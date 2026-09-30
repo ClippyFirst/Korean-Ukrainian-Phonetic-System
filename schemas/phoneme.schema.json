@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["id","category","ipa","status"],"properties":{"id":{"type":"string"},"category":{"type":"string"},"ipa":{"type":"string"},"features":{"type":"string"},"status":{"type":"string"},"analysis_id":{"type":"string"}}}
