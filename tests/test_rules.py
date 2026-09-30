@@ -7,7 +7,7 @@ def test_nasal_assimilation():
 def test_liquidization():
     items,_=apply_ordered_rules(parse_syllables("신라"),["R006"]); assert items[0].coda=="ㄹ" and items[1].onset=="ㄹ"
 def test_palatalization():
-    items,_=apply_ordered_rules(parse_syllables("굳이"),["R002","R007"]); assert items[0].coda=="" and items[1].onset=="ㅈ"
+    items,_=apply_ordered_rules(parse_syllables("굳이"),["R007"]); assert items[0].coda=="" and items[1].onset=="ㅈ"
 def test_tensification():
     items,_=apply_ordered_rules(parse_syllables("국밥"),["R008"]); assert items[1].onset=="ㅃ"
 def test_aspiration():
