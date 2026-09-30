@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["realization_id","phoneme_id","position","ipa","status","source_id"],"properties":{"realization_id":{"type":"string"},"phoneme_id":{"type":"string"},"position":{"type":"string"},"ipa":{"type":"string"},"status":{"type":"string"},"source_id":{"type":"string"},"notes":{"type":"string"}}}
