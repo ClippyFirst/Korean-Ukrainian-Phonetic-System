@@ -1,45 +1,75 @@
-# Final audit
+# Final audit — 2026-09-30
 
 ## Repository state
 - Repository: ClippyFirst/Korean-Ukrainian-Phonetic-System
 - Visibility: private
 - Default branch: main
-- Latest implementation commit: 599d2c981eafcb3ae66701048b930db7ea620c48
+- Latest audited commit: b1e07478f273a252a7f19deed2a2d5d538518683
 
-## Implemented
-- Scientific layered architecture and explicit Standard Korean scope.
-- Unicode Hangul decomposition/composition reference implementation.
-- Deterministic generated inventory of 11,172 modern precomposed Hangul syllable blocks.
-- 67 modern conjoining Jamo records: 19 L + 21 V + 27 T.
-- Korean segmental dataset with explicit analysis dependence.
-- Initial contextual rule dataset and explicit ordering metadata.
-- Initial phonotactics dataset.
-- Surface realization examples with variation status.
-- Claim-level evidence and source provenance.
-- Competing-analysis dataset.
-- Ukrainian target-layer contract pinned to ClippyFirst/Ukrainian-Phonetic-Inventory 0.8.0.
-- Feature-distance and candidate-ranking reference layer using explicit heuristic costs.
-- JSON Schemas, validation scripts, reference API and GitHub Actions test workflow.
-- Terminology, methodology, uncertainty and reproducibility documentation.
+## Implemented in this pass
+- Research-grade written design specification and implementation plan.
+- Structured Korean syllable representation.
+- Ordered traceable Korean contextual-rule engine.
+- Broad/contextual segmental IPA realization layer.
+- External Ukrainian target adapter aligned with the current UPI package architecture.
+- Explicit non-probabilistic candidate-cost semantics.
+- Vowel/realization-environment datasets.
+- Expanded source/evidence/competing-analysis metadata.
+- JSON Schemas for phoneme and realization records.
+- Tests for rules, IPA, pipeline separation, adapter failure mode and end-to-end structure.
+- Updated README and research methodology/evidence/uncertainty/reproducibility documentation.
+- Implementation ledger.
+- Editable Lucid architecture diagram.
+- Notion research-status page.
 
-## Verified directly through GitHub
-- Generated artifact starts at 가 and ends at 힣.
-- Last generated record is U+D7A3 with L=18,V=20,T=27.
-- Jamo artifact contains 19 L, 21 V and 27 T records.
-- Core source, test, schema, evidence and workflow files exist in the latest tree.
+## Generated core data
+- Modern Hangul graphic combinations: 11,172.
+- Actual modern conjoining Jamo records in the repository: 67 = 19 L + 21 V + 27 T.
+- Generated artifact range: 가 → 힣.
 
-## Not yet complete
-- Exhaustive Korean morphophonological rule inventory.
-- Full rule-interaction/ordering alternatives with empirical adjudication.
-- Complete broad/narrow surface-IPA realization engine.
-- Corpus-scale lexical attestation and frequency layer.
-- Full Korean→Ukrainian candidate generation against the private Ukrainian inventory API.
-- Full Ukrainian orthographic realization integration.
-- Exhaustive page-level literature review for every non-trivial claim.
-- Independent human review by Korean phonology/phonetics and Ukrainian orthography specialists.
+## Verification evidence
+- Independent local reproduction of the newly implemented core test set: 13 passed.
+- JSON Schema structural validation of the two new schemas: 2/2 valid.
+- GitHub Actions workflow exists and runs pytest on push/pull_request.
+- Latest commit workflow lookup returned no run object. CI is therefore **not claimed as passed**.
 
-## Verification limitation
-The current execution environment could not clone the private GitHub repository because external network resolution is unavailable. Therefore pytest was not executed locally in this session. GitHub Actions is configured to run it, but no workflow run was exposed by the connector at audit time.
+## Scientific status
 
-## Scientific readiness
-The repository is suitable as a **research prototype / scientific-methodology demonstration**, not as a claim of exhaustive or publication-final Korean→Ukrainian transliteration. The remaining items above are substantive linguistic work, not cosmetic TODOs.
+### Completed enough for a research-methodology demonstration
+- Layer separation.
+- Reproducible Hangul combinatorics.
+- Provenance-bearing Korean rule traces.
+- Explicit broad IPA layer.
+- External Ukrainian target boundary.
+- Explainable heuristic ranking semantics.
+- Explicit uncertainty/competing-analysis representation.
+
+### Not complete
+- Exhaustive Standard Korean morphophonological rule inventory.
+- Empirically adjudicated rule-order alternatives for all environments.
+- Corpus-scale lexical pronunciation/attestation layer.
+- Full narrow IPA realization based on acoustic/corpus evidence.
+- Complete feature extraction from Korean IPA into the exact current UPI feature ontology.
+- Complete Ukrainian candidate-to-orthography realization engine.
+- Exhaustive lexical/morphological validation corpus.
+- Independent specialist review.
+
+## Important implementation caveats
+1. The current rule engine is deliberately a research prototype. Some rules are represented at a broad structural level rather than as a full morphological lexicon.
+2. The pipeline currently does not infer a Ukrainian candidate from an IPA string by itself; candidate ranking requires an explicit source feature vector. This prevents arbitrary target selection from an under-specified input.
+3. The adapter refuses to pretend that a missing external Ukrainian inventory is available.
+4. Narrow IPA is not treated as automatically more scientific than broad IPA.
+5. 11,172 is a Unicode combinatorial count, not a count of Korean phonemes, syllables in the lexicon or possible pronunciations.
+
+## Reproducibility
+The machine-readable repository remains the source of truth. Derived/generated data should be regenerated by the existing scripts and checked for drift in CI.
+
+## Human review required before publication claims
+- Korean phonology/phonetics specialist: rule scope, rule ordering, IPA realizations, morphophonological environments.
+- Ukrainian phonology/orthography specialist: target candidate ontology and orthographic realization.
+- Computational linguist/data scientist: schema integrity, reproducibility, candidate-ranking methodology and evaluation protocol.
+
+## Overall status
+**Research-grade prototype / methodology demonstration.**
+
+It is not scientifically honest to label the repository an exhaustive, publication-final Korean→Ukrainian system yet. The remaining gaps are substantive linguistic coverage and validation, not merely presentation work.
