@@ -1,0 +1,2 @@
+target_system,repository,expected_version,interface,source_of_truth
+ukrainian,ClippyFirst/Ukrainian-Phonetic-Inventory,0.8.0,IPA-features-candidates-orthography,external repository

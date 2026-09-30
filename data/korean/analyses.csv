@@ -1,0 +1,4 @@
+analysis_id,claim,variant,supporting_sources,contradicting_sources,status,confidence
+A1,Standard Korean segmental inventory,traditional segmental representation,S001;S003,,primary,high
+A2,Contemporary Seoul vowel realization,merger and diphthongization sensitive,S004;S005,S001,alternative,medium
+A3,Seoul stop cues,lax-fortis-aspirated with context-dependent VOT/F0,S003;S004;S005,,primary,high

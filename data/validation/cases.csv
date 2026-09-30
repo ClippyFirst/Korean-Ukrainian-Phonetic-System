@@ -1,0 +1,8 @@
+case_id,input,stage,expected,source_id
+V001,가,hangul,가,S002
+V002,각,hangul,각,S002
+V003,낫,final-neutralization,낟,S001
+V004,신라,liquid-assimilation,실라,S001
+V005,같이,palatalization,가치,S001
+V006,국밥,tensification,국빱,S001
+V007,축하,aspiration,추카,S001

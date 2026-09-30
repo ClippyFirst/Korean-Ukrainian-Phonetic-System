@@ -1,0 +1,12 @@
+feature,weight,status
+place,2.0,heuristic
+manner,2.0,heuristic
+aspiration,1.5,heuristic
+tenseness,1.5,heuristic
+voicing,1.0,heuristic
+height,1.5,heuristic
+backness,1.5,heuristic
+rounding,1.0,heuristic
+nasality,1.0,heuristic
+laterality,1.0,heuristic
+palatalization,1.0,heuristic

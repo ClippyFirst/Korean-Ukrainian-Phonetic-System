@@ -1,0 +1,8 @@
+evidence_id,source_id,claim,domain,status,confidence
+E001,S002,Modern Hangul has 19 leading 21 medial and 27 trailing jamo,Hangul,established,high
+E002,S001,Standard pronunciation is grounded in modern Standard Seoul speech with normative rules,scope,established,high
+E003,S001,Final consonants have restricted neutralized realizations,phonology,established,high
+E004,S001,Nasal and liquid assimilation are regulated pronunciation processes,phonology,established,high
+E005,S003,Korean stops have a three-way lenis fortis aspirated contrast,phonetics,established,high
+E006,S004,Seoul stop realization is undergoing sound change,variation,established,high
+E007,S005,Contemporary Seoul stop cues show ongoing reweighting,variation,established,high
