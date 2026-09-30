@@ -1,6 +1,7 @@
 source_id,source_type,title,author_or_organization,year,locator,url,evidence_level
-S001,normative,Standard Pronunciation Rules,National Institute of Korean Language,2026,Chapters 1-7,https://korean.go.kr/kornorms/refr/refrList.do,normative
+S001,normative,Standard Pronunciation Rules,National Institute of Korean Language,2026,Chapters 1-7,https://www.korean.go.kr/front/page/pageView.do?page_id=P000097,normative
 S002,standard,Unicode Core Specification Chapter 18,Unicode Consortium,2026,18.6.5,https://unicode.org/versions/Unicode18.0.0/core-spec/chapter-18/,normative
 S003,peer_reviewed,Acoustic and aerodynamic correlates of Korean stops and fricatives,Cho Jun Ladefoged,2002,Journal of Phonetics 30(2),https://doi.org/10.1006/jpho.2001.0153,peer_reviewed
 S004,peer_reviewed,Tonogenesis in early Contemporary Seoul Korean,Kang Han,2013,Lingua 134 62-74,https://doi.org/10.1016/j.lingua.2013.06.002,peer_reviewed
 S005,peer_reviewed,The emergence progress and impact of sound change in progress in Seoul Korean,Bang et al.,2018,Journal of Phonetics 66 120-144,https://doi.org/10.1016/j.wocn.2017.10.004,peer_reviewed
+S006,academic_reference,Modern Korean monophthong and diphthong inventories,National Institute of Korean Language,2014,Standard Korean Language Development report pp. 92-99,https://www.korean.go.kr/common/download.do,academic_reference
