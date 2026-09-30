@@ -13,6 +13,8 @@ class UkrainianTargetAdapter:
     def status(self):
         return {"available":self.available,"package":self.package_name,"version":self.version,"expected_version":EXPECTED_VERSION,"error":self.error}
     def candidates(self,source_features:Mapping[str,object],weights:Mapping[str,float]):
+        if not source_features:
+            return {"status":"needs_source_features","adapter":self.status(),"candidates":[]}
         if not self.available:return {"status":"unavailable","adapter":self.status(),"candidates":[]}
         from .correspondence import rank_candidates
         rows=[]
