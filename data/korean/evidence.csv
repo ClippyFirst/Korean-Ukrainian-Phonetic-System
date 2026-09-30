@@ -1,8 +1,9 @@
-evidence_id,source_id,claim,domain,status,confidence
-E001,S002,Modern Hangul has 19 leading 21 medial and 27 trailing jamo,Hangul,established,high
-E002,S001,Standard pronunciation is grounded in modern Standard Seoul speech with normative rules,scope,established,high
-E003,S001,Final consonants have restricted neutralized realizations,phonology,established,high
-E004,S001,Nasal and liquid assimilation are regulated pronunciation processes,phonology,established,high
-E005,S003,Korean stops have a three-way lenis fortis aspirated contrast,phonetics,established,high
-E006,S004,Seoul stop realization is undergoing sound change,variation,established,high
-E007,S005,Contemporary Seoul stop cues show ongoing reweighting,variation,established,high
+evidence_id,source_id,claim,domain,status,confidence,locator,notes
+E001,S002,Modern Hangul uses 19 leading 21 medial and 27 trailing Jamo,Hangul,established,high,Unicode 18.6.5,The empty trailing slot makes 28 T positions in the 11172 block formula.
+E002,S001,Standard pronunciation is grounded in actual contemporary Standard Seoul pronunciation,scope,established,high,§1,Normative scope statement.
+E003,S001,Final obstruents have restricted representative realizations,phonology,established,high,§9,Rule layer keeps orthography separate from surface pronunciation.
+E004,S001,Nasal and liquid assimilation are regulated pronunciation processes,phonology,established,high,§§18-20,Rule ordering remains model-dependent.
+E005,S003,Korean stops show a three-way lenis fortis aspirated contrast,phonetics,established,high,Journal of Phonetics 30(2),Acoustic evidence.
+E006,S004,Seoul stop cue weighting is undergoing sound change,variation,established,high,pp.62-74,VOT/F0 reweighting.
+E007,S005,Contemporary Seoul stop cues show ongoing reweighting across speakers and contexts,variation,established,high,pp.120-144,Corpus-based evidence.
+E008,S006,The modern Korean vowel inventory has substantial age and realization variation,variation,established,medium,pp.92-99,10-vowel normative analysis coexists with reduced contemporary systems.
