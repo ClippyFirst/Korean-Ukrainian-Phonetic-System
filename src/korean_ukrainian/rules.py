@@ -46,7 +46,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="unknown")->Rule
             pair=(a.coda,b.onset)
             if pair in ASPIRATE:
                 b.onset=ASPIRATE[pair]
-                if a.coda=="ㅎ": a.coda=""
+                a.coda=""
                 changed=True
     elif rule_id=="R005":
         for i in range(len(items)-1):
@@ -73,5 +73,5 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="unknown")->Rule
     return RuleTrace(rule_id,name,changed,before,_snap(items),"established",confidence,source)
 
 def apply_ordered_rules(items:list[Syllable],rule_ids=None,*,boundary_mode="unknown"):
-    ids=rule_ids or ["R002","R003","R004","R005","R006","R007","R008","R001"]
+    ids=rule_ids or ["R003","R004","R005","R006","R007","R002","R008","R001"]
     return items,[apply_rule(items,r,boundary_mode=boundary_mode) for r in ids]
