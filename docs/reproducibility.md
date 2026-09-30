@@ -1,9 +1,19 @@
 # Reproducibility
 
-The generated Hangul artifact is produced by scripts/generate_syllables.py from the deterministic Unicode composition algorithm in src/korean_ukrainian/hangul.py.
+GitHub is the source of truth for code and machine-readable Korean data.
 
-The invariant is 19 × 21 × 28 = 11,172 unique precomposed syllable blocks, spanning U+AC00 (가) through U+D7A3 (힣).
+## Deterministic artifacts
 
-CI installs the package and runs pytest on pushes and pull requests. A separate validator checks row count, endpoints and uniqueness.
+- Modern Hangul generator: exactly 11,172 rows.
+- Jamo inventory: 19 L + 21 V + 27 T = 67 actual Jamo records.
+- Generated syllable artifact begins at 가 and ends at 힣.
+- Rule IDs and rule order are explicit.
+- Feature weights are versioned heuristic parameters.
 
-The current execution environment could not clone the private repository over the public network, so this session did not independently execute pytest against a checkout. The GitHub workflow was committed, but no workflow run was exposed by the connector at audit time.
+## Verification
+
+The project has pytest coverage for Hangul, generated artifacts, schemas, evidence, phonotactics, rule behavior, IPA, the external Ukrainian adapter and end-to-end layer separation.
+
+GitHub Actions is configured to execute the suite on pushes and pull requests.
+
+If the connected GitHub Actions API does not expose a run, the audit must state that rather than claiming CI passed.
