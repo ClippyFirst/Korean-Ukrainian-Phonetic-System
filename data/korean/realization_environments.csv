@@ -1,0 +1,10 @@
+environment_id,position,description,status,source_id
+E01,phrase_initial,Initial position of accentual/phrase domain,established,S003
+E02,intervocalic,Between vowel nuclei,established,S003
+E03,coda,Syllable-final position,established,S001
+E04,before_nasal,Coda before ㄴ or ㅁ,established,S001
+E05,before_liquid,Coda/onset adjacency involving ㄴ or ㄹ,established,S001
+E06,before_i,ㄷ/ㅌ before ㅣ in licensed morphology,established,S001
+E07,before_h,Obstruent plus ㅎ interaction,established,S001
+E08,after_h,ㅎ plus obstruent interaction,established,S001
+E09,post_obstruent,Plain obstruent after representative stop coda,established,S001
