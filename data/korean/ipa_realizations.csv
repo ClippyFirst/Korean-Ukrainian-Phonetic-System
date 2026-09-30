@@ -1,0 +1,9 @@
+realization_id,phoneme_id,position,ipa,status,source_id,notes
+I001,C01,phrase_initial,[p],broad,S003,Lenis stop
+I002,C01,intervocalic,[b],observed-variation,S003,Contextual voicing
+I003,C04,phrase_initial,[t],broad,S003,Lenis stop
+I004,C04,intervocalic,[d],observed-variation,S003,Contextual voicing
+I005,C07,phrase_initial,[k],broad,S003,Lenis stop
+I006,C07,intervocalic,[ɡ],observed-variation,S003,Contextual voicing
+I007,C18,intervocalic,[ɾ],broad,S001,Tap
+I008,C18,coda,[l],contextual,S001,Lateral realization

@@ -1,0 +1,9 @@
+ordering_group,rule_id,preferred_order,alternative_order,analysis_status,notes
+G1,R001,1,,primary,Final neutralization
+G1,R002,1,,primary,Final neutralization
+G1,R003,1,,primary,Final neutralization
+G2,R004,2,,primary,Nasal assimilation
+G3,R005,3,,primary,Liquid assimilation
+G4,R006,4,,primary,Palatalization
+G5,R007,5,,analysis-dependent,Tensification
+G5,R008,5,,analysis-dependent,Aspiration interaction
