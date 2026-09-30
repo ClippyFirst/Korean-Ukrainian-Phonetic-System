@@ -1,4 +1,5 @@
-analysis_id,claim,variant,supporting_sources,contradicting_sources,status,confidence
-A1,Standard Korean segmental inventory,traditional segmental representation,S001;S003,,primary,high
-A2,Contemporary Seoul vowel realization,merger and diphthongization sensitive,S004;S005,S001,alternative,medium
-A3,Seoul stop cues,lax-fortis-aspirated with context-dependent VOT/F0,S003;S004;S005,,primary,high
+analysis_id,claim,variant,supporting_sources,contradicting_sources,status,confidence,impact
+A1,Standard Korean segmental inventory,traditional segmental representation,S001;S003,,primary,high,Core computational inventory.
+A2,Contemporary Seoul vowel realization,merger and diphthongization sensitive,S004;S005;S006,S001,alternative,medium,Vowel candidates remain analysis-dependent.
+A3,Seoul stop cues,lenis-fortis-aspirated with context-dependent VOT/F0,S003;S004;S005,,primary,high,IPA realization must not imply a single timeless acoustic cue.
+A4,Rule ordering,alternative derivational orderings for liaison assimilation and fortition,S001;S004,S001,analysis-dependent,medium,The engine stores trace order explicitly.
