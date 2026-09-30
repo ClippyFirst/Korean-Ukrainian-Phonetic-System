@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["syllable","codepoint","L","V","T"],"properties":{"syllable":{"type":"string","minLength":1,"maxLength":1},"codepoint":{"type":"string"},"L":{"type":"integer","minimum":0,"maximum":18},"V":{"type":"integer","minimum":0,"maximum":20},"T":{"type":"integer","minimum":0,"maximum":27}}}

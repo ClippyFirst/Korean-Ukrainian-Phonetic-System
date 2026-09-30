@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["rule_id","name","input","output","environment","source_id","status"],"properties":{"rule_id":{"type":"string"},"name":{"type":"string"},"input":{"type":"string"},"output":{"type":"string"},"environment":{"type":"string"},"source_id":{"type":"string"},"status":{"type":"string"}}}
