@@ -1,0 +1,22 @@
+vowel_id,jamo,ipa_primary,ipa_alternatives,status,analysis_id,notes
+V01,ㅏ,a,,canonical,A1,
+V02,ㅐ,ɛ,,canonical,A1,Contemporary merger with ㅔ is possible
+V03,ㅑ,ja,,canonical,A1,
+V04,ㅒ,jɛ,,canonical,A1,
+V05,ㅓ,ʌ,,canonical,A1,
+V06,ㅔ,e,,canonical,A1,Contemporary merger with ㅐ is possible
+V07,ㅕ,jʌ,,canonical,A1,
+V08,ㅖ,je,,canonical,A1,
+V09,ㅗ,o,,canonical,A1,
+V10,ㅘ,wa,,canonical,A1,
+V11,ㅙ,wɛ,,canonical,A1,
+V12,ㅚ,ø,we,analysis-dependent,A2,May be realized as [we]
+V13,ㅛ,jo,,canonical,A1,
+V14,ㅜ,u,,canonical,A1,
+V15,ㅝ,wʌ,,canonical,A1,
+V16,ㅞ,we,,canonical,A1,
+V17,ㅟ,y,wi,analysis-dependent,A2,May be realized as [wi]
+V18,ㅠ,ju,,canonical,A1,
+V19,ㅡ,ɯ,,canonical,A1,
+V20,ㅢ,ɰi,ɯi,analysis-dependent,A2,Context-dependent realization
+V21,ㅣ,i,,canonical,A1,
