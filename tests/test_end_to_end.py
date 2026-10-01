@@ -15,4 +15,4 @@ def test_unsupported_ipa_is_rejected():
 def test_phrase_boundary_is_distinct():
     from korean_ukrainian.phonology import parse_syllables
     items=parse_syllables("무슨 일")
-    assert items[1].index==1 and items[0].boundary_after=="word"
+    assert items[1].index==1 and items[1].boundary_after=="word"
