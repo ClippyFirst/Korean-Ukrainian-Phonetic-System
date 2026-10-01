@@ -13,7 +13,10 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False)->list[
     if c=="ㄹ": return ["ɾ"]
     if c=="ㅎ": return ["h"]
     if c in LENIS:
-        return [CONSONANT_PHONEMES[c].strip("/") if phonemic else ({"ㄱ":"ɡ","ㄷ":"d","ㅂ":"b"}[c] if index>0 and items[index-1].coda=="" else LENIS[c])]
+        if phonemic: return [CONSONANT_PHONEMES[c].strip("/")]
+        if c in {"ㄱ","ㄷ","ㅂ"} and index>0 and items[index-1].coda=="":
+            return [{"ㄱ":"ɡ","ㄷ":"d","ㅂ":"b"}[c]]
+        return [LENIS[c]]
     return [CONSONANT_PHONEMES[c].strip("/")]
 
 def nucleus_ipa(s:Syllable,*,phonemic=False)->list[str]:
