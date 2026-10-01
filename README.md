@@ -69,4 +69,4 @@ Bang et al. (2018): https://doi.org/10.1016/j.wocn.2017.10.004
 
 ## Status
 
-Version 0.2.0 is a research-engine prototype: the computational rule/IPA path is substantially implemented, but corpus-scale lexical attestation, exhaustive morphophonological coverage, full Ukrainian orthographic realization and independent specialist review remain open research/validation layers. See docs/final-audit.md.
+Version 0.3.0 is the completed research-prototype release: the computational rule/IPA path is substantially implemented, but corpus-scale lexical attestation, exhaustive morphophonological coverage, full Ukrainian orthographic realization and independent specialist review remain open research/validation layers. See docs/final-audit.md.
