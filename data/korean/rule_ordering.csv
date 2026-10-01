@@ -1,10 +1,10 @@
 ordering_group,rule_id,preferred_order,alternative_order,analysis_status,notes
-G1,R002,1,,primary,Single and complex coda liaison precedes later assimilation.
-G2,R003,2,,primary,ㅎ deletion is conditioned by vowel-initial formal morphology.
-G3,R004,3,,primary,ㅎ plus obstruent aspiration.
-G4,R005,4,,primary,Nasal assimilation.
-G5,R006,5,,primary,Liquid assimilation.
-G6,R007,6,,primary,Palatalization.
-G7,R009,7,,analysis-dependent,Insertion is morphologically/phrase conditioned; ordering can vary by analysis.
+G1,R009,1,,analysis-dependent,ㄴ-insertion is explicitly licensed before liaison so licensed cases such as 한여름 and 무슨 일 do not get consumed by generic vowel liaison.
+G2,R002,2,,primary,Single and complex coda liaison after any explicitly licensed ㄴ-insertion.
+G3,R003,3,,primary,ㅎ deletion is conditioned by vowel-initial formal morphology.
+G4,R004,4,,primary,ㅎ plus obstruent aspiration.
+G5,R005,5,,primary,Nasal assimilation using the representative coda class.
+G6,R006,6,,primary,Liquid assimilation after representative-coda normalization.
+G7,R007,7,,primary,Palatalization.
 G8,R008,8,7,analysis-dependent,Fortition interacts with preceding coda realization.
 G9,R001,9,,primary,Final neutralization is applied to remaining codas after contextual rules.
