@@ -30,7 +30,7 @@ NIKL §23 covers tensification after representative coda classes, including comp
 
 Previous fresh GitHub Actions verification: **run #92 — success, 41 tests passed** on the final v0.4.0 verification tree immediately before PR #2 was merged.
 
-v0.4.1 contains new code and therefore **must not inherit run #92 as proof of correctness**. A fresh CI run on the v0.4.1 branch is required before this branch can be considered verified.
+v0.4.1 contains new code and therefore did not inherit run #92 as proof of correctness. Fresh GitHub Actions run **#130 passed: 49 tests passed in 0.57s** on the latest v0.4.1 branch commit.
 
 ## Remaining important research gaps
 
@@ -46,4 +46,4 @@ v0.4.1 contains new code and therefore **must not inherit run #92 as proof of co
 
 ## Scientific status
 
-**Research-demo capable after fresh v0.4.1 CI verification; not publication-final.**
+**Research-demo capable after fresh v0.4.1 CI verification (#130: 49/49); not publication-final.**
