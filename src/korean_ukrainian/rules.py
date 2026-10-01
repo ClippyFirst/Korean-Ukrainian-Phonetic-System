@@ -6,7 +6,8 @@ FINAL_REPRESENTATIVE={"ㄳ":"ㄱ","ㄵ":"ㄴ","ㄶ":"ㄴ","ㄺ":"ㄱ","ㄻ":"ㅁ
 PLAIN_TO_FORTIS={"ㄱ":"ㄲ","ㄷ":"ㄸ","ㅂ":"ㅃ","ㅅ":"ㅆ","ㅈ":"ㅉ"}
 ASPIRATE={("ㄱ","ㅎ"):"ㅋ",("ㄷ","ㅎ"):"ㅌ",("ㅂ","ㅎ"):"ㅍ",("ㅈ","ㅎ"):"ㅊ",("ㅎ","ㄱ"):"ㅋ",("ㅎ","ㄷ"):"ㅌ",("ㅎ","ㅂ"):"ㅍ",("ㅎ","ㅈ"):"ㅊ"}
 NASAL_AFTER={"ㄱ":"ㅇ","ㄲ":"ㅇ","ㅋ":"ㅇ","ㄷ":"ㄴ","ㅅ":"ㄴ","ㅆ":"ㄴ","ㅈ":"ㄴ","ㅊ":"ㄴ","ㅌ":"ㄴ","ㅎ":"ㄴ","ㅂ":"ㅁ","ㅍ":"ㅁ"}
-RULE_META={"R001":("final-neutralization","NIKL §9","high"),"R002":("liaison-resyllabification","NIKL §§13–15","high"),"R003":("h-deletion-before-vowel","NIKL §12(4)","high"),"R004":("h-aspiration","NIKL §12(1)","high"),"R005":("nasal-assimilation","NIKL §18","high"),"R006":("liquid-assimilation","NIKL §§19–20","high"),"R007":("palatalization","NIKL §17","high"),"R008":("tensification","NIKL §§23–27","high")}
+RULE_META={"R001":("final-neutralization","NIKL §9","high"),"R002":("liaison-resyllabification","NIKL §§13–15","high"),"R003":("h-deletion-before-vowel","NIKL §12(4)","high"),"R004":("h-aspiration","NIKL §12(1)","high"),"R005":("nasal-assimilation","NIKL §18","high"),"R006":("liquid-assimilation","NIKL §§19–20","high"),"R007":("palatalization","NIKL §17","high"),"R008":("tensification","NIKL §§23–27","high"),
+"R009":("n-insertion","NIKL §29","high")}
 
 @dataclass
 class RuleTrace:
@@ -54,6 +55,11 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="unknown")->Rule
             a,b=items[i],items[i+1]
             if _eligible(a,b) and a.coda in {"ㄷ","ㅌ"} and b.onset=="ㅇ" and b.nucleus in {"ㅣ","ㅑ","ㅕ","ㅛ","ㅠ","ㅖ","ㅒ"}:
                 b.onset={"ㄷ":"ㅈ","ㅌ":"ㅊ"}[a.coda]; a.coda=""; changed=True
+    elif rule_id=="R009":
+        for i in range(len(items)-1):
+            a,b=items[i],items[i+1]
+            if _eligible(a,b) and b.onset=="ㅇ" and b.nucleus in {"ㅣ","ㅑ","ㅕ","ㅛ","ㅠ"}:
+                b.onset="ㄹ" if a.coda=="ㄹ" else "ㄴ"; changed=True
     elif rule_id=="R008":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
@@ -63,6 +69,6 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="unknown")->Rule
     return RuleTrace(rule_id,name,changed,before,_snap(items),"established",confidence,source)
 
 def apply_ordered_rules(items:list[Syllable],rule_ids=None,*,boundary_mode="unknown"):
-    ids=rule_ids or ["R003","R004","R005","R006","R007","R002","R008","R001"]
+    ids=rule_ids or ["R003","R004","R005","R006","R007","R009","R002","R008","R001"]
     if boundary_mode not in {"unknown","same_word","morpheme","word","phrase"}: raise ValueError("invalid boundary_mode")
     return items,[apply_rule(items,r,boundary_mode=boundary_mode) for r in ids]
