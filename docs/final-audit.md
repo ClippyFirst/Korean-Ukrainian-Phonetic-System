@@ -2,9 +2,9 @@
 
 ## Release status
 
-**Hardened research prototype — post-audit repair release.**
+**Version 0.4.0 — hardened research prototype / post-audit repair release.**
 
-The previous v0.3.0 audit overstated completion. This repair release fixes demonstrated internal inconsistencies and adds adversarial regression coverage, but it is not an exhaustive publication-final Korean→Ukrainian standard.
+The previous v0.3.0 audit overstated completion; v0.4.0 records the demonstrated repairs and their verification status. This repair release fixes demonstrated internal inconsistencies and adds adversarial regression coverage, but it is not an exhaustive publication-final Korean→Ukrainian standard.
 
 ## Critical repairs completed
 
@@ -34,8 +34,8 @@ NIKL's 2026 guidance states that ㄴ-insertion can occur in a connected phrase s
 
 ## Verification status
 
-Fresh CI verification is pending on the repair branch; the previous CI success cannot be used as evidence for these changes.
+Fresh verification: GitHub Actions **run #86 — success**, 41 tests passed on the repair branch head that was merged into `main` via PR #1. This is the relevant post-repair CI evidence.
 
 ## Scientific status
 
-**Ready for research demonstration and further specialist review; not yet publication-final.**
+**Ready for research demonstration and further specialist review; not publication-final.**
