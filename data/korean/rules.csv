@@ -7,3 +7,4 @@ R005,liquid-assimilation,ㄴ,ㄹ,adjacent to ㄹ,word,3,S001,established,high
 R006,palatalization,ㄷ|ㅌ,ㅈ|ㅊ,before i/j in licensed context,morpheme,4,S001,established,high
 R007,tensification,plain-obstruent,fortis,licensed post-coda/morphological context,word,5,S001,established,high
 R008,aspiration,obstruent+ㅎ,aspirated,licensed consonant interaction,word,5,S001,established,high
+R009,n-insertion,zero-onset+i-yowel,ㄴ|ㄹ,before ㅣ/ㅑ/ㅕ/ㅛ/ㅠ in licensed morphological environment,morpheme,6,S001,established,high
