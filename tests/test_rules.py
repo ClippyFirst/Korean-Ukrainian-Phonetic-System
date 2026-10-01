@@ -19,8 +19,11 @@ def test_tensification():
 def test_aspiration():
     items,_=apply_ordered_rules(parse_syllables("각하"),["R004"]); assert items[1].onset=="ㅋ"
 
-def test_n_insertion():
-    items,_=apply_ordered_rules(parse_syllables("한여름"),["R009"]); assert items[1].onset=="ㄴ"
+def test_n_insertion_requires_license():
+    items,_=apply_ordered_rules(parse_syllables("한여름"),["R009"],n_insertion_licensed=True); assert items[1].onset=="ㄴ"
+
+def test_n_insertion_disabled_by_default():
+    items,_=apply_ordered_rules(parse_syllables("한여름"),["R009"]); assert items[1].onset=="ㅇ"
 
 def test_complex_coda_liaison():
     expected={"넋이":("ㄱ","ㅆ"),"값이":("ㅂ","ㅆ"),"앉아":("ㄴ","ㅈ"),"닭을":("ㄹ","ㄱ"),"젊어":("ㄹ","ㅁ")}
