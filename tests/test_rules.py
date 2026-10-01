@@ -12,3 +12,7 @@ def test_tensification():
     items,_=apply_ordered_rules(parse_syllables("국밥"),["R008"]); assert items[1].onset=="ㅃ"
 def test_aspiration():
     items,_=apply_ordered_rules(parse_syllables("각하"),["R004"]); assert items[1].onset=="ㅋ"
+
+
+def test_n_insertion():
+    items,_=apply_ordered_rules(parse_syllables("한여름"),["R009"]); assert items[1].onset=="ㄴ"
