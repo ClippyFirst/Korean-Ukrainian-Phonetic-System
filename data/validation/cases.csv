@@ -6,9 +6,14 @@ V004,신라,실라,sil.la,,established,S001,Liquid assimilation
 V005,같이,가치,ka.tɕʰi,,established,S001,Palatalization
 V006,국밥,국빱,kuk̚.p͈ap,,established,S001,Tensification
 V007,축하,추카,tɕʰu.kʰa,,established,S001,Aspiration
-V008,넋이,넉씨,nək̚.s͈i,,established,S001,Complex coda liaison
+V008,넋이,넉씨,nʌk̚.s͈i,,established,S001,Complex coda liaison
 V009,값이,갑씨,kap̚.s͈i,,established,S001,Complex coda liaison with ㅅ fortition
 V010,앉아,안자,an.tɕa,,established,S001,Complex coda liaison
 V011,닭을,달글,tal.kɯl,,established,S001,Complex coda liaison
 V012,젊어,절머,tɕʌl.mʌ,,established,S001,Complex coda liaison
-V013,무슨 일,,, ,conditional,S001,Phrase-level n-insertion; standard pronunciation guidance permits [무슨 닐] when spoken as one prosodic unit
+V013,무슨 일,,, ,conditional,S001,Phrase-level n-insertion only when connected phrase and insertion licensing are supplied
+V014,먹이,먹이,, ,negative,S001,Adversarial: n-insertion must not fire merely from a vowel-initial suffix-like sequence
+V015,긁는,긍는,, ,established,S001,Adversarial complex-coda neutralization before nasal
+V016,뚫네,뚤레,, ,established,S001,Adversarial ㅀ simplification followed by liquid assimilation
+V017,핥네,할레,, ,established,S001,Adversarial ㄾ simplification followed by liquid assimilation
+V018,몇 년,,, ,conditional,S001,Cross-word nasalization requires phrase-connected context

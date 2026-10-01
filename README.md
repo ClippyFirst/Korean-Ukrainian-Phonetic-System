@@ -8,13 +8,13 @@ KOR_ORTH → KOR_PHON → KOR_PHON_RULES → KOR_IPA → UA_PHONETIC_TARGET → 
 
 ## Implemented scope
 
-- Unicode Hangul decomposition/composition and deterministic generation of all 11,172 modern precomposed Hangul syllable blocks.
+- Unicode Hangul decomposition/composition, canonical NFD decomposition metadata and deterministic generation of all 11,172 modern precomposed Hangul syllable blocks.
+- Machine-readable modern Jamo inventory with canonical and compatibility codepoints.
 - Structured onset/nucleus/coda representation, including 11 complex codas as component sequences.
 - Canonical rule registry shared by code, CSV and ordering data: R001–R009.
-- Context-sensitive rules with explicit boundary/morphological gating.
-- Broad IPA realization with analysis-dependent vowel alternatives; the API does not pretend to provide a complete acoustic narrow-IPA model.
-- External Ukrainian target adapter with segmentwise feature-based candidate ranking.
-- Explicit top-ranked candidate and Ukrainian graphemic rendering when the external target inventory is available.
+- Context-sensitive rules with explicit boundary/morphological gating; ㄴ-insertion is disabled unless explicitly licensed.
+- Broad IPA realization with analysis-dependent vowel alternatives. Narrow IPA is explicitly unavailable until an acoustic/allophonic model exists.
+- External Ukrainian target adapter with segmentwise feature-based candidate ranking and target grapheme retrieval from UPI 0.8.0.
 - Evidence, competing-analysis metadata, JSON Schemas, validation fixtures, adversarial regression tests and GitHub Actions.
 
 ## Important interpretation
@@ -29,7 +29,7 @@ The system distinguishes:
 - heuristic cost vs probability;
 - documented fact vs model assumption vs unresolved analysis.
 
-The Korean model is grounded in the National Institute of Korean Language standard-pronunciation framework and peer-reviewed Seoul Korean phonetics. Complex-coda liaison and phrase-level n-insertion are explicitly conditioned rather than applied to arbitrary adjacent syllables.
+The Korean model is grounded in the National Institute of Korean Language standard-pronunciation framework and peer-reviewed Seoul Korean phonetics. Complex-coda liaison, assimilation chains and phrase-level n-insertion are explicitly conditioned rather than applied to arbitrary adjacent syllables.
 
 ## API
 
@@ -49,27 +49,17 @@ The regression corpus includes:
 - simple coda neutralization;
 - liaison;
 - complex-coda liaison: 넋이, 값이, 앉아, 닭을, 젊어;
-- ㅎ-complex-coda behavior;
+- complex-coda assimilation chains: 긁는, 뚫네, 핥네;
 - nasal/liquid assimilation;
 - palatalization;
 - tensification;
 - aspiration;
-- n-insertion and explicit phrase boundaries;
+- explicitly licensed n-insertion and phrase boundaries;
+- adversarial non-insertion: 먹이;
 - unsupported IPA and unknown-boundary negative cases;
+- exact generated-artifact reproducibility;
 - cross-file rule-ID and evidence foreign-key validation.
-
-## Evidence
-
-Normative Korean pronunciation: https://www.korean.go.kr/front/page/pageView.do?page_id=P000097
-
-Unicode Hangul model: https://unicode.org/versions/Unicode18.0.0/core-spec/chapter-18/
-
-Cho, Jun & Ladefoged (2002): https://doi.org/10.1006/jpho.2001.0153
-
-Kang & Han (2013): https://doi.org/10.1016/j.lingua.2013.06.002
-
-Bang et al. (2018): https://doi.org/10.1016/j.wocn.2017.10.004
 
 ## Status
 
-This repair release hardens v0.3.0 against the demonstrated internal inconsistencies. It does not claim exhaustive lexical coverage, publication-final phonological adjudication, corpus-optimized correspondence weights, or a complete Ukrainian orthographic grammar for all Korean proper names/loanwords. Those remain explicit research extensions.
+v0.4.1 adversarial audit hardens v0.4.0 against demonstrated rule-interaction and false-precision failures. It still does not claim exhaustive lexical coverage, publication-final phonological adjudication, corpus-optimized correspondence weights, or a complete Ukrainian orthographic grammar for all Korean proper names/loanwords. Those remain explicit research extensions.

@@ -10,15 +10,17 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False)->list[
     if c=="ㅇ": return []
     if c in FORTIS: return [FORTIS[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
     if c in ASPIRATED: return [ASPIRATED[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
-    if c=="ㄹ": return ["/ɾ/"[1:-1] if phonemic else "ɾ"]
+    if c=="ㄹ": return ["ɾ"]
     if c=="ㅎ": return ["h"]
     if c in LENIS:
-        return [CONSONANT_PHONEMES[c].strip("/") if phonemic else ({"ㄱ":"ɡ","ㄷ":"d","ㅂ":"b"}[c] if index>0 and items[index-1].coda=="" else LENIS[c])]
+        if phonemic: return [CONSONANT_PHONEMES[c].strip("/")]
+        if c in {"ㄱ","ㄷ","ㅂ"} and index>0 and items[index-1].coda=="":
+            return [{"ㄱ":"ɡ","ㄷ":"d","ㅂ":"b"}[c]]
+        return [LENIS[c]]
     return [CONSONANT_PHONEMES[c].strip("/")]
 
 def nucleus_ipa(s:Syllable,*,phonemic=False)->list[str]:
-    if phonemic: return [VOWEL_IPA[s.nucleus][0]]
-    return VOWEL_IPA[s.nucleus][:1]
+    return [VOWEL_IPA[s.nucleus][0]]
 
 def coda_ipa(coda:str,*,phonemic=False)->list[str]:
     if not coda:return []
@@ -27,7 +29,8 @@ def coda_ipa(coda:str,*,phonemic=False)->list[str]:
 
 def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     if level not in {"phonemic","broad","narrow"}: raise ValueError("level must be phonemic, broad, or narrow")
+    if level=="narrow":
+        raise ValueError("narrow IPA is unavailable: repository has no acoustic/allophonic model supporting a defensible narrow transcription")
     phonemic=level=="phonemic"
-    syllables=[onset_ipa(s,i,items,phonemic=phonemic)+nucleus_ipa(s,phonemic=phonemic)+coda_ipa(s.coda,phonemic=phonemic) for i,s in enumerate(items)]
-    rendered=["".join(x) for x in syllables]
-    return {"level":level,"ipa":".".join(rendered),"syllables":rendered,"status":"narrow" if level=="narrow" else "rule-supported"}
+    rendered=["".join(onset_ipa(s,i,items,phonemic=phonemic)+nucleus_ipa(s,phonemic=phonemic)+coda_ipa(s.coda,phonemic=phonemic)) for i,s in enumerate(items)]
+    return {"level":level,"ipa":".".join(rendered),"syllables":rendered,"status":"phonemic" if phonemic else "rule-supported-broad"}

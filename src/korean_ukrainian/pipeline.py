@@ -15,19 +15,13 @@ def phonologize_korean(text):
     items=parse_syllables(text)
     return {"input":text,"syllables":[x.to_dict() for x in items],"analysis_status":"canonical_structural_representation"}
 
-def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad"):
-    items=parse_syllables(text); items,traces=apply_ordered_rules(items,rule_ids,boundary_mode=boundary_mode)
+def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False):
+    items=parse_syllables(text)
+    items,traces=apply_ordered_rules(items,rule_ids,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed)
     return {"input":text,"surface_syllables":[x.to_dict() for x in items],"rules":[x.to_dict() for x in traces],"ipa":realize_syllables(items,level=ipa_level)}
 
 def _feature_vector_for_ipa(ipa:str)->dict:
-    consonants={
-    "p":("0","0","1","0","0","0","0","0"),"p͈":("0","0","1","0","0","0","0","0"),"pʰ":("0","0","1","0","0","0","0","1"),
-    "t":("0","1","0","0","0","0","0","0"),"t͈":("0","1","0","0","0","0","0","0"),"tʰ":("0","1","0","0","0","0","0","1"),
-    "k":("0","0","0","1","0","0","0","0"),"k͈":("0","0","0","1","0","0","0","0"),"kʰ":("0","0","0","1","0","0","0","1"),
-    "tɕ":("0","1","0","0","0","1","0","0"),"tɕ͈":("0","1","0","0","0","1","0","0"),"tɕʰ":("0","1","0","0","0","1","0","1"),
-    "s":("0","1","0","0","1","0","0","0"),"s͈":("0","1","0","0","1","0","0","0"),
-    "m":("1","0","1","0","0","1","0","0"),"n":("1","1","0","0","0","1","0","0"),"ŋ":("1","0","0","1","0","1","0","0"),
-    "ɾ":("1","1","0","0","1","0","1","0"),"l":("1","1","0","0","1","0","0","0"),"h":("0","0","0","0","1","0","0","0")}
+    consonants={"p":("0","0","1","0","0","0","0","0"),"p͈":("0","0","1","0","0","0","0","0"),"pʰ":("0","0","1","0","0","0","0","1"),"t":("0","1","0","0","0","0","0","0"),"t͈":("0","1","0","0","0","0","0","0"),"tʰ":("0","1","0","0","0","0","0","1"),"k":("0","0","0","1","0","0","0","0"),"k͈":("0","0","0","1","0","0","0","0"),"kʰ":("0","0","0","1","0","0","0","1"),"tɕ":("0","1","0","0","0","1","0","0"),"tɕ͈":("0","1","0","0","0","1","0","0"),"tɕʰ":("0","1","0","0","0","1","0","1"),"s":("0","1","0","0","1","0","0","0"),"s͈":("0","1","0","0","1","0","0","0"),"m":("1","0","1","0","0","1","0","0"),"n":("1","1","0","0","0","1","0","0"),"ŋ":("1","0","0","1","0","1","0","0"),"ɾ":("1","1","0","0","1","0","1","0"),"l":("1","1","0","0","1","0","0","0"),"h":("0","0","0","0","1","0","0","0")}
     if ipa in consonants:
         son,cor,lab,dor,cont,nas,rho,asp=consonants[ipa]
         return {"consonantal":"1","sonorant":son,"syllabic":"0","voice":"1" if ipa in {"m","n","ŋ","ɾ","l"} else "0","continuant":cont,"nasal":nas,"lateral":"1" if ipa=="l" else "0","rhotic":rho,"labial":lab,"coronal":cor,"dorsal":dor,"palatal":"1" if ipa.startswith("tɕ") else "0","palatalized":"0","affricate":"1" if ipa.startswith("tɕ") else "0","aspirated":asp}
@@ -73,9 +67,9 @@ def _select_target(target):
         selected.append(candidates[0])
     return {"segments":selected,"score_type":"heuristic_cost","status":"top_ranked_segmentwise"}
 
-def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None):
-    surface=phoneticize_korean(text,rule_ids=rule_ids,boundary_mode=boundary_mode,ipa_level=ipa_level)
+def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False):
+    surface=phoneticize_korean(text,rule_ids=rule_ids,boundary_mode=boundary_mode,ipa_level=ipa_level,n_insertion_licensed=n_insertion_licensed)
     target=map_ipa_to_ukrainian(surface["ipa"]["ipa"],target_adapter)
     selected=_select_target(target)
-    orthographic=render_sequence([x.get("grapheme","") for x in selected["segments"]]) if selected else None
-    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"score_type":"heuristic_cost","confidence":None,"selection_status":"top-ranked heuristic candidate; not probability" if selected else "unavailable_without_target_inventory","sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype"}
+    orthographic=render_sequence(selected["segments"]) if selected else None
+    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"score_type":"heuristic_cost","confidence":None,"selection_status":"top-ranked segmentwise heuristic candidate; not probability" if selected else "unavailable_without_target_inventory","sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype"}

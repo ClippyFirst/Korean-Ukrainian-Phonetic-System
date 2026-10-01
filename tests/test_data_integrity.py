@@ -1,12 +1,12 @@
 import csv, json
 from pathlib import Path
 from jsonschema import validate
+from korean_ukrainian.hangul import generate_syllables
 
 ROOT=Path(__file__).parents[1]
 
 def rows(path):
-    with path.open(encoding="utf-8",newline="") as f:
-        return list(csv.DictReader(f))
+    with path.open(encoding="utf-8",newline="") as f: return list(csv.DictReader(f))
 
 def test_rule_registry_matches_runtime_ids():
     csv_ids={r["rule_id"] for r in rows(ROOT/"data/korean/rules.csv")}
@@ -18,16 +18,21 @@ def test_rule_registry_matches_runtime_ids():
 def test_rule_instances_validate_against_schema():
     schema=json.loads((ROOT/"schemas/rule.schema.json").read_text(encoding="utf-8"))
     for row in rows(ROOT/"data/korean/rules.csv"):
-        row["ordering"]=int(row["ordering"])
-        validate(row,schema)
+        row["ordering"]=int(row["ordering"]); validate(row,schema)
 
 def test_validation_instances_validate_against_schema():
     schema=json.loads((ROOT/"schemas/validation-case.schema.json").read_text(encoding="utf-8"))
-    for row in rows(ROOT/"data/validation/cases.csv"):
-        validate(row,schema)
+    for row in rows(ROOT/"data/validation/cases.csv"): validate(row,schema)
+
+def test_jamo_instances_validate_against_schema():
+    schema=json.loads((ROOT/"schemas/hangul-jamo.schema.json").read_text(encoding="utf-8"))
+    for row in rows(ROOT/"data/korean/jamo.csv"): validate(row,schema)
 
 def test_source_foreign_keys():
     source_ids={r["source_id"] for r in rows(ROOT/"data/korean/sources.csv")}
     for path in [ROOT/"data/korean/rules.csv",ROOT/"data/validation/cases.csv"]:
-        for row in rows(path):
-            assert row["source_id"] in source_ids
+        for row in rows(path): assert row["source_id"] in source_ids
+
+def test_generated_csv_matches_generator():
+    actual=rows(ROOT/"data/korean/syllables.csv")
+    assert actual==[{k:str(v) for k,v in row.items()} for row in generate_syllables()]
