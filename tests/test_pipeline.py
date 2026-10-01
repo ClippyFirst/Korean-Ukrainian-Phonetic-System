@@ -16,8 +16,8 @@ def test_n_insertion_requires_explicit_licensing():
     assert not any(x["changed"] for x in phoneticize_korean("먹이")["rules"] if x["rule_id"]=="R009")
     q=phoneticize_korean("한여름",n_insertion_licensed=True)
     assert any(x["rule_id"]=="R009" and x["changed"] for x in q["rules"])
-    assert q["surface_syllables"][2]["onset"]=="ㄴ"
+    assert q["surface_syllables"][1]["onset"]=="ㄴ"
 
 def test_phrase_n_insertion_requires_phrase_and_license():
     q=phoneticize_korean("무슨 일",boundary_mode="phrase",n_insertion_licensed=True)
-    assert q["surface_syllables"][1]["onset"]=="ㄴ"
+    assert q["surface_syllables"][2]["onset"]=="ㄴ"
