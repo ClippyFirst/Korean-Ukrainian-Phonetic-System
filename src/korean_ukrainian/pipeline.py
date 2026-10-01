@@ -46,7 +46,7 @@ def tokenize_ipa(ipa:str)->list[str]:
     tokens=[]; i=0
     inventory=("tɕ͈","tɕʰ","tɕ","pʰ","tʰ","kʰ","p͈","t͈","k͈","ɡ","ɾ","ŋ","ɯ","ʌ","ɛ","ø","ɰ","j","w","p","t","k","b","d","m","n","s","h","a","e","o","u","i","l","y")
     while i<len(ipa):
-        if ipa[i] in ".#": i+=1; continue
+        if ipa[i] in ".#̚": i+=1; continue
         match=next((x for x in inventory if ipa.startswith(x,i)),None)
         if match is None: raise ValueError(f"unsupported IPA segment at index {i}: {ipa[i]!r}")
         tokens.append(match); i+=len(match)
