@@ -1,10 +1,10 @@
 rule_id,name,input,output,environment,domain,ordering,source_id,status,confidence
-R001,final-obstruent-neutralization,ㅅ|ㅆ|ㅈ|ㅊ,ㄷ,syllable-final coda,syllable,1,S001,established,high
-R002,final-k-neutralization,ㅋ|ㄲ,ㄱ,syllable-final coda,syllable,1,S001,established,high
-R003,final-p-neutralization,ㅍ,ㅂ,syllable-final coda,syllable,1,S001,established,high
-R004,nasal-assimilation,obstruent,nasal-place-matched,preceding nasal,word,2,S001,established,high
-R005,liquid-assimilation,ㄴ,ㄹ,adjacent to ㄹ,word,3,S001,established,high
-R006,palatalization,ㄷ|ㅌ,ㅈ|ㅊ,before i/j in licensed context,morpheme,4,S001,established,high
-R007,tensification,plain-obstruent,fortis,licensed post-coda/morphological context,word,5,S001,established,high
-R008,aspiration,obstruent+ㅎ,aspirated,licensed consonant interaction,word,5,S001,established,high
-R009,n-insertion,zero-onset+i-yowel,ㄴ|ㄹ,before ㅣ/ㅑ/ㅕ/ㅛ/ㅠ in licensed morphological environment,morpheme,6,S001,established,high
+R001,final-neutralization,obstruent-coda,ㄱ|ㄷ|ㅂ|ㄴ|ㄹ|ㅁ|ㅇ,syllable-final or before consonant,syllable,9,S001,established,high
+R002,liaison-resyllabification,coda,following-onset,vowel-initial licensed boundary,word|morpheme,1,S001,established,high
+R003,h-deletion-before-vowel,ㅎ|ㄶ|ㅀ,loss-of-ㅎ,before vowel-initial formal morphology,morpheme,2,S001,established,high
+R004,h-aspiration,ㅎ+obstruent,ㅋ|ㅌ|ㅍ|ㅊ,licensed consonant interaction,word|morpheme,3,S001,established,high
+R005,nasal-assimilation,obstruent,nasal-place-matched,before ㄴ|ㅁ,word|morpheme,4,S001,established,high
+R006,liquid-assimilation,ㄴ|ㄹ,ㄹ|ㄹ,adjacent to liquid,word|morpheme,5,S001,established,high
+R007,palatalization,ㄷ|ㅌ,ㅈ|ㅊ,before i/y-initial nucleus,word|morpheme,6,S001,established,high
+R008,tensification,plain-obstruent,fortis,post-coda licensed context,word|morpheme,8,S001,established,high
+R009,n-insertion,zero-onset+i-or-y,ㄴ|ㄹ,before ㅣ/ㅑ/ㅕ/ㅛ/ㅠ/ㅖ/ㅒ under licensed morphology or connected speech,word|morpheme|phrase,7,S001,established,high
