@@ -34,7 +34,7 @@ NIKL's 2026 guidance states that ㄴ-insertion can occur in a connected phrase s
 
 ## Verification status
 
-A fresh GitHub Actions run is required after this repair commit. The previous CI success cannot be used as evidence for these new changes.
+Fresh CI verification is pending on the repair branch; the previous CI success cannot be used as evidence for these changes.
 
 ## Scientific status
 
