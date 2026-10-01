@@ -10,15 +10,26 @@ VOWEL_IPA = {"ㅏ":["a"],"ㅐ":["ɛ"],"ㅑ":["ja"],"ㅒ":["jɛ"],"ㅓ":["ʌ"],"�
 
 @dataclass
 class Syllable:
-    text:str; index:int; L:int; V:int; T:int; onset:str; nucleus:str; coda:str; boundary_after:str="unknown"
+    text:str; index:int; L:int; V:int; T:int; onset:str; nucleus:str; coda:str; boundary_after:str="same_word"
     def to_dict(self): return asdict(self)
 
 def parse_syllables(text:str)->list[Syllable]:
     result=[]
+    syllable_index=0
+    pending_boundary="same_word"
     for i,ch in enumerate(text):
-        if not ("가"<=ch<="힣"): raise ValueError(f"unsupported non-Hangul character at index {i}: {ch!r}")
+        if ch.isspace():
+            if result: result[-1].boundary_after="word"
+            pending_boundary="word"
+            continue
+        if not ("가"<=ch<="힣"):
+            raise ValueError(f"unsupported non-Hangul character at index {i}: {ch!r}")
         d=decompose_hangul(ch)
-        result.append(Syllable(ch,i,d["L"],d["V"],d["T"],L_JAMO[d["L"]],V_JAMO[d["V"]],T_JAMO[d["T"]]))
+        result.append(Syllable(ch,syllable_index,d["L"],d["V"],d["T"],L_JAMO[d["L"]],V_JAMO[d["V"]],T_JAMO[d["T"]]))
+        if pending_boundary=="word" and len(result)>1:
+            result[-2].boundary_after="word"
+        syllable_index+=1
+        pending_boundary="same_word"
     return result
 
 def split_coda(coda:str)->tuple[str,...]:
