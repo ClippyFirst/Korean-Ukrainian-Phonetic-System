@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["source_ipa","target_id","score","score_type"],"properties":{"source_ipa":{"type":"string"},"target_id":{"type":"string"},"score":{"type":"number"},"score_type":{"const":"heuristic_cost"},"mismatches":{"type":"array","items":{"type":"string"}}}}
