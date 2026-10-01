@@ -1,8 +1,14 @@
-case_id,input,stage,expected,source_id
-V001,가,hangul,가,S002
-V002,각,hangul,각,S002
-V003,낫,final-neutralization,낟,S001
-V004,신라,liquid-assimilation,실라,S001
-V005,같이,palatalization,가치,S001
-V006,국밥,tensification,국빱,S001
-V007,축하,aspiration,추카,S001
+case_id,input,expected_phonology,expected_ipa,expected_ua,status,source_id,notes
+V001,가,가,ka,,established,S002,Hangul round-trip baseline
+V002,각,각,kak̚,,established,S001,Simple coda
+V003,낫,낟,nat̚,,established,S001,Final neutralization
+V004,신라,실라,sil.la,,established,S001,Liquid assimilation
+V005,같이,가치,ka.tɕʰi,,established,S001,Palatalization
+V006,국밥,국빱,kuk̚.p͈ap,,established,S001,Tensification
+V007,축하,추카,tɕʰu.kʰa,,established,S001,Aspiration
+V008,넋이,넉씨,nək̚.s͈i,,established,S001,Complex coda liaison
+V009,값이,갑씨,kap̚.s͈i,,established,S001,Complex coda liaison with ㅅ fortition
+V010,앉아,안자,an.tɕa,,established,S001,Complex coda liaison
+V011,닭을,달글,tal.kɯl,,established,S001,Complex coda liaison
+V012,젊어,절머,tɕʌl.mʌ,,established,S001,Complex coda liaison
+V013,무슨 일,,, ,conditional,S001,Phrase-level n-insertion; standard pronunciation guidance permits [무슨 닐] when spoken as one prosodic unit
