@@ -1,9 +1,10 @@
 ordering_group,rule_id,preferred_order,alternative_order,analysis_status,notes
-G1,R001,1,,primary,Final neutralization
-G1,R002,1,,primary,Final neutralization
-G1,R003,1,,primary,Final neutralization
-G2,R004,2,,primary,Nasal assimilation
-G3,R005,3,,primary,Liquid assimilation
-G4,R006,4,,primary,Palatalization
-G5,R007,5,,analysis-dependent,Tensification
-G5,R008,5,,analysis-dependent,Aspiration interaction
+G1,R002,1,,primary,Single and complex coda liaison precedes later assimilation.
+G2,R003,2,,primary,ㅎ deletion is conditioned by vowel-initial formal morphology.
+G3,R004,3,,primary,ㅎ plus obstruent aspiration.
+G4,R005,4,,primary,Nasal assimilation.
+G5,R006,5,,primary,Liquid assimilation.
+G6,R007,6,,primary,Palatalization.
+G7,R009,7,,analysis-dependent,Insertion is morphologically/phrase conditioned; ordering can vary by analysis.
+G8,R008,8,7,analysis-dependent,Fortition interacts with preceding coda realization.
+G9,R001,9,,primary,Final neutralization is applied to remaining codas after contextual rules.
