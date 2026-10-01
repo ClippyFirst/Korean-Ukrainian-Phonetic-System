@@ -2,40 +2,48 @@
 
 ## Release status
 
-**Version 0.4.0 — hardened research prototype / post-audit repair release.**
+**Version 0.4.1 — adversarially hardened research prototype.**
 
-The previous v0.3.0 audit overstated completion; v0.4.0 records the demonstrated repairs and their verification status. This repair release fixes demonstrated internal inconsistencies and adds adversarial regression coverage, but it is not an exhaustive publication-final Korean→Ukrainian standard.
+This audit found additional issues that were not covered by the previous 41-test v0.4.0 suite. They were repaired on branch `audit/adversarial-v0.4.1` and are now covered by new regression tests. The project remains a research prototype, not a publication-final Korean→Ukrainian standard.
 
-## Critical repairs completed
+## New adversarial findings and repairs
 
-1. **Canonical rule registry.** R001–R009 now have identical semantics in `rules.py`, `rules.csv`, `rule_ordering.csv`, tests and documentation.
-2. **Complex coda liaison.** The 11 complex codas are decomposed into component consonants for liaison. The second component moves to the following onset where the standard rule licenses it; ㄳ/ㄽ/ㅄ use the documented [ㅆ] realization in liaison. ㅎ-bearing codas are handled separately rather than by blindly moving the whole cluster.
-3. **Boundary conditioning.** Contextual rules no longer fire when `boundary_mode="unknown"`. Whitespace is represented as a word boundary. Phrase-level n-insertion is explicitly opt-in through `boundary_mode="phrase"`.
-4. **Target selection.** The pipeline now exposes the top-ranked segmentwise candidate and a final Ukrainian graphemic rendering when the external Ukrainian inventory is available. The score remains a heuristic cost, never a probability.
-5. **Adversarial validation.** Cross-file rule IDs, schema instances, evidence foreign keys, complex-coda examples, phrase boundaries and unsupported IPA are tested.
+1. **False narrow-IPA precision.** v0.4.0 exposed `ipa_level="narrow"` while returning broad/rule-supported output under a misleading status. v0.4.1 now rejects narrow IPA explicitly until an acoustic/allophonic model exists.
+2. **Complex-coda assimilation ordering.** Complex codas such as `ㄺ`, `ㅀ`, `ㄾ` were not normalized to their representative coda before nasal/liquid assimilation. The rule engine now evaluates the representative coda in R005/R006. This covers adversarial chains such as `긁는`, `뚫네`, `핥네`.
+3. **Over-permissive ㄴ-insertion.** v0.4.0 could apply R009 merely because an adjacent syllable began with a zero onset and /i/-initial nucleus. v0.4.1 requires explicit `n_insertion_licensed=True`, reflecting the fact that NIKL treats ㄴ-insertion as non-automatic and lexically/morphologically conditioned.
+4. **Hangul decomposition metadata.** `decompose_hangul` now exposes canonical NFD Jamo and Unicode codepoints, and the compatibility-Jamo inventory stores explicit compatibility codepoints.
+5. **Ukrainian target orthography contract.** The Korean repository no longer contains a hard-coded Ukrainian IPA→grapheme inventory. The adapter retrieves graphemes from the external UPI 0.8.0 data export and rejects an incompatible UPI version explicitly.
+6. **Generated-artifact reproducibility.** Tests now compare the committed 11,172-row CSV exactly with the deterministic generator, rather than checking only row count and endpoints.
+7. **Adversarial validation corpus.** Added explicit negative/conditional cases for `먹이`, `무슨 일`, `긁는`, `뚫네`, `핥네` and cross-word `몇 년`.
 
-## Linguistic evidence
+## Evidence boundary
 
-NIKL §14 explicitly gives `넋이[넉씨]`, `앉아[안자]`, `닭을[달글]`, `젊어[절머]`, `값을[갑쓸]`, and `없어[업써]` as complex-coda liaison examples. citeturn0search3turn1search2
+NIKL documents complex-coda liaison such as `넋이[넉씨]`, `앉아[안자]`, `닭을[달글]`, `젊어[절머]`, and `값을[갑쓸]`. citeturn8search4turn10search6
 
-NIKL also distinguishes ㅎ deletion before vowel-initial formal morphology from complex-coda simplification before consonants, e.g. `뚫네[뚤네→뚤레]`. citeturn1search1turn1search5
+NIKL also documents `뚫네[뚤네→뚤레]` as coda simplification plus liquid assimilation, which directly motivated the R005/R006 adversarial repair. citeturn2search0turn2search7
 
-NIKL's 2026 guidance states that ㄴ-insertion can occur in a connected phrase such as `무슨 일 → [무슨 닐]`, while a phrase boundary can block the connected-speech environment. citeturn0search0turn0search5
+NIKL states that ㄴ-insertion is not obligatory in every phonologically similar environment and gives both lexical/morphological and connected-phrase conditioning; this is why v0.4.1 does not silently enable R009. citeturn7search0turn7search1
 
-## Remaining non-blocking research extensions
+NIKL §23 covers tensification after representative coda classes, including complex codas such as ㄳ and ㄺ. citeturn1search3
+
+## Verification
+
+Previous fresh GitHub Actions verification: **run #92 — success, 41 tests passed** on the final v0.4.0 verification tree immediately before PR #2 was merged.
+
+v0.4.1 contains new code and therefore **must not inherit run #92 as proof of correctness**. A fresh CI run on the v0.4.1 branch is required before this branch can be considered verified.
+
+## Remaining important research gaps
 
 - exhaustive lexical pronunciation-dictionary coverage;
 - corpus-scale attestation/frequency statistics;
-- complete morphophonological conditioning for all lexical classes;
-- complete acoustic/narrow-IPA modeling;
+- full morphophonological conditioning and exception datasets;
+- remaining Standard Pronunciation Rules not represented as computational rules (including several §24–§30 environments);
+- complete acoustic/narrow-IPA modelling;
 - independent expert adjudication of competing analyses;
-- full Ukrainian orthographic grammar for Korean proper names/loanwords;
-- empirical optimization and gold-corpus evaluation of correspondence weights.
-
-## Verification status
-
-Fresh verification: GitHub Actions **run #92 — success**, 41 tests passed on the final v0.4.0 verification branch immediately before PR #2 was merged into `main`. Earlier repair verification run #86 also passed the same 41-test suite.
+- empirical optimisation and gold-corpus evaluation of correspondence weights;
+- full Ukrainian orthographic realization including context-sensitive palatalization/iotation/ь/я/ю/є/ї and sequence-level orthography;
+- end-to-end validation against a real Korean pronunciation corpus and a gold Ukrainian-output corpus.
 
 ## Scientific status
 
-**Ready for research demonstration and further specialist review; not publication-final.**
+**Research-demo capable after fresh v0.4.1 CI verification; not publication-final.**
