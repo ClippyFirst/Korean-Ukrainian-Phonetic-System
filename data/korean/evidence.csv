@@ -7,3 +7,9 @@ E005,S003,Korean stops show a three-way lenis fortis aspirated contrast,phonetic
 E006,S004,Seoul stop cue weighting is undergoing sound change,variation,established,high,pp.62-74,VOT/F0 reweighting.
 E007,S005,Contemporary Seoul stop cues show ongoing reweighting across speakers and contexts,variation,established,high,pp.120-144,Corpus-based evidence.
 E008,S006,The modern Korean vowel inventory has substantial age and realization variation,variation,established,medium,pp.92-99,10-vowel normative analysis coexists with reduced contemporary systems.
+
+E009,S001,Fortition after stem-final ㄴ or ㅁ is morphologically conditioned,phonology,established,high,§24,Implemented as explicit-license R010 rather than adjacency inference.
+E010,S001,Fortition after stem-final ㄼ or ㄾ is morphologically conditioned,phonology,established,high,§25,Implemented as explicit-license R011.
+E011,S001,Sino-Korean ㄹ fortition and adnominal -(으)ㄹ fortition have lexical/morphological conditioning,phonology,established,high,§§26-27,Implemented as explicit-license R012/R013.
+E012,S001,Compound fortition is not exception-free and depends on lexical/semantic relation,phonology,established,high,§28,Implemented as explicit-license R014.
+E013,S001,Saisiot pronunciation has alternative standard paths depending on following material,phonology,established,high,§30,Implemented as conditional R015 without collapsing alternatives.

@@ -29,7 +29,14 @@ The implemented rule IDs are:
 | R005 | nasal assimilation | §18 | established |
 | R006 | liquid assimilation | §§19–20 | established |
 | R007 | palatalization | §17 | established |
-| R008 | post-coda fortition | §§23–27 | established |
+| R008 | post-coda fortition | §23 | established |
+| R009 | ㄴ-insertion | §29 | conditional |
+| R010 | stem ㄴ/ㅁ fortition | §24 | conditional |
+| R011 | stem ㄼ/ㄾ fortition | §25 | conditional |
+| R012 | Sino-Korean ㄹ fortition | §26 | conditional |
+| R013 | adnominal -(으)ㄹ fortition | §27 | conditional |
+| R014 | compound fortition | §28 | conditional |
+| R015 | saisiot pronunciation | §30 | conditional |
 
 The implementation stores a rule trace for every stage. This is deliberate: NIKL documentation itself notes that some derivational questions can be analyzed differently, so the project does not encode one derivational narrative as a universal fact.
 
@@ -43,3 +50,8 @@ Sources:
 - https://doi.org/10.1006/jpho.2001.0153
 - https://doi.org/10.1016/j.lingua.2013.06.002
 - https://doi.org/10.1016/j.wocn.2017.10.004
+
+
+## Standard Pronunciation coverage
+
+The repository now classifies §§9–30 explicitly in `data/korean/rule_scope.csv`. Rules requiring lexical, morphological or compound structure are **conditional** and cannot be inferred safely from Hangul adjacency alone. Section 16 (consonant-letter names) is outside the ordinary lexical-word pipeline and is therefore scoped separately rather than falsely generalized. Section 21 is represented as an explicit negative constraint; §22 is retained as variation-only because deterministic vowel assimilation would require additional lexical/acoustic conditioning.

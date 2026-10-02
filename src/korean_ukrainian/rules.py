@@ -7,11 +7,28 @@ PLAIN_TO_FORTIS={"ㄱ":"ㄲ","ㄷ":"ㄸ","ㅂ":"ㅃ","ㅅ":"ㅆ","ㅈ":"ㅉ"}
 ASPIRATE={("ㄱ","ㅎ"):"ㅋ",("ㄷ","ㅎ"):"ㅌ",("ㅂ","ㅎ"):"ㅍ",("ㅈ","ㅎ"):"ㅊ",("ㅎ","ㄱ"):"ㅋ",("ㅎ","ㄷ"):"ㅌ",("ㅎ","ㅂ"):"ㅍ",("ㅎ","ㅈ"):"ㅊ"}
 NASAL_AFTER={"ㄱ":"ㅇ","ㄲ":"ㅇ","ㅋ":"ㅇ","ㄷ":"ㄴ","ㅅ":"ㄴ","ㅆ":"ㄴ","ㅈ":"ㄴ","ㅊ":"ㄴ","ㅌ":"ㄴ","ㅎ":"ㄴ","ㅂ":"ㅁ","ㅍ":"ㅁ"}
 COMPLEX_LIAISON={"ㄳ":("ㄱ","ㅆ"),"ㄵ":("ㄴ","ㅈ"),"ㄶ":("ㄴ",""),"ㄺ":("ㄹ","ㄱ"),"ㄻ":("ㄹ","ㅁ"),"ㄼ":("ㄹ","ㅂ"),"ㄽ":("ㄹ","ㅆ"),"ㄾ":("ㄹ","ㅌ"),"ㄿ":("ㄹ","ㅍ"),"ㅀ":("ㄹ",""),"ㅄ":("ㅂ","ㅆ")}
-RULE_META={"R001":("final-neutralization","NIKL §9","high"),"R002":("liaison-resyllabification","NIKL §§13–15","high"),"R003":("h-deletion-before-vowel","NIKL §12(4)","high"),"R004":("h-aspiration","NIKL §12(1)","high"),"R005":("nasal-assimilation","NIKL §18","high"),"R006":("liquid-assimilation","NIKL §§19–20","high"),"R007":("palatalization","NIKL §17","high"),"R008":("tensification","NIKL §§23–27","high"),"R009":("n-insertion","NIKL §29","high")}
+RULE_META={
+"R001":("final-neutralization","NIKL §9","high"),
+"R002":("liaison-resyllabification","NIKL §§13–15","high"),
+"R003":("h-deletion-before-vowel","NIKL §12(4)","high"),
+"R004":("h-aspiration","NIKL §12(1)","high"),
+"R005":("nasal-assimilation","NIKL §18","high"),
+"R006":("liquid-assimilation","NIKL §§19–20","high"),
+"R007":("palatalization","NIKL §17","high"),
+"R008":("tensification","NIKL §§23–27","high"),
+"R009":("n-insertion","NIKL §29","high"),
+"R010":("stem-nm-fortition","NIKL §24","high"),
+"R011":("stem-lb-lt-fortition","NIKL §25","high"),
+"R012":("sino-korean-l-fortition","NIKL §26","high"),
+"R013":("adnominal-l-fortition","NIKL §27","high"),
+"R014":("compound-fortition","NIKL §28","high"),
+"R015":("saisiot-pronunciation","NIKL §30","high"),
+}
 
 @dataclass
 class RuleTrace:
     rule_id:str; name:str; changed:bool; before:list[dict]; after:list[dict]; status:str; confidence:str; source:str
+    license_context:str|None=None
     def to_dict(self): return self.__dict__.copy()
 
 def _snap(items): return [x.to_dict() for x in items]
@@ -23,10 +40,17 @@ def _eligible(a:Syllable,b:Syllable,*,boundary_mode:str,allow_word_boundary:bool
         return allow_word_boundary and boundary_mode=="phrase"
     return boundary_mode in {"same_word","morpheme","word","phrase"}
 
-def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_insertion_licensed=False)->RuleTrace:
+def _licensed(rule_id:str,rule_licenses:set[str]|None)->str|None:
+    if not rule_licenses: return None
+    prefix=rule_id+":"
+    return next((x for x in rule_licenses if x.startswith(prefix)),None)
+
+def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_insertion_licensed=False,rule_licenses=None)->RuleTrace:
     if rule_id not in RULE_META: raise ValueError(f"unknown rule_id: {rule_id}")
     if boundary_mode not in {"unknown","same_word","morpheme","word","phrase"}: raise ValueError("invalid boundary_mode")
+    licenses=set(rule_licenses or ())
     before=_snap(items); changed=False
+    license_context=_licensed(rule_id,licenses)
     if rule_id=="R001":
         for s in items:
             if s.coda in FINAL_REPRESENTATIVE:
@@ -78,16 +102,55 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     elif rule_id=="R009":
         if not n_insertion_licensed:
             name,source,confidence=RULE_META[rule_id]
-            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source)
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,license_context)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=True) or b.onset!="ㅇ": continue
             if b.nucleus not in {"ㅣ","ㅑ","ㅕ","ㅛ","ㅠ","ㅖ","ㅒ"}: continue
             b.onset="ㄹ" if FINAL_REPRESENTATIVE.get(a.coda,a.coda)=="ㄹ" else "ㄴ"; changed=True
+    elif rule_id in {"R010","R011","R012","R013","R014"}:
+        required={
+            "R010":"R010:stem_n_m+suffix",
+            "R011":"R011:stem_lb_lt+suffix",
+            "R012":"R012:sino_ryeon",
+            "R013":"R013:adnominal_l",
+            "R014":"R014:compound",
+        }[rule_id]
+        if required not in licenses:
+            name,source,confidence=RULE_META[rule_id]
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
+        for i in range(len(items)-1):
+            a,b=items[i],items[i+1]
+            if not _eligible(a,b,boundary_mode=boundary_mode): continue
+            if b.onset not in PLAIN_TO_FORTIS: continue
+            applies = (
+                (rule_id=="R010" and FINAL_REPRESENTATIVE.get(a.coda,a.coda) in {"ㄴ","ㅁ"}) or
+                (rule_id=="R011" and a.coda in {"ㄼ","ㄾ"}) or
+                (rule_id=="R012" and a.coda=="ㄹ" and b.onset in {"ㄷ","ㅅ","ㅈ"}) or
+                (rule_id=="R013" and a.coda=="ㄹ") or
+                (rule_id=="R014" and bool(a.coda))
+            )
+            if applies:
+                b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
+    elif rule_id=="R015":
+        if license_context!="R015:saisiot":
+            name,source,confidence=RULE_META[rule_id]
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
+        for i in range(len(items)-1):
+            a,b=items[i],items[i+1]
+            if not _eligible(a,b,boundary_mode=boundary_mode): continue
+            if a.coda!="ㅅ": continue
+            if b.onset in PLAIN_TO_FORTIS:
+                b.onset=PLAIN_TO_FORTIS[b.onset]; a.coda=""; changed=True
+            elif b.onset in {"ㄴ","ㅁ"}:
+                a.coda="ㄴ"; changed=True
+            elif b.onset=="ㅇ" and b.nucleus=="ㅣ":
+                a.coda="ㄴ"; b.onset="ㄴ"; changed=True
     name,source,confidence=RULE_META[rule_id]
-    return RuleTrace(rule_id,name,changed,before,_snap(items),"established",confidence,source)
+    status="established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015"} else "conditional-nochange"
+    return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,source,license_context)
 
-def apply_ordered_rules(items:list[Syllable],rule_ids=None,*,boundary_mode="same_word",n_insertion_licensed=False):
-    ids=rule_ids or ["R009","R002","R003","R004","R005","R006","R007","R008","R001"]
+def apply_ordered_rules(items:list[Syllable],rule_ids=None,*,boundary_mode="same_word",n_insertion_licensed=False,rule_licenses=None):
+    ids=rule_ids or ["R009","R002","R003","R004","R005","R006","R007","R010","R011","R012","R013","R014","R015","R008","R001"]
     if boundary_mode not in {"unknown","same_word","morpheme","word","phrase"}: raise ValueError("invalid boundary_mode")
-    return items,[apply_rule(items,r,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed) for r in ids]
+    return items,[apply_rule(items,r,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses) for r in ids]

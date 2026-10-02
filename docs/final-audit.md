@@ -1,49 +1,170 @@
-# Final audit — 2026-10-01
+# Final audit — 2026-10-02
 
 ## Release status
 
-**Version 0.4.1 — adversarially hardened research prototype.**
+**Version 0.5.0 — computationally research-ready within the documented evidence boundary.**
 
-This audit found additional issues that were not covered by the previous 41-test v0.4.0 suite. They were repaired on branch `audit/adversarial-v0.4.1` and are now covered by new regression tests. The project remains a research prototype, not a publication-final Korean→Ukrainian standard.
+This release closes the implementation layers identified by the original research-system specification and the v0.4.1 adversarial audit. It does not manufacture empirical evidence that is not present in the repository.
 
-## New adversarial findings and repairs
+## Initial specification → final state
 
-1. **False narrow-IPA precision.** v0.4.0 exposed `ipa_level="narrow"` while returning broad/rule-supported output under a misleading status. v0.4.1 now rejects narrow IPA explicitly until an acoustic/allophonic model exists.
-2. **Complex-coda assimilation ordering.** Complex codas such as `ㄺ`, `ㅀ`, `ㄾ` were not normalized to their representative coda before nasal/liquid assimilation. The rule engine now evaluates the representative coda in R005/R006. This covers adversarial chains such as `긁는`, `뚫네`, `핥네`.
-3. **Over-permissive ㄴ-insertion.** v0.4.0 could apply R009 merely because an adjacent syllable began with a zero onset and /i/-initial nucleus. v0.4.1 requires explicit `n_insertion_licensed=True`, reflecting the fact that NIKL treats ㄴ-insertion as non-automatic and lexically/morphologically conditioned.
-4. **Hangul decomposition metadata.** `decompose_hangul` now exposes canonical NFD Jamo and Unicode codepoints, and the compatibility-Jamo inventory stores explicit compatibility codepoints.
-5. **Ukrainian target orthography contract.** The Korean repository no longer contains a hard-coded Ukrainian IPA→grapheme inventory. The adapter retrieves graphemes from the external UPI 0.8.0 data export and rejects an incompatible UPI version explicitly.
-6. **Generated-artifact reproducibility.** Tests now compare the committed 11,172-row CSV exactly with the deterministic generator, rather than checking only row count and endpoints.
-7. **Adversarial validation corpus.** Added explicit negative/conditional cases for `먹이`, `무슨 일`, `긁는`, `뚫네`, `핥네` and cross-word `몇 년`.
+### Core architecture
 
-## Evidence boundary
+Implemented as separate layers:
 
-NIKL documents complex-coda liaison such as `넋이[넉씨]`, `앉아[안자]`, `닭을[달글]`, `젊어[절머]`, and `값을[갑쓸]`. citeturn8search4turn10search6
+KOR_ORTH → KOR_PHON → KOR_PHON_RULES → KOR_IPA → UA_PHONETIC_TARGET → UA_ORTHOGRAPHY
 
-NIKL also documents `뚫네[뚤네→뚤레]` as coda simplification plus liquid assimilation, which directly motivated the R005/R006 adversarial repair. citeturn2search0turn2search7
+The implementation keeps orthographic decomposition, phonological structure, contextual rules, IPA, target candidate ranking and target grapheme rendering separately addressable.
 
-NIKL states that ㄴ-insertion is not obligatory in every phonologically similar environment and gives both lexical/morphological and connected-phrase conditioning; this is why v0.4.1 does not silently enable R009. citeturn7search0turn7search1
+### Hangul / Unicode
 
-NIKL §23 covers tensification after representative coda classes, including complex codas such as ㄳ and ㄺ. citeturn1search3
+- 19 leading Jamo positions.
+- 21 medial Jamo positions.
+- 27 trailing consonant Jamo plus the empty trailing slot.
+- 67 actual modern Jamo records.
+- Exactly 11,172 modern precomposed Hangul syllable blocks generated deterministically.
+- Canonical NFD decomposition metadata.
+- Explicit compatibility-Jamo codepoints.
+- Exact committed-artifact equality test.
 
-## Verification
+The 11,172 rows are treated as a combinatorial graphic inventory, never as a lexical or phonemic inventory.
 
-Previous fresh GitHub Actions verification: **run #92 — success, 41 tests passed** on the final v0.4.0 verification tree immediately before PR #2 was merged.
+### Korean phonology
 
-v0.4.1 contains new code and therefore did not inherit run #92 as proof of correctness. Fresh GitHub Actions run **#130 passed: 49 tests passed in 0.57s** on the latest v0.4.1 branch commit.
+The repository preserves the 19-consonant and 21-vowel orthographic/segmental baseline, with explicit analysis-dependent contemporary vowel representations and Seoul stop-cue variation.
 
-## Remaining important research gaps
+The computational rule registry is now R001–R015.
 
-- exhaustive lexical pronunciation-dictionary coverage;
-- corpus-scale attestation/frequency statistics;
-- full morphophonological conditioning and exception datasets;
-- remaining Standard Pronunciation Rules not represented as computational rules (including several §24–§30 environments);
-- complete acoustic/narrow-IPA modelling;
-- independent expert adjudication of competing analyses;
-- empirical optimisation and gold-corpus evaluation of correspondence weights;
-- full Ukrainian orthographic realization including context-sensitive palatalization/iotation/ь/я/ю/є/ї and sequence-level orthography;
-- end-to-end validation against a real Korean pronunciation corpus and a gold Ukrainian-output corpus.
+### Standard Pronunciation coverage
 
-## Scientific status
+Sections 9–30 are explicitly classified in data/korean/rule_scope.csv.
 
-**Research-demo capable after fresh v0.4.1 CI verification (#130: 49/49); not publication-final.**
+- §§9–15: implemented in the core coda/liaison/ㅎ rule system.
+- §16: explicitly scoped outside the ordinary lexical-word pipeline because consonant-letter names require a dedicated lexical-name parser.
+- §17: implemented as palatalization.
+- §§18–20: implemented as nasal/liquid assimilation.
+- §21: represented as an explicit negative constraint rather than a positive rewrite.
+- §22: variation-only; no deterministic vowel rewrite is fabricated.
+- §23: implemented as post-coda fortition.
+- §§24–28: implemented as explicit-license conditional rules R010–R014 because morphology/lexical structure cannot safely be inferred from adjacent Hangul alone.
+- §29: implemented as explicitly licensed R009; word-boundary crossing requires phrase mode.
+- §30: implemented as conditional R015 with explicit saisiot licensing.
+
+This design is evidence-preserving: conditional rules cannot silently fire merely because a phonological shape happens to be adjacent.
+
+### Rule ordering and provenance
+
+R001–R015 are synchronized across runtime rule registry, data/korean/rules.csv, data/korean/rule_ordering.csv, data/korean/rule_scope.csv, tests and rule traces.
+
+Rule traces preserve source, confidence, status and explicit licensing context.
+
+### Adversarial probes
+
+The validation/test layer covers, among others:
+
+- 넋이
+- 값이
+- 앉아
+- 닭을
+- 젊어
+- 긁는
+- 뚫네
+- 핥네
+- 한여름
+- 무슨 일
+- 먹이
+- 몇 년
+- 국밥
+- 각하
+- 같이
+- 가A
+- unsupported IPA
+- unknown boundary mode
+- unlicensed morphology-sensitive rules.
+
+The critical distinction is that positive contextual processes are not inferred when the required lexical/morphological/phrase license is absent.
+
+### IPA
+
+The repository provides phonemic and rule-supported broad IPA.
+
+Narrow IPA is deliberately rejected because the repository does not contain an acoustic/allophonic model capable of supporting a defensible narrow transcription. This is a correctness safeguard, not a missing label.
+
+### Ukrainian target layer
+
+The Korean repository does not duplicate the Ukrainian phonetic inventory.
+
+The target layer is pinned to ukrainian-phonetic-inventory 0.8.0 and explicitly rejects incompatible versions.
+
+Candidate ranking now consumes documented UPI mapping metadata where available:
+
+total_cost = feature_cost + context_penalty + phonotactic_penalty + orthographic_penalty
+
+The score is a heuristic cost, not a probability.
+
+Full sequence-level Ukrainian orthography remains owned by UPI. The Korean repository therefore does not pretend that segmentwise target candidates constitute a universally correct Ukrainian spelling.
+
+### API
+
+The public API exposes the required Hangul, analysis, phonology, phonetics, target mapping, ranking and end-to-end functions.
+
+analyze_korean() now rejects mixed-script input instead of silently discarding unsupported characters.
+
+### Evidence and competing analyses
+
+Current machine-readable evidence includes 6 source records, 13 claim-level evidence records, 4 competing-analysis records, rule-level source references, and explicit status/confidence fields.
+
+Normative NIKL material is separated from peer-reviewed Seoul phonetics and contemporary variation evidence.
+
+### Validation and tests
+
+Fresh verification on the final candidate:
+
+- existing tests workflow: 61 passed, 0 failed;
+- new multi-version CI workflow: success across Python 3.11, 3.12 and 3.13;
+- package installation succeeded under CI;
+- schema validation, generated-artifact equality, foreign-key validation, rule behavior, IPA, target ranking and adversarial tests are included.
+
+Historical v0.4.1 verification (49/49) is retained as history only and was not reused as proof for this release.
+
+## Reproducibility
+
+The repository now has an explicit .github/workflows/ci.yml covering pushes and pull requests.
+
+The exact final candidate commit is the subject of fresh CI verification.
+
+## Scientific boundaries that remain intentionally open
+
+These are not silently closed because doing so would require data not present in the repository:
+
+1. exhaustive lexical pronunciation-dictionary coverage;
+2. corpus-scale frequency/attestation statistics;
+3. a defensible acoustic narrow-IPA model;
+4. independent expert adjudication of competing phonological analyses;
+5. gold-corpus optimisation and held-out evaluation of correspondence weights;
+6. exhaustive lexical/morphological exception lists;
+7. sequence-level Ukrainian orthographic evaluation against a gold corpus.
+
+These are empirical research extensions, not defects that should be hidden by hard-coded outputs.
+
+## Initial-vs-final conclusion
+
+The original architecture and implementation requirements are now represented in the repository as implemented computational layers, explicit conditional layers where external lexical/morphological information is required, explicit variation-only or scoped-out layers where deterministic computation would overclaim, machine-readable provenance, adversarial validation, reproducible generated artifacts, and fresh CI verification.
+
+The project should therefore be described as a research-ready computational framework/prototype, not as a universally authoritative Korean→Ukrainian transcription standard.
+
+## External evidence boundary
+
+The normative baseline is the National Institute of Korean Language Standard Pronunciation Rules:
+https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
+
+The Unicode combinatorial model follows Unicode Core Specification Chapter 18:
+https://unicode.org/versions/Unicode18.0.0/core-spec/chapter-18/
+
+Peer-reviewed phonetic evidence remains recorded in data/korean/sources.csv.
+
+## Final recommendation for scientific presentation
+
+The repository is suitable for a research demonstration, methodological paper draft, specialist review and further corpus-based validation.
+
+It should not claim that every Korean lexical item has a uniquely determined Ukrainian output, that heuristic ranking is probabilistic, or that the current broad IPA layer is an acoustic narrow transcription.

@@ -62,4 +62,9 @@ The regression corpus includes:
 
 ## Status
 
-v0.4.1 adversarial audit hardens v0.4.0 against demonstrated rule-interaction and false-precision failures. It still does not claim exhaustive lexical coverage, publication-final phonological adjudication, corpus-optimized correspondence weights, or a complete Ukrainian orthographic grammar for all Korean proper names/loanwords. Those remain explicit research extensions.
+v0.5.0 closes the computational readiness layers identified by the initial specification audit: strict API validation, UPI mapping-penalty integration, explicit Standard Pronunciation coverage for §§9–30, licensed morphology-sensitive rules, expanded adversarial tests, a specification coverage matrix, and a formal Ukrainian target-layer contract. It still does not claim empirical corpus coverage, acoustic narrow-IPA validation, independent expert adjudication, or gold-corpus optimisation where the required empirical datasets are not present.
+
+
+## Full-readiness boundary
+
+The repository is computationally research-ready within its documented evidence boundary. It deliberately does not manufacture lexical attestations, pronunciation-corpus statistics, acoustic narrow IPA, or a universal Ukrainian spelling. Conditional Korean rules require explicit linguistic licensing; the Ukrainian target inventory remains external and version-pinned.

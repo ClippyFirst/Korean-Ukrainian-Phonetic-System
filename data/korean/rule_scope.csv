@@ -1,0 +1,23 @@
+section,topic,status,rule_ids,computational_scope,evidence_status,notes
+9,final consonant representative sounds,implemented,R001,lexical syllable coda normalization,established,Applied to remaining codas.
+10,complex coda neutralization,implemented,R001,representative-coda mapping,established,Explicit complex coda classes retained.
+11,complex coda special cases,implemented,R001,representative-coda mapping,established,Special lexical exceptions remain outside generic rule engine.
+12,ㅎ pronunciation,implemented,R003|R004,ㅎ deletion and aspiration under licensed adjacency,established,Morphological exceptions require explicit license/context.
+13,single/double coda liaison,implemented,R002,vowel-initial formal morphology,established,Boundary-gated.
+14,complex coda liaison,implemented,R002,second component resyllabification,established,NIKL examples encoded in validation corpus.
+15,liaison after representative neutralization,implemented,R002|R001,derivational interaction,established,Ordering is explicit.
+16,Hangeul consonant-letter names,scoped-out-of-lexical-pipeline,,special jamo-name pronunciation,established,Requires lexical-name parser rather than ordinary word orthography; not silently treated as ordinary word pronunciation.
+17,palatalization,implemented,R007,ㄷ/ㅌ + i/j-initial formal morphology,established,Explicit boundary gating.
+18,nasal assimilation,implemented,R005,obstruent + ㄴ/ㅁ,established,Representative coda normalization precedes assimilation.
+19,liquid assimilation after nasal,implemented,R006,ㄴ/ㄹ interaction,established,Rule trace preserved.
+20,liquid assimilation,implemented,R006,ㄹ/ㄴ interaction,established,Complex-coda chains supported.
+21,disallowed consonant assimilation,explicit-negative,,non-rule constraint,established,No positive transformation is applied for non-standard assimilations.
+22,allowed vowel assimilation/variation,variation-only,,observational variation,established,No deterministic rewrite without lexical/acoustic conditioning.
+23,post-coda fortition,implemented,R008,representative coda + plain obstruent,established,NIKL §23.
+24,stem ㄴ/ㅁ fortition,conditional,R010,morphological stem+ending license,established,Disabled without explicit rule license.
+25,stem ㄼ/ㄾ fortition,conditional,R011,morphological stem+ending license,established,Disabled without explicit rule license.
+26,Sino-Korean ㄹ fortition,conditional,R012,lexical/morphological license,established,Disabled without explicit lexical license.
+27,adnominal -(으)ㄹ fortition,conditional,R013,adnominal license and discourse cohesion,established,Disabled without explicit license.
+28,compound fortition,conditional,R014,compound lexical relation license,established,Not inferred from adjacency because lexical exceptions exist.
+29,ㄴ insertion,conditional,R009,morphological or connected-phrase license,established,Not obligatory; phrase boundary may be crossed only in phrase mode.
+30,saisiot pronunciation,conditional,R015,explicit saisiot lexical/orthographic license,established,Alternative standard realizations are retained as conditional paths.
