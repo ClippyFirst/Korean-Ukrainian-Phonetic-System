@@ -36,3 +36,9 @@ def test_source_foreign_keys():
 def test_generated_csv_matches_generator():
     actual=rows(ROOT/"data/korean/syllables.csv")
     assert actual==[{k:str(v) for k,v in row.items()} for row in generate_syllables()]
+
+def test_rule_scope_instances_validate_against_schema():
+    schema=json.loads((ROOT/"schemas/rule-scope.schema.json").read_text(encoding="utf-8"))
+    scope=list(csv.DictReader((ROOT/"data/korean/rule_scope.csv").open(encoding="utf-8")))
+    for row in scope: validate(row,schema)
+    assert {int(r["section"]) for r in scope} == set(range(9,31))
