@@ -101,7 +101,8 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
     elif rule_id=="R009":
         if not n_insertion_licensed:
-            name,source,confidence=RULE_META[rule_id]\n            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,license_context)
+            name,source,confidence=RULE_META[rule_id]
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,license_context)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=True) or b.onset!="ㅇ": continue
@@ -116,7 +117,8 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             "R014":"R014:compound",
         }[rule_id]
         if required not in licenses:
-            name,source,confidence=RULE_META[rule_id]\n            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
+            name,source,confidence=RULE_META[rule_id]
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode): continue
@@ -132,7 +134,8 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
     elif rule_id=="R015":
         if license_context!="R015:saisiot":
-            name,source,confidence=RULE_META[rule_id]\n            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
+            name,source,confidence=RULE_META[rule_id]
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode): continue
