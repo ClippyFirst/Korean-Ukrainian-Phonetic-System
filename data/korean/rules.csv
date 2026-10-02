@@ -8,3 +8,10 @@ R006,liquid-assimilation,ㄴ|ㄹ,ㄹ|ㄹ,adjacent to liquid,word|morpheme,5,S001
 R007,palatalization,ㄷ|ㅌ,ㅈ|ㅊ,before i/y-initial nucleus,word|morpheme,6,S001,established,high
 R008,tensification,plain-obstruent,fortis,post-coda licensed context,word|morpheme,8,S001,established,high
 R009,n-insertion,zero-onset+i-or-y,ㄴ|ㄹ,before ㅣ/ㅑ/ㅕ/ㅛ/ㅠ/ㅖ/ㅒ under licensed morphology or connected speech,word|morpheme|phrase,7,S001,established,high
+
+R010,stem-nm-fortition,stem-final-n-or-m+suffix-initial-obstruent,ㄲ|ㄸ|ㅆ|ㅉ,verb-stem boundary with explicit morphological license,morpheme,10,S001,conditional,high
+R011,stem-lb-lt-fortition,stem-final-ㄼ-or-ㄾ+suffix-initial-obstruent,ㄲ|ㄸ|ㅆ|ㅉ,verb-stem boundary with explicit morphological license,morpheme,11,S001,conditional,high
+R012,sino-korean-l-fortition,ㄹ+ㄷ|ㅅ|ㅈ,ㄸ|ㅆ|ㅉ,Sino-Korean lexical/morphological context with explicit license,word|morpheme,12,S001,conditional,high
+R013,adnominal-l-fortition,adnominal-ㄹ+plain-obstruent,fortis,adnominal -(으)ㄹ context with explicit license,word|morpheme,13,S001,conditional,high
+R014,compound-fortition,compound-boundary+coda+plain-obstruent,fortis,compound/saisiot-like lexical context with explicit license,word|morpheme,14,S001,conditional,medium
+R015,saisiot-pronunciation,licensed-saisiot+coda,fortition-or-nasalization,explicit saisiot lexical/orthographic license,word|morpheme,15,S001,conditional,high
