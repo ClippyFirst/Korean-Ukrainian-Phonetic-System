@@ -75,7 +75,7 @@ def _write_rows(path: Path, output_format: str, rows: list[dict[str, Any]], head
 def run_batch(input_path: Path, output_path: Path, input_format: str, output_format: str, column: str, sheet: str | None, mode: str) -> int:
     rows, headers = _read_rows(input_path, input_format, column, sheet)
     output_rows: list[dict[str, Any]] = []
-    extra = ["ukrainian_orthography", "ipa", "analysis_status", "result_json"]
+    extra = ["input", "ukrainian_orthography", "ipa", "analysis_status", "result_json"]
     for row in rows:
         text = str(row.get(column, "") or "").strip()
         if not text:
