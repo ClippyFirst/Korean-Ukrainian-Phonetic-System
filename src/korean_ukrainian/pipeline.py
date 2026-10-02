@@ -58,7 +58,7 @@ def map_ipa_to_ukrainian(ipa,target_adapter=None,source_features=None,weights=No
     grouped=[]
     for segment in segments:
         features=source_features if source_features and len(segments)==1 else source_features_for_ipa(segment)
-        grouped.append({"source_ipa":segment,"source_features":features,"target":adapter.candidates(features,weights)})
+        grouped.append({"source_ipa":segment,"source_features":features,"target":adapter.candidates(features,weights,source_ipa=segment)})
     return {"ipa":ipa,"segments":grouped,"status":"segmentwise-candidate-analysis"}
 
 def rank_ukrainian_candidates(candidates):
