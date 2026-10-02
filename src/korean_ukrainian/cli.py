@@ -86,6 +86,7 @@ def run_batch(input_path: Path, output_path: Path, input_format: str, output_for
             except Exception as exc:
                 result = {"input": text, "error": f"{type(exc).__name__}: {exc}"}
         enriched = dict(row)
+        enriched["input"] = text
         enriched["ukrainian_orthography"] = result.get("ukrainian_orthography", "")
         enriched["ipa"] = result.get("ipa", {}).get("ipa", "") if isinstance(result.get("ipa"), dict) else ""
         enriched["analysis_status"] = result.get("analysis_status", result.get("selection_status", ""))
