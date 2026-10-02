@@ -11,7 +11,7 @@ KOR_ORTH → KOR_PHON → KOR_PHON_RULES → KOR_IPA → UA_PHONETIC_TARGET → 
 - Unicode Hangul decomposition/composition, canonical NFD decomposition metadata and deterministic generation of all 11,172 modern precomposed Hangul syllable blocks.
 - Machine-readable modern Jamo inventory with canonical and compatibility codepoints.
 - Structured onset/nucleus/coda representation, including 11 complex codas as component sequences.
-- Canonical rule registry shared by code, CSV and ordering data: R001–R009.
+- Canonical rule registry shared by code, CSV, ordering and scope data: R001–R015.
 - Context-sensitive rules with explicit boundary/morphological gating; ㄴ-insertion is disabled unless explicitly licensed.
 - Broad IPA realization with analysis-dependent vowel alternatives. Narrow IPA is explicitly unavailable until an acoustic/allophonic model exists.
 - External Ukrainian target adapter with segmentwise feature-based candidate ranking and target grapheme retrieval from UPI 0.8.0.
