@@ -42,3 +42,8 @@ def test_rule_scope_instances_validate_against_schema():
     scope=list(csv.DictReader((ROOT/"data/korean/rule_scope.csv").open(encoding="utf-8")))
     for row in scope: validate(row,schema)
     assert {int(r["section"]) for r in scope} == set(range(9,31))
+
+def test_evidence_source_foreign_keys():
+    source_ids={r["source_id"] for r in rows(ROOT/"data/korean/sources.csv")}
+    for row in rows(ROOT/"data/korean/evidence.csv"):
+        assert row["source_id"] in source_ids
