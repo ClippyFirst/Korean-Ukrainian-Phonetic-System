@@ -148,7 +148,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 a.coda="ㄴ"; b.onset="ㄴ"; changed=True
     name,source,confidence=RULE_META[rule_id]
     status="established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015"} else "conditional-nochange"
-    return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,license_context)
+    return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,source,license_context)
 
 def apply_ordered_rules(items:list[Syllable],rule_ids=None,*,boundary_mode="same_word",n_insertion_licensed=False,rule_licenses=None):
     ids=rule_ids or ["R009","R002","R003","R004","R005","R006","R007","R010","R011","R012","R013","R014","R015","R008","R001"]
