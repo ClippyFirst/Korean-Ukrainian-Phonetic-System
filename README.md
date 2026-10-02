@@ -68,3 +68,8 @@ v0.5.0 closes the computational readiness layers identified by the initial speci
 ## Full-readiness boundary
 
 The repository is computationally research-ready within its documented evidence boundary. It deliberately does not manufacture lexical attestations, pronunciation-corpus statistics, acoustic narrow IPA, or a universal Ukrainian spelling. Conditional Korean rules require explicit linguistic licensing; the Ukrainian target inventory remains external and version-pinned.
+
+
+## Verification
+
+The v0.5.0 implementation candidate was verified by the repository test workflow with 61 passing tests and by the multi-version CI workflow on Python 3.11, 3.12 and 3.13.
