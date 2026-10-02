@@ -9,6 +9,11 @@ from .orthography import render_sequence
 DEFAULT_WEIGHTS={"consonantal":2.0,"sonorant":1.5,"syllabic":1.0,"voice":1.0,"continuant":1.5,"nasal":1.5,"lateral":1.0,"rhotic":1.0,"labial":1.5,"coronal":1.5,"dorsal":1.5,"palatal":2.0,"palatalized":1.5,"affricate":1.5,"aspirated":0.5,"long":0.5}
 
 def analyze_korean(text):
+    for i, c in enumerate(text):
+        if c.isspace():
+            continue
+        if not ("가" <= c <= "힣"):
+            raise ValueError(f"unsupported non-Hangul character at index {i}: {c!r}")
     return [{"orthography":c,"decomposition":decompose_hangul(c)} for c in text if "가"<=c<="힣"]
 
 def phonologize_korean(text):
