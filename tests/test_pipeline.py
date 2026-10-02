@@ -6,7 +6,7 @@ def test_pipeline_layers_are_separate():
 
 def test_rule_trace_is_structured():
     q=phoneticize_korean("국밥")
-    assert any(x["rule_id"]=="R008" and x["changed"] for x in q["rules"])\n    assert q["rules"][7]["source"]=="NIKL §§23–27"
+    assert any(x["rule_id"]=="R008" and x["changed"] for x in q["rules"])\n    assert next(x for x in q["rules"] if x["rule_id"]=="R008")["source"]=="NIKL §§23–27"
 
 def test_unknown_boundary_does_not_apply_contextual_rules():
     q=phoneticize_korean("국밥",boundary_mode="unknown")
