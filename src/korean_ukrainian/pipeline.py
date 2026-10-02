@@ -20,9 +20,9 @@ def phonologize_korean(text):
     items=parse_syllables(text)
     return {"input":text,"syllables":[x.to_dict() for x in items],"analysis_status":"canonical_structural_representation"}
 
-def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False):
+def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None):
     items=parse_syllables(text)
-    items,traces=apply_ordered_rules(items,rule_ids,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed)
+    items,traces=apply_ordered_rules(items,rule_ids,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses)
     return {"input":text,"surface_syllables":[x.to_dict() for x in items],"rules":[x.to_dict() for x in traces],"ipa":realize_syllables(items,level=ipa_level)}
 
 def _feature_vector_for_ipa(ipa:str)->dict:
@@ -72,8 +72,8 @@ def _select_target(target):
         selected.append(candidates[0])
     return {"segments":selected,"score_type":"heuristic_cost","status":"top_ranked_segmentwise"}
 
-def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False):
-    surface=phoneticize_korean(text,rule_ids=rule_ids,boundary_mode=boundary_mode,ipa_level=ipa_level,n_insertion_licensed=n_insertion_licensed)
+def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False,rule_licenses=None):
+    surface=phoneticize_korean(text,rule_ids=rule_ids,boundary_mode=boundary_mode,ipa_level=ipa_level,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses)
     target=map_ipa_to_ukrainian(surface["ipa"]["ipa"],target_adapter)
     selected=_select_target(target)
     orthographic=render_sequence(selected["segments"]) if selected else None
