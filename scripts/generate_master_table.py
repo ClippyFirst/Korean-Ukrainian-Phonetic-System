@@ -56,7 +56,7 @@ def write_csv(path: Path, fieldnames, rows):
     with path.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(rows)
+        writer.writerows({field: row[field] for field in fieldnames} for row in rows)
 
 def main():
     rows = build_rows()
