@@ -6,11 +6,11 @@ The project now includes a deterministic generator for the complete modern Hangu
 
 **19 × 21 × 28 = 11,172 rows**
 
-The human-facing projection is exactly two columns:
+The human-facing projection is exactly three columns:
 
-`Korean | Ukrainian`
+`Korean | IPA | Ukrainian`
 
-The table is a canonical **isolated-syllable** rendering derived from the project's IPA-centered model. It is exhaustive for the modern Unicode Hangul syllable inventory, but it is not a lexical dictionary and does not erase Korean context-sensitive pronunciation.
+IPA is a primary verification column: every Ukrainian rendering is inspectable through the project's canonical broad-IPA intermediate representation. The table is a canonical **isolated-syllable** rendering derived from the IPA-centered model. It is exhaustive for the modern Unicode Hangul syllable inventory, but it is not a lexical dictionary and does not erase Korean context-sensitive pronunciation.
 
 See [docs/master-table.md](docs/master-table.md) for the semantics, limits and reproducibility contract.
 
@@ -22,7 +22,7 @@ python scripts/generate_master_table.py
 
 This produces:
 
-- `data/derived/korean_ukrainian_master.csv`
+- `data/derived/korean_ipa_ukrainian_master.csv`
 - `data/derived/korean_ukrainian_master_audit.csv`
 
 GitHub Actions also publishes the generated files as a build artifact.
