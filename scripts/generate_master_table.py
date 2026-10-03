@@ -6,7 +6,7 @@ from pathlib import Path
 from korean_ukrainian.hangul import generate_syllables
 from korean_ukrainian.phonology import L_JAMO, V_JAMO, T_JAMO, VOWEL_IPA
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 MAPPING = ROOT / "data/korean/canonical_correspondence.csv"
 MASTER = ROOT / "data/derived/korean_ukrainian_master.csv"
 AUDIT = ROOT / "data/derived/korean_ukrainian_master_audit.csv"
