@@ -1,3 +1,32 @@
+
+
+## Exhaustive 11,172-row master table
+
+The project now includes a deterministic generator for the complete modern Hangul syllable-block space:
+
+**19 × 21 × 28 = 11,172 rows**
+
+The human-facing projection is exactly two columns:
+
+`Korean | Ukrainian`
+
+The table is a canonical **isolated-syllable** rendering derived from the project's IPA-centered model. It is exhaustive for the modern Unicode Hangul syllable inventory, but it is not a lexical dictionary and does not erase Korean context-sensitive pronunciation.
+
+See [docs/master-table.md](docs/master-table.md) for the semantics, limits and reproducibility contract.
+
+Generate locally:
+
+```powershell
+python scripts/generate_master_table.py
+```
+
+This produces:
+
+- `data/derived/korean_ukrainian_master.csv`
+- `data/derived/korean_ukrainian_master_audit.csv`
+
+GitHub Actions also publishes the generated files as a build artifact.
+
 # Korean–Ukrainian Phonetic System
 
 Research-grade, machine-readable framework for Korean → Ukrainian phonetic-graphemic correspondence.
