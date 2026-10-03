@@ -1,8 +1,8 @@
-# Final audit — 2026-10-02
+# Final audit — 2026-10-03
 
 ## Release status
 
-**Version 0.5.0 — computationally research-ready within the documented evidence boundary.**
+**Version 0.6.0 — computationally research-ready within the documented evidence boundary, with an exhaustive Hangul master-table projection.**
 
 This release closes the implementation layers identified by the original research-system specification and the v0.4.1 adversarial audit. It does not manufacture empirical evidence that is not present in the repository.
 
@@ -126,6 +126,21 @@ Fresh verification on the final candidate:
 - schema validation, generated-artifact equality, foreign-key validation, rule behavior, IPA, target ranking and adversarial tests are included.
 
 Historical v0.4.1 verification (49/49) is retained as history only and was not reused as proof for this release.
+
+
+## Exhaustive master-table layer
+
+Version 0.6.0 adds the practical table layer requested for direct use.
+
+- deterministic modern Hangul inventory: exactly 11,172 syllable blocks;
+- two-column presentation projection: `korean,ukrainian`;
+- canonical isolated-syllable rendering derived from the IPA-centered model;
+- separate canonical correspondence basis in `data/korean/canonical_correspondence.csv`;
+- deterministic generator in `scripts/generate_master_table.py`;
+- audit projection includes decomposition, IPA, scope and lexical-status metadata;
+- GitHub Actions generates the CSV artifacts reproducibly.
+
+The table is exhaustive for the Unicode combinatorial syllable space, not for the Korean lexicon or all connected-speech contexts. Context-sensitive pronunciation remains governed by the rule system. This boundary is consistent with the NIKL Standard Pronunciation Rules, which explicitly distinguish contextual pronunciation processes.
 
 ## Reproducibility
 
