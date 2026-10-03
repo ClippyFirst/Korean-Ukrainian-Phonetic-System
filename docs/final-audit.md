@@ -133,11 +133,13 @@ Historical v0.4.1 verification (49/49) is retained as history only and was not r
 Version 0.6.0 adds the practical table layer requested for direct use.
 
 - deterministic modern Hangul inventory: exactly 11,172 syllable blocks;
-- two-column presentation projection: `korean,ukrainian`;
+- three-column presentation projection: `korean,ipa,ukrainian`;
+- IPA is a primary verification column between Korean and Ukrainian;
 - canonical isolated-syllable rendering derived from the IPA-centered model;
 - separate canonical correspondence basis in `data/korean/canonical_correspondence.csv`;
 - deterministic generator in `scripts/generate_master_table.py`;
-- audit projection includes decomposition, IPA, scope and lexical-status metadata;
+- primary generated table includes Korean, IPA and Ukrainian;
+- audit projection additionally includes decomposition, scope and lexical-status metadata;
 - GitHub Actions generates the CSV artifacts reproducibly.
 
 The table is exhaustive for the Unicode combinatorial syllable space, not for the Korean lexicon or all connected-speech contexts. Context-sensitive pronunciation remains governed by the rule system. This boundary is consistent with the NIKL Standard Pronunciation Rules, which explicitly distinguish contextual pronunciation processes.

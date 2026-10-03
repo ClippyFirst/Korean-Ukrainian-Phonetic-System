@@ -4,13 +4,13 @@
 
 This release adds the user-facing exhaustive table requested for the system:
 
-| Korean | Ukrainian |
-|---|---|
-| 가 | ка |
-| 각 | как |
-| 강 | кан |
-| 한 | хан |
-| 힣 | хіт |
+| Korean | IPA | Ukrainian |
+|---|---|---|
+| 가 | ka | ка |
+| 각 | kak̚ | как |
+| 강 | kaŋ | кан |
+| 한 | han | хан |
+| 힣 | hiç̚ | хіт |
 
 The complete generated table contains **11,172 rows**, covering the entire modern precomposed Hangul syllable space:
 
@@ -32,6 +32,12 @@ It is not a replacement for contextual phonological rules.
 
 The distinction is essential because Korean pronunciation is context-sensitive: final neutralization, liaison, assimilation, palatalization, fortition, n-insertion and other processes can change the surface realization. The National Institute of Korean Language documents these processes in the Standard Pronunciation Rules: https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
 
+## Why IPA is a primary column
+
+IPA is deliberately present in the main table, not hidden in the audit file. It is the control layer that makes the Ukrainian rendering inspectable: each row can be read as **Korean → IPA → Ukrainian**. The Ukrainian form is therefore not evaluated directly from Hangul shape; it is checked against the documented IPA basis.
+
+The IPA column is the project's broad, canonical isolated-syllable representation. It is not a narrow acoustic transcription and does not encode every contextual allophone.
+
 ## Why there is one Ukrainian value
 
 The requested practical table deliberately has one primary Ukrainian value per Hangul block.
@@ -39,6 +45,8 @@ The requested practical table deliberately has one primary Ukrainian value per H
 That value is a **canonical baseline**, defined by:
 
 Korean Hangul block → structural decomposition → canonical broad IPA basis → Ukrainian target correspondence → Ukrainian graphemic rendering.
+
+The main table therefore has three primary fields: `Korean | IPA | Ukrainian`.
 
 The model does not encode fortis/aspiration as additional Ukrainian letters in the primary two-column projection. Context-dependent alternatives remain in the rule system and analysis layers.
 
@@ -67,7 +75,7 @@ and the existing Hangul generator.
 
 It writes:
 
-- `data/derived/korean_ukrainian_master.csv` — exactly two columns: `korean,ukrainian`;
+- `data/derived/korean_ipa_ukrainian_master.csv` — exactly three primary columns: `korean,ipa,ukrainian`;
 - `data/derived/korean_ukrainian_master_audit.csv` — the same rows plus decomposition, IPA, status and provenance metadata.
 
 The GitHub Actions workflow `.github/workflows/master-table.yml` regenerates these artifacts and publishes them as a build artifact.

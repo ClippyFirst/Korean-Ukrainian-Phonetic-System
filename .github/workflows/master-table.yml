@@ -21,6 +21,6 @@ jobs:
         with:
           name: korean-ukrainian-master-table
           path: |
-            data/derived/korean_ukrainian_master.csv
+            data/derived/korean_ipa_ukrainian_master.csv
             data/derived/korean_ukrainian_master_audit.csv
           if-no-files-found: error
