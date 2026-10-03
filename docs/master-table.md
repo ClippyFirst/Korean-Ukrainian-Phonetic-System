@@ -30,7 +30,7 @@ It is not a claim that the same Korean block always has the same pronunciation i
 
 It is not a replacement for contextual phonological rules.
 
-The distinction is essential because Korean pronunciation is context-sensitive: final neutralization, liaison, assimilation, palatalization, fortition, n-insertion and other processes can change the surface realization. The National Institute of Korean Language documents these processes in the Standard Pronunciation Rules. citeturn5search0turn5search1
+The distinction is essential because Korean pronunciation is context-sensitive: final neutralization, liaison, assimilation, palatalization, fortition, n-insertion and other processes can change the surface realization. The National Institute of Korean Language documents these processes in the Standard Pronunciation Rules: https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
 
 ## Why there is one Ukrainian value
 
@@ -86,7 +86,7 @@ IPA remains the controlling intermediate representation; the two-column table is
 
 ## Sources and model boundary
 
-The Korean side follows the project's documented Korean phonology and the NIKL Standard Pronunciation Rules. NIKL explicitly states that standard pronunciation is based on actual contemporary Seoul standard speech while also considering tradition and rationality. citeturn1search9
+The Korean side follows the project's documented Korean phonology and the NIKL Standard Pronunciation Rules. NIKL explicitly states that standard pronunciation is based on actual contemporary Seoul standard speech while also considering tradition and rationality.
 
 The Ukrainian target inventory remains external and version-pinned to Ukrainian-Phonetic-Inventory 0.8.0. The canonical correspondence file records the project-level modelling choices used to produce the simple table.
 
