@@ -96,11 +96,17 @@ def project_segment(
             "surface_voicing_selects_Ukrainian_target",
         )
 
+    # ㅆ has the same /i,j/-conditioned target rule as ㅅ before
+    # generic fortis neutralization is applied.
+    if grapheme == "ㅆ":
+        if following in {"ㅣ", "ㅑ", "ㅒ", "ㅕ", "ㅖ", "ㅛ", "ㅠ", "ㅢ"} or ipa.startswith("ɕ"):
+            return _decision(grapheme, ipa, "ʃ", "ш", mode, features, "palatalized_fortis_sibilant_target")
+        return _decision(grapheme, ipa, "s", "с", mode, features, "fortis_sibilant_target")
+
     fortis = {
         "ㄲ": ("k", "к"),
         "ㄸ": ("t", "т"),
         "ㅃ": ("p", "п"),
-        "ㅆ": ("s", "с"),
         "ㅉ": ("tɕ", "ч"),
     }
     if grapheme in fortis:
