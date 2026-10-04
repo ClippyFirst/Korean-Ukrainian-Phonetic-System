@@ -151,16 +151,24 @@ def project_segment(
         "ㅗ": ("o", "о"),
         "ㅘ": ("wa", "ва"),
         "ㅙ": ("wɛ", "ве"),
-        "ㅚ": ("we", "ве"),
         "ㅛ": ("jo", "йо"),
         "ㅜ": ("u", "у"),
         "ㅝ": ("wo", "во"),
         "ㅞ": ("we", "ве"),
-        "ㅟ": ("wi", "ві"),
         "ㅠ": ("ju", "ю"),
         "ㅡ": ("ɪ", "и"),
         "ㅣ": ("i", "і"),
     }
+    if grapheme == "ㅚ":
+        if ipa.startswith("w"):
+            return _decision(grapheme, ipa, "we", "ве", mode, features, "surface_diphthongal_oe_target")
+        return _decision(grapheme, ipa, "e", "е", mode, features, "surface_monophthongal_oe_target")
+
+    if grapheme == "ㅟ":
+        if ipa.startswith("w"):
+            return _decision(grapheme, ipa, "wi", "ві", mode, features, "surface_diphthongal_wi_target")
+        return _decision(grapheme, ipa, "i", "і", mode, features, "surface_monophthongal_wi_target")
+
     if grapheme in direct:
         target, graphemic = direct[grapheme]
         return _decision(grapheme, ipa, target, graphemic, mode, features, "canonical_direct_target")
