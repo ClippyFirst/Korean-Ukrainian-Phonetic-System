@@ -63,7 +63,8 @@ T_COMPAT = (
 STATUS_VALUES = {
     "draft", "example", "verified", "validated", "deprecated",
     "tbd", "unknown", "model-selected", "structural-null",
-    "canonical_isolated_syllable", "contextual",
+    "canonical_isolated_syllable", "contextual", "generated_inventory",
+    "established", "conditional",
 }
 CONFIDENCE_VALUES = {"low", "medium", "high", "unknown", ""}
 
@@ -873,6 +874,59 @@ def load_optional_context(
     )
 
 
+def adapt_rules(rows: Sequence[Mapping[str, str]]) -> list[dict[str, str]]:
+    """Normalize the repository's existing compact rule registry into the
+    richer corpus export schema without inventing phonetic effects."""
+    result: list[dict[str, str]] = []
+    for row in rows:
+        domain = clean(row.get("domain"))
+        environment = clean(row.get("environment"))
+        source = clean(row.get("source_id"))
+        result.append({
+            "rule_id": clean(row.get("rule_id")),
+            "process_name": clean(row.get("process_name")) or clean(row.get("name")),
+            "description": clean(row.get("description")) or environment,
+            "environment": environment,
+            "input": clean(row.get("input")),
+            "output": clean(row.get("output")),
+            "ipa_effect": clean(row.get("ipa_effect")),
+            "ukrainian_target_effect": clean(row.get("ukrainian_target_effect")),
+            "cross_syllable": (
+                "true" if any(token in domain.split("|") for token in ("word", "phrase"))
+                else "false"
+            ),
+            "morphological_license": (
+                "explicit"
+                if ("morpholog" in environment.lower() or "explicit" in environment.lower()
+                    or "morpheme" in domain)
+                else ""
+            ),
+            "priority": clean(row.get("priority")) or clean(row.get("ordering")),
+            "source_ids": source,
+            "status": clean(row.get("status")),
+            "confidence": clean(row.get("confidence")) or "unknown",
+            "notes": clean(row.get("notes")),
+        })
+    return result
+
+
+def adapt_sources(rows: Sequence[Mapping[str, str]]) -> list[dict[str, str]]:
+    """Normalize the repository's existing provenance registry."""
+    result: list[dict[str, str]] = []
+    for row in rows:
+        result.append({
+            "source_id": clean(row.get("source_id")),
+            "title": clean(row.get("title")),
+            "author_or_organization": clean(row.get("author_or_organization")),
+            "year": clean(row.get("year")),
+            "url": clean(row.get("url")),
+            "source_type": clean(row.get("source_type")),
+            "scope": clean(row.get("scope")) or clean(row.get("locator")),
+            "notes": clean(row.get("notes")) or clean(row.get("evidence_level")),
+        })
+    return result
+
+
 def make_empty_or_passthrough(
     rows: Sequence[Mapping[str, str]],
     fields: Sequence[str],
@@ -1085,8 +1139,8 @@ def main() -> int:
 
     sequence_rows, rule_rows, source_rows, _ = load_optional_context(data_dir)
     sequences = make_empty_or_passthrough(sequence_rows, SEQUENCE_FIELDS)
-    rules = make_empty_or_passthrough(rule_rows, RULE_FIELDS)
-    sources = make_empty_or_passthrough(source_rows, SOURCE_FIELDS)
+    rules = adapt_rules(rule_rows)
+    sources = adapt_sources(source_rows)
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -1169,7 +1223,8 @@ def main() -> int:
         validation.append(validate_headers(
             data_dir / "rules.csv",
             list(rule_rows[0]),
-            RULE_FIELDS,
+            ["rule_id", "name", "input", "output", "environment",
+             "domain", "ordering", "source_id", "status", "confidence"],
             "RULE-001",
         ))
         validation.append(validate_unique(
@@ -1213,7 +1268,8 @@ def main() -> int:
         validation.append(validate_headers(
             data_dir / "sources.csv",
             list(source_rows[0]),
-            SOURCE_FIELDS,
+            ["source_id", "source_type", "title", "author_or_organization",
+             "year", "locator", "url", "evidence_level"],
             "SOURCE-001",
         ))
         validation.append(validate_unique(
