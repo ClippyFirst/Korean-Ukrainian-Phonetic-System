@@ -171,4 +171,8 @@ Before calling this table publication-final:
 6. run the adversarial corpus;
 7. only then promote selected rows into `data/korean/canonical_correspondence.csv`.
 
-**Current status: research master-table draft, not publication-final.**
+**Current status: research master-table with provenance controls.**
+
+The table is intentionally conservative: Russian/Slovak/Bulgarian cells are retained where a published row-level table supports them; Serbian is explicitly proposal-level; Czech/Polish/Slovenian cells are not presented as exact one-to-one national mappings where the consulted source does not establish such a table. See [`docs/comparative-evidence-methodology.md`](comparative-evidence-methodology.md) for the evidence-class policy.
+
+Publication of a normative Ukrainian system remains a separate claim and is not made by this repository.
