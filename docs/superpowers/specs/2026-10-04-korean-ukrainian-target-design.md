@@ -137,6 +137,19 @@ The sequence/word layer is the only layer allowed to apply cross-syllable proces
 
 The system must first derive the Korean surface form, then select Ukrainian targets. It must not apply Ukrainian spelling decisions as if they were Korean phonological rules.
 
+## Target-layer data contract
+
+The implementation distinguishes the **Ukrainian phonetic target** from the **Ukrainian graphemic realization**.
+
+For example:
+
+- Korean [kʰ] from ㅋ → Ukrainian phonetic target /k/ → practical **к**;
+- Korean [ɡ] from ㄱ → Ukrainian phonetic target /ɡ/ → practical **ґ**;
+- Korean [ɕ] from ㅅ before /i,j/ → Ukrainian phonetic target /ʃ/ → practical **ш**;
+- Korean coda [ŋ] from ㅇ → closest primary Ukrainian target /n/ → practical **н**, while a contrastive layer may expose **нґ**.
+
+This prevents a Cyrillic spelling from being mistaken for a phonetic value. Every target decision therefore has separate fields for source IPA, Ukrainian phonetic target, Ukrainian graphemic realization, mode, features and rationale.
+
 ## Representation contract
 
 Every derived row must make it possible to distinguish:
