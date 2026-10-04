@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 """Ukrainian-phonetics-first target projection for Korean segments.
 
-This module is intentionally small and dependency-free. It is a target-layer
-component, not a Korean pronunciation engine.
+This module is a target-layer component, not a Korean pronunciation engine.
+It consumes an already-resolved Korean surface IPA value and produces:
+1. a Ukrainian phonetic target (IPA-like target value);
+2. a Ukrainian practical graphemic realization;
+3. explicit decision metadata.
 
-Contract:
-    Korean grapheme/phonology/surface IPA -> Ukrainian phonetic target ->
-    Ukrainian graphemic realization.
-
-The primary practical mode does not encode Korean aspiration or fortisness as
-mandatory Ukrainian digraphs/double letters. Those distinctions remain
-available through the returned IPA/features metadata.
+Primary practical mode intentionally neutralizes Korean aspiration and fortisness
+when Ukrainian has no corresponding phonological contrast. The Korean
+distinction remains recoverable from the source IPA and feature metadata.
 """
 
 from __future__ import annotations
@@ -40,6 +39,18 @@ def _features(ipa: str) -> tuple[str, ...]:
     return tuple(values)
 
 
+def _decision(
+    grapheme: str,
+    ipa: str,
+    target: str,
+    graphemic: str,
+    mode: str,
+    features: tuple[str, ...],
+    reason: str,
+) -> TargetDecision:
+    return TargetDecision(grapheme, ipa, target, graphemic, mode, features, reason)
+
+
 def project_segment(
     grapheme: str,
     ipa: str,
@@ -48,130 +59,119 @@ def project_segment(
     onset: bool = False,
     mode: str = "primary_practical",
 ) -> TargetDecision:
-    """Project one Korean surface segment into the Ukrainian target layer.
+    """Project one Korean surface segment into Ukrainian target space.
 
-    IPA is authoritative for surface realization. Grapheme supplies the
-    Korean identity needed for target-specific rules. The function does not
-    infer a connected-speech IPA form from orthography.
+    IPA is authoritative for surface realization. Grapheme supplies Korean
+    identity for target-specific contextual rules. Connected-speech IPA is
+    never inferred by this function.
     """
-
     if mode != "primary_practical":
         raise ValueError("only primary_practical is implemented")
 
     features = _features(ipa)
 
-    # Structural null: Korean ㅇ has no onset consonant.
     if grapheme == "ㅇ" and onset:
-        return TargetDecision(
-            grapheme, ipa, "", "", mode, features, "structural_null_onset"
-        )
+        return _decision(grapheme, ipa, "", "", mode, features, "structural_null_onset")
 
-    # Primary Ukrainian target neutralizes Korean aspiration.
+    # Aspiration is retained analytically but neutralized in primary Ukrainian.
     aspirated = {
-        "ㅋ": "к",
-        "ㅌ": "т",
-        "ㅍ": "п",
-        "ㅊ": "ч",
+        "ㅋ": ("k", "к"),
+        "ㅌ": ("t", "т"),
+        "ㅍ": ("p", "п"),
+        "ㅊ": ("tɕ", "ч"),
     }
     if grapheme in aspirated:
-        target = aspirated[grapheme]
-        return TargetDecision(
-            grapheme, ipa, target, target, mode, features,
-            "aspiration_preserved_in_ipa_but_neutralized_in_primary_ukrainian_target",
+        target, graphemic = aspirated[grapheme]
+        return _decision(
+            grapheme, ipa, target, graphemic, mode, features,
+            "aspiration_preserved_in_source_IPA_but_neutralized_in_primary_Ukrainian_target",
         )
 
-    # Korean lenis stops can have voiceless or voiced surface realizations.
-    voiced = {"ㄱ": "ґ", "ㄷ": "д", "ㅂ": "б"}
-    voiceless = {"ㄱ": "к", "ㄷ": "т", "ㅂ": "п"}
+    voiced = {"ㄱ": ("ɡ", "ґ"), "ㄷ": ("d", "д"), "ㅂ": ("b", "б")}
+    voiceless = {"ㄱ": ("k", "к"), "ㄷ": ("t", "т"), "ㅂ": ("p", "п")}
     if grapheme in voiced:
-        target = voiced[grapheme] if ipa in {"ɡ", "d", "b"} else voiceless[grapheme]
-        return TargetDecision(
-            grapheme, ipa, target, target, mode, features,
-            "surface_voicing_selects_ukrainian_target",
+        target, graphemic = voiced[grapheme] if ipa in {"ɡ", "d", "b"} else voiceless[grapheme]
+        return _decision(
+            grapheme, ipa, target, graphemic, mode, features,
+            "surface_voicing_selects_Ukrainian_target",
         )
 
-    # Fortis remains explicit in Korean/IPA but is not encoded by default
-    # with Ukrainian double graphemes.
-    fortis = {"ㄲ": "к", "ㄸ": "т", "ㅃ": "п", "ㅆ": "с", "ㅉ": "ч"}
+    fortis = {
+        "ㄲ": ("k", "к"),
+        "ㄸ": ("t", "т"),
+        "ㅃ": ("p", "п"),
+        "ㅆ": ("s", "с"),
+        "ㅉ": ("tɕ", "ч"),
+    }
     if grapheme in fortis:
-        target = fortis[grapheme]
-        return TargetDecision(
-            grapheme, ipa, target, target, mode, features,
+        target, graphemic = fortis[grapheme]
+        return _decision(
+            grapheme, ipa, target, graphemic, mode, features,
             "fortis_preserved_analytically_but_neutralized_in_primary_target",
         )
 
-    # ㅅ has a Ukrainian phonetic-context candidate before /i,j/-like vowels.
     if grapheme == "ㅅ":
         if following in {"ㅣ", "ㅑ", "ㅒ", "ㅕ", "ㅖ", "ㅛ", "ㅠ", "ㅢ"} or ipa.startswith("ɕ"):
-            return TargetDecision(
-                grapheme, ipa, "ш", "ш", mode, features,
-                "palatalized_sibilant_candidate_before_i_or_j_environment",
+            return _decision(
+                grapheme, ipa, "ʃ", "ш", mode, features,
+                "palatalized_sibilant_target_before_i_or_j_environment",
             )
-        return TargetDecision(
-            grapheme, ipa, "с", "с", mode, features, "plain_sibilant_target"
-        )
+        return _decision(grapheme, ipa, "s", "с", mode, features, "plain_sibilant_target")
+
+    if grapheme == "ㅆ":
+        if following in {"ㅣ", "ㅑ", "ㅒ", "ㅕ", "ㅖ", "ㅛ", "ㅠ", "ㅢ"} or ipa.startswith("ɕ"):
+            return _decision(grapheme, ipa, "ʃ", "ш", mode, features, "palatalized_fortis_sibilant_target")
+        return _decision(grapheme, ipa, "s", "с", mode, features, "fortis_sibilant_target")
 
     if grapheme == "ㅈ":
-        target = "дж" if ipa in {"dʑ", "ʑ"} else "ч"
-        return TargetDecision(
-            grapheme, ipa, target, target, mode, features,
-            "surface_affricate_voicing_selects_ukrainian_target",
-        )
+        if ipa in {"dʑ", "ʑ"}:
+            return _decision(grapheme, ipa, "dʒ", "дж", mode, features, "voiced_affricate_target")
+        return _decision(grapheme, ipa, "tɕ", "ч", mode, features, "affricate_target")
 
     if grapheme == "ㄹ":
-        target = "л" if ipa.startswith("l") else "р"
-        return TargetDecision(
-            grapheme, ipa, target, target, mode, features,
-            "surface_liquid_position_selects_r_or_l_target",
-        )
+        if ipa.startswith("l"):
+            return _decision(grapheme, ipa, "l", "л", mode, features, "lateral_surface_target")
+        return _decision(grapheme, ipa, "ɾ", "р", mode, features, "tap_surface_target")
 
     if grapheme == "ㅇ":
-        return TargetDecision(
-            grapheme, ipa, "н", "н", mode, features,
-            "velar_nasal_has_no_direct_ukrainian_phoneme",
-        )
+        return _decision(grapheme, ipa, "n", "н", mode, features, "practical_target_for_velar_nasal")
 
     direct = {
-        "ㄴ": "н",
-        "ㅁ": "м",
-        "ㅎ": "х",
-        "ㅏ": "а",
-        "ㅐ": "е",
-        "ㅑ": "я",
-        "ㅒ": "є",
-        "ㅓ": "о",
-        "ㅔ": "е",
-        "ㅕ": "йо",
-        "ㅖ": "є",
-        "ㅗ": "о",
-        "ㅘ": "ва",
-        "ㅙ": "ве",
-        "ㅚ": "ве",
-        "ㅛ": "йо",
-        "ㅜ": "у",
-        "ㅝ": "во",
-        "ㅞ": "ве",
-        "ㅟ": "ві",
-        "ㅠ": "ю",
-        "ㅡ": "и",
-        "ㅣ": "і",
+        "ㄴ": ("n", "н"),
+        "ㅁ": ("m", "м"),
+        "ㅎ": ("h", "х"),
+        "ㅏ": ("a", "а"),
+        "ㅐ": ("ɛ", "е"),
+        "ㅑ": ("ja", "я"),
+        "ㅒ": ("jɛ", "є"),
+        "ㅓ": ("ɔ", "о"),
+        "ㅔ": ("e", "е"),
+        "ㅕ": ("jo", "йо"),
+        "ㅖ": ("je", "є"),
+        "ㅗ": ("o", "о"),
+        "ㅘ": ("wa", "ва"),
+        "ㅙ": ("wɛ", "ве"),
+        "ㅚ": ("we", "ве"),
+        "ㅛ": ("jo", "йо"),
+        "ㅜ": ("u", "у"),
+        "ㅝ": ("wo", "во"),
+        "ㅞ": ("we", "ве"),
+        "ㅟ": ("wi", "ві"),
+        "ㅠ": ("ju", "ю"),
+        "ㅡ": ("ɪ", "и"),
+        "ㅣ": ("i", "і"),
     }
-    target = direct.get(grapheme, "")
-    if target:
-        return TargetDecision(
-            grapheme, ipa, target, target, mode, features, "canonical_direct_target"
-        )
+    if grapheme in direct:
+        target, graphemic = direct[grapheme]
+        return _decision(grapheme, ipa, target, graphemic, mode, features, "canonical_direct_target")
 
-    # ㅢ is deliberately not given a universal orthographic target here.
     if grapheme == "ㅢ":
-        return TargetDecision(
+        return _decision(
             grapheme, ipa, "", "", mode, features,
             "context_dependent_target_requires_environment",
         )
 
-    return TargetDecision(
-        grapheme, ipa, "", "", mode, features, "no_canonical_target_defined"
-    )
+    return _decision(grapheme, ipa, "", "", mode, features, "no_canonical_target_defined")
 
 
 __all__ = ["TargetDecision", "project_segment"]
