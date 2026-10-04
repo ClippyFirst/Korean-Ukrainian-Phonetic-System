@@ -1,9 +1,9 @@
 id,korean,broad_ipa,surface_process,ukrainian_primary,ukrainian_contrastive,comparative_note,evidence_status,source_ids
 SEQ001,평양,/pʰjʌŋ.jaŋ/,"aspiration retained analytically; practical target neutralizes aspiration",Пйон'ян,Пхьоньян,"Primary Ukrainian output does not import Russian-style aspiration digraphs; apostrophe remains an orthographic question.",model_validated,UKR-SH;KOR-NIKL
-SEQ002,현대,/hjʌn.tɛ/→[hjʌn.dɛ] where connected-speech voicing applies,"lenis voicing across syllable boundary",хьонде,хьондэ,"Illustrative context test; not a universal narrow IPA claim.",conditional,KOR-NIKL
-SEQ003,국밥,/kuk.pap/→[kuk.p͈ap] in fortition environments,"tensification/fortition",кукпап,кукппап,"Primary mode does not encode Korean fortis as mandatory Ukrainian doubling.",conditional,KOR-NIKL
+SEQ002,현대,/hjʌn.tɛ/→[hjʌn.dɛ],"lenis voicing across syllable boundary",хьонде,хьондэ,"Illustrative context test; not a universal narrow IPA claim.",conditional,KOR-NIKL
+SEQ003,국밥,/kuk.pap/→[kuk.p͈ap],"tensification/fortition",кукпап,кукппап,"Primary mode does not encode Korean fortis as mandatory Ukrainian doubling.",conditional,KOR-NIKL
 SEQ004,넋이,/nʌk.si/,"cluster simplification + fortition",ноксі,нокссі,"Process test; narrow realization requires standard-pronunciation rule evaluation.",conditional,KOR-NIKL
 SEQ005,닭을,/talk.ɯl/→[tal.gɯl],"complex-coda liaison",тальґиль,тальґиль,"Second component of a complex coda may resyllabify; do not move the whole cluster blindly.",conditional,KOR-NIKL
 SEQ006,한여름,/han.jʌ.rɯm/→[han.njʌ.rɯm],"n-insertion",ханньорим,ханньорим,"Sequence rule is separate from isolated Jamo correspondence.",conditional,KOR-NIKL
-SEQ007,시/샤,/ɕi, ɕja/,"ㅅ palatalized before i/j",ші,шіа,"Ukrainian ш target supported by Shchehel and Slovak comparative evidence.",documented_target,UKR-SH;SVK-PRO
+SEQ007,시/샤,"/ɕi, ɕja/","ㅅ palatalized before i/j",ші,шіа,"Ukrainian ш target supported by Shchehel and Slovak comparative evidence.",documented_target,UKR-SH;SVK-PRO
 SEQ008,ㄹ+ㅎ,/l+h/ or /ɾ+h/,"ㅎ interaction; lateral context-sensitive",льх/рх,льх/рх,"Do not hard-code льх as universal; it remains a gold-corpus hypothesis.",hypothesis,UKR-SH;KOR-NIKL
