@@ -6,7 +6,7 @@ FINAL_REPRESENTATIVE={"ㄳ":"ㄱ","ㄵ":"ㄴ","ㄶ":"ㄴ","ㄺ":"ㄱ","ㄻ":"ㅁ
 PLAIN_TO_FORTIS={"ㄱ":"ㄲ","ㄷ":"ㄸ","ㅂ":"ㅃ","ㅅ":"ㅆ","ㅈ":"ㅉ"}
 ASPIRATE={("ㄱ","ㅎ"):"ㅋ",("ㄷ","ㅎ"):"ㅌ",("ㅂ","ㅎ"):"ㅍ",("ㅈ","ㅎ"):"ㅊ",("ㅎ","ㄱ"):"ㅋ",("ㅎ","ㄷ"):"ㅌ",("ㅎ","ㅂ"):"ㅍ",("ㅎ","ㅈ"):"ㅊ"}
 NASAL_AFTER={"ㄱ":"ㅇ","ㄲ":"ㅇ","ㅋ":"ㅇ","ㄷ":"ㄴ","ㅅ":"ㄴ","ㅆ":"ㄴ","ㅈ":"ㄴ","ㅊ":"ㄴ","ㅌ":"ㄴ","ㅎ":"ㄴ","ㅂ":"ㅁ","ㅍ":"ㅁ"}
-COMPLEX_LIAISON={"ㄳ":("ㄱ","ㅆ"),"ㄵ":("ㄴ","ㅈ"),"ㄶ":("ㄴ",""),"ㄺ":("ㄹ","ㄱ"),"ㄻ":("ㄹ","ㅁ"),"ㄼ":("ㄹ","ㅂ"),"ㄽ":("ㄹ","ㅆ"),"ㄾ":("ㄹ","ㅌ"),"ㄿ":("ㄹ","ㅍ"),"ㅀ":("ㄹ",""),"ㅄ":("ㅂ","ㅆ")}
+COMPLEX_LIAISON={"ㄳ":("ㄱ","ㅆ"),"ㄵ":("ㄴ","ㅈ"),"ㄶ":("ㄴ",""),"ㄺ":("ㄹ","ㄱ"),"ㄻ":("ㄹ","ㅁ"),"ㄼ":("ㄹ","ㅂ"),"ㄽ":("ㄹ","ㅆ"),"ㄾ":("ㄹ","ㅌ"),"ㄿ":("ㄹ","ㅍ"),"ㅀ":("ㄹ",""),"ㅄ":("ㅂ","ㅆ")}\n\ndef contextual_final_representative(a,b):\n    if a.coda=="ㄼ" and b.onset!="ㅇ":\n        if a.text=="밟":\n            return "ㅂ"\n        if a.text=="넓" and a.text+b.text in {"넓죽","넓둥글","넓적"}:\n            return "ㅂ"\n    return FINAL_REPRESENTATIVE.get(a.coda,a.coda)
 RULE_META={
 "R001":("final-neutralization","NIKL §9","high"),
 "R002":("liaison-resyllabification","NIKL §§13–15","high"),
@@ -84,7 +84,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     elif rule_id=="R005":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
-            representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
+            representative=contextual_final_representative(a,b)
             if _eligible(a,b,boundary_mode=boundary_mode) and representative in NASAL_AFTER and b.onset in {"ㄴ","ㅁ"}:
                 a.coda=NASAL_AFTER[representative]; changed=True
     elif rule_id=="R006":
