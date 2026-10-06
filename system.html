@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Методологія авторської Korean → Ukrainian практичної фонетично-графемної системи.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none';">
+  <title>Система / 한국어 → УКРАЇНСЬКА</title>
+  <link rel="stylesheet" href="./src/styles/main.css">
+</head>
+<body>
+<main class="page-shell system-page">
+  <header class="site-header">
+    <div class="topline">
+      <a class="brand" href="./index.html"><span class="taegeuk" aria-hidden="true"><i></i><b></b></span><span>한국어 / УКРАЇНСЬКА</span></a>
+      <nav class="site-nav" aria-label="Основна навігація"><a href="./index.html">Сервіс</a><a class="nav-active" href="./system.html">Система</a></nav>
+    </div>
+    <div class="hero">
+      <p class="eyebrow blue-eyebrow">Методологія · v1.0</p>
+      <h1>Не просто передача знаків, <em>а система читання.</em></h1>
+      <p class="subtitle">Корейський текст проходить через окремі рівні аналізу, перш ніж потрапити в українську графіку. Саме тому одна літера Hangul не завжди має одну українську відповідність.</p>
+    </div>
+  </header>
+
+  <section class="system-intro">
+    <div class="system-index">00</div>
+    <div><p class="section-kicker">Статус</p><h2>Дослідницька практична система</h2><p>Цей проєкт пропонує авторську українську практичну передачу корейської мови. Він не є твердженням про офіційно затверджений український національний стандарт.</p></div>
+    <div class="status-chip"><span></span> evidence-controlled</div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-label">01</div><div class="doc-content"><p class="section-kicker">Що це</p><h2>Транскрипція, а не переклад</h2><p>Система відповідає на питання «як передати корейське звучання українськими засобами?», а не «що означає корейський текст?». У практичному режимі ціль — природний для українського читача запис із збереженням суттєвої фонетичної інформації.</p><div class="callout red"><strong>Основний принцип</strong><span>Корейська фонетична доказовість → українська фонетика → українська фонологія/орфографія → документований український прецедент → порівняльні слов’янські системи.</span></div></div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-label">02</div><div class="doc-content"><p class="section-kicker">Архітектура</p><h2>Шість рівнів</h2><div class="layers">
+      <article><b>01</b><strong>Корейська орфографія</strong><span>Hangul, syllable blocks, Jamo</span></article>
+      <article><b>02</b><strong>Корейська фонологія</strong><span>фонеми та протиставлення</span></article>
+      <article><b>03</b><strong>Контекстуальні правила</strong><span>liaison, assimilation, fortition, insertion</span></article>
+      <article><b>04</b><strong>Surface IPA</strong><span>реалізація після правил</span></article>
+      <article><b>05</b><strong>Український фонетичний target</strong><span>найближчий український сегмент</span></article>
+      <article><b>06</b><strong>Українська графіка</strong><span>практичний читабельний результат</span></article>
+    </div></div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-label">03</div><div class="doc-content"><p class="section-kicker">Приголосні</p><h2>Ключові рішення</h2><div class="decision-table">
+      <div class="table-row table-head"><span>Корейська</span><span>Поверхнева основа</span><span>Український target</span><span>Коментар</span></div>
+      <div class="table-row"><b>ㄱ</b><span>[k] ~ [ɡ]</span><strong>к / ґ</strong><span>вибір залежить від surface realization.</span></div>
+      <div class="table-row"><b>ㄷ</b><span>[t] ~ [d]</span><strong>т / д</strong><span>не одна безумовна заміна.</span></div>
+      <div class="table-row"><b>ㅂ</b><span>[p] ~ [b]</span><strong>п / б</strong><span>визначається контекстом.</span></div>
+      <div class="table-row"><b>ㅋ ㅌ ㅍ ㅊ</b><span>[kʰ tʰ pʰ tɕʰ]</span><strong>к т п ч</strong><span>аспірація зберігається аналітично, але в primary practical mode нейтралізується.</span></div>
+      <div class="table-row"><b>ㅅ / ㅆ</b><span>[s] ~ [ɕ]</span><strong>с / ш</strong><span>перед i/j-like середовищем працює окреме правило.</span></div>
+      <div class="table-row"><b>ㄹ</b><span>[ɾ] ~ [l]</span><strong>р / л</strong><span>поверхнева реалізація визначає український target.</span></div>
+      <div class="table-row"><b>ㅇ</b><span>onset ∅ / coda [ŋ]</span><strong>∅ / н</strong><span>структурний нуль не плутається з кода-носовим.</span></div>
+    </div></div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-label">04</div><div class="doc-content"><p class="section-kicker">Голосні</p><h2>Українська апроксимація без псевдоідентичності</h2><div class="vowel-grid">
+      <span>ㅏ → <b>а</b></span><span>ㅐ → <b>е</b></span><span>ㅑ → <b>я</b></span><span>ㅒ → <b>є</b></span>
+      <span>ㅓ → <b>о</b></span><span>ㅔ → <b>е</b></span><span>ㅕ → <b>йо</b></span><span>ㅖ → <b>є</b></span>
+      <span>ㅗ → <b>о</b></span><span>ㅘ → <b>ва</b></span><span>ㅙ → <b>ве</b></span><span>ㅚ → <b>ве</b></span>
+      <span>ㅛ → <b>йо</b></span><span>ㅜ → <b>у</b></span><span>ㅝ → <b>во</b></span><span>ㅞ → <b>ве</b></span>
+      <span>ㅟ → <b>ві</b></span><span>ㅠ → <b>ю</b></span><span>ㅡ → <b>и</b></span><span>ㅣ → <b>і</b></span>
+      <span class="wide">ㅢ → <b>контекстно</b> <small>не має універсального українського виходу</small></span>
+    </div></div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-label">05</div><div class="doc-content"><p class="section-kicker">Контекст</p><h2>Правила важливіші за таблицю</h2><p>Сервіс не повинен перетворювати корейську на послідовність незалежних символів. На рівні послідовностей модель враховує документовані процеси, коли для них є потрібне середовище.</p><div class="rule-grid">
+      <span><b>R001</b> final neutralization</span><span><b>R002</b> liaison / resyllabification</span><span><b>R004</b> ㅎ-aspiration</span><span><b>R005</b> nasal assimilation</span><span><b>R006</b> liquid assimilation</span><span><b>R008</b> tensification</span><span><b>R009</b> licensed ㄴ-insertion</span><span><b>R010–R015</b> conditional morphology / lexical rules</span>
+    </div><div class="callout blue"><strong>Приклад</strong><span>현대 може мати broad /hjʌn.tɛ/ і контекстуальну реалізацію з [d]. Тому ㄷ не можна моделювати лише як «т» або лише як «д».</span></div></div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-label">06</div><div class="doc-content"><p class="section-kicker">Порівняння</p><h2>Російська система — comparator, не authority</h2><p>Історична система Холодовича—Концевича важлива як сильний порівняльний матеріал, але її український результат не копіюється механічно. Причина кожної відмінності перевіряється через корейську фонетику, українську фонетику й українську графіку.</p><div class="compare-strip"><span><b>Російська</b><small>історичний / практичний comparator</small></span><span><b>Українська</b><small>власний target, орієнтований на українську фонетику</small></span><span><b>Інші слов’янські</b><small>тести стійкості рішення, а не нормативне джерело</small></span></div></div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-label">07</div><div class="doc-content"><p class="section-kicker">Доказовість</p><h2>Що є фактом, а що — рішенням проєкту</h2><div class="evidence-list">
+      <p><b>FACT</b><span>підтверджено нормативним, академічним або технічним джерелом.</span></p>
+      <p><b>MODEL</b><span>детермінований вибір, необхідний для роботи системи.</span></p>
+      <p><b>CONDITIONAL</b><span>правило працює лише за явно визначеного середовища.</span></p>
+      <p><b>HYPOTHESIS</b><span>потребує додаткової емпіричної або експертної перевірки.</span></p>
+      <p><b>UNRESOLVED</b><span>джерела або контекст не дозволяють чесно обрати один вихід.</span></p>
+    </div></div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-label">08</div><div class="doc-content"><p class="section-kicker">Обмеження</p><h2>Чого цей сервіс не стверджує</h2><ul class="limits"><li>Не є офіційним українським державним стандартом.</li><li>Не є повним lexical corpus Korean pronunciation engine.</li><li>Не генерує вигадані narrow IPA або словникові атестації.</li><li>11 172 Hangul blocks — це Unicode-комбінаторний інвентар, а не словник.</li><li>Морфологічно ліцензовані правила не активуються без потрібного контексту.</li></ul></div>
+  </section>
+
+  <section class="doc-section references">
+    <div class="doc-label">09</div><div class="doc-content"><p class="section-kicker">Джерела</p><h2>Основні дослідницькі опори</h2>
+      <ul><li><a href="https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002">National Institute of Korean Language — Standard Korean Pronunciation</a></li><li><a href="https://movoznavstvo.org.ua/vsi-nomera-zhurnalu/statti/2009-1-sichen-lyutij/shchegel-o-m-praktichna-transkriptsiya-korejskikh-imen-ukrajinskoyu-movoyu-porivnyannya-problemi-i-propozitsiji">О. М. Щегель (2009) — Практична транскрипція корейських імен українською мовою</a></li><li><a href="https://bp-razvitie.ru/prilozhenie-9-sistemy-transkripcii-">Холодович—Концевич — практична транскрипція корейської мови</a></li><li><a href="https://www.journals.polon.uw.edu.pl/index.php/pj/article/view/1631">Kim Gwangseok & Jarosław A. Pietrow (2023) — Korean toponyms in Polish</a></li><li><a href="https://authors.uni-sofia.bg/AuthorPublications.aspx?id=2584c0a6-0810-4d34-8733-deee92e8bac7">Beneva et al. (2018) — Korean transcription in Bulgarian texts</a></li><li><a href="https://serbia-korea.rs/wp-content/uploads/2026/01/A-need-for-transcription-between-Korean-Hangul-and-Serbian-Cyrillic.pdf">Angelina Galjević (2023) — Korean Hangul and Serbian Cyrillic</a></li></ul>
+      <div class="repo-links"><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">Відкрити GitHub репозиторій ↗</a><a href="./index.html">Повернутися до сервісу ↗</a></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div><strong>한국어 / УКРАЇНСЬКА</strong><span>Авторська дослідницька система практичної передачі корейської мови українською.</span></div>
+    <div><span>© 2026 Vitalii Tkachuk</span><span><a href="./index.html">Сервіс</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">GitHub</a></span></div>
+  </footer>
+</main>
+</body>
+</html>
