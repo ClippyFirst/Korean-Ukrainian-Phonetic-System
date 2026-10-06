@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Корейський текст → практичний український запис за авторською фонетично-графемною системою.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none';">
+  <title>한국어 / УКРАЇНСЬКА</title>
+  <link rel="stylesheet" href="./src/styles/main.css">
+</head>
+<body>
+<main class="page-shell">
+  <header class="site-header">
+    <div class="topline">
+      <a class="brand" href="./index.html" aria-label="Корейсько-українська система">
+        <span class="taegeuk" aria-hidden="true"><i></i><b></b></span>
+        <span>한국어 / УКРАЇНСЬКА</span>
+      </a>
+      <nav class="site-nav" aria-label="Основна навігація">
+        <a class="nav-active" href="./index.html">Сервіс</a>
+        <a href="./system.html">Система</a>
+      </nav>
+    </div>
+    <div class="hero">
+      <p class="eyebrow">Практична транскрипція</p>
+      <h1>Корейський текст, <em>українське читання.</em></h1>
+      <p class="subtitle">Введіть Hangul — отримайте практичний український запис і прозорий аналітичний шар. Сервіс працює локально та не перекладає значення тексту.</p>
+    </div>
+  </header>
+
+  <section class="workspace" aria-labelledby="input-heading">
+    <div class="workspace-bar">
+      <div class="section-title"><span class="section-number">A</span><div><p class="section-kicker">Вхід</p><h2 id="input-heading">Корейський текст</h2></div></div>
+      <span id="character-count" class="character-count">0 символів</span>
+    </div>
+    <label class="sr-only" for="source-input">Введіть корейський текст</label>
+    <div class="input-frame">
+      <span class="input-corner input-corner-tl" aria-hidden="true"></span>
+      <span class="input-corner input-corner-br" aria-hidden="true"></span>
+      <textarea id="source-input" rows="7" spellcheck="false" lang="ko" placeholder="예: 현대 한국어"></textarea>
+      <div class="input-hint"><span>Unicode Hangul</span><span>локальна обробка</span></div>
+    </div>
+    <div class="control-deck">
+      <div class="control-cell">
+        <span class="control-label">Режим</span>
+        <span class="mode-note"><i aria-hidden="true"></i> практичний український</span>
+      </div>
+      <div class="control-cell">
+        <span class="control-label">Приклади</span>
+        <div class="example-buttons" role="group" aria-label="Приклади">
+          <button class="mini-button" data-example="현대">현대</button>
+          <button class="mini-button" data-example="국밥">국밥</button>
+          <button class="mini-button" data-example="넋이">넋이</button>
+          <button class="mini-button" data-example="닭을">닭을</button>
+          <button class="mini-button" data-example="시">시</button>
+        </div>
+      </div>
+      <div class="action-cell">
+        <button id="example-button" class="button button-primary" type="button">Приклад <b aria-hidden="true">↗</b></button>
+        <button id="clear-button" class="button button-secondary" type="button">Очистити</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="empty-state" class="empty-state" aria-live="polite">
+    <div class="empty-glyph" aria-hidden="true">한</div>
+    <div><strong>Тут з’явиться результат</strong><span>Введіть корейський текст або скористайтеся прикладом.</span></div>
+    <span class="empty-rule" aria-hidden="true"></span>
+  </section>
+
+  <section id="results" class="results" aria-labelledby="results-heading" hidden>
+    <div class="results-bar">
+      <div class="section-title"><span class="section-number">B</span><div><p class="section-kicker">Вихід</p><h2 id="results-heading">Результати</h2></div></div>
+      <span id="status-note" class="results-note">Канонічний режим</span>
+    </div>
+
+    <article class="result-card primary-result">
+      <div class="result-meta"><span class="result-index">01</span><div><h3>Український запис</h3><p>Основний практичний результат системи</p></div><button class="copy-button" data-copy="ukrainian" type="button">Копіювати</button></div>
+      <p id="result-ukrainian" class="result-value result-primary" lang="uk"></p>
+      <span class="result-key">Korean surface → Ukrainian target → Ukrainian output</span>
+    </article>
+
+    <div class="secondary-grid">
+      <article class="result-card">
+        <div class="result-meta"><span class="result-index">02</span><div><h3>Аналітичний IPA</h3><p>Широкий запис із канонічних дослідницьких даних</p></div><button class="copy-button" data-copy="ipa" type="button">Копіювати</button></div>
+        <p id="result-ipa" class="result-value result-ipa" lang="und-fonipa"></p>
+      </article>
+      <article class="result-card">
+        <div class="result-meta"><span class="result-index">03</span><div><h3>Структура Hangul</h3><p>Розклад складів на onset + nucleus + coda</p></div><button class="copy-button" data-copy="analysis" type="button">Копіювати</button></div>
+        <p id="result-analysis" class="result-value result-analysis"></p>
+      </article>
+    </div>
+
+    <section class="trace-panel" aria-labelledby="trace-heading">
+      <div class="trace-heading"><div><p class="section-kicker">Прозорість</p><h3 id="trace-heading">Що відбулося під час обробки</h3></div><span class="trace-note">дослідницький шар</span></div>
+      <div id="trace-list" class="trace-list"></div>
+    </section>
+  </section>
+
+  <section id="issue-state" class="issue-state" aria-live="polite" hidden>
+    <span class="issue-symbol" aria-hidden="true">!</span><div><strong>Потребує уваги</strong><p id="issue-text"></p></div>
+  </section>
+
+  <section class="feedback-panel">
+    <div class="feedback-copy"><p class="section-kicker">Авторська система</p><h2>Чому результат виглядає саме так?</h2><p>Сервіс є практичною проєкцією дослідницької моделі. На другій сторінці описано фонологічні рівні, українські рішення, контекстуальні правила, порівняння зі слов’янськими системами та межі доказовості.</p></div>
+    <a class="feedback-link" href="./system.html">Читати систему <span aria-hidden="true">↗</span></a>
+  </section>
+
+  <footer class="site-footer">
+    <div><strong>한국어 / УКРАЇНСЬКА</strong><span>Дослідницький сервіс практичної передачі корейської мови українською.</span></div>
+    <div><span>© 2026 Vitalii Tkachuk</span><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">GitHub</a> · <a href="./system.html">Методологія</a></span></div>
+  </footer>
+  <p id="live-region" class="sr-only" aria-live="polite"></p>
+</main>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
