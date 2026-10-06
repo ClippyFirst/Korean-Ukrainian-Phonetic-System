@@ -1,104 +1,117 @@
-
-
-## Exhaustive 11,172-row master table
-
-The project now includes a deterministic generator for the complete modern Hangul syllable-block space:
-
-**19 × 21 × 28 = 11,172 rows**
-
-The human-facing projection is exactly three columns:
-
-`Korean | IPA | Ukrainian`
-
-IPA is a primary verification column: every Ukrainian rendering is inspectable through the project's canonical broad-IPA intermediate representation. The table is a canonical **isolated-syllable** rendering derived from the IPA-centered model. It is exhaustive for the modern Unicode Hangul syllable inventory, but it is not a lexical dictionary and does not erase Korean context-sensitive pronunciation.
-
-See [docs/master-table.md](docs/master-table.md) for the semantics, limits and reproducibility contract.
-
-Generate locally:
-
-```powershell
-python scripts/generate_master_table.py
-```
-
-This produces:
-
-- `data/derived/korean_ipa_ukrainian_master.csv`
-- `data/derived/korean_ukrainian_master_audit.csv`
-
-GitHub Actions also publishes the generated files as a build artifact.
-
 # Korean–Ukrainian Phonetic System
 
-Research-grade, machine-readable framework for Korean → Ukrainian phonetic-graphemic correspondence.
+Research-grade, machine-readable framework for Korean → Ukrainian phonetic-graphemic correspondence, now with a two-page browser service.
 
-Pipeline:
+## Public web service
 
-KOR_ORTH → KOR_PHON → KOR_PHON_RULES → KOR_IPA → UA_PHONETIC_TARGET → UA_ORTHOGRAPHY
+The project has two public-facing pages:
 
-## Implemented scope
+- **Service** — Korean text → practical Ukrainian reading.
+- **System** — explanation of the author's Ukrainian system, methodology, evidence and limitations.
 
-- Unicode Hangul decomposition/composition, canonical NFD decomposition metadata and deterministic generation of all 11,172 modern precomposed Hangul syllable blocks.
-- Machine-readable modern Jamo inventory with canonical and compatibility codepoints.
-- Structured onset/nucleus/coda representation, including 11 complex codas as component sequences.
-- Canonical rule registry shared by code, CSV, ordering and scope data: R001–R015.
-- Context-sensitive rules with explicit boundary/morphological gating; ㄴ-insertion is disabled unless explicitly licensed.
-- Broad IPA realization with analysis-dependent vowel alternatives. Narrow IPA is explicitly unavailable until an acoustic/allophonic model exists.
-- External Ukrainian target adapter with segmentwise feature-based candidate ranking and target grapheme retrieval from UPI 0.8.0.
-- Evidence, competing-analysis metadata, JSON Schemas, validation fixtures, adversarial regression tests and GitHub Actions.
+The service is intentionally modelled on the functional architecture of the Chinese-for-Ukrainians project: the tool is the centre of the page, typography carries hierarchy, results are inspectable and there is no marketing/AI decoration.
 
-## Important interpretation
+The Korean visual identity uses South Korean national colours: Taegeuk red #CD2E3A and Taegeuk blue #0047A0.
 
-11,172 is a Unicode combinatorial graphic inventory, not a phoneme inventory, lexical vocabulary or set of unique pronunciations.
+## Scientific pipeline
 
-The system distinguishes:
-- transliteration vs transcription;
-- orthography vs phonology vs phonetics;
-- phoneme vs allophone;
-- theoretical possibility vs phonotactic validity vs attestation;
-- heuristic cost vs probability;
-- documented fact vs model assumption vs unresolved analysis.
+Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
 
-The Korean model is grounded in the National Institute of Korean Language standard-pronunciation framework and peer-reviewed Seoul Korean phonetics. Complex-coda liaison, assimilation chains and phrase-level n-insertion are explicitly conditioned rather than applied to arbitrary adjacent syllables.
+The web service is a practical runtime projection of this research model. It is **not** an official Ukrainian national standard and it does not translate Korean meaning.
 
-## API
+## Research layers
 
-- decompose_hangul
-- compose_hangul
-- generate_syllables
-- analyze_korean
-- phonologize_korean
-- phoneticize_korean
-- map_ipa_to_ukrainian
-- rank_ukrainian_candidates
-- transliterate_korean
+- Unicode Hangul decomposition/composition.
+- Exact 19 × 21 × 28 = 11,172 modern precomposed Hangul blocks.
+- Modern Jamo inventory and structured onset/nucleus/coda representation.
+- 11 complex codas as explicit component sequences.
+- Rule registry R001–R015 with evidence/provenance.
+- Context-sensitive sequence corpus.
+- Ukrainian target layer separated from Ukrainian graphemic realization.
+- Comparative Slavic evidence with provenance controls.
+- Adversarial regression tests and reproducible generated artifacts.
 
-## Validation highlights
+## Web runtime boundary
 
-The regression corpus includes:
-- simple coda neutralization;
-- liaison;
-- complex-coda liaison: 넋이, 값이, 앉아, 닭을, 젊어;
-- complex-coda assimilation chains: 긁는, 뚫네, 핥네;
-- nasal/liquid assimilation;
-- palatalization;
-- tensification;
-- aspiration;
-- explicitly licensed n-insertion and phrase boundaries;
-- adversarial non-insertion: 먹이;
-- unsupported IPA and unknown-boundary negative cases;
-- exact generated-artifact reproducibility;
-- cross-file rule-ID and evidence foreign-key validation.
+The browser adapter implements:
+
+- Unicode-safe Hangul decomposition;
+- canonical onset/vowel/coda mappings from data/korean/canonical_correspondence.csv;
+- ㅅ/ㅆ → ш in the relevant i/j-like environments;
+- simple liaison;
+- complex-coda liaison;
+- selected contextual voicing;
+- practical tensification neutralization;
+- explicit unresolved handling for context-dependent ㅢ;
+- preservation of non-Hangul text;
+- an inspectable rule/status trace.
+
+It deliberately does **not** claim to be a complete lexical, morphological or acoustic Korean pronunciation engine. Research-layer rules that require lexical or morphological licensing remain outside the browser's automatic scope.
+
+## Exhaustive Hangul inventory
+
+19 × 21 × 28 = **11,172 modern Hangul syllable blocks** are generated deterministically.
+
+This is a Unicode combinatorial inventory, not a lexical dictionary and not 11,172 unique pronunciations.
+
+Generate the research artifacts with:
+
+    python scripts/generate_korean_corpus.py --strict
+
+## Development
+
+Requirements: Node.js 22+ and Python 3.11+ for the research layer.
+
+Web service:
+
+    npm install
+    npm test
+    npm run build
+    npm run dev
+
+Research layer:
+
+    python scripts/generate_korean_corpus.py --strict
+    pytest
+
+## Documentation
+
+### Research
+- docs/methodology.md
+- docs/slavic-comparative-master-table.md
+- docs/comparative-evidence-methodology.md
+- docs/multilevel-corpus.md
+- docs/superpowers/specs/2026-10-04-korean-ukrainian-target-design.md
+- docs/superpowers/plans/2026-10-04-korean-ukrainian-target-implementation.md
+
+### Web service
+- docs/WEB-SERVICE-REQUIREMENTS.md
+- docs/WEB-SERVICE.md
+- docs/WEB-SERVICE-ARCHITECTURE.md
+- docs/WEB-SERVICE-QA.md
+- docs/WEB-SERVICE-USER-GUIDE.md
+
+## Research integrity
+
+The repository explicitly distinguishes:
+
+- source-language fact;
+- documented external system;
+- project model decision;
+- conditional rule;
+- hypothesis;
+- unresolved analysis.
+
+Missing evidence is not converted into a fabricated one-to-one correspondence.
 
 ## Status
 
-v0.5.0 closes the computational readiness layers identified by the initial specification audit: strict API validation, UPI mapping-penalty integration, explicit Standard Pronunciation coverage for §§9–30, licensed morphology-sensitive rules, expanded adversarial tests, a specification coverage matrix, and a formal Ukrainian target-layer contract. It still does not claim empirical corpus coverage, acoustic narrow-IPA validation, independent expert adjudication, or gold-corpus optimisation where the required empirical datasets are not present.
+**Research layer:** computationally research-ready within its documented evidence boundary.
 
+**Web layer:** public-service implementation with a deliberately documented runtime boundary.
 
-## Full-readiness boundary
+Neither layer claims official Ukrainian standardisation, exhaustive lexical attestation, acoustic narrow-IPA validation or independent expert adjudication without the corresponding evidence.
 
-The repository is computationally research-ready within its documented evidence boundary. It deliberately does not manufacture lexical attestations, pronunciation-corpus statistics, acoustic narrow IPA, or a universal Ukrainian spelling. Conditional Korean rules require explicit linguistic licensing; the Ukrainian target inventory remains external and version-pinned.
+## License / attribution
 
-
-## Verification
-
-The v0.5.0 implementation candidate was verified by the repository test workflow with 61 passing tests and by the multi-version CI workflow on Python 3.11, 3.12 and 3.13.
+See repository metadata and source files for the current licensing and attribution terms.
