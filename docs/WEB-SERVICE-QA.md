@@ -25,7 +25,7 @@ The regression suite now deliberately probes cases where a naive grapheme-to-gra
 - **많아 / 싫어**: ㄶ/ㅀ must not invent an [h] onset during liaison.
 - **넋이 / 곬이 / 값이**: the ㅅ component of ㄳ/ㄽ/ㅄ is carried as fortis ㅆ in the liaison environment.
 
-These are standard-pronunciation edge cases, not merely arbitrary test strings. NIKL explicitly documents the relevant exceptions and assimilation patterns. citeturn1search0turn2search0turn0search6
+These are standard-pronunciation edge cases, not merely arbitrary test strings. NIKL's Standard Pronunciation Rules and Online Q&A explicitly document the relevant exceptions and assimilation patterns.
 
 The following remain explicit: ㅢ is context-dependent; 11,172 Hangul blocks are not a lexical corpus; contextual examples are not automatically universal rules; Russian and other Slavic systems are comparative evidence; the service is not translation.
 
