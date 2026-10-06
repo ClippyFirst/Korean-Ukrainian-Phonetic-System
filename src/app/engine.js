@@ -180,7 +180,7 @@ function convertText(text,map){
     const liaisonOnset=Boolean(u.__liaison);
     const previousSonorant=['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
     const previousObstruent=Boolean(previousCoda)&&!previousSonorant;
-    const voiced=liaisonOnset&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
+    const voiced=(liaisonOnset||previousSonorant)&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
     const fortis=!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
     const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis);
     if(!outOnset&&onset!=='ㅇ'){issues.push(u.char+': no Ukrainian onset target');status='unresolved';}
