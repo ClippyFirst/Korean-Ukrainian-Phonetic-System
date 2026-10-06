@@ -10,7 +10,10 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False)->list[
     if c=="ㅇ": return []
     if c in FORTIS: return [FORTIS[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
     if c in ASPIRATED: return [ASPIRATED[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
-    if c=="ㄹ": return ["ɾ"]
+    if c=="ㄹ":
+        # Surface ㄹ is [l] after a realized liquid coda (e.g. 신라, 칼날).
+        if index>0 and items[index-1].coda=="ㄹ": return ["l"]
+        return ["ɾ"]
     if c=="ㅎ": return ["h"]
     if c in LENIS:
         if phonemic: return [CONSONANT_PHONEMES[c].strip("/")]
