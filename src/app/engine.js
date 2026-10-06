@@ -73,6 +73,14 @@ function applyContextualRules(units){
     const rules=ruleSets[i];
     const nextRules=ruleSets[i+1];
 
+    // R007: palatalization takes precedence over ordinary liaison when
+    // ㄷ/ㅌ meets an i/j-like vowel through a zero onset.
+    if((a.coda==='ㄷ'||a.coda==='ㅌ')&&b.onset==='ㅇ'&&J_VOWELS.has(b.vowel)){
+      b.onset=a.coda==='ㄷ'?'ㅈ':'ㅊ';
+      a.coda='';
+      rules.push('palatalization');
+    }
+
     // R002: liaison / resyllabification. Complex codas keep their first
     // component in the coda and move the second component; ㄶ/ㅀ lose ㅎ.
     if(a.coda&&b.onset==='ㅇ'){
@@ -129,13 +137,6 @@ function applyContextualRules(units){
       rules.push('liquid-assimilation');
     }
 
-    // R007: palatalization before i/j-like vowels.
-    if((a.coda==='ㄷ'||a.coda==='ㅌ')&&b.onset==='ㅇ'&&J_VOWELS.has(b.vowel)){
-      b.onset=a.coda==='ㄷ'?'ㅈ':'ㅊ';
-      a.coda='';
-      rules.push('palatalization');
-    }
-
     // R008: practical tensification. The project deliberately does not
     // encode fortisness as doubled Ukrainian graphemes.
     const fortisRep=representative(a.coda);
@@ -183,6 +184,9 @@ function convertText(text,map){
     const voiced=(liaisonOnset||previousSonorant)&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
     const fortis=!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
     const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis);
+    const traceRules=[...applied];
+    if(voiced)traceRules.push('contextual-voicing');
+    if(fortis)traceRules.push('tensification');
     if(!outOnset&&onset!=='ㅇ'){issues.push(u.char+': no Ukrainian onset target');status='unresolved';}
 
     u.__effectiveCoda=u.coda;
@@ -203,7 +207,7 @@ function convertText(text,map){
     }
     ipa[i]=unitIpa;
     analysis[i]=u.char+' = '+onset+'+'+u.vowel+(u.coda?'+'+u.coda:'');
-    trace[i]={source:u.char,status,rules:[...new Set(applied)],output:out,ipa:unitIpa};
+    trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:out,ipa:unitIpa};
   }
 
   return{
