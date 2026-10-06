@@ -14,6 +14,19 @@ Check desktop and narrow mobile widths: empty state; example flow; conversion; a
 
 ## Research correctness
 
+### Adversarial pronunciation cases
+
+The regression suite now deliberately probes cases where a naive grapheme-to-grapheme converter is likely to fail:
+
+- **신라 → [실라]**: ㄴ+ㄹ liquid assimilation, with the second ㄹ realized as surface [l], not onset [ɾ].
+- **칼날 → [칼랄]**: ㄹ+ㄴ liquid assimilation.
+- **밟는 → [밤는]**: lexical ㄼ exception in 밟- ([ㅂ] before consonants), followed by nasal assimilation.
+- **넓죽하다 → [넙쭈카다]**: lexical ㄼ exception + tensification + ㅎ aspiration.
+- **많아 / 싫어**: ㄶ/ㅀ must not invent an [h] onset during liaison.
+- **넋이 / 곬이 / 값이**: the ㅅ component of ㄳ/ㄽ/ㅄ is carried as fortis ㅆ in the liaison environment.
+
+These are standard-pronunciation edge cases, not merely arbitrary test strings. NIKL explicitly documents the relevant exceptions and assimilation patterns. citeturn1search0turn2search0turn0search6
+
 The following remain explicit: ㅢ is context-dependent; 11,172 Hangul blocks are not a lexical corpus; contextual examples are not automatically universal rules; Russian and other Slavic systems are comparative evidence; the service is not translation.
 
 ## Release rule
