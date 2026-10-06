@@ -38,8 +38,9 @@ The browser adapter implements:
 - Unicode-safe Hangul decomposition;
 - canonical onset/vowel/coda mappings from data/korean/canonical_correspondence.csv;
 - ㅅ/ㅆ → ш in the relevant i/j-like environments;
-- simple liaison;
-- complex-coda liaison;
+- simple and complex-coda liaison, including correct ㄶ/ㅀ handling;
+- ㅎ deletion and ㅎ-driven aspiration;
+- nasal assimilation, liquid assimilation and palatalization in the documented environments;
 - selected contextual voicing;
 - practical tensification neutralization;
 - explicit unresolved handling for context-dependent ㅢ;
