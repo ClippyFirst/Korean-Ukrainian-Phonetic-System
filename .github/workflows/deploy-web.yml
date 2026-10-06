@@ -12,21 +12,22 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: 22
-          cache: npm
-      - run: npm install
-      - run: npm test
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+          node-version: 22.12.0
+      - run: npm install --no-audit --no-fund
+      - run: npm run check:release
+      - uses: actions/configure-pages@v6
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
 
@@ -38,4 +39,4 @@ jobs:
     needs: build
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
