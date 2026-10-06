@@ -2,7 +2,7 @@
 
 ## Automated tests
 
-npm test covers modern Hangul decomposition, CV/CVC mapping, ㅅ before ㅣ, ㄹ onset/coda, ㅇ onset/coda, complex-coda liaison, simple liaison, practical tensification, contextual voicing, unresolved ㅢ, non-Korean preservation, CSV quoting and deterministic conversion.
+npm test covers modern Hangul decomposition, CV/CVC mapping, ㅅ before ㅣ, ㄹ onset/coda, ㅇ onset/coda, complex-coda liaison, simple liaison, practical tensification, contextual voicing, unresolved ㅢ, non-Korean preservation, CSV quoting, deterministic conversion, and the public two-page/UI/CSP contract.
 
 ## Build
 
