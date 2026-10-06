@@ -35,3 +35,16 @@ def test_h_complex_coda_before_vowel():
     for word,expected in {"많아":"ㄴ","싫어":"ㄹ"}.items():
         items,_=apply_ordered_rules(parse_syllables(word),["R002","R003"])
         assert items[0].coda==expected
+
+
+def test_liquid_assimilation_requires_surface_lateral_context():
+    items,_=apply_ordered_rules(parse_syllables("신라"),["R006"])
+    assert items[0].coda=="ㄹ" and items[1].onset=="ㄹ"
+
+def test_balm_lexical_exception_before_consonant():
+    items,_=apply_ordered_rules(parse_syllables("밟는"),["R009","R002","R003","R004","R005","R006","R007","R008","R001"])
+    assert items[0].coda=="ㅁ"
+
+def test_neolp_compound_lexical_exception():
+    items,_=apply_ordered_rules(parse_syllables("넓죽하다"),["R009","R002","R003","R004","R005","R006","R007","R010","R011","R012","R013","R014","R015","R008","R001"])
+    assert items[0].coda=="ㅂ" and items[1].onset=="ㅉ"
