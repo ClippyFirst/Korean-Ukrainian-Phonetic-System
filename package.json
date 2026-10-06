@@ -1,0 +1,17 @@
+{
+  "name": "korean-ukrainian-phonetic-system-web",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Korean to Ukrainian practical transcription service built on the research model.",
+  "type": "module",
+  "engines": { "node": ">=22.12.0" },
+  "scripts": {
+    "dev": "vite",
+    "test": "node --test tests/*.test.mjs",
+    "build": "vite build",
+    "check:release": "npm test && npm run build"
+  },
+  "devDependencies": {
+    "vite": "8.3.1"
+  }
+}
