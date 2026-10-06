@@ -22,7 +22,7 @@ test('nasal assimilation is explicit',()=>{const r=engine.convert('국물');asse
 test('h aspiration is explicit',()=>{const r=engine.convert('각하');assert.equal(r.ukrainian,'кака');assert.ok(r.trace.some(x=>x.rules.includes('h-aspiration')));});
 test('palatalization is explicit',()=>{const r=engine.convert('같이');assert.ok(r.trace.some(x=>x.rules.includes('palatalization')));});
 test('simple liaison is contextual',()=>{const r=engine.convert('밥이');assert.equal(r.status,'contextual');assert.equal(r.ukrainian,'пабі');});
-test('standard lexical ㄼ exception 밟- is preserved before consonants',()=>{const r=engine.convert('밟는');assert.equal(r.ukrainian,'памни');assert.ok(r.trace[0].rules.includes('lexical-coda-balm'));});
+test('standard lexical ㄼ exception 밟- is preserved before consonants',()=>{const r=engine.convert('밟는');assert.equal(r.ukrainian,'памнин');assert.ok(r.trace[0].rules.includes('lexical-coda-balm'));});
 test('standard lexical ㄼ exception 넓죽- is preserved before fortition',()=>{const r=engine.convert('넓죽하다');assert.ok(r.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(r.trace[1].rules.includes('tensification'));});
 test('tensification remains practical rather than mandatory doubling',()=>{const r=engine.convert('국밥');assert.equal(r.ukrainian,'кукпап');assert.ok(r.trace.some(x=>x.rules.includes('tensification')));});
 test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'хйонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
