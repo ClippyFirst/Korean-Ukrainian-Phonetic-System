@@ -19,6 +19,10 @@ const ASPIRATION={
   'ㄱ':'ㅋ','ㄷ':'ㅌ','ㅂ':'ㅍ','ㅈ':'ㅊ'
 };
 
+// Lexical standard-pronunciation exceptions that cannot be inferred from
+// the final consonant alone. In particular, 밟- is [ㅂ] before consonants.
+const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥글']);
+
 function parseCsv(text){
   const rows=[];let row=[],cell='',quoted=false;
   for(let i=0;i<text.length;i++){
@@ -45,8 +49,9 @@ function decompose(ch){
 function createMap(csv){return new Map(parseCsv(csv).map(r=>[r.layer+':'+r.input,r]));}
 function get(map,layer,key){return map.get(layer+':'+key);}
 function isHangulUnit(units,i){return Boolean(units[i]&&units[i].type==='hangul');}
-function mapOnset(map,jamo,currentVowel='',voiced=false,fortis=false){
+function mapOnset(map,jamo,currentVowel='',voiced=false,fortis=false,liquid=false){
   if(jamo==='ㅇ')return '';
+  if(jamo==='ㄹ'&&liquid)return 'л';
   if((jamo==='ㅅ'||jamo==='ㅆ')&&J_VOWELS.has(currentVowel))return 'ш';
   if(voiced&&jamo==='ㄱ')return 'ґ';
   if(voiced&&jamo==='ㄷ')return 'д';
@@ -72,6 +77,12 @@ function applyContextualRules(units){
     if(a.type!=='hangul'||b.type!=='hangul')continue;
     const rules=ruleSets[i];
     const nextRules=ruleSets[i+1];
+
+    // Lexical coda exceptions precede generic coda rules.
+    if(a.coda==='ㄼ'&&b.onset!=='ㅇ'){
+      if(a.char==='밟'){a.coda='ㅂ';rules.push('lexical-coda-balm');}
+      else if(a.char==='넓'&&LEXICAL_B_CODA_PREFIXES.has(a.char+b.char)){a.coda='ㅂ';rules.push('lexical-coda-neolp');}
+    }
 
     // R007: palatalization takes precedence over ordinary liaison when
     // ㄷ/ㅌ meets an i/j-like vowel through a zero onset.
@@ -183,10 +194,12 @@ function convertText(text,map){
     const previousObstruent=Boolean(previousCoda)&&!previousSonorant;
     const voiced=(liaisonOnset||previousSonorant)&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
     const fortis=!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
-    const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis);
+    const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
+    const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis,liquid);
     const traceRules=[...applied];
     if(voiced)traceRules.push('contextual-voicing');
     if(fortis)traceRules.push('tensification');
+    if(liquid&&!traceRules.includes('liquid-assimilation'))traceRules.push('liquid-assimilation');
     if(!outOnset&&onset!=='ㅇ'){issues.push(u.char+': no Ukrainian onset target');status='unresolved';}
 
     u.__effectiveCoda=u.coda;
@@ -196,6 +209,7 @@ function convertText(text,map){
 
     const o=get(map,'onset',onset),v=get(map,'vowel',u.vowel),c=u.coda?get(map,'coda',u.coda):null;
     let unitIpa=(o?.ipa||'')+(v?.ipa||'')+(c?.ipa||'');
+    if(liquid&&onset==='ㄹ')unitIpa='l'+(v?.ipa||'')+(c?.ipa||'');
     // The IPA column is deliberately broad/analytical. Reflect the same
     // contextual onset decision used for the Ukrainian target when possible.
     if(voiced){
