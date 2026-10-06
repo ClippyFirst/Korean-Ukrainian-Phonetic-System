@@ -15,8 +15,8 @@ test('contextual ㅅ before i maps to ш',()=>{assert.equal(engine.convert('시'
 test('ㄹ onset/coda distinction',()=>{assert.equal(engine.convert('라').ukrainian,'ра');assert.equal(engine.convert('알').ukrainian,'ал');});
 test('ㅇ onset/coda distinction',()=>{assert.equal(engine.convert('아').ukrainian,'а');assert.equal(engine.convert('앙').ukrainian,'ан');});
 test('complex-coda liaison keeps first component',()=>{assert.equal(engine.convert('닭을').ukrainian,'талґил');});
-test('ㄶ/ㅀ liaison drops ㅎ rather than inventing an h onset',()=>{assert.equal(engine.convert('많아').ukrainian,'мана');assert.equal(engine.convert('싫어').ukrainian,'сиро');});
-test('ㄳ/ㄽ/ㅄ liaison uses fortis ㅆ',()=>{assert.equal(engine.convert('넋이').ukrainian,'нокші');assert.equal(engine.convert('곬이').ukrainian,'ґолші');assert.equal(engine.convert('값이').ukrainian,'капші');});
+test('ㄶ/ㅀ liaison drops ㅎ rather than inventing an h onset',()=>{assert.equal(engine.convert('많아').ukrainian,'мана');assert.equal(engine.convert('싫어').ukrainian,'шіло');});
+test('ㄳ/ㄽ/ㅄ liaison uses fortis ㅆ',()=>{assert.equal(engine.convert('넋이').ukrainian,'нокші');assert.equal(engine.convert('곬이').ukrainian,'колші');assert.equal(engine.convert('값이').ukrainian,'капші');});
 test('nasal assimilation is explicit',()=>{const r=engine.convert('국물');assert.equal(r.ukrainian,'кунмул');assert.ok(r.trace.some(x=>x.rules.includes('nasal-assimilation')));});
 test('h aspiration is explicit',()=>{const r=engine.convert('각하');assert.equal(r.ukrainian,'кака');assert.ok(r.trace.some(x=>x.rules.includes('h-aspiration')));});
 test('palatalization is explicit',()=>{const r=engine.convert('같이');assert.ok(r.trace.some(x=>x.rules.includes('palatalization')));});
