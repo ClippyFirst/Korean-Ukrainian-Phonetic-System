@@ -14,6 +14,7 @@ test('canonical CV/CVC output',()=>{assert.equal(engine.convert('가').ukrainian
 test('contextual ㅅ before i maps to ш',()=>{assert.equal(engine.convert('시').ukrainian,'ші');});
 test('ㄹ onset/coda distinction',()=>{assert.equal(engine.convert('라').ukrainian,'ра');assert.equal(engine.convert('알').ukrainian,'ал');});
 test('ㅇ onset/coda distinction',()=>{assert.equal(engine.convert('아').ukrainian,'а');assert.equal(engine.convert('앙').ukrainian,'ан');});
+test('liquid assimilation renders surface ㄹ as л, not onset р',()=>{assert.equal(engine.convert('신라').ukrainian,'сілла');assert.ok(engine.convert('신라').trace[1].rules.includes('liquid-assimilation'));assert.equal(engine.convert('칼날').ukrainian,'каллал');});
 test('complex-coda liaison keeps first component',()=>{assert.equal(engine.convert('닭을').ukrainian,'талґил');});
 test('ㄶ/ㅀ liaison drops ㅎ rather than inventing an h onset',()=>{assert.equal(engine.convert('많아').ukrainian,'мана');assert.equal(engine.convert('싫어').ukrainian,'шіло');});
 test('ㄳ/ㄽ/ㅄ liaison uses fortis ㅆ',()=>{assert.equal(engine.convert('넋이').ukrainian,'нокші');assert.equal(engine.convert('곬이').ukrainian,'колші');assert.equal(engine.convert('값이').ukrainian,'капші');});
@@ -21,6 +22,8 @@ test('nasal assimilation is explicit',()=>{const r=engine.convert('국물');asse
 test('h aspiration is explicit',()=>{const r=engine.convert('각하');assert.equal(r.ukrainian,'кака');assert.ok(r.trace.some(x=>x.rules.includes('h-aspiration')));});
 test('palatalization is explicit',()=>{const r=engine.convert('같이');assert.ok(r.trace.some(x=>x.rules.includes('palatalization')));});
 test('simple liaison is contextual',()=>{const r=engine.convert('밥이');assert.equal(r.status,'contextual');assert.equal(r.ukrainian,'пабі');});
+test('standard lexical ㄼ exception 밟- is preserved before consonants',()=>{const r=engine.convert('밟는');assert.equal(r.ukrainian,'памни');assert.ok(r.trace[0].rules.includes('lexical-coda-balm'));});
+test('standard lexical ㄼ exception 넓죽- is preserved before fortition',()=>{const r=engine.convert('넓죽하다');assert.ok(r.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(r.trace[1].rules.includes('tensification'));});
 test('tensification remains practical rather than mandatory doubling',()=>{const r=engine.convert('국밥');assert.equal(r.ukrainian,'кукпап');assert.ok(r.trace.some(x=>x.rules.includes('tensification')));});
 test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'хйонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
 test('unresolved ㅢ is explicit',()=>{const r=engine.convert('의');assert.equal(r.status,'unresolved');assert.match(r.ukrainian,/⟦의⟧/);});
