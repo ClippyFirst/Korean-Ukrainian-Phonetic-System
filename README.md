@@ -41,6 +41,7 @@ The browser adapter implements:
 - simple and complex-coda liaison, including correct ㄶ/ㅀ handling;
 - ㅎ deletion and ㅎ-driven aspiration;
 - nasal assimilation, liquid assimilation and palatalization in the documented environments;
+- selected lexical coda exceptions such as 밟- and 넓죽-/넓둥글-/넓적- where standard pronunciation cannot be inferred from the coda inventory alone;
 - selected contextual voicing;
 - practical tensification neutralization;
 - explicit unresolved handling for context-dependent ㅢ;
