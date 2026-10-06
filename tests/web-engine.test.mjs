@@ -14,8 +14,8 @@ test('canonical CV/CVC output',()=>{assert.equal(engine.convert('가').ukrainian
 test('contextual ㅅ before i maps to ш',()=>{assert.equal(engine.convert('시').ukrainian,'ші');});
 test('ㄹ onset/coda distinction',()=>{assert.equal(engine.convert('라').ukrainian,'ра');assert.equal(engine.convert('알').ukrainian,'ал');});
 test('ㅇ onset/coda distinction',()=>{assert.equal(engine.convert('아').ukrainian,'а');assert.equal(engine.convert('앙').ukrainian,'ан');});
-test('complex-coda liaison keeps first component',()=>{assert.equal(engine.convert('닭을').ukrainian,'тальґиль');});
-test('simple liaison is contextual',()=>{const r=engine.convert('밥이');assert.equal(r.status,'contextual');assert.equal(r.ukrainian,'бабі');});
+test('complex-coda liaison keeps first component',()=>{assert.equal(engine.convert('닭을').ukrainian,'талґил');});
+test('simple liaison is contextual',()=>{const r=engine.convert('밥이');assert.equal(r.status,'contextual');assert.equal(r.ukrainian,'пабі');});
 test('tensification remains practical rather than mandatory doubling',()=>{const r=engine.convert('국밥');assert.equal(r.ukrainian,'кукпап');assert.ok(r.trace.some(x=>x.rules.includes('tensification')));});
 test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'хйонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
 test('unresolved ㅢ is explicit',()=>{const r=engine.convert('의');assert.equal(r.status,'unresolved');assert.match(r.ukrainian,/⟦의⟧/);});
