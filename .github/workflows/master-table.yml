@@ -1,4 +1,4 @@
-name: Master table artifact
+name: Master table and research corpus artifacts
 
 on:
   push:
@@ -8,19 +8,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  generate-master-table:
+  generate-corpus:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
       - run: python -m pip install -e .
       - run: python scripts/generate_master_table.py
+      - run: python scripts/generate_korean_corpus.py
+
       - uses: actions/upload-artifact@v4
         with:
-          name: korean-ukrainian-master-table
+          name: korean-ukrainian-research-corpus
           path: |
             data/derived/korean_ipa_ukrainian_master.csv
             data/derived/korean_ukrainian_master_audit.csv
+            data/derived/korean_graphemes.csv
+            data/derived/korean_syllables_11172.csv
+            data/derived/korean_ukrainian_sequences.csv
+            data/derived/korean_rules.csv
+            data/derived/korean_sources.csv
+            data/derived/korean_validation.csv
+            data/derived/korean_manifest.csv
+            data/derived/README.md
           if-no-files-found: error
