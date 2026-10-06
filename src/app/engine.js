@@ -21,7 +21,7 @@ const ASPIRATION={
 
 // Lexical standard-pronunciation exceptions that cannot be inferred from
 // the final consonant alone. In particular, 밟- is [ㅂ] before consonants.
-const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥글']);
+const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥글','넓적']);
 
 function parseCsv(text){
   const rows=[];let row=[],cell='',quoted=false;
