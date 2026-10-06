@@ -58,7 +58,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 # the narrower [ㅂ] realization in 넓죽-/넓둥글-.
                 if s.text=="밟":
                     s.coda="ㅂ"; changed=True; continue
-                if s.text=="넓" and s.text+items[i+1].text in {"넓죽","넓둥글"}:
+                if s.text=="넓" and s.text+items[i+1].text in {"넓죽","넓둥글","넓적"}:
                     s.coda="ㅂ"; changed=True; continue
             if s.coda in FINAL_REPRESENTATIVE:
                 new=FINAL_REPRESENTATIVE[s.coda]
