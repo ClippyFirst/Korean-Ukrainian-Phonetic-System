@@ -52,7 +52,14 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     before=_snap(items); changed=False
     license_context=_licensed(rule_id,licenses)
     if rule_id=="R001":
-        for s in items:
+        for i,s in enumerate(items):
+            if s.coda=="ㄼ" and i+1<len(items) and items[i+1].onset!="ㅇ":
+                # NIKL exception: 밟- is [ㅂ] before consonants; 넓- has
+                # the narrower [ㅂ] realization in 넓죽-/넓둥글-.
+                if s.text=="밟":
+                    s.coda="ㅂ"; changed=True; continue
+                if s.text=="넓" and s.text+items[i+1].text in {"넓죽","넓둥글"}:
+                    s.coda="ㅂ"; changed=True; continue
             if s.coda in FINAL_REPRESENTATIVE:
                 new=FINAL_REPRESENTATIVE[s.coda]
                 if new!=s.coda: s.coda=new; changed=True
