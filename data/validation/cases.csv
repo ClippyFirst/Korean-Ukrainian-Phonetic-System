@@ -43,4 +43,12 @@ V041,맑고,말꼬,mal.k͈o,малко,established,S009,"Verbal-stem ㄺ before 
 V042,맑다,막따,mak̚.t͈a,макта,established,S009,"General coda simplification for ㄺ before a consonant"
 V043,밝기,발끼,pal.k͈i,палкі,established,S011,"Stem-derived form with ㄺ before ㄱ follows the ㄹ-retaining exception"
 V044,닭고기,닥꼬기,tak̚.k͈o.ɡi,таккоґі,established,S010,"Noun 닭- does not receive the verbal-stem ㄺ+ㄱ exception"
-
+V045,꽃잎,꼰닙,k͈on.nip̚,конніп,established,S001,"Compound n-insertion and nasal assimilation; source standard pronunciation [꼰닙]"
+V046,밭이,바치,pa.tɕʰi,пачі,established,S001,"Palatalization before particle 이; standard pronunciation [바치]"
+V047,밭을,바틀,pa.tʰɯl,патил,established,S001,"Liaison before vowel-initial particle; standard pronunciation [바틀]"
+V048,넓네,널레,nʌl.le,нольле,established,S001,"ㄼ simplification followed by liquid assimilation; standard pronunciation [널레]"
+V049,없다,업따,ʌːp̚.t͈a,опта,established,S001,"Complex coda simplification and tensification; preserve lexical vowel length"
+V050,없는,엄는,ʌːm.nɯn,омнин,established,S001,"Complex coda simplification followed by nasal assimilation; preserve lexical vowel length"
+V051,국물,궁물,kuŋ.mul,кунмул,established,S001,"Velar coda nasalizes before nasal onset"
+V052,떡볶이,떡뽀끼,t͈ʌk̚.p͈o.k͈i,токпокі,established,S001,"Lexical suffix liaison and tensification; official standard pronunciation [떡뽀끼]"
+V053,옷이,오시,o.ɕi,оші,established,S001,"Liaison and sibilant realization before i-like vowel"
