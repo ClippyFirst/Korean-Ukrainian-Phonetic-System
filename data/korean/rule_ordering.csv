@@ -6,13 +6,13 @@ G4,R004,4,,primary,ㅎ plus obstruent aspiration.
 G5,R005,5,,primary,Nasal assimilation using the representative coda class.
 G6,R006,6,,primary,Liquid assimilation after representative-coda normalization.
 G7,R007,7,,primary,Palatalization.
-G8,R008,8,7,analysis-dependent,Fortition interacts with preceding coda realization.
-G9,R001,9,,primary,Final neutralization is applied to remaining codas after contextual rules.
+G8,R008,15,,analysis-dependent,Fortition interacts with preceding coda realization.
+G9,R001,16,,primary,Final neutralization is applied to remaining codas after contextual rules.
 
-G9,R010,10,,conditional,Only when R010:stem_n_m+suffix is licensed.
-G10,R011,11,,conditional,Only when R011:stem_lb_lt+suffix is licensed.
-G11,R012,12,,conditional,Only when R012:sino_ryeon is licensed.
-G12,R013,13,,conditional,Only when R013:adnominal_l is licensed.
-G13,R014,14,,conditional,Only when R014:compound is licensed.
-G14,R015,15,,conditional,Only when R015:saisiot is licensed.
-G15,R016,8,,conditional,Requires explicit verbal-stem ㄺ plus ㄱ-initial ending license; must precede generic final neutralization.
+G9,R010,8,,conditional,Only when R010:stem_n_m+suffix is licensed.
+G10,R011,9,,conditional,Only when R011:stem_lb_lt+suffix is licensed.
+G11,R012,10,,conditional,Only when R012:sino_ryeon is licensed.
+G12,R013,11,,conditional,Only when R013:adnominal_l is licensed.
+G13,R014,12,,conditional,Only when R014:compound is licensed.
+G14,R015,13,,conditional,Only when R015:saisiot is licensed.
+G15,R016,14,,conditional,Requires explicit verbal-stem ㄺ plus ㄱ-initial ending license; must precede generic final neutralization.
