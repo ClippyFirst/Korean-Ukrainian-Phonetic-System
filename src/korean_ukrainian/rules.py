@@ -100,6 +100,12 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                     a.coda=""; b.onset=representative; changed=True
                 else:
                     conditional_disabled=True
+            elif a.coda in {"ㄷ","ㅌ"} and b.nucleus=="ㅣ":
+                # §17 palatalization must get first refusal on ㄷ/ㅌ + formal
+                # ㅣ. Generic liaison here would consume the coda before R007
+                # can distinguish licensed forms such as 같이/굳이 from
+                # unverified lookalikes. Leave the pair unchanged for R007.
+                conditional_disabled=True
             elif a.coda!="ㅎ":
                 representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
                 if representative!=a.coda and b.nucleus in {"ㅏ","ㅓ","ㅗ","ㅜ","ㅟ"}:
@@ -190,27 +196,41 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             elif representative=="ㄹ" and b.onset=="ㄴ":
                 a.coda="ㄹ"; b.onset="ㄹ"; changed=True
     elif rule_id=="R007":
-        # NIKL §17 is not a general rule before every j-glide vowel. It
-        # requires the vowel ㅣ of a formal morpheme, or the explicitly
-        # listed ㄷ + suffix -히 sequence. The browser must provide a license
-        # rather than infer morphology from adjacent syllables alone.
-        if license_context not in {"R007:formal_morpheme_i","R007:dh_suffix_hi"}:
-            name,source,confidence=RULE_META[rule_id]
-            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
+        # §17 is morphology-conditioned. A generic flag such as
+        # R007:formal_morpheme_i can accidentally license every ㄷ/ㅌ + ㅣ
+        # sequence in a string. Require exact full-form and adjacent-pair
+        # evidence, parallel to §§15 and 29:
+        # R007:formal_morpheme_i:굳이:굳>이
+        # R007:dh_suffix_hi:굳히다:굳>히
+        r007_licenses={x for x in licenses if x.startswith("R007:")}
+        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
+        exact_pairs=set()
+        for license in r007_licenses:
+            parts=license.split(":",3)
+            if len(parts)==4 and parts[2]==full_form:
+                exact_pairs.add((parts[1],parts[3]))
+        if not exact_pairs:
+            conditional_disabled=True
+            license_context=None
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode): continue
-            if license_context=="R007:formal_morpheme_i" and a.coda in {"ㄷ","ㅌ","ㄾ"} and b.onset=="ㅇ" and b.nucleus=="ㅣ":
+            pair=f"{a.text}>{b.text}"
+            if ("formal_morpheme_i",pair) in exact_pairs and a.coda in {"ㄷ","ㅌ","ㄾ"} and b.onset=="ㅇ" and b.nucleus=="ㅣ":
                 coda=a.coda
                 # ㄾ is realized as ㄹ in the coda, while its ㅌ component
                 # palatalizes and moves to the next syllable onset.
                 a.coda="ㄹ" if coda=="ㄾ" else ""
                 b.onset="ㅈ" if coda=="ㄷ" else "ㅊ"
                 changed=True
-            elif license_context=="R007:dh_suffix_hi" and getattr(b,"_palatalization_after_dh",False) and b.onset=="ㅌ" and b.nucleus=="ㅣ":
+                license_context=f"R007:formal_morpheme_i:{full_form}:{pair}"
+            elif ("dh_suffix_hi",pair) in exact_pairs and getattr(b,"_palatalization_after_dh",False) and b.onset=="ㅌ" and b.nucleus=="ㅣ":
                 b.onset="ㅊ"
                 delattr(b,"_palatalization_after_dh")
                 changed=True
+                license_context=f"R007:dh_suffix_hi:{full_form}:{pair}"
+            elif ("formal_morpheme_i",pair) not in exact_pairs and ("dh_suffix_hi",pair) not in exact_pairs:
+                conditional_disabled=True
     elif rule_id=="R008":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
