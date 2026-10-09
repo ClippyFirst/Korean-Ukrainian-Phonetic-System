@@ -101,19 +101,22 @@ test('shared lexical pronunciation data is sourced, aligned, and marks provision
 
 test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays explicitly provisional', () => {
   const expected = {
-    같이: ['가치', 'ка', 'чі', 'ka tɕʰi'],
-    굳이: ['구지', 'ку', 'джі', 'ku dʑi'],
-    곧이듣다: ['고지듣따', 'коджідитта', null, null],
-    굳히다: ['구치다', 'кучіда', null, null],
-    닫히다: ['다치다', 'дачіда', null, null],
-    묻히다: ['무치다', 'мучіда', null, null],
+    같이: {surface:'가치', target:'качі', ipa:'ka tɕʰi'},
+    굳이: {surface:'구지', target:'куджі', ipa:'ku dʑi'},
+    곧이듣다: {surface:'고지듣따', target:'коджідитта', ipa:'ko dʑi tɯt̚ t͈a'},
+    굳히다: {surface:'구치다', target:'кучіда', ipa:'ku tɕʰi da'},
+    닫히다: {surface:'다치다', target:'дачіда', ipa:'ta tɕʰi da'},
+    묻히다: {surface:'무치다', target:'мучіда', ipa:'mu tɕʰi da'},
   };
-  for (const [word, [surface, target, , ipa]] of Object.entries(expected)) {
+  const rows = parseCsv(lexical);
+  for (const [word, values] of Object.entries(expected)) {
+    const entry = rows.find((row) => row.input === word);
+    assert.ok(entry, word);
+    assert.equal(entry.surface_hangul, values.surface, word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ukrainian, target, word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
-    if (ipa) assert.equal(result.ipa, ipa, word);
-    assert.ok(surface.length > 0);
   }
 });
