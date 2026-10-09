@@ -213,12 +213,12 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             representative=contextual_final_representative(a,b)
-            if _eligible(a,b,boundary_mode=boundary_mode) and representative in NASAL_AFTER and b.onset in {"ㄴ","ㅁ"}:
+            if _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=(boundary_mode=="phrase")) and representative in NASAL_AFTER and b.onset in {"ㄴ","ㅁ"}:
                 a.coda=NASAL_AFTER[representative]; changed=True
     elif rule_id=="R006":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
-            if not _eligible(a,b,boundary_mode=boundary_mode): continue
+            if not _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=(boundary_mode=="phrase")): continue
             representative=contextual_final_representative(a,b)
             # NIKL §19: after a coda in the ㄱ/ㅂ/ㅁ/ㅇ classes, ㄹ is
             # realized as ㄴ. For ㄱ/ㅂ, the following R005 pass then

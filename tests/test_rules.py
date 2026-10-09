@@ -413,3 +413,25 @@ def test_default_pipeline_runs_licensed_h_deletion_before_liaison():
     assert items[1].onset=="ㄴ"
     assert any(t.rule_id=="R003" and t.changed for t in traces)
     assert any(t.rule_id=="R002" and t.changed for t in traces)
+
+def test_section_18_nasal_assimilation_applies_across_words_in_phrase_mode():
+    items,traces=apply_ordered_rules(
+        parse_syllables("밥 먹는다"),["R005"],boundary_mode="same_word",
+    )
+    assert items[0].coda=="ㅂ"
+    # R005 may still change the coda inside 먹는다; the first word must remain untouched.
+    assert items[0].coda=="ㅂ"
+
+    items,traces=apply_ordered_rules(
+        parse_syllables("밥 먹는다"),["R005"],boundary_mode="phrase",
+    )
+    assert items[0].coda=="ㅁ"
+    assert traces[0].changed
+
+def test_section_19_then_section_18_can_apply_across_phrase_boundary():
+    items,traces=apply_ordered_rules(
+        parse_syllables("협 력"),["R006","R005"],boundary_mode="phrase",
+    )
+    assert items[0].coda=="ㅁ"
+    assert items[1].onset=="ㄴ"
+    assert traces[0].changed and traces[1].changed

@@ -147,3 +147,10 @@ Official source: NIKL, *표준 발음법*, §30: https://www.korean.go.kr/kornor
 R003 now requires an exact full-form/pair license such as `R003:ending_or_suffix_h_deletion:많아:많>아`. The default Python pipeline applies licensed ㅎ deletion before liaison, so the surviving ㄴ/ㄹ in ㄶ/ㅀ moves to the next syllable onset: 많아 [마나], 싫어 [시러]. The browser has no morphological parser, so it uses sourced lexical entries for known official examples and marks unknown ㅎ/ㄶ/ㅀ + vowel candidates unresolved. This prevents a generic coda-deletion rule from being mistaken for evidence of an ending/suffix boundary.
 
 Official source: NIKL, *표준 발음법*, §12(4): https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+
+
+### Phrase-boundary assimilation (§§18–20)
+
+NIKL §18 explicitly says nasal assimilation can apply when two words are connected in one spoken phrase. Python R005 and R006 now allow word-boundary eligibility only when `boundary_mode="phrase"`; same-word mode remains unchanged. The browser treats plain whitespace as a connected phrase for the explicit §18–20 assimilation pass, but punctuation blocks it. The pass applies §19 ㄹ→ㄴ before §18 nasalization, preserving the normative order illustrated by 협력 [혐녁] and phrase examples such as 밥 먹는다 [밤 멍는다].
+
+Official source: NIKL, *표준 발음법*, §§18–20 and commentary: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
