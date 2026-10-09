@@ -164,16 +164,16 @@ function applyContextualRules(units){
     }else if(a.coda&&b.onset==='ㅎ'){
       const pair=COMPLEX[a.coda];
       if(pair){
-        // Preserve the first component of complex codas while ㅎ combines
-        // with the second: 읽히다 [일키다], 앉히다 [안치다],
-        // 넓히다 [널피다].
-        const moved=pair[1];
-        const aspirated=moved==='ㅈ'?'ㅊ':(ASPIRATION[moved]||ASPIRATION[representative(moved)]);
-        if(aspirated){
-          b.onset=aspirated;
-          a.coda=pair[0];
-          rules.push('complex-coda-h-aspiration');
-        }
+        // NIKL §12 붙임 1 has direct complex-coda + ㅎ aspiration in
+        // morphologically licensed forms such as 읽히다/앉히다/넓히다.
+        // This browser has no morphological parser; exact lexical entries
+        // resolve known forms. Do not apply that suffix pattern to unknown
+        // adjacent Hangul blocks.
+        a.__complexHAspirationUnlicensed='left';
+        b.__complexHAspirationUnlicensed='right';
+        rules.push('complex-coda-h-aspiration-requires-morphology');
+        nextRules.push('complex-coda-h-aspiration-requires-morphology');
+        continue;
       }else{
         const aspirated=a.coda==='ㅈ'?'ㅊ':(ASPIRATION[a.coda]||ASPIRATION[rep]);
         if(aspirated){
@@ -325,6 +325,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     }
     if(u.__complexLiaisonUnlicensed){
       if(u.__complexLiaisonUnlicensed==='left')issues.push(u.char+': complex-coda liaison differs between formal and substantive morphemes (§§13–15); add a sourced lexical pronunciation entry.');
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='';
+      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
+      continue;
+    }
+    if(u.__complexHAspirationUnlicensed){
+      if(u.__complexHAspirationUnlicensed==='left')issues.push(u.char+': §12 complex-coda + ㅎ aspiration depends on the licensed morphophonemic pattern; add a sourced lexical pronunciation entry.');
       output[i]='⟦'+u.char+'⟧';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
