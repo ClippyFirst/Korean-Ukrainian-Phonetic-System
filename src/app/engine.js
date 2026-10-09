@@ -70,6 +70,18 @@ function nextHangul(units,i){return isHangulUnit(units,i+1)?units[i+1]:null;}
 function prevHangul(units,i){return isHangulUnit(units,i-1)?units[i-1]:null;}
 function representative(coda){return FINAL_REPRESENTATIVE[coda]??coda;}
 
+// Preserve literal whitespace and punctuation instead of joining them with
+// artificial IPA/analysis separators (which previously produced triple spaces).
+function renderStructured(units,values,separator){
+  let result='';
+  for(let i=0;i<units.length;i++){
+    if(units[i].type==='literal'){result+=units[i].char;continue;}
+    if(i>0&&units[i-1].type==='hangul')result+=separator;
+    result+=values[i]??'';
+  }
+  return result;
+}
+
 function applyContextualRules(units){
   const ruleSets=units.map(()=>[]);
   for(let i=0;i<units.length-1;i++){
@@ -228,8 +240,8 @@ function convertText(text,map){
   return{
     source:text,
     ukrainian:output.join(''),
-    ipa:ipa.join(' '),
-    analysis:analysis.join(' · '),
+    ipa:renderStructured(units,ipa,' '),
+    analysis:renderStructured(units,analysis,' · '),
     trace,
     issues,
     status:issues.length?'unresolved':trace.some(x=>x?.status==='contextual')?'contextual':'canonical'
