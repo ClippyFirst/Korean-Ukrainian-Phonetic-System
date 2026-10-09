@@ -534,3 +534,34 @@ test('NIKL §10 complex-coda examples and lexical exceptions are source-backed',
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
+
+test('NIKL §9 official final-neutralization examples have source-backed surface forms', () => {
+  const expected = {
+    '닦다': ['닥따', 'tak̚ t͈a', 'такта'],
+    '키읔': ['키윽', 'kʰi ɯk̚', 'кіик'],
+    '키읔과': ['키윽꽈', 'kʰi ɯk̚ k͈wa', 'кіикква'],
+    '옷': ['옫', 'ot̚', 'от'],
+    '웃다': ['욷따', 'uːt̚ t͈a', 'утта'],
+    '있다': ['읻따', 'it̚ t͈a', 'ітта'],
+    '젖': ['젇', 'tɕʌt̚', 'джот'],
+    '빚다': ['빋따', 'pit̚ t͈a', 'пітта'],
+    '꽃': ['꼳', 'k͈ot̚', 'кот'],
+    '쫓다': ['쫃따', 'tɕ͈ot̚ t͈a', 'чотта'],
+    '솥': ['솓', 'sot̚', 'сот'],
+    '뱉다': ['밷따', 'pɛːt̚ t͈a', 'петта'],
+    '앞': ['압', 'ap̚', 'ап'],
+    '덮다': ['덥따', 'tʌp̚ t͈a', 'топта'],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, surface, word);
+    assert.equal(row.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ukrainian, target, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
+});
