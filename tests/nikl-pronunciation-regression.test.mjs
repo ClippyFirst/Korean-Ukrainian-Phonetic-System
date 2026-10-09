@@ -263,7 +263,7 @@ test('official §12(4) H-deletion examples are sourced and marked provisional on
     많아: {surface:'마나', target:'мана', ipa:'ma na'},
     않은: {surface:'아는', target:'анин', ipa:'a nɯn'},
     닳아: {surface:'다라', target:'тара', ipa:'ta ɾa'},
-    싫어도: {surface:'시러도', target:'шілодо', ipa:'ɕi ɾʌ do'},
+    싫어도: {surface:'시러도', target:'шіродо', ipa:'ɕi ɾʌ do'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
