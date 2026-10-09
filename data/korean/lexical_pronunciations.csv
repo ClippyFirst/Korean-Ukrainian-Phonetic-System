@@ -21,3 +21,12 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 떡볶이,떡뽀끼,ток|по|кі,t͈ʌk̚|p͈o|k͈i,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397,"접미사 -이 앞에서 ㄲ 연음, ㄱ 계열 뒤 된소리되기; 표준 발음 [떡뽀끼]",high,model-selected
 옷이,오시,о|ші,o|ɕi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397,"홑받침 ㅅ의 연음; ㅅ의 i 환경 표면 실현",high,model-selected
 서울역,서울력,со|ул|лйок,sʌ|ul|ljʌk̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"표준 발음법 제29항 붙임 1: ㄹ 받침 뒤 첨가되는 ㄴ은 [ㄹ]로 발음; 서울역 [서울력]. 어휘 경계를 모르는 일반 규칙에 맡기지 않고 검증된 표면형을 고정",high,model-selected
+같이,가치,ка|чі,ka|tɕʰi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313399,제17항 구개음화; 표준 발음 [가치]. Ukrainian target requires phonetic review.,high,provisional
+굳이,구지,ку|джі,ku|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=2&qna_seq=313201,제17항 용례; 표준 발음 [구지]. Ukrainian target requires phonetic review.,high,provisional
+곧이듣다,고지듣따,ко|джі|дит|та,ko|dʑi|tɯt̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [고지듣따]; 제23항 된소리되기. Ukrainian target requires phonetic review.,high,provisional
+미닫이,미ː다지,мі|да|джі,miː|ta|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [미ː다지]; 장음 표시 유지. Ukrainian target requires phonetic review.,high,provisional
+땀받이,땀바지,там|ба|джі,t͈am|pa|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [땀바지]. Ukrainian target requires phonetic review.,high,provisional
+벼훑이,벼훌치,бйо|хул|чі,pjʌ|hul|tɕʰi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [벼훌치]; ㄾ의 ㄹ 유지와 ㅌ의 구개음화. Ukrainian target requires phonetic review.,high,provisional
+굳히다,구치다,ку|чі|да,ku|tɕʰi|da,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851,"제17항 붙임; ㄷ+ㅎ 축약 후 [ㅊ], 표준 발음 [구치다]. Ukrainian target requires phonetic review.",high,provisional
+닫히다,다치다,да|чі|да,ta|tɕʰi|da,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851,"제17항 붙임; ㄷ+ㅎ 축약 후 [ㅊ], 표준 발음 [다치다]. Ukrainian target requires phonetic review.",high,provisional
+묻히다,무치다,му|чі|да,mu|tɕʰi|da,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851,"제17항 붙임; ㄷ+ㅎ 축약 후 [ㅊ], 표준 발음 [무치다]. Ukrainian target requires phonetic review.",high,provisional
