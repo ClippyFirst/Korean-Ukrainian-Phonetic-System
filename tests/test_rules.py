@@ -17,7 +17,7 @@ def test_palatalization_requires_nikl_formal_morpheme_license_and_ㅣ():
 
     items,traces=apply_ordered_rules(
         parse_syllables("굳이"),["R007"],
-        rule_licenses={"R007:formal_morpheme_i"},
+        rule_licenses={"R007:formal_morpheme_i:굳이:굳>이"},
     )
     assert items[0].coda=="" and items[1].onset=="ㅈ"
     assert traces[0].changed
@@ -25,7 +25,7 @@ def test_palatalization_requires_nikl_formal_morpheme_license_and_ㅣ():
 def test_palatalization_does_not_fire_before_vowels_other_than_ㅣ():
     items,traces=apply_ordered_rules(
         parse_syllables("밭에"),["R007"],
-        rule_licenses={"R007:formal_morpheme_i"},
+        rule_licenses={"R007:formal_morpheme_i:밭에:밭>에"},
     )
     assert items[0].coda=="ㅌ" and items[1].onset=="ㅇ"
     assert not traces[0].changed
@@ -34,7 +34,7 @@ def test_dh_suffix_palatalization_is_sequential_r004_then_r007():
     for word, expected_onset in {"굳히다":"ㅊ","닫히다":"ㅊ","묻히다":"ㅊ"}.items():
         items,traces=apply_ordered_rules(
             parse_syllables(word),["R004","R007"],
-            rule_licenses={"R007:dh_suffix_hi"},
+            rule_licenses={f"R007:dh_suffix_hi:{word}:{word[:-2]}>{word[-2:]}"},
         )
         assert items[0].coda==""
         assert items[1].onset==expected_onset
@@ -288,7 +288,7 @@ def test_generic_liaison_does_not_preempt_section_17_palatalization():
     for word, expected in {"같이": ("", "ㅊ"), "굳이": ("", "ㅈ")}.items():
         items,traces=apply_ordered_rules(
             parse_syllables(word),
-            rule_licenses={"R007:formal_morpheme_i"},
+            rule_licenses={f"R007:formal_morpheme_i:{word}:{word[:-1]}>{word[-1:]}"},
         )
         assert (items[0].coda,items[1].onset)==expected
         assert any(t.rule_id=="R007" and t.changed for t in traces)
@@ -303,8 +303,25 @@ def test_section_17_license_survives_default_rule_order_after_h_sequence():
     for word in ("굳히다","닫히다","묻히다"):
         items,traces=apply_ordered_rules(
             parse_syllables(word),
-            rule_licenses={"R007:dh_suffix_hi"},
+            rule_licenses={f"R007:dh_suffix_hi:{word}:{word[:1]}>{word[1:2]}"},
         )
         assert items[1].onset=="ㅊ", word
         assert any(t.rule_id=="R004" and t.changed for t in traces)
         assert any(t.rule_id=="R007" and t.changed for t in traces)
+
+def test_section_17_license_is_exact_to_full_form_and_pair():
+    # The old category-only token must no longer license an arbitrary form.
+    items,traces=apply_ordered_rules(
+        parse_syllables("갇이"),["R007"],
+        rule_licenses={"R007:formal_morpheme_i"},
+    )
+    assert items[0].coda=="ㄷ" and items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
+
+    # A license for 굳이 cannot be reused for 같이.
+    items,traces=apply_ordered_rules(
+        parse_syllables("같이"),["R007"],
+        rule_licenses={"R007:formal_morpheme_i:굳이:굳>이"},
+    )
+    assert items[0].coda=="ㅌ" and items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
