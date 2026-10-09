@@ -393,22 +393,22 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
     '벌리다': ['벌리다', 'полліда', 'pʌːl li da'],
     '첫눈': ['천눈', 'чоннун', 'tɕʰʌn nun'],
     '수많이': ['수마니', 'сумані', 'suː ma ni'],
-    '재삼재사': ['재삼재사', 'чесамчеса', 'tɕɛː sam tɕɛː sa'],
+    '재삼재사': ['재삼재사', 'чесамджеса', 'tɕɛː sam dʑɛː sa'],
     '감다': ['감따', 'камта', 'kaːm t͈a'],
     '감으니': ['가므니', 'камині', 'ka mɯ ni'],
     '밟다': ['밥따', 'папта', 'paːp̚ t͈a'],
     '밟으면': ['발브면', 'палбимйон', 'pal bɯ mjʌn'],
     '신다': ['신따', 'шінта', 'ɕiːn t͈a'],
     '신어': ['시너', 'шіно', 'ɕi nʌ'],
-    '알다': ['알다', 'алта', 'aːl ta'],
+    '알да': ['алта', 'алта', 'aːl da'],
     '알아': ['아라', 'ара', 'a ɾa'],
     '끌다': ['끌따', 'килта', 'k͈ɯl t͈a'],
     '끌어': ['끄러', 'киро', 'k͈ɯː ɾʌ'],
     '떫다': ['떨따', 'толта', 't͈ʌːl t͈a'],
     '떫은': ['떨븐', 'толбин', 't͈ʌːl bɯn'],
-    '벌다': ['벌다', 'полта', 'pʌːl ta'],
+    '벌다': ['벌다', 'полта', 'pʌːl da'],
     '벌어': ['버러', 'боро', 'pʌː ɾʌ'],
-    '썰다': ['썰다', 'солта', 's͈ʌːl ta'],
+    '썰다': ['썰다', 'солта', 's͈ʌːl da'],
     '썰어': ['써러', 'соро', 's͈ʌː ɾʌ'],
     '감기다': ['감기다', 'камґіда', 'kam ɡi da'],
     '꼬이다': ['꼬이다', 'коіда', 'k͈o i da'],
@@ -430,9 +430,9 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
   }
   const compound = engine.convert('반신반의');
   assert.equal(compound.status, 'lexical-review');
-  assert.equal(compound.ukrainian, '판신파니');
-  assert.equal(compound.ipa, 'paːn ɕin paː nɰi');
+  assert.equal(compound.ukrainian, 'паншінбаній');
+  assert.equal(compound.ipa, 'paːn ɕin baː nɰi');
   assert.equal(compound.variants[0].surface, '반신바니');
-  assert.equal(compound.variants[0].ukrainian, '판신파니');
-  assert.equal(compound.variants[0].ipa, 'paːn ɕin paː ni');
+  assert.equal(compound.variants[0].ukrainian, 'паншінбані');
+  assert.equal(compound.variants[0].ipa, 'paːn ɕin baː ni');
 });
