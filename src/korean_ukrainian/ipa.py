@@ -17,8 +17,13 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False)->list[
     if c=="ㅎ": return ["h"]
     if c in LENIS:
         if phonemic: return [CONSONANT_PHONEMES[c].strip("/")]
-        if c in {"ㄱ","ㄷ","ㅂ"} and index>0 and items[index-1].coda=="":
-            return [{"ㄱ":"ɡ","ㄷ":"d","ㅂ":"b"}[c]]
+        if c in {"ㄱ","ㄷ","ㅂ","ㅈ"} and index>0:
+            previous=items[index-1]
+            # Broad surface voicing of lenis stops after a vowel or sonorant.
+            # ㅈ is represented as [dʑ] in the same environment.
+            if previous.coda=="" or previous.coda in {"ㄴ","ㄹ","ㅁ","ㅇ"}:
+                voiced={"ㄱ":"ɡ","ㄷ":"d","ㅂ":"b","ㅈ":"dʑ"}
+                return [voiced[c]]
         return [LENIS[c]]
     return [CONSONANT_PHONEMES[c].strip("/")]
 
