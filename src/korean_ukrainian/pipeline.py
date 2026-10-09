@@ -67,11 +67,35 @@ def phonologize_korean(text):
     items=parse_syllables(text)
     return {"input":text,"syllables":[x.to_dict() for x in items],"analysis_status":"canonical_structural_representation"}
 
+def _apply_lexical_ipa(items,ipa_result):
+    """Use the sourced lexical IPA for matched forms (including length/variant marks)."""
+    syllable_ipa=list(ipa_result["syllables"])
+    i=0
+    while i<len(items):
+        j=i+1
+        while j<len(items) and items[j-1].boundary_after!="word":
+            j+=1
+        word="".join(s.text for s in items[i:j])
+        entry=LEXICAL_PRONUNCIATIONS.get(word)
+        if entry:
+            values=entry.get("ipa_syllables","").split("|")
+            if len(values)==j-i and all(values):
+                syllable_ipa[i:j]=values
+        i=j
+    rendered=syllable_ipa[0] if syllable_ipa else ""
+    for i in range(1,len(syllable_ipa)):
+        separator=" " if items[i-1].boundary_after=="word" else "."
+        rendered+=separator+syllable_ipa[i]
+    ipa_result["syllables"]=syllable_ipa
+    ipa_result["ipa"]=rendered
+    return ipa_result
+
 def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None):
     items=parse_syllables(text)
     items,traces=apply_ordered_rules(items,rule_ids,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses)
     lexical_traces=_apply_lexical_pronunciations(items)
-    return {"input":text,"surface_syllables":[x.to_dict() for x in items],"rules":[x.to_dict() for x in traces]+lexical_traces,"ipa":realize_syllables(items,level=ipa_level)}
+    ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level))
+    return {"input":text,"surface_syllables":[x.to_dict() for x in items],"rules":[x.to_dict() for x in traces]+lexical_traces,"ipa":ipa}
 
 def _feature_vector_for_ipa(ipa:str)->dict:
     consonants={"p":("0","0","1","0","0","0","0","0"),"p͈":("0","0","1","0","0","0","0","0"),"pʰ":("0","0","1","0","0","0","0","1"),"t":("0","1","0","0","0","0","0","0"),"t͈":("0","1","0","0","0","0","0","0"),"tʰ":("0","1","0","0","0","0","0","1"),"k":("0","0","0","1","0","0","0","0"),"k͈":("0","0","0","1","0","0","0","0"),"kʰ":("0","0","0","1","0","0","0","1"),"tɕ":("0","1","0","0","0","1","0","0"),"tɕ͈":("0","1","0","0","0","1","0","0"),"tɕʰ":("0","1","0","0","0","1","0","1"),"s":("0","1","0","0","1","0","0","0"),"s͈":("0","1","0","0","1","0","0","0"),"m":("1","0","1","0","0","1","0","0"),"n":("1","1","0","0","0","1","0","0"),"ŋ":("1","0","0","1","0","1","0","0"),"ɾ":("1","1","0","0","1","0","1","0"),"l":("1","1","0","0","1","0","0","0"),"h":("0","0","0","0","1","0","0","0")}
