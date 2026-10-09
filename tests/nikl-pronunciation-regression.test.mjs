@@ -358,3 +358,27 @@ test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
     assert.equal(result.variants[0].status, 'lexical-review', word);
   }
 });
+
+test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings', () => {
+  const expected = {
+    '주의': {surface:'주의', target:'чуий', ipa:'tɕu ɰi', alternateSurface:'주이', alternateTarget:'чуі', alternateIpa:'tɕu i'},
+    '협의': {surface:'혀븨', target:'хьобий', ipa:'hjʌ bɰi', alternateSurface:'혀비', alternateTarget:'хьобі', alternateIpa:'hjʌ bi'},
+    '우리의': {surface:'우리의', target:'уріий', ipa:'u ɾi ɰi', alternateSurface:'우리에', alternateTarget:'уріе', alternateIpa:'u ɾi e'},
+    '강의의': {surface:'강의의', target:'канийий', ipa:'kaːŋ ɰi ɰi', alternateSurface:'강이에', alternateTarget:'каніе', alternateIpa:'kaːŋ i e'},
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, values] of Object.entries(expected)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, values.surface, word);
+    assert.equal(row.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.variants.length, 1, word);
+    assert.equal(result.variants[0].surface, values.alternateSurface, word);
+    assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
+    assert.equal(result.variants[0].ipa, values.alternateIpa, word);
+  }
+});
