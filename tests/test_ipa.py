@@ -25,3 +25,12 @@ def test_complex_coda_components_are_explicit_in_phonemic_ipa():
     assert split_coda("ㄶ") == ("ㄴ", "ㅎ")
     result = realize_syllables(parse_syllables("넋"), level="phonemic")["ipa"]
     assert "ks" in result
+
+
+
+def test_consonant_onset_ui_is_surface_i_but_preserves_phonemic_form():
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.ipa import realize_syllables
+    items = parse_syllables("희망")
+    assert realize_syllables(items, level="broad")["ipa"] == "hi.maŋ"
+    assert realize_syllables(items, level="phonemic")["ipa"].startswith("hɰi")
