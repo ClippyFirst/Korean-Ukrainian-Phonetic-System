@@ -28,6 +28,11 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False)->list[
     return [CONSONANT_PHONEMES[c].strip("/")]
 
 def nucleus_ipa(s:Syllable,*,phonemic=False)->list[str]:
+    # Korean standard pronunciation: ㅢ in a syllable with a consonant
+    # onset is realized as [i]. Keep the underlying /ɰi/ at the phonemic
+    # level; ㅇ+ㅢ remains lexically/morphologically ambiguous.
+    if s.nucleus=="ㅢ" and s.onset!="ㅇ" and not phonemic:
+        return ["i"]
     return [VOWEL_IPA[s.nucleus][0]]
 
 def coda_ipa(coda:str,*,phonemic=False)->list[str]:
