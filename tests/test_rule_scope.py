@@ -20,23 +20,24 @@ def test_stem_lb_lt_fortition_requires_license():
     items=parse_syllables("넓게")
     apply_ordered_rules(items, rule_ids=["R011"])
     assert items[1].onset=="ㄱ"
-    items=_run("넓게","R011","R011:stem_lb_lt+suffix")
+    items=_run("넓게","R011","R011:stem_lb_lt+suffix:넓게:넓>게")
     assert items[1].onset=="ㄲ"
 
 def test_sino_korean_l_fortition_requires_license():
-    items=_run("갈등","R012","R012:sino_ryeon")
+    items=_run("갈등","R012","R012:sino_ryeon:갈등:갈>등")
     assert items[1].onset=="ㄸ"
 
 def test_adnominal_l_fortition_requires_license():
-    items=_run("할것","R013","R013:adnominal_l")
+    items=parse_syllables("할 것")
+    apply_ordered_rules(items,rule_ids=["R013"],boundary_mode="phrase",rule_licenses={"R013:adnominal_l:할 것:할>것"})
     assert items[1].onset=="ㄲ"
 
 def test_compound_fortition_requires_license():
-    items=parse_syllables("국밥")
+    items=parse_syllables("문고리")
     apply_ordered_rules(items, rule_ids=["R014"])
-    assert items[1].onset=="ㅂ"
-    items=_run("국밥","R014","R014:compound")
-    assert items[1].onset=="ㅃ"
+    assert items[1].onset=="ㄱ"
+    items=_run("문고리","R014","R014:compound:문고리:문>고")
+    assert items[1].onset=="ㄲ"
 
 def test_saisiot_requires_explicit_license():
     items=parse_syllables("냇가")

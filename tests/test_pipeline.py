@@ -54,7 +54,7 @@ def test_morphological_fortition_requires_explicit_license():
     assert items[1].onset == "ㄱ"
     items = parse_syllables("신고")
     apply_ordered_rules(items, rule_ids=["R010"], boundary_mode="same_word",
-                        rule_licenses={"R010:stem_n_m+suffix"})
+                        rule_licenses={"R010:stem_n_m+suffix:신고:신>고"})
     assert items[1].onset == "ㄲ"
 
 

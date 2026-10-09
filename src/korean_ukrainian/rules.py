@@ -290,19 +290,28 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             b.onset="ㄹ" if FINAL_REPRESENTATIVE.get(a.coda,a.coda)=="ㄹ" else "ㄴ"
             changed=True
     elif rule_id in {"R010","R011","R012","R013","R014"}:
-        required={
-            "R010":"R010:stem_n_m+suffix",
-            "R011":"R011:stem_lb_lt+suffix",
-            "R012":"R012:sino_ryeon",
-            "R013":"R013:adnominal_l",
-            "R014":"R014:compound",
+        # These rules depend on morphology or lexical class, not just the
+        # consonant sequence. Require a full-form + adjacent-pair license.
+        scope={
+            "R010":"stem_n_m+suffix",
+            "R011":"stem_lb_lt+suffix",
+            "R012":"sino_ryeon",
+            "R013":"adnominal_l",
+            "R014":"compound",
         }[rule_id]
-        if required not in licenses:
+        exact_licenses={x for x in licenses if x.startswith(rule_id+":")}
+        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
+        exact_pairs=set()
+        for license in exact_licenses:
+            parts=license.split(":",3)
+            if len(parts)==4 and parts[1]==scope and parts[2]==full_form:
+                exact_pairs.add(parts[3])
+        if not exact_pairs:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
-            if not _eligible(a,b,boundary_mode=boundary_mode): continue
+            if not _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=(rule_id=="R013")): continue
             if b.onset not in PLAIN_TO_FORTIS: continue
             applies = (
                 (rule_id=="R010" and FINAL_REPRESENTATIVE.get(a.coda,a.coda) in {"ㄴ","ㅁ"}) or
@@ -311,8 +320,14 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 (rule_id=="R013" and a.coda=="ㄹ") or
                 (rule_id=="R014" and bool(a.coda))
             )
-            if applies:
-                b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
+            if not applies: continue
+            pair=f"{a.text}>{b.text}"
+            if pair not in exact_pairs:
+                conditional_disabled=True
+                continue
+            b.onset=PLAIN_TO_FORTIS[b.onset]
+            changed=True
+            license_context=f"{rule_id}:{scope}:{full_form}:{pair}"
     elif rule_id=="R016":
         # §11's ㄺ-before-ㄱ exception is morphology-conditioned. A category
         # token alone can incorrectly license unrelated words (e.g. 닭고기).
