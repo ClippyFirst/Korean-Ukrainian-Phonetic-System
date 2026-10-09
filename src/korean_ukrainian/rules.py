@@ -31,6 +31,7 @@ RULE_META={
 "R013":("adnominal-l-fortition","NIKL §27","high"),
 "R014":("compound-fortition","NIKL §28","high"),
 "R015":("saisiot-pronunciation","NIKL §30","high"),
+"R016":("verbal-stem-rieul-giyeok-exception","NIKL §11; lexical/morphological conditioning","high"),
 }
 
 @dataclass
@@ -185,6 +186,21 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             )
             if applies:
                 b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
+    elif rule_id=="R016":
+        required="R016:verb_stem_rieul_giyeok_suffix"
+        if required not in licenses:
+            name,source,confidence=RULE_META[rule_id]
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
+        for i in range(len(items)-1):
+            a,b=items[i],items[i+1]
+            if not _eligible(a,b,boundary_mode=boundary_mode): continue
+            if a.coda=="ㄺ" and b.onset=="ㄱ":
+                # This exception is limited to a morphologically identified
+                # verbal stem/derivative before a ㄱ-initial ending. It must
+                # not apply to noun 닭고기 [닥꼬기].
+                a.coda="ㄹ"
+                b.onset="ㄲ"
+                changed=True
     elif rule_id=="R015":
         if license_context!="R015:saisiot":
             name,source,confidence=RULE_META[rule_id]
@@ -200,10 +216,10 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             elif b.onset=="ㅇ" and b.nucleus=="ㅣ":
                 a.coda="ㄴ"; b.onset="ㄴ"; changed=True
     name,source,confidence=RULE_META[rule_id]
-    status="established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015"} else "conditional-nochange"
+    status="established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015","R016"} else "conditional-nochange"
     return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,source,license_context)
 
 def apply_ordered_rules(items:list[Syllable],rule_ids=None,*,boundary_mode="same_word",n_insertion_licensed=False,rule_licenses=None):
-    ids=rule_ids or ["R009","R002","R003","R004","R005","R006","R007","R010","R011","R012","R013","R014","R015","R008","R001"]
+    ids=rule_ids or ["R009","R002","R003","R004","R005","R006","R007","R010","R011","R012","R013","R014","R015","R016","R008","R001"]
     if boundary_mode not in {"unknown","same_word","morpheme","word","phrase"}: raise ValueError("invalid boundary_mode")
     return items,[apply_rule(items,r,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses) for r in ids]
