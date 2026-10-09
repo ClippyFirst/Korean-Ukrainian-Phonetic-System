@@ -61,7 +61,9 @@ The regression suite **tests/nikl-pronunciation-regression.test.mjs** covers:
 - 같이 → palatalization in the ㅣ environment only.
 - 굳히다 → sequential §12 + §17 result [구치다].
 
-The browser adapter now requires exact sourced entries for §17 cases when morphology cannot be inferred. For unlisted ㄷ/ㅌ/ㄾ + 이-looking candidates it emits an explicit unresolved marker instead of guessing a formal-morpheme boundary. The Python research rule accepts only explicit licenses (`R007:formal_morpheme_i` or `R007:dh_suffix_hi`) and no longer fires for unlicensed vowel sequences. §29 likewise requires a full-form/pair-specific license (`R009:word:한여름:한>여`, or `R009:phrase:무슨 일:슨>일`) instead of a global boolean.\n\nThe expected Korean surface forms are normative evidence. The Ukrainian spellings asserted by tests are model outputs and must not be described as officially standardized Ukrainian forms.
+The browser adapter now requires exact sourced entries for §17 cases when morphology cannot be inferred. For unlisted ㄷ/ㅌ/ㄾ + 이-looking candidates it emits an explicit unresolved marker instead of guessing a formal-morpheme boundary. The Python research rule accepts only explicit licenses (`R007:formal_morpheme_i` or `R007:dh_suffix_hi`) and no longer fires for unlicensed vowel sequences. §29 likewise requires a full-form/pair-specific license (`R009:word:한여름:한>여`, or `R009:phrase:무슨 일:슨>일`) instead of a global boolean.
+
+The expected Korean surface forms are normative evidence. The Ukrainian spellings asserted by tests are model outputs and must not be described as officially standardized Ukrainian forms.
 
 ## Rule-ordering requirements
 
@@ -77,10 +79,13 @@ The browser adapter now requires exact sourced entries for §17 cases when morph
 
 - NIKL, *표준 발음법*, official full text: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 - §5 / ㅢ variants, NIKL Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=278827
-- §17 / official examples and the ㄷ + suffix -히 provision, NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851\n- §17 / 굳이 [구지], NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=2&qna_seq=313201\n- §17 / 밭이 vs 밭에, NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=281511
+- §17 / official examples and the ㄷ + suffix -히 provision, NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851
+- §17 / 굳이 [구지], NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=2&qna_seq=313201
+- §17 / 밭이 vs 밭에, NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=281511
 - §18 / nasal assimilation, NIKL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009
 - §19 / ㄹ → ㄴ exceptions and examples, NIKL standard text above; example 의견란 [의ː견난] is also retained in the lexical pronunciation data.
-- §29 / official rule and commentary on the variability of ㄴ insertion, NIKL: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002\n- §29 / compound examples and 서울역 [서울력], NIKL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219
+- §29 / official rule and commentary on the variability of ㄴ insertion, NIKL: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+- §29 / compound examples and 서울역 [서울력], NIKL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219
 - NIKL lists 서울역 [서울력] directly in §29, 붙임 1 of the official standard text.
 
 ## Release gate
