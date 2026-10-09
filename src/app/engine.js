@@ -233,6 +233,17 @@ function applyContextualRules(units){
       rules.push('liquid-assimilation');
     }
 
+    // R016 / §11: ㄺ before ㄱ is morphologically ambiguous. Known forms
+    // are resolved by exact lexical entries; do not let generic §23
+    // fortition silently choose the noun-like coda simplification.
+    if(a.coda==='ㄺ'&&b.onset==='ㄱ'){
+      a.__rieulGiyeokUnlicensed='left';
+      b.__rieulGiyeokUnlicensed='right';
+      rules.push('rieul-giyeok-exception-requires-morphology');
+      nextRules.push('rieul-giyeok-exception-requires-morphology');
+      continue;
+    }
+
     // R008: practical tensification. The project deliberately does not
     // encode fortisness as doubled Ukrainian graphemes.
     const fortisRep=representative(a.coda);
@@ -395,6 +406,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     }
     if(u.__substantiveLiaisonUnlicensed){
       if(u.__substantiveLiaisonUnlicensed==='left')issues.push(u.char+': coda representative changes under §15 before ㅏ/ㅓ/ㅗ/ㅜ/ㅟ, unlike formal-morpheme liaison; add a sourced lexical pronunciation entry.');
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='';
+      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
+      continue;
+    }
+    if(u.__rieulGiyeokUnlicensed){
+      if(u.__rieulGiyeokUnlicensed==='left')issues.push(u.char+': written ㄺ before ㄱ may follow the §11 stem exception or general coda simplification; add a sourced lexical pronunciation entry.');
       output[i]='⟦'+u.char+'⟧';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
