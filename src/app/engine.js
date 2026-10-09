@@ -280,13 +280,17 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     // ㅇ+ㅢ remains unresolved because lexical position and particle
     // function can license different readings ([의], [이], [에]).
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
+    const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
-    let status=applied.length||contextualUi?'contextual':'canonical';
-    const vowel=mapVowel(map,vowelJamo);
+    let status=applied.length||contextualUi||defaultUi?'contextual':'canonical';
+    // Standard Pronunciation Rules §5: ㅢ is [ɰi] by default. A ㅢ syllable
+    // with a consonant onset is [i]; non-initial 의 may also be [i], and the
+    // particle 의 may also be [e]. Since this browser adapter has no full
+    // morphological parser, render the normative default [ɰi] instead of
+    // marking every ㅇ+ㅢ as unresolved. Alternatives remain context-sensitive.
+    const vowel=defaultUi?'ий':mapVowel(map,vowelJamo);
     if(!vowel){
-      const message=u.vowel==='ㅢ'
-        ? u.char+': ㅇ+ㅢ needs lexical/grammatical context (initial 의, non-initial 의, or the particle 의).'
-        : u.char+': no Ukrainian vowel target is available.';
+      const message=u.char+': no Ukrainian vowel target is available.';
       issues.push(message);
       output[i]='⟦'+u.char+'⟧';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
@@ -307,6 +311,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis,liquid);
     const traceRules=[...applied];
     if(contextualUi)traceRules.push('vowel-ui-to-i');
+    if(defaultUi)traceRules.push('vowel-ui-default-ɰi');
     if(voiced)traceRules.push('contextual-voicing');
     if(fortis)traceRules.push('tensification');
     if(liquid&&!traceRules.includes('liquid-assimilation'))traceRules.push('liquid-assimilation');
@@ -318,16 +323,17 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     output[i]=out;
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
-    let unitIpa=(o?.ipa||'')+(v?.ipa||'')+(c?.ipa||'');
+    const vowelIpa=defaultUi?'ɰi':(v?.ipa||'');
+    let unitIpa=(o?.ipa||'')+vowelIpa+(c?.ipa||'');
     if(liquid&&onset==='ㄹ')unitIpa='l'+(v?.ipa||'')+(c?.ipa||'');
     // The IPA column is deliberately broad/analytical. Reflect the same
     // contextual onset decision used for the Ukrainian target when possible.
     if(voiced){
       const voicedIpa={ 'ㄱ':'ɡ','ㄷ':'d','ㅂ':'b','ㅈ':'dʑ' }[onset];
-      if(voicedIpa)unitIpa=voicedIpa+(v?.ipa||'')+(c?.ipa||'');
+      if(voicedIpa)unitIpa=voicedIpa+vowelIpa+(c?.ipa||'');
     }else if(fortis){
       const fortisIpa={ 'ㄱ':'k͈','ㄷ':'t͈','ㅂ':'p͈','ㅅ':'s͈','ㅈ':'tɕ͈' }[onset];
-      if(fortisIpa)unitIpa=fortisIpa+(v?.ipa||'')+(c?.ipa||'');
+      if(fortisIpa)unitIpa=fortisIpa+vowelIpa+(c?.ipa||'');
     }
     ipa[i]=unitIpa;
     trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:out,ipa:unitIpa};
