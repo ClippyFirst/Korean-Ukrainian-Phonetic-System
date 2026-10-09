@@ -57,3 +57,12 @@ test('ㄷ+히 follows aspiration and then palatalization (§12 + §17)', () => {
   assert.match(result.ipa, /ku tɕʰi da/);
   assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration-plus-palatalization')));
 });
+
+test('the complete official institution name preserves sequential §19, §18 and §23 rules', () => {
+  const result = engine.convert('국립국어원');
+  assert.equal(result.ukrainian, 'кунніпкуґовон');
+  assert.equal(result.ipa, 'kuŋ nip̚ k͈u ɡʌ wʌn');
+  assert.ok(result.trace.some((item) => item.rules.includes('liquid-to-nasal-before-obstruent')));
+  assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')));
+  assert.ok(result.trace.some((item) => item.rules.includes('tensification')));
+});
