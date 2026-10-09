@@ -48,3 +48,10 @@ def test_balm_lexical_exception_before_consonant():
 def test_neolp_compound_lexical_exception():
     items,_=apply_ordered_rules(parse_syllables("넓죽하다"),["R009","R002","R003","R004","R005","R006","R007","R010","R011","R012","R013","R014","R015","R008","R001"])
     assert items[0].coda=="ㅂ" and items[1].onset=="ㅉ"
+
+
+def test_complex_h_coda_aspiration_retains_nasal_or_liquid():
+    for word, expected_coda, expected_onset in {"많다": ("ㄴ", "ㅌ"), "싫다": ("ㄹ", "ㅌ")}.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R004"])
+        assert (items[0].coda, items[1].onset) == (expected_coda, expected_onset)
+        assert traces[0].changed
