@@ -68,7 +68,9 @@ def phonologize_korean(text):
     return {"input":text,"syllables":[x.to_dict() for x in items],"analysis_status":"canonical_structural_representation"}
 
 def _apply_lexical_ipa(items,ipa_result):
-    """Use the sourced lexical IPA for matched forms (including length/variant marks)."""
+    """Use sourced surface IPA for matched forms without overriding phonemic mode."""
+    if ipa_result.get("level")!="broad":
+        return ipa_result
     syllable_ipa=list(ipa_result["syllables"])
     i=0
     while i<len(items):
