@@ -627,3 +627,40 @@ test('NIKL §18 cross-word examples nasalize across connected phrase boundaries'
     assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')), phrase);
   }
 });
+
+test('NIKL §11 generic complex-coda examples use the general rules', () => {
+  // Official forms: 닭[닥], 흙과[흑꽈], 늙지[늑찌], 읊고[읍꼬], 읊다[읍따].
+  const expected = {
+    '닭': ['tak̚', 'так'],
+    '흙과': ['hɯk̚ k͈wa', 'хикква'],
+    '늙지': ['nɯk̚ tɕ͈i', 'никчі'],
+    '읊고': ['ɯp̚ k͈o', 'ипко'],
+    '읊다': ['ɯp̚ t͈a', 'ипта'],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [ipa, target]] of Object.entries(expected)) {
+    assert.ok(!rows.some((item) => item.input === word), word);
+    const result = engine.convert(word);
+    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ukrainian, target, word);
+    assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
+});
+
+test('NIKL §11 lexical length and morphology exceptions preserve official readings', () => {
+  const expected = {
+    '삶': ['삼', 'saːm', 'сам'],
+    '젊다': ['점따', 'tɕʌːm t͈a', 'чомта'],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, surface, word);
+    assert.equal(row.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ukrainian, target, word);
+  }
+});
