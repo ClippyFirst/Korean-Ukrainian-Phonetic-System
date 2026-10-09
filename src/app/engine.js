@@ -217,10 +217,19 @@ function convertText(text,map){
     const applied=rules[i];
     const original=originalUnits[i];
     analysis[i]=original.char+' = '+original.onset+'+'+original.vowel+(original.coda?'+'+original.coda:'');
-    let status=applied.length?'contextual':'canonical';
-    const vowel=mapVowel(map,u.vowel);
+    // Standard Korean pronunciation: ㅢ in a syllable with an
+    // actual consonant onset is realized as [i] (e.g. 희망 [히망]).
+    // ㅇ+ㅢ remains unresolved because lexical position and particle
+    // function can license different readings ([의], [이], [에]).
+    const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
+    const vowelJamo=contextualUi?'ㅣ':u.vowel;
+    let status=applied.length||contextualUi?'contextual':'canonical';
+    const vowel=mapVowel(map,vowelJamo);
     if(!vowel){
-      issues.push(u.char+': ㅢ or another context-dependent vowel needs contextual resolution.');
+      const message=u.vowel==='ㅢ'
+        ? u.char+': ㅇ+ㅢ needs lexical/grammatical context (initial 의, non-initial 의, or the particle 의).'
+        : u.char+': no Ukrainian vowel target is available.';
+      issues.push(message);
       output[i]='⟦'+u.char+'⟧';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
@@ -237,6 +246,7 @@ function convertText(text,map){
     const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
     const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis,liquid);
     const traceRules=[...applied];
+    if(contextualUi)traceRules.push('vowel-ui-to-i');
     if(voiced)traceRules.push('contextual-voicing');
     if(fortis)traceRules.push('tensification');
     if(liquid&&!traceRules.includes('liquid-assimilation'))traceRules.push('liquid-assimilation');
@@ -247,7 +257,7 @@ function convertText(text,map){
     const out=outOnset+vowel+outCoda;
     output[i]=out;
 
-    const o=get(map,'onset',onset),v=get(map,'vowel',u.vowel),c=u.coda?get(map,'coda',u.coda):null;
+    const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
     let unitIpa=(o?.ipa||'')+(v?.ipa||'')+(c?.ipa||'');
     if(liquid&&onset==='ㄹ')unitIpa='l'+(v?.ipa||'')+(c?.ipa||'');
     // The IPA column is deliberately broad/analytical. Reflect the same
