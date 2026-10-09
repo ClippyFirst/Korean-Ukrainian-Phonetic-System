@@ -31,7 +31,7 @@ The browser engine is intentionally not a full Korean morphological parser. Rule
 | §12 | ㅎ: aspiration, deletion, nasal realization, and interactions with ㄶ/ㅀ. | Core aspiration/deletion implemented; lexical and morphological exceptions remain. Added the sequence ㄷ+히 → ㅌ+ㅣ → ㅊ+ㅣ for 굳히다/닫히다/묻히다. |
 | §13 | Single coda liaison before a vowel-initial formal morpheme. | Generic liaison exists, but it cannot infer every morpheme boundary. Exact lexical overrides take precedence. |
 | §14 | Complex-coda liaison before a vowel-initial formal morpheme; second member moves, and ㅅ surfaces as fortis ㅆ. | Core component logic implemented; exact stem/morpheme exceptions remain lexical. |
-| §15 | Coda before a vowel-initial substantive morpheme beginning with ㅏ/ㅓ/ㅗ/ㅜ/ㅟ: neutralize to the representative coda before resyllabification; only one consonant of a complex coda moves. 맛있다/멋있다 also have listed variants. | Added sourced exact-form entries for 맛없다 [마덥따], 겉옷 [거돋], 헛웃음 [허두슴], 값어치 [가버치], and 젖어미 [저더미]. These are lexical evidence, not a general morphology detector. The alternate readings of 맛있다/멋있다 still need an explicit variant-capable output model. |
+| §15 | Coda before a vowel-initial substantive morpheme beginning with ㅏ/ㅓ/ㅗ/ㅜ/ㅟ: neutralize to the representative coda before resyllabification; only one consonant of a complex coda moves. 맛있다/멋있다 also have listed variants. | Added sourced exact-form entries for 맛없다 [마덥따], 겉옷 [거돋], 헛웃음 [허두슴], 값어치 [가버치], and 젖어미 [저더미]. Added explicit alternate-reading fields and a UI variant panel for 맛있다 [마딛따]/[마싣따] and 멋있다 [머딛따]/[머싣따]. These are lexical evidence, not a general morphology detector; Ukrainian targets remain provisional. |
 | §16 | Special pronunciation of Korean consonant-letter names when particles/endings attach. | Not generalized in the browser engine; letter names are lexical forms, not ordinary Jamo sequences. |
 | §17 | Palatalization of ㄷ/ㅌ(ㄾ) before ㅣ-initial formal morphemes; ㄷ+히 also yields 치. | Fixed over-broad trigger: palatalization is not a general rule before every j-glide vowel. The Python research rule requires an explicit §17 formal-morpheme or -히 license; the browser uses sourced exact-form entries and withholds unknown spelling-only candidates. The official [붙임] sequence ㄷ+ㅎ → ㅌ followed by ㅣ → ㅊ is documented and tested separately. |
 | §18 | Nasal assimilation: coda obstruents surface as ㅇ/ㄴ/ㅁ before ㄴ/ㅁ. | Implemented after coda neutralization/simplification. The trace now marks the change on both affected syllables. |
@@ -57,6 +57,7 @@ The regression suite **tests/nikl-pronunciation-regression.test.mjs** covers:
 - 국립국어원 → [궁님꾸거원], combining §19, §18, and §23 in the correct order.
 - 서울역 → [서울력], via a sourced lexical override implementing §29's ㄹ + inserted ㄴ → ㄹ.
 - §15 exact lexical forms: 맛없다 [마덥따], 겉옷 [거돋], 헛웃음 [허두슴], 값어치 [가버치], 젖어미 [저더미]; each output is marked `lexical-review` because the Ukrainian target is provisional.
+- §15 variants: 맛있다 [마딛따] with [마싣따] as an allowed reading, and 멋있다 [머딛따] with [머싣따] as an allowed reading. The browser exposes the alternative Korean surface form, IPA, and provisional Ukrainian target rather than silently collapsing the variant.
 - 한국어의 → default [ɰi] instead of an unresolved placeholder.
 - 희망 → ㅢ with consonant onset [i].
 - 같이 → palatalization in the ㅣ environment only.
@@ -84,7 +85,7 @@ The expected Korean surface forms are normative evidence. The Ukrainian spelling
 - §17 / 굳이 [구지], NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=2&qna_seq=313201
 - §17 / 밭이 vs 밭에, NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=281511
 - §18 / nasal assimilation, NIKL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009
-- §15 / substantive-morpheme liaison and complex-coda exception examples (맛없다 [마덥따], 겉옷 [거돋], 헛웃음 [허두슴], 값어치 [가버치], 젖어미 [저더미]), NIKL standard text above.
+- §15 / substantive-morpheme liaison and complex-coda exception examples (맛없다 [마덥따], 겉옷 [거돋], 헛웃음 [허두슴], 값어치 [가버치], 젖어미 [저더미]) and permitted readings of 맛있다/멋있다, NIKL standard text above.
 - §19 / ㄹ → ㄴ exceptions and examples, NIKL standard text above; example 의견란 [의ː견난] is also retained in the lexical pronunciation data.
 - §29 / official rule and commentary on the variability of ㄴ insertion, NIKL: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 - §29 / compound examples and 서울역 [서울력], NIKL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219
