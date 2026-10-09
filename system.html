@@ -91,8 +91,37 @@
     <div class="doc-label">08</div><div class="doc-content"><p class="section-kicker">Обмеження</p><h2>Чого цей сервіс не стверджує</h2><ul class="limits"><li>Не є офіційним українським державним стандартом.</li><li>Не є повним lexical corpus Korean pronunciation engine.</li><li>Не генерує вигадані narrow IPA або словникові атестації.</li><li>11 172 Hangul blocks — це Unicode-комбінаторний інвентар, а не словник.</li><li>Морфологічно ліцензовані правила не активуються без потрібного контексту.</li></ul></div>
   </section>
 
+  <section class="doc-section" id="lexical-edge-cases">
+    <div class="doc-label">09</div><div class="doc-content"><p class="section-kicker">Перевірка на складних випадках</p><h2>Словникова вимова — не механічна таблиця</h2>
+      <p>Деякі вимови залежать від морфемної будови, лексикалізованих винятків або взаємодії кількох процесів. Для них сервіс використовує окремі словникові записи, а не намагається вивести все з останньої літери складу. Корейська форма й IPA спираються на джерела Національного інституту корейської мови; українські форми нижче — авторські модельні рішення, а не затверджений стандарт.</p>
+      <div class="decision-table">
+        <div class="table-row table-head"><span>Вхід</span><span>Нормативна вимова</span><span>Практично українською</span><span>Що перевіряємо</span></div>
+        <div class="table-row"><b>값없다</b><span>[가법따]</span><strong>кабопта</strong><span>ㅄ перед 실질 형태소, нейтралізація й 된소리되기</span></div>
+        <div class="table-row"><b>의견란</b><span>[의ː견난]</span><strong>ийґйоннан*</strong><span>лексичний виняток ㄹ → ㄴ</span></div>
+        <div class="table-row"><b>읽고 / 읽다</b><span>[일꼬] / [익따]</span><strong>ілко / ікта</strong><span>ㄺ у дієслівній основі перед різними закінченнями</span></div>
+        <div class="table-row"><b>맑게 / 맑다</b><span>[말께] / [막따]</span><strong>малке / макта</strong><span>морфологічно обумовлене читання ㄺ</span></div>
+        <div class="table-row"><b>닭고기</b><span>[닥꼬기]</span><strong>таккогі</strong><span>іменниковий 닭- не прирівнюється до дієслівної основи</span></div>
+        <div class="table-row"><b>꽃잎</b><span>[꼰닙]</span><strong>конніп</strong><span>ㄴ-вставка та назалізація</span></div>
+        <div class="table-row"><b>밭이 / 밭을</b><span>[바치] / [바틀]</span><strong>пачі / патил</strong><span>палаталізація проти звичайного перенесення кінцевого приголосного</span></div>
+        <div class="table-row"><b>넓네</b><span>[널레]</span><strong>нольле</strong><span>спрощення ㄼ та асиміляція ㄴ+ㄹ</span></div>
+        <div class="table-row"><b>없다 / 없는</b><span>[업ː따] / [엄ː는]</span><strong>опта / омнин</strong><span>довгота голосного, спрощення та назалізація</span></div>
+        <div class="table-row"><b>국물</b><span>[궁물]</span><strong>кунмул</strong><span>назалізація кінцевого ㄱ перед ㅁ</span></div>
+        <div class="table-row"><b>떡볶이</b><span>[떡뽀끼]</span><strong>токпокі</strong><span>словникова форма, 연음 та 된소리되기</span></div>
+      </div>
+      <p class="small-note">* Для 의견란 український результат позначено як попередній: корейська вимова нормативно підтверджена, але конкретне українське рішення потребує окремої фонетичної та редакторської оцінки.</p>
+      <div class="repo-links">
+        <a href="https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=330620">NIKL: 값없다 ↗</a>
+        <a href="https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=8505">NIKL: 의견란 ↗</a>
+        <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219">NIKL: ㄴ-вставка ↗</a>
+        <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237">NIKL: 넓네 / 겹받침 ↗</a>
+        <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009">NIKL: назалізація ↗</a>
+        <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397">NIKL: 떡볶이 ↗</a>
+      </div>
+    </div>
+  </section>
+
   <section class="doc-section references">
-    <div class="doc-label">09</div><div class="doc-content"><p class="section-kicker">Джерела</p><h2>Основні дослідницькі опори</h2>
+    <div class="doc-label">10</div><div class="doc-content"><p class="section-kicker">Джерела</p><h2>Основні дослідницькі опори</h2>
       <ul><li><a href="https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002">National Institute of Korean Language — Standard Korean Pronunciation</a></li><li><a href="https://movoznavstvo.org.ua/vsi-nomera-zhurnalu/statti/2009-1-sichen-lyutij/shchegel-o-m-praktichna-transkriptsiya-korejskikh-imen-ukrajinskoyu-movoyu-porivnyannya-problemi-i-propozitsiji">О. М. Щегель (2009) — Практична транскрипція корейських імен українською мовою</a></li><li><a href="https://bp-razvitie.ru/prilozhenie-9-sistemy-transkripcii-">Холодович—Концевич — практична транскрипція корейської мови</a></li><li><a href="https://www.journals.polon.uw.edu.pl/index.php/pj/article/view/1631">Kim Gwangseok & Jarosław A. Pietrow (2023) — Korean toponyms in Polish</a></li><li><a href="https://authors.uni-sofia.bg/AuthorPublications.aspx?id=2584c0a6-0810-4d34-8733-deee92e8bac7">Beneva et al. (2018) — Korean transcription in Bulgarian texts</a></li><li><a href="https://serbia-korea.rs/wp-content/uploads/2026/01/A-need-for-transcription-between-Korean-Hangul-and-Serbian-Cyrillic.pdf">Angelina Galjević (2023) — Korean Hangul and Serbian Cyrillic</a></li></ul>
       <div class="repo-links"><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">Відкрити GitHub репозиторій ↗</a><a href="./index.html">Повернутися до сервісу ↗</a></div>
     </div>
