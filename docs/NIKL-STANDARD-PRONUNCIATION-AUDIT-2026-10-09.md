@@ -94,3 +94,14 @@ The expected Korean surface forms are normative evidence. The Ukrainian spelling
 ## Release gate
 
 Do not claim this audit is complete or the public site is fixed until the following are verified on the branch: npm test, npm run build, Python tests (pytest), corpus/data integrity, and the deployed GitHub Pages result. A successful static build alone does not prove pronunciation correctness.
+
+
+### Complex-coda liaison guardrail (§§13–15)
+
+The Python research rule R002 now refuses to resyllabify a complex coda solely because the next written syllable begins with ㅇ. The correct operation depends on morphology:
+
+- **Formal morpheme (§§13–14):** retain the first cluster component and move the second, e.g. 넋이 [넉씨], 값이 [갑씨].
+- **Substantive morpheme (§15):** neutralize the complex coda to its representative and resyllabify that representative, e.g. 값어치 [가버치].
+- **Unknown morphology:** keep the written cluster unchanged in the research representation and mark the rule `conditional-disabled`; do not guess a surface form.
+
+Exact licenses are tied to the full input and syllable pair, e.g. `R002:formal:넋이:넋>이` or `R002:substantive:값어치:값>어`. A license for one word cannot be reused for another. This is a conservative research-layer guardrail; the browser's exact lexical overrides remain the user-facing path for known words, not a general morphological analyzer.
