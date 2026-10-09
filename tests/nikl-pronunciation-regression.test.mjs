@@ -693,7 +693,7 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
     '물난리': 'mul lal li',
     '할는지': 'hal lɯn dʑi',
     '닳는': 'tal lɯn',
-    '뚫는': 'tul lɯn',
+    '뚫는': 't͈ul lɯn',
     '핥네': 'hal le',
   };
   const rows = parseCsv(lexical);
