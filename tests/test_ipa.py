@@ -34,3 +34,10 @@ def test_consonant_onset_ui_is_surface_i_but_preserves_phonemic_form():
     items = parse_syllables("희망")
     assert realize_syllables(items, level="broad")["ipa"] == "hi.maŋ"
     assert realize_syllables(items, level="phonemic")["ipa"].startswith("hɰi")
+
+
+
+def test_broad_ipa_for_complex_coda_aspiration():
+    assert phoneticize_korean("읽히다")["ipa"]["ipa"] == "il.kʰi.da"
+    assert phoneticize_korean("앉히다")["ipa"]["ipa"] == "an.tɕʰi.da"
+    assert phoneticize_korean("넓히다")["ipa"]["ipa"] == "nʌl.pʰi.da"
