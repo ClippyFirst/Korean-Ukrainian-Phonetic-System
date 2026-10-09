@@ -138,7 +138,7 @@ test('§19 precedes §18 across a phrase boundary',()=>{
 });
 
 test('official §11 ㄺ-before-ㄱ examples use exact lexical readings',()=>{
-  for(const [word,target,ipa] of [['묽고','мулко','mul k͈o'],['얽거나','олккона','ʌl k͈ʌ na']]){
+  for(const [word,target,ipa] of [['묽고','мулко','mul k͈o'],['얽거나','олкона','ʌl k͈ʌ na']]){
     const r=engine.convert(word);
     assert.equal(r.ukrainian,target);
     assert.equal(r.ipa,ipa);
