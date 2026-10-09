@@ -34,7 +34,7 @@ def test_dh_suffix_palatalization_is_sequential_r004_then_r007():
     for word, expected_onset in {"굳히다":"ㅊ","닫히다":"ㅊ","묻히다":"ㅊ"}.items():
         items,traces=apply_ordered_rules(
             parse_syllables(word),["R004","R007"],
-            rule_licenses={f"R007:dh_suffix_hi:{word}:{word[:-2]}>{word[-2:]}"},
+            rule_licenses={f"R007:dh_suffix_hi:{word}:{word[:1]}>{word[1:2]}"},
         )
         assert items[0].coda==""
         assert items[1].onset==expected_onset
