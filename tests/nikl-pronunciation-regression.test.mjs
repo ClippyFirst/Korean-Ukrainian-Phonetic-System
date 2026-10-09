@@ -43,3 +43,17 @@ test('ㅢ with a consonant onset follows §5 and is realized as [i]', () => {
   assert.match(result.ipa, /hi maŋ/);
   assert.ok(result.trace.some((item) => item.rules.includes('vowel-ui-to-i')));
 });
+
+test('palatalization applies to ㄷ/ㅌ before ㅣ, not every j-like vowel', () => {
+  const result = engine.convert('같이');
+  assert.equal(result.ukrainian, 'качі');
+  assert.match(result.ipa, /ka tɕʰi/);
+  assert.ok(result.trace.some((item) => item.rules.includes('palatalization')));
+});
+
+test('ㄷ+히 follows aspiration and then palatalization (§12 + §17)', () => {
+  const result = engine.convert('굳히다');
+  assert.equal(result.ukrainian, 'кучіта');
+  assert.match(result.ipa, /ku tɕʰi ta/);
+  assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration-plus-palatalization')));
+});
