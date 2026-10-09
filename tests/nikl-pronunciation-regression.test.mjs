@@ -123,7 +123,7 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
 
 test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', () => {
   const expected = {
-    맛없다: {surface:'마덥따', target:'마дептта', ipa:'ma dʌp̚ t͈a'},
+    맛없다: {surface:'마덥따', target:'\u043c\u0430\u0434\u0435\u043f\u0442\u0442\u0430', ipa:'ma dʌp̚ t͈a'},
     겉옷: {surface:'거돋', target:'ґодот', ipa:'kʌ tot̚'},
     헛웃음: {surface:'허두슴', target:'ходусим', ipa:'hʌ du sɯm'},
     값어치: {surface:'가버치', target:'кабочі', ipa:'ka bʌ tɕʰi'},
