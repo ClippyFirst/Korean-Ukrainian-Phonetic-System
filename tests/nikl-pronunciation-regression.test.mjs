@@ -312,6 +312,7 @@ test('NIKL §16 official letter-name examples are exact lexical entries', () => 
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, target, word);
     assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ukrainian, target, word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
@@ -683,5 +684,51 @@ test('NIKL §19 official examples preserve rule order before §18 nasalization',
     for (const rule of rules) {
       assert.ok(result.trace.some((item) => item.rules.includes(rule)), word + ': ' + rule);
     }
+  }
+});
+
+test('NIKL §20 general liquid-assimilation examples use the general rules', () => {
+  const expected = {
+    '천리': 'tɕʰʌl li',
+    '물난리': 'mul lal li',
+    '할는지': 'hal lɯn dʑi',
+    '닳는': 'tal lɯn',
+    '뚫는': 't͈ul lɯn',
+    '핥네': 'hal le',
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, ipa] of Object.entries(expected)) {
+    assert.ok(!rows.some((item) => item.input === word), word);
+    const result = engine.convert(word);
+    assert.equal(result.ipa, ipa, word);
+    assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+    assert.ok(result.trace.some((item) => item.rules.includes('liquid-assimilation')), word);
+  }
+});
+
+test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', () => {
+  const expected = {
+    '줄넘기': ['줄럼끼', 'tɕul lʌm k͈i', 'чульломкі'],
+    '임진란': ['임진난', 'imː tɕin nan', 'імчіннан'],
+    '생산량': ['생산냥', 'sɛŋ san njaŋ', 'сенсаннян'],
+    '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйольтаннок'],
+    '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', 'конквоннок'],
+    '동원령': ['동원녕', 'toŋː wʌn njʌŋ', 'тонвоннон'],
+    '상견례': ['상견녜', 'saŋ ɡjʌn nje', 'санґйоннє'],
+    '이원론': ['이원논', 'iː wʌn non', 'івоннон'],
+    '입원료': ['이붠뇨', 'i bwʌn njo', 'ібвонньо'],
+    '구근류': ['구근뉴', 'ku ɡɯn nju', 'куґинню'],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, surface, word);
+    assert.equal(row.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ukrainian, target, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
