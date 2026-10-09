@@ -48,14 +48,16 @@ test('palatalization applies to ㄷ/ㅌ before ㅣ, not every j-like vowel', () 
   const result = engine.convert('같이');
   assert.equal(result.ukrainian, 'качі');
   assert.match(result.ipa, /ka tɕʰi/);
-  assert.ok(result.trace.some((item) => item.rules.includes('palatalization')));
+  assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
+  assert.equal(result.status, 'lexical-review');
 });
 
 test('ㄷ+히 follows aspiration and then palatalization (§12 + §17)', () => {
   const result = engine.convert('굳히다');
   assert.equal(result.ukrainian, 'кучіда');
   assert.match(result.ipa, /ku tɕʰi da/);
-  assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration-plus-palatalization')));
+  assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
+  assert.equal(result.status, 'lexical-review');
 });
 
 test('the complete official institution name preserves sequential §19, §18 and §23 rules', () => {
@@ -65,4 +67,18 @@ test('the complete official institution name preserves sequential §19, §18 and
   assert.ok(result.trace.some((item) => item.rules.includes('liquid-to-nasal-before-obstruent')));
   assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')));
   assert.ok(result.trace.some((item) => item.rules.includes('tensification')));
+});
+
+test('unlicensed spelling-only palatalization is withheld instead of guessed', () => {
+  const result = engine.convert('갇이');
+  assert.equal(result.status, 'unresolved');
+  assert.equal(result.ukrainian, '⟦갇⟧⟦이⟧');
+  assert.ok(result.issues.some((issue) => issue.includes('verified formal-morpheme boundary')));
+  assert.ok(result.trace.every((item) => !item.rules.includes('palatalization')));
+});
+
+test('밭에 does not undergo §17 palatalization because the following vowel is ㅔ', () => {
+  const result = engine.convert('밭에');
+  assert.match(result.ipa, /pa tʰe/);
+  assert.ok(!result.trace.some((item) => item.rules.includes('palatalization')));
 });
