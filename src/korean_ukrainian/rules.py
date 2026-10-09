@@ -87,8 +87,17 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     elif rule_id=="R004":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
-            if _eligible(a,b,boundary_mode=boundary_mode) and (a.coda,b.onset) in ASPIRATE:
-                b.onset=ASPIRATE[(a.coda,b.onset)]; a.coda=""; changed=True
+            if not _eligible(a,b,boundary_mode=boundary_mode): continue
+            # Complex h-codas retain ㄴ/ㄹ while their ㅎ component
+            # aspirates the following lenis onset: 많다 [만타], 싫다 [실타].
+            if a.coda in {"ㄶ","ㅀ"} and b.onset in {"ㄱ","ㄷ","ㅂ","ㅈ"}:
+                b.onset={"ㄱ":"ㅋ","ㄷ":"ㅌ","ㅂ":"ㅍ","ㅈ":"ㅊ"}[b.onset]
+                a.coda="ㄴ" if a.coda=="ㄶ" else "ㄹ"
+                changed=True
+            elif (a.coda,b.onset) in ASPIRATE:
+                b.onset=ASPIRATE[(a.coda,b.onset)]
+                a.coda="" if a.coda not in {"ㄶ","ㅀ"} else ("ㄴ" if a.coda=="ㄶ" else "ㄹ")
+                changed=True
     elif rule_id=="R005":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
