@@ -19,6 +19,7 @@ test('complex-coda liaison keeps first component',()=>{assert.equal(engine.conve
 test('ㄶ/ㅀ liaison drops ㅎ rather than inventing an h onset',()=>{assert.equal(engine.convert('많아').ukrainian,'мана');assert.equal(engine.convert('싫어').ukrainian,'шіло');});
 test('ㄳ/ㄽ/ㅄ liaison uses fortis ㅆ',()=>{assert.equal(engine.convert('넋이').ukrainian,'нокші');assert.equal(engine.convert('곬이').ukrainian,'колші');assert.equal(engine.convert('값이').ukrainian,'капші');});
 test('nasal assimilation is explicit',()=>{const r=engine.convert('국물');assert.equal(r.ukrainian,'кунмул');assert.ok(r.trace.some(x=>x.rules.includes('nasal-assimilation')));});
+test('aspirated ㅍ coda participates in nasal assimilation',()=>{const r=engine.convert('앞문');assert.equal(r.ukrainian,'аммун');assert.ok(engine.convert('앞문').trace[0].rules.includes('nasal-assimilation'));});
 test('h aspiration is explicit',()=>{const r=engine.convert('각하');assert.equal(r.ukrainian,'кака');assert.ok(r.trace.some(x=>x.rules.includes('h-aspiration')));});
 test('palatalization is explicit',()=>{const r=engine.convert('같이');assert.ok(r.trace.some(x=>x.rules.includes('palatalization')));});
 test('simple liaison is contextual',()=>{const r=engine.convert('밥이');assert.equal(r.status,'contextual');assert.equal(r.ukrainian,'пабі');});
