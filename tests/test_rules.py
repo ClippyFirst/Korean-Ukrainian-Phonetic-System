@@ -120,3 +120,23 @@ def test_complex_coda_plus_h_preserves_the_unaspirated_component():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R004"])
         assert (items[0].coda, items[1].onset) == expected
         assert traces[0].changed
+
+
+
+def test_verbal_stem_rieul_giyeok_exception_requires_morphological_license():
+    items, traces = apply_ordered_rules(
+        parse_syllables("읽고"),
+        ["R016", "R008", "R001"],
+        boundary_mode="morpheme",
+    )
+    assert (items[0].coda, items[1].onset) == ("ㄱ", "ㄲ")
+    assert traces[0].status == "conditional-disabled"
+
+    items, traces = apply_ordered_rules(
+        parse_syllables("읽고"),
+        ["R016", "R008", "R001"],
+        boundary_mode="morpheme",
+        rule_licenses={"R016:verb_stem_rieul_giyeok_suffix"},
+    )
+    assert (items[0].coda, items[1].onset) == ("ㄹ", "ㄲ")
+    assert traces[0].changed
