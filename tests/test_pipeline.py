@@ -91,7 +91,8 @@ def test_lexical_ㄺ_rules_do_not_overgeneralize_to_noun_forms():
 
 def test_lexical_pronunciation_keeps_phrase_level_n_insertion_working():
     from korean_ukrainian.pipeline import phoneticize_korean
-    result = phoneticize_korean("무슨 일", boundary_mode="phrase", n_insertion_licensed=True,\n                                 rule_licenses={"R009:phrase:무슨 일:슨>일"})
+    result = phoneticize_korean("무슨 일", boundary_mode="phrase", n_insertion_licensed=True,
+                                 rule_licenses={"R009:phrase:무슨 일:슨>일"})
     assert result["surface_syllables"][2]["onset"] == "ㄴ"
 
 
