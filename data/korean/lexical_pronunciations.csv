@@ -1,5 +1,5 @@
 input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confidence,target_status
-값없다,가법따,카|боп|та,ka|bʌp̚|t͈a,https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=330620,"실질 형태소 없- 앞에서 ㅄ 단순화 후 대표음 ㅂ이 이동; [가법따]",high,model-selected
+값없다,가법따,ка|боп|та,ka|bʌp̚|t͈a,https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=330620,"실질 형태소 없- 앞에서 ㅄ 단순화 후 대표음 ㅂ이 이동; [가법따]",high,model-selected
 의견란,의견난,ий|ґйон|нан,ɰiː|ɡjʌn|nan,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=8505,"어휘적 ㄹ→ㄴ 예외; 의의 어휘적 읽기 및 장음은 이 항목에서만 명시",high,provisional
 읽고,일꼬,іл|ко,il|k͈o,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"용언 어간 ㄺ 앞 ㄱ 계열 어미: ㄱ 탈락, ㄹ 유지; 된소리되기",high,model-selected
 읽다,익따,ік|та,ik̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"ㄺ의 일반 자음 앞 실현과 된소리되기",high,model-selected
