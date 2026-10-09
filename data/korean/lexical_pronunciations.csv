@@ -15,7 +15,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 밭이,바치,па|чі,pa|tɕʰi,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5748,"받침 ㅌ과 조사 이의 구개음화; 표준 발음 [바치]",high,model-selected
 밭을,바틀,па|тил,pa|tʰɯl,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5748,"받침 ㅌ의 모음 앞 연음; 표준 발음 [바틀]",high,model-selected
 넓네,널레,ноль|ле,nʌl|le,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237,"ㄼ의 ㄹ 실현 후 ㄴ+ㄹ 유음화; 표준 발음 [널레]",high,model-selected
-없다,업따,оп|та,ʌp̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237,"ㅄ 단순화와 된소리되기; 표준 발음 [업ː따], 길이는 IPA에 별도 표시",high,model-selected
+없다,업따,оп|та,ʌːp̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237,"ㅄ 단순화와 된소리되기; 표준 발음 [업ː따], 길이는 IPA에 별도 표시",high,model-selected
 없는,엄는,ом|нин,ʌːm|nɯn,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009,"ㅄ 단순화 후 비음화; 표준 발음 [엄ː는]",high,model-selected
 국물,궁물,кун|мул,kuŋ|mul,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009,"ㄱ 종성의 비음화; 표준 발음 [궁물]",high,model-selected
 떡볶이,떡뽀끼,ток|по|кі,t͈ʌk̚|p͈o|k͈i,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397,"접미사 -이 앞에서 ㄲ 연음, ㄱ 계열 뒤 된소리되기; 표준 발음 [떡뽀끼]",high,model-selected
