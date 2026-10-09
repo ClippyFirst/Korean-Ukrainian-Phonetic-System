@@ -12,7 +12,7 @@ def test_complex_coda_ipa_is_supported():
     assert realize_syllables(parse_syllables("값"))["ipa"]=="kap̚"
 
 def test_complex_coda_liaison_examples():
-    expected={"넋이":"nʌk̚.s͈i","값이":"kap̚.s͈i","앉아":"an.dʑa","닭을":"tal.kɯl","젊어":"tɕʌl.mʌ"}
+    expected={"넋이":"nʌk̚.s͈i","값이":"kap̚.s͈i","앉아":"an.dʑa","닭을":"tal.ɡɯl","젊어":"tɕʌl.mʌ"}
     for word,ipa in expected.items():
         result=realize_syllables(apply_ordered_rules(parse_syllables(word),["R002"])[0])["ipa"]
         assert result==ipa
