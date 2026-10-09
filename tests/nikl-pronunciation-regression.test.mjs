@@ -196,3 +196,34 @@ test('sourced §14 complex-coda examples use exact surface forms and provisional
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
+
+test('simple codas with §15-sensitive representatives are not transferred blindly', () => {
+  const result = engine.convert('옷어');
+  assert.equal(result.status, 'unresolved');
+  assert.ok(result.ukrainian.includes('⟦옷⟧'));
+  assert.ok(result.issues.some((issue) => issue.includes('coda representative changes under §15')));
+  assert.ok(result.trace.some((item) => item.rules.includes('substantive-morpheme-liaison-requires-morphology')));
+});
+
+test('sourced §13 simple-coda examples preserve their formal-morpheme readings', () => {
+  const expected = {
+    깎아: {surface:'까까', target:'ккакка', ipa:'k͈a k͈a'},
+    있어: {surface:'이써', target:'іссо', ipa:'i s͈ʌ'},
+    쫓아: {surface:'쪼차', target:'ччоча', ipa:'tɕ͈o tɕʰa'},
+    덮어: {surface:'더퍼', target:'топо', ipa:'tʌ pʰʌ'},
+    맞아: {surface:'마자', target:'маджа', ipa:'ma dʑa'},
+    낮아: {surface:'나자', target:'наджа', ipa:'na dʑa'},
+    붙어: {surface:'부터', target:'путо', ipa:'pu tʰʌ'},
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, values] of Object.entries(expected)) {
+    const entry = rows.find((row) => row.input === word);
+    assert.ok(entry, word);
+    assert.equal(entry.surface_hangul, values.surface, word);
+    assert.equal(entry.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+  }
+});

@@ -42,7 +42,7 @@ The browser adapter implements:
 - Unicode-safe Hangul decomposition;
 - canonical onset/vowel/coda mappings from data/korean/canonical_correspondence.csv;
 - ㅅ/ㅆ → ш in the relevant i/j-like environments;
-- simple-coda liaison and exact sourced complex-coda pronunciations; unknown non-ㅎ complex-coda + vowel sequences are marked unresolved because §§13–15 require morphological distinctions; ㄶ/ㅀ retain their special ㅎ behavior;
+- simple-coda liaison where the outcome is unambiguous, and exact sourced complex-coda pronunciations; codas whose representative changes under §15 are withheld before ㅏ/ㅓ/ㅗ/ㅜ/ㅟ when morphology is unknown; unknown non-ㅎ complex-coda + vowel sequences are also marked unresolved; ㄶ/ㅀ retain their special ㅎ behavior;
 - ㅎ deletion and ㅎ-driven aspiration;
 - nasal assimilation, liquid assimilation and palatalization in the documented environments;
 - selected lexical coda exceptions such as 밟- and 넓죽-/넓둥글-/넓적- where standard pronunciation cannot be inferred from the coda inventory alone;

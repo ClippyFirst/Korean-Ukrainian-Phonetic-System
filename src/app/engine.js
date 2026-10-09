@@ -126,6 +126,18 @@ function applyContextualRules(units){
         rules.push('complex-coda-liaison-requires-morphology');
         nextRules.push('complex-coda-liaison-requires-morphology');
         continue;
+      }else if(!pair&&a.coda!=='ㅎ'&&a.coda!=='ㅇ'&&
+               representative(a.coda)!==a.coda&&
+               ['ㅏ','ㅓ','ㅗ','ㅜ','ㅟ'].includes(b.vowel)){
+        // NIKL §15 applies representative-coda neutralization before
+        // substantive morphemes beginning with ㅏ/ㅓ/ㅗ/ㅜ/ㅟ. For these
+        // codas, the §13 formal-morpheme result can differ. Without lexical
+        // or morphological evidence, do not transfer the written coda.
+        a.__substantiveLiaisonUnlicensed='left';
+        b.__substantiveLiaisonUnlicensed='right';
+        rules.push('substantive-morpheme-liaison-requires-morphology');
+        nextRules.push('substantive-morpheme-liaison-requires-morphology');
+        continue;
       }else if(pair){
         a.coda=pair[0];
         if(pair[1]){b.onset=pair[1];b.__liaison=true;}
@@ -313,6 +325,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     }
     if(u.__complexLiaisonUnlicensed){
       if(u.__complexLiaisonUnlicensed==='left')issues.push(u.char+': complex-coda liaison differs between formal and substantive morphemes (§§13–15); add a sourced lexical pronunciation entry.');
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='';
+      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
+      continue;
+    }
+    if(u.__substantiveLiaisonUnlicensed){
+      if(u.__substantiveLiaisonUnlicensed==='left')issues.push(u.char+': coda representative changes under §15 before ㅏ/ㅓ/ㅗ/ㅜ/ㅟ, unlike formal-morpheme liaison; add a sourced lexical pronunciation entry.');
       output[i]='⟦'+u.char+'⟧';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
