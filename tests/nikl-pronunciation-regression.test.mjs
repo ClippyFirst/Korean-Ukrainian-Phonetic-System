@@ -728,6 +728,7 @@ test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', 
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ukrainian, target, word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
