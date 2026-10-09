@@ -145,8 +145,8 @@ test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', 
 
 test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () => {
   const expected = {
-    맛있다: {surface:'마딛따', target:'мадіттта', ipa:'ma tit̚ t͈a', alternateSurface:'마싣따', alternateTarget:'машіттта', alternateIpa:'ma ɕit̚ t͈a'},
-    멋있다: {surface:'머딛따', target:'модіттта', ipa:'mʌ tit̚ t͈a', alternateSurface:'머싣따', alternateTarget:'мошіттта', alternateIpa:'mʌ ɕit̚ t͈a'},
+    맛있다: {surface:'마딛따', target:'мадіттта', ipa:'ma dit̚ t͈a', alternateSurface:'마싣따', alternateTarget:'машіттта', alternateIpa:'ma ɕit̚ t͈a'},
+    멋있다: {surface:'머딛따', target:'модіттта', ipa:'mʌ dit̚ t͈a', alternateSurface:'머싣따', alternateTarget:'мошіттта', alternateIpa:'mʌ ɕit̚ t͈a'},
   };
   for (const [word, values] of Object.entries(expected)) {
     const result = engine.convert(word);
