@@ -23,7 +23,7 @@ The browser engine is intentionally not a full Korean morphological parser. Rule
 | §3 | Korean vowel inventory. | Inventory represented. |
 | §4 | Monophthongs; standard variants for ㅚ and ㅟ. | Canonical table is a broad model; it does not encode every speaker/variant realization. |
 | §5 | Diphthongs and permitted pronunciations: 용언 forms 져/쪄/쳐; ㅖ variants; ㅢ with consonant onset; non-initial 의 and particle 의. | Fixed default ㅇ+ㅢ handling and added sourced alternate readings for 주의/주이, 협의/혀비, 우리의/우리에, and 강의의/강이에. The 협의 case explicitly preserves the normative [혀븨] despite resyllabified ㅂ onset; entries are exact lexical cases rather than a general morphology parser. Ukrainian targets remain provisional. |
-| §§6–7 | Vowel length and its distribution/compound exceptions. | Partial: length is recorded in selected lexical IPA entries only; the general browser engine is not a complete lexical length dictionary. |
+| §§6–7 | Vowel length and its distribution/compound exceptions. | Expanded exact lexical IPA coverage with official long-vowel examples, shortening before endings/suffixes, length-retaining exceptions, and the compound variant 반신반의 [반ː신바ː늬/반ː신바ː니]. This is still not a complete lexical length dictionary; Ukrainian targets remain provisional. |
 | §8 | Only seven consonants are realized as coda sounds: ㄱ ㄴ ㄷ ㄹ ㅁ ㅂ ㅇ. | Core coda inventory represented. |
 | §9 | Final neutralization of ㄲ/ㅋ, obstruent codas, and ㅍ. | Implemented through representative-coda mapping; ordering before assimilation is essential. |
 | §10 | Simplification of ㄳ ㄵ ㄼ ㄽ ㄾ ㅄ in coda position; exceptions for 밟- and selected 넓- compounds. | Partial with explicit lexical exceptions. Do not generalize 밟-/넓- behavior to every ㄼ word. |
