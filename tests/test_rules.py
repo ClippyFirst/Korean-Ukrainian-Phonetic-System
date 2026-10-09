@@ -197,3 +197,18 @@ def test_verbal_stem_rieul_giyeok_exception_requires_morphological_license():
     )
     assert (items[0].coda, items[1].onset) == ("ㄹ", "ㄲ")
     assert traces[0].changed
+
+
+def test_nikl_section_19_precedes_section_18_in_python_pipeline():
+    for word, expected_coda in {"국립":"ㅇ", "협력":"ㅁ"}.items():
+        items,traces=apply_ordered_rules(parse_syllables(word),["R006","R005"])
+        assert items[0].coda==expected_coda
+        assert items[1].onset=="ㄴ"
+        assert traces[0].changed
+        assert traces[1].changed
+
+def test_default_rule_order_produces_dongnimmun_surface():
+    items,traces=apply_ordered_rules(parse_syllables("독립문"))
+    assert [(x.onset,x.coda) for x in items]==[("ㄷ","ㅇ"),("ㄴ","ㅁ"),("ㅁ","ㄴ")]
+    assert any(t.rule_id=="R006" and t.changed for t in traces)
+    assert any(t.rule_id=="R005" and t.changed for t in traces)
