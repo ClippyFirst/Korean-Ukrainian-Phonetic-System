@@ -99,3 +99,16 @@ def test_lexical_pronunciation_keeps_phrase_level_n_insertion_working():
 def test_ipa_tokenizer_accepts_length_marks_in_lexical_pronunciations():
     from korean_ukrainian.pipeline import tokenize_ipa
     assert tokenize_ipa("ɰiː.ɡjʌn.nan") == ["ɰ", "i", "ɡ", "j", "ʌ", "n", "n", "a", "n"]
+
+
+
+def test_python_transliteration_uses_exact_lexical_target_and_marks_provisional_mapping():
+    from korean_ukrainian.pipeline import transliterate_korean
+    value = transliterate_korean("값없다")
+    assert value["ukrainian_orthography"] == "кабопта"
+    assert value["target_status"] == "model-selected"
+    assert "lexical target override" in value["selection_status"]
+    opinion = transliterate_korean("의견란")
+    assert opinion["ukrainian_orthography"] == "ийґйоннан"
+    assert opinion["target_status"] == "provisional"
+    assert "author-designed" in opinion["selection_status"]
