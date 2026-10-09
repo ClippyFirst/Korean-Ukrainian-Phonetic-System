@@ -435,3 +435,20 @@ def test_section_19_then_section_18_can_apply_across_phrase_boundary():
     assert items[0].coda=="ㅁ"
     assert items[1].onset=="ㄴ"
     assert traces[0].changed and traces[1].changed
+
+def test_section_10_general_complex_coda_and_balm_exception():
+    # General ㄼ behavior retains ㄹ; the listed 밟- exception retains ㅂ.
+    items, traces = apply_ordered_rules(parse_syllables("넓다"), ["R001"])
+    assert items[0].coda == "ㄹ"
+    assert traces[0].changed
+
+    items, traces = apply_ordered_rules(parse_syllables("밟다"), ["R001"])
+    assert items[0].coda == "ㅂ"
+    assert traces[0].changed
+
+def test_section_10_neolp_exception_is_narrowly_lexical():
+    for word in ("넓죽하다", "넓둥글다"):
+        items, _ = apply_ordered_rules(parse_syllables(word), ["R001"])
+        assert items[0].coda == "ㅂ"
+    items, _ = apply_ordered_rules(parse_syllables("넓다"), ["R001"])
+    assert items[0].coda == "ㄹ"
