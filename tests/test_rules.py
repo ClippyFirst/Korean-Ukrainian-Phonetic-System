@@ -403,3 +403,13 @@ def test_compound_fortition_license_cannot_be_reused_for_another_word():
     )
     assert items[1].onset=="ㄷ"
     assert traces[0].status=="conditional-disabled"
+
+def test_default_pipeline_runs_licensed_h_deletion_before_liaison():
+    items,traces=apply_ordered_rules(
+        parse_syllables("많아"),
+        rule_licenses={"R003:ending_or_suffix_h_deletion:많아:많>아"},
+    )
+    assert items[0].coda==""
+    assert items[1].onset=="ㄴ"
+    assert any(t.rule_id=="R003" and t.changed for t in traces)
+    assert any(t.rule_id=="R002" and t.changed for t in traces)
