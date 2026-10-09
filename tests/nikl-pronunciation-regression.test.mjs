@@ -315,3 +315,46 @@ test('NIKL §16 official letter-name examples are exact lexical entries', () => 
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
+
+test('NIKL §21 negative controls prevent nonstandard place assimilation', () => {
+  const expected = {
+    '감기': ['감기', 'камґі'],
+    '옷감': ['옫깜', 'откам'],
+    '있고': ['읻꼬', 'ітко'],
+    '꽃길': ['꼳낄', 'коткіл'],
+    '젖먹이': ['전머기', 'джонмоґі'],
+    '문법': ['문뻡', 'мунпоп'],
+    '꽃밭': ['꼳빧', 'котпат'],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [surface, target]] of Object.entries(expected)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, surface, word);
+    assert.equal(row.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, target, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
+});
+
+test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
+  const expected = {
+    '되어': {target:'твео', ipa:'tø ʌ', alternateSurface:'되여', alternateTarget:'твейо', alternateIpa:'tø jʌ'},
+    '피어': {target:'піо', ipa:'pʰi ʌ', alternateSurface:'피여', alternateTarget:'пійо', alternateIpa:'pʰi jʌ'},
+    '이오': {target:'іо', ipa:'i o', alternateSurface:'이요', alternateTarget:'ійо', alternateIpa:'i jo'},
+    '아니오': {target:'аніо', ipa:'a ni o', alternateSurface:'아니요', alternateTarget:'анійо', alternateIpa:'a ni jo'},
+  };
+  for (const [word, values] of Object.entries(expected)) {
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.variants.length, 1, word);
+    assert.equal(result.variants[0].surface, values.alternateSurface, word);
+    assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
+    assert.equal(result.variants[0].ipa, values.alternateIpa, word);
+    assert.equal(result.variants[0].status, 'lexical-review', word);
+  }
+});
