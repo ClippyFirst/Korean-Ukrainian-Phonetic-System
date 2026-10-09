@@ -113,11 +113,20 @@ function applyContextualRules(units){
       continue;
     }
 
-    // R002: liaison / resyllabification. Complex codas keep their first
-    // component in the coda and move the second component; ㄶ/ㅀ lose ㅎ.
+    // R002: liaison / resyllabification. For non-H complex codas, the
+    // result differs between formal morphemes (§§13–14) and substantive
+    // morphemes (§15). The browser has no morphological parser, so only exact
+    // sourced lexical entries may resolve these cases; unknown forms are
+    // marked unresolved rather than assigned the §14 pattern by default.
     if(a.coda&&b.onset==='ㅇ'&&!a.__palatalizationUnlicensed){
       const pair=COMPLEX[a.coda];
-      if(pair){
+      if(pair&&!['ㄶ','ㅀ'].includes(a.coda)){
+        a.__complexLiaisonUnlicensed='left';
+        b.__complexLiaisonUnlicensed='right';
+        rules.push('complex-coda-liaison-requires-morphology');
+        nextRules.push('complex-coda-liaison-requires-morphology');
+        continue;
+      }else if(pair){
         a.coda=pair[0];
         if(pair[1]){b.onset=pair[1];b.__liaison=true;}
         rules.push('complex-coda-liaison');
@@ -297,6 +306,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     analysis[i]=original.char+' = '+original.onset+'+'+original.vowel+(original.coda?'+'+original.coda:'');
     if(u.__palatalizationUnlicensed){
       if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a verified formal-morpheme boundary; add a sourced lexical entry or morphological license.');
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='';
+      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
+      continue;
+    }
+    if(u.__complexLiaisonUnlicensed){
+      if(u.__complexLiaisonUnlicensed==='left')issues.push(u.char+': complex-coda liaison differs between formal and substantive morphemes (§§13–15); add a sourced lexical pronunciation entry.');
       output[i]='⟦'+u.char+'⟧';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
