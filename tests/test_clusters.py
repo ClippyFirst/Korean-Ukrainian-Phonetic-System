@@ -11,11 +11,23 @@ def test_complex_coda_neutralizes():
 def test_complex_coda_ipa_is_supported():
     assert realize_syllables(parse_syllables("값"))["ipa"]=="kap̚"
 
-def test_complex_coda_liaison_examples():
-    expected={"넋이":"nʌk̚.s͈i","값이":"kap̚.s͈i","앉아":"an.dʑa","닭을":"tal.ɡɯl","젊어":"tɕʌl.mʌ"}
-    for word,ipa in expected.items():
-        result=realize_syllables(apply_ordered_rules(parse_syllables(word),["R002"])[0])["ipa"]
-        assert result==ipa
+def test_complex_coda_liaison_examples_require_formal_morpheme_evidence():
+    expected={
+        "넋이":("nʌk̚.s͈i","넋>이"),
+        "값이":("kap̚.s͈i","값>이"),
+        "앉아":("an.dʑa","앉>아"),
+        "닭을":("tal.ɡɯl","닭>을"),
+        "젊어":("tɕʌl.mʌ","젊>어"),
+    }
+    for word,(ipa,pair) in expected.items():
+        items,traces=apply_ordered_rules(parse_syllables(word),["R002"])
+        assert traces[0].status=="conditional-disabled"
+        items,traces=apply_ordered_rules(
+            parse_syllables(word),["R002"],
+            rule_licenses={f"R002:formal:{word}:{pair}"},
+        )
+        assert realize_syllables(items)["ipa"]==ipa
+        assert traces[0].changed
 
 def test_complex_coda_assimilation_after_neutralization():
     for word,expected in {"긁는":("ㅇ","ㄴ"),"뚫네":("ㄹ","ㄹ"),"핥네":("ㄹ","ㄹ")}.items():
