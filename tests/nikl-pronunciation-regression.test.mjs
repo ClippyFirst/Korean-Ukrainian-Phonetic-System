@@ -27,3 +27,19 @@ test('nasalisation changes both the coda and following liquid in 국립', () => 
   assert.equal(result.ukrainian, 'кунніп');
   assert.match(result.ipa, /kuŋ nip̚/);
 });
+
+test('ㅇ+ㅢ uses the normative [ɰi] default instead of an unresolved placeholder', () => {
+  const result = engine.convert('한국어의 표준 발음');
+  assert.equal(result.issues.length, 0);
+  assert.ok(!result.ukrainian.includes('⟦'));
+  assert.ok(result.ukrainian.includes('ий'));
+  assert.match(result.ipa, /ɰi/);
+  assert.ok(result.trace.some((item) => item.rules.includes('vowel-ui-default-ɰi')));
+});
+
+test('ㅢ with a consonant onset follows §5 and is realized as [i]', () => {
+  const result = engine.convert('희망');
+  assert.equal(result.ukrainian, 'хіманґ');
+  assert.match(result.ipa, /hi maŋ/);
+  assert.ok(result.trace.some((item) => item.rules.includes('vowel-ui-to-i')));
+});
