@@ -32,8 +32,18 @@ def parse_syllables(text:str)->list[Syllable]:
         pending_boundary="same_word"
     return result
 
+COMPLEX_CODA_COMPONENTS = {
+    "ㄳ": ("ㄱ", "ㅅ"), "ㄵ": ("ㄴ", "ㅈ"), "ㄶ": ("ㄴ", "ㅎ"),
+    "ㄺ": ("ㄹ", "ㄱ"), "ㄻ": ("ㄹ", "ㅁ"), "ㄼ": ("ㄹ", "ㅂ"),
+    "ㄽ": ("ㄹ", "ㅅ"), "ㄾ": ("ㄹ", "ㅌ"), "ㄿ": ("ㄹ", "ㅍ"),
+    "ㅀ": ("ㄹ", "ㅎ"), "ㅄ": ("ㅂ", "ㅅ"),
+}
+
 def split_coda(coda:str)->tuple[str,...]:
-    return tuple(coda) if coda else ()
+    """Return phonological jamo components, not Unicode code points."""
+    if not coda:
+        return ()
+    return COMPLEX_CODA_COMPONENTS.get(coda, (coda,))
 
 def phonemic_segments(s:Syllable)->dict:
     onset=None if s.onset=="ㅇ" else CONSONANT_PHONEMES[s.onset]
