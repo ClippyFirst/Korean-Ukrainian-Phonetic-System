@@ -9,6 +9,9 @@ The project has two public-facing pages:
 - **Service** — Korean text → practical Ukrainian reading.
 - **System** — explanation of the author's Ukrainian system, methodology, evidence and limitations.
 
+- [Open the live service](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/index.html)
+- [Read the methodology and edge-case registry](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#lexical-edge-cases)
+
 The service is intentionally modelled on the functional architecture of the Chinese-for-Ukrainians project: the tool is the centre of the page, typography carries hierarchy, results are inspectable and there is no marketing/AI decoration.
 
 The Korean visual identity uses South Korean national colours: Taegeuk red #CD2E3A and Taegeuk blue #0047A0.
@@ -72,6 +75,7 @@ Web service:
     npm run build
     npm run dev
 
+The GitHub Pages workflow in `.github/workflows/deploy-pages.yml` runs browser tests, Python pipeline/data-integrity tests, builds the static site, and deploys the `dist/` artifact on pushes to `main`.
 Research layer:
 
     python scripts/generate_korean_corpus.py --strict
