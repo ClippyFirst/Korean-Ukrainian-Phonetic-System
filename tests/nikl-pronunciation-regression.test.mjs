@@ -691,7 +691,7 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
   const expected = {
     '천리': 'tɕʰʌl li',
     '물난리': 'mul lal li',
-    '할는지': 'hal lɯn tɕi',
+    '할는지': 'hal lɯn dʑi',
     '닳는': 'tal lɯn',
     '뚫는': 'tul lɯn',
     '핥네': 'hal le',
