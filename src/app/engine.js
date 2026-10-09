@@ -120,8 +120,10 @@ function applyContextualRules(units){
       }else if(a.coda!=='ㅎ'&&a.coda!=='ㅇ'){
         b.onset=a.coda;
         b.__liaison=true;
+        if(a.coda==='ㄹ')b.__liaisonLateral=true;
         a.coda='';
         rules.push('liaison');
+        if(b.__liaisonLateral)nextRules.push('liaison-lateral');
       }
     }
 
@@ -159,13 +161,26 @@ function applyContextualRules(units){
       }
     }
 
+    // R006a: when an obstruent coda precedes ㄹ, standard pronunciation
+    // realizes that ㄹ as ㄴ; the coda then undergoes nasal assimilation.
+    // Examples: 국립 [궁닙], 독립문 [동님문], 협력 [혐녁].
+    // Keep the rule visible on both segments so the trace explains the change.
+    const beforeLiquidRep=representative(a.coda);
+    if(['ㄱ','ㄷ','ㅂ'].includes(beforeLiquidRep)&&b.onset==='ㄹ'){
+      b.onset='ㄴ';
+      rules.push('liquid-to-nasal-before-obstruent');
+      nextRules.push('liquid-to-nasal-before-obstruent');
+    }
+
     // R005: nasal assimilation. Use the final representative for obstruent
     // codas; do not infer it across punctuation/space because those are
-    // represented as literal units.
+    // represented as literal units. The affected onset receives the same
+    // trace label as the coda that changed.
     const afterRep=representative(a.coda);
     if((b.onset==='ㄴ'||b.onset==='ㅁ')&&NASAL_AFTER[afterRep]){
       a.coda=NASAL_AFTER[afterRep];
       rules.push('nasal-assimilation');
+      nextRules.push('nasal-assimilation');
     }
 
     // R006: liquid assimilation.
@@ -286,7 +301,9 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     const previousOpenSyllable=Boolean(prev)&&prev.coda==='';
     const voiced=(liaisonOnset||previousSonorant||previousOpenSyllable)&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
     const fortis=!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
-    const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
+    // A coda ㄹ resyllabified into the next onset stays lateral [l];
+    // it must not be reinterpreted as the intervocalic tap [ɾ] (e.g. 서울역).
+    const liquid=onset==='ㄹ'&&(Boolean(u.__liaisonLateral)||['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda));
     const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis,liquid);
     const traceRules=[...applied];
     if(contextualUi)traceRules.push('vowel-ui-to-i');
