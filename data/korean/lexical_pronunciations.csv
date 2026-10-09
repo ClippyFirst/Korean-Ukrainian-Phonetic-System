@@ -51,3 +51,6 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 맞아,마자,ма|джа,ma|dʑa,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제13항: 형식 형태소 아 앞에서 ㅈ 연음; 표준 발음 [마자]. Ukrainian target provisional.",high,provisional,,,,
 낮아,나자,на|джа,na|dʑa,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제13항: 형식 형태소 아 앞에서 받침 ㅈ의 음가를 옮겨 발음; 표준 발음 [나자]. Ukrainian target provisional.",high,provisional,,,,
 붙어,부터,пу|то,pu|tʰʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제13항: 형식 형태소 어 앞에서 받침 ㅌ 연음; 표준 발음 [부터]. Ukrainian target provisional.",high,provisional,,,,
+읽히다,일키다,іл|кі|да,il|kʰi|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제12항 붙임 1 공식 예시: 용언 어간 읽- + 접미사 -히; 겹받침 ㄺ의 ㄱ과 ㅎ이 축약되어 [일키다]. Ukrainian target provisional.",high,provisional,,,,
+앉히다,안치다,ан|чі|да,an|tɕʰi|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제12항 붙임 1 공식 예시: 앉- + 접미사 -히; ㄵ의 ㅈ과 ㅎ이 축약되어 [안치다]. Ukrainian target provisional.",high,provisional,,,,
+넓히다,널피다,нол|пі|да,nʌl|pʰi|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제12항 붙임 1 공식 예시: 넓- + 접미사 -히; ㄼ의 ㅂ과 ㅎ이 축약되어 [널피다]. Ukrainian target provisional.",high,provisional,,,,

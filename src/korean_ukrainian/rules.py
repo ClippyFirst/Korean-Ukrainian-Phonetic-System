@@ -143,18 +143,29 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 a.coda="ㄴ" if a.coda=="ㄶ" else "ㄹ"
                 changed=True
             elif b.onset=="ㅎ" and a.coda in COMPLEX_LIAISON:
-                # In clusters such as ㄺ/ㄵ/ㄼ + ㅎ, retain the first
-                # component and aspirate the second: 읽히다 [일키다],
-                # 앉히다 [안치다], 넓히다 [널피다].
-                retained,moved=COMPLEX_LIAISON[a.coda]
-                aspirated=ASPIRATE.get((moved,"ㅎ"))
-                if aspirated is None:
-                    representative=FINAL_REPRESENTATIVE.get(moved,moved)
-                    aspirated=ASPIRATE.get((representative,"ㅎ"))
-                if aspirated:
-                    a.coda=retained
-                    b.onset=aspirated
-                    changed=True
+                # NIKL §12 붙임 1 gives direct cluster+ㅎ aspiration for
+                # specified morphophonemic forms such as 읽히다, 앉히다,
+                # 넓히다. The same written cluster elsewhere first undergoes
+                # coda simplification (§11) before §12. Require exact evidence
+                # rather than applying the suffix pattern to every adjacency.
+                full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
+                pair=f"{a.text}>{b.text}"
+                license=f"R004:complex_h_suffix:{full_form}:{pair}"
+                if a.coda in {"ㄺ","ㄵ","ㄼ"} and license in licenses:
+                    retained,moved=COMPLEX_LIAISON[a.coda]
+                    aspirated=ASPIRATE.get((moved,"ㅎ"))
+                    if aspirated is None:
+                        representative=FINAL_REPRESENTATIVE.get(moved,moved)
+                        aspirated=ASPIRATE.get((representative,"ㅎ"))
+                    if aspirated:
+                        a.coda=retained
+                        b.onset=aspirated
+                        changed=True
+                        license_context=license
+                    else:
+                        conditional_disabled=True
+                else:
+                    conditional_disabled=True
             elif b.onset=="ㅎ" and a.coda:
                 # Use the written coda where it licenses a distinct
                 # morphophonemic outcome (e.g. ㅈ+ㅎ -> ㅊ); otherwise use

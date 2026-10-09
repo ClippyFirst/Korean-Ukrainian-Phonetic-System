@@ -227,3 +227,30 @@ test('sourced §13 simple-coda examples preserve their formal-morpheme readings'
     assert.equal(result.ipa, values.ipa, word);
   }
 });
+
+test('official §12 complex-coda + ㅎ examples use exact lexical evidence', () => {
+  const expected = {
+    읽히다: {surface:'일키다', target:'ілкіда', ipa:'il kʰi da'},
+    앉히다: {surface:'안치다', target:'анчіда', ipa:'an tɕʰi da'},
+    넓히다: {surface:'널피다', target:'нолпіда', ipa:'nʌl pʰi da'},
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, values] of Object.entries(expected)) {
+    const entry = rows.find((row) => row.input === word);
+    assert.ok(entry, word);
+    assert.equal(entry.surface_hangul, values.surface, word);
+    assert.equal(entry.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+  }
+});
+
+test('unknown complex-coda + ㅎ does not inherit the suffix-aspiration pattern', () => {
+  const result = engine.convert('넋하고');
+  assert.equal(result.status, 'unresolved');
+  assert.ok(result.ukrainian.includes('⟦넋⟧'));
+  assert.ok(result.issues.some((issue) => issue.includes('§12 complex-coda + ㅎ aspiration depends')));
+  assert.ok(result.trace.some((item) => item.rules.includes('complex-coda-h-aspiration-requires-morphology')));
+});

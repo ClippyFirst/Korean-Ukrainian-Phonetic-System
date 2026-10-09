@@ -112,3 +112,10 @@ Exact Python licenses are tied to the full input and syllable pair, e.g. `R002:f
 The default Python pipeline lists R002 before R007. That ordering is safe only if R002 does not consume the coda in a potential §17 environment. R002 now leaves ㄷ/ㅌ + ㅣ unchanged and records a conditional result, allowing the later licensed R007 pass to handle forms such as 같이 [가치] and 굳이 [구지]. R007 licenses are now exact to full form and adjacent syllable pair (e.g. `R007:formal_morpheme_i:굳이:굳>이`), so a category-only flag or a license for one word cannot authorize another. The same exact-pair requirement applies to the §12 + §17 sequence in 굳히다/닫히다/묻히다. Without exact morphology evidence, the pair remains unresolved in the research representation. The §12 + §17 sequence for 굳히다/닫히다/묻히다 remains sequential: R004 first creates the intermediate ㅌ + ㅣ environment, then R007 palatalizes it to ㅊ.
 
 Regression tests cover both licensed positive examples and an unlicensed negative control (갇이), as well as the aspirated suffix sequence.
+
+
+### Complex-coda aspiration before ㅎ (§12)
+
+The official commentary to §12 explicitly distinguishes a verbal stem plus suffix (e.g. 넓히다 [널피다]) from other combinations. In suffix forms, the specified cluster component combines directly with ㅎ; outside that licensed morphophonemic pattern, coda simplification is applied first. The research layer now requires an exact `R004:complex_h_suffix:읽히다:읽>히`-style license before preserving the first component and aspirating the second. The browser uses exact sourced lexical entries for the official examples 읽히다 [일키다], 앉히다 [안치다], 넓히다 [널피다] and marks unknown complex-coda + ㅎ sequences unresolved instead of assuming the suffix pattern.
+
+Official source: NIKL, *표준 발음법*, §12, especially the commentary explaining the difference between forms with a suffix and other combinations: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
