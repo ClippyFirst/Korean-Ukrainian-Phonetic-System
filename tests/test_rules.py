@@ -145,14 +145,21 @@ def test_coda_plus_h_uses_final_representative_for_aspiration():
     assert traces[0].changed
 
 
-def test_complex_coda_plus_h_retains_first_component_and_aspirates_second():
+def test_complex_coda_plus_h_requires_exact_morphophonemic_license():
     cases = {
-        "읽히다": ("ㄹ", "ㅋ"),
-        "앉히다": ("ㄴ", "ㅊ"),
-        "넓히다": ("ㄹ", "ㅍ"),
+        "읽히다": (("ㄹ", "ㅋ"), "읽>히"),
+        "앉히다": (("ㄴ", "ㅊ"), "앉>히"),
+        "넓히다": (("ㄹ", "ㅍ"), "넓>히"),
     }
-    for word, expected in cases.items():
+    for word, (expected, pair) in cases.items():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R004"])
+        assert (items[0].coda, items[1].onset) == ({"읽히다":"ㄺ","앉히다":"ㄵ","넓히다":"ㄼ"}[word], "ㅎ")
+        assert traces[0].status == "conditional-disabled"
+
+        items, traces = apply_ordered_rules(
+            parse_syllables(word), ["R004"],
+            rule_licenses={f"R004:complex_h_suffix:{word}:{pair}"},
+        )
         assert (items[0].coda, items[1].onset) == expected
         assert traces[0].changed
 
@@ -188,16 +195,18 @@ def test_final_consonant_plus_h_uses_correct_aspiration():
 
 
 
-def test_complex_coda_plus_h_preserves_the_unaspirated_component():
-    cases = {
-        "읽히다": ("ㄹ", "ㅋ"),
-        "앉히다": ("ㄴ", "ㅊ"),
-        "넓히다": ("ㄹ", "ㅍ"),
-    }
-    for word, expected in cases.items():
-        items, traces = apply_ordered_rules(parse_syllables(word), ["R004"])
-        assert (items[0].coda, items[1].onset) == expected
-        assert traces[0].changed
+def test_complex_coda_h_license_cannot_be_reused_for_another_form():
+    items, traces = apply_ordered_rules(
+        parse_syllables("앉히다"), ["R004"],
+        rule_licenses={"R004:complex_h_suffix:읽히다:읽>히"},
+    )
+    assert (items[0].coda, items[1].onset) == ("ㄵ", "ㅎ")
+    assert traces[0].status == "conditional-disabled"
+
+def test_unknown_complex_coda_before_h_is_not_guessed_as_a_suffix_pattern():
+    items, traces = apply_ordered_rules(parse_syllables("넋하고"), ["R004"])
+    assert (items[0].coda, items[1].onset) == ("ㄳ", "ㅎ")
+    assert traces[0].status == "conditional-disabled"
 
 
 
