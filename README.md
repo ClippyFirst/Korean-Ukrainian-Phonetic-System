@@ -84,6 +84,7 @@ Research layer:
 ## Documentation
 
 ### Research
+- docs/NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md — article-by-article audit of all 30 official Standard Pronunciation Rules, implementation boundary, and regression cases
 - docs/methodology.md
 - docs/slavic-comparative-master-table.md
 - docs/comparative-evidence-methodology.md
