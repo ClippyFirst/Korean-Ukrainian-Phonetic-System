@@ -76,8 +76,13 @@ function renderStructured(units,values,separator){
   let result='';
   for(let i=0;i<units.length;i++){
     if(units[i].type==='literal'){result+=units[i].char;continue;}
-    if(i>0&&units[i-1].type==='hangul')result+=separator;
-    result+=values[i]??'';
+    const value=values[i]??'';
+    // An unresolved syllable may have no IPA value. Do not emit a synthetic
+    // syllable separator for that empty value: the original whitespace after
+    // it is preserved by the following literal unit.
+    if(value==='')continue;
+    if(i>0&&units[i-1].type==='hangul'&&(values[i-1]??'')!=='')result+=separator;
+    result+=value;
   }
   return result;
 }
