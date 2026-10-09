@@ -340,3 +340,48 @@ def test_section_17_license_is_exact_to_full_form_and_pair():
     )
     assert items[0].coda=="ㅌ" and items[1].onset=="ㅇ"
     assert traces[0].status=="conditional-disabled"
+
+def test_sections_24_to_28_require_exact_full_form_and_pair_licenses():
+    cases = [
+        ("R010", "안고", "stem_n_m+suffix", "안>고", "ㄲ"),
+        ("R011", "넓게", "stem_lb_lt+suffix", "넓>게", "ㄲ"),
+        ("R012", "갈등", "sino_ryeon", "갈>등", "ㄸ"),
+        ("R014", "문고리", "compound", "문>고", "ㄲ"),
+    ]
+    for rule, word, scope, pair, expected_onset in cases:
+        items,traces=apply_ordered_rules(
+            parse_syllables(word),[rule],
+            rule_licenses={f"{rule}:{scope}"},
+        )
+        assert items[1].onset in {"ㄱ","ㄷ"}
+        assert traces[0].status=="conditional-disabled"
+
+        items,traces=apply_ordered_rules(
+            parse_syllables(word),[rule],
+            rule_licenses={f"{rule}:{scope}:{word}:{pair}"},
+        )
+        assert items[1].onset==expected_onset
+        assert traces[0].changed
+
+def test_section_27_adnominal_l_fortition_can_cross_a_word_boundary_only_with_phrase_evidence():
+    items,traces=apply_ordered_rules(
+        parse_syllables("할 것"),["R013"],boundary_mode="phrase",
+        rule_licenses={"R013:adnominal_l:할 것:할>것"},
+    )
+    assert items[1].onset=="ㄲ"
+    assert traces[0].changed
+
+    items,traces=apply_ordered_rules(
+        parse_syllables("할 것"),["R013"],boundary_mode="phrase",
+        rule_licenses={"R013:adnominal_l:갈 데:갈>데"},
+    )
+    assert items[1].onset=="ㄱ"
+    assert traces[0].status=="conditional-disabled"
+
+def test_compound_fortition_license_cannot_be_reused_for_another_word():
+    items,traces=apply_ordered_rules(
+        parse_syllables("눈동자"),["R014"],
+        rule_licenses={"R014:compound:문고리:문>고"},
+    )
+    assert items[1].onset=="ㄷ"
+    assert traces[0].status=="conditional-disabled"
