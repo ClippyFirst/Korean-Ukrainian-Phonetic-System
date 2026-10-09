@@ -72,11 +72,40 @@ def test_n_insertion_license_cannot_be_reused_for_a_different_word():
 def test_n_insertion_disabled_by_default():
     items,_=apply_ordered_rules(parse_syllables("한여름"),["R009"]); assert items[1].onset=="ㅇ"
 
-def test_complex_coda_liaison():
-    expected={"넋이":("ㄱ","ㅆ"),"값이":("ㅂ","ㅆ"),"앉아":("ㄴ","ㅈ"),"닭을":("ㄹ","ㄱ"),"젊어":("ㄹ","ㅁ")}
-    for word,(coda,onset) in expected.items():
-        items,_=apply_ordered_rules(parse_syllables(word),["R002"])
+def test_complex_coda_liaison_requires_exact_formal_morpheme_license():
+    expected={"넋이":(("ㄱ","ㅆ"),"넋>이"),"값이":(("ㅂ","ㅆ"),"값>이"),"앉아":(("ㄴ","ㅈ"),"앉>아"),"닭을":(("ㄹ","ㄱ"),"닭>을"),"젊어":(("ㄹ","ㅁ"),"젊>어")}
+    for word,((coda,onset),pair) in expected.items():
+        items,traces=apply_ordered_rules(parse_syllables(word),["R002"])
+        assert traces[0].status=="conditional-disabled"
+        assert items[0].coda in {"ㄳ","ㅄ","ㄵ","ㄺ","ㄻ"}
+        items,traces=apply_ordered_rules(
+            parse_syllables(word),["R002"],
+            rule_licenses={f"R002:formal:{word}:{pair}"},
+        )
         assert items[0].coda==coda and items[1].onset==onset
+        assert traces[0].changed
+
+def test_substantive_morpheme_uses_representative_of_complex_coda():
+    # 값어치 [가버치] follows §15, not §14's 값이 [갑씨] pattern.
+    items,traces=apply_ordered_rules(parse_syllables("값어치"),["R002"])
+    assert items[0].coda=="ㅄ" and items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
+
+    items,traces=apply_ordered_rules(
+        parse_syllables("값어치"),["R002"],
+        rule_licenses={"R002:substantive:값어치:값>어"},
+    )
+    assert items[0].coda==""
+    assert items[1].onset=="ㅂ"
+    assert traces[0].changed
+
+def test_complex_coda_license_cannot_be_reused_for_another_word():
+    items,traces=apply_ordered_rules(
+        parse_syllables("값어치"),["R002"],
+        rule_licenses={"R002:formal:넋이:넋>이"},
+    )
+    assert items[0].coda=="ㅄ" and items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
 
 def test_h_complex_coda_before_vowel():
     for word,expected in {"많아":"ㄴ","싫어":"ㄹ"}.items():
