@@ -124,7 +124,7 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
 test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', () => {
   const expected = {
     맛없다: {surface:'마덥따', target:'\u043c\u0430\u0434\u0435\u043f\u0442\u0442\u0430', ipa:'ma dʌp̚ t͈a'},
-    겉옷: {surface:'거돋', target:'ґодот', ipa:'kʌ tot̚'},
+    겉옷: {surface:'거돋', target:'ґодот', ipa:'kʌ dot̚'},
     헛웃음: {surface:'허두슴', target:'ходусим', ipa:'hʌ du sɯm'},
     값어치: {surface:'가버치', target:'кабочі', ipa:'ka bʌ tɕʰi'},
     젖어미: {surface:'저더미', target:'джодомі', ipa:'tɕʌ dʌ mi'},
@@ -141,4 +141,26 @@ test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', 
     assert.equal(result.ipa, values.ipa, word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
+});
+
+test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () => {
+  const expected = {
+    맛있다: {surface:'마딛따', target:'мадіттта', ipa:'ma dit̚ t͈a', alternateSurface:'마싣따', alternateTarget:'машіттта', alternateIpa:'ma ɕit̚ t͈a'},
+    멋있다: {surface:'머딛따', target:'модіттта', ipa:'mʌ dit̚ t͈a', alternateSurface:'머싣따', alternateTarget:'мошіттта', alternateIpa:'mʌ ɕit̚ t͈a'},
+  };
+  for (const [word, values] of Object.entries(expected)) {
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.variants.length, 1, word);
+    assert.equal(result.variants[0].surface, values.alternateSurface, word);
+    assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
+    assert.equal(result.variants[0].ipa, values.alternateIpa, word);
+    assert.equal(result.variants[0].status, 'lexical-review', word);
+  }
+  const phrase = engine.convert('맛있다!');
+  assert.equal(phrase.variants.length, 1);
+  assert.equal(phrase.variants[0].ukrainian, 'машіттта!');
+  assert.equal(phrase.variants[0].ipa, 'ma ɕit̚ t͈a!');
 });

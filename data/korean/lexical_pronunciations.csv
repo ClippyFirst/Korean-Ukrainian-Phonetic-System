@@ -1,37 +1,39 @@
-input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confidence,target_status
-값없다,가법따,ка|боп|та,ka|bʌp̚|t͈a,https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=330620,"실질 형태소 없- 앞에서 ㅄ 단순화 후 대표음 ㅂ이 이동; [가법따]",high,model-selected
-의견란,의견난,ий|ґйон|нан,ɰiː|ɡjʌn|nan,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=8505,"어휘적 ㄹ→ㄴ 예외; 의의 어휘적 읽기 및 장음은 이 항목에서만 명시",high,provisional
-읽고,일꼬,іл|ко,il|k͈o,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"용언 어간 ㄺ 앞 ㄱ 계열 어미: ㄱ 탈락, ㄹ 유지; 된소리되기",high,model-selected
-읽다,익따,ік|та,ik̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"ㄺ의 일반 자음 앞 실현과 된소리되기",high,model-selected
-읽어,일거,іл|ґо,il|ɡʌ,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327808,"형식 형태소 어미 앞 ㄺ 연음: ㄹ은 종성, ㄱ은 다음 음절 초성",high,model-selected
-읽는,잉는,ін|нин,iŋ|nɯn,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"ㄺ 단순화 후 비음화; [잉는]",high,model-selected
-읽지,익찌,ік|чі,ik̚|tɕ͈i,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"ㄺ 단순화 후 된소리되기",high,model-selected
-맑게,말께,мал|ке,mal|k͈e,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"용언 어간 ㄺ 앞 ㄱ 계열 어미: ㄹ 유지, ㄱ 탈락",high,model-selected
-맑고,말꼬,мал|ко,mal|k͈o,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"용언 어간 ㄺ 앞 ㄱ 계열 어미: ㄹ 유지, ㄱ 탈락",high,model-selected
-맑다,막따,мак|та,mak̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"ㄺ의 일반 자음 앞 실현과 된소리되기",high,model-selected
-밝기,발끼,пал|кі,pal|k͈i,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313399,"파생어에서도 용언 어간 ㄺ의 ㄱ 앞 예외 적용",high,model-selected
-닭고기,닥꼬기,так|ко|ґі,tak̚|k͈o|ɡi,https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327808,"체언 닭-은 ㄱ 앞에서도 일반적으로 [ㄱ]; 된소리되기",high,model-selected
-꽃잎,꼰닙,кон|ніп,k͈on|nip̚,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219,"합성어의 ㄴ 첨가와 비음화; 표준 발음 [꼰닙]",high,model-selected
-밭이,바치,па|чі,pa|tɕʰi,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5748,"받침 ㅌ과 조사 이의 구개음화; 표준 발음 [바치]",high,model-selected
-밭을,바틀,па|тил,pa|tʰɯl,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5748,"받침 ㅌ의 모음 앞 연음; 표준 발음 [바틀]",high,model-selected
-넓네,널레,ноль|ле,nʌl|le,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237,"ㄼ의 ㄹ 실현 후 ㄴ+ㄹ 유음화; 표준 발음 [널레]",high,model-selected
-없다,업따,оп|та,ʌːp̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237,"ㅄ 단순화와 된소리되기; 표준 발음 [업ː따], 길이는 IPA에 별도 표시",high,model-selected
-없는,엄는,ом|нин,ʌːm|nɯn,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009,"ㅄ 단순화 후 비음화; 표준 발음 [엄ː는]",high,model-selected
-국물,궁물,кун|мул,kuŋ|mul,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009,"ㄱ 종성의 비음화; 표준 발음 [궁물]",high,model-selected
-떡볶이,떡뽀끼,ток|по|кі,t͈ʌk̚|p͈o|k͈i,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397,"접미사 -이 앞에서 ㄲ 연음, ㄱ 계열 뒤 된소리되기; 표준 발음 [떡뽀끼]",high,model-selected
-옷이,오시,о|ші,o|ɕi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397,"홑받침 ㅅ의 연음; ㅅ의 i 환경 표면 실현",high,model-selected
-서울역,서울력,со|ул|лйок,sʌ|ul|ljʌk̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"표준 발음법 제29항 붙임 1: ㄹ 받침 뒤 첨가되는 ㄴ은 [ㄹ]로 발음; 서울역 [서울력]. 어휘 경계를 모르는 일반 규칙에 맡기지 않고 검증된 표면형을 고정",high,model-selected
-같이,가치,ка|чі,ka|tɕʰi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313399,제17항 구개음화; 표준 발음 [가치]. Ukrainian target requires phonetic review.,high,provisional
-굳이,구지,ку|джі,ku|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=2&qna_seq=313201,제17항 용례; 표준 발음 [구지]. Ukrainian target requires phonetic review.,high,provisional
-곧이듣다,고지듣따,ко|джі|дит|та,ko|dʑi|tɯt̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [고지듣따]; 제23항 된소리되기. Ukrainian target requires phonetic review.,high,provisional
-미닫이,미다지,мі|да|джі,miː|ta|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [미ː다지]; 장음 표시 유지. Ukrainian target requires phonetic review.,high,provisional
-땀받이,땀바지,там|ба|джі,t͈am|pa|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [땀바지]. Ukrainian target requires phonetic review.,high,provisional
-벼훑이,벼훌치,бйо|хул|чі,pjʌ|hul|tɕʰi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [벼훌치]; ㄾ의 ㄹ 유지와 ㅌ의 구개음화. Ukrainian target requires phonetic review.,high,provisional
-굳히다,구치다,ку|чі|да,ku|tɕʰi|da,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851,"제17항 붙임; ㄷ+ㅎ 축약 후 [ㅊ], 표준 발음 [구치다]. Ukrainian target requires phonetic review.",high,provisional
-닫히다,다치다,да|чі|да,ta|tɕʰi|da,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851,"제17항 붙임; ㄷ+ㅎ 축약 후 [ㅊ], 표준 발음 [다치다]. Ukrainian target requires phonetic review.",high,provisional
-묻히다,무치다,му|чі|да,mu|tɕʰi|da,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851,"제17항 붙임; ㄷ+ㅎ 축약 후 [ㅊ], 표준 발음 [무치다]. Ukrainian target requires phonetic review.",high,provisional
-맛없다,마덥따,ма|деп|тта,ma|dʌp̚|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 실질 형태소 없- 앞: 받침 ㅅ의 대표음 ㄷ이 뒤 음절 초성으로 이동; 표준 발음 [마덥따]. Ukrainian target requires phonetic review.",high,provisional
-겉옷,거돋,ґо|дот,kʌ|tot̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 실질 형태소 옷 앞: 겉의 받침을 대표음 ㄷ으로 바꾸어 이동; 표준 발음 [거돋]. Ukrainian target requires phonetic review.",high,provisional
-헛웃음,허두슴,хо|ду|сим,hʌ|du|sɯm,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 실질 형태소 웃음 앞: 받침 ㅅ의 대표음 ㄷ이 이동; 표준 발음 [허두슴]. Ukrainian target requires phonetic review.",high,provisional
-값어치,가버치,ка|бо|чі,ka|bʌ|tɕʰi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 붙임: 겹받침 ㅄ에서 한 자음만 이동; 표준 발음 [가버치]. Ukrainian target requires phonetic review.",high,provisional
-젖어미,저더미,джо|до|мі,tɕʌ|dʌ|mi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 실질 형태소 어미 앞: 받침 ㅈ의 대표음 ㄷ이 이동; 표준 발음 [저더미]. Ukrainian target requires phonetic review.",high,provisional
+input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confidence,target_status,alternate_surface_hangul,alternate_target_syllables,alternate_ipa_syllables,variant_note
+값없다,가법따,ка|боп|та,ka|bʌp̚|t͈a,https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=330620,"실질 형태소 없- 앞에서 ㅄ 단순화 후 대표음 ㅂ이 이동; [가법따]",high,model-selected,,,
+의견란,의견난,ий|ґйон|нан,ɰiː|ɡjʌn|nan,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=8505,"어휘적 ㄹ→ㄴ 예외; 의의 어휘적 읽기 및 장음은 이 항목에서만 명시",high,provisional,,,
+읽고,일꼬,іл|ко,il|k͈o,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"용언 어간 ㄺ 앞 ㄱ 계열 어미: ㄱ 탈락, ㄹ 유지; 된소리되기",high,model-selected,,,
+읽다,익따,ік|та,ik̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"ㄺ의 일반 자음 앞 실현과 된소리되기",high,model-selected,,,
+읽어,일거,іл|ґо,il|ɡʌ,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327808,"형식 형태소 어미 앞 ㄺ 연음: ㄹ은 종성, ㄱ은 다음 음절 초성",high,model-selected,,,
+읽는,잉는,ін|нин,iŋ|nɯn,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"ㄺ 단순화 후 비음화; [잉는]",high,model-selected,,,
+읽지,익찌,ік|чі,ik̚|tɕ͈i,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"ㄺ 단순화 후 된소리되기",high,model-selected,,,
+맑게,말께,мал|ке,mal|k͈e,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"용언 어간 ㄺ 앞 ㄱ 계열 어미: ㄹ 유지, ㄱ 탈락",high,model-selected,,,
+맑고,말꼬,мал|ко,mal|k͈o,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"용언 어간 ㄺ 앞 ㄱ 계열 어미: ㄹ 유지, ㄱ 탈락",high,model-selected,,,
+맑다,막따,мак|та,mak̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"ㄺ의 일반 자음 앞 실현과 된소리되기",high,model-selected,,,
+밝기,발끼,пал|кі,pal|k͈i,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313399,"파생어에서도 용언 어간 ㄺ의 ㄱ 앞 예외 적용",high,model-selected,,,
+닭고기,닥꼬기,так|ко|ґі,tak̚|k͈o|ɡi,https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327808,"체언 닭-은 ㄱ 앞에서도 일반적으로 [ㄱ]; 된소리되기",high,model-selected,,,
+꽃잎,꼰닙,кон|ніп,k͈on|nip̚,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219,"합성어의 ㄴ 첨가와 비음화; 표준 발음 [꼰닙]",high,model-selected,,,
+밭이,바치,па|чі,pa|tɕʰi,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5748,"받침 ㅌ과 조사 이의 구개음화; 표준 발음 [바치]",high,model-selected,,,
+밭을,바틀,па|тил,pa|tʰɯl,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5748,"받침 ㅌ의 모음 앞 연음; 표준 발음 [바틀]",high,model-selected,,,
+넓네,널레,ноль|ле,nʌl|le,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237,"ㄼ의 ㄹ 실현 후 ㄴ+ㄹ 유음화; 표준 발음 [널레]",high,model-selected,,,
+없다,업따,оп|та,ʌːp̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237,"ㅄ 단순화와 된소리되기; 표준 발음 [업ː따], 길이는 IPA에 별도 표시",high,model-selected,,,
+없는,엄는,ом|нин,ʌːm|nɯn,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009,"ㅄ 단순화 후 비음화; 표준 발음 [엄ː는]",high,model-selected,,,
+국물,궁물,кун|мул,kuŋ|mul,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009,"ㄱ 종성의 비음화; 표준 발음 [궁물]",high,model-selected,,,
+떡볶이,떡뽀끼,ток|по|кі,t͈ʌk̚|p͈o|k͈i,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397,"접미사 -이 앞에서 ㄲ 연음, ㄱ 계열 뒤 된소리되기; 표준 발음 [떡뽀끼]",high,model-selected,,,
+옷이,오시,о|ші,o|ɕi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397,"홑받침 ㅅ의 연음; ㅅ의 i 환경 표면 실현",high,model-selected,,,
+서울역,서울력,со|ул|лйок,sʌ|ul|ljʌk̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"표준 발음법 제29항 붙임 1: ㄹ 받침 뒤 첨가되는 ㄴ은 [ㄹ]로 발음; 서울역 [서울력]. 어휘 경계를 모르는 일반 규칙에 맡기지 않고 검증된 표면형을 고정",high,model-selected,,,
+같이,가치,ка|чі,ka|tɕʰi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313399,제17항 구개음화; 표준 발음 [가치]. Ukrainian target requires phonetic review.,high,provisional,,,
+굳이,구지,ку|джі,ku|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=2&qna_seq=313201,제17항 용례; 표준 발음 [구지]. Ukrainian target requires phonetic review.,high,provisional,,,
+곧이듣다,고지듣따,ко|джі|дит|та,ko|dʑi|tɯt̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [고지듣따]; 제23항 된소리되기. Ukrainian target requires phonetic review.,high,provisional,,,
+미닫이,미다지,мі|да|джі,miː|ta|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [미ː다지]; 장음 표시 유지. Ukrainian target requires phonetic review.,high,provisional,,,
+땀받이,땀바지,там|ба|джі,t͈am|pa|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [땀바지]. Ukrainian target requires phonetic review.,high,provisional,,,
+벼훑이,벼훌치,бйо|хул|чі,pjʌ|hul|tɕʰi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [벼훌치]; ㄾ의 ㄹ 유지와 ㅌ의 구개음화. Ukrainian target requires phonetic review.,high,provisional,,,
+굳히다,구치다,ку|чі|да,ku|tɕʰi|da,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851,"제17항 붙임; ㄷ+ㅎ 축약 후 [ㅊ], 표준 발음 [구치다]. Ukrainian target requires phonetic review.",high,provisional,,,
+닫히다,다치다,да|чі|да,ta|tɕʰi|da,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851,"제17항 붙임; ㄷ+ㅎ 축약 후 [ㅊ], 표준 발음 [다치다]. Ukrainian target requires phonetic review.",high,provisional,,,
+묻히다,무치다,му|чі|да,mu|tɕʰi|da,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851,"제17항 붙임; ㄷ+ㅎ 축약 후 [ㅊ], 표준 발음 [무치다]. Ukrainian target requires phonetic review.",high,provisional,,,
+맛없다,마덥따,ма|деп|тта,ma|dʌp̚|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 실질 형태소 없- 앞: 받침 ㅅ의 대표음 ㄷ이 뒤 음절 초성으로 이동; 표준 발음 [마덥따]. Ukrainian target requires phonetic review.",high,provisional,,,
+겉옷,거돋,ґо|дот,kʌ|dot̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 실질 형태소 옷 앞: 겉의 받침을 대표음 ㄷ으로 바꾸어 이동; 표준 발음 [거돋]. Ukrainian target requires phonetic review.",high,provisional,,,
+헛웃음,허두슴,хо|ду|сим,hʌ|du|sɯm,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 실질 형태소 웃음 앞: 받침 ㅅ의 대표음 ㄷ이 이동; 표준 발음 [허두슴]. Ukrainian target requires phonetic review.",high,provisional,,,
+값어치,가버치,ка|бо|чі,ka|bʌ|tɕʰi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 붙임: 겹받침 ㅄ에서 한 자음만 이동; 표준 발음 [가버치]. Ukrainian target requires phonetic review.",high,provisional,,,
+젖어미,저더미,джо|до|мі,tɕʌ|dʌ|mi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 실질 형태소 어미 앞: 받침 ㅈ의 대표음 ㄷ이 이동; 표준 발음 [저더미]. Ukrainian target requires phonetic review.",high,provisional,,,
+맛있다,마딛따,ма|діт|тта,ma|dit̚|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 해설: [마딛따] 원칙 발음; [마싣따]도 허용. Ukrainian target requires phonetic review.",high,provisional,마싣따,ма|шіт|тта,ma|ɕit̚|t͈a,"NIKL §15 commentary permits [마싣따] alongside [마딛따]; Ukrainian target provisional."
+멋있다,머딛따,мо|діт|тта,mʌ|dit̚|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제15항 해설: [머딛따] 원칙 발음; [머싣따]도 허용. Ukrainian target requires phonetic review.",high,provisional,머싣따,мо|шіт|тта,mʌ|ɕit̚|t͈a,"NIKL §15 commentary permits [머싣따] alongside [머딛따]; Ukrainian target provisional."
