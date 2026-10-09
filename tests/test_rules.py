@@ -110,16 +110,17 @@ def test_complex_coda_license_cannot_be_reused_for_another_word():
 def test_h_deletion_before_vowel_requires_exact_ending_or_suffix_evidence():
     cases={"많아":("많>아","ㄴ"),"싫어":("싫>어","ㄹ")}
     for word,(pair,expected) in cases.items():
-        items,traces=apply_ordered_rules(parse_syllables(word),["R002","R003"])
+        items,traces=apply_ordered_rules(parse_syllables(word),["R003","R002"])
         assert items[0].coda in {"ㄶ","ㅀ"}
-        assert traces[1].status=="conditional-disabled"
+        assert traces[0].status=="conditional-disabled"
 
         items,traces=apply_ordered_rules(
-            parse_syllables(word),["R002","R003"],
+            parse_syllables(word),["R003","R002"],
             rule_licenses={f"R003:ending_or_suffix_h_deletion:{word}:{pair}"},
         )
-        assert items[0].coda==expected
-        assert traces[1].changed
+        assert items[0].coda==""
+        assert items[1].onset==expected
+        assert traces[0].changed
 
 def test_h_deletion_license_cannot_be_reused_for_another_form():
     items,traces=apply_ordered_rules(
