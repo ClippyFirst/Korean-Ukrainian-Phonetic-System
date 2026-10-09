@@ -94,3 +94,30 @@ test('lexicon does not rewrite unrelated forms with the same coda spelling',()=>
   assert.equal(engine.convert('닭이').ukrainian,'талґі');
   assert.equal(engine.convert('값이').ukrainian,'капші');
 });
+
+test('sourced lexical edge cases cover n-insertion, nasalization, liaison, palatalization and fortition',()=>{
+  const expected={
+    '꽃잎':['꼰닙','конніп','k͈on nip̚'],
+    '밭이':['바치','пачі','pa tɕʰi'],
+    '밭을':['바틀','патил','pa tʰɯl'],
+    '넓네':['널레','нольле','nʌl le'],
+    '없다':['업따','опта','ʌːp̚ t͈a'],
+    '없는':['엄는','омнин','ʌːm nɯn'],
+    '국물':['궁물','кунмул','kuŋ mul'],
+    '떡볶이':['떡뽀끼','токпокі','t͈ʌk̚ p͈o k͈i'],
+    '옷이':['오시','оші','o ɕi']
+  };
+  for(const [input,[surface,ua,ipa]] of Object.entries(expected)){
+    const r=engine.convert(input);
+    assert.equal(r.ukrainian,ua,input);
+    assert.equal(r.ipa,ipa,input);
+    assert.equal(r.status,'lexical',input);
+    assert.ok(r.trace[0].rules.includes('lexical-pronunciation'),input);
+  }
+});
+
+test('sourced lexical edge cases preserve spaces and punctuation in phrases',()=>{
+  const r=engine.convert('꽃잎, 밭이! 국물');
+  assert.equal(r.ukrainian,'конніп, пачі! кунмул');
+  assert.equal(r.ipa,'k͈on nip̚, pa tɕʰi! kuŋ mul');
+});
