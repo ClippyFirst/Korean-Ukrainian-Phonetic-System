@@ -16,3 +16,11 @@ def test_broad_ipa_voicing_after_sonorant():
 def test_broad_ipa_voicing_of_jieut_after_vowel():
     result = phoneticize_korean("표준")["ipa"]["ipa"]
     assert "dʑ" in result
+
+
+def test_complex_coda_components_are_explicit_in_phonemic_ipa():
+    from korean_ukrainian.phonology import split_coda
+    assert split_coda("ㄳ") == ("ㄱ", "ㅅ")
+    assert split_coda("ㄶ") == ("ㄴ", "ㅎ")
+    result = phoneticize_korean("넋", ipa_level="phonemic")["ipa"]["ipa"]
+    assert "k" in result and "s" in result
