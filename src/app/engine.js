@@ -136,10 +136,27 @@ function applyContextualRules(units){
       b.onset=ASPIRATION[b.onset];
       a.coda=a.coda==='ㄶ'?'ㄴ':a.coda==='ㅀ'?'ㄹ':'';
       rules.push('h-aspiration');
-    }else if(a.coda&&b.onset==='ㅎ'&&ASPIRATION[rep]){
-      b.onset=ASPIRATION[rep];
-      a.coda='';
-      rules.push('h-aspiration');
+    }else if(a.coda&&b.onset==='ㅎ'){
+      const pair=COMPLEX[a.coda];
+      if(pair){
+        // Preserve the first component of complex codas while ㅎ combines
+        // with the second: 읽히다 [일키다], 앉히다 [안치다],
+        // 넓히다 [널피다].
+        const moved=pair[1];
+        const aspirated=ASPIRATION[moved]||ASPIRATION[representative(moved)];
+        if(aspirated){
+          b.onset=aspirated;
+          a.coda=pair[0];
+          rules.push('complex-coda-h-aspiration');
+        }
+      }else{
+        const aspirated=ASPIRATION[a.coda]||ASPIRATION[rep];
+        if(aspirated){
+          b.onset=aspirated;
+          a.coda='';
+          rules.push('h-aspiration');
+        }
+      }
     }
 
     // R005: nasal assimilation. Use the final representative for obstruent
