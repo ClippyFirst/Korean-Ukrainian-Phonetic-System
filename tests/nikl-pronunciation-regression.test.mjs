@@ -436,3 +436,50 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
   assert.equal(compound.variants[0].ukrainian, 'паншінбані');
   assert.equal(compound.variants[0].ipa, 'paːn ɕin baː ni');
 });
+
+test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readings', () => {
+  const variants = {
+    '회': {surface:'회', target:'хве', ipa:'hø', alternateSurface:'훼', alternateTarget:'хве', alternateIpa:'hwe'},
+    '위': {surface:'위', target:'ві', ipa:'y', alternateSurface:'위', alternateTarget:'ві', alternateIpa:'wi'},
+    '계집': {surface:'계집', target:'кєджіп', ipa:'kjeː dʑip̚', alternateSurface:'게집', alternateTarget:'кеджіп', alternateIpa:'keː dʑip̚'},
+    '계시다': {surface:'계시다', target:'кєшіда', ipa:'kjeː ɕi da', alternateSurface:'게시다', alternateTarget:'кешіда', alternateIpa:'keː ɕi da'},
+    '시계': {surface:'시계', target:'шіґє', ipa:'ɕi ɡje', alternateSurface:'시게', alternateTarget:'шіґе', alternateIpa:'ɕi ɡe'},
+    '연계': {surface:'연계', target:'йоґє', ipa:'jʌn ɡje', alternateSurface:'연게', alternateTarget:'йоґе', alternateIpa:'jʌn ɡe'},
+    '몌별': {surface:'몌별', target:'мєбйол', ipa:'mje bjʌl', alternateSurface:'메별', alternateTarget:'мебйол', alternateIpa:'me bjʌl'},
+    '개폐': {surface:'개폐', target:'кепє', ipa:'kɛ pʰje', alternateSurface:'개페', alternateTarget:'кепе', alternateIpa:'kɛ pʰe'},
+    '혜택': {surface:'혜택', target:'хєтек', ipa:'hjeː tʰɛk̚', alternateSurface:'헤택', alternateTarget:'хетек', alternateIpa:'heː tʰɛk̚'},
+    '지혜': {surface:'지혜', target:'чіхє', ipa:'tɕi hje', alternateSurface:'지헤', alternateTarget:'чіхе', alternateIpa:'tɕi he'},
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, values] of Object.entries(variants)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, values.surface, word);
+    assert.equal(row.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.variants.length, 1, word);
+    assert.equal(result.variants[0].surface, values.alternateSurface, word);
+    assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
+    assert.equal(result.variants[0].ipa, values.alternateIpa, word);
+  }
+  const contractions = {
+    '가져': ['가저', 'каджо', 'ka dʑʌ'],
+    '쪄': ['쩌', 'чо', 'tɕ͈ʌ'],
+    '다쳐': ['다처', 'тачо', 'ta tɕʰʌ'],
+    '묻혀': ['무쳐', 'мучо', 'mu tɕʰʌ'],
+    '붙여': ['부쳐', 'пучо', 'pu tɕʰʌ'],
+    '잊혀': ['이쳐', 'ічо', 'i tɕʰʌ'],
+  };
+  for (const [word, [surface, target, ipa]] of Object.entries(contractions)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, surface, word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, target, word);
+    assert.equal(result.ipa, ipa, word);
+  }
+});
