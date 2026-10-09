@@ -15,3 +15,4 @@ R012,sino-korean-l-fortition,ㄹ+ㄷ|ㅅ|ㅈ,ㄸ|ㅆ|ㅉ,Sino-Korean lexical/mor
 R013,adnominal-l-fortition,adnominal-ㄹ+plain-obstruent,fortis,adnominal -(으)ㄹ context with explicit license,word|morpheme,13,S001,conditional,high
 R014,compound-fortition,compound-boundary+coda+plain-obstruent,fortis,compound/saisiot-like lexical context with explicit license,word|morpheme,14,S001,conditional,medium
 R015,saisiot-pronunciation,licensed-saisiot+coda,fortition-or-nasalization,explicit saisiot lexical/orthographic license,word|morpheme,15,S001,conditional,high
+R016,verbal-stem-rieul-giyeok-exception,verb-stem-ㄺ+ㄱ-initial-ending,ㄹ+ㄲ,explicit verbal-stem and suffix license required,morpheme,16,S009,conditional,high
