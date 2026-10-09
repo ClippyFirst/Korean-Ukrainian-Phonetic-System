@@ -22,6 +22,7 @@ test('nasal assimilation is explicit',()=>{const r=engine.convert('국물');asse
 test('aspirated ㅍ coda participates in nasal assimilation',()=>{const r=engine.convert('앞문');assert.equal(r.ukrainian,'аммун');assert.ok(engine.convert('앞문').trace[0].rules.includes('nasal-assimilation'));});
 test('h aspiration is explicit',()=>{const r=engine.convert('각하');assert.equal(r.ukrainian,'кака');assert.ok(r.trace.some(x=>x.rules.includes('h-aspiration')));});
 test('complex ㅎ codas aspirate following lenis stops',()=>{assert.equal(engine.convert('많다').ukrainian,'манта');assert.equal(engine.convert('싫다').ukrainian,'шілта');});
+test('complex codas retain their first component before ㅎ aspiration',()=>{assert.equal(engine.convert('읽히다').ukrainian,'ілкіда');assert.ok(engine.convert('읽히다').trace[0].rules.includes('complex-coda-h-aspiration'));assert.equal(engine.convert('앉히다').ukrainian,'анчіда');assert.equal(engine.convert('넓히다').ukrainian,'нолпіда');});
 test('palatalization is explicit',()=>{const r=engine.convert('같이');assert.ok(r.trace.some(x=>x.rules.includes('palatalization')));});
 test('simple liaison is contextual',()=>{const r=engine.convert('밥이');assert.equal(r.status,'contextual');assert.equal(r.ukrainian,'пабі');});
 test('standard lexical ㄼ exception 밟- is preserved before consonants',()=>{const r=engine.convert('밟는');assert.equal(r.ukrainian,'памнин');assert.ok(r.trace[0].rules.includes('lexical-coda-balm'));});
