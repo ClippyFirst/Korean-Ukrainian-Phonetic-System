@@ -50,7 +50,7 @@ The website now makes this distinction visible and links selected edge cases dir
 3. **Shared data.** The browser engine and Python pipeline consume the same CSV, reducing the chance that a correction appears on one interface but not the other.
 4. **Broad IPA, not narrow phonetics.** The IPA column records a practical broad surface representation and selected lexical length information; it is not acoustic measurement or a claim about every speaker and dialect.
 5. **Modelled Ukrainian target.** Ukrainian output is author-designed practical transcription. It is not a translation and is not an officially promulgated Ukrainian standard.
-6. **Unknown contexts remain unknown.** The system should flag unresolved context rather than silently invent lexical identity, morphology, or a unique reading.
+6. **Unknown contexts remain unknown.** The system should flag unresolved context rather than silently invent lexical identity, morphology, or a unique reading. The Python §29 rule now requires an exact word/pair or phrase/pair license; `n_insertion_licensed=True` alone is intentionally insufficient.
 
 ## Regression and quality gates
 
