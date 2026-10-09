@@ -51,7 +51,7 @@ def test_neolp_compound_lexical_exception():
 
 
 def test_complex_h_coda_aspiration_retains_nasal_or_liquid():
-    for word, expected_coda, expected_onset in {"많다": ("ㄴ", "ㅌ"), "싫다": ("ㄹ", "ㅌ")}.items():
+    for word, (expected_coda, expected_onset) in {"많다": ("ㄴ", "ㅌ"), "싫다": ("ㄹ", "ㅌ")}.items():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R004"])
         assert (items[0].coda, items[1].onset) == (expected_coda, expected_onset)
         assert traces[0].changed
