@@ -312,6 +312,7 @@ test('NIKL §16 official letter-name examples are exact lexical entries', () => 
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, target, word);
     assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ukrainian, target, word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
@@ -708,18 +709,18 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
 test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', () => {
   const expected = {
     '줄넘기': ['줄럼끼', 'tɕul lʌm k͈i', 'чульломкі'],
-    '임진란': ['임진난', 'imː tɕin nan', '임진난'],
-    '생산량': ['생산냥', 'sɛŋ san njaŋ', '생산냥'],
-    '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', '결딴녁'],
-    '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', '공꿘녁'],
-    '동원령': ['동원녕', 'toŋː wʌn njʌŋ', '동원녕'],
-    '상견례': ['상견녜', 'saŋ ɡjʌn nje', '상견녜'],
-    '이원론': ['이원논', 'iː wʌn non', '이원논'],
-    '입원료': ['이붠뇨', 'i bwʌn njo', '이붠뇨'],
-    '구근류': ['구근뉴', 'ku ɡɯn nju', '구근뉴'],
+    '임진란': ['임진난', 'imː tɕin nan', 'імчіннан'],
+    '생산량': ['생산냥', 'sɛŋ san njaŋ', 'сенсаннян'],
+    '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйольтаннок'],
+    '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', 'конквоннок'],
+    '동원령': ['동원녕', 'toŋː wʌn njʌŋ', 'тонвоннон'],
+    '상견례': ['상견녜', 'saŋ ɡjʌn nje', 'санґйоннє'],
+    '이원론': ['이원논', 'iː wʌn non', 'івоннон'],
+    '입원료': ['이붠뇨', 'i bwʌn njo', 'ібвонньо'],
+    '구근류': ['구근뉴', 'ku ɡɯn nju', 'куґинню'],
   };
   const rows = parseCsv(lexical);
-  for (const [word, [surface, ipa, _surfaceTarget]] of Object.entries(expected)) {
+  for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
     const row = rows.find((item) => item.input === word);
     assert.ok(row, word);
     assert.equal(row.surface_hangul, surface, word);
