@@ -151,4 +151,11 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
     target=map_ipa_to_ukrainian(surface["ipa"]["ipa"],target_adapter)
     selected=_select_target(target)
     orthographic=render_sequence(selected["segments"]) if selected else None
-    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"score_type":"heuristic_cost","confidence":None,"selection_status":"top-ranked segmentwise heuristic candidate; not probability" if selected else "unavailable_without_target_inventory","sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype"}
+    lexical=LEXICAL_PRONUNCIATIONS.get(text)
+    target_status="model-selected"
+    selection_status="top-ranked segmentwise heuristic candidate; not probability" if selected else "unavailable_without_target_inventory"
+    if lexical and lexical.get("target_syllables"):
+        orthographic="".join(lexical["target_syllables"].split("|"))
+        target_status=lexical.get("target_status","model-selected")
+        selection_status="exact-form lexical target override; Ukrainian output is author-designed"
+    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype"}
