@@ -31,6 +31,8 @@ The regression suite now deliberately probes cases where a naive grapheme-to-gra
 - **읽히다 / 앉히다 / 넓히다**: aspiration from ㅎ combines with the second member of a complex coda while retaining its first member: [일키다], [안치다], [널피다].
 - **옷하고**: aspiration after a coda must consult final neutralization; the rule cannot be triggered only by an exact written-coda lookup.
 - **희망**: ㅢ in a syllable with a consonant onset is realized as [i]. By contrast, ㅇ+ㅢ uses normative [ɰi] as the primary output; optional [i]/[e] readings are documented but not guessed without lexical/morphological context.
+- **§17 palatalization**: sourced entries cover 같이, 굳이, 곧이듣다, 미닫이, 땀받이, 벼훑이, 굳히다, 닫히다, 묻히다, and 밭이. The Python research rule requires an explicit formal-morpheme/suffix license; an unknown browser candidate is withheld with a warning rather than automatically palatalized.
+- **Negative control 밭에 → [바테]**: the following vowel is ㅔ, not the licensed ㅣ environment; do not apply §17.
 - **서울역 → [서울력]**: §29's ㄹ + inserted ㄴ → ㄹ rule is handled with a sourced exact-form entry rather than generic liaison.
 - **한여름 / 가여름**: licensed n-insertion is permitted after a coda in the configured environment, but is not blindly inserted after an open syllable.
 - **발음**: the structural panel must retain the written decomposition of 음 as ㅇ+ㅡ+ㅁ even though liaison changes its surface onset.
@@ -49,7 +51,7 @@ A UI build is not by itself scientific validation. The web layer is complete onl
 ## Lexical edge-case layer (2026-10-09 follow-up)
 
 - Shared browser/Python lexical data: `data/korean/lexical_pronunciations.csv`.
-- Exact entries: 값없다 [가법따], 의견란 [의ː견난], 읽고/읽다/읽어/읽는/읽지, 맑게/맑고/맑다, 밝기, 닭고기.
+- Exact entries: 값없다 [가법따], 의견란 [의ː견난], 읽고/읽다/읽어/읽는/읽지, 맑게/맑고/맑다, 밝기, 닭고기, and sourced §17 palatalization examples.
 - Confirm each entry has an official source URL, surface Hangul form, IPA sequence, Ukrainian target syllables, and a confidence distinction.
 - `의견란` has a normative pronunciation entry, but its Ukrainian `ийґйоннан` rendering is explicitly provisional and must not be treated as a normative Ukrainian transcription.
 - Negative controls: `닭이` remains `달기` and `값이` remains `갑씨`; the lexical ㄺ exceptions must not spread to noun `닭-` or all words with coda `ㅄ`.
