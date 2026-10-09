@@ -69,3 +69,8 @@ The browser shows the lexical rule in the trace and keeps the original Hangul de
 **Important target-side qualification:** the Korean pronunciation of 의견란 is documented as [의ː견난], but `ийґйоннан` is an author-designed Ukrainian approximation, not an official or independently validated Ukrainian standard. The entry is therefore marked `target_status=provisional`; the browser explicitly labels it as requiring target-side review. The phonological fact and the Ukrainian rendering must not share one confidence label.
 
 The current lexicon is a deliberately small, auditable seed—not a comprehensive dictionary or morphological analyzer. Exact-form matching means unseen inflections and compounds remain uncovered until added with a source, positive case, negative control, and accepted variants. Future work should support multiple licensed pronunciations where official sources permit them.
+
+
+### Explicit morphological rule for ㄺ + ㄱ
+
+The Python rule engine now also exposes `R016:verb_stem_rieul_giyeok_suffix`. It retains ㄹ and fortifies the following ㄱ only when a caller explicitly licenses the verbal-stem/ending analysis and selects a morpheme-aware boundary mode. Without that license, the rule is disabled; the engine does not guess that a given ㄺ form is a verb stem. This is intentionally separate from the exact-form lexical entries, and it must not spread to noun forms such as 닭고기 [닥꼬기]. A regression test checks both the licensed and unlicensed paths.
