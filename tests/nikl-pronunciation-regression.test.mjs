@@ -123,7 +123,7 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
 
 test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', () => {
   const expected = {
-    맛없다: {surface:'마덥따', target:'\u043c\u0430\u0434\u0435\u043f\u0442\u0442\u0430', ipa:'ma dʌp̚ t͈a'},
+    맛없다: {surface:'마덥따', target:'\u043c\u0430\u0434\u0435\u043f\u0442\u0430', ipa:'ma dʌp̚ t͈a'},
     겉옷: {surface:'거돋', target:'ґодот', ipa:'kʌ dot̚'},
     헛웃음: {surface:'허두슴', target:'ходусим', ipa:'hʌ du sɯm'},
     값어치: {surface:'가버치', target:'кабочі', ipa:'ka bʌ tɕʰi'},
@@ -145,8 +145,8 @@ test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', 
 
 test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () => {
   const expected = {
-    맛있다: {surface:'마딛따', target:'мадіттта', ipa:'ma dit̚ t͈a', alternateSurface:'마싣따', alternateTarget:'машіттта', alternateIpa:'ma ɕit̚ t͈a'},
-    멋있다: {surface:'머딛따', target:'модіттта', ipa:'mʌ dit̚ t͈a', alternateSurface:'머싣따', alternateTarget:'мошіттта', alternateIpa:'mʌ ɕit̚ t͈a'},
+    맛있다: {surface:'마딛따', target:'мадітта', ipa:'ma dit̚ t͈a', alternateSurface:'마싣따', alternateTarget:'машітта', alternateIpa:'ma ɕit̚ t͈a'},
+    멋있다: {surface:'머딛따', target:'модітта', ipa:'mʌ dit̚ t͈a', alternateSurface:'머싣따', alternateTarget:'мошітта', alternateIpa:'mʌ ɕit̚ t͈a'},
   };
   for (const [word, values] of Object.entries(expected)) {
     const result = engine.convert(word);
@@ -161,7 +161,7 @@ test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () 
   }
   const phrase = engine.convert('맛있다!');
   assert.equal(phrase.variants.length, 1);
-  assert.equal(phrase.variants[0].ukrainian, 'машіттта!');
+  assert.equal(phrase.variants[0].ukrainian, 'машітта!');
   assert.equal(phrase.variants[0].ipa, 'ma ɕit̚ t͈a!');
 });
 
@@ -207,9 +207,9 @@ test('simple codas with §15-sensitive representatives are not transferred blind
 
 test('sourced §13 simple-coda examples preserve their formal-morpheme readings', () => {
   const expected = {
-    깎아: {surface:'까까', target:'ккакка', ipa:'k͈a k͈a'},
-    있어: {surface:'이써', target:'іссо', ipa:'i s͈ʌ'},
-    쫓아: {surface:'쪼차', target:'ччоча', ipa:'tɕ͈o tɕʰa'},
+    깎아: {surface:'까까', target:'кака', ipa:'k͈a k͈a'},
+    있어: {surface:'이써', target:'ісо', ipa:'i s͈ʌ'},
+    쫓아: {surface:'쪼차', target:'чоча', ipa:'tɕ͈o tɕʰa'},
     덮어: {surface:'더퍼', target:'топо', ipa:'tʌ pʰʌ'},
     맞아: {surface:'마자', target:'маджа', ipa:'ma dʑa'},
     낮아: {surface:'나자', target:'наджа', ipa:'na dʑa'},
@@ -259,7 +259,7 @@ test('official §12(4) H-deletion examples are sourced and marked provisional on
   const expected = {
     낳은: {surface:'나은', target:'наин', ipa:'na ɯn'},
     놓아: {surface:'노아', target:'ноа', ipa:'no a'},
-    쌓이다: {surface:'싸이다', target:'ссаіда', ipa:'s͈a i da'},
+    쌓이다: {surface:'싸이다', target:'саіда', ipa:'s͈a i da'},
     많아: {surface:'마나', target:'мана', ipa:'ma na'},
     않은: {surface:'아는', target:'анин', ipa:'a nɯn'},
     닳아: {surface:'다라', target:'тара', ipa:'ta ɾa'},
@@ -481,5 +481,25 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, target, word);
     assert.equal(result.ipa, ipa, word);
+  }
+});
+
+test('fortisness remains in IPA but is not encoded by doubled Ukrainian graphemes', () => {
+  const expected = {
+    '맛없다': ['мадепта', 'ma dʌp̚ t͈a'],
+    '맛있다': ['мадітта', 'ma dit̚ t͈a'],
+    '멋있다': ['модітта', 'mʌ dit̚ t͈a'],
+    '깎아': ['кака', 'k͈a k͈a'],
+    '있어': ['ісо', 'i s͈ʌ'],
+    '쫓아': ['чоча', 'tɕ͈o tɕʰa'],
+    '쌓이다': ['саіда', 's͈a i da'],
+    '얽거나': ['олкона', 'ʌl k͈ʌ na'],
+  };
+  for (const [word, [target, ipa]] of Object.entries(expected)) {
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, target, word);
+    assert.equal(result.ipa, ipa, word);
+    assert.ok(!/(кк|тт|пп|сс|чч)/u.test(result.ukrainian), word);
   }
 });
