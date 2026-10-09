@@ -151,3 +151,12 @@ def test_second_pass_lexical_targets_are_shared_with_python_transliteration():
         assert result["ukrainian_orthography"] == ukrainian, word
         assert result["target_status"] == "model-selected", word
 
+
+
+def test_seoul_station_uses_sourced_surface_form_and_shared_target():
+    from korean_ukrainian.pipeline import transliterate_korean
+    result = phoneticize_korean("서울역")
+    assert result["ipa"]["ipa"] == "sʌ.ul.ljʌk̚"
+    target = transliterate_korean("서울역")
+    assert target["ukrainian_orthography"] == "соуллйок"
+    assert target["target_status"] == "model-selected"
