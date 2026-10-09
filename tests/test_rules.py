@@ -281,3 +281,30 @@ def test_section_15_sensitive_guard_does_not_block_unambiguous_vowel_ㅔ():
     assert items[0].coda==""
     assert items[1].onset=="ㅌ"
     assert traces[0].changed
+
+def test_generic_liaison_does_not_preempt_section_17_palatalization():
+    # Default pipeline runs R002 before R007. R002 must preserve the
+    # context so a licensed formal-morpheme ㅣ can be palatalized later.
+    for word, expected in {"같이": ("", "ㅊ"), "굳이": ("", "ㅈ")}.items():
+        items,traces=apply_ordered_rules(
+            parse_syllables(word),
+            rule_licenses={"R007:formal_morpheme_i"},
+        )
+        assert (items[0].coda,items[1].onset)==expected
+        assert any(t.rule_id=="R007" and t.changed for t in traces)
+
+    # Without morphology evidence, neither rule may guess the result.
+    items,traces=apply_ordered_rules(parse_syllables("갇이"))
+    assert items[0].coda=="ㄷ" and items[1].onset=="ㅇ"
+    assert any(t.rule_id=="R002" and t.status=="conditional-disabled" for t in traces)
+    assert any(t.rule_id=="R007" and t.status=="conditional-disabled" for t in traces)
+
+def test_section_17_license_survives_default_rule_order_after_h_sequence():
+    for word in ("굳히다","닫히다","묻히다"):
+        items,traces=apply_ordered_rules(
+            parse_syllables(word),
+            rule_licenses={"R007:dh_suffix_hi"},
+        )
+        assert items[1].onset=="ㅊ", word
+        assert any(t.rule_id=="R004" and t.changed for t in traces)
+        assert any(t.rule_id=="R007" and t.changed for t in traces)
