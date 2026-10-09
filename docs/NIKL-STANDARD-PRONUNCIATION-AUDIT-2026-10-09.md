@@ -133,3 +133,10 @@ Official source: NIKL, *표준 발음법*, §§11 and 23: https://www.korean.go.
 The morphology-conditioned fortition rules R010–R014 no longer accept category-only switches (such as `R014:compound`) as sufficient evidence. Each rule now requires a license tied to the exact full form and adjacent syllable pair, for example `R014:compound:문고리:문>고`. This prevents a compound, Sino-Korean item, stem ending, or adnominal construction's license from being reused for unrelated words. §27 also explicitly permits the licensed adnominal ㄹ construction across a written word boundary only in phrase mode, e.g. 할 것 [할껃].
 
 Official source: NIKL, *표준 발음법*, §§24–28: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+
+
+### Exact evidence for saisiot pronunciation (§30)
+
+R015 now requires a full-form and adjacent-pair license such as `R015:saisiot:냇가:냇>가`, rather than a category-only `R015:saisiot` token. This prevents a lexical saisiot analysis from being reused for an unrelated ㅅ-final sequence. The rule continues to implement the documented §30 outcomes only for the licensed pair.
+
+Official source: NIKL, *표준 발음법*, §30: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002

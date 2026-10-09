@@ -43,6 +43,21 @@ def test_saisiot_requires_explicit_license():
     items=parse_syllables("냇가")
     apply_ordered_rules(items, rule_ids=["R015"])
     assert items[1].onset=="ㄱ"
-    items=_run("냇가","R015","R015:saisiot")
+    items=_run("냇가","R015","R015:saisiot:냇가:냇>가")
     assert items[1].onset=="ㄲ"
     assert items[0].coda==""
+
+def test_saisiot_license_is_exact_to_form_and_pair():
+    items,traces=apply_ordered_rules(
+        parse_syllables("냇가"),rule_ids=["R015"],
+        rule_licenses={"R015:saisiot"},
+    )
+    assert items[1].onset=="ㄱ"
+    assert traces[0].status=="conditional-disabled"
+
+    items,traces=apply_ordered_rules(
+        parse_syllables("뱃사공"),rule_ids=["R015"],
+        rule_licenses={"R015:saisiot:냇가:냇>가"},
+    )
+    assert items[1].onset=="ㅅ"
+    assert traces[0].status=="conditional-disabled"

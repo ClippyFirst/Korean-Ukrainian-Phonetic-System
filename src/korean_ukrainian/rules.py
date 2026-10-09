@@ -357,19 +357,38 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             elif pair not in exact_pairs:
                 conditional_disabled=True
     elif rule_id=="R015":
-        if license_context!="R015:saisiot":
+        # §30 saisiot behavior is lexical/morphological. A category-only
+        # license must not apply to every written ㅅ coda in an input.
+        # Example: R015:saisiot:냇가:냇>가.
+        r015_licenses={x for x in licenses if x.startswith("R015:")}
+        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
+        exact_pairs=set()
+        for license in r015_licenses:
+            parts=license.split(":",3)
+            if len(parts)==4 and parts[1]=="saisiot" and parts[2]==full_form:
+                exact_pairs.add(parts[3])
+        if not exact_pairs:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
-            if not _eligible(a,b,boundary_mode=boundary_mode): continue
-            if a.coda!="ㅅ": continue
+            if not _eligible(a,b,boundary_mode=boundary_mode) or a.coda!="ㅅ": continue
+            pair=f"{a.text}>{b.text}"
+            if pair not in exact_pairs:
+                conditional_disabled=True
+                continue
+            pair_changed=False
             if b.onset in PLAIN_TO_FORTIS:
-                b.onset=PLAIN_TO_FORTIS[b.onset]; a.coda=""; changed=True
+                b.onset=PLAIN_TO_FORTIS[b.onset]; a.coda=""; pair_changed=True
             elif b.onset in {"ㄴ","ㅁ"}:
-                a.coda="ㄴ"; changed=True
+                a.coda="ㄴ"; pair_changed=True
             elif b.onset=="ㅇ" and b.nucleus=="ㅣ":
-                a.coda="ㄴ"; b.onset="ㄴ"; changed=True
+                a.coda="ㄴ"; b.onset="ㄴ"; pair_changed=True
+            else:
+                conditional_disabled=True
+            if pair_changed:
+                changed=True
+                license_context=f"R015:saisiot:{full_form}:{pair}"
     name,source,confidence=RULE_META[rule_id]
     status=("conditional-disabled" if conditional_disabled and not changed else ("partially-conditional" if conditional_disabled else ("established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015","R016"} else "conditional-nochange")))
     return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,source,license_context)
