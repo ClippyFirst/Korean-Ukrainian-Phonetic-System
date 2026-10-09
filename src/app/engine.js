@@ -143,14 +143,14 @@ function applyContextualRules(units){
         // with the second: 읽히다 [일키다], 앉히다 [안치다],
         // 넓히다 [널피다].
         const moved=pair[1];
-        const aspirated=ASPIRATION[moved]||ASPIRATION[representative(moved)];
+        const aspirated=moved==='ㅈ'?'ㅊ':(ASPIRATION[moved]||ASPIRATION[representative(moved)]);
         if(aspirated){
           b.onset=aspirated;
           a.coda=pair[0];
           rules.push('complex-coda-h-aspiration');
         }
       }else{
-        const aspirated=ASPIRATION[a.coda]||ASPIRATION[rep];
+        const aspirated=a.coda==='ㅈ'?'ㅊ':(ASPIRATION[a.coda]||ASPIRATION[rep]);
         if(aspirated){
           b.onset=aspirated;
           a.coda='';
