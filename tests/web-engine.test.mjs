@@ -56,7 +56,8 @@ test('lexical ㄹ-to-ㄴ exception resolves 의견란 and preserves its original
   const r=engine.convert('의견란');
   assert.equal(r.ukrainian,'ийґйоннан');
   assert.equal(r.ipa,'ɰiː ɡjʌn nan');
-  assert.equal(r.status,'lexical');
+  assert.equal(r.status,'lexical-review');
+  assert.ok(r.trace[0].rules.includes('ukrainian-target-provisional'));
   assert.match(r.analysis,/의 = ㅇ\+ㅢ/);
 });
 
