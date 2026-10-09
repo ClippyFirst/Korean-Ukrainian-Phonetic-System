@@ -21,3 +21,6 @@ addopts="-q"
 
 [tool.setuptools.packages.find]
 where=["src"]
+
+[tool.setuptools.data-files]
+"share/korean-ukrainian-phonetic-system" = ["data/korean/lexical_pronunciations.csv"]
