@@ -469,3 +469,14 @@ def test_section_9_final_neutralization_covers_each_obstruent_class():
         coda_items = [item for item in items if item.coda]
         assert coda_items[-1].coda == expected, word
         assert any(trace.changed for trace in traces), word
+
+def test_section_18_nasal_assimilation_applies_across_phrase_boundaries():
+    for phrase, expected in {
+        "밥 먹는다": ("ㅁ", "ㅇ"),
+        "값 매기다": ("ㅁ", "ㅁ"),
+    }.items():
+        items, traces = apply_ordered_rules(
+            parse_syllables(phrase), ["R005"], boundary_mode="phrase"
+        )
+        assert items[0].coda == expected[0], phrase
+        assert any(trace.changed for trace in traces), phrase
