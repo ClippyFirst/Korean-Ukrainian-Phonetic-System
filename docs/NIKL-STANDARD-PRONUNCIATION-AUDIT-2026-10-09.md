@@ -154,3 +154,10 @@ Official source: NIKL, *표준 발음법*, §12(4): https://www.korean.go.kr/kor
 NIKL §18 explicitly says nasal assimilation can apply when two words are connected in one spoken phrase. Python R005 and R006 now allow word-boundary eligibility only when `boundary_mode="phrase"`; same-word mode remains unchanged. The browser treats plain whitespace as a connected phrase for the explicit §18–20 assimilation pass, but punctuation blocks it. The pass applies §19 ㄹ→ㄴ before §18 nasalization, preserving the normative order illustrated by 협력 [혐녁] and phrase examples such as 밥 먹는다 [밤 멍는다].
 
 Official source: NIKL, *표준 발음법*, §§18–20 and commentary: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+
+
+### Browser parity for ㄺ before ㄱ (§11)
+
+The browser now mirrors the Python research layer's guard: if an unlisted form has written ㄺ immediately before ㄱ, it is not allowed to choose between the §11 verbal-stem exception and ordinary coda simplification through generic §23 fortition. Exact sourced lexical entries resolve official examples such as 묽고 [물꼬] and 얽거나 [얼꺼나]; other ambiguous forms are marked unresolved.
+
+Official source: NIKL, *표준 발음법*, §11 and its listed examples: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
