@@ -507,3 +507,32 @@ test('fortisness remains in IPA but is not encoded by doubled Ukrainian grapheme
     }
   }
 });
+
+test('NIKL §10 complex-coda examples and lexical exceptions are source-backed', () => {
+  const expected = {
+    '넋과': ['넉꽈', 'нокква', 'nʌk̚ k͈wa'],
+    '앉다': ['안따', 'анта', 'an t͈a'],
+    '여덟': ['여덜', 'йодоль', 'jʌ dʌl'],
+    '넓다': ['널따', 'нольта', 'nʌl t͈a'],
+    '외곬': ['외골', 'веґол', 'ø ɡol'],
+    '값': ['갑', 'кап', 'kap̚'],
+    '밟소': ['밥쏘', 'папсо', 'paːp̚ s͈o'],
+    '밟지': ['밥찌', 'папчі', 'paːp̚ tɕ͈i'],
+    '밟게': ['밥께', 'папке', 'paːp̚ k͈e'],
+    '밟고': ['밥꼬', 'папко', 'paːp̚ k͈o'],
+    '넓죽하다': ['넙쭈카다', 'нопчукада', 'nʌp̚ tɕ͈u kʰa da'],
+    '넓둥글다': ['넙뚱글다', 'ноптунґильда', 'nʌp̚ t͈uŋ ɡɯl da'],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, surface, word);
+    assert.equal(row.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, target, word);
+    assert.equal(result.ipa, ipa, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
+});
