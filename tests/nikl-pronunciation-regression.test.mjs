@@ -142,3 +142,25 @@ test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', 
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
+
+test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () => {
+  const expected = {
+    맛있다: {surface:'마딛따', target:'мадіттта', ipa:'ma tit̚ t͈a', alternateSurface:'마싣따', alternateTarget:'машіттта', alternateIpa:'ma ɕit̚ t͈a'},
+    멋있다: {surface:'머딛따', target:'модіттта', ipa:'mʌ tit̚ t͈a', alternateSurface:'머싣따', alternateTarget:'мошіттта', alternateIpa:'mʌ ɕit̚ t͈a'},
+  };
+  for (const [word, values] of Object.entries(expected)) {
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.variants.length, 1, word);
+    assert.equal(result.variants[0].surface, values.alternateSurface, word);
+    assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
+    assert.equal(result.variants[0].ipa, values.alternateIpa, word);
+    assert.equal(result.variants[0].status, 'lexical-review', word);
+  }
+  const phrase = engine.convert('맛있다!');
+  assert.equal(phrase.variants.length, 1);
+  assert.equal(phrase.variants[0].ukrainian, 'машіттта!');
+  assert.equal(phrase.variants[0].ipa, 'ma ɕit̚ t͈a!');
+});
