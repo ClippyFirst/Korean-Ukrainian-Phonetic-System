@@ -84,6 +84,10 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode) or b.onset!="ㅇ" or not a.coda: continue
+            if a.coda in {"ㄶ","ㅀ"}:
+                # These clusters are governed by §12(4) before vowel-initial
+                # endings/suffixes, not by the generic §§13–15 liaison path.
+                continue
             if a.coda in COMPLEX_LIAISON:
                 pair=f"{a.text}>{b.text}"
                 scope=None
@@ -128,10 +132,29 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 else:
                     b.onset=a.coda; a.coda=""; changed=True
     elif rule_id=="R003":
+        # NIKL §12(4) deletes ㅎ in ㅎ/ㄶ/ㅀ before a vowel-initial ending
+        # or suffix. Adjacent Hangul blocks alone do not prove that boundary.
+        r003_licenses={x for x in licenses if x.startswith("R003:")}
+        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
+        exact_pairs=set()
+        for license in r003_licenses:
+            parts=license.split(":",3)
+            if len(parts)==4 and parts[1]=="ending_or_suffix_h_deletion" and parts[2]==full_form:
+                exact_pairs.add(parts[3])
+        if not exact_pairs:
+            name,source,confidence=RULE_META[rule_id]
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
-            if _eligible(a,b,boundary_mode=boundary_mode) and a.coda in {"ㅎ","ㄶ","ㅀ"} and b.onset=="ㅇ":
-                a.coda={"ㅎ":"","ㄶ":"ㄴ","ㅀ":"ㄹ"}[a.coda]; changed=True
+            if not _eligible(a,b,boundary_mode=boundary_mode) or a.coda not in {"ㅎ","ㄶ","ㅀ"} or b.onset!="ㅇ":
+                continue
+            pair=f"{a.text}>{b.text}"
+            if pair not in exact_pairs:
+                conditional_disabled=True
+                continue
+            a.coda={"ㅎ":"","ㄶ":"ㄴ","ㅀ":"ㄹ"}[a.coda]
+            changed=True
+            license_context=f"R003:ending_or_suffix_h_deletion:{full_form}:{pair}"
     elif rule_id=="R004":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
