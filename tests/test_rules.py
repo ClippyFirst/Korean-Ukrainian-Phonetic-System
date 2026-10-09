@@ -95,3 +95,15 @@ def test_n_insertion_still_applies_after_coda_when_licensed():
     )
     assert items[1].onset == "ㄴ"
     assert traces[0].changed
+
+
+
+def test_final_consonant_plus_h_uses_correct_aspiration():
+    cases = {
+        "옷하고": ("", "ㅌ"),
+        "맞히다": ("", "ㅊ"),
+    }
+    for word, expected in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R004"])
+        assert (items[0].coda, items[1].onset) == expected
+        assert traces[0].changed
