@@ -241,6 +241,45 @@ function applyContextualRules(units){
       nextRules.push('tensification');
     }
   }
+  // NIKL §18 explicitly permits nasal assimilation across eojeol when
+  // the words are spoken as one phrase; §§19–20 can feed the same sequence.
+  // Treat plain whitespace as a phrase link, but never cross punctuation.
+  for(let i=0;i<units.length;i++){
+    const a=units[i];
+    if(a.type!=='hangul'||!a.coda)continue;
+    let j=i+1,sawSpace=false;
+    while(j<units.length&&units[j].type==='literal'&&/^\\s$/u.test(units[j].char)){
+      sawSpace=true;j++;
+    }
+    if(!sawSpace||j>=units.length||units[j].type!=='hangul')continue;
+    const b=units[j],rules=ruleSets[i],nextRules=ruleSets[j];
+
+    const beforeLiquidRep=representative(a.coda);
+    if(['ㄱ','ㅂ','ㅁ','ㅇ'].includes(beforeLiquidRep)&&b.onset==='ㄹ'){
+      b.onset='ㄴ';
+      rules.push('liquid-to-nasal-before-obstruent');
+      nextRules.push('liquid-to-nasal-before-obstruent');
+    }
+
+    const afterRep=representative(a.coda);
+    if((b.onset==='ㄴ'||b.onset==='ㅁ')&&NASAL_AFTER[afterRep]){
+      a.coda=NASAL_AFTER[afterRep];
+      rules.push('nasal-assimilation');
+      nextRules.push('nasal-assimilation');
+    }
+
+    const liquidRep=representative(a.coda);
+    if(liquidRep==='ㄴ'&&b.onset==='ㄹ'){
+      a.coda='ㄹ';
+      rules.push('liquid-assimilation');
+    }else if(liquidRep==='ㄹ'&&b.onset==='ㄴ'){
+      a.coda='ㄹ';b.onset='ㄹ';
+      rules.push('liquid-assimilation');
+    }else if((liquidRep==='ㅁ'||liquidRep==='ㅇ')&&b.onset==='ㄹ'){
+      b.onset='ㄴ';
+      rules.push('liquid-assimilation');
+    }
+  }
   return ruleSets;
 }
 
