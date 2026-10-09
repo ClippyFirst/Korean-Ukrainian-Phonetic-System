@@ -46,4 +46,10 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
         raise ValueError("narrow IPA is unavailable: repository has no acoustic/allophonic model supporting a defensible narrow transcription")
     phonemic=level=="phonemic"
     rendered=["".join(onset_ipa(s,i,items,phonemic=phonemic)+nucleus_ipa(s,phonemic=phonemic)+coda_ipa(s.coda,phonemic=phonemic)) for i,s in enumerate(items)]
-    return {"level":level,"ipa":".".join(rendered),"syllables":rendered,"status":"phonemic" if phonemic else "rule-supported-broad"}
+    # Keep syllable dots within an eojeol, but preserve orthographic word
+    # boundaries as spaces instead of silently joining words into one chain.
+    ipa=rendered[0] if rendered else ""
+    for i in range(1,len(rendered)):
+        separator=" " if items[i-1].boundary_after=="word" else "."
+        ipa+=separator+rendered[i]
+    return {"level":level,"ipa":ipa,"syllables":rendered,"status":"phonemic" if phonemic else "rule-supported-broad"}
