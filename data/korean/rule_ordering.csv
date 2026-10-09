@@ -15,3 +15,4 @@ G11,R012,12,,conditional,Only when R012:sino_ryeon is licensed.
 G12,R013,13,,conditional,Only when R013:adnominal_l is licensed.
 G13,R014,14,,conditional,Only when R014:compound is licensed.
 G14,R015,15,,conditional,Only when R015:saisiot is licensed.
+G15,R016,8,,conditional,Requires explicit verbal-stem ㄺ plus ㄱ-initial ending license; must precede generic final neutralization.
