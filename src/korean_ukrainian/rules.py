@@ -171,18 +171,38 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if _eligible(a,b,boundary_mode=boundary_mode) and representative in {"ㄱ","ㄷ","ㅂ"} and b.onset in PLAIN_TO_FORTIS:
                 b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
     elif rule_id=="R009":
-        if not n_insertion_licensed:
+        # A global boolean is not sufficient evidence: §29 is lexical,
+        # morphological and sometimes optional. Require an exact per-pair
+        # license such as R009:word:한여름:한>여 or
+        # R009:phrase:무슨 일:슨>일.
+        insertion_licenses={x for x in licenses if x.startswith("R009:")}
+        if not insertion_licenses:
             name,source,confidence=RULE_META[rule_id]
-            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,license_context)
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
+        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=True) or b.onset!="ㅇ": continue
             if b.nucleus not in {"ㅣ","ㅑ","ㅕ","ㅛ","ㅠ","ㅖ","ㅒ"}: continue
-            # N-insertion is not a free rewrite of every vowel-initial
-            # syllable. Require a preceding coda; licensed 사이시옷 and
-            # lexical exceptions belong to their own explicit rule path.
             if not a.coda: continue
-            b.onset="ㄹ" if FINAL_REPRESENTATIVE.get(a.coda,a.coda)=="ㄹ" else "ㄴ"; changed=True
+            pair=f"{a.text}>{b.text}"
+            permitted=False
+            for license in insertion_licenses:
+                parts=license.split(":",3)
+                if len(parts)!=4: continue
+                _,scope,licensed_form,licensed_pair=parts
+                if licensed_form!=full_form or licensed_pair!=pair: continue
+                if scope=="word" and a.boundary_after!="word" and " " not in licensed_form:
+                    permitted=True
+                elif scope=="phrase" and boundary_mode=="phrase" and a.boundary_after=="word" and " " in licensed_form:
+                    permitted=True
+                if permitted: break
+            if not permitted: continue
+            # NIKL §29 and its commentary include ㅣ and j-initial
+            # diphthongs; optionality and lexical licensing live in the
+            # exact license, not in this segmental environment check.
+            b.onset="ㄹ" if FINAL_REPRESENTATIVE.get(a.coda,a.coda)=="ㄹ" else "ㄴ"
+            changed=True
     elif rule_id in {"R010","R011","R012","R013","R014"}:
         required={
             "R010":"R010:stem_n_m+suffix",
