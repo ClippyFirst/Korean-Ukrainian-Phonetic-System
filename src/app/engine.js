@@ -103,7 +103,7 @@ function applyContextualRules(units){
 
     // R007: palatalization takes precedence over ordinary liaison when
     // ㄷ/ㅌ meets an i/j-like vowel through a zero onset.
-    if((a.coda==='ㄷ'||a.coda==='ㅌ')&&b.onset==='ㅇ'&&J_VOWELS.has(b.vowel)){
+    if((a.coda==='ㄷ'||a.coda==='ㅌ')&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
       b.onset=a.coda==='ㄷ'?'ㅈ':'ㅊ';
       a.coda='';
       rules.push('palatalization');
@@ -154,9 +154,12 @@ function applyContextualRules(units){
       }else{
         const aspirated=a.coda==='ㅈ'?'ㅊ':(ASPIRATION[a.coda]||ASPIRATION[rep]);
         if(aspirated){
-          b.onset=aspirated;
+          // In 굳히다/닫히다/묻히다, ㄷ+ㅎ first becomes ㅌ and
+          // the resulting ㅌ before ㅣ is palatalized to ㅊ (§12 + §17).
+          const aspiratedPalatalized=a.coda==='ㄷ'&&b.onset==='ㅎ'&&b.vowel==='ㅣ';
+          b.onset=aspiratedPalatalized?'ㅊ':aspirated;
           a.coda='';
-          rules.push('h-aspiration');
+          rules.push(aspiratedPalatalized?'h-aspiration-plus-palatalization':'h-aspiration');
         }
       }
     }
