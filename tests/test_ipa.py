@@ -22,5 +22,5 @@ def test_complex_coda_components_are_explicit_in_phonemic_ipa():
     from korean_ukrainian.phonology import split_coda
     assert split_coda("ㄳ") == ("ㄱ", "ㅅ")
     assert split_coda("ㄶ") == ("ㄴ", "ㅎ")
-    result = phoneticize_korean("넋", ipa_level="phonemic")["ipa"]["ipa"]
-    assert "k" in result and "s" in result
+    from korean_ukrainian.ipa import realize_syllables\n    from korean_ukrainian.phonology import parse_syllables\n    result = realize_syllables(parse_syllables("넋"), level="phonemic")["ipa"]
+    assert "ks" in result
