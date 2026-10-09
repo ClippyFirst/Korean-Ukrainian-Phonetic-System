@@ -54,6 +54,7 @@ The branch **fix/nikl-standard-pronunciation-audit** adds **tests/nikl-pronuncia
 
 - 독립문 → normative surface sequence [동님문], with §19 before §18.
 - 국립 → [궁닙].
+- 국립국어원 → [궁님꾸거원], combining §19, §18, and §23 in the correct order.
 - 서울역 → [서울력], via a sourced lexical override implementing §29's ㄹ + inserted ㄴ → ㄹ.
 - 한국어의 → default [ɰi] instead of an unresolved placeholder.
 - 희망 → ㅢ with consonant onset [i].
