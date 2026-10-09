@@ -50,7 +50,7 @@ The browser engine is intentionally not a full Korean morphological parser. Rule
 
 ## Regressions added in this pass
 
-The branch **fix/nikl-standard-pronunciation-audit** adds **tests/nikl-pronunciation-regression.test.mjs** for:
+The regression suite **tests/nikl-pronunciation-regression.test.mjs** covers:
 
 - 독립문 → normative surface sequence [동님문], with §19 before §18.
 - 국립 → [궁닙].
@@ -61,7 +61,7 @@ The branch **fix/nikl-standard-pronunciation-audit** adds **tests/nikl-pronuncia
 - 같이 → palatalization in the ㅣ environment only.
 - 굳히다 → sequential §12 + §17 result [구치다].
 
-The expected Korean surface forms are normative evidence. The Ukrainian spellings asserted by tests are model outputs and must not be described as officially standardized Ukrainian forms.
+The browser adapter now requires exact sourced entries for §17 cases when morphology cannot be inferred. For unlisted ㄷ/ㅌ/ㄾ + 이-looking candidates it emits an explicit unresolved marker instead of guessing a formal-morpheme boundary. The Python research rule accepts only explicit licenses (`R007:formal_morpheme_i` or `R007:dh_suffix_hi`) and no longer fires for ㅑ/ㅕ/ㅛ/ㅠ/ㅖ/ㅒ.\n\nThe expected Korean surface forms are normative evidence. The Ukrainian spellings asserted by tests are model outputs and must not be described as officially standardized Ukrainian forms.
 
 ## Rule-ordering requirements
 
