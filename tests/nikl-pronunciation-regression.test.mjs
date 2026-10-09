@@ -444,7 +444,7 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
     '계집': {surface:'계집', target:'кєджіп', ipa:'kjeː dʑip̚', alternateSurface:'게집', alternateTarget:'кеджіп', alternateIpa:'keː dʑip̚'},
     '계시다': {surface:'계시다', target:'кєшіда', ipa:'kjeː ɕi da', alternateSurface:'게시다', alternateTarget:'кешіда', alternateIpa:'keː ɕi da'},
     '시계': {surface:'시계', target:'шіґє', ipa:'ɕi ɡje', alternateSurface:'시게', alternateTarget:'шіґе', alternateIpa:'ɕi ɡe'},
-    '연계': {surface:'연계', target:'йоґє', ipa:'jʌn ɡje', alternateSurface:'연게', alternateTarget:'йоґе', alternateIpa:'jʌn ɡe'},
+    '연계': {surface:'연계', target:'йонґє', ipa:'jʌn ɡje', alternateSurface:'연게', alternateTarget:'йоґе', alternateIpa:'jʌn ɡe'},
     '몌별': {surface:'몌별', target:'мєбйол', ipa:'mje bjʌl', alternateSurface:'메별', alternateTarget:'мебйол', alternateIpa:'me bjʌl'},
     '개폐': {surface:'개폐', target:'кепє', ipa:'kɛ pʰje', alternateSurface:'개페', alternateTarget:'кепе', alternateIpa:'kɛ pʰe'},
     '혜택': {surface:'혜택', target:'хєтек', ipa:'hjeː tʰɛk̚', alternateSurface:'헤택', alternateTarget:'хетек', alternateIpa:'heː tʰɛk̚'},
