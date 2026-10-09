@@ -61,3 +61,37 @@ def test_neoldunggeul_lexical_exception_matches_stem_prefix():
     items, _ = apply_ordered_rules(parse_syllables("넓둥글다"))
     assert items[0].coda == "ㅂ"
     assert items[1].onset == "ㄸ"
+
+
+def test_coda_plus_h_uses_final_representative_for_aspiration():
+    items, traces = apply_ordered_rules(parse_syllables("옷하고"), ["R004"])
+    assert (items[0].coda, items[1].onset) == ("", "ㅌ")
+    assert traces[0].changed
+
+
+def test_complex_coda_plus_h_retains_first_component_and_aspirates_second():
+    cases = {
+        "읽히다": ("ㄹ", "ㅋ"),
+        "앉히다": ("ㄴ", "ㅊ"),
+        "넓히다": ("ㄹ", "ㅍ"),
+    }
+    for word, expected in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R004"])
+        assert (items[0].coda, items[1].onset) == expected
+        assert traces[0].changed
+
+
+def test_n_insertion_does_not_apply_after_open_syllable_even_when_enabled():
+    items, traces = apply_ordered_rules(
+        parse_syllables("가여름"), ["R009"], n_insertion_licensed=True
+    )
+    assert items[1].onset == "ㅇ"
+    assert not traces[0].changed
+
+
+def test_n_insertion_still_applies_after_coda_when_licensed():
+    items, traces = apply_ordered_rules(
+        parse_syllables("한여름"), ["R009"], n_insertion_licensed=True
+    )
+    assert items[1].onset == "ㄴ"
+    assert traces[0].changed
