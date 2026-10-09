@@ -209,9 +209,9 @@ function applyContextualRules(units){
     }
 
     // R005: nasal assimilation. Use the final representative for obstruent
-    // codas; do not infer it across punctuation/space because those are
-    // represented as literal units. The affected onset receives the same
-    // trace label as the coda that changed.
+    // codas. This local pass handles within-eojeol pairs; the separate phrase
+    // pass below handles plain whitespace but never crosses punctuation. The
+    // affected onset receives the same trace label as the coda that changed.
     const afterRep=representative(a.coda);
     if((b.onset==='ㄴ'||b.onset==='ㅁ')&&NASAL_AFTER[afterRep]){
       a.coda=NASAL_AFTER[afterRep];
