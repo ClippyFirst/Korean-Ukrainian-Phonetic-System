@@ -126,3 +126,10 @@ Official source: NIKL, *표준 발음법*, §12, especially the commentary expla
 The generic §23 fortition pass previously saw the representative ㄱ of written ㄺ and could tense the next ㄱ before the morphologically conditioned §11 exception had been established. R016 now requires an exact full-form/pair license such as `R016:verb_stem_rieul_giyeok_suffix:읽고:읽>고`. R008 withholds the ambiguous written ㄺ + ㄱ sequence when R016 has not resolved it, rather than silently choosing the noun-like simplification. This protects the contrast between stem forms such as 읽고 [일꼬]/맑게 [말께] and lexical nouns such as 닭고기 [닥꼬기]; exact lexical overrides remain the source of user-facing readings for listed forms.
 
 Official source: NIKL, *표준 발음법*, §§11 and 23: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+
+
+### Exact licensing for §§24–28 fortition
+
+The morphology-conditioned fortition rules R010–R014 no longer accept category-only switches (such as `R014:compound`) as sufficient evidence. Each rule now requires a license tied to the exact full form and adjacent syllable pair, for example `R014:compound:문고리:문>고`. This prevents a compound, Sino-Korean item, stem ending, or adnominal construction's license from being reused for unrelated words. §27 also explicitly permits the licensed adnominal ㄹ construction across a written word boundary only in phrase mode, e.g. 할 것 [할껃].
+
+Official source: NIKL, *표준 발음법*, §§24–28: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
