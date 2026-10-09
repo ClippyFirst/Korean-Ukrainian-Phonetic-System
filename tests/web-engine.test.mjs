@@ -19,7 +19,7 @@ test('liquid assimilation renders surface ㄹ as л, not onset р',()=>{assert.e
 test('complex-coda liaison keeps first component',()=>{assert.equal(engine.convert('닭을').ukrainian,'талґил');});
 test('ㄶ/ㅀ liaison drops ㅎ rather than inventing an h onset',()=>{assert.equal(engine.convert('많아').ukrainian,'мана');assert.equal(engine.convert('싫어').ukrainian,'шіло');});
 test('ㄳ/ㄽ/ㅄ liaison uses fortis ㅆ',()=>{assert.equal(engine.convert('넋이').ukrainian,'нокші');assert.equal(engine.convert('곬이').ukrainian,'колші');assert.equal(engine.convert('값이').ukrainian,'капші');});
-test('nasal assimilation is explicit',()=>{const r=engine.convert('국물');assert.equal(r.ukrainian,'кунмул');assert.ok(r.trace.some(x=>x.rules.includes('nasal-assimilation')));});
+test('nasal assimilation is explicit',()=>{const r=engine.convert('국문');assert.equal(r.ukrainian,'кунмун');assert.equal(r.ipa,'kuŋ mun');assert.ok(r.trace.some(x=>x.rules.includes('nasal-assimilation')));});
 test('aspirated ㅍ coda participates in nasal assimilation',()=>{const r=engine.convert('앞문');assert.equal(r.ukrainian,'аммун');assert.ok(engine.convert('앞문').trace[0].rules.includes('nasal-assimilation'));});
 test('h aspiration is explicit',()=>{const r=engine.convert('각하');assert.equal(r.ukrainian,'кака');assert.ok(r.trace.some(x=>x.rules.includes('h-aspiration')));});
 test('complex ㅎ codas aspirate following lenis stops',()=>{assert.equal(engine.convert('많다').ukrainian,'манта');assert.equal(engine.convert('싫다').ukrainian,'шілта');});
