@@ -277,3 +277,41 @@ test('official §12(4) H-deletion examples are sourced and marked provisional on
     assert.equal(result.ipa, values.ipa, word);
   }
 });
+
+test('NIKL §16 official letter-name examples are exact lexical entries', () => {
+  const expected = {
+    '디귿이': ['디그시', 'диґиші', 'ti ɡɯ ɕi'],
+    '디귿을': ['디그슬', 'диґисил', 'ti ɡɯ sɯl'],
+    '디귿에': ['디그세', 'диґисе', 'ti ɡɯ se'],
+    '지읒이': ['지으시', 'чіїші', 'tɕi ɯ ɕi'],
+    '지읒을': ['지으슬', 'чіїсил', 'tɕi ɯ sɯl'],
+    '지읒에': ['지으세', 'чіїсе', 'tɕi ɯ se'],
+    '치읓이': ['치으시', 'чіїші', 'tɕʰi ɯ ɕi'],
+    '치읓을': ['치으슬', 'чіїсил', 'tɕʰi ɯ sɯl'],
+    '치읓에': ['치으세', 'чіїсе', 'tɕʰi ɯ se'],
+    '키읔이': ['키으기', 'кіиґі', 'kʰi ɯ ɡi'],
+    '키읔을': ['키으글', 'кіиґил', 'kʰi ɯ ɡɯl'],
+    '키읔에': ['키으게', 'кіиґе', 'kʰi ɯ ɡe'],
+    '티읕이': ['티으시', 'тіиші', 'tʰi ɯ ɕi'],
+    '티읕을': ['티으슬', 'тіисил', 'tʰi ɯ sɯl'],
+    '티읕에': ['티으세', 'тіисе', 'tʰi ɯ se'],
+    '피읖이': ['피으비', 'піибі', 'pʰi ɯ bi'],
+    '피읖을': ['피으블', 'піибил', 'pʰi ɯ bɯl'],
+    '피읖에': ['피으베', 'піибе', 'pʰi ɯ be'],
+    '히읗이': ['히으시', 'хіїші', 'hi ɯ ɕi'],
+    '히읗을': ['히으슬', 'хіїсил', 'hi ɯ sɯl'],
+    '히읗에': ['히으세', 'хіїсе', 'hi ɯ se'],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, surface, word);
+    assert.equal(row.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, target, word);
+    assert.equal(result.ipa, ipa, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
+});
