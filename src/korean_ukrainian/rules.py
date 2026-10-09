@@ -245,8 +245,16 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     elif rule_id=="R008":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
+            if not _eligible(a,b,boundary_mode=boundary_mode): continue
+            # A written ㄺ before ㄱ is the §11 morphophonemic exception
+            # zone: a licensed stem form keeps ㄹ (R016), while ordinary
+            # lexical forms simplify to ㄱ. Do not let generic §23 fortition
+            # silently decide that morphology before R016 has evidence.
+            if a.coda=="ㄺ" and b.onset=="ㄱ":
+                conditional_disabled=True
+                continue
             representative=contextual_final_representative(a,b)
-            if _eligible(a,b,boundary_mode=boundary_mode) and representative in {"ㄱ","ㄷ","ㅂ"} and b.onset in PLAIN_TO_FORTIS:
+            if representative in {"ㄱ","ㄷ","ㅂ"} and b.onset in PLAIN_TO_FORTIS:
                 b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
     elif rule_id=="R009":
         # A global boolean is not sufficient evidence: §29 is lexical,
