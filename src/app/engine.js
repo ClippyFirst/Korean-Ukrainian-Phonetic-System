@@ -103,7 +103,7 @@ function applyContextualRules(units){
 
     // R007: palatalization takes precedence over ordinary liaison when
     // ㄷ/ㅌ meets an i/j-like vowel through a zero onset.
-    if((a.coda==='ㄷ'||a.coda==='ㅌ')&&b.onset==='ㅇ'&&J_VOWELS.has(b.vowel)){
+    if((a.coda==='ㄷ'||a.coda==='ㅌ')&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
       b.onset=a.coda==='ㄷ'?'ㅈ':'ㅊ';
       a.coda='';
       rules.push('palatalization');
@@ -152,20 +152,36 @@ function applyContextualRules(units){
       }else{
         const aspirated=a.coda==='ㅈ'?'ㅊ':(ASPIRATION[a.coda]||ASPIRATION[rep]);
         if(aspirated){
-          b.onset=aspirated;
+          // In 굳히다/닫히다/묻히다, ㄷ+ㅎ first becomes ㅌ and
+          // the resulting ㅌ before ㅣ is palatalized to ㅊ (§12 + §17).
+          const aspiratedPalatalized=a.coda==='ㄷ'&&b.onset==='ㅎ'&&b.vowel==='ㅣ';
+          b.onset=aspiratedPalatalized?'ㅊ':aspirated;
           a.coda='';
-          rules.push('h-aspiration');
+          rules.push(aspiratedPalatalized?'h-aspiration-plus-palatalization':'h-aspiration');
         }
       }
     }
 
+    // R006a: when an obstruent coda precedes ㄹ, standard pronunciation
+    // realizes that ㄹ as ㄴ; the coda then undergoes nasal assimilation.
+    // Examples: 국립 [궁닙], 독립문 [동님문], 협력 [혐녁].
+    // Keep the rule visible on both segments so the trace explains the change.
+    const beforeLiquidRep=representative(a.coda);
+    if(['ㄱ','ㅂ','ㅁ','ㅇ'].includes(beforeLiquidRep)&&b.onset==='ㄹ'){
+      b.onset='ㄴ';
+      rules.push('liquid-to-nasal-before-obstruent');
+      nextRules.push('liquid-to-nasal-before-obstruent');
+    }
+
     // R005: nasal assimilation. Use the final representative for obstruent
     // codas; do not infer it across punctuation/space because those are
-    // represented as literal units.
+    // represented as literal units. The affected onset receives the same
+    // trace label as the coda that changed.
     const afterRep=representative(a.coda);
     if((b.onset==='ㄴ'||b.onset==='ㅁ')&&NASAL_AFTER[afterRep]){
       a.coda=NASAL_AFTER[afterRep];
       rules.push('nasal-assimilation');
+      nextRules.push('nasal-assimilation');
     }
 
     // R006: liquid assimilation.
@@ -265,13 +281,17 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     // ㅇ+ㅢ remains unresolved because lexical position and particle
     // function can license different readings ([의], [이], [에]).
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
+    const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
-    let status=applied.length||contextualUi?'contextual':'canonical';
-    const vowel=mapVowel(map,vowelJamo);
+    let status=applied.length||contextualUi||defaultUi?'contextual':'canonical';
+    // Standard Pronunciation Rules §5: ㅢ is [ɰi] by default. A ㅢ syllable
+    // with a consonant onset is [i]; non-initial 의 may also be [i], and the
+    // particle 의 may also be [e]. Since this browser adapter has no full
+    // morphological parser, render the normative default [ɰi] instead of
+    // marking every ㅇ+ㅢ as unresolved. Alternatives remain context-sensitive.
+    const vowel=defaultUi?'ий':mapVowel(map,vowelJamo);
     if(!vowel){
-      const message=u.vowel==='ㅢ'
-        ? u.char+': ㅇ+ㅢ needs lexical/grammatical context (initial 의, non-initial 의, or the particle 의).'
-        : u.char+': no Ukrainian vowel target is available.';
+      const message=u.char+': no Ukrainian vowel target is available.';
       issues.push(message);
       output[i]='⟦'+u.char+'⟧';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
@@ -286,10 +306,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     const previousOpenSyllable=Boolean(prev)&&prev.coda==='';
     const voiced=(liaisonOnset||previousSonorant||previousOpenSyllable)&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
     const fortis=!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
+    // A coda ㄹ resyllabified into the next onset stays lateral [l];
+    // it must not be reinterpreted as the intervocalic tap [ɾ] (e.g. 서울역).
     const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
     const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis,liquid);
     const traceRules=[...applied];
     if(contextualUi)traceRules.push('vowel-ui-to-i');
+    if(defaultUi)traceRules.push('vowel-ui-default-ɰi');
     if(voiced)traceRules.push('contextual-voicing');
     if(fortis)traceRules.push('tensification');
     if(liquid&&!traceRules.includes('liquid-assimilation'))traceRules.push('liquid-assimilation');
@@ -301,16 +324,17 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     output[i]=out;
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
-    let unitIpa=(o?.ipa||'')+(v?.ipa||'')+(c?.ipa||'');
+    const vowelIpa=defaultUi?'ɰi':(v?.ipa||'');
+    let unitIpa=(o?.ipa||'')+vowelIpa+(c?.ipa||'');
     if(liquid&&onset==='ㄹ')unitIpa='l'+(v?.ipa||'')+(c?.ipa||'');
     // The IPA column is deliberately broad/analytical. Reflect the same
     // contextual onset decision used for the Ukrainian target when possible.
     if(voiced){
       const voicedIpa={ 'ㄱ':'ɡ','ㄷ':'d','ㅂ':'b','ㅈ':'dʑ' }[onset];
-      if(voicedIpa)unitIpa=voicedIpa+(v?.ipa||'')+(c?.ipa||'');
+      if(voicedIpa)unitIpa=voicedIpa+vowelIpa+(c?.ipa||'');
     }else if(fortis){
       const fortisIpa={ 'ㄱ':'k͈','ㄷ':'t͈','ㅂ':'p͈','ㅅ':'s͈','ㅈ':'tɕ͈' }[onset];
-      if(fortisIpa)unitIpa=fortisIpa+(v?.ipa||'')+(c?.ipa||'');
+      if(fortisIpa)unitIpa=fortisIpa+vowelIpa+(c?.ipa||'');
     }
     ipa[i]=unitIpa;
     trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:out,ipa:unitIpa};

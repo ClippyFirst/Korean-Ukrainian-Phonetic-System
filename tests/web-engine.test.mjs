@@ -19,7 +19,7 @@ test('liquid assimilation renders surface ㄹ as л, not onset р',()=>{assert.e
 test('complex-coda liaison keeps first component',()=>{assert.equal(engine.convert('닭을').ukrainian,'талґил');});
 test('ㄶ/ㅀ liaison drops ㅎ rather than inventing an h onset',()=>{assert.equal(engine.convert('많아').ukrainian,'мана');assert.equal(engine.convert('싫어').ukrainian,'шіло');});
 test('ㄳ/ㄽ/ㅄ liaison uses fortis ㅆ',()=>{assert.equal(engine.convert('넋이').ukrainian,'нокші');assert.equal(engine.convert('곬이').ukrainian,'колші');assert.equal(engine.convert('값이').ukrainian,'капші');});
-test('nasal assimilation is explicit',()=>{const r=engine.convert('국물');assert.equal(r.ukrainian,'кунмул');assert.ok(r.trace.some(x=>x.rules.includes('nasal-assimilation')));});
+test('nasal assimilation is explicit',()=>{const r=engine.convert('국문');assert.equal(r.ukrainian,'кунмун');assert.equal(r.ipa,'kuŋ mun');assert.ok(r.trace.some(x=>x.rules.includes('nasal-assimilation')));});
 test('aspirated ㅍ coda participates in nasal assimilation',()=>{const r=engine.convert('앞문');assert.equal(r.ukrainian,'аммун');assert.ok(engine.convert('앞문').trace[0].rules.includes('nasal-assimilation'));});
 test('h aspiration is explicit',()=>{const r=engine.convert('각하');assert.equal(r.ukrainian,'кака');assert.ok(r.trace.some(x=>x.rules.includes('h-aspiration')));});
 test('complex ㅎ codas aspirate following lenis stops',()=>{assert.equal(engine.convert('많다').ukrainian,'манта');assert.equal(engine.convert('싫다').ukrainian,'шілта');});
@@ -34,9 +34,9 @@ test('contextual voicing is visible',()=>{const r=engine.convert('현대');asser
 test('lenis voicing between vowels is explicit',()=>{const r=engine.convert('부부');assert.equal(r.ukrainian,'пубу');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
 test('표준 voices intervocalic ㅈ',()=>{const r=engine.convert('표준');assert.equal(r.ukrainian,'пйоджун');assert.equal(r.ipa,'pʰjo dʑun');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
 test('consonant-onset ㅢ follows standard [i] realization',()=>{const r=engine.convert('희망');assert.equal(r.ukrainian,'хіман');assert.equal(r.ipa,'hi maŋ');assert.ok(r.trace[0].rules.includes('vowel-ui-to-i'));});
-test('unresolved ㅢ is explicit',()=>{const r=engine.convert('의');assert.equal(r.status,'unresolved');assert.match(r.ukrainian,/⟦의⟧/);});
-test('unresolved ㅢ still reports its original Hangul decomposition',()=>{const r=engine.convert('의');assert.equal(r.analysis,'의 = ㅇ+ㅢ');});
-test('unresolved ㅢ does not create a doubled IPA word boundary',()=>{const r=engine.convert('현대 한국어의 표준 발음');assert.equal(r.ipa,'hjʌn dɛ han ɡu ɡʌ pʰjo dʑun pa ɾɯm');});
+test('ㅇ+ㅢ uses the normative default rather than an unresolved placeholder',()=>{const r=engine.convert('의');assert.equal(r.status,'contextual');assert.equal(r.ukrainian,'ий');assert.equal(r.ipa,'ɰi');assert.ok(r.trace[0].rules.includes('vowel-ui-default-ɰi'));});
+test('ㅇ+ㅢ still reports its original Hangul decomposition',()=>{const r=engine.convert('의');assert.equal(r.analysis,'의 = ㅇ+ㅢ');});
+test('default ㅢ and ordinary liaison preserve IPA word boundaries',()=>{const r=engine.convert('현대 한국어의 표준 발음');assert.equal(r.ipa,'hjʌn dɛ han ɡu ɡʌ ɰi pʰjo dʑun pa ɾɯm');});
 test('non-Korean text is preserved',()=>{assert.equal(engine.convert('ABC 123!').ukrainian,'ABC 123!');});
 test('CSV parser handles quoted fields',()=>{const rows=parseCsv('a,b\n1,"x,y"\n');assert.deepEqual(rows,[{a:'1',b:'x,y'}]);});
 test('IPA and analysis preserve original whitespace without doubled separators',()=>{const r=engine.convert('가 나');assert.equal(r.ipa,'ka na');assert.equal(r.analysis,'가 = ㄱ+ㅏ 나 = ㄴ+ㅏ');const p=engine.convert('가, 나');assert.equal(p.ipa,'ka, na');assert.equal(p.analysis,'가 = ㄱ+ㅏ, 나 = ㄴ+ㅏ');});

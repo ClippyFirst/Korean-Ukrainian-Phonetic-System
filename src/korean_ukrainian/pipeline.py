@@ -106,10 +106,10 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     return {"input":text,"surface_syllables":[x.to_dict() for x in items],"rules":[x.to_dict() for x in traces]+lexical_traces,"ipa":ipa}
 
 def _feature_vector_for_ipa(ipa:str)->dict:
-    consonants={"p":("0","0","1","0","0","0","0","0"),"p͈":("0","0","1","0","0","0","0","0"),"pʰ":("0","0","1","0","0","0","0","1"),"t":("0","1","0","0","0","0","0","0"),"t͈":("0","1","0","0","0","0","0","0"),"tʰ":("0","1","0","0","0","0","0","1"),"k":("0","0","0","1","0","0","0","0"),"k͈":("0","0","0","1","0","0","0","0"),"kʰ":("0","0","0","1","0","0","0","1"),"tɕ":("0","1","0","0","0","1","0","0"),"tɕ͈":("0","1","0","0","0","1","0","0"),"tɕʰ":("0","1","0","0","0","1","0","1"),"s":("0","1","0","0","1","0","0","0"),"s͈":("0","1","0","0","1","0","0","0"),"m":("1","0","1","0","0","1","0","0"),"n":("1","1","0","0","0","1","0","0"),"ŋ":("1","0","0","1","0","1","0","0"),"ɾ":("1","1","0","0","1","0","1","0"),"l":("1","1","0","0","1","0","0","0"),"h":("0","0","0","0","1","0","0","0")}
+    consonants={"p":("0","0","1","0","0","0","0","0"),"p͈":("0","0","1","0","0","0","0","0"),"pʰ":("0","0","1","0","0","0","0","1"),"t":("0","1","0","0","0","0","0","0"),"t͈":("0","1","0","0","0","0","0","0"),"tʰ":("0","1","0","0","0","0","0","1"),"k":("0","0","0","1","0","0","0","0"),"k͈":("0","0","0","1","0","0","0","0"),"kʰ":("0","0","0","1","0","0","0","1"),"tɕ":("0","1","0","0","0","1","0","0"),"tɕ͈":("0","1","0","0","0","1","0","0"),"tɕʰ":("0","1","0","0","0","1","0","1"),"s":("0","1","0","0","1","0","0","0"),"ɕ":("0","1","0","0","1","0","0","0"),"s͈":("0","1","0","0","1","0","0","0"),"m":("1","0","1","0","0","1","0","0"),"n":("1","1","0","0","0","1","0","0"),"ŋ":("1","0","0","1","0","1","0","0"),"ɾ":("1","1","0","0","1","0","1","0"),"l":("1","1","0","0","1","0","0","0"),"h":("0","0","0","0","1","0","0","0")}
     if ipa in consonants:
         son,cor,lab,dor,cont,nas,rho,asp=consonants[ipa]
-        return {"consonantal":"1","sonorant":son,"syllabic":"0","voice":"1" if ipa in {"m","n","ŋ","ɾ","l"} else "0","continuant":cont,"nasal":nas,"lateral":"1" if ipa=="l" else "0","rhotic":rho,"labial":lab,"coronal":cor,"dorsal":dor,"palatal":"1" if ipa.startswith("tɕ") else "0","palatalized":"0","affricate":"1" if ipa.startswith("tɕ") else "0","aspirated":asp}
+        return {"consonantal":"1","sonorant":son,"syllabic":"0","voice":"1" if ipa in {"m","n","ŋ","ɾ","l"} else "0","continuant":cont,"nasal":nas,"lateral":"1" if ipa=="l" else "0","rhotic":rho,"labial":lab,"coronal":cor,"dorsal":dor,"palatal":"1" if ipa.startswith("tɕ") or ipa=="ɕ" else "0","palatalized":"1" if ipa=="ɕ" else "0","affricate":"1" if ipa.startswith("tɕ") else "0","aspirated":asp}
     vowels={"i":("close","front","0"),"ɛ":("open-mid","front","0"),"a":("open","central","0"),"ʌ":("open-mid","back","0"),"o":("close-mid","back","1"),"u":("close","back","1"),"ɯ":("close","back","0"),"e":("close-mid","front","0"),"ø":("close-mid","front","1"),"y":("close","front","1")}
     if ipa in vowels:
         h,b,r=vowels[ipa]
@@ -123,7 +123,7 @@ def source_features_for_ipa(ipa:str)->dict: return _feature_vector_for_ipa(ipa)
 
 def tokenize_ipa(ipa:str)->list[str]:
     tokens=[]; i=0
-    inventory=("tɕ͈","tɕʰ","tɕ","pʰ","tʰ","kʰ","p͈","t͈","k͈","ɡ","ɾ","ŋ","ɯ","ʌ","ɛ","ø","ɰ","j","w","p","t","k","b","d","m","n","s","h","a","e","o","u","i","l","y")
+    inventory=("tɕ͈","tɕʰ","tɕ","ɕ","pʰ","tʰ","kʰ","p͈","t͈","k͈","ɡ","ɾ","ŋ","ɯ","ʌ","ɛ","ø","ɰ","j","w","p","t","k","b","d","m","n","s","h","a","e","o","u","i","l","y")
     while i<len(ipa):
         if ipa[i] in ".#̚ː": i+=1; continue
         match=next((x for x in inventory if ipa.startswith(x,i)),None)

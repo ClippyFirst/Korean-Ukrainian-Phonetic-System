@@ -48,7 +48,7 @@ The browser adapter implements:
 - selected lexical coda exceptions such as 밟- and 넓죽-/넓둥글-/넓적- where standard pronunciation cannot be inferred from the coda inventory alone;
 - selected contextual voicing;
 - practical tensification neutralization;
-- explicit unresolved handling for context-dependent ㅢ;
+- normative [ɰi] default for ㅇ+ㅢ, [i] for consonant-onset ㅢ, and documented optional readings;
 - preservation of non-Hangul text;
 - an inspectable rule/status trace.
 
@@ -84,6 +84,7 @@ Research layer:
 ## Documentation
 
 ### Research
+- docs/NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md — article-by-article audit of all 30 official Standard Pronunciation Rules, implementation boundary, and regression cases
 - docs/methodology.md
 - docs/slavic-comparative-master-table.md
 - docs/comparative-evidence-methodology.md
