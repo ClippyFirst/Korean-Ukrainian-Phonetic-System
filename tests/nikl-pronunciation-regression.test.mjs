@@ -9,7 +9,7 @@ const engine = createEngine(canonical, lexical);
 
 test('obstruent coda before ㄹ triggers ㄹ-to-ㄴ and nasal assimilation', () => {
   const result = engine.convert('독립문');
-  assert.equal(result.ukrainian, 'тон님문');
+  assert.equal(result.ukrainian, 'тонніммун');
   assert.match(result.ipa, /toŋ nim mun/);
   assert.ok(result.trace.some((item) => item.rules.includes('liquid-to-nasal-before-obstruent')));
   assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')));
@@ -17,7 +17,7 @@ test('obstruent coda before ㄹ triggers ㄹ-to-ㄴ and nasal assimilation', () 
 
 test('ㄹ resyllabified before a vowel retains lateral [l], not tap [ɾ]', () => {
   const result = engine.convert('서울역');
-  assert.equal(result.ukrainian, 'соуллйок');
+  assert.equal(result.ukrainian, 'соулйок');
   assert.match(result.ipa, /sʌ u ljʌk̚/);
   assert.ok(result.trace.some((item) => item.rules.includes('liaison-lateral')));
 });
