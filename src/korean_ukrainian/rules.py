@@ -94,6 +94,31 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 b.onset={"ㄱ":"ㅋ","ㄷ":"ㅌ","ㅂ":"ㅍ","ㅈ":"ㅊ"}[b.onset]
                 a.coda="ㄴ" if a.coda=="ㄶ" else "ㄹ"
                 changed=True
+            elif b.onset=="ㅎ" and a.coda in COMPLEX_LIAISON:
+                # In clusters such as ㄺ/ㄵ/ㄼ + ㅎ, retain the first
+                # component and aspirate the second: 읽히다 [일키다],
+                # 앉히다 [안치다], 넓히다 [널피다].
+                retained,moved=COMPLEX_LIAISON[a.coda]
+                aspirated=ASPIRATE.get((moved,"ㅎ"))
+                if aspirated is None:
+                    representative=FINAL_REPRESENTATIVE.get(moved,moved)
+                    aspirated=ASPIRATE.get((representative,"ㅎ"))
+                if aspirated:
+                    a.coda=retained
+                    b.onset=aspirated
+                    changed=True
+            elif b.onset=="ㅎ" and a.coda:
+                # Use the written coda where it licenses a distinct
+                # morphophonemic outcome (e.g. ㅈ+ㅎ -> ㅊ); otherwise use
+                # the final representative (e.g. ㅅ/ㅊ+ㅎ -> ㅌ).
+                aspirated=ASPIRATE.get((a.coda,"ㅎ"))
+                if aspirated is None:
+                    representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
+                    aspirated=ASPIRATE.get((representative,"ㅎ"))
+                if aspirated:
+                    b.onset=aspirated
+                    a.coda=""
+                    changed=True
             elif (a.coda,b.onset) in ASPIRATE:
                 b.onset=ASPIRATE[(a.coda,b.onset)]
                 a.coda="" if a.coda not in {"ㄶ","ㅀ"} else ("ㄴ" if a.coda=="ㄶ" else "ㄹ")
@@ -131,6 +156,10 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=True) or b.onset!="ㅇ": continue
             if b.nucleus not in {"ㅣ","ㅑ","ㅕ","ㅛ","ㅠ","ㅖ","ㅒ"}: continue
+            # N-insertion is not a free rewrite of every vowel-initial
+            # syllable. Require a preceding coda; licensed 사이시옷 and
+            # lexical exceptions belong to their own explicit rule path.
+            if not a.coda: continue
             b.onset="ㄹ" if FINAL_REPRESENTATIVE.get(a.coda,a.coda)=="ㄹ" else "ㄴ"; changed=True
     elif rule_id in {"R010","R011","R012","R013","R014"}:
         required={
