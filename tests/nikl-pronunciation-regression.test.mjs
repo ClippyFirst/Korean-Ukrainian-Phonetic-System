@@ -685,3 +685,48 @@ test('NIKL §19 official examples preserve rule order before §18 nasalization',
     }
   }
 });
+
+test('NIKL §20 general liquid-assimilation examples use the general rules', () => {
+  const expected = {
+    '천리': 'tɕʰʌl li',
+    '물난리': 'mul lal li',
+    '줄넘기': 'tɕul lʌm k͈i',
+    '할는지': 'hal lɯn tɕi',
+    '닳는': 'tal lɯn',
+    '뚫는': 'tul lɯn',
+    '핥네': 'hal le',
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, ipa] of Object.entries(expected)) {
+    assert.ok(!rows.some((item) => item.input === word), word);
+    const result = engine.convert(word);
+    assert.equal(result.ipa, ipa, word);
+    assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+    assert.ok(result.trace.some((item) => item.rules.includes('liquid-assimilation')), word);
+  }
+});
+
+test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', () => {
+  const expected = {
+    '임진란': ['임진난', 'imː tɕin nan', '임진난'],
+    '생산량': ['생산냥', 'sɛŋ san njaŋ', '생산냥'],
+    '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', '결딴녁'],
+    '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', '공꿘녁'],
+    '동원령': ['동원녕', 'toŋː wʌn njʌŋ', '동원녕'],
+    '상견례': ['상견녜', 'saŋ ɡjʌn nje', '상견녜'],
+    '이원론': ['이원논', 'iː wʌn non', '이원논'],
+    '입원료': ['이붠뇨', 'i bwʌn njo', '이붠뇨'],
+    '구근류': ['구근뉴', 'ku ɡɯn nju', '구근뉴'],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [surface, ipa, _surfaceTarget]] of Object.entries(expected)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, surface, word);
+    assert.equal(row.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ipa, ipa, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
+});
