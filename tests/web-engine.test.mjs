@@ -31,4 +31,5 @@ test('표준 voices intervocalic ㅈ',()=>{const r=engine.convert('표준');asse
 test('unresolved ㅢ is explicit',()=>{const r=engine.convert('의');assert.equal(r.status,'unresolved');assert.match(r.ukrainian,/⟦의⟧/);});
 test('non-Korean text is preserved',()=>{assert.equal(engine.convert('ABC 123!').ukrainian,'ABC 123!');});
 test('CSV parser handles quoted fields',()=>{const rows=parseCsv('a,b\n1,"x,y"\n');assert.deepEqual(rows,[{a:'1',b:'x,y'}]);});
+test('IPA and analysis preserve original whitespace without doubled separators',()=>{const r=engine.convert('가 나');assert.equal(r.ipa,'ka na');assert.equal(r.analysis,'가 = ㄱ+ㅏ 나 = ㄴ+ㅏ');const p=engine.convert('가, 나');assert.equal(p.ipa,'ka, na');assert.equal(p.analysis,'가 = ㄱ+ㅏ, 나 = ㄴ+ㅏ');});
 test('deterministic output',()=>{const a=engine.convert('현대 한국어');const b=engine.convert('현대 한국어');assert.deepEqual(a,b);});
