@@ -136,3 +136,21 @@ test('§19 precedes §18 across a phrase boundary',()=>{
   assert.ok(r.trace[0].rules.includes('liquid-to-nasal-before-obstruent'));
   assert.ok(r.trace[0].rules.includes('nasal-assimilation'));
 });
+
+test('official §11 ㄺ-before-ㄱ examples use exact lexical readings',()=>{
+  for(const [word,target,ipa] of [['묽고','мулко','mul k͈o'],['얽거나','олккона','ʌl k͈ʌ na']]){
+    const r=engine.convert(word);
+    assert.equal(r.ukrainian,target);
+    assert.equal(r.ipa,ipa);
+    assert.equal(r.status,'lexical-review');
+    assert.ok(r.trace.some(x=>x.rules.includes('lexical-pronunciation')));
+  }
+});
+
+test('unknown ㄺ-before-ㄱ does not let generic §23 fortition choose the morphology',()=>{
+  const r=engine.convert('굵고');
+  assert.equal(r.status,'unresolved');
+  assert.ok(r.ukrainian.includes('⟦굵⟧'));
+  assert.ok(r.issues.some(x=>x.includes('written ㄺ before ㄱ may follow the §11 stem exception')));
+  assert.ok(r.trace.some(x=>x.rules.includes('rieul-giyeok-exception-requires-morphology')));
+});
