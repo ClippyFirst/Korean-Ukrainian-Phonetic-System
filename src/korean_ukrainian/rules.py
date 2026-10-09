@@ -188,7 +188,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
     elif rule_id=="R016":
         required="R016:verb_stem_rieul_giyeok_suffix"
-        if required not in licenses:
+        if required not in licenses or boundary_mode!="morpheme":
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
