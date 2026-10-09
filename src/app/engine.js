@@ -166,7 +166,7 @@ function applyContextualRules(units){
     // Examples: 국립 [궁닙], 독립문 [동님문], 협력 [혐녁].
     // Keep the rule visible on both segments so the trace explains the change.
     const beforeLiquidRep=representative(a.coda);
-    if(['ㄱ','ㄷ','ㅂ'].includes(beforeLiquidRep)&&b.onset==='ㄹ'){
+    if(['ㄱ','ㅂ','ㅁ','ㅇ'].includes(beforeLiquidRep)&&b.onset==='ㄹ'){
       b.onset='ㄴ';
       rules.push('liquid-to-nasal-before-obstruent');
       nextRules.push('liquid-to-nasal-before-obstruent');
