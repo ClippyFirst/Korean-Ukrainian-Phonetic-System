@@ -306,20 +306,33 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if applies:
                 b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
     elif rule_id=="R016":
-        required="R016:verb_stem_rieul_giyeok_suffix"
-        if required not in licenses or boundary_mode!="morpheme":
+        # §11's ㄺ-before-ㄱ exception is morphology-conditioned. A category
+        # token alone can incorrectly license unrelated words (e.g. 닭고기).
+        # Require exact full-form and pair evidence:
+        # R016:verb_stem_rieul_giyeok_suffix:읽고:읽>고
+        r016_licenses={x for x in licenses if x.startswith("R016:")}
+        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
+        exact_pairs=set()
+        for license in r016_licenses:
+            parts=license.split(":",3)
+            if len(parts)==4 and parts[1]=="verb_stem_rieul_giyeok_suffix" and parts[2]==full_form:
+                exact_pairs.add(parts[3])
+        if not exact_pairs or boundary_mode!="morpheme":
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode): continue
-            if a.coda=="ㄺ" and b.onset=="ㄱ":
-                # This exception is limited to a morphologically identified
-                # verbal stem/derivative before a ㄱ-initial ending. It must
-                # not apply to noun 닭고기 [닥꼬기].
+            pair=f"{a.text}>{b.text}"
+            if a.coda=="ㄺ" and b.onset=="ㄱ" and pair in exact_pairs:
+                # NIKL §11: a morphologically licensed ㄺ-ending stem before
+                # a ㄱ-initial ending retains ㄹ and fortifies the following ㄱ.
                 a.coda="ㄹ"
                 b.onset="ㄲ"
                 changed=True
+                license_context=f"R016:verb_stem_rieul_giyeok_suffix:{full_form}:{pair}"
+            elif pair not in exact_pairs:
+                conditional_disabled=True
     elif rule_id=="R015":
         if license_context!="R015:saisiot":
             name,source,confidence=RULE_META[rule_id]
