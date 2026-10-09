@@ -4,7 +4,7 @@
 
 This note documents the second pass over high-risk Korean surface-pronunciation cases. The goal is not to pretend that a finite list is a complete Korean grapheme-to-phoneme system. It is to prevent well-known lexical and morphophonological exceptions from being silently treated as regular character substitutions.
 
-The curated file is `data/korean/lexical_pronunciations.csv`. At this revision it contains 31 exact lexical entries. Every row carries the input form, standard surface Hangul, project Ukrainian target syllables, broad IPA syllables, a source URL, a short rule rationale, confidence, and target status.
+The curated file is `data/korean/lexical_pronunciations.csv`. The shared rule engines also cover the ordered §19 → §18 chain for 국립, 협력, and 독립문; these are algorithmic regressions rather than lexical overrides. At this revision it contains 31 exact lexical entries. Every row carries the input form, standard surface Hangul, project Ukrainian target syllables, broad IPA syllables, a source URL, a short rule rationale, confidence, and target status.
 
 ## Added in this pass
 

@@ -161,3 +161,10 @@ def test_seoul_station_uses_sourced_surface_form_and_shared_target():
     target = transliterate_korean("서울역")
     assert target["ukrainian_orthography"] == "соуллйок"
     assert target["target_status"] == "model-selected"
+
+
+def test_python_surface_ipa_matches_nikl_19_and_18_for_dongnimmun():
+    result=phoneticize_korean("독립문")
+    assert [x["onset"] for x in result["surface_syllables"]]==["ㄷ","ㄴ","ㅁ"]
+    assert [x["coda"] for x in result["surface_syllables"]]==["ㅇ","ㅁ","ㄴ"]
+    assert result["ipa"]["ipa"]=="toŋ.nim.mun"
