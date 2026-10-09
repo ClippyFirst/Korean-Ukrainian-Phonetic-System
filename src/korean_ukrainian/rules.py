@@ -139,9 +139,15 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode): continue
             representative=contextual_final_representative(a,b)
-            if representative=="ㄴ" and b.onset=="ㄹ": a.coda="ㄹ"; changed=True
-            elif representative=="ㄹ" and b.onset=="ㄴ": a.coda="ㄹ"; b.onset="ㄹ"; changed=True
-            elif representative in {"ㅁ","ㅇ"} and b.onset=="ㄹ": b.onset="ㄴ"; changed=True
+            # NIKL §19: after a coda in the ㄱ/ㅂ/ㅁ/ㅇ classes, ㄹ is
+            # realized as ㄴ. For ㄱ/ㅂ, the following R005 pass then
+            # nasalizes the coda to ㅇ/ㅁ. Therefore R006 must precede R005.
+            if representative in {"ㄱ","ㅂ","ㅁ","ㅇ"} and b.onset=="ㄹ":
+                b.onset="ㄴ"; changed=True
+            elif representative=="ㄴ" and b.onset=="ㄹ":
+                a.coda="ㄹ"; changed=True
+            elif representative=="ㄹ" and b.onset=="ㄴ":
+                a.coda="ㄹ"; b.onset="ㄹ"; changed=True
     elif rule_id=="R007":
         # NIKL §17 is not a general rule before every j-glide vowel. It
         # requires the vowel ㅣ of a formal morpheme, or the explicitly
@@ -261,6 +267,6 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,source,license_context)
 
 def apply_ordered_rules(items:list[Syllable],rule_ids=None,*,boundary_mode="same_word",n_insertion_licensed=False,rule_licenses=None):
-    ids=rule_ids or ["R009","R002","R003","R004","R005","R006","R007","R010","R011","R012","R013","R014","R015","R016","R008","R001"]
+    ids=rule_ids or ["R009","R002","R003","R004","R006","R005","R007","R010","R011","R012","R013","R014","R015","R016","R008","R001"]
     if boundary_mode not in {"unknown","same_word","morpheme","word","phrase"}: raise ValueError("invalid boundary_mode")
     return items,[apply_rule(items,r,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses) for r in ids]
