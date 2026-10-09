@@ -476,7 +476,7 @@ def test_section_18_nasal_assimilation_applies_across_phrase_boundaries():
         "값 매기다": ("ㅁ", "ㅁ"),
     }.items():
         items, traces = apply_ordered_rules(
-            parse_syllables(phrase), ["R005"], boundary_mode="phrase"
+            parse_syllables(phrase), ["R001", "R005"], boundary_mode="phrase"
         )
         assert items[0].coda == expected[0], phrase
         assert any(trace.changed for trace in traces), phrase
