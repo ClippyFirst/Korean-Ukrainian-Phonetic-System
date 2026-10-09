@@ -60,3 +60,10 @@ def test_lexical_pronunciation_entries_are_complete_and_provenanced():
         assert row["target_status"] in {"model-selected","provisional"}
         assert len(row["surface_hangul"]) == len(row["target_syllables"].split("|"))
         assert len(row["surface_hangul"]) == len(row["ipa_syllables"].split("|"))
+
+def test_documented_rule_order_matches_runtime_pipeline():
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.rules import apply_ordered_rules
+    documented = sorted(rows(ROOT/"data/korean/rule_ordering.csv"), key=lambda r: int(r["preferred_order"]))
+    _, traces = apply_ordered_rules(parse_syllables("가"))
+    assert [r["rule_id"] for r in documented] == [trace.rule_id for trace in traces]

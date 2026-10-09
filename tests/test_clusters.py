@@ -33,3 +33,14 @@ def test_complex_coda_assimilation_after_neutralization():
     for word,expected in {"긁는":("ㅇ","ㄴ"),"뚫네":("ㄹ","ㄹ"),"핥네":("ㄹ","ㄹ")}.items():
         items,_=apply_ordered_rules(parse_syllables(word),["R005","R006","R001"])
         assert (items[0].coda,items[1].onset)==expected
+
+def test_coda_exception_does_not_cross_a_written_word_boundary():
+    # The §10 밟-/넓- exception is contextual within the lexical form;
+    # a consonant onset in the next whitespace-delimited word is not enough.
+    across_boundary = parse_syllables("밟 사람")
+    apply_ordered_rules(across_boundary, ["R001"], boundary_mode="phrase")
+    assert across_boundary[0].coda == "ㄹ"
+
+    within_word = parse_syllables("밟고")
+    apply_ordered_rules(within_word, ["R001"], boundary_mode="phrase")
+    assert within_word[0].coda == "ㅂ"
