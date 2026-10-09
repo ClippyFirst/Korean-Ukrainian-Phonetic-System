@@ -230,9 +230,9 @@ test('sourced §13 simple-coda examples preserve their formal-morpheme readings'
 
 test('official §12 complex-coda + ㅎ examples use exact lexical evidence', () => {
   const expected = {
-    읽히다: {surface:'일키다', target:'ілкіда', ipa:'il kʰi ta'},
-    앉히다: {surface:'안치다', target:'анчіда', ipa:'an tɕʰi ta'},
-    넓히다: {surface:'널피다', target:'нолпіда', ipa:'nʌl pʰi ta'},
+    읽히다: {surface:'일키다', target:'ілкіда', ipa:'il kʰi da'},
+    앉히다: {surface:'안치다', target:'анчіда', ipa:'an tɕʰi da'},
+    넓히다: {surface:'널피다', target:'нолпіда', ipa:'nʌl pʰi da'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
