@@ -35,7 +35,7 @@ The browser engine is intentionally not a full Korean morphological parser. Rule
 | §16 | Special pronunciation of Korean consonant-letter names when particles/endings attach. | Not generalized in the browser engine; letter names are lexical forms, not ordinary Jamo sequences. |
 | §17 | Palatalization of ㄷ/ㅌ(ㄾ) before ㅣ-initial formal morphemes; ㄷ+히 also yields 치. | Fixed over-broad trigger: palatalization is not a general rule before every j-glide vowel. The Python research rule requires an explicit §17 formal-morpheme or -히 license; the browser uses sourced exact-form entries and withholds unknown spelling-only candidates. The official [붙임] sequence ㄷ+ㅎ → ㅌ followed by ㅣ → ㅊ is documented and tested separately. |
 | §18 | Nasal assimilation: coda obstruents surface as ㅇ/ㄴ/ㅁ before ㄴ/ㅁ. | Implemented after coda neutralization/simplification. The trace now marks the change on both affected syllables. |
-| §19 | ㄹ → ㄴ after coda ㄱ/ㅂ/ㅁ/ㅇ; after ㄱ/ㅂ, nasal assimilation also changes the coda. | Fixed and regression-tested. The rule is limited to the standard environments; it must run before nasal assimilation. Examples: 국립 [궁닙], 협력 [혐녁], 독립문 [동님문]. |
+| §19 | ㄹ → ㄴ after coda ㄱ/ㅂ/ㅁ/ㅇ; after ㄱ/ㅂ, nasal assimilation also changes the coda. | The browser and Python research engines now both implement §19 before §18. Regression tests assert the ordered chain: 국립 [궁닙], 협력 [혐녁], 독립문 [동님문]. The Python rule order was corrected so the liquid-to-nasal change happens before nasal assimilation of the preceding ㄱ/ㅂ coda. |
 | §20 | Liquid assimilation: ㄴ and ㄹ become ㄹㄹ in licensed environments; listed lexical exceptions can instead have ㄹ → ㄴ. | General adjacent ㄴ/ㄹ logic exists; lexical exceptions such as 의견란 remain exact dictionary entries. |
 | §21 | Other place-assimilation patterns are not accepted as standard merely because they are common in casual speech. | Do not add speculative velar/labial place assimilation as a generic rule. |
 | §22 | Optional glide [j] in specified verb-ending environments (e.g. 되어/피어 variants). | Not generally implemented; requires morphology and variant representation. |
@@ -52,8 +52,8 @@ The browser engine is intentionally not a full Korean morphological parser. Rule
 
 The regression suite **tests/nikl-pronunciation-regression.test.mjs** covers:
 
-- 독립문 → normative surface sequence [동님문], with §19 before §18.
-- 국립 → [궁닙].
+- 독립문 → normative surface sequence [동님문], with §19 before §18 in both runtime and research pipeline.
+- 국립 → [궁닙], including Python/browser cross-layer parity.
 - 국립국어원 → [궁님꾸거원], combining §19, §18, and §23 in the correct order.
 - 서울역 → [서울력], via a sourced lexical override implementing §29's ㄹ + inserted ㄴ → ㄹ.
 - 한국어의 → default [ɰi] instead of an unresolved placeholder.
