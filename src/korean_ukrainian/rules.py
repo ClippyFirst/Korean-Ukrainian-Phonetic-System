@@ -62,7 +62,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     license_context=_licensed(rule_id,licenses)
     if rule_id=="R001":
         for i,s in enumerate(items):
-            if s.coda=="ㄼ" and i+1<len(items) and items[i+1].onset!="ㅇ":
+            if s.coda=="ㄼ" and s.boundary_after!="word" and i+1<len(items) and items[i+1].onset!="ㅇ":
                 # NIKL exception: 밟- is [ㅂ] before consonants; 넓- has
                 # the narrower [ㅂ] realization in 넓죽-/넓둥글-.
                 if s.text=="밟":
