@@ -248,7 +248,7 @@ function applyContextualRules(units){
     const a=units[i];
     if(a.type!=='hangul'||!a.coda)continue;
     let j=i+1,sawSpace=false;
-    while(j<units.length&&units[j].type==='literal'&&/^\\s$/u.test(units[j].char)){
+    while(j<units.length&&units[j].type==='literal'&&/^\s$/u.test(units[j].char)){
       sawSpace=true;j++;
     }
     if(!sawSpace||j>=units.length||units[j].type!=='hangul')continue;
