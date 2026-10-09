@@ -123,3 +123,16 @@ test('sourced lexical edge cases preserve spaces and punctuation in phrases',()=
 });
 
 test('unknown ㅎ-coda + vowel is unresolved without ending/suffix evidence',()=>{const r=engine.convert('낳어');assert.equal(r.status,'unresolved');assert.ok(r.ukrainian.includes('⟦낳⟧'));assert.ok(r.issues.some(x=>x.includes('§12(4) ㅎ deletion requires a verified')));assert.ok(r.trace.some(x=>x.rules.includes('h-deletion-requires-morphology')));});
+
+test('§18 nasal assimilation applies across plain spaces in connected phrases',()=>{
+  const r=engine.convert('밥 먹는다');
+  assert.ok(r.trace[0].rules.includes('nasal-assimilation'));
+  assert.equal(r.ipa,'pam mʌŋ.nɯn.da');
+});
+
+test('§19 precedes §18 across a phrase boundary',()=>{
+  const r=engine.convert('협 력');
+  assert.equal(r.ipa,'hjʌm njʌk̚');
+  assert.ok(r.trace[0].rules.includes('liquid-to-nasal-before-obstruent'));
+  assert.ok(r.trace[0].rules.includes('nasal-assimilation'));
+});
