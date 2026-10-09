@@ -480,3 +480,18 @@ def test_section_18_nasal_assimilation_applies_across_phrase_boundaries():
         )
         assert items[0].coda == expected[0], phrase
         assert any(trace.changed for trace in traces), phrase
+
+def test_section_11_complex_coda_neutralization_and_fortition_examples():
+    cases = {
+        "닭": ("ㄺ", "ㄱ", None),
+        "흙과": ("ㄺ", "ㄱ", "ㄲ"),
+        "늙지": ("ㄺ", "ㄱ", "ㅉ"),
+        "읊고": ("ㄿ", "ㅂ", "ㄲ"),
+        "읊다": ("ㄿ", "ㅂ", "ㄸ"),
+    }
+    for word, (written_coda, expected_coda, expected_onset) in cases.items():
+        items, _ = apply_ordered_rules(parse_syllables(word), ["R001", "R008"])
+        coda_items = [item for item in items if item.coda]
+        assert coda_items[0].coda == expected_coda, word
+        if expected_onset:
+            assert items[-1].onset == expected_onset, word
