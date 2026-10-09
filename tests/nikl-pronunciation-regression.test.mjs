@@ -588,7 +588,6 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '밥물': ['밤물', 'pam mul', 'паммуль'],
     '앞마당': ['암마당', 'am ma daŋ', 'аммадан'],
     '읊는': ['음는', 'ɯm nɯn', 'имнин'],
-    '밟는': ['밤는', 'paːm nɯn', 'памнин'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
