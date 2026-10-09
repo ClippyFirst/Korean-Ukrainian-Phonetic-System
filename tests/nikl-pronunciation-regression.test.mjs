@@ -690,7 +690,6 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
   const expected = {
     '천리': 'tɕʰʌl li',
     '물난리': 'mul lal li',
-    '줄넘기': 'tɕul lʌm k͈i',
     '할는지': 'hal lɯn tɕi',
     '닳는': 'tal lɯn',
     '뚫는': 'tul lɯn',
@@ -708,6 +707,7 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
 
 test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', () => {
   const expected = {
+    '줄넘기': ['줄럼끼', 'tɕul lʌm k͈i', 'чульломкі'],
     '임진란': ['임진난', 'imː tɕin nan', '임진난'],
     '생산량': ['생산냥', 'sɛŋ san njaŋ', '생산냥'],
     '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', '결딴녁'],
