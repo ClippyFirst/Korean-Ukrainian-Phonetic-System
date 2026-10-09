@@ -228,11 +228,19 @@ function lexicalResult(text,entry){
     return ch+' = '+d.onset+'+'+d.vowel+(d.coda?'+'+d.coda:'');
   }).join(' · ');
   const targetReview=entry.target_status==='provisional';
+  const variants=entry.alternate_surface_hangul? [{
+    surface:entry.alternate_surface_hangul,
+    ukrainian:(entry.alternate_target_syllables||'').split('|').join(''),
+    ipa:(entry.alternate_ipa_syllables||'').split('|').join(' '),
+    note:entry.variant_note||'',
+    status:targetReview?'lexical-review':'lexical'
+  }]:[];
   return {
     source:text,
     ukrainian:targets.join(''),
     ipa:ipas.join(' '),
     analysis,
+    variants,
     trace:syllables.map((ch,i)=>({
       source:ch,status:targetReview?'lexical-review':'lexical',rules:i===0?(targetReview?['lexical-pronunciation','ukrainian-target-provisional']:['lexical-pronunciation']):['lexical-context'],
       output:targets[i]??'',ipa:ipas[i]??''
@@ -251,12 +259,19 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
         return convertText(part,map,lexicon,true);
       });
       const issues=results.flatMap(r=>r.issues);
+      const variants=results.flatMap((r,i)=>(r.variants||[]).map(v=>({
+        ...v,
+        source:r.source,
+        ukrainian:results.map((other,j)=>j===i?v.ukrainian:other.ukrainian).join(''),
+        ipa:results.map((other,j)=>j===i?v.ipa:other.ipa).join('')
+      })));
       return {
         source:text,
         ukrainian:results.map(r=>r.ukrainian).join(''),
         ipa:results.map(r=>r.ipa).join(''),
         analysis:results.map(r=>r.analysis).join(''),
         trace:results.flatMap(r=>r.trace),
+        variants,
         issues,
         status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='contextual')?'contextual':'canonical'
       };
