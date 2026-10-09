@@ -1,10 +1,57 @@
 from __future__ import annotations
+import csv
+from pathlib import Path
 from .hangul import decompose_hangul
 from .phonology import parse_syllables
 from .rules import apply_ordered_rules
 from .ipa import realize_syllables
 from .ukrainian_adapter import UkrainianTargetAdapter
 from .orthography import render_sequence
+
+_LEXICON_PATH=Path(__file__).resolve().parents[2]/"data"/"korean"/"lexical_pronunciations.csv"
+
+def _load_lexicon():
+    try:
+        with _LEXICON_PATH.open(encoding="utf-8-sig",newline="") as stream:
+            return {row["input"]:row for row in csv.DictReader(stream) if row.get("input")}
+    except FileNotFoundError:
+        return {}
+
+LEXICAL_PRONUNCIATIONS=_load_lexicon()
+
+def _apply_lexical_pronunciations(items):
+    """Apply exact, sourced lexical forms after general rules; never generalize by spelling alone."""
+    from .phonology import parse_syllables
+    traces=[]
+    i=0
+    while i<len(items):
+        j=i+1
+        while j<len(items) and items[j-1].boundary_after!="word":
+            j+=1
+        group=items[i:j]
+        word="".join(s.text for s in group)
+        entry=LEXICAL_PRONUNCIATIONS.get(word)
+        if entry:
+            surface=parse_syllables(entry["surface_hangul"])
+            if len(surface)!=len(group):
+                traces.append({
+                    "rule_id":"LEXICON","name":"lexical-pronunciation","changed":False,
+                    "status":"invalid-entry","confidence":entry.get("confidence","unknown"),
+                    "source":entry.get("source_url",""),
+                    "notes":f"syllable count mismatch for {word}: {len(group)} != {len(surface)}"
+                })
+            else:
+                before=[s.to_dict() for s in group]
+                for target,source in zip(group,surface):
+                    target.onset,target.nucleus,target.coda=source.onset,source.nucleus,source.coda
+                traces.append({
+                    "rule_id":"LEXICON","name":"lexical-pronunciation","changed":before != [s.to_dict() for s in group],
+                    "before":before,"after":[s.to_dict() for s in group],
+                    "status":"lexical-override","confidence":entry.get("confidence","unknown"),
+                    "source":entry.get("source_url",""),"license_context":entry.get("rule_notes","")
+                })
+        i=j
+    return traces
 
 DEFAULT_WEIGHTS={"consonantal":2.0,"sonorant":1.5,"syllabic":1.0,"voice":1.0,"continuant":1.5,"nasal":1.5,"lateral":1.0,"rhotic":1.0,"labial":1.5,"coronal":1.5,"dorsal":1.5,"palatal":2.0,"palatalized":1.5,"affricate":1.5,"aspirated":0.5,"long":0.5}
 
@@ -23,7 +70,8 @@ def phonologize_korean(text):
 def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None):
     items=parse_syllables(text)
     items,traces=apply_ordered_rules(items,rule_ids,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses)
-    return {"input":text,"surface_syllables":[x.to_dict() for x in items],"rules":[x.to_dict() for x in traces],"ipa":realize_syllables(items,level=ipa_level)}
+    lexical_traces=_apply_lexical_pronunciations(items)
+    return {"input":text,"surface_syllables":[x.to_dict() for x in items],"rules":[x.to_dict() for x in traces]+lexical_traces,"ipa":realize_syllables(items,level=ipa_level)}
 
 def _feature_vector_for_ipa(ipa:str)->dict:
     consonants={"p":("0","0","1","0","0","0","0","0"),"p͈":("0","0","1","0","0","0","0","0"),"pʰ":("0","0","1","0","0","0","0","1"),"t":("0","1","0","0","0","0","0","0"),"t͈":("0","1","0","0","0","0","0","0"),"tʰ":("0","1","0","0","0","0","0","1"),"k":("0","0","0","1","0","0","0","0"),"k͈":("0","0","0","1","0","0","0","0"),"kʰ":("0","0","0","1","0","0","0","1"),"tɕ":("0","1","0","0","0","1","0","0"),"tɕ͈":("0","1","0","0","0","1","0","0"),"tɕʰ":("0","1","0","0","0","1","0","1"),"s":("0","1","0","0","1","0","0","0"),"s͈":("0","1","0","0","1","0","0","0"),"m":("1","0","1","0","0","1","0","0"),"n":("1","1","0","0","0","1","0","0"),"ŋ":("1","0","0","1","0","1","0","0"),"ɾ":("1","1","0","0","1","0","1","0"),"l":("1","1","0","0","1","0","0","0"),"h":("0","0","0","0","1","0","0","0")}
