@@ -41,3 +41,8 @@ def test_broad_ipa_for_complex_coda_aspiration():
     assert phoneticize_korean("읽히다")["ipa"]["ipa"] == "il.kʰi.da"
     assert phoneticize_korean("앉히다")["ipa"]["ipa"] == "an.tɕʰi.da"
     assert phoneticize_korean("넓히다")["ipa"]["ipa"] == "nʌl.pʰi.da"
+
+
+
+def test_ipa_renderer_preserves_word_boundaries():
+    assert phoneticize_korean("현대 한국어")["ipa"]["ipa"] == "hjʌn.dɛ han.ɡu.ɡʌ"
