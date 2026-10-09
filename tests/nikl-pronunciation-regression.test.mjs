@@ -617,7 +617,7 @@ test('NIKL §18 cross-word examples nasalize across connected phrase boundaries'
   const expected = {
     '책 넣는다': 'tɕʰɛŋ nʌn nɯn da',
     '흙 말리다': 'hɯŋ mal li da',
-    '옷 맞추다': 'on mat tɕʰu da',
+    '옷 맞추다': 'on mat̚ tɕʰu da',
     '밥 먹는다': 'pam mʌŋ nɯn da',
     '값 매기다': 'kam mɛ ɡi da',
   };
