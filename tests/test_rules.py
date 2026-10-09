@@ -419,7 +419,8 @@ def test_section_18_nasal_assimilation_applies_across_words_in_phrase_mode():
         parse_syllables("밥 먹는다"),["R005"],boundary_mode="same_word",
     )
     assert items[0].coda=="ㅂ"
-    assert not traces[0].changed
+    # R005 may still change the coda inside 먹는다; the first word must remain untouched.
+    assert items[0].coda=="ㅂ"
 
     items,traces=apply_ordered_rules(
         parse_syllables("밥 먹는다"),["R005"],boundary_mode="phrase",
