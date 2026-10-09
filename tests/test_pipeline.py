@@ -56,3 +56,40 @@ def test_morphological_fortition_requires_explicit_license():
     apply_ordered_rules(items, rule_ids=["R010"], boundary_mode="same_word",
                         rule_licenses={"R010:stem_n_m+suffix"})
     assert items[1].onset == "ㄲ"
+
+
+
+def test_sourced_lexical_pronunciation_overrides_cover_known_exceptions():
+    from korean_ukrainian.pipeline import phoneticize_korean
+    expected = {
+        "값없다": "ka.bʌp̚.t͈a",
+        "의견란": "ɰi.ɡjʌn.nan",
+        "읽고": "il.k͈o",
+        "읽다": "ik̚.t͈a",
+        "읽어": "il.ɡʌ",
+        "읽는": "iŋ.nɯn",
+        "읽지": "ik̚.tɕ͈i",
+        "맑게": "mal.k͈e",
+        "맑고": "mal.k͈o",
+        "맑다": "mak̚.t͈a",
+        "밝기": "pal.k͈i",
+        "닭고기": "tak̚.k͈o.ɡi",
+    }
+    for word, ipa in expected.items():
+        result = phoneticize_korean(word)
+        assert result["ipa"]["ipa"] == ipa, word
+        assert any(rule["rule_id"] == "LEXICON" and rule["status"] == "lexical-override"
+                   for rule in result["rules"]), word
+
+
+def test_lexical_ㄺ_rules_do_not_overgeneralize_to_noun_forms():
+    from korean_ukrainian.pipeline import phoneticize_korean
+    assert phoneticize_korean("닭고기")["ipa"]["ipa"] == "tak̚.k͈o.ɡi"
+    assert phoneticize_korean("읽고")["ipa"]["ipa"] == "il.k͈o"
+    assert phoneticize_korean("닭이")["ipa"]["ipa"] == "tal.ɡi"
+
+
+def test_lexical_pronunciation_keeps_phrase_level_n_insertion_working():
+    from korean_ukrainian.pipeline import phoneticize_korean
+    result = phoneticize_korean("무슨 일", boundary_mode="phrase", n_insertion_licensed=True)
+    assert result["surface_syllables"][2]["onset"] == "ㄴ"
