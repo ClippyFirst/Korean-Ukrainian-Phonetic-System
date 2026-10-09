@@ -58,7 +58,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     if rule_id not in RULE_META: raise ValueError(f"unknown rule_id: {rule_id}")
     if boundary_mode not in {"unknown","same_word","morpheme","word","phrase"}: raise ValueError("invalid boundary_mode")
     licenses=set(rule_licenses or ())
-    before=_snap(items); changed=False
+    before=_snap(items); changed=False; conditional_disabled=False
     license_context=_licensed(rule_id,licenses)
     if rule_id=="R001":
         for i,s in enumerate(items):
@@ -73,11 +73,33 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 new=FINAL_REPRESENTATIVE[s.coda]
                 if new!=s.coda: s.coda=new; changed=True
     elif rule_id=="R002":
+        # Complex-coda liaison is morphologically ambiguous: §§13–14 move
+        # the second cluster component before a formal morpheme, while §15
+        # neutralizes the cluster and moves its representative before a
+        # substantive morpheme. Never infer the distinction from Hangul
+        # adjacency alone. Require an exact full-form + pair license:
+        # R002:formal:넋이:넋>이 or R002:substantive:값어치:값>어.
+        liaison_licenses={x for x in licenses if x.startswith("R002:")}
+        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode) or b.onset!="ㅇ" or not a.coda: continue
             if a.coda in COMPLEX_LIAISON:
-                retained,moved=COMPLEX_LIAISON[a.coda]; a.coda=retained; b.onset=moved or "ㅇ"; changed=True
+                pair=f"{a.text}>{b.text}"
+                scope=None
+                for license in liaison_licenses:
+                    parts=license.split(":",3)
+                    if len(parts)==4 and parts[2]==full_form and parts[3]==pair:
+                        scope=parts[1]
+                        break
+                if scope=="formal":
+                    retained,moved=COMPLEX_LIAISON[a.coda]
+                    a.coda=retained; b.onset=moved or "ㅇ"; changed=True
+                elif scope=="substantive":
+                    representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
+                    a.coda=""; b.onset=representative; changed=True
+                else:
+                    conditional_disabled=True
             elif a.coda!="ㅎ":
                 b.onset=a.coda; a.coda=""; changed=True
     elif rule_id=="R003":
@@ -263,7 +285,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             elif b.onset=="ㅇ" and b.nucleus=="ㅣ":
                 a.coda="ㄴ"; b.onset="ㄴ"; changed=True
     name,source,confidence=RULE_META[rule_id]
-    status="established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015","R016"} else "conditional-nochange"
+    status=("conditional-disabled" if conditional_disabled and not changed else ("partially-conditional" if conditional_disabled else ("established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015","R016"} else "conditional-nochange")))
     return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,source,license_context)
 
 def apply_ordered_rules(items:list[Syllable],rule_ids=None,*,boundary_mode="same_word",n_insertion_licensed=False,rule_licenses=None):
