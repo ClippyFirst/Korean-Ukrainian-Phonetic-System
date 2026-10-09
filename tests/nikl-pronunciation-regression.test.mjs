@@ -575,3 +575,55 @@ test('NIKL §9 lexical vowel-length examples preserve source length in IPA', () 
     assert.equal(result.ukrainian, target, word);
   }
 });
+
+test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
+  const expected = {
+    '먹는': ['멍는', 'mʌŋ nɯn', 'моннин'],
+    '깎는': ['깡는', 'k͈aŋ nɯn', 'каннин'],
+    '키읔만': ['키응만', 'kʰi ɯŋ man', 'кіинман'],
+    '몫몫이': ['몽목씨', 'moŋ mok̚ s͈i', 'монмокші'],
+    '긁는': ['긍는', 'kɯŋ nɯn', 'киннин'],
+    '흙만': ['흥만', 'hɯŋ man', 'хинман'],
+    '닫는': ['단는', 'tan nɯn', 'таннин'],
+    '짓는': ['진는', 'tɕiːn nɯn', 'чіннин'],
+    '옷맵시': ['온맵씨', 'on mɛp̚ s͈i', 'онмепші'],
+    '있는': ['인는', 'in nɯn', 'іннин'],
+    '맞는': ['만는', 'man nɯn', 'маннин'],
+    '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'джонмонуль'],
+    '쫓는': ['쫀는', 'tɕ͈on nɯn', 'чоннин'],
+    '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'конмануль'],
+    '붙는': ['분는', 'pun nɯn', 'пуннин'],
+    '놓는': ['논는', 'non nɯn', 'ноннин'],
+    '잡는': ['잠는', 'tɕam nɯn', 'джамнин'],
+    '밥물': ['밤물', 'pam mul', 'паммуль'],
+    '앞마당': ['암마당', 'am ma daŋ', 'аммадан'],
+    '읊는': ['음는', 'ɯm nɯn', 'имнин'],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
+    const row = rows.find((item) => item.input === word);
+    assert.ok(row, word);
+    assert.equal(row.surface_hangul, surface, word);
+    assert.equal(row.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ukrainian, target, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
+});
+
+test('NIKL §18 cross-word examples nasalize across connected phrase boundaries', () => {
+  const expected = {
+    '책 넣는다': 'tɕʰɛŋ nʌn nɯn da',
+    '흙 말리다': 'hɯŋ mal li da',
+    '옷 맞추다': 'on mat̚ tɕʰu da',
+    '밥 먹는다': 'pam mʌŋ nɯn da',
+    '값 매기다': 'kam mɛ ɡi da',
+  };
+  for (const [phrase, ipa] of Object.entries(expected)) {
+    const result = engine.convert(phrase);
+    assert.equal(result.ipa, ipa, phrase);
+    assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')), phrase);
+  }
+});
