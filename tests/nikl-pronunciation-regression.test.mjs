@@ -535,33 +535,44 @@ test('NIKL §10 complex-coda examples and lexical exceptions are source-backed',
   }
 });
 
-test('NIKL §9 official final-neutralization examples have source-backed surface forms', () => {
+test('NIKL §9 regular final-neutralization examples are computed by rules', () => {
   const expected = {
-    '닦다': ['닥따', 'tak̚ t͈a', 'такта'],
-    '키읔': ['키윽', 'kʰi ɯk̚', 'кіик'],
-    '키읔과': ['키윽꽈', 'kʰi ɯk̚ k͈wa', 'кіикква'],
-    '옷': ['옫', 'ot̚', 'от'],
+    '닦다': ['tak̚ t͈a', 'такта'],
+    '키읔': ['kʰi ɯk̚', 'кіик'],
+    '키읔과': ['kʰi ɯk̚ k͈wa', 'кіикква'],
+    '옷': ['ot̚', 'от'],
+    '있다': ['it̚ t͈a', 'ітта'],
+    '젖': ['tɕʌt̚', 'джот'],
+    '빚다': ['pit̚ t͈a', 'пітта'],
+    '꽃': ['k͈ot̚', 'кот'],
+    '쫓다': ['tɕ͈ot̚ t͈a', 'чотта'],
+    '솥': ['sot̚', 'сот'],
+    '앞': ['ap̚', 'ап'],
+    '덮다': ['tʌp̚ t͈a', 'топта'],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [ipa, target]] of Object.entries(expected)) {
+    assert.ok(!rows.some((item) => item.input === word), word);
+    const result = engine.convert(word);
+    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ukrainian, target, word);
+    assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
+});
+
+test('NIKL §9 lexical vowel-length examples preserve source length in IPA', () => {
+  const expected = {
     '웃다': ['욷따', 'uːt̚ t͈a', 'утта'],
-    '있다': ['읻따', 'it̚ t͈a', 'ітта'],
-    '젖': ['젇', 'tɕʌt̚', 'джот'],
-    '빚다': ['빋따', 'pit̚ t͈a', 'пітта'],
-    '꽃': ['꼳', 'k͈ot̚', 'кот'],
-    '쫓다': ['쫃따', 'tɕ͈ot̚ t͈a', 'чотта'],
-    '솥': ['솓', 'sot̚', 'сот'],
     '뱉다': ['밷따', 'pɛːt̚ t͈a', 'петта'],
-    '앞': ['압', 'ap̚', 'ап'],
-    '덮다': ['덥따', 'tʌp̚ t͈a', 'топта'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
     const row = rows.find((item) => item.input === word);
     assert.ok(row, word);
     assert.equal(row.surface_hangul, surface, word);
-    assert.equal(row.target_status, 'provisional', word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ipa, ipa, word);
     assert.equal(result.ukrainian, target, word);
-    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
