@@ -47,3 +47,16 @@ def test_evidence_source_foreign_keys():
     source_ids={r["source_id"] for r in rows(ROOT/"data/korean/sources.csv")}
     for row in rows(ROOT/"data/korean/evidence.csv"):
         assert row["source_id"] in source_ids
+
+
+
+def test_lexical_pronunciation_entries_are_complete_and_provenanced():
+    entries=rows(ROOT/"data/korean/lexical_pronunciations.csv")
+    assert entries
+    for row in entries:
+        assert row["input"] and row["surface_hangul"]
+        assert row["source_url"].startswith("https://")
+        assert row["confidence"] in {"high","medium","low"}
+        assert row["target_status"] in {"model-selected","provisional"}
+        assert len(row["surface_hangul"]) == len(row["target_syllables"].split("|"))
+        assert len(row["surface_hangul"]) == len(row["ipa_syllables"].split("|"))
