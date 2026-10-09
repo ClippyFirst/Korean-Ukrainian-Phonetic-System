@@ -120,3 +120,25 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
+
+test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', () => {
+  const expected = {
+    맛없다: {surface:'마덥따', target:'\u043c\u0430\u0434\u0435\u043f\u0442\u0442\u0430', ipa:'ma dʌp̚ t͈a'},
+    겉옷: {surface:'거돋', target:'ґодот', ipa:'kʌ tot̚'},
+    헛웃음: {surface:'허두슴', target:'ходусим', ipa:'hʌ du sɯm'},
+    값어치: {surface:'가버치', target:'кабочі', ipa:'ka bʌ tɕʰi'},
+    젖어미: {surface:'저더미', target:'джодомі', ipa:'tɕʌ dʌ mi'},
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, values] of Object.entries(expected)) {
+    const entry = rows.find((row) => row.input === word);
+    assert.ok(entry, word);
+    assert.equal(entry.surface_hangul, values.surface, word);
+    assert.equal(entry.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
+});
