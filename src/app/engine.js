@@ -119,6 +119,16 @@ function applyContextualRules(units){
     // sourced lexical entries may resolve these cases; unknown forms are
     // marked unresolved rather than assigned the §14 pattern by default.
     if(a.coda&&b.onset==='ㅇ'&&!a.__palatalizationUnlicensed){
+      // NIKL §12(4): ㅎ/ㄶ/ㅀ deletion is licensed before vowel-initial
+      // endings/suffixes, not by Hangul adjacency alone. Exact known forms
+      // are handled by the lexical layer; unknown candidates are withheld.
+      if(['ㅎ','ㄶ','ㅀ'].includes(a.coda)){
+        a.__hDeletionUnlicensed='left';
+        b.__hDeletionUnlicensed='right';
+        rules.push('h-deletion-requires-morphology');
+        nextRules.push('h-deletion-requires-morphology');
+        continue;
+      }
       const pair=COMPLEX[a.coda];
       if(pair&&!['ㄶ','ㅀ'].includes(a.coda)){
         a.__complexLiaisonUnlicensed='left';
@@ -318,6 +328,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     analysis[i]=original.char+' = '+original.onset+'+'+original.vowel+(original.coda?'+'+original.coda:'');
     if(u.__palatalizationUnlicensed){
       if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a verified formal-morpheme boundary; add a sourced lexical entry or morphological license.');
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='';
+      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
+      continue;
+    }
+    if(u.__hDeletionUnlicensed){
+      if(u.__hDeletionUnlicensed==='left')issues.push(u.char+': §12(4) ㅎ deletion requires a verified vowel-initial ending/suffix; add a sourced lexical pronunciation entry.');
       output[i]='⟦'+u.char+'⟧';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};

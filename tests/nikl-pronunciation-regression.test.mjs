@@ -254,3 +254,26 @@ test('unknown complex-coda + ㅎ does not inherit the suffix-aspiration pattern'
   assert.ok(result.issues.some((issue) => issue.includes('§12 complex-coda + ㅎ aspiration depends')));
   assert.ok(result.trace.some((item) => item.rules.includes('complex-coda-h-aspiration-requires-morphology')));
 });
+
+test('official §12(4) H-deletion examples are sourced and marked provisional on the Ukrainian side', () => {
+  const expected = {
+    낳은: {surface:'나은', target:'наин', ipa:'na ɯn'},
+    놓아: {surface:'노아', target:'ноа', ipa:'no a'},
+    쌓이다: {surface:'싸이다', target:'ссаіда', ipa:'s͈a i da'},
+    많아: {surface:'마나', target:'мана', ipa:'ma na'},
+    않은: {surface:'아는', target:'анин', ipa:'a nɯn'},
+    닳아: {surface:'다라', target:'тара', ipa:'ta ɾa'},
+    싫어도: {surface:'시러도', target:'шіродо', ipa:'ɕi ɾʌ do'},
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, values] of Object.entries(expected)) {
+    const entry = rows.find((row) => row.input === word);
+    assert.ok(entry, word);
+    assert.equal(entry.surface_hangul, values.surface, word);
+    assert.equal(entry.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+  }
+});

@@ -43,7 +43,7 @@ The browser adapter implements:
 - canonical onset/vowel/coda mappings from data/korean/canonical_correspondence.csv;
 - ㅅ/ㅆ → ш in the relevant i/j-like environments;
 - simple-coda liaison where the outcome is unambiguous, and exact sourced complex-coda pronunciations; codas whose representative changes under §15 are withheld before ㅏ/ㅓ/ㅗ/ㅜ/ㅟ when morphology is unknown; unknown non-ㅎ complex-coda + vowel sequences are also marked unresolved; ㄶ/ㅀ retain their special ㅎ behavior;
-- ㅎ deletion and ㅎ-driven aspiration; the direct complex-coda + ㅎ suffix pattern is resolved only through exact sourced lexical entries, while unknown morphologically ambiguous forms are marked unresolved;
+- ㅎ deletion and ㅎ-driven aspiration; §12(4) ㅎ/ㄶ/ㅀ deletion before vowels is resolved through exact sourced lexical entries, and unknown morphology-dependent forms are marked unresolved; the direct complex-coda + ㅎ suffix pattern is also lexical-evidence gated;
 - nasal assimilation, liquid assimilation and palatalization in the documented environments;
 - selected lexical coda exceptions such as 밟- and 넓죽-/넓둥글-/넓적- where standard pronunciation cannot be inferred from the coda inventory alone;
 - selected contextual voicing;

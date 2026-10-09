@@ -140,3 +140,10 @@ Official source: NIKL, *표준 발음법*, §§24–28: https://www.korean.go.kr
 R015 now requires a full-form and adjacent-pair license such as `R015:saisiot:냇가:냇>가`, rather than a category-only `R015:saisiot` token. This prevents a lexical saisiot analysis from being reused for an unrelated ㅅ-final sequence. The rule continues to implement the documented §30 outcomes only for the licensed pair.
 
 Official source: NIKL, *표준 발음법*, §30: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+
+
+### Exact licensing and order for §12(4) ㅎ deletion
+
+R003 now requires an exact full-form/pair license such as `R003:ending_or_suffix_h_deletion:많아:많>아`. The default Python pipeline applies licensed ㅎ deletion before liaison, so the surviving ㄴ/ㄹ in ㄶ/ㅀ moves to the next syllable onset: 많아 [마나], 싫어 [시러]. The browser has no morphological parser, so it uses sourced lexical entries for known official examples and marks unknown ㅎ/ㄶ/ㅀ + vowel candidates unresolved. This prevents a generic coda-deletion rule from being mistaken for evidence of an ending/suffix boundary.
+
+Official source: NIKL, *표준 발음법*, §12(4): https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
