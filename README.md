@@ -42,7 +42,7 @@ The browser adapter implements:
 - Unicode-safe Hangul decomposition;
 - canonical onset/vowel/coda mappings from data/korean/canonical_correspondence.csv;
 - ㅅ/ㅆ → ш in the relevant i/j-like environments;
-- simple and complex-coda liaison, including correct ㄶ/ㅀ handling;
+- simple-coda liaison and exact sourced complex-coda pronunciations; unknown non-ㅎ complex-coda + vowel sequences are marked unresolved because §§13–15 require morphological distinctions; ㄶ/ㅀ retain their special ㅎ behavior;
 - ㅎ deletion and ㅎ-driven aspiration;
 - nasal assimilation, liquid assimilation and palatalization in the documented environments;
 - selected lexical coda exceptions such as 밟- and 넓죽-/넓둥글-/넓적- where standard pronunciation cannot be inferred from the coda inventory alone;
@@ -52,7 +52,7 @@ The browser adapter implements:
 - preservation of non-Hangul text;
 - an inspectable rule/status trace.
 
-It deliberately does **not** claim to be a complete lexical, morphological or acoustic Korean pronunciation engine. Research-layer rules that require lexical or morphological licensing remain outside the browser's automatic scope. For §17 palatalization, the browser accepts exact sourced lexical entries; an unlisted ㄷ/ㅌ/ㄾ + 이-looking sequence is marked unresolved instead of inferring a formal-morpheme boundary from spelling alone. The Python §29 n-insertion rule requires a full-form and pair-specific license rather than a global boolean.
+It deliberately does **not** claim to be a complete lexical, morphological or acoustic Korean pronunciation engine. Research-layer rules that require lexical or morphological licensing remain outside the browser's automatic scope. For §17 palatalization, the browser accepts exact sourced lexical entries; an unlisted ㄷ/ㅌ/ㄾ + 이-looking sequence is marked unresolved instead of inferring a formal-morpheme boundary from spelling alone. The Python §29 n-insertion rule requires a full-form and pair-specific license rather than a global boolean. The Python research layer and browser both require exact full-form/pair evidence before applying complex-coda liaison; the browser additionally uses sourced lexical entries for known examples.
 
 ## Exhaustive Hangul inventory
 
