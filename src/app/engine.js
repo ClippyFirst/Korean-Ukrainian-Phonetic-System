@@ -207,17 +207,18 @@ function lexicalResult(text,entry){
     const d=decompose(ch);
     return ch+' = '+d.onset+'+'+d.vowel+(d.coda?'+'+d.coda:'');
   }).join(' · ');
+  const targetReview=entry.target_status==='provisional';
   return {
     source:text,
     ukrainian:targets.join(''),
     ipa:ipas.join(' '),
     analysis,
     trace:syllables.map((ch,i)=>({
-      source:ch,status:'lexical',rules:[i===0?'lexical-pronunciation':'lexical-context'],
+      source:ch,status:targetReview?'lexical-review':'lexical',rules:i===0?(targetReview?['lexical-pronunciation','ukrainian-target-provisional']:['lexical-pronunciation']):['lexical-context'],
       output:targets[i]??'',ipa:ipas[i]??''
     })),
     issues:[],
-    status:'lexical'
+    status:targetReview?'lexical-review':'lexical'
   };
 }
 
@@ -237,7 +238,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
         analysis:results.map(r=>r.analysis).join(''),
         trace:results.flatMap(r=>r.trace),
         issues,
-        status:issues.length?'unresolved':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='contextual')?'contextual':'canonical'
+        status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='contextual')?'contextual':'canonical'
       };
     }
   }
