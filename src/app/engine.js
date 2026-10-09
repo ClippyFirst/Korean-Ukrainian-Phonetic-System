@@ -193,6 +193,8 @@ function convertText(text,map){
     if(u.type==='literal')continue;
     const next=nextHangul(units,i), prev=prevHangul(units,i);
     const applied=rules[i];
+    const original=originalUnits[i];
+    analysis[i]=original.char+' = '+original.onset+'+'+original.vowel+(original.coda?'+'+original.coda:'');
     let status=applied.length?'contextual':'canonical';
     const vowel=mapVowel(map,u.vowel);
     if(!vowel){
@@ -236,8 +238,6 @@ function convertText(text,map){
       if(fortisIpa)unitIpa=fortisIpa+(v?.ipa||'')+(c?.ipa||'');
     }
     ipa[i]=unitIpa;
-    const original=originalUnits[i];
-    analysis[i]=original.char+' = '+original.onset+'+'+original.vowel+(original.coda?'+'+original.coda:'');
     trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:out,ipa:unitIpa};
   }
 
