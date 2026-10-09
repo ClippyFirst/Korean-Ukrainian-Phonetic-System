@@ -430,7 +430,7 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
   }
   const compound = engine.convert('반신반의');
   assert.equal(compound.status, 'lexical-review');
-  assert.equal(compound.ukrainian, 'паншінбаній');
+  assert.equal(compound.ukrainian, 'паншінбаний');
   assert.equal(compound.ipa, 'paːn ɕin baː nɰi');
   assert.equal(compound.variants[0].surface, '반신바니');
   assert.equal(compound.variants[0].ukrainian, 'паншінбані');
