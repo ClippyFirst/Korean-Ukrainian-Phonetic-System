@@ -2,7 +2,7 @@
 
 ## Automated tests
 
-npm test covers modern Hangul decomposition, CV/CVC mapping, ㅅ before ㅣ, ㄹ onset/coda, ㅇ onset/coda, simple and complex-coda liaison (including ㄶ/ㅀ and ㅆ liaison), ㅎ deletion/aspiration, nasal and liquid assimilation, palatalization, practical tensification, contextual voicing, unresolved ㅢ, non-Korean preservation, CSV quoting, deterministic conversion, and the public two-page/UI/CSP contract.
+npm test covers modern Hangul decomposition, CV/CVC mapping, ㅅ before ㅣ, ㄹ onset/coda, ㅇ onset/coda, simple and complex-coda liaison (including ㄶ/ㅀ and ㅆ liaison), ㅎ deletion/aspiration, nasal and liquid assimilation, palatalization, practical tensification, contextual voicing, unresolved ㅢ, non-Korean preservation, CSV quoting, deterministic conversion, preservation of original Hangul decomposition, IPA/analysis whitespace, and the public two-page/UI/CSP contract.
 
 ## Build
 
@@ -24,6 +24,13 @@ The regression suite now deliberately probes cases where a naive grapheme-to-gra
 - **넓죽하다 → [넙쭈카다]**: lexical ㄼ exception + tensification + ㅎ aspiration.
 - **많아 / 싫어**: ㄶ/ㅀ must not invent an [h] onset during liaison.
 - **넋이 / 곬이 / 값이**: the ㅅ component of ㄳ/ㄽ/ㅄ is carried as fortis ㅆ in the liaison environment.
+
+- **앞문 → [암문]**: aspirated ㅍ is neutralized to the ㅂ representative before nasal assimilation, then surfaces as ㅁ.
+- **많다 → [만타], 싫다 → [실타]**: aspiration from the ㅎ component of ㄶ/ㅀ retains the nasal/liquid component.
+- **표준**: broad surface IPA records intervocalic ㅈ as [dʑ], not [tɕ].
+- **발음**: the structural panel must retain the written decomposition of 음 as ㅇ+ㅡ+ㅁ even though liaison changes its surface onset.
+- **가 나 / 가, 나**: IPA and structural output preserve literal whitespace and punctuation without injecting extra separators.
+- Complex codas are decomposed into component jamo for underlying/phonemic analysis; surface neutralization remains a separate step.
 
 These are standard-pronunciation edge cases, not merely arbitrary test strings. NIKL's Standard Pronunciation Rules and Online Q&A explicitly document the relevant exceptions and assimilation patterns.
 
