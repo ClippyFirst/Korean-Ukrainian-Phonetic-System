@@ -30,7 +30,7 @@ The regression suite now deliberately probes cases where a naive grapheme-to-gra
 - **표준**: broad surface IPA records intervocalic ㅈ as [dʑ], not [tɕ].
 - **읽히다 / 앉히다 / 넓히다**: aspiration from ㅎ combines with the second member of a complex coda while retaining its first member: [일키다], [안치다], [널피다].
 - **옷하고**: aspiration after a coda must consult final neutralization; the rule cannot be triggered only by an exact written-coda lookup.
-- **희망**: ㅢ in a syllable with a consonant onset is realized as [i]. By contrast, ㅇ+ㅢ remains unresolved without lexical/morphological context.
+- **희망**: ㅢ in a syllable with a consonant onset is realized as [i]. By contrast, ㅇ+ㅢ now uses the normative [ɰi] default for the primary output; optional [i]/[e] readings are documented but not guessed without lexical/morphological context.
 - **한여름 / 가여름**: licensed n-insertion is permitted after a coda in the configured environment, but is not blindly inserted after an open syllable.
 - **발음**: the structural panel must retain the written decomposition of 음 as ㅇ+ㅡ+ㅁ even though liaison changes its surface onset.
 - **가 나 / 가, 나**: IPA and structural output preserve literal whitespace and punctuation without injecting extra separators.
