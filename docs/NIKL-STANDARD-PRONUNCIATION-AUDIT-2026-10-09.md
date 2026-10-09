@@ -33,7 +33,7 @@ The browser engine is intentionally not a full Korean morphological parser. Rule
 | §14 | Complex-coda liaison before a vowel-initial formal morpheme; second member moves, and ㅅ surfaces as fortis ㅆ. | Core component logic implemented; exact stem/morpheme exceptions remain lexical. |
 | §15 | Coda before a vowel-initial substantive morpheme: representative coda transfers; special variants for 맛있다/멋있다. | Not safe to infer universally from adjacent blocks; use lexical evidence for exceptional forms. |
 | §16 | Special pronunciation of Korean consonant-letter names when particles/endings attach. | Not generalized in the browser engine; letter names are lexical forms, not ordinary Jamo sequences. |
-| §17 | Palatalization of ㄷ/ㅌ(ㄾ) before ㅣ-initial formal morphemes; ㄷ+히 also yields 치. | Fixed over-broad trigger: palatalization now requires ㅣ, not any j-like vowel. The ㄷ+히 sequence is handled explicitly. Morphological licensing still limits universal generalization. |
+| §17 | Palatalization of ㄷ/ㅌ(ㄾ) before ㅣ-initial formal morphemes; ㄷ+히 also yields 치. | Fixed over-broad trigger: palatalization is not a general rule before every j-glide vowel. The Python research rule requires an explicit §17 formal-morpheme or -히 license; the browser uses sourced exact-form entries and withholds unknown spelling-only candidates. The official [붙임] sequence ㄷ+ㅎ → ㅌ followed by ㅣ → ㅊ is documented and tested separately. |
 | §18 | Nasal assimilation: coda obstruents surface as ㅇ/ㄴ/ㅁ before ㄴ/ㅁ. | Implemented after coda neutralization/simplification. The trace now marks the change on both affected syllables. |
 | §19 | ㄹ → ㄴ after coda ㄱ/ㅂ/ㅁ/ㅇ; after ㄱ/ㅂ, nasal assimilation also changes the coda. | Fixed and regression-tested. The rule is limited to the standard environments; it must run before nasal assimilation. Examples: 국립 [궁닙], 협력 [혐녁], 독립문 [동님문]. |
 | §20 | Liquid assimilation: ㄴ and ㄹ become ㄹㄹ in licensed environments; listed lexical exceptions can instead have ㄹ → ㄴ. | General adjacent ㄴ/ㄹ logic exists; lexical exceptions such as 의견란 remain exact dictionary entries. |
@@ -50,7 +50,7 @@ The browser engine is intentionally not a full Korean morphological parser. Rule
 
 ## Regressions added in this pass
 
-The branch **fix/nikl-standard-pronunciation-audit** adds **tests/nikl-pronunciation-regression.test.mjs** for:
+The regression suite **tests/nikl-pronunciation-regression.test.mjs** covers:
 
 - 독립문 → normative surface sequence [동님문], with §19 before §18.
 - 국립 → [궁닙].
@@ -61,7 +61,7 @@ The branch **fix/nikl-standard-pronunciation-audit** adds **tests/nikl-pronuncia
 - 같이 → palatalization in the ㅣ environment only.
 - 굳히다 → sequential §12 + §17 result [구치다].
 
-The expected Korean surface forms are normative evidence. The Ukrainian spellings asserted by tests are model outputs and must not be described as officially standardized Ukrainian forms.
+The browser adapter now requires exact sourced entries for §17 cases when morphology cannot be inferred. For unlisted ㄷ/ㅌ/ㄾ + 이-looking candidates it emits an explicit unresolved marker instead of guessing a formal-morpheme boundary. The Python research rule accepts only explicit licenses (`R007:formal_morpheme_i` or `R007:dh_suffix_hi`) and no longer fires for ㅑ/ㅕ/ㅛ/ㅠ/ㅖ/ㅒ.\n\nThe expected Korean surface forms are normative evidence. The Ukrainian spellings asserted by tests are model outputs and must not be described as officially standardized Ukrainian forms.
 
 ## Rule-ordering requirements
 
@@ -77,7 +77,7 @@ The expected Korean surface forms are normative evidence. The Ukrainian spelling
 
 - NIKL, *표준 발음법*, official full text: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 - §5 / ㅢ variants, NIKL Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=278827
-- §17 / 밭이 and palatalization, NIKL: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5748
+- §17 / official examples and the ㄷ + suffix -히 provision, NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851\n- §17 / 굳이 [구지], NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=2&qna_seq=313201\n- §17 / 밭이 vs 밭에, NIKL Online Q&A: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=281511
 - §18 / nasal assimilation, NIKL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009
 - §19 / ㄹ → ㄴ exceptions and examples, NIKL standard text above; example 의견란 [의ː견난] is also retained in the lexical pronunciation data.
 - §29 / compound ㄴ insertion, NIKL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219

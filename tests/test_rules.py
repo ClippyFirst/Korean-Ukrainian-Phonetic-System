@@ -10,8 +10,35 @@ def test_nasal_assimilation():
 def test_liquidization():
     items,_=apply_ordered_rules(parse_syllables("신라"),["R006"]); assert items[0].coda=="ㄹ" and items[1].onset=="ㄹ"
 
-def test_palatalization():
-    items,_=apply_ordered_rules(parse_syllables("굳이"),["R007"]); assert items[0].coda=="" and items[1].onset=="ㅈ"
+def test_palatalization_requires_nikl_formal_morpheme_license_and_ㅣ():
+    items,traces=apply_ordered_rules(parse_syllables("굳이"),["R007"])
+    assert items[0].coda=="ㄷ" and items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
+
+    items,traces=apply_ordered_rules(
+        parse_syllables("굳이"),["R007"],
+        rule_licenses={"R007:formal_morpheme_i"},
+    )
+    assert items[0].coda=="" and items[1].onset=="ㅈ"
+    assert traces[0].changed
+
+def test_palatalization_does_not_fire_before_vowels_other_than_ㅣ():
+    items,traces=apply_ordered_rules(
+        parse_syllables("밭에"),["R007"],
+        rule_licenses={"R007:formal_morpheme_i"},
+    )
+    assert items[0].coda=="ㅌ" and items[1].onset=="ㅇ"
+    assert not traces[0].changed
+
+def test_dh_suffix_palatalization_is_sequential_r004_then_r007():
+    for word, expected_onset in {"굳히다":"ㅊ","닫히다":"ㅊ","묻히다":"ㅊ"}.items():
+        items,traces=apply_ordered_rules(
+            parse_syllables(word),["R004","R007"],
+            rule_licenses={"R007:dh_suffix_hi"},
+        )
+        assert items[0].coda==""
+        assert items[1].onset==expected_onset
+        assert traces[0].changed and traces[1].changed
 
 def test_tensification():
     items,_=apply_ordered_rules(parse_syllables("국밥"),["R008"]); assert items[1].onset=="ㅃ"

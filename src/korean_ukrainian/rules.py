@@ -117,6 +117,10 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                     representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
                     aspirated=ASPIRATE.get((representative,"ㅎ"))
                 if aspirated:
+                    # Keep a narrowly scoped intermediate marker for the
+                    # official §17 붙임 sequence ㄷ+히 -> ㅌ+ㅣ -> ㅊ+ㅣ.
+                    if a.coda=="ㄷ" and b.nucleus=="ㅣ":
+                        b._palatalization_after_dh=True
                     b.onset=aspirated
                     a.coda=""
                     changed=True
@@ -139,10 +143,27 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             elif representative=="ㄹ" and b.onset=="ㄴ": a.coda="ㄹ"; b.onset="ㄹ"; changed=True
             elif representative in {"ㅁ","ㅇ"} and b.onset=="ㄹ": b.onset="ㄴ"; changed=True
     elif rule_id=="R007":
+        # NIKL §17 is not a general rule before every j-glide vowel. It
+        # requires the vowel ㅣ of a formal morpheme, or the explicitly
+        # listed ㄷ + suffix -히 sequence. The browser must provide a license
+        # rather than infer morphology from adjacent syllables alone.
+        if license_context not in {"R007:formal_morpheme_i","R007:dh_suffix_hi"}:
+            name,source,confidence=RULE_META[rule_id]
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
-            if _eligible(a,b,boundary_mode=boundary_mode) and a.coda in {"ㄷ","ㅌ"} and b.onset=="ㅇ" and b.nucleus in {"ㅣ","ㅑ","ㅕ","ㅛ","ㅠ","ㅖ","ㅒ"}:
-                b.onset={"ㄷ":"ㅈ","ㅌ":"ㅊ"}[a.coda]; a.coda=""; changed=True
+            if not _eligible(a,b,boundary_mode=boundary_mode): continue
+            if license_context=="R007:formal_morpheme_i" and a.coda in {"ㄷ","ㅌ","ㄾ"} and b.onset=="ㅇ" and b.nucleus=="ㅣ":
+                coda=a.coda
+                # ㄾ is realized as ㄹ in the coda, while its ㅌ component
+                # palatalizes and moves to the next syllable onset.
+                a.coda="ㄹ" if coda=="ㄾ" else ""
+                b.onset="ㅈ" if coda=="ㄷ" else "ㅊ"
+                changed=True
+            elif license_context=="R007:dh_suffix_hi" and getattr(b,"_palatalization_after_dh",False) and b.onset=="ㅌ" and b.nucleus=="ㅣ":
+                b.onset="ㅊ"
+                delattr(b,"_palatalization_after_dh")
+                changed=True
     elif rule_id=="R008":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]

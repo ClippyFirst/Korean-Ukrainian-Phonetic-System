@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { createEngine } from '../src/app/engine.js';
+import { createEngine, parseCsv } from '../src/app/engine.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -48,14 +48,16 @@ test('palatalization applies to ㄷ/ㅌ before ㅣ, not every j-like vowel', () 
   const result = engine.convert('같이');
   assert.equal(result.ukrainian, 'качі');
   assert.match(result.ipa, /ka tɕʰi/);
-  assert.ok(result.trace.some((item) => item.rules.includes('palatalization')));
+  assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
+  assert.equal(result.status, 'lexical-review');
 });
 
 test('ㄷ+히 follows aspiration and then palatalization (§12 + §17)', () => {
   const result = engine.convert('굳히다');
   assert.equal(result.ukrainian, 'кучіда');
   assert.match(result.ipa, /ku tɕʰi da/);
-  assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration-plus-palatalization')));
+  assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
+  assert.equal(result.status, 'lexical-review');
 });
 
 test('the complete official institution name preserves sequential §19, §18 and §23 rules', () => {
@@ -65,4 +67,56 @@ test('the complete official institution name preserves sequential §19, §18 and
   assert.ok(result.trace.some((item) => item.rules.includes('liquid-to-nasal-before-obstruent')));
   assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')));
   assert.ok(result.trace.some((item) => item.rules.includes('tensification')));
+});
+
+test('unlicensed spelling-only palatalization is withheld instead of guessed', () => {
+  const result = engine.convert('갇이');
+  assert.equal(result.status, 'unresolved');
+  assert.equal(result.ukrainian, '⟦갇⟧⟦이⟧');
+  assert.ok(result.issues.some((issue) => issue.includes('verified formal-morpheme boundary')));
+  assert.ok(result.trace.every((item) => !item.rules.includes('palatalization')));
+});
+
+test('밭에 does not undergo §17 palatalization because the following vowel is ㅔ', () => {
+  const result = engine.convert('밭에');
+  assert.match(result.ipa, /pa tʰe/);
+  assert.ok(!result.trace.some((item) => item.rules.includes('palatalization')));
+});
+
+test('shared lexical pronunciation data is sourced, aligned, and marks provisional Ukrainian targets', () => {
+  const rows = parseCsv(lexical);
+  const seen = new Set();
+  for (const row of rows) {
+    assert.ok(!seen.has(row.input), 'duplicate lexical key: ' + row.input);
+    seen.add(row.input);
+    assert.match(row.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//, row.input);
+    assert.ok([...row.surface_hangul].every((char) => /[가-힣]/u.test(char)), row.input);
+    assert.equal([...row.input].length, row.target_syllables.split('|').length, row.input);
+    assert.equal([...row.input].length, row.ipa_syllables.split('|').length, row.input);
+    if (row.target_status === 'provisional') {
+      assert.equal(engine.convert(row.input).status, 'lexical-review', row.input);
+    }
+  }
+});
+
+test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays explicitly provisional', () => {
+  const expected = {
+    같이: {surface:'가치', target:'качі', ipa:'ka tɕʰi'},
+    굳이: {surface:'구지', target:'куджі', ipa:'ku dʑi'},
+    곧이듣다: {surface:'고지듣따', target:'коджідитта', ipa:'ko dʑi tɯt̚ t͈a'},
+    굳히다: {surface:'구치다', target:'кучіда', ipa:'ku tɕʰi da'},
+    닫히다: {surface:'다치다', target:'дачіда', ipa:'ta tɕʰi da'},
+    묻히다: {surface:'무치다', target:'мучіда', ipa:'mu tɕʰi da'},
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, values] of Object.entries(expected)) {
+    const entry = rows.find((row) => row.input === word);
+    assert.ok(entry, word);
+    assert.equal(entry.surface_hangul, values.surface, word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
 });
