@@ -130,7 +130,8 @@ def test_complex_coda_plus_h_retains_first_component_and_aspirates_second():
 
 def test_n_insertion_does_not_apply_after_open_syllable_even_when_enabled():
     items, traces = apply_ordered_rules(
-        parse_syllables("가여름"), ["R009"], n_insertion_licensed=True,\n        rule_licenses={"R009:word:가여름:가>여"}
+        parse_syllables("가여름"), ["R009"], n_insertion_licensed=True,
+        rule_licenses={"R009:word:가여름:가>여"}
     )
     assert items[1].onset == "ㅇ"
     assert not traces[0].changed
