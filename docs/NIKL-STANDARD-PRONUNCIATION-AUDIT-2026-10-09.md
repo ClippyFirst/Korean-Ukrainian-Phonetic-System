@@ -98,10 +98,10 @@ Do not claim this audit is complete or the public site is fixed until the follow
 
 ### Complex-coda liaison guardrail (§§13–15)
 
-The Python research rule R002 and browser runtime now refuse to resyllabify a non-ㅎ complex coda solely because the next written syllable begins with ㅇ. The browser also withholds simple-coda transfer when the written coda differs from its §15 representative and the next vowel is one of ㅏ/ㅓ/ㅗ/ㅜ/ㅟ. The correct operation depends on morphology:
+The Python research rule R002 and browser runtime now refuse to resyllabify a non-ㅎ complex coda solely because the next written syllable begins with ㅇ. Both layers also withhold simple-coda transfer when the written coda differs from its §15 representative and the next vowel is one of ㅏ/ㅓ/ㅗ/ㅜ/ㅟ. The correct operation depends on morphology:
 
 - **Formal morpheme (§§13–14):** retain the first cluster component and move the second, e.g. 넋이 [넉씨], 값이 [갑씨].
 - **Substantive morpheme (§15):** neutralize the complex coda to its representative and resyllabify that representative, e.g. 값어치 [가버치].
 - **Unknown morphology:** keep the written cluster unchanged in the research representation and mark the rule `conditional-disabled`; do not guess a surface form.
 
-Exact Python licenses are tied to the full input and syllable pair, e.g. `R002:formal:넋이:넋>이` or `R002:substantive:값어치:값>어`. A license for one word cannot be reused for another. In the browser, known forms such as 넋이 [넉씨], 값이 [갑씨], 앉아 [안자], 닭을 [달글], 젊어 [절머], 깎아 [까까], 있어 [이써], 쫓아 [쪼차], 맞아 [마자], 낮아 [나자], and 붙어 [부터] use exact sourced lexical entries; unknown forms are marked unresolved. This remains a conservative guardrail, not a general morphological analyzer.
+Exact Python licenses are tied to the full input and syllable pair, e.g. `R002:formal:넋이:넋>이`, `R002:substantive:값어치:값>어`, `R002:formal:깎아:깎>아`, or `R002:substantive:겉옷:겉>옷`. A license for one word cannot be reused for another. In the browser, known forms such as 넋이 [넉씨], 값이 [갑씨], 앉아 [안자], 닭을 [달글], 젊어 [절머], 깎아 [까까], 있어 [이써], 쫓아 [쪼차], 맞아 [마자], 낮아 [나자], and 붙어 [부터] use exact sourced lexical entries; unknown forms are marked unresolved. This remains a conservative guardrail, not a general morphological analyzer.
