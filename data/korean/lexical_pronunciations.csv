@@ -11,3 +11,12 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 맑다,막따,мак|та,mak̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294,"ㄺ의 일반 자음 앞 실현과 된소리되기",high,model-selected
 밝기,발끼,пал|кі,pal|k͈i,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313399,"파생어에서도 용언 어간 ㄺ의 ㄱ 앞 예외 적용",high,model-selected
 닭고기,닥꼬기,так|ко|ґі,tak̚|k͈o|ɡi,https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327808,"체언 닭-은 ㄱ 앞에서도 일반적으로 [ㄱ]; 된소리되기",high,model-selected
+꽃잎,꼰닙,кон|ніп,k͈on|nip̚,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219,"합성어의 ㄴ 첨가와 비음화; 표준 발음 [꼰닙]",high,model-selected
+밭이,바치,па|чі,pa|tɕʰi,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5748,"받침 ㅌ과 조사 이의 구개음화; 표준 발음 [바치]",high,model-selected
+밭을,바틀,па|тил,pa|tʰɯl,https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5748,"받침 ㅌ의 모음 앞 연음; 표준 발음 [바틀]",high,model-selected
+넓네,널레,ноль|ле,nʌl|le,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237,"ㄼ의 ㄹ 실현 후 ㄴ+ㄹ 유음화; 표준 발음 [널레]",high,model-selected
+없다,업따,оп|та,ʌp̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237,"ㅄ 단순화와 된소리되기; 표준 발음 [업ː따], 길이는 IPA에 별도 표시",high,model-selected
+없는,엄는,ом|нин,ʌːm|nɯn,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009,"ㅄ 단순화 후 비음화; 표준 발음 [엄ː는]",high,model-selected
+국물,궁물,кун|мул,kuŋ|mul,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009,"ㄱ 종성의 비음화; 표준 발음 [궁물]",high,model-selected
+떡볶이,떡뽀끼,ток|по|кі,t͈ʌk̚|p͈o|k͈i,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397,"접미사 -이 앞에서 ㄲ 연음, ㄱ 계열 뒤 된소리되기; 표준 발음 [떡뽀끼]",high,model-selected
+옷이,오시,о|ші,o|ɕi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397,"홑받침 ㅅ의 연음; ㅅ의 i 환경 표면 실현",high,model-selected
