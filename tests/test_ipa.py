@@ -19,8 +19,9 @@ def test_broad_ipa_voicing_of_jieut_after_vowel():
 
 
 def test_complex_coda_components_are_explicit_in_phonemic_ipa():
-    from korean_ukrainian.phonology import split_coda
+    from korean_ukrainian.phonology import split_coda, parse_syllables
+    from korean_ukrainian.ipa import realize_syllables
     assert split_coda("ㄳ") == ("ㄱ", "ㅅ")
     assert split_coda("ㄶ") == ("ㄴ", "ㅎ")
-    from korean_ukrainian.ipa import realize_syllables\n    from korean_ukrainian.phonology import parse_syllables\n    result = realize_syllables(parse_syllables("넋"), level="phonemic")["ipa"]
+    result = realize_syllables(parse_syllables("넋"), level="phonemic")["ipa"]
     assert "ks" in result
