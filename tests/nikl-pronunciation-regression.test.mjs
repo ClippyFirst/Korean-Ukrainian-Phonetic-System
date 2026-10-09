@@ -19,7 +19,7 @@ test('ㄹ resyllabified before a vowel retains lateral [l], not tap [ɾ]', () =>
   const result = engine.convert('서울역');
   assert.equal(result.ukrainian, 'соулйок');
   assert.match(result.ipa, /sʌ u ljʌk̚/);
-  assert.ok(result.trace.some((item) => item.rules.includes('liaison-lateral')));
+  assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
 });
 
 test('nasalisation changes both the coda and following liquid in 국립', () => {
