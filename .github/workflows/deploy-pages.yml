@@ -28,6 +28,15 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Run browser regression tests
         run: npm test
+      - name: Set up Python for data and pipeline checks
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install Python package and test dependencies
+        run: python -m pip install -e ".[dev,all]"
+      - name: Run Python pipeline and data-integrity tests
+        run: python -m pytest -q
       - name: Build static site
         run: npm run build
       - name: Upload Pages artifact
