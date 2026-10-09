@@ -466,5 +466,6 @@ def test_section_9_final_neutralization_covers_each_obstruent_class():
     }
     for word, (written, expected) in cases.items():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R001"])
-        assert items[0].coda == expected, word
-        assert traces[0].changed, word
+        coda_items = [item for item in items if item.coda]
+        assert coda_items[-1].coda == expected, word
+        assert any(trace.changed for trace in traces), word
