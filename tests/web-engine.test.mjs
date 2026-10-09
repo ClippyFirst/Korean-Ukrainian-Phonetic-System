@@ -154,3 +154,18 @@ test('unknown ㄺ-before-ㄱ does not let generic §23 fortition choose the morp
   assert.ok(r.issues.some(x=>x.includes('written ㄺ before ㄱ may follow the §11 stem exception')));
   assert.ok(r.trace.some(x=>x.rules.includes('rieul-giyeok-exception-requires-morphology')));
 });
+
+test('§9 and §10 representative coda examples remain context-sensitive',()=>{
+  const values=[
+    ['옷','от','ot̚'],
+    ['값','кап','kap̚'],
+    ['있다','ітта','it̚ t͈a'],
+    ['키읔과','кіикква','kʰi ɯk̚ k͈wa'],
+  ];
+  for(const [word,ukrainian,ipa] of values){
+    const result=engine.convert(word);
+    assert.equal(result.ukrainian,ukrainian,word);
+    assert.equal(result.ipa,ipa,word);
+    assert.ok(!result.trace.some(item=>item.rules.includes('lexical-pronunciation')),word);
+  }
+});
