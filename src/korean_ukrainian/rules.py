@@ -417,6 +417,6 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,source,license_context)
 
 def apply_ordered_rules(items:list[Syllable],rule_ids=None,*,boundary_mode="same_word",n_insertion_licensed=False,rule_licenses=None):
-    ids=rule_ids or ["R009","R002","R003","R004","R006","R005","R007","R010","R011","R012","R013","R014","R015","R016","R008","R001"]
+    ids=rule_ids or ["R009","R003","R002","R004","R006","R005","R007","R010","R011","R012","R013","R014","R015","R016","R008","R001"]
     if boundary_mode not in {"unknown","same_word","morpheme","word","phrase"}: raise ValueError("invalid boundary_mode")
     return items,[apply_rule(items,r,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses) for r in ids]
