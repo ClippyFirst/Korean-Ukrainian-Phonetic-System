@@ -127,7 +127,7 @@ test('unknown ㅎ-coda + vowel is unresolved without ending/suffix evidence',()=
 test('§18 nasal assimilation applies across plain spaces in connected phrases',()=>{
   const r=engine.convert('밥 먹는다');
   assert.ok(r.trace[0].rules.includes('nasal-assimilation'));
-  assert.equal(r.ipa,'pam mʌŋ.nɯn.da');
+  assert.equal(r.ipa,'pam mʌŋ nɯn da');
 });
 
 test('§19 precedes §18 across a phrase boundary',()=>{
