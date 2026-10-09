@@ -101,7 +101,26 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 else:
                     conditional_disabled=True
             elif a.coda!="ㅎ":
-                b.onset=a.coda; a.coda=""; changed=True
+                representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
+                if representative!=a.coda and b.nucleus in {"ㅏ","ㅓ","ㅗ","ㅜ","ㅟ"}:
+                    # §15 can neutralize this coda before a substantive
+                    # morpheme, unlike §13 formal-morpheme liaison. Require
+                    # the same exact form/pair evidence as for complex codas.
+                    pair=f"{a.text}>{b.text}"
+                    scope=None
+                    for license in liaison_licenses:
+                        parts=license.split(":",3)
+                        if len(parts)==4 and parts[2]==full_form and parts[3]==pair:
+                            scope=parts[1]
+                            break
+                    if scope=="formal":
+                        b.onset=a.coda; a.coda=""; changed=True
+                    elif scope=="substantive":
+                        b.onset=representative; a.coda=""; changed=True
+                    else:
+                        conditional_disabled=True
+                else:
+                    b.onset=a.coda; a.coda=""; changed=True
     elif rule_id=="R003":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
