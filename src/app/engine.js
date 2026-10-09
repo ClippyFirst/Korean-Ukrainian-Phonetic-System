@@ -287,10 +287,9 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
-    // Standard Korean pronunciation: ㅢ in a syllable with an
-    // actual consonant onset is realized as [i] (e.g. 희망 [히망]).
-    // ㅇ+ㅢ remains unresolved because lexical position and particle
-    // function can license different readings ([의], [이], [에]).
+    // Standard Korean pronunciation: ㅢ with a consonant onset is [i]
+    // (e.g. 희망 [히망]). ㅇ+ㅢ defaults to [ɰi]; optional readings are
+    // represented only where lexical/morphological context is evidenced.
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
