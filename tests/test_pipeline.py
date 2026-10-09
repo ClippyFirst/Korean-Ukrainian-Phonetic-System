@@ -15,12 +15,12 @@ def test_unknown_boundary_does_not_apply_contextual_rules():
 
 def test_n_insertion_requires_explicit_licensing():
     assert not any(x["changed"] for x in phoneticize_korean("먹이")["rules"] if x["rule_id"]=="R009")
-    q=phoneticize_korean("한여름",n_insertion_licensed=True)
+    q=phoneticize_korean("한여름",n_insertion_licensed=True,rule_licenses={"R009:word:한여름:한>여"})
     assert any(x["rule_id"]=="R009" and x["changed"] for x in q["rules"])
     assert q["surface_syllables"][1]["onset"]=="ㄴ"
 
 def test_phrase_n_insertion_requires_phrase_and_license():
-    q=phoneticize_korean("무슨 일",boundary_mode="phrase",n_insertion_licensed=True)
+    q=phoneticize_korean("무슨 일",boundary_mode="phrase",n_insertion_licensed=True,rule_licenses={"R009:phrase:무슨 일:슨>일"})
     assert q["surface_syllables"][2]["onset"]=="ㄴ"
 
 import pytest
@@ -91,7 +91,8 @@ def test_lexical_ㄺ_rules_do_not_overgeneralize_to_noun_forms():
 
 def test_lexical_pronunciation_keeps_phrase_level_n_insertion_working():
     from korean_ukrainian.pipeline import phoneticize_korean
-    result = phoneticize_korean("무슨 일", boundary_mode="phrase", n_insertion_licensed=True)
+    result = phoneticize_korean("무슨 일", boundary_mode="phrase", n_insertion_licensed=True,
+                                 rule_licenses={"R009:phrase:무슨 일:슨>일"})
     assert result["surface_syllables"][2]["onset"] == "ㄴ"
 
 
