@@ -178,6 +178,9 @@ export function createEngine(csv){
 
 function convertText(text,map){
   const units=[...text].map(ch=>{const d=decompose(ch);return d?{type:'hangul',...d}:{type:'literal',char:ch};});
+  // Keep orthographic decomposition immutable: contextual rules mutate the
+  // working surface representation, not the source Hangul structure.
+  const originalUnits=units.map(u=>({...u}));
   const rules=applyContextualRules(units);
   const output=units.map(u=>u.char);
   const ipa=units.map(u=>u.type==='literal'?u.char:'');
@@ -233,7 +236,8 @@ function convertText(text,map){
       if(fortisIpa)unitIpa=fortisIpa+(v?.ipa||'')+(c?.ipa||'');
     }
     ipa[i]=unitIpa;
-    analysis[i]=u.char+' = '+onset+'+'+u.vowel+(u.coda?'+'+u.coda:'');
+    const original=originalUnits[i];
+    analysis[i]=original.char+' = '+original.onset+'+'+original.vowel+(original.coda?'+'+original.coda:'');
     trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:out,ipa:unitIpa};
   }
 
