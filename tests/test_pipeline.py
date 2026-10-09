@@ -63,7 +63,7 @@ def test_sourced_lexical_pronunciation_overrides_cover_known_exceptions():
     from korean_ukrainian.pipeline import phoneticize_korean
     expected = {
         "값없다": "ka.bʌp̚.t͈a",
-        "의견란": "ɰi.ɡjʌn.nan",
+        "의견란": "ɰiː.ɡjʌn.nan",
         "읽고": "il.k͈o",
         "읽다": "ik̚.t͈a",
         "읽어": "il.ɡʌ",
@@ -93,3 +93,9 @@ def test_lexical_pronunciation_keeps_phrase_level_n_insertion_working():
     from korean_ukrainian.pipeline import phoneticize_korean
     result = phoneticize_korean("무슨 일", boundary_mode="phrase", n_insertion_licensed=True)
     assert result["surface_syllables"][2]["onset"] == "ㄴ"
+
+
+
+def test_ipa_tokenizer_accepts_length_marks_in_lexical_pronunciations():
+    from korean_ukrainian.pipeline import tokenize_ipa
+    assert tokenize_ipa("ɰiː.ɡjʌn.nan") == ["ɰ", "i", "ɡ", "j", "ʌ", "n", "n", "a", "n"]
