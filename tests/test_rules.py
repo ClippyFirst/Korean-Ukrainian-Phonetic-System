@@ -241,3 +241,43 @@ def test_default_rule_order_produces_dongnimmun_surface():
     assert [(x.onset,x.coda) for x in items]==[("ㄷ","ㅇ"),("ㄴ","ㅁ"),("ㅁ","ㄴ")]
     assert any(t.rule_id=="R006" and t.changed for t in traces)
     assert any(t.rule_id=="R005" and t.changed for t in traces)
+
+def test_simple_coda_liaison_requires_morphology_when_section_15_changes_the_representative():
+    items,traces=apply_ordered_rules(parse_syllables("깎아"),["R002"])
+    assert items[0].coda=="ㄲ" and items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
+
+    items,traces=apply_ordered_rules(
+        parse_syllables("깎아"),["R002"],
+        rule_licenses={"R002:formal:깎아:깎>아"},
+    )
+    assert items[0].coda==""
+    assert items[1].onset=="ㄲ"
+    assert traces[0].changed
+
+def test_substantive_simple_coda_uses_representative_and_exact_pair_license():
+    items,traces=apply_ordered_rules(parse_syllables("겉옷"),["R002"])
+    assert items[0].coda=="ㅌ" and items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
+
+    items,traces=apply_ordered_rules(
+        parse_syllables("겉옷"),["R002"],
+        rule_licenses={"R002:substantive:겉옷:겉>옷"},
+    )
+    assert items[0].coda==""
+    assert items[1].onset=="ㄷ"
+    assert traces[0].changed
+
+def test_simple_coda_license_cannot_be_reused_for_another_full_form():
+    items,traces=apply_ordered_rules(
+        parse_syllables("겉옷"),["R002"],
+        rule_licenses={"R002:formal:깎아:깎>아"},
+    )
+    assert items[0].coda=="ㅌ" and items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
+
+def test_section_15_sensitive_guard_does_not_block_unambiguous_vowel_ㅔ():
+    items,traces=apply_ordered_rules(parse_syllables("밭에"),["R002"])
+    assert items[0].coda==""
+    assert items[1].onset=="ㅌ"
+    assert traces[0].changed
