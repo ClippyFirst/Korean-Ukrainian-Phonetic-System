@@ -107,3 +107,16 @@ def test_final_consonant_plus_h_uses_correct_aspiration():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R004"])
         assert (items[0].coda, items[1].onset) == expected
         assert traces[0].changed
+
+
+
+def test_complex_coda_plus_h_preserves_the_unaspirated_component():
+    cases = {
+        "읽히다": ("ㄹ", "ㅋ"),
+        "앉히다": ("ㄴ", "ㅊ"),
+        "넓히다": ("ㄹ", "ㅍ"),
+    }
+    for word, expected in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R004"])
+        assert (items[0].coda, items[1].onset) == expected
+        assert traces[0].changed
