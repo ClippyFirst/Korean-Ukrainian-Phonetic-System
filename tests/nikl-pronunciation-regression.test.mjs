@@ -15,10 +15,10 @@ test('obstruent coda before ㄹ triggers ㄹ-to-ㄴ and nasal assimilation', () 
   assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')));
 });
 
-test('ㄹ resyllabified before a vowel retains lateral [l], not tap [ɾ]', () => {
+test('서울역 applies §29 n-insertion and retains the coda ㄹ', () => {
   const result = engine.convert('서울역');
-  assert.equal(result.ukrainian, 'соулйок');
-  assert.match(result.ipa, /sʌ u ljʌk̚/);
+  assert.equal(result.ukrainian, 'соуллйок');
+  assert.match(result.ipa, /sʌ ul ljʌk̚/);
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
 });
 
@@ -53,7 +53,7 @@ test('palatalization applies to ㄷ/ㅌ before ㅣ, not every j-like vowel', () 
 
 test('ㄷ+히 follows aspiration and then palatalization (§12 + §17)', () => {
   const result = engine.convert('굳히다');
-  assert.equal(result.ukrainian, 'кучіта');
-  assert.match(result.ipa, /ku tɕʰi ta/);
+  assert.equal(result.ukrainian, 'кучіда');
+  assert.match(result.ipa, /ku tɕʰi da/);
   assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration-plus-palatalization')));
 });
