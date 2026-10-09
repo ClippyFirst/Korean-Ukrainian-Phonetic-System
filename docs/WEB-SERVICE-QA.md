@@ -43,3 +43,13 @@ The following remain explicit: ㅇ+ㅢ is context-dependent; n-insertion and com
 ## Release rule
 
 A UI build is not by itself scientific validation. The web layer is complete only when its implementation boundary is documented and output remains traceable to the research repository.
+
+
+## Lexical edge-case layer (2026-10-09 follow-up)
+
+- Shared browser/Python lexical data: `data/korean/lexical_pronunciations.csv`.
+- Exact entries: 값없다 [가법따], 의견란 [의ː견난], 읽고/읽다/읽어/읽는/읽지, 맑게/맑고/맑다, 밝기, 닭고기.
+- Confirm each entry has an official source URL, surface Hangul form, IPA sequence, Ukrainian target syllables, and a confidence distinction.
+- `의견란` has a normative pronunciation entry, but its Ukrainian `ийґйоннан` rendering is explicitly provisional and must not be treated as a normative Ukrainian transcription.
+- Negative controls: `닭이` remains `달기` and `값이` remains `갑씨`; the lexical ㄺ exceptions must not spread to noun `닭-` or all words with coda `ㅄ`.
+- Run `npm test`, `pytest`, `npm run build`, and inspect the latest GitHub Pages deployment before claiming the public service reflects the latest data.
