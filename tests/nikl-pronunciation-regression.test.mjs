@@ -541,7 +541,7 @@ test('NIKL §9 regular final-neutralization examples are computed by rules', () 
     '키읔과': ['kʰi ɯk̚ k͈wa', 'кіикква'],
     '옷': ['ot̚', 'от'],
     '있다': ['it̚ t͈a', 'ітта'],
-    '젖': ['tɕʌt̚', 'джот'],
+    '젖': ['tɕʌt̚', 'чот'],
     '빚다': ['pit̚ t͈a', 'пітта'],
     '꽃': ['k͈ot̚', 'кот'],
     '쫓다': ['tɕ͈ot̚ t͈a', 'чотта'],
