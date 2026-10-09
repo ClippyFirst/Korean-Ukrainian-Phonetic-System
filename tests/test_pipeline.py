@@ -112,3 +112,42 @@ def test_python_transliteration_uses_exact_lexical_target_and_marks_provisional_
     assert opinion["ukrainian_orthography"] == "ийґйоннан"
     assert opinion["target_status"] == "provisional"
     assert "author-designed" in opinion["selection_status"]
+
+def test_second_pass_sourced_lexical_pronunciations_match_shared_ipa_data():
+    from korean_ukrainian.pipeline import phoneticize_korean
+    expected = {
+        "꽃잎": "k͈on.nip̚",
+        "밭이": "pa.tɕʰi",
+        "밭을": "pa.tʰɯl",
+        "넓네": "nʌl.le",
+        "없다": "ʌːp̚.t͈a",
+        "없는": "ʌːm.nɯn",
+        "국물": "kuŋ.mul",
+        "떡볶이": "t͈ʌk̚.p͈o.k͈i",
+        "옷이": "o.ɕi",
+    }
+    for word, ipa in expected.items():
+        result = phoneticize_korean(word)
+        assert result["ipa"]["ipa"] == ipa, word
+        assert any(rule["rule_id"] == "LEXICON" and rule["status"] == "lexical-override"
+                   for rule in result["rules"]), word
+
+
+def test_second_pass_lexical_targets_are_shared_with_python_transliteration():
+    from korean_ukrainian.pipeline import transliterate_korean
+    expected = {
+        "꽃잎": "конніп",
+        "밭이": "пачі",
+        "밭을": "патил",
+        "넓네": "нольле",
+        "없다": "опта",
+        "없는": "омнин",
+        "국물": "кунмул",
+        "떡볶이": "токпокі",
+        "옷이": "оші",
+    }
+    for word, ukrainian in expected.items():
+        result = transliterate_korean(word)
+        assert result["ukrainian_orthography"] == ukrainian, word
+        assert result["target_status"] == "model-selected", word
+
