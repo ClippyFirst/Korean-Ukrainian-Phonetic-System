@@ -25,11 +25,12 @@ The web service is a practical runtime projection of this research model. It is 
 - Exact 19 × 21 × 28 = 11,172 modern precomposed Hangul blocks.
 - Modern Jamo inventory and structured onset/nucleus/coda representation.
 - 11 complex codas as explicit component sequences.
-- Rule registry R001–R015 with evidence/provenance.
+- Rule registry R001–R016 with evidence/provenance.
 - Context-sensitive sequence corpus.
 - Ukrainian target layer separated from Ukrainian graphemic realization.
 - Comparative Slavic evidence with provenance controls.
 - Adversarial regression tests and reproducible generated artifacts.
+- Shared, provenance-carrying lexical pronunciation overrides for high-risk exceptions (see [lexical coverage audit](docs/LEXICAL-PRONUNCIATION-COVERAGE-2026-10-09.md)).
 
 ## Web runtime boundary
 
