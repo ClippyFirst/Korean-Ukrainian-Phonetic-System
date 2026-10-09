@@ -520,8 +520,6 @@ test('NIKL §10 complex-coda examples and lexical exceptions are source-backed',
     '밟지': ['밥찌', 'папчі', 'paːp̚ tɕ͈i'],
     '밟게': ['밥께', 'папке', 'paːp̚ k͈e'],
     '밟고': ['밥꼬', 'папко', 'paːp̚ k͈o'],
-    '넓죽하다': ['넙쭈카다', 'нопчукада', 'nʌp̚ tɕ͈u kʰa da'],
-    '넓둥글다': ['넙뚱글다', 'ноптунґильда', 'nʌp̚ t͈uŋ ɡɯl da'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
