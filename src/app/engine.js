@@ -193,12 +193,54 @@ function applyContextualRules(units){
   return ruleSets;
 }
 
-export function createEngine(csv){
+export function createEngine(csv,lexiconCsv=''){
   const map=createMap(csv);
-  return{convert:function(text){return convertText(text,map)},decompose};
+  const lexicon=new Map(parseCsv(lexiconCsv).map(r=>[r.input,r]));
+  return{convert:function(text){return convertText(text,map,lexicon)},decompose};
 }
 
-function convertText(text,map){
+function lexicalResult(text,entry){
+  const targets=entry.target_syllables.split('|');
+  const ipas=entry.ipa_syllables.split('|');
+  const syllables=[...text];
+  const analysis=syllables.map(ch=>{
+    const d=decompose(ch);
+    return ch+' = '+d.onset+'+'+d.vowel+(d.coda?'+'+d.coda:'');
+  }).join(' · ');
+  return {
+    source:text,
+    ukrainian:targets.join(''),
+    ipa:ipas.join(' '),
+    analysis,
+    trace:syllables.map((ch,i)=>({
+      source:ch,status:'lexical',rules:[i===0?'lexical-pronunciation':'lexical-context'],
+      output:targets[i]??'',ipa:ipas[i]??''
+    })),
+    issues:[],
+    status:'lexical'
+  };
+}
+
+function convertText(text,map,lexicon=new Map(),skipLexicon=false){
+  if(!skipLexicon&&lexicon.size){
+    const parts=text.match(/[가-힣]+|[^가-힣]+/g)||[];
+    if(parts.some(part=>lexicon.has(part))){
+      const results=parts.map(part=>{
+        if(lexicon.has(part))return lexicalResult(part,lexicon.get(part));
+        return convertText(part,map,lexicon,true);
+      });
+      const issues=results.flatMap(r=>r.issues);
+      return {
+        source:text,
+        ukrainian:results.map(r=>r.ukrainian).join(''),
+        ipa:results.map(r=>r.ipa).join(''),
+        analysis:results.map(r=>r.analysis).join(''),
+        trace:results.flatMap(r=>r.trace),
+        issues,
+        status:issues.length?'unresolved':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='contextual')?'contextual':'canonical'
+      };
+    }
+  }
   const units=[...text].map(ch=>{const d=decompose(ch);return d?{type:'hangul',...d}:{type:'literal',char:ch};});
   // Keep orthographic decomposition immutable: contextual rules mutate the
   // working surface representation, not the source Hangul structure.
