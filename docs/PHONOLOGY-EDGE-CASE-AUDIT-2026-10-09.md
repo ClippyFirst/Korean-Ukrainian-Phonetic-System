@@ -58,3 +58,14 @@ Do not promote a rule to “fully supported” because a single positive example
 - [Jeo22] Jeon, H.-S. (2022). *Exploring Variability in Compound Tensification in Seoul Korean*. Language and Speech. https://doi.org/10.1177/00238309221095479
 - [Cho25] Choi, S.-K., Kwon, H.-C. & Kim, M. (2025). *Combining Autoregressive Models and Phonological Knowledge Bases for Improved Accuracy in Korean Grapheme-to-Phoneme Conversion*. IEEE Access. https://doi.org/10.1109/ACCESS.2025.3581981
 - [Hol17] Holliday, J., Turnbull, R. & Eychenne, J. (2017). *K-SPAN: A lexical database of Korean surface phonetic forms and phonological neighborhood density statistics*. Behavior Research Methods. https://doi.org/10.3758/s13428-016-0836-8
+
+
+## Follow-up implementation: lexical pronunciation layer
+
+The repository now includes `data/korean/lexical_pronunciations.csv`, a sourced, exact-form lexicon used by both the browser and Python pipeline. It contains selected entries for 값없다, 의견란, and adversarial ㄺ forms (읽고/읽다/읽어/읽는/읽지, 맑게/맑고/맑다, 밝기, 닭고기). The entry is matched by the complete eojeol; its pronunciation is not generalized to every word with the same written coda.
+
+The browser shows the lexical rule in the trace and keeps the original Hangul decomposition visible. The Python pipeline applies the same surface Hangul pronunciation to its phonological layer and records a `LEXICON` trace with the exact source URL and rationale. Regression cases V033–V044 were added to the validation corpus, and sources S007–S011 record official NIKL references.
+
+**Important target-side qualification:** the Korean pronunciation of 의견란 is documented as [의ː견난], but `ийґйоннан` is an author-designed Ukrainian approximation, not an official or independently validated Ukrainian standard. The entry is therefore marked `target_status=provisional`; the browser explicitly labels it as requiring target-side review. The phonological fact and the Ukrainian rendering must not share one confidence label.
+
+The current lexicon is a deliberately small, auditable seed—not a comprehensive dictionary or morphological analyzer. Exact-form matching means unseen inflections and compounds remain uncovered until added with a source, positive case, negative control, and accepted variants. Future work should support multiple licensed pronunciations where official sources permit them.
