@@ -33,7 +33,8 @@ The regression suite now deliberately probes cases where a naive grapheme-to-gra
 - **희망**: ㅢ in a syllable with a consonant onset is realized as [i]. By contrast, ㅇ+ㅢ uses normative [ɰi] as the primary output; optional [i]/[e] readings are documented but not guessed without lexical/morphological context.
 - **§17 palatalization**: sourced entries cover 같이, 굳이, 곧이듣다, 미닫이, 땀받이, 벼훑이, 굳히다, 닫히다, 묻히다, and 밭이. The Python research rule requires an explicit formal-morpheme/suffix license; an unknown browser candidate is withheld with a warning rather than automatically palatalized.
 - **Negative control 밭에 → [바테]**: the following vowel is ㅔ, not the licensed ㅣ environment; do not apply §17.
-- **서울역 → [서울력]**: §29's ㄹ + inserted ㄴ → ㄹ rule is handled with a sourced exact-form entry rather than generic liaison.\n- **국립 / 협력 / 독립문**: §19 changes ㄹ → ㄴ before §18 nasalizes the preceding ㄱ/ㅂ coda; the Python research rule order matches the browser result.
+- **서울역 → [서울력]**: §29's ㄹ + inserted ㄴ → ㄹ rule is handled with a sourced exact-form entry rather than generic liaison.
+- **국립 / 협력 / 독립문**: §19 changes ㄹ → ㄴ before §18 nasalizes the preceding ㄱ/ㅂ coda; the Python research rule order matches the browser result.
 - **한여름 / 가여름**: licensed n-insertion is permitted after a coda in the configured environment, but is not blindly inserted after an open syllable.
 - **발음**: the structural panel must retain the written decomposition of 음 as ㅇ+ㅡ+ㅁ even though liaison changes its surface onset.
 - **가 나 / 가, 나**: IPA and structural output preserve literal whitespace and punctuation without injecting extra separators.
