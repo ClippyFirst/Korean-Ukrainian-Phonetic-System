@@ -1,5 +1,6 @@
 from __future__ import annotations
 import csv
+import sysconfig
 from pathlib import Path
 from .hangul import decompose_hangul
 from .phonology import parse_syllables
@@ -9,13 +10,18 @@ from .ukrainian_adapter import UkrainianTargetAdapter
 from .orthography import render_sequence
 
 _LEXICON_PATH=Path(__file__).resolve().parents[2]/"data"/"korean"/"lexical_pronunciations.csv"
+_INSTALLED_LEXICON_PATH=Path(sysconfig.get_path("data"))/"share"/"korean-ukrainian-phonetic-system"/"lexical_pronunciations.csv"
 
 def _load_lexicon():
-    try:
-        with _LEXICON_PATH.open(encoding="utf-8-sig",newline="") as stream:
-            return {row["input"]:row for row in csv.DictReader(stream) if row.get("input")}
-    except FileNotFoundError:
-        return {}
+    # Prefer the single source file in a checkout; use the packaged data-file
+    # path for wheel installs where the repository-level data directory is absent.
+    for path in (_LEXICON_PATH,_INSTALLED_LEXICON_PATH):
+        try:
+            with path.open(encoding="utf-8-sig",newline="") as stream:
+                return {row["input"]:row for row in csv.DictReader(stream) if row.get("input")}
+        except FileNotFoundError:
+            continue
+    return {}
 
 LEXICAL_PRONUNCIATIONS=_load_lexicon()
 
