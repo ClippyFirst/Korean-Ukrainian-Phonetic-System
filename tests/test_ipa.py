@@ -7,3 +7,12 @@ def test_ipa_level_is_explicit(): assert phoneticize_korean("가",ipa_level="pho
 def test_narrow_ipa_is_explicitly_unavailable():
     with pytest.raises(ValueError,match="narrow IPA is unavailable"):
         phoneticize_korean("가",ipa_level="narrow")
+
+
+def test_broad_ipa_voicing_after_sonorant():
+    result = phoneticize_korean("현대")["ipa"]["ipa"]
+    assert "d" in result
+
+def test_broad_ipa_voicing_of_jieut_after_vowel():
+    result = phoneticize_korean("표준")["ipa"]["ipa"]
+    assert "dʑ" in result
