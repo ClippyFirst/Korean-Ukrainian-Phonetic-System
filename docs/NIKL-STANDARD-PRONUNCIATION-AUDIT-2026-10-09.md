@@ -119,3 +119,10 @@ Regression tests cover both licensed positive examples and an unlicensed negativ
 The official commentary to §12 explicitly distinguishes a verbal stem plus suffix (e.g. 넓히다 [널피다]) from other combinations. In suffix forms, the specified cluster component combines directly with ㅎ; outside that licensed morphophonemic pattern, coda simplification is applied first. The research layer now requires an exact `R004:complex_h_suffix:읽히다:읽>히`-style license before preserving the first component and aspirating the second. The browser uses exact sourced lexical entries for the official examples 읽히다 [일키다], 앉히다 [안치다], 넓히다 [널피다] and marks unknown complex-coda + ㅎ sequences unresolved instead of assuming the suffix pattern.
 
 Official source: NIKL, *표준 발음법*, §12, especially the commentary explaining the difference between forms with a suffix and other combinations: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+
+
+### ㄺ before ㄱ: §11 exception must be protected from §23 (§§11, 23)
+
+The generic §23 fortition pass previously saw the representative ㄱ of written ㄺ and could tense the next ㄱ before the morphologically conditioned §11 exception had been established. R016 now requires an exact full-form/pair license such as `R016:verb_stem_rieul_giyeok_suffix:읽고:읽>고`. R008 withholds the ambiguous written ㄺ + ㄱ sequence when R016 has not resolved it, rather than silently choosing the noun-like simplification. This protects the contrast between stem forms such as 읽고 [일꼬]/맑게 [말께] and lexical nouns such as 닭고기 [닥꼬기]; exact lexical overrides remain the source of user-facing readings for listed forms.
+
+Official source: NIKL, *표준 발음법*, §§11 and 23: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
