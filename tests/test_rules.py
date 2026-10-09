@@ -498,16 +498,16 @@ def test_section_11_complex_coda_neutralization_and_fortition_examples():
 
 def test_section_19_official_examples_feed_section_18_in_order():
     expected = {
-        "막론": ("ㅇ", "ㄴ"),
-        "석류": ("ㅇ", "ㄴ"),
-        "협력": ("ㅁ", "ㄴ"),
-        "법리": ("ㅁ", "ㄴ"),
-        "침략": ("ㅁ", "ㄴ"),
-        "강릉": ("ㅇ", "ㄴ"),
+        "막론": ("ㅇ", "ㄴ", True),
+        "석류": ("ㅇ", "ㄴ", True),
+        "협력": ("ㅁ", "ㄴ", True),
+        "법리": ("ㅁ", "ㄴ", True),
+        "침략": ("ㅁ", "ㄴ", False),
+        "강릉": ("ㅇ", "ㄴ", False),
     }
-    for word, (expected_coda, expected_onset) in expected.items():
+    for word, (expected_coda, expected_onset, nasalizes_coda) in expected.items():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R006", "R005"])
         assert items[0].coda == expected_coda, word
         assert items[1].onset == expected_onset, word
         assert traces[0].changed, word
-        assert traces[1].changed, word
+        assert traces[1].changed is nasalizes_coda, word
