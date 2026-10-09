@@ -511,3 +511,20 @@ def test_section_19_official_examples_feed_section_18_in_order():
         assert items[1].onset == expected_onset, word
         assert traces[0].changed, word
         assert traces[1].changed is nasalizes_coda, word
+
+def test_section_20_general_liquid_assimilation_examples():
+    cases = {
+        "천리": (("ㄹ", "ㄹ"),),
+        "물난리": (("ㄹ", "ㄹ"), ("ㄹ", "ㄹ")),
+        "줄넘기": (("ㄹ", "ㄹ"),),
+        "할는지": (("ㄹ", "ㄹ"),),
+        "닳는": (("ㄹ", "ㄹ"),),
+        "뚫는": (("ㄹ", "ㄹ"),),
+        "핥네": (("ㄹ", "ㄹ"),),
+    }
+    for word, expected_pairs in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R001", "R003", "R006"])
+        for i, (expected_coda, expected_onset) in enumerate(expected_pairs):
+            assert items[i].coda == expected_coda, word
+            assert items[i + 1].onset == expected_onset, word
+        assert any(trace.changed for trace in traces), word
