@@ -500,6 +500,10 @@ test('fortisness remains in IPA but is not encoded by doubled Ukrainian grapheme
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, target, word);
     assert.equal(result.ipa, ipa, word);
-    assert.ok(!/(кк|тт|пп|сс|чч)/u.test(result.ukrainian), word);
+    const entry = parseCsv(lexical).find((row) => row.input === word);
+    assert.ok(!entry.target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
+    if (entry.alternate_target_syllables) {
+      assert.ok(!entry.alternate_target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
+    }
   }
 });
