@@ -120,10 +120,8 @@ function applyContextualRules(units){
       }else if(a.coda!=='ㅎ'&&a.coda!=='ㅇ'){
         b.onset=a.coda;
         b.__liaison=true;
-        if(a.coda==='ㄹ')b.__liaisonLateral=true;
         a.coda='';
         rules.push('liaison');
-        if(b.__liaisonLateral)nextRules.push('liaison-lateral');
       }
     }
 
@@ -310,7 +308,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     const fortis=!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
     // A coda ㄹ resyllabified into the next onset stays lateral [l];
     // it must not be reinterpreted as the intervocalic tap [ɾ] (e.g. 서울역).
-    const liquid=onset==='ㄹ'&&(Boolean(u.__liaisonLateral)||['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda));
+    const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
     const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis,liquid);
     const traceRules=[...applied];
     if(contextualUi)traceRules.push('vowel-ui-to-i');
