@@ -7,7 +7,8 @@ import {createEngine,decompose,parseCsv} from '../src/app/engine.js';
 
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const csv=fs.readFileSync(path.join(root,'data/korean/canonical_correspondence.csv'),'utf8');
-const engine=createEngine(csv);
+const lexicalCsv=fs.readFileSync(path.join(root,'data/korean/lexical_pronunciations.csv'),'utf8');
+const engine=createEngine(csv,lexicalCsv);
 
 test('modern Hangul decomposition',()=>{assert.deepEqual(decompose('가'),{char:'가',onset:'ㄱ',vowel:'ㅏ',coda:'',hasCoda:false});assert.deepEqual(decompose('각'),{char:'각',onset:'ㄱ',vowel:'ㅏ',coda:'ㄱ',hasCoda:true});});
 test('canonical CV/CVC output',()=>{assert.equal(engine.convert('가').ukrainian,'ка');assert.equal(engine.convert('각').ukrainian,'как');assert.equal(engine.convert('한').ukrainian,'хан');});
@@ -41,3 +42,54 @@ test('CSV parser handles quoted fields',()=>{const rows=parseCsv('a,b\n1,"x,y"\n
 test('IPA and analysis preserve original whitespace without doubled separators',()=>{const r=engine.convert('가 나');assert.equal(r.ipa,'ka na');assert.equal(r.analysis,'가 = ㄱ+ㅏ 나 = ㄴ+ㅏ');const p=engine.convert('가, 나');assert.equal(p.ipa,'ka, na');assert.equal(p.analysis,'가 = ㄱ+ㅏ, 나 = ㄴ+ㅏ');});
 test('Hangul structure reports original orthographic jamo after liaison',()=>{const r=engine.convert('발음');assert.match(r.analysis,/음 = ㅇ\+ㅡ\+ㅁ/);assert.equal(r.ukrainian,'парим');});
 test('deterministic output',()=>{const a=engine.convert('현대 한국어');const b=engine.convert('현대 한국어');assert.deepEqual(a,b);});
+
+
+test('lexical pronunciation overrides cover 값없다 without generalizing to every ㅄ coda',()=>{
+  const r=engine.convert('값없다');
+  assert.equal(r.ukrainian,'кабопта');
+  assert.equal(r.ipa,'ka bʌp̚ t͈a');
+  assert.equal(r.status,'lexical');
+  assert.ok(r.trace[0].rules.includes('lexical-pronunciation'));
+});
+
+test('lexical ㄹ-to-ㄴ exception resolves 의견란 and preserves its original analysis',()=>{
+  const r=engine.convert('의견란');
+  assert.equal(r.ukrainian,'ийґйоннан');
+  assert.equal(r.ipa,'ɰiː ɡjʌn nan');
+  assert.equal(r.status,'lexical');
+  assert.match(r.analysis,/의 = ㅇ\+ㅢ/);
+});
+
+test('verb-stem ㄺ exceptions are lexically scoped rather than generalized to noun 닭-',()=>{
+  const expected={
+    '읽고':['일꼬','ілко','il k͈o'],
+    '읽다':['익따','ікта','ik̚ t͈a'],
+    '읽어':['일거','ілґо','il ɡʌ'],
+    '읽는':['잉는','іннин','iŋ nɯn'],
+    '읽지':['익찌','ікчі','ik̚ tɕ͈i'],
+    '맑게':['말께','малке','mal k͈e'],
+    '맑고':['말꼬','малко','mal k͈o'],
+    '맑다':['막따','макта','mak̚ t͈a'],
+    '밝기':['발끼','палкі','pal k͈i'],
+    '닭고기':['닥꼬기','таккоґі','tak̚ k͈o ɡi']
+  };
+  for(const [input,[surface,ua,ipa]] of Object.entries(expected)){
+    const r=engine.convert(input);
+    assert.equal(r.ukrainian,ua,input);
+    assert.equal(r.ipa,ipa,input);
+    assert.equal(r.status,'lexical',input);
+    assert.ok(r.trace[0].rules.includes('lexical-pronunciation'),input);
+  }
+});
+
+test('lexical entries apply inside surrounding text and preserve separators',()=>{
+  const r=engine.convert('값없다, 읽고!');
+  assert.equal(r.ukrainian,'кабопта, ілко!');
+  assert.equal(r.ipa,'ka bʌp̚ t͈a, il k͈o!');
+  assert.equal(r.status,'lexical');
+});
+
+test('lexicon does not rewrite unrelated forms with the same coda spelling',()=>{
+  assert.equal(engine.convert('닭이').ukrainian,'талґі');
+  assert.equal(engine.convert('값이').ukrainian,'капші');
+});
