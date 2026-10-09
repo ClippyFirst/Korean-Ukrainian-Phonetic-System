@@ -1,18 +1,18 @@
 rule_id,name,input,output,environment,domain,ordering,source_id,status,confidence
-R001,final-neutralization,obstruent-coda,ㄱ|ㄷ|ㅂ|ㄴ|ㄹ|ㅁ|ㅇ,syllable-final or before consonant,syllable,9,S001,established,high
-R002,liaison-resyllabification,coda,following-onset,vowel-initial licensed boundary,word|morpheme,1,S001,established,high
-R003,h-deletion-before-vowel,ㅎ|ㄶ|ㅀ,loss-of-ㅎ,before vowel-initial formal morphology,morpheme,2,S001,established,high
-R004,h-aspiration,ㅎ+obstruent,ㅋ|ㅌ|ㅍ|ㅊ,licensed consonant interaction,word|morpheme,3,S001,established,high
-R005,nasal-assimilation,obstruent,nasal-place-matched,before ㄴ|ㅁ,word|morpheme,4,S001,established,high
-R006,liquid-assimilation,ㄴ|ㄹ,ㄹ|ㄹ,adjacent to liquid,word|morpheme,5,S001,established,high
-R007,palatalization,ㄷ|ㅌ,ㅈ|ㅊ,before i/y-initial nucleus,word|morpheme,6,S001,established,high
-R008,tensification,plain-obstruent,fortis,post-coda licensed context,word|morpheme,8,S001,established,high
-R009,n-insertion,zero-onset+i-or-y,ㄴ|ㄹ,before ㅣ/ㅑ/ㅕ/ㅛ/ㅠ/ㅖ/ㅒ under licensed morphology or connected speech,word|morpheme|phrase,7,S001,established,high
+R001,final-neutralization,obstruent-coda,ㄱ|ㄷ|ㅂ|ㄴ|ㄹ|ㅁ|ㅇ,syllable-final or before consonant,syllable,16,S001,established,high
+R002,liaison-resyllabification,coda,following-onset,vowel-initial licensed boundary,word|morpheme,2,S001,established,high
+R003,h-deletion-before-vowel,ㅎ|ㄶ|ㅀ,loss-of-ㅎ,before vowel-initial formal morphology,morpheme,3,S001,established,high
+R004,h-aspiration,ㅎ+obstruent,ㅋ|ㅌ|ㅍ|ㅊ,licensed consonant interaction,word|morpheme,4,S001,established,high
+R005,nasal-assimilation,obstruent,nasal-place-matched,before ㄴ|ㅁ,word|morpheme,5,S001,established,high
+R006,liquid-assimilation,ㄴ|ㄹ,ㄹ|ㄹ,adjacent to liquid,word|morpheme,6,S001,established,high
+R007,palatalization,ㄷ|ㅌ,ㅈ|ㅊ,before i/y-initial nucleus,word|morpheme,7,S001,established,high
+R008,tensification,plain-obstruent,fortis,post-coda licensed context,word|morpheme,15,S001,established,high
+R009,n-insertion,zero-onset+i-or-y,ㄴ|ㄹ,before ㅣ/ㅑ/ㅕ/ㅛ/ㅠ/ㅖ/ㅒ under licensed morphology or connected speech,word|morpheme|phrase,1,S001,established,high
 
-R010,stem-nm-fortition,stem-final-n-or-m+suffix-initial-obstruent,ㄲ|ㄸ|ㅆ|ㅉ,verb-stem boundary with explicit morphological license,morpheme,10,S001,conditional,high
-R011,stem-lb-lt-fortition,stem-final-ㄼ-or-ㄾ+suffix-initial-obstruent,ㄲ|ㄸ|ㅆ|ㅉ,verb-stem boundary with explicit morphological license,morpheme,11,S001,conditional,high
-R012,sino-korean-l-fortition,ㄹ+ㄷ|ㅅ|ㅈ,ㄸ|ㅆ|ㅉ,Sino-Korean lexical/morphological context with explicit license,word|morpheme,12,S001,conditional,high
-R013,adnominal-l-fortition,adnominal-ㄹ+plain-obstruent,fortis,adnominal -(으)ㄹ context with explicit license,word|morpheme,13,S001,conditional,high
-R014,compound-fortition,compound-boundary+coda+plain-obstruent,fortis,compound/saisiot-like lexical context with explicit license,word|morpheme,14,S001,conditional,medium
-R015,saisiot-pronunciation,licensed-saisiot+coda,fortition-or-nasalization,explicit saisiot lexical/orthographic license,word|morpheme,15,S001,conditional,high
-R016,verbal-stem-rieul-giyeok-exception,verb-stem-ㄺ+ㄱ-initial-ending,ㄹ+ㄲ,explicit verbal-stem and suffix license required,morpheme,16,S009,conditional,high
+R010,stem-nm-fortition,stem-final-n-or-m+suffix-initial-obstruent,ㄲ|ㄸ|ㅆ|ㅉ,verb-stem boundary with explicit morphological license,morpheme,8,S001,conditional,high
+R011,stem-lb-lt-fortition,stem-final-ㄼ-or-ㄾ+suffix-initial-obstruent,ㄲ|ㄸ|ㅆ|ㅉ,verb-stem boundary with explicit morphological license,morpheme,9,S001,conditional,high
+R012,sino-korean-l-fortition,ㄹ+ㄷ|ㅅ|ㅈ,ㄸ|ㅆ|ㅉ,Sino-Korean lexical/morphological context with explicit license,word|morpheme,10,S001,conditional,high
+R013,adnominal-l-fortition,adnominal-ㄹ+plain-obstruent,fortis,adnominal -(으)ㄹ context with explicit license,word|morpheme,11,S001,conditional,high
+R014,compound-fortition,compound-boundary+coda+plain-obstruent,fortis,compound/saisiot-like lexical context with explicit license,word|morpheme,12,S001,conditional,medium
+R015,saisiot-pronunciation,licensed-saisiot+coda,fortition-or-nasalization,explicit saisiot lexical/orthographic license,word|morpheme,13,S001,conditional,high
+R016,verbal-stem-rieul-giyeok-exception,verb-stem-ㄺ+ㄱ-initial-ending,ㄹ+ㄲ,explicit verbal-stem and suffix license required,morpheme,14,S009,conditional,high
