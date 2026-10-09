@@ -6,12 +6,8 @@ const root=fileURLToPath(new URL('.',import.meta.url));
 
 export default defineConfig({
   base: './',
-  build: {
-    rollupOptions: {
-      input: {
-        index: resolve(root,'index.html'),
-        system: resolve(root,'system.html'),
-      },
-    },
+  input: {
+    index: resolve(root,'index.html'),
+    system: resolve(root,'system.html'),
   },
 });
