@@ -139,7 +139,8 @@ def test_n_insertion_does_not_apply_after_open_syllable_even_when_enabled():
 
 def test_n_insertion_still_applies_after_coda_when_licensed():
     items, traces = apply_ordered_rules(
-        parse_syllables("한여름"), ["R009"], n_insertion_licensed=True,\n        rule_licenses={"R009:word:한여름:한>여"}
+        parse_syllables("한여름"), ["R009"], n_insertion_licensed=True,
+        rule_licenses={"R009:word:한여름:한>여"}
     )
     assert items[1].onset == "ㄴ"
     assert traces[0].changed
