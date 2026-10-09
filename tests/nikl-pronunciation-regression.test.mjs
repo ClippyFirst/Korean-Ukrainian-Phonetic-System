@@ -164,3 +164,35 @@ test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () 
   assert.equal(phrase.variants[0].ukrainian, 'машіттта!');
   assert.equal(phrase.variants[0].ipa, 'ma ɕit̚ t͈a!');
 });
+
+test('unknown complex-coda liaison is unresolved rather than guessed as §14', () => {
+  for (const word of ['넋어', '값어']) {
+    const result = engine.convert(word);
+    assert.equal(result.status, 'unresolved', word);
+    assert.ok(result.ukrainian.includes('⟦'), word);
+    assert.ok(result.issues.some((issue) => issue.includes('complex-coda liaison differs')), word);
+    assert.ok(result.trace.some((item) => item.rules.includes('complex-coda-liaison-requires-morphology')), word);
+  }
+});
+
+test('sourced §14 complex-coda examples use exact surface forms and provisional Ukrainian targets', () => {
+  const expected = {
+    넋이: {surface:'넉씨', target:'нокші', ipa:'nʌk̚ s͈i'},
+    값이: {surface:'갑씨', target:'капші', ipa:'kap̚ s͈i'},
+    앉아: {surface:'안자', target:'анджа', ipa:'an dʑa'},
+    닭을: {surface:'달글', target:'талґил', ipa:'tal ɡɯl'},
+    젊어: {surface:'절머', target:'джолмо', ipa:'tɕʌl mʌ'},
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, values] of Object.entries(expected)) {
+    const entry = rows.find((row) => row.input === word);
+    assert.ok(entry, word);
+    assert.equal(entry.surface_hangul, values.surface, word);
+    assert.equal(entry.target_status, 'provisional', word);
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, values.target, word);
+    assert.equal(result.ipa, values.ipa, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+  }
+});
