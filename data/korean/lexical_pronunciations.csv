@@ -179,3 +179,5 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 밥물,밤물,пам|муль,pam|mul,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제18항 공식 예시 [밤물]; ㅂ 대표음 뒤 ㅁ 앞 비음화. Ukrainian target provisional.",high,provisional,,,,
 앞마당,암마당,ам|ма|дан,am|ma|daŋ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제18항 공식 예시 [암마당]; ㅍ 대표음 뒤 ㅁ 앞 비음화. Ukrainian target provisional.",high,provisional,,,,
 읊는,음는,им|нин,ɯm|nɯn,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제18항 공식 예시 [음는]; ㄿ 단순화 후 비음화. Ukrainian target provisional.",high,provisional,,,,
+삶,삼,сам,saːm,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제11항 공식 예시 [삼ː]; ㄻ은 ㅁ으로 단순화하며 장음은 IPA에 보존. Ukrainian target provisional.",high,provisional,,,,
+젊다,점따,чом|та,tɕʌːm|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제11항 공식 예시 [점ː따]; ㄻ은 ㅁ으로 단순화하고 장음 및 용언 어간의 된소리되기를 정확한 어휘 항목으로 보존. Ukrainian target provisional.",high,provisional,,,,
