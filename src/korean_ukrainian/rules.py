@@ -377,15 +377,17 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if pair not in exact_pairs:
                 conditional_disabled=True
                 continue
+            pair_changed=False
             if b.onset in PLAIN_TO_FORTIS:
-                b.onset=PLAIN_TO_FORTIS[b.onset]; a.coda=""; changed=True
+                b.onset=PLAIN_TO_FORTIS[b.onset]; a.coda=""; pair_changed=True
             elif b.onset in {"ㄴ","ㅁ"}:
-                a.coda="ㄴ"; changed=True
+                a.coda="ㄴ"; pair_changed=True
             elif b.onset=="ㅇ" and b.nucleus=="ㅣ":
-                a.coda="ㄴ"; b.onset="ㄴ"; changed=True
+                a.coda="ㄴ"; b.onset="ㄴ"; pair_changed=True
             else:
                 conditional_disabled=True
-            if changed:
+            if pair_changed:
+                changed=True
                 license_context=f"R015:saisiot:{full_form}:{pair}"
     name,source,confidence=RULE_META[rule_id]
     status=("conditional-disabled" if conditional_disabled and not changed else ("partially-conditional" if conditional_disabled else ("established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015","R016"} else "conditional-nochange")))
