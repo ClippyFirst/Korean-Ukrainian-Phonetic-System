@@ -101,17 +101,21 @@ function applyContextualRules(units){
       else if(a.char==='넓'&&LEXICAL_B_CODA_PREFIXES.has(a.char+b.char)){a.coda='ㅂ';rules.push('lexical-coda-neolp');}
     }
 
-    // R007: palatalization takes precedence over ordinary liaison when
-    // ㄷ/ㅌ meets an i/j-like vowel through a zero onset.
-    if((a.coda==='ㄷ'||a.coda==='ㅌ')&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
-      b.onset=a.coda==='ㄷ'?'ㅈ':'ㅊ';
-      a.coda='';
-      rules.push('palatalization');
+    // NIKL §17 requires a licensed formal morpheme boundary (or its
+    // explicit ㄷ + suffix -히 provision). Hangul adjacency alone cannot
+    // establish that morphology. Exact sourced forms are handled by the
+    // lexical layer; unknown candidates are withheld instead of guessed.
+    if(['ㄷ','ㅌ','ㄾ'].includes(a.coda)&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
+      a.__palatalizationUnlicensed='left';
+      b.__palatalizationUnlicensed='right';
+      rules.push('palatalization-requires-lexical-morphology');
+      nextRules.push('palatalization-requires-lexical-morphology');
+      continue;
     }
 
     // R002: liaison / resyllabification. Complex codas keep their first
     // component in the coda and move the second component; ㄶ/ㅀ lose ㅎ.
-    if(a.coda&&b.onset==='ㅇ'){
+    if(a.coda&&b.onset==='ㅇ'&&!a.__palatalizationUnlicensed){
       const pair=COMPLEX[a.coda];
       if(pair){
         a.coda=pair[0];
@@ -276,6 +280,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     const applied=rules[i];
     const original=originalUnits[i];
     analysis[i]=original.char+' = '+original.onset+'+'+original.vowel+(original.coda?'+'+original.coda:'');
+    if(u.__palatalizationUnlicensed){
+      if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a verified formal-morpheme boundary; add a sourced lexical entry or morphological license.');
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='';
+      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
+      continue;
+    }
     // Standard Korean pronunciation: ㅢ in a syllable with an
     // actual consonant onset is realized as [i] (e.g. 희망 [히망]).
     // ㅇ+ㅢ remains unresolved because lexical position and particle
