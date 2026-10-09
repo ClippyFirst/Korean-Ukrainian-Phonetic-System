@@ -46,8 +46,28 @@ def test_tensification():
 def test_aspiration():
     items,_=apply_ordered_rules(parse_syllables("각하"),["R004"]); assert items[1].onset=="ㅋ"
 
-def test_n_insertion_requires_license():
-    items,_=apply_ordered_rules(parse_syllables("한여름"),["R009"],n_insertion_licensed=True); assert items[1].onset=="ㄴ"
+def test_n_insertion_requires_exact_word_pair_license_not_a_global_boolean():
+    items,traces=apply_ordered_rules(
+        parse_syllables("한여름"),["R009"],n_insertion_licensed=True
+    )
+    assert items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
+
+    items,traces=apply_ordered_rules(
+        parse_syllables("한여름"),["R009"],
+        rule_licenses={"R009:word:한여름:한>여"},
+    )
+    assert items[1].onset=="ㄴ"
+    assert traces[0].changed
+
+def test_n_insertion_license_cannot_be_reused_for_a_different_word():
+    items,traces=apply_ordered_rules(
+        parse_syllables("먹이"),["R009"],
+        n_insertion_licensed=True,
+        rule_licenses={"R009:word:한여름:한>여"},
+    )
+    assert items[1].onset=="ㅇ"
+    assert not traces[0].changed
 
 def test_n_insertion_disabled_by_default():
     items,_=apply_ordered_rules(parse_syllables("한여름"),["R009"]); assert items[1].onset=="ㅇ"
@@ -110,7 +130,7 @@ def test_complex_coda_plus_h_retains_first_component_and_aspirates_second():
 
 def test_n_insertion_does_not_apply_after_open_syllable_even_when_enabled():
     items, traces = apply_ordered_rules(
-        parse_syllables("가여름"), ["R009"], n_insertion_licensed=True
+        parse_syllables("가여름"), ["R009"], n_insertion_licensed=True,\n        rule_licenses={"R009:word:가여름:가>여"}
     )
     assert items[1].onset == "ㅇ"
     assert not traces[0].changed
@@ -118,7 +138,7 @@ def test_n_insertion_does_not_apply_after_open_syllable_even_when_enabled():
 
 def test_n_insertion_still_applies_after_coda_when_licensed():
     items, traces = apply_ordered_rules(
-        parse_syllables("한여름"), ["R009"], n_insertion_licensed=True
+        parse_syllables("한여름"), ["R009"], n_insertion_licensed=True,\n        rule_licenses={"R009:word:한여름:한>여"}
     )
     assert items[1].onset == "ㄴ"
     assert traces[0].changed
