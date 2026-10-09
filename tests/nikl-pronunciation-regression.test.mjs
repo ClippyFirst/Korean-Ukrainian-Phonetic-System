@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { createEngine } from '../src/app/engine.js';
+import { createEngine, parseCsv } from '../src/app/engine.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -81,4 +81,39 @@ test('밭에 does not undergo §17 palatalization because the following vowel is
   const result = engine.convert('밭에');
   assert.match(result.ipa, /pa tʰe/);
   assert.ok(!result.trace.some((item) => item.rules.includes('palatalization')));
+});
+
+test('shared lexical pronunciation data is sourced, aligned, and marks provisional Ukrainian targets', () => {
+  const rows = parseCsv(lexical);
+  const seen = new Set();
+  for (const row of rows) {
+    assert.ok(!seen.has(row.input), 'duplicate lexical key: ' + row.input);
+    seen.add(row.input);
+    assert.match(row.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//, row.input);
+    assert.ok([...row.surface_hangul].every((char) => /[가-힣]/u.test(char)), row.input);
+    assert.equal([...row.input].length, row.target_syllables.split('|').length, row.input);
+    assert.equal([...row.input].length, row.ipa_syllables.split('|').length, row.input);
+    if (row.target_status === 'provisional') {
+      assert.equal(engine.convert(row.input).status, 'lexical-review', row.input);
+    }
+  }
+});
+
+test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays explicitly provisional', () => {
+  const expected = {
+    같이: ['가치', 'ка', 'чі', 'ka tɕʰi'],
+    굳이: ['구지', 'ку', 'джі', 'ku dʑi'],
+    곧이듣다: ['고지듣따', 'коджідитта', null, null],
+    굳히다: ['구치다', 'кучіда', null, null],
+    닫히다: ['다치다', 'дачіда', null, null],
+    묻히다: ['무치다', 'мучіда', null, null],
+  };
+  for (const [word, [surface, target, , ipa]] of Object.entries(expected)) {
+    const result = engine.convert(word);
+    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.ukrainian, target, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+    if (ipa) assert.equal(result.ipa, ipa, word);
+    assert.ok(surface.length > 0);
+  }
 });
