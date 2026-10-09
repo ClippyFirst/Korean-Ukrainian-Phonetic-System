@@ -100,6 +100,12 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                     a.coda=""; b.onset=representative; changed=True
                 else:
                     conditional_disabled=True
+            elif a.coda in {"ㄷ","ㅌ"} and b.nucleus=="ㅣ":
+                # §17 palatalization must get first refusal on ㄷ/ㅌ + formal
+                # ㅣ. Generic liaison here would consume the coda before R007
+                # can distinguish licensed forms such as 같이/굳이 from
+                # unverified lookalikes. Leave the pair unchanged for R007.
+                conditional_disabled=True
             elif a.coda!="ㅎ":
                 representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
                 if representative!=a.coda and b.nucleus in {"ㅏ","ㅓ","ㅗ","ㅜ","ㅟ"}:
