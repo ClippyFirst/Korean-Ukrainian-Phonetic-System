@@ -12,7 +12,7 @@ def contextual_final_representative(a,b):
     if a.coda=="ㄼ" and b.onset!="ㅇ":
         if a.text=="밟":
             return "ㅂ"
-        if a.text=="넓" and a.text+b.text in {"넓죽","넓둥글","넓적"}:
+        if a.text=="넓" and a.text+b.text in {"넓죽","넓둥","넓적"}:
             return "ㅂ"
     return FINAL_REPRESENTATIVE.get(a.coda,a.coda)
 RULE_META={
