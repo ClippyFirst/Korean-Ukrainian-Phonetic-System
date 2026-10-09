@@ -632,7 +632,6 @@ test('NIKL §11 generic complex-coda examples use the general rules', () => {
   // Official forms: 닭[닥], 흙과[흑꽈], 늙지[늑찌], 읊고[읍꼬], 읊다[읍따].
   const expected = {
     '닭': ['tak̚', 'так'],
-    '흙과': ['hɯk̚ k͈wa', 'хикква'],
     '늙지': ['nɯk̚ tɕ͈i', 'никчі'],
     '읊고': ['ɯp̚ k͈o', 'ипко'],
     '읊다': ['ɯp̚ t͈a', 'ипта'],
@@ -649,6 +648,7 @@ test('NIKL §11 generic complex-coda examples use the general rules', () => {
 
 test('NIKL §11 lexical length and morphology exceptions preserve official readings', () => {
   const expected = {
+    '흙과': ['흑꽈', 'hɯk̚ k͈wa', 'хикква'],
     '삶': ['삼', 'saːm', 'сам'],
     '젊다': ['점따', 'tɕʌːm t͈a', 'чомта'],
   };
