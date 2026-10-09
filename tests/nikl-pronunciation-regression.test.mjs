@@ -664,3 +664,24 @@ test('NIKL §11 lexical length and morphology exceptions preserve official readi
     assert.equal(result.ukrainian, target, word);
   }
 });
+
+test('NIKL §19 official examples preserve rule order before §18 nasalization', () => {
+  const expected = {
+    '침략': ['tɕʰim njak̚', ['liquid-to-nasal-before-obstruent']],
+    '강릉': ['kaŋ nɯŋ', ['liquid-to-nasal-before-obstruent']],
+    '막론': ['maŋ non', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
+    '석류': ['sʌŋ nju', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
+    '협력': ['hjʌm njʌk̚', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
+    '법리': ['pʌm ni', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, [ipa, rules]] of Object.entries(expected)) {
+    assert.ok(!rows.some((item) => item.input === word), word);
+    const result = engine.convert(word);
+    assert.equal(result.ipa, ipa, word);
+    assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
+    for (const rule of rules) {
+      assert.ok(result.trace.some((item) => item.rules.includes(rule)), word + ': ' + rule);
+    }
+  }
+});
