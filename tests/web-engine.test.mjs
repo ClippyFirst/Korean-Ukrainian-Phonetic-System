@@ -79,6 +79,14 @@ test('lexical CSV has unique keys, complete evidence fields and aligned syllable
     assert.equal(targetParts.length,ipaParts.length,'target/IPA segmentation mismatch: '+row.input);
     assert.equal([...row.input].length,targetParts.length,'input/target segmentation mismatch: '+row.input);
     assert.equal([...row.surface_hangul].length,ipaParts.length,'surface/IPA segmentation mismatch: '+row.input);
+    const alternateFields=[row.alternate_surface_hangul,row.alternate_target_syllables,row.alternate_ipa_syllables];
+    assert.ok(alternateFields.every(v=>!v)||alternateFields.every(Boolean),'incomplete alternate variant for '+row.input);
+    if(alternateFields.every(Boolean)){
+      assert.equal([...row.alternate_surface_hangul].length,[...row.input].length,'alternate surface segmentation mismatch: '+row.input);
+      assert.equal(row.alternate_target_syllables.split('|').length,[...row.input].length,'alternate target segmentation mismatch: '+row.input);
+      assert.equal(row.alternate_ipa_syllables.split('|').length,[...row.input].length,'alternate IPA segmentation mismatch: '+row.input);
+      assert.ok(row.variant_note,'missing alternate variant note for '+row.input);
+    }
   }
   assert.ok(rows.length>=300,'unexpectedly small lexical dataset');
 });
@@ -101,6 +109,60 @@ test('remaining official NIKL §28 compound examples retain sourced surface form
     assert.equal(r.ukrainian,ua,word);
     assert.equal(r.ipa,ipa,word);
     assert.equal(r.status,'lexical-review',word);
+  }
+});
+
+test('NIKL §29 official ㄴ-insertion and negative-control examples are covered',()=>{
+  const cases=[
+    ['솜이불','솜니불','сомнібул','soːm ni bul'],
+    ['홑이불','혼니불','гоннібул','hon ni bul'],
+    ['막일','망닐','манніл','maŋ nil'],
+    ['삯일','상닐','санніл','saŋ nil'],
+    ['맨입','맨닙','менніп','mɛn nip̚'],
+    ['내복약','내봉냑','небонняк','nɛː boŋ ɲak̚'],
+    ['한여름','한녀름','ганньорим','han ɲʌ ɾɯm'],
+    ['남존여비','남존녀비','намджонньобі','nam dʑon ɲʌ bi'],
+    ['신여성','신녀성','шінньосон','ɕin ɲʌ sʌŋ'],
+    ['색연필','생년필','сенньонпіл','sɛŋ ɲʌn pʰil'],
+    ['직행열차','지캥녈차','чікенньолча','tɕi kʰɛŋ ɲʌl tɕʰa'],
+    ['늑막염','능망념','нинманньом','nɯŋ maŋ ɲʌm'],
+    ['콩엿','콩녇','конньот','kʰoŋ ɲʌt̚'],
+    ['담요','담뇨','тамньо','taːm ɲo'],
+    ['눈요기','눈뇨기','нунньоґі','nun ɲo ɡi'],
+    ['영업용','영엄뇽','йон엄'.replace('엄','ом')+'ньон','jʌŋ ʌm ɲoŋ'],
+    ['식용유','시굥뉴','шіґйонню','ɕi ɡjoŋ ɲu'],
+    ['백분율','백뿐뉼','пекпуннюл','pɛk̚ p͈un ɲul'],
+    ['밤윷','밤뉻','памньут','paːm ɲut̚'],
+    ['송별연','송벼련','сонбйорйон','soːŋ bjʌ ɾjʌn'],
+    ['등용문','등용문','тинйонмун','tɯŋ joŋ mun']
+  ];
+  for(const [word,surface,ua,ipa] of cases){
+    const r=engine.convert(word);
+    assert.equal(r.surfaceHangul,surface,word);
+    assert.equal(r.ukrainian,ua,word);
+    assert.equal(r.ipa,ipa,word);
+    assert.equal(r.status,'lexical-review',word);
+  }
+});
+
+test('NIKL §29 optional readings expose both official surface variants',()=>{
+  const cases=[
+    ['이죽이죽','이중니죽','і|джун|ні|джук','i dʑuŋ ni dʑuk̚','이주기죽','і|джу|ґі|джук','i dʑu ɡi dʑuk̚'],
+    ['야금야금','야금냐금','я|гим|ня|гим','ja gɯm ɲa gɯm','야그먀금','я|ги|мя|гим','ja gɯ mja gɯm'],
+    ['검열','검녈','ком|ньол','kʌːm ɲʌl','거멸','ко|мйол','kʌː mjʌl'],
+    ['욜랑욜랑','욜랑뇰랑','йол|лан|ньол|лан','jol laŋ ɲol laŋ','욜랑욜랑','йол|лан|йол|лан','jol laŋ jol laŋ'],
+    ['금융','금늉','ким|нюн','kɯm ɲuŋ','그뮹','ки|мюн','kɯ mjuŋ']
+  ];
+  for(const [word,surface,ua,ipa,altSurface,altUa,altIpa] of cases){
+    const r=engine.convert(word);
+    assert.equal(r.surfaceHangul,surface,word);
+    assert.equal(r.ukrainian,ua.replaceAll('|',''),word);
+    assert.equal(r.ipa,ipa,word);
+    assert.equal(r.status,'lexical-review',word);
+    assert.equal(r.variants.length,1,word);
+    assert.equal(r.variants[0].surface,altSurface,word);
+    assert.equal(r.variants[0].ukrainian,altUa.replaceAll('|',''),word);
+    assert.equal(r.variants[0].ipa,altIpa,word);
   }
 });
 
