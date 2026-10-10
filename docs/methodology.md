@@ -74,3 +74,17 @@ Phrase-boundary liquid assimilation is also preserved when any exact lexical ent
 ### Composition of consecutive phrase-boundary rules
 
 The regression suite also checks chains of adjacent word-boundary changes, not only isolated pairs. In `국 립 문법`, the boundary `ㄱ + ㄹ` first yields the liquid-to-nasal pattern and nasalizes the coda, then `ㅂ + ㅁ` at the next boundary nasalizes independently. In `몇 리 문법`, the representative coda of ㅊ is ㄷ; the test verifies the ㄷ + ㄹ sequence and confirms that a later lexical override in the same phrase does not bypass the boundary pass. These are regression examples for rule composition, not claims that arbitrary orthographic adjacency establishes every morphophonemic rule.
+
+
+## Phrase-boundary assimilation: normative rule vs runtime heuristic
+
+NIKL Standard Pronunciation Rules §18 explicitly extends nasal assimilation to two words pronounced together as one utterance. The normative condition is connected-phrase pronunciation, not the mere presence of a whitespace character. The browser engine currently uses plain whitespace as a deterministic proxy for that prosodic condition and blocks the rule at punctuation. This is an engineering heuristic, not a claim that every whitespace-separated pair must undergo assimilation.
+
+Consequences for interpretation and evaluation:
+
+- Treat phrase-boundary nasal/liquid changes as context-dependent predictions, not guaranteed readings for every written sentence.
+- Preserve the distinction between the cited Korean surface rule and the browser's simplified phrase-link detection.
+- A future interface should let users choose connected-phrase mode or provide prosodic/phrase-boundary information instead of inferring it silently.
+- Regression tests can verify the deterministic implementation, but cannot establish the intended prosodic grouping of arbitrary user text.
+
+Normative source: National Institute of Korean Language, *한국어 어문 규범 — 표준 발음법 제18항*, including the note that the rule also applies when two words are pronounced together as one utterance: https://korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a402
