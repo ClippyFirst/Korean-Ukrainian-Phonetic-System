@@ -252,9 +252,10 @@ function applyContextualRules(units){
       nextRules.push('tensification');
     }
   }
-  // NIKL §18 explicitly permits nasal assimilation across eojeol when
-  // the words are spoken as one phrase; §§19–20 can feed the same sequence.
-  // Treat plain whitespace as a phrase link, but never cross punctuation.
+  // NIKL §18 permits nasal assimilation across eojeol when the words are
+  // spoken as one phrase; §§19–20 can feed the same sequence. Whitespace is
+  // only a deterministic proxy for that prosodic condition, not proof that
+  // every written pair is connected in speech. Never cross punctuation.
   for(let i=0;i<units.length;i++){
     const a=units[i];
     if(a.type!=='hangul'||!a.coda)continue;
