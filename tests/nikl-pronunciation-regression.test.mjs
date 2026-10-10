@@ -92,8 +92,14 @@ test('shared lexical pronunciation data is sourced, aligned, and marks provision
     seen.add(row.input);
     assert.match(row.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//, row.input);
     assert.ok([...row.surface_hangul].every((char) => /[가-힣]/u.test(char)), row.input);
-    assert.equal([...row.input].length, row.target_syllables.split('|').length, row.input);
-    assert.equal([...row.input].length, row.ipa_syllables.split('|').length, row.input);
+    if (row.input_kind === 'mixed-script') {
+      assert.match(row.input, /[^가-힣]/u, row.input);
+      assert.equal([...row.surface_hangul].length, row.target_syllables.split('|').length, row.input);
+      assert.equal([...row.surface_hangul].length, row.ipa_syllables.split('|').length, row.input);
+    } else {
+      assert.equal([...row.input].length, row.target_syllables.split('|').length, row.input);
+      assert.equal([...row.input].length, row.ipa_syllables.split('|').length, row.input);
+    }
     if (row.target_status === 'provisional') {
       assert.equal(engine.convert(row.input).status, 'lexical-review', row.input);
     }
