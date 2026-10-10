@@ -220,7 +220,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 끝이,끄치,ки|чі,k͈ɯ|tɕʰi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§17; [끄치].,high,provisional,,,,,
 "밝다","박따","пак|та","pak̚|t͈a","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [박따].","high","provisional","","","","",
 "넓고","널꼬","нол|ко","nʌl|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10/§23; [널꼬].","high","provisional","","","","",
-"밟는","밤는","пам|нин","pam|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10 then §18; [밤는].","high","surface-only","","","","",
+"밟는","밤는","пам|нин","paːm|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10 then §18; preserve source-attested long vowel [밤ː는].","high","surface-only","","","","",
 "읊다","읍따","ип|та","ɯp̚|t͈a","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [읍따].","high","surface-only","","","","",
 "읊고","읍꼬","ип|ко","ɯp̚|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [읍꼬].","high","surface-only","","","","",
 "앉고","안꼬","ан|ко","an|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10/§23; [안꼬].","high","provisional","","","","",
