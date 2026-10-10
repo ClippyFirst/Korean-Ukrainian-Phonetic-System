@@ -198,7 +198,7 @@ test('NIKL §30 retains both permitted surface readings for written 사이시옷
     ['햇살','해쌀','гесал','hɛ s͈al','핻쌀','гетсал','hɛt̚ s͈al'],
     ['뱃속','배쏙','песок','pɛ s͈ok̚','밷쏙','петсок','pɛt̚ s͈ok̚'],
     ['뱃전','배쩐','печон','pɛ tɕ͈ʌn','밷쩐','петчон','pɛt̚ tɕ͈ʌn'],
-    ['고갯짓','고개찓','коґечіт','ko kɛ tɕ͈it̚','고갣찓','коґетчіт','ko kɛt̚ tɕ͈it̚']
+    ['고갯짓','고개찓','коґечіт','ko ɡɛ tɕ͈it̚','고갣찓','коґетчіт','ko kɛt̚ tɕ͈it̚']
   ];
   for(const [word,surface,ua,ipa,altSurface,altUa,altIpa] of cases){
     const r=engine.convert(word);
