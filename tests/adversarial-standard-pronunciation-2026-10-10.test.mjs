@@ -42,11 +42,11 @@ test('지식의 retains both NIKL-standard readings of genitive particle 의', (
   assert.equal(row.alternate_surface_hangul, '지시게');
   const result = engine.convert('지식의');
   assert.equal(result.surfaceHangul, '지시긔');
-  assert.equal(result.ukrainian, 'джішіґий');
+  assert.equal(result.ukrainian, 'чішіґий');
   assert.equal(result.ipa, 'tɕi ɕi ɡɰi');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '지시게');
-  assert.equal(result.variants[0].ukrainian, 'джішіґе');
+  assert.equal(result.variants[0].ukrainian, 'чішіґе');
   assert.equal(result.variants[0].ipa, 'tɕi ɕi ɡe');
 });
 
