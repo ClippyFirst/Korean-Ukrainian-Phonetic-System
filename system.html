@@ -302,10 +302,12 @@
       </div>
       <p>Цільова ізольована перевірка виявила й виправила IPA для <code>신라[실라]</code>: корейські ㅅ/ㅆ перед j-подібними голосними тепер передаються в IPA як [ɕ]/[ɕ͈], а не [s]/[s͈]. Також прибрано некоректний негативний тест для <code>낮이</code>, який помилково трактував звичайне перенесення ㅈ як палаталізацію ㄷ/ㅌ. <code>독립문[동님문]</code> збережено як поверхневий контроль, щоб перевіряти послідовну назалізацію та асиміляцію ㄹ без підміни алгоритмічного сліду словниковим override.</p>
       <p><strong>Статус перевірки:</strong> повний CI для кандидата PR #132 пройшов: усі 865 браузерних тестів (865/865), збірка обох публічних сторінок і перевірка згенерованого артефакту успішні; Python-тести пройшли на 3.11, 3.12 і 3.13, генерація master table та Korean corpus — успішна. Розгортання GitHub Pages налаштовано на автоматичний запуск після push у <code>main</code>.</p>
+      <p><strong>Нові регресії за повідомленням користувача:</strong> додано точні еталони для <code>해돋이처럼[해도지처럼]</code> (§17: палаталізація дозволена суфіксом -이; ㄴ-вставлення не ліцензоване) та <code>없으며[업쓰며]</code> (§14, збереження довготи в парадигмі 없-). Тест повторно проганяє повний початковий текст і перевіряє, що ці два токени більше не дають <code>⟦…⟧</code>, водночас generic-режим без словникової ліцензії й далі відмовляється вгадувати морфологію. Новий тест ще має пройти CI перед злиттям.</p>
       <div class="repo-links">
         <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/adversarial-long-passage-2026-10-10.test.mjs">Каверзні тексти ↗</a>
         <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/independent-oracles-and-context-invariance-2026-10-10.test.mjs">Незалежні еталони й контекстні інваріанти ↗</a>
         <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/nikl-evidence-lexicon-roundtrip-2026-10-10.test.mjs">Лексичний round-trip ↗</a>
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/reported-placeholder-regressions-2026-10-10.test.mjs">Регресії двох виявлених плейсхолдерів ↗</a>
         <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002">NIKL — 표준 발음법 ↗</a>
       </div>
     </div>

@@ -174,3 +174,13 @@ Official source: NIKL, *표준 발음법*, §11 and its listed examples: https:/
 ### Exact phrase-boundary ㄴ insertion (§29)
 
 `nikl-phrase-boundary-insertion-29.test.mjs` checks all six exact phrase licenses in the browser engine (`한 일`, `옷 입다`, `먹은 엿`, `할 일`, `잘 입다`, `먹을 엿`), six near-miss controls, and punctuation boundaries. This protects the rule from being generalized to every final ㄴ/ㄹ/ㅅ before a vowel-initial next word. The matrix validates the engine's narrow license table, not productive syntactic coverage.
+
+
+### Exact regressions from the 2026-10-10 long-passage stress test
+
+The submitted full passage exposed two unresolved orthographic tokens that had been hidden inside otherwise readable output: `해돋이처럼` and `없으며`. The browser engine intentionally does not infer morphology from Hangul adjacency, so the correct repair is not to weaken its fail-closed guards. Two narrow, source-documented exact-token rows and independent literal regression oracles were added instead.
+
+- `해돋이처럼` → `해도지처럼`: NIKL Q&A explicitly confirms `해돋이[해도지]` and explains that suffix `-이` is a formal morpheme licensing §17 palatalization; ㄴ-insertion is not licensed in this word. The attached `처럼` does not change the established surface form. Source: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327364
+- `없으며` → `업쓰며`: rule-derived exact verbal form `없- + -으며`, using §14 complex-coda liaison before a vowel-initial ending and the documented long-vowel behavior of the `없-` paradigm (including `없다[업ː따]`, `없으니[업ː쓰니]`). Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+
+`tests/reported-placeholder-regressions-2026-10-10.test.mjs` independently pins the Korean surface forms, project Ukrainian outputs, and broad IPA; verifies official source URLs and provisional status; confirms generic mode still fails closed without the lexical layer; checks nearby negative controls (`곧이어`, `없다`, `없는`, `없어`, `없으니`); and reruns the complete original long passage, not just isolated words. This is a regression for these reported tokens, not a claim that a finite corpus covers every Korean word or every possible morphology.
