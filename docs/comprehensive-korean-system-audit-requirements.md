@@ -47,7 +47,7 @@ Every normative rule and every sourced lexical exception must, where applicable,
 - source title, publisher, URL, and the relevant article/section or dictionary entry;
 - access/check date for mutable web sources;
 - a concise explanation of why the source supports the specific claim;
-- confidence/evidence class and any unresolved disagreement;
+- confidence/evidence class and any unresolved disagreement; define exactly what the confidence field measures (source reliability, Korean surface-form certainty, Ukrainian-target confidence, or another dimension) rather than letting one label imply all of them;
 - tests that cover the claim.
 
 A URL alone is insufficient if it does not identify the relevant claim. Never invent quotations, source details, dictionary attestations, or confidence.
