@@ -388,6 +388,21 @@ export function createEngine(csv,lexiconCsv=''){
 function lexicalResult(text,entry){
   const targets=entry.target_syllables.split('|');
   const ipas=entry.ipa_syllables.split('|');
+  if(entry.input_kind==='mixed-script'){
+    const target=targets.join('');
+    const ipa=ipas.join(' ');
+    return {
+      source:text,
+      surfaceHangul:entry.surface_hangul||'',
+      ukrainian:target,
+      ipa,
+      analysis:text+' → '+(entry.surface_hangul||'')+' (sourced lexical reading)',
+      variants:[],
+      trace:[{source:text,status:'lexical-review',rules:['lexical-pronunciation','ukrainian-target-provisional'],output:target,ipa}],
+      issues:[],
+      status:'lexical-review'
+    };
+  }
   const syllables=[...text];
   const analysis=syllables.map(ch=>{
     const d=decompose(ch);
@@ -419,7 +434,15 @@ function lexicalResult(text,entry){
 
 function convertText(text,map,lexicon=new Map(),skipLexicon=false){
   if(!skipLexicon&&lexicon.size){
-    const parts=text.match(/[가-힣]+|[^가-힣]+/g)||[];
+    // Exact mixed-script lexical keys (e.g. 6·25, 3·1절) are tokenized
+    // before ordinary Hangul/non-Hangul runs, including inside phrases.
+    const mixedKeys=[...lexicon.keys()].filter(key=>/[^가-힣]/u.test(key)).sort((a,b)=>b.length-a.length);
+    const escapeRegex=value=>value.replace(/[.*+?^${}()|[\]\\]/g,'\\  if(!skipLexicon&&lexicon.size){
+    const parts=text.match(/[가-힣]+|[^가-힣]+/g)||[];');
+    const tokenPattern=mixedKeys.length
+      ? new RegExp(mixedKeys.map(escapeRegex).join('|')+'|[가-힣]+|[^가-힣]+','gu')
+      : /[가-힣]+|[^가-힣]+/gu;
+    const parts=text.match(tokenPattern)||[];
     if(parts.some(part=>lexicon.has(part))){
       const results=parts.map(part=>{
         if(lexicon.has(part)){
