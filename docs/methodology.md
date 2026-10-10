@@ -59,6 +59,8 @@ The same audit also enforces the declared coda-`ㄹ` target `л` (not `ль`), c
 
 A second corpus-wide pass found three remaining lexical entries that still wrote Korean coda [l] with Ukrainian `ль` (`얇실하다`, `짧다`, `읽거든`), plus `넓습니다`, where doubled `сс` encoded Korean fortisness contrary to the declared practical-target policy. These targets are now `ял|сіл|га|да`, `чал|та`, `іл|ко|ден`, and `нол|сим|ни|да`, respectively. The hard-lateral regression list and fortis-neutralization checks now cover these missed cases as well.
 
+A full aligned-syllable coda scan then found `밭이랑`, whose Korean surface is `반니랑` [pan ni ɾaŋ] but whose Ukrainian target still followed the written coda of `밭` and the IPA spelling of [ŋ]. Its target is corrected from `пат|ні|ранґ` to `пан|ні|ран`. A corpus-wide regression now checks each aligned syllable's final IPA coda against the declared Ukrainian target (`к/т/п/н/м/л`) so similar surface-vs-orthography drift is caught earlier.
+
 
 ## Consistency of the Ukrainian target for coda ㅇ
 
