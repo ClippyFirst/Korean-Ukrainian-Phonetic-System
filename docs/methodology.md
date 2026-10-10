@@ -66,3 +66,6 @@ The browser resolves exact sourced lexical entries at word level. This must not 
 ## Liquid-to-nasal assimilation after the representative ㄷ coda
 
 The surface representative ㄷ must be included alongside ㄱ and ㅂ when a following ㄹ is realized as ㄴ; the coda then participates in nasal assimilation as well. This includes written codas such as ㅅ/ㅈ/ㅊ after neutralization. The browser regression `몇 리` guards the [면니]-type sequence across a phrase boundary. The rule is about the Korean surface sequence; Ukrainian output remains a project-specific approximation.
+
+
+Phrase-boundary liquid assimilation is also preserved when any exact lexical entry causes word-level conversion: `신 라면 문법` exercises ㄴ+ㄹ → ㄹㄹ, while `칼 날 문법` exercises ㄹ+ㄴ → ㄹㄹ. The repair changes only the affected edge segments and records the rule on both neighbouring trace rows. It does not cross punctuation and does not infer morphology-dependent liaison or palatalization.
