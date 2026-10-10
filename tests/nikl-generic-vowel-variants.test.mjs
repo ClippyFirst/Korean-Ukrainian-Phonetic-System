@@ -48,7 +48,7 @@ test('§4 enumerates every combination for up to three optional vowels', () => {
 test('§4 avoids exponential variant growth for text with more than three optional vowels', () => {
   const result = engine.convert('괴물귀회외');
   assert.equal(result.variants.length, 4);
-  assert.ok(result.variants.every((variant) => variant.note.includes('다른 необрані голосні')));
+  assert.ok(result.variants.every((variant) => variant.note.includes('інші необрані голосні')));
   assert.ok(result.variants.every((variant) => variant.surface === '괴물귀회외'));
 });
 
