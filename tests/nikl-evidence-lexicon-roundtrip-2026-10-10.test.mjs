@@ -23,7 +23,7 @@ for (const row of singleScriptRows) {
   test('sourced lexical row round-trips through engine: ' + row.input, () => {
     assert.match(
       row.source_url,
-      /^https:\/\/(?:www\.|m\.)?korean\.go\.kr\//u,
+      /^https:\/\/(?:www\.|m\.|krdict\.)?korean\.go\.kr\//u,
       row.input + ': source must be on an official NIKL domain',
     );
     const result = engine.convert(row.input);
