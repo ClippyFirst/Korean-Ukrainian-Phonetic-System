@@ -217,3 +217,10 @@ The lexicon now covers all 19 examples listed under NIKL §28: 문고리, 눈동
 ## 17. Regression caught and fixed: 바람결 segmentation
 
 The new structural test caught that the first version of the 바람결 entry grouped its first two Korean syllables into one Ukrainian target/IPA segment. The renderer indexes lexical target and IPA segments against individual Hangul syllables, so that grouping would have left the trace misaligned even though the concatenated output looked plausible. The entry is now segmented per syllable (`па|рам|кйол`, `pa|ɾam|k͈jʌl`). A fresh static check of all 348 lexical entries now finds no input/surface/target/IPA segment-count mismatches. This is precisely why the data-integrity test is useful in addition to output-level spot checks.
+
+
+## 18. NIKL §29 example coverage
+
+Added the previously missing Hangul-only examples for §29: 솜이불, 홑이불, 막일, 삯일, 맨입, 내복약, 한여름, 남존여비, 신여성, 색연필, 직행열차, 늑막염, 콩엿, 담요, 눈요기, 영업용, 식용유, 백분율 and 밤윷. Added explicit alternative readings for 이죽이죽, 야금야금, 검열, 욜랑욜랑 and 금융. Added negative controls 송별연 and 등용문 where §29 says ㄴ insertion does not occur. The numeric/punctuated controls 6·25 and 3·1절 are not yet represented as lexical overrides because the current lexical-result path assumes Hangul-only inputs; supporting these safely requires a mixed-script lexical entry path.
+
+All new Ukrainian targets are provisional. The official rule page provides Korean standard pronunciations, not Ukrainian-transcription validation. The structural audit now checks alternate variants as well as primary entries: alternate surface, Ukrainian target and IPA must all be present together, each segment-aligned to the input syllables, with a non-empty variant note.
