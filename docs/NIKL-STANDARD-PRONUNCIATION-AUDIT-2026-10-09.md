@@ -130,7 +130,7 @@ Official source: NIKL, *표준 발음법*, §§11 and 23: https://www.korean.go.
 
 ### Exact licensing for §§24–28 fortition
 
-The morphology-conditioned fortition rules R010–R014 no longer accept category-only switches (such as `R014:compound`) as sufficient evidence. Each rule now requires a license tied to the exact full form and adjacent syllable pair, for example `R014:compound:문고리:문>고`. This prevents a compound, Sino-Korean item, stem ending, or adnominal construction's license from being reused for unrelated words. §27 also explicitly permits the licensed adnominal ㄹ construction across a written word boundary only in phrase mode, e.g. 할 것 [할껃].
+The morphology-conditioned fortition rules R010–R014 no longer accept category-only switches (such as `R014:compound`) as sufficient evidence. Each rule now requires a license tied to the exact full form and adjacent syllable pair, for example `R014:compound:문고리:문>고`. This prevents a compound, Sino-Korean item, stem ending, or adnominal construction's license from being reused for unrelated words. §27 also explicitly permits the licensed adnominal ㄹ construction across a written word boundary only in phrase mode, e.g. 할 것을 [할꺼슬].
 
 Official source: NIKL, *표준 발음법*, §§24–28: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 
