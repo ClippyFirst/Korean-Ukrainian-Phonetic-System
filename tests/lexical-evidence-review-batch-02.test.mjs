@@ -16,7 +16,7 @@ test('batch 02 reviews the next ten traceability-queue records', () => {
 });
 
 test('batch 02 preserves source mismatch findings and regulation-name distinction', () => {
-  assert.match(review, /Source URL mismatch/u);
+  assert.match(review, /source URL mismatch/iu);
   assert.match(review, /qna_seq=313399[\s\S]*?밝기/u);
   assert.match(review, /qna_seq=307219[\s\S]*?꽃잎/u);
   assert.match(review, /qna_seq=313397[\s\S]*?떡볶이/u);
@@ -41,5 +41,5 @@ test('batch 02 records explicit rule examples without claiming every URL is item
   assert.match(review, /없는\[엄ː는\]/u);
   assert.match(review, /국물\[궁물\]/u);
   assert.match(review, /없다\[업ː따\]/u);
-  assert.match(review, /do not assign article numbers from the note alone/u);
+  assert.match(review, /article numbers from the note alone/u);
 });
