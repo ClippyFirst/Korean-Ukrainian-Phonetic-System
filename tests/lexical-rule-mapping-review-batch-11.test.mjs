@@ -16,7 +16,7 @@ const expected = {
   '웃었고': [9, 13, 23],
 };
 
-test('eight reviewed complex-coda records have explicit Standard Pronunciation Rules mappings', () => {
+test('seven reviewed complex-coda records have explicit Standard Pronunciation Rules mappings', () => {
   for (const [input, articles] of Object.entries(expected)) {
     const row = rows.find((item) => item.input === input);
     assert.ok(row, input + ': expected lexical row');
