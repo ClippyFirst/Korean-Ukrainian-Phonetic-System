@@ -1,10 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { createEngine } from '../src/app/engine.js';
+import { createEngine, parseCsv } from '../src/app/engine.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
+const lexicalInputs = new Set(parseCsv(lexicalText).map((row) => row.input));
 const engine = createEngine(canonical, lexicalText);
 const generic = createEngine(canonical, '');
 
@@ -82,6 +83,8 @@ test('generic rule fixtures stay independent of the lexical override layer', () 
       !result.trace.some((item) => item.rules.includes('lexical-pronunciation')),
       input + ': generic mode must not use lexical overrides',
     );
-    assert.equal(engine.convert(input).ipa, expectedIpa, input + ': adding the lexicon must not alter an unlisted generic reading');
+    if (!lexicalInputs.has(input)) {
+      assert.equal(engine.convert(input).ipa, expectedIpa, input + ': adding the lexicon must not alter an unlisted generic reading');
+    }
   }
 });
