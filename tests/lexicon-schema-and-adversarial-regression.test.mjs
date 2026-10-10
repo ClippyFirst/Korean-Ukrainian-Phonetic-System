@@ -70,7 +70,7 @@ test('every lexical row has valid provenance, explicit confidence/status, and al
 });
 
 test('morphology-dependent pronunciations fail closed rather than infer a morpheme from spelling', () => {
-  const unresolved = ['얇은', '않았다', '긁고', '늙고', '굵고', '놓아라'];
+  const unresolved = ['얇은', '긁고', '늙고', '굵고', '놓아라'];
   for (const input of unresolved) {
     assert.ok(!entries.has(input), input + ': do not add a blanket lexical override');
     const result = genericEngine.convert(input);
@@ -83,6 +83,17 @@ test('morphology-dependent pronunciations fail closed rather than infer a morphe
       input + ': do not silently pick a morphology-dependent reading',
     );
   }
+});
+
+
+test('않았다 is resolved only by its exact sourced entry, not by generic morphology guessing', () => {
+  const row = entries.get('않았다');
+  assert.ok(row, 'the official NIKL example must have an exact lexical row');
+  assert.match(row.source_url, officialSource);
+  const generic = genericEngine.convert('않았다');
+  assert.ok(generic.ukrainian.includes('⟦') || generic.status === 'unresolved');
+  assert.equal(engine.convert('않았다').surfaceHangul, '아낟따');
+  assert.equal(engine.convert('않았다').ukrainian, 'анатта');
 });
 
 test('punctuation is a hard boundary for cross-word sound-rule propagation', () => {
@@ -107,7 +118,7 @@ test('a representative set of generic rule cases stays algorithmic with and with
   const expected = {
     '국물':'kuŋ mul',
     '막론':'maŋ non',
-    '신라':'sil la',
+    '신라':'ɕil la',
     '값':'kap̚',
     '넋':'nʌk̚',
     '낮이':'na dʑi',

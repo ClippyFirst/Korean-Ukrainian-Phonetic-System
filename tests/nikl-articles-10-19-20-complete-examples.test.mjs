@@ -36,7 +36,7 @@ test('§19 every explicit example uses the correct ordered nasalization chain', 
     '백리':['pɛŋ ni',['liquid-to-nasal-before-obstruent','nasal-assimilation']],
     '석류':['sʌŋ nju',['liquid-to-nasal-before-obstruent','nasal-assimilation']],
     '협력':['hjʌm njʌk̚',['liquid-to-nasal-before-obstruent','nasal-assimilation']],
-    '십리':['sim ni',['liquid-to-nasal-before-obstruent','nasal-assimilation']],
+    '십리':['ɕim ni',['liquid-to-nasal-before-obstruent','nasal-assimilation']],
     '법리':['pʌm ni',['liquid-to-nasal-before-obstruent','nasal-assimilation']],
   };
   for (const [word,[ipa,rules]] of Object.entries(expected)) {
@@ -51,7 +51,7 @@ test('§19 every explicit example uses the correct ordered nasalization chain', 
 test('§20 every listed general liquid-assimilation example is computed algorithmically', () => {
   const expected = {
     '난로':'nal lo',
-    '신라':'sil la',
+    '신라':'ɕil la',
     '천리':'tɕʰʌl li',
     '광한루':'kwaŋ hal lu',
     '대관령':'tɛ ɡwal ljʌŋ',
