@@ -180,7 +180,7 @@ test('NIKL §29 official ㄴ-insertion and negative-control examples are covered
 test('NIKL §29 optional readings expose both official surface variants',()=>{
   const cases=[
     ['이죽이죽','이중니죽','і|джун|ні|джук','i dʑuŋ ni dʑuk̚','이주기죽','і|джу|ґі|джук','i dʑu ɡi dʑuk̚'],
-    ['야금야금','야금냐금','я|гим|ня|гим','ja gɯm ɲa gɯm','야그먀금','я|ги|мя|гим','ja gɯ mja gɯm'],
+    ['야금야금','야금냐금','я|ґим|ня|ґим','ja ɡɯm ɲa ɡɯm','야그먀금','я|ґи|мя|ґим','ja ɡɯ mja ɡɯm'],
     ['검열','검녈','ком|ньол','kʌːm ɲʌl','거멸','ко|мйол','kʌː mjʌl'],
     ['욜랑욜랑','욜랑뇰랑','йол|лан|ньол|лан','jol laŋ ɲol laŋ','욜랑욜랑','йол|лан|йол|лан','jol laŋ jol laŋ'],
     ['금융','금늉','ким|нюн','kɯm ɲuŋ','그뮹','ки|мюн','kɯ mjuŋ']
