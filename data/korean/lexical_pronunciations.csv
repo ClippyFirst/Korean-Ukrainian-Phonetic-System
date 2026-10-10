@@ -221,7 +221,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "밝다","박따","пак|тта","pak̚|t͈a","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [박따].","high","provisional","","","",""
 "넓고","널꼬","ноль|кко","nʌl|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10/§23; [널꼬].","high","provisional","","","",""
 "밟는","밤는","пам|нин","pam|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10 then §18; [밤는].","high","surface-only","","","",""
-"읊다","읍따","ип|тта","ɯp̚|t͈a","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [읍따].","high","provisional","","","",""
+"읊다","읍따","ип|тта","ɯp̚|t͈a","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [읍따].","high","surface-only","","","",""
 "읊고","읍꼬","ип|кко","ɯp̚|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [읍꼬].","high","surface-only","","","",""
 "앉고","안꼬","ан|кко","an|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10/§23; [안꼬].","high","provisional","","","",""
 "앉는","안는","ан|нин","an|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10/§18; [안는].","high","provisional","","","",""
