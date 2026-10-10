@@ -61,3 +61,8 @@ The same audit also enforces the declared coda-`ㄹ` target `л` (not `ль`), c
 ## Phrase boundaries when a lexical override is present
 
 The browser resolves exact sourced lexical entries at word level. This must not accidentally disable a separately licensed phrase-level rule in the adjacent word. In particular, NIKL §18 nasal assimilation across plain whitespace is re-applied to the preceding word's final coda when a following word begins with ㄴ/ㅁ, even if that following word uses an exact lexical override. Punctuation remains a hard boundary for this pass. Regression coverage includes `밥 먹는다`, `밥 문법`, and the punctuation contrast `밥, 문법`. This boundary repair is limited to the explicitly supported nasal-assimilation environment; it is not a general morphological parser.
+
+
+## Liquid-to-nasal assimilation after the representative ㄷ coda
+
+The surface representative ㄷ must be included alongside ㄱ and ㅂ when a following ㄹ is realized as ㄴ; the coda then participates in nasal assimilation as well. This includes written codas such as ㅅ/ㅈ/ㅊ after neutralization. The browser regression `몇 리` guards the [면니]-type sequence across a phrase boundary. The rule is about the Korean surface sequence; Ukrainian output remains a project-specific approximation.
