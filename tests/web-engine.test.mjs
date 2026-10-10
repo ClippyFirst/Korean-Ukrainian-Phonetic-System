@@ -33,6 +33,26 @@ test('standard lexical ㄼ exceptions 넓죽- and 넓둥글- are preserved befor
 test('tensification remains practical rather than mandatory doubling',()=>{const r=engine.convert('국밥');assert.equal(r.ukrainian,'кукпап');assert.ok(r.trace.some(x=>x.rules.includes('tensification')));});
 test('sourced NIKL tense examples are available in the lexical layer',()=>{for(const w of ['앉고','넓게','갈등','문고리']){const r=engine.convert(w);assert.equal(r.status,'lexical-review',w);assert.ok(r.trace.some(x=>x.rules.includes('lexical-pronunciation')),w);}});
 test('sourced tensification outputs preserve Korean surface IPA and provisional Ukrainian targets',()=>{for(const [word,surface,ua,ipa] of [['넓게','널께','нолке','nʌl k͈e'],['갈등','갈뜽','калтин','kal t͈ɯŋ'],['문고리','문꼬리','мункорі','mun k͈o ɾi'],['젊지','점찌','чомчі','tɕʌmː tɕ͈i'],['훑소','훌쏘','гулсо','hul s͈o']]){const r=engine.convert(word);assert.equal(r.surfaceHangul,surface,word);assert.equal(r.ukrainian,ua,word);assert.equal(r.ipa,ipa,word);assert.equal(r.status,'lexical-review',word);}});
+test('official NIKL §27 attached-ending fortition examples are lexically covered',()=>{
+  const cases=[
+    ['할걸','할껄','галкол','hal k͈ʌl'],
+    ['할밖에','할빠께','галпаке','hal p͈a k͈e'],
+    ['할세라','할쎄라','галсера','hal s͈e ɾa'],
+    ['할수록','할쑤록','галсурок','hal s͈u ɾok̚'],
+    ['할지라도','할찌라도','галчірато','hal tɕ͈i ɾa do'],
+    ['할지언정','할찌언정','галчіонджон','hal tɕ͈i ʌn dʑʌŋ'],
+    ['할진대','할찐대','галчінде','hal tɕ͈in dɛ']
+  ];
+  for(const [word,surface,ua,ipa] of cases){
+    const r=engine.convert(word);
+    assert.equal(r.surfaceHangul,surface,word);
+    assert.equal(r.ukrainian,ua,word);
+    assert.equal(r.ipa,ipa,word);
+    assert.equal(r.status,'lexical-review',word);
+    assert.ok(r.trace.some(x=>x.rules.includes('ukrainian-target-provisional')),word);
+  }
+});
+
 test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'гйонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
 test('lenis voicing between vowels is explicit',()=>{const r=engine.convert('부부');assert.equal(r.ukrainian,'пубу');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
 test('표준 voices intervocalic ㅈ',()=>{const r=engine.convert('표준');assert.equal(r.ukrainian,'пйоджун');assert.equal(r.ipa,'pʰjo dʑun');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
