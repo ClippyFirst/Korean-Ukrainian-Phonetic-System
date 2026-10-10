@@ -61,6 +61,8 @@ A second corpus-wide pass found three remaining lexical entries that still wrote
 
 A full aligned-syllable coda scan then found `밭이랑`, whose Korean surface is `반니랑` [pan ni ɾaŋ] but whose Ukrainian target still followed the written coda of `밭` and the IPA spelling of [ŋ]. Its target is corrected from `пат|ні|ранґ` to `пан|ні|ран`. A corpus-wide regression now checks each aligned syllable's final IPA coda against the declared Ukrainian target (`к/т/п/н/м/л`) so similar surface-vs-orthography drift is caught earlier.
 
+A subsequent onset-alignment pass found several lexical targets that disagreed with the project's contextual onset model: initial ㄷ/ㅂ/ㅈ in `들일`, `불여우`, `지식의`, and `집안일`; intervocalic ㅈ in `넓어졌다는`; intervocalic ㄷ in `할지라도`; and onset ㅎ in `휘발유`. These targets now follow their aligned surface IPA and the declared Ukrainian mappings. The source-attested IPA for `값있다` was also corrected from `p` to contextual `b` in the second syllable, matching its between-vowels realization and the practical target `б`. These are narrow lexical corrections, not a claim that a simple grapheme-to-phoneme rule can replace lexical evidence.
+
 
 ## Consistency of the Ukrainian target for coda ㅇ
 
