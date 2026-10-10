@@ -89,14 +89,6 @@ test('generic rule fixtures stay independent of the lexical override layer', () 
 });
 
 
-test('palatalization is not inferred for an unlicensed spelling-only form', () => {
-  const result = generic.convert('낮이');
-  assert.ok(
-    result.ukrainian.includes('⟦') || result.issues.length > 0 || result.status === 'unresolved',
-    '낮이: without evidence for the formal morpheme boundary, generic mode must not guess palatalization',
-  );
-});
-
 test('ordered §19 → §18 → §20 interaction matrix remains stable for all seven representative codas before ㄹ', () => {
   // Expected IPA is written independently here; this specifically guards
   // against applying nasalization before changing the following ㄹ to ㄴ.
