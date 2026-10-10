@@ -277,3 +277,22 @@ test('system page publishes the phrase-boundary assimilation audit',()=>{
   }
   assert.ok(html.includes('NIKL — 표준 발음법'));
 });
+
+
+test('phrase-boundary trace stays silent when a lexical target does not match the expected coda or onset',()=>{
+  // Deliberately adversarial fixture: the synthetic Ukrainian targets are
+  // inconsistent with their Korean surface forms. A failed edge rewrite must
+  // not mutate aggregate output or claim a successful rule in either trace.
+  const syntheticLexicon=[
+    'input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confidence,target_status,alternate_surface_hangul,alternate_target_syllables,alternate_ipa_syllables,variant_note',
+    '국,국,구,ku,test-fixture,"synthetic target intentionally omits the coda",high,model-selected,,,,',
+    '라면,라면,나|면,na|mjʌn,test-fixture,"synthetic target intentionally changes the onset",high,model-selected,,,,'
+  ].join('\\n');
+  const guarded=createEngine(csv,syntheticLexicon);
+  const nasal=guarded.convert('국 문');
+  assert.equal(nasal.ukrainian,'구 문');
+  assert.ok(!nasal.trace.some(unit=>unit.rules.includes('nasal-assimilation')));
+  const liquid=guarded.convert('국 라면');
+  assert.equal(liquid.ukrainian,'구 나면');
+  assert.ok(!liquid.trace.some(unit=>unit.rules.includes('liquid-to-nasal-before-obstruent')));
+});
