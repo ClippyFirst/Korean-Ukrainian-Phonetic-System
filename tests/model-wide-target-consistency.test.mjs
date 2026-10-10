@@ -71,7 +71,7 @@ test('target syllable alignment and contextual IPA are consistent for high-risk 
     '미닫이': ['мі|да|джі', 'miː|da|dʑi'],
     '땀받이': ['там|ба|джі', 't͈am|ba|dʑi'],
     '국립국어원': ['кунг|нім|ку|ґо|вон', 'kuŋ|nim|k͈u|ɡʌ|wʌn'],
-    '곧이듣다': ['고|지|딛|따', 'ko|tɕi|dɯt̚|t͈a'],
+    '곧이듣다': ['ко|джі|дит|та', 'ko|tɕi|dɯt̚|t͈a'],
     '좋아질': ['чо|а|джіль', 'tɕo|a|dʑil'],
   };
   for (const [word, [target, ipa]] of Object.entries(expected)) {
