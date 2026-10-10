@@ -42,3 +42,32 @@ test('every adversarial corpus can be submitted to the engine without a runtime 
     assert.ok(Array.isArray(result.trace), file + ': trace is exposed for triage');
   }
 });
+
+test('diagnostic: summarize actual engine outcomes across all 165 adversarial corpora', () => {
+  const report = [];
+  for (const file of files) {
+    const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
+    const result = engine.convert(source);
+    const placeholders = [...result.ukrainian.matchAll(/⟦([^⟦⟧]+)⟧/gu)].map((m) => m[1]);
+    const issueText = result.issues.map(String);
+    if (result.status === 'unresolved' || placeholders.length || issueText.length) {
+      report.push({
+        file,
+        status: result.status,
+        placeholders: placeholders.slice(0, 8),
+        placeholderCount: placeholders.length,
+        issues: issueText.slice(0, 4),
+        issueCount: issueText.length,
+        outputLength: result.ukrainian.length
+      });
+    }
+  }
+  const counts = report.reduce((acc, row) => {
+    acc.filesWithIssues++;
+    acc.placeholders += row.placeholderCount;
+    acc.issues += row.issueCount;
+    acc.byStatus[row.status || 'no-status'] = (acc.byStatus[row.status || 'no-status'] || 0) + 1;
+    return acc;
+  }, {filesWithIssues:0, placeholders:0, issues:0, byStatus:{}});
+  console.log('ADVERSARIAL_CORPUS_DIAGNOSTIC ' + JSON.stringify({totalFiles:files.length, ...counts, firstFindings:report.slice(0,60)}));
+});
