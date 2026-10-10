@@ -240,11 +240,11 @@ The first §30 regression run caught two Ukrainian-target cells that accidentall
 
 ## 21. Ukrainian target-script inventory
 
-A full character scan of all 393 primary and alternate Ukrainian targets found only the declared Ukrainian Cyrillic letters and the allowed syllable delimiter. No Latin characters, IPA symbols, digits, or Hangul remained in the target fields. The automated CSV integrity test now checks this alphabet boundary in addition to rejecting Hangul explicitly. This is a script-integrity check only; it does not establish that every target is idiomatic or phonetically optimal Ukrainian.
+A full character scan of all 395 primary and alternate Ukrainian targets found only the declared Ukrainian Cyrillic letters and the allowed syllable delimiter. No Latin characters, IPA symbols, digits, or Hangul remained in the target fields. The automated CSV integrity test now checks this alphabet boundary in addition to rejecting Hangul explicitly. This is a script-integrity check only; it does not establish that every target is idiomatic or phonetically optimal Ukrainian.
 
 
 ## 22. Mixed-script numeric readings (§29)
 
 Added exact, source-linked lexical entries for the official mixed-script examples `6·25` → [유기오] and `3·1절` → [사밀쩔]. The CSV now has an explicit optional `input_kind` field; ordinary entries remain Hangul-only, while `mixed-script` entries align target and IPA units to the sourced Korean surface reading, not to the number of input code points. This avoids pretending that digits or punctuation are Hangul syllables.
 
-The engine recognizes these exact entries both as standalone inputs and inside surrounding Korean phrases. The result retains the original input, provides the Korean surface reading, Ukrainian target and IPA, and labels the Ukrainian output provisional. The test suite covers standalone conversion, phrase tokenization and the distinct CSV alignment contract. The numeric examples’ Ukrainian targets are project proposals, not NIKL-validated transcriptions.
+The engine recognizes these exact entries both as standalone inputs and inside surrounding Korean phrases. The result retains the original input, provides the Korean surface reading, Ukrainian target and IPA, and labels the Ukrainian output provisional. The test suite covers standalone conversion, phrase tokenization and the distinct CSV alignment contract. The inventory now contains 395 records. GitHub Actions run [38057973331](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38057973331) passed browser regression tests, production build/generated-page verification and Python regression/data-integrity checks. The numeric examples’ Ukrainian targets are project proposals, not NIKL-validated transcriptions.
