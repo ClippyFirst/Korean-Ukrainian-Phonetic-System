@@ -553,7 +553,10 @@ test('NIKL §9 regular final-neutralization examples are computed by rules', () 
   };
   const rows = parseCsv(lexical);
   for (const [word, [ipa, target]] of Object.entries(expected)) {
-    assert.ok(!rows.some((item) => item.input === word), word);
+    const reference = rows.find((item) => item.input === word);
+    // A surface-only row may document the normative Hangul reading, but must
+    // not override the general engine's contextual analysis or target output.
+    assert.ok(!reference || reference.target_status === 'surface-only', word);
     const result = engine.convert(word);
     assert.equal(result.ipa, ipa, word);
     assert.equal(result.ukrainian, target, word);
