@@ -28,6 +28,14 @@ test('high-risk user-corpus words use explicit standard surface readings', () =>
   }
 });
 
+test('Korean onset ㅎ uses the documented practical Ukrainian target г', () => {
+  const row = parseCsv(canonical).find((r) => r.layer === 'onset' && r.input === 'ㅎ');
+  assert.ok(row, 'missing canonical onset ㅎ row');
+  assert.equal(row.ipa, 'h');
+  assert.equal(row.ukrainian, 'г');
+  assert.equal(engine.convert('하').ukrainian, 'га');
+});
+
 test('trace panel has explicit column labels for source, target, rules and status', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   const css = readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
@@ -80,7 +88,7 @@ test('second adversarial corpus resolves morphology-sensitive forms without plac
     '얇아서': ['얄바서', 'яльбасо'],
     '많은': ['마는', 'манин'],
     '빗었어요': ['비서써요', 'бісосойо'],
-    '해돋이를': ['해도지를', 'хедоджірил'],
+    '해돋이를': ['해도지를', 'гедоджірил'],
     '멋있어요': ['머디써요', 'модісойо'],
     '맛있고': ['마딛꼬', 'мадітко'],
     '맛없고': ['마덥꼬', 'мадепко'],
