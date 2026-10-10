@@ -24,6 +24,12 @@ The system page now publishes a five-line running-text test corpus that stresses
 - [Corpus fixture](tests/fixtures/adversarial-sentence-corpus.txt)
 - [Regression tests](tests/adversarial-sentence-corpus.test.mjs)
 
+A third adversarial window adds a longer text stressing `흙을`, `밟으며`, `낡은`, `놓인`, `맑은`, `햇빛이`, `젊은`, `신라`, `설날`, `독립문`, and `종로`. It records Korean surface-form controls separately from Ukrainian target choices.
+
+- [Third corpus on the live methodology page](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#third-adversarial-corpus)
+- [Third corpus fixture](tests/fixtures/adversarial-sentence-corpus-3.txt)
+- [Third corpus tests](tests/adversarial-sentence-corpus-3.test.mjs)
+
 Passing tests demonstrates reproducibility of declared model outputs and absence of unresolved placeholders in this fixture; it does not validate the Ukrainian approximations through an independent reader study.
 
 ## Scientific pipeline
