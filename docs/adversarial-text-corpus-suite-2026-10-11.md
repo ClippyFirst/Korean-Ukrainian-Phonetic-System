@@ -11,3 +11,8 @@ node --test tests/adversarial-text-corpus-suite.test.mjs
 ```
 
 The suite checks inventory, uniqueness, substantial Korean text, and crash-free engine processing. The audit diagnostic reports per-eojeol unresolved cases; an unresolved result is not automatically a bug because the engine intentionally withholds guesses when morphology or lexical evidence is missing.
+
+
+## Latest audit
+
+See [the 2026-10-11 corpus audit](./adversarial-corpus-audit-2026-10-11.md) for the measured unresolved forms, the fixes applied, and remaining morphology-sensitive cases.
