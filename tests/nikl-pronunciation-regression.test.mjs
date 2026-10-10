@@ -643,7 +643,10 @@ test('NIKL §11 generic complex-coda examples use the general rules', () => {
   };
   const rows = parseCsv(lexical);
   for (const [word, [ipa, target]] of Object.entries(expected)) {
-    assert.ok(!rows.some((item) => item.input === word), word);
+    const reference = rows.find((item) => item.input === word);
+    // Surface-only entries document the Korean reading but do not override
+    // the general rule engine's output or trace.
+    assert.ok(!reference || reference.target_status === 'surface-only', word);
     const result = engine.convert(word);
     assert.equal(result.ipa, ipa, word);
     assert.equal(result.ukrainian, target, word);
