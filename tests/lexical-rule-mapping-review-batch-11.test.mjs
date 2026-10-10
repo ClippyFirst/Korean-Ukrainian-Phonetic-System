@@ -34,7 +34,7 @@ test('rule mapping does not misrepresent related official evidence as exact-form
   assert.match(놓인.rule_notes, /Exact-word attestation not yet located/u);
   const 넓어졌다는 = rows.find((item) => item.input === '넓어졌다는');
   assert.doesNotMatch(넓어졌다는.rule_notes, /§\s*\d|제\s*\d+\s*항/u);
-  assert.match(넓어졌다는.rule_notes, /exact full-form attestation not located/u);
+  assert.match(넓어졌다는.rule_notes, /Compositional standard reading/u);
 });
 
 test('the baseline and corpus controls are not assigned invented article numbers', () => {
