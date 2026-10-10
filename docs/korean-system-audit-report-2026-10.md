@@ -193,3 +193,27 @@ Source: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/re
 | §22 | Exact entries for permitted vowel-glide variants | No productive verb-stem class inference. |
 
 Taken together with §12 above, this is an implementation-coverage map, not a claim of full rule coverage. Each rule family must be validated independently at three layers: Korean surface pronunciation, IPA representation, and Ukrainian reader-facing target.
+
+
+## 14. NIKL §27: exact attached-ending examples
+
+Added exact lexical entries and regressions for the official attached-ending examples 할걸[할껄], 할밖에[할빠께], 할세라[할쎄라], 할수록[할쑤록], 할지라도[할찌라도], 할지언정[할찌언정], and 할진대[할찐대]. These entries are deliberately lexical: the browser engine does not parse the morphology of arbitrary -(으)ㄹ endings and must not generalize fortition from surface adjacency alone.
+
+The separated phrase examples in §27 (할 것을, 갈 데가, 할 바를, 할 수는, 할 적에, 갈 곳, 할 도리, 만날 사람) remain a separate phrase/syntax gap. The standard explicitly notes that fortition may not apply when a phrase is spoken with a pause; treating every whitespace boundary as a fortition trigger would be incorrect. Source: [NIKL Standard Pronunciation Rules, §27](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002).
+
+All seven Ukrainian targets are marked provisional. The Korean surface forms and their IPA representations are separate from the Ukrainian reader-facing approximation and need independent review.
+
+
+## 15. Lexicon integrity guard
+
+The lexical CSV now has an automated regression checking unique input keys, required evidence/metadata fields, allowed confidence and target-status values, source URL schemes, and one-to-one segmentation counts across input, Korean surface, Ukrainian target and IPA. A fresh static pass over the current 348 records found no duplicate input keys, missing required fields, unsupported status labels, malformed source URL schemes, or segment-count mismatches. This check is structural only: it cannot determine whether a Korean pronunciation is linguistically correct or whether a Ukrainian target is optimal.
+
+
+## 16. §28 official compound example inventory completed
+
+The lexicon now covers all 19 examples listed under NIKL §28: 문고리, 눈동자, 신바람, 산새, 손재주, 길가, 물동이, 발바닥, 굴속, 술잔, 바람결, 그믐달, 아침밥, 잠자리, 강가, 초승달, 등불, 창살 and 강줄기. The nine previously missing forms were added as exact lexical entries with provisional Ukrainian targets. Regression coverage preserves [굴ː쏙] vowel length as IPA `kuːl` (length belongs to the vowel, not the coda) and represents the lenis onset in 강줄기 contextually as [g] in the chosen broad IPA layer. These readings are tied to the listed official examples only; they do not license a general rule for every compound.
+
+
+## 17. Regression caught and fixed: 바람결 segmentation
+
+The new structural test caught that the first version of the 바람결 entry grouped its first two Korean syllables into one Ukrainian target/IPA segment. The renderer indexes lexical target and IPA segments against individual Hangul syllables, so that grouping would have left the trace misaligned even though the concatenated output looked plausible. The entry is now segmented per syllable (`па|рам|кйол`, `pa|ɾam|k͈jʌl`). A fresh static check of all 348 lexical entries now finds no input/surface/target/IPA segment-count mismatches. This is precisely why the data-integrity test is useful in addition to output-level spot checks.
