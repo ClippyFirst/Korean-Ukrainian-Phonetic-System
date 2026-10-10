@@ -66,6 +66,8 @@ const officialGroups = {
     '3 연대':'삼년대', '1 연대':'일련대',
     '6·25':'유기오', '3·1절':'사밀쩔',
     '송별연':'송벼련', '등용문':'등용문',
+    '이죽이죽':'이중니죽', '야금야금':'야금냐금', '검열':'검녈',
+    '욜랑욜랑':'욜랑뇰랑', '금융':'금늉',
   },
   '§30': {
     '냇가':'내까', '샛길':'새낄', '빨랫돌':'빨래똘',
@@ -105,6 +107,19 @@ test('§26 negative controls prevent blanket fortition after every Sino-Korean �
 test('§29 negative controls do not receive automatic ㄴ insertion', () => {
   assert.equal(engine.convert('송별연').surfaceHangul, '송벼련');
   assert.equal(engine.convert('등용문').surfaceHangul, '등용문');
+});
+
+test('§29 optional standard variants are preserved as explicit alternatives', () => {
+  for (const word of ['이죽이죽','야금야금','검열','욜랑욜랑','금융']) {
+    const row = entries.get(word);
+    assert.ok(row, word);
+    assert.ok(row.alternate_surface_hangul, word + ': NIKL permits an alternate');
+    const result = engine.convert(word);
+    assert.equal(result.surfaceHangul, row.surface_hangul, word);
+    assert.equal(result.variants.length, 1, word);
+    assert.equal(result.variants[0].surface, row.alternate_surface_hangul, word);
+    assert.equal(result.variants[0].ipa, row.alternate_ipa_syllables.split('|').join(' '), word);
+  }
 });
 
 test('§30 permitted saisiot variants remain visible as variants, not silently discarded', () => {
