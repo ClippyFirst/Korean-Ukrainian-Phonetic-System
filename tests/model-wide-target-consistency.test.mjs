@@ -48,6 +48,8 @@ test('word-initial lenis and affricate targets follow the declared Ukrainian map
     '젖먹이': 'чон|мо|ґі',
     '벌어': 'по|ро',
     '젖멍울': 'чон|мон|ул',
+    '지식의': 'чі|ші|ґий',
+    '집안일': 'чі|бан|ніл',
     '잡는': 'чам|нин',
     '닿소': 'та|со',
     '빗었어요': 'пі|со|со|йо',
@@ -72,6 +74,7 @@ test('target syllable alignment and contextual IPA are consistent for high-risk 
     '미닫이': ['мі|да|джі', 'miː|da|dʑi'],
     '땀받이': ['там|ба|джі', 't͈am|ba|dʑi'],
     '국립국어원': ['кун|нім|ку|ґо|вон', 'kuŋ|nim|k͈u|ɡʌ|wʌn'],
+    '넓어졌다는': ['нол|бо|джот|та|нин', 'nʌl|bʌ|dʑʌt̚|t͈a|nɯn'],
     '곧이듣다': ['ко|джі|дит|та', 'ko|dʑi|dɯt̚|t͈a'],
     '좋아질': ['чо|а|джіл', 'tɕo|a|dʑil'],
   };
@@ -86,7 +89,7 @@ test('all corrected non-surface-only rows remain provisional and traceable', () 
     '밝다','넓고','앉고','많습니다','좋습니다','넓습니다','넓습니다','낫다','낫고','낫지','낯설다','낮잠',
     '벼훑이','닫히다','겉옷','젖어미','젊어','디귿이','디귿을','디귿에','젖먹이',
     '벌어','젖멍울','잡는','닿소','빗었어요','젊은','좋아질','실제','한국어',
-    '덥고','춥습니다','나갔습니다','알다','벌다','썰다'
+    '덥고','춥습니다','나갔습니다','값있다','할지라도','넓어졌다는','지식의','집안일','들일','불여우','휘발유','알다','벌다','썰다'
   ];
   for (const word of words) {
     const row = entries.get(word);
@@ -105,6 +108,7 @@ test('coda ㄹ uses the declared Ukrainian л target without an added soft sign'
     '넓네': 'нол|ле',
     '여덟': 'йо|дол',
     '넓다': 'нол|та',
+    '들일': 'тил|ліл',
     '얇실하다': 'ял|сіл|га|да',
     '짧다': 'чал|та',
     '읽거든': 'іл|ко|ден',
@@ -156,6 +160,10 @@ test('context-sensitive vowel and voicing decisions remain explicit in the lexic
     '춥습니다': ['чуп|сим|ні|да', 'tɕʰup̚|s͈ɯm|ni|da'],
     '나갔습니다': ['на|ґат|сим|ні|да', 'na|ɡat̚|s͈ɯm|ni|da'],
     '밟았습니다': ['пал|ба|сим|ні|да', 'pal|ba|s͈ɯm|ni|da'],
+    '값있다': ['ка|біт|та', 'ka|bit̚|t͈a'],
+    '할지라도': ['гал|чі|ра|до', 'hal|tɕ͈i|ɾa|do'],
+    '불여우': ['пул|льо|у', 'pul|lju|u'],
+    '휘발유': ['гві|пал|льу', 'hwi|pal|lju'],
   };
   for (const [word, [target, ipa]] of Object.entries(expected)) {
     const row = entries.get(word);
