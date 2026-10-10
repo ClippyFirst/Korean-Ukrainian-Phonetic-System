@@ -82,6 +82,22 @@ test('§6 contracted -아/-어 forms cover every listed long-vowel form and ever
   for (const [word,[surface,ipa]] of Object.entries(short)) assertOfficial(word,surface,ipa,{short:true});
 });
 
+test('§7 long-vowel citation forms are paired with the short/retained inflected forms', () => {
+  const citation = {
+    '감다':['감따','kaːm t͈a'],
+    '밟다':['밥따','paːp̚ t͈a'],
+    '신다':['신따','ɕiːn t͈a'],
+    '알다':['알다','aːl da'],
+    '끌다':['끌따','k͈ɯl t͈a'],
+    '떨다':['떨다','t͈ʌːl da'],
+    '벌다':['벌다','pʌːl da'],
+    '쓸다':['쓸다','s͈ɯːl da'],
+    '떫다':['떨따','t͈ʌːl t͈a'],
+    '없다':['업따','ʌːp̚ t͈a'],
+  };
+  for (const [word,[surface,ipa]] of Object.entries(citation)) assertOfficial(word,surface,ipa,{long:true});
+});
+
 test('§7(1) short-vowel alternations and every official length-retention exception are distinguished', () => {
   const short = {
     '감으니':['가므니','ka mɯ ni'],
