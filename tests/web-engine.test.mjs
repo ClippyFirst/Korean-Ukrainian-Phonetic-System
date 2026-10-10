@@ -130,6 +130,21 @@ test('§18 nasal assimilation applies across plain spaces in connected phrases',
   assert.equal(r.ipa,'pam mʌŋ nɯn da');
 });
 
+test('§18 nasal assimilation still applies when the following word uses a lexical override',()=>{
+  const r=engine.convert('밥 문법');
+  assert.equal(r.ukrainian,'пам мунпоп');
+  assert.equal(r.ipa,'pam mun p͈ʌp̚');
+  assert.ok(r.trace.some(item=>item.source==='밥'&&item.rules.includes('nasal-assimilation')));
+  assert.ok(r.trace.some(item=>item.source==='문'&&item.rules.includes('nasal-assimilation')));
+});
+
+test('phrase nasal assimilation does not cross punctuation even when a lexical word follows',()=>{
+  const r=engine.convert('밥, 문법');
+  assert.equal(r.ukrainian,'пап, мунпоп');
+  assert.equal(r.ipa,'pap̚, mun p͈ʌp̚');
+  assert.ok(!r.trace.some(item=>item.source==='밥'&&item.rules.includes('nasal-assimilation')));
+});
+
 test('§19 precedes §18 across a phrase boundary',()=>{
   const r=engine.convert('협 력');
   assert.equal(r.ipa,'hjʌm njʌk̚');
