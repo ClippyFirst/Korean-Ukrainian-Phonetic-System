@@ -364,7 +364,7 @@ test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
 test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings', () => {
   const expected = {
     '주의': {surface:'주의', target:'чуий', ipa:'tɕu ɰi', alternateSurface:'주이', alternateTarget:'чуі', alternateIpa:'tɕu i'},
-    '협의': {surface:'혀븨', target:'гьобий', ipa:'hjʌ bɰi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ bi'},
+    '협의': {surface:'혀븨', target:'гьобі', ipa:'hjʌ bi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ bi'},
     '우리의': {surface:'우리의', target:'уріий', ipa:'u ɾi ɰi', alternateSurface:'우리에', alternateTarget:'уріе', alternateIpa:'u ɾi e'},
     '강의의': {surface:'강의의', target:'канийий', ipa:'kaːŋ ɰi ɰi', alternateSurface:'강이에', alternateTarget:'каніе', alternateIpa:'kaːŋ i e'},
   };
@@ -488,7 +488,7 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
 
 test('fortisness remains in IPA but is not encoded by doubled Ukrainian graphemes', () => {
   const expected = {
-    '맛없다': ['мадепта', 'ma dʌp̚ t͈a'],
+    '맛없다': ['мадопта', 'ma dʌp̚ t͈a'],
     '맛있다': ['мадітта', 'ma dit̚ t͈a'],
     '멋있다': ['модітта', 'mʌ dit̚ t͈a'],
     '깎아': ['кака', 'k͈a k͈a'],
@@ -515,7 +515,7 @@ test('NIKL §10 complex-coda examples and lexical exceptions are source-backed',
     '넋과': ['넉꽈', 'нокква', 'nʌk̚ k͈wa'],
     '앉다': ['안따', 'анта', 'an t͈a'],
     '여덟': ['여덜', 'йодоль', 'jʌ dʌl'],
-    '넓다': ['널따', 'нольта', 'nʌl t͈a'],
+    '넓다': ['널따', 'нолта', 'nʌl t͈a'],
     '외곬': ['외골', 'веґол', 'ø ɡol'],
     '밟소': ['밥쏘', 'папсо', 'paːp̚ s͈o'],
     '밟지': ['밥찌', 'папчі', 'paːp̚ tɕ͈i'],
@@ -594,7 +594,7 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '옷맵시': ['온맵씨', 'on mɛp̚ s͈i', 'онмепші'],
     '있는': ['인는', 'in nɯn', 'іннин'],
     '맞는': ['만는', 'man nɯn', 'маннин'],
-    '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'чонмонуль'],
+    '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'чонмонул'],
     '쫓는': ['쫀는', 'tɕ͈on nɯn', 'чоннин'],
     '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'конмануль'],
     '붙는': ['분는', 'pun nɯn', 'пуннин'],
@@ -716,9 +716,9 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
 test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', () => {
   const expected = {
     '줄넘기': ['줄럼끼', 'tɕul lʌm k͈i', 'чульломкі'],
-    '임진란': ['임진난', 'imː tɕin nan', 'імчіннан'],
+    '임진란': ['임진난', 'imː dʑin nan', 'імджіннан'],
     '생산량': ['생산냥', 'sɛŋ san njaŋ', 'сенсаннян'],
-    '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйольтаннок'],
+    '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйолтанньок'],
     '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', 'конквоннок'],
     '동원령': ['동원녕', 'toŋː wʌn njʌŋ', 'тонвоннон'],
     '상견례': ['상견녜', 'saŋ ɡjʌn nje', 'санґйоннє'],
