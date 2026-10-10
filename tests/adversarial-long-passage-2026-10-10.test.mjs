@@ -53,3 +53,62 @@ test('the full adversarial passage has no unresolved phonological placeholders',
   assert.ok(!result.ukrainian.includes('⟦'), 'the output must not leak unresolved Hangul placeholders');
   assert.equal(result.status, 'lexical-review', 'provisional Ukrainian targets remain visibly reviewable');
 });
+
+
+const adversarialPassages = [
+  {
+    name: 'complex codas, liaison, and morphology boundaries',
+    text: `값이 싼 물건과 값있는 물건은 다르다. 값어치가 있는 물건을 값없이 주었다고 해서 값없다거나 쓸모없다고 단정할 수는 없다. 읽고 읽다 읽어 읽는 책의 문장을 비교하고, 읽은 내용을 읽었다고 말했다. 맑고 맑게 개인 날에도 밝은 하늘이 늘 맑은 것은 아니다. 넓게 펼친 종이와 넓네 하고 감탄한 들판, 넓히다라는 동사의 활용도 함께 살폈다. 핥다, 훑소, 떫지처럼 겹받침 뒤에 오는 자음과 어미가 달라지면 표준 발음도 달라진다.`,
+    anchors: ['값이','값있는','값어치','값없다','읽고','읽다','읽어','읽는','읽은','읽었다','맑고','맑게','밝은','넓게','넓네','넓히다','핥다','훑소','떫지'],
+  },
+  {
+    name: 'nasalization, liquid assimilation, and n-insertion',
+    text: `국립국어원은 한국 표준 발음법을 설명했다. 국물과 밥물, 독립문과 종로, 신라와 난로, 서울역의 발음을 나란히 놓고 비교했다. 꽃잎과 깻잎, 밭일과 밭일을 마친 농부의 말을 다시 들었다. 한국어의 음운 규칙은 한 글자씩 기계적으로 옮기는 방식으로 설명할 수 없다. 앞 음절의 받침, 뒤 음절의 초성, 합성어의 경계와 형태소 구조가 함께 작용한다.`,
+    anchors: ['국립국어원','국물','밥물','독립문','종로','신라','난로','서울역','꽃잎','깻잎','밭일'],
+  },
+  {
+    name: 'palatalization, aspiration, and ㅎ-related interactions',
+    text: `같이 읽고 굳이 다시 읽어 보자. 밭이 넓다고 말했지만 밭을 갈 때의 발음은 같지 않다. 해돋이는 일찍 시작되고, 해돋이는 산 너머에서 보인다. 발견했어요라는 표현과 않았다라는 표현을 비교하면 ㅎ과 뒤따르는 자음의 상호 작용을 확인할 수 있다. 굳이, 같이, 밭이, 밭을을 한데 모아 읽되, 실제 표준 발음과 철자를 혼동하지 않는다.`,
+    anchors: ['같이','굳이','밭이','밭을','해돋이는','발견했어요','않았다'],
+  },
+  {
+    name: 'substantive-morpheme liaison and tensification',
+    text: `맛없다, 겉옷, 헛웃음, 젖어미, 끝없이, 없다, 없는을 차례로 읽었다. 값없다와 값있는의 경계에서는 받침의 대표음과 뒤 형태소의 첫소리가 중요하다. 떡볶이 한 접시를 먹고, 옷 안에 놓인 책과 숲 속의 작은 집을 살폈다. 냇가를 따라 걷다가 나뭇가지 아래에서 쉬고, 아랫방에서 표준 발음법을 다시 읽었다.`,
+    anchors: ['맛없다','겉옷','헛웃음','젖어미','끝없이','없다','없는','값없다','값있는','떡볶이','냇가'],
+  },
+  {
+    name: 'punctuation, quotation, and whitespace invariance',
+    text: `“꽃잎, 깻잎, 밭일!” 발표자가 외쳤다. (국물)—밥물; ‘독립문…서울역?’ 그리고 종로·신라·난로. 그는 다시 말했다: “같이! 굳이? 밭이, 밭을; 읽고—읽어—읽는.” 마지막으로 적었다. [값이] {값어치} / 값없다; 끝없이…`,
+    anchors: ['꽃잎','깻잎','밭일','국물','밥물','독립문','서울역','종로','신라','난로','같이','굳이','밭이','밭을','읽고','읽어','읽는','값이','값어치','값없다','끝없이'],
+  },
+];
+
+for (const passageCase of adversarialPassages) {
+  test('adversarial prose remains fully resolved: ' + passageCase.name, () => {
+    const result = engine.convert(passageCase.text);
+    assert.equal(result.issues.length, 0, passageCase.name + ': no engine issues');
+    assert.equal(
+      result.trace.filter((item) => item.status === 'unresolved').length,
+      0,
+      passageCase.name + ': no unresolved trace records',
+    );
+    assert.ok(!result.ukrainian.includes('⟦'), passageCase.name + ': no placeholder may leak into output');
+    assert.equal(result.status, 'lexical-review', passageCase.name + ': provisional Ukrainian targets remain reviewable');
+
+    for (const input of passageCase.anchors) {
+      const expectedRow = lexicon.get(input);
+      assert.ok(expectedRow, passageCase.name + ': anchor must have an exact evidence row: ' + input);
+      const standalone = engine.convert(input);
+      assert.equal(standalone.surfaceHangul, expectedRow.surface_hangul, input + ': evidence surface');
+      assert.equal(standalone.ukrainian, expectedRow.target_syllables.replaceAll('|', ''), input + ': evidence target');
+      assert.equal(standalone.ipa, expectedRow.ipa_syllables.split('|').join(' '), input + ': evidence IPA');
+      assert.ok(!standalone.ukrainian.includes('⟦'), input + ': no unresolved placeholder');
+    }
+  });
+}
+
+test('adversarial corpus exercises a broad range of independent high-risk lexical anchors', () => {
+  const allAnchors = new Set(adversarialPassages.flatMap((item) => item.anchors));
+  assert.ok(allAnchors.size >= 35, 'expected at least 35 distinct tricky lexical anchors; got ' + allAnchors.size);
+  assert.equal(adversarialPassages.length, 5, 'keep each adversarial text as a separate regression case');
+});
