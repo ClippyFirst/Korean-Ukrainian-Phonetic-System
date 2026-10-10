@@ -5,7 +5,7 @@ import { createEngine, parseCsv } from '../src/app/engine.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
-const userCorpus = readFileSync(new URL('./fixtures/user-supplied-corpus.txt', import.meta.url), 'utf8').trim().split(/\\r?\\n/u);
+const userCorpus = readFileSync(new URL('./fixtures/user-supplied-corpus.txt', import.meta.url), 'utf8').trim().split(/\r?\n/u);
 const engine = createEngine(canonical, lexical);
 
 test('obstruent coda before ㄹ triggers ㄹ-to-ㄴ and nasal assimilation', () => {
