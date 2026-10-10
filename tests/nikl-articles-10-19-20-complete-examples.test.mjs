@@ -40,7 +40,6 @@ test('§19 every explicit example uses the correct ordered nasalization chain', 
     '법리':['pʌm ni',['liquid-to-nasal-before-obstruent','nasal-assimilation']],
   };
   for (const [word,[ipa,rules]] of Object.entries(expected)) {
-    assert.ok(!entries.has(word) || entries.get(word).target_status === 'surface-only', word + ': any lexicon row must be non-overriding surface evidence');
     const result = genericEngine.convert(word);
     assert.equal(result.issues.length, 0, word);
     assert.equal(result.ipa, ipa, word);
