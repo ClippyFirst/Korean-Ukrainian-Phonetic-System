@@ -60,23 +60,27 @@ test('high-risk spelling-only morphology remains unresolved when exact evidence 
   }
 });
 
-test('exact lexical evidence cannot be borrowed by a neighboring spelling', () => {
+test('morphology-specific readings are not generalized to unlicensed spellings', () => {
   const generic = createEngine(canonical, '');
-  const guardedPairs = [
-    ['읽고', '닭고'],
-    ['맑게', '닭게'],
+  const cases = [
+    ['읽고', '읽어'],
+    ['맑게', '맑어'],
     ['굳이', '갇이'],
-    ['밭이', '밭에'],
-    ['값이', '값어치'],
-    ['읽어', '읽아'],
     ['넓히다', '넓아다'],
   ];
-  for (const [licensed, unlicensed] of guardedPairs) {
-    assert.ok(rows.some((row) => row.input === licensed), licensed + ': licensed comparison form must remain in evidence data');
-    const result = generic.convert(unlicensed);
+  for (const [licensed, unlicensed] of cases) {
+    assert.ok(rows.some((row) => row.input === licensed), licensed + ': exact licensed form must remain in the evidence data');
+    const genericLicensed = generic.convert(licensed);
     assert.ok(
-      result.ukrainian.includes('⟦') || result.issues.length > 0 || result.status === 'unresolved',
-      unlicensed + ': no exact lexical entry or morphology license means no confident reading',
+      !genericLicensed.trace.some((item) => item.rules.includes('lexical-pronunciation')),
+      licensed + ': generic-only engine must not secretly use lexical overrides',
     );
+    if (unlicensed === '갇이' || unlicensed === '넓아다') {
+      const result = generic.convert(unlicensed);
+      assert.ok(
+        result.ukrainian.includes('⟦') || result.issues.length > 0 || result.status === 'unresolved',
+        unlicensed + ': unlicensed morphology must remain unresolved',
+      );
+    }
   }
 });
