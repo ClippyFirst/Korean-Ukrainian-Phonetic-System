@@ -88,3 +88,36 @@ test('§5 word boundaries prevent non-initial ㅢ alternatives from leaking acro
   assert.ok(result.variants.some((variant) => variant.ipa === 'min dʑu dʑu ɰi ɰi i'));
   assert.ok(result.variants.some((variant) => variant.ipa === 'min dʑu dʑu i ɰi i'));
 });
+
+
+test('§5 generic ㅖ may be [e] except in the syllables 예 and 례', () => {
+  const genericEngine = createEngine(canonical, '');
+  const result = genericEngine.convert('폐기');
+  assert.equal(result.ipa, 'pʰje ɡi');
+  assert.equal(result.ukrainian, 'пєґі');
+  assert.equal(result.variants.length, 1);
+  assert.equal(result.variants[0].surface, '폐기');
+  assert.equal(result.variants[0].ipa, 'pʰe ɡi');
+  assert.equal(result.variants[0].ukrainian, 'пеґі');
+  assert.match(result.variants[0].note, /§5/u);
+
+  assert.equal(genericEngine.convert('예').variants.length, 0);
+  assert.equal(genericEngine.convert('례').variants.length, 0);
+});
+
+test('§5 combines optional ㅖ-to-[e] readings without changing Korean spelling', () => {
+  const genericEngine = createEngine(canonical, '');
+  const result = genericEngine.convert('폐기계');
+  assert.equal(result.ipa, 'pʰje ɡi ɡje');
+  assert.equal(result.variants.length, 3);
+  assert.deepEqual(result.variants.map((variant) => variant.ipa), [
+    'pʰe ɡi ɡje',
+    'pʰje ɡi ɡe',
+    'pʰe ɡi ɡe',
+  ]);
+  assert.deepEqual(result.variants.map((variant) => variant.ukrainian), [
+    'пеґіґє',
+    'пєґіґе',
+    'пеґіґе',
+  ]);
+});
