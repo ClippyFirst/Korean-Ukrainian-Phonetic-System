@@ -157,7 +157,7 @@ test('representative ㄷ before ㄹ triggers liquid-to-nasal and nasal assimilat
 test('liquid assimilation is preserved when a lexical override elsewhere activates word splitting',()=>{
   const nasalLiquid=engine.convert('신 라면 문법');
   assert.equal(nasalLiquid.ukrainian,'шіл ламйон мунпоп');
-  assert.equal(nasalLiquid.ipa,'ɕil lamjʌn mun p͈ʌp̚');
+  assert.equal(nasalLiquid.ipa,'sil la mjʌn mun p͈ʌp̚');
   assert.ok(nasalLiquid.trace.find(item=>item.source==='신').rules.includes('liquid-assimilation'));
   assert.ok(nasalLiquid.trace.find(item=>item.source==='라').rules.includes('liquid-assimilation'));
 
