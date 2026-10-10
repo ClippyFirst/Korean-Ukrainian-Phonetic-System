@@ -458,6 +458,19 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
           if(entry.target_status==='surface-only'){
             const result=convertText(part,map,lexicon,true);
             result.surfaceHangul=entry.surface_hangul||'';
+            // Keep the general rule-engine trace and target, but restore a
+            // source-attested vowel-length mark when the computed broad IPA
+            // otherwise matches the surface-only record exactly. This lets
+            // entries such as 밟는 [밤ː는] retain length without replacing
+            // the algorithmic ㄼ simplification/nasalization path.
+            const sourcedIpa=(entry.ipa_syllables||'').split('|');
+            const generatedIpa=result.ipa.split(' ');
+            if(sourcedIpa.length===generatedIpa.length&&
+               sourcedIpa.some(ipa=>ipa.includes('ː'))&&
+               sourcedIpa.every((ipa,i)=>ipa.replace(/ː/gu,'')===generatedIpa[i])){
+              result.ipa=sourcedIpa.join(' ');
+              result.trace=result.trace.map((item,i)=>({...item,ipa:sourcedIpa[i]??item.ipa}));
+            }
             return result;
           }
           return lexicalResult(part,entry);
