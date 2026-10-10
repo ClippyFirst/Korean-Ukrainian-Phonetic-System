@@ -88,7 +88,7 @@ test('§7 long-vowel citation forms are paired with the short/retained inflected
     '밟다':['밥따','paːp̚ t͈a'],
     '신다':['신따','ɕiːn t͈a'],
     '알다':['알다','aːl da'],
-    '끌다':['끌따','k͈ɯl t͈a'],
+    '끌다':['끌따','k͈ɯːl t͈a'],
     '떨다':['떨다','t͈ʌːl da'],
     '벌다':['벌다','pʌːl da'],
     '쓸다':['쓸다','s͈ɯːl da'],
