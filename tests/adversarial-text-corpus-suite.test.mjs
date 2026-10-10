@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { createEngine } from '../src/app/engine.js';
 
 const directory = new URL('./fixtures/adversarial-corpora/', import.meta.url);
-const files = readdirSync(directory).filter((name) => name.endsWith('.txt') && /^\d{2}-/u.test(name)).sort();
+const files = readdirSync(directory).filter((name) => name.endsWith('.txt') && /^(?:0[1-9]|1[0-5])-/u.test(name)).sort();
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
