@@ -485,6 +485,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
 
   return{
     source:text,
+    surfaceHangul:'',
     ukrainian:output.join(''),
     ipa:renderStructured(units,ipa,' '),
     analysis:renderStructured(units,analysis,' · '),
