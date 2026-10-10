@@ -4,13 +4,17 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { createEngine } from '../src/app/engine.js';
 
 const directory = new URL('./fixtures/adversarial-corpora/', import.meta.url);
-const files = readdirSync(directory).filter((name) => name.endsWith('.txt') && /^(?:0[1-9]|1[0-5])-/u.test(name)).sort();
+const files = readdirSync(directory).filter((name) => name.endsWith('.txt') && (/^(?:0[1-9]|1[0-5])-/.test(name) || /^rule-\d{2}-\d{2}-/.test(name))).sort();
+const originalCorpora = files.filter((name) => /^(?:0[1-9]|1[0-5])-/.test(name));
+const ruleCorpora = files.filter((name) => /^rule-\d{2}-\d{2}-/.test(name));
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
 
-test('adversarial text corpus suite contains all topic-separated UTF-8 corpora', () => {
-  assert.equal(files.length, 15, 'the suite must keep all 15 independent corpus files');
+test('corpus suite has 15 broad corpora plus five corpora for each of 30 rule families', () => {
+  assert.equal(originalCorpora.length, 15, 'preserve the original 15 broad adversarial corpora');
+  assert.equal(ruleCorpora.length, 150, '30 rule families × 5 independent corpora');
+  assert.equal(files.length, 165, 'all corpus inputs are discoverable');
   const seen = new Set();
   for (const file of files) {
     const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
@@ -19,6 +23,10 @@ test('adversarial text corpus suite contains all topic-separated UTF-8 corpora',
     assert.ok(source.trim().length >= 500, file + ': corpus must not be a tiny sample');
     assert.ok(!seen.has(source), file + ': corpus content must be unique');
     seen.add(source);
+  }
+  for (let rule = 1; rule <= 30; rule++) {
+    const prefix = 'rule-' + String(rule).padStart(2, '0') + '-';
+    assert.equal(ruleCorpora.filter((name) => name.startsWith(prefix)).length, 5, prefix + ': exactly five corpus files');
   }
 });
 

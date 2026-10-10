@@ -1,17 +1,17 @@
-# Adversarial Korean text corpora
+# Expanded adversarial Korean text corpus suite
 
-Added 15 separate plain-text corpora under `tests/fixtures/adversarial-corpora/`. Together they cover coda liaison, complex codas, palatalization boundaries, nasal/liquid assimilation, fortition, aspiration, ㄴ insertion, inflection, compounds, numbers/names/loanwords, long mixed prose, negative controls, rule ordering, punctuation/spacing, and evidence-sensitive proper names.
+Expanded the original 15 broad TXT corpora with **150 additional rule-family TXT corpora**: 30 topic/rule families × 5 separate files each. Total corpus inputs: **165 files** (excluding the index).
 
-The corpus files are raw test inputs, not pronunciation gold standards. The collection intentionally separates raw input from expected outputs so that a guessed output cannot become its own oracle. The new suite smoke-tests every file through the current engine and checks that each corpus is substantial, distinct, and inspectable through issues and trace.
+The new files are under `tests/fixtures/adversarial-corpora/` and use names like `rule-01-01-general-principles.txt`. Families include coda neutralization, complex codas, ㄺ/ㄼ exceptions, liaison, palatalization, nasalization, liquid assimilation, ㅎ aspiration, fortition, ㄴ insertion, connected speech, inflection, names/loanwords, rule chains, and negative controls.
 
-## Plain-text index
+**Scope caveat:** numeric family IDs are corpus grouping IDs, not a claim that each file maps one-to-one to one numbered paragraph of the official Standard Pronunciation Rules. Rule interactions are intentional. A separate standards crosswalk should identify the exact provision and verify each candidate example against the National Institute of Korean Language before any item becomes a gold-standard expected output.
 
-See [00-README.txt](../tests/fixtures/adversarial-corpora/00-README.txt) for a file-by-file guide and recommended testing workflow.
+The files are raw inputs, not pronunciation gold standards. They do not encode a single expected Ukrainian output, so guessed engine output cannot become its own oracle.
 
-## Run
+## Validation
 
 ```sh
 node --test tests/adversarial-text-corpus-suite.test.mjs
 ```
 
-This validates fixture integrity and runtime processing; it does not assert that every form is already resolved or normatively verified. The next phase should produce a separate review ledger with exact span, expected Korean surface form, rule article, source, evidence level, and regression status.
+The test checks all 165 files for uniqueness, substantial Korean text, five-per-family counts, and crash-free processing through the current engine. This is a fixture-integrity/runtime smoke test, not proof that every pronunciation or Ukrainian approximation is correct.
