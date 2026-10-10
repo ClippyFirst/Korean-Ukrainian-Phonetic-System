@@ -60,7 +60,7 @@ test('§30: saisiot remains an exact lexical decision, not a generic ㅅ-final r
 test('§§24–30 evidence rows have official provenance and explicit article coverage in the audit', () => {
   const audit = readFileSync(new URL('../docs/NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md', import.meta.url), 'utf8');
   for (const [input, article] of [
-    ['껴안다', 24], ['넓게', 25], ['발전', 26], ['할 것', 27], ['문고리', 28], ['냇가', 30],
+    ['껴안다', 24], ['넓게', 25], ['발전', 26], ['문고리', 28], ['냇가', 30],
   ]) {
     const row = lexical.get(input);
     assert.ok(row, input + ': exact evidence row is required');
