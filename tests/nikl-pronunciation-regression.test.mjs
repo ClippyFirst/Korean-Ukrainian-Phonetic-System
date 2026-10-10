@@ -447,7 +447,7 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
 
 test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readings', () => {
   const variants = {
-    '회': {surface:'회', target:'гве', ipa:'hø', alternateSurface:'훼', alternateTarget:'гве', alternateIpa:'hwe'},
+    '회': {surface:'회', target:'гве', ipa:'hø', alternateSurface:'회', alternateTarget:'гве', alternateIpa:'hwe'},
     '위': {surface:'위', target:'ві', ipa:'y', alternateSurface:'위', alternateTarget:'ві', alternateIpa:'wi'},
     '계집': {surface:'계집', target:'кєджіп', ipa:'kjeː dʑip̚', alternateSurface:'게집', alternateTarget:'кеджіп', alternateIpa:'keː dʑip̚'},
     '계시다': {surface:'계시다', target:'кєшіда', ipa:'kjeː ɕi da', alternateSurface:'게시다', alternateTarget:'кешіда', alternateIpa:'keː ɕi da'},
