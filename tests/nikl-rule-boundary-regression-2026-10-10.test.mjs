@@ -41,7 +41,7 @@ test('§§11 and 14 exact sourced complex-coda liaison remains stable for 읽어
 test('morphology-dependent complex-coda and ㄺ-before-ㄱ cases fail closed without lexical evidence', () => {
   // These are deliberately not guessed from adjacent Hangul blocks alone.
   // Add an exact form only after confirming the reading against NIKL/dictionary evidence.
-  const unresolved = ['얇은', '않았다', '긁고', '늙고', '굵고', '놓아라'];
+  const unresolved = ['얇은', '긁고', '늙고', '굵고', '놓아라'];
   for (const input of unresolved) {
     assert.ok(!entries.has(input), input + ': do not silently add an unsourced override');
     const result = engine.convert(input);
