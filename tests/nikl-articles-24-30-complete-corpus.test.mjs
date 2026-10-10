@@ -42,7 +42,7 @@ const officialGroups = {
   },
   '§27': {
     '할걸':'할껄', '할밖에':'할빠께', '할세라':'할쎄라',
-    '할수록':'할쑤록', '할진대':'할찐대', '할지라도':'할찌라도',
+    '할수록':'할쑤록', '할진대':'할찐대', '할지라도':'할찌라도', '할지언정':'할찌언정',
   },
   '§28': {
     '문고리':'문꼬리', '눈동자':'눈똥자', '신바람':'신빠람',
@@ -53,12 +53,18 @@ const officialGroups = {
     '초승달':'초승딸', '등불':'등뿔', '창살':'창쌀', '강줄기':'강쭐기',
   },
   '§29': {
-    '솜이불':'솜니불', '맨입':'맨닙', '내복약':'내봉냑',
-    '한여름':'한녀름', '담요':'담뇨', '식용유':'시굥뉴',
-    '색연필':'생년필', '서울역':'서울력', '물약':'물략',
-    '불여우':'불려우', '들일':'들릴', '솔잎':'솔립',
-    '설익다':'설릭따', '물엿':'물렫', '휘발유':'휘발류',
-    '유들유들':'유들류들', '6·25':'유기오', '3·1절':'사밀쩔',
+    '솜이불':'솜니불', '홑이불':'혼니불', '막일':'망닐', '삯일':'상닐',
+    '맨입':'맨닙', '꽃잎':'꼰닙', '내복약':'내봉냑', '한여름':'한녀름',
+    '남존여비':'남존녀비', '신여성':'신녀성', '색연필':'생년필',
+    '직행열차':'지캥녈차', '늑막염':'능망념', '콩엿':'콩녇',
+    '담요':'담뇨', '눈요기':'눈뇨기', '영업용':'영엄뇽',
+    '식용유':'시굥뉴', '국민윤리':'궁민뉼리', '밤윷':'밤뉻',
+    '서울역':'서울력', '물약':'물략', '불여우':'불려우',
+    '들일':'들릴', '솔잎':'솔립', '설익다':'설릭따',
+    '물엿':'물렫', '휘발유':'휘발류', '유들유들':'유들류들',
+    '서른여섯':'서른녀섣', '스물여섯':'스물려섣',
+    '3 연대':'삼년대', '1 연대':'일련대',
+    '6·25':'유기오', '3·1절':'사밀쩔',
     '송별연':'송벼련', '등용문':'등용문',
   },
   '§30': {
@@ -81,7 +87,7 @@ test('every registered NIKL article 24–30 exemplar is present and stable in th
       assert.match(row.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u, `${article}: source URL for ${word}`);
       const result = engine.convert(word);
       assert.equal(result.surfaceHangul, surface, `${article}: engine surface for ${word}`);
-      assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), `${article}: Ukrainian target for ${word}`);
+      assert.equal(result.ukrainian, expectedTarget(row), `${article}: Ukrainian target for ${word}`);
       assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), `${article}: IPA for ${word}`);
       assert.ok(['lexical-review', 'lexical', 'surface-only'].includes(result.status), `${article}: target status for ${word}`);
     }
