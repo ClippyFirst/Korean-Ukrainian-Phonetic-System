@@ -272,7 +272,7 @@ test('multiple phrase-boundary assimilation rules compose in one sentence with a
 test('system page publishes the phrase-boundary assimilation audit',()=>{
   const html=fs.readFileSync(path.join(root,'system.html'),'utf8');
   assert.ok(html.includes('id="phrase-boundary-assimilation-audit"'));
-  for(const example of ['밥 문법','밥, 문법','몇 리','신 라면 문법','칼 날 문법']){
+  for(const example of ['밥 문법','밥, 문법','몇 리','신 라면 문법','칼 날 문법','국 립 문법','몇 리 문법']){
     assert.ok(html.includes(example),'missing published phrase-boundary example: '+example);
   }
   assert.ok(html.includes('NIKL — 표준 발음법'));
