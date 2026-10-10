@@ -18,6 +18,10 @@ const J_VOWELS=new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ','ㅢ']);
 const ASPIRATION={
   'ㄱ':'ㅋ','ㄷ':'ㅌ','ㅂ':'ㅍ','ㅈ':'ㅊ'
 };
+// NIKL §12(1): ㅎ/ㄶ/ㅀ + ㄱ/ㄷ/ㅈ coalesce; ㅂ is not in this direction.
+const H_CODA_ASPIRATION={
+  'ㄱ':'ㅋ','ㄷ':'ㅌ','ㅈ':'ㅊ'
+};
 
 // Lexical standard-pronunciation exceptions that cannot be inferred from
 // the final consonant alone. In particular, 밟- is [ㅂ] before consonants.
@@ -167,8 +171,8 @@ function applyContextualRules(units){
       else if(a.coda==='ㄶ')a.coda='ㄴ';
       else a.coda='ㄹ';
       rules.push('h-deletion');
-    }else if((a.coda==='ㅎ'||a.coda==='ㄶ'||a.coda==='ㅀ')&&ASPIRATION[b.onset]){
-      b.onset=ASPIRATION[b.onset];
+    }else if((a.coda==='ㅎ'||a.coda==='ㄶ'||a.coda==='ㅀ')&&H_CODA_ASPIRATION[b.onset]){
+      b.onset=H_CODA_ASPIRATION[b.onset];
       a.coda=a.coda==='ㄶ'?'ㄴ':a.coda==='ㅀ'?'ㄹ':'';
       rules.push('h-aspiration');
     }else if(a.coda&&b.onset==='ㅎ'){
@@ -197,15 +201,19 @@ function applyContextualRules(units){
       }
     }
 
-    // R006a: when an obstruent coda precedes ㄹ, standard pronunciation
-    // realizes that ㄹ as ㄴ; the coda then undergoes nasal assimilation.
-    // Examples: 국립 [궁닙], 독립문 [동님문], 협력 [혐녁].
-    // Keep the rule visible on both segments so the trace explains the change.
+    // R006a: the NIKL §19 cases are ㄱ/ㅂ (plus the explicit ㅁ/ㅇ cases).
+    // The engine also supports ㄷ + ㄹ as a project inference (e.g. 몇 리),
+    // but NIKL's 2025 Q&A says the standard-pronunciation rules have no
+    // explicit clause for 몇 리 and notes that views may differ. Keep that
+    // inference visibly separate in the trace; do not present it as §19.
     const beforeLiquidRep=representative(a.coda);
     if(['ㄱ','ㄷ','ㅂ','ㅁ','ㅇ'].includes(beforeLiquidRep)&&b.onset==='ㄹ'){
       b.onset='ㄴ';
-      rules.push('liquid-to-nasal-before-obstruent');
-      nextRules.push('liquid-to-nasal-before-obstruent');
+      const rule=beforeLiquidRep==='ㄷ'
+        ?'project-inferred-d-liquid-nasalization'
+        :'liquid-to-nasal-before-obstruent';
+      rules.push(rule);
+      nextRules.push(rule);
     }
 
     // R005: nasal assimilation. Use the final representative for obstruent
@@ -268,8 +276,11 @@ function applyContextualRules(units){
     const beforeLiquidRep=representative(a.coda);
     if(['ㄱ','ㄷ','ㅂ','ㅁ','ㅇ'].includes(beforeLiquidRep)&&b.onset==='ㄹ'){
       b.onset='ㄴ';
-      rules.push('liquid-to-nasal-before-obstruent');
-      nextRules.push('liquid-to-nasal-before-obstruent');
+      const rule=beforeLiquidRep==='ㄷ'
+        ?'project-inferred-d-liquid-nasalization'
+        :'liquid-to-nasal-before-obstruent';
+      rules.push(rule);
+      nextRules.push(rule);
     }
 
     const afterRep=representative(a.coda);
@@ -308,13 +319,12 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const oldIpa=get(map,'coda',oldCoda)?.ipa||'',newIpa=get(map,'coda',newCoda)?.ipa||'';
     if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
     const trace=lastTrace(result);
-    if(result.ukrainian.endsWith(oldTarget))result.ukrainian=result.ukrainian.slice(0,-oldTarget.length)+newTarget;
-    if(result.ipa.endsWith(oldIpa))result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
-    if(trace){
-      if(trace.output.endsWith(oldTarget))trace.output=trace.output.slice(0,-oldTarget.length)+newTarget;
-      if(trace.ipa.endsWith(oldIpa))trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
-      addRule(trace,rule);
-    }
+    if(!trace||!result.ukrainian.endsWith(oldTarget)||!result.ipa.endsWith(oldIpa)||!trace.output.endsWith(oldTarget)||!trace.ipa.endsWith(oldIpa))return false;
+    result.ukrainian=result.ukrainian.slice(0,-oldTarget.length)+newTarget;
+    result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
+    trace.output=trace.output.slice(0,-oldTarget.length)+newTarget;
+    trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
+    addRule(trace,rule);
     return true;
   };
   const rewriteOnset=(result,oldOnset,newOnset,realizedLateral,rule)=>{
@@ -323,13 +333,12 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const newIpa=realizedLateral?(get(map,'coda','ㄹ')?.ipa||''):(get(map,'onset',newOnset)?.ipa||'');
     if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
     const trace=firstTrace(result);
-    if(result.ukrainian.startsWith(oldTarget))result.ukrainian=newTarget+result.ukrainian.slice(oldTarget.length);
-    if(result.ipa.startsWith(oldIpa))result.ipa=newIpa+result.ipa.slice(oldIpa.length);
-    if(trace){
-      if(trace.output.startsWith(oldTarget))trace.output=newTarget+trace.output.slice(oldTarget.length);
-      if(trace.ipa.startsWith(oldIpa))trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
-      addRule(trace,rule);
-    }
+    if(!trace||!result.ukrainian.startsWith(oldTarget)||!result.ipa.startsWith(oldIpa)||!trace.output.startsWith(oldTarget)||!trace.ipa.startsWith(oldIpa))return false;
+    result.ukrainian=newTarget+result.ukrainian.slice(oldTarget.length);
+    result.ipa=newIpa+result.ipa.slice(oldIpa.length);
+    trace.output=newTarget+trace.output.slice(oldTarget.length);
+    trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
+    addRule(trace,rule);
     return true;
   };
 
@@ -344,20 +353,17 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const leftRep=representative(left.coda),rightOnset=right.onset;
 
     if(['ㄴ','ㅁ'].includes(rightOnset)&&NASAL_AFTER[leftRep]){
-      rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation');
-      addRule(firstTrace(next),'nasal-assimilation');
+      if(rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation'))addRule(firstTrace(next),'nasal-assimilation');
       continue;
     }
 
     if(rightOnset==='ㄹ'&&['ㄱ','ㄷ','ㅂ','ㅁ','ㅇ'].includes(leftRep)){
       const obstruent=['ㄱ','ㄷ','ㅂ'].includes(leftRep);
-      const rule=obstruent?'liquid-to-nasal-before-obstruent':'liquid-assimilation';
-      rewriteOnset(next,'ㄹ','ㄴ',false,rule);
-      addRule(lastTrace(previous),rule);
-      if(NASAL_AFTER[leftRep]){
-        rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation');
-        addRule(firstTrace(next),'nasal-assimilation');
-      }
+      const rule=leftRep==='ㄷ'
+        ?'project-inferred-d-liquid-nasalization'
+        :obstruent?'liquid-to-nasal-before-obstruent':'liquid-assimilation';
+      if(rewriteOnset(next,'ㄹ','ㄴ',false,rule))addRule(lastTrace(previous),rule);
+      if(NASAL_AFTER[leftRep]&&rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation'))addRule(firstTrace(next),'nasal-assimilation');
       continue;
     }
 
@@ -368,8 +374,7 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     }
 
     if(leftRep==='ㄹ'&&rightOnset==='ㄴ'){
-      rewriteOnset(next,'ㄴ','ㄹ',true,'liquid-assimilation');
-      addRule(lastTrace(previous),'liquid-assimilation');
+      if(rewriteOnset(next,'ㄴ','ㄹ',true,'liquid-assimilation'))addRule(lastTrace(previous),'liquid-assimilation');
     }
   }
 }
@@ -383,6 +388,21 @@ export function createEngine(csv,lexiconCsv=''){
 function lexicalResult(text,entry){
   const targets=entry.target_syllables.split('|');
   const ipas=entry.ipa_syllables.split('|');
+  if(entry.input_kind==='mixed-script'){
+    const target=targets.join('');
+    const ipa=ipas.join(' ');
+    return {
+      source:text,
+      surfaceHangul:entry.surface_hangul||'',
+      ukrainian:target,
+      ipa,
+      analysis:text+' → '+(entry.surface_hangul||'')+' (sourced lexical reading)',
+      variants:[],
+      trace:[{source:text,status:'lexical-review',rules:['lexical-pronunciation','ukrainian-target-provisional'],output:target,ipa}],
+      issues:[],
+      status:'lexical-review'
+    };
+  }
   const syllables=[...text];
   const analysis=syllables.map(ch=>{
     const d=decompose(ch);
@@ -414,7 +434,20 @@ function lexicalResult(text,entry){
 
 function convertText(text,map,lexicon=new Map(),skipLexicon=false){
   if(!skipLexicon&&lexicon.size){
-    const parts=text.match(/[가-힣]+|[^가-힣]+/g)||[];
+    // Exact mixed-script lexical keys (e.g. 6·25, 3·1절) are tokenized
+    // before ordinary Hangul/non-Hangul runs, including inside phrases.
+    const mixedKeys=[...lexicon.keys()].filter(key=>/[^가-힣]/u.test(key)).sort((a,b)=>b.length-a.length);
+    const parts=[];
+    let cursor=0;
+    while(cursor<text.length){
+      const exactKey=mixedKeys.find(key=>text.startsWith(key,cursor));
+      if(exactKey){parts.push(exactKey);cursor+=exactKey.length;continue;}
+      const nextKeyPositions=mixedKeys.map(key=>text.indexOf(key,cursor)).filter(position=>position>=0);
+      const nextKey=nextKeyPositions.length?Math.min(...nextKeyPositions):text.length;
+      const segment=text.slice(cursor,nextKey);
+      parts.push(...(segment.match(/[가-힣]+|[^가-힣]+/g)||[]));
+      cursor=nextKey;
+    }
     if(parts.some(part=>lexicon.has(part))){
       const results=parts.map(part=>{
         if(lexicon.has(part)){

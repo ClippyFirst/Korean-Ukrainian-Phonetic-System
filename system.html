@@ -251,8 +251,41 @@
     </div>
   </section>
 
+  <section class="doc-section" id="current-release-status">
+    <div class="doc-label">14</div><div class="doc-content">
+      <p class="section-kicker">Актуальний стан системи · 10 жовтня 2026</p>
+      <h2>Поточна версія: нормативні корейські форми відокремлено від українських рішень</h2>
+      <p>Цей розділ фіксує актуальний стан реалізації та її межі. Сервіс використовує лексичні записи з джерелами, контекстуальні правила й регресійні тести; він не вважає український результат автоматично правильним лише тому, що корейська вимова має високу доказовість.</p>
+      <div class="decision-table">
+        <div class="table-row table-head"><span>Частина</span><span>Поточне покриття</span><span>Як це перевіряється</span><span>Обмеження</span></div>
+        <div class="table-row"><b>Лексичні вимови</b><span>395 записів у контрольному наборі</span><span>Джерело, корейська поверхнева форма, IPA та український target зберігаються окремо.</span><span>Кількість записів не означає повного словникового покриття корейської мови.</span></div>
+        <div class="table-row"><b>NIKL §27–28</b><span>Приклади адномінальних закінчень і офіційні приклади 된소리되기</span><span>Окремі лексичні фікстури та регресійні тести.</span><span>Це покриття перевірених прикладів, а не повний автоматичний морфологічний аналіз.</span></div>
+        <div class="table-row"><b>NIKL §29</b><span>Усі 19 прикладів ㄴ-вставки, включно з варіантами</span><span>Позитивні та негативні контрольні випадки; окремі записи для дозволених читань.</span><span>Невідомі морфологічні умови не слід виводити лише з написання.</span></div>
+        <div class="table-row"><b>NIKL §30</b><span>Усі 19 наведених прикладів вимови 사이시옷</span><span>Окремо перевіряються 된소리되기, носова реалізація та ㄴ-вставка.</span><span>Корейські варіанти не означають, що українські відповідники вже пройшли читацьке дослідження.</span></div>
+        <div class="table-row"><b>Числа й пунктуація</b><span><code>6·25</code> та <code>3·1절</code></span><span>Точні змішані лексичні ключі; target та IPA вирівнюються за корейським поверхневим читанням, а не за кількістю символів.</span><span>Ці українські записи є рішеннями проєкту, не нормативними українськими транскрипціями.</span></div>
+      </div>
+      <h3>Що змінено в актуальному наборі</h3>
+      <ul>
+        <li>Додано контрольні приклади для офіційних правил 된소리되기, ㄴ-вставки та вимови 사이시옷, включно з явно дозволеними альтернативами.</li>
+        <li>Додано точні записи для <code>6·25</code> і <code>3·1절</code>; вони працюють як окремий ввід і всередині фрази.</li>
+        <li>Виправлено та перевірено сегментацію українських цілей і відповідність IPA: цільовий рядок не повинен дублювати 받침 або приписувати зайве подвоєння українським літерам.</li>
+        <li>Посилено перевірки цільової графіки, цілісності CSV, дубльованих ключів і вирівнювання первинних та альтернативних читань.</li>
+      </ul>
+      <h3>Важлива межа: українська передача ще не має статусу емпірично затвердженої системи</h3>
+      <p>Окремий перегляд цільового шару виявив питання, які не можна чесно «виправити» інтуїтивно в сотнях записів: передавання довготи голосних, нейтралізація аспірації та fortisness у практичному написанні, апроксимації корейських голосних без прямих українських відповідників, кода [ŋ], а також послідовності р/л. Наявні українські цілі узгоджуються з поточними правилами моделі, але це ще не доводить, що вони найкращі для українського читача.</p>
+      <p><strong>Поточне рішення:</strong> не підміняти відсутні результати дослідження масовими інтуїтивними правками. Наступний доказовий крок — зіставлення кількох українських варіантів на тих самих аудіозаписах, перевірка корейських міток носіями мови та сліпе читальницьке тестування. Впевненість у джерелі, корейській поверхневій формі, IPA й українському target потрібно оцінювати окремо.</p>
+      <div class="repo-links">
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/korean-system-audit-report-2026-10.md">Повний технічний аудит ↗</a>
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/ukrainian-target-review-2026-10-10.md">Аудит українського цільового шару ↗</a>
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/data/korean/lexical_pronunciations.csv">Лексична база з джерелами ↗</a>
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/72">Змішані числові записи ↗</a>
+        <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002">NIKL — 표준 발음법 ↗</a>
+      </div>
+    </div>
+  </section>
+
   <section class="doc-section references">
-    <div class="doc-label">14</div><div class="doc-content"><p class="section-kicker">Джерела</p><h2>Основні дослідницькі опори</h2>
+    <div class="doc-label">15</div><div class="doc-content"><p class="section-kicker">Джерела</p><h2>Основні дослідницькі опори</h2>
       <ul><li><a href="https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002">National Institute of Korean Language — Standard Korean Pronunciation</a></li><li><a href="https://movoznavstvo.org.ua/vsi-nomera-zhurnalu/statti/2009-1-sichen-lyutij/shchegel-o-m-praktichna-transkriptsiya-korejskikh-imen-ukrajinskoyu-movoyu-porivnyannya-problemi-i-propozitsiji">О. М. Щегель (2009) — Практична транскрипція корейських імен українською мовою</a></li><li><a href="https://bp-razvitie.ru/prilozhenie-9-sistemy-transkripcii-">Холодович—Концевич — практична транскрипція корейської мови</a></li><li><a href="https://www.journals.polon.uw.edu.pl/index.php/pj/article/view/1631">Kim Gwangseok & Jarosław A. Pietrow (2023) — Korean toponyms in Polish</a></li><li><a href="https://authors.uni-sofia.bg/AuthorPublications.aspx?id=2584c0a6-0810-4d34-8733-deee92e8bac7">Beneva et al. (2018) — Korean transcription in Bulgarian texts</a></li><li><a href="https://serbia-korea.rs/wp-content/uploads/2026/01/A-need-for-transcription-between-Korean-Hangul-and-Serbian-Cyrillic.pdf">Angelina Galjević (2023) — Korean Hangul and Serbian Cyrillic</a></li></ul>
       <div class="repo-links"><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">Відкрити GitHub репозиторій ↗</a><a href="./index.html">Повернутися до сервісу ↗</a></div>
     </div>
