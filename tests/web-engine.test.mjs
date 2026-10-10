@@ -39,7 +39,7 @@ test('official NIKL §27 attached-ending fortition examples are lexically covere
     ['할밖에','할빠께','галпаке','hal p͈a k͈e'],
     ['할세라','할쎄라','галсера','hal s͈e ɾa'],
     ['할수록','할쑤록','галсурок','hal s͈u ɾok̚'],
-    ['할지라도','할찌라도','галчірато','hal tɕ͈i ɾa do'],
+    ['할지라도','할찌라도','галчірадо','hal tɕ͈i ɾa do'],
     ['할지언정','할찌언정','галчіонджон','hal tɕ͈i ʌn dʑʌŋ'],
     ['할진대','할찐대','галчінде','hal tɕ͈in dɛ']
   ];
