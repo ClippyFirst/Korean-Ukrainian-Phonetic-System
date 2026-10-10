@@ -21,7 +21,7 @@ test('practical targets do not duplicate Korean fortisness as doubled Ukrainian 
     '낫다': 'нат|та',
     '낫고': 'нат|ко',
     '낫지': 'нат|чі',
-    '낯설다': 'нат|соль|да',
+    '낯설다': 'нат|сол|да',
     '낮잠': 'нат|чам',
   };
   for (const [word, target] of Object.entries(expected)) {
@@ -72,7 +72,7 @@ test('target syllable alignment and contextual IPA are consistent for high-risk 
     '땀받이': ['там|ба|джі', 't͈am|ba|dʑi'],
     '국립국어원': ['кунг|нім|ку|ґо|вон', 'kuŋ|nim|k͈u|ɡʌ|wʌn'],
     '곧이듣다': ['ко|джі|дит|та', 'ko|dʑi|dɯt̚|t͈a'],
-    '좋아질': ['чо|а|джіль', 'tɕo|a|dʑil'],
+    '좋아질': ['чо|а|джіл', 'tɕo|a|dʑil'],
   };
   for (const [word, [target, ipa]] of Object.entries(expected)) {
     assert.equal(entries.get(word)?.target_syllables, target, word + ': target segmentation');
