@@ -432,7 +432,7 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
   }
   const compound = engine.convert('반신반의');
   assert.equal(compound.status, 'lexical-review');
-  assert.equal(compound.ukrainian, 'паншінбаний');
+  assert.equal(compound.ukrainian, 'паншінбані');
   assert.equal(compound.ipa, 'paːn ɕin baː nɰi');
   assert.equal(compound.variants[0].surface, '반신바니');
   assert.equal(compound.variants[0].ukrainian, 'паншінбані');
@@ -719,7 +719,7 @@ test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', 
     '임진란': ['임진난', 'imː dʑin nan', 'імджіннан'],
     '생산량': ['생산냥', 'sɛŋ san njaŋ', 'сенсаннян'],
     '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйолтанньок'],
-    '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', 'конквоннок'],
+    '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', 'конквонньок'],
     '동원령': ['동원녕', 'toŋː wʌn njʌŋ', 'тонвоннон'],
     '상견례': ['상견녜', 'saŋ ɡjʌn nje', 'санґйоннє'],
     '이원론': ['이원논', 'iː wʌn non', 'івоннон'],
