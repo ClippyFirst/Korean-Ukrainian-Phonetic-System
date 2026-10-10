@@ -66,7 +66,7 @@ test('§5 non-initial ㅢ exposes the permitted [i] reading and adjusts the Ukra
   const genericEngine = createEngine(canonical, '');
   const result = genericEngine.convert('민주주의');
   assert.equal(result.ipa, 'min dʑu dʑu ɰi');
-  assert.equal(result.ukrainian, 'мінджуджуй');
+  assert.equal(result.ukrainian, 'мінджуджуий');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].ipa, 'min dʑu dʑu i');
   assert.equal(result.variants[0].ukrainian, 'мінджуджуі');
