@@ -13,6 +13,7 @@ test('practical targets do not duplicate Korean fortisness as doubled Ukrainian 
   const expected = {
     '밝다': 'пак|та',
     '넓고': 'нол|ко',
+    '넓습니다': 'нол|сим|ни|да',
     '읊다': 'ип|та',
     '읊고': 'ип|ко',
     '앉고': 'ан|ко',
@@ -82,7 +83,7 @@ test('target syllable alignment and contextual IPA are consistent for high-risk 
 
 test('all corrected non-surface-only rows remain provisional and traceable', () => {
   const words = [
-    '밝다','넓고','앉고','많습니다','좋습니다','낫다','낫고','낫지','낯설다','낮잠',
+    '밝다','넓고','앉고','많습니다','좋습니다','넓습니다','넓습니다','낫다','낫고','낫지','낯설다','낮잠',
     '벼훑이','닫히다','겉옷','젖어미','젊어','디귿이','디귿을','디귿에','젖먹이',
     '벌어','젖멍울','잡는','닿소','빗었어요','젊은','좋아질','실제','한국어',
     '덥고','춥습니다','나갔습니다','알다','벌다','썰다'
@@ -104,6 +105,10 @@ test('coda ㄹ uses the declared Ukrainian л target without an added soft sign'
     '넓네': 'нол|ле',
     '여덟': 'йо|дол',
     '넓다': 'нол|та',
+    '얇실하다': 'ял|сіл|га|да',
+    '짧다': 'чал|та',
+    '읽거든': 'іл|ко|ден',
+    '넓습니다': 'нол|сим|ни|да',
     '젖멍울': 'чон|мон|ул',
     '꽃망울': 'кон|ман|ул',
     '밥물': 'пам|мул',
