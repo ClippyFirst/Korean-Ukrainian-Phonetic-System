@@ -23,3 +23,21 @@ test('NIKL complex-coda liaison examples resolve without morphological guessing'
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholder');
   }
 });
+
+test('NIKL dictionary conjugations preserve the ㄼ coda alternation in 넓다 and 짧다', () => {
+  const expected = {
+    '넓어': { surface: '널버', ipa: 'nʌl bʌ' },
+    '넓으니': { surface: '널브니', ipa: 'nʌl bɯ ni' },
+    '넓은': { surface: '널븐', ipa: 'nʌl bɯn' },
+    '넓습니다': { surface: '널씀니다', ipa: 'nʌl s͈ɯm ni da' },
+    '넓지': { surface: '널찌', ipa: 'nʌl tɕ͈i' },
+    '짧아': { surface: '짤바', ipa: 'tɕ͈al ba' },
+    '짧으니': { surface: '짤브니', ipa: 'tɕ͈al bɯ ni' },
+  };
+  for (const [input, want] of Object.entries(expected)) {
+    const result = engine.convert(input);
+    assert.equal(result.surfaceHangul, want.surface, input + ': NIKL standard surface');
+    assert.equal(result.ipa, want.ipa, input + ': broad IPA');
+    assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholder');
+  }
+});
