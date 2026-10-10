@@ -4,7 +4,7 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **534** rows; **0** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **538** rows; **0** rows meet the audit filter.
 
 ## Source-type counts
 
@@ -62,3 +62,8 @@ The queue is empty because every remaining row either has an explicit article ma
 | Input | Existing official source | Current note (preserved verbatim) | Next action |
 |---|---|---|---|
 
+
+
+## Tricky-passage morphology matrix follow-up
+
+Four new exact regression rows were added for `같아지는` (§13 rule-derived), `같았다` (§§9, 13, 23 rule-derived), `밝히는` (§12 suffixal aspiration derived from the directly discussed `밝히다[발키다]`), and `닭고기와` (§§11, 23 compositional extension of the directly attested `닭고기[닥꼬기]`). Their notes explicitly distinguish direct lexical attestation from rule-derived forms; none is left in the article-mapping queue.
