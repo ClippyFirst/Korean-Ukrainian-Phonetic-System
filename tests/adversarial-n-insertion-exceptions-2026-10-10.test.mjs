@@ -11,7 +11,7 @@ const engine = createEngine(canonical, lexical);
 // NIKL Q&A 279931: 음용 [으묭], despite the phonological environment that can invite ㄴ insertion.
 test('NIKL §29 negative and exceptional cases do not receive blanket ㄴ insertion', () => {
   const expected = {
-    '값있다': { surface: '가빋따', ipa: 'ka pit̚ t͈a' },
+    '값있다': { surface: '가빋따', ipa: 'ka bit̚ t͈a' },
     '곧이어': { surface: '고디어', ipa: 'ko di ʌ' },
     '음용': { surface: '으묭', ipa: 'ɯ mjoŋ' },
   };
