@@ -1,17 +1,18 @@
 # Expanded adversarial Korean text corpus suite
 
-Expanded the original 15 broad TXT corpora with **150 additional rule-family TXT corpora**: 30 topic/rule families × 5 separate files each. Total corpus inputs: **165 files** (excluding the index).
+The suite contains 165 TXT inputs: the original 15 broad corpora plus 150 additional corpora (30 families × 5 files). The 150 rule-family files were revised after the first engine audit: example forms are now quoted and isolated rather than being accidentally attached to arbitrary particles/endings by the corpus generator. This prevents artificial forms such as `같이와` from contaminating the test input.
 
-The new files are under `tests/fixtures/adversarial-corpora/` and use names like `rule-01-01-general-principles.txt`. Families include coda neutralization, complex codas, ㄺ/ㄼ exceptions, liaison, palatalization, nasalization, liquid assimilation, ㅎ aspiration, fortition, ㄴ insertion, connected speech, inflection, names/loanwords, rule chains, and negative controls.
+The family IDs are organizational groups, not a one-to-one mapping to numbered provisions of the official Standard Pronunciation Rules. The files are discovery inputs, not gold-standard output files. Exact expected pronunciations must be mapped to a provision and verified against the National Institute of Korean Language before being promoted to gold regressions.
 
-**Scope caveat:** numeric family IDs are corpus grouping IDs, not a claim that each file maps one-to-one to one numbered paragraph of the official Standard Pronunciation Rules. Rule interactions are intentional. A separate standards crosswalk should identify the exact provision and verify each candidate example against the National Institute of Korean Language before any item becomes a gold-standard expected output.
-
-The files are raw inputs, not pronunciation gold standards. They do not encode a single expected Ukrainian output, so guessed engine output cannot become its own oracle.
-
-## Validation
+Run:
 
 ```sh
 node --test tests/adversarial-text-corpus-suite.test.mjs
 ```
 
-The test checks all 165 files for uniqueness, substantial Korean text, five-per-family counts, and crash-free processing through the current engine. This is a fixture-integrity/runtime smoke test, not proof that every pronunciation or Ukrainian approximation is correct.
+The suite checks inventory, uniqueness, substantial Korean text, and crash-free engine processing. The audit diagnostic reports per-eojeol unresolved cases; an unresolved result is not automatically a bug because the engine intentionally withholds guesses when morphology or lexical evidence is missing.
+
+
+## Latest audit
+
+See [the 2026-10-11 corpus audit](./adversarial-corpus-audit-2026-10-11.md) for the measured unresolved forms, the fixes applied, and remaining morphology-sensitive cases.

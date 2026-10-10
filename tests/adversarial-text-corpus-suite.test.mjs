@@ -42,3 +42,41 @@ test('every adversarial corpus can be submitted to the engine without a runtime 
     assert.ok(Array.isArray(result.trace), file + ': trace is exposed for triage');
   }
 });
+
+test('150 rule-family corpora keep each target form quoted and isolated', () => {
+  for (const file of ruleCorpora) {
+    const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
+    const examples = [...source.matchAll(/「([^」]+)」/gu)].map((match) => match[1]);
+    assert.ok(examples.length >= 20, file + ': expected a substantial set of quoted target forms');
+    assert.doesNotMatch(source, /(?:같이와|밭이가|값이와|읽게가)/u, file + ': known accidental target-plus-particle forms must not recur');
+  }
+});
+
+test('diagnostic: summarize per-eojeol outcomes across all 165 adversarial corpora', () => {
+  const stats = new Map();
+  for (const file of files) {
+    const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
+    const eojeols = source.match(/[가-힣]+/gu) || [];
+    for (const word of eojeols) {
+      const result = engine.convert(word);
+      const placeholders = [...result.ukrainian.matchAll(/⟦([^⟦⟧]+)⟧/gu)].map((match) => match[1]);
+      const row = stats.get(word) || {word, count:0, unresolved:0, placeholders:0, issues:new Set(), sampleTarget:'', sampleIpa:''};
+      row.count++;
+      if (result.status === 'unresolved' || placeholders.length || result.issues.length) row.unresolved++;
+      row.placeholders += placeholders.length;
+      for (const issue of result.issues) row.issues.add(String(issue));
+      if (!row.sampleTarget) { row.sampleTarget=result.ukrainian; row.sampleIpa=result.ipa; }
+      stats.set(word,row);
+    }
+  }
+  const rows=[...stats.values()];
+  const problematic=rows.filter(row=>row.unresolved>0).sort((a,b)=>b.count-a.count || a.word.localeCompare(b.word));
+  console.log('ADVERSARIAL_EOJEOL_SUMMARY ' + JSON.stringify({
+    corpusFiles:files.length,
+    uniqueEojeols:rows.length,
+    eojeolOccurrences:rows.reduce((sum,row)=>sum+row.count,0),
+    uniqueWordsWithUnresolved:problematic.length,
+    unresolvedOccurrences:problematic.reduce((sum,row)=>sum+row.unresolved,0),
+    topUnresolved:problematic.slice(0,25).map(row=>({...row,issues:[...row.issues].slice(0,2)}))
+  }));
+});
