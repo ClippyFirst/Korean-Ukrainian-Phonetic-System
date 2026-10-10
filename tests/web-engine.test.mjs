@@ -61,6 +61,28 @@ test('NIKL §26 fortition is not generalized to non-licensed ㄹ-final words or 
   }
 });
 
+test('lexical CSV has unique keys, complete evidence fields and aligned syllable records',()=>{
+  const rows=parseCsv(lexicalCsv);
+  const seen=new Set();
+  for(const row of rows){
+    assert.ok(row.input, 'missing lexical input');
+    assert.ok(!seen.has(row.input), 'duplicate lexical input: '+row.input);
+    seen.add(row.input);
+    for(const field of ['surface_hangul','target_syllables','ipa_syllables','source_url','rule_notes','confidence','target_status']){
+      assert.ok(row[field], 'missing '+field+' for '+row.input);
+    }
+    assert.match(row.source_url,/^https?:\\/\\//u,row.input);
+    assert.ok(['high','medium','low'].includes(row.confidence),'unknown confidence for '+row.input);
+    assert.ok(['provisional','model-selected','surface-only'].includes(row.target_status),'unknown target_status for '+row.input);
+    const targetParts=row.target_syllables.split('|');
+    const ipaParts=row.ipa_syllables.split('|');
+    assert.equal(targetParts.length,ipaParts.length,'target/IPA segmentation mismatch: '+row.input);
+    assert.equal([...row.input].length,targetParts.length,'input/target segmentation mismatch: '+row.input);
+    assert.equal([...row.surface_hangul].length,ipaParts.length,'surface/IPA segmentation mismatch: '+row.input);
+  }
+  assert.ok(rows.length>=300,'unexpectedly small lexical dataset');
+});
+
 test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'гйонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
 test('lenis voicing between vowels is explicit',()=>{const r=engine.convert('부부');assert.equal(r.ukrainian,'пубу');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
 test('표준 voices intervocalic ㅈ',()=>{const r=engine.convert('표준');assert.equal(r.ukrainian,'пйоджун');assert.equal(r.ipa,'pʰjo dʑun');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
