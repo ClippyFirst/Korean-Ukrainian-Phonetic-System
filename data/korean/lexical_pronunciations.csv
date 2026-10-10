@@ -289,7 +289,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 책을,채글,че|ґил,tɕʰɛ|ɡɯl,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"책 + 을: 받침 ㄱ의 연음, [채글]. Ukrainian target provisional.",high,provisional,,,,,
 연구원은,연구워는,йон|ґу|во|нин,jʌn|gu|wʌ|nɯn,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,연구원 + 은: 원의 받침 ㄴ과 은의 연속; 표면형 [연구워는]. Ukrainian target provisional.,high,provisional,,,,,
 발음과,바름과,па|рим|ґва,pa|rɯm|gwa,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,발음 + 과: 발음의 표면형 [바름] 및 과의 연결; Ukrainian target provisional.,high,provisional,,,,,
-실제,실쩨,шіл|че,ɕil|tɕ͈e,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표면형 [실쩨]; ㅅ의 i 환경 및 ㅈ 된소리; Ukrainian target provisional.,high,provisional,,,,,
+실제,실쩨,шіл|че,ɕil|tɕ͈e,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,한자어 실제(實際): ㄹ 받침 뒤에 오는 ㅈ의 된소리되기(표준 발음법 제26항); 표면형 [실쩨]. source_url은 일반 규정 페이지이며 실제 자체의 직접 어휘 출처는 별도 보강 필요.,high,provisional,,,,,
 발음의,바르미,па|ри|мі,pa|rɯ|mi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,발음 + 의: 이 형태에서는 의를 [이]로 읽는 모델 경로를 기본값으로 기록. 조사 의의 [에] 계열은 별도 variant로 검토.,high,provisional,바르메,па|ри|ме,pa|rɯ|me,관형격 조사 의의 [이]/[에]에 대응하는 발음 변이; target은 provisional,
 차이를,차이를,ча|і|рил,tɕʰa|i|ɾɯl,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표면형 [차이를]; Ukrainian target provisional.,high,provisional,,,,,
 자세히,자세히,ча|се|гі,tɕa|se|hi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,표면형 [자세히]; onset ㅎ은 프로젝트 모델에 따라 г로 근사. Ukrainian target provisional.,high,provisional,,,,,
