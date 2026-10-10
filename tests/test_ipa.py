@@ -46,3 +46,33 @@ def test_broad_ipa_for_complex_coda_aspiration():
 
 def test_ipa_renderer_preserves_word_boundaries():
     assert phoneticize_korean("현대 한국어")["ipa"]["ipa"] == "hjʌn.dɛ han.ɡu.ɡʌ"
+
+
+def test_section4_generic_oe_and_wi_diphthong_variants():
+    oe = phoneticize_korean("괴물")["ipa"]
+    assert oe["ipa"] == "kø.mul"
+    assert [variant["ipa"] for variant in oe["variants"]] == ["kwe.mul"]
+    assert oe["variants"][0]["syllable_indices"] == [0]
+
+    wi = phoneticize_korean("귀")["ipa"]
+    assert wi["ipa"] == "ky"
+    assert [variant["ipa"] for variant in wi["variants"]] == ["kwi"]
+
+def test_section4_combines_up_to_three_optional_vowels():
+    result = phoneticize_korean("괴물귀")["ipa"]
+    assert result["ipa"] == "kø.mul.ky"
+    assert [variant["ipa"] for variant in result["variants"]] == [
+        "kwe.mul.ky",
+        "kø.mul.kwi",
+        "kwe.mul.kwi",
+    ]
+
+def test_section4_keeps_sourced_lexical_length_and_spelling_in_variants():
+    result = phoneticize_korean("회")["ipa"]
+    assert result["ipa"] == "hø"
+    assert [variant["ipa"] for variant in result["variants"]] == ["hwe"]
+    assert result["variants"][0]["syllable_indices"] == [0]
+
+def test_phonemic_ipa_does_not_add_surface_diphthong_variants():
+    result = phoneticize_korean("괴물", ipa_level="phonemic")["ipa"]
+    assert result["variants"] == []
