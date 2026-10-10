@@ -10,9 +10,14 @@ const engine = createEngine(canonical, lexical);
 test('corpus-discovered directly attested pronunciation cases are sourced and regression-locked', () => {
   const expected = {
     읽기: ['일끼','일끼','ілкі','il k͈i'],
+    읽어요: ['일거요','일거요','ілґойо','il ɡʌ jo'],
     많이: ['마니','마니','мані','maː ni'],
     밝게: ['발께','발께','палке','pal k͈e'],
     좋아: ['조아','조아','чоа','tɕoː a'],
+    좋은: ['조은','조은','чоин','tɕo ɯn'],
+    없어요: ['업써요','업써요','опсойо','ʌp̚ s͈ʌ jo'],
+    밟아요: ['발바요','발바요','палбайо','pal ba jo'],
+    넓어요: ['널버요','널버요','нолбойо','nʌl bʌ jo'],
     붙이다: ['부치다','부치다','пучіда','pu tɕʰi da'],
     낱낱이: ['난나치','난나치','нанначі','nanː na tɕʰi']
   };
