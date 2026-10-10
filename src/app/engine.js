@@ -334,7 +334,7 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
   };
 
   for(let i=0;i<parts.length-2;i++){
-    if(!/^[가-힣]+$/u.test(parts[i])||!/^\\s+$/u.test(parts[i+1])||!/^[가-힣]+$/u.test(parts[i+2]))continue;
+    if(!/^[가-힣]+$/u.test(parts[i])||!/^\s+$/u.test(parts[i+1])||!/^[가-힣]+$/u.test(parts[i+2]))continue;
     const previous=results[i],next=results[i+2];
     if(!previous||!next||previous.status==='unresolved'||next.status==='unresolved'||previous.issues?.length||next.issues?.length)continue;
     const previousText=previous.surfaceHangul||parts[i],nextText=next.surfaceHangul||parts[i+2];
