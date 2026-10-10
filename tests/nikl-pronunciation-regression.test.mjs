@@ -388,7 +388,7 @@ test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings',
 test('NIKL §§6–7 source-backed length examples preserve long vowels and alternants', () => {
   const expected = {
     '눈보라': ['눈보라', 'нунбора', 'nuːn bo ɾa'],
-    '말씨': ['말씨', 'малсі', 'maːl s͈i'],
+    '말씨': ['말씨', 'малші', 'maːl s͈i'],
     '밤나무': ['밤나무', 'памнаму', 'paːm na mu'],
     '많다': ['만타', 'манта', 'maːn tʰa'],
     '멀리': ['멀리', 'моллі', 'mʌːl li'],
@@ -514,7 +514,7 @@ test('NIKL §10 complex-coda examples and lexical exceptions are source-backed',
   const expected = {
     '넋과': ['넉꽈', 'нокква', 'nʌk̚ k͈wa'],
     '앉다': ['안따', 'анта', 'an t͈a'],
-    '여덟': ['여덜', 'йодоль', 'jʌ dʌl'],
+    '여덟': ['여덜', 'йодол', 'jʌ dʌl'],
     '넓다': ['널따', 'нолта', 'nʌl t͈a'],
     '외곬': ['외골', 'веґол', 'ø ɡol'],
     '밟소': ['밥쏘', 'папсо', 'paːp̚ s͈o'],
@@ -596,7 +596,7 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '맞는': ['만는', 'man nɯn', 'маннин'],
     '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'чонмонул'],
     '쫓는': ['쫀는', 'tɕ͈on nɯn', 'чоннин'],
-    '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'конмануль'],
+    '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'конманул'],
     '붙는': ['분는', 'pun nɯn', 'пуннин'],
     '놓는': ['논는', 'non nɯn', 'ноннин'],
     '잡는': ['잠는', 'tɕam nɯn', 'чамнин'],
@@ -715,7 +715,7 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
 
 test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', () => {
   const expected = {
-    '줄넘기': ['줄럼끼', 'tɕul lʌm k͈i', 'чульломкі'],
+    '줄넘기': ['줄럼끼', 'tɕul lʌm k͈i', 'чулломкі'],
     '임진란': ['임진난', 'imː dʑin nan', 'імджіннан'],
     '생산량': ['생산냥', 'sɛŋ san njaŋ', 'сенсаннян'],
     '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйолтанньок'],
