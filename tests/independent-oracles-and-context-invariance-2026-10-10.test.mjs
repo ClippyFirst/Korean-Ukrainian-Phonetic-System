@@ -88,3 +88,45 @@ test('generic rule fixtures stay independent of the lexical override layer', () 
     }
   }
 });
+
+
+test('ordered §19 → §18 → §20 interaction matrix remains stable for all seven representative codas before ㄹ', () => {
+  // Expected IPA is written independently here; this specifically guards
+  // against applying nasalization before changing the following ㄹ to ㄴ.
+  const cases = [
+    ['각라', 'kaŋ na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
+    ['갇라', 'kan na', ['project-inferred-d-liquid-nasalization', 'nasal-assimilation']],
+    ['갑라', 'kam na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
+    ['간라', 'kal la', ['liquid-assimilation']],
+    ['갈라', 'kal la', []],
+    ['감라', 'kam na', ['liquid-assimilation']],
+    ['강라', 'kaŋ na', ['liquid-assimilation']],
+  ];
+  for (const [input, expectedIpa, requiredRules] of cases) {
+    const result = generic.convert(input);
+    assert.equal(result.issues.length, 0, input + ': expected generic composition to resolve');
+    assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved marker expected');
+    assert.equal(result.ipa, expectedIpa, input + ': independent IPA oracle');
+    const traceRules = new Set(result.trace.flatMap((item) => item.rules));
+    for (const rule of requiredRules) {
+      assert.ok(traceRules.has(rule), input + ': missing rule trace ' + rule);
+    }
+    assert.deepEqual(generic.convert(input).ipa, result.ipa, input + ': repeated conversion must be deterministic');
+  }
+});
+
+test('a punctuation boundary blocks the same cross-syllable interaction chain', () => {
+  const blocked = new Set([
+    'liquid-to-nasal-before-obstruent',
+    'project-inferred-d-liquid-nasalization',
+    'nasal-assimilation',
+    'liquid-assimilation',
+  ]);
+  for (const input of ['각,라', '갇!라', '갑.라', '간—라', '감;라', '강/라']) {
+    const result = generic.convert(input);
+    assert.ok(
+      !result.trace.some((item) => item.rules.some((rule) => blocked.has(rule))),
+      input + ': cross-boundary sound rules must not fire through punctuation',
+    );
+  }
+});
