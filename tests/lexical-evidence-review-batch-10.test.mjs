@@ -4,7 +4,6 @@ import { readFileSync } from 'node:fs';
 import { parseCsv } from '../src/app/engine.js';
 
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
-const auditText = readFileSync(new URL('../docs/LEXICAL-EVIDENCE-TRACEABILITY-AUDIT-2026-10-10.md', import.meta.url), 'utf8');
 const review = readFileSync(new URL('../docs/LEXICAL-EVIDENCE-REVIEW-BATCH-10-2026-10-10.md', import.meta.url), 'utf8');
 const rows = parseCsv(lexicalText);
 
