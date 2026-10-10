@@ -18,7 +18,7 @@ test('batch 05 reviews ten more lexical evidence queue entries', () => {
 test('batch 05 flags 실제 for phonological re-analysis rather than guessing a rule', () => {
   assert.match(review, /실제[\s\S]*?Needs phonological re-analysis/u);
   assert.match(review, /may conflate the segment's spelling\/environment/u);
-  assert.match(review, /do not infer that ㅅ becomes fortis merely because it is adjacent to an i-like vowel/u);
+  assert.match(review, /do not infer that ㅅ becomes fortis merely because it is adjacent to an i-like vowel/iu);
 });
 
 test('batch 05 keeps particle 의 variants and Ukrainian approximations separate', () => {
