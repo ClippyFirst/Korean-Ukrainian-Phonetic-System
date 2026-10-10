@@ -55,9 +55,9 @@ test('sentence conversion resolves exact lexical words inside punctuation-separa
 
 test('the exact three user-reported sentences do not leave past-tense liaison placeholders', () => {
   const cases = [
-    ['독립문 앞에서 사진을 찍었어요.', '찍었어요', '찌거써요'],
-    ['한국 음식은 맛있지만 매울 수도 있어요.', '있어요', '이써요'],
-    ['오늘은 날씨가 맑고 바람이 붑니다. 책을 읽고 학교에 갔어요.', '갔어요', '가써요'],
+    ['독립문 앞에서 사진을 찍었어요.', '찍었어요', 'чіґосойо'],
+    ['한국 음식은 맛있지만 매울 수도 있어요.', '있어요', 'ісойо'],
+    ['오늘은 날씨가 맑고 바람이 붑니다. 책을 읽고 학교에 갔어요.', '갔어요', 'касойо'],
   ];
   for (const [sentence, word, expected] of cases) {
     const result = engine.convert(sentence);
