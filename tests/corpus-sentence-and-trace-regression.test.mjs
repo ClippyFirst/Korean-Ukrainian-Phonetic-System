@@ -53,6 +53,22 @@ test('sentence conversion resolves exact lexical words inside punctuation-separa
   }
 });
 
+test('the exact three user-reported sentences do not leave past-tense liaison placeholders', () => {
+  const cases = [
+    ['독립문 앞에서 사진을 찍었어요.', '찍었어요', '찌거써요'],
+    ['한국 음식은 맛있지만 매울 수도 있어요.', '있어요', '이써요'],
+    ['오늘은 날씨가 맑고 바람이 붑니다. 책을 읽고 학교에 갔어요.', '갔어요', '가써요'],
+  ];
+  for (const [sentence, word, expected] of cases) {
+    const result = engine.convert(sentence);
+    assert.ok(result.ukrainian.includes(expected), sentence + ': ' + result.ukrainian);
+    assert.ok(!result.ukrainian.includes('⟦었⟧') && !result.ukrainian.includes('⟦어⟧') &&
+      !result.ukrainian.includes('⟦있⟧') && !result.ukrainian.includes('⟦갔⟧'),
+      sentence + ': unresolved past-tense placeholder in ' + result.ukrainian);
+    assert.deepEqual(result.issues, [], sentence + ': ' + JSON.stringify(result.issues));
+  }
+});
+
 test('literal punctuation and spaces are not emitted as empty-looking trace rows', () => {
   const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   assert.match(main, /for\s*\(const t of r\.trace\)\s*\{\s*if\s*\(t\.status\s*===\s*'literal'\)\s*continue;/u);
