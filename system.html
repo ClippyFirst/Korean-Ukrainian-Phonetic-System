@@ -225,8 +225,32 @@
     </div>
   </section>
 
+  <section class="doc-section" id="phrase-boundary-assimilation-audit">
+    <div class="doc-label">13</div><div class="doc-content">
+      <p class="section-kicker">Аудит межслівних правил</p>
+      <h2>Фонологічні правила не повинні зникати через лексичний виняток</h2>
+      <p>Сервіс використовує точні словникові записи для форм, де потрібні перевірені поверхневі вимови. Аудит виявив інженерний дефект: якщо в реченні є хоча б один такий запис, конвертер розбиває текст на слова, і правила, що діють через звичайний пробіл, могли не застосуватися до сусіднього слова. Виправлено підтримку міжслівної носової та плавної асиміляції; розділові знаки залишаються межею, через яку правило не переноситься.</p>
+      <div class="decision-table">
+        <div class="table-row table-head"><span>Випадок</span><span>Корейська поверхнева зміна</span><span>Український результат</span><span>Що перевіряємо</span></div>
+        <div class="table-row"><b>밥 문법</b><span>ㅂ + ㅁ → ㅁ + ㅁ</span><span>пам мунпоп</span><span>§18: носова асиміляція не зникає біля словникового запису.</span></div>
+        <div class="table-row"><b>밥, 문법</b><span>кома блокує перенесення правила</span><span>пап, мунпоп</span><span>Пунктуація не прирівнюється до звичайного пробілу.</span></div>
+        <div class="table-row"><b>몇 리</b><span>받침 ㅊ → 대표음 ㄷ; ㄹ → ㄴ; ㄷ → ㄴ</span><span>мйон ні</span><span>Коду ㄷ не можна пропускати в умовах асиміляції перед ㄹ.</span></div>
+        <div class="table-row"><b>신 라면 문법</b><span>ㄴ + ㄹ → ㄹ + ㄹ</span><span>шіл ламйон мунпоп</span><span>Міжслівна плавна асиміляція з лексичним винятком в іншому слові.</span></div>
+        <div class="table-row"><b>칼 날 문법</b><span>ㄹ + ㄴ → ㄹ + ㄹ</span><span>кал лал мунпоп</span><span>Зміна початку другого слова має бути відображена і в IPA, і в українській цілі.</span></div>
+      </div>
+      <p>Це цільові регресійні приклади, а не повний морфологічний аналіз корейської мови. Система не виводить автоматично межі морфем для правил, які потребують морфологічного підтвердження: такі випадки й надалі мають залишатися невизначеними, доки немає точного джерельного запису.</p>
+      <div class="repo-links">
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/56">PR #56 — носова асиміляція біля лексичних записів ↗</a>
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/57">PR #57 — ㄷ перед ㄹ ↗</a>
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/58">PR #58 — плавна асиміляція біля лексичних записів ↗</a>
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/web-engine.test.mjs">Браузерні регресійні тести ↗</a>
+        <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002">NIKL — 표준 발음법 ↗</a>
+      </div>
+    </div>
+  </section>
+
   <section class="doc-section references">
-    <div class="doc-label">13</div><div class="doc-content"><p class="section-kicker">Джерела</p><h2>Основні дослідницькі опори</h2>
+    <div class="doc-label">14</div><div class="doc-content"><p class="section-kicker">Джерела</p><h2>Основні дослідницькі опори</h2>
       <ul><li><a href="https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002">National Institute of Korean Language — Standard Korean Pronunciation</a></li><li><a href="https://movoznavstvo.org.ua/vsi-nomera-zhurnalu/statti/2009-1-sichen-lyutij/shchegel-o-m-praktichna-transkriptsiya-korejskikh-imen-ukrajinskoyu-movoyu-porivnyannya-problemi-i-propozitsiji">О. М. Щегель (2009) — Практична транскрипція корейських імен українською мовою</a></li><li><a href="https://bp-razvitie.ru/prilozhenie-9-sistemy-transkripcii-">Холодович—Концевич — практична транскрипція корейської мови</a></li><li><a href="https://www.journals.polon.uw.edu.pl/index.php/pj/article/view/1631">Kim Gwangseok & Jarosław A. Pietrow (2023) — Korean toponyms in Polish</a></li><li><a href="https://authors.uni-sofia.bg/AuthorPublications.aspx?id=2584c0a6-0810-4d34-8733-deee92e8bac7">Beneva et al. (2018) — Korean transcription in Bulgarian texts</a></li><li><a href="https://serbia-korea.rs/wp-content/uploads/2026/01/A-need-for-transcription-between-Korean-Hangul-and-Serbian-Cyrillic.pdf">Angelina Galjević (2023) — Korean Hangul and Serbian Cyrillic</a></li></ul>
       <div class="repo-links"><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">Відкрити GitHub репозиторій ↗</a><a href="./index.html">Повернутися до сервісу ↗</a></div>
     </div>
