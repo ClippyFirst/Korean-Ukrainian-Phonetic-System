@@ -23,7 +23,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 서울역,서울력,со|ул|лйок,sʌ|ul|ljʌk̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"표준 발음법 제29항 붙임 1: ㄹ 받침 뒤 첨가되는 ㄴ은 [ㄹ]로 발음; 서울역 [서울력]. 어휘 경계를 모르는 일반 규칙에 맡기지 않고 검증된 표면형을 고정",high,model-selected,,,
 같이,가치,ка|чі,ka|tɕʰi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313399,제17항 구개음화; 표준 발음 [가치]. Ukrainian target requires phonetic review.,high,provisional,,,
 굳이,구지,ку|джі,ku|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=2&qna_seq=313201,제17항 용례; 표준 발음 [구지]. Ukrainian target requires phonetic review.,high,provisional,,,
-곧이듣다,고지듣따,ко|джі|дит|та,ko|tɕi|dɯt̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [고지듣따]; 제23항 된소리되기. Ukrainian target requires phonetic review.,high,provisional,,,
+곧이듣다,고지듣따,ко|джі|дит|та,ko|dʑi|dɯt̚|t͈a,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [고지듣따]; 제23항 된소리되기. Ukrainian target requires phonetic review.,high,provisional,,,
 미닫이,미다지,мі|да|джі,miː|da|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [미ː다지]; 장음 표시 유지. Ukrainian target requires phonetic review.,high,provisional,,,
 땀받이,땀바지,там|ба|джі,t͈am|ba|dʑi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [땀바지]. Ukrainian target requires phonetic review.,high,provisional,,,
 벼훑이,벼훌치,пйо|гул|чі,pjʌ|hul|tɕʰi,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313851,제17항 용례 [벼훌치]; ㄾ의 ㄹ 유지와 ㅌ의 구개음화. Ukrainian target requires phonetic review.,high,provisional,,,
@@ -42,7 +42,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 값이,갑씨,кап|ші,kap̚|s͈i,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항: 형식 형태소 이 앞에서 ㅄ의 두 번째 자음 ㅅ이 이동해 된소리로 발음; [갑씨]. Ukrainian target provisional.",high,provisional,,,,
 앉아,안자,ан|джа,an|dʑa,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항: 형식 형태소 아 앞에서 ㄵ의 두 번째 자음 ㅈ이 이동; [안자]. Ukrainian target provisional.",high,provisional,,,,
 닭을,달글,тал|ґил,tal|ɡɯl,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항: 형식 형태소 을 앞에서 ㄺ의 두 번째 자음 ㄱ이 이동; [달글]. Ukrainian target provisional.",high,provisional,,,,
-젊어,절머,чоль|мо,tɕʌl|mʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항: 형식 형태소 어 앞에서 ㄻ의 두 번째 자음 ㅁ이 이동; [절머]. Ukrainian target provisional.",high,provisional,,,,
+젊어,절머,чол|мо,tɕʌl|mʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항: 형식 형태소 어 앞에서 ㄻ의 두 번째 자음 ㅁ이 이동; [절머]. Ukrainian target provisional.",high,provisional,,,,
 곬이,골씨,кол|ші,kol|s͈i,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항 예시: 곬이 [골씨]; ㄽ의 두 번째 자음 ㅅ이 이동해 된소리로 발음. Ukrainian target provisional.",high,provisional,,,,
 깎아,까까,ка|ка,k͈a|k͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제13항 공식 예시: 깎아 [까까], 형식 형태소 앞에서 ㄲ의 음가를 유지해 연음. Ukrainian target provisional.",high,provisional,,,,
 있어,이써,і|со,i|s͈ʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제13항 공식 예시: 있어 [이써], 형식 형태소 어 앞에서 ㅆ 연음. Ukrainian target provisional.",high,provisional,,,,
@@ -115,15 +115,15 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 밟으면,발브면,пал|би|мйон,pal|bɯ|mjʌn,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 공식 예시 [발브면]. 어미 앞 ㄼ의 실현과 장음 단축. Ukrainian target requires phonetic review.",high,provisional,,,,
 신다,신따,шін|та,ɕiːn|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 공식 예시 [신ː따]. Ukrainian target requires phonetic review.",high,provisional,,,,
 신어,시너,ші|но,ɕi|nʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 공식 예시 [시너]. 어미 앞 장음 단축과 연음. Ukrainian target requires phonetic review.",high,provisional,,,,
-알다,알다,аль|да,aːl|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 공식 예시 [알ː다]. Ukrainian target requires phonetic review.",high,provisional,,,,
+알다,알다,ал|да,aːl|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 공식 예시 [알ː다]. Ukrainian target requires phonetic review.",high,provisional,,,,
 알아,아라,а|ра,a|ɾa,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 공식 예시 [아라]. 어미 앞 장음 단축과 연음. Ukrainian target requires phonetic review.",high,provisional,,,,
 끌다,끌따,кил|та,k͈ɯl|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 장음 유지 예외 공식 예시 [끌ː다]. Ukrainian target requires phonetic review.",high,provisional,,,,
 끌어,끄러,ки|ро,k͈ɯː|ɾʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 장음 유지 예외 공식 예시 [끄ː러]. Ukrainian target requires phonetic review.",high,provisional,,,,
 떫다,떨따,тол|та,t͈ʌːl|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 장음 유지 예외 공식 예시 [떨ː따]. Ukrainian target requires phonetic review.",high,provisional,,,,
 떫은,떨븐,тол|бин,t͈ʌːl|bɯn,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 장음 유지 예외 공식 예시 [떨ː븐]. Ukrainian target requires phonetic review.",high,provisional,,,,
-벌다,벌다,поль|да,pʌːl|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 장음 유지 예외 공식 예시 [벌ː다]. Ukrainian target requires phonetic review.",high,provisional,,,,
+벌다,벌다,пол|да,pʌːl|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 장음 유지 예외 공식 예시 [벌ː다]. Ukrainian target requires phonetic review.",high,provisional,,,,
 벌어,버러,по|ро,pʌː|ɾʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 장음 유지 예외 공식 예시 [버ː러]. Ukrainian target requires phonetic review.",high,provisional,,,,
-썰다,썰다,соль|да,s͈ʌːl|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 장음 유지 예외 공식 예시 [썰ː다]. Ukrainian target requires phonetic review.",high,provisional,,,,
+썰다,썰다,сол|да,s͈ʌːl|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 장음 유지 예외 공식 예시 [썰ː다]. Ukrainian target requires phonetic review.",high,provisional,,,,
 썰어,써러,со|ро,s͈ʌː|ɾʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 장음 유지 예외 공식 예시 [써ː러]. Ukrainian target requires phonetic review.",high,provisional,,,,
 감기다,감기다,кам|ґі|да,kam|ɡi|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 피동·사동 접미사 결합 시 장음 단축 공식 예시 [감기다]. Ukrainian target requires phonetic review.",high,provisional,,,,
 꼬이다,꼬이다,ко|і|да,k͈o|i|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제7항 피동·사동 접미사 결합 시 장음 단축 공식 예시 [꼬이다]. Ukrainian target requires phonetic review.",high,provisional,,,,
@@ -238,7 +238,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "낫다","낟따","нат|та","nat̚|t͈a","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§9/§23; [낟따].","high","provisional","","","",""
 "낫고","낟꼬","нат|ко","nat̚|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§9/§23; [낟꼬].","high","provisional","","","",""
 "낫지","낟찌","нат|чі","nat̚|tɕ͈i","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§9/§23; [낟찌].","high","provisional","","","",""
-"낯설다","낟썰다","нат|соль|да","nat̚|s͈ʌl|da","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§9/§23; [낟썰다].","high","provisional","","","",""
+"낯설다","낟썰다","нат|сол|да","nat̚|s͈ʌl|da","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§9/§23; [낟썰다].","high","provisional","","","",""
 "낮잠","낟짬","нат|чам","nat̚|tɕ͈am","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§9/§23; [낟짬].","high","provisional","","","",""
 "앞문","암문","ам|мун","am|mun","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [암문].","high","surface-only","","","",""
 "앞니","암니","ам|ні","am|ni","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [암니].","high","provisional","","","",""
@@ -270,10 +270,10 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "맛있고","마딛꼬","ма|діт|ко","ma|dit̚|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제15항 해설의 맛있다 계열 [마딛-] 원칙형과 제23항 된소리되기. [마싣꼬] 변이도 보존. Ukrainian target provisional.","high","provisional","마싣꼬","ма|шіт|ко","ma|ɕit̚|k͈o","제15항 해설의 허용 발음 [마싣-] 계열; Ukrainian target provisional."
 "맛없고","마덥꼬","ма|деп|ко","ma|dʌp̚|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제15항: 맛없- [마덥-] 및 제23항 된소리되기, [마덥꼬]. Ukrainian target provisional.","high","provisional","","","",""
 "맛없어요","마더버요","ма|до|бо|йо","ma|dʌ|bʌ|jo","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제15항: 맛없- + -어요, [마더버요]. Ukrainian target provisional.","high","provisional","","","",""
-"젊은","절믄","чоль|мин","tɕʌl|mɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제14항: 젊- + -은, ㄻ의 ㅁ 연음, [절믄]. Ukrainian target provisional.","high","provisional","","","",""
+"젊은","절믄","чол|мин","tɕʌl|mɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제14항: 젊- + -은, ㄻ의 ㅁ 연음, [절믄]. Ukrainian target provisional.","high","provisional","","","",""
 "읽었습니다","일거씀니다","іл|ґо|сим|ни|да","il|ɡʌ|s͈ɯm|ni|da","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","읽- + -었습니다: ㄺ의 ㄱ 연음, ㅆ, 비음화; [일거씀니다]. Ukrainian target provisional.","high","provisional","","","",""
 "않아도","아나도","а|на|до","a|na|do","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제12항 제4호: ㄶ의 ㅎ 탈락, [아나도]. Ukrainian target provisional.","high","provisional","","","",""
-"좋아질","조아질","чо|а|джіль","tɕo|a|dʑil","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제12항 제4호: 좋- + -아지-; ㅎ 탈락, [조아질]. Ukrainian target provisional.","high","provisional","","","",""
+"좋아질","조아질","чо|а|джіл","tɕo|a|dʑil","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제12항 제4호: 좋- + -아지-; ㅎ 탈락, [조아질]. Ukrainian target provisional.","high","provisional","","","",""
 "나중엔","나중엔","на|джун|ен","na|dʑuŋ|en","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","문장 corpus: 나중엔의 표면형을 보존. Ukrainian target is a project-level practical approximation.","high","provisional","","","",""
 "덥고","덥꼬","топ|ко","tʌp̚|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","덥- + -고: 받침 ㅂ 뒤 ㄱ 된소리되기; [덥꼬]. Ukrainian target provisional.","high","provisional","","","",""
 "밤에는","바메는","па|ме|нин","pa|me|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","밤 + 에는: 받침 ㅁ의 연음; [바메는]. Ukrainian target provisional.","high","provisional","","","",""
@@ -292,7 +292,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "책을","채글","че|ґил","tɕʰɛ|ɡɯl","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","책 + 을: 받침 ㄱ의 연음, [채글]. Ukrainian target provisional.","high","provisional","","","",""
 "연구원은","연구워는","йон|ґу|во|нин","jʌn|gu|wʌ|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","연구원 + 은: 원의 받침 ㄴ과 은의 연속; 표면형 [연구워는]. Ukrainian target provisional.","high","provisional","","","",""
 "발음과","바름과","па|рим|ґва","pa|rɯm|gwa","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","발음 + 과: 발음의 표면형 [바름] 및 과의 연결; Ukrainian target provisional.","high","provisional","","","",""
-"실제","실쩨","шіль|че","ɕil|tɕ͈e","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","표면형 [실쩨]; ㅅ의 i 환경 및 ㅈ 된소리; Ukrainian target provisional.","high","provisional","","","",""
+"실제","실쩨","шіл|че","ɕil|tɕ͈e","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","표면형 [실쩨]; ㅅ의 i 환경 및 ㅈ 된소리; Ukrainian target provisional.","high","provisional","","","",""
 "발음의","바르미","па|ри|мі","pa|rɯ|mi","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","발음 + 의: 이 형태에서는 의를 [이]로 읽는 모델 경로를 기본값으로 기록. 조사 의의 [에] 계열은 별도 variant로 검토.","high","provisional","바르메","па|ри|ме","pa|rɯ|me","관형격 조사 의의 [이]/[에]에 대응하는 발음 변이; target은 provisional"
 "차이를","차이를","ча|і|рил","tɕʰa|i|ɾɯl","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","표면형 [차이를]; Ukrainian target provisional.","high","provisional","","","",""
 "자세히","자세히","ча|се|гі","tɕa|se|hi","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","표면형 [자세히]; onset ㅎ은 프로젝트 모델에 따라 г로 근사. Ukrainian target provisional.","high","provisional","","","",""
