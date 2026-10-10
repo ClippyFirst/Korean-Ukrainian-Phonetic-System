@@ -59,6 +59,6 @@ test('adversarial forms have explicit standard surface readings and traceable pr
 test('short vowel and coda traps are not treated as literal character-by-character substitutions', () => {
   assert.equal(engine.convert('짧아도').surfaceHangul, '짤바도');
   assert.equal(engine.convert('빗고').surfaceHangul, '빋꼬');
-  assert.equal(engine.convert('학생의').alternateSurfaceHangul, '학쌩에');
-  assert.equal(engine.convert('발음의').alternateSurfaceHangul, '바르메');
+  assert.equal(engine.convert('학생의').variants[0]?.surface, '학쌩에');
+  assert.equal(engine.convert('발음의').variants[0]?.surface, '바르메');
 });
