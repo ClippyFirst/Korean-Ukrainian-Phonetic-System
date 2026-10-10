@@ -64,7 +64,7 @@ test('ㄷ+히 follows aspiration and then palatalization (§12 + §17)', () => {
 test('the complete official institution name uses its sourced standard surface form', () => {
   const result = engine.convert('국립국어원');
   assert.equal(result.surfaceHangul, '궁님꾸거원');
-  assert.equal(result.ukrainian, 'кунгнімкуґовон');
+  assert.equal(result.ukrainian, 'куннімкуґовон');
   assert.equal(result.ipa, 'kuŋ nim k͈u ɡʌ wʌn');
   assert.equal(result.status, 'lexical-review');
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
