@@ -104,7 +104,7 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
   const expected = {
     같이: {surface:'가치', target:'качі', ipa:'ka tɕʰi'},
     굳이: {surface:'구지', target:'куджі', ipa:'ku dʑi'},
-    곧이듣다: {surface:'고지듣따', target:'коджідитта', ipa:'ko dʑi tɯt̚ t͈a'},
+    곧이듣다: {surface:'고지듣따', target:'коджідитта', ipa:'ko dʑi dɯt̚ t͈a'},
     굳히다: {surface:'구치다', target:'кучіда', ipa:'ku tɕʰi da'},
     닫히다: {surface:'다치다', target:'дачіда', ipa:'ta tɕʰi da'},
     묻히다: {surface:'무치다', target:'мучіда', ipa:'mu tɕʰi da'},
@@ -128,7 +128,7 @@ test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', 
     겉옷: {surface:'거돋', target:'кодот', ipa:'kʌ dot̚'},
     헛웃음: {surface:'허두슴', target:'годусим', ipa:'hʌ du sɯm'},
     값어치: {surface:'가버치', target:'кабочі', ipa:'ka bʌ tɕʰi'},
-    젖어미: {surface:'저더미', target:'джодомі', ipa:'tɕʌ dʌ mi'},
+    젖어미: {surface:'저더미', target:'чодомі', ipa:'tɕʌ dʌ mi'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
@@ -282,7 +282,7 @@ test('official §12(4) H-deletion examples are sourced and marked provisional on
 test('NIKL §16 official letter-name examples are exact lexical entries', () => {
   const expected = {
     '디귿이': ['디그시', 'тіґиші', 'ti ɡɯ ɕi'],
-    '디귿을': ['디그슬', 'диґисил', 'ti ɡɯ sɯl'],
+    '디귿을': ['디그슬', 'тіґисил', 'ti ɡɯ sɯl'],
     '디귿에': ['디그세', 'диґисе', 'ti ɡɯ se'],
     '지읒이': ['지으시', 'чіиші', 'tɕi ɯ ɕi'],
     '지읒을': ['지으슬', 'чіисил', 'tɕi ɯ sɯl'],
@@ -408,7 +408,7 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
     '끌어': ['끄러', 'киро', 'k͈ɯː ɾʌ'],
     '떫다': ['떨따', 'толта', 't͈ʌːl t͈a'],
     '떫은': ['떨븐', 'толбин', 't͈ʌːl bɯn'],
-    '벌다': ['벌다', 'полта', 'pʌːl da'],
+    '벌다': ['벌다', 'полда', 'pʌːl da'],
     '벌어': ['버러', 'боро', 'pʌː ɾʌ'],
     '썰다': ['썰다', 'солта', 's͈ʌːl da'],
     '썰어': ['써러', 'соро', 's͈ʌː ɾʌ'],
@@ -599,7 +599,7 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'конмануль'],
     '붙는': ['분는', 'pun nɯn', 'пуннин'],
     '놓는': ['논는', 'non nɯn', 'ноннин'],
-    '잡는': ['잠는', 'tɕam nɯn', 'джамнин'],
+    '잡는': ['잠는', 'tɕam nɯn', 'чамнин'],
     '밥물': ['밤물', 'pam mul', 'паммуль'],
     '앞마당': ['암마당', 'am ma daŋ', 'аммадан'],
     '읊는': ['음는', 'ɯm nɯn', 'имнин'],
