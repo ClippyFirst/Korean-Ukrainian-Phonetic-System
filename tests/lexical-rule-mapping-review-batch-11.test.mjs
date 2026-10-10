@@ -7,10 +7,10 @@ const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.
 const rows = parseCsv(lexicalText);
 
 const expected = {
-  '밟으며': [10, 14],
+  '밟으며': [14],
   '낡은': [14],
   '놓인': [12],
-  '밟았습니다': [10, 14, 18, 23],
+  '밟았습니다': [14, 18, 23],
   '맑은': [14],
   '있었고': [9, 13, 23],
   '웃었고': [9, 13, 23],
