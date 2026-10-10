@@ -49,7 +49,7 @@ test('§5 consonant-initial ㅢ is pronounced [ㅣ] in every listed example', ()
 });
 
 test('§5 all listed 의 alternations are kept as explicit variants', () => {
-  for (const word of ['주의','협의','우리의','강의의']) {
+  for (const word of ['주의','협의','우리의','강의의','발음의']) {
     const row = rows.get(word);
     assert.ok(row, word);
     assert.ok(row.alternate_surface_hangul, word);
@@ -57,7 +57,13 @@ test('§5 all listed 의 alternations are kept as explicit variants', () => {
     assert.equal(result.surfaceHangul, row.surface_hangul, word);
     assert.equal(result.variants.length, 1, word);
     assert.equal(result.variants[0].surface, row.alternate_surface_hangul, word);
+    assert.equal(result.variants[0].ipa, row.alternate_ipa_syllables.split('|').join(' '), word);
+    assert.equal(result.variants[0].ukrainian, row.alternate_target_syllables.split('|').join(''), word);
   }
+  const pronunciation = engine.convert('발음의');
+  assert.equal(pronunciation.surfaceHangul, '바르미');
+  assert.equal(pronunciation.variants[0].surface, '바르메');
+  assert.equal(pronunciation.variants[0].ukrainian, 'париме');
 });
 
 test('§5 contracted 져/쪄/쳐 use the explicit short-vowel readings', () => {
