@@ -67,6 +67,14 @@ The browser adapter now requires exact sourced entries for §17 cases when morph
 
 The expected Korean surface forms are normative evidence. The Ukrainian spellings asserted by tests are model outputs and must not be described as officially standardized Ukrainian forms.
 
+### Independent-oracle and context-invariance regressions (2026-10-10)
+
+`tests/independent-oracles-and-context-invariance-2026-10-10.test.mjs` adds literal expected-value fixtures that are not generated from `lexical_pronunciations.csv`. They check the Korean surface reading, broad IPA, and project Ukrainian approximation for ten high-risk forms. These are independent regression oracles for the implementation/data layer, but the Ukrainian target remains a project convention rather than an official NIKL standard.
+
+The same suite checks that punctuation wrapping does not alter an exact lexical reading; morphology-sensitive unknown forms remain visibly unresolved even when surrounded by punctuation or neutral text; and the seven representative codas before ㄹ preserve the expected order of liquid-to-nasal conversion and nasal assimilation. Punctuation-boundary negative controls ensure the cross-syllable chain does not propagate across commas, exclamation marks, periods, em dashes, semicolons, or slashes.
+
+These additions improve regression independence and interaction coverage. They do not replace a complete independent audit of every official example in §§1–30, nor do they constitute a full morphological parser.
+
 ## Rule-ordering requirements
 
 1. Apply lexical coda exceptions before generic coda simplification.
