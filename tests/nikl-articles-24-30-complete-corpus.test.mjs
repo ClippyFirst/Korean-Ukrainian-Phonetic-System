@@ -87,7 +87,7 @@ test('every registered NIKL article 24–30 exemplar is present and stable in th
       assert.match(row.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u, `${article}: source URL for ${word}`);
       const result = engine.convert(word);
       assert.equal(result.surfaceHangul, surface, `${article}: engine surface for ${word}`);
-      assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), `${article}: Ukrainian target for ${word}`);
+      assert.equal(result.ukrainian, expectedTarget(row), `${article}: Ukrainian target for ${word}`);
       assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), `${article}: IPA for ${word}`);
       assert.ok(['lexical-review', 'lexical', 'surface-only'].includes(result.status), `${article}: target status for ${word}`);
     }
