@@ -145,6 +145,15 @@ test('phrase nasal assimilation does not cross punctuation even when a lexical w
   assert.ok(!r.trace.some(item=>item.source==='밥'&&item.rules.includes('nasal-assimilation')));
 });
 
+test('representative ㄷ before ㄹ triggers liquid-to-nasal and nasal assimilation across a phrase boundary',()=>{
+  const r=engine.convert('몇 리');
+  assert.equal(r.ukrainian,'мйон ні');
+  assert.equal(r.ipa,'mjʌn ni');
+  assert.ok(r.trace[0].rules.includes('liquid-to-nasal-before-obstruent'));
+  assert.ok(r.trace[0].rules.includes('nasal-assimilation'));
+  assert.ok(r.trace.find(item=>item.source==='리').rules.includes('liquid-to-nasal-before-obstruent'));
+});
+
 test('§19 precedes §18 across a phrase boundary',()=>{
   const r=engine.convert('협 력');
   assert.equal(r.ipa,'hjʌm njʌk̚');
