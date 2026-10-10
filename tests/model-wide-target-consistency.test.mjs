@@ -109,7 +109,7 @@ test('coda ㄹ uses the declared Ukrainian л target without an added soft sign'
     '여덟': 'йо|дол',
     '넓다': 'нол|та',
     '들일': 'тил|ліл',
-    '얇실하다': 'ял|сіл|га|да',
+    '얇실하다': 'ял|шіл|га|да',
     '짧다': 'чал|та',
     '읽거든': 'іл|ко|ден',
     '넓습니다': 'нол|сим|ни|да',
@@ -228,4 +228,37 @@ test('lexical target codas match the final consonants of their aligned surface I
   const batIlang = entries.get('밭이랑');
   assert.equal(batIlang?.target_syllables, 'пан|ні|ран');
   assert.equal(engine.convert('밭이랑').ukrainian, 'панніран');
+});
+
+
+test('lexical onset targets match declared surface-onset mappings across the corpus', () => {
+  const onsetTargets = [
+    [/^tɕ(?:ʰ|͈)?/u, 'ч'],
+    [/^dʑ/u, 'дж'],
+    [/^k(?:ʰ|͈)?/u, 'к'],
+    [/^ɡ/u, 'ґ'],
+    [/^t(?:ʰ|͈)?/u, 'т'],
+    [/^d/u, 'д'],
+    [/^p(?:ʰ|͈)?/u, 'п'],
+    [/^b/u, 'б'],
+    [/^ɕ/u, 'ш'],
+    [/^s͈?i/u, 'ш'],
+    [/^s͈?/u, 'с'],
+    [/^h/u, 'г'],
+    [/^m/u, 'м'],
+    [/^n/u, 'н'],
+    [/^l/u, 'л'],
+    [/^ɾ/u, 'р'],
+  ];
+  for (const row of rows) {
+    const target = (row.target_syllables || '').split('|');
+    const ipa = (row.ipa_syllables || '').split('|');
+    assert.equal(target.length, ipa.length, row.input + ': target/IPA syllable alignment');
+    for (let i = 0; i < ipa.length; i++) {
+      const mapping = onsetTargets.find(([pattern]) => pattern.test(ipa[i]));
+      if (!mapping) continue;
+      assert.ok(target[i].startsWith(mapping[1]),
+        row.input + ': surface onset ' + ipa[i] + ' must align with Ukrainian target ' + mapping[1] + ' in ' + target[i]);
+    }
+  }
 });
