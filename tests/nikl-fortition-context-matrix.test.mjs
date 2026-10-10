@@ -7,7 +7,6 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const genericEngine = createEngine(canonical, '');
 const fortisIpa = { 'ㄱ':'k͈', 'ㄷ':'t͈', 'ㅂ':'p͈', 'ㅅ':'s͈', 'ㅈ':'tɕ͈' };
 const onsetSyllable = { 'ㄱ':'가', 'ㄷ':'다', 'ㅂ':'바', 'ㅅ':'사', 'ㅈ':'자' };
-const onsetBaseIpa = { 'ㄱ':'ka', 'ㄷ':'ta', 'ㅂ':'pa', 'ㅅ':'sa', 'ㅈ':'tɕa' };
 const codaBaseIpa = { 'ㄱ':'kak̚', 'ㄷ':'kat̚', 'ㅂ':'kap̚' };
 
 test('§23 exhaustive fortition matrix: each obstruent representative fortifies all five licensed plain onsets', () => {
