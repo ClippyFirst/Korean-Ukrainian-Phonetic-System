@@ -72,6 +72,7 @@ test('lexical CSV has unique keys, complete evidence fields and aligned syllable
       assert.ok(row[field], 'missing '+field+' for '+row.input);
     }
     assert.ok(row.source_url.startsWith('https://')||row.source_url.startsWith('http://'),'invalid source URL for '+row.input);
+    assert.doesNotMatch(row.target_syllables,/[가-힣]/u,'Hangul leaked into Ukrainian target for '+row.input);
     assert.ok(['high','medium','low'].includes(row.confidence),'unknown confidence for '+row.input);
     assert.ok(['provisional','model-selected','surface-only'].includes(row.target_status),'unknown target_status for '+row.input);
     const targetParts=row.target_syllables.split('|');
@@ -85,6 +86,7 @@ test('lexical CSV has unique keys, complete evidence fields and aligned syllable
       assert.equal([...row.alternate_surface_hangul].length,[...row.input].length,'alternate surface segmentation mismatch: '+row.input);
       assert.equal(row.alternate_target_syllables.split('|').length,[...row.input].length,'alternate target segmentation mismatch: '+row.input);
       assert.equal(row.alternate_ipa_syllables.split('|').length,[...row.input].length,'alternate IPA segmentation mismatch: '+row.input);
+      assert.doesNotMatch(row.alternate_target_syllables,/[가-힣]/u,'Hangul leaked into alternate Ukrainian target for '+row.input);
       assert.ok(row.variant_note,'missing alternate variant note for '+row.input);
     }
   }
