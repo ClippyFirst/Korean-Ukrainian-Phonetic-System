@@ -342,20 +342,15 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const leftRep=representative(left.coda),rightOnset=right.onset;
 
     if(['ㄴ','ㅁ'].includes(rightOnset)&&NASAL_AFTER[leftRep]){
-      rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation');
-      addRule(firstTrace(next),'nasal-assimilation');
+      if(rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation'))addRule(firstTrace(next),'nasal-assimilation');
       continue;
     }
 
     if(rightOnset==='ㄹ'&&['ㄱ','ㄷ','ㅂ','ㅁ','ㅇ'].includes(leftRep)){
       const obstruent=['ㄱ','ㄷ','ㅂ'].includes(leftRep);
       const rule=obstruent?'liquid-to-nasal-before-obstruent':'liquid-assimilation';
-      rewriteOnset(next,'ㄹ','ㄴ',false,rule);
-      addRule(lastTrace(previous),rule);
-      if(NASAL_AFTER[leftRep]){
-        rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation');
-        addRule(firstTrace(next),'nasal-assimilation');
-      }
+      if(rewriteOnset(next,'ㄹ','ㄴ',false,rule))addRule(lastTrace(previous),rule);
+      if(NASAL_AFTER[leftRep]&&rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation'))addRule(firstTrace(next),'nasal-assimilation');
       continue;
     }
 
@@ -366,8 +361,7 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     }
 
     if(leftRep==='ㄹ'&&rightOnset==='ㄴ'){
-      rewriteOnset(next,'ㄴ','ㄹ',true,'liquid-assimilation');
-      addRule(lastTrace(previous),'liquid-assimilation');
+      if(rewriteOnset(next,'ㄴ','ㄹ',true,'liquid-assimilation'))addRule(lastTrace(previous),'liquid-assimilation');
     }
   }
 }
