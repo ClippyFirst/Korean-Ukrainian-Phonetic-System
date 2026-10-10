@@ -252,3 +252,8 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 밝고,발꼬,пал|ко,pal|k͈o,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,제11항: 용언 어간 ㄺ은 ㄱ 앞에서 ㄹ로 발음; 제23항 된소리되기 [발꼬]. 우크라이나어 표기는 잠정적.,high,provisional,,,,
 읽습니다,익씀니다,ік|сим|ні|да,ik̚|s͈ɯm|ni|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제11항 받침 단순화, 제23항 된소리되기, 제18항 비음화: 읽습니다 [익씀니다]. 우크라이나어 표기는 잠정적.",high,provisional,,,,
 읽을,일글,іл|ґил,il|ɡɯl,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,제13항: 용언 어간 읽-과 어미 -을의 연음 [일글]. 우크라이나어 표기는 잠정적.,high,provisional,,,,
+었어,어써,о|со,ʌ|s͈ʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,제13항: 과거 어미 -었-과 -어의 연음 [어써]. 우크라이나어 표기는 잠정적.,high,provisional,,,,
+갔어,가써,ка|со,ka|s͈ʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제13항: 갔어 [가써], 받침 ㅆ의 연음. 우크라이나어 표기는 잠정적.",high,provisional,,,,
+갔어요,가써요,ка|со|йо,ka|s͈ʌ|jo,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제13항: 갔어요 [가써요], 받침 ㅆ의 연음. 우크라이나어 표기는 잠정적.",high,provisional,,,,
+있어요,이써요,і|со|йо,i|s͈ʌ|jo,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제13항: 있어요 [이써요], 받침 ㅆ의 연음. 우크라이나어 표기는 잠정적.",high,provisional,,,,
+있습니다,읻씀니다,іт|сим|ні|да,it̚|s͈ɯm|ni|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제9항 받침 중화, 제23항 된소리되기, 제18항 비음화: 있습니다 [읻씀니다]. 우크라이나어 표기는 잠정적.",high,provisional,,,,
