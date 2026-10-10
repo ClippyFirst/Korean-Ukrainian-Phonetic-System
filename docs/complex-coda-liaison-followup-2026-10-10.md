@@ -4,7 +4,7 @@
 
 The National Institute of Korean Language's Standard Pronunciation Rule §14 lists several official complex-coda + vowel-initial grammatical-morpheme examples. A targeted scan showed that the project had records for some familiar cases (for example, `닭을`, `값을`, `없어`, `여덟이`) but lacked other explicit controls. Since the engine intentionally does not infer morphology from Hangul adjacency, those examples need narrow, sourced lexical records rather than a broader heuristic.
 
-## Twelve additional source-backed records
+## Twelve source-backed regression controls
 
 | Input | NIKL surface | Rule pressure | Source |
 |---|---|---|---|
@@ -21,7 +21,7 @@ The National Institute of Korean Language's Standard Pronunciation Rule §14 lis
 | 짧아 | 짤바 | ㄼ liaison before -아 | [NIKL Standard Pronunciation Rules §14](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002) |
 | 짧으니 | 짤브니 | ㄼ liaison before -으니 | [NIKL Standard Pronunciation Rules §14](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002) |
 
-The lexical corpus grows from 418 to 430 entries. Korean surface forms are source-backed. Broad IPA is a project transcription layer; Ukrainian readings remain provisional and have not been independently validated with Ukrainian readers.
+Nine of the twelve tested forms were new lexical entries, growing the corpus from 418 to 427 entries; three liaison controls were already present and are tested rather than duplicated. Korean surface forms are source-backed. Broad IPA is a project transcription layer; Ukrainian readings remain provisional and have not been independently validated with Ukrainian readers.
 
 ## Regression control
 
