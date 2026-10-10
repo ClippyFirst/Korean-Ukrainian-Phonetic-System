@@ -17,7 +17,7 @@ onset,ㅊ,tɕʰ,ч,model-selected,isolated-syllable,"Aspiration not encoded as a
 onset,ㅋ,kʰ,к,model-selected,isolated-syllable,"Aspiration not encoded as a separate Ukrainian grapheme"
 onset,ㅌ,tʰ,т,model-selected,isolated-syllable,"Aspiration not encoded as a separate Ukrainian grapheme"
 onset,ㅍ,pʰ,п,model-selected,isolated-syllable,"Aspiration not encoded as a separate Ukrainian grapheme"
-onset,ㅎ,h,х,model-selected,isolated-syllable,"Broad Korean [h] mapped to the closest Ukrainian graphemic category in this model"
+onset,ㅎ,h,г,model-selected,isolated-syllable,"MODEL DECISION: Korean [h] approximated with Ukrainian г [ɦ] to preserve glottal place; voicing mismatch is explicit. Compare against х [x] in reader testing; not a phonetic identity or inherited convention."
 vowel,ㅏ,a,а,model-selected,isolated-syllable,""
 vowel,ㅐ,ɛ,е,model-selected,isolated-syllable,""
 vowel,ㅑ,ja,я,model-selected,isolated-syllable,""

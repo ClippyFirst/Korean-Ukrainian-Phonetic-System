@@ -11,7 +11,7 @@ const lexicalCsv=fs.readFileSync(path.join(root,'data/korean/lexical_pronunciati
 const engine=createEngine(csv,lexicalCsv);
 
 test('modern Hangul decomposition',()=>{assert.deepEqual(decompose('가'),{char:'가',onset:'ㄱ',vowel:'ㅏ',coda:'',hasCoda:false});assert.deepEqual(decompose('각'),{char:'각',onset:'ㄱ',vowel:'ㅏ',coda:'ㄱ',hasCoda:true});});
-test('canonical CV/CVC output',()=>{assert.equal(engine.convert('가').ukrainian,'ка');assert.equal(engine.convert('각').ukrainian,'как');assert.equal(engine.convert('한').ukrainian,'хан');});
+test('canonical CV/CVC output',()=>{assert.equal(engine.convert('가').ukrainian,'ка');assert.equal(engine.convert('각').ukrainian,'как');assert.equal(engine.convert('한').ukrainian,'ган');});
 test('contextual ㅅ before i maps to ш',()=>{assert.equal(engine.convert('시').ukrainian,'ші');});
 test('ㄹ onset/coda distinction',()=>{assert.equal(engine.convert('라').ukrainian,'ра');assert.equal(engine.convert('알').ukrainian,'ал');});
 test('ㅇ onset/coda distinction',()=>{assert.equal(engine.convert('아').ukrainian,'а');assert.equal(engine.convert('앙').ukrainian,'ан');});
@@ -30,10 +30,10 @@ test('simple liaison is contextual',()=>{const r=engine.convert('밥이');assert
 test('standard lexical ㄼ exception 밟- is preserved before consonants',()=>{const r=engine.convert('밟는');assert.equal(r.ukrainian,'памнин');assert.ok(r.trace[0].rules.includes('lexical-coda-balm'));});
 test('standard lexical ㄼ exceptions 넓죽- and 넓둥글- are preserved before fortition',()=>{const a=engine.convert('넓죽하다');assert.ok(a.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(a.trace[1].rules.includes('tensification'));const b=engine.convert('넓둥글다');assert.ok(b.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(b.trace[1].rules.includes('tensification'));});
 test('tensification remains practical rather than mandatory doubling',()=>{const r=engine.convert('국밥');assert.equal(r.ukrainian,'кукпап');assert.ok(r.trace.some(x=>x.rules.includes('tensification')));});
-test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'хйонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
+test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'гйонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
 test('lenis voicing between vowels is explicit',()=>{const r=engine.convert('부부');assert.equal(r.ukrainian,'пубу');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
 test('표준 voices intervocalic ㅈ',()=>{const r=engine.convert('표준');assert.equal(r.ukrainian,'пйоджун');assert.equal(r.ipa,'pʰjo dʑun');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
-test('consonant-onset ㅢ follows standard [i] realization',()=>{const r=engine.convert('희망');assert.equal(r.ukrainian,'хіман');assert.equal(r.ipa,'hi maŋ');assert.ok(r.trace[0].rules.includes('vowel-ui-to-i'));});
+test('consonant-onset ㅢ follows standard [i] realization',()=>{const r=engine.convert('희망');assert.equal(r.ukrainian,'гіман');assert.equal(r.ipa,'hi maŋ');assert.ok(r.trace[0].rules.includes('vowel-ui-to-i'));});
 test('ㅇ+ㅢ uses the normative default rather than an unresolved placeholder',()=>{const r=engine.convert('의');assert.equal(r.status,'contextual');assert.equal(r.ukrainian,'ий');assert.equal(r.ipa,'ɰi');assert.ok(r.trace[0].rules.includes('vowel-ui-default-ɰi'));});
 test('ㅇ+ㅢ still reports its original Hangul decomposition',()=>{const r=engine.convert('의');assert.equal(r.analysis,'의 = ㅇ+ㅢ');});
 test('default ㅢ and ordinary liaison preserve IPA word boundaries',()=>{const r=engine.convert('현대 한국어의 표준 발음');assert.equal(r.ipa,'hjʌn dɛ han ɡu ɡʌ ɰi pʰjo dʑun pa ɾɯm');});
@@ -198,7 +198,7 @@ test('official NIKL §§13–14 liaison examples are covered by exact sourced re
     '밭에':['바테','пате','pa tʰe'],
     '앞으로':['아프로','апиро','a pʰɯ ɾo'],
     '덮이다':['더피다','топіда','tʌ pʰi da'],
-    '핥아':['할타','халта','hal tʰa'],
+    '핥아':['할타','галта','hal tʰa'],
     '읊어':['을퍼','илпо','ɯl pʰʌ'],
     '값을':['갑쓸','капсил','kap̚ s͈ɯl'],
     '없어':['업써','опсо','ʌːp̚ s͈ʌ'],

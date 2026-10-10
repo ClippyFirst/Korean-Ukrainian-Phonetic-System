@@ -40,7 +40,7 @@ test('ㅇ+ㅢ uses the normative [ɰi] default instead of an unresolved placehol
 
 test('ㅢ with a consonant onset follows §5 and is realized as [i]', () => {
   const result = engine.convert('희망');
-  assert.equal(result.ukrainian, 'хіман');
+  assert.equal(result.ukrainian, 'гіман');
   assert.match(result.ipa, /hi maŋ/);
   assert.ok(result.trace.some((item) => item.rules.includes('vowel-ui-to-i')));
 });
@@ -126,7 +126,7 @@ test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', 
   const expected = {
     맛없다: {surface:'마덥따', target:'\u043c\u0430\u0434\u0435\u043f\u0442\u0430', ipa:'ma dʌp̚ t͈a'},
     겉옷: {surface:'거돋', target:'ґодот', ipa:'kʌ dot̚'},
-    헛웃음: {surface:'허두슴', target:'ходусим', ipa:'hʌ du sɯm'},
+    헛웃음: {surface:'허두슴', target:'годусим', ipa:'hʌ du sɯm'},
     값어치: {surface:'가버치', target:'кабочі', ipa:'ka bʌ tɕʰi'},
     젖어미: {surface:'저더미', target:'джодомі', ipa:'tɕʌ dʌ mi'},
   };
@@ -299,9 +299,9 @@ test('NIKL §16 official letter-name examples are exact lexical entries', () => 
     '피읖이': ['피으비', 'піибі', 'pʰi ɯ bi'],
     '피읖을': ['피으블', 'піибил', 'pʰi ɯ bɯl'],
     '피읖에': ['피으베', 'піибе', 'pʰi ɯ be'],
-    '히읗이': ['히으시', 'хіиші', 'hi ɯ ɕi'],
-    '히읗을': ['히으슬', 'хіисил', 'hi ɯ sɯl'],
-    '히읗에': ['히으세', 'хіисе', 'hi ɯ se'],
+    '히읗이': ['히으시', 'гіиші', 'hi ɯ ɕi'],
+    '히읗을': ['히으슬', 'гіисил', 'hi ɯ sɯl'],
+    '히읗에': ['히으세', 'гіисе', 'hi ɯ se'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
@@ -364,7 +364,7 @@ test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
 test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings', () => {
   const expected = {
     '주의': {surface:'주의', target:'чуий', ipa:'tɕu ɰi', alternateSurface:'주이', alternateTarget:'чуі', alternateIpa:'tɕu i'},
-    '협의': {surface:'혀븨', target:'хьобий', ipa:'hjʌ bɰi', alternateSurface:'혀비', alternateTarget:'хьобі', alternateIpa:'hjʌ bi'},
+    '협의': {surface:'혀븨', target:'гьобий', ipa:'hjʌ bɰi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ bi'},
     '우리의': {surface:'우리의', target:'уріий', ipa:'u ɾi ɰi', alternateSurface:'우리에', alternateTarget:'уріе', alternateIpa:'u ɾi e'},
     '강의의': {surface:'강의의', target:'канийий', ipa:'kaːŋ ɰi ɰi', alternateSurface:'강이에', alternateTarget:'каніе', alternateIpa:'kaːŋ i e'},
   };
@@ -441,7 +441,7 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
 
 test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readings', () => {
   const variants = {
-    '회': {surface:'회', target:'хве', ipa:'hø', alternateSurface:'훼', alternateTarget:'хве', alternateIpa:'hwe'},
+    '회': {surface:'회', target:'гве', ipa:'hø', alternateSurface:'훼', alternateTarget:'гве', alternateIpa:'hwe'},
     '위': {surface:'위', target:'ві', ipa:'y', alternateSurface:'위', alternateTarget:'ві', alternateIpa:'wi'},
     '계집': {surface:'계집', target:'кєджіп', ipa:'kjeː dʑip̚', alternateSurface:'게집', alternateTarget:'кеджіп', alternateIpa:'keː dʑip̚'},
     '계시다': {surface:'계시다', target:'кєшіда', ipa:'kjeː ɕi da', alternateSurface:'게시다', alternateTarget:'кешіда', alternateIpa:'keː ɕi da'},
@@ -449,8 +449,8 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
     '연계': {surface:'연계', target:'йонґє', ipa:'jʌn ɡje', alternateSurface:'연게', alternateTarget:'йонґе', alternateIpa:'jʌn ɡe'},
     '몌별': {surface:'몌별', target:'мєбйол', ipa:'mje bjʌl', alternateSurface:'메별', alternateTarget:'мебйол', alternateIpa:'me bjʌl'},
     '개폐': {surface:'개폐', target:'кепє', ipa:'kɛ pʰje', alternateSurface:'개페', alternateTarget:'кепе', alternateIpa:'kɛ pʰe'},
-    '혜택': {surface:'혜택', target:'хєтек', ipa:'hjeː tʰɛk̚', alternateSurface:'헤택', alternateTarget:'хетек', alternateIpa:'heː tʰɛk̚'},
-    '지혜': {surface:'지혜', target:'чіхє', ipa:'tɕi hje', alternateSurface:'지헤', alternateTarget:'чіхе', alternateIpa:'tɕi he'},
+    '혜택': {surface:'혜택', target:'гєтек', ipa:'hjeː tʰɛk̚', alternateSurface:'헤택', alternateTarget:'гетек', alternateIpa:'heː tʰɛk̚'},
+    '지혜': {surface:'지혜', target:'чігє', ipa:'tɕi hje', alternateSurface:'지헤', alternateTarget:'чіге', alternateIpa:'tɕi he'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(variants)) {
@@ -588,7 +588,7 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '키읔만': ['키응만', 'kʰi ɯŋ man', 'кіинман'],
     '몫몫이': ['몽목씨', 'moŋ mok̚ s͈i', 'монмокші'],
     '긁는': ['긍는', 'kɯŋ nɯn', 'киннин'],
-    '흙만': ['흥만', 'hɯŋ man', 'хинман'],
+    '흙만': ['흥만', 'hɯŋ man', 'гинман'],
     '닫는': ['단는', 'tan nɯn', 'таннин'],
     '짓는': ['진는', 'tɕiːn nɯn', 'чіннин'],
     '옷맵시': ['온맵씨', 'on mɛp̚ s͈i', 'онмепші'],
@@ -656,7 +656,7 @@ test('NIKL §11 generic complex-coda examples use the general rules', () => {
 
 test('NIKL §11 lexical length and morphology exceptions preserve official readings', () => {
   const expected = {
-    '흙과': ['흑꽈', 'hɯk̚ k͈wa', 'хикква'],
+    '흙과': ['흑꽈', 'hɯk̚ k͈wa', 'гикква'],
     '삶': ['삼', 'saːm', 'сам'],
     '젊다': ['점따', 'tɕʌːm t͈a', 'чомта'],
   };

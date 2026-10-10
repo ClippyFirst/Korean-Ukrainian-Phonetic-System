@@ -28,6 +28,14 @@ test('high-risk user-corpus words use explicit standard surface readings', () =>
   }
 });
 
+test('Korean onset ㅎ uses the documented practical Ukrainian target г', () => {
+  const row = parseCsv(canonical).find((r) => r.layer === 'onset' && r.input === 'ㅎ');
+  assert.ok(row, 'missing canonical onset ㅎ row');
+  assert.equal(row.ipa, 'h');
+  assert.equal(row.ukrainian, 'г');
+  assert.equal(engine.convert('하').ukrainian, 'га');
+});
+
 test('trace panel has explicit column labels for source, target, rules and status', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   const css = readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
@@ -72,4 +80,29 @@ test('the exact three user-reported sentences do not leave past-tense liaison pl
 test('literal punctuation and spaces are not emitted as empty-looking trace rows', () => {
   const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   assert.match(main, /for\s*\(const t of r\.trace\)\s*\{\s*if\s*\(t\.status\s*===\s*'literal'\)\s*continue;/u);
+});
+
+test('second adversarial corpus resolves morphology-sensitive forms without placeholders', () => {
+  const expected = {
+    '얇아도': ['얄바도', 'яльбадо'],
+    '얇아서': ['얄바서', 'яльбасо'],
+    '많은': ['마는', 'манин'],
+    '빗었어요': ['비서써요', 'бісосойо'],
+    '해돋이를': ['해도지를', 'гедоджірил'],
+    '멋있어요': ['머디써요', 'модісойо'],
+    '맛있고': ['마딛꼬', 'мадітко'],
+    '맛없고': ['마덥꼬', 'мадепко'],
+    '맛없어요': ['마더버요', 'мадобойо'],
+    '젊은': ['절믄', 'джолмин'],
+    '읽었습니다': ['일거씀니다', 'ілґосимнида'],
+    '않아도': ['아나도', 'анадо'],
+    '좋아질': ['조아질', 'джоаджіль'],
+  };
+  for (const [word, [surface, target]] of Object.entries(expected)) {
+    const result = engine.convert(word);
+    assert.equal(result.surfaceHangul, surface, word + ': surface');
+    assert.equal(result.ukrainian, target, word + ': target');
+    assert.deepEqual(result.issues, [], word + ': ' + JSON.stringify(result.issues));
+    assert.ok(!result.ukrainian.includes('⟦'), word + ': ' + result.ukrainian);
+  }
 });

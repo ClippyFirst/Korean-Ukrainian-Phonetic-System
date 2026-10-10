@@ -29,3 +29,10 @@ The 11,172 Hangul blocks are generated Unicode combinations. They must not be re
 ## Uncertainty
 
 Alternative vowel realizations and contemporary Seoul stop cue change are represented explicitly. A single preferred output is therefore always contextual to the selected analysis and rule ordering.
+
+
+## Korean ㅎ → Ukrainian practical target
+
+The browser's primary practical model currently maps onset ㅎ, whose broad Korean phonetic basis is voiceless glottal [h], to Ukrainian **г** [ɦ]. This is a project-level approximation, not a claim that the phones are identical and not an inherited transcription convention. The choice preserves glottal place of articulation while sacrificing the Korean segment's voicelessness; Ukrainian **х** [x] would preserve voicelessness but shift the place of articulation toward the velar region. Neither candidate is a perfect match. The choice should be evaluated through controlled reader-production tests and, if available, acoustic comparison—not justified by Latin-letter substitution alone.
+
+This onset mapping does not override Korean phonological rules: when ㅎ deletes, triggers aspiration, or participates in a coda process, the Korean surface form must be determined first. Only then is the resulting surface segment mapped into Ukrainian. The coda entry ㅎ and the onset entry ㅎ therefore remain separate analyses.
