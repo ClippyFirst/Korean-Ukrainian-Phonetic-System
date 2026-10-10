@@ -5,6 +5,7 @@ import { createEngine, parseCsv } from '../src/app/engine.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
+const userCorpus = readFileSync(new URL('./fixtures/user-supplied-corpus.txt', import.meta.url), 'utf8').trim().split(/\\r?\\n/u);
 const engine = createEngine(canonical, lexical);
 
 test('obstruent coda before ㄹ triggers ㄹ-to-ㄴ and nasal assimilation', () => {
@@ -805,4 +806,18 @@ test('surface pronunciation is exposed for lexical forms and omitted for unverif
   assert.equal(sourced.surfaceHangul, '해도지');
   const general = engine.convert('눈물');
   assert.equal(general.surfaceHangul, '');
+});
+
+
+test('all 154 user-supplied tokens and phrases are stable end-to-end smoke inputs', () => {
+  assert.equal(userCorpus.length, 154);
+  for (const source of userCorpus) {
+    const result = engine.convert(source);
+    assert.equal(result.source, source, source);
+    assert.equal(typeof result.ukrainian, 'string', source);
+    assert.equal(typeof result.ipa, 'string', source);
+    assert.equal(typeof result.analysis, 'string', source);
+    assert.ok(Array.isArray(result.trace), source);
+    assert.ok(Array.isArray(result.issues), source);
+  }
 });
