@@ -39,6 +39,13 @@ A follow-up NIKL source sweep added twelve exact regression cases for complex-co
 - [Read the audit report](docs/complex-coda-liaison-followup-2026-10-10.md)
 - [Regression test](tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs)
 
+## NIKL audit: exceptions to automatic ㄴ insertion (2026-10-10)
+
+A test-first audit exposed a missing standard surface form for `값있다[가빋따]`. Three lexical controls are now included: `값있다[가빋따]`, `곧이어[고디어]`, and `음용[으묭]`. They encode NIKL's caution that ㄴ insertion is not automatic in every similar phonological environment.
+
+- [Audit report](docs/n-insertion-exceptions-audit-2026-10-10.md)
+- [Regression test](tests/adversarial-n-insertion-exceptions-2026-10-10.test.mjs)
+
 ## Scientific pipeline
 
 Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
