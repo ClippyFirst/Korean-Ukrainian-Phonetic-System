@@ -252,10 +252,27 @@ test('official NIKL §§13–14 liaison examples are covered by exact sourced re
   }
 });
 
+test('multiple phrase-boundary assimilation rules compose in one sentence with a lexical override',()=>{
+  const chain=engine.convert('국 립 문법');
+  assert.equal(chain.ukrainian,'кун нім мунпоп');
+  assert.equal(chain.ipa,'kuŋ nim mun p͈ʌp̚');
+  assert.ok(chain.trace.find(item=>item.source==='국').rules.includes('liquid-to-nasal-before-obstruent'));
+  assert.ok(chain.trace.find(item=>item.source==='국').rules.includes('nasal-assimilation'));
+  assert.ok(chain.trace.find(item=>item.source==='립').rules.includes('liquid-to-nasal-before-obstruent'));
+  assert.ok(chain.trace.find(item=>item.source==='립').rules.includes('nasal-assimilation'));
+  assert.ok(chain.trace.find(item=>item.source==='문').rules.includes('nasal-assimilation'));
+
+  const second=engine.convert('몇 리 문법');
+  assert.equal(second.ukrainian,'мйон ні мунпоп');
+  assert.equal(second.ipa,'mjʌn ni mun p͈ʌp̚');
+  assert.ok(second.trace.find(item=>item.source==='몇').rules.includes('liquid-to-nasal-before-obstruent'));
+  assert.ok(second.trace.find(item=>item.source==='몇').rules.includes('nasal-assimilation'));
+});
+
 test('system page publishes the phrase-boundary assimilation audit',()=>{
   const html=fs.readFileSync(path.join(root,'system.html'),'utf8');
   assert.ok(html.includes('id="phrase-boundary-assimilation-audit"'));
-  for(const example of ['밥 문법','밥, 문법','몇 리','신 라면 문법','칼 날 문법']){
+  for(const example of ['밥 문법','밥, 문법','몇 리','신 라면 문법','칼 날 문법','국 립 문법','몇 리 문법']){
     assert.ok(html.includes(example),'missing published phrase-boundary example: '+example);
   }
   assert.ok(html.includes('NIKL — 표준 발음법'));

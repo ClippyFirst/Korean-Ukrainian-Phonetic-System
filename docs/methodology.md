@@ -69,3 +69,8 @@ The surface representative ㄷ must be included alongside ㄱ and ㅂ when a fol
 
 
 Phrase-boundary liquid assimilation is also preserved when any exact lexical entry causes word-level conversion: `신 라면 문법` exercises ㄴ+ㄹ → ㄹㄹ, while `칼 날 문법` exercises ㄹ+ㄴ → ㄹㄹ. The repair changes only the affected edge segments and records the rule on both neighbouring trace rows. It does not cross punctuation and does not infer morphology-dependent liaison or palatalization.
+
+
+### Composition of consecutive phrase-boundary rules
+
+The regression suite also checks chains of adjacent word-boundary changes, not only isolated pairs. In `국 립 문법`, the boundary `ㄱ + ㄹ` first yields the liquid-to-nasal pattern and nasalizes the coda, then `ㅂ + ㅁ` at the next boundary nasalizes independently. In `몇 리 문법`, the representative coda of ㅊ is ㄷ; the test verifies the ㄷ + ㄹ sequence and confirms that a later lexical override in the same phrase does not bypass the boundary pass. These are regression examples for rule composition, not claims that arbitrary orthographic adjacency establishes every morphophonemic rule.
