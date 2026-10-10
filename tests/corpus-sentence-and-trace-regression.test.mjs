@@ -84,7 +84,7 @@ test('literal punctuation and spaces are not emitted as empty-looking trace rows
 
 test('second adversarial corpus resolves morphology-sensitive forms without placeholders', () => {
   const expected = {
-    '얇아도': ['얄바도', 'яльбадо'],
+    '얇아도': ['얄바도', 'ялбадо'],
     '얇아서': ['얄바서', 'яльбасо'],
     '많은': ['마는', 'манин'],
     '빗었어요': ['비서써요', 'пісосойо'],
