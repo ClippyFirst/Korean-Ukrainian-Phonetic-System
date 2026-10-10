@@ -163,7 +163,7 @@ test('liquid assimilation is preserved when a lexical override elsewhere activat
 
   const liquidNasal=engine.convert('칼 날 문법');
   assert.equal(liquidNasal.ukrainian,'кал лал мунпоп');
-  assert.equal(liquidNasal.ipa,'kal lal mun p͈ʌp̚');
+  assert.equal(liquidNasal.ipa,'kʰal lal mun p͈ʌp̚');
   assert.ok(liquidNasal.trace.find(item=>item.source==='칼').rules.includes('liquid-assimilation'));
   assert.ok(liquidNasal.trace.find(item=>item.source==='날').rules.includes('liquid-assimilation'));
 });
