@@ -63,8 +63,8 @@ test('high-risk spelling-only morphology remains unresolved when exact evidence 
 test('morphology-specific readings are not generalized to unlicensed spellings', () => {
   const generic = createEngine(canonical, '');
   const cases = [
-    ['읽고', '읽어'],
-    ['맑게', '맑어'],
+    ['읽고', '긁고'],
+    ['맑게', '늙고'],
     ['굳이', '갇이'],
     ['넓히다', '넓아다'],
   ];
@@ -75,12 +75,10 @@ test('morphology-specific readings are not generalized to unlicensed spellings',
       !genericLicensed.trace.some((item) => item.rules.includes('lexical-pronunciation')),
       licensed + ': generic-only engine must not secretly use lexical overrides',
     );
-    if (unlicensed === '갇이' || unlicensed === '넓아다') {
-      const result = generic.convert(unlicensed);
-      assert.ok(
-        result.ukrainian.includes('⟦') || result.issues.length > 0 || result.status === 'unresolved',
-        unlicensed + ': unlicensed morphology must remain unresolved',
-      );
-    }
+    const result = generic.convert(unlicensed);
+    assert.ok(
+      result.ukrainian.includes('⟦') || result.issues.length > 0 || result.status === 'unresolved',
+      unlicensed + ': unlicensed morphology must remain unresolved',
+    );
   }
 });
