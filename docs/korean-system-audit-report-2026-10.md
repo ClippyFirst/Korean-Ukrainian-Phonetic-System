@@ -231,3 +231,8 @@ All new Ukrainian targets are provisional. The official rule page provides Korea
 Added exact entries for all 19 official §30 examples: ten §30(1) fortition examples with both permitted readings (냇가, 샛길, 빨랫돌, 콧등, 깃발, 대팻밥, 햇살, 뱃속, 뱃전, 고갯짓); four §30(2) nasalization examples (콧날, 아랫니, 툇마루, 뱃머리); and five §30(3) double-nasal-insertion examples (베갯잇, 깻잎, 나뭇잎, 도리깻열, 뒷윷). Alternate readings are represented as explicit variants rather than hidden in notes. Long vowels are marked on the vowel in IPA (e.g. 퇸ː마루 → `tʰøːn`), while the Ukrainian target remains provisional.
 
 The inventory now contains 393 lexical records. Structural review checks primary and alternate segment counts independently; passing these checks establishes data alignment only, not the optimality of each Ukrainian target.
+
+
+## 20. Target-script integrity correction
+
+The first §30 regression run caught two Ukrainian-target cells that accidentally contained Hangul characters: the target for 깃발 contained 팔 instead of пал, and the target for 뱃머리 contained 모 instead of мо. Both cells were corrected. The lexical CSV integrity test now also rejects Hangul characters in Ukrainian target fields, including alternate targets, to prevent this class of copy/paste error from recurring.
