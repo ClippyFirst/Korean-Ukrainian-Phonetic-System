@@ -197,15 +197,19 @@ function applyContextualRules(units){
       }
     }
 
-    // R006a: when an obstruent coda precedes ㄹ, standard pronunciation
-    // realizes that ㄹ as ㄴ; the coda then undergoes nasal assimilation.
-    // Examples: 국립 [궁닙], 독립문 [동님문], 협력 [혐녁].
-    // Keep the rule visible on both segments so the trace explains the change.
+    // R006a: the NIKL §19 cases are ㄱ/ㅂ (plus the explicit ㅁ/ㅇ cases).
+    // The engine also supports ㄷ + ㄹ as a project inference (e.g. 몇 리),
+    // but NIKL's 2025 Q&A says the standard-pronunciation rules have no
+    // explicit clause for 몇 리 and notes that views may differ. Keep that
+    // inference visibly separate in the trace; do not present it as §19.
     const beforeLiquidRep=representative(a.coda);
     if(['ㄱ','ㄷ','ㅂ','ㅁ','ㅇ'].includes(beforeLiquidRep)&&b.onset==='ㄹ'){
       b.onset='ㄴ';
-      rules.push('liquid-to-nasal-before-obstruent');
-      nextRules.push('liquid-to-nasal-before-obstruent');
+      const rule=beforeLiquidRep==='ㄷ'
+        ?'project-inferred-d-liquid-nasalization'
+        :'liquid-to-nasal-before-obstruent';
+      rules.push(rule);
+      nextRules.push(rule);
     }
 
     // R005: nasal assimilation. Use the final representative for obstruent
@@ -268,8 +272,11 @@ function applyContextualRules(units){
     const beforeLiquidRep=representative(a.coda);
     if(['ㄱ','ㄷ','ㅂ','ㅁ','ㅇ'].includes(beforeLiquidRep)&&b.onset==='ㄹ'){
       b.onset='ㄴ';
-      rules.push('liquid-to-nasal-before-obstruent');
-      nextRules.push('liquid-to-nasal-before-obstruent');
+      const rule=beforeLiquidRep==='ㄷ'
+        ?'project-inferred-d-liquid-nasalization'
+        :'liquid-to-nasal-before-obstruent';
+      rules.push(rule);
+      nextRules.push(rule);
     }
 
     const afterRep=representative(a.coda);

@@ -145,13 +145,14 @@ test('phrase nasal assimilation does not cross punctuation even when a lexical w
   assert.ok(!r.trace.some(item=>item.source==='밥'&&item.rules.includes('nasal-assimilation')));
 });
 
-test('representative ㄷ before ㄹ triggers liquid-to-nasal and nasal assimilation across a phrase boundary',()=>{
+test('몇 리 keeps the ㄷ+ㄹ analysis explicitly labelled as a project inference',()=>{
   const r=engine.convert('몇 리');
   assert.equal(r.ukrainian,'мйон ні');
   assert.equal(r.ipa,'mjʌn ni');
-  assert.ok(r.trace[0].rules.includes('liquid-to-nasal-before-obstruent'));
+  assert.ok(r.trace[0].rules.includes('project-inferred-d-liquid-nasalization'));
   assert.ok(r.trace[0].rules.includes('nasal-assimilation'));
-  assert.ok(r.trace.find(item=>item.source==='리').rules.includes('liquid-to-nasal-before-obstruent'));
+  assert.ok(r.trace.find(item=>item.source==='리').rules.includes('project-inferred-d-liquid-nasalization'));
+  assert.ok(!r.trace.some(item=>item.rules.includes('liquid-to-nasal-before-obstruent')&&item.source==='몇'));
 });
 
 test('liquid assimilation is preserved when a lexical override elsewhere activates word splitting',()=>{
