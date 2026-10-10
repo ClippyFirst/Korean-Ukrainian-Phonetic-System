@@ -56,8 +56,8 @@ test('official NIKL §27 attached-ending fortition examples are lexically covere
 test('NIKL §26 fortition is not generalized to non-licensed ㄹ-final words or reduplications',()=>{
   for(const word of ['갈구','출발','허허실실','절절하다']){
     const r=engine.convert(word);
-    assert.equal(r.surfaceHangul,word,word);
     assert.ok(!r.trace.some(item=>item.rules.includes('tensification')),word);
+    assert.ok(!r.ipa.includes('͈'),word);
   }
 });
 
