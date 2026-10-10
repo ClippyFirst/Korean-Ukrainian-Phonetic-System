@@ -151,7 +151,7 @@ Audit the complete lexical dataset, not just a hand-picked sample.
 For every record, check:
 
 - unique and correctly normalized input key;
-- valid CSV quoting and stable column count;
+- valid CSV quoting and all required columns; omitted trailing optional fields are acceptable only when the parser explicitly fills them with empty values and the data contract documents that convention;
 - complete syllable segmentation;
 - equal and sensible counts of Hangul syllables, Ukrainian target syllables and IPA syllable units where that record format requires alignment;
 - surface Hangul agrees with the cited pronunciation;
