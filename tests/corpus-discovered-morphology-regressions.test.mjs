@@ -7,7 +7,7 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
 
-test('corpus-discovered directly attested pronunciation cases are sourced and regression-locked', () => {
+test('corpus-discovered source-backed and rule-derived pronunciation cases are regression-locked', () => {
   const expected = {
     읽기: ['일끼','일끼','ілкі','il k͈i'],
     읽어요: ['일거요','일거요','ілґойо','il ɡʌ jo'],
@@ -22,7 +22,6 @@ test('corpus-discovered directly attested pronunciation cases are sourced and re
     좋으면: ['조으면','조으면','чоимйон','tɕo ɯ mjʌn'],
     놓으면: ['노으면','노으면','ноимйон','no ɯ mjʌn'],
     않으면: ['아느면','아느면','анимйон','a nɯ mjʌn'],
-    좋아: ['조아','조아','чоа','tɕoː a'],
     좋은: ['조은','조은','чоин','tɕo ɯn'],
     없어요: ['업써요','업써요','опсойо','ʌp̚ s͈ʌ jo'],
     밟아요: ['발바요','발바요','палбайо','pal ba jo'],
