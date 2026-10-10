@@ -161,3 +161,8 @@ Official source: NIKL, *표준 발음법*, §§18–20 and commentary: https://w
 The browser now mirrors the Python research layer's guard: if an unlisted form has written ㄺ immediately before ㄱ, it is not allowed to choose between the §11 verbal-stem exception and ordinary coda simplification through generic §23 fortition. Exact sourced lexical entries resolve official examples such as 묽고 [물꼬] and 얽거나 [얼꺼나]; other ambiguous forms are marked unresolved.
 
 Official source: NIKL, *표준 발음법*, §11 and its listed examples: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+
+
+### Exact phrase-boundary ㄴ insertion (§29)
+
+`nikl-phrase-boundary-insertion-29.test.mjs` checks all six exact phrase licenses in the browser engine (`한 일`, `옷 입다`, `먹은 엿`, `할 일`, `잘 입다`, `먹을 엿`), six near-miss controls, and punctuation boundaries. This protects the rule from being generalized to every final ㄴ/ㄹ/ㅅ before a vowel-initial next word. The matrix validates the engine's narrow license table, not productive syntactic coverage.
