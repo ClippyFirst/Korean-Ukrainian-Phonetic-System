@@ -17,6 +17,7 @@ test('new adversarial standard-pronunciation forms are sourced and regression-lo
     '값있는': { surface: '가빈는', target: 'кабіннин', ipa: 'ka bin nɯn' },
     '앞일': { surface: '암닐', target: 'амніл', ipa: 'am nil' },
     '무늬': { surface: '무니', target: 'муні', ipa: 'mu ni' },
+    '넋받이': { surface: '넉빠지', target: 'нокпаджі', ipa: 'nʌk̚ p͈a dʑi' },
   };
 
   for (const [input, want] of Object.entries(expected)) {
@@ -68,6 +69,24 @@ test('the contrasting ㄺ/ㄼ/ㄿ/ㅄ contexts keep distinct readings', () => {
     assert.equal(result.surfaceHangul, surface, input);
     assert.equal(result.ukrainian, target, input);
     assert.equal(result.ipa, ipa, input);
+    assert.ok(!result.ukrainian.includes('⟦'), input);
+  }
+});
+
+test('other official coda-plus-fortition examples remain rule-governed', () => {
+  const expected = {
+    '삯돈': { target: 'сактон', ipa: 'sak̚ t͈on', rules: ['tensification'] },
+    '읊조리다': { target: 'ипчоріда', ipa: 'ɯp̚ tɕ͈o ɾi da', rules: ['tensification'] },
+    '맑는': { target: 'маннин', ipa: 'maŋ nɯn', rules: ['nasal-assimilation'] },
+    '묽는': { target: 'муннин', ipa: 'muŋ nɯn', rules: ['nasal-assimilation'] },
+  };
+  for (const [input, want] of Object.entries(expected)) {
+    const result = engine.convert(input);
+    assert.equal(result.ukrainian, want.target, input);
+    assert.equal(result.ipa, want.ipa, input);
+    for (const rule of want.rules) {
+      assert.ok(result.trace.some((item) => item.rules.includes(rule)), input + ': ' + rule);
+    }
     assert.ok(!result.ukrainian.includes('⟦'), input);
   }
 });
