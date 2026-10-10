@@ -33,7 +33,6 @@ test('§§24–28: unseen morphology-conditioned fortition is not inferred from 
     ['발전', 26],
     ['몰상식', 26],
     ['불세출', 26],
-    ['할 것', 27],
     ['문고리', 28],
   ];
 
@@ -68,4 +67,12 @@ test('§§24–30 evidence rows have official provenance and explicit article co
     assert.match(row.source_url, /^https:\/\/(?:www\.|m\.)?korean\.go\.kr\//u, input + ': official NIKL provenance');
     assert.ok(audit.includes('§' + article), input + ': audit must account for §' + article);
   }
+});
+
+test('§27: the explicitly listed adnominal phrase remains a narrow positive license', () => {
+  const result = generic.convert('할 것');
+  assert.ok(
+    result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')),
+    'the exact listed phrase 할 것 should use the explicit §27 phrase license',
+  );
 });
