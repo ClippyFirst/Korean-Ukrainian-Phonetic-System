@@ -99,3 +99,35 @@ This is a mapping of the current implementation and tests inspected, not a claim
 ## 6. Evidence and reproducibility
 
 The counts above are from a complete parse of the two CSV files on the audit branch, not a sampled subset. The mismatch/duplicate checks are deterministic structural checks. No external source-page crawl, native Korean-speaker review, Ukrainian-reader study, browser automation, or local test/build execution is represented as completed.
+
+
+## 7. Rule-interaction matrix (source-code review; not yet expert-validated)
+
+The classifications below describe intended behavior and implementation safeguards visible in the current source. They are a practical audit matrix, not a substitute for checking each article and example against the live NIKL text.
+
+| Interaction | Classification | Current handling | Required regression / evidence gate |
+|---|---|---|---|
+| Coda representative → nasal assimilation before ㄴ/ㅁ | Required when the standard environment is licensed | `representative` + `NASAL_AFTER`; local and phrase-boundary passes | Exhaustive contrast for each coda class; verify surface IPA and trace |
+| Obstruent coda + ㄹ → ㄹ realised as ㄴ, then coda nasalizes | Required in the supported environment | `liquid-to-nasal-before-obstruent`, then nasal assimilation | Cover underlying ㄱ/ㄷ/ㅂ representatives including written ㅅ/ㅈ/ㅊ, plus boundary and punctuation contrasts |
+| ㄴ + ㄹ → ㄹㄹ | Required in the licensed environment | `liquid-assimilation` in local and phrase-boundary passes | Minimal pairs; ensure both aggregate channels and trace change together |
+| ㄹ + ㄴ → ㄹㄹ | Required in the licensed environment | `liquid-assimilation` | Verify coda and onset outputs, especially lexical overrides |
+| ㅁ/ㅇ coda + ㄹ → ㄴ onset | Context-dependent by the standard sequence | Local and phrase-boundary liquid handling | Contrast with ㄴ+ㄹ and obstruent+ㄹ; verify ordering and trace |
+| ㅎ coda + lenis onset → aspiration | Required only in licensed patterns | `ASPIRATION` branch and sourced lexical examples | Test every eligible onset and coda; distinguish simple from complex codas |
+| ㄷ + ㅎ before ㅣ → aspiration plus palatalization | Required for licensed morphology | Explicit `h-aspiration-plus-palatalization` path | Official examples and contrastive non-licensed forms |
+| Complex coda + vowel-initial ending/suffix | Context-dependent on morphology | Unknown cases marked unresolved; exact sourced forms use lexical entries | Formal vs substantive morpheme contrasts; never generalize from adjacency |
+| ㅎ deletion before vowel-initial ending/suffix | Context-dependent on morphology | Unknown cases marked unresolved; exact sourced forms use lexical entries | Positive and negative morphology contrasts, including ㄶ/ㅀ |
+| Complex coda + ㅎ aspiration | Context-dependent on licensed morphophonology | Unknown cases marked unresolved; exact sourced forms use lexical entries | All official examples, with separate Ukrainian-target review |
+| ㄺ + ㄱ | Context-dependent / lexical-morphological exception | Unknown cases withheld; known verb-stem and noun forms have scoped entries | Expand stem/noun minimal contrasts; verify no exception leakage |
+| Coda + lenis onset fortition | Required only in applicable environments | `PLAIN_TO_FORTIS` pass; practical UA output deliberately neutralizes fortisness | Enumerate all applicable coda/onset pairs and exceptions; distinguish Korean IPA from UA grapheme policy |
+| ㄴ insertion in compounds/derived words | Context-dependent, often lexical/morphological | Current inspected coverage relies substantially on exact sourced entries | Build full normative inventory and contrastive tests; do not claim a general parser |
+| ㅢ realization | Context-dependent by position/morphology | Default [ɰi], consonant-onset [i], with exact context limits | Add particle 의, non-initial 의, and word-initial/non-initial contrasts |
+| Whitespace-separated phrase assimilation | Heuristic approximation | Plain whitespace is treated as a phrase link; punctuation blocks the pass | Add connected-phrase vs isolated-word behavior or an explicit UI disclosure/mode |
+| Lexical override + boundary rule | Required only when the boundary rule itself is licensed and both rendered edge segments match | Guarded edge rewrites; rules propagated only after successful rewrite | Keep the adversarial regression and add positive cases for each rewrite branch |
+| Korean surface change → Ukrainian target | Not a Korean normative interaction; project mapping policy | Canonical map and lexical targets render the selected surface analysis | Review Korean surface, IPA and UA target separately; target tests do not certify reader quality |
+
+### Known gaps after this pass
+
+- This matrix has not been exhaustively cross-checked article-by-article against the current NIKL source.
+- The engine's phrase pass still uses whitespace as a proxy for connected speech. The previous PR documents this limitation; a user-selectable phrase mode would be clearer.
+- The full 11,172-syllable property suite, a live-source reachability crawl, UI/accessibility checks and independent Korean/ Ukrainian review remain outstanding.
+- A green test suite would establish code/test conformance, not prove the linguistic or reader-facing quality of every output.
