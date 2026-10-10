@@ -202,3 +202,8 @@ Added exact lexical entries and regressions for the official attached-ending exa
 The separated phrase examples in §27 (할 것을, 갈 데가, 할 바를, 할 수는, 할 적에, 갈 곳, 할 도리, 만날 사람) remain a separate phrase/syntax gap. The standard explicitly notes that fortition may not apply when a phrase is spoken with a pause; treating every whitespace boundary as a fortition trigger would be incorrect. Source: [NIKL Standard Pronunciation Rules, §27](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002).
 
 All seven Ukrainian targets are marked provisional. The Korean surface forms and their IPA representations are separate from the Ukrainian reader-facing approximation and need independent review.
+
+
+## 15. Lexicon integrity guard
+
+The lexical CSV now has an automated regression checking unique input keys, required evidence/metadata fields, allowed confidence and target-status values, source URL schemes, and one-to-one segmentation counts across input, Korean surface, Ukrainian target and IPA. A fresh static pass over the current 339 records found no duplicate input keys, missing required fields, unsupported status labels, malformed source URL schemes, or segment-count mismatches. This check is structural only: it cannot determine whether a Korean pronunciation is linguistically correct or whether a Ukrainian target is optimal.
