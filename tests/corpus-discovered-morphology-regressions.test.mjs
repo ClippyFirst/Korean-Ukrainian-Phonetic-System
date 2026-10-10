@@ -7,15 +7,17 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
 
-test('corpus-discovered directly attested morphology has sourced and regression-locked readings', () => {
+test('corpus-discovered directly attested pronunciation cases are sourced and regression-locked', () => {
   const expected = {
-    많이: ['마니','мані','maː ni'],
-    밝게: ['발께','палке','pal k͈e'],
-    붙이다: ['부치다','пучіда','pu tɕʰi da'],
-    낱낱이: ['난나치','нанначі','nanː na tɕʰi']
+    읽기: ['일끼','일끼','ілкі','il k͈i'],
+    많이: ['마니','마니','мані','maː ni'],
+    밝게: ['발께','발께','палке','pal k͈e'],
+    좋아: ['조아','조아','чоа','tɕoː a'],
+    붙이다: ['부치다','부치다','пучіда','pu tɕʰi da'],
+    낱낱이: ['난나치','난나치','нанначі','nanː na tɕʰi']
   };
   const rows = parseCsv(lexical);
-  for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
+  for (const [word, [surface, _surfaceAgain, target, ipa]] of Object.entries(expected)) {
     const entry = rows.find((row) => row.input === word);
     assert.ok(entry, word + ': lexical entry exists');
     assert.match(entry.source_url, /^https:\/\/(?:(?:www\.|m\.)?korean\.go\.kr)\//u, word + ': official NIKL source');
