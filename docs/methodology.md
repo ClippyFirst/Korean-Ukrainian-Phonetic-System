@@ -53,3 +53,6 @@ The third corpus is based on a user-supplied running text and adds further contr
 ## Model-wide Ukrainian-target consistency audit
 
 A review of the lexical layer found two different defects that must not be conflated with Korean pronunciation errors: (1) Ukrainian target syllables sometimes duplicated the segmental coda by moving it into the next target syllable, and (2) some target strings encoded Korean fortisness as doubled Ukrainian onset letters despite the project's stated neutralization policy. The same pass corrected several clear word-initial lenis/affricate targets and updated contextual IPA where it contradicted the model's stated realization. Regression coverage lives in `tests/model-wide-target-consistency.test.mjs`. The corrections preserve source-backed Korean surface forms and leave Ukrainian targets provisional; no test pass is evidence of reader-tested transcription quality.
+
+
+The same audit also enforces the declared coda-`ㄹ` target `л` (not `ль`), context-sensitive `ㅢ` readings, and the special `ㅅ/ㅆ + ㅣ` target `ш`. It fixes duplicated or shifted consonants in the target syllable array without changing the verified Korean surface form. Context-dependent Ukrainian spellings for glides remain graphemic model decisions rather than universal Korean facts.
