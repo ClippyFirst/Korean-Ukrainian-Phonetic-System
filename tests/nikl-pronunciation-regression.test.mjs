@@ -65,7 +65,7 @@ test('the complete official institution name uses its sourced standard surface f
   const result = engine.convert('국립국어원');
   assert.equal(result.surfaceHangul, '궁님꾸거원');
   assert.equal(result.ukrainian, 'кунгнімкуґовон');
-  assert.equal(result.ipa, 'kuŋ nim k͈u kʌ wʌn');
+  assert.equal(result.ipa, 'kuŋ nim k͈u ɡʌ wʌn');
   assert.equal(result.status, 'lexical-review');
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
 });
@@ -104,9 +104,9 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
   const expected = {
     같이: {surface:'가치', target:'качі', ipa:'ka tɕʰi'},
     굳이: {surface:'구지', target:'куджі', ipa:'ku dʑi'},
-    곧이듣다: {surface:'고지듣따', target:'коджідитта', ipa:'ko dʑi tɯt̚ t͈a'},
+    곧이듣다: {surface:'고지듣따', target:'коджідитта', ipa:'ko dʑi dɯt̚ t͈a'},
     굳히다: {surface:'구치다', target:'кучіда', ipa:'ku tɕʰi da'},
-    닫히다: {surface:'다치다', target:'дачіда', ipa:'ta tɕʰi da'},
+    닫히다: {surface:'다치다', target:'тачіда', ipa:'ta tɕʰi da'},
     묻히다: {surface:'무치다', target:'мучіда', ipa:'mu tɕʰi da'},
   };
   const rows = parseCsv(lexical);
@@ -124,11 +124,11 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
 
 test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', () => {
   const expected = {
-    맛없다: {surface:'마덥따', target:'\u043c\u0430\u0434\u0435\u043f\u0442\u0430', ipa:'ma dʌp̚ t͈a'},
-    겉옷: {surface:'거돋', target:'ґодот', ipa:'kʌ dot̚'},
+    맛없다: {surface:'마덥따', target:'мадопта', ipa:'ma dʌp̚ t͈a'},
+    겉옷: {surface:'거돋', target:'кодот', ipa:'kʌ dot̚'},
     헛웃음: {surface:'허두슴', target:'годусим', ipa:'hʌ du sɯm'},
     값어치: {surface:'가버치', target:'кабочі', ipa:'ka bʌ tɕʰi'},
-    젖어미: {surface:'저더미', target:'джодомі', ipa:'tɕʌ dʌ mi'},
+    젖어미: {surface:'저더미', target:'чодомі', ipa:'tɕʌ dʌ mi'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
@@ -182,7 +182,7 @@ test('sourced §14 complex-coda examples use exact surface forms and provisional
     값이: {surface:'갑씨', target:'капші', ipa:'kap̚ s͈i'},
     앉아: {surface:'안자', target:'анджа', ipa:'an dʑa'},
     닭을: {surface:'달글', target:'талґил', ipa:'tal ɡɯl'},
-    젊어: {surface:'절머', target:'джолмо', ipa:'tɕʌl mʌ'},
+    젊어: {surface:'절머', target:'чолмо', ipa:'tɕʌl mʌ'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
@@ -281,9 +281,9 @@ test('official §12(4) H-deletion examples are sourced and marked provisional on
 
 test('NIKL §16 official letter-name examples are exact lexical entries', () => {
   const expected = {
-    '디귿이': ['디그시', 'диґиші', 'ti ɡɯ ɕi'],
-    '디귿을': ['디그슬', 'диґисил', 'ti ɡɯ sɯl'],
-    '디귿에': ['디그세', 'диґисе', 'ti ɡɯ se'],
+    '디귿이': ['디그시', 'тіґиші', 'ti ɡɯ ɕi'],
+    '디귿을': ['디그슬', 'тіґисил', 'ti ɡɯ sɯl'],
+    '디귿에': ['디그세', 'тіґисе', 'ti ɡɯ se'],
     '지읒이': ['지으시', 'чіиші', 'tɕi ɯ ɕi'],
     '지읒을': ['지으슬', 'чіисил', 'tɕi ɯ sɯl'],
     '지읒에': ['지으세', 'чіисе', 'tɕi ɯ se'],
@@ -324,7 +324,7 @@ test('NIKL §21 negative controls prevent nonstandard place assimilation', () =>
     '옷감': ['옫깜', 'откам'],
     '있고': ['읻꼬', 'ітко'],
     '꽃길': ['꼳낄', 'коткіл'],
-    '젖먹이': ['전머기', 'джонмоґі'],
+    '젖먹이': ['전머기', 'чонмоґі'],
     '문법': ['문뻡', 'мунпоп'],
     '꽃밭': ['꼳빧', 'котпат'],
   };
@@ -364,7 +364,7 @@ test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
 test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings', () => {
   const expected = {
     '주의': {surface:'주의', target:'чуий', ipa:'tɕu ɰi', alternateSurface:'주이', alternateTarget:'чуі', alternateIpa:'tɕu i'},
-    '협의': {surface:'혀븨', target:'гьобий', ipa:'hjʌ bɰi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ bi'},
+    '협의': {surface:'혀븨', target:'гьобі', ipa:'hjʌ bi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ bi'},
     '우리의': {surface:'우리의', target:'уріий', ipa:'u ɾi ɰi', alternateSurface:'우리에', alternateTarget:'уріе', alternateIpa:'u ɾi e'},
     '강의의': {surface:'강의의', target:'канийий', ipa:'kaːŋ ɰi ɰi', alternateSurface:'강이에', alternateTarget:'каніе', alternateIpa:'kaːŋ i e'},
   };
@@ -388,7 +388,7 @@ test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings',
 test('NIKL §§6–7 source-backed length examples preserve long vowels and alternants', () => {
   const expected = {
     '눈보라': ['눈보라', 'нунбора', 'nuːn bo ɾa'],
-    '말씨': ['말씨', 'малсі', 'maːl s͈i'],
+    '말씨': ['말씨', 'малші', 'maːl s͈i'],
     '밤나무': ['밤나무', 'памнаму', 'paːm na mu'],
     '많다': ['만타', 'манта', 'maːn tʰa'],
     '멀리': ['멀리', 'моллі', 'mʌːl li'],
@@ -402,15 +402,15 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
     '밟으면': ['발브면', 'палбимйон', 'pal bɯ mjʌn'],
     '신다': ['신따', 'шінта', 'ɕiːn t͈a'],
     '신어': ['시너', 'шіно', 'ɕi nʌ'],
-    '알다': ['알다', 'алта', 'aːl da'],
+    '알다': ['알다', 'алда', 'aːl da'],
     '알아': ['아라', 'ара', 'a ɾa'],
     '끌다': ['끌따', 'килта', 'k͈ɯl t͈a'],
     '끌어': ['끄러', 'киро', 'k͈ɯː ɾʌ'],
     '떫다': ['떨따', 'толта', 't͈ʌːl t͈a'],
     '떫은': ['떨븐', 'толбин', 't͈ʌːl bɯn'],
-    '벌다': ['벌다', 'полта', 'pʌːl da'],
-    '벌어': ['버러', 'боро', 'pʌː ɾʌ'],
-    '썰다': ['썰다', 'солта', 's͈ʌːl da'],
+    '벌다': ['벌다', 'полда', 'pʌːl da'],
+    '벌어': ['버러', 'поро', 'pʌː ɾʌ'],
+    '썰다': ['썰다', 'солда', 's͈ʌːl da'],
     '썰어': ['써러', 'соро', 's͈ʌː ɾʌ'],
     '감기다': ['감기다', 'камґіда', 'kam ɡi da'],
     '꼬이다': ['꼬이다', 'коіда', 'k͈o i da'],
@@ -432,8 +432,8 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
   }
   const compound = engine.convert('반신반의');
   assert.equal(compound.status, 'lexical-review');
-  assert.equal(compound.ukrainian, 'паншінбаний');
-  assert.equal(compound.ipa, 'paːn ɕin baː nɰi');
+  assert.equal(compound.ukrainian, 'паншінбані');
+  assert.equal(compound.ipa, 'paːn ɕin baː ni');
   assert.equal(compound.variants[0].surface, '반신바니');
   assert.equal(compound.variants[0].ukrainian, 'паншінбані');
   assert.equal(compound.variants[0].ipa, 'paːn ɕin baː ni');
@@ -488,7 +488,7 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
 
 test('fortisness remains in IPA but is not encoded by doubled Ukrainian graphemes', () => {
   const expected = {
-    '맛없다': ['мадепта', 'ma dʌp̚ t͈a'],
+    '맛없다': ['мадопта', 'ma dʌp̚ t͈a'],
     '맛있다': ['мадітта', 'ma dit̚ t͈a'],
     '멋있다': ['модітта', 'mʌ dit̚ t͈a'],
     '깎아': ['кака', 'k͈a k͈a'],
@@ -514,8 +514,8 @@ test('NIKL §10 complex-coda examples and lexical exceptions are source-backed',
   const expected = {
     '넋과': ['넉꽈', 'нокква', 'nʌk̚ k͈wa'],
     '앉다': ['안따', 'анта', 'an t͈a'],
-    '여덟': ['여덜', 'йодоль', 'jʌ dʌl'],
-    '넓다': ['널따', 'нольта', 'nʌl t͈a'],
+    '여덟': ['여덜', 'йодол', 'jʌ dʌl'],
+    '넓다': ['널따', 'нолта', 'nʌl t͈a'],
     '외곬': ['외골', 'веґол', 'ø ɡol'],
     '밟소': ['밥쏘', 'папсо', 'paːp̚ s͈o'],
     '밟지': ['밥찌', 'папчі', 'paːp̚ tɕ͈i'],
@@ -594,13 +594,13 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '옷맵시': ['온맵씨', 'on mɛp̚ s͈i', 'онмепші'],
     '있는': ['인는', 'in nɯn', 'іннин'],
     '맞는': ['만는', 'man nɯn', 'маннин'],
-    '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'джонмонуль'],
+    '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'чонмонул'],
     '쫓는': ['쫀는', 'tɕ͈on nɯn', 'чоннин'],
-    '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'конмануль'],
+    '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'конманул'],
     '붙는': ['분는', 'pun nɯn', 'пуннин'],
     '놓는': ['논는', 'non nɯn', 'ноннин'],
-    '잡는': ['잠는', 'tɕam nɯn', 'джамнин'],
-    '밥물': ['밤물', 'pam mul', 'паммуль'],
+    '잡는': ['잠는', 'tɕam nɯn', 'чамнин'],
+    '밥물': ['밤물', 'pam mul', 'паммул'],
     '앞마당': ['암마당', 'am ma daŋ', 'аммадан'],
     '읊는': ['음는', 'ɯm nɯn', 'имнин'],
   };
@@ -715,12 +715,12 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
 
 test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', () => {
   const expected = {
-    '줄넘기': ['줄럼끼', 'tɕul lʌm k͈i', 'чульломкі'],
-    '임진란': ['임진난', 'imː tɕin nan', 'імчіннан'],
+    '줄넘기': ['줄럼끼', 'tɕul lʌm k͈i', 'чулломкі'],
+    '임진란': ['임진난', 'imː dʑin nan', 'імджіннан'],
     '생산량': ['생산냥', 'sɛŋ san njaŋ', 'сенсаннян'],
-    '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйольтаннок'],
-    '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', 'конквоннок'],
-    '동원령': ['동원녕', 'toŋː wʌn njʌŋ', 'тонвоннон'],
+    '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйолтанньок'],
+    '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', 'конквонньок'],
+    '동원령': ['동원녕', 'toŋː wʌn njʌŋ', 'тонвонньон'],
     '상견례': ['상견녜', 'saŋ ɡjʌn nje', 'санґйоннє'],
     '이원론': ['이원논', 'iː wʌn non', 'івоннон'],
     '입원료': ['이붠뇨', 'i bwʌn njo', 'ібвонньо'],

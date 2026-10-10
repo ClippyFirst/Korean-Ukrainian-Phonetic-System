@@ -140,7 +140,7 @@ def test_second_pass_lexical_targets_are_shared_with_python_transliteration():
         "꽃잎": "конніп",
         "밭이": "пачі",
         "밭을": "патил",
-        "넓네": "нольле",
+        "넓네": "нолле",
         "없다": "опта",
         "없는": "омнин",
         "국물": "кунмул",

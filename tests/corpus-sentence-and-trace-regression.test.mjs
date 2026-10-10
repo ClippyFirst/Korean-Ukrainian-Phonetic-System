@@ -10,7 +10,7 @@ const entries = new Map(parseCsv(lexical).map((row) => [row.input, row]));
 
 test('high-risk user-corpus words use explicit standard surface readings', () => {
   const expected = {
-    '국립국어원': ['궁님꾸거원', 'кунгнімкуґовон', 'kuŋ nim k͈u kʌ wʌn'],
+    '국립국어원': ['궁님꾸거원', 'кунгнімкуґовон', 'kuŋ nim k͈u ɡʌ wʌn'],
     '먹었어요': ['머거써요', 'моґосойо', 'mʌ ɡʌ s͈ʌ jo'],
     '찍었어요': ['찌거써요', 'чіґосойо', 'tɕ͈i ɡʌ s͈ʌ jo'],
   };
@@ -84,19 +84,19 @@ test('literal punctuation and spaces are not emitted as empty-looking trace rows
 
 test('second adversarial corpus resolves morphology-sensitive forms without placeholders', () => {
   const expected = {
-    '얇아도': ['얄바도', 'яльбадо'],
-    '얇아서': ['얄바서', 'яльбасо'],
+    '얇아도': ['얄바도', 'ялбадо'],
+    '얇아서': ['얄바서', 'ялбасо'],
     '많은': ['마는', 'манин'],
-    '빗었어요': ['비서써요', 'бісосойо'],
+    '빗었어요': ['비서써요', 'пісосойо'],
     '해돋이를': ['해도지를', 'гедоджірил'],
     '멋있어요': ['머디써요', 'модісойо'],
     '맛있고': ['마딛꼬', 'мадітко'],
-    '맛없고': ['마덥꼬', 'мадепко'],
+    '맛없고': ['마덥꼬', 'мадопко'],
     '맛없어요': ['마더버요', 'мадобойо'],
-    '젊은': ['절믄', 'джолмин'],
-    '읽었습니다': ['일거씀니다', 'ілґосимнида'],
+    '젊은': ['절믄', 'чолмин'],
+    '읽었습니다': ['일거씀니다', 'ілґосимніда'],
     '않아도': ['아나도', 'анадо'],
-    '좋아질': ['조아질', 'джоаджіль'],
+    '좋아질': ['조아질', 'чоаджіл'],
   };
   for (const [word, [surface, target]] of Object.entries(expected)) {
     const result = engine.convert(word);
