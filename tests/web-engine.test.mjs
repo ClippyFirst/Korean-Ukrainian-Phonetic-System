@@ -286,7 +286,7 @@ test('phrase-boundary trace stays silent when a lexical target does not match th
   const syntheticLexicon=[
     'input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confidence,target_status,alternate_surface_hangul,alternate_target_syllables,alternate_ipa_syllables,variant_note',
     '국,국,гу,ku,test-fixture,"synthetic target intentionally omits the coda",high,model-selected,,,,',
-    '라면,라면,나|면,na|mjʌn,test-fixture,"synthetic target intentionally changes the onset",high,model-selected,,,,'
+    '라면,라면,на|мен,na|mjʌn,test-fixture,"synthetic target intentionally changes the onset",high,model-selected,,,,'
   ].join('\n');
   const guarded=createEngine(csv,syntheticLexicon);
   const nasal=guarded.convert('국 문');
