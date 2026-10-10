@@ -21,7 +21,7 @@ The National Institute of Korean Language's Standard Pronunciation Rule §14 lis
 | 짧아 | 짤바 | ㄼ liaison before -아 | [NIKL Standard Pronunciation Rules §14](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002) |
 | 짧으니 | 짤브니 | ㄼ liaison before -으니 | [NIKL Standard Pronunciation Rules §14](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002) |
 
-Nine of the twelve tested forms were new lexical entries, growing the corpus from 418 to 427 entries; three liaison controls were already present and are tested rather than duplicated. Korean surface forms are source-backed. Broad IPA is a project transcription layer; Ukrainian readings remain provisional and have not been independently validated with Ukrainian readers.
+Eight of the twelve tested forms were new lexical entries, growing the corpus from 418 to 426 entries; four liaison controls were already present and are tested rather than duplicated. Korean surface forms are source-backed. Broad IPA is a project transcription layer; Ukrainian readings remain provisional and have not been independently validated with Ukrainian readers.
 
 ## Regression control
 
