@@ -46,7 +46,7 @@ test('word-initial lenis and affricate targets follow the declared Ukrainian map
     '디귿에': 'ті|ґи|се',
     '젖먹이': 'чон|мо|ґі',
     '벌어': 'по|ро',
-    '젖멍울': 'чон|мон|уль',
+    '젖멍울': 'чон|мон|ул',
     '잡는': 'чам|нин',
     '닿소': 'та|со',
     '빗었어요': 'пі|со|со|йо',
@@ -95,5 +95,68 @@ test('all corrected non-surface-only rows remain provisional and traceable', () 
     assert.equal(result.status, 'lexical-review', word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
     assert.deepEqual(result.issues, [], word);
+  }
+});
+
+
+test('coda ㄹ uses the declared Ukrainian л target without an added soft sign', () => {
+  const expected = {
+    '넓네': 'нол|ле',
+    '여덟': 'йо|дол',
+    '넓다': 'нол|та',
+    '젖멍울': 'чон|мон|ул',
+    '꽃망울': 'кон|ман|ул',
+    '밥물': 'пам|мул',
+    '결단력': 'кйол|тан|ньок',
+    '줄넘기': 'чул|лом|кі',
+    '뚫네': 'тул|ле',
+    '설날': 'сол|лал',
+    '넓고': 'нол|ко',
+    '콧물': 'кон|мул',
+    '박물관': 'панг|мул|ґван',
+    '한국말': 'ган|кунг|мал',
+    '얇아도': 'ял|ба|до',
+    '얇아서': 'ял|ба|со',
+    '넓지만': 'нол|чі|ман',
+    '짧아도': 'чал|ба|до',
+    '일찍': 'іл|чік',
+    '설명했어요': 'сол|мйон|ге|со|йо',
+    '흙을': 'гил|ґил',
+    '밟으며': 'пал|би|мйо',
+    '낡은': 'нал|ґин',
+    '밟았습니다': 'пал|ба|сим|ні|да',
+    '맑은': 'мал|ґин',
+  };
+  for (const [word, target] of Object.entries(expected)) {
+    assert.equal(entries.get(word)?.target_syllables, target, word + ': coda-lateral target');
+    assert.ok(!target.split('|').some((segment) => /ль/u.test(segment)), word + ': coda ㄹ must not be softened');
+    assert.equal(engine.convert(word).ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+  }
+});
+
+test('context-sensitive vowel and voicing decisions remain explicit in the lexical layer', () => {
+  const expected = {
+    '맛없다': ['ма|доп|та', 'ma|dʌp̚|t͈a'],
+    '맛없고': ['ма|доп|ко', 'ma|dʌp̚|k͈o'],
+    '협의': ['гьо|бі', 'hjʌ|bi'],
+    '말씨': ['мал|ші', 'maːl|s͈i'],
+    '반신반의': ['пан|шін|ба|ні', 'paːn|ɕin|baː|ni'],
+    '임진란': ['ім|джін|нан', 'imː|dʑin|nan'],
+    '결단력': ['кйол|тан|ньок', 'kjʌl|t͈an|njʌk̚'],
+    '공권력': ['кон|квон|ньок', 'koŋ|k͈wʌn|njʌk̚'],
+    '동원령': ['тон|вон|ньон', 'toŋː|wʌn|njʌŋ'],
+    '많습니다': ['ман|сим|ні|да', 'man|s͈ɯm|ni|da'],
+    '좋습니다': ['чо|сим|ні|да', 'tɕo|s͈ɯm|ni|da'],
+    '읽었습니다': ['іл|ґо|сим|ні|да', 'il|ɡʌ|s͈ɯm|ni|da'],
+    '춥습니다': ['чуп|сим|ні|да', 'tɕʰup̚|s͈ɯm|ni|da'],
+    '나갔습니다': ['на|ґат|сим|ні|да', 'na|ɡat̚|s͈ɯm|ni|da'],
+    '밟았습니다': ['пал|ба|сим|ні|да', 'pal|ba|s͈ɯm|ni|da'],
+  };
+  for (const [word, [target, ipa]] of Object.entries(expected)) {
+    const row = entries.get(word);
+    assert.ok(row, 'missing lexical row: ' + word);
+    assert.equal(row.target_syllables, target, word + ': target');
+    assert.equal(row.ipa_syllables, ipa, word + ': IPA');
+    assert.equal(engine.convert(word).ukrainian, target.replaceAll('|', ''), word + ': runtime target');
   }
 });
