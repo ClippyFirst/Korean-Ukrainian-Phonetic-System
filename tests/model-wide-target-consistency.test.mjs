@@ -12,12 +12,12 @@ const entries = new Map(rows.map((row) => [row.input, row]));
 test('practical targets do not duplicate Korean fortisness as doubled Ukrainian onset letters', () => {
   const expected = {
     '밝다': 'пак|та',
-    '넓고': 'ноль|ко',
+    '넓고': 'нол|ко',
     '읊다': 'ип|та',
     '읊고': 'ип|ко',
     '앉고': 'ан|ко',
-    '많습니다': 'ман|сим|ни|да',
-    '좋습니다': 'чо|сим|ни|да',
+    '많습니다': 'ман|сим|ні|да',
+    '좋습니다': 'чо|сим|ні|да',
     '낫다': 'нат|та',
     '낫고': 'нат|ко',
     '낫지': 'нат|чі',
@@ -66,8 +66,8 @@ test('word-initial lenis and affricate targets follow the declared Ukrainian map
 test('target syllable alignment and contextual IPA are consistent for high-risk connected forms', () => {
   const expected = {
     '덥고': ['топ|ко', 'tʌp̚|k͈o'],
-    '춥습니다': ['чуп|сим|ни|да', 'tɕʰup̚|s͈ɯm|ni|da'],
-    '나갔습니다': ['на|ґат|сим|ни|да', 'na|ɡat̚|s͈ɯm|ni|da'],
+    '춥습니다': ['чуп|сим|ні|да', 'tɕʰup̚|s͈ɯm|ni|da'],
+    '나갔습니다': ['на|ґат|сим|ні|да', 'na|ɡat̚|s͈ɯm|ni|da'],
     '미닫이': ['мі|да|джі', 'miː|da|dʑi'],
     '땀받이': ['там|ба|джі', 't͈am|ba|dʑi'],
     '국립국어원': ['кунг|нім|ку|ґо|вон', 'kuŋ|nim|k͈u|ɡʌ|wʌn'],
