@@ -322,13 +322,12 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const newIpa=realizedLateral?(get(map,'coda','ㄹ')?.ipa||''):(get(map,'onset',newOnset)?.ipa||'');
     if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
     const trace=firstTrace(result);
-    if(result.ukrainian.startsWith(oldTarget))result.ukrainian=newTarget+result.ukrainian.slice(oldTarget.length);
-    if(result.ipa.startsWith(oldIpa))result.ipa=newIpa+result.ipa.slice(oldIpa.length);
-    if(trace){
-      if(trace.output.startsWith(oldTarget))trace.output=newTarget+trace.output.slice(oldTarget.length);
-      if(trace.ipa.startsWith(oldIpa))trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
-      addRule(trace,rule);
-    }
+    if(!trace||!result.ukrainian.startsWith(oldTarget)||!result.ipa.startsWith(oldIpa)||!trace.output.startsWith(oldTarget)||!trace.ipa.startsWith(oldIpa))return false;
+    result.ukrainian=newTarget+result.ukrainian.slice(oldTarget.length);
+    result.ipa=newIpa+result.ipa.slice(oldIpa.length);
+    trace.output=newTarget+trace.output.slice(oldTarget.length);
+    trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
+    addRule(trace,rule);
     return true;
   };
 
