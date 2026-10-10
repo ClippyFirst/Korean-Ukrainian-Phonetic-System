@@ -236,3 +236,8 @@ The inventory now contains 393 lexical records. Structural review checks primary
 ## 20. Target-script integrity correction
 
 The first §30 regression run caught two Ukrainian-target cells that accidentally contained Hangul characters: the target for 깃발 contained 팔 instead of пал, and the target for 뱃머리 contained 모 instead of мо. Both cells were corrected. The lexical CSV integrity test now also rejects Hangul characters in Ukrainian target fields, including alternate targets, to prevent this class of copy/paste error from recurring.
+
+
+## 21. Ukrainian target-script inventory
+
+A full character scan of all 393 primary and alternate Ukrainian targets found only the declared Ukrainian Cyrillic letters and the allowed syllable delimiter. No Latin characters, IPA symbols, digits, or Hangul remained in the target fields. The automated CSV integrity test now checks this alphabet boundary in addition to rejecting Hangul explicitly. This is a script-integrity check only; it does not establish that every target is idiomatic or phonetically optimal Ukrainian.
