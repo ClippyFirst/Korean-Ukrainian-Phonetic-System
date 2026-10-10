@@ -27,6 +27,18 @@ const H_CODA_ASPIRATION={
 // the final consonant alone. In particular, 밟- is [ㅂ] before consonants.
 const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥','넓적']);
 
+// Exact, source-licensed phrase boundaries whose rules require syntax or a
+// known compound. These maps deliberately do not generalize from ㄹ/ㄴ codas.
+const NIKL_27_ADNOMINAL_PHRASES=new Map([
+  ['할 것을','ㄱ'],['갈 데가','ㄷ'],['할 바를','ㅂ'],['할 수는','ㅅ'],
+  ['할 적에','ㅈ'],['갈 곳','ㄱ'],['할 도리','ㄷ'],['만날 사람','ㅅ']
+]);
+const NIKL_29_PHRASE_INSERTION=new Map([
+  ['한 일',{onset:'ㄴ'}],['옷 입다',{coda:'ㄴ',onset:'ㄴ'}],
+  ['먹은 엿',{onset:'ㄴ'}],['할 일',{onset:'ㄹ'}],
+  ['잘 입다',{onset:'ㄹ'}],['먹을 엿',{onset:'ㄹ'}]
+]);
+
 function parseCsv(text){
   const rows=[];let row=[],cell='',quoted=false;
   for(let i=0;i<text.length;i++){
@@ -272,6 +284,34 @@ function applyContextualRules(units){
     }
     if(!sawSpace||j>=units.length||units[j].type!=='hangul')continue;
     const b=units[j],rules=ruleSets[i],nextRules=ruleSets[j];
+
+    // Build an exact eojeol pair from the immutable source characters. §27
+    // fortition is licensed by the adnominal ending and prosody, not by any
+    // arbitrary word-final ㄹ. Only the official examples are generalized.
+    let leftStart=i;
+    while(leftStart>0&&units[leftStart-1].type==='hangul')leftStart--;
+    let rightEnd=j;
+    while(rightEnd<units.length&&units[rightEnd].type==='hangul')rightEnd++;
+    const leftWord=units.slice(leftStart,i+1).map(u=>u.char).join('');
+    const rightWord=units.slice(j,rightEnd).map(u=>u.char).join('');
+    const phraseKey=leftWord+' '+rightWord;
+    const licensedFortis=NIKL_27_ADNOMINAL_PHRASES.get(phraseKey);
+    if(licensedFortis&&b.onset===licensedFortis){
+      b.onset=PLAIN_TO_FORTIS[licensedFortis];
+      rules.push('adnominal-r-fortition-§27');
+      nextRules.push('adnominal-r-fortition-§27');
+    }
+
+    // §29 [붙임 2]: exact licensed phrase examples for n-insertion. In the
+    // listed ㄹ-final examples the inserted ㄴ surfaces as ㄹ. For 옷 입다,
+    // the inserted ㄴ also triggers nasalization of the preceding ㅅ coda.
+    const insertion=NIKL_29_PHRASE_INSERTION.get(phraseKey);
+    if(insertion){
+      if(insertion.coda)a.coda=insertion.coda;
+      b.onset=insertion.onset;
+      rules.push('phrase-n-insertion-§29');
+      nextRules.push('phrase-n-insertion-§29');
+    }
 
     const beforeLiquidRep=representative(a.coda);
     if(['ㄱ','ㄷ','ㅂ','ㅁ','ㅇ'].includes(beforeLiquidRep)&&b.onset==='ㄹ'){
