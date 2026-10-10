@@ -189,3 +189,27 @@ test('official §12(2)–(3) ㅎ-before-ㅅ and ㅎ-before-ㄴ examples are cove
     assert.ok(r.trace[0].rules.includes('lexical-pronunciation'),word);
   }
 });
+
+test('official NIKL §§13–14 liaison examples are covered by exact sourced readings',()=>{
+  const expected={
+    '낮이':['나지','наджі','na dʑi'],
+    '꽂아':['꼬자','коджа','k͈o dʑa'],
+    '꽃을':['꼬츨','кочил','k͈o tɕʰɯl'],
+    '밭에':['바테','пате','pa tʰe'],
+    '앞으로':['아프로','апиро','a pʰɯ ɾo'],
+    '덮이다':['더피다','топіда','tʌ pʰi da'],
+    '핥아':['할타','халта','hal tʰa'],
+    '읊어':['을퍼','илпо','ɯl pʰʌ'],
+    '값을':['갑쓸','капсил','kap̚ s͈ɯl'],
+    '없어':['업써','опсо','ʌːp̚ s͈ʌ'],
+    '여덟이':['여덜비','йодолбі','jʌ dʌl bi'],
+    '여덟을':['여덜블','йодолбил','jʌ dʌl bɯl'],
+  };
+  for(const [word,[surface,ua,ipa]] of Object.entries(expected)){
+    const r=engine.convert(word);
+    assert.equal(r.ukrainian,ua,word);
+    assert.equal(r.ipa,ipa,word);
+    assert.equal(r.status,'lexical-review',word);
+    assert.ok(r.trace[0].rules.includes('lexical-pronunciation'),word);
+  }
+});
