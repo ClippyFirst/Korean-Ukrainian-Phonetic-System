@@ -34,7 +34,7 @@ Passing tests demonstrates reproducibility of declared model outputs and absence
 
 ## Complex-coda liaison audit (2026-10-10)
 
-A follow-up NIKL source sweep added five exact regression cases for complex-coda liaison and fortis [ㅆ]: `앉아`, `곬이`, `핥아`, `읊어`, and `몫이`. The new entries are narrow lexical controls, not general morphology guesses.
+A follow-up NIKL source sweep added twelve exact regression cases for complex-coda liaison, fortis [ㅆ], and the conjugation patterns of `넓다` / `짧다`, including `넓어[널버]`, `넓으니[널브니]`, and `짧아[짤바]`. The new entries are narrow lexical controls, not general morphology guesses.
 
 - [Read the audit report](docs/complex-coda-liaison-followup-2026-10-10.md)
 - [Regression test](tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs)
