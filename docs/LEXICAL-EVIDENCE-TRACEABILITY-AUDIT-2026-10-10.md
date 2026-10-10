@@ -4,16 +4,16 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **48** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **39** rows meet the audit filter.
 
 ## Source-type counts
 
 | Existing source URL type | Rows |
 |---|---:|
-| NIKL online Q&A | 11 |
-| NIKL FAQ | 2 |
+| NIKL online Q&A | 4 |
+| NIKL FAQ | 0 |
 | NIKL standard-rules page | 35 |
-| **Total requiring article-mapping review** | **48** |
+| **Total requiring article-mapping review** | **39** |
 
 ## Resolved during follow-up
 
@@ -31,6 +31,10 @@ Nine more rows were assigned explicit rule references or documented as rule-spec
 
 Twelve further rows now have explicit article mappings or a directly supported rule trace: `값없다` (§§10, 15, 23), `의견란` (§20), `읽고` (§§11, 23), `읽다` (§§11, 23), `읽어` (§14; its source URL was corrected to the exact NIKL answer), `읽는` (§§11, 18), `읽지` (§§11, 23), `맑게` (§§11, 23), `맑고` (§§11, 23; exact-word attestation remains indirect), `맑다` (§§11, 23; source now points to the official rules page), `밝기` (§§11, 23), and `닭고기` (§§11, 23).
 
+## Resolved during follow-up
+
+Nine more records received explicit rule mappings based on their linked official evidence: `꽃잎` (§§9, 18, 29), `밭이` (§17), `밭을` (§13), `넓네` (§§10, 20), `없다` (§§10, 23), `없는` (§§10, 18), `국물` (§18), `떡볶이` (§23, with the remaining morphological liaison step explicitly left unclaimed by the source), and `옷이` (§13). `대한민국` remains a baseline/no-rewrite control; it has not been forced into an article mapping merely to clear the queue.
+
 ## Required handling
 
 - Do not assign a rule number from a guessed sound-process label. Verify the cited source and the exact Standard Pronunciation Rules clause first.
@@ -43,15 +47,6 @@ Twelve further rows now have explicit article mappings or a directly supported r
 
 | Input | Existing official source | Current note (preserved verbatim) | Next action |
 |---|---|---|---|
-| 꽃잎 | NIKL online Q&A | 합성어의 ㄴ 첨가와 비음화; 표준 발음 [꼰닙] | Verify source; map article or label lexical/corpus evidence |
-| 밭이 | NIKL FAQ | 받침 ㅌ과 조사 이의 구개음화; 표준 발음 [바치] | Verify source; map article or label lexical/corpus evidence |
-| 밭을 | NIKL FAQ | 받침 ㅌ의 모음 앞 연음; 표준 발음 [바틀] | Verify source; map article or label lexical/corpus evidence |
-| 넓네 | NIKL online Q&A | ㄼ의 ㄹ 실현 후 ㄴ+ㄹ 유음화; 표준 발음 [널레] | Verify source; map article or label lexical/corpus evidence |
-| 없다 | NIKL online Q&A | ㅄ 단순화와 된소리되기; 표준 발음 [업ː따], 길이는 IPA에 별도 표시 | Verify source; map article or label lexical/corpus evidence |
-| 없는 | NIKL online Q&A | ㅄ 단순화 후 비음화; 표준 발음 [엄ː는] | Verify source; map article or label lexical/corpus evidence |
-| 국물 | NIKL online Q&A | ㄱ 종성의 비음화; 표준 발음 [궁물] | Verify source; map article or label lexical/corpus evidence |
-| 떡볶이 | NIKL online Q&A | 접미사 -이 앞에서 ㄲ 연음, ㄱ 계열 뒤 된소리되기; 표준 발음 [떡뽀끼] | Verify source; map article or label lexical/corpus evidence |
-| 옷이 | NIKL online Q&A | 홑받침 ㅅ의 연음; ㅅ의 i 환경 표면 실현 | Verify source; map article or label lexical/corpus evidence |
 | 대한민국 | NIKL standard-rules page | Core name; Ukrainian target remains provisional. | Verify source; map article or label lexical/corpus evidence |
 | 국립국어원 | NIKL standard-rules page | 합성 기관명: 국립 [궁닙] + 국어원 [꾸거원]; 비음화와 경음화의 표면형을 고정. 우크라이나어 표기는 잠정적. | Verify source; map article or label lexical/corpus evidence |
 | 먹었어요 | NIKL online Q&A | NIKL 답변: 먹었어요 [머거써요]; ㅆ 연음. 우크라이나어 표기는 잠정적. | Verify source; map article or label lexical/corpus evidence |
