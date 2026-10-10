@@ -147,7 +147,7 @@ test('phrase nasal assimilation does not cross punctuation even when a lexical w
 
 test('representative ㄷ before ㄹ triggers liquid-to-nasal and nasal assimilation across a phrase boundary',()=>{
   const r=engine.convert('몇 리');
-  assert.equal(r.ukrainian,'мйонні');
+  assert.equal(r.ukrainian,'мйон ні');
   assert.equal(r.ipa,'mjʌn ni');
   assert.ok(r.trace[0].rules.includes('liquid-to-nasal-before-obstruent'));
   assert.ok(r.trace[0].rules.includes('nasal-assimilation'));
