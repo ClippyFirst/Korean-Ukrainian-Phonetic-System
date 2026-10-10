@@ -43,42 +43,40 @@ test('every adversarial corpus can be submitted to the engine without a runtime 
   }
 });
 
+test('150 rule-family corpora keep each target form quoted and isolated', () => {
+  for (const file of ruleCorpora) {
+    const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
+    const examples = [...source.matchAll(/「([^」]+)」/gu)].map((match) => match[1]);
+    assert.ok(examples.length >= 20, file + ': expected a substantial set of quoted target forms');
+    assert.equal([...source.matchAll(/「[^」]+」[가-힣]/gu)].length, 0, file + ': a Korean particle/ending must not be accidentally appended to a quoted target');
+  }
+});
+
 test('diagnostic: summarize per-eojeol outcomes across all 165 adversarial corpora', () => {
   const stats = new Map();
-  const filesByIssue = new Map();
   for (const file of files) {
     const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
     const eojeols = source.match(/[가-힣]+/gu) || [];
     for (const word of eojeols) {
       const result = engine.convert(word);
-      const placeholders = [...result.ukrainian.matchAll(/⟦([^⟦⟧]+)⟧/gu)].map((m) => m[1]);
-      const row = stats.get(word) || {word, count:0, statuses:{}, placeholders:0, issues:[], sampleTarget:'', sampleIpa:'', sampleSurface:''};
+      const placeholders = [...result.ukrainian.matchAll(/⟦([^⟦⟧]+)⟧/gu)].map((match) => match[1]);
+      const row = stats.get(word) || {word, count:0, unresolved:0, placeholders:0, issues:new Set(), sampleTarget:'', sampleIpa:''};
       row.count++;
-      row.statuses[result.status || 'no-status'] = (row.statuses[result.status || 'no-status'] || 0) + 1;
+      if (result.status === 'unresolved' || placeholders.length || result.issues.length) row.unresolved++;
       row.placeholders += placeholders.length;
-      row.issues.push(...result.issues.map(String));
-      if (!row.sampleTarget) {
-        row.sampleTarget = result.ukrainian;
-        row.sampleIpa = result.ipa;
-        row.sampleSurface = result.surfaceHangul;
-      }
+      for (const issue of result.issues) row.issues.add(String(issue));
+      if (!row.sampleTarget) { row.sampleTarget=result.ukrainian; row.sampleIpa=result.ipa; }
       stats.set(word,row);
-      if (result.status === 'unresolved' || placeholders.length || result.issues.length) {
-        if (!filesByIssue.has(file)) filesByIssue.set(file, new Set());
-        filesByIssue.get(file).add(word);
-      }
     }
   }
-  const rows = [...stats.values()].sort((a,b) => b.count-a.count || a.word.localeCompare(b.word));
-  const problematic = rows.filter(r => Object.keys(r.statuses).some(s => s === 'unresolved') || r.placeholders || r.issues.length);
-  const summary = {
-    corpusFiles: files.length,
-    uniqueEojeols: stats.size,
-    eojeolOccurrences: rows.reduce((n,r)=>n+r.count,0),
-    uniqueWithUnresolved: problematic.length,
-    occurrencesWithUnresolved: rows.filter(r=>r.statuses.unresolved).reduce((n,r)=>n+r.statuses.unresolved,0),
-    topProblematic: problematic.sort((a,b)=>b.count-a.count).slice(0,100).map(r=>({...r,issues:[...new Set(r.issues)].slice(0,3)})),
-    filesWithMostProblemWords:[...filesByIssue.entries()].map(([file,words])=>({file,count:words.size,words:[...words].slice(0,20)})).sort((a,b)=>b.count-a.count).slice(0,30)
-  };
-  console.log('ADVERSARIAL_EOJEOL_DIAGNOSTIC ' + JSON.stringify(summary));
+  const rows=[...stats.values()];
+  const problematic=rows.filter(row=>row.unresolved>0).sort((a,b)=>b.count-a.count || a.word.localeCompare(b.word));
+  console.log('ADVERSARIAL_EOJEOL_SUMMARY ' + JSON.stringify({
+    corpusFiles:files.length,
+    uniqueEojeols:rows.length,
+    eojeolOccurrences:rows.reduce((sum,row)=>sum+row.count,0),
+    uniqueWordsWithUnresolved:problematic.length,
+    unresolvedOccurrences:problematic.reduce((sum,row)=>sum+row.unresolved,0),
+    topUnresolved:problematic.slice(0,25).map(row=>({...row,issues:[...row.issues].slice(0,2)}))
+  }));
 });
