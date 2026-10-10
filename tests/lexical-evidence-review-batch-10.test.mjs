@@ -38,7 +38,7 @@ test('batch 10 maps nine source-backed records to official rule articles', () =>
   }
 });
 
-test('traceability snapshot reflects 39 remaining rows after this batch', () => {
+test('traceability snapshot reflects the current 32-row queue after seven additional mappings', () => {
   assert.match(auditText, /contains \*\*520\*\* rows; \*\*39\*\* rows meet the audit filter/u);
   assert.match(auditText, /NIKL online Q&A \| 4/u);
   assert.match(auditText, /NIKL FAQ \| 0/u);
