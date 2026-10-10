@@ -4,20 +4,24 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **78** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **69** rows meet the audit filter.
 
 ## Source-type counts
 
 | Existing source URL type | Rows |
 |---|---:|
-| NIKL online Q&A | 38 |
+| NIKL online Q&A | 30 |
 | NIKL FAQ | 3 |
-| NIKL standard-rules page | 37 |
-| **Total requiring article-mapping review** | **78** |
+| NIKL standard-rules page | 36 |
+| **Total requiring article-mapping review** | **69** |
 
 ## Resolved during follow-up
 
 - `실제` was removed from the unresolved metadata queue after its rule note was corrected to *표준 발음법* §26 (Sino-Korean ㄹ + ㅈ fortition). The general rules page supports that rule family; an item-specific lexical citation for `실제[실쩨]` remains desirable, but it is no longer missing an article mapping.
+
+## Resolved during follow-up
+
+The following nine records received explicit article mappings after source review and are no longer in the unresolved queue: `밝는` (§§11, 18), `실없다` (§§10, 15, 23; with §13 explicitly ruled out for the substantive-morpheme boundary), `몇으로` (§13), `넋받이` (§§10, 17, 23), `밭이랑` (§§9, 18, 29), `집안일` (§§18, 29), `공업용` (§§18, 29), `얇실하다` (§§10, 23), and `짧다` (§§10, 23). The exact-word sources remain attached to their lexical rows.
 
 ## Required handling
 
@@ -92,15 +96,6 @@ Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **78**
 | 있었고 | NIKL online Q&A | Morphological sequence 있- + -었- + -고; exact sourced-pattern entry preserves the ㅆ liaison, coda neutralization and fortition before ㄱ; surface [이썯꼬]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 웃었고 | NIKL standard-rules page | Morphological sequence 웃- + -었- + -고; ㅅ liaison before -었-, then ㅆ coda neutralization and fortition before ㄱ; surface [우섣꼬]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 넓어졌다는 | NIKL standard-rules page | Compositional standard reading with intervocalic voicing of ㅈ: ㄼ in 넓- before vowel-initial -어 gives [널버]; ㅆ in 졌 is [ㄷ] before 다, with fortition [ㄸ]; surface [널버젇따는]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 밝는 | NIKL online Q&A | NIKL: ㄺ in 밝는 simplifies to ㄱ before ㄴ, then nasal assimilation gives [방는]. Exact lexical record pins the source-confirmed surface form; Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 실없다 | NIKL online Q&A | NIKL lexical reading [시럽따]; the ㄹ liaison across 실+없- and fortition in 없다 are retained as a complete sourced form. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 몇으로 | NIKL online Q&A | NIKL Q&A: 몇으로 is [며츠로]; final ㅊ is resyllabified before the particle 으로. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 넋받이 | NIKL standard-rules page | NIKL standard example [넉빠지]: ㄳ simplifies to ㄱ before consonants; fortition follows the coda, and ㄷ in suffix -이 undergoes licensed palatalization. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 밭이랑 | NIKL online Q&A | NIKL example: compound ㄴ-insertion and nasal assimilation; [반니랑]. The analysis depends on compound structure, so this exact entry is deliberately narrow. | Verify source; map article or label lexical/corpus evidence |
-| 집안일 | NIKL online Q&A | NIKL example: compound boundary triggers ㄴ insertion and nasal assimilation; [지반닐]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 공업용 | NIKL online Q&A | NIKL explicitly corrects the standard pronunciation to [공엄뇽], including nasalization of 업 before inserted ㄴ. Exact compound record prevents an unsupported generic derivation. | Verify source; map article or label lexical/corpus evidence |
-| 얇실하다 | NIKL online Q&A | NIKL Q&A: ㄼ before consonant simplifies to ㄹ and following ㅅ is fortis; [얄씰하다]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 짧다 | NIKL online Q&A | NIKL Q&A confirms standard [짤따]; ㄼ before consonant simplifies to ㄹ and following ㄷ is fortis. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 삶다 | NIKL online Q&A | NIKL Q&A confirms [삼ː따]; ㄻ simplifies to ㅁ and lexical vowel length is retained in IPA. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 넓어 | NIKL online Q&A | NIKL 사전 활용형 및 표준 발음 확인: ㄼ의 ㄹ은 종성에 남고 ㅂ은 어미 -어 앞에서 연음; [널버]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 넓으니 | NIKL online Q&A | NIKL 사전 활용형: ㄼ의 ㄹ은 종성에 남고 ㅂ은 으니의 초성으로 연음; [널브니]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
