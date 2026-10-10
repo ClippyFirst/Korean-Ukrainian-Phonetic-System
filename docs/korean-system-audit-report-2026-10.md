@@ -131,3 +131,24 @@ The classifications below describe intended behavior and implementation safeguar
 - The engine's phrase pass still uses whitespace as a proxy for connected speech. The previous PR documents this limitation; a user-selectable phrase mode would be clearer.
 - The full 11,172-syllable property suite, a live-source reachability crawl, UI/accessibility checks and independent Korean/ Ukrainian review remain outstanding.
 - A green test suite would establish code/test conformance, not prove the linguistic or reader-facing quality of every output.
+
+
+## 9. Normative evidence boundary: ㄷ + ㄹ (몇 리)
+
+This follow-up checked a specific rule claim against the current official source rather than treating the existing regression test as proof of a normative rule.
+
+- NIKL *표준 발음법* §19 explicitly names coda ㅁ/ㅇ and, in its supplement, ㄱ/ㅂ before ㄹ: [official rules and commentary](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002).
+- NIKL's Online Q&A response dated 2025-04-22 says there is **no explicit clause in the Standard Pronunciation Rules explaining 몇 리**, and notes that the §19 commentary's restriction reflects the fact that Sino-Korean syllables do not end in ㄷ: [NIKL Q&A: ㄹ의 비음화 2](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=313411).
+- A separate NIKL response dated 2025-06-04 says views may differ on the explanation for 몇 리: [NIKL Q&A: 몇 리](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=315809).
+
+### Implementation change
+
+The engine continues to return the project's selected reading for `몇 리` (`mjʌn ni`; Ukrainian `мйон ні`), but its trace now labels the ㄷ + ㄹ step as `project-inferred-d-liquid-nasalization`, not as the general NIKL §19 rule `liquid-to-nasal-before-obstruent`. The same distinction is used in local and phrase-boundary processing. The follow-up regression asserts that distinction.
+
+This is a **provenance/claim-calibration correction**, not a claim that the output [면니] is wrong. It prevents the UI trace from overstating what the cited normative rule explicitly says. The rule remains a project inference until a stronger authoritative or academic source supports a more specific analysis.
+
+## 10. Other rule-coverage cautions confirmed during source review
+
+- NIKL §18 explicitly includes a supplement for two words pronounced as one phrase. Plain whitespace is still only a proxy for that prosodic condition, not proof that a speaker links every adjacent word.
+- §19's explicit environments must not be generalized solely from orthographic adjacency. The engine's morphology safeguards for complex-coda liaison, ㅎ deletion, palatalization and complex-coda + ㅎ aspiration should be retained unless a lexical/morphological analysis licenses the change.
+- A regression test's expected output is project evidence, not independent evidence for a Korean normative claim. For each test, the project should record whether the expected surface is directly normative, lexically sourced, supported by a dictionary, or a documented project inference.
