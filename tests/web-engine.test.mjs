@@ -154,6 +154,20 @@ test('representative ㄷ before ㄹ triggers liquid-to-nasal and nasal assimilat
   assert.ok(r.trace.find(item=>item.source==='리').rules.includes('liquid-to-nasal-before-obstruent'));
 });
 
+test('liquid assimilation is preserved when a lexical override elsewhere activates word splitting',()=>{
+  const nasalLiquid=engine.convert('신 라면 문법');
+  assert.equal(nasalLiquid.ukrainian,'шіл ламйон мунпоп');
+  assert.equal(nasalLiquid.ipa,'ɕil lamjʌn mun p͈ʌp̚');
+  assert.ok(nasalLiquid.trace.find(item=>item.source==='신').rules.includes('liquid-assimilation'));
+  assert.ok(nasalLiquid.trace.find(item=>item.source==='라').rules.includes('liquid-assimilation'));
+
+  const liquidNasal=engine.convert('칼 날 문법');
+  assert.equal(liquidNasal.ukrainian,'кал лал мунпоп');
+  assert.equal(liquidNasal.ipa,'kal lal mun p͈ʌp̚');
+  assert.ok(liquidNasal.trace.find(item=>item.source==='칼').rules.includes('liquid-assimilation'));
+  assert.ok(liquidNasal.trace.find(item=>item.source==='날').rules.includes('liquid-assimilation'));
+});
+
 test('§19 precedes §18 across a phrase boundary',()=>{
   const r=engine.convert('협 력');
   assert.equal(r.ipa,'hjʌm njʌk̚');
