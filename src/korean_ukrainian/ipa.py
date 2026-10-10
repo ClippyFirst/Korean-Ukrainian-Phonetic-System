@@ -52,12 +52,20 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
         return []
     sites=[]
     for i,syllable in enumerate(items):
-        options=VOWEL_IPA.get(syllable.nucleus,[])
-        if syllable.nucleus not in {"ㅚ","ㅟ"} or len(options)<2:
+        if syllable.nucleus in {"ㅚ","ㅟ"}:
+            options=VOWEL_IPA.get(syllable.nucleus,[])
+            if len(options)<2:
+                continue
+            primary,alternate=options[0],options[1]
+            section="§4"
+        elif (syllable.nucleus=="ㅢ" and syllable.onset=="ㅇ" and i>0
+              and items[i-1].boundary_after!="word"):
+            primary,alternate="ɰi","i"
+            section="§5"
+        else:
             continue
-        primary,alternate=options[0],options[1]
         if primary in rendered[i]:
-            sites.append((i,syllable.nucleus,primary,alternate))
+            sites.append((i,syllable.nucleus,primary,alternate,section))
     if not sites:
         return []
     # Enumerate all readings for up to three optional vowels. Longer input
@@ -67,14 +75,15 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
     for mask in masks:
         changed=[site for i,site in enumerate(sites) if mask&(1<<i)]
         alternate=list(rendered)
-        for index,vowel,primary,form in changed:
+        for index,vowel,primary,form,_ in changed:
             alternate[index]=alternate[index].replace(primary,form,1)
-        labels=[f"{vowel} [{form}]" for _,vowel,_,form in changed]
-        note=("NIKL §4 permits this diphthongal reading; Korean spelling is unchanged."
+        labels=[f"{vowel} [{form}]" for _,vowel,_,form,_ in changed]
+        sections="/".join(dict.fromkeys(section for *_,section in changed))
+        note=(f"NIKL {sections} permits this alternate; Korean spelling is unchanged."
               if len(sites)<=3 else
-              "NIKL §4 permits this local alternate; other optional vowels keep the primary reading.")
+              f"NIKL {sections} permits this local alternate; other optional vowels keep the primary reading.")
         variants.append({
-            "syllable_indices":[index for index,_,_,_ in changed],
+            "syllable_indices":[index for index,_,_,_,_ in changed],
             "ipa":render_syllable_sequence(items,alternate),
             "note":note,
             "vowels":labels,
