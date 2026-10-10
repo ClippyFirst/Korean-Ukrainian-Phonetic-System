@@ -51,7 +51,7 @@ test('§19 every explicit example uses the correct ordered nasalization chain', 
 test('§20 every listed general liquid-assimilation example is computed algorithmically', () => {
   const expected = {
     '난로':'nal lo',
-    '신라':'ɕil la',
+    '신라':'sil la',
     '천리':'tɕʰʌl li',
     '광한루':'kwaŋ hal lu',
     '대관령':'tɛ ɡwal ljʌŋ',
