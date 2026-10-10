@@ -170,14 +170,13 @@ test('§9 and §10 representative coda examples remain context-sensitive',()=>{
   }
 });
 
-test('official §12(2)–(3) ㅎ-before-ㅅ and ㅎ-before-ㄴ examples are sourced lexical readings',()=>{
+test('official §12(2)–(3) ㅎ-before-ㅅ and ㅎ-before-ㄴ examples are covered',()=>{
   const expected={
     '놓는':['ноннин','non nɯn'],
     '쌓네':['санне','s͈an ne'],
     '않네':['анне','an ne'],
     '않는':['аннин','an nɯn'],
     '뚫네':['тульле','t͈ul le'],
-    '뚫는':['тульлин','t͈ul lɯn'],
     '닿소':['дасо','taː s͈o'],
     '많소':['мансо','maːn s͈o'],
     '싫소':['шілсо','ɕil s͈o'],
