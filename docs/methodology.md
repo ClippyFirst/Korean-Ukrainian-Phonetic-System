@@ -48,3 +48,8 @@ The corpus is an engineering regression set, not a representative frequency corp
 ## Third sentence-level adversarial window
 
 The third corpus is based on a user-supplied running text and adds further controls for complex codas and liaison (`흙을`, `밟으며`, `낡은`, `맑은`), ㅎ deletion (`놓인`), coda neutralization/fortition/liaison (`햇빛이`), and lateralization/nasalization (`신라`, `설날`, `독립문`, `종로`). The browser-facing page labels these as Korean surface-form controls. Only forms with an explicit lexical row are asserted against the runtime in the current regression test; unencoded examples remain audit targets rather than silently being treated as validated engine behavior. Passing tests do not validate the Ukrainian target through independent reader testing.
+
+
+## Model-wide Ukrainian-target consistency audit
+
+A review of the lexical layer found two different defects that must not be conflated with Korean pronunciation errors: (1) Ukrainian target syllables sometimes duplicated the segmental coda by moving it into the next target syllable, and (2) some target strings encoded Korean fortisness as doubled Ukrainian onset letters despite the project's stated neutralization policy. The same pass corrected several clear word-initial lenis/affricate targets and updated contextual IPA where it contradicted the model's stated realization. Regression coverage lives in `tests/model-wide-target-consistency.test.mjs`. The corrections preserve source-backed Korean surface forms and leave Ukrainian targets provisional; no test pass is evidence of reader-tested transcription quality.
