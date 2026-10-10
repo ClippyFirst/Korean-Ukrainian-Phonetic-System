@@ -214,10 +214,10 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "신라","실라","шіл|ла","ɕil|la","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§20 liquid assimilation; [실라].","high","surface-only","","","",""
 "설날","설랄","соль|лаль","sʌl|lal","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§20 liquid assimilation; [설랄].","high","provisional","","","",""
 "종로","종노","чон|но","tɕoŋ|no","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§19; [종노].","high","provisional","","","",""
-"해돋이","해도지","хе|до|джі","he|do|dʑi","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§17; [해도지].","high","provisional","","","",""
+해돋이,해도지,хе|до|джі,hɛ|do|dʑi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§17; [해도지].,high,provisional,,,,
 "맏이","마지","ма|джі","ma|dʑi","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§17; [마지].","high","provisional","","","",""
 "숱이","수치","су|чі","su|tɕʰi","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§17; [수치].","high","provisional","","","",""
-"끝이","끄치","кки|чі","k͈ɯ|tɕʰi","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§17; [끄치].","high","provisional","","","",""
+끝이,끄치,ки|чі,k͈ɯ|tɕʰi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§17; [끄치].,high,provisional,,,,
 "밝다","박따","пак|тта","pak̚|t͈a","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [박따].","high","provisional","","","",""
 "넓고","널꼬","ноль|кко","nʌl|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10/§23; [널꼬].","high","provisional","","","",""
 "밟는","밤는","пам|нин","pam|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10 then §18; [밤는].","high","surface-only","","","",""
@@ -248,3 +248,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "한국말","한궁말","хан|кунг|маль","han|kuŋ|mal","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [한궁말].","high","provisional","","","",""
 "한국어","한구거","хан|ку|ґо","han|ɡu|ɡʌ","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§13 liaison; [한구거].","high","provisional","","","",""
 "대한민국","대한민국","те|хан|мін|ґук","te|han|min|ɡuk̚","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","Core name; Ukrainian target remains provisional.","high","provisional","","","",""
+꽃이,꼬치,ко|чі,k͈o|tɕʰi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,제13항 연음 및 제9항 받침 중화: 꽃이 [꼬치]. 우크라이나어 표기는 잠정적.,high,provisional,,,,
+밝고,발꼬,пал|ко,pal|k͈o,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,제11항: 용언 어간 ㄺ은 ㄱ 앞에서 ㄹ로 발음; 제23항 된소리되기 [발꼬]. 우크라이나어 표기는 잠정적.,high,provisional,,,,
+읽습니다,익씀니다,ік|сим|ні|да,ik̚|s͈ɯm|ni|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제11항 받침 단순화, 제23항 된소리되기, 제18항 비음화: 읽습니다 [익씀니다]. 우크라이나어 표기는 잠정적.",high,provisional,,,,
+읽을,일글,іл|ґил,il|ɡɯl,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,제13항: 용언 어간 읽-과 어미 -을의 연음 [일글]. 우크라이나어 표기는 잠정적.,high,provisional,,,,
