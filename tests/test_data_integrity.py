@@ -57,7 +57,11 @@ def test_lexical_pronunciation_entries_are_complete_and_provenanced():
         assert row["input"] and row["surface_hangul"]
         assert row["source_url"].startswith("https://")
         assert row["confidence"] in {"high","medium","low"}
-        assert row["target_status"] in {"model-selected","provisional"}
+        assert row["target_status"] in {"model-selected","provisional","surface-only"}
+        if row["target_status"] == "surface-only":
+            # Surface-only records document standard Korean readings without
+            # claiming the row as a Ukrainian-target override.
+            assert row["rule_notes"] and row["confidence"] == "high"
         assert len(row["surface_hangul"]) == len(row["target_syllables"].split("|"))
         assert len(row["surface_hangul"]) == len(row["ipa_syllables"].split("|"))
 
