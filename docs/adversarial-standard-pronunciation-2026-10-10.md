@@ -2,11 +2,12 @@
 
 ## What changed
 
-This audit adds 8 exact lexical entries to the browser pronunciation corpus (400 → 408 rows). These are deliberately narrow, source-backed entries: they pin standard Korean surface forms and their broad IPA while leaving Ukrainian outputs explicitly provisional. They do not create a general-purpose Korean morphological parser.
+This audit adds 9 exact lexical entries to the browser pronunciation corpus (400 → 409 rows). These are deliberately narrow, source-backed entries: they pin standard Korean surface forms and their broad IPA while leaving Ukrainian outputs explicitly provisional. They do not create a general-purpose Korean morphological parser.
 
 | Input | NIKL surface form | Why it is adversarial | Primary evidence |
 |---|---|---|---|
 | 밝는 | 방는 | ㄺ simplification before ㄴ followed by nasal assimilation | [NIKL Q&A 334294](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294) |
+| 넋받이 | 넉빠지 | ㄳ simplification, fortition, and morphology-licensed palatalization in -이 | [Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002), §§10, 17, 23 |
 | 묽게 | 물께 | Verb/adjective-stem ㄺ exception before ㄱ-initial ending | [Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002), §11 |
 | 실없다 | 시럽따 | Lexicalized liaison into substantive morpheme 없-; not a formal-morpheme §13 case | [NIKL Q&A 335263](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=335263) |
 | 몇으로 | 며츠로 | Final ㅊ resyllabifies before 으로 | [NIKL Q&A 326601](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=326601) |
@@ -32,3 +33,5 @@ Passing automated tests confirms the implementation matches these fixtures; it d
 ## Cases deliberately not duplicated in the lexical layer
 
 The audit also rechecked `넓죽하다`, `넓둥글다`, `넓적하다`, `많고`, and `밟는`. These already have general-rule or surface-only coverage in the repository. Adding a full lexical override would hide the rule trace and break tests that specifically ensure the narrow ㄼ exception remains algorithmic. They therefore remain covered by existing regression tests rather than being duplicated as new full lexical records. The existing surface-only `밟는` row now preserves the source IPA `paːm|nɯn`; the engine restores the long-vowel mark only when the generated IPA otherwise matches, while keeping the general-rule trace active.
+
+The follow-up audit also added regression checks for the rule-governed forms `삯돈[삭똔]`, `읊조리다[읍쪼리다]`, `맑는[망는]`, and `묽는[뭉는]`. These remain algorithmic tests rather than lexical overrides because the general rule engine can derive their readings without guessing a word-class or morpheme boundary.
