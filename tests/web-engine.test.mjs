@@ -168,7 +168,7 @@ test('NIKL §29 optional readings expose both official surface variants',()=>{
 
 test('NIKL §30 official 사이시옷 readings cover fortition, nasalization and ㄴㄴ insertion',()=>{
   const cases=[
-    ['콧날','콘날','콘날','kʰon nal'],
+    ['콧날','콘날','коннал','kʰon nal'],
     ['아랫니','아랜니','аренні','a ɾɛn ni'],
     ['툇마루','퇸마루','твенмару','tʰøːn ma ɾu'],
     ['뱃머리','밴머리','пенморі','pɛn mʌ ɾi'],
