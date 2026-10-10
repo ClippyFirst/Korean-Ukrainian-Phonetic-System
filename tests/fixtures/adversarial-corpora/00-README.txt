@@ -4,50 +4,56 @@ Version: 2026-10-11
 
 PURPOSE
 -------
-These are raw Korean text stress corpora for testing the system. They are deliberately
-not gold-standard output files: they do not prescribe a single Ukrainian transliteration
-or claim that every sentence has a verified official pronunciation. Use them to expose
-unresolved spans, context-sensitive behavior, segmentation problems, and rule interactions.
+These are raw Korean text stress corpora, not gold-standard outputs. They do not prescribe
+one Ukrainian transliteration or claim every sentence has a verified official pronunciation.
+Use them to expose unresolved spans, context-sensitive behavior, segmentation problems, and
+rule interactions.
 
-FILES
------
-01-coda-liaison.txt
-  Coda + vowel-initial endings, particles, and ordinary connected text.
-02-complex-codas.txt
-  ㄺ, ㄼ, ㄵ, ㄶ, ㅀ and other complex-coda environments.
-03-palatalization-boundaries.txt
-  Palatalization, formal morpheme boundaries, and superficially similar controls.
-04-nasal-liquid-assimilation.txt
-  Nasalization, liquid assimilation, compounds, and multi-rule contexts.
-05-fortition.txt
-  Fortition/tensification with lexical and syntactic controls.
-06-aspiration-and-h.txt
-  ㅎ, aspiration, complex-coda interactions, and inflectional forms.
-07-n-insertion.txt
-  Potential ㄴ insertion, compounds, and boundary-sensitive controls.
-08-inflection-and-morphology.txt
-  Verb/adjective stems, endings, and related inflected forms.
-09-compounds-and-boundaries.txt
-  Compounds, 사이시옷-like environments, and morpheme-boundary ambiguity.
-10-numbers-names-loans.txt
-  Numbers, dates, acronyms, proper names, and loanwords.
-11-long-mixed-prose.txt
-  Longer continuous prose mixing multiple rule classes.
-12-minimal-contrasts-and-negative-controls.txt
-  Contrastive forms designed to catch overgeneralization.
-13-rule-ordering-chains.txt
-  Sequences where one rule may change the environment for another.
-14-orthography-spacing-punctuation.txt
-  Quotes, punctuation, spaces, symbols, jamo, and mixed-script input.
-15-unknowns-and-proper-names.txt
-  Evidence boundaries and cases where a confident guess is not justified.
+COLLECTION SIZE
+---------------
+15 broad thematic corpora (01–15) plus 150 rule-family corpora:
+30 test families × 5 separate TXT files = 150 additional files.
+Total: 165 Korean TXT corpora, plus this index.
+
+RULE-FAMILY CORPORA
+-------------------
+Each family has five files named rule-NN-01 through rule-NN-05. The 30 families cover:
+general principles; consonant contrasts; vowel contrasts; ㅚ/ㅟ; ㅢ; vowel length; final
+neutralization; simple codas; complex codas; ㄺ; 밟-; 넓-; liaison with particles; liaison
+with endings; palatalization; nasalization; liquid assimilation; ㅎ and aspiration; coda-
+conditioned fortition; morphological/lexical fortition; ㄴ insertion; insertion controls;
+coda+ㄹ; complex coda+nasalization; connected speech; verb inflection; adjective inflection;
+names and loanwords; chained rules; and negative controls.
+
+The numeric IDs are collection group IDs, not a claim that every file maps one-to-one to
+one numbered paragraph of the official regulation. Many examples intentionally test rule
+interactions. Before promoting an example to a normative gold test, map it to the exact
+provision and verify it against the National Institute of Korean Language.
+
+ORIGINAL 15 CORPORA
+-------------------
+01-coda-liaison.txt — Coda + vowel-initial endings, particles, and connected text.
+02-complex-codas.txt — Complex final consonants.
+03-palatalization-boundaries.txt — Palatalization and morpheme boundaries.
+04-nasal-liquid-assimilation.txt — Nasalization and liquid assimilation.
+05-fortition.txt — Fortition/tensification and controls.
+06-aspiration-and-h.txt — ㅎ and aspiration.
+07-n-insertion.txt — ㄴ insertion and controls.
+08-inflection-and-morphology.txt — Inflectional forms.
+09-compounds-and-boundaries.txt — Compounds and boundary ambiguity.
+10-numbers-names-loans.txt — Numbers, dates, names, and loanwords.
+11-long-mixed-prose.txt — Longer mixed-rule prose.
+12-minimal-contrasts-and-negative-controls.txt — Minimal contrasts.
+13-rule-ordering-chains.txt — Rule-ordering chains.
+14-orthography-spacing-punctuation.txt — Punctuation, spacing, symbols, and mixed scripts.
+15-unknowns-and-proper-names.txt — Evidence-sensitive names and unknowns.
 
 RECOMMENDED WORKFLOW
 --------------------
 1. Run every file through the same engine version and configuration.
-2. Save the untouched source text, raw output, unresolved-marker list, and trace separately.
+2. Save source text, raw output, unresolved markers, and trace separately.
 3. Compare isolated forms with the same forms in sentence context.
-4. Triage each issue by rule, morphology, lexical evidence, tokenization, or target-language mapping.
+4. Triage by rule, morphology, lexical evidence, tokenization, or target-language mapping.
 5. Verify Korean surface forms against the National Institute of Korean Language standard and
    authoritative lexical sources before treating a form as a gold oracle.
 6. Keep Ukrainian target spelling provisional until its phonetic mapping has been reviewed.
@@ -55,7 +61,7 @@ RECOMMENDED WORKFLOW
 
 IMPORTANT
 ---------
-A stress corpus is a discovery instrument, not proof of correctness. Some forms intentionally
-require morphological or lexical evidence. An unresolved marker can be a correct safe failure;
-silently producing an unsupported answer is not necessarily better. Do not use the Ukrainian
-approximation as evidence that the Korean surface pronunciation is correct.
+A stress corpus is a discovery instrument, not proof of correctness. Some forms require
+morphological or lexical evidence. An unresolved marker can be a correct safe failure; silently
+producing an unsupported answer is not necessarily better. Do not use the Ukrainian approximation
+as evidence that the Korean surface pronunciation is correct.
