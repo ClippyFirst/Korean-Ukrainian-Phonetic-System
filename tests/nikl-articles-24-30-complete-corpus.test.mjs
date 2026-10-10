@@ -9,6 +9,20 @@ const rows = parseCsv(lexical);
 const entries = new Map(rows.map((row) => [row.input, row]));
 const engine = createEngine(canonical, lexical);
 
+function expectedTarget(row) {
+  const targets = row.target_syllables.split('|');
+  if (row.input_kind !== 'mixed-script' || !/\\s/u.test(row.input)) return targets.join('');
+  let index = 0;
+  let result = '';
+  for (const token of (row.input.match(/\\s+|[^\\s]+/gu) || [])) {
+    if (/^\\s+$/u.test(token)) { result += token; continue; }
+    const count = /^[가-힣]+$/u.test(token) ? [...token].length : 1;
+    result += targets.slice(index, index + count).join('');
+    index += count;
+  }
+  return result + targets.slice(index).join('');
+}
+
 const officialGroups = {
   '§24': {
     '안다':'안따', '안고':'안꼬', '안지':'안찌',
@@ -104,7 +118,7 @@ test('every lexical row round-trips to its stored Korean surface, Ukrainian targ
     const result = engine.convert(row.input);
     assert.equal(result.surfaceHangul, row.surface_hangul, 'surface: ' + row.input);
     if (row.target_status !== 'surface-only') {
-      assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), 'Ukrainian: ' + row.input);
+      assert.equal(result.ukrainian, expectedTarget(row), 'Ukrainian: ' + row.input);
       assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), 'IPA: ' + row.input);
     }
     if (row.alternate_surface_hangul) {
