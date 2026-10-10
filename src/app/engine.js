@@ -18,6 +18,10 @@ const J_VOWELS=new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ','ㅢ']);
 const ASPIRATION={
   'ㄱ':'ㅋ','ㄷ':'ㅌ','ㅂ':'ㅍ','ㅈ':'ㅊ'
 };
+// NIKL §12(1): ㅎ/ㄶ/ㅀ + ㄱ/ㄷ/ㅈ coalesce; ㅂ is not in this direction.
+const H_CODA_ASPIRATION={
+  'ㄱ':'ㅋ','ㄷ':'ㅌ','ㅈ':'ㅊ'
+};
 
 // Lexical standard-pronunciation exceptions that cannot be inferred from
 // the final consonant alone. In particular, 밟- is [ㅂ] before consonants.
@@ -167,8 +171,8 @@ function applyContextualRules(units){
       else if(a.coda==='ㄶ')a.coda='ㄴ';
       else a.coda='ㄹ';
       rules.push('h-deletion');
-    }else if((a.coda==='ㅎ'||a.coda==='ㄶ'||a.coda==='ㅀ')&&ASPIRATION[b.onset]){
-      b.onset=ASPIRATION[b.onset];
+    }else if((a.coda==='ㅎ'||a.coda==='ㄶ'||a.coda==='ㅀ')&&H_CODA_ASPIRATION[b.onset]){
+      b.onset=H_CODA_ASPIRATION[b.onset];
       a.coda=a.coda==='ㄶ'?'ㄴ':a.coda==='ㅀ'?'ㄹ':'';
       rules.push('h-aspiration');
     }else if(a.coda&&b.onset==='ㅎ'){

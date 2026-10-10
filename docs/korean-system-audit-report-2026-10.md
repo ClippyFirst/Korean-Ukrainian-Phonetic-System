@@ -152,3 +152,14 @@ This is a **provenance/claim-calibration correction**, not a claim that the outp
 - NIKL §18 explicitly includes a supplement for two words pronounced as one phrase. Plain whitespace is still only a proxy for that prosodic condition, not proof that a speaker links every adjacent word.
 - §19's explicit environments must not be generalized solely from orthographic adjacency. The engine's morphology safeguards for complex-coda liaison, ㅎ deletion, palatalization and complex-coda + ㅎ aspiration should be retained unless a lexical/morphological analysis licenses the change.
 - A regression test's expected output is project evidence, not independent evidence for a Korean normative claim. For each test, the project should record whether the expected surface is directly normative, lexically sourced, supported by a dictionary, or a documented project inference.
+
+
+## 11. Directional asymmetry in §12 aspiration
+
+The official wording of §12(1) specifies `ㅎ(ㄶ, ㅀ)` followed by `ㄱ, ㄷ, ㅈ`, producing `ㅋ, ㅌ, ㅊ`. The supplement separately specifies the reverse direction, including coda `ㅂ(ㄼ)` before onset `ㅎ`, producing `ㅍ`. These are not symmetric sets.
+
+The engine previously reused a general aspiration map containing `ㅂ → ㅍ` for both directions. That incorrectly made an `ㅎ` coda aspirate a following `ㅂ`, although §12(1) does not license that transformation. The engine now uses a direction-specific map for `ㅎ/ㄶ/ㅀ + onset`, while retaining the broader map for coda + `ㅎ` under §12's supplement. A negative regression checks `놓바` so this implementation detail cannot silently return.
+
+Source: [National Institute of Korean Language, Standard Pronunciation Rules §12](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002).
+
+This synthetic syllable-sequence test checks the rule boundary; it is not presented as a lexical Korean word or a claim about a word's standard pronunciation.
