@@ -172,3 +172,24 @@ A fresh pass over the official *표준 발음법* confirms that the engine's pro
 The official source also explicitly rejects several place-assimilation pronunciations under §21. Keep these as negative controls; do not add general place assimilation. Optional vowel variants and vowel length under §§4–7 and §22 remain lexically/positionally conditioned and should not be inferred from Hangul spelling alone.
 
 Source: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002). The inventory records engineering coverage only. It is not a claim of complete linguistic coverage or native-speaker validation.
+
+
+## 13. Coverage status for NIKL §§1–22
+
+| Articles | Current implementation | Remaining limitation |
+|---|---|---|
+| §§1–3 | Methodology and canonical onset/vowel/coda correspondence | Project Ukrainian choices are approximations; the Korean inventory itself is not the same thing as a Ukrainian output table. |
+| §§4–5 | Canonical monophthong/diphthong mappings; contextual ㅢ handling and selected alternatives | Not all permitted ㅚ/ㅟ/ㅖ/ㅢ variants are represented productively. |
+| §§6–7 | Lexical length and length-change examples | Length and conjugation cannot be reconstructed reliably from orthography without lexical/morphological evidence. |
+| §§8–10 | Coda correspondence, representative neutralization and complex-coda map | Contextual ordering and lexical exceptions still require exact tests. |
+| §11 | Scoped ㄺ exception guard and sourced entries | Unknown stem/noun ambiguities are withheld rather than guessed. |
+| §12 | ㅎ deletion/aspiration, with direction-specific coda aspiration | Morphological boundaries and complex-coda + ㅎ cases remain lexically guarded. |
+| §§13–16 | Simple liaison path; complex liaison and consonant names use exact entries | No full morpheme parser; adjacency alone cannot distinguish formal from substantive morphemes. |
+| §17 | Palatalization guard and exact sourced forms | Requires licensed particle/suffix morphology. |
+| §18 | Nasal assimilation locally and across plain whitespace | Whitespace approximates connected speech; it does not prove prosodic linking. |
+| §19 | Listed liquid-to-nasal environments; separate label for ㄷ + ㄹ | 몇 리 remains a project inference, not a direct statement of §19. |
+| §20 | Liquid assimilation with regression coverage | Lexical exceptions and the full range of contexts need additional evidence. |
+| §21 | Negative controls reject non-standard place assimilation | Exact examples are covered; no general productive place-assimilation model is intended. |
+| §22 | Exact entries for permitted vowel-glide variants | No productive verb-stem class inference. |
+
+Taken together with §12 above, this is an implementation-coverage map, not a claim of full rule coverage. Each rule family must be validated independently at three layers: Korean surface pronunciation, IPA representation, and Ukrainian reader-facing target.
