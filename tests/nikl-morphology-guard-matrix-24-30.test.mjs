@@ -70,9 +70,9 @@ test('§§24–30 evidence rows have official provenance and explicit article co
 });
 
 test('§27: the explicitly listed adnominal phrase remains a narrow positive license', () => {
-  const result = generic.convert('할 것');
+  const result = generic.convert('할 것을');
   assert.ok(
     result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')),
-    'the exact listed phrase 할 것 should use the explicit §27 phrase license',
+    'the exact listed phrase 할 것을 should use the explicit §27 phrase license',
   );
 });
