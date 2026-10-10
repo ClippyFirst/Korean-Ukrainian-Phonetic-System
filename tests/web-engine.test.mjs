@@ -71,7 +71,7 @@ test('lexical CSV has unique keys, complete evidence fields and aligned syllable
     for(const field of ['surface_hangul','target_syllables','ipa_syllables','source_url','rule_notes','confidence','target_status']){
       assert.ok(row[field], 'missing '+field+' for '+row.input);
     }
-    assert.match(row.source_url,/^https?:\\/\\//u,row.input);
+    assert.ok(row.source_url.startsWith('https://')||row.source_url.startsWith('http://'),'invalid source URL for '+row.input);
     assert.ok(['high','medium','low'].includes(row.confidence),'unknown confidence for '+row.input);
     assert.ok(['provisional','model-selected','surface-only'].includes(row.target_status),'unknown target_status for '+row.input);
     const targetParts=row.target_syllables.split('|');
