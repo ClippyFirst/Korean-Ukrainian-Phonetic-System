@@ -15,11 +15,12 @@ This follow-up converts eight previously reviewed, high-confidence rule-derived 
 | `맑은` | §14 | Rule-derived form; ㄺ before vowel-initial ending. |
 | `있었고` | §§9, 13, 23 | Rule-family evidence only. The linked NIKL Q&A directly discusses `있었다` and `있습니다`, not exact `있었고`. |
 | `웃었고` | §§9, 13, 23 | Compositional form: ㅅ liaison, ㅆ coda neutralization, and fortition before ㄱ. |
-| `넓어졌다는` | §§9, 14, 23 | Compositional form combining ㄼ liaison and ㅆ neutralization/fortition across the inflectional boundary. |
+| `넓어졌다는` | **Not mapped in this batch** | Deliberately left unresolved: the complete inflectional derivation and article scope need independent verification; do not guess a blanket list. |
 
 ## Guardrails
 
-- Article mappings now live in the lexical row itself, so the traceability filter no longer treats these eight rows as having no rule mapping.
+- Article mappings now live in the lexical row itself for seven rows, so the traceability filter no longer treats those rows as having no rule mapping.
+- `넓어졌다는` remains outside the resolved set because its complete derivation has not been independently verified.
 - The update does **not** upgrade indirect evidence into exact-word attestation.
 - It does not modify the engine's pronunciation outputs, IPA syllabification, or Ukrainian target strings.
 - The eight Korean surface forms remain candidates for a later independent phonetic/IPA review; this change is about explicit rule traceability, not proof that every transcription layer is perfect.
