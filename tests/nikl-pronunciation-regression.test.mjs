@@ -106,7 +106,7 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
     굳이: {surface:'구지', target:'куджі', ipa:'ku dʑi'},
     곧이듣다: {surface:'고지듣따', target:'коджідитта', ipa:'ko dʑi dɯt̚ t͈a'},
     굳히다: {surface:'구치다', target:'кучіда', ipa:'ku tɕʰi da'},
-    닫히다: {surface:'다치다', target:'дачіда', ipa:'ta tɕʰi da'},
+    닫히다: {surface:'다치다', target:'тачіда', ipa:'ta tɕʰi da'},
     묻히다: {surface:'무치다', target:'мучіда', ipa:'mu tɕʰi da'},
   };
   const rows = parseCsv(lexical);
@@ -283,7 +283,7 @@ test('NIKL §16 official letter-name examples are exact lexical entries', () => 
   const expected = {
     '디귿이': ['디그시', 'тіґиші', 'ti ɡɯ ɕi'],
     '디귿을': ['디그슬', 'тіґисил', 'ti ɡɯ sɯl'],
-    '디귿에': ['디그세', 'диґисе', 'ti ɡɯ se'],
+    '디귿에': ['디그세', 'тіґисе', 'ti ɡɯ se'],
     '지읒이': ['지으시', 'чіиші', 'tɕi ɯ ɕi'],
     '지읒을': ['지으슬', 'чіисил', 'tɕi ɯ sɯl'],
     '지읒에': ['지으세', 'чіисе', 'tɕi ɯ se'],
@@ -409,7 +409,7 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
     '떫다': ['떨따', 'толта', 't͈ʌːl t͈a'],
     '떫은': ['떨븐', 'толбин', 't͈ʌːl bɯn'],
     '벌다': ['벌다', 'полда', 'pʌːl da'],
-    '벌어': ['버러', 'боро', 'pʌː ɾʌ'],
+    '벌어': ['버러', 'поро', 'pʌː ɾʌ'],
     '썰다': ['썰다', 'солта', 's͈ʌːl da'],
     '썰어': ['써러', 'соро', 's͈ʌː ɾʌ'],
     '감기다': ['감기다', 'камґіда', 'kam ɡi da'],
