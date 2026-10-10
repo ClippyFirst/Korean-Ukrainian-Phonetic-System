@@ -143,7 +143,7 @@ This follow-up checked a specific rule claim against the current official source
 
 ### Implementation change
 
-The engine continues to return the project's selected reading for `몇 리` (`mjʌn ni`; Ukrainian `мйон ні`), but its trace now labels the ㄷ + ㄹ step as `project-inferred-d-liquid-nasalization`, not as the general NIKL §19 rule `liquid-to-nasal-before-obstruent`. The same distinction is used in local and phrase-boundary processing. The follow-up regression asserts that distinction.
+The engine continues to return the project's selected reading for `몇 리` (`mjʌn ni`; Ukrainian `мйон ні`), but its trace labels the ㄷ + ㄹ step as `project-inferred-d-liquid-nasalization`, not as the general NIKL §19 rule `liquid-to-nasal-before-obstruent`. The first implementation of this distinction covered the local pass but missed the phrase-boundary pass used when lexical overrides split the input into words. This follow-up closes that gap: both paths now use the inference-specific label, and the regression checks `몇 리 문법` as well as the isolated phrase.
 
 This is a **provenance/claim-calibration correction**, not a claim that the output [면니] is wrong. It prevents the UI trace from overstating what the cited normative rule explicitly says. The rule remains a project inference until a stronger authoritative or academic source supports a more specific analysis.
 

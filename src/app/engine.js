@@ -355,7 +355,9 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
 
     if(rightOnset==='ㄹ'&&['ㄱ','ㄷ','ㅂ','ㅁ','ㅇ'].includes(leftRep)){
       const obstruent=['ㄱ','ㄷ','ㅂ'].includes(leftRep);
-      const rule=obstruent?'liquid-to-nasal-before-obstruent':'liquid-assimilation';
+      const rule=leftRep==='ㄷ'
+        ?'project-inferred-d-liquid-nasalization'
+        :obstruent?'liquid-to-nasal-before-obstruent':'liquid-assimilation';
       if(rewriteOnset(next,'ㄹ','ㄴ',false,rule))addRule(lastTrace(previous),rule);
       if(NASAL_AFTER[leftRep]&&rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation'))addRule(firstTrace(next),'nasal-assimilation');
       continue;
