@@ -61,6 +61,26 @@ test('NIKL §26 fortition is not generalized to non-licensed ㄹ-final words or 
   }
 });
 
+test('NIKL §29 mixed-script numeric readings work standalone and inside phrases',()=>{
+  const anniversary=engine.convert('6·25');
+  assert.equal(anniversary.surfaceHangul,'유기오');
+  assert.equal(anniversary.ukrainian,'юґіо');
+  assert.equal(anniversary.ipa,'ju ɡi o');
+  assert.equal(anniversary.status,'lexical-review');
+  assert.equal(anniversary.trace.length,1);
+  assert.ok(anniversary.trace[0].rules.includes('ukrainian-target-provisional'));
+
+  const independence=engine.convert('3·1절');
+  assert.equal(independence.surfaceHangul,'사밀쩔');
+  assert.equal(independence.ukrainian,'самілчол');
+  assert.equal(independence.ipa,'sa mil tɕ͈ʌl');
+  assert.equal(independence.status,'lexical-review');
+
+  const phrase=engine.convert('오늘은 3·1절이다.');
+  assert.ok(phrase.ukrainian.includes('самілчол'),'mixed-script token was not recognized inside a phrase');
+  assert.ok(phrase.ipa.includes('sa mil tɕ͈ʌl'),'mixed-script IPA was lost inside a phrase');
+});
+
 test('lexical CSV has unique keys, complete evidence fields and aligned syllable records',()=>{
   const rows=parseCsv(lexicalCsv);
   const seen=new Set();
@@ -79,10 +99,18 @@ test('lexical CSV has unique keys, complete evidence fields and aligned syllable
     const targetParts=row.target_syllables.split('|');
     const ipaParts=row.ipa_syllables.split('|');
     assert.equal(targetParts.length,ipaParts.length,'target/IPA segmentation mismatch: '+row.input);
-    assert.equal([...row.input].length,targetParts.length,'input/target segmentation mismatch: '+row.input);
-    assert.equal([...row.surface_hangul].length,ipaParts.length,'surface/IPA segmentation mismatch: '+row.input);
+    assert.ok(['','mixed-script'].includes(row.input_kind),'unknown input_kind for '+row.input);
     const alternateFields=[row.alternate_surface_hangul,row.alternate_target_syllables,row.alternate_ipa_syllables];
     assert.ok(alternateFields.every(v=>!v)||alternateFields.every(Boolean),'incomplete alternate variant for '+row.input);
+    if(row.input_kind==='mixed-script'){
+      assert.match(row.input,/[^가-힣]/u,'mixed-script entry must contain non-Hangul characters: '+row.input);
+      assert.equal([...row.surface_hangul].length,ipaParts.length,'mixed-script surface/IPA segmentation mismatch: '+row.input);
+      assert.ok(alternateFields.every(v=>!v),'mixed-script alternate variants are not yet supported: '+row.input);
+    }else{
+      assert.match(row.input,/^[가-힣]+$/u,'ordinary lexical input must be Hangul-only: '+row.input);
+      assert.equal([...row.input].length,targetParts.length,'input/target segmentation mismatch: '+row.input);
+      assert.equal([...row.surface_hangul].length,ipaParts.length,'surface/IPA segmentation mismatch: '+row.input);
+    }
     if(alternateFields.every(Boolean)){
       assert.equal([...row.alternate_surface_hangul].length,[...row.input].length,'alternate surface segmentation mismatch: '+row.input);
       assert.equal(row.alternate_target_syllables.split('|').length,[...row.input].length,'alternate target segmentation mismatch: '+row.input);
