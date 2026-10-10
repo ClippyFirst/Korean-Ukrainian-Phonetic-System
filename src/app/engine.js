@@ -308,13 +308,12 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const oldIpa=get(map,'coda',oldCoda)?.ipa||'',newIpa=get(map,'coda',newCoda)?.ipa||'';
     if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
     const trace=lastTrace(result);
-    if(result.ukrainian.endsWith(oldTarget))result.ukrainian=result.ukrainian.slice(0,-oldTarget.length)+newTarget;
-    if(result.ipa.endsWith(oldIpa))result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
-    if(trace){
-      if(trace.output.endsWith(oldTarget))trace.output=trace.output.slice(0,-oldTarget.length)+newTarget;
-      if(trace.ipa.endsWith(oldIpa))trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
-      addRule(trace,rule);
-    }
+    if(!trace||!result.ukrainian.endsWith(oldTarget)||!result.ipa.endsWith(oldIpa)||!trace.output.endsWith(oldTarget)||!trace.ipa.endsWith(oldIpa))return false;
+    result.ukrainian=result.ukrainian.slice(0,-oldTarget.length)+newTarget;
+    result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
+    trace.output=trace.output.slice(0,-oldTarget.length)+newTarget;
+    trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
+    addRule(trace,rule);
     return true;
   };
   const rewriteOnset=(result,oldOnset,newOnset,realizedLateral,rule)=>{
