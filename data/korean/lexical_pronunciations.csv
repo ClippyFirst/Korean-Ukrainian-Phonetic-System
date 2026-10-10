@@ -260,3 +260,4 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 국립국어원,궁님꾸거원,кунг|нім|ку|ґо|вон,kuŋ|nim|k͈u|kʌ|wʌn,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"합성 기관명: 국립 [궁닙] + 국어원 [꾸거원]; 비음화와 경음화의 표면형을 고정. 우크라이나어 표기는 잠정적.",high,provisional,,,,
 먹었어요,머거써요,мо|ґо|со|йо,mʌ|ɡʌ|s͈ʌ|jo,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=98&pageIndex=1&qna_seq=324097,"NIKL 답변: 먹었어요 [머거써요]; ㅆ 연음. 우크라이나어 표기는 잠정적.",high,provisional,,,,
 찍었어요,찌거써요,чі|ґо|со|йо,tɕ͈i|ɡʌ|s͈ʌ|jo,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=98&pageIndex=1&qna_seq=324097,"NIKL의 과거형 연음 예시(먹었어요 [머거써요])와 표준국어대사전의 찍어 [찌거]를 결합한 형태; 표면형은 회귀 테스트로 고정. 우크라이나어 표기는 잠정적.",high,provisional,,,,
+국립국어원에서,궁님꾸거워네서,кунг|нім|ку|ґо|во|не|со,kuŋ|nim|k͈u|ɡʌ|wʌ|ne|sʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"국립국어원 [궁님꾸거원] + 조사 에서; ㄴ 받침이 모음 초성으로 이어져 [궁님꾸거워네서]. 우크라이나어 표기는 잠정적.",high,provisional,,,,
