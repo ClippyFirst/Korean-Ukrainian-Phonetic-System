@@ -224,3 +224,20 @@ The new structural test caught that the first version of the 바람결 entry gro
 Added the previously missing Hangul-only examples for §29: 솜이불, 홑이불, 막일, 삯일, 맨입, 내복약, 한여름, 남존여비, 신여성, 색연필, 직행열차, 늑막염, 콩엿, 담요, 눈요기, 영업용, 식용유, 백분율 and 밤윷. Added explicit alternative readings for 이죽이죽, 야금야금, 검열, 욜랑욜랑 and 금융. Added negative controls 송별연 and 등용문 where §29 says ㄴ insertion does not occur. The numeric/punctuated controls 6·25 and 3·1절 are not yet represented as lexical overrides because the current lexical-result path assumes Hangul-only inputs; supporting these safely requires a mixed-script lexical entry path.
 
 All new Ukrainian targets are provisional. The official rule page provides Korean standard pronunciations, not Ukrainian-transcription validation. The structural audit now checks alternate variants as well as primary entries: alternate surface, Ukrainian target and IPA must all be present together, each segment-aligned to the input syllables, with a non-empty variant note.
+
+
+## 19. NIKL §30 example coverage
+
+Added exact entries for all 19 official §30 examples: ten §30(1) fortition examples with both permitted readings (냇가, 샛길, 빨랫돌, 콧등, 깃발, 대팻밥, 햇살, 뱃속, 뱃전, 고갯짓); four §30(2) nasalization examples (콧날, 아랫니, 툇마루, 뱃머리); and five §30(3) double-nasal-insertion examples (베갯잇, 깻잎, 나뭇잎, 도리깻열, 뒷윷). Alternate readings are represented as explicit variants rather than hidden in notes. Long vowels are marked on the vowel in IPA (e.g. 퇸ː마루 → `tʰøːn`), while the Ukrainian target remains provisional.
+
+The inventory now contains 393 lexical records. Structural review checks primary and alternate segment counts independently; passing these checks establishes data alignment only, not the optimality of each Ukrainian target.
+
+
+## 20. Target-script integrity correction
+
+The first §30 regression run caught two Ukrainian-target cells that accidentally contained Hangul characters: the target for 깃발 contained 팔 instead of пал, and the target for 뱃머리 contained 모 instead of мо. Both cells were corrected. The lexical CSV integrity test now also rejects Hangul characters in Ukrainian target fields, including alternate targets, to prevent this class of copy/paste error from recurring.
+
+
+## 21. Ukrainian target-script inventory
+
+A full character scan of all 393 primary and alternate Ukrainian targets found only the declared Ukrainian Cyrillic letters and the allowed syllable delimiter. No Latin characters, IPA symbols, digits, or Hangul remained in the target fields. The automated CSV integrity test now checks this alphabet boundary in addition to rejecting Hangul explicitly. This is a script-integrity check only; it does not establish that every target is idiomatic or phonetically optimal Ukrainian.
