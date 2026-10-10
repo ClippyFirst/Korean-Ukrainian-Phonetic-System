@@ -600,7 +600,7 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '붙는': ['분는', 'pun nɯn', 'пуннин'],
     '놓는': ['논는', 'non nɯn', 'ноннин'],
     '잡는': ['잠는', 'tɕam nɯn', 'чамнин'],
-    '밥물': ['밤물', 'pam mul', 'паммуль'],
+    '밥물': ['밤물', 'pam mul', 'паммул'],
     '앞마당': ['암마당', 'am ma daŋ', 'аммадан'],
     '읊는': ['음는', 'ɯm nɯn', 'имнин'],
   };
