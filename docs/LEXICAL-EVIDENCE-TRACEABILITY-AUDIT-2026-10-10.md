@@ -4,16 +4,16 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **60** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **48** rows meet the audit filter.
 
 ## Source-type counts
 
 | Existing source URL type | Rows |
 |---|---:|
-| NIKL online Q&A | 21 |
-| NIKL FAQ | 3 |
-| NIKL standard-rules page | 36 |
-| **Total requiring article-mapping review** | **60** |
+| NIKL online Q&A | 11 |
+| NIKL FAQ | 2 |
+| NIKL standard-rules page | 35 |
+| **Total requiring article-mapping review** | **48** |
 
 ## Resolved during follow-up
 
@@ -27,6 +27,10 @@ The following nine records received explicit article mappings after source revie
 
 Nine more rows were assigned explicit rule references or documented as rule-specific negative controls: `삶다` (§§11, 23), `넓어` (§14), `넓으니` (§14), `넓은` (§14; exact bracketed reading remains indirectly supported), `넓습니다` (§§10, 18, 23; rule-derived), `넓지` (§§10, 23), `값있다` (§29 non-application of ㄴ-insertion), `곧이어` (§29 non-application of ㄴ-insertion), and `음용` (§29 non-application of ㄴ-insertion). For `넓습니다`, the source URL now points to the official rule text rather than implying the related dictionary-form Q&A directly lists the full conjugated form.
 
+## Resolved during follow-up
+
+Twelve further rows now have explicit article mappings or a directly supported rule trace: `값없다` (§§10, 15, 23), `의견란` (§20), `읽고` (§§11, 23), `읽다` (§§11, 23), `읽어` (§14; its source URL was corrected to the exact NIKL answer), `읽는` (§§11, 18), `읽지` (§§11, 23), `맑게` (§§11, 23), `맑고` (§§11, 23; exact-word attestation remains indirect), `맑다` (§§11, 23; source now points to the official rules page), `밝기` (§§11, 23), and `닭고기` (§§11, 23).
+
 ## Required handling
 
 - Do not assign a rule number from a guessed sound-process label. Verify the cited source and the exact Standard Pronunciation Rules clause first.
@@ -39,18 +43,6 @@ Nine more rows were assigned explicit rule references or documented as rule-spec
 
 | Input | Existing official source | Current note (preserved verbatim) | Next action |
 |---|---|---|---|
-| 값없다 | NIKL online Q&A | 실질 형태소 없- 앞에서 ㅄ 단순화 후 대표음 ㅂ이 이동; [가법따] | Verify source; map article or label lexical/corpus evidence |
-| 의견란 | NIKL FAQ | 어휘적 ㄹ→ㄴ 예외; 의의 어휘적 읽기 및 장음은 이 항목에서만 명시 | Verify source; map article or label lexical/corpus evidence |
-| 읽고 | NIKL online Q&A | 용언 어간 ㄺ 앞 ㄱ 계열 어미: ㄱ 탈락, ㄹ 유지; 된소리되기 | Verify source; map article or label lexical/corpus evidence |
-| 읽다 | NIKL online Q&A | ㄺ의 일반 자음 앞 실현과 된소리되기 | Verify source; map article or label lexical/corpus evidence |
-| 읽어 | NIKL online Q&A | 형식 형태소 어미 앞 ㄺ 연음: ㄹ은 종성, ㄱ은 다음 음절 초성 | Verify source; map article or label lexical/corpus evidence |
-| 읽는 | NIKL online Q&A | ㄺ 단순화 후 비음화; [잉는] | Verify source; map article or label lexical/corpus evidence |
-| 읽지 | NIKL online Q&A | ㄺ 단순화 후 된소리되기 | Verify source; map article or label lexical/corpus evidence |
-| 맑게 | NIKL online Q&A | 용언 어간 ㄺ 앞 ㄱ 계열 어미: ㄹ 유지, ㄱ 탈락 | Verify source; map article or label lexical/corpus evidence |
-| 맑고 | NIKL online Q&A | 용언 어간 ㄺ 앞 ㄱ 계열 어미: ㄹ 유지, ㄱ 탈락 | Verify source; map article or label lexical/corpus evidence |
-| 맑다 | NIKL online Q&A | ㄺ의 일반 자음 앞 실현과 된소리되기 | Verify source; map article or label lexical/corpus evidence |
-| 밝기 | NIKL online Q&A | 파생어에서도 용언 어간 ㄺ의 ㄱ 앞 예외 적용 | Verify source; map article or label lexical/corpus evidence |
-| 닭고기 | NIKL online Q&A | 체언 닭-은 ㄱ 앞에서도 일반적으로 [ㄱ]; 된소리되기 | Verify source; map article or label lexical/corpus evidence |
 | 꽃잎 | NIKL online Q&A | 합성어의 ㄴ 첨가와 비음화; 표준 발음 [꼰닙] | Verify source; map article or label lexical/corpus evidence |
 | 밭이 | NIKL FAQ | 받침 ㅌ과 조사 이의 구개음화; 표준 발음 [바치] | Verify source; map article or label lexical/corpus evidence |
 | 밭을 | NIKL FAQ | 받침 ㅌ의 모음 앞 연음; 표준 발음 [바틀] | Verify source; map article or label lexical/corpus evidence |
