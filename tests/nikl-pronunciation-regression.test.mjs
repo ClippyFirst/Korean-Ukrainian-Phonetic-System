@@ -61,13 +61,13 @@ test('ㄷ+히 follows aspiration and then palatalization (§12 + §17)', () => {
   assert.equal(result.status, 'lexical-review');
 });
 
-test('the complete official institution name preserves sequential §19, §18 and §23 rules', () => {
+test('the complete official institution name uses its sourced standard surface form', () => {
   const result = engine.convert('국립국어원');
-  assert.equal(result.ukrainian, 'кунніпкуґовон');
-  assert.equal(result.ipa, 'kuŋ nip̚ k͈u ɡʌ wʌn');
-  assert.ok(result.trace.some((item) => item.rules.includes('liquid-to-nasal-before-obstruent')));
-  assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')));
-  assert.ok(result.trace.some((item) => item.rules.includes('tensification')));
+  assert.equal(result.surfaceHangul, '궁님꾸거원');
+  assert.equal(result.ukrainian, 'кунгнімкуґовон');
+  assert.equal(result.ipa, 'kuŋ nim k͈u kʌ wʌn');
+  assert.equal(result.status, 'lexical-review');
+  assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
 });
 
 test('unlicensed spelling-only palatalization is withheld instead of guessed', () => {
