@@ -206,4 +206,9 @@ All seven Ukrainian targets are marked provisional. The Korean surface forms and
 
 ## 15. Lexicon integrity guard
 
-The lexical CSV now has an automated regression checking unique input keys, required evidence/metadata fields, allowed confidence and target-status values, source URL schemes, and one-to-one segmentation counts across input, Korean surface, Ukrainian target and IPA. A fresh static pass over the current 339 records found no duplicate input keys, missing required fields, unsupported status labels, malformed source URL schemes, or segment-count mismatches. This check is structural only: it cannot determine whether a Korean pronunciation is linguistically correct or whether a Ukrainian target is optimal.
+The lexical CSV now has an automated regression checking unique input keys, required evidence/metadata fields, allowed confidence and target-status values, source URL schemes, and one-to-one segmentation counts across input, Korean surface, Ukrainian target and IPA. A fresh static pass over the current 348 records found no duplicate input keys, missing required fields, unsupported status labels, malformed source URL schemes, or segment-count mismatches. This check is structural only: it cannot determine whether a Korean pronunciation is linguistically correct or whether a Ukrainian target is optimal.
+
+
+## 16. §28 official compound example inventory completed
+
+The lexicon now covers all 19 examples listed under NIKL §28: 문고리, 눈동자, 신바람, 산새, 손재주, 길가, 물동이, 발바닥, 굴속, 술잔, 바람결, 그믐달, 아침밥, 잠자리, 강가, 초승달, 등불, 창살 and 강줄기. The nine previously missing forms were added as exact lexical entries with provisional Ukrainian targets. Regression coverage preserves [굴ː쏙] vowel length as IPA `kuːl` (length belongs to the vowel, not the coda) and represents the lenis onset in 강줄기 contextually as [g] in the chosen broad IPA layer. These readings are tied to the listed official examples only; they do not license a general rule for every compound.
