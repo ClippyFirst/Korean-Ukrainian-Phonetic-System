@@ -229,3 +229,36 @@ test('lexical target codas match the final consonants of their aligned surface I
   assert.equal(batIlang?.target_syllables, 'пан|ні|ран');
   assert.equal(engine.convert('밭이랑').ukrainian, 'панніран');
 });
+
+
+test('lexical onset targets match declared surface-onset mappings across the corpus', () => {
+  const onsetTargets = [
+    [/^tɕ(?:ʰ|͈)?/u, 'ч'],
+    [/^dʑ/u, 'дж'],
+    [/^k(?:ʰ|͈)?/u, 'к'],
+    [/^ɡ/u, 'ґ'],
+    [/^t(?:ʰ|͈)?/u, 'т'],
+    [/^d/u, 'д'],
+    [/^p(?:ʰ|͈)?/u, 'п'],
+    [/^b/u, 'б'],
+    [/^ɕ/u, 'ш'],
+    [/^s͈?i/u, 'ш'],
+    [/^s͈?/u, 'с'],
+    [/^h/u, 'г'],
+    [/^m/u, 'м'],
+    [/^n/u, 'н'],
+    [/^l/u, 'л'],
+    [/^ɾ/u, 'р'],
+  ];
+  for (const row of rows) {
+    const target = (row.target_syllables || '').split('|');
+    const ipa = (row.ipa_syllables || '').split('|');
+    assert.equal(target.length, ipa.length, row.input + ': target/IPA syllable alignment');
+    for (let i = 0; i < ipa.length; i++) {
+      const mapping = onsetTargets.find(([pattern]) => pattern.test(ipa[i]));
+      if (!mapping) continue;
+      assert.ok(target[i].startsWith(mapping[1]),
+        row.input + ': surface onset ' + ipa[i] + ' must align with Ukrainian target ' + mapping[1] + ' in ' + target[i]);
+    }
+  }
+});
