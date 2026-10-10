@@ -18,7 +18,10 @@ The curated file is `data/korean/lexical_pronunciations.csv`. The shared rule en
 | 없는 | 엄는 | coda simplification and nasal assimilation; lexical vowel length | NIKL |
 | 국물 | 궁물 | velar coda nasalization | NIKL |
 | 떡볶이 | 떡뽀끼 | lexicalized suffixal liaison and fortition | NIKL |
-| 옷이 | 오시 | liaison and sibilant realization in the i environment | NIKL |\n| 같이, 굳이, 곧이듣다, 미닫이, 땀받이, 벼훑이 | 가치, 구지, 고지듣따, 미ː다지, 땀바지, 벼훌치 | §17 palatalization; includes ㄾ and the official ㄷ+히 provision | NIKL |\n| 굳히다, 닫히다, 묻히다 | 구치다, 다치다, 무치다 | ordered ㄷ+ㅎ → ㅌ, then ㅌ+ㅣ → ㅊ under §17 붙임 | NIKL |\n| 서울역 | 서울력 | §29 n-insertion with ㄹ realization | NIKL Standard Pronunciation Rules |
+| 옷이 | 오시 | liaison and sibilant realization in the i environment | NIKL |
+| 같이, 굳이, 곧이듣다, 미닫이, 땀받이, 벼훑이 | 가치, 구지, 고지듣따, 미ː다지, 땀바지, 벼훌치 | §17 palatalization; includes ㄾ and the official ㄷ+히 provision | NIKL |
+| 굳히다, 닫히다, 묻히다 | 구치다, 다치다, 무치다 | ordered ㄷ+ㅎ → ㅌ, then ㅌ+ㅣ → ㅊ under §17 붙임 | NIKL |
+| 서울역 | 서울력 | §29 n-insertion with ㄹ realization | NIKL Standard Pronunciation Rules |
 
 The source links are stored on each row so that the browser service and Python implementation share the same provenance instead of maintaining independent undocumented exception lists.
 
@@ -65,5 +68,7 @@ The website now makes this distinction visible and links selected edge cases dir
 - [NIKL: 넓네 [널레] and 겹받침](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307237)
 - [NIKL: compound n-insertion](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219)
 - [NIKL: nasalization before ㄴ/ㅁ](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=311009)
-- [NIKL: §17 official palatalization examples and ㄷ + suffix -히](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851)\n- [NIKL: 굳이 [구지]](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=2&qna_seq=313201)\n- [NIKL: 밭이 vs 밭에](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=281511)
+- [NIKL: §17 official palatalization examples and ㄷ + suffix -히](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313851)
+- [NIKL: 굳이 [구지]](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=2&qna_seq=313201)
+- [NIKL: 밭이 vs 밭에](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=281511)
 - [NIKL: 떡볶이 [떡뽀끼]](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=313397)
