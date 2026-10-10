@@ -4,7 +4,7 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **27** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **15** rows meet the audit filter.
 
 ## Source-type counts
 
@@ -12,8 +12,8 @@ Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **27**
 |---|---:|
 | NIKL online Q&A | 2 |
 | NIKL FAQ | 0 |
-| NIKL standard-rules page | 25 |
-| **Total requiring article-mapping review** | **27** |
+| NIKL standard-rules page | 13 |
+| **Total requiring article-mapping review** | **15** |
 
 ## Resolved during follow-up
 
@@ -39,6 +39,10 @@ Nine more records received explicit rule mappings based on their linked official
 
 Nine additional forms now carry explicit rule traces: `국립국어원` (§§18, 19, 23), `먹었어요` (§13), `찍었어요` (§13; component sources documented), `국립국어원에서` (§§13, 18, 19, 23), `빗었어요` (§13), `읽었습니다` (§§9, 14, 18, 23), `덥고` (§23), `밤에는` (§13), and `춥습니다` (§§18, 23). Three unchanged controls were explicitly reclassified so the audit does not force meaningless article numbers: `대한민국` is a baseline control; `나중엔` and `머리를` are corpus controls whose corpus provenance remains pending.
 
+## Resolved or reclassified during follow-up
+
+Nine further rows now have explicit rule traces: `빗고` (§§9, 23), `넓지만` (§§10, 23), `짧아도` (§14), `나갔습니다` (§§9, 18, 23), `꽃밭에` (§§9, 13, 23), `있던` (§§9, 23), `학생의` (§§5, 23; variant-sensitive), `책을` (§13), and `연구원은` (§13). Three unchanged surface forms were reclassified as baseline controls rather than given fabricated rule numbers: `예쁘고`, `보러`, and `일찍`.
+
 ## Required handling
 
 - Do not assign a rule number from a guessed sound-process label. Verify the cited source and the exact Standard Pronunciation Rules clause first.
@@ -51,18 +55,6 @@ Nine additional forms now carry explicit rule traces: `국립국어원` (§§18,
 
 | Input | Existing official source | Current note (preserved verbatim) | Next action |
 |---|---|---|---|
-| 빗고 | NIKL standard-rules page | 빗- + -고: 받침 ㅅ의 대표음 [ㄷ] 및 ㄱ 된소리되기; [빋꼬]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 넓지만 | NIKL standard-rules page | 넓- + -지만: ㄼ의 ㄹ 실현과 뒤 ㅈ의 된소리되기; [널찌만]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 예쁘고 | NIKL standard-rules page | 표면형 [예쁘고]; Ukrainian target is a project-level practical approximation. | Verify source; map article or label lexical/corpus evidence |
-| 짧아도 | NIKL standard-rules page | 짧- + -아도: ㄼ의 ㄹ은 받침으로 남고 ㅂ은 다음 음절 초성으로 연음; [짤바도]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 보러 | NIKL standard-rules page | 표면형 [보러]; Ukrainian target is a project-level practical approximation. | Verify source; map article or label lexical/corpus evidence |
-| 일찍 | NIKL standard-rules page | 표면형 [일찍]; Ukrainian target is a project-level practical approximation. | Verify source; map article or label lexical/corpus evidence |
-| 나갔습니다 | NIKL standard-rules page | 나가- + -았습니다: past-tense ending, 받침 중화 및 ㅅ 된소리되기; [나갇씀니다]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 꽃밭에 | NIKL standard-rules page | 꽃밭 + 에: 받침 중화·된소리되기·연음; 표면형 [꼳빠테]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 있던 | NIKL standard-rules page | 있- + -던: 받침 ㅆ의 대표음 [ㄷ]과 뒤 ㄷ의 된소리되기; [읻떤]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 학생의 | NIKL standard-rules page | 학생 + 의(관형격 조사): 학생의 [학쌩의]; 의의 조사 발음은 [에]도 허용됨. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 책을 | NIKL standard-rules page | 책 + 을: 받침 ㄱ의 연음, [채글]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 연구원은 | NIKL standard-rules page | 연구원 + 은: 원의 받침 ㄴ과 은의 연속; 표면형 [연구워는]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 발음과 | NIKL standard-rules page | 발음 + 과: 발음의 표면형 [바름] 및 과의 연결; Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 
 | 발음의 | NIKL standard-rules page | 발음 + 의: 이 형태에서는 의를 [이]로 읽는 모델 경로를 기본값으로 기록. 조사 의의 [에] 계열은 별도 variant로 검토. | Verify source; map article or label lexical/corpus evidence |
