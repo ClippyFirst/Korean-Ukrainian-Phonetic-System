@@ -369,6 +369,7 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
 
     if(leftRep==='ㄹ'&&rightOnset==='ㄴ'){
       rewriteOnset(next,'ㄴ','ㄹ',true,'liquid-assimilation');
+      addRule(lastTrace(previous),'liquid-assimilation');
     }
   }
 }
