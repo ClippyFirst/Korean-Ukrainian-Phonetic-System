@@ -724,7 +724,12 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
     const vowelIpa=defaultUi?'ɰi':(v?.ipa||'');
-    let unitIpa=(o?.ipa||'')+vowelIpa+(c?.ipa||'');
+    // Standard Korean sibilants are alveolo-palatal before the j-vowel set.
+    // Keep this in IPA even when a surface-only lexical row deliberately uses
+    // the general rule engine so that its contextual trace remains inspectable.
+    const ipaOnset=(J_VOWELS.has(u.vowel)&&onset==='ㅅ')?'ɕ':
+      (J_VOWELS.has(u.vowel)&&onset==='ㅆ')?'ɕ͈':(o?.ipa||'');
+    let unitIpa=ipaOnset+vowelIpa+(c?.ipa||'');
     if(liquid&&onset==='ㄹ')unitIpa='l'+(v?.ipa||'')+(c?.ipa||'');
     // The IPA column is deliberately broad/analytical. Reflect the same
     // contextual onset decision used for the Ukrainian target when possible.
