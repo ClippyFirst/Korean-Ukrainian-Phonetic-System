@@ -221,7 +221,7 @@ The new structural test caught that the first version of the 바람결 entry gro
 
 ## 18. NIKL §29 example coverage
 
-Added the previously missing Hangul-only examples for §29: 솜이불, 홑이불, 막일, 삯일, 맨입, 내복약, 한여름, 남존여비, 신여성, 색연필, 직행열차, 늑막염, 콩엿, 담요, 눈요기, 영업용, 식용유, 백분율 and 밤윷. Added explicit alternative readings for 이죽이죽, 야금야금, 검열, 욜랑욜랑 and 금융. Added negative controls 송별연 and 등용문 where §29 says ㄴ insertion does not occur. The numeric/punctuated controls 6·25 and 3·1절 are not yet represented as lexical overrides because the current lexical-result path assumes Hangul-only inputs; supporting these safely requires a mixed-script lexical entry path.
+Added the previously missing Hangul-only examples for §29: 솜이불, 홑이불, 막일, 삯일, 맨입, 내복약, 한여름, 남존여비, 신여성, 색연필, 직행열차, 늑막염, 콩엿, 담요, 눈요기, 영업용, 식용유, 백분율 and 밤윷. Added explicit alternative readings for 이죽이죽, 야금야금, 검열, 욜랑욜랑 and 금융. Added negative controls 송별연 and 등용문 where §29 says ㄴ insertion does not occur. The numeric/punctuated controls 6·25 and 3·1절 are now represented through an explicit `input_kind=mixed-script` path; their target/IPA alignment is checked against the Korean surface reading rather than the orthographic input length.
 
 All new Ukrainian targets are provisional. The official rule page provides Korean standard pronunciations, not Ukrainian-transcription validation. The structural audit now checks alternate variants as well as primary entries: alternate surface, Ukrainian target and IPA must all be present together, each segment-aligned to the input syllables, with a non-empty variant note.
 
@@ -241,3 +241,10 @@ The first §30 regression run caught two Ukrainian-target cells that accidentall
 ## 21. Ukrainian target-script inventory
 
 A full character scan of all 393 primary and alternate Ukrainian targets found only the declared Ukrainian Cyrillic letters and the allowed syllable delimiter. No Latin characters, IPA symbols, digits, or Hangul remained in the target fields. The automated CSV integrity test now checks this alphabet boundary in addition to rejecting Hangul explicitly. This is a script-integrity check only; it does not establish that every target is idiomatic or phonetically optimal Ukrainian.
+
+
+## 22. Mixed-script numeric readings (§29)
+
+Added exact, source-linked lexical entries for the official mixed-script examples `6·25` → [유기오] and `3·1절` → [사밀쩔]. The CSV now has an explicit optional `input_kind` field; ordinary entries remain Hangul-only, while `mixed-script` entries align target and IPA units to the sourced Korean surface reading, not to the number of input code points. This avoids pretending that digits or punctuation are Hangul syllables.
+
+The engine recognizes these exact entries both as standalone inputs and inside surrounding Korean phrases. The result retains the original input, provides the Korean surface reading, Ukrainian target and IPA, and labels the Ukrainian output provisional. The test suite covers standalone conversion, phrase tokenization and the distinct CSV alignment contract. The numeric examples’ Ukrainian targets are project proposals, not NIKL-validated transcriptions.
