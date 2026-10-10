@@ -100,7 +100,7 @@ test('sourced lexical edge cases cover n-insertion, nasalization, liaison, palat
     '꽃잎':['꼰닙','конніп','k͈on nip̚'],
     '밭이':['바치','пачі','pa tɕʰi'],
     '밭을':['바틀','патил','pa tʰɯl'],
-    '넓네':['널레','нольле','nʌl le'],
+    '넓네':['널레','нолле','nʌl le'],
     '없다':['업따','опта','ʌːp̚ t͈a'],
     '없는':['엄는','омнин','ʌːm nɯn'],
     '국물':['궁물','кунмул','kuŋ mul'],
