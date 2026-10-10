@@ -437,10 +437,17 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     // Exact mixed-script lexical keys (e.g. 6·25, 3·1절) are tokenized
     // before ordinary Hangul/non-Hangul runs, including inside phrases.
     const mixedKeys=[...lexicon.keys()].filter(key=>/[^가-힣]/u.test(key)).sort((a,b)=>b.length-a.length);
-    const regexSpecials=new Set(['.','*','+','?','^','    const tokenPattern=mixedKeys.length
-      ? new RegExp(mixedKeys.map(escapeRegex).join('|')+'|[가-힣]+|[^가-힣]+','gu')
-      : /[가-힣]+|[^가-힣]+/gu;
-    const parts=text.match(tokenPattern)||[];
+    const parts=[];
+    let cursor=0;
+    while(cursor<text.length){
+      const exactKey=mixedKeys.find(key=>text.startsWith(key,cursor));
+      if(exactKey){parts.push(exactKey);cursor+=exactKey.length;continue;}
+      const nextKeyPositions=mixedKeys.map(key=>text.indexOf(key,cursor)).filter(position=>position>=0);
+      const nextKey=nextKeyPositions.length?Math.min(...nextKeyPositions):text.length;
+      const segment=text.slice(cursor,nextKey);
+      parts.push(...(segment.match(/[가-힣]+|[^가-힣]+/g)||[]));
+      cursor=nextKey;
+    }
     if(parts.some(part=>lexicon.has(part))){
       const results=parts.map(part=>{
         if(lexicon.has(part)){
