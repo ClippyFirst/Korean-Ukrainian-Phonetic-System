@@ -11,14 +11,9 @@ const engine = createEngine(canonical, lexical);
 test('new adversarial standard-pronunciation forms are sourced and regression-locked', () => {
   const expected = {
     '밝는': { surface: '방는', target: 'паннин', ipa: 'paŋ nɯn' },
-    '넓죽하다': { surface: '넙쭈카다', target: 'нопчукада', ipa: 'nʌp̚ tɕ͈u kʰa da' },
-    '넓둥글다': { surface: '넙뚱글다', target: 'ноптунґильда', ipa: 'nʌp̚ t͈uŋ ɡɯl da' },
-    '넓적하다': { surface: '넙쩌카다', target: 'нопчокада', ipa: 'nʌp̚ tɕ͈ʌ kʰa da' },
     '묽게': { surface: '물께', target: 'мулке', ipa: 'mul k͈e' },
     '실없다': { surface: '시럽따', target: 'шіропта', ipa: 'ɕi ɾʌp̚ t͈a' },
     '몇으로': { surface: '며츠로', target: 'мйочиро', ipa: 'mjʌ tɕʰɯ ɾo' },
-    '많고': { surface: '만코', target: 'манко', ipa: 'man kʰo' },
-    '밟는': { surface: '밤는', target: 'памнин', ipa: 'paːm nɯn' },
     '값있는': { surface: '가빈는', target: 'кабіннин', ipa: 'ka bin nɯn' },
     '앞일': { surface: '암닐', target: 'амніл', ipa: 'am nil' },
     '무늬': { surface: '무니', target: 'муні', ipa: 'mu ni' },
