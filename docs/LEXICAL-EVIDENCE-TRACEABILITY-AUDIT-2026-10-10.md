@@ -4,16 +4,16 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **39** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **27** rows meet the audit filter.
 
 ## Source-type counts
 
 | Existing source URL type | Rows |
 |---|---:|
-| NIKL online Q&A | 4 |
+| NIKL online Q&A | 2 |
 | NIKL FAQ | 0 |
-| NIKL standard-rules page | 35 |
-| **Total requiring article-mapping review** | **39** |
+| NIKL standard-rules page | 25 |
+| **Total requiring article-mapping review** | **27** |
 
 ## Resolved during follow-up
 
@@ -35,6 +35,10 @@ Twelve further rows now have explicit article mappings or a directly supported r
 
 Nine more records received explicit rule mappings based on their linked official evidence: `꽃잎` (§§9, 18, 29), `밭이` (§17), `밭을` (§13), `넓네` (§§10, 20), `없다` (§§10, 23), `없는` (§§10, 18), `국물` (§18), `떡볶이` (§23, with the remaining morphological liaison step explicitly left unclaimed by the source), and `옷이` (§13). `대한민국` remains a baseline/no-rewrite control; it has not been forced into an article mapping merely to clear the queue.
 
+## Resolved or reclassified during follow-up
+
+Nine additional forms now carry explicit rule traces: `국립국어원` (§§18, 19, 23), `먹었어요` (§13), `찍었어요` (§13; component sources documented), `국립국어원에서` (§§13, 18, 19, 23), `빗었어요` (§13), `읽었습니다` (§§9, 14, 18, 23), `덥고` (§23), `밤에는` (§13), and `춥습니다` (§§18, 23). Three unchanged controls were explicitly reclassified so the audit does not force meaningless article numbers: `대한민국` is a baseline control; `나중엔` and `머리를` are corpus controls whose corpus provenance remains pending.
+
 ## Required handling
 
 - Do not assign a rule number from a guessed sound-process label. Verify the cited source and the exact Standard Pronunciation Rules clause first.
@@ -47,18 +51,6 @@ Nine more records received explicit rule mappings based on their linked official
 
 | Input | Existing official source | Current note (preserved verbatim) | Next action |
 |---|---|---|---|
-| 대한민국 | NIKL standard-rules page | Core name; Ukrainian target remains provisional. | Verify source; map article or label lexical/corpus evidence |
-| 국립국어원 | NIKL standard-rules page | 합성 기관명: 국립 [궁닙] + 국어원 [꾸거원]; 비음화와 경음화의 표면형을 고정. 우크라이나어 표기는 잠정적. | Verify source; map article or label lexical/corpus evidence |
-| 먹었어요 | NIKL online Q&A | NIKL 답변: 먹었어요 [머거써요]; ㅆ 연음. 우크라이나어 표기는 잠정적. | Verify source; map article or label lexical/corpus evidence |
-| 찍었어요 | NIKL online Q&A | NIKL의 과거형 연음 예시(먹었어요 [머거써요])와 표준국어대사전의 찍어 [찌거]를 결합한 형태; 표면형은 회귀 테스트로 고정. 우크라이나어 표기는 잠정적. | Verify source; map article or label lexical/corpus evidence |
-| 국립국어원에서 | NIKL standard-rules page | 국립국어원 [궁님꾸거원] + 조사 에서; ㄴ 받침이 모음 초성으로 이어져 [궁님꾸거워네서]. 우크라이나어 표기는 잠정적. | Verify source; map article or label lexical/corpus evidence |
-| 빗었어요 | NIKL standard-rules page | 빗- + -었어요: ㅅ 연음 및 ㅆ의 연음, [비서써요]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 읽었습니다 | NIKL standard-rules page | 읽- + -었습니다: ㄺ의 ㄱ 연음, ㅆ, 비음화; [일거씀니다]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 나중엔 | NIKL standard-rules page | 문장 corpus: 나중엔의 표면형을 보존. Ukrainian target is a project-level practical approximation. | Verify source; map article or label lexical/corpus evidence |
-| 덥고 | NIKL standard-rules page | 덥- + -고: 받침 ㅂ 뒤 ㄱ 된소리되기; [덥꼬]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 밤에는 | NIKL standard-rules page | 밤 + 에는: 받침 ㅁ의 연음; [바메는]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 춥습니다 | NIKL standard-rules page | 춥- + -습니다: ㅂ 받침 뒤 ㅅ 된소리되기와 습니다의 비음 환경; [춥씀니다]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 머리를 | NIKL standard-rules page | 문장 corpus의 대조용 일반형; 표면형 [머리를]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 빗고 | NIKL standard-rules page | 빗- + -고: 받침 ㅅ의 대표음 [ㄷ] 및 ㄱ 된소리되기; [빋꼬]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 넓지만 | NIKL standard-rules page | 넓- + -지만: ㄼ의 ㄹ 실현과 뒤 ㅈ의 된소리되기; [널찌만]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 예쁘고 | NIKL standard-rules page | 표면형 [예쁘고]; Ukrainian target is a project-level practical approximation. | Verify source; map article or label lexical/corpus evidence |
