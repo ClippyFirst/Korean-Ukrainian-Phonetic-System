@@ -4,7 +4,6 @@ import { readFileSync } from 'node:fs';
 import { parseCsv } from '../src/app/engine.js';
 
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
-const auditText = readFileSync(new URL('../docs/LEXICAL-EVIDENCE-TRACEABILITY-AUDIT-2026-10-10.md', import.meta.url), 'utf8');
 const review = readFileSync(new URL('../docs/LEXICAL-EVIDENCE-REVIEW-BATCH-10-2026-10-10.md', import.meta.url), 'utf8');
 const rows = parseCsv(lexicalText);
 
@@ -38,9 +37,6 @@ test('batch 10 maps nine source-backed records to official rule articles', () =>
   }
 });
 
-test('traceability snapshot reflects 39 remaining rows after this batch', () => {
-  assert.match(auditText, /contains \*\*520\*\* rows; \*\*39\*\* rows meet the audit filter/u);
-  assert.match(auditText, /NIKL online Q&A \| 4/u);
-  assert.match(auditText, /NIKL FAQ \| 0/u);
-  assert.match(auditText, /NIKL standard-rules page \| 35/u);
+test('batch 10 report preserves its historical queue reduction', () => {
+  assert.match(review, /unresolved traceability queue decreases from \*\*48 to 39\*\*/u);
 });
