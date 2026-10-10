@@ -330,15 +330,16 @@ test('decomposition rejects non-syllable characters without coercion',()=>{
   }
 });
 
-test('decomposed jamo and mixed-script text are preserved as literals rather than silently normalized',()=>{
+test('decomposed jamo are preserved as literals while mixed-script input transliterates Hangul only',()=>{
   const decomposed='가';
   const mixed='한글 ABC かな 漢字 🙂';
   const a=engine.convert(decomposed);
   const b=engine.convert(mixed);
+  const korean=engine.convert('한글');
   assert.equal(a.ukrainian,decomposed);
   assert.equal(a.ipa,decomposed);
-  assert.equal(b.ukrainian,mixed);
-  assert.equal(b.ipa,mixed);
+  assert.equal(b.ukrainian,korean.ukrainian+' ABC かな 漢字 🙂');
+  assert.equal(b.ipa,korean.ipa+' ABC かな 漢字 🙂');
   assert.equal(b.source,mixed);
 });
 
