@@ -308,13 +308,12 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const oldIpa=get(map,'coda',oldCoda)?.ipa||'',newIpa=get(map,'coda',newCoda)?.ipa||'';
     if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
     const trace=lastTrace(result);
-    if(result.ukrainian.endsWith(oldTarget))result.ukrainian=result.ukrainian.slice(0,-oldTarget.length)+newTarget;
-    if(result.ipa.endsWith(oldIpa))result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
-    if(trace){
-      if(trace.output.endsWith(oldTarget))trace.output=trace.output.slice(0,-oldTarget.length)+newTarget;
-      if(trace.ipa.endsWith(oldIpa))trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
-      addRule(trace,rule);
-    }
+    if(!trace||!result.ukrainian.endsWith(oldTarget)||!result.ipa.endsWith(oldIpa)||!trace.output.endsWith(oldTarget)||!trace.ipa.endsWith(oldIpa))return false;
+    result.ukrainian=result.ukrainian.slice(0,-oldTarget.length)+newTarget;
+    result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
+    trace.output=trace.output.slice(0,-oldTarget.length)+newTarget;
+    trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
+    addRule(trace,rule);
     return true;
   };
   const rewriteOnset=(result,oldOnset,newOnset,realizedLateral,rule)=>{
@@ -323,13 +322,12 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const newIpa=realizedLateral?(get(map,'coda','ㄹ')?.ipa||''):(get(map,'onset',newOnset)?.ipa||'');
     if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
     const trace=firstTrace(result);
-    if(result.ukrainian.startsWith(oldTarget))result.ukrainian=newTarget+result.ukrainian.slice(oldTarget.length);
-    if(result.ipa.startsWith(oldIpa))result.ipa=newIpa+result.ipa.slice(oldIpa.length);
-    if(trace){
-      if(trace.output.startsWith(oldTarget))trace.output=newTarget+trace.output.slice(oldTarget.length);
-      if(trace.ipa.startsWith(oldIpa))trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
-      addRule(trace,rule);
-    }
+    if(!trace||!result.ukrainian.startsWith(oldTarget)||!result.ipa.startsWith(oldIpa)||!trace.output.startsWith(oldTarget)||!trace.ipa.startsWith(oldIpa))return false;
+    result.ukrainian=newTarget+result.ukrainian.slice(oldTarget.length);
+    result.ipa=newIpa+result.ipa.slice(oldIpa.length);
+    trace.output=newTarget+trace.output.slice(oldTarget.length);
+    trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
+    addRule(trace,rule);
     return true;
   };
 
@@ -344,20 +342,15 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const leftRep=representative(left.coda),rightOnset=right.onset;
 
     if(['ㄴ','ㅁ'].includes(rightOnset)&&NASAL_AFTER[leftRep]){
-      rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation');
-      addRule(firstTrace(next),'nasal-assimilation');
+      if(rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation'))addRule(firstTrace(next),'nasal-assimilation');
       continue;
     }
 
     if(rightOnset==='ㄹ'&&['ㄱ','ㄷ','ㅂ','ㅁ','ㅇ'].includes(leftRep)){
       const obstruent=['ㄱ','ㄷ','ㅂ'].includes(leftRep);
       const rule=obstruent?'liquid-to-nasal-before-obstruent':'liquid-assimilation';
-      rewriteOnset(next,'ㄹ','ㄴ',false,rule);
-      addRule(lastTrace(previous),rule);
-      if(NASAL_AFTER[leftRep]){
-        rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation');
-        addRule(firstTrace(next),'nasal-assimilation');
-      }
+      if(rewriteOnset(next,'ㄹ','ㄴ',false,rule))addRule(lastTrace(previous),rule);
+      if(NASAL_AFTER[leftRep]&&rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation'))addRule(firstTrace(next),'nasal-assimilation');
       continue;
     }
 
@@ -368,8 +361,7 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     }
 
     if(leftRep==='ㄹ'&&rightOnset==='ㄴ'){
-      rewriteOnset(next,'ㄴ','ㄹ',true,'liquid-assimilation');
-      addRule(lastTrace(previous),'liquid-assimilation');
+      if(rewriteOnset(next,'ㄴ','ㄹ',true,'liquid-assimilation'))addRule(lastTrace(previous),'liquid-assimilation');
     }
   }
 }
