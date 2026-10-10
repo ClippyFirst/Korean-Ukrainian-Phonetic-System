@@ -533,7 +533,7 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
     });
     const sections=[...new Set(changed.map(site=>site.section))].join('/');
     const note=sites.length<=3
-      ?sections+': 허용되는 대안 발음 '+labels.join(' + ')+'; корейське написання не змінюється.'
+      ?sections+': дозволена альтернативна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
       :sections+': альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';
     return{
       source:text,
