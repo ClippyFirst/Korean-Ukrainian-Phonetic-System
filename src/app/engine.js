@@ -318,6 +318,7 @@ function lexicalResult(text,entry){
   }]:[];
   return {
     source:text,
+    surfaceHangul:entry.surface_hangul||'',
     ukrainian:targets.join(''),
     ipa:ipas.join(' '),
     analysis,
@@ -348,6 +349,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
       })));
       return {
         source:text,
+        surfaceHangul:results.every(r=>r.surfaceHangul)?results.map(r=>r.surfaceHangul).join(''):'',
         ukrainian:results.map(r=>r.ukrainian).join(''),
         ipa:results.map(r=>r.ipa).join(''),
         analysis:results.map(r=>r.analysis).join(''),
