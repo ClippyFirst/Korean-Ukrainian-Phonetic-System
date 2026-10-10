@@ -40,7 +40,7 @@ test('baseline and corpus controls are excluded from the article-mapping queue',
     assert.match(row.rule_notes, /^(?:Baseline control|Corpus control)/u);
     assert.doesNotMatch(row.rule_notes, /§\s*\d|제\s*\d+\s*항/u);
   }
-  assert.match(review, /unresolved article-mapping queue decreases from \*\*39 to \*\*27\*\*/u);
+  assert.match(review, /unresolved article-mapping queue decreases from \*\*39 to 27\*\*/u);
 });
 
 test('찍었어요 records its second component source without claiming a direct full-form quotation', () => {
