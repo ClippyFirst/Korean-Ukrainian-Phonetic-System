@@ -70,7 +70,7 @@ test('target syllable alignment and contextual IPA are consistent for high-risk 
     '나갔습니다': ['на|ґат|сим|ні|да', 'na|ɡat̚|s͈ɯm|ni|da'],
     '미닫이': ['мі|да|джі', 'miː|da|dʑi'],
     '땀받이': ['там|ба|джі', 't͈am|ba|dʑi'],
-    '국립국어원': ['кунг|нім|ку|ґо|вон', 'kuŋ|nim|k͈u|ɡʌ|wʌn'],
+    '국립국어원': ['кун|нім|ку|ґо|вон', 'kuŋ|nim|k͈u|ɡʌ|wʌn'],
     '곧이듣다': ['ко|джі|дит|та', 'ko|dʑi|dɯt̚|t͈a'],
     '좋아질': ['чо|а|джіл', 'tɕo|a|dʑil'],
   };
@@ -113,8 +113,8 @@ test('coda ㄹ uses the declared Ukrainian л target without an added soft sign'
     '설날': 'сол|лал',
     '넓고': 'нол|ко',
     '콧물': 'кон|мул',
-    '박물관': 'панг|мул|ґван',
-    '한국말': 'ган|кунг|мал',
+    '박물관': 'пан|мул|ґван',
+    '한국말': 'ган|кун|мал',
     '얇아도': 'ял|ба|до',
     '얇아서': 'ял|ба|со',
     '넓지만': 'нол|чі|ман',
@@ -158,5 +158,34 @@ test('context-sensitive vowel and voicing decisions remain explicit in the lexic
     assert.equal(row.target_syllables, target, word + ': target');
     assert.equal(row.ipa_syllables, ipa, word + ': IPA');
     assert.equal(engine.convert(word).ukrainian, target.replaceAll('|', ''), word + ': runtime target');
+  }
+});
+
+
+test('velar nasal coda targets follow the canonical Ukrainian н convention across lexical overrides', () => {
+  const affected = ['국민', '박물관', '한국말', '국립국어원', '국립국어원에서'];
+  for (const word of affected) {
+    const row = entries.get(word);
+    assert.ok(row, 'missing lexical row: ' + word);
+    const target = row.target_syllables.split('|');
+    const ipa = row.ipa_syllables.split('|');
+    assert.equal(target.length, ipa.length, word + ': target/IPA syllable alignment');
+    for (let i = 0; i < ipa.length; i++) {
+      if (ipa[i].endsWith('ŋ')) {
+        assert.ok(target[i].endsWith('н'), word + ': velar nasal coda must use the declared Ukrainian н target');
+        assert.ok(!target[i].endsWith('нг'), word + ': do not mix a separate г into the declared coda target');
+      }
+    }
+    assert.equal(engine.convert(word).ukrainian, target.join(''), word + ': runtime target');
+  }
+  for (const row of rows) {
+    const target = (row.target_syllables || '').split('|');
+    const ipa = (row.ipa_syllables || '').split('|');
+    if (target.length !== ipa.length) continue;
+    for (let i = 0; i < ipa.length; i++) {
+      if (ipa[i].endsWith('ŋ')) {
+        assert.ok(!target[i].endsWith('нг'), row.input + ': inconsistent velar nasal target ' + target[i]);
+      }
+    }
   }
 });

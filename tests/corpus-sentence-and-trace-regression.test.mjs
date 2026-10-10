@@ -10,7 +10,7 @@ const entries = new Map(parseCsv(lexical).map((row) => [row.input, row]));
 
 test('high-risk user-corpus words use explicit standard surface readings', () => {
   const expected = {
-    '국립국어원': ['궁님꾸거원', 'кунгнімкуґовон', 'kuŋ nim k͈u ɡʌ wʌn'],
+    '국립국어원': ['궁님꾸거원', 'куннімкуґовон', 'kuŋ nim k͈u ɡʌ wʌn'],
     '먹었어요': ['머거써요', 'моґосойо', 'mʌ ɡʌ s͈ʌ jo'],
     '찍었어요': ['찌거써요', 'чіґосойо', 'tɕ͈i ɡʌ s͈ʌ jo'],
   };
@@ -49,7 +49,7 @@ test('trace panel has explicit column labels for source, target, rules and statu
 
 test('sentence conversion resolves exact lexical words inside punctuation-separated text', () => {
   for (const [input, expected] of [
-    ['국립국어원에서', ['궁님꾸거워네서', 'кунгнімкуґовонесо']],
+    ['국립국어원에서', ['궁님꾸거워네서', 'куннімкуґовонесо']],
     ['찍었어요.', ['찌거써요', 'чіґосойо']],
     ['있어요.', ['이써요', 'ісойо']],
     ['갔어요.', ['가써요', 'касойо']],

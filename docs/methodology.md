@@ -58,6 +58,11 @@ A review of the lexical layer found two different defects that must not be confl
 The same audit also enforces the declared coda-`ㄹ` target `л` (not `ль`), context-sensitive `ㅢ` readings, and the special `ㅅ/ㅆ + ㅣ` target `ш`. It fixes duplicated or shifted consonants in the target syllable array without changing the verified Korean surface form. Context-dependent Ukrainian spellings for glides remain graphemic model decisions rather than universal Korean facts.
 
 
+## Consistency of the Ukrainian target for coda ㅇ
+
+The current practical model maps Korean coda [ŋ] to Ukrainian **н** as an explicit approximation; it does not append **г** to imitate the Latin/IPA spelling *ng*. This decision applies equally to canonical conversion and exact lexical overrides. A corpus audit corrected `국민`, `박물관`, `한국말`, `국립국어원`, and `국립국어원에서`; the regression test checks every aligned target/IPA syllable in the lexical table for this specific inconsistency. The Korean IPA remains [ŋ] where source evidence supports it—the repair changes only the Ukrainian target, not the Korean pronunciation analysis.
+
+
 ## Phrase boundaries when a lexical override is present
 
 The browser resolves exact sourced lexical entries at word level. This must not accidentally disable a separately licensed phrase-level rule in the adjacent word. In particular, NIKL §18 nasal assimilation across plain whitespace is re-applied to the preceding word's final coda when a following word begins with ㄴ/ㅁ, even if that following word uses an exact lexical override. Punctuation remains a hard boundary for this pass. Regression coverage includes `밥 먹는다`, `밥 문법`, and the punctuation contrast `밥, 문법`. This boundary repair is limited to the explicitly supported nasal-assimilation environment; it is not a general morphological parser.
