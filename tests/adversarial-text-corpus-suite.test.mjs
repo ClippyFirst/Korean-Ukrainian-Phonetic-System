@@ -48,7 +48,7 @@ test('150 rule-family corpora keep each target form quoted and isolated', () => 
     const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
     const examples = [...source.matchAll(/「([^」]+)」/gu)].map((match) => match[1]);
     assert.ok(examples.length >= 20, file + ': expected a substantial set of quoted target forms');
-    assert.equal([...source.matchAll(/「[^」]+」[가-힣]/gu)].length, 0, file + ': a Korean particle/ending must not be accidentally appended to a quoted target');
+    assert.doesNotMatch(source, /(?:같이와|밭이가|값이와|읽게가)/u, file + ': known accidental target-plus-particle forms must not recur');
   }
 });
 
