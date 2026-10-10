@@ -9,7 +9,7 @@ const rows = parseCsv(lexicalText);
 const entries = new Map(rows.map((row) => [row.input, row]));
 const engine = createEngine(canonical, lexicalText);
 const genericEngine = createEngine(canonical, '');
-const officialSource = /^https:\/\/(?:www\.|m\.)?korean\.go\.kr\//u;
+const officialSource = /^https:\/\/(?:(?:www\.|m\.)?korean\.go\.kr|krdict\.korean\.go\.kr)\//u;
 
 function csvFieldCount(line) {
   let count = 1;

@@ -4,16 +4,16 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **15** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **0** rows meet the audit filter.
 
 ## Source-type counts
 
 | Existing source URL type | Rows |
 |---|---:|
-| NIKL online Q&A | 2 |
+| NIKL online Q&A | 0 |
 | NIKL FAQ | 0 |
-| NIKL standard-rules page | 13 |
-| **Total requiring article-mapping review** | **15** |
+| NIKL standard-rules page | 0 |
+| **Total requiring article-mapping review** | **0** |
 
 ## Resolved during follow-up
 
@@ -41,7 +41,13 @@ Nine additional forms now carry explicit rule traces: `국립국어원` (§§18,
 
 ## Resolved or reclassified during follow-up
 
-Nine further rows now have explicit rule traces: `빗고` (§§9, 23), `넓지만` (§§10, 23), `짧아도` (§14), `나갔습니다` (§§9, 18, 23), `꽃밭에` (§§9, 13, 23), `있던` (§§9, 23), `학생의` (§§5, 23; variant-sensitive), `책을` (§13), and `연구원은` (§13). Three unchanged surface forms were reclassified as baseline controls rather than given fabricated rule numbers: `예쁘고`, `보러`, and `일찍`.
+Nine further rows now have explicit rule traces: `빗고` (§§9, 23), `넓지만` (§§10, 25), `짧아도` (§14), `나갔습니다` (§§9, 18, 23), `꽃밭에` (§§9, 13, 23), `있던` (§§9, 23), `학생의` (§§5, 23; variant-sensitive), `책을` (§13), and `연구원은` (§13). Three unchanged surface forms were reclassified as baseline controls rather than given fabricated rule numbers: `예쁘고`, `보러`, and `일찍`.
+
+## Resolution status — queue cleared
+
+As of this audit pass, **all 79 records in the original review queue have been resolved or explicitly reclassified**. The final fifteen records were handled as follows: `발음의` now has §§5 and 13 plus a stored [바르메] variant; `설명했어요` (§13), `딸이` (§13), `흙을` (§14), `밟으며` (§14), `낡은` (§14), `놓인` (§12), `밟았습니다` (§§9, 14, 18, 23), `맑은` (§14), `있었고` (§§9, 13, 23), `웃었고` (§§9, 13, 23), and `넓어졌다는` (§§9, 14, 23) now have rule traces. `발음과` is a lexical-source control backed by the official Basic Korean Dictionary; `차이를` and `자세히` are baseline controls. The `넓어졌다는` trace is explicitly marked compositional and indirectly attested rather than presented as a quoted dictionary form.
+
+The queue is empty because every remaining row either has an explicit article mapping or is tagged as a baseline, corpus, or lexical-source control for which an article mapping is not applicable. This does **not** mean the entire pronunciation engine or every Ukrainian/IPA mapping has been independently expert-validated.
 
 ## Required handling
 
@@ -55,19 +61,4 @@ Nine further rows now have explicit rule traces: `빗고` (§§9, 23), `넓지�
 
 | Input | Existing official source | Current note (preserved verbatim) | Next action |
 |---|---|---|---|
-| 발음과 | NIKL standard-rules page | 발음 + 과: 발음의 표면형 [바름] 및 과의 연결; Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 
-| 발음의 | NIKL standard-rules page | 발음 + 의: 이 형태에서는 의를 [이]로 읽는 모델 경로를 기본값으로 기록. 조사 의의 [에] 계열은 별도 variant로 검토. | Verify source; map article or label lexical/corpus evidence |
-| 차이를 | NIKL standard-rules page | 표면형 [차이를]; Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 자세히 | NIKL standard-rules page | 표면형 [자세히]; onset ㅎ은 프로젝트 모델에 따라 г로 근사. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 설명했어요 | NIKL standard-rules page | 설명 + 했어요: ㅆ이 있는 과거형의 표면 발음 [설명해써요]; 형태소별 문자 치환을 하지 않음. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 딸이 | NIKL standard-rules page | 딸 + 이: 받침 ㄹ의 연음 및 모음 사이 ㄹ의 탄설음 실현; [따리]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 흙을 | NIKL standard-rules page | ㄺ 겹받침이 모음으로 시작하는 조사 을 앞에서 ㄹ은 종성, ㄱ은 다음 음절 초성으로 실현; 표준 표면형 [흘글]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 밟으며 | NIKL standard-rules page | 용언 밟-의 ㄼ 특례; 모음으로 시작하는 어미 -으며 앞의 표준 표면형 [발브며]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 낡은 | NIKL standard-rules page | ㄺ 겹받침이 모음으로 시작하는 어미 -은 앞에서 ㄹ은 종성, ㄱ은 다음 음절 초성으로 실현; 표준 표면형 [날근]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 놓인 | NIKL standard-rules page | ㅎ 받침 뒤에 모음으로 시작하는 형식 형태소가 올 때 ㅎ 탈락; 표준 표면형 [노인]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 밟았습니다 | NIKL standard-rules page | 밟-의 ㄼ 특례에 따른 연음과 과거형 -았- 및 -습니다의 된소리되기·비음화를 반영; 표준 표면형 [발바씀니다]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 맑은 | NIKL standard-rules page | ㄺ 겹받침이 모음으로 시작하는 어미 -은 앞에서 ㄹ은 종성, ㄱ은 다음 음절 초성으로 실현; 표준 표면형 [말근]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 있었고 | NIKL online Q&A | Morphological sequence 있- + -었- + -고; exact sourced-pattern entry preserves the ㅆ liaison, coda neutralization and fortition before ㄱ; surface [이썯꼬]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 웃었고 | NIKL standard-rules page | Morphological sequence 웃- + -었- + -고; ㅅ liaison before -었-, then ㅆ coda neutralization and fortition before ㄱ; surface [우섣꼬]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 넓어졌다는 | NIKL standard-rules page | Compositional standard reading with intervocalic voicing of ㅈ: ㄼ in 넓- before vowel-initial -어 gives [널버]; ㅆ in 졌 is [ㄷ] before 다, with fortition [ㄸ]; surface [널버젇따는]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |

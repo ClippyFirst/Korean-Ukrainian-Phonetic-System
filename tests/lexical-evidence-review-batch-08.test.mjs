@@ -40,9 +40,9 @@ test('넓은 remains explicitly labelled as indirect rather than exact lexical a
   assert.match(review, /does not explicitly give a bracketed pronunciation for 넓은/u);
 });
 
-test('넓어졌다는 remains unresolved rather than receiving a guessed article list', () => {
+test('batch 08 historically left 넓어졌다는 unresolved; later review supplies a trace', () => {
   const row = rows.find((item) => item.input === '넓어졌다는');
-  assert.doesNotMatch(row.rule_notes, /§\s*\d|제\s*\d+\s*항/u);
   assert.match(review, /Still unresolved/u);
   assert.match(review, /Do not assign a blanket article list/u);
+  assert.match(row.rule_notes, /§§9, 14, 23/u);
 });
