@@ -131,3 +131,23 @@ The classifications below describe intended behavior and implementation safeguar
 - The engine's phrase pass still uses whitespace as a proxy for connected speech. The previous PR documents this limitation; a user-selectable phrase mode would be clearer.
 - The full 11,172-syllable property suite, a live-source reachability crawl, UI/accessibility checks and independent Korean/ Ukrainian review remain outstanding.
 - A green test suite would establish code/test conformance, not prove the linguistic or reader-facing quality of every output.
+
+
+## 8. Unicode and exhaustive Hangul property pass (2026-10-10 follow-up)
+
+The follow-up test now iterates over every modern precomposed Hangul syllable code point from U+AC00 through U+D7A3 (11,172 syllables). For each syllable it verifies the onset, vowel, coda, coda-presence flag and exact reconstruction from the decomposed indices.
+
+### Confirmed edge-case defect and fix
+
+The first CI run exposed a real input-validation defect in `decompose('')`: `codePointAt(0)` returns `undefined`, and comparisons against the Hangul range did not reject it. The function could therefore return an object with undefined components for an empty string. The implementation now first requires a string containing exactly one Unicode code point. The regression test includes empty and multi-code-point inputs.
+
+### Unicode behavior clarified
+
+- Precomposed modern Hangul syllables are decomposed.
+- Compatibility jamo, conjoining jamo, non-Hangul characters, and multi-code-point strings are not treated as a single precomposed Hangul syllable by `decompose`.
+- In full conversion, decomposed jamo are currently preserved as literal characters rather than normalized to precomposed Hangul. This is now explicitly tested and should be considered a known input-format limitation, not a claim that normalization is impossible or undesirable.
+- Mixed-script conversion transliterates Hangul while preserving non-Hangul text, punctuation and emoji.
+
+### Validation result
+
+The corrected branch passed the GitHub Actions verification run: 126 web tests passed with zero failures; production build and Python regression/data-integrity checks passed. This establishes implementation/test conformance for the tested cases, not independent phonetic correctness.
