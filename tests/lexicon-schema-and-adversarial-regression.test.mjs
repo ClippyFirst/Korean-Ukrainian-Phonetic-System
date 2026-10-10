@@ -118,7 +118,7 @@ test('a representative set of generic rule cases stays algorithmic with and with
   const expected = {
     '국물':'kuŋ mul',
     '막론':'maŋ non',
-    '신라':'sil la',
+    '신라':'ɕil la',
     '값':'kap̚',
     '넋':'nʌk̚',
     '낮이':'na dʑi',
