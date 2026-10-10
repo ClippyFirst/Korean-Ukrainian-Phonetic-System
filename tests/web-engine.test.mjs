@@ -296,3 +296,57 @@ test('phrase-boundary trace stays silent when a lexical target does not match th
   assert.equal(liquid.ukrainian,'гу намен');
   assert.ok(!liquid.trace.some(unit=>unit.rules.includes('liquid-to-nasal-before-obstruent')));
 });
+
+
+test('all 11,172 modern Hangul syllables decompose and reconstruct exactly',()=>{
+  const BASE=0xAC00,END=0xD7A3,T_COUNT=28,N_COUNT=21*T_COUNT;
+  const ONSETS=[...'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'];
+  const VOWELS=[...'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'];
+  const CODAS=['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+  let count=0;
+  for(let cp=BASE;cp<=END;cp++){
+    const char=String.fromCodePoint(cp);
+    const d=decompose(char);
+    assert.ok(d, 'modern Hangul syllable must decompose: '+char);
+    assert.equal(d.char,char);
+    const offset=cp-BASE;
+    const onset=Math.floor(offset/N_COUNT);
+    const vowel=Math.floor((offset%N_COUNT)/T_COUNT);
+    const coda=offset%T_COUNT;
+    assert.equal(d.onset,ONSETS[onset],char+' onset');
+    assert.equal(d.vowel,VOWELS[vowel],char+' vowel');
+    assert.equal(d.coda,CODAS[coda],char+' coda');
+    assert.equal(d.hasCoda,coda!==0,char+' hasCoda');
+    const rebuilt=String.fromCodePoint(BASE+(onset*N_COUNT)+(vowel*T_COUNT)+coda);
+    assert.equal(rebuilt,char,'round-trip reconstruction');
+    count++;
+  }
+  assert.equal(count,11172);
+});
+
+test('decomposition rejects non-syllable characters without coercion',()=>{
+  for(const char of ['', 'ㄱ', 'ㅏ', 'ᄀ', 'ᅡ', 'ᆨ', 'A', '字', '🙂']){
+    assert.equal(decompose(char),null,JSON.stringify(char));
+  }
+});
+
+test('decomposed jamo and mixed-script text are preserved as literals rather than silently normalized',()=>{
+  const decomposed='가';
+  const mixed='한글 ABC かな 漢字 🙂';
+  const a=engine.convert(decomposed);
+  const b=engine.convert(mixed);
+  assert.equal(a.ukrainian,decomposed);
+  assert.equal(a.ipa,decomposed);
+  assert.equal(b.ukrainian,mixed);
+  assert.equal(b.ipa,mixed);
+  assert.equal(b.source,mixed);
+});
+
+test('empty input produces a stable empty result',()=>{
+  const r=engine.convert('');
+  assert.equal(r.source,'');
+  assert.equal(r.ukrainian,'');
+  assert.equal(r.ipa,'');
+  assert.deepEqual(r.trace,[]);
+  assert.deepEqual(r.issues,[]);
+});
