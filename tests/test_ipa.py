@@ -60,11 +60,11 @@ def test_section4_generic_oe_and_wi_diphthong_variants():
 
 def test_section4_combines_up_to_three_optional_vowels():
     result = phoneticize_korean("괴물귀")["ipa"]
-    assert result["ipa"] == "kø.mul.ky"
+    assert result["ipa"] == "kø.mul.ɡy"
     assert [variant["ipa"] for variant in result["variants"]] == [
-        "kwe.mul.ky",
-        "kø.mul.kwi",
-        "kwe.mul.kwi",
+        "kwe.mul.ɡy",
+        "kø.mul.ɡwi",
+        "kwe.mul.ɡwi",
     ]
 
 def test_section4_keeps_sourced_lexical_length_and_spelling_in_variants():
