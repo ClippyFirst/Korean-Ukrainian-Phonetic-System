@@ -43,3 +43,8 @@ This onset mapping does not override Korean phonological rules: when ㅎ deletes
 The regression corpus at `tests/fixtures/adversarial-sentence-corpus.txt` covers several interacting processes in running text: ㄼ resyllabification in `짧아도`, coda neutralization and fortition in `빗고`, the morphology-sensitive reading of `넓지만`, licensed particle-`의` variants, and the contracted past-tense form `설명했어요`. Expected Korean surface forms and Ukrainian target strings are tested separately.
 
 The corpus is an engineering regression set, not a representative frequency corpus. Its Ukrainian outputs are marked provisional. Passing the tests establishes that the implementation reproduces declared decisions and avoids unresolved placeholders in these cases; it does not establish that the chosen Ukrainian approximations are optimal or that all possible contexts have been covered. Future evaluation should include independent Korean phonetics review and Ukrainian-reader production/perception testing.
+
+
+## Third sentence-level adversarial window
+
+The third corpus is based on a user-supplied running text and adds further controls for complex codas and liaison (`흙을`, `밟으며`, `낡은`, `맑은`), ㅎ deletion (`놓인`), coda neutralization/fortition/liaison (`햇빛이`), and lateralization/nasalization (`신라`, `설날`, `독립문`, `종로`). The browser-facing page labels these as Korean surface-form controls. Only forms with an explicit lexical row are asserted against the runtime in the current regression test; unencoded examples remain audit targets rather than silently being treated as validated engine behavior. Passing tests do not validate the Ukrainian target through independent reader testing.
