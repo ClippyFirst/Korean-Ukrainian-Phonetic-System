@@ -14,7 +14,7 @@ const cases = [
     input: '같아지는',
     surface: '가타지는',
     target: 'катаджінин',
-    ipa: 'ka tʰa tɕi nɯn',
+    ipa: 'ka tʰa dʑi nɯn',
     source: 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002',
     article: '§13: formal-morpheme liaison, not §15 representative-coda neutralization',
   },
