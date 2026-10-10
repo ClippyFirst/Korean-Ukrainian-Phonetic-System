@@ -26,10 +26,14 @@ test('§27 adnominal -(으)ㄹ fortition is licensed for every official phrase e
   }
 });
 
-test('§27 does not generalize fortition to arbitrary word-final ㄹ', () => {
+test('§27 does not generalize fortition to arbitrary word-final ㄹ or across a pause', () => {
   const result = engine.convert('서울 사람');
   assert.ok(!result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')));
   assert.ok(!result.ipa.includes('s͈a'));
+  for (const phrase of ['할, 것을', '할! 것을', '할. 것을']) {
+    const paused = engine.convert(phrase);
+    assert.ok(!paused.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')), phrase);
+  }
 });
 
 test('§29 official cross-word n-insertion examples are licensed pair-by-pair', () => {
