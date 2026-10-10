@@ -40,7 +40,7 @@ test('word-initial lenis and affricate targets follow the declared Ukrainian map
     '닫히다': 'та|чі|да',
     '겉옷': 'ко|дот',
     '젖어미': 'чо|до|мі',
-    '젊어': 'чоль|мо',
+    '젊어': 'чол|мо',
     '디귿이': 'ті|ґи|ші',
     '디귿을': 'ті|ґи|сил',
     '디귿에': 'ті|ґи|се',
@@ -50,9 +50,9 @@ test('word-initial lenis and affricate targets follow the declared Ukrainian map
     '잡는': 'чам|нин',
     '닿소': 'та|со',
     '빗었어요': 'пі|со|со|йо',
-    '젊은': 'чоль|мин',
-    '좋아질': 'чо|а|джіль',
-    '실제': 'шіль|че',
+    '젊은': 'чол|мин',
+    '좋아질': 'чо|а|джіл',
+    '실제': 'шіл|че',
     '한국어': 'ган|ґу|ґо',
   };
   for (const [word, target] of Object.entries(expected)) {
@@ -71,7 +71,7 @@ test('target syllable alignment and contextual IPA are consistent for high-risk 
     '미닫이': ['мі|да|джі', 'miː|da|dʑi'],
     '땀받이': ['там|ба|джі', 't͈am|ba|dʑi'],
     '국립국어원': ['кунг|нім|ку|ґо|вон', 'kuŋ|nim|k͈u|ɡʌ|wʌn'],
-    '곧이듣다': ['ко|джі|дит|та', 'ko|tɕi|dɯt̚|t͈a'],
+    '곧이듣다': ['ко|джі|дит|та', 'ko|dʑi|dɯt̚|t͈a'],
     '좋아질': ['чо|а|джіль', 'tɕo|a|dʑil'],
   };
   for (const [word, [target, ipa]] of Object.entries(expected)) {
