@@ -163,3 +163,12 @@ The engine previously reused a general aspiration map containing `ㅂ → ㅍ` f
 Source: [National Institute of Korean Language, Standard Pronunciation Rules §12](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002).
 
 This synthetic syllable-sequence test checks the rule boundary; it is not presented as a lexical Korean word or a claim about a word's standard pronunciation.
+
+
+## 12. Coverage status for NIKL §§23–30
+
+A fresh pass over the official *표준 발음법* confirms that the engine's productive fortition implementation is principally §23. Articles §§24–28 have additional morphology- or lexicon-conditioned environments: verb-stem codas, Sino-Korean words with dictionary exceptions, adnominal -(으)ㄹ, and compounds whose functional 사이시옷 is not written. The new lexical rows cover selected official examples from §§24–26 and §28 without pretending these are productive rules. §27 remains a gap for sentence-level inference because this engine has no syntactic parser. §§29–30 (ㄴ insertion and written 사이시옷) remain primarily exact-entry coverage, not general morphological analysis.
+
+The official source also explicitly rejects several place-assimilation pronunciations under §21. Keep these as negative controls; do not add general place assimilation. Optional vowel variants and vowel length under §§4–7 and §22 remain lexically/positionally conditioned and should not be inferred from Hangul spelling alone.
+
+Source: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002). The inventory records engineering coverage only. It is not a claim of complete linguistic coverage or native-speaker validation.
