@@ -125,8 +125,43 @@
     </div>
   </section>
 
+  <section class="doc-section" id="sentence-adversarial-corpus">
+    <div class="doc-label">10</div><div class="doc-content">
+      <p class="section-kicker">Реченнєвий adversarial corpus</p>
+      <h2>Перевірка на реальному контексті, а не лише на окремих складах</h2>
+      <p>Цей набір відтворює складні місця з ручного тестового читання: 겹받침 перед голосним, нейтралізацію 받침, 된소리되기, палаталізацію, 연음, морфемний стик минулого часу та частку 의. Поверхнева корейська форма перевіряється окремо від українського запису. Українські цілі — модельні й попередні; таблиця не видає їх за нормативний український стандарт.</p>
+      <div class="callout blue"><strong>Тестовий корейський текст</strong><span>
+        옷이 얇아도 나중엔 덥고 밤에는 춥습니다.<br>
+        숱이 많은 머리를 빗고,<br>
+        밭이 넓지만 꽃이 예쁘고, 낮이 짧아도 해돋이를 보러 일찍 나갔습니다.<br>
+        꽃밭에 앉아 있던 학생의 책을 읽었습니다.<br>
+        젊은 연구원은 표준 발음과 실제 발음의 차이를 자세히 설명했어요.
+      </span></div>
+      <h3>Вузлові форми</h3>
+      <div class="decision-table">
+        <div class="table-row table-head"><span>Вхід</span><span>Поверхнева форма</span><span>Український target</span><span>Що перевіряється</span></div>
+        <div class="table-row"><b>짧아도</b><span>[짤바도]</span><strong>джальбадо</strong><span>ㄼ: ㄹ залишається в кода-позиції, ㅂ переходить до наступного складу.</span></div>
+        <div class="table-row"><b>빗고</b><span>[빋꼬]</span><strong>пітко</strong><span>нейтралізація ㅅ до [ㄷ] і 된소리되기 перед ㄱ.</span></div>
+        <div class="table-row"><b>넓지만</b><span>[널찌만]</span><strong>нольчіман</strong><span>морфологічне читання ㄼ і напруження ㅈ.</span></div>
+        <div class="table-row"><b>숱이</b><span>[수치]</span><strong>сучі</strong><span>палаталізація ㅌ перед 이.</span></div>
+        <div class="table-row"><b>꽃밭에</b><span>[꼳빠테]</span><strong>котпате</strong><span>нейтралізація, напруження та перенесення ㅌ.</span></div>
+        <div class="table-row"><b>학생의</b><span>[학쌩의] ~ [학쌩에]</span><strong>гаксені ~ гаксене</strong><span>допустиме читання частки 의; варіант не можна губити.</span></div>
+        <div class="table-row"><b>발음의</b><span>[바르미] ~ [바르메]</span><strong>паримі ~ париме</strong><span>варіантність 의 відображається і в IPA, і в target.</span></div>
+        <div class="table-row"><b>설명했어요</b><span>[설명해써요]</span><strong>сольмйонгесойо</strong><span>морфемний стик 설명 + 했어요; не залишати ⟦했⟧⟦어⟧.</span></div>
+        <div class="table-row"><b>딸이</b><span>[따리]</span><strong>тарі</strong><span>перенесення ㄹ і його реалізація між голосними.</span></div>
+        <div class="table-row"><b>춥습니다</b><span>[춥씀니다]</span><strong>чупсимнида</strong><span> 된소리되기 в закінченні та подальша складова структура.</span></div>
+      </div>
+      <p class="small-note">У тестах очікувана корейська поверхнева форма — окрема перевірювана величина. Український target позначений як provisional, бо його якість потребує незалежної оцінки читачами та порівняння з альтернативами. Варіант частки 의 зберігається, а не приховується за єдиним «правильним» українським записом.</p>
+      <div class="repo-links">
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/fixtures/adversarial-sentence-corpus.txt">Відкрити тестовий корпус ↗</a>
+        <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/adversarial-sentence-corpus.test.mjs">Відкрити регресійні тести ↗</a>
+        <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002">NIKL — 표준 발음법 ↗</a>
+      </div>
+    </div>
+  </section>
+
   <section class="doc-section references">
-    <div class="doc-label">10</div><div class="doc-content"><p class="section-kicker">Джерела</p><h2>Основні дослідницькі опори</h2>
+    <div class="doc-label">11</div><div class="doc-content"><p class="section-kicker">Джерела</p><h2>Основні дослідницькі опори</h2>
       <ul><li><a href="https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002">National Institute of Korean Language — Standard Korean Pronunciation</a></li><li><a href="https://movoznavstvo.org.ua/vsi-nomera-zhurnalu/statti/2009-1-sichen-lyutij/shchegel-o-m-praktichna-transkriptsiya-korejskikh-imen-ukrajinskoyu-movoyu-porivnyannya-problemi-i-propozitsiji">О. М. Щегель (2009) — Практична транскрипція корейських імен українською мовою</a></li><li><a href="https://bp-razvitie.ru/prilozhenie-9-sistemy-transkripcii-">Холодович—Концевич — практична транскрипція корейської мови</a></li><li><a href="https://www.journals.polon.uw.edu.pl/index.php/pj/article/view/1631">Kim Gwangseok & Jarosław A. Pietrow (2023) — Korean toponyms in Polish</a></li><li><a href="https://authors.uni-sofia.bg/AuthorPublications.aspx?id=2584c0a6-0810-4d34-8733-deee92e8bac7">Beneva et al. (2018) — Korean transcription in Bulgarian texts</a></li><li><a href="https://serbia-korea.rs/wp-content/uploads/2026/01/A-need-for-transcription-between-Korean-Hangul-and-Serbian-Cyrillic.pdf">Angelina Galjević (2023) — Korean Hangul and Serbian Cyrillic</a></li></ul>
       <div class="repo-links"><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">Відкрити GitHub репозиторій ↗</a><a href="./index.html">Повернутися до сервісу ↗</a></div>
     </div>
