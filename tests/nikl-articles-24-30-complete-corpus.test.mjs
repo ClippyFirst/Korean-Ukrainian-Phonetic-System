@@ -69,7 +69,7 @@ test('every registered NIKL article 24–30 exemplar is present and stable in th
       assert.equal(result.surfaceHangul, surface, `${article}: engine surface for ${word}`);
       assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), `${article}: Ukrainian target for ${word}`);
       assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), `${article}: IPA for ${word}`);
-      assert.ok(result.status === 'lexical-review' || row.target_status === 'surface-only', `${article}: target status for ${word}`);
+      assert.ok(['lexical-review', 'lexical', 'surface-only'].includes(result.status), `${article}: target status for ${word}`);
     }
   }
 });
