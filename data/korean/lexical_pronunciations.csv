@@ -245,9 +245,9 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "콧물","콘물","кон|муль","kon|mul","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [콘물].","high","provisional","","","",""
 "국민","궁민","кунг|мін","kuŋ|min","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [궁민].","high","provisional","","","",""
 "박물관","방물관","панг|муль|ґван","paŋ|mul|ɡwan","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [방물관].","high","provisional","","","",""
-"한국말","한궁말","хан|кунг|маль","han|kuŋ|mal","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [한궁말].","high","provisional","","","",""
-"한국어","한구거","хан|ку|ґо","han|ɡu|ɡʌ","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§13 liaison; [한구거].","high","provisional","","","",""
-"대한민국","대한민국","те|хан|мін|ґук","te|han|min|ɡuk̚","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","Core name; Ukrainian target remains provisional.","high","provisional","","","",""
+"한국말","한궁말","ган|кунг|маль","han|kuŋ|mal","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [한궁말].","high","provisional","","","",""
+"한국어","한구거","ган|ку|ґо","han|ɡu|ɡʌ","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§13 liaison; [한구거].","high","provisional","","","",""
+"대한민국","대한민국","те|ган|мін|ґук","te|han|min|ɡuk̚","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","Core name; Ukrainian target remains provisional.","high","provisional","","","",""
 꽃이,꼬치,ко|чі,k͈o|tɕʰi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,제13항 연음 및 제9항 받침 중화: 꽃이 [꼬치]. 우크라이나어 표기는 잠정적.,high,provisional,,,,
 밝고,발꼬,пал|ко,pal|k͈o,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,제11항: 용언 어간 ㄺ은 ㄱ 앞에서 ㄹ로 발음; 제23항 된소리되기 [발꼬]. 우크라이나어 표기는 잠정적.,high,provisional,,,,
 읽습니다,익씀니다,ік|сим|ні|да,ik̚|s͈ɯm|ni|da,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제11항 받침 단순화, 제23항 된소리되기, 제18항 비음화: 읽습니다 [익씀니다]. 우크라이나어 표기는 잠정적.",high,provisional,,,,
@@ -265,7 +265,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "얇아서","얄바서","яль|ба|со","jʌl|ba|sʌ","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제12항·제14항: 얇- + -아서; ㄼ의 ㅂ 연음, [얄바서]. Ukrainian target provisional.","high","provisional","","","",""
 "많은","마는","ма|нин","ma|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제12항 제4호: ㄶ의 ㅎ 탈락, [마는]. Ukrainian target provisional.","high","provisional","","","",""
 "빗었어요","비서써요","бі|со|со|йо","pi|sʌ|s͈ʌ|jo","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","빗- + -었어요: ㅅ 연음 및 ㅆ의 연음, [비서써요]. Ukrainian target provisional.","high","provisional","","","",""
-"해돋이를","해도지를","хе|до|джі|рил","hɛ|do|dʑi|ɾɯl","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제17항: 해돋이 [해도지] + 를, [해도지를]. Ukrainian target provisional.","high","provisional","","","",""
+"해돋이를","해도지를","ге|до|джі|рил","hɛ|do|dʑi|ɾɯl","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제17항: 해돋이 [해도지] + 를, [해도지를]. Ukrainian target provisional.","high","provisional","","","",""
 "멋있어요","머디써요","мо|ді|со|йо","mʌ|di|s͈ʌ|jo","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제15항 해설의 멋있다 계열; [머디써요] 원칙형. [머시써요]도 별도 변이로 보존. Ukrainian target provisional.","high","provisional","머시써요","мо|ші|со|йо","mʌ|ɕi|s͈ʌ|jo","허용되는 멋있다 계열 변이; Ukrainian target provisional."
 "맛있고","마딛꼬","ма|діт|ко","ma|dit̚|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제15항 해설의 맛있다 계열 [마딛-] 원칙형과 제23항 된소리되기. [마싣꼬] 변이도 보존. Ukrainian target provisional.","high","provisional","마싣꼬","ма|шіт|ко","ma|ɕit̚|k͈o","제15항 해설의 허용 발음 [마싣-] 계열; Ukrainian target provisional."
 "맛없고","마덥꼬","ма|деп|ко","ma|dʌp̚|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","제15항: 맛없- [마덥-] 및 제23항 된소리되기, [마덥꼬]. Ukrainian target provisional.","high","provisional","","","",""
