@@ -73,7 +73,7 @@ The focused regression pass adds five adversarial prose fixtures with 46 distinc
 
 The targeted in-memory engine harness passed the new oracle, round-trip, morphology-guard, punctuation, anchor, and prose-resolution checks after correcting three issues: contextual IPA for Korean ㅅ/ㅆ before j-vowels (e.g. 신라 [ɕil.la]); a false-positive unresolved test for 낮이, which is not an example of ㄷ/ㅌ palatalization; and prose fixtures that had attached unlicensed particles/endings to exact lexical keys. 독립문 [동님문] is now represented as a NIKL-backed surface-only control, preserving the generic engine's nasal/liquid assimilation trace.
 
-These targeted checks are not a substitute for the repository-wide `npm test`, build, Python suite, or a successful GitHub Actions run. Those release gates remain pending.
+The PR #132 candidate passed the repository-wide `npm test` (865/865), `npm run build` and generated-page verification, Python tests on 3.11/3.12/3.13, and master-table/Korean-corpus generation. GitHub Pages deployment is configured to run on pushes to `main`; live URL availability should still be checked after deployment.
 
 ## Rule-ordering requirements
 
