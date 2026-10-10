@@ -60,3 +60,31 @@ test('the listed lexical example 회 keeps its spelling in both permitted IPA re
   assert.equal(result.variants[0].surface, '회');
   assert.equal(result.variants[0].ipa, 'hwe');
 });
+
+
+test('§5 non-initial ㅢ exposes the permitted [i] reading and adjusts the Ukrainian target', () => {
+  const genericEngine = createEngine(canonical, '');
+  const result = genericEngine.convert('민주주의');
+  assert.equal(result.ipa, 'min dʑu dʑu ɰi');
+  assert.equal(result.ukrainian, 'мінджуджуий');
+  assert.equal(result.variants.length, 1);
+  assert.equal(result.variants[0].ipa, 'min dʑu dʑu i');
+  assert.equal(result.variants[0].ukrainian, 'мінджуджуі');
+  assert.match(result.variants[0].note, /§5/u);
+});
+
+test('§5 does not infer the optional [i] reading for word-initial ㅢ without particle evidence', () => {
+  const genericEngine = createEngine(canonical, '');
+  const result = genericEngine.convert('의견');
+  assert.equal(result.ipa, 'ɰi ɡjʌn');
+  assert.equal(result.variants.length, 0);
+});
+
+test('§5 word boundaries prevent non-initial ㅢ alternatives from leaking across spaces', () => {
+  const genericEngine = createEngine(canonical, '');
+  const result = genericEngine.convert('민주주의 의의');
+  assert.equal(result.variants.length, 3);
+  assert.ok(result.variants.some((variant) => variant.ipa === 'min dʑu dʑu i ɰi ɰi'));
+  assert.ok(result.variants.some((variant) => variant.ipa === 'min dʑu dʑu ɰi ɰi i'));
+  assert.ok(result.variants.some((variant) => variant.ipa === 'min dʑu dʑu i ɰi i'));
+});

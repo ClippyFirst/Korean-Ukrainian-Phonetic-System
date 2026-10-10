@@ -487,14 +487,27 @@ function lexicalResult(text,entry){
   };
 }
 
+function firstSyllableInWord(units,index){
+  for(let i=index-1;i>=0;i--){
+    if(units[i].type==='literal')return true;
+    if(units[i].type==='hangul')return false;
+  }
+  return true;
+}
+
 function genericVowelVariants(text,units,originalUnits,ipa,output,status){
   const sites=[];
   for(let i=0;i<originalUnits.length;i++){
-    const vowel=originalUnits[i].vowel;
-    const alternate=vowel==='ㅚ'?'we':vowel==='ㅟ'?'wi':'';
-    const primary=vowel==='ㅚ'?'ø':vowel==='ㅟ'?'y':'';
+    const syllable=originalUnits[i];
+    const vowel=syllable.vowel;
+    let primary='',alternate='',section='§4',targetPrimary='',targetAlternate='';
+    if(vowel==='ㅚ'){primary='ø';alternate='we';}
+    else if(vowel==='ㅟ'){primary='y';alternate='wi';}
+    else if(vowel==='ㅢ'&&syllable.onset==='ㅇ'&&!firstSyllableInWord(units,i)){
+      primary='ɰi';alternate='i';section='§5';targetPrimary='ий';targetAlternate='і';
+    }
     if(!alternate||!ipa[i]||!ipa[i].includes(primary))continue;
-    sites.push({index:i,vowel,primary,alternate});
+    sites.push({index:i,vowel,primary,alternate,section,targetPrimary,targetAlternate});
   }
   if(!sites.length||status==='unresolved')return[];
   // Enumerate every combination for up to three optional vowels. For longer
@@ -506,17 +519,26 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
   return masks.map(mask=>{
     const changed=sites.filter((_,i)=>(mask&(1<<i))!==0);
     const alternateIpa=ipa.slice();
+    const alternateOutput=output.slice();
     for(const site of changed){
       alternateIpa[site.index]=alternateIpa[site.index].replace(site.primary,site.alternate);
+      if(site.targetPrimary&&site.targetAlternate){
+        alternateOutput[site.index]=alternateOutput[site.index].replace(site.targetPrimary,site.targetAlternate);
+      }
     }
-    const labels=changed.map(site=>site.vowel==='ㅚ'?'ㅚ [we]':'ㅟ [wi]');
+    const labels=changed.map(site=>{
+      if(site.vowel==='ㅚ')return 'ㅚ [we]';
+      if(site.vowel==='ㅟ')return 'ㅟ [wi]';
+      return '비초성 ㅢ [i]';
+    });
+    const sections=[...new Set(changed.map(site=>site.section))].join('/');
     const note=sites.length<=3
-      ?'§4: дозволена дифтонгічна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
-      :'§4: альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';
+      ?sections+': дозволена альтернативна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
+      :sections+': альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';
     return{
       source:text,
       surface:text,
-      ukrainian:output.join(''),
+      ukrainian:alternateOutput.join(''),
       ipa:renderStructured(units,alternateIpa,' '),
       note,
       status
