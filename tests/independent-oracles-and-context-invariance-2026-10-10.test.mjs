@@ -71,7 +71,7 @@ test('generic rule fixtures stay independent of the lexical override layer', () 
   const genericOracles = [
     ['국물', 'kuŋ mul'],
     ['막론', 'maŋ non'],
-    ['신라', 'sil la'],
+    ['신라', 'ɕil la'],
     ['값', 'kap̚'],
     ['넋', 'nʌk̚'],
   ];
