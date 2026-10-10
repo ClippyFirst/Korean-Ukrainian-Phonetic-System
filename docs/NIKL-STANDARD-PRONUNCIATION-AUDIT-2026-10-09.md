@@ -67,6 +67,14 @@ The browser adapter now requires exact sourced entries for §17 cases when morph
 
 The expected Korean surface forms are normative evidence. The Ukrainian spellings asserted by tests are model outputs and must not be described as officially standardized Ukrainian forms.
 
+### Regression stress-test follow-up (2026-10-10)
+
+The focused regression pass adds five adversarial prose fixtures with 46 distinct lexical anchors, ten literal independent oracles, a full lexical runtime round-trip, punctuation-boundary controls, and an ordered nasal/liquid interaction matrix. Exact lexical licenses are used for morphology-sensitive forms; the generic engine must remain unresolved when morphology cannot be established from orthography alone.
+
+The targeted in-memory engine harness passed the new oracle, round-trip, morphology-guard, punctuation, anchor, and prose-resolution checks after correcting three issues: contextual IPA for Korean ㅅ/ㅆ before j-vowels (e.g. 신라 [ɕil.la]); a false-positive unresolved test for 낮이, which is not an example of ㄷ/ㅌ palatalization; and prose fixtures that had attached unlicensed particles/endings to exact lexical keys. 독립문 [동님문] is now represented as an exact NIKL-backed lexical license.
+
+These targeted checks are not a substitute for the repository-wide `npm test`, build, Python suite, or a successful GitHub Actions run. Those release gates remain pending.
+
 ## Rule-ordering requirements
 
 1. Apply lexical coda exceptions before generic coda simplification.
