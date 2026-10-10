@@ -162,7 +162,7 @@ test('context-sensitive vowel and voicing decisions remain explicit in the lexic
     '밟았습니다': ['пал|ба|сим|ні|да', 'pal|ba|s͈ɯm|ni|da'],
     '값있다': ['ка|біт|та', 'ka|bit̚|t͈a'],
     '할지라도': ['гал|чі|ра|до', 'hal|tɕ͈i|ɾa|do'],
-    '불여우': ['пул|льо|у', 'pul|lju|u'],
+    '불여우': ['пул|льо|у', 'pul|ljʌ|u'],
     '휘발유': ['гві|пал|льу', 'hwi|pal|lju'],
   };
   for (const [word, [target, ipa]] of Object.entries(expected)) {
