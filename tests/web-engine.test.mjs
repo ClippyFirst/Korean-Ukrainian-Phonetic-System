@@ -169,3 +169,23 @@ test('§9 and §10 representative coda examples remain context-sensitive',()=>{
     assert.ok(!result.trace.some(item=>item.rules.includes('lexical-pronunciation')),word);
   }
 });
+
+test('official §12(2)–(3) ㅎ-before-ㅅ and ㅎ-before-ㄴ examples are covered',()=>{
+  const expected={
+    '놓는':['ноннин','non nɯn'],
+    '쌓네':['санне','s͈an ne'],
+    '않네':['анне','an ne'],
+    '않는':['аннин','an nɯn'],
+    '뚫네':['тульле','t͈ul le'],
+    '닿소':['дасо','taː s͈o'],
+    '많소':['мансо','maːn s͈o'],
+    '싫소':['шілсо','ɕil s͈o'],
+  };
+  for(const [word,[ua,ipa]] of Object.entries(expected)){
+    const r=engine.convert(word);
+    assert.equal(r.ukrainian,ua,word);
+    assert.equal(r.ipa,ipa,word);
+    assert.equal(r.status,'lexical-review',word);
+    assert.ok(r.trace[0].rules.includes('lexical-pronunciation'),word);
+  }
+});
