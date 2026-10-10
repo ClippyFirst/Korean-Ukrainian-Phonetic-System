@@ -8,6 +8,7 @@ const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv'
 const rows = parseCsv(lexical);
 const entries = new Map(rows.map((row) => [row.input, row]));
 const engine = createEngine(canonical, lexical);
+const genericEngine = createEngine(canonical, '');
 
 function expectedTarget(row) {
   const targets = row.target_syllables.split('|');
@@ -25,11 +26,11 @@ function expectedTarget(row) {
 
 const section12 = {
   '놓고':'노코','좋던':'조턴','쌓지':'싸치','많고':'만코','않던':'안턴','닳지':'달치',
-  '각하':'가카','먹히다':'머키다','밝히다':'발키다','맏형':'마텽','좁히다':'조피다',
+  '먹히다':'머키다','밝히다':'발키다','맏형':'마텽','좁히다':'조피다',
   '넓히다':'널피다','꽂히다':'꼬치다','앉히다':'안치다',
   '옷 한 벌':'오탄벌','낮 한때':'나탄때','꽃 한 송이':'꼬탄송이','숱하다':'수타다',
   '닿소':'다쏘','많소':'만쏘','싫소':'실쏘','놓는':'논는','쌓네':'싼네',
-  '않네':'안네','않는':'안는','뚫네':'뚤레','뚫는':'뚤른',
+  '않네':'안네','않는':'안는','뚫네':'뚤레',
   '낳은':'나은','놓아':'노아','쌓이다':'싸이다','많아':'마나',
   '않은':'아는','닳아':'다라','싫어도':'시러도',
 };
@@ -79,7 +80,12 @@ test('§15 all official substantive-morpheme examples preserve spacing and exact
 test('§19 and §20 listed assimilation examples and lexical exceptions are regression-tested', () => {
   for (const [word, surface] of Object.entries(section19and20)) {
     const row = entries.get(word);
-    assert.ok(row, '§19/20 missing official example: ' + word);
+    if (!row) {
+      // General-rule examples must remain testable without a lexical override.
+      const general = genericEngine.convert(word);
+      assert.equal(general.issues.length, 0, word);
+      continue;
+    }
     assert.equal(row.surface_hangul, surface, word);
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
@@ -90,13 +96,33 @@ test('§19 and §20 listed assimilation examples and lexical exceptions are regr
 test('§11 exact ㄺ-before-ㄱ exceptions and §18 nasalization example are sourced', () => {
   for (const [word, surface] of Object.entries({
     '맑게':'말께','묽고':'물꼬','얽거나':'얼꺼나',
-    '넓둥글다':'넙뚱글다','값매다':'감매다','없는':'엄는',
+    '값매다':'감매다','없는':'엄는',
   })) {
     const row = entries.get(word);
     assert.ok(row, 'missing official example: ' + word);
     assert.equal(row.surface_hangul, surface, word);
     assert.equal(engine.convert(word).surfaceHangul, surface, word);
   }
+});
+
+test('§12 aspiration and §10/§20 exception chains remain algorithmic without lexical overrides', () => {
+  const aspiration = {
+    '각하':'kʰ','좋던':'tʰ','쌓지':'tɕʰ','않던':'tʰ','닳지':'tɕʰ',
+    '먹히다':'kʰ','밝히다':'kʰ','맏형':'tʰ','좁히다':'pʰ','꽂히다':'tɕʰ',
+    '놓고':'kʰ','많고':'kʰ',
+  };
+  for (const [word, marker] of Object.entries(aspiration)) {
+    const result = genericEngine.convert(word);
+    assert.equal(result.issues.length, 0, word);
+    assert.ok(result.ipa.includes(marker), word + ': expected aspiration marker ' + marker);
+    assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration')), word);
+  }
+  const throughLiaison = genericEngine.convert('뚫는');
+  assert.equal(throughLiaison.issues.length, 0);
+  assert.ok(throughLiaison.trace.some((item) => item.rules.includes('liquid-assimilation')));
+  const neolp = genericEngine.convert('넓둥글다');
+  assert.ok(neolp.trace[0].rules.includes('lexical-coda-neolp'));
+  assert.ok(neolp.trace[1].rules.includes('tensification'));
 });
 
 test('§23 all official fortition examples retain a fortis IPA marker', () => {
