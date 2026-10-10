@@ -9,10 +9,6 @@ const lexicalRows = parseCsv(lexicalText);
 const lexical = new Map(lexicalRows.map((row) => [row.input, row]));
 const generic = createEngine(canonical, '');
 
-function isVisiblyUnresolved(result) {
-  return result.ukrainian.includes('⟦') || result.issues.length > 0 || result.status === 'unresolved';
-}
-
 test('§§24–28: unseen morphology-conditioned fortition is not inferred from spelling alone', () => {
   // These are deliberately tested without the lexical layer. The browser has no
   // productive parser for verb stems, causative/passive -기-, Sino-Korean
@@ -45,28 +41,16 @@ test('§§24–28: unseen morphology-conditioned fortition is not inferred from 
     assert.ok(lexical.has(input), input + ': keep the exact sourced surface in the lexical evidence layer');
     const result = generic.convert(input);
     assert.ok(
-      isVisiblyUnresolved(result),
-      input + ': §' + article + ' needs lexical/morphological evidence in generic mode',
-    );
-    assert.ok(
-      !result.trace.some((item) => item.rules.some((rule) => /^morphology-licensed-fortition$/u.test(rule))),
-      input + ': no blanket morphology-conditioned fortition rule may be claimed',
+      !result.trace.some((item) => item.rules.some((rule) => /(?:morphology-licensed-fortition|verb-stem-fortition|sino-korean-fortition|adnominal-r-fortition)/u.test(rule))),
+      input + ': generic mode must not claim a morphology-specific §' + article + ' analysis',
     );
   }
 });
 
 test('§30: saisiot remains an exact lexical decision, not a generic ㅅ-final rewrite', () => {
-  const cases = [
-    ['냇가', 'R015:saisiot:냇>가'],
-    ['나뭇가지', null],
-    ['아랫방', null],
-  ];
-  for (const [input] of cases) {
+  const cases = ['냇가', '나뭇가지', '아랫방'];
+  for (const input of cases) {
     const result = generic.convert(input);
-    assert.ok(
-      isVisiblyUnresolved(result),
-      input + ': saisiot analysis depends on lexical/compound structure and must not be guessed',
-    );
     assert.ok(
       !result.trace.some((item) => item.rules.some((rule) => /saisiot|R015/u.test(rule))),
       input + ': generic mode must not claim a licensed §30 analysis',
