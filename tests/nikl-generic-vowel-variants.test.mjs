@@ -32,12 +32,12 @@ test('§4 generic ㅟ words expose [wi] without changing Korean spelling or Ukra
 
 test('§4 enumerates every combination for up to three optional vowels', () => {
   const result = engine.convert('괴물귀');
-  assert.equal(result.ipa, 'kø mul ky');
+  assert.equal(result.ipa, 'kø mul ɡy');
   assert.equal(result.variants.length, 3);
   assert.deepEqual(result.variants.map((variant) => variant.ipa), [
-    'kwe mul ky',
-    'kø mul kwi',
-    'kwe mul kwi',
+    'kwe mul ɡy',
+    'kø mul ɡwi',
+    'kwe mul ɡwi',
   ]);
   for (const variant of result.variants) {
     assert.equal(variant.surface, '괴물귀');
