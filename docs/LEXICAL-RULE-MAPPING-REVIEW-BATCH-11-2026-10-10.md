@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This follow-up converts eight previously reviewed, high-confidence rule-derived records from unnumbered process notes into explicit *표준 발음법* article mappings. It does not claim that a generic rules URL directly attests the full lexical form. Where the exact form is not present in the source, that limitation is retained in `rule_notes`.
+This follow-up converts seven previously reviewed, high-confidence rule-derived records from unnumbered process notes into explicit *표준 발음법* article mappings. It does not claim that a generic rules URL directly attests the full lexical form. Where the exact form is not present in the source, that limitation is retained in `rule_notes`.
 
 ## Data changes
 
@@ -23,7 +23,7 @@ This follow-up converts eight previously reviewed, high-confidence rule-derived 
 - `넓어졌다는` remains outside the resolved set because its complete derivation has not been independently verified.
 - The update does **not** upgrade indirect evidence into exact-word attestation.
 - It does not modify the engine's pronunciation outputs, IPA syllabification, or Ukrainian target strings.
-- The eight Korean surface forms remain candidates for a later independent phonetic/IPA review; this change is about explicit rule traceability, not proof that every transcription layer is perfect.
+- The eight reviewed Korean surface forms remain candidates for a later independent phonetic/IPA review; this change is about explicit rule traceability, not proof that every transcription layer is perfect.
 
 ## Primary sources
 
