@@ -58,7 +58,7 @@ test('the full adversarial passage has no unresolved phonological placeholders',
 const adversarialPassages = [
   {
     name: 'complex codas, liaison, and morphology boundaries',
-    text: `값이 싼 물건과 값있는 물건은 다르다. 값어치가 있는 물건을 값없이 주었다고 해서 값없다거나 쓸모없다고 단정할 수는 없다. 읽고 읽다 읽어 읽는 책의 문장을 비교하고, 읽은 내용을 읽었다고 말했다. 맑고 맑게 개인 날에도 밝은 하늘이 늘 맑은 것은 아니다. 넓게 펼친 종이와 넓네 하고 감탄한 들판, 넓히다라는 동사의 활용도 함께 살폈다. 핥다, 훑소, 떫지처럼 겹받침 뒤에 오는 자음과 어미가 달라지면 표준 발음도 달라진다.`,
+    text: `값이 싼 물건과 값있는 물건은 다르다. 값어치, 곧 가치가 있는 물건을 무료로 주었다고 해서 값없다. 읽고 읽다 읽어 읽는 책의 문장을 비교하고, 읽은 내용을 읽었다. 맑고 맑게 개인 날에도 밝은 하늘이 늘 맑은 것은 아니다. 넓게 펼친 종이와 넓네 하고 감탄한 들판, ‘넓히다’라는 동사의 활용도 함께 살폈다. 핥다, 훑소, 떫지처럼 겹받침 뒤에 오는 자음과 어미가 달라지면 표준 발음도 달라진다.`,
     anchors: ['값이','값있는','값어치','값없다','읽고','읽다','읽어','읽는','읽은','읽었다','맑고','맑게','밝은','넓게','넓네','넓히다','핥다','훑소','떫지'],
   },
   {
@@ -68,12 +68,12 @@ const adversarialPassages = [
   },
   {
     name: 'palatalization, aspiration, and ㅎ-related interactions',
-    text: `같이 읽고 굳이 다시 읽어 보자. 밭이 넓다고 말했지만 밭을 갈 때의 발음은 같지 않다. 해돋이는 일찍 시작되고, 해돋이는 산 너머에서 보인다. 발견했어요라는 표현과 않았다라는 표현을 비교하면 ㅎ과 뒤따르는 자음의 상호 작용을 확인할 수 있다. 굳이, 같이, 밭이, 밭을 한데 모아 읽되, 실제 표준 발음과 철자를 혼동하지 않는다.`,
+    text: `같이 읽고 굳이 다시 읽어 보자. 밭이 넓게 펼쳐져 있지만 밭을 갈 때의 발음은 같지 않다. 해돋이는 일찍 시작되고, 해돋이는 산 너머에서 보인다. ‘발견했어요’라는 표현과 ‘않았다’라는 표현을 비교하면 ㅎ과 뒤따르는 자음의 상호 작용을 확인할 수 있다. 굳이, 같이, 밭이, 밭을 한데 모아 읽되, 실제 표준 발음과 철자를 혼동하지 않는다.`,
     anchors: ['같이','굳이','밭이','밭을','해돋이는','발견했어요','않았다'],
   },
   {
     name: 'substantive-morpheme liaison and tensification',
-    text: `맛없다, 겉옷, 헛웃음, 젖어미, 끝없이, 없다, 없는 책을 차례로 읽었다. 값없다와 값있는의 경계에서는 받침의 대표음과 뒤 형태소의 첫소리가 중요하다. 떡볶이 한 접시를 먹고, 옷 안에 놓인 책과 숲 속의 작은 집을 살폈다. 냇가를 지나 잠시 쉬고, 표준 발음법을 다시 읽었다.`,
+    text: `맛없다, 겉옷, 헛웃음, 젖어미, 끝없이, 없다, 없는 책을 차례로 읽었다. ‘값없다’와 ‘값있는’의 경계에서는 받침의 대표음과 뒤 형태소의 첫소리가 중요하다. 떡볶이 한 접시를 먹고, 옷 안에 놓인 책과 숲 속의 작은 집을 살폈다. 냇가 근처에서 잠시 쉬고, 표준 발음법을 다시 읽었다.`,
     anchors: ['맛없다','겉옷','헛웃음','젖어미','끝없이','없다','없는','값없다','값있는','떡볶이','냇가'],
   },
   {
@@ -125,9 +125,16 @@ for (const input of uniqueAdversarialAnchors) {
     assert.equal(standalone.ipa, row.ipa_syllables.split('|').join(' '), input + ': expected IPA');
     assert.ok(!standalone.ukrainian.includes('⟦'), input + ': no unresolved marker in isolation');
     assert.equal(standalone.issues.length, 0, input + ': no issue for a sourced exact form');
-    assert.ok(
-      standalone.trace.some((item) => item.rules.includes('lexical-pronunciation')),
-      input + ': exact adversarial anchor should be traceable to the lexical evidence layer',
-    );
+    if (row.target_status !== 'surface-only') {
+      assert.ok(
+        standalone.trace.some((item) => item.rules.includes('lexical-pronunciation')),
+        input + ': exact adversarial anchor should be traceable to the lexical evidence layer',
+      );
+    } else {
+      assert.ok(
+        !standalone.trace.some((item) => item.rules.includes('lexical-pronunciation')),
+        input + ': surface-only row must retain the general rule-engine trace',
+      );
+    }
   });
 }
