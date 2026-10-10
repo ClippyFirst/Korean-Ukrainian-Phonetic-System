@@ -166,6 +166,52 @@ test('NIKL §29 optional readings expose both official surface variants',()=>{
   }
 });
 
+test('NIKL §30 official 사이시옷 readings cover fortition, nasalization and ㄴㄴ insertion',()=>{
+  const cases=[
+    ['콧날','콘날','콘날','kʰon nal'],
+    ['아랫니','아랜니','аренні','a ɾɛn ni'],
+    ['툇마루','퇸마루','твенмару','tʰøːn ma ɾu'],
+    ['뱃머리','밴머리','пенморі','pɛn mʌ ɾi'],
+    ['베갯잇','베갠닏','пеґенніт','pe gɛn nit̚'],
+    ['깻잎','깬닙','кенніп','kɛn nip̚'],
+    ['나뭇잎','나문닙','намунніп','na mun nip̚'],
+    ['도리깻열','도리깬녈','торіґенньол','to ɾi gɛn ɲʌl'],
+    ['뒷윷','뒨뉻','твінньут','tyːn ɲut̚']
+  ];
+  for(const [word,surface,ua,ipa] of cases){
+    const r=engine.convert(word);
+    assert.equal(r.surfaceHangul,surface,word);
+    assert.equal(r.ukrainian,ua,word);
+    assert.equal(r.ipa,ipa,word);
+    assert.equal(r.status,'lexical-review',word);
+  }
+});
+
+test('NIKL §30 retains both permitted surface readings for written 사이시옷 examples',()=>{
+  const cases=[
+    ['냇가','내까','нека','nɛː k͈a','낻까','нетка','nɛːt̚ k͈a'],
+    ['샛길','새낄','секіл','sɛː k͈il','샏낄','сеткіл','sɛːt̚ k͈il'],
+    ['빨랫돌','빨래똘','паллетол','p͈al lɛ t͈ol','빨랟똘','паллеттол','p͈al lɛt̚ t͈ol'],
+    ['콧등','코뜽','котин','kʰo t͈ɯŋ','콛뜽','коттин','kʰot̚ t͈ɯŋ'],
+    ['깃발','기빨','кіпал','ki p͈al','긷빨','кітпал','kit̚ p͈al'],
+    ['대팻밥','대패빱','тепепап','tɛː pʰɛ p͈ap̚','대팯빱','тепетпап','tɛː pʰɛt̚ p͈ap̚'],
+    ['햇살','해쌀','гесал','hɛ s͈al','핻쌀','гетсал','hɛt̚ s͈al'],
+    ['뱃속','배쏙','песок','pɛ s͈ok̚','밷쏙','петсок','pɛt̚ s͈ok̚'],
+    ['뱃전','배쩐','печон','pɛ tɕ͈ʌn','밷쩐','петчон','pɛt̚ tɕ͈ʌn'],
+    ['고갯짓','고개찓','коґечіт','ko kɛ tɕ͈it̚','고갣찓','коґетчіт','ko kɛt̚ tɕ͈it̚']
+  ];
+  for(const [word,surface,ua,ipa,altSurface,altUa,altIpa] of cases){
+    const r=engine.convert(word);
+    assert.equal(r.surfaceHangul,surface,word);
+    assert.equal(r.ukrainian,ua,word);
+    assert.equal(r.ipa,ipa,word);
+    assert.equal(r.variants.length,1,word);
+    assert.equal(r.variants[0].surface,altSurface,word);
+    assert.equal(r.variants[0].ukrainian,altUa,word);
+    assert.equal(r.variants[0].ipa,altIpa,word);
+  }
+});
+
 test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'гйонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
 test('lenis voicing between vowels is explicit',()=>{const r=engine.convert('부부');assert.equal(r.ukrainian,'пубу');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
 test('표준 voices intervocalic ㅈ',()=>{const r=engine.convert('표준');assert.equal(r.ukrainian,'пйоджун');assert.equal(r.ipa,'pʰjo dʑun');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
