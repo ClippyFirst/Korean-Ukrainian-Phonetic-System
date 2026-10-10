@@ -2,7 +2,7 @@
 
 **Scope of this pass:** inspect the current engine, web-engine regression suite, canonical correspondence table and complete lexical pronunciation CSV; correct a trace-consistency defect; add an adversarial regression; record coverage and remaining evidence gaps.
 
-**Important limit:** this is a source/data audit, not a completed independent linguistic validation. I did not execute `npm test`, `npm run build`, or `npm run check:release` in this pass. No claim of passing runtime tests or build is made here. The official normative baseline is the National Institute of Korean Language (NIKL), *표준 발음법*: https://korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+**Important limit:** this is a source/data audit, not a completed independent linguistic validation. GitHub Actions on the current PR branch ran `npm test` (122 passed, 0 failed), `npm run build` (passed), the Python regression/data-integrity job (passed), and the corpus/master-table artifact job (passed). These are CI results, not a local execution in this session. The first CI attempt caught a malformed synthetic test fixture; the fixture was corrected and the subsequent CI run passed. [Web tests and build](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38055001424) · [Korean system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38055001653) · [Corpus/master-table artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38055001532). The official normative baseline is the National Institute of Korean Language (NIKL), *표준 발음법*: https://korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 
 ## 1. Confirmed code defect fixed in this branch
 
@@ -87,7 +87,7 @@ This is a mapping of the current implementation and tests inspected, not a claim
 
 ## 5. Next mandatory checks before calling the audit complete
 
-1. Run `npm run check:release` (which invokes `npm test` and `npm run build`) in a real checkout and inspect the full output.
+1. `npm test` and `npm run build` passed in GitHub Actions on this branch (122 tests passed; production build succeeded). Re-run `npm run check:release` in a local checkout when available to reproduce the combined release gate.
 2. Add property tests over all 11,172 modern Hangul syllable blocks and test parser behavior for decomposed/conjoining jamo, archaic forms, whitespace and punctuation.
 3. Build a machine-readable NIKL article inventory: exact rule text and exceptions → engine implementation → sourced examples → positive and negative tests. Verify the current official source rather than relying on summaries.
 4. Audit all lexical URLs for reachability and exact claim support; flag source pages that are mutable, generic or unavailable.
