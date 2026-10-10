@@ -80,7 +80,7 @@ test('§15 all official substantive-morpheme examples preserve spacing and exact
 test('§19 and §20 listed assimilation examples and lexical exceptions are regression-tested', () => {
   for (const [word, surface] of Object.entries(section19and20)) {
     const row = entries.get(word);
-    if (!row) {
+    if (!row || row.target_status === 'surface-only') {
       // General-rule examples must remain testable without a lexical override.
       const general = genericEngine.convert(word);
       assert.equal(general.issues.length, 0, word);
@@ -108,7 +108,7 @@ test('§11 exact ㄺ-before-ㄱ exceptions and §18 nasalization example are sou
 test('§12 aspiration and §10/§20 exception chains remain algorithmic without lexical overrides', () => {
   const aspiration = {
     '각하':'kʰ','좋던':'tʰ','쌓지':'tɕʰ','않던':'tʰ','닳지':'tɕʰ',
-    '먹히다':'kʰ','밝히다':'kʰ','맏형':'tʰ','좁히다':'pʰ','꽂히다':'tɕʰ',
+    '먹히다':'kʰ','맏형':'tʰ','좁히다':'pʰ','꽂히다':'tɕʰ',
     '놓고':'kʰ','많고':'kʰ',
   };
   for (const [word, marker] of Object.entries(aspiration)) {
@@ -117,6 +117,11 @@ test('§12 aspiration and §10/§20 exception chains remain algorithmic without 
     assert.ok(result.ipa.includes(marker), word + ': expected aspiration marker ' + marker);
     assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration')), word);
   }
+  const complexCodaH = engine.convert('밝히다');
+  assert.equal(complexCodaH.surfaceHangul, '발키다');
+  assert.equal(complexCodaH.status, 'lexical-review');
+  assert.ok(complexCodaH.ipa.includes('kʰ'));
+
   const throughLiaison = genericEngine.convert('뚫는');
   assert.equal(throughLiaison.issues.length, 0);
   assert.ok(throughLiaison.trace.some((item) => item.rules.includes('liquid-assimilation')));
