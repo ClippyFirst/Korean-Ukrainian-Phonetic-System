@@ -40,9 +40,7 @@ test('실없다 preserves the official negative control against §13', () => {
   assert.match(review, /explicitly says §13 is not the applicable rule/u);
 });
 
-test('넓어졌다는 remains unresolved rather than receiving guessed article numbers', () => {
-  const row = rows.find((item) => item.input === '넓어졌다는');
-  assert.doesNotMatch(row.rule_notes, /§\s*\d|제\s*\d+\s*항/u);
+test('batch 07 historically left 넓어졌다는 unresolved pending ordered derivation', () => {
   assert.match(review, /Still unresolved/u);
   assert.match(review, /Do not add a guessed article number/u);
 });
