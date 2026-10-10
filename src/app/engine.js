@@ -337,7 +337,18 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     const parts=text.match(/[가-힣]+|[^가-힣]+/g)||[];
     if(parts.some(part=>lexicon.has(part))){
       const results=parts.map(part=>{
-        if(lexicon.has(part))return lexicalResult(part,lexicon.get(part));
+        if(lexicon.has(part)){
+          const entry=lexicon.get(part);
+          // Some sourced surface forms are retained as reference data without
+          // bypassing the general rule engine. This preserves contextual rule
+          // traces for independently tested rules (e.g. §18 nasalisation).
+          if(entry.target_status==='surface-only'){
+            const result=convertText(part,map,lexicon,true);
+            result.surfaceHangul=entry.surface_hangul||'';
+            return result;
+          }
+          return lexicalResult(part,entry);
+        }
         return convertText(part,map,lexicon,true);
       });
       const issues=results.flatMap(r=>r.issues);
