@@ -732,3 +732,79 @@ test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', 
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
+
+
+test('user-supplied high-risk corpus has source-backed Korean surface forms', () => {
+  const expected = {
+    '국립국어원':'궁님꾸거원',
+    '신라':'실라',
+    '설날':'설랄',
+    '독립문':'동님문',
+    '종로':'종노',
+    '해돋이':'해도지',
+    '맏이':'마지',
+    '숱이':'수치',
+    '끝이':'끄치',
+    '값이':'갑씨',
+    '없어':'업써',
+    '맑다':'막따',
+    '밝다':'박따',
+    '넓다':'널따',
+    '넓고':'널꼬',
+    '밟다':'밥따',
+    '밟고':'밥꼬',
+    '밟는':'밤는',
+    '삶':'삼',
+    '젊다':'점따',
+    '읊다':'읍따',
+    '읊고':'읍꼬',
+    '앉다':'안따',
+    '앉고':'안꼬',
+    '앉는':'안는',
+    '많다':'만타',
+    '많고':'만코',
+    '많습니다':'만씀니다',
+    '좋다':'조타',
+    '좋고':'조코',
+    '좋지':'조치',
+    '좋습니다':'조씀니다',
+    '놓고':'노코',
+    '놓는':'논는',
+    '놓지':'노치',
+    '낳다':'나타',
+    '낳고':'나코',
+    '낫다':'낟따',
+    '낫고':'낟꼬',
+    '낫지':'낟찌',
+    '낯설다':'낟썰다',
+    '낮잠':'낟짬',
+    '꽃망울':'꼰망울',
+    '옷맵시':'온맵씨',
+    '앞문':'암문',
+    '앞니':'암니',
+    '콧물':'콘물',
+    '국민':'궁민',
+    '국물':'궁물',
+    '박물관':'방물관',
+    '서울역':'서울력',
+    '한국말':'한궁말',
+    '한국어':'한구거',
+  };
+  const rows = parseCsv(lexical);
+  for (const [word, surface] of Object.entries(expected)) {
+    const entry = rows.find((row) => row.input === word);
+    assert.ok(entry, 'missing lexical pronunciation: ' + word);
+    assert.equal(entry.surface_hangul, surface, word);
+    const result = engine.convert(word);
+    assert.equal(result.surfaceHangul, surface, word);
+    assert.ok(!result.ukrainian.includes('⟦'), 'unexpected unresolved marker: ' + word);
+    assert.ok(result.ipa.length > 0, 'missing IPA: ' + word);
+  }
+});
+
+test('surface pronunciation is exposed for lexical forms and omitted for unverified general forms', () => {
+  const sourced = engine.convert('해돋이');
+  assert.equal(sourced.surfaceHangul, '해도지');
+  const general = engine.convert('눈물');
+  assert.equal(general.surfaceHangul, '');
+});
