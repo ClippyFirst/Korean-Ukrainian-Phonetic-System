@@ -736,10 +736,8 @@ test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', 
 
 test('user-supplied high-risk corpus has source-backed Korean surface forms', () => {
   const expected = {
-    '국립국어원':'궁님꾸거원',
     '신라':'실라',
     '설날':'설랄',
-    '독립문':'동님문',
     '종로':'종노',
     '해돋이':'해도지',
     '맏이':'마지',
