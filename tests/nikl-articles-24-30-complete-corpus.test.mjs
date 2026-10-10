@@ -11,11 +11,11 @@ const engine = createEngine(canonical, lexical);
 
 function expectedTarget(row) {
   const targets = row.target_syllables.split('|');
-  if (row.input_kind !== 'mixed-script' || !/\\s/u.test(row.input)) return targets.join('');
+  if (row.input_kind !== 'mixed-script' || !/\s/u.test(row.input)) return targets.join('');
   let index = 0;
   let result = '';
-  for (const token of (row.input.match(/\\s+|[^\\s]+/gu) || [])) {
-    if (/^\\s+$/u.test(token)) { result += token; continue; }
+  for (const token of (row.input.match(/\s+|[^\s]+/gu) || [])) {
+    if (/^\s+$/u.test(token)) { result += token; continue; }
     const count = /^[가-힣]+$/u.test(token) ? [...token].length : 1;
     result += targets.slice(index, index + count).join('');
     index += count;
