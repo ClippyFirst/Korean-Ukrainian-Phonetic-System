@@ -32,7 +32,7 @@ test('standard lexical ㄼ exception 밟- is preserved before consonants',()=>{c
 test('standard lexical ㄼ exceptions 넓죽- and 넓둥글- are preserved before fortition',()=>{const a=engine.convert('넓죽하다');assert.ok(a.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(a.trace[1].rules.includes('tensification'));const b=engine.convert('넓둥글다');assert.ok(b.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(b.trace[1].rules.includes('tensification'));});
 test('tensification remains practical rather than mandatory doubling',()=>{const r=engine.convert('국밥');assert.equal(r.ukrainian,'кукпап');assert.ok(r.trace.some(x=>x.rules.includes('tensification')));});
 test('sourced NIKL tense examples are available in the lexical layer',()=>{for(const w of ['앉고','넓게','갈등','문고리']){const r=engine.convert(w);assert.equal(r.status,'lexical-review',w);assert.ok(r.trace.some(x=>x.rules.includes('lexical-pronunciation')),w);}});
-test('sourced tensification outputs preserve Korean surface IPA and provisional Ukrainian targets',()=>{for(const [word,surface,ua,ipa] of [['넓게','널께','нолке','nʌl k͈e'],['갈등','갈뜽','калтин','kal t͈ɯŋ'],['문고리','문꼬리','мункорі','mun k͈o ɾi'],['젊지','점찌','чомчі','tɕʌmː tɕ͈i'],['훑소','훌쏘','гулсо','hul s͈o']]){const r=engine.convert(word);assert.equal(r.surfaceHangul,surface,word);assert.equal(r.ukrainian,ua,word);assert.equal(r.ipa,ipa,word);assert.equal(r.status,'lexical-review',word);}});
+test('sourced tensification outputs preserve Korean surface IPA and provisional Ukrainian targets',()=>{for(const [word,surface,ua,ipa] of [['넓게','널께','нолке','nʌl k͈e'],['갈등','갈뜽','калтин','kal t͈ɯŋ'],['문고리','문꼬리','мункорі','mun k͈o ɾi'],['젊지','점찌','чомчі','tɕʌːm tɕ͈i'],['훑소','훌쏘','гулсо','hul s͈o']]){const r=engine.convert(word);assert.equal(r.surfaceHangul,surface,word);assert.equal(r.ukrainian,ua,word);assert.equal(r.ipa,ipa,word);assert.equal(r.status,'lexical-review',word);}});
 test('official NIKL §27 attached-ending fortition examples are lexically covered',()=>{
   const cases=[
     ['할걸','할껄','галкол','hal k͈ʌl'],
@@ -81,6 +81,27 @@ test('lexical CSV has unique keys, complete evidence fields and aligned syllable
     assert.equal([...row.surface_hangul].length,ipaParts.length,'surface/IPA segmentation mismatch: '+row.input);
   }
   assert.ok(rows.length>=300,'unexpectedly small lexical dataset');
+});
+
+test('remaining official NIKL §28 compound examples retain sourced surface forms and long-vowel/voicing detail',()=>{
+  const cases=[
+    ['손재주','손째주','손체주'.replace('체','че'),'son tɕ͈ɛ dʑu'],
+    ['굴속','굴쏙','кулсок','kuːl s͈ok̚'],
+    ['술잔','술짠','сулчан','sul tɕ͈an'],
+    ['바람결','바람껼','парамкйол','paɾam k͈jʌl'],
+    ['그믐달','그믐딸','кимимтал','kɯ mɯm t͈al'],
+    ['아침밥','아침빱','ачімпап','a tɕʰim p͈ap̚'],
+    ['잠자리','잠짜리','чамчарі','tɕam tɕ͈a ɾi'],
+    ['초승달','초승딸','чосинтал','tɕʰo sɯŋ t͈al'],
+    ['강줄기','강쭐기','канчулґи','kaŋ tɕ͈ul gi']
+  ];
+  for(const [word,surface,ua,ipa] of cases){
+    const r=engine.convert(word);
+    assert.equal(r.surfaceHangul,surface,word);
+    assert.equal(r.ukrainian,ua,word);
+    assert.equal(r.ipa,ipa,word);
+    assert.equal(r.status,'lexical-review',word);
+  }
 });
 
 test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'гйонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
