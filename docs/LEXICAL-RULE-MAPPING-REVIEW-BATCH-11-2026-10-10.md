@@ -8,10 +8,10 @@ This follow-up converts eight previously reviewed, high-confidence rule-derived 
 
 | Input | Added mapping | Evidence status |
 |---|---|---|
-| `밟으며` | §§10, 14 | Rule-derived form; special ㄼ behavior of `밟-` and liaison before `-으며`. |
+| `밟으며` | §14 | Rule-derived form; ㄼ liaison before `-으며` (the special consonant-environment exception in §10 is not applied to this vowel-initial ending). |
 | `낡은` | §14 | Rule-derived form; ㄺ before vowel-initial ending. |
 | `놓인` | §12 | Rule-derived ㅎ deletion before a vowel-initial formal morpheme; exact-word attestation still not located. |
-| `밟았습니다` | §§10, 14, 18, 23 | Compositional form combining `밟-` liaison and the `-습니다` sequence; not a single-source lexical citation. |
+| `밟았습니다` | §§14, 18, 23 | Compositional form combining ㄼ liaison before `-았-` and the `-습니다` sequence; not a single-source lexical citation. |
 | `맑은` | §14 | Rule-derived form; ㄺ before vowel-initial ending. |
 | `있었고` | §§9, 13, 23 | Rule-family evidence only. The linked NIKL Q&A directly discusses `있었다` and `있습니다`, not exact `있었고`. |
 | `웃었고` | §§9, 13, 23 | Compositional form: ㅅ liaison, ㅆ coda neutralization, and fortition before ㄱ. |
