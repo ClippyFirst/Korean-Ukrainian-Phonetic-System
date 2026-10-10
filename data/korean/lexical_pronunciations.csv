@@ -211,7 +211,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 없어,업써,оп|со,ʌːp̚|s͈ʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항 공식 예시 [업ː써]. 겹받침 ㅄ의 두 번째 자음 ㅅ은 된소리 ㅆ으로 실현; 장음 유지. Ukrainian target provisional.",high,provisional,,,,
 여덟이,여덜비,йо|дол|бі,jʌ|dʌl|bi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항 해설 공식 예시 [여덜비]. 명사 여덟 + 조사 이의 겹받침 연음. Ukrainian target provisional.",high,provisional,,,,
 여덟을,여덜블,йо|дол|бил,jʌ|dʌl|bɯl,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항 해설 공식 예시 [여덜블]. 명사 여덟 + 조사 을의 겹받침 연음. Ukrainian target provisional.",high,provisional,,,,
-"신라","실라","шіл|ла","ɕil|la","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§20 liquid assimilation; [실라].","high","provisional","","","",""
+"신라","실라","шіл|ла","ɕil|la","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§20 liquid assimilation; [실라].","high","surface-only","","","",""
 "설날","설랄","соль|лаль","sʌl|lal","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§20 liquid assimilation; [설랄].","high","provisional","","","",""
 "종로","종노","чон|но","tɕoŋ|no","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§19; [종노].","high","provisional","","","",""
 "해돋이","해도지","хе|до|джі","he|do|dʑi","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§17; [해도지].","high","provisional","","","",""
@@ -220,9 +220,9 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "끝이","끄치","кки|чі","k͈ɯ|tɕʰi","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§17; [끄치].","high","provisional","","","",""
 "밝다","박따","пак|тта","pak̚|t͈a","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [박따].","high","provisional","","","",""
 "넓고","널꼬","ноль|кко","nʌl|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10/§23; [널꼬].","high","provisional","","","",""
-"밟는","밤는","пам|нин","pam|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10 then §18; [밤는].","high","provisional","","","",""
+"밟는","밤는","пам|нин","pam|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10 then §18; [밤는].","high","surface-only","","","",""
 "읊다","읍따","ип|тта","ɯp̚|t͈a","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [읍따].","high","provisional","","","",""
-"읊고","읍꼬","ип|кко","ɯp̚|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [읍꼬].","high","provisional","","","",""
+"읊고","읍꼬","ип|кко","ɯp̚|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§11/§23; [읍꼬].","high","surface-only","","","",""
 "앉고","안꼬","ан|кко","an|k͈o","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10/§23; [안꼬].","high","provisional","","","",""
 "앉는","안는","ан|нин","an|nɯn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§10/§18; [안는].","high","provisional","","","",""
 "많고","만코","ман|ко","man|kʰo","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§12; [만코].","high","provisional","","","",""
@@ -240,7 +240,7 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "낫지","낟찌","нат|ччі","nat̚|tɕ͈i","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§9/§23; [낟찌].","high","provisional","","","",""
 "낯설다","낟썰다","нат|ссоль|да","nat̚|s͈ʌl|da","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§9/§23; [낟썰다].","high","provisional","","","",""
 "낮잠","낟짬","нат|ччам","nat̚|tɕ͈am","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§9/§23; [낟짬].","high","provisional","","","",""
-"앞문","암문","ам|мун","am|mun","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [암문].","high","provisional","","","",""
+"앞문","암문","ам|мун","am|mun","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [암문].","high","surface-only","","","",""
 "앞니","암니","ам|ні","am|ni","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [암니].","high","provisional","","","",""
 "콧물","콘물","кон|муль","kon|mul","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [콘물].","high","provisional","","","",""
 "국민","궁민","кунг|мін","kuŋ|min","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [궁민].","high","provisional","","","",""
