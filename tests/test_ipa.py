@@ -76,3 +76,17 @@ def test_section4_keeps_sourced_lexical_length_and_spelling_in_variants():
 def test_phonemic_ipa_does_not_add_surface_diphthong_variants():
     result = phoneticize_korean("괴물", ipa_level="phonemic")["ipa"]
     assert result["variants"] == []
+
+
+def test_section5_non_initial_ui_has_a_generic_i_variant():
+    result = phoneticize_korean("민주주의")["ipa"]
+    assert result["ipa"] == "min.dʑu.dʑu.ɰi"
+    assert [variant["ipa"] for variant in result["variants"]] == ["min.dʑu.dʑu.i"]
+    assert result["variants"][0]["syllable_indices"] == [3]
+
+def test_section5_does_not_generalize_non_initial_ui_across_word_boundaries():
+    result = phoneticize_korean("민주주의 의의")["ipa"]
+    assert result["ipa"] == "min.dʑu.dʑu.ɰi ɰi.ɰi"
+    assert len(result["variants"]) == 3
+    assert "min.dʑu.dʑu.i ɰi.ɰi" in [variant["ipa"] for variant in result["variants"]]
+    assert "min.dʑu.dʑu.ɰi ɰi.i" in [variant["ipa"] for variant in result["variants"]]
