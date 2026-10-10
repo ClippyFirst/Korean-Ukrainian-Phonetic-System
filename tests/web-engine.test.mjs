@@ -88,7 +88,7 @@ test('remaining official NIKL §28 compound examples retain sourced surface form
     ['손재주','손째주','сончеджу','son tɕ͈ɛ dʑu'],
     ['굴속','굴쏙','кулсок','kuːl s͈ok̚'],
     ['술잔','술짠','сулчан','sul tɕ͈an'],
-    ['바람결','바람껼','парамкйол','paɾam k͈jʌl'],
+    ['바람결','바람껼','парамкйол','pa ɾam k͈jʌl'],
     ['그믐달','그믐딸','кимимтал','kɯ mɯm t͈al'],
     ['아침밥','아침빱','ачімпап','a tɕʰim p͈ap̚'],
     ['잠자리','잠짜리','чамчарі','tɕam tɕ͈a ɾi'],
