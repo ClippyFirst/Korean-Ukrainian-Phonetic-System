@@ -57,6 +57,8 @@ A review of the lexical layer found two different defects that must not be confl
 
 The same audit also enforces the declared coda-`ㄹ` target `л` (not `ль`), context-sensitive `ㅢ` readings, and the special `ㅅ/ㅆ + ㅣ` target `ш`. It fixes duplicated or shifted consonants in the target syllable array without changing the verified Korean surface form. Context-dependent Ukrainian spellings for glides remain graphemic model decisions rather than universal Korean facts.
 
+A second corpus-wide pass found three remaining lexical entries that still wrote Korean coda [l] with Ukrainian `ль` (`얇실하다`, `짧다`, `읽거든`), plus `넓습니다`, where doubled `сс` encoded Korean fortisness contrary to the declared practical-target policy. These targets are now `ял|сіл|га|да`, `чал|та`, `іл|ко|ден`, and `нол|сим|ни|да`, respectively. The hard-lateral regression list and fortis-neutralization checks now cover these missed cases as well.
+
 
 ## Consistency of the Ukrainian target for coda ㅇ
 
