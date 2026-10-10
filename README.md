@@ -16,6 +16,16 @@ The service is intentionally modelled on the functional architecture of the Chin
 
 The Korean visual identity uses South Korean national colours: Taegeuk red #CD2E3A and Taegeuk blue #0047A0.
 
+## Sentence-level adversarial corpus
+
+The system page now publishes a five-line running-text test corpus that stresses complex-coda liaison, coda neutralization, fortition, palatalization, the particle `의`, and the contracted form `설명했어요`. The regression fixture and tests keep the normative Korean surface form separate from the provisional Ukrainian target.
+
+- [View the corpus on the live methodology page](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#sentence-adversarial-corpus)
+- [Corpus fixture](tests/fixtures/adversarial-sentence-corpus.txt)
+- [Regression tests](tests/adversarial-sentence-corpus.test.mjs)
+
+Passing tests demonstrates reproducibility of declared model outputs and absence of unresolved placeholders in this fixture; it does not validate the Ukrainian approximations through an independent reader study.
+
 ## Scientific pipeline
 
 Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
