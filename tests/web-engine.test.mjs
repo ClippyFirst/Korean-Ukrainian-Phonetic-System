@@ -266,8 +266,10 @@ test('multiple phrase-boundary assimilation rules compose in one sentence with a
   const second=engine.convert('몇 리 문법');
   assert.equal(second.ukrainian,'мйон ні мунпоп');
   assert.equal(second.ipa,'mjʌn ni mun p͈ʌp̚');
-  assert.ok(second.trace.find(item=>item.source==='몇').rules.includes('liquid-to-nasal-before-obstruent'));
+  assert.ok(second.trace.find(item=>item.source==='몇').rules.includes('project-inferred-d-liquid-nasalization'));
+  assert.ok(!second.trace.find(item=>item.source==='몇').rules.includes('liquid-to-nasal-before-obstruent'));
   assert.ok(second.trace.find(item=>item.source==='몇').rules.includes('nasal-assimilation'));
+  assert.ok(second.trace.find(item=>item.source==='리').rules.includes('project-inferred-d-liquid-nasalization'));
 });
 
 test('system page publishes the phrase-boundary assimilation audit',()=>{
