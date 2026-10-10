@@ -41,5 +41,5 @@ test('batch 02 records explicit rule examples without claiming every URL is item
   assert.match(review, /없는\[엄ː는\]/u);
   assert.match(review, /국물\[궁물\]/u);
   assert.match(review, /없다\[업ː따\]/u);
-  assert.match(review, /article numbers from the note alone/u);
+  assert.match(review, /single pedagogical derivation/u);
 });
