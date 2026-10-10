@@ -46,6 +46,13 @@ A test-first audit exposed a missing standard surface form for `값있다[가빋
 - [Audit report](docs/n-insertion-exceptions-audit-2026-10-10.md)
 - [Regression test](tests/adversarial-n-insertion-exceptions-2026-10-10.test.mjs)
 
+## NIKL Rule 29: liquid assimilation
+
+Added eight official examples from the attached note to Rule 29, including `들일[들ː릴]`, `솔잎[솔립]`, `설익다[설릭따]`, `물약[물략]`, `불여우[불려우]`, `물엿[물렫]`, `휘발유[휘발류]`, and `유들유들[유들류들]`. The exact surface-form controls are source-backed; Ukrainian targets remain provisional.
+
+- [Audit report](docs/rule29-liquid-assimilation-audit-2026-10-10.md)
+- [Regression test](tests/adversarial-rule29-liquid-assimilation-2026-10-10.test.mjs)
+
 ## Scientific pipeline
 
 Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
