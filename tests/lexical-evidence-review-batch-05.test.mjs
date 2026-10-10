@@ -20,8 +20,8 @@ test('실제 is mapped to the Sino-Korean ㄹ+ㅈ fortition rule §26', () => {
   assert.ok(row, 'expected 실제 lexical row');
   assert.match(row.rule_notes, /제26항/u);
   assert.doesNotMatch(row.rule_notes, /i 환경/u);
-  assert.match(review, /Sino-Korean words, ㄹ 받침 뒤에 오는 ㄷ, ㅅ, ㅈ/u);
-  assert.match(review, /exact word still needs an item-specific dictionary or NIKL citation/u);
+  assert.match(review, /§26[\s\S]*?fortition of ㄷ, ㅅ, ㅈ after ㄹ in Sino-Korean words/u);
+  assert.match(review, /exact word still needs an item-specific dictionary or NIKL citation/iu);
 });
 
 test('batch 05 keeps particle 의 variants and Ukrainian approximations separate', () => {
