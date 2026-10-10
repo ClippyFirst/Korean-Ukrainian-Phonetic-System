@@ -141,3 +141,11 @@ Neither layer claims official Ukrainian standardisation, exhaustive lexical atte
 ## License / attribution
 
 See repository metadata and source files for the current licensing and attribution terms.
+
+
+### Model-wide target consistency audit
+
+The lexical layer has a dedicated regression suite for Ukrainian target segmentation, non-duplication of fortisness, word-initial onset choices, and IPA/target consistency in high-risk forms.
+
+- [Audit summary on the methodology page](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#model-wide-target-consistency)
+- [Regression tests](tests/model-wide-target-consistency.test.mjs)
