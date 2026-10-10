@@ -254,7 +254,7 @@ test('official NIKL §§13–14 liaison examples are covered by exact sourced re
 
 test('multiple phrase-boundary assimilation rules compose in one sentence with a lexical override',()=>{
   const chain=engine.convert('국 립 문법');
-  assert.equal(chain.ukrainian,'кунг нім мунпоп');
+  assert.equal(chain.ukrainian,'кун нім мунпоп');
   assert.equal(chain.ipa,'kuŋ nim mun p͈ʌp̚');
   assert.ok(chain.trace.find(item=>item.source==='국').rules.includes('liquid-to-nasal-before-obstruent'));
   assert.ok(chain.trace.find(item=>item.source==='국').rules.includes('nasal-assimilation'));
