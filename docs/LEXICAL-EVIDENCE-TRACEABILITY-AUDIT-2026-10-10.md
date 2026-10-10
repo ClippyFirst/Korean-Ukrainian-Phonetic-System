@@ -4,7 +4,7 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **79** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **78** rows meet the audit filter.
 
 ## Source-type counts
 
@@ -12,8 +12,12 @@ Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **79**
 |---|---:|
 | NIKL online Q&A | 38 |
 | NIKL FAQ | 3 |
-| NIKL standard-rules page | 38 |
-| **Total requiring article-mapping review** | **79** |
+| NIKL standard-rules page | 37 |
+| **Total requiring article-mapping review** | **78** |
+
+## Resolved during follow-up
+
+- `실제` was removed from the unresolved metadata queue after its rule note was corrected to *표준 발음법* §26 (Sino-Korean ㄹ + ㅈ fortition). The general rules page supports that rule family; an item-specific lexical citation for `실제[실쩨]` remains desirable, but it is no longer missing an article mapping.
 
 ## Required handling
 
@@ -73,7 +77,7 @@ Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **79**
 | 책을 | NIKL standard-rules page | 책 + 을: 받침 ㄱ의 연음, [채글]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 연구원은 | NIKL standard-rules page | 연구원 + 은: 원의 받침 ㄴ과 은의 연속; 표면형 [연구워는]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 발음과 | NIKL standard-rules page | 발음 + 과: 발음의 표면형 [바름] 및 과의 연결; Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 실제 | NIKL standard-rules page | 표면형 [실쩨]; ㅅ의 i 환경 및 ㅈ 된소리; Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
+
 | 발음의 | NIKL standard-rules page | 발음 + 의: 이 형태에서는 의를 [이]로 읽는 모델 경로를 기본값으로 기록. 조사 의의 [에] 계열은 별도 variant로 검토. | Verify source; map article or label lexical/corpus evidence |
 | 차이를 | NIKL standard-rules page | 표면형 [차이를]; Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 자세히 | NIKL standard-rules page | 표면형 [자세히]; onset ㅎ은 프로젝트 모델에 따라 г로 근사. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
