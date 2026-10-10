@@ -99,8 +99,8 @@ test('ordered §19 → §18 → §20 interaction matrix remains stable for all s
     ['갑라', 'kam na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
     ['간라', 'kal la', ['liquid-assimilation']],
     ['갈라', 'kal la', []],
-    ['감라', 'kam na', ['liquid-assimilation']],
-    ['강라', 'kaŋ na', ['liquid-assimilation']],
+    ['감라', 'kam na', ['liquid-to-nasal-before-obstruent']],
+    ['강라', 'kaŋ na', ['liquid-to-nasal-before-obstruent']],
   ];
   for (const [input, expectedIpa, requiredRules] of cases) {
     const result = generic.convert(input);
