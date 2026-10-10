@@ -194,3 +194,30 @@ test('velar nasal coda targets follow the canonical Ukrainian н convention acro
     }
   }
 });
+
+
+test('lexical target codas match the final consonants of their aligned surface IPA syllables', () => {
+  const codaTargets = [
+    [/k̚$/u, 'к'],
+    [/t̚$/u, 'т'],
+    [/p̚$/u, 'п'],
+    [/ŋ$/u, 'н'],
+    [/n(?:ː)?$/u, 'н'],
+    [/m(?:ː)?$/u, 'м'],
+    [/l(?:ː)?$/u, 'л'],
+  ];
+  for (const row of rows) {
+    const target = (row.target_syllables || '').split('|');
+    const ipa = (row.ipa_syllables || '').split('|');
+    assert.equal(target.length, ipa.length, row.input + ': target/IPA syllable alignment');
+    for (let i = 0; i < ipa.length; i++) {
+      const mapping = codaTargets.find(([pattern]) => pattern.test(ipa[i]));
+      if (!mapping) continue;
+      assert.ok(target[i].endsWith(mapping[1]),
+        row.input + ': IPA coda ' + ipa[i] + ' must align with Ukrainian target ' + mapping[1] + ' in ' + target[i]);
+    }
+  }
+  const batIlang = entries.get('밭이랑');
+  assert.equal(batIlang?.target_syllables, 'пан|ні|ран');
+  assert.equal(engine.convert('밭이랑').ukrainian, 'панніран');
+});
