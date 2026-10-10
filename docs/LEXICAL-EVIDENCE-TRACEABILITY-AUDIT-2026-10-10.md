@@ -4,16 +4,16 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **69** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **60** rows meet the audit filter.
 
 ## Source-type counts
 
 | Existing source URL type | Rows |
 |---|---:|
-| NIKL online Q&A | 30 |
+| NIKL online Q&A | 21 |
 | NIKL FAQ | 3 |
 | NIKL standard-rules page | 36 |
-| **Total requiring article-mapping review** | **69** |
+| **Total requiring article-mapping review** | **60** |
 
 ## Resolved during follow-up
 
@@ -22,6 +22,10 @@ Snapshot: `data/korean/lexical_pronunciations.csv` contains **520** rows; **69**
 ## Resolved during follow-up
 
 The following nine records received explicit article mappings after source review and are no longer in the unresolved queue: `밝는` (§§11, 18), `실없다` (§§10, 15, 23; with §13 explicitly ruled out for the substantive-morpheme boundary), `몇으로` (§13), `넋받이` (§§10, 17, 23), `밭이랑` (§§9, 18, 29), `집안일` (§§18, 29), `공업용` (§§18, 29), `얇실하다` (§§10, 23), and `짧다` (§§10, 23). The exact-word sources remain attached to their lexical rows.
+
+## Resolved during follow-up
+
+Nine more rows were assigned explicit rule references or documented as rule-specific negative controls: `삶다` (§§11, 23), `넓어` (§14), `넓으니` (§14), `넓은` (§14; exact bracketed reading remains indirectly supported), `넓습니다` (§§10, 18, 23; rule-derived), `넓지` (§§10, 23), `값있다` (§29 non-application of ㄴ-insertion), `곧이어` (§29 non-application of ㄴ-insertion), and `음용` (§29 non-application of ㄴ-insertion). For `넓습니다`, the source URL now points to the official rule text rather than implying the related dictionary-form Q&A directly lists the full conjugated form.
 
 ## Required handling
 
@@ -96,12 +100,3 @@ The following nine records received explicit article mappings after source revie
 | 있었고 | NIKL online Q&A | Morphological sequence 있- + -었- + -고; exact sourced-pattern entry preserves the ㅆ liaison, coda neutralization and fortition before ㄱ; surface [이썯꼬]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 웃었고 | NIKL standard-rules page | Morphological sequence 웃- + -었- + -고; ㅅ liaison before -었-, then ㅆ coda neutralization and fortition before ㄱ; surface [우섣꼬]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
 | 넓어졌다는 | NIKL standard-rules page | Compositional standard reading with intervocalic voicing of ㅈ: ㄼ in 넓- before vowel-initial -어 gives [널버]; ㅆ in 졌 is [ㄷ] before 다, with fortition [ㄸ]; surface [널버젇따는]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 삶다 | NIKL online Q&A | NIKL Q&A confirms [삼ː따]; ㄻ simplifies to ㅁ and lexical vowel length is retained in IPA. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 넓어 | NIKL online Q&A | NIKL 사전 활용형 및 표준 발음 확인: ㄼ의 ㄹ은 종성에 남고 ㅂ은 어미 -어 앞에서 연음; [널버]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 넓으니 | NIKL online Q&A | NIKL 사전 활용형: ㄼ의 ㄹ은 종성에 남고 ㅂ은 으니의 초성으로 연음; [널브니]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 넓은 | NIKL online Q&A | NIKL 사전 활용형: ㄼ의 ㄹ은 종성에 남고 ㅂ은 관형형 어미 -은 앞에서 연음; [널븐]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 넓습니다 | NIKL online Q&A | NIKL 사전 활용형: ㄼ 단순화와 ㅅ 된소리되기, ㅂ+ㄴ 비음화가 반영된 [널씀니다]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 넓지 | NIKL online Q&A | NIKL 사전 활용형: ㄼ 단순화 후 ㅈ 된소리; [널찌]. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 값있다 | NIKL online Q&A | NIKL Q&A 316101 explicitly gives 값있다[가빋따]. Do not apply ㄴ insertion by environment alone; lexicalized 표준 발음. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 곧이어 | NIKL online Q&A | NIKL Q&A 316101 explicitly gives 곧이어[고디어]; no ㄴ insertion in this lexical item. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
-| 음용 | NIKL online Q&A | NIKL Q&A 279931 explicitly explains 음용[으묭]; ㄴ insertion is not automatic even where the environment might suggest it. Ukrainian target provisional. | Verify source; map article or label lexical/corpus evidence |
