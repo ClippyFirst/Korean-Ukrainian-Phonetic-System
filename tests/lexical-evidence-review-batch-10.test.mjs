@@ -38,5 +38,5 @@ test('batch 10 maps nine source-backed records to official rule articles', () =>
 });
 
 test('batch 10 report preserves its historical queue reduction', () => {
-  assert.match(review, /unresolved traceability queue decreases from \*\*48 to \*\*39\*\*/u);
+  assert.match(review, /unresolved traceability queue decreases from \*\*48 to 39\*\*/u);
 });
