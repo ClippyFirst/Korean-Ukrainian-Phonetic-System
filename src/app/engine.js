@@ -41,6 +41,7 @@ function parseCsv(text){
   return rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,(r[i]??'').trim()])));
 }
 function decompose(ch){
+  if(typeof ch!=='string'||[...ch].length!==1)return null;
   const cp=ch.codePointAt(0);
   if(cp<HANGUL_BASE||cp>HANGUL_END)return null;
   const n=cp-HANGUL_BASE,l=Math.floor(n/N_COUNT),v=Math.floor((n%N_COUNT)/T_COUNT),t=n%T_COUNT;
