@@ -85,6 +85,7 @@ Research layer:
 
 ### Research
 - docs/NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md — article-by-article audit of all 30 official Standard Pronunciation Rules, implementation boundary, and regression cases
+- docs/USER-CORPUS-REGRESSION-AUDIT-2026-10-10.md — regression audit for the user-supplied Korean corpus, with high-priority normative surface readings and release acceptance criteria
 - docs/methodology.md
 - docs/slavic-comparative-master-table.md
 - docs/comparative-evidence-methodology.md
