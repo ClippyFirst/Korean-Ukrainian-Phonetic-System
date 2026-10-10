@@ -5,7 +5,7 @@ from pathlib import Path
 from .hangul import decompose_hangul
 from .phonology import parse_syllables
 from .rules import apply_ordered_rules
-from .ipa import realize_syllables
+from .ipa import generate_vowel_variants, realize_syllables
 from .ukrainian_adapter import UkrainianTargetAdapter
 from .orthography import render_sequence
 
@@ -96,6 +96,9 @@ def _apply_lexical_ipa(items,ipa_result):
         rendered+=separator+syllable_ipa[i]
     ipa_result["syllables"]=syllable_ipa
     ipa_result["ipa"]=rendered
+    # Recompute §4 alternatives after lexical IPA has restored sourced length
+    # and segment detail, so variants inherit the exact primary syllables.
+    ipa_result["variants"]=generate_vowel_variants(items,syllable_ipa,level=ipa_result.get("level","broad"))
     return ipa_result
 
 def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None):

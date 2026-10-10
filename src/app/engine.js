@@ -487,6 +487,43 @@ function lexicalResult(text,entry){
   };
 }
 
+function genericVowelVariants(text,units,originalUnits,ipa,output,status){
+  const sites=[];
+  for(let i=0;i<originalUnits.length;i++){
+    const vowel=originalUnits[i].vowel;
+    const alternate=vowel==='ㅚ'?'we':vowel==='ㅟ'?'wi':'';
+    const primary=vowel==='ㅚ'?'ø':vowel==='ㅟ'?'y':'';
+    if(!alternate||!ipa[i]||!ipa[i].includes(primary))continue;
+    sites.push({index:i,vowel,primary,alternate});
+  }
+  if(!sites.length||status==='unresolved')return[];
+  // Enumerate every combination for up to three optional vowels. For longer
+  // text, expose each local alternative independently to avoid exponential UI
+  // growth; each note explicitly says that other occurrences stay primary.
+  const masks=sites.length<=3
+    ?Array.from({length:(1<<sites.length)-1},(_,i)=>i+1)
+    :sites.map((_,i)=>1<<i);
+  return masks.map(mask=>{
+    const changed=sites.filter((_,i)=>(mask&(1<<i))!==0);
+    const alternateIpa=ipa.slice();
+    for(const site of changed){
+      alternateIpa[site.index]=alternateIpa[site.index].replace(site.primary,site.alternate);
+    }
+    const labels=changed.map(site=>site.vowel==='ㅚ'?'ㅚ [we]':'ㅟ [wi]');
+    const note=sites.length<=3
+      ?'§4: дозволена дифтонгічна вимова '+labels.join(' + ')+'; корейське написання не змінюється.'
+      :'§4: альтернативна вимова '+labels.join(' + ')+'; інші необрані голосні зберігають основне читання, написання не змінюється.';
+    return{
+      source:text,
+      surface:text,
+      ukrainian:output.join(''),
+      ipa:renderStructured(units,alternateIpa,' '),
+      note,
+      status
+    };
+  });
+}
+
 function convertText(text,map,lexicon=new Map(),skipLexicon=false){
   if(!skipLexicon&&lexicon.size){
     // Exact mixed-script lexical keys (e.g. 6·25, 3·1절) are tokenized
@@ -676,6 +713,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:out,ipa:unitIpa};
   }
 
+  const status=issues.length?'unresolved':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
   return{
     source:text,
     surfaceHangul:'',
@@ -683,8 +721,9 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     ipa:renderStructured(units,ipa,' '),
     analysis:renderStructured(units,analysis,' · '),
     trace,
+    variants:genericVowelVariants(text,units,originalUnits,ipa,output,status),
     issues,
-    status:issues.length?'unresolved':trace.some(x=>x?.status==='contextual')?'contextual':'canonical'
+    status
   };
 }
 

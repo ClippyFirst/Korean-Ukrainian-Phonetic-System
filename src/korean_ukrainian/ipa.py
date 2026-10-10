@@ -40,16 +40,58 @@ def coda_ipa(coda:str,*,phonemic=False)->list[str]:
     if phonemic:return [CONSONANT_PHONEMES[c].strip("/") for c in split_coda(coda)]
     return [CODA[coda]] if coda in CODA else [CODA[c] for c in split_coda(coda)]
 
+def render_syllable_sequence(items:list[Syllable],rendered:list[str])->str:
+    ipa=rendered[0] if rendered else ""
+    for i in range(1,len(rendered)):
+        separator=" " if items[i-1].boundary_after=="word" else "."
+        ipa+=separator+rendered[i]
+    return ipa
+
+def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="broad")->list[dict]:
+    if level!="broad":
+        return []
+    sites=[]
+    for i,syllable in enumerate(items):
+        options=VOWEL_IPA.get(syllable.nucleus,[])
+        if syllable.nucleus not in {"ㅚ","ㅟ"} or len(options)<2:
+            continue
+        primary,alternate=options[0],options[1]
+        if primary in rendered[i]:
+            sites.append((i,syllable.nucleus,primary,alternate))
+    if not sites:
+        return []
+    # Enumerate all readings for up to three optional vowels. Longer input
+    # receives each local alternative independently to prevent exponential growth.
+    masks=range(1,(1<<len(sites))) if len(sites)<=3 else (1<<i for i in range(len(sites)))
+    variants=[]
+    for mask in masks:
+        changed=[site for i,site in enumerate(sites) if mask&(1<<i)]
+        alternate=list(rendered)
+        for index,vowel,primary,form in changed:
+            alternate[index]=alternate[index].replace(primary,form,1)
+        labels=[f"{vowel} [{form}]" for _,vowel,_,form in changed]
+        note=("NIKL §4 permits this diphthongal reading; Korean spelling is unchanged."
+              if len(sites)<=3 else
+              "NIKL §4 permits this local alternate; other optional vowels keep the primary reading.")
+        variants.append({
+            "syllable_indices":[index for index,_,_,_ in changed],
+            "ipa":render_syllable_sequence(items,alternate),
+            "note":note,
+            "vowels":labels,
+        })
+    return variants
+
 def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     if level not in {"phonemic","broad","narrow"}: raise ValueError("level must be phonemic, broad, or narrow")
     if level=="narrow":
         raise ValueError("narrow IPA is unavailable: repository has no acoustic/allophonic model supporting a defensible narrow transcription")
     phonemic=level=="phonemic"
     rendered=["".join(onset_ipa(s,i,items,phonemic=phonemic)+nucleus_ipa(s,phonemic=phonemic)+coda_ipa(s.coda,phonemic=phonemic)) for i,s in enumerate(items)]
-    # Keep syllable dots within an eojeol, but preserve orthographic word
-    # boundaries as spaces instead of silently joining words into one chain.
-    ipa=rendered[0] if rendered else ""
-    for i in range(1,len(rendered)):
-        separator=" " if items[i-1].boundary_after=="word" else "."
-        ipa+=separator+rendered[i]
-    return {"level":level,"ipa":ipa,"syllables":rendered,"status":"phonemic" if phonemic else "rule-supported-broad"}
+    ipa=render_syllable_sequence(items,rendered)
+    return {
+        "level":level,
+        "ipa":ipa,
+        "syllables":rendered,
+        "variants":generate_vowel_variants(items,rendered,level=level),
+        "status":"phonemic" if phonemic else "rule-supported-broad"
+    }
