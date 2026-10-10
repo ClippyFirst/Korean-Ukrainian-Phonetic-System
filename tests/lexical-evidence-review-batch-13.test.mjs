@@ -58,5 +58,5 @@ test('all three control classes are excluded from the article-mapping queue', ()
 test('있었고 does not incorrectly claim nasal assimilation under §18', () => {
   const row = rows.find((item) => item.input === '있었고');
   assert.match(row.rule_notes, /§§9, 13, 23/u);
-  assert.match(row.rule_notes, /§18 is not applicable/u);
+  assert.match(row.rule_notes, /No §18 nasalization applies/u);
 });
