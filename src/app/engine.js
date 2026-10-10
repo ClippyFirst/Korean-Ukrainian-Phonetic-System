@@ -434,11 +434,11 @@ function lexicalResult(text,entry){
     // consuming one pronunciation syllable for each numeric token and one
     // per Hangul syllable in Hangul tokens.
     let target=targets.join('');
-    if(/\\s/u.test(text)){
+    if(/\s/u.test(text)){
       let targetIndex=0;
       target='';
-      for(const token of (text.match(/\\s+|[^\\s]+/gu)||[])){
-        if(/^\\s+$/u.test(token)){target+=token;continue;}
+      for(const token of (text.match(/\s+|[^\s]+/gu)||[])){
+        if(/^\s+$/u.test(token)){target+=token;continue;}
         const syllableCount=/^[가-힣]+$/u.test(token)?[...token].length:1;
         target+=targets.slice(targetIndex,targetIndex+syllableCount).join('');
         targetIndex+=syllableCount;
