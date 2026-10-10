@@ -211,10 +211,8 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 없어,업써,оп|со,ʌːp̚|s͈ʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항 공식 예시 [업ː써]. 겹받침 ㅄ의 두 번째 자음 ㅅ은 된소리 ㅆ으로 실현; 장음 유지. Ukrainian target provisional.",high,provisional,,,,
 여덟이,여덜비,йо|дол|бі,jʌ|dʌl|bi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항 해설 공식 예시 [여덜비]. 명사 여덟 + 조사 이의 겹받침 연음. Ukrainian target provisional.",high,provisional,,,,
 여덟을,여덜블,йо|дол|бил,jʌ|dʌl|bɯl,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"제14항 해설 공식 예시 [여덜블]. 명사 여덟 + 조사 을의 겹받침 연음. Ukrainian target provisional.",high,provisional,,,,
-"국립국어원","궁님꾸거원","кунг|нім|ку|ґо|вон","kuŋ|nim|k͈u|ɡʌ|wʌn","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§19 → §18 → §23; sourced expected surface [궁님꾸거원].","high","provisional","","","",""
 "신라","실라","шіл|ла","ɕil|la","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§20 liquid assimilation; [실라].","high","provisional","","","",""
 "설날","설랄","соль|лаль","sʌl|lal","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§20 liquid assimilation; [설랄].","high","provisional","","","",""
-"독립문","동님문","тон|нім|мун","toŋ|nim|mun","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§19 before §18; [동님문].","high","provisional","","","",""
 "종로","종노","чон|но","tɕoŋ|no","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§19; [종노].","high","provisional","","","",""
 "해돋이","해도지","хе|до|джі","he|do|dʑi","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§17; [해도지].","high","provisional","","","",""
 "맏이","마지","ма|джі","ma|dʑi","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§17; [마지].","high","provisional","","","",""
