@@ -124,7 +124,7 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
 
 test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', () => {
   const expected = {
-    맛없다: {surface:'마덥따', target:'\u043c\u0430\u0434\u0435\u043f\u0442\u0430', ipa:'ma dʌp̚ t͈a'},
+    맛없다: {surface:'마덥따', target:'мадопта', ipa:'ma dʌp̚ t͈a'},
     겉옷: {surface:'거돋', target:'кодот', ipa:'kʌ dot̚'},
     헛웃음: {surface:'허두슴', target:'годусим', ipa:'hʌ du sɯm'},
     값어치: {surface:'가버치', target:'кабочі', ipa:'ka bʌ tɕʰi'},
@@ -433,7 +433,7 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
   const compound = engine.convert('반신반의');
   assert.equal(compound.status, 'lexical-review');
   assert.equal(compound.ukrainian, 'паншінбані');
-  assert.equal(compound.ipa, 'paːn ɕin baː nɰi');
+  assert.equal(compound.ipa, 'paːn ɕin baː ni');
   assert.equal(compound.variants[0].surface, '반신바니');
   assert.equal(compound.variants[0].ukrainian, 'паншінбані');
   assert.equal(compound.variants[0].ipa, 'paːn ɕin baː ni');
@@ -720,7 +720,7 @@ test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', 
     '생산량': ['생산냥', 'sɛŋ san njaŋ', 'сенсаннян'],
     '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйолтанньок'],
     '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', 'конквонньок'],
-    '동원령': ['동원녕', 'toŋː wʌn njʌŋ', 'тонвоннон'],
+    '동원령': ['동원녕', 'toŋː wʌn njʌŋ', 'тонвонньон'],
     '상견례': ['상견녜', 'saŋ ɡjʌn nje', 'санґйоннє'],
     '이원론': ['이원논', 'iː wʌn non', 'івоннон'],
     '입원료': ['이붠뇨', 'i bwʌn njo', 'ібвонньо'],
