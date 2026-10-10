@@ -20,7 +20,7 @@ The Korean visual identity uses South Korean national colours: Taegeuk red #CD2E
 
 Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
 
-The web service is a practical runtime projection of this research model. It is **not** an official Ukrainian national standard and it does not translate Korean meaning.
+The web service is a practical runtime projection of this research model. It is **not** an official Ukrainian national standard and it does not translate Korean meaning. Ukrainian correspondences are model decisions: for example, ㅎ → г is a documented approximation with a stated phonetic trade-off, not a claim of exact equivalence.
 
 ## Research layers
 
@@ -40,7 +40,7 @@ The web service is a practical runtime projection of this research model. It is 
 The browser adapter implements:
 
 - Unicode-safe Hangul decomposition;
-- canonical onset/vowel/coda mappings from data/korean/canonical_correspondence.csv;
+- canonical onset/vowel/coda mappings from data/korean/canonical_correspondence.csv, including the explicitly model-selected onset target ㅎ [h] → Ukrainian г [ɦ] (glottal place retained, voicelessness not retained);
 - ㅅ/ㅆ → ш in the relevant i/j-like environments;
 - simple-coda liaison where the outcome is unambiguous, and exact sourced complex-coda pronunciations; codas whose representative changes under §15 are withheld before ㅏ/ㅓ/ㅗ/ㅜ/ㅟ when morphology is unknown; unknown non-ㅎ complex-coda + vowel sequences are also marked unresolved; ㄶ/ㅀ retain their special ㅎ behavior;
 - ㅎ deletion and ㅎ-driven aspiration; §12(4) ㅎ/ㄶ/ㅀ deletion before vowels is resolved through exact sourced lexical entries, and unknown morphology-dependent forms are marked unresolved; the direct complex-coda + ㅎ suffix pattern is also lexical-evidence gated;
