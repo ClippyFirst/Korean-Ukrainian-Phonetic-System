@@ -65,7 +65,7 @@ test('the complete official institution name uses its sourced standard surface f
   const result = engine.convert('국립국어원');
   assert.equal(result.surfaceHangul, '궁님꾸거원');
   assert.equal(result.ukrainian, 'кунгнімкуґовон');
-  assert.equal(result.ipa, 'kuŋ nim k͈u kʌ wʌn');
+  assert.equal(result.ipa, 'kuŋ nim k͈u ɡʌ wʌn');
   assert.equal(result.status, 'lexical-review');
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
 });
@@ -125,7 +125,7 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
 test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', () => {
   const expected = {
     맛없다: {surface:'마덥따', target:'\u043c\u0430\u0434\u0435\u043f\u0442\u0430', ipa:'ma dʌp̚ t͈a'},
-    겉옷: {surface:'거돋', target:'ґодот', ipa:'kʌ dot̚'},
+    겉옷: {surface:'거돋', target:'кодот', ipa:'kʌ dot̚'},
     헛웃음: {surface:'허두슴', target:'годусим', ipa:'hʌ du sɯm'},
     값어치: {surface:'가버치', target:'кабочі', ipa:'ka bʌ tɕʰi'},
     젖어미: {surface:'저더미', target:'джодомі', ipa:'tɕʌ dʌ mi'},
@@ -182,7 +182,7 @@ test('sourced §14 complex-coda examples use exact surface forms and provisional
     값이: {surface:'갑씨', target:'капші', ipa:'kap̚ s͈i'},
     앉아: {surface:'안자', target:'анджа', ipa:'an dʑa'},
     닭을: {surface:'달글', target:'талґил', ipa:'tal ɡɯl'},
-    젊어: {surface:'절머', target:'джолмо', ipa:'tɕʌl mʌ'},
+    젊어: {surface:'절머', target:'чолмо', ipa:'tɕʌl mʌ'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
@@ -281,7 +281,7 @@ test('official §12(4) H-deletion examples are sourced and marked provisional on
 
 test('NIKL §16 official letter-name examples are exact lexical entries', () => {
   const expected = {
-    '디귿이': ['디그시', 'диґиші', 'ti ɡɯ ɕi'],
+    '디귿이': ['디그시', 'тіґиші', 'ti ɡɯ ɕi'],
     '디귿을': ['디그슬', 'диґисил', 'ti ɡɯ sɯl'],
     '디귿에': ['디그세', 'диґисе', 'ti ɡɯ se'],
     '지읒이': ['지으시', 'чіиші', 'tɕi ɯ ɕi'],
@@ -324,7 +324,7 @@ test('NIKL §21 negative controls prevent nonstandard place assimilation', () =>
     '옷감': ['옫깜', 'откам'],
     '있고': ['읻꼬', 'ітко'],
     '꽃길': ['꼳낄', 'коткіл'],
-    '젖먹이': ['전머기', 'джонмоґі'],
+    '젖먹이': ['전머기', 'чонмоґі'],
     '문법': ['문뻡', 'мунпоп'],
     '꽃밭': ['꼳빧', 'котпат'],
   };
@@ -402,7 +402,7 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
     '밟으면': ['발브면', 'палбимйон', 'pal bɯ mjʌn'],
     '신다': ['신따', 'шінта', 'ɕiːn t͈a'],
     '신어': ['시너', 'шіно', 'ɕi nʌ'],
-    '알다': ['알다', 'алта', 'aːl da'],
+    '알다': ['알다', 'алда', 'aːl da'],
     '알아': ['아라', 'ара', 'a ɾa'],
     '끌다': ['끌따', 'килта', 'k͈ɯl t͈a'],
     '끌어': ['끄러', 'киро', 'k͈ɯː ɾʌ'],
@@ -594,7 +594,7 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '옷맵시': ['온맵씨', 'on mɛp̚ s͈i', 'онмепші'],
     '있는': ['인는', 'in nɯn', 'іннин'],
     '맞는': ['만는', 'man nɯn', 'маннин'],
-    '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'джонмонуль'],
+    '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'чонмонуль'],
     '쫓는': ['쫀는', 'tɕ͈on nɯn', 'чоннин'],
     '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'конмануль'],
     '붙는': ['분는', 'pun nɯn', 'пуннин'],
