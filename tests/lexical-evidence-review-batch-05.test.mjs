@@ -15,10 +15,13 @@ test('batch 05 reviews ten more lexical evidence queue entries', () => {
   }
 });
 
-test('batch 05 flags 실제 for phonological re-analysis rather than guessing a rule', () => {
-  assert.match(review, /실제[\s\S]*?Needs phonological re-analysis/u);
-  assert.match(review, /may conflate the segment's spelling\/environment/u);
-  assert.match(review, /do not infer that ㅅ becomes fortis merely because it is adjacent to an i-like vowel/iu);
+test('실제 is mapped to the Sino-Korean ㄹ+ㅈ fortition rule §26', () => {
+  const row = rows.find((item) => item.input === '실제');
+  assert.ok(row, 'expected 실제 lexical row');
+  assert.match(row.rule_notes, /제26항/u);
+  assert.doesNotMatch(row.rule_notes, /i 환경/u);
+  assert.match(review, /Sino-Korean words, ㄹ 받침 뒤에 오는 ㄷ, ㅅ, ㅈ/u);
+  assert.match(review, /exact word still needs an item-specific dictionary or NIKL citation/u);
 });
 
 test('batch 05 keeps particle 의 variants and Ukrainian approximations separate', () => {
