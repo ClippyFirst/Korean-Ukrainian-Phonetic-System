@@ -16,7 +16,7 @@ test('user-corpus high-risk forms have exact NIKL-backed surface readings', () =
     '끝이': ['끄치', 'кичі', 'k͈ɯ tɕʰi'],
     '꽃이': ['꼬치', 'кочі', 'k͈o tɕʰi'],
     '밝고': ['발꼬', 'палко', 'pal k͈o'],
-    '읽습니다': ['익씀니다', 'іксімніда', 'ik̚ s͈ɯm ni da'],
+    '읽습니다': ['익씀니다', 'іксимніда', 'ik̚ s͈ɯm ni da'],
     '읽을': ['일글', 'ілґил', 'il ɡɯl'],
   };
   for (const [word, [surface, ukrainian, ipa]] of Object.entries(expected)) {
