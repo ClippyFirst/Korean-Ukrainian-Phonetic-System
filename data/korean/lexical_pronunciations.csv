@@ -454,3 +454,5 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 안다,안따,ан|та,anː|t͈a,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§24 official paradigm; standard [안ː따].,high,provisional,,,,,
 앉지,안찌,ан|чі,an|tɕ͈i,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§24 ㄵ stem coda before -지; standard [안찌].,high,provisional,,,,,
 서른여섯,서른녀섣,со|рин|ньо|сот,sʌ|ɾɯn|ɲʌ|sʌt̚,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"§29 official 붙임 2 example: 서른여섯 [서른녀섣], with n-insertion within the lexical compound.",high,provisional,,,,,
+3 연대,삼년대,сам|ньон|де,sam|ɲʌn|dɛ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§29 official 붙임 2 phrase example: 3 연대 [삼년대]; numeric token is read 삼 and n-insertion applies before 연대.,high,provisional,,,,,mixed-script
+1 연대,일련대,іл|льон|де,il|ljʌn|dɛ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§29 official 붙임 2 phrase example: 1 연대 [일련대]; numeric token is read 일 and inserted ㄴ after ㄹ surfaces as ㄹ.,high,provisional,,,,,mixed-script
