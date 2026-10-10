@@ -40,7 +40,7 @@ test('§19 every explicit example uses the correct ordered nasalization chain', 
     '법리':['pʌm ni',['liquid-to-nasal-before-obstruent','nasal-assimilation']],
   };
   for (const [word,[ipa,rules]] of Object.entries(expected)) {
-    assert.ok(!entries.has(word), word + ': rule-governed example should exercise the generic engine');
+    assert.ok(!entries.has(word) || entries.get(word).target_status === 'surface-only', word + ': any lexicon row must be non-overriding surface evidence');
     const result = genericEngine.convert(word);
     assert.equal(result.issues.length, 0, word);
     assert.equal(result.ipa, ipa, word);
@@ -64,7 +64,7 @@ test('§20 every listed general liquid-assimilation example is computed algorith
     '핥네':'hal le',
   };
   for (const [word,ipa] of Object.entries(expected)) {
-    assert.ok(!entries.has(word), word + ': general assimilation must not be hidden by a lexical override');
+    assert.ok(!entries.has(word) || entries.get(word).target_status === 'surface-only', word + ': any lexicon row must be non-overriding surface evidence');
     const result = genericEngine.convert(word);
     assert.equal(result.issues.length, 0, word);
     assert.equal(result.ipa, ipa, word);
