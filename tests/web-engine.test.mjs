@@ -85,7 +85,7 @@ test('lexical CSV has unique keys, complete evidence fields and aligned syllable
 
 test('remaining official NIKL §28 compound examples retain sourced surface forms and long-vowel/voicing detail',()=>{
   const cases=[
-    ['손재주','손째주','손체주'.replace('체','че'),'son tɕ͈ɛ dʑu'],
+    ['손재주','손째주','сончеджу','son tɕ͈ɛ dʑu'],
     ['굴속','굴쏙','кулсок','kuːl s͈ok̚'],
     ['술잔','술짠','сулчан','sul tɕ͈an'],
     ['바람결','바람껼','парамкйол','paɾam k͈jʌl'],
