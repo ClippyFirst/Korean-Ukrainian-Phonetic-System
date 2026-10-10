@@ -41,7 +41,7 @@ Nine additional forms now carry explicit rule traces: `국립국어원` (§§18,
 
 ## Resolved or reclassified during follow-up
 
-Nine further rows now have explicit rule traces: `빗고` (§§9, 23), `넓지만` (§§10, 23), `짧아도` (§14), `나갔습니다` (§§9, 18, 23), `꽃밭에` (§§9, 13, 23), `있던` (§§9, 23), `학생의` (§§5, 23; variant-sensitive), `책을` (§13), and `연구원은` (§13). Three unchanged surface forms were reclassified as baseline controls rather than given fabricated rule numbers: `예쁘고`, `보러`, and `일찍`.
+Nine further rows now have explicit rule traces: `빗고` (§§9, 23), `넓지만` (§§10, 25), `짧아도` (§14), `나갔습니다` (§§9, 18, 23), `꽃밭에` (§§9, 13, 23), `있던` (§§9, 23), `학생의` (§§5, 23; variant-sensitive), `책을` (§13), and `연구원은` (§13). Three unchanged surface forms were reclassified as baseline controls rather than given fabricated rule numbers: `예쁘고`, `보러`, and `일찍`.
 
 ## Resolution status — queue cleared
 
