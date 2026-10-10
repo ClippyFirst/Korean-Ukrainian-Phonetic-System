@@ -33,7 +33,7 @@ test('rule mapping does not misrepresent related official evidence as exact-form
   const 놓인 = rows.find((item) => item.input === '놓인');
   assert.match(놓인.rule_notes, /Exact-word attestation not yet located/u);
   const 넓어졌다는 = rows.find((item) => item.input === '넓어졌다는');
-  assert.doesNotMatch(넓어졌다는.rule_notes, /§\\s*\\d|제\\s*\\d+\\s*항/u);
+  assert.doesNotMatch(넓어졌다는.rule_notes, /§\s*\d|제\s*\d+\s*항/u);
   assert.match(넓어졌다는.rule_notes, /exact full-form attestation not located/u);
 });
 
