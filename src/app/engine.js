@@ -294,34 +294,82 @@ function applyContextualRules(units){
   return ruleSets;
 }
 
-// A lexical override can split a phrase into separate conversion calls. Re-apply
-// the context-independent part of NIKL §18 at plain-space boundaries so an
-// exact lexical word does not suppress nasal assimilation in its neighbour.
-function applyPhraseBoundaryNasalAssimilation(results,parts,map){
-  for(let i=0;i<parts.length-2;i++){
-    if(!/^[가-힣]+$/u.test(parts[i])||!/^\s+$/u.test(parts[i+1])||!/^[가-힣]+$/u.test(parts[i+2]))continue;
-    const previous=results[i],next=results[i+2];
-    if(!previous||!next||previous.status==='unresolved'||next.status==='unresolved'||previous.issues?.length||next.issues?.length)continue;
-    const previousText=previous.surfaceHangul||parts[i];
-    const nextText=next.surfaceHangul||parts[i+2];
-    const last=[...previousText].at(-1),first=[...nextText][0];
-    const left=last?decompose(last):null,right=first?decompose(first):null;
-    if(!left?.coda||!right||!['ㄴ','ㅁ'].includes(right.onset))continue;
-    const oldCoda=representative(left.coda),newCoda=NASAL_AFTER[oldCoda];
-    if(!newCoda)continue;
+// Exact lexical overrides split a phrase into word-level conversion calls.
+// Re-apply the licensed, surface-level nasal/liquid assimilation rules at plain
+// whitespace boundaries so a lexical entry cannot suppress its neighbour's rule.
+function applyPhraseBoundaryAssimilation(results,parts,map){
+  const addRule=(trace,rule)=>{
+    if(trace)trace.rules=[...new Set([...(trace.rules||[]),rule])];
+  };
+  const lastTrace=(result)=>[...(result?.trace||[])].reverse().find(item=>item.status!=='literal');
+  const firstTrace=(result)=>(result?.trace||[]).find(item=>item.status!=='literal');
+  const rewriteCoda=(result,oldCoda,newCoda,rule)=>{
     const oldTarget=mapCoda(map,oldCoda),newTarget=mapCoda(map,newCoda);
     const oldIpa=get(map,'coda',oldCoda)?.ipa||'',newIpa=get(map,'coda',newCoda)?.ipa||'';
-    if(!oldTarget||!newTarget||!oldIpa||!newIpa||!previous.ukrainian.endsWith(oldTarget)||!previous.ipa.endsWith(oldIpa))continue;
-    previous.ukrainian=previous.ukrainian.slice(0,-oldTarget.length)+newTarget;
-    previous.ipa=previous.ipa.slice(0,-oldIpa.length)+newIpa;
-    const leftTrace=[...previous.trace].reverse().find(item=>item.status!=='literal');
-    const rightTrace=next.trace.find(item=>item.status!=='literal');
-    if(leftTrace){
-      leftTrace.output=leftTrace.output.endsWith(oldTarget)?leftTrace.output.slice(0,-oldTarget.length)+newTarget:leftTrace.output;
-      leftTrace.ipa=leftTrace.ipa.endsWith(oldIpa)?leftTrace.ipa.slice(0,-oldIpa.length)+newIpa:leftTrace.ipa;
-      leftTrace.rules=[...new Set([...(leftTrace.rules||[]),'nasal-assimilation'])];
+    if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
+    const trace=lastTrace(result);
+    if(result.ukrainian.endsWith(oldTarget))result.ukrainian=result.ukrainian.slice(0,-oldTarget.length)+newTarget;
+    if(result.ipa.endsWith(oldIpa))result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
+    if(trace){
+      if(trace.output.endsWith(oldTarget))trace.output=trace.output.slice(0,-oldTarget.length)+newTarget;
+      if(trace.ipa.endsWith(oldIpa))trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
+      addRule(trace,rule);
     }
-    if(rightTrace)rightTrace.rules=[...new Set([...(rightTrace.rules||[]),'nasal-assimilation'])];
+    return true;
+  };
+  const rewriteOnset=(result,oldOnset,newOnset,realizedLateral,rule)=>{
+    const oldTarget=mapOnset(map,oldOnset),oldIpa=get(map,'onset',oldOnset)?.ipa||'';
+    const newTarget=realizedLateral?mapCoda(map,'ㄹ'):mapOnset(map,newOnset);
+    const newIpa=realizedLateral?(get(map,'coda','ㄹ')?.ipa||''):(get(map,'onset',newOnset)?.ipa||'');
+    if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
+    const trace=firstTrace(result);
+    if(result.ukrainian.startsWith(oldTarget))result.ukrainian=newTarget+result.ukrainian.slice(oldTarget.length);
+    if(result.ipa.startsWith(oldIpa))result.ipa=newIpa+result.ipa.slice(oldIpa.length);
+    if(trace){
+      if(trace.output.startsWith(oldTarget))trace.output=newTarget+trace.output.slice(oldTarget.length);
+      if(trace.ipa.startsWith(oldIpa))trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
+      addRule(trace,rule);
+    }
+    return true;
+  };
+
+  for(let i=0;i<parts.length-2;i++){
+    if(!/^[가-힣]+$/u.test(parts[i])||!/^\\s+$/u.test(parts[i+1])||!/^[가-힣]+$/u.test(parts[i+2]))continue;
+    const previous=results[i],next=results[i+2];
+    if(!previous||!next||previous.status==='unresolved'||next.status==='unresolved'||previous.issues?.length||next.issues?.length)continue;
+    const previousText=previous.surfaceHangul||parts[i],nextText=next.surfaceHangul||parts[i+2];
+    const last=[...previousText].at(-1),first=[...nextText][0];
+    const left=last?decompose(last):null,right=first?decompose(first):null;
+    if(!left?.coda||!right)continue;
+    const leftRep=representative(left.coda),rightOnset=right.onset;
+
+    if(['ㄴ','ㅁ'].includes(rightOnset)&&NASAL_AFTER[leftRep]){
+      rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation');
+      addRule(firstTrace(next),'nasal-assimilation');
+      continue;
+    }
+
+    if(rightOnset==='ㄹ'&&['ㄱ','ㄷ','ㅂ','ㅁ','ㅇ'].includes(leftRep)){
+      const obstruent=['ㄱ','ㄷ','ㅂ'].includes(leftRep);
+      const rule=obstruent?'liquid-to-nasal-before-obstruent':'liquid-assimilation';
+      rewriteOnset(next,'ㄹ','ㄴ',false,rule);
+      addRule(lastTrace(previous),rule);
+      if(NASAL_AFTER[leftRep]){
+        rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation');
+        addRule(firstTrace(next),'nasal-assimilation');
+      }
+      continue;
+    }
+
+    if(leftRep==='ㄴ'&&rightOnset==='ㄹ'){
+      rewriteCoda(previous,'ㄴ','ㄹ','liquid-assimilation');
+      rewriteOnset(next,'ㄹ','ㄹ',true,'liquid-assimilation');
+      continue;
+    }
+
+    if(leftRep==='ㄹ'&&rightOnset==='ㄴ'){
+      rewriteOnset(next,'ㄴ','ㄹ',true,'liquid-assimilation');
+    }
   }
 }
 
@@ -382,7 +430,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
         }
         return convertText(part,map,lexicon,true);
       });
-      applyPhraseBoundaryNasalAssimilation(results,parts,map);
+      applyPhraseBoundaryAssimilation(results,parts,map);
       const issues=results.flatMap(r=>r.issues);
       const variants=results.flatMap((r,i)=>(r.variants||[]).map(v=>({
         ...v,
