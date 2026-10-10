@@ -36,7 +36,12 @@ test('§3 canonical inventory contains all and only the 21 standard vowels', () 
     const row = byKey.get('vowel:' + jamo);
     assert.ok(row, jamo);
     assert.ok(row.ipa, jamo + ': missing IPA');
-    assert.ok(row.ukrainian, jamo + ': missing Ukrainian target');
+    if (jamo === 'ㅢ') {
+      assert.equal(row.ukrainian, '');
+      assert.match(row.notes, /no universal Ukrainian output/u);
+    } else {
+      assert.ok(row.ukrainian, jamo + ': missing Ukrainian target');
+    }
     assert.ok(row.status, jamo + ': canonical status must be documented');
   }
 });
