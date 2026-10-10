@@ -32,6 +32,13 @@ A third adversarial window adds a longer text stressing `흙을`, `밟으며`, `
 
 Passing tests demonstrates reproducibility of declared model outputs and absence of unresolved placeholders in this fixture; it does not validate the Ukrainian approximations through an independent reader study.
 
+## Complex-coda liaison audit (2026-10-10)
+
+A follow-up NIKL source sweep added twelve exact regression cases for complex-coda liaison, fortis [ㅆ], and the conjugation patterns of `넓다` / `짧다`, including `넓어[널버]`, `넓으니[널브니]`, and `짧아[짤바]`. The new entries are narrow lexical controls, not general morphology guesses.
+
+- [Read the audit report](docs/complex-coda-liaison-followup-2026-10-10.md)
+- [Regression test](tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs)
+
 ## Scientific pipeline
 
 Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
