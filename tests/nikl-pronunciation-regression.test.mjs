@@ -801,6 +801,21 @@ test('user-supplied high-risk corpus has source-backed Korean surface forms', ()
   }
 });
 
+test('surface-only lexicon records do not bypass the general rule engine', () => {
+  const expected = [
+    ['신라', '실라', 'liquid-assimilation'],
+    ['앞문', '암문', 'nasal-assimilation'],
+    ['밟는', '밤는', 'lexical-coda-balm'],
+    ['읊고', '읍꼬', 'tensification'],
+  ];
+  for (const [word, surface, rule] of expected) {
+    const result = engine.convert(word);
+    assert.equal(result.surfaceHangul, surface, word);
+    assert.ok(result.trace.some(item => item.rules.includes(rule)), word);
+    assert.ok(result.trace.every(item => !item.rules.includes('lexical-pronunciation')), word);
+  }
+});
+
 test('surface pronunciation is exposed for lexical forms and omitted for unverified general forms', () => {
   const sourced = engine.convert('해돋이');
   assert.equal(sourced.surfaceHangul, '해도지');
