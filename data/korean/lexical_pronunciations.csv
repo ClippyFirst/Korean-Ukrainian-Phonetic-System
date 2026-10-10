@@ -248,7 +248,5 @@ input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confid
 "국민","궁민","кунг|мін","kuŋ|min","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [궁민].","high","provisional","","","",""
 "박물관","방물관","панг|муль|ґван","paŋ|mul|ɡwan","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [방물관].","high","provisional","","","",""
 "한국말","한궁말","хан|кунг|маль","han|kuŋ|mal","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§18; [한궁말].","high","provisional","","","",""
-"한국어","한구거","хан|ку|ґо","han|ɡʌ|ɡʌ","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§13 liaison; [한구거].","high","provisional","","","",""
-"한국 문화","한국 문화","хан|кук|мун|хва","han|ɡuk̚ mun|hwa","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","Phrase context requires whitespace-aware rendering; review before treating as canonical.","high","provisional","","","",""
+"한국어","한구거","хан|ку|ґо","han|ɡu|ɡʌ","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","§13 liaison; [한구거].","high","provisional","","","",""
 "대한민국","대한민국","те|хан|мін|ґук","te|han|min|ɡuk̚","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","Core name; Ukrainian target remains provisional.","high","provisional","","","",""
-"신라의 역사와 문화","신라의 역사와 문화","шіл|ла|ий хьо|са|ва мун|хва","ɕil|laɰi hjʌksa wa munhwa","https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","Phrase-level IPA/target segmentation requires further review.","high","provisional","","","",""
