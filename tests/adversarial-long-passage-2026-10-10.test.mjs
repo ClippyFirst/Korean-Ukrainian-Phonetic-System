@@ -112,3 +112,22 @@ test('adversarial corpus exercises a broad range of independent high-risk lexica
   assert.ok(allAnchors.size >= 35, 'expected at least 35 distinct tricky lexical anchors; got ' + allAnchors.size);
   assert.equal(adversarialPassages.length, 5, 'keep each adversarial text as a separate regression case');
 });
+
+
+const uniqueAdversarialAnchors = [...new Set(adversarialPassages.flatMap((item) => item.anchors))];
+for (const input of uniqueAdversarialAnchors) {
+  test('adversarial anchor is stable in isolation and in prose: ' + input, () => {
+    const row = lexicon.get(input);
+    assert.ok(row, input + ': evidence row must exist');
+    const standalone = engine.convert(input);
+    assert.equal(standalone.surfaceHangul, row.surface_hangul, input + ': expected standard surface');
+    assert.equal(standalone.ukrainian, row.target_syllables.replaceAll('|', ''), input + ': expected Ukrainian target');
+    assert.equal(standalone.ipa, row.ipa_syllables.split('|').join(' '), input + ': expected IPA');
+    assert.ok(!standalone.ukrainian.includes('⟦'), input + ': no unresolved marker in isolation');
+    assert.equal(standalone.issues.length, 0, input + ': no issue for a sourced exact form');
+    assert.ok(
+      standalone.trace.some((item) => item.rules.includes('lexical-pronunciation')),
+      input + ': exact adversarial anchor should be traceable to the lexical evidence layer',
+    );
+  });
+}
