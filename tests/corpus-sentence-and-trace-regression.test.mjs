@@ -37,3 +37,23 @@ test('trace panel has explicit column labels for source, target, rules and statu
   assert.match(css, /\.trace-columns\s*\{/u);
   assert.match(css, /@media\s*\(max-width:\s*680px\)/u);
 });
+
+
+test('sentence conversion resolves exact lexical words inside punctuation-separated text', () => {
+  for (const [input, expected] of [
+    ['국립국어원에서', ['궁님꾸거워네서', 'кунгнімкуґовонесо']],
+    ['찍었어요.', ['찌거써요', 'чіґосойо']],
+    ['있어요.', ['이써요', 'ісойо']],
+    ['갔어요.', ['가써요', 'касойо']],
+  ]) {
+    const result = engine.convert(input);
+    assert.ok(result.surfaceHangul.startsWith(expected[0]), input + ' surface: ' + result.surfaceHangul);
+    assert.ok(result.ukrainian.includes(expected[1]), input + ' target: ' + result.ukrainian);
+    assert.deepEqual(result.issues, [], input);
+  }
+});
+
+test('literal punctuation and spaces are not emitted as empty-looking trace rows', () => {
+  const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
+  assert.match(main, /for\s*\(const t of r\.trace\)\s*\{\s*if\s*\(t\.status\s*===\s*'literal'\)\s*continue;/u);
+});
