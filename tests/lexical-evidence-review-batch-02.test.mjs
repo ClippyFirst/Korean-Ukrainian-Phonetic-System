@@ -23,6 +23,20 @@ test('batch 02 preserves source mismatch findings and regulation-name distinctio
   assert.match(review, /한글맞춤법[\s\S]*?표준 발음법/u);
 });
 
+test('corrected lexical URLs point to official pages that attest the specific forms', () => {
+  const expected = {
+    '밝기': 'qna_seq=334141',
+    '꽃잎': 'qna_seq=330938',
+    '떡볶이': 'qna_seq=325642',
+    '옷이': 'qna_seq=311009',
+  };
+  for (const [input, marker] of Object.entries(expected)) {
+    const row = rows.find((item) => item.input === input);
+    assert.ok(row, input + ': expected lexical row');
+    assert.ok(row.source_url.includes(marker), input + ': expected corrected official source URL');
+  }
+});
+
 test('batch 02 records explicit rule examples without claiming every URL is item-specific', () => {
   assert.match(review, /없는\[엄ː는\]/u);
   assert.match(review, /국물\[궁물\]/u);
