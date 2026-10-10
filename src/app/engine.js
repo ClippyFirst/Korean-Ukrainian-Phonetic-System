@@ -503,6 +503,9 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
     let primary='',alternate='',section='§4',targetPrimary='',targetAlternate='';
     if(vowel==='ㅚ'){primary='ø';alternate='we';}
     else if(vowel==='ㅟ'){primary='y';alternate='wi';}
+    else if(vowel==='ㅖ'&&syllable.onset!=='ㅇ'&&syllable.onset!=='ㄹ'){
+      primary='je';alternate='e';section='§5';targetPrimary='є';targetAlternate='е';
+    }
     else if(vowel==='ㅢ'&&syllable.onset==='ㅇ'&&!firstSyllableInWord(units,i)){
       primary='ɰi';alternate='i';section='§5';targetPrimary='ий';targetAlternate='і';
     }
@@ -529,6 +532,7 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
     const labels=changed.map(site=>{
       if(site.vowel==='ㅚ')return 'ㅚ [we]';
       if(site.vowel==='ㅟ')return 'ㅟ [wi]';
+      if(site.vowel==='ㅖ')return 'ㅖ [e]';
       return '비초성 ㅢ [i]';
     });
     const sections=[...new Set(changed.map(site=>site.section))].join('/');

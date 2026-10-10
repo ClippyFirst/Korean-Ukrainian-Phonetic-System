@@ -58,6 +58,9 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 continue
             primary,alternate=options[0],options[1]
             section="§4"
+        elif syllable.nucleus=="ㅖ" and syllable.onset not in {"ㅇ","ㄹ"}:
+            primary,alternate="je","e"
+            section="§5"
         elif (syllable.nucleus=="ㅢ" and syllable.onset=="ㅇ" and i>0
               and items[i-1].boundary_after!="word"):
             primary,alternate="ɰi","i"

@@ -90,3 +90,22 @@ def test_section5_does_not_generalize_non_initial_ui_across_word_boundaries():
     assert len(result["variants"]) == 3
     assert "min.dʑu.dʑu.i ɰi.ɰi" in [variant["ipa"] for variant in result["variants"]]
     assert "min.dʑu.dʑu.ɰi ɰi.i" in [variant["ipa"] for variant in result["variants"]]
+
+
+def test_section5_generic_ye_has_optional_e_except_in_ye_and_rye():
+    result = phoneticize_korean("폐기")["ipa"]
+    assert result["ipa"] == "pʰje.ɡi"
+    assert [variant["ipa"] for variant in result["variants"]] == ["pʰe.ɡi"]
+    assert result["variants"][0]["syllable_indices"] == [0]
+
+    assert phoneticize_korean("예")["ipa"]["variants"] == []
+    assert phoneticize_korean("례")["ipa"]["variants"] == []
+
+def test_section5_combines_generic_ye_variants():
+    result = phoneticize_korean("폐기계")["ipa"]
+    assert result["ipa"] == "pʰje.ɡi.ɡje"
+    assert [variant["ipa"] for variant in result["variants"]] == [
+        "pʰe.ɡi.ɡje",
+        "pʰje.ɡi.ɡe",
+        "pʰe.ɡi.ɡe",
+    ]
