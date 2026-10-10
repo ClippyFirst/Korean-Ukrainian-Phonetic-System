@@ -11,6 +11,6 @@ const engine = createEngine(canonical, lexical);
 test('NIKL 밟는 has an explicit long-vowel Korean surface form', () => {
   const result = engine.convert('밟는');
   assert.equal(result.surfaceHangul, '밤는');
-  assert.equal(result.ipa, 'pamː nɯn');
+  assert.equal(result.ipa, 'paːm nɯn');
   assert.ok(!result.ukrainian.includes('⟦'));
 });
