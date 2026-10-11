@@ -45,6 +45,23 @@ test('§12: a simple ㅎ coda aspirates a following plain stop in generic IPA', 
   }
 });
 
+test('§12: ㅎ/ㄶ/ㅀ before ㄴ composes with nasal/liquid rules in generic IPA', () => {
+  const cases = [
+    ['놓는', 'non nɯn', 'ноннин'],
+    ['좋네', 'tɕon ne', 'чонне'],
+    ['많네', 'man ne', 'манне'],
+    ['않는', 'an nɯn', 'аннин'],
+    ['싫네', 'ɕil le', 'шілле'],
+  ];
+  for (const [input, expectedIpa, expectedUkrainian] of cases) {
+    const result = genericEngine.convert(input);
+    assert.equal(result.ipa, expectedIpa, input + ': ordered §12 plus nasal/liquid surface IPA');
+    assert.equal(result.ukrainian, expectedUkrainian, input + ': Ukrainian must follow IPA');
+    assert.deepEqual(result.issues, [], input + ': this consonant-initial pattern is productive');
+    assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholder expected');
+  }
+});
+
 test('§12: H deletion before a vowel is not guessed from adjacent Hangul alone', () => {
   for (const input of ['좋아', '많아', '않아', '싫어']) {
     const result = genericEngine.convert(input);
