@@ -148,7 +148,7 @@ test('context-sensitive vowel and voicing decisions remain explicit in the lexic
     '맛없다': ['ма|доп|та', 'ma|dʌp̚|t͈a'],
     '맛없고': ['ма|доп|ко', 'ma|dʌp̚|k͈o'],
     '협의': ['гьо|бі', 'hjʌ|bi'],
-    '말씨': ['мал|ші', 'maːl|s͈i'],
+    '말씨': ['мал|ші', 'maːl|ɕ͈i'],
     '반신반의': ['пан|шін|ба|ні', 'paːn|ɕin|baː|ni'],
     '임진란': ['ім|джін|нан', 'imː|dʑin|nan'],
     '결단력': ['кйол|тан|ньок', 'kjʌl|t͈an|njʌk̚'],
