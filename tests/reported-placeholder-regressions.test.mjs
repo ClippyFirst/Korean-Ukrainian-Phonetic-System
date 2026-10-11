@@ -264,12 +264,12 @@ test('§23 all 20 enumerated NIKL fortition examples have sourced IPA-first lexi
 });
 
 test('lexical IPA with an unmapped segment fails closed instead of silently dropping it', () => {
-  const header = lexical.split(/\\r?\\n/u, 1)[0];
+  const header = lexical.split(/\r?\n/u, 1)[0];
   const synthetic = [
     header,
     '가,가,가,☃,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"test-only unknown IPA segment",high,model-selected,,,,,',
     '가나,가나,가,ka,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"test-only IPA syllable-count mismatch",high,model-selected,,,,,',
-  ].join('\\n');
+  ].join('\n');
   const guardedEngine = createEngine(canonical, synthetic);
   const result = guardedEngine.convert('가');
 
