@@ -62,6 +62,24 @@
     </div>
   </section>
 
+  <section class="stress-panel" aria-labelledby="stress-heading">
+    <div class="stress-header">
+      <div class="section-title"><span class="section-number">A+</span><div><p class="section-kicker">Стрес-тест</p><h2 id="stress-heading">Вікно каверзного тексту</h2></div></div>
+      <span class="stress-tag">редагований корпус</span>
+    </div>
+    <p class="stress-intro">Тут можна змінювати складний корейський текст, поєднувати словникові винятки, морфологічні межі, асиміляцію, палаталізацію та фразові контексти, а потім передати його в основний аналізатор.</p>
+    <label class="sr-only" for="stress-input">Каверзний корейський текст для перевірки</label>
+    <textarea id="stress-input" class="stress-input" rows="8" spellcheck="false" lang="ko">오늘 국립국어원 표준 발음 규정을 다시 확인했다. 넋이, 값이, 몫을, 곬이, 옷맵시, 말씨, 일시, 끝없이, 빠짐없이, 값의 의미와 값에 대한 기록을 비교했다.
+현대 한국어의 표준 발음은 문맥과 형태소 경계에 따라 달라질 수 있다. 밟고, 읽히다, 앉히다, 굳히다, 닫히다, 해돋이처럼, 같이, 국밥만, 독립문, 몇 리를 따로 검사했다.
+할 것을 읽을 수 있는지 확인하고, 한 일과 옷 입다의 경계를 살폈다. 쌓인 자료가 없으면 빠짐없이 다시 검토하되, 표기와 실제 발음을 같은 것으로 취급하지 않는다.
+품삯이 얼마인지 묻는 문장과 품삯으로 계산한 결과도 확인했다. 표준 발음, 넓은 IPA, 우크라이나어 실용 표기는 서로 다른 층위이므로 각각 근거와 불확실성을 기록한다.</textarea>
+    <div class="stress-actions">
+      <span id="stress-count" class="character-count">0 символів</span>
+      <div class="stress-buttons"><button id="stress-reset" class="button button-secondary" type="button">Відновити корпус</button><button id="stress-run" class="button button-primary" type="button">Перевірити цей текст <b aria-hidden="true">↗</b></button></div>
+    </div>
+    <p class="stress-footnote">Це навмисно складний діагностичний текст, а не еталонна відповідь. Система має показати невизначеність там, де для нормативної вимови бракує лексичних або морфологічних доказів.</p>
+  </section>
+
   <section id="empty-state" class="empty-state" aria-live="polite">
     <div class="empty-glyph" aria-hidden="true">한</div>
     <div><strong>Тут з’явиться результат</strong><span>Введіть корейський текст або скористайтеся прикладом.</span></div>
