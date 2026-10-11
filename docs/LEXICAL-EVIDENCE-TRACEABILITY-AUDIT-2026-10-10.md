@@ -73,7 +73,7 @@ The adversarial passage review added eleven entries since the previous 601-row s
 
 | Inputs | Expected surface | Evidence classification |
 |---|---|---|
-| `잊었다`, `붙었다`, `넣었다`, `놓았다`, `좋아도`, `맑을`, `없었다` | `이젇따`, `부텯따`, `너얻따`, `노앋따`, `조아도`, `말글`, `업썯따` | Official lemma readings combined with numbered standard-rule derivations; target layer provisional |
+| `잊었다`, `붙었다`, `넣었다`, `놓았다`, `좋아도`, `맑을`, `없었다` | `이젇따`, `부텓따`, `너얻따`, `노앋따`, `조아도`, `말글`, `업썯따` | Official lemma readings combined with numbered standard-rule derivations; target layer provisional |
 | `쌓였다` | `싸엳따` | NIKL learner-dictionary lemma/application evidence plus §§12(4), 23 derivation; target layer provisional |
 | `찾아가다` | `차자가다` | Exact pronunciation listed in NIKL dictionary material; §13 mapping |
 | `미닫이문` | `미다지문` | Compound extension of NIKL-attested `미닫이[미ː다지]`; §17 lexicalized palatalization |
