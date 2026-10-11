@@ -159,9 +159,18 @@ function applyContextualRules(units){
       }
     }
 
-    // R003/R004: ㅎ deletion and aspiration. These are applied after liaison.
+    // NIKL §12: ㅎ/ㄶ/ㅀ before ㅅ deletes the ㅎ component and fortifies ㅅ.
+    // This must precede generic §23 fortition: otherwise the ㅎ coda survives
+    // as an erroneous [t̚], e.g. 좋소 would be emitted as [tɕot̚ s͈o].
     const rep=representative(a.coda);
-    if((a.coda==='ㅎ'||a.coda==='ㄶ'||a.coda==='ㅀ')&&b.onset==='ㅇ'){
+    if(['ㅎ','ㄶ','ㅀ'].includes(a.coda)&&b.onset==='ㅅ'){
+      if(a.coda==='ㅎ')a.coda='';
+      else if(a.coda==='ㄶ')a.coda='ㄴ';
+      else a.coda='ㄹ';
+      b.onset='ㅆ';
+      rules.push('h-coda-sibilant-fortition');
+      nextRules.push('h-coda-sibilant-fortition');
+    }else if((a.coda==='ㅎ'||a.coda==='ㄶ'||a.coda==='ㅀ')&&b.onset==='ㅇ'){
       if(a.coda==='ㅎ')a.coda='';
       else if(a.coda==='ㄶ')a.coda='ㄴ';
       else a.coda='ㄹ';
