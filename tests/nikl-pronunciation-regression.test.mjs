@@ -245,7 +245,7 @@ test('§13 all enumerated simple-coda liaison examples have pinned surfaces and 
     assert.equal(entry.surface_hangul, values.surface, word);
     assert.equal(entry.target_status, values.targetStatus || 'provisional', word);
     const result = engine.convert(word);
-    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.status, values.targetStatus === 'model-selected' ? 'lexical' : 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
     assert.equal(result.ipa, values.ipa, word);
   }
