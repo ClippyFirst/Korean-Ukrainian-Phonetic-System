@@ -520,6 +520,10 @@ function lexicalResult(text,entry){
   const targetIssues=mappedTargets.flatMap((item,i)=>item.unknown
     ?[text+': IPA syllable "'+ipas[i]+'" contains an unmapped segment "'+item.unknown+'"; add an explicit Ukrainian mapping or correct the IPA.']:[]
   );
+  const hasSyllableCountMismatch=/^[가-힣]+$/u.test(text)&&ipas.length!==[...text].length;
+  if(hasSyllableCountMismatch){
+    targetIssues.push(text+': lexical IPA has '+ipas.length+' syllable entries for '+[...text].length+' Hangul syllables; align the IPA segmentation before conversion.');
+  }
   if(entry.input_kind==='mixed-script'){
     // Mixed-script exact keys can include official phrase examples such as
     // "3 연대". Preserve source whitespace in the Ukrainian output while
@@ -541,7 +545,7 @@ function lexicalResult(text,entry){
     return {
       source:text,
       surfaceHangul:entry.surface_hangul||'',
-      ukrainian:target,
+      ukrainian:target+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
       ipa,
       analysis:text+' → '+(entry.surface_hangul||'')+' (sourced lexical reading)',
       variants:[],
@@ -566,7 +570,7 @@ function lexicalResult(text,entry){
   return {
     source:text,
     surfaceHangul:entry.surface_hangul||'',
-    ukrainian:targets.join(''),
+    ukrainian:targets.join('')+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
     ipa:ipas.join(' '),
     analysis,
     variants,
