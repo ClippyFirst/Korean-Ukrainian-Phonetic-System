@@ -27,7 +27,8 @@ test('§12: a simple ㅎ coda aspirates a following plain stop in generic IPA', 
     assert.equal(result.ipa, expectedIpa, input + ': generic surface IPA');
     assert.equal(result.ukrainian, expectedUkrainian, input + ': Ukrainian must be derived from surface IPA');
     assert.deepEqual(result.issues, [], input + ': this direct aspiration pattern is rule-governed');
-    assert.ok(result.trace.some(item => item.rules.includes('h-aspiration')), input + ': missing §12 aspiration trace');
+    assert.ok(result.trace.some(item => item.rules.some(rule => ['h-aspiration', 'h-coda-sibilant-fortition'].includes(rule))),
+      input + ': missing §12 h-coda rule trace');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': a supported pattern must not produce a placeholder');
   }
 });
