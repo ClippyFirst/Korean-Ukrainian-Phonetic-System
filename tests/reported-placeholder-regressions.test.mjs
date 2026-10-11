@@ -195,3 +195,25 @@ test('Ukrainian rendering is derived from the IPA layer for lexical readings', (
   }
 });
 
+
+test('difficult passage forms have sourced IPA and render Ukrainian only from that IPA',()=>{
+  const cases=[
+    ['읽었다는','il ɡʌt̚ t͈a nɯn','ілґотанин'],
+    ['없어서','ʌp̚ s͈ʌ sʌ','опсосо'],
+    ['찾았다','tɕʰa dʑa t͈a','чаджата'],
+    ['앉히다','an tɕʰi da','анчіда'],
+    ['해돋이','hɛ do dʑi','геододжі'],
+    ['품삯이','pʰum s͈ak̚ ɕ͈i','пумсакші'],
+    ['품삯을','pʰum s͈ak̚ s͈ɯl','пумсаксил'],
+    ['품삯으로','pʰum s͈ak̚ s͈ɯ ɾo','пумсаксиро'],
+    ['외곬에','ø ɡol s͈e','веґолсе'],
+    ['값의','kap̚ ɕ͈ɰi','капший'],
+  ];
+  for(const [word,ipa,ukrainian] of cases){
+    const result=engine.convert(word);
+    assert.equal(result.ipa,ipa,word+': standard IPA');
+    assert.equal(result.ukrainian,ukrainian,word+': IPA-derived Ukrainian');
+    assert.ok(!result.ukrainian.includes('⟦')&&!result.ukrainian.includes('⟧'),word+': no inline markers');
+    assert.deepEqual(result.issues,[],word+': sourced lexical reading resolves the form');
+  }
+});
