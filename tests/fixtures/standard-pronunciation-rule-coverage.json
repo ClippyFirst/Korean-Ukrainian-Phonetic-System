@@ -217,9 +217,10 @@
       "status": "verified",
       "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "caseIds": [
-        "A24-1:tests/nikl-articles-24-30-complete-corpus.test.mjs#every registered NIKL article 24–30 exemplar is present and stable in the browser engine"
+        "A24-1:tests/nikl-articles-24-30-complete-corpus.test.mjs#every registered NIKL article 24–30 exemplar is present and stable in the browser engine",
+        "A24-2:tests/nikl-articles-24-30-complete-corpus.test.mjs#§24 신고 preserves noun and verb-form readings without a global fortition override"
       ],
-      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+      "notes": "Finite coverage of the enumerated §24 examples and documented contrasts. The homographic 신고 [신ː꼬] verb form is explicitly represented alongside the noun reading [신고] as a context-dependent alternate; the engine does not claim to infer unseen morphology. This status is finite normative-example coverage only, not exhaustive productive morphological analysis. Ukrainian outputs remain project approximations."
     },
     {
       "article": 25,
