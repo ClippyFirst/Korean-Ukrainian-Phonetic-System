@@ -2,218 +2,298 @@
   "schemaVersion": 1,
   "standard": "국립국어원 표준 발음법",
   "minimumCasesPerArticle": null,
-  "gateStatus": "AUDIT_IN_PROGRESS",
-  "policy": "This is an audit ledger, not an arbitrary release blocker. Missing coverage is reported and then converted into executable regression cases. CI must fail on an actual incorrect expected surface form, unresolved placeholder, or contradictory lexical/rule output. Mark an article verified only after its applicable subparagraphs, boundary/negative cases, and interactions have source-backed executable tests; do not impose a fixed number of cases where the rule's scope does not warrant it.",
+  "gateStatus": "FINITE_NORMATIVE_EXAMPLE_COVERAGE_MAPPED",
+  "policy": "This ledger maps each of the 30 official articles to source and executable regression files. 'verified' means the article's enumerated standard examples and the applicable tested contrasts/interactions are represented; it does not mean every Korean lexical item or productive morphology is covered. The engine must fail on incorrect expected surface forms, unresolved placeholders in cases claimed resolved, duplicate/missing evidence, or contradictions between lexical and rule output. Ukrainian targets are project-level approximations, never official NIKL prescriptions. Article 1 is a governing principle rather than a standalone phonological rewrite.",
   "articles": [
     {
       "article": 1,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "not-applicable",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A01-1:docs/NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md"
+      ],
+      "notes": "Governing principle, not a standalone phonological rewrite. Reviewed in the article-by-article audit; its operational consequence is to separate standard surface pronunciation from spelling and to preserve evidence/uncertainty. No claim of lexical completeness."
     },
     {
       "article": 2,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A02-1:tests/nikl-articles-2-3-inventory.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 3,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A03-1:tests/nikl-articles-2-3-inventory.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 4,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A04-1:tests/nikl-articles-4-5-vowel-variants.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 5,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A05-1:tests/nikl-articles-4-5-vowel-variants.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 6,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A06-1:tests/nikl-articles-6-7-exhaustive-listed-examples.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 7,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A07-1:tests/nikl-articles-6-7-exhaustive-listed-examples.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 8,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A08-1:tests/nikl-exhaustive-coda-matrix.test.mjs",
+        "A08-2:tests/nikl-articles-2-3-inventory.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 9,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A09-1:tests/nikl-exhaustive-coda-matrix.test.mjs",
+        "A09-2:tests/nikl-articles-10-19-20-complete-examples.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 10,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A10-1:tests/nikl-articles-10-11-complex-coda-contrast.test.mjs",
+        "A10-2:tests/nikl-articles-10-19-20-complete-examples.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 11,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A11-1:tests/nikl-articles-10-11-complex-coda-contrast.test.mjs",
+        "A11-2:tests/nikl-exhaustive-coda-matrix.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 12,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A12-1:tests/nikl-article-12-aspiration-vs-h-deletion.test.mjs",
+        "A12-2:tests/nikl-articles-8-23-gap-closure.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 13,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A13-1:tests/nikl-pronunciation-regression.test.mjs",
+        "A13-2:tests/nikl-substantive-liaison-matrix.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 14,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A14-1:tests/nikl-pronunciation-regression.test.mjs",
+        "A14-2:tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 15,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A15-1:tests/nikl-article-15-substantive-morpheme-liaison.test.mjs",
+        "A15-2:tests/nikl-substantive-liaison-matrix.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 16,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A16-1:tests/nikl-pronunciation-regression.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 17,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A17-1:tests/nikl-palatalization-boundary-matrix.test.mjs",
+        "A17-2:tests/nikl-articles-8-23-gap-closure.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 18,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A18-1:tests/nikl-articles-17-18-complete-examples.test.mjs",
+        "A18-2:tests/nikl-ordered-rule-chains-and-boundary-isolation.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 19,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A19-1:tests/nikl-articles-10-19-20-complete-examples.test.mjs",
+        "A19-2:tests/nikl-articles-17-18-complete-examples.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 20,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A20-1:tests/nikl-articles-10-19-20-complete-examples.test.mjs",
+        "A20-2:tests/nikl-exhaustive-coda-matrix.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 21,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A21-1:tests/nikl-articles-8-23-gap-closure.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 22,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A22-1:tests/nikl-pronunciation-regression.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 23,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A23-1:tests/nikl-fortition-context-matrix.test.mjs",
+        "A23-2:tests/nikl-articles-10-11-complex-coda-contrast.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 24,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A24-1:tests/nikl-articles-24-30-complete-corpus.test.mjs",
+        "A24-2:tests/nikl-morphology-guard-matrix-24-30.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 25,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A25-1:tests/nikl-articles-24-30-complete-corpus.test.mjs",
+        "A25-2:tests/nikl-morphology-guard-matrix-24-30.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 26,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A26-1:tests/nikl-articles-24-30-complete-corpus.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 27,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A27-1:tests/nikl-articles-24-30-complete-corpus.test.mjs",
+        "A27-2:tests/nikl-morphology-guard-matrix-24-30.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 28,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A28-1:tests/nikl-articles-24-30-complete-corpus.test.mjs",
+        "A28-2:tests/nikl-morphology-guard-matrix-24-30.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 29,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A29-1:tests/nikl-articles-24-30-complete-corpus.test.mjs",
+        "A29-2:tests/nikl-phrase-boundary-insertion-29.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
     {
       "article": 30,
-      "status": "unverified",
-      "source": null,
-      "caseIds": [],
-      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A30-1:tests/nikl-articles-24-30-complete-corpus.test.mjs",
+        "A30-2:tests/nikl-morphology-guard-matrix-24-30.test.mjs"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     }
-  ]
+  ],
+  "auditDate": "2026-10-11"
 }
