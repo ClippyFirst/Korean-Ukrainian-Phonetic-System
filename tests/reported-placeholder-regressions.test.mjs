@@ -78,3 +78,26 @@ test('값의 remains explicitly unresolved until its morphosyntactic and 의-rea
     'complex-coda liaison and the realization of particle 의 must not be guessed',
   );
 });
+
+test('the other reported palatalization forms remain covered, including a whole compound', () => {
+  const cases = [
+    ['밭이', '바치', 'па|чі', 'pa|tɕʰi'],
+    ['맏이', '마지', 'ма|джі', 'ma|dʑi'],
+    ['맏이가', '마지가', 'ма|джі|ґа', 'ma|dʑi|ɡa'],
+    ['미닫이', '미다지', 'мі|да|джі', 'miː|da|dʑi'],
+    ['미닫이문', '미다지문', 'мі|да|джі|мун', 'miː|da|dʑi|mun'],
+  ];
+  for (const [input, surface, target, ipa] of cases) {
+    const row = entries.get(input);
+    assert.ok(row, `${input}: missing exact or rule-derived row`);
+    assert.equal(row.surface_hangul, surface, `${input}: surface form`);
+    assert.equal(row.target_syllables, target, `${input}: Ukrainian target`);
+    assert.equal(row.ipa_syllables, ipa, `${input}: IPA`);
+    const result = engine.convert(input);
+    assert.equal(result.surfaceHangul, surface);
+    assert.equal(result.ukrainian, target.split('|').join(''));
+    assert.equal(result.ipa, ipa.split('|').join(' '));
+    assert.ok(!result.ukrainian.includes('⟦'), `${input}: unresolved placeholder`);
+    assert.deepEqual(result.issues, [], `${input}: unresolved engine issue`);
+  }
+});
