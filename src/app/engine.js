@@ -294,6 +294,20 @@ function applyContextualRules(units){
       b.onset=insertion.onset;
       rules.push('phrase-n-insertion-§29');
       nextRules.push('phrase-n-insertion-§29');
+      continue;
+    }
+
+    // A word boundary before vowel-initial Hangul may license substantive
+    // liaison (§15), but orthographic adjacency and whitespace alone do not
+    // establish that morphosyntactic relation. The exact official phrase
+    // "밭 아래" is covered by its sourced lexical entry; unknown phrases must
+    // not be rendered as if no liaison occurred.
+    if(b.onset==='ㅇ'){
+      a.__crossWordLiaisonUnlicensed='left';
+      b.__crossWordLiaisonUnlicensed='right';
+      rules.push('cross-word-vowel-liaison-requires-morphology');
+      nextRules.push('cross-word-vowel-liaison-requires-morphology');
+      continue;
     }
 
     const beforeLiquidRep=representative(a.coda);
@@ -753,6 +767,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     }
     if(u.__hDeletionUnlicensed){
       if(u.__hDeletionUnlicensed==='left')issues.push(u.char+': §12(4) ㅎ deletion requires a verified vowel-initial ending/suffix; add a sourced lexical pronunciation entry.');
+      output[i]='';
+      ipa[i]='';
+      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
+      continue;
+    }
+    if(u.__crossWordLiaisonUnlicensed){
+      if(u.__crossWordLiaisonUnlicensed==='left')issues.push(u.char+': cross-word vowel-initial liaison may depend on a substantive-morpheme boundary (§15); add a sourced lexical pronunciation entry.');
       output[i]='';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
