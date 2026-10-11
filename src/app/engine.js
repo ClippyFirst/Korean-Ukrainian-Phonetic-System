@@ -65,23 +65,6 @@ function decompose(ch){
 function createMap(csv){return new Map(parseCsv(csv).map(r=>[r.layer+':'+r.input,r]));}
 function get(map,layer,key){return map.get(layer+':'+key);}
 function isHangulUnit(units,i){return Boolean(units[i]&&units[i].type==='hangul');}
-function mapOnset(map,jamo,currentVowel='',voiced=false,fortis=false,liquid=false){
-  if(jamo==='ㅇ')return '';
-  if(jamo==='ㄹ'&&liquid)return 'л';
-  if((jamo==='ㅅ'||jamo==='ㅆ')&&J_VOWELS.has(currentVowel))return 'ш';
-  if(voiced&&jamo==='ㄱ')return 'ґ';
-  if(voiced&&jamo==='ㄷ')return 'д';
-  if(voiced&&jamo==='ㅂ')return 'б';
-  if(voiced&&jamo==='ㅈ')return 'дж';
-  if(fortis&&jamo==='ㄱ')return 'к';
-  if(fortis&&jamo==='ㄷ')return 'т';
-  if(fortis&&jamo==='ㅂ')return 'п';
-  if(fortis&&jamo==='ㅅ')return 'с';
-  if(fortis&&jamo==='ㅈ')return 'ч';
-  return get(map,'onset',jamo)?.ukrainian??'';
-}
-function mapVowel(map,jamo){return get(map,'vowel',jamo)?.ukrainian??'';}
-function mapCoda(map,jamo){return jamo?(get(map,'coda',jamo)?.ukrainian??''):'';}
 function nextHangul(units,i){return isHangulUnit(units,i+1)?units[i+1]:null;}
 function prevHangul(units,i){return isHangulUnit(units,i-1)?units[i-1]:null;}
 function representative(coda){return FINAL_REPRESENTATIVE[coda]??coda;}
@@ -584,14 +567,14 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
   for(let i=0;i<originalUnits.length;i++){
     const syllable=originalUnits[i];
     const vowel=syllable.vowel;
-    let primary='',alternate='',section='§4',targetPrimary='',targetAlternate='';
+    let primary='',alternate='',section='§4';
     if(vowel==='ㅚ'){primary='ø';alternate='we';}
     else if(vowel==='ㅟ'){primary='y';alternate='wi';}
     else if(vowel==='ㅖ'&&syllable.onset!=='ㅇ'&&syllable.onset!=='ㄹ'){
-      primary='je';alternate='e';section='§5';targetPrimary='є';targetAlternate='е';
+      primary='je';alternate='e';section='§5';
     }
     else if(vowel==='ㅢ'&&syllable.onset==='ㅇ'&&!firstSyllableInWord(units,i)){
-      primary='ɰi';alternate='i';section='§5';targetPrimary='ий';targetAlternate='і';
+      primary='ɰi';alternate='i';section='§5';
     }
     if(!alternate||!ipa[i]||!ipa[i].includes(primary))continue;
     sites.push({index:i,vowel,primary,alternate,section,targetPrimary,targetAlternate});
