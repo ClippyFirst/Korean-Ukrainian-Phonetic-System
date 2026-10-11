@@ -2,7 +2,7 @@
 
 ## Scope
 
-This batch revisits the first twelve entries in the unresolved article-mapping queue. All twelve now have an explicit rule mapping; one source URL mismatch (`읽어`) was corrected. Exact lexical attestation remains distinguished from a rule-derived form, particularly for `맑고`.
+This batch revisits the first twelve entries in the unresolved article-mapping queue. All twelve now have an explicit rule mapping; one source URL mismatch (`읽어`) was corrected. The corrected NIKL Q&A URL directly attests `맑고[말꼬]`, so the evidence classification has been upgraded from indirect rule evidence to direct lexical attestation.
 
 ## Reviewed records
 
@@ -16,7 +16,7 @@ This batch revisits the first twelve entries in the unresolved article-mapping q
 | `읽는` → `[잉는]` | NIKL official Q&A includes 읽는[잉는] in its pronunciation examples. | Added **§§11, 18**: ㄺ simplification before ㄴ followed by nasal assimilation. Source: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306000 |
 | `읽지` → `[익찌]` | NIKL official Q&A includes 읽지[익찌] in its pronunciation examples. | Added **§§11, 23**: ㄺ simplification before a consonant and fortition of following ㅈ. Source: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306000 |
 | `맑게` → `[말께]` | NIKL Q&A directly confirms the exact form and discusses the verb-stem ㄺ-before-ㄱ exception. | Added **§§11, 23**. Keep the exception scoped to the licensed verb-stem environment. Source: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=334294 |
-| `맑고` → `[말꼬]` | The linked Q&A supports the relevant rule family but does not explicitly list 맑고[말꼬]. | Added **§§11, 23** as a rule-derived regression and explicitly retained the indirect-evidence status. Do not claim exact lexical attestation. |
+| `맑고` → `[말꼬]` | NIKL Q&A 2025-05-23 directly lists 맑고[말꼬]. | Corrected the source-linked note to distinguish direct lexical attestation from the project's broad IPA rendering; retain **§§11, 23** as rule mapping. |
 | `맑다` → `[막따]` | The official *표준 발음법* page directly lists 맑다[막따] under §11. | Corrected the URL to the official rule page and added **§§11, 23** for coda simplification and fortition. Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002 |
 | `밝기` → `[발끼]` | NIKL Q&A directly confirms the exact form and discusses the licensed ㄺ-before-ㄱ pattern in this derived form. | Added **§§11, 23**; keep the exception morphologically scoped. Source: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=334141 |
 | `닭고기` → `[닥꼬기]` | NIKL Q&A directly confirms 닭고기[닥꼬기]. | Added **§§11, 23**: noun-final ㄺ simplifies to [ㄱ] before the consonant, and following ㄱ is fortis. Source: https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327808 |
@@ -26,7 +26,7 @@ This batch revisits the first twelve entries in the unresolved article-mapping q
 - Twelve rows now have explicit rule references.
 - The unresolved traceability queue decreases from **60 to 48**.
 - The `읽어` source mismatch is corrected; the previous URL did not attest the row's word.
-- `맑고` remains explicitly classified as a rule-derived regression rather than a direct official lexical citation.
+- `맑고` is directly attested by the corrected official NIKL Q&A source; the Ukrainian target remains a project-level IPA rendering, not a normative NIKL transliteration.
 - No Korean surface outputs, Ukrainian targets, or IPA values were changed in this batch.
 
 ## Sources
