@@ -70,7 +70,7 @@ test('every lexical row has valid provenance, explicit confidence/status, and al
 });
 
 test('morphology-dependent pronunciations fail closed rather than infer a morpheme from spelling', () => {
-  const unresolved = ['얇은', '긁고', '늙고', '굵고', '놓아라'];
+  const unresolved = ['얇은', '긁고', '굵고', '놓아라'];
   for (const input of unresolved) {
     assert.ok(!entries.has(input), input + ': do not add a blanket lexical override');
     const result = genericEngine.convert(input);
@@ -85,6 +85,20 @@ test('morphology-dependent pronunciations fail closed rather than infer a morphe
   }
 });
 
+
+
+test('NIKL-attested 늙고 is resolved only by its exact sourced entry', () => {
+  const row = entries.get('늙고');
+  assert.ok(row, 'official NIKL pronunciation example must have an exact lexical row');
+  assert.match(row.source_url, officialSource);
+  assert.equal(row.confidence, 'high');
+  assert.equal(row.target_status, 'provisional');
+  const generic = genericEngine.convert('늙고');
+  assert.ok(generic.ukrainian.includes('⟦') || generic.status === 'unresolved');
+  assert.equal(engine.convert('늙고').surfaceHangul, '늘꼬');
+  assert.equal(engine.convert('늙고').ukrainian, 'нилко');
+  assert.equal(engine.convert('늙고').ipa, 'nɯl k͈o');
+});
 
 test('않았다 is resolved only by its exact sourced entry, not by generic morphology guessing', () => {
   const row = entries.get('않았다');
