@@ -45,6 +45,26 @@ test('§18–§20 exhaustive coda matrix before ㄴ exercises ordered nasal/liqu
   }
 });
 
+test('§18 exhaustive coda matrix before ㅁ verifies all 27 written codas', () => {
+  const expected = {
+    '각마':'kaŋ ma', '갂마':'kaŋ ma', '갃마':'kaŋ ma',
+    '간마':'kan ma', '갅마':'kan ma', '갆마':'kan ma',
+    '갇마':'kan ma', '갈마':'kal ma', '갉마':'kaŋ ma', '갊마':'kam ma',
+    '갋마':'kal ma', '갌마':'kal ma', '갍마':'kal ma', '갎마':'kam ma', '갏마':'kal ma',
+    '감마':'kam ma', '갑마':'kam ma', '값마':'kam ma', '갓마':'kan ma', '갔마':'kan ma',
+    '강마':'kaŋ ma', '갖마':'kan ma', '갗마':'kan ma', '갘마':'kaŋ ma', '같마':'kan ma',
+    '갚마':'kam ma', '갛마':'kan ma',
+  };
+  assert.equal(Object.keys(expected).length, 27);
+  for (const [word, ipa] of Object.entries(expected)) {
+    const result = genericEngine.convert(word);
+    assert.equal(result.issues.length, 0, word);
+    assert.equal(result.ipa, ipa, word);
+    assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')), word + ': nasal assimilation trace');
+    assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word + ': generic engine only');
+  }
+});
+
 test('unknown complex-coda liaison and H deletion remain unresolved without morphology', () => {
   for (const input of ['갃아','갅아','갆아','갉아','갋아','갏아','갛아']) {
     const result = genericEngine.convert(input);
