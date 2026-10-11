@@ -513,8 +513,13 @@ function ipaTargetForSource(source,ipa){
 
 function lexicalResult(text,entry){
   const ipas=entry.ipa_syllables.split('|');
-  const mappedTargets=ipaSyllablesToUkrainian(ipas);
-  const targets=mappedTargets.syllables;
+  const mappedTargets=ipas.map(ipaSyllableToUkrainian);
+  // A lexical row must never silently drop IPA that the Ukrainian layer cannot
+  // map. Keep the unresolved syllable visible and surface a blocking issue.
+  const targets=mappedTargets.map((item,i)=>item.unknown?'⟦'+ipas[i]+'⟧':item.text);
+  const targetIssues=mappedTargets.flatMap((item,i)=>item.unknown
+    ?[text+': IPA syllable "'+ipas[i]+'" contains an unmapped segment "'+item.unknown+'"; add an explicit Ukrainian mapping or correct the IPA.']:[]
+  );
   if(entry.input_kind==='mixed-script'){
     // Mixed-script exact keys can include official phrase examples such as
     // "3 연대". Preserve source whitespace in the Ukrainian output while
@@ -540,9 +545,9 @@ function lexicalResult(text,entry){
       ipa,
       analysis:text+' → '+(entry.surface_hangul||'')+' (sourced lexical reading)',
       variants:[],
-      trace:[{source:text,status:'lexical-review',rules:['lexical-pronunciation','ukrainian-target-provisional'],output:target,ipa}],
-      issues:[],
-      status:'lexical-review'
+      trace:[{source:text,status:targetIssues.length?'unresolved':'lexical-review',rules:targetIssues.length?['lexical-pronunciation','ipa-to-ukrainian-unmapped-segment']:['lexical-pronunciation','ukrainian-target-provisional'],output:target,ipa}],
+      issues:targetIssues,
+      status:targetIssues.length?'unresolved':'lexical-review'
     };
   }
   const syllables=[...text];
@@ -566,11 +571,13 @@ function lexicalResult(text,entry){
     analysis,
     variants,
     trace:syllables.map((ch,i)=>({
-      source:ch,status:targetReview?'lexical-review':'lexical',rules:i===0?(targetReview?['lexical-pronunciation','ukrainian-target-provisional']:['lexical-pronunciation']):['lexical-context'],
+      source:ch,
+      status:mappedTargets[i]?.unknown?'unresolved':targetReview?'lexical-review':'lexical',
+      rules:mappedTargets[i]?.unknown?['lexical-pronunciation','ipa-to-ukrainian-unmapped-segment']:i===0?(targetReview?['lexical-pronunciation','ukrainian-target-provisional']:['lexical-pronunciation']):['lexical-context'],
       output:targets[i]??'',ipa:ipas[i]??''
     })),
-    issues:[],
-    status:targetReview?'lexical-review':'lexical'
+    issues:targetIssues,
+    status:targetIssues.length?'unresolved':targetReview?'lexical-review':'lexical'
   };
 }
 
