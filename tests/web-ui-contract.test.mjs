@@ -40,7 +40,7 @@ test('service exposes the research/system navigation contract',()=>{
   assert.match(html,/id="result-ipa"/);
   assert.match(html,/id="result-analysis"/);
   assert.match(html,/контекстуальних правил/);
-  assert.match(html,/Корейський текст → контекстуальні правила → практичний український запис/);
+  assert.match(html,/Корейський текст → нормативна IPA → українська передача/);
 
 });
 
