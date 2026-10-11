@@ -50,12 +50,13 @@ The browser engine is intentionally not a full Korean morphological parser. Rule
 
 ## Machine-checked article coverage ledger (2026-10-11)
 
-The machine-readable inventory is `tests/fixtures/standard-pronunciation-rule-coverage.json`. It now maps all 30 numbered articles to the official NIKL standard and to existing executable regression files (or this audit document for §1). The coverage-gate test verifies that each evidence path exists, each article has the primary source, evidence IDs are unique, and the status vocabulary is explicit.
+The machine-readable inventory is `tests/fixtures/standard-pronunciation-rule-coverage.json`. Every article points to an exact regression-test title, not merely a test file; §1 points to its row in this audit table. The coverage-gate test verifies that each referenced file exists, each test title exists verbatim, the title names the relevant article or an enclosing article range, the primary NIKL source is recorded, evidence IDs are unique, and statuses use an explicit vocabulary. The gate therefore catches stale or misdirected links in the ledger, although a title match is not itself proof that every subparagraph is exhausted.
 
 - §§2–30 are marked `verified` only in the narrow sense that the official listed examples and the tested contrasts/interactions described below are represented in regression coverage.
 - §1 is marked `not-applicable` to standalone runtime transformation because it is a governing principle, not a phonological rewrite; its consequences are documented in this audit.
 - This is **not** a claim that the browser is a productive morphological analyzer, that every Korean lexical item is covered, or that the Ukrainian output is an official standard. Morphology-dependent unknown forms must remain unresolved unless a source-backed exact entry or licensed rule applies.
-- The CI gate checks that the audit map stays connected to real files; it cannot independently prove that a cited test exhausts a rule. Normative correctness still depends on the case-level expected forms and source review.
+- The CI gate checks the exact test title and its article reference, rather than only checking file existence. It still cannot independently prove that a cited test exhausts every subparagraph; normative correctness depends on the case-level expected forms and source review.
+- The §21 negative-control test now asserts all seven official forms (감기, 옷감, 있고, 꽃길, 젖먹이, 문법, 꽃밭) against explicit surface and IPA expectations, preventing common nonstandard place-assimilation variants from entering the standard layer.
 
 ## Regressions added in this pass
 
