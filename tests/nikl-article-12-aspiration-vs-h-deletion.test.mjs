@@ -50,8 +50,8 @@ test('§12 source records explicitly distinguish aspiration from ㅎ deletion be
   const aspiration = rows.get('놓고');
   const deletion = rows.get('놓아');
   assert.ok(aspiration && deletion, 'both comparison records must exist');
-  assert.match(aspiration.notes, /§12/u);
-  assert.match(deletion.notes, /ㅎ 탈락|탈락/u);
+  assert.match(aspiration.rule_notes, /§12/u);
+  assert.match(deletion.rule_notes, /ㅎ 탈락|탈락/u);
   assert.notEqual(aspiration.surface_hangul, deletion.surface_hangul);
   assertOfficialReading('놓고', '노코', 'no kʰo');
   assertOfficialReading('놓아', '노아', 'no a');
