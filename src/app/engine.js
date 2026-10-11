@@ -30,7 +30,7 @@ const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥','넓적']);
 // Exact, source-licensed phrase boundaries whose rules require syntax or a
 // known compound. These maps deliberately do not generalize from ㄹ/ㄴ codas.
 const NIKL_27_ADNOMINAL_PHRASES=new Map([
-  ['할 것을','ㄱ'],['갈 데가','ㄷ'],['할 바를','ㅂ'],['할 수는','ㅅ'],
+  ['할 것을','ㄱ'],['갈 데가','ㄷ'],['할 바를','ㅂ'],['할 수는','ㅅ'],['읽을 수','ㅅ'],
   ['할 적에','ㅈ'],['갈 곳','ㄱ'],['할 도리','ㄷ'],['만날 사람','ㅅ']
 ]);
 const NIKL_29_PHRASE_INSERTION=new Map([
@@ -382,6 +382,23 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     return true;
   };
 
+  // NIKL §27 fortisness is not represented by doubling Ukrainian letters,
+  // but the IPA must retain it. Apply only to exact licensed eojeol pairs;
+  // this also covers mixed lexical/generic phrases split by the browser adapter.
+  const rewriteFortisOnset=(result,onset,rule)=>{
+    const ipaPairs={
+      'ㄱ':['k','k͈'],'ㄷ':['t','t͈'],'ㅂ':['p','p͈'],
+      'ㅅ':['s','s͈'],'ㅈ':['tɕ','tɕ͈']
+    };
+    const pair=ipaPairs[onset];
+    const trace=firstTrace(result);
+    if(!pair||!trace||!result.ipa.startsWith(pair[0])||!trace.ipa.startsWith(pair[0]))return false;
+    result.ipa=pair[1]+result.ipa.slice(pair[0].length);
+    trace.ipa=pair[1]+trace.ipa.slice(pair[0].length);
+    addRule(trace,rule);
+    return true;
+  };
+
   for(let i=0;i<parts.length-2;i++){
     if(!/^[가-힣]+$/u.test(parts[i])||!/^\s+$/u.test(parts[i+1])||!/^[가-힣]+$/u.test(parts[i+2]))continue;
     const previous=results[i],next=results[i+2];
@@ -391,6 +408,16 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const left=last?decompose(last):null,right=first?decompose(first):null;
     if(!left?.coda||!right)continue;
     const leftRep=representative(left.coda),rightOnset=right.onset;
+
+    // Apply §27 to exact official/rule-licensed adnominal phrases even when
+    // another word in the sentence is served by a lexical pronunciation row.
+    // The generic whole-string path cannot see these boundaries after splitting.
+    const phraseKey=parts[i]+' '+parts[i+2];
+    const licensedFortis=NIKL_27_ADNOMINAL_PHRASES.get(phraseKey);
+    if(licensedFortis===rightOnset&&rewriteFortisOnset(next,licensedFortis,'adnominal-r-fortition-§27')){
+      addRule(lastTrace(previous),'adnominal-r-fortition-§27');
+      continue;
+    }
 
     if(['ㄴ','ㅁ'].includes(rightOnset)&&NASAL_AFTER[leftRep]){
       if(rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation'))addRule(firstTrace(next),'nasal-assimilation');
