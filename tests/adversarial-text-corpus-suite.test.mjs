@@ -54,12 +54,23 @@ test('150 rule-family corpora keep each target form quoted and isolated', () => 
 
 test('diagnostic: summarize per-eojeol outcomes across all 165 adversarial corpora', () => {
   const stats = new Map();
+  const intentionalOrthographyNegativeControls = new Set(['옷안']);
+  const orthographyControls = new Map();
   for (const file of files) {
     const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
     const eojeols = source.match(/[가-힣]+/gu) || [];
     for (const word of eojeols) {
       const result = engine.convert(word);
       const placeholders = [...result.ukrainian.matchAll(/⟦([^⟦⟧]+)⟧/gu)].map((match) => match[1]);
+      if (intentionalOrthographyNegativeControls.has(word)) {
+        const control = orthographyControls.get(word) || {word, count:0, unresolved:0, issues:new Set(), sampleTarget:'', sampleIpa:''};
+        control.count++;
+        if (result.status === 'unresolved' || placeholders.length || result.issues.length) control.unresolved++;
+        for (const issue of result.issues) control.issues.add(String(issue));
+        if (!control.sampleTarget) { control.sampleTarget=result.ukrainian; control.sampleIpa=result.ipa; }
+        orthographyControls.set(word, control);
+        continue;
+      }
       const row = stats.get(word) || {word, count:0, unresolved:0, placeholders:0, issues:new Set(), sampleTarget:'', sampleIpa:''};
       row.count++;
       if (result.status === 'unresolved' || placeholders.length || result.issues.length) row.unresolved++;
@@ -77,7 +88,8 @@ test('diagnostic: summarize per-eojeol outcomes across all 165 adversarial corpo
     eojeolOccurrences:rows.reduce((sum,row)=>sum+row.count,0),
     uniqueWordsWithUnresolved:problematic.length,
     unresolvedOccurrences:problematic.reduce((sum,row)=>sum+row.unresolved,0),
-    topUnresolved:problematic.slice(0,25).map(row=>({...row,issues:[...row.issues].slice(0,2)}))
+    topUnresolved:problematic.slice(0,25).map(row=>({...row,issues:[...row.issues].slice(0,2)})),
+    intentionalOrthographyControls:[...orthographyControls.values()].map(row=>({...row,issues:[...row.issues]}))
   }));
 });
 
@@ -91,4 +103,12 @@ test('corpus prose avoids malformed suffix attachment in example descriptions', 
     const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
     assert.ok(!source.includes(phrase), file + ': malformed example phrase must not recur');
   }
+});
+
+test('the nonstandard 옷안 spelling is an explicit orthography negative control', () => {
+  const source = readFileSync(new URL('./fixtures/adversarial-corpora/12-minimal-contrasts-and-negative-controls.txt', import.meta.url), 'utf8');
+  assert.ok(source.includes('의도적으로 잘못 붙여 쓴 ‘옷안’'), 'the nonstandard spelling must be explicitly labelled');
+  const result = engine.convert('옷안');
+  assert.ok(result.status === 'unresolved' || result.ukrainian.includes('⟦'), 'do not silently normalize a spacing error as a standard word');
+  assert.ok(result.issues.some((issue) => String(issue).includes('§15')), 'the diagnostic should identify the substantive-morpheme boundary issue');
 });
