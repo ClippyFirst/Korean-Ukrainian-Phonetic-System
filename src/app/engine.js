@@ -850,4 +850,4 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
   };
 }
 
-export {parseCsv,decompose};
+export {parseCsv,decompose,createEngine};
