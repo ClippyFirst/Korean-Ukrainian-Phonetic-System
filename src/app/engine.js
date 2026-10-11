@@ -683,6 +683,21 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
         return convertText(part,map,lexicon,true);
       });
       applyPhraseBoundaryAssimilation(results,parts,map);
+      // Phrase-boundary rules may revise surface IPA after token conversion.
+      // Re-render every Korean-derived target from that final IPA, so no
+      // secondary Hangul/jamo-to-Ukrainian path can diverge from the display.
+      for(const result of results){
+        const ipaUnits=(result.ipa||'').split(/\\s+/u).filter(Boolean);
+        const rendered=ipaSyllablesToUkrainian(ipaUnits);
+        if(!rendered.unknown&&ipaUnits.length){
+          result.ukrainian=rendered.syllables.join('');
+          result.trace=result.trace.map(item=>{
+            if(item.status==='literal')return item;
+            const mapped=ipaSyllableToUkrainian(item.ipa||'');
+            return mapped.unknown?item:{...item,output:mapped.text};
+          });
+        }
+      }
       const issues=results.flatMap(r=>r.issues);
       const variants=results.flatMap((r,i)=>(r.variants||[]).map(v=>({
         ...v,
