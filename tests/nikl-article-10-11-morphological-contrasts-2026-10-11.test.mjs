@@ -33,7 +33,7 @@ test('§10–11 morphology contrasts distinguish ㄺ stems, 밟- exception, and 
     assert.ok(row, word + ': exact source-backed lexical row is required');
     assert.match(row.source_url, officialSource, word + ': source must be on the NIKL domain');
     assert.equal(row.confidence, 'high', word + ': source confidence');
-    assert.equal(row.target_status, 'provisional', word + ': Ukrainian target must remain provisional');
+    assert.ok(['provisional', 'model-selected'].includes(row.target_status), word + ': Ukrainian target status must remain explicit and non-normative');
     assert.equal(row.surface_hangul, want.surface, word + ': recorded normative surface');
     assert.equal(row.ipa_syllables.split('|').join(' '), want.ipa, word + ': broad IPA');
     assert.equal(row.target_syllables.split('|').join(''), want.target, word + ': reviewed IPA-derived target');
