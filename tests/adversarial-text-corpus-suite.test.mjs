@@ -130,12 +130,13 @@ test('whole-corpus unresolved output is limited to the explicitly invalid spacin
     const result = engine.convert(source);
     const placeholders = [...result.ukrainian.matchAll(/⟦([^⟦⟧]+)⟧/gu)].map(match => match[1]);
     if (placeholders.length || result.issues.length || result.status === 'unresolved') {
-      affected.push({file,placeholders,issues:result.issues.map(String),status:result.status});
+      affected.push({file,placeholders,issues:result.issues.map(String),status:result.status,unresolvedSources:result.trace.filter(item=>item.status==='unresolved').map(item=>item.source)});
     }
   }
   assert.deepEqual(affected.map(row => row.file), [intentional],
     'no corpus except the deliberately malformed spacing control may have unresolved output');
-  assert.deepEqual(affected[0].placeholders.sort(), ['안','옷']);
+  assert.deepEqual(affected[0].placeholders, [], 'unresolved Korean fragments must not leak into the Ukrainian output');
+  assert.deepEqual(affected[0].unresolvedSources.sort(), ['안','옷']);
   assert.equal(affected[0].issues.length, 1);
   assert.match(affected[0].issues[0], /§15/u);
 });
