@@ -93,6 +93,35 @@ test('diagnostic: summarize per-eojeol outcomes across all 165 adversarial corpo
   }));
 });
 
+test('diagnostic: summarize whole-file contextual conversion across all 165 corpora', () => {
+  const byCorpus = [];
+  const statusCounts = {};
+  const issueCounts = new Map();
+  const unresolvedWords = new Map();
+  let totalPlaceholders = 0;
+  let totalIssues = 0;
+  for (const file of files) {
+    const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
+    const result = engine.convert(source);
+    statusCounts[result.status] = (statusCounts[result.status] || 0) + 1;
+    const placeholders = [...result.ukrainian.matchAll(/⟦([^⟦⟧]+)⟧/gu)].map(match => match[1]);
+    totalPlaceholders += placeholders.length;
+    totalIssues += result.issues.length;
+    for (const issue of result.issues) issueCounts.set(String(issue), (issueCounts.get(String(issue)) || 0) + 1);
+    for (const token of placeholders) unresolvedWords.set(token, (unresolvedWords.get(token) || 0) + 1);
+    if (placeholders.length || result.issues.length || result.status === 'unresolved') {
+      byCorpus.push({file,status:result.status,placeholders:placeholders.length,issues:result.issues.length,samplePlaceholders:placeholders.slice(0,8),sampleIssues:result.issues.slice(0,3)});
+    }
+  }
+  console.log('ADVERSARIAL_WHOLE_FILE_SUMMARY ' + JSON.stringify({
+    corpusFiles:files.length,statusCounts,totalPlaceholders,totalIssues,
+    uniqueUnresolvedTokens:unresolvedWords.size,
+    mostFrequentUnresolved:[...unresolvedWords.entries()].sort((a,b)=>b[1]-a[1]).slice(0,40).map(([token,count])=>({token,count})),
+    topIssues:[...issueCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,25).map(([issue,count])=>({issue,count})),
+    affectedCorpusCount:byCorpus.length,affectedCorpora:byCorpus.slice(0,50)
+  }));
+});
+
 test('corpus prose avoids malformed suffix attachment in example descriptions', () => {
   const checks = [
     ['03-palatalization-boundaries.txt', '맏이의 동생'],
