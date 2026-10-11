@@ -88,6 +88,16 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
   assert.deepEqual(result.issues, []);
 });
 
+test('§27 fortition survives mixed lexical/generic tokenization in 읽을 수 있습니다', () => {
+  const result = engine.convert('읽을 수 있습니다');
+  assert.equal(result.ukrainian, 'ілґил су ітсимніда');
+  assert.equal(result.ipa, 'il ɡɯl s͈u it̚ s͈ɯm ni da');
+  assert.equal(result.issues.length, 0);
+  assert.equal(result.status, 'lexical-review');
+  assert.ok(result.trace.some(item => item.rules.includes('adnominal-r-fortition-§27')));
+  assert.ok(!result.ukrainian.includes('⟦'));
+});
+
 test('the other reported palatalization forms remain covered, including a whole compound', () => {
   const cases = [
     ['밭이', '바치', 'па|чі', 'pa|tɕʰi'],
