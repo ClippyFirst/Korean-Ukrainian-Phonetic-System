@@ -284,7 +284,9 @@
         "A30-1:tests/nikl-morphology-guard-matrix-24-30.test.mjs#§30: saisiot remains an exact lexical decision, not a generic ㅅ-final rewrite",
         "A30-2:tests/nikl-article-30-saisiot-interaction-2026-10-11.test.mjs#§30(2): saisiot before ㄴ/ㅁ has independently pinned nasalized surface readings",
         "A30-3:tests/nikl-article-30-saisiot-interaction-2026-10-11.test.mjs#§30(3): saisiot before 이 yields the documented ㄴㄴ insertion sequence",
-        "A30-4:tests/nikl-article-30-saisiot-interaction-2026-10-11.test.mjs#§30(1): 냇가 retains both NIKL-listed coda realizations rather than collapsing the variant"
+        "A30-4:tests/nikl-article-30-saisiot-interaction-2026-10-11.test.mjs#§30(1): 냇가 retains both NIKL-listed coda realizations rather than collapsing the variant",
+        "A30-5:tests/nikl-article-30-saisiot-morphology-guard-2026-10-11.test.mjs#§30(3) does not guess compound-internal ㄴㄴ insertion from spelling alone",
+        "A30-6:tests/nikl-article-30-saisiot-morphology-guard-2026-10-11.test.mjs#§30(3) evidence distinguishes within-compound insertion from ordinary vowel liaison"
       ],
       "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     }
