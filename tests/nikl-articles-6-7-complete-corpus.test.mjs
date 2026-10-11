@@ -11,7 +11,7 @@ const engine = createEngine(canonical, lexical);
 
 const section6 = {
   '눈보라':['눈보라','nuːn|bo|ɾa'],
-  '말씨':['말씨','maːl|s͈i'],
+  '말씨':['말씨','maːl|ɕ͈i'],
   '밤나무':['밤나무','paːm|na|mu'],
   '많다':['만타','maːn|tʰa'],
   '멀리':['멀리','mʌːl|li'],
