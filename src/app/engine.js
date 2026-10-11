@@ -485,6 +485,9 @@ export function createEngine(csv,lexiconCsv=''){
 // Korean phonetic contrasts that matter to the project target (e.g. ɡ/ k,
 // dʑ/tɕ, ɕ/s, and coda unreleased stops).
 const IPA_TO_UKRAINIAN = [
+  ['kʰjʌ','кхьо'],['hjʌ','гьо'],['njʌ','ньо'],['njo','ньо'],['nju','ню'],
+  ['ɲʌ','ньо'],['ɲa','ня'],['ɲo','ньо'],['ɲu','ню'],
+  ['ljʌ','льо'],['lju','лю'],
   ['tɕ͈','ч'],['tɕʰ','ч'],['tɕ','ч'],['dʑ','дж'],['ɕ͈','ш'],['ɕ','ш'],
   ['k͈','к'],['t͈','т'],['p͈','п'],['s͈','с'],
   ['kʰ','к'],['tʰ','т'],['pʰ','п'],['k̚','к'],['t̚','т'],['p̚','п'],
