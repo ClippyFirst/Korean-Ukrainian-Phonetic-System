@@ -17,6 +17,8 @@ test('§10–11 official complex-coda examples preserve the standard distinction
     // §11 exception for verb stems: ㄺ before ㄱ retains [ㄹ].
     '맑게': ['말께', 'mal k͈e'],
     '묽고': ['물꼬', 'mul k͈o'],
+    // NIKL §11 explicitly lists 늙고[늘꼬] as the ㄺ-before-ㄱ stem exception.
+    '늙고': ['늘꼬', 'nɯl k͈o'],
     '얽거나': ['얼꺼나', 'ʌl k͈ʌ na'],
     // §10 ㄼ exception for 밟- before consonants: [ㅂ], not [ㄹ].
     '밟다': ['밥따', 'paːp̚ t͈a'],
