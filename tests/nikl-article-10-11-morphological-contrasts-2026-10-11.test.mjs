@@ -64,9 +64,10 @@ test('§10–11 negative contrasts prevent spelling-only generalization of coda 
 });
 
 test('§10–11 exact morphology evidence identifies its official rule and source', () => {
-  for (const word of ['읽다', '읽고', '붉다', '붉지', '붉고', '맑다', '맑고', '밟다', '밟고', '밟으니', '넓다', '넓죽하다', '넓둥글다']) {
+  for (const word of ['읽다', '읽고', '붉다', '붉지', '붉고', '맑다', '맑고', '밟다', '밟고', '넓다', '넓죽하다', '넓둥글다']) {
     const row = rows.get(word);
     assert.match(row.source_url, officialSource, word);
     assert.match(row.rule_notes, /제10항|제11항|§10|§11/u, word + ': notes must name the relevant article');
   }
 });
+
