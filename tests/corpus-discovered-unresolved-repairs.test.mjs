@@ -35,7 +35,7 @@ test('corpus-discovered morphology repairs have NIKL or standard-rule evidence',
   },
   "맑으면": {
     "surface": "말그면",
-    "target": "малгимйон",
+    "target": "малґимйон",
     "ipa": "mal ɡɯ mjʌn",
     "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
   },
