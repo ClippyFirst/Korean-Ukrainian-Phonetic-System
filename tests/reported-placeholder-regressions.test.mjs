@@ -17,15 +17,15 @@ const regressions = [
 ];
 
 const derivedRegressions = [
-  ['잊었다', '이젇따', '§13', '§23'],
-  ['쌓였다', '싸엳따', '§12(4)', '§23'],
-  ['붙었다', '부텯따', '§13', '§23'],
-  ['찾아가다', '차자가다', 'directly lists 찾아가다 pronunciation', null],
-  ['넣었다', '너얻따', '§12(4)', '§23'],
-  ['놓았다', '노앋따', '§12(4)', '§23'],
-  ['좋아도', '조아도', '§12(4)', null],
-  ['맑을', '말글', '§14', null],
-  ['없었다', '업썯따', '§14', '§23'],
+  ['잊었다', '이젇따', 'і|джот|тта', 'i|dʑʌt̚|t͈a', '§13', '§23'],
+  ['쌓였다', '싸엳따', 'сса|йот|тта', 's͈a|jʌt̚|t͈a', '§12(4)', '§23'],
+  ['붙었다', '부텯따', 'пу|тот|тта', 'pu|tʰʌt̚|t͈a', '§13', '§23'],
+  ['찾아가다', '차자가다', 'ча|джа|ґа|да', 'tɕʰa|dʑa|ɡa|ta', 'directly lists 찾아가다 pronunciation', null],
+  ['넣었다', '너얻따', 'но|от|тта', 'nʌ|ʌt̚|t͈a', '§12(4)', '§23'],
+  ['놓았다', '노앋따', 'но|ат|тта', 'no|at̚|t͈a', '§12(4)', '§23'],
+  ['좋아도', '조아도', 'джо|а|до', 'tɕoː|a|to', '§12(4)', null],
+  ['맑을', '말글', 'мал|ґил', 'mal|ɡɯl', '§14', null],
+  ['없었다', '업썯따', 'оп|ссот|тта', 'ʌp̚|s͈ʌt̚|t͈a', '§14', '§23'],
 ];
 
 test('reported complex-coda forms have exact official source attestations', () => {
@@ -50,16 +50,20 @@ test('reported forms resolve without placeholders and match their sourced or rul
 });
 
 test('reported inflections have explicit NIKL rule derivations rather than unsupported direct-attestation claims', () => {
-  for (const [input, surface, ruleA, ruleB] of derivedRegressions) {
+  for (const [input, surface, expectedTarget, expectedIpa, ruleA, ruleB] of derivedRegressions) {
     const row = entries.get(input);
     assert.ok(row, `${input}: missing regression row`);
     assert.equal(row.surface_hangul, surface, `${input}: surface form`);
+    assert.equal(row.target_syllables, expectedTarget, `${input}: Ukrainian target by syllable`);
+    assert.equal(row.ipa_syllables, expectedIpa, `${input}: IPA by syllable`);
     assert.equal(row.confidence, 'high', `${input}: evidence confidence`);
     assert.equal(row.target_status, 'provisional', `${input}: Ukrainian target is provisional`);
     assert.match(row.source_url, /^https:\/\/(?:(?:www\.|m\.)?korean\.go\.kr|krdict\.korean\.go\.kr)\//u, `${input}: official NIKL source`);
     assert.ok(row.rule_notes.includes(ruleA), `${input}: missing first rule/evidence note`);
     if (ruleB) assert.ok(row.rule_notes.includes(ruleB), `${input}: missing second rule/evidence note`);
     assert.equal(engine.convert(input).surfaceHangul, surface, `${input}: engine result`);
+    assert.equal(engine.convert(input).ukrainian, expectedTarget.split('|').join(''), `${input}: engine Ukrainian target`);
+    assert.equal(engine.convert(input).ipa, expectedIpa.split('|').join(' '), `${input}: engine IPA`);
     assert.ok(!engine.convert(input).ukrainian.includes('⟦'), `${input}: placeholder remains`);
     assert.deepEqual(engine.convert(input).issues, [], `${input}: engine issues remain`);
   }
