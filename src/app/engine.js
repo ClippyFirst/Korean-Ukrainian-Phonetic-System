@@ -355,28 +355,22 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
   const lastTrace=(result)=>[...(result?.trace||[])].reverse().find(item=>item.status!=='literal');
   const firstTrace=(result)=>(result?.trace||[]).find(item=>item.status!=='literal');
   const rewriteCoda=(result,oldCoda,newCoda,rule)=>{
-    const oldTarget=mapCoda(map,oldCoda),newTarget=mapCoda(map,newCoda);
     const oldIpa=get(map,'coda',oldCoda)?.ipa||'',newIpa=get(map,'coda',newCoda)?.ipa||'';
-    if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
+    if(!oldIpa||!newIpa)return false;
     const trace=lastTrace(result);
-    if(!trace||!result.ukrainian.endsWith(oldTarget)||!result.ipa.endsWith(oldIpa)||!trace.output.endsWith(oldTarget)||!trace.ipa.endsWith(oldIpa))return false;
-    result.ukrainian=result.ukrainian.slice(0,-oldTarget.length)+newTarget;
+    if(!trace||!result.ipa.endsWith(oldIpa)||!trace.ipa.endsWith(oldIpa))return false;
     result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
-    trace.output=trace.output.slice(0,-oldTarget.length)+newTarget;
     trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
     addRule(trace,rule);
     return true;
   };
   const rewriteOnset=(result,oldOnset,newOnset,realizedLateral,rule)=>{
-    const oldTarget=mapOnset(map,oldOnset),oldIpa=get(map,'onset',oldOnset)?.ipa||'';
-    const newTarget=realizedLateral?mapCoda(map,'ㄹ'):mapOnset(map,newOnset);
+    const oldIpa=get(map,'onset',oldOnset)?.ipa||'';
     const newIpa=realizedLateral?(get(map,'coda','ㄹ')?.ipa||''):(get(map,'onset',newOnset)?.ipa||'');
-    if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
+    if(!oldIpa||!newIpa)return false;
     const trace=firstTrace(result);
-    if(!trace||!result.ukrainian.startsWith(oldTarget)||!result.ipa.startsWith(oldIpa)||!trace.output.startsWith(oldTarget)||!trace.ipa.startsWith(oldIpa))return false;
-    result.ukrainian=newTarget+result.ukrainian.slice(oldTarget.length);
+    if(!trace||!result.ipa.startsWith(oldIpa)||!trace.ipa.startsWith(oldIpa))return false;
     result.ipa=newIpa+result.ipa.slice(oldIpa.length);
-    trace.output=newTarget+trace.output.slice(oldTarget.length);
     trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
     addRule(trace,rule);
     return true;
@@ -402,13 +396,10 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
   // §29 insertion can change an initial ㅇ into ㄴ/ㄹ. Unlike ordinary
   // onset replacement, this must prepend a target because ㅇ maps to empty.
   const insertPhraseOnset=(result,onset,realizedLateral,rule)=>{
-    const target=realizedLateral?mapCoda(map,'ㄹ'):mapOnset(map,onset);
     const ipa=realizedLateral?(get(map,'coda','ㄹ')?.ipa||''):(get(map,'onset',onset)?.ipa||'');
     const trace=firstTrace(result);
-    if(!target||!ipa||!trace)return false;
-    result.ukrainian=target+result.ukrainian;
+    if(!ipa||!trace)return false;
     result.ipa=ipa+(result.ipa||'');
-    trace.output=target+(trace.output||'');
     trace.ipa=ipa+(trace.ipa||'');
     addRule(trace,rule);
     return true;
