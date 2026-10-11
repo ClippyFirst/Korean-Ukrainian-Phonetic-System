@@ -208,6 +208,7 @@ test('difficult passage forms have sourced IPA and render Ukrainian only from th
     ['품삯으로','pʰum s͈ak̚ s͈ɯ ɾo','пумсаксиро'],
     ['외곬에','ø ɡol s͈e','веґолсе'],
     ['값의','kap̚ ɕ͈ɰi','капший'],
+    ['값에','kap̚ s͈e','капсе'], 
   ];
   for(const [word,ipa,ukrainian] of cases){
     const result=engine.convert(word);
