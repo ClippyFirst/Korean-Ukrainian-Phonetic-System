@@ -86,6 +86,10 @@ A browser result captured from the service on 2026-10-10 leaves multiple supplie
 
 **Editorial caution:** Entries explicitly marked “verify” or involving compound boundaries must be checked against the official standard and/or an NIKL dictionary/Q&A before being frozen as test expectations. This table is a review queue, not a substitute for lexical evidence. In particular, a Hangul boundary alone does not license a morphological rule.
 
+## Follow-up: phrase-level §27 after lexical tokenization
+
+The mixed phrase `읽을 수 있습니다` is a useful boundary regression: `읽을` has a sourced lexical reading, while `수` is rendered by the generic layer. The browser adapter previously split the phrase at lexical entries before applying the exact §27 phrase licenses, so the IPA could lose the fortis onset in `수`. The phrase-level boundary pass now applies the exact licensed pair `읽을 수` and records `adnominal-r-fortition-§27`; the Ukrainian spelling remains unchanged because this project does not double Ukrainian letters to encode Korean fortisness. The expected Korean IPA sequence is `il ɡɯl s͈u it̚ s͈ɯm ni da`. This is a targeted phrase regression, not a productive morphology parser.
+
 ## Mandatory acceptance criteria
 
 1. Test every exact user-supplied input as a full token and as part of its original sentence/phrase.
