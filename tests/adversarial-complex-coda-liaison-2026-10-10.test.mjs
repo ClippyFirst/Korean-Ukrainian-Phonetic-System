@@ -7,7 +7,7 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
 
-// NIKL §14 official examples, repeated in NIKL Q&A 325622; 몫이 is confirmed by Q&A 335008.
+// NIKL §14 examples plus dictionary/Q&A-attested forms; 몫이 is confirmed by NIKL Q&A 335008.
 test('NIKL complex-coda liaison examples resolve without morphological guessing', () => {
   const expected = {
     '넋이': { surface: '넉씨', ipa: 'nʌk̚ s͈i' },
