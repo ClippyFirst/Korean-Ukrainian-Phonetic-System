@@ -159,7 +159,7 @@ def test_seoul_station_uses_sourced_surface_form_and_shared_target():
     result = phoneticize_korean("서울역")
     assert result["ipa"]["ipa"] == "sʌ.ul.ljʌk̚"
     target = transliterate_korean("서울역")
-    assert target["ukrainian_orthography"] == "соуллйок"
+    assert target["ukrainian_orthography"] == "соулльок"
     assert target["target_status"] == "model-selected"
 
 
