@@ -399,6 +399,21 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     return true;
   };
 
+  // §29 insertion can change an initial ㅇ into ㄴ/ㄹ. Unlike ordinary
+  // onset replacement, this must prepend a target because ㅇ maps to empty.
+  const insertPhraseOnset=(result,onset,realizedLateral,rule)=>{
+    const target=realizedLateral?mapCoda(map,'ㄹ'):mapOnset(map,onset);
+    const ipa=realizedLateral?(get(map,'coda','ㄹ')?.ipa||''):(get(map,'onset',onset)?.ipa||'');
+    const trace=firstTrace(result);
+    if(!target||!ipa||!trace)return false;
+    result.ukrainian=target+result.ukrainian;
+    result.ipa=ipa+(result.ipa||'');
+    trace.output=target+(trace.output||'');
+    trace.ipa=ipa+(trace.ipa||'');
+    addRule(trace,rule);
+    return true;
+  };
+
   for(let i=0;i<parts.length-2;i++){
     if(!/^[가-힣]+$/u.test(parts[i])||!/^\s+$/u.test(parts[i+1])||!/^[가-힣]+$/u.test(parts[i+2]))continue;
     const previous=results[i],next=results[i+2];
@@ -413,6 +428,19 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     // another word in the sentence is served by a lexical pronunciation row.
     // The generic whole-string path cannot see these boundaries after splitting.
     const phraseKey=parts[i]+' '+parts[i+2];
+
+    // Preserve the exact §29 cross-word insertion examples when another token
+    // in the same sentence invokes the lexical/generic split path.
+    const insertion=NIKL_29_PHRASE_INSERTION.get(phraseKey);
+    if(insertion){
+      if(insertion.coda&&!rewriteCoda(previous,leftRep,insertion.coda,'phrase-n-insertion-§29'))continue;
+      const lateral=insertion.onset==='ㄹ';
+      if(rightOnset==='ㅇ'&&insertPhraseOnset(next,insertion.onset,lateral,'phrase-n-insertion-§29')){
+        addRule(lastTrace(previous),'phrase-n-insertion-§29');
+        continue;
+      }
+    }
+
     const licensedFortis=NIKL_27_ADNOMINAL_PHRASES.get(phraseKey);
     if(licensedFortis===rightOnset&&rewriteFortisOnset(next,licensedFortis,'adnominal-r-fortition-§27')){
       addRule(lastTrace(previous),'adnominal-r-fortition-§27');
