@@ -80,3 +80,15 @@ test('diagnostic: summarize per-eojeol outcomes across all 165 adversarial corpo
     topUnresolved:problematic.slice(0,25).map(row=>({...row,issues:[...row.issues].slice(0,2)}))
   }));
 });
+
+test('corpus prose avoids malformed suffix attachment in example descriptions', () => {
+  const checks = [
+    ['03-palatalization-boundaries.txt', '맏이의 동생'],
+    ['08-inflection-and-morphology.txt', '밝혀서의 발음'],
+    ['12-minimal-contrasts-and-negative-controls.txt', '없으며를 단순히']
+  ];
+  for (const [file, phrase] of checks) {
+    const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
+    assert.ok(!source.includes(phrase), file + ': malformed example phrase must not recur');
+  }
+});
