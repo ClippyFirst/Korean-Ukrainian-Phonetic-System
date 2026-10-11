@@ -17,7 +17,7 @@ test('corpus-discovered morphology repairs have NIKL or standard-rule evidence',
   },
   "홑이불을": {
     "surface": "혼니부를",
-    "target": "хоннібурил",
+    "target": "гоннібурил",
     "ipa": "hon ni bu ɾɯl",
     "source": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317202"
   },
