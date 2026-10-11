@@ -4,7 +4,7 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **582** rows; **1** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **582** rows; **0** rows meet the audit filter.
 
 ## Source-type counts
 
@@ -47,7 +47,7 @@ Nine further rows now have explicit rule traces: `빗고` (§§9, 23), `넓지�
 
 As of this audit pass, **all 79 records in the original review queue have been resolved or explicitly reclassified**. The final fifteen records were handled as follows: `발음의` now has §§5 and 13 plus a stored [바르메] variant; `설명했어요` (§13), `딸이` (§13), `흙을` (§14), `밟으며` (§14), `낡은` (§14), `놓인` (§12), `밟았습니다` (§§9, 14, 18, 23), `맑은` (§14), `있었고` (§§9, 13, 23), `웃었고` (§§9, 13, 23), and `넓어졌다는` (§§9, 14, 23) now have rule traces. `발음과` is a lexical-source control backed by the official Basic Korean Dictionary; `차이를` and `자세히` are baseline controls. The `넓어졌다는` trace is explicitly marked compositional and indirectly attested rather than presented as a quoted dictionary form.
 
-The queue contains one row whose official lexical evidence is clear but whose note does not explicitly map the case to a numbered article. This does **not** mean the entire pronunciation engine or every Ukrainian/IPA mapping has been independently expert-validated.
+The queue is empty because every remaining row either has an explicit article mapping or is tagged as a baseline, corpus, or lexical-source control for which an article mapping is not applicable. This does **not** mean the entire pronunciation engine or every Ukrainian/IPA mapping has been independently expert-validated.
 
 ## Required handling
 
@@ -61,7 +61,6 @@ The queue contains one row whose official lexical evidence is clear but whose no
 
 | Input | Existing official source | Current note (preserved verbatim) | Next action |
 |---|---|---|---|
-| 홑이불을 | [NIKL Q&A](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317202) | NIKL directly confirms 홑이불 [혼니불]; particle 을 links to the final ㅜ as [부를]. Ukrainian target is provisional. | Add explicit article mapping for ㄴ insertion, nasal assimilation, and liaison, without asserting a disputed rule order. |
 
 ## Tricky-passage morphology matrix follow-up
 
