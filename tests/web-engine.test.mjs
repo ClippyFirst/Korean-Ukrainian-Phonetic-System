@@ -371,7 +371,7 @@ test('몇 리 keeps the ㄷ+ㄹ analysis explicitly labelled as a project infere
 
 test('liquid assimilation is preserved when a lexical override elsewhere activates word splitting',()=>{
   const nasalLiquid=engine.convert('신 라면 문법');
-  assert.equal(nasalLiquid.ukrainian,'шіл ламйон мунпоп');
+  assert.equal(nasalLiquid.ukrainian,'шіл ламйон мунпоп',JSON.stringify({ipa:nasalLiquid.ipa,trace:nasalLiquid.trace.map(item=>({source:item.source,output:item.output,ipa:item.ipa,rules:item.rules}))}));
   assert.equal(nasalLiquid.ipa,'ɕil la mjʌn mun p͈ʌp̚');
   assert.ok(nasalLiquid.trace.find(item=>item.source==='신').rules.includes('liquid-assimilation'));
   assert.ok(nasalLiquid.trace.find(item=>item.source==='라').rules.includes('liquid-assimilation'));
