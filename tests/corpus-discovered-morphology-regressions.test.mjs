@@ -66,6 +66,8 @@ test('corpus-discovered source-backed and rule-derived pronunciation cases are r
     "헛웃음처럼": ['허두슴처럼','허두슴처럼','годусимчором','hʌ du sɯm tɕʰʌ ɾʌm'],
     "확정값을": ['확쩡갑쓸','확쩡갑쓸','гвакччонкапссил','hwak̚ tɕ͈ʌŋ kap̚ s͈ɯl'],
     "흙이": ['흘기','흘기','гилґі','hɯl ɡi'],
+    "늙게": ['늘께','늘께','нилке','nɯl k͈e'],
+    "늙고": ['늘꼬','늘꼬','нилко','nɯl k͈o'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, _surfaceAgain, target, ipa]] of Object.entries(expected)) {

@@ -41,7 +41,7 @@ test('§§11 and 14 exact sourced complex-coda liaison remains stable for 읽어
 test('morphology-dependent complex-coda and ㄺ-before-ㄱ cases fail closed without lexical evidence', () => {
   // These are deliberately not guessed from adjacent Hangul blocks alone.
   // Add an exact form only after confirming the reading against NIKL/dictionary evidence.
-  const unresolved = ['얇은', '긁고', '늙고', '굵고', '놓아라'];
+  const unresolved = ['얇은', '긁고', '굵고', '놓아라'];
   for (const input of unresolved) {
     assert.ok(!entries.has(input), input + ': do not silently add an unsourced override');
     const result = engine.convert(input);
@@ -52,11 +52,18 @@ test('morphology-dependent complex-coda and ㄺ-before-ㄱ cases fail closed wit
   }
 });
 
-test('known exact forms and morphology-ambiguous lookalikes are treated differently', () => {
+test('NIKL-attested 늙고 is resolved exactly while other lookalikes remain guarded', () => {
+  const row = entries.get('늙고');
+  assert.ok(row, 'NIKL directly attests 늙고[늘꼬]');
+  assert.ok(row.source_url.startsWith('https://www.korean.go.kr/'), 'official NIKL source URL');
+  assert.equal(engine.convert('늙고').surfaceHangul, '늘꼬');
+  assert.equal(engine.convert('늙고').ukrainian, 'нилко');
+  assert.equal(engine.convert('늙고').ipa, 'nɯl k͈o');
+
   assert.equal(engine.convert('읽어').surfaceHangul, '일거');
   assert.equal(engine.convert('헛웃음').surfaceHangul, '허두슴');
 
-  for (const input of ['긁고', '늙고', '굵고', '놓아라']) {
+  for (const input of ['긁고', '굵고', '놓아라']) {
     const result = engine.convert(input);
     assert.ok(
       result.ukrainian.includes('⟦') || result.issues.length > 0,
