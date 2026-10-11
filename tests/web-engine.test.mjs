@@ -9,6 +9,7 @@ const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const csv=fs.readFileSync(path.join(root,'data/korean/canonical_correspondence.csv'),'utf8');
 const lexicalCsv=fs.readFileSync(path.join(root,'data/korean/lexical_pronunciations.csv'),'utf8');
 const engine=createEngine(csv,lexicalCsv);
+const genericEngine=createEngine(csv,'');
 
 test('modern Hangul decomposition',()=>{assert.deepEqual(decompose('가'),{char:'가',onset:'ㄱ',vowel:'ㅏ',coda:'',hasCoda:false});assert.deepEqual(decompose('각'),{char:'각',onset:'ㄱ',vowel:'ㅏ',coda:'ㄱ',hasCoda:true});});
 test('canonical CV/CVC output',()=>{assert.equal(engine.convert('가').ukrainian,'ка');assert.equal(engine.convert('각').ukrainian,'как');assert.equal(engine.convert('한').ukrainian,'ган');});
@@ -29,8 +30,8 @@ test('simple ㅈ plus ㅎ aspirates to ㅊ rather than the final representative 
 test('palatalization uses a sourced exact-form entry and provisional Ukrainian target',()=>{const r=engine.convert('같이');assert.equal(r.ukrainian,'качі');assert.equal(r.ipa,'ka tɕʰi');assert.equal(r.status,'lexical-review');assert.ok(r.trace.some(x=>x.rules.includes('lexical-pronunciation')));});
 test('simple liaison is contextual',()=>{const r=engine.convert('밥이');assert.equal(r.status,'contextual');assert.equal(r.ukrainian,'пабі');});
 test('standard lexical ㄼ exception 밟- is preserved before consonants',()=>{const r=engine.convert('밟는');assert.equal(r.ukrainian,'памнин');assert.ok(r.trace[0].rules.includes('lexical-coda-balm'));});
-test('standard lexical ㄼ exceptions 넓죽- and 넓둥글- are preserved before fortition',()=>{const a=engine.convert('넓죽하다');assert.ok(a.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(a.trace[1].rules.includes('tensification'));const b=engine.convert('넓둥글다');assert.ok(b.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(b.trace[1].rules.includes('tensification'));});
-test('tensification remains practical rather than mandatory doubling',()=>{const r=engine.convert('국밥');assert.equal(r.ukrainian,'кукпап');assert.ok(r.trace.some(x=>x.rules.includes('tensification')));});
+test('standard lexical ㄼ exceptions 넓죽- and 넓둥글- are preserved before fortition',()=>{const a=genericEngine.convert('넓죽하다');assert.ok(a.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(a.trace[1].rules.includes('tensification'));const b=genericEngine.convert('넓둥글다');assert.ok(b.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(b.trace[1].rules.includes('tensification'));});
+test('tensification remains practical rather than mandatory doubling',()=>{const r=genericEngine.convert('국밥');assert.equal(r.ukrainian,'кукпап');assert.ok(r.trace.some(x=>x.rules.includes('tensification')));});
 test('sourced NIKL tense examples are available in the lexical layer',()=>{for(const w of ['앉고','넓게','갈등','문고리']){const r=engine.convert(w);assert.equal(r.status,'lexical-review',w);assert.ok(r.trace.some(x=>x.rules.includes('lexical-pronunciation')),w);}});
 test('sourced tensification outputs preserve Korean surface IPA and provisional Ukrainian targets',()=>{for(const [word,surface,ua,ipa] of [['넓게','널께','нолке','nʌl k͈e'],['갈등','갈뜽','калтин','kal t͈ɯŋ'],['문고리','문꼬리','мункорі','mun k͈o ɾi'],['젊지','점찌','чомчі','tɕʌːm tɕ͈i'],['훑소','훌쏘','гулсо','hul s͈o']]){const r=engine.convert(word);assert.equal(r.surfaceHangul,surface,word);assert.equal(r.ukrainian,ua,word);assert.equal(r.ipa,ipa,word);assert.equal(r.status,'lexical-review',word);}});
 test('official NIKL §27 attached-ending fortition examples are lexically covered',()=>{
