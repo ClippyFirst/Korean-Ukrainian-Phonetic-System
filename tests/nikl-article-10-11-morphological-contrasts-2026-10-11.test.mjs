@@ -69,5 +69,6 @@ test('§10–11 exact morphology evidence identifies its official rule and sourc
     assert.match(row.source_url, officialSource, word);
     assert.match(row.rule_notes, /제10항|제11항|§10|§11/u, word + ': notes must name the relevant article');
   }
+  assert.match(rows.get('밟으니').rule_notes, /§14/u, '밟으니 uses complex-coda liaison under §14, not a §10–11 mapping');
 });
 
