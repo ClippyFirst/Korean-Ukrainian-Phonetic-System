@@ -18,7 +18,7 @@ test('obstruent coda before ㄹ triggers ㄹ-to-ㄴ and nasal assimilation', () 
 
 test('서울역 applies §29 n-insertion and retains the coda ㄹ', () => {
   const result = engine.convert('서울역');
-  assert.equal(result.ukrainian, 'соуллйок');
+  assert.equal(result.ukrainian, 'соулльок');
   assert.match(result.ipa, /sʌ ul ljʌk̚/);
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
 });
@@ -73,7 +73,7 @@ test('the complete official institution name uses its sourced standard surface f
 test('unlicensed spelling-only palatalization is withheld instead of guessed', () => {
   const result = engine.convert('갇이');
   assert.equal(result.status, 'unresolved');
-  assert.equal(result.ukrainian, '⟦갇⟧⟦이⟧');
+  assert.equal(result.ukrainian, '');
   assert.ok(result.issues.some((issue) => issue.includes('verified formal-morpheme boundary')));
   assert.ok(result.trace.every((item) => !item.rules.includes('palatalization')));
 });
@@ -176,7 +176,7 @@ test('unknown complex-coda liaison is unresolved rather than guessed as §14', (
   for (const word of ['넋어', '값어']) {
     const result = engine.convert(word);
     assert.equal(result.status, 'unresolved', word);
-    assert.ok(result.ukrainian.includes('⟦'), word);
+    assert.ok(!result.ukrainian.includes('⟦') && !result.ukrainian.includes('⟧'), word);
     assert.ok(result.issues.some((issue) => issue.includes('complex-coda liaison differs')), word);
     assert.ok(result.trace.some((item) => item.rules.includes('complex-coda-liaison-requires-morphology')), word);
   }
@@ -215,7 +215,7 @@ test('§14 every enumerated complex-coda liaison example has an independently pi
 test('simple codas with §15-sensitive representatives are not transferred blindly', () => {
   const result = engine.convert('옷어');
   assert.equal(result.status, 'unresolved');
-  assert.ok(result.ukrainian.includes('⟦옷⟧'));
+  assert.ok(!result.ukrainian.includes('⟦') && !result.ukrainian.includes('⟧'));
   assert.ok(result.issues.some((issue) => issue.includes('coda representative changes under §15')));
   assert.ok(result.trace.some((item) => item.rules.includes('substantive-morpheme-liaison-requires-morphology')));
 });
@@ -273,7 +273,7 @@ test('official §12 complex-coda + ㅎ examples use exact lexical evidence', () 
 test('unknown complex-coda + ㅎ does not inherit the suffix-aspiration pattern', () => {
   const result = engine.convert('넋하고');
   assert.equal(result.status, 'unresolved');
-  assert.ok(result.ukrainian.includes('⟦넋⟧'));
+  assert.ok(!result.ukrainian.includes('⟦') && !result.ukrainian.includes('⟧'));
   assert.ok(result.issues.some((issue) => issue.includes('§12 complex-coda + ㅎ aspiration depends')));
   assert.ok(result.trace.some((item) => item.rules.includes('complex-coda-h-aspiration-requires-morphology')));
 });
