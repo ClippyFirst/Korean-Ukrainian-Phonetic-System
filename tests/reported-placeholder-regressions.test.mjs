@@ -123,7 +123,7 @@ test('the other reported palatalization forms remain covered, including a whole 
 
 test('§14 NIKL complex-coda liaison examples preserve official particle readings', () => {
   const cases = [
-    ['품삯이', '품싹씨', 'пум|сак|ші', 'pʰum|s͈ak̚|s͈i'],
+    ['품삯이', '품싹씨', 'пум|сак|ші', 'pʰum|s͈ak̚|ɕ͈i'],
     ['품삯을', '품싹쓸', 'пум|сак|сил', 'pʰum|s͈ak̚|s͈ɯl'],
     ['품삯으로', '품싹쓰로', 'пум|сак|си|ро', 'pʰum|s͈ak̚|s͈ɯ|ɾo'],
     ['외곬에', '외골쎄', 'ве|ґол|се', 'ø|ɡol|s͈e'],
@@ -145,6 +145,8 @@ test('§14 NIKL complex-coda liaison examples preserve official particle reading
     assert.equal(result.surfaceHangul, surface, `${input}: engine surface`);
     assert.equal(result.ukrainian, target.split('|').join(''), `${input}: Ukrainian target`);
     assert.equal(result.ipa, ipa.split('|').join(' '), `${input}: IPA`);
+    assert.equal(result.status, 'lexical-review', `${input}: provisional Ukrainian mapping remains visibly reviewable`);
+    assert.ok(result.trace.some(item => item.rules.includes('ukrainian-target-provisional')), `${input}: trace flags provisional target`);
     assert.ok(!result.ukrainian.includes('⟦'), `${input}: unresolved target placeholder`);
     assert.deepEqual(result.issues, [], `${input}: engine issues`);
   }
