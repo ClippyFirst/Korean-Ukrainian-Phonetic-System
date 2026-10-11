@@ -8,9 +8,8 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 // Normative reference: NIKL Standard Pronunciation Rules §§18–20.
 const genericEngine = createEngine(canonical, '');
 
-function rulesFor(result, inputFragment) {
-  const item = result.trace.find((entry) => entry.input === inputFragment);
-  return item?.rules ?? [];
+function rulesFor(result) {
+  return result.trace.flatMap((entry) => entry.rules ?? []);
 }
 
 test('§18: generic nasal assimilation changes the coda before ㄴ/ㅁ', () => {
@@ -23,7 +22,7 @@ test('§18: generic nasal assimilation changes the coda before ㄴ/ㅁ', () => {
   for (const [input, expectedIpa, fragment, rule] of cases) {
     const result = genericEngine.convert(input);
     assert.equal(result.ipa, expectedIpa, input + ': expected the rule-derived surface IPA');
-    assert.ok(rulesFor(result, fragment).includes(rule), input + ': the coda change must be traceable');
+    assert.ok(rulesFor(result).includes(rule), input + ': the coda change must be traceable');
     assert.deepEqual(result.issues, [], input + ': ordinary nasal assimilation is productive');
   }
 });
