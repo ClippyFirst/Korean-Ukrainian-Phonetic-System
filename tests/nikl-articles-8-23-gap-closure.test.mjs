@@ -157,7 +157,7 @@ test('§21 all seven official place-assimilation negative controls keep their ex
   for (const [word, [surface, ipa]] of Object.entries(examples)) {
     const row = entries.get(word);
     assert.ok(row, '§21 missing official negative control: ' + word);
-    assert.match(row.source_url, /^https:\/\/(www\\.|m\\.)?korean\\.go\\.kr\//u, word + ': NIKL source');
+    assert.match(row.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u, word + ': NIKL source');
     assert.equal(row.surface_hangul, surface, word + ': source surface');
     assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word + ': source IPA');
     const result = engine.convert(word);
