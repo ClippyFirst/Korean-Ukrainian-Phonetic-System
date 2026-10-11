@@ -59,7 +59,7 @@ test('corpus-discovered morphology repairs have official Standard Pronunciation 
   },
   "짧아지는": {
     "surface": "짤바지는",
-    "target": "тччалбаджінин",
+    "target": "ччалбаджінин",
     "ipa": "tɕ͈al ba dʑi nɯn",
     "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
   },
