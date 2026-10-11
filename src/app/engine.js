@@ -480,9 +480,43 @@ export function createEngine(csv,lexiconCsv=''){
   return{convert:function(text){return convertText(text,map,lexicon)},decompose};
 }
 
+// Canonical second stage: Ukrainian output is rendered from the generated IPA,
+// never independently from Hangul jamo. Longest-match tokenization preserves
+// Korean phonetic contrasts that matter to the project target (e.g. ɡ/ k,
+// dʑ/tɕ, ɕ/s, and coda unreleased stops).
+const IPA_TO_UKRAINIAN = [
+  ['tɕ͈','ч'],['tɕʰ','ч'],['tɕ','ч'],['dʑ','дж'],['ɕ͈','ш'],['ɕ','ш'],
+  ['k͈','к'],['t͈','т'],['p͈','п'],['s͈','с'],
+  ['kʰ','к'],['tʰ','т'],['pʰ','п'],['k̚','к'],['t̚','т'],['p̚','п'],
+  ['ɰi','ий'],['jʌ','йо'],['jɛ','є'],['ja','я'],['je','є'],['jo','йо'],['ju','ю'],
+  ['wa','ва'],['wɛ','ве'],['wʌ','во'],['we','ве'],['aː','а'],
+  ['ɡ','ґ'],['k','к'],['g','ґ'],['t','т'],['d','д'],['p','п'],['b','б'],
+  ['n','н'],['m','м'],['ŋ','н'],['ɾ','р'],['l','л'],['h','г'],
+  ['s','с'],['a','а'],['ɛ','е'],['ʌ','о'],['e','е'],['o','о'],['u','у'],
+  ['ɯ','и'],['i','і'],['ø','ве'],['y','ві'],['w','в'],['j','й']
+].sort((a,b)=>b[0].length-a[0].length);
+
+function ipaSyllableToUkrainian(ipa){
+  let output='';
+  for(let i=0;i<ipa.length;){
+    if(/\\s/u.test(ipa[i])){i++;continue;}
+    const match=IPA_TO_UKRAINIAN.find(([token])=>ipa.startsWith(token,i));
+    if(!match)return {text:'',unknown:ipa.slice(i)};
+    output+=match[1];
+    i+=match[0].length;
+  }
+  return {text:output,unknown:''};
+}
+
+function ipaSyllablesToUkrainian(ipaSyllables){
+  const mapped=ipaSyllables.map(ipaSyllableToUkrainian);
+  return {syllables:mapped.map(item=>item.text),unknown:mapped.find(item=>item.unknown)?.unknown||''};
+}
+
 function lexicalResult(text,entry){
-  const targets=entry.target_syllables.split('|');
   const ipas=entry.ipa_syllables.split('|');
+  const mappedTargets=ipaSyllablesToUkrainian(ipas);
+  const targets=mappedTargets.syllables;
   if(entry.input_kind==='mixed-script'){
     // Mixed-script exact keys can include official phrase examples such as
     // "3 연대". Preserve source whitespace in the Ukrainian output while
@@ -521,7 +555,7 @@ function lexicalResult(text,entry){
   const targetReview=entry.target_status==='provisional';
   const variants=entry.alternate_surface_hangul? [{
     surface:entry.alternate_surface_hangul,
-    ukrainian:(entry.alternate_target_syllables||'').split('|').join(''),
+    ukrainian:ipaSyllablesToUkrainian((entry.alternate_ipa_syllables||'').split('|')).syllables.join(''),
     ipa:(entry.alternate_ipa_syllables||'').split('|').join(' '),
     note:entry.variant_note||'',
     status:targetReview?'lexical-review':'lexical'
@@ -691,7 +725,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     analysis[i]=original.char+' = '+original.onset+'+'+original.vowel+(original.coda?'+'+original.coda:'');
     if(u.__palatalizationUnlicensed){
       if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a verified formal-morpheme boundary; add a sourced lexical entry or morphological license.');
-      output[i]='⟦'+u.char+'⟧';
+      output[i]='';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
@@ -763,19 +797,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     // A coda ㄹ resyllabified into the next onset stays lateral [l];
     // it must not be reinterpreted as the intervocalic tap [ɾ] (e.g. 서울역).
     const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
-    const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis,liquid);
     const traceRules=[...applied];
     if(contextualUi)traceRules.push('vowel-ui-to-i');
     if(defaultUi)traceRules.push('vowel-ui-default-ɰi');
     if(voiced)traceRules.push('contextual-voicing');
     if(fortis)traceRules.push('tensification');
     if(liquid&&!traceRules.includes('liquid-assimilation'))traceRules.push('liquid-assimilation');
-    if(!outOnset&&onset!=='ㅇ'){issues.push(u.char+': no Ukrainian onset target');status='unresolved';}
-
     u.__effectiveCoda=u.coda;
-    const outCoda=mapCoda(map,u.coda);
-    const out=outOnset+vowel+outCoda;
-    output[i]=out;
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
     const vowelIpa=defaultUi?'ɰi':(v?.ipa||'');
@@ -796,7 +824,15 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
       if(fortisIpa)unitIpa=fortisIpa+vowelIpa+(c?.ipa||'');
     }
     ipa[i]=unitIpa;
-    trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:out,ipa:unitIpa};
+    const targetFromIpa=ipaSyllableToUkrainian(unitIpa);
+    if(targetFromIpa.unknown){
+      issues.push(u.char+': IPA segment has no Ukrainian mapping: '+targetFromIpa.unknown);
+      output[i]='';
+      status='unresolved';
+    }else{
+      output[i]=targetFromIpa.text;
+    }
+    trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa};
   }
 
   const status=issues.length?'unresolved':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
