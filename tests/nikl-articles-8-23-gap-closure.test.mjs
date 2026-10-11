@@ -107,14 +107,22 @@ test('§11 exact ㄺ-before-ㄱ exceptions and §18 nasalization example are sou
 
 test('§12 aspiration and §10/§20 exception chains remain algorithmic without lexical overrides', () => {
   const aspiration = {
-    '각하':'kʰ','좋던':'tʰ','쌓지':'tɕʰ','않던':'tʰ','닳지':'tɕʰ',
-    '먹히다':'kʰ','맏형':'tʰ','좁히다':'pʰ','꽂히다':'tɕʰ',
-    '놓고':'kʰ','많고':'kʰ',
+    '각하':'ka kʰa',
+    '좋던':'tɕo tʰʌn',
+    '쌓지':'s͈a tɕʰi',
+    '않던':'an tʰʌn',
+    '닳지':'tal tɕʰi',
+    '먹히다':'mʌ kʰi da',
+    '맏형':'ma tʰjʌŋ',
+    '좁히다':'tɕo pʰi da',
+    '꽂히다':'k͈o tɕʰi da',
+    '놓고':'no kʰo',
+    '많고':'man kʰo',
   };
-  for (const [word, marker] of Object.entries(aspiration)) {
+  for (const [word, expectedIpa] of Object.entries(aspiration)) {
     const result = genericEngine.convert(word);
     assert.equal(result.issues.length, 0, word);
-    assert.ok(result.ipa.includes(marker), word + ': expected aspiration marker ' + marker);
+    assert.equal(result.ipa, expectedIpa, word + ': exact ordered aspiration IPA');
     assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration')), word);
   }
   const complexCodaH = engine.convert('밝히다');
