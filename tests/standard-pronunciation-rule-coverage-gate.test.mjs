@@ -8,7 +8,7 @@ const officialSource = 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?r
 
 function articleNumbersInTitle(title) {
   const found = new Set();
-  for (const match of title.matchAll(/§{1,2}\s*(\d+)(?:\s*[–-]\s*(\d+))?/gu)) {
+  for (const match of title.matchAll(/§{1,2}\s*(\d+)(?:\s*[–-]\s*§{0,2}\s*(\d+))?/gu)) {
     const first = Number(match[1]);
     const last = Number(match[2] || match[1]);
     for (let n = first; n <= last; n++) found.add(n);
