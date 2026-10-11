@@ -72,7 +72,7 @@ test('every lexical row has valid provenance, explicit confidence/status, and al
 test('dictionary-attested 얇은 is resolved exactly while unknown morphology still fails closed', () => {
   const thin = entries.get('얇은');
   assert.ok(thin, 'NIKL dictionary directly lists 얇은[얄븐]');
-  assert.match(thin.source_url, /^https:\/\/krdict\\.korean\\.go\\.kr\//u);
+  assert.match(thin.source_url, /^https:\/\/krdict\.korean\.go\.kr\//u);
   assert.equal(engine.convert('얇은').surfaceHangul, '얄븐');
   const unresolved = ['긁고', '굵고', '놓아라'];
   for (const input of unresolved) {
