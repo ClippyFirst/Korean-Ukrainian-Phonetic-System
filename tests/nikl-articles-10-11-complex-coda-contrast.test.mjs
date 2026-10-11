@@ -7,7 +7,7 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const entries = new Map(parseCsv(lexical).map((row) => [row.input, row]));
 const engine = createEngine(canonical, lexical);
-const officialSource = /^https:\/\/(www\\.|m\\.)?korean\\.go\\.kr\//u;
+const officialSource = /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u;
 
 test('§10–11 official complex-coda examples preserve the standard distinction between coda simplification and ㄺ-before-ㄱ', () => {
   const expected = {
