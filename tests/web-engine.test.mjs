@@ -510,6 +510,6 @@ test('phrase-boundary trace stays silent when a lexical target does not match th
   assert.equal(nasal.ukrainian,'ку мун');
   assert.ok(!nasal.trace.some(unit=>unit.rules.includes('nasal-assimilation')));
   const liquid=guarded.convert('국 라면');
-  assert.equal(liquid.ukrainian,'ку намен');
+  assert.equal(liquid.ukrainian,'ку намйон');
   assert.ok(!liquid.trace.some(unit=>unit.rules.includes('liquid-to-nasal-before-obstruent')));
 });
