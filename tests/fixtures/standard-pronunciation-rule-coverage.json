@@ -118,7 +118,7 @@
       "status": "verified",
       "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "caseIds": [
-        "A13-1:tests/nikl-pronunciation-regression.test.mjs#sourced §13 simple-coda examples preserve their formal-morpheme readings"
+        "A13-1:tests/nikl-pronunciation-regression.test.mjs#§13 all enumerated simple-coda liaison examples have pinned surfaces and IPA"
       ],
       "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
