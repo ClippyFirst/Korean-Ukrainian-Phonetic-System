@@ -26,7 +26,7 @@ const derivedRegressions = [
   ['좋아도', '조아도', 'чо|а|до', 'tɕoː|a|do', '§12(4)', null],
   ['맑을', '말글', 'мал|ґил', 'mal|ɡɯl', '§14', null],
   ['없었다', '업썯따', 'оп|сот|та', 'ʌp̚|s͈ʌt̚|t͈a', '§14', '§23'],
-  ['각하', '가카', 'ка|ка', 'ka|kʰa', '§12 붙임 1', null],
+  ['각하', '가카', 'ка|ка', 'ka|kʰa', '제12항 붙임 1', null],
 ];
 
 test('reported complex-coda forms have exact official source attestations', () => {
