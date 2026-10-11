@@ -31,8 +31,8 @@ test('all mixed-script and phrase lexical entries preserve their source spacing 
     const targets = row.target_syllables.split('|');
     let expected = '';
     let targetIndex = 0;
-    for (const token of (row.input.match(/\\s+|[^\\s]+/gu) || [])) {
-      if (/^\\s+$/u.test(token)) {
+    for (const token of (row.input.match(/\s+|[^\s]+/gu) || [])) {
+      if (/^\s+$/u.test(token)) {
         expected += token;
         continue;
       }
