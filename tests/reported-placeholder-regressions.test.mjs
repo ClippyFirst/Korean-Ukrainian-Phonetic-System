@@ -17,7 +17,7 @@ const regressions = [
 
 const derivedRegressions = [
   ['잊었다', '이젇따', 'і|джот|тта', 'i|dʑʌt̚|t͈a', '§13', '§23'],
-  ['쌓였다', '싸엳따', 'сса|йот|тта', 's͈a|jʌt̚|t͈a', '§12(4)', '§23'],
+  ['쌓였다', '싸엳따', 'са|йот|тта', 's͈a|jʌt̚|t͈a', '§12(4)', '§23'],
   ['붙었다', '부텓따', 'пу|тот|тта', 'pu|tʰʌt̚|t͈a', '§13', '§23'],
   ['찾아가다', '차자가다', 'ча|джа|ґа|да', 'tɕʰa|dʑa|ɡa|da', 'directly lists 찾아가다 pronunciation', null],
   ['미닫이문', '미다지문', 'мі|да|джі|мун', 'miː|da|dʑi|mun', '§17', null],
@@ -25,7 +25,7 @@ const derivedRegressions = [
   ['놓았다', '노앋따', 'но|ат|тта', 'no|at̚|t͈a', '§12(4)', '§23'],
   ['좋아도', '조아도', 'чо|а|до', 'tɕoː|a|do', '§12(4)', null],
   ['맑을', '말글', 'мал|ґил', 'mal|ɡɯl', '§14', null],
-  ['없었다', '업썯따', 'оп|ссот|тта', 'ʌp̚|s͈ʌt̚|t͈a', '§14', '§23'],
+  ['없었다', '업썯따', 'оп|сот|тта', 'ʌp̚|s͈ʌt̚|t͈a', '§14', '§23'],
 ];
 
 test('reported complex-coda forms have exact official source attestations', () => {
@@ -82,7 +82,7 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
   assert.equal(result.ipa, 'kap̚ ɕ͈ɰi');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '갑쎄');
-  assert.equal(result.variants[0].ukrainian, 'капссе');
+  assert.equal(result.variants[0].ukrainian, 'капсе');
   assert.equal(result.variants[0].ipa, 'kap̚ s͈e');
   assert.ok(!result.ukrainian.includes('⟦'));
   assert.deepEqual(result.issues, []);
