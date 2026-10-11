@@ -121,18 +121,24 @@ test('the other reported palatalization forms remain covered, including a whole 
   }
 });
 
-test('§14 NIKL 품삯 liaison examples preserve all three official particle readings', () => {
+test('§14 NIKL complex-coda liaison examples preserve official particle readings', () => {
   const cases = [
     ['품삯이', '품싹씨', 'пум|ссак|ссі', 'pʰum|s͈ak̚|s͈i'],
     ['품삯을', '품싹쓸', 'пум|ссак|ссил', 'pʰum|s͈ak̚|s͈ɯl'],
     ['품삯으로', '품싹쓰로', 'пум|ссак|сси|ро', 'pʰum|s͈ak̚|s͈ɯ|ɾo'],
+    ['외곬에', '외골쎄', 'ве|ґол|ссе', 'ø|ɡol|s͈e'],
   ];
-  const source = 'https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=309950';
+  const sources = new Map([
+    ['품삯이', 'https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=309950'],
+    ['품삯을', 'https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=309950'],
+    ['품삯으로', 'https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=309950'],
+    ['외곬에', 'https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317229'],
+  ]);
   for (const [input, surface, target, ipa] of cases) {
     const row = entries.get(input);
     assert.ok(row, `${input}: missing NIKL-attested lexical row`);
     assert.equal(row.surface_hangul, surface, `${input}: source-attested Korean surface`);
-    assert.equal(row.source_url, source, `${input}: exact NIKL Q&A source`);
+    assert.equal(row.source_url, sources.get(input), `${input}: exact NIKL Q&A source`);
     assert.equal(row.confidence, 'high', `${input}: source confidence`);
     assert.equal(row.target_status, 'provisional', `${input}: Ukrainian target remains provisional`);
     const result = engine.convert(input);
