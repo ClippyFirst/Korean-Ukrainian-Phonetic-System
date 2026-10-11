@@ -79,7 +79,7 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
   const result = engine.convert('값의');
   assert.equal(result.surfaceHangul, '갑씌');
   assert.equal(result.ukrainian, 'капсси');
-  assert.equal(result.ipa, 'kap̚ s͈ɰi');
+  assert.equal(result.ipa, 'kap̚ ɕ͈ɰi');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '갑쎄');
   assert.equal(result.variants[0].ukrainian, 'капссе');
@@ -149,6 +149,33 @@ test('§14 NIKL complex-coda liaison examples preserve official particle reading
     assert.ok(result.trace.some(item => item.rules.includes('ukrainian-target-provisional')), `${input}: trace flags provisional target`);
     assert.ok(!result.ukrainian.includes('⟦'), `${input}: unresolved target placeholder`);
     assert.deepEqual(result.issues, [], `${input}: engine issues`);
+  }
+});
+
+test('lexical IPA consistently marks fortis sibilants as alveolo-palatal before the j-vowel set', () => {
+  const expected = {
+    '넋이': 'nʌk̚ ɕ͈i',
+    '값이': 'kap̚ ɕ͈i',
+    '말씨': 'maːl ɕ͈i',
+    '몫몫이': 'moŋ mok̚ ɕ͈i',
+    '옷맵시': 'on mɛp̚ ɕ͈i',
+    '일시': 'il ɕ͈i',
+    '얇실하다': 'jal ɕ͈il ha da',
+    '몫이': 'mok̚ ɕ͈i',
+    '곬이': 'kol ɕ͈i',
+    '씌어': 'ɕ͈i ʌ',
+    '끝없이': 'k͈ɯ tʌp̚ ɕ͈i',
+    '없이': 'ʌp̚ ɕ͈i',
+    '빠짐없이': 'p͈a dʑi mʌp̚ ɕ͈i',
+    '값의': 'kap̚ ɕ͈ɰi',
+  };
+  for (const [input, ipa] of Object.entries(expected)) {
+    const row = entries.get(input);
+    assert.ok(row, `${input}: missing lexical evidence row`);
+    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, `${input}: stored broad IPA`);
+    const result = engine.convert(input);
+    assert.equal(result.ipa, ipa, `${input}: engine IPA`);
+    assert.equal(result.status, 'lexical-review', `${input}: provisional mapping remains reviewable`);
   }
 });
 
