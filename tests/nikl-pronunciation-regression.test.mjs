@@ -220,22 +220,30 @@ test('simple codas with §15-sensitive representatives are not transferred blind
   assert.ok(result.trace.some((item) => item.rules.includes('substantive-morpheme-liaison-requires-morphology')));
 });
 
-test('sourced §13 simple-coda examples preserve their formal-morpheme readings', () => {
+test('§13 all enumerated simple-coda liaison examples have pinned surfaces and IPA', () => {
   const expected = {
-    깎아: {surface:'까까', target:'кака', ipa:'k͈a k͈a'},
-    있어: {surface:'이써', target:'ісо', ipa:'i s͈ʌ'},
-    쫓아: {surface:'쪼차', target:'чоча', ipa:'tɕ͈o tɕʰa'},
-    덮어: {surface:'더퍼', target:'топо', ipa:'tʌ pʰʌ'},
-    맞아: {surface:'마자', target:'маджа', ipa:'ma dʑa'},
-    낮아: {surface:'나자', target:'наджа', ipa:'na dʑa'},
-    붙어: {surface:'부터', target:'путо', ipa:'pu tʰʌ'},
+    '깎아': {surface:'까까', target:'кака', ipa:'k͈a k͈a'},
+    '옷이': {surface:'오시', target:'оші', ipa:'o ɕi', targetStatus:'model-selected'},
+    '있어': {surface:'이써', target:'ісо', ipa:'i s͈ʌ'},
+    '낮이': {surface:'나지', target:'наджі', ipa:'na dʑi'},
+    '꽂아': {surface:'꼬자', target:'коджа', ipa:'k͈o dʑa'},
+    '꽃을': {surface:'꼬츨', target:'кочил', ipa:'k͈o tɕʰɯl'},
+    '밭에': {surface:'바테', target:'пате', ipa:'pa tʰe'},
+    '앞으로': {surface:'아프로', target:'апиро', ipa:'a pʰɯ ɾo'},
+    '덮이다': {surface:'더피다', target:'топіда', ipa:'tʌ pʰi da'},
+    '쫓아': {surface:'쪼차', target:'чоча', ipa:'tɕ͈o tɕʰa'},
+    '덮어': {surface:'더퍼', target:'топо', ipa:'tʌ pʰʌ'},
+    '맞아': {surface:'마자', target:'маджа', ipa:'ma dʑa'},
+    '낮아': {surface:'나자', target:'наджа', ipa:'na dʑa'},
+    '붙어': {surface:'부터', target:'путо', ipa:'pu tʰʌ'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
     const entry = rows.find((row) => row.input === word);
     assert.ok(entry, word);
+    assert.match(entry.source_url, /^https:\/\/(?:www\.|m\.|krdict\.)?korean\.go\.kr\//u, word + ': official NIKL source');
     assert.equal(entry.surface_hangul, values.surface, word);
-    assert.equal(entry.target_status, 'provisional', word);
+    assert.equal(entry.target_status, values.targetStatus || 'provisional', word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
