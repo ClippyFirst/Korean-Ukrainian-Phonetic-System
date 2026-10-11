@@ -262,3 +262,18 @@ test('§23 all 20 enumerated NIKL fortition examples have sourced IPA-first lexi
     assert.deepEqual(result.issues, [], input + ': no unresolved engine issue');
   }
 });
+
+test('lexical IPA with an unmapped segment fails closed instead of silently dropping it', () => {
+  const header = lexical.split(/\\r?\\n/u, 1)[0];
+  const synthetic = [
+    header,
+    '가,가,가,☃,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"test-only unknown IPA segment",high,model-selected,,,,,',
+  ].join('\\n');
+  const guardedEngine = createEngine(canonical, synthetic);
+  const result = guardedEngine.convert('가');
+
+  assert.equal(result.status, 'unresolved');
+  assert.match(result.ukrainian, /⟦☃⟧/u, 'the unknown IPA syllable must remain visible');
+  assert.ok(result.issues.some(issue => issue.includes('unmapped segment')), 'the missing mapping must be reported');
+  assert.ok(result.trace.some(item => item.status === 'unresolved' && item.rules.includes('ipa-to-ukrainian-unmapped-segment')));
+});
