@@ -151,7 +151,7 @@ test('§23 every listed fortition example has its exact expected IPA, not merely
     '솥전': 'sot̚ tɕ͈ʌn',
     '곱돌': 'kop̚ t͈ol',
     '덮개': 'tʌp̚ k͈ɛ',
-    '옆집': 'jʌp̚ tɕ͈ip',
+    '옆집': 'jʌp̚ tɕ͈ip̚',
     '넓죽하다': 'nʌp̚ tɕ͈u kʰa da',
     '읊조리다': 'ɯp̚ tɕ͈o ɾi da',
     '값지다': 'kap̚ tɕ͈i da',
