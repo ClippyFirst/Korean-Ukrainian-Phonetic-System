@@ -44,12 +44,12 @@ test('ordered-rule chains remain visible in surface-only source controls', () =>
 test('contextual rules never assimilate across punctuation', () => {
   const comma = engine.convert('국,물');
   assert.equal(comma.issues.length, 0);
-  assert.equal(comma.ipa, 'kuk̚, mul');
+  assert.equal(comma.ipa, 'kuk̚,mul');
   assert.ok(!comma.trace.flatMap((entry) => entry.rules || []).includes('nasal-assimilation'));
 
   const fullStop = engine.convert('국.물');
   assert.equal(fullStop.issues.length, 0);
-  assert.equal(fullStop.ipa, 'kuk̚. mul');
+  assert.equal(fullStop.ipa, 'kuk̚.mul');
   assert.ok(!fullStop.trace.flatMap((entry) => entry.rules || []).includes('nasal-assimilation'));
 });
 
