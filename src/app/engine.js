@@ -494,6 +494,23 @@ function ipaSyllablesToUkrainian(ipaSyllables){
   return {syllables:mapped.map(item=>item.text),unknown:mapped.find(item=>item.unknown)?.unknown||''};
 }
 
+function ipaTargetForSource(source,ipa){
+  const ipaUnits=(ipa||'').split(/\s+/u).filter(Boolean);
+  const mapped=ipaSyllablesToUkrainian(ipaUnits);
+  if(mapped.unknown||!ipaUnits.length)return {text:'',syllables:mapped.syllables,unknown:mapped.unknown};
+  if(!/\s/u.test(source||''))return {text:mapped.syllables.join(''),syllables:mapped.syllables,unknown:''};
+  let text='';
+  let targetIndex=0;
+  for(const token of ((source||'').match(/\s+|[^\s]+/gu)||[])){
+    if(/^\s+$/u.test(token)){text+=token;continue;}
+    const count=/^[가-힣]+$/u.test(token)?[...token].length:1;
+    text+=mapped.syllables.slice(targetIndex,targetIndex+count).join('');
+    targetIndex+=count;
+  }
+  text+=mapped.syllables.slice(targetIndex).join('');
+  return {text,syllables:mapped.syllables,unknown:''};
+}
+
 function lexicalResult(text,entry){
   const ipas=entry.ipa_syllables.split('|');
   const mappedTargets=ipaSyllablesToUkrainian(ipas);
@@ -667,12 +684,12 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
       // Re-render every Korean-derived target from that final IPA, so no
       // secondary Hangul/jamo-to-Ukrainian path can diverge from the display.
       for(const result of results){
-        const ipaUnits=(result.ipa||'').split(/\s+/u).filter(Boolean);
-        const rendered=ipaSyllablesToUkrainian(ipaUnits);
-        if(!rendered.unknown&&ipaUnits.length){
-          result.ukrainian=rendered.syllables.join('');
+        const rendered=ipaTargetForSource(result.source||'',result.ipa||'');
+        if(!rendered.unknown&&rendered.syllables.length){
+          result.ukrainian=rendered.text;
           result.trace=result.trace.map(item=>{
             if(item.status==='literal')return item;
+            if(item.source===result.source&&/\s/u.test(result.source||''))return {...item,output:result.ukrainian};
             const mapped=ipaSyllableToUkrainian(item.ipa||'');
             return mapped.unknown?item:{...item,output:mapped.text};
           });
