@@ -13,7 +13,7 @@ test('practical targets do not duplicate Korean fortisness as doubled Ukrainian 
   const expected = {
     '밝다': 'пак|та',
     '넓고': 'нол|ко',
-    '넓습니다': 'нол|сим|ни|да',
+    '넓습니다': 'нол|сим|ні|да',
     '읊다': 'ип|та',
     '읊고': 'ип|ко',
     '앉고': 'ан|ко',
@@ -111,8 +111,8 @@ test('coda ㄹ uses the declared Ukrainian л target without an added soft sign'
     '들일': 'тил|ліл',
     '얇실하다': 'ял|шіл|га|да',
     '짧다': 'чал|та',
-    '읽거든': 'іл|ко|ден',
-    '넓습니다': 'нол|сим|ни|да',
+    '읽거든': 'іл|ко|дин',
+    '넓습니다': 'нол|сим|ні|да',
     '젖멍울': 'чон|мон|ул',
     '꽃망울': 'кон|ман|ул',
     '밥물': 'пам|мул',
@@ -163,7 +163,7 @@ test('context-sensitive vowel and voicing decisions remain explicit in the lexic
     '값있다': ['ка|біт|та', 'ka|bit̚|t͈a'],
     '할지라도': ['гал|чі|ра|до', 'hal|tɕ͈i|ɾa|do'],
     '불여우': ['пул|льо|у', 'pul|ljʌ|u'],
-    '휘발유': ['гві|пал|льу', 'hwi|pal|lju'],
+    '휘발유': ['гві|пал|лю', 'hwi|pal|lju'],
   };
   for (const [word, [target, ipa]] of Object.entries(expected)) {
     const row = entries.get(word);
