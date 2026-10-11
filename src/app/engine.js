@@ -497,6 +497,7 @@ const IPA_TO_UKRAINIAN = [
 ].sort((a,b)=>b[0].length-a[0].length);
 
 function ipaSyllableToUkrainian(ipa){
+  ipa=ipa.replace(/ː/gu,''); // vowel length is retained in IPA, not duplicated in the Ukrainian target
   let output='';
   for(let i=0;i<ipa.length;){
     if(/\\s/u.test(ipa[i])){i++;continue;}
@@ -611,13 +612,10 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
   return masks.map(mask=>{
     const changed=sites.filter((_,i)=>(mask&(1<<i))!==0);
     const alternateIpa=ipa.slice();
-    const alternateOutput=output.slice();
     for(const site of changed){
       alternateIpa[site.index]=alternateIpa[site.index].replace(site.primary,site.alternate);
-      if(site.targetPrimary&&site.targetAlternate){
-        alternateOutput[site.index]=alternateOutput[site.index].replace(site.targetPrimary,site.targetAlternate);
-      }
     }
+    const alternateOutput=alternateIpa.map(value=>ipaSyllableToUkrainian(value).text);
     const labels=changed.map(site=>{
       if(site.vowel==='ㅚ')return 'ㅚ [we]';
       if(site.vowel==='ㅟ')return 'ㅟ [wi]';
