@@ -52,7 +52,7 @@ test('all three control classes are excluded from the article-mapping queue', ()
   for (const input of ['차이를', '자세히']) {
     assert.match(rows.find((item) => item.input === input).rule_notes, /^Baseline control/u);
   }
-  assert.match(auditText, /contains \*\*613\*\* rows; \*\*0\*\* rows meet the audit filter/u);
+  assert.match(auditText, /contains \*\*616\*\* rows; \*\*0\*\* rows meet the audit filter/u);
 });
 
 test('있었고 does not incorrectly claim nasal assimilation under §18', () => {
