@@ -344,6 +344,7 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     if(!trace||!result.ipa.endsWith(oldIpa)||!trace.ipa.endsWith(oldIpa))return false;
     result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
     trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
+    trace.output=ipaSyllableToUkrainian(trace.ipa).text;
     addRule(trace,rule);
     return true;
   };
@@ -355,6 +356,7 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     if(!trace||!result.ipa.startsWith(oldIpa)||!trace.ipa.startsWith(oldIpa))return false;
     result.ipa=newIpa+result.ipa.slice(oldIpa.length);
     trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
+    trace.output=ipaSyllableToUkrainian(trace.ipa).text;
     addRule(trace,rule);
     return true;
   };
@@ -384,6 +386,7 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     if(!ipa||!trace)return false;
     result.ipa=ipa+(result.ipa||'');
     trace.ipa=ipa+(trace.ipa||'');
+    trace.output=ipaSyllableToUkrainian(trace.ipa).text;
     addRule(trace,rule);
     return true;
   };
