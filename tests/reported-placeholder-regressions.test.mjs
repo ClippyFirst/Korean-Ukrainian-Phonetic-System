@@ -198,7 +198,7 @@ test('Ukrainian rendering is derived from the IPA layer for lexical readings', (
 
 test('difficult passage forms have sourced IPA and render Ukrainian only from that IPA',()=>{
   const cases=[
-    ['읽었다는','il ɡʌt̚ t͈a nɯn','ілґотанин'],
+    ['읽었다는','il ɡʌt̚ t͈a nɯn','ілґоттанин'],
     ['없어서','ʌp̚ s͈ʌ sʌ','опсосо'],
     ['찾았다','tɕʰa dʑa t͈a','чаджата'],
     ['앉히다','an tɕʰi da','анчіда'],
