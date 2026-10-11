@@ -77,7 +77,7 @@ test('corpus-discovered morphology repairs have official Standard Pronunciation 
   },
   "확정값을": {
     "surface": "확쩡갑쓸",
-    "target": "гвактччонкапссил",
+    "target": "гвакччонкапссил",
     "ipa": "hwak̚ tɕ͈ʌŋ kap̚ s͈ɯl",
     "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
   },
