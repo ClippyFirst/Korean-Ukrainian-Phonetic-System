@@ -53,7 +53,7 @@ test('corpus-discovered morphology repairs have official Standard Pronunciation 
   },
   "있었지만": {
     "surface": "이썯찌만",
-    "target": "іссоттччіман",
+    "target": "іссотччіман",
     "ipa": "i s͈ʌt̚ tɕ͈i man",
     "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
   },
