@@ -29,7 +29,7 @@ test('corpus-discovered morphology repairs have NIKL or standard-rule evidence',
   },
   "맑았지만": {
     "surface": "말가찌만",
-    "target": "малґаччіман",
+    "target": "малґатччіман",
     "ipa": "mal ɡa t͈ɕi man",
     "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
   },
@@ -78,7 +78,7 @@ test('corpus-discovered morphology repairs have NIKL or standard-rule evidence',
   "없으므로": {
     "surface": "업쓰므로",
     "target": "опссимиро",
-    "ipa": "ʌp̚ s͈ɯ ɾo",
+    "ipa": "ʌp̚ s͈ɯ mɯ ɾo",
     "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
   },
   "밝혀서": {
