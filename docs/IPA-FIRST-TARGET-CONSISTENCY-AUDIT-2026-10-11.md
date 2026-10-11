@@ -18,7 +18,7 @@ This audit checks **pipeline consistency**, not whether the source IPA or Ukrain
 
 | Measure | Result |
 |---|---:|
-| Primary lexical rows checked | 622 |
+| Primary lexical rows checked | 637 |
 | Alternate readings checked | 44 |
 | Primary IPA/target segment mismatches | 0 |
 | Alternate IPA/target segment mismatches | 0 |
@@ -31,7 +31,7 @@ The test is recorded in `tests/model-wide-target-consistency.test.mjs` as **“a
 - The zero-mismatch result supports the architectural invariant that stored Ukrainian targets are reproducible from the IPA layer; it does not independently validate each Korean surface pronunciation against NIKL.
 - It does not prove that the project's Ukrainian approximation is the only valid or best Ukrainian rendering. These mappings are not prescribed by the Korean standard and must remain labelled according to the row's existing target status.
 - The test oracle intentionally duplicates the declared mapping table. If the production IPA mapper changes, the oracle should be reviewed and updated explicitly rather than automatically importing implementation details that could make the test tautological.
-- The 622-row count is a snapshot. When rows are intentionally added or removed, update the snapshot assertion after reviewing the corpus delta.
+- The 637-row count is a snapshot. When rows are intentionally added or removed, update the snapshot assertion after reviewing the corpus delta.
 
 
 ## Normative coverage follow-up
@@ -41,3 +41,30 @@ A comparison against the official examples quoted in NIKL's §12 guidance found 
 Official NIKL references:
 - [Standard Pronunciation Rule §12, official examples](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002)
 - [NIKL explanation of §12 and coda + ㅎ aspiration](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=303702)
+
+
+## Normative coverage follow-up — §23 fortition examples
+
+The §23 list in the official *표준 발음법* was checked against the lexical inventory. Five of its twenty enumerated examples were already represented; the other fifteen were missing as exact lexical rows. Added source-backed rows for:
+
+- 국밥 [국빱]
+- 깎다 [깍따]
+- 삯돈 [삭똔]
+- 닭장 [닥짱]
+- 칡범 [칙뻠]
+- 뻗대다 [뻗때다]
+- 옷고름 [옫꼬름]
+- 꽃고 [꼳꼬]
+- 꽃다발 [꼳따발]
+- 솥전 [솓쩐]
+- 곱돌 [곱똘]
+- 덮개 [덥깨]
+- 옆집 [엽찝]
+- 넓죽하다 [넙쭈카다]
+- 읊조리다 [읍쪼리다]
+
+The new regression pins all twenty enumerated §23 examples, checks the source-backed Korean surface form and stored IPA, and asserts that the Ukrainian result is generated from IPA. The Korean surface readings are sourced to the official NIKL standard; IPA is the project's broad phonetic rendering, and every Ukrainian target remains marked **provisional**.
+
+This closes the inventory gap for the standard's enumerated §23 examples only. It does not establish exhaustive coverage of every productive fortition environment or every lexical exception.
+
+Official source: [NIKL *표준 발음법*](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002).
