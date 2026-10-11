@@ -27,6 +27,11 @@ test('§12: a simple ㅎ coda aspirates a following plain stop in generic IPA', 
     ['않던', 'an tʰʌn', 'антон'],
     ['닳지', 'tal tɕʰi', 'талчі'],
     ['싫소', 'sil s͈o', 'сілсо'],
+    ['각하', 'ka kʰa', 'кака'],
+    ['먹히다', 'mʌ kʰi da', 'мокіда'],
+    ['맏형', 'ma tʰjʌŋ', 'матйон'],
+    ['입학', 'i pʰak̚', 'іпак'],
+    ['좁히다', 'tɕo pʰi da', 'чопіда'],
   ];
 
   for (const [input, expectedIpa, expectedUkrainian] of cases) {
