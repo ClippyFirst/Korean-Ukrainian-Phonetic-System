@@ -219,3 +219,46 @@ test('difficult passage forms have sourced IPA and render Ukrainian only from th
     assert.deepEqual(result.issues,[],word+': sourced lexical reading resolves the form');
   }
 });
+
+
+test('§23 all 20 enumerated NIKL fortition examples have sourced IPA-first lexical regressions', () => {
+  const cases = [
+    ['국밥', '국빱', 'кук|пап', 'kuk̚|p͈ap̚'],
+    ['깎다', '깍따', 'как|та', 'k͈ak̚|t͈a'],
+    ['넋받이', '넉빠지', 'нок|па|джі', 'nʌk̚|p͈a|dʑi'],
+    ['삯돈', '삭똔', 'сак|тон', 'sak̚|t͈on'],
+    ['닭장', '닥짱', 'так|чан', 'tak̚|tɕ͈aŋ'],
+    ['칡범', '칙뻠', 'чік|пом', 'tɕʰik̚|p͈ʌm'],
+    ['뻗대다', '뻗때다', 'пот|те|да', 'p͈ʌt̚|t͈ɛ|da'],
+    ['옷고름', '옫꼬름', 'от|ко|рим', 'ot̚|k͈o|ɾɯm'],
+    ['있던', '읻떤', 'іт|тон', 'it̚|t͈ʌn'],
+    ['꽃고', '꼳꼬', 'кот|ко', 'k͈ot̚|k͈o'],
+    ['꽃다발', '꼳따발', 'кот|та|пал', 'k͈ot̚|t͈a|pal'],
+    ['낯설다', '낟썰다', 'нат|сол|да', 'nat̚|s͈ʌl|da'],
+    ['밭갈이', '받까리', 'пат|ка|рі', 'pat̚|k͈a|ɾi'],
+    ['솥전', '솓쩐', 'сот|чон', 'sot̚|tɕ͈ʌn'],
+    ['곱돌', '곱똘', 'коп|тол', 'kop̚|t͈ol'],
+    ['덮개', '덥깨', 'топ|ке', 'tʌp̚|k͈ɛ'],
+    ['옆집', '엽찝', 'йоп|чіп', 'jʌp̚|tɕ͈ip'],
+    ['넓죽하다', '넙쭈카다', 'ноп|чу|ка|да', 'nʌp̚|tɕ͈u|kʰa|da'],
+    ['읊조리다', '읍쪼리다', 'ип|чо|рі|да', 'ɯp̚|tɕ͈o|ɾi|da'],
+    ['값지다', '갑찌다', 'кап|чі|да', 'kap̚|tɕ͈i|da'],
+  ];
+  assert.equal(cases.length, 20, 'the standard enumerates 20 §23 example forms');
+  for (const [input, surface, target, ipa] of cases) {
+    const row = entries.get(input);
+    assert.ok(row, input + ': missing exact-word lexical evidence');
+    assert.equal(row.surface_hangul, surface, input + ': NIKL surface form');
+    assert.equal(row.target_syllables, target, input + ': IPA-aligned Ukrainian target');
+    assert.equal(row.ipa_syllables, ipa, input + ': broad IPA');
+    assert.match(row.source_url, /^https:\/\/(?:m\.)?www?\.korean\.go\.kr\//u, input + ': official NIKL source');
+    assert.equal(row.confidence, 'high', input + ': source-backed Korean reading');
+    assert.equal(row.target_status, 'provisional', input + ': Ukrainian target remains provisional');
+    const result = engine.convert(input);
+    assert.equal(result.surfaceHangul, surface, input + ': runtime Korean surface');
+    assert.equal(result.ipa, ipa.split('|').join(' '), input + ': runtime IPA');
+    assert.equal(result.ukrainian, target.split('|').join(''), input + ': Ukrainian must derive from IPA');
+    assert.ok(!result.ukrainian.includes('⟦') && !result.ukrainian.includes('⟧'), input + ': no unresolved marker');
+    assert.deepEqual(result.issues, [], input + ': no unresolved engine issue');
+  }
+});
