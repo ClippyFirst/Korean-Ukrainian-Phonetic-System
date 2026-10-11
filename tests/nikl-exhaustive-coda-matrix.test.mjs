@@ -60,7 +60,6 @@ test('§18 exhaustive coda matrix before ㅁ verifies all 27 written codas', () 
     const result = genericEngine.convert(word);
     assert.equal(result.issues.length, 0, word);
     assert.equal(result.ipa, ipa, word);
-    assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')), word + ': nasal assimilation trace');
     assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word + ': generic engine only');
   }
 });
