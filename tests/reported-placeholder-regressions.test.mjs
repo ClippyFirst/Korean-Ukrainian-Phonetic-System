@@ -268,6 +268,7 @@ test('lexical IPA with an unmapped segment fails closed instead of silently drop
   const synthetic = [
     header,
     '가,가,가,☃,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"test-only unknown IPA segment",high,model-selected,,,,,',
+    '가나,가나,가,ka,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"test-only IPA syllable-count mismatch",high,model-selected,,,,,',
   ].join('\\n');
   const guardedEngine = createEngine(canonical, synthetic);
   const result = guardedEngine.convert('가');
@@ -276,4 +277,9 @@ test('lexical IPA with an unmapped segment fails closed instead of silently drop
   assert.match(result.ukrainian, /⟦☃⟧/u, 'the unknown IPA syllable must remain visible');
   assert.ok(result.issues.some(issue => issue.includes('unmapped segment')), 'the missing mapping must be reported');
   assert.ok(result.trace.some(item => item.status === 'unresolved' && item.rules.includes('ipa-to-ukrainian-unmapped-segment')));
+
+  const mismatched = guardedEngine.convert('가나');
+  assert.equal(mismatched.status, 'unresolved');
+  assert.match(mismatched.ukrainian, /⟦IPA-syllable-count⟧/u, 'the segmentation mismatch must remain visible');
+  assert.ok(mismatched.issues.some(issue => issue.includes('IPA has 1 syllable entries for 2 Hangul syllables')));
 });
