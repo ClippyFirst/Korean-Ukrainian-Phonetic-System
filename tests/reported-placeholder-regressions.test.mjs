@@ -6,7 +6,6 @@ import { createEngine, parseCsv } from '../src/app/engine.js';
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
-const genericEngine = createEngine(canonical, '');
 const entries = new Map(parseCsv(lexical).map(row => [row.input, row]));
 
 const regressions = [
