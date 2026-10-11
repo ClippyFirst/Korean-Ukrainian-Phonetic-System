@@ -10,10 +10,6 @@ const engine = createEngine(canonical, lexical);
 // NIKL §14 official examples, repeated in NIKL Q&A 325622; 몫이 is confirmed by Q&A 335008.
 test('NIKL complex-coda liaison examples resolve without morphological guessing', () => {
   const expected = {
-    '앉아': { surface: '안자', ipa: 'an dʑa' },
-    '곬이': { surface: '골씨', ipa: 'kol s͈i' },
-    '핥아': { surface: '할타', ipa: 'hal tʰa' },
-    '읊어': { surface: '을퍼', ipa: 'ɯl pʰʌ' },
     '넋이': { surface: '넉씨', ipa: 'nʌk̚ s͈i' },
     '앉아': { surface: '안자', ipa: 'an dʑa' },
     '곬이': { surface: '골씨', ipa: 'kol s͈i' },
