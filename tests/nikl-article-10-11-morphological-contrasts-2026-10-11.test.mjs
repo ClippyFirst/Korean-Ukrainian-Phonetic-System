@@ -22,7 +22,7 @@ test('§10–11 morphology contrasts distinguish ㄺ stems, 밟- exception, and 
     '맑고': { surface: '말꼬', ipa: 'mal k͈o', target: 'малко' },
     '밟다': { surface: '밥따', ipa: 'paːp̚ t͈a', target: 'папта' },
     '밟고': { surface: '밥꼬', ipa: 'paːp̚ k͈o', target: 'папко' },
-    '밟으니': { surface: '발브니', ipa: 'pal bɯ ni', target: 'палбини' },
+    '밟으니': { surface: '발브니', ipa: 'pal bɯ ni', target: 'палбині' },
     '넓다': { surface: '널따', ipa: 'nʌl t͈a', target: 'нолта' },
     '넓죽하다': { surface: '넙쭈카다', ipa: 'nʌp̚ tɕ͈u kʰa da', target: 'нопчукада' },
     '넓둥글다': { surface: '넙뚱글다', ipa: 'nʌp̚ t͈uŋ ɡɯl da', target: 'ноптунґилда' },
