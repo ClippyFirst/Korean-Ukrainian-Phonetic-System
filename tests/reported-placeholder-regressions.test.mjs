@@ -70,13 +70,23 @@ test('reported inflections have explicit NIKL rule derivations rather than unsup
   }
 });
 
-test('값의 remains explicitly unresolved until its morphosyntactic and 의-realization alternatives are evidenced', () => {
-  assert.ok(!entries.has('값의'), 'do not force a single surface where the available evidence does not settle the reading');
-  const result = genericEngine.convert('값의');
-  assert.ok(
-    result.ukrainian.includes('⟦') || result.issues.length > 0 || result.status === 'unresolved',
-    'complex-coda liaison and the realization of particle 의 must not be guessed',
-  );
+test('값의 exposes both standard particle readings under NIKL §§5 and 14', () => {
+  const row = entries.get('값의');
+  assert.ok(row, '값의 must have a source-backed variant entry');
+  assert.equal(row.surface_hangul, '갑씌');
+  assert.equal(row.alternate_surface_hangul, '갑쎄');
+  assert.match(row.source_url, /^https:\/\/www\.korean\.go\.kr\/front\/onlineQna\//u);
+  assert.ok(row.rule_notes.includes('§5') && row.rule_notes.includes('§14'));
+  const result = engine.convert('값의');
+  assert.equal(result.surfaceHangul, '갑씌');
+  assert.equal(result.ukrainian, 'капсси');
+  assert.equal(result.ipa, 'kap̚ s͈ɰi');
+  assert.equal(result.variants.length, 1);
+  assert.equal(result.variants[0].surface, '갑쎄');
+  assert.equal(result.variants[0].ukrainian, 'капссе');
+  assert.equal(result.variants[0].ipa, 'kap̚ s͈e');
+  assert.ok(!result.ukrainian.includes('⟦'));
+  assert.deepEqual(result.issues, []);
 });
 
 test('the other reported palatalization forms remain covered, including a whole compound', () => {
