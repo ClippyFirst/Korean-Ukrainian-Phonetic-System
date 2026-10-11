@@ -54,7 +54,7 @@ The §23 list in the official *표준 발음법* was checked against the lexical
 - 칡범 [칙뻠]
 - 뻗대다 [뻗때다]
 - 옷고름 [옫꼬름]
-- 꽃고 [꼳꼬]
+- 꽂고 [꼳꼬]
 - 꽃다발 [꼳따발]
 - 솥전 [솓쩐]
 - 곱돌 [곱똘]
