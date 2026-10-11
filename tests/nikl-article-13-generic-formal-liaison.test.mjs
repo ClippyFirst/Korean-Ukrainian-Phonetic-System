@@ -29,4 +29,5 @@ test('§§13–15: complex-coda liaison stays unresolved without morphological e
   assert.ok(result.issues.some(issue => /complex-coda liaison differs between formal and substantive morphemes/u.test(issue)));
   assert.ok(result.trace.some(item => item.rules.includes('complex-coda-liaison-requires-morphology')));
   assert.ok(result.ukrainian.includes('⟦'), 'uncertain morphology must remain visibly unresolved');
+  assert.ok(result.ipa.includes('⟦IPA-unresolved⟧'), 'IPA must not silently omit a morphology-dependent syllable');
 });
