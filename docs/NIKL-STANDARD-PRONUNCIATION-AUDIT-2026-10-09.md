@@ -48,6 +48,15 @@ The browser engine is intentionally not a full Korean morphological parser. Rule
 | §29 | N-insertion in compounds/derivatives before 이/야/여/요/유; ㄹ + inserted ㄴ becomes ㄹ. NIKL commentary also discusses j-initial diphthongs such as 얘/예 and notes lexical/optional variation. | Every explicit word example in §29 is now represented: 솜이불, 홑이불, 막일, 삯일, 맨입, 꽃잎, 내복약, 한여름, 남존여비, 신여성, 색연필, 직행열차, 늑막염, 콩엿, 담요, 눈요기, 영업용, 식용유, 백분율, 밤윷; listed ㄹ+inserted-ㄴ forms; and 붙임 2 examples including 서른여섯, 스물여섯, 3 연대, 1 연대. Pair-specific phrase licenses cover 한 일, 옷 입다, 먹은 엿, 할 일, 잘 입다, 먹을 엿. No-insertion controls 6·25, 3·1절, 송별연, 등용문 remain. All five explicitly listed optional pairs (이죽이죽, 야금야금, 검열, 욜랑욜랑, 금융) are retained as alternatives; unseen compounds and additional prosodic variants remain open. |
 | §30 | Pronunciation effects of written/underlying saisiot in compounds, including ㄴ/ㄴㄴ insertion patterns. | Corpus covers all examples listed in the standard's three subparts: principal/alternate forms for the ㄱ/ㄷ/ㅂ/ㅅ/ㅈ group, ㄴ realization before ㄴ/ㅁ, and ㄴㄴ insertion before 이 (including 도리깻열 and 뒷윷). Exact lexical data is not a general compound analyzer. |
 
+## Machine-checked article coverage ledger (2026-10-11)
+
+The machine-readable inventory is `tests/fixtures/standard-pronunciation-rule-coverage.json`. It now maps all 30 numbered articles to the official NIKL standard and to existing executable regression files (or this audit document for §1). The coverage-gate test verifies that each evidence path exists, each article has the primary source, evidence IDs are unique, and the status vocabulary is explicit.
+
+- §§2–30 are marked `verified` only in the narrow sense that the official listed examples and the tested contrasts/interactions described below are represented in regression coverage.
+- §1 is marked `not-applicable` to standalone runtime transformation because it is a governing principle, not a phonological rewrite; its consequences are documented in this audit.
+- This is **not** a claim that the browser is a productive morphological analyzer, that every Korean lexical item is covered, or that the Ukrainian output is an official standard. Morphology-dependent unknown forms must remain unresolved unless a source-backed exact entry or licensed rule applies.
+- The CI gate checks that the audit map stays connected to real files; it cannot independently prove that a cited test exhausts a rule. Normative correctness still depends on the case-level expected forms and source review.
+
 ## Regressions added in this pass
 
 The regression suite **tests/nikl-pronunciation-regression.test.mjs** covers:
