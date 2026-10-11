@@ -17,7 +17,7 @@ test('corpus-discovered morphology repairs have official Standard Pronunciation 
   },
   "빠짐없이": {
     "surface": "빠지멉씨",
-    "target": "ппаджімопссі",
+    "target": "ппаджімопшші",
     "ipa": "p͈a dʑi mʌp̚ s͈i",
     "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
   },
