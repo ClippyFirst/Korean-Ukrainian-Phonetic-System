@@ -46,5 +46,5 @@ test('읽어 points to an official source that explicitly gives 읽어[일거]',
 test('맑고 has direct NIKL lexical attestation and explicit rule mapping', () => {
   const row = rows.find((item) => item.input === '맑고');
   assert.match(row.rule_notes, /directly confirms 맑고\[말꼬\]/u);
-  assert.match(review, /direct official lexical citation/u);
+  assert.match(review, /directly attests/u);
 });
