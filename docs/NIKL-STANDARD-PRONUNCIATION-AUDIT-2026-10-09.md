@@ -218,3 +218,15 @@ This is primarily an IPA consistency repair, not a change to the NIKL-attested K
 A second audit compared provisional target syllables against `data/korean/canonical_correspondence.csv`. Thirteen rows were doubling the Ukrainian consonant even though the declared correspondence table says fortisness is neutralized in the graphemic target. The targets were aligned with that declared policy: `몫을`, `쌓인`, `없으면`, `없으므로`, `빠짐없이`, `있어서`, `있어야`, `있었는지`, `있었지만`, `확정값을`, `곬으로`, `쌓였다`, and `없었다`. The `값의` row and its permitted [에] variant were also aligned with the contextual onset policy, while the uncertain vowel rendering remains explicitly provisional.
 
 These edits make the existing target policy internally consistent; they do **not** establish that each provisional Ukrainian rendering is the only acceptable practical transcription. All such rows retain `target_status=provisional` and must remain candidates for a future reader-oriented comparison against alternative Ukrainian spellings. Regression expectations were updated to reflect the policy decision, not to turn provisional targets into confirmed linguistic facts.
+
+### 2026-10-11 follow-up: lexical data integrity and IPA-first regression gate
+
+A whole-file audit exposed a higher-priority failure than adding further isolated rule examples:
+
+- The newly edited `맑고` row had an unclosed CSV quote. The same parser used by the browser stopped recognizing record boundaries after that point; a reproduced parse returned only nine lexical records instead of the full inventory. The quote is repaired.
+- The `밟으니` note contained an unquoted comma, shifting CSV columns so its `target_status` was read as `high` instead of `provisional`. The note is now quoted as one field.
+- The stored Ukrainian target for `밟으니` was `пал|би|ни`, while the project IPA mapper renders `pal|bɯ|ni` as `пал|би|ні`. The stored target and regression expectation now follow the IPA layer.
+
+Added `tests/lexical-csv-integrity-ipa-first.test.mjs` to guard the full inventory, require valid target statuses and source URLs, and check runtime IPA/Ukrainian consistency for every Hangul-only lexical entry not marked `surface-only`. Added a fail-closed regression in `reported-placeholder-regressions.test.mjs` so unmapped IPA segments and mismatched IPA/Hangul syllable counts remain visible and produce blocking issues instead of silently disappearing.
+
+Static audit after repair: 642 lexical records parsed; all rows have the expected 13 fields; no unmatched quote lines; no unexpected target statuses; no unmapped primary or alternate IPA segments; no IPA-to-target mismatches; and no Hangul-only lexical IPA syllable-count mismatches. This is a data-integrity audit, not a claim that GitHub Actions or the complete Node test suite has passed.
