@@ -319,5 +319,12 @@ test('all lexical Ukrainian targets are mechanically reproducible from their IPA
         );
       }
     }
+    const runtime = engine.convert(row.input);
+    assert.equal(runtime.ipa, ipa.join(' '), row.input + ': runtime IPA must match the lexical source');
+    assert.equal(
+      runtime.ukrainian.replace(/\\s/gu, ''),
+      target.join(''),
+      row.input + ': runtime Ukrainian must remain the IPA-derived lexical target',
+    );
   }
 });
