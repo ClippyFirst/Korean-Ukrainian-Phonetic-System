@@ -251,7 +251,7 @@ test('§23 all 20 enumerated NIKL fortition examples have sourced IPA-first lexi
     assert.equal(row.surface_hangul, surface, input + ': NIKL surface form');
     assert.equal(row.target_syllables, target, input + ': IPA-aligned Ukrainian target');
     assert.equal(row.ipa_syllables, ipa, input + ': broad IPA');
-    assert.match(row.source_url, /^https:\/\/(?:m\.)?www?\.korean\.go\.kr\//u, input + ': official NIKL source');
+    assert.match(row.source_url, /^https:\/\/(?:m\.)?(?:www\.)?korean\.go\.kr\//u, input + ': official NIKL source');
     assert.equal(row.confidence, 'high', input + ': source-backed Korean reading');
     assert.equal(row.target_status, 'provisional', input + ': Ukrainian target remains provisional');
     const result = engine.convert(input);
