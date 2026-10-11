@@ -143,3 +143,26 @@ test('§23 all official fortition examples retain a fortis IPA marker', () => {
     assert.ok(result.ipa.includes(marker), word + ': expected fortis IPA marker ' + marker);
   }
 });
+
+test('§21 all seven official place-assimilation negative controls keep their exact standard surfaces', () => {
+  const examples = {
+    '감기': ['감기', 'kaːm ɡi'],
+    '옷감': ['옫깜', 'ot̚ k͈am'],
+    '있고': ['읻꼬', 'it̚ k͈o'],
+    '꽃길': ['꼳낄', 'k͈ot̚ k͈il'],
+    '젖먹이': ['전머기', 'tɕʌn mʌ ɡi'],
+    '문법': ['문뻡', 'mun p͈ʌp̚'],
+    '꽃밭': ['꼳빧', 'k͈ot̚ p͈at̚'],
+  };
+  for (const [word, [surface, ipa]] of Object.entries(examples)) {
+    const row = entries.get(word);
+    assert.ok(row, '§21 missing official negative control: ' + word);
+    assert.match(row.source_url, /^https:\/\/(www\\.|m\\.)?korean\\.go\\.kr\//u, word + ': NIKL source');
+    assert.equal(row.surface_hangul, surface, word + ': source surface');
+    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word + ': source IPA');
+    const result = engine.convert(word);
+    assert.equal(result.surfaceHangul, surface, word + ': engine surface');
+    assert.equal(result.ipa, ipa, word + ': engine IPA');
+    assert.equal(result.ukrainian, expectedTarget(row), word + ': project target');
+  }
+});
