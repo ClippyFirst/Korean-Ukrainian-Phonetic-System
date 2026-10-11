@@ -58,7 +58,7 @@ test('Ukrainian rendering has one IPA-first path',()=>{
 
 test('editable adversarial passage has a complete IPA path without inline placeholders',()=>{
   const html=read('index.html');
-  const match=html.match(/id="stress-input"[^>]*>([\\s\\S]*?)<\\/textarea>/u);
+  const match=html.match(/id="stress-input"[^>]*>([\s\S]*?)<\/textarea>/u);
   assert.ok(match,'stress passage textarea exists');
   const engine=createEngine(read('data/korean/canonical_correspondence.csv'),read('data/korean/lexical_pronunciations.csv'));
   const result=engine.convert(match[1]);
