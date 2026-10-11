@@ -13,6 +13,8 @@ test('§30(3) does not guess compound-internal ㄴㄴ insertion from spelling al
     const result = engine.convert(input);
     assert.equal(result.status, 'unresolved', input + ': compound-specific §30(3) reading needs lexical evidence');
     assert.ok(result.issues.length > 0, input + ': uncertainty must be explicit');
+    assert.ok(result.trace.some((entry) => (entry.rules ?? []).includes('saisiot-n-insertion-§30(3)-requires-lexical-compound')),
+      input + ': trace must explain why morphology was withheld');
     assert.ok(!result.trace.some((entry) => (entry.rules ?? []).includes('phrase-n-insertion-§29')),
       input + ': within-compound §30 insertion must not be mislabelled as phrase-boundary §29');
   }
