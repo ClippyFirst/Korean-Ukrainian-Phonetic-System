@@ -78,7 +78,7 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
   assert.ok(row.rule_notes.includes('§5') && row.rule_notes.includes('§14'));
   const result = engine.convert('값의');
   assert.equal(result.surfaceHangul, '갑씌');
-  assert.equal(result.ukrainian, 'капші');
+  assert.equal(result.ukrainian, 'капший');
   assert.equal(result.ipa, 'kap̚ ɕ͈ɰi');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '갑쎄');
@@ -176,6 +176,22 @@ test('lexical IPA consistently marks fortis sibilants as alveolo-palatal before 
     const result = engine.convert(input);
     assert.equal(result.ipa, ipa, `${input}: engine IPA`);
     assert.equal(result.status, 'lexical-review', `${input}: provisional mapping remains reviewable`);
+  }
+});
+
+
+test('Ukrainian rendering is derived from the IPA layer for lexical readings', () => {
+  const cases = [
+    ['값의', 'kap̚ ɕ͈ɰi', 'капший'],
+    ['학생의', 'hak̚ s͈ɛŋ ɰi', 'гаксений'],
+    ['주의', 'tɕu ɰi', 'чуий'],
+    ['지식의', 'tɕi ɕi ɡɰi', 'чішіґий'],
+  ];
+  for (const [input, expectedIpa, expectedUkrainian] of cases) {
+    const result = engine.convert(input);
+    assert.equal(result.ipa, expectedIpa, input + ': canonical IPA');
+    assert.equal(result.ukrainian, expectedUkrainian, input + ': Ukrainian must be rendered from IPA');
+    assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved marker leaks into the target');
   }
 });
 
