@@ -78,7 +78,7 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
   assert.ok(row.rule_notes.includes('§5') && row.rule_notes.includes('§14'));
   const result = engine.convert('값의');
   assert.equal(result.surfaceHangul, '갑씌');
-  assert.equal(result.ukrainian, 'капсси');
+  assert.equal(result.ukrainian, 'капші');
   assert.equal(result.ipa, 'kap̚ ɕ͈ɰi');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '갑쎄');
