@@ -163,9 +163,10 @@
       "status": "verified",
       "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "caseIds": [
-        "A18-1:tests/nikl-articles-17-18-complete-examples.test.mjs#§18 all twenty-four listed word examples are source-backed with exact standard surfaces"
+        "A18-1:tests/nikl-articles-17-18-complete-examples.test.mjs#§18 all twenty-four listed word examples are source-backed with exact standard surfaces",
+        "A18-2:tests/nikl-exhaustive-coda-matrix.test.mjs#§18 exhaustive coda matrix before ㅁ verifies all 27 written codas"
       ],
-      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+      "notes": "Coverage includes all 24 listed word examples, all five official cross-word examples, a lexical/generic split interaction, and an exhaustive generic-engine matrix for all 27 written codas before ㅁ. The separate before-ㄴ matrix also checks ordered §18/§19/§20 interactions. This status is finite normative-example and explicitly enumerated contrast coverage only, not every lexical/morphological context. Ukrainian outputs remain project approximations."
     },
     {
       "article": 19,
