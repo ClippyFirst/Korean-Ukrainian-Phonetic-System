@@ -46,6 +46,19 @@ test('§§24–28: generic mode does not claim morphology-specific fortition', (
   }
 });
 
+test('§27 punctuation-separated pause controls suppress adnominal fortition', () => {
+  const connected = generic.convert('할 것을');
+  assert.ok(connected.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')));
+
+  for (const input of ['할, 것을', '할. 것을', '할; 것을']) {
+    const result = generic.convert(input);
+    assert.ok(
+      !result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')),
+      input + ': punctuation-separated material must not inherit the connected-phrase license',
+    );
+  }
+});
+
 test('§30: saisiot remains an exact lexical decision, not a generic ㅅ-final rewrite', () => {
   const cases = ['냇가', '나뭇가지', '아랫방'];
   for (const input of cases) {
