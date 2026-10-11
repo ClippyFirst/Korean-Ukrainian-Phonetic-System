@@ -182,18 +182,26 @@ test('unknown complex-coda liaison is unresolved rather than guessed as §14', (
   }
 });
 
-test('sourced §14 complex-coda examples use exact surface forms and provisional Ukrainian targets', () => {
+test('§14 every enumerated complex-coda liaison example has an independently pinned surface and IPA', () => {
   const expected = {
-    넋이: {surface:'넉씨', target:'нокші', ipa:'nʌk̚ s͈i'},
-    값이: {surface:'갑씨', target:'капші', ipa:'kap̚ s͈i'},
-    앉아: {surface:'안자', target:'анджа', ipa:'an dʑa'},
-    닭을: {surface:'달글', target:'талґил', ipa:'tal ɡɯl'},
-    젊어: {surface:'절머', target:'чолмо', ipa:'tɕʌl mʌ'},
+    '넋이': {surface:'넉씨', target:'нокші', ipa:'nʌk̚ s͈i'},
+    '값이': {surface:'갑씨', target:'капші', ipa:'kap̚ s͈i'},
+    '앉아': {surface:'안자', target:'анджа', ipa:'an dʑa'},
+    '닭을': {surface:'달글', target:'талґил', ipa:'tal ɡɯl'},
+    '젊어': {surface:'절머', target:'чолмо', ipa:'tɕʌl mʌ'},
+    '곬이': {surface:'골씨', target:'колші', ipa:'kol s͈i'},
+    '핥아': {surface:'할타', target:'галта', ipa:'hal tʰa'},
+    '읊어': {surface:'을퍼', target:'илпо', ipa:'ɯl pʰʌ'},
+    '값을': {surface:'갑쓸', target:'капсил', ipa:'kap̚ s͈ɯl'},
+    '없어': {surface:'업써', target:'опсо', ipa:'ʌːp̚ s͈ʌ'},
+    '여덟이': {surface:'여덜비', target:'йодолбі', ipa:'jʌ dʌl bi'},
+    '여덟을': {surface:'여덜블', target:'йодолбил', ipa:'jʌ dʌl bɯl'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
     const entry = rows.find((row) => row.input === word);
     assert.ok(entry, word);
+    assert.match(entry.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u, word + ': official source');
     assert.equal(entry.surface_hangul, values.surface, word);
     assert.equal(entry.target_status, 'provisional', word);
     const result = engine.convert(word);
