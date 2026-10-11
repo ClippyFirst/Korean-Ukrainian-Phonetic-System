@@ -15,9 +15,9 @@ test('§10–11 morphology contrasts distinguish ㄺ stems, 밟- exception, and 
   const expected = {
     '읽다': { surface: '익따', ipa: 'ik̚ t͈a', target: 'ікта' },
     '읽고': { surface: '일꼬', ipa: 'il k͈o', target: 'ілко' },
-    '붉다': { surface: '북따', ipa: 'puk̚ t͈a', target: 'букта' },
-    '붉지': { surface: '북찌', ipa: 'puk̚ tɕ͈i', target: 'букчі' },
-    '붉고': { surface: '불꼬', ipa: 'pul k͈o', target: 'булко' },
+    '붉다': { surface: '북따', ipa: 'puk̚ t͈a', target: 'пукта' },
+    '붉지': { surface: '북찌', ipa: 'puk̚ tɕ͈i', target: 'пукчі' },
+    '붉고': { surface: '불꼬', ipa: 'pul k͈o', target: 'пулко' },
     '맑다': { surface: '막따', ipa: 'mak̚ t͈a', target: 'макта' },
     '맑고': { surface: '말꼬', ipa: 'mal k͈o', target: 'малко' },
     '밟다': { surface: '밥따', ipa: 'paːp̚ t͈a', target: 'папта' },
