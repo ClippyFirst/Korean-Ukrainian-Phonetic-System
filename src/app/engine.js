@@ -38,6 +38,10 @@ const NIKL_29_PHRASE_INSERTION=new Map([
   ['먹은 엿',{onset:'ㄴ'}],['할 일',{onset:'ㄹ'}],
   ['잘 입다',{onset:'ㄹ'}],['먹을 엿',{onset:'ㄹ'}]
 ]);
+// §30(3) compound examples need a lexical compound boundary: do not treat
+// their written 사이시옷 as ordinary coda-to-vowel liaison when the exact
+// sourced lexical reading is unavailable.
+const NIKL_30_SAISIOT_INSERTION_FORMS=new Set(['깻잎','나뭇잎','베갯잇','도리깻열']);
 
 export function parseCsv(text){
   const rows=[];let row=[],cell='',quoted=false;
@@ -86,7 +90,7 @@ function renderStructured(units,values,separator){
   return result;
 }
 
-function applyContextualRules(units){
+function applyContextualRules(units,sourceText=''){
   const ruleSets=units.map(()=>[]);
   for(let i=0;i<units.length-1;i++){
     const a=units[i],b=units[i+1];
@@ -109,6 +113,18 @@ function applyContextualRules(units){
       b.__palatalizationUnlicensed='right';
       rules.push('palatalization-requires-lexical-morphology');
       nextRules.push('palatalization-requires-lexical-morphology');
+      continue;
+    }
+
+    // NIKL §30(3): the exact compound examples below require ㄴㄴ insertion.
+    // Without their lexical entry, ordinary liaison would produce a false
+    // confident reading. Scope this guard to the attested compounds rather
+    // than every ㅅ-final noun followed by 이 (e.g. 옷이 is ordinary liaison).
+    if(NIKL_30_SAISIOT_INSERTION_FORMS.has(sourceText)&&a.coda==='ㅅ'&&b.onset==='ㅇ'){
+      a.__saisiotInsertionUnlicensed='left';
+      b.__saisiotInsertionUnlicensed='right';
+      rules.push('saisiot-n-insertion-§30(3)-requires-lexical-compound');
+      nextRules.push('saisiot-n-insertion-§30(3)-requires-lexical-compound');
       continue;
     }
 
@@ -753,7 +769,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
   // Keep orthographic decomposition immutable: contextual rules mutate the
   // working surface representation, not the source Hangul structure.
   const originalUnits=units.map(u=>({...u}));
-  const rules=applyContextualRules(units);
+  const rules=applyContextualRules(units,text);
   const output=units.map(u=>u.char);
   const ipa=units.map(u=>u.type==='literal'?u.char:'');
   const analysis=units.map(u=>u.type==='literal'?u.char:'');
@@ -776,6 +792,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     }
     if(u.__hDeletionUnlicensed){
       if(u.__hDeletionUnlicensed==='left')issues.push(u.char+': §12(4) ㅎ deletion requires a verified vowel-initial ending/suffix; add a sourced lexical pronunciation entry.');
+      output[i]='';
+      ipa[i]='';
+      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
+      continue;
+    }
+    if(u.__saisiotInsertionUnlicensed){
+      if(u.__saisiotInsertionUnlicensed==='left')issues.push(u.char+': NIKL §30(3) ㄴㄴ insertion requires evidence for the exact 사이시옷 compound; add a sourced lexical pronunciation entry.');
       output[i]='';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
