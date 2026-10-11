@@ -480,7 +480,7 @@ function ipaSyllableToUkrainian(ipa){
   ipa=ipa.replace(/ː/gu,''); // vowel length is retained in IPA, not duplicated in the Ukrainian target
   let output='';
   for(let i=0;i<ipa.length;){
-    if(/\\s/u.test(ipa[i])){i++;continue;}
+    if(/\s/u.test(ipa[i])){i++;continue;}
     const match=IPA_TO_UKRAINIAN.find(([token])=>ipa.startsWith(token,i));
     if(!match)return {text:'',unknown:ipa.slice(i)};
     output+=match[1];
@@ -667,7 +667,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
       // Re-render every Korean-derived target from that final IPA, so no
       // secondary Hangul/jamo-to-Ukrainian path can diverge from the display.
       for(const result of results){
-        const ipaUnits=(result.ipa||'').split(/\\s+/u).filter(Boolean);
+        const ipaUnits=(result.ipa||'').split(/\s+/u).filter(Boolean);
         const rendered=ipaSyllablesToUkrainian(ipaUnits);
         if(!rendered.unknown&&ipaUnits.length){
           result.ukrainian=rendered.syllables.join('');
