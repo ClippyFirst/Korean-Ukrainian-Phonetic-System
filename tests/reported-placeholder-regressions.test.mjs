@@ -56,7 +56,7 @@ test('reported inflections have explicit NIKL rule derivations rather than unsup
     assert.equal(row.surface_hangul, surface, `${input}: surface form`);
     assert.equal(row.confidence, 'high', `${input}: evidence confidence`);
     assert.equal(row.target_status, 'provisional', `${input}: Ukrainian target is provisional`);
-    assert.match(row.source_url, /^https:\/\/(?:www\.|m\.)?korean\.go\.kr\//u, `${input}: official NIKL source`);
+    assert.match(row.source_url, /^https:\/\/(?:(?:www\.|m\.)?korean\.go\.kr|krdict\.korean\.go\.kr)\//u, `${input}: official NIKL source`);
     assert.ok(row.rule_notes.includes(ruleA), `${input}: missing first rule/evidence note`);
     if (ruleB) assert.ok(row.rule_notes.includes(ruleB), `${input}: missing second rule/evidence note`);
     assert.equal(engine.convert(input).surfaceHangul, surface, `${input}: engine result`);
