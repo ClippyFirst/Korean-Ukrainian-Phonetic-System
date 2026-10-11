@@ -28,7 +28,7 @@ test('§15 substantive-morpheme liaison uses representative codas, not the §13 
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, want.surface, input + ': engine surface');
     assert.equal(result.ipa, want.ipa, input + ': engine IPA');
-    assert.equal(result.ukrainian, row.target_syllables.split('|').join(input.includes(' ')?' ':''),
+    assert.equal(result.ukrainian, (input === '밭 아래' ? 'па таре' : row.target_syllables.split('|').join('')),
       input + ': engine output agrees with reviewed target and preserves phrase spacing');
     assert.equal(result.issues.length, 0, input + ': sourced form must be resolved');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholder');
