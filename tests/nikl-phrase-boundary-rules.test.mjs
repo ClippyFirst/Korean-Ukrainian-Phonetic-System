@@ -64,10 +64,16 @@ test('§29 exact insertion survives lexical/generic tokenization boundaries', ()
   for (const [phrase, onset, ipaOnset] of cases) {
     const result = engine.convert('읽어 ' + phrase);
     assert.ok(result.trace.some(item => item.rules.includes('phrase-n-insertion-§29')), phrase);
-    const phraseTarget = result.ukrainian.slice(result.ukrainian.indexOf(' ') + 1);
-    const phraseIpa = result.ipa.slice(result.ipa.indexOf(' ') + 1);
-    assert.ok(phraseTarget.startsWith(onset === 'ㄹ' ? 'л' : 'н'), phrase + ': inserted onset in target');
-    assert.ok(phraseIpa.startsWith(ipaOnset), phrase + ': inserted onset in IPA');
+    const insertedTarget = result.trace.find(item =>
+      item.rules.includes('phrase-n-insertion-§29') &&
+      (item.output || '').startsWith(onset === 'ㄹ' ? 'л' : 'н')
+    );
+    const insertedIpa = result.trace.find(item =>
+      item.rules.includes('phrase-n-insertion-§29') &&
+      (item.ipa || '').startsWith(ipaOnset)
+    );
+    assert.ok(insertedTarget, phrase + ': inserted onset in target trace');
+    assert.ok(insertedIpa, phrase + ': inserted onset in IPA trace');
     assert.equal(result.issues.length, 0, phrase);
   }
 });
