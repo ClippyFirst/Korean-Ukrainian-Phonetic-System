@@ -49,7 +49,7 @@ test('Ukrainian rendering has one IPA-first path',()=>{
   const system=read('system.html');
   assert.match(engine,/function ipaSyllableToUkrainian\(/);
   assert.match(engine,/output\[i\]=targetFromIpa\.text/);
-  assert.match(engine,/result\.ukrainian=rendered\.syllables\.join\(''\)/);
+  assert.match(engine,/result\.ukrainian=rendered\.text/);
   assert.doesNotMatch(engine,/function mapOnset\(/);
   assert.doesNotMatch(engine,/function mapVowel\(/);
   assert.doesNotMatch(engine,/function mapCoda\(/);
