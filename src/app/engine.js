@@ -577,7 +577,7 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
       primary='ɰi';alternate='i';section='§5';
     }
     if(!alternate||!ipa[i]||!ipa[i].includes(primary))continue;
-    sites.push({index:i,vowel,primary,alternate,section,targetPrimary,targetAlternate});
+    sites.push({index:i,vowel,primary,alternate,section});
   }
   if(!sites.length||status==='unresolved')return[];
   // Enumerate every combination for up to three optional vowels. For longer
