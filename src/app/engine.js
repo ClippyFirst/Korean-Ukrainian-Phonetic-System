@@ -696,7 +696,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
       // secondary Hangul/jamo-to-Ukrainian path can diverge from the display.
       for(const result of results){
         const rendered=ipaTargetForSource(result.source||'',result.ipa||'');
-        if(!rendered.unknown&&rendered.syllables.length){
+        if(!rendered.unknown&&rendered.syllables.length&&result.status!=='unresolved'){
           result.ukrainian=rendered.text;
           result.trace=result.trace.map(item=>{
             if(item.status==='literal')return item;
