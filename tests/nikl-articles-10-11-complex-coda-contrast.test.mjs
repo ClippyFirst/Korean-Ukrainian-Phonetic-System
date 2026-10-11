@@ -19,6 +19,10 @@ test('§10–11 official complex-coda examples preserve the standard distinction
     '묽고': ['물꼬', 'mul k͈o'],
     // NIKL §11 explicitly lists 늙고[늘꼬] as the ㄺ-before-ㄱ stem exception.
     '늙고': ['늘꼬', 'nɯl k͈o'],
+    // Rule-derived stem forms: the same ㄺ exception applies before vowel-initial endings.
+    '늙게': ['늘께', 'nɯl k͈e'],
+    '맑으면': ['말그면', 'mal ɡɯ mjʌn'],
+    '맑았지만': ['말가찌만', 'mal ɡa t͈ɕi man'],
     '얽거나': ['얼꺼나', 'ʌl k͈ʌ na'],
     // §10 ㄼ exception for 밟- before consonants: [ㅂ], not [ㄹ].
     '밟다': ['밥따', 'paːp̚ t͈a'],
