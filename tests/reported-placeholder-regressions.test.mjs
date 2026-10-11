@@ -202,7 +202,7 @@ test('difficult passage forms have sourced IPA and render Ukrainian only from th
     ['없어서','ʌp̚ s͈ʌ sʌ','опсосо'],
     ['찾았다','tɕʰa dʑa t͈a','чаджата'],
     ['앉히다','an tɕʰi da','анчіда'],
-    ['해돋이','hɛ do dʑi','геододжі'],
+    ['해돋이','hɛ do dʑi','гедоджі'],
     ['품삯이','pʰum s͈ak̚ ɕ͈i','пумсакші'],
     ['품삯을','pʰum s͈ak̚ s͈ɯl','пумсаксил'],
     ['품삯으로','pʰum s͈ak̚ s͈ɯ ɾo','пумсаксиро'],
