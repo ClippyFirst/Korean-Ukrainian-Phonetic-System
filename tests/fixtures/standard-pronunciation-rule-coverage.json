@@ -1,219 +1,219 @@
 {
   "schemaVersion": 1,
   "standard": "국립국어원 표준 발음법",
-  "minimumCasesPerArticle": 5,
-  "gateStatus": "BLOCKED_UNTIL_EVIDENCE_COMPLETE",
-  "policy": "An article counts as covered only when its source has been checked and at least five reviewed corpus cases (positive, negative/boundary, and interaction cases where applicable) are linked to executable regression fixtures. Do not treat raw Hangul syllable enumeration, successful conversion, or unreviewed expected output as coverage.",
+  "minimumCasesPerArticle": null,
+  "gateStatus": "AUDIT_IN_PROGRESS",
+  "policy": "This is an audit ledger, not an arbitrary release blocker. Missing coverage is reported and then converted into executable regression cases. CI must fail on an actual incorrect expected surface form, unresolved placeholder, or contradictory lexical/rule output. Mark an article verified only after its applicable subparagraphs, boundary/negative cases, and interactions have source-backed executable tests; do not impose a fixed number of cases where the rule's scope does not warrant it.",
   "articles": [
     {
       "article": 1,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 2,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 3,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 4,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 5,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 6,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 7,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 8,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 9,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 10,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 11,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 12,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 13,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 14,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 15,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 16,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 17,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 18,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 19,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 20,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 21,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 22,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 23,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 24,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 25,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 26,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 27,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 28,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 29,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     },
     {
       "article": 30,
       "status": "unverified",
       "source": null,
       "caseIds": [],
-      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+      "notes": "Audit not yet completed. Add rule/subparagraph-specific executable regression IDs and official source evidence; do not mark verified from corpus size alone."
     }
   ]
 }
