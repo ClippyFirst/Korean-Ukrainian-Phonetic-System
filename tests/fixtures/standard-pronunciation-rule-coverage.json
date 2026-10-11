@@ -127,7 +127,8 @@
       "status": "verified",
       "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "caseIds": [
-        "A14-1:tests/nikl-pronunciation-regression.test.mjs#§14 every enumerated complex-coda liaison example has an independently pinned surface and IPA"
+        "A14-1:tests/nikl-pronunciation-regression.test.mjs#§14 every enumerated complex-coda liaison example has an independently pinned surface and IPA",
+        "A14-2:tests/reported-placeholder-regressions.test.mjs#§14 NIKL complex-coda liaison examples preserve official particle readings"
       ],
       "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
