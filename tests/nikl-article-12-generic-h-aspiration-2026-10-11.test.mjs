@@ -40,6 +40,17 @@ test('§12: H deletion before a vowel is not guessed from adjacent Hangul alone'
   }
 });
 
+test('§15: unknown cross-word vowel liaison is not silently treated as absent', () => {
+  // The official phrase 밭 아래 has a sourced lexical reading. With the
+  // lexicon deliberately disabled, the generic engine must surface its
+  // missing morpheme-boundary evidence instead of emitting a false no-liaison
+  // reading. This is the regression that an exact lexical override would hide.
+  const result = genericEngine.convert('밭 아래');
+  assert.equal(result.status, 'unresolved');
+  assert.ok(result.issues.some(issue => /cross-word vowel-initial liaison.*§15/u.test(issue)));
+  assert.ok(result.trace.some(item => item.rules.includes('cross-word-vowel-liaison-requires-morphology')));
+});
+
 test('§12: complex coda plus ㅎ is not generalized as simple coda aspiration', () => {
   for (const input of ['읽히다', '앉히다', '넓히다']) {
     const result = genericEngine.convert(input);
