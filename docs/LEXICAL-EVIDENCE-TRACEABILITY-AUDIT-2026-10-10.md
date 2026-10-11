@@ -4,7 +4,7 @@
 
 This is a **metadata audit**, not a claim that these records lack normative support. It identifies lexical rows whose `rule_notes` do not explicitly name a numbered article (for example, `§18`) or cite the Standard Pronunciation Rules by title. Many notes already describe a sound process and point to an official National Institute of Korean Language (NIKL) source; the gap is that the mapping from that evidence to a numbered rule is not normalized.
 
-Snapshot: `data/korean/lexical_pronunciations.csv` contains **601** rows; **0** rows meet the audit filter.
+Snapshot: `data/korean/lexical_pronunciations.csv` contains **612** rows; **0** rows meet the audit filter.
 
 ## Source-type counts
 
@@ -65,3 +65,18 @@ The queue is empty because every remaining row either has an explicit article ma
 ## Tricky-passage morphology matrix follow-up
 
 Four new exact regression rows were added for `같아지는` (§13 rule-derived), `같았다` (§§9, 13, 23 rule-derived), `밝히는` (§12 suffixal aspiration derived from the directly discussed `밝히다[발키다]`), and `닭고기와` (§§11, 23 compositional extension of the directly attested `닭고기[닥꼬기]`). Their notes explicitly distinguish direct lexical attestation from rule-derived forms; none is left in the article-mapping queue.
+
+
+## Reported-placeholder regression follow-up (2026-10-11)
+
+The adversarial passage review added eleven entries since the previous 601-row snapshot. They are not all equivalent evidence types:
+
+| Inputs | Expected surface | Evidence classification |
+|---|---|---|
+| `잊었다`, `붙었다`, `넣었다`, `놓았다`, `좋아도`, `맑을`, `없었다` | `이젇따`, `부텯따`, `너얻따`, `노앋따`, `조아도`, `말글`, `업썯따` | Official lemma readings combined with numbered standard-rule derivations; target layer provisional |
+| `쌓였다` | `싸엳따` | NIKL learner-dictionary lemma/application evidence plus §§12(4), 23 derivation; target layer provisional |
+| `찾아가다` | `차자가다` | Exact pronunciation listed in NIKL dictionary material; §13 mapping |
+| `미닫이문` | `미다지문` | Compound extension of NIKL-attested `미닫이[미ː다지]`; §17 lexicalized palatalization |
+| `값의` | `갑씌` / `갑쎄` | NIKL §5 Q&A plus §14 liaison; preserve both permitted particle readings rather than collapsing the variant |
+
+These rows are tracked in the lexical CSV with explicit source URLs and rule notes, and in `tests/reported-placeholder-regressions.test.mjs`. Ukrainian targets remain provisional; the standard Korean surface readings and alternatives are what the regression tests lock. The count is a snapshot, not a quality gate: future additions must update this document and its snapshot assertion, but a nonzero article-coverage queue alone must not fail builds.
