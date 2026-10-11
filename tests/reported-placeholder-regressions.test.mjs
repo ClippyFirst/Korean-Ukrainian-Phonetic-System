@@ -123,9 +123,9 @@ test('the other reported palatalization forms remain covered, including a whole 
 
 test('§14 NIKL 품삯 liaison examples preserve all three official particle readings', () => {
   const cases = [
-    ['품삯이', '품싹씨', 'пум|ссак|ссі', 'pum|s͈ak̚|s͈i'],
-    ['품삯을', '품싹쓸', 'пум|ссак|ссил', 'pum|s͈ak̚|s͈ɯl'],
-    ['품삯으로', '품싹쓰로', 'пум|ссак|сси|ро', 'pum|s͈ak̚|s͈ɯ|ɾo'],
+    ['품삯이', '품싹씨', 'пум|ссак|ссі', 'pʰum|s͈ak̚|s͈i'],
+    ['품삯을', '품싹쓸', 'пум|ссак|ссил', 'pʰum|s͈ak̚|s͈ɯl'],
+    ['품삯으로', '품싹쓰로', 'пум|ссак|сси|ро', 'pʰum|s͈ak̚|s͈ɯ|ɾo'],
   ];
   const source = 'https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=309950';
   for (const [input, surface, target, ipa] of cases) {
