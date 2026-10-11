@@ -103,7 +103,7 @@ test('§24 신고 preserves noun and verb-form readings without a global fortiti
   assert.equal(row.ipa_syllables.split('|').join(' '), 'ɕin ɡo');
   assert.equal(row.alternate_surface_hangul, '신꼬', 'the verb-form reading is available contextually');
   assert.equal(row.alternate_ipa_syllables.split('|').join(' '), 'ɕiːn k͈o');
-  assert.match(row.variant_note, /context-dependent homograph/u);
+  assert.match(row.variant_note, /context-dependent homograph/iu);
   assert.match(row.variant_note, /신다 \+ -고/u);
   assert.equal(row.target_status, 'provisional');
 
@@ -115,7 +115,7 @@ test('§24 신고 preserves noun and verb-form readings without a global fortiti
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '신꼬');
   assert.equal(result.variants[0].ipa, 'ɕiːn k͈o');
-  assert.match(result.variants[0].note, /context-dependent homograph/u);
+  assert.match(result.variants[0].note, /context-dependent homograph/iu);
 });
 
 test('§26 negative controls prevent blanket fortition after every Sino-Korean ㄹ', () => {
