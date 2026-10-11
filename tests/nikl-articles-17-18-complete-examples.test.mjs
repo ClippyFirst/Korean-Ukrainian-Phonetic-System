@@ -97,3 +97,20 @@ test('§18 all five official cross-word examples remain connected and nasalize',
     assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')), phrase);
   }
 });
+
+test('§18 cross-word nasal/liquid assimilation survives a lexical/generic split elsewhere in the sentence', () => {
+  const cases = [
+    ['읽어 밥 먹는다', 'il ɡʌ pam mʌŋ nɯn da'],
+    ['읽어 흙 말리다', 'il ɡʌ hɯŋ mal li da'],
+    ['읽어 책 넣는다', 'il ɡʌ tɕʰɛŋ nʌn nɯn da'],
+  ];
+  for (const [phrase, expectedIpa] of cases) {
+    const result = engine.convert(phrase);
+    assert.equal(result.ipa, expectedIpa, phrase);
+    assert.ok(
+      result.trace.some((item) => item.rules.includes('nasal-assimilation') || item.rules.includes('liquid-assimilation')),
+      phrase + ': phrase-boundary rule should remain visible in the trace',
+    );
+    assert.equal(result.issues.length, 0, phrase);
+  }
+});
