@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "standard": "국립국어원 표준 발음법",
+  "minimumCasesPerArticle": 5,
+  "gateStatus": "BLOCKED_UNTIL_EVIDENCE_COMPLETE",
+  "policy": "An article counts as covered only when its source has been checked and at least five reviewed corpus cases (positive, negative/boundary, and interaction cases where applicable) are linked to executable regression fixtures. Do not treat raw Hangul syllable enumeration, successful conversion, or unreviewed expected output as coverage.",
+  "articles": [
+    {
+      "article": 1,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 2,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 3,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 4,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 5,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 6,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 7,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 8,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 9,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 10,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 11,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 12,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 13,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 14,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 15,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 16,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 17,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 18,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 19,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 20,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 21,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 22,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 23,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 24,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 25,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 26,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 27,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 28,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 29,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    },
+    {
+      "article": 30,
+      "status": "unverified",
+      "source": null,
+      "caseIds": [],
+      "notes": "Unverified inventory placeholder: add the official article text/source, case IDs, expected Korean surface pronunciation, morphology/context assumptions, and evidence grade before marking verified."
+    }
+  ]
+}
