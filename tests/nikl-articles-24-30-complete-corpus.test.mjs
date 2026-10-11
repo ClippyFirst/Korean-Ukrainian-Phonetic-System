@@ -96,6 +96,28 @@ test('every registered NIKL article 24–30 exemplar is present and stable in th
   }
 });
 
+test('§24 신고 preserves noun and verb-form readings without a global fortition override', () => {
+  const row = entries.get('신고');
+  assert.ok(row, 'the homographic §24 example must remain explicitly represented');
+  assert.equal(row.surface_hangul, '신고', 'noun reading remains the neutral primary');
+  assert.equal(row.ipa_syllables.split('|').join(' '), 'ɕin ɡo');
+  assert.equal(row.alternate_surface_hangul, '신꼬', 'the verb-form reading is available contextually');
+  assert.equal(row.alternate_ipa_syllables.split('|').join(' '), 'ɕiːn k͈o');
+  assert.match(row.variant_note, /context-dependent homograph/u);
+  assert.match(row.variant_note, /신다 \+ -고/u);
+  assert.equal(row.target_status, 'provisional');
+
+  const result = engine.convert('신고');
+  assert.equal(result.surfaceHangul, '신고');
+  assert.equal(result.status, 'lexical-review');
+  assert.equal(result.ukrainian, expectedTarget(row));
+  assert.equal(result.ipa, 'ɕin ɡo');
+  assert.equal(result.variants.length, 1);
+  assert.equal(result.variants[0].surface, '신꼬');
+  assert.equal(result.variants[0].ipa, 'ɕiːn k͈o');
+  assert.match(result.variants[0].note, /context-dependent homograph/u);
+});
+
 test('§26 negative controls prevent blanket fortition after every Sino-Korean ㄹ', () => {
   for (const word of ['허허실실', '절절하다']) {
     const row = entries.get(word);
