@@ -42,3 +42,15 @@ test('service exposes the research/system navigation contract',()=>{
   assert.match(html,/Корейський текст → контекстуальні правила → практичний український запис/);
 
 });
+
+test('Ukrainian rendering has one IPA-first path',()=>{
+  const engine=read('src/app/engine.js');
+  const system=read('system.html');
+  assert.match(engine,/function ipaSyllableToUkrainian\(/);
+  assert.match(engine,/output\[i\]=targetFromIpa\.text/);
+  assert.match(engine,/result\.ukrainian=rendered\.syllables\.join\(''\)/);
+  assert.doesNotMatch(engine,/function mapOnset\(/);
+  assert.doesNotMatch(engine,/function mapVowel\(/);
+  assert.doesNotMatch(engine,/function mapCoda\(/);
+  assert.match(system,/id="ipa-first-pipeline-2026-10-11"/);
+});
