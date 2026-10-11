@@ -746,43 +746,43 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     analysis[i]=original.char+' = '+original.onset+'+'+original.vowel+(original.coda?'+'+original.coda:'');
     if(u.__palatalizationUnlicensed){
       if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a verified formal-morpheme boundary; add a sourced lexical entry or morphological license.');
-      output[i]='';
-      ipa[i]='';
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='⟦IPA-unresolved⟧';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
     if(u.__hDeletionUnlicensed){
       if(u.__hDeletionUnlicensed==='left')issues.push(u.char+': §12(4) ㅎ deletion requires a verified vowel-initial ending/suffix; add a sourced lexical pronunciation entry.');
-      output[i]='';
-      ipa[i]='';
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='⟦IPA-unresolved⟧';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
     if(u.__complexLiaisonUnlicensed){
       if(u.__complexLiaisonUnlicensed==='left')issues.push(u.char+': complex-coda liaison differs between formal and substantive morphemes (§§13–15); add a sourced lexical pronunciation entry.');
-      output[i]='';
-      ipa[i]='';
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='⟦IPA-unresolved⟧';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
     if(u.__complexHAspirationUnlicensed){
       if(u.__complexHAspirationUnlicensed==='left')issues.push(u.char+': §12 complex-coda + ㅎ aspiration depends on the licensed morphophonemic pattern; add a sourced lexical pronunciation entry.');
-      output[i]='';
-      ipa[i]='';
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='⟦IPA-unresolved⟧';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
     if(u.__substantiveLiaisonUnlicensed){
       if(u.__substantiveLiaisonUnlicensed==='left')issues.push(u.char+': coda representative changes under §15 before ㅏ/ㅓ/ㅗ/ㅜ/ㅟ, unlike formal-morpheme liaison; add a sourced lexical pronunciation entry.');
-      output[i]='';
-      ipa[i]='';
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='⟦IPA-unresolved⟧';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
     if(u.__rieulGiyeokUnlicensed){
       if(u.__rieulGiyeokUnlicensed==='left')issues.push(u.char+': written ㄺ before ㄱ may follow the §11 stem exception or general coda simplification; add a sourced lexical pronunciation entry.');
-      output[i]='';
-      ipa[i]='';
+      output[i]='⟦'+u.char+'⟧';
+      ipa[i]='⟦IPA-unresolved⟧';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
