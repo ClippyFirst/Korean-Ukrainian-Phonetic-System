@@ -262,3 +262,62 @@ test('lexical onset targets match declared surface-onset mappings across the cor
     }
   }
 });
+
+
+// Independent test oracle for the project's declared IPA → Ukrainian layer.
+// Keep this mapping intentionally in the test: it makes every stored lexical
+// target accountable to IPA, rather than merely checking a few hand-picked rows.
+const IPA_TO_UKRAINIAN_ORACLE = [
+  ['kʰjʌ','кхьо'],['hjʌ','гьо'],['njʌ','ньо'],['njo','ньо'],['nju','ню'],
+  ['ɲʌ','ньо'],['ɲa','ня'],['ɲo','ньо'],['ɲu','ню'],
+  ['ljʌ','льо'],['lju','лю'],
+  ['tɕ͈','ч'],['tɕʰ','ч'],['tɕ','ч'],['dʑ','дж'],['ɕ͈','ш'],['ɕ','ш'],
+  ['k͈','к'],['t͈','т'],['p͈','п'],['s͈','с'],
+  ['kʰ','к'],['tʰ','т'],['pʰ','п'],['k̚','к'],['t̚','т'],['p̚','п'],
+  ['ɰi','ий'],['jʌ','йо'],['jɛ','є'],['ja','я'],['je','є'],['jo','йо'],['ju','ю'],
+  ['wa','ва'],['wɛ','ве'],['wʌ','во'],['we','ве'],['aː','а'],
+  ['ɡ','ґ'],['k','к'],['g','ґ'],['t','т'],['d','д'],['p','п'],['b','б'],
+  ['ɲ','нь'],['n','н'],['m','м'],['ŋ','н'],['ɾ','р'],['r','р'],['l','л'],['h','г'],
+  ['s','с'],['a','а'],['ɛ','е'],['ʌ','о'],['e','е'],['o','о'],['u','у'],
+  ['ɯ','и'],['i','і'],['ø','ве'],['y','ві'],['w','в'],['j','й'],
+].sort((a, b) => b[0].length - a[0].length);
+
+function oracleIpaSyllableToUkrainian(ipa) {
+  const source = ipa.replace(/ː/gu, '');
+  let target = '';
+  for (let index = 0; index < source.length;) {
+    const match = IPA_TO_UKRAINIAN_ORACLE.find(([token]) => source.startsWith(token, index));
+    assert.ok(match, 'unmapped IPA token in lexical corpus: ' + ipa.slice(index) + ' (from ' + ipa + ')');
+    target += match[1];
+    index += match[0].length;
+  }
+  return target;
+}
+
+test('all lexical Ukrainian targets are mechanically reproducible from their IPA, including variants', () => {
+  assert.equal(rows.length, 621, 'update the reviewed corpus snapshot deliberately when lexical rows change');
+  for (const row of rows) {
+    const ipa = row.ipa_syllables.split('|');
+    const target = row.target_syllables.split('|');
+    assert.equal(target.length, ipa.length, row.input + ': IPA/target alignment');
+    for (let index = 0; index < ipa.length; index++) {
+      assert.equal(
+        target[index],
+        oracleIpaSyllableToUkrainian(ipa[index]),
+        row.input + ': target syllable ' + (index + 1) + ' must be generated from IPA ' + ipa[index],
+      );
+    }
+    if (row.alternate_ipa_syllables) {
+      const alternateIpa = row.alternate_ipa_syllables.split('|');
+      const alternateTarget = row.alternate_target_syllables.split('|');
+      assert.equal(alternateTarget.length, alternateIpa.length, row.input + ': alternate IPA/target alignment');
+      for (let index = 0; index < alternateIpa.length; index++) {
+        assert.equal(
+          alternateTarget[index],
+          oracleIpaSyllableToUkrainian(alternateIpa[index]),
+          row.input + ': alternate target syllable ' + (index + 1) + ' must be generated from IPA ' + alternateIpa[index],
+        );
+      }
+    }
+  }
+});
