@@ -120,3 +120,27 @@ test('the other reported palatalization forms remain covered, including a whole 
     assert.deepEqual(result.issues, [], `${input}: unresolved engine issue`);
   }
 });
+
+test('§14 NIKL 품삯 liaison examples preserve all three official particle readings', () => {
+  const cases = [
+    ['품삯이', '품싹씨', 'пум|ссак|ссі', 'pum|s͈ak̚|s͈i'],
+    ['품삯을', '품싹쓸', 'пум|ссак|ссил', 'pum|s͈ak̚|s͈ɯl'],
+    ['품삯으로', '품싹쓰로', 'пум|ссак|сси|ро', 'pum|s͈ak̚|s͈ɯ|ɾo'],
+  ];
+  const source = 'https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=309950';
+  for (const [input, surface, target, ipa] of cases) {
+    const row = entries.get(input);
+    assert.ok(row, `${input}: missing NIKL-attested lexical row`);
+    assert.equal(row.surface_hangul, surface, `${input}: source-attested Korean surface`);
+    assert.equal(row.source_url, source, `${input}: exact NIKL Q&A source`);
+    assert.equal(row.confidence, 'high', `${input}: source confidence`);
+    assert.equal(row.target_status, 'provisional', `${input}: Ukrainian target remains provisional`);
+    const result = engine.convert(input);
+    assert.equal(result.surfaceHangul, surface, `${input}: engine surface`);
+    assert.equal(result.ukrainian, target.split('|').join(''), `${input}: Ukrainian target`);
+    assert.equal(result.ipa, ipa.split('|').join(' '), `${input}: IPA`);
+    assert.ok(!result.ukrainian.includes('⟦'), `${input}: unresolved target placeholder`);
+    assert.deepEqual(result.issues, [], `${input}: engine issues`);
+  }
+});
+
