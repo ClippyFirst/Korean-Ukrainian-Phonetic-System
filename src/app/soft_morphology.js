@@ -124,7 +124,7 @@ export function trySoftFormal(
 
   // R002 formal liaison: complex coda → retain first, move second (§§13–14)
   // Never apply §15 substantive neutralization via soft.
-  if (b.onset === 'ㅇ' && a.coda && !['ㅎ', 'ㄶ', 'ㅀ'].includes(a.coda)) {
+  if (b.onset === 'ㅇ' && a.coda && !['ㅎ', 'ㄶ', 'ㅀ'].includes(a.coda) && !['어', '아'].includes(ending)) {
     const pair = COMPLEX[a.coda];
     if (pair) {
       a.coda = pair[0];
@@ -151,19 +151,10 @@ export function trySoftFormal(
       const substantiveRisk =
         rep !== a.coda && ['ㅏ', 'ㅓ', 'ㅗ', 'ㅜ', 'ㅟ'].includes(b.vowel);
       if (substantiveRisk) {
-        // Still prefer formal transfer for soft formal endings, but mark it.
-        b.onset = a.coda;
-        b.__liaison = true;
-        a.coda = '';
-        delete a.__substantiveLiaisonUnlicensed;
-        delete b.__substantiveLiaisonUnlicensed;
-        rules.push('soft-heuristic-morphology');
-        rules.push('simple-coda-liaison-§13-soft-formal');
-        nextRules.push('soft-heuristic-morphology');
-        nextRules.push('simple-coda-liaison-§13-soft-formal');
-        a.__softHeuristic = true;
-        b.__softHeuristic = true;
-        applied = true;
+        // Fail closed: spelling alone cannot distinguish a formal ending from
+        // a substantive morpheme in the §15-sensitive vowel environment.
+        // Do not turn a low-confidence guess into an asserted §13 reading.
+        return false;
       } else if (!pair) {
         b.onset = a.coda;
         b.__liaison = true;
