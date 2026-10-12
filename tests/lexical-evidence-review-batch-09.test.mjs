@@ -43,8 +43,8 @@ test('읽어 points to an official source that explicitly gives 읽어[일거]',
   assert.match(review, /previous URL did not attest the row's word/u);
 });
 
-test('맑고 remains a rule-derived regression rather than exact-word attestation', () => {
+test('맑고 has direct NIKL lexical attestation and explicit rule mapping', () => {
   const row = rows.find((item) => item.input === '맑고');
-  assert.match(row.rule_notes, /does not explicitly attest 맑고/u);
-  assert.match(review, /indirect-evidence status/u);
+  assert.match(row.rule_notes, /directly confirms 맑고\[말꼬\]/u);
+  assert.match(review, /directly attests/u);
 });

@@ -59,7 +59,34 @@
         <button id="example-button" class="button button-primary" type="button">Приклад <b aria-hidden="true">↗</b></button>
         <button id="clear-button" class="button button-secondary" type="button">Очистити</button>
       </div>
+      <label class="soft-morphology-toggle" for="soft-morphology">
+        <input type="checkbox" id="soft-morphology" />
+        М’яка морфологія (heuristic, низька впевненість)
+      </label>
+      <p class="soft-morphology-hint">
+        Увімкнено: пропонує читання для частих закінчень (이/을/어/…) зі статусом
+        <code>heuristic-low-confidence</code>. За замовчуванням вимкнено — лише
+        точні NIKL/lexical licenses.
+      </p>
     </div>
+  </section>
+
+  <section class="stress-panel" aria-labelledby="stress-heading">
+    <div class="stress-header">
+      <div class="section-title"><span class="section-number">A+</span><div><p class="section-kicker">Стрес-тест</p><h2 id="stress-heading">Вікно каверзного тексту</h2></div></div>
+      <span class="stress-tag">редагований корпус</span>
+    </div>
+    <p class="stress-intro">Тут можна змінювати складний корейський текст, поєднувати словникові винятки, морфологічні межі, асиміляцію, палаталізацію та фразові контексти, а потім передати його в основний аналізатор.</p>
+    <label class="sr-only" for="stress-input">Каверзний корейський текст для перевірки</label>
+    <textarea id="stress-input" class="stress-input" rows="8" spellcheck="false" lang="ko">오늘 국립국어원 표준 발음 규정을 다시 확인했다. 넋이, 값이, 값의 의미, 값에 대한 기록, 몫을, 곬이, 외곬에, 옷맵시, 말씨, 일시, 끝없이, 빠짐없이 발음을 비교했다.
+현대 한국어의 표준 발음은 문맥과 형태소 경계에 따라 달라질 수 있다. 밟고, 읽히다, 읽었다는 기록, 앉히다, 굳히다, 닫히다, 해돋이처럼, 같이, 국밥만, 독립문, 몇 리를 따로 검사했다.
+할 것을 읽을 수 있는지 확인하고, 한 일과 옷 입다의 경계를 살폈다. 쌓인 자료가 없으면, 없어서, 없으므로, 있었는지, 있었지만, 찾았다, 쌓였다. 발음도 검토했다.
+품삯이 얼마인지 묻고, 품삯을 계산한 다음 품삯으로 기록했다. 표준 발음, 넓은 IPA, 우크라이나어 실용 표기는 서로 다른 층위이므로 각각 근거와 불확실성을 기록한다.</textarea>
+    <div class="stress-actions">
+      <span id="stress-count" class="character-count">0 символів</span>
+      <div class="stress-buttons"><button id="stress-reset" class="button button-secondary" type="button">Відновити корпус</button><button id="stress-run" class="button button-primary" type="button">Перевірити цей текст <b aria-hidden="true">↗</b></button></div>
+    </div>
+    <p class="stress-footnote">Це навмисно складний діагностичний текст, а не еталонна відповідь. Система має показати невизначеність там, де для нормативної вимови бракує лексичних або морфологічних доказів.</p>
   </section>
 
   <section id="empty-state" class="empty-state" aria-live="polite">
@@ -75,10 +102,10 @@
     </div>
 
     <article class="result-card primary-result">
-      <div class="result-meta"><span class="result-index">01</span><div><h3>Український запис</h3><p>Основний практичний результат системи</p></div><button class="copy-button" data-copy="ukrainian" type="button">Копіювати</button></div>
+      <div class="result-meta"><span class="result-index">01</span><div><h3>Український запис</h3><p>Побудовано виключно з показаної IPA</p></div><button class="copy-button" data-copy="ukrainian" type="button">Копіювати</button></div>
       <p id="result-ukrainian" class="result-value result-primary" lang="uk"></p>
-      <div id="surface-reading" class="surface-reading" hidden><span>Нормативна корейська вимова</span><strong id="result-surface" lang="ko"></strong><small>Словниковий запис; українська передача оцінюється окремо.</small></div>
-      <span class="result-key">Корейський текст → контекстуальні правила → практичний український запис</span>
+      <div id="surface-reading" class="surface-reading" hidden><span>Нормативна корейська вимова</span><strong id="result-surface" lang="ko"></strong><small>Поверхнева корейська вимова визначає IPA; український запис будується з IPA.</small></div>
+      <span class="result-key">Корейський текст → нормативна IPA → українська передача</span>
     </article>
 
     <section id="variant-panel" class="trace-panel variant-panel" aria-labelledby="variant-heading" hidden>
@@ -88,7 +115,7 @@
 
     <div class="secondary-grid">
       <article class="result-card">
-        <div class="result-meta"><span class="result-index">02</span><div><h3>Аналітичний IPA</h3><p>Широкий IPA з урахуванням реалізованих контекстуальних правил</p></div><button class="copy-button" data-copy="ipa" type="button">Копіювати</button></div>
+        <div class="result-meta"><span class="result-index">02</span><div><h3>Нормативна IPA — проміжний шар</h3><p>Широкий IPA з урахуванням реалізованих контекстуальних правил</p></div><button class="copy-button" data-copy="ipa" type="button">Копіювати</button></div>
         <p id="result-ipa" class="result-value result-ipa" lang="und-fonipa"></p>
       </article>
       <article class="result-card">
@@ -106,6 +133,25 @@
 
   <section id="issue-state" class="issue-state" aria-live="polite" hidden>
     <span class="issue-symbol" aria-hidden="true">!</span><div><strong>Потребує уваги</strong><p id="issue-text"></p></div>
+  </section>
+
+  <section class="audit-summary" aria-labelledby="audit-summary-heading">
+    <div class="audit-summary-head">
+      <div><p class="section-kicker">Останній аудит · 11.10.2026</p><h2 id="audit-summary-heading">Що перевірено й виправлено</h2></div>
+      <a href="./system.html#audit-2026-10-11">Повний звіт ↗</a>
+    </div>
+    <div class="audit-metrics">
+      <div><strong>637</strong><span>словникових записів перевірено</span></div>
+      <div><strong>14</strong><span>IPA-записів узгоджено</span></div>
+      <div><strong>13 + 2</strong><span>цільових записів та варіантів узгоджено</span></div>
+      <div><strong>CI</strong><span>повторна перевірка після розширення §23</span></div>
+    </div>
+    <div class="audit-findings">
+      <article><span class="audit-mark">01</span><div><h3>Послідовність IPA</h3><p>Виправлено 14 словникових записів із [ɕ͈] перед відповідним набором голосних; додано табличний регресійний тест для словника та результату рушія.</p></div></article>
+      <article><span class="audit-mark">02</span><div><h3>Узгодженість української передачі</h3><p>13 записів і два варіанти для 값의 узгоджено з оголошеною політикою графічної передачі. Українські форми залишено попередніми, доки їх не підтверджено окремою редакторською оцінкою.</p></div></article>
+      <article><span class="audit-mark">03</span><div><h3>Перевірка без надмірних висновків</h3><p>У двох цільових категоріях повторна перевірка 637 записів не знайшла залишкових невідповідностей. Це не є доказом повної відсутності інших помилок у всіх правилах і корпусах.</p></div></article>
+    </div>
+    <div class="audit-footer"><span>Поточні зміни перебувають у відкритій чернетці PR #144, не злитій до main.</span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/144">Переглянути зміни та CI на GitHub ↗</a></div>
   </section>
 
   <section class="feedback-panel">

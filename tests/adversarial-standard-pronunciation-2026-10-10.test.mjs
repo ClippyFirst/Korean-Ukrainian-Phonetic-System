@@ -7,6 +7,7 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const rows = parseCsv(lexical);
 const engine = createEngine(canonical, lexical);
+const genericEngine = createEngine(canonical, '');
 
 test('new adversarial standard-pronunciation forms are sourced and regression-locked', () => {
   const expected = {
@@ -81,7 +82,7 @@ test('other official coda-plus-fortition examples remain rule-governed', () => {
     '묽는': { target: 'муннин', ipa: 'muŋ nɯn', rules: ['nasal-assimilation'] },
   };
   for (const [input, want] of Object.entries(expected)) {
-    const result = engine.convert(input);
+    const result = genericEngine.convert(input);
     assert.equal(result.ukrainian, want.target, input);
     assert.equal(result.ipa, want.ipa, input);
     for (const rule of want.rules) {

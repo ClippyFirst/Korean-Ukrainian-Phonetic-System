@@ -41,12 +41,12 @@ test('§18 all twenty-four listed word examples are source-backed with exact sta
     '국물':['궁물','kuŋ mul'],
     '깎는':['깡는','k͈aŋ nɯn'],
     '키읔만':['키응만','kʰi ɯŋ man'],
-    '몫몫이':['몽목씨','moŋ mok̚ s͈i'],
+    '몫몫이':['몽목씨','moŋ mok̚ ɕ͈i'],
     '긁는':['긍는','kɯŋ nɯn'],
     '흙만':['흥만','hɯŋ man'],
     '닫는':['단는','tan nɯn'],
     '짓는':['진는','tɕiːn nɯn'],
-    '옷맵시':['온맵씨','on mɛp̚ s͈i'],
+    '옷맵시':['온맵씨','on mɛp̚ ɕ͈i'],
     '있는':['인는','in nɯn'],
     '맞는':['만는','man nɯn'],
     '젖멍울':['전멍울','tɕʌn mʌŋ ul'],
@@ -95,5 +95,26 @@ test('§18 all five official cross-word examples remain connected and nasalize',
     const result = engine.convert(phrase);
     assert.equal(result.ipa, ipa, phrase);
     assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')), phrase);
+  }
+});
+
+test('§18 cross-word nasal/liquid assimilation survives a lexical/generic split elsewhere in the sentence', () => {
+  // All five official eojeol examples are exercised after an unrelated lexical
+  // token, so this specifically covers the mixed-tokenization adapter path.
+  const cases = [
+    ['읽어 책 넣는다', 'il ɡʌ tɕʰɛŋ nʌn nɯn da'],
+    ['읽어 흙 말리다', 'il ɡʌ hɯŋ mal li da'],
+    ['읽어 옷 맞추다', 'il ɡʌ on mat̚ tɕʰu da'],
+    ['읽어 밥 먹는다', 'il ɡʌ pam mʌŋ nɯn da'],
+    ['읽어 값 매기다', 'il ɡʌ kam mɛ ɡi da'],
+  ];
+  for (const [phrase, expectedIpa] of cases) {
+    const result = engine.convert(phrase);
+    assert.equal(result.ipa, expectedIpa, phrase);
+    assert.ok(
+      result.trace.some((item) => item.rules.includes('nasal-assimilation') || item.rules.includes('liquid-assimilation')),
+      phrase + ': phrase-boundary rule should remain visible in the trace',
+    );
+    assert.equal(result.issues.length, 0, phrase);
   }
 });

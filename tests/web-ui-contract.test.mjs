@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {createEngine} from '../src/app/engine.js';
 
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const read=(p)=>fs.readFileSync(path.join(root,p),'utf8');
@@ -39,6 +40,29 @@ test('service exposes the research/system navigation contract',()=>{
   assert.match(html,/id="result-ipa"/);
   assert.match(html,/id="result-analysis"/);
   assert.match(html,/контекстуальних правил/);
-  assert.match(html,/Корейський текст → контекстуальні правила → практичний український запис/);
+  assert.match(html,/Корейський текст → нормативна IPA → українська передача/);
 
+});
+
+test('Ukrainian rendering has one IPA-first path',()=>{
+  const engine=read('src/app/engine.js');
+  const system=read('system.html');
+  assert.match(engine,/function ipaSyllableToUkrainian\(/);
+  assert.match(engine,/output\[i\]=targetFromIpa\.text/);
+  assert.match(engine,/result\.ukrainian=rendered\.text/);
+  assert.doesNotMatch(engine,/function mapOnset\(/);
+  assert.doesNotMatch(engine,/function mapVowel\(/);
+  assert.doesNotMatch(engine,/function mapCoda\(/);
+  assert.match(system,/id="ipa-first-pipeline-2026-10-11"/);
+});
+
+test('editable adversarial passage has a complete IPA path without inline placeholders',()=>{
+  const html=read('index.html');
+  const match=html.match(/id="stress-input"[^>]*>([\s\S]*?)<\/textarea>/u);
+  assert.ok(match,'stress passage textarea exists');
+  const engine=createEngine(read('data/korean/canonical_correspondence.csv'),read('data/korean/lexical_pronunciations.csv'));
+  const result=engine.convert(match[1]);
+  assert.ok(result.ipa.length>0);
+  assert.ok(!result.ukrainian.includes('⟦')&&!result.ukrainian.includes('⟧'));
+  assert.deepEqual(result.issues,[],JSON.stringify(result.issues));
 });

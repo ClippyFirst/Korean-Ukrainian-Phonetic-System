@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 1,
+  "standard": "국립국어원 표준 발음법",
+  "minimumCasesPerArticle": null,
+  "gateStatus": "FINITE_NORMATIVE_EXAMPLE_COVERAGE_MAPPED",
+  "policy": "Each article's evidence reference is an exact test title (or the Article 1 audit-table anchor), not merely a file path. CI verifies the file exists, the referenced test title exists verbatim, and the title explicitly names the article or a containing article range. This is an evidence-index integrity check, not a proof that a finite test exhausts every subparagraph, lexical item, or productive morphological pattern. 'verified' is limited to the official standard's enumerated examples and the explicitly referenced contrasts/interactions. The engine must fail on incorrect expected surface forms, unresolved placeholders in cases claimed resolved, duplicate/missing evidence, or contradictions between lexical and rule output. Ukrainian targets are project-level approximations, never official NIKL prescriptions. Article 1 is a governing principle rather than a standalone phonological rewrite.",
+  "articles": [
+    {
+      "article": 1,
+      "status": "not-applicable",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A01-1:docs/NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md#article-1"
+      ],
+      "notes": "Governing principle, not a standalone phonological rewrite. Reviewed in the article-by-article audit; its operational consequence is to separate standard surface pronunciation from spelling and to preserve evidence/uncertainty. No claim of lexical completeness."
+    },
+    {
+      "article": 2,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A02-1:tests/nikl-articles-2-3-inventory.test.mjs#§2 canonical inventory contains all and only the 19 standard consonants"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 3,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A03-1:tests/nikl-articles-2-3-inventory.test.mjs#§3 canonical inventory contains all and only the 21 standard vowels"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 4,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A04-1:tests/nikl-articles-4-5-vowel-variants.test.mjs#§4 preserves the permitted monophthong/diphthong readings of ㅚ and ㅟ"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 5,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A05-1:tests/nikl-articles-4-5-vowel-variants.test.mjs#§5 all eight listed ㅖ variation examples retain both official readings"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 6,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A06-1:tests/nikl-articles-6-7-exhaustive-listed-examples.test.mjs#§6(1) every official first-syllable length example is explicitly tested"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 7,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A07-1:tests/nikl-articles-6-7-exhaustive-listed-examples.test.mjs#§7(1) short-vowel alternations and every official length-retention exception are distinguished"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 8,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A08-1:tests/nikl-exhaustive-coda-matrix.test.mjs#§8–§11 exhaustive coda spelling matrix: all 27 coda Jamo resolve to one of seven standard sounds"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 9,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A09-1:tests/nikl-exhaustive-coda-matrix.test.mjs#§8–§11 exhaustive coda spelling matrix: all 27 coda Jamo resolve to one of seven standard sounds",
+        "A09-2:tests/nikl-articles-9-18-23-29-interaction-2026-10-11.test.mjs#§9 and §18: representative coda neutralization feeds nasal assimilation in 앞마당"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 10,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A10-1:tests/nikl-articles-10-11-complex-coda-contrast.test.mjs#§10–11 official complex-coda examples preserve the standard distinction between coda simplification and ㄺ-before-ㄱ",
+        "A10-2:tests/nikl-article-10-11-morphological-contrasts-2026-10-11.test.mjs#§10–11 morphology contrasts distinguish ㄺ stems, 밟- exception, and 넓- compounds"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 11,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A11-1:tests/nikl-articles-10-11-complex-coda-contrast.test.mjs#§10–11 official complex-coda examples preserve the standard distinction between coda simplification and ㄺ-before-ㄱ",
+        "A11-2:tests/nikl-article-10-11-morphological-contrasts-2026-10-11.test.mjs#§10–11 morphology contrasts distinguish ㄺ stems, 밟- exception, and 넓- compounds"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 12,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A12-1:tests/nikl-articles-8-23-gap-closure.test.mjs#§12 official aspiration, ㅎ deletion, and ㅎ+ㄴ examples are source-backed and stable"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 13,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A13-1:tests/nikl-pronunciation-regression.test.mjs#§13 all enumerated simple-coda liaison examples have pinned surfaces and IPA"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 14,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A14-1:tests/nikl-pronunciation-regression.test.mjs#§14 every enumerated complex-coda liaison example has an independently pinned surface and IPA",
+        "A14-2:tests/reported-placeholder-regressions.test.mjs#§14 NIKL complex-coda liaison examples preserve official particle readings"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 15,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A15-1:tests/nikl-article-15-substantive-morpheme-liaison.test.mjs#§15 substantive-morpheme liaison uses representative codas, not the §13 written-coda pattern"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 16,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A16-1:tests/nikl-pronunciation-regression.test.mjs#NIKL §16 official letter-name examples are exact lexical entries"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 17,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A17-1:tests/nikl-palatalization-boundary-matrix.test.mjs#§17 spelling-only ㄷ/ㅌ/ㄾ + 이 does not trigger unlicensed palatalization"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 18,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A18-1:tests/nikl-articles-17-18-complete-examples.test.mjs#§18 all twenty-four listed word examples are source-backed with exact standard surfaces",
+        "A18-2:tests/nikl-exhaustive-coda-matrix.test.mjs#§18 exhaustive coda matrix before ㅁ verifies all 27 written codas",
+        "A18-3:tests/nikl-articles-9-18-23-29-interaction-2026-10-11.test.mjs#§18 and §19: ordered assimilation remains stable when nasalization precedes a following coda"
+      ],
+      "notes": "Coverage includes all 24 listed word examples, all five official cross-word examples, a lexical/generic split interaction, and an exhaustive generic-engine matrix for all 27 written codas before ㅁ. The separate before-ㄴ matrix also checks ordered §18/§19/§20 interactions. This status means finite normative-example coverage only; it does not claim every lexical/morphological context. Ukrainian outputs remain project approximations."
+    },
+    {
+      "article": 19,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A19-1:tests/nikl-articles-10-19-20-complete-examples.test.mjs#§19 every explicit example uses the correct ordered nasalization chain"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 20,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A20-1:tests/nikl-articles-10-19-20-complete-examples.test.mjs#§20 every listed general liquid-assimilation example is computed algorithmically"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 21,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A21-1:tests/nikl-articles-8-23-gap-closure.test.mjs#§21 all seven official place-assimilation negative controls keep their exact standard surfaces"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 22,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A22-1:tests/nikl-pronunciation-regression.test.mjs#NIKL §22 preserves both permitted [어] and [여] readings"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 23,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A23-1:tests/nikl-fortition-context-matrix.test.mjs#§23 exhaustive fortition matrix: each obstruent representative fortifies all five licensed plain onsets",
+        "A23-2:tests/nikl-articles-9-18-23-29-interaction-2026-10-11.test.mjs#§9 and §23: a neutralized obstruent coda licenses fortition, unlike a sonorant coda"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 24,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A24-1:tests/nikl-articles-24-30-complete-corpus.test.mjs#every registered NIKL article 24–30 exemplar is present and stable in the browser engine",
+        "A24-2:tests/nikl-articles-24-30-complete-corpus.test.mjs#§24 신고 preserves noun and verb-form readings without a global fortition override"
+      ],
+      "notes": "Finite coverage of the enumerated §24 examples and documented contrasts. The homographic 신고 [신ː꼬] verb form is explicitly represented alongside the noun reading [신고] as a context-dependent alternate; the engine does not claim to infer unseen morphology. This status is finite normative-example coverage only, not exhaustive productive morphological analysis. Ukrainian outputs remain project approximations."
+    },
+    {
+      "article": 25,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A25-1:tests/nikl-articles-24-30-complete-corpus.test.mjs#every registered NIKL article 24–30 exemplar is present and stable in the browser engine"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 26,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A26-1:tests/nikl-articles-24-30-complete-corpus.test.mjs#§26 negative controls prevent blanket fortition after every Sino-Korean ㄹ"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 27,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A27-1:tests/nikl-morphology-guard-matrix-24-30.test.mjs#§27: the explicitly listed adnominal phrase remains a narrow positive license",
+        "A27-2:tests/nikl-morphology-guard-matrix-24-30.test.mjs#§27 punctuation-separated pause controls suppress adnominal fortition"
+      ],
+      "notes": "Finite coverage of the enumerated connected adnominal forms and a punctuation-separated pause control. The runtime does not model acoustic prosody; punctuation is only a regression proxy for an explicit break, and unlisted morphology is not generalized. This status is finite normative-example coverage only. Ukrainian outputs remain project approximations."
+    },
+    {
+      "article": 28,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A28-1:tests/nikl-morphology-guard-matrix-24-30.test.mjs#§§24–28: generic mode does not claim morphology-specific fortition"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 29,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A29-1:tests/nikl-phrase-boundary-insertion-29.test.mjs#§29: every exact licensed phrase-boundary example receives the narrow insertion trace",
+        "A29-2:tests/nikl-articles-9-18-23-29-interaction-2026-10-11.test.mjs#§9, §18, and §29: exact phrase insertion feeds the surface nasal sequence in 옷 입다"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    },
+    {
+      "article": 30,
+      "status": "verified",
+      "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "caseIds": [
+        "A30-1:tests/nikl-morphology-guard-matrix-24-30.test.mjs#§30: saisiot remains an exact lexical decision, not a generic ㅅ-final rewrite",
+        "A30-2:tests/nikl-article-30-saisiot-interaction-2026-10-11.test.mjs#§30(2): saisiot before ㄴ/ㅁ has independently pinned nasalized surface readings",
+        "A30-3:tests/nikl-article-30-saisiot-interaction-2026-10-11.test.mjs#§30(3): saisiot before 이 yields the documented ㄴㄴ insertion sequence",
+        "A30-4:tests/nikl-article-30-saisiot-interaction-2026-10-11.test.mjs#§30(1): 냇가 retains both NIKL-listed coda realizations rather than collapsing the variant",
+        "A30-5:tests/nikl-article-30-saisiot-morphology-guard-2026-10-11.test.mjs#§30(3) does not guess compound-internal ㄴㄴ insertion from spelling alone",
+        "A30-6:tests/nikl-article-30-saisiot-morphology-guard-2026-10-11.test.mjs#§30(3) evidence distinguishes within-compound insertion from ordinary vowel liaison"
+      ],
+      "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
+    }
+  ],
+  "auditDate": "2026-10-11"
+}

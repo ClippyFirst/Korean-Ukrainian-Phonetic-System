@@ -52,6 +52,32 @@ test('§29 official cross-word n-insertion examples are licensed pair-by-pair', 
   }
 });
 
+test('§29 exact insertion survives lexical/generic tokenization boundaries', () => {
+  const cases = [
+    ['한 일', 'ㄴ', 'n'],
+    ['옷 입다', 'ㄴ', 'n'],
+    ['먹은 엿', 'ㄴ', 'n'],
+    ['할 일', 'ㄹ', 'l'],
+    ['잘 입다', 'ㄹ', 'l'],
+    ['먹을 엿', 'ㄹ', 'l'],
+  ];
+  for (const [phrase, onset, ipaOnset] of cases) {
+    const result = engine.convert('읽어 ' + phrase);
+    assert.ok(result.trace.some(item => item.rules.includes('phrase-n-insertion-§29')), phrase);
+    const insertedTarget = result.trace.find(item =>
+      item.rules.includes('phrase-n-insertion-§29') &&
+      (item.output || '').startsWith(onset === 'ㄹ' ? 'л' : 'н')
+    );
+    const insertedIpa = result.trace.find(item =>
+      item.rules.includes('phrase-n-insertion-§29') &&
+      (item.ipa || '').startsWith(ipaOnset)
+    );
+    assert.ok(insertedTarget, phrase + ': inserted onset in target trace');
+    assert.ok(insertedIpa, phrase + ': inserted onset in IPA trace');
+    assert.equal(result.issues.length, 0, phrase);
+  }
+});
+
 test('§29 insertion rules do not cross punctuation or fire on an unlicensed pair', () => {
   for (const phrase of ['한, 일', '할! 일', '서울 일']) {
     const result = engine.convert(phrase);

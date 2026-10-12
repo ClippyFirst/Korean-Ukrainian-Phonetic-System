@@ -18,7 +18,7 @@ test('obstruent coda before ㄹ triggers ㄹ-to-ㄴ and nasal assimilation', () 
 
 test('서울역 applies §29 n-insertion and retains the coda ㄹ', () => {
   const result = engine.convert('서울역');
-  assert.equal(result.ukrainian, 'соуллйок');
+  assert.equal(result.ukrainian, 'соулльок');
   assert.match(result.ipa, /sʌ ul ljʌk̚/);
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
 });
@@ -73,7 +73,7 @@ test('the complete official institution name uses its sourced standard surface f
 test('unlicensed spelling-only palatalization is withheld instead of guessed', () => {
   const result = engine.convert('갇이');
   assert.equal(result.status, 'unresolved');
-  assert.equal(result.ukrainian, '⟦갇⟧⟦이⟧');
+  assert.equal(result.ukrainian, '');
   assert.ok(result.issues.some((issue) => issue.includes('verified formal-morpheme boundary')));
   assert.ok(result.trace.every((item) => !item.rules.includes('palatalization')));
 });
@@ -176,24 +176,32 @@ test('unknown complex-coda liaison is unresolved rather than guessed as §14', (
   for (const word of ['넋어', '값어']) {
     const result = engine.convert(word);
     assert.equal(result.status, 'unresolved', word);
-    assert.ok(result.ukrainian.includes('⟦'), word);
+    assert.ok(!result.ukrainian.includes('⟦') && !result.ukrainian.includes('⟧'), word);
     assert.ok(result.issues.some((issue) => issue.includes('complex-coda liaison differs')), word);
     assert.ok(result.trace.some((item) => item.rules.includes('complex-coda-liaison-requires-morphology')), word);
   }
 });
 
-test('sourced §14 complex-coda examples use exact surface forms and provisional Ukrainian targets', () => {
+test('§14 every enumerated complex-coda liaison example has an independently pinned surface and IPA', () => {
   const expected = {
-    넋이: {surface:'넉씨', target:'нокші', ipa:'nʌk̚ s͈i'},
-    값이: {surface:'갑씨', target:'капші', ipa:'kap̚ s͈i'},
-    앉아: {surface:'안자', target:'анджа', ipa:'an dʑa'},
-    닭을: {surface:'달글', target:'талґил', ipa:'tal ɡɯl'},
-    젊어: {surface:'절머', target:'чолмо', ipa:'tɕʌl mʌ'},
+    '넋이': {surface:'넉씨', target:'нокші', ipa:'nʌk̚ ɕ͈i'},
+    '값이': {surface:'갑씨', target:'капші', ipa:'kap̚ ɕ͈i'},
+    '앉아': {surface:'안자', target:'анджа', ipa:'an dʑa'},
+    '닭을': {surface:'달글', target:'талґил', ipa:'tal ɡɯl'},
+    '젊어': {surface:'절머', target:'чолмо', ipa:'tɕʌl mʌ'},
+    '곬이': {surface:'골씨', target:'колші', ipa:'kol ɕ͈i'},
+    '핥아': {surface:'할타', target:'галта', ipa:'hal tʰa'},
+    '읊어': {surface:'을퍼', target:'илпо', ipa:'ɯl pʰʌ'},
+    '값을': {surface:'갑쓸', target:'капсил', ipa:'kap̚ s͈ɯl'},
+    '없어': {surface:'업써', target:'опсо', ipa:'ʌːp̚ s͈ʌ'},
+    '여덟이': {surface:'여덜비', target:'йодолбі', ipa:'jʌ dʌl bi'},
+    '여덟을': {surface:'여덜블', target:'йодолбил', ipa:'jʌ dʌl bɯl'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
     const entry = rows.find((row) => row.input === word);
     assert.ok(entry, word);
+    assert.match(entry.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u, word + ': official source');
     assert.equal(entry.surface_hangul, values.surface, word);
     assert.equal(entry.target_status, 'provisional', word);
     const result = engine.convert(word);
@@ -207,29 +215,37 @@ test('sourced §14 complex-coda examples use exact surface forms and provisional
 test('simple codas with §15-sensitive representatives are not transferred blindly', () => {
   const result = engine.convert('옷어');
   assert.equal(result.status, 'unresolved');
-  assert.ok(result.ukrainian.includes('⟦옷⟧'));
+  assert.ok(!result.ukrainian.includes('⟦') && !result.ukrainian.includes('⟧'));
   assert.ok(result.issues.some((issue) => issue.includes('coda representative changes under §15')));
   assert.ok(result.trace.some((item) => item.rules.includes('substantive-morpheme-liaison-requires-morphology')));
 });
 
-test('sourced §13 simple-coda examples preserve their formal-morpheme readings', () => {
+test('§13 all enumerated simple-coda liaison examples have pinned surfaces and IPA', () => {
   const expected = {
-    깎아: {surface:'까까', target:'кака', ipa:'k͈a k͈a'},
-    있어: {surface:'이써', target:'ісо', ipa:'i s͈ʌ'},
-    쫓아: {surface:'쪼차', target:'чоча', ipa:'tɕ͈o tɕʰa'},
-    덮어: {surface:'더퍼', target:'топо', ipa:'tʌ pʰʌ'},
-    맞아: {surface:'마자', target:'маджа', ipa:'ma dʑa'},
-    낮아: {surface:'나자', target:'наджа', ipa:'na dʑa'},
-    붙어: {surface:'부터', target:'путо', ipa:'pu tʰʌ'},
+    '깎아': {surface:'까까', target:'кака', ipa:'k͈a k͈a'},
+    '옷이': {surface:'오시', target:'оші', ipa:'o ɕi', targetStatus:'model-selected'},
+    '있어': {surface:'이써', target:'ісо', ipa:'i s͈ʌ'},
+    '낮이': {surface:'나지', target:'наджі', ipa:'na dʑi'},
+    '꽂아': {surface:'꼬자', target:'коджа', ipa:'k͈o dʑa'},
+    '꽃을': {surface:'꼬츨', target:'кочил', ipa:'k͈o tɕʰɯl'},
+    '밭에': {surface:'바테', target:'пате', ipa:'pa tʰe'},
+    '앞으로': {surface:'아프로', target:'апиро', ipa:'a pʰɯ ɾo'},
+    '덮이다': {surface:'더피다', target:'топіда', ipa:'tʌ pʰi da'},
+    '쫓아': {surface:'쪼차', target:'чоча', ipa:'tɕ͈o tɕʰa'},
+    '덮어': {surface:'더퍼', target:'топо', ipa:'tʌ pʰʌ'},
+    '맞아': {surface:'마자', target:'маджа', ipa:'ma dʑa'},
+    '낮아': {surface:'나자', target:'наджа', ipa:'na dʑa'},
+    '붙어': {surface:'부터', target:'путо', ipa:'pu tʰʌ'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
     const entry = rows.find((row) => row.input === word);
     assert.ok(entry, word);
+    assert.match(entry.source_url, /^https:\/\/(?:www\.|m\.|krdict\.)?korean\.go\.kr\//u, word + ': official NIKL source');
     assert.equal(entry.surface_hangul, values.surface, word);
-    assert.equal(entry.target_status, 'provisional', word);
+    assert.equal(entry.target_status, values.targetStatus || 'provisional', word);
     const result = engine.convert(word);
-    assert.equal(result.status, 'lexical-review', word);
+    assert.equal(result.status, values.targetStatus === 'model-selected' ? 'lexical' : 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
     assert.equal(result.ipa, values.ipa, word);
   }
@@ -257,7 +273,7 @@ test('official §12 complex-coda + ㅎ examples use exact lexical evidence', () 
 test('unknown complex-coda + ㅎ does not inherit the suffix-aspiration pattern', () => {
   const result = engine.convert('넋하고');
   assert.equal(result.status, 'unresolved');
-  assert.ok(result.ukrainian.includes('⟦넋⟧'));
+  assert.ok(!result.ukrainian.includes('⟦') && !result.ukrainian.includes('⟧'));
   assert.ok(result.issues.some((issue) => issue.includes('§12 complex-coda + ㅎ aspiration depends')));
   assert.ok(result.trace.some((item) => item.rules.includes('complex-coda-h-aspiration-requires-morphology')));
 });
@@ -394,7 +410,7 @@ test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings',
 test('NIKL §§6–7 source-backed length examples preserve long vowels and alternants', () => {
   const expected = {
     '눈보라': ['눈보라', 'нунбора', 'nuːn bo ɾa'],
-    '말씨': ['말씨', 'малші', 'maːl s͈i'],
+    '말씨': ['말씨', 'малші', 'maːl ɕ͈i'],
     '밤나무': ['밤나무', 'памнаму', 'paːm na mu'],
     '많다': ['만타', 'манта', 'maːn tʰa'],
     '멀리': ['멀리', 'моллі', 'mʌːl li'],
@@ -592,12 +608,12 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '먹는': ['멍는', 'mʌŋ nɯn', 'моннин'],
     '깎는': ['깡는', 'k͈aŋ nɯn', 'каннин'],
     '키읔만': ['키응만', 'kʰi ɯŋ man', 'кіинман'],
-    '몫몫이': ['몽목씨', 'moŋ mok̚ s͈i', 'монмокші'],
+    '몫몫이': ['몽목씨', 'moŋ mok̚ ɕ͈i', 'монмокші'],
     '긁는': ['긍는', 'kɯŋ nɯn', 'киннин'],
     '흙만': ['흥만', 'hɯŋ man', 'гинман'],
     '닫는': ['단는', 'tan nɯn', 'таннин'],
     '짓는': ['진는', 'tɕiːn nɯn', 'чіннин'],
-    '옷맵시': ['온맵씨', 'on mɛp̚ s͈i', 'онмепші'],
+    '옷맵시': ['온맵씨', 'on mɛp̚ ɕ͈i', 'онмепші'],
     '있는': ['인는', 'in nɯn', 'іннин'],
     '맞는': ['만는', 'man nɯn', 'маннин'],
     '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'чонмонул'],

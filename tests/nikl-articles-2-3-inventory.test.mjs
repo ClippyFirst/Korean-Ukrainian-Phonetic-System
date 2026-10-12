@@ -7,6 +7,7 @@ const canonicalText = readFileSync(new URL('../data/korean/canonical_corresponde
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const rows = parseCsv(canonicalText);
 const engine = createEngine(canonicalText, lexical);
+const genericEngine = createEngine(canonicalText, '');
 const byKey = new Map(rows.map((row) => [row.layer + ':' + row.input, row]));
 
 test('§2 canonical inventory contains all and only the 19 standard consonants', () => {
@@ -63,6 +64,23 @@ test('§8–§9 every possible coda spelling maps to one of the seven standard c
     assert.ok(row, jamo);
     assert.equal(row.ipa, ipa, jamo);
     assert.ok(row.ukrainian, jamo + ': missing Ukrainian coda mapping');
+  }
+});
+
+test('§2–§3 every standard onset–vowel combination survives the generic engine (19 × 21 = 399)', () => {
+  const onsets = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+  const vowels = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+  assert.equal(onsets.length * vowels.length, 399);
+  for (let onsetIndex = 0; onsetIndex < onsets.length; onsetIndex++) {
+    for (let vowelIndex = 0; vowelIndex < vowels.length; vowelIndex++) {
+      const syllable = String.fromCharCode(0xac00 + (onsetIndex * 21 + vowelIndex) * 28);
+      const result = genericEngine.convert(syllable);
+      assert.equal(result.issues.length, 0, syllable + ': unexpected unresolved issue');
+      assert.ok(result.ipa.length > 0, syllable + ': missing IPA');
+      assert.ok(result.ukrainian.length > 0, syllable + ': missing Ukrainian target');
+      assert.ok(!result.ukrainian.includes('⟦'), syllable + ': unresolved output placeholder');
+      assert.ok(!result.ipa.includes('undefined'), syllable + ': invalid IPA serialization');
+    }
   }
 });
 

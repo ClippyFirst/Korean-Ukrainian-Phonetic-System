@@ -241,6 +241,8 @@
         <div class="table-row"><b>칼 날 문법</b><span>ㄹ + ㄴ → ㄹ + ㄹ</span><span>кал лал мунпоп</span><span>Зміна початку другого слова має бути відображена і в IPA, і в українській цілі.</span></div>
         <div class="table-row"><b>국 립 문법</b><span>ㄱ + ㄹ → ㅇ + ㄴ; далі ㅂ + ㅁ → ㅁ + ㅁ</span><span>кун нім мунпоп</span><span>Послідовне застосування двох сусідніх асиміляцій без втрати попереднього результату.</span></div>
         <div class="table-row"><b>몇 리 문법</b><span>ㅊ → 대표음 ㄷ; ㄷ + ㄹ → ㄴ + ㄴ</span><span>мйон ні мунпоп</span><span>Каскадна перевірка 대표음 ㄷ у реченні з лексичним записом.</span></div>
+        <div class="table-row"><b>읽을 수 있습니다</b><span>ㄹ 관형사형 + ㅅ → ㅆ</span><span>ілґил су ітсимніда</span><span>§27: IPA зберігає fortisness у 쑤 навіть після поділу фрази на лексичні й загальні токени.</span></div>
+        <div class="table-row"><b>읽어 한 일</b><span>лексичний токен перед точним прикладом §29</span><span>цільовий початок ㄴ + IPA [n]</span><span>§29: вставка зберігається у сусідній парі, навіть якщо лексичний запис змушує рушій розбити рядок на токени.</span></div>
       </div>
       <p>Це цільові регресійні приклади, а не повний морфологічний аналіз корейської мови. Система не виводить автоматично межі морфем для правил, які потребують морфологічного підтвердження: такі випадки й надалі мають залишатися невизначеними, доки немає точного джерельного запису.</p>
       <div class="repo-links">
@@ -312,6 +314,53 @@
         <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/tricky-passage-morphology-matrix-2026-10-10.test.mjs">Морфологічна матриця каверзного тексту ↗</a>
         <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/tricky-passage-morphology-matrix-2026-10-10.md">Звіт: межі §§9–17 та доказовість ↗</a>
         <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002">NIKL — 표준 발음법 ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="audit-2026-10-11" class="doc-section">
+    <div class="doc-label">17</div>
+    <div class="doc-content">
+      <p class="section-kicker">Аудит словника · 11 жовтня 2026</p>
+      <h2>Узгодження IPA та українських цільових записів</h2>
+      <p>У межах останнього аудиту повторно перевірено словниковий корпус із 637 записів: 617 записів охоплював початковий аудит, далі додано чотири джерельно обґрунтовані IPA-first форми, одну форму з §12 та п’ятнадцять пропущених прикладів §23. Завданням було виявити внутрішні суперечності між збереженою поверхневою вимовою Hangul, широкою IPA-транскрипцією та задекларованою політикою практичної української передачі.</p>
+      <div class="compare-strip">
+        <span><b>14 записів IPA</b><small>Виправлено непослідовну транскрипцію [ɕ͈] перед відповідним набором голосних; додано спільний регресійний тест.</small></span>
+        <span><b>13 цільових записів</b><small>Узгоджено написання без додаткового подвоєння українських приголосних, відповідно до чинної таблиці проєкту.</small></span>
+        <span><b>1005/1005 тестів</b><small>Останній зафіксований CI пройшов JavaScript-тести, збірку, Python-тести 3.11–3.13, системну перевірку й генерацію артефактів.</small></span>
+      </div>
+      <h3>1. IPA: контекстна реалізація ㅆ</h3>
+      <p>Перевірено <code>넋이</code>, <code>값이</code>, <code>말씨</code>, <code>몫몫이</code>, <code>옷맵시</code>, <code>일시</code>, <code>얇실하다</code>, <code>몫이</code>, <code>곬이</code>, <code>씌어</code>, <code>끝없이</code>, <code>없이</code>, <code>빠짐없이</code> та <code>값의</code>. Відповідні IPA-записи узгоджено з контекстною моделлю, а окремий тест порівнює збережений словниковий IPA з результатом рушія.</p>
+      <h3>2. Українські цільові форми: не ототожнювати фортицію з подвоєнням</h3>
+      <p>Записи <code>몫을</code>, <code>쌓인</code>, <code>없으면</code>, <code>없으므로</code>, <code>빠짐없이</code>, <code>있어서</code>, <code>있어야</code>, <code>있었는지</code>, <code>있었지만</code>, <code>확정값을</code>, <code>곬으로</code>, <code>쌓였다</code> та <code>없었다</code> узгоджено з таблицею відповідностей. Для <code>값의</code> узгоджено основний запис і варіант вимови з [에].</p>
+      <p><strong>Важливе обмеження:</strong> ці зміни роблять модель внутрішньо послідовнішою, але не доводять, що обрані українські написання є єдиними можливими або остаточно нормативними. Цільові форми зберігають статус попередніх і потребують окремого читабельнісного та фонетичного рецензування.</p>
+      <h3>3. Результат повторної перевірки</h3>
+      <p>Автоматична перевірка усіх 637 записів не знайшла залишкових невідповідностей у двох конкретних категоріях цього аудиту: IPA для ㅆ перед відповідними голосними та непередбачене подвоєння українських цільових приголосних. Окремо додано регресію для всіх двадцяти прикладів §23. Це не є твердженням про повне покриття всіх правил стандартної корейської вимови.</p>
+      <div class="evidence-list">
+        <p><b>Словник</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/test/block-standard-rule-coverage-gate-2026-10-11/data/korean/lexical_pronunciations.csv">lexical_pronunciations.csv · гілка аудиту</a></span></p>
+        <p><b>Регресії</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/test/block-standard-rule-coverage-gate-2026-10-11/tests/reported-placeholder-regressions.test.mjs">reported-placeholder-regressions.test.mjs</a></span></p>
+        <p><b>CI</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38151388338">1005/1005 тести й збірка</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38151388371">системна перевірка</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38151388351">генерація артефактів</a></span></p>
+        <p><b>Статус змін</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/144">PR #144 — чернетка; ще не злито до main</a></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ipa-first-pipeline-2026-10-11" class="doc-section">
+    <div class="doc-label">18</div>
+    <div class="doc-content">
+      <p class="section-kicker">Архітектура рушія · 11 жовтня 2026</p>
+      <h2>Єдиний шлях перетворення: корейська → IPA → українська</h2>
+      <p>Український результат більше не повинен обчислюватися паралельно з корейського написання. Рушій спершу встановлює поверхневу вимову та формує IPA за словниковими даними й контекстними правилами; лише після цього єдиний IPA→український відображувач створює цільовий текст.</p>
+      <ol>
+        <li><b>Корейський текст → поверхнева вимова та IPA.</b> Нормативні правила, морфологічно ліцензовані контексти й джерельно підтверджені словникові записи визначають фонетичну форму.</li>
+        <li><b>Фінальна IPA → українська передача.</b> Сегменти IPA зіставляються з єдиною таблицею практичного українського відображення. Український результат не читає Hangul повторно.</li>
+        <li><b>Варіанти та межі фраз.</b> Якщо контекст змінює IPA, український текст і слід перераховуються з оновленої IPA, а не змінюються окремою паралельною фонетичною гілкою.</li>
+      </ol>
+      <p>Для невстановленого морфологічного контексту рушій не має вигадувати вимову: невизначеність показується окремо в діагностиці, а службові корейські фрагменти не вставляються в український результат. Такий випадок усе ще потребує нормативного розв’язання перед тим, як його можна вважати повністю опрацьованим.</p>
+      <div class="evidence-list">
+        <p><b>Рушій</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/test/block-standard-rule-coverage-gate-2026-10-11/src/app/engine.js">engine.js · IPA-first conversion</a></span></p>
+        <p><b>Словникові дані</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/test/block-standard-rule-coverage-gate-2026-10-11/data/korean/lexical_pronunciations.csv">lexical_pronunciations.csv · IPA та узгоджені цільові форми</a></span></p>
+        <p><b>Регресії</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/test/block-standard-rule-coverage-gate-2026-10-11/tests/reported-placeholder-regressions.test.mjs">Перевірки відповідності IPA→українська</a></span></p>
       </div>
     </div>
   </section>

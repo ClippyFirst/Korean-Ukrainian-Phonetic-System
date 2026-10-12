@@ -7,14 +7,18 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
 
-// NIKL §14 official examples, repeated in NIKL Q&A 325622; 몫이 is confirmed by Q&A 335008.
+// NIKL §14 examples plus dictionary/Q&A-attested forms; 몫이 is confirmed by NIKL Q&A 335008.
 test('NIKL complex-coda liaison examples resolve without morphological guessing', () => {
   const expected = {
+    '넋이': { surface: '넉씨', ipa: 'nʌk̚ ɕ͈i' },
     '앉아': { surface: '안자', ipa: 'an dʑa' },
-    '곬이': { surface: '골씨', ipa: 'kol s͈i' },
+    '곬이': { surface: '골씨', ipa: 'kol ɕ͈i' },
     '핥아': { surface: '할타', ipa: 'hal tʰa' },
     '읊어': { surface: '을퍼', ipa: 'ɯl pʰʌ' },
-    '몫이': { surface: '목씨', ipa: 'mok̚ s͈i' },
+    '몫이': { surface: '목씨', ipa: 'mok̚ ɕ͈i' },
+    '값이': { surface: '갑씨', ipa: 'kap̚ ɕ͈i' },
+    '값을': { surface: '갑쓸', ipa: 'kap̚ s͈ɯl' },
+    '넓어': { surface: '널버', ipa: 'nʌl bʌ' },
   };
   for (const [input, want] of Object.entries(expected)) {
     const result = engine.convert(input);

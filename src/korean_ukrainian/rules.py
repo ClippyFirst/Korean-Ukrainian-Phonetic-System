@@ -1,6 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from .phonology import Syllable, split_coda
+from .soft_morphology import soft_formal_licenses, merge_licenses, mark_heuristic_trace
 
 FINAL_REPRESENTATIVE={"ㄳ":"ㄱ","ㄵ":"ㄴ","ㄶ":"ㄴ","ㄺ":"ㄱ","ㄻ":"ㅁ","ㄼ":"ㄹ","ㄽ":"ㄹ","ㄾ":"ㄹ","ㄿ":"ㅂ","ㅀ":"ㄹ","ㅄ":"ㅂ","ㅅ":"ㄷ","ㅆ":"ㄷ","ㅈ":"ㄷ","ㅊ":"ㄷ","ㅌ":"ㄷ","ㅎ":"ㄷ","ㄲ":"ㄱ","ㅋ":"ㄱ","ㅍ":"ㅂ"}
 PLAIN_TO_FORTIS={"ㄱ":"ㄲ","ㄷ":"ㄸ","ㅂ":"ㅃ","ㅅ":"ㅆ","ㅈ":"ㅉ"}
@@ -416,7 +417,51 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     status=("conditional-disabled" if conditional_disabled and not changed else ("partially-conditional" if conditional_disabled else ("established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015","R016"} else "conditional-nochange")))
     return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,source,license_context)
 
-def apply_ordered_rules(items:list[Syllable],rule_ids=None,*,boundary_mode="same_word",n_insertion_licensed=False,rule_licenses=None):
-    ids=rule_ids or ["R009","R003","R002","R004","R006","R005","R007","R010","R011","R012","R013","R014","R015","R016","R008","R001"]
-    if boundary_mode not in {"unknown","same_word","morpheme","word","phrase"}: raise ValueError("invalid boundary_mode")
-    return items,[apply_rule(items,r,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses) for r in ids]
+def apply_ordered_rules(
+    items: list[Syllable],
+    rule_ids=None,
+    *,
+    boundary_mode="same_word",
+    n_insertion_licensed=False,
+    rule_licenses=None,
+    morphology_mode="strict",
+):
+    """Apply ordered NIKL rules.
+
+    morphology_mode:
+      - "strict" (default): exact licenses only (current behaviour).
+      - "soft": also inject ephemeral formal-ending licenses for R002/R003/R007.
+        Soft applications are marked heuristic-low-confidence.
+    """
+    if morphology_mode not in {"strict", "soft"}:
+        raise ValueError('morphology_mode must be "strict" or "soft"')
+    if boundary_mode not in {"unknown", "same_word", "morpheme", "word", "phrase"}:
+        raise ValueError("invalid boundary_mode")
+
+    ids = rule_ids or [
+        "R009", "R003", "R002", "R004", "R006", "R005", "R007",
+        "R010", "R011", "R012", "R013", "R014", "R015", "R016", "R008", "R001",
+    ]
+    exact = list(rule_licenses or ())
+    soft = soft_formal_licenses(items) if morphology_mode == "soft" else []
+    merged = merge_licenses(exact, soft, morphology_mode=morphology_mode)
+    soft_set = set(soft)
+
+    traces = []
+    for r in ids:
+        tr = apply_rule(
+            items,
+            r,
+            boundary_mode=boundary_mode,
+            n_insertion_licensed=n_insertion_licensed,
+            rule_licenses=merged,
+        )
+        soft_contributed = (
+            morphology_mode == "soft"
+            and tr.changed
+            and tr.license_context is not None
+            and tr.license_context in soft_set
+        )
+        mark_heuristic_trace(tr, soft_contributed=soft_contributed)
+        traces.append(tr)
+    return items, traces

@@ -89,6 +89,14 @@ The browser adapter implements:
 - preservation of non-Hangul text;
 - an inspectable rule/status trace.
 
+
+- Optional `morphology_mode=soft` (UI checkbox **М’яка морфологія**) may propose
+  high-frequency formal-ending readings (이 / 을 / 어 / 았 / 고 / …) with status
+  `heuristic-low-confidence`. Default remains **strict** (exact evidence only).
+  Soft never selects §15 substantive neutralization and never licenses
+  R009 / R010–R016. Full contract:
+  [docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md](docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md).
+
 It deliberately does **not** claim to be a complete lexical, morphological or acoustic Korean pronunciation engine. Research-layer rules that require lexical or morphological licensing remain outside the browser's automatic scope. For §17 palatalization, the browser accepts exact sourced lexical entries; an unlisted ㄷ/ㅌ/ㄾ + 이-looking sequence is marked unresolved instead of inferring a formal-morpheme boundary from spelling alone. The Python §29 n-insertion rule requires a full-form and pair-specific license rather than a global boolean. The Python research layer and browser both require exact full-form/pair evidence for morphologically ambiguous complex-coda liaison and for simple-coda cases where §15 neutralization could change the result; sourced lexical entries cover known examples.
 
 ## Exhaustive Hangul inventory

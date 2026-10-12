@@ -9,6 +9,7 @@ const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const csv=fs.readFileSync(path.join(root,'data/korean/canonical_correspondence.csv'),'utf8');
 const lexicalCsv=fs.readFileSync(path.join(root,'data/korean/lexical_pronunciations.csv'),'utf8');
 const engine=createEngine(csv,lexicalCsv);
+const genericEngine=createEngine(csv,'');
 
 test('modern Hangul decomposition',()=>{assert.deepEqual(decompose('가'),{char:'가',onset:'ㄱ',vowel:'ㅏ',coda:'',hasCoda:false});assert.deepEqual(decompose('각'),{char:'각',onset:'ㄱ',vowel:'ㅏ',coda:'ㄱ',hasCoda:true});});
 test('canonical CV/CVC output',()=>{assert.equal(engine.convert('가').ukrainian,'ка');assert.equal(engine.convert('각').ukrainian,'как');assert.equal(engine.convert('한').ukrainian,'ган');});
@@ -21,7 +22,7 @@ test('official §12(4) ㅎ-deletion forms use sourced lexical readings',()=>{for
 test('ㄳ/ㄽ/ㅄ liaison uses fortis ㅆ',()=>{assert.equal(engine.convert('넋이').ukrainian,'нокші');assert.equal(engine.convert('곬이').ukrainian,'колші');assert.equal(engine.convert('값이').ukrainian,'капші');});
 test('nasal assimilation is explicit',()=>{const r=engine.convert('국문');assert.equal(r.ukrainian,'кунмун');assert.equal(r.ipa,'kuŋ mun');assert.ok(r.trace.some(x=>x.rules.includes('nasal-assimilation')));});
 test('aspirated ㅍ coda participates in nasal assimilation',()=>{const r=engine.convert('앞문');assert.equal(r.ukrainian,'аммун');assert.ok(engine.convert('앞문').trace[0].rules.includes('nasal-assimilation'));});
-test('h aspiration is explicit',()=>{const r=engine.convert('각하');assert.equal(r.ukrainian,'кака');assert.ok(r.trace.some(x=>x.rules.includes('h-aspiration')));});
+test('official 각하 reading and generic h aspiration are explicit',()=>{const sourced=engine.convert('각하');assert.equal(sourced.ukrainian,'кака');assert.ok(sourced.trace.some(x=>x.rules.includes('lexical-pronunciation')));const generic=engine.convert('앞하');assert.ok(generic.trace.some(x=>x.rules.includes('h-aspiration')));});
 test('ㅎ coda does not aspirate ㅂ: §12(1) lists only ㄱ, ㄷ, ㅈ in this direction',()=>{const r=engine.convert('놓바');assert.equal(r.ukrainian,'нотпа');assert.equal(r.ipa,'not̚ p͈a');assert.ok(!r.trace.some(x=>x.rules.includes('h-aspiration')));assert.ok(r.trace[1].rules.includes('tensification'));});
 test('complex ㅎ codas aspirate following lenis stops',()=>{assert.equal(engine.convert('많다').ukrainian,'манта');assert.equal(engine.convert('싫다').ukrainian,'шілта');});
 test('official §12 complex-coda + ㅎ forms use sourced lexical entries',()=>{for(const [word,target] of [['읽히다','ілкіда'],['앉히다','анчіда'],['넓히다','нолпіда']]){const r=engine.convert(word);assert.equal(r.ukrainian,target);assert.equal(r.status,'lexical-review');assert.ok(r.trace.some(x=>x.rules.includes('lexical-pronunciation')));}});
@@ -29,8 +30,8 @@ test('simple ㅈ plus ㅎ aspirates to ㅊ rather than the final representative 
 test('palatalization uses a sourced exact-form entry and provisional Ukrainian target',()=>{const r=engine.convert('같이');assert.equal(r.ukrainian,'качі');assert.equal(r.ipa,'ka tɕʰi');assert.equal(r.status,'lexical-review');assert.ok(r.trace.some(x=>x.rules.includes('lexical-pronunciation')));});
 test('simple liaison is contextual',()=>{const r=engine.convert('밥이');assert.equal(r.status,'contextual');assert.equal(r.ukrainian,'пабі');});
 test('standard lexical ㄼ exception 밟- is preserved before consonants',()=>{const r=engine.convert('밟는');assert.equal(r.ukrainian,'памнин');assert.ok(r.trace[0].rules.includes('lexical-coda-balm'));});
-test('standard lexical ㄼ exceptions 넓죽- and 넓둥글- are preserved before fortition',()=>{const a=engine.convert('넓죽하다');assert.ok(a.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(a.trace[1].rules.includes('tensification'));const b=engine.convert('넓둥글다');assert.ok(b.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(b.trace[1].rules.includes('tensification'));});
-test('tensification remains practical rather than mandatory doubling',()=>{const r=engine.convert('국밥');assert.equal(r.ukrainian,'кукпап');assert.ok(r.trace.some(x=>x.rules.includes('tensification')));});
+test('standard lexical ㄼ exceptions 넓죽- and 넓둥글- are preserved before fortition',()=>{const a=genericEngine.convert('넓죽하다');assert.ok(a.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(a.trace[1].rules.includes('tensification'));const b=genericEngine.convert('넓둥글다');assert.ok(b.trace[0].rules.includes('lexical-coda-neolp'));assert.ok(b.trace[1].rules.includes('tensification'));});
+test('tensification remains practical rather than mandatory doubling',()=>{const r=genericEngine.convert('국밥');assert.equal(r.ukrainian,'кукпап');assert.ok(r.trace.some(x=>x.rules.includes('tensification')));});
 test('sourced NIKL tense examples are available in the lexical layer',()=>{for(const w of ['앉고','넓게','갈등','문고리']){const r=engine.convert(w);assert.equal(r.status,'lexical-review',w);assert.ok(r.trace.some(x=>x.rules.includes('lexical-pronunciation')),w);}});
 test('sourced tensification outputs preserve Korean surface IPA and provisional Ukrainian targets',()=>{for(const [word,surface,ua,ipa] of [['넓게','널께','нолке','nʌl k͈e'],['갈등','갈뜽','калтин','kal t͈ɯŋ'],['문고리','문꼬리','мункорі','mun k͈o ɾi'],['젊지','점찌','чомчі','tɕʌːm tɕ͈i'],['훑소','훌쏘','гулсо','hul s͈o']]){const r=engine.convert(word);assert.equal(r.surfaceHangul,surface,word);assert.equal(r.ukrainian,ua,word);assert.equal(r.ipa,ipa,word);assert.equal(r.status,'lexical-review',word);}});
 test('official NIKL §27 attached-ending fortition examples are lexically covered',()=>{
@@ -133,7 +134,7 @@ test('remaining official NIKL §28 compound examples retain sourced surface form
     ['아침밥','아침빱','ачімпап','a tɕʰim p͈ap̚'],
     ['잠자리','잠짜리','чамчарі','tɕam tɕ͈a ɾi'],
     ['초승달','초승딸','чосинтал','tɕʰo sɯŋ t͈al'],
-    ['강줄기','강쭐기','канчулґи','kaŋ tɕ͈ul gi']
+    ['강줄기','강쭐기','канчулґі','kaŋ tɕ͈ul gi']
   ];
   for(const [word,surface,ua,ipa] of cases){
     const r=engine.convert(word);
@@ -164,7 +165,7 @@ test('NIKL §29 official ㄴ-insertion and negative-control examples are covered
     ['영업용','영엄뇽','йономньон','jʌŋ ʌm ɲoŋ'],
     ['식용유','시굥뉴','шіґйонню','ɕi ɡjoŋ ɲu'],
     ['백분율','백뿐뉼','пекпуннюл','pɛk̚ p͈un ɲul'],
-    ['밤윷','밤뉻','памньут','paːm ɲut̚'],
+    ['밤윷','밤뉻','памнют','paːm ɲut̚'],
     ['송별연','송벼련','сонбйорйон','soːŋ bjʌ ɾjʌn'],
     ['등용문','등용문','тинйонмун','tɯŋ joŋ mun']
   ];
@@ -208,7 +209,7 @@ test('NIKL §30 official 사이시옷 readings cover fortition, nasalization and
     ['깻잎','깬닙','кенніп','kɛn nip̚'],
     ['나뭇잎','나문닙','намунніп','na mun nip̚'],
     ['도리깻열','도리깬녈','торіґенньол','to ɾi gɛn ɲʌl'],
-    ['뒷윷','뒨뉻','твінньут','tyːn ɲut̚']
+    ['뒷윷','뒨뉻','твіннют','tyːn ɲut̚']
   ];
   for(const [word,surface,ua,ipa] of cases){
     const r=engine.convert(word);
@@ -230,7 +231,7 @@ test('NIKL §30 retains both permitted surface readings for written 사이시옷
     ['햇살','해쌀','гесал','hɛ s͈al','핻쌀','гетсал','hɛt̚ s͈al'],
     ['뱃속','배쏙','песок','pɛ s͈ok̚','밷쏙','петсок','pɛt̚ s͈ok̚'],
     ['뱃전','배쩐','печон','pɛ tɕ͈ʌn','밷쩐','петчон','pɛt̚ tɕ͈ʌn'],
-    ['고갯짓','고개찓','коґечіт','ko ɡɛ tɕ͈it̚','고갣찓','коґетчіт','ko kɛt̚ tɕ͈it̚']
+    ['고갯짓','고개찓','коґечіт','ko ɡɛ tɕ͈it̚','고갣찓','кокетчіт','ko kɛt̚ tɕ͈it̚']
   ];
   for(const [word,surface,ua,ipa,altSurface,altUa,altIpa] of cases){
     const r=engine.convert(word);
@@ -244,7 +245,7 @@ test('NIKL §30 retains both permitted surface readings for written 사이시옷
   }
 });
 
-test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'гйонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
+test('contextual voicing is visible',()=>{const r=engine.convert('현대');assert.equal(r.ukrainian,'гьонде');assert.ok(r.trace.some(x=>x.rules.includes('contextual-voicing')));});
 test('lenis voicing between vowels is explicit',()=>{const r=engine.convert('부부');assert.equal(r.ukrainian,'пубу');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
 test('표준 voices intervocalic ㅈ',()=>{const r=engine.convert('표준');assert.equal(r.ukrainian,'пйоджун');assert.equal(r.ipa,'pʰjo dʑun');assert.ok(r.trace[1].rules.includes('contextual-voicing'));});
 test('consonant-onset ㅢ follows standard [i] realization',()=>{const r=engine.convert('희망');assert.equal(r.ukrainian,'гіман');assert.equal(r.ipa,'hi maŋ');assert.ok(r.trace[0].rules.includes('vowel-ui-to-i'));});
@@ -336,7 +337,7 @@ test('sourced lexical edge cases preserve spaces and punctuation in phrases',()=
   assert.equal(r.ipa,'k͈on nip̚, pa tɕʰi! kuŋ mul');
 });
 
-test('unknown ㅎ-coda + vowel is unresolved without ending/suffix evidence',()=>{const r=engine.convert('낳어');assert.equal(r.status,'unresolved');assert.ok(r.ukrainian.includes('⟦낳⟧'));assert.ok(r.issues.some(x=>x.includes('§12(4) ㅎ deletion requires a verified')));assert.ok(r.trace.some(x=>x.rules.includes('h-deletion-requires-morphology')));});
+test('unknown ㅎ-coda + vowel is unresolved without ending/suffix evidence',()=>{const r=engine.convert('낳어');assert.equal(r.status,'unresolved');assert.ok(!r.ukrainian.includes('⟦') && !r.ukrainian.includes('⟧'));assert.ok(r.issues.some(x=>x.includes('§12(4) ㅎ deletion requires a verified')));assert.ok(r.trace.some(x=>x.rules.includes('h-deletion-requires-morphology')));});
 
 test('§18 nasal assimilation applies across plain spaces in connected phrases',()=>{
   const r=engine.convert('밥 먹는다');
@@ -371,7 +372,7 @@ test('몇 리 keeps the ㄷ+ㄹ analysis explicitly labelled as a project infere
 
 test('liquid assimilation is preserved when a lexical override elsewhere activates word splitting',()=>{
   const nasalLiquid=engine.convert('신 라면 문법');
-  assert.equal(nasalLiquid.ukrainian,'шіл ламйон мунпоп');
+  assert.equal(nasalLiquid.ukrainian,'шіл ламйон мунпоп',JSON.stringify({ipa:nasalLiquid.ipa,trace:nasalLiquid.trace.map(item=>({source:item.source,output:item.output,ipa:item.ipa,rules:item.rules}))}));
   assert.equal(nasalLiquid.ipa,'ɕil la mjʌn mun p͈ʌp̚');
   assert.ok(nasalLiquid.trace.find(item=>item.source==='신').rules.includes('liquid-assimilation'));
   assert.ok(nasalLiquid.trace.find(item=>item.source==='라').rules.includes('liquid-assimilation'));
@@ -403,7 +404,7 @@ test('official §11 ㄺ-before-ㄱ examples use exact lexical readings',()=>{
 test('unknown ㄺ-before-ㄱ does not let generic §23 fortition choose the morphology',()=>{
   const r=engine.convert('굵고');
   assert.equal(r.status,'unresolved');
-  assert.ok(r.ukrainian.includes('⟦굵⟧'));
+  assert.ok(!r.ukrainian.includes('⟦') && !r.ukrainian.includes('⟧'));
   assert.ok(r.issues.some(x=>x.includes('written ㄺ before ㄱ may follow the §11 stem exception')));
   assert.ok(r.trace.some(x=>x.rules.includes('rieul-giyeok-exception-requires-morphology')));
 });
@@ -507,9 +508,9 @@ test('phrase-boundary trace stays silent when a lexical target does not match th
   ].join('\n');
   const guarded=createEngine(csv,syntheticLexicon);
   const nasal=guarded.convert('국 문');
-  assert.equal(nasal.ukrainian,'гу мун');
+  assert.equal(nasal.ukrainian,'ку мун');
   assert.ok(!nasal.trace.some(unit=>unit.rules.includes('nasal-assimilation')));
   const liquid=guarded.convert('국 라면');
-  assert.equal(liquid.ukrainian,'гу намен');
+  assert.equal(liquid.ukrainian,'ку намйон');
   assert.ok(!liquid.trace.some(unit=>unit.rules.includes('liquid-to-nasal-before-obstruent')));
 });

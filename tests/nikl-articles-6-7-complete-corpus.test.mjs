@@ -11,7 +11,7 @@ const engine = createEngine(canonical, lexical);
 
 const section6 = {
   '눈보라':['눈보라','nuːn|bo|ɾa'],
-  '말씨':['말씨','maːl|s͈i'],
+  '말씨':['말씨','maːl|ɕ͈i'],
   '밤나무':['밤나무','paːm|na|mu'],
   '많다':['만타','maːn|tʰa'],
   '멀리':['멀리','mʌːl|li'],
@@ -99,11 +99,15 @@ test('§7 compound shortening is explicitly covered', () => {
   }
 });
 
-test('the homographic official §24 example 신고 is not globally overridden as the verb reading', () => {
-  // The standard's 신고 [신ː꼬] is morphology-specific (신- + -고); 신고
-  // also means a noun 'report' and has a different ordinary reading. A global
-  // override would corrupt the noun, so the verb example stays explicitly
-  // documented rather than being forced into the default word-level lexicon.
-  assert.ok(!entries.has('신고'));
-  assert.ok(!engine.convert('신고').ipa.includes('k͈'));
+test('§24 homographic 신고 keeps noun and verb-form readings context-dependent', () => {
+  const row = entries.get('신고');
+  assert.ok(row);
+  assert.equal(row.surface_hangul, '신고');
+  assert.equal(row.alternate_surface_hangul, '신꼬');
+  assert.equal(row.ipa_syllables.split('|').join(' '), 'ɕin ɡo');
+  assert.equal(row.alternate_ipa_syllables.split('|').join(' '), 'ɕiːn k͈o');
+  assert.match(row.variant_note, /context-dependent homograph/iu);
+  const result = engine.convert('신고');
+  assert.equal(result.surfaceHangul, '신고');
+  assert.equal(result.variants[0].surface, '신꼬');
 });

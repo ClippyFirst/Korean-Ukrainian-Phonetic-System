@@ -1,3 +1,4 @@
+import { SOFT_FORMAL_ENDINGS, isSoftFormalPair, trySoftFormal, softStatusForUnit } from './soft_morphology.js';
 const HANGUL_BASE=0xAC00,HANGUL_END=0xD7A3,V_COUNT=21,T_COUNT=28,N_COUNT=V_COUNT*T_COUNT;
 const ONSETS=[...'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'];
 const VOWELS=[...'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'];
@@ -30,7 +31,7 @@ const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥','넓적']);
 // Exact, source-licensed phrase boundaries whose rules require syntax or a
 // known compound. These maps deliberately do not generalize from ㄹ/ㄴ codas.
 const NIKL_27_ADNOMINAL_PHRASES=new Map([
-  ['할 것을','ㄱ'],['갈 데가','ㄷ'],['할 바를','ㅂ'],['할 수는','ㅅ'],
+  ['할 것을','ㄱ'],['갈 데가','ㄷ'],['할 바를','ㅂ'],['할 수는','ㅅ'],['읽을 수','ㅅ'],
   ['할 적에','ㅈ'],['갈 곳','ㄱ'],['할 도리','ㄷ'],['만날 사람','ㅅ']
 ]);
 const NIKL_29_PHRASE_INSERTION=new Map([
@@ -38,8 +39,12 @@ const NIKL_29_PHRASE_INSERTION=new Map([
   ['먹은 엿',{onset:'ㄴ'}],['할 일',{onset:'ㄹ'}],
   ['잘 입다',{onset:'ㄹ'}],['먹을 엿',{onset:'ㄹ'}]
 ]);
+// §30(3) compound examples need a lexical compound boundary: do not treat
+// their written 사이시옷 as ordinary coda-to-vowel liaison when the exact
+// sourced lexical reading is unavailable.
+const NIKL_30_SAISIOT_INSERTION_FORMS=new Set(['깻잎','나뭇잎','베갯잇','도리깻열']);
 
-function parseCsv(text){
+export function parseCsv(text){
   const rows=[];let row=[],cell='',quoted=false;
   for(let i=0;i<text.length;i++){
     const c=text[i];
@@ -56,7 +61,7 @@ function parseCsv(text){
   const headers=rows.shift()||[];
   return rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,(r[i]??'').trim()])));
 }
-function decompose(ch){
+export function decompose(ch){
   const cp=ch.codePointAt(0);
   if(cp<HANGUL_BASE||cp>HANGUL_END)return null;
   const n=cp-HANGUL_BASE,l=Math.floor(n/N_COUNT),v=Math.floor((n%N_COUNT)/T_COUNT),t=n%T_COUNT;
@@ -65,23 +70,6 @@ function decompose(ch){
 function createMap(csv){return new Map(parseCsv(csv).map(r=>[r.layer+':'+r.input,r]));}
 function get(map,layer,key){return map.get(layer+':'+key);}
 function isHangulUnit(units,i){return Boolean(units[i]&&units[i].type==='hangul');}
-function mapOnset(map,jamo,currentVowel='',voiced=false,fortis=false,liquid=false){
-  if(jamo==='ㅇ')return '';
-  if(jamo==='ㄹ'&&liquid)return 'л';
-  if((jamo==='ㅅ'||jamo==='ㅆ')&&J_VOWELS.has(currentVowel))return 'ш';
-  if(voiced&&jamo==='ㄱ')return 'ґ';
-  if(voiced&&jamo==='ㄷ')return 'д';
-  if(voiced&&jamo==='ㅂ')return 'б';
-  if(voiced&&jamo==='ㅈ')return 'дж';
-  if(fortis&&jamo==='ㄱ')return 'к';
-  if(fortis&&jamo==='ㄷ')return 'т';
-  if(fortis&&jamo==='ㅂ')return 'п';
-  if(fortis&&jamo==='ㅅ')return 'с';
-  if(fortis&&jamo==='ㅈ')return 'ч';
-  return get(map,'onset',jamo)?.ukrainian??'';
-}
-function mapVowel(map,jamo){return get(map,'vowel',jamo)?.ukrainian??'';}
-function mapCoda(map,jamo){return jamo?(get(map,'coda',jamo)?.ukrainian??''):'';}
 function nextHangul(units,i){return isHangulUnit(units,i+1)?units[i+1]:null;}
 function prevHangul(units,i){return isHangulUnit(units,i-1)?units[i-1]:null;}
 function representative(coda){return FINAL_REPRESENTATIVE[coda]??coda;}
@@ -103,7 +91,8 @@ function renderStructured(units,values,separator){
   return result;
 }
 
-function applyContextualRules(units){
+function applyContextualRules(units,sourceText='',{ morphologyMode = 'strict' } = {}){
+  const softOn = morphologyMode === 'soft';
   const ruleSets=units.map(()=>[]);
   for(let i=0;i<units.length-1;i++){
     const a=units[i],b=units[i+1];
@@ -122,10 +111,25 @@ function applyContextualRules(units){
     // establish that morphology. Exact sourced forms are handled by the
     // lexical layer; unknown candidates are withheld instead of guessed.
     if(['ㄷ','ㅌ','ㄾ'].includes(a.coda)&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
+      if(softOn&&trySoftFormal(a,b,rules,nextRules,{COMPLEX,FINAL_REPRESENTATIVE})){
+        continue;
+      }
       a.__palatalizationUnlicensed='left';
       b.__palatalizationUnlicensed='right';
       rules.push('palatalization-requires-lexical-morphology');
       nextRules.push('palatalization-requires-lexical-morphology');
+      continue;
+    }
+
+    // NIKL §30(3): the exact compound examples below require ㄴㄴ insertion.
+    // Without their lexical entry, ordinary liaison would produce a false
+    // confident reading. Scope this guard to the attested compounds rather
+    // than every ㅅ-final noun followed by 이 (e.g. 옷이 is ordinary liaison).
+    if(NIKL_30_SAISIOT_INSERTION_FORMS.has(sourceText)&&a.coda==='ㅅ'&&b.onset==='ㅇ'){
+      a.__saisiotInsertionUnlicensed='left';
+      b.__saisiotInsertionUnlicensed='right';
+      rules.push('saisiot-n-insertion-§30(3)-requires-lexical-compound');
+      nextRules.push('saisiot-n-insertion-§30(3)-requires-lexical-compound');
       continue;
     }
 
@@ -135,6 +139,12 @@ function applyContextualRules(units){
     // sourced lexical entries may resolve these cases; unknown forms are
     // marked unresolved rather than assigned the §14 pattern by default.
     if(a.coda&&b.onset==='ㅇ'&&!a.__palatalizationUnlicensed){
+      // Soft formal path: closed ending inventory, same-eojeol only.
+      if(softOn&&isSoftFormalPair(a,b)){
+        if(trySoftFormal(a,b,rules,nextRules,{COMPLEX,FINAL_REPRESENTATIVE})){
+          continue;
+        }
+      }
       // NIKL §12(4): ㅎ/ㄶ/ㅀ deletion is licensed before vowel-initial
       // endings/suffixes, not by Hangul adjacency alone. Exact known forms
       // are handled by the lexical layer; unknown candidates are withheld.
@@ -176,9 +186,18 @@ function applyContextualRules(units){
       }
     }
 
-    // R003/R004: ㅎ deletion and aspiration. These are applied after liaison.
+    // NIKL §12: ㅎ/ㄶ/ㅀ before ㅅ deletes the ㅎ component and fortifies ㅅ.
+    // This must precede generic §23 fortition: otherwise the ㅎ coda survives
+    // as an erroneous [t̚], e.g. 좋소 would be emitted as [tɕot̚ s͈o].
     const rep=representative(a.coda);
-    if((a.coda==='ㅎ'||a.coda==='ㄶ'||a.coda==='ㅀ')&&b.onset==='ㅇ'){
+    if(['ㅎ','ㄶ','ㅀ'].includes(a.coda)&&b.onset==='ㅅ'){
+      if(a.coda==='ㅎ')a.coda='';
+      else if(a.coda==='ㄶ')a.coda='ㄴ';
+      else a.coda='ㄹ';
+      b.onset='ㅆ';
+      rules.push('h-coda-sibilant-fortition');
+      nextRules.push('h-coda-sibilant-fortition');
+    }else if((a.coda==='ㅎ'||a.coda==='ㄶ'||a.coda==='ㅀ')&&b.onset==='ㅇ'){
       if(a.coda==='ㅎ')a.coda='';
       else if(a.coda==='ㄶ')a.coda='ㄴ';
       else a.coda='ㄹ';
@@ -311,6 +330,20 @@ function applyContextualRules(units){
       b.onset=insertion.onset;
       rules.push('phrase-n-insertion-§29');
       nextRules.push('phrase-n-insertion-§29');
+      continue;
+    }
+
+    // A word boundary before vowel-initial Hangul may license substantive
+    // liaison (§15), but orthographic adjacency and whitespace alone do not
+    // establish that morphosyntactic relation. The exact official phrase
+    // "밭 아래" is covered by its sourced lexical entry; unknown phrases must
+    // not be rendered as if no liaison occurred.
+    if(b.onset==='ㅇ'){
+      a.__crossWordLiaisonUnlicensed='left';
+      b.__crossWordLiaisonUnlicensed='right';
+      rules.push('cross-word-vowel-liaison-requires-morphology');
+      nextRules.push('cross-word-vowel-liaison-requires-morphology');
+      continue;
     }
 
     const beforeLiquidRep=representative(a.coda);
@@ -355,29 +388,55 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
   const lastTrace=(result)=>[...(result?.trace||[])].reverse().find(item=>item.status!=='literal');
   const firstTrace=(result)=>(result?.trace||[]).find(item=>item.status!=='literal');
   const rewriteCoda=(result,oldCoda,newCoda,rule)=>{
-    const oldTarget=mapCoda(map,oldCoda),newTarget=mapCoda(map,newCoda);
     const oldIpa=get(map,'coda',oldCoda)?.ipa||'',newIpa=get(map,'coda',newCoda)?.ipa||'';
-    if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
+    if(!oldIpa||!newIpa)return false;
     const trace=lastTrace(result);
-    if(!trace||!result.ukrainian.endsWith(oldTarget)||!result.ipa.endsWith(oldIpa)||!trace.output.endsWith(oldTarget)||!trace.ipa.endsWith(oldIpa))return false;
-    result.ukrainian=result.ukrainian.slice(0,-oldTarget.length)+newTarget;
+    if(!trace||!result.ipa.endsWith(oldIpa)||!trace.ipa.endsWith(oldIpa))return false;
     result.ipa=result.ipa.slice(0,-oldIpa.length)+newIpa;
-    trace.output=trace.output.slice(0,-oldTarget.length)+newTarget;
     trace.ipa=trace.ipa.slice(0,-oldIpa.length)+newIpa;
+    trace.output=ipaSyllableToUkrainian(trace.ipa).text;
     addRule(trace,rule);
     return true;
   };
   const rewriteOnset=(result,oldOnset,newOnset,realizedLateral,rule)=>{
-    const oldTarget=mapOnset(map,oldOnset),oldIpa=get(map,'onset',oldOnset)?.ipa||'';
-    const newTarget=realizedLateral?mapCoda(map,'ㄹ'):mapOnset(map,newOnset);
+    const oldIpa=get(map,'onset',oldOnset)?.ipa||'';
     const newIpa=realizedLateral?(get(map,'coda','ㄹ')?.ipa||''):(get(map,'onset',newOnset)?.ipa||'');
-    if(!oldTarget||!newTarget||!oldIpa||!newIpa)return false;
+    if(!oldIpa||!newIpa)return false;
     const trace=firstTrace(result);
-    if(!trace||!result.ukrainian.startsWith(oldTarget)||!result.ipa.startsWith(oldIpa)||!trace.output.startsWith(oldTarget)||!trace.ipa.startsWith(oldIpa))return false;
-    result.ukrainian=newTarget+result.ukrainian.slice(oldTarget.length);
+    if(!trace||!result.ipa.startsWith(oldIpa)||!trace.ipa.startsWith(oldIpa))return false;
     result.ipa=newIpa+result.ipa.slice(oldIpa.length);
-    trace.output=newTarget+trace.output.slice(oldTarget.length);
     trace.ipa=newIpa+trace.ipa.slice(oldIpa.length);
+    trace.output=ipaSyllableToUkrainian(trace.ipa).text;
+    addRule(trace,rule);
+    return true;
+  };
+
+  // NIKL §27 fortisness is not represented by doubling Ukrainian letters,
+  // but the IPA must retain it. Apply only to exact licensed eojeol pairs;
+  // this also covers mixed lexical/generic phrases split by the browser adapter.
+  const rewriteFortisOnset=(result,onset,rule)=>{
+    const ipaPairs={
+      'ㄱ':['k','k͈'],'ㄷ':['t','t͈'],'ㅂ':['p','p͈'],
+      'ㅅ':['s','s͈'],'ㅈ':['tɕ','tɕ͈']
+    };
+    const pair=ipaPairs[onset];
+    const trace=firstTrace(result);
+    if(!pair||!trace||!result.ipa.startsWith(pair[0])||!trace.ipa.startsWith(pair[0]))return false;
+    result.ipa=pair[1]+result.ipa.slice(pair[0].length);
+    trace.ipa=pair[1]+trace.ipa.slice(pair[0].length);
+    addRule(trace,rule);
+    return true;
+  };
+
+  // §29 insertion can change an initial ㅇ into ㄴ/ㄹ. Unlike ordinary
+  // onset replacement, this must prepend a target because ㅇ maps to empty.
+  const insertPhraseOnset=(result,onset,realizedLateral,rule)=>{
+    const ipa=realizedLateral?(get(map,'coda','ㄹ')?.ipa||''):(get(map,'onset',onset)?.ipa||'');
+    const trace=firstTrace(result);
+    if(!ipa||!trace)return false;
+    result.ipa=ipa+(result.ipa||'');
+    trace.ipa=ipa+(trace.ipa||'');
+    trace.output=ipaSyllableToUkrainian(trace.ipa).text;
     addRule(trace,rule);
     return true;
   };
@@ -391,6 +450,29 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
     const left=last?decompose(last):null,right=first?decompose(first):null;
     if(!left?.coda||!right)continue;
     const leftRep=representative(left.coda),rightOnset=right.onset;
+
+    // Apply §27 to exact official/rule-licensed adnominal phrases even when
+    // another word in the sentence is served by a lexical pronunciation row.
+    // The generic whole-string path cannot see these boundaries after splitting.
+    const phraseKey=parts[i]+' '+parts[i+2];
+
+    // Preserve the exact §29 cross-word insertion examples when another token
+    // in the same sentence invokes the lexical/generic split path.
+    const insertion=NIKL_29_PHRASE_INSERTION.get(phraseKey);
+    if(insertion){
+      if(insertion.coda&&!rewriteCoda(previous,leftRep,insertion.coda,'phrase-n-insertion-§29'))continue;
+      const lateral=insertion.onset==='ㄹ';
+      if(rightOnset==='ㅇ'&&insertPhraseOnset(next,insertion.onset,lateral,'phrase-n-insertion-§29')){
+        addRule(lastTrace(previous),'phrase-n-insertion-§29');
+        continue;
+      }
+    }
+
+    const licensedFortis=NIKL_27_ADNOMINAL_PHRASES.get(phraseKey);
+    if(licensedFortis===rightOnset&&rewriteFortisOnset(next,licensedFortis,'adnominal-r-fortition-§27')){
+      addRule(lastTrace(previous),'adnominal-r-fortition-§27');
+      continue;
+    }
 
     if(['ㄴ','ㅁ'].includes(rightOnset)&&NASAL_AFTER[leftRep]){
       if(rewriteCoda(previous,leftRep,NASAL_AFTER[leftRep],'nasal-assimilation'))addRule(firstTrace(next),'nasal-assimilation');
@@ -422,12 +504,76 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
 export function createEngine(csv,lexiconCsv=''){
   const map=createMap(csv);
   const lexicon=new Map(parseCsv(lexiconCsv).map(r=>[r.input,r]));
-  return{convert:function(text){return convertText(text,map,lexicon)},decompose};
+  return{convert:function(text,options={}){return convertText(text,map,lexicon,false,options)},decompose};
+}
+
+// Canonical second stage: Ukrainian output is rendered from the generated IPA,
+// never independently from Hangul jamo. Longest-match tokenization preserves
+// Korean phonetic contrasts that matter to the project target (e.g. ɡ/ k,
+// dʑ/tɕ, ɕ/s, and coda unreleased stops).
+const IPA_TO_UKRAINIAN = [
+  ['kʰjʌ','кхьо'],['hjʌ','гьо'],['njʌ','ньо'],['njo','ньо'],['nju','ню'],
+  ['ɲʌ','ньо'],['ɲa','ня'],['ɲo','ньо'],['ɲu','ню'],
+  ['ljʌ','льо'],['lju','лю'],
+  ['tɕ͈','ч'],['tɕʰ','ч'],['tɕ','ч'],['dʑ','дж'],['ɕ͈','ш'],['ɕ','ш'],
+  ['k͈','к'],['t͈','т'],['p͈','п'],['s͈','с'],
+  ['kʰ','к'],['tʰ','т'],['pʰ','п'],['k̚','к'],['t̚','т'],['p̚','п'],
+  ['ɰi','ий'],['jʌ','йо'],['jɛ','є'],['ja','я'],['je','є'],['jo','йо'],['ju','ю'],
+  ['wa','ва'],['wɛ','ве'],['wʌ','во'],['we','ве'],['aː','а'],
+  ['ɡ','ґ'],['k','к'],['g','ґ'],['t','т'],['d','д'],['p','п'],['b','б'],
+  ['ɲ','нь'],['n','н'],['m','м'],['ŋ','н'],['ɾ','р'],['r','р'],['l','л'],['h','г'],
+  ['s','с'],['a','а'],['ɛ','е'],['ʌ','о'],['e','е'],['o','о'],['u','у'],
+  ['ɯ','и'],['i','і'],['ø','ве'],['y','ві'],['w','в'],['j','й']
+].sort((a,b)=>b[0].length-a[0].length);
+
+function ipaSyllableToUkrainian(ipa){
+  ipa=ipa.replace(/ː/gu,''); // vowel length is retained in IPA, not duplicated in the Ukrainian target
+  let output='';
+  for(let i=0;i<ipa.length;){
+    if(/\s/u.test(ipa[i])){i++;continue;}
+    const match=IPA_TO_UKRAINIAN.find(([token])=>ipa.startsWith(token,i));
+    if(!match)return {text:'',unknown:ipa.slice(i)};
+    output+=match[1];
+    i+=match[0].length;
+  }
+  return {text:output,unknown:''};
+}
+
+function ipaSyllablesToUkrainian(ipaSyllables){
+  const mapped=ipaSyllables.map(ipaSyllableToUkrainian);
+  return {syllables:mapped.map(item=>item.text),unknown:mapped.find(item=>item.unknown)?.unknown||''};
+}
+
+function ipaTargetForSource(source,ipa){
+  const ipaUnits=(ipa||'').split(/\s+/u).filter(Boolean);
+  const mapped=ipaSyllablesToUkrainian(ipaUnits);
+  if(mapped.unknown||!ipaUnits.length)return {text:'',syllables:mapped.syllables,unknown:mapped.unknown};
+  if(!/\s/u.test(source||''))return {text:mapped.syllables.join(''),syllables:mapped.syllables,unknown:''};
+  let text='';
+  let targetIndex=0;
+  for(const token of ((source||'').match(/\s+|[^\s]+/gu)||[])){
+    if(/^\s+$/u.test(token)){text+=token;continue;}
+    const count=/^[가-힣]+$/u.test(token)?[...token].length:1;
+    text+=mapped.syllables.slice(targetIndex,targetIndex+count).join('');
+    targetIndex+=count;
+  }
+  text+=mapped.syllables.slice(targetIndex).join('');
+  return {text,syllables:mapped.syllables,unknown:''};
 }
 
 function lexicalResult(text,entry){
-  const targets=entry.target_syllables.split('|');
   const ipas=entry.ipa_syllables.split('|');
+  const mappedTargets=ipas.map(ipaSyllableToUkrainian);
+  // A lexical row must never silently drop IPA that the Ukrainian layer cannot
+  // map. Keep the unresolved syllable visible and surface a blocking issue.
+  const targets=mappedTargets.map((item,i)=>item.unknown?'⟦'+ipas[i]+'⟧':item.text);
+  const targetIssues=mappedTargets.flatMap((item,i)=>item.unknown
+    ?[text+': IPA syllable "'+ipas[i]+'" contains an unmapped segment "'+item.unknown+'"; add an explicit Ukrainian mapping or correct the IPA.']:[]
+  );
+  const hasSyllableCountMismatch=/^[가-힣]+$/u.test(text)&&ipas.length!==[...text].length;
+  if(hasSyllableCountMismatch){
+    targetIssues.push(text+': lexical IPA has '+ipas.length+' syllable entries for '+[...text].length+' Hangul syllables; align the IPA segmentation before conversion.');
+  }
   if(entry.input_kind==='mixed-script'){
     // Mixed-script exact keys can include official phrase examples such as
     // "3 연대". Preserve source whitespace in the Ukrainian output while
@@ -449,13 +595,13 @@ function lexicalResult(text,entry){
     return {
       source:text,
       surfaceHangul:entry.surface_hangul||'',
-      ukrainian:target,
+      ukrainian:target+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
       ipa,
       analysis:text+' → '+(entry.surface_hangul||'')+' (sourced lexical reading)',
       variants:[],
-      trace:[{source:text,status:'lexical-review',rules:['lexical-pronunciation','ukrainian-target-provisional'],output:target,ipa}],
-      issues:[],
-      status:'lexical-review'
+      trace:[{source:text,status:targetIssues.length?'unresolved':'lexical-review',rules:targetIssues.length?['lexical-pronunciation','ipa-to-ukrainian-unmapped-segment']:['lexical-pronunciation','ukrainian-target-provisional'],output:target,ipa}],
+      issues:targetIssues,
+      status:targetIssues.length?'unresolved':'lexical-review'
     };
   }
   const syllables=[...text];
@@ -466,7 +612,7 @@ function lexicalResult(text,entry){
   const targetReview=entry.target_status==='provisional';
   const variants=entry.alternate_surface_hangul? [{
     surface:entry.alternate_surface_hangul,
-    ukrainian:(entry.alternate_target_syllables||'').split('|').join(''),
+    ukrainian:ipaSyllablesToUkrainian((entry.alternate_ipa_syllables||'').split('|')).syllables.join(''),
     ipa:(entry.alternate_ipa_syllables||'').split('|').join(' '),
     note:entry.variant_note||'',
     status:targetReview?'lexical-review':'lexical'
@@ -474,16 +620,18 @@ function lexicalResult(text,entry){
   return {
     source:text,
     surfaceHangul:entry.surface_hangul||'',
-    ukrainian:targets.join(''),
+    ukrainian:targets.join('')+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
     ipa:ipas.join(' '),
     analysis,
     variants,
     trace:syllables.map((ch,i)=>({
-      source:ch,status:targetReview?'lexical-review':'lexical',rules:i===0?(targetReview?['lexical-pronunciation','ukrainian-target-provisional']:['lexical-pronunciation']):['lexical-context'],
+      source:ch,
+      status:mappedTargets[i]?.unknown?'unresolved':targetReview?'lexical-review':'lexical',
+      rules:mappedTargets[i]?.unknown?['lexical-pronunciation','ipa-to-ukrainian-unmapped-segment']:i===0?(targetReview?['lexical-pronunciation','ukrainian-target-provisional']:['lexical-pronunciation']):['lexical-context'],
       output:targets[i]??'',ipa:ipas[i]??''
     })),
-    issues:[],
-    status:targetReview?'lexical-review':'lexical'
+    issues:targetIssues,
+    status:targetIssues.length?'unresolved':targetReview?'lexical-review':'lexical'
   };
 }
 
@@ -500,17 +648,17 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
   for(let i=0;i<originalUnits.length;i++){
     const syllable=originalUnits[i];
     const vowel=syllable.vowel;
-    let primary='',alternate='',section='§4',targetPrimary='',targetAlternate='';
+    let primary='',alternate='',section='§4';
     if(vowel==='ㅚ'){primary='ø';alternate='we';}
     else if(vowel==='ㅟ'){primary='y';alternate='wi';}
     else if(vowel==='ㅖ'&&syllable.onset!=='ㅇ'&&syllable.onset!=='ㄹ'){
-      primary='je';alternate='e';section='§5';targetPrimary='є';targetAlternate='е';
+      primary='je';alternate='e';section='§5';
     }
     else if(vowel==='ㅢ'&&syllable.onset==='ㅇ'&&!firstSyllableInWord(units,i)){
-      primary='ɰi';alternate='i';section='§5';targetPrimary='ий';targetAlternate='і';
+      primary='ɰi';alternate='i';section='§5';
     }
     if(!alternate||!ipa[i]||!ipa[i].includes(primary))continue;
-    sites.push({index:i,vowel,primary,alternate,section,targetPrimary,targetAlternate});
+    sites.push({index:i,vowel,primary,alternate,section});
   }
   if(!sites.length||status==='unresolved')return[];
   // Enumerate every combination for up to three optional vowels. For longer
@@ -522,13 +670,10 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
   return masks.map(mask=>{
     const changed=sites.filter((_,i)=>(mask&(1<<i))!==0);
     const alternateIpa=ipa.slice();
-    const alternateOutput=output.slice();
     for(const site of changed){
       alternateIpa[site.index]=alternateIpa[site.index].replace(site.primary,site.alternate);
-      if(site.targetPrimary&&site.targetAlternate){
-        alternateOutput[site.index]=alternateOutput[site.index].replace(site.targetPrimary,site.targetAlternate);
-      }
     }
+    const alternateOutput=alternateIpa.map(value=>ipaSyllableToUkrainian(value).text);
     const labels=changed.map(site=>{
       if(site.vowel==='ㅚ')return 'ㅚ [we]';
       if(site.vowel==='ㅟ')return 'ㅟ [wi]';
@@ -550,7 +695,8 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
   });
 }
 
-function convertText(text,map,lexicon=new Map(),skipLexicon=false){
+function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
+  const morphologyMode=options.morphologyMode==='soft'?'soft':'strict';
   if(!skipLexicon&&lexicon.size){
     // Exact mixed-script lexical keys (e.g. 6·25, 3·1절) are tokenized
     // before ordinary Hangul/non-Hangul runs, including inside phrases.
@@ -574,7 +720,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
           // bypassing the general rule engine. This preserves contextual rule
           // traces for independently tested rules (e.g. §18 nasalisation).
           if(entry.target_status==='surface-only'){
-            const result=convertText(part,map,lexicon,true);
+            const result=convertText(part,map,lexicon,true,options);
             result.surfaceHangul=entry.surface_hangul||'';
             // Keep the general rule-engine trace and target, but restore a
             // source-attested vowel-length mark when the computed broad IPA
@@ -593,9 +739,24 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
           }
           return lexicalResult(part,entry);
         }
-        return convertText(part,map,lexicon,true);
+        return convertText(part,map,lexicon,true,options);
       });
       applyPhraseBoundaryAssimilation(results,parts,map);
+      // Phrase-boundary rules may revise surface IPA after token conversion.
+      // Re-render every Korean-derived target from that final IPA, so no
+      // secondary Hangul/jamo-to-Ukrainian path can diverge from the display.
+      for(const result of results){
+        const rendered=ipaTargetForSource(result.source||'',result.ipa||'');
+        if(!rendered.unknown&&rendered.syllables.length&&result.status!=='unresolved'){
+          result.ukrainian=rendered.text;
+          result.trace=result.trace.map(item=>{
+            if(item.status==='literal')return item;
+            if(item.source===result.source&&/\s/u.test(result.source||''))return {...item,output:result.ukrainian};
+            const mapped=ipaSyllableToUkrainian(item.ipa||'');
+            return mapped.unknown?item:{...item,output:mapped.text};
+          });
+        }
+      }
       const issues=results.flatMap(r=>r.issues);
       const variants=results.flatMap((r,i)=>(r.variants||[]).map(v=>({
         ...v,
@@ -612,7 +773,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
         trace:results.flatMap(r=>r.trace),
         variants,
         issues,
-        status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='contextual')?'contextual':'canonical'
+        status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical'
       };
     }
   }
@@ -620,7 +781,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
   // Keep orthographic decomposition immutable: contextual rules mutate the
   // working surface representation, not the source Hangul structure.
   const originalUnits=units.map(u=>({...u}));
-  const rules=applyContextualRules(units);
+  const rules=applyContextualRules(units,text,{morphologyMode});
   const output=units.map(u=>u.char);
   const ipa=units.map(u=>u.type==='literal'?u.char:'');
   const analysis=units.map(u=>u.type==='literal'?u.char:'');
@@ -636,42 +797,56 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     analysis[i]=original.char+' = '+original.onset+'+'+original.vowel+(original.coda?'+'+original.coda:'');
     if(u.__palatalizationUnlicensed){
       if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a verified formal-morpheme boundary; add a sourced lexical entry or morphological license.');
-      output[i]='⟦'+u.char+'⟧';
+      output[i]='';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
     if(u.__hDeletionUnlicensed){
       if(u.__hDeletionUnlicensed==='left')issues.push(u.char+': §12(4) ㅎ deletion requires a verified vowel-initial ending/suffix; add a sourced lexical pronunciation entry.');
-      output[i]='⟦'+u.char+'⟧';
+      output[i]='';
+      ipa[i]='';
+      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
+      continue;
+    }
+    if(u.__saisiotInsertionUnlicensed){
+      if(u.__saisiotInsertionUnlicensed==='left')issues.push(u.char+': NIKL §30(3) ㄴㄴ insertion requires evidence for the exact 사이시옷 compound; add a sourced lexical pronunciation entry.');
+      output[i]='';
+      ipa[i]='';
+      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
+      continue;
+    }
+    if(u.__crossWordLiaisonUnlicensed){
+      if(u.__crossWordLiaisonUnlicensed==='left')issues.push(u.char+': cross-word vowel-initial liaison may depend on a substantive-morpheme boundary (§15); add a sourced lexical pronunciation entry.');
+      output[i]='';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
     if(u.__complexLiaisonUnlicensed){
       if(u.__complexLiaisonUnlicensed==='left')issues.push(u.char+': complex-coda liaison differs between formal and substantive morphemes (§§13–15); add a sourced lexical pronunciation entry.');
-      output[i]='⟦'+u.char+'⟧';
+      output[i]='';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
     if(u.__complexHAspirationUnlicensed){
       if(u.__complexHAspirationUnlicensed==='left')issues.push(u.char+': §12 complex-coda + ㅎ aspiration depends on the licensed morphophonemic pattern; add a sourced lexical pronunciation entry.');
-      output[i]='⟦'+u.char+'⟧';
+      output[i]='';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
     if(u.__substantiveLiaisonUnlicensed){
       if(u.__substantiveLiaisonUnlicensed==='left')issues.push(u.char+': coda representative changes under §15 before ㅏ/ㅓ/ㅗ/ㅜ/ㅟ, unlike formal-morpheme liaison; add a sourced lexical pronunciation entry.');
-      output[i]='⟦'+u.char+'⟧';
+      output[i]='';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
     }
     if(u.__rieulGiyeokUnlicensed){
       if(u.__rieulGiyeokUnlicensed==='left')issues.push(u.char+': written ㄺ before ㄱ may follow the §11 stem exception or general coda simplification; add a sourced lexical pronunciation entry.');
-      output[i]='⟦'+u.char+'⟧';
+      output[i]='';
       ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
       continue;
@@ -682,21 +857,12 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
-    let status=applied.length||contextualUi||defaultUi?'contextual':'canonical';
+    let status=u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi?'contextual':'canonical');
     // Standard Pronunciation Rules §5: ㅢ is [ɰi] by default. A ㅢ syllable
     // with a consonant onset is [i]; non-initial 의 may also be [i], and the
     // particle 의 may also be [e]. Since this browser adapter has no full
     // morphological parser, render the normative default [ɰi] instead of
     // marking every ㅇ+ㅢ as unresolved. Alternatives remain context-sensitive.
-    const vowel=defaultUi?'ий':mapVowel(map,vowelJamo);
-    if(!vowel){
-      const message=u.char+': no Ukrainian vowel target is available.';
-      issues.push(message);
-      output[i]='⟦'+u.char+'⟧';
-      trace[i]={source:u.char,status:'unresolved',rules:applied,output:output[i],ipa:''};
-      continue;
-    }
-
     const onset=u.onset;
     const previousCoda=prev?.__effectiveCoda??prev?.coda??'';
     const liaisonOnset=Boolean(u.__liaison);
@@ -708,19 +874,13 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     // A coda ㄹ resyllabified into the next onset stays lateral [l];
     // it must not be reinterpreted as the intervocalic tap [ɾ] (e.g. 서울역).
     const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
-    const outOnset=mapOnset(map,onset,u.vowel,voiced,fortis,liquid);
     const traceRules=[...applied];
     if(contextualUi)traceRules.push('vowel-ui-to-i');
     if(defaultUi)traceRules.push('vowel-ui-default-ɰi');
     if(voiced)traceRules.push('contextual-voicing');
     if(fortis)traceRules.push('tensification');
     if(liquid&&!traceRules.includes('liquid-assimilation'))traceRules.push('liquid-assimilation');
-    if(!outOnset&&onset!=='ㅇ'){issues.push(u.char+': no Ukrainian onset target');status='unresolved';}
-
     u.__effectiveCoda=u.coda;
-    const outCoda=mapCoda(map,u.coda);
-    const out=outOnset+vowel+outCoda;
-    output[i]=out;
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
     const vowelIpa=defaultUi?'ɰi':(v?.ipa||'');
@@ -741,10 +901,18 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
       if(fortisIpa)unitIpa=fortisIpa+vowelIpa+(c?.ipa||'');
     }
     ipa[i]=unitIpa;
-    trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:out,ipa:unitIpa};
+    const targetFromIpa=ipaSyllableToUkrainian(unitIpa);
+    if(targetFromIpa.unknown){
+      issues.push(u.char+': IPA segment has no Ukrainian mapping: '+targetFromIpa.unknown);
+      output[i]='';
+      status='unresolved';
+    }else{
+      output[i]=targetFromIpa.text;
+    }
+    trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa};
   }
 
-  const status=issues.length?'unresolved':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
+  const status=issues.length?'unresolved':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
   return{
     source:text,
     surfaceHangul:'',
@@ -758,4 +926,3 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
   };
 }
 
-export {parseCsv,decompose};

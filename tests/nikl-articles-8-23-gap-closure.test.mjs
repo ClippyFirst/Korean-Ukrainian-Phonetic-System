@@ -107,14 +107,22 @@ test('§11 exact ㄺ-before-ㄱ exceptions and §18 nasalization example are sou
 
 test('§12 aspiration and §10/§20 exception chains remain algorithmic without lexical overrides', () => {
   const aspiration = {
-    '각하':'kʰ','좋던':'tʰ','쌓지':'tɕʰ','않던':'tʰ','닳지':'tɕʰ',
-    '먹히다':'kʰ','맏형':'tʰ','좁히다':'pʰ','꽂히다':'tɕʰ',
-    '놓고':'kʰ','많고':'kʰ',
+    '각하':'ka kʰa',
+    '좋던':'tɕo tʰʌn',
+    '쌓지':'s͈a tɕʰi',
+    '않던':'an tʰʌn',
+    '닳지':'tal tɕʰi',
+    '먹히다':'mʌ kʰi da',
+    '맏형':'ma tʰjʌŋ',
+    '좁히다':'tɕo pʰi da',
+    '꽂히다':'k͈o tɕʰi da',
+    '놓고':'no kʰo',
+    '많고':'man kʰo',
   };
-  for (const [word, marker] of Object.entries(aspiration)) {
+  for (const [word, expectedIpa] of Object.entries(aspiration)) {
     const result = genericEngine.convert(word);
     assert.equal(result.issues.length, 0, word);
-    assert.ok(result.ipa.includes(marker), word + ': expected aspiration marker ' + marker);
+    assert.equal(result.ipa, expectedIpa, word + ': exact ordered aspiration IPA');
     assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration')), word);
   }
   const complexCodaH = engine.convert('밝히다');
@@ -130,16 +138,59 @@ test('§12 aspiration and §10/§20 exception chains remain algorithmic without 
   assert.ok(neolp.trace[1].rules.includes('tensification'));
 });
 
-test('§23 all official fortition examples retain a fortis IPA marker', () => {
+test('§23 every listed fortition example has its exact expected IPA, not merely some fortis marker', () => {
+  // Literal, independently pinned broad-IPA oracles. A substring check can
+  // pass when fortisness appears in the wrong syllable or a second segment is
+  // missing, so compare the complete ordered output.
   const examples = {
-    '국밥':'p͈','깎다':'t͈','넋받이':'p͈','삯돈':'t͈','닭장':'tɕ͈',
-    '칡범':'p͈','뻗대다':'t͈','옷고름':'k͈','있던':'t͈','꽂고':'k͈',
-    '꽃다발':'t͈','낯설다':'s͈','밭갈이':'k͈','솥전':'tɕ͈','곱돌':'t͈',
-    '덮개':'k͈','옆집':'tɕ͈','넓죽하다':'tɕ͈','읊조리다':'tɕ͈','값지다':'tɕ͈',
+    '국밥': 'kuk̚ p͈ap̚',
+    '깎다': 'k͈ak̚ t͈a',
+    '넋받이': 'nʌk̚ p͈a dʑi',
+    '삯돈': 'sak̚ t͈on',
+    '닭장': 'tak̚ tɕ͈aŋ',
+    '칡범': 'tɕʰik̚ p͈ʌm',
+    '뻗대다': 'p͈ʌt̚ t͈ɛ da',
+    '옷고름': 'ot̚ k͈o ɾɯm',
+    '있던': 'it̚ t͈ʌn',
+    '꽂고': 'k͈ot̚ k͈o',
+    '꽃다발': 'k͈ot̚ t͈a bal',
+    '낯설다': 'nat̚ s͈ʌl da',
+    '밭갈이': 'pat̚ k͈a ɾi',
+    '솥전': 'sot̚ tɕ͈ʌn',
+    '곱돌': 'kop̚ t͈ol',
+    '덮개': 'tʌp̚ k͈ɛ',
+    '옆집': 'jʌp̚ tɕ͈ip̚',
+    '넓죽하다': 'nʌp̚ tɕ͈u kʰa da',
+    '읊조리다': 'ɯp̚ tɕ͈o ɾi da',
+    '값지다': 'kap̚ tɕ͈i da',
   };
-  for (const [word, marker] of Object.entries(examples)) {
+  for (const [word, ipa] of Object.entries(examples)) {
     const result = engine.convert(word);
     assert.equal(result.issues.length, 0, word);
-    assert.ok(result.ipa.includes(marker), word + ': expected fortis IPA marker ' + marker);
+    assert.equal(result.ipa, ipa, word + ': exact ordered IPA');
+    assert.ok(result.ipa.includes('͈'), word + ': expected fortis IPA marker');
+  }
+});
+
+test('§21 all seven official place-assimilation negative controls keep their exact standard surfaces', () => {
+  const examples = {
+    '감기': ['감기', 'kaːm ɡi'],
+    '옷감': ['옫깜', 'ot̚ k͈am'],
+    '있고': ['읻꼬', 'it̚ k͈o'],
+    '꽃길': ['꼳낄', 'k͈ot̚ k͈il'],
+    '젖먹이': ['전머기', 'tɕʌn mʌ ɡi'],
+    '문법': ['문뻡', 'mun p͈ʌp̚'],
+    '꽃밭': ['꼳빧', 'k͈ot̚ p͈at̚'],
+  };
+  for (const [word, [surface, ipa]] of Object.entries(examples)) {
+    const row = entries.get(word);
+    assert.ok(row, '§21 missing official negative control: ' + word);
+    assert.match(row.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u, word + ': NIKL source');
+    assert.equal(row.surface_hangul, surface, word + ': source surface');
+    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word + ': source IPA');
+    const result = engine.convert(word);
+    assert.equal(result.surfaceHangul, surface, word + ': engine surface');
+    assert.equal(result.ipa, ipa, word + ': engine IPA');
+    assert.equal(result.ukrainian, expectedTarget(row), word + ': project target');
   }
 });
