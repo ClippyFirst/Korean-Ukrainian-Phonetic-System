@@ -1,0 +1,29 @@
+SOFT-HEURISTIC MORPHOLOGY — files to copy into the repo
+Branch: test/block-standard-rule-coverage-gate-2026-10-11
+
+Copy each file to the same relative path in the repo root.
+
+ALREADY ON GITHUB (safe to overwrite with these copies):
+  src/korean_ukrainian/soft_morphology.py
+  src/app/soft_morphology.js
+  src/main.js
+  tests/test_soft_morphology.py
+  docs/SOFT-HEURISTIC-APPLY-CHECKLIST.md
+  docs/SOFT-HEURISTIC-INTEGRATION-NOTES.md
+  docs/architecture.md (partial)
+  docs/WEB-SERVICE-USER-GUIDE.md (partial)
+
+MUST UPLOAD (not yet on remote / incomplete):
+  src/korean_ukrainian/rules.py
+  src/korean_ukrainian/pipeline.py
+  src/app/engine.js
+  index.html
+  src/styles/main.css
+  README.md
+  docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md
+  docs/NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md
+  tests/soft-heuristic-morphology-formal-endings.test.mjs
+
+VS Code: open the repo folder, then drag files from this pack into matching paths,
+or:  cp -r SOFT-HEURISTIC-UPLOAD/* /path/to/Korean-Ukrainian-Phonetic-System/
+then commit & push.

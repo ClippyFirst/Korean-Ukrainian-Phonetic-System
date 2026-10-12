@@ -1,3 +1,4 @@
+import { SOFT_FORMAL_ENDINGS, isSoftFormalPair, trySoftFormal, softStatusForUnit } from './soft_morphology.js';
 const HANGUL_BASE=0xAC00,HANGUL_END=0xD7A3,V_COUNT=21,T_COUNT=28,N_COUNT=V_COUNT*T_COUNT;
 const ONSETS=[...'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'];
 const VOWELS=[...'ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ'];
@@ -90,7 +91,8 @@ function renderStructured(units,values,separator){
   return result;
 }
 
-function applyContextualRules(units,sourceText=''){
+function applyContextualRules(units,sourceText='',{ morphologyMode = 'strict' } = {}){
+  const softOn = morphologyMode === 'soft';
   const ruleSets=units.map(()=>[]);
   for(let i=0;i<units.length-1;i++){
     const a=units[i],b=units[i+1];
@@ -109,6 +111,9 @@ function applyContextualRules(units,sourceText=''){
     // establish that morphology. Exact sourced forms are handled by the
     // lexical layer; unknown candidates are withheld instead of guessed.
     if(['ㄷ','ㅌ','ㄾ'].includes(a.coda)&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
+      if(softOn&&trySoftFormal(a,b,rules,nextRules,{COMPLEX,FINAL_REPRESENTATIVE})){
+        continue;
+      }
       a.__palatalizationUnlicensed='left';
       b.__palatalizationUnlicensed='right';
       rules.push('palatalization-requires-lexical-morphology');
@@ -134,6 +139,12 @@ function applyContextualRules(units,sourceText=''){
     // sourced lexical entries may resolve these cases; unknown forms are
     // marked unresolved rather than assigned the §14 pattern by default.
     if(a.coda&&b.onset==='ㅇ'&&!a.__palatalizationUnlicensed){
+      // Soft formal path: closed ending inventory, same-eojeol only.
+      if(softOn&&isSoftFormalPair(a,b)){
+        if(trySoftFormal(a,b,rules,nextRules,{COMPLEX,FINAL_REPRESENTATIVE})){
+          continue;
+        }
+      }
       // NIKL §12(4): ㅎ/ㄶ/ㅀ deletion is licensed before vowel-initial
       // endings/suffixes, not by Hangul adjacency alone. Exact known forms
       // are handled by the lexical layer; unknown candidates are withheld.
@@ -493,7 +504,7 @@ function applyPhraseBoundaryAssimilation(results,parts,map){
 export function createEngine(csv,lexiconCsv=''){
   const map=createMap(csv);
   const lexicon=new Map(parseCsv(lexiconCsv).map(r=>[r.input,r]));
-  return{convert:function(text){return convertText(text,map,lexicon)},decompose};
+  return{convert:function(text,options={}){return convertText(text,map,lexicon,false,options)},decompose};
 }
 
 // Canonical second stage: Ukrainian output is rendered from the generated IPA,
@@ -684,7 +695,8 @@ function genericVowelVariants(text,units,originalUnits,ipa,output,status){
   });
 }
 
-function convertText(text,map,lexicon=new Map(),skipLexicon=false){
+function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
+  const morphologyMode=options.morphologyMode==='soft'?'soft':'strict';
   if(!skipLexicon&&lexicon.size){
     // Exact mixed-script lexical keys (e.g. 6·25, 3·1절) are tokenized
     // before ordinary Hangul/non-Hangul runs, including inside phrases.
@@ -708,7 +720,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
           // bypassing the general rule engine. This preserves contextual rule
           // traces for independently tested rules (e.g. §18 nasalisation).
           if(entry.target_status==='surface-only'){
-            const result=convertText(part,map,lexicon,true);
+            const result=convertText(part,map,lexicon,true,options);
             result.surfaceHangul=entry.surface_hangul||'';
             // Keep the general rule-engine trace and target, but restore a
             // source-attested vowel-length mark when the computed broad IPA
@@ -727,7 +739,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
           }
           return lexicalResult(part,entry);
         }
-        return convertText(part,map,lexicon,true);
+        return convertText(part,map,lexicon,true,options);
       });
       applyPhraseBoundaryAssimilation(results,parts,map);
       // Phrase-boundary rules may revise surface IPA after token conversion.
@@ -761,7 +773,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
         trace:results.flatMap(r=>r.trace),
         variants,
         issues,
-        status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='contextual')?'contextual':'canonical'
+        status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical'
       };
     }
   }
@@ -769,7 +781,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
   // Keep orthographic decomposition immutable: contextual rules mutate the
   // working surface representation, not the source Hangul structure.
   const originalUnits=units.map(u=>({...u}));
-  const rules=applyContextualRules(units,text);
+  const rules=applyContextualRules(units,text,{morphologyMode});
   const output=units.map(u=>u.char);
   const ipa=units.map(u=>u.type==='literal'?u.char:'');
   const analysis=units.map(u=>u.type==='literal'?u.char:'');
@@ -845,7 +857,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
-    let status=applied.length||contextualUi||defaultUi?'contextual':'canonical';
+    let status=u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi?'contextual':'canonical');
     // Standard Pronunciation Rules §5: ㅢ is [ɰi] by default. A ㅢ syllable
     // with a consonant onset is [i]; non-initial 의 may also be [i], and the
     // particle 의 may also be [e]. Since this browser adapter has no full
@@ -900,7 +912,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false){
     trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa};
   }
 
-  const status=issues.length?'unresolved':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
+  const status=issues.length?'unresolved':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
   return{
     source:text,
     surfaceHangul:'',

@@ -14,6 +14,26 @@ The official rules specify Korean standard pronunciation. They do **not** specif
 
 The browser engine is intentionally not a full Korean morphological parser. Rules requiring lexical identity, compound structure, word class, a verb stem, or a specific ending cannot safely be generalized from adjacent Hangul blocks alone. In such cases, use an evidenced exact lexical entry or preserve a clearly marked uncertainty. A finite regression corpus is not proof of complete lexical coverage. The IPA-first lexical integrity test also covers all 12 mixed-script/phrase entries (including spacing), in addition to the 630 Hangul-only lexical entries; this checks runtime IPA and confirms the Ukrainian target is rendered from the stored IPA rather than independently from Hangul spelling.
 
+
+
+### Soft-heuristic morphology (opt-in, 2026-10-11)
+
+An optional soft-heuristic morphology layer may unlock **R002 formal liaison**,
+**R003 ㅎ-deletion**, and **R007 palatalization** for a closed same-eojeol
+formal-ending inventory (이, 을/를, 에, 어/아, 았/었/였, 고, 다, 은/는, 인, 히).
+
+- Default path remains **strict** (exact full-form / pair licenses only).
+- Soft applications are traced as `heuristic-low-confidence` /
+  `source: soft-heuristic-morphology`.
+- Soft **never** selects §15 substantive neutralization.
+- Soft **never** licenses R009, R010–R016, or R015.
+- Soft **never** fires across whitespace.
+- Coverage-gate `verified` status is unchanged: it still means official listed
+  examples + exact licenses, not productive morphology.
+
+Contract and acceptance criteria:
+`docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md`.
+
 ## Article-by-article coverage map
 
 | Official article | Normative topic | Runtime status and audit decision |

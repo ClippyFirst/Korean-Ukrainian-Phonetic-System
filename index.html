@@ -59,6 +59,16 @@
         <button id="example-button" class="button button-primary" type="button">Приклад <b aria-hidden="true">↗</b></button>
         <button id="clear-button" class="button button-secondary" type="button">Очистити</button>
       </div>
+      <label class="soft-morphology-toggle" for="soft-morphology">
+        <input type="checkbox" id="soft-morphology" />
+        М’яка морфологія (heuristic, низька впевненість)
+      </label>
+      <p class="soft-morphology-hint">
+        Увімкнено: пропонує читання для частих закінчень (이/을/어/…) зі статусом
+        <code>heuristic-low-confidence</code>. За замовчуванням вимкнено — лише
+        точні NIKL/lexical licenses.
+      </p>
+      </div>
     </div>
   </section>
 
