@@ -15,13 +15,26 @@ _INSTALLED_LEXICON_PATH=Path(sysconfig.get_path("data"))/"share"/"korean-ukraini
 def _load_lexicon():
     # Prefer the single source file in a checkout; use the packaged data-file
     # path for wheel installs where the repository-level data directory is absent.
+    # Dated addition batches (lexical_additions_*.csv) overlay the base lexicon.
+    base = {}
     for path in (_LEXICON_PATH,_INSTALLED_LEXICON_PATH):
         try:
             with path.open(encoding="utf-8-sig",newline="") as stream:
-                return {row["input"]:row for row in csv.DictReader(stream) if row.get("input")}
+                base = {row["input"]:row for row in csv.DictReader(stream) if row.get("input")}
+                break
         except FileNotFoundError:
             continue
-    return {}
+    additions_dir = _LEXICON_PATH.parent
+    if additions_dir.is_dir():
+        for add_path in sorted(additions_dir.glob("lexical_additions_*.csv")):
+            try:
+                with add_path.open(encoding="utf-8-sig",newline="") as stream:
+                    for row in csv.DictReader(stream):
+                        if row.get("input"):
+                            base[row["input"]] = row
+            except FileNotFoundError:
+                continue
+    return base
 
 LEXICAL_PRONUNCIATIONS=_load_lexicon()
 
