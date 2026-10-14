@@ -1,0 +1,12 @@
+input,surface_hangul,target_syllables,ipa_syllables,source_url,rule_notes,confidence,target_status,alternate_surface_hangul,alternate_target_syllables,alternate_ipa_syllables,variant_note,input_kind
+숲이,수피,су|пі,su|pʰi,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§13 simple-coda liaison before formal particle 이: ㅍ moves; [수피]. Ukrainian provisional.,high,provisional,,,,,
+집에,지베,чі|бе,tɕi|be,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§13 liaison + contextual voicing of ㅂ after vowel before formal ending 에; [지베]. Ukrainian provisional.,high,provisional,,,,,
+싫은,싫은,ші|рин,ɕi|ɾɯn,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§12(4) ㅀ cluster; surface [싫은]/[시른]. Ukrainian provisional.,high,provisional,,,,,
+앓아,아라,а|ра,a|ɾa,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§12(4) ㅎ deletion in ㅀ before vowel-initial ending 아; [아라]. Ukrainian provisional.,high,provisional,,,,,
+끓여,끄려,ки|рьо,k͈ɯ|ɾjʌ,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§12(4) ㅎ deletion in ㅀ before 여; [끄려]. Ukrainian provisional.,high,provisional,,,,,
+국밥만,국빰만,кук|пам|ман,kuk̚|p͈am|man,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§23 tensification in 국밥 [국빰] + particle 만; [국빰만]. Ukrainian provisional.,high,provisional,,,,,
+의사,의사,ий|са,ɰi|sa,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§4 ㅢ after ㅇ: normative [ɰi]; 의사 [의사]. Ukrainian provisional.,high,provisional,,,,,
+의자,의자,ий|джа,ɰi|dʑa,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§4 ㅢ after ㅇ: normative [ɰi]; 의자 [의자]. Ukrainian provisional.,high,provisional,,,,,
+의의,의이,ий|і,ɰi|i,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,"§4: first ㅢ after ㅇ → [ɰi], second often [i]; 의의. Ukrainian provisional.",high,provisional,,,,,
+회의의,회의이,гве|ий|і,hø|ɰi|i,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§4 ㅢ readings in 회의의. Ukrainian provisional.,high,provisional,,,,,
+민주주의의,민주주의이,мін|джу|джу|ий|і,min|dʑu|dʑu|ɰi|i,https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002,§4 ㅢ in 민주주의의; particle 의. Ukrainian provisional.,high,provisional,,,,,
