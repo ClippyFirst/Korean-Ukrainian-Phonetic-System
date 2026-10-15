@@ -61,3 +61,69 @@ def test_saisiot_license_is_exact_to_form_and_pair():
     )
     assert items[1].onset=="ㅅ"
     assert traces[0].status=="conditional-disabled"
+
+def test_nikl_article_28_full_positive_compound_matrix_requires_exact_license():
+    # Source: NIKL 표준 발음법 §28 and its commentary:
+    # https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+    # Each pair below is an explicitly listed compound boundary; do not infer
+    # fortition from arbitrary coda+plain-obstruent adjacency.
+    cases = [
+        ("문고리", "문", "고", "ㄲ"),
+        ("눈동자", "눈", "동", "ㄸ"),
+        ("신바람", "신", "바", "ㅃ"),
+        ("산새", "산", "새", "ㅆ"),
+        ("손재주", "손", "재", "ㅉ"),
+        ("길가", "길", "가", "ㄲ"),
+        ("물동이", "물", "동", "ㄸ"),
+        ("발바닥", "발", "바", "ㅃ"),
+        ("굴속", "굴", "속", "ㅆ"),
+        ("술잔", "술", "잔", "ㅉ"),
+        ("바람결", "바람", "결", "ㄲ"),
+        ("그믐달", "그믐", "달", "ㄸ"),
+        ("아침밥", "아침", "밥", "ㅃ"),
+        ("잠자리", "잠", "자", "ㅉ"),
+        ("강가", "강", "가", "ㄲ"),
+        ("초승달", "초승", "달", "ㄸ"),
+        ("등불", "등", "불", "ㅃ"),
+        ("창살", "창", "살", "ㅆ"),
+        ("강줄기", "강", "줄", "ㅉ"),
+    ]
+    for word, left, right, expected_fortis in cases:
+        items = parse_syllables(word)
+        apply_ordered_rules(items, rule_ids=["R014"])
+        boundary = len(left)
+        assert items[boundary].onset != expected_fortis, f"{word}: unlicensed R014 must not fire"
+        items = parse_syllables(word)
+        apply_ordered_rules(
+            items,
+            rule_ids=["R014"],
+            rule_licenses={f"R014:compound:{word}:{left}>{right}"},
+        )
+        assert items[boundary].onset == expected_fortis, f"{word}: licensed §28 fortition"
+        
+
+def test_nikl_article_28_commentary_negative_compounds_do_not_get_automatic_fortition():
+    # NIKL §28 commentary explicitly cautions that semantic compound patterns
+    # do not predict fortition in every lexical item. These are negative
+    # controls, not a claim that a generic phonological rule can derive every
+    # dictionary pronunciation.
+    cases = [
+        ("가을고치", "가을", "고치", "ㄱ"),
+        ("민물송어", "민물", "송어", "ㅅ"),
+        ("운동자금", "운동", "자금", "ㅈ"),
+        ("콩기름", "콩", "기름", "ㄱ"),
+        ("물불", "물", "불", "ㅂ"),
+        ("손발", "손", "발", "ㅂ"),
+        ("돌부처", "돌", "부처", "ㅂ"),
+        ("콩밥", "콩", "밥", "ㅂ"),
+        ("물장난", "물", "장난", "ㅈ"),
+        ("불고기", "불", "고기", "ㄱ"),
+    ]
+    for word, left, right, expected_plain in cases:
+        items = parse_syllables(word)
+        boundary = len(left)
+        assert items[boundary].onset == expected_plain, f"{word}: source commentary negative control"
+        items, traces = apply_ordered_rules(items, rule_ids=["R014"])
+        assert items[boundary].onset == expected_plain, f"{word}: no implicit lexical compound license"
+        assert not any(t.changed for t in traces), f"{word}: negative control must not transform"
+
