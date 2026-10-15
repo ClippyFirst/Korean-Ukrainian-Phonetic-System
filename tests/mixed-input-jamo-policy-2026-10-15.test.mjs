@@ -16,6 +16,7 @@ test('bare jamo is not treated as Korean pronunciation', () => {
     const r = engine.convert(input);
     assert.equal(r.status, 'unresolved', input);
     assert.equal(hasHangulInIpa(r.ipa), false, input + ' IPA must not contain Hangul/jamo');
+    assert.doesNotMatch(r.ukrainian, /[ㄱ-ㅎㅏ-ㅣ]/, input + ' Ukrainian output must not pass through bare jamo');
     assert.ok((r.issues || []).some((x) => /jamo|syllable/i.test(x)), input);
   }
 });
