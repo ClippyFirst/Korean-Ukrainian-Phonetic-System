@@ -182,3 +182,4 @@ def test_ipa_tokenizer_accepts_browser_surface_inventory():
     assert "".join(tokenize_ipa("s͈ɕ͈dʑɡ")) == "s͈ɕ͈dʑɡ"
     assert source_features_for_ipa("ɡ")["voice"] == "1"
     assert source_features_for_ipa("dʑ")["voice"] == "1"
+    assert source_features_for_ipa("ɕ͈")["palatalized"] == "1"
