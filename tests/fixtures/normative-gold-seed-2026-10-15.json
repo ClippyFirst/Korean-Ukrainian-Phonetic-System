@@ -441,14 +441,14 @@
         "침냑"
       ],
       "expectedProjectIpa": [
-        "tɕʰiːm njak̚"
+        "tɕʰim njak̚"
       ],
       "ruleIds": [
         "NIKL-19"
       ],
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§19 official example; preserves the source's explicit long-vowel mark in the IPA target.",
+      "evidenceNote": "§19 official example; the source marks vowel length (침ː냑), but the current generic IPA engine omits that length mark. Surface and rule ordering are tested algorithmically; vowel-length preservation remains a separately tracked gap.",
       "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
@@ -604,7 +604,7 @@
       ],
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§20 official example: ㄴ becomes ㄹ before ㄹ.",
+      "evidenceNote": "§20 official example: ㄴ becomes ㄹ before ㄹ. Kept in the generic rule path to verify algorithmic liquid assimilation.",
       "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
