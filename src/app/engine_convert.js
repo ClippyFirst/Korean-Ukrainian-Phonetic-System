@@ -3,13 +3,15 @@
  */
 import {
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
-  representative, renderStructured, J_VOWELS, CODAS, ONSETS, VOWELS,
+  representative, isJamoChar, isPreservableIpaLiteral, renderStructured, J_VOWELS, CODAS, ONSETS, VOWELS,
 } from './engine_shared.js';
 import { applyContextualRules } from './engine_rules_ctx.js';
 import { applyPhraseBoundaryAssimilation } from './engine_rules_phrase.js';
 import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource, IPA_TO_UKRAINIAN } from './engine_ipa.js';
 import { lexicalResult, firstSyllableInWord, genericVowelVariants } from './engine_lexical.js';
 import { practicalStatusForUnit, softStatusForUnit } from './soft_morphology.js';
+
+function ipaSafeLiteral(value){return [...value].filter(isPreservableIpaLiteral).join('');}
 
 export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
   const morphologyMode=options.morphologyMode==='practical'?'practical':options.morphologyMode==='soft'?'soft':'strict';
@@ -24,7 +26,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const nextKeyPositions=mixedKeys.map(key=>text.indexOf(key,cursor)).filter(position=>position>=0);
       const nextKey=nextKeyPositions.length?Math.min(...nextKeyPositions):text.length;
       const segment=text.slice(cursor,nextKey);
-      parts.push(...(segment.match(/[가-힣]+|[^가-힣]+/g)||[]));
+      parts.push(...(segment.match(/[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+(?:[\\s\\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)*[\\s\\p{P}]*[가-힣]+|[가-힣]+|[^가-힣ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+/gu)||[]));
       cursor=nextKey;
     }
     if(parts.some(part=>lexicon.has(part))){
@@ -66,18 +68,21 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       });
       applyPhraseBoundaryAssimilation(results,parts,map);
       const issues=results.flatMap(r=>r.issues||[]);
+      let residueText=text;
+      for(const key of mixedKeys)if(lexicon.has(key))residueText=residueText.split(key).join(' ');
+      if(/[가-힣][A-Za-z0-9]|[A-Za-z0-9][가-힣]/u.test(residueText))issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
       return{
         source:text,
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
         ukrainian:results.map(r=>r.ukrainian).join(''),
-        ipa:results.map((r,index)=>(lexicon.has(parts[index])||/^[가-힣]+$/u.test(parts[index]))?r.ipa:parts[index]).join(''),
+        ipa:results.map((r,index)=>(lexicon.has(parts[index])||/^[가-힣]+$/u.test(parts[index]))?r.ipa:ipaSafeLiteral(parts[index])).join(''),
         analysis:results.map(r=>r.analysis).filter(Boolean).join(' · '),
         variants:results.flatMap((result,variantIndex)=>(result.variants||[]).map(variant=>({
           ...variant,
           source:text,
           surface:results.map((item,index)=>index===variantIndex?variant.surface:(item.surfaceHangul||parts[index])).join(''),
           ukrainian:results.map((item,index)=>index===variantIndex?variant.ukrainian:item.ukrainian).join(''),
-          ipa:results.map((item,index)=>(lexicon.has(parts[index])||/^[가-힣]+$/u.test(parts[index]))?(index===variantIndex?variant.ipa:item.ipa):parts[index]).join('')
+          ipa:results.map((item,index)=>(lexicon.has(parts[index])||/^[가-힣]+$/u.test(parts[index]))?(index===variantIndex?variant.ipa:item.ipa):ipaSafeLiteral(parts[index])).join('')
         }))),
         trace:results.flatMap(r=>r.trace||[]),
         issues,
@@ -86,21 +91,35 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     }
   }
 
-  const units=[];
-  for(const ch of text){
+  const characters=[...text];
+  const units=characters.map((ch,index)=>{
     const d=decompose(ch);
-    if(d)units.push({type:'hangul',...d});
-    else units.push({type:'literal',char:ch});
-  }
+    if(d)return {type:'hangul',...d};
+    if(isJamoChar(ch)){
+      const context=characters.slice(Math.max(0,index-2),Math.min(characters.length,index+3)).filter((_,offset)=>Math.abs(Math.max(0,index-2)+offset-index)>0);
+      const nearbyLatinOrDigit=context.some(value=>/[A-Za-z0-9]/u.test(value));
+      // Korean explanatory prose can name a jamo (e.g. "ㅎ과"); never
+      // phonologize that label, but distinguish it from malformed bare input.
+      if(characters.some(value=>Boolean(decompose(value)))&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
+      return {type:'jamo',char:ch};
+    }
+    return {type:'literal',char:ch};
+  });
   const originalUnits=units.map(u=>({...u}));
   const ruleSets=applyContextualRules(units,text,{morphologyMode});
   const output=[],ipa=[],analysis=[],trace=[],issues=[];
 
   for(let i=0;i<units.length;i++){
     const u=units[i];
+    if(u.type==='jamo'){
+      output[i]='';ipa[i]='';analysis[i]='';
+      issues.push(u.char+': standalone compatibility jamo is not a syllable; IPA is withheld.');
+      trace[i]={source:u.char,status:'unsupported-jamo',rules:['unsupported-standalone-jamo'],output:'',ipa:''};
+      continue;
+    }
     if(u.type==='literal'){
-      output[i]=u.char;ipa[i]='';analysis[i]=u.char;
-      trace[i]={source:u.char,status:'literal',rules:[],output:u.char,ipa:''};
+      output[i]=u.char;ipa[i]=isPreservableIpaLiteral(u.char)?u.char:'';analysis[i]=isPreservableIpaLiteral(u.char)?u.char:'';
+      trace[i]={source:u.char,status:'literal',rules:[],output:u.char,ipa:ipa[i]};
       continue;
     }
     // Practical mode: never leave blank Hangul syllables.
@@ -218,7 +237,11 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa};
   }
 
-  const status=issues.length?'unresolved':trace.some(x=>x?.status==='practical-transliteration')?'practical-transliteration':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
+  if(!units.some(u=>u.type==='hangul')&&!units.some(u=>u.type==='jamo')&&!skipLexicon)issues.push('Input contains no Hangul syllable; pronunciation cannot be generated.');
+  if(/[가-힣][A-Za-z0-9]|[A-Za-z0-9][가-힣]/u.test(text))issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
+  const hasJamo=units.some(u=>u.type==='jamo');
+  const hasHangulSyllables=units.some(u=>u.type==='hangul');
+  const status=hasJamo?'unresolved':!hasHangulSyllables?'non-korean-input':issues.length?'unresolved':trace.some(x=>x?.status==='practical-transliteration')?'practical-transliteration':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
   const surfaceParts=[];
   for(let i=0;i<units.length;i++){
     const u=units[i];
