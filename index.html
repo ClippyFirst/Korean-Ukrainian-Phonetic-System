@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./src/styles/main.css">
 </head>
 <body>
+<a class="skip-link" href="#input-heading">Перейти до інструмента</a>
 <main class="page-shell">
   <header class="site-header">
     <div class="topline">
@@ -17,17 +18,19 @@
         <span>한국어 / УКРАЇНСЬКА</span>
       </a>
       <nav class="site-nav" aria-label="Основна навігація">
-        <a class="nav-active" href="./index.html">Сервіс</a>
-        <a href="./system.html">Система</a>
+        <a class="nav-active" aria-current="page" href="./index.html">Сервіс</a>
+        <a href="./system.html">Методологія</a>
       </nav>
     </div>
     <div class="hero">
       <p class="eyebrow">Практична транскрипція</p>
       <h1>Корейський текст, <em>українське читання.</em></h1>
-      <p class="subtitle">Введіть Hangul — отримайте практичний український запис і прозорий аналітичний шар. Сервіс працює локально та не перекладає значення тексту.</p>
+      <p class="subtitle">Введіть корейський текст, щоб отримати практичний український запис. За потреби відкрийте IPA й аналіз — сервіс не перекладає значення тексту.</p>
+      <div class="method-line" aria-label="Послідовність перетворення"><span><b>Hangul</b></span><span><b>Вимова</b></span><span><b>IPA</b></span><span><b>Український запис</b></span></div>
     </div>
   </header>
 
+  <div class="workspace-layout">
   <section class="workbench" aria-labelledby="input-heading">
     <div class="section-title"><span class="section-number">A</span><div><p class="section-kicker">Вхід</p><h2 id="input-heading">Корейський текст</h2></div></div>
     <label class="sr-only" for="source-input">Корейський текст</label>
@@ -50,13 +53,13 @@
         <legend class="mode-legend">Режим виводу</legend>
         <label class="mode-option" for="mode-practical">
           <input type="radio" name="transliteration-mode" id="mode-practical" value="practical" checked />
-          <span><strong>Практична транслітерація</strong>
-          <em>Покриває весь текст. Якість нижча: евристичні читання там, де немає точної морфології.</em></span>
+          <span><strong>Практичний режим</strong>
+          <em>Покриває більше тексту; частина читань може бути евристичною.</em></span>
         </label>
         <label class="mode-option" for="mode-research">
           <input type="radio" name="transliteration-mode" id="mode-research" value="research" />
-          <span><strong>Дослідницький (строгий)</strong>
-          <em>NIKL/lexical licenses. Де бракує доказів — порожньо або попередження, без здогадок.</em></span>
+          <span><strong>Дослідницький режим</strong>
+          <em>Використовує підтверджені правила й словникові записи; невизначені місця позначає.</em></span>
         </label>
       </fieldset>
       <div id="research-options" class="research-options" hidden>
@@ -73,6 +76,7 @@
     </div>
   </section>
 
+  <section class="output-workspace" aria-label="Результат перетворення">
   <section id="empty-state" class="empty-state" aria-live="polite">
     <div class="empty-glyph" aria-hidden="true">한</div>
     <div><strong>Тут з’явиться результат</strong><span>Введіть корейський текст або скористайтеся прикладом.</span></div>
@@ -111,6 +115,12 @@
     </div>
   </section>
 
+  </section>
+  </div>
+  <footer class="site-footer">
+    <div><strong>한국어 / УКРАЇНСЬКА</strong><span>Авторська система практичної передачі корейської вимови українською.</span></div>
+    <div><span>Результат — транскрипція, не переклад; українські відповідники можуть бути попередніми.</span><span><a href="./system.html">Методологія</a> · <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" rel="noreferrer">Стандарт вимови NIKL</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">GitHub</a></span></div>
+  </footer>
   <div id="live-region" class="sr-only" aria-live="polite"></div>
 </main>
 <script type="module" src="./src/main.js"></script>
