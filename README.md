@@ -55,7 +55,7 @@ Added eight official examples from the attached note to Rule 29, including `들�
 
 ## Optional g2pK pronunciation backend
 
-The Python package, CLI, and optional FastAPI backend can use the pinned, prescriptive g2pK engine for context-sensitive Korean surface pronunciation. Install with `python -m pip install -e ".[g2pk]"`, then run `korean-ua analyze "넋이 굳이" --pronunciation-engine g2pk`. The native engine remains the default unless g2pK is explicitly selected; missing dependencies never trigger a silent fallback.
+The Python package, CLI, and optional FastAPI backend can use the pinned, prescriptive g2pK engine for context-sensitive Korean surface pronunciation. Its MeCab binding is tested on Python 3.11/3.12; on Python 3.13/3.14, use the native engine or a separate 3.11/3.12 environment. Install with `python -m pip install -e ".[g2pk]"`, then run `korean-ua analyze "넋이 굳이" --pronunciation-engine g2pk`. The native engine remains the default unless g2pK is explicitly selected; missing dependencies never trigger a silent fallback.
 
 g2pK returns pronunciation-spelling in Hangul rather than IPA. The adapter derives IPA from that surface form and applies NIKL-sourced surface/IPA controls only to exact, unambiguously aligned lexical entries. The Ukrainian target stage still consumes IPA only. See [the integration and validation boundary](docs/G2PK-INTEGRATION-2026-10-15.md).
 
