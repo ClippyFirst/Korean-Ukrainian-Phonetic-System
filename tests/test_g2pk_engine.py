@@ -27,6 +27,23 @@ def test_g2pk_adapter_derives_ipa_from_surface_hangul(monkeypatch):
     assert "NIKL" not in result["rules"][0]["source"]
 
 
+def test_nikl_surface_override_corrects_an_unlicensed_external_mismatch(monkeypatch):
+    class IncorrectG2p:
+        def __call__(self, text, descriptive=False):
+            return text
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", IncorrectG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("넋이")
+
+    assert result["surface_hangul"] == "넉씨"
+    assert any(
+        rule["name"] == "sourced-lexical-surface-override"
+        and rule["source"]
+        for rule in result["rules"]
+    )
+    assert result["ipa"]["ipa"] == "nʌk̚.ɕ͈i"
+
+
 def test_g2pk_descriptive_mode_is_explicit_and_passed_through(monkeypatch):
     monkeypatch.setattr(g2pk_engine, "_ENGINE", FakeG2p())
     assert g2pk_engine.pronounce_surface("나의 친구", descriptive=True) == "나에 친구"
@@ -63,6 +80,7 @@ def test_g2pk_surface_keeps_latin_digits_and_compatibility_jamo_out_of_engine(mo
 def test_g2pk_live_engine_smoke_and_normative_controls():
     pytest.importorskip("g2pk")
     expected = {
+        "학교": "학꾜",
         "넋이": "넉씨",
         "값어치": "가버치",
         "밟고": "밥꼬",
