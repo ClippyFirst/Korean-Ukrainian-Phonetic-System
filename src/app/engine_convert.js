@@ -70,7 +70,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const issues=results.flatMap(r=>r.issues||[]);
       let residueText=text;
       for(const key of mixedKeys)if(lexicon.has(key))residueText=residueText.split(key).join(' ');
-      if(/[가-힣][A-Za-z0-9]|[A-Za-z0-9][가-힣]/u.test(residueText))issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
+      if(/[가-힣][A-Za-z]/u.test(residueText))issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
       return{
         source:text,
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
@@ -238,7 +238,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   }
 
   if(!units.some(u=>u.type==='hangul')&&!units.some(u=>u.type==='jamo')&&!skipLexicon)issues.push('Input contains no Hangul syllable; pronunciation cannot be generated.');
-  if(/[가-힣][A-Za-z0-9]|[A-Za-z0-9][가-힣]/u.test(text))issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
+  if(/[가-힣][A-Za-z]/u.test(text))issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
   const hasJamo=units.some(u=>u.type==='jamo');
   const hasHangulSyllables=units.some(u=>u.type==='hangul');
   const status=hasJamo?'unresolved':!hasHangulSyllables?'non-korean-input':issues.length?'unresolved':trace.some(x=>x?.status==='practical-transliteration')?'practical-transliteration':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
