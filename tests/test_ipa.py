@@ -86,10 +86,13 @@ def test_section5_non_initial_ui_has_a_generic_i_variant():
 
 def test_section5_does_not_generalize_non_initial_ui_across_word_boundaries():
     result = phoneticize_korean("민주주의 의의")["ipa"]
-    assert result["ipa"] == "min.dʑu.dʑu.ɰi ɰi.ɰi"
-    assert len(result["variants"]) == 3
-    assert "min.dʑu.dʑu.i ɰi.ɰi" in [variant["ipa"] for variant in result["variants"]]
-    assert "min.dʑu.dʑu.ɰi ɰi.i" in [variant["ipa"] for variant in result["variants"]]
+    # The final ㅢ in 민주주의 has a §5 alternate, but the next word starts
+    # independently. The exact lexical entry for 의의 preserves [ɰi.i];
+    # word-internal [i] must not be applied to the initial syllable of 의의.
+    assert result["ipa"] == "min.dʑu.dʑu.ɰi ɰi.i"
+    assert [variant["ipa"] for variant in result["variants"]] == [
+        "min.dʑu.dʑu.i ɰi.i"
+    ]
 
 
 def test_section5_generic_ye_has_optional_e_except_in_ye_and_rye():
