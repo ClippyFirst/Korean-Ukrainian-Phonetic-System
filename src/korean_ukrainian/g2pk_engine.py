@@ -7,6 +7,7 @@ the input word and g2pK's output exactly match the NIKL-backed record.
 from __future__ import annotations
 
 import re
+import sys
 from typing import Any
 
 from .ipa import realize_syllables
@@ -26,10 +27,20 @@ def _get_engine():
         try:
             from g2pk import G2p
         except ImportError as exc:
-            raise RuntimeError(
-                "The g2pK pronunciation engine is optional. Install it with "
-                "python -m pip install -e '.[g2pk]'."
-            ) from exc
+            if sys.version_info >= (3, 13):
+                message = (
+                    f"g2pK is not installed for Python {sys.version_info.major}."
+                    f"{sys.version_info.minor}. The optional extra is restricted "
+                    "to Python 3.11/3.12 because python-mecab-ko could not build "
+                    "without mecab-config on Python 3.13/3.14. Use a Python "
+                    "3.11/3.12 environment or select the native engine."
+                )
+            else:
+                message = (
+                    "The g2pK pronunciation engine is optional. Install it with "
+                    "python -m pip install -e '.[g2pk]'."
+                )
+            raise RuntimeError(message) from exc
         try:
             _ENGINE = G2p()
         except Exception as exc:
