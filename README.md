@@ -53,6 +53,14 @@ Added eight official examples from the attached note to Rule 29, including `들�
 - [Audit report](docs/rule29-liquid-assimilation-audit-2026-10-10.md)
 - [Regression test](tests/adversarial-rule29-liquid-assimilation-2026-10-10.test.mjs)
 
+## Optional g2pK pronunciation backend
+
+The Python package, CLI, and optional FastAPI backend can use the pinned, prescriptive g2pK engine for context-sensitive Korean surface pronunciation. Install with `python -m pip install -e ".[g2pk]"`, then run `korean-ua analyze "넋이 굳이" --pronunciation-engine g2pk`. The native engine remains the default unless g2pK is explicitly selected; missing dependencies never trigger a silent fallback.
+
+g2pK returns pronunciation-spelling in Hangul rather than IPA. The adapter derives IPA from that surface form and applies NIKL-sourced surface/IPA controls only to exact, unambiguously aligned lexical entries. The Ukrainian target stage still consumes IPA only. See [the integration and validation boundary](docs/G2PK-INTEGRATION-2026-10-15.md).
+
+The GitHub Pages app is static JavaScript and cannot import Python/MeCab. This integration does not claim that the browser engine has been replaced; browser/API parity requires a deployed API or an independently tested JavaScript implementation.
+
 ## Scientific pipeline
 
 Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
