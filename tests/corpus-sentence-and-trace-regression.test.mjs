@@ -12,12 +12,12 @@ for (const row of parseCsv(lexicalAdditions)) effectiveRows.set(row.input, row);
 const headers = Object.keys(baseRows[0] || {});
 const csvCell = (value) => {
   const cell = String(value ?? '');
-  return /[",\\r\\n]/u.test(cell) ? '"' + cell.replace(/"/gu, '""') + '"' : cell;
+  return /[",\r\n]/u.test(cell) ? '"' + cell.replace(/"/gu, '""') + '"' : cell;
 };
 const lexical = [
   headers.join(','),
   ...[...effectiveRows.values()].map((row) => headers.map((header) => csvCell(row[header])).join(','))
-].join('\\n');
+].join('\n');
 const engine = createEngine(canonical, lexical);
 const entries = new Map(effectiveRows);
 
