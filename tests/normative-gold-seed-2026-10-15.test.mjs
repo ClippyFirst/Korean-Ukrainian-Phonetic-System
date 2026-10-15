@@ -14,7 +14,11 @@ test('normative seed fixture has unique IDs, source provenance, and explicit unc
   assert.equal(fixture.schemaVersion, 1);
   assert.match(fixture.normativeSource.url, /^https:\/\//);
   assert.match(fixture.ukrainianTargetPolicy, /excluded from normative gold labels/i);
-  assert.ok(fixture.cases.length >= 10, 'seed set should contain at least ten independently addressable controls');
+  assert.ok(fixture.cases.length >= 150, 'source-backed normative seed must retain the expanded minimum control set');
+  assert.ok(fixture.cases.filter((item) => item.ruleIds.includes('NIKL-28')).length >= 18,
+    '§28 must include the full official compound-fortition example family');
+  assert.ok(fixture.cases.filter((item) => item.ruleIds.includes('NIKL-29')).length >= 35,
+    '§29 must include positive, variant, and negative controls from official materials');
   const ids = fixture.cases.map((item) => item.id);
   assert.equal(new Set(ids).size, ids.length, 'case IDs must be unique');
   for (const item of fixture.cases) {
