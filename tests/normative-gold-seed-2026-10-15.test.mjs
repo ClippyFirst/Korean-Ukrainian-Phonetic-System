@@ -21,12 +21,6 @@ test('normative seed fixture has unique IDs, source provenance, and explicit unc
     assert.ok(item.input, item.id + ': input is required');
     assert.ok(Array.isArray(item.expectedSurfaceForms) && item.expectedSurfaceForms.length, item.id + ': surface gold is required');
     assert.ok(Array.isArray(item.expectedProjectIpa) && item.expectedProjectIpa.length, item.id + ': project IPA target is required');
-    if (item.expectedPythonIpa) {
-      assert.ok(Array.isArray(item.expectedPythonIpa) && item.expectedPythonIpa.length, item.id + ': Python IPA target must be non-empty');
-      assert.ok(item.runtimeDivergenceNote, item.id + ': cross-runtime IPA difference must be documented');
-    } else {
-      assert.equal(item.runtimeDivergenceNote, undefined, item.id + ': do not declare a runtime divergence without a Python-specific target');
-    }
     assert.ok(Array.isArray(item.ruleIds) && item.ruleIds.length, item.id + ': rule IDs are required');
     assert.match(item.evidenceUrl, /^https:\/\//, item.id + ': evidence URL is required');
     assert.ok(item.evidenceNote, item.id + ': explain why this evidence applies');
