@@ -114,6 +114,10 @@ For every source, record the exact bibliographic identity, accessible full text,
 19. **Comparative Cyrillic/Slavic systems already in the project source register:** Czech (Stanjurová, 2023), Slovak (Procházka, 2020), Bulgarian (Beneva et al., 2018), Serbian (Galjević, 2023), and historical Russian Holodovich–Kontsevich.  
     Project use: compare design criteria, phonetic distinctions preserved/lost, reader expectations, and status of each proposal. Cite exact pages. Never import mappings solely because the target script is Cyrillic.
 
+## Evidence follow-up
+
+The first evidence memo is [CRITICAL-LITERATURE-REVIEW-01-2026-10-16.md](CRITICAL-LITERATURE-REVIEW-01-2026-10-16.md). It records which findings are based on accessible full text, which remain abstract-only, and which specific tasks must be completed before any method is considered adopted.
+
 ## 3. Method families the project must compare
 
 The project must not presuppose that one method wins before benchmarking. Maintain at least these explicit alternatives:
