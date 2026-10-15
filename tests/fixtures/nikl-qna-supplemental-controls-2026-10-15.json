@@ -296,6 +296,239 @@
       "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=333041",
       "evidenceKind": "context-required-control",
       "note": "Prosodic pause can change whether the connected-phrase rule applies; absent speech/prosody context, do not force one output."
+    },
+    {
+      "id": "QNA-334141-DAKGWA",
+      "input": "닭과",
+      "expectedSurfaceForms": [
+        "닥꽈"
+      ],
+      "ruleIds": [
+        "NIKL-10",
+        "NIKL-23"
+      ],
+      "sourceId": "S041",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=334141",
+      "evidenceKind": "direct-noun-coda-control",
+      "note": "Noun 닭 keeps the regular representative coda [ㄱ] before ㄱ; do not apply the verbal-stem ㄺ exception."
+    },
+    {
+      "id": "QNA-334141-AMTAKGWA",
+      "input": "암탉과",
+      "expectedSurfaceForms": [
+        "암탁꽈"
+      ],
+      "ruleIds": [
+        "NIKL-10",
+        "NIKL-23"
+      ],
+      "sourceId": "S041",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=334141",
+      "evidenceKind": "direct-noun-coda-control",
+      "note": "Explicit noun control from NIKL; do not generalize the verb-stem exception to all ㄺ-looking spellings."
+    },
+    {
+      "id": "QNA-334141-SUTAKGWA",
+      "input": "수탉과",
+      "expectedSurfaceForms": [
+        "수탁꽈"
+      ],
+      "ruleIds": [
+        "NIKL-10",
+        "NIKL-23"
+      ],
+      "sourceId": "S041",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=334141",
+      "evidenceKind": "direct-noun-coda-control",
+      "note": "Explicit noun control from NIKL; the coda is not treated as a verbal stem."
+    },
+    {
+      "id": "QNA-334141-JANGDAKGWA",
+      "input": "장닭과",
+      "expectedSurfaceForms": [
+        "장딱꽈"
+      ],
+      "ruleIds": [
+        "NIKL-10",
+        "NIKL-23"
+      ],
+      "sourceId": "S041",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=334141",
+      "evidenceKind": "direct-noun-coda-control",
+      "note": "Explicit noun control from NIKL; lexical and morphological class must remain distinct."
+    },
+    {
+      "id": "QNA-334141-ILKKO",
+      "input": "읽고",
+      "expectedSurfaceForms": [
+        "일꼬"
+      ],
+      "ruleIds": [
+        "NIKL-11",
+        "NIKL-23"
+      ],
+      "sourceId": "S041",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=334141",
+      "evidenceKind": "direct-verbal-stem-control",
+      "note": "The verbal-stem ㄺ exception before ㄱ retains ㄹ; tensification is a separate interaction."
+    },
+    {
+      "id": "QNA-334141-MALKKO",
+      "input": "맑고",
+      "expectedSurfaceForms": [
+        "말꼬"
+      ],
+      "ruleIds": [
+        "NIKL-11",
+        "NIKL-23"
+      ],
+      "sourceId": "S041",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=334141",
+      "evidenceKind": "direct-verbal-stem-control",
+      "note": "Listed verbal-stem example; keep coda selection and fortition as separate rule stages."
+    },
+    {
+      "id": "QNA-334141-BULKKO",
+      "input": "붉고",
+      "expectedSurfaceForms": [
+        "불꼬"
+      ],
+      "ruleIds": [
+        "NIKL-11",
+        "NIKL-23"
+      ],
+      "sourceId": "S041",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=334141",
+      "evidenceKind": "direct-verbal-stem-control",
+      "note": "Listed verbal-stem example; do not replace its lexical/morphological license with a spelling-only rule."
+    },
+    {
+      "id": "QNA-334141-BALKKO",
+      "input": "밝고",
+      "expectedSurfaceForms": [
+        "발꼬"
+      ],
+      "ruleIds": [
+        "NIKL-11",
+        "NIKL-23"
+      ],
+      "sourceId": "S041",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=334141",
+      "evidenceKind": "direct-verbal-stem-control",
+      "note": "Listed verbal-stem example; distinguish it from nominal 밝기-type derivation where applicable."
+    },
+    {
+      "id": "QNA-321743-CHIKKWA",
+      "input": "칡과",
+      "expectedSurfaceForms": [
+        "칙꽈"
+      ],
+      "ruleIds": [
+        "NIKL-10",
+        "NIKL-23"
+      ],
+      "sourceId": "S045",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=321743",
+      "evidenceKind": "direct-noun-coda-control",
+      "note": "NIKL contrasts 칡과 [칙꽈] with verbal 읽고 [일꼬]; a generic ㄺ-before-ㄱ rule is invalid."
+    },
+    {
+      "id": "QNA-313201-GUD-I",
+      "input": "굳이",
+      "expectedSurfaceForms": [
+        "구지"
+      ],
+      "ruleIds": [
+        "NIKL-13",
+        "NIKL-17"
+      ],
+      "sourceId": "S040",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313201",
+      "evidenceKind": "direct-palatalization-control",
+      "note": "NIKL confirms the standard form [구지]; do not encode a competing theoretical derivation as a different surface output."
+    },
+    {
+      "id": "QNA-318230-PAT-IMNIDA",
+      "input": "팥입니다",
+      "expectedSurfaceForms": [
+        "파침니다"
+      ],
+      "ruleIds": [
+        "NIKL-17",
+        "NIKL-18"
+      ],
+      "sourceId": "S044",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=318230",
+      "evidenceKind": "direct-interaction-control",
+      "note": "Source explicitly gives [파침니다], useful for checking the palatalization-plus-nasalization interaction."
+    },
+    {
+      "id": "QNA-313411-MYEOT-RI",
+      "input": "몇 리",
+      "expectedSurfaceForms": [],
+      "ruleIds": [
+        "NIKL-19"
+      ],
+      "sourceId": "S042",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313411",
+      "evidenceKind": "rule-scope-control",
+      "note": "NIKL states that the standard rules contain no explicit clause for ㄷ+ㄹ in this form; label any output as project inference, not an official rule."
+    },
+    {
+      "id": "QNA-316752-MAN-A",
+      "input": "많아",
+      "expectedSurfaceForms": [
+        "마나"
+      ],
+      "ruleIds": [
+        "NIKL-12"
+      ],
+      "sourceId": "S043",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316752",
+      "evidenceKind": "direct-h-deletion-control",
+      "note": "NIKL gives [마ː나]; the surface field omits the vowel-length diacritic, which belongs in the IPA layer."
+    },
+    {
+      "id": "QNA-316752-ANEUN",
+      "input": "않은",
+      "expectedSurfaceForms": [
+        "아는"
+      ],
+      "ruleIds": [
+        "NIKL-12"
+      ],
+      "sourceId": "S043",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316752",
+      "evidenceKind": "direct-h-deletion-control",
+      "note": "NIKL lists [아는]; ㅎ deletion is licensed by the vowel-initial ending, not arbitrary Hangul adjacency."
+    },
+    {
+      "id": "QNA-316752-DAL-A",
+      "input": "닳아",
+      "expectedSurfaceForms": [
+        "다라"
+      ],
+      "ruleIds": [
+        "NIKL-12"
+      ],
+      "sourceId": "S043",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316752",
+      "evidenceKind": "direct-h-deletion-control",
+      "note": "NIKL lists [다라]; retain the ㅀ-specific coda behavior."
+    },
+    {
+      "id": "QNA-316752-SIREODO",
+      "input": "싫어도",
+      "expectedSurfaceForms": [
+        "시러도"
+      ],
+      "ruleIds": [
+        "NIKL-12"
+      ],
+      "sourceId": "S043",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316752",
+      "evidenceKind": "direct-h-deletion-control",
+      "note": "NIKL lists [시러도]; the exact suffix sequence is part of the licensed morphology."
     }
   ]
 }
