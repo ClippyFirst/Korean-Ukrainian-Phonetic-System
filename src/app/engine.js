@@ -12,5 +12,11 @@ export { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource };
 export function createEngine(csv, lexiconCsv=''){
   const map=createMap(csv);
   const lexicon=new Map(parseCsv(lexiconCsv).map(r=>[r.input,r]));
-  return{convert:function(text,options={}){return convertText(text,map,lexicon,false,options)},decompose};
+  return{
+    convert:function(text,options={}){return convertText(text,map,lexicon,false,options)},
+    // G2P surface text is already normalized; derive IPA/target without
+    // re-running coda, liaison, assimilation, or fortition rules.
+    convertSurface:function(text){return convertText(text,map,new Map(),true,{morphologyMode:'strict',surfaceMode:true})},
+    decompose
+  };
 }
