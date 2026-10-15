@@ -25,6 +25,7 @@ test('Hangul syllable + Latin residue does not leak Latin into IPA', () => {
   assert.equal(hasHangulInIpa(r.ipa), false);
   assert.match(r.ipa, /ɰi/);
   assert.doesNotMatch(r.ipa, /nin/);
+  assert.doesNotMatch(r.analysis, /nin/);
   // Latin may remain visible in the Ukrainian passthrough column.
   assert.match(r.ukrainian, /nin/);
 });
@@ -52,4 +53,11 @@ test('soft does not override exact lexical 넋이', () => {
   assert.equal(strict.ukrainian, soft.ukrainian);
   assert.equal(strict.ipa, soft.ipa);
   assert.ok(!(soft.trace || []).some((t) => (t.rules || []).some((rule) => /soft-heuristic/.test(rule))));
+});
+
+test('non-Korean-only input is explicitly classified', () => {
+  const r = engine.convert('latin 123');
+  assert.equal(r.status, 'non-korean-input');
+  assert.doesNotMatch(r.ipa, /latin|123/i);
+  assert.ok((r.issues || []).some((x) => /no Hangul syllable/i.test(x)));
 });
