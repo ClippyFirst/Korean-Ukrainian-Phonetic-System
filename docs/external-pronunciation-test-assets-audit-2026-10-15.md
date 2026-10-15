@@ -217,3 +217,39 @@ The expanded corpus remains finite example coverage. The rule engine should stay
 
 
 The lexical inventory also gained two exact source-backed entries for the NIKL §30 commentary examples 훗일[훈ː닐] and 뒷일[뒨ː닐]. These are recorded as provisional Ukrainian targets derived from IPA; their Korean standard surface forms and source-attested vowel length are explicit. The lexical inventory snapshot is now 653 data rows, with the nine surface-only references plus these two entries added to the prior 642-row inventory.
+
+
+## Follow-up mass pass — official §28–§30 examples and source inventory (2026-10-15)
+
+### Additional primary-source controls
+
+The NIKL page was re-read at the rule text and commentary level, not only at the heading level:
+
+- **§28:** the complete listed compound-fortition family was cross-checked, including the lexical/semantic caveat in the commentary. The rule is not generalized from coda adjacency alone: the standard explicitly notes compounds such as 가을고치, 민물송어, 운동자금, 콩기름, 물불, 손발, 돌부처, 콩밥, 물장난, 불고기 where the same broad semantic tendency does not guarantee fortition. These are important negative/lexical-lookup controls.
+- **§29:** the complete listed examples, the alternation paragraph (이죽이죽, 야금야금, 검열, 욜랑욜랑, 금융), the ㄹ-coda attachment paragraph, phrase-boundary examples, and explicit non-insertion examples (6·25, 3·1절, 송별연, 등용문) were reviewed. The commentary also names cases where insertion may occur and cases where it does not; a generic rule must not silently force insertion into every eligible spelling.
+- **§30:** all three subparagraph families were reviewed, including the explicitly permitted pair of readings for §30(1), the mandatory nasal outcomes for §30(2), and the chained nasal-insertion examples for §30(3). Length marks in NIKL examples are source evidence and should be preserved in IPA when the project has a supported lexical-length decision.
+
+Official rule text and commentary: <https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002>
+
+### What changed in this follow-up
+
+- Expanded `tests/fixtures/normative-gold-seed-2026-10-15.json` from **100 to 151 controls**.
+- Added **51 source-linked controls** from the existing lexical table: §28 compound fortition, §29 insertion and nasal/liquid interactions, variant pronunciations, and explicit negative controls.
+- Added explicit minimum-count assertions for the 151-case set, the §28 family, and the §29 family in `tests/normative-gold-seed-2026-10-15.test.mjs`.
+- One inflected form, `삯일을`, is marked as a **derived control**, not misrepresented as a word explicitly enumerated by NIKL. The underlying `삯일` is official evidence; the inflection tests compositional interaction and remains project-derived.
+- Registered additional source leads S016–S019 in `data/korean/sources.csv`: SBV2-KR's category-based gold-set test design, the NIKL dictionary XML mirror and its license caveats, and two NIKL official Q&A items clarifying phrase-boundary insertion and formal/substantive morpheme liaison.
+
+### Source and licensing decisions
+
+- SBV2-KR is a **test-design/differential reference**, not an independent normative authority. Its repository declares AGPL-3.0; do not copy its code or test rows into this project without a separate license review and source-by-source validation.
+- The NIKL dictionary XML mirror states CC BY-SA 2.0 KR for dictionary data, but warns that quoted literary/news examples and linked audio/media are not freely redistributable. Do not bulk-vendor the XML or media into the browser bundle. Prefer minimal lexical controls with attribution, entry URL/version, and the least data necessary.
+- Official NIKL Q&A is supplementary interpretation, not a substitute for the rule text or a dictionary entry. It can establish a context requirement or clarify a boundary but does not authorize a blanket rule beyond the answer's scope.
+
+### Remaining coverage gaps (do not call the project complete)
+
+1. The 151-case set is still finite; it is not an exhaustive lexicon and cannot prove all productive morphology.
+2. The current lexical table contains project IPA and Ukrainian approximations. NIKL publishes Hangul surface forms, not the project's IPA transcription; those IPA targets need independent phonetic-convention review and must not be presented as NIKL IPA.
+3. A few standard examples have licensed alternatives. They must remain a set of accepted outputs, not be collapsed into a single supposedly universal surface form.
+4. §28 fortition and §29 ㄴ insertion are lexically/morphologically conditioned. The browser engine must keep fail-closed behavior for unknown compounds and phrase boundaries instead of inferring a license from spelling adjacency.
+5. External G2P agreement is a disagreement detector only. KoG2P, g2pK/g2pk2, and SBV2-KR do not replace NIKL/dictionary evidence; benchmark licenses and target conventions must be checked independently.
+6. A full final audit still needs a live test run after this fixture expansion, followed by a rule-by-rule failure review. Passing CI means the declared tests pass, not that every Korean word is resolved.
