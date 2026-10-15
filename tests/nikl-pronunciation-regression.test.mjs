@@ -4,7 +4,24 @@ import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
-const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
+const lexicalBase = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
+const lexicalAdditions = readFileSync(new URL('../data/korean/lexical_additions_2026-10-15.csv', import.meta.url), 'utf8');
+
+// Match the public app's effective lexicon: dated additions override base rows
+// with the same input key. Keep one row per key so row-level audits inspect the
+// actual record used by createEngine rather than a stale base entry.
+const baseRows = parseCsv(lexicalBase);
+const effectiveRows = new Map(baseRows.map((row) => [row.input, row]));
+for (const row of parseCsv(lexicalAdditions)) effectiveRows.set(row.input, row);
+const headers = Object.keys(baseRows[0] || {});
+const csvCell = (value) => {
+  const cell = String(value ?? '');
+  return /[",\r\n]/u.test(cell) ? '"' + cell.replace(/"/gu, '""') + '"' : cell;
+};
+const lexical = [
+  headers.join(','),
+  ...[...effectiveRows.values()].map((row) => headers.map((header) => csvCell(row[header])).join(','))
+].join('\n');
 const userCorpus = readFileSync(new URL('./fixtures/user-supplied-corpus.txt', import.meta.url), 'utf8').trim().split(/\r?\n/u);
 const engine = createEngine(canonical, lexical);
 
