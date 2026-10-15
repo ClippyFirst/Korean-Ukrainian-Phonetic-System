@@ -238,7 +238,37 @@ This is now a priority source-discovery task. The bibliographic record was verif
 - Name-frequency statistics date from 1985/2000 and must not be reused as current data.
 - Locate Kovalchuk (2011), cited by Kozmin (2025), which directly addresses a unified Ukrainian practical transcription system.
 
-## 14. Architecture comparison: current hypotheses, not a premature decision
+## 15. Full-text review completed: Kovalchuk (2011), unifying Ukrainian practical transcription
+
+**Source:** Ю. А. Ковальчук, “Проблеми та перспективи створення уніфікованої системи української практичної транскрипції корейських власних назв,” *Мовні і концептуальні картини світу*, вип. 36, 2011, pp. 468–473.  
+**Evidence:** six-page article text was accessible through a third-party Scribd upload; bibliographic record is corroborated by the KNU author page and Kozmin (2025). The Scribd copy is not the publisher's authoritative host, and its displayed rights are “All Rights Reserved”; use it for research notes only, do not redistribute its text or tables.  
+**Links:** https://www.scribd.com/document/869072249/Ковальчук-Ю-А-ПРАКТИЧНА-ТРАНСКРИПЦІЯ-КОРЕЙСЬКИХ-ВЛАСНИХ-НАЗВ-2011 ; https://philology.knu.ua/struktura-if/kafedry/kovalchuk/
+
+### Main arguments from the article
+- The study starts from observed inconsistency in Ukrainian media: examples include 연평도, 이명박, 김정은, 영변군, and 김연아, each rendered in multiple incompatible ways (pp. 468–469).
+- It argues that indirect transfer through English- or Russian-language reporting often introduces additional distortions; therefore, a consistent target-language system should work from Korean pronunciation and source forms where possible (pp. 468–470).
+- It distinguishes scientific phonetic transcription from practical transcription for general readers. Practical transcription aims to preserve the source's sound as closely as the receiving language's ordinary orthography allows (pp. 469–470).
+- It reviews the disagreement between Holodovich–Kontsevich-style Cyrillic transcription and the Revised Romanization of Korean, especially initial lenis consonants and how to represent them in Ukrainian (pp. 470–471).
+- It notes that Ukrainian cannot preserve all Korean contrasts with ordinary letters. Specific debated areas include ㅓ vs ㅗ, ㅕ vs ㅛ, ㅐ vs ㅔ, ㅒ vs ㅖ, ㅚ/ㅞ/ㅙ, coda ㅇ, and ㅈ; the article argues some distinctions may be merged in practical orthography while retained in phonetic transcription (pp. 471–472).
+- It discusses whether Ukrainian practical transcriptions should use initial и for Korean ㅡ/ㅢ-based forms (examples include Ийчжонбу and Инбонсан), and how to represent the Korean personal-name sequence in Ukrainian (p. 472).
+- Unlike Shchegel (2009), who proposes hyphenating the given-name syllables, Kovalchuk argues for writing the family name and given name as two words without a hyphen, while preserving entrenched forms such as Кім Ір Сен and Кім Чен Ір (p. 472).
+- The article presents itself as a problem-framing study intended to establish the agenda for a more thorough future investigation, not as a completed empirically validated standard (pp. 468–472).
+
+### Methodological significance
+1. **The Ukrainian target layer is genuinely contested.** The project must not silently adopt either Shchegel's or Kovalchuk's orthographic policy as definitive. Their differences should become explicit alternative policies with examples and decision criteria.
+2. **Separate phonetic inference from spelling policy.** The IPA layer can represent contrasts that a practical Ukrainian spelling policy deliberately merges. This is a core reason to preserve the project's IPA-first architecture.
+3. **Define target audience and use case.** Academic transcription, general-reader practical transcription, names in media, and reversible bibliographic transliteration are different objectives; a single output mode may not satisfy all of them.
+4. **Do not resolve target-letter mappings by intuition alone.** For each disputed correspondence, compare contemporary Korean phonetic evidence, Ukrainian phonology and orthography, name-recognition costs, and reader interpretation.
+5. **Treat this article as a research agenda, not a gold standard.** Its own stated aim is to formulate key questions for future unification; it does not provide an independently validated universal converter.
+6. **Maintain separate handling for historical conventional forms.** A modern phonetic output may differ from a widely established Ukrainian name; those should be represented as different policies/metadata rather than confused as a pronunciation error.
+
+### Concrete new tasks derived from this source
+- Add a target-layer comparison table for Shchegel (2009) vs Kovalchuk (2011), with columns for IPA/phonetic rationale, Ukrainian mapping, name segmentation, legacy-name policy, reversibility, audience, evidence, and unresolved questions.
+- Obtain an authoritative institutional copy of Kovalchuk (2011), if available, and verify the original article's bibliography, pagination, and tables.
+- Create a disputed-mappings test set, especially for initial lenis stops, ㅓ/ㅗ, ㅐ/ㅔ, coda ㅇ, ㅈ, initial ㅡ/ㅢ, and syllable/hyphen conventions in personal names.
+- Do not apply proper-name conventions to all common nouns without separate evidence.
+
+## 16. Architecture comparison: current hypotheses, not a premature decision
 
 | Family | Strongest reason to consider | Principal risk | Current disposition |
 |---|---|---|---|
