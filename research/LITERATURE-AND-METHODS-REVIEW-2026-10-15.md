@@ -116,7 +116,7 @@ For every source, record the exact bibliographic identity, accessible full text,
 
 ## Evidence follow-up
 
-The first evidence memo is [CRITICAL-LITERATURE-REVIEW-01-2026-10-16.md](CRITICAL-LITERATURE-REVIEW-01-2026-10-16.md). It records which findings are based on accessible full text, which remain abstract-only, and which specific tasks must be completed before any method is considered adopted.
+The first evidence memo is [CRITICAL-LITERATURE-REVIEW-01-2026-10-16.md](CRITICAL-LITERATURE-REVIEW-01-2026-10-16.md). It records which findings are based on accessible full text, which remain abstract-only, and which specific tasks must be completed before any method is considered adopted. The target-language comparison is detailed in [UKRAINIAN-TARGET-LAYER-COMPARISON-2026-10-16.md](UKRAINIAN-TARGET-LAYER-COMPARISON-2026-10-16.md).
 
 ## 3. Method families the project must compare
 
