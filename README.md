@@ -53,6 +53,16 @@ Added eight official examples from the attached note to Rule 29, including `ë“¤ì
 - [Audit report](docs/rule29-liquid-assimilation-audit-2026-10-10.md)
 - [Regression test](tests/adversarial-rule29-liquid-assimilation-2026-10-10.test.mjs)
 
+## Shared normative seed: browser + Python (2026-10-15)
+
+A machine-readable, source-linked seed set now runs through both the browser engine and the Python research engine. The fixture stores Korean surface-form expectations and the project's broad IPA targets separately from Ukrainian output; Ukrainian spelling is not treated as an official normative gold label.
+
+- [Seed fixture](tests/fixtures/normative-gold-seed-2026-10-15.json)
+- [Browser regression and schema checks](tests/normative-gold-seed-2026-10-15.test.mjs)
+- [Python research-engine cross-check](tests/test_normative_gold_seed.py)
+
+The 11 seed cases are cross-linked to existing rule-focused regressions, not represented as a fully independent audit of every rule. CI must pass before adding cases or upgrading their validation status. Python reconstructs the surface form from the post-rule phonological fields rather than reusing the input spelling, which guards against stale syllable-index bugs.
+
 ## External normative test assets and dictionary controls
 
 A source-backed audit of public Korean G2P test suites, NIKL dictionary data, licensing constraints, and the recommended independent gold-set workflow is available in [the external test-assets audit (2026-10-15)](docs/external-pronunciation-test-assets-audit-2026-10-15.md). External engine outputs are differential references only; they are not accepted as normative gold without independent NIKL/dictionary validation.
