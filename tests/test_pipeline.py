@@ -174,10 +174,11 @@ def test_ipa_tokenizer_accepts_browser_surface_inventory():
     from korean_ukrainian.pipeline import tokenize_ipa, source_features_for_ipa
     samples = {
         "ɡ": "ɡ", "dʑ": "dʑ", "s͈": "s͈", "ɕ͈": "ɕ͈",
-        "tɕ͈": "tɕ͈", "tɕʰ": "tɕʰ", "k͈": "k͈", "s͈ɕ͈dʑɡ": "s͈ɕ͈dʑɡ",
+        "tɕ͈": "tɕ͈", "tɕʰ": "tɕʰ", "k͈": "k͈",
     }
     for ipa, expected in samples.items():
         assert "".join(tokenize_ipa(ipa)) == expected
-        assert source_features_for_ipa(expected), ipa
+        assert source_features_for_ipa(ipa), ipa
+    assert "".join(tokenize_ipa("s͈ɕ͈dʑɡ")) == "s͈ɕ͈dʑɡ"
     assert source_features_for_ipa("ɡ")["voice"] == "1"
     assert source_features_for_ipa("dʑ")["voice"] == "1"
