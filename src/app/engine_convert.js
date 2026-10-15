@@ -72,7 +72,13 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         ukrainian:results.map(r=>r.ukrainian).join(''),
         ipa:results.map(r=>r.ipa).join('').replace(/\s+/gu,' '),
         analysis:results.map(r=>r.analysis).filter(Boolean).join(' · '),
-        variants:results.flatMap(r=>r.variants||[]),
+        variants:results.flatMap((result,variantIndex)=>(result.variants||[]).map(variant=>({
+          ...variant,
+          source:text,
+          surface:results.map((item,index)=>index===variantIndex?variant.surface:(item.surfaceHangul||parts[index])).join(''),
+          ukrainian:results.map((item,index)=>index===variantIndex?variant.ukrainian:item.ukrainian).join(''),
+          ipa:results.map((item,index)=>index===variantIndex?variant.ipa:item.ipa).join('').replace(/\\s+/gu,' ')
+        }))),
         trace:results.flatMap(r=>r.trace||[]),
         issues,
         status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical'
