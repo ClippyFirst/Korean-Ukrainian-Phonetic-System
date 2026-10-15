@@ -96,6 +96,7 @@ def _apply_sourced_surface_overrides(source_text: str, surface: str) -> tuple[st
                 "after": expected,
                 "source": entry.get("source_url", ""),
                 "notes": entry.get("rule_notes", ""),
+                "confidence": entry.get("confidence", "unknown"),
             })
     if not replacement_by_index:
         return surface, []
@@ -146,6 +147,7 @@ def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
                     "ipa": word_ipa,
                     "source": entry.get("source_url", ""),
                     "notes": entry.get("rule_notes", ""),
+                    "confidence": entry.get("confidence", "unknown"),
                 })
             else:
                 rendered = realize_syllables(items, level="broad")
@@ -213,7 +215,7 @@ def phoneticize_with_g2pk(text: str, *, descriptive: bool = False,
         "name": "sourced-lexical-surface-override",
         "changed": True,
         "status": "sourced-lexical-surface-override",
-        "confidence": "high",
+        "confidence": entry["confidence"],
         "source": entry["source"],
         "license_context": entry["notes"],
         "before": entry["before"],
@@ -224,7 +226,7 @@ def phoneticize_with_g2pk(text: str, *, descriptive: bool = False,
         "name": "sourced-lexical-ipa-override",
         "changed": True,
         "status": "sourced-lexical-ipa-override",
-        "confidence": "high",
+        "confidence": entry["confidence"],
         "source": entry["source"],
         "license_context": entry["notes"],
     } for entry in ipa["lexical_overrides"])
