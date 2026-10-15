@@ -16,23 +16,23 @@ function softTrace(result) {
 
 describe('soft-heuristic morphology — integrated browser engine', () => {
   it('strict remains the default and matches explicit strict mode', () => {
-    for (const text of ['굳이', '값어치', '숲이', '넋이', '읽고', '값 이']) {
+    for (const text of ['굳이', '값어치', '삶이', '넋이', '읽고', '값 이']) {
       assert.deepEqual(engine.convert(text), engine.convert(text, STRICT), text);
     }
   });
 
   it('soft mode really fires on an unlisted same-eojeol formal candidate', () => {
-    // 숲이 is deliberately absent from the exact lexical CSV: this checks the
+    // 삶이 is kept out of the exact lexical CSV: this checks the
     // opt-in heuristic path rather than a lexical shortcut such as 굳이.
-    const result = engine.convert('숲이', SOFT);
+    const result = engine.convert('삶이', SOFT);
     const applied = softTrace(result);
-    assert.ok(applied.length > 0, 'expected at least one soft trace for 숲이');
+    assert.ok(applied.length > 0, 'expected at least one soft trace for 삶이');
     assert.ok(applied.every(t => t.status === 'heuristic-low-confidence'));
     assert.equal(result.status, 'heuristic-low-confidence');
   });
 
   it('does not create a soft license across whitespace', () => {
-    const result = engine.convert('숲 이', SOFT);
+    const result = engine.convert('삶 이', SOFT);
     assert.equal(softTrace(result).length, 0);
   });
 

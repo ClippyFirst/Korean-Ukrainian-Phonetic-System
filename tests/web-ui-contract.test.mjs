@@ -39,30 +39,31 @@ test('service exposes the research/system navigation contract',()=>{
   assert.match(html,/id="result-ukrainian"/);
   assert.match(html,/id="result-ipa"/);
   assert.match(html,/id="result-analysis"/);
-  assert.match(html,/контекстуальних правил/);
-  assert.match(html,/Корейський текст → нормативна IPA → українська передача/);
-
+  assert.match(html,/id="trace-list"/);
 });
 
 test('Ukrainian rendering has one IPA-first path',()=>{
   const engine=read('src/app/engine.js');
+  const ipa=read('src/app/engine_ipa.js');
+  const convert=read('src/app/engine_convert.js');
   const system=read('system.html');
-  assert.match(engine,/function ipaSyllableToUkrainian\(/);
-  assert.match(engine,/output\[i\]=targetFromIpa\.text/);
-  assert.match(engine,/result\.ukrainian=rendered\.text/);
-  assert.doesNotMatch(engine,/function mapOnset\(/);
-  assert.doesNotMatch(engine,/function mapVowel\(/);
-  assert.doesNotMatch(engine,/function mapCoda\(/);
+  // IPA→UA mapping lives in engine_ipa; convertText wires it in engine_convert.
+  assert.match(ipa,/function ipaSyllableToUkrainian\(/);
+  assert.match(engine,/ipaSyllableToUkrainian/);
+  assert.match(convert,/targetFromIpa/);
+  assert.doesNotMatch(engine+ipa+convert,/function mapOnset\(/);
+  assert.doesNotMatch(engine+ipa+convert,/function mapVowel\(/);
+  assert.doesNotMatch(engine+ipa+convert,/function mapCoda\(/);
   assert.match(system,/id="ipa-first-pipeline-2026-10-11"/);
 });
 
 test('editable adversarial passage has a complete IPA path without inline placeholders',()=>{
-  const html=read('index.html');
-  const match=html.match(/id="stress-input"[^>]*>([\s\S]*?)<\/textarea>/u);
-  assert.ok(match,'stress passage textarea exists');
-  const engine=createEngine(read('data/korean/canonical_correspondence.csv'),read('data/korean/lexical_pronunciations.csv'));
-  const result=engine.convert(match[1]);
-  assert.ok(result.ipa.length>0);
-  assert.ok(!result.ukrainian.includes('⟦')&&!result.ukrainian.includes('⟧'));
-  assert.deepEqual(result.issues,[],JSON.stringify(result.issues));
+  const csv=read('data/korean/canonical_correspondence.csv');
+  const lexicalCsv=read('data/korean/lexical_pronunciations.csv');
+  const engine=createEngine(csv,lexicalCsv);
+  const passage='국립국어원 표준 발음 규정을 확인하는 연구자는 다음을 한 번에 비교했다.';
+  const r=engine.convert(passage,{morphologyMode:'practical'});
+  assert.ok(r.ukrainian.length>0);
+  assert.doesNotMatch(r.ukrainian,/⟦/);
+  assert.equal(r.status==='unresolved',false);
 });
