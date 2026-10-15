@@ -194,9 +194,13 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     if(trace[i]?.status==='unresolved'||!output[i]){surfaceParts.push(u.char);continue;}
     surfaceParts.push(compose(u.onset,u.vowel,u.coda||''));
   }
+  const recomposed=surfaceParts.join('');
+  const originalHangul=units.filter(u=>u.type==='hangul').map(u=>u.char).join('');
+  // Only expose surface when contextual rules changed the Hangul form (e.g. 독립문→동님문).
+  // Unchanged general forms stay empty so lexical vs general remains distinguishable.
   return{
     source:text,
-    surfaceHangul:surfaceParts.join(''),
+    surfaceHangul:recomposed===originalHangul?'':recomposed,
     ukrainian:output.join(''),
     ipa:renderStructured(units,ipa,' '),
     analysis:renderStructured(units,analysis,' · '),
