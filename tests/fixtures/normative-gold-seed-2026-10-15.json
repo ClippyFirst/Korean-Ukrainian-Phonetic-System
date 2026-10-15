@@ -433,240 +433,6 @@
       "evidenceExcerpt": "난로[날로]"
     },
     {
-      "id": "NIKL-19-CHIMNYAK",
-      "input": "침략",
-      "context": null,
-      "phraseMode": "word",
-      "expectedSurfaceForms": [
-        "침냑"
-      ],
-      "expectedProjectIpa": [
-        "tɕʰim njak̚"
-      ],
-      "ruleIds": [
-        "NIKL-19"
-      ],
-      "evidenceType": "official-standard-example",
-      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§19 official example; the source marks vowel length (침ː냑), but the current generic IPA engine omits that length mark. Surface and rule ordering are tested algorithmically; vowel-length preservation remains a separately tracked gap.",
-      "validationStatus": "official-standard-example-checked",
-      "regressionRefs": [
-        {
-          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
-          "testName": "§19 every explicit example uses the correct ordered nasalization chain"
-        }
-      ],
-      "evidenceExcerpt": "침략[침ː냑]"
-    },
-    {
-      "id": "NIKL-19-KANGNEUNG",
-      "input": "강릉",
-      "context": null,
-      "phraseMode": "word",
-      "expectedSurfaceForms": [
-        "강능"
-      ],
-      "expectedProjectIpa": [
-        "kaŋ nɯŋ"
-      ],
-      "ruleIds": [
-        "NIKL-19"
-      ],
-      "evidenceType": "official-standard-example",
-      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§19 official example: ㄹ becomes ㄴ after ㅇ.",
-      "validationStatus": "official-standard-example-checked",
-      "regressionRefs": [
-        {
-          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
-          "testName": "§19 every explicit example uses the correct ordered nasalization chain"
-        }
-      ],
-      "evidenceExcerpt": "강릉[강능]"
-    },
-    {
-      "id": "NIKL-19-MANGNON",
-      "input": "막론",
-      "context": null,
-      "phraseMode": "word",
-      "expectedSurfaceForms": [
-        "망논"
-      ],
-      "expectedProjectIpa": [
-        "maŋ non"
-      ],
-      "ruleIds": [
-        "NIKL-19"
-      ],
-      "evidenceType": "official-standard-example",
-      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§19 official derivation: ㄹ→ㄴ precedes nasalization of the preceding ㄱ.",
-      "validationStatus": "official-standard-example-checked",
-      "regressionRefs": [
-        {
-          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
-          "testName": "§19 every explicit example uses the correct ordered nasalization chain"
-        }
-      ],
-      "evidenceExcerpt": "막론[막논→망논]"
-    },
-    {
-      "id": "NIKL-19-SEONGNYU",
-      "input": "석류",
-      "context": null,
-      "phraseMode": "word",
-      "expectedSurfaceForms": [
-        "성뉴"
-      ],
-      "expectedProjectIpa": [
-        "sʌŋ nju"
-      ],
-      "ruleIds": [
-        "NIKL-19"
-      ],
-      "evidenceType": "official-standard-example",
-      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§19 official derivation: ㄹ→ㄴ precedes nasalization of the preceding ㄱ.",
-      "validationStatus": "official-standard-example-checked",
-      "regressionRefs": [
-        {
-          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
-          "testName": "§19 every explicit example uses the correct ordered nasalization chain"
-        }
-      ],
-      "evidenceExcerpt": "석류[석뉴→성뉴]"
-    },
-    {
-      "id": "NIKL-19-HYEOMNYEOK",
-      "input": "협력",
-      "context": null,
-      "phraseMode": "word",
-      "expectedSurfaceForms": [
-        "혐녁"
-      ],
-      "expectedProjectIpa": [
-        "hjʌm njʌk̚"
-      ],
-      "ruleIds": [
-        "NIKL-19"
-      ],
-      "evidenceType": "official-standard-example",
-      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§19 official derivation: ㄹ→ㄴ precedes nasalization of the preceding ㅂ.",
-      "validationStatus": "official-standard-example-checked",
-      "regressionRefs": [
-        {
-          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
-          "testName": "§19 every explicit example uses the correct ordered nasalization chain"
-        }
-      ],
-      "evidenceExcerpt": "협력[협녁→혐녁]"
-    },
-    {
-      "id": "NIKL-19-BEOMNI",
-      "input": "법리",
-      "context": null,
-      "phraseMode": "word",
-      "expectedSurfaceForms": [
-        "범니"
-      ],
-      "expectedProjectIpa": [
-        "pʌm ni"
-      ],
-      "ruleIds": [
-        "NIKL-19"
-      ],
-      "evidenceType": "official-standard-example",
-      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§19 official derivation: ㄹ→ㄴ precedes nasalization of the preceding ㅂ.",
-      "validationStatus": "official-standard-example-checked",
-      "regressionRefs": [
-        {
-          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
-          "testName": "§19 every explicit example uses the correct ordered nasalization chain"
-        }
-      ],
-      "evidenceExcerpt": "법리[법니→범니]"
-    },
-    {
-      "id": "NIKL-20-CHEOLLI",
-      "input": "천리",
-      "context": null,
-      "phraseMode": "word",
-      "expectedSurfaceForms": [
-        "철리"
-      ],
-      "expectedProjectIpa": [
-        "tɕʰʌl li"
-      ],
-      "ruleIds": [
-        "NIKL-20"
-      ],
-      "evidenceType": "official-standard-example",
-      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§20 official example: ㄴ becomes ㄹ before ㄹ. Kept in the generic rule path to verify algorithmic liquid assimilation.",
-      "validationStatus": "official-standard-example-checked",
-      "regressionRefs": [
-        {
-          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
-          "testName": "§20 every listed general liquid-assimilation example is computed algorithmically"
-        }
-      ],
-      "evidenceExcerpt": "천리[철리]"
-    },
-    {
-      "id": "NIKL-20-DALLNEUN",
-      "input": "닳는",
-      "context": null,
-      "phraseMode": "word",
-      "expectedSurfaceForms": [
-        "달른"
-      ],
-      "expectedProjectIpa": [
-        "tal lɯn"
-      ],
-      "ruleIds": [
-        "NIKL-20"
-      ],
-      "evidenceType": "official-standard-example",
-      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§20 붙임: licensed ㅀ+ㄴ sequence resolves to [ㄹㄹ].",
-      "validationStatus": "official-standard-example-checked",
-      "regressionRefs": [
-        {
-          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
-          "testName": "§20 every listed general liquid-assimilation example is computed algorithmically"
-        }
-      ],
-      "evidenceExcerpt": "닳는[달른]"
-    },
-    {
-      "id": "NIKL-20-HALLNE",
-      "input": "핥네",
-      "context": null,
-      "phraseMode": "word",
-      "expectedSurfaceForms": [
-        "할레"
-      ],
-      "expectedProjectIpa": [
-        "hal le"
-      ],
-      "ruleIds": [
-        "NIKL-20"
-      ],
-      "evidenceType": "official-standard-example",
-      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "§20 붙임: ㅌ component of ㄾ is not resyllabified here; ㄴ becomes ㄹ after ㄹ.",
-      "validationStatus": "official-standard-example-checked",
-      "regressionRefs": [
-        {
-          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
-          "testName": "§20 every listed general liquid-assimilation example is computed algorithmically"
-        }
-      ],
-      "evidenceExcerpt": "핥네[할레]"
-    },
-    {
       "id": "NIKL-13-EXP-01",
       "input": "낮이",
       "context": null,
@@ -2563,6 +2329,240 @@
         }
       ],
       "evidenceExcerpt": "뒷윷[뒫ː뉻→뒨ː뉻]"
+    },
+    {
+      "id": "NIKL-19-LEX-01",
+      "input": "항로",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "항노"
+      ],
+      "expectedProjectIpa": [
+        "haŋ no"
+      ],
+      "ruleIds": [
+        "NIKL-19"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "official §19 example for ㄹ→ㄴ after ㅇ. The project IPA is sourced from the lexical layer and is not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "항로[항ː노]"
+    },
+    {
+      "id": "NIKL-19-LEX-02",
+      "input": "대통령",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "대통녕"
+      ],
+      "expectedProjectIpa": [
+        "tɛː toŋ ɲʌŋ"
+      ],
+      "ruleIds": [
+        "NIKL-19"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "official §19 example for ㄹ→ㄴ after ㅇ. The project IPA is sourced from the lexical layer and is not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "대통령[대ː통녕]"
+    },
+    {
+      "id": "NIKL-20-LEX-03",
+      "input": "의견란",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "의견난"
+      ],
+      "expectedProjectIpa": [
+        "ɰiː ɡjʌn nan"
+      ],
+      "ruleIds": [
+        "NIKL-20"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "explicit §20 lexical exception: ㄹ is realized as ㄴ. The project IPA is sourced from the lexical layer and is not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "의견란[의ː견난]"
+    },
+    {
+      "id": "NIKL-20-LEX-04",
+      "input": "임진란",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "임진난"
+      ],
+      "expectedProjectIpa": [
+        "imː dʑin nan"
+      ],
+      "ruleIds": [
+        "NIKL-20"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "explicit §20 lexical exception: ㄹ is realized as ㄴ. The project IPA is sourced from the lexical layer and is not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "임진란[임ː진난]"
+    },
+    {
+      "id": "NIKL-20-LEX-05",
+      "input": "생산량",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "생산냥"
+      ],
+      "expectedProjectIpa": [
+        "sɛŋ san njaŋ"
+      ],
+      "ruleIds": [
+        "NIKL-20"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "explicit §20 lexical exception: ㄹ is realized as ㄴ. The project IPA is sourced from the lexical layer and is not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "생산량[생산냥]"
+    },
+    {
+      "id": "NIKL-20-LEX-06",
+      "input": "결단력",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "결딴녁"
+      ],
+      "expectedProjectIpa": [
+        "kjʌl t͈an njʌk̚"
+      ],
+      "ruleIds": [
+        "NIKL-20"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "explicit §20 lexical exception: ㄹ is realized as ㄴ. The project IPA is sourced from the lexical layer and is not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "결단력[결딴녁]"
+    },
+    {
+      "id": "NIKL-20-LEX-07",
+      "input": "공권력",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "공꿘녁"
+      ],
+      "expectedProjectIpa": [
+        "koŋ k͈wʌn njʌk̚"
+      ],
+      "ruleIds": [
+        "NIKL-20"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "explicit §20 lexical exception: ㄹ is realized as ㄴ. The project IPA is sourced from the lexical layer and is not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "공권력[공꿘녁]"
+    },
+    {
+      "id": "NIKL-20-LEX-08",
+      "input": "동원령",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "동원녕"
+      ],
+      "expectedProjectIpa": [
+        "toŋː wʌn njʌŋ"
+      ],
+      "ruleIds": [
+        "NIKL-20"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "explicit §20 lexical exception: ㄹ is realized as ㄴ. The project IPA is sourced from the lexical layer and is not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "동원령[동ː원녕]"
+    },
+    {
+      "id": "NIKL-20-LEX-09",
+      "input": "상견례",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "상견녜"
+      ],
+      "expectedProjectIpa": [
+        "saŋ ɡjʌn nje"
+      ],
+      "ruleIds": [
+        "NIKL-20"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "explicit §20 lexical exception: ㄹ is realized as ㄴ. The project IPA is sourced from the lexical layer and is not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "상견례[상견녜]"
     }
   ],
   "validationPolicy": "Statuses distinguish exact official examples, official dictionary entries, and controls derived from a general rule but not explicitly listed. Project IPA remains a project transcription target and is not an official NIKL IPA prescription."
