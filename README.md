@@ -196,3 +196,18 @@ The lexical layer has a dedicated regression suite for Ukrainian target segmenta
 
 - [Audit summary on the methodology page](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#model-wide-target-consistency)
 - [Regression tests](tests/model-wide-target-consistency.test.mjs)
+
+
+## Research programme and completion roadmap
+
+The durable project plan, evidence registers, rule-coverage matrix, architecture decisions, and release acceptance criteria are maintained in the repository so that work can continue consistently across sessions.
+
+- [Research programme index](research/README.md)
+- [Master directive](research/MASTER-DIRECTIVE.md)
+- [Staged roadmap and current work queue](research/ROADMAP.md)
+- [External source register](research/SOURCE-REGISTER.csv)
+- [Rule-to-implementation coverage matrix](research/RULE-COVERAGE.csv)
+- [Architecture decision log](research/DECISION-LOG.md)
+- [Release acceptance gates](research/ACCEPTANCE-GATES.md)
+
+These documents establish the process; they do not claim the full audit or implementation is complete. The current first task is Phase 0: reconstruct the repository, branches, baseline tests, runtime paths, and deployment state with evidence.

@@ -1,0 +1,3 @@
+rule_id,phenomenon,source_ids,formal_spec_status,canonical_data_location,implementation_location,browser_status,python_status,cli_status,api_status,positive_tests,negative_tests,interaction_tests,independent_review_status,known_gaps,next_action
+NIKL-INDEX,official standard article inventory,SRC-NIKL-PRON,not_started,,,,,,,,,,,,"Create one row per article/subarticle and separate rows for meaningful exceptions; this index row is only a setup task"
+IPA-UKR-MAPPING,IPA-to-Ukrainian mapping,SRC-UKR-PHONETICS,not_started,,,,,,,,,,,,"Build an explicit source-backed mapping inventory; this placeholder is not a completed mapping rule"
