@@ -193,6 +193,3 @@ This is a source/repository inspection, not a claim that every row in an externa
 ### Seed expansion follow-up (2026-10-15)
 
 The shared cross-runtime seed was expanded from 11 to 16 cases. The five new controls are exact examples from NIKL §§17, 18, and 20: 굳이[구지], 국물[궁물], 먹는[멍는], 신라[실라], and 난로[날로]. Each points to the official standard and an exact existing regression-test title. This improves rule-family diversity but does not establish exhaustive coverage of any article; CI is the arbiter for whether the project engines reproduce the declared project IPA and surface forms.
-
-
-The shared seed also records one current cross-runtime IPA discrepancy rather than hiding it: for 난로, both engines agree on the standard surface [날로], but the Python research layer preserves a lexical vowel-length mark (`naːl.lo`) that the browser layer currently omits (`nal lo`). The fixture therefore carries a separate `expectedPythonIpa` plus a mandatory explanation for this case. This is an implementation difference, not an alternate normative reading; a later vowel-length alignment pass should resolve it.
