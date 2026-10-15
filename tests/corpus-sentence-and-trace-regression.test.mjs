@@ -122,9 +122,9 @@ test('second adversarial corpus resolves morphology-sensitive forms without plac
 
 test('phrase IPA and alternate readings preserve word boundaries and punctuation', () => {
   const result = engine.convert('맛있다, 값이!');
-  assert.equal(result.ipa, 'ma dit̚ t͈a, ka bi!');
+  assert.equal(result.ipa, 'ma dit̚ t͈a, kap̚ ɕ͈i!');
   assert.equal(result.variants.length, 1);
-  assert.equal(result.variants[0].ipa, 'ma ɕit̚ t͈a, ka bi!');
+  assert.equal(result.variants[0].ipa, 'ma ɕit̚ t͈a, kap̚ ɕ͈i!');
   assert.ok(!result.variants[0].ipa.includes('\\\\s'));
   assert.deepEqual(result.issues, []);
 });
