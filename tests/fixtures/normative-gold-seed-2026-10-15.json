@@ -2563,6 +2563,60 @@
         }
       ],
       "evidenceExcerpt": "상견례[상견녜]"
+    },
+    {
+      "id": "NIKL-30-HUTIL",
+      "input": "훗일",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "훈닐"
+      ],
+      "expectedProjectIpa": [
+        "huːn nil"
+      ],
+      "ruleIds": [
+        "NIKL-29",
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-commentary-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "NIKL §30 commentary: additional attested ㄴ-insertion example; preserve the long-vowel mark. Project IPA is based on the lexical row; NIKL publishes Hangul pronunciation, not IPA.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "훗일[훈ː닐]"
+    },
+    {
+      "id": "NIKL-30-DWITIL",
+      "input": "뒷일",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "뒨닐"
+      ],
+      "expectedProjectIpa": [
+        "tyːn nil"
+      ],
+      "ruleIds": [
+        "NIKL-29",
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-commentary-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "NIKL §30 commentary: additional attested ㄴ-insertion example; preserve the long-vowel mark. Project IPA is based on the lexical row; NIKL publishes Hangul pronunciation, not IPA.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "뒷일[뒨ː닐]"
     }
   ],
   "validationPolicy": "Statuses distinguish exact official examples, official dictionary entries, and controls derived from a general rule but not explicitly listed. Project IPA remains a project transcription target and is not an official NIKL IPA prescription."
