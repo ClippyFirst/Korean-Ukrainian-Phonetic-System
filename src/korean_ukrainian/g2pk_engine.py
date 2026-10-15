@@ -72,6 +72,45 @@ def pronounce_surface(text: str, *, descriptive: bool = False) -> str:
     return surface
 
 
+def _apply_sourced_surface_overrides(source_text: str, surface: str) -> tuple[str, list[dict[str, str]]]:
+    """Apply exact lexical surface forms only when word alignment is unambiguous."""
+    from .pipeline import LEXICAL_PRONUNCIATIONS
+
+    source_words = re.findall(r"[가-힣]+", source_text)
+    surface_words = re.findall(r"[가-힣]+", surface)
+    if not source_words or len(source_words) != len(surface_words):
+        return surface, []
+
+    replacement_by_index: dict[int, str] = {}
+    traces: list[dict[str, str]] = []
+    for index, (source_word, surface_word) in enumerate(zip(source_words, surface_words)):
+        entry = LEXICAL_PRONUNCIATIONS.get(source_word)
+        expected = entry.get("surface_hangul", "") if entry else ""
+        if not expected or len(expected) != len(surface_word):
+            continue
+        if expected != surface_word:
+            replacement_by_index[index] = expected
+            traces.append({
+                "input": source_word,
+                "before": surface_word,
+                "after": expected,
+                "source": entry.get("source_url", ""),
+                "notes": entry.get("rule_notes", ""),
+            })
+    if not replacement_by_index:
+        return surface, []
+
+    pieces = []
+    word_index = 0
+    for token in _SURFACE_TOKENS.findall(surface):
+        if re.fullmatch(r"[가-힣]+", token):
+            pieces.append(replacement_by_index.get(word_index, token))
+            word_index += 1
+        else:
+            pieces.append(token)
+    return "".join(pieces), traces
+
+
 def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
     """Derive broad surface IPA and apply only exact, source-backed IPA controls."""
     from .pipeline import LEXICAL_PRONUNCIATIONS
@@ -154,7 +193,8 @@ def phoneticize_with_g2pk(text: str, *, descriptive: bool = False,
             "g2pK mode currently supports broad surface IPA only; "
             "phonemic and narrow modes are not inferred from its output."
         )
-    surface = pronounce_surface(text, descriptive=descriptive)
+    raw_surface = pronounce_surface(text, descriptive=descriptive)
+    surface, surface_overrides = _apply_sourced_surface_overrides(text, raw_surface)
     ipa = _surface_ipa(surface, text)
     rules = [{
         "rule_id": "G2PK",
@@ -168,6 +208,17 @@ def phoneticize_with_g2pk(text: str, *, descriptive: bool = False,
             "not claim that g2pK exposes a trace for every applied rule."
         ),
     }]
+    rules.extend({
+        "rule_id": "LEXICON",
+        "name": "sourced-lexical-surface-override",
+        "changed": True,
+        "status": "sourced-lexical-surface-override",
+        "confidence": "high",
+        "source": entry["source"],
+        "license_context": entry["notes"],
+        "before": entry["before"],
+        "after": entry["after"],
+    } for entry in surface_overrides)
     rules.extend({
         "rule_id": "LEXICON",
         "name": "sourced-lexical-ipa-override",
