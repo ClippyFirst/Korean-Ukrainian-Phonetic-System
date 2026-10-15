@@ -192,4 +192,4 @@ This is a source/repository inspection, not a claim that every row in an externa
 
 ### Seed expansion follow-up (2026-10-15)
 
-The shared cross-runtime seed was expanded from 11 to 16 cases. The five new controls are exact examples from NIKL §§17, 18, and 20: 굳이[구지], 국물[궁물], 먹는[멍는], 신라[실라], and 칼날[칼랄]. Each points to the official standard and an exact existing regression-test title. This improves rule-family diversity but does not establish exhaustive coverage of any article; CI is the arbiter for whether the project engines reproduce the declared project IPA and surface forms.
+The shared cross-runtime seed was expanded from 11 to 16 cases. The five new controls are exact examples from NIKL §§17, 18, and 20: 굳이[구지], 국물[궁물], 먹는[멍는], 신라[실라], and 물난리[물랄리]. Each points to the official standard and an exact existing regression-test title. This improves rule-family diversity but does not establish exhaustive coverage of any article; CI is the arbiter for whether the project engines reproduce the declared project IPA and surface forms.
