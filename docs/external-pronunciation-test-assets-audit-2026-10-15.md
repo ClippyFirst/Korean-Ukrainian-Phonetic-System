@@ -170,6 +170,21 @@ These are **candidate cases**, not gold answers until individually sourced.
 | SBV2-KR goldset/code (AGPL-3.0) | Study category design and test strategy | Copy implementation into the project without a license decision |
 | IPA_G2P-Testing datasets | Optional benchmark after audit | Assume “IPA” means a compatible or authoritative IPA convention |
 
+## Implementation follow-up — shared seed and CI (2026-10-15)
+
+The first implementation step has now landed on the working branch:
+
+- `tests/fixtures/normative-gold-seed-2026-10-15.json`: 11 source-linked controls for complex-coda liaison, lexical ㄼ behavior, coda neutralization + nasal assimilation, and fortition.
+- `tests/normative-gold-seed-2026-10-15.test.mjs`: validates required provenance fields, unique IDs, exact regression references, and browser surface/IPA outputs.
+- `tests/test_normative_gold_seed.py`: runs the same fixture through the Python research engine and reconstructs Hangul from the post-rule onset/nucleus/coda fields before comparing the result. This avoids using the original spelling as a false proxy for the phonological surface.
+- README now links the shared fixture and the external-source audit.
+
+The fixture deliberately labels these cases `cross-linked-existing-regression`, not `independently-verified`: the entries are connected to existing source-focused tests, but this small seed is not a claim that all rule subparagraphs have been independently re-audited. The exact test-title references are checked in CI rather than left as unvalidated prose.
+
+**CI result:** the GitHub Actions run for commit `a8fd3874656c82f7b5c145e038924525a7eb876f` completed successfully. Both **Browser regression tests and build** and **Python regression and data integrity** passed. Run: <https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38749729171>.
+
+This is a validated first cross-runtime gate, not proof of complete linguistic correctness. The next pass should promote cases to `independently-verified` only after a row-by-row check against the official rule text or an official dictionary/Q&A entry, and should add explicit negative controls for every productive rule family.
+
 ## Audit limitations
 
 This is a source/repository inspection, not a claim that every row in an external test suite has been validated. The files and READMEs listed above were inspected on 2026-10-15. The next quality step is a row-by-row source audit and the addition of independently validated fixtures—not bulk importing third-party outputs.
