@@ -41,3 +41,13 @@ test('§12 + §17 keeps the documented ㄷ+ㅎ+ㅣ chain distinct from bare ㄷ+
   const bare = genericEngine.convert('갇이');
   assert.ok(bare.trace.some((item) => item.rules.includes('palatalization-requires-lexical-morphology')));
 });
+
+test('§17 and §18 compose for the official 팥입니다[파침니다] control without a lexical bypass', () => {
+  const result = genericEngine.convert('팥입니다');
+  assert.equal(result.surfaceHangul, '파침니다');
+  assert.ok(result.trace.some((item) => item.rules.includes('palatalization')),
+    'the sourced formal-morpheme license must activate §17');
+  assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')),
+    'ㅂ before ㄴ must be nasalized after palatalization');
+  assert.deepEqual(result.issues, []);
+});
