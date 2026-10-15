@@ -32,7 +32,33 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         if(lexicon.has(part)){
           const entry=lexicon.get(part);
           if(entry.target_status==='surface-only'){
-            return convertText(part,map,lexicon,true,options);
+            // Run the general rules for traceability, then attach the exact
+            // source-backed surface/IPA facts without relabelling the trace as
+            // a lexical override. This preserves long vowels and official
+            // complex-coda surfaces while keeping rule evidence visible.
+            const result=convertText(part,map,lexicon,true,options);
+            const sourceIpa=(entry.ipa_syllables||'').split('|');
+            const sourceSurface=entry.surface_hangul||'';
+            if(/^[가-힣]+$/u.test(part)&&sourceSurface&&[...sourceSurface].length===[...part].length){
+              result.surfaceHangul=sourceSurface===part?'':sourceSurface;
+            }
+            if(/^[가-힣]+$/u.test(part)&&sourceIpa.length===[...part].length&&sourceIpa.every(Boolean)){
+              const mapped=ipaSyllablesToUkrainian(sourceIpa);
+              if(!mapped.unknown){
+                result.ipa=sourceIpa.join(' ');
+                result.ukrainian=mapped.syllables.join('');
+                let index=0;
+                for(const item of result.trace||[]){
+                  if(item.status==='literal')continue;
+                  if(index<sourceIpa.length)item.ipa=sourceIpa[index++];
+                }
+              }else{
+                result.issues=[...(result.issues||[]),part+': sourced lexical IPA contains an unmapped segment "'+mapped.unknown+'".'];
+                result.status='unresolved';
+                result.trace=[...(result.trace||[]),{source:part,status:'unresolved',rules:['ipa-to-ukrainian-unmapped-segment'],output:'',ipa:sourceIpa.join(' ')}];
+              }
+            }
+            return result;
           }
           return lexicalResult(part,entry);
         }
@@ -44,7 +70,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         source:text,
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
         ukrainian:results.map(r=>r.ukrainian).join(''),
-        ipa:results.map(r=>r.ipa).filter(Boolean).join(' ').replace(/\s+/gu,' '),
+        ipa:results.map(r=>r.ipa).join('').replace(/\s+/gu,' '),
         analysis:results.map(r=>r.analysis).filter(Boolean).join(' · '),
         variants:results.flatMap(r=>r.variants||[]),
         trace:results.flatMap(r=>r.trace||[]),
