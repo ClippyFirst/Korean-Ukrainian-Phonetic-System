@@ -8,6 +8,9 @@ import {
 import { ipaSyllableToUkrainian } from './engine_ipa.js';
 
 export function applyPhraseBoundaryAssimilation(results,parts,map){
+  // NIKL §18 depends on connected-phrase pronunciation, not whitespace itself.
+  // The browser uses whitespace as a deterministic proxy and blocks punctuation;
+  // this is an implementation heuristic, not a prosodic analysis.
   const addRule=(trace,rule)=>{
     if(trace)trace.rules=[...new Set([...(trace.rules||[]),rule])];
   };
