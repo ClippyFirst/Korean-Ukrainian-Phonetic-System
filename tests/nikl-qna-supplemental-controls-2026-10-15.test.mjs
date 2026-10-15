@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createEngine } from '../src/app/engine.js';
 
 const manifest = JSON.parse(readFileSync(new URL('./fixtures/nikl-qna-supplemental-controls-2026-10-15.json', import.meta.url), 'utf8'));
 const sources = readFileSync(new URL('../data/korean/sources.csv', import.meta.url), 'utf8').trim().split(/\r?\n/u);
@@ -40,15 +41,13 @@ test('supplemental source controls remain explicit about the two principal §29 
   assert.match(cases.get('QNA-333041-PAUSE').note, /pause|prosodic/i);
 });
 
-import { createEngine } from '../src/app/engine.js';
-
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
 
 test('direct word-level NIKL Q&A controls match the declared Korean surface form', () => {
   const wordCases = manifest.cases.filter((item) =>
-    item.expectedSurfaceForms.length > 0 && !/\\s/u.test(item.input));
+    item.expectedSurfaceForms.length > 0 && !/\s/u.test(item.input));
   assert.ok(wordCases.length >= 20, 'word-level direct controls must remain broad');
   for (const item of wordCases) {
     const result = engine.convert(item.input);
