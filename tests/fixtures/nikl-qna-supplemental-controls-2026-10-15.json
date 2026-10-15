@@ -122,7 +122,7 @@
       "id": "QNA-319681-KKEUTNAN-IL",
       "input": "끝난 일",
       "expectedSurfaceForms": [
-        "끈난 닐"
+        "끈난닐"
       ],
       "ruleIds": [
         "NIKL-29"
@@ -136,7 +136,7 @@
       "id": "QNA-319681-ANEUN-IL",
       "input": "않은 일",
       "expectedSurfaceForms": [
-        "아는 닐"
+        "아는닐"
       ],
       "ruleIds": [
         "NIKL-29"
@@ -150,7 +150,7 @@
       "id": "QNA-333295-HAL-IL",
       "input": "할 일",
       "expectedSurfaceForms": [
-        "할 릴"
+        "할릴"
       ],
       "ruleIds": [
         "NIKL-20",
