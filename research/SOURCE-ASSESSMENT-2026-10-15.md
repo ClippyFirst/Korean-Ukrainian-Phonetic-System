@@ -279,6 +279,19 @@ Sources have different jobs. Official Korean norms define the normative surface-
 
 **Decision:** keep for system-level comparison only.
 
+### 5.10 lang-uk/ipa-uk — C / Ukrainian phonemization comparator
+**URL:** https://github.com/lang-uk/ipa-uk  
+**Role:** open-source Python package for converting Ukrainian text into IPA, described by its README as an implementation of the Ukrainian Wiktionary phonemization module.
+
+**Use**
+- A secondary check for how Ukrainian written candidates are phonemized, especially when evaluating whether a proposed Ukrainian spelling produces an unintended sequence.
+- Generate consistency tests for the target layer's Ukrainian outputs, where the tool's scope and conventions match.
+- Help expose target candidates that are orthographically valid but phonetically misleading.
+
+**Limitations:** this tool maps Ukrainian orthography to IPA, not Korean IPA to practical Ukrainian transcription. It is a small independent implementation and must not be treated as the official Ukrainian pronunciation authority or as a target-mapping oracle.
+
+**Decision:** add as a low-cost comparative QA tool, after checking its license, version, and behavior. Use it only to flag candidates for review; do not automatically rewrite project output.
+
 ## 6. Official Korean romanization — C / contrastive baseline, not target authority
 **URL:** https://www.korean.go.kr/front_eng/roman/roman_01.do  
 **Role:** official Korean-to-Latin romanization based on standard pronunciation.
@@ -373,16 +386,3 @@ This appendix ensures that the existing source ledgers are assessed individually
 
 The separate file SOURCE-DISCOVERY-QUEUE.csv contains the current candidates for Korean dictionaries/APIs, three G2P implementations, corpus indexes, AI-Hub, the phonetic literature, UPI, and official romanization. It records priority, expected value, access/license risk, provisional decision, and the next concrete action. Candidate status means “needs review”, not “approved for copying or production use”.
 
-
-### 5.10 lang-uk/ipa-uk — C / Ukrainian phonemization comparator
-**URL:** https://github.com/lang-uk/ipa-uk  
-**Role:** open-source Python package for converting Ukrainian text into IPA, described by its README as an implementation of the Ukrainian Wiktionary phonemization module.
-
-**Use**
-- A secondary check for how Ukrainian written candidates are phonemized, especially when evaluating whether a proposed Ukrainian spelling produces an unintended sequence.
-- Generate consistency tests for the target layer's Ukrainian outputs, where the tool's scope and conventions match.
-- Help expose target candidates that are orthographically valid but phonetically misleading.
-
-**Limitations:** this tool maps Ukrainian orthography to IPA, not Korean IPA to practical Ukrainian transcription. It is a small independent implementation and must not be treated as the official Ukrainian pronunciation authority or as a target-mapping oracle.
-
-**Decision:** add as a low-cost comparative QA tool, after checking its license, version, and behavior. Use it only to flag candidates for review; do not automatically rewrite project output.
