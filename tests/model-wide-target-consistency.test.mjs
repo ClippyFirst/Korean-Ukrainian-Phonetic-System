@@ -295,7 +295,7 @@ function oracleIpaSyllableToUkrainian(ipa) {
 }
 
 test('all lexical Ukrainian targets are mechanically reproducible from their IPA, including variants', () => {
-  assert.equal(rows.length, 651, 'update the reviewed corpus snapshot deliberately when lexical rows change');
+  assert.equal(rows.length, 653, 'update the reviewed corpus snapshot deliberately when lexical rows change');
   for (const row of rows) {
     const ipa = row.ipa_syllables.split('|');
     const target = row.target_syllables.split('|');
