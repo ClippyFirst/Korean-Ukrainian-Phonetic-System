@@ -122,10 +122,16 @@ test('diagnostic: summarize whole-file contextual conversion across all 225 corp
   }));
 });
 
-test('whole-corpus unresolved output is limited to the explicitly invalid spacing control', () => {
+test('the original 165-corpus baseline keeps unresolved output limited to the known spacing control', () => {
+  // The 60 newly added rule-family stress corpora deliberately contain
+  // morphology-sensitive and context-only probes. Those are triage inputs,
+  // not gold outputs; preserve the old regression baseline independently.
+  const baselineFiles = files.filter((name) =>
+    /^(?:0[1-9]|1[0-5])-/.test(name) || /^rule-\\d{2}-0[1-5]-/.test(name));
+  assert.equal(baselineFiles.length, 165, 'the legacy baseline remains reproducible');
   const intentional = '12-minimal-contrasts-and-negative-controls.txt';
   const affected = [];
-  for (const file of files) {
+  for (const file of baselineFiles) {
     const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
     const result = engine.convert(source);
     const placeholders = [...result.ukrainian.matchAll(/⟦([^⟦⟧]+)⟧/gu)].map(match => match[1]);
