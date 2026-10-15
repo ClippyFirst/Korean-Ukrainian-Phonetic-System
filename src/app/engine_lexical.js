@@ -71,7 +71,11 @@ export function lexicalResult(text,entry){
     trace:syllables.map((ch,i)=>({
       source:ch,
       status:mappedTargets[i]?.unknown?'unresolved':targetReview?'lexical-review':'lexical',
-      rules:['lexical-pronunciation'],
+      rules:mappedTargets[i]?.unknown
+        ?['lexical-pronunciation','ipa-to-ukrainian-unmapped-segment']
+        :targetReview
+          ?['lexical-pronunciation','ukrainian-target-provisional']
+          :['lexical-pronunciation'],
       output:targets[i],
       ipa:ipas[i]
     })),
