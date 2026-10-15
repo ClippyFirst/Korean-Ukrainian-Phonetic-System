@@ -13,8 +13,9 @@ This directory is the durable source of truth for research planning, evidence tr
 5. [Source-by-source assessment](SOURCE-ASSESSMENT-2026-10-15.md) — utility, limits, and integration decisions for current and candidate sources.
 6. [Source discovery queue](SOURCE-DISCOVERY-QUEUE.csv) — prioritized research backlog with risks and next actions.
 7. [Literature and methods review](LITERATURE-AND-METHODS-REVIEW-2026-10-15.md) — Korean G2P research, formal rule models, neural/hybrid alternatives, Ukrainian receiving-language studies, and the required comparison protocol.
-8. [Decision log](DECISION-LOG.md) — durable record of consequential decisions.
-9. [Release acceptance gates](ACCEPTANCE-GATES.md) — evidence required before a release is accepted.
+8. [Critical literature review 01](CRITICAL-LITERATURE-REVIEW-01-2026-10-16.md) — evidence memo distinguishing accessible full-text findings from abstract-only evidence, with implementation implications and remaining review tasks.
+9. [Decision log](DECISION-LOG.md) — durable record of consequential decisions.
+10. [Release acceptance gates](ACCEPTANCE-GATES.md) — evidence required before a release is accepted.
 
 ## Current state
 The programme has been defined, but the existence of these documents does not mean the repository, all branches, external sources, runtime parity, or public deployment have been fully audited. Those are Phase 0 tasks.
