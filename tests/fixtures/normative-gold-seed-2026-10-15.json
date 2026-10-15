@@ -2918,17 +2918,18 @@
       "ruleIds": [
         "NIKL-29"
       ],
-      "evidenceType": "official-standard-commentary-example",
+      "evidenceType": "rule-derived-control",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "Mass source pass (2026-10-15): NIKL §29 gives 삯일 [상닐] through ㄴ insertion and nasal assimilation; exact inflected form adds liaison of final ㄹ before 을, surface [상니를]. Ukrainian target provisional. Korean IPA is the project's declared broad-IPA rendering, not an IPA label published by NIKL.",
-      "validationStatus": "official-standard-example-checked",
+      "evidenceNote": "Derived negative/interaction control from the official §29 삯일[상닐] example: inflection with 을 is not itself an enumerated official example. It checks that the known compound reading and regular liaison compose correctly without changing the licensed ㄴ-insertion analysis.",
+      "validationStatus": "rule-derived-control-not-explicitly-listed",
       "regressionRefs": [
         {
           "path": "tests/normative-gold-seed-2026-10-15.test.mjs",
           "testName": "source-linked seed cases match the declared Korean surface forms and project IPA"
         }
       ],
-      "evidenceExcerpt": "삯일을[상니를]"
+      "evidenceExcerpt": null,
+      "secondaryEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
     },
     {
       "id": "NIKL-29-MASS-색연필",
