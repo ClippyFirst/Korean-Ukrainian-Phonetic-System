@@ -25,7 +25,7 @@ test('Latin residue attached to Hangul is withheld from IPA and reported', () =>
   assert.doesNotMatch(result.ipa, /nin/u);
   assert.doesNotMatch(result.analysis, /nin/u);
   assert.match(result.ukrainian, /nin/u);
-  assert.ok(result.issues.some(issue => /mixed Hangul and Latin/u.test(issue)));
+  assert.ok(result.issues.some(issue => /mixed Hangul and Latin/iu.test(issue)));
   assert.equal(result.status, 'unresolved');
 });
 
