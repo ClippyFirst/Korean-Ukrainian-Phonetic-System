@@ -407,22 +407,22 @@
       "evidenceExcerpt": "신라[실라]"
     },
     {
-      "id": "NIKL-20-MULNANRI",
-      "input": "물난리",
+      "id": "NIKL-20-GWANGHANRU",
+      "input": "광한루",
       "context": null,
       "phraseMode": "word",
       "expectedSurfaceForms": [
-        "물랄리"
+        "광할루"
       ],
       "expectedProjectIpa": [
-        "mul lal li"
+        "kwaŋ hal lu"
       ],
       "ruleIds": [
         "NIKL-20"
       ],
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "Explicit liquid-assimilation example whose declared project IPA is stable across both current runtimes; regression excludes lexical override for the general rule family.",
+      "evidenceNote": "Explicit liquid-assimilation example with a non-aspirated onset, cross-checked by the shared browser/Python seed gate.",
       "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
@@ -430,7 +430,7 @@
           "testName": "§20 every listed general liquid-assimilation example is computed algorithmically"
         }
       ],
-      "evidenceExcerpt": "물난리[물랄리]"
+      "evidenceExcerpt": "광한루[광할루]"
     }
   ],
   "validationPolicy": "Statuses distinguish exact official examples, official dictionary entries, and controls derived from a general rule but not explicitly listed. Project IPA remains a project transcription target and is not an official NIKL IPA prescription."
