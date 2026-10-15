@@ -21,8 +21,8 @@ def test_g2pk_adapter_derives_ipa_from_surface_hangul(monkeypatch):
 
     assert result["pronunciation_engine"] == "g2pK"
     assert result["surface_hangul"] == "넉씨, 구지!"
-    assert result["ipa"]["ipa"] == "nʌk̚.s͈i ku.dʑi"
-    assert result["ipa"]["rendered_text"] == "nʌk̚.s͈i, ku.dʑi!"
+    assert result["ipa"]["ipa"] == "nʌk̚.ɕ͈i ku.dʑi"
+    assert result["ipa"]["rendered_text"] == "nʌk̚.ɕ͈i, ku.dʑi!"
     assert result["rules"][0]["status"] == "external-engine-output"
     assert "NIKL" not in result["rules"][0]["source"]
 
@@ -62,7 +62,20 @@ def test_g2pk_surface_keeps_latin_digits_and_compatibility_jamo_out_of_engine(mo
 
 def test_g2pk_live_engine_smoke_and_normative_controls():
     pytest.importorskip("g2pk")
-    result = g2pk_engine.phoneticize_with_g2pk("넋이, 굳이, 신라")
-    assert result["surface_hangul"]
-    assert result["ipa"]["ipa"]
-    assert result["pronunciation_engine"] == "g2pK"
+    expected = {
+        "넋이": "넉씨",
+        "값어치": "가버치",
+        "밟고": "밥꼬",
+        "밟는": "밤는",
+        "읽습니다": "익씀니다",
+        "굳이": "구지",
+        "신라": "실라",
+        "칼날": "칼랄",
+        "꽃잎": "꼰닙",
+        "서울역": "서울력",
+    }
+    for word, surface in expected.items():
+        result = g2pk_engine.phoneticize_with_g2pk(word)
+        assert result["surface_hangul"] == surface, word
+        assert result["ipa"]["ipa"], word
+        assert result["pronunciation_engine"] == "g2pK"
