@@ -53,13 +53,23 @@ Added eight official examples from the attached note to Rule 29, including `들�
 - [Audit report](docs/rule29-liquid-assimilation-audit-2026-10-10.md)
 - [Regression test](tests/adversarial-rule29-liquid-assimilation-2026-10-10.test.mjs)
 
-## Optional g2pK pronunciation backend
+## Pronunciation engines: browser and Python
 
-The Python package, CLI, and optional FastAPI backend can use the pinned, prescriptive g2pK engine for context-sensitive Korean surface pronunciation. Its MeCab binding is tested on Python 3.11/3.12; on Python 3.13/3.14, use the native engine or a separate 3.11/3.12 environment. Install with `python -m pip install -e ".[g2pk]"`, then run `korean-ua analyze "넋이 굳이" --pronunciation-engine g2pk`. The native engine remains the default unless g2pK is explicitly selected; missing dependencies never trigger a silent fallback.
+### Browser service — JavaScript G2P (default practical mode)
 
-g2pK returns pronunciation-spelling in Hangul rather than IPA. The adapter derives IPA from that surface form and applies NIKL-sourced surface/IPA controls only to exact, unambiguously aligned lexical entries. The Ukrainian target stage still consumes IPA only. See [the integration and validation boundary](docs/G2PK-INTEGRATION-2026-10-15.md).
+The public GitHub Pages service now uses the pinned, pure-JavaScript `korean-pronunciation@1.0.1`, a JavaScript port of g2pK. It runs entirely in the browser without a server, Python, MeCab, network calls, or native binaries. The path is:
 
-The GitHub Pages app is static JavaScript and cannot import Python/MeCab. This integration does not claim that the browser engine has been replaced; browser/API parity requires a deployed API or an independently tested JavaScript implementation.
+`Hangul input → JS G2P surface spelling → project IPA conversion → IPA-to-Ukrainian mapping`.
+
+The browser preserves Latin text, digits, punctuation, and whitespace, and applies exact project lexical surface/IPA controls after the generic G2P stage. The separate **Research mode** continues to use the project's native evidence-gated engine so users can compare its stricter, unresolved-when-uncertain behavior with the broader practical G2P output.
+
+**Important limitation:** the JavaScript port implements rule-based G2P and idiom handling, but does not reproduce the original Python g2pK's MeCab-based morphological analysis. It is therefore a browser-compatible reference engine, not a claim of exact parity with Python g2pK on morphology-dependent homographs. Those cases must be covered by source-backed lexical controls and adversarial regression tests.
+
+### Python / CLI / API
+
+The Python package, CLI, and optional FastAPI backend can still use the original pinned g2pK engine. Its MeCab binding is tested on Python 3.11/3.12; on Python 3.13/3.14, use the native engine or a separate 3.11/3.12 environment. Install with `python -m pip install -e ".[g2pk]"`, then run `korean-ua analyze "넋이 굳이" --pronunciation-engine g2pk`. The native Python engine remains the default unless g2pK is explicitly selected; missing dependencies never trigger a silent fallback.
+
+Both runtimes preserve the same methodological boundary: the Ukrainian target is generated from IPA, never by a parallel Hangul-to-Ukrainian substitution. See [the Python integration and validation boundary](docs/G2PK-INTEGRATION-2026-10-15.md).
 
 ## Scientific pipeline
 
