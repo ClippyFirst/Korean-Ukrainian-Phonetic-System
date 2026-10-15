@@ -279,3 +279,14 @@ Fixed on this branch:
 
 This is an example of why the audit cannot stop at “all 30 articles are listed in a coverage ledger”: the same normative rule must be checked in every runtime implementation, including intermediate rule ordering and retained consonants.
 
+
+### Bibliographic and canonical-link correction pass
+
+The source-register audit also found metadata defects unrelated to the phonology rules themselves:
+
+- S001 previously linked to a general NIKL page and described “Chapters 1–7,” which did not identify the actual pronunciation standard. It now links directly to the canonical NIKL Standard Pronunciation Rules page and explicitly covers Articles 1–30 plus commentary.
+- S003–S005 author fields were normalized to identifiable author names and the article titles/volume/page metadata were corrected against the DOI-linked records.
+- S006 previously used a generic NIKL download endpoint and a page range that was not well-supported. It now points to the exact 2014 Standard Korean Grammar Development PDF and identifies the vowel-system section; its PDF page numbering is explicitly marked for final manual verification rather than being asserted as certain.
+
+These changes make the source ledger auditable: an entry should point to the actual standard/article/document, distinguish normative evidence from acoustic or model-comparison evidence, and avoid presenting uncertain bibliographic details as settled facts.
+
