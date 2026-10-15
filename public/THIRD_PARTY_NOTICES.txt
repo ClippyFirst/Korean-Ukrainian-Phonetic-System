@@ -1,0 +1,10 @@
+Third-party software notices
+
+Browser Korean G2P core
+- Adapted from ntdgo/korean-pronunciation 1.0.1, a JavaScript port of g2pK by Kyubyong Park.
+- Upstream: https://github.com/ntdgo/korean-pronunciation
+- License: Apache License 2.0; full text is available in LICENSES/Apache-2.0.txt and at https://www.apache.org/licenses/LICENSE-2.0.
+- Local changes: TypeScript module paths adapted for the project; browser-only path excludes CMU English pronunciation data, English transliteration, and numeral conversion because the surrounding adapter preserves those input fragments literally.
+- The original package's heuristic POS annotation is retained; it is not equivalent to the MeCab morphological analyzer used by the Python g2pK implementation.
+
+The project-specific IPA conversion, lexical controls, and Ukrainian mapping are maintained separately in this repository.

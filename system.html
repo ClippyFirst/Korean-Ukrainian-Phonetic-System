@@ -62,7 +62,7 @@
   </section>
 
   <section class="doc-section">
-    <div class="doc-label">02A</div><div class="doc-content"><p class="section-kicker">Вебрушій · JavaScript</p><h2>Практичний режим використовує G2P до етапу IPA</h2><p>Браузерний сервіс підключає <a href="https://github.com/ntdgo/korean-pronunciation" rel="noreferrer">korean-pronunciation 1.0.1</a> — чистий JavaScript-порт g2pK під ліцензією Apache-2.0. Він працює локально в браузері й не потребує Python, MeCab, API-сервера чи мережевого запиту.</p><div class="layers">
+    <div class="doc-label">02A</div><div class="doc-content"><p class="section-kicker">Вебрушій · JavaScript</p><h2>Практичний режим використовує G2P до етапу IPA</h2><p>Браузерний сервіс використовує локально адаптоване ядро з <a href="https://github.com/ntdgo/korean-pronunciation" rel="noreferrer">korean-pronunciation 1.0.1</a> — JavaScript-порту g2pK під Apache-2.0. З ядра вилучено невикористаний CMU-словник англійської вимови, англійську транслітерацію та перетворення чисел: сервіс зберігає ці фрагменти буквально. Це суттєво зменшує завантаження. Код працює локально в браузері без Python, MeCab, API-сервера чи мережевого запиту; повідомлення про авторство та повний текст ліцензії копіюються до збірки.</p><div class="layers">
       <article><b>01</b><strong>Hangul</strong><span>вхідний текст із захистом пунктуації та іншописемних фрагментів</span></article>
       <article><b>02</b><strong>JS G2P</strong><span>правила стандартної вимови та словникові винятки → поверхнева форма Hangul</span></article>
       <article><b>03</b><strong>IPA</strong><span>поверхнева форма конвертується у фонетичні сегменти; правила вимови вдруге не застосовуються</span></article>

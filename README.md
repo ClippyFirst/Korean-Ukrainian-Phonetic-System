@@ -57,7 +57,7 @@ Added eight official examples from the attached note to Rule 29, including `들�
 
 ### Browser service — JavaScript G2P (default practical mode)
 
-The public GitHub Pages service now uses the pinned, pure-JavaScript `korean-pronunciation@1.0.1`, a JavaScript port of g2pK. It runs entirely in the browser without a server, Python, MeCab, network calls, or native binaries. The path is:
+The public GitHub Pages service now uses a browser-only, vendored subset adapted from `ntdgo/korean-pronunciation` 1.0.1, a JavaScript port of g2pK. It retains Korean rule tables and heuristic annotation while excluding the unused CMU English pronunciation dictionary, English transliteration, and numeral conversion. This avoids shipping a multi-megabyte dictionary to the browser. It runs locally without a server, Python, MeCab, network calls, or native binaries. Attribution and the Apache 2.0 license are bundled in `public/THIRD_PARTY_NOTICES.txt` and `public/LICENSES/Apache-2.0.txt`. The path is:
 
 `Hangul input → JS G2P surface spelling → project IPA conversion → IPA-to-Ukrainian mapping`.
 
@@ -92,7 +92,7 @@ The web service is a practical runtime projection of this research model. It is 
 
 ## Web runtime boundary
 
-The browser adapter implements:
+The browser practical adapter uses the reduced browser-only G2P core; the native research adapter implements:
 
 - Unicode-safe Hangul decomposition;
 - canonical onset/vowel/coda mappings from data/korean/canonical_correspondence.csv, including the explicitly model-selected onset target ㅎ [h] → Ukrainian г [ɦ] (glottal place retained, voicelessness not retained);
