@@ -791,10 +791,21 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
       };
     }
   }
-  const units=[...text].map(ch=>{
+  const characters=[...text];
+  const units=characters.map((ch,index)=>{
     const d=decompose(ch);
     if(d)return {type:'hangul',...d};
-    if(isJamoChar(ch))return {type:'jamo',char:ch};
+    if(isJamoChar(ch)){
+      const previous=characters[index-1]||'';
+      const next=characters[index+1]||'';
+      const adjacentHangul=[previous,next].some(value=>Boolean(decompose(value)));
+      const adjacentLatinOrDigit=[previous,next].some(value=>/[A-Za-z0-9]/u.test(value));
+      // A jamo immediately attached to Hangul can be metalinguistic prose
+      // (e.g. "ㅎ과 뒤따르는 자음"). Do not phonologize it, but do not treat
+      // that explanatory notation as malformed mixed-script residue.
+      if(adjacentHangul&&!adjacentLatinOrDigit)return {type:'literal',char:ch};
+      return {type:'jamo',char:ch};
+    }
     return {type:'literal',char:ch};
   });
   // Keep orthographic decomposition immutable: contextual rules mutate the
