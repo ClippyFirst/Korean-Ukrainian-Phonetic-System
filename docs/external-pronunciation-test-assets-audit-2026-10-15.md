@@ -253,3 +253,16 @@ Official rule text and commentary: <https://www.korean.go.kr/kornorms/regltn/reg
 4. §28 fortition and §29 ㄴ insertion are lexically/morphologically conditioned. The browser engine must keep fail-closed behavior for unknown compounds and phrase boundaries instead of inferring a license from spelling adjacency.
 5. External G2P agreement is a disagreement detector only. KoG2P, g2pK/g2pk2, and SBV2-KR do not replace NIKL/dictionary evidence; benchmark licenses and target conventions must be checked independently.
 6. A full final audit still needs a live test run after this fixture expansion, followed by a rule-by-rule failure review. Passing CI means the declared tests pass, not that every Korean word is resolved.
+
+
+### Additional external-source pass
+
+The external inventory was extended beyond the first four comparators:
+
+- **KoG2Padvanced** (<https://github.com/seongmin-mun/KoG2Padvanced>): inspected its README, rulebook/test-set inventory, and linked 2022 peer-reviewed comparison paper. It documents useful edge cases for ㅎ deletion, ㅢ/ㅖ variation, and non-standard place assimilation. The inspected repository tree has no `LICENSE` file; treat it as **reference-only** and do not copy its implementation or test set. Some described place-assimilation outputs are descriptive/colloquial rather than normative; they must not be added as standard pronunciation rules without an NIKL/dictionary basis.
+- **g2pk3** (<https://github.com/kdrkdrkdr/g2pk3>): README identifies a §20 fix and Japanese transcription; its repository has an MIT license. It remains a differential comparator, not a gold source. Validate the exact revision, runtime dependencies, and test-data provenance before using its outputs.
+- **Korean reading assessment** (<https://github.com/sungjin-ahn-dev/korean-reading-assessment>): inspected the README and test inventory. Its goal is reading assessment/alignment rather than open-ended normative G2P. No repository license file was found in the inspected tree, so it is reference-only; do not copy code, task data, audio, or model artifacts.
+- **Peer-reviewed comparison:** Mun, Kim & Ko (2022), “A proposal to improve on existing Grapheme-to-Phoneme conversion models informed by linguistics,” *Language and Information* 26(2), 27–46. This provides research context for rule additions and comparative testing, but the official NIKL standard and dictionary evidence still decide normative labels.
+
+These entries are registered as S020–S023 in `data/korean/sources.csv`. Together with S012–S019, the source register now distinguishes normative sources, supplementary official Q&A, peer-reviewed research, reference engines, benchmark projects, and dictionary mirrors. A repository being public or a package being MIT/Apache licensed does not automatically make its data, examples, models, or dependencies reusable.
+
