@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "description": "Korean to Ukrainian practical transcription service built on the research model.",
   "type": "module",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "vite",
     "test": "node --test tests/*.test.mjs",
@@ -13,5 +15,8 @@
   },
   "devDependencies": {
     "vite": "8.3.1"
+  },
+  "dependencies": {
+    "korean-pronunciation": "1.0.1"
   }
 }
