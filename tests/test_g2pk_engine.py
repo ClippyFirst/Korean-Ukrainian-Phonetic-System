@@ -90,7 +90,7 @@ def test_g2pk_handles_adversarial_sentence_with_punctuation_and_protected_materi
     assert result["ipa"]["ipa"]
     assert "API 3.1" in result["surface_hangul"]
     assert "ㄴ 첨가" in result["surface_hangul"]
-    for expected_surface in ("넉씨", "가버치", "구지", "실라", "칼랄", "꼰닙", "서울력"):
+    for expected_surface in ("넉씨", "가버치가", "구지", "실라", "칼랄", "꼰닙", "서울력"):
         assert expected_surface in result["surface_hangul"]
 
 
