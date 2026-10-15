@@ -795,7 +795,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
   // working surface representation, not the source Hangul structure.
   const originalUnits=units.map(u=>({...u}));
   const rules=applyContextualRules(units,text,{morphologyMode});
-  const output=units.map(u=>u.char??'');
+  const output=units.map(u=>u.type==='jamo'?'':(u.char??''));
   const ipa=units.map(u=>u.type==='literal'&&isPreservableIpaLiteral(u.char)?u.char:'');
   const analysis=units.map(u=>u.type==='literal'?u.char:'');
   const trace=units.map(u=>u.type==='literal'?{source:u.char,status:'literal',rules:[],output:u.char,ipa:isPreservableIpaLiteral(u.char)?u.char:''}:u.type==='jamo'?{source:u.char,status:'unsupported-jamo',rules:['unsupported-standalone-jamo'],output:u.char,ipa:''}:null);
