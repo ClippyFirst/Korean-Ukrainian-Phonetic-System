@@ -290,3 +290,14 @@ The source-register audit also found metadata defects unrelated to the phonology
 
 These changes make the source ledger auditable: an entry should point to the actual standard/article/document, distinguish normative evidence from acoustic or model-comparison evidence, and avoid presenting uncertain bibliographic details as settled facts.
 
+
+### Official Q&A pass: positive and negative §29 controls
+
+A further pass through the official NIKL Q&A records added seven exact Q&A-backed controls to the normative seed plus two clearly labelled derived inflection controls. This extends the fixture to **160 cases**. The additions include:
+
+- Positive insertion/assimilation chains: 꽃잎[꼰닙], 밭이랑[반니랑], 집안일[지반닐], 공업용[공엄뇽].
+- Negative controls against automatic insertion: 값있다[가빋따], 곧이어[고디어], 음용[으묭].
+- Derived controls: 홑이불을, composed from the officially listed base form 홑이불[혼니불], and 삯일과, composed from the official 삯일[상닐] example. Neither inflected form is mislabelled as an explicitly enumerated standard example.
+
+The relevant Q&A records are now registered as S024–S028 in the source ledger. The distinction between **source-confirmed surface form** and **our derived IPA / Ukrainian rendering** remains explicit. In particular, the Q&A about 밭이랑 confirms the standard surface [반니랑] but notes that scholars differ on the exact ordering analysis; the engine must test the final form without asserting an unsettled derivational ordering as normative fact.
+
