@@ -16,7 +16,8 @@ The dependency is optional and pinned. A missing or uninitializable backend prod
     Korean text
       → g2pK prescriptive surface spelling in Hangul
       → this project's IPA renderer
-      → sourced lexical IPA override only when the original word's NIKL-backed surface form exactly matches g2pK
+      → exact NIKL-backed surface-form correction for an exact input-word entry
+      → sourced lexical IPA override only when the final surface form matches that entry
       → this project's Ukrainian target inventory
 
 The Ukrainian layer is still the project's own model. It receives IPA, never Hangul directly. g2pK does not emit IPA or a rule-by-rule audit trace. Therefore the result labels its trace as external-engine output rather than fabricating individual NIKL rule applications.
