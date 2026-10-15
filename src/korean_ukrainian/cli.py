@@ -26,7 +26,7 @@ def _result(text: str, mode: str, pronunciation_engine: str = "native",
 
 def _read_rows(path: Path, input_format: str, column: str, sheet: str | None) -> tuple[list[dict[str, Any]], list[str]]:
     if input_format == "txt":
-        return [{"text": line.rstrip("\\r\\n")} for line in path.read_text(encoding="utf-8").splitlines() if line.strip()], ["text"]
+        return [{"text": line.rstrip("\r\n")} for line in path.read_text(encoding="utf-8").splitlines() if line.strip()], ["text"]
     if input_format == "csv":
         import csv
         with path.open("r", encoding="utf-8-sig", newline="") as fh:
@@ -52,7 +52,7 @@ def _read_rows(path: Path, input_format: str, column: str, sheet: str | None) ->
 
 def _write_rows(path: Path, output_format: str, rows: list[dict[str, Any]], headers: list[str]) -> None:
     if output_format == "jsonl":
-        path.write_text("\\n".join(json.dumps(r, ensure_ascii=False) for r in rows) + ("\\n" if rows else ""), encoding="utf-8")
+        path.write_text("\n".join(json.dumps(r, ensure_ascii=False) for r in rows) + ("\n" if rows else ""), encoding="utf-8")
         return
     if output_format == "json":
         path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -75,7 +75,7 @@ def _write_rows(path: Path, output_format: str, rows: list[dict[str, Any]], head
         wb.save(path)
         return
     if output_format == "txt":
-        path.write_text("\\n".join(str(r.get("ukrainian_orthography", "")) for r in rows) + ("\\n" if rows else ""), encoding="utf-8")
+        path.write_text("\n".join(str(r.get("ukrainian_orthography", "")) for r in rows) + ("\n" if rows else ""), encoding="utf-8")
         return
     raise ValueError(f"unsupported output format: {output_format}")
 
