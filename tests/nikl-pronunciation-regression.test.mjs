@@ -842,6 +842,11 @@ test('surface-only lexicon records do not bypass the general rule engine', () =>
     assert.ok(result.trace.some(item => item.rules.includes(rule)), word);
     assert.ok(result.trace.every(item => !item.rules.includes('lexical-pronunciation')), word);
   }
+  const patImnida = engine.convert('팥입니다');
+  assert.equal(patImnida.surfaceHangul, '파침니다');
+  assert.ok(patImnida.trace.some(item => item.rules.includes('palatalization')));
+  assert.ok(patImnida.trace.some(item => item.rules.includes('nasal-assimilation')));
+  assert.ok(patImnida.trace.every(item => !item.rules.includes('lexical-pronunciation')));
 });
 
 test('surface pronunciation is exposed for lexical forms and omitted for unverified general forms', () => {
