@@ -717,7 +717,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
       const nextKeyPositions=mixedKeys.map(key=>text.indexOf(key,cursor)).filter(position=>position>=0);
       const nextKey=nextKeyPositions.length?Math.min(...nextKeyPositions):text.length;
       const segment=text.slice(cursor,nextKey);
-      parts.push(...(segment.match(/[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+(?:[\\s,，、]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)*[\\s,，、]*[가-힣]+|[가-힣]+|[^가-힣]+/gu)||[]));
+      parts.push(...(segment.match(/[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+(?:[\s,，、]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)*[\s,，、]*[가-힣]+|[가-힣]+|[^가-힣]+/gu)||[]));
       cursor=nextKey;
     }
     if(parts.some(part=>lexicon.has(part))){
