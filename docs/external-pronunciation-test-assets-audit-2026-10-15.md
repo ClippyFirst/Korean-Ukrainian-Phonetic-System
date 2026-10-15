@@ -266,3 +266,16 @@ The external inventory was extended beyond the first four comparators:
 
 These entries are registered as S020–S023 in `data/korean/sources.csv`. Together with S012–S019, the source register now distinguishes normative sources, supplementary official Q&A, peer-reviewed research, reference engines, benchmark projects, and dictionary mirrors. A repository being public or a package being MIT/Apache licensed does not automatically make its data, examples, models, or dependencies reusable.
 
+
+### Newly exposed implementation gap — NIKL §12(2)–(3)
+
+The article-by-article pass exposed a real mismatch between the browser engine and the Python research rule engine. The browser already had explicit traces for ㅎ-coda + ㅅ and ㅎ-coda + ㄴ, but the Python rule R004 did not implement those two NIKL patterns. The rule was therefore only partially equivalent across runtimes.
+
+Fixed on this branch:
+
+- R004 now handles **ㅎ/ㄶ/ㅀ + ㅅ** by dropping the ㅎ component, retaining ㄴ/ㄹ where present, and fortisizing ㅅ, as in 닿소[다ː쏘], 많소[만ː쏘], 싫소[실쏘].
+- R004 now handles **ㅎ + ㄴ** as a nasal realization and preserves the ㄴ/ㄹ component in ㄶ/ㅀ before later assimilation, as in 놓는[논는], 쌓네[싼네], 않네[안네], 않는[안는], 뚫네[뚤네→뚤레], 뚫는[뚤는→뚤른].
+- Added source-linked Python regressions for both subrules. The final CI run for these changes passed both the Python regression/data-integrity job and the browser regression/build job.
+
+This is an example of why the audit cannot stop at “all 30 articles are listed in a coverage ledger”: the same normative rule must be checked in every runtime implementation, including intermediate rule ordering and retained consonants.
+
