@@ -36,6 +36,14 @@ test('IPA target output is composed from the same tokens displayed in the trace'
   }
 });
 
+
+test('unknown IPA segments keep target rendering fail-closed', () => {
+  const mapping = traceIpaMapping('ɕ☃');
+  assert.equal(mapping.tokens.length, 1);
+  assert.equal(mapping.unknown, '☃');
+  assert.deepEqual(ipaSyllableToUkrainian('ɕ☃'), { text: '', unknown: '☃' });
+});
+
 test('every resolved Korean syllable trace retains its realized surface, IPA and Ukrainian result', () => {
   const engine = createEngine(canonicalCsv, lexicalCsv);
   const result = engine.convert('시', { morphologyMode: 'strict' });
