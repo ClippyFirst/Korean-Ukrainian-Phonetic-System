@@ -78,7 +78,7 @@ function representative(coda){return FINAL_REPRESENTATIVE[coda]??coda;}
 
 // Preserve literal whitespace and punctuation instead of joining them with
 // artificial IPA/analysis separators (which previously produced triple spaces).
-function renderStructured(units,values,separator,{ipa=false}={}){
+function renderStructured(units,values,separator){
   let result='';
   for(let i=0;i<units.length;i++){
     const unit=units[i];
@@ -939,7 +939,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
     source:text,
     surfaceHangul:'',
     ukrainian:output.join(''),
-    ipa:renderStructured(units,ipa,' ',{ipa:true}),
+    ipa:renderStructured(units,ipa,' '),
     analysis:renderStructured(units,analysis,' · '),
     trace,
     variants:genericVowelVariants(text,units,originalUnits,ipa,output,status),
