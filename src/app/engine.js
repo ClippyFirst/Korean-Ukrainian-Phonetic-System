@@ -30,6 +30,8 @@ const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥','넓적']);
 
 // Exact, source-licensed phrase boundaries whose rules require syntax or a
 // known compound. These maps deliberately do not generalize from ㄹ/ㄴ codas.
+const NIKL_17_FORMAL_PALATALIZATION_FORMS=new Set(['팥입니다']);
+
 const NIKL_27_ADNOMINAL_PHRASES=new Map([
   ['할 것을','ㄱ'],['갈 데가','ㄷ'],['할 바를','ㅂ'],['할 수는','ㅅ'],['읽을 수','ㅅ'],
   ['할 적에','ㅈ'],['갈 곳','ㄱ'],['할 도리','ㄷ'],['만날 사람','ㅅ']
@@ -123,6 +125,16 @@ function applyContextualRules(units,sourceText='',{ morphologyMode = 'strict' } 
     // establish that morphology. Exact sourced forms are handled by the
     // lexical layer; unknown candidates are withheld instead of guessed.
     if(['ㄷ','ㅌ','ㄾ'].includes(a.coda)&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
+      // NIKL Q&A qna_seq=318230 explicitly licenses 팥입니다[파침니다].
+      // Keep this attested formal-morpheme boundary in the rule engine so the
+      // surface-only lexical row can retain the generic IPA and trace path.
+      if(NIKL_17_FORMAL_PALATALIZATION_FORMS.has(sourceText)){
+        a.coda='';
+        b.onset='ㅊ';
+        rules.push('palatalization');
+        nextRules.push('palatalization');
+        continue;
+      }
       if(softOn&&trySoftFormal(a,b,rules,nextRules,{COMPLEX,FINAL_REPRESENTATIVE})){
         continue;
       }
