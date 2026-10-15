@@ -28,13 +28,14 @@
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "evidenceNote": "Complex-coda liaison control; also present in the existing browser regression suite.",
-      "validationStatus": "cross-linked-existing-regression",
+      "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
           "path": "tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs",
           "testName": "NIKL complex-coda liaison examples resolve without morphological guessing"
         }
-      ]
+      ],
+      "evidenceExcerpt": "넋이[넉씨]"
     },
     {
       "id": "NIKL-14-ANJA",
@@ -53,13 +54,14 @@
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "evidenceNote": "Complex-coda liaison control; existing browser regression.",
-      "validationStatus": "cross-linked-existing-regression",
+      "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
           "path": "tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs",
           "testName": "NIKL complex-coda liaison examples resolve without morphological guessing"
         }
-      ]
+      ],
+      "evidenceExcerpt": "앉아[안자]"
     },
     {
       "id": "NIKL-14-GOLSSI",
@@ -78,13 +80,14 @@
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "evidenceNote": "Complex-coda liaison control; existing browser regression.",
-      "validationStatus": "cross-linked-existing-regression",
+      "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
           "path": "tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs",
           "testName": "NIKL complex-coda liaison examples resolve without morphological guessing"
         }
-      ]
+      ],
+      "evidenceExcerpt": "곬이[골씨]"
     },
     {
       "id": "NIKL-14-HALTA",
@@ -103,13 +106,14 @@
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "evidenceNote": "Complex-coda liaison control; existing browser regression.",
-      "validationStatus": "cross-linked-existing-regression",
+      "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
           "path": "tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs",
           "testName": "NIKL complex-coda liaison examples resolve without morphological guessing"
         }
-      ]
+      ],
+      "evidenceExcerpt": "핥아[할타]"
     },
     {
       "id": "NIKL-14-EULPEO",
@@ -128,13 +132,14 @@
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "evidenceNote": "Complex-coda liaison control; existing browser regression.",
-      "validationStatus": "cross-linked-existing-regression",
+      "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
           "path": "tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs",
           "testName": "NIKL complex-coda liaison examples resolve without morphological guessing"
         }
-      ]
+      ],
+      "evidenceExcerpt": "읊어[을퍼]"
     },
     {
       "id": "NIKL-14-MOKSSI",
@@ -150,16 +155,17 @@
       "ruleIds": [
         "NIKL-14"
       ],
-      "evidenceType": "official-dictionary-or-qna-control",
-      "evidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=335008",
-      "evidenceNote": "Exact NIKL Q&A control referenced by the existing complex-coda regression.",
-      "validationStatus": "cross-linked-existing-regression",
+      "evidenceType": "official-rule-derived-control",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "몫이[목씨] is a derived control rather than an enumerated §14 example. The earlier test cites NIKL Q&A 335008, but this seed does not claim the Q&A was independently inspected in this pass.",
+      "validationStatus": "rule-derived-control-not-explicitly-listed",
       "regressionRefs": [
         {
           "path": "tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs",
           "testName": "NIKL complex-coda liaison examples resolve without morphological guessing"
         }
-      ]
+      ],
+      "evidenceExcerpt": null
     },
     {
       "id": "NIKL-14-KAPSSI",
@@ -175,16 +181,17 @@
       "ruleIds": [
         "NIKL-14"
       ],
-      "evidenceType": "official-standard-example",
+      "evidenceType": "official-rule-derived-control",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "Complex-coda liaison control; existing browser regression.",
-      "validationStatus": "cross-linked-existing-regression",
+      "evidenceNote": "값이[갑씨] is a derived control for the general §14 rule; it is not one of the rule page's enumerated examples. Keep its status distinct from exact examples.",
+      "validationStatus": "rule-derived-control-not-explicitly-listed",
       "regressionRefs": [
         {
           "path": "tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs",
           "testName": "NIKL complex-coda liaison examples resolve without morphological guessing"
         }
-      ]
+      ],
+      "evidenceExcerpt": null
     },
     {
       "id": "NIKL-14-KAPSSUL",
@@ -203,13 +210,14 @@
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "evidenceNote": "Complex-coda liaison control; existing browser regression.",
-      "validationStatus": "cross-linked-existing-regression",
+      "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
           "path": "tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs",
           "testName": "NIKL complex-coda liaison examples resolve without morphological guessing"
         }
-      ]
+      ],
+      "evidenceExcerpt": "값을[갑쓸]"
     },
     {
       "id": "NIKL-10-11-NEOLBEO",
@@ -227,15 +235,16 @@
         "NIKL-11"
       ],
       "evidenceType": "official-dictionary-or-rule-example",
-      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "Morphological/lexical ㄼ control; existing browser regression specifically guards 넓다/짧다 conjugations.",
-      "validationStatus": "cross-linked-existing-regression",
+      "evidenceUrl": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=64511",
+      "evidenceNote": "Official Korean Basic Dictionary entry for 넓다 lists the conjugation 넓어[널버]; this is a lexical/dictionary control, not a listed example in the standard-rule page.",
+      "validationStatus": "official-dictionary-entry-checked",
       "regressionRefs": [
         {
           "path": "tests/adversarial-complex-coda-liaison-2026-10-10.test.mjs",
           "testName": "NIKL dictionary conjugations preserve the ㄼ coda alternation in 넓다 and 짧다"
         }
-      ]
+      ],
+      "evidenceExcerpt": "넓어[널버]"
     },
     {
       "id": "NIKL-9-18-APMADANG",
@@ -255,13 +264,14 @@
       "evidenceType": "official-rule-interaction-regression",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "evidenceNote": "Interaction control: coda neutralization feeds nasal assimilation; existing productive-rule test.",
-      "validationStatus": "cross-linked-existing-regression",
+      "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
           "path": "tests/nikl-articles-9-18-23-29-interaction-2026-10-11.test.mjs",
           "testName": "§9 and §18: representative coda neutralization feeds nasal assimilation in 앞마당"
         }
-      ]
+      ],
+      "evidenceExcerpt": "앞마당[암마당]"
     },
     {
       "id": "NIKL-9-23-GUKBAP",
@@ -281,13 +291,15 @@
       "evidenceType": "official-rule-interaction-regression",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "evidenceNote": "Interaction control: obstruent coda and fortition; existing productive-rule test.",
-      "validationStatus": "cross-linked-existing-regression",
+      "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
           "path": "tests/nikl-articles-9-18-23-29-interaction-2026-10-11.test.mjs",
           "testName": "§9 and §23: a neutralized obstruent coda licenses fortition, unlike a sonorant coda"
         }
-      ]
+      ],
+      "evidenceExcerpt": "국밥[국빱]"
     }
-  ]
+  ],
+  "validationPolicy": "Statuses distinguish exact official examples, official dictionary entries, and controls derived from a general rule but not explicitly listed. Project IPA remains a project transcription target and is not an official NIKL IPA prescription."
 }
