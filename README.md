@@ -192,3 +192,14 @@ The lexical layer has a dedicated regression suite for Ukrainian target segmenta
 
 - [Audit summary on the methodology page](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#model-wide-target-consistency)
 - [Regression tests](tests/model-wide-target-consistency.test.mjs)
+
+
+## Expanded NIKL source audit and adversarial corpus (2026-10-15)
+
+- [Supplemental official NIKL Q&A source sweep](docs/nikl-qna-source-sweep-2026-10-15.md)
+- [Machine-readable NIKL Q&A controls](tests/fixtures/nikl-qna-supplemental-controls-2026-10-15.json)
+- [Provenance regression test](tests/nikl-qna-supplemental-controls-2026-10-15.test.mjs)
+- [225-file adversarial corpus index](tests/fixtures/adversarial-corpora/00-README.txt)
+- [Corpus suite and test methodology](docs/adversarial-text-corpus-suite-2026-10-11.md)
+
+The corpus suite contains 15 broad texts and 210 rule-family texts (seven per each of 30 groups). They are stress inputs, not gold transcriptions. Direct NIKL examples and Q&A readings remain separate from policy-only, morphology-sensitive, and prosody-dependent controls.
