@@ -193,3 +193,24 @@ This is a source/repository inspection, not a claim that every row in an externa
 ### Seed expansion follow-up (2026-10-15)
 
 The shared cross-runtime seed was expanded from 11 to 16 cases. The five new controls are exact examples from NIKL §§17, 18, and 20: 굳이[구지], 국물[궁물], 먹는[멍는], 신라[실라], and 난로[날로]. Each points to the official standard and an exact existing regression-test title. This improves rule-family diversity but does not establish exhaustive coverage of any article; CI is the arbiter for whether the project engines reproduce the declared project IPA and surface forms.
+
+## Expanded source pass (2026-10-15)
+
+### External engines and test resources reviewed
+
+- [KoG2P](https://github.com/scarletcho/KoG2P): inspected the repository README, `rulebook.txt`, and `testset.txt`. Its rulebook is useful for rule ordering and stress-case discovery; its testset contains written Hangul surface outputs, not official IPA labels. It is GPL-3.0, so this project records it as an external reference and does not copy its implementation or bulk-import its testset.
+- [g2pK](https://github.com/kyubyong/g2pK): inspected its README and implementation. It explicitly distinguishes prescriptive from descriptive output and uses morphological context for homographs such as 신고. These are architectural requirements, not labels to import as normative truth. License: Apache-2.0.
+- [g2pk2](https://github.com/tenebo/g2pk2): inspected its README, which specifically notes fixes to the §15 substantive-morpheme liaison issue and a §13 issue. This is an independent review signal, not proof of every form. License: Apache-2.0.
+- [IPA_G2P-Testing](https://github.com/kr-MATAGI/IPA_G2P-Testing): inspected the README and benchmark summary. Its metrics and dataset inventory are useful for planning independent evaluation, but its repository license was not verified in this pass, so no data/code is copied.
+
+### Bulk normative fixture expansion
+
+The shared cross-runtime normative seed now contains **98 cases**. In this pass, 73 additional source-linked controls were added across NIKL §§13, 14, 15, 17, 18, 21, 23, and 30, on top of the earlier §9–20 coverage. The controls cover liaison, complex-coda liaison, substantive-morpheme liaison, palatalization, nasal assimilation, negative controls against non-standard place assimilation, coda-triggered fortition, and the three main saisiot realization patterns. The added examples use the official NIKL article text as their evidence source and are cross-linked to an executable browser regression gate.
+
+The 9 §19–20 forms that exercise the *general algorithm* (침략, 강릉, 막론, 석류, 협력, 법리, 천리, 닳는, 핥네) deliberately remain outside `lexical_pronunciations.csv`; inserting them there bypassed the general rule trace and broke existing algorithmic tests. They remain in the shared seed as algorithmic controls. Exact lexical entries must not conceal a broken productive rule.
+
+### Known limitation made explicit
+
+The official §19 example is written with a long-vowel mark, 침략[침ː냑]. The current generic browser IPA path produces `tɕʰim njak̚` and omits the length mark. The fixture records this discrepancy in its evidence note rather than falsely claiming a full phonetic match. A dedicated long-vowel analysis/data layer is still needed; the normative fixture does not validate vowel length merely because the surface Hangul is correct.
+
+The expanded corpus remains finite example coverage. The rule engine should stay conservative for unknown morphology and should not treat every adjacency as a licensed morphological boundary.
