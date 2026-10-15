@@ -180,7 +180,7 @@ Read the full paper and extract rule ordering, pronunciation-dictionary architec
 - Do not treat findings about audiovisual names as proof of a universal system for all Korean vocabulary.
 
 ### Still required
-Read PDF pages 59–63, extract the article's actual case-study examples and recommendations, then retrieve and compare Kovalchuk (2011) and Shchegel (2009) in full.
+Read the publisher PDF pages 59–63 page by page; current evidence includes the article HTML record/abstract and indexed PDF text, but not a verified full page-level extraction. Kovalchuk (2011) and Shchegel (2009) now have full-text review notes; compare them directly.
 
 ## 9. Newly discovered primary Ukrainian source: Shchegel (2009)
 
@@ -201,11 +201,9 @@ Read PDF pages 59–63, extract the article's actual case-study examples and rec
 ### Still required
 Read all 12 pages and extract each proposal with page numbers and example forms; validate the bibliographic details against the journal issue.
 
-## 10. New direction: Kovalchuk (2011)
+## 10. Kovalchuk (2011): source access status
 
-Kozmin (2025) cites: Yu. A. Kovalchuk (2011), “Problemy ta perspektyvy stvorennia unifikovanoi systemy ukrainskoi praktychnoi transkryptsii koreiskykh vlasnykh nazv,” *Movni i kontseptualni kartyny svitu*, 36, 468–473.
-
-This is now a priority source-discovery task. The bibliographic record was verified via Kozmin's references, but the article's full text and exact recommendations have not yet been located. Do not summarize its conclusions until the paper itself is obtained.
+Kozmin (2025) cites: Yu. A. Kovalchuk (2011), “Problemy ta perspektyvy stvorennia unifikovanoi systemy ukrainskoi praktychnoi transkryptsii koreiskykh vlasnykh nazv,” *Movni i kontseptualni kartyny svitu*, 36, 468–473. A six-page text copy was found on Scribd and reviewed. The copy is not hosted by the publisher and is marked All Rights Reserved; the search for an institutional copy remains open. Findings and limitations are recorded in Section 15.
 
 ## 13. Full-text review completed: Shchegel (2009), Ukrainian practical transcription of Korean names
 
@@ -236,7 +234,7 @@ This is now a priority source-discovery task. The bibliographic record was verif
 - The paper announces transcription/transliteration tables as to be published later (footnote on p. 78); confirm whether the full tables were published elsewhere.
 - Some proposed mappings require independent modern verification.
 - Name-frequency statistics date from 1985/2000 and must not be reused as current data.
-- Locate Kovalchuk (2011), cited by Kozmin (2025), which directly addresses a unified Ukrainian practical transcription system.
+- Compare the now-reviewed Kovalchuk (2011) and Shchegel (2009) proposals; locate an authoritative institutional copy of Kovalchuk.
 
 ## 15. Full-text review completed: Kovalchuk (2011), unifying Ukrainian practical transcription
 
@@ -287,7 +285,7 @@ This is now a priority source-discovery task. The bibliographic record was verif
 2. Page-review Yoon & Brew (2006) and map the nine rules to our rule IDs and test coverage.
 3. Extract all quantitative methodology from Lee et al. (2009) hybrid paper and Lee & Lee (2009) data-driven paper; do not compare their scores without compatible conditions.
 4. Obtain Lee & Yim (2003) full text and evaluate Petri-net formalization against a simpler declarative rule schema.
-5. Review all pages of Shchegel (2009) and Kozmin (2025); locate Kovalchuk (2011).
+5. Review Kozmin (2025) PDF pages 59–63 with page-level evidence; compare the already reviewed Shchegel (2009) and Kovalchuk (2011) proposals and locate an authoritative institutional copy of Kovalchuk.
 6. Create a shared benchmark schema and independent gold corpus before any architecture replacement.
 7. Record source licensing before corpus ingestion; specifically, Seoul Corpus CC BY-NC 2.0 blocks assuming unrestricted commercial reuse.
 8. Correct the source queue so the Seoul Corpus points to DOI 10.13064/KSSS.2015.7.2.103 and OpenSLR SLR113, not to the unrelated 2015 rule-tracing article.
