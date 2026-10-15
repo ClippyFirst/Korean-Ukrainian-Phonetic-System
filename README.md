@@ -53,6 +53,10 @@ Added eight official examples from the attached note to Rule 29, including `들�
 - [Audit report](docs/rule29-liquid-assimilation-audit-2026-10-10.md)
 - [Regression test](tests/adversarial-rule29-liquid-assimilation-2026-10-10.test.mjs)
 
+## External normative test assets and dictionary controls
+
+A source-backed audit of public Korean G2P test suites, NIKL dictionary data, licensing constraints, and the recommended independent gold-set workflow is available in [the external test-assets audit (2026-10-15)](docs/external-pronunciation-test-assets-audit-2026-10-15.md). External engine outputs are differential references only; they are not accepted as normative gold without independent NIKL/dictionary validation.
+
 ## Scientific pipeline
 
 Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
