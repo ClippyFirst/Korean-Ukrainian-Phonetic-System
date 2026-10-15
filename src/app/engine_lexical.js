@@ -2,16 +2,14 @@
  * Lexical result shaping and vowel variants.
  */
 import { get, renderStructured, J_VOWELS, decompose } from './engine_shared.js';
-import { ipaSyllableToUkrainian, IPA_TO_UKRAINIAN } from './engine_ipa.js';
+import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, IPA_TO_UKRAINIAN } from './engine_ipa.js';
 
 export function lexicalResult(text,entry){
   const ipas=entry.ipa_syllables.split('|');
   const mappedTargets=ipas.map(ipaSyllableToUkrainian);
-  // A lexical row must never silently drop IPA that the Ukrainian layer cannot
-  // map. Keep the unresolved syllable visible and surface a blocking issue.
   const targets=mappedTargets.map((item,i)=>item.unknown?'⟦'+ipas[i]+'⟧':item.text);
   const targetIssues=mappedTargets.flatMap((item,i)=>item.unknown
-    ?[text+': IPA syllable "'+ipas[i]+'" contains an unmapped segment "'+item.unknown+'"; add an explicit Ukrainian mapping or correct the IPA.']:[ ]
+    ?[text+': IPA syllable "'+ipas[i]+'" contains an unmapped segment "'+item.unknown+'"; add an explicit Ukrainian mapping or correct the IPA.']:[]
   );
   const hasSyllableCountMismatch=/^[가-힣]+$/u.test(text)&&ipas.length!==[...text].length;
   if(hasSyllableCountMismatch){
