@@ -127,7 +127,7 @@ test('the original 165-corpus baseline keeps unresolved output limited to the kn
   // morphology-sensitive and context-only probes. Those are triage inputs,
   // not gold outputs; preserve the old regression baseline independently.
   const baselineFiles = files.filter((name) =>
-    /^(?:0[1-9]|1[0-5])-/.test(name) || /^rule-\\d{2}-0[1-5]-/.test(name));
+    /^(?:0[1-9]|1[0-5])-/.test(name) || /^rule-\d{2}-0[1-5]-/.test(name));
   assert.equal(baselineFiles.length, 165, 'the legacy baseline remains reproducible');
   const intentional = '12-minimal-contrasts-and-negative-controls.txt';
   const affected = [];
