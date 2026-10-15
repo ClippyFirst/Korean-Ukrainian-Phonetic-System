@@ -42,7 +42,8 @@ def test_shared_normative_seed_matches_python_surface_and_ipa():
         # The browser renders syllables with spaces; the Python research layer
         # uses dots for within-word syllable boundaries. Both must encode the
         # same declared broad IPA segments.
-        expected_ipa = {value.replace(" ", ".") for value in case["expectedProjectIpa"]}
+        expected_ipa_source = case.get("expectedPythonIpa", case["expectedProjectIpa"])
+        expected_ipa = {value.replace(" ", ".") for value in expected_ipa_source}
         actual_ipa = result["ipa"]["ipa"]
         assert actual_ipa in expected_ipa, (
             f'{case["id"]}: expected IPA in {sorted(expected_ipa)}, got {actual_ipa}'
