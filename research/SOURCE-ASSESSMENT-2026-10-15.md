@@ -210,7 +210,7 @@ Sources have different jobs. Official Korean norms define the normative surface-
 **Decision:** preserve the single-source-of-truth contract. Inspect UPI source, tests, license, version history, and target mapping decisions before declaring output professionally validated.
 
 ### 5.3 Russian Holodovich–Kontsevich practical transcription — C / historical Cyrillic comparator
-**URL:** https://bp-razвитие.ru/prilozhenie-9-sistemy-transkripcii-  
+**URL:** https://bp-razvitie.ru/prilozhenie-9-sistemy-transkripcii-  
 **Role:** historical Cyrillic row-by-row comparison for Korean Jamo.
 
 **Use:** compare how a Cyrillic target system handles contrasts, syllable structure, and conventions; identify questions the Ukrainian layer should answer explicitly.
@@ -333,3 +333,42 @@ Do not bulk-copy third-party rules, datasets, or target tables. The professional
 - [ ] Compare engine outputs on a common gold corpus.
 - [ ] Complete Ukrainian target-layer source review and reader evaluation design.
 - [ ] Update source and rule registers with final dispositions.
+
+
+## 10. Row-by-row disposition of sources already registered in the repository
+
+This appendix ensures that the existing source ledgers are assessed individually rather than hidden inside general source categories. The dispositions below are provisional triage; exact page/claim verification remains open.
+
+### 10.1 Existing Korean source register: data/korean/sources.csv
+
+| Existing ID | Source | Project value | Decision / required action |
+|---|---|---|---|
+| S001 | NIKL Standard Pronunciation Rules | Highest: normative authority for the Korean surface layer | Keep as core authority. Add exact article/subarticle locators, source snapshots or stable excerpts where permitted, and rule-to-test links. |
+| S002 | Unicode Core Specification, Chapter 18.6.5 | Highest for Hangul encoding and decomposition; not phonology | Keep as core technical standard. Verify current version and add conformance tests. |
+| S003 | Cho, Jun & Ladefoged (2002) | High for phonetic feature interpretation of Korean stops/fricatives | Keep. Extract only claims directly supported by the paper; do not treat it as normative rules. |
+| S004 | Kang & Han (2013) | High for documented Seoul Korean sound change and cue reweighting | Keep as variation evidence. Preserve population/time scope and keep separate from standard mode. |
+| S005 | Bang et al. (2018) | High for corroborating contemporary variation | Keep. Verify exact title/authors and page-level claims against full text; do not turn descriptive results into universal deterministic rules. |
+| S006 | NIKL vowel inventory / development report (2014) | Potentially high for age/cohort vowel variation | Keep topic, but repair the generic download URL and identify exact report, publication data, pages, and claims before using it as evidence. |
+| S007 | NIKL online Q&A: 값없다 | High for a specific lexical pronunciation control | Keep only the exact claim the official answer supports; add paired controls if a similar form should not generalize. Verify the URL and answer text. |
+| S008 | NIKL FAQ: 의견란 and ㄹ→ㄴ exceptions | High for a narrowly scoped exception to a productive-looking pattern | Keep as an exception-specific source; verify exact FAQ wording and article relationship. Use negative controls to prevent overgeneralization. |
+| S009 | NIKL online Q&A: ㄺ verbal-stem exceptions versus 닭- nouns | High for morphology/lexical-class contrast | Keep. Encode narrow lexical/morphological conditions; do not infer verb class from spelling alone. |
+| S010 | NIKL online Q&A: 닭이 and 닭고기 | High for a coda/liaison versus compound-context contrast | Keep. Add a minimal-pair/contrast test with explicit word boundaries and source locator. |
+| S011 | NIKL online Q&A: 밝기 and ㄺ+ㄱ | High for a conditional ㄺ realization and exception boundary | Keep. Test the exact licensed form and at least one superficially similar negative control. |
+
+### 10.2 Existing Slavic-comparative source register: data/korean/slavic_comparative_sources.csv
+
+| Existing ID | Source | Project value | Decision / required action |
+|---|---|---|---|
+| RUS-HK | Holodovich–Kontsevich Russian practical transcription | High as a historical Cyrillic table and comparator | Retain as comparator only. Verify original bibliographic provenance and the exact table; never inherit Russian mappings as Ukrainian defaults. |
+| CZE-ST | Stanjurová (2023), Czech transcription thesis | Medium for history, phonetic compatibility, and design rationale | Retain for system-level comparison. Add page-level evidence before using any individual mapping. |
+| POL-KP | Kim & Pietrow (2023), Korean toponyms in Polish | Medium for real-name adaptation and assimilation | Retain for name-adaptation context, not as a complete grapheme table. Extract claims with page locators. |
+| SVK-PRO | Procházka (2020), proposed Slovak romanization | Medium for an explicit Slavic-language table and design trade-offs | Retain as a proposal/comparator. Verify status, page, and bibliographic metadata. |
+| BUL-BEN | Beneva et al. (2018), Korean transcription in Bulgarian texts | High comparative value because it offers a practical Cyrillic system | Retain. Compare principles and examples, but justify every Ukrainian choice independently. |
+| SRB-GAL | Galjević (2023), Korean–Serbian Cyrillic proposal | Medium/low until status and source provenance are fully verified | Retain as a proposal only; never label an official Serbian standard. Verify PDF metadata and table page. |
+| SLO-CB | Chang & Shigemori Bučar (2019), Slovene loanword adaptation into Korean | Low/medium for reverse-direction adaptation constraints | Retain only as reverse-adaptation context; do not use it as direct Korean-to-Ukrainian correspondence evidence. |
+| UKR-SH | Shchehel (2009), Korean names into Ukrainian | Highest target-language precedent in the existing comparative register | Prioritize full-text review. Map each claim to a target-layer decision and identify where the project intentionally differs. |
+| KOR-NIKL | NIKL Standard Pronunciation Rules | Highest for Korean source pronunciation, not the target language | Link to S001 rather than maintaining conflicting duplicate metadata; retain the explicit boundary between Korean evidence and Ukrainian rendering. |
+
+### 10.3 Additional sources added by the discovery queue
+
+The separate file SOURCE-DISCOVERY-QUEUE.csv contains the current candidates for Korean dictionaries/APIs, three G2P implementations, corpus indexes, AI-Hub, the phonetic literature, UPI, and official romanization. It records priority, expected value, access/license risk, provisional decision, and the next concrete action. Candidate status means “needs review”, not “approved for copying or production use”.
