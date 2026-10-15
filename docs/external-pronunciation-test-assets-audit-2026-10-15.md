@@ -216,7 +216,7 @@ The official §19 example is written with a long-vowel mark, 침략[침ː냑]. T
 The expanded corpus remains finite example coverage. The rule engine should stay conservative for unknown morphology and should not treat every adjacency as a licensed morphological boundary.
 
 
-The lexical inventory also gained two exact source-backed entries for the NIKL §30 commentary examples 훗일[훈ː닐] and 뒷일[뒨ː닐]. These are recorded as provisional Ukrainian targets derived from IPA; their Korean standard surface forms and source-attested vowel length are explicit. The lexical inventory snapshot is now 658 data rows, with the nine surface-only references plus these two entries added to the prior 642-row inventory.
+The lexical inventory also gained two exact source-backed entries for the NIKL §30 commentary examples 훗일[훈ː닐] and 뒷일[뒨ː닐]. These are recorded as provisional Ukrainian targets derived from IPA; their Korean standard surface forms and source-attested vowel length are explicit. The lexical inventory snapshot is now 661 data rows, with the nine surface-only references plus these two entries added to the prior 642-row inventory.
 
 
 ## Follow-up mass pass — official §28–§30 examples and source inventory (2026-10-15)
