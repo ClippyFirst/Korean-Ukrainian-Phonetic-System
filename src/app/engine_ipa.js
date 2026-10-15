@@ -35,7 +35,7 @@ export function traceIpaMapping(ipa){
 
 export function ipaSyllableToUkrainian(ipa){
   const mapped=traceIpaMapping(ipa);
-  return {text:mapped.tokens.map(token=>token.ukrainian).join(''),unknown:mapped.unknown};
+  return mapped.unknown?{text:'',unknown:mapped.unknown}:{text:mapped.tokens.map(token=>token.ukrainian).join(''),unknown:''};
 }
 
 export function ipaSyllablesToUkrainian(ipaSyllables){
