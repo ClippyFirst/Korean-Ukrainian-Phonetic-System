@@ -26,7 +26,7 @@ test('§30(3) evidence distinguishes within-compound insertion from ordinary vow
   for (const [input, expectedSurface, expectedIpa] of [
     ['깻잎', '깬닙', 'kɛn nip̚'],
     ['나뭇잎', '나문닙', 'na mun nip̚'],
-    ['베갯잇', '베갠닏', 'pe gɛn nit̚'],
+    ['베갯잇', '베갠닏', 'pe ɡɛn nit̚'],
     ['도리깻열', '도리깬녈', 'to ɾi gɛn ɲʌl'],
   ]) {
     const result = sourcedEngine.convert(input);
