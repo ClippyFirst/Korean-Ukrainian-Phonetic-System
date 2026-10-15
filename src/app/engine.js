@@ -85,7 +85,7 @@ function renderStructured(units,values,separator,{ipa=false}={}){
     if(unit.type!=='hangul'){
       // Keep whitespace and punctuation as readable boundaries, but never
       // serialize raw Latin, digits, or standalone jamo into the IPA/analysis.
-      if(unit.type==='literal'&&(!ipa||isPreservableIpaLiteral(unit.char)))result+=unit.char;
+      if(unit.type==='literal'&&isPreservableIpaLiteral(unit.char))result+=unit.char;
       continue;
     }
     const value=values[i]??'';
@@ -934,7 +934,6 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
   }
 
   const hasJamo=units.some(u=>u.type==='jamo');
-  const hasUnsupportedLiteral=units.some(u=>u.type==='literal'&&!isPreservableIpaLiteral(u.char));
   const status=!hasHangulSyllables&&!hasJamo?'non-korean-input':issues.length?'unresolved':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
   return{
     source:text,
