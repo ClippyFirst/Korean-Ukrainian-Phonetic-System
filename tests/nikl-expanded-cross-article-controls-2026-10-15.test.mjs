@@ -8,6 +8,8 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
 const expandedIds = new Set([
+  'NIKL-30-HUTIL',
+  'NIKL-30-DWITIL',
   'NIKL-19-LEX-01',
   'NIKL-19-LEX-02',
   'NIKL-20-LEX-03',
