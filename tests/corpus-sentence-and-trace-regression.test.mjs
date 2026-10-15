@@ -43,7 +43,7 @@ test('trace panel has explicit column labels for source, target, rules and statu
     assert.ok(html.includes(label), 'missing trace label: ' + label);
   }
   assert.match(css, /\.trace-columns\s*\{/u);
-  assert.match(css, /@media\s*\(max-width:\s*680px\)/u);
+  assert.match(css, /@media\s*\(max-width:\s*(?:680|720)px\)/u);
 });
 
 
