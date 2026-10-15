@@ -70,14 +70,14 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         source:text,
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
         ukrainian:results.map(r=>r.ukrainian).join(''),
-        ipa:results.map((r,index)=>/lexicon.has(parts[index])?r.ipa:parts[index]).join(''),
+        ipa:results.map((r,index)=>lexicon.has(parts[index])?r.ipa:parts[index]).join(''),
         analysis:results.map(r=>r.analysis).filter(Boolean).join(' · '),
         variants:results.flatMap((result,variantIndex)=>(result.variants||[]).map(variant=>({
           ...variant,
           source:text,
           surface:results.map((item,index)=>index===variantIndex?variant.surface:(item.surfaceHangul||parts[index])).join(''),
           ukrainian:results.map((item,index)=>index===variantIndex?variant.ukrainian:item.ukrainian).join(''),
-          ipa:results.map((item,index)=>/lexicon.has(parts[index])?(index===variantIndex?variant.ipa:item.ipa):parts[index]).join('')
+          ipa:results.map((item,index)=>lexicon.has(parts[index])?(index===variantIndex?variant.ipa:item.ipa):parts[index]).join('')
         }))),
         trace:results.flatMap(r=>r.trace||[]),
         issues,
