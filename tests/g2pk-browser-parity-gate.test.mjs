@@ -24,8 +24,8 @@ test('practical browser mode is wired to the vendored JavaScript g2pK adapter', 
   const port = read('src/vendor/g2pk/g2p-browser.ts');
 
   assert.match(main, /createG2pWebAdapter/u);
-  assert.match(main, /const useG2p = !\(modeResearch && modeResearch\.checked\)/u);
-  assert.match(main, /useG2p \? webEngine\.convert\(value\) : engine\.convert/u);
+  assert.match(main, /const useG2p=\!\(modeResearch&&modeResearch\.checked\)/u);
+  assert.match(main, /useG2p\?webEngine\.convert\(value\):engine\.convert/u);
   assert.match(adapter, /new G2pBrowser\(\)/u);
   assert.match(adapter, /descriptive: false/u);
   assert.match(adapter, /toSyl: true/u);
