@@ -11,10 +11,10 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
 
-test('corpus suite has 15 broad corpora plus five corpora for each of 30 rule families', () => {
+test('corpus suite has 15 broad corpora plus seven corpora for each of 30 rule families', () => {
   assert.equal(originalCorpora.length, 15, 'preserve the original 15 broad adversarial corpora');
-  assert.equal(ruleCorpora.length, 150, '30 rule families × 5 independent corpora');
-  assert.equal(files.length, 165, 'all corpus inputs are discoverable');
+  assert.equal(ruleCorpora.length, 210, '30 rule families × 7 independent corpora');
+  assert.equal(files.length, 225, 'all corpus inputs are discoverable');
   const seen = new Set();
   for (const file of files) {
     const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
@@ -26,7 +26,7 @@ test('corpus suite has 15 broad corpora plus five corpora for each of 30 rule fa
   }
   for (let rule = 1; rule <= 30; rule++) {
     const prefix = 'rule-' + String(rule).padStart(2, '0') + '-';
-    assert.equal(ruleCorpora.filter((name) => name.startsWith(prefix)).length, 5, prefix + ': exactly five corpus files');
+    assert.equal(ruleCorpora.filter((name) => name.startsWith(prefix)).length, 7, prefix + ': exactly seven corpus files');
   }
 });
 
@@ -43,7 +43,7 @@ test('every adversarial corpus can be submitted to the engine without a runtime 
   }
 });
 
-test('150 rule-family corpora keep each target form quoted and isolated', () => {
+test('210 rule-family corpora keep each target form quoted and isolated', () => {
   for (const file of ruleCorpora) {
     const source = readFileSync(new URL('./fixtures/adversarial-corpora/' + file, import.meta.url), 'utf8');
     const examples = [...source.matchAll(/「([^」]+)」/gu)].map((match) => match[1]);
@@ -52,7 +52,7 @@ test('150 rule-family corpora keep each target form quoted and isolated', () => 
   }
 });
 
-test('diagnostic: summarize per-eojeol outcomes across all 165 adversarial corpora', () => {
+test('diagnostic: summarize per-eojeol outcomes across all 225 adversarial corpora', () => {
   const stats = new Map();
   const intentionalOrthographyNegativeControls = new Set(['옷안']);
   const orthographyControls = new Map();
@@ -93,7 +93,7 @@ test('diagnostic: summarize per-eojeol outcomes across all 165 adversarial corpo
   }));
 });
 
-test('diagnostic: summarize whole-file contextual conversion across all 165 corpora', () => {
+test('diagnostic: summarize whole-file contextual conversion across all 225 corpora', () => {
   const byCorpus = [];
   const statusCounts = {};
   const issueCounts = new Map();
