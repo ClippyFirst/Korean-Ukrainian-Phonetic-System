@@ -2,7 +2,7 @@
  * Main convertText pipeline.
  */
 import {
-  parseCsv, decompose, createMap, get, isHangulUnit, nextHangul, prevHangul,
+  parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, renderStructured, J_VOWELS, CODAS, ONSETS, VOWELS,
 } from './engine_shared.js';
 import { applyContextualRules } from './engine_rules_ctx.js';
@@ -192,7 +192,6 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const u=units[i];
     if(u.type==='literal'){surfaceParts.push(u.char);continue;}
     if(trace[i]?.status==='unresolved'||!output[i]){surfaceParts.push(u.char);continue;}
-    const {compose}=await import('./engine_shared.js');
     surfaceParts.push(compose(u.onset,u.vowel,u.coda||''));
   }
   return{
