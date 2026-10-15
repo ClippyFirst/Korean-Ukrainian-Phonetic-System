@@ -10,7 +10,7 @@ function hasNInsertion(result) {
   return result.trace.some((item) => item.rules.includes('phrase-n-insertion-§29'));
 }
 
-test('§29: every exact licensed phrase-boundary example receives the narrow insertion trace', () => {
+test('§29: official standard and NIKL Q&A phrase-boundary examples receive the narrow insertion trace', () => {
   const licensed = [
     '한 일',
     '옷 입다',
@@ -18,6 +18,9 @@ test('§29: every exact licensed phrase-boundary example receives the narrow ins
     '할 일',
     '잘 입다',
     '먹을 엿',
+    '무슨 일',
+    '끝난 일',
+    '않은 일',
   ];
   for (const phrase of licensed) {
     assert.ok(hasNInsertion(generic.convert(phrase)), phrase + ': expected the exact §29 phrase license');
