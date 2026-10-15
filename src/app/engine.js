@@ -70,7 +70,7 @@ export function decompose(ch){
 function createMap(csv){return new Map(parseCsv(csv).map(r=>[r.layer+':'+r.input,r]));}
 function get(map,layer,key){return map.get(layer+':'+key);}
 function isJamoChar(ch){return typeof ch==='string'&&/^[ㄱ-ㅎㅏ-ㅣ]$/u.test(ch);}
-function isPreservableIpaLiteral(ch){return typeof ch==='string'&&/^[\s\p{P}\p{S}]$/u.test(ch);}
+function isPreservableIpaLiteral(ch){return typeof ch==='string'&&/^[\s\p{P}]$/u.test(ch);}
 function isHangulUnit(units,i){return Boolean(units[i]&&units[i].type==='hangul');}
 function nextHangul(units,i){return isHangulUnit(units,i+1)?units[i+1]:null;}
 function prevHangul(units,i){return isHangulUnit(units,i-1)?units[i-1]:null;}
