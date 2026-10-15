@@ -77,6 +77,23 @@ def test_g2pk_surface_keeps_latin_digits_and_compatibility_jamo_out_of_engine(mo
     assert all("API" not in call and "3.1" not in call and "ㄴ" not in call for call in calls)
 
 
+def test_g2pk_handles_adversarial_sentence_with_punctuation_and_protected_material():
+    pytest.importorskip("g2pk")
+    text = (
+        "국립국어원 표준 발음 규정을 확인하던 연구원은 "
+        "넋이 나갔다, 몫을 나누다, 값이 올랐다, 값어치가 없다, 숲이 우거졌다. "
+        "밟고 밟는 읽습니다 맑게 굳이 신라 칼날 꽃잎 서울역. "
+        "API 3.1, ㄴ 첨가."
+    )
+    result = g2pk_engine.phoneticize_with_g2pk(text)
+    assert result["surface_hangul"]
+    assert result["ipa"]["ipa"]
+    assert "API 3.1" in result["surface_hangul"]
+    assert "ㄴ 첨가" in result["surface_hangul"]
+    for expected_surface in ("넉씨", "가버치", "구지", "실라", "칼랄", "꼰닙", "서울력"):
+        assert expected_surface in result["surface_hangul"]
+
+
 def test_g2pk_live_engine_smoke_and_normative_controls():
     pytest.importorskip("g2pk")
     expected = {
