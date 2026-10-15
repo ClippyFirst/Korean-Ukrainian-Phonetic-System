@@ -68,7 +68,7 @@ test('redesigned workbench preserves accessible navigation and responsive result
   assert.match(css,/:focus-visible/);
   assert.match(css,/@media\s*\(max-width:\s*720px\)/);
   assert.match(css,/@media\s*\(prefers-reduced-motion:reduce\)/);
-  assert.match(css,/\\.result-card:first-child/);
+  assert.match(css,/\.result-card:first-child/);
 });
 
 test('editable adversarial passage has a complete IPA path without inline placeholders',()=>{
