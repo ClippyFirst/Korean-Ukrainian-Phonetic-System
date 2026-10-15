@@ -1,11 +1,11 @@
 KOREAN–UKRAINIAN PHONETIC SYSTEM
 ADVERSARIAL TEXT CORPUS COLLECTION
-Version: 2026-10-11
+Version: 2026-10-15
 
 SIZE
 ----
-15 broad thematic corpora (01–15) plus 150 rule-family corpora:
-30 families × 5 TXT files each = 165 corpus inputs, plus this index.
+15 broad thematic corpora (01–15) plus 210 rule-family corpora:
+30 families × 7 TXT files each = 225 corpus inputs, plus this index.
 
 The rule-family files present target forms as quoted, independent examples. This is deliberate:
 corpus construction must not accidentally attach arbitrary particles or endings to examples
