@@ -1,0 +1,94 @@
+{
+  "generated_at": "2026-10-15T09:12:07.440568+00:00",
+  "counts": {
+    "main_rows": 642,
+    "additions_rows": 34,
+    "total_rows": 676,
+    "unique_effective_inputs": 670,
+    "shadowed_by_additions": 6,
+    "schema_issue_count": 0,
+    "segment_mismatch_count": 0,
+    "ipa_anomaly_count": 0,
+    "overlap_count": 6,
+    "priority_found": 67,
+    "priority_missing": 0
+  },
+  "structural_pass": true,
+  "status_distribution": {
+    "model-selected": 21,
+    "provisional": 648,
+    "surface-only": 7
+  },
+  "confidence_distribution": {
+    "high": 676
+  },
+  "overlap_keys": [
+    {
+      "input": "강줄기",
+      "identical_content": true,
+      "main_ipa": "kaŋ|tɕ͈ul|ɡi",
+      "add_ipa": "kaŋ|tɕ͈ul|ɡi",
+      "main_status": "provisional",
+      "add_status": "provisional",
+      "runtime_winner": "additions"
+    },
+    {
+      "input": "도리깻열",
+      "identical_content": true,
+      "main_ipa": "to|ɾi|ɡɛn|ɲʌl",
+      "add_ipa": "to|ɾi|ɡɛn|ɲʌl",
+      "main_status": "provisional",
+      "add_status": "provisional",
+      "runtime_winner": "additions"
+    },
+    {
+      "input": "발음과",
+      "identical_content": true,
+      "main_ipa": "pa|rɯm|ɡwa",
+      "add_ipa": "pa|rɯm|ɡwa",
+      "main_status": "provisional",
+      "add_status": "provisional",
+      "runtime_winner": "additions"
+    },
+    {
+      "input": "베갯잇",
+      "identical_content": true,
+      "main_ipa": "pe|ɡɛn|nit̚",
+      "add_ipa": "pe|ɡɛn|nit̚",
+      "main_status": "provisional",
+      "add_status": "provisional",
+      "runtime_winner": "additions"
+    },
+    {
+      "input": "연구원은",
+      "identical_content": true,
+      "main_ipa": "jʌn|ɡu|wʌ|nɯn",
+      "add_ipa": "jʌn|ɡu|wʌ|nɯn",
+      "main_status": "provisional",
+      "add_status": "provisional",
+      "runtime_winner": "additions"
+    },
+    {
+      "input": "예쁘고",
+      "identical_content": true,
+      "main_ipa": "je|p͈ɯ|ɡo",
+      "add_ipa": "je|p͈ɯ|ɡo",
+      "main_status": "provisional",
+      "add_status": "provisional",
+      "runtime_winner": "additions"
+    }
+  ],
+  "ipa_anomalies": [],
+  "priority_forms": {
+    "found_count": 67,
+    "missing": []
+  },
+  "normative_review": {
+    "entries_with_any_source_url": 676,
+    "entries_generic_rule_page_only": 568,
+    "entries_specific_citation_heuristic": 108,
+    "note": "Presence of source_url is NOT proof of correct pronunciation. Generic 표준 발음법 page citations need independent confirmation of the specific form. Counts above are heuristics only."
+  },
+  "merge_note": "Runtime merge (src/main.js): additions appended after main; later rows with the same input key override earlier ones.",
+  "notes": []
+}
