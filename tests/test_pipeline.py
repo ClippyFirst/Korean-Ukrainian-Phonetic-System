@@ -168,3 +168,14 @@ def test_python_surface_ipa_matches_nikl_19_and_18_for_dongnimmun():
     assert [x["onset"] for x in result["surface_syllables"]]==["ㄷ","ㄴ","ㅁ"]
     assert [x["coda"] for x in result["surface_syllables"]]==["ㅇ","ㅁ","ㄴ"]
     assert result["ipa"]["ipa"]=="toŋ.nim.mun"
+
+
+def test_ipa_tokenizer_accepts_browser_surface_inventory():
+    from korean_ukrainian.pipeline import tokenize_ipa, source_features_for_ipa
+    samples = {
+        "ɡ": "ɡ", "dʑ": "dʑ", "s͈": "s͈", "ɕ͈": "ɕ͈",
+        "tɕ͈": "tɕ͈", "tɕʰ": "tɕʰ", "k͈": "k͈", "s͈ɕ͈dʑɡ": "s͈ɕ͈dʑɡ",
+    }
+    for ipa, expected in samples.items():
+        assert "".join(tokenize_ipa(ipa)) == expected
+        assert source_features_for_ipa(expected), ipa
