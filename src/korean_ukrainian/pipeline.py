@@ -24,16 +24,17 @@ def _load_lexicon():
                 break
         except FileNotFoundError:
             continue
-    additions_dir = _LEXICON_PATH.parent
-    if additions_dir.is_dir():
-        for add_path in sorted(additions_dir.glob("lexical_additions_*.csv")):
-            try:
-                with add_path.open(encoding="utf-8-sig",newline="") as stream:
-                    for row in csv.DictReader(stream):
-                        if row.get("input"):
-                            base[row["input"]] = row
-            except FileNotFoundError:
-                continue
+    additions_dirs = {_LEXICON_PATH.parent, _INSTALLED_LEXICON_PATH.parent}
+    for additions_dir in sorted(additions_dirs, key=str):
+        if additions_dir.is_dir():
+            for add_path in sorted(additions_dir.glob("lexical_additions_*.csv")):
+                try:
+                    with add_path.open(encoding="utf-8-sig",newline="") as stream:
+                        for row in csv.DictReader(stream):
+                            if row.get("input"):
+                                base[row["input"]] = row
+                except FileNotFoundError:
+                    continue
     return base
 
 LEXICAL_PRONUNCIATIONS=_load_lexicon()
