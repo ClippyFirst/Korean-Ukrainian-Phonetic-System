@@ -5,7 +5,9 @@ on:
       - "src/korean_ukrainian/g2pk_engine.py"
       - "src/korean_ukrainian/api.py"
       - "src/korean_ukrainian/cli.py"
+      - "src/korean_ukrainian/pipeline.py"
       - "pyproject.toml"
+      - "data/korean/lexical_additions_2026-10-15-g2pk.csv"
       - "tests/test_g2pk_engine.py"
       - ".github/workflows/g2pk-integration.yml"
   workflow_dispatch:
@@ -13,11 +15,15 @@ jobs:
   g2pk-integration:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
           cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e ".[dev,g2pk]"
