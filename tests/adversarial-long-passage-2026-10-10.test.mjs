@@ -86,7 +86,7 @@ const adversarialPassages = [
 for (const passageCase of adversarialPassages) {
   test('adversarial prose remains fully resolved: ' + passageCase.name, () => {
     const result = engine.convert(passageCase.text);
-    assert.equal(result.issues.length, 0, passageCase.name + ': no engine issues');
+    assert.equal(result.issues.length, 0, passageCase.name + ': no engine issues: ' + JSON.stringify(result.issues));
     assert.equal(
       result.trace.filter((item) => item.status === 'unresolved').length,
       0,
