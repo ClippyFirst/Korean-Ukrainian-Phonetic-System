@@ -35,7 +35,7 @@ test('§30(3): saisiot before 이 yields the documented ㄴㄴ insertion sequenc
   const cases = [
     ['깻잎', '깬닙', 'kɛn nip̚'],
     ['나뭇잎', '나문닙', 'na mun nip̚'],
-    ['베갯잇', '베갠닏', 'pe gɛn nit̚'],
+    ['베갯잇', '베갠닏', 'pe ɡɛn nit̚'],
     ['도리깻열', '도리깬녈', 'to ɾi gɛn ɲʌl'],
   ];
   for (const [input, surface, ipa] of cases) {
