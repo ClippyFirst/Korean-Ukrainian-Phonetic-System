@@ -61,7 +61,7 @@ A machine-readable, source-linked seed set now runs through both the browser eng
 - [Browser regression and schema checks](tests/normative-gold-seed-2026-10-15.test.mjs)
 - [Python research-engine cross-check](tests/test_normative_gold_seed.py)
 
-The 98 seed cases are cross-linked to existing rule-focused regressions, not represented as a fully independent audit of every rule. CI must pass before adding cases or upgrading their validation status. Python reconstructs the surface form from the post-rule phonological fields rather than reusing the input spelling, which guards against stale syllable-index bugs.
+The 100 seed cases are cross-linked to existing rule-focused regressions, not represented as a fully independent audit of every rule. CI must pass before adding cases or upgrading their validation status. Python reconstructs the surface form from the post-rule phonological fields rather than reusing the input spelling, which guards against stale syllable-index bugs.
 
 ## External normative test assets and dictionary controls
 
