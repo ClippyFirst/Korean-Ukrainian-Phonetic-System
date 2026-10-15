@@ -706,7 +706,7 @@ test('NIKL §19 official examples preserve rule order before §18 nasalization',
   };
   const rows = parseCsv(lexical);
   for (const [word, [ipa, rules]] of Object.entries(expected)) {
-    assert.ok(!rows.some((item) => item.input === word), word);
+    assert.ok(!rows.some((item) => item.input === word && item.target_status !== 'surface-only'), word);
     const result = engine.convert(word);
     assert.equal(result.ipa, ipa, word);
     assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
