@@ -10,7 +10,7 @@ function hasNInsertion(result) {
   return result.trace.some((item) => item.rules.includes('phrase-n-insertion-§29'));
 }
 
-test('§29: official standard and NIKL Q&A phrase-boundary examples receive the narrow insertion trace', () => {
+test('§29: every exact licensed phrase-boundary example receives the narrow insertion trace', () => {
   const licensed = [
     '한 일',
     '옷 입다',
