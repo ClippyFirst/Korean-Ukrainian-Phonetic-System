@@ -6,12 +6,20 @@ from pathlib import Path
 from typing import Any
 
 from .pipeline import analyze_korean, transliterate_korean
+from .g2pk_engine import transliterate_with_g2pk
 
 
-def _result(text: str, mode: str) -> dict[str, Any]:
+def _result(text: str, mode: str, pronunciation_engine: str = "native",
+            descriptive_pronunciation: bool = False) -> dict[str, Any]:
+    if pronunciation_engine not in {"native", "g2pk"}:
+        raise ValueError("pronunciation_engine must be 'native' or 'g2pk'")
     if mode == "decompose":
+        if pronunciation_engine != "native":
+            raise ValueError("decompose mode is available only with pronunciation_engine='native'")
         return {"input": text, "analysis": analyze_korean(text)}
     if mode == "transliterate":
+        if pronunciation_engine == "g2pk":
+            return transliterate_with_g2pk(text, descriptive=descriptive_pronunciation)
         return transliterate_korean(text)
     raise ValueError(f"unsupported mode: {mode}")
 
@@ -72,7 +80,9 @@ def _write_rows(path: Path, output_format: str, rows: list[dict[str, Any]], head
     raise ValueError(f"unsupported output format: {output_format}")
 
 
-def run_batch(input_path: Path, output_path: Path, input_format: str, output_format: str, column: str, sheet: str | None, mode: str) -> int:
+def run_batch(input_path: Path, output_path: Path, input_format: str, output_format: str,
+              column: str, sheet: str | None, mode: str, pronunciation_engine: str = "native",
+              descriptive_pronunciation: bool = False) -> int:
     rows, headers = _read_rows(input_path, input_format, column, sheet)
     output_rows: list[dict[str, Any]] = []
     extra = ["input", "ukrainian_orthography", "ipa", "analysis_status", "result_json"]
@@ -82,7 +92,7 @@ def run_batch(input_path: Path, output_path: Path, input_format: str, output_for
             result = {"input": text, "error": "empty input"}
         else:
             try:
-                result = _result(text, mode)
+                result = _result(text, mode, pronunciation_engine, descriptive_pronunciation)
             except Exception as exc:
                 result = {"input": text, "error": f"{type(exc).__name__}: {exc}"}
         enriched = dict(row)
@@ -106,6 +116,9 @@ def build_parser() -> argparse.ArgumentParser:
     one = sub.add_parser("analyze", help="Analyze one Korean string")
     one.add_argument("text")
     one.add_argument("--mode", choices=["decompose", "transliterate"], default="transliterate")
+    one.add_argument("--pronunciation-engine", choices=["native", "g2pk"], default="native")
+    one.add_argument("--descriptive-pronunciation", action="store_true",
+                     help="Use g2pK's descriptive mode (only with --pronunciation-engine g2pk)")
 
     batch = sub.add_parser("batch", help="Process TXT, CSV or XLSX in batch")
     batch.add_argument("input", type=Path)
@@ -115,17 +128,23 @@ def build_parser() -> argparse.ArgumentParser:
     batch.add_argument("--column", default="text", help="Input text column for CSV/XLSX")
     batch.add_argument("--sheet", default=None, help="Excel worksheet name")
     batch.add_argument("--mode", choices=["decompose", "transliterate"], default="transliterate")
+    batch.add_argument("--pronunciation-engine", choices=["native", "g2pk"], default="native")
+    batch.add_argument("--descriptive-pronunciation", action="store_true",
+                     help="Use g2pK's descriptive mode (only with --pronunciation-engine g2pk)")
     return p
 
 
 def main() -> int:
     args = build_parser().parse_args()
     if args.command == "analyze":
-        print(json.dumps(_result(args.text, args.mode), ensure_ascii=False, indent=2))
+        print(json.dumps(_result(args.text, args.mode, args.pronunciation_engine,
+                                 args.descriptive_pronunciation), ensure_ascii=False, indent=2))
         return 0
     input_format = args.input_format or args.input.suffix.lower().lstrip(".")
     output_format = args.output_format or ("jsonl" if args.output.suffix.lower() in {".jsonl", ".ndjson"} else args.output.suffix.lower().lstrip("."))
-    count = run_batch(args.input, args.output, input_format, output_format, args.column, args.sheet, args.mode)
+    count = run_batch(args.input, args.output, input_format, output_format, args.column,
+                      args.sheet, args.mode, args.pronunciation_engine,
+                      args.descriptive_pronunciation)
     print(f"processed={count} output={args.output}")
     return 0
 
