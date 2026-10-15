@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Корейський текст → практичний український запис за авторською фонетично-графемною системою.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none';">
   <title>한국어 / УКРАЇНСЬКА</title>
@@ -73,7 +73,13 @@
     </div>
   </section>
 
-  <!-- remaining page structure continues with stress panel, results, etc. from original -->
+  <section class="stress-panel" aria-labelledby="stress-heading">
+    <div class="section-title"><span class="section-number">A+</span><div><p class="section-kicker">Наголос</p><h2 id="stress-heading">Опційний наголос</h2></div></div>
+    <label class="sr-only" for="stress-input">Склад з наголосом</label>
+    <input id="stress-input" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Номер складу (1…n)" autocomplete="off">
+    <p class="stress-hint">Необов’язково. Якщо вказано — наголошений склад у UA-виводі позначається великою літерою.</p>
+  </section>
+
   <section id="empty-state" class="empty-state" aria-live="polite">
     <div class="empty-glyph" aria-hidden="true">한</div>
     <div><strong>Тут з’явиться результат</strong><span>Введіть корейський текст або скористайтеся прикладом.</span></div>
@@ -101,8 +107,15 @@
       </article>
     </div>
     <div id="issue-state" class="issue-state" hidden><p id="issue-text"></p></div>
-    <div id="variant-panel" class="variant-panel" hidden><div class="section-title"><span class="section-number">B+</span><div><p class="section-kicker">Варіанти</p><h3>Альтернативні читання</h3></div></div><div id="variant-list" class="trace-list"></div></div>
-    <div class="trace-panel"><div class="section-title"><span class="section-number">C</span><div><p class="section-kicker">Трасування</p><h3>Поскладовий розбір</h3></div></div><div class="trace-columns"><span>Джерело</span><span>Вихід</span><span>Правила / IPA</span><span>Статус</span></div><div id="trace-list" class="trace-list"></div></div>
+    <div id="variant-panel" class="variant-panel" hidden>
+      <div class="section-title"><span class="section-number">B+</span><div><p class="section-kicker">Варіанти</p><h3>Альтернативні читання</h3></div></div>
+      <div id="variant-list" class="trace-list"></div>
+    </div>
+    <div class="trace-panel">
+      <div class="section-title"><span class="section-number">C</span><div><p class="section-kicker">Трасування</p><h3>Поскладовий розбір</h3></div></div>
+      <div class="trace-columns"><span>Джерело</span><span>Вихід</span><span>Правила / IPA</span><span>Статус</span></div>
+      <div id="trace-list" class="trace-list"></div>
+    </div>
   </section>
 
   <div id="live-region" class="sr-only" aria-live="polite"></div>
