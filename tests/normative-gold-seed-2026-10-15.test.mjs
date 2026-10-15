@@ -28,6 +28,9 @@ test('normative seed fixture has unique IDs, source provenance, and explicit unc
       item.id + ': exact regression references are required');
     for (const ref of item.regressionRefs) {
       assert.ok(ref.path && ref.testName, item.id + ': regression reference needs both path and exact test name');
+      const regressionSource = readFileSync(new URL('../' + ref.path, import.meta.url), 'utf8');
+      assert.ok(regressionSource.includes(ref.testName),
+        item.id + ': exact regression test title not found in ' + ref.path + ': ' + ref.testName);
     }
     assert.equal(item.validationStatus, 'cross-linked-existing-regression',
       item.id + ': do not imply independent audit when only linked to an existing regression');
