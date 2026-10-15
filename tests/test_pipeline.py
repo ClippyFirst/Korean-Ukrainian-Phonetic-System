@@ -179,3 +179,5 @@ def test_ipa_tokenizer_accepts_browser_surface_inventory():
     for ipa, expected in samples.items():
         assert "".join(tokenize_ipa(ipa)) == expected
         assert source_features_for_ipa(expected), ipa
+    assert source_features_for_ipa("ɡ")["voice"] == "1"
+    assert source_features_for_ipa("dʑ")["voice"] == "1"
