@@ -32,8 +32,26 @@ test('normative seed fixture has unique IDs, source provenance, and explicit unc
       assert.ok(regressionSource.includes(ref.testName),
         item.id + ': exact regression test title not found in ' + ref.path + ': ' + ref.testName);
     }
-    assert.equal(item.validationStatus, 'cross-linked-existing-regression',
-      item.id + ': do not imply independent audit when only linked to an existing regression');
+    const allowedValidationStatuses = new Set([
+      'official-standard-example-checked',
+      'official-dictionary-entry-checked',
+      'rule-derived-control-not-explicitly-listed',
+    ]);
+    assert.ok(allowedValidationStatuses.has(item.validationStatus),
+      item.id + ': validation status must state the actual evidence level');
+    if (item.validationStatus === 'official-standard-example-checked' ||
+        item.validationStatus === 'official-dictionary-entry-checked') {
+      assert.ok(item.evidenceExcerpt, item.id + ': independently checked source excerpt is required');
+      assert.ok(item.evidenceExcerpt.includes(item.input),
+        item.id + ': evidence excerpt must identify the input form');
+      assert.ok(item.expectedSurfaceForms.some((surface) => item.evidenceExcerpt.includes(surface)),
+        item.id + ': evidence excerpt must support an expected Korean surface form');
+    } else {
+      assert.equal(item.evidenceExcerpt, null,
+        item.id + ': do not fabricate an exact source quote for a derived control');
+      assert.ok(item.secondaryEvidenceUrl || item.evidenceNote,
+        item.id + ': derived controls must explain the derivation or link secondary evidence');
+    }
   }
 });
 
