@@ -3956,6 +3956,250 @@
         }
       ],
       "evidenceExcerpt": "국밥[국빱]"
+    },
+    {
+      "id": "NIKL-QNA-MASS-값있다",
+      "input": "값있다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "가빋따"
+      ],
+      "expectedProjectIpa": [
+        "ka bit̚ t͈a"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "evidenceType": "official-online-qna-example",
+      "evidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316101",
+      "evidenceNote": "Mass source pass (2026-10-15): NIKL Q&A directly confirms [가빋따] and explicitly says §29 ㄴ-insertion is not automatic: 값있다 is a negative control against overapplying insertion. This citation establishes the lexical reading and §29 non-application, not every stage of the surface derivation. Ukrainian target provisional. The project IPA is its own broad-IPA rendering; NIKL Q&A confirms Korean surface pronunciation, not IPA.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/normative-gold-seed-2026-10-15.test.mjs",
+          "testName": "source-linked seed cases match the declared Korean surface forms and project IPA"
+        }
+      ],
+      "evidenceExcerpt": "값있다[가빋따]"
+    },
+    {
+      "id": "NIKL-QNA-MASS-곧이어",
+      "input": "곧이어",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "고디어"
+      ],
+      "expectedProjectIpa": [
+        "ko di ʌ"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "evidenceType": "official-online-qna-example",
+      "evidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316101",
+      "evidenceNote": "Mass source pass (2026-10-15): NIKL Q&A directly confirms [고디어] and explicitly says §29 ㄴ-insertion does not occur in this lexical item. Negative control against overapplying insertion from sound environment alone. Ukrainian target provisional. The project IPA is its own broad-IPA rendering; NIKL Q&A confirms Korean surface pronunciation, not IPA.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/normative-gold-seed-2026-10-15.test.mjs",
+          "testName": "source-linked seed cases match the declared Korean surface forms and project IPA"
+        }
+      ],
+      "evidenceExcerpt": "곧이어[고디어]"
+    },
+    {
+      "id": "NIKL-QNA-MASS-공업용",
+      "input": "공업용",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "공엄뇽"
+      ],
+      "expectedProjectIpa": [
+        "koŋ ʌm njoŋ"
+      ],
+      "ruleIds": [
+        "NIKL-18",
+        "NIKL-29"
+      ],
+      "evidenceType": "official-online-qna-example",
+      "evidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=311728",
+      "evidenceNote": "Mass source pass (2026-10-15): NIKL Q&A explicitly confirms [공엄뇽]. Article mapping §§18, 29: §29 licenses ㄴ-insertion in the compound and §18 accounts for nasalization of ㅂ before inserted ㄴ. Exact compound record prevents unsupported generalization. Ukrainian target provisional. The project IPA is its own broad-IPA rendering; NIKL Q&A confirms Korean surface pronunciation, not IPA.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/normative-gold-seed-2026-10-15.test.mjs",
+          "testName": "source-linked seed cases match the declared Korean surface forms and project IPA"
+        }
+      ],
+      "evidenceExcerpt": "공업용[공엄뇽]"
+    },
+    {
+      "id": "NIKL-QNA-MASS-꽃잎",
+      "input": "꽃잎",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "꼰닙"
+      ],
+      "expectedProjectIpa": [
+        "k͈on nip̚"
+      ],
+      "ruleIds": [
+        "NIKL-9",
+        "NIKL-29",
+        "NIKL-18"
+      ],
+      "evidenceType": "official-online-qna-example",
+      "evidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=330938",
+      "evidenceNote": "Mass source pass (2026-10-15): NIKL Q&A directly confirms 꽃잎[꼰닙]. Article mapping §§9, 18, 29: coda ㅊ neutralizes to [ㄷ], §29 licenses ㄴ-insertion in this compound, and §18 nasal assimilation yields [ㄴㄴ]. Keep this rule scoped to the compound 꽃잎. Ukrainian target model-selected. The project IPA is its own broad-IPA rendering; NIKL Q&A confirms Korean surface pronunciation, not IPA.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/normative-gold-seed-2026-10-15.test.mjs",
+          "testName": "source-linked seed cases match the declared Korean surface forms and project IPA"
+        }
+      ],
+      "evidenceExcerpt": "꽃잎[꼰닙]"
+    },
+    {
+      "id": "NIKL-QNA-MASS-밭이랑",
+      "input": "밭이랑",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "반니랑"
+      ],
+      "expectedProjectIpa": [
+        "pan ni ɾaŋ"
+      ],
+      "ruleIds": [
+        "NIKL-9",
+        "NIKL-29",
+        "NIKL-18"
+      ],
+      "evidenceType": "official-online-qna-example",
+      "evidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=335881",
+      "evidenceNote": "Mass source pass (2026-10-15): NIKL Q&A explicitly confirms [반니랑]. Article mapping §§9, 18, 29: §29 licenses ㄴ-insertion in this compound; final ㅌ neutralizes to [ㄷ] (§9), then undergoes nasal assimilation before inserted ㄴ (§18). Keep this analysis restricted to lexical compound 밭이랑, not homographic 밭 + 이랑 as a particle phrase. Ukrainian target provisional. The project IPA is its own broad-IPA rendering; NIKL Q&A confirms Korean surface pronunciation, not IPA.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/normative-gold-seed-2026-10-15.test.mjs",
+          "testName": "source-linked seed cases match the declared Korean surface forms and project IPA"
+        }
+      ],
+      "evidenceExcerpt": "밭이랑[반니랑]"
+    },
+    {
+      "id": "NIKL-QNA-MASS-삯일과",
+      "input": "삯일과",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "상닐과"
+      ],
+      "expectedProjectIpa": [
+        "saŋ nil ɡwa"
+      ],
+      "ruleIds": [
+        "NIKL-29",
+        "NIKL-19"
+      ],
+      "evidenceType": "rule-derived-control",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "Mass source pass (2026-10-15): Rule-derived from §29 ㄴ insertion in the compound 삯일 and §19 nasal assimilation: the resulting ㄴ affects coda ㄱ, yielding [상닐]; 과 follows regularly. Ukrainian target is provisional. The project IPA is its own broad-IPA rendering; NIKL Q&A confirms Korean surface pronunciation, not IPA.",
+      "validationStatus": "rule-derived-control-not-explicitly-listed",
+      "regressionRefs": [
+        {
+          "path": "tests/normative-gold-seed-2026-10-15.test.mjs",
+          "testName": "source-linked seed cases match the declared Korean surface forms and project IPA"
+        }
+      ],
+      "evidenceExcerpt": null,
+      "secondaryEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
+    },
+    {
+      "id": "NIKL-QNA-MASS-음용",
+      "input": "음용",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "으묭"
+      ],
+      "expectedProjectIpa": [
+        "ɯ mjoŋ"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "evidenceType": "official-online-qna-example",
+      "evidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=279931",
+      "evidenceNote": "Mass source pass (2026-10-15): NIKL Q&A directly confirms [으묭] and discusses §29: ㄴ-insertion is not obligatory even in an apparently similar environment. Negative control against generalizing §29 to every consonant + 용 sequence. Ukrainian target provisional. The project IPA is its own broad-IPA rendering; NIKL Q&A confirms Korean surface pronunciation, not IPA.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/normative-gold-seed-2026-10-15.test.mjs",
+          "testName": "source-linked seed cases match the declared Korean surface forms and project IPA"
+        }
+      ],
+      "evidenceExcerpt": "음용[으묭]"
+    },
+    {
+      "id": "NIKL-QNA-MASS-집안일",
+      "input": "집안일",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "지반닐"
+      ],
+      "expectedProjectIpa": [
+        "tɕi ban nil"
+      ],
+      "ruleIds": [
+        "NIKL-18",
+        "NIKL-29"
+      ],
+      "evidenceType": "official-online-qna-example",
+      "evidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=335881",
+      "evidenceNote": "Mass source pass (2026-10-15): NIKL Q&A explicitly confirms [지반닐]. Article mapping §§18, 29: §29 licenses ㄴ-insertion in the compound; nasal assimilation of ㅂ before ㄴ gives [반]. Preserve the compound boundary and do not apply this rewrite across arbitrary phrase boundaries. Ukrainian target provisional. The project IPA is its own broad-IPA rendering; NIKL Q&A confirms Korean surface pronunciation, not IPA.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/normative-gold-seed-2026-10-15.test.mjs",
+          "testName": "source-linked seed cases match the declared Korean surface forms and project IPA"
+        }
+      ],
+      "evidenceExcerpt": "집안일[지반닐]"
+    },
+    {
+      "id": "NIKL-QNA-MASS-홑이불을",
+      "input": "홑이불을",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "혼니부를"
+      ],
+      "expectedProjectIpa": [
+        "hon ni bu ɾɯl"
+      ],
+      "ruleIds": [
+        "NIKL-29",
+        "NIKL-9"
+      ],
+      "evidenceType": "rule-derived-control",
+      "evidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317202",
+      "evidenceNote": "Mass source pass (2026-10-15): NIKL directly confirms 홑이불[혼니불]; §29 covers ㄴ insertion and §§9, 18 cover final neutralization and nasal assimilation. The exact ordering of these changes is not settled by NIKL, so the entry records the attested surface form without asserting a disputed order. Particle 을 links to the final ㅜ as [부를]. Ukrainian target is provisional. The project IPA is its own broad-IPA rendering; NIKL Q&A confirms Korean surface pronunciation, not IPA.",
+      "validationStatus": "rule-derived-control-not-explicitly-listed",
+      "regressionRefs": [
+        {
+          "path": "tests/normative-gold-seed-2026-10-15.test.mjs",
+          "testName": "source-linked seed cases match the declared Korean surface forms and project IPA"
+        }
+      ],
+      "evidenceExcerpt": null,
+      "secondaryEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317202"
     }
   ],
   "validationPolicy": "Statuses distinguish exact official examples, official dictionary entries, and controls derived from a general rule but not explicitly listed. Project IPA remains a project transcription target and is not an official NIKL IPA prescription."
