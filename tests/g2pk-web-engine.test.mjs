@@ -37,7 +37,7 @@ test('browser G2P implements key standard pronunciation controls',()=>{
 test('browser G2P preserves punctuation, spaces, and protected Latin/digits',()=>{
   const input='값이, old school 12시! 같이';
   const result=g2p.convert(input);
-  assert.ok(result.ukrainian.includes(', old school 12시! '));
+  assert.ok(result.ukrainian.includes(', old school 12ші! '));
   assert.ok(result.surfaceHangul.includes('old school 12시!'));
   assert.equal(result.source,input);
 });
