@@ -69,7 +69,7 @@ export function decompose(ch){
 }
 function createMap(csv){return new Map(parseCsv(csv).map(r=>[r.layer+':'+r.input,r]));}
 function get(map,layer,key){return map.get(layer+':'+key);}
-function isJamoChar(ch){return typeof ch==='string'&&/^[ㄱ-ㅎㅏ-ㅣ]$/u.test(ch);}
+function isJamoChar(ch){return typeof ch==='string'&&(/^[ㄱ-ㅎㅏ-ㅣ]$/u.test(ch)||'ㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ'.includes(ch));}
 function isPreservableIpaLiteral(ch){return typeof ch==='string'&&/^[\s\p{P}]$/u.test(ch);}
 function isHangulUnit(units,i){return Boolean(units[i]&&units[i].type==='hangul');}
 function nextHangul(units,i){return isHangulUnit(units,i+1)?units[i+1]:null;}
@@ -796,14 +796,12 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
     const d=decompose(ch);
     if(d)return {type:'hangul',...d};
     if(isJamoChar(ch)){
-      const previous=characters[index-1]||'';
-      const next=characters[index+1]||'';
-      const adjacentHangul=[previous,next].some(value=>Boolean(decompose(value)));
-      const adjacentLatinOrDigit=[previous,next].some(value=>/[A-Za-z0-9]/u.test(value));
-      // A jamo immediately attached to Hangul can be metalinguistic prose
-      // (e.g. "ㅎ과 뒤따르는 자음"). Do not phonologize it, but do not treat
-      // that explanatory notation as malformed mixed-script residue.
-      if(adjacentHangul&&!adjacentLatinOrDigit)return {type:'literal',char:ch};
+      const context=characters.slice(Math.max(0,index-2),Math.min(characters.length,index+3)).filter((_,offset)=>Math.abs(Math.max(0,index-2)+offset-index)>0);
+      const nearbyHangul=context.some(value=>Boolean(decompose(value)));
+      const nearbyLatinOrDigit=context.some(value=>/[A-Za-z0-9]/u.test(value));
+      // Jamo used as a linguistic label in Korean explanatory prose (e.g.
+      // "ㅎ과", "ㄴ-삽입") is notation, not a pronunciation unit.
+      if(nearbyHangul&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
       return {type:'jamo',char:ch};
     }
     return {type:'literal',char:ch};
