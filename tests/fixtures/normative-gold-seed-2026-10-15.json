@@ -407,22 +407,22 @@
       "evidenceExcerpt": "신라[실라]"
     },
     {
-      "id": "NIKL-20-TTULNEUN",
-      "input": "뚫는",
+      "id": "NIKL-20-NALRO",
+      "input": "난로",
       "context": null,
       "phraseMode": "word",
       "expectedSurfaceForms": [
-        "뚤른"
+        "날로"
       ],
       "expectedProjectIpa": [
-        "t͈ul lɯn"
+        "nal lo"
       ],
       "ruleIds": [
         "NIKL-20"
       ],
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "Explicit liquid-assimilation example without vowel-length or aspirated-onset differences between the current browser and Python runtimes.",
+      "evidenceNote": "Explicit liquid-assimilation example. The surface form is shared by both runtimes; the project records the current IPA length-marking discrepancy rather than normalizing it away.",
       "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
@@ -430,7 +430,11 @@
           "testName": "§20 every listed general liquid-assimilation example is computed algorithmically"
         }
       ],
-      "evidenceExcerpt": "뚫는[뚤른]"
+      "evidenceExcerpt": "난로[날로]",
+      "expectedPythonIpa": [
+        "naːl lo"
+      ],
+      "runtimeDivergenceNote": "Known runtime difference to preserve explicitly: the browser engine currently emits nal lo, while the Python research engine retains the lexical long-vowel marker naːl lo. This is not an alternate official pronunciation; it is a cross-runtime implementation discrepancy to resolve in a later dedicated vowel-length alignment pass."
     }
   ],
   "validationPolicy": "Statuses distinguish exact official examples, official dictionary entries, and controls derived from a general rule but not explicitly listed. Project IPA remains a project transcription target and is not an official NIKL IPA prescription."
