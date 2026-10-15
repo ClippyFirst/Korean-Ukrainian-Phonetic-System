@@ -37,7 +37,11 @@ const NIKL_27_ADNOMINAL_PHRASES=new Map([
 const NIKL_29_PHRASE_INSERTION=new Map([
   ['한 일',{onset:'ㄴ'}],['옷 입다',{coda:'ㄴ',onset:'ㄴ'}],
   ['먹은 엿',{onset:'ㄴ'}],['할 일',{onset:'ㄹ'}],
-  ['잘 입다',{onset:'ㄹ'}],['먹을 엿',{onset:'ㄹ'}]
+  ['잘 입다',{onset:'ㄹ'}],['먹을 엿',{onset:'ㄹ'}],
+  // Official NIKL Q&A expands the connected-phrase controls beyond the
+  // original six examples. These apply only when the phrase is spoken as
+  // one prosodic unit; a pause is not inferred from orthographic spacing.
+  ['무슨 일',{onset:'ㄴ'}],['끝난 일',{onset:'ㄴ'}],['않은 일',{onset:'ㄴ'}]
 ]);
 // §30(3) compound examples need a lexical compound boundary: do not treat
 // their written 사이시옷 as ordinary coda-to-vowel liaison when the exact
