@@ -66,8 +66,8 @@ test('redesigned workbench preserves accessible navigation and responsive result
   assert.match(html,/aria-current="page"/);
   assert.match(html,/class="method-line"/);
   assert.match(css,/:focus-visible/);
-  assert.match(css,/@media\\s*\\(max-width:\\s*720px\\)/);
-  assert.match(css,/@media\\s*\\(prefers-reduced-motion:reduce\\)/);
+  assert.match(css,/@media\s*\(max-width:\s*720px\)/);
+  assert.match(css,/@media\s*\(prefers-reduced-motion:reduce\)/);
   assert.match(css,/\\.result-card:first-child/);
 });
 
