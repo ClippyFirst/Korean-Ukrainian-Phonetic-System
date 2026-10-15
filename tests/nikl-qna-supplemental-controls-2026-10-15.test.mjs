@@ -10,7 +10,7 @@ const sourceRows = new Map(sources.slice(1).map((line) => {
   return [fields[0], fields];
 }));
 
-test('supplemental NIKL Q&A controls have traceable source-register entries and explicit evidence levels', () => {
+test('§29: supplemental NIKL Q&A controls have traceable source-register entries and explicit evidence levels', () => {
   assert.equal(manifest.schemaVersion, 1);
   assert.ok(manifest.cases.length >= 35, 'supplemental NIKL controls must retain the expanded source inventory');
   const ids = new Set();
