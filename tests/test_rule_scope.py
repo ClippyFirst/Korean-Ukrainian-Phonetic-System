@@ -97,7 +97,7 @@ def test_nikl_article_28_full_positive_compound_matrix_requires_exact_license():
         apply_ordered_rules(
             items,
             rule_ids=["R014"],
-            rule_licenses={f"R014:compound:{word}:{left}>{right}"},
+            rule_licenses={f"R014:compound:{word}:{left[-1]}>{right[0]}"},
         )
         assert items[boundary].onset == expected_fortis, f"{word}: licensed §28 fortition"
         
