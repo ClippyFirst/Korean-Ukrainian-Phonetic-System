@@ -1,9 +1,8 @@
 """Optional g2pK-backed Korean surface-pronunciation adapter.
 
-The upstream engine returns a pronunciation-spelling in Hangul, not IPA. This
-module therefore treats its output as a surface-form hypothesis and derives IPA
-from that output with the project's IPA renderer. It never silently falls back
-to the native rule engine.
+g2pK returns a pronunciation spelling in Hangul, not IPA. This adapter derives
+IPA from that surface form and restores a sourced lexical IPA entry only when
+the input word and g2pK's output exactly match the NIKL-backed record.
 """
 from __future__ import annotations
 
@@ -73,21 +72,56 @@ def pronounce_surface(text: str, *, descriptive: bool = False) -> str:
     return surface
 
 
-def _surface_ipa(surface: str) -> dict[str, Any]:
-    """Derive broad surface IPA from g2pK's pronunciation-spelling output."""
+def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
+    """Derive broad surface IPA and apply only exact, source-backed IPA controls."""
+    from .pipeline import LEXICAL_PRONUNCIATIONS
+
     display_parts: list[str] = []
     ipa_words: list[str] = []
     syllables: list[str] = []
     syllable_records: list[dict[str, Any]] = []
+    word_analyses: list[dict[str, Any]] = []
+    lexical_overrides: list[dict[str, str]] = []
+    source_words = re.findall(r"[가-힣]+", source_text)
+    source_index = 0
 
     for token in _SURFACE_TOKENS.findall(surface):
         if re.fullmatch(r"[가-힣]+", token):
             items = parse_syllables(token)
-            rendered = realize_syllables(items, level="broad")
-            display_parts.append(rendered["ipa"])
-            ipa_words.append(rendered["ipa"])
-            syllables.extend(rendered["syllables"])
+            source_word = source_words[source_index] if source_index < len(source_words) else ""
+            source_index += 1
+            entry = LEXICAL_PRONUNCIATIONS.get(source_word)
+            values = entry.get("ipa_syllables", "").split("|") if entry else []
+            exact_override = bool(
+                entry
+                and entry.get("surface_hangul") == token
+                and len(values) == len(items)
+                and all(values)
+            )
+            if exact_override:
+                word_ipa = ".".join(values)
+                syllables.extend(values)
+                lexical_overrides.append({
+                    "input": source_word,
+                    "surface_hangul": token,
+                    "ipa": word_ipa,
+                    "source": entry.get("source_url", ""),
+                    "notes": entry.get("rule_notes", ""),
+                })
+            else:
+                rendered = realize_syllables(items, level="broad")
+                word_ipa = rendered["ipa"]
+                syllables.extend(rendered["syllables"])
+            display_parts.append(word_ipa)
+            ipa_words.append(word_ipa)
             syllable_records.extend(item.to_dict() for item in items)
+            word_analyses.append({
+                "input": source_word,
+                "surface_hangul": token,
+                "ipa": word_ipa,
+                "ipa_syllables": word_ipa.split("."),
+                "status": "sourced-lexical-ipa-override" if exact_override else "derived-from-surface",
+            })
         else:
             # Keep punctuation and non-Korean material in a display-aligned
             # string, but never pretend it is part of the IPA-only field.
@@ -98,11 +132,15 @@ def _surface_ipa(surface: str) -> dict[str, Any]:
         "ipa": " ".join(ipa_words),
         "rendered_text": "".join(display_parts),
         "syllables": syllables,
+        "surface_syllables": syllable_records,
+        "word_analyses": word_analyses,
+        "lexical_overrides": lexical_overrides,
         "variants": [],
         "status": "ipa-derived-from-g2pk-surface-form",
         "surface_hangul": surface,
         "note": (
             "IPA is derived from g2pK's Hangul pronunciation spelling. "
+            "Sourced lexical IPA is restored only on an exact surface-form match. "
             "Punctuation and non-Korean text are preserved only in rendered_text."
         ),
     }
@@ -117,23 +155,33 @@ def phoneticize_with_g2pk(text: str, *, descriptive: bool = False,
             "phonemic and narrow modes are not inferred from its output."
         )
     surface = pronounce_surface(text, descriptive=descriptive)
-    ipa = _surface_ipa(surface)
+    ipa = _surface_ipa(surface, text)
+    rules = [{
+        "rule_id": "G2PK",
+        "name": "external-g2pK-pronunciation",
+        "changed": surface != text,
+        "status": "external-engine-output",
+        "confidence": "engine-defined",
+        "source": "https://github.com/kyubyong/g2pK",
+        "notes": (
+            "g2pK supplied the pronunciation spelling. The project does "
+            "not claim that g2pK exposes a trace for every applied rule."
+        ),
+    }]
+    rules.extend({
+        "rule_id": "LEXICON",
+        "name": "sourced-lexical-ipa-override",
+        "changed": True,
+        "status": "sourced-lexical-ipa-override",
+        "confidence": "high",
+        "source": entry["source"],
+        "license_context": entry["notes"],
+    } for entry in ipa["lexical_overrides"])
     return {
         "input": text,
         "surface_hangul": surface,
-        "surface_syllables": [],
-        "rules": [{
-            "rule_id": "G2PK",
-            "name": "external-g2pK-pronunciation",
-            "changed": surface != text,
-            "status": "external-engine-output",
-            "confidence": "engine-defined",
-            "source": "https://github.com/kyubyong/g2pK",
-            "notes": (
-                "g2pK supplied the pronunciation spelling. The project does "
-                "not claim that g2pK exposes a trace for every applied rule."
-            ),
-        }],
+        "surface_syllables": ipa["surface_syllables"],
+        "rules": rules,
         "ipa": ipa,
         "pronunciation_engine": "g2pK",
         "morphology_mode": "external-g2pK",
@@ -155,14 +203,16 @@ def transliterate_with_g2pk(text: str, *, descriptive: bool = False,
     output_parts: list[str] = []
     targets: list[dict[str, Any]] = []
     all_mapped = True
+    word_index = 0
+    analyses = pronunciation["ipa"]["word_analyses"]
 
     for token in _SURFACE_TOKENS.findall(surface):
         if not re.fullmatch(r"[가-힣]+", token):
             output_parts.append(token)
             continue
 
-        items = parse_syllables(token)
-        word_ipa = realize_syllables(items, level="broad")["ipa"]
+        word_ipa = analyses[word_index]["ipa"]
+        word_index += 1
         target = map_ipa_to_ukrainian(word_ipa, target_adapter)
         selected = _select_target(target)
         if not selected:
