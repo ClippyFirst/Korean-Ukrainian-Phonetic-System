@@ -116,7 +116,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     }
     const applied=ruleSets[i]||[];
     if(u.__palatalizationUnlicensed){
-      if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a formal morpheme boundary; add a sourced lexical pronunciation entry.');
+      if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a verified formal-morpheme boundary; add a sourced lexical pronunciation entry.');
       output[i]='';ipa[i]='';
       trace[i]={source:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
       continue;
