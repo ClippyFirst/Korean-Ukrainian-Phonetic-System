@@ -697,7 +697,7 @@ test('NIKL §11 lexical length and morphology exceptions preserve official readi
 
 test('NIKL §19 official examples preserve rule order before §18 nasalization', () => {
   const expected = {
-    '침략': ['tɕʰim njak̚', ['liquid-to-nasal-before-obstruent']],
+    '침략': ['tɕʰiːm njak̚', ['liquid-to-nasal-before-obstruent']],
     '강릉': ['kaŋ nɯŋ', ['liquid-to-nasal-before-obstruent']],
     '막론': ['maŋ non', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
     '석류': ['sʌŋ nju', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
