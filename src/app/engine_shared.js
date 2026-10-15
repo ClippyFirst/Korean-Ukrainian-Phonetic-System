@@ -77,6 +77,8 @@ function compose(onset,vowel,coda){
 }
 function createMap(csv){return new Map(parseCsv(csv).map(r=>[r.layer+':'+r.input,r]));}
 function get(map,layer,key){return map.get(layer+':'+key);}
+function isJamoChar(ch){return typeof ch==='string'&&(/^[ㄱ-ㅎㅏ-ㅣ]$/u.test(ch)||'ㄳㄵㄶㄺㄻㄼㄽㄾㅀㅄ'.includes(ch));}
+function isPreservableIpaLiteral(ch){return typeof ch==='string'&&/^[\\s\\p{P}]$/u.test(ch);}
 function isHangulUnit(units,i){return Boolean(units[i]&&units[i].type==='hangul');}
 function nextHangul(units,i){return isHangulUnit(units,i+1)?units[i+1]:null;}
 function prevHangul(units,i){return isHangulUnit(units,i-1)?units[i-1]:null;}
@@ -87,7 +89,7 @@ function representative(coda){return FINAL_REPRESENTATIVE[coda]??coda;}
 function renderStructured(units,values,separator){
   let result='';
   for(let i=0;i<units.length;i++){
-    if(units[i].type==='literal'){result+=units[i].char;continue;}
+    if(units[i].type!=='hangul'){if(units[i].type==='literal'&&isPreservableIpaLiteral(units[i].char))result+=units[i].char;continue;}
     const value=values[i]??'';
     // An unresolved syllable may have no IPA value. Do not emit a synthetic
     // syllable separator for that empty value: the original whitespace after
@@ -107,5 +109,5 @@ export {
   LEXICAL_B_CODA_PREFIXES, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
   NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
-  representative, renderStructured,
+  representative, isJamoChar, isPreservableIpaLiteral, renderStructured,
 };
