@@ -407,22 +407,22 @@
       "evidenceExcerpt": "신라[실라]"
     },
     {
-      "id": "NIKL-20-GWANGHANRU",
-      "input": "광한루",
+      "id": "NIKL-20-TTULNEUN",
+      "input": "뚫는",
       "context": null,
       "phraseMode": "word",
       "expectedSurfaceForms": [
-        "광할루"
+        "뚤른"
       ],
       "expectedProjectIpa": [
-        "kwaŋ hal lu"
+        "t͈ul lɯn"
       ],
       "ruleIds": [
         "NIKL-20"
       ],
       "evidenceType": "official-standard-example",
       "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "evidenceNote": "Explicit liquid-assimilation example with a non-aspirated onset, cross-checked by the shared browser/Python seed gate.",
+      "evidenceNote": "Explicit liquid-assimilation example without vowel-length or aspirated-onset differences between the current browser and Python runtimes.",
       "validationStatus": "official-standard-example-checked",
       "regressionRefs": [
         {
@@ -430,7 +430,7 @@
           "testName": "§20 every listed general liquid-assimilation example is computed algorithmically"
         }
       ],
-      "evidenceExcerpt": "광한루[광할루]"
+      "evidenceExcerpt": "뚫는[뚤른]"
     }
   ],
   "validationPolicy": "Statuses distinguish exact official examples, official dictionary entries, and controls derived from a general rule but not explicitly listed. Project IPA remains a project transcription target and is not an official NIKL IPA prescription."
