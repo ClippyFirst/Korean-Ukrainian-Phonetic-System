@@ -1,3 +1,12 @@
+/*
+ * Browser-only adaptation of ntdgo/korean-pronunciation 1.0.1, a JavaScript
+ * port of g2pK by Kyubyong Park. Licensed under the Apache License, Version 2.0.
+ * Modified for this project: ESM-relative imports and a browser-only pipeline;
+ * the CMU English dictionary, English transliteration, and numeral conversion
+ * are intentionally excluded because mixed-script literals are preserved by
+ * the surrounding adapter. See public/LICENSES/Apache-2.0.txt and
+ * public/THIRD_PARTY_NOTICES.txt.
+ */
 /**
  * Regular linking rules for Korean pronunciation.
  * Ported from g2pk/regular.py
