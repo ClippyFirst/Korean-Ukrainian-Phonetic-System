@@ -5,7 +5,7 @@
  * surface -> Ukrainian target from IPA. The browser never re-runs the native
  * orthographic phonology rules over a surface that is already normalized.
  */
-import { G2p } from 'korean-pronunciation';
+import { G2pBrowser } from '../vendor/g2pk/g2p-browser.ts';
 import { parseCsv } from './engine_shared.js';
 import { ipaSyllableToUkrainian } from './engine_ipa.js';
 
@@ -43,7 +43,7 @@ function renderTarget(trace) {
 }
 
 export function createG2pWebAdapter(engine, lexicalCsv = '') {
-  const g2p = new G2p();
+  const g2p = new G2pBrowser();
   const lexicon = new Map(parseCsv(lexicalCsv).map(row => [row.input, row]));
 
   function normalizeSurface(text) {
