@@ -174,12 +174,12 @@ These are **candidate cases**, not gold answers until individually sourced.
 
 The first implementation step has now landed on the working branch:
 
-- `tests/fixtures/normative-gold-seed-2026-10-15.json`: 11 source-linked controls for complex-coda liaison, lexical ㄼ behavior, coda neutralization + nasal assimilation, and fortition.
+- `tests/fixtures/normative-gold-seed-2026-10-15.json`: 16 source-linked controls spanning complex-coda liaison, lexical ㄼ behavior, palatalization, nasal assimilation, liquid assimilation, coda neutralization, and fortition.
 - `tests/normative-gold-seed-2026-10-15.test.mjs`: validates required provenance fields, unique IDs, exact regression references, and browser surface/IPA outputs.
 - `tests/test_normative_gold_seed.py`: runs the same fixture through the Python research engine and reconstructs Hangul from the post-rule onset/nucleus/coda fields before comparing the result. This avoids using the original spelling as a false proxy for the phonological surface.
 - README now links the shared fixture and the external-source audit.
 
-The fixture distinguishes `official-standard-example-checked`, `official-dictionary-entry-checked`, and `rule-derived-control-not-explicitly-listed`. The explicit examples and the `넓다` dictionary conjugation were checked against the official NIKL standard/dictionary pages; `값이` and `몫이` remain clearly labelled derived controls because they are not enumerated examples in §14. All 11 cases are also cross-linked to existing regression tests, and CI verifies the exact test-title references. This seed is not a claim that all rule subparagraphs have been independently re-audited.
+The fixture distinguishes `official-standard-example-checked`, `official-dictionary-entry-checked`, and `rule-derived-control-not-explicitly-listed`. The explicit examples and the `넓다` dictionary conjugation were checked against the official NIKL standard/dictionary pages; `값이` and `몫이` remain clearly labelled derived controls because they are not enumerated examples in §14. All 16 cases are also cross-linked to existing regression tests, and CI verifies the exact test-title references. This seed is not a claim that all rule subparagraphs have been independently re-audited.
 
 **CI result:** the GitHub Actions run for commit `a8fd3874656c82f7b5c145e038924525a7eb876f` completed successfully. Both **Browser regression tests and build** and **Python regression and data integrity** passed. Run: <https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38749729171>.
 
@@ -188,3 +188,8 @@ This is a validated first cross-runtime gate, not proof of complete linguistic c
 ## Audit limitations
 
 This is a source/repository inspection, not a claim that every row in an external test suite has been validated. The files and READMEs listed above were inspected on 2026-10-15. The next quality step is a row-by-row source audit and the addition of independently validated fixtures—not bulk importing third-party outputs.
+
+
+### Seed expansion follow-up (2026-10-15)
+
+The shared cross-runtime seed was expanded from 11 to 16 cases. The five new controls are exact examples from NIKL §§17, 18, and 20: 굳이[구지], 국물[궁물], 먹는[멍는], 신라[실라], and 난로[날로]. Each points to the official standard and an exact existing regression-test title. This improves rule-family diversity but does not establish exhaustive coverage of any article; CI is the arbiter for whether the project engines reproduce the declared project IPA and surface forms.
