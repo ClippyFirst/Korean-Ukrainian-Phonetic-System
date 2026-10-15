@@ -69,6 +69,8 @@ export function decompose(ch){
 }
 function createMap(csv){return new Map(parseCsv(csv).map(r=>[r.layer+':'+r.input,r]));}
 function get(map,layer,key){return map.get(layer+':'+key);}
+function isJamoChar(ch){return typeof ch==='string'&&/^[ㄱ-ㅎㅏ-ㅣ]$/u.test(ch);}
+function isPreservableIpaLiteral(ch){return typeof ch==='string'&&/^[\\s\\p{P}\\p{S}]$/u.test(ch);}
 function isHangulUnit(units,i){return Boolean(units[i]&&units[i].type==='hangul');}
 function nextHangul(units,i){return isHangulUnit(units,i+1)?units[i+1]:null;}
 function prevHangul(units,i){return isHangulUnit(units,i-1)?units[i-1]:null;}
@@ -76,10 +78,16 @@ function representative(coda){return FINAL_REPRESENTATIVE[coda]??coda;}
 
 // Preserve literal whitespace and punctuation instead of joining them with
 // artificial IPA/analysis separators (which previously produced triple spaces).
-function renderStructured(units,values,separator){
+function renderStructured(units,values,separator,{ipa=false}={}){
   let result='';
   for(let i=0;i<units.length;i++){
-    if(units[i].type==='literal'){result+=units[i].char;continue;}
+    const unit=units[i];
+    if(unit.type!=='hangul'){
+      // Keep whitespace and punctuation as readable boundaries, but never
+      // serialize raw Latin, digits, or standalone jamo into the IPA/analysis.
+      if(unit.type==='literal'&&(!ipa||isPreservableIpaLiteral(unit.char)))result+=unit.char;
+      continue;
+    }
     const value=values[i]??'';
     // An unresolved syllable may have no IPA value. Do not emit a synthetic
     // syllable separator for that empty value: the original whitespace after
@@ -777,20 +785,33 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
       };
     }
   }
-  const units=[...text].map(ch=>{const d=decompose(ch);return d?{type:'hangul',...d}:{type:'literal',char:ch};});
+  const units=[...text].map(ch=>{
+    const d=decompose(ch);
+    if(d)return {type:'hangul',...d};
+    if(isJamoChar(ch))return {type:'jamo',char:ch};
+    return {type:'literal',char:ch};
+  });
   // Keep orthographic decomposition immutable: contextual rules mutate the
   // working surface representation, not the source Hangul structure.
   const originalUnits=units.map(u=>({...u}));
   const rules=applyContextualRules(units,text,{morphologyMode});
-  const output=units.map(u=>u.char);
-  const ipa=units.map(u=>u.type==='literal'?u.char:'');
+  const output=units.map(u=>u.char??'');
+  const ipa=units.map(u=>u.type==='literal'&&isPreservableIpaLiteral(u.char)?u.char:'');
   const analysis=units.map(u=>u.type==='literal'?u.char:'');
-  const trace=units.map(u=>u.type==='literal'?{source:u.char,status:'literal',rules:[],output:u.char,ipa:u.char}:null);
+  const trace=units.map(u=>u.type==='literal'?{source:u.char,status:'literal',rules:[],output:u.char,ipa:isPreservableIpaLiteral(u.char)?u.char:''}:u.type==='jamo'?{source:u.char,status:'unsupported-jamo',rules:['unsupported-standalone-jamo'],output:u.char,ipa:''}:null);
   const issues=[];
+  const hasHangulSyllables=units.some(u=>u.type==='hangul');
+  for(const u of units){
+    if(u.type==='jamo')issues.push(u.char+': standalone compatibility jamo is not a syllable; IPA is withheld.');
+    else if(u.type==='literal'&&!isPreservableIpaLiteral(u.char))issues.push(u.char+': non-Korean input is preserved only in the Ukrainian passthrough column, not IPA.');
+  }
+  if(!hasHangulSyllables&&!units.some(u=>u.type==='jamo')){
+    issues.push('Input contains no Hangul syllable; pronunciation cannot be generated.');
+  }
 
   for(let i=0;i<units.length;i++){
     const u=units[i];
-    if(u.type==='literal')continue;
+    if(u.type!=='hangul')continue;
     const next=nextHangul(units,i), prev=prevHangul(units,i);
     const applied=rules[i];
     const original=originalUnits[i];
@@ -912,12 +933,14 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
     trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa};
   }
 
-  const status=issues.length?'unresolved':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
+  const hasJamo=units.some(u=>u.type==='jamo');
+  const hasUnsupportedLiteral=units.some(u=>u.type==='literal'&&!isPreservableIpaLiteral(u.char));
+  const status=!hasHangulSyllables&&!hasJamo?'non-korean-input':issues.length?'unresolved':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
   return{
     source:text,
     surfaceHangul:'',
     ukrainian:output.join(''),
-    ipa:renderStructured(units,ipa,' '),
+    ipa:renderStructured(units,ipa,' ',{ipa:true}),
     analysis:renderStructured(units,analysis,' · '),
     trace,
     variants:genericVowelVariants(text,units,originalUnits,ipa,output,status),
