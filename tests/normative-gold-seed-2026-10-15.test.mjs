@@ -24,6 +24,11 @@ test('normative seed fixture has unique IDs, source provenance, and explicit unc
     assert.ok(Array.isArray(item.ruleIds) && item.ruleIds.length, item.id + ': rule IDs are required');
     assert.match(item.evidenceUrl, /^https:\/\//, item.id + ': evidence URL is required');
     assert.ok(item.evidenceNote, item.id + ': explain why this evidence applies');
+    assert.ok(Array.isArray(item.regressionRefs) && item.regressionRefs.length > 0,
+      item.id + ': exact regression references are required');
+    for (const ref of item.regressionRefs) {
+      assert.ok(ref.path && ref.testName, item.id + ': regression reference needs both path and exact test name');
+    }
     assert.equal(item.validationStatus, 'cross-linked-existing-regression',
       item.id + ': do not imply independent audit when only linked to an existing regression');
   }
