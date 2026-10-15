@@ -4,9 +4,22 @@ import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
-const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
+const lexicalBase = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
+const lexicalAdditions = readFileSync(new URL('../data/korean/lexical_additions_2026-10-15.csv', import.meta.url), 'utf8');
+const baseRows = parseCsv(lexicalBase);
+const effectiveRows = new Map(baseRows.map((row) => [row.input, row]));
+for (const row of parseCsv(lexicalAdditions)) effectiveRows.set(row.input, row);
+const headers = Object.keys(baseRows[0] || {});
+const csvCell = (value) => {
+  const cell = String(value ?? '');
+  return /[",\\r\\n]/u.test(cell) ? '"' + cell.replace(/"/gu, '""') + '"' : cell;
+};
+const lexical = [
+  headers.join(','),
+  ...[...effectiveRows.values()].map((row) => headers.map((header) => csvCell(row[header])).join(','))
+].join('\\n');
 const engine = createEngine(canonical, lexical);
-const entries = new Map(parseCsv(lexical).map((row) => [row.input, row]));
+const entries = new Map(effectiveRows);
 
 test('high-risk user-corpus words use explicit standard surface readings', () => {
   const expected = {
