@@ -7,8 +7,8 @@
   --surface-soft: #eeeee7;
   --line: #d9dcd3;
   --line-strong: #aeb6aa;
-  --red: #bd3340;
-  --blue: #174c83;
+  --red:#cd2e3a;
+  --blue:#0047a0;
   --blue-soft: #e9f0f7;
   --green: #315f4a;
   --warning: #8a4b13;
@@ -188,7 +188,7 @@ button { color: inherit; }
 .issue-state { margin-top: 12px; padding: 12px 14px; border: 1px solid #e8c8b4; border-radius: 9px; background: #fff5ed; color: var(--warning); font-size: .88rem; }
 .issue-state p { margin: 0; }
 .trace-panel, .variant-panel { margin-top: 24px; }
-.trace-columns, .trace-row { display: grid; grid-template-columns: 1fr 1fr 1.35fr .9fr; gap: 10px; }
+.trace-columns, .trace-row { display: grid; grid-template-columns:1.1fr 1.1fr 1.6fr .9fr; gap: 10px; }
 .trace-columns {
   margin-bottom: 7px; padding: 0 10px; color: var(--muted); font-size: .65rem;
   font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
@@ -288,7 +288,7 @@ button { color: inherit; }
   .table-head > :nth-child(n+3) { display: none; }
   .site-footer { flex-direction: column; gap: 14px; }
 }
-@media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion:reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
