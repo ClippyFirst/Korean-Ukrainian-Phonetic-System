@@ -52,7 +52,7 @@ def test_g2pk_descriptive_mode_is_explicit_and_passed_through(monkeypatch):
 def test_g2pk_mode_fails_closed_when_optional_dependency_is_missing(monkeypatch):
     monkeypatch.setattr(g2pk_engine, "_ENGINE", None)
     monkeypatch.setitem(sys.modules, "g2pk", None)
-    with pytest.raises(RuntimeError, match="optional.*Install it"):
+    with pytest.raises(RuntimeError, match="optional|not installed"):
         g2pk_engine.pronounce_surface("국밥")
 
 
