@@ -128,3 +128,50 @@ test('phrase IPA and alternate readings preserve word boundaries and punctuation
   assert.ok(!result.variants[0].ipa.includes('\\\\s'));
   assert.deepEqual(result.issues, []);
 });
+
+
+test('user-supplied stress corpus: exact phrase entries preserve word boundaries and source-backed IPA', () => {
+  const cases = [
+    ['몇 리', '면니', 'мйон ні', 'mjʌn ni'],
+    ['할 것을', '할꺼슬', 'гал косил', 'hal k͈ʌ sɯl'],
+    ['갈 데가', '갈떼가', 'кал теґа', 'kal t͈e ɡa'],
+    ['읽을 수', '일글쑤', 'ілґил су', 'il ɡɯl s͈u'],
+    ['읽을 것을', '일글꺼슬', 'ілґил косил', 'il ɡɯl k͈ʌ sɯl'],
+    ['옷 입다', '온닙따', 'он ніпта', 'on nip t͈a'],
+  ];
+  for (const [input, surface, target, ipa] of cases) {
+    const result = engine.convert(input, { morphologyMode: 'practical' });
+    assert.equal(result.surfaceHangul, surface, input + ': surface');
+    assert.equal(result.ukrainian, target, input + ': Ukrainian target');
+    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.deepEqual(result.issues, [], input + ': ' + JSON.stringify(result.issues));
+  }
+});
+
+test('user-supplied stress corpus: complex-coda and assimilation controls are covered', () => {
+  const expected = {
+    '넋이': ['넉씨', 'nʌk̚ ɕ͈i'],
+    '몫을': ['목쓸', 'mok̚ s͈ɯl'],
+    '값이': ['갑씨', 'kap̚ ɕ͈i'],
+    '읽고': ['일꼬', 'il k͈o'],
+    '읽는': ['잉는', 'iŋ nɯn'],
+    '읽히다': ['일키다', 'il kʰi da'],
+    '밟고': ['밥꼬', 'paːp̚ k͈o'],
+    '맑다': ['막따', 'mak̚ t͈a'],
+    '닭고기': ['닥꼬기', 'tak̚ k͈o ɡi'],
+    '넓네': ['널레', 'nʌl le'],
+    '굳이': ['구지', 'ku dʑi'],
+    '밭이': ['바치', 'pa tɕʰi'],
+    '해돋이': ['해도지', 'hɛ do dʑi'],
+    '있었는지': ['이썬는지', 'i s͈ʌn nɯn dʑi'],
+    '독립문': ['동님문', 'toŋ nim mun'],
+    '꽃잎': ['꼰닙', 'k͈on nip̚'],
+  };
+  for (const [input, [surface, ipa]] of Object.entries(expected)) {
+    const result = engine.convert(input, { morphologyMode: 'practical' });
+    assert.equal(result.surfaceHangul, surface, input + ': surface');
+    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.deepEqual(result.issues, [], input + ': ' + JSON.stringify(result.issues));
+    assert.ok(!result.ukrainian.includes('⟦'), input + ': unresolved placeholder');
+  }
+});
