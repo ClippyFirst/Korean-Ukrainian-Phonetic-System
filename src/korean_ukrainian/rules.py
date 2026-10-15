@@ -160,9 +160,20 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode): continue
+            # NIKL §12(2): ㅎ/ㄶ/ㅀ before ㅅ loses its ㅎ component and
+            # fortisizes ㅅ: 닿소 [다ː쏘], 많소 [만ː쏘], 싫소 [실쏘].
+            if a.coda in {"ㅎ","ㄶ","ㅀ"} and b.onset=="ㅅ":
+                a.coda={"ㅎ":"","ㄶ":"ㄴ","ㅀ":"ㄹ"}[a.coda]
+                b.onset="ㅆ"
+                changed=True
+            # NIKL §12(3): ㅎ before ㄴ is realized as ㄴ; for ㄶ/ㅀ
+            # the ㅎ component disappears, and §20 may later liquidize ㅀ+ㄴ.
+            elif a.coda in {"ㅎ","ㄶ","ㅀ"} and b.onset=="ㄴ":
+                a.coda={"ㅎ":"ㄴ","ㄶ":"ㄴ","ㅀ":"ㄹ"}[a.coda]
+                changed=True
             # Complex h-codas retain ㄴ/ㄹ while their ㅎ component
             # aspirates the following lenis onset: 많다 [만타], 싫다 [실타].
-            if a.coda in {"ㄶ","ㅀ"} and b.onset in {"ㄱ","ㄷ","ㅂ","ㅈ"}:
+            elif a.coda in {"ㄶ","ㅀ"} and b.onset in {"ㄱ","ㄷ","ㅂ","ㅈ"}:
                 b.onset={"ㄱ":"ㅋ","ㄷ":"ㅌ","ㅂ":"ㅍ","ㅈ":"ㅊ"}[b.onset]
                 a.coda="ㄴ" if a.coda=="ㄶ" else "ㄹ"
                 changed=True
