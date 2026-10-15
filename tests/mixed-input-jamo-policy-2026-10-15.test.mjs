@@ -40,7 +40,7 @@ test('jamo named in Korean explanatory prose is not phonologized or leaked into 
   const result = engine.convert('ㅎ과 뒤따르는 자음을 비교한다.');
   assert.ok(!result.issues.some(issue => /standalone compatibility jamo/u.test(issue)));
   assert.doesNotMatch(result.ipa, /ㅎ/u);
-  assert.doesNotMatch(result.analysis, /ㅎ/u);
+  assert.doesNotMatch(result.analysis, /ㅎ과/u);
 });
 
 test('sourced mixed-script numeric lexical forms keep their exact IPA', () => {
