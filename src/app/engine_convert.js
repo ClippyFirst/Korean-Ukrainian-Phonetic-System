@@ -68,9 +68,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       });
       applyPhraseBoundaryAssimilation(results,parts,map);
       const issues=results.flatMap(r=>r.issues||[]);
-      let residueText=text;
-      for(const key of mixedKeys)if(lexicon.has(key))residueText=residueText.split(key).join(' ');
-      if(/[가-힣][A-Za-z]/u.test(residueText))issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
+      if(/[가-힣][A-Za-z]/u.test(text))issues.push('Mixed Hangul and Latin residue without a boundary; non-Korean characters are withheld from IPA.');
       return{
         source:text,
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
