@@ -44,8 +44,11 @@ test('normative seed fixture has unique IDs, source provenance, and explicit unc
       assert.ok(item.evidenceExcerpt, item.id + ': independently checked source excerpt is required');
       assert.ok(item.evidenceExcerpt.includes(item.input),
         item.id + ': evidence excerpt must identify the input form');
-      assert.ok(item.expectedSurfaceForms.some((surface) => item.evidenceExcerpt.includes(surface)),
-        item.id + ': evidence excerpt must support an expected Korean surface form');
+      // Standard references mark vowel length with ː inside the phonetic form;
+      // remove that non-Hangul annotation before comparing it with the surface-Hangul label.
+      const normalizedExcerpt = item.evidenceExcerpt.replaceAll('ː', '');
+      assert.ok(item.expectedSurfaceForms.some((surface) => normalizedExcerpt.includes(surface)),
+        item.id + ': evidence excerpt must support an expected Korean surface form (ignoring length marks)');
     } else {
       assert.equal(item.evidenceExcerpt, null,
         item.id + ': do not fabricate an exact source quote for a derived control');
