@@ -301,6 +301,136 @@
         }
       ],
       "evidenceExcerpt": "국밥[국빱]"
+    },
+    {
+      "id": "NIKL-17-GUDI",
+      "input": "굳이",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "구지"
+      ],
+      "expectedProjectIpa": [
+        "ku dʑi"
+      ],
+      "ruleIds": [
+        "NIKL-17"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "Explicit palatalization example; linked regression checks the exact standard surface and project IPA.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-articles-17-18-complete-examples.test.mjs",
+          "testName": "§17 all six listed palatalization examples and all three ㄷ+히 examples are covered"
+        }
+      ],
+      "evidenceExcerpt": "굳이[구지]"
+    },
+    {
+      "id": "NIKL-18-GUKMUL",
+      "input": "국물",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "궁물"
+      ],
+      "expectedProjectIpa": [
+        "kuŋ mul"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "Explicit nasal-assimilation example; checked against the standard and productive-rule regression.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-articles-18-20-generic-assimilation-2026-10-11.test.mjs",
+          "testName": "§18: generic nasal assimilation changes the coda before ㄴ/ㅁ"
+        }
+      ],
+      "evidenceExcerpt": "국물[궁물]"
+    },
+    {
+      "id": "NIKL-18-MEONGNEUN",
+      "input": "먹는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "멍는"
+      ],
+      "expectedProjectIpa": [
+        "mʌŋ nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "Explicit nasal-assimilation example; also covered in the source-backed §18 lexical example suite.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-articles-17-18-complete-examples.test.mjs",
+          "testName": "§18 all twenty-four listed word examples are source-backed with exact standard surfaces"
+        }
+      ],
+      "evidenceExcerpt": "먹는[멍는]"
+    },
+    {
+      "id": "NIKL-20-SILLA",
+      "input": "신라",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "실라"
+      ],
+      "expectedProjectIpa": [
+        "ɕil la"
+      ],
+      "ruleIds": [
+        "NIKL-20"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "Explicit liquid-assimilation example; generic algorithmic behavior is separately tested without a lexical override.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
+          "testName": "§20 every listed general liquid-assimilation example is computed algorithmically"
+        }
+      ],
+      "evidenceExcerpt": "신라[실라]"
+    },
+    {
+      "id": "NIKL-20-NALRO",
+      "input": "난로",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "날로"
+      ],
+      "expectedProjectIpa": [
+        "nal lo"
+      ],
+      "ruleIds": [
+        "NIKL-20"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "Explicit liquid-assimilation example; the regression specifically excludes lexical override as the explanation.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-articles-10-19-20-complete-examples.test.mjs",
+          "testName": "§20 every listed general liquid-assimilation example is computed algorithmically"
+        }
+      ],
+      "evidenceExcerpt": "난로[날로]"
     }
   ],
   "validationPolicy": "Statuses distinguish exact official examples, official dictionary entries, and controls derived from a general rule but not explicitly listed. Project IPA remains a project transcription target and is not an official NIKL IPA prescription."
