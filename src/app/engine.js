@@ -801,7 +801,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
       const nearbyLatinOrDigit=context.some(value=>/[A-Za-z0-9]/u.test(value));
       // Jamo used as a linguistic label in Korean explanatory prose (e.g.
       // "ㅎ과", "ㄴ-삽입") is notation, not a pronunciation unit.
-      if(nearbyHangul&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
+      if((characters.some(value=>Boolean(decompose(value)))||nearbyHangul)&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
       return {type:'jamo',char:ch};
     }
     return {type:'literal',char:ch};
