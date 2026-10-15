@@ -37,4 +37,4 @@ GitHub Pages is a static browser application and cannot import a Python package 
 
 ## Validation policy
 
-Before considering g2pK the only production engine, compare its output with NIKL-backed surface-form fixtures and the existing adversarial corpus. Known source-backed lexical IPA, including distinctions not encoded in Hangul pronunciation spelling (for example vowel length), may be restored only when the source word and g2pK surface form match the sourced entry exactly. A mismatch is an audit finding, not something to conceal with a broad spelling heuristic.
+Before considering g2pK the only production engine, compare its output with NIKL-backed surface-form fixtures and the existing adversarial corpus. Known source-backed surface forms may correct a g2pK output only for an exact input-word entry, with unambiguous one-to-one word alignment and matching syllable count. Sourced IPA, including distinctions not encoded in Hangul pronunciation spelling (for example vowel length), is restored only when the final surface form matches that entry exactly. A mismatch without an exact license remains visible as an audit finding; no broad spelling heuristic is used.
