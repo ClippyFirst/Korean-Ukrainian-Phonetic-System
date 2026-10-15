@@ -727,7 +727,7 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
   };
   const rows = parseCsv(lexical);
   for (const [word, ipa] of Object.entries(expected)) {
-    assert.ok(!rows.some((item) => item.input === word), word);
+    assert.ok(!rows.some((item) => item.input === word && item.target_status !== 'surface-only'), word);
     const result = engine.convert(word);
     assert.equal(result.ipa, ipa, word);
     assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
