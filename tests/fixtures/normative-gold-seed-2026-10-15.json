@@ -165,7 +165,8 @@
           "testName": "NIKL complex-coda liaison examples resolve without morphological guessing"
         }
       ],
-      "evidenceExcerpt": null
+      "evidenceExcerpt": null,
+      "secondaryEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=335008"
     },
     {
       "id": "NIKL-14-KAPSSI",
@@ -191,7 +192,8 @@
           "testName": "NIKL complex-coda liaison examples resolve without morphological guessing"
         }
       ],
-      "evidenceExcerpt": null
+      "evidenceExcerpt": null,
+      "secondaryEvidenceUrl": "https://www.hrdkorea.or.kr/download/epstopik/EPS-TOPIK-5.pdf"
     },
     {
       "id": "NIKL-14-KAPSSUL",
@@ -234,7 +236,7 @@
         "NIKL-10",
         "NIKL-11"
       ],
-      "evidenceType": "official-dictionary-or-rule-example",
+      "evidenceType": "official-dictionary-entry",
       "evidenceUrl": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=64511",
       "evidenceNote": "Official Korean Basic Dictionary entry for 넓다 lists the conjugation 넓어[널버]; this is a lexical/dictionary control, not a listed example in the standard-rule page.",
       "validationStatus": "official-dictionary-entry-checked",
