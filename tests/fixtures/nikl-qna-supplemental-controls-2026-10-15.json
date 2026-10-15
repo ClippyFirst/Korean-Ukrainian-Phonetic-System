@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "nikl-qna-supplemental-controls-2026-10-15",
+  "purpose": "Supplemental source register for official NIKL Q&A interpretations. Directly quoted surface forms are separated from rule-derived or context-dependent controls. This file does not promote an IPA or Ukrainian target unless independently validated.",
+  "policy": "NIKL Q&A supplements the Standard Pronunciation Rules; it does not override the rules. Do not infer automatic ㄴ insertion from phonological shape alone. Preserve permitted variants, prosodic context, and analytically unresolved ordering.",
+  "cases": [
+    {
+      "id": "QNA-329103-GEOMNYEOL",
+      "input": "검열",
+      "expectedSurfaceForms": [
+        "검녈",
+        "거멸"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S029",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=98&pageIndex=1&qna_seq=329103",
+      "evidenceKind": "direct-variant-control",
+      "note": "Both [검ː녈] and [거ː멸] are accepted standard readings; retain both."
+    },
+    {
+      "id": "QNA-329103-GEUMNYUNG",
+      "input": "금융",
+      "expectedSurfaceForms": [
+        "금늉",
+        "그뮹"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S029",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=98&pageIndex=1&qna_seq=329103",
+      "evidenceKind": "direct-variant-control",
+      "note": "Both [금늉] and [그뮹] are accepted standard readings; do not collapse to one."
+    },
+    {
+      "id": "QNA-320110-GAP-IKIYAGI",
+      "input": "값 이야기",
+      "expectedSurfaceForms": [],
+      "ruleIds": [
+        "NIKL-10",
+        "NIKL-18",
+        "NIKL-29"
+      ],
+      "sourceId": "S030",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320110",
+      "evidenceKind": "rule-order-analysis-only",
+      "note": "The answer says representative-coda handling, ㄴ insertion, and nasalization interact. Exact step ordering is not generalized beyond the stated item."
+    },
+    {
+      "id": "QNA-320110-DAK-IKIYAGI",
+      "input": "닭 이야기",
+      "expectedSurfaceForms": [],
+      "ruleIds": [
+        "NIKL-10",
+        "NIKL-18",
+        "NIKL-29"
+      ],
+      "sourceId": "S030",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320110",
+      "evidenceKind": "rule-order-analysis-only",
+      "note": "Complex-coda control; do not extrapolate the noun 닭 pattern to verbal-stem ㄺ exceptions."
+    },
+    {
+      "id": "QNA-320629-MEOGI",
+      "input": "먹이",
+      "expectedSurfaceForms": [
+        "머기"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S031",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320629",
+      "evidenceKind": "direct-negative-insertion-control",
+      "note": "Suffixal -이 does not imply automatic ㄴ insertion."
+    },
+    {
+      "id": "QNA-320629-EOLUGI",
+      "input": "얼룩이",
+      "expectedSurfaceForms": [
+        "얼루기"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S031",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320629",
+      "evidenceKind": "direct-negative-insertion-control",
+      "note": "Retain liaison/regular surface behavior without inventing ㄴ."
+    },
+    {
+      "id": "QNA-320629-SOSIMI",
+      "input": "소심이",
+      "expectedSurfaceForms": [
+        "소시미"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S031",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320629",
+      "evidenceKind": "direct-negative-insertion-control",
+      "note": "A superficially similar suffixal form is not enough to trigger insertion."
+    },
+    {
+      "id": "QNA-330322-MUSEUN-IL",
+      "input": "무슨 일",
+      "expectedSurfaceForms": [
+        "무슨 닐"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S032",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=330322",
+      "evidenceKind": "direct-phrase-boundary-control",
+      "note": "The answer licenses insertion when the two words are pronounced as one prosodic unit."
+    },
+    {
+      "id": "QNA-319681-KKEUTNAN-IL",
+      "input": "끝난 일",
+      "expectedSurfaceForms": [
+        "끈난 닐"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S036",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=319681",
+      "evidenceKind": "direct-phrase-boundary-control",
+      "note": "Connected phrase example; pause and prosodic phrasing must not be silently ignored."
+    },
+    {
+      "id": "QNA-319681-ANEUN-IL",
+      "input": "않은 일",
+      "expectedSurfaceForms": [
+        "아는 닐"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S036",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=319681",
+      "evidenceKind": "direct-phrase-boundary-control",
+      "note": "Connected phrase example; preserve the phrase boundary in the input."
+    },
+    {
+      "id": "QNA-333295-HAL-IL",
+      "input": "할 일",
+      "expectedSurfaceForms": [
+        "할 릴"
+      ],
+      "ruleIds": [
+        "NIKL-20",
+        "NIKL-29"
+      ],
+      "sourceId": "S033",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=333295",
+      "evidenceKind": "direct-phrase-boundary-control",
+      "note": "NIKL uses this as a connected-phrase illustration; do not turn it into an unrestricted cross-word rule."
+    },
+    {
+      "id": "QNA-333295-JAL-IPDA",
+      "input": "잘 입다",
+      "expectedSurfaceForms": [
+        "잘립따"
+      ],
+      "ruleIds": [
+        "NIKL-20",
+        "NIKL-29"
+      ],
+      "sourceId": "S033",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=333295",
+      "evidenceKind": "direct-phrase-boundary-control",
+      "note": "Phrase-level liquidization is tied to the connected-pronunciation condition."
+    },
+    {
+      "id": "QNA-316101-GAP-ITDA",
+      "input": "값있다",
+      "expectedSurfaceForms": [
+        "가빋따"
+      ],
+      "ruleIds": [
+        "NIKL-15",
+        "NIKL-29"
+      ],
+      "sourceId": "S027",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316101",
+      "evidenceKind": "direct-negative-insertion-control",
+      "note": "Explicit negative control: no automatic ㄴ insertion."
+    },
+    {
+      "id": "QNA-316101-GOD-IEO",
+      "input": "곧이어",
+      "expectedSurfaceForms": [
+        "고디어"
+      ],
+      "ruleIds": [
+        "NIKL-13",
+        "NIKL-29"
+      ],
+      "sourceId": "S027",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316101",
+      "evidenceKind": "direct-negative-insertion-control",
+      "note": "Lexicalized single-word form; do not confuse with two words in a connected phrase."
+    },
+    {
+      "id": "QNA-316888-SIKMOKIL",
+      "input": "식목일",
+      "expectedSurfaceForms": [],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S035",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316888",
+      "evidenceKind": "negative-insertion-policy-control",
+      "note": "The source confirms that insertion is not automatic; it does not supply a direct phonetic spelling in the cited answer."
+    },
+    {
+      "id": "QNA-307219-SOM-IBUL",
+      "input": "솜이불",
+      "expectedSurfaceForms": [
+        "솜니불"
+      ],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S038",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219",
+      "evidenceKind": "direct-positive-insertion-control",
+      "note": "Listed positive example; retain the long-vowel annotation separately if the chosen IPA convention records it."
+    },
+    {
+      "id": "QNA-307219-KKON-IP",
+      "input": "꽃잎",
+      "expectedSurfaceForms": [
+        "꼰닙"
+      ],
+      "ruleIds": [
+        "NIKL-10",
+        "NIKL-18",
+        "NIKL-29"
+      ],
+      "sourceId": "S038",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219",
+      "evidenceKind": "direct-positive-insertion-control",
+      "note": "Interaction of insertion and nasal assimilation; source surface is the gold, not the analysis order."
+    },
+    {
+      "id": "QNA-307219-SONG-BYEOL-YEON",
+      "input": "송별연",
+      "expectedSurfaceForms": [],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S038",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219",
+      "evidenceKind": "negative-insertion-policy-control",
+      "note": "NIKL commentary says ㄴ insertion is not accepted as a standard variant for this item."
+    },
+    {
+      "id": "QNA-307219-DEUNG-YONG-MUN",
+      "input": "등용문",
+      "expectedSurfaceForms": [],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S038",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219",
+      "evidenceKind": "negative-insertion-policy-control",
+      "note": "NIKL commentary says ㄴ insertion is not accepted as a standard variant for this item."
+    },
+    {
+      "id": "QNA-328681-RL-ENVIRONMENTS",
+      "input": "ㄹ nasalization vs liquidization",
+      "expectedSurfaceForms": [],
+      "ruleIds": [
+        "NIKL-19",
+        "NIKL-20"
+      ],
+      "sourceId": "S037",
+      "sourceUrl": "https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=98&pageIndex=1&qna_seq=328681",
+      "evidenceKind": "rule-scope-control",
+      "note": "Distinguish the environments after ㅁ/ㅇ from ㄴ+ㄹ; do not merge §§19 and 20 into one broad liquid rule."
+    },
+    {
+      "id": "QNA-333041-PAUSE",
+      "input": "connected phrase with pause",
+      "expectedSurfaceForms": [],
+      "ruleIds": [
+        "NIKL-29"
+      ],
+      "sourceId": "S039",
+      "sourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=333041",
+      "evidenceKind": "context-required-control",
+      "note": "Prosodic pause can change whether the connected-phrase rule applies; absent speech/prosody context, do not force one output."
+    }
+  ]
+}
