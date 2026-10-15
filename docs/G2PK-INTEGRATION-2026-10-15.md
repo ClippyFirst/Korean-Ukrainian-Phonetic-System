@@ -9,7 +9,7 @@ The optional Python/API pronunciation backend is Kyubyong's **g2pK 0.9.4** (the 
 - License: Apache-2.0
 - Installation: python -m pip install -e ".[g2pk]"
 
-The dependency is optional and pinned. A missing or uninitializable backend produces an explicit error; the system never silently substitutes its native rules.
+The dependency is optional and pinned. Its MeCab binding installed cleanly on Python 3.11 and 3.12 in CI. Python 3.13/3.14 installation failed because python-mecab-ko attempted a source build and could not find mecab-config, so the extra is intentionally restricted to Python below 3.13. On Python 3.13/3.14, keep using the native engine or create a Python 3.11/3.12 environment for g2pK. A missing or uninitializable backend produces an explicit error; the system never silently substitutes its native rules.
 
 ## Data flow
 
