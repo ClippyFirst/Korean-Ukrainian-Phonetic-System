@@ -835,6 +835,9 @@ test('surface-only lexicon records do not bypass the general rule engine', () =>
     ['앞문', '암문', 'nasal-assimilation'],
     ['밟는', '밤는', 'lexical-coda-balm'],
     ['읊고', '읍꼬', 'tensification'],
+    ['먹이', '머기', 'liaison'],
+    ['얼룩이', '얼루기', 'liaison'],
+    ['소심이', '소시미', 'liaison'],
   ];
   for (const [word, surface, rule] of expected) {
     const result = engine.convert(word);
