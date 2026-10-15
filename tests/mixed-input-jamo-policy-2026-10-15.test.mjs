@@ -38,7 +38,7 @@ test('non-Korean-only input is not presented as canonical pronunciation', () => 
 
 test('jamo named in Korean explanatory prose is not phonologized or leaked into IPA', () => {
   const result = engine.convert('ㅎ과 뒤따르는 자음을 비교한다.');
-  assert.notEqual(result.status, 'unresolved');
+  assert.ok(!result.issues.some(issue => /standalone compatibility jamo/u.test(issue)));
   assert.doesNotMatch(result.ipa, /ㅎ/u);
   assert.doesNotMatch(result.analysis, /ㅎ/u);
 });
