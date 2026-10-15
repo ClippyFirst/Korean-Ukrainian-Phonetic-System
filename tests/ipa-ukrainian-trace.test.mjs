@@ -53,7 +53,7 @@ test('every resolved Korean syllable trace retains its realized surface, IPA and
 test('service markup exposes all explanatory trace stages', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   const app = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
-  for (const heading of ['Hangul · вхід', 'Корейська вимова', 'IPA', 'IPA-токен → графема', 'Український запис', 'Нюанс / правило', 'Статус']) {
+  for (const heading of ['Корейський сегмент · вхід', 'Корейська вимова', 'IPA', 'IPA-токен → графема', 'Український запис', 'Нюанс / правило', 'Статус']) {
     assert.ok(html.includes(heading), 'missing trace heading: ' + heading);
   }
   assert.ok(app.includes('traceIpaMapping'));
