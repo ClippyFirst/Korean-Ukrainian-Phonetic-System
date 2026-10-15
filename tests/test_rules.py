@@ -527,3 +527,35 @@ def test_section_20_general_liquid_assimilation_examples():
             assert items[i].coda == expected_coda, word
             assert items[i + 1].onset == expected_onset, word
         assert any(trace.changed for trace in traces), word
+
+def test_nikl_article_12_2_h_coda_before_sibilant_fortitizes_ㅅ():
+    # Official NIKL §12(2): 닿소[다ː쏘], 많소[만ː쏘], 싫소[실쏘].
+    # https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+    cases = {
+        "닿소": ("", "ㅆ"),
+        "많소": ("ㄴ", "ㅆ"),
+        "싫소": ("ㄹ", "ㅆ"),
+    }
+    for word, expected in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R004"])
+        assert (items[0].coda, items[1].onset) == expected, word
+        assert traces[0].changed, word
+
+
+def test_nikl_article_12_3_h_coda_before_nasal_and_complex_h_coda_retention():
+    # Official NIKL §12(3) and its attachment: 놓는[논는], 쌓네[싼네],
+    # 않네[안네], 않는[안는], 뚫네[뚤네→뚤레], 뚫는[뚤는→뚤른].
+    # §20 liquidization is applied after the §12 h-deletion/assimilation.
+    cases = {
+        "놓는": ("ㄴ", "ㄴ"),
+        "쌓네": ("ㄴ", "ㄴ"),
+        "않네": ("ㄴ", "ㄴ"),
+        "않는": ("ㄴ", "ㄴ"),
+        "뚫네": ("ㄹ", "ㄹ"),
+        "뚫는": ("ㄹ", "ㄹ"),
+    }
+    for word, expected in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R004", "R006"])
+        assert (items[0].coda, items[1].onset) == expected, word
+        assert traces[0].changed, word
+
