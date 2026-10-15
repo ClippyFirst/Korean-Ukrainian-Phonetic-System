@@ -769,7 +769,7 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
       // Report a single diagnostic for Latin/digit residue glued directly to
       // Hangul, but do not flag standalone non-Korean chunks in a deliberately
       // mixed-script passage (e.g. IPA annotations separated by spaces).
-      if(/[가-힣][A-Za-z0-9]|[A-Za-z0-9][가-힣]/u.test(text)){
+      if(parts.some(part=>!lexicon.has(part)&&/[가-힣][A-Za-z0-9]|[A-Za-z0-9][가-힣]/u.test(part))){
         issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
       }
       const variants=results.flatMap((r,i)=>(r.variants||[]).map(v=>({
