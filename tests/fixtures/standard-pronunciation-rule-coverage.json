@@ -272,7 +272,8 @@
       "source": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "caseIds": [
         "A29-1:tests/nikl-phrase-boundary-insertion-29.test.mjs#§29: every exact licensed phrase-boundary example receives the narrow insertion trace",
-        "A29-2:tests/nikl-articles-9-18-23-29-interaction-2026-10-11.test.mjs#§9, §18, and §29: exact phrase insertion feeds the surface nasal sequence in 옷 입다"
+        "A29-2:tests/nikl-articles-9-18-23-29-interaction-2026-10-11.test.mjs#§9, §18, and §29: exact phrase insertion feeds the surface nasal sequence in 옷 입다",
+        "A29-3:tests/nikl-qna-supplemental-controls-2026-10-15.test.mjs#§29: supplemental NIKL Q&A controls have traceable source-register entries and explicit evidence levels"
       ],
       "notes": "Verified against the official rule's enumerated examples and the linked executable regression tests, including applicable negative controls/interactions recorded in the audit. This status means finite normative-example coverage only; it does not claim productive morphological analysis or exhaustive coverage of all Korean vocabulary. Ukrainian outputs remain project approximations, not official standards."
     },
