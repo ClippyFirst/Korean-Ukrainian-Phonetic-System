@@ -55,3 +55,16 @@ test('surface mode does not apply native fortition a second time',()=>{
   assert.equal(result.surfaceHangul,'국빱');
   assert.match(result.ipa,/p͈/);
 });
+
+test('full adversarial Korean passage completes with IPA-first output and no placeholders',()=>{
+  const passage=read('tests/fixtures/g2pk-web-adversarial.txt');
+  const result=g2p.convert(passage);
+  assert.ok(result.surfaceHangul.length>0,'surface Hangul trace missing');
+  assert.ok(result.ipa.length>0,'IPA output missing');
+  assert.ok(result.ukrainian.length>0,'Ukrainian target missing');
+  assert.equal(result.issues.length,0,result.issues.join('\\n'));
+  assert.ok(!result.ukrainian.includes('⟦'),'unresolved placeholder leaked');
+  assert.ok(!result.ukrainian.includes('undefined'),'undefined leaked into target');
+  assert.ok(result.surfaceHangul.includes('가버치가'),'sourced lexical control was not applied');
+  assert.ok(result.ukrainian.includes('“')&&result.ukrainian.includes('”'),'quotation punctuation was not preserved');
+});
