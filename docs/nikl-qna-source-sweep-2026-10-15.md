@@ -15,10 +15,15 @@ This pass adds four additional official National Institute of Korean Language (N
 
 ## New files
 
-- `tests/fixtures/nikl-qna-supplemental-controls-2026-10-15.json`: 20 compact controls with source IDs, URLs, rule links, and a deliberate distinction between directly stated surface forms and policy/context-only controls.
+- `tests/fixtures/nikl-qna-supplemental-controls-2026-10-15.json`: 37 compact controls with source IDs, URLs, rule links, and a deliberate distinction between directly stated surface forms and policy/context-only controls.
 - `tests/nikl-qna-supplemental-controls-2026-10-15.test.mjs`: validates source-register completeness, provenance, rule links, and the fact that controls without direct surface evidence do not fabricate a gold form.
 - `tests/fixtures/adversarial-corpora/`: expanded from 5 to 7 stress TXT inputs for each of the 30 existing rule families. The full suite now contains 225 TXT inputs (15 broad + 210 rule-family files).
 
 ## Limits
 
 This is not a claim that every possible Korean word or morphology is covered. The TXT files are stress inputs, not gold transcriptions. Direct source forms should be promoted into engine-level IPA tests only after their project IPA has been checked independently; rule-derived and context-sensitive cases remain explicitly non-gold until then.
+
+
+### Second expansion: coda and interaction exceptions
+
+The supplemental inventory now contains 37 controls. Six additional NIKL Q&A sources (S040–S045) cover the formal-morpheme analysis of 굳이, the distinction between nominal and verbal-stem ㄺ before ㄱ, the unprescribed status of 몇 리, ㅎ deletion before vowel-initial endings, and the interaction in 팥입니다. Five directly sourced lexical controls were added to the lexical table where the strict engine intentionally requires lexical evidence: 암탉과, 수탉과, 장닭과, 칡과, and 팥입니다. Their Ukrainian targets remain provisional; the Korean surface forms are source-attested.
