@@ -1,7 +1,7 @@
 # Programme Roadmap
 
 Last updated: 2026-10-15  
-Current phase: Phase 0 — repository and implementation baseline (not yet completed).  
+Current phase: Phase 0 — repository and implementation baseline (not yet completed); source triage has begun in parallel.  
 Planned phases are not evidence of completion.
 
 ## Operating model
@@ -47,7 +47,15 @@ After work: record actual changes, exact commands and outcomes, update affected 
 - [ ] Inventory tests, scripts, CI workflows, runtime entry points, generated data, and documentation.
 - [ ] Run or obtain reproducible baseline test/build results where tooling permits.
 - [ ] Verify deployed site against expected source revision.
-- [ ] Populate source and rule registers with observed, not assumed, statuses.
+- [x] Create a first-pass source-by-source assessment and expand the source register/discovery queue; this is triage only, not full-text verification.
+- [ ] Populate rule coverage register with observed, not assumed, statuses.
 - [ ] Publish a prioritized gap report and branch integration order.
+
+## Source review work recorded on 2026-10-15
+
+- Added research/SOURCE-ASSESSMENT-2026-10-15.md with row-by-row dispositions for S001–S011 and all rows in the existing Slavic comparative source table, plus assessments of dictionaries, G2P engines, corpora, phonetic studies, Ukrainian target evidence, UPI, and official romanization.
+- Added research/SOURCE-DISCOVERY-QUEUE.csv with priorities, expected value, access/license risks, decisions, statuses, and next actions.
+- Expanded research/SOURCE-REGISTER.csv with additional official APIs, G2P/corpus candidates, Ukrainian precedent, target dependency, and comparators.
+- These are evidence-based triage decisions, not claims that every source has been read in full, every license verified, or every candidate implemented.
 
 These checkboxes remain open until evidence is recorded.
