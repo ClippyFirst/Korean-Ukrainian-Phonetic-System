@@ -93,7 +93,10 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     else units.push({type:'literal',char:ch});
   }
   const originalUnits=units.map(u=>({...u}));
-  const ruleSets=applyContextualRules(units,text,{morphologyMode});
+  // g2pK has already realized the normative surface spelling. In surfaceMode,
+  // do not apply orthographic phonology rules a second time; only derive IPA
+  // and allophonic voicing from the realized surface sequence.
+  const ruleSets=options.surfaceMode?units.map(()=>[]):applyContextualRules(units,text,{morphologyMode});
   const output=[],ipa=[],analysis=[],trace=[],issues=[];
 
   for(let i=0;i<units.length;i++){
@@ -182,7 +185,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const previousObstruent=Boolean(previousCoda)&&!previousSonorant;
     const previousOpenSyllable=Boolean(prev)&&prev.coda==='';
     const voiced=(liaisonOnset||previousSonorant||previousOpenSyllable)&&['ㄱ','ㄷ','ㅂ','ㅈ'].includes(onset);
-    const fortis=!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
+    const fortis=!options.surfaceMode&&!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
     const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
     const traceRules=[...applied];
     if(contextualUi)traceRules.push('vowel-ui-to-i');
