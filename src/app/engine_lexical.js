@@ -53,7 +53,21 @@ export function lexicalResult(text,entry){
     ukrainian:targets.join('')+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
     ipa:ipas.join(' '),
     analysis:analysis+' → lexical',
-    variants:[],
+    variants:(()=>{
+      const alternateIpas=(entry.alternate_ipa_syllables||'').split('|');
+      const alternateSurface=entry.alternate_surface_hangul||'';
+      if(!alternateSurface||!entry.alternate_ipa_syllables||alternateIpas.some(value=>!value))return [];
+      const mapped=alternateIpas.map(ipaSyllableToUkrainian);
+      if(mapped.some(item=>item.unknown))return [];
+      return [{
+        source:text,
+        surface:alternateSurface,
+        ukrainian:mapped.map(item=>item.text).join(''),
+        ipa:alternateIpas.join(' '),
+        note:entry.variant_note||entry.rule_notes||'NIKL-listed alternate pronunciation; Ukrainian rendering remains provisional.',
+        status:targetReview?'lexical-review':'lexical'
+      }];
+    })(),
     trace:syllables.map((ch,i)=>({
       source:ch,
       status:mappedTargets[i]?.unknown?'unresolved':targetReview?'lexical-review':'lexical',
