@@ -766,6 +766,12 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
         }
       }
       const issues=results.flatMap(r=>r.issues);
+      // Report a single diagnostic for Latin/digit residue glued directly to
+      // Hangul, but do not flag standalone non-Korean chunks in a deliberately
+      // mixed-script passage (e.g. IPA annotations separated by spaces).
+      if(/[가-힣][A-Za-z0-9]|[A-Za-z0-9][가-힣]/u.test(text)){
+        issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
+      }
       const variants=results.flatMap((r,i)=>(r.variants||[]).map(v=>({
         ...v,
         source:r.source,
@@ -803,10 +809,12 @@ function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
   const hasHangulSyllables=units.some(u=>u.type==='hangul');
   for(const u of units){
     if(u.type==='jamo')issues.push(u.char+': standalone compatibility jamo is not a syllable; IPA is withheld.');
-    else if(u.type==='literal'&&!isPreservableIpaLiteral(u.char))issues.push(u.char+': non-Korean input is preserved only in the Ukrainian passthrough column, not IPA.');
   }
-  if(!hasHangulSyllables&&!units.some(u=>u.type==='jamo')){
+  if(!hasHangulSyllables&&!units.some(u=>u.type==='jamo')&&!skipLexicon){
     issues.push('Input contains no Hangul syllable; pronunciation cannot be generated.');
+  }
+  if(/[가-힣][A-Za-z0-9]|[A-Za-z0-9][가-힣]/u.test(text)){
+    issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
   }
 
   for(let i=0;i<units.length;i++){
