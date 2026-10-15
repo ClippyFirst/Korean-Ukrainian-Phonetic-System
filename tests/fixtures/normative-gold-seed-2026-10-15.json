@@ -665,6 +665,1904 @@
         }
       ],
       "evidenceExcerpt": "핥네[할레]"
+    },
+    {
+      "id": "NIKL-13-EXP-01",
+      "input": "낮이",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "나지"
+      ],
+      "expectedProjectIpa": [
+        "na dʑi"
+      ],
+      "ruleIds": [
+        "NIKL-13"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "single-coda liaison before a particle. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "낮이[나지]"
+    },
+    {
+      "id": "NIKL-13-EXP-02",
+      "input": "꽂아",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "꼬자"
+      ],
+      "expectedProjectIpa": [
+        "k͈o dʑa"
+      ],
+      "ruleIds": [
+        "NIKL-13"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "single-coda liaison before an ending. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "꽂아[꼬자]"
+    },
+    {
+      "id": "NIKL-13-EXP-03",
+      "input": "꽃을",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "꼬츨"
+      ],
+      "expectedProjectIpa": [
+        "k͈o tɕʰɯl"
+      ],
+      "ruleIds": [
+        "NIKL-13"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "single-coda liaison before a particle. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "꽃을[꼬츨]"
+    },
+    {
+      "id": "NIKL-13-EXP-04",
+      "input": "쫓아",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "쪼차"
+      ],
+      "expectedProjectIpa": [
+        "tɕ͈o tɕʰa"
+      ],
+      "ruleIds": [
+        "NIKL-13"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "single-coda liaison before an ending. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "쫓아[쪼차]"
+    },
+    {
+      "id": "NIKL-13-EXP-05",
+      "input": "밭에",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "바테"
+      ],
+      "expectedProjectIpa": [
+        "pa tʰe"
+      ],
+      "ruleIds": [
+        "NIKL-13"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "single-coda liaison before a particle. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "밭에[바테]"
+    },
+    {
+      "id": "NIKL-13-EXP-06",
+      "input": "덮이다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "더피다"
+      ],
+      "expectedProjectIpa": [
+        "tʌ pʰi da"
+      ],
+      "ruleIds": [
+        "NIKL-13"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "single-coda liaison with aspiration after ㅍ. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "덮이다[더피다]"
+    },
+    {
+      "id": "NIKL-14-EXP-01",
+      "input": "닭을",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "달글"
+      ],
+      "expectedProjectIpa": [
+        "tal ɡɯl"
+      ],
+      "ruleIds": [
+        "NIKL-14"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "complex-coda liaison: retain ㄹ and resyllabify ㄱ. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "닭을[달글]"
+    },
+    {
+      "id": "NIKL-14-EXP-02",
+      "input": "젊어",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "절머"
+      ],
+      "expectedProjectIpa": [
+        "tɕʌl mʌ"
+      ],
+      "ruleIds": [
+        "NIKL-14"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "complex-coda liaison: retain ㄹ and resyllabify ㅁ. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "젊어[절머]"
+    },
+    {
+      "id": "NIKL-14-EXP-03",
+      "input": "없어",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "업써"
+      ],
+      "expectedProjectIpa": [
+        "ʌːp̚ s͈ʌ"
+      ],
+      "ruleIds": [
+        "NIKL-14"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "complex-coda liaison with tense ㅆ; preserve long-vowel notation in the source. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "없어[업ː써]"
+    },
+    {
+      "id": "NIKL-15-EXP-01",
+      "input": "맛없다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "마덥따"
+      ],
+      "expectedProjectIpa": [
+        "ma dʌp̚ t͈a"
+      ],
+      "ruleIds": [
+        "NIKL-15"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "substantive-morpheme liaison uses the representative coda. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "맛없다[마덥따]"
+    },
+    {
+      "id": "NIKL-15-EXP-02",
+      "input": "겉옷",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "거돋"
+      ],
+      "expectedProjectIpa": [
+        "kʌ dot̚"
+      ],
+      "ruleIds": [
+        "NIKL-15"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "substantive-morpheme liaison uses representative ㄷ. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "겉옷[거돋]"
+    },
+    {
+      "id": "NIKL-15-EXP-03",
+      "input": "헛웃음",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "허두슴"
+      ],
+      "expectedProjectIpa": [
+        "hʌ du sɯm"
+      ],
+      "ruleIds": [
+        "NIKL-15"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "substantive-morpheme liaison and subsequent syllable structure. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "헛웃음[허두슴]"
+    },
+    {
+      "id": "NIKL-15-EXP-04",
+      "input": "값어치",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "가버치"
+      ],
+      "expectedProjectIpa": [
+        "ka bʌ tɕʰi"
+      ],
+      "ruleIds": [
+        "NIKL-15"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "special listed complex-coda substantive-morpheme control. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "값어치[가버치]"
+    },
+    {
+      "id": "NIKL-15-EXP-05",
+      "input": "값있는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "가빈는"
+      ],
+      "expectedProjectIpa": [
+        "ka bin nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-15"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "listed §15 complex-coda control followed by nasal assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "값있는[가빈는]"
+    },
+    {
+      "id": "NIKL-17-EXP-01",
+      "input": "곧이듣다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "고지듣따"
+      ],
+      "expectedProjectIpa": [
+        "ko dʑi dɯt̚ t͈a"
+      ],
+      "ruleIds": [
+        "NIKL-17"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "palatalization before formal-morpheme ㅣ plus downstream fortition. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "곧이듣다[고지듣따]"
+    },
+    {
+      "id": "NIKL-17-EXP-02",
+      "input": "미닫이",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "미다지"
+      ],
+      "expectedProjectIpa": [
+        "miː da dʑi"
+      ],
+      "ruleIds": [
+        "NIKL-17"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "palatalization with source vowel-length notation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "미닫이[미ː다지]"
+    },
+    {
+      "id": "NIKL-17-EXP-03",
+      "input": "땀받이",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "땀바지"
+      ],
+      "expectedProjectIpa": [
+        "t͈am ba dʑi"
+      ],
+      "ruleIds": [
+        "NIKL-17"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "palatalization of the suffix-initial sequence. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "땀받이[땀바지]"
+    },
+    {
+      "id": "NIKL-17-EXP-04",
+      "input": "벼훑이",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "벼훌치"
+      ],
+      "expectedProjectIpa": [
+        "pjʌ hul tɕʰi"
+      ],
+      "ruleIds": [
+        "NIKL-17"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㄾ + suffixal ㅣ palatalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "벼훑이[벼훌치]"
+    },
+    {
+      "id": "NIKL-17-EXP-05",
+      "input": "굳히다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "구치다"
+      ],
+      "expectedProjectIpa": [
+        "ku tɕʰi da"
+      ],
+      "ruleIds": [
+        "NIKL-17"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㄷ+ㅎ contraction followed by palatalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "굳히다[구치다]"
+    },
+    {
+      "id": "NIKL-17-EXP-06",
+      "input": "닫히다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "다치다"
+      ],
+      "expectedProjectIpa": [
+        "ta tɕʰi da"
+      ],
+      "ruleIds": [
+        "NIKL-17"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㄷ+ㅎ contraction followed by palatalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "닫히다[다치다]"
+    },
+    {
+      "id": "NIKL-17-EXP-07",
+      "input": "묻히다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "무치다"
+      ],
+      "expectedProjectIpa": [
+        "mu tɕʰi da"
+      ],
+      "ruleIds": [
+        "NIKL-17"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㄷ+ㅎ contraction followed by palatalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "묻히다[무치다]"
+    },
+    {
+      "id": "NIKL-18-EXP-01",
+      "input": "깎는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "깡는"
+      ],
+      "expectedProjectIpa": [
+        "k͈aŋ nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "coda neutralization followed by nasal assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "깎는[깡는]"
+    },
+    {
+      "id": "NIKL-18-EXP-02",
+      "input": "키읔만",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "키응만"
+      ],
+      "expectedProjectIpa": [
+        "kʰi ɯŋ man"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "letter-name coda and nasal assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "키읔만[키응만]"
+    },
+    {
+      "id": "NIKL-18-EXP-03",
+      "input": "몫몫이",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "몽목씨"
+      ],
+      "expectedProjectIpa": [
+        "moŋ mok̚ ɕ͈i"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "complex coda nasalization with a tense onset in the final syllable. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "몫몫이[몽목씨]"
+    },
+    {
+      "id": "NIKL-18-EXP-04",
+      "input": "긁는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "긍는"
+      ],
+      "expectedProjectIpa": [
+        "kɯŋ nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "complex-coda simplification followed by nasal assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "긁는[긍는]"
+    },
+    {
+      "id": "NIKL-18-EXP-05",
+      "input": "흙만",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "흥만"
+      ],
+      "expectedProjectIpa": [
+        "hɯŋ man"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "complex-coda simplification followed by nasal assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "흙만[흥만]"
+    },
+    {
+      "id": "NIKL-18-EXP-06",
+      "input": "닫는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "단는"
+      ],
+      "expectedProjectIpa": [
+        "tan nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㄷ-class coda nasalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "닫는[단는]"
+    },
+    {
+      "id": "NIKL-18-EXP-07",
+      "input": "짓는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "진는"
+      ],
+      "expectedProjectIpa": [
+        "tɕiːn nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅅ coda nasalization; source marks a long vowel. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "짓는[진ː는]"
+    },
+    {
+      "id": "NIKL-18-EXP-08",
+      "input": "옷맵시",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "온맵씨"
+      ],
+      "expectedProjectIpa": [
+        "on mɛp̚ ɕ͈i"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "nasal assimilation and fortition in a listed example. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "옷맵시[온맵씨]"
+    },
+    {
+      "id": "NIKL-18-EXP-09",
+      "input": "있는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "인는"
+      ],
+      "expectedProjectIpa": [
+        "in nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅆ-class coda nasalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "있는[인는]"
+    },
+    {
+      "id": "NIKL-18-EXP-10",
+      "input": "맞는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "만는"
+      ],
+      "expectedProjectIpa": [
+        "man nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅈ-class coda nasalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "맞는[만는]"
+    },
+    {
+      "id": "NIKL-18-EXP-11",
+      "input": "젖멍울",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "전멍울"
+      ],
+      "expectedProjectIpa": [
+        "tɕʌn mʌŋ ul"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅈ-class coda nasalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "젖멍울[전멍울]"
+    },
+    {
+      "id": "NIKL-18-EXP-12",
+      "input": "쫓는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "쫀는"
+      ],
+      "expectedProjectIpa": [
+        "tɕ͈on nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅊ-class coda nasalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "쫓는[쫀는]"
+    },
+    {
+      "id": "NIKL-18-EXP-13",
+      "input": "꽃망울",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "꼰망울"
+      ],
+      "expectedProjectIpa": [
+        "k͈on maŋ ul"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅊ coda neutralization and nasal assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "꽃망울[꼰망울]"
+    },
+    {
+      "id": "NIKL-18-EXP-14",
+      "input": "붙는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "분는"
+      ],
+      "expectedProjectIpa": [
+        "pun nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅌ-class coda nasalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "붙는[분는]"
+    },
+    {
+      "id": "NIKL-18-EXP-15",
+      "input": "놓는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "논는"
+      ],
+      "expectedProjectIpa": [
+        "non nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅎ coda before ㄴ. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "놓는[논는]"
+    },
+    {
+      "id": "NIKL-18-EXP-16",
+      "input": "잡는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "잠는"
+      ],
+      "expectedProjectIpa": [
+        "tɕam nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅂ coda nasalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "잡는[잠는]"
+    },
+    {
+      "id": "NIKL-18-EXP-17",
+      "input": "밥물",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "밤물"
+      ],
+      "expectedProjectIpa": [
+        "pam mul"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "phrase/word nasal assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "밥물[밤물]"
+    },
+    {
+      "id": "NIKL-18-EXP-18",
+      "input": "밟는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "밤는"
+      ],
+      "expectedProjectIpa": [
+        "paːm nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "lexical ㄼ behavior plus nasal assimilation and source length. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "밟는[밤ː는]"
+    },
+    {
+      "id": "NIKL-18-EXP-19",
+      "input": "읊는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "음는"
+      ],
+      "expectedProjectIpa": [
+        "ɯm nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "complex coda nasalization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "읊는[음는]"
+    },
+    {
+      "id": "NIKL-18-EXP-20",
+      "input": "없는",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "엄는"
+      ],
+      "expectedProjectIpa": [
+        "ʌːm nɯn"
+      ],
+      "ruleIds": [
+        "NIKL-18"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅄ coda nasalization with source length. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "없는[엄ː는]"
+    },
+    {
+      "id": "NIKL-21-EXP-01",
+      "input": "감기",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "감기"
+      ],
+      "expectedProjectIpa": [
+        "kaːm ɡi"
+      ],
+      "ruleIds": [
+        "NIKL-21"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "negative control: do not apply place assimilation to make the coda velar before ㄱ. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "감기[감ː기](×[강ː기])"
+    },
+    {
+      "id": "NIKL-21-EXP-02",
+      "input": "옷감",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "옫깜"
+      ],
+      "expectedProjectIpa": [
+        "ot̚ k͈am"
+      ],
+      "ruleIds": [
+        "NIKL-21"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "negative control: preserve the normative coda place; fortition is separate. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "옷감[옫깜](×[옥깜])"
+    },
+    {
+      "id": "NIKL-21-EXP-03",
+      "input": "있고",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "읻꼬"
+      ],
+      "expectedProjectIpa": [
+        "it̚ k͈o"
+      ],
+      "ruleIds": [
+        "NIKL-21"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "negative control: no non-standard velar place assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "있고[읻꼬](×[익꼬])"
+    },
+    {
+      "id": "NIKL-21-EXP-04",
+      "input": "꽃길",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "꼳낄"
+      ],
+      "expectedProjectIpa": [
+        "k͈ot̚ k͈il"
+      ],
+      "ruleIds": [
+        "NIKL-21"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "negative control: coda neutralization plus fortition, not place assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "꽃길[꼳낄](×[꼭낄])"
+    },
+    {
+      "id": "NIKL-21-EXP-05",
+      "input": "젖먹이",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "전머기"
+      ],
+      "expectedProjectIpa": [
+        "tɕʌn mʌ ɡi"
+      ],
+      "ruleIds": [
+        "NIKL-21"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "negative control: do not apply non-standard bilabial place assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "젖먹이[전머기](×[점머기])"
+    },
+    {
+      "id": "NIKL-21-EXP-06",
+      "input": "문법",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "문뻡"
+      ],
+      "expectedProjectIpa": [
+        "mun p͈ʌp̚"
+      ],
+      "ruleIds": [
+        "NIKL-21"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "negative control: preserve nasal coda place; apply fortition separately. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "문법[문뻡](×[뭄뻡])"
+    },
+    {
+      "id": "NIKL-21-EXP-07",
+      "input": "꽃밭",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "꼳빧"
+      ],
+      "expectedProjectIpa": [
+        "k͈ot̚ p͈at̚"
+      ],
+      "ruleIds": [
+        "NIKL-21"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "negative control: no non-standard bilabial place assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "꽃밭[꼳빧](×[꼽빧])"
+    },
+    {
+      "id": "NIKL-23-EXP-01",
+      "input": "깎다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "깍따"
+      ],
+      "expectedProjectIpa": [
+        "k͈ak̚ t͈a"
+      ],
+      "ruleIds": [
+        "NIKL-23"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "coda neutralization and fortition. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "깎다[깍따]"
+    },
+    {
+      "id": "NIKL-23-EXP-02",
+      "input": "낯설다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "낟썰다"
+      ],
+      "expectedProjectIpa": [
+        "nat̚ s͈ʌl da"
+      ],
+      "ruleIds": [
+        "NIKL-23"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "coda neutralization and fortition before ㅅ. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "낯설다[낟썰다]"
+    },
+    {
+      "id": "NIKL-23-EXP-03",
+      "input": "밭갈이",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "받까리"
+      ],
+      "expectedProjectIpa": [
+        "pat̚ k͈a ɾi"
+      ],
+      "ruleIds": [
+        "NIKL-23"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "coda fortition followed by the listed surface form. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "밭갈이[받까리]"
+    },
+    {
+      "id": "NIKL-23-EXP-04",
+      "input": "옆집",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "엽찝"
+      ],
+      "expectedProjectIpa": [
+        "jʌp̚ tɕ͈ip̚"
+      ],
+      "ruleIds": [
+        "NIKL-23"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅂ-class coda-triggered fortition. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "옆집[엽찝]"
+    },
+    {
+      "id": "NIKL-23-EXP-05",
+      "input": "넓죽하다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "넙쭈카다"
+      ],
+      "expectedProjectIpa": [
+        "nʌp̚ tɕ͈u kʰa da"
+      ],
+      "ruleIds": [
+        "NIKL-23"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "lexical ㄼ exception and fortition. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "넓죽하다[넙쭈카다]"
+    },
+    {
+      "id": "NIKL-23-EXP-06",
+      "input": "읊조리다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "읍쪼리다"
+      ],
+      "expectedProjectIpa": [
+        "ɯp̚ tɕ͈o ɾi da"
+      ],
+      "ruleIds": [
+        "NIKL-23"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "complex-coda neutralization and fortition. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "읊조리다[읍쪼리다]"
+    },
+    {
+      "id": "NIKL-23-EXP-07",
+      "input": "값지다",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "갑찌다"
+      ],
+      "expectedProjectIpa": [
+        "kap̚ tɕ͈i da"
+      ],
+      "ruleIds": [
+        "NIKL-23"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "ㅄ neutralization and fortition. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "값지다[갑찌다]"
+    },
+    {
+      "id": "NIKL-30-EXP-01",
+      "input": "냇가",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "내까"
+      ],
+      "expectedProjectIpa": [
+        "nɛː k͈a"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot rule permits the primary fortis reading and an alternate with coda [ㄷ]. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "냇가[내ː까/낻ː까]"
+    },
+    {
+      "id": "NIKL-30-EXP-02",
+      "input": "샛길",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "새낄"
+      ],
+      "expectedProjectIpa": [
+        "sɛː k͈il"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot fortition with optional [ㄷ] realization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "샛길[새ː낄/샏ː낄]"
+    },
+    {
+      "id": "NIKL-30-EXP-03",
+      "input": "빨랫돌",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "빨래똘"
+      ],
+      "expectedProjectIpa": [
+        "p͈al lɛ t͈ol"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot fortition with optional [ㄷ] realization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "빨랫돌[빨래똘/빨랟똘]"
+    },
+    {
+      "id": "NIKL-30-EXP-04",
+      "input": "콧등",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "코뜽"
+      ],
+      "expectedProjectIpa": [
+        "kʰo t͈ɯŋ"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot fortition with optional [ㄷ] realization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "콧등[코뜽/콛뜽]"
+    },
+    {
+      "id": "NIKL-30-EXP-05",
+      "input": "깃발",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "기빨"
+      ],
+      "expectedProjectIpa": [
+        "ki p͈al"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot fortition with optional [ㄷ] realization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "깃발[기빨/긷빨]"
+    },
+    {
+      "id": "NIKL-30-EXP-06",
+      "input": "햇살",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "해쌀"
+      ],
+      "expectedProjectIpa": [
+        "hɛ s͈al"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot fortition with optional [ㄷ] realization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "햇살[해쌀/핻쌀]"
+    },
+    {
+      "id": "NIKL-30-EXP-07",
+      "input": "뱃속",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "배쏙"
+      ],
+      "expectedProjectIpa": [
+        "pɛ s͈ok̚"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot fortition with optional [ㄷ] realization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "뱃속[배쏙/밷쏙]"
+    },
+    {
+      "id": "NIKL-30-EXP-08",
+      "input": "뱃전",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "배쩐"
+      ],
+      "expectedProjectIpa": [
+        "pɛ tɕ͈ʌn"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot fortition with optional [ㄷ] realization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "뱃전[배쩐/밷쩐]"
+    },
+    {
+      "id": "NIKL-30-EXP-09",
+      "input": "고갯짓",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "고개찓"
+      ],
+      "expectedProjectIpa": [
+        "ko ɡɛ tɕ͈it̚"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot fortition with optional [ㄷ] realization. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "고갯짓[고개찓/고갣찓]"
+    },
+    {
+      "id": "NIKL-30-EXP-10",
+      "input": "콧날",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "콘날"
+      ],
+      "expectedProjectIpa": [
+        "kʰon nal"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot coda realization followed by nasal assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "콧날[콛날→콘날]"
+    },
+    {
+      "id": "NIKL-30-EXP-11",
+      "input": "아랫니",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "아랜니"
+      ],
+      "expectedProjectIpa": [
+        "a ɾɛn ni"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot coda realization followed by nasal assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "아랫니[아랟니→아랜니]"
+    },
+    {
+      "id": "NIKL-30-EXP-12",
+      "input": "툇마루",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "퇸마루"
+      ],
+      "expectedProjectIpa": [
+        "tʰøːn ma ɾu"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot coda realization and nasal assimilation with source length. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "툇마루[퇻ː마루→퇸ː마루]"
+    },
+    {
+      "id": "NIKL-30-EXP-13",
+      "input": "뱃머리",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "밴머리"
+      ],
+      "expectedProjectIpa": [
+        "pɛn mʌ ɾi"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot coda realization followed by nasal assimilation. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "뱃머리[밷머리→밴머리]"
+    },
+    {
+      "id": "NIKL-30-EXP-14",
+      "input": "베갯잇",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "베갠닏"
+      ],
+      "expectedProjectIpa": [
+        "pe gɛn nit̚"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot n-insertion chain. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "베갯잇[베갣닏→베갠닏]"
+    },
+    {
+      "id": "NIKL-30-EXP-15",
+      "input": "깻잎",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "깬닙"
+      ],
+      "expectedProjectIpa": [
+        "kɛn nip̚"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot/n-insertion chain. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "깻잎[깯닙→깬닙]"
+    },
+    {
+      "id": "NIKL-30-EXP-16",
+      "input": "나뭇잎",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "나문닙"
+      ],
+      "expectedProjectIpa": [
+        "na mun nip̚"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot/n-insertion chain. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "나뭇잎[나묻닙→나문닙]"
+    },
+    {
+      "id": "NIKL-30-EXP-17",
+      "input": "도리깻열",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "도리깬녈"
+      ],
+      "expectedProjectIpa": [
+        "to ɾi gɛn ɲʌl"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot n-insertion chain. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "도리깻열[도리깯녈→도리깬녈]"
+    },
+    {
+      "id": "NIKL-30-EXP-18",
+      "input": "뒷윷",
+      "context": null,
+      "phraseMode": "word",
+      "expectedSurfaceForms": [
+        "뒨뉻"
+      ],
+      "expectedProjectIpa": [
+        "tyːn ɲut̚"
+      ],
+      "ruleIds": [
+        "NIKL-30"
+      ],
+      "evidenceType": "official-standard-example",
+      "evidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "evidenceNote": "saisiot/n-insertion chain with source length. This is a project IPA target from the sourced lexical layer, not an IPA transcription published by NIKL.",
+      "validationStatus": "official-standard-example-checked",
+      "regressionRefs": [
+        {
+          "path": "tests/nikl-expanded-cross-article-controls-2026-10-15.test.mjs",
+          "testName": "expanded NIKL examples from §§13–30 match sourced surfaces and declared project IPA"
+        }
+      ],
+      "evidenceExcerpt": "뒷윷[뒫ː뉻→뒨ː뉻]"
     }
   ],
   "validationPolicy": "Statuses distinguish exact official examples, official dictionary entries, and controls derived from a general rule but not explicitly listed. Project IPA remains a project transcription target and is not an official NIKL IPA prescription."
