@@ -82,3 +82,19 @@ Missing/under-covered cases to add to a separately labelled, source-backed bench
 - **Surface regression fixture/harness on #156:** head `07c18d247f5033188236a6684fdc783f4d63b665); existing test, verification, and corpus workflows passed (`39488581780`, `39488581776`, `39488581740`). The 18-row fixture is now externalized and the Python differential script exists, but **the script has not been run** and no differential JSON report exists yet. It must not be described as proven parity.
 - **Base branch history:** a workflow-file add was accidentally committed to `main` as `1f96917317c922debab964217d2d96e264056cf3` while attempting to create a branch-specific workflow, then immediately removed in `98697b71e442afcad802930896a7a5dcb94a02ef`. The workflow file is absent from current `main`; its tree is restored, but the two commits remain in main history. This means the current main tip is two commits after the previously used baseline, and open PR branches may report themselves behind even where their changed files do not overlap. Recheck mergeability before integration.
 - **Integration remains pending:** do not merge #159/#155/#156 solely because their listed tests pass. Review the exact diffs, confirm GitHub's current mergeability/base SHA, run the Python-vs-browser surface comparison, and separately adjudicate IPA against authoritative/source-backed evidence.
+
+
+## Latest PR #156 verification — fixed corpus/export harness
+
+- Latest head: `deff3e70218612a5328782729b74cfecd47f6c37`.
+- CI passed: system verification `39489076412`, tests `39489076709`, master-table/corpus artifacts `39489076863`.
+- Browser suite: **1035 passed, 0 failed**. The new test runs `scripts/export-browser-g2pk-surfaces.mjs` and confirms all 18 exported browser surfaces match the fixed fixture; Python pytest also syntax-checks `scripts/compare-g2pk-engines.py`.
+- The actual comparison against Python `g2pK` has **not** been executed. The JSON report has not been generated. The fixture is a surface regression set with expected values from existing project tests, not an independently adjudicated gold set.
+- Current PR #156 is draft and the metadata response reports it mergeable against `main`; the branch was behind two history-only main commits from the workflow add/delete noted above, so recheck exact base SHA immediately before merge.
+
+## Revised immediate sequence
+
+1. Keep #159 draft; exact-head CI is green, but review the combined diff and recheck mergeability against current main.
+2. Reconcile #155 after #159's disposition; its strict IPA glyph fix is green at exact head `3bd2446a1d8d33233a097c28e448ea1cbd1fd78d`, but overlapping `engine_convert.js` changes mean it should not be merged independently before that review.
+3. #156's browser fixture/exporter checks are green at `deff3e70218612a5328782729b74cfecd47f6c37`; execute the Python differential script separately before claiming runtime comparison.
+4. Reconcile #154 and #157 documentation branches; neither substitutes for runtime or IPA validation.
