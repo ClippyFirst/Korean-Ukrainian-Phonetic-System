@@ -175,3 +175,44 @@ def test_g2pk_differential_script_has_valid_python_syntax():
     from pathlib import Path
     script = Path(__file__).resolve().parents[1] / "scripts" / "compare-g2pk-engines.py"
     ast.parse(script.read_text(encoding="utf-8"), filename=str(script))
+
+
+def test_python_g2pk_surface_differential_against_browser_fixture():
+    import json
+    import sys
+    import warnings
+    from pathlib import Path
+    import pytest
+
+    if sys.version_info >= (3, 13):
+        pytest.skip("the optional g2pK extra is declared only for Python <3.13")
+    try:
+        from g2pk import G2p
+    except ImportError as exc:
+        pytest.fail(f"g2pK should be installed by the dev extra on Python {sys.version_info.major}.{sys.version_info.minor}: {exc}")
+
+    root = Path(__file__).resolve().parents[1]
+    fixture = json.loads((root / "tests/fixtures/g2pk-surface-regression.json").read_text(encoding="utf-8"))
+    g2p = G2p()
+    rows = []
+    for case in fixture["cases"]:
+        python_surface = str(g2p(case["input"]))
+        rows.append({
+            "input": case["input"],
+            "phenomenon": case["phenomenon"],
+            "browser_expected_surface": case["expectedSurface"],
+            "python_g2pk_surface": python_surface,
+            "equal": python_surface == case["expectedSurface"],
+            "ipa_gold_status": case["ipaGoldStatus"],
+        })
+    mismatches = [row for row in rows if not row["equal"]]
+    report = {
+        "kind": "diagnostic-only",
+        "rows_compared": len(rows),
+        "equal": len(rows) - len(mismatches),
+        "different": len(mismatches),
+        "ipa_comparison": "not_performed",
+        "mismatches": mismatches,
+    }
+    warnings.warn("PYTHON_G2PK_DIFFERENTIAL_REPORT=" + json.dumps(report, ensure_ascii=False), UserWarning)
+    assert len(rows) == len(fixture["cases"]) == 18
