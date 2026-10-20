@@ -96,9 +96,13 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     if(isJamoChar(ch)){
       const context=characters.slice(Math.max(0,index-2),Math.min(characters.length,index+3)).filter((_,offset)=>Math.abs(Math.max(0,index-2)+offset-index)>0);
       const nearbyLatinOrDigit=context.some(value=>/[A-Za-z0-9]/u.test(value));
-      // Korean explanatory prose can name a jamo (e.g. "ㅎ과"); never
-      // phonologize that label, but distinguish it from malformed bare input.
-      if(characters.some(value=>Boolean(decompose(value)))&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
+      // Preserve a jamo as explanatory notation only when it is locally
+      // attached to Korean prose (e.g. "ㅎ과") or the documented label "ㄴ 첨가".
+      // A Hangul syllable elsewhere in the input is not enough evidence.
+      const next=characters[index+1]||'';
+      const attachedToKorean=Boolean(decompose(next));
+      const namedNInsertion=ch==='ㄴ'&&/^\\s+첨가/u.test(characters.slice(index+1).join(''));
+      if((attachedToKorean||namedNInsertion)&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
       return {type:'jamo',char:ch};
     }
     return {type:'literal',char:ch};
