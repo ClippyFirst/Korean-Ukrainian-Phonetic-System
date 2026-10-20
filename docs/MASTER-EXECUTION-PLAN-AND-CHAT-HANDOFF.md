@@ -88,6 +88,14 @@ Next: inspect the complete PR #155 and #148 diffs plus their latest CI status, e
 
 - Created draft PR [#158](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/158), branch `fix/jamo-explanatory-boundary-2026-10-20`, based on PR #148's branch to keep the dependency explicit. Latest head: `b82752c1085f3fd3717546e1dcb5019a246207ac`; source change commit: `a8a0415bebe47fa3d20ca005d7da00e21d962bb6`.
 - Changed the explanatory-jamo classifier to require local evidence (immediate Korean syllable adjacency, or the named label `ㄴ 첨가`) instead of any Hangul syllable anywhere in the input. Added tests for `가 ㄷ`, `ㄷ 가`, `ㅎ과 뒤따르는 자음을 비교한다.`, and `ㄴ 첨가를 설명한다.`.
-- PR #158 CI run [39483943245](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39483943245) was queued at last observation. No local tests were run; do not mark the change verified until remote CI finishes and the test expectations are reviewed.
+- PR #158 CI run [39483943245](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39483943245) completed with overall `failure`: the `web` job failed at `npm test`, while Python 3.11/3.12/3.13 jobs succeeded. No local tests were run. Inspect/fix the web failure before treating this PR as verified.
 - PR #158 is a draft and is not merged. It depends on PR #148's branch; do not merge it directly to main without first reconciling/merging its base dependency and re-running the integrated checks.
 - Update KUA-001 and KUA-003 only after the PR dependency and CI state are confirmed. JS/Python parity remains IN_PROGRESS and no differential corpus has yet been executed.
+
+
+### CI failure follow-up — 2026-10-20
+
+- Inspected run `39483943245` on head `b82752c1085f3fd3717546e1dcb5019a246207ac`: web job `118839393503` failed at `npm test`; Python jobs `118839393069`, `118839393564`, and `118839393712` succeeded. The failing web step skipped the build.
+- Source inspection found the `namedNInsertion` regular expression in `src/app/engine_convert.js` used an over-escaped whitespace token (`/^\\s+첨가/u` in the JS source), so the intended `ㄴ 첨가` label may not be recognized. Corrected the source line on the PR #158 branch in commit `7097100932648f7f3abe190aef33fa27a47db214` to use the whitespace matcher `/^\s+첨가/u`.
+- This is a source-level diagnosis, not a confirmed explanation of every failure: the original job log was not inspected in detail. Await the CI run for the new head `7097100932648f7f3abe190aef33fa27a47db214` and review its exact failing/passing test output before changing status. No local tests were run. Main remains unchanged; PR #158 remains draft/open and dependent on PR #148's branch.
+- PR #157's documentation workflow completed successfully on HEAD `ca3b1ee18c4a4060229393c37a91350144c2873a`: [run 39483998549](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39483998549). This only validates the configured docs/artifact workflow, not linguistic correctness.
