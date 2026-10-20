@@ -147,7 +147,7 @@ Next: review the exact current-base diffs for #159 and #155 together; then execu
 - **Still not run:** `python scripts/compare-g2pk-engines.py --output g2pk-differential-report.json` with optional g2pK installed in Python 3.11/3.12. No Python/browser mismatch report exists yet; do not claim parity.
 - PR #155 exact head `3bd2446a1d8d33233a097c28e448ea1cbd1fd78d` passed all listed CI groups and browser tests 1037/1037. ASCII `g` is now rejected while IPA `ɡ` is accepted. It overlaps #159 in `engine_convert.js` and remains draft.
 - PR #159 exact head `de4565de7e43187831ad44f03c35ff515b25c4fc` passed all listed CI groups and browser tests 1039/1039; 165 corpus files: 164 `lexical-review`, one intentional unresolved negative control, zero placeholders. It remains draft and unmerged.
-- Updated audit report: `docs/audits/PR-CONVERGENCE-AND-G2P-IPA-AUDIT-2026-10-20.md` (latest audit document commit `69ca6b0e81af12af3c46c3716c683db6fd91f601`).
+- Updated audit report: `docs/audits/PR-CONVERGENCE-AND-G2P-IPA-AUDIT-2026-10-20.md` (latest audit document commit `ee0bea180d689b2a45815e7b496bbdaaec9b481c`).
 - Main history contains the workflow add/delete pair `1f96917317c922debab964217d2d96e264056cf3` and `98697b71e442afcad802930896a7a5dcb94a02ef`; the workflow file is absent from current main tree. Current main is two commits past the prior baseline, so recheck mergeability/base before any integration.
 ## Python/browser surface comparison — 2026-10-20
 
@@ -155,3 +155,10 @@ Next: review the exact current-base diffs for #159 and #155 together; then execu
 - Mismatch: `값어치` → browser expectation `가버치`; Python g2pK → `갑써치`. NIKL's official guidance confirms standard pronunciation `[가버치]` (표준 발음법 제15항 붙임): https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217. The fixture now records both outputs and the authoritative source; do not rewrite the expected form to match Python.
 - Latest fixture head `c2b63e577f5d6a610e32eb661f8abcde5a721633` has fresh CI queued. The prior comparison run on `e6bb11a1858d281ad171802217a34e2ce19feea3` completed successfully and emitted the 17/18 report in both Python versions.
 - Remaining: verify all other fixture rows against authoritative sources and create an independently adjudicated IPA gold set.
+## Differential verification complete for the fixed surface fixture — 2026-10-20
+
+- PR #156 exact head `c2b63e577f5d6a610e32eb661f8abcde5a721633` passed tests (`39490017242`), system verification (`39490017260`), corpus artifacts (`39490017442`), and optional g2pK integration (`39490017642`). Browser tests: 1035/1035; Python 3.11/3.12/3.13 matrix pass; optional g2pK 3.11/3.12 pass.
+- Fixed corpus comparison: **17/18 surface forms equal** in both Python 3.11 and 3.12. One mismatch: `값어치` expected/browser `가버치`, Python g2pK 0.9.4 `갑써치`.
+- This mismatch is adjudicated by NIKL official guidance, which explicitly gives standard pronunciation `[가버치]` under standard pronunciation rule 15's supplement: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217. Keep `가버치`; record `갑써치` as a known Python-engine divergence, not the gold output.
+- The fixture now records both surfaces, exact Python version/package scope, differential status and source URL. The other 17 rows still need independent source review. IPA comparison is not performed; all IPA gold statuses remain `not_independently_adjudicated`.
+- Latest audit report commit: `ee0bea180d689b2a45815e7b496bbdaaec9b481c`. KUA-002 remains IN_PROGRESS until remaining surface rows are source-checked and mismatch categories documented; KUA-003 remains IN_PROGRESS pending independent IPA/target-policy validation.
