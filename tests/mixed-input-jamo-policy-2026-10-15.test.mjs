@@ -37,10 +37,22 @@ test('non-Korean-only input is not presented as canonical pronunciation', () => 
 });
 
 test('jamo named in Korean explanatory prose is not phonologized or leaked into IPA', () => {
-  const result = engine.convert('ㅎ과 뒤따르는 자음을 비교한다.');
-  assert.ok(!result.issues.some(issue => /standalone compatibility jamo/u.test(issue)));
-  assert.doesNotMatch(result.ipa, /ㅎ/u);
-  assert.doesNotMatch(result.analysis, /ㅎ과/u);
+  for (const input of ['ㅎ과 뒤따르는 자음을 비교한다.', 'ㄴ 첨가를 설명한다.']) {
+    const result = engine.convert(input);
+    assert.ok(!result.issues.some(issue => /standalone compatibility jamo/u.test(issue)), input);
+    assert.doesNotMatch(result.ipa, /[ㄱ-ㅎㅏ-ㅣ]/u, input);
+    assert.doesNotMatch(result.analysis, /ㅎ과|ㄴ 첨가/u, input);
+  }
+});
+
+test('a jamo separated from Korean syllables is not presumed to be explanatory notation', () => {
+  for (const input of ['가 ㄷ', 'ㄷ 가']) {
+    const result = engine.convert(input);
+    assert.equal(result.status, 'unresolved', input);
+    assert.ok(result.issues.some(issue => /standalone compatibility jamo/u.test(issue)), input);
+    assert.doesNotMatch(result.ipa, /[ㄱ-ㅎㅏ-ㅣ]/u, input);
+    assert.doesNotMatch(result.analysis, /[ㄱ-ㅎㅏ-ㅣ]/u, input);
+  }
 });
 
 test('sourced mixed-script numeric lexical forms keep their exact IPA', () => {
