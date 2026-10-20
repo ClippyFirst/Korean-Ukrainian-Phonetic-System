@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { createEngine } from '../src/app/engine.js';
 import { createG2pWebAdapter } from '../src/app/g2pk_web.js';
 import { ipaSyllableToUkrainian } from '../src/app/engine_ipa.js';
@@ -44,6 +45,22 @@ test('browser g2pK keeps difficult standard surface forms under exact regression
     assert.ok(result.ipa.length > 0, input + ': missing IPA');
     assert.ok(result.ukrainian.length > 0, input + ': missing Ukrainian target');
     assert.deepEqual(result.issues, [], input + ': unexpected unresolved issues');
+  }
+});
+
+test('browser surface export is deterministic and covers the fixed fixture', () => {
+  const fixture = JSON.parse(read('tests/fixtures/g2pk-surface-regression.json'));
+  const output = execFileSync(
+    process.execPath,
+    ['--experimental-strip-types', 'scripts/export-browser-g2pk-surfaces.mjs'],
+    { encoding: 'utf8' }
+  );
+  const exported = JSON.parse(output);
+  assert.equal(exported.rows.length, fixture.cases.length);
+  for (const item of fixture.cases) {
+    const row = exported.rows.find(candidate => candidate.input === item.input);
+    assert.ok(row, item.input + ': missing browser export row');
+    assert.equal(row.browser_surface, item.expectedSurface, item.input);
   }
 });
 
