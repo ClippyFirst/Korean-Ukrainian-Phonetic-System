@@ -55,6 +55,14 @@ test('a jamo separated from Korean syllables is not presumed to be explanatory n
   }
 });
 
+test('explanatory jamo labels retain context through lexical tokenization', () => {
+  for (const input of ['주제: ㅚ·ㅟ의 발음', '주제: ㄺ과 ㄱ 앞 환경', '받침과 ㄹ']) {
+    const result = engine.convert(input);
+    assert.ok(!result.issues.some(issue => /standalone compatibility jamo/u.test(issue)), input);
+    assert.doesNotMatch(result.ipa, /[ㄱ-ㅎㅏ-ㅣ]/u, input);
+  }
+});
+
 test('sourced mixed-script numeric lexical forms keep their exact IPA', () => {
   const result = engine.convert('3·1절');
   assert.equal(result.ipa, 'sa mil tɕ͈ʌl');
