@@ -182,3 +182,8 @@ The earlier counts in this file are historical snapshots. A fresh GitHub compare
 **Still open:** independent source review for the other 17 surface rows; an independently adjudicated IPA gold set; Ukrainian target-policy evaluation; current-base integration/retest of #156 → #159 → #155; reconciliation of #154/#157; root project license and citation metadata decision. Do not set KUA-002/KUA-003/KUA-010 to DONE on the basis of CI or self-consistency tests.
 
 **Integration guardrail:** do not merge #148 or #158 separately. #156 and #159 overlap in `tests/test_pipeline.py`; #159 and #155 overlap in `src/app/engine_convert.js`. Each final combined head must get its own CI run. No PR has been merged by this refresh.
+
+
+## CI recheck — 2026-10-20
+
+Correction to the prior note: GitHub Actions has now confirmed successful exact-head workflows for docs/handoff head `ac099059340bb07d820082093135f7760f7016f2`: tests run 39494387952, system verification run 39494387991, and master-table/research-corpus artifacts run 39494387956. The branch is 32 commits ahead / 2 behind current main. These are documentation-branch checks, not integrated runtime checks. The four workflow groups also report success for the recorded current PR heads of #155, #156, and #159; #154's three workflow groups report success. All claims remain scoped to the exact SHAs checked.
