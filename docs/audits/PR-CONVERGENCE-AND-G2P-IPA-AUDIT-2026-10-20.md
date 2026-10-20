@@ -53,3 +53,18 @@ Missing/under-covered cases to add to a separately labelled, source-backed bench
 - **Verified:** exact historical CI runs for #148, #155, #156 and #157 listed above; #158's previous exact-head system verification; presence of upstream notices/license text; absence of root `LICENSE` and `CITATION.cff`; 642 primary lexical rows; #158's ancestry on #148; #148/#158 are 9 commits behind main.
 - **Pending:** fresh CI after strict ASCII-`g` rejection on #155; current mergeability and exact head metadata for each PR; rebase/retarget of #154 and #158; independent Python-vs-browser differential benchmark; independent IPA adjudication; broader `의`, reduction, names and long-sentence corpus.
 - **Not claimed:** full G2P parity, complete normative IPA coverage, final Ukrainian target-policy approval, release readiness, or completed scientific validation.
+
+
+## Follow-up update — clean-base mixed-input PR #159
+
+- Retargeting the stacked #158 directly to `main` did not give a reliable clean integration path; a new branch was created from `main` at `8641dac4002f951d391682062ba134894e4198d7` and the reviewed #148/#158 functional delta was ported as [PR #159](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/159).
+- PR #159 head `de4565de7e43187831ad44f03c35ff515b25c4fc`. Exact-head workflow [39488133606](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39488133606) completed successfully: browser regression/build and Python regression/data-integrity both passed. Other workflow checks (including browser-G2P and multi-version test workflow) were still queued/in progress at the last read; do not treat the PR as fully green yet.
+- The initial clean-base run on `eecccf6e7c8af232b5eef6de5e064d4bd4d5f0bd` failed because a local context variable was removed while the classifier still referenced it. Restored it in `de4565d...`; the exact-head browser/build and Python regression jobs then passed.
+- The new regression suite also covers the edge case where malformed standalone jamo occurs in the same input as a sourced lexical item (`가 ㄷ 3·1절)); this ensures lexical tokenization cannot silently drop the jamo.
+- PR #159 remains draft. Do not close #148/#158 until all #159 checks are green and the combined diff is reviewed.
+
+## Follow-up update — strict IPA glyph
+
+- The ASCII-`g` rejection on #155 correctly exposed a stale test that explicitly required both ASCII `g` and IPA `ɡ` to map to `ґ`. That expectation contradicted the IPA-first requirement.
+- Updated `tests/web-engine.test.mjs` to require `ɡa` → `ґа` and `ga` → unresolved. A first run showed the unknown segment is reported as the full `ga` string (because failure occurs at index zero), so the assertion was corrected accordingly.
+- Latest #155 head is `3bd2446a1d8d33233a097c28e448ea1cbd1fd78d`; exact-head CI is queued/not yet visible at the last check. The previous failing run is evidence of a stale test, not a passing validation of the new fix.
