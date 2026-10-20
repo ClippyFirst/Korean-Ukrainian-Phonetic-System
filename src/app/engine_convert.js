@@ -26,7 +26,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const nextKeyPositions=mixedKeys.map(key=>text.indexOf(key,cursor)).filter(position=>position>=0);
       const nextKey=nextKeyPositions.length?Math.min(...nextKeyPositions):text.length;
       const segment=text.slice(cursor,nextKey);
-      parts.push(...(segment.match(/(?:[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[가-힣]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[\s\p{P}]*[가-힣]+)+|[가-힣]+(?:과|와)\s+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)*[\s\p{P}]*[가-힣]+|[가-힣]+|[^가-힣ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)/gu)||[]));
+      parts.push(...(segment.match(/(?:[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[가-힣]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[\s\p{P}]*[가-힣]+)+|[가-힣]+(?:과|와)\s+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)*[\s\p{P}]*[가-힣]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[가-힣]+|[^가-힣ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)/gu)||[]));
       cursor=nextKey;
     }
     if(parts.some(part=>lexicon.has(part))){
@@ -94,7 +94,6 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const d=decompose(ch);
     if(d)return {type:'hangul',...d};
     if(isJamoChar(ch)){
-      const context=characters.slice(Math.max(0,index-2),Math.min(characters.length,index+3)).filter((_,offset)=>Math.abs(Math.max(0,index-2)+offset-index)>0);
       const nearbyLatinOrDigit=context.some(value=>/[A-Za-z0-9]/u.test(value));
       // Preserve a jamo as explanatory notation only when it is locally
       // attached to Korean prose (e.g. "ㅎ과") or the documented label "ㄴ 첨가".
