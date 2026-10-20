@@ -15,9 +15,9 @@ test('createEngine exposes convert and decompose', () => {
   assert.equal(typeof parseCsv, 'function');
 });
 
-test('IPA helpers are re-exported and map both g and ɡ', () => {
+test('IPA helpers accept IPA ɡ and reject ASCII Latin g residue', () => {
   assert.equal(ipaSyllableToUkrainian('ɡa').text, 'ґа');
-  assert.equal(ipaSyllableToUkrainian('ga').text, 'ґа');
+  assert.deepEqual(ipaSyllableToUkrainian('ga'), { text: '', unknown: 'g' });
   const multi = ipaSyllablesToUkrainian(['pan', 'nil']);
   assert.deepEqual(multi.syllables, ['пан', 'ніл']);
 });
