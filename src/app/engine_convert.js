@@ -102,7 +102,16 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const next=characters[index+1]||'';
       const attachedToKorean=Boolean(decompose(next));
       const namedNInsertion=ch==='ㄴ'&&/^\s+첨가/u.test(characters.slice(index+1).join(''));
-      if((attachedToKorean||namedNInsertion)&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
+      // Also allow locally explicit labels in Korean phonology prose:
+      // punctuation-separated jamo lists with Korean particles (ㄱ, ㄴ, ㄷ은;
+      // ㅚ·ㅟ의), or labels following 과/와 (받침과 ㄹ; ㄺ과 ㄱ 앞).
+      // These patterns do not license arbitrary "가 ㄷ" or "ㄷ 가".
+      const fromHere=characters.slice(index).join('');
+      const listedJamoLabel=/^[ㄱ-ㅎㅏ-ㅣ]+(?:\s*[·,\/]\s*[ㄱ-ㅎㅏ-ㅣ]+)+(?:은|는|의|을|를|이|가|과|와)/u.test(fromHere);
+      const before=characters.slice(Math.max(0,index-12),index).join('');
+      const after=characters.slice(index+1,index+18).join('');
+      const conjunctionLabel=/(?:과|와)\s*$/u.test(before)&&/^\s*(?:앞|환경|발음|조건|관련|설명|비교|[.,。:;·\/]|$)/u.test(after);
+      if((attachedToKorean||namedNInsertion||listedJamoLabel||conjunctionLabel)&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
       return {type:'jamo',char:ch};
     }
     return {type:'literal',char:ch};
