@@ -170,3 +170,13 @@ A subsequent query of GitHub Actions confirmed that the latest documentation hea
 - master-table/research-corpus artifacts: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39494387956 — success
 
 The PR #157 branch comparison now reports **32 commits ahead / 2 behind** current main at `98697b71e442afcad802930896a7a5dcb94a02ef`. The successful documentation-branch workflows verify the documented gates for this exact SHA, but do not test a combined runtime integration. The latest exact-head CI queries for #154, #155, #156 and #159 also returned success for all four recorded workflow groups for their stated SHAs. Those runtime branches remain two or more commits behind main and still require current-base reconciliation plus combined-head CI.
+
+
+### Final result for latest handoff head
+
+The workflows have now completed successfully on the exact latest documentation commit `3ac3886f2edec05afb5294fb1e3ba6f9729b4b62`:
+- tests: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39494957629 — success
+- system verification: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39494957623 — success
+- master-table/research-corpus artifacts: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39494957627 — success
+
+The system-verification workflow completed both browser regression/build and Python regression/data-integrity jobs successfully. This establishes green documentation-branch CI on this SHA; it does not validate runtime PR integration or IPA gold.
