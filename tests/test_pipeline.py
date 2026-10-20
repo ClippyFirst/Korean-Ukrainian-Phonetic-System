@@ -197,13 +197,16 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
     rows = []
     for case in fixture["cases"]:
         python_surface = str(g2p(case["input"]))
+        assert python_surface == case["pythonG2pkSurface"], case["input"] + ": recorded Python g2pK result changed"
         rows.append({
             "input": case["input"],
             "phenomenon": case["phenomenon"],
             "browser_expected_surface": case["expectedSurface"],
+            "recorded_python_surface": case["pythonG2pkSurface"],
             "python_g2pk_surface": python_surface,
             "equal": python_surface == case["expectedSurface"],
             "ipa_gold_status": case["ipaGoldStatus"],
+            "differential_status": case["differentialStatus"],
         })
     mismatches = [row for row in rows if not row["equal"]]
     report = {
