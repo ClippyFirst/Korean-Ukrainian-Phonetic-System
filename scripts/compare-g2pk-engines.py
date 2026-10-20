@@ -54,6 +54,8 @@ def main() -> int:
             "expected_surface": expected,
             "browser_surface": browser["browser_surface"],
             "python_g2pk_surface": python_surface,
+            "recorded_python_surface": case.get("pythonG2pkSurface"),
+            "matches_recorded_python_run": python_surface == case.get("pythonG2pkSurface"),
             "browser_matches_existing_fixture": browser["browser_surface"] == expected,
             "python_matches_existing_fixture": python_surface == expected,
             "browser_equals_python": browser["browser_surface"] == python_surface,
@@ -74,6 +76,7 @@ def main() -> int:
         "browser_python_equal": sum(row["browser_equals_python"] for row in rows),
         "browser_python_different": sum(not row["browser_equals_python"] for row in rows),
         "fixture_expectations_different_from_python": sum(not row["python_matches_existing_fixture"] for row in rows),
+        "recorded_python_output_mismatches": sum(not row["matches_recorded_python_run"] for row in rows),
         "rows": rows,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
