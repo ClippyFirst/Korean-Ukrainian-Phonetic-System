@@ -43,9 +43,10 @@
       "pythonG2pkSurface": "갑써치",
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
-      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "needs-normative-review",
-      "differentialNote": "Python g2pK returns 갑써치 while the existing browser regression expects 가버치; do not select either form as gold without NIKL/source adjudication."
+      "expectedSurfaceProvenance": "National Institute of Korean Language: standard pronunciation [가버치], 표준 발음법 제15항 붙임; https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217",
+      "differentialStatus": "python-g2pk-diverges-from-nikl-normative-output",
+      "differentialNote": "NIKL explicitly gives the standard pronunciation [가버치]. Python g2pK 0.9.4 returns 갑써치 for this lexical item; retain this as a known engine divergence, not as a reason to change the browser expectation.",
+      "sourceUrl": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217"
     },
     {
       "input": "숲이",
