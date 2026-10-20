@@ -147,7 +147,7 @@ Next: review the exact current-base diffs for #159 and #155 together; then execu
 - **Still not run:** `python scripts/compare-g2pk-engines.py --output g2pk-differential-report.json` with optional g2pK installed in Python 3.11/3.12. No Python/browser mismatch report exists yet; do not claim parity.
 - PR #155 exact head `3bd2446a1d8d33233a097c28e448ea1cbd1fd78d` passed all listed CI groups and browser tests 1037/1037. ASCII `g` is now rejected while IPA `ɡ` is accepted. It overlaps #159 in `engine_convert.js` and remains draft.
 - PR #159 exact head `de4565de7e43187831ad44f03c35ff515b25c4fc` passed all listed CI groups and browser tests 1039/1039; 165 corpus files: 164 `lexical-review`, one intentional unresolved negative control, zero placeholders. It remains draft and unmerged.
-- Updated audit report: `docs/audits/PR-CONVERGENCE-AND-G2P-IPA-AUDIT-2026-10-20.md` (latest audit document commit `55a05ecea236bc832383bd3f666ac04bf0905dd8`).
+- Updated audit report: `docs/audits/PR-CONVERGENCE-AND-G2P-IPA-AUDIT-2026-10-20.md` (latest audit document commit `c4b71351d9afb027ae2768da8bfb87e905912441`).
 - Main history contains the workflow add/delete pair `1f96917317c922debab964217d2d96e264056cf3` and `98697b71e442afcad802930896a7a5dcb94a02ef`; the workflow file is absent from current main tree. Current main is two commits past the prior baseline, so recheck mergeability/base before any integration.
 ## Python/browser surface comparison — 2026-10-20
 
@@ -167,3 +167,8 @@ Next: review the exact current-base diffs for #159 and #155 together; then execu
 - PR #156 now modifies `pyproject.toml` and `tests/test_pipeline.py` as well as the fixture/exporter. PR #159 also changes `tests/test_pipeline.py`; integrate #156 before #159 and resolve the additive test overlap during rebase.
 - Recommended order is #154 → #157 (documentation/source register), #156 (surface fixture and actual Python comparison), #159 (sole mixed-input integration), then #155 (trace UI/strict IPA glyph guard). This is a review order, not permission to merge without current-base checks.
 - #156 exact head `c2b63e577f5d6a610e32eb661f8abcde5a721633` passed all workflows; comparison result is 17/18 matches, with the sole mismatch adjudicated by NIKL. The latest audit report now records the #156/#159 overlap and revised order.
+## Current branch counts (rechecked against main)
+
+- #148: 11 ahead / 11 behind; #158: 20 ahead / 11 behind; #154: 33 ahead / 4 behind; #155: 19 ahead / 2 behind; #156: 17 ahead / 2 behind; #157: 27 ahead / 2 behind; #159: 7 ahead / 2 behind.
+- #155, #156 and #159 report mergeable true in the latest PR metadata refresh; #158 reports mergeable false; #148 reports mergeable true but is superseded. All are still unmerged. PR #157 is ready for review and reports mergeable true; latest documentation-only head has no observed exact-head CI.
+- Integration order after the real surface comparison: #154 → #157 for docs/source-register alignment, #156 for fixture + Python differential, #159 for mixed-input guards (rebase and resolve `tests/test_pipeline.py` overlap), then #155 (rebase and resolve `engine_convert.js` overlap). Do not merge #148/#158 separately.
