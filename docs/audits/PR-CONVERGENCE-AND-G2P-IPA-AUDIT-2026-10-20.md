@@ -98,3 +98,15 @@ Missing/under-covered cases to add to a separately labelled, source-backed bench
 2. Reconcile #155 after #159's disposition; its strict IPA glyph fix is green at exact head `3bd2446a1d8d33233a097c28e448ea1cbd1fd78d`, but overlapping `engine_convert.js` changes mean it should not be merged independently before that review.
 3. #156's browser fixture/exporter checks are green at `deff3e70218612a5328782729b74cfecd47f6c37`; execute the Python differential script separately before claiming runtime comparison.
 4. Reconcile #154 and #157 documentation branches; neither substitutes for runtime or IPA validation.
+
+## Partial presence in main and PR-specific risks
+
+| PR | What main already has | What remains branch-only / risk |
+|---|---|---|
+| #148 / #158 / #159 | Core IPA-first renderer, literal handling, native contextual rules, lexical source controls | Main lacks the new standalone-jamo classification, strict IPA-safe literal filtering and local explanatory-label boundary. #159 is the consolidated candidate. Risk: tokenizer changes can drop or misclassify jamo when lexical tokenization is active; the 18-row/long-passage tests do not substitute for the whole 165-corpus gate. |
+| #155 | `engine_ipa.js`, longest-match output mapping, IPA-to-Ukrainian rendering already exist | The visible per-token trace, realized-surface trace field, UI headings and strict ASCII-`g` rejection are branch-only. Risk: `engine_convert.js` overlap with #159 and target trace can misalign on literals, lexical overrides, variants or unresolved units. |
+| #156 | Browser app already uses the vendored JS g2pK adapter in practical mode; Python backend is optional | Adds regression fixture, tests and comparison harness, not a new runtime. Risk: its 18 expected surfaces are inherited project expectations; the Python comparison is not yet executed and IPA gold is absent. |
+| #154 | Core engine, source/lexical CSVs and current README already exist | Research programme, source registers, literature review, target-layer comparison and acceptance gates are branch-only. Risk: 2 commits behind main; source locator/license claims need review; documentation-only PR has no runtime test coverage. |
+| #157 | Runtime and existing audit docs | Completion audit, handoff and this convergence report are branch-only. Risk: latest docs commit has no exact-head workflow result observed; it does not alter runtime. |
+
+No PR among these has been merged. The existence of a module on main (for example the IPA renderer) must not be confused with the additional trace or validation gates proposed by its PR.
