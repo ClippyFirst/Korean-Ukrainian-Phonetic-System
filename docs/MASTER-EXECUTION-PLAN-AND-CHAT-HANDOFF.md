@@ -66,3 +66,19 @@ A successful unit test proves only the asserted property. Mechanical IPA-to-targ
 ## Handoff: next concrete action
 
 Next: inspect the complete PR #155 and #148 diffs plus their latest CI status, especially the interaction between mixed-script segmentation and trace alignment. Then build a same-input JS-vs-Python comparison fixture for the highest-risk morphology cases, generating outputs from both engines in a supported Python 3.11/3.12 environment. Do not infer parity from the browser-only PR #156 tests. Update KUA-001–KUA-003 with exact test evidence and the relevant commit SHAs.
+
+
+## Follow-up review — 2026-10-20 (PR checks and edge-case finding)
+
+- PR #157 handoff branch CI completed successfully on HEAD `9c73a817928497b66813ec22b9c26aa824ef3300`: [Verify workflow run 39482745797](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39482745797). This validates the branch's configured checks only; it is not a linguistic validation.
+- PR #155 remains open at head `199f25363f92964930e027aefddfc8d1b75bbdb1`; its 2026-10-15 verification run [38808586098](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38808586098) completed successfully for Python regression/data-integrity and browser tests/build/page verification. The PR body itself states its tests had not yet been run in the author's environment; remote CI is the relevant evidence.
+- PR #148 remains open at head `27341b49921452a0d84fd8e16ddc3ef017e8a9e5`; its 2026-10-15 verification run [38727833203](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38727833203) completed successfully for Python regression/data-integrity and browser tests/build/page verification. Its broader workflow run [38808586098](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38808586098) belongs to PR #155, not PR #148; keep run-to-commit attribution exact.
+- Patch review identified a specific untested edge in PR #148: the classification of a compatibility jamo as explanatory literal currently depends on whether *any* Hangul syllable occurs anywhere in the full input and whether Latin/digits occur in a nearby window. That can classify a malformed mixed input such as `가 ㄷ` as literal rather than unresolved. Existing tests cover bare jamo and Korean explanatory prose, but do not establish this boundary behavior. Add a focused regression before merge and decide the intended policy for jamo in otherwise valid Korean text.
+- PR #155 improves observability but is not independent verification: token-level trace tests establish the mechanics of the existing IPA-to-Ukrainian mapping, not whether the Korean IPA or the target mapping is linguistically correct. Its long one-line render implementation also merits maintainability review separately from functional tests.
+
+### Updated immediate next steps
+
+1. Add focused mixed-input jamo boundary tests to a review branch or PR, including `가 ㄷ`, `ㄷ 가`, `ㅎ과 뒤따르는 자음을 비교한다.`, and bare `ㄷ`; avoid changing the policy until tests define intended outcomes.
+2. Inspect and test the combined behavior of PR #148 and #155 on the same inputs (trace alignment, literals/punctuation, lexical mixed-script entries, unresolved IPA).
+3. Build a versioned same-input JS-vs-Python fixture only after documenting input/output schemas and dependency/runtime versions; compare surface Hangul, IPA, Ukrainian output, status, and trace separately.
+4. Keep PRs unmerged until overlap and edge behavior are reconciled; no local tests were run in this session.
