@@ -117,3 +117,11 @@ No PR among these has been merged. The existence of a module on main (for exampl
 - This mismatch is now adjudicated against the [National Institute of Korean Language's official pronunciation guidance](https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217), which explicitly gives standard pronunciation `[가버치]` under 표준 발음법 제15항 붙임. The browser expectation is therefore retained; Python g2pK's output is recorded as a known lexical/morphological divergence.
 - Fixture metadata records the source URL and the exact Python output. The remaining 17 rows match existing project expectations, but those matches are not all independently sourced yet.
 - This comparison is **surface spelling only**. It does not validate IPA. Every row still has `ipaGoldStatus: not_independently_adjudicated`.
+
+## Latest exact-head comparison CI — PR #156
+
+- Head `c2b63e577f5d6a610e32eb661f8abcde5a721633` passed all four workflow groups: tests `39490017242`, system verification `39490017260`, master-table/corpus artifacts `39490017442`, and optional g2pK integration `39490017642`.
+- Browser suite: **1035 passed, 0 failed**; corpus diagnostic remains 165 files / 164 `lexical-review` / one intentionally unresolved negative control / zero placeholders. Python matrix 3.11, 3.12 and 3.13 passed; optional g2pK integration passed on 3.11 and 3.12.
+- The Python differential report emitted by both 3.11 and 3.12 is 17 equal / 1 different. The mismatch is stable and recorded: `값어치` expected `가버치`, Python g2pK `갑써치`.
+- Official source: NIKL standard-pronunciation guidance explicitly gives `값어치 [가버치]` under 표준 발음법 제15항 붙임: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217. The fixture records the URL and classifies this as a known Python-engine divergence.
+- This is a real cross-runtime surface comparison, not IPA verification. No independently adjudicated IPA gold set has been produced.
