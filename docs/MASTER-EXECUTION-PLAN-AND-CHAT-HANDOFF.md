@@ -82,3 +82,12 @@ Next: inspect the complete PR #155 and #148 diffs plus their latest CI status, e
 2. Inspect and test the combined behavior of PR #148 and #155 on the same inputs (trace alignment, literals/punctuation, lexical mixed-script entries, unresolved IPA).
 3. Build a versioned same-input JS-vs-Python fixture only after documenting input/output schemas and dependency/runtime versions; compare surface Hangul, IPA, Ukrainian output, status, and trace separately.
 4. Keep PRs unmerged until overlap and edge behavior are reconciled; no local tests were run in this session.
+
+
+## Follow-up implementation — PR #158 (2026-10-20)
+
+- Created draft PR [#158](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/158), branch `fix/jamo-explanatory-boundary-2026-10-20`, based on PR #148's branch to keep the dependency explicit. Latest head: `b82752c1085f3fd3717546e1dcb5019a246207ac`; source change commit: `a8a0415bebe47fa3d20ca005d7da00e21d962bb6`.
+- Changed the explanatory-jamo classifier to require local evidence (immediate Korean syllable adjacency, or the named label `ㄴ 첨가`) instead of any Hangul syllable anywhere in the input. Added tests for `가 ㄷ`, `ㄷ 가`, `ㅎ과 뒤따르는 자음을 비교한다.`, and `ㄴ 첨가를 설명한다.`.
+- PR #158 CI run [39483943245](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39483943245) was queued at last observation. No local tests were run; do not mark the change verified until remote CI finishes and the test expectations are reviewed.
+- PR #158 is a draft and is not merged. It depends on PR #148's branch; do not merge it directly to main without first reconciling/merging its base dependency and re-running the integrated checks.
+- Update KUA-001 and KUA-003 only after the PR dependency and CI state are confirmed. JS/Python parity remains IN_PROGRESS and no differential corpus has yet been executed.
