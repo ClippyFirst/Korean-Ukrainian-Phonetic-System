@@ -110,3 +110,10 @@ Missing/under-covered cases to add to a separately labelled, source-backed bench
 | #157 | Runtime and existing audit docs | Completion audit, handoff and this convergence report are branch-only. Risk: latest docs commit has no exact-head workflow result observed; it does not alter runtime. |
 
 No PR among these has been merged. The existence of a module on main (for example the IPA renderer) must not be confused with the additional trace or validation gates proposed by its PR.
+## Independent surface comparison result — `값어치`
+
+- The shared 18-row fixture was run through browser JS (existing regression) and Python `g2pK==0.9.4` on Python 3.11 and 3.12. Both versions report **17 equal / 1 different**.
+- The sole mismatch is `값어치`: browser fixture `가버치`; Python g2pK `갑써치`.
+- This mismatch is now adjudicated against the [National Institute of Korean Language's official pronunciation guidance](https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217), which explicitly gives standard pronunciation `[가버치]` under 표준 발음법 제15항 붙임. The browser expectation is therefore retained; Python g2pK's output is recorded as a known lexical/morphological divergence.
+- Fixture metadata records the source URL and the exact Python output. The remaining 17 rows match existing project expectations, but those matches are not all independently sourced yet.
+- This comparison is **surface spelling only**. It does not validate IPA. Every row still has `ipaGoldStatus: not_independently_adjudicated`.
