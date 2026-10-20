@@ -33,28 +33,12 @@ test('practical browser mode is wired to the vendored JavaScript g2pK adapter', 
 });
 
 test('browser g2pK keeps difficult standard surface forms under exact regression control', () => {
-  const cases = [
-    ['넋이', '넉씨'],
-    ['몫이', '목씨'],
-    ['값이', '갑씨'],
-    ['값어치', '가버치'],
-    ['숲이', '수피'],
-    ['같이', '가치'],
-    ['굳이', '구지'],
-    ['닭이', '달기'],
-    ['밟는', '밤는'],
-    ['넓죽하다', '넙쭈카다'],
-    ['읽고', '일꼬'],
-    ['읽는', '잉는'],
-    ['국립', '궁닙'],
-    ['협력', '혐녁'],
-    ['독립문', '동님문'],
-    ['칼날', '칼랄'],
-    ['물난리', '물랄리'],
-    ['서울역', '서울력']
-  ];
-
-  for (const [input, expectedSurface] of cases) {
+  const cases = JSON.parse(read('tests/fixtures/g2pk-surface-regression.json')).cases;
+  assert.equal(cases.length, 18);
+  for (const item of cases) {
+    assert.equal(item.ipaGoldStatus, 'not_independently_adjudicated', item.input);
+    assert.equal(item.pythonComparisonStatus, 'not_run', item.input);
+    const { input, expectedSurface } = item;
     const result = webEngine.convert(input);
     assert.equal(result.surfaceHangul, expectedSurface, input);
     assert.ok(result.ipa.length > 0, input + ': missing IPA');
