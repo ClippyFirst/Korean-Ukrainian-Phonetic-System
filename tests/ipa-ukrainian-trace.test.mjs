@@ -37,6 +37,18 @@ test('IPA target output is composed from the same tokens displayed in the trace'
 });
 
 
+test('ASCII Latin g is not accepted as the IPA symbol ɡ', () => {
+  assert.deepEqual(traceIpaMapping('ɡ'), {
+    tokens: [{ ipa: 'ɡ', ukrainian: 'ґ' }],
+    unknown: ''
+  });
+  assert.deepEqual(traceIpaMapping('g'), {
+    tokens: [],
+    unknown: 'g'
+  });
+  assert.deepEqual(ipaSyllableToUkrainian('g'), { text: '', unknown: 'g' });
+});
+
 test('unknown IPA segments keep target rendering fail-closed', () => {
   const mapping = traceIpaMapping('ɕ☃');
   assert.equal(mapping.tokens.length, 1);
