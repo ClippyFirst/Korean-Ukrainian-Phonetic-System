@@ -172,3 +172,13 @@ Next: review the exact current-base diffs for #159 and #155 together; then execu
 - #148: 11 ahead / 11 behind; #158: 20 ahead / 11 behind; #154: 33 ahead / 4 behind; #155: 19 ahead / 2 behind; #156: 17 ahead / 2 behind; #157: 27 ahead / 2 behind; #159: 7 ahead / 2 behind.
 - #155, #156 and #159 report mergeable true in the latest PR metadata refresh; #158 reports mergeable false; #148 reports mergeable true but is superseded. All are still unmerged. PR #157 is ready for review and reports mergeable true; latest documentation-only head has no observed exact-head CI.
 - Integration order after the real surface comparison: #154 → #157 for docs/source-register alignment, #156 for fixture + Python differential, #159 for mixed-input guards (rebase and resolve `tests/test_pipeline.py` overlap), then #155 (rebase and resolve `engine_convert.js` overlap). Do not merge #148/#158 separately.
+
+## Final handoff refresh — 2026-10-20
+
+The earlier counts in this file are historical snapshots. A fresh GitHub compare reports current `main` at `98697b71e442afcad802930896a7a5dcb94a02ef`, with merge base `8641dac4002f951d391682062ba134894e4198d7` for the active branches. Current ahead/behind counts: #154 33/4, #155 19/2, #156 17/2, #157 30/2, #159 7/2, #148 11/11, #158 20/11.
+
+**Actual completed:** Python/browser surface comparison on the 18-row fixture, 17/18 equal in Python 3.11 and 3.12; the `값어치` mismatch is adjudicated by NIKL as `[가버치]`, while Python g2pK gives `갑써치`. This is a surface-form result only.
+
+**Still open:** independent source review for the other 17 surface rows; an independently adjudicated IPA gold set; Ukrainian target-policy evaluation; current-base integration/retest of #156 → #159 → #155; reconciliation of #154/#157; root project license and citation metadata decision. Do not set KUA-002/KUA-003/KUA-010 to DONE on the basis of CI or self-consistency tests.
+
+**Integration guardrail:** do not merge #148 or #158 separately. #156 and #159 overlap in `tests/test_pipeline.py`; #159 and #155 overlap in `src/app/engine_convert.js`. Each final combined head must get its own CI run. No PR has been merged by this refresh.
