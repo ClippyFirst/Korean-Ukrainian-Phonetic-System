@@ -68,3 +68,17 @@ Missing/under-covered cases to add to a separately labelled, source-backed bench
 - The ASCII-`g` rejection on #155 correctly exposed a stale test that explicitly required both ASCII `g` and IPA `ɡ` to map to `ґ`. That expectation contradicted the IPA-first requirement.
 - Updated `tests/web-engine.test.mjs` to require `ɡa` → `ґа` and `ga` → unresolved. A first run showed the unknown segment is reported as the full `ga` string (because failure occurs at index zero), so the assertion was corrected accordingly.
 - Latest #155 head is `3bd2446a1d8d33233a097c28e448ea1cbd1fd78d`; exact-head CI is queued/not yet visible at the last check. The previous failing run is evidence of a stale test, not a passing validation of the new fix.
+
+
+## Final verification snapshot — 2026-10-20
+
+- **Consolidated mixed-input PR #159:** exact head `de4565de7e43187831ad44f03c35ff515b25c4fc`. All four workflow groups passed:
+  - system verification `39488133606`;
+  - tests `39488133971`;
+  - browser G2P integration `39488133871`;
+  - master table/corpus artifacts `39488133584`.
+  Browser test suite: **1039 passed, 0 failed**. Whole-corpus diagnostic: 165 files, 164 `lexical-review`, one intentionally unresolved negative control, zero placeholders. The Python 3.11/3.12/3.13 matrix passed. PR #159 remains draft and unmerged.
+- **Strict IPA mapper fix on #155:** latest head `3bd2446a1d8d33233a097c28e448ea1cbd1fd78d`; all four workflow groups passed (`39488270264`, `39488270290`, `39488270387`, `39488270279`). Browser tests: **1037 passed, 0 failed**. This closes the stale-test regression for the ASCII `g` rejection, but #155 still needs convergence with #159 because of overlapping `engine_convert.js` changes.
+- **Surface regression fixture/harness on #156:** head `07c18d247f5033188236a6684fdc783f4d63b665); existing test, verification, and corpus workflows passed (`39488581780`, `39488581776`, `39488581740`). The 18-row fixture is now externalized and the Python differential script exists, but **the script has not been run** and no differential JSON report exists yet. It must not be described as proven parity.
+- **Base branch history:** a workflow-file add was accidentally committed to `main` as `1f96917317c922debab964217d2d96e264056cf3` while attempting to create a branch-specific workflow, then immediately removed in `98697b71e442afcad802930896a7a5dcb94a02ef`. The workflow file is absent from current `main`; its tree is restored, but the two commits remain in main history. This means the current main tip is two commits after the previously used baseline, and open PR branches may report themselves behind even where their changed files do not overlap. Recheck mergeability before integration.
+- **Integration remains pending:** do not merge #159/#155/#156 solely because their listed tests pass. Review the exact diffs, confirm GitHub's current mergeability/base SHA, run the Python-vs-browser surface comparison, and separately adjudicate IPA against authoritative/source-backed evidence.
