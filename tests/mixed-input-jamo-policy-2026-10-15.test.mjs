@@ -51,7 +51,7 @@ test('a jamo separated from Korean syllables is not presumed to be explanatory n
     assert.equal(result.status, 'unresolved', input);
     assert.ok(result.issues.some(issue => /standalone compatibility jamo/u.test(issue)), input);
     assert.doesNotMatch(result.ipa, /[ㄱ-ㅎㅏ-ㅣ]/u, input);
-    assert.doesNotMatch(result.analysis, /[ㄱ-ㅎㅏ-ㅣ]/u, input);
+    assert.doesNotMatch(result.analysis, /[ㄱ-ㅎㅏ-ㅣ]/u, input + ': compatibility jamo must not leak into analysis');
   }
 });
 
