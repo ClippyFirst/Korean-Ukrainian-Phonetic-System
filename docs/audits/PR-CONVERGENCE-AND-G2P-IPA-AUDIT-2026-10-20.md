@@ -127,3 +127,36 @@ No PR among these has been merged. The existence of a module on main (for exampl
 - The Python differential report emitted by both 3.11 and 3.12 is 17 equal / 1 different. The mismatch is stable and recorded: `값어치` expected `가버치`, Python g2pK `갑써치`.
 - Official source: NIKL standard-pronunciation guidance explicitly gives `값어치 [가버치]` under 표준 발음법 제15항 붙임: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217. The fixture records the URL and classifies this as a known Python-engine divergence.
 - This is a real cross-runtime surface comparison, not IPA verification. No independently adjudicated IPA gold set has been produced.
+
+
+## Rechecked repository state — 2026-10-20 (latest branch comparison)
+
+This section supersedes earlier branch-count snapshots above. GitHub compare was rerun against the current `main` head `98697b71e442afcad802930896a7a5dcb94a02ef`; the common merge base for the active runtime branches remains `8641dac4002f951d391682062ba134894e4198d7`.
+
+| PR | Branch | Ahead / behind current main | Decision |
+|---|---|---:|---|
+| #154 | `docs/research-programme-foundation-2026-10-15` | 33 / 4 | Reconcile/rebase before merge; inspect README overlap and validate source/license claims. |
+| #155 | `feat/ipa-to-ukrainian-visible-trace-2026-10-16` | 19 / 2 | Keep; reconcile `engine_convert.js` with #159 before integration. |
+| #156 | `fix/g2pk-browser-parity-gate-2026-10-16` | 17 / 2 | Keep; first runtime/test candidate, but rebase and rerun CI on current base. |
+| #157 | `audit/completion-plan-handoff-2026-10-20` | 30 / 2 | Documentation branch; this addendum itself has not yet been validated by an exact-head workflow run. |
+| #159 | `fix/mixed-input-main-convergence-2026-10-20` | 7 / 2 | Preferred consolidated mixed-input candidate; rebase after #156 and resolve `tests/test_pipeline.py` overlap. |
+| #148 | `fix/mixed-input-ipa-leak-2026-10-15` | 11 / 11 | Superseded; do not merge separately. |
+| #158 | `fix/jamo-explanatory-boundary-2026-10-20` | 20 / 11 | Superseded; do not merge separately. |
+
+### Completion state
+
+- **Surface differential:** completed for the fixed 18-row fixture only. Python g2pK 0.9.4 on Python 3.11 and 3.12 matches the browser expectation on 17/18 rows. The one mismatch, `값어치`, is resolved in favor of NIKL's normative `[가버치]`; Python g2pK returns `갑써치`. This does not mean the other 17 rows have independent source adjudication.
+- **IPA gold:** not complete. `expectedIpa` remains null for the fixture rows and `ipaGoldStatus` remains `not_independently_adjudicated`. Do not populate gold from either engine's output.
+- **Mixed-input policy:** the consolidated #159 exact-head CI was green, but that run predates rebasing onto current `main`; it must be rerun after #156 is integrated/reconciled.
+- **Trace / strict IPA glyph:** #155 exact-head CI was green, but the branch overlaps #159 and is two commits behind current main. The integrated trace must be tested after the mixed-input branch.
+- **Research docs and legal metadata:** #154/#157 need current-base reconciliation. Root project-wide `LICENSE` and `CITATION.cff` still require an owner decision; do not infer a project license from third-party notices.
+- **No PR is merged by this audit.** Existing exact-head CI is evidence for the recorded SHAs only, not for a hypothetical combined head. The two workflow-file history commits on main remain documented above; the file itself is absent from the current tree.
+
+### Required finish sequence
+
+1. Reconcile #154 and #157 against current `main`; validate source-register CSVs, URLs and licensing statements, then run the docs/artifact workflow.
+2. Rebase #156 onto current `main`, rerun all workflows, and retain the fixed 18-row comparison report.
+3. Rebase #159 onto the accepted #156 result; merge test changes additively and preserve all mixed-input regressions; rerun full CI and the 165-corpus gate.
+4. Rebase #155 on the accepted #159 result; resolve trace/render overlap, inspect literal/lexical/unresolved segments, and rerun full CI.
+5. Build a separately sourced IPA gold set and adjudicate Ukrainian target policy before claiming scientific/release readiness.
+6. Only after the integrated diff and checks pass, close #148/#158 as superseded and decide on root license/citation metadata and release criteria.
