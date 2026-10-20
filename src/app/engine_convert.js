@@ -101,7 +101,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       // A Hangul syllable elsewhere in the input is not enough evidence.
       const next=characters[index+1]||'';
       const attachedToKorean=Boolean(decompose(next));
-      const namedNInsertion=ch==='ㄴ'&&/^\\s+첨가/u.test(characters.slice(index+1).join(''));
+      const namedNInsertion=ch==='ㄴ'&&/^\s+첨가/u.test(characters.slice(index+1).join(''));
       if((attachedToKorean||namedNInsertion)&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
       return {type:'jamo',char:ch};
     }
