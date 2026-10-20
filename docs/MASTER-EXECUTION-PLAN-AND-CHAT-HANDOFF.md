@@ -187,3 +187,6 @@ The earlier counts in this file are historical snapshots. A fresh GitHub compare
 ## CI recheck — 2026-10-20
 
 Correction to the prior note: GitHub Actions has now confirmed successful exact-head workflows for docs/handoff head `ac099059340bb07d820082093135f7760f7016f2`: tests run 39494387952, system verification run 39494387991, and master-table/research-corpus artifacts run 39494387956. The branch is 32 commits ahead / 2 behind current main. These are documentation-branch checks, not integrated runtime checks. The four workflow groups also report success for the recorded current PR heads of #155, #156, and #159; #154's three workflow groups report success. All claims remain scoped to the exact SHAs checked.
+
+
+Latest exact-head check is complete: `3ac3886f2edec05afb5294fb1e3ba6f9729b4b62` passed all three documentation/handoff workflow groups — tests (39494957629), system verification including browser build and Python regression/data integrity (39494957623), and master-table/research-corpus artifacts (39494957627). This is not a combined runtime integration test.
