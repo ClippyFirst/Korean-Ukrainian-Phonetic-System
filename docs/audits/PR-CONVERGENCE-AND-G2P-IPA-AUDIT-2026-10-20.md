@@ -160,3 +160,13 @@ This section supersedes earlier branch-count snapshots above. GitHub compare was
 4. Rebase #155 on the accepted #159 result; resolve trace/render overlap, inspect literal/lexical/unresolved segments, and rerun full CI.
 5. Build a separately sourced IPA gold set and adjudicate Ukrainian target policy before claiming scientific/release readiness.
 6. Only after the integrated diff and checks pass, close #148/#158 as superseded and decide on root license/citation metadata and release criteria.
+
+
+## CI recheck correction — 2026-10-20
+
+A subsequent query of GitHub Actions confirmed that the latest documentation head `ac099059340bb07d820082093135f7760f7016f2` **does have successful exact-head runs** (the earlier statement that no run was visible is superseded):
+- tests: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39494387952 — success
+- system verification: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39494387991 — success
+- master-table/research-corpus artifacts: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39494387956 — success
+
+The PR #157 branch comparison now reports **32 commits ahead / 2 behind** current main at `98697b71e442afcad802930896a7a5dcb94a02ef`. The successful documentation-branch workflows verify the documented gates for this exact SHA, but do not test a combined runtime integration. The latest exact-head CI queries for #154, #155, #156 and #159 also returned success for all four recorded workflow groups for their stated SHAs. Those runtime branches remain two or more commits behind main and still require current-base reconciliation plus combined-head CI.
