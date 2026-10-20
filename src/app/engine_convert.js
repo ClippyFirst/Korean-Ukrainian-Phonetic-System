@@ -94,6 +94,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const d=decompose(ch);
     if(d)return {type:'hangul',...d};
     if(isJamoChar(ch)){
+      const context=characters.slice(Math.max(0,index-2),Math.min(characters.length,index+3)).filter((_,offset)=>Math.abs(Math.max(0,index-2)+offset-index)>0);
       const nearbyLatinOrDigit=context.some(value=>/[A-Za-z0-9]/u.test(value));
       // Preserve a jamo as explanatory notation only when it is locally
       // attached to Korean prose (e.g. "ㅎ과") or the documented label "ㄴ 첨가".
