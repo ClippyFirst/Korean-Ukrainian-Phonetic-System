@@ -17,13 +17,13 @@
 
 ### Integration order (recommended, not executed)
 
-1. **#156** — add the current browser surface-form guardrail (after checking the exact current head and required checks).
-2. **#154 and #157** — reconcile documentation branches against main; keep the source/literature programme and operational handoff distinct but linked. Neither is evidence of runtime completion.
-3. **#158 as the sole mixed-script PR** — bring the stacked #148+#158 branch onto current main, resolve any conflicts, review combined diff, run full CI. Close #148 as superseded only after #158 has been accepted; do not merge both.
-4. **#155** — rebase/reconcile the trace UI and `engine_convert.js` changes on top of the accepted mixed-script path, then run full CI. Verify that surface alignment remains correct for literals, lexical entries, variants and unresolved syllables.
+1. **#154 then #157** — reconcile documentation branches against current main; review source/license claims in #154, then update the handoff/audit links in #157. Neither is evidence of runtime completion.
+2. **#156** — integrate the fixed surface fixture and Python 3.11/3.12 differential test. Exact head `c2b63e5...` is green and reports 17/18 matching surfaces, with `값어치` adjudicated against NIKL.
+3. **#159 as the sole mixed-input PR** — it consolidates #148+#158 on a clean branch. Rebase it after #156 and resolve the additive overlap in `tests/test_pipeline.py`; review the combined diff and run full CI. Close #148/#158 as superseded only after #159 is accepted; do not merge them separately.
+4. **#155** — rebase/reconcile the trace UI, strict IPA glyph guard and `engine_convert.js` changes on top of accepted #159, then run full CI. Verify alignment for literals, lexical entries, variants and unresolved units.
 5. Re-run all regression suites on the final integrated head. Treat #156's current tests as a baseline, not as independent phonetic gold.
 
-This order is conditional on actual GitHub mergeability and exact-head CI. No branch was merged by this audit.
+This order is conditional on actual GitHub mergeability and exact-head CI. No branch was merged by this audit. Both #156 and #159 append tests to `tests/test_pipeline.py`, so resolve that overlap explicitly during rebase rather than assuming a clean cherry-pick.
 
 ## 2. G2P: what is and is not verified
 
@@ -105,7 +105,7 @@ Missing/under-covered cases to add to a separately labelled, source-backed bench
 |---|---|---|
 | #148 / #158 / #159 | Core IPA-first renderer, literal handling, native contextual rules, lexical source controls | Main lacks the new standalone-jamo classification, strict IPA-safe literal filtering and local explanatory-label boundary. #159 is the consolidated candidate. Risk: tokenizer changes can drop or misclassify jamo when lexical tokenization is active; the 18-row/long-passage tests do not substitute for the whole 165-corpus gate. |
 | #155 | `engine_ipa.js`, longest-match output mapping, IPA-to-Ukrainian rendering already exist | The visible per-token trace, realized-surface trace field, UI headings and strict ASCII-`g` rejection are branch-only. Risk: `engine_convert.js` overlap with #159 and target trace can misalign on literals, lexical overrides, variants or unresolved units. |
-| #156 | Browser app already uses the vendored JS g2pK adapter in practical mode; Python backend is optional | Adds regression fixture, tests and comparison harness, not a new runtime. Risk: its 18 expected surfaces are inherited project expectations; the Python comparison is not yet executed and IPA gold is absent. |
+| #156 | Browser app already uses the vendored JS g2pK adapter in practical mode; Python backend is optional | Adds `pyproject.toml` dev dependency, fixed fixture, browser export/comparison scripts, `tests/g2pk-browser-parity-gate.test.mjs`, and Python differential test in `tests/test_pipeline.py`; no new runtime engine. Its 18 expected surfaces are not all independently source-reviewed; one Python mismatch is now adjudicated against NIKL; IPA gold is absent. It overlaps #159 in `tests/test_pipeline.py`. |
 | #154 | Core engine, source/lexical CSVs and current README already exist | Research programme, source registers, literature review, target-layer comparison and acceptance gates are branch-only. Risk: 2 commits behind main; source locator/license claims need review; documentation-only PR has no runtime test coverage. |
 | #157 | Runtime and existing audit docs | Completion audit, handoff and this convergence report are branch-only. Risk: latest docs commit has no exact-head workflow result observed; it does not alter runtime. |
 
