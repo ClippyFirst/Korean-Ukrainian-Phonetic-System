@@ -38,7 +38,8 @@ test('browser g2pK keeps difficult standard surface forms under exact regression
   assert.equal(cases.length, 18);
   for (const item of cases) {
     assert.equal(item.ipaGoldStatus, 'not_independently_adjudicated', item.input);
-    assert.equal(item.pythonComparisonStatus, 'not_run', item.input);
+    assert.equal(item.pythonComparisonStatus, 'compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20', item.input);
+    assert.ok(item.pythonG2pkSurface, item.input + ': missing recorded Python g2pK surface');
     const { input, expectedSurface } = item;
     const result = webEngine.convert(input);
     assert.equal(result.surfaceHangul, expectedSurface, input);
