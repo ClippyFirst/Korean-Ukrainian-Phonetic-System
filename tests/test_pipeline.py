@@ -168,3 +168,10 @@ def test_python_surface_ipa_matches_nikl_19_and_18_for_dongnimmun():
     assert [x["onset"] for x in result["surface_syllables"]]==["ㄷ","ㄴ","ㅁ"]
     assert [x["coda"] for x in result["surface_syllables"]]==["ㅇ","ㅁ","ㄴ"]
     assert result["ipa"]["ipa"]=="toŋ.nim.mun"
+
+
+def test_g2pk_differential_script_has_valid_python_syntax():
+    import ast
+    from pathlib import Path
+    script = Path(__file__).resolve().parents[1] / "scripts" / "compare-g2pk-engines.py"
+    ast.parse(script.read_text(encoding="utf-8"), filename=str(script))
