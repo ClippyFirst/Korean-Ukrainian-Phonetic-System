@@ -349,7 +349,10 @@ This evidence is exact-head CI, not local execution; this environment still has 
 
 - Starting default-branch commit: `1f8b37fd524c39bf0f2ecb6991ebdaf4ae677c7e` (`main`). Its existing CI had passed browser tests/build, Python 3.11–3.13, corpus artifacts, system verification, and deployment smoke checks; this follow-up preserves that mainline and does not change the production transcription pipeline.
 - Working branch: `research/nikl-agent-skills-2026-10-21`; PR #176 remains open against `main`. No branch was merged or force-pushed.
-- Implementation/evidence head before this handoff update: `67ddc383a2b96c6a1feb21e9fcc31f09abd4d99e`. The final PR head is the commit that contains this handoff update; verify its exact-head CI on PR #176 before merge.
+- Implementation head with full exact-head checks passed before this final documentation refresh: `d7d0e87fe4ee0679a5cd27e8c599397414d454dd`. The completion-audit refresh commit is `46e33071f4918705b8393073398f385f77c27744`; this handoff update is the next commit. Verify CI on the final PR head after this update.
+
+
+- Mainline hygiene note: a `.gitignore` creation briefly landed on `main` due to a missing branch argument, then was immediately reverted. The current `main` tree SHA `d0dd8abd6f6b4c74a177a02b409d35ac76f483e2` is identical to the starting tree SHA; the incident leaves two net-zero add/delete commits in main history but no remaining file-content change.
 
 ### Executable work completed
 
@@ -361,8 +364,8 @@ This evidence is exact-head CI, not local execution; this environment still has 
 
 ### Verification and external blocker
 
-- The Node regression suite passed 1,067/1,067 tests at commit `3dea334abc3067839ec6d79c4dc36df5d3058064`; the manifest schema and Python schema-test addition passed CI at commit `031b5724222ba9c253a54e0a91136182f712a755`. Newer exact-head CI is required after the latest access-classification and handoff changes; do not extrapolate those earlier passes to a newer SHA.
-- A live crawl was attempted from GitHub Actions. `robots.txt` returned 404 (treated as no published robots file), but the official article page returned **HTTP 403**. The collector classified this as `BLOCKED`, logged the denial, and did not try alternate hosts, disguise the client, or bypass access controls. No live article inventory or manifest was produced.
+- Exact implementation head `d7d0e87fe4ee0679a5cd27e8c599397414d454dd` passed **1,068/1,068 Node tests**, Vite build, Python regression/data-integrity suites on Python 3.11, 3.12, and 3.13, system verification, browser G2P integration, and master-table/corpus artifact checks. Evidence: [Node/Python matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39662476540), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39662468522), [browser G2P](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39662476543), [corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39662476557). These checks are for that exact SHA; this documentation refresh requires a fresh exact-head rerun.
+- A live crawl was attempted from GitHub Actions. `robots.txt` returned 404 (treated as no published robots file), but the official article page returned **HTTP 403**. The collector classified this as `BLOCKED`, logged the denial, and did not try alternate hosts, disguise the client, or bypass access controls. No live article inventory or manifest was produced. The diagnostic workflow remains green only because it treats this specific external access block as a warning; parser/inventory defects still fail the job.
 - The source reuse/redistribution terms remain `not_assessed`. The 403 is an access limitation, not proof that the normative content is inaccurate or that every form of access is prohibited.
 
 ### Task ledger
