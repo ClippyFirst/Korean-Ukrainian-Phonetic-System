@@ -17,7 +17,7 @@ test('IPA adjudication queue mirrors every surface case without inventing IPA go
     seen.add(item.input);
     const source = byInput.get(item.input);
     assert.ok(source, item.input + ': missing surface-fixture source');
-    assert.equal(item.sourceBackedKoreanSurface, source.normativeSurface, item.input);
+    assert.equal(item.normativeSurfaceComparator, source.normativeSurface, item.input);
     assert.equal(item.surfaceEvidenceStatus, source.normativeEvidenceStatus, item.input);
     assert.equal(item.surfaceEvidenceUrl, source.normativeSourceUrl, item.input);
     assert.equal(item.sourceLocator, source.normativeSourceLocator, item.input);
