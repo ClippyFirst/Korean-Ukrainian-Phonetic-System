@@ -73,11 +73,29 @@ def soft_formal_licenses(items: list, *, full_form: str | None = None) -> list[s
         pair = f"{a.text}>{b.text}"
 
         # R002 formal liaison (never substantive / §15).
-        if b.onset == "ㅇ":
-            lic = f"R002:formal:{form}:{pair}"
-            if lic not in seen:
-                licenses.append(lic)
-                seen.add(lic)
+        # Do not infer liaison from the orthographic sequence 어/아: these
+        # are especially ambiguous between formal endings and substantive
+        # morphemes (e.g. 값어치). Mirror the browser adapter's fail-closed
+        # guard, including simple-coda §15-sensitive vowel environments.
+        if b.onset == "ㅇ" and ending not in {"어", "아"}:
+            complex_codas = {"ㄳ", "ㄵ", "ㄶ", "ㄺ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅄ"}
+            representative = {
+                "ㄳ": "ㄱ", "ㄵ": "ㄴ", "ㄶ": "ㄴ", "ㄺ": "ㄱ",
+                "ㄻ": "ㅁ", "ㄼ": "ㄹ", "ㄽ": "ㄹ", "ㄾ": "ㄹ",
+                "ㄿ": "ㅂ", "ㅀ": "ㄹ", "ㅄ": "ㅂ", "ㅅ": "ㄷ",
+                "ㅆ": "ㄷ", "ㅈ": "ㄷ", "ㅊ": "ㄷ", "ㅌ": "ㄷ",
+                "ㅎ": "ㄷ", "ㄲ": "ㄱ", "ㅋ": "ㄱ", "ㅍ": "ㅂ",
+            }.get(a.coda, a.coda)
+            substantive_risk = (
+                a.coda not in complex_codas
+                and representative != a.coda
+                and b.nucleus in {"ㅏ", "ㅓ", "ㅗ", "ㅜ", "ㅟ"}
+            )
+            if a.coda not in {"ㅎ", "ㅇ"} and not substantive_risk:
+                lic = f"R002:formal:{form}:{pair}"
+                if lic not in seen:
+                    licenses.append(lic)
+                    seen.add(lic)
 
         # R003 ㅎ / ㄶ / ㅀ deletion before vowel-initial ending.
         if a.coda in {"ㅎ", "ㄶ", "ㅀ"} and b.onset == "ㅇ":
