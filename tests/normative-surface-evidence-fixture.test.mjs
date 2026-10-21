@@ -7,7 +7,7 @@ const fixture = JSON.parse(readFileSync(resolve('tests/fixtures/g2pk-surface-reg
 const byInput = new Map(fixture.cases.map((item) => [item.input, item]));
 
 test('surface fixture separates JS-port regression values from normative evidence', () => {
-  assert.equal(fixture.cases.length, 18);
+  assert.equal(fixture.cases.length, 20);
   assert.match(fixture.description, /must never replace port output with normativeSurface/u);
   for (const item of fixture.cases) {
     assert.ok(item.expectedSurface, item.input + ': missing pinned-port expected surface');
@@ -70,8 +70,18 @@ test('six formerly rule-derived surface comparators now have exact NIKL Q&A cita
     assert.equal(item.normativeEvidenceStatus, 'direct-NIKL-QA', input);
     assert.equal(item.normativeSourceUrl, url, input);
   }
-  assert.equal(fixture.cases.filter((item) => item.normativeEvidenceStatus === 'direct-NIKL-QA' || item.normativeEvidenceStatus === 'direct-NIKL-example').length, 17);
+  assert.equal(fixture.cases.filter((item) => item.normativeEvidenceStatus === 'direct-NIKL-QA' || item.normativeEvidenceStatus === 'direct-NIKL-example').length, 19);
   assert.equal(fixture.cases.filter((item) => item.normativeEvidenceStatus.startsWith('derived')).length, 1);
   assert.equal(byInput.get('숲이').normativeEvidenceStatus, 'derived-from-NIKL-rule');
+  for (const [input, surface, url] of [
+    ['숲을', '수플', 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=332248'],
+    ['숲에', '수페', 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=331304'],
+  ]) {
+    const item = byInput.get(input);
+    assert.equal(item.normativeSurface, surface, input);
+    assert.equal(item.normativeEvidenceStatus, 'direct-NIKL-QA', input);
+    assert.equal(item.normativeSourceUrl, url, input);
+    assert.equal(item.ipaGoldStatus, 'not_independently_adjudicated', input);
+  }
   assert.match(byInput.get('숲이').normativeNotes, /not independently adjudicated/u);
 });
