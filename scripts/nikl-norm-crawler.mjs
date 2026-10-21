@@ -5,7 +5,7 @@
  * explicit human acknowledgement that applicable reuse terms have been reviewed.
  */
 import { createHash } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -209,7 +209,7 @@ export function robotsPathAllowed(robotsText, targetUrl, userAgent = USER_AGENT)
   const targetPath = url.pathname + url.search;
   const matching = rules.map((rule) => ({ ...rule, prefix: rule.path.replace(/\*.*$/, "") }))
     .filter((rule) => targetPath.startsWith(rule.prefix))
-    .sort((a, b) => b.prefix.length - a.prefix.length);
+    .sort((a, b) => b.prefix.length - a.prefix.length || (a.type === "allow" ? -1 : 1));
   return matching.length === 0 || matching[0].type === "allow";
 }
 
@@ -299,7 +299,15 @@ export async function runCrawler(args = parseArgs(process.argv.slice(2))) {
   const manifest = buildManifest(parsed, fetched.metadata, { includeText: args.includeText });
   const outputPath = resolve(args.output);
   await mkdir(dirname(outputPath), { recursive: true });
-  await writeFile(outputPath, JSON.stringify(manifest, null, 2) + "\n", { encoding: "utf8", flag: "wx" });
+  const temporaryPath = outputPath + ".tmp-" + process.pid;
+  try {
+    await writeFile(temporaryPath, JSON.stringify(manifest, null, 2) + "\n", { encoding: "utf8", flag: "wx" });
+    await rename(temporaryPath, outputPath);
+  } catch (error) {
+    const { unlink } = await import("node:fs/promises");
+    await unlink(temporaryPath).catch(() => {});
+    throw error;
+  }
   return { outputPath, manifest };
 }
 
