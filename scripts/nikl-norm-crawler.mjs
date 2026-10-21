@@ -250,7 +250,7 @@ export async function fetchOfficialSource(url = DEFAULT_SOURCE_URL, { fetchImpl 
   return {
     html,
     metadata: {
-      requestedUrl: url, finalUrl: response.url, retrievedAt: new Date().toISOString(),
+      requestedUrl: url, finalUrl: response.url || url, retrievedAt: new Date().toISOString(),
       httpStatus: response.status, contentType, etag: response.headers.get("etag"),
       lastModified: response.headers.get("last-modified"), responseBytes: buffer.length,
       responseSha256: sha256(buffer), userAgent: USER_AGENT,
@@ -290,6 +290,8 @@ function parseArgs(argv) {
   if (args.includeText && !args.termsReviewed) throw new Error("--include-text requires --terms-reviewed after a human has reviewed applicable source reuse terms.");
   return args;
 }
+
+export function parseCrawlerArgs(argv) { return parseArgs(argv); }
 
 export async function runCrawler(args = parseArgs(process.argv.slice(2))) {
   if (args.help) return { help: true, text: "Usage: node scripts/nikl-norm-crawler.mjs [--url OFFICIAL_URL] [--output PATH] [--include-text --terms-reviewed]\nDefault output stores article metadata and hashes only; raw HTML and article text are not retained." };
