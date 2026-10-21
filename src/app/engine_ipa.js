@@ -13,7 +13,7 @@ export const IPA_TO_UKRAINIAN = [
   ['k͈','к'],['t͈','т'],['p͈','п'],['s͈','с'],
   ['kʰ','к'],['tʰ','т'],['pʰ','п'],['k̚','к'],['t̚','т'],['p̚','п'],
   ['ɰi','ий'],['jʌ','йо'],['jɛ','є'],['ja','я'],['je','є'],['jo','йо'],['ju','ю'],
-  ['wa','ва'],['wɛ','ве'],['wʌ','во'],['we','ве'],['aː','а'],
+  ['wa','ва'],['wɛ','ве'],['wʌ','во'],['we','ве'],
   ['ɡ','ґ'],['k','к'],['t','т'],['d','д'],['p','п'],['b','б'],
   ['ɲ','нь'],['n','н'],['m','м'],['ŋ','н'],['ɾ','р'],['r','р'],['l','л'],['h','г'],
   ['s','с'],['a','а'],['ɛ','е'],['ʌ','о'],['e','е'],['o','о'],['u','у'],
@@ -21,16 +21,27 @@ export const IPA_TO_UKRAINIAN = [
 ].sort((a,b)=>b[0].length-a[0].length);
 
 export function traceIpaMapping(ipa){
-  ipa=ipa.replace(/ː/gu,''); // vowel length is retained in IPA, not duplicated in the Ukrainian target
+  ipa=String(ipa??'');
   const tokens=[];
+  const features=[];
   for(let i=0;i<ipa.length;){
     if(/\s/u.test(ipa[i])){i++;continue;}
+    if(ipa[i]==='ː'){
+      features.push({
+        ipa:'ː',
+        offset:i,
+        handling:'omitted-from-ukrainian-target',
+        note:'довгота збережена в IPA; український запис не має окремого знака довготи'
+      });
+      i++;
+      continue;
+    }
     const match=IPA_TO_UKRAINIAN.find(([token])=>ipa.startsWith(token,i));
-    if(!match)return {tokens,unknown:ipa.slice(i)};
+    if(!match)return {tokens,features,unknown:ipa.slice(i)};
     tokens.push({ipa:match[0],ukrainian:match[1]});
     i+=match[0].length;
   }
-  return {tokens,unknown:''};
+  return {tokens,features,unknown:''};
 }
 
 export function ipaSyllableToUkrainian(ipa){
