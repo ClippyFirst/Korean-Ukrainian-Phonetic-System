@@ -9,7 +9,7 @@ description: Use when reconciling every official NIKL pronunciation article with
 
 Convert the official NIKL Standard Pronunciation Rules (표준 발음법) into a source-traceable acceptance contract for the existing Korean research engine. Coverage means more than a rule name in a CSV or a test file existing: it means the official scope is inventoried, implementation behavior is identified, and assertions actually verify the intended behavior.
 
-Primary source: https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
+Primary source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 
 ## Mandatory repository reconnaissance
 
@@ -29,7 +29,7 @@ Use the latest current-state section where historical snapshots conflict. Reuse 
 ## Inventory-first method
 
 1. Read the official table of contents and build the expected article/subarticle inventory independently of repository coverage.
-2. Preserve official numbering, hierarchy, order, titles, examples, and cross-references.
+2. Preserve official numbering, hierarchy, order, titles, examples, and cross-references. Verify the actual example list against the official page before marking an individual word as directly attested; general rule coverage is not lexical attestation.
 3. Join the official inventory to the existing matrix by stable IDs, not by fuzzy rule-name similarity alone.
 4. Classify every item using the repository vocabulary:
    - DONE_VERIFIED: exact acceptance behavior and required evidence are present and relevant tests were run;
