@@ -180,3 +180,25 @@ The workflows have now completed successfully on the exact latest documentation 
 - master-table/research-corpus artifacts: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39494957627 — success
 
 The system-verification workflow completed both browser regression/build and Python regression/data-integrity jobs successfully. This establishes green documentation-branch CI on this SHA; it does not validate runtime PR integration or IPA gold.
+
+
+## Current-main convergence completed — 2026-10-21
+
+The old proposed rebase order (#156 → #159 → #155) was replaced by clean current-main ports, avoiding stale overlapping branch history:
+
+1. Research programme/registers: #160 → `e8ea0d4`, all three exact-head CI groups passed.
+2. Browser/Python G2P surface differential: #161 → `0326d24`, all four exact-head CI groups passed, including optional g2pK integration.
+3. Combined mixed-input/explanatory-jamo guards and IPA trace: #163 → `16ac736`, all four exact-head CI groups passed, including Python 3.11/3.12/3.13, browser G2P, and generated corpus artifacts.
+
+The clean integrated trace now displays source Hangul, realized surface, IPA, longest-match IPA-token → Ukrainian-grapheme mapping, final Ukrainian output, rule labels, and status. The target output uses the same IPA mapping function as the trace. Standalone jamo and malformed mixed-script cases are explicitly guarded; ASCII `g` is not accepted as IPA `ɡ`.
+
+Stale overlapping PRs #154, #155, #156, #159, #162, #148 and #158 were closed with replacement links in their discussions. Their source history remains available. PR #157 was merged as `598247a`.
+
+### Remaining science/release gaps
+
+- 17/18 browser/Python surface fixture rows match; `값어치` remains browser/NIKL `가버치` vs Python g2pK 0.9.4 `갑써치`. The other 17 still need individual normative-source adjudication.
+- IPA trace tests establish implementation consistency, not independent IPA gold or narrow phonetic accuracy. Ukrainian target-policy choices remain research decisions requiring independent review.
+- Soft morphology remains opt-in; dedicated current-main JS/Python parity adjudication is not yet recorded.
+- Root project-level `LICENSE` and `CITATION.cff` remain owner decisions.
+- Public Pages serving the merged SHA has not been verified. The available direct web retrieval failed, and local checkout was blocked by DNS resolution of `github.com`; do not claim a local release-gate run.
+- Release remains **not ready** until the independent phonetic/target review, remaining fixture adjudication, soft-mode parity, licensing/citation decisions, and live deployment verification are evidenced.
