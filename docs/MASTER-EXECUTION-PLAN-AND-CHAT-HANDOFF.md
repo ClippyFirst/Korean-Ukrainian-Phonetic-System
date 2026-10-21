@@ -341,3 +341,39 @@ This evidence is exact-head CI, not local execution; this environment still has 
 - **Exact-head Pages deployment, HTTP smoke and headless browser smoke:** PASS [39604039154](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039154). The live page accepted the repository's 1,443-character adversarial Korean fixture and produced 2,782 Ukrainian characters and 3,731 IPA characters; the mode status was `g2pK JS · Контекстну вимову застосовано`; no page errors occurred.
 - The exact earlier passage pasted by the user was not present in the current conversation context, so this is a representative repository fixture test, not a claim to have reproduced the user's exact text.
 - Scientific/owner blockers remain: independent IPA gold, Ukrainian target review, seven rule-derived surface cases, root project license/citation decisions. Release classification remains **technically deployed research preview, not scientifically validated/release-ready**.
+
+
+## Official NIKL collector implementation and source-access blocker — 2026-10-21
+
+### Starting state and branch
+
+- Starting default-branch commit: `1f8b37fd524c39bf0f2ecb6991ebdaf4ae677c7e` (`main`). Its existing CI had passed browser tests/build, Python 3.11–3.13, corpus artifacts, system verification, and deployment smoke checks; this follow-up preserves that mainline and does not change the production transcription pipeline.
+- Working branch: `research/nikl-agent-skills-2026-10-21`; PR #176 remains open against `main`. No branch was merged or force-pushed.
+- Implementation/evidence head before this handoff update: `67ddc383a2b96c6a1feb21e9fcc31f09abd4d99e`. The final PR head is the commit that contains this handoff update; verify its exact-head CI on PR #176 before merge.
+
+### Executable work completed
+
+- Added `scripts/nikl-norm-crawler.mjs`, a metadata-first collector scoped to the 30 articles in `제2부 표준 발음법`. It allowlists HTTPS NIKL norms URLs, checks robots.txt, bounds time and response size, records HTTP provenance and SHA-256 hashes, detects missing/duplicate/incomplete article extraction, writes the manifest atomically, and fails closed on structural drift.
+- Default output retains metadata and per-article hashes only. Full article-text retention requires the explicit `--include-text --terms-reviewed` acknowledgement; the manifest still states that licensing has not been independently verified. Raw HTML is not saved.
+- Added `schemas/nikl-source-manifest.schema.json`, Python schema validation tests, fixture-based Node tests for all 30 article numbers, section exclusions, missing/duplicate/incomplete headings, URL allowlisting, robots rules, provenance, and explicit retention acknowledgement.
+- Added `npm run crawl:nikl`, documented usage, ignored local crawl outputs, and added a live source-access diagnostic to `.github/workflows/verify.yml` for `research/nikl-*` branches. The workflow uploads a short-lived log/manifest artifact where available.
+- Updated the existing source register, rule-coverage row, research README, skill guide, and collector documentation in place. No duplicate coverage matrix or parallel engine was introduced.
+
+### Verification and external blocker
+
+- The Node regression suite passed 1,067/1,067 tests at commit `3dea334abc3067839ec6d79c4dc36df5d3058064`; the manifest schema and Python schema-test addition passed CI at commit `031b5724222ba9c253a54e0a91136182f712a755`. Newer exact-head CI is required after the latest access-classification and handoff changes; do not extrapolate those earlier passes to a newer SHA.
+- A live crawl was attempted from GitHub Actions. `robots.txt` returned 404 (treated as no published robots file), but the official article page returned **HTTP 403**. The collector classified this as `BLOCKED`, logged the denial, and did not try alternate hosts, disguise the client, or bypass access controls. No live article inventory or manifest was produced.
+- The source reuse/redistribution terms remain `not_assessed`. The 403 is an access limitation, not proof that the normative content is inaccurate or that every form of access is prohibited.
+
+### Task ledger
+
+- **DONE_VERIFIED** — three repository-local NIKL skills and integration guide; metadata-first collector implementation; fixture tests; manifest schema; CLI entry point; documented CI diagnostic; updates to existing source and coverage registers.
+- **PARTIAL** — article inventory parser is fixture-tested and integrated, but the official live page's actual current HTML has not been parsed in this environment because the page request was denied.
+- **BLOCKED** — fresh official source inventory: GitHub Actions received HTTP 403. Acceptance criterion: run from an environment where the official site permits access, retain the request/response provenance, and reconcile all 30 numbered articles with no missing, duplicate, or incomplete records. Do not bypass the denial.
+- **BLOCKED / evidence-limited** — source reuse terms and any bulk retention of official article text. Acceptance criterion: inspect the current official terms/notice and record a source-specific decision before retaining or redistributing text.
+- **TODO** — once access is available, compare the live inventory and exact article/subparagraph/example structure against the existing NIKL audit, rule matrix, data files, and tests; add only evidence-backed missing cases and negative controls. Then run exact-head tests/build and verify IPA is the actual input to the Ukrainian adapter.
+- **DEFERRED** — independent narrow-IPA adjudication and Ukrainian target-layer validation remain outside what a scraper can establish; they still require qualified reviewers and must not be fabricated by automation.
+
+### Architecture and release disposition
+
+The required pipeline remains Hangul → structural/morphological analysis → Korean phonology → IPA or typed unresolved result → Ukrainian adaptation → Ukrainian practical orthography. This change does not make the public site claim that every NIKL rule is newly crawled or that Ukrainian outputs are normatively validated. Repository disposition remains a technically deployed research preview, not a scientifically validated/release-ready standard.
