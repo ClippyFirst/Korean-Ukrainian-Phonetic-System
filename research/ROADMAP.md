@@ -81,3 +81,8 @@ Branch `fix/soft-morphology-parity-and-release-gates-2026-10-21`, head `14bca46c
 
 ### Release disposition
 **Technically deployed research preview; not a scientifically validated or release-ready transcription standard.** A headless Chromium test passed against the live page using the repository's 1,443-character adversarial Korean fixture; it produced 2,782 Ukrainian characters and 3,731 IPA characters with `g2pK JS` status and no browser errors. The exact earlier passage pasted by the user, if different from this repository fixture, remains unverified. Independent IPA gold and Ukrainian target review remain the next scientific acceptance work.
+
+
+### Final exact-head CI evidence — 2026-10-21
+
+The code/deployment commit `dae8ebdabb396d1be51afbe891d80c9c48a29f1c` and code-equivalent mainline commit `a8996112a01ec43f90b7c297b975906e4b44ab83` passed tests/build/Python 3.11–3.13 [39604039126](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039126), system verification [39604039157](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039157), corpus artifacts [39604039164](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039164), and Pages deployment plus HTTP/headless-browser smoke [39604039154](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039154). The repository's 1,443-character adversarial fixture yielded 2,782 Ukrainian and 3,731 IPA characters with no page errors. Independent IPA and target-policy validation remain open.
