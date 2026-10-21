@@ -13,7 +13,6 @@
     {
       "caseId": "IPA-001",
       "input": "넋이",
-      "sourceBackedKoreanSurface": "넉씨",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=323740",
       "sourceLocator": "NIKL Online Q&A qna_seq=323740 explicitly confirms 넋이[넉씨] and explains the §14/§23 sequence.",
@@ -36,12 +35,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "넉씨"
     },
     {
       "caseId": "IPA-002",
       "input": "몫이",
-      "sourceBackedKoreanSurface": "목씨",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=335008",
       "sourceLocator": "NIKL Online Q&A qna_seq=335008 directly lists 몫이[목씨] and discusses the §14 liaison/fortis-s result.",
@@ -64,12 +63,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "목씨"
     },
     {
       "caseId": "IPA-003",
       "input": "값이",
-      "sourceBackedKoreanSurface": "갑씨",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=330274",
       "sourceLocator": "NIKL Online Q&A qna_seq=330274 explicitly confirms 값이[갑씨] and relates it to §14.",
@@ -92,12 +91,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "갑씨"
     },
     {
       "caseId": "IPA-004",
       "input": "값어치",
-      "sourceBackedKoreanSurface": "가버치",
       "surfaceEvidenceStatus": "direct-NIKL-example",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217",
       "sourceLocator": "§15 붙임 explicitly lists 값어치[가버치]",
@@ -120,12 +119,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "가버치"
     },
     {
       "caseId": "IPA-005",
       "input": "숲이",
-      "sourceBackedKoreanSurface": "수피",
       "surfaceEvidenceStatus": "derived-from-NIKL-rule",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "sourceLocator": "§13 formal-morpheme liaison; lexical output still needs independent adjudication",
@@ -148,12 +147,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "Surface candidate is rule-derived, not a direct lexical attestation; IPA review must preserve that evidence limitation."
+      "notes": "Surface candidate is rule-derived, not a direct lexical attestation; IPA review must preserve that evidence limitation.",
+      "normativeSurfaceComparator": "수피"
     },
     {
       "caseId": "IPA-006",
       "input": "같이",
-      "sourceBackedKoreanSurface": "가치",
       "surfaceEvidenceStatus": "direct-NIKL-example",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "sourceLocator": "§17 palatalization example 같이[가치]",
@@ -176,12 +175,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "가치"
     },
     {
       "caseId": "IPA-007",
       "input": "굳이",
-      "sourceBackedKoreanSurface": "구지",
       "surfaceEvidenceStatus": "direct-NIKL-example",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "sourceLocator": "§17 palatalization example 굳이[구지]",
@@ -204,12 +203,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "구지"
     },
     {
       "caseId": "IPA-008",
       "input": "닭이",
-      "sourceBackedKoreanSurface": "달기",
       "surfaceEvidenceStatus": "direct-NIKL-example",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "sourceLocator": "§13 example 닭이[달기]",
@@ -232,12 +231,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "달기"
     },
     {
       "caseId": "IPA-009",
       "input": "밟는",
-      "sourceBackedKoreanSurface": "밤는",
       "surfaceEvidenceStatus": "direct-NIKL-example",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "sourceLocator": "§10 exception and §18 nasal assimilation give 밟는[밤ː는]; Hangul surface field does not encode length",
@@ -260,12 +259,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "NIKL surface notation includes vowel length [밤ː는]; the Hangul surface field alone does not encode this contrast."
+      "notes": "NIKL surface notation includes vowel length [밤ː는]; the Hangul surface field alone does not encode this contrast.",
+      "normativeSurfaceComparator": "밤는"
     },
     {
       "caseId": "IPA-010",
       "input": "넓죽하다",
-      "sourceBackedKoreanSurface": "넙쭈카다",
       "surfaceEvidenceStatus": "direct-NIKL-example",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "sourceLocator": "§10 explicitly gives 넓-죽하다[넙쭈카다]",
@@ -288,12 +287,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "넙쭈카다"
     },
     {
       "caseId": "IPA-011",
       "input": "읽고",
-      "sourceBackedKoreanSurface": "일꼬",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=315279",
       "sourceLocator": "NIKL Online Q&A directly confirms 읽고[일꼬]",
@@ -316,12 +315,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "일꼬"
     },
     {
       "caseId": "IPA-012",
       "input": "읽는",
-      "sourceBackedKoreanSurface": "잉는",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306000",
       "sourceLocator": "NIKL Online Q&A example and §11 + §18",
@@ -344,12 +343,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "잉는"
     },
     {
       "caseId": "IPA-013",
       "input": "국립",
-      "sourceBackedKoreanSurface": "궁닙",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=328893",
       "sourceLocator": "NIKL Online Q&A qna_seq=328893 explicitly derives 국립[궁닙] as [국닙→궁닙], with §19 before §18.",
@@ -372,12 +371,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "궁닙"
     },
     {
       "caseId": "IPA-014",
       "input": "협력",
-      "sourceBackedKoreanSurface": "혐녁",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330091",
       "sourceLocator": "NIKL Online Q&A qna_seq=330091 explicitly confirms 협력[협녁→혐녁] and the ordered §19→§18 interaction.",
@@ -400,12 +399,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "혐녁"
     },
     {
       "caseId": "IPA-015",
       "input": "독립문",
-      "sourceBackedKoreanSurface": "동님문",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=314644",
       "sourceLocator": "NIKL Online Q&A qna_seq=314644 explicitly confirms 독립문[동님문] from §§19 and 18.",
@@ -428,12 +427,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "동님문"
     },
     {
       "caseId": "IPA-016",
       "input": "칼날",
-      "sourceBackedKoreanSurface": "칼랄",
       "surfaceEvidenceStatus": "direct-NIKL-example",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "sourceLocator": "§20 explicitly lists 칼날[칼랄]",
@@ -456,12 +455,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "칼랄"
     },
     {
       "caseId": "IPA-017",
       "input": "물난리",
-      "sourceBackedKoreanSurface": "물랄리",
       "surfaceEvidenceStatus": "direct-NIKL-example",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "sourceLocator": "§20 explicitly lists 물난리[물랄리]",
@@ -484,12 +483,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "물랄리"
     },
     {
       "caseId": "IPA-018",
       "input": "서울역",
-      "sourceBackedKoreanSurface": "서울력",
       "surfaceEvidenceStatus": "direct-NIKL-example",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "sourceLocator": "§29 붙임 1 explicitly lists 서울-역[서울력]",
@@ -512,12 +511,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "서울력"
     },
     {
       "caseId": "IPA-019",
       "input": "숲을",
-      "sourceBackedKoreanSurface": "수플",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=332248",
       "sourceLocator": "NIKL Online Q&A qna_seq=332248 answer dated 2026-06-12 explicitly says 숲을[수플] under §13.",
@@ -540,12 +539,12 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "수플"
     },
     {
       "caseId": "IPA-020",
       "input": "숲에",
-      "sourceBackedKoreanSurface": "수페",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=331304",
       "sourceLocator": "NIKL Online Q&A qna_seq=331304 answer dated 2026-05-18 explicitly says 숲에[수페] and rejects [숩페].",
@@ -568,7 +567,8 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently."
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "수페"
     }
   ]
 }
