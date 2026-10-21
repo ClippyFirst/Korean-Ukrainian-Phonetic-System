@@ -130,3 +130,8 @@ The crawler may populate source/evidence registries and fixtures. It must not di
 For every run, report scope, source inventory, fetched/parsed/failed counts, changed/new/missing IDs, parser/schema versions, terms status, validation commands, and blockers. Distinguish an unavailable website, denied access, parser drift, incomplete inventory, and uncertain linguistic interpretation.
 
 Never say "all rules scraped" unless inventory reconciliation and validation prove it. Never claim live scraping or terms review occurred if the run only inspected existing repository files.
+
+
+## When automated access is denied
+
+Do not use proxy/stealth scraping or rotate hosts to evade a 401/403/429/451. If a human can open the official page normally, support a local HTML import using `--input-html` plus an explicit canonical official `--url`. Mark `retrievalMode=local-html-import`, keep HTTP status and retrieval time unknown/null, record import time and the saved-file SHA-256, and mark robots policy as not checked by the import run. Never represent a local import as a live HTTP fetch. Keep the metadata-only default and require all 30 article headings/content blocks to reconcile before emitting a manifest.
