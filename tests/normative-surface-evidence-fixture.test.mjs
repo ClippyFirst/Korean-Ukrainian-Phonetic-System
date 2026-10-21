@@ -86,3 +86,13 @@ test('six formerly rule-derived surface comparators now have exact NIKL Q&A cita
   }
   assert.match(byInput.get('숲이').normativeNotes, /not independently adjudicated/u);
 });
+
+
+test('README evidence counts match the current source-adjudicated fixture', () => {
+  const readme = readFileSync(resolve('README.md'), 'utf8');
+  assert.match(readme, /20-case practical-port fixture/u);
+  assert.match(readme, /Nineteen comparators are directly attested/u);
+  assert.match(readme, /one \(`숲이`\) remains rule-derived/u);
+  assert.match(readme, /IPA gold remains 0\/20/u);
+  assert.doesNotMatch(readme, /18-case practical-port fixture|0\/18|11 comparators are directly attested/u);
+});
