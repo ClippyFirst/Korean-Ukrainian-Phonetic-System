@@ -262,3 +262,12 @@ The surface fixture now has 17/18 directly attested Korean surface comparators; 
 ### Source-reuse policy check — 2026-10-21
 
 The official [NIKL copyright policy](https://www.korean.go.kr/front/nuri/pageView.do?mkn=3&page_id=P000189) states that materials provided on the NIKL website may be used under Korean Copyright Act Article 24-2 without separate permission unless a specific KOGL type is marked for an item. This resolves the previous absence of a site-wide policy source, but not the per-item condition: this pass did not establish the KOGL marking, if any, on the Standard Pronunciation Rules page or each cited Q&A page. The source register now records the policy and this caveat. Keep raw text retention disabled until item-level markings are checked; metadata/hash-only output remains the safe default.
+
+
+## Completion audit refresh — NIKL source and surface evidence — 2026-10-21
+
+- The official NIKL desktop full-text route is now canonical in the crawler, article-coverage fixture, audit references, and surface-regression fixture. A regression test rejects legacy mobile-route citations in the surface fixture.
+- The surface fixture's direct-evidence inventory is 17/18; `숲이` remains rule-derived. Fourteen directly matching surface rows now explicitly say that only the Hangul surface string matches the cited NIKL comparator. The three known practical-port/normative divergences remain unchanged. Independent IPA gold remains 0/18.
+- Exact-head CI passed for PR #182: 1,071 Node tests, Vite build, and Python regression/data-integrity tests. PR #183 then passed 1,072 Node tests, Vite build, and Python regression/data-integrity tests. These tests establish repository regression integrity, not independent phonetic or Ukrainian target correctness.
+- The NIKL copyright policy is located and cited, but item-level KOGL conditions remain unverified. Raw source-text retention remains disabled by default.
+- Current disposition: DONE_VERIFIED for canonical citation integrity, the evidence-fixture provenance gate, collector argument/path safety, and listed CI runs. BLOCKED for direct official-page access (HTTP 403) and a fresh 30-article inventory. BLOCKED / specialist evidence for independent IPA gold and Ukrainian target adjudication. Do not mark the research system release-ready.
