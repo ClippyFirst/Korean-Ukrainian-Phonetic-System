@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "title": "Independent broad-IPA adjudication queue for the NIKL surface regression set",
   "purpose": "Prepare a review queue without fabricating IPA gold. Korean surface strings and NIKL citations are source evidence for Korean surface forms only; they do not independently determine broad IPA or Ukrainian target choices.",
   "acceptanceCriteria": [
@@ -21,11 +21,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -49,11 +55,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -77,11 +89,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -105,11 +123,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -133,11 +157,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -161,11 +191,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -189,11 +225,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -217,11 +259,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -245,11 +293,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -273,11 +327,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -301,11 +361,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -329,11 +395,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -357,11 +429,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -385,11 +463,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -413,11 +497,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -441,11 +531,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -469,11 +565,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -497,11 +599,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -525,11 +633,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
@@ -553,11 +667,17 @@
       "vowelLengthAssessment": null,
       "reviewerA": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
       "reviewerB": {
         "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
         "ipa": null,
         "notes": null
       },
