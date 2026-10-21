@@ -1,44 +1,99 @@
 ---
 name: nikl-rule-coverage
-description: Use when mapping official NIKL pronunciation articles to the research engine, finding missing rule environments, generating source-backed regressions, or updating rule coverage and handoff registers.
+description: Use when reconciling every official NIKL pronunciation article with repository implementation, IPA-first processing, evidence, and positive/negative/interacting regression tests; use for coverage gates and release readiness.
 ---
 
 # NIKL Rule Coverage and Regression
 
-## Mission
+## Purpose
 
-Turn the official NIKL Standard Pronunciation Rules (표준 발음법) into an inspectable acceptance matrix and regression tests.
+Convert the official NIKL Standard Pronunciation Rules (표준 발음법) into a source-traceable acceptance contract for the existing Korean research engine. Coverage means more than a rule name in a CSV or a test file existing: it means the official scope is inventoried, implementation behavior is identified, and assertions actually verify the intended behavior.
 
 Primary source: https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
 
-## Workflow
+## Mandatory repository reconnaissance
 
-1. Read the existing NIKL audit, coverage matrix, research/RULE-COVERAGE.csv, tests/fixtures/standard-pronunciation-rule-coverage.json, current schemas, and latest completion audit before editing.
-2. Reuse existing matrices, registries, evidence tables, tests, and handoff documents. Do not create a duplicate master plan or parallel rule engine.
-3. Build the expected article inventory from the official table of contents, then reconcile every expected article/subarticle with a row in the existing matrix.
-4. For every rule, distinguish the normative statement, environment, listed examples, explicit exceptions, morphological/lexical prerequisites, implementation location, exact tests, and status: DONE_VERIFIED, PARTIAL, TODO, BLOCKED, or DEFERRED.
-5. Trace every test to an exact official article and source URL. Keep official Hangul and official Korean surface pronunciation separate from project IPA and Ukrainian target.
-6. Cover interactions and boundaries, not only canonical examples: 받침 and 겹받침, liaison, neutralization, nasal/liquid assimilation, fortition, palatalization, ㅎ aspiration/deletion, ㄴ insertion, 사이시옷, phrase boundaries, and morphology-dependent alternations where relevant.
-7. Test negative conditions as well as positive ones. Near-matches that must not trigger a rule are important regression cases.
-8. Update existing tests and matrices in place. Regenerate derived artifacts and check for drift.
+Before editing, inspect and reconcile the current state of:
+- docs/NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md;
+- docs/coverage-matrix.md;
+- research/RULE-COVERAGE.csv;
+- research/SOURCE-REGISTER.csv;
+- tests/fixtures/standard-pronunciation-rule-coverage.json;
+- existing rule, lexicon, IPA, morphology, and phonology schemas;
+- all relevant NIKL article tests;
+- docs/audits/COMPLETION-AUDIT-2026-10-20.md;
+- the latest section of docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md.
 
-## Mandatory IPA-first architecture
+Use the latest current-state section where historical snapshots conflict. Reuse existing source IDs and rule IDs. Do not add a second master matrix, duplicate rule registry, or parallel engine.
+
+## Inventory-first method
+
+1. Read the official table of contents and build the expected article/subarticle inventory independently of repository coverage.
+2. Preserve official numbering, hierarchy, order, titles, examples, and cross-references.
+3. Join the official inventory to the existing matrix by stable IDs, not by fuzzy rule-name similarity alone.
+4. Classify every item using the repository vocabulary:
+   - DONE_VERIFIED: exact acceptance behavior and required evidence are present and relevant tests were run;
+   - PARTIAL: some implementation/evidence exists but acceptance criteria remain incomplete;
+   - TODO: work remains;
+   - BLOCKED: a named external dependency or missing evidence prevents progress;
+   - DEFERRED: explicitly outside the agreed scope.
+5. Distinguish these independent dimensions: source captured, rule interpreted, implementation present, IPA boundary respected, positive test, negative test, interaction test, cross-runtime parity, independent review, and final verification.
+6. Do not upgrade status because a file exists or documentation claims completion. Inspect the assertion and implementation path.
+
+## Rule case model
+
+Each case should retain, where available:
+- stable case ID;
+- official article/subarticle ID and source URL;
+- official input spelling and exact source example;
+- official surface pronunciation, if explicitly supplied;
+- evidence class: direct attestation, rule-derived, dictionary-attested, secondary-supported, hypothesis/unresolved;
+- morphological segmentation and lexical identity only when supported;
+- expected Korean phonological/IPA output and the evidence/rule chain deriving it;
+- expected Ukrainian target, tested separately from Korean phonology;
+- positive/negative/interaction classification;
+- implementation path and test name;
+- confidence/review status and unresolved questions.
+
+Do not assume every official spelling has one context-free output. Preserve optionality and variants where the source establishes them. Do not invent IPA simply because the test harness expects a string.
+
+## Test design requirements
+
+For each applicable rule, build a balanced set rather than collecting only canonical positives:
+- canonical positive example;
+- boundary or minimal/near-minimal contrast;
+- negative control where a similar spelling does not meet the environment;
+- interaction case where rule order or a second rule matters;
+- morphology-sensitive pair when the official rule requires morphological knowledge;
+- lexical exception or dictionary-confirmed item where relevant;
+- regression for every previously observed false positive/false negative.
+
+Keep official example tests separate from generated/adversarial examples. Label generated examples as derived test material, not official quotations. A rule-derived expected form needs a traceable rule chain and review status.
+
+Prioritize coverage of 받침/겹받침, neutralization, liaison, nasalization, liquid assimilation, fortition, palatalization, ㅎ aspiration/deletion, ㄴ insertion, 사이시옷, phrase boundaries, and morphology-dependent alternations according to the exact cited article. These categories are a checklist, not permission to overgeneralize them.
+
+## IPA-first architecture gate
 
 Required path:
 
-Hangul → structural/morphological analysis → source-language phonology → IPA or explicitly typed unresolved result → Ukrainian target adaptation → Ukrainian practical orthography
+Hangul → structural/morphological analysis → Korean phonology → IPA or explicitly typed unresolved result → Ukrainian target adaptation → Ukrainian practical orthography.
 
-Ukrainian output must consume the IPA/typed phonetic result. Never add parallel Hangul-to-Ukrainian conversion. Preserve provenance, rule order, uncertainty, syllable boundaries, and other features required by the project contract.
+Verify dataflow, not just display. The Ukrainian adapter must consume the IPA/typed phonetic result. A parallel Hangul-to-Ukrainian mapping is an architectural failure even if an IPA string is displayed elsewhere for audit.
 
-If lexical or morphological evidence is insufficient, preserve the unresolved marker/status instead of guessing. Soft heuristics must remain visibly low-confidence and must not license rules the repository keeps evidence-gated.
+Preserve rule order, source provenance, syllable boundaries, uncertainty, optional variants, and other features the project contract requires. Where IPA is incomplete, use the repository's explicit unresolved/incomplete type and keep the reason visible. Heuristics may rank hypotheses but must not silently become normative rules.
 
-## Acceptance and reporting
+## Gate implementation
 
-- Inventory reconciles with the current official contents.
-- Every rule/subrule has an explicit status and linked evidence.
-- Tests assert source-backed Korean surface forms separately from Ukrainian target choices.
-- Coverage checks detect missing article IDs/examples, duplicates, and untraceable forms.
-- Relevant Node tests, Python tests, generators, schema/coverage gates, and release build are run and reported with exact commands and outcomes.
-- Update the existing audit/handoff in place with evidence, limitations, and the next blocker.
+- Validate official inventory count and exact IDs against the coverage fixture.
+- Validate unique IDs, resolvable source links, expected-case references, and that referenced test names/assertions exist.
+- Ensure missing article IDs and source examples cause a failing gate, not warnings that can be ignored.
+- Validate generated artifacts against source registries and fail on drift.
+- Run relevant focused tests first, then the complete repository-defined test suite, Python tests, browser/parity checks, static build, and release gates available in the environment.
+- Record exact commands, exit codes, environment/runtime versions, and whether checks ran locally or in CI.
+- Re-run failed checks after fixes and verify the final exact commit, not a prior tree.
 
-Passing a coverage test proves fixture/inventory consistency, not independent linguistic adjudication or acoustic validation.
+## Status and release language
+
+A coverage fixture passing establishes consistency of the inventory and test references only. It does not by itself establish that all rules are implemented, that phonetic analyses are linguistically correct, or that results are acoustically validated. Report these as separate claims.
+
+Update the existing matrix, audit register, and handoff in place. Every remaining TODO/BLOCKED item must have a concrete acceptance criterion and a named missing dependency/evidence. Do not stop after documenting gaps when implementation is feasible.
