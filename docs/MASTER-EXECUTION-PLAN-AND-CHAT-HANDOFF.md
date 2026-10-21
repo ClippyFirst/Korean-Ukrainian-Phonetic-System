@@ -257,3 +257,18 @@ For main commit `3bb3dfe177e2e426ff1260349e199920b1a220ef`, all push-triggered w
 - **Next genuine work:** source-adjudicate the 18-row surface fixture; build an independently reviewed IPA gold subset; review target-policy evidence; add explicit soft-mode parity tests; obtain license/citation owner decisions; perform direct public-site smoke testing when a suitable browser/network path is available.
 
 A documentation-only continuation update follows this section; the code/workflow deployment evidence above remains tied to the exact SHA and run IDs stated here.
+
+
+
+## Practical-mode strict-port follow-up — 2026-10-21
+
+**Scope is practical mode only.** User clarified that practical mode must follow the pinned JavaScript g2pK port strictly; the native research engine and its lexical evidence are not an alternate pronunciation source for this mode.
+
+- Created branch `fix/practical-mode-strict-g2pk-port-2026-10-21` from `2fca8db67ebc7239f9d2d63837d74ef5b3d57be1`.
+- Removed post-G2P lexical surface and IPA overrides from `src/app/g2pk_web.js`; kept the research lexicon wired only to `engine` in `src/main.js`.
+- Added a regression asserting practical `값어치` surface equals the direct `G2pBrowser.convert` result; changed the 18-row surface gate to compare the adapter against direct port output and document the known normative divergence separately.
+- Updated README and G2P integration notes to distinguish strict-port behavior from normative pronunciation. No claim is made that upstream port output is always normatively correct.
+- Commits so far: `95688881eaa6e8b109bb2bc7295da5d5fb912a3a` (adapter), `944d34c2581613bcec1cc5c79ab80d3c200be17f` (entrypoint), `198e0fdbf4c97e3b68cc1bb761ad334abc79f40e` (tests), `53089db27081e4df1a953462fe44291d4c48d98a` (parity gate), `462df0e7e68254f57d3da827657612d52ea0bb60` (fixture), `a68dfac6147fd22e7659fee6c6be6c8c3187b56e` (README), `2c20f3313355e3b90ba8e993a0a7d370843a60e5` (integration contract).
+- **Not yet verified:** exact-head browser/Python CI and a direct check of the deployed app. The GitHub API-only editing workflow means local `npm test` / `npm run build` have not been executed. Before accepting this change, run CI and fix any fixture expectation or integration regression it exposes.
+- Next: update the regression fixture test if direct JS port outputs differ from the previous expected rows; run the exact-head workflows; only then mark the practical-mode contract `DONE_VERIFIED`.
+
