@@ -68,4 +68,4 @@ Known divergences that must remain visible rather than silently corrected in pra
 - `넓죽하다`: JS port `널쭈카다`; NIKL §10 gives `넙쭈카다`.
 - `읽고`: JS port `익꼬`; NIKL Q&A gives `일꼬`.
 
-CI passing establishes the selected port's reproducibility and build/test integrity only. It does not validate all Korean surface pronunciations, independent IPA, Ukrainian target quality, or the live page's interactive behavior. Direct live-site long-passage smoke testing remains outstanding until a suitable browser/network path is available.
+CI passing establishes the selected port's reproducibility and build/test integrity only. It does not validate all Korean surface pronunciations, independent IPA, Ukrainian target quality, or the live page's interactive behavior. The deployment workflow now performs both live HTTP smoke and headless Chromium interaction with the repository's 1,443-character adversarial Korean fixture. The live browser run produced substantial Ukrainian and IPA output without page errors. This does not verify the exact earlier user-pasted passage if different, nor does it validate normative pronunciation accuracy.

@@ -181,7 +181,7 @@ Missing evidence is not converted into a fabricated one-to-one correspondence.
 
 **Research layer:** a tested research prototype with source-backed rule coverage, but incomplete independent IPA and target-language validation.
 
-**Web layer:** a technically deployed research preview. Practical mode reproduces the pinned JavaScript g2pK port; it does not claim that every port result is normatively correct. The public UI warns users about known upstream divergences. The main deployment workflow now HTTP-smoke-tests the public index, methodology page, and JavaScript asset after each deployment; the interactive long-passage check remains a separate acceptance item.
+**Web layer:** a technically deployed research preview. Practical mode reproduces the pinned JavaScript g2pK port; it does not claim that every port result is normatively correct. The public UI warns users about known upstream divergences. The main deployment workflow now HTTP-smoke-tests the public index, methodology page, and JavaScript asset, then runs headless Chromium against the repository's 1,443-character adversarial Korean passage. This verifies live interaction and output presence, not normative pronunciation accuracy; a different user-supplied passage remains a separate acceptance input.
 
 Neither layer claims official Ukrainian standardisation, exhaustive lexical attestation, acoustic narrow-IPA validation or independent expert adjudication without the corresponding evidence.
 
