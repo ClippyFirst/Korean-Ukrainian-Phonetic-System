@@ -295,3 +295,8 @@ PR #187 merged as `171a1ac013fd09bb04c5f25d705a80706f3d4b89`. Its exact PR head 
 The evidence audit was deliberately corrected after reopening the official NIKL §13 page: its enumerated examples do not include `숲이[수피]`. This case remains rule-derived, not directly attested. The evidence gate is **17/18 direct Korean surface comparators**, while independently adjudicated IPA gold remains **0/18**. The public practical output was not changed by the evidence correction.
 
 The skills now require exact source-span inspection before any direct-attestation label and reject rule-derived inference or secondary snippets as direct evidence. Live automated article collection remains blocked by HTTP 403; the local HTML import path preserves honest provenance but has not yet produced a real 30-article manifest. Item-level reuse conditions, independent IPA, and Ukrainian target validation remain unresolved.
+
+
+### Post-merge deployment smoke after evidence-gate update — 2026-10-21
+
+Main commit `171a1ac013fd09bb04c5f25d705a80706f3d4b89` passed Pages deployment, public HTTP smoke for `index.html`, `system.html`, and the first JavaScript asset, and live Chromium practical-mode smoke. The adversarial fixture contained 1,443 Korean input characters and produced 2,782 Ukrainian output characters plus 3,731 IPA characters with no page errors. Evidence: [deployment and live browser smoke](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39673643136). This verifies deployment and interaction plumbing, not pronunciation accuracy or IPA gold.
