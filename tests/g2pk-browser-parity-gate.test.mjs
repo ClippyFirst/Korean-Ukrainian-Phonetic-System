@@ -39,7 +39,7 @@ test('practical browser mode is wired to the vendored JavaScript g2pK adapter', 
 test('practical browser surface exactly matches the vendored JavaScript port', () => {
   const cases = JSON.parse(read('tests/fixtures/g2pk-surface-regression.json')).cases;
   const port = new G2pBrowser();
-  assert.equal(cases.length, 18);
+  assert.equal(cases.length, 20);
   for (const item of cases) {
     assert.equal(item.ipaGoldStatus, 'not_independently_adjudicated', item.input);
     assert.equal(item.pythonComparisonStatus, 'compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20', item.input);

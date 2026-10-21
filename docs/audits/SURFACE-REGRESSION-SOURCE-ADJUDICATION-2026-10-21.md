@@ -51,3 +51,15 @@ Primary authority: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/
 ## Evidence correction — 2026-10-21
 
 A prior fixture edit marked `숲이[수피]` as a direct §13 example. Re-reading the primary NIKL page showed that the enumerated §13 examples do **not** include this word. The claim was too strong and has been reverted: `숲이` is again `derived-from-NIKL-rule`, and the direct-evidence count is **17/18**. The general liaison rule supports the candidate, but it is not a direct lexical attestation. Do not restore a direct status unless an exact official source is found.
+
+
+## Formal-morpheme boundary controls added — 2026-10-21
+
+A targeted official-source search found two NIKL Online Q&A answers that strengthen the lexical boundary evidence around the still rule-derived case `숲이`:
+
+- `숲을` → `[수플]`, explicitly explained under §13: [official NIKL Q&A qna_seq=332248](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=332248).
+- `숲에` → `[수페]`; the answer explicitly rejects `[숩페]` as a standard pronunciation: [official NIKL Q&A qna_seq=331304](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=331304).
+
+Both forms are now added to the machine-readable surface fixture as direct lexical comparators, with separate source-register entries and regression checks. The fixed fixture expands from 18 to 20 cases. Current evidence count: **19/20 direct NIKL surface attestations**; `숲이[수피]` remains **rule-derived**, because neither the official §13 enumerated examples nor these two Q&A answers directly attest that exact form. The negative `숩페` control guards against treating a perceived closure interval as a separate coda.
+
+The exact implementation head `0e0b96080335fec8fe04e7bd9d302d7b1e8a2183` passed **1,074/1,074 Node tests**, Vite build, Python regression/data-integrity checks, and master-table/corpus artifact checks: [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39674707274), [test matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39674707281), [corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39674707413). The browser port and Python g2pK both emitted `수플` and `수페`; the two new cases passed. They do not add IPA gold: independently adjudicated IPA remains **0/20**. Korean surface attestation does not establish IPA transcription or Ukrainian target correctness.

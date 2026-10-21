@@ -293,6 +293,38 @@
       "normativeSourceLocator": "§29 붙임 1 explicitly lists 서울-역[서울력]",
       "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
+    },
+    {
+      "input": "숲을",
+      "expectedSurface": "수플",
+      "pythonG2pkSurface": "수플",
+      "phenomenon": "simple-coda-liaison-formal-morpheme",
+      "expectedIpa": null,
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "differentialStatus": "new-official-morphology-boundary-control",
+      "normativeEvidenceStatus": "direct-NIKL-QA",
+      "expectedSurfaceProvenance": "The pinned JS-port surface string matches the separately cited direct NIKL comparator for this case; this verifies only the Hangul surface string, not IPA, vowel length, or Ukrainian target rendering.",
+      "normativeSurface": "수플",
+      "normativeSourceLocator": "NIKL Online Q&A qna_seq=332248 answer dated 2026-06-12 explicitly says 숲을[수플] under §13.",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=332248",
+      "normativeNotes": "Direct official lexical attestation for Korean surface [수플]. Contrast: a formal particle permits liaison; IPA and Ukrainian target remain independently unadjudicated."
+    },
+    {
+      "input": "숲에",
+      "expectedSurface": "수페",
+      "pythonG2pkSurface": "수페",
+      "phenomenon": "simple-coda-liaison-formal-morpheme",
+      "expectedIpa": null,
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "differentialStatus": "new-official-morphology-boundary-control",
+      "normativeEvidenceStatus": "direct-NIKL-QA",
+      "expectedSurfaceProvenance": "The pinned JS-port surface string matches the separately cited direct NIKL comparator for this case; this verifies only the Hangul surface string, not IPA, vowel length, or Ukrainian target rendering.",
+      "normativeSurface": "수페",
+      "normativeSourceLocator": "NIKL Online Q&A qna_seq=331304 answer dated 2026-05-18 explicitly says 숲에[수페] and rejects [숩페].",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=331304",
+      "normativeNotes": "Direct official lexical attestation for Korean surface [수페]; [숩페] is explicitly rejected as a standard pronunciation. IPA and Ukrainian target remain independently unadjudicated."
     }
   ]
 }

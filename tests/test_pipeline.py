@@ -218,7 +218,7 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
         "mismatches": mismatches,
     }
     warnings.warn("PYTHON_G2PK_DIFFERENTIAL_REPORT=" + json.dumps(report, ensure_ascii=False), UserWarning)
-    assert len(rows) == len(fixture["cases"]) == 18
+    assert len(rows) == len(fixture["cases"]) == 20
 
 
 def test_python_ipa_inventory_matches_browser_surface_segments():
