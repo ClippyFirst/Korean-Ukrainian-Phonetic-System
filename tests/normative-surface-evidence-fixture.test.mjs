@@ -32,6 +32,17 @@ test('official rule citations use the canonical desktop full-text URL', () => {
   assert.ok(!JSON.stringify(fixture).includes('/kornorms/m/m_regltn.do'), 'legacy mobile URL must not remain in the surface fixture');
 });
 
+test('directly matching NIKL surface evidence is reflected in provenance notes without claiming IPA gold', () => {
+  for (const item of fixture.cases) {
+    const direct = item.normativeEvidenceStatus === 'direct-NIKL-QA' || item.normativeEvidenceStatus === 'direct-NIKL-example';
+    if (direct && item.expectedSurface === item.normativeSurface) {
+      assert.match(item.expectedSurfaceProvenance, /surface string matches the separately cited direct NIKL comparator/u, item.input);
+      assert.match(item.expectedSurfaceProvenance, /not IPA/u, item.input);
+      assert.equal(item.ipaGoldStatus, 'not_independently_adjudicated', item.input);
+    }
+  }
+});
+
 test('known normative divergences stay explicit and never rewrite the port fixture', () => {
   assert.equal(byInput.get('값어치').expectedSurface, '갑써치');
   assert.equal(byInput.get('값어치').normativeSurface, '가버치');
