@@ -58,3 +58,24 @@ def test_generated_syllable_csv_schema(tmp_path):
 
     assert count == 11172
     assert output.read_text(encoding="utf-8-sig").splitlines()[0].split(",") == generator.SYLLABLE_FIELDS
+
+def test_sourced_lexical_records_adapt_to_sequence_rows_without_inventing_targets():
+    generator = load_generator()
+    data_dir = ROOT / "data" / "korean"
+    lexical_rows, _ = generator.read_csv(data_dir / "lexical_pronunciations.csv")
+    source_rows, _ = generator.read_csv(data_dir / "sources.csv")
+
+    sequences = generator.adapt_lexical_sequences(lexical_rows, source_rows)
+
+    assert len(sequences) == len(lexical_rows) == 642
+    assert len({row["sequence_id"] for row in sequences}) == len(sequences)
+    by_input = {row["word_or_phrase"]: row for row in sequences}
+    source_row = next(row for row in lexical_rows if row["input"] == "값없다")
+    sequence = by_input["값없다"]
+    assert sequence["surface_ipa"] == source_row["ipa_syllables"]
+    assert sequence["ukrainian_phonetic_target"] == source_row["target_syllables"]
+    assert sequence["ukrainian_graphemic_target"] == ""
+    assert sequence["source_ids"] == "S007"
+    assert source_row["source_url"] in sequence["notes"]
+    assert "lexical_target_status=model-selected" in sequence["notes"]
+
