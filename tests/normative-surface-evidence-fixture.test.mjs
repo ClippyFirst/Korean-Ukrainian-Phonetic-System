@@ -70,8 +70,8 @@ test('six formerly rule-derived surface comparators now have exact NIKL Q&A cita
     assert.equal(item.normativeEvidenceStatus, 'direct-NIKL-QA', input);
     assert.equal(item.normativeSourceUrl, url, input);
   }
-  assert.equal(fixture.cases.filter((item) => item.normativeEvidenceStatus === 'direct-NIKL-QA' || item.normativeEvidenceStatus === 'direct-NIKL-example').length, 18);
-  assert.equal(fixture.cases.filter((item) => item.normativeEvidenceStatus.startsWith('derived')).length, 0);
-  assert.equal(byInput.get('숲이').normativeEvidenceStatus, 'direct-NIKL-example');
-  assert.equal(byInput.get('숲이').normativeSourceLocator, '§13 explicit example: 숲이[수피]');
+  assert.equal(fixture.cases.filter((item) => item.normativeEvidenceStatus === 'direct-NIKL-QA' || item.normativeEvidenceStatus === 'direct-NIKL-example').length, 17);
+  assert.equal(fixture.cases.filter((item) => item.normativeEvidenceStatus.startsWith('derived')).length, 1);
+  assert.equal(byInput.get('숲이').normativeEvidenceStatus, 'derived-from-NIKL-rule');
+  assert.match(byInput.get('숲이').normativeNotes, /not independently adjudicated/u);
 });

@@ -450,8 +450,8 @@ The required pipeline remains Hangul → structural/morphological analysis → K
 - Remaining scientific blockers are unchanged: IPA gold is independently adjudicated for 0/18 surface-regression cases; Ukrainian target-layer review remains outstanding; the exact lexical attestation for `숲이` is unresolved; the live 30-article NIKL inventory remains blocked by HTTP 403; per-item KOGL markings remain unverified.
 
 
-## Final remaining surface comparator sourced — 2026-10-21
+## Evidence correction: `숲이` remains rule-derived — 2026-10-21
 
-- Rechecked the one remaining rule-derived comparator in `tests/fixtures/g2pk-surface-regression.json`. The official Standard Pronunciation Rules' §13 examples explicitly list `숲이[수피]`, so the fixture now records `direct-NIKL-example` with the precise locator rather than a rule-derived hypothesis.
-- The evidence test now requires **18/18 directly attested Korean surface comparators** and zero derived-only comparators. This does not change pinned practical output and does not turn any case into IPA gold: independently adjudicated IPA remains **0/18**.
-- The source register and surface adjudication audit were updated in place. Existing source access/reuse constraints and the Ukrainian target-layer review remain open.
+- PR #185 temporarily marked `숲이[수피]` as a direct §13 example. A primary-source recheck found that the official §13 enumerated example list does not include this word. The claim was too strong and has been corrected in the fixture, test, source register, and audit.
+- Direct NIKL surface evidence is therefore **17/18**, not 18/18; `숲이` remains `derived-from-NIKL-rule` pending an exact lexical attestation. The official rule supports the general liaison pattern but is not itself a direct lexical citation for this form.
+- This correction does not change pinned practical output. IPA gold remains **0/18**, Ukrainian target-layer review remains outstanding, and the live 30-article inventory remains blocked by HTTP 403.
