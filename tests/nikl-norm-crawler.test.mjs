@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   DEFAULT_SOURCE_URL, EXPECTED_ARTICLES, assertAllowedSourceUrl, buildManifest,
-  decodeHtmlEntities, parseNiklStandardHtml, robotsPathAllowed, sha256,
+  decodeHtmlEntities, fetchOfficialSource, parseCrawlerArgs, parseNiklStandardHtml, robotsPathAllowed, sha256,
 } from "../scripts/nikl-norm-crawler.mjs";
 
 function fixtureHtml(options = {}) {
@@ -77,4 +77,36 @@ test("manifest is metadata-only unless explicit text retention is requested", ()
   assert.equal("sourceText" in manifest.articles[0], false);
   const withText = buildManifest(parsed, metadata, { includeText: true });
   assert.match(withText.articles[0].sourceText, /규정 본문 1/);
+});
+
+test("article text retention requires explicit source-terms review acknowledgement", () => {
+  assert.throws(() => parseCrawlerArgs(["--include-text"]), /requires --terms-reviewed/);
+  assert.equal(parseCrawlerArgs(["--include-text", "--terms-reviewed"]).includeText, true);
+  assert.equal(parseCrawlerArgs(["--output", "manifest.json"]).output, "manifest.json");
+});
+
+test("mocked fetch records provenance and does not require retaining source text", async () => {
+  const requests = [];
+  const fetchImpl = async (url) => {
+    requests.push(String(url));
+    if (String(url).endsWith("/robots.txt")) return new Response("", { status: 404 });
+    return new Response(fixtureHtml(), { status: 200, headers: { "content-type": "text/html; charset=utf-8", etag: '"fixture-etag"' } });
+  };
+  const result = await fetchOfficialSource(DEFAULT_SOURCE_URL, { fetchImpl });
+  assert.equal(result.metadata.httpStatus, 200);
+  assert.equal(result.metadata.robots.decision, "no_robots_file");
+  assert.equal(result.metadata.termsReview, "not_assessed");
+  assert.equal(result.metadata.etag, '"fixture-etag"');
+  assert.equal(result.metadata.responseSha256, sha256(Buffer.from(result.html)));
+  assert.equal(requests.length, 2);
+});
+
+test("mocked fetch stops when robots.txt disallows the official rules path", async () => {
+  const requests = [];
+  const fetchImpl = async (url) => {
+    requests.push(String(url));
+    return new Response("User-agent: *\\nDisallow: /kornorms/", { status: 200, headers: { "content-type": "text/plain" } });
+  };
+  await assert.rejects(fetchOfficialSource(DEFAULT_SOURCE_URL, { fetchImpl }), /robots.txt disallows/);
+  assert.equal(requests.length, 1, "page request must not occur after a robots denial");
 });
