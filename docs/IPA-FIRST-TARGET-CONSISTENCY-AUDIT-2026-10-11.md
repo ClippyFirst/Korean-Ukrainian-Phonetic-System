@@ -68,3 +68,12 @@ The new regression pins all twenty enumerated §23 examples, checks the source-b
 This closes the inventory gap for the standard's enumerated §23 examples only. It does not establish exhaustive coverage of every productive fortition environment or every lexical exception.
 
 Official source: [NIKL *표준 발음법*](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002).
+
+
+## Surface-only lexical path coverage — 2026-10-21
+
+The lexical inventory contains seven rows marked `surface-only`: `신라`, `밟는`, `읊다`, `읊고`, `앞문`, `희망`, and `독립문`. These rows intentionally preserve a source-backed Korean surface form and broad IPA while the Ukrainian target is still produced by the IPA mapping layer.
+
+Added a model-wide regression that enumerates every current `surface-only` row and checks source/surface/IPA/target syllable alignment, the exact runtime surface and IPA, target equality with the IPA-derived stored mapping, and absence of unresolved issues. This closes a test-coverage gap in the previous model-wide consistency suite, which explicitly excluded `surface-only` rows. Exact-head CI passed **1,073/1,073 Node tests**, Vite build and Python regression/data-integrity tests: [CI run](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39672160451).
+
+This verifies the implementation boundary and internal data consistency only. It does **not** independently validate the IPA forms or establish the optimality of Ukrainian target choices. The seven rows and their evidence statuses remain subject to the existing source audit.
