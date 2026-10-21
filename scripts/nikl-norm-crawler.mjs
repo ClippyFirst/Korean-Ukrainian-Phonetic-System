@@ -9,7 +9,7 @@ import { mkdir, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const DEFAULT_SOURCE_URL = "https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002";
+export const DEFAULT_SOURCE_URL = "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002";
 export const EXPECTED_ARTICLES = Object.freeze(Array.from({ length: 30 }, (_, index) => index + 1));
 export const USER_AGENT = "ClippyFirst-NIKLResearchBot/0.1 (+https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System)";
 const MAX_SOURCE_BYTES = 10 * 1024 * 1024;
@@ -281,7 +281,7 @@ export function buildManifest(parsed, sourceMetadata, { includeText = false } = 
   return {
     schemaVersion: 1,
     collector: { name: "nikl-norm-crawler", version: "0.1.0" },
-    standard: { id: "NIKL-SP", title: "국립국어원 표준 발음법", authority: "국립국어원", scope: "Articles 1–30 of 제2부 표준 발음법 only; adjacent parts are excluded.", canonicalUrl: DEFAULT_SOURCE_URL },
+    standard: { id: "NIKL-SP", title: "국립국어원 표준 발음법", authority: "국립국어원", scope: "Articles 1–30 of 제2부 표준 발음법 only; adjacent parts are excluded.", canonicalUrl: "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" },
     source: sourceMetadata,
     inventory: { ...parsed.validation, articleIds: parsed.articles.map((article) => article.articleId) },
     articles: parsed.articles.map((article) => ({
