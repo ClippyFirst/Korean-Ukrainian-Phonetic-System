@@ -219,3 +219,15 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
     }
     warnings.warn("PYTHON_G2PK_DIFFERENTIAL_REPORT=" + json.dumps(report, ensure_ascii=False), UserWarning)
     assert len(rows) == len(fixture["cases"]) == 18
+
+
+def test_python_ipa_inventory_matches_browser_surface_segments():
+    from korean_ukrainian.pipeline import tokenize_ipa, source_features_for_ipa
+    tokens = ("ɡ", "dʑ", "s͈", "ɕ͈", "tɕ͈", "tɕʰ", "k͈")
+    for token in tokens:
+        assert tokenize_ipa(token) == [token]
+        assert source_features_for_ipa(token), token
+    assert "".join(tokenize_ipa("s͈ɕ͈dʑɡ")) == "s͈ɕ͈dʑɡ"
+    assert source_features_for_ipa("ɡ")["voice"] == "1"
+    assert source_features_for_ipa("dʑ")["voice"] == "1"
+    assert source_features_for_ipa("ɕ͈")["palatalized"] == "1"
