@@ -45,8 +45,9 @@ def test_nikl_pronunciation_source_keeps_live_access_and_item_license_uncertaint
     rows = {row["source_id"]: row for row in load_source_register()}
     source = rows["SRC-NIKL-PRON"]
     assert source["url"] == "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
-    assert source["review_status"] == "blocked-live-source-access"
+    assert source["integration_status"] == "blocked-live-source-access"
     assert "page-level marking not yet verified" in source["license_status"]
+    assert "official full-text page opened" in source["review_status"]
     assert "HTTP 403" in source["limitations_or_next_action"]
     assert "manifest" in source["limitations_or_next_action"]
 
