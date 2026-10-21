@@ -1,8 +1,9 @@
 # Master execution plan and chat handoff
 
-**Updated:** 2026-10-20  
+> **Current-state precedence (2026-10-21):** This document retains dated historical snapshots for auditability. Do not execute the old PR #148/#154/#155/#156 integration instructions or use the historical baseline below as current state. The authoritative latest status, merged commit evidence, live HTTP smoke result, and remaining blockers are in the final dated section at the end of this file and the current acceptance-gate snapshot.
+**Updated:** 2026-10-21  
 **Working branch:** `audit/completion-plan-handoff-2026-10-20`  
-**Baseline inspected:** `main` at `8641dac4002f951d391682062ba134894e4198d7`  
+**Historical baseline:** `main` at `8641dac4002f951d391682062ba134894e4198d7`; this predates the 2026-10-21 continuation below.  
 **Status policy:** `TODO`, `IN_PROGRESS`, `BLOCKED`, `DONE_VERIFIED`, `DEFERRED`, `NOT_APPLICABLE`. Use `DONE_VERIFIED` only with a reproducible test or inspectable evidence.
 
 ## Mandatory start-of-session procedure
