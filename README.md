@@ -190,6 +190,10 @@ Neither layer claims official Ukrainian standardisation, exhaustive lexical atte
 The repository currently has **no root-level project-wide LICENSE file**. Do not infer a license for project-authored code or data from third-party notices. The vendored browser g2pK-derived code is attributed and its Apache-2.0 license is bundled in public/THIRD_PARTY_NOTICES.txt and public/LICENSES/Apache-2.0.txt. A project-wide license remains an owner decision.
 
 
+### Surface regression source adjudication (2026-10-21)
+
+The 18-case practical-port fixture separates the pinned JavaScript output from NIKL normative comparators. Eleven comparators are directly attested examples/Q&A; seven remain rule-derived candidates, and no case has independent IPA gold yet. See the [source-adjudication report](docs/audits/SURFACE-REGRESSION-SOURCE-ADJUDICATION-2026-10-21.md) and [metadata regression test](tests/normative-surface-evidence-fixture.test.mjs).
+
 ### Model-wide target consistency audit
 
 The lexical layer has a dedicated regression suite for Ukrainian target segmentation, non-duplication of fortisness, word-initial onset choices, and IPA/target consistency in high-risk forms.
