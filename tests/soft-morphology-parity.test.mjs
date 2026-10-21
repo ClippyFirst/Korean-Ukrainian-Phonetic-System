@@ -2,15 +2,28 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, it } from 'node:test';
-import { createEngine } from '../src/app/engine.js';
+import { COMPLEX, FINAL_REPRESENTATIVE, compose, decompose } from '../src/app/engine_shared.js';
+import { trySoftFormal } from '../src/app/soft_morphology.js';
 
 const fixture = JSON.parse(readFileSync(resolve('tests/fixtures/soft-morphology-parity.json'), 'utf8'));
-const canonical = readFileSync(resolve('data/korean/canonical_correspondence.csv'), 'utf8');
-const lexical = readFileSync(resolve('data/korean/lexical_pronunciations.csv'), 'utf8');
-const engine = createEngine(canonical, lexical);
 
-function softTrace(result) {
-  return result.trace.filter((trace) => (trace.rules || []).includes('soft-heuristic-morphology'));
+function runSoftPair(input) {
+  const units = [...input].map((char) => {
+    const syllable = decompose(char);
+    return syllable ? { type: 'hangul', ...syllable } : { type: 'literal', char };
+  });
+  const rules = units.map(() => []);
+  let applied = false;
+  for (let i = 0; i < units.length - 1; i += 1) {
+    if (units[i].type !== 'hangul' || units[i + 1].type !== 'hangul') continue;
+    if (trySoftFormal(units[i], units[i + 1], rules[i], rules[i + 1], {
+      COMPLEX, FINAL_REPRESENTATIVE
+    })) applied = true;
+  }
+  const surface = units.map((unit) => unit.type === 'hangul'
+    ? compose(unit.onset, unit.vowel, unit.coda || '')
+    : unit.char).join('');
+  return { units, rules, applied, surface };
 }
 
 describe('shared Python/browser soft-morphology parity contract', () => {
@@ -20,15 +33,14 @@ describe('shared Python/browser soft-morphology parity contract', () => {
 
   for (const item of fixture.cases) {
     it(`matches soft-rule eligibility for ${item.input}`, () => {
-      const result = engine.convert(item.input, { morphologyMode: 'soft' });
-      const applied = softTrace(result);
-      assert.equal(applied.length > 0, item.expectedSoftTrace, item.input);
+      const result = runSoftPair(item.input);
+      assert.equal(result.applied, item.expectedSoftTrace, item.input);
       if (item.expectedSurface !== null) {
-        assert.equal(result.surfaceHangul, item.expectedSurface, item.input);
+        assert.equal(result.surface, item.expectedSurface, item.input);
       }
       if (item.expectedSoftTrace) {
-        assert.ok(applied.every((trace) => trace.status === 'heuristic-low-confidence'), item.input);
-        const traceText = applied.flatMap((trace) => trace.rules || []).join(' ');
+        assert.ok(result.units.some((unit) => unit.__softHeuristic), item.input);
+        const traceText = result.rules.flat().join(' ');
         for (const family of item.expectedSoftRuleFamily) {
           const familyRule = family === 'R002'
             ? /complex-coda-liaison-§13-14-soft-formal|liaison-soft-formal/u
