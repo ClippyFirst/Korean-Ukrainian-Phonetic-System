@@ -14,7 +14,7 @@ const merge = (base, extra) => [
   ...extra.split(/\r?\n/u).filter((line) => line.trim() && !line.startsWith('input,'))
 ].join('\n');
 const lexical = merge(baseLexical, additions);
-const webEngine = createG2pWebAdapter(createEngine(canonical, lexical), lexical);
+const webEngine = createG2pWebAdapter(createEngine(canonical, lexical));
 
 const rows = corpus.cases.map((item) => {
   const result = webEngine.convert(item.input);
