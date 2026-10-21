@@ -214,3 +214,8 @@ The durable project plan, evidence registers, rule-coverage matrix, architecture
 - [Release acceptance gates](research/ACCEPTANCE-GATES.md)
 
 The initial Phase 0 reconstruction is substantially complete for the current mainline: current CI covers browser tests/build, Python 3.11/3.12/3.13, corpus artifacts and system verification. Remaining acceptance gaps and their evidence are tracked in the handoff, completion audit, and research/ACCEPTANCE-GATES.md.
+
+
+## Repository-local agent skills
+
+Specialized agent workflows for official NIKL scraping, article-by-article rule coverage, and evidence-gated pronunciation adjudication are documented in [docs/AGENT-SKILLS-NIKL.md](docs/AGENT-SKILLS-NIKL.md) and installed under `.agents/skills/`. These are workflow instructions; they do not claim that a live crawl or new linguistic validation has already run.
