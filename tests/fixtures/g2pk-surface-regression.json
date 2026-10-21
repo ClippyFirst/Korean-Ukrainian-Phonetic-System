@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "description": "Fixed Korean surface-form regression cases. This fixture is not yet an independent IPA gold set or a recorded Python g2pK differential run.",
+  "cases": [
+    {
+      "input": "넋이",
+      "expectedSurface": "넉씨",
+      "phenomenon": "complex-coda-liaison",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "넉씨",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "몫이",
+      "expectedSurface": "목씨",
+      "phenomenon": "complex-coda-liaison",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "목씨",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "값이",
+      "expectedSurface": "갑씨",
+      "phenomenon": "complex-coda-liaison",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "갑씨",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "값어치",
+      "expectedSurface": "가버치",
+      "phenomenon": "complex-coda-liaison",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "갑써치",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "National Institute of Korean Language: standard pronunciation [가버치], 표준 발음법 제15항 붙임; https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217",
+      "differentialStatus": "python-g2pk-diverges-from-nikl-normative-output",
+      "differentialNote": "NIKL explicitly gives the standard pronunciation [가버치]. Python g2pK 0.9.4 returns 갑써치 for this lexical item; retain this as a known engine divergence, not as a reason to change the browser expectation.",
+      "sourceUrl": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217"
+    },
+    {
+      "input": "숲이",
+      "expectedSurface": "수피",
+      "phenomenon": "simple-coda-liaison",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "수피",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "같이",
+      "expectedSurface": "가치",
+      "phenomenon": "palatalization",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "가치",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "굳이",
+      "expectedSurface": "구지",
+      "phenomenon": "palatalization",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "구지",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "닭이",
+      "expectedSurface": "달기",
+      "phenomenon": "complex-coda-liaison",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "달기",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "밟는",
+      "expectedSurface": "밤는",
+      "phenomenon": "complex-coda-nasalization",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "밤는",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "넓죽하다",
+      "expectedSurface": "넙쭈카다",
+      "phenomenon": "complex-coda-fortition",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "넙쭈카다",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "읽고",
+      "expectedSurface": "일꼬",
+      "phenomenon": "rieul-giyeok-fortition",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "일꼬",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "읽는",
+      "expectedSurface": "잉는",
+      "phenomenon": "rieul-giyeok-nasalization",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "잉는",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "국립",
+      "expectedSurface": "궁닙",
+      "phenomenon": "nasalization-and-n-insertion",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "궁닙",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "협력",
+      "expectedSurface": "혐녁",
+      "phenomenon": "nasal-liquid-assimilation",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "혐녁",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "독립문",
+      "expectedSurface": "동님문",
+      "phenomenon": "nasalization-and-n-insertion",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "동님문",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "칼날",
+      "expectedSurface": "칼랄",
+      "phenomenon": "liquid-assimilation",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "칼랄",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "물난리",
+      "expectedSurface": "물랄리",
+      "phenomenon": "liquid-assimilation",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "물랄리",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    },
+    {
+      "input": "서울역",
+      "expectedSurface": "서울력",
+      "phenomenon": "word-boundary-liquid-assimilation",
+      "expectedIpa": null,
+      "pythonG2pkSurface": "서울력",
+      "ipaGoldStatus": "not_independently_adjudicated",
+      "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
+      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "differentialStatus": "matched-existing-browser-expectation"
+    }
+  ]
+}
