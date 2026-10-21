@@ -21,6 +21,7 @@ test('IPA trace exposes exact longest-match token to Ukrainian grapheme mappings
       { ipa: 'ɕ', ukrainian: 'ш' },
       { ipa: 'i', ukrainian: 'і' }
     ],
+    features: [],
     unknown: ''
   });
 });
@@ -41,6 +42,7 @@ test('IPA target output is composed from the same tokens displayed in the trace'
 test('ASCII Latin g is not accepted as the IPA symbol ɡ', () => {
   assert.deepEqual(traceIpaMapping('ɡ'), {
     tokens: [{ ipa: 'ɡ', ukrainian: 'ґ' }],
+    features: [],
     unknown: ''
   });
   assert.deepEqual(traceIpaMapping('g'), {
