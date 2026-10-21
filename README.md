@@ -61,7 +61,7 @@ The public GitHub Pages service now uses a browser-only, vendored subset adapted
 
 `Hangul input → JS G2P surface spelling → project IPA conversion → IPA-to-Ukrainian mapping`.
 
-The browser preserves Latin text, digits, punctuation, and whitespace, and applies exact project lexical surface/IPA controls after the generic G2P stage. The separate **Research mode** continues to use the project's native evidence-gated engine so users can compare its stricter, unresolved-when-uncertain behavior with the broader practical G2P output.
+The browser preserves Latin text, digits, punctuation, and whitespace. The practical mode passes Korean-bearing spans through the pinned JavaScript port with `descriptive: false`, `groupVowels: false`, and `toSyl: true`; it does not apply project lexical surface or IPA overrides after G2P. Consequently, upstream port behavior—including known divergences from NIKL or Python g2pK—is preserved and tested as such. The separate **Research mode** continues to use the project's native evidence-gated engine and its research lexicon; those overrides do not leak into practical mode.
 
 **Important limitation:** the JavaScript port implements rule-based G2P and idiom handling, but does not reproduce the original Python g2pK's MeCab-based morphological analysis. It is therefore a browser-compatible reference engine, not a claim of exact parity with Python g2pK on morphology-dependent homographs. Those cases must be covered by source-backed lexical controls and adversarial regression tests.
 
