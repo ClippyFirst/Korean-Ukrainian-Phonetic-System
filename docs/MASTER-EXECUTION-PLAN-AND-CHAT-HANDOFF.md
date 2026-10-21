@@ -329,3 +329,15 @@ This evidence is exact-head CI, not local execution; this environment still has 
 - **Live browser smoke:** PASS on code/deployment commit `dae8ebdabb396d1be51afbe891d80c9c48a29f1c`. The deployed page accepted the repository's 1,443-character adversarial Korean fixture and produced 2,782 Ukrainian output characters and 3,731 IPA characters; status was `g2pK JS · Контекстну вимову застосовано`, with no page errors. **Still not verified:** the exact earlier user-pasted passage if it differs from the repository fixture, responsive/mobile/assistive-technology behavior, independent IPA gold, and independent Ukrainian target-policy quality. HTTP/browser smoke is not linguistic-accuracy evidence.
 - **Owner/specialist blockers:** root project-wide LICENSE and CITATION.cff identity/attribution decision; qualified independent IPA and Ukrainian target review; seven rule-derived surface cases remain unadjudicated. Do not fabricate these to make the release gate green.
 - **Final disposition:** technically deployed, CI-tested **research preview**, not a scientifically validated or release-ready standard.
+
+
+## Final exact-head rerun after live-browser smoke integration — 2026-10-21
+
+- **Code/deployment commit:** `dae8ebdabb396d1be51afbe891d80c9c48a29f1c` (includes the live headless-browser workflow and smoke script).
+- **Mainline docs/evidence commit tested after the code change:** `a8996112a01ec43f90b7c297b975906e4b44ab83`; code was unchanged from the verified deployment commit.
+- **Exact-head mainline tests/build/Python 3.11–3.13:** PASS [39604039126](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039126).
+- **Exact-head system verification:** PASS [39604039157](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039157).
+- **Exact-head corpus artifacts:** PASS [39604039164](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039164).
+- **Exact-head Pages deployment, HTTP smoke and headless browser smoke:** PASS [39604039154](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039154). The live page accepted the repository's 1,443-character adversarial Korean fixture and produced 2,782 Ukrainian characters and 3,731 IPA characters; the mode status was `g2pK JS · Контекстну вимову застосовано`; no page errors occurred.
+- The exact earlier passage pasted by the user was not present in the current conversation context, so this is a representative repository fixture test, not a claim to have reproduced the user's exact text.
+- Scientific/owner blockers remain: independent IPA gold, Ukrainian target review, seven rule-derived surface cases, root project license/citation decisions. Release classification remains **technically deployed research preview, not scientifically validated/release-ready**.
