@@ -77,3 +77,11 @@ The lexical inventory contains seven rows marked `surface-only`: `신라`, `밟�
 Added a model-wide regression that enumerates every current `surface-only` row and checks source/surface/IPA/target syllable alignment, the exact runtime surface and IPA, target equality with the IPA-derived stored mapping, and absence of unresolved issues. This closes a test-coverage gap in the previous model-wide consistency suite, which explicitly excluded `surface-only` rows. Exact-head CI passed **1,073/1,073 Node tests**, Vite build and Python regression/data-integrity tests: [CI run](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39672160451).
 
 This verifies the implementation boundary and internal data consistency only. It does **not** independently validate the IPA forms or establish the optimality of Ukrainian target choices. The seven rows and their evidence statuses remain subject to the existing source audit.
+
+
+## IPA feature trace: vowel-length handling — 2026-10-22
+
+- The IPA-to-Ukrainian adapter intentionally does not add a length mark to Ukrainian practical spelling, but the previous trace implementation removed `ː` before tokenization and did not expose that target-layer decision in the token trace.
+- Updated `src/app/engine_ipa.js` so `traceIpaMapping` retains a structured feature record for every `ː` marker (`handling=omitted-from-ukrainian-target`, source offset, and an explicit Ukrainian explanation). The original IPA string remains unchanged and visible; Ukrainian output remains unchanged. The browser trace now renders the explanation alongside token mappings.
+- Added regression tests proving the length marker is accounted for, target output is unchanged, and the UI displays the feature handling. The test uses a clearly labelled generic IPA sentinel; it does not add or claim any Korean IPA gold.
+- Acceptance: verify the PR-head Node suite/build and Python regression suite. This is a transparency/traceability improvement, not a linguistic validation of Korean vowel length or of the target mapping. The independent 0/20 IPA-gold and Ukrainian-target review blockers remain unchanged.
