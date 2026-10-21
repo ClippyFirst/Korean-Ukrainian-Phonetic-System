@@ -320,7 +320,7 @@ This evidence is exact-head CI, not local execution; this environment still has 
 
 ## Final mainline verification after one-pass follow-up — 2026-10-21
 
-- **Final main commit:** `778070fd81afc21e170ded6d8b5c0b8af8bab19c`.
+- **Code/deployment commit verified by live HTTP smoke:** `778070fd81afc21e170ded6d8b5c0b8af8bab19c`. This PR is a documentation-only follow-up on top of that code/deployment commit.
 - **PR #169 merged:** `a2f534aba610bb3d5b17e7cbae1815972259a178`; cross-runtime soft-morphology parity guard/tests, source-evidence gates, populated coverage matrix, stale manifest cleanup, and user-facing practical-mode warning are on main.
 - **PR #170 merged:** `778070fd81afc21e170ded6d8b5c0b8af8bab19c`; the existing Pages deployment workflow now performs a live HTTP smoke check after deployment.
 - **Final mainline CI passed:** tests/build/Python 3.11–3.13 [39602020543](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020543); system verification [39602020407](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020407); master table/corpus artifacts [39602020437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020437); Pages deploy and post-deploy HTTP smoke [39602020436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020436).
