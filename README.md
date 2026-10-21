@@ -214,3 +214,12 @@ The durable project plan, evidence registers, rule-coverage matrix, architecture
 - [Release acceptance gates](research/ACCEPTANCE-GATES.md)
 
 The initial Phase 0 reconstruction is substantially complete for the current mainline: current CI covers browser tests/build, Python 3.11/3.12/3.13, corpus artifacts and system verification. Remaining acceptance gaps and their evidence are tracked in the handoff, completion audit, and research/ACCEPTANCE-GATES.md.
+
+
+## Official NIKL Standard Pronunciation Rules collector
+
+The metadata-first collector for the official Korean-language norms portal is implemented in [scripts/nikl-norm-crawler.mjs](scripts/nikl-norm-crawler.mjs). It scopes extraction to the 30 articles in 제2부 표준 발음법, checks robots.txt, records source/HTTP and per-article hashes, and fails closed on incomplete inventories. By default it stores metadata only; source terms remain explicitly unassessed and article text is not retained. See the [collector guide](docs/NIKL-NORM-CRAWLER.md) and run `npm run crawl:nikl` locally when network/policy checks are available. The live crawl itself has not yet been verified in this PR.
+
+## Repository-local agent skills
+
+Specialized agent workflows for official NIKL scraping, article-by-article rule coverage, and evidence-gated pronunciation adjudication are documented in [docs/AGENT-SKILLS-NIKL.md](docs/AGENT-SKILLS-NIKL.md) and installed under `.agents/skills/`. These are workflow instructions; they do not claim that a live crawl or new linguistic validation has already run.

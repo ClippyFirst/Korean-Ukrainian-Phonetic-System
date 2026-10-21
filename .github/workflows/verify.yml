@@ -23,6 +23,42 @@ jobs:
       - name: Run Python tests
         run: python -m pytest -q
 
+  nikl-source-crawl:
+    name: Official NIKL source inventory (metadata-only)
+    if: startsWith(github.head_ref, 'research/nikl-') || startsWith(github.ref_name, 'research/nikl-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare report directory
+        run: mkdir -p reports
+      - name: Crawl official article inventory
+        id: live-crawl
+        continue-on-error: true
+        run: set -o pipefail; npm run crawl:nikl -- --output reports/nikl/ci-manifest.json 2>&1 | tee reports/nikl-live-crawl.log
+      - name: Upload crawl evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nikl-source-crawl-${{ github.run_id }}
+          path: |
+            reports/nikl-live-crawl.log
+            reports/nikl/ci-manifest.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Classify source-access blocks separately from collector defects
+        if: steps.live-crawl.outcome != 'success'
+        run: |
+          if grep -q '^NIKL crawl BLOCKED:' reports/nikl-live-crawl.log; then
+            echo "::warning::Official NIKL access is blocked in this runner. The failure is recorded as BLOCKED; no bypass will be attempted."
+          else
+            echo "Collector or inventory validation failed. Inspect the uploaded log; this is not an accepted crawl."
+            exit 1
+          fi
+
   web-tests:
     name: Browser regression tests and build
     runs-on: ubuntu-latest
