@@ -250,3 +250,10 @@ Code/deployment commit: `dae8ebdabb396d1be51afbe891d80c9c48a29f1c`. Mainline cod
 - Live source attempt from GitHub Actions: robots.txt returned 404; official article request returned HTTP 403. The workflow records this as BLOCKED and does not bypass the denial. No live inventory was generated. Source reuse terms remain unassessed.
 - Coverage status is therefore PARTIAL/BLOCKED, not DONE_VERIFIED for the live official inventory. Next acceptance criteria: run from an environment where access is permitted; verify all 30 article headings and article structure; reconcile the official inventory against existing rule IDs, implementations, IPA path, and regressions; only then update coverage status.
 - No production engine or public UI behavior was changed. The research layer remains a technically deployed prototype with independent IPA and Ukrainian target validation still outstanding.
+
+
+## 2026-10-21 follow-up — NIKL surface evidence refresh
+
+A fresh official-source review found exact NIKL Online Q&A attestations for six previously rule-derived cases: `넋이[넉씨]`, `몫이[목씨]`, `값이[갑씨]`, `국립[궁닙]`, `협력[혐녁]`, and `독립문[동님문]`. Exact question URLs, dates, scope, and integration state are registered individually in `research/SOURCE-REGISTER.csv`; the fixture and `docs/audits/SURFACE-REGRESSION-SOURCE-ADJUDICATION-2026-10-21.md` now point to those attestations.
+
+The surface fixture now has 17/18 directly attested Korean surface comparators; `숲이[수피]` remains rule-derived because an exact lexical attestation was not located in this pass. This is a provenance upgrade only: pinned JS-port `expectedSurface` values remain unchanged, no practical-mode behavior was rewritten, and independently adjudicated IPA gold remains 0/18. Korean surface attestations do not validate IPA or Ukrainian target rendering.
