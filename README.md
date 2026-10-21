@@ -179,15 +179,15 @@ Missing evidence is not converted into a fabricated one-to-one correspondence.
 
 ## Status
 
-**Research layer:** computationally research-ready within its documented evidence boundary.
+**Research layer:** a tested research prototype with source-backed rule coverage, but incomplete independent IPA and target-language validation.
 
-**Web layer:** public-service implementation with a deliberately documented runtime boundary.
+**Web layer:** a technically deployed research preview. Practical mode reproduces the pinned JavaScript g2pK port; it does not claim that every port result is normatively correct. The public UI warns users about known upstream divergences.
 
 Neither layer claims official Ukrainian standardisation, exhaustive lexical attestation, acoustic narrow-IPA validation or independent expert adjudication without the corresponding evidence.
 
 ## License / attribution
 
-See repository metadata and source files for the current licensing and attribution terms.
+The repository currently has **no root-level project-wide LICENSE file**. Do not infer a license for project-authored code or data from third-party notices. The vendored browser g2pK-derived code is attributed and its Apache-2.0 license is bundled in public/THIRD_PARTY_NOTICES.txt and public/LICENSES/Apache-2.0.txt. A project-wide license remains an owner decision.
 
 
 ### Model-wide target consistency audit
@@ -209,4 +209,4 @@ The durable project plan, evidence registers, rule-coverage matrix, architecture
 - [Architecture decision log](research/DECISION-LOG.md)
 - [Release acceptance gates](research/ACCEPTANCE-GATES.md)
 
-These documents establish the process; they do not claim the full audit or implementation is complete. The current first task is Phase 0: reconstruct the repository, branches, baseline tests, runtime paths, and deployment state with evidence.
+The initial Phase 0 reconstruction is substantially complete for the current mainline: current CI covers browser tests/build, Python 3.11/3.12/3.13, corpus artifacts and system verification. Remaining acceptance gaps and their evidence are tracked in the handoff, completion audit, and research/ACCEPTANCE-GATES.md.
