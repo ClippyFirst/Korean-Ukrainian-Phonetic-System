@@ -69,8 +69,8 @@ These checkboxes remain open until evidence is recorded.
 - The rule coverage matrix is populated for R001–R016 plus NIKL article inventory and IPA→Ukrainian mapping.
 - The 18-case surface fixture now separates JS-port output from normative comparators: 11 directly attested NIKL cases/Q&A and 7 rule-derived candidates. This does not create an IPA gold set.
 
-### IN_PROGRESS / CI gate
-Branch `fix/soft-morphology-parity-and-release-gates-2026-10-21` adds a Python soft-morphology fail-closed fix, shared Python/browser parity fixture/tests, a normative-source metadata gate, a visible practical-mode warning, and refreshed source/coverage/acceptance docs. Do not merge until exact-head CI passes. No local tests are claimed.
+### DONE_VERIFIED / exact-head CI
+Branch `fix/soft-morphology-parity-and-release-gates-2026-10-21`, head `14bca46c7431bc8ed273f0cb1d6f693f17838abc`, passed tests/build/Python 3.11–3.13 [39601258671](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258671), browser G2P integration [39601258672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258672), system verification [39601258670](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258670), and corpus artifacts [39601258668](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258668). These are remote CI results; no local tests are claimed.
 
 ### BLOCKED / evidence-limited
 - Independent IPA gold and Ukrainian target-policy review; exact phonetic judgments require qualified independent review.
