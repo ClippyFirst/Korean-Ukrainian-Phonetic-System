@@ -17,7 +17,7 @@ function fixtureHtml(options = {}) {
   return '<!doctype html><html><body><h2>제1부 표준어 사정 원칙</h2><h4>제1항 다른 규정</h4>' +
     '<p>이 항목은 수집 대상이 아니다.</p><h2>제2부 표준 발음법</h2><h3>제1장 총칙</h3>' + articles +
     '<h2>제3부 외래어 표기법</h2><h4>제1항 제외되어야 하는 항목</h4><p>다른 규정.</p>' +
-    '<script>제99항 가짜 기사</script></body></html>';
+    '<script>if (a < b) { document.write("<h2>제3부 fake</h2>"); } 제99항 가짜 기사</script></body></html>';
 }
 
 test("extracts exactly the 30 articles from the Standard Pronunciation Rules section", () => {
