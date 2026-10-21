@@ -24,9 +24,9 @@ test('surface fixture separates JS-port regression values from normative evidenc
 
 test('official rule citations use the canonical desktop full-text URL', () => {
   const canonical = 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002';
-  const ruleDerived = fixture.cases.filter((item) => item.normativeEvidenceStatus === 'derived-from-NIKL-rule' || item.normativeEvidenceStatus === 'direct-NIKL-example');
-  assert.ok(ruleDerived.length > 0);
-  for (const item of ruleDerived) {
+  const ruleCited = fixture.cases.filter((item) => item.normativeSourceUrl.includes('/kornorms/'));
+  assert.ok(ruleCited.length > 0);
+  for (const item of ruleCited) {
     assert.equal(item.normativeSourceUrl, canonical, item.input + ': stale or non-canonical NIKL rule citation');
   }
   assert.ok(!JSON.stringify(fixture).includes('/kornorms/m/m_regltn.do'), 'legacy mobile URL must not remain in the surface fixture');
