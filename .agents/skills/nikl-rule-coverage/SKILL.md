@@ -72,6 +72,30 @@ Keep official example tests separate from generated/adversarial examples. Label 
 
 Prioritize coverage of 받침/겹받침, neutralization, liaison, nasalization, liquid assimilation, fortition, palatalization, ㅎ aspiration/deletion, ㄴ insertion, 사이시옷, phrase boundaries, and morphology-dependent alternations according to the exact cited article. These categories are a checklist, not permission to overgeneralize them.
 
+## Test assertion quality and examples
+
+A test is useful only when it would fail for the bug it claims to prevent. For each coverage reference, inspect the assertion body and verify that:
+- the expected article/rule ID is explicit or unambiguously mapped;
+- the Korean input is the intended form and is not silently pre-normalized into a different case;
+- the assertion checks the output layer relevant to the claim (surface pronunciation/IPA versus Ukrainian adaptation);
+- the test does not merely check that output is non-empty or that a rule label appears in a trace;
+- negative controls prove the rule does not fire outside its environment;
+- unresolved cases assert the typed unresolved status/reason rather than accepting any output;
+- fixtures do not label generated candidates as verbatim official examples.
+
+When one input can have multiple parses, tests should specify the contextual evidence provided to the engine and should include a test where that evidence is absent. Avoid hard-coding a single lexical parse when the source does not establish it.
+
+### Rule-to-test traceability pattern
+
+Use the existing test and fixture conventions, but ensure each test case can answer:
+- Which official article supports this expectation?
+- Is the expectation directly quoted, dictionary-attested, or rule-derived?
+- Which transformation stages are expected to run, and in what order?
+- What nearby input would demonstrate that the rule's scope is limited?
+- What does the engine return if the evidence is insufficient?
+
+Do not impose a universal minimum number of cases per article if that would encourage fabricated examples. Coverage requirements should scale with the rule's stated conditions, alternatives, exceptions, and known interactions.
+
 ## IPA-first architecture gate
 
 Required path:
