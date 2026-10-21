@@ -64,7 +64,7 @@ STATUS_VALUES = {
     "draft", "example", "verified", "validated", "deprecated",
     "tbd", "unknown", "model-selected", "structural-null",
     "canonical_isolated_syllable", "contextual", "generated_inventory",
-    "established", "conditional",
+    "established", "conditional", "provisional", "surface-only",
 }
 CONFIDENCE_VALUES = {"low", "medium", "high", "unknown", ""}
 
@@ -845,6 +845,86 @@ def validate_canonical_coverage(
     return results
 
 
+def adapt_lexical_sequences(
+    rows: Sequence[Mapping[str, str]],
+    source_rows: Sequence[Mapping[str, str]],
+) -> list[dict[str, str]]:
+    """Adapt sourced lexical pronunciation rows into whole-word sequence records.
+
+    This preserves the source form, surface IPA, target status, and exact source URL.
+    It does not infer segment-level environments, rule IDs, or established Ukrainian
+    orthography that are not represented in the lexical source row.
+    """
+    source_id_by_url = {
+        clean(source.get("url")): clean(source.get("source_id"))
+        for source in source_rows
+        if clean(source.get("url")) and clean(source.get("source_id"))
+    }
+    result: list[dict[str, str]] = []
+    for index, row in enumerate(rows, start=1):
+        input_form = clean(row.get("input"))
+        surface = clean(row.get("surface_hangul"))
+        ipa = clean(row.get("ipa_syllables"))
+        target = clean(row.get("target_syllables"))
+        source_url = clean(row.get("source_url"))
+        missing = [
+            field for field, value in (
+                ("input", input_form),
+                ("surface_hangul", surface),
+                ("ipa_syllables", ipa),
+                ("target_syllables", target),
+                ("source_url", source_url),
+            ) if not value
+        ]
+        if missing:
+            raise ValueError(
+                f"lexical sequence source row {index} is missing required evidence fields: "
+                + ", ".join(missing)
+            )
+
+        digest = hashlib.sha256(f"{input_form}\\0{source_url}".encode("utf-8")).hexdigest()[:12].upper()
+        notes = [
+            f"surface_hangul={surface}",
+            f"source_url={source_url}",
+            f"lexical_target_status={clean(row.get('target_status')) or 'unknown'}",
+        ]
+        for key in (
+            "rule_notes",
+            "alternate_surface_hangul",
+            "alternate_target_syllables",
+            "alternate_ipa_syllables",
+            "variant_note",
+            "input_kind",
+        ):
+            value = clean(row.get(key))
+            if value:
+                notes.append(f"{key}={value}")
+
+        target_status = clean(row.get("target_status"))
+        status = target_status if target_status in STATUS_VALUES else "contextual"
+        result.append({
+            "sequence_id": f"LEX-{digest}",
+            "word_or_phrase": input_form,
+            "previous_syllable": "",
+            "current_syllable": "",
+            "next_syllable": "",
+            "current_onset": "",
+            "current_nucleus": "",
+            "current_coda": "",
+            "environment": "sourced lexical surface pronunciation; whole-word record",
+            "phonological_input": input_form,
+            "applied_rule_ids": "",
+            "surface_ipa": ipa,
+            "ukrainian_phonetic_target": target,
+            "ukrainian_graphemic_target": "",
+            "source_ids": source_id_by_url.get(source_url, ""),
+            "status": status,
+            "confidence": clean(row.get("confidence")) or "unknown",
+            "notes": "; ".join(notes),
+        })
+    return result
+
+
 def load_optional_context(
     data_dir: Path,
 ) -> tuple[
@@ -865,6 +945,15 @@ def load_optional_context(
             tables[name], _ = read_csv(path)
         else:
             tables[name] = []
+
+    # Prefer a dedicated sequence table when supplied. Otherwise adapt the
+    # repository's existing source-backed lexical pronunciation records. Exact
+    # source URLs are retained in notes; no missing IPA/target values are guessed.
+    if not tables["sequences"]:
+        lexical_path = data_dir / "lexical_pronunciations.csv"
+        if lexical_path.exists():
+            lexical_rows, _ = read_csv(lexical_path)
+            tables["sequences"] = adapt_lexical_sequences(lexical_rows, tables["sources"])
 
     return (
         tables["sequences"],
@@ -976,7 +1065,7 @@ def build_readme(
         "  1. Graphemes/Jamo — inventory and correspondence metadata.",
         "  2. Syllables — exhaustive 19 × 21 × 28 = 11,172 modern "
         "precomposed Hangul blocks.",
-        "  3. Sequences — contextual word/phrase data supplied separately.",
+        "  3. Sequences — dedicated sequences.csv when supplied; otherwise source-backed lexical pronunciation records.",
         "  4. Rules — contextual phonological process registry supplied separately.",
         "  5. Sources — provenance registry.",
         "",
@@ -985,7 +1074,7 @@ def build_readme(
         "not a lexical dictionary.",
         "  Generated isolated-syllable IPA/UA values are a presentation/model "
         "projection and do not replace contextual phonology.",
-        "  Missing contextual evidence is left empty rather than fabricated.",
+        "  Missing contextual evidence is left empty rather than fabricated. Adapted lexical sequence rows retain exact source URLs and do not infer segment-level environments.",
         "  No separate established-Ukrainian-norm layer is generated.",
         "",
         f"Validation: FAIL={failed}; WARN={warnings}",
@@ -1139,6 +1228,13 @@ def main() -> int:
 
     sequence_rows, rule_rows, source_rows, _ = load_optional_context(data_dir)
     sequences = make_empty_or_passthrough(sequence_rows, SEQUENCE_FIELDS)
+    sequence_source = (
+        "data/korean/sequences.csv"
+        if (data_dir / "sequences.csv").exists() and sequence_rows
+        else "data/korean/lexical_pronunciations.csv (sourced lexical rows; exact URLs retained)"
+        if (data_dir / "lexical_pronunciations.csv").exists() and sequence_rows
+        else "no sequence source supplied"
+    )
     rules = adapt_rules(rule_rows)
     sources = adapt_sources(source_rows)
 
@@ -1168,7 +1264,7 @@ def main() -> int:
         "sequences",
         sequence_path,
         write_csv(sequence_path, SEQUENCE_FIELDS, sequences),
-        "data/korean/sequences.csv (if supplied)",
+        sequence_source,
     ))
     generated.append((
         "rules",
@@ -1252,6 +1348,7 @@ def main() -> int:
         validation.append(validate_unique(
             sequences, "sequence_id", "SEQUENCE-002", "sequence IDs"
         ))
+        validation.extend(validate_status_confidence(sequences, "SEQUENCE"))
     else:
         validation.append(ValidationResult(
             "SEQUENCE-000",
