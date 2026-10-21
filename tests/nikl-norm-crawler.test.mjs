@@ -165,3 +165,18 @@ test("local HTML import records its provenance without pretending an HTTP or rob
     await rm(directory, { recursive: true, force: true });
   }
 });
+
+
+test("all NIKL repository skills point to the canonical desktop rules page", async () => {
+  const canonical = "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002";
+  const skillPaths = [
+    "../.agents/skills/nikl-norm-crawler/SKILL.md",
+    "../.agents/skills/nikl-rule-coverage/SKILL.md",
+    "../.agents/skills/nikl-evidence-audit/SKILL.md",
+  ];
+  for (const path of skillPaths) {
+    const content = await readFile(new URL(path, import.meta.url), "utf8");
+    assert.ok(content.includes(canonical), path + ": missing canonical official source URL");
+    assert.ok(!content.includes("/kornorms/m/m_regltn.do"), path + ": stale mobile source URL remains");
+  }
+});
