@@ -9,13 +9,14 @@ ROOT = Path(__file__).parents[1]
 def _valid_manifest():
     url = "https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002"
     article_ids = [f"NIKL-SP-{number:02d}" for number in range(1, 31)]
+    redirected_url = "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002"
     articles = [
         {
             "articleNumber": number,
             "articleId": article_ids[number - 1],
             "title": f"제{number}항 표준 발음법 fixture",
             "anchorId": None,
-            "sourceUrl": url,
+            "sourceUrl": redirected_url,
             "textSha256": "a" * 64,
             "normalizedCharCount": 20,
             "extractionStatus": "parsed",
@@ -34,7 +35,7 @@ def _valid_manifest():
         },
         "source": {
             "requestedUrl": url,
-            "finalUrl": url,
+            "finalUrl": redirected_url,
             "retrievedAt": "2026-10-21T19:00:00.000Z",
             "httpStatus": 200,
             "contentType": "text/html; charset=utf-8",
