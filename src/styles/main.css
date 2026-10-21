@@ -131,11 +131,16 @@ button { color: inherit; }
 .issue-state { margin-top:12px; padding:13px 15px; border:1px solid #e8c8b4; background:#fff5ed; color:var(--warning); font-size:.87rem; }
 .issue-state p { margin:0; }
 .trace-panel,.variant-panel { margin-top:28px; }
-.trace-columns,.trace-row { display:grid; grid-template-columns:1.1fr 1.1fr 1.6fr .9fr; gap:10px; }
+.trace-columns,.trace-row { display:grid; grid-template-columns:.75fr .8fr .85fr 1.25fr .85fr 1.5fr .75fr; gap:10px; }
+.variant-row { grid-template-columns:1.1fr 1.1fr 1.6fr .9fr; }
 .trace-columns { margin-bottom:8px; padding:0 10px; color:var(--muted); font-size:.63rem; font-weight:850; letter-spacing:.07em; text-transform:uppercase; }
 .trace-list { display:grid; gap:7px; }
 .trace-row { align-items:start; padding:12px 10px; border:1px solid var(--line); background:#fff; font-size:.8rem; overflow-wrap:anywhere; }
-.trace-source,.trace-output,.trace-ipa,.trace-status { min-width:0; }
+.trace-source,.trace-surface,.trace-output,.trace-ipa,.trace-mapping,.trace-rules,.trace-status { min-width:0; }
+.trace-mapping { color:var(--blue); font-size:.75rem; line-height:1.45; }
+.trace-surface { font-family:"Noto Sans KR","Noto Sans",sans-serif; color:var(--blue); }
+.trace-rules { color:var(--muted); font-size:.75rem; line-height:1.45; }
+.trace-explainer { margin:0 0 12px; max-width:78ch; color:var(--muted); font-size:.83rem; line-height:1.55; }
 .trace-source { font-family:"Noto Sans KR","Noto Sans",sans-serif; }
 .trace-status { color:var(--muted); font-size:.73rem; }
 .trace-status.heuristic-low-confidence { color:var(--warning); font-weight:800; }
@@ -230,7 +235,7 @@ button { color: inherit; }
   .results-note { text-align:left; }
   .trace-columns { display:none; }
   .trace-row { grid-template-columns:1fr 1fr; gap:8px; }
-  .trace-row>:nth-child(3),.trace-row>:nth-child(4) { padding-top:5px; border-top:1px solid var(--line); }
+  .trace-row>:nth-child(n+3) { padding-top:5px; border-top:1px solid var(--line); }
   .system-intro { grid-template-columns:1fr; gap:10px; padding:17px; }
   .status-chip { grid-column:auto; }
   .doc-section { grid-template-columns:36px minmax(0,1fr); gap:10px; padding:24px 0; }
