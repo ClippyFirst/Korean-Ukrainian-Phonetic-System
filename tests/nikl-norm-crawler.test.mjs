@@ -53,6 +53,7 @@ test("rejects non-HTTPS, non-official and out-of-scope URLs", () => {
   assert.throws(() => assertAllowedSourceUrl("https://example.com/kornorms/"), /non-official host/);
   assert.throws(() => assertAllowedSourceUrl("https://korean.go.kr/front/onlineQna/"), /Only the official NIKL/);
   assert.equal(new URL(assertAllowedSourceUrl(DEFAULT_SOURCE_URL)).hostname, "korean.go.kr");
+  assert.equal(new URL(assertAllowedSourceUrl("https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002")).hostname, "www.korean.go.kr");
 });
 
 test("robots parser respects disallow and longest matching allow rule", () => {
