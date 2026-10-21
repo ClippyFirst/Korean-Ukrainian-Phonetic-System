@@ -80,4 +80,4 @@ Branch `fix/soft-morphology-parity-and-release-gates-2026-10-21`, head `14bca46c
 - Full branch-level archaeology of every old branch is out of scope for this continuation; no open PR was left unreviewed, and no historical branch was deleted.
 
 ### Release disposition
-**Technically deployed research preview; not a scientifically validated or release-ready transcription standard.** Next genuine acceptance work is independent IPA gold/target review and the live UI smoke test, after the current branch CI and deployment have completed.
+**Technically deployed research preview; not a scientifically validated or release-ready transcription standard.** Next genuine acceptance work is independent IPA gold/target review and an interactive live-site test with the full long passage. The post-deploy HTTP smoke already passed on main commit 778070fd81afc21e170ded6d8b5c0b8af8bab19c; it checks availability/content but does not simulate typing or assess pronunciation.

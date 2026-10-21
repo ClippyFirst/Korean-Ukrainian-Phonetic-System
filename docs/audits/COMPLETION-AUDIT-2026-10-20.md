@@ -218,3 +218,15 @@ The CI exposed and the fixture now records the strict port's outputs instead of 
 - **Product/docs:** public UI warns that practical mode reproduces the JS port and may differ from NIKL; README status no longer calls the research layer research-ready; stale MANIFEST upload instructions are marked historical; source register and acceptance gates reflect actual current evidence; root project-wide license is explicitly left to the owner.
 - **DONE_VERIFIED — exact-head CI:** branch head `14bca46c7431bc8ed273f0cb1d6f693f17838abc` passed tests/build/Python 3.11–3.13 [39601258671](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258671), browser G2P [39601258672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258672), system verification [39601258670](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258670), and corpus artifacts [39601258668](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258668). Local tests are not claimed because no local checkout/runtime was available.
 - **Remaining blockers:** independent IPA gold; independent Ukrainian target review/reader evaluation; direct live-site interactive smoke test; owner decision on root LICENSE/CITATION.cff; adjudication of seven rule-derived surface cases. Final classification remains **technically deployed research preview, not scientifically validated or release-ready**.
+
+
+## Final post-deploy verification — 2026-10-21
+
+- Code/deployment commit verified by live HTTP smoke: `778070fd81afc21e170ded6d8b5c0b8af8bab19c`; this PR only updates the final handoff/audit evidence.
+- PR #169 and #170 merged; no open PRs remained at the last status check.
+- Tests/build/Python 3.11–3.13 passed: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020543
+- System verification passed: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020407
+- Corpus artifacts passed: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020437
+- Pages deployment and live HTTP smoke passed: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020436. The runner fetched index.html, system.html, the practical-mode warning/control, and the generated JavaScript asset.
+- The HTTP smoke does not test interactive typing of the exact long passage or pronunciation accuracy. That interactive test remains unverified in this session.
+- Still release-blocking: independent IPA gold, independent Ukrainian target validation, seven rule-derived surface comparators, and owner decisions for the root project license/citation metadata. Final status: technically deployed research preview, not scientifically validated or release-ready.
