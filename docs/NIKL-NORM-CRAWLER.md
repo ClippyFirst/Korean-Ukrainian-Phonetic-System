@@ -4,7 +4,7 @@ This collector is a reproducible source-inventory tool, not a pronunciation engi
 
 ## Scope
 
-- Official source: https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
+- Official source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 - Expected inventory: Articles 1–30 of 제2부 표준 발음법 only.
 - Excluded: adjacent parts of the standards portal, unofficial sources, dictionary/corpus harvesting, and any direct Hangul-to-Ukrainian transformation.
 
@@ -25,9 +25,15 @@ The default command:
 5. fails closed unless all 30 numbered articles are extracted exactly once with non-empty content;
 6. writes metadata only; raw HTML is never persisted.
 
-The manifest records terms status as not_assessed. Public accessibility is not treated as a license. The default mode does not retain or redistribute article text.
+The manifest records terms status as not_assessed. Public accessibility is not treated as a license. The default mode does not retain or redistribute article text. The default URL is the official desktop full-text route; the mobile route previously returned HTTP 403 from GitHub Actions, and the canonical route also remains blocked there. The collector does not use proxy/stealth modes or retry around an access denial.
 
-## Optional local text extraction
+## Manual local HTML import when the official server blocks automated requests
+
+If the official page opens normally in your browser but automated requests are denied, save the official page as HTML through the browser's ordinary **Save Page As** function. Do not use a proxy, stealth mode, alternate host, or other access-control bypass. Then parse that local copy without making any network request:
+
+    npm run crawl:nikl -- --url "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" --input-html "C:/path/to/saved-official-page.html" --output reports/nikl/standard-pronunciation-manifest.json
+
+Local import requires an explicit official `--url`. Its manifest sets `retrievalMode=local-html-import`, leaves HTTP status and retrieval time null, records the local import time and file hash, and explicitly marks robots policy as not checked by this run. It does not pretend the local file was freshly fetched or that current reuse terms were verified. The saved HTML is read but is not copied to the output; the default manifest still contains metadata and hashes only. All 30 articles must parse and reconcile before a manifest is written.
 
 Only after a human has reviewed the source's current reuse terms, a local operator may explicitly retain extracted article text:
 

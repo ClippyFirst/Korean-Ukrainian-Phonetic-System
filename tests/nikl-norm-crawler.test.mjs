@@ -1,8 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import {
   DEFAULT_SOURCE_URL, EXPECTED_ARTICLES, assertAllowedSourceUrl, buildManifest,
-  decodeHtmlEntities, fetchOfficialSource, parseCrawlerArgs, parseNiklStandardHtml, robotsPathAllowed, sha256,
+  decodeHtmlEntities, fetchOfficialSource, parseCrawlerArgs, parseNiklStandardHtml, robotsPathAllowed, runCrawler, sha256,
 } from "../scripts/nikl-norm-crawler.mjs";
 
 function fixtureHtml(options = {}) {
@@ -52,12 +55,14 @@ test("rejects non-HTTPS, non-official and out-of-scope URLs", () => {
   assert.throws(() => assertAllowedSourceUrl("http://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002"), /HTTPS/);
   assert.throws(() => assertAllowedSourceUrl("https://example.com/kornorms/"), /non-official host/);
   assert.throws(() => assertAllowedSourceUrl("https://korean.go.kr/front/onlineQna/"), /Only the official NIKL/);
-  assert.equal(new URL(assertAllowedSourceUrl(DEFAULT_SOURCE_URL)).hostname, "korean.go.kr");
+  assert.equal(new URL(assertAllowedSourceUrl(DEFAULT_SOURCE_URL)).hostname, "www.korean.go.kr");
+  assert.equal(new URL(DEFAULT_SOURCE_URL).pathname, "/kornorms/regltn/regltnView.do");
+  assert.equal(new URL(DEFAULT_SOURCE_URL).searchParams.get("regltn_code"), "0002");
   assert.equal(new URL(assertAllowedSourceUrl("https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002")).hostname, "www.korean.go.kr");
 });
 
 test("robots parser respects disallow and longest matching allow rule", () => {
-  const robots = "User-agent: *\nDisallow: /kornorms/\nAllow: /kornorms/m/m_regltn.do";
+  const robots = "User-agent: *\nDisallow: /kornorms/\nAllow: /kornorms/regltn/regltnView.do";
   assert.equal(robotsPathAllowed(robots, DEFAULT_SOURCE_URL), true);
   assert.equal(robotsPathAllowed("User-agent: *\nDisallow: /kornorms/", DEFAULT_SOURCE_URL), false);
   assert.equal(robotsPathAllowed("User-agent: *\nDisallow: /private/", DEFAULT_SOURCE_URL), true);
@@ -69,7 +74,7 @@ test("manifest is metadata-only unless explicit text retention is requested", ()
     requestedUrl: DEFAULT_SOURCE_URL, finalUrl: DEFAULT_SOURCE_URL, retrievedAt: "2026-10-21T00:00:00.000Z",
     httpStatus: 200, contentType: "text/html; charset=utf-8", etag: null, lastModified: null,
     responseBytes: 1234, responseSha256: sha256("fixture"), userAgent: "test",
-    robots: { url: "https://korean.go.kr/robots.txt", status: 404, decision: "no_robots_file" },
+    robots: { url: "https://www.korean.go.kr/robots.txt", status: 404, decision: "no_robots_file" },
     termsReview: "not_assessed", retentionPolicy: "metadata-only",
   };
   const manifest = buildManifest(parsed, metadata);
@@ -82,6 +87,7 @@ test("manifest is metadata-only unless explicit text retention is requested", ()
 
 test("article text retention requires explicit source-terms review acknowledgement", () => {
   assert.throws(() => parseCrawlerArgs(["--include-text"]), /requires --terms-reviewed/);
+  assert.throws(() => parseCrawlerArgs(["--input-html", "saved.html"]), /requires an explicit --url/);
   assert.equal(parseCrawlerArgs(["--include-text", "--terms-reviewed"]).includeText, true);
   assert.equal(parseCrawlerArgs(["--output", "manifest.json"]).output, "manifest.json");
 });
@@ -124,4 +130,30 @@ test("classifies HTTP 403 as an access block and does not retry or bypass", asyn
     (error) => error.code === "SOURCE_ACCESS_BLOCKED" && /HTTP 403/.test(error.message),
   );
   assert.equal(requests.length, 2, "one robots request and one page request; no alternate-host retries");
+});
+
+
+test("local HTML import records its provenance without pretending an HTTP or robots check occurred", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "nikl-import-"));
+  try {
+    const inputPath = join(directory, "official-page.html");
+    const outputPath = join(directory, "manifest.json");
+    const html = fixtureHtml();
+    await writeFile(inputPath, html, "utf8");
+    const result = await runCrawler(parseCrawlerArgs([
+      "--url", DEFAULT_SOURCE_URL, "--input-html", inputPath, "--output", outputPath,
+    ]));
+    assert.equal(result.manifest.inventory.complete, true);
+    assert.equal(result.manifest.source.retrievalMode, "local-html-import");
+    assert.equal(result.manifest.source.retrievedAt, null);
+    assert.equal(result.manifest.source.importedAt.length > 0, true);
+    assert.equal(result.manifest.source.httpStatus, null);
+    assert.equal(result.manifest.source.userAgent, null);
+    assert.equal(result.manifest.source.robots.decision, "not_checked_local_import");
+    assert.equal(result.manifest.source.responseSha256, sha256(Buffer.from(html)));
+    assert.equal("sourceText" in result.manifest.articles[0], false);
+    assert.deepEqual(JSON.parse(await readFile(outputPath, "utf8")), result.manifest);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
 });

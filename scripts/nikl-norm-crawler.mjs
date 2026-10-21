@@ -5,11 +5,11 @@
  * explicit human acknowledgement that applicable reuse terms have been reviewed.
  */
 import { createHash } from "node:crypto";
-import { mkdir, rename, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const DEFAULT_SOURCE_URL = "https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002";
+export const DEFAULT_SOURCE_URL = "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002";
 export const EXPECTED_ARTICLES = Object.freeze(Array.from({ length: 30 }, (_, index) => index + 1));
 export const USER_AGENT = "ClippyFirst-NIKLResearchBot/0.1 (+https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System)";
 const MAX_SOURCE_BYTES = 10 * 1024 * 1024;
@@ -267,7 +267,7 @@ export async function fetchOfficialSource(url = DEFAULT_SOURCE_URL, { fetchImpl 
   return {
     html,
     metadata: {
-      requestedUrl: url, finalUrl, retrievedAt: new Date().toISOString(),
+      retrievalMode: "direct-http", requestedUrl: url, finalUrl, retrievedAt: new Date().toISOString(), importedAt: null,
       httpStatus: response.status, contentType, etag: response.headers.get("etag"),
       lastModified: response.headers.get("last-modified"), responseBytes: buffer.length,
       responseSha256: sha256(buffer), userAgent: USER_AGENT,
@@ -281,7 +281,7 @@ export function buildManifest(parsed, sourceMetadata, { includeText = false } = 
   return {
     schemaVersion: 1,
     collector: { name: "nikl-norm-crawler", version: "0.1.0" },
-    standard: { id: "NIKL-SP", title: "국립국어원 표준 발음법", authority: "국립국어원", scope: "Articles 1–30 of 제2부 표준 발음법 only; adjacent parts are excluded.", canonicalUrl: DEFAULT_SOURCE_URL },
+    standard: { id: "NIKL-SP", title: "국립국어원 표준 발음법", authority: "국립국어원", scope: "Articles 1–30 of 제2부 표준 발음법 only; adjacent parts are excluded.", canonicalUrl: "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" },
     source: sourceMetadata,
     inventory: { ...parsed.validation, articleIds: parsed.articles.map((article) => article.articleId) },
     articles: parsed.articles.map((article) => ({
@@ -294,16 +294,18 @@ export function buildManifest(parsed, sourceMetadata, { includeText = false } = 
 }
 
 function parseArgs(argv) {
-  const args = { url: DEFAULT_SOURCE_URL, output: "reports/nikl/standard-pronunciation-manifest.json", includeText: false, termsReviewed: false };
+  const args = { url: DEFAULT_SOURCE_URL, urlProvided: false, inputHtml: null, output: "reports/nikl/standard-pronunciation-manifest.json", includeText: false, termsReviewed: false };
   for (let i = 0; i < argv.length; i++) {
     const value = argv[i];
-    if (value === "--url") args.url = argv[++i];
+    if (value === "--url") { args.url = argv[++i]; args.urlProvided = true; }
+    else if (value === "--input-html") args.inputHtml = argv[++i];
     else if (value === "--output") args.output = argv[++i];
     else if (value === "--include-text") args.includeText = true;
     else if (value === "--terms-reviewed") args.termsReviewed = true;
     else if (value === "--help" || value === "-h") args.help = true;
     else throw new Error("Unknown argument: " + value);
   }
+  if (args.inputHtml && !args.urlProvided) throw new Error("--input-html requires an explicit --url for the exact official page represented by the saved file.");
   if (args.includeText && !args.termsReviewed) throw new Error("--include-text requires --terms-reviewed after a human has reviewed applicable source reuse terms.");
   return args;
 }
@@ -311,8 +313,30 @@ function parseArgs(argv) {
 export function parseCrawlerArgs(argv) { return parseArgs(argv); }
 
 export async function runCrawler(args = parseArgs(process.argv.slice(2))) {
-  if (args.help) return { help: true, text: "Usage: node scripts/nikl-norm-crawler.mjs [--url OFFICIAL_URL] [--output PATH] [--include-text --terms-reviewed]\nDefault output stores article metadata and hashes only; raw HTML and article text are not retained." };
-  const fetched = await fetchOfficialSource(args.url);
+  if (args.help) return { help: true, text: "Usage: node scripts/nikl-norm-crawler.mjs [--url OFFICIAL_URL] [--input-html SAVED_OFFICIAL_PAGE.html] [--output PATH] [--include-text --terms-reviewed]\nDefault output stores article metadata and hashes only; raw HTML and article text are not retained. Local HTML import requires an explicit --url and records that no HTTP request or robots check was performed by this run." };
+  let fetched;
+  if (args.inputHtml) {
+    const sourceUrl = assertAllowedSourceUrl(args.url).toString();
+    const inputPath = resolve(args.inputHtml);
+    const buffer = await readFile(inputPath);
+    if (buffer.length === 0) throw new Error("Local HTML input is empty.");
+    if (buffer.length > MAX_SOURCE_BYTES) throw new Error("Local HTML input exceeds 10 MiB; refusing unexpectedly large input.");
+    const html = new TextDecoder("utf-8", { fatal: true }).decode(buffer);
+    fetched = {
+      html,
+      metadata: {
+        retrievalMode: "local-html-import", requestedUrl: sourceUrl, finalUrl: sourceUrl,
+        retrievedAt: null, importedAt: new Date().toISOString(), httpStatus: null,
+        contentType: "text/html; local-file", etag: null, lastModified: null,
+        responseBytes: buffer.length, responseSha256: sha256(buffer), userAgent: null,
+        robots: { url: new URL("/robots.txt", sourceUrl).toString(), status: null, decision: "not_checked_local_import" },
+        termsReview: "not_assessed",
+        retentionPolicy: "metadata-only; local HTML is read but not copied to the manifest by default",
+      },
+    };
+  } else {
+    fetched = await fetchOfficialSource(args.url);
+  }
   const parsed = parseNiklStandardHtml(fetched.html, fetched.metadata.finalUrl);
   if (!parsed.validation.complete) throw new Error("Official article inventory did not reconcile: " + parsed.validation.errors.join("; "));
   const sourceMetadata = {

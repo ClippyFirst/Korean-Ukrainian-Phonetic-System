@@ -69,9 +69,11 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "retrievalMode",
         "requestedUrl",
         "finalUrl",
         "retrievedAt",
+        "importedAt",
         "httpStatus",
         "contentType",
         "etag",
@@ -95,17 +97,23 @@
           "pattern": "^https://(www\\.)?korean\\.go\\.kr/kornorms/"
         },
         "retrievedAt": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "date-time"
         },
         "httpStatus": {
-          "type": "integer",
+          "type": [
+            "integer",
+            "null"
+          ],
           "minimum": 200,
           "maximum": 299
         },
         "contentType": {
           "type": "string",
-          "pattern": "text/html|application/xhtml\\+xml"
+          "pattern": "text/html|application/xhtml\\\\+xml|text/html; local-file"
         },
         "etag": {
           "type": [
@@ -129,7 +137,10 @@
           "pattern": "^[a-f0-9]{64}$"
         },
         "userAgent": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "minLength": 1
         },
         "robots": {
@@ -146,14 +157,18 @@
               "format": "uri"
             },
             "status": {
-              "type": "integer",
+              "type": [
+                "integer",
+                "null"
+              ],
               "minimum": 200,
               "maximum": 599
             },
             "decision": {
               "enum": [
                 "allowed",
-                "no_robots_file"
+                "no_robots_file",
+                "not_checked_local_import"
               ]
             }
           }
@@ -167,6 +182,19 @@
         "retentionPolicy": {
           "type": "string",
           "minLength": 1
+        },
+        "retrievalMode": {
+          "enum": [
+            "direct-http",
+            "local-html-import"
+          ]
+        },
+        "importedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         }
       }
     },
