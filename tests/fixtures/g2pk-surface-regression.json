@@ -76,13 +76,13 @@
       "pythonG2pkSurface": "수피",
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
-      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
+      "expectedSurfaceProvenance": "pinned JavaScript port output; surface string matches the separately cited direct NIKL example; this is surface evidence, not IPA gold.",
       "differentialStatus": "matched-existing-browser-expectation",
       "normativeSurface": "수피",
-      "normativeEvidenceStatus": "derived-from-NIKL-rule",
-      "normativeSourceLocator": "§13 formal-morpheme liaison; lexical output still needs independent adjudication",
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§13 explicit example: 숲이[수피]",
       "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
+      "normativeNotes": "The official standard explicitly lists 숲이[수피] under formal-morpheme liaison. This directly attests the Korean surface only; IPA remains not independently adjudicated."
     },
     {
       "input": "같이",
