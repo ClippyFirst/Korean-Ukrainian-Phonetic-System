@@ -1,47 +1,93 @@
 ---
 name: nikl-evidence-audit
-description: Use when adjudicating Korean pronunciations against official NIKL rules, dictionary entries, examples, or Q&A, and when auditing provenance and evidence quality for lexical overrides.
+description: Use when adjudicating Korean pronunciation claims from NIKL rules, the Standard Korean Dictionary, official answers, or secondary literature; when reviewing lexical overrides, uncertain morphology, or source-to-IPA provenance.
 ---
 
 # NIKL Evidence and Lexical Audit
 
 ## Mission
 
-Prevent unsupported pronunciations from entering the research engine. Establish what the official source actually supports, where evidence applies, and which claims remain provisional.
+Keep the research engine evidence-gated. Every deterministic pronunciation decision must be traceable to an official attestation or a documented, correctly scoped application of a normative rule. Distinguish what the source says from what the engine derives.
 
-## Source hierarchy
+## Source hierarchy and scope
 
-1. NIKL Standard Pronunciation Rules: https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
+1. NIKL Standard Pronunciation Rules (표준 발음법): https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
 2. NIKL Standard Korean Dictionary: https://stdict.korean.go.kr/
-3. Other official NIKL material and answers, with exact page/context recorded.
-4. Peer-reviewed linguistic references, clearly labelled as secondary evidence.
-5. Independent G2P implementations (e.g. g2pK, KoG2P, Kiwi) for differential testing only, not normative adjudication.
-6. Unverified web examples and model suggestions are leads, not evidence.
+3. Other official NIKL material, official answers, or official corpora where access/use terms allow, with exact page and context recorded.
+4. Peer-reviewed linguistic publications and scholarly grammars, explicitly marked as secondary evidence.
+5. Independent G2P implementations (g2pK, KoG2P, Kiwi, etc.) for differential tests and candidate discovery only.
+6. Unverified web examples, community posts, and language-model suggestions as leads only.
 
-Check each source's terms, API conditions, and redistribution limits before downloading or committing data. Do not assume public accessibility means unrestricted reuse.
+Authority is claim-specific. A pronunciation rule, a dictionary entry, an official example, and a secondary phonetic description answer different questions; do not collapse them into one generic "source" field. Verify current terms, API conditions, and redistribution rights before bulk collection or publication.
 
-## Evidence record
+## Evidence classes
 
-For each claim, record where available: exact Korean form; lexical identity/POS if established; official surface pronunciation exactly as printed; source class; canonical URL; article/entry ID; relevant short excerpt or local reference; retrieval date; environment and morphology; whether directly attested or derived from a cited rule; independent review status; disagreements; confidence/status; and what evidence would resolve uncertainty.
+Use explicit classes and never conflate them:
+- DIRECT_OFFICIAL_ATTESTATION: exact form/pronunciation is printed by an official source;
+- OFFICIAL_DICTIONARY_ATTESTATION: linked to an exact dictionary entry, lemma, and relevant sense/POS where available;
+- OFFICIAL_RULE_DERIVATION: candidate follows from a cited rule and verified environment, but is not directly listed;
+- OFFICIAL_ANSWER: official answer with exact question/context and date;
+- SECONDARY_SUPPORTED: claim supported by a cited scholarly source;
+- DIFFERENTIAL_ONLY: one or more G2P tools agree, but normative evidence has not been established;
+- HYPOTHESIS_UNRESOLVED: insufficient or conflicting evidence.
 
-Use distinct statuses:
-- directly attested: exact form/pronunciation appears in the source;
-- rule-derived: follows from a cited rule but is not directly listed;
-- dictionary-attested: tied to an exact dictionary entry;
-- secondary-supported: supported by a cited non-primary source;
-- hypothesis/unresolved: insufficient evidence.
+If the repository already has a compatible schema, map these concepts to its established vocabulary instead of creating incompatible duplicate labels.
 
-Never label a rule-derived candidate as a direct official example. Never copy a pronunciation from a different homograph or part of speech. Do not erase optionality or variation in the source.
+## Claim-level evidence record
 
-## Engine integration rules
+For every material pronunciation claim, record:
+- exact orthographic input and normalized form, without losing the original;
+- lexical identity, POS, sense, and morphological segmentation only where established;
+- exact official surface pronunciation if printed;
+- source class and source authority;
+- canonical URL, article/entry/question ID, retrieval date, and capture hash or immutable locator;
+- exact short excerpt or source-position locator needed for review, subject to copyright policy;
+- applicable environment and each rule in the ordered derivation chain;
+- expected IPA and whether it is attested, derived, reviewed, or unresolved;
+- variant/optionality notes;
+- engine implementation and regression-test references;
+- adjudication status, reviewer, date, disagreements, and next evidence needed.
 
-- Official Korean surface form, IPA analysis, and Ukrainian target are separate fields.
-- Only a documented transformation or verified source record may license a deterministic pronunciation override.
-- A rule's existence does not prove it applies to every similar spelling; check the exact environment, morphology, and exceptions.
-- Do not infer morphology solely from a Hangul substring if the form is ambiguous.
-- When evidence does not settle the reading, preserve an explicit unresolved result and explain the missing evidence.
-- Never fabricate IPA, article numbers, examples, URLs, source quotations, or test outcomes.
+Do not cite a broad homepage when a precise article or dictionary entry is available. Do not copy a pronunciation from a homograph, unrelated sense, or different part of speech.
 
-## Audit completion
+## Adjudication procedure
 
-Review existing evidence registries and reports before adding entries. Prefer correcting an existing record and test over creating duplicates. Add a negative regression when an overgeneralization caused an unsupported application. Update the existing audit/handoff with actual outcomes, limitations, commands run, and the next blocker.
+1. Reproduce the input and output from the current engine before changing behavior.
+2. Determine whether the form is an official listed example, a dictionary-attested lexical item, or an inferred/generated case.
+3. Confirm the relevant article text, exact environment, exceptions, cross-references, and morphological assumptions.
+4. Seek counterevidence: nearby forms where the rule does not apply, alternate lexical parses, optional pronunciations, and source disagreements.
+5. Separate orthographic facts, morphological analysis, Korean surface pronunciation, IPA transcription, and Ukrainian adaptation.
+6. If evidence supports a deterministic result, add or correct the existing evidence record and a focused regression.
+7. If evidence is conflicting or incomplete, preserve an explicit unresolved/incomplete state with a machine-readable reason; do not pick the most plausible result silently.
+8. Record the decision and why alternatives were rejected. Do not overstate certainty from agreement among tools.
+
+## Morphology and rule scope
+
+- A rule's existence does not establish that it applies to every visually similar string.
+- Do not infer morpheme boundaries solely from a Hangul substring if the surface form is lexically or grammatically ambiguous.
+- Treat heuristic segmentation as a candidate, not a fact. Keep heuristic provenance and confidence visible.
+- Apply only rule environments licensed by the source. Preserve ordered interactions and negative conditions.
+- Do not turn a dictionary pronunciation into a universal productive rule.
+- Preserve variation and optionality instead of normalizing them away.
+- Keep a strict boundary between source evidence and Ukrainian target choices; a target-language preference cannot be used as evidence for Korean pronunciation.
+
+## IPA-first boundary
+
+The research pipeline is:
+
+Hangul → structure/morphology → Korean phonology → IPA or typed unresolved result → Ukrainian target adaptation → Ukrainian practical orthography.
+
+The IPA/typed result must be the actual input to the Ukrainian adapter. Do not accept an audit-only IPA field alongside a parallel grapheme-to-Ukrainian implementation. If the current pipeline violates this, classify it as an architecture defect and trace the actual call graph before claiming resolution.
+
+## Review and audit quality
+
+- Prefer correcting an existing evidence record and its test over adding duplicates.
+- Add a negative regression when an earlier overgeneralization applied a rule outside its official environment.
+- Ensure source citations remain available after generated artifacts are rebuilt.
+- Record disagreement between official norms, dictionary entries, scholarly analysis, and G2P output rather than hiding it.
+- Never fabricate IPA, source quotations, article IDs, dictionary senses, URLs, licenses, or test outcomes.
+- When no independent linguist review is available, mark that limitation; automated self-consistency is not independent validation.
+
+## Completion report
+
+For each audit batch, report the claims reviewed, evidence classes, records changed, regressions added, unresolved items, commands actually run, and exact commit/branch. State whether conclusions are directly attested, rule-derived, or provisional. Update the existing audit/handoff rather than creating a competing source of truth.
