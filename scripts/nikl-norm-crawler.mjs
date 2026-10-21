@@ -152,7 +152,7 @@ export function parseNiklStandardHtml(html, sourceUrl = DEFAULT_SOURCE_URL) {
   const nodes = walk(tree);
   const partMarker = findPartMarker(nodes, 2);
   if (!partMarker) throw new Error("Could not locate semantic heading 제2부 표준 발음법; upstream structure may have changed.");
-  const nextPart = nodes.filter((node) => /^h[1-6]$/.test(node.tag) && /^제\s*3\s*부\b/u.test(normalizeText(textContent(node))))
+  const nextPart = nodes.filter((node) => /^h[1-6]$/.test(node.tag) && /^제\s*3\s*부(?:\s|$)/u.test(normalizeText(textContent(node))))
     .filter((node) => node.start > partMarker.start).sort((a, b) => a.start - b.start)[0] ?? null;
   const sectionStart = partMarker.end;
   const sectionEnd = nextPart?.start ?? html.length;
