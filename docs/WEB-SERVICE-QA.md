@@ -57,3 +57,15 @@ A UI build is not by itself scientific validation. The web layer is complete onl
 - `의견란` has a normative pronunciation entry, but its Ukrainian `ийґйоннан` rendering is explicitly provisional and must not be treated as a normative Ukrainian transcription.
 - Negative controls: `닭이` remains `달기` and `값이` remains `갑씨`; the lexical ㄺ exceptions must not spread to noun `닭-` or all words with coda `ㅄ`.
 - Run `npm test`, `pytest`, `npm run build`, and inspect the latest GitHub Pages deployment before claiming the public service reflects the latest data.
+
+
+## Practical-mode strict-port contract — 2026-10-21
+
+The public practical mode is wired to the pinned browser-only JavaScript g2pK port. It does not apply the research lexicon's surface/IPA corrections after G2P. The public UI states that the result may differ from NIKL. The 18-case gate verifies direct JS-port parity; the source-adjudication report keeps normative comparators separate.
+
+Known divergences that must remain visible rather than silently corrected in practical mode:
+- `값어치`: JS port `갑써치`; NIKL §15 gives `가버치`.
+- `넓죽하다`: JS port `널쭈카다`; NIKL §10 gives `넙쭈카다`.
+- `읽고`: JS port `익꼬`; NIKL Q&A gives `일꼬`.
+
+CI passing establishes the selected port's reproducibility and build/test integrity only. It does not validate all Korean surface pronunciations, independent IPA, Ukrainian target quality, or the live page's interactive behavior. Direct live-site long-passage smoke testing remains outstanding until a suitable browser/network path is available.
