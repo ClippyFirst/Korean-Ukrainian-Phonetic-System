@@ -65,12 +65,12 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 
 ## DEC-2026-005 — Soft morphology must fail closed on ambiguous liaison and keep cross-runtime status parity
 - **Date:** 2026-10-21
-- **Status:** implementation added on branch fix/soft-morphology-parity-and-release-gates-2026-10-21; CI pending.
+- **Status:** implemented and verified by exact-head CI on 2026-10-21; PR #169 is the integration vehicle.
 - **Context/problem:** Python soft_formal_licenses could emit a generic R002 formal license for ambiguous 어/아 sequences such as 값어치, while the browser layer deliberately refuses to guess §15-sensitive liaison.
 - **Evidence:** Existing browser negative controls in tests/soft-heuristic-morphology-formal-endings.test.mjs; shared fixture tests/fixtures/soft-morphology-parity.json added in this branch.
 - **Options considered:** loosen the browser guard; let Python guess; align Python with the browser fail-closed boundary and test both.
 - **Decision:** Python soft mode no longer emits generic R002 licenses for 어/아, for ㅎ clusters handled by R003, or for simple-coda §15-sensitive environments. A shared fixture checks positive low-confidence cases and negative ambiguity/boundary cases in Python and JavaScript.
 - **Consequences and trade-offs:** Some forms remain unresolved rather than guessed; this is intentional. This decision is not complete until exact-head CI passes.
 - **Affected files/rule IDs/runtimes:** src/korean_ukrainian/soft_morphology.py; tests/test_soft_morphology_parity.py; src/app/soft_morphology.js; tests/soft-morphology-parity.test.mjs.
-- **Validation/tests:** Pending branch CI; local execution unavailable in the API-only environment.
+- **Validation/tests:** tests/build/Python 3.11–3.13 passed [39601258671](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258671); browser G2P integration passed [39601258672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258672); system verification passed [39601258670](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258670); corpus artifacts passed [39601258668](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258668). Local execution remains unavailable in the API-only environment.
 - **Revisit when:** A source-backed morphological analyzer or independent evidence supports a narrower rule for a previously blocked form.
