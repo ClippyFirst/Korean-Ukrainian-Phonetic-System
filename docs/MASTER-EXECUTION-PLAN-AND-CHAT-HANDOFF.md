@@ -349,7 +349,7 @@ This evidence is exact-head CI, not local execution; this environment still has 
 
 - Starting default-branch commit: `1f8b37fd524c39bf0f2ecb6991ebdaf4ae677c7e` (`main`). Its existing CI had passed browser tests/build, Python 3.11–3.13, corpus artifacts, system verification, and deployment smoke checks; this follow-up preserves that mainline and does not change the production transcription pipeline.
 - Working branch: `research/nikl-agent-skills-2026-10-21`; PR #176 remains open against `main`. No branch was merged or force-pushed.
-- Implementation head with full exact-head checks passed before this final documentation refresh: `d7d0e87fe4ee0679a5cd27e8c599397414d454dd`. The completion-audit refresh commit is `46e33071f4918705b8393073398f385f77c27744`; this handoff update is the next commit. Verify CI on the final PR head after this update.
+- Implementation head with full exact-head checks passed before this final documentation refresh: `62432e384d8bd1c289d2910217aca17b82701981`. The completion-audit refresh commit is `33a7931c32e198ec74d4a1da8b035cd1129d919f`; this handoff update is the next commit. Verify CI on the final PR head after this update.
 
 
 - Mainline hygiene note: a `.gitignore` creation briefly landed on `main` due to a missing branch argument, then was immediately reverted. The current `main` tree SHA `d0dd8abd6f6b4c74a177a02b409d35ac76f483e2` is identical to the starting tree SHA; the incident leaves two net-zero add/delete commits in main history but no remaining file-content change.
