@@ -13,7 +13,9 @@ This collector is a reproducible source-inventory tool, not a pronunciation engi
 Requires the repository's declared Node.js runtime (Node 22.12+); no third-party package is required.
 
     node scripts/nikl-norm-crawler.mjs --help
-    node scripts/nikl-norm-crawler.mjs --output reports/nikl/standard-pronunciation-manifest.json
+    npm run crawl:nikl -- --output reports/nikl/standard-pronunciation-manifest.json
+
+or invoke the script directly:
 
 The default command:
 1. restricts the URL to HTTPS on the official korean.go.kr host and the /kornorms/ path;
@@ -40,7 +42,7 @@ Fixture-based parser tests run in the existing browser regression suite:
     npm test
     npm run build
 
-The parser requires a semantic heading for 제2부 표준 발음법; selector drift is a hard failure rather than an empty successful crawl. Tests cover the full 1–30 inventory, exclusions, missing/duplicate headings, empty extraction, entity decoding, source URL allowlisting, robots decisions and metadata-only output.
+The parser requires a semantic heading for 제2부 표준 발음법; selector drift is a hard failure rather than an empty successful crawl. Tests cover the full 1–30 inventory, exclusions, missing/duplicate headings, empty extraction, entity decoding, source URL allowlisting, robots decisions, mocked fetch provenance, the no-retention default, and the explicit acknowledgement gate for article-text retention.
 
 ## Limits
 
