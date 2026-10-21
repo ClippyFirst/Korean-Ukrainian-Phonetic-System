@@ -92,3 +92,17 @@ jobs:
           curl --fail --location --silent --show-error --retry 10 --retry-delay 5 --retry-all-errors --max-time 30 "${base_url}${asset_path}" -o "$asset_file"
           test -s "$asset_file"
           echo "Public Pages HTTP smoke passed for index.html, system.html, and the first JS asset at $base_url"
+      - name: Check out source for live browser smoke
+        uses: actions/checkout@v4
+      - name: Set up Node.js for live browser smoke
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright without changing project manifests
+        run: npm install --no-save --no-package-lock playwright
+      - name: Install Chromium for live browser smoke
+        run: npx playwright install --with-deps chromium
+      - name: Exercise live practical mode with adversarial Korean passage
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+        run: node scripts/smoke-live-pages-browser.mjs
