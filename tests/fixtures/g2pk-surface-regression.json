@@ -118,14 +118,15 @@
     },
     {
       "input": "읽고",
-      "expectedSurface": "일꼬",
+      "expectedSurface": "익꼬",
+      "previousProjectSurface": "일꼬",
       "phenomenon": "rieul-giyeok-fortition",
       "expectedIpa": null,
       "pythonG2pkSurface": "일꼬",
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
-      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "expectedSurfaceProvenance": "Pinned vendored JavaScript g2pK output under production options; prior project lexical control had changed this surface.",
+      "differentialStatus": "js-port-differs-from-previous-project-lexical-control"
     },
     {
       "input": "읽는",
