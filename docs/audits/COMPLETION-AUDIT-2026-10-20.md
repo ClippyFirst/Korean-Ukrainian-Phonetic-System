@@ -230,3 +230,14 @@ The CI exposed and the fixture now records the strict port's outputs instead of 
 - Pages deployment and live HTTP smoke passed: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020436. The runner fetched index.html, system.html, the practical-mode warning/control, and the generated JavaScript asset.
 - A headless Chromium smoke passed against the deployed page using the repository's 1,443-character adversarial Korean fixture, producing 2,782 Ukrainian characters and 3,731 IPA characters with no page errors. The exact earlier user-pasted passage remains unverified if it differs from this fixture; this smoke does not validate pronunciation accuracy.
 - Still release-blocking: independent IPA gold, independent Ukrainian target validation, seven rule-derived surface comparators, and owner decisions for the root project license/citation metadata. Final status: technically deployed research preview, not scientifically validated or release-ready.
+
+
+## Exact-head mainline verification after live-browser smoke integration — 2026-10-21
+
+Code/deployment commit: `dae8ebdabb396d1be51afbe891d80c9c48a29f1c`. Mainline code-equivalent docs/evidence commit tested: `a8996112a01ec43f90b7c297b975906e4b44ab83`.
+
+- Tests/build/Python 3.11–3.13: PASS [39604039126](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039126).
+- System verification: PASS [39604039157](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039157).
+- Corpus artifacts: PASS [39604039164](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039164).
+- Pages deployment + HTTP + headless Chromium smoke: PASS [39604039154](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039154). 1,443 Korean input characters produced 2,782 Ukrainian output characters and 3,731 IPA characters with no page errors.
+- This is a live interaction check with the repository fixture, not the exact prior user-pasted passage if different, and not evidence of normative pronunciation accuracy.
