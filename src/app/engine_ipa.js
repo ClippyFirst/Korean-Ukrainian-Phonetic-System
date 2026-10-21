@@ -14,23 +14,28 @@ export const IPA_TO_UKRAINIAN = [
   ['kʰ','к'],['tʰ','т'],['pʰ','п'],['k̚','к'],['t̚','т'],['p̚','п'],
   ['ɰi','ий'],['jʌ','йо'],['jɛ','є'],['ja','я'],['je','є'],['jo','йо'],['ju','ю'],
   ['wa','ва'],['wɛ','ве'],['wʌ','во'],['we','ве'],['aː','а'],
-  ['ɡ','ґ'],['k','к'],['g','ґ'],['t','т'],['d','д'],['p','п'],['b','б'],
+  ['ɡ','ґ'],['k','к'],['t','т'],['d','д'],['p','п'],['b','б'],
   ['ɲ','нь'],['n','н'],['m','м'],['ŋ','н'],['ɾ','р'],['r','р'],['l','л'],['h','г'],
   ['s','с'],['a','а'],['ɛ','е'],['ʌ','о'],['e','е'],['o','о'],['u','у'],
   ['ɯ','и'],['i','і'],['ø','ве'],['y','ві'],['w','в'],['j','й']
 ].sort((a,b)=>b[0].length-a[0].length);
 
-export function ipaSyllableToUkrainian(ipa){
+export function traceIpaMapping(ipa){
   ipa=ipa.replace(/ː/gu,''); // vowel length is retained in IPA, not duplicated in the Ukrainian target
-  let output='';
+  const tokens=[];
   for(let i=0;i<ipa.length;){
     if(/\s/u.test(ipa[i])){i++;continue;}
     const match=IPA_TO_UKRAINIAN.find(([token])=>ipa.startsWith(token,i));
-    if(!match)return {text:'',unknown:ipa.slice(i)};
-    output+=match[1];
+    if(!match)return {tokens,unknown:ipa.slice(i)};
+    tokens.push({ipa:match[0],ukrainian:match[1]});
     i+=match[0].length;
   }
-  return {text:output,unknown:''};
+  return {tokens,unknown:''};
+}
+
+export function ipaSyllableToUkrainian(ipa){
+  const mapped=traceIpaMapping(ipa);
+  return mapped.unknown?{text:'',unknown:mapped.unknown}:{text:mapped.tokens.map(token=>token.ukrainian).join(''),unknown:''};
 }
 
 export function ipaSyllablesToUkrainian(ipaSyllables){
