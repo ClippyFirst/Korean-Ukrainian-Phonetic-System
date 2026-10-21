@@ -19,13 +19,12 @@ These are related implementations, not identical runtimes. In particular, the br
     Korean text
       → browser JavaScript g2pK port (prescriptive mode)
       → Korean surface spelling
-      → this project's IPA renderer
-      → exact, source-backed lexical surface/IPA controls when licensed
+      → this project's IPA renderer (adapter only; no new phonological rules)
       → this project's IPA-to-Ukrainian target inventory
 
 The browser's practical mode calls `webEngine.convert(text)`; the research mode intentionally calls the project's separate evidence-gated native engine. The Ukrainian target is generated from IPA, never through a parallel Hangul-to-Ukrainian conversion.
 
-The browser port preserves punctuation, whitespace, Latin text, and digits through the surrounding adapter. It does not use Python, MeCab, a server, or network calls at runtime.
+The browser port preserves punctuation, whitespace, Latin text, and digits through the surrounding adapter. The practical mode applies no project lexical surface/IPA overrides after the port; known upstream divergences are preserved rather than silently corrected. It does not use Python, MeCab, a server, or network calls at runtime.
 
 ## Python data flow
 
@@ -49,10 +48,10 @@ The upstream G2P implementation is a useful, established rule-based foundation, 
 - Keep Korean surface realization separate from IPA rendering and Ukrainian target mapping.
 - Test exact outputs for difficult codas, liaison, tensification, aspiration, palatalization, nasal/liquid assimilation, ㄴ insertion, and negative controls.
 - Keep the user's adversarial long passage as an end-to-end regression fixture; a test that merely checks for non-empty output or absence of placeholders is a smoke test, not a pronunciation-accuracy test.
-- Apply a lexical surface correction only when the exact source form, alignment, and syllable count are licensed.
-- Apply sourced IPA only when its form/alignment matches the licensed lexical entry.
+- In **practical browser mode**, do not apply lexical surface or IPA corrections after the port: doing so would break the strict port contract. Record upstream divergences as known limitations and regression cases.
+- Research-only and Python integrations may have their own evidence-backed lexical controls, but these must not leak into the practical browser path.
 - Do not invent per-rule NIKL trace entries: the upstream JS port does not expose an auditable NIKL rule-by-rule derivation. Label the G2P surface realization honestly.
-- If a case depends on morphology the browser port cannot determine, add a sourced exact-form control or expose the uncertainty; do not silently claim Python g2pK parity.
+- If the port cannot determine morphology, preserve the port's own output; document the limitation rather than silently substituting another pronunciation engine.
 
 ## Known boundary
 
@@ -62,3 +61,8 @@ Related validation documents:
 - `docs/WEB-SERVICE-QA.md`
 - `docs/IPA-FIRST-TARGET-CONSISTENCY-AUDIT-2026-10-11.md`
 - `tests/g2pk-web-engine.test.mjs`
+
+
+## Practical-mode contract correction — 2026-10-21
+
+The practical browser mode is intentionally strict about the selected JavaScript port, not about matching normative NIKL output in every word. Its Korean surface form must equal `G2pBrowser.convert` with `descriptive: false`, `verbose: false`, `groupVowels: false`, and `toSyl: true`, after the documented literal-preservation boundary for Latin/digits/jamo. The adapter then derives IPA and Ukrainian target from that surface. It must not patch the surface or IPA using the research lexicon. For example, the port's `값어치` output is kept as a known upstream divergence from NIKL's `가버치`; this is not a claim that the port is normatively correct.

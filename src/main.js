@@ -13,7 +13,9 @@ function mergeLexicalCsv(base, additions) {
 }
 const mergedLexicalCsv=mergeLexicalCsv(lexicalCsv, lexicalAdditionsCsv);
 const engine=createEngine(canonicalCsv, mergedLexicalCsv);
-const webEngine=createG2pWebAdapter(engine, mergedLexicalCsv);
+// Practical mode uses only the pinned JS G2P port; the merged lexical corpus
+// is passed to the separate research engine above, never as a practical override.
+const webEngine=createG2pWebAdapter(engine);
 const softToggle=document.querySelector('#soft-morphology');
 const modePractical=document.querySelector('#mode-practical');
 const modeResearch=document.querySelector('#mode-research');

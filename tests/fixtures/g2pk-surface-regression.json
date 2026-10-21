@@ -37,15 +37,16 @@
     },
     {
       "input": "값어치",
-      "expectedSurface": "가버치",
+      "expectedSurface": "갑써치",
+      "normativeSurface": "가버치",
       "phenomenon": "complex-coda-liaison",
       "expectedIpa": null,
       "pythonG2pkSurface": "갑써치",
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
-      "expectedSurfaceProvenance": "National Institute of Korean Language: standard pronunciation [가버치], 표준 발음법 제15항 붙임; https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217",
-      "differentialStatus": "python-g2pk-diverges-from-nikl-normative-output",
-      "differentialNote": "NIKL explicitly gives the standard pronunciation [가버치]. Python g2pK 0.9.4 returns 갑써치 for this lexical item; retain this as a known engine divergence, not as a reason to change the browser expectation.",
+      "expectedSurfaceProvenance": "Observed output of the pinned vendored JavaScript g2pK port; normative surface is recorded separately and differs.",
+      "differentialStatus": "js-port-and-python-g2pk-diverge-from-nikl-normative-output",
+      "differentialNote": "NIKL explicitly gives the standard pronunciation [가버치]. The practical mode preserves the pinned JS port output [갑써치] by contract; this is a known upstream-model divergence, not an override opportunity.",
       "sourceUrl": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217"
     },
     {
@@ -105,25 +106,27 @@
     },
     {
       "input": "넓죽하다",
-      "expectedSurface": "넙쭈카다",
+      "expectedSurface": "널쭈카다",
+      "previousProjectSurface": "넙쭈카다",
       "phenomenon": "complex-coda-fortition",
       "expectedIpa": null,
       "pythonG2pkSurface": "넙쭈카다",
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
-      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "expectedSurfaceProvenance": "Pinned vendored JavaScript g2pK output under production options; prior project lexical control had changed this surface.",
+      "differentialStatus": "js-port-differs-from-previous-project-lexical-control"
     },
     {
       "input": "읽고",
-      "expectedSurface": "일꼬",
+      "expectedSurface": "익꼬",
+      "previousProjectSurface": "일꼬",
       "phenomenon": "rieul-giyeok-fortition",
       "expectedIpa": null,
       "pythonG2pkSurface": "일꼬",
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
-      "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "expectedSurfaceProvenance": "Pinned vendored JavaScript g2pK output under production options; prior project lexical control had changed this surface.",
+      "differentialStatus": "js-port-differs-from-previous-project-lexical-control"
     },
     {
       "input": "읽는",
