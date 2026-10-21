@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { createEngine } from '../src/app/engine.js';
+import { createEngine, parseCsv } from '../src/app/engine.js';
 import { ipaSyllableToUkrainian, traceIpaMapping } from '../src/app/engine_ipa.js';
 
 const canonicalCsv = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
@@ -104,4 +104,25 @@ test('the visible IPA trace renders non-orthographic feature handling rather tha
   const ipaEngine = readFileSync(new URL('../src/app/engine_ipa.js', import.meta.url), 'utf8');
   assert.ok(app.includes('const featureTrace=(mappingResult.features||[])'));
   assert.ok(ipaEngine.includes('довгота збережена в IPA'));
+});
+
+
+test('every long-vowel marker in the lexical IPA inventory is surfaced as a target-layer feature', () => {
+  const rows = parseCsv(lexicalCsv);
+  let checked = 0;
+  for (const row of rows) {
+    const syllables = (row.ipa_syllables || '').split('|').filter(Boolean);
+    for (const syllable of syllables) {
+      const expectedLengthMarks = [...syllable].filter(character => character === 'ː').length;
+      if (!expectedLengthMarks) continue;
+      const traced = traceIpaMapping(syllable);
+      assert.equal(
+        traced.features.filter(feature => feature.ipa === 'ː').length,
+        expectedLengthMarks,
+        row.input + ': every IPA length mark must have an explicit target-layer handling record'
+      );
+      checked += expectedLengthMarks;
+    }
+  }
+  assert.ok(checked > 0, 'fixture must exercise real lexical IPA length markers');
 });
