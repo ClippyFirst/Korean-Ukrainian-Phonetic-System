@@ -5,6 +5,7 @@ import {fileURLToPath} from 'node:url';
 import {dirname,resolve} from 'node:path';
 import {createEngine} from '../src/app/engine.js';
 import {createG2pWebAdapter} from '../src/app/g2pk_web.js';
+import {G2pBrowser} from '../src/vendor/g2pk/g2p-browser.ts';
 
 const here=dirname(fileURLToPath(import.meta.url));
 const read=(path)=>readFileSync(resolve(here,'..',path),'utf8');
@@ -15,7 +16,7 @@ const header=baseLexical.split(/\r?\n/u).find(line=>line.trim());
 const merge=(base,extra)=>[header,...base.split(/\r?\n/u).filter(line=>line.trim()&&!line.startsWith('input,')),...extra.split(/\r?\n/u).filter(line=>line.trim()&&!line.startsWith('input,'))].join('\n');
 const lexical=merge(baseLexical,additions);
 const engine=createEngine(canonical,lexical);
-const g2p=createG2pWebAdapter(engine,lexical);
+const g2p=createG2pWebAdapter(engine);
 
 test('browser G2P implements key standard pronunciation controls',()=>{
   const cases=[
@@ -42,11 +43,14 @@ test('browser G2P preserves punctuation, spaces, and protected Latin/digits',()=
   assert.equal(result.source,input);
 });
 
-test('NIKL-backed lexical surface/IPA control overrides generic G2P output',()=>{
-  const result=g2p.convert('값어치가');
-  assert.equal(result.surfaceHangul,'가버치가');
-  assert.equal(result.ipa,'ka bʌ tɕʰi ɡa');
-  assert.equal(result.status,'lexical');
+test('practical mode surface is exactly the vendored g2pK JS port output (no lexical override)',()=>{
+  const port=new G2pBrowser();
+  const input='값어치';
+  const expected=port.convert(input,{descriptive:false,verbose:false,groupVowels:false,toSyl:true});
+  const result=g2p.convert(input);
+  assert.equal(result.surfaceHangul,expected);
+  assert.notEqual(result.status,'lexical');
+  assert.ok(!result.trace.some(item=>(item.rules||[]).includes('sourced-lexical-ipa')));
   assert.equal(result.issues.length,0);
 });
 
@@ -65,6 +69,6 @@ test('full adversarial Korean passage completes with IPA-first output and no pla
   assert.equal(result.issues.length,0,result.issues.join('\\n'));
   assert.ok(!result.ukrainian.includes('⟦'),'unresolved placeholder leaked');
   assert.ok(!result.ukrainian.includes('undefined'),'undefined leaked into target');
-  assert.ok(result.surfaceHangul.includes('가버치가'),'sourced lexical control was not applied');
+  assert.ok(!result.trace.some(item=>(item.rules||[]).includes('sourced-lexical-ipa')),'research lexical IPA override leaked into practical mode');
   assert.ok(result.ukrainian.includes('“')&&result.ukrainian.includes('”'),'quotation punctuation was not preserved');
 });
