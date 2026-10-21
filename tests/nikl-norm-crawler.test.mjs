@@ -59,7 +59,7 @@ test("rejects non-HTTPS, non-official and out-of-scope URLs", () => {
 });
 
 test("robots parser respects disallow and longest matching allow rule", () => {
-  const robots = "User-agent: *\nDisallow: /kornorms/\nAllow: /kornorms/m/m_regltn.do";
+  const robots = "User-agent: *\nDisallow: /kornorms/\nAllow: /kornorms/regltn/regltnView.do";
   assert.equal(robotsPathAllowed(robots, DEFAULT_SOURCE_URL), true);
   assert.equal(robotsPathAllowed("User-agent: *\nDisallow: /kornorms/", DEFAULT_SOURCE_URL), false);
   assert.equal(robotsPathAllowed("User-agent: *\nDisallow: /private/", DEFAULT_SOURCE_URL), true);
