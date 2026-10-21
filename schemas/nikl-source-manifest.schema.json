@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/schemas/nikl-source-manifest.schema.json",
+  "title": "NIKL Standard Pronunciation Rules source manifest",
+  "description": "Metadata-first inventory emitted only after the official source's 30 article headings and non-empty article extracts reconcile. Optional article text is permitted only for local use after explicit human acknowledgement; this schema does not grant reuse rights.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "collector", "standard", "source", "inventory", "articles"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "collector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "const": "nikl-norm-crawler" },
+        "version": { "type": "string", "minLength": 1 }
+      }
+    },
+    "standard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "authority", "scope", "canonicalUrl"],
+      "properties": {
+        "id": { "const": "NIKL-SP" },
+        "title": { "const": "국립국어원 표준 발음법" },
+        "authority": { "const": "국립국어원" },
+        "scope": { "type": "string", "minLength": 1 },
+        "canonicalUrl": { "type": "string", "format": "uri", "pattern": "^https://korean\\.go\\.kr/kornorms/" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestedUrl", "finalUrl", "retrievedAt", "httpStatus", "contentType", "etag", "lastModified", "responseBytes", "responseSha256", "userAgent", "robots", "termsReview", "retentionPolicy"],
+      "properties": {
+        "requestedUrl": { "type": "string", "format": "uri", "pattern": "^https://korean\\.go\\.kr/kornorms/" },
+        "finalUrl": { "type": "string", "format": "uri", "pattern": "^https://korean\\.go\\.kr/kornorms/" },
+        "retrievedAt": { "type": "string", "format": "date-time" },
+        "httpStatus": { "type": "integer", "minimum": 200, "maximum": 299 },
+        "contentType": { "type": "string", "pattern": "text/html|application/xhtml\\+xml" },
+        "etag": { "type": ["string", "null"] },
+        "lastModified": { "type": ["string", "null"] },
+        "responseBytes": { "type": "integer", "minimum": 1, "maximum": 10485760 },
+        "responseSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "userAgent": { "type": "string", "minLength": 1 },
+        "robots": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["url", "status", "decision"],
+          "properties": {
+            "url": { "type": "string", "format": "uri" },
+            "status": { "type": "integer", "minimum": 200, "maximum": 599 },
+            "decision": { "enum": ["allowed", "no_robots_file"] }
+          }
+        },
+        "termsReview": { "enum": ["not_assessed", "human_acknowledgement_received_not_independently_verified"] },
+        "retentionPolicy": { "type": "string", "minLength": 1 }
+      }
+    },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expectedCount", "extractedCount", "missing", "duplicates", "unexpected", "incomplete", "complete", "errors", "articleIds"],
+      "properties": {
+        "expectedCount": { "const": 30 },
+        "extractedCount": { "const": 30 },
+        "missing": { "type": "array", "maxItems": 0 },
+        "duplicates": { "type": "array", "maxItems": 0 },
+        "unexpected": { "type": "array", "maxItems": 0 },
+        "incomplete": { "type": "array", "maxItems": 0 },
+        "complete": { "const": true },
+        "errors": { "type": "array", "maxItems": 0 },
+        "articleIds": {
+          "type": "array",
+          "minItems": 30,
+          "maxItems": 30,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^NIKL-SP-(0[1-9]|[12][0-9]|30)$" }
+        }
+      }
+    },
+    "articles": {
+      "type": "array",
+      "minItems": 30,
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["articleNumber", "articleId", "title", "anchorId", "sourceUrl", "textSha256", "normalizedCharCount", "extractionStatus"],
+        "properties": {
+          "articleNumber": { "type": "integer", "minimum": 1, "maximum": 30 },
+          "articleId": { "type": "string", "pattern": "^NIKL-SP-(0[1-9]|[12][0-9]|30)$" },
+          "title": { "type": "string", "minLength": 1 },
+          "anchorId": { "type": ["string", "null"] },
+          "sourceUrl": { "type": "string", "format": "uri", "pattern": "^https://korean\\.go\\.kr/kornorms/" },
+          "textSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "normalizedCharCount": { "type": "integer", "minimum": 1 },
+          "extractionStatus": { "const": "parsed" },
+          "sourceText": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}
