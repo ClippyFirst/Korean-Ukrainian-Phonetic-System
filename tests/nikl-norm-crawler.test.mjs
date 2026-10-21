@@ -51,7 +51,7 @@ test("normalizes HTML entities while preserving Korean text", () => {
 test("rejects non-HTTPS, non-official and out-of-scope URLs", () => {
   assert.throws(() => assertAllowedSourceUrl("http://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002"), /HTTPS/);
   assert.throws(() => assertAllowedSourceUrl("https://example.com/kornorms/"), /non-official host/);
-  assert.throws(() => assertAllowedSourceUrl("https://korean.go.kr/front/onlineQna/"), /only the official NIKL/);
+  assert.throws(() => assertAllowedSourceUrl("https://korean.go.kr/front/onlineQna/"), /Only the official NIKL/);
   assert.equal(new URL(assertAllowedSourceUrl(DEFAULT_SOURCE_URL)).hostname, "korean.go.kr");
 });
 
