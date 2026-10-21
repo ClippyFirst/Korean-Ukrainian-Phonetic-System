@@ -4,6 +4,8 @@ These skills live in .agents/skills/ and are intended for coding agents that sup
 
 ## Skills and when to invoke them
 
+The executable collector lives at [scripts/nikl-norm-crawler.mjs](../scripts/nikl-norm-crawler.mjs); operational instructions and limits are in [NIKL-NORM-CRAWLER.md](NIKL-NORM-CRAWLER.md). Skills direct agent behavior, while the script and tests provide the executable collection boundary.
+
 ### 1. NIKL Norm Crawler
 Path: [nikl-norm-crawler/SKILL.md](../.agents/skills/nikl-norm-crawler/SKILL.md)
 
