@@ -4,7 +4,7 @@ This collector is a reproducible source-inventory tool, not a pronunciation engi
 
 ## Scope
 
-- Official source: https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
+- Official source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 - Expected inventory: Articles 1–30 of 제2부 표준 발음법 only.
 - Excluded: adjacent parts of the standards portal, unofficial sources, dictionary/corpus harvesting, and any direct Hangul-to-Ukrainian transformation.
 
