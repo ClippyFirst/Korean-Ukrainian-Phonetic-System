@@ -230,3 +230,30 @@ This section supersedes older PR-head/base counts above where they conflict. Rec
 - Full scientific validation, independent IPA gold, remaining surface-fixture source adjudication, soft-mode parity, project-level licensing/citation decisions, and live deployment verification: PARTIAL / BLOCKED / OWNER-DECISION as appropriate.
 - Release status: **not release-ready**. Keep the project a research preview until independent phonetic/target-policy review and public deployment verification are complete.
 - Next actions: (1) source-adjudicate the 18-row fixture and create an independently reviewed IPA gold subset; (2) run dedicated JS/Python soft-morphology parity tests; (3) obtain owner decisions for root licensing/citation metadata; (4) verify the public Pages site against the merged SHA; (5) run the repository's release gate on a network-enabled checkout and update this handoff with exact evidence.
+
+
+## Final execution update — 2026-10-21
+
+### Strict corpus validation and deployment gate
+- The first strict corpus run correctly exposed the absence of a dedicated `data/korean/sequences.csv` (0 validation FAIL, 1 WARN). Instead of fabricating rows or weakening strict mode, PR #164 adapted the existing **642** source-backed rows in `lexical_pronunciations.csv` into whole-word sequence records when no dedicated sequence table is supplied.
+- Adapted rows preserve the source surface form, IPA string, target string/status, exact per-row source URL, and a registry source ID only when the URL exactly matches an existing source row. They leave segment-level context windows, applied rule IDs, and Ukrainian graphemic targets empty where no evidence supports them.
+- Controlled statuses `provisional` and `surface-only` are now explicit. Regression test `test_sourced_lexical_records_adapt_to_sequence_rows_without_inventing_targets` checks the 642-row count, unique IDs, exact IPA/target carry-through, source URL preservation, S007 matching for `값없다`, and the empty graphemic target.
+- PR #164 merged as [`10bb886`](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/10bb886b27776321d33b1a9358a441c370c1b04c). On its exact head, strict corpus generation, Python 3.11/3.12/3.13, browser tests/build, and Python data-integrity tests passed.
+- PR #165 merged as [`3bb3dfe`](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/3bb3dfe177e2e426ff1260349e199920b1a220ef), adding `python scripts/generate_korean_corpus.py --strict` as a prerequisite in the Pages deployment workflow. The deployment workflow can no longer deploy if strict corpus validation fails.
+
+### Exact-main CI and Pages deployment evidence
+For main commit `3bb3dfe177e2e426ff1260349e199920b1a220ef`, all push-triggered workflows completed successfully:
+- Pages deployment (including strict validation on Python 3.11/3.12/3.13, Python tests, browser tests/build, both generated pages): [run 39571926662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39571926662) — **success**.
+- System verification: [run 39571926526](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39571926526) — **success**.
+- Python 3.11/3.12/3.13 and web tests: [run 39571926415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39571926415) — **success**.
+- Master-table/research-corpus artifacts: [run 39571926475](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39571926475) — **success**.
+- The Pages deploy log reports `Reported success!` for build version `3bb3dfe177e2e426ff1260349e199920b1a220ef` and evaluates the environment URL as https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/. Direct web retrieval of the URL was unavailable to the web tool, so this is verified through GitHub Pages deployment status rather than an independent HTTP/browser smoke test.
+
+### Final disposition and remaining acceptance gaps
+- **DONE_VERIFIED:** current-main IPA adapter trace + Ukrainian target mapping consistency; mixed-script and explanatory-jamo safeguards; 18-row browser/Python surface comparison; strict corpus generation; 642-row source-backed sequence adaptation; Python 3.11/3.12/3.13 tests; browser regression/build; generated corpus; Pages deployment for the exact code/workflow commit above.
+- **PARTIAL / evidence-limited:** the browser/Python surface fixture remains 17/18 matching. `값어치` remains browser/NIKL `가버치` versus Python g2pK 0.9.4 `갑써치`; the other 17 expected rows still need individual source adjudication. Adapted lexical rows do not create full segment-level context coverage.
+- **BLOCKED / owner decision:** independent IPA gold and Ukrainian target-policy review; dedicated JS/Python soft-morphology parity adjudication; root project-level `LICENSE` and `CITATION.cff`; independent direct HTTP smoke check of Pages. Local checkout remains unavailable in this execution environment because `git clone` could not resolve `github.com`; remote exact-head CI evidence is recorded above.
+- **Release classification:** the repository is now a technically deployed, tested **research preview**, but it is **not a scientifically validated/release-ready transcription standard**. Do not claim universal narrow-phonetic accuracy or complete contextual coverage.
+- **Next genuine work:** source-adjudicate the 18-row surface fixture; build an independently reviewed IPA gold subset; review target-policy evidence; add explicit soft-mode parity tests; obtain license/citation owner decisions; perform direct public-site smoke testing when a suitable browser/network path is available.
+
+A documentation-only continuation update follows this section; the code/workflow deployment evidence above remains tied to the exact SHA and run IDs stated here.
