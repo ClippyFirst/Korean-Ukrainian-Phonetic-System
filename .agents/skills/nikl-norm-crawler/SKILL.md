@@ -52,6 +52,30 @@ For each requested resource, retain at least:
 
 Keep raw body storage configurable. Do not commit a raw-page cache by default: large snapshots may contain copyrighted material or create noisy diffs. If local caching is needed, follow existing ignore conventions and repository policy.
 
+## Parser engineering and operational diagnostics
+
+- Prefer semantic anchors, stable article IDs, and structural relationships over CSS classes that look presentational. If the source is table-based, preserve row/column meaning; if examples are interleaved with prose, preserve their order and association with the correct clause.
+- Keep HTML decoding and extraction separate from linguistic normalization. Unicode NFC/NFD normalization may be useful for comparison, but never discard the original byte hash or source string.
+- Avoid broad selectors that accidentally include navigation, footer text, duplicated mobile/desktop markup, or unrelated regulations. Add fixtures for representative page shapes and malformed variants.
+- Treat selectors, parser dependencies, and source URL patterns as versioned behavior. A parser change that alters record counts must produce a reviewable diff.
+- Detect pagination, hidden continuation links, article anchors, and duplicate mobile/desktop representations. Confirm the index's article count against extracted article IDs.
+- Keep logs useful but safe: include resource IDs, URLs, statuses, and concise errors; avoid dumping huge copyrighted page bodies into CI logs.
+- Make the command idempotent. Re-running against unchanged captured inputs must not reorder records or create spurious diffs.
+- If the site introduces JavaScript-only content, first inspect network/documentation for an official endpoint. Use browser automation only after confirming that it is needed and permitted.
+
+### Recommended implementation seams
+
+Prefer small functions or modules with independently testable contracts:
+1. discover_index() returns ordered expected source IDs and URLs;
+2. fetch_resource() returns bytes plus HTTP/provenance metadata;
+3. parse_resource() returns a typed parse result plus warnings;
+4. normalize_article() maps parsed structure into the existing schema without inventing missing fields;
+5. validate_inventory() checks completeness, duplicates, hierarchy, and count reconciliation;
+6. diff_manifests() compares current and previous source identities and hashes;
+7. write_outputs() writes atomically only after validation succeeds.
+
+These are conceptual seams, not mandatory function names; fit the repository's existing architecture rather than adding redundant abstractions.
+
 ## Normalized article/rule records
 
 Reuse the repository's existing schema if it can represent the source faithfully. Do not silently mutate a schema to fit one page. If a schema extension is needed, version it and provide migration/compatibility tests.
