@@ -82,6 +82,7 @@ test('six formerly rule-derived surface comparators now have exact NIKL Q&A cita
     assert.equal(item.normativeEvidenceStatus, 'direct-NIKL-QA', input);
     assert.equal(item.normativeSourceUrl, url, input);
     assert.equal(item.ipaGoldStatus, 'not_independently_adjudicated', input);
+    if (input === '숲에') assert.match(item.normativeNotes, /\\[숩페\\].*rejected/u);
   }
   assert.match(byInput.get('숲이').normativeNotes, /not independently adjudicated/u);
 });
