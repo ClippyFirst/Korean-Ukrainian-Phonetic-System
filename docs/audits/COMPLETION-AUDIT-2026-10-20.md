@@ -222,7 +222,7 @@ The CI exposed and the fixture now records the strict port's outputs instead of 
 
 ## Final post-deploy verification — 2026-10-21
 
-- Final main commit: `778070fd81afc21e170ded6d8b5c0b8af8bab19c`.
+- Code/deployment commit verified by live HTTP smoke: `778070fd81afc21e170ded6d8b5c0b8af8bab19c`; this PR only updates the final handoff/audit evidence.
 - PR #169 and #170 merged; no open PRs remained at the last status check.
 - Tests/build/Python 3.11–3.13 passed: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020543
 - System verification passed: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020407
