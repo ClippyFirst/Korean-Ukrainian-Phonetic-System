@@ -30,3 +30,23 @@ test('known normative divergences stay explicit and never rewrite the port fixtu
   assert.equal(byInput.get('읽고').expectedSurface, '익꼬');
   assert.equal(byInput.get('읽고').normativeSurface, '일꼬');
 });
+
+
+test('six formerly rule-derived surface comparators now have exact NIKL Q&A citations', () => {
+  const evidence = {
+    '넋이': ['넉씨', 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=323740'],
+    '몫이': ['목씨', 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=335008'],
+    '값이': ['갑씨', 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=330274'],
+    '국립': ['궁닙', 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=328893'],
+    '협력': ['혐녁', 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330091'],
+    '독립문': ['동님문', 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=314644'],
+  };
+  for (const [input, [surface, url]] of Object.entries(evidence)) {
+    const item = byInput.get(input);
+    assert.equal(item.normativeSurface, surface, input);
+    assert.equal(item.normativeEvidenceStatus, 'direct-NIKL-QA', input);
+    assert.equal(item.normativeSourceUrl, url, input);
+  }
+  assert.equal(fixture.cases.filter((item) => item.normativeEvidenceStatus.startsWith('derived')).length, 1);
+  assert.equal(byInput.get('숲이').normativeEvidenceStatus, 'derived-from-NIKL-rule');
+});
