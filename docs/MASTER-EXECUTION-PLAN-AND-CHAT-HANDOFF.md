@@ -316,3 +316,15 @@ This evidence is exact-head CI, not local execution; this environment still has 
 - **BLOCKED / owner-dependent:** root project-wide `LICENSE` and `CITATION.cff) cannot be finalized without owner identity/licensing decisions; no license is inferred from third-party Apache notices. The UPI package locator was not verified and is no longer described as a confirmed runtime dependency.
 - **BLOCKED / specialist evidence:** independent IPA gold and Ukrainian target-policy validation require qualified review; no IPA is fabricated from orthography. Direct interactive smoke test of the deployed long-passage input was not completed due unavailable browser/network path.
 - **Release status:** technically deployed research preview, not a scientifically validated/release-ready standard. Merge of this bounded follow-up depends on CI; scientific acceptance remains blocked independently.
+
+
+## Final mainline verification after one-pass follow-up — 2026-10-21
+
+- **Final main commit:** `778070fd81afc21e170ded6d8b5c0b8af8bab19c`.
+- **PR #169 merged:** `a2f534aba610bb3d5b17e7cbae1815972259a178`; cross-runtime soft-morphology parity guard/tests, source-evidence gates, populated coverage matrix, stale manifest cleanup, and user-facing practical-mode warning are on main.
+- **PR #170 merged:** `778070fd81afc21e170ded6d8b5c0b8af8bab19c`; the existing Pages deployment workflow now performs a live HTTP smoke check after deployment.
+- **Final mainline CI passed:** tests/build/Python 3.11–3.13 [39602020543](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020543); system verification [39602020407](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020407); master table/corpus artifacts [39602020437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020437); Pages deploy and post-deploy HTTP smoke [39602020436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39602020436).
+- **Live HTTP smoke result:** PASS. GitHub-hosted runner retrieved the public index and system page, verified the practical-mode warning and mode control, and retrieved a non-empty generated JavaScript asset from https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/.
+- **Still not verified:** interactive browser entry/processing of the user's exact long passage, responsive/mobile/assistive-technology behavior, independent IPA gold, and independent Ukrainian target-policy quality. This session's direct web/network path could not open the site; do not represent HTTP smoke as an interactive or linguistic-accuracy test.
+- **Owner/specialist blockers:** root project-wide LICENSE and CITATION.cff identity/attribution decision; qualified independent IPA and Ukrainian target review; seven rule-derived surface cases remain unadjudicated. Do not fabricate these to make the release gate green.
+- **Final disposition:** technically deployed, CI-tested **research preview**, not a scientifically validated or release-ready standard.
