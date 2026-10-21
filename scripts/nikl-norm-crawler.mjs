@@ -161,19 +161,14 @@ export function parseNiklStandardHtml(html, sourceUrl = DEFAULT_SOURCE_URL) {
   const candidates = rawCandidates.filter((item) => !rawCandidates.some((other) =>
     other.node !== item.node && other.heading.number === item.heading.number && isDescendant(item.node, other.node)))
     .sort((a, b) => a.node.start - b.node.start);
-  const deduped = [];
-  for (const item of candidates) {
-    const previous = deduped[deduped.length - 1];
-    if (previous?.heading.number === item.heading.number) {
-      if (item.node.end - item.node.start < previous.node.end - previous.node.start) deduped[deduped.length - 1] = item;
-      continue;
-    }
-    deduped.push(item);
-  }
+  // Nested duplicate title nodes were removed above. Do not collapse repeated
+  // sibling headings: the inventory validator must report those as source defects.
+  const deduped = candidates;
   const articles = deduped.map((item, index) => {
     const end = Math.min(deduped[index + 1]?.node.start ?? sectionEnd, sectionEnd);
     const sourceText = stripHtml(html.slice(item.node.start, end));
     const anchorId = item.node.attrs.id || null;
+    const titleRemainder = item.heading.text.replace(/^제\\s*\\d+\\s*항/u, "").trim();
     return {
       articleNumber: item.heading.number,
       articleId: "NIKL-SP-" + String(item.heading.number).padStart(2, "0"),
@@ -183,7 +178,7 @@ export function parseNiklStandardHtml(html, sourceUrl = DEFAULT_SOURCE_URL) {
       sourceText,
       textSha256: sha256(sourceText.normalize("NFC")),
       normalizedCharCount: [...sourceText].length,
-      extractionStatus: sourceText.length > item.heading.text.length ? "parsed" : "review-needed",
+      extractionStatus: sourceText.length > item.heading.text.length && titleRemainder ? "parsed" : "review-needed",
     };
   });
   return { sourceUrl, sectionTitle: normalizeText(textContent(partMarker)), articles, validation: validateArticleInventory(articles) };
