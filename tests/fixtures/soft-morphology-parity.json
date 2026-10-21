@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "description": "Shared regression contract for opt-in soft morphology. These tests compare rule-family eligibility and trace status across the Python research rule engine and browser engine; they do not assert that heuristic outputs are normative gold.",
+  "cases": [
+    {
+      "input": "삶이",
+      "expectedSoftRuleFamily": ["R002"],
+      "expectedSoftTrace": true,
+      "expectedSurface": "살미",
+      "reason": "Unlisted complex-coda + vowel-initial candidate; formal liaison is permitted only as explicitly low-confidence soft behavior."
+    },
+    {
+      "input": "좋아",
+      "expectedSoftRuleFamily": ["R003"],
+      "expectedSoftTrace": true,
+      "expectedSurface": "조아",
+      "reason": "ㅎ-deletion heuristic; this must not also emit a generic R002 liaison license."
+    },
+    {
+      "input": "값어",
+      "expectedSoftRuleFamily": [],
+      "expectedSoftTrace": false,
+      "expectedSurface": null,
+      "reason": "Adversarial §15-sensitive sequence; spelling alone cannot decide formal versus substantive morphology."
+    },
+    {
+      "input": "값어치",
+      "expectedSoftRuleFamily": [],
+      "expectedSoftTrace": false,
+      "expectedSurface": null,
+      "reason": "NIKL gives normative [가버치] under §15; soft morphology must not guess a formal liaison path."
+    },
+    {
+      "input": "삶 이",
+      "expectedSoftRuleFamily": [],
+      "expectedSoftTrace": false,
+      "expectedSurface": null,
+      "reason": "No heuristic license may cross whitespace."
+    }
+  ]
+}

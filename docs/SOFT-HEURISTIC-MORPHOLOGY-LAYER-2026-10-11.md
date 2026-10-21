@@ -224,3 +224,10 @@ When implementing, update:
 ---
 
 **Summary for implementers:** keep the fail-closed core. Add an opt-in, closed-list, same-eojeol formal-ending detector that can temporarily unlock R002 (formal only), R003, and R007. Trace every soft decision. Document the boundary so soft is never mistaken for a general morphological parser.
+
+
+## Cross-runtime parity regression update — 2026-10-21
+
+The shared fixture `tests/fixtures/soft-morphology-parity.json` is consumed by both Python and JavaScript tests. It checks a positive complex-coda case (`삶이`), a ㅎ-deletion case (`좋아`), §15-sensitive negative cases (`값어`, `값어치`), and a whitespace boundary (`삶 이`). Expected outputs in this fixture are heuristic regression expectations, not normative gold.
+
+A Python guard was added so soft R002 does not emit a generic formal liaison license for 어/아, for ㅎ/ㄶ/ㅀ cases handled by R003, or for simple-coda §15-sensitive environments. This aligns Python's fail-closed boundary with the browser helper. Acceptance requires both `tests/test_soft_morphology_parity.py` and `tests/soft-morphology-parity.test.mjs` to pass in CI.

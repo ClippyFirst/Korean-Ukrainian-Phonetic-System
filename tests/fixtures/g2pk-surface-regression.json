@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "description": "Fixed Korean surface-form regression cases. This fixture is not yet an independent IPA gold set or a recorded Python g2pK differential run.",
+  "description": "The expectedSurface field records the pinned JavaScript g2pK port output used by practical-mode parity tests. normativeSurface is a separate NIKL comparator: normativeEvidenceStatus distinguishes directly attested examples from rule-derived candidates that still need lexical adjudication. This fixture is not an independent IPA gold set; practical mode must never replace port output with normativeSurface.",
   "cases": [
     {
       "input": "넋이",
@@ -11,7 +11,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "넉씨",
+      "normativeEvidenceStatus": "derived-from-NIKL-rule",
+      "normativeSourceLocator": "§13; source form is not individually listed in the reviewed excerpt",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
     },
     {
       "input": "몫이",
@@ -22,7 +27,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "목씨",
+      "normativeEvidenceStatus": "derived-from-NIKL-rule",
+      "normativeSourceLocator": "§13 plus final-consonant constraints; individual lexical entry not independently adjudicated",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
     },
     {
       "input": "값이",
@@ -33,7 +43,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "갑씨",
+      "normativeEvidenceStatus": "derived-from-NIKL-rule",
+      "normativeSourceLocator": "§13 plus final-consonant constraints; individual lexical entry not independently adjudicated",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
     },
     {
       "input": "값어치",
@@ -47,7 +62,11 @@
       "expectedSurfaceProvenance": "Observed output of the pinned vendored JavaScript g2pK port; normative surface is recorded separately and differs.",
       "differentialStatus": "js-port-and-python-g2pk-diverge-from-nikl-normative-output",
       "differentialNote": "NIKL explicitly gives the standard pronunciation [가버치]. The practical mode preserves the pinned JS port output [갑써치] by contract; this is a known upstream-model divergence, not an override opportunity.",
-      "sourceUrl": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217"
+      "sourceUrl": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217",
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§15 붙임 explicitly lists 값어치[가버치]",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217",
+      "normativeNotes": "This is the normative standard, while expectedSurface remains the practical JS-port output. Do not use normativeSurface to override practical mode."
     },
     {
       "input": "숲이",
@@ -58,7 +77,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "수피",
+      "normativeEvidenceStatus": "derived-from-NIKL-rule",
+      "normativeSourceLocator": "§13 formal-morpheme liaison; lexical output still needs independent adjudication",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
     },
     {
       "input": "같이",
@@ -69,7 +93,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "가치",
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§17 palatalization example 같이[가치]",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
       "input": "굳이",
@@ -80,7 +109,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "구지",
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§17 palatalization example 굳이[구지]",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
       "input": "닭이",
@@ -91,7 +125,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "달기",
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§13 example 닭이[달기]",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
       "input": "밟는",
@@ -102,7 +141,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "밤는",
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§10 exception and §18 nasal assimilation give 밟는[밤ː는]; Hangul surface field does not encode length",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
       "input": "넓죽하다",
@@ -114,7 +158,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "Pinned vendored JavaScript g2pK output under production options; prior project lexical control had changed this surface.",
-      "differentialStatus": "js-port-differs-from-previous-project-lexical-control"
+      "differentialStatus": "js-port-differs-from-previous-project-lexical-control",
+      "normativeSurface": "넙쭈카다",
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§10 explicitly gives 넓-죽하다[넙쭈카다]",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "The JS port intentionally differs from the official standard; expectedSurface remains port output."
     },
     {
       "input": "읽고",
@@ -126,7 +175,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "Pinned vendored JavaScript g2pK output under production options; prior project lexical control had changed this surface.",
-      "differentialStatus": "js-port-differs-from-previous-project-lexical-control"
+      "differentialStatus": "js-port-differs-from-previous-project-lexical-control",
+      "normativeSurface": "일꼬",
+      "normativeEvidenceStatus": "direct-NIKL-QA",
+      "normativeSourceLocator": "NIKL Online Q&A directly confirms 읽고[일꼬]",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=315279",
+      "normativeNotes": "The JS port intentionally differs from the official standard; expectedSurface remains port output."
     },
     {
       "input": "읽는",
@@ -137,7 +191,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "잉는",
+      "normativeEvidenceStatus": "direct-NIKL-QA",
+      "normativeSourceLocator": "NIKL Online Q&A example and §11 + §18",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306000",
+      "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
       "input": "국립",
@@ -148,7 +207,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "궁닙",
+      "normativeEvidenceStatus": "derived-from-NIKL-rules",
+      "normativeSourceLocator": "§19 liquid behavior followed by §18 nasal assimilation; exact lexical surface is a rule-derived candidate",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
     },
     {
       "input": "협력",
@@ -159,7 +223,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "혐녁",
+      "normativeEvidenceStatus": "derived-from-NIKL-rules",
+      "normativeSourceLocator": "§19 liquid behavior followed by §18 nasal assimilation; exact lexical surface is a rule-derived candidate",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
     },
     {
       "input": "독립문",
@@ -170,7 +239,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "동님문",
+      "normativeEvidenceStatus": "derived-from-NIKL-rules",
+      "normativeSourceLocator": "Rule-interaction candidate from §§18–19; compound-level lexical adjudication remains open",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
     },
     {
       "input": "칼날",
@@ -181,7 +255,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "칼랄",
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§20 explicitly lists 칼날[칼랄]",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
       "input": "물난리",
@@ -192,7 +271,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "물랄리",
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§20 explicitly lists 물난리[물랄리]",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
       "input": "서울역",
@@ -203,7 +287,12 @@
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
-      "differentialStatus": "matched-existing-browser-expectation"
+      "differentialStatus": "matched-existing-browser-expectation",
+      "normativeSurface": "서울력",
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§29 붙임 1 explicitly lists 서울-역[서울력]",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     }
   ]
 }

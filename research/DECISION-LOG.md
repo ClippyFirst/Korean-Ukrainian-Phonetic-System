@@ -38,3 +38,39 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Consequences:** Some cases remain unresolved, but users are not given unsupported confidence.
 - **Validation:** Verify confidence/status propagation, strict-mode defaults, and that heuristics cannot license excluded rule classes.
 - **Revisit when:** A validated lexical/morphological analyzer and independent evaluation justify a revised policy.
+
+## DEC-2026-003 — Practical browser mode is strict to the pinned JavaScript port
+- **Date:** 2026-10-21
+- **Status:** accepted and merged to main in PR #167.
+- **Context/problem:** Research lexical corrections after G2P made the public practical mode cease to reproduce the chosen upstream JavaScript port.
+- **Evidence:** Direct adapter-vs-port regression gate over 18 fixed cases; exact-head CI runs 39597726122, 39597726175, 39597726128, and 39597726141; merged implementation commit fde3113fe97a34582228abcd870e64a690cf9d09.
+- **Options considered:** silently correct upstream output; keep port output and document divergences; route practical mode through the native research engine.
+- **Decision:** Practical mode preserves pinned port output, then maps that surface through the IPA adapter. Research mode remains separate. No lexical override may rewrite the practical surface or IPA.
+- **Consequences and trade-offs:** Exact behavioral parity is reproducible, but upstream output is not treated as normative gold. Known divergences include 값어치 (port 갑써치; NIKL 가버치), 넓죽하다 (port 널쭈카다; NIKL 넙쭈카다), and 읽고 (port 익꼬; NIKL 일꼬).
+- **Affected files/rule IDs/runtimes:** src/app/g2pk_web.js; src/main.js; tests/g2pk-browser-parity-gate.test.mjs; tests/fixtures/g2pk-surface-regression.json; public browser runtime.
+- **Validation/tests:** All four exact-head CI groups passed before merge; main deployment workflow passed on merge commit.
+- **Revisit when:** The user explicitly changes the practical-mode contract or a versioned port upgrade is proposed with a new parity corpus.
+
+## DEC-2026-004 — Ukrainian target output remains an explicitly provisional project policy
+- **Date:** 2026-10-21
+- **Status:** accepted as a documentation/claim boundary; empirical validation remains open.
+- **Context/problem:** Ukrainian transcription scholarship reviewed by the project addresses mainly proper names and includes disagreements; it does not establish one universal mapping for all Korean vocabulary.
+- **Evidence:** docs/ukrainian-target-review-2026-10-10.md; research/UKRAINIAN-TARGET-LAYER-COMPARISON-2026-10-16.md; mechanical IPA-to-target consistency test; source register entries for Shchehel (2009) and Kovalchuk (2011).
+- **Options considered:** claim one mapping is authoritative; silently adopt one proper-name proposal for all words; preserve current mapping as a project policy and label it provisional.
+- **Decision:** Preserve the inspectable IPA layer and the existing explicit IPA-to-Ukrainian mapping as a practical project approximation. Do not call it an official Ukrainian standard, an empirically optimal mapping, or a validated universal proper-name policy. Do not rewrite individual lexical targets without evidence.
+- **Consequences and trade-offs:** Mechanical consistency can be tested now, while perceptual quality and policy preferences remain unresolved. A reader study and independent review are required before stronger claims.
+- **Affected files/rule IDs/runtimes:** data/korean/canonical_correspondence.csv; src/app/engine_ipa.js; src/korean_ukrainian/ukrainian_adapter.py; README.md; index.html.
+- **Validation/tests:** Existing model-wide IPA/target consistency tests validate reproducibility only, not target optimality.
+- **Revisit when:** At least two independent Korean/Ukrainian reviewers and reader-evaluation evidence are available.
+
+## DEC-2026-005 — Soft morphology must fail closed on ambiguous liaison and keep cross-runtime status parity
+- **Date:** 2026-10-21
+- **Status:** implemented and verified by exact-head CI on 2026-10-21; PR #169 is the integration vehicle.
+- **Context/problem:** Python soft_formal_licenses could emit a generic R002 formal license for ambiguous 어/아 sequences such as 값어치, while the browser layer deliberately refuses to guess §15-sensitive liaison.
+- **Evidence:** Existing browser negative controls in tests/soft-heuristic-morphology-formal-endings.test.mjs; shared fixture tests/fixtures/soft-morphology-parity.json added in this branch.
+- **Options considered:** loosen the browser guard; let Python guess; align Python with the browser fail-closed boundary and test both.
+- **Decision:** Python soft mode no longer emits generic R002 licenses for 어/아, for ㅎ clusters handled by R003, or for simple-coda §15-sensitive environments. A shared fixture checks positive low-confidence cases and negative ambiguity/boundary cases in Python and JavaScript.
+- **Consequences and trade-offs:** Some forms remain unresolved rather than guessed; this is intentional. This decision is not complete until exact-head CI passes.
+- **Affected files/rule IDs/runtimes:** src/korean_ukrainian/soft_morphology.py; tests/test_soft_morphology_parity.py; src/app/soft_morphology.js; tests/soft-morphology-parity.test.mjs.
+- **Validation/tests:** tests/build/Python 3.11–3.13 passed [39601258671](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258671); browser G2P integration passed [39601258672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258672); system verification passed [39601258670](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258670); corpus artifacts passed [39601258668](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258668). Local execution remains unavailable in the API-only environment.
+- **Revisit when:** A source-backed morphological analyzer or independent evidence supports a narrower rule for a previously blocked form.

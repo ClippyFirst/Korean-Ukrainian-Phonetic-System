@@ -66,3 +66,10 @@ Related validation documents:
 ## Practical-mode contract correction — 2026-10-21
 
 The practical browser mode is intentionally strict about the selected JavaScript port, not about matching normative NIKL output in every word. Its Korean surface form must equal `G2pBrowser.convert` with `descriptive: false`, `verbose: false`, `groupVowels: false`, and `toSyl: true`, after the documented literal-preservation boundary for Latin/digits/jamo. The adapter then derives IPA and Ukrainian target from that surface. It must not patch the surface or IPA using the research lexicon. For example, the port's `값어치` output is kept as a known upstream divergence from NIKL's `가버치`; this is not a claim that the port is normatively correct.
+
+
+## Source-adjudicated surface regression — 2026-10-21
+
+See [surface regression source adjudication](audits/SURFACE-REGRESSION-SOURCE-ADJUDICATION-2026-10-21.md). The 18-case fixture now keeps the pinned JS-port expected output separate from the NIKL normative comparator. Eleven cases have direct NIKL example/Q&A support; seven are rule-derived candidates and remain explicitly unadjudicated. All 18 IPA gold values remain pending independent review.
+
+The public UI now warns that practical mode reproduces the JavaScript port without lexical corrections and may differ from NIKL. This is a behavior contract and limitation notice, not a claim that upstream G2P output is always standard-correct.
