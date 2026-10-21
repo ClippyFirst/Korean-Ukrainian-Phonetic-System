@@ -101,6 +101,7 @@ test('IPA vowel length remains visible in IPA and is explicitly explained when o
 
 test('the visible IPA trace renders non-orthographic feature handling rather than silently dropping it', () => {
   const app = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
+  const ipaEngine = readFileSync(new URL('../src/app/engine_ipa.js', import.meta.url), 'utf8');
   assert.ok(app.includes('const featureTrace=(mappingResult.features||[])'));
-  assert.ok(app.includes('довгота збережена в IPA'));
+  assert.ok(ipaEngine.includes('довгота збережена в IPA'));
 });
