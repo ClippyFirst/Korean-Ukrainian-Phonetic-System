@@ -10,7 +10,7 @@ description: Use when planning, implementing, running, or reviewing a reproducib
 Collect a complete, auditable representation of official Korean-language normative material needed by the existing Korean → IPA → Ukrainian research engine. This skill governs source discovery and capture; it does not itself decide phonological analyses or authorize rules.
 
 Primary sources:
-- Standard Pronunciation Rules (표준 발음법): https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
+- Standard Pronunciation Rules (표준 발음법): https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 - Korean Norms portal: https://korean.go.kr/kornorms/main/main.do
 - Standard Korean Dictionary: https://stdict.korean.go.kr/
 
