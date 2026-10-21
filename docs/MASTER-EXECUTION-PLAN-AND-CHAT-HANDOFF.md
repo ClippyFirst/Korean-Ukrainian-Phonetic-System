@@ -448,3 +448,10 @@ The required pipeline remains Hangul → structural/morphological analysis → K
 - Exact test head `008f44c1f348926b767ce92a7cc5c70b12e685ad`: **1,073/1,073 Node tests**, Vite build, Python regression/data-integrity suite passed. CI: [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39672160451).
 - Status: `DONE_VERIFIED` for the previously excluded surface-only path's IPA-first consistency gate. This is a mechanical pipeline test, not independent phonetic or target-language validation. No runtime code, practical output, or public UI changed.
 - Remaining scientific blockers are unchanged: IPA gold is independently adjudicated for 0/18 surface-regression cases; Ukrainian target-layer review remains outstanding; the exact lexical attestation for `숲이` is unresolved; the live 30-article NIKL inventory remains blocked by HTTP 403; per-item KOGL markings remain unverified.
+
+
+## Final remaining surface comparator sourced — 2026-10-21
+
+- Rechecked the one remaining rule-derived comparator in `tests/fixtures/g2pk-surface-regression.json`. The official Standard Pronunciation Rules' §13 examples explicitly list `숲이[수피]`, so the fixture now records `direct-NIKL-example` with the precise locator rather than a rule-derived hypothesis.
+- The evidence test now requires **18/18 directly attested Korean surface comparators** and zero derived-only comparators. This does not change pinned practical output and does not turn any case into IPA gold: independently adjudicated IPA remains **0/18**.
+- The source register and surface adjudication audit were updated in place. Existing source access/reuse constraints and the Ukrainian target-layer review remain open.
