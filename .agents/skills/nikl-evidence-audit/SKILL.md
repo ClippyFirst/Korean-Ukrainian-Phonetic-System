@@ -11,7 +11,7 @@ Keep the research engine evidence-gated. Every deterministic pronunciation decis
 
 ## Source hierarchy and scope
 
-1. NIKL Standard Pronunciation Rules (표준 발음법): https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002
+1. NIKL Standard Pronunciation Rules (표준 발음법): https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 2. NIKL Standard Korean Dictionary: https://stdict.korean.go.kr/
 3. Other official NIKL material, official answers, or official corpora where access/use terms allow, with exact page and context recorded.
 4. Peer-reviewed linguistic publications and scholarly grammars, explicitly marked as secondary evidence.
@@ -75,6 +75,10 @@ When official sources appear to disagree, do not silently choose whichever outpu
 ### Safe handling of automated suggestions
 
 Automated agents may propose candidate examples, article mappings, segmentations, or IPA. Treat each as untrusted until independently verified against the source and project schema. A source URL alone does not prove that the cited page contains the claimed form. Re-open the exact source, verify the relevant span, and retain a reproducible locator. Reject unsupported claims rather than weakening the acceptance gate to fit them.
+
+**Direct-example gate:** use `DIRECT_OFFICIAL_ATTESTATION` or the repository's equivalent `direct-NIKL-example` status only when the exact orthographic form and pronunciation are visible in the cited official page/entry/answer. Inspect the actual enumerated example list, not just the general rule or its explanatory prose. A secondary search result quoting a rule, agreement with G2P, or a plausible derivation cannot upgrade a rule-derived case to direct evidence. If the exact source span cannot be checked, retain `OFFICIAL_RULE_DERIVATION` / `derived-from-NIKL-rule` or `HYPOTHESIS_UNRESOLVED` and record the access/evidence limitation.
+
+**Regression lesson:** NIKL §13's current enumerated examples include `깎아[까까]`, `옷이[오시]`, `있어[이써]`, `낮이[나지]`, `꽂아[꼬자]`, `꽃을[꼬츨]`, `쫓아[쪼차]`, `밭에[바테]`, `앞으로[아프로]`, and `덮이다[더피다]`; they do not list `숲이[수피]`. The general liaison rule supports `숲이[수피]` as a candidate, but without an exact lexical attestation it must remain rule-derived. See the official [Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002).
 
 ## Morphology and rule scope
 
