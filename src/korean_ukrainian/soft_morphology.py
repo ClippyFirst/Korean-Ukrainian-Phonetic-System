@@ -91,7 +91,7 @@ def soft_formal_licenses(items: list, *, full_form: str | None = None) -> list[s
                 and representative != a.coda
                 and b.nucleus in {"ㅏ", "ㅓ", "ㅗ", "ㅜ", "ㅟ"}
             )
-            if a.coda not in {"ㅎ", "ㅇ"} and not substantive_risk:
+            if a.coda not in {"ㅎ", "ㄶ", "ㅀ", "ㅇ"} and not substantive_risk:
                 lic = f"R002:formal:{form}:{pair}"
                 if lic not in seen:
                     licenses.append(lic)
