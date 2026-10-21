@@ -13,10 +13,10 @@
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
       "differentialStatus": "matched-existing-browser-expectation",
       "normativeSurface": "넉씨",
-      "normativeEvidenceStatus": "derived-from-NIKL-rule",
-      "normativeSourceLocator": "§13; source form is not individually listed in the reviewed excerpt",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
-      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
+      "normativeEvidenceStatus": "direct-NIKL-QA",
+      "normativeSourceLocator": "NIKL Online Q&A qna_seq=323740 explicitly confirms 넋이[넉씨] and explains the §14/§23 sequence.",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=323740",
+      "normativeNotes": "Direct official lexical attestation for the Korean surface [넉씨]. IPA and Ukrainian target remain independently unadjudicated."
     },
     {
       "input": "몫이",
@@ -29,10 +29,10 @@
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
       "differentialStatus": "matched-existing-browser-expectation",
       "normativeSurface": "목씨",
-      "normativeEvidenceStatus": "derived-from-NIKL-rule",
-      "normativeSourceLocator": "§13 plus final-consonant constraints; individual lexical entry not independently adjudicated",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
-      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
+      "normativeEvidenceStatus": "direct-NIKL-QA",
+      "normativeSourceLocator": "NIKL Online Q&A qna_seq=335008 directly lists 몫이[목씨] and discusses the §14 liaison/fortis-s result.",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=335008",
+      "normativeNotes": "Direct official lexical attestation for the Korean surface [목씨]. IPA and Ukrainian target remain independently unadjudicated."
     },
     {
       "input": "값이",
@@ -45,10 +45,10 @@
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
       "differentialStatus": "matched-existing-browser-expectation",
       "normativeSurface": "갑씨",
-      "normativeEvidenceStatus": "derived-from-NIKL-rule",
-      "normativeSourceLocator": "§13 plus final-consonant constraints; individual lexical entry not independently adjudicated",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
-      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
+      "normativeEvidenceStatus": "direct-NIKL-QA",
+      "normativeSourceLocator": "NIKL Online Q&A qna_seq=330274 explicitly confirms 값이[갑씨] and relates it to §14.",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=330274",
+      "normativeNotes": "Direct official lexical attestation for the Korean surface [갑씨]. IPA and Ukrainian target remain independently unadjudicated."
     },
     {
       "input": "값어치",
@@ -209,10 +209,10 @@
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
       "differentialStatus": "matched-existing-browser-expectation",
       "normativeSurface": "궁닙",
-      "normativeEvidenceStatus": "derived-from-NIKL-rules",
-      "normativeSourceLocator": "§19 liquid behavior followed by §18 nasal assimilation; exact lexical surface is a rule-derived candidate",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
-      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
+      "normativeEvidenceStatus": "direct-NIKL-QA",
+      "normativeSourceLocator": "NIKL Online Q&A qna_seq=328893 explicitly derives 국립[궁닙] as [국닙→궁닙], with §19 before §18.",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=328893",
+      "normativeNotes": "Direct official lexical attestation for the Korean surface [궁닙] and the ordered §19→§18 interaction. IPA and Ukrainian target remain independently unadjudicated."
     },
     {
       "input": "협력",
@@ -225,10 +225,10 @@
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
       "differentialStatus": "matched-existing-browser-expectation",
       "normativeSurface": "혐녁",
-      "normativeEvidenceStatus": "derived-from-NIKL-rules",
-      "normativeSourceLocator": "§19 liquid behavior followed by §18 nasal assimilation; exact lexical surface is a rule-derived candidate",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
-      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
+      "normativeEvidenceStatus": "direct-NIKL-QA",
+      "normativeSourceLocator": "NIKL Online Q&A qna_seq=330091 explicitly confirms 협력[협녁→혐녁] and the ordered §19→§18 interaction.",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330091",
+      "normativeNotes": "Direct official lexical attestation for the Korean surface [혐녁] and the ordered §19→§18 interaction. IPA and Ukrainian target remain independently unadjudicated."
     },
     {
       "input": "독립문",
@@ -241,10 +241,10 @@
       "expectedSurfaceProvenance": "existing project regression expectation; independently re-check against NIKL before treating as gold",
       "differentialStatus": "matched-existing-browser-expectation",
       "normativeSurface": "동님문",
-      "normativeEvidenceStatus": "derived-from-NIKL-rules",
-      "normativeSourceLocator": "Rule-interaction candidate from §§18–19; compound-level lexical adjudication remains open",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
-      "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
+      "normativeEvidenceStatus": "direct-NIKL-QA",
+      "normativeSourceLocator": "NIKL Online Q&A qna_seq=314644 explicitly confirms 독립문[동님문] from §§19 and 18.",
+      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=314644",
+      "normativeNotes": "Direct official lexical attestation for the Korean surface [동님문] and the ordered §19→§18 interaction. IPA and Ukrainian target remain independently unadjudicated."
     },
     {
       "input": "칼날",
