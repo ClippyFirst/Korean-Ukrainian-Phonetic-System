@@ -300,3 +300,8 @@ The skills now require exact source-span inspection before any direct-attestatio
 ### Post-merge deployment smoke after evidence-gate update — 2026-10-21
 
 Main commit `171a1ac013fd09bb04c5f25d705a80706f3d4b89` passed Pages deployment, public HTTP smoke for `index.html`, `system.html`, and the first JavaScript asset, and live Chromium practical-mode smoke. The adversarial fixture contained 1,443 Korean input characters and produced 2,782 Ukrainian output characters plus 3,731 IPA characters with no page errors. Evidence: [deployment and live browser smoke](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39673643136). This verifies deployment and interaction plumbing, not pronunciation accuracy or IPA gold.
+
+
+### NIKL formal-morpheme boundary evidence extension — 2026-10-21
+
+A primary-source search found two additional official NIKL Q&A attestations: `숲을[수플]` (qna_seq=332248) and `숲에[수페]` (qna_seq=331304; `[숩페]` explicitly rejected). Added both to `tests/fixtures/g2pk-surface-regression.json`, source register, port parity gate, and normative evidence test. The fixed surface fixture now contains 20 cases: **19 direct Korean surface comparators + 1 rule-derived case** (`숲이`). IPA gold remains **0/20 independently adjudicated**. Exact-head CI must verify the two expected JavaScript-port outputs; until then this batch is implementation-pending, not DONE_VERIFIED. No production output was intentionally changed.
