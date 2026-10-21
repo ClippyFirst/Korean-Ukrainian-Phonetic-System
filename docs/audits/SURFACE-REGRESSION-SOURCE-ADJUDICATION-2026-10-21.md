@@ -14,7 +14,7 @@ Primary authority: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/
 | 몫이 | 목씨 | 목씨 | Direct NIKL Q&A | [Official Q&A qna_seq=335008](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=335008) directly lists 몫이[목씨] |
 | 값이 | 갑씨 | 갑씨 | Direct NIKL Q&A | [Official Q&A qna_seq=330274](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=330274) explicitly confirms 값이[갑씨] and cites §14 |
 | 값어치 | 갑써치 | 가버치 | Direct NIKL example | §15 붙임 explicitly gives 값어치[가버치]; [official NIKL FAQ](https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217) |
-| 숲이 | 수피 | 수피 | Rule-derived candidate | §13; exact lexical form not independently adjudicated |
+| 숲이 | 수피 | 수피 | Direct NIKL example | §13 explicitly lists 숲이[수피] |
 | 같이 | 가치 | 가치 | Direct NIKL example | §17 palatalization |
 | 굳이 | 구지 | 구지 | Direct NIKL example | §17 palatalization |
 | 닭이 | 달기 | 달기 | Direct NIKL example | §13 formal-morpheme liaison |
@@ -31,8 +31,8 @@ Primary authority: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/
 
 ## Findings
 
-- **17/18** rows have a directly attested NIKL example or official Q&A comparator in this inventory.
-- **1/18** row (`숲이`) remains a rule-derived comparator without an exact lexical attestation in the reviewed sources. It remains marked as such in `tests/fixtures/g2pk-surface-regression.json`.
+- **18/18** rows have a directly attested NIKL example or official Q&A comparator in this inventory.
+
 - **3/18** known port/normative divergences are intentionally preserved in practical mode: 값어치 (갑써치 vs 가버치), 넓죽하다 (널쭈카다 vs 넙쭈카다), and 읽고 (익꼬 vs 일꼬).
 - **IPA gold remains 0/18 independently adjudicated.** Official Korean surface spellings do not by themselves establish the repository's broad IPA transcription or its Ukrainian rendering.
 - The fixture is a compact regression set, not a representative corpus or a statistically valid accuracy benchmark. It contains no held-out evaluation set.
@@ -45,4 +45,4 @@ Primary authority: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/
 
 ## Acceptance disposition
 
-**PARTIAL / evidence-limited.** The normative comparator layer is explicit and source-linked for all 18 cases; 17 now have direct NIKL examples or official Q&A attestations. `숲이` remains rule-derived pending exact lexical attestation, and IPA gold remains 0/18 independently adjudicated. These Korean-surface source upgrades do not validate the project's IPA or Ukrainian target layer.
+**PARTIAL / evidence-limited.** The normative comparator layer is explicit and directly source-attested for all 18 cases, including the explicit §13 example `숲이[수피]`. IPA gold remains 0/18 independently adjudicated. These Korean-surface source upgrades do not validate the project's IPA or Ukrainian target layer.

@@ -63,3 +63,27 @@ test('every Hangul-only lexical target is rendered from its stored IPA, not inde
     assert.equal(result.issues.length, 0, row.input + ': exact sourced entry should not have an unresolved issue');
   }
 });
+
+
+test('all surface-only lexical overrides still cross the IPA-to-Ukrainian boundary', () => {
+  const candidates = rows.filter(row => row.target_status === 'surface-only');
+  assert.equal(candidates.length, 7, 'surface-only inventory must remain explicitly reviewed');
+
+  for (const row of candidates) {
+    assert.match(row.input, /^[가-힣]+$/u, row.input + ': surface-only case should be a Korean lexical form');
+    const sourceSyllables = [...row.input].length;
+    const surfaceSyllables = [...row.surface_hangul].length;
+    const ipaSyllables = row.ipa_syllables.split('|');
+    const targetSyllables = row.target_syllables.split('|');
+    assert.equal(surfaceSyllables, sourceSyllables, row.input + ': source surface syllable alignment');
+    assert.equal(ipaSyllables.length, sourceSyllables, row.input + ': IPA syllable alignment');
+    assert.equal(targetSyllables.length, sourceSyllables, row.input + ': target syllable alignment');
+    assert.ok(ipaSyllables.every(Boolean), row.input + ': empty IPA syllable');
+
+    const result = engine.convert(row.input);
+    assert.equal(result.surfaceHangul, row.surface_hangul, row.input + ': source-attested surface override');
+    assert.equal(result.ipa, ipaSyllables.join(' '), row.input + ': runtime IPA must preserve the curated surface IPA');
+    assert.equal(result.ukrainian, targetSyllables.join(''), row.input + ': Ukrainian output must be rendered from IPA');
+    assert.equal(result.issues.length, 0, row.input + ': surface-only IPA should map without unresolved issues');
+  }
+});
