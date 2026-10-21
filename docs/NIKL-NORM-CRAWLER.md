@@ -37,7 +37,7 @@ This is an acknowledgement gate, not legal advice or an assertion that the sourc
 
 ## Validation
 
-The JSON output contract is defined in [schemas/nikl-source-manifest.schema.json](../schemas/nikl-source-manifest.schema.json). The Python schema tests validate the schema and a metadata-only sample. On branches named `research/nikl-*`, `.github/workflows/verify.yml` also runs a live official-source crawl and uploads the manifest/log as a short-lived CI artifact. A blocked or incomplete crawl fails that job; it must not be bypassed or re-labelled as a successful inventory.
+The JSON output contract is defined in [schemas/nikl-source-manifest.schema.json](../schemas/nikl-source-manifest.schema.json). The Python schema tests validate the schema and a metadata-only sample. On branches named `research/nikl-*`, `.github/workflows/verify.yml` also runs a live official-source crawl and uploads the manifest/log as a short-lived CI artifact. A parser/inventory defect fails that job. If the official site returns an access denial such as HTTP 403, the workflow records a BLOCKED warning and retains the log; it does not bypass the restriction or call the inventory complete.
 
 Fixture-based parser tests run in the existing browser regression suite:
 
