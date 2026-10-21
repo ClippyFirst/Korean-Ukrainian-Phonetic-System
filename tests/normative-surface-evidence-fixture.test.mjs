@@ -41,12 +41,15 @@ test('six formerly rule-derived surface comparators now have exact NIKL Q&A cita
     '협력': ['혐녁', 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330091'],
     '독립문': ['동님문', 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=314644'],
   };
+  const pinnedPortSurface = { '넋이': '넉씨', '몫이': '목씨', '값이': '갑씨', '국립': '궁닙', '협력': '혐녁', '독립문': '동님문' };
   for (const [input, [surface, url]] of Object.entries(evidence)) {
     const item = byInput.get(input);
+    assert.equal(item.expectedSurface, pinnedPortSurface[input], input + ': practical port output must remain unchanged');
     assert.equal(item.normativeSurface, surface, input);
     assert.equal(item.normativeEvidenceStatus, 'direct-NIKL-QA', input);
     assert.equal(item.normativeSourceUrl, url, input);
   }
+  assert.equal(fixture.cases.filter((item) => item.normativeEvidenceStatus === 'direct-NIKL-QA' || item.normativeEvidenceStatus === 'direct-NIKL-example').length, 17);
   assert.equal(fixture.cases.filter((item) => item.normativeEvidenceStatus.startsWith('derived')).length, 1);
   assert.equal(byInput.get('숲이').normativeEvidenceStatus, 'derived-from-NIKL-rule');
 });
