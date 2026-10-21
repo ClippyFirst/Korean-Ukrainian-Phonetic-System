@@ -48,11 +48,14 @@ function parseAttributes(source) {
 }
 
 export function parseHtmlTree(html) {
-  const root = { tag: "#root", attrs: {}, children: [], start: 0, end: html.length, parent: null };
+  // Mask raw-text/non-content elements without changing offsets. This prevents JavaScript strings
+  // or comparison operators containing <...> from corrupting the structural tree.
+  const tokenHtml = html.replace(/<(script|style|noscript|template|svg)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, (block) => block.replace(/[^\r\n]/g, " "));
+  const root = { tag: "#root", attrs: {}, children: [], start: 0, end: tokenHtml.length, parent: null };
   const stack = [root];
   const tokenPattern = /<!--[\s\S]*?-->|<![^>]*>|<\/?[A-Za-z][^>]*>|[^<]+|</g;
   let token;
-  while ((token = tokenPattern.exec(html))) {
+  while ((token = tokenPattern.exec(tokenHtml))) {
     const raw = token[0];
     const current = stack[stack.length - 1];
     if (raw.startsWith("<!--") || /^<!/i.test(raw)) continue;
@@ -79,7 +82,7 @@ export function parseHtmlTree(html) {
     }
     current.children.push({ tag: "#text", text: decodeHtmlEntities(raw), attrs: {}, children: [], start: token.index, end: token.index + raw.length, parent: current });
   }
-  for (const node of stack) node.end = html.length;
+  for (const node of stack) node.end = tokenHtml.length;
   return root;
 }
 
