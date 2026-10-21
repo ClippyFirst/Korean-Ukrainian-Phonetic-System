@@ -32,6 +32,8 @@ jobs:
           cache: pip
       - name: Install Python package and test dependencies
         run: python -m pip install -e ".[dev,all]"
+      - name: Validate research corpus in strict mode before deployment
+        run: python scripts/generate_korean_corpus.py --strict
       - name: Run Python pipeline and data-integrity tests
         run: python -m pytest -q
 
