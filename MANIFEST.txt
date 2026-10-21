@@ -7,4 +7,4 @@ The listed Python and browser modules, integration files, documentation, and reg
 - docs/audits/COMPLETION-AUDIT-2026-10-20.md
 - docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md
 
-As of 2026-10-21, a shared cross-runtime parity fixture and regression tests are being added to verify the fail-closed boundary. The project remains a research preview; a root-level project license still requires an owner decision.
+As of 2026-10-21, the shared cross-runtime parity fixture and regression tests have been added. Exact-head CI passed (tests 39601258671, browser G2P 39601258672, system verification 39601258670, corpus artifacts 39601258668). This historical manifest is not a release checklist. The project remains a research preview; a root-level project license still requires an owner decision.
