@@ -272,3 +272,22 @@ A documentation-only continuation update follows this section; the code/workflow
 - **Not yet verified:** exact-head browser/Python CI and a direct check of the deployed app. The GitHub API-only editing workflow means local `npm test` / `npm run build` have not been executed. Before accepting this change, run CI and fix any fixture expectation or integration regression it exposes.
 - Next: update the regression fixture test if direct JS port outputs differ from the previous expected rows; run the exact-head workflows; only then mark the practical-mode contract `DONE_VERIFIED`.
 
+
+
+## Strict practical-mode port CI result — 2026-10-21
+
+The first exact-head CI correctly exposed two cases where the old project lexical overrides had changed the pinned JavaScript port's result. The regression fixture was corrected to represent the port output and to preserve the former project value separately:
+
+- `넓죽하다`: strict port `널쭈카다`; previous project override `넙쭈카다`.
+- `읽고`: strict port `익꼬`; previous project override `일꼬`.
+- `값어치`: strict port `갑써치`; NIKL normative pronunciation `가버치` remains separately recorded as a known upstream divergence.
+
+No lexical override is applied in practical mode. This is a deliberate behavior change to meet the requested contract, not a claim that the port is always normatively correct. Research mode retains its own lexical evidence.
+
+For exact head `1b4e337e8d4f48df1fa950f7bbeb44ed06009fe7`, all four current-head workflow groups succeeded:
+- Browser G2P integration `39597566751`: `npm test` and `npm run build` passed.
+- General tests `39597566834`: browser tests/build and Python 3.11, 3.12, 3.13 passed.
+- System verification `39597566591`: Python regression/data integrity and browser regression/build passed.
+- Master table/research corpus artifacts `39597566745`: passed.
+
+This evidence is exact-head CI, not local execution; this environment still has no local checkout. The updated branch is in PR #167: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/167. This patch's practical-mode contract is now **DONE_VERIFIED for port-output parity and build/test execution** on the stated head. Scientific accuracy of the port, IPA quality, and Ukrainian target adequacy remain separate and unresolved.
