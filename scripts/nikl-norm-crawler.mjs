@@ -298,7 +298,12 @@ export async function runCrawler(args = parseArgs(process.argv.slice(2))) {
   const fetched = await fetchOfficialSource(args.url);
   const parsed = parseNiklStandardHtml(fetched.html, fetched.metadata.finalUrl);
   if (!parsed.validation.complete) throw new Error("Official article inventory did not reconcile: " + parsed.validation.errors.join("; "));
-  const manifest = buildManifest(parsed, fetched.metadata, { includeText: args.includeText });
+  const sourceMetadata = {
+    ...fetched.metadata,
+    termsReview: args.includeText ? "human_acknowledgement_received_not_independently_verified" : "not_assessed",
+    retentionPolicy: args.includeText ? "article text retained locally after human terms acknowledgement; redistribution rights not independently verified" : "metadata-only; raw HTML is never written by this command",
+  };
+  const manifest = buildManifest(parsed, sourceMetadata, { includeText: args.includeText });
   const outputPath = resolve(args.output);
   await mkdir(dirname(outputPath), { recursive: true });
   const temporaryPath = outputPath + ".tmp-" + process.pid;
