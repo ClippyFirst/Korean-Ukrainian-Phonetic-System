@@ -305,3 +305,8 @@ Main commit `171a1ac013fd09bb04c5f25d705a80706f3d4b89` passed Pages deployment, 
 ### NIKL formal-morpheme boundary evidence extension — 2026-10-21
 
 A primary-source search found two additional official NIKL Q&A attestations: `숲을[수플]` (qna_seq=332248) and `숲에[수페]` (qna_seq=331304; `[숩페]` explicitly rejected). Added both to `tests/fixtures/g2pk-surface-regression.json`, source register, port parity gate, and normative evidence test. The fixed surface fixture now contains 20 cases: **19 direct Korean surface comparators + 1 rule-derived case** (`숲이`). IPA gold remains **0/20 independently adjudicated**. Exact-head CI at `0e0b96080335fec8fe04e7bd9d302d7b1e8a2183` verified the two new JavaScript-port outputs; **1,074/1,074 Node tests**, Vite build, Python regression/data-integrity checks, and corpus artifact checks passed. This batch is `DONE_VERIFIED` for fixture/source consistency and runtime parity only, not IPA or Ukrainian linguistic correctness. No production output was intentionally changed.
+
+
+### Independent IPA adjudication queue — 2026-10-21
+
+Added `research/ipa-adjudication-queue.json` and `tests/ipa-adjudication-queue.test.mjs`. The queue mirrors the 20-case NIKL surface fixture and preserves exact source provenance, but intentionally supplies no candidate/final IPA and no reviewer identities. Its gate ensures unresolved cases cannot be mislabeled as adjudicated and that Ukrainian target review stays separate. This makes the next specialist task explicit and auditable; it does not create IPA gold. Status remains `BLOCKED_SPECIALIST_ADJUDICATION`, **0/20 independently adjudicated IPA cases**.
