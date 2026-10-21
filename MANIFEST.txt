@@ -1,29 +1,10 @@
-SOFT-HEURISTIC MORPHOLOGY — files to copy into the repo
-Branch: test/block-standard-rule-coverage-gate-2026-10-11
+# Historical soft-morphology upload manifest — superseded 2026-10-21
 
-Copy each file to the same relative path in the repo root.
+This file originally described a local upload pack for the 2026-10-11 soft-morphology branch. It is historical only and must not be used as an active copy/upload checklist.
 
-ALREADY ON GITHUB (safe to overwrite with these copies):
-  src/korean_ukrainian/soft_morphology.py
-  src/app/soft_morphology.js
-  src/main.js
-  tests/test_soft_morphology.py
-  docs/SOFT-HEURISTIC-APPLY-CHECKLIST.md
-  docs/SOFT-HEURISTIC-INTEGRATION-NOTES.md
-  docs/architecture.md (partial)
-  docs/WEB-SERVICE-USER-GUIDE.md (partial)
+The listed Python and browser modules, integration files, documentation, and regression tests are already present in the current mainline. Current implementation status is tracked in:
+- docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md
+- docs/audits/COMPLETION-AUDIT-2026-10-20.md
+- docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md
 
-MUST UPLOAD (not yet on remote / incomplete):
-  src/korean_ukrainian/rules.py
-  src/korean_ukrainian/pipeline.py
-  src/app/engine.js
-  index.html
-  src/styles/main.css
-  README.md
-  docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md
-  docs/NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md
-  tests/soft-heuristic-morphology-formal-endings.test.mjs
-
-VS Code: open the repo folder, then drag files from this pack into matching paths,
-or:  cp -r SOFT-HEURISTIC-UPLOAD/* /path/to/Korean-Ukrainian-Phonetic-System/
-then commit & push.
+As of 2026-10-21, a shared cross-runtime parity fixture and regression tests are being added to verify the fail-closed boundary. The project remains a research preview; a root-level project license still requires an owner decision.
