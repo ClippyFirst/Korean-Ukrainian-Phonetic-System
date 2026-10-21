@@ -25,7 +25,7 @@ The default command:
 5. fails closed unless all 30 numbered articles are extracted exactly once with non-empty content;
 6. writes metadata only; raw HTML is never persisted.
 
-The manifest records terms status as not_assessed. Public accessibility is not treated as a license. The default mode does not retain or redistribute article text. The default URL is the official desktop full-text route; the mobile route previously returned HTTP 403 from GitHub Actions, and the canonical route also remains blocked there. The collector does not use proxy/stealth modes or retry around an access denial.
+The official [NIKL copyright policy](https://www.korean.go.kr/front/nuri/pageView.do?mkn=3&page_id=P000189) says website materials may be used under Korean Copyright Act Article 24-2 unless a specific KOGL type is marked for an item. The collector's manifest still records terms status as not_assessed because this review did not establish the specific KOGL marking, if any, on the Standard Pronunciation Rules page. The default mode does not retain or redistribute article text. The default URL is the official desktop full-text route; the mobile route previously returned HTTP 403 from GitHub Actions, and the canonical route also remains blocked there. The collector does not use proxy/stealth modes or retry around an access denial.
 
 ## Manual local HTML import when the official server blocks automated requests
 
@@ -33,7 +33,7 @@ If the official page opens normally in your browser but automated requests are d
 
     npm run crawl:nikl -- --url "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" --input-html "C:/path/to/saved-official-page.html" --output reports/nikl/standard-pronunciation-manifest.json
 
-Local import requires an explicit official `--url`. Its manifest sets `retrievalMode=local-html-import`, leaves HTTP status and retrieval time null, records the local import time and file hash, and explicitly marks robots policy as not checked by this run. It does not pretend the local file was freshly fetched or that current reuse terms were verified. The saved HTML is read but is not copied to the output; the default manifest still contains metadata and hashes only. All 30 articles must parse and reconcile before a manifest is written.
+Local import requires an explicit official `--url`. Its manifest sets `retrievalMode=local-html-import`, leaves HTTP status and retrieval time null, records the local import time and file hash, and explicitly marks robots policy as not checked by this run. It does not pretend the local file was freshly fetched or that the page-level KOGL marking was verified. The saved HTML is read but is not copied to the output; the default manifest still contains metadata and hashes only. All 30 articles must parse and reconcile before a manifest is written.
 
 Only after a human has reviewed the source's current reuse terms, a local operator may explicitly retain extracted article text:
 
@@ -56,5 +56,5 @@ The parser requires a semantic heading for 제2부 표준 발음법; selector dr
 
 - A successful extraction proves only that the expected page structure was parsed, not that every rule has been interpreted correctly.
 - Per-article hashes are integrity/change-detection aids, not proof of source authenticity beyond the captured response.
-- Official terms and redistribution permissions have not yet been independently adjudicated.
+- The NIKL site-wide reuse policy has been reviewed; the per-page KOGL marking for the Standard Pronunciation Rules and the cited Q&A pages remains unverified. Keep text retention disabled until those item-level conditions are checked.
 - This collector does not generate IPA, decide morphology, infer lexical exceptions, or produce Ukrainian output. Use the coverage and evidence-audit skills for those stages.
