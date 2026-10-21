@@ -256,7 +256,7 @@ Code/deployment commit: `dae8ebdabb396d1be51afbe891d80c9c48a29f1c`. Mainline cod
 
 A fresh official-source review found exact NIKL Online Q&A attestations for six previously rule-derived cases: `넋이[넉씨]`, `몫이[목씨]`, `값이[갑씨]`, `국립[궁닙]`, `협력[혐녁]`, and `독립문[동님문]`. Exact question URLs, dates, scope, and integration state are registered individually in `research/SOURCE-REGISTER.csv`; the fixture and `docs/audits/SURFACE-REGRESSION-SOURCE-ADJUDICATION-2026-10-21.md` now point to those attestations.
 
-The surface fixture now has 18/18 directly attested Korean surface comparators; §13 explicitly lists `숲이[수피]`. This is a provenance upgrade only: pinned JS-port `expectedSurface` values remain unchanged, no practical-mode behavior was rewritten, and independently adjudicated IPA gold remains 0/18. Korean surface attestations do not validate IPA or Ukrainian target rendering.
+The surface fixture has 17/18 directly attested Korean surface comparators; `숲이[수피]` remains rule-derived because it is not listed among the official §13 examples. Pinned JS-port `expectedSurface` values remain unchanged, and independently adjudicated IPA gold remains 0/18. Korean surface attestations do not validate IPA or Ukrainian target rendering.
 
 
 ### Source-reuse policy check — 2026-10-21
@@ -267,7 +267,7 @@ The official [NIKL copyright policy](https://www.korean.go.kr/front/nuri/pageVie
 ## Completion audit refresh — NIKL source and surface evidence — 2026-10-21
 
 - The official NIKL desktop full-text route is now canonical in the crawler, article-coverage fixture, audit references, and surface-regression fixture. A regression test rejects legacy mobile-route citations in the surface fixture.
-- The surface fixture's direct-evidence inventory is 18/18. Fifteen directly matching surface rows now explicitly say that only the Hangul surface string matches the cited NIKL comparator. The three known practical-port/normative divergences remain unchanged. Independent IPA gold remains 0/18.
+- The surface fixture's direct-evidence inventory is 17/18. Fourteen directly matching surface rows now explicitly say that only the Hangul surface string matches the cited NIKL comparator. The three known practical-port/normative divergences remain unchanged. Independent IPA gold remains 0/18.
 - Exact-head CI passed for PR #182: 1,071 Node tests, Vite build, and Python regression/data-integrity tests. PR #183 then passed 1,072 Node tests, Vite build, and Python regression/data-integrity tests. These tests establish repository regression integrity, not independent phonetic or Ukrainian target correctness.
 - The NIKL copyright policy is located and cited, but item-level KOGL conditions remain unverified. Raw source-text retention remains disabled by default.
 - Current disposition: DONE_VERIFIED for canonical citation integrity, the evidence-fixture provenance gate, collector argument/path safety, and listed CI runs. BLOCKED for direct official-page access (HTTP 403) and a fresh 30-article inventory. BLOCKED / specialist evidence for independent IPA gold and Ukrainian target adjudication. Do not mark the research system release-ready.
@@ -280,4 +280,9 @@ The model-wide IPA-first regression now covers all seven `surface-only` lexical 
 
 ### Final surface comparator source reconciliation — 2026-10-21
 
-The last rule-derived surface comparator, `숲이[수피]`, is explicitly enumerated in §13 of the official Standard Pronunciation Rules. The fixture and source-adjudication audit now mark all **18/18** Korean surface comparators as directly attested to an official NIKL example or Q&A. The evidence test enforces this count. Independently adjudicated IPA remains **0/18**, and this update does not validate Ukrainian target choices.
+A prior edit marked `숲이[수피]` as a direct §13 example, but a primary-source recheck showed that the official §13 enumerated examples do not include this word. That overclaim has been corrected: direct Korean surface evidence is **17/18**, and `숲이` remains rule-derived pending exact lexical attestation. Independently adjudicated IPA remains **0/18**, and this update does not validate Ukrainian target choices.
+
+
+### Evidence correction — 2026-10-21
+
+The current official NIKL page was re-opened and its §13 examples inspected directly. The list does not include `숲이[수피]`; the earlier claim of a direct example was too strong. The machine-readable fixture and evidence gate are corrected to 17 direct cases and one rule-derived case. This is a provenance correction only; practical output remains unchanged.
