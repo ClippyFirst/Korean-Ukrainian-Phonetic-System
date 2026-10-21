@@ -87,6 +87,9 @@ test("manifest is metadata-only unless explicit text retention is requested", ()
 
 test("article text retention requires explicit source-terms review acknowledgement", () => {
   assert.throws(() => parseCrawlerArgs(["--include-text"]), /requires --terms-reviewed/);
+  assert.throws(() => parseCrawlerArgs(["--input-html"]), /--input-html requires a value/);
+  assert.throws(() => parseCrawlerArgs(["--url"]), /--url requires a value/);
+  assert.throws(() => parseCrawlerArgs(["--output"]), /--output requires a value/);
   assert.throws(() => parseCrawlerArgs(["--input-html", "saved.html"]), /requires an explicit --url/);
   assert.equal(parseCrawlerArgs(["--include-text", "--terms-reviewed"]).includeText, true);
   assert.equal(parseCrawlerArgs(["--output", "manifest.json"]).output, "manifest.json");
@@ -140,6 +143,11 @@ test("local HTML import records its provenance without pretending an HTTP or rob
     const outputPath = join(directory, "manifest.json");
     const html = fixtureHtml();
     await writeFile(inputPath, html, "utf8");
+    await assert.rejects(
+      runCrawler(parseCrawlerArgs(["--url", DEFAULT_SOURCE_URL, "--input-html", inputPath, "--output", inputPath])),
+      /must not overwrite the --input-html source file/,
+    );
+    assert.equal(await readFile(inputPath, "utf8"), html, "refusing output collision must preserve the source file");
     const result = await runCrawler(parseCrawlerArgs([
       "--url", DEFAULT_SOURCE_URL, "--input-html", inputPath, "--output", outputPath,
     ]));

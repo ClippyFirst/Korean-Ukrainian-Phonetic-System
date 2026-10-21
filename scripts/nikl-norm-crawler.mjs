@@ -297,9 +297,13 @@ function parseArgs(argv) {
   const args = { url: DEFAULT_SOURCE_URL, urlProvided: false, inputHtml: null, output: "reports/nikl/standard-pronunciation-manifest.json", includeText: false, termsReviewed: false };
   for (let i = 0; i < argv.length; i++) {
     const value = argv[i];
-    if (value === "--url") { args.url = argv[++i]; args.urlProvided = true; }
-    else if (value === "--input-html") args.inputHtml = argv[++i];
-    else if (value === "--output") args.output = argv[++i];
+    if (value === "--url" || value === "--input-html" || value === "--output") {
+      const optionValue = argv[++i];
+      if (!optionValue || optionValue.startsWith("--")) throw new Error(value + " requires a value.");
+      if (value === "--url") { args.url = optionValue; args.urlProvided = true; }
+      else if (value === "--input-html") args.inputHtml = optionValue;
+      else args.output = optionValue;
+    }
     else if (value === "--include-text") args.includeText = true;
     else if (value === "--terms-reviewed") args.termsReviewed = true;
     else if (value === "--help" || value === "-h") args.help = true;
@@ -316,8 +320,10 @@ export async function runCrawler(args = parseArgs(process.argv.slice(2))) {
   if (args.help) return { help: true, text: "Usage: node scripts/nikl-norm-crawler.mjs [--url OFFICIAL_URL] [--input-html SAVED_OFFICIAL_PAGE.html] [--output PATH] [--include-text --terms-reviewed]\nDefault output stores article metadata and hashes only; raw HTML and article text are not retained. Local HTML import requires an explicit --url and records that no HTTP request or robots check was performed by this run." };
   let fetched;
   if (args.inputHtml) {
-    const sourceUrl = assertAllowedSourceUrl(args.url).toString();
     const inputPath = resolve(args.inputHtml);
+    const outputPath = resolve(args.output);
+    if (inputPath === outputPath) throw new Error("--output must not overwrite the --input-html source file.");
+    const sourceUrl = assertAllowedSourceUrl(args.url).toString();
     const buffer = await readFile(inputPath);
     if (buffer.length === 0) throw new Error("Local HTML input is empty.");
     if (buffer.length > MAX_SOURCE_BYTES) throw new Error("Local HTML input exceeds 10 MiB; refusing unexpectedly large input.");
