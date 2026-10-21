@@ -7,9 +7,9 @@ ROOT = Path(__file__).parents[1]
 
 
 def _valid_manifest():
-    url = "https://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002"
+    url = "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
     article_ids = [f"NIKL-SP-{number:02d}" for number in range(1, 31)]
-    redirected_url = "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002"
+    redirected_url = url
     articles = [
         {
             "articleNumber": number,
@@ -34,9 +34,11 @@ def _valid_manifest():
             "canonicalUrl": url,
         },
         "source": {
+            "retrievalMode": "direct-http",
             "requestedUrl": url,
             "finalUrl": redirected_url,
             "retrievedAt": "2026-10-21T19:00:00.000Z",
+            "importedAt": None,
             "httpStatus": 200,
             "contentType": "text/html; charset=utf-8",
             "etag": None,
@@ -44,7 +46,7 @@ def _valid_manifest():
             "responseBytes": 1024,
             "responseSha256": "b" * 64,
             "userAgent": "ClippyFirst-NIKLResearchBot/0.1",
-            "robots": {"url": "https://korean.go.kr/robots.txt", "status": 404, "decision": "no_robots_file"},
+            "robots": {"url": "https://www.korean.go.kr/robots.txt", "status": 404, "decision": "no_robots_file"},
             "termsReview": "not_assessed",
             "retentionPolicy": "metadata-only; raw HTML is never written by this command",
         },
@@ -80,3 +82,28 @@ def test_nikl_manifest_schema_rejects_incomplete_inventory_and_unreviewed_text_r
     manifest = _valid_manifest()
     manifest["source"]["termsReview"] = "redistribution_permitted"
     assert list(validator.iter_errors(manifest))
+
+
+
+def test_nikl_manifest_schema_accepts_local_html_import_with_explicitly_unknown_http_provenance():
+    schema = json.loads((ROOT / "schemas" / "nikl-source-manifest.schema.json").read_text(encoding="utf-8"))
+    validator = Draft202012Validator(schema, format_checker=FormatChecker())
+    manifest = _valid_manifest()
+    source = manifest["source"]
+    source.update(
+        {
+            "retrievalMode": "local-html-import",
+            "retrievedAt": None,
+            "importedAt": "2026-10-21T19:30:00.000Z",
+            "httpStatus": None,
+            "contentType": "text/html; local-file",
+            "userAgent": None,
+            "robots": {
+                "url": "https://www.korean.go.kr/robots.txt",
+                "status": None,
+                "decision": "not_checked_local_import",
+            },
+        }
+    )
+    errors = list(validator.iter_errors(manifest))
+    assert not errors, "\\n".join(error.message for error in errors)
