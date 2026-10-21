@@ -76,7 +76,7 @@
       "pythonG2pkSurface": "수피",
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
-      "expectedSurfaceProvenance": "pinned JavaScript port output; surface string matches the separately cited direct NIKL example; this is surface evidence, not IPA gold.",
+      "expectedSurfaceProvenance": "pinned JavaScript port output; surface string matches the separately cited direct NIKL comparator (the explicit §13 example); this is surface evidence, not IPA gold.",
       "differentialStatus": "matched-existing-browser-expectation",
       "normativeSurface": "수피",
       "normativeEvidenceStatus": "direct-NIKL-example",
