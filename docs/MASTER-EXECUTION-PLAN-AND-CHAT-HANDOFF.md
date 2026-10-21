@@ -439,3 +439,12 @@ The required pipeline remains Hangul → structural/morphological analysis → K
 - BLOCKED: automated live NIKL article fetch returns HTTP 403 from GitHub Actions. No live 30-article manifest was generated and no bypass was attempted. Acceptance: direct access permitted by NIKL, or a human saves the official page through normal browser access and the local import parses exactly 30 complete articles.
 - BLOCKED / evidence-limited: item-level KOGL marking/reuse conditions; `숲이` exact lexical attestation; independent IPA gold (0/18); independent Ukrainian target-layer review; direct interactive Pages smoke test. Preserve current statuses until evidence is supplied.
 - Release disposition: technically deployed research preview, not a scientifically validated or release-ready transcription standard. No practical-mode output or public UI behavior changed in this source-evidence follow-up.
+
+
+## Surface-only IPA boundary regression — 2026-10-21
+
+- Branch: `test/surface-only-ipa-boundary-2026-10-21`, based on main `9ae745249fdee16f5853be10d902044258ccaa86`.
+- Added a test covering all seven `target_status=surface-only` lexical rows: `신라`, `밟는`, `읊다`, `읊고`, `앞문`, `희망`, and `독립문`. It asserts syllable alignment across source, source-backed surface, IPA and target; exact runtime surface/IPA; IPA-derived Ukrainian target; and no unresolved issues.
+- Exact test head `008f44c1f348926b767ce92a7cc5c70b12e685ad`: **1,073/1,073 Node tests**, Vite build, Python regression/data-integrity suite passed. CI: [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39672160451).
+- Status: `DONE_VERIFIED` for the previously excluded surface-only path's IPA-first consistency gate. This is a mechanical pipeline test, not independent phonetic or target-language validation. No runtime code, practical output, or public UI changed.
+- Remaining scientific blockers are unchanged: IPA gold is independently adjudicated for 0/18 surface-regression cases; Ukrainian target-layer review remains outstanding; the exact lexical attestation for `숲이` is unresolved; the live 30-article NIKL inventory remains blocked by HTTP 403; per-item KOGL markings remain unverified.
