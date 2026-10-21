@@ -202,3 +202,12 @@ Stale overlapping PRs #154, #155, #156, #159, #162, #148 and #158 were closed wi
 - Root project-level `LICENSE` and `CITATION.cff` remain owner decisions.
 - Public Pages serving the merged SHA has not been verified. The available direct web retrieval failed, and local checkout was blocked by DNS resolution of `github.com`; do not claim a local release-gate run.
 - Release remains **not ready** until the independent phonetic/target review, remaining fixture adjudication, soft-mode parity, licensing/citation decisions, and live deployment verification are evidenced.
+
+
+## Strict corpus and Pages release gate — 2026-10-21
+
+- PR #164 (`10bb886`) made the existing corpus workflow strict and supplied a truthful adapter from the 642 source-backed lexical pronunciation records when `sequences.csv` is absent. Exact source URLs and target status are retained. Segment-level context, rule IDs, and Ukrainian graphemic targets remain empty unless supplied; no phonetic evidence is fabricated. The strict command passed.
+- PR #165 (`3bb3dfe`) made strict corpus validation a prerequisite of the Pages deployment job.
+- Exact main-push CI on `3bb3dfe177e2e426ff1260349e199920b1a220ef` passed: Pages deployment [39571926662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39571926662), verify [39571926526](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39571926526), Python 3.11/3.12/3.13 + web [39571926415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39571926415), corpus artifact generation [39571926475](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39571926475). Deployment log reports success for the Pages URL.
+- The integrated IPA trace/mixed-input implementation is deployed. The 17/18 surface differential and `값어치` engine divergence remain documented; independent IPA gold, target-policy review, soft-mode parity, root license/citation, and direct public HTTP smoke test remain open.
+- Release disposition: technically deployed research preview, not a validated transcription standard. No universal narrow-phonetic or complete contextual coverage claim is supported.
