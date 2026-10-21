@@ -241,3 +241,12 @@ Code/deployment commit: `dae8ebdabb396d1be51afbe891d80c9c48a29f1c`. Mainline cod
 - Corpus artifacts: PASS [39604039164](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039164).
 - Pages deployment + HTTP + headless Chromium smoke: PASS [39604039154](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039154). 1,443 Korean input characters produced 2,782 Ukrainian output characters and 3,731 IPA characters with no page errors.
 - This is a live interaction check with the repository fixture, not the exact prior user-pasted passage if different, and not evidence of normative pronunciation accuracy.
+
+
+## NIKL collector follow-up — 2026-10-21
+
+- Added the executable metadata-first collector `scripts/nikl-norm-crawler.mjs`, manifest schema `schemas/nikl-source-manifest.schema.json`, Node fixture tests, Python schema-instance tests, `npm run crawl:nikl`, and a live source diagnostic for `research/nikl-*` branches.
+- Fixture tests cover the 30-article inventory, section boundaries, exclusions, missing/duplicate/incomplete headings, official URL allowlisting, robots decisions, provenance hashes, metadata-only defaults, and the explicit text-retention acknowledgement gate. The Node suite passed 1,067/1,067 at `3dea334abc3067839ec6d79c4dc36df5d3058064`; schema validation passed at `031b5724222ba9c253a54e0a91136182f712a755`. These are prior passing heads; exact-head CI must be checked after the latest changes.
+- Live source attempt from GitHub Actions: robots.txt returned 404; official article request returned HTTP 403. The workflow records this as BLOCKED and does not bypass the denial. No live inventory was generated. Source reuse terms remain unassessed.
+- Coverage status is therefore PARTIAL/BLOCKED, not DONE_VERIFIED for the live official inventory. Next acceptance criteria: run from an environment where access is permitted; verify all 30 article headings and article structure; reconcile the official inventory against existing rule IDs, implementations, IPA path, and regressions; only then update coverage status.
+- No production engine or public UI behavior was changed. The research layer remains a technically deployed prototype with independent IPA and Ukrainian target validation still outstanding.
