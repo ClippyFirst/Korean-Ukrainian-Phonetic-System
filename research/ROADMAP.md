@@ -1,7 +1,7 @@
 # Programme Roadmap
 
-Last updated: 2026-10-15  
-Current phase: Phase 0 — repository and implementation baseline (not yet completed); source triage has begun in parallel.  
+Last updated: 2026-10-21  
+Current phase: Phase 7 — verification and Phase 9 — release acceptance. Mainline implementation is tested/deployed as a research preview; independent linguistic and owner-dependent release gates remain open.  
 Planned phases are not evidence of completion.
 
 ## Operating model
@@ -40,16 +40,16 @@ Before work: read this roadmap and README; inspect current branch and repository
 After work: record actual changes, exact commands and outcomes, update affected registers, set next action, and do not label planned work as done.
 
 ## Initial Phase 0 tasks
-- [ ] Inspect repository tree and default branch commit.
-- [ ] Enumerate branches and paginate until complete; note search limitations.
-- [ ] Enumerate open/closed PRs and relevant issues.
-- [ ] Compare relevant branches against default branch; record ahead/behind and changed files.
-- [ ] Inventory tests, scripts, CI workflows, runtime entry points, generated data, and documentation.
-- [ ] Run or obtain reproducible baseline test/build results where tooling permits.
+- [x] Inspect repository tree and record default branch commit (main at a50ce37cb6052d74ea8ad34c0baf74a91bac7378 at follow-up start).
+- [x] Enumerate branches across both API pages (173 branch refs at inspection); note that historical branches are not all individually diff-reviewed.
+- [x] Check open PRs and issues (none at inspection); relevant historical PR/branch history is summarized in the handoff.
+- [x] Compare 16 relevant branches against main; highly divergent/old branches were left untouched rather than merged blindly.
+- [x] Inventory test suites, scripts, CI workflows, runtime entry points, generated data, and core research/docs registries.
+- [x] Obtain exact-head GitHub Actions test/build/corpus/system/deployment results; local checkout is unavailable in this API-only environment.
 - [ ] Verify deployed site against expected source revision.
 - [x] Create a first-pass source-by-source assessment and expand the source register/discovery queue; this is triage only, not full-text verification.
-- [ ] Populate rule coverage register with observed, not assumed, statuses.
-- [ ] Publish a prioritized gap report and branch integration order.
+- [x] Populate research/RULE-COVERAGE.csv for R001–R016, the article inventory, and IPA-to-Ukrainian target mapping with observed implementation/test status.
+- [x] Publish the prioritized remaining gaps in the completion audit, acceptance gates, and surface source-adjudication report.
 
 ## Source review work recorded on 2026-10-15
 
@@ -59,3 +59,25 @@ After work: record actual changes, exact commands and outcomes, update affected 
 - These are evidence-based triage decisions, not claims that every source has been read in full, every license verified, or every candidate implemented.
 
 These checkboxes remain open until evidence is recorded.
+
+## One-pass execution update — 2026-10-21
+
+### DONE_VERIFIED on mainline
+- Strict practical-mode JS-port behavior merged as `fde3113fe97a34582228abcd870e64a690cf9d09`; exact-head CI and Pages deployment succeeded.
+- Follow-up documentation handoff merged as `a50ce37cb6052d74ea8ad34c0baf74a91bac7378`; its mainline test/build/system/corpus workflows passed. The subsequent Pages deployment was running at the last API poll and must not be reported as complete until its workflow concludes.
+- Branches enumerated across two API pages (173 refs), open PRs/issues checked (none at the snapshot), and 16 relevant historical branches compared with main. Old divergent branches were left untouched where current main already carries newer integrated implementations; no destructive cleanup performed.
+- The rule coverage matrix is populated for R001–R016 plus NIKL article inventory and IPA→Ukrainian mapping.
+- The 18-case surface fixture now separates JS-port output from normative comparators: 11 directly attested NIKL cases/Q&A and 7 rule-derived candidates. This does not create an IPA gold set.
+
+### IN_PROGRESS / CI gate
+Branch `fix/soft-morphology-parity-and-release-gates-2026-10-21` adds a Python soft-morphology fail-closed fix, shared Python/browser parity fixture/tests, a normative-source metadata gate, a visible practical-mode warning, and refreshed source/coverage/acceptance docs. Do not merge until exact-head CI passes. No local tests are claimed.
+
+### BLOCKED / evidence-limited
+- Independent IPA gold and Ukrainian target-policy review; exact phonetic judgments require qualified independent review.
+- Direct public-site interactive smoke test of the user's long passage; current browser/web access path could not complete it.
+- Root project-wide LICENSE and CITATION.cff require owner decisions; no project-wide license is inferred from vendored Apache-2.0 notices.
+- Seven surface cases remain rule-derived rather than direct lexical gold; all 18 IPA rows remain not independently adjudicated.
+- Full branch-level archaeology of every old branch is out of scope for this continuation; no open PR was left unreviewed, and no historical branch was deleted.
+
+### Release disposition
+**Technically deployed research preview; not a scientifically validated or release-ready transcription standard.** Next genuine acceptance work is independent IPA gold/target review and the live UI smoke test, after the current branch CI and deployment have completed.
