@@ -126,12 +126,12 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     if(u.type==='jamo'){
       output[i]='';ipa[i]='';analysis[i]='';
       issues.push(u.char+': standalone compatibility jamo is not a syllable; IPA is withheld.');
-      trace[i]={source:u.char,status:'unsupported-jamo',rules:['unsupported-standalone-jamo'],output:'',ipa:''};
+      trace[i]={source:u.char,surface:u.char,status:'unsupported-jamo',rules:['unsupported-standalone-jamo'],output:'',ipa:''};
       continue;
     }
     if(u.type==='literal'){
       output[i]=u.char;ipa[i]=isPreservableIpaLiteral(u.char)?u.char:'';analysis[i]=isPreservableIpaLiteral(u.char)?u.char:'';
-      trace[i]={source:u.char,status:'literal',rules:[],output:u.char,ipa:ipa[i]};
+      trace[i]={source:u.char,surface:u.char,status:'literal',rules:[],output:u.char,ipa:ipa[i]};
       continue;
     }
     // Practical mode: never leave blank Hangul syllables.
@@ -155,49 +155,49 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     if(u.__palatalizationUnlicensed){
       if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a verified formal-morpheme boundary; add a sourced lexical pronunciation entry.');
       output[i]='';ipa[i]='';
-      trace[i]={source:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
+      trace[i]={source:u.char,surface:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
       continue;
     }
     if(u.__hDeletionUnlicensed){
       if(u.__hDeletionUnlicensed==='left')issues.push(u.char+': §12(4) ㅎ deletion requires a verified vowel-initial ending/suffix; add a sourced lexical pronunciation entry.');
       output[i]='';ipa[i]='';
-      trace[i]={source:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
+      trace[i]={source:u.char,surface:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
       continue;
     }
     if(u.__saisiotInsertionUnlicensed){
       if(u.__saisiotInsertionUnlicensed==='left')issues.push(u.char+': NIKL §30(3) ㄴㄴ insertion requires evidence for the exact 사이시옷 compound; add a sourced lexical pronunciation entry.');
       output[i]='';ipa[i]='';
-      trace[i]={source:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
+      trace[i]={source:u.char,surface:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
       continue;
     }
     if(u.__crossWordLiaisonUnlicensed){
       if(u.__crossWordLiaisonUnlicensed==='left')issues.push(u.char+': cross-word vowel-initial liaison may depend on a substantive-morpheme boundary (§15); add a sourced lexical pronunciation entry.');
       output[i]='';ipa[i]='';
-      trace[i]={source:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
+      trace[i]={source:u.char,surface:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
       continue;
     }
     if(u.__complexLiaisonUnlicensed){
       if(u.__complexLiaisonUnlicensed==='left')issues.push(u.char+': complex-coda liaison differs between formal and substantive morphemes (§§13–15); add a sourced lexical pronunciation entry.');
       output[i]='';ipa[i]='';
-      trace[i]={source:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
+      trace[i]={source:u.char,surface:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
       continue;
     }
     if(u.__complexHAspirationUnlicensed){
       if(u.__complexHAspirationUnlicensed==='left')issues.push(u.char+': §12 complex-coda + ㅎ aspiration depends on the licensed morphophonemic pattern; add a sourced lexical pronunciation entry.');
       output[i]='';ipa[i]='';
-      trace[i]={source:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
+      trace[i]={source:u.char,surface:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
       continue;
     }
     if(u.__substantiveLiaisonUnlicensed){
       if(u.__substantiveLiaisonUnlicensed==='left')issues.push(u.char+': coda representative changes under §15 before ㅏ/ㅓ/ㅗ/ㅜ/ㅟ, unlike formal-morpheme liaison; add a sourced lexical pronunciation entry.');
       output[i]='';ipa[i]='';
-      trace[i]={source:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
+      trace[i]={source:u.char,surface:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
       continue;
     }
     if(u.__rieulGiyeokUnlicensed){
       if(u.__rieulGiyeokUnlicensed==='left')issues.push(u.char+': ㄺ before ㄱ is morphologically ambiguous (§11); add a sourced lexical pronunciation entry.');
       output[i]='';ipa[i]='';
-      trace[i]={source:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
+      trace[i]={source:u.char,surface:u.char,status:'unresolved',rules:applied,output:'',ipa:''};
       continue;
     }
 
@@ -246,7 +246,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       output[i]=targetFromIpa.text;
     }
     analysis[i]=u.char+'['+(u.onset||'')+'+'+(u.vowel||'')+(u.coda?'+'+u.coda:'')+']';
-    trace[i]={source:u.char,status,rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa};
+    trace[i]={source:u.char,surface:compose(u.onset,u.vowel,u.coda||''),status,rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa};
   }
 
   if(!units.some(u=>u.type==='hangul')&&!units.some(u=>u.type==='jamo')&&!skipLexicon)issues.push('Input contains no Hangul syllable; pronunciation cannot be generated.');
