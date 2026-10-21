@@ -16,6 +16,12 @@ const MAX_SOURCE_BYTES = 10 * 1024 * 1024;
 const VOID_TAGS = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]);
 const SKIP_TEXT_TAGS = new Set(["script", "style", "noscript", "template", "svg"]);
 
+function sourceAccessBlocked(message) {
+  const error = new Error(message);
+  error.code = "SOURCE_ACCESS_BLOCKED";
+  return error;
+}
+
 export function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
@@ -229,19 +235,27 @@ export async function fetchOfficialSource(url = DEFAULT_SOURCE_URL, { fetchImpl 
     signal: AbortSignal.timeout(15000), redirect: "follow",
   });
   let robotsDecision;
+  let robotsText = "";
   if (robotsResponse.status === 200) {
-    robotsDecision = robotsPathAllowed(await robotsResponse.text(), url) ? "allowed" : "disallowed";
-    if (robotsDecision === "disallowed") throw new Error("robots.txt disallows this path; stopping without bypass.");
+    robotsText = await robotsResponse.text();
+    robotsDecision = robotsPathAllowed(robotsText, url) ? "allowed" : "disallowed";
+    if (robotsDecision === "disallowed") throw sourceAccessBlocked("robots.txt disallows this path; stopping without bypass.");
   } else if (robotsResponse.status === 404 || robotsResponse.status === 410) {
     robotsDecision = "no_robots_file";
+  } else if ([401, 403, 429, 451].includes(robotsResponse.status)) {
+    throw sourceAccessBlocked("Cannot verify robots policy (HTTP " + robotsResponse.status + "); stopping rather than bypassing policy.");
   } else {
-    throw new Error("Cannot verify robots policy (HTTP " + robotsResponse.status + "); stopping rather than bypassing policy.");
+    throw sourceAccessBlocked("Cannot verify robots policy (HTTP " + robotsResponse.status + "); stopping rather than bypassing policy.");
   }
   const response = await fetchImpl(url, {
     headers: { "user-agent": USER_AGENT, accept: "text/html,application/xhtml+xml;q=0.9,*/*;q=0.1" },
     signal: AbortSignal.timeout(20000), redirect: "follow",
   });
+  if ([401, 403, 429, 451].includes(response.status)) throw sourceAccessBlocked("Official source denied or rate-limited this request (HTTP " + response.status + "); do not bypass access controls.");
   if (!response.ok) throw new Error("Official source request failed with HTTP " + response.status);
+  const finalUrl = response.url || url;
+  assertAllowedSourceUrl(finalUrl);
+  if (robotsText && !robotsPathAllowed(robotsText, finalUrl)) throw sourceAccessBlocked("Redirected final URL is disallowed by robots.txt; stopping without bypass.");
   const contentType = response.headers.get("content-type") ?? "";
   if (!/text\/html|application\/xhtml\+xml/i.test(contentType)) throw new Error("Expected HTML from official source, received content-type: " + (contentType || "missing"));
   const buffer = Buffer.from(await response.arrayBuffer());
@@ -250,7 +264,7 @@ export async function fetchOfficialSource(url = DEFAULT_SOURCE_URL, { fetchImpl 
   return {
     html,
     metadata: {
-      requestedUrl: url, finalUrl: response.url || url, retrievedAt: new Date().toISOString(),
+      requestedUrl: url, finalUrl, retrievedAt: new Date().toISOString(),
       httpStatus: response.status, contentType, etag: response.headers.get("etag"),
       lastModified: response.headers.get("last-modified"), responseBytes: buffer.length,
       responseSha256: sha256(buffer), userAgent: USER_AGENT,
@@ -331,7 +345,12 @@ if (invokedPath && fileURLToPath(import.meta.url) === invokedPath) {
       retainedContent: result.manifest.source.retentionPolicy,
     }, null, 2));
   } catch (error) {
-    console.error("NIKL crawl failed closed: " + (error instanceof Error ? error.message : String(error)));
-    process.exitCode = 1;
+    if (error?.code === "SOURCE_ACCESS_BLOCKED") {
+      console.error("NIKL crawl BLOCKED: " + (error instanceof Error ? error.message : String(error)));
+      process.exitCode = 3;
+    } else {
+      console.error("NIKL crawl failed closed: " + (error instanceof Error ? error.message : String(error)));
+      process.exitCode = 1;
+    }
   }
 }
