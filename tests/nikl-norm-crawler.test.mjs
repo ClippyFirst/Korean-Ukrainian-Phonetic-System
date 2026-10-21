@@ -105,7 +105,7 @@ test("mocked fetch stops when robots.txt disallows the official rules path", asy
   const requests = [];
   const fetchImpl = async (url) => {
     requests.push(String(url));
-    return new Response("User-agent: *\\nDisallow: /kornorms/", { status: 200, headers: { "content-type": "text/plain" } });
+    return new Response("User-agent: *\nDisallow: /kornorms/", { status: 200, headers: { "content-type": "text/plain" } });
   };
   await assert.rejects(fetchOfficialSource(DEFAULT_SOURCE_URL, { fetchImpl }), /robots.txt disallows/);
   assert.equal(requests.length, 1, "page request must not occur after a robots denial");
