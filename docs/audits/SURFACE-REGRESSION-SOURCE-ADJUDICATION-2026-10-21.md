@@ -4,7 +4,7 @@
 
 The practical-mode contract and the normative Korean standard answer different questions. The fixture's `expectedSurface` remains the pinned JavaScript g2pK port output. `normativeSurface` is an independent comparator from the National Institute of Korean Language (NIKL) standard or a rule-derived candidate; it must never rewrite practical-mode output.
 
-Primary authority: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002). This follow-up added direct official Q&A evidence for 넋이, 몫이, 값이, 국립, 협력, and 독립문; those source URLs are recorded per case in the fixture and in `research/SOURCE-REGISTER.csv`. 
+Primary authority: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002). All rule-based case links in the machine-readable surface fixture use this canonical desktop full-text route; the retired mobile-route URL is rejected by a regression test. This follow-up added direct official Q&A evidence for 넋이, 몫이, 값이, 국립, 협력, and 독립문; those source URLs are recorded per case in the fixture and in `research/SOURCE-REGISTER.csv`. 
 
 ## Case inventory
 
