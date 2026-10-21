@@ -61,6 +61,21 @@ Do not cite a broad homepage when a precise article or dictionary entry is avail
 7. If evidence is conflicting or incomplete, preserve an explicit unresolved/incomplete state with a machine-readable reason; do not pick the most plausible result silently.
 8. Record the decision and why alternatives were rejected. Do not overstate certainty from agreement among tools.
 
+## Resolving conflicting sources
+
+When official sources appear to disagree, do not silently choose whichever output matches the current engine.
+
+1. Verify that the sources refer to the same lexical item, POS, sense, grammatical form, and speech/style conditions.
+2. Check whether one source gives a normative standard, another a dictionary-listed variant, and another a descriptive or colloquial form.
+3. Record publication/update dates and whether the source is current or historical.
+4. Preserve each source's claim independently and explain the scope of the apparent disagreement.
+5. If the disagreement remains material, mark the engine decision unresolved or variant-bearing and state what expert review or additional source would resolve it.
+6. Do not treat a majority vote among G2P systems as a resolution of normative evidence.
+
+### Safe handling of automated suggestions
+
+Automated agents may propose candidate examples, article mappings, segmentations, or IPA. Treat each as untrusted until independently verified against the source and project schema. A source URL alone does not prove that the cited page contains the claimed form. Re-open the exact source, verify the relevant span, and retain a reproducible locator. Reject unsupported claims rather than weakening the acceptance gate to fit them.
+
 ## Morphology and rule scope
 
 - A rule's existence does not establish that it applies to every visually similar string.
