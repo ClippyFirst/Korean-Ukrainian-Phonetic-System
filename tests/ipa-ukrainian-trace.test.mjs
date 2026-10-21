@@ -13,6 +13,7 @@ test('IPA trace exposes exact longest-match token to Ukrainian grapheme mappings
       { ipa: 'dʑ', ukrainian: 'дж' },
       { ipa: 'i', ukrainian: 'і' }
     ],
+    features: [],
     unknown: ''
   });
   assert.deepEqual(traceIpaMapping('ɕi'), {
@@ -44,6 +45,7 @@ test('ASCII Latin g is not accepted as the IPA symbol ɡ', () => {
   });
   assert.deepEqual(traceIpaMapping('g'), {
     tokens: [],
+    features: [],
     unknown: 'g'
   });
   assert.deepEqual(ipaSyllableToUkrainian('g'), { text: '', unknown: 'g' });
@@ -78,4 +80,25 @@ test('service markup exposes all explanatory trace stages', () => {
   }
   assert.ok(app.includes('traceIpaMapping'));
   assert.ok(app.includes('t.surface||t.source'));
+});
+
+
+test('IPA vowel length remains visible in IPA and is explicitly explained when omitted from Ukrainian orthography', () => {
+  const traced = traceIpaMapping('aː');
+  assert.deepEqual(traced.tokens, [{ ipa: 'a', ukrainian: 'а' }]);
+  assert.deepEqual(traced.features, [{
+    ipa: 'ː',
+    offset: 1,
+    handling: 'omitted-from-ukrainian-target',
+    note: 'довгота збережена в IPA; український запис не має окремого знака довготи'
+  }]);
+  assert.equal(traced.unknown, '');
+  assert.equal(ipaSyllableToUkrainian('aː').text, 'а', 'target spelling stays unchanged');
+  assert.equal(ipaSyllableToUkrainian('aː').unknown, '');
+});
+
+test('the visible IPA trace renders non-orthographic feature handling rather than silently dropping it', () => {
+  const app = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
+  assert.ok(app.includes('const featureTrace=(mappingResult.features||[])'));
+  assert.ok(app.includes('довгота збережена в IPA'));
 });
