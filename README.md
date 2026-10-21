@@ -192,7 +192,7 @@ The repository currently has **no root-level project-wide LICENSE file**. Do not
 
 ### Surface regression source adjudication (2026-10-21)
 
-The 18-case practical-port fixture separates the pinned JavaScript output from NIKL normative comparators. Eleven comparators are directly attested examples/Q&A; seven remain rule-derived candidates, and no case has independent IPA gold yet. See the [source-adjudication report](docs/audits/SURFACE-REGRESSION-SOURCE-ADJUDICATION-2026-10-21.md) and [metadata regression test](tests/normative-surface-evidence-fixture.test.mjs).
+The 20-case practical-port fixture separates the pinned JavaScript output from NIKL normative comparators. Nineteen comparators are directly attested official examples/Q&A; one (`숲이`) remains rule-derived and is not treated as a direct lexical attestation. Independently adjudicated IPA gold remains 0/20, and Ukrainian target review is separate. See the [source-adjudication report](docs/audits/SURFACE-REGRESSION-SOURCE-ADJUDICATION-2026-10-21.md) and [metadata regression test](tests/normative-surface-evidence-fixture.test.mjs).
 
 ### Model-wide target consistency audit
 
