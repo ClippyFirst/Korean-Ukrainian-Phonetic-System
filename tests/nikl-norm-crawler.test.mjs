@@ -52,7 +52,9 @@ test("rejects non-HTTPS, non-official and out-of-scope URLs", () => {
   assert.throws(() => assertAllowedSourceUrl("http://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002"), /HTTPS/);
   assert.throws(() => assertAllowedSourceUrl("https://example.com/kornorms/"), /non-official host/);
   assert.throws(() => assertAllowedSourceUrl("https://korean.go.kr/front/onlineQna/"), /Only the official NIKL/);
-  assert.equal(new URL(assertAllowedSourceUrl(DEFAULT_SOURCE_URL)).hostname, "korean.go.kr");
+  assert.equal(new URL(assertAllowedSourceUrl(DEFAULT_SOURCE_URL)).hostname, "www.korean.go.kr");
+  assert.equal(new URL(DEFAULT_SOURCE_URL).pathname, "/kornorms/regltn/regltnView.do");
+  assert.equal(new URL(DEFAULT_SOURCE_URL).searchParams.get("regltn_code"), "0002");
   assert.equal(new URL(assertAllowedSourceUrl("https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002")).hostname, "www.korean.go.kr");
 });
 
@@ -69,7 +71,7 @@ test("manifest is metadata-only unless explicit text retention is requested", ()
     requestedUrl: DEFAULT_SOURCE_URL, finalUrl: DEFAULT_SOURCE_URL, retrievedAt: "2026-10-21T00:00:00.000Z",
     httpStatus: 200, contentType: "text/html; charset=utf-8", etag: null, lastModified: null,
     responseBytes: 1234, responseSha256: sha256("fixture"), userAgent: "test",
-    robots: { url: "https://korean.go.kr/robots.txt", status: 404, decision: "no_robots_file" },
+    robots: { url: "https://www.korean.go.kr/robots.txt", status: 404, decision: "no_robots_file" },
     termsReview: "not_assessed", retentionPolicy: "metadata-only",
   };
   const manifest = buildManifest(parsed, metadata);
