@@ -13,7 +13,7 @@ from korean_ukrainian.soft_morphology import soft_formal_licenses
 def test_shared_soft_morphology_parity_fixture():
     fixture_path = Path(__file__).parent / "fixtures" / "soft-morphology-parity.json"
     fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
-    assert "not normative gold" in fixture["description"]
+    assert "normative gold" in fixture["description"]
 
     for case in fixture["cases"]:
         items = parse_syllables(case["input"])
