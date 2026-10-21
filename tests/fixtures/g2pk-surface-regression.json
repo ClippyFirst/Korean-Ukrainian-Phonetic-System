@@ -81,7 +81,7 @@
       "normativeSurface": "수피",
       "normativeEvidenceStatus": "derived-from-NIKL-rule",
       "normativeSourceLocator": "§13 formal-morpheme liaison; lexical output still needs independent adjudication",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "Rule-derived candidate, not independently adjudicated lexical gold."
     },
     {
@@ -97,7 +97,7 @@
       "normativeSurface": "가치",
       "normativeEvidenceStatus": "direct-NIKL-example",
       "normativeSourceLocator": "§17 palatalization example 같이[가치]",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
@@ -113,7 +113,7 @@
       "normativeSurface": "구지",
       "normativeEvidenceStatus": "direct-NIKL-example",
       "normativeSourceLocator": "§17 palatalization example 굳이[구지]",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
@@ -129,7 +129,7 @@
       "normativeSurface": "달기",
       "normativeEvidenceStatus": "direct-NIKL-example",
       "normativeSourceLocator": "§13 example 닭이[달기]",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
@@ -145,7 +145,7 @@
       "normativeSurface": "밤는",
       "normativeEvidenceStatus": "direct-NIKL-example",
       "normativeSourceLocator": "§10 exception and §18 nasal assimilation give 밟는[밤ː는]; Hangul surface field does not encode length",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
@@ -162,7 +162,7 @@
       "normativeSurface": "넙쭈카다",
       "normativeEvidenceStatus": "direct-NIKL-example",
       "normativeSourceLocator": "§10 explicitly gives 넓-죽하다[넙쭈카다]",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "The JS port intentionally differs from the official standard; expectedSurface remains port output."
     },
     {
@@ -259,7 +259,7 @@
       "normativeSurface": "칼랄",
       "normativeEvidenceStatus": "direct-NIKL-example",
       "normativeSourceLocator": "§20 explicitly lists 칼날[칼랄]",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
@@ -275,7 +275,7 @@
       "normativeSurface": "물랄리",
       "normativeEvidenceStatus": "direct-NIKL-example",
       "normativeSourceLocator": "§20 explicitly lists 물난리[물랄리]",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     },
     {
@@ -291,7 +291,7 @@
       "normativeSurface": "서울력",
       "normativeEvidenceStatus": "direct-NIKL-example",
       "normativeSourceLocator": "§29 붙임 1 explicitly lists 서울-역[서울력]",
-      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
     }
   ]
