@@ -73,3 +73,22 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Smoke-test the deployed public pages
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          base_url="${PAGES_URL%/}/"
+          index_file="$(mktemp)"
+          system_file="$(mktemp)"
+          asset_file="$(mktemp)"
+          curl --fail --location --silent --show-error --retry 10 --retry-delay 5 --retry-all-errors --max-time 30 "$base_url" -o "$index_file"
+          grep -Fq 'Практичний режим точно відтворює вихід JavaScript-порту g2pK без словникових виправлень' "$index_file"
+          grep -Fq 'id="mode-practical"' "$index_file"
+          curl --fail --location --silent --show-error --retry 10 --retry-delay 5 --retry-all-errors --max-time 30 "${base_url}system.html" -o "$system_file"
+          grep -Fq '<title>Система / 한국어 → УКРАЇНСЬКА</title>' "$system_file"
+          asset_path="$(grep -oE 'src="\./assets/[^"]+\.js"' "$index_file" | head -n 1 | cut -d '"' -f 2 | sed 's#^\./##')"
+          test -n "$asset_path"
+          curl --fail --location --silent --show-error --retry 10 --retry-delay 5 --retry-all-errors --max-time 30 "${base_url}${asset_path}" -o "$asset_file"
+          test -s "$asset_file"
+          echo "Public Pages HTTP smoke passed for index.html, system.html, and the first JS asset at $base_url"
