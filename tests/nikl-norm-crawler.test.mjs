@@ -110,3 +110,17 @@ test("mocked fetch stops when robots.txt disallows the official rules path", asy
   await assert.rejects(fetchOfficialSource(DEFAULT_SOURCE_URL, { fetchImpl }), /robots.txt disallows/);
   assert.equal(requests.length, 1, "page request must not occur after a robots denial");
 });
+
+test("classifies HTTP 403 as an access block and does not retry or bypass", async () => {
+  const requests = [];
+  const fetchImpl = async (url) => {
+    requests.push(String(url));
+    if (String(url).endsWith("/robots.txt")) return new Response("", { status: 404 });
+    return new Response("Forbidden", { status: 403, headers: { "content-type": "text/html" } });
+  };
+  await assert.rejects(
+    fetchOfficialSource(DEFAULT_SOURCE_URL, { fetchImpl }),
+    (error) => error.code === "SOURCE_ACCESS_BLOCKED" && /HTTP 403/.test(error.message),
+  );
+  assert.equal(requests.length, 2, "one robots request and one page request; no alternate-host retries");
+});
