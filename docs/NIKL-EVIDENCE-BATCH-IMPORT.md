@@ -47,7 +47,7 @@ This writes `reports/nikl/saved-pages-import.template.json` with deterministic `
 npm run import:nikl-evidence -- --input-manifest reports/nikl/saved-pages-import.template.json --output reports/nikl/evidence-import-manifest.json
 ```
 
-The generator reads only the source register; it does not download pages or change source review status. The 41 rows cover the currently eligible Q&A/FAQ and Korean Basic Dictionary HTML pages, not all 44 outstanding citations. The importer validates dictionary language and ParaWordNo against the stable SRC-KRDICT-ENG/KOR ID. Three NIKL-hosted PDFs use a separate binary-metadata intake described in [the PDF guide](NIKL-PDF-IMPORT.md); PDF text extraction and document/claim review remain separate tasks. Import success remains metadata-only and does not establish claim support.
+The generator reads only the source register; it does not download pages or change source review status. The 39 rows cover the currently eligible unreviewed Q&A/FAQ and Korean Basic Dictionary HTML pages, not all 42 outstanding citations. The importer validates dictionary language and ParaWordNo against the stable SRC-KRDICT-ENG/KOR ID. Three NIKL-hosted PDFs use a separate binary-metadata intake described in [the PDF guide](NIKL-PDF-IMPORT.md); PDF text extraction and document/claim review remain separate tasks. Import success remains metadata-only and does not establish claim support.
 
 ## Safety and evidence semantics
 
