@@ -174,13 +174,13 @@
       "pythonG2pkSurface": "일꼬",
       "ipaGoldStatus": "not_independently_adjudicated",
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
-      "expectedSurfaceProvenance": "Pinned vendored JavaScript g2pK output under production options; prior project lexical control had changed this surface.",
+      "expectedSurfaceProvenance": "Pinned JavaScript g2pK output under production options; it differs from the direct NIKL §1 commentary surface comparator. The practical port contract is preserved; this is not IPA gold.",
       "differentialStatus": "js-port-differs-from-previous-project-lexical-control",
       "normativeSurface": "일꼬",
-      "normativeEvidenceStatus": "direct-NIKL-QA",
-      "normativeSourceLocator": "NIKL Online Q&A directly confirms 읽고[일꼬]",
-      "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=315279",
-      "normativeNotes": "The JS port intentionally differs from the official standard; expectedSurface remains port output."
+      "normativeEvidenceStatus": "direct-NIKL-example",
+      "normativeSourceLocator": "§1 해설 explicitly states the verbal-stem ㄺ + ㄱ environment and gives 읽고[일꼬].",
+      "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "normativeNotes": "Direct primary-rule commentary attestation: NIKL §1 commentary explicitly gives 읽고[일꼬]. This confirms Korean surface spelling only, not broad IPA or Ukrainian target."
     },
     {
       "input": "읽는",
