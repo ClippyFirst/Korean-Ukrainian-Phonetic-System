@@ -16,7 +16,7 @@ test("qna_seq=312379 directly attests 얇실하다 and separately quotes officia
   assert.match(source.title_or_project, /표준발음과 음운변동/u);
   assert.match(source.version_or_date, /Question 2025-04-03; answer 2025-04-08/u);
   assert.match(source.coverage, /Direct answer gives 얇실하다\[얄씰하다\].*밭갈이\[받까리\].*값지다\[갑찌다\]/u);
-  assert.match(source.contribution_expected, /not the Q&A question target/u);
+  assert.match(source.contribution_expected, /Do not claim all three were the Q&A question target/u);
   assert.match(source.license_status, /item-level KOGL marking not checked/u);
   for (const input of ['얇실하다', '밭갈이', '값지다']) assert.equal(byInput(input).source_url, source.url, input);
   assert.match(byInput('얇실하다').rule_notes, /directly confirms \[얄씰하다\]/u);
