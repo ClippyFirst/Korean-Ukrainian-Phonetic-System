@@ -75,10 +75,17 @@ The source register had two Q&A citations marked unreviewed even though the offi
 - The answer directly gives 솜이불[솜니불], 밭이랑[반니랑], and 집안일[지반닐], and explains that ㄴ-insertion in consonant-final compounds is distinct from orthographic 사이시옷.
 - Decision: direct surface evidence for 밭이랑 and 집안일. The answer does not establish a unique intermediate ordering; another official answer (qna_seq=330938) likewise declines to prescribe a categorical order. The corpus now explicitly marks the derivation order as the project's analysis, not normative consensus.
 
+
+## 11. qna_seq=325287 — direct attestations for 짧다 and 삶다
+
+- Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=325287
+- The official answer directly lists 짧다[짤따] and 삶다[삼ː따], alongside contrasts for other complex codas, and directs readers to §§10–11.
+- Decision: direct evidence for both exact lexical surfaces. The Korean length mark is preserved as source notation; broad IPA and Ukrainian adaptation remain separate, provisional project layers.
+
 ## Evidence limits
 
 The review used substantive text exposed in the official NIKL search index because direct HTML fetch was unavailable in this environment. The exact statements above are bounded by that visible indexed text; this report does not claim a complete HTTP retrieval of either page. Source reuse rights remain unverified. No broad-IPA gold or Ukrainian-target validation was added. No production transcription logic changed.
 
 ## Updated inventory
 
-The citation-only/unreviewed source-register count falls from 42 to 32. Ten sources are now reviewed at claim-scope level. Direct exact-surface attestations: qna_seq=305480 (읽다), 330743 (밝게, 굵은), 317229 (외곬에), 328719 (없이), 330620 (값없다), 330938 (꽃잎 final surface only), 335263 (실없다), and 335881 (밭이랑, 집안일). Partial only: qna_seq=334294 (rule context for 읽고/밝는, not direct forms) and qna_seq=307508 (spelling mismatch for 넓둥글다).
+The citation-only/unreviewed source-register count falls from 42 to 31. Eleven sources are now reviewed at claim-scope level. qna_seq=325287 directly attests 짧다[짤따] and 삶다[삼ː따]. Direct exact-surface attestations: qna_seq=305480 (읽다), 330743 (밝게, 굵은), 317229 (외곬에), 328719 (없이), 330620 (값없다), 330938 (꽃잎 final surface only), 335263 (실없다), and 335881 (밭이랑, 집안일). Partial only: qna_seq=334294 (rule context for 읽고/밝는, not direct forms) and qna_seq=307508 (spelling mismatch for 넓둥글다).
