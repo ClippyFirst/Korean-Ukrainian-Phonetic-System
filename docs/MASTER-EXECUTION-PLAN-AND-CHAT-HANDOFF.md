@@ -246,3 +246,19 @@ This section supersedes any earlier handoff statement that stops at batch 26. Th
 - Direct NIKL fetch again returned HTTP 403 and was explicitly classified BLOCKED; no live manifest was emitted.
 - The two known JS/Python surface differences (넓죽하다, 읽고) remain diagnostic-only and lack independent IPA adjudication.
 - The next commit only adds this verification close-out; final-head CI is rerun before merge.
+
+
+## Continuation checkpoint — integrated NIKL master passage run through browser engine (2026-10-22)
+
+- Working branch: `research/nikl-corpus-engine-regression-2026-10-22`; draft PR #247.
+- Latest engine/test implementation at this checkpoint: `c86a550e38bb5b959825cf222329d95486f7d588`; follow-up audit/handoff documentation commits are on the same branch.
+- Added `tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt` and `tests/nikl-master-passage-engine-regression.test.mjs`. The test runs each unique Hangul token and the full passage through the browser engine in strict and practical modes, checks every matching lexical record against stored Korean surface/IPA/Ukrainian target, gates unresolved tokens/issues, and tests seven generic §19 outputs without lexical overrides.
+- Latest measured corpus run: 5,230 characters; 855 unique Hangul tokens; 329 lexical hits; 526 generic-resolved tokens; zero unresolved tokens; zero token-level issues. Full-text strict and practical conversion both produced IPA and Ukrainian output with zero unresolved placeholders. The 23 diagnostics are expected warnings for isolated compatibility Jamo included in the inventory, not actionable word-level issues.
+- The first run exposed 13 unresolved token forms. Review showed that most were malformed particle/ending joins in the passage, not evidence for loosening the engine's morphology guards. These contexts were corrected; the final run has zero unresolved tokens. No unsupported pronunciations were invented.
+- Generic §19 regression oracles pass: 침략→침냑, 강릉→강능, 막론→망논, 석류→성뉴, 협력→혐녁, 법리→범니, 국립→궁닙.
+- Exact-head CI for the implementation batch: browser tests **1,166/1,166 passed**, Vite build passed, Python regression/data-integrity jobs on 3.11/3.12/3.13 passed, and master-table/research-corpus generation passed. See PR #247 and `docs/audits/NIKL-MASTER-PASSAGE-ENGINE-RUN-2026-10-22.md`.
+- **DONE_VERIFIED:** corpus is wired into the actual browser engine; known lexical records are regression-locked; the reported token-level blockers were corrected; full-text strict/practical smoke checks and all current CI jobs pass.
+- **PARTIAL:** this does not prove all subparagraphs, exceptions, and allowed variants of articles 1–30 are covered by the passage, nor that all 526 generic outputs are normatively correct. Continue with article/subparagraph span mapping and independent NIKL adjudication of generic outputs.
+- **BLOCKED / external access:** direct NIKL live fetch in CI remains HTTP 403 and must remain explicitly blocked; do not bypass access controls or invent evidence.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** independent broad-IPA gold and Ukrainian practical-target review remain outstanding; Ukrainian targets are project approximations, not NIKL prescriptions.
+- **Release disposition:** research preview / partial prototype, not release-ready. Keep PR #247 in draft until rule-by-rule coverage and generic-output adjudication are complete.
