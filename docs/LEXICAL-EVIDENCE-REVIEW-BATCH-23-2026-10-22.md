@@ -39,3 +39,11 @@ The stored Korean surface remains 난나치; the IPA already preserves the sourc
 
 No runtime pronunciation, IPA, Ukrainian output, or production code changed.
 
+
+## Verification
+
+- Tested implementation head: a78d9806ffecbe07af7edf4a38ee1a0cbeee0b61.
+- CI run: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39832112640 — passed.
+- Browser regression suite: 1,150/1,150 Node tests passed; Vite build passed.
+- Python regression/data-integrity passed.
+- Live NIKL fetch returned HTTP 403 and was classified BLOCKED; no live manifest was produced and no access-control bypass was attempted.
