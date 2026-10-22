@@ -209,6 +209,23 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
             "differential_status": case["differentialStatus"],
         })
     mismatches = [row for row in rows if not row["equal"]]
+    # These are known, evidence-backed JS-port divergences, not interchangeable
+    # IPA gold. Keep the practical port contract visible while guarding against
+    # silent additions/removals from this diagnostic.
+    expected_mismatches = {
+        "넓죽하다": {"browser": "널쭈카다", "python": "넙쭈카다"},
+        "읽고": {"browser": "익꼬", "python": "일꼬"},
+    }
+    assert {row["input"] for row in mismatches} == set(expected_mismatches)
+    by_input = {case["input"]: case for case in fixture["cases"]}
+    for row in mismatches:
+        expected = expected_mismatches[row["input"]]
+        case = by_input[row["input"]]
+        assert row["browser_expected_surface"] == expected["browser"]
+        assert row["python_g2pk_surface"] == expected["python"]
+        assert case["normativeSurface"] == expected["python"], row["input"]
+        assert case["expectedSurface"] != case["normativeSurface"], row["input"]
+        assert case["normativeEvidenceStatus"] in {"direct-NIKL-example", "direct-NIKL-QA"}
     report = {
         "kind": "diagnostic-only",
         "rows_compared": len(rows),
