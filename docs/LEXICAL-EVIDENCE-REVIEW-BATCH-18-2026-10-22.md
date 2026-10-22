@@ -102,7 +102,7 @@ The source register had two Q&A citations marked unreviewed even though the offi
 - The FAQ directly gives 않았다[아낟따], explaining §12(4) deletion of ㅎ before vowel-initial -았- and §23 fortition of the following ㄷ.
 - Decision: direct surface attestation; the existing Korean target is retained and the IPA/Ukrainian target remain separate.
 
-## 15. qna_seq=333927 — correct source for 의견란; remove the mismatched FAQ citation
+## 15. qna_seq=333927 — direct source for 의견란; supersede the unverified prior locator
 
 - Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=97&pageIndex=1&qna_seq=333927
 - The official answer directly gives 의견란[의견난] under the exception in §20 for ㄹ realized as ㄴ.
@@ -115,4 +115,4 @@ The review used substantive text exposed in the official NIKL search index becau
 
 ## Updated inventory
 
-The citation-only/unreviewed source-register count falls from 42 to 27. Fifteen active lexical citations are now reviewed at claim-scope level; the mismatched MCFAQ 8505 record is retained only as a correction trail, not as an active lexical citation. MCFAQ 8420 directly attests 않았다[아낟따]; Q&A 333927 directly attests 의견란[의견난] and replaces the superseded, unverified MCFAQ 8505 locator; no claim about the latter page's content is made. Curated FAQ 6674 directly attests only the base compound 밭일, not the attached forms 밭일과/밭일을; curated FAQ 6718 directly attests 많이[마ː니]. qna_seq=325287 directly attests 짧다[짤따] and 삶다[삼ː따]. Direct exact-surface attestations: qna_seq=305480 (읽다), 330743 (밝게, 굵은), 317229 (외곬에), 328719 (없이), 330620 (값없다), 330938 (꽃잎 final surface only), 335263 (실없다), and 335881 (밭이랑, 집안일). Partial only: qna_seq=334294 (rule context for 읽고/밝는, not direct forms) and qna_seq=307508 (spelling mismatch for 넓둥글다).
+The citation-only/unreviewed source-register count falls from 42 to 27. Fifteen active lexical citations are now reviewed at claim-scope level; the superseded MCFAQ 8505 locator is retained only as a pending-review record, not as an active lexical citation. MCFAQ 8420 directly attests 않았다[아낟따]; Q&A 333927 directly attests 의견란[의견난] and replaces the superseded, unverified MCFAQ 8505 locator; no claim about the latter page's content is made. Curated FAQ 6674 directly attests only the base compound 밭일, not the attached forms 밭일과/밭일을; curated FAQ 6718 directly attests 많이[마ː니]. qna_seq=325287 directly attests 짧다[짤따] and 삶다[삼ː따]. Direct exact-surface attestations: qna_seq=305480 (읽다), 330743 (밝게, 굵은), 317229 (외곬에), 328719 (없이), 330620 (값없다), 330938 (꽃잎 final surface only), 335263 (실없다), and 335881 (밭이랑, 집안일). Partial only: qna_seq=334294 (rule context for 읽고/밝는, not direct forms) and qna_seq=307508 (spelling mismatch for 넓둥글다).
