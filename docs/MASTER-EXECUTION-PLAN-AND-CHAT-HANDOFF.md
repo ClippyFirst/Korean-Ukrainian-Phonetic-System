@@ -131,3 +131,5 @@ undefined
 - Inventory after batch 21: 36/60 citations content-checked (22 direct, 9 partial, 5 contextual-example-only); 24 citation-only/unreviewed remain: 20 Q&A/FAQ pages, one Korean Basic Dictionary entry, and three PDFs. The HTML import queue contains 21 eligible pages.
 - Task ledger: DONE_VERIFIED after exact-head CI — source content scope reviewed, source register and intake queue reconciled, regression coverage added. BLOCKED / rights — item-level KOGL marking remains unverified. TODO — continue reviewing the remaining 24 citations. BLOCKED_SPECIALIST_ADJUDICATION — independent broad-IPA gold and Ukrainian-target review remain absent.
 - Release status remains deployed research preview / partial prototype, not a scientifically validated release.
+
+- Exact tested implementation head: b3b5432f7d84b01663ac9445e037cc4d29464b4b. [CI run](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39829491706) passed 1,144/1,144 Node tests, Vite build, Python regression/data-integrity, and source-register checks. Direct NIKL fetch returned HTTP 403 and was explicitly classified BLOCKED.
