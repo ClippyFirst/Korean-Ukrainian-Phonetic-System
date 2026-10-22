@@ -702,3 +702,11 @@ Official indexed NIKL Q&A “낱낱이 음운변동” (qna_seq=314041; question
 - BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
 
 The system remains a deployed research preview / partial prototype, not release-ready.
+
+
+### Batch-24 exact-head verification evidence
+
+- Tested implementation/test head 776a57ac0ed6202969d048ae4251def6dea3d545.
+- [System verification CI 39830871605](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39830871605) passed **1,148/1,148 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
+- Direct official NIKL access remains HTTP 403 and is classified BLOCKED; no manifest was produced.
+- The two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
