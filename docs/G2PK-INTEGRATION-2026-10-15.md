@@ -35,7 +35,13 @@ The browser port preserves punctuation, whitespace, Latin text, and digits throu
       → exact source-backed corrections when licensed
       → project Ukrainian target inventory
 
-Install the optional dependency on a compatible Python environment with:
+The native Python target adapter depends on the separate `ClippyFirst/Ukrainian-Phonetic-Inventory` repository, expected version `0.8.0`. It is deliberately not vendored here or added as a private VCS dependency. In a development checkout where both repositories are sibling directories, install it into the same environment:
+
+    python -m pip install -e ../Ukrainian-Phonetic-Inventory
+
+If the shared inventory is unavailable, native Korean surface/IPA analysis still runs, but Ukrainian orthography is returned as unresolved/unavailable. A stored `target_syllables` value is retained only as a comparison reference; it must not override the IPA-derived adapter result.
+
+Install the optional g2pK dependency on a compatible Python environment with:
 
     python -m pip install -e ".[g2pk]"
 
