@@ -91,7 +91,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
 
   const characters=[...text];
   const sourceText=characters.join('');
-  const jamoInventoryRanges=[...sourceText.matchAll(/[ㄱ-ㅎㅏ-ㅣ]+(?:\\s*[,·/]\\s*[ㄱ-ㅎㅏ-ㅣ]+){2,}/gu)]
+  const jamoInventoryRanges=[...sourceText.matchAll(/[ㄱ-ㅎㅏ-ㅣ]+(?:\s*[,·/]\s*[ㄱ-ㅎㅏ-ㅣ]+){2,}/gu)]
     .map(match=>[match.index,match.index+match[0].length]);
   const units=characters.map((ch,index)=>{
     const d=decompose(ch);
@@ -109,6 +109,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       // jamo lists (ㅚ·ㅟ의) or labels following 과/와 (ㄺ과 ㄱ 앞).
       const fromHere=characters.slice(index).join('');
       const listedJamoLabel=/^[ㄱ-ㅎㅏ-ㅣ]+(?:\s*[·,\/]\s*[ㄱ-ㅎㅏ-ㅣ]+)+(?:은|는|의|을|를|이|가|과|와)/u.test(fromHere);
+      const inJamoInventory=jamoInventoryRanges.some(([start,end])=>index>=start&&index<end);
       const before=characters.slice(Math.max(0,index-12),index).join('');
       const after=characters.slice(index+1,index+18).join('');
       const conjunctionLabel=/(?:과|와)\s*$/u.test(before)&&/^\s*(?:앞|환경|발음|조건|관련|설명|비교|[.,。:;·\/]|$)/u.test(after);
