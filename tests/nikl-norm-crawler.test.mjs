@@ -189,7 +189,7 @@ test("robots parser gives a matching product token precedence over wildcard grou
     "User-agent: ClippyFirst-NIKLResearchBot",
     "Allow: /kornorms/regltn/",
   ].join("\n");
-  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/main/main.do"), false, "wildcard disallow remains active outside the specific group path");
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/main/main.do", "OtherBot/1.0"), false, "wildcard group applies when no specific product-token group matches");
   assert.equal(robotsPathAllowed(robots, DEFAULT_SOURCE_URL), true, "the matching specific product-token group takes precedence over wildcard disallow");
 });
 
