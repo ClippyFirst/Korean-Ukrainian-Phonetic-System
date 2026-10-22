@@ -16,6 +16,7 @@ test('batch 14 records exact dictionary attestation for 맑은, not 맑을', () 
   assert.match(exact.rule_notes, /not IPA/u);
   const source = bySource('SRC-KRDICT-ENG-66031');
   assert.ok(source);
+  assert.equal(source.source_type, 'dictionary_lexical_reviewed');
   assert.match(source.coverage, /Directly lists 맑은\[말근\]/u);
   assert.match(source.review_status, /direct_attestation_for_맑은_partial_for_맑을/u);
   assert.match(review, /\| Direct for `맑은`; partial for `맑을` \|/u);
@@ -27,6 +28,7 @@ test('batch 14 keeps 얇은 exact-form evidence scoped to the listed dictionary 
   assert.match(exact.rule_notes, /directly lists 얇은\[얄븐\]/u);
   const source = bySource('SRC-KRDICT-ENG-89859');
   assert.ok(source);
+  assert.equal(source.source_type, 'dictionary_lexical_reviewed');
   assert.match(source.review_status, /^direct_attestation_2026-10-22$/u);
   assert.match(source.limitations_or_next_action, /not all ㄼ adjective paradigms/u);
 });
@@ -36,6 +38,7 @@ test('batch 14 marks 넣었다 as derived because the cited page does not list i
   assert.match(exact.rule_notes, /not directly listed on the page/u);
   const source = bySource('SRC-KRDICT-ENG-64509');
   assert.ok(source);
+  assert.equal(source.source_type, 'dictionary_lexical_reviewed');
   assert.match(source.review_status, /^partial_lemma_application_support_2026-10-22$/u);
   assert.match(source.coverage, /넣었다 is not directly listed/u);
   assert.match(review, /\*\*not\*\* listed/u);
