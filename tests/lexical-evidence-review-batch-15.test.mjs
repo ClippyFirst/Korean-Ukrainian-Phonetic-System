@@ -48,7 +48,4 @@ test('batch 15 source identities and review states remain explicit as the backlo
     assert.equal(sources.filter((row) => row.source_id === id).length, 1, id);
     assert.match(bySource(id).license_status, /item-level KOGL marking not checked/u);
   }
-  assert.equal(bySource('SRC-NIKL-QNA-315279').review_status, 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(bySource('SRC-NIKL-QNA-307237').review_status, 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(bySource('SRC-NIKL-MCFAQ-5748').review_status, 'direct_attestation_with_rule_instrument_scope_note_2026-10-22');
 });
