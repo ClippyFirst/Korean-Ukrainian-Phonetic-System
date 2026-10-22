@@ -135,3 +135,6 @@ Never say "all rules scraped" unless inventory reconciliation and validation pro
 ## When automated access is denied
 
 Do not use proxy/stealth scraping or rotate hosts to evade a 401/403/429/451. If a human can open the official page normally, support a local HTML import using `--input-html` plus an explicit canonical official `--url`. Mark `retrievalMode=local-html-import`, keep HTTP status and retrieval time unknown/null, record import time and the saved-file SHA-256, and mark robots policy as not checked by the import run. Never represent a local import as a live HTTP fetch. Keep the metadata-only default and require all 30 article headings/content blocks to reconcile before emitting a manifest.
+
+
+When interpreting `robots.txt`, select the most-specific matching product-token group and use `User-agent: *` only as fallback; combine groups only at the same most-specific token. Match `*` wildcards and terminal `$` anchors, resolve by longest matching rule, and let `Allow` win equal-specificity ties. Treat a denial or inability to verify policy as a blocker, never as a cue to try another host or disguise the client.

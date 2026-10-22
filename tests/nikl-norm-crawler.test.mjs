@@ -180,3 +180,35 @@ test("all NIKL repository skills point to the canonical desktop rules page", asy
     assert.ok(!content.includes("/kornorms/m/m_regltn.do"), path + ": stale mobile source URL remains");
   }
 });
+
+
+test("robots parser gives a matching product token precedence over wildcard groups", () => {
+  const robots = [
+    "User-agent: *",
+    "Disallow: /kornorms/",
+    "User-agent: ClippyFirst-NIKLResearchBot",
+    "Allow: /kornorms/regltn/",
+  ].join("\n");
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/main/main.do", "OtherBot/1.0"), false, "wildcard group applies when no specific product-token group matches");
+  assert.equal(robotsPathAllowed(robots, DEFAULT_SOURCE_URL), true, "the matching specific product-token group takes precedence over wildcard disallow");
+});
+
+test("robots parser handles wildcard segments and terminal dollar anchors", () => {
+  const robots = [
+    "User-agent: *",
+    "Disallow: /kornorms/private/*/secret$",
+  ].join("\n");
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/a/secret"), false);
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/a/secret/more"), true);
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/secret"), true);
+});
+
+
+test("robots parser prefers Allow when allow and disallow rules have equal specificity", () => {
+  const robots = [
+    "User-agent: *",
+    "Disallow: /same/path",
+    "Allow: /same/path",
+  ].join("\n");
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/same/path"), true);
+});
