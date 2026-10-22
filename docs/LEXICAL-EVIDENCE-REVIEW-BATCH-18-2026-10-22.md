@@ -35,7 +35,7 @@ The source register had two Q&A citations marked unreviewed even though the offi
 
 - Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317229
 - Indexed title: “외곬에.” The official indexed answer directly states “외곬에” is pronounced [외골쎄] and cites Standard Pronunciation Rules §14.
-- Decision: mark the exact Korean surface as directly attested; keep IPA and Ukrainian target validation separate. The source URL in the lexical corpus is normalized to the official desktop locator.
+- Decision: mark the exact Korean surface as directly attested; keep IPA and Ukrainian target validation separate. The original official mobile locator is retained to preserve the corpus source-identity contract.
 
 
 ## 5. qna_seq=328719 — direct attestation of 없이
