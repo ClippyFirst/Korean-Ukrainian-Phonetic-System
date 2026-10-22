@@ -37,6 +37,28 @@ test('qna_seq=334294 is contextual support and no longer falsely claims direct a
 });
 
 
+
+test('qna_seq=305480 directly attests 읽다[익따] and distinguishes 읽어[일거]', () => {
+  const source = bySource('SRC-NIKL-QNA-305480');
+  assert.ok(source);
+  assert.equal(source.review_status, 'direct_attestation_2026-10-22');
+  assert.match(source.coverage, /읽다\[익따\].*읽어\[일거\]/u);
+  assert.match(byInput('읽다').rule_notes, /directly confirms 읽다\[익따\]/u);
+  assert.equal(byInput('읽다').source_url, source.source_url);
+});
+
+test('qna_seq=335881 attests compound surfaces without asserting unique intermediate order', () => {
+  const source = bySource('SRC-NIKL-QNA-335881');
+  assert.ok(source);
+  assert.equal(source.review_status, 'direct_attestation_with_ordering_limit_2026-10-22');
+  assert.match(source.coverage, /밭이랑\[반니랑\].*집안일\[지반닐\]/u);
+  assert.match(source.limitations_or_next_action, /does not establish a unique intermediate rule order/u);
+  assert.match(byInput('밭이랑').rule_notes, /not normative consensus/u);
+  assert.match(byInput('집안일').rule_notes, /not an explicit intermediate derivation/u);
+  assert.equal(byInput('밭이랑').source_url, source.source_url);
+  assert.equal(byInput('집안일').source_url, source.source_url);
+});
+
 test('qna_seq=328719 directly attests 없이[업씨]', () => {
   const source = bySource('SRC-NIKL-QNA-328719');
   assert.ok(source);
@@ -92,10 +114,10 @@ test('qna_seq=317229 directly attests 외곬에 and the lexical URL matches the 
   assert.equal(byInput('외곬에').source_url, source.source_url);
 });
 
-test('batch 18 updates the citation-only backlog from 42 to 34 without altering lexical targets', () => {
+test('batch 18 updates the citation-only backlog from 42 to 32 without altering lexical targets', () => {
   const unreviewed = sources.filter((row) => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 34);
-  assert.match(review, /falls from 42 to 34/u);
+  assert.equal(unreviewed.length, 32);
+  assert.match(review, /falls from 42 to 32/u);
   assert.equal(byInput('읽고').pronunciation, '일꼬');
   assert.equal(byInput('밝는').pronunciation, '방는');
   assert.match(review, /No broad-IPA gold or Ukrainian-target validation was added/u);
