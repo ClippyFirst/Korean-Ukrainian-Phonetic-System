@@ -621,4 +621,14 @@ Current source evidence status is 33/60 citations content-checked (21 direct, 7 
 
 Main commit `1e40e0271c706311d21af144e003b5742d0e5ab7` passed system verification, browser/Python tests, and master-table/corpus artifact generation. GitHub Pages deploy/live smoke [39825627246](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39825627246) passed. The live Playwright practical-mode fixture processed 1,443 Korean input characters and returned 2,782 Ukrainian output characters plus 3,731 IPA characters with status `g2pK JS · Контекстну вимову застосовано`. This confirms deployment and end-to-end browser execution for that fixture only; it does not constitute independent linguistic adjudication.
 
-Open blockers remain: direct NIKL fetch is HTTP 403; 27 source citations still require content review; item-level reuse rights are not verified; independent broad-IPA gold and Ukrainian-target review remain absent. Release disposition remains deployed research preview / partial prototype.
+Open blockers after batch 19: direct NIKL fetch is HTTP 403; 26 source citations still require content review; item-level reuse rights are not verified; independent broad-IPA gold and Ukrainian-target review remain absent. Release disposition remains deployed research preview / partial prototype.
+
+
+## 2026-10-22 — NIKL Q&A claim-scope review, batch 19
+
+Q&A qna_seq=279931 (“'ㄴ' 첨가”, question 2023-09-11, answer 2023-09-13) was opened from the official NIKL site. The question supplies 음용[으묭] as the form under discussion; the answer explains that §29 ㄴ-insertion is not automatic even in apparently similar environments, but does not independently repeat [으묭] as an answer example.
+
+- Evidence status: PARTIAL / partial_claim_scope_reviewed_2026-10-22, not direct attestation. The lexical note was narrowed so it no longer claims that the answer directly confirms the question's premise.
+- Source-register count: 34/60 citations content-checked (21 direct, 8 partial, 5 contextual-example-only); 26 citation-only/unreviewed remain (22 Q&A/FAQ pages, one Korean Basic Dictionary entry, three PDFs). The ordinary-browser HTML import queue is 23 pages (22 Q&A/FAQ + one dictionary entry).
+- Regression coverage checks source identity, exact question/answer scope, retention of the existing Korean/IPA/Ukrainian fields, the 26-source backlog, and exclusion of the reviewed source from the generated import queue.
+- No runtime Korean pronunciation, IPA, or Ukrainian target values changed. The bracketed Korean notation is not IPA. Item-level KOGL rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
