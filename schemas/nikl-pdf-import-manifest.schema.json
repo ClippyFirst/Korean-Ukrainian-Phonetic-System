@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/schemas/nikl-pdf-import-manifest.schema.json",
+  "title": "NIKL PDF local binary metadata import manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "generatedBy",
+    "retentionPolicy",
+    "sourceCount",
+    "allSourcesContentReviewed",
+    "sources"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generatedBy": {
+      "const": "scripts/nikl-pdf-import.mjs"
+    },
+    "retentionPolicy": {
+      "const": "binary-metadata-and-hashes-only; no PDF bytes or extracted text are copied to this manifest"
+    },
+    "sourceCount": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 100
+    },
+    "allSourcesContentReviewed": {
+      "const": false
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sourceId",
+          "sourceUrl",
+          "retrievalMode",
+          "importedAt",
+          "httpFetchedAt",
+          "httpStatus",
+          "robotsStatus",
+          "rightsStatus",
+          "reviewStatus",
+          "localFileName",
+          "fileBytes",
+          "fileSha256",
+          "pdfVersion",
+          "hasPdfEofMarker",
+          "displayFileName",
+          "textExtracted",
+          "contentRetained",
+          "claimSupportEstablished",
+          "note"
+        ],
+        "properties": {
+          "sourceId": {
+            "type": "string",
+            "pattern": "^SRC-NIKL-DOWNLOAD-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}(?:_0)?$"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://(?:www\\.)?korean\\.go\\.kr/common/download\\.do\\?"
+          },
+          "retrievalMode": {
+            "const": "local-pdf-import"
+          },
+          "importedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "httpFetchedAt": {
+            "type": "null"
+          },
+          "httpStatus": {
+            "type": "null"
+          },
+          "robotsStatus": {
+            "const": "not_checked_local_import"
+          },
+          "rightsStatus": {
+            "const": "not_assessed"
+          },
+          "reviewStatus": {
+            "const": "NOT_REVIEWED_BINARY_HASH_ONLY"
+          },
+          "localFileName": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^/\\\\]+$"
+          },
+          "fileBytes": {
+            "type": "integer",
+            "minimum": 16,
+            "maximum": 104857600
+          },
+          "fileSha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "pdfVersion": {
+            "type": "string",
+            "pattern": "^\\d\\.\\d$"
+          },
+          "hasPdfEofMarker": {
+            "const": true
+          },
+          "displayFileName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255
+          },
+          "textExtracted": {
+            "const": false
+          },
+          "contentRetained": {
+            "const": false
+          },
+          "claimSupportEstablished": {
+            "const": false
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
