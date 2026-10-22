@@ -4,6 +4,7 @@ import lexicalAdditionsCsv from '../data/korean/lexical_additions_2026-10-15.csv
 import {createEngine} from './app/engine.js';
 import {createG2pWebAdapter} from './app/g2pk_web.js';
 import {traceIpaMapping} from './app/engine_ipa.js';
+import niklMasterPassage from '../tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt?raw';
 
 // Merge base lexicon with dated additions (later rows override earlier on same key).
 function mergeLexicalCsv(base, additions) {
@@ -70,6 +71,7 @@ syncModeUi();
 input.addEventListener('input',render);
 document.querySelector('#clear-button').addEventListener('click',()=>{input.value='';render();input.focus();});
 document.querySelector('#example-button').addEventListener('click',()=>{input.value='현대 한국어의 표준 발음';render();input.focus();});
+document.querySelector('#nikl-stress-example').addEventListener('click',()=>{input.value=niklMasterPassage.trim();render();input.focus();});
 for(const button of document.querySelectorAll('[data-example]'))button.addEventListener('click',()=>{input.value=button.dataset.example;render();input.focus();});
 for(const button of document.querySelectorAll('[data-copy]'))button.addEventListener('click',async()=>{const key=button.dataset.copy;const source=key==='ukrainian'?output:key==='ipa'?ipa:analysis;try{await navigator.clipboard.writeText(source.textContent);button.textContent='Скопійовано';live.textContent='Результат скопійовано.';setTimeout(()=>button.textContent='Копіювати',1200);}catch{live.textContent='Автоматичне копіювання недоступне; виділіть результат вручну.';}});
 
