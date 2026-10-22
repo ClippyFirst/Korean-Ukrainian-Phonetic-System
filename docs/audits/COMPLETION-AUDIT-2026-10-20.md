@@ -682,3 +682,13 @@ Release status remains deployed research preview / partial prototype, not releas
 - [System verification CI 39829847141](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39829847141) passed **1,145/1,145 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic.
 - The live NIKL request was again HTTP 403 and was classified BLOCKED. No live source manifest was emitted and no bypass was attempted.
 - Python differential diagnostics still show two known, unadjudicated JS/Python surface divergences (넓죽하다, 읽고); IPA comparison was not performed. This batch does not change runtime output.
+
+
+## Batch 22 — NIKL Q&A mixed-scope review (qna_seq=312379), 2026-10-22
+
+The official indexed answer “표준발음과 음운변동을 알려주세요” (question 2025-04-03; answer 2025-04-08) directly gives 얇실하다[얄씰하다] and explains §§10/23. The reproduced official §23 example list also contains 밭갈이[받까리] and 값지다[갑찌다], which are quoted rule examples rather than the Q&A's question target.
+
+- Evidence status: direct_answer_and_quoted_rule_examples_2026-10-22, with explicit claim-level distinction.
+- Inventory: 37/60 citations content-checked (23 direct, 9 partial, 5 contextual-example-only); 23 citation-only/unreviewed remain (19 Q&A/FAQ pages, one dictionary entry, three PDFs). HTML intake queue: 20 pages.
+- Existing lexical notes and output fields were preserved. Regression coverage checks source identity, mixed scope, and current queue counts.
+- Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
