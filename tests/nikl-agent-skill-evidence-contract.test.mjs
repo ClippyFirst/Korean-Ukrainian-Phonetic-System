@@ -30,7 +30,7 @@ test('NIKL coverage skill prevents rule-instrument and quoted-example conflation
 
 test('skill catalog records the current verified inventory without stale test counts', () => {
   assert.match(catalog, /18\/60/u);
-  assert.match(catalog, /29 remain citation-only\/unreviewed/u);
+  assert.match(catalog, /27 remain citation-only\/unreviewed/u);
   assert.match(catalog, /1,123\/1,123 Node tests/u);
   assert.doesNotMatch(catalog, /1,120\/1,120 Node tests/u);
   assert.doesNotMatch(catalog, /1,099\/1,099/);
