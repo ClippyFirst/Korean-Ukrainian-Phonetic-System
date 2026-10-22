@@ -113,7 +113,7 @@
         },
         "contentType": {
           "type": "string",
-          "pattern": "text/html|application/xhtml\\\\+xml|text/html; local-file"
+          "pattern": "^(?:text/html(?:;[^\\r\\n]*)?|application/xhtml\\+xml(?:;[^\\r\\n]*)?)$"
         },
         "etag": {
           "type": [
