@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/schemas/nikl-evidence-import-manifest.schema.json",
+  "title": "Metadata-only local NIKL evidence import manifest",
+  "description": "Batch inventory of human-saved official NIKL pages. This manifest records hashes and page metadata only; successful import does not establish claim support, current HTTP access, or reuse rights.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "generatedBy",
+    "retentionPolicy",
+    "sourceCount",
+    "allSourcesContentReviewed",
+    "sources"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generatedBy": {
+      "const": "scripts/nikl-evidence-import.mjs"
+    },
+    "retentionPolicy": {
+      "const": "metadata-and-hashes-only; source HTML and extracted page text are not copied to this manifest"
+    },
+    "sourceCount": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 250
+    },
+    "allSourcesContentReviewed": {
+      "const": false
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 250,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sourceId",
+          "sourceUrl",
+          "retrievalMode",
+          "importedAt",
+          "httpFetchedAt",
+          "httpStatus",
+          "robotsStatus",
+          "reuseTermsStatus",
+          "reviewStatus",
+          "localFileName",
+          "htmlBytes",
+          "htmlSha256",
+          "documentTitle",
+          "headings",
+          "normalizedTextSha256",
+          "normalizedTextCharCount",
+          "contentRetained",
+          "claimSupportEstablished",
+          "note"
+        ],
+        "properties": {
+          "sourceId": {
+            "type": "string",
+            "pattern": "^SRC-NIKL-[A-Z0-9-]{2,80}$"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://(?:www\\.)?korean\\.go\\.kr/"
+          },
+          "retrievalMode": {
+            "const": "local-html-import"
+          },
+          "importedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "httpFetchedAt": {
+            "type": "null"
+          },
+          "httpStatus": {
+            "type": "null"
+          },
+          "robotsStatus": {
+            "const": "not_checked_local_import"
+          },
+          "reuseTermsStatus": {
+            "const": "not_assessed"
+          },
+          "reviewStatus": {
+            "const": "NOT_REVIEWED_CONTENT_HASH_ONLY"
+          },
+          "localFileName": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[^/\\\\\\\\]+$"
+          },
+          "htmlBytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10485760
+          },
+          "htmlSha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "documentTitle": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "headings": {
+            "type": "array",
+            "maxItems": 30,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "normalizedTextSha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "normalizedTextCharCount": {
+            "type": "integer",
+            "minimum": 80
+          },
+          "contentRetained": {
+            "const": false
+          },
+          "claimSupportEstablished": {
+            "const": false
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
