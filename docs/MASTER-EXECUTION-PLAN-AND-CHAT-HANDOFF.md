@@ -142,3 +142,14 @@ undefined
 - Release status remains deployed research preview / partial prototype, not a scientifically validated release.
 
 - Exact tested implementation head: e79d7c2b2fc9cef9af8e98f51ba702e8b67c2d67. [CI run](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39830641838) passed 1,147/1,147 Node tests, Vite build, Python regression/data-integrity, and source-register checks. Direct NIKL fetch returned HTTP 403 and was explicitly classified BLOCKED.
+
+
+## Continuation checkpoint — NIKL Q&A 314041 ordered-rule evidence review, batch 23 (2026-10-22)
+
+- Starting main: 86ff1394c765b119dafb4506c15045ea1b5a1018 (batch 22 Q&A 312379 mixed-scope review is merged).
+- Reviewed official indexed NIKL Q&A [qna_seq=314041](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=314041), “낱낱이 음운변동” (question 2025-04-28; answer 2025-04-29).
+- The answer directly gives 낱낱이[난ː나치] and explicitly orders the derivation: syllable-final neutralization, nasalization, then palatalization. The lexical note now preserves the source's explicit ordering instead of saying the exact order may vary by analysis.
+- Korean surface, project IPA (including long-vowel mark), and Ukrainian target remain unchanged.
+- Inventory after batch 23: 38/60 citations content-checked (24 direct target-form/official-rule-example attestations, 9 partial, 5 contextual-example-only); 22 citation-only/unreviewed remain: 18 Q&A/FAQ pages, one Korean Basic Dictionary entry, and three PDFs. HTML intake queue: 19 eligible pages.
+- Task ledger: DONE_VERIFIED after exact-head CI — source title/date, direct attestation, ordered rule sequence, queue and tests updated. BLOCKED / rights — item-level KOGL marking remains unverified. TODO — review the remaining 22 citations. BLOCKED_SPECIALIST_ADJUDICATION — independent broad-IPA gold and Ukrainian-target review remain absent.
+- Release status remains deployed research preview / partial prototype, not a scientifically validated release.
