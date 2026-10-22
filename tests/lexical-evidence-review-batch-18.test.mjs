@@ -133,7 +133,7 @@ test('qna_seq=313452 replaces the superseded unverified MCFAQ 8505 locator for �
   assert.ok(superseded);
   assert.equal(source.review_status, 'direct_attestation_2026-10-22');
   assert.equal(superseded.review_status, 'citation_replaced_pending_source_review_2026-10-22');
-  assert.match(source.coverage, /의견란\[의견난\].*§20/u);
+  assert.match(source.coverage, /의견란\[의ː견난\].*§20/u);
   assert.match(superseded.coverage, /Page content not independently reviewed/u);
   assert.equal(byInput('의견란').source_url, source.url);
   assert.match(byInput('의견란').rule_notes, /source explicitly preserves the long-vowel mark/u);
