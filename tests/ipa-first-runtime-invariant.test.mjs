@@ -153,6 +153,15 @@ test('every Hangul-only lexical entry and licensed alternate is reproducible fro
   assert.equal(failures.length, 0, 'every runtime lexical target and licensed variant must derive from its runtime IPA');
 });
 
+test('standalone compatibility Jamo inventories are preserved as literal notation while IPA is withheld', () => {
+  const inventory = 'ㄱ, ㄲ, ㄴ, ㄷ, ㄸ, ㄹ, ㅁ, ㅂ, ㅃ, ㅅ, ㅆ, ㅇ, ㅈ, ㅉ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ';
+  const result = engine.convert(inventory);
+  assert.equal(result.ukrainian, inventory, 'research target must not silently delete a consonant inventory');
+  assert.equal(result.status, 'unresolved', 'literal preservation must not mislabel isolated Jamo as pronounced syllables');
+  assert.ok(result.issues.some((issue) => issue.includes('standalone compatibility jamo is not a syllable')), 'the lack of syllable-level IPA must remain explicit');
+  assert.ok(result.trace.filter((item) => item.status === 'unsupported-jamo').every((item) => item.ipa === '' && item.output === item.source), 'each isolated Jamo is preserved literally and has no invented IPA');
+});
+
 test('IPA-derived targets preserve whitespace and align multiword inputs without guessing missing IPA', () => {
   assert.deepEqual(ipaTargetForSource('국립 국어원', 'kuŋ nim k͈u ɡʌ wʌn'), {
     text: 'куннім куґовон',
