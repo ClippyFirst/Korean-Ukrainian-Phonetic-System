@@ -600,3 +600,10 @@ The overall inventory is still **16/60 content-checked and 44 citation-only/unre
 - `BLOCKED_SPECIALIST_ADJUDICATION`: no broad-IPA gold or independent Ukrainian-target review was added.
 
 Current evidence inventory: **18/60** newly inventoried citations content-checked (9 direct for target forms, 4 partial, 5 contextual-example-only); **42 citation-only/unreviewed**. The source count changed because two pages received scoped partial review; the third dictionary source and three PDFs remain outstanding. Release status remains deployed research preview / partial prototype.
+
+
+## 2026-10-22 continuation checkpoint — batch 18 merged
+
+Batch 18 PR #221 was merged as `353a5075ece1d70b188d20dc9d59f43005b3767b`. Its exact tested head `913716d7e4f23ab54a5b6651f963f2fe9449cf7f` passed 1,136/1,136 Node tests, Vite build, Python regression/data-integrity, and the source-inventory diagnostic; the live source fetch correctly remained BLOCKED by HTTP 403.
+
+Current source evidence status is 33/60 citations content-checked (21 direct, 7 partial, 5 contextual-example-only) and 27 citation-only/unreviewed. Remaining: 23 Q&A/FAQ pages, one Korean Basic Dictionary entry, and three PDFs. No claim was promoted solely from a URL or filename. The live crawler blocker, item-level reuse-rights gap, and absence of independent broad-IPA/Ukrainian-target adjudication remain open. Status: deployed research preview / partial prototype, not release-ready.
