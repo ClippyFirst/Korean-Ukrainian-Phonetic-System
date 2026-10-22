@@ -18,7 +18,7 @@ Requires the repository's declared Node.js runtime (Node 22.12+); no third-party
 or invoke the script directly:
 
 The default command:
-1. restricts the URL to HTTPS on the official korean.go.kr host and the /kornorms/ path;
+1. restricts the URL to HTTPS on the official korean.go.kr host, the exact desktop or legacy mobile Standard Pronunciation Rules endpoint, and exactly one `regltn_code=0002` parameter;
 2. checks robots.txt and stops if the target path is disallowed or policy cannot be checked;
 3. fetches one official page with a descriptive user-agent, timeout and 10 MiB response cap;
 4. records HTTP metadata, exact response SHA-256, retrieval time, article IDs/titles/locators and normalized per-article hashes;
@@ -50,7 +50,7 @@ Fixture-based parser tests run in the existing browser regression suite:
     npm test
     npm run build
 
-The parser requires a semantic heading for 제2부 표준 발음법; selector drift is a hard failure rather than an empty successful crawl. Tests cover the full 1–30 inventory, exclusions, missing/duplicate headings, empty extraction, entity decoding, source URL allowlisting, robots decisions, mocked fetch provenance, the no-retention default, and the explicit acknowledgement gate for article-text retention.
+The parser requires a semantic heading for 제2부 표준 발음법; selector drift is a hard failure rather than an empty successful crawl. Tests cover the full 1–30 inventory, exclusions, missing/duplicate headings, empty extraction, entity decoding, exact source-endpoint and regulation-code allowlisting, robots decisions, mocked fetch provenance, the no-retention default, and the explicit acknowledgement gate for article-text retention.
 
 ## Limits
 

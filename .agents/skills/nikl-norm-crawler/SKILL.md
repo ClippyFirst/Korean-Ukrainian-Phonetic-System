@@ -24,7 +24,7 @@ Treat the official NIKL source as normative within its documented scope. Third-p
 4. Check whether an official API, export, sitemap, or stable structured response exists before HTML scraping.
 5. Choose the least brittle method: documented API/export → stable static HTML parser → browser automation only if necessary. Do not use browser automation as a default if ordinary HTTP is adequate.
 6. Do not bypass login, approval, access controls, rate limits, CAPTCHA, robots restrictions, or anti-bot measures. A block becomes an explicit blocker, not a reason to evade controls.
-7. Pin the target base URL and allowed hostnames. Do not follow arbitrary off-site links or user-controlled URLs.
+7. Pin the target to the official desktop full-text endpoint or its legacy official mobile counterpart, and require exactly one `regltn_code=0002` query parameter. Do not accept arbitrary paths under `/kornorms/`, other regulation codes, duplicate code parameters, off-site redirects, or user-controlled URLs.
 
 ## Collection protocol
 

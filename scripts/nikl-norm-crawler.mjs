@@ -247,7 +247,15 @@ export function assertAllowedSourceUrl(url) {
   const parsed = new URL(url);
   if (parsed.protocol !== "https:") throw new Error("Only HTTPS official source URLs are allowed.");
   if (!["korean.go.kr", "www.korean.go.kr"].includes(parsed.hostname.toLowerCase())) throw new Error("Refusing non-official host: " + parsed.hostname);
-  if (!parsed.pathname.startsWith("/kornorms/")) throw new Error("Only the official NIKL Korean language norms area is in scope.");
+  const acceptedPaths = new Set([
+    "/kornorms/regltn/regltnView.do",
+    "/kornorms/m/m_regltn.do",
+  ]);
+  if (!acceptedPaths.has(parsed.pathname)) throw new Error("Only the official NIKL Standard Pronunciation Rules endpoints are in scope.");
+  const regulationCodes = parsed.searchParams.getAll("regltn_code");
+  if (regulationCodes.length !== 1 || regulationCodes[0] !== "0002") {
+    throw new Error("Only NIKL Standard Pronunciation Rules regulation code 0002 is in scope.");
+  }
   return parsed;
 }
 
