@@ -109,3 +109,14 @@ undefined
 - CI on the implementation/test head passed: 1,139/1,139 Node tests, Vite build, Python regression/data-integrity, and source-register checks. The live NIKL fetch returned HTTP 403 and was explicitly classified BLOCKED; no live manifest was produced and no access-control bypass was attempted.
 - Task ledger: DONE_VERIFIED — source claim narrowed, source register updated, batch report and regression test added, queue counts reconciled. BLOCKED / rights — item-level KOGL marking remains unverified. TODO — continue claim-by-claim review of the remaining 26 citations. BLOCKED_SPECIALIST_ADJUDICATION — independent broad-IPA gold and Ukrainian-target review remain absent.
 - Release status remains deployed research preview / partial prototype, not a scientifically validated release.
+
+
+## Continuation checkpoint — NIKL Q&A 312379 mixed-scope evidence review, batch 20 (2026-10-22)
+
+- Starting main: 3f125e09533019098f6eaafec86fa274a9630a18 (batch 19 Q&A 279931 claim-scope review is merged).
+- Reviewed official NIKL Q&A [qna_seq=312379](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=312379), “표준발음과 음운변동을 알려주세요” (question 2025-04-03; answer 2025-04-08).
+- The answer directly attests 얇실하다[얄씰하다] and explains §§10/23. The answer's reproduced official §23 example list also contains 밭갈이[받까리] and 값지다[갑찌다]; these are quoted rule examples, not the Q&A's question target. The source register uses direct_answer_and_quoted_rule_examples_2026-10-22 to preserve that distinction.
+- Existing lexical notes for the three forms already reflect this scope. Their Korean surface, IPA, Ukrainian targets, and source URLs are unchanged; only the source register, batch report/tests, and evidence intake counts changed.
+- Inventory after batch 20: 35/60 citations content-checked (22 direct, 8 partial, 5 contextual-example-only); 25 citation-only/unreviewed remain: 21 Q&A/FAQ pages, one Korean Basic Dictionary entry, and three PDFs. The HTML intake queue contains 22 eligible pages.
+- Task ledger: DONE_VERIFIED after exact-head CI — source content scope reviewed, source register and intake queue reconciled, regression coverage added. BLOCKED / rights — item-level KOGL marking remains unverified. TODO — continue reviewing the remaining 25 citations. BLOCKED_SPECIALIST_ADJUDICATION — independent broad-IPA gold and Ukrainian-target review remain absent.
+- Release status remains deployed research preview / partial prototype, not a scientifically validated release.
