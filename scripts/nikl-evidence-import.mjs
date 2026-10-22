@@ -52,6 +52,13 @@ export function officialSourceUrl(value) {
     : queryContract.required === "page_id" ? values[0] === "P000189"
       : /^\d+$/.test(values[0]) && Number(values[0]) > 0);
   if (!valid) throw new Error("Official URL must contain exactly one valid " + queryContract.required + " identifier.");
+  if (isKrdict) {
+    const nationValues = url.searchParams.getAll("nation");
+    const englishRoute = url.pathname.startsWith("/eng/");
+    if (nationValues.length > 1 || (nationValues.length === 1 && (!englishRoute || nationValues[0] !== "eng"))) {
+      throw new Error("Korean Basic Dictionary nation parameter is only valid as nation=eng on the English route.");
+    }
+  }
   if (url.username || url.password) throw new Error("URL credentials are not allowed.");
   url.hash = "";
   url.searchParams.sort();
@@ -100,7 +107,7 @@ export async function buildEvidenceImport(inputManifestPath, outputPath, { now =
   const records = [];
   for (const source of input.sources) {
     if (!source || typeof source.sourceId !== "string" ||
-        !(/^(?:SRC-NIKL-[A-Z0-9-]{2,80}|SRC-KRDICT-(?:ENG|KOR)-\\d+)$/.test(source.sourceId))) {
+        !(/^(?:SRC-NIKL-[A-Z0-9-]{2,80}|SRC-KRDICT-(?:ENG|KOR)-\d+)$/.test(source.sourceId))) {
       throw new Error("Each source requires a stable SRC-NIKL-* or SRC-KRDICT-{ENG,KOR}-* sourceId.");
     }
     if (ids.has(source.sourceId)) throw new Error("Duplicate sourceId: " + source.sourceId);
@@ -109,6 +116,7 @@ export async function buildEvidenceImport(inputManifestPath, outputPath, { now =
     const parsedUrl = new URL(url);
     const expectedQnaId = source.sourceId.match(/^SRC-NIKL-QNA-(\d+)$/);
     const expectedFaqId = source.sourceId.match(/^SRC-NIKL-(?:FAQ|MCFAQ)-(\d+)$/);
+    const expectedDictionaryId = source.sourceId.match(/^SRC-KRDICT-(ENG|KOR)-(\d+)$/);
     if (expectedQnaId && parsedUrl.searchParams.get("qna_seq") !== expectedQnaId[1]) {
       throw new Error(source.sourceId + ": source ID does not match qna_seq in URL.");
     }
