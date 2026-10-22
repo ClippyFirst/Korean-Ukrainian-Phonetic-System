@@ -389,7 +389,7 @@
       "input": "읽는",
       "surfaceEvidenceStatus": "direct-NIKL-QA",
       "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306000",
-      "sourceLocator": "NIKL Online Q&A example and §11 + §18",
+      "sourceLocator": "NIKL Online Q&A about spelling (answer 2024-11-15): its explanatory discussion uses 읽는 → 잉는 as a phonetic illustration; compare §§11 and 18 for pronunciation analysis.",
       "candidateBroadIpa": null,
       "syllableBoundaries": null,
       "vowelLengthAssessment": null,
@@ -415,7 +415,7 @@
         "decisionNotes": null
       },
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
-      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "notes": "The cited NIKL Q&A is about spelling, not a direct pronunciation question; 잉는 appears in explanatory discussion as a phonetic illustration. No IPA candidate supplied; reviewers must adjudicate independently.",
       "normativeSurfaceComparator": "잉는"
     },
     {
