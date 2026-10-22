@@ -102,7 +102,7 @@ export async function buildEvidenceImport(inputManifestPath, outputPath, { now =
     const url = officialSourceUrl(source.url);
     const parsedUrl = new URL(url);
     const expectedQnaId = source.sourceId.match(/^SRC-NIKL-QNA-(\d+)$/);
-    const expectedFaqId = source.sourceId.match(/^SRC-NIKL-FAQ-(\d+)$/);
+    const expectedFaqId = source.sourceId.match(/^SRC-NIKL-(?:FAQ|MCFAQ)-(\d+)$/);
     if (expectedQnaId && parsedUrl.searchParams.get("qna_seq") !== expectedQnaId[1]) {
       throw new Error(source.sourceId + ": source ID does not match qna_seq in URL.");
     }
