@@ -25,17 +25,17 @@ function normalized(value) {
   return String(value ?? "").replace(/[\u00a0\u200b\ufeff]/g, " ").replace(/\s+/g, " ").trim();
 }
 
-function officialSourceUrl(value) {
+export function officialSourceUrl(value) {
   let url;
   try { url = new URL(value); } catch { throw new Error("Each source requires a valid absolute URL."); }
-  if (url.protocol !== "https:" || !["korean.go.kr", "www.korean.go.kr"].includes(url.hostname.toLowerCase())) {
+  if (url.protocol !== "https:" || !["korean.go.kr", "www.korean.go.kr", "m.korean.go.kr"].includes(url.hostname.toLowerCase())) {
     throw new Error("Only HTTPS pages on the official korean.go.kr host are allowed.");
   }
   if (!ALLOWED_PATHS.has(url.pathname)) throw new Error("URL path is outside the official NIKL evidence-import allowlist: " + url.pathname);
   const queryContract = url.pathname.includes("onlineQna")
     ? { required: "qna_seq", allowed: new Set(["qna_seq", "mn_id", "pageIndex"]) }
     : url.pathname.includes("mcfaq")
-      ? { required: "mcfaq_seq", allowed: new Set(["mcfaq_seq", "mn_id"]) }
+      ? { required: "mcfaq_seq", allowed: new Set(["mcfaq_seq", "mn_id", "pageIndex"]) }
       : url.pathname.includes("regltnView") || url.pathname.includes("m_regltn")
         ? { required: "regltn_code", allowed: new Set(["regltn_code"]) }
         : { required: "page_id", allowed: new Set(["page_id", "mkn"]) };
@@ -102,7 +102,7 @@ export async function buildEvidenceImport(inputManifestPath, outputPath, { now =
     const url = officialSourceUrl(source.url);
     const parsedUrl = new URL(url);
     const expectedQnaId = source.sourceId.match(/^SRC-NIKL-QNA-(\d+)$/);
-    const expectedFaqId = source.sourceId.match(/^SRC-NIKL-FAQ-(\d+)$/);
+    const expectedFaqId = source.sourceId.match(/^SRC-NIKL-(?:FAQ|MCFAQ)-(\d+)$/);
     if (expectedQnaId && parsedUrl.searchParams.get("qna_seq") !== expectedQnaId[1]) {
       throw new Error(source.sourceId + ": source ID does not match qna_seq in URL.");
     }

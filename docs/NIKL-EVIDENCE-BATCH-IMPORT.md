@@ -32,9 +32,26 @@ Use this helper when the official NIKL pages open in a human's ordinary browser 
 
 4. Inspect each saved official page yourself. Compare the exact cited target, page title/date, quoted example versus case-specific answer, rule instrument, morphology/POS, and claim scope. Only after that manual claim-level review should the source register or lexical notes be updated.
 
+
+## Generate a ready-to-fill template from the current source register
+
+The source register currently contains **38 unreviewed official NIKL Q&A/curated FAQ citations** that match the batch importer's page contract. Generate a template with stable source IDs and deterministic local filenames:
+
+```sh
+npm run template:nikl-evidence
+```
+
+This writes `reports/nikl/saved-pages-import.template.json` with `saved-pages/SRC-NIKL-….html` input paths. Save each corresponding official page through ordinary browser access into `reports/nikl/saved-pages/`, then use the generated JSON as the `--input-manifest`:
+
+```sh
+npm run import:nikl-evidence -- --input-manifest reports/nikl/saved-pages-import.template.json --output reports/nikl/evidence-import-manifest.json
+```
+
+The generator reads only the source register; it does not download pages or change source review status. The 38 rows are only the currently eligible Q&A/FAQ subset, not all 44 outstanding citations. Dictionary pages and NIKL-hosted documents outside the allowlisted HTML routes are intentionally excluded and need their own source-specific retrieval/review procedure. Import success remains metadata-only and does not establish claim support.
+
 ## Safety and evidence semantics
 
-- Only HTTPS URLs on the official `korean.go.kr` host and allowlisted NIKL Q&A, curated FAQ, pronunciation-rules, and official reuse-policy paths are accepted. Q&A/FAQ pages require an exact numeric page identifier.
+- Only HTTPS URLs on the exact official `korean.go.kr`, `www.korean.go.kr`, or `m.korean.go.kr` hosts and allowlisted NIKL Q&A, curated FAQ, pronunciation-rules, and official reuse-policy paths are accepted. FAQ `pageIndex` is accepted as display/navigation metadata but does not change the source identifier. Q&A/FAQ pages require an exact numeric page identifier.
 - Each source ID and canonical URL must be unique. Missing/empty files, likely error pages, invalid UTF-8, and files over 10 MiB fail closed.
 - Output contains source IDs/URLs, page title and headings, import timestamp, local filename, byte count, SHA-256 hashes, and normalized visible-text length. It never copies raw HTML or page text into the output.
 - It explicitly records `httpFetchedAt=null`, `httpStatus=null`, `robotsStatus=not_checked_local_import`, `reuseTermsStatus=not_assessed`, `reviewStatus=NOT_REVIEWED_CONTENT_HASH_ONLY`, and `claimSupportEstablished=false`. These fields must not be promoted merely because the importer succeeds.

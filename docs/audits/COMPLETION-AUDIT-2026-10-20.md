@@ -504,3 +504,28 @@ At implementation/test head `a7f7339a12c88b0d6a6485fb131ee6bafba9faed`, GitHub A
 - `BLOCKED_SPECIALIST_ADJUDICATION`: the 20-case fixture still has 0/20 independently adjudicated broad-IPA gold; Ukrainian-target review is separate and uncompleted.
 - Existing source inventory remains 16/60 content-checked (9 direct, 2 partial, 5 contextual-only) and 44 citation-only/unreviewed. No changes to source evidence classification were made in this batch.
 - Release remains a deployed research preview / partial prototype, not a scientifically validated release. No production engine or UI changes.
+
+
+## Batch 18: source-register-driven NIKL evidence-import template — 2026-10-22
+
+### Work completed
+- Fixed a real compatibility gap in the metadata-only batch importer: existing official mobile-host citations (`m.korean.go.kr`), existing stable `SRC-NIKL-MCFAQ-…` IDs, and FAQ URLs containing `pageIndex` are now accepted under the same HTTPS host/path/query allowlist.
+- Added `scripts/nikl-evidence-template.mjs` and `npm run template:nikl-evidence`. It parses the existing source-register CSV with quoted/multiline-field handling, filters only the unreviewed official NIKL Q&A/curated FAQ records eligible for this importer, validates canonical URLs and duplicate IDs/URLs, and writes deterministic relative HTML filenames.
+- Added regression tests for mobile URLs, MCFAQ IDs, FAQ pagination, CSV multiline fields, unsafe relative directories, malformed CSV, duplicate records, and the real current source-register inventory.
+- Updated the importer guide and PR description. No linguistic claim, source-review status, public UI, or production transcription behavior was changed.
+
+### Verification
+- Implementation/test head: `8bad819d4294af56feda6249be2f992e7854dbef`.
+- [Node/browser suite](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39784141517): **1,112 passed, 0 failed**; Vite build passed.
+- [Python matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39784141517): Python 3.11, 3.12, and 3.13 all passed.
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39784141636), [browser G2P integration](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39784141594), and [master-table/research-corpus checks](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39784141499) passed.
+- CI initially caught an over-escaped source-ID assertion in the new test. The test was corrected; the exact implementation/test head above passed all suites. The live crawl was skipped on this fix branch by workflow policy, and this change performs no network crawl.
+
+### Task ledger
+- `DONE_VERIFIED`: deterministic template generator; strict CSV/path/URL validation; stable Q&A/MCFAQ identifiers; source-register count assertion (**38 eligible Q&A/FAQ rows**); regression and CI.
+- `BLOCKED`: no authorized human-saved HTML batch was available, so no page content was reviewed or evidence status changed. Direct live NIKL collection remains HTTP 403 in GitHub Actions.
+- `BLOCKED / rights`: page-level reuse terms remain unverified.
+- `TODO`: inspect the 38 saved Q&A/FAQ pages individually; separately design a compatible evidence intake for the remaining **3 Korean Basic Dictionary pages** and **3 NIKL-hosted PDFs**. Do not treat template generation or import hashes as linguistic evidence.
+- `BLOCKED_SPECIALIST_ADJUDICATION`: independent broad-IPA gold and independent Ukrainian-target review remain outstanding.
+
+The evidence inventory remains **16/60 citation pages content-checked** and **44 citation-only/unreviewed**. This batch makes the 38-page eligible subset easier to collect; it does not reduce the unreviewed count. Release disposition remains deployed research preview / partial prototype.
