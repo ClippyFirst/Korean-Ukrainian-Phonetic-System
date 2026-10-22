@@ -446,3 +446,8 @@ Exact-head workflow [39761906127](https://github.com/ClippyFirst/Korean-Ukrainia
 - Source-review inventory after the contextual-only checks stands at **11/60** newly inventoried pages content-checked: **4 direct for target forms, 2 partial, 5 contextual-example-only for target forms, 49 still citation-only/unreviewed**. Item-level KOGL marking remains unverified for all three pages.
 - `DONE_VERIFIED`: exact content check, source-register scope correction, `맑은` citation correction, regression assertions. `PARTIAL`: rule-derived `맑을` and `넣었다`. `BLOCKED / rights`: page-level reuse marking. `BLOCKED_SPECIALIST_ADJUDICATION`: independent broad IPA and Ukrainian target review.
 - No production engine or UI changes. Release status remains research preview/prototype, not scientifically validated.
+
+
+### Additional contextual-only dictionary checks — batch 14
+
+Five further pages were inspected: `찾다` (57320), `잊다` (70067), `붙다` (74181), `놓다` (89534), and `쌓이다` (65098). Their cited target spellings appear in ordinary example sentences, not as bracketed pronunciation entries. The corresponding lexical rows now explicitly retain rule-derived status; source-register records identify the evidence as contextual-only for those target forms. Automated tests protect that distinction. Current new-citation review count: **11/60** (4 direct, 2 partial, 5 contextual-only; 49 unreviewed). Details: [batch 14 review note](../LEXICAL-EVIDENCE-REVIEW-BATCH-14-2026-10-22.md).
