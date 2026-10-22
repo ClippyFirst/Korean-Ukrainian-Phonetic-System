@@ -91,3 +91,19 @@ After the original corpus smoke run, added `tests/ipa-first-runtime-invariant.te
 For the tested corpus and the entire Hangul-only lexical inventory, the runtime Ukrainian output is mechanically reproducible from the runtime IPA. This is direct evidence that those results use the IPA → Ukrainian boundary, not an independent Hangul-to-Ukrainian result path.
 
 This result **does not prove that every generated Korean IPA form is normatively correct**. In particular, generic phonology still requires independent source-backed adjudication for every relevant article/subparagraph, exception, and permitted variant. Ukrainian spellings remain project adaptations, not prescriptions from NIKL. Full linguistic correctness and exhaustive normative coverage remain **PARTIAL**.
+
+
+## Exact-user-text rerun and gap-register correction — 2026-10-22
+
+The earlier section above describes the first, edited version of the stress passage and must not be used as evidence that the user's original passage was fully tested. The fixture was restored to the user's original intentionally awkward/ambiguous forms and rerun at commit `0fa20f2790f66b8b3e3b06a70b67bdc97e999ce4`. That exact-head CI run exposed 13 unresolved tokens, and the previous tests failed because they incorrectly required all 853 tokens to resolve. No pronunciation has been invented to silence these failures.
+
+The corpus gate has now been changed to an explicit, finite gap register for these exact tokens: `짧은소리의`, `수많이는`, `없으니를`, `없애다에서는`, `값에서는`, `밟으니와`, `싫어도에서는`, `외곬에를`, `값있는에서는`, `히읗을의`, `벼훑이를`, `밭이와`, and `붙임`. The regression must fail if any new unresolved token appears, if any registered item unexpectedly resolves without review, or if any token-level diagnostic appears outside this list. The IPA-first invariant checks that all resolved tokens/variants reproduce exactly from their runtime IPA and reports the unresolved list separately.
+
+The 13 items are not claimed to be correct Korean lexical forms or normatively licensed pronunciations. They are ambiguous/structurally malformed contexts embedded in a stress-test instruction. The engine must not fabricate a morphology parse merely to achieve a green test. The current whole-text strict mode also surfaces these diagnostics; practical mode's heuristic output is not promoted to normative status. Any target emitted alongside an `unresolved` status is not considered an accepted transcription for that item.
+
+### Corrected acceptance status
+
+- **PASS only when CI confirms:** full suite, runtime IPA parity for resolved items, exact expected unresolved-token set, production build, Python matrix, system verification, and generated-artifact workflow.
+- **Known gaps:** the 13 registered contexts require the corpus to be split into grammatical minimal examples or supplied with explicit, evidence-backed morphological analyses before they can be used as normative pronunciation tests.
+- **Not established:** byte-for-byte identity between this reconstructed repository fixture and the original chat message, exhaustive rule/subparagraph coverage, or normative correctness of all generic IPA outputs. Those require independent source-to-fixture comparison and NIKL evidence.
+- **Release status:** research preview / partial prototype; not release-ready as a fully normative standard-pronunciation transcriber.
