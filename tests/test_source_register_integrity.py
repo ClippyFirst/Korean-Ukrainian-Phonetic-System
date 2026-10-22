@@ -73,6 +73,8 @@ def test_every_ipa_queue_surface_source_is_registered_with_an_exact_url():
     queue = json.loads(IPA_QUEUE.read_text(encoding="utf-8"))
     missing = sorted({item["surfaceEvidenceUrl"] for item in queue["cases"]} - registered_urls)
     assert not missing, "IPA queue source URL(s) missing from SOURCE-REGISTER.csv: " + ", ".join(missing)
+    rows_by_id = {row["source_id"]: row for row in rows}
+    assert rows_by_id["SRC-NIKL-QNA"]["integration_status"] == "exact_URL_coverage_tested_for_ipa_queue"
 
 
 def test_ipa_queue_sources_keep_evidence_scope_and_item_license_uncertainty_explicit():
