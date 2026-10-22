@@ -92,4 +92,4 @@ Three previously citation-only NIKL Korean-English Learners' Dictionary pages we
 
 The source register now differentiates exact direct attestation from partial lemma/application support. Added `tests/lexical-evidence-review-batch-14.test.mjs` to protect source identity, direct/partial status, and the distinction between Hangul pronunciation notation and IPA.
 
-**Updated inventory:** 6 of the 60 newly inventoried citation pages have now been content-checked: 4 direct and 2 partial; 54 remain citation-only/unverified. Page-level KOGL markings remain unverified. These source checks do not adjudicate broad IPA or Ukrainian target spellings.
+**Updated inventory after the contextual-only checks:** 11 of the 60 newly inventoried citation pages have been content-checked: 4 direct for target forms, 2 partial, 5 contextual-example-only for target forms; 49 remain citation-only/unreviewed. Page-level KOGL markings remain unverified. These source checks do not adjudicate broad IPA or Ukrainian target spellings.
