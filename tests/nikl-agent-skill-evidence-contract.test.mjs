@@ -34,5 +34,6 @@ test('skill catalog records the current verified inventory without stale test co
   assert.doesNotMatch(catalog, /1,123\/1,123 Node tests/u);
   assert.doesNotMatch(catalog, /1,120\/1,120 Node tests/u);
   assert.doesNotMatch(catalog, /1,099\/1,099/);
+  assert.doesNotMatch(catalog, /being corrected and must pass on the final head before merge/u);
   assert.doesNotMatch(catalog, /154284febf08ef33c7483511fc65934441f7cfb2/);
 });
