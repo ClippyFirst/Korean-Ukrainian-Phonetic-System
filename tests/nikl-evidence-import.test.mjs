@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 import { buildEvidenceImport, extractPageMetadata } from "../scripts/nikl-evidence-import.mjs";
+import { buildImportTemplate } from "../scripts/nikl-evidence-template.mjs";
 
 const QNA = "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317202";
 const FAQ = "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217";
@@ -145,4 +146,35 @@ test("accepts exact official mobile-host citations and FAQ pagination parameters
   assert.equal(manifest.sourceCount, 2);
   assert.equal(manifest.sources[0].sourceUrl, MOBILE_QNA);
   assert.equal(manifest.sources[1].sourceUrl, FAQ_PAGINATED);
+});
+
+
+test("builds a template from only unreviewed official NIKL Q&A/FAQ rows and preserves multiline CSV fields", () => {
+  const csv = [
+    "source_id,url,review_status,coverage",
+    '"SRC-NIKL-QNA-317229","https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317229","unverified_lexical_citation_inventory_2026-10-22","lexical inputs: 외곬에,',
+    'second line"',
+    '"SRC-NIKL-MCFAQ-6718","https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=6718&mn_id=57&pageIndex=1","unverified_lexical_citation_inventory_2026-10-22","FAQ"',
+    '"SRC-NIKL-QNA-123","https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=123","reviewed","already reviewed"',
+    '"SRC-KRDICT-ENG-79033","https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=79033","unverified_lexical_citation_inventory_2026-10-22","different host"',
+  ].join("\\n");
+  const template = buildImportTemplate(csv, { relativeHtmlDirectory: "saved-pages" });
+  assert.equal(template.sourceCount, 2);
+  assert.equal(template.allSourcesContentReviewed, false);
+  assert.deepEqual(template.sources.map(source => source.sourceId), ["SRC-NIKL-QNA-317229", "SRC-NIKL-MCFAQ-6718"]);
+  assert.equal(template.sources[0].inputHtml, "saved-pages/SRC-NIKL-QNA-317229.html");
+  assert.equal(template.sources[1].url, FAQ_PAGINATED);
+  assert.equal(JSON.stringify(template).includes("second line"), false);
+});
+
+test("rejects unsafe HTML directories, malformed CSV, and duplicate source records", () => {
+  const csv = [
+    "source_id,url,review_status",
+    "SRC-NIKL-QNA-317202,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=317202,unverified_lexical_citation_inventory_2026-10-22",
+  ].join("\\n");
+  assert.throws(() => buildImportTemplate(csv, { relativeHtmlDirectory: "../outside" }), /safe relative path/u);
+  assert.throws(() => buildImportTemplate(csv, { relativeHtmlDirectory: "C:\\\\temp" }), /safe relative path/u);
+  assert.throws(() => buildImportTemplate('source_id,url,review_status\\n"SRC-NIKL-QNA-1,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=1,unverified', {}), /unterminated quoted field/u);
+  const duplicate = csv + "\\n" + csv.split("\\n")[1];
+  assert.throws(() => buildImportTemplate(duplicate), /Duplicate source ID/u);
 });
