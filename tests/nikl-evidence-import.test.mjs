@@ -186,13 +186,14 @@ test("rejects unsafe HTML directories, malformed CSV, and duplicate source recor
 test("repository source register produces a deterministic template for eligible unreviewed NIKL Q&A/FAQ citations", async () => {
   const sourceRegister = await readFile(new URL("../research/SOURCE-REGISTER.csv", import.meta.url), "utf8");
   const template = buildImportTemplate(sourceRegister);
-  assert.equal(template.sourceCount, 26
+  assert.equal(template.sourceCount, 26);
   assert.equal(template.allSourcesContentReviewed, false);
-  assert.ok(template.sources.some(source => source.sourceId === "SRC-NIKL-MCFAQ-6674"));
-  assert.ok(template.sources.some(source => source.sourceId === "SRC-NIKL-QNA-317229"));
+  assert.ok(!template.sources.some(source => source.sourceId === "SRC-NIKL-MCFAQ-6674"), "reviewed FAQ must not be re-queued");
+  assert.ok(!template.sources.some(source => source.sourceId === "SRC-NIKL-QNA-317229"), "reviewed Q&A must not be re-queued");
   assert.ok(template.sources.every(source => /^(?:SRC-NIKL-(?:QNA|MCFAQ|FAQ)-\d+|SRC-KRDICT-(?:ENG|KOR)-\d+)$/u.test(source.sourceId)));
   assert.ok(template.sources.every(source => source.inputHtml.startsWith("saved-pages/")));
   assert.ok(template.sources.some(source => source.sourceId === "SRC-KRDICT-ENG-89917"));
+  assert.ok(template.sources.some(source => source.sourceId === "SRC-NIKL-QNA-279931"), "remaining unreviewed Q&A should stay in the template");
   assert.ok(!template.sources.some(source => source.sourceId === "SRC-KRDICT-ENG-79033"), "reviewed source must not be re-queued");
 });
 
