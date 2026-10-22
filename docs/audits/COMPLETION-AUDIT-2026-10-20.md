@@ -494,11 +494,11 @@ Added a separate batch importer for a human's ordinary browser-saved official pa
 
 ### Verification
 
-At PR head `7434cbf73aed008a415d5980a5d4cd11f10b6235`, GitHub Actions run [39778216339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39778216339) passed 1,108/1,108 Node tests, Vite build, Python regression/data-integrity, system verification, and master-table/corpus artifact checks. The direct NIKL crawl correctly remained `BLOCKED` on HTTP 403. The audit/handoff edits themselves require a fresh exact-head CI run before this batch is considered DONE_VERIFIED at final head.
+At implementation/test head `a7f7339a12c88b0d6a6485fb131ee6bafba9faed`, GitHub Actions [39778627927](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39778627927) passed 1,108/1,108 Node tests, Vite build, Python regression/data-integrity, and source-inventory checks; [the Python 3.11–3.13 matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39778627947), [browser G2P integration](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39778627923), and [master-table/corpus checks](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39778627848) also passed. The direct NIKL crawl correctly remained `BLOCKED` on HTTP 403. A prior test run caught an invalid synthetic source-ID fixture; it was corrected and all final-head checks passed. The handoff/audit checkpoint commit is documentation-only; its exact-head CI must pass before merge.
 
 ### Task ledger and scope limits
 
-- `DONE_VERIFIED` after exact-head rerun: importer contract, URL allowlist, duplicate and collision safeguards, metadata-only manifest, schema and regression coverage.
+- `DONE_VERIFIED` at implementation/test head `a7f7339a12c88b0d6a6485fb131ee6bafba9faed`: importer contract, URL/query allowlist, source-ID/URL consistency, duplicate and collision safeguards, error-page rejection, metadata-only manifest, schema and regression coverage. The documentation-only checkpoint commit must also pass CI before merge.
 - `BLOCKED`: no authorized saved HTML batch was available; therefore the 44 citation-only/unreviewed pages remain unreviewed. The importer does not read pages from the network.
 - `BLOCKED / rights`: page-level KOGL markings remain unverified.
 - `BLOCKED_SPECIALIST_ADJUDICATION`: the 20-case fixture still has 0/20 independently adjudicated broad-IPA gold; Ukrainian-target review is separate and uncompleted.
