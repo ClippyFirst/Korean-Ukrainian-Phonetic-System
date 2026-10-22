@@ -90,6 +90,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   }
 
   const characters=[...text];
+  const sourceText=characters.join('');
+  const jamoInventoryRanges=[...sourceText.matchAll(/[ㄱ-ㅎㅏ-ㅣ]+(?:\\s*[,·/]\\s*[ㄱ-ㅎㅏ-ㅣ]+){2,}/gu)]
+    .map(match=>[match.index,match.index+match[0].length]);
   const units=characters.map((ch,index)=>{
     const d=decompose(ch);
     if(d)return {type:'hangul',...d};
@@ -109,7 +112,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const before=characters.slice(Math.max(0,index-12),index).join('');
       const after=characters.slice(index+1,index+18).join('');
       const conjunctionLabel=/(?:과|와)\s*$/u.test(before)&&/^\s*(?:앞|환경|발음|조건|관련|설명|비교|[.,。:;·\/]|$)/u.test(after);
-      if((attachedToKorean||namedNInsertion||listedJamoLabel||conjunctionLabel)&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
+      if((attachedToKorean||namedNInsertion||listedJamoLabel||conjunctionLabel||inJamoInventory)&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
       return {type:'jamo',char:ch};
     }
     return {type:'literal',char:ch};
