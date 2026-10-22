@@ -102,12 +102,12 @@ The source register had two Q&A citations marked unreviewed even though the offi
 - The FAQ directly gives 않았다[아낟따], explaining §12(4) deletion of ㅎ before vowel-initial -았- and §23 fortition of the following ㄷ.
 - Decision: direct surface attestation; the existing Korean target is retained and the IPA/Ukrainian target remain separate.
 
-## 15. qna_seq=333927 — direct source for 의견란; supersede the unverified prior locator
+## 15. qna_seq=313452 — direct source for 의견란; supersede the unverified prior locator
 
-- Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=97&pageIndex=1&qna_seq=333927
-- The official answer directly gives 의견란[의견난] under the exception in §20 for ㄹ realized as ㄴ.
+- Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=97&pageIndex=1&qna_seq=313452
+- The official answer directly gives 의견란[의ː견난] under the exception in §20 for ㄹ realized as ㄴ, explicitly preserving the long-vowel mark.
 - The previous MCFAQ 8505 locator was not independently reviewed in this run; no claim about its page topic/content is made. It is retained as a superseded historical locator and no longer referenced by the lexical row. Q&A 333927 is used because its official indexed answer directly attests 의견란[의견난].
-- Decision: the lexical row now cites qna_seq=333927; MCFAQ 8505 is retained in the source register as a superseded locator pending page review and is not counted as an active lexical citation. The Q&A does not mark vowel length, so the existing long-vowel IPA is explicitly left unverified by this citation.
+- Decision: the lexical row now cites qna_seq=313452; MCFAQ 8505 is retained in the source register as a superseded locator pending page review and is not counted as an active lexical citation. The Q&A explicitly marks vowel length, supporting the existing long-vowel IPA representation at the Korean-evidence level.
 
 ## Evidence limits
 
