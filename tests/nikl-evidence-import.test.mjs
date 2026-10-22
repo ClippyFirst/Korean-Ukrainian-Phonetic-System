@@ -7,6 +7,8 @@ import { buildEvidenceImport, extractPageMetadata } from "../scripts/nikl-eviden
 
 const QNA = "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317202";
 const FAQ = "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217";
+const FAQ_PAGINATED = "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=6718&mn_id=57&pageIndex=1";
+const MOBILE_QNA = "https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317229";
 
 function html(title, heading, body = "Official Korean language institute page content. ".repeat(8)) {
   return `<!doctype html><html><head><title>${title}</title><script>fake private script text</script></head><body><h1>${heading}</h1><main><p>${body}</p></main></body></html>`;
@@ -126,4 +128,21 @@ test("refuses to overwrite either the input manifest or an imported HTML file", 
   await assert.rejects(buildEvidenceImport(input, htmlPath), /must not overwrite an imported HTML file/u);
   assert.equal(await readFile(htmlPath, "utf8"), originalHtml);
   assert.ok((await readFile(input, "utf8")).includes("SRC-NIKL-QNA-317202"));
+});
+
+
+test("accepts exact official mobile-host citations and FAQ pagination parameters", async t => {
+  const dir = await fixture(t);
+  await writeFile(join(dir, "mobile.html"), html("NIKL Q&A", "외곬에 발음"), "utf8");
+  await writeFile(join(dir, "faq.html"), html("NIKL FAQ", "자주 묻는 질문"), "utf8");
+  const input = join(dir, "saved-pages.json");
+  const output = join(dir, "manifest.json");
+  await writeFile(input, JSON.stringify({ sources: [
+    { sourceId: "SRC-NIKL-QNA-317229", url: MOBILE_QNA, inputHtml: "mobile.html" },
+    { sourceId: "SRC-NIKL-FAQ-6718", url: FAQ_PAGINATED, inputHtml: "faq.html" },
+  ] }), "utf8");
+  const manifest = await buildEvidenceImport(input, output);
+  assert.equal(manifest.sourceCount, 2);
+  assert.equal(manifest.sources[0].sourceUrl, MOBILE_QNA);
+  assert.equal(manifest.sources[1].sourceUrl, FAQ_PAGINATED);
 });
