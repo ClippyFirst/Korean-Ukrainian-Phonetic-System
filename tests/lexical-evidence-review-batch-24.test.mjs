@@ -32,9 +32,9 @@ test('붙이다 preserves its Korean surface, project IPA, and provisional Ukrai
   assert.match(report, /direct answer attestation for the exact lexical target 붙이다/u);
 });
 
-test('batch 24 updates the live backlog without rewriting historical batch-23 counts', () => {
-  const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 21);
+test('batch 24 records its historical backlog without freezing the live queue', () => {
+  assert.equal(source.review_status, 'direct_attestation_2026-10-22');
+  assert.match(report, /21.*17 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
   assert.match(report, /39\/60/);
   assert.match(report, /25 direct target-form \/ official-rule-example attestations, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /21.*17 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
