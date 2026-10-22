@@ -653,3 +653,24 @@ The official indexed NIKL Q&A page “홑이불” (qna_seq=317202; question 202
 - BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
 
 The system remains a deployed research preview / partial prototype, not release-ready.
+
+
+## Batch 23: NIKL Q&A 311009 rule-example scope and 국물 note correction — 2026-10-22
+
+### Primary-source findings
+Official indexed NIKL Q&A “'빛' 발음이 궁금합니다.” (qna_seq=311009; question 2025-03-04, answer 2025-03-05) concerns 빛 in personal names. The answer reproduces official Standard Pronunciation Rules §§13 and 18, including 옷이[오시], 국물[궁물], and 없는[엄ː는]. These are exact official rule examples but are not the Q&A's primary question target; the source is recorded with a rule-instrument scope note.
+
+### Implementation and verification scope
+- Normalized the source-register URL to the observed official locator and updated the three lexical rows to match it.
+- Corrected the 국물 explanatory note: the coda ㄱ assimilates before following ㅁ, not ㄹ. Korean surface, IPA, and Ukrainian target values were not changed.
+- Added batch-21 report/tests; updated the current source count and HTML intake queue; historicalized batch-20 live-count assertions.
+- Batch-20 merged-main exact-head CI: commit 9e6fa37768021fc0998360d81f67816d70d45635, [run 39829054489](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39829054489), 1,142/1,142 Node tests, Vite build, Python regression/data-integrity passed. The live NIKL crawl remained BLOCKED by HTTP 403.
+
+### Task ledger
+- DONE_VERIFIED after batch-21 exact-head CI: source claim scope, source-register integrity, source URL parity, corrected rule note, queue counts, tests/build all pass.
+- DIRECT_RULE_EXAMPLE_WITH_SCOPE_NOTE: exact forms appear in reproduced official §§13/18 examples, but are not the Q&A's question target.
+- BLOCKED / rights: item-level KOGL mark remains unverified.
+- TODO: review remaining 24 citation-only sources; three PDFs require the separate saved-PDF workflow.
+- BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
+
+Release status remains deployed research preview / partial prototype, not release-ready.
