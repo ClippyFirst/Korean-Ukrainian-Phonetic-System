@@ -166,8 +166,13 @@ def _select_target(target):
     selected=[]
     for segment in target["segments"]:
         candidates=segment["target"].get("candidates",[])
-        if not candidates: return None
-        selected.append(candidates[0])
+        # A feature-near target phoneme is not a licensed correspondence by itself.
+        # Require an explicit IPA-to-target mapping and a renderable Ukrainian
+        # grapheme; otherwise this segment remains unresolved instead of guessing.
+        licensed=[candidate for candidate in candidates
+                  if candidate.get("mapping_id") and candidate.get("grapheme")]
+        if not licensed: return None
+        selected.append(licensed[0])
     return {"segments":selected,"score_type":"heuristic_cost","status":"top_ranked_segmentwise"}
 
 def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict"):
