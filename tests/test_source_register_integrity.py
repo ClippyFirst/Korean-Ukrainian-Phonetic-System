@@ -84,7 +84,7 @@ def test_every_ipa_queue_surface_source_is_registered_with_an_exact_url():
 def test_ipa_queue_sources_keep_evidence_scope_and_item_license_uncertainty_explicit():
     rows = {row["source_id"]: row for row in load_source_register()}
     reading_example = rows["SRC-NIKL-QNA-306000"]
-    assert "orthography" in reading_example["limitations_or_next_action"].lower()
+    assert "spelling" in reading_example["limitations_or_next_action"].lower()
     assert "not a direct pronunciation question" in reading_example["limitations_or_next_action"]
     assert "not verified" in reading_example["license_status"]
 
