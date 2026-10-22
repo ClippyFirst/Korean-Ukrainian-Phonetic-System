@@ -128,7 +128,7 @@ Update the existing matrix, audit register, and handoff in place. Every remainin
 Coverage assertions must encode the scope of the evidence, not just the expected Hangul string.
 
 - Distinguish a case-specific official answer, a quoted official-rule example, a dictionary's explicitly bracketed paradigm form, a mere orthographic occurrence in example prose, and a rule-derived prediction.
-- A target spelling found in an ordinary sentence without a bracketed pronunciation does not satisfy a direct-pronunciation coverage assertion.
+- A target spelling found in an ordinary sentence without a bracketed pronunciation does not satisfy a direct-pronunciation coverage assertion; an ordinary example spelling is contextual evidence only.
 - A dictionary page that lists the lemma and neighboring applications does not directly attest an unlisted inflection.
 - When a page reproduces a rule example that is not the question target, label the example separately; do not imply that the answer specifically adjudicates it.
 - Preserve the exact named source instrument: `표준 발음법` and `한글맞춤법` are distinct. Same article numbers do not mean the source cited the same rule set. Test any project crosswalk separately.
