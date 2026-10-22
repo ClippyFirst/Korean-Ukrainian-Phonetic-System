@@ -48,7 +48,7 @@ function parseCsvRecords(text) {
 }
 
 export function buildImportTemplate(csvText, { relativeHtmlDirectory = "saved-pages" } = {}) {
-  const htmlDirectory = String(relativeHtmlDirectory).replace(/\\\\/gu, "/").replace(/\\/+$/u, "");
+  const htmlDirectory = String(relativeHtmlDirectory).replaceAll("\\", "/");
   if (!htmlDirectory || htmlDirectory.startsWith("/") || /^[A-Za-z]:/u.test(htmlDirectory) ||
       htmlDirectory.split("/").some(part => !part || part === "." || part === "..")) {
     throw new Error("HTML directory must be a safe relative path without empty, dot, or parent segments.");
