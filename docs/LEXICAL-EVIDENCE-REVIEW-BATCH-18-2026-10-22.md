@@ -106,8 +106,8 @@ The source register had two Q&A citations marked unreviewed even though the offi
 
 - Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=97&pageIndex=1&qna_seq=333927
 - The official answer directly gives 의견란[의견난] under the exception in §20 for ㄹ realized as ㄴ.
-- The previously cited MCFAQ 8505 is not about 의견란: its actual title/content is “'상견례'의 표준 발음” and it gives 상견례[상견녜]. That was a citation mismatch, not an alternate pronunciation.
-- Decision: the lexical row now cites qna_seq=333927; MCFAQ 8505 is retained in the source register as a resolved mismatch record and is no longer counted as an active lexical citation. The Q&A does not mark vowel length, so the existing long-vowel IPA is explicitly left unverified by this citation.
+- The previous MCFAQ 8505 locator was not independently reviewed in this run; no claim about its page topic/content is made. It is retained as a superseded historical locator and no longer referenced by the lexical row. Q&A 333927 is used because its official indexed answer directly attests 의견란[의견난].
+- Decision: the lexical row now cites qna_seq=333927; MCFAQ 8505 is retained in the source register as a superseded locator pending page review and is not counted as an active lexical citation. The Q&A does not mark vowel length, so the existing long-vowel IPA is explicitly left unverified by this citation.
 
 ## Evidence limits
 
@@ -115,4 +115,4 @@ The review used substantive text exposed in the official NIKL search index becau
 
 ## Updated inventory
 
-The citation-only/unreviewed source-register count falls from 42 to 27. Fifteen active lexical citations are now reviewed at claim-scope level; the mismatched MCFAQ 8505 record is retained only as a correction trail, not as an active lexical citation. MCFAQ 8420 directly attests 않았다[아낟따]; Q&A 333927 directly attests 의견란[의견난] and replaces the mismatched MCFAQ 8505 citation, whose actual page is about 상견례. Curated FAQ 6674 directly attests only the base compound 밭일, not the attached forms 밭일과/밭일을; curated FAQ 6718 directly attests 많이[마ː니]. qna_seq=325287 directly attests 짧다[짤따] and 삶다[삼ː따]. Direct exact-surface attestations: qna_seq=305480 (읽다), 330743 (밝게, 굵은), 317229 (외곬에), 328719 (없이), 330620 (값없다), 330938 (꽃잎 final surface only), 335263 (실없다), and 335881 (밭이랑, 집안일). Partial only: qna_seq=334294 (rule context for 읽고/밝는, not direct forms) and qna_seq=307508 (spelling mismatch for 넓둥글다).
+The citation-only/unreviewed source-register count falls from 42 to 27. Fifteen active lexical citations are now reviewed at claim-scope level; the mismatched MCFAQ 8505 record is retained only as a correction trail, not as an active lexical citation. MCFAQ 8420 directly attests 않았다[아낟따]; Q&A 333927 directly attests 의견란[의견난] and replaces the superseded, unverified MCFAQ 8505 locator; no claim about the latter page's content is made. Curated FAQ 6674 directly attests only the base compound 밭일, not the attached forms 밭일과/밭일을; curated FAQ 6718 directly attests 많이[마ː니]. qna_seq=325287 directly attests 짧다[짤따] and 삶다[삼ː따]. Direct exact-surface attestations: qna_seq=305480 (읽다), 330743 (밝게, 굵은), 317229 (외곬에), 328719 (없이), 330620 (값없다), 330938 (꽃잎 final surface only), 335263 (실없다), and 335881 (밭이랑, 집안일). Partial only: qna_seq=334294 (rule context for 읽고/밝는, not direct forms) and qna_seq=307508 (spelling mismatch for 넓둥글다).
