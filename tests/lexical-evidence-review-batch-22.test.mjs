@@ -30,5 +30,6 @@ test("batch 22 reconciles the live citation-only queue without changing target v
   assert.match(report, /37\/60/);
   assert.match(report, /23 direct target-form attestations, 9 partial, 5 contextual-example-only/);
   assert.match(report, /23.*19 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
+  assert.match(report, /20 eligible pages \(19 Q&A\\/FAQ \+ one dictionary entry\)/u);
   assert.match(report, /No runtime Korean pronunciation or Ukrainian output values changed/u);
 });
