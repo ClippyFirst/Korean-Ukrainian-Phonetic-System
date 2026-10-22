@@ -659,3 +659,8 @@ The required pipeline remains Hangul → structural/morphological analysis → K
 - **Task ledger:** `DONE_VERIFIED` — exact-page content checks, source status scope, direct/partial regression assertions. `PARTIAL` — `맑을` and `넣었다` remain derived forms, not directly listed in their cited dictionary entries. `BLOCKED / rights` — item-level KOGL marking remains unverified. `BLOCKED_SPECIALIST_ADJUDICATION` — independent broad IPA and Ukrainian target review remain outstanding.
 - **Inventory after the contextual-only checks:** 11/60 newly inventoried lexical citations content-checked (4 direct for target forms, 2 partial, 5 contextual-example-only for target forms); 49 remain citation-only/unreviewed. No IPA or Ukrainian output was inferred from the dictionary Hangul notation.
 - **Release status unchanged:** deployed research preview, not scientifically validated/release-ready. This batch changes evidence bookkeeping and one lexical citation, not production transcription behavior.
+
+
+### Batch 14 extension: contextual-only dictionary evidence
+
+Five additional official dictionary entries were checked: `찾다` (ParaWordNo=57320), `잊다` (70067), `붙다` (74181), `놓다` (89534), and `쌓이다` (65098). Their target spellings occur as ordinary example text but have no bracketed pronunciation on the page; the lexical notes therefore continue to treat the inflected targets as rule-derived. The source register now records the inspected lemma/application readings without upgrading the target forms to direct attestation. Batch-14 status is **11/60 reviewed** (4 direct for target forms, 2 partial, 5 contextual-only; 49 citation-only/unreviewed). See `docs/LEXICAL-EVIDENCE-REVIEW-BATCH-14-2026-10-22.md`.
