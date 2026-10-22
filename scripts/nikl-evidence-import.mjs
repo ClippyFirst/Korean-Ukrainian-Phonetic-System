@@ -25,7 +25,7 @@ function normalized(value) {
   return String(value ?? "").replace(/[\u00a0\u200b\ufeff]/g, " ").replace(/\s+/g, " ").trim();
 }
 
-function officialSourceUrl(value) {
+export function officialSourceUrl(value) {
   let url;
   try { url = new URL(value); } catch { throw new Error("Each source requires a valid absolute URL."); }
   if (url.protocol !== "https:" || !["korean.go.kr", "www.korean.go.kr", "m.korean.go.kr"].includes(url.hostname.toLowerCase())) {
