@@ -162,6 +162,11 @@ test('standalone compatibility Jamo inventories are preserved as literal notatio
   const jamoTrace = result.trace.filter((item) => /^[ㄱ-ㅎㅏ-ㅣ]+$/u.test(item.source));
   assert.equal(jamoTrace.length, 19, 'every inventory member must have a trace entry');
   assert.ok(jamoTrace.every((item) => item.status === 'literal' && item.ipa === '' && item.output === item.source), 'each inventory member is preserved as notation without fabricated IPA');
+
+  const contextual = engine.convert('자음은 ' + inventory + '의 19개이며, 모음은 ㅏ, ㅐ, ㅑ, ㅒ의 21개이다.');
+  assert.ok(contextual.ukrainian.includes(inventory), 'the inventory must survive when embedded in explanatory Korean prose');
+  assert.ok(contextual.ukrainian.includes('ㅏ, ㅐ, ㅑ, ㅒ'), 'the vowel inventory must survive in explanatory prose too');
+  assert.ok(!/[ㄱ-ㅎㅏ-ㅣ]/u.test(contextual.ipa), 'preserved notation must not leak into the IPA result');
 });
 
 test('IPA-derived targets preserve whitespace and align multiword inputs without guessing missing IPA', () => {
