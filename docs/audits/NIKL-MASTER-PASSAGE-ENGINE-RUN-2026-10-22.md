@@ -303,7 +303,7 @@ Inspection of the recorded strict whole-text IPA output showed inventory positio
 ### Correction made
 
 - Recognize multi-item comma/dot/slash-separated Jamo inventories as literal orthographic notation. Preserve those inventory symbols in the output while excluding them from IPA and phonological analysis; isolated Jamo outside recognized inventories remain unresolved and are not emitted as Ukrainian pronunciation.
-- Add a regression asserting that a full consonant inventory round-trips unchanged, receives no fabricated IPA, and is not labelled as a pronounceable Korean word.
+- Add regressions asserting that consonant and vowel inventories round-trip unchanged both alone and inside explanatory Korean prose, receive no fabricated IPA, and are not labelled as pronounceable Korean words.
 
 ### Verification status
 
