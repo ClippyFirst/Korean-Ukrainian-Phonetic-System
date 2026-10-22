@@ -109,3 +109,11 @@ Reviewed three more official pages. Q&A `qna_seq=315279` (answer 2025-05-23) dir
 The FAQ explicitly names `한글맞춤법` §§13/17, not `표준 발음법`. Lexical notes now explicitly distinguish the named orthography instrument from the project's separate Standard Pronunciation Rules crosswalk. No source-specific article citation is silently relabeled.
 
 **Current inventory:** 14/60 newly inventoried citation pages content-checked: 7 direct for target forms, 2 partial, 5 contextual-example-only; 46 remain citation-only/unreviewed. Page-level KOGL marks, independent IPA, and Ukrainian target validation remain unresolved.
+
+
+## Batch 16: direct NIKL Q&A evidence — 2026-10-22
+
+- Q&A `qna_seq=316101` (answer 2025-06-11) directly attests `값있다[가빋따]`, `값있는[가빈는]`, and `곧이어[고디어]`; it explicitly explains that §29 ㄴ-insertion is not automatic. `값있다` and `곧이어` remain negative controls against broad insertion heuristics.
+- Q&A `qna_seq=312381` (answer 2025-04-05) directly attests `좋아[조ː아]` and cites Standard Pronunciation Rules §12(4) for ㅎ deletion.
+- Updated both source-register records and three lexical notes; added regression tests for exact forms, direct-source scope, and the §29 negative-control interpretation.
+- **Current inventory:** 16/60 newly inventoried pages content-checked: 9 direct for target forms, 2 partial, 5 contextual-example-only; 44 remain citation-only/unreviewed. Item-level KOGL marks and independent IPA/Ukrainian validation remain unresolved.
