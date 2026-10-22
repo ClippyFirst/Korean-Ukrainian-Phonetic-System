@@ -832,3 +832,28 @@ The system remains a deployed research preview / partial prototype, not release-
 - [System verification CI 39836022141](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39836022141) passed **1,162/1,162 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
 - Direct official NIKL access remains HTTP 403 and is classified BLOCKED; no live manifest was produced.
 - Two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
+
+
+## Batch 30: integrated NIKL master passage browser-engine run — 2026-10-22
+
+### Work completed
+- Added one integrated passage fixture spanning the themes of 표준 발음법 articles 1–30.
+- Added a browser regression harness that sends every unique Hangul token and the full passage through the real `createEngine` pipeline in strict and practical modes.
+- Checked all exact lexical hits against the existing source-backed Korean surface, stored IPA, and IPA-derived Ukrainian target. Added generic §19 surface oracles for 침략, 강릉, 막론, 석류, 협력, 법리, and 국립.
+- Corrected malformed corpus particle/ending joins discovered by the first run instead of weakening morphology guards or inventing readings.
+
+### Exact CI evidence
+- Tested code head for generic §19 additions: `c86a550e38bb5b959825cf222329d95486f7d588`.
+- Browser tests: **1,166 passed, 0 failed**; Vite build passed.
+- Python regression/data-integrity jobs (3.11, 3.12, 3.13): passed.
+- Master-table/research-corpus generation: passed.
+- Run report: 5,230 characters; 855 unique Hangul tokens; 329 lexical hits; 526 generic-resolved tokens; zero unresolved tokens and zero actionable issues. Full-text strict/practical conversion emitted no unresolved placeholders. Twenty-three standalone compatibility-Jamo diagnostics are expected and explicitly classified as non-syllabic inventory warnings.
+
+### Task ledger
+- **DONE_VERIFIED:** corpus integration into the browser engine, exact lexical round-trip for corpus hits, zero unresolved-token gate, generic §19 regressions, current CI/build/data checks.
+- **PARTIAL:** article 1–30 coverage is not yet proven at every subparagraph/exception/variant; generic resolved output is not equivalent to independently source-verified output.
+- **TODO:** map every article/subparagraph/exception/allowed variant to an exact span and official source; adjudicate generic outputs and add only source-backed regression corrections.
+- **BLOCKED:** direct NIKL fetch remains HTTP 403 in CI; no bypass or invented source data.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** independent broad-IPA gold and Ukrainian-target review remain open.
+
+The audit report is `docs/audits/NIKL-MASTER-PASSAGE-ENGINE-RUN-2026-10-22.md`. The system remains a research preview / partial prototype, not release-ready.
