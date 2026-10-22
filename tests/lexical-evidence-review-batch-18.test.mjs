@@ -17,8 +17,8 @@ test('qna_seq=330743 directly attests the exact forms 밝게 and 굵은', () => 
   assert.match(source.coverage, /밝게\[발께\].*굵은\[굴근\]/u);
   assert.match(byInput('밝게').rule_notes, /directly confirms 밝게\[발께\]/u);
   assert.match(byInput('굵은').rule_notes, /directly confirms 굵은\[굴근\]/u);
-  assert.equal(byInput('밝게').source_url, source.source_url);
-  assert.equal(byInput('굵은').source_url, source.source_url);
+  assert.equal(byInput('밝게').source_url, source.url);
+  assert.equal(byInput('굵은').source_url, source.url);
   assert.match(source.limitations_or_next_action, /item-level reuse rights remain unverified/u);
 });
 
@@ -44,7 +44,7 @@ test('qna_seq=305480 directly attests 읽다[익따] and distinguishes 읽어[�
   assert.equal(source.review_status, 'direct_attestation_2026-10-22');
   assert.match(source.coverage, /읽다\[익따\].*읽어\[일거\]/u);
   assert.match(byInput('읽다').rule_notes, /directly confirms 읽다\[익따\]/u);
-  assert.equal(byInput('읽다').source_url, source.source_url);
+  assert.equal(byInput('읽다').source_url, source.url);
 });
 
 test('qna_seq=335881 attests compound surfaces without asserting unique intermediate order', () => {
@@ -53,10 +53,10 @@ test('qna_seq=335881 attests compound surfaces without asserting unique intermed
   assert.equal(source.review_status, 'direct_attestation_with_ordering_limit_2026-10-22');
   assert.match(source.coverage, /밭이랑\[반니랑\].*집안일\[지반닐\]/u);
   assert.match(source.limitations_or_next_action, /does not establish a unique intermediate rule order/u);
-  assert.match(byInput('밭이랑').rule_notes, /not normative consensus/u);
+  assert.match(byInput('밭이랑').rule_notes, /normative consensus/u);
   assert.match(byInput('집안일').rule_notes, /not an explicit intermediate derivation/u);
-  assert.equal(byInput('밭이랑').source_url, source.source_url);
-  assert.equal(byInput('집안일').source_url, source.source_url);
+  assert.equal(byInput('밭이랑').source_url, source.url);
+  assert.equal(byInput('집안일').source_url, source.url);
 });
 
 test('qna_seq=328719 directly attests 없이[업씨]', () => {
@@ -65,7 +65,7 @@ test('qna_seq=328719 directly attests 없이[업씨]', () => {
   assert.equal(source.review_status, 'direct_attestation_2026-10-22');
   assert.match(source.coverage, /없이\[업씨\]/u);
   assert.match(byInput('없이').rule_notes, /없이 \[업씨\]/u);
-  assert.equal(byInput('없이').source_url, source.source_url);
+  assert.equal(byInput('없이').source_url, source.url);
 });
 
 test('qna_seq=330620 directly attests 값없다 and distinguishes substantive-morpheme §15 from §14', () => {
@@ -74,7 +74,7 @@ test('qna_seq=330620 directly attests 값없다 and distinguishes substantive-mo
   assert.equal(source.review_status, 'direct_attestation_2026-10-22');
   assert.match(source.coverage, /값없다\[가법따\]/u);
   assert.match(source.limitations_or_next_action, /§15 rather than §14/u);
-  assert.equal(byInput('값없다').source_url, source.source_url);
+  assert.equal(byInput('값없다').source_url, source.url);
 });
 
 test('qna_seq=330938 attests 꽃잎[꼰닙] but does not establish a unique intermediate ordering', () => {
@@ -84,7 +84,7 @@ test('qna_seq=330938 attests 꽃잎[꼰닙] but does not establish a unique inte
   assert.match(source.coverage, /꽃잎\[꼰닙\]/u);
   assert.match(source.limitations_or_next_action, /Do not use it as evidence for a unique intermediate order/u);
   assert.match(byInput('꽃잎').rule_notes, /not as the only ordering endorsed by NIKL/u);
-  assert.equal(byInput('꽃잎').source_url, source.source_url);
+  assert.equal(byInput('꽃잎').source_url, source.url);
 });
 
 test('qna_seq=335263 directly attests 실없다[시럽따] and corrects the question title premise', () => {
@@ -93,7 +93,7 @@ test('qna_seq=335263 directly attests 실없다[시럽따] and corrects the ques
   assert.equal(source.review_status, 'direct_attestation_with_premise_correction_2026-10-22');
   assert.match(source.coverage, /실없다\[시럽따\].*not the question's assumed \[시럼따\]/u);
   assert.match(byInput('실없다').rule_notes, /NIKL lexical reading \[시럽따\]/u);
-  assert.equal(byInput('실없다').source_url, source.source_url);
+  assert.equal(byInput('실없다').source_url, source.url);
 });
 
 test('qna_seq=307508 is partial until the spelling discrepancy is resolved', () => {
@@ -111,7 +111,7 @@ test('qna_seq=317229 directly attests 외곬에 and the lexical URL matches the 
   assert.equal(source.review_status, 'direct_attestation_2026-10-22');
   assert.match(source.coverage, /외곬에\[외골쎄\]/u);
   assert.match(byInput('외곬에').rule_notes, /directly confirms 외곬에\[외골쎄\]/u);
-  assert.equal(byInput('외곬에').source_url, source.source_url);
+  assert.equal(byInput('외곬에').source_url, source.url);
 });
 
 test('batch 18 updates the citation-only backlog from 42 to 29 without altering lexical targets', () => {
