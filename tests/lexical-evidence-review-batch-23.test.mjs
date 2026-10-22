@@ -41,5 +41,5 @@ test('batch 23 updates the live backlog without rewriting the historical batch-2
   assert.match(report, /24 direct target-form \/ official-rule-example attestations, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /22.*18 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
   assert.match(report, /19.*18 Q&A\/FAQ \+ one dictionary entry/su);
-  assert.match(readFileSync(new URL('../docs/LEXICAL-EVIDENCE-REVIEW-BATCH-21-2026-10-22.md', import.meta.url), 'utf8'), /36\/60/);
+  assert.match(readFileSync(new URL('../docs/LEXICAL-EVIDENCE-REVIEW-BATCH-22-2026-10-22.md', import.meta.url), 'utf8'), /37\/60/);
 });
