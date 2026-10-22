@@ -684,3 +684,52 @@ Five additional official dictionary entries were checked: `찾다` (ParaWordNo=5
 - Q&A `qna_seq=312381` directly attests `좋아[조ː아]` and cites §12(4) for ㅎ deletion before `-아`.
 - Updated two source-register records, three lexical notes, and the explicit remaining-citation floor; added `docs/LEXICAL-EVIDENCE-REVIEW-BATCH-16-2026-10-22.md` and `tests/lexical-evidence-review-batch-16.test.mjs`.
 - **Current inventory:** 16/60 pages content-checked (9 direct for target forms, 2 partial, 5 contextual-example-only); 44 remain citation-only/unreviewed. Item-level KOGL marks, independent IPA gold, and Ukrainian-target review remain blocked.
+
+
+## End-to-end continuation checkpoint — 2026-10-22
+
+### Repository state
+
+- Continuation starting point for lexical evidence work: main `e183e1ab05b1307472a169a3ef9b6fda4d81cdfd`.
+- Current main at checkpoint: `d4099c0aa9bda8d695826f6e2c4eca7f395fc778`.
+- Merged PRs:
+  - [#211 — lexical evidence batch 14](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/211), merge `2e17c51cf02f94390f0e2ed538d19bbbcc287425`.
+  - [#212 — direct pronunciation and rule-instrument scope, batch 15](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/212), merge `4d09a4cec489a1d59d2a0f0976de9f6e93ed2bc0`.
+  - [#213 — n-insertion negative controls and ㅎ deletion, batch 16](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/213), merge `e12167324f0f1aa6ba088f6d423b16afaac98c26`.
+  - [#214 — evidence-scope and source-instrument gates](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/214), merge `d4099c0aa9bda8d695826f6e2c4eca7f395fc778`.
+- The mainline tests, system verification, and master-table/research-corpus checks passed after merge #214. The Pages deployment for main `d4099c0...` was still in progress at the latest status check: [run 39772975939](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39772975939). Do not claim the latest deployment completed until that run reaches success.
+
+### Exact-head verification
+
+| PR head | Node tests | Other verified gates |
+|---|---:|---|
+| `7e1718ba0063e22cd7438505159bcecb2befbe58` (#211) | 1,092/1,092 | Vite build, Python regression/data-integrity, system, corpus/artifact |
+| `5c9c679759aaa7c3c33a6c6401d9b42995305cde` (#212) | 1,096/1,096 | Vite build, Python 3.11–3.13, system, corpus/artifact |
+| `361e1511d327e39733eb94e6de4b1971f589c2c0` (#213) | 1,099/1,099 | Vite build, Python 3.11–3.13, system, corpus/artifact |
+| `823b65d041a488850019fc06320d82e1de81b2b9` (#214) | 1,102/1,102 | Vite build, Python 3.11–3.13, system, corpus/artifact |
+
+The tests ran in GitHub Actions; no local runtime/test environment was available in this continuation. Exact-head CI links are recorded in each PR description.
+
+### Evidence inventory and actual outcomes
+
+- **DONE_VERIFIED:** 63/63 source identities in the current citation inventory are registered. Three lexical review batches updated source records, nine lexical notes in batch 15, and three in batch 16, plus the associated regression tests and existing audit/handoff documents.
+- **Current inventory:** 16/60 newly inventoried lexical citations content-checked: 9 direct attestations for target forms, 2 partial lemma/application records, and 5 contextual-example-only records. 44 remain citation-only/unreviewed.
+- **DONE_VERIFIED:** source evidence classes now distinguish direct target attestation, quoted rule example, partial dictionary paradigm, contextual spelling without pronunciation notation, rule-derived form, and unresolved evidence.
+- **DONE_VERIFIED:** rule-instrument attribution is explicit. A `한글맞춤법` citation is not silently relabeled as `표준 발음법`; any project crosswalk is identified separately.
+- **DONE_VERIFIED:** negative controls preserve the official warning that §29 ㄴ-insertion is not automatic, including `값있다[가빋따]` and `곧이어[고디어]`.
+- **BLOCKED:** the official live 30-article collector receives HTTP 403 from GitHub Actions. It did not generate a live manifest. The safe `--input-html` path can process a human-saved official page without pretending to have performed an HTTP fetch or robots check; no saved page was available in this run.
+- **BLOCKED / rights:** page-level KOGL markings have not been checked for the reviewed dictionary/Q&A/FAQ pages. Site-level policy is not a substitute for item-level reuse terms.
+- **BLOCKED / external retrieval:** Firecrawl requests could not run because the connected account has insufficient credits. Several remaining official Q&A/FAQ URLs also returned cache-miss/inaccessible results through the available public-page fetch path. No source record was promoted based on these failed retrievals.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** the 18-row surface fixture has 17 direct NIKL comparators and one rule-derived case (`숲이`); independent broad-IPA gold remains 0/18. Ukrainian target choices remain provisional and require independent review.
+
+### Next acceptance criteria
+
+1. Retrieve each of the 44 remaining cited pages through ordinary authorized access; inspect exact page content, record claim-level evidence class and source instrument, and update the same source register. If retrieval fails, retain the unverified status with a specific blocker.
+2. Review page-level reuse markings before storing/redistributing source text. Keep metadata/hash-only output as the default.
+3. Reconcile every reviewed form against the existing lexical dataset, official rule environment, source-to-IPA boundary, and regression tests. Do not infer IPA or Ukrainian output from Hangul bracket notation.
+4. Obtain independent linguistic adjudication for the 18-row broad-IPA fixture and independent Ukrainian-target review; acceptance criterion is a recorded claim-by-claim adjudication, not merely passing self-consistency tests.
+5. Recheck the current main Pages deployment run before claiming the website is live at the final commit.
+
+### Release disposition
+
+The repository remains a deployed **research preview / partial prototype**, not scientifically validated or release-ready. The recent batches improved source traceability, evidence scope, and regression coverage; they did not change the production transcription engine or public UI. The next genuine blockers are the 44 unreviewed citations, item-level reuse terms, independent IPA/target adjudication, and final post-merge deployment confirmation.
