@@ -68,7 +68,7 @@ export function extractPageMetadata(html) {
     .map(node => normalized(textContent(node))).filter(Boolean);
   const visibleText = normalized(textContent(bodyNode));
   if (visibleText.length < 80) throw new Error("Saved HTML has too little visible text; refusing an apparently incomplete/error page.");
-  const errorPagePattern = /(?:^|\\b)(?:403\\s+forbidden|404\\s+not\\s+found|access\\s+denied|request\\s+blocked|too\\s+many\\s+requests|captcha|verify\\s+you\\s+are\\s+human|just\\s+a\\s+moment)(?:\\b|$)/iu;
+  const errorPagePattern = /(?:^|\b)(?:403\s+forbidden|404\s+not\s+found|access\s+denied|request\s+blocked|too\s+many\s+requests|captcha|verify\s+you\s+are\s+human|just\s+a\s+moment)(?:\b|$)/iu;
   if (errorPagePattern.test(normalized(textContent(titleNode))) || errorPagePattern.test(visibleText.slice(0, 1200))) {
     throw new Error("Saved page appears to be an access-denial, challenge, or HTTP error page; refusing to inventory it as an official source.");
   }
@@ -101,8 +101,8 @@ export async function buildEvidenceImport(inputManifestPath, outputPath, { now =
     ids.add(source.sourceId);
     const url = officialSourceUrl(source.url);
     const parsedUrl = new URL(url);
-    const expectedQnaId = source.sourceId.match(/^SRC-NIKL-QNA-(\\d+)$/);
-    const expectedFaqId = source.sourceId.match(/^SRC-NIKL-FAQ-(\\d+)$/);
+    const expectedQnaId = source.sourceId.match(/^SRC-NIKL-QNA-(\d+)$/);
+    const expectedFaqId = source.sourceId.match(/^SRC-NIKL-FAQ-(\d+)$/);
     if (expectedQnaId && parsedUrl.searchParams.get("qna_seq") !== expectedQnaId[1]) {
       throw new Error(source.sourceId + ": source ID does not match qna_seq in URL.");
     }
