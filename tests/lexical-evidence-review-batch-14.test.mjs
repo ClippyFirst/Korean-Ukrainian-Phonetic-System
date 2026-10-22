@@ -47,3 +47,25 @@ test('all three source identities remain unique and item-level rights remain unr
     assert.match(bySource(id).license_status, /item-level KOGL marking not checked/u);
   }
 });
+
+test('five dictionary example sentences are not mislabeled as direct pronunciation attestations', () => {
+  const contextualOnly = [
+    ['찾았다', 'SRC-KRDICT-ENG-57320', 'https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=57320&blockCount=10&currentPage=1&exaType=&mainSearchWord=%EC%B0%BE%EB%8B%A4&nation=eng&nationCode=6&proverbType=&searchType=E&sort=W&viewType=A&viewTypes=on'],
+    ['잊었다', 'SRC-KRDICT-ENG-70067', 'https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=70067&nation=eng'],
+    ['붙었다', 'SRC-KRDICT-ENG-74181', 'https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=74181&nation=eng'],
+    ['놓았다', 'SRC-KRDICT-ENG-89534', 'https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=89534&nation=eng'],
+    ['쌓였다', 'SRC-KRDICT-ENG-65098', 'https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=65098&nation=eng'],
+  ];
+  for (const [input, sourceId, sourceUrl] of contextualOnly) {
+    const lexicalRow = byInput(input);
+    const source = bySource(sourceId);
+    assert.ok(lexicalRow, input + ': lexical row missing');
+    assert.equal(lexicalRow.source_url, sourceUrl, input + ': source URL mismatch');
+    assert.match(lexicalRow.rule_notes, /ordinary example (?:sentence|text)/u, input + ': must disclose contextual-only evidence');
+    assert.ok(source, sourceId + ': source record missing');
+    assert.equal(source.source_type, 'dictionary_lexical_reviewed');
+    assert.equal(source.review_status, 'contextual_example_only_for_target_2026-10-22');
+    assert.match(source.coverage, /without a bracketed pronunciation/u, sourceId);
+    assert.match(source.license_status, /item-level KOGL marking not checked/u, sourceId);
+  }
+});
