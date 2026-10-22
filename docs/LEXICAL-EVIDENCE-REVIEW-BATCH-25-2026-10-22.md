@@ -33,3 +33,11 @@ The Korean surface, project IPA, and Ukrainian target fields remain unchanged. T
 - BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain absent.
 
 No runtime pronunciation or Ukrainian output values changed.
+
+## Verification
+
+- Tested implementation head: 392e03af331a543dfded890967ea33cc95fdd408.
+- CI run: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39833318615 — passed.
+- Browser regression suite: 1,156/1,156 Node tests passed; Vite build passed.
+- Python regression/data-integrity passed.
+- Live NIKL fetch returned HTTP 403 and was classified BLOCKED; no live manifest was produced and no access-control bypass was attempted.
