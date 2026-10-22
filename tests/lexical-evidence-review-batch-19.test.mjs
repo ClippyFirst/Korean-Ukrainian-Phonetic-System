@@ -33,9 +33,9 @@ test("음용 lexical evidence no longer overstates the question premise as direc
   assert.match(report, /Korean bracket notation is not IPA/u);
 });
 
-test("batch 19 reduces only the citation-only queue, not the direct-attestation count", () => {
-  const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 26);
+test("batch 19 records its historical backlog and does not freeze the live queue", () => {
+  assert.match(report, /26.*22 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
+  assert.equal(source.review_status, 'partial_claim_scope_reviewed_2026-10-22');
   assert.match(report, /34\/60/);
   assert.match(report, /21 direct target-form attestations, 8 partial, 5 contextual-example-only/);
   assert.match(report, /26.*22 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
