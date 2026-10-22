@@ -41,7 +41,7 @@ The source register had two Q&A citations marked unreviewed even though the offi
 ## 5. qna_seq=328719 — direct attestation of 없이
 
 - Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=98&pageIndex=1&qna_seq=328719
-- The answer explains the exact form 없이[업씨]: liaison gives 업시, followed by §23 fortition. It also discusses 넋이[넉씨] and the complex-coda behavior of 값.
+- The answer explains the exact form 없이[업씨]: §10 simplifies ㅄ to [ㅂ], §13 liaison gives 업시, and §23 fortition yields 업씨. It also discusses 넋이[넉씨] and the complex-coda behavior of 값. The source's explicit rule sequence corrects the prior corpus note that had incorrectly attributed this case to §14.
 - Decision: direct surface attestation. The answer distinguishes the relevant rule sequence and does not make Ukrainian or IPA claims.
 
 ## 6. qna_seq=330620 — direct attestation and morpheme-boundary correction
