@@ -166,14 +166,14 @@ def test_priority_nikl_lexical_sources_distinguish_direct_and_partial_attestatio
         assert example in palatalization["coverage"]
     assert "item-level KOGL marking not verified" in palatalization["license_status"]
 
-    넓다 = rows["SRC-NIKL-QNA-323289"]
-    assert 넓다["review_status"] == "partial_attestation_checked_2026-10-22"
-    assert "넓어[널버]" in 넓다["coverage"]
-    assert "넓으니[널브니]" in 넓다["coverage"]
-    assert "other lexical CSV forms are not directly enumerated" in 넓다["coverage"]
-    assert "other forms require separate evidence" in 넓다["limitations_or_next_action"]
+    wide_word = rows["SRC-NIKL-QNA-323289"]
+    assert wide_word["review_status"] == "partial_attestation_checked_2026-10-22"
+    assert "넓어[널버]" in wide_word["coverage"]
+    assert "넓으니[널브니]" in wide_word["coverage"]
+    assert "other lexical CSV forms are not directly enumerated" in wide_word["coverage"]
+    assert "other forms require separate evidence" in wide_word["limitations_or_next_action"]
 
-    품삯 = rows["SRC-NIKL-QNA-309950"]
-    assert 품삯["review_status"] == "direct_attestation_checked_2026-10-22"
+    pumsak = rows["SRC-NIKL-QNA-309950"]
+    assert pumsak["review_status"] == "direct_attestation_checked_2026-10-22"
     for example in ("품삯을[품싹쓸]", "품삯으로[품싹쓰로]", "품삯이[품싹씨]"):
-        assert example in 품삯["coverage"]
+        assert example in pumsak["coverage"]
