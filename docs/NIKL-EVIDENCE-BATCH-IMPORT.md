@@ -35,7 +35,7 @@ Use this helper when the official NIKL pages open in a human's ordinary browser 
 
 ## Generate a ready-to-fill template from the current source register
 
-The source register currently contains **20 unreviewed official HTML citations** that match the batch importer's page contract: 19 NIKL Q&A/curated FAQ pages and one remaining Korean Basic Dictionary entry. Generate a template with stable source IDs and deterministic local filenames:
+The source register currently contains **19 unreviewed official HTML citations** that match the batch importer's page contract: 18 NIKL Q&A/curated FAQ pages and one remaining Korean Basic Dictionary entry. Generate a template with stable source IDs and deterministic local filenames:
 
 ```sh
 npm run template:nikl-evidence
@@ -47,7 +47,7 @@ This writes `reports/nikl/saved-pages-import.template.json` with deterministic `
 npm run import:nikl-evidence -- --input-manifest reports/nikl/saved-pages-import.template.json --output reports/nikl/evidence-import-manifest.json
 ```
 
-The generator reads only the source register; it does not download pages or change source review status. The 20 rows cover the currently eligible unreviewed Q&A/FAQ and Korean Basic Dictionary HTML pages, not all 23 outstanding citations. The importer validates dictionary language and ParaWordNo against the stable SRC-KRDICT-ENG/KOR ID. Three NIKL-hosted PDFs use a separate binary-metadata intake described in [the PDF guide](NIKL-PDF-IMPORT.md); PDF text extraction and document/claim review remain separate tasks. Current inventory (2026-10-22): 37/60 citations content-checked and 23 citation-only/unreviewed (20 HTML + 3 PDFs). Import success remains metadata-only and does not establish claim support.
+The generator reads only the source register; it does not download pages or change source review status. The 19 rows cover the currently eligible unreviewed Q&A/FAQ and Korean Basic Dictionary HTML pages, not all 22 outstanding citations. The importer validates dictionary language and ParaWordNo against the stable SRC-KRDICT-ENG/KOR ID. Three NIKL-hosted PDFs use a separate binary-metadata intake described in [the PDF guide](NIKL-PDF-IMPORT.md); PDF text extraction and document/claim review remain separate tasks. Current inventory (2026-10-22): 38/60 citations content-checked and 22 citation-only/unreviewed (19 HTML + 3 PDFs). Import success remains metadata-only and does not establish claim support.
 
 ## Safety and evidence semantics
 
