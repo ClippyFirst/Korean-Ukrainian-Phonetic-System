@@ -579,3 +579,24 @@ The source evidence inventory remains **16/60 checked and 44 citation-only/unrev
 - `BLOCKED_SPECIALIST_ADJUDICATION`: independent broad-IPA and Ukrainian-target reviews remain outstanding.
 
 The overall inventory is still **16/60 content-checked and 44 citation-only/unreviewed**. This batch completes the collection tooling for all 44 known citation routes (41 HTML pages plus 3 PDFs) but does not complete source review. The project remains a deployed research preview / partial prototype.
+
+
+## Batch 21: partial evidence review of two Korean Basic Dictionary citations — 2026-10-22
+
+### Primary-source findings
+- `SRC-KRDICT-ENG-79033`: the official learner-dictionary page for 좋다 lists 좋다[조ː타] and the application form 좋아[조ː아]. It does not list 좋아도 as a bracketed pronunciation. The source-register classification is therefore `partial_lemma_application_support_2026-10-22`; 좋아도 remains rule-derived under the existing §12(4) note, not directly dictionary-attested. Source: https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=79033
+- `SRC-KRDICT-KOR-57199`: the official Korean Basic Dictionary page for 발음 lists 발음[바름] and identifies it as a noun. It does not separately attest 발음과. The source-register classification is `partial_lemma_support_2026-10-22`; 발음과 remains derived from the lemma plus particle attachment. Source: https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=57199
+- `SRC-KRDICT-ENG-89917`, cited for 없었다, was not accessible through the available public page view in this pass and remains unreviewed. No content was inferred for it.
+
+### Implementation and verification
+- Updated only the two source-register rows, added `docs/LEXICAL-EVIDENCE-REVIEW-BATCH-17-2026-10-22.md`, added three Node regressions, and updated the existing source-register integrity tests and inventory-count expectations. The existing lexical notes already correctly treat both full forms as rule-derived; no lexical output or production code changed.
+- Exact code/test head `7973f9ea230c2a261f2a0b11fe2fd4a979eea906`: [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39787113641) passed **1,123/1,123 Node tests**, Vite build, and Python regression/data-integrity. A prior CI attempt caught unquoted commas in CSV evidence notes and mismatched test expectations; these were corrected before the verified head.
+
+### Task ledger
+- `DONE_VERIFIED`: primary-source content inspection and partial evidence classification for two dictionary entries; source-register row and test updates; full code/test verification.
+- `PARTIAL`: both pages support their dictionary lemmas/application forms but not the exact full lexical target. They are deliberately not classified as direct full-form attestations.
+- `BLOCKED / rights`: item-level KOGL markings remain unverified for both pages.
+- `BLOCKED`: the third dictionary page (ParaWordNo=89917) was unavailable in the public page view and remains citation-only.
+- `BLOCKED_SPECIALIST_ADJUDICATION`: no broad-IPA gold or independent Ukrainian-target review was added.
+
+Current evidence inventory: **18/60** newly inventoried citations content-checked (9 direct for target forms, 4 partial, 5 contextual-example-only); **42 citation-only/unreviewed**. The source count changed because two pages received scoped partial review; the third dictionary source and three PDFs remain outstanding. Release status remains deployed research preview / partial prototype.
