@@ -114,10 +114,10 @@ test('qna_seq=317229 directly attests 외곬에 and the lexical URL matches the 
   assert.equal(byInput('외곬에').source_url, source.source_url);
 });
 
-test('batch 18 updates the citation-only backlog from 42 to 31 without altering lexical targets', () => {
+test('batch 18 updates the citation-only backlog from 42 to 29 without altering lexical targets', () => {
   const unreviewed = sources.filter((row) => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 31);
-  assert.match(review, /falls from 42 to 31/u);
+  assert.equal(unreviewed.length, 29);
+  assert.match(review, /falls from 42 to 29/u);
   assert.equal(byInput('읽고').pronunciation, '일꼬');
   assert.equal(byInput('밝는').pronunciation, '방는');
   assert.match(review, /No broad-IPA gold or Ukrainian-target validation was added/u);
