@@ -107,3 +107,58 @@ def test_nikl_manifest_schema_accepts_local_html_import_with_explicitly_unknown_
     )
     errors = list(validator.iter_errors(manifest))
     assert not errors, "\\n".join(error.message for error in errors)
+
+
+def test_nikl_manifest_schema_rejects_contradictory_retrieval_provenance():
+    schema = json.loads((ROOT / "schemas" / "nikl-source-manifest.schema.json").read_text(encoding="utf-8"))
+    validator = Draft202012Validator(schema, format_checker=FormatChecker())
+
+    direct_http_but_no_retrieval_timestamp = _valid_manifest()
+    direct_http_but_no_retrieval_timestamp["source"]["retrievedAt"] = None
+    assert list(validator.iter_errors(direct_http_but_no_retrieval_timestamp))
+
+    direct_http_but_local_robots_state = _valid_manifest()
+    direct_http_but_local_robots_state["source"]["robots"] = {
+        "url": "https://www.korean.go.kr/robots.txt",
+        "status": None,
+        "decision": "not_checked_local_import",
+    }
+    assert list(validator.iter_errors(direct_http_but_local_robots_state))
+
+    local_import_claiming_live_fetch = _valid_manifest()
+    source = local_import_claiming_live_fetch["source"]
+    source.update(
+        {
+            "retrievalMode": "local-html-import",
+            "retrievedAt": None,
+            "importedAt": "2026-10-21T19:30:00.000Z",
+            "httpStatus": 200,
+            "contentType": "text/html; local-file",
+            "userAgent": None,
+            "robots": {
+                "url": "https://www.korean.go.kr/robots.txt",
+                "status": None,
+                "decision": "not_checked_local_import",
+            },
+        }
+    )
+    assert list(validator.iter_errors(local_import_claiming_live_fetch))
+
+    local_import_with_unchecked_robots_misreported = _valid_manifest()
+    source = local_import_with_unchecked_robots_misreported["source"]
+    source.update(
+        {
+            "retrievalMode": "local-html-import",
+            "retrievedAt": None,
+            "importedAt": "2026-10-21T19:30:00.000Z",
+            "httpStatus": None,
+            "contentType": "text/html; local-file",
+            "userAgent": None,
+            "robots": {
+                "url": "https://www.korean.go.kr/robots.txt",
+                "status": 404,
+                "decision": "no_robots_file",
+            },
+        }
+    )
+    assert list(validator.iter_errors(local_import_with_unchecked_robots_misreported))
