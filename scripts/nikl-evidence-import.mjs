@@ -68,6 +68,10 @@ export function extractPageMetadata(html) {
     .map(node => normalized(textContent(node))).filter(Boolean);
   const visibleText = normalized(textContent(bodyNode));
   if (visibleText.length < 80) throw new Error("Saved HTML has too little visible text; refusing an apparently incomplete/error page.");
+  const errorPagePattern = /(?:^|\\b)(?:403\\s+forbidden|404\\s+not\\s+found|access\\s+denied|request\\s+blocked|too\\s+many\\s+requests|captcha|verify\\s+you\\s+are\\s+human|just\\s+a\\s+moment)(?:\\b|$)/iu;
+  if (errorPagePattern.test(normalized(textContent(titleNode))) || errorPagePattern.test(visibleText.slice(0, 1200))) {
+    throw new Error("Saved page appears to be an access-denial, challenge, or HTTP error page; refusing to inventory it as an official source.");
+  }
   return {
     documentTitle: normalized(textContent(titleNode)) || null,
     headings: [...new Set(headings)].slice(0, 30),
@@ -96,6 +100,15 @@ export async function buildEvidenceImport(inputManifestPath, outputPath, { now =
     if (ids.has(source.sourceId)) throw new Error("Duplicate sourceId: " + source.sourceId);
     ids.add(source.sourceId);
     const url = officialSourceUrl(source.url);
+    const parsedUrl = new URL(url);
+    const expectedQnaId = source.sourceId.match(/^SRC-NIKL-QNA-(\\d+)$/);
+    const expectedFaqId = source.sourceId.match(/^SRC-NIKL-FAQ-(\\d+)$/);
+    if (expectedQnaId && parsedUrl.searchParams.get("qna_seq") !== expectedQnaId[1]) {
+      throw new Error(source.sourceId + ": source ID does not match qna_seq in URL.");
+    }
+    if (expectedFaqId && parsedUrl.searchParams.get("mcfaq_seq") !== expectedFaqId[1]) {
+      throw new Error(source.sourceId + ": source ID does not match mcfaq_seq in URL.");
+    }
     if (urls.has(url)) throw new Error("Duplicate canonical source URL: " + url);
     urls.add(url);
     if (typeof source.inputHtml !== "string" || !source.inputHtml.trim()) throw new Error(source.sourceId + ": inputHtml path is required.");
