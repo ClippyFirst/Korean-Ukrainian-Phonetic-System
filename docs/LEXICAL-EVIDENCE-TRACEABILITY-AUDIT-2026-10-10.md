@@ -80,3 +80,16 @@ The adversarial passage review added eleven entries since the previous 601-row s
 | `값의` | `갑씌` / `갑쎄` | NIKL §5 Q&A plus §14 liaison; preserve both permitted particle readings rather than collapsing the variant |
 
 These rows are tracked in the lexical CSV with explicit source URLs and rule notes, and in `tests/reported-placeholder-regressions.test.mjs`. Ukrainian targets remain provisional; the standard Korean surface readings and alternatives are what the regression tests lock. The count is a snapshot, not a quality gate: future additions must update this document and its snapshot assertion, but a nonzero article-coverage queue alone must not fail builds.
+
+
+## Official dictionary source review — batch 14 (2026-10-22)
+
+Three previously citation-only NIKL Korean-English Learners' Dictionary pages were opened and compared with the exact lexical rows:
+
+- `SRC-KRDICT-ENG-66031`, **맑다**: the dictionary explicitly lists `맑은[말근]`, along with `맑아[말가]`, `맑으니[말그니]`, `맑습니다[막씀니다]`, `맑고[말꼬]`, and `맑지[막찌]`. The lexical `맑은` row now cites this exact entry. `맑을` is not listed and remains rule-derived.
+- `SRC-KRDICT-ENG-89859`, **얇다**: the dictionary explicitly lists `얇은[얄븐]` and five other application forms. This is direct evidence for the listed forms only, not a productive license for all ㄼ adjectives.
+- `SRC-KRDICT-ENG-64509`, **넣다**: the dictionary lists `넣다[너ː타]`, `넣는[넌ː는]`, `넣어[너어]`, `넣으니[너으니]`, and `넣습니다[너ː씀니다]`. It does **not** list the CSV form `넣었다`; that form remains a rule-derived inflection with the existing §12(4)/§23 rationale.
+
+The source register now differentiates exact direct attestation from partial lemma/application support. Added `tests/lexical-evidence-review-batch-14.test.mjs` to protect source identity, direct/partial status, and the distinction between Hangul pronunciation notation and IPA.
+
+**Updated inventory:** 6 of the 60 newly inventoried citation pages have now been content-checked: 4 direct and 2 partial; 54 remain citation-only/unverified. Page-level KOGL markings remain unverified. These source checks do not adjudicate broad IPA or Ukrainian target spellings.
