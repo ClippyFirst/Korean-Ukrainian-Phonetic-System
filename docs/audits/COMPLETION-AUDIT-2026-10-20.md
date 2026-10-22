@@ -682,3 +682,23 @@ Release status remains deployed research preview / partial prototype, not releas
 - [System verification CI 39829847141](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39829847141) passed **1,145/1,145 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic.
 - The live NIKL request was again HTTP 403 and was classified BLOCKED. No live source manifest was emitted and no bypass was attempted.
 - Python differential diagnostics still show two known, unadjudicated JS/Python surface divergences (넓죽하다, 읽고); IPA comparison was not performed. This batch does not change runtime output.
+
+
+## Batch 24: NIKL Q&A 314041 direct attestation and sequence fidelity — 2026-10-22
+
+### Primary-source findings
+Official indexed NIKL Q&A “낱낱이 음운변동” (qna_seq=314041; question 2025-04-28, answer 2025-04-29) directly gives 낱낱이[난ː나치] and explicitly states the sequence of syllable-final neutralization, nasalization, and palatalization. The source therefore supports the exact lexical target and a stated sequence; it is not merely contextual support.
+
+### Implementation and verification scope
+- Updated the source register with title/date and direct-attestation status.
+- Corrected the lexical evidence note, which previously said exact ordering can vary by analysis despite this answer explicitly giving a sequence.
+- Preserved Korean surface, IPA (including long-vowel mark nanː), and Ukrainian target.
+- Added batch report/regressions and updated the current source backlog and HTML import queue.
+
+### Task ledger
+- DONE_VERIFIED after exact-head CI: direct source claim, ordered rule sequence, IPA length preservation, source-register integrity, queue counts, and build/test checks pass.
+- BLOCKED / rights: item-level KOGL mark remains unverified.
+- TODO: review remaining 23 citation-only sources, including three PDFs.
+- BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
+
+The system remains a deployed research preview / partial prototype, not release-ready.
