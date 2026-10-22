@@ -154,3 +154,26 @@ def test_orthography_qna_examples_are_not_described_as_direct_pronunciation_answ
     source = rows["SRC-NIKL-QNA-306000"]
     assert "읽지 → 익찌" in source["coverage"]
     assert "not a direct pronunciation question" in source["limitations_or_next_action"]
+
+
+
+def test_priority_nikl_lexical_sources_distinguish_direct_and_partial_attestation():
+    rows = {row["source_id"]: row for row in load_source_register()}
+
+    palatalization = rows["SRC-NIKL-QNA-313851"]
+    assert palatalization["review_status"] == "direct_attestation_checked_2026-10-22"
+    for example in ("곧이듣다[고지듣따]", "미닫이[미ː다지]", "굳히다[구치다]"):
+        assert example in palatalization["coverage"]
+    assert "item-level KOGL marking not verified" in palatalization["license_status"]
+
+    넓다 = rows["SRC-NIKL-QNA-323289"]
+    assert 넓다["review_status"] == "partial_attestation_checked_2026-10-22"
+    assert "넓어[널버]" in 넓다["coverage"]
+    assert "넓으니[널브니]" in 넓다["coverage"]
+    assert "other lexical CSV forms are not directly enumerated" in 넓다["coverage"]
+    assert "other forms require separate evidence" in 넓다["limitations_or_next_action"]
+
+    품삯 = rows["SRC-NIKL-QNA-309950"]
+    assert 품삯["review_status"] == "direct_attestation_checked_2026-10-22"
+    for example in ("품삯을[품싹쓸]", "품삯으로[품싹쓰로]", "품삯이[품싹씨]"):
+        assert example in 품삯["coverage"]
