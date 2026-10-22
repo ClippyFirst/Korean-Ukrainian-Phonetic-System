@@ -28,7 +28,7 @@ test("batch 21 reconciles the live citation-only queue without changing target v
   const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
   assert.equal(unreviewed.length, 24);
   assert.match(report, /36\/60/);
-  assert.match(report, /22 direct target-form attestations, 8 partial, 5 contextual-example-only/);
+  assert.match(report, /22 direct target-form attestations, 9 partial, 5 contextual-example-only/);
   assert.match(report, /24.*20 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
   assert.match(report, /No runtime Korean pronunciation or Ukrainian output values changed/u);
 });
