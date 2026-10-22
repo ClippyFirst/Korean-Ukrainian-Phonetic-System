@@ -21,7 +21,7 @@ test('qna_seq=314041 directly attests 낱낱이 and the stated sequence of rule 
   assert.match(source.limitations_or_next_action, /Item-level KOGL marking remains unverified/u);
 });
 
-test('낱낱이 keeps the long vowel in IPA and no longer understates the source's explicit sequence', () => {
+test("낱낱이 keeps the long vowel in IPA and no longer understates the source's explicit sequence", () => {
   assert.ok(word);
   assert.equal(word.source_url, source.url);
   assert.equal(word.surface_hangul, '난나치');
