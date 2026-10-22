@@ -43,9 +43,9 @@ test('mcfaq_seq=5748 preserves the distinction between Hangeul Orthography and S
   assert.match(review, /Rule-instrument distinction/u);
 });
 
-test('source register has 46 remaining citation-only rows after batch 15', () => {
+test('source register has 44 remaining citation-only rows after batch 16', () => {
   const unreviewed = sources.filter((row) => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 46);
+  assert.equal(unreviewed.length, 44);
   for (const id of ['SRC-NIKL-QNA-315279', 'SRC-NIKL-QNA-307237', 'SRC-NIKL-MCFAQ-5748']) {
     assert.equal(sources.filter((row) => row.source_id === id).length, 1, id);
     assert.match(bySource(id).license_status, /item-level KOGL marking not checked/u);
