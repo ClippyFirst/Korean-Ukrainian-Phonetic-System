@@ -33,3 +33,11 @@ The three lexical rows already carried notes that distinguish the direct answer 
 
 No runtime Korean pronunciation or Ukrainian output values changed.
 
+
+## Verification
+
+- Tested implementation head: b3b5432f7d84b01663ac9445e037cc4d29464b4b.
+- CI run: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39829491706 — passed.
+- Browser regression suite: 1,144/1,144 Node tests passed; Vite build passed.
+- Python regression/data-integrity passed.
+- Live NIKL fetch returned HTTP 403 and was classified BLOCKED; no live manifest was produced and no access-control bypass was attempted.
