@@ -196,9 +196,9 @@
       "differentialStatus": "matched-existing-browser-expectation",
       "normativeSurface": "잉는",
       "normativeEvidenceStatus": "direct-NIKL-QA",
-      "normativeSourceLocator": "NIKL Online Q&A example and §11 + §18",
+      "normativeSourceLocator": "NIKL Online Q&A about spelling (answer 2024-11-15): its explanatory discussion uses 읽는 → 잉는 as a phonetic illustration; compare §§11 and 18 for pronunciation analysis.",
       "normativeSourceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306000",
-      "normativeNotes": "Directly attested normative comparator; IPA still requires separate independent adjudication."
+      "normativeNotes": "The official orthography Q&A uses 잉는 as a phonetic illustration for 읽는; this is an exact surface example, not a standalone pronunciation answer. IPA and Ukrainian target remain unreviewed."
     },
     {
       "input": "국립",
