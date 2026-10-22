@@ -12,7 +12,8 @@
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "build": "vite build",
     "check:release": "npm test && npm run build",
-    "crawl:nikl": "node scripts/nikl-norm-crawler.mjs"
+    "crawl:nikl": "node scripts/nikl-norm-crawler.mjs",
+    "import:nikl-evidence": "node scripts/nikl-evidence-import.mjs"
   },
   "devDependencies": {
     "vite": "8.3.1"
