@@ -353,9 +353,9 @@
     {
       "caseId": "IPA-011",
       "input": "읽고",
-      "surfaceEvidenceStatus": "direct-NIKL-QA",
-      "surfaceEvidenceUrl": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=315279",
-      "sourceLocator": "NIKL Online Q&A directly confirms 읽고[일꼬]",
+      "surfaceEvidenceStatus": "direct-NIKL-example",
+      "surfaceEvidenceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "sourceLocator": "NIKL §1 commentary explicitly gives 읽고[일꼬] in the verbal-stem ㄺ + ㄱ environment; Korean surface only, not IPA.",
       "candidateBroadIpa": null,
       "syllableBoundaries": null,
       "vowelLengthAssessment": null,
