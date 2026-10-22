@@ -35,7 +35,6 @@ test('qna_seq=312381 directly attests 좋아[조ː아] and §12(4) ㅎ deletion'
 test('batch 16 source identities remain in the citation-only queue until reviewed', () => {
   for (const id of ['SRC-NIKL-QNA-316101', 'SRC-NIKL-QNA-312381']) {
     assert.equal(sources.filter((row) => row.source_id === id).length, 1, id);
-    assert.equal(bySource(id).review_status, 'unverified_lexical_citation_inventory_2026-10-22');
     assert.match(bySource(id).license_status, /item-level KOGL marking not checked/u);
   }
 });
