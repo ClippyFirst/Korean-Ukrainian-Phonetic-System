@@ -120,3 +120,12 @@ undefined
 - Inventory after this batch: **35/60** citations content-checked (21 direct target-form attestations, 9 partial, 5 contextual-example-only); **25 citation-only/unreviewed** (21 Q&A/FAQ pages, one Korean Basic Dictionary entry, three PDFs). The HTML import template now contains 22 eligible pages (21 Q&A/FAQ + one dictionary entry).
 - Direct NIKL fetch remains HTTP 403; no live manifest is claimed and no bypass is attempted. The saved-page import path remains the compliant alternative. Item-level reuse rights remain unverified.
 - Release status remains deployed research preview / partial prototype, not a scientifically validated release.
+
+
+### Batch-20 exact-head verification checkpoint
+
+- Tested implementation/test head: cdbfd435f63b09a36b3194e506fdaf0f1fd8d0e3.
+- [System verification CI](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39828855949) passed: browser suite **1,142/1,142**, Vite build passed, Python regression/data-integrity passed.
+- The official NIKL inventory step recorded HTTP 403 as BLOCKED, then completed its diagnostic wrapper successfully. No live manifest was emitted; this is not counted as a successful crawl.
+- The Python differential warning still reports two known JS/Python surface divergences (넓죽하다, 읽고) with IPA gold not independently adjudicated. This batch does not change those runtime results.
+- The current PR includes a documentation-only handoff/audit update after the tested code head; CI is being rerun on the resulting PR head before merge.
