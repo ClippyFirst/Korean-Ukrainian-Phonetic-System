@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { test } from "node:test";
 import { buildPdfImport, canonicalOfficialPdfUrl } from "../scripts/nikl-pdf-import.mjs";
 import { buildPdfImportTemplate } from "../scripts/nikl-pdf-template.mjs";
@@ -114,6 +114,6 @@ test("rejects unsafe PDF template directories and source ID/filename mismatches"
 async function importFile(dir, relativePath, bytes) {
   const path = join(dir, relativePath);
   const { mkdir } = await import("node:fs/promises");
-  await mkdir(join(path, ".."), { recursive: true });
+  await mkdir(dirname(path), { recursive: true });
   await writeFile(path, bytes);
 }
