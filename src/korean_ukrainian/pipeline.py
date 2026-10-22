@@ -176,10 +176,17 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
     selected=_select_target(target)
     orthographic=render_sequence(selected["segments"]) if selected else None
     lexical=LEXICAL_PRONUNCIATIONS.get(text)
-    target_status="model-selected"
-    selection_status="top-ranked segmentwise heuristic candidate; not probability" if selected else "unavailable_without_target_inventory"
-    if lexical and lexical.get("target_syllables"):
-        orthographic="".join(lexical["target_syllables"].split("|"))
-        target_status=lexical.get("target_status","model-selected")
-        selection_status="exact-form lexical target override; Ukrainian output is author-designed"
-    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype","morphology_mode":morphology_mode}
+    lexical_reference="".join(lexical["target_syllables"].split("|")) if lexical and lexical.get("target_syllables") else None
+    lexical_reference_status=lexical.get("target_status","model-selected") if lexical_reference is not None else None
+    if lexical_reference is None:
+        lexical_comparison="no_lexical_reference"
+    elif orthographic is None:
+        lexical_comparison="unavailable_without_ipa_target"
+    else:
+        lexical_comparison="matches_reference" if orthographic==lexical_reference else "differs_from_reference"
+    # The lexical target is an audit reference only. Never use a stored Ukrainian
+    # target to bypass the required IPA -> Ukrainian inventory adapter boundary.
+    target_status="model-selected" if selected else "unresolved"
+    selection_status=("top-ranked segmentwise IPA-derived heuristic candidate; not probability"
+                      if selected else "unavailable_without_target_inventory")
+    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"lexical_target_reference":lexical_reference,"lexical_target_reference_status":lexical_reference_status,"lexical_target_comparison":lexical_comparison,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype","morphology_mode":morphology_mode}
