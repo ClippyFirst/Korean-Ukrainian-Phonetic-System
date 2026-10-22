@@ -451,3 +451,12 @@ Exact-head workflow [39761906127](https://github.com/ClippyFirst/Korean-Ukrainia
 ### Additional contextual-only dictionary checks — batch 14
 
 Five further pages were inspected: `찾다` (57320), `잊다` (70067), `붙다` (74181), `놓다` (89534), and `쌓이다` (65098). Their cited target spellings appear in ordinary example sentences, not as bracketed pronunciation entries. The corresponding lexical rows now explicitly retain rule-derived status; source-register records identify the evidence as contextual-only for those target forms. Automated tests protect that distinction. Current new-citation review count: **11/60** (4 direct, 2 partial, 5 contextual-only; 49 unreviewed). Details: [batch 14 review note](../LEXICAL-EVIDENCE-REVIEW-BATCH-14-2026-10-22.md).
+
+
+## Batch 15: official pronunciation Q&A/FAQ evidence — 2026-10-22
+
+- Reviewed Q&A `qna_seq=315279` (answer 2025-05-23): direct Korean surface attestations include `맑고[말꼬]`, `붉다[북따]`, `붉지[북찌]`, `붉고[불꼬]`, and `밟으니[발브니]`, alongside other complex-coda examples.
+- Reviewed Q&A `qna_seq=307237`: direct answer `넓네[널레]`; `없다[업ː따]` occurs as a reproduced §10 rule example, not as the question target.
+- Reviewed curated FAQ `mcfaq_seq=5748`: direct answers `밭을[바틀]` and `밭이[바치]`. The FAQ explicitly cites `한글맞춤법` §§13/17; lexical notes now distinguish that instrument from the project's separate `표준 발음법` crosswalk.
+- Updated three source-register records and nine lexical notes, and added a regression suite for exact surface forms, source identity, quoted-rule scope, and rule-instrument attribution.
+- Current new-citation inventory: **14/60** content-checked (7 direct for target forms, 2 partial, 5 contextual-only; 46 unreviewed). Item-level KOGL marks remain unverified; independent IPA and Ukrainian-target review remain outstanding.
