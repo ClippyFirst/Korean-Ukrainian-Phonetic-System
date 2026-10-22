@@ -152,7 +152,7 @@ test("accepts exact official mobile-host citations and FAQ pagination parameters
 });
 
 
-test("builds a template from only unreviewed official NIKL Q&A/FAQ rows and preserves multiline CSV fields", () => {
+test("builds a template from unreviewed official NIKL HTML rows and preserves multiline CSV fields", () => {
   const csv = [
     "source_id,url,review_status,coverage",
     '"SRC-NIKL-QNA-317229","https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317229","unverified_lexical_citation_inventory_2026-10-22","lexical inputs: 외곬에,',
@@ -162,9 +162,9 @@ test("builds a template from only unreviewed official NIKL Q&A/FAQ rows and pres
     '"SRC-KRDICT-ENG-79033","https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=79033","unverified_lexical_citation_inventory_2026-10-22","different host"',
   ].join("\n");
   const template = buildImportTemplate(csv, { relativeHtmlDirectory: "saved-pages" });
-  assert.equal(template.sourceCount, 2);
+  assert.equal(template.sourceCount, 3);
   assert.equal(template.allSourcesContentReviewed, false);
-  assert.deepEqual(template.sources.map(source => source.sourceId), ["SRC-NIKL-QNA-317229", "SRC-NIKL-MCFAQ-6718"]);
+  assert.deepEqual(template.sources.map(source => source.sourceId), ["SRC-NIKL-QNA-317229", "SRC-NIKL-MCFAQ-6718", "SRC-KRDICT-ENG-79033"]);
   assert.equal(template.sources[0].inputHtml, "saved-pages/SRC-NIKL-QNA-317229.html");
   assert.equal(template.sources[1].url, FAQ_PAGINATED);
   assert.equal(JSON.stringify(template).includes("second line"), false);
