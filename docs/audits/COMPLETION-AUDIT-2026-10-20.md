@@ -615,3 +615,10 @@ Current source evidence status is 33/60 citations content-checked (21 direct, 7 
 - Regression coverage: lexical references cannot override adapter output; missing target inventory yields unresolved output; unmapped nearest candidate is skipped; all-unmapped candidate sets remain unresolved; selected output must equal render_sequence(selected_candidate.segments).
 - The optional UPI package is intentionally not installed in minimal CI, so null target output is an expected safe state there, not a failing transliteration result. Browser output is not altered by this Python-specific fix.
 - Exact final PR head and CI evidence will be recorded once the newest CI run completes. Do not promote this to a linguistically validated target model: independent broad-IPA gold and Ukrainian-target review remain blocked.
+
+
+## Post-merge public Pages verification — 2026-10-22
+
+Main commit `1e40e0271c706311d21af144e003b5742d0e5ab7` passed system verification, browser/Python tests, and master-table/corpus artifact generation. GitHub Pages deploy/live smoke [39825627246](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39825627246) passed. The live Playwright practical-mode fixture processed 1,443 Korean input characters and returned 2,782 Ukrainian output characters plus 3,731 IPA characters with status `g2pK JS · Контекстну вимову застосовано`. This confirms deployment and end-to-end browser execution for that fixture only; it does not constitute independent linguistic adjudication.
+
+Open blockers remain: direct NIKL fetch is HTTP 403; 27 source citations still require content review; item-level reuse rights are not verified; independent broad-IPA gold and Ukrainian-target review remain absent. Release disposition remains deployed research preview / partial prototype.
