@@ -114,10 +114,34 @@ test('qna_seq=317229 directly attests 외곬에 and the lexical URL matches the 
   assert.equal(byInput('외곬에').source_url, source.url);
 });
 
-test('batch 18 updates the citation-only backlog from 42 to 29 without altering lexical targets', () => {
+
+test('MCFAQ 8420 directly attests 않았다[아낟따] and its §§12(4)/23 explanation', () => {
+  const source = bySource('SRC-NIKL-MCFAQ-8420');
+  assert.ok(source);
+  assert.equal(source.review_status, 'direct_attestation_2026-10-22');
+  assert.match(source.coverage, /않았다\[아낟따\]/u);
+  assert.match(byInput('않았다').rule_notes, /§12\(4\).*§23/u);
+  assert.equal(byInput('않았다').source_url, source.url);
+});
+
+test('qna_seq=333927 replaces the mismatched MCFAQ 8505 citation for 의견란', () => {
+  const source = bySource('SRC-NIKL-QNA-333927');
+  const wrong = bySource('SRC-NIKL-MCFAQ-8505');
+  assert.ok(source);
+  assert.ok(wrong);
+  assert.equal(source.review_status, 'direct_attestation_2026-10-22');
+  assert.equal(wrong.review_status, 'citation_mismatch_resolved_2026-10-22');
+  assert.match(source.coverage, /의견란\[의견난\].*§20/u);
+  assert.match(wrong.coverage, /상견례\[상견녜\], not 의견란/u);
+  assert.equal(byInput('의견란').source_url, source.url);
+  assert.match(byInput('의견란').rule_notes, /does not mark vowel length/u);
+  assert.equal(lexical.some((row) => row.source_url === wrong.url), false);
+});
+
+test('batch 18 updates the citation-only backlog from 42 to 27 without altering lexical targets', () => {
   const unreviewed = sources.filter((row) => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 29);
-  assert.match(review, /falls from 42 to 29/u);
+  assert.equal(unreviewed.length, 27);
+  assert.match(review, /falls from 42 to 27/u);
   assert.equal(byInput('읽고').surface_hangul, '일꼬');
   assert.equal(byInput('밝는').surface_hangul, '방는');
   assert.match(review, /No broad-IPA gold or Ukrainian-target validation was added/u);
