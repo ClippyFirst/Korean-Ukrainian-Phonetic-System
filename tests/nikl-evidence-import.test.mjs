@@ -178,3 +178,15 @@ test("rejects unsafe HTML directories, malformed CSV, and duplicate source recor
   const duplicate = csv + "\n" + csv.split("\n")[1];
   assert.throws(() => buildImportTemplate(duplicate), /Duplicate source ID/u);
 });
+
+
+test("repository source register produces a deterministic template for eligible unreviewed NIKL Q&A/FAQ citations", async () => {
+  const sourceRegister = await readFile(new URL("../research/SOURCE-REGISTER.csv", import.meta.url), "utf8");
+  const template = buildImportTemplate(sourceRegister);
+  assert.equal(template.sourceCount, 38);
+  assert.equal(template.allSourcesContentReviewed, false);
+  assert.ok(template.sources.some(source => source.sourceId === "SRC-NIKL-MCFAQ-6674"));
+  assert.ok(template.sources.some(source => source.sourceId === "SRC-NIKL-QNA-317229"));
+  assert.ok(template.sources.every(source => /^SRC-NIKL-(?:QNA|MCFAQ|FAQ)-\\d+$/u.test(source.sourceId)));
+  assert.ok(template.sources.every(source => source.inputHtml.startsWith("saved-pages/")));
+});
