@@ -36,10 +36,28 @@ test('qna_seq=334294 is contextual support and no longer falsely claims direct a
   assert.match(source.limitations_or_next_action, /not directly attested by this citation/u);
 });
 
-test('batch 18 updates the citation-only backlog from 42 to 40 without altering lexical targets', () => {
+test('qna_seq=307508 is partial until the spelling discrepancy is resolved', () => {
+  const source = bySource('SRC-NIKL-QNA-307508');
+  assert.ok(source);
+  assert.equal(source.review_status, 'partial_claim_scope_reviewed_2026-10-22');
+  assert.match(source.coverage, /넓둥굴다\[넙뚱글다\].*넓둥글다/u);
+  assert.match(byInput('넓둥글다').rule_notes, /exact orthographic match as unresolved/u);
+  assert.doesNotMatch(byInput('넓둥글다').rule_notes, /directly confirms/u);
+});
+
+test('qna_seq=317229 directly attests 외곬에 and the lexical URL matches the source register', () => {
+  const source = bySource('SRC-NIKL-QNA-317229');
+  assert.ok(source);
+  assert.equal(source.review_status, 'direct_attestation_2026-10-22');
+  assert.match(source.coverage, /외곬에\[외골쎄\]/u);
+  assert.match(byInput('외곬에').rule_notes, /directly confirms 외곬에\[외골쎄\]/u);
+  assert.equal(byInput('외곬에').source_url, source.source_url);
+});
+
+test('batch 18 updates the citation-only backlog from 42 to 38 without altering lexical targets', () => {
   const unreviewed = sources.filter((row) => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 40);
-  assert.match(review, /falls from 42 to 40/u);
+  assert.equal(unreviewed.length, 38);
+  assert.match(review, /falls from 42 to 38/u);
   assert.equal(byInput('읽고').pronunciation, '일꼬');
   assert.equal(byInput('밝는').pronunciation, '방는');
   assert.match(review, /No broad-IPA gold or Ukrainian-target validation was added/u);
