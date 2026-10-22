@@ -653,3 +653,11 @@ The official indexed NIKL Q&A page “홑이불” (qna_seq=317202; question 202
 - BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
 
 The system remains a deployed research preview / partial prototype, not release-ready.
+
+
+### Batch-22 verification evidence
+
+- Implementation/test head cdbfd435f63b09a36b3194e506fdaf0f1fd8d0e3 passed [system verification CI](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39828855949): 1,142/1,142 browser tests, Vite build, and Python regression/data-integrity.
+- Live official NIKL crawl returned HTTP 403 and was recorded as BLOCKED; no live manifest was emitted.
+- Two existing Python-vs-browser differential cases remain unresolved and are explicitly diagnostic-only: 넓죽하다 and 읽고. No IPA gold adjudication is claimed.
+- Documentation-only audit/handoff updates are followed by a final-head CI run before merge.
