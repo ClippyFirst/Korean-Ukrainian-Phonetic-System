@@ -112,3 +112,28 @@ The IPA/typed result must be the actual input to the Ukrainian adapter. Do not a
 ## Completion report
 
 For each audit batch, report the claims reviewed, evidence classes, records changed, regressions added, unresolved items, commands actually run, and exact commit/branch. State whether conclusions are directly attested, rule-derived, or provisional. Update the existing audit/handoff rather than creating a competing source of truth.
+
+
+## Evidence-scope and source-instrument gate (added 2026-10-22)
+
+Classify the **claim actually supported by the exact page**, not the broad topic of the page. Keep these distinct:
+
+- `DIRECT_OFFICIAL_ATTESTATION`: the exact target form and its bracketed Korean pronunciation are visibly attached to that form in an official dictionary entry, official answer, or official numbered rule example.
+- `DIRECT_OFFICIAL_RULE_EXAMPLE`: the exact form is bracketed in an official rule example reproduced by a page, but it is not the specific question being answered. This is direct official evidence for the form, but not evidence that the page's case-specific answer concerns it.
+- `PARTIAL_LEMMA_APPLICATION_SUPPORT`: the source directly attests the lemma or selected paradigm forms, but not the exact target inflection. Do not promote the target inflection to direct evidence.
+- `CONTEXTUAL_EXAMPLE_ONLY`: the target spelling occurs in ordinary example prose but no bracketed pronunciation is given for that form. This supports orthographic/contextual occurrence only; keep the pronunciation rule-derived or unresolved.
+- `OFFICIAL_RULE_DERIVATION`: the exact form is derived through a documented official rule environment, with morpheme boundaries and interactions independently justified.
+- `HYPOTHESIS_UNRESOLVED`: exact source support, lexical identity, morphology, or the rule environment is insufficient.
+
+A page can contain more than one evidence class for different forms. Record the scope per target claim; do not assign one blanket "direct" status to the whole page.
+
+**Rule-instrument attribution is mandatory.** Copy the instrument name exactly as cited by the source, such as `표준 발음법` (Standard Pronunciation Rules) versus `한글맞춤법` (Hangeul Orthography). Same-numbered articles in different instruments are not interchangeable. If the project crosswalks an orthographic citation to a pronunciation rule, label it as a separate project crosswalk rather than claiming the source itself cited that pronunciation rule.
+
+Regression examples from the 2026-10-22 review:
+- `넓네[널레]` is the direct target of its official Q&A; `없다[업ː따]` is a separate example reproduced from §10 on that page.
+- `맑은[말근]` is directly listed in the dictionary paradigm for `맑다`; `맑을` is not listed there and remains rule-derived.
+- `넣었다` is not directly listed in the `넣다` dictionary page; the page supports the lemma and other applications only.
+- `찾았다`, `잊었다`, `붙었다`, `놓았다`, and `쌓였다` occur as ordinary example spellings on their cited dictionary pages without a bracketed pronunciation; treat these as contextual-only, not direct pronunciation attestations.
+- The FAQ for `밭을`/`밭이` names `한글맞춤법` §§13/17. Preserve that wording and record any `표준 발음법` mapping as a separate project crosswalk.
+
+The source registry may use date-suffixed status strings; keep its existing schema and status vocabulary consistent rather than inventing a parallel register. Update the current inventory counts and the existing audit/handoff whenever a record changes class.
