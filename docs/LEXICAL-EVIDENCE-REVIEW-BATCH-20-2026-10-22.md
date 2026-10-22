@@ -32,3 +32,11 @@ The three lexical rows already carried notes that distinguish the direct answer 
 - BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain absent.
 
 No runtime Korean pronunciation or Ukrainian output values changed.
+
+## Verification
+
+- Tested implementation head: 2a0ed0b734af4dd9d11b730bdd5cd11ccc467fe1.
+- CI run: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39828563277 — passed.
+- Browser regression suite: 1,141/1,141 Node tests passed; Vite build passed.
+- Python regression/data-integrity job passed.
+- Live NIKL diagnostic returned HTTP 403 and was classified BLOCKED; no live manifest was produced and no access-control bypass was attempted.
