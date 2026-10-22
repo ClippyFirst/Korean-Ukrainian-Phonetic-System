@@ -15,7 +15,7 @@ test('qna_seq=317202 is reviewed as partial lemma/application evidence, not dire
   assert.equal(source.review_status, 'partial_lemma_application_support_2026-10-22');
   assert.match(source.title_or_project, /홑이불/u);
   assert.match(source.version_or_date, /Question 2025-06-28; answer 2025-06-30/u);
-  assert.match(source.coverage, /attests the lemma 홑이불\\[혼니불\\]/u);
+  assert.match(source.coverage, /attests the lemma 홑이불\[혼니불\]/u);
   assert.match(source.coverage, /exact inflected input 홑이불을/u);
   assert.match(source.integration_status, /exact inflected form remains rule-derived/u);
   assert.match(source.limitations_or_next_action, /item-level KOGL marking remains unverified/u);
@@ -29,6 +29,7 @@ test('홑이불을 retains its existing surface, IPA, and Ukrainian reference wh
   assert.equal(word.target_syllables, 'гон|ні|бу|рил');
   assert.match(word.rule_notes, /attests the lemma 홑이불\[혼니불\]/u);
   assert.match(word.rule_notes, /does not separately attest the inflected input 홑이불을/u);
+  assert.match(word.rule_notes, /liaison of final ㄹ before particle 을 follows §13/u);
   assert.doesNotMatch(word.rule_notes, /directly confirms 홑이불\[혼니불\]/u);
   assert.match(report, /partial lemma\/application support/u);
   assert.match(report, /Korean bracket notation is a pronunciation notation, not IPA/u);
