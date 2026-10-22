@@ -35,9 +35,9 @@ test('홑이불을 retains its existing surface, IPA, and Ukrainian reference wh
   assert.match(report, /Korean bracket notation is a pronunciation notation, not IPA/u);
 });
 
-test('batch 20 updates the live backlog without rewriting historical batch-19 counts', () => {
-  const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 25);
+test('batch 20 records its historical backlog without freezing the live queue', () => {
+  assert.equal(source.review_status, 'partial_lemma_application_support_2026-10-22');
+  assert.match(report, /25.*21 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
   assert.match(report, /35\/60/);
   assert.match(report, /21 direct target-form attestations, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /25.*21 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
