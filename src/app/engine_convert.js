@@ -127,15 +127,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   for(let i=0;i<units.length;i++){
     const u=units[i];
     if(u.type==='jamo'){
-      // A standalone compatibility Jamo is not a pronounceable syllable, so
-      // do not fabricate IPA. It can nevertheless be meaningful orthographic
-      // notation (e.g. consonant/vowel inventories in a linguistics passage).
-      // Preserve it verbatim in the target text rather than silently deleting
-      // source content; the unresolved status and issue keep it out of claims
-      // of a complete pronunciation.
-      output[i]=u.char;ipa[i]='';analysis[i]=u.char;
-      issues.push(u.char+': standalone compatibility jamo is not a syllable; preserved as literal notation and IPA is withheld.');
-      trace[i]={source:u.char,surface:u.char,status:'unsupported-jamo',rules:['unsupported-standalone-jamo','preserve-literal-notation'],output:u.char,ipa:''};
+      output[i]='';ipa[i]='';analysis[i]='';
+      issues.push(u.char+': standalone compatibility jamo is not a syllable; IPA is withheld.');
+      trace[i]={source:u.char,surface:u.char,status:'unsupported-jamo',rules:['unsupported-standalone-jamo'],output:'',ipa:''};
       continue;
     }
     if(u.type==='literal'){
