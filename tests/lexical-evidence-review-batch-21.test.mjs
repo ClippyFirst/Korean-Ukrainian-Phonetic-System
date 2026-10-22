@@ -42,9 +42,8 @@ test('없는, 국물, and 옷이 remain linked to the exact official source with
   assert.match(report, /not the primary target of the Q&A question/u);
 });
 
-test('batch 21 updates the live citation backlog and eligible HTML queue', () => {
-  const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 24);
+test('batch 21 records its historical backlog while later reviews can proceed', () => {
+  assert.equal(source.review_status, 'direct_attestation_with_rule_instrument_scope_note_2026-10-22');
   assert.match(report, /36\/60/);
   assert.match(report, /22 direct target-form \/ official-rule-example attestations, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /24.*20 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
