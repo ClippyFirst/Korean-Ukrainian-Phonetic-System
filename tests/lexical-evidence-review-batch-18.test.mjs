@@ -65,6 +65,8 @@ test('qna_seq=328719 directly attests 없이[업씨]', () => {
   assert.equal(source.review_status, 'direct_attestation_2026-10-22');
   assert.match(source.coverage, /없이\[업씨\]/u);
   assert.match(byInput('없이').rule_notes, /없이\[업씨\]/u);
+  assert.match(byInput('없이').rule_notes, /§10.*§13.*§23/u);
+  assert.match(byInput('없이').rule_notes, /do not misattribute this case to §14/u);
   assert.equal(byInput('없이').source_url, source.url);
 });
 
