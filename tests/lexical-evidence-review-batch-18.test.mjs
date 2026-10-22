@@ -36,6 +36,44 @@ test('qna_seq=334294 is contextual support and no longer falsely claims direct a
   assert.match(source.limitations_or_next_action, /not directly attested by this citation/u);
 });
 
+
+test('qna_seq=328719 directly attests 없이[업씨]', () => {
+  const source = bySource('SRC-NIKL-QNA-328719');
+  assert.ok(source);
+  assert.equal(source.review_status, 'direct_attestation_2026-10-22');
+  assert.match(source.coverage, /없이\[업씨\]/u);
+  assert.match(byInput('없이').rule_notes, /없이 \[업씨\]/u);
+  assert.equal(byInput('없이').source_url, source.source_url);
+});
+
+test('qna_seq=330620 directly attests 값없다 and distinguishes substantive-morpheme §15 from §14', () => {
+  const source = bySource('SRC-NIKL-QNA-330620');
+  assert.ok(source);
+  assert.equal(source.review_status, 'direct_attestation_2026-10-22');
+  assert.match(source.coverage, /값없다\[가법따\]/u);
+  assert.match(source.limitations_or_next_action, /§15 rather than §14/u);
+  assert.equal(byInput('값없다').source_url, source.source_url);
+});
+
+test('qna_seq=330938 attests 꽃잎[꼰닙] but does not establish a unique intermediate ordering', () => {
+  const source = bySource('SRC-NIKL-QNA-330938');
+  assert.ok(source);
+  assert.equal(source.review_status, 'direct_attestation_with_ordering_limit_2026-10-22');
+  assert.match(source.coverage, /꽃잎\[꼰닙\]/u);
+  assert.match(source.limitations_or_next_action, /Do not use it as evidence for a unique intermediate order/u);
+  assert.match(byInput('꽃잎').rule_notes, /not as the only ordering endorsed by NIKL/u);
+  assert.equal(byInput('꽃잎').source_url, source.source_url);
+});
+
+test('qna_seq=335263 directly attests 실없다[시럽따] and corrects the question title premise', () => {
+  const source = bySource('SRC-NIKL-QNA-335263');
+  assert.ok(source);
+  assert.equal(source.review_status, 'direct_attestation_with_premise_correction_2026-10-22');
+  assert.match(source.coverage, /실없다\[시럽따\].*not the question's assumed \[시럼따\]/u);
+  assert.match(byInput('실없다').rule_notes, /NIKL lexical reading \[시럽따\]/u);
+  assert.equal(byInput('실없다').source_url, source.source_url);
+});
+
 test('qna_seq=307508 is partial until the spelling discrepancy is resolved', () => {
   const source = bySource('SRC-NIKL-QNA-307508');
   assert.ok(source);
@@ -54,10 +92,10 @@ test('qna_seq=317229 directly attests 외곬에 and the lexical URL matches the 
   assert.equal(byInput('외곬에').source_url, source.source_url);
 });
 
-test('batch 18 updates the citation-only backlog from 42 to 38 without altering lexical targets', () => {
+test('batch 18 updates the citation-only backlog from 42 to 34 without altering lexical targets', () => {
   const unreviewed = sources.filter((row) => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 38);
-  assert.match(review, /falls from 42 to 38/u);
+  assert.equal(unreviewed.length, 34);
+  assert.match(review, /falls from 42 to 34/u);
   assert.equal(byInput('읽고').pronunciation, '일꼬');
   assert.equal(byInput('밝는').pronunciation, '방는');
   assert.match(review, /No broad-IPA gold or Ukrainian-target validation was added/u);
