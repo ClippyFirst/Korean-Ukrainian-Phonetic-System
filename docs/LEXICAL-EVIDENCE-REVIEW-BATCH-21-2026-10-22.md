@@ -21,7 +21,7 @@ The three lexical rows already carried notes that distinguish the direct answer 
 
 - Content-checked citations: **36/60**.
 - Scope breakdown: **22 direct target-form attestations, 9 partial, 5 contextual-example-only**.
-- Citation-only/unreviewed: **24** — 20 Q&A/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs. The HTML import queue has 22 eligible pages (21 Q&A/FAQ + one dictionary entry).
+- Citation-only/unreviewed: **24** — 20 Q&A/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs. The HTML import queue has 21 eligible pages (20 Q&A/FAQ + one dictionary entry).
 - Item-level reuse rights remain unverified; independent broad-IPA and Ukrainian-target review remain open.
 
 ## Task ledger
