@@ -383,3 +383,8 @@ Status: `DONE_VERIFIED` for PR #200's provenance invariants and PR #202's media-
 The NIKL collector now honors the most-specific matching user-agent group, treats wildcard groups as fallback, supports wildcard path segments and terminal anchors, and resolves equal-specificity rules with Allow precedence. Focused regression tests and corresponding guide/skill updates were added. This is policy-correctness hardening only; it does not bypass HTTP 403 or imply a successful crawl.
 
 PR #203 merged as `beba8449fb4aea2e3c6b7398f75d21702e602133`. Exact-head CI at `b5db9f70f6a1fded765bc2407b366b4920722a67` passed **1,087/1,087 Node tests**, Vite build, Python regression/data-integrity, corpus/master-table validation, and system verification. The parser hardening is `DONE_VERIFIED`; live NIKL access remains blocked by HTTP 403.
+
+
+### Live NIKL access recheck after crawler hardening — 2026-10-22
+
+Exact-head workflow [39761906127](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39761906127) on `f477363b321b5f9d1cb5727d0f01fa41f61bc4b1` again received HTTP 403 from the canonical official rules page. The workflow correctly classified source access as `BLOCKED`, retained a small log artifact, and did not generate an accepted 30-article manifest. Regression/build/Python/system checks passed (Node **1,087/1,087**). No bypass was attempted. The collector's local HTML import remains the safe path if an authorized human can save the official page through ordinary browser access.
