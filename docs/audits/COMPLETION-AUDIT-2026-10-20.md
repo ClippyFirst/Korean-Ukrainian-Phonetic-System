@@ -642,3 +642,5 @@ Q&A qna_seq=312379 (“표준발음과 음운변동을 알려주세요”, quest
 - Inventory: 35/60 citations content-checked (22 direct, 8 partial, 5 contextual-example-only); 25 citation-only/unreviewed remain (21 Q&A/FAQ pages, one dictionary entry, three PDFs). The HTML import queue is 22 pages.
 - The existing lexical notes and output fields were retained; regression coverage now checks source identity, dates, mixed scope, and queue reconciliation. No Korean/IPA/Ukrainian output values changed.
 - Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
+
+- Batch 20 exact tested head: 2a0ed0b734af4dd9d11b730bdd5cd11ccc467fe1; [system CI](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39828563277) passed 1,141/1,141 Node tests, Vite build, Python regression/data-integrity, and source-register checks. The live NIKL request remained BLOCKED by HTTP 403.
