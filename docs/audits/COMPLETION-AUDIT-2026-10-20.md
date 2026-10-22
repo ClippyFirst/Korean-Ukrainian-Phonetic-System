@@ -554,3 +554,28 @@ The evidence inventory remains **16/60 citation pages content-checked** and **44
 - `BLOCKED_SPECIALIST_ADJUDICATION`: independent broad-IPA and Ukrainian-target review remain outstanding.
 
 The source evidence inventory remains **16/60 checked and 44 citation-only/unreviewed**. This is a collection-workflow improvement, not a source-evidence completion claim. Release disposition remains deployed research preview / partial prototype.
+
+
+## Batch 20: separate metadata-only intake for NIKL-hosted PDFs — 2026-10-22
+
+### Work completed
+- Added `scripts/nikl-pdf-template.mjs` and `npm run template:nikl-pdf` to generate the three PDF records from the existing source register, preserving stable source IDs and exact official download URLs.
+- Added `scripts/nikl-pdf-import.mjs` and `npm run import:nikl-pdf` for human-saved local PDFs. It validates the exact official HTTPS download route, UUID-based stored filename, allowed document directory, source-ID/filename consistency, safe relative paths, symlink containment, 100 MiB limit, PDF header/version, and terminal EOF marker.
+- The output is binary metadata and SHA-256 only. It does not extract or retain PDF text, does not infer document identity from file names, and keeps HTTP/robots, rights, content-review, and claim-support states explicitly unknown/unreviewed.
+- Added a separate JSON Schema, Node/Python regression tests, PDF guide, README link, and package commands. Existing HTML import remains separate.
+- No source-register evidence status, linguistic claim, public UI, or production transcription behavior changed.
+
+### Verification
+- Implementation/test head: `6ea955108d84981247696b2f9a0c7aae095a931e`.
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39785721762): browser regression suite **1,120 passed, 0 failed**, Vite build passed, Python regression/data-integrity passed.
+- The dedicated live NIKL source check in that run again returned HTTP 403 and was correctly recorded as `BLOCKED`; no bypass was attempted. The collector job's workflow completion means the blocker was classified, not that a live crawl succeeded.
+- An early run failed while the PDF importer still referenced the wrong hash helper; the shared SHA-256 import was corrected, and the later exact-head system verification passed.
+
+### Task ledger
+- `DONE_VERIFIED`: PDF template for the three registered citations; strict URL/filename/source-ID/path checks; binary integrity guard; metadata-only schema; Node/Python tests; documentation and commands.
+- `BLOCKED`: no authorized saved PDF files were present in this run, so no document was inspected and no source evidence was promoted. Live automated access remains HTTP 403.
+- `BLOCKED / rights`: item-level document reuse permissions remain unassessed.
+- `TODO`: save the three official PDFs through ordinary browser access, run the importer, then manually inspect document title/version/page locators and the exact passage supporting each claim.
+- `BLOCKED_SPECIALIST_ADJUDICATION`: independent broad-IPA and Ukrainian-target reviews remain outstanding.
+
+The overall inventory is still **16/60 content-checked and 44 citation-only/unreviewed**. This batch completes the collection tooling for all 44 known citation routes (41 HTML pages plus 3 PDFs) but does not complete source review. The project remains a deployed research preview / partial prototype.
