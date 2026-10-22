@@ -103,16 +103,40 @@ def test_ipa_tokenizer_accepts_length_marks_in_lexical_pronunciations():
 
 
 
-def test_python_transliteration_uses_exact_lexical_target_and_marks_provisional_mapping():
+def test_python_transliteration_uses_ipa_derived_target_and_keeps_lexical_target_as_reference():
     from korean_ukrainian.pipeline import transliterate_korean
     value = transliterate_korean("값없다")
     assert value["ukrainian_orthography"] == "кабопта"
     assert value["target_status"] == "model-selected"
-    assert "lexical target override" in value["selection_status"]
+    assert value["lexical_target_reference"] == "кабопта"
+    assert value["lexical_target_reference_status"] == "model-selected"
+    assert value["lexical_target_comparison"] == "matches_reference"
+    assert "IPA-derived" in value["selection_status"]
     opinion = transliterate_korean("의견란")
     assert opinion["ukrainian_orthography"] == "ийґйоннан"
-    assert opinion["target_status"] == "provisional"
-    assert "author-designed" in opinion["selection_status"]
+    assert opinion["target_status"] == "model-selected"
+    assert opinion["lexical_target_reference"] == "ийґйоннан"
+    assert opinion["lexical_target_reference_status"] == "provisional"
+    assert opinion["lexical_target_comparison"] == "matches_reference"
+    assert "author-designed" not in opinion["selection_status"]
+
+
+def test_python_lexical_target_reference_cannot_override_ipa_adapter_output(monkeypatch):
+    import korean_ukrainian.pipeline as pipeline
+    monkeypatch.setattr(
+        pipeline,
+        "_select_target",
+        lambda target: {
+            "segments": [{"grapheme": "тест"}],
+            "score_type": "heuristic_cost",
+            "status": "top_ranked_segmentwise",
+        },
+    )
+    result = pipeline.transliterate_korean("값없다")
+    assert result["ukrainian_orthography"] == "тест"
+    assert result["lexical_target_reference"] == "кабопта"
+    assert result["lexical_target_comparison"] == "differs_from_reference"
+    assert result["target_status"] == "model-selected"
 
 def test_second_pass_sourced_lexical_pronunciations_match_shared_ipa_data():
     from korean_ukrainian.pipeline import phoneticize_korean
