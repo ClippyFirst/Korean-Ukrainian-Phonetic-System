@@ -59,8 +59,8 @@ export function buildImportTemplate(csvText, { relativeHtmlDirectory = "saved-pa
   }
   const eligible = rows.filter(row =>
     /unverified_lexical_citation_inventory/u.test(row.review_status ?? "") &&
-    /^SRC-NIKL-(?:QNA|MCFAQ|FAQ)-\d+$/u.test(row.source_id ?? "") &&
-    /^https:\/\/(?:www\.|m\.)?korean\.go\.kr\/front\/(?:onlineQna\/onlineQnaView\.do|mcfaq\/mcfaqView\.do)(?:\?|$)/u.test(row.url ?? "")
+    /^(?:SRC-NIKL-(?:QNA|MCFAQ|FAQ)-\d+|SRC-KRDICT-(?:ENG|KOR)-\d+)$/u.test(row.source_id ?? "") &&
+    /^https:\/\/(?:www\.|m\.)?korean\.go\.kr\/front\/(?:onlineQna\/onlineQnaView\.do|mcfaq\/mcfaqView\.do)(?:\?|$)|^https:\/\/krdict\.korean\.go\.kr\/(?:eng|kor)\/dicSearch\/SearchView\?/u.test(row.url ?? "")
   );
   const seenIds = new Set();
   const seenUrls = new Set();
