@@ -615,3 +615,13 @@ Current source evidence status is 33/60 citations content-checked (21 direct, 7 
 - Regression coverage: lexical references cannot override adapter output; missing target inventory yields unresolved output; unmapped nearest candidate is skipped; all-unmapped candidate sets remain unresolved; selected output must equal render_sequence(selected_candidate.segments).
 - The optional UPI package is intentionally not installed in minimal CI, so null target output is an expected safe state there, not a failing transliteration result. Browser output is not altered by this Python-specific fix.
 - Exact final PR head and CI evidence will be recorded once the newest CI run completes. Do not promote this to a linguistically validated target model: independent broad-IPA gold and Ukrainian-target review remain blocked.
+
+
+## 2026-10-22 — NIKL Q&A claim-scope review, batch 19
+
+Q&A qna_seq=279931 (“'ㄴ' 첨가”, question 2023-09-11, answer 2023-09-13) was opened from the official NIKL site. The question supplies 음용[으묭] as the form under discussion; the answer explains that §29 ㄴ-insertion is not automatic even in apparently similar environments, but does not independently repeat [으묭] as an answer example.
+
+- Evidence status: `PARTIAL` / `partial_claim_scope_reviewed_2026-10-22`, not direct attestation. The lexical note was narrowed so it no longer claims that the answer directly confirms the question's premise.
+- Source-register count: 34/60 citations content-checked (21 direct, 8 partial, 5 contextual-example-only); 26 citation-only/unreviewed remain (22 Q&A/FAQ pages, one Korean Basic Dictionary entry, three PDFs). The ordinary-browser HTML import queue is now 23 pages (22 Q&A/FAQ + one dictionary entry).
+- Regression coverage checks source identity, exact question/answer scope, retention of the existing Korean/IPA/Ukrainian fields, the 26-source backlog, and exclusion of the reviewed source from the generated import queue.
+- No runtime Korean pronunciation, IPA, or Ukrainian target values changed. The bracketed Korean notation is not IPA. Item-level KOGL rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
