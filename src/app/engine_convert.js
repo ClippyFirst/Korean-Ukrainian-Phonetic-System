@@ -26,7 +26,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const nextKeyPositions=mixedKeys.map(key=>text.indexOf(key,cursor)).filter(position=>position>=0);
       const nextKey=nextKeyPositions.length?Math.min(...nextKeyPositions):text.length;
       const segment=text.slice(cursor,nextKey);
-      parts.push(...(segment.match(/(?:[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[가-힣]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[\s\p{P}]*[가-힣]+)+|[가-힣]+(?:과|와)\s+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)*[\s\p{P}]*[가-힣]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[가-힣]+|[^가-힣ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)/gu)||[]));
+      parts.push(...(segment.match(/(?:\\[[ㄱ-ㅎㅏ-ㅣ]\\]|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[가-힣]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+[\s\p{P}]*[가-힣]+)+|[가-힣]+(?:과|와)\s+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+(?:[\s\p{P}]+[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)*[\s\p{P}]*[가-힣]+|[ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+|[가-힣]+|[^가-힣ㄱ-ㅎㅏ-ㅣㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]+)/gu)||[]));
       cursor=nextKey;
     }
     if(parts.some(part=>lexicon.has(part))){
@@ -104,6 +104,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       // A Hangul syllable elsewhere in the input is not enough evidence.
       const next=characters[index+1]||'';
       const attachedToKorean=Boolean(decompose(next));
+      const bracketedJamo=characters[index-1]==='['&&characters[index+1]===']';
       const namedNInsertion=ch==='ㄴ'&&/^\s+첨가/u.test(characters.slice(index+1).join(''));
       // Also allow locally explicit Korean phonology labels: punctuation-separated
       // jamo lists (ㅚ·ㅟ의) or labels following 과/와 (ㄺ과 ㄱ 앞).
@@ -113,7 +114,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const before=characters.slice(Math.max(0,index-12),index).join('');
       const after=characters.slice(index+1,index+18).join('');
       const conjunctionLabel=/(?:과|와)\s*$/u.test(before)&&/^\s*(?:앞|환경|발음|조건|관련|설명|비교|[.,。:;·\/]|$)/u.test(after);
-      if((attachedToKorean||namedNInsertion||listedJamoLabel||conjunctionLabel||inJamoInventory)&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
+      if((attachedToKorean||bracketedJamo||namedNInsertion||listedJamoLabel||conjunctionLabel||inJamoInventory)&&!nearbyLatinOrDigit)return {type:'literal',char:ch};
       return {type:'jamo',char:ch};
     }
     return {type:'literal',char:ch};
