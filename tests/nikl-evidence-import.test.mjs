@@ -192,7 +192,7 @@ test("repository source register produces a deterministic template for eligible 
   assert.ok(!template.sources.some(source => source.sourceId === "SRC-NIKL-QNA-317229"), "reviewed Q&A must not be re-queued");
   assert.ok(!template.sources.some(source => source.sourceId === "SRC-NIKL-MCFAQ-8420"), "reviewed FAQ must not be re-queued");
   assert.ok(!template.sources.some(source => source.sourceId === "SRC-NIKL-QNA-333927"), "reviewed Q&A must not be re-queued");
-  assert.ok(!template.sources.some(source => source.sourceId === "SRC-NIKL-MCFAQ-8505"), "resolved mismatched FAQ must not be re-queued");
+  assert.ok(!template.sources.some(source => source.sourceId === "SRC-NIKL-MCFAQ-8505"), "superseded unverified FAQ locator must not be re-queued");
   assert.ok(template.sources.every(source => /^(?:SRC-NIKL-(?:QNA|MCFAQ|FAQ)-\d+|SRC-KRDICT-(?:ENG|KOR)-\d+)$/u.test(source.sourceId)));
   assert.ok(template.sources.every(source => source.inputHtml.startsWith("saved-pages/")));
   assert.ok(template.sources.some(source => source.sourceId === "SRC-KRDICT-ENG-89917"));
