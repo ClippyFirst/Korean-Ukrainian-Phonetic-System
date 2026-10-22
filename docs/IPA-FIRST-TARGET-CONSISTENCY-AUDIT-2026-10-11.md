@@ -93,7 +93,7 @@ The earlier 637-row model-wide consistency check compared stored IPA and Ukraini
 
 The bypass is removed in PR #224. Stored lexical Ukrainian forms are now exposed as `lexical_target_reference` with their original status and a comparison state; they do not change `ukrainian_orthography`. When the separate `ClippyFirst/Ukrainian-Phonetic-Inventory` package (expected version 0.8.0) is unavailable, the native Python engine returns unresolved target output instead of silently using the lexical reference. No second copy of the Ukrainian inventory was added.
 
-Verification at tested PR head `7aed05ee382307a8c6c67b413ca103f719e3a23f`: **1,136/1,136 Node tests passed**, Vite build passed, Python 3.11/3.12/3.13 passed, and optional g2pK integration passed. The final documentation updates in this PR are pending a rerun of CI. This correction enforces the architecture boundary; it does not establish independent IPA gold or validate the Ukrainian target model.
+Verification at final tested PR head `e5cc237075ce82b3d7e473a2de3dc352a186caef`: **1,136/1,136 Node tests passed**, Vite build passed, Python 3.11/3.12/3.13 passed, optional g2pK integration passed on Python 3.11/3.12, and master-table/corpus artifact checks passed. The change was merged as `aa2e9d17efc4c45686166d2a6950d2d8f309f457`. The post-merge Pages workflow has passed browser tests/build and Python validation; its final deploy job was queued when this checkpoint was written. This correction enforces the architecture boundary; it does not establish independent IPA gold or validate the Ukrainian target model.
 
 ### Follow-up: do not select an unmapped feature-nearest target — 2026-10-22
 
