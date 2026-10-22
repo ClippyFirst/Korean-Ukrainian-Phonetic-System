@@ -58,6 +58,8 @@ def test_metadata_only_import_manifest_matches_schema(validator):
 @pytest.mark.parametrize(
     ("path", "value"),
     [
+        (("sources", 0, "sourceId"), "SRC-KRDICT-OTHER-79033"),
+        (("sources", 0, "sourceUrl"), "https://example.org/not-official"),
         (("sources", 0, "httpStatus"), 200),
         (("sources", 0, "robotsStatus"), "allowed"),
         (("sources", 0, "reuseTermsStatus"), "verified"),
