@@ -82,10 +82,23 @@ The source register had two Q&A citations marked unreviewed even though the offi
 - The official answer directly lists 짧다[짤따] and 삶다[삼ː따], alongside contrasts for other complex codas, and directs readers to §§10–11.
 - Decision: direct evidence for both exact lexical surfaces. The Korean length mark is preserved as source notation; broad IPA and Ukrainian adaptation remain separate, provisional project layers.
 
+
+## 12. Curated FAQ mcfaq_seq=6674 — base-form direct, attached forms derived
+
+- Official URL: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=6674&mn_id=97&pageIndex=1
+- The FAQ directly gives 밭일[반닐] and explains the relevant §29 ㄴ-insertion and §18 nasal assimilation.
+- Decision: direct attestation only for the base compound 밭일. The dataset's 밭일과 and 밭일을 rows are attached-particle forms; this FAQ does not list those full eojeol strings as separately attested pronunciations. Their outputs remain derived, with particle-boundary analysis kept explicit.
+
+## 13. Curated FAQ mcfaq_seq=6718 — direct attestation of 많이
+
+- Official URL: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=6718&mn_id=97&pageIndex=1
+- The FAQ directly states 많이[마ː니] and explains that §12's ㅎ-deletion applies to 많- plus vowel-initial suffix -이.
+- Decision: direct Korean surface attestation, preserving the source length mark as Korean source notation. IPA and Ukrainian adaptation remain separate and provisional.
+
 ## Evidence limits
 
 The review used substantive text exposed in the official NIKL search index because direct HTML fetch was unavailable in this environment. The exact statements above are bounded by that visible indexed text; this report does not claim a complete HTTP retrieval of either page. Source reuse rights remain unverified. No broad-IPA gold or Ukrainian-target validation was added. No production transcription logic changed.
 
 ## Updated inventory
 
-The citation-only/unreviewed source-register count falls from 42 to 31. Eleven sources are now reviewed at claim-scope level. qna_seq=325287 directly attests 짧다[짤따] and 삶다[삼ː따]. Direct exact-surface attestations: qna_seq=305480 (읽다), 330743 (밝게, 굵은), 317229 (외곬에), 328719 (없이), 330620 (값없다), 330938 (꽃잎 final surface only), 335263 (실없다), and 335881 (밭이랑, 집안일). Partial only: qna_seq=334294 (rule context for 읽고/밝는, not direct forms) and qna_seq=307508 (spelling mismatch for 넓둥글다).
+The citation-only/unreviewed source-register count falls from 42 to 29. Thirteen sources are now reviewed at claim-scope level. Curated FAQ 6674 directly attests only the base compound 밭일, not the attached forms 밭일과/밭일을; curated FAQ 6718 directly attests 많이[마ː니]. qna_seq=325287 directly attests 짧다[짤따] and 삶다[삼ː따]. Direct exact-surface attestations: qna_seq=305480 (읽다), 330743 (밝게, 굵은), 317229 (외곬에), 328719 (없이), 330620 (값없다), 330938 (꽃잎 final surface only), 335263 (실없다), and 335881 (밭이랑, 집안일). Partial only: qna_seq=334294 (rule context for 읽고/밝는, not direct forms) and qna_seq=307508 (spelling mismatch for 넓둥글다).
