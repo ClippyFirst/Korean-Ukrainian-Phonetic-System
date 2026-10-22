@@ -22,7 +22,7 @@ test('IPA adapter is the only source of Ukrainian targets for representative IPA
   assert.equal(ipaSyllableToUkrainian('tɕʰi').text, 'чі');
   assert.equal(ipaSyllableToUkrainian('t͈a').text, 'та');
   assert.equal(ipaSyllableToUkrainian('ɕi').text, 'ші');
-  assert.equal(ipaSyllableToUkrainian('unknown').unknown, 'unknown');
+  assert.equal(ipaSyllableToUkrainian('💥').unknown, '💥');
 });
 
 test('every unique Hangul token in the integrated NIKL passage has Ukrainian output reproducible from its runtime IPA', () => {
