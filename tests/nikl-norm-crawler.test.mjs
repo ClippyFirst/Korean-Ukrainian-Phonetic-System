@@ -209,6 +209,6 @@ test("robots parser prefers Allow when allow and disallow rules have equal speci
     "User-agent: *",
     "Disallow: /same/path",
     "Allow: /same/path",
-  ].join("\\n");
+  ].join("\n");
   assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/same/path"), true);
 });
