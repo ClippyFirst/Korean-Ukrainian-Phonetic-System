@@ -664,3 +664,14 @@ The required pipeline remains Hangul → structural/morphological analysis → K
 ### Batch 14 extension: contextual-only dictionary evidence
 
 Five additional official dictionary entries were checked: `찾다` (ParaWordNo=57320), `잊다` (70067), `붙다` (74181), `놓다` (89534), and `쌓이다` (65098). Their target spellings occur as ordinary example text but have no bracketed pronunciation on the page; the lexical notes therefore continue to treat the inflected targets as rule-derived. The source register now records the inspected lemma/application readings without upgrading the target forms to direct attestation. Batch-14 status is **11/60 reviewed** (4 direct for target forms, 2 partial, 5 contextual-only; 49 citation-only/unreviewed). See `docs/LEXICAL-EVIDENCE-REVIEW-BATCH-14-2026-10-22.md`.
+
+
+## Batch 15: official pronunciation Q&A/FAQ review — 2026-10-22
+
+- Working branch: `research/lexical-source-review-batch-15-2026-10-22`, based on main `2e17c51cf02f94390f0e2ed538d19bbbcc287425`.
+- `qna_seq=315279` (answer 2025-05-23) directly lists the Korean surface readings for `맑고`, `붉다`, `붉지`, `붉고`, and `밟으니` among its official complex-coda examples.
+- `qna_seq=307237` directly answers `넓네[널레]`; `없다[업ː따]` appears separately as a quoted §10 example. The registry and tests preserve that scope distinction.
+- Curated FAQ `mcfaq_seq=5748` directly answers `밭을[바틀]` and `밭이[바치]`. It cites `한글맞춤법` §§13/17; the updated notes do not conflate that instrument with `표준 발음법` even though the project's separate crosswalk uses the corresponding standard-pronunciation rules.
+- Updated source register and nine lexical notes; added `docs/LEXICAL-EVIDENCE-REVIEW-BATCH-15-2026-10-22.md` and `tests/lexical-evidence-review-batch-15.test.mjs`. The source-inventory guard now expects 46 remaining citation-only records.
+- **Current inventory:** 14/60 pages reviewed (7 direct for target forms, 2 partial, 5 contextual-example-only); 46 remain citation-only/unreviewed. Item-level KOGL rights, independent IPA gold, and Ukrainian-target adjudication remain blocked.
+- **Release disposition unchanged:** deployed research preview, not scientifically validated/release-ready.
