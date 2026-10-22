@@ -12,6 +12,8 @@ const engine = createEngine(canonical, lexical);
 const tokens = [...new Set(corpus.match(/[가-힣]+/gu) || [])];
 
 test('master passage is passed through the browser engine and emits a reproducible coverage-gap report', () => {
+  const wholeStrict = engine.convert(corpus);
+  const wholePractical = engine.convert(corpus, { morphologyMode: 'practical' });
   const report = {
     corpusCharacters: [...corpus].length,
     uniqueHangulTokens: tokens.length,
@@ -19,6 +21,20 @@ test('master passage is passed through the browser engine and emits a reproducib
     genericResolved: 0,
     unresolved: [],
     issues: [],
+    wholeTextStrict: {
+      outputCharacters: [...wholeStrict.ukrainian].length,
+      ipaCharacters: [...wholeStrict.ipa].length,
+      issueCount: (wholeStrict.issues || []).length,
+      placeholderCount: (wholeStrict.ukrainian.match(/[⟦⟧]/gu) || []).length,
+      issueSamples: (wholeStrict.issues || []).slice(0, 25),
+    },
+    wholeTextPractical: {
+      outputCharacters: [...wholePractical.ukrainian].length,
+      ipaCharacters: [...wholePractical.ipa].length,
+      issueCount: (wholePractical.issues || []).length,
+      placeholderCount: (wholePractical.ukrainian.match(/[⟦⟧]/gu) || []).length,
+      issueSamples: (wholePractical.issues || []).slice(0, 25),
+    },
   };
 
   for (const token of tokens) {
@@ -49,6 +65,9 @@ test('master passage is passed through the browser engine and emits a reproducib
 
   assert.ok(tokens.length > 500, 'the integrated passage should remain a substantial stress corpus');
   assert.ok(report.lexicalHits > 30, 'the passage must exercise many existing source-backed lexical entries');
+  assert.ok(wholeStrict.ipa.length > 0, 'strict whole-text conversion must produce its IPA-stage result');
+  assert.ok(wholePractical.ipa.length > 0, 'practical whole-text conversion must produce its IPA-stage result');
+  assert.doesNotMatch(wholePractical.ukrainian, /[⟦⟧]/u, 'practical mode must not leak unresolved placeholders into the full passage');
 });
 
 test('core source-backed examples in the passage retain the current engine surface and IPA', () => {
