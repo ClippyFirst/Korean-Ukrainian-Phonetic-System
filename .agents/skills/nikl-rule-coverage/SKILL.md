@@ -121,3 +121,24 @@ Preserve rule order, source provenance, syllable boundaries, uncertainty, option
 A coverage fixture passing establishes consistency of the inventory and test references only. It does not by itself establish that all rules are implemented, that phonetic analyses are linguistically correct, or that results are acoustically validated. Report these as separate claims.
 
 Update the existing matrix, audit register, and handoff in place. Every remaining TODO/BLOCKED item must have a concrete acceptance criterion and a named missing dependency/evidence. Do not stop after documenting gaps when implementation is feasible.
+
+
+## Evidence class and source-instrument gate (added 2026-10-22)
+
+Coverage assertions must encode the scope of the evidence, not just the expected Hangul string.
+
+- Distinguish a case-specific official answer, a quoted official-rule example, a dictionary's explicitly bracketed paradigm form, a mere orthographic occurrence in example prose, and a rule-derived prediction.
+- A target spelling found in an ordinary sentence without a bracketed pronunciation does not satisfy a direct-pronunciation coverage assertion.
+- A dictionary page that lists the lemma and neighboring applications does not directly attest an unlisted inflection.
+- When a page reproduces a rule example that is not the question target, label the example separately; do not imply that the answer specifically adjudicates it.
+- Preserve the exact named source instrument: `표준 발음법` and `한글맞춤법` are distinct. Same article numbers do not mean the source cited the same rule set. Test any project crosswalk separately.
+- For negative controls such as `값있다[가빋따]` and `곧이어[고디어]`, assert that the engine does not apply ㄴ-insertion merely because a phonetic environment appears superficially compatible. The official source states that §29 ㄴ-insertion is not automatic.
+
+Required regression dimensions for evidence-backed rows:
+1. exact source identity and URL;
+2. exact target form and source-attested surface notation;
+3. evidence class and claim scope;
+4. source instrument/article attribution;
+5. direct-versus-derived distinction;
+6. negative controls and adjacent non-examples;
+7. separate status for broad IPA and Ukrainian target validation.
