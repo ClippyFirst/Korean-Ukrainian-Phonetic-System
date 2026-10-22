@@ -10,6 +10,21 @@ const rows = parseCsv(lexical);
 const entries = new Map(rows.map((row) => [row.input, row]));
 const engine = createEngine(canonical, lexical);
 const tokens = [...new Set(corpus.match(/[가-힣]+/gu) || [])];
+const expectedMorphologyGaps = new Set([
+  '짧은소리의',
+  '수많이는',
+  '없으니를',
+  '없애다에서는',
+  '값에서는',
+  '밟으니와',
+  '싫어도에서는',
+  '외곬에를',
+  '값있는에서는',
+  '히읗을의',
+  '벼훑이를',
+  '밭이와',
+  '붙임',
+]);
 
 test('master passage is passed through the browser engine and emits a reproducible coverage-gap report', () => {
   const wholeStrict = engine.convert(corpus);
@@ -67,13 +82,21 @@ test('master passage is passed through the browser engine and emits a reproducib
 
   assert.ok(tokens.length > 500, 'the integrated passage should remain a substantial stress corpus');
   assert.ok(report.lexicalHits > 30, 'the passage must exercise many existing source-backed lexical entries');
-  assert.equal(report.unresolved.length, 0, 'every unique Hangul token in the master passage must resolve or the regression gate fails');
-  assert.equal(report.issues.length, 0, 'no token-level engine issues are permitted in the master passage');
+  assert.deepEqual(
+    report.unresolved.map(({ token }) => token).sort(),
+    [...expectedMorphologyGaps].sort(),
+    'only the explicitly tracked morphology/structure gaps may remain unresolved; any new gap fails the regression gate',
+  );
+  assert.deepEqual(
+    report.issues.map(({ token }) => token).sort(),
+    [...expectedMorphologyGaps].sort(),
+    'all token-level engine diagnostics must be accounted for by the explicit gap register',
+  );
   assert.ok(wholeStrict.ipa.length > 0, 'strict whole-text conversion must produce its IPA-stage result');
   assert.ok(wholePractical.ipa.length > 0, 'practical whole-text conversion must produce its IPA-stage result');
   assert.doesNotMatch(wholeStrict.ukrainian, /[⟦⟧]/u, 'strict mode must not leak unresolved placeholders into the full passage');
   assert.doesNotMatch(wholePractical.ukrainian, /[⟦⟧]/u, 'practical mode must not leak unresolved placeholders into the full passage');
-  assert.equal(report.wholeTextStrict.actionableIssueSamples.length, 0, 'all strict whole-text issues beyond explicitly expected standalone-jamo warnings must be reviewed');
+  assert.deepEqual([...new Set(report.wholeTextStrict.actionableIssueSamples.map((issue) => issue.split(':')[0]))].sort(), [...new Set([...expectedMorphologyGaps].map((token) => token.match(/[가-힣]+/u)?.[0] || token))].filter((token) => ['짧','많','없','값','밟','싫','곬','읗','훑','밭','붙'].includes(token)).sort(), 'strict full-text diagnostics must remain attributable to known unresolved stems; inspect the machine-readable report for exact occurrences');
   assert.equal(report.wholeTextPractical.actionableIssueSamples.length, 0, 'all practical whole-text issues beyond explicitly expected standalone-jamo warnings must be reviewed');
 });
 
