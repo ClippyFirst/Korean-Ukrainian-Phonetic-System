@@ -25,15 +25,17 @@ test('master passage is passed through the browser engine and emits a reproducib
       outputCharacters: [...wholeStrict.ukrainian].length,
       ipaCharacters: [...wholeStrict.ipa].length,
       issueCount: (wholeStrict.issues || []).length,
+      expectedStandaloneJamoWarnings: (wholeStrict.issues || []).filter((issue) => /standalone compatibility jamo is not a syllable/u.test(issue)).length,
+      actionableIssueSamples: (wholeStrict.issues || []).filter((issue) => !/standalone compatibility jamo is not a syllable/u.test(issue)).slice(0, 25),
       placeholderCount: (wholeStrict.ukrainian.match(/[⟦⟧]/gu) || []).length,
-      issueSamples: (wholeStrict.issues || []).slice(0, 25),
     },
     wholeTextPractical: {
       outputCharacters: [...wholePractical.ukrainian].length,
       ipaCharacters: [...wholePractical.ipa].length,
       issueCount: (wholePractical.issues || []).length,
+      expectedStandaloneJamoWarnings: (wholePractical.issues || []).filter((issue) => /standalone compatibility jamo is not a syllable/u.test(issue)).length,
+      actionableIssueSamples: (wholePractical.issues || []).filter((issue) => !/standalone compatibility jamo is not a syllable/u.test(issue)).slice(0, 25),
       placeholderCount: (wholePractical.ukrainian.match(/[⟦⟧]/gu) || []).length,
-      issueSamples: (wholePractical.issues || []).slice(0, 25),
     },
   };
 
@@ -68,6 +70,8 @@ test('master passage is passed through the browser engine and emits a reproducib
   assert.ok(wholeStrict.ipa.length > 0, 'strict whole-text conversion must produce its IPA-stage result');
   assert.ok(wholePractical.ipa.length > 0, 'practical whole-text conversion must produce its IPA-stage result');
   assert.doesNotMatch(wholePractical.ukrainian, /[⟦⟧]/u, 'practical mode must not leak unresolved placeholders into the full passage');
+  assert.equal(report.wholeTextStrict.actionableIssueSamples.length, 0, 'all strict whole-text issues beyond explicitly expected standalone-jamo warnings must be reviewed');
+  assert.equal(report.wholeTextPractical.actionableIssueSamples.length, 0, 'all practical whole-text issues beyond explicitly expected standalone-jamo warnings must be reviewed');
 });
 
 test('core source-backed examples in the passage retain the current engine surface and IPA', () => {
