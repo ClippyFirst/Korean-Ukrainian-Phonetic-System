@@ -674,3 +674,11 @@ Official indexed NIKL Q&A “'빛' 발음이 궁금합니다.” (qna_seq=311009
 - BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
 
 Release status remains deployed research preview / partial prototype, not release-ready.
+
+
+### Batch-23 exact-head verification evidence
+
+- Tested implementation/test head 4e737cff714bb4a7eea019a01ac65e4117889608.
+- [System verification CI 39829847141](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39829847141) passed **1,145/1,145 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic.
+- The live NIKL request was again HTTP 403 and was classified BLOCKED. No live source manifest was emitted and no bypass was attempted.
+- Python differential diagnostics still show two known, unadjudicated JS/Python surface divergences (넓죽하다, 읽고); IPA comparison was not performed. This batch does not change runtime output.
