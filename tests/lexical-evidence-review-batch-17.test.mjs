@@ -33,9 +33,9 @@ test('KRDICT 57199 is partial lemma evidence for 발음과, not direct full-form
   assert.match(source.license_status, /item-level KOGL marking not checked/u);
 });
 
-test('batch 17 records its historical 42-row checkpoint while later reviews reduce the current backlog to 31', () => {
+test('batch 17 records its historical 42-row checkpoint while later reviews reduce the current backlog to 29', () => {
   const unreviewed = sources.filter((row) => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
   assert.match(review, /third Korean Basic Dictionary citation.*remains unreviewed/u);
-  assert.equal(unreviewed.length, 31);
+  assert.equal(unreviewed.length, 29);
   assert.equal(bySource('SRC-KRDICT-ENG-89917').review_status, 'unverified_lexical_citation_inventory_2026-10-22');
 });
