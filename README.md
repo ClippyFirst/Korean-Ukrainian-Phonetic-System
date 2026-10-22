@@ -67,6 +67,15 @@ The browser preserves Latin text, digits, punctuation, and whitespace. The pract
 
 ### Python / CLI / API
 
+The native Python research pipeline uses the separate `ClippyFirst/Ukrainian-Phonetic-Inventory` package (expected version `0.8.0`) for IPA-to-Ukrainian target selection. It is not bundled or duplicated in this repository. In a development environment with both repositories checked out as siblings, install the shared inventory into the same virtual environment:
+
+```sh
+python -m pip install -e ../Ukrainian-Phonetic-Inventory
+python -m pip install -e ".[all]"
+```
+
+Without that package, the native engine still exposes Korean surface/IPA analysis but leaves Ukrainian output unresolved; stored lexical Ukrainian forms are audit references only and are never used as a Hangul-keyed fallback.
+
 The Python package, CLI, and optional FastAPI backend can still use the original pinned g2pK engine. Its MeCab binding is tested on Python 3.11/3.12; on Python 3.13/3.14, use the native engine or a separate 3.11/3.12 environment. Install with `python -m pip install -e ".[g2pk]"`, then run `korean-ua analyze "넋이 굳이" --pronunciation-engine g2pk`. The native Python engine remains the default unless g2pK is explicitly selected; missing dependencies never trigger a silent fallback.
 
 Both runtimes preserve the same methodological boundary: the Ukrainian target is generated from IPA, never by a parallel Hangul-to-Ukrainian substitution. See [the Python integration and validation boundary](docs/G2PK-INTEGRATION-2026-10-15.md).
