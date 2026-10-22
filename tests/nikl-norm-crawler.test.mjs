@@ -180,3 +180,25 @@ test("all NIKL repository skills point to the canonical desktop rules page", asy
     assert.ok(!content.includes("/kornorms/m/m_regltn.do"), path + ": stale mobile source URL remains");
   }
 });
+
+
+test("robots parser gives a matching product token precedence over wildcard groups", () => {
+  const robots = [
+    "User-agent: *",
+    "Disallow: /kornorms/",
+    "User-agent: ClippyFirst-NIKLResearchBot",
+    "Allow: /kornorms/regltn/",
+  ].join("\\n");
+  assert.equal(robotsPathAllowed(robots, DEFAULT_SOURCE_URL), false, "specific allow is limited to /kornorms/regltn/");
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"), true);
+});
+
+test("robots parser handles wildcard segments and terminal dollar anchors", () => {
+  const robots = [
+    "User-agent: *",
+    "Disallow: /private/*/secret$",
+  ].join("\\n");
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/a/secret"), false);
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/a/secret/more"), true);
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/secret"), true);
+});
