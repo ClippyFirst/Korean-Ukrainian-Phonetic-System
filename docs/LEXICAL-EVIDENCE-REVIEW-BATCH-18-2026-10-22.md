@@ -37,10 +37,35 @@ The source register had two Q&A citations marked unreviewed even though the offi
 - Indexed title: “외곬에.” The official indexed answer directly states “외곬에” is pronounced [외골쎄] and cites Standard Pronunciation Rules §14.
 - Decision: mark the exact Korean surface as directly attested; keep IPA and Ukrainian target validation separate. The source URL in the lexical corpus is normalized to the official desktop locator.
 
+
+## 5. qna_seq=328719 — direct attestation of 없이
+
+- Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=98&pageIndex=1&qna_seq=328719
+- The answer explains the exact form 없이[업씨]: liaison gives 업시, followed by §23 fortition. It also discusses 넋이[넉씨] and the complex-coda behavior of 값.
+- Decision: direct surface attestation. The answer distinguishes the relevant rule sequence and does not make Ukrainian or IPA claims.
+
+## 6. qna_seq=330620 — direct attestation and morpheme-boundary correction
+
+- Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=330620
+- The answer gives 값없다[가법따] and clarifies that 없- is a substantive morpheme in this compound, so §15—not the formal-morpheme §14—is relevant after coda simplification under §10.
+- Decision: direct surface attestation and useful boundary evidence. The existing target is retained; the source locator is normalized to the official desktop route.
+
+## 7. qna_seq=330938 — direct surface attestation, explicit ordering limitation
+
+- Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=330938
+- The answer directly gives 꽃잎[꼰닙] under §29, but explicitly says intermediate sound-change order can be analyzed differently and declines to prescribe one categorical sequence.
+- Decision: direct evidence for the final Korean surface only. The corpus now labels its §§9/18/29 derivation as the project's internally consistent analysis, not as a unique intermediate order endorsed by NIKL.
+
+## 8. qna_seq=335263 — direct attestation that corrects the question's premise
+
+- Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=44&pageIndex=1&qna_seq=335263
+- The title reflects the questioner's assumption that 실없다 is [시럼따], but the answer explicitly says the standard dictionary pronunciation is 실없다[시럽따] and explains the boundary as 실+없-. It says §13 is not the relevant rule here.
+- Decision: direct attestation for [시럽따]; the existing lexical target is correct. Do not mistake the question title for the official answer.
+
 ## Evidence limits
 
 The review used substantive text exposed in the official NIKL search index because direct HTML fetch was unavailable in this environment. The exact statements above are bounded by that visible indexed text; this report does not claim a complete HTTP retrieval of either page. Source reuse rights remain unverified. No broad-IPA gold or Ukrainian-target validation was added. No production transcription logic changed.
 
 ## Updated inventory
 
-The citation-only/unreviewed source-register count falls from 42 to 38. Four sources are now reviewed at claim-scope level. qna_seq=330743 directly attests 밝게 and 굵은; qna_seq=317229 directly attests 외곬에. qna_seq=334294 is partial contextual evidence for 읽고/밝는, while qna_seq=307508 is partial because the indexed orthography for the cited compound does not exactly match the corpus input.
+The citation-only/unreviewed source-register count falls from 42 to 34. Eight sources are now reviewed at claim-scope level. Direct exact-surface attestations: qna_seq=330743 (밝게, 굵은), 317229 (외곬에), 328719 (없이), 330620 (값없다), 330938 (꽃잎 final surface only), and 335263 (실없다). Partial only: qna_seq=334294 (rule context for 읽고/밝는, not direct forms) and qna_seq=307508 (spelling mismatch for 넓둥글다).
