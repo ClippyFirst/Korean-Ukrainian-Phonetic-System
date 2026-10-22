@@ -18,7 +18,7 @@ test('qna_seq=317202 is reviewed as partial lemma/application evidence, not dire
   assert.match(source.coverage, /attests the lemma 홑이불\[혼니불\]/u);
   assert.match(source.coverage, /exact inflected input 홑이불을/u);
   assert.match(source.integration_status, /exact inflected form remains rule-derived/u);
-  assert.match(source.limitations_or_next_action, /item-level KOGL marking remains unverified/u);
+  assert.match(source.limitations_or_next_action, /Item-level KOGL marking remains unverified/u);
 });
 
 test('홑이불을 retains its existing surface, IPA, and Ukrainian reference while narrowing source claims', () => {
