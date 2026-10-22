@@ -81,13 +81,13 @@ test("rejects duplicate source IDs and duplicate canonical URLs", async t => {
   const input = join(dir, "saved-pages.json");
   const output = join(dir, "manifest.json");
   await writeFile(input, JSON.stringify({ sources: [
-    { sourceId: "SRC-NIKL-QNA-1", url: QNA, inputHtml: "page.html" },
-    { sourceId: "SRC-NIKL-QNA-1", url: FAQ, inputHtml: "page.html" },
+    { sourceId: "SRC-NIKL-QNA-317202", url: QNA, inputHtml: "page.html" },
+    { sourceId: "SRC-NIKL-QNA-317202", url: FAQ, inputHtml: "page.html" },
   ] }), "utf8");
   await assert.rejects(buildEvidenceImport(input, output), /Duplicate sourceId/u);
   await writeFile(input, JSON.stringify({ sources: [
-    { sourceId: "SRC-NIKL-QNA-1", url: QNA, inputHtml: "page.html" },
-    { sourceId: "SRC-NIKL-QNA-2", url: "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=317202&pageIndex=1&mn_id=216", inputHtml: "page.html" },
+    { sourceId: "SRC-NIKL-QNA-ALIAS-1", url: QNA, inputHtml: "page.html" },
+    { sourceId: "SRC-NIKL-QNA-ALIAS-2", url: "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=317202&pageIndex=1&mn_id=216", inputHtml: "page.html" },
   ] }), "utf8");
   await assert.rejects(buildEvidenceImport(input, output), /Duplicate canonical source URL/u);
   await writeFile(input, JSON.stringify({ sources: [
