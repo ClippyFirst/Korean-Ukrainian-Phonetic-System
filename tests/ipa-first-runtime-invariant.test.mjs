@@ -79,13 +79,13 @@ test('every unique Hangul token in the integrated NIKL passage has Ukrainian out
 
 test('IPA-derived targets preserve whitespace and align multiword inputs without guessing missing IPA', () => {
   assert.deepEqual(ipaTargetForSource('국립 국어원', 'kuŋ nim k͈u ɡʌ wʌn'), {
-    text: '궁닙 꾹거원',
+    text: 'куннім куґовон',
     syllables: ['궁', '닙', '꾹', '거', '원'],
     unknown: '',
   });
-  assert.deepEqual(ipaTargetForSource('가', 'unmapped'), {
+  assert.deepEqual(ipaTargetForSource('가', '💥'), {
     text: '',
     syllables: [''],
-    unknown: 'unmapped',
+    unknown: '💥',
   });
 });
