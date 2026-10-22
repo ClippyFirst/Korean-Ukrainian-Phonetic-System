@@ -39,5 +39,5 @@ test("batch 25 reconciles the live citation-only queue", () => {
   assert.match(report, /40\/60/);
   assert.match(report, /26 direct target-form \/ official-rule-example attestations, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /20.*16 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
-  assert.match(report, /17 eligible pages \(16 Q&A\/FAQ \+ one dictionary entry\)/u);
+  assert.match(report, /\\*\\*17\\*\\* eligible pages \\(16 Q&A\\/FAQ \\+ one dictionary entry\\)/u);
 });
