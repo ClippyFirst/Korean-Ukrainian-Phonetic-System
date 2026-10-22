@@ -66,3 +66,28 @@ These edits deliberately avoid adding unsupported lexical pronunciations. The en
 ## Status
 
 The passage is now an executable regression fixture, and its current end-to-end engine run is clean under the above criteria. The generic §19 examples are additionally checked against explicit expected Korean surface forms, so those seven outcomes are no longer counted as merely “generic resolved” cases. Full exhaustive normative coverage remains **PARTIAL** until the article/subparagraph matrix and generic-output adjudication are completed.
+
+## Runtime IPA-first invariant audit — 2026-10-22
+
+After the original corpus smoke run, added `tests/ipa-first-runtime-invariant.test.mjs` to test the actual runtime boundary rather than relying only on the stored CSV target columns.
+
+### Exact-head evidence
+
+- Tested commit: `b980dc498c57bc0502325b4cf5fd71318664b9dc`.
+- [Browser/Python test workflow](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39839292113): **1,170 tests passed, 0 failed**; production build passed; Python 3.11, 3.12, and 3.13 passed.
+- [System verification workflow](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39839292102): passed.
+- [Master-table/research-corpus artifact workflow](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39839292149): passed.
+
+### What the new runtime tests actually check
+
+- All **855 unique Hangul tokens** in the integrated NIKL passage: recompute the Ukrainian target from the engine's *returned runtime IPA* using the exported IPA adapter, then compare exact output. **0 divergences**.
+- All **630 Hangul-only lexical rows** in the curated inventory, including any runtime-exposed licensed alternate readings: adapt the runtime IPA independently and compare the exact target. **0 divergences**.
+- Direct IPA contrast controls ensure the adapter reacts to IPA differences (e.g. `ka → ка`, `ɡa → ґа`, `tɕʰi → чі`) and refuses an unmapped symbol instead of guessing.
+- Multiword alignment/whitespace and fail-closed behavior for unknown IPA are checked explicitly.
+- The earlier stored-data audit still covers the full lexical CSV and alternate IPA/target rows; the new tests add a runtime-level check rather than replacing that audit.
+
+### Interpretation
+
+For the tested corpus and the entire Hangul-only lexical inventory, the runtime Ukrainian output is mechanically reproducible from the runtime IPA. This is direct evidence that those results use the IPA → Ukrainian boundary, not an independent Hangul-to-Ukrainian result path.
+
+This result **does not prove that every generated Korean IPA form is normatively correct**. In particular, generic phonology still requires independent source-backed adjudication for every relevant article/subparagraph, exception, and permitted variant. Ukrainian spellings remain project adaptations, not prescriptions from NIKL. Full linguistic correctness and exhaustive normative coverage remain **PARTIAL**.
