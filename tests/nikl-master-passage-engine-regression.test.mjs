@@ -118,6 +118,26 @@ test('core source-backed examples in the passage retain the current engine surfa
   }
 });
 
+test('§19 generic engine outputs match the standard nasal/liquid assimilation examples without lexical overrides', () => {
+  const expected = {
+    '침략': '침냑',
+    '강릉': '강능',
+    '막론': '망논',
+    '석류': '성뉴',
+    '협력': '혐녁',
+    '법리': '범니',
+    '국립': '궁닙',
+  };
+  for (const [word, surface] of Object.entries(expected)) {
+    assert.ok(!entries.has(word), word + ': this test must exercise the generic rule engine, not a lexical override');
+    const result = engine.convert(word);
+    assert.equal(result.surfaceHangul, surface, word + ': §19/§18 ordered surface');
+    assert.equal(result.issues.length, 0, word + ': expected standard environment must be supported generically');
+    assert.ok(result.ipa.length > 0, word + ': IPA must be produced from the computed surface');
+    assert.doesNotMatch(result.ukrainian, /[⟦⟧]/u, word + ': no unresolved placeholder');
+  }
+});
+
 test('licensed pronunciation variants in the passage are surfaced instead of silently collapsed', () => {
   for (const [word, primary, alternate] of [
     ['맛있다', '마딛따', '마싣따'],
