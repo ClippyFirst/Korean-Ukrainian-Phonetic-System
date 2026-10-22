@@ -50,6 +50,9 @@ test('known normative divergences stay explicit and never rewrite the port fixtu
   assert.equal(byInput.get('넓죽하다').normativeSurface, '넙쭈카다');
   assert.equal(byInput.get('읽고').expectedSurface, '익꼬');
   assert.equal(byInput.get('읽고').normativeSurface, '일꼬');
+  assert.equal(byInput.get('읽고').normativeEvidenceStatus, 'direct-NIKL-example');
+  assert.equal(byInput.get('읽고').normativeSourceUrl, 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002');
+  assert.match(byInput.get('읽고').normativeSourceLocator, /§1 해설.*읽고\[일꼬\]/u);
 });
 
 

@@ -357,3 +357,8 @@ Main at `858ea7ad2e08babed2ce4cf441d22f46de94f34b` passes system verification, t
 New Python tests validate source-register column integrity, unique IDs, the canonical NIKL source URL, explicit live-access blocking, and the distinction between general reuse policy and page-level KOGL clearance. The Python differential diagnostic remains 18/20 matching and 2/20 divergent (`넓죽하다`, `읽고`); it is diagnostic only and does not adjudicate IPA. Preserve the practical JS port contract until evidence-backed reconciliation is approved.
 
 The actual scientific blockers remain unchanged: no live NIKL manifest because CI direct fetch receives HTTP 403; no authorized local HTML snapshot yet supplied; page-level reuse marks remain unverified; independent IPA gold is 0/20; Ukrainian target review remains outstanding. Status is still **deployed research preview, not release-ready**.
+
+
+### Direct primary-rule attestation for 읽고 — 2026-10-22
+
+The official NIKL Standard Pronunciation Rules §1 commentary explicitly gives `읽고[일꼬]` while discussing the verbal-stem ㄺ + ㄱ environment. The surface fixture and IPA queue now cite that canonical rules page as `direct-NIKL-example`, rather than relying only on the NIKL Q&A URL. The browser practical-port output `익꼬` is intentionally unchanged and remains a known normative divergence. This upgrades the evidence locator for the Korean surface only; it does not supply broad IPA, resolve the 0/20 independent IPA-gold queue, or validate Ukrainian target choices.
