@@ -157,7 +157,7 @@ test("builds a template from only unreviewed official NIKL Q&A/FAQ rows and pres
     '"SRC-NIKL-MCFAQ-6718","https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=6718&mn_id=57&pageIndex=1","unverified_lexical_citation_inventory_2026-10-22","FAQ"',
     '"SRC-NIKL-QNA-123","https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=123","reviewed","already reviewed"',
     '"SRC-KRDICT-ENG-79033","https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=79033","unverified_lexical_citation_inventory_2026-10-22","different host"',
-  ].join("\\n");
+  ].join("\n");
   const template = buildImportTemplate(csv, { relativeHtmlDirectory: "saved-pages" });
   assert.equal(template.sourceCount, 2);
   assert.equal(template.allSourcesContentReviewed, false);
@@ -171,10 +171,10 @@ test("rejects unsafe HTML directories, malformed CSV, and duplicate source recor
   const csv = [
     "source_id,url,review_status",
     "SRC-NIKL-QNA-317202,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=317202,unverified_lexical_citation_inventory_2026-10-22",
-  ].join("\\n");
+  ].join("\n");
   assert.throws(() => buildImportTemplate(csv, { relativeHtmlDirectory: "../outside" }), /safe relative path/u);
   assert.throws(() => buildImportTemplate(csv, { relativeHtmlDirectory: "C:\\\\temp" }), /safe relative path/u);
-  assert.throws(() => buildImportTemplate('source_id,url,review_status\\n"SRC-NIKL-QNA-1,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=1,unverified', {}), /unterminated quoted field/u);
-  const duplicate = csv + "\\n" + csv.split("\\n")[1];
+  assert.throws(() => buildImportTemplate(["source_id,url,review_status", '"SRC-NIKL-QNA-1,https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=1,unverified'].join("\n")), /unterminated quoted field/u);
+  const duplicate = csv + "\n" + csv.split("\n")[1];
   assert.throws(() => buildImportTemplate(duplicate), /Duplicate source ID/u);
 });
