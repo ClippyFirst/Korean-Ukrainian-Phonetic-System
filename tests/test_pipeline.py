@@ -125,6 +125,30 @@ def test_python_transliteration_uses_ipa_derived_target_and_keeps_lexical_target
             assert "IPA-derived" in value["selection_status"]
         assert "author-designed" not in value["selection_status"]
 
+
+def test_target_selection_skips_unmapped_feature_nearest_candidates():
+    from korean_ukrainian.pipeline import _select_target
+    target = {"segments": [
+        {"target": {"candidates": [
+            {"candidate_id": "unmapped-nearest", "grapheme": "?", "mapping_id": None, "score": 0.0},
+            {"candidate_id": "mapped-next", "grapheme": "а", "mapping_id": "MAP-1", "score": 1.0},
+        ]}},
+    ]}
+    selected = _select_target(target)
+    assert selected is not None
+    assert selected["segments"][0]["candidate_id"] == "mapped-next"
+
+
+def test_target_selection_fails_closed_when_no_explicit_ipa_mapping_exists():
+    from korean_ukrainian.pipeline import _select_target
+    target = {"segments": [
+        {"target": {"candidates": [
+            {"candidate_id": "feature-nearest-but-unmapped", "grapheme": "а", "mapping_id": None, "score": 0.0},
+        ]}},
+    ]}
+    assert _select_target(target) is None
+
+
 def test_python_lexical_target_reference_cannot_override_ipa_adapter_output(monkeypatch):
     import korean_ukrainian.pipeline as pipeline
     monkeypatch.setattr(
