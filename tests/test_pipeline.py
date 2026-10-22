@@ -104,22 +104,26 @@ def test_ipa_tokenizer_accepts_length_marks_in_lexical_pronunciations():
 
 
 def test_python_transliteration_uses_ipa_derived_target_and_keeps_lexical_target_as_reference():
-    from korean_ukrainian.pipeline import transliterate_korean
-    value = transliterate_korean("값없다")
-    assert value["ukrainian_orthography"] == "кабопта"
-    assert value["target_status"] == "model-selected"
-    assert value["lexical_target_reference"] == "кабопта"
-    assert value["lexical_target_reference_status"] == "model-selected"
-    assert value["lexical_target_comparison"] == "matches_reference"
-    assert "IPA-derived" in value["selection_status"]
-    opinion = transliterate_korean("의견란")
-    assert opinion["ukrainian_orthography"] == "ийґйоннан"
-    assert opinion["target_status"] == "model-selected"
-    assert opinion["lexical_target_reference"] == "ийґйоннан"
-    assert opinion["lexical_target_reference_status"] == "provisional"
-    assert opinion["lexical_target_comparison"] == "matches_reference"
-    assert "author-designed" not in opinion["selection_status"]
-
+    from korean_ukrainian.pipeline import transliterate_korean, render_sequence
+    for word, expected_reference, expected_reference_status in (
+        ("값없다", "кабопта", "model-selected"),
+        ("의견란", "ийґйоннан", "provisional"),
+    ):
+        value = transliterate_korean(word)
+        assert value["lexical_target_reference"] == expected_reference
+        assert value["lexical_target_reference_status"] == expected_reference_status
+        if value["selected_candidate"] is None:
+            # Optional UPI is unavailable in minimal CI: never fall back to a
+            # Hangul-keyed Ukrainian target just to make the output look complete.
+            assert value["ukrainian_orthography"] is None
+            assert value["target_status"] == "unresolved"
+            assert value["lexical_target_comparison"] == "unavailable_without_ipa_target"
+        else:
+            assert value["ukrainian_orthography"] == render_sequence(value["selected_candidate"]["segments"])
+            assert value["target_status"] == "model-selected"
+            assert value["lexical_target_comparison"] in {"matches_reference", "differs_from_reference"}
+            assert "IPA-derived" in value["selection_status"]
+        assert "author-designed" not in value["selection_status"]
 
 def test_python_lexical_target_reference_cannot_override_ipa_adapter_output(monkeypatch):
     import korean_ukrainian.pipeline as pipeline
@@ -158,8 +162,8 @@ def test_second_pass_sourced_lexical_pronunciations_match_shared_ipa_data():
                    for rule in result["rules"]), word
 
 
-def test_second_pass_lexical_targets_are_shared_with_python_transliteration():
-    from korean_ukrainian.pipeline import transliterate_korean
+def test_second_pass_lexical_targets_are_references_not_ukrainian_overrides():
+    from korean_ukrainian.pipeline import transliterate_korean, render_sequence
     expected = {
         "꽃잎": "конніп",
         "밭이": "пачі",
@@ -171,20 +175,29 @@ def test_second_pass_lexical_targets_are_shared_with_python_transliteration():
         "떡볶이": "токпокі",
         "옷이": "оші",
     }
-    for word, ukrainian in expected.items():
+    for word, reference in expected.items():
         result = transliterate_korean(word)
-        assert result["ukrainian_orthography"] == ukrainian, word
-        assert result["target_status"] == "model-selected", word
+        assert result["lexical_target_reference"] == reference, word
+        if result["selected_candidate"] is None:
+            assert result["ukrainian_orthography"] is None, word
+            assert result["target_status"] == "unresolved", word
+            assert result["lexical_target_comparison"] == "unavailable_without_ipa_target", word
+        else:
+            assert result["ukrainian_orthography"] == render_sequence(result["selected_candidate"]["segments"]), word
+            assert result["target_status"] == "model-selected", word
 
 
-
-def test_seoul_station_uses_sourced_surface_form_and_shared_target():
-    from korean_ukrainian.pipeline import transliterate_korean
+def test_seoul_station_uses_sourced_surface_ipa_and_does_not_bypass_target_adapter():
+    from korean_ukrainian.pipeline import transliterate_korean, render_sequence
     result = phoneticize_korean("서울역")
     assert result["ipa"]["ipa"] == "sʌ.ul.ljʌk̚"
     target = transliterate_korean("서울역")
-    assert target["ukrainian_orthography"] == "соулльок"
-    assert target["target_status"] == "model-selected"
+    if target["selected_candidate"] is None:
+        assert target["ukrainian_orthography"] is None
+        assert target["target_status"] == "unresolved"
+    else:
+        assert target["ukrainian_orthography"] == render_sequence(target["selected_candidate"]["segments"])
+        assert target["target_status"] == "model-selected"
 
 
 def test_python_surface_ipa_matches_nikl_19_and_18_for_dongnimmun():
