@@ -17,12 +17,12 @@ test('batch 07 reviews ten more traceability queue records', () => {
 
 test('batch 07 maps nine source-confirmed rows to numbered official rules', () => {
   const expected = {
-    '밝는': /§§11, 18/u,
+    '밝는': /§11.*§18/u,
     '실없다': /§§10, 15, 23/u,
     '몇으로': /§13/u,
     '넋받이': /§§10, 17, 23/u,
     '밭이랑': /§§9, 18, 29/u,
-    '집안일': /§§18, 29/u,
+    '집안일': /§§18\/29 mapping is an analysis/u,
     '공업용': /§§18, 29/u,
     '얇실하다': /§§10, 23/u,
     '짧다': /§§10, 23/u,
