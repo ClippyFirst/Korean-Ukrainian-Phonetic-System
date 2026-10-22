@@ -694,3 +694,23 @@ The official indexed answer “표준발음과 음운변동을 알려주세요�
 - Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
 
 - Batch 22 exact tested head: e79d7c2b2fc9cef9af8e98f51ba702e8b67c2d67; [system CI](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39830641838) passed 1,147/1,147 Node tests, Vite build, Python regression/data-integrity, and source-register checks. Live NIKL fetch remains BLOCKED by HTTP 403.
+
+
+## Batch 25: NIKL Q&A 314041 direct attestation and sequence fidelity — 2026-10-22
+
+### Primary-source findings
+Official indexed NIKL Q&A “낱낱이 음운변동” (qna_seq=314041; question 2025-04-28, answer 2025-04-29) directly gives 낱낱이[난ː나치] and explicitly states the sequence of syllable-final neutralization, nasalization, and palatalization. The source supports the exact lexical target and the stated sequence.
+
+### Implementation and verification scope
+- Updated the source register with title/date and direct-attestation status.
+- Corrected the lexical evidence note, which previously said exact ordering can vary by analysis despite this answer explicitly giving a sequence.
+- Preserved Korean surface, IPA (including long-vowel mark nanː), and Ukrainian target.
+- Added batch report/regressions and updated the current source backlog and HTML import queue.
+
+### Task ledger
+- DONE_VERIFIED after exact-head CI: direct source claim, ordered rule sequence, IPA length preservation, source-register integrity, queue counts, and build/test checks pass.
+- BLOCKED / rights: item-level KOGL mark remains unverified.
+- TODO: review remaining 22 citation-only sources, including three PDFs.
+- BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
+
+The system remains a deployed research preview / partial prototype, not release-ready.
