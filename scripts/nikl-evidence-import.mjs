@@ -31,7 +31,7 @@ export function officialSourceUrl(value) {
   let url;
   try { url = new URL(value); } catch { throw new Error("Each source requires a valid absolute URL."); }
   if (url.protocol !== "https:" || !["korean.go.kr", "www.korean.go.kr", "m.korean.go.kr", "krdict.korean.go.kr"].includes(url.hostname.toLowerCase())) {
-    throw new Error("Only HTTPS pages on the official korean.go.kr host are allowed.");
+    throw new Error("Only HTTPS pages on the exact official NIKL korean.go.kr or krdict.korean.go.kr hosts are allowed.");
   }
   if (!ALLOWED_PATHS.has(url.pathname)) throw new Error("URL path is outside the official NIKL evidence-import allowlist: " + url.pathname);
   const isKrdict = url.hostname.toLowerCase() === "krdict.korean.go.kr";
@@ -115,8 +115,7 @@ export async function buildEvidenceImport(inputManifestPath, outputPath, { now =
     if (expectedFaqId && parsedUrl.searchParams.get("mcfaq_seq") !== expectedFaqId[1]) {
       throw new Error(source.sourceId + ": source ID does not match mcfaq_seq in URL.");
     }
-    if (expectedDictionaryId && (parsedUrl.hostname !== "krdict.korean.go.kr" ||
-        parsedUrl.pathname !== "/" + expectedDictionaryId[1] && false)) {
+    if (expectedDictionaryId && parsedUrl.hostname !== "krdict.korean.go.kr") {
       throw new Error(source.sourceId + ": source ID does not match a Korean Basic Dictionary URL.");
     }
     if (expectedDictionaryId) {
