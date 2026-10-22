@@ -32,9 +32,8 @@ test('공업용 preserves its standard Korean surface, project IPA, and Ukrainia
   assert.match(report, /the standard pronunciation is 공업용\[공엄뇽\]/u);
 });
 
-test('batch 26 updates the live backlog without rewriting historical batch-25 counts', () => {
-  const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 19);
+test('batch 26 preserves its historical inventory as later reviews proceed', () => {
+  assert.equal(source.review_status, 'direct_attestation_2026-10-22');
   assert.match(report, /41\/60/);
   assert.match(report, /27 direct target-form \/ official-rule-example attestations, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /19.*15 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
