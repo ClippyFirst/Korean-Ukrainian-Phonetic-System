@@ -10,6 +10,9 @@ const QNA = "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216
 const FAQ = "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217";
 const FAQ_PAGINATED = "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=6718&mn_id=57&pageIndex=1";
 const MOBILE_QNA = "https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317229";
+const DICT_ENG = "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=79033";
+const DICT_ENG_NATION = "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=89917&nation=eng";
+const DICT_KOR = "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=57199";
 
 function html(title, heading, body = "Official Korean language institute page content. ".repeat(8)) {
   return `<!doctype html><html><head><title>${title}</title><script>fake private script text</script></head><body><h1>${heading}</h1><main><p>${body}</p></main></body></html>`;
@@ -149,7 +152,7 @@ test("accepts exact official mobile-host citations and FAQ pagination parameters
 });
 
 
-test("builds a template from only unreviewed official NIKL Q&A/FAQ rows and preserves multiline CSV fields", () => {
+test("builds a template from unreviewed official NIKL HTML rows and preserves multiline CSV fields", () => {
   const csv = [
     "source_id,url,review_status,coverage",
     '"SRC-NIKL-QNA-317229","https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317229","unverified_lexical_citation_inventory_2026-10-22","lexical inputs: 외곬에,',
@@ -159,9 +162,9 @@ test("builds a template from only unreviewed official NIKL Q&A/FAQ rows and pres
     '"SRC-KRDICT-ENG-79033","https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=79033","unverified_lexical_citation_inventory_2026-10-22","different host"',
   ].join("\n");
   const template = buildImportTemplate(csv, { relativeHtmlDirectory: "saved-pages" });
-  assert.equal(template.sourceCount, 2);
+  assert.equal(template.sourceCount, 3);
   assert.equal(template.allSourcesContentReviewed, false);
-  assert.deepEqual(template.sources.map(source => source.sourceId), ["SRC-NIKL-QNA-317229", "SRC-NIKL-MCFAQ-6718"]);
+  assert.deepEqual(template.sources.map(source => source.sourceId), ["SRC-NIKL-QNA-317229", "SRC-NIKL-MCFAQ-6718", "SRC-KRDICT-ENG-79033"]);
   assert.equal(template.sources[0].inputHtml, "saved-pages/SRC-NIKL-QNA-317229.html");
   assert.equal(template.sources[1].url, FAQ_PAGINATED);
   assert.equal(JSON.stringify(template).includes("second line"), false);
@@ -183,10 +186,49 @@ test("rejects unsafe HTML directories, malformed CSV, and duplicate source recor
 test("repository source register produces a deterministic template for eligible unreviewed NIKL Q&A/FAQ citations", async () => {
   const sourceRegister = await readFile(new URL("../research/SOURCE-REGISTER.csv", import.meta.url), "utf8");
   const template = buildImportTemplate(sourceRegister);
-  assert.equal(template.sourceCount, 38);
+  assert.equal(template.sourceCount, 41);
   assert.equal(template.allSourcesContentReviewed, false);
   assert.ok(template.sources.some(source => source.sourceId === "SRC-NIKL-MCFAQ-6674"));
   assert.ok(template.sources.some(source => source.sourceId === "SRC-NIKL-QNA-317229"));
-  assert.ok(template.sources.every(source => /^SRC-NIKL-(?:QNA|MCFAQ|FAQ)-\d+$/u.test(source.sourceId)));
+  assert.ok(template.sources.every(source => /^(?:SRC-NIKL-(?:QNA|MCFAQ|FAQ)-\d+|SRC-KRDICT-(?:ENG|KOR)-\d+)$/u.test(source.sourceId)));
   assert.ok(template.sources.every(source => source.inputHtml.startsWith("saved-pages/")));
+  assert.ok(template.sources.some(source => source.sourceId === "SRC-KRDICT-ENG-79033"));
+});
+
+
+test("imports official Korean Basic Dictionary pages with exact language and entry-ID provenance", async t => {
+  const dir = await fixture(t);
+  await writeFile(join(dir, "eng.html"), html("Korean Basic Dictionary", "좋아도"), "utf8");
+  await writeFile(join(dir, "eng-nation.html"), html("Korean Basic Dictionary", "없었다"), "utf8");
+  await writeFile(join(dir, "kor.html"), html("한국어기초사전", "발음과"), "utf8");
+  const input = join(dir, "saved-pages.json");
+  const output = join(dir, "manifest.json");
+  await writeFile(input, JSON.stringify({ sources: [
+    { sourceId: "SRC-KRDICT-ENG-79033", url: DICT_ENG, inputHtml: "eng.html" },
+    { sourceId: "SRC-KRDICT-ENG-89917", url: DICT_ENG_NATION, inputHtml: "eng-nation.html" },
+    { sourceId: "SRC-KRDICT-KOR-57199", url: DICT_KOR, inputHtml: "kor.html" },
+  ] }), "utf8");
+  const manifest = await buildEvidenceImport(input, output);
+  assert.equal(manifest.sourceCount, 3);
+  assert.deepEqual(manifest.sources.map(source => source.sourceId), [
+    "SRC-KRDICT-ENG-79033", "SRC-KRDICT-ENG-89917", "SRC-KRDICT-KOR-57199",
+  ]);
+  assert.equal(manifest.sources.every(source => source.reviewStatus === "NOT_REVIEWED_CONTENT_HASH_ONLY"), true);
+  assert.equal(manifest.sources.every(source => source.claimSupportEstablished === false), true);
+});
+
+test("rejects dictionary ID mismatches, language mismatches, and invalid nation values", async t => {
+  const dir = await fixture(t);
+  await writeFile(join(dir, "page.html"), html("Dictionary", "표제어"), "utf8");
+  const input = join(dir, "saved-pages.json");
+  const output = join(dir, "manifest.json");
+  for (const source of [
+    { sourceId: "SRC-KRDICT-ENG-89917", url: DICT_ENG, inputHtml: "page.html" },
+    { sourceId: "SRC-KRDICT-KOR-79033", url: DICT_ENG, inputHtml: "page.html" },
+    { sourceId: "SRC-KRDICT-KOR-57199", url: DICT_KOR + "&nation=eng", inputHtml: "page.html" },
+    { sourceId: "SRC-KRDICT-ENG-79033", url: DICT_ENG + "&nation=kor", inputHtml: "page.html" },
+  ]) {
+    await writeFile(input, JSON.stringify({ sources: [source] }), "utf8");
+    await assert.rejects(buildEvidenceImport(input, output), /source ID|nation parameter/u);
+  }
 });

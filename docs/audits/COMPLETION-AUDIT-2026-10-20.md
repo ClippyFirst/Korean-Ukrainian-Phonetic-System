@@ -529,3 +529,28 @@ At implementation/test head `a7f7339a12c88b0d6a6485fb131ee6bafba9faed`, GitHub A
 - `BLOCKED_SPECIALIST_ADJUDICATION`: independent broad-IPA gold and independent Ukrainian-target review remain outstanding.
 
 The evidence inventory remains **16/60 citation pages content-checked** and **44 citation-only/unreviewed**. This batch makes the 38-page eligible subset easier to collect; it does not reduce the unreviewed count. Release disposition remains deployed research preview / partial prototype.
+
+
+## Batch 19: Korean Basic Dictionary citation intake — 2026-10-22
+
+### Work completed
+- Extended the local metadata-only evidence importer to the exact official `krdict.korean.go.kr` English/Korean entry paths.
+- Added strict `ParaWordNo` validation, language-specific `SRC-KRDICT-ENG/KOR-…` identity checks, and a narrowly permitted `nation=eng` parameter only on English entries.
+- Extended the JSON Schema, Python schema tests, Node tests, and the source-register-driven template generator.
+- The eligible local-import template now covers **41/44** unreviewed citation pages: 34 Q&A, 4 FAQ, and 3 Korean Basic Dictionary entries. The three NIKL-hosted PDFs are excluded for a separate document intake.
+- No page was fetched or content reviewed. No source-register evidence status, linguistic record, public UI, or production transcription behavior changed.
+
+### Verification
+- Implementation/test head: `db782975aead7422163fd2f499859e0eae295576`.
+- [Node suite + Vite build](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39784994528): **1,114 passed, 0 failed**.
+- Python 3.11, 3.12, 3.13 passed in the same run; [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39784986483) and [master-table/corpus checks](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39784995035) passed.
+- Intermediate CI exposed an outdated two-row template assertion after dictionary pages were added; the fixture was updated to expect the third eligible source. The final implementation/test head passed.
+
+### Task ledger
+- `DONE_VERIFIED`: official Korean Basic Dictionary URL contract, source-ID/entry-number/language matching, schema and regression tests, 41-record template inventory, CI.
+- `BLOCKED`: no authorized saved-page batch is present, so all 44 citations remain unreviewed; live NIKL fetch is still HTTP 403 in GitHub Actions.
+- `BLOCKED / rights`: item-level reuse terms remain unverified.
+- `TODO`: save and inspect the 41 eligible HTML pages; design a separate safe PDF/document intake for the remaining three official PDFs.
+- `BLOCKED_SPECIALIST_ADJUDICATION`: independent broad-IPA and Ukrainian-target review remain outstanding.
+
+The source evidence inventory remains **16/60 checked and 44 citation-only/unreviewed**. This is a collection-workflow improvement, not a source-evidence completion claim. Release disposition remains deployed research preview / partial prototype.

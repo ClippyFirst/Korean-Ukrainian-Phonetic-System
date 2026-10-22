@@ -67,12 +67,12 @@
         "properties": {
           "sourceId": {
             "type": "string",
-            "pattern": "^SRC-NIKL-[A-Z0-9-]{2,80}$"
+            "pattern": "^(?:SRC-NIKL-[A-Z0-9-]{2,80}|SRC-KRDICT-(?:ENG|KOR)-[0-9]+)$"
           },
           "sourceUrl": {
             "type": "string",
             "format": "uri",
-            "pattern": "^https://(?:www\\.)?korean\\.go\\.kr/"
+            "pattern": "^(?:https://(?:www\\.|m\\.)?korean\\.go\\.kr/|https://krdict\\.korean\\.go\\.kr/(?:eng|kor)/dicSearch/SearchView\\?)"
           },
           "retrievalMode": {
             "const": "local-html-import"

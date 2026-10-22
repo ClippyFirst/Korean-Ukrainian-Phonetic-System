@@ -35,23 +35,23 @@ Use this helper when the official NIKL pages open in a human's ordinary browser 
 
 ## Generate a ready-to-fill template from the current source register
 
-The source register currently contains **38 unreviewed official NIKL Q&A/curated FAQ citations** that match the batch importer's page contract. Generate a template with stable source IDs and deterministic local filenames:
+The source register currently contains **41 unreviewed official HTML citations** that match the batch importer's page contract: 38 NIKL Q&A/curated FAQ pages and 3 Korean Basic Dictionary entries. Generate a template with stable source IDs and deterministic local filenames:
 
 ```sh
 npm run template:nikl-evidence
 ```
 
-This writes `reports/nikl/saved-pages-import.template.json` with `saved-pages/SRC-NIKL-….html` input paths. Save each corresponding official page through ordinary browser access into `reports/nikl/saved-pages/`, then use the generated JSON as the `--input-manifest`:
+This writes `reports/nikl/saved-pages-import.template.json` with deterministic `saved-pages/SRC-….html` input paths. Save each corresponding official page through ordinary browser access into `reports/nikl/saved-pages/`, then use the generated JSON as the `--input-manifest`:
 
 ```sh
 npm run import:nikl-evidence -- --input-manifest reports/nikl/saved-pages-import.template.json --output reports/nikl/evidence-import-manifest.json
 ```
 
-The generator reads only the source register; it does not download pages or change source review status. The 38 rows are only the currently eligible Q&A/FAQ subset, not all 44 outstanding citations. Dictionary pages and NIKL-hosted documents outside the allowlisted HTML routes are intentionally excluded and need their own source-specific retrieval/review procedure. Import success remains metadata-only and does not establish claim support.
+The generator reads only the source register; it does not download pages or change source review status. The 41 rows cover the currently eligible Q&A/FAQ and Korean Basic Dictionary HTML pages, not all 44 outstanding citations. The importer validates dictionary language and ParaWordNo against the stable SRC-KRDICT-ENG/KOR ID. Three NIKL-hosted PDFs remain excluded and need a separate document/PDF intake and review procedure. Import success remains metadata-only and does not establish claim support.
 
 ## Safety and evidence semantics
 
-- Only HTTPS URLs on the exact official `korean.go.kr`, `www.korean.go.kr`, or `m.korean.go.kr` hosts and allowlisted NIKL Q&A, curated FAQ, pronunciation-rules, and official reuse-policy paths are accepted. FAQ `pageIndex` is accepted as display/navigation metadata but does not change the source identifier. Q&A/FAQ pages require an exact numeric page identifier.
+- Only HTTPS URLs on exact allowlisted official NIKL hosts are accepted: `korean.go.kr`, `www.korean.go.kr`, `m.korean.go.kr`, or `krdict.korean.go.kr`. Allowed paths are NIKL Q&A, curated FAQ, pronunciation rules, reuse policy, and Korean Basic Dictionary English/Korean entry pages. Dictionary `nation=eng` is allowed only on the English route. FAQ `pageIndex` is accepted as display/navigation metadata but does not change the source identifier. Q&A/FAQ pages require an exact numeric page identifier.
 - Each source ID and canonical URL must be unique. Missing/empty files, likely error pages, invalid UTF-8, and files over 10 MiB fail closed.
 - Output contains source IDs/URLs, page title and headings, import timestamp, local filename, byte count, SHA-256 hashes, and normalized visible-text length. It never copies raw HTML or page text into the output.
 - It explicitly records `httpFetchedAt=null`, `httpStatus=null`, `robotsStatus=not_checked_local_import`, `reuseTermsStatus=not_assessed`, `reviewStatus=NOT_REVIEWED_CONTENT_HASH_ONLY`, and `claimSupportEstablished=false`. These fields must not be promoted merely because the importer succeeds.

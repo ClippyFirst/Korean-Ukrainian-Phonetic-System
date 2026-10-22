@@ -58,6 +58,8 @@ def test_metadata_only_import_manifest_matches_schema(validator):
 @pytest.mark.parametrize(
     ("path", "value"),
     [
+        (("sources", 0, "sourceId"), "SRC-KRDICT-OTHER-79033"),
+        (("sources", 0, "sourceUrl"), "https://example.org/not-official"),
         (("sources", 0, "httpStatus"), 200),
         (("sources", 0, "robotsStatus"), "allowed"),
         (("sources", 0, "reuseTermsStatus"), "verified"),
@@ -82,3 +84,17 @@ def test_manifest_schema_rejects_raw_page_text_fields(validator):
     manifest["sources"][0]["pageText"] = "Do not retain copied source text here."
     errors = list(validator.iter_errors(manifest))
     assert any("Additional properties are not allowed" in error.message for error in errors)
+
+
+
+def test_schema_accepts_official_korean_basic_dictionary_metadata_record(validator):
+    manifest = valid_manifest()
+    source = manifest["sources"][0]
+    source.update(
+        {
+            "sourceId": "SRC-KRDICT-ENG-79033",
+            "sourceUrl": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=79033",
+            "localFileName": "SRC-KRDICT-ENG-79033.html",
+        }
+    )
+    assert not list(validator.iter_errors(manifest))
