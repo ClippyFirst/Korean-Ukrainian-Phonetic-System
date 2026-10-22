@@ -32,9 +32,9 @@ test('qna_seq=312381 directly attests 좋아[조ː아] and §12(4) ㅎ deletion'
   assert.match(byInput('좋아').rule_notes, /§12\(4\)/u);
 });
 
-test('source inventory contains 44 remaining citation-only records after batch 16', () => {
+test('source inventory contains 42 remaining citation-only records after two dictionary partial reviews', () => {
   const unreviewed = sources.filter((row) => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 44);
+  assert.equal(unreviewed.length, 42);
   for (const id of ['SRC-NIKL-QNA-316101', 'SRC-NIKL-QNA-312381']) {
     assert.equal(sources.filter((row) => row.source_id === id).length, 1, id);
     assert.match(bySource(id).license_status, /item-level KOGL marking not checked/u);

@@ -135,7 +135,7 @@ def test_unreviewed_lexical_citations_are_not_promoted_to_verified_evidence():
         row for row in rows
         if row["review_status"] == "unverified_lexical_citation_inventory_2026-10-22"
     ]
-    assert len(unreviewed) >= 44, "expected the 44 remaining citation-only lexical records after batch-16 review"
+    assert len(unreviewed) == 42, "expected 42 citation-only records after partial review of two dictionary citations"
     for row in unreviewed:
         assert row["integration_status"] == "lexical_csv_citation_only"
         assert "not independently rechecked" in row["limitations_or_next_action"]
@@ -177,3 +177,27 @@ def test_priority_nikl_lexical_sources_distinguish_direct_and_partial_attestatio
     assert pumsak["review_status"] == "direct_attestation_checked_2026-10-22"
     for example in ("품삯을[품싹쓸]", "품삯으로[품싹쓰로]", "품삯이[품싹씨]"):
         assert example in pumsak["coverage"]
+
+
+
+def test_dictionary_source_review_preserves_partial_attestation_scope():
+    rows = {row["source_id"]: row for row in load_source_register()}
+
+    good = rows["SRC-KRDICT-ENG-79033"]
+    assert good["source_type"] == "dictionary_lexical_reviewed"
+    assert good["review_status"] == "partial_lemma_application_support_2026-10-22"
+    assert "좋다[조ː타]" in good["coverage"]
+    assert "좋아[조ː아]" in good["coverage"]
+    assert "좋아도 is not listed" in good["coverage"]
+    assert "좋아도 remains rule-derived" in good["integration_status"]
+    assert "not direct dictionary pronunciation attestation" in good["limitations_or_next_action"]
+    assert "item-level KOGL rights remain unverified" in good["limitations_or_next_action"]
+
+    pronunciation = rows["SRC-KRDICT-KOR-57199"]
+    assert pronunciation["source_type"] == "dictionary_lexical_reviewed"
+    assert pronunciation["review_status"] == "partial_lemma_support_2026-10-22"
+    assert "발음[바름]" in pronunciation["coverage"]
+    assert "발음과 is not listed" in pronunciation["coverage"]
+    assert "particle-attached target remains derived" in pronunciation["integration_status"]
+    assert "not the full form 발음과" in pronunciation["limitations_or_next_action"]
+    assert "item-level KOGL rights remain unverified" in pronunciation["limitations_or_next_action"]

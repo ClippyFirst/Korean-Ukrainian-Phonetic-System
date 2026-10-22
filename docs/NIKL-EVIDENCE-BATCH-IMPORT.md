@@ -35,7 +35,7 @@ Use this helper when the official NIKL pages open in a human's ordinary browser 
 
 ## Generate a ready-to-fill template from the current source register
 
-The source register currently contains **41 unreviewed official HTML citations** that match the batch importer's page contract: 38 NIKL Q&A/curated FAQ pages and 3 Korean Basic Dictionary entries. Generate a template with stable source IDs and deterministic local filenames:
+The source register currently contains **39 unreviewed official HTML citations** that match the batch importer's page contract: 38 NIKL Q&A/curated FAQ pages and the remaining unreviewed Korean Basic Dictionary entry. Generate a template with stable source IDs and deterministic local filenames:
 
 ```sh
 npm run template:nikl-evidence
@@ -47,7 +47,7 @@ This writes `reports/nikl/saved-pages-import.template.json` with deterministic `
 npm run import:nikl-evidence -- --input-manifest reports/nikl/saved-pages-import.template.json --output reports/nikl/evidence-import-manifest.json
 ```
 
-The generator reads only the source register; it does not download pages or change source review status. The 41 rows cover the currently eligible Q&A/FAQ and Korean Basic Dictionary HTML pages, not all 44 outstanding citations. The importer validates dictionary language and ParaWordNo against the stable SRC-KRDICT-ENG/KOR ID. Three NIKL-hosted PDFs use a separate binary-metadata intake described in [the PDF guide](NIKL-PDF-IMPORT.md); PDF text extraction and document/claim review remain separate tasks. Import success remains metadata-only and does not establish claim support.
+The generator reads only the source register; it does not download pages or change source review status. The 39 rows cover the currently eligible unreviewed Q&A/FAQ and Korean Basic Dictionary HTML pages, not all 42 outstanding citations. The importer validates dictionary language and ParaWordNo against the stable SRC-KRDICT-ENG/KOR ID. Three NIKL-hosted PDFs use a separate binary-metadata intake described in [the PDF guide](NIKL-PDF-IMPORT.md); PDF text extraction and document/claim review remain separate tasks. Import success remains metadata-only and does not establish claim support.
 
 ## Safety and evidence semantics
 
