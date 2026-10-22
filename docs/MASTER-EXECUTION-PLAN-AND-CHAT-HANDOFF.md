@@ -171,3 +171,14 @@ undefined
 - The live NIKL request again returned HTTP 403 and was explicitly recorded as BLOCKED; no live manifest was emitted.
 - The existing two diagnostic-only JS/Python surface divergences (넓죽하다, 읽고) remain unresolved and have no independent IPA adjudication.
 - The next commit only adds this verification close-out; final-head CI is rerun before merge.
+
+
+## Continuation checkpoint — NIKL Q&A 311728 direct correction for 공업용, batch 25 (2026-10-22)
+
+- Starting main: 1eecb11275e5af031cd40082f6cc6f8da51cc531 (batch 24 Q&A 313717 direct attestation is merged).
+- Reviewed official indexed NIKL Q&A [qna_seq=311728](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=311728), “앞일과 공업용의 발음 관련” (question 2025-03-21; answer 2025-03-26).
+- The question proposes 공업용[공업뇽]; the answer explicitly corrects this to the standard pronunciation 공업용[공엄뇽]. The answer also reproduces §29's 영업-용[영엄뇽] example, which is a quoted rule example rather than the primary target.
+- Evidence status records the correction of the question premise and quoted-example scope. Korean surface, IPA, and Ukrainian target fields remain unchanged.
+- Inventory after batch 25: 40/60 citations content-checked (26 direct target-form/official-rule-example attestations, 9 partial, 5 contextual-example-only); 20 citation-only/unreviewed remain: 16 Q&A/FAQ pages, one Korean Basic Dictionary entry, and three PDFs. HTML intake queue: 17 eligible pages.
+- Task ledger: DONE_VERIFIED after exact-head CI — official answer scope, source register, lexical note, queue, and tests updated. BLOCKED / rights — item-level KOGL marking remains unverified. TODO — review remaining 20 citations. BLOCKED_SPECIALIST_ADJUDICATION — independent broad-IPA gold and Ukrainian-target review remain absent.
+- Release status remains deployed research preview / partial prototype, not a scientifically validated release.
