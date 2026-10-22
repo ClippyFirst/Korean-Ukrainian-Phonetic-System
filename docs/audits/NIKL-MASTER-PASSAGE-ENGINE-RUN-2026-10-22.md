@@ -294,17 +294,19 @@ tɕʰø dʑoŋ kʌm dʑɯŋ e sʌ nɯn tɕehaŋ ɰi wʌn tɕʰik̚ p͈u tʰʌ t�
 
 ~~~
 
-## Research-output fidelity bug: standalone Jamo inventories — 2026-10-22
+## Research-output fidelity bug: bracketed Jamo notation — 2026-10-22
 
 ### Reproduced diagnosis
 
-Inspection of the recorded strict whole-text IPA output showed inventory positions rendered as empty comma-separated slots, for example the passage's consonant/vowel inventory sections. The source contains isolated compatibility Jamo as *orthographic/linguistic notation*, not as pronounceable syllables. In `src/app/engine_convert.js`, the `u.type === 'jamo'` branch previously assigned both `output[i]` and `ipa[i]` to empty strings. That correctly withheld unsupported IPA but also silently deleted the Jamo from the Ukrainian/documentary output.
+The user's Ukrainian result contains `[]` in places where the Korean source has `[ㅔ]` and `[ㅣ]`. These bracketed compatibility Jamo are metalinguistic pronunciation notation, not syllables to pronounce. The engine's isolated-Jamo guard correctly withholds IPA, but the bracketed symbols were not recognized as literal notation in the mixed-script tokenization path and were therefore omitted from the Ukrainian/documentary output. The raw IPA output's omission of standalone Jamo is expected; that alone is not a target-output bug.
 
 ### Correction made
 
-- Recognize multi-item comma/dot/slash-separated Jamo inventories as literal orthographic notation. Preserve those inventory symbols in the output while excluding them from IPA and phonological analysis; isolated Jamo outside recognized inventories remain unresolved and are not emitted as Ukrainian pronunciation.
-- Add regressions asserting that consonant and vowel inventories round-trip unchanged both alone and inside explanatory Korean prose, receive no fabricated IPA, and are not labelled as pronounceable Korean words.
+- Treat a single compatibility Jamo enclosed in square brackets (for example `[ㅔ]`, `[ㅣ]`) as a literal notation token in mixed-script segmentation and preserve it in the Ukrainian/documentary output, without emitting it as IPA.
+- Recognize multi-item comma/dot/slash-separated Jamo inventories as literal notation, preserving their symbols while excluding them from IPA and phonological analysis.
+- Keep isolated Jamo outside recognized notation contexts fail-closed: they remain unresolved and are not emitted as Ukrainian pronunciation.
+- Add regressions for bracketed Jamo and consonant/vowel inventories, both alone and embedded in explanatory Korean prose.
 
 ### Verification status
 
-Implementation branch: `fix/research-jamo-notation-preservation-2026-10-22`. This is a targeted source-fidelity correction, not a linguistic rule correction. CI must pass the new regression and full browser suite, and the full-passage output must be checked to confirm that isolated Jamo are no longer deleted. This does not establish normative correctness of generic IPA or exhaustive coverage of *표준 발음법* articles 1–30.
+Implementation branch: `fix/research-jamo-notation-preservation-2026-10-22`, PR #249. This is a targeted source-fidelity correction, not a Korean pronunciation-rule correction. CI must pass the latest bracketed-Jamo regression and full browser suite. This does not establish normative correctness of generic IPA or exhaustive coverage of *표준 발음법* articles 1–30.
