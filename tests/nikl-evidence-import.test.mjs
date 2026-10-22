@@ -187,6 +187,6 @@ test("repository source register produces a deterministic template for eligible 
   assert.equal(template.allSourcesContentReviewed, false);
   assert.ok(template.sources.some(source => source.sourceId === "SRC-NIKL-MCFAQ-6674"));
   assert.ok(template.sources.some(source => source.sourceId === "SRC-NIKL-QNA-317229"));
-  assert.ok(template.sources.every(source => /^SRC-NIKL-(?:QNA|MCFAQ|FAQ)-\\d+$/u.test(source.sourceId)));
+  assert.ok(template.sources.every(source => /^SRC-NIKL-(?:QNA|MCFAQ|FAQ)-\d+$/u.test(source.sourceId)));
   assert.ok(template.sources.every(source => source.inputHtml.startsWith("saved-pages/")));
 });
