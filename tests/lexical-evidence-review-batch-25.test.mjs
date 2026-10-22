@@ -33,9 +33,8 @@ test('굳이 retains the Korean standard reading and preserves the IPA/Ukrainian
   assert.match(report, /direct official-rule-example evidence for the exact lexical target 굳이/u);
 });
 
-test('batch 25 updates the live backlog without rewriting historical batch-24 counts', () => {
-  const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 20);
+test('batch 25 preserves its historical inventory as later reviews proceed', () => {
+  assert.equal(source.review_status, 'direct_attestation_2026-10-22');
   assert.match(report, /40\/60/);
   assert.match(report, /26 direct target-form \/ official-rule-example attestations, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /20.*16 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
