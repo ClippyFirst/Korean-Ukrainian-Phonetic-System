@@ -694,3 +694,13 @@ The official indexed answer “표준발음과 음운변동을 알려주세요�
 - Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
 
 - Batch 22 exact tested head: e79d7c2b2fc9cef9af8e98f51ba702e8b67c2d67; [system CI](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39830641838) passed 1,147/1,147 Node tests, Vite build, Python regression/data-integrity, and source-register checks. Live NIKL fetch remains BLOCKED by HTTP 403.
+
+
+## Batch 23 — NIKL Q&A ordered-rule evidence review (qna_seq=314041), 2026-10-22
+
+The official indexed answer “낱낱이 음운변동” (question 2025-04-28; answer 2025-04-29) directly attests 낱낱이[난ː나치] and explicitly states the sequence of syllable-final neutralization, nasalization, then palatalization.
+
+- Evidence status: direct_attestation_2026-10-22; the note now matches the exact sequence stated in the answer.
+- Inventory: 38/60 citations content-checked (24 direct, 9 partial, 5 contextual-example-only); 22 citation-only/unreviewed remain (18 Q&A/FAQ pages, one dictionary entry, three PDFs). HTML intake queue: 19 pages.
+- Korean surface, IPA, and Ukrainian target fields were preserved; only source/evidence wording and test coverage changed.
+- Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
