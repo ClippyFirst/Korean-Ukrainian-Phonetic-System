@@ -274,3 +274,14 @@ This section supersedes any earlier handoff statement that stops at batch 26. Th
 - **PARTIAL:** this verifies the adapter boundary, not normative correctness of all Korean IPA surfaces. Continue source-backed adjudication of generic phonology and article/subparagraph/exception/variant coverage.
 - **BLOCKED:** direct NIKL fetch remains HTTP 403 in CI; no bypass or fabricated evidence. Independent broad-IPA gold and Ukrainian-target specialist review remain open.
 - Release status remains research preview / partial prototype, not release-ready.
+
+
+## Korean NIKL master-passage execution update — 2026-10-22
+
+- Branch: `research/nikl-corpus-engine-regression-2026-10-22`; PR #247 remains draft.
+- Restored the intentionally ambiguous forms in `tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt`; do not claim the previous sanitized-corpus result represents the user's exact input.
+- CI at `0fa20f2790f66b8b3e3b06a70b67bdc97e999ce4` failed as expected on 13 unresolved tokens. The test gate was corrected to register those exact cases rather than inventing pronunciations: `짧은소리의`, `수많이는`, `없으니를`, `없애다에서는`, `값에서는`, `밟으니와`, `싫어도에서는`, `외곬에를`, `값있는에서는`, `히읗을의`, `벼훑이를`, `밭이와`, `붙임`.
+- Updated tests now require that exact unresolved set, fail on new gaps, and check IPA→Ukrainian parity for resolved tokens/variants. These changes are a gate correction, not proof that the 13 cases have been solved.
+- Audit: `docs/audits/NIKL-MASTER-PASSAGE-ENGINE-RUN-2026-10-22.md`.
+- Pending final evidence: CI on the final branch head after the last test commit; verify fixture fidelity against the full user message; inspect any remaining failures; update this section with exact final SHA and statuses.
+- Classification: broad IPA-first runtime invariant = partially verified; 13 source/morphology contexts = blocked/evidence-limited; exhaustive articles 1–30 normativity = PARTIAL; release = not ready as a fully normative transcriber.
