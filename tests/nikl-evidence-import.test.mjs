@@ -139,7 +139,7 @@ test("accepts exact official mobile-host citations and FAQ pagination parameters
   const output = join(dir, "manifest.json");
   await writeFile(input, JSON.stringify({ sources: [
     { sourceId: "SRC-NIKL-QNA-317229", url: MOBILE_QNA, inputHtml: "mobile.html" },
-    { sourceId: "SRC-NIKL-FAQ-6718", url: FAQ_PAGINATED, inputHtml: "faq.html" },
+    { sourceId: "SRC-NIKL-MCFAQ-6718", url: FAQ_PAGINATED, inputHtml: "faq.html" },
   ] }), "utf8");
   const manifest = await buildEvidenceImport(input, output);
   assert.equal(manifest.sourceCount, 2);
