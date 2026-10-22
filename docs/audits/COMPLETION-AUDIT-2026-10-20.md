@@ -622,3 +622,24 @@ Current source evidence status is 33/60 citations content-checked (21 direct, 7 
 Main commit `1e40e0271c706311d21af144e003b5742d0e5ab7` passed system verification, browser/Python tests, and master-table/corpus artifact generation. GitHub Pages deploy/live smoke [39825627246](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39825627246) passed. The live Playwright practical-mode fixture processed 1,443 Korean input characters and returned 2,782 Ukrainian output characters plus 3,731 IPA characters with status `g2pK JS · Контекстну вимову застосовано`. This confirms deployment and end-to-end browser execution for that fixture only; it does not constitute independent linguistic adjudication.
 
 Open blockers remain: direct NIKL fetch is HTTP 403; 27 source citations still require content review; item-level reuse rights are not verified; independent broad-IPA gold and Ukrainian-target review remain absent. Release disposition remains deployed research preview / partial prototype.
+
+
+## Batch 22: NIKL Q&A 317202 claim-scope review — 2026-10-22
+
+### Primary-source findings
+The official indexed NIKL Q&A page “홑이불” (qna_seq=317202; question 2025-06-28, answer 2025-06-30) directly states 홑이불[혼니불] and attributes the pronunciation to ㄴ-insertion and nasal assimilation. The project's lexical input is 홑이불을; the answer does not separately attest that inflected form.
+
+### Implementation and verification scope
+- Narrowed the lexical evidence note from “NIKL directly confirms 홑이불[혼니불]” to a lemma-level attestation and rule-derived particle attachment. Korean surface, project IPA, and Ukrainian target values were preserved.
+- Updated the source register to partial_lemma_application_support_2026-10-22; item-level KOGL mark remains unverified.
+- Added a batch report and regression tests; removed qna_seq=317202 from the generated HTML intake queue; updated the live backlog checks and made batch-19 assertions historical.
+- No production code, runtime pronunciation, IPA, or Ukrainian target changed.
+
+### Task ledger
+- DONE_VERIFIED after exact-head CI: source claim scope, source-register integrity, current queue count, and all regression/build checks pass.
+- PARTIAL: direct evidence covers 홑이불, not the exact input 홑이불을.
+- BLOCKED / rights: page-level KOGL marking not visually verified.
+- TODO: review remaining 25 citation-only sources; three PDFs require the separate saved-PDF workflow.
+- BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
+
+The system remains a deployed research preview / partial prototype, not release-ready.
