@@ -348,3 +348,12 @@ This web source view is not a locally acquired HTML snapshot and does not satisf
 
 
 The policy URL was normalized to the exact registered official route on 2026-10-22: https://www.korean.go.kr/front/nuri/pageView.do?mkn=3&page_id=P000189. The page's policy statement and KOGL type descriptions were directly checked; item-level clearance of the pronunciation rules page and Q&A sources remains unverified.
+
+
+### Current mainline verification — 2026-10-22
+
+Main at `858ea7ad2e08babed2ce4cf441d22f46de94f34b` passes system verification, the Node/Python matrix, generated master-table/corpus validation, and GitHub Pages deployment with live Chromium smoke. Evidence: [system](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39679386102), [test matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39679386107), [artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39679386124), and [deployment/browser smoke](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39679386111). The Node suite reports 1,082/1,082; Python 3.11/3.12/3.13 pass; the 11,172-row modern Hangul validation reports zero failures/warnings; live browser smoke processes the adversarial 1,443-character fixture without page errors. These checks do not validate broad IPA or Ukrainian target decisions.
+
+New Python tests validate source-register column integrity, unique IDs, the canonical NIKL source URL, explicit live-access blocking, and the distinction between general reuse policy and page-level KOGL clearance. The Python differential diagnostic remains 18/20 matching and 2/20 divergent (`넓죽하다`, `읽고`); it is diagnostic only and does not adjudicate IPA. Preserve the practical JS port contract until evidence-backed reconciliation is approved.
+
+The actual scientific blockers remain unchanged: no live NIKL manifest because CI direct fetch receives HTTP 403; no authorized local HTML snapshot yet supplied; page-level reuse marks remain unverified; independent IPA gold is 0/20; Ukrainian target review remains outstanding. Status is still **deployed research preview, not release-ready**.
