@@ -24,7 +24,7 @@ The stored Korean surface remains 난나치; the IPA already preserves the sourc
 ## Updated inventory
 
 - Content-checked citations: **38/60**.
-- Scope breakdown: **23 direct target-form / official-rule-example attestations, 9 partial, 5 contextual-example-only**.
+- Scope breakdown: **24 direct target-form / official-rule-example attestations, 9 partial, 5 contextual-example-only**.
 - Citation-only/unreviewed: **22** — 18 Q&A/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs.
 - Saved-HTML intake queue: **19** eligible pages (18 Q&A/FAQ + one dictionary entry).
 - Item-level KOGL/reuse marking remains unverified. No broad-IPA gold or independent Ukrainian-target review was added.
