@@ -125,7 +125,7 @@ test('every Hangul-only lexical entry and licensed alternate is reproducible fro
 test('IPA-derived targets preserve whitespace and align multiword inputs without guessing missing IPA', () => {
   assert.deepEqual(ipaTargetForSource('국립 국어원', 'kuŋ nim k͈u ɡʌ wʌn'), {
     text: 'куннім куґовон',
-    syllables: ['궁', '닙', '꾹', '거', '원'],
+    syllables: ['кун', 'нім', 'ку', 'ґо', 'вон'],
     unknown: '',
   });
   assert.deepEqual(ipaTargetForSource('가', '💥'), {
