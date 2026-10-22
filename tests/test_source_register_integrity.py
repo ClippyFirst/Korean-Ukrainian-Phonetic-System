@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_REGISTER = ROOT / "research" / "SOURCE-REGISTER.csv"
 IPA_QUEUE = ROOT / "research" / "ipa-adjudication-queue.json"
+SURFACE_FIXTURE = ROOT / "tests" / "fixtures" / "g2pk-surface-regression.json"
 EXPECTED_COLUMNS = [
     "source_id",
     "source_type",
@@ -71,8 +72,11 @@ def test_every_ipa_queue_surface_source_is_registered_with_an_exact_url():
     rows = load_source_register()
     registered_urls = {row["url"] for row in rows}
     queue = json.loads(IPA_QUEUE.read_text(encoding="utf-8"))
-    missing = sorted({item["surfaceEvidenceUrl"] for item in queue["cases"]} - registered_urls)
-    assert not missing, "IPA queue source URL(s) missing from SOURCE-REGISTER.csv: " + ", ".join(missing)
+    surface = json.loads(SURFACE_FIXTURE.read_text(encoding="utf-8"))
+    queue_urls = {item["surfaceEvidenceUrl"] for item in queue["cases"]}
+    fixture_urls = {item["normativeSourceUrl"] for item in surface["cases"] if item.get("normativeSourceUrl")}
+    missing = sorted((queue_urls | fixture_urls) - registered_urls)
+    assert not missing, "IPA queue/surface-fixture source URL(s) missing from SOURCE-REGISTER.csv: " + ", ".join(missing)
     rows_by_id = {row["source_id"]: row for row in rows}
     assert rows_by_id["SRC-NIKL-QNA"]["integration_status"] == "exact_URL_coverage_tested_for_ipa_queue"
 
