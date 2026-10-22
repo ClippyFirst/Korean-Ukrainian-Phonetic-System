@@ -67,8 +67,11 @@ test('master passage is passed through the browser engine and emits a reproducib
 
   assert.ok(tokens.length > 500, 'the integrated passage should remain a substantial stress corpus');
   assert.ok(report.lexicalHits > 30, 'the passage must exercise many existing source-backed lexical entries');
+  assert.equal(report.unresolved.length, 0, 'every unique Hangul token in the master passage must resolve or the regression gate fails');
+  assert.equal(report.issues.length, 0, 'no token-level engine issues are permitted in the master passage');
   assert.ok(wholeStrict.ipa.length > 0, 'strict whole-text conversion must produce its IPA-stage result');
   assert.ok(wholePractical.ipa.length > 0, 'practical whole-text conversion must produce its IPA-stage result');
+  assert.doesNotMatch(wholeStrict.ukrainian, /[⟦⟧]/u, 'strict mode must not leak unresolved placeholders into the full passage');
   assert.doesNotMatch(wholePractical.ukrainian, /[⟦⟧]/u, 'practical mode must not leak unresolved placeholders into the full passage');
   assert.equal(report.wholeTextStrict.actionableIssueSamples.length, 0, 'all strict whole-text issues beyond explicitly expected standalone-jamo warnings must be reviewed');
   assert.equal(report.wholeTextPractical.actionableIssueSamples.length, 0, 'all practical whole-text issues beyond explicitly expected standalone-jamo warnings must be reviewed');
