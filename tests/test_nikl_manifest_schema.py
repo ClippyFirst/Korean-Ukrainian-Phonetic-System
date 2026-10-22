@@ -162,3 +162,35 @@ def test_nikl_manifest_schema_rejects_contradictory_retrieval_provenance():
         }
     )
     assert list(validator.iter_errors(local_import_with_unchecked_robots_misreported))
+
+
+def test_nikl_manifest_schema_accepts_valid_html_media_types_and_rejects_near_misses():
+    schema = json.loads((ROOT / "schemas" / "nikl-source-manifest.schema.json").read_text(encoding="utf-8"))
+    validator = Draft202012Validator(schema, format_checker=FormatChecker())
+
+    xhtml = _valid_manifest()
+    xhtml["source"]["contentType"] = "application/xhtml+xml; charset=utf-8"
+    assert not list(validator.iter_errors(xhtml))
+
+    local_html = _valid_manifest()
+    source = local_html["source"]
+    source.update(
+        {
+            "retrievalMode": "local-html-import",
+            "retrievedAt": None,
+            "importedAt": "2026-10-21T19:30:00.000Z",
+            "httpStatus": None,
+            "contentType": "text/html; local-file",
+            "userAgent": None,
+            "robots": {
+                "url": "https://www.korean.go.kr/robots.txt",
+                "status": None,
+                "decision": "not_checked_local_import",
+            },
+        }
+    )
+    assert not list(validator.iter_errors(local_html))
+
+    invalid = _valid_manifest()
+    invalid["source"]["contentType"] = "application/xhtmlXxml"
+    assert list(validator.iter_errors(invalid))

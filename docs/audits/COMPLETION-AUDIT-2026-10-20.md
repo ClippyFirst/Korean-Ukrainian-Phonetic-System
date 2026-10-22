@@ -369,3 +369,10 @@ The official NIKL Standard Pronunciation Rules §1 commentary explicitly gives `
 The official NIKL Q&A `qna_seq=321743` contrasts `칡과[칙꽈]` with `읽고[일꼬]`, confirming that the verbal-stem ㄺ + ㄱ exception must not be generalized to every ㄺ-final word. The fixed fixture now explicitly labels the pinned JavaScript-port divergences `넓죽하다: 널쭈카다 ≠ 넙쭈카다` and `읽고: 익꼬 ≠ 일꼬`. The new regression verifies the source register and evidence labels without changing production output.
 
 Status: `DONE_VERIFIED` for provenance/differential bookkeeping after CI; `BLOCKED_SPECIALIST_ADJUDICATION` for all 20 IPA cases; `BLOCKED / rights` for Q&A item-level KOGL marking. Korean Hangul surface evidence is not IPA gold or Ukrainian-target validation.
+
+
+### NIKL manifest provenance and media-type schema hardening — 2026-10-22
+
+PR #200 added conditional schema invariants and negative tests so a manifest cannot misrepresent a local HTML import as a live HTTP fetch or vice versa; exact-head CI passed. Follow-up PR #202 corrects an over-escaped, unanchored content-type regex that rejected valid XHTML media types and adds positive/negative schema cases. Its exact-head verification remains pending until CI reports success.
+
+Status: `DONE_VERIFIED` for PR #200's provenance invariants; `PARTIAL` for the PR #202 media-type correction pending exact-head CI. Neither change claims that NIKL direct crawling succeeded; the live source blocker remains HTTP 403 and the item-level reuse-mark blocker remains open.
