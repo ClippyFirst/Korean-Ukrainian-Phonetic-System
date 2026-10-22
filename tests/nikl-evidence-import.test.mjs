@@ -67,6 +67,7 @@ test("rejects non-official hosts, unsupported paths, and missing exact page iden
     "https://www.korean.go.kr/admin/anything.do?qna_seq=1",
     "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do",
     "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=0",
+    "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=317202&unexpected=1",
     "http://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=1",
   ]) {
     await writeFile(input, JSON.stringify({ sources: [{ sourceId: "SRC-NIKL-QNA-1", url, inputHtml: "page.html" }] }), "utf8");
@@ -86,7 +87,7 @@ test("rejects duplicate source IDs and duplicate canonical URLs", async t => {
   await assert.rejects(buildEvidenceImport(input, output), /Duplicate sourceId/u);
   await writeFile(input, JSON.stringify({ sources: [
     { sourceId: "SRC-NIKL-QNA-1", url: QNA, inputHtml: "page.html" },
-    { sourceId: "SRC-NIKL-QNA-2", url: QNA, inputHtml: "page.html" },
+    { sourceId: "SRC-NIKL-QNA-2", url: "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=317202&pageIndex=1&mn_id=216", inputHtml: "page.html" },
   ] }), "utf8");
   await assert.rejects(buildEvidenceImport(input, output), /Duplicate canonical source URL/u);
 });
