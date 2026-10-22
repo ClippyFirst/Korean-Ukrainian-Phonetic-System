@@ -35,13 +35,13 @@ Use this helper when the official NIKL pages open in a human's ordinary browser 
 
 ## Generate a ready-to-fill template from the current source register
 
-The source register currently contains **38 unreviewed official NIKL Q&A/curated FAQ citations** that match the batch importer's page contract. Generate a template with stable source IDs and deterministic local filenames:
+The source register currently contains **41 unreviewed official HTML citations** that match the batch importer's page contract: 38 NIKL Q&A/curated FAQ pages and 3 Korean Basic Dictionary entries. Generate a template with stable source IDs and deterministic local filenames:
 
 ```sh
 npm run template:nikl-evidence
 ```
 
-This writes `reports/nikl/saved-pages-import.template.json` with `saved-pages/SRC-NIKL-….html` input paths. Save each corresponding official page through ordinary browser access into `reports/nikl/saved-pages/`, then use the generated JSON as the `--input-manifest`:
+This writes `reports/nikl/saved-pages-import.template.json` with deterministic `saved-pages/SRC-….html` input paths. Save each corresponding official page through ordinary browser access into `reports/nikl/saved-pages/`, then use the generated JSON as the `--input-manifest`:
 
 ```sh
 npm run import:nikl-evidence -- --input-manifest reports/nikl/saved-pages-import.template.json --output reports/nikl/evidence-import-manifest.json
