@@ -314,5 +314,115 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "retrievalMode": {
+                "const": "direct-http"
+              }
+            },
+            "required": [
+              "retrievalMode"
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "retrievedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "importedAt": {
+                "type": "null"
+              },
+              "httpStatus": {
+                "type": "integer",
+                "minimum": 200,
+                "maximum": 299
+              },
+              "userAgent": {
+                "type": "string",
+                "minLength": 1
+              },
+              "robots": {
+                "properties": {
+                  "status": {
+                    "type": "integer",
+                    "minimum": 200,
+                    "maximum": 599
+                  },
+                  "decision": {
+                    "enum": [
+                      "allowed",
+                      "no_robots_file"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "properties": {
+              "retrievalMode": {
+                "const": "local-html-import"
+              }
+            },
+            "required": [
+              "retrievalMode"
+            ]
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "properties": {
+          "source": {
+            "properties": {
+              "retrievedAt": {
+                "type": "null"
+              },
+              "importedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "httpStatus": {
+                "type": "null"
+              },
+              "userAgent": {
+                "type": "null"
+              },
+              "robots": {
+                "properties": {
+                  "status": {
+                    "type": "null"
+                  },
+                  "decision": {
+                    "const": "not_checked_local_import"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
