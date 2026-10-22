@@ -256,3 +256,12 @@ This section supersedes any earlier handoff statement that stops at batch 26. Th
 - Expected inventory after batch 28: **43/60** content-checked (28 direct target-form/official-rule-example, 1 official dictionary, 9 partial, 5 contextual-example-only); **17 citation-only/unreviewed** (13 Q&A/FAQ, one dictionary, three PDFs); **14** eligible HTML imports.
 - Task ledger: DONE_VERIFIED after exact-head CI — official answer, title/date, direct source claim, source register, and queue tests. BLOCKED / rights — item-level KOGL mark remains unverified. TODO — review remaining 17 citations. BLOCKED_SPECIALIST_ADJUDICATION — independent broad-IPA gold and Ukrainian-target review remain outstanding.
 - Direct NIKL fetch remains HTTP 403 in CI; no live manifest is claimed and no access-control bypass is attempted. Release remains deployed research preview / partial prototype.
+
+
+### Batch-28 exact-head verification checkpoint
+
+- Tested implementation/test head: 8e7de2bb1178fb2c2af9516171e26e499e232c8b.
+- [System verification CI 39836748590](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39836748590) passed **1,165/1,165 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
+- Direct NIKL fetch again returned HTTP 403 and was explicitly classified BLOCKED; no live manifest was emitted.
+- Two known JS/Python surface differences (넓죽하다, 읽고) remain diagnostic-only and lack independent IPA adjudication.
+- The next commit only adds this verification close-out; exact-head CI is rerun before merge.
