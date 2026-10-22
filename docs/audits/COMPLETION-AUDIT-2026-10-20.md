@@ -704,3 +704,5 @@ The official indexed answer “낱낱이 음운변동” (question 2025-04-28; a
 - Inventory: 38/60 citations content-checked (24 direct, 9 partial, 5 contextual-example-only); 22 citation-only/unreviewed remain (18 Q&A/FAQ pages, one dictionary entry, three PDFs). HTML intake queue: 19 pages.
 - Korean surface, IPA, and Ukrainian target fields were preserved; only source/evidence wording and test coverage changed.
 - Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
+
+- Batch 23 exact tested head: a78d9806ffecbe07af7edf4a38ee1a0cbeee0b61; [system CI](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39832112640) passed 1,150/1,150 Node tests, Vite build, Python regression/data-integrity, and source-register checks. Live NIKL fetch remains BLOCKED by HTTP 403.
