@@ -74,19 +74,22 @@ test('master passage is passed through the browser engine and emits a reproducib
 
   console.log('NIKL_MASTER_PASSAGE_ENGINE_REPORT=' + JSON.stringify({
     ...report,
-    strictIpaFullText: wholeStrict.ipa,
-    strictUkrainianFullText: wholeStrict.ukrainian,
-    practicalIpaFullText: wholePractical.ipa,
-    practicalUkrainianFullText: wholePractical.ukrainian,
-    tokenTriples: tokens.map((token) => {
-      const result = engine.convert(token);
-      return { korean: token, ipa: result.ipa, ukrainian: result.ukrainian, status: result.status, issues: result.issues };
-    }),
     unresolved: report.unresolved.slice(0, 160),
     issues: report.issues.slice(0, 160),
     unresolvedTruncated: report.unresolved.length > 160,
     issuesTruncated: report.issues.length > 160,
   }));
+  for (const [label, value] of [
+    ['STRICT_IPA', wholeStrict.ipa],
+    ['STRICT_UKRAINIAN', wholeStrict.ukrainian],
+    ['PRACTICAL_IPA', wholePractical.ipa],
+    ['PRACTICAL_UKRAINIAN', wholePractical.ukrainian],
+  ]) {
+    const chunkSize = 2400;
+    for (let offset = 0, index = 0; offset < value.length; offset += chunkSize, index += 1) {
+      console.log('NIKL_OUTPUT_' + label + '_CHUNK_' + String(index).padStart(3, '0') + '=' + JSON.stringify(value.slice(offset, offset + chunkSize)));
+    }
+  }
 
   assert.ok(tokens.length > 500, 'the integrated passage should remain a substantial stress corpus');
   assert.ok(report.lexicalHits > 30, 'the passage must exercise many existing source-backed lexical entries');
