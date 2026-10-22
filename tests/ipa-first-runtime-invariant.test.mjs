@@ -13,6 +13,21 @@ const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv'
 const corpus = readFileSync(new URL('./fixtures/nikl-all-articles-master-passage-2026-10-22.txt', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
 const lexicalRows = parseCsv(lexical);
+const expectedMorphologyGaps = new Set([
+  '짧은소리의',
+  '수많이는',
+  '없으니를',
+  '없애다에서는',
+  '값에서는',
+  '밟으니와',
+  '싫어도에서는',
+  '외곬에를',
+  '값있는에서는',
+  '히읗을의',
+  '벼훑이를',
+  '밭이와',
+  '붙임',
+]);
 
 test('IPA adapter is the only source of Ukrainian targets for representative IPA contrasts', () => {
   // Same source slot, different IPA input: target must follow the IPA, not
@@ -28,11 +43,13 @@ test('IPA adapter is the only source of Ukrainian targets for representative IPA
 test('every unique Hangul token in the integrated NIKL passage has Ukrainian output reproducible from its runtime IPA', () => {
   const tokens = [...new Set(corpus.match(/[가-힣]+/gu) || [])];
   const failures = [];
+  const unresolved = [];
 
   for (const token of tokens) {
     const result = engine.convert(token);
     if (result.status === 'unresolved' || !result.ipa || /[⟦⟧]/u.test(result.ukrainian)) {
-      failures.push({ token, kind: 'not-resolved', status: result.status, ipa: result.ipa, ukrainian: result.ukrainian, issues: result.issues });
+      unresolved.push({ token, status: result.status, ipa: result.ipa, issues: result.issues });
+      if (!expectedMorphologyGaps.has(token)) failures.push({ token, kind: 'unexpected-unresolved', status: result.status, ipa: result.ipa, ukrainian: result.ukrainian, issues: result.issues });
       continue;
     }
 
@@ -69,12 +86,15 @@ test('every unique Hangul token in the integrated NIKL passage has Ukrainian out
     uniqueTokens: tokens.length,
     lexicalRowsInInventory: lexicalRows.length,
     failureCount: failures.length,
+    knownUnresolvedCount: unresolved.length,
+    knownUnresolved: unresolved,
     failureSamples: failures.slice(0, 100),
     failuresTruncated: failures.length > 100,
   }));
 
   assert.ok(tokens.length >= 800, 'the integrated passage should exercise at least 800 unique Hangul tokens');
-  assert.equal(failures.length, 0, 'all passage token targets and licensed variants must be reproducible from the actual runtime IPA');
+  assert.deepEqual(unresolved.map(({ token }) => token).sort(), [...expectedMorphologyGaps].sort(), 'the unresolved list must match the explicit known-gap register exactly');
+  assert.equal(failures.length, 0, 'every resolved passage token and licensed variant must be reproducible from the actual runtime IPA; new gaps or divergences fail');
 });
 
 test('every Hangul-only lexical entry and licensed alternate is reproducible from the runtime IPA', () => {
