@@ -17,7 +17,7 @@ test('qna_seq=311728 directly corrects the proposed 공업용 reading', () => {
   assert.match(source.version_or_date, /Question 2025-03-21; answer 2025-03-26/u);
   assert.match(source.coverage, /Direct answer: 공업용\[공엄뇽\]/u);
   assert.match(source.coverage, /question target/u);
-  assert.match(source.integration_status, /Direct attestation for the exact lexical target/u);
+  assert.match(source.integration_status, /corrects the question premise and directly gives the standard reading/u);
   assert.match(source.limitations_or_next_action, /Item-level KOGL marking remains unverified/u);
 });
 
