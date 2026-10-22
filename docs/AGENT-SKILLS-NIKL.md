@@ -73,4 +73,15 @@ External project licenses and site reuse terms must be checked again at implemen
 
 ## Scope and current limitations
 
-These files are agent workflow instructions, not the crawler implementation; the executable collector is `scripts/nikl-norm-crawler.mjs`. A passing parser/schema test does not prove a live scrape, complete fresh source inventory, or linguistic validation. On main at `154284febf08ef33c7483511fc65934441f7cfb2`, post-merge CI passed 1,073/1,073 Node tests, Vite build, Python 3.11–3.13 tests, corpus artifact checks, Pages HTTP smoke, and live Chromium practical-mode smoke. The official live 30-article collector remains blocked by HTTP 403; no bypass was attempted. The 18-row surface fixture has 17 direct NIKL comparators and one rule-derived case (`숲이`); independent IPA gold remains 0/18. Exact-head CI for this documentation update must still pass before merge.
+These files are agent workflow instructions, not the crawler implementation; the executable collector is `scripts/nikl-norm-crawler.mjs`. A passing parser/schema test does not prove a live scrape, complete fresh source inventory, or linguistic validation. The official live 30-article collector remains blocked by HTTP 403; no bypass was attempted. The 18-row surface fixture has 17 direct NIKL comparators and one rule-derived case (`숲이`); independent IPA gold remains 0/18.
+
+
+## Evidence-scope refinements from the 2026-10-22 review
+
+The evidence-audit and rule-coverage skills now explicitly distinguish: direct target-form attestation; a quoted official-rule example that is not the question target; partial lemma/paradigm support; an ordinary example spelling without pronunciation notation; a rule-derived form; and unresolved evidence. A source page may support different claims at different strengths, so status belongs to each claim, not to the page as a whole.
+
+The skills also require exact attribution of the source instrument. In particular, a citation to `한글맞춤법` must not be silently relabeled as a citation to `표준 발음법` merely because the article numbers or outcomes look similar. A project-level crosswalk must be stated as such.
+
+Latest evidence inventory: **16/60** newly inventoried lexical citations content-checked (9 direct for target forms, 2 partial, 5 contextual-example-only; 44 remain citation-only/unreviewed). Page-level KOGL marking, independent broad-IPA gold, and Ukrainian-target adjudication remain unresolved.
+
+The most recent exact-head verification on PR #213 head `361e1511d327e39733eb94e6de4b1971f589c2c0` passed **1,099/1,099 Node tests**, Vite build, Python regression/data-integrity tests on Python 3.11–3.13, system verification, and master-table/research-corpus checks. The squash-merged main commit is `e12167324f0f1aa6ba088f6d423b16afaac98c26`; its post-merge tests, system verification, and corpus checks passed. GitHub Pages deployment subsequently completed successfully in [post-merge run 39772281087](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39772281087). The official live 30-article collector remains blocked by HTTP 403; no bypass was attempted. The 18-row surface fixture remains 17 direct NIKL comparators plus one rule-derived case (`숲이`), with independent IPA gold still 0/18.
