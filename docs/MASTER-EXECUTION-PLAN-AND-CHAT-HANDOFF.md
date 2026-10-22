@@ -246,3 +246,13 @@ This section supersedes any earlier handoff statement that stops at batch 26. Th
 - Direct NIKL fetch again returned HTTP 403 and was explicitly classified BLOCKED; no live manifest was emitted.
 - The two known JS/Python surface differences (넓죽하다, 읽고) remain diagnostic-only and lack independent IPA adjudication.
 - The next commit only adds this verification close-out; final-head CI is rerun before merge.
+
+
+## Continuation checkpoint — NIKL Q&A 326601 direct attestation, batch 28 (2026-10-22)
+
+- Starting main: 2d561fcd7907514c1787ddc27d2b0695d4fa95cd (batch 27, qna_seq=318279, is merged).
+- Official indexed NIKL Q&A [qna_seq=326601](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=326601), “몇으로 발음” (question 2026-01-18; answer 2026-01-20), directly gives 몇으로[며츠로] and explains Standard Pronunciation Rules §13: final ㅊ moves to the onset of vowel-initial 으로.
+- The lexical note now records direct source support and the IPA boundary. Korean surface, project IPA, and Ukrainian target remain unchanged.
+- Expected inventory after batch 28: **43/60** content-checked (28 direct target-form/official-rule-example, 1 official dictionary, 9 partial, 5 contextual-example-only); **17 citation-only/unreviewed** (13 Q&A/FAQ, one dictionary, three PDFs); **14** eligible HTML imports.
+- Task ledger: DONE_VERIFIED after exact-head CI — official answer, title/date, direct source claim, source register, and queue tests. BLOCKED / rights — item-level KOGL mark remains unverified. TODO — review remaining 17 citations. BLOCKED_SPECIALIST_ADJUDICATION — independent broad-IPA gold and Ukrainian-target review remain outstanding.
+- Direct NIKL fetch remains HTTP 403 in CI; no live manifest is claimed and no access-control bypass is attempted. Release remains deployed research preview / partial prototype.
