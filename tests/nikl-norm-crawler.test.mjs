@@ -196,7 +196,7 @@ test("robots parser gives a matching product token precedence over wildcard grou
 test("robots parser handles wildcard segments and terminal dollar anchors", () => {
   const robots = [
     "User-agent: *",
-    "Disallow: /private/*/secret$",
+    "Disallow: /kornorms/private/*/secret$",
   ].join("\n");
   assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/a/secret"), false);
   assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/a/secret/more"), true);
