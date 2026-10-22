@@ -8,7 +8,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { officialSourceUrl } from "./nikl-evidence-import.mjs";
 
-function parseCsvRecords(text) {
+export function parseCsvRecords(text) {
   const rows = [];
   let row = [], field = "", quoted = false, afterQuote = false;
   const input = String(text).replace(/^\uFEFF/u, "").replace(/\r\n?/gu, "\n");
