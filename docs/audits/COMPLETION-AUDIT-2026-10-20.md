@@ -632,3 +632,24 @@ Q&A qna_seq=279931 (“'ㄴ' 첨가”, question 2023-09-11, answer 2023-09-13) 
 - Source-register count: 34/60 citations content-checked (21 direct, 8 partial, 5 contextual-example-only); 26 citation-only/unreviewed remain (22 Q&A/FAQ pages, one Korean Basic Dictionary entry, three PDFs). The ordinary-browser HTML import queue is 23 pages (22 Q&A/FAQ + one dictionary entry).
 - Regression coverage checks source identity, exact question/answer scope, retention of the existing Korean/IPA/Ukrainian fields, the 26-source backlog, and exclusion of the reviewed source from the generated import queue.
 - No runtime Korean pronunciation, IPA, or Ukrainian target values changed. The bracketed Korean notation is not IPA. Item-level KOGL rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
+
+
+## Batch 22: NIKL Q&A 317202 claim-scope review — 2026-10-22
+
+### Primary-source findings
+The official indexed NIKL Q&A page “홑이불” (qna_seq=317202; question 2025-06-28, answer 2025-06-30) directly states 홑이불[혼니불] and attributes the pronunciation to ㄴ-insertion and nasal assimilation. The project's lexical input is 홑이불을; the answer does not separately attest that inflected form.
+
+### Implementation and verification scope
+- Narrowed the lexical evidence note from “NIKL directly confirms 홑이불[혼니불]” to a lemma-level attestation and rule-derived particle attachment under §13. Korean surface, project IPA, and Ukrainian target values were preserved.
+- Updated the source register to partial_lemma_application_support_2026-10-22; item-level KOGL mark remains unverified.
+- Added a batch report and regression tests; removed qna_seq=317202 from the generated HTML intake queue; updated the live backlog checks and made the batch-19 count historical.
+- No production code, runtime pronunciation, IPA, or Ukrainian target changed.
+
+### Task ledger
+- DONE_VERIFIED after exact-head CI: source claim scope, source-register integrity, current queue count, and all regression/build checks pass.
+- PARTIAL: direct evidence covers 홑이불, not the exact input 홑이불을.
+- BLOCKED / rights: page-level KOGL marking not visually verified.
+- TODO: review remaining 25 citation-only sources; three PDFs require the separate saved-PDF workflow.
+- BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
+
+The system remains a deployed research preview / partial prototype, not release-ready.
