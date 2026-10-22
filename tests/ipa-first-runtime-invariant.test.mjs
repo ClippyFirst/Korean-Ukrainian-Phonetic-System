@@ -77,6 +77,51 @@ test('every unique Hangul token in the integrated NIKL passage has Ukrainian out
   assert.equal(failures.length, 0, 'all passage token targets and licensed variants must be reproducible from the actual runtime IPA');
 });
 
+test('every Hangul-only lexical entry and licensed alternate is reproducible from the runtime IPA', () => {
+  const rows = lexicalRows.filter((row) => /^[가-힣]+$/u.test(row.input));
+  const failures = [];
+
+  for (const row of rows) {
+    const result = engine.convert(row.input);
+    const adapted = ipaTargetForSource(row.input, result.ipa);
+    if (result.status === 'unresolved' || adapted.unknown || adapted.text !== result.ukrainian) {
+      failures.push({
+        input: row.input,
+        kind: 'primary',
+        status: result.status,
+        ipa: result.ipa,
+        runtimeUkrainian: result.ukrainian,
+        adapterUkrainian: adapted.text,
+        unknownIpa: adapted.unknown,
+        issues: result.issues,
+      });
+    }
+    for (const variant of result.variants || []) {
+      const variantAdapted = ipaTargetForSource(row.input, variant.ipa);
+      if (variantAdapted.unknown || variantAdapted.text !== variant.ukrainian) {
+        failures.push({
+          input: row.input,
+          kind: 'variant',
+          ipa: variant.ipa,
+          runtimeUkrainian: variant.ukrainian,
+          adapterUkrainian: variantAdapted.text,
+          unknownIpa: variantAdapted.unknown,
+        });
+      }
+    }
+  }
+
+  console.log('ALL_LEXICAL_IPA_FIRST_REPORT=' + JSON.stringify({
+    hangulOnlyLexicalRows: rows.length,
+    failureCount: failures.length,
+    failureSamples: failures.slice(0, 100),
+    failuresTruncated: failures.length > 100,
+  }));
+
+  assert.ok(rows.length >= 600, 'the test should cover the curated Hangul-only lexical inventory');
+  assert.equal(failures.length, 0, 'every runtime lexical target and licensed variant must derive from its runtime IPA');
+});
+
 test('IPA-derived targets preserve whitespace and align multiword inputs without guessing missing IPA', () => {
   assert.deepEqual(ipaTargetForSource('국립 국어원', 'kuŋ nim k͈u ɡʌ wʌn'), {
     text: 'куннім куґовон',
