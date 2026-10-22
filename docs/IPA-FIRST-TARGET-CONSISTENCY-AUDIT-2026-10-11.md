@@ -94,3 +94,12 @@ The earlier 637-row model-wide consistency check compared stored IPA and Ukraini
 The bypass is removed in PR #224. Stored lexical Ukrainian forms are now exposed as `lexical_target_reference` with their original status and a comparison state; they do not change `ukrainian_orthography`. When the separate `ClippyFirst/Ukrainian-Phonetic-Inventory` package (expected version 0.8.0) is unavailable, the native Python engine returns unresolved target output instead of silently using the lexical reference. No second copy of the Ukrainian inventory was added.
 
 Verification at tested PR head `7aed05ee382307a8c6c67b413ca103f719e3a23f`: **1,136/1,136 Node tests passed**, Vite build passed, Python 3.11/3.12/3.13 passed, and optional g2pK integration passed. The final documentation updates in this PR are pending a rerun of CI. This correction enforces the architecture boundary; it does not establish independent IPA gold or validate the Ukrainian target model.
+
+### Follow-up: do not select an unmapped feature-nearest target — 2026-10-22
+
+A further review of the Python target adapter found a second, adjacent risk: its candidate list includes target inventory phonemes with mapping_status=unmapped. Feature distance alone is not evidence for an IPA-to-Ukrainian correspondence, and an unmapped row could otherwise win the heuristic ranking.
+
+- _select_target() now selects only candidates with an explicit mapping_id and a renderable target grapheme. It preserves ranking among licensed candidates; if a segment has no licensed candidate, the whole target remains unresolved.
+- Added regressions for skipping an unmapped feature-nearest candidate in favor of the next mapped candidate, and returning unresolved when all candidates lack an explicit mapping.
+- Lexical-target tests now treat stored Ukrainian strings as audit references only. Minimal CI intentionally does not install the external UPI package; there, expected behavior is ukrainian_orthography=null, target_status=unresolved, and lexical_target_comparison=unavailable_without_ipa_target, not a lexical fallback.
+- This is a stricter evidence gate, not a claim that heuristic ranking is linguistically validated. Mapping rows with explicit IDs still need target-language review; independent broad-IPA gold and Ukrainian-target adjudication remain open.
