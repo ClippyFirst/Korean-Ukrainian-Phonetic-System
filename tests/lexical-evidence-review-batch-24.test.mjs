@@ -17,7 +17,7 @@ test('qna_seq=313717 directly attests the exact lexical target 붙이다', () =>
   assert.match(source.version_or_date, /Question 2025-04-23; answer 2025-04-24/u);
   assert.match(source.coverage, /Direct answer: 붙이다\[부치다\]/u);
   assert.match(source.authority_or_role, /§17/u);
-  assert.match(source.integration_status, /Direct attestation for the exact lexical target/u);
+  assert.match(source.integration_status, /Exact target and rule explanation are present/u);
   assert.match(source.limitations_or_next_action, /Item-level KOGL marking remains unverified/u);
 });
 
