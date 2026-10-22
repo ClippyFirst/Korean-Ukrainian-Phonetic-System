@@ -211,17 +211,38 @@ export function robotsPathAllowed(robotsText, targetUrl, userAgent = USER_AGENT)
     }
   }
   if (group.agents.length) groups.push(group);
+
   const agentToken = userAgent.toLowerCase().split(/[\s/]/)[0];
-  const rules = groups.filter((g) => g.agents.includes("*") || g.agents.some((agent) => agent !== "*" && agentToken.includes(agent)))
-    .flatMap((g) => g.rules);
+  const specificGroups = groups.filter((candidate) =>
+    candidate.agents.some((agent) => agent !== "*" && agentToken.includes(agent))
+  );
+  const specificLength = specificGroups.reduce((longest, candidate) =>
+    Math.max(longest, ...candidate.agents.filter((agent) => agent !== "*" && agentToken.includes(agent)).map((agent) => agent.length)), 0);
+  // A specific product-token group takes precedence over the wildcard group.
+  // Multiple groups for the same most-specific token are combined.
+  const selectedGroups = specificLength > 0
+    ? specificGroups.filter((candidate) => candidate.agents.some((agent) => agent !== "*" && agent.length === specificLength && agentToken.includes(agent)))
+    : groups.filter((candidate) => candidate.agents.includes("*"));
+  const rules = selectedGroups.flatMap((candidate) => candidate.rules);
   const url = new URL(targetUrl);
   const targetPath = url.pathname + url.search;
-  const matching = rules.map((rule) => ({ ...rule, prefix: rule.path.replace(/\*.*$/, "") }))
-    .filter((rule) => targetPath.startsWith(rule.prefix))
-    .sort((a, b) => b.prefix.length - a.prefix.length || (a.type === "allow" ? -1 : 1));
+
+  function matchesRule(rulePath) {
+    let pattern = "^";
+    for (let index = 0; index < rulePath.length; index++) {
+      const character = rulePath[index];
+      if (character === "*") pattern += ".*";
+      else if (character === "$" && index === rulePath.length - 1) pattern += "$";
+      else pattern += character.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+    return new RegExp(pattern).test(targetPath);
+  }
+
+  const matching = rules.filter((rule) => matchesRule(rule.path))
+    .map((rule) => ({ ...rule, specificity: rule.path.replace(/\*/g, "").length }))
+    .sort((a, b) => b.specificity - a.specificity || (a.type === "allow" ? -1 : 1));
   return matching.length === 0 || matching[0].type === "allow";
 }
-
 export function assertAllowedSourceUrl(url) {
   const parsed = new URL(url);
   if (parsed.protocol !== "https:") throw new Error("Only HTTPS official source URLs are allowed.");
