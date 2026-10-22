@@ -265,14 +265,20 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   const originalHangul=units.filter(u=>u.type==='hangul').map(u=>u.char).join('');
   // Only expose surface when contextual rules changed the Hangul form (e.g. 독립문→동님문).
   // Unchanged general forms stay empty so lexical vs general remains distinguishable.
+  // A single Hangul token with unresolved morphology must not expose a
+  // partial IPA string or a plausible-looking partial Ukrainian transcription.
+  // Keep the trace and diagnostics for research, but fail closed at the public
+  // result boundary. Phrase conversion still preserves surrounding resolved
+  // words because the phrase path recursively converts each token.
+  const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
   return{
     source:text,
     surfaceHangul:recomposed===originalHangul?'':recomposed,
-    ukrainian:output.join(''),
-    ipa:renderStructured(units,ipa,' '),
+    ukrainian:unresolvedWholeHangulToken?'':output.join(''),
+    ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,' '),
     analysis:renderStructured(units,analysis,' · '),
     trace,
-    variants:genericVowelVariants(text,units,originalUnits,ipa,output,status),
+    variants:unresolvedWholeHangulToken?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status),
     issues,
     status
   };
