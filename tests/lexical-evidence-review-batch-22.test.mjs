@@ -24,9 +24,8 @@ test("qna_seq=312379 directly attests 얇실하다 and separately quotes officia
   assert.match(byInput('값지다').rule_notes, /NIKL §23 example \[갑찌다\]/u);
 });
 
-test("batch 22 reconciles the live citation-only queue without changing target values", () => {
-  const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 23);
+test("batch 22 records its historical backlog without freezing the live queue", () => {
+  assert.equal(source.review_status, 'direct_answer_and_quoted_rule_examples_2026-10-22');
   assert.match(report, /37\/60/);
   assert.match(report, /23 direct target-form attestations, 9 partial, 5 contextual-example-only/);
   assert.match(report, /23.*19 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
