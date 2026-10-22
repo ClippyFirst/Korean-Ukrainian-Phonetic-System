@@ -692,3 +692,5 @@ The official indexed answer “표준발음과 음운변동을 알려주세요�
 - Inventory: 37/60 citations content-checked (23 direct, 9 partial, 5 contextual-example-only); 23 citation-only/unreviewed remain (19 Q&A/FAQ pages, one dictionary entry, three PDFs). HTML intake queue: 20 pages.
 - Existing lexical notes and output fields were preserved. Regression coverage checks source identity, mixed scope, and current queue counts.
 - Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
+
+- Batch 22 exact tested head: e79d7c2b2fc9cef9af8e98f51ba702e8b67c2d67; [system CI](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39830641838) passed 1,147/1,147 Node tests, Vite build, Python regression/data-integrity, and source-register checks. Live NIKL fetch remains BLOCKED by HTTP 403.
