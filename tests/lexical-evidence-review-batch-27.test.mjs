@@ -17,7 +17,7 @@ test('qna_seq=318279 is classified as an embedded official dictionary attestatio
   assert.match(source.version_or_date, /Question 2025-07-14; answer 2025-07-15/u);
   assert.match(source.coverage, /embedded dictionary entry gives 찾아가다\[차자가다\]/u);
   assert.match(source.integration_status, /OFFICIAL_DICTIONARY_ATTESTATION/u);
-  assert.match(source.limitations_or_next_action, /Item-level reuse rights remain unverified/u);
+  assert.match(source.limitations_or_next_action, /item-level reuse rights remain unverified/u);
 });
 
 test('찾아가다 keeps its dictionary surface, IPA, and Ukrainian target without attributing §13 analysis to the Q&A', () => {
