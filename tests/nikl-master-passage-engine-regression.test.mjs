@@ -74,6 +74,14 @@ test('master passage is passed through the browser engine and emits a reproducib
 
   console.log('NIKL_MASTER_PASSAGE_ENGINE_REPORT=' + JSON.stringify({
     ...report,
+    strictIpaFullText: wholeStrict.ipa,
+    strictUkrainianFullText: wholeStrict.ukrainian,
+    practicalIpaFullText: wholePractical.ipa,
+    practicalUkrainianFullText: wholePractical.ukrainian,
+    tokenTriples: tokens.map((token) => {
+      const result = engine.convert(token);
+      return { korean: token, ipa: result.ipa, ukrainian: result.ukrainian, status: result.status, issues: result.issues };
+    }),
     unresolved: report.unresolved.slice(0, 160),
     issues: report.issues.slice(0, 160),
     unresolvedTruncated: report.unresolved.length > 160,
