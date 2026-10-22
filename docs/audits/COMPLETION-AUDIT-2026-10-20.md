@@ -795,3 +795,13 @@ The system remains a deployed research preview / partial prototype, not release-
 - [System verification CI 39834567015](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39834567015) passed **1,159/1,159 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
 - Direct official NIKL access remains HTTP 403 and is classified BLOCKED; no live manifest was produced.
 - Two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
+
+
+## Final consolidation checkpoint — 2026-10-22
+
+- Mainline evidence correction PR #243 is merged. Duplicate PRs #241 and #242 were closed after their overlapping change was integrated; no open PRs remained at consolidation.
+- Implementation head verified by CI: `26ed48842a4f475ecd1a5eb2f9f92af7547ff9af`. [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39834874376) and [test workflow](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39834874589) passed. Node suite: 1,159 passed / 0 failed; Vite build passed; Python regression/data-integrity passed.
+- The collector's live-source step is not evidence of successful retrieval: direct NIKL access remains HTTP 403 in prior diagnostic runs. The workflow must continue to label the live inventory BLOCKED and must not emit a manifest from a failed request.
+- Current citation inventory for the latest merged correction: 41/60 content-checked; 19 citation-only/unreviewed remain (15 Q&A/FAQ pages, one Korean Basic Dictionary entry, three PDFs); 16 eligible HTML imports remain. This citation-review inventory is distinct from the 30-article normative-rule inventory.
+- Remaining acceptance gates: (1) claim-level review of all 19 remaining citations, (2) human verification of item-level KOGL reuse markings, (3) independent broad-IPA gold and Ukrainian-target review, including adjudication of `넓죽하다` and `읽고`, and (4) a successful current Pages deployment and master-table/corpus artifact run. The latter two workflows were still queued/pending at the time of this checkpoint and are not marked as passed here.
+- Release classification: **deployed research preview / partial prototype; not release-ready**. Passing software tests validates the current implementation and its contracts, not every linguistic output or the missing empirical evidence.
