@@ -35,7 +35,7 @@ Use this helper when the official NIKL pages open in a human's ordinary browser 
 
 ## Generate a ready-to-fill template from the current source register
 
-The source register currently contains **41 unreviewed official HTML citations** that match the batch importer's page contract: 38 NIKL Q&A/curated FAQ pages and 3 Korean Basic Dictionary entries. Generate a template with stable source IDs and deterministic local filenames:
+The source register currently contains **39 unreviewed official HTML citations** that match the batch importer's page contract: 38 NIKL Q&A/curated FAQ pages and the remaining unreviewed Korean Basic Dictionary entry. Generate a template with stable source IDs and deterministic local filenames:
 
 ```sh
 npm run template:nikl-evidence
