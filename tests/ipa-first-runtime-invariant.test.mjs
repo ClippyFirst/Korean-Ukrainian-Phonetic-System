@@ -29,6 +29,16 @@ const expectedMorphologyGaps = new Set([
   '붙임',
 ]);
 
+test('unresolved whole Hangul tokens withhold partial IPA and Ukrainian targets', () => {
+  for (const token of expectedMorphologyGaps) {
+    const result = engine.convert(token);
+    assert.equal(result.status, 'unresolved', token + ': must remain explicitly unresolved');
+    assert.equal(result.ipa, '', token + ': partial IPA must not be presented as a complete pronunciation');
+    assert.equal(result.ukrainian, '', token + ': partial Ukrainian output must be withheld');
+    assert.deepEqual(result.variants, [], token + ': unresolved input must not expose derived target variants');
+  }
+});
+
 test('IPA adapter is the only source of Ukrainian targets for representative IPA contrasts', () => {
   // Same source slot, different IPA input: target must follow the IPA, not
   // reconstruct a Ukrainian result from the Korean spelling.
@@ -48,8 +58,9 @@ test('every unique Hangul token in the integrated NIKL passage has Ukrainian out
   for (const token of tokens) {
     const result = engine.convert(token);
     if (result.status === 'unresolved' || !result.ipa || /[⟦⟧]/u.test(result.ukrainian)) {
-      unresolved.push({ token, status: result.status, ipa: result.ipa, issues: result.issues });
+      unresolved.push({ token, status: result.status, ipa: result.ipa, ukrainian: result.ukrainian, issues: result.issues });
       if (!expectedMorphologyGaps.has(token)) failures.push({ token, kind: 'unexpected-unresolved', status: result.status, ipa: result.ipa, ukrainian: result.ukrainian, issues: result.issues });
+      if (result.ipa !== '' || result.ukrainian !== '') failures.push({ token, kind: 'unresolved-output-not-withheld', status: result.status, ipa: result.ipa, ukrainian: result.ukrainian });
       continue;
     }
 
