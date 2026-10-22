@@ -476,3 +476,31 @@ Current main checkpoint: `d4099c0aa9bda8d695826f6e2c4eca7f395fc778`. Merged lexi
 Current lexical citation inventory: **16/60** newly inventoried pages content-checked (9 direct for target forms, 2 partial, 5 contextual-example-only); **44 citation-only/unreviewed**. Item-level KOGL markings remain unverified. Official live 30-article collection is blocked by HTTP 403; the safe local HTML import route remains available if an authorized human can save the official page normally. Firecrawl retrieval was unavailable because the connected account had insufficient credits, and several other public-page requests returned cache misses; these failures were not treated as source evidence.
 
 Release disposition remains research preview/partial prototype. The 18-row surface fixture has 17 direct NIKL comparators and one rule-derived case (`숲이`); independent broad-IPA gold remains 0/18. Remaining acceptance criteria: inspect the 44 exact pages, verify item-level reuse terms, obtain independent IPA/Ukrainian-target adjudication, and confirm the final Pages deployment.
+
+
+## Batch 17: safe metadata-only importer for cited NIKL pages — 2026-10-22
+
+### Scope and implementation
+
+The single-page Standard Pronunciation Rules collector did not cover the growing citation inventory of official NIKL Online Q&A and curated FAQ pages. Direct automated requests remain blocked in GitHub Actions; available public-page requests for several cited pages returned cache misses, and the connected Firecrawl account has no usable credits. No linguistic claim was promoted based on unavailable retrieval.
+
+Added a separate batch importer for a human's ordinary browser-saved official pages:
+
+- `scripts/nikl-evidence-import.mjs` plus `npm run import:nikl-evidence`.
+- HTTPS host/path allowlisting for official NIKL Q&A, curated FAQ, Standard Pronunciation Rules, and official reuse-policy pages; exact identifier and query-parameter contracts.
+- Canonical URL normalization, duplicate source-ID/URL rejection, UTF-8 and size checks, likely error-page rejection, and protection against output/input collisions.
+- Metadata-and-hashes-only output with no copied HTML/page text and explicit null/not-checked/unreviewed provenance states.
+- JSON Schema, Node regression tests, Python schema tests, usage documentation, and README link.
+
+### Verification
+
+At PR head `7434cbf73aed008a415d5980a5d4cd11f10b6235`, GitHub Actions run [39778216339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39778216339) passed 1,108/1,108 Node tests, Vite build, Python regression/data-integrity, system verification, and master-table/corpus artifact checks. The direct NIKL crawl correctly remained `BLOCKED` on HTTP 403. The audit/handoff edits themselves require a fresh exact-head CI run before this batch is considered DONE_VERIFIED at final head.
+
+### Task ledger and scope limits
+
+- `DONE_VERIFIED` after exact-head rerun: importer contract, URL allowlist, duplicate and collision safeguards, metadata-only manifest, schema and regression coverage.
+- `BLOCKED`: no authorized saved HTML batch was available; therefore the 44 citation-only/unreviewed pages remain unreviewed. The importer does not read pages from the network.
+- `BLOCKED / rights`: page-level KOGL markings remain unverified.
+- `BLOCKED_SPECIALIST_ADJUDICATION`: the 20-case fixture still has 0/20 independently adjudicated broad-IPA gold; Ukrainian-target review is separate and uncompleted.
+- Existing source inventory remains 16/60 content-checked (9 direct, 2 partial, 5 contextual-only) and 44 citation-only/unreviewed. No changes to source evidence classification were made in this batch.
+- Release remains a deployed research preview / partial prototype, not a scientifically validated release. No production engine or UI changes.
