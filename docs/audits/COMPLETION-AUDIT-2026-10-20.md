@@ -751,3 +751,5 @@ The official indexed answer “앞일과 공업용의 발음 관련” (question
 - Inventory: 40/60 citations content-checked (26 direct, 9 partial, 5 contextual-example-only); 20 citation-only/unreviewed remain (16 Q&A/FAQ pages, one dictionary entry, three PDFs). HTML intake queue: 17 pages.
 - The lexical note was clarified; Korean surface, IPA, and Ukrainian target fields were preserved. Regression tests enforce source identity, the correction, and queue counts.
 - Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
+
+- Batch 25 exact tested head: 392e03af331a543dfded890967ea33cc95fdd408; [system CI](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39833318615) passed 1,156/1,156 Node tests, Vite build, Python regression/data-integrity, and source-register checks. Live NIKL fetch remains BLOCKED by HTTP 403.
