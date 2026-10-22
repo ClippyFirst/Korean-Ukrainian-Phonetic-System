@@ -435,3 +435,14 @@ Exact-head workflow [39761906127](https://github.com/ClippyFirst/Korean-Ukrainia
   - `BLOCKED / rights`: item-level KOGL status for the rules page and each source page has not been fully verified. Acceptance criterion: inspect the actual page-specific mark and record conditions before retaining/redistributing text.
   - `BLOCKED_SPECIALIST_ADJUDICATION`: independent broad IPA remains 0/20; Ukrainian target review remains outstanding. Acceptance criterion: qualified independent reviewers provide inspectable IPA with syllable/tone/length/uncertainty metadata, reconcile disagreements, and review Ukrainian adaptation from that IPA.
 - **Release status:** the public site is deployed and its practical-mode browser smoke test passes, but the repository remains a research preview/prototype, not scientifically validated or release-ready. These recent changes did not alter practical-mode output; CI success is software verification, not linguistic gold.
+
+
+## Batch 14: exact official dictionary evidence — 2026-10-22
+
+- Reviewed official Korean-English Learners' Dictionary entries `ParaWordNo=66031` (맑다), `89859` (얇다), and `64509` (넣다).
+- Exact attestation: `맑은[말근]` and `얇은[얄븐]` appear in their cited dictionary paradigms. The `맑은` lexical row now points to the exact dictionary entry.
+- Partial attestation: the `넣다` entry gives the lemma and selected application forms but does not list `넣었다`; `넣었다` remains explicitly rule-derived. Likewise, `맑을` is not listed in the `맑다` page and remains rule-derived.
+- Added a dedicated review note and test file asserting exact URLs, source identity uniqueness, direct-vs-partial classification, and the rule that dictionary Hangul notation is not IPA.
+- Source-review inventory now stands at **6/60** newly inventoried pages content-checked: **4 direct, 2 partial, 54 still citation-only/unverified**. Item-level KOGL marking remains unverified for all three pages.
+- `DONE_VERIFIED`: exact content check, source-register scope correction, `맑은` citation correction, regression assertions. `PARTIAL`: rule-derived `맑을` and `넣었다`. `BLOCKED / rights`: page-level reuse marking. `BLOCKED_SPECIALIST_ADJUDICATION`: independent broad IPA and Ukrainian target review.
+- No production engine or UI changes. Release status remains research preview/prototype, not scientifically validated.
