@@ -188,7 +188,7 @@ test("robots parser gives a matching product token precedence over wildcard grou
     "Disallow: /kornorms/",
     "User-agent: ClippyFirst-NIKLResearchBot",
     "Allow: /kornorms/regltn/",
-  ].join("\\n");
+  ].join("\n");
   assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/main/main.do"), false, "wildcard disallow remains active outside the specific group path");
   assert.equal(robotsPathAllowed(robots, DEFAULT_SOURCE_URL), true, "the matching specific product-token group takes precedence over wildcard disallow");
 });
@@ -197,7 +197,7 @@ test("robots parser handles wildcard segments and terminal dollar anchors", () =
   const robots = [
     "User-agent: *",
     "Disallow: /private/*/secret$",
-  ].join("\\n");
+  ].join("\n");
   assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/a/secret"), false);
   assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/a/secret/more"), true);
   assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/secret"), true);
