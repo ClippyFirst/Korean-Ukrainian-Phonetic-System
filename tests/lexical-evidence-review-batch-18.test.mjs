@@ -124,8 +124,8 @@ test('MCFAQ 8420 directly attests 않았다[아낟따] and its §§12(4)/23 expl
   assert.equal(byInput('않았다').source_url, source.url);
 });
 
-test('qna_seq=333927 replaces the superseded unverified MCFAQ 8505 locator for 의견란', () => {
-  const source = bySource('SRC-NIKL-QNA-333927');
+test('qna_seq=313452 replaces the superseded unverified MCFAQ 8505 locator for 의견란', () => {
+  const source = bySource('SRC-NIKL-QNA-313452');
   const superseded = bySource('SRC-NIKL-MCFAQ-8505');
   assert.ok(source);
   assert.ok(superseded);
@@ -134,7 +134,7 @@ test('qna_seq=333927 replaces the superseded unverified MCFAQ 8505 locator for �
   assert.match(source.coverage, /의견란\[의견난\].*§20/u);
   assert.match(superseded.coverage, /Page content not independently reviewed/u);
   assert.equal(byInput('의견란').source_url, source.url);
-  assert.match(byInput('의견란').rule_notes, /does not mark vowel length/u);
+  assert.match(byInput('의견란').rule_notes, /source explicitly preserves the long-vowel mark/u);
   assert.equal(lexical.some((row) => row.source_url === superseded.url), false);
 });
 
