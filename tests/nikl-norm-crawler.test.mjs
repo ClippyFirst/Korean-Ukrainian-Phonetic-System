@@ -55,6 +55,9 @@ test("rejects non-HTTPS, non-official and out-of-scope URLs", () => {
   assert.throws(() => assertAllowedSourceUrl("http://korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002"), /HTTPS/);
   assert.throws(() => assertAllowedSourceUrl("https://example.com/kornorms/"), /non-official host/);
   assert.throws(() => assertAllowedSourceUrl("https://korean.go.kr/front/onlineQna/"), /Only the official NIKL/);
+  assert.throws(() => assertAllowedSourceUrl("https://www.korean.go.kr/kornorms/main/main.do"), /Standard Pronunciation Rules endpoints/);
+  assert.throws(() => assertAllowedSourceUrl("https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0001"), /regulation code 0002/);
+  assert.throws(() => assertAllowedSourceUrl("https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002&regltn_code=0001"), /regulation code 0002/);
   assert.equal(new URL(assertAllowedSourceUrl(DEFAULT_SOURCE_URL)).hostname, "www.korean.go.kr");
   assert.equal(new URL(DEFAULT_SOURCE_URL).pathname, "/kornorms/regltn/regltnView.do");
   assert.equal(new URL(DEFAULT_SOURCE_URL).searchParams.get("regltn_code"), "0002");
