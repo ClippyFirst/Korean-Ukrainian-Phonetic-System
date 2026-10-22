@@ -373,6 +373,6 @@ Status: `DONE_VERIFIED` for provenance/differential bookkeeping after CI; `BLOCK
 
 ### NIKL manifest provenance and media-type schema hardening — 2026-10-22
 
-PR #200 added conditional schema invariants and negative tests so a manifest cannot misrepresent a local HTML import as a live HTTP fetch or vice versa; exact-head CI passed. Follow-up PR #202 corrects an over-escaped, unanchored content-type regex that rejected valid XHTML media types and adds positive/negative schema cases. Its exact-head verification remains pending until CI reports success.
+PR #200 added conditional schema invariants and negative tests so a manifest cannot misrepresent a local HTML import as a live HTTP fetch or vice versa; exact-head CI passed. Follow-up PR #202 merged as `55fede8fbeccbc5ada13daea19166bf2f897cc98`, correcting the over-escaped, unanchored content-type regex and adding positive XHTML/local-file cases plus a negative near-miss. Exact-head CI passed **1,084/1,084 Node tests**, Vite build, Python 3.11/3.12/3.13, corpus/master-table checks, and system verification.
 
-Status: `DONE_VERIFIED` for PR #200's provenance invariants; `PARTIAL` for the PR #202 media-type correction pending exact-head CI. Neither change claims that NIKL direct crawling succeeded; the live source blocker remains HTTP 403 and the item-level reuse-mark blocker remains open.
+Status: `DONE_VERIFIED` for PR #200's provenance invariants and PR #202's media-type correction. Neither change claims that NIKL direct crawling succeeded; the live source blocker remains HTTP 403 and the item-level reuse-mark blocker remains open.
