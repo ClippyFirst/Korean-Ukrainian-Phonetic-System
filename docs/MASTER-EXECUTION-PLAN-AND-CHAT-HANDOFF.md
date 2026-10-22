@@ -120,3 +120,14 @@ undefined
 - Inventory after this batch: **35/60** citations content-checked (21 direct target-form attestations, 9 partial, 5 contextual-example-only); **25 citation-only/unreviewed** (21 Q&A/FAQ pages, one Korean Basic Dictionary entry, three PDFs). The HTML import template now contains 22 eligible pages (21 Q&A/FAQ + one dictionary entry).
 - Direct NIKL fetch remains HTTP 403; no live manifest is claimed and no bypass is attempted. The saved-page import path remains the compliant alternative. Item-level reuse rights remain unverified.
 - Release status remains deployed research preview / partial prototype, not a scientifically validated release.
+
+
+## Continuation checkpoint — NIKL Q&A 312379 mixed-scope evidence review, batch 21 (2026-10-22)
+
+- Starting main: 9e6fa37768021fc0998360d81f67816d70d45635, which includes batch 20 PR #230 (qna_seq=317202) merged as that commit.
+- Reviewed official indexed NIKL Q&A [qna_seq=312379](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=312379), “표준발음과 음운변동을 알려주세요” (question 2025-04-03; answer 2025-04-08).
+- The answer directly attests 얇실하다[얄씰하다] and explains §§10/23. The reproduced §23 examples also contain 밭갈이[받까리] and 값지다[갑찌다]; those are quoted official-rule examples, not the Q&A question target. The source register preserves this mixed scope.
+- Existing lexical notes for all three forms were preserved. No Korean surface, project IPA, or Ukrainian target field changed.
+- Inventory after batch 21: 36/60 citations content-checked (22 direct, 9 partial, 5 contextual-example-only); 24 citation-only/unreviewed remain: 20 Q&A/FAQ pages, one Korean Basic Dictionary entry, and three PDFs. The HTML import queue contains 21 eligible pages.
+- Task ledger: DONE_VERIFIED after exact-head CI — source content scope reviewed, source register and intake queue reconciled, regression coverage added. BLOCKED / rights — item-level KOGL marking remains unverified. TODO — continue reviewing the remaining 24 citations. BLOCKED_SPECIALIST_ADJUDICATION — independent broad-IPA gold and Ukrainian-target review remain absent.
+- Release status remains deployed research preview / partial prototype, not a scientifically validated release.
