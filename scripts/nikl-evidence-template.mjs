@@ -4,33 +4,37 @@
  * This reads metadata only; it neither downloads pages nor changes evidence status.
  */
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
-import { basename, dirname, resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { officialSourceUrl } from "./nikl-evidence-import.mjs";
 
 function parseCsvRecords(text) {
   const rows = [];
-  let row = [], field = "", quoted = false;
-  const input = String(text).replace(/^\uFEFF/u, "");
+  let row = [], field = "", quoted = false, afterQuote = false;
+  const input = String(text).replace(/^\uFEFF/u, "").replace(/\r\n?/gu, "\n");
   for (let i = 0; i < input.length; i++) {
     const ch = input[i];
     if (quoted) {
       if (ch === '"' && input[i + 1] === '"') { field += '"'; i++; }
-      else if (ch === '"') quoted = false;
+      else if (ch === '"') { quoted = false; afterQuote = true; }
       else field += ch;
+    } else if (afterQuote) {
+      if (ch === ",") { row.push(field); field = ""; afterQuote = false; }
+      else if (ch === "\n") { row.push(field); rows.push(row); row = []; field = ""; afterQuote = false; }
+      else throw new Error("Malformed CSV: unexpected character after a closing quote.");
     } else if (ch === '"') {
       if (field.length) throw new Error("Malformed CSV: quote inside an unquoted field.");
       quoted = true;
     } else if (ch === ",") {
       row.push(field); field = "";
     } else if (ch === "\n") {
-      row.push(field.replace(/\r$/u, "")); rows.push(row); row = []; field = "";
+      row.push(field); rows.push(row); row = []; field = "";
     } else {
       field += ch;
     }
   }
   if (quoted) throw new Error("Malformed CSV: unterminated quoted field.");
-  if (field.length || row.length) { row.push(field.replace(/\r$/u, "")); rows.push(row); }
+  if (field.length || row.length || afterQuote) { row.push(field); rows.push(row); }
   if (!rows.length) throw new Error("Source register CSV is empty.");
   const header = rows.shift().map(value => value.trim());
   if (new Set(header).size !== header.length) throw new Error("Source register CSV has duplicate header names.");
@@ -44,6 +48,11 @@ function parseCsvRecords(text) {
 }
 
 export function buildImportTemplate(csvText, { relativeHtmlDirectory = "saved-pages" } = {}) {
+  const htmlDirectory = String(relativeHtmlDirectory).replace(/\\\\/gu, "/").replace(/\\/+$/u, "");
+  if (!htmlDirectory || htmlDirectory.startsWith("/") || /^[A-Za-z]:/u.test(htmlDirectory) ||
+      htmlDirectory.split("/").some(part => !part || part === "." || part === "..")) {
+    throw new Error("HTML directory must be a safe relative path without empty, dot, or parent segments.");
+  }
   const rows = parseCsvRecords(csvText);
   for (const column of ["source_id", "url", "review_status"]) {
     if (!rows.length || !(column in rows[0])) throw new Error("Source register is missing required column: " + column);
