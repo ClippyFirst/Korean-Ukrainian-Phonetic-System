@@ -93,3 +93,10 @@ Three previously citation-only NIKL Korean-English Learners' Dictionary pages we
 The source register now differentiates exact direct attestation from partial lemma/application support. Added `tests/lexical-evidence-review-batch-14.test.mjs` to protect source identity, direct/partial status, and the distinction between Hangul pronunciation notation and IPA.
 
 **Updated inventory after the contextual-only checks:** 11 of the 60 newly inventoried citation pages have been content-checked: 4 direct for target forms, 2 partial, 5 contextual-example-only for target forms; 49 remain citation-only/unreviewed. Page-level KOGL markings remain unverified. These source checks do not adjudicate broad IPA or Ukrainian target spellings.
+
+
+### Additional contextual-only source checks in batch 14
+
+Five more official dictionary pages were inspected. The cited target spellings appear as ordinary Hangul examples, but not as bracketed pronunciation entries: `찾았다` (ParaWordNo=57320), `잊었다` (70067), `붙었다` (74181), `놓았다` (89534), and `쌓였다` (65098). Their lemma and selected application readings are recorded in the source register, but the target inflections remain rule-derived. The lexical notes explicitly state that an ordinary example sentence is not direct pronunciation evidence. See [batch 14 review](LEXICAL-EVIDENCE-REVIEW-BATCH-14-2026-10-22.md).
+
+The current inventory is 11/60 pages content-checked: 4 direct for target forms, 2 partial, 5 contextual-example-only for target forms, and 49 citation-only/unreviewed. Page-level KOGL marking remains unverified; no IPA or Ukrainian target has been inferred from these dictionary pages.
