@@ -5,7 +5,7 @@
  */
 import { mkdir, readFile, realpath, rename, writeFile } from "node:fs/promises";
 import { basename, dirname, isAbsolute, relative, resolve, sep } from "node:path";
-import { createHash } from "node:crypto";
+import { sha256 } from "./nikl-norm-crawler.mjs";
 import { fileURLToPath } from "node:url";
 
 const MAX_MANIFEST_BYTES = 10 * 1024 * 1024;
