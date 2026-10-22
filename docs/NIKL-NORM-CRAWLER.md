@@ -58,3 +58,6 @@ The parser requires a semantic heading for 제2부 표준 발음법; selector dr
 - Per-article hashes are integrity/change-detection aids, not proof of source authenticity beyond the captured response.
 - The NIKL site-wide reuse policy has been reviewed; the per-page KOGL marking for the Standard Pronunciation Rules and the cited Q&A pages remains unverified. Keep text retention disabled until those item-level conditions are checked.
 - This collector does not generate IPA, decide morphology, infer lexical exceptions, or produce Ukrainian output. Use the coverage and evidence-audit skills for those stages.
+
+
+The robots parser follows the most-specific matching `User-agent` product token; `User-agent: *` is only a fallback when no specific group matches. Multiple groups at the same most-specific token are combined. Path matching recognizes `*` wildcards and a terminal `$` anchor, then selects the longest matching rule with `Allow` winning a specificity tie. A robots denial or unreadable policy remains a hard stop; this parser is not a mechanism for overriding site policy.
