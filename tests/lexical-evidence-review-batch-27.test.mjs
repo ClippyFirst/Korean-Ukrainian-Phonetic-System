@@ -32,9 +32,8 @@ test('찾아가다 keeps its dictionary surface, IPA, and Ukrainian target witho
   assert.match(report, /OFFICIAL_DICTIONARY_ATTESTATION/u);
 });
 
-test('batch 27 updates the live backlog without rewriting historical batch-26 counts', () => {
-  const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 18);
+test('batch 27 preserves its historical inventory as later reviews proceed', () => {
+  assert.equal(source.review_status, 'official_dictionary_attestation_2026-10-22');
   assert.match(report, /42\/60/);
   assert.match(report, /27 direct target-form \/ official-rule-example attestations, 1 official dictionary attestation, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /18.*14 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
