@@ -768,3 +768,30 @@ The system remains a deployed research preview / partial prototype, not release-
 - [System verification CI 39833113496](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39833113496) passed **1,156/1,156 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
 - Direct official NIKL access remains HTTP 403 and is classified BLOCKED; no live manifest was produced.
 - Two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
+
+
+## Batch 28: NIKL Q&A 311728 direct correction for 공업용 — 2026-10-22
+
+### Primary-source findings
+Official indexed NIKL Q&A “앞일과 공업용의 발음 관련” (qna_seq=311728; question 2025-03-21, answer 2025-03-26) corrects the question's proposed 공업용[공업뇽] to the standard reading 공업용[공엄뇽]. The answer also reproduces official §29 examples, including 영업-용[영엄뇽].
+
+### Implementation and verification scope
+- Updated the source register with title/date, direct-attestation status, and the explicit correction of the question premise.
+- Clarified the lexical evidence note; Korean surface, project IPA, and Ukrainian target were preserved.
+- Added batch report/regressions and updated current source backlog and HTML intake queue.
+
+### Task ledger
+- DONE_VERIFIED after exact-head CI: direct correction, source-register integrity, target/source parity, queue counts, and build/test checks pass.
+- BLOCKED / rights: item-level KOGL mark remains unverified.
+- TODO: review remaining 19 citation-only sources, including three PDFs.
+- BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
+
+The system remains a deployed research preview / partial prototype, not release-ready.
+
+
+### Batch-28 exact-head verification evidence
+
+- Tested implementation/test head c43715ecb8637cda4c32dfece452e6ec2bd633ef.
+- [System verification CI 39834567015](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39834567015) passed **1,159/1,159 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
+- Direct official NIKL access remains HTTP 403 and is classified BLOCKED; no live manifest was produced.
+- Two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
