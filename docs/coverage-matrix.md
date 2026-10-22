@@ -15,9 +15,9 @@ Audit date: 2026-10-02
 | Alternative analyses / uncertainty | Implemented | `analyses.csv`, rule status/confidence, broad IPA only |
 | Narrow IPA | Explicitly unavailable | `ipa.py` rejects `level="narrow"` |
 | Feature-based Korean→Ukrainian ranking | Implemented | `correspondence.py` |
-| UPI target source of truth | Implemented | adapter pins UPI 0.8.0 and rejects incompatible versions |
-| UPI mapping penalties | Integrated | adapter loads `transliteration_mapping.csv` and ranking exposes component costs |
-| Ukrainian sequence-level orthography | Delegated, not duplicated | UPI remains authoritative; this repo exposes segmentwise target candidates |
+| UPI target source of truth | Implemented; unresolved if unavailable | adapter pins UPI 0.8.0 and rejects incompatible versions; lexical Ukrainian targets are reference-only |
+| UPI mapping penalties and selection gate | Integrated; fail-closed gate tested | adapter loads `transliteration_mapping.csv`, ranking exposes component costs, and selection requires an explicit mapping ID plus renderable grapheme |
+| Ukrainian sequence-level orthography | Delegated, not duplicated | UPI remains authoritative; this repo exposes segmentwise candidates and does not select unmapped candidates or fall back to Hangul-keyed lexical targets |
 | Validation corpus | Rule-demonstration corpus implemented | `data/validation/cases.csv` |
 | Lexical/corpus attestation | Not claimed | No corpus dataset is fabricated |
 | Evidence/provenance | Implemented for current claims | `sources.csv`, `evidence.csv`, rule source IDs |

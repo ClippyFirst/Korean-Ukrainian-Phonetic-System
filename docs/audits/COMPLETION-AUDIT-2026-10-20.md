@@ -607,3 +607,11 @@ Current evidence inventory: **18/60** newly inventoried citations content-checke
 Batch 18 PR #221 was merged as `353a5075ece1d70b188d20dc9d59f43005b3767b`. Its exact tested head `913716d7e4f23ab54a5b6651f963f2fe9449cf7f` passed 1,136/1,136 Node tests, Vite build, Python regression/data-integrity, and the source-inventory diagnostic; the live source fetch correctly remained BLOCKED by HTTP 403.
 
 Current source evidence status is 33/60 citations content-checked (21 direct, 7 partial, 5 contextual-example-only) and 27 citation-only/unreviewed. Remaining: 23 Q&A/FAQ pages, one Korean Basic Dictionary entry, and three PDFs. No claim was promoted solely from a URL or filename. The live crawler blocker, item-level reuse-rights gap, and absence of independent broad-IPA/Ukrainian-target adjudication remain open. Status: deployed research preview / partial prototype, not release-ready.
+
+## 2026-10-22 — Python IPA-first target boundary correction (PR #224)
+
+- PARTIAL → DONE_VERIFIED after exact-head CI: remove the Python transliterate_korean() override that replaced the IPA-adapter output with target_syllables from the Hangul-keyed lexical CSV. Stored Ukrainian forms are now audit references with explicit comparison status only.
+- Added a fail-closed selection gate: target candidates need both an explicit UPI mapping ID and a renderable Ukrainian grapheme. Feature-nearest candidates without an explicit IPA correspondence cannot be selected. If the optional UPI package is unavailable, the API returns unresolved output rather than silently using lexical strings.
+- Regression coverage: lexical references cannot override adapter output; missing target inventory yields unresolved output; unmapped nearest candidate is skipped; all-unmapped candidate sets remain unresolved; selected output must equal render_sequence(selected_candidate.segments).
+- The optional UPI package is intentionally not installed in minimal CI, so null target output is an expected safe state there, not a failing transliteration result. Browser output is not altered by this Python-specific fix.
+- Exact final PR head and CI evidence will be recorded once the newest CI run completes. Do not promote this to a linguistically validated target model: independent broad-IPA gold and Ukrainian-target review remain blocked.

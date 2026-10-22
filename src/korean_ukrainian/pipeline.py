@@ -166,8 +166,13 @@ def _select_target(target):
     selected=[]
     for segment in target["segments"]:
         candidates=segment["target"].get("candidates",[])
-        if not candidates: return None
-        selected.append(candidates[0])
+        # A feature-near target phoneme is not a licensed correspondence by itself.
+        # Require an explicit IPA-to-target mapping and a renderable Ukrainian
+        # grapheme; otherwise this segment remains unresolved instead of guessing.
+        licensed=[candidate for candidate in candidates
+                  if candidate.get("mapping_id") and candidate.get("grapheme")]
+        if not licensed: return None
+        selected.append(licensed[0])
     return {"segments":selected,"score_type":"heuristic_cost","status":"top_ranked_segmentwise"}
 
 def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict"):
@@ -176,10 +181,17 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
     selected=_select_target(target)
     orthographic=render_sequence(selected["segments"]) if selected else None
     lexical=LEXICAL_PRONUNCIATIONS.get(text)
-    target_status="model-selected"
-    selection_status="top-ranked segmentwise heuristic candidate; not probability" if selected else "unavailable_without_target_inventory"
-    if lexical and lexical.get("target_syllables"):
-        orthographic="".join(lexical["target_syllables"].split("|"))
-        target_status=lexical.get("target_status","model-selected")
-        selection_status="exact-form lexical target override; Ukrainian output is author-designed"
-    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype","morphology_mode":morphology_mode}
+    lexical_reference="".join(lexical["target_syllables"].split("|")) if lexical and lexical.get("target_syllables") else None
+    lexical_reference_status=lexical.get("target_status","model-selected") if lexical_reference is not None else None
+    if lexical_reference is None:
+        lexical_comparison="no_lexical_reference"
+    elif orthographic is None:
+        lexical_comparison="unavailable_without_ipa_target"
+    else:
+        lexical_comparison="matches_reference" if orthographic==lexical_reference else "differs_from_reference"
+    # The lexical target is an audit reference only. Never use a stored Ukrainian
+    # target to bypass the required IPA -> Ukrainian inventory adapter boundary.
+    target_status="model-selected" if selected else "unresolved"
+    selection_status=("top-ranked segmentwise IPA-derived heuristic candidate; not probability"
+                      if selected else "unavailable_without_target_inventory")
+    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"lexical_target_reference":lexical_reference,"lexical_target_reference_status":lexical_reference_status,"lexical_target_comparison":lexical_comparison,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype","morphology_mode":morphology_mode}
