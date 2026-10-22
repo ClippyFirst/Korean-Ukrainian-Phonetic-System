@@ -23,7 +23,7 @@ test('NIKL coverage skill prevents rule-instrument and quoted-example conflation
   assert.match(coverage, /case-specific official answer/u);
   assert.match(coverage, /quoted official-rule example/u);
   assert.match(coverage, /ordinary example spelling/u);
-  assert.match(coverage, /same article numbers do not mean the source cited the same rule set/u);
+  assert.match(coverage, /same article numbers do not mean the source cited the same rule set/iu);
   assert.match(evidence, /한글맞춤법/u);
   assert.match(evidence, /표준 발음법/u);
 });
