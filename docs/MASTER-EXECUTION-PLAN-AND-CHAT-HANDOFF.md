@@ -592,3 +592,10 @@ The required pipeline remains Hangul → structural/morphological analysis → K
 
 - PR #203 merged as `beba8449fb4aea2e3c6b7398f75d21702e602133`. Exact-head validation at `b5db9f70f6a1fded765bc2407b366b4920722a67` passed **1,087/1,087 Node tests**, Vite build, Python regression/data-integrity, corpus/master-table validation, and system verification.
 - Task ledger: `DONE_VERIFIED` — robots group precedence, wildcard and terminal-anchor matching, Allow-on-tie semantics, tests, and matching docs/skill guidance. `BLOCKED` — live NIKL fetch still receives HTTP 403. No policy bypass or live manifest claim.
+
+
+## Live NIKL access recheck after collector hardening — 2026-10-22
+
+- Re-run the official metadata-only crawl on the exact current collector after robots-policy parsing and manifest-schema fixes. This research branch intentionally triggers the repository's live NIKL source-inventory job.
+- Acceptance: if the official endpoint responds, verify all 30 article headings and non-empty extracts reconcile before treating the manifest as usable; otherwise preserve the exact BLOCKED response and do not bypass the access control.
+- Result: pending this branch's exact-head workflow. This line must be replaced with the observed result before handoff.
