@@ -107,3 +107,17 @@ The 13 items are not claimed to be correct Korean lexical forms or normatively l
 - **Known gaps:** the 13 registered contexts require the corpus to be split into grammatical minimal examples or supplied with explicit, evidence-backed morphological analyses before they can be used as normative pronunciation tests.
 - **Not established:** byte-for-byte identity between this reconstructed repository fixture and the original chat message, exhaustive rule/subparagraph coverage, or normative correctness of all generic IPA outputs. Those require independent source-to-fixture comparison and NIKL evidence.
 - **Release status:** research preview / partial prototype; not release-ready as a fully normative standard-pronunciation transcriber.
+
+
+## Final-head verification after fixture wording restoration — 2026-10-22
+
+Final code/test/fixture head: `34dc21fb521cc03933f091c89da14473bbd02a66` on `research/nikl-corpus-engine-regression-2026-10-22`, PR #247 (draft).
+
+- [Browser tests/build/Python matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842388316): **1,170 tests passed, 0 failed**; Vite production build passed; Python 3.11, 3.12, and 3.13 passed.
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842380731): passed, including Python regression/data integrity, browser tests/build, and metadata-only NIKL source inventory.
+- [Generated master-table/research-corpus artifact job](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842388501): `generate-corpus` job passed. The workflow run's final overall conclusion had not yet updated at the time of this note.
+- Restored two additional wording details identified during comparison: `별도의 규정을 확인하시오` and `꽃밭을 검증하시오`.
+- Runtime gate expects exactly 13 unresolved contexts and fails on any additional or missing unresolved token; all resolved-token IPA→Ukrainian parity checks pass. This does not mean the 13 contexts are linguistically solved.
+- Source-text byte-for-byte equivalence is still not proven. Remaining acceptance work: exact source comparison; split/annotate the 13 contexts without guessing; complete article/subparagraph/exception/variant mapping and source-backed generic-IPA adjudication.
+
+**Final classification:** implementation/test harness = DONE_VERIFIED for the declared contract; 13 contexts = PARTIAL/evidence-limited; exhaustive standard coverage = PARTIAL; release readiness = NO.
