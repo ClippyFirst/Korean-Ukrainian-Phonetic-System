@@ -240,7 +240,7 @@ export function robotsPathAllowed(robotsText, targetUrl, userAgent = USER_AGENT)
 
   const matching = rules.filter((rule) => matchesRule(rule.path))
     .map((rule) => ({ ...rule, specificity: rule.path.replace(/\*/g, "").length }))
-    .sort((a, b) => b.specificity - a.specificity || (a.type === "allow" ? -1 : 1));
+    .sort((a, b) => b.specificity - a.specificity || (a.type === b.type ? 0 : a.type === "allow" ? -1 : 1));
   return matching.length === 0 || matching[0].type === "allow";
 }
 export function assertAllowedSourceUrl(url) {
