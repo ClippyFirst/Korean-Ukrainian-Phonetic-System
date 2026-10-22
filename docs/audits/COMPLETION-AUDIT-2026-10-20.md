@@ -857,3 +857,25 @@ The system remains a deployed research preview / partial prototype, not release-
 - **BLOCKED_SPECIALIST_ADJUDICATION:** independent broad-IPA gold and Ukrainian-target review remain open.
 
 The audit report is `docs/audits/NIKL-MASTER-PASSAGE-ENGINE-RUN-2026-10-22.md`. The system remains a research preview / partial prototype, not release-ready.
+
+## Batch 31: runtime IPA → Ukrainian invariant across passage and lexical inventory — 2026-10-22
+
+### Implementation
+- Added `tests/ipa-first-runtime-invariant.test.mjs` to derive Ukrainian output again from each result's actual runtime IPA using the exported IPA adapter.
+- Added a representative IPA-contrast test, whole NIKL-passage token loop, complete Hangul-only lexical-row loop, licensed variant checks, whitespace alignment, and fail-closed unknown-IPA checks.
+- No production conversion code was changed in this batch: the audit found no runtime IPA/target divergence to fix, so changing correct output code would have been unjustified.
+
+### Exact-head evidence
+- Commit tested: `b980dc498c57bc0502325b4cf5fd71318664b9dc`.
+- [Tests and build](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39839292113): **1,170/1,170 Node tests passed**, build passed, Python 3.11–3.13 passed.
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39839292102): passed.
+- [Generated research artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39839292149): passed.
+- Runtime comparison: 855 unique passage tokens, 0 IPA→Ukrainian divergences; 630 Hangul-only lexical rows, including surfaced variants, 0 divergences.
+
+### Task ledger
+- **DONE_VERIFIED:** runtime IPA-first output invariant for the complete integrated passage token set and all Hangul-only lexical entries/variants; unmapped IPA remains fail-closed.
+- **PARTIAL:** correctness of every Korean IPA result is not established merely by target reproducibility. Article/subparagraph/exception/variant-level normative adjudication and independent broad-IPA gold remain open.
+- **BLOCKED:** official NIKL live fetch continues to return HTTP 403 in CI; do not bypass the restriction or invent evidence.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** independent Korean IPA and Ukrainian practical-target review remain outstanding.
+
+The system remains a research preview / partial prototype, not release-ready.
