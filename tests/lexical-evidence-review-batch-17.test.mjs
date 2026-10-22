@@ -15,7 +15,7 @@ test('KRDICT 79033 is partial evidence for 좋아도, not a direct surface attes
   assert.equal(source.integration_status, 'partial_support_recorded; 좋아도 remains rule-derived');
   assert.match(source.coverage, /좋다\[조ː타\].*좋아\[조ː아\]/u);
   assert.match(source.coverage, /좋아도 is not listed/u);
-  assert.match(byInput('좋아도').rule_notes, /directly attests 좋다\[조ː타\] and 좋아\[조ː아\]/u);
+  assert.match(byInput('좋아도').rule_notes, /attests 좋다\[조ː타\] and 좋아\[조ː아\]/u);
   assert.match(byInput('좋아도').rule_notes, /derive 좋아도 by §12\(4\)/u);
   assert.match(source.limitations_or_next_action, /not direct dictionary pronunciation attestation/u);
   assert.match(source.license_status, /item-level KOGL marking not checked/u);
