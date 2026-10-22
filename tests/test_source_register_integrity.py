@@ -4,11 +4,13 @@ from __future__ import annotations
 import csv
 import json
 from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_REGISTER = ROOT / "research" / "SOURCE-REGISTER.csv"
 IPA_QUEUE = ROOT / "research" / "ipa-adjudication-queue.json"
 SURFACE_FIXTURE = ROOT / "tests" / "fixtures" / "g2pk-surface-regression.json"
+LEXICAL_DATA = ROOT / "data" / "korean" / "lexical_pronunciations.csv"
 EXPECTED_COLUMNS = [
     "source_id",
     "source_type",
@@ -35,6 +37,24 @@ def load_source_register() -> list[dict[str, str]]:
         "every CSV row must contain exactly the declared columns"
     )
     return rows
+
+
+def source_identity(url: str) -> tuple[str, ...]:
+    parsed = urlsplit(url)
+    query = parse_qs(parsed.query, keep_blank_values=True)
+    if query.get("qna_seq"):
+        return ("NIKL-QNA", query["qna_seq"][0])
+    if query.get("mcfaq_seq"):
+        return ("NIKL-MCFAQ", query["mcfaq_seq"][0])
+    if query.get("ParaWordNo"):
+        parts = [part for part in parsed.path.split("/") if part]
+        language = parts[0] if parts and parts[0] in {"kor", "eng"} else "other"
+        return ("KRDICT", language, query["ParaWordNo"][0])
+    if query.get("c_file_name"):
+        return ("NIKL-FILE", query.get("file_path", ["unknown"])[0], query["c_file_name"][0])
+    if query.get("regltn_code") == ["0002"]:
+        return ("NIKL-RULES", "0002")
+    return ("URL", url)
 
 
 def test_source_register_has_unique_nonblank_ids_and_stable_shape():
@@ -92,3 +112,45 @@ def test_ipa_queue_sources_keep_evidence_scope_and_item_license_uncertainty_expl
     assert value_of_money["url"] == "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217"
     assert "값어치[가버치]" in value_of_money["coverage"]
     assert "not verified" in value_of_money["license_status"]
+
+
+
+def test_every_lexical_dataset_citation_has_a_source_register_identity():
+    with LEXICAL_DATA.open("r", encoding="utf-8-sig", newline="") as stream:
+        lexical_rows = list(csv.DictReader(stream))
+    registered_rows = load_source_register()
+    registered_identities = {source_identity(row["url"]) for row in registered_rows}
+    cited_identities = {
+        source_identity(row["source_url"])
+        for row in lexical_rows
+        if row.get("source_url", "").strip()
+    }
+    missing = sorted(cited_identities - registered_identities)
+    assert not missing, "lexical source identities missing from SOURCE-REGISTER.csv: " + ", ".join(map(str, missing))
+
+
+def test_unreviewed_lexical_citations_are_not_promoted_to_verified_evidence():
+    rows = load_source_register()
+    unreviewed = [
+        row for row in rows
+        if row["review_status"] == "unverified_lexical_citation_inventory_2026-10-22"
+    ]
+    assert len(unreviewed) >= 50, "expected an explicit inventory of previously unregistered lexical citations"
+    for row in unreviewed:
+        assert row["integration_status"] == "lexical_csv_citation_only"
+        assert "not independently rechecked" in row["limitations_or_next_action"]
+        assert "not verified" in row["license_status"].lower() or "not assessed" in row["license_status"].lower()
+
+
+
+def test_orthography_qna_examples_are_not_described_as_direct_pronunciation_answers():
+    with LEXICAL_DATA.open("r", encoding="utf-8-sig", newline="") as stream:
+        lexical_rows = {row["input"]: row for row in csv.DictReader(stream)}
+    for word in ("읽는", "읽지"):
+        notes = lexical_rows[word]["rule_notes"]
+        assert "orthography Q&A qna_seq=306000" in notes
+        assert "not a direct pronunciation question" in notes
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-QNA-306000"]
+    assert "읽지 → 익찌" in source["coverage"]
+    assert "not a direct pronunciation question" in source["limitations_or_next_action"]

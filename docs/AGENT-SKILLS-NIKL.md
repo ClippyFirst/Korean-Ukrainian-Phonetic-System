@@ -47,6 +47,8 @@ Use the repository's status vocabulary consistently:
 - BLOCKED — a specific external dependency, access restriction, or missing evidence prevents progress;
 - DEFERRED — explicitly outside current scope.
 
+Source-register completeness: every stable source identity referenced by the lexical dataset, IPA queue, and normative surface fixture must be registered. Unknown or unreviewed citations are recorded as explicitly unverified rather than treated as supporting evidence; `tests/test_source_register_integrity.py` enforces this boundary.
+
 A passing fixture consistency test is not proof of linguistic correctness, and agreement among multiple G2P tools is not official normative evidence.
 
 ## Cross-skill invariants
