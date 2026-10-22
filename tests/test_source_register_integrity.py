@@ -140,3 +140,17 @@ def test_unreviewed_lexical_citations_are_not_promoted_to_verified_evidence():
         assert row["integration_status"] == "lexical_csv_citation_only"
         assert "not independently rechecked" in row["limitations_or_next_action"]
         assert "not verified" in row["license_status"].lower() or "not assessed" in row["license_status"].lower()
+
+
+
+def test_orthography_qna_examples_are_not_described_as_direct_pronunciation_answers():
+    with LEXICAL_DATA.open("r", encoding="utf-8-sig", newline="") as stream:
+        lexical_rows = {row["input"]: row for row in csv.DictReader(stream)}
+    for word in ("읽는", "읽지"):
+        notes = lexical_rows[word]["rule_notes"]
+        assert "orthography Q&A qna_seq=306000" in notes
+        assert "not a direct pronunciation question" in notes
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-QNA-306000"]
+    assert "읽지 → 익찌" in source["coverage"]
+    assert "not a direct pronunciation question" in source["limitations_or_next_action"]
