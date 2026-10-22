@@ -285,3 +285,14 @@ This section supersedes any earlier handoff statement that stops at batch 26. Th
 - Audit: `docs/audits/NIKL-MASTER-PASSAGE-ENGINE-RUN-2026-10-22.md`.
 - Pending final evidence: CI on the final branch head after the last test commit; verify fixture fidelity against the full user message; inspect any remaining failures; update this section with exact final SHA and statuses.
 - Classification: broad IPA-first runtime invariant = partially verified; 13 source/morphology contexts = blocked/evidence-limited; exhaustive articles 1–30 normativity = PARTIAL; release = not ready as a fully normative transcriber.
+
+
+## Final-head verification — 2026-10-22
+
+- Current fixture/code/test head: `34dc21fb521cc03933f091c89da14473bbd02a66`; branch `research/nikl-corpus-engine-regression-2026-10-22`; draft PR #247.
+- Restored two additional wording differences: `별도의 규정을 확인하시오` and `꽃밭을 검증하시오`.
+- [Tests/build/Python 3.11–3.13](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842388316): **1,170/1,170 passed**, build passed, all three Python versions passed.
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842380731): passed. [Artifact generation](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842388501): `generate-corpus` job passed; workflow overall conclusion was still updating at the time of writing.
+- The exact unresolved set remains 13 tokens documented in the NIKL audit. All other resolved-token runtime targets pass IPA-adapter equality; no pronunciations were invented.
+- **Still open:** byte-for-byte verification against the full user message; resolve/segment the 13 malformed or morphology-ambiguous contexts using evidence; source-map all subparagraphs/exceptions/variants; normative review of generic IPA. NIKL live access returns HTTP 403.
+- **Stop status:** feasible harness correction and CI completed; linguistic coverage remains PARTIAL and release is not ready. Do not label the entire request “fully completed” while these evidence gaps remain.
