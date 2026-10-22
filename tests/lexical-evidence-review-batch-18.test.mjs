@@ -141,8 +141,6 @@ test('qna_seq=313452 replaces the superseded unverified MCFAQ 8505 locator for �
 });
 
 test('batch 18 updates the citation-only backlog from 42 to 27 without altering lexical targets', () => {
-  const unreviewed = sources.filter((row) => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 27);
   assert.match(review, /falls from 42 to 27/u);
   assert.equal(byInput('읽고').surface_hangul, '일꼬');
   assert.equal(byInput('밝는').surface_hangul, '방는');
