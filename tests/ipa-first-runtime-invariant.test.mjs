@@ -169,6 +169,13 @@ test('standalone compatibility Jamo inventories are preserved as literal notatio
   assert.ok(!/[ㄱ-ㅎㅏ-ㅣ]/u.test(contextual.ipa), 'preserved notation must not leak into the IPA result');
 });
 
+test('single Jamo inside square-bracket pronunciation notation is preserved in the target text', () => {
+  const result = engine.convert('허용되는 [ㅔ] 발음과 ㅢ를 [ㅣ]로 발음하시오.');
+  assert.ok(result.ukrainian.includes('[ㅔ]'), 'the bracketed [ㅔ] notation must not collapse to []');
+  assert.ok(result.ukrainian.includes('[ㅣ]'), 'the bracketed [ㅣ] notation must not collapse to []');
+  assert.ok(!/[ㄱ-ㅎㅏ-ㅣ]/u.test(result.ipa), 'literal bracket notation must not be fabricated into IPA');
+});
+
 test('IPA-derived targets preserve whitespace and align multiword inputs without guessing missing IPA', () => {
   assert.deepEqual(ipaTargetForSource('국립 국어원', 'kuŋ nim k͈u ɡʌ wʌn'), {
     text: 'куннім куґовон',
