@@ -34,9 +34,8 @@ test("낱낱이 keeps the long vowel in IPA and matches the source's explicit se
   assert.match(report, /Korean bracket notation is not IPA/u);
 });
 
-test('batch 23 updates the live backlog without rewriting the historical batch-22 count', () => {
-  const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 22);
+test('batch 23 preserves its historical inventory as later reviews proceed', () => {
+  assert.equal(source.review_status, 'direct_attestation_2026-10-22');
   assert.match(report, /38\/60/);
   assert.match(report, /24 direct target-form \/ official-rule-example attestations, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /22.*18 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
