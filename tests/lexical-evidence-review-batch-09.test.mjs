@@ -19,7 +19,7 @@ test('batch 09 assigns the expected official rule mappings', () => {
   const expected = {
     '값없다': /§§10, 15, 23/u,
     '의견란': /§20/u,
-    '읽고': /§§11, 23/u,
+    '읽고': /§11.*§23/u,
     '읽다': /§§11, 23/u,
     '읽어': /§14/u,
     '읽는': /§§11, 18/u,
