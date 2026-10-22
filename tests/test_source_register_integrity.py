@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 import csv
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_REGISTER = ROOT / "research" / "SOURCE-REGISTER.csv"
+IPA_QUEUE = ROOT / "research" / "ipa-adjudication-queue.json"
 EXPECTED_COLUMNS = [
     "source_id",
     "source_type",
@@ -62,3 +64,25 @@ def test_nikl_copyright_policy_is_registered_without_claiming_item_level_clearan
     assert "KOGL" in policy["license_status"]
     assert "item-level" in policy["limitations_or_next_action"]
     assert "not established" in policy["limitations_or_next_action"]
+
+
+
+def test_every_ipa_queue_surface_source_is_registered_with_an_exact_url():
+    rows = load_source_register()
+    registered_urls = {row["url"] for row in rows}
+    queue = json.loads(IPA_QUEUE.read_text(encoding="utf-8"))
+    missing = sorted({item["surfaceEvidenceUrl"] for item in queue["cases"]} - registered_urls)
+    assert not missing, "IPA queue source URL(s) missing from SOURCE-REGISTER.csv: " + ", ".join(missing)
+
+
+def test_ipa_queue_sources_keep_evidence_scope_and_item_license_uncertainty_explicit():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    reading_example = rows["SRC-NIKL-QNA-306000"]
+    assert "orthography" in reading_example["limitations_or_next_action"].lower()
+    assert "not a direct pronunciation question" in reading_example["limitations_or_next_action"]
+    assert "not verified" in reading_example["license_status"]
+
+    value_of_money = rows["SRC-NIKL-MCFAQ-5949"]
+    assert value_of_money["url"] == "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217"
+    assert "값어치[가버치]" in value_of_money["coverage"]
+    assert "not verified" in value_of_money["license_status"]
