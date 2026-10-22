@@ -39,7 +39,7 @@ Use this helper when the official NIKL pages open in a human's ordinary browser 
 - Output contains source IDs/URLs, page title and headings, import timestamp, local filename, byte count, SHA-256 hashes, and normalized visible-text length. It never copies raw HTML or page text into the output.
 - It explicitly records `httpFetchedAt=null`, `httpStatus=null`, `robotsStatus=not_checked_local_import`, `reuseTermsStatus=not_assessed`, `reviewStatus=NOT_REVIEWED_CONTENT_HASH_ONLY`, and `claimSupportEstablished=false`. These fields must not be promoted merely because the importer succeeds.
 - Page hashes are integrity aids, not proof that a citation supports a claim. The input files and their local path are not embedded in the manifest; only the basename is retained.
-- The current output is a local evidence inventory, not a substitute for the source register, not a live HTTP crawl, and not a legal rights determination. Keep saved HTML local unless item-level reuse rights have been checked.
+- The output contract is defined in [the JSON Schema](../schemas/nikl-evidence-import-manifest.schema.json). The current output is a local evidence inventory, not a substitute for the source register, not a live HTTP crawl, and not a legal rights determination. Keep saved HTML local unless item-level reuse rights have been checked.
 
 ## Validation
 
