@@ -879,3 +879,17 @@ The audit report is `docs/audits/NIKL-MASTER-PASSAGE-ENGINE-RUN-2026-10-22.md`. 
 - **BLOCKED_SPECIALIST_ADJUDICATION:** independent Korean IPA and Ukrainian practical-target review remain outstanding.
 
 The system remains a research preview / partial prototype, not release-ready.
+
+
+## Correction to Batch 30/31 status — exact-user-passage rerun (2026-10-22)
+
+The earlier Batch 30 statement that the integrated passage had a zero-unresolved-token gate was based on an edited fixture and is superseded. The reconstructed fixture was restored for known wording differences and the current CI head is `34dc21fb521cc03933f091c89da14473bbd02a66`.
+
+- **DONE_VERIFIED:** regression harness runs the restored fixture; 1,170/1,170 Node tests pass; Vite production build passes; Python 3.11/3.12/3.13 pass; system verification passes. [Tests run](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842388316), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842380731).
+- **DONE_VERIFIED:** runtime IPA→Ukrainian equality is asserted for resolved passage tokens/variants; exact registered unresolved set is asserted to prevent silent regression.
+- **PARTIAL:** 13 intentionally joined/ambiguous contexts remain unresolved and are explicitly listed in the NIKL run audit. They must not be accepted as verified output or patched with guessed pronunciation.
+- **PARTIAL:** fixture has been corrected against known original wording differences, but byte-for-byte identity with the full chat source has not been independently proven.
+- **TODO:** compare all fixture paragraphs directly against the original user message; split malformed joined examples into grammatical minimal pairs where the intended morphology can be established; map all articles/subparagraphs/exceptions/allowed variants to source-backed examples.
+- **BLOCKED:** direct NIKL retrieval in CI remains HTTP 403; no bypass attempted. Independent Korean IPA and Ukrainian adaptation review remain outstanding.
+
+Release classification remains **research preview / partial prototype**, not a release-ready normative transcriber. This correction supersedes any older zero-unresolved claim for the user-pasted passage.
