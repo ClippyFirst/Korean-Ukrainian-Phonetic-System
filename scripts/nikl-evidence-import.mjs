@@ -32,17 +32,24 @@ function officialSourceUrl(value) {
     throw new Error("Only HTTPS pages on the official korean.go.kr host are allowed.");
   }
   if (!ALLOWED_PATHS.has(url.pathname)) throw new Error("URL path is outside the official NIKL evidence-import allowlist: " + url.pathname);
-  const required = url.pathname.includes("onlineQna") ? "qna_seq"
-    : url.pathname.includes("mcfaq") ? "mcfaq_seq"
-      : url.pathname.includes("regltnView") || url.pathname.includes("m_regltn") ? "regltn_code"
-        : "page_id";
-  const values = url.searchParams.getAll(required);
-  const valid = values.length === 1 && (required === "regltn_code" ? values[0] === "0002"
-    : required === "page_id" ? values[0] === "P000189"
+  const queryContract = url.pathname.includes("onlineQna")
+    ? { required: "qna_seq", allowed: new Set(["qna_seq", "mn_id", "pageIndex"]) }
+    : url.pathname.includes("mcfaq")
+      ? { required: "mcfaq_seq", allowed: new Set(["mcfaq_seq", "mn_id"]) }
+      : url.pathname.includes("regltnView") || url.pathname.includes("m_regltn")
+        ? { required: "regltn_code", allowed: new Set(["regltn_code"]) }
+        : { required: "page_id", allowed: new Set(["page_id", "mkn"]) };
+  for (const key of url.searchParams.keys()) {
+    if (!queryContract.allowed.has(key)) throw new Error("Unexpected query parameter for official NIKL page: " + key);
+  }
+  const values = url.searchParams.getAll(queryContract.required);
+  const valid = values.length === 1 && (queryContract.required === "regltn_code" ? values[0] === "0002"
+    : queryContract.required === "page_id" ? values[0] === "P000189"
       : /^\d+$/.test(values[0]) && Number(values[0]) > 0);
-  if (!valid) throw new Error("Official URL must contain exactly one valid " + required + " identifier.");
+  if (!valid) throw new Error("Official URL must contain exactly one valid " + queryContract.required + " identifier.");
   if (url.username || url.password) throw new Error("URL credentials are not allowed.");
   url.hash = "";
+  url.searchParams.sort();
   return url.toString();
 }
 
