@@ -202,3 +202,13 @@ test("robots parser handles wildcard segments and terminal dollar anchors", () =
   assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/a/secret/more"), true);
   assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/kornorms/private/secret"), true);
 });
+
+
+test("robots parser prefers Allow when allow and disallow rules have equal specificity", () => {
+  const robots = [
+    "User-agent: *",
+    "Disallow: /same/path",
+    "Allow: /same/path",
+  ].join("\\n");
+  assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/same/path"), true);
+});
