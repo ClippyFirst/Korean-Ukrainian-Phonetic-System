@@ -832,3 +832,22 @@ The system remains a deployed research preview / partial prototype, not release-
 - [System verification CI 39836022141](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39836022141) passed **1,162/1,162 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
 - Direct official NIKL access remains HTTP 403 and is classified BLOCKED; no live manifest was produced.
 - Two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
+
+
+## Batch 30: NIKL Q&A 326601 direct §13 attestation for 몇으로 — 2026-10-22
+
+### Primary-source findings
+Official indexed NIKL Q&A “몇으로 발음” (qna_seq=326601; question 2026-01-18, answer 2026-01-20) directly gives 몇으로[며츠로] and explains §13: the final ㅊ moves to the onset of vowel-initial 으로.
+
+### Implementation and verification scope
+- Updated the source register with the official title/date, exact reading, and direct-attestation status.
+- Clarified the lexical evidence note; preserved Korean surface, project IPA, and Ukrainian target.
+- Added batch report/regressions and updated current source backlog and HTML intake queue.
+
+### Task ledger
+- DONE_VERIFIED after exact-head CI: direct answer claim, source-register integrity, source URL parity, queue counts, and build/test checks pass.
+- BLOCKED / rights: item-level KOGL mark remains unverified.
+- TODO: review remaining 17 citation-only sources, including three PDFs.
+- BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
+
+The system remains a deployed research preview / partial prototype, not release-ready.
