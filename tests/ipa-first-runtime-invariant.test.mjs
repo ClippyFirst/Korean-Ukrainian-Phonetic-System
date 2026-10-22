@@ -157,9 +157,11 @@ test('standalone compatibility Jamo inventories are preserved as literal notatio
   const inventory = 'ㄱ, ㄲ, ㄴ, ㄷ, ㄸ, ㄹ, ㅁ, ㅂ, ㅃ, ㅅ, ㅆ, ㅇ, ㅈ, ㅉ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ';
   const result = engine.convert(inventory);
   assert.equal(result.ukrainian, inventory, 'research target must not silently delete a consonant inventory');
-  assert.equal(result.status, 'unresolved', 'literal preservation must not mislabel isolated Jamo as pronounced syllables');
-  assert.ok(result.issues.some((issue) => issue.includes('standalone compatibility jamo is not a syllable')), 'the lack of syllable-level IPA must remain explicit');
-  assert.ok(result.trace.filter((item) => item.status === 'unsupported-jamo').every((item) => item.ipa === '' && item.output === item.source), 'each isolated Jamo is preserved literally and has no invented IPA');
+  assert.equal(result.status, 'non-korean-input', 'an inventory is notation, not a pronounceable Korean word');
+  assert.ok(!/[ㄱ-ㅎㅏ-ㅣ]/u.test(result.ipa), 'standalone Jamo must not be emitted as IPA');
+  const jamoTrace = result.trace.filter((item) => /^[ㄱ-ㅎㅏ-ㅣ]+$/u.test(item.source));
+  assert.equal(jamoTrace.length, 19, 'every inventory member must have a trace entry');
+  assert.ok(jamoTrace.every((item) => item.status === 'literal' && item.ipa === '' && item.output === item.source), 'each inventory member is preserved as notation without fabricated IPA');
 });
 
 test('IPA-derived targets preserve whitespace and align multiword inputs without guessing missing IPA', () => {
