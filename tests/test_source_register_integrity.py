@@ -56,7 +56,8 @@ def test_nikl_copyright_policy_is_registered_without_claiming_item_level_clearan
     rows = {row["source_id"]: row for row in load_source_register()}
     policy = rows["SRC-NIKL-COPYRIGHT-POLICY"]
     assert policy["source_type"] == "license_policy"
-    assert policy["url"].startswith("https://www.korean.go.kr/")
+    assert policy["url"] == "https://www.korean.go.kr/front/nuri/pageView.do?mkn=3&page_id=P000189"
+    assert "front/page/pageView.do?mn_id=105" not in policy["url"]
     assert "Article 24-2" in policy["license_status"]
     assert "KOGL" in policy["license_status"]
     assert "item-level" in policy["limitations_or_next_action"]
