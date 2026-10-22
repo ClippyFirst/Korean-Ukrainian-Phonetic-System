@@ -14,7 +14,9 @@
     "check:release": "npm test && npm run build",
     "crawl:nikl": "node scripts/nikl-norm-crawler.mjs",
     "import:nikl-evidence": "node scripts/nikl-evidence-import.mjs",
-    "template:nikl-evidence": "node scripts/nikl-evidence-template.mjs"
+    "template:nikl-evidence": "node scripts/nikl-evidence-template.mjs",
+    "import:nikl-pdf": "node scripts/nikl-pdf-import.mjs",
+    "template:nikl-pdf": "node scripts/nikl-pdf-template.mjs"
   },
   "devDependencies": {
     "vite": "8.3.1"
