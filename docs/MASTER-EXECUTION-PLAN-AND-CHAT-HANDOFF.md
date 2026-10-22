@@ -578,3 +578,11 @@ The required pipeline remains Hangul → structural/morphological analysis → K
 - PR #201 (official ㄺ exception contrast) merged as `8fd25638ef3cd7cded15b36a5d1e1e536220bdc4`. Its exact-head test/build verification passed **1,084/1,084 Node tests**, Python 3.11/3.12/3.13, and corpus/master-table checks. The official surface contrast is documented separately from IPA and Ukrainian-target validation.
 - PR #202 (NIKL manifest content-type schema) merged as `55fede8fbeccbc5ada13daea19166bf2f897cc98`. Exact PR-head verification passed **1,084/1,084 Node tests**, Vite build, Python 3.11/3.12/3.13, corpus/master-table checks, and system verification. Post-merge mainline CI is running against the squash commit.
 - Remaining true blockers are unchanged: direct NIKL HTTP fetch returns 403 in GitHub Actions; no live 30-article manifest exists; page-specific KOGL marks are unverified; independent IPA adjudication is 0/20; Ukrainian target-layer review is outstanding. The project remains a deployed research preview, not a scientifically validated release.
+
+
+## Robots policy parser hardening — 2026-10-22
+
+- The metadata-first NIKL collector's robots parser now selects the most-specific matching product-token group and uses `User-agent: *` only when no specific group matches. Groups are combined only at the same specificity.
+- Rule matching now supports `*` wildcard segments and terminal `$` anchors, chooses the longest matching rule, and deterministically prefers `Allow` for equal-specificity ties. Added regression tests for specific-agent precedence, wildcard fallback, wildcard/end-anchor behavior, and Allow-on-tie.
+- Updated the crawler guide and skill so the operational policy matches the tested implementation. No fetch retries, alternate-host switching, proxy/stealth mode, or access-control bypass was added.
+- Status pending exact-head CI: `DONE_VERIFIED` only after Node/build, Python 3.11/3.12/3.13, and corpus/system checks pass. The live source remains blocked by HTTP 403; this work improves policy interpretation but does not make a live crawl available.
