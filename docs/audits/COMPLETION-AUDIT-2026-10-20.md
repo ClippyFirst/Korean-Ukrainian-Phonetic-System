@@ -832,3 +832,77 @@ The system remains a deployed research preview / partial prototype, not release-
 - [System verification CI 39836022141](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39836022141) passed **1,162/1,162 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
 - Direct official NIKL access remains HTTP 403 and is classified BLOCKED; no live manifest was produced.
 - Two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
+
+
+## Batch 30: integrated NIKL master passage browser-engine run — 2026-10-22
+
+### Work completed
+- Added one integrated passage fixture spanning the themes of 표준 발음법 articles 1–30.
+- Added a browser regression harness that sends every unique Hangul token and the full passage through the real `createEngine` pipeline in strict and practical modes.
+- Checked all exact lexical hits against the existing source-backed Korean surface, stored IPA, and IPA-derived Ukrainian target. Added generic §19 surface oracles for 침략, 강릉, 막론, 석류, 협력, 법리, and 국립.
+- Corrected malformed corpus particle/ending joins discovered by the first run instead of weakening morphology guards or inventing readings.
+
+### Exact CI evidence
+- Tested code head for generic §19 additions: `c86a550e38bb5b959825cf222329d95486f7d588`.
+- Browser tests: **1,166 passed, 0 failed**; Vite build passed.
+- Python regression/data-integrity jobs (3.11, 3.12, 3.13): passed.
+- Master-table/research-corpus generation: passed.
+- Run report: 5,230 characters; 855 unique Hangul tokens; 329 lexical hits; 526 generic-resolved tokens; zero unresolved tokens and zero actionable issues. Full-text strict/practical conversion emitted no unresolved placeholders. Twenty-three standalone compatibility-Jamo diagnostics are expected and explicitly classified as non-syllabic inventory warnings.
+
+### Task ledger
+- **DONE_VERIFIED:** corpus integration into the browser engine, exact lexical round-trip for corpus hits, zero unresolved-token gate, generic §19 regressions, current CI/build/data checks.
+- **PARTIAL:** article 1–30 coverage is not yet proven at every subparagraph/exception/variant; generic resolved output is not equivalent to independently source-verified output.
+- **TODO:** map every article/subparagraph/exception/allowed variant to an exact span and official source; adjudicate generic outputs and add only source-backed regression corrections.
+- **BLOCKED:** direct NIKL fetch remains HTTP 403 in CI; no bypass or invented source data.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** independent broad-IPA gold and Ukrainian-target review remain open.
+
+The audit report is `docs/audits/NIKL-MASTER-PASSAGE-ENGINE-RUN-2026-10-22.md`. The system remains a research preview / partial prototype, not release-ready.
+
+## Batch 31: runtime IPA → Ukrainian invariant across passage and lexical inventory — 2026-10-22
+
+### Implementation
+- Added `tests/ipa-first-runtime-invariant.test.mjs` to derive Ukrainian output again from each result's actual runtime IPA using the exported IPA adapter.
+- Added a representative IPA-contrast test, whole NIKL-passage token loop, complete Hangul-only lexical-row loop, licensed variant checks, whitespace alignment, and fail-closed unknown-IPA checks.
+- No production conversion code was changed in this batch: the audit found no runtime IPA/target divergence to fix, so changing correct output code would have been unjustified.
+
+### Exact-head evidence
+- Commit tested: `b980dc498c57bc0502325b4cf5fd71318664b9dc`.
+- [Tests and build](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39839292113): **1,170/1,170 Node tests passed**, build passed, Python 3.11–3.13 passed.
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39839292102): passed.
+- [Generated research artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39839292149): passed.
+- Runtime comparison: 855 unique passage tokens, 0 IPA→Ukrainian divergences; 630 Hangul-only lexical rows, including surfaced variants, 0 divergences.
+
+### Task ledger
+- **DONE_VERIFIED:** runtime IPA-first output invariant for the complete integrated passage token set and all Hangul-only lexical entries/variants; unmapped IPA remains fail-closed.
+- **PARTIAL:** correctness of every Korean IPA result is not established merely by target reproducibility. Article/subparagraph/exception/variant-level normative adjudication and independent broad-IPA gold remain open.
+- **BLOCKED:** official NIKL live fetch continues to return HTTP 403 in CI; do not bypass the restriction or invent evidence.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** independent Korean IPA and Ukrainian practical-target review remain outstanding.
+
+The system remains a research preview / partial prototype, not release-ready.
+
+
+## Correction to Batch 30/31 status — exact-user-passage rerun (2026-10-22)
+
+The earlier Batch 30 statement that the integrated passage had a zero-unresolved-token gate was based on an edited fixture and is superseded. The reconstructed fixture was restored for known wording differences and the current CI head is `34dc21fb521cc03933f091c89da14473bbd02a66`.
+
+- **DONE_VERIFIED:** regression harness runs the restored fixture; 1,170/1,170 Node tests pass; Vite production build passes; Python 3.11/3.12/3.13 pass; system verification passes. [Tests run](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842388316), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842380731).
+- **DONE_VERIFIED:** runtime IPA→Ukrainian equality is asserted for resolved passage tokens/variants; exact registered unresolved set is asserted to prevent silent regression.
+- **PARTIAL:** 13 intentionally joined/ambiguous contexts remain unresolved and are explicitly listed in the NIKL run audit. They must not be accepted as verified output or patched with guessed pronunciation.
+- **PARTIAL:** fixture has been corrected against known original wording differences, but byte-for-byte identity with the full chat source has not been independently proven.
+- **TODO:** compare all fixture paragraphs directly against the original user message; split malformed joined examples into grammatical minimal pairs where the intended morphology can be established; map all articles/subparagraphs/exceptions/allowed variants to source-backed examples.
+- **BLOCKED:** direct NIKL retrieval in CI remains HTTP 403; no bypass attempted. Independent Korean IPA and Ukrainian adaptation review remain outstanding.
+
+Release classification remains **research preview / partial prototype**, not a release-ready normative transcriber. This correction supersedes any older zero-unresolved claim for the user-pasted passage.
+
+
+## Fail-closed runtime correction and final verification — 2026-10-22
+
+Commit with implementation and tests: `f296014d5980123c8c64b9dde9abd47c43382131` (production fix `761d89c030687a3b588af717ffda430917aa8570`). For a single unresolved Hangul token, the engine now withholds the entire IPA string, Ukrainian target, and derived variants instead of exposing partial results from unaffected syllables. Diagnostic trace/issues remain available for research. Added a regression that checks every registered gap has empty IPA/target/variants and that the exact known-gap set remains unchanged.
+
+- [Tests/build/Python 3.11–3.13](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842772761): **1,171/1,171 tests passed**, 0 failed; production build passed; Python 3.11, 3.12, and 3.13 passed.
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842772726): passed.
+- [Browser G2P integration](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842772847): passed.
+- [Master-table/research-corpus artifact workflow](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39842772746): passed.
+- Final stress fixture on this code head: 5,198 Unicode characters; 852 unique Hangul tokens; 322 exact lexical hits; 517 generic resolved tokens; exactly 13 registered unresolved tokens; 0 unexpected unresolved forms; 0 runtime IPA→Ukrainian divergences among resolved tokens. The unresolved forms are withheld, not rendered as accepted transcription.
+
+**DONE_VERIFIED:** fail-closed behavior for unresolved single-token contexts; exact gap-set regression; runtime IPA parity for all resolved corpus tokens/variants; all listed CI checks on the implementation/test head. **PARTIAL / evidence-limited:** the 13 contexts themselves are not normatively solved; byte-for-byte identity with the complete original chat text is not proven; article/subparagraph/exception/allowed-variant mapping and generic IPA adjudication remain incomplete. Direct NIKL fetch remains HTTP 403. Release readiness remains **NO** (research preview / partial prototype).
