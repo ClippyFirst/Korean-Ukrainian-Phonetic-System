@@ -741,3 +741,30 @@ The system remains a deployed research preview / partial prototype, not release-
 - [System verification CI 39832329925](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39832329925) passed **1,153/1,153 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
 - Official NIKL direct access remains HTTP 403 and is classified BLOCKED; no live manifest was produced.
 - Two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
+
+
+## Batch 27: NIKL Q&A 313201 direct official-rule-example evidence for 굳이 — 2026-10-22
+
+### Primary-source findings
+Official indexed NIKL Q&A “‘굳이’ 구개음화” (qna_seq=313201; question 2025-04-16, answer 2025-04-18) asks about 굳이 and reproduces the official §17 example 굳이[구지]. This is direct rule-example evidence for the exact lexical target.
+
+### Implementation and verification scope
+- Updated the source register with the official title/date, canonical URL, direct-evidence status, and separate IPA/Ukrainian-adaptation boundary.
+- Updated the lexical source URL and evidence note; Korean surface, project IPA, and Ukrainian target remain unchanged.
+- Added batch report/regressions and updated the current source backlog and HTML intake queue.
+
+### Task ledger
+- DONE_VERIFIED after exact-head CI: direct example evidence, source URL parity, source-register integrity, queue counts, and build/test checks pass.
+- BLOCKED / rights: item-level KOGL mark remains unverified.
+- TODO: review remaining 20 citation-only sources, including three PDFs.
+- BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
+
+The system remains a deployed research preview / partial prototype, not release-ready.
+
+
+### Batch-27 exact-head verification evidence
+
+- Tested implementation/test head 63d8659d07d5bd6589a1e8336a434361bcbaa888.
+- [System verification CI 39833113496](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39833113496) passed **1,156/1,156 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
+- Direct official NIKL access remains HTTP 403 and is classified BLOCKED; no live manifest was produced.
+- Two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
