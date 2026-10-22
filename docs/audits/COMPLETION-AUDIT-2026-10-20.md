@@ -805,3 +805,22 @@ The system remains a deployed research preview / partial prototype, not release-
 - Current citation inventory for the latest merged correction: 41/60 content-checked; 19 citation-only/unreviewed remain (15 Q&A/FAQ pages, one Korean Basic Dictionary entry, three PDFs); 16 eligible HTML imports remain. This citation-review inventory is distinct from the 30-article normative-rule inventory.
 - Remaining acceptance gates: (1) claim-level review of all 19 remaining citations, (2) human verification of item-level KOGL reuse markings, (3) independent broad-IPA gold and Ukrainian-target review, including adjudication of `넓죽하다` and `읽고`, and (4) a successful current Pages deployment and master-table/corpus artifact run. The latter two workflows were still queued/pending at the time of this checkpoint and are not marked as passed here.
 - Release classification: **deployed research preview / partial prototype; not release-ready**. Passing software tests validates the current implementation and its contracts, not every linguistic output or the missing empirical evidence.
+
+
+## Batch 29: Q&A 318279 embedded official dictionary attestation for 찾아가다 — 2026-10-22
+
+### Primary-source findings
+Official indexed NIKL Q&A “‘찾아가다’라는 동사의 쓰임” (qna_seq=318279; question 2025-07-14, answer 2025-07-15) is about syntax and argument structure, but embeds a Standard Korean Dictionary headword entry directly giving 찾아가다[차자가다] and conjugation 찾아가[차자가]. The evidence class is OFFICIAL_DICTIONARY_ATTESTATION; the Q&A answer is not a phonological analysis.
+
+### Implementation and verification scope
+- Updated the source register with the official title/date, dictionary-attestation status, and source-scope distinction.
+- Clarified the lexical note; preserved Korean surface, project IPA, and Ukrainian target.
+- Added batch report/regressions and updated current source backlog and HTML intake queue.
+
+### Task ledger
+- DONE_VERIFIED after exact-head CI: dictionary attestation, source-register integrity, source URL parity, queue counts, and build/test checks pass.
+- BLOCKED / rights: item-level KOGL mark remains unverified.
+- TODO: review remaining 18 citation-only sources, including three PDFs.
+- BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
+
+The system remains a deployed research preview / partial prototype, not release-ready.
