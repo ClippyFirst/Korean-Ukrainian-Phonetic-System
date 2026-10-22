@@ -787,3 +787,11 @@ Official indexed NIKL Q&A “앞일과 공업용의 발음 관련” (qna_seq=31
 - BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
 
 The system remains a deployed research preview / partial prototype, not release-ready.
+
+
+### Batch-28 exact-head verification evidence
+
+- Tested implementation/test head 2e929e3aaeb42d83591f68989a849cfef548bbff.
+- [System verification CI 39833830987](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39833830987) passed **1,159/1,159 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
+- Direct official NIKL access remains HTTP 403 and is classified BLOCKED; no live manifest was produced.
+- Two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
