@@ -124,18 +124,18 @@ test('MCFAQ 8420 directly attests 않았다[아낟따] and its §§12(4)/23 expl
   assert.equal(byInput('않았다').source_url, source.url);
 });
 
-test('qna_seq=333927 replaces the mismatched MCFAQ 8505 citation for 의견란', () => {
+test('qna_seq=333927 replaces the superseded unverified MCFAQ 8505 locator for 의견란', () => {
   const source = bySource('SRC-NIKL-QNA-333927');
-  const wrong = bySource('SRC-NIKL-MCFAQ-8505');
+  const superseded = bySource('SRC-NIKL-MCFAQ-8505');
   assert.ok(source);
-  assert.ok(wrong);
+  assert.ok(superseded);
   assert.equal(source.review_status, 'direct_attestation_2026-10-22');
-  assert.equal(wrong.review_status, 'citation_mismatch_resolved_2026-10-22');
+  assert.equal(superseded.review_status, 'citation_replaced_pending_source_review_2026-10-22');
   assert.match(source.coverage, /의견란\[의견난\].*§20/u);
-  assert.match(wrong.coverage, /상견례\[상견녜\], not 의견란/u);
+  assert.match(superseded.coverage, /Page content not independently reviewed/u);
   assert.equal(byInput('의견란').source_url, source.url);
   assert.match(byInput('의견란').rule_notes, /does not mark vowel length/u);
-  assert.equal(lexical.some((row) => row.source_url === wrong.url), false);
+  assert.equal(lexical.some((row) => row.source_url === superseded.url), false);
 });
 
 test('batch 18 updates the citation-only backlog from 42 to 27 without altering lexical targets', () => {
