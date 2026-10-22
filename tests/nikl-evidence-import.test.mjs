@@ -90,6 +90,10 @@ test("rejects duplicate source IDs and duplicate canonical URLs", async t => {
     { sourceId: "SRC-NIKL-QNA-2", url: "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?qna_seq=317202&pageIndex=1&mn_id=216", inputHtml: "page.html" },
   ] }), "utf8");
   await assert.rejects(buildEvidenceImport(input, output), /Duplicate canonical source URL/u);
+  await writeFile(input, JSON.stringify({ sources: [
+    { sourceId: "SRC-NIKL-QNA-999999", url: QNA, inputHtml: "page.html" },
+  ] }), "utf8");
+  await assert.rejects(buildEvidenceImport(input, output), /source ID does not match qna_seq/u);
 });
 
 test("fails closed on missing files, tiny error pages, and malformed source manifests", async t => {
@@ -101,6 +105,10 @@ test("fails closed on missing files, tiny error pages, and malformed source mani
   await writeFile(join(dir, "tiny.html"), "<html><body>Forbidden</body></html>", "utf8");
   await writeFile(input, JSON.stringify({ sources: [{ sourceId: "SRC-NIKL-QNA-317202", url: QNA, inputHtml: "tiny.html" }] }), "utf8");
   await assert.rejects(buildEvidenceImport(input, output), /too little visible text/u);
+  const challenge = "<html><head><title>Access Denied</title></head><body><h1>Access Denied</h1><p>" + "This request has been blocked by the security service. ".repeat(8) + "</p></body></html>";
+  await writeFile(join(dir, "challenge.html"), challenge, "utf8");
+  await writeFile(input, JSON.stringify({ sources: [{ sourceId: "SRC-NIKL-QNA-317202", url: QNA, inputHtml: "challenge.html" }] }), "utf8");
+  await assert.rejects(buildEvidenceImport(input, output), /appears to be an access-denial/u);
   await writeFile(input, "{not-json", "utf8");
   await assert.rejects(buildEvidenceImport(input, output));
   await writeFile(input, JSON.stringify({ sources: [] }), "utf8");
