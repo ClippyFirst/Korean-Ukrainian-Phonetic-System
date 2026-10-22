@@ -467,3 +467,12 @@ Five further pages were inspected: `찾다` (57320), `잊다` (70067), `붙다` 
 - Reviewed Q&A `qna_seq=316101` (answer 2025-06-11): direct readings `값있다[가빋따]`, `값있는[가빈는]`, and `곧이어[고디어]`; the answer explicitly says §29 ㄴ-insertion is not automatic.
 - Reviewed Q&A `qna_seq=312381` (answer 2025-04-05): direct `좋아[조ː아]`, with explicit §12(4) ㅎ-deletion explanation.
 - Updated source register and three lexical notes, and added regression coverage for direct evidence and the negative-control interpretation. New-citation inventory now stands at **16/60** (9 direct, 2 partial, 5 contextual-only; 44 unreviewed). Page-level reuse marks and independent IPA/Ukrainian-target validation remain open.
+
+
+## Final continuation checkpoint — 2026-10-22
+
+Current main checkpoint: `d4099c0aa9bda8d695826f6e2c4eca7f395fc778`. Merged lexical evidence batches #211–#213 and skill evidence-scope gate #214; exact-head Node suite increased to **1,102/1,102 passing**, with Vite build, Python 3.11–3.13 regression/data-integrity, system verification, and master-table/research-corpus checks passing on PR #214 head. Post-merge mainline tests/system/corpus checks also passed. GitHub Pages deployment run `39772975939` subsequently completed successfully, including public-page HTTP smoke tests and live practical-mode Chromium smoke.
+
+Current lexical citation inventory: **16/60** newly inventoried pages content-checked (9 direct for target forms, 2 partial, 5 contextual-example-only); **44 citation-only/unreviewed**. Item-level KOGL markings remain unverified. Official live 30-article collection is blocked by HTTP 403; the safe local HTML import route remains available if an authorized human can save the official page normally. Firecrawl retrieval was unavailable because the connected account had insufficient credits, and several other public-page requests returned cache misses; these failures were not treated as source evidence.
+
+Release disposition remains research preview/partial prototype. The 18-row surface fixture has 17 direct NIKL comparators and one rule-derived case (`숲이`); independent broad-IPA gold remains 0/18. Remaining acceptance criteria: inspect the 44 exact pages, verify item-level reuse terms, obtain independent IPA/Ukrainian-target adjudication, and confirm the final Pages deployment.
