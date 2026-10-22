@@ -563,3 +563,11 @@ The required pipeline remains Hangul → structural/morphological analysis → K
 - Added `tests/nikl-r11-exception-contrast-evidence.test.mjs` to guard the exact NIKL locators, source registry entry, mismatch status, and the prohibition against treating Hangul surface evidence as IPA/Ukrainian gold.
 - Evidence scope: official NIKL establishes the Korean surface comparator, not broad IPA, Ukrainian target, or page-level reuse permission. Q&A item-level KOGL marking remains unverified.
 - Task ledger: `DONE_VERIFIED` after exact-head CI for source registration and explicit differential classification. `BLOCKED_SPECIALIST_ADJUDICATION`: 0/20 independent IPA-gold judgments remain. `BLOCKED / rights`: Q&A page-level reuse mark remains unverified. Practical JS port remains unchanged; do not promote this evidence-only batch as linguistic release validation.
+
+
+## Manifest provenance-schema invariants — 2026-10-22
+
+- **PR #200** merged as `421ffa07b303bd9543fd0e3afe0524f9c49f06f8`. The JSON Schema now conditionally enforces coherent provenance: direct HTTP requires a real retrieval timestamp, successful HTTP status, user-agent, and a checked robots result; local import requires a separate import timestamp, null HTTP status/retrieval timestamp/user-agent, and `not_checked_local_import`. Negative tests reject contradictory manifests in both directions.
+- The exact PR-head CI passed **1,082/1,082 Node tests**, Vite build, Python 3.11/3.12/3.13 regression/data-integrity suites, and corpus/master-table checks. The schema-only change does not resolve the external HTTP 403 or establish source reuse rights.
+- A follow-up inspection found that the media-type schema regex over-escaped the literal plus in `application/xhtml+xml` and was not anchored. **PR #202** corrects it and adds positive XHTML/local-file tests plus a negative near-miss. Its exact-head CI is pending at the time this note was authored; do not classify that follow-up as `DONE_VERIFIED` until the run is green.
+- Task ledger: `DONE_VERIFIED` — provenance conditional schema and negative cases (PR #200). `PARTIAL` — content-type schema validation until PR #202's exact-head CI completes. `BLOCKED` — live NIKL direct fetch remains HTTP 403; no live manifest exists. `BLOCKED / rights` — page-specific KOGL marking remains unverified.
