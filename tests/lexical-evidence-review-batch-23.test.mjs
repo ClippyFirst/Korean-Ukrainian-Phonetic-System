@@ -28,7 +28,7 @@ test("낱낱이 keeps the long vowel in IPA and no longer understates the source
   assert.equal(word.ipa_syllables, 'nanː|na|tɕʰi');
   assert.equal(word.target_syllables, 'нан|на|чі');
   assert.match(word.rule_notes, /explicitly states the sequence: syllable-final neutralization, nasalization, then palatalization/u);
-  assert.match(word.rule_notes, /Preserve vowel length in IPA/u);
+  assert.match(word.rule_notes, /long vowel in IPA/u);
   assert.doesNotMatch(word.rule_notes, /exact rule ordering can vary by analysis/u);
   assert.match(report, /explicitly states the ordered explanation/u);
   assert.match(report, /Korean bracket notation is not IPA/u);
