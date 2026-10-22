@@ -714,3 +714,22 @@ Official indexed NIKL Q&A “낱낱이 음운변동” (qna_seq=314041; question
 - BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
 
 The system remains a deployed research preview / partial prototype, not release-ready.
+
+
+## Batch 26: NIKL Q&A 313717 direct attestation for 붙이다 — 2026-10-22
+
+### Primary-source findings
+Official indexed NIKL Q&A “붙이는 구개음화” (qna_seq=313717; question 2025-04-23, answer 2025-04-24) directly states 붙이다[부치다] and explains Standard Pronunciation Rules §17: ㅌ combines with suffixal 이, is realized as ㅊ, and resyllabifies.
+
+### Implementation and verification scope
+- Updated the source register with official title/date and direct-attestation status.
+- Clarified the lexical evidence note's direct target scope; Korean surface, project IPA, and Ukrainian target remain unchanged.
+- Added batch report/regressions and updated the current source backlog and HTML intake queue.
+
+### Task ledger
+- DONE_VERIFIED after exact-head CI: direct source claim, source-register integrity, source URL parity, queue counts, and build/test checks pass.
+- BLOCKED / rights: item-level KOGL mark remains unverified.
+- TODO: review remaining 21 citation-only sources, including three PDFs.
+- BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
+
+The system remains a deployed research preview / partial prototype, not release-ready.
