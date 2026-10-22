@@ -11,7 +11,7 @@ The harness runs both the unique Hangul tokens and the full passage through `cre
 
 ## Latest observed CI result
 
-Commit: `5597815cb3e35c99eb8b27e564ab4e1a007caa06`  
+Commit: `c86a550e38bb5b959825cf222329d95486f7d588`  
 Branch: `research/nikl-corpus-engine-regression-2026-10-22`  
 Pull request: #247 (draft)
 
@@ -26,7 +26,8 @@ From GitHub Actions run for the browser job:
 - Full-text strict mode: 9,547 Ukrainian output characters, 12,140 IPA characters, 0 unresolved placeholders.
 - Full-text practical mode: 9,547 Ukrainian output characters, 12,140 IPA characters, 0 unresolved placeholders.
 - Full-text diagnostics: 23 expected warnings for standalone compatibility Jamo listed as inventory items; 0 other actionable issues.
-- Browser test suite: 1,165 passed, 0 failed.
+- Browser test suite: 1,166 passed, 0 failed.
+- Additional generic §19 regression oracles passed without lexical overrides: 침략 → 침냑, 강릉 → 강능, 막론 → 망논, 석류 → 성뉴, 협력 → 혐녁, 법리 → 범니, 국립 → 궁닙.
 - Vite production build: passed.
 - Python regression/data-integrity jobs (Python 3.11, 3.12, 3.13): passed.
 - Master-table and research-corpus generation workflow: passed.
@@ -64,4 +65,4 @@ These edits deliberately avoid adding unsupported lexical pronunciations. The en
 
 ## Status
 
-The passage is now an executable regression fixture, and its current end-to-end engine run is clean under the above criteria. Full exhaustive normative coverage remains **PARTIAL** until the article/subparagraph matrix and generic-output adjudication are completed.
+The passage is now an executable regression fixture, and its current end-to-end engine run is clean under the above criteria. The generic §19 examples are additionally checked against explicit expected Korean surface forms, so those seven outcomes are no longer counted as merely “generic resolved” cases. Full exhaustive normative coverage remains **PARTIAL** until the article/subparagraph matrix and generic-output adjudication are completed.
