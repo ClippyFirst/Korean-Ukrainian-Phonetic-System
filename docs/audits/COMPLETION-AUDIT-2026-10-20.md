@@ -382,4 +382,4 @@ Status: `DONE_VERIFIED` for PR #200's provenance invariants and PR #202's media-
 
 The NIKL collector now honors the most-specific matching user-agent group, treats wildcard groups as fallback, supports wildcard path segments and terminal anchors, and resolves equal-specificity rules with Allow precedence. Focused regression tests and corresponding guide/skill updates were added. This is policy-correctness hardening only; it does not bypass HTTP 403 or imply a successful crawl.
 
-Acceptance remains pending exact-head CI for this branch; do not mark complete until the tests/build and data-integrity jobs pass.
+PR #203 merged as `beba8449fb4aea2e3c6b7398f75d21702e602133`. Exact-head CI at `b5db9f70f6a1fded765bc2407b366b4920722a67` passed **1,087/1,087 Node tests**, Vite build, Python regression/data-integrity, corpus/master-table validation, and system verification. The parser hardening is `DONE_VERIFIED`; live NIKL access remains blocked by HTTP 403.
