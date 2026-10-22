@@ -80,3 +80,23 @@ The adversarial passage review added eleven entries since the previous 601-row s
 | `값의` | `갑씌` / `갑쎄` | NIKL §5 Q&A plus §14 liaison; preserve both permitted particle readings rather than collapsing the variant |
 
 These rows are tracked in the lexical CSV with explicit source URLs and rule notes, and in `tests/reported-placeholder-regressions.test.mjs`. Ukrainian targets remain provisional; the standard Korean surface readings and alternatives are what the regression tests lock. The count is a snapshot, not a quality gate: future additions must update this document and its snapshot assertion, but a nonzero article-coverage queue alone must not fail builds.
+
+
+## Official dictionary source review — batch 14 (2026-10-22)
+
+Three previously citation-only NIKL Korean-English Learners' Dictionary pages were opened and compared with the exact lexical rows:
+
+- `SRC-KRDICT-ENG-66031`, **맑다**: the dictionary explicitly lists `맑은[말근]`, along with `맑아[말가]`, `맑으니[말그니]`, `맑습니다[막씀니다]`, `맑고[말꼬]`, and `맑지[막찌]`. The lexical `맑은` row now cites this exact entry. `맑을` is not listed and remains rule-derived.
+- `SRC-KRDICT-ENG-89859`, **얇다**: the dictionary explicitly lists `얇은[얄븐]` and five other application forms. This is direct evidence for the listed forms only, not a productive license for all ㄼ adjectives.
+- `SRC-KRDICT-ENG-64509`, **넣다**: the dictionary lists `넣다[너ː타]`, `넣는[넌ː는]`, `넣어[너어]`, `넣으니[너으니]`, and `넣습니다[너ː씀니다]`. It does **not** list the CSV form `넣었다`; that form remains a rule-derived inflection with the existing §12(4)/§23 rationale.
+
+The source register now differentiates exact direct attestation from partial lemma/application support. Added `tests/lexical-evidence-review-batch-14.test.mjs` to protect source identity, direct/partial status, and the distinction between Hangul pronunciation notation and IPA.
+
+**Updated inventory after the contextual-only checks:** 11 of the 60 newly inventoried citation pages have been content-checked: 4 direct for target forms, 2 partial, 5 contextual-example-only for target forms; 49 remain citation-only/unreviewed. Page-level KOGL markings remain unverified. These source checks do not adjudicate broad IPA or Ukrainian target spellings.
+
+
+### Additional contextual-only source checks in batch 14
+
+Five more official dictionary pages were inspected. The cited target spellings appear as ordinary Hangul examples, but not as bracketed pronunciation entries: `찾았다` (ParaWordNo=57320), `잊었다` (70067), `붙었다` (74181), `놓았다` (89534), and `쌓였다` (65098). Their lemma and selected application readings are recorded in the source register, but the target inflections remain rule-derived. The lexical notes explicitly state that an ordinary example sentence is not direct pronunciation evidence. See [batch 14 review](LEXICAL-EVIDENCE-REVIEW-BATCH-14-2026-10-22.md).
+
+The current inventory is 11/60 pages content-checked: 4 direct for target forms, 2 partial, 5 contextual-example-only for target forms, and 49 citation-only/unreviewed. Page-level KOGL marking remains unverified; no IPA or Ukrainian target has been inferred from these dictionary pages.

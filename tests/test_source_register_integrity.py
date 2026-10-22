@@ -135,7 +135,7 @@ def test_unreviewed_lexical_citations_are_not_promoted_to_verified_evidence():
         row for row in rows
         if row["review_status"] == "unverified_lexical_citation_inventory_2026-10-22"
     ]
-    assert len(unreviewed) >= 50, "expected an explicit inventory of previously unregistered lexical citations"
+    assert len(unreviewed) >= 49, "expected the 49 remaining citation-only lexical records after batch-14 review"
     for row in unreviewed:
         assert row["integration_status"] == "lexical_csv_citation_only"
         assert "not independently rechecked" in row["limitations_or_next_action"]
