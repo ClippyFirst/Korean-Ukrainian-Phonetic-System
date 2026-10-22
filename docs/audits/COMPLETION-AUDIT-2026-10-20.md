@@ -460,3 +460,10 @@ Five further pages were inspected: `찾다` (57320), `잊다` (70067), `붙다` 
 - Reviewed curated FAQ `mcfaq_seq=5748`: direct answers `밭을[바틀]` and `밭이[바치]`. The FAQ explicitly cites `한글맞춤법` §§13/17; lexical notes now distinguish that instrument from the project's separate `표준 발음법` crosswalk.
 - Updated three source-register records and nine lexical notes, and added a regression suite for exact surface forms, source identity, quoted-rule scope, and rule-instrument attribution.
 - Current new-citation inventory: **14/60** content-checked (7 direct for target forms, 2 partial, 5 contextual-only; 46 unreviewed). Item-level KOGL marks remain unverified; independent IPA and Ukrainian-target review remain outstanding.
+
+
+## Batch 16: NIKL negative-control and ㅎ-deletion evidence — 2026-10-22
+
+- Reviewed Q&A `qna_seq=316101` (answer 2025-06-11): direct readings `값있다[가빋따]`, `값있는[가빈는]`, and `곧이어[고디어]`; the answer explicitly says §29 ㄴ-insertion is not automatic.
+- Reviewed Q&A `qna_seq=312381` (answer 2025-04-05): direct `좋아[조ː아]`, with explicit §12(4) ㅎ-deletion explanation.
+- Updated source register and three lexical notes, and added regression coverage for direct evidence and the negative-control interpretation. New-citation inventory now stands at **16/60** (9 direct, 2 partial, 5 contextual-only; 44 unreviewed). Page-level reuse marks and independent IPA/Ukrainian-target validation remain open.
