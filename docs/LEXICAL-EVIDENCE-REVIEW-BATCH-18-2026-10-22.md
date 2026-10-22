@@ -23,10 +23,24 @@ The source register had two Q&A citations marked unreviewed even though the offi
 - Current treatment: 읽고[일꼬] is derived from the Standard Pronunciation Rules' licensed verb-stem ㄺ-before-ㄱ exception plus fortition; 밝는[방는] is derived from complex-coda simplification and nasal assimilation. These remain rule-derived rather than directly attested by this citation.
 - This is a correction to evidence provenance, not a change to the Korean target forms or Ukrainian outputs.
 
+
+## 3. qna_seq=307508 — partial support pending spelling resolution
+
+- Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307508
+- Indexed title: “넓의 발음.” The answer explicitly describes the lexical ㄼ exception and gives 넓죽하다[넙쭈카다] plus a second form rendered in the indexed text as 넓둥굴다[넙뚱글다].
+- The corpus input is 넓둥글다. The indexed answer's visible spelling differs by one vowel from the corpus input; without full-page verification it would be unsafe to claim exact orthographic attestation.
+- Decision: mark the citation as reviewed but partial. It supports the relevant exception context and the pronunciation string [넙뚱글다], but the exact spelling-to-form match remains unresolved. The lexical target itself is unchanged.
+
+## 4. qna_seq=317229 — direct attestation
+
+- Official URL: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=317229
+- Indexed title: “외곬에.” The official indexed answer directly states “외곬에” is pronounced [외골쎄] and cites Standard Pronunciation Rules §14.
+- Decision: mark the exact Korean surface as directly attested; keep IPA and Ukrainian target validation separate. The source URL in the lexical corpus is normalized to the official desktop locator.
+
 ## Evidence limits
 
 The review used substantive text exposed in the official NIKL search index because direct HTML fetch was unavailable in this environment. The exact statements above are bounded by that visible indexed text; this report does not claim a complete HTTP retrieval of either page. Source reuse rights remain unverified. No broad-IPA gold or Ukrainian-target validation was added. No production transcription logic changed.
 
 ## Updated inventory
 
-The citation-only/unreviewed source-register count falls from 42 to 40. Both sources are now reviewed at the claim-scope level, but only qna_seq=330743 directly attests the exact lexical forms 밝게 and 굵은. qna_seq=334294 is partial contextual evidence only for the lexical rows 읽고 and 밝는.
+The citation-only/unreviewed source-register count falls from 42 to 38. Four sources are now reviewed at claim-scope level. qna_seq=330743 directly attests 밝게 and 굵은; qna_seq=317229 directly attests 외곬에. qna_seq=334294 is partial contextual evidence for 읽고/밝는, while qna_seq=307508 is partial because the indexed orthography for the cited compound does not exactly match the corpus input.
