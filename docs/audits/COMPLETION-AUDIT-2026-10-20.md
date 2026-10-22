@@ -632,3 +632,13 @@ Q&A qna_seq=279931 (“'ㄴ' 첨가”, question 2023-09-11, answer 2023-09-13) 
 - Source-register count: 34/60 citations content-checked (21 direct, 8 partial, 5 contextual-example-only); 26 citation-only/unreviewed remain (22 Q&A/FAQ pages, one Korean Basic Dictionary entry, three PDFs). The ordinary-browser HTML import queue is 23 pages (22 Q&A/FAQ + one dictionary entry).
 - Regression coverage checks source identity, exact question/answer scope, retention of the existing Korean/IPA/Ukrainian fields, the 26-source backlog, and exclusion of the reviewed source from the generated import queue.
 - No runtime Korean pronunciation, IPA, or Ukrainian target values changed. The bracketed Korean notation is not IPA. Item-level KOGL rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
+
+
+## 2026-10-22 — NIKL Q&A mixed-scope review, batch 20
+
+Q&A qna_seq=312379 (“표준발음과 음운변동을 알려주세요”, question 2025-04-03, answer 2025-04-08) was checked through the official indexed page. The answer directly gives 얇실하다[얄씰하다] and explains §§10/23. Its reproduced §23 text includes 밭갈이[받까리] and 값지다[갑찌다] as official rule examples, not as the Q&A question target.
+
+- Evidence status: direct_answer_and_quoted_rule_examples_2026-10-22. Scope is mixed and claim-level; the three forms are not treated as equally direct Q&A answer targets.
+- Inventory: 35/60 citations content-checked (22 direct, 8 partial, 5 contextual-example-only); 25 citation-only/unreviewed remain (21 Q&A/FAQ pages, one dictionary entry, three PDFs). The HTML import queue is 22 pages.
+- The existing lexical notes and output fields were retained; regression coverage now checks source identity, dates, mixed scope, and queue reconciliation. No Korean/IPA/Ukrainian output values changed.
+- Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
