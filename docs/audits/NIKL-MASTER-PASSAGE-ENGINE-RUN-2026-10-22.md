@@ -293,3 +293,18 @@ tɕʰø dʑoŋ kʌm dʑɯŋ e sʌ nɯn tɕehaŋ ɰi wʌn tɕʰik̚ p͈u tʰʌ t�
 чведжон комджинесонин че1ганий вончікпуто че30ганий саішіот паримкаджі, как ганий понмунґва путім, єве, гойон паримил пйолдоий комджин ганмоґиро тиннокашіо. модин ємуненин ганґил вонмун, гьонтесо міт имджол куджо, чоґйондвенин кюджонґва сунсо, пйоджун паримі кинґо, IPA, укираінао имсон чоґин, укираінао шірйон пйоґірил кірокашіо. пйоджун паримі гваґіндвен кйонува кючіґиробуто точулган кйону, саджоні кебйол огві чонбоґа пірйоган кйону, поксу паримі гойондвенин кйонурил кубйолгашіо. кинґоґа пуджокаґона гьонтесо кйонґєрил пандангал су омнин ганмоґин мігвакчониро намґіґо, пйоґіманиро чучикан кйолґварил пйоджун паримиро чешігаджі машіо. IPAка гвакчондвеґі чоненин укираінао транскрипцію сенсонгаджі машіо.
 
 ~~~
+
+## Research-output fidelity bug: standalone Jamo inventories — 2026-10-22
+
+### Reproduced diagnosis
+
+Inspection of the recorded strict whole-text IPA output showed inventory positions rendered as empty comma-separated slots, for example the passage's consonant/vowel inventory sections. The source contains isolated compatibility Jamo as *orthographic/linguistic notation*, not as pronounceable syllables. In `src/app/engine_convert.js`, the `u.type === 'jamo'` branch previously assigned both `output[i]` and `ipa[i]` to empty strings. That correctly withheld unsupported IPA but also silently deleted the Jamo from the Ukrainian/documentary output.
+
+### Correction made
+
+- Commit `bde3c681dae06580e8304594809efbb0542c6852`: preserve isolated Jamo verbatim in the output and trace as literal notation, while leaving its IPA empty and retaining the `unsupported-jamo` status plus diagnostic.
+- Commit `d6468b01d63503d76c7b05510ec00ad496ac13d5`: added a regression asserting that a full consonant inventory round-trips unchanged in the output, remains unresolved as pronunciation, retains a diagnostic, and has no fabricated IPA.
+
+### Verification status
+
+The code and regression test are committed on `research/nikl-corpus-engine-regression-2026-10-22`. No workflow run was returned for the latest commit at the time of this note, so the new test is **not yet CI-verified**. Earlier passing test counts do not verify this correction. Acceptance requires the new regression and full browser suite to pass, plus checking that the full-passage output no longer loses isolated Jamo. This correction addresses source-text loss only; it does not establish normative correctness of generic IPA or exhaustive coverage of *표준 발음법* articles 1–30.
