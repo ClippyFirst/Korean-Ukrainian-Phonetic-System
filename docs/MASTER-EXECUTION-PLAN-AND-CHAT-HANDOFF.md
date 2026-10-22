@@ -129,3 +129,13 @@ undefined
 - A concrete data-note defect was corrected: 국물 nasal assimilation is triggered by following ㅁ, not ㄹ. The lexical note now says “before ㅁ”. The three lexical surface, IPA, and Ukrainian target fields remain unchanged; their source URLs now match the observed official locator.
 - Batch-21 exact-head verification passed at 4e737cff714bb4a7eea019a01ac65e4117889608: [system CI 39829847141](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39829847141) passed **1,145/1,145 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic. Expected post-review inventory: 36/60 citations content-checked (22 direct target-form/official-rule-example, 9 partial, 5 contextual-example-only), 24 citation-only/unreviewed, 21 eligible HTML imports. Item-level KOGL marking and independent broad-IPA/Ukrainian-target review remain open.
 - Release disposition remains deployed research preview / partial prototype.
+
+
+## Continuation checkpoint — NIKL Q&A 314041 claim-scope review, batch 22 (2026-10-22)
+
+- Starting main: d72ba016b18950e0455ec032567bcec9c695a635 (batch 21 and its exact-head verification are merged).
+- Official indexed NIKL Q&A [qna_seq=314041](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=314041), “낱낱이 음운변동” (question 2025-04-28; answer 2025-04-29), directly gives 낱낱이[난ː나치] and explicitly states the sequence final neutralization → nasalization → palatalization.
+- Corrected the evidence note that previously said exact ordering could vary by analysis; this particular answer states a specific sequence. The stored IPA already preserves vowel length (nanː|na|tɕʰi). Korean surface and Ukrainian target remain unchanged.
+- Expected inventory after batch 22: **37/60** content-checked (23 direct target-form/official-rule-example, 9 partial, 5 contextual-example-only); **23 citation-only/unreviewed** (19 Q&A/FAQ, one dictionary, three PDFs); **20** eligible HTML imports.
+- Task ledger: DONE_VERIFIED after exact-head CI — source title/date, exact-form attestation, explicit sequence, source-register status, IPA length preservation, and queue tests. BLOCKED / rights — item-level KOGL mark remains unverified. TODO — review remaining 23 citations. BLOCKED_SPECIALIST_ADJUDICATION — independent broad-IPA gold and Ukrainian-target review remain outstanding.
+- Direct NIKL fetch remains HTTP 403 in CI; no live manifest is claimed and no access-control bypass is attempted. Release status remains deployed research preview / partial prototype.
