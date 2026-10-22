@@ -15,7 +15,7 @@ test('qna_seq=314041 directly attests 낱낱이 and the stated sequence of rule 
   assert.equal(source.review_status, 'direct_attestation_2026-10-22');
   assert.match(source.title_or_project, /낱낱이.*음운변동/u);
   assert.match(source.version_or_date, /Question 2025-04-28; answer 2025-04-29/u);
-  assert.match(source.coverage, /directly gives 낱낱이\[난ː나치\]/u);
+  assert.match(source.coverage, /Directly attests 낱낱이\[난ː나치\]/u);
   assert.match(source.coverage, /final neutralization, nasalization, then palatalization/u);
   assert.match(source.integration_status, /exact form and ordered explanation/u);
   assert.match(source.limitations_or_next_action, /Item-level KOGL marking remains unverified/u);
@@ -30,7 +30,7 @@ test("낱낱이 keeps the long vowel in IPA and no longer understates the source
   assert.match(word.rule_notes, /sequence 음절의 끝소리 규칙 → 비음화 → 구개음화/u);
   assert.match(word.rule_notes, /Preserve vowel length in IPA/u);
   assert.doesNotMatch(word.rule_notes, /exact rule ordering can vary by analysis/u);
-  assert.match(report, /directly states the ordered explanation/u);
+  assert.match(report, /explicitly states the ordered explanation/u);
   assert.match(report, /Korean bracket notation is not IPA/u);
 });
 
