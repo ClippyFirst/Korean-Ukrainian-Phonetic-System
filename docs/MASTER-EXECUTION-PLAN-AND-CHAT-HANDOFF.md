@@ -554,3 +554,12 @@ The required pipeline remains Hangul → structural/morphological analysis → K
 - Synchronized `research/ipa-adjudication-queue.json` to that stronger surface-evidence pointer. All candidate/final IPA and reviewer fields remain null; no IPA-gold claim was made.
 - The practical browser port's expected `익꼬` remains unchanged and is still explicitly different from the direct normative surface `일꼬`. This is evidence classification, not a production behavior change. The existing differential diagnostic and new fixture assertion guard this divergence.
 - Acceptance: fixture/queue parity, Node/Python/build/corpus checks pass on the exact PR head. The scientific blockers remain 0/20 independent IPA gold and outstanding Ukrainian target review; the NIKL live crawler remains blocked by HTTP 403 and item-level reuse marks remain unverified.
+
+
+## ㄺ exception differential evidence — 2026-10-22
+
+- Added official NIKL Online Q&A `qna_seq=321743` to `research/SOURCE-REGISTER.csv`. It directly contrasts `칡과[칙꽈]` (general ㄺ before ㄱ) with `읽고[일꼬]` (the verbal-stem ㄺ exception). The exact URL is `https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=321743`.
+- Updated the fixed browser-port surface fixture to label the two known normative divergences explicitly: `넓죽하다` browser port `널쭈카다` vs NIKL `넙쭈카다`; `읽고` browser port `익꼬` vs NIKL `일꼬`. No production runtime output was changed. The distinction is preserved rather than hiding it by replacing the pinned g2pK port contract with the normative comparator.
+- Added `tests/nikl-r11-exception-contrast-evidence.test.mjs` to guard the exact NIKL locators, source registry entry, mismatch status, and the prohibition against treating Hangul surface evidence as IPA/Ukrainian gold.
+- Evidence scope: official NIKL establishes the Korean surface comparator, not broad IPA, Ukrainian target, or page-level reuse permission. Q&A item-level KOGL marking remains unverified.
+- Task ledger: `DONE_VERIFIED` after exact-head CI for source registration and explicit differential classification. `BLOCKED_SPECIALIST_ADJUDICATION`: 0/20 independent IPA-gold judgments remain. `BLOCKED / rights`: Q&A page-level reuse mark remains unverified. Practical JS port remains unchanged; do not promote this evidence-only batch as linguistic release validation.

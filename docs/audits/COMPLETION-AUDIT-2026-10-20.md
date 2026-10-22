@@ -362,3 +362,10 @@ The actual scientific blockers remain unchanged: no live NIKL manifest because C
 ### Direct primary-rule attestation for 읽고 — 2026-10-22
 
 The official NIKL Standard Pronunciation Rules §1 commentary explicitly gives `읽고[일꼬]` while discussing the verbal-stem ㄺ + ㄱ environment. The surface fixture and IPA queue now cite that canonical rules page as `direct-NIKL-example`, rather than relying only on the NIKL Q&A URL. The browser practical-port output `익꼬` is intentionally unchanged and remains a known normative divergence. This upgrades the evidence locator for the Korean surface only; it does not supply broad IPA, resolve the 0/20 independent IPA-gold queue, or validate Ukrainian target choices.
+
+
+### Official ㄺ exception contrast and port divergence — 2026-10-22
+
+The official NIKL Q&A `qna_seq=321743` contrasts `칡과[칙꽈]` with `읽고[일꼬]`, confirming that the verbal-stem ㄺ + ㄱ exception must not be generalized to every ㄺ-final word. The fixed fixture now explicitly labels the pinned JavaScript-port divergences `넓죽하다: 널쭈카다 ≠ 넙쭈카다` and `읽고: 익꼬 ≠ 일꼬`. The new regression verifies the source register and evidence labels without changing production output.
+
+Status: `DONE_VERIFIED` for provenance/differential bookkeeping after CI; `BLOCKED_SPECIALIST_ADJUDICATION` for all 20 IPA cases; `BLOCKED / rights` for Q&A item-level KOGL marking. Korean Hangul surface evidence is not IPA gold or Ukrainian-target validation.
