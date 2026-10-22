@@ -19,6 +19,8 @@ const ALLOWED_PATHS = new Set([
   "/kornorms/regltn/regltnView.do",
   "/kornorms/m/m_regltn.do",
   "/front/nuri/pageView.do",
+  "/eng/dicSearch/SearchView",
+  "/kor/dicSearch/SearchView",
 ]);
 
 function normalized(value) {
@@ -28,11 +30,14 @@ function normalized(value) {
 export function officialSourceUrl(value) {
   let url;
   try { url = new URL(value); } catch { throw new Error("Each source requires a valid absolute URL."); }
-  if (url.protocol !== "https:" || !["korean.go.kr", "www.korean.go.kr", "m.korean.go.kr"].includes(url.hostname.toLowerCase())) {
+  if (url.protocol !== "https:" || !["korean.go.kr", "www.korean.go.kr", "m.korean.go.kr", "krdict.korean.go.kr"].includes(url.hostname.toLowerCase())) {
     throw new Error("Only HTTPS pages on the official korean.go.kr host are allowed.");
   }
   if (!ALLOWED_PATHS.has(url.pathname)) throw new Error("URL path is outside the official NIKL evidence-import allowlist: " + url.pathname);
-  const queryContract = url.pathname.includes("onlineQna")
+  const isKrdict = url.hostname.toLowerCase() === "krdict.korean.go.kr";
+  const queryContract = isKrdict
+    ? { required: "ParaWordNo", allowed: new Set(["ParaWordNo", "nation"]) }
+    : url.pathname.includes("onlineQna")
     ? { required: "qna_seq", allowed: new Set(["qna_seq", "mn_id", "pageIndex"]) }
     : url.pathname.includes("mcfaq")
       ? { required: "mcfaq_seq", allowed: new Set(["mcfaq_seq", "mn_id", "pageIndex"]) }
@@ -94,8 +99,9 @@ export async function buildEvidenceImport(inputManifestPath, outputPath, { now =
   const urls = new Set();
   const records = [];
   for (const source of input.sources) {
-    if (!source || typeof source.sourceId !== "string" || !/^SRC-NIKL-[A-Z0-9-]{2,80}$/.test(source.sourceId)) {
-      throw new Error("Each source requires a stable SRC-NIKL-* sourceId.");
+    if (!source || typeof source.sourceId !== "string" ||
+        !(/^(?:SRC-NIKL-[A-Z0-9-]{2,80}|SRC-KRDICT-(?:ENG|KOR)-\\d+)$/.test(source.sourceId))) {
+      throw new Error("Each source requires a stable SRC-NIKL-* or SRC-KRDICT-{ENG,KOR}-* sourceId.");
     }
     if (ids.has(source.sourceId)) throw new Error("Duplicate sourceId: " + source.sourceId);
     ids.add(source.sourceId);
@@ -108,6 +114,16 @@ export async function buildEvidenceImport(inputManifestPath, outputPath, { now =
     }
     if (expectedFaqId && parsedUrl.searchParams.get("mcfaq_seq") !== expectedFaqId[1]) {
       throw new Error(source.sourceId + ": source ID does not match mcfaq_seq in URL.");
+    }
+    if (expectedDictionaryId && (parsedUrl.hostname !== "krdict.korean.go.kr" ||
+        parsedUrl.pathname !== "/" + expectedDictionaryId[1] && false)) {
+      throw new Error(source.sourceId + ": source ID does not match a Korean Basic Dictionary URL.");
+    }
+    if (expectedDictionaryId) {
+      const expectedPath = expectedDictionaryId[1] === "ENG" ? "/eng/dicSearch/SearchView" : "/kor/dicSearch/SearchView";
+      if (parsedUrl.pathname !== expectedPath || parsedUrl.searchParams.get("ParaWordNo") !== expectedDictionaryId[2]) {
+        throw new Error(source.sourceId + ": source ID language/number does not match the dictionary URL.");
+      }
     }
     if (urls.has(url)) throw new Error("Duplicate canonical source URL: " + url);
     urls.add(url);
