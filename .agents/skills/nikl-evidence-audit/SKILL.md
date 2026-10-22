@@ -23,15 +23,18 @@ Authority is claim-specific. A pronunciation rule, a dictionary entry, an offici
 ## Evidence classes
 
 Use explicit classes and never conflate them:
-- DIRECT_OFFICIAL_ATTESTATION: exact form/pronunciation is printed by an official source;
-- OFFICIAL_DICTIONARY_ATTESTATION: linked to an exact dictionary entry, lemma, and relevant sense/POS where available;
-- OFFICIAL_RULE_DERIVATION: candidate follows from a cited rule and verified environment, but is not directly listed;
-- OFFICIAL_ANSWER: official answer with exact question/context and date;
-- SECONDARY_SUPPORTED: claim supported by a cited scholarly source;
-- DIFFERENTIAL_ONLY: one or more G2P tools agree, but normative evidence has not been established;
+- DIRECT_OFFICIAL_ATTESTATION: exact target form and its pronunciation are visibly paired in an official source.
+- OFFICIAL_DICTIONARY_ATTESTATION: an exact dictionary entry supports the identified lemma/sense/POS; direct attestation of a specific inflection still requires that inflection to be listed with pronunciation.
+- DIRECT_OFFICIAL_RULE_EXAMPLE: an exact form and pronunciation appear in an official rule example, including an example reproduced in an answer that is not the question target.
+- OFFICIAL_RULE_DERIVATION: the candidate follows from a cited rule and verified environment, but the exact target pronunciation is not directly listed.
+- OFFICIAL_ANSWER: official answer with exact question/context and date; this identifies the source type, not a blanket evidence strength.
+- PARTIAL_LEMMA_APPLICATION_SUPPORT: the source attests a lemma or selected paradigm forms but not the exact target inflection.
+- CONTEXTUAL_EXAMPLE_ONLY: the target spelling appears in ordinary example prose without pronunciation notation; this is orthographic/contextual support only.
+- SECONDARY_SUPPORTED: claim supported by a cited scholarly source.
+- DIFFERENTIAL_ONLY: one or more G2P tools agree, but normative evidence has not been established.
 - HYPOTHESIS_UNRESOLVED: insufficient or conflicting evidence.
 
-If the repository already has a compatible schema, map these concepts to its established vocabulary instead of creating incompatible duplicate labels.
+These are claim-level evidence classes, not mutually exclusive page types. A page can directly attest one form, quote a rule example for another, and provide only contextual spelling for a third. Map them to existing repository status fields where possible; do not create a parallel evidence registry.
 
 ## Claim-level evidence record
 
