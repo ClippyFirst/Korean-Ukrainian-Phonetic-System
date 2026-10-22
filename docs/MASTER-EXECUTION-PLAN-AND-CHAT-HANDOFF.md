@@ -697,7 +697,7 @@ Five additional official dictionary entries were checked: `찾다` (ParaWordNo=5
   - [#212 — direct pronunciation and rule-instrument scope, batch 15](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/212), merge `4d09a4cec489a1d59d2a0f0976de9f6e93ed2bc0`.
   - [#213 — n-insertion negative controls and ㅎ deletion, batch 16](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/213), merge `e12167324f0f1aa6ba088f6d423b16afaac98c26`.
   - [#214 — evidence-scope and source-instrument gates](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/214), merge `d4099c0aa9bda8d695826f6e2c4eca7f395fc778`.
-- The mainline tests, system verification, and master-table/research-corpus checks passed after merge #214. The Pages deployment for main `d4099c0...` was still in progress at the latest status check: [run 39772975939](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39772975939). Do not claim the latest deployment completed until that run reaches success.
+- The mainline tests, system verification, and master-table/research-corpus checks passed after merge #214. The Pages deployment for main `d4099c0...` subsequently completed successfully, including smoke tests for the deployed public pages and live practical-mode Chromium smoke: [run 39772975939](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39772975939).
 
 ### Exact-head verification
 
