@@ -741,3 +741,13 @@ The system remains a deployed research preview / partial prototype, not release-
 - [System verification CI 39832329925](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39832329925) passed **1,153/1,153 Node tests**, Vite build, Python regression/data-integrity, and source inventory diagnostic wrapper.
 - Official NIKL direct access remains HTTP 403 and is classified BLOCKED; no live manifest was produced.
 - Two existing JS/Python differential cases remain diagnostic-only and lack independent IPA adjudication.
+
+
+## Batch 25 — NIKL Q&A correction for 공업용 (qna_seq=311728), 2026-10-22
+
+The official indexed answer “앞일과 공업용의 발음 관련” (question 2025-03-21; answer 2025-03-26) corrects the question's proposed 공업용[공업뇽] to the standard pronunciation [공엄뇽]. The answer reproduces §29, including 영업-용[영엄뇽] as a separate rule example.
+
+- Evidence status: direct_attestation_with_question_premise_correction_2026-10-22. The answer's correction is normative; the question's proposed form is not.
+- Inventory: 40/60 citations content-checked (26 direct, 9 partial, 5 contextual-example-only); 20 citation-only/unreviewed remain (16 Q&A/FAQ pages, one dictionary entry, three PDFs). HTML intake queue: 17 pages.
+- The lexical note was clarified; Korean surface, IPA, and Ukrainian target fields were preserved. Regression tests enforce source identity, the correction, and queue counts.
+- Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
