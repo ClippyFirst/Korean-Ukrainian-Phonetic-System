@@ -17,7 +17,7 @@ test('qna_seq=313201 is reviewed as direct official §17 example evidence for �
   assert.match(source.version_or_date, /Question 2025-04-16; answer 2025-04-18/u);
   assert.equal(source.url, 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313201');
   assert.match(source.coverage, /question is about 굳이.*official example 굳이\[구지\]/u);
-  assert.match(source.integration_status, /Direct official-rule-example attestation/u);
+  assert.match(source.integration_status, /Exact lexical target appears in the official rule example/u);
   assert.match(source.limitations_or_next_action, /project IPA and Ukrainian adaptation need separate phonetic adjudication/u);
 });
 
