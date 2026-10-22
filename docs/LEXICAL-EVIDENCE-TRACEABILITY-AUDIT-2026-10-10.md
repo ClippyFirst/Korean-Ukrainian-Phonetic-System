@@ -100,3 +100,12 @@ The source register now differentiates exact direct attestation from partial lem
 Five more official dictionary pages were inspected. The cited target spellings appear as ordinary Hangul examples, but not as bracketed pronunciation entries: `찾았다` (ParaWordNo=57320), `잊었다` (70067), `붙었다` (74181), `놓았다` (89534), and `쌓였다` (65098). Their lemma and selected application readings are recorded in the source register, but the target inflections remain rule-derived. The lexical notes explicitly state that an ordinary example sentence is not direct pronunciation evidence. See [batch 14 review](LEXICAL-EVIDENCE-REVIEW-BATCH-14-2026-10-22.md).
 
 The current inventory is 11/60 pages content-checked: 4 direct for target forms, 2 partial, 5 contextual-example-only for target forms, and 49 citation-only/unreviewed. Page-level KOGL marking remains unverified; no IPA or Ukrainian target has been inferred from these dictionary pages.
+
+
+## Batch 15: official Q&A/FAQ scope review — 2026-10-22
+
+Reviewed three more official pages. Q&A `qna_seq=315279` (answer 2025-05-23) directly lists the exact Korean surface forms for `맑고`, `붉다`, `붉지`, `붉고`, and `밟으니` among its complex-coda examples. Q&A `qna_seq=307237` directly answers `넓네[널레]`; it also reproduces `없다[업ː따]` as a §10 example, which is recorded as a quoted-rule example rather than the question target. Curated FAQ `mcfaq_seq=5748` directly answers `밭을[바틀]` and `밭이[바치]`.
+
+The FAQ explicitly names `한글맞춤법` §§13/17, not `표준 발음법`. Lexical notes now explicitly distinguish the named orthography instrument from the project's separate Standard Pronunciation Rules crosswalk. No source-specific article citation is silently relabeled.
+
+**Current inventory:** 14/60 newly inventoried citation pages content-checked: 7 direct for target forms, 2 partial, 5 contextual-example-only; 46 remain citation-only/unreviewed. Page-level KOGL marks, independent IPA, and Ukrainian target validation remain unresolved.
