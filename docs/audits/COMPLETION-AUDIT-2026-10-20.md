@@ -653,3 +653,13 @@ The official indexed NIKL Q&A page “홑이불” (qna_seq=317202; question 202
 - BLOCKED_SPECIALIST_ADJUDICATION: independent broad-IPA gold and Ukrainian practical-target review remain outstanding.
 
 The system remains a deployed research preview / partial prototype, not release-ready.
+
+
+## Batch 21 — NIKL Q&A mixed-scope review (qna_seq=312379), 2026-10-22
+
+The official indexed answer “표준발음과 음운변동을 알려주세요” (question 2025-04-03; answer 2025-04-08) directly gives 얇실하다[얄씰하다] and explains §§10/23. The same answer reproduces official §23 examples 밭갈이[받까리] and 값지다[갑찌다]; these are quoted rule examples, not the question's target.
+
+- Evidence status: direct_answer_and_quoted_rule_examples_2026-10-22, with claim-level distinction between the direct answer and reproduced rule examples.
+- Inventory: 36/60 citations content-checked (22 direct, 9 partial, 5 contextual-example-only); 24 citation-only/unreviewed remain (20 Q&A/FAQ pages, one dictionary entry, three PDFs). HTML intake queue: 21 pages.
+- Existing lexical notes and all runtime fields were preserved. Regression coverage checks exact source identity, mixed evidence scope, and current queue counts.
+- Item-level reuse rights and independent broad-IPA/Ukrainian-target adjudication remain unresolved.
