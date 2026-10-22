@@ -675,3 +675,12 @@ Five additional official dictionary entries were checked: `찾다` (ParaWordNo=5
 - Updated source register and nine lexical notes; added `docs/LEXICAL-EVIDENCE-REVIEW-BATCH-15-2026-10-22.md` and `tests/lexical-evidence-review-batch-15.test.mjs`. The source-inventory guard now expects 46 remaining citation-only records.
 - **Current inventory:** 14/60 pages reviewed (7 direct for target forms, 2 partial, 5 contextual-example-only); 46 remain citation-only/unreviewed. Item-level KOGL rights, independent IPA gold, and Ukrainian-target adjudication remain blocked.
 - **Release disposition unchanged:** deployed research preview, not scientifically validated/release-ready.
+
+
+## Batch 16: NIKL Q&A negative controls — 2026-10-22
+
+- Working branch: `research/lexical-source-review-batch-16-2026-10-22`, based on main `4d09a4cec489a1d59d2a0f0976de9f6e93ed2bc0`.
+- Q&A `qna_seq=316101` directly attests `값있다[가빋따]`, `값있는[가빈는]`, and `곧이어[고디어]`, explicitly warning that §29 ㄴ-insertion is not automatic. The lexical forms are retained as negative controls, not generalized into a productive insertion rule.
+- Q&A `qna_seq=312381` directly attests `좋아[조ː아]` and cites §12(4) for ㅎ deletion before `-아`.
+- Updated two source-register records, three lexical notes, and the explicit remaining-citation floor; added `docs/LEXICAL-EVIDENCE-REVIEW-BATCH-16-2026-10-22.md` and `tests/lexical-evidence-review-batch-16.test.mjs`.
+- **Current inventory:** 16/60 pages content-checked (9 direct for target forms, 2 partial, 5 contextual-example-only); 44 remain citation-only/unreviewed. Item-level KOGL marks, independent IPA gold, and Ukrainian-target review remain blocked.
