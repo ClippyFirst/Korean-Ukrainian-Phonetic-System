@@ -443,6 +443,6 @@ Exact-head workflow [39761906127](https://github.com/ClippyFirst/Korean-Ukrainia
 - Exact attestation: `맑은[말근]` and `얇은[얄븐]` appear in their cited dictionary paradigms. The `맑은` lexical row now points to the exact dictionary entry.
 - Partial attestation: the `넣다` entry gives the lemma and selected application forms but does not list `넣었다`; `넣었다` remains explicitly rule-derived. Likewise, `맑을` is not listed in the `맑다` page and remains rule-derived.
 - Added a dedicated review note and test file asserting exact URLs, source identity uniqueness, direct-vs-partial classification, and the rule that dictionary Hangul notation is not IPA.
-- Source-review inventory now stands at **6/60** newly inventoried pages content-checked: **4 direct, 2 partial, 54 still citation-only/unverified**. Item-level KOGL marking remains unverified for all three pages.
+- Source-review inventory after the contextual-only checks stands at **11/60** newly inventoried pages content-checked: **4 direct for target forms, 2 partial, 5 contextual-example-only for target forms, 49 still citation-only/unreviewed**. Item-level KOGL marking remains unverified for all three pages.
 - `DONE_VERIFIED`: exact content check, source-register scope correction, `맑은` citation correction, regression assertions. `PARTIAL`: rule-derived `맑을` and `넣었다`. `BLOCKED / rights`: page-level reuse marking. `BLOCKED_SPECIALIST_ADJUDICATION`: independent broad IPA and Ukrainian target review.
 - No production engine or UI changes. Release status remains research preview/prototype, not scientifically validated.
