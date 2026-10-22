@@ -36,3 +36,11 @@ The lexical row, Korean surface, IPA string, and Ukrainian target were not chang
 - BLOCKED_SPECIALIST_ADJUDICATION: independent broad IPA and Ukrainian practical-target review remain open.
 
 This batch changes evidence provenance only; it does not change runtime pronunciation or Ukrainian output.
+
+## Verification
+
+- Tested branch head: 98556521fe404ccf550091915b5cee9de4689a69.
+- CI run: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39826883919 — passed.
+- Browser regression suite: 1,139/1,139 Node tests passed; Vite build passed.
+- Python regression and data-integrity job passed.
+- The live NIKL diagnostic again returned HTTP 403 and was recorded as BLOCKED; it did not create a live manifest. No access-control bypass was attempted.
