@@ -41,5 +41,5 @@ test('batch 20 updates the live backlog without rewriting historical batch-19 co
   assert.match(report, /21 direct target-form attestations, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /25.*21 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
   assert.match(report, /No broad-IPA gold or independent Ukrainian-target review was added/u);
-  assert.match(readFileSync(new URL('../docs/LEXICAL-EVIDENCE-REVIEW-BATCH-19-2026-10-22.md', import.meta.url), 'utf8'), /26\/60/);
+  assert.match(readFileSync(new URL('../docs/LEXICAL-EVIDENCE-REVIEW-BATCH-19-2026-10-22.md', import.meta.url), 'utf8'), /34\/60/);
 });
