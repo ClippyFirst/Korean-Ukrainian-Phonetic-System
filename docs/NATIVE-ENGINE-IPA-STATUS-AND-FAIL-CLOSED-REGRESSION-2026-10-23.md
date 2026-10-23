@@ -27,13 +27,13 @@ The IPA remains inspectable for research and debugging. This is intentional: the
 The new parametrized test covers native-engine contexts that must remain explicitly unresolved and block target rendering:
 
 - `앉아라` — R002 complex-coda liaison;
-- `싫어` — R003 ㅎ-coda deletion;
+- `앓아` — R003 ㅎ-coda deletion;
 - `넋하고` — R004 complex-coda + ㅎ;
 - `갇이` — R007 morphology-conditioned palatalization;
-- `늙고` — R008 ㄺ-before-ㄱ fortition;
-- `깎아` — R002 simple-coda liaison where §15 changes the representative.
+- `긁고` — R008 ㄺ-before-ㄱ fortition;
+- 
 
-Negative controls ensure that unrelated or already-resolved forms (`먹이`, `일본`, `실수`, `밭에`, `국밥`) are not incorrectly labelled unresolved. A source-backed `값어치` lexical override remains provisional rather than diagnostic-only.
+Negative controls ensure that unrelated or already-resolved forms (`먹이`, `일본`, `실수`, `밭에`, `국밥`) are not incorrectly labelled unresolved. Source-backed lexical entries (including `값어치`) remain provisional rather than diagnostic-only. Source-backed `싫어`, `늙고`, and `깎아` are not used as unresolved test cases because their exact lexical entries intentionally resolve their own contexts.
 
 ## Verification ledger
 
