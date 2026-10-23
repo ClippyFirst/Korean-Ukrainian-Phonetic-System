@@ -246,9 +246,32 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level))
     all_traces=[x.to_dict() for x in traces]+lexical_traces
     unresolved_contexts=_unlicensed_ambiguous_pronunciation_contexts(all_traces, items)
+    # A lexicon entry may have directly attested Korean surface Hangul while
+    # its IPA rendering remains unreviewed. Do not let a lexical override
+    # silently promote project-generated IPA to an accepted pronunciation.
+    i=0
+    while i<len(items):
+        j=i+1
+        while j<len(items) and items[j-1].boundary_after!="word":
+            j+=1
+        word="".join(s.text for s in items[i:j])
+        entry=LEXICAL_PRONUNCIATIONS.get(word)
+        if entry and entry.get("ipa_adjudication_status")=="diagnostic_only_unresolved_pronunciation":
+            unresolved_contexts.append({
+                "rule_id":"IPA_ADJUDICATION",
+                "input_span":word,
+                "reason":"source-backed Korean surface spelling exists, but project IPA lacks independent adjudication",
+                "source":entry.get("source_url",""),
+                "status":"unresolved-ipa-adjudication",
+            })
+        i=j
     ipa_status="diagnostic_only_unresolved_pronunciation" if unresolved_contexts else "provisional"
     ipa_is_diagnostic_only=bool(unresolved_contexts)
-    ipa_status_reason="unresolved_morphophonological_context" if unresolved_contexts else None
+    ipa_status_reason=(
+        "independent_ipa_adjudication_required"
+        if any(x.get("rule_id")=="IPA_ADJUDICATION" for x in unresolved_contexts)
+        else "unresolved_morphophonological_context" if unresolved_contexts else None
+    )
     # Mirror acceptance metadata inside the IPA payload as well as at the
     # analysis root. This protects clients that pass the IPA object around
     # without carrying the enclosing pronunciation analysis.
