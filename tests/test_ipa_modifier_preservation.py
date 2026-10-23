@@ -5,7 +5,6 @@ from korean_ukrainian.pipeline import (
     map_ipa_to_ukrainian,
     source_features_for_ipa,
     tokenize_ipa,
-    source_features_for_ipa,
     tokenize_ipa_with_modifiers,
     _select_target,
 )
@@ -191,3 +190,29 @@ def test_selected_candidates_retain_word_boundary_for_final_rendering():
     assert selected is not None
     assert selected["segments"][2]["source_boundary_before"] == "word"
     assert render_sequence(selected["segments"]) == "ка м"
+
+
+@pytest.mark.parametrize("text", ["", "   ", " "])
+def test_empty_or_whitespace_only_input_fails_closed_at_all_public_stages(text):
+    from korean_ukrainian.pipeline import (
+        analyze_korean,
+        phonologize_korean,
+        phoneticize_korean,
+        transliterate_korean,
+    )
+
+    for operation in (analyze_korean, phonologize_korean, phoneticize_korean, transliterate_korean):
+        with pytest.raises(ValueError, match="at least one precomposed Hangul syllable"):
+            operation(text)
+
+
+def test_target_selector_does_not_treat_empty_segment_list_as_success():
+    assert _select_target({"segments": []}) is None
+
+
+def test_non_hangul_input_is_rejected_consistently_before_phonology():
+    from korean_ukrainian.pipeline import phonologize_korean, phoneticize_korean
+
+    for operation in (phonologize_korean, phoneticize_korean):
+        with pytest.raises(ValueError, match="unsupported non-Hangul character"):
+            operation("hello")

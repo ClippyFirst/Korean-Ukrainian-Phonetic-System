@@ -380,3 +380,16 @@ Task ledger, reconciled against code and exact-head CI:
 - **CI lessons:** strict raw-row audit exposed the hidden alternate IPA typo and stale cross-runtime assertion; boundary E2E test exposed a missing import. Each was corrected and the relevant exact code/test head passed. No local test run is claimed.
 - **TODO / BLOCKED_SPECIALIST_ADJUDICATION:** the 20-case broad-IPA queue still requires two qualified independent reviewers; do not treat engine output as its own gold. **TODO:** independent Ukrainian target review. **TODO:** exhaustive article/subparagraph/exception/variant audit. **BLOCKED:** item-level KOGL rights and live NIKL inventory (HTTP 403; workflow skipped).
 - **Readiness:** technically improved research preview / partial prototype; not scientifically release-ready.
+
+
+## Native pipeline empty-input fail-closed follow-up — 2026-10-23
+
+- Starting default branch: `main` at `e1c079f81604bf2a6f3f93624fea06a22b14dd8a`.
+- Working branch / PR: `research/native-empty-input-fail-closed-2026-10-23` / [PR #261](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/261).
+- Problem found: empty/whitespace-only input could flow to an empty IPA segment list; `_select_target` then returned an empty selection object, allowing a false `model-selected` state with no output segments.
+- Implementation: shared input validation for `analyze_korean`, `phonologize_korean`, and `phoneticize_korean`; fail-closed `_select_target` for empty segments; regressions across all public pipeline stages and unsupported non-Hangul input. No JS practical engine or linguistic data changed.
+- First CI attempt exposed a validation-order mismatch for `hello`; fixed by checking unsupported characters before the no-Hangul empty-state check. The next run exposed a fixture that contained literal escaped text rather than actual whitespace; changed it to a literal non-breaking space. These failures and fixes are retained as evidence, not hidden.
+- Implementation/test head `052f8ef0155be23ad86b8f58f94b8c7a5ffa3af6`: tests/Python 3.11–3.13/web build PASS [40006290986](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290986); system/browser/Python integrity PASS [40006290971](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290971); corpus artifacts PASS [40006290630](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290630); optional g2pK Python 3.11/3.12 PASS [40006292252](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006292252). Live NIKL inventory skipped, not passed. Local tests not run.
+- `DONE_VERIFIED` for the code/test head; final PR-head CI must be rechecked after documentation commits. Mainline is not changed by this open PR.
+- Remaining scientific blockers unchanged: independent IPA adjudication queue (20 cases), independent Ukrainian target review, exhaustive article/subparagraph/exception coverage, item-level KOGL evidence, and live NIKL access (HTTP 403).
+- Release status remains research preview / partial prototype, not scientifically validated or release-ready.

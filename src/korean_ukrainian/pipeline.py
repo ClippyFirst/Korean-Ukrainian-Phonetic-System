@@ -75,15 +75,24 @@ def _apply_lexical_pronunciations(items):
 
 DEFAULT_WEIGHTS={"consonantal":2.0,"sonorant":1.5,"syllabic":1.0,"voice":1.0,"continuant":1.5,"nasal":1.5,"lateral":1.0,"rhotic":1.0,"labial":1.5,"coronal":1.5,"dorsal":1.5,"palatal":2.0,"palatalized":1.5,"affricate":1.5,"aspirated":0.5,"long":0.5}
 
-def analyze_korean(text):
-    for i, c in enumerate(text):
-        if c.isspace():
+def _validate_korean_input(text):
+    """Reject empty and non-Hangul input consistently at every public stage."""
+    if not isinstance(text, str):
+        raise TypeError("Korean input must be a string")
+    for i, char in enumerate(text):
+        if char.isspace():
             continue
-        if not ("가" <= c <= "힣"):
-            raise ValueError(f"unsupported non-Hangul character at index {i}: {c!r}")
+        if not ("가" <= char <= "힣"):
+            raise ValueError(f"unsupported non-Hangul character at index {i}: {char!r}")
+    if not any("가" <= char <= "힣" for char in text):
+        raise ValueError("input must contain at least one precomposed Hangul syllable")
+
+def analyze_korean(text):
+    _validate_korean_input(text)
     return [{"orthography":c,"decomposition":decompose_hangul(c)} for c in text if "가"<=c<="힣"]
 
 def phonologize_korean(text):
+    _validate_korean_input(text)
     items=parse_syllables(text)
     return {"input":text,"syllables":[x.to_dict() for x in items],"analysis_status":"canonical_structural_representation"}
 
@@ -142,6 +151,7 @@ def _apply_lexical_ipa(items,ipa_result):
     return ipa_result
 
 def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict"):
+    _validate_korean_input(text)
     items=parse_syllables(text)
     items,traces=apply_ordered_rules(items,rule_ids,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses,morphology_mode=morphology_mode)
     lexical_traces=_apply_lexical_pronunciations(items)
@@ -284,6 +294,10 @@ def rank_ukrainian_candidates(candidates):
     return sorted(candidates,key=lambda x:(x.get("score",float("inf")),x.get("candidate_id","")))
 
 def _select_target(target):
+    # Empty IPA is not a successful zero-segment transcription. Fail closed so
+    # blank input cannot be reported as a selected Ukrainian target.
+    if not target.get("segments"):
+        return None
     selected=[]
     for segment in target["segments"]:
         candidates=segment["target"].get("candidates",[])
