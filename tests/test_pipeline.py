@@ -311,7 +311,7 @@ def test_python_ipa_inventory_matches_browser_surface_segments():
     assert source_features_for_ipa("ɕ͈")["palatalized"] == "1"
 
 
-@pytest.mark.parametrize("ipa", ["", " \\t\\n", "...", " . # "])
+@pytest.mark.parametrize("ipa", ["", " " + chr(9) + chr(10), "...", " . # "])
 def test_ipa_adapter_rejects_empty_or_boundary_only_input(ipa):
     from korean_ukrainian.pipeline import map_ipa_to_ukrainian
     with pytest.raises(ValueError, match="at least one supported segment"):
