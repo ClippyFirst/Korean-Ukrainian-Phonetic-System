@@ -906,3 +906,14 @@ Commit with implementation and tests: `f296014d5980123c8c64b9dde9abd47c43382131`
 - Final stress fixture on this code head: 5,198 Unicode characters; 852 unique Hangul tokens; 322 exact lexical hits; 517 generic resolved tokens; exactly 13 registered unresolved tokens; 0 unexpected unresolved forms; 0 runtime IPA→Ukrainian divergences among resolved tokens. The unresolved forms are withheld, not rendered as accepted transcription.
 
 **DONE_VERIFIED:** fail-closed behavior for unresolved single-token contexts; exact gap-set regression; runtime IPA parity for all resolved corpus tokens/variants; all listed CI checks on the implementation/test head. **PARTIAL / evidence-limited:** the 13 contexts themselves are not normatively solved; byte-for-byte identity with the complete original chat text is not proven; article/subparagraph/exception/allowed-variant mapping and generic IPA adjudication remain incomplete. Direct NIKL fetch remains HTTP 403. Release readiness remains **NO** (research preview / partial prototype).
+
+
+
+## 2026-10-23 continuation update
+
+- **DONE_VERIFIED:** PR #249 merged by squash as `e9f769035172eb43387443f8e33fdfef04733a42`. Its latest observed CI run `39848905827` reports success for browser regression/build and Python regression/data integrity; the optional metadata-only NIKL source inventory was skipped.
+- **PARTIAL:** exact-context preservation of bracketed compatibility Jamo and punctuation-separated inventories is now implemented and covered by that CI run. This is a source-fidelity fix, not evidence of correct pronunciation.
+- **TODO:** add and verify preservation of whitespace-separated Jamo inventories; maintain literal source characters in documentary output while withholding invented IPA.
+- **PARTIAL:** exhaustive article/subparagraph/exception/variant coverage for *표준 발음법* 1–30 and independent adjudication of generic IPA remain incomplete. Internal IPA-to-Ukrainian recomputation is an invariant, not an independent gold standard.
+- **BLOCKED:** live NIKL retrieval returned HTTP 403 in the recorded work; do not claim live source validation until a reproducible permitted route or a source file with provenance is available.
+- **Release status:** not release-ready as a fully validated normative transcription system. The web service and automated tests exist, but independent linguistic evaluation and source-backed rule coverage remain acceptance blockers.
