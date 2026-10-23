@@ -14,7 +14,7 @@ The public native `map_ipa_to_ukrainian` adapter previously accepted an empty IP
 ## Verification state
 
 - Branch: `fix/native-ipa-adapter-empty-input-2026-10-23`.
-- Code and tests are committed; exact-head CI has not yet been observed. Status is **PENDING_CI**, not DONE_VERIFIED.
+- Code/test head before this evidence update: `04c767ca56f5add8b5d7829eb6051a863cc9d63f`. CI passed: Python/web tests [run 40007019581](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019581), system verification [run 40007019470](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019470), generated corpus artifacts [run 40007019405](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019405), and optional g2pK integration [run 40007019497](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019497). The Python/web workflow passed Python 3.12 and 3.13; Python 3.11 also passed in the final workflow run. The current documentation-only evidence update still needs its own exact-head CI confirmation.
 - Local Python execution is unavailable in this GitHub API-only session; no local pass is claimed.
 - The separate open PR #261 addresses empty/non-Hangul Korean input at public native Korean stages. This patch addresses the downstream IPA adapter's independent public boundary and does not replace or duplicate that Korean-input validator.
 
