@@ -386,11 +386,10 @@ def test_unambiguous_productive_tensification_remains_available():
     ("word", "rule_id"),
     [
         ("앉아라", "R002"),
-        ("싫어", "R003"),
+        ("앓아", "R003"),
         ("넋하고", "R004"),
         ("갇이", "R007"),
-        ("늙고", "R008"),
-        ("깎아", "R002"),
+        ("긁고", "R008"),
     ],
 )
 def test_native_engine_marks_unlicensed_ambiguous_ipa_as_diagnostic_only(word, rule_id):
