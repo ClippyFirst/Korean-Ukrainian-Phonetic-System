@@ -54,3 +54,8 @@ The previous `tokenize_ipa` skipped the length mark `ː` as if it were punctuati
 A one-off scan of all 642 lexical rows found two IPA values using ASCII `r` rather than the repository's intended IPA flap `ɾ`: `발음과` (`pa|rɯm|ɡwa`) and `발음의` (`pa|rɯ|mi`). Both were corrected to `ɾ`. The Korean surface spellings and Ukrainian target reference fields were not changed. A new regression now tokenizes every non-empty lexical IPA syllable through the same fail-closed adapter parser, so unsupported IPA symbols cannot remain hidden in untested dictionary rows.
 
 This is a syntactic/inventory compatibility check, **not** independent adjudication that every lexical IPA transcription is phonetically correct.
+
+
+### CI-driven correction to length parsing
+
+The registry-wide regression initially failed on 12 valid entries such as `anː`, `toŋː`, and `samː`: in this dataset's syllable notation, the length mark can follow the coda even though it marks the vowel. The parser was corrected to associate `ː` with the last supported vowel in the same syllable, while still rejecting a length mark in a syllable with no preceding vowel. The same CI run also exposed the active overlay copy of `발음과` in `lexical_additions_2026-10-15.csv`; that duplicate was corrected alongside the base lexicon row. The all-lexicon parser test remains enabled to guard both base and overlay data.
