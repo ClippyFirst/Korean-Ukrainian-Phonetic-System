@@ -567,3 +567,12 @@ def test_nikl_rule_29_phrase_examples_require_phrase_boundary_mode():
         assert items[right_index].onset == expected_onset, phrase
         assert traces[0].changed, phrase
         assert traces[0].license_context == f"R009:phrase:{phrase}:{pair}", phrase
+
+
+def test_nikl_rule_29_explicit_no_insertion_exceptions_remain_unlicensed():
+    # NIKL §29 names these as exceptions to obligatory n-insertion.
+    for word in ("육이오", "삼일절", "송별연", "등용문"):
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R009"])
+        assert not traces[0].changed, word
+        assert traces[0].status == "conditional-disabled", word
+        assert all(item.onset != "ㄴ" for item in items), word
