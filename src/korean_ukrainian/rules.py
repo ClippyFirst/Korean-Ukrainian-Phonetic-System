@@ -330,6 +330,18 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             parts=license.split(":",3)
             if len(parts)==4 and parts[1]==scope and parts[2]==full_form:
                 exact_pairs.add(parts[3])
+        # NIKL explicitly confirms that the attached ending -ㄹ게 is pronounced
+        # with fortis ㄲ ([할께]); this is not a free inference from ㄹ + ㄱ.
+        # License only the exact orthographic environment where 게 is attached
+        # to a preceding ㄹ coda, and preserve the official Q&A provenance.
+        attested_l_ge_pairs=set()
+        if rule_id=="R013":
+            for i in range(len(items)-1):
+                a,b=items[i],items[i+1]
+                if a.boundary_after!="word" and a.coda=="ㄹ" and b.text=="게" and b.onset=="ㄱ":
+                    pair=f"{a.text}>{b.text}"
+                    exact_pairs.add(pair)
+                    attested_l_ge_pairs.add(pair)
         if not exact_pairs:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
@@ -351,7 +363,12 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 continue
             b.onset=PLAIN_TO_FORTIS[b.onset]
             changed=True
-            license_context=f"{rule_id}:{scope}:{full_form}:{pair}"
+            if pair in attested_l_ge_pairs:
+                license_context=f"R013:attested_l_ge_ending:{full_form}:{pair}"
+                source="NIKL Standard Pronunciation Rule 27; official Q&A https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330963"
+                confidence="high"
+            else:
+                license_context=f"{rule_id}:{scope}:{full_form}:{pair}"
     elif rule_id=="R016":
         # §11's ㄺ-before-ㄱ exception is morphology-conditioned. A category
         # token alone can incorrectly license unrelated words (e.g. 닭고기).
