@@ -5,7 +5,7 @@ from korean_ukrainian.pipeline import phoneticize_korean
 def test_nikl_attested_particle_readings_for_salmui_are_explicit_variants():
     word = "\uc0b6\uc758"
     result = phoneticize_korean(word)
-    assert result["surface_hangul"] == "\uc0b4\ubbe0"
+    assert result["surface_hangul"] == "\uc0b4\ubbdc"
     assert result["ipa"]["ipa"] == "sal.m\u0270i"
     assert result["pronunciation_status"] == "provisional"
     assert result["unresolved_contexts"] == []
