@@ -402,3 +402,10 @@ Task ledger, reconciled against code and exact-head CI:
 - Added explicit type validation and a post-tokenization non-empty-segment requirement; added regressions for empty, true whitespace-only, boundary-only, non-string and valid IPA inputs.
 - Current task ledger: **PARTIAL / PENDING_CI** — implementation and tests committed on the branch; no local test execution in this GitHub API-only environment and exact-head CI not yet verified. Do not mark DONE_VERIFIED until CI passes on the final PR head.
 - This is a contract/empty-state hardening only. It is not evidence of independent broad-IPA gold, Ukrainian-target correctness, complete Korean rule coverage, licensing clearance, or release readiness.
+
+
+### Verification update — native IPA adapter empty-input guard
+
+- Exact code/test head `04c767ca56f5add8b5d7829eb6051a863cc9d63f` passed Python/web tests [40007019581](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019581), system verification [40007019470](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019470), generated corpus artifacts [40007019405](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019405), and optional g2pK integration [40007019497](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019497).
+- Task ledger: **DONE_VERIFIED for the code/test head**. The current evidence-only documentation refresh must pass CI on its new exact head before merge.
+- The guard remains a structural API-contract improvement; the research preview remains scientifically unvalidated.
