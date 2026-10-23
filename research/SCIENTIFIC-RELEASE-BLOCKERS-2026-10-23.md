@@ -90,3 +90,11 @@ Scientific release disposition remains blocked; deployed research preview / part
 ## Deployment acceptance update — 2026-10-23
 
 The corrected Pages workflow is now verified on main commit `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`: [run 40009408019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40009408019) passed Python 3.11/3.12/3.13, browser tests/build, the public HTTP smoke, and the live Playwright practical-mode interaction. Therefore SR-06 is `DONE_VERIFIED` for that deployed commit. The additional source-HTML regression test in the current follow-up branch still needs exact-head CI. The live NIKL inventory remained skipped/blocked, not passed.
+
+## Current main and rights-audit tooling — 2026-10-23
+
+This update supersedes any older statement that Pages smoke is still pending. Main is `b795575c0d8b122123561c682e510ed5c171b5cc`; [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40010110513), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40010110375), [corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40010110416), and [Pages deployment with public HTTP + live Playwright smoke](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40010110447) all passed on that exact commit.
+
+A follow-up branch `research/source-rights-ledger-validator-2026-10-23` adds a read-only CSV structure audit and conservative, ephemeral item-level rights-review queue. It deliberately does not access source sites, infer permissions from general policy, modify the register, or claim legal clearance. The command `npm run audit:source-register` summarizes the current 100-row register; `npm run audit:source-register -- --require-reviewed-rights` is an intentional strict gate that exits non-zero while any item-level rights classification remains open. Exact-head CI is required before this tooling can be accepted.
+
+The live NIKL inventory remains `BLOCKED` when the official endpoint denies the request; no bypass is attempted. IPA remains 0/20 independent submissions in both reviewer slots, and Ukrainian target review remains separate. Release disposition is still research preview / partial prototype, not scientifically validated.
