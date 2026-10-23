@@ -79,3 +79,10 @@ def test_sourced_lexical_records_adapt_to_sequence_rows_without_inventing_target
     assert source_row["source_url"] in sequence["notes"]
     assert "lexical_target_status=model-selected" in sequence["notes"]
 
+    salmui_source = next(row for row in lexical_rows if row["input"] == "삶의")
+    salmui_sequence = by_input["삶의"]
+    assert salmui_sequence["source_ids"] == "S012"
+    assert salmui_source["source_url"] in salmui_sequence["notes"]
+    assert salmui_sequence["surface_ipa"] == salmui_source["ipa_syllables"]
+
+
