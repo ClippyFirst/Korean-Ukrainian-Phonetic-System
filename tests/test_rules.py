@@ -48,14 +48,14 @@ def test_aspiration():
 
 def test_n_insertion_requires_exact_word_pair_license_not_a_global_boolean():
     items,traces=apply_ordered_rules(
-        parse_syllables("한여름"),["R009"],n_insertion_licensed=True
+        parse_syllables("가여름"),["R009"],n_insertion_licensed=True
     )
     assert items[1].onset=="ㅇ"
     assert traces[0].status=="conditional-disabled"
 
     items,traces=apply_ordered_rules(
-        parse_syllables("한여름"),["R009"],
-        rule_licenses={"R009:word:한여름:한>여"},
+        parse_syllables("가여름"),["R009"],
+        rule_licenses={"R009:word:가여름:가>여"},
     )
     assert items[1].onset=="ㄴ"
     assert traces[0].changed
@@ -69,8 +69,8 @@ def test_n_insertion_license_cannot_be_reused_for_a_different_word():
     assert items[1].onset=="ㅇ"
     assert not traces[0].changed
 
-def test_n_insertion_disabled_by_default():
-    items,_=apply_ordered_rules(parse_syllables("한여름"),["R009"]); assert items[1].onset=="ㅇ"
+def test_n_insertion_disabled_by_default_for_unlisted_form():
+    items,_=apply_ordered_rules(parse_syllables("가여름"),["R009"]); assert items[1].onset=="ㅇ"
 
 def test_complex_coda_liaison_requires_exact_formal_morpheme_license():
     expected={"넋이":(("ㄱ","ㅆ"),"넋>이"),"값이":(("ㅂ","ㅆ"),"값>이"),"앉아":(("ㄴ","ㅈ"),"앉>아"),"닭을":(("ㄹ","ㄱ"),"닭>을"),"젊어":(("ㄹ","ㅁ"),"젊>어")}
@@ -527,3 +527,43 @@ def test_section_20_general_liquid_assimilation_examples():
             assert items[i].coda == expected_coda, word
             assert items[i + 1].onset == expected_onset, word
         assert any(trace.changed for trace in traces), word
+
+
+def test_nikl_rule_29_listed_word_examples_receive_only_exact_builtin_licenses():
+    examples = {
+        "솜이불": "솜>이", "홑이불": "홑>이", "막일": "막>일", "삯일": "삯>일",
+        "맨입": "맨>입", "꽃잎": "꽃>잎", "내복약": "복>약", "한여름": "한>여",
+        "남존여비": "존>여", "신여성": "신>여", "색연필": "색>연",
+        "직행열차": "행>열", "늑막염": "막>염", "콩엿": "콩>엿", "담요": "담>요",
+        "눈요기": "눈>요", "영업용": "업>용", "식용유": "용>유", "백분율": "분>율",
+        "밤윷": "밤>윷", "들일": "들>일", "솔잎": "솔>잎", "설익다": "설>익",
+        "물약": "물>약", "불여우": "불>여", "서울역": "울>역", "물엿": "물>엿",
+        "서른여섯": "른>여", "스물여섯": "물>여",
+    }
+    for word, pair in examples.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R009"])
+        assert items[next(i for i, item in enumerate(items) if item.text == pair.split(">")[1])].onset in {"ㄴ", "ㄹ"}, word
+        trace = traces[0]
+        assert trace.changed, word
+        assert trace.license_context == f"R009:word:{word}:{pair}", word
+        assert trace.source.startswith("NIKL §29"), word
+
+
+def test_nikl_rule_29_phrase_examples_require_phrase_boundary_mode():
+    examples = {
+        "한 입": ("한>입", "ㄴ"),
+        "옷 입다": ("옷>입", "ㄴ"),
+        "먹은 엿": ("은>엿", "ㄴ"),
+        "할 일": ("할>일", "ㄹ"),
+        "잘 입다": ("잘>입", "ㄹ"),
+        "먹을 엿": ("을>엿", "ㄹ"),
+    }
+    for phrase, (pair, expected_onset) in examples.items():
+        same_word_items, same_word_traces = apply_ordered_rules(parse_syllables(phrase), ["R009"])
+        assert not same_word_traces[0].changed, phrase
+        items, traces = apply_ordered_rules(parse_syllables(phrase), ["R009"], boundary_mode="phrase")
+        pair_left, pair_right = pair.split(">")
+        right_index = next(i for i, item in enumerate(items) if item.text == pair_right)
+        assert items[right_index].onset == expected_onset, phrase
+        assert traces[0].changed, phrase
+        assert traces[0].license_context == f"R009:phrase:{phrase}:{pair}", phrase
