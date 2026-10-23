@@ -917,3 +917,9 @@ Commit with implementation and tests: `f296014d5980123c8c64b9dde9abd47c43382131`
 - **PARTIAL:** exhaustive article/subparagraph/exception/variant coverage for *표준 발음법* 1–30 and independent adjudication of generic IPA remain incomplete. Internal IPA-to-Ukrainian recomputation is an invariant, not an independent gold standard.
 - **BLOCKED:** live NIKL retrieval returned HTTP 403 in the recorded work; do not claim live source validation until a reproducible permitted route or a source file with provenance is available.
 - **Release status:** not release-ready as a fully validated normative transcription system. The web service and automated tests exist, but independent linguistic evaluation and source-backed rule coverage remain acceptance blockers.
+
+
+## 2026-10-23 source-retention defect
+
+- **DONE_VERIFIED (source-retention contract):** branch `fix/research-unresolved-source-retention-2026-10-23`, implementation commit `846a4b6c29c8e6f6aeef93f96b0487ac5ffc34b8`. Mixed-text unresolved/unsupported units are visibly marked as `⟦source-character⟧`; their IPA remains empty; single-token fail-closed behavior remains unchanged. Regression tests cover the marker and source/IPA separation.
+- **Verification evidence:** exact implementation head passed [verification run](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39951726717), [JS tests and build](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39951732894), [browser G2P integration](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39951732711), and [generated-artifact checks](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39951732958); Python 3.11/3.12/3.13 passed. This verifies technical behavior, not linguistic correctness.

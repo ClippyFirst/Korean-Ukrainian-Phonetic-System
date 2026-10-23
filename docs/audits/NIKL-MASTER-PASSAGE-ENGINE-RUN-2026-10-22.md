@@ -334,3 +334,10 @@ The master passage contains both punctuation-separated inventories and may conta
 - Official NIKL live-source retrieval: `BLOCKED` in the recorded run by HTTP 403; the skipped metadata-only CI job must not be represented as successful source verification.
 
 This audit update records implementation and CI evidence, not a claim that the system is fully normatively validated or release-ready.
+
+
+## Source-retention acceptance follow-up — 2026-10-23
+
+A further end-to-end defect was confirmed in the native JS engine: when a multiword research passage contains a morphology-sensitive unit that the engine correctly refuses to pronounce, the affected Hangul unit was omitted from the Ukrainian target. The trace and issue list recorded the failure, but the primary output did not visibly preserve the source fragment. That violates the service-level requirement that unsupported content be marked rather than silently lost.
+
+A follow-up implementation on branch `fix/research-unresolved-source-retention-2026-10-23` adds visible `⟦source-character⟧` markers to mixed-text target output for unresolved morphology and unsupported standalone Jamo while keeping their IPA empty. Single-token fail-closed behavior remains unchanged, so an unresolved whole token still yields no guessed Ukrainian pronunciation. Regression gates require the integrated strict and practical stress passage to show unresolved markers. Exact-head commit `846a4b6c29c8e6f6aeef93f96b0487ac5ffc34b8` passed the browser regression/build job, JavaScript tests/build, Python 3.11/3.12/3.13, and generated-artifact checks. The fix is verified for these regression contracts; linguistic correctness of the unresolved pronunciations is not claimed.

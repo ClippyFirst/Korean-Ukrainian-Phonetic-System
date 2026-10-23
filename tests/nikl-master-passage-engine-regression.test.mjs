@@ -105,8 +105,8 @@ test('master passage is passed through the browser engine and emits a reproducib
   );
   assert.ok(wholeStrict.ipa.length > 0, 'strict whole-text conversion must produce its IPA-stage result');
   assert.ok(wholePractical.ipa.length > 0, 'practical whole-text conversion must produce its IPA-stage result');
-  assert.doesNotMatch(wholeStrict.ukrainian, /[⟦⟧]/u, 'strict mode must not leak unresolved placeholders into the full passage');
-  assert.doesNotMatch(wholePractical.ukrainian, /[⟦⟧]/u, 'practical mode must not leak unresolved placeholders into the full passage');
+  assert.match(wholeStrict.ukrainian, /⟦[^⟧]+⟧/u, 'strict mode must visibly mark unresolved source characters in the full passage rather than silently dropping them');
+  assert.match(wholePractical.ukrainian, /⟦[^⟧]+⟧/u, 'unsupported source notation must remain visible in practical-mode full text too');
   assert.equal(report.wholeTextStrict.actionableIssueSamples.length, 13, 'strict whole-text output must retain the 13 explicitly registered morphology/structure diagnostics, in addition to standalone-Jamo warnings');
   assert.equal(report.wholeTextPractical.actionableIssueSamples.length, 0, 'all practical whole-text issues beyond explicitly expected standalone-jamo warnings must be reviewed');
 });
