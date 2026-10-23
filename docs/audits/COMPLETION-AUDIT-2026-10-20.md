@@ -940,6 +940,6 @@ Commit with implementation and tests: `f296014d5980123c8c64b9dde9abd47c43382131`
 
 - **IMPLEMENTED / CI pending:** exact-form corrections in `src/app/g2pk_web.js` for `값어치→가버치`, `넓죽하다→넙쭈카다`, `넓둥글다→넙뚱글다`, `넓적하다→넙쩌카다`, and `읽고→일꼬`. Corrections occur before IPA generation; Ukrainian output remains IPA-derived.
 - The raw vendored g2pK output remains independently recorded. The finite allowlist does not generalize to arbitrary `ㄺ`/`ㄼ` words; length changes fail closed.
-- Added source-backed regressions and the batch-29 evidence report. `읽고` now cites Q&A qna_seq=315279; qna_seq=307508 is direct for `넓죽하다` only; qna_seq=322805 is registered for `넓적하다`.
+- Added source-backed regressions and the batch-29 evidence report. `읽고` now cites Q&A qna_seq=315279; qna_seq=307508 is direct for `넓죽하다` only; qna_seq=322805 directly supports `넓둥글다[넙뚱글다]` and `넓적하다[넙쩌카다]`, resolving the former spelling gap with independent evidence.
 - Fixed intake queue remains 43/60 checked and 17 unreviewed (14 HTML + 3 PDFs). Independent IPA/Ukrainian gold, full rule/exception mapping, item-level KOGL review, and permitted live source access remain open. Live NIKL CI access returns HTTP 403; no bypass attempted.
 - Readiness remains research preview / partial prototype.
