@@ -246,6 +246,17 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level))
     all_traces=[x.to_dict() for x in traces]+lexical_traces
     unresolved_contexts=_unlicensed_ambiguous_pronunciation_contexts(all_traces, items)
+    ipa_status="diagnostic_only_unresolved_pronunciation" if unresolved_contexts else "provisional"
+    ipa_is_diagnostic_only=bool(unresolved_contexts)
+    ipa_status_reason="unresolved_morphophonological_context" if unresolved_contexts else None
+    # Mirror acceptance metadata inside the IPA payload as well as at the
+    # analysis root. This protects clients that pass the IPA object around
+    # without carrying the enclosing pronunciation analysis.
+    ipa.update({
+        "status":ipa_status,
+        "is_diagnostic_only":ipa_is_diagnostic_only,
+        "status_reason":ipa_status_reason,
+    })
     return {
         "input":text,
         "surface_hangul":surface_hangul,
@@ -259,9 +270,9 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
         # status explicit at the same API level as the IPA value. Downstream
         # callers must not infer that a syntactically valid IPA string is
         # approved when a morphophonological context remains unresolved.
-        "ipa_status":"diagnostic_only_unresolved_pronunciation" if unresolved_contexts else "provisional",
-        "ipa_is_diagnostic_only":bool(unresolved_contexts),
-        "ipa_status_reason":"unresolved_morphophonological_context" if unresolved_contexts else None,
+        "ipa_status":ipa_status,
+        "ipa_is_diagnostic_only":ipa_is_diagnostic_only,
+        "ipa_status_reason":ipa_status_reason,
         "unresolved_contexts":unresolved_contexts,
     }
 
