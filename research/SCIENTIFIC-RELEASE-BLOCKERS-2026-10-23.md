@@ -52,3 +52,10 @@ Use the existing `research/ipa-adjudication-queue.json`; do not create a paralle
 Reason: independent IPA adjudication is 0/20; Ukrainian target evaluation remains independent-review blocked; full atomic coverage of NIKL §§9–30 is not demonstrated; item-level KOGL rights remain unresolved; live source access is blocked for some pages; and deployment for the inspected mainline SHA reported failure pending log inspection.
 
 This status can change only when the corresponding evidence is added and verified. Do not close a gate solely by changing prose or checking a box.
+
+
+## Deployment smoke diagnosis — 2026-10-23 follow-up
+
+The failed Pages run was inspected at job `120599746894` in [workflow run 40007564481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007564481). The actual Pages deployment step reported success. The following smoke step failed because it searched for the obsolete UI sentence “Практичний режим точно відтворює вихід JavaScript-порту g2pK без словникових виправлень”, which contradicted the current UI and current exact NIKL-backed corrections. Python 3.11/3.12/3.13, browser tests/build, artifact upload, and Pages deploy all succeeded in that run; the stale text assertion caused the job-level failure before the later Playwright smoke could run.
+
+The branch now updates the assertion to check the current UI contract: “лише кілька точних виправлень корейської поверхневої форми, прямо підтверджених NIKL”. This is a narrow smoke-test repair, not evidence that the new assertion has passed against the live deployment yet. Exact-head PR CI is pending; the Pages workflow itself triggers on pushes to main or manual dispatch, so live deployment smoke will run after an accepted merge or manual dispatch.
