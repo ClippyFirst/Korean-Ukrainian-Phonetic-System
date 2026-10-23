@@ -98,3 +98,7 @@ This update supersedes any older statement that Pages smoke is still pending. Ma
 A follow-up branch `research/source-rights-ledger-validator-2026-10-23` adds a read-only CSV structure audit and conservative, ephemeral item-level rights-review queue. It deliberately does not access source sites, infer permissions from general policy, modify the register, or claim legal clearance. The command `npm run audit:source-register` summarizes the current 100-row register; `npm run audit:source-register -- --require-reviewed-rights` is an intentional strict gate that exits non-zero while any item-level rights classification remains open. Exact-head CI is required before this tooling can be accepted.
 
 The live NIKL inventory remains `BLOCKED` when the official endpoint denies the request; no bypass is attempted. IPA remains 0/20 independent submissions in both reviewer slots, and Ukrainian target review remains separate. Release disposition is still research preview / partial prototype, not scientifically validated.
+
+### Source-register audit baseline
+
+The current 100-row register classifies as: `REVIEW_REQUIRED=96`, `MANUAL_CLASSIFICATION_REQUIRED=2`, `ITEM_LEVEL_LICENSE_RECORDED=1`, `NOT_APPLICABLE_RECORDED=1`. These are conservative triage labels produced from the existing free-text `license_status` column, not legal conclusions. Even the single explicit license-recorded row still requires a human check that the license covers the exact retained artifact and obligations. The strict gate is expected to remain blocked.
