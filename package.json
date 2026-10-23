@@ -18,7 +18,8 @@
     "import:nikl-pdf": "node scripts/nikl-pdf-import.mjs",
     "template:nikl-pdf": "node scripts/nikl-pdf-template.mjs",
     "audit:source-register": "node scripts/audit-source-register.mjs",
-    "ipa:review-packet": "node scripts/build-ipa-review-packet.mjs"
+    "ipa:review-packet": "node scripts/build-ipa-review-packet.mjs",
+    "ipa:validate-submission": "node scripts/validate-ipa-review-submission.mjs"
   },
   "devDependencies": {
     "vite": "8.3.1"
