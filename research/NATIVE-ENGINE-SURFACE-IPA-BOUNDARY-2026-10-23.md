@@ -201,3 +201,30 @@ Final implementation/test head: `052f8ef0155be23ad86b8f58f94b8c7a5ffa3af6`.
 - `DONE_VERIFIED` at the implementation/test head above: consistent empty-input rejection, fail-closed empty target selection, and regressions.
 - The later documentation-only commits still require final exact-PR-head CI before merge.
 - This does not validate any IPA gold, Ukrainian adaptation choice, or normative Korean rule. Independent IPA and target review, source/license verification, exhaustive rule coverage, and live source access remain open.
+
+
+## Follow-up: preserve Korean fortisness in source feature vectors — 2026-10-23
+
+### Gap and implementation
+
+The native IPA tokenizer retained fortis IPA strings such as `p͈`, `tɕ͈`, and `s͈`, but the source feature vectors collapsed these with plain consonants. The feature boundary therefore lost a meaningful source contrast even though the original IPA remained visible.
+
+- Added an explicit `fortis` feature to all supported native source feature vectors.
+- Distinguishes fortis from aspiration: `p͈` has `fortis=1, aspirated=0`; `pʰ` has `fortis=0, aspirated=1`.
+- Expanded the raw base/overlay IPA registry audit to require `consonantal`, `syllabic`, and `fortis` for every segment.
+- Preserved the complete `source_features` object through target-candidate selection, so the selected candidate retains inspectable source feature provenance.
+- Deliberately did **not** add a target ranking weight or alter candidate order: the reviewed Ukrainian target feature schema has no explicit fortis contrast. Target adaptation remains a separate policy/research question.
+
+### Verification
+
+Implementation/test head: `a7b159baccba147837d979e3428a6cca486662b1`.
+- Python 3.11–3.13 and web tests/build: PASS [run 40006952606](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952606).
+- System verification, browser build and Python regression/data integrity: PASS [run 40006952310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952310).
+- Generated research corpus artifacts: PASS [run 40006952531](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952531).
+- Optional g2pK integration on Python 3.11/3.12: PASS [run 40006952377](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952377).
+- Live NIKL source inventory was skipped. Local tests were not run in this API-only session.
+
+### Acceptance status
+
+- `DONE_VERIFIED` at the implementation/test head: source feature vectors preserve fortis independently of aspiration, raw lexical IPA coverage requires the field, and selected candidates carry source feature provenance.
+- This is a source-analysis preservation fix, not a validated Ukrainian rendering of Korean fortisness. No target ranking weight was invented. Independent IPA adjudication, Ukrainian adaptation review, full normative coverage, rights verification, and live source access remain open.
