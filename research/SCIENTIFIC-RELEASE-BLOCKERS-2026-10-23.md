@@ -130,3 +130,9 @@ The blinded packet builder is now paired with `scripts/validate-ipa-review-submi
 Required length assessment values are `present`, `absent`, `not_applicable`, or `uncertain`. A review timestamp must include a timezone. Source-backed Korean comparator and evidence fields are immutable in the submission.
 
 The new test suite covers a complete fixture, incomplete review fields, stale hashes, changed source data, duplicate/missing IDs, wrong slot, forbidden leaked fields, and CLI exit behavior. Fixture IPA strings are intentionally synthetic and are not research data. Exact-head CI is required before merge. The scientific blocker remains unchanged: 0/20 independent IPA submissions per slot and no Ukrainian target-layer expert review.
+
+## NIKL article test-reference index — 2026-10-23
+
+Added `scripts/audit-nikl-article-test-index.mjs` and `npm run audit:nikl-test-index -- --format json|csv`. It inventories explicit article references in existing `tests/*.test.mjs` filenames and text, emits one row for each of articles 1–30, and reports which test files mention each article. It intentionally does not expand a filename such as `articles-24-30` into assumed coverage of §§25–29; only printed endpoints are indexed.
+
+This index is navigational evidence only. A named test or textual citation does not establish that every subparagraph, exception, variant, or interaction is implemented or tested. The atomic coverage acceptance gate remains blocked until every normative item is enumerated from permitted primary-source evidence, mapped to executable implementation and positive/negative tests, and independently reviewed. The tool performs no network access and does not change the source corpus.
