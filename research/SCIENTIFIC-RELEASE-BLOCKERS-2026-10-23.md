@@ -122,3 +122,11 @@ Two new no-network tools are in main:
 - `npm run ipa:review-packet -- --reviewer A|B`: generates a deterministic, SHA-256-pinned blinded packet from the canonical 20-case queue, excluding candidate IPA, both reviewer records, reconciliation, Ukrainian target review and free-text source notes.
 
 The IPA queue is still 0/20 independent submissions in each reviewer slot. No IPA gold was fabricated. Independent Ukrainian target review, exhaustive atomic subparagraph/exception coverage, item-level rights evidence and authorized live NIKL inventory remain unresolved. The live source-inventory workflow was skipped/blocked; no access restriction was bypassed.
+
+## Reviewer submission validation tooling — 2026-10-23
+
+The blinded packet builder is now paired with `scripts/validate-ipa-review-submission.mjs` and `npm run ipa:validate-submission -- <submission.json> --reviewer A|B`. The validator compares the packet's SHA-256 to the exact current queue text; checks the full expected case-ID set, duplicate/missing cases, immutable source fields, strict allowed-field lists (to prevent candidate/reviewer leakage), and required reviewer/method/timestamp/IPA/boundary/length-assessment fields. It reports structural validity only and explicitly does not judge IPA correctness, reviewer qualification, independence, or Ukrainian adaptation. It never modifies the packet or canonical queue.
+
+Required length assessment values are `present`, `absent`, `not_applicable`, or `uncertain`. A review timestamp must include a timezone. Source-backed Korean comparator and evidence fields are immutable in the submission.
+
+The new test suite covers a complete fixture, incomplete review fields, stale hashes, changed source data, duplicate/missing IDs, wrong slot, forbidden leaked fields, and CLI exit behavior. Fixture IPA strings are intentionally synthetic and are not research data. Exact-head CI is required before merge. The scientific blocker remains unchanged: 0/20 independent IPA submissions per slot and no Ukrainian target-layer expert review.
