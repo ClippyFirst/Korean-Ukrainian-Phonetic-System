@@ -393,3 +393,15 @@ Task ledger, reconciled against code and exact-head CI:
 - `DONE_VERIFIED` for the code/test head; final PR-head CI must be rechecked after documentation commits. Mainline is not changed by this open PR.
 - Remaining scientific blockers unchanged: independent IPA adjudication queue (20 cases), independent Ukrainian target review, exhaustive article/subparagraph/exception coverage, item-level KOGL evidence, and live NIKL access (HTTP 403).
 - Release status remains research preview / partial prototype, not scientifically validated or release-ready.
+
+
+## Native IPA fortis-feature preservation — 2026-10-23
+
+- Starting `main`: `1860616a15a664ef189ffdaff50fe559aa1339a5` (the merge of PR #261).
+- Working branch / PR: `research/native-ipa-fortis-feature-preservation-2026-10-23` / [PR #262](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/262).
+- Gap: source IPA feature vectors collapsed fortis forms (`p͈`, `tɕ͈`, `s͈`) with plain forms. Raw IPA was still preserved, but feature-based analysis lost the distinction.
+- Implementation: add `fortis` to every supported source feature vector; require it in the raw lexical base/overlay audit; preserve `source_features` through target selection. Aspiration remains a separate feature. No IPA data or target mapping values were changed.
+- Target-layer guardrail: `fortis` is deliberately excluded from `DEFAULT_WEIGHTS` because the reviewed Ukrainian inventory does not expose an explicit fortis feature. Candidate ordering is unchanged; the new feature is retained for analysis/provenance pending a reviewed target policy.
+- Exact implementation/test head `a7b159baccba147837d979e3428a6cca486662b1`: Python 3.11–3.13/web [40006952606](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952606), system/browser/Python integrity [40006952310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952310), corpus artifacts [40006952531](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952531), and optional g2pK Python 3.11/3.12 [40006952377](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952377) all PASS. Live NIKL inventory was skipped, not passed. Local tests were not run.
+- Code/test result: `DONE_VERIFIED` at the implementation/test head; documentation changes need final exact-PR-head CI before merge.
+- Still open: independent IPA gold (20 cases), Ukrainian target review, exhaustive normative article/subparagraph/exception coverage, item-level KOGL evidence, and permitted live NIKL access.
