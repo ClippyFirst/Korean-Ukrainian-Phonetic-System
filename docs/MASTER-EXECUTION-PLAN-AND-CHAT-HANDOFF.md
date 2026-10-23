@@ -565,3 +565,46 @@ Branch: `research/native-engine-unresolved-cases-2026-10-24`. This work is limit
 - Deliberately did not auto-resolve `많이본` or `좋아보인다고`: the likely spacing boundaries (`많이 본`, `좋아 보인다고`) cannot be safely inferred from Hangul adjacency. Compact forms remain unresolved; explicitly spaced controls are tested separately.
 - Scholarly evidence and case-by-case decisions are documented in [docs/NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md](NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md). Literature reviewed includes Lee & Chung 2007 on morphology-conditioned pronunciation variation, Jeon et al. 1998 on staged rule processing, Jun 2015/2021 on gradient n-insertion, and the K-SPAN paper's limits as a non-recording-based lexical reference.
 - CI acceptance is pending at the time of this entry; do not mark the batch DONE_VERIFIED until the new Python regression test, full tests, system verification, and corpus artifacts finish successfully. The compact forms and independent IPA/Ukrainian specialist reviews remain open blockers.
+
+
+### Continuation — IPA adjudication gate for 삶의 and target-layer separation (2026-10-24)
+
+Branch / PR: `research/native-engine-unresolved-cases-2026-10-24` / [PR #281](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/281).
+
+This continuation found a critical evidence distinction: NIKL MCFAQ 5716 directly attests Korean surface-Hangul readings `[살믜]` and `[살메]`, but does not supply IPA `sal.mɰi` or `sal.me`. Those IPA strings are project-rendered and remain unadjudicated. Rather than guessing that either is correct or silently changing it, the native engine now:
+- stores the form-specific `ipa_adjudication_status=diagnostic_only_unresolved_pronunciation` in the existing dated lexical overlay `data/korean/lexical_additions_ipa-adjudication-2026-10-24.csv` (the canonical base lexicon schema remains unchanged);
+- adds an `IPA_ADJUDICATION` unresolved context, keeps the candidate IPA inspectable, and returns `pronunciation_status=unresolved` / `ipa_is_diagnostic_only=true`;
+- blocks IPA→Ukrainian target selection for `삶의` until independent IPA adjudication is complete;
+- tests the explicit status/reason and confirms `transliterate_korean("삶의")` returns no Ukrainian orthography;
+- records a separate blinded target-layer review protocol and source limitations in `docs/IPA-TARGET-ADJUDICATION-BLOCKERS-2026-10-24.md`.
+
+The existing PR's source-backed exact-form work remains intact: `앉아라` and `없어도` use narrow NIKL-rule-derived licenses; `많이본` and `좋아보인다고` remain unresolved without explicit segmentation. No third-party G2P rules were adopted.
+
+#### Verification evidence
+
+The code/data/test state at `ea14a6d9b7f332a3b88a181d841bb34841eb893d` passed:
+- Tests + Python 3.11/3.12/3.13 + web build: [run 40027594483](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594483).
+- System verification: [run 40027594485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594485).
+- Master table / strict research corpus artifacts: [run 40027594415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594415).
+- Optional g2pK integration: [run 40027594547](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594547).
+- External UGTPHON IPA diagnostic: [run 40027594361](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594361).
+
+All listed workflows concluded success. The official NIKL metadata-only inventory job was **skipped**, not passed. A later documentation-only commit `0348043653e7489e98e0f68dc2bb9a820e9cb99a` added extracted literature findings; no code/data/test files changed after the green code/test state. A local clone/test attempt was blocked because this execution environment could not resolve `github.com`; CI supplied the executable verification instead.
+
+#### Evidence-based conclusions and remaining blockers
+
+- Jun (2015, DOI 10.1017/S0952675715000275) shows n-insertion tendencies that differ between existing and novel words; the existing-word M1-length effect did not generalize in the novel-word experiment. Do not encode it as a universal categorical rewrite or copy study rates as calibrated engine probabilities.
+- Jun (2021, DOI 10.5334/GJGL.1401) reports interacting gradient factors and no single absolute condition for n-insertion.
+- Wei et al. (2023, DOI 10.21437/interspeech.2023-1635) distinguishes orthographic transcription accuracy from subjective comprehensibility ratings. It is methodological context only; it does not validate Korean IPA or Ukrainian mappings.
+- Park (2019, DOI 10.14342/SMOG.2019.102.165) and Kim (2025, DOI 10.22557/hg.2025.3.86.1.5) are relevant ㅢ research leads, but their abstracts/full texts were unavailable in the retrieved records and they are not treated as evidence for the exact form.
+
+Current task ledger:
+- **DONE_VERIFIED:** form-specific IPA review gate; base lexicon schema preserved; overlay metadata structurally checked; regression tests and CI passed at the code/test state above.
+- **PARTIAL:** official surface-Hangul evidence for 삶의 is present, but neither IPA candidate is independently validated.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** two qualified Korean phonetics reviewers must independently assess the exact construction, IPA convention, segmental realization, boundaries, and accepted alternatives.
+- **BLOCKED_SPECIALIST_REVIEW:** Ukrainian target policy must be reviewed separately on a frozen, adjudicated IPA input.
+- **BLOCKED_INPUT_ANALYSIS:** compact `많이본` / `좋아보인다고` require caller-supplied segmentation or a validated morphology/spacing component.
+- **DEFERRED:** probabilistic modeling of optional variants requires a documented alternative representation and calibrated evidence.
+- **BLOCKED_EXTERNAL_ACCESS:** official NIKL inventory job remains skipped due source-access restrictions; no bypass was attempted.
+
+Readiness remains **research preview / partial prototype**, not a scientifically validated transcription standard. Do not mark the release gate complete based on CI.
