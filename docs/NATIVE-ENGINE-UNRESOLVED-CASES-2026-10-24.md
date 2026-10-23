@@ -18,9 +18,9 @@ The lexical surface-form resource K-SPAN is useful as a reference but its paper 
 
 | Input | Decision | Evidence and implementation |
 |---|---|---|
-| 앉아라 | **Rule-derived, resolved at Korean-surface level** | NIKL Standard Pronunciation Rule §14 explicitly gives 앉아[안자]. The transparent inflection 앉- + -아라 licenses the exact 앉>아 pair in the full form 앉아라; the native engine now records R002:formal:앉아라:앉>아 in the trace. The extension to the whole inflected form is a project rule derivation, not a claim that NIKL directly lists the full form. |
+| 앉아라 | **Rule-derived, resolved at Korean-surface level** | NIKL Standard Pronunciation Rule §14 explicitly gives 앉아[안자]. The transparent inflection 앉- + -아라 licenses the exact 앉>아 pair in the full form 앉아라; the native engine records R002:formal:앉아라:앉>아 in the trace. The extension to the whole inflected form is a project rule derivation, not a claim that NIKL directly lists the full form. |
 | 없어도 | **Rule-derived, resolved at Korean-surface level** | NIKL §14 gives 없어[업써]; NIKL's grammar FAQ identifies -어도 as a connective ending in 없어도. The engine licenses only 없>어 in the exact form 없어도, yielding the expected surface sequence 업써도. The full inflected pronunciation is derived from the rule, not falsely labeled a direct dictionary transcription. |
-| 삶의 | **Direct surface-Hangul alternatives added; IPA remains project-rendered** | NIKL's official MCFAQ explicitly states 삶의[살믜] and permits [살메] under Standard Pronunciation Rule §5. Added a full-form lexical entry with both Hangul alternatives and the source URL. The project broad-IPA rendering (sal.mɰi, alternate sal.me) is an explicit engine representation of the official Hangul readings; NIKL does not provide those IPA strings. Ukrainian target status remains provisional. |
+| 삶의 | **Direct surface-Hangul alternatives; IPA remains project-rendered and unadjudicated** | NIKL's official MCFAQ explicitly states 삶의[살믜] and permits [살메] under Standard Pronunciation Rule §5. These are direct Korean surface-Hangul evidence. They are not IPA strings. The project candidates `sal.mɰi` and `sal.me` are not quoted by NIKL and must not be represented as independently validated broad IPA. The choice between underlying/phonological and broad surface notation, especially whether [ɰ] is justified in this exact construction, remains open. Ukrainian target remains provisional. See [the separate IPA and target-layer adjudication blocker report](IPA-TARGET-ADJUDICATION-BLOCKERS-2026-10-24.md). |
 | 많이본 | **Intentionally unresolved without spacing/morphological analysis** | This compact sequence may represent 많이 본, but the engine must not invent a word boundary from character adjacency. The spaced form can use the existing sourced entry for 많이; the compact form remains diagnostic-only until a text-normalization or morphological-analysis layer supplies the boundary. |
 | 좋아보인다고 | **Intentionally unresolved without spacing/morphological analysis** | The likely sequence 좋아 보인다고 crosses a lexical/eojeol boundary that is absent from the compact input. The existing 좋아 entry does not license an unspaced larger string. Do not infer the segmentation solely from a plausible phrase. |
 
@@ -47,7 +47,7 @@ Case-specific sources:
   - [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472504) — Python regression/data integrity and browser regression/build passed; official NIKL inventory skipped, not claimed passed.
   - [Master table and research corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472604) — passed.
   - [External UGTPHON IPA diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472528) — passed. This is a regression/diagnostic gate, not proof of normative accuracy.
-- **PARTIAL:** 삶의 Korean surface-Hangul alternatives are directly attested, but its project IPA rendering has not been independently adjudicated by a Korean phonetician.
+- **PARTIAL:** 삶의 Korean surface-Hangul alternatives are directly attested, but neither project IPA candidate has been independently adjudicated by a Korean phonetician.
 - **PARTIAL:** 앉아라 and 없어도 are derived from transparent morphology plus NIKL rules; full-form surface pronunciation is not claimed to be directly listed by the cited NIKL source.
 - **BLOCKED / input normalization:** compact 많이본 and 좋아보인다고 require an explicit spacing/morphological-analysis stage or caller-supplied segmentation; do not force a guessed result in the current API.
 - **BLOCKED_SPECIALIST_ADJUDICATION:** independent Korean IPA review and separate Ukrainian target-layer review remain outstanding.
@@ -60,3 +60,7 @@ Case-specific sources:
 - [Jun15] Jongho Jun. 2015. “Korean n-insertion: a mismatch between data and learning.” DOI: https://doi.org/10.1017/S0952675715000275.
 - [Jun21] Jongho Jun. 2021. “Morphophonological gradience in Korean n-insertion.” DOI: https://doi.org/10.5334/GJGL.1401.
 - [Hol17] J. Holliday, Rory Turnbull & J. Eychenne. 2017. “K-SPAN: A lexical database of Korean surface phonetic forms and phonological neighborhood density statistics.” DOI: https://doi.org/10.3758/s13428-016-0836-8.
+
+## Follow-up action
+
+The exact IPA/target-layer concern is now tracked in [IPA-TARGET-ADJUDICATION-BLOCKERS-2026-10-24.md](IPA-TARGET-ADJUDICATION-BLOCKERS-2026-10-24.md). A focused Undermind search has been launched to find primary evidence for ㅢ in 삶의 and methods for independent Ukrainian target evaluation. Do not mark this literature task complete until the returned papers have been inspected and their case-specific claims verified.
