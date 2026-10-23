@@ -151,3 +151,20 @@ Readiness: **research preview / partial prototype**, not release-ready as a scie
 | Ukrainian target fortis policy | PARTIAL / evidence-limited | No target-side fortis feature is defined in the reviewed Ukrainian feature schema; no ranking weight or target mapping was invented. |
 | Live source inventory | BLOCKED / skipped | NIKL inventory job skipped. |
 | Final PR acceptance | PENDING | Re-run exact-head CI after the documentation commits. |
+
+
+## Scientific-release blocker snapshot — 2026-10-23 (continuation branch)
+
+This is a current evidence snapshot, not an acceptance decision. Detailed task ledger and reviewer protocols: [Scientific release blockers](SCIENTIFIC-RELEASE-BLOCKERS-2026-10-23.md).
+
+| Gate | Status | Evidence / next action |
+|---|---|---|
+| 0 — Repository integrity | PARTIAL | Baseline main SHA `17440e995cd38a2e57b5d203dfb0bd072b1fdbb5`; one open PR (#263) identified. This continuation is on `research/scientific-release-blockers-2026-10-23`; PR #263 was left untouched. |
+| 1 — Source and licensing | BLOCKED / PARTIAL | Source register has 101 data rows; multiple NIKL rows state item-level KOGL marks are unchecked. Review exact record-level terms before redistributing source-derived content. |
+| 2 — Rule and data integrity | PARTIAL | R001–R016 and IPA-UKR-MAPPING are registered; atomic subparagraph/exception/variant coverage for NIKL §§9–30 is not demonstrated. Build and independently review an atomic inventory. |
+| 3 — Independent evaluation corpus | BLOCKED | Queue contains 20 cases; reviewer A 0/20, reviewer B 0/20, all reconciliation statuses blocked. Independent Ukrainian target review is separate and outstanding. |
+| 4 — Runtime correctness | PASS for observed test/verify runs; deployment separate | Main SHA test and verify runs reported success at inspection; a separate verify run was in progress. Pages deployment reported failure at the same SHA; inspect job logs and re-run exact-head deployment. No local tests were run in the API-only session. |
+| 5 — Product / deployment | PARTIAL / BLOCKED | Public service exists, but the inspected Pages deployment failed. Verify workflow completion and public URL after diagnosing the exact failing step. |
+| 6 — Release / independent review | BLOCKED | Specialist IPA and Ukrainian-target reviews, full atomic NIKL coverage, item-level rights evidence, and some authorized live source access remain unresolved. |
+
+Readiness: **research preview / partial prototype**, not a scientifically validated release. Do not change the decision until acceptance evidence exists.
