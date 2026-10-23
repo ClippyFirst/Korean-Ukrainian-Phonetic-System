@@ -401,7 +401,7 @@ def test_compound_fortition_license_cannot_be_reused_for_another_word():
         parse_syllables("산고"),["R014"],
         rule_licenses={"R014:compound:문고리:문>고"},
     )
-    assert items[1].onset=="ㄷ"
+    assert items[1].onset=="ㄱ"
     assert traces[0].status=="conditional-disabled"
 
 def test_default_pipeline_runs_licensed_h_deletion_before_liaison():
