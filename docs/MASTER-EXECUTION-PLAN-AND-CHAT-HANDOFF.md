@@ -486,3 +486,11 @@ Tests use explicitly synthetic IPA fixture strings solely to exercise validation
 ### Continuation — executable NIKL article-reference index (2026-10-23)
 
 Branch `research/nikl-article-test-index-2026-10-23` adds `scripts/audit-nikl-article-test-index.mjs` and `npm run audit:nikl-test-index -- --format json|csv`. It inventories literal article/section references found in test filenames and test text for all 30 NIKL articles, lists the referenced files, and marks articles with no explicit reference. It does not infer a complete numeric range from endpoint notation and does not equate a reference with coverage. This is a repeatable navigation/audit aid; source-derived atomic coverage and independent review remain separate acceptance requirements.
+
+### Final handoff checkpoint — 2026-10-23 20:00 UTC
+
+Code snapshot verified: `3a2052c9c27d7af6b5efa7c744d9e2ef14a70d41`. Merged PRs #270, #271, #273, and #274 added source-rights triage, blinded IPA reviewer packet generation, strict returned-packet validation, and an explicit article-reference index. PR #272 reconciled the handoff after the rights and packet merges.
+
+Exact-main CI at this snapshot: Node tests **1205/1205 pass**; Python 3.11, 3.12, and 3.13 pass; browser G2P integration passes; browser regression/build and Python data integrity pass; master table/research corpus artifact workflow passes. Pages run [40015664039](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40015664039) subsequently passed deployment, public HTTP smoke, and live Playwright practical-mode smoke. The official NIKL inventory remains blocked by HTTP 403 and must not be represented as a successful crawl.
+
+Remaining blockers are scientific, not simply technical: 20/20 independent IPA cases remain unsubmitted by each of two reviewers; Ukrainian target-layer review is outstanding; source-grounded atomic coverage of all paragraphs, exceptions, variants and interactions is unproven; 96/100 source records remain rights-review required and 2 require manual classification; live official-source access is blocked. The article index is only navigation evidence. Project status remains research preview / partial prototype.

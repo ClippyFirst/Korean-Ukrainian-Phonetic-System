@@ -214,3 +214,9 @@ The branch `research/validate-ipa-review-submissions-2026-10-23` pairs the blind
 ## Follow-up branch — NIKL article reference index
 
 A repeatable test-reference index is proposed in `research/nikl-article-test-index-2026-10-23`. It records explicit filename and text references for articles 1–30, including missing references, without inferring unlisted range members. It is not an exhaustive coverage report. Acceptance still requires source-backed atomic rule inventory and linked positive, negative, interaction, runtime-parity, and independent-review evidence.
+
+## Exact-main evidence checkpoint — 2026-10-23
+
+At main snapshot `3a2052c9c27d7af6b5efa7c744d9e2ef14a70d41`, CI recorded 1205 Node tests passing with zero failures, Python 3.11/3.12/3.13 passing, browser G2P integration passing, system browser regression/build and Python integrity passing, and master table/research artifact generation passing. Pages run [40015664039](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40015664039) subsequently completed successfully, including public HTTP and live Playwright practical-mode smoke.
+
+The official-source inventory job explicitly logged HTTP 403; its workflow handling as a nonfatal blocked dependency is not evidence that source crawling succeeded. The release gate remains blocked by independent IPA review (0/20 submissions in each slot), Ukrainian target-layer review, unproven atomic article coverage, and unresolved item-level rights (96 review-required, 2 manual classification, 1 license-recorded, 1 not applicable out of 100). The reference index is not coverage proof.
