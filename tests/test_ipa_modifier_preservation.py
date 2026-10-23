@@ -135,4 +135,4 @@ def test_ukrainian_renderer_preserves_word_boundaries_but_not_ipa_syllable_dots(
         {"grapheme": "а", "source_boundary_before": "within"},
         {"grapheme": "б", "source_boundary_before": "syllable"},
         {"grapheme": "в", "source_boundary_before": "word"},
-    ]) == "ґабв"
+    ]) == "ґаб в"
