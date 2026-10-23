@@ -151,3 +151,41 @@ def test_ukrainian_renderer_preserves_word_boundaries_but_not_ipa_syllable_dots(
         {"grapheme": "б", "source_boundary_before": "syllable"},
         {"grapheme": "в", "source_boundary_before": "word"},
     ]) == "ґаб в"
+
+
+def test_selected_candidates_retain_word_boundary_for_final_rendering():
+    target = {
+        "segments": [
+            {
+                "source_ipa": "k",
+                "source_boundary_before": "start",
+                "source_syllable_index": 0,
+                "source_word_index": 0,
+                "source_length": "unspecified",
+                "source_diacritics": {"unreleased": False},
+                "target": {"candidates": [{"candidate_id": "test-k", "mapping_id": "map-k", "grapheme": "к"}]},
+            },
+            {
+                "source_ipa": "a",
+                "source_boundary_before": "within",
+                "source_syllable_index": 0,
+                "source_word_index": 0,
+                "source_length": "unspecified",
+                "source_diacritics": {"unreleased": False},
+                "target": {"candidates": [{"candidate_id": "test-a", "mapping_id": "map-a", "grapheme": "а"}]},
+            },
+            {
+                "source_ipa": "m",
+                "source_boundary_before": "word",
+                "source_syllable_index": 1,
+                "source_word_index": 1,
+                "source_length": "unspecified",
+                "source_diacritics": {"unreleased": False},
+                "target": {"candidates": [{"candidate_id": "test-m", "mapping_id": "map-m", "grapheme": "м"}]},
+            },
+        ]
+    }
+    selected = _select_target(target)
+    assert selected is not None
+    assert selected["segments"][2]["source_boundary_before"] == "word"
+    assert render_sequence(selected["segments"]) == "ка м"
