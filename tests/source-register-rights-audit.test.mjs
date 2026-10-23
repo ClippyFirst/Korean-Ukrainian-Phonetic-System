@@ -27,7 +27,7 @@ test('source rights triage never promotes vague source descriptions to a license
     'SRC-F,other,Unverified,https://example.org/f,2026,authority,not_verified,unknown,unknown,unreviewed,not integrated,review rights',
     'SRC-G,other,PDF,https://example.org/g,2026,authority,verify PDF terms,unknown,unknown,unreviewed,not integrated,review terms',
     'SRC-H,normative,Policy,https://example.org/h,2026,authority,site-wide policy permits use unless item-specific KOGL is marked,unknown,unknown,unreviewed,not integrated,inspect exact item',
-  ].join('\\n');
+  ].join('\n');
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0);
   assert.deepEqual(report.rightsClassificationCounts, {
