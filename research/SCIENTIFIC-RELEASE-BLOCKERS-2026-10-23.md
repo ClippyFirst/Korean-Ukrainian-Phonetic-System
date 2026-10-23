@@ -102,3 +102,11 @@ The live NIKL inventory remains `BLOCKED` when the official endpoint denies the 
 ### Source-register audit baseline
 
 The current 100-row register classifies as: `REVIEW_REQUIRED=96`, `MANUAL_CLASSIFICATION_REQUIRED=2`, `ITEM_LEVEL_LICENSE_RECORDED=1`, `NOT_APPLICABLE_RECORDED=1`. These are conservative triage labels produced from the existing free-text `license_status` column, not legal conclusions. Even the single explicit license-recorded row still requires a human check that the license covers the exact retained artifact and obligations. The strict gate is expected to remain blocked.
+
+## Independent IPA reviewer packet tooling — 2026-10-23
+
+PR #270 has merged as `1f91d0c3817153d8a07004778ed916fda39d4ec5`. Exact-main tests, system verification, browser G2P integration, and corpus artifact workflows passed; [Pages run 40012122568](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012122568) also passed deployment, public HTTP smoke, and live Playwright practical-mode smoke.
+
+A follow-up branch `research/blinded-ipa-review-packets-2026-10-23` adds `scripts/build-ipa-review-packet.mjs` and `npm run ipa:review-packet -- --reviewer A|B`. It projects the canonical 20-case queue into a reproducibly hashed, blinded packet containing only Korean input, source-backed surface evidence, and blank IPA-review fields. It deliberately omits candidate IPA, both reviewer records, reconciliation, Ukrainian target review, and source-note fields that could expose hidden review data. Regression tests inject secret sentinel values into those forbidden fields and assert that no value leaks into either packet.
+
+This enables a clean handoff but does not complete adjudication: the queue remains 0/20 independent IPA submissions for reviewer A and 0/20 for reviewer B. The packet's source comparator is Hangul notation, not IPA; the reviewer protocol states this explicitly. Exact-head CI is required before merging the tooling.

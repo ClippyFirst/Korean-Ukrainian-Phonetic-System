@@ -194,3 +194,9 @@ Main `b795575c0d8b122123561c682e510ed5c171b5cc` has passed tests, system verific
 The new branch `research/source-rights-ledger-validator-2026-10-23` adds a read-only CSV parser/auditor and a conservative rights-review queue generated from `research/SOURCE-REGISTER.csv`. The report separates explicit unresolved status from ambiguous free-text status; it does not modify the register or infer legal permission. Exact-head CI is pending. Source-rights acceptance remains blocked until item-level evidence is reviewed.
 
 The read-only rights triage on the current 100-row register yields 96 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`, and 1 `NOT_APPLICABLE_RECORDED`. These counts describe register wording only and do not grant reuse permission or replace item-level human review.
+
+## Follow-up branch — blinded IPA review packet, 2026-10-23
+
+Main `1f91d0c3817153d8a07004778ed916fda39d4ec5` passed tests, Python 3.11–3.13, browser G2P, system verification, corpus artifacts, and Pages live smoke ([run 40012122568](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012122568)).
+
+The new branch `research/blinded-ipa-review-packets-2026-10-23` provides a one-way, read-only projection of the canonical 20-case IPA queue for reviewer A or B. It hashes the exact queue revision and omits candidate IPA, the other reviewer’s record, reconciliation, target review, and source notes. Exact-head CI remains required; reviewer submissions themselves are external evidence and are not simulated by code.

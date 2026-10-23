@@ -151,3 +151,7 @@ Pages deployment smoke is `DONE_VERIFIED` for main commit `dae9ed1bf5806fd8d33d8
 The current main/deployment gates passed on `b795575c0d8b122123561c682e510ed5c171b5cc`. A dedicated branch now implements a no-dependency source-register auditor and regression tests. It should be merged only after exact-head CI passes and the reported row count / rights triage is inspected. This tool improves auditability; it does not resolve the underlying item-level licensing blocker. Next independent blockers remain IPA adjudication, Ukrainian target review, exhaustive atomic NIKL coverage, and permitted live-source access.
 
 Initial rights-triage result: 96 of 100 records need review, 2 need manual classification, 1 explicitly records a verified license, and 1 is marked not applicable. Treat this as a review queue, not a legal decision. Do not close source-rights acceptance based on this report alone.
+
+### Next executable batch — independent IPA review handoff
+
+The 20-case queue remains the canonical source of truth. A new branch prepares blinded reviewer packets for slot A/B from that queue, preserving source-backed Hangul surface evidence while excluding any candidate IPA, other reviewer record, reconciliation and target-layer data. This is a preparation tool only; merge after exact-head CI and then recruit qualified reviewers. Do not fabricate independent IPA or count packet generation as adjudication.
