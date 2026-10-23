@@ -201,15 +201,24 @@ def tokenize_ipa_with_modifiers(ipa:str)->list[dict]:
                         if token["segment"] in _IPA_VOWEL_TOKENS),None)
             if vowel is None:
                 raise ValueError(f"IPA length mark at index {i} has no supported vowel in its syllable")
+            if vowel["long"]:
+                raise ValueError(f"duplicate IPA length mark at index {i} in the same syllable")
             vowel["long"]=True
             i+=1
             continue
         if char=="̚":
-            # Unreleased-stop diacritic is represented by the supported
-            # broad coda segment itself; retain the fact that it was present.
-            if not tokens:
-                raise ValueError(f"IPA diacritic at index {i} has no preceding segment")
-            tokens[-1]["unreleased"]=True
+            # A combining diacritic belongs to the immediately preceding stop
+            # in the same syllable; never attach it across a syllable boundary
+            # or to a vowel/sonorant just because a token exists globally.
+            if len(tokens)<=syllable_start:
+                raise ValueError(f"IPA unreleased-stop diacritic at index {i} has no preceding segment in its syllable")
+            previous=tokens[-1]
+            stop_segments={"p","p͈","pʰ","b","t","t͈","tʰ","d","k","k͈","kʰ","ɡ"}
+            if previous["segment"] not in stop_segments:
+                raise ValueError(f"IPA unreleased-stop diacritic at index {i} follows non-stop segment {previous['segment']!r}")
+            if previous["unreleased"]:
+                raise ValueError(f"duplicate IPA unreleased-stop diacritic at index {i}")
+            previous["unreleased"]=True
             i+=1
             continue
         match=next((x for x in _IPA_SEGMENT_INVENTORY if ipa.startswith(x,i)),None)
