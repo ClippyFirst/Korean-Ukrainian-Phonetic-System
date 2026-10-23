@@ -42,7 +42,11 @@ Case-specific sources:
 
 ## Acceptance ledger
 
-- **DONE_VERIFIED after CI:** source-backed exact-form licensing, lexical entry, trace provenance, regression tests, and cross-runtime checks. Record actual workflow URLs and status here after the branch's CI finishes.
+- **DONE_VERIFIED:** source-backed exact-form licensing, lexical entry, trace provenance, regression tests, and cross-runtime checks passed on PR head `24dac25d625dc648ae421412aeb6ccb430a60034`.
+  - [Python/browser tests, Python 3.11–3.13](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472569) — all jobs passed.
+  - [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472504) — Python regression/data integrity and browser regression/build passed; official NIKL inventory skipped, not claimed passed.
+  - [Master table and research corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472604) — passed.
+  - [External UGTPHON IPA diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472528) — passed. This is a regression/diagnostic gate, not proof of normative accuracy.
 - **PARTIAL:** 삶의 Korean surface-Hangul alternatives are directly attested, but its project IPA rendering has not been independently adjudicated by a Korean phonetician.
 - **PARTIAL:** 앉아라 and 없어도 are derived from transparent morphology plus NIKL rules; full-form surface pronunciation is not claimed to be directly listed by the cited NIKL source.
 - **BLOCKED / input normalization:** compact 많이본 and 좋아보인다고 require an explicit spacing/morphological-analysis stage or caller-supplied segmentation; do not force a guessed result in the current API.
