@@ -158,6 +158,6 @@ The 20-case queue remains the canonical source of truth. A new branch prepares b
 
 ### Latest integration checkpoint — 2026-10-23
 
-PR #270 and PR #271 are merged. Main is `df733c7f7afdf1262bea6c46d07876d6f315ccaf`. The source-register audit and blinded IPA packet generator are now in the canonical branch. Exact-head CI for the packet branch passed 1,195 Node tests with zero failures, Python 3.11–3.13, system verification, browser G2P, and corpus artifact checks. Mainline equivalents passed after merge. Public Pages deployment and HTTP smoke passed in run 40012736801; live Playwright status was still in progress at this note and must be read from the final run conclusion.
+PR #270 and PR #271 are merged. Main is `df733c7f7afdf1262bea6c46d07876d6f315ccaf`. The source-register audit and blinded IPA packet generator are now in the canonical branch. Exact-head CI for the packet branch passed 1,195 Node tests with zero failures, Python 3.11–3.13, system verification, browser G2P, and corpus artifact checks. Mainline equivalents passed after merge. Public Pages deployment, HTTP smoke, and live Playwright practical-mode smoke all passed in run [40012736801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012736801).
 
 Current source-rights triage flags 96 of 100 rows for review and 2 for manual classification. IPA remains 0/20 independent submissions per reviewer slot. This improves the audit/review workflow but does not close scientific acceptance.
