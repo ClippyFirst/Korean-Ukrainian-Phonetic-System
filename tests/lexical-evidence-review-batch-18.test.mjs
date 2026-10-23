@@ -26,10 +26,11 @@ test('qna_seq=334294 is contextual support and no longer falsely claims direct a
   const source = bySource('SRC-NIKL-QNA-334294');
   assert.ok(source);
   assert.equal(source.source_type, 'normative_lexical_reviewed');
-  assert.equal(source.review_status, 'partial_claim_scope_reviewed_2026-10-22');
+  assert.equal(source.review_status, 'direct_attestation_2026-10-23');
   assert.match(source.coverage, /맑게\[말께\].*묽고\[물꼬\].*밝기\[발끼\]/u);
   assert.match(source.coverage, /does not directly attest.*읽고\[일꼬\].*밝는\[방는\]/u);
-  assert.match(byInput('읽고').rule_notes, /Rule-derived, not directly attested/u);
+  assert.match(byInput('읽고').rule_notes, /qna_seq=315279 directly lists 읽고/u);
+  assert.equal(byInput('읽고').source_url, bySource('SRC-NIKL-QNA-315279').url);
   assert.match(byInput('밝는').rule_notes, /Rule-derived, not directly attested/u);
   assert.doesNotMatch(byInput('읽고').rule_notes, /NIKL Q&A directly confirms/u);
   assert.doesNotMatch(byInput('밝는').rule_notes, /NIKL Q&A directly confirms/u);
@@ -98,11 +99,11 @@ test('qna_seq=335263 directly attests 실없다[시럽따] and corrects the ques
   assert.equal(byInput('실없다').source_url, source.url);
 });
 
-test('qna_seq=307508 is partial until the spelling discrepancy is resolved', () => {
+test('qna_seq=307508 directly attests 넓죽하다 while the second spelling remains unresolved', () => {
   const source = bySource('SRC-NIKL-QNA-307508');
   assert.ok(source);
   assert.equal(source.review_status, 'partial_claim_scope_reviewed_2026-10-22');
-  assert.match(source.coverage, /넓둥굴다\[넙뚱글다\].*넓둥글다/u);
+  assert.match(source.coverage, /넓죽하다\[넙쭈카다\].*넓둥굴다\[넙뚱글다\]/u);
   assert.match(byInput('넓둥글다').rule_notes, /exact orthographic match as unresolved/u);
   assert.doesNotMatch(byInput('넓둥글다').rule_notes, /directly confirms/u);
 });
