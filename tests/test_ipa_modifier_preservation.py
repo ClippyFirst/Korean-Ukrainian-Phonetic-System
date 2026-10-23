@@ -3,6 +3,7 @@ import pytest
 
 from korean_ukrainian.pipeline import (
     map_ipa_to_ukrainian,
+    source_features_for_ipa,
     tokenize_ipa,
     tokenize_ipa_with_modifiers,
 )
@@ -82,7 +83,21 @@ def test_every_raw_lexical_ipa_form_is_supported_and_syllable_aligned():
                         )
                     for index, ipa_syllable in enumerate(ipa_syllables, start=1):
                         try:
-                            tokenize_ipa_with_modifiers(ipa_syllable)
+                            parsed = tokenize_ipa_with_modifiers(ipa_syllable)
+                            for token in parsed:
+                                features = source_features_for_ipa(token["segment"])
+                                if not features:
+                                    problems.append(
+                                        f"{path.name}:{line_number} {orthography} {ipa_field} "
+                                        f"syllable {index}: IPA segment {token['segment']!r} "
+                                        "has no source feature vector"
+                                    )
+                                elif "consonantal" not in features or "syllabic" not in features:
+                                    problems.append(
+                                        f"{path.name}:{line_number} {orthography} {ipa_field} "
+                                        f"syllable {index}: IPA segment {token['segment']!r} "
+                                        "has an incomplete source feature vector"
+                                    )
                         except ValueError as exc:
                             problems.append(
                                 f"{path.name}:{line_number} {orthography} {ipa_field} "
