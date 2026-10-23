@@ -450,3 +450,11 @@ Working branch: `research/source-rights-ledger-validator-2026-10-23`. This batch
 Acceptance is still pending exact-head CI. Run `npm run audit:source-register` for a structural report; use `npm run audit:source-register -- --require-reviewed-rights` as a strict gate after the owner/reviewer has resolved every record. A non-zero strict result is expected until item-level rights are evidenced. This audit is not legal advice and cannot establish permission by itself.
 
 Audit baseline for the current 100-row source register: 96 records `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`, and 1 `NOT_APPLICABLE_RECORDED`. These are triage counts, not a legal clearance. The one explicit license-recorded row is not treated as permission for every retained artifact; verify scope, notices, and obligations before closure.
+
+### Continuation — blinded IPA reviewer packets, 2026-10-23
+
+Main after PR #270 is `1f91d0c3817153d8a07004778ed916fda39d4ec5`. Tests, Python 3.11–3.13, browser build/integration, system verification, corpus artifacts, public HTTP smoke, and live Playwright practical-mode smoke passed; Pages run [40012122568](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012122568) is successful.
+
+Working branch: `research/blinded-ipa-review-packets-2026-10-23`. It adds `scripts/build-ipa-review-packet.mjs`, `tests/blinded-ipa-review-packet.test.mjs`, and `npm run ipa:review-packet`. Generate a packet with `npm run ipa:review-packet -- --reviewer A` or `--reviewer B`; JSON is written to stdout, the canonical queue is not modified, and the output includes a SHA-256 of the exact queue text. The projection omits candidate IPA, both existing reviewer records, reconciliation, Ukrainian target review, and free-text source notes. Tests use secret sentinel values to verify that hidden fields cannot leak.
+
+This is workflow preparation only. No IPA value was added and the independent-review queue remains 0/20 in both slots. The official NIKL live inventory remains skipped/blocked by access restrictions; no bypass was attempted.
