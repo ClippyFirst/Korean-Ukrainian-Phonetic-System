@@ -35,6 +35,6 @@ The official Rule 29 phrase list also includes `3연대` and `1연대`. They are
 
 ## Acceptance and limits
 
-- `TODO / CI`: implementation, source-attributed rule trace, and regression tests are present on the working branch; exact-head Python/browser/system/artifact workflows must finish green before this batch is marked verified.
+- `DONE_VERIFIED / CI`: [test workflow #2185](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40021815322) passed Python 3.11/3.12/3.13 and browser tests/build; [system verification #5068](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40021815298) passed Python regression/data-integrity and browser regression/build; [master table/research corpus artifacts #2049](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40021815444) passed. The live NIKL inventory step was skipped/blocked, not passed, and is not used as acceptance evidence.
 - The official Korean surface examples do not themselves establish a unique broad IPA or Ukrainian target. Those outputs remain provisional until the independent IPA and target-layer review gates are completed.
 - This registry intentionally covers only the source-listed forms. It is not a general Korean morphological analyzer and does not infer unseen compounds or phrase boundaries.
