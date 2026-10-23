@@ -143,3 +143,8 @@ The tokenizer previously discarded `.`, whitespace and `#` after splitting the I
 ### Verification gate
 
 Regression tests assert the precise boundary/index sequence for `ɰiː.nan kʌ`, metadata propagation through target analysis, and rendering behavior. CI must pass on the exact PR head. This change preserves source segmentation metadata; it does not claim that every target grapheme or adaptation is linguistically correct.
+
+
+### CI-driven test correction
+
+The first exact-head CI caught a test-only NameError: the new end-to-end boundary test called the private target selector without importing it. Added the explicit import. The implementation and assertion remain unchanged; the test must pass on the subsequent exact head before merge.
