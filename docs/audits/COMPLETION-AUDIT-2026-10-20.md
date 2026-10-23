@@ -934,3 +934,12 @@ Commit with implementation and tests: `f296014d5980123c8c64b9dde9abd47c43382131`
 - Direct live NIKL retrieval remains HTTP 403 in the existing checks. This review is bounded to the official indexed answer content already examined; no access-control workaround is used.
 - Task ledger: `PARTIAL` — source claim-scope and inventory changes are implemented, but the first exact-head CI exposed a batch-28 integration-status assertion failure. The source-register field has been corrected; exact-head CI must be rerun before this item is marked `DONE_VERIFIED`. `BLOCKED / rights` — item-level reuse marks; `TODO` — inspect remaining 17 citations via authorized saved copies; `BLOCKED_SPECIALIST_ADJUDICATION` — independent broad IPA and Ukrainian practical-target review.
 - Release disposition remains **deployed research preview / partial prototype**, not a scientifically validated release.
+
+
+## 2026-10-23 batch 29 — NIKL-backed practical surface corrections
+
+- **IMPLEMENTED / CI pending:** exact-form corrections in `src/app/g2pk_web.js` for `값어치→가버치`, `넓죽하다→넙쭈카다`, `넓둥글다→넙뚱글다`, `넓적하다→넙쩌카다`, and `읽고→일꼬`. Corrections occur before IPA generation; Ukrainian output remains IPA-derived.
+- The raw vendored g2pK output remains independently recorded. The finite allowlist does not generalize to arbitrary `ㄺ`/`ㄼ` words; length changes fail closed.
+- Added source-backed regressions and the batch-29 evidence report. `읽고` now cites Q&A qna_seq=315279; qna_seq=307508 is direct for `넓죽하다` only; qna_seq=322805 is registered for `넓적하다`.
+- Fixed intake queue remains 43/60 checked and 17 unreviewed (14 HTML + 3 PDFs). Independent IPA/Ukrainian gold, full rule/exception mapping, item-level KOGL review, and permitted live source access remain open. Live NIKL CI access returns HTTP 403; no bypass attempted.
+- Readiness remains research preview / partial prototype.
