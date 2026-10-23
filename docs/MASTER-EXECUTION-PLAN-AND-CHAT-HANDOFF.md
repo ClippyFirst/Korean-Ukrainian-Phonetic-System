@@ -474,3 +474,11 @@ Commands added:
 - `npm run ipa:review-packet -- --reviewer B`
 
 The live NIKL inventory remains skipped/blocked by HTTP 403. IPA remains 0/20 independent submissions in both reviewer slots; Ukrainian target review is separate. Scientific release remains blocked.
+
+### Continuation — strict validation of returned IPA review packets (2026-10-23)
+
+On top of merged PR #271, branch `research/validate-ipa-review-submissions-2026-10-23` adds `scripts/validate-ipa-review-submission.mjs` and `npm run ipa:validate-submission -- <submission.json> --reviewer A|B`.
+
+The validator fails closed on stale queue hashes, missing/duplicate/unknown cases, modified source evidence, unexpected fields that could leak candidate IPA or another reviewer's data, missing reviewer/method/timestamp/IPA/boundary/length fields, and reviewer-slot mismatch. It requires a timezone-bearing timestamp and one of `present|absent|not_applicable|uncertain` for the length assessment. It only validates structure and provenance; it cannot certify phonetic correctness, expertise, independence, or target-layer quality. It does not alter the packet or canonical queue.
+
+Tests use explicitly synthetic IPA fixture strings solely to exercise validation. No fixture is added to the research corpus and no gold IPA is created. The 20 cases remain blocked pending genuine independent reviewers.

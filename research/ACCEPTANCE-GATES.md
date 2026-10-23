@@ -206,3 +206,7 @@ The new branch `research/blinded-ipa-review-packets-2026-10-23` provides a one-w
 Main is `df733c7f7afdf1262bea6c46d07876d6f315ccaf`. Exact-head PR #271 CI passed 1,195 Node tests (0 failures), Python 3.11–3.13, system verification, browser G2P and corpus artifacts. Post-merge main tests, system verification, browser G2P and corpus artifacts passed. Pages run [40012736801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012736801) completed successfully: deploy, public HTTP smoke, and live Playwright practical-mode interaction passed.
 
 Source rights triage: 100 rows; 96 review required, 2 manual classification required, 1 item-level license recorded, 1 not applicable recorded. This is not a permission decision. IPA review tooling is ready, but independent submissions remain 0/20 in each slot. The live NIKL inventory is skipped/blocked, not passed.
+
+## Follow-up branch — validating reviewer submissions
+
+The branch `research/validate-ipa-review-submissions-2026-10-23` pairs the blinded packet generator with a strict returned-packet validator. The validator checks exact queue revision hash, all case IDs, unchanged source evidence, no forbidden extra fields, reviewer slot, and required review metadata/values. It does not grade IPA or assert that a reviewer is qualified. The test fixtures are synthetic only and must never be treated as linguistic evidence. Merge only after exact-head CI passes.
