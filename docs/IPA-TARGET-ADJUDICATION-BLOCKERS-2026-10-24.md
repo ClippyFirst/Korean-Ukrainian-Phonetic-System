@@ -68,3 +68,17 @@ A focused Undermind deep search has been launched for primary evidence on ㅢ in
 https://app.undermind.ai/projects/de353992-202a-4b09-bf19-47932f80e426?path=/Independent%20IPA%20adjudication%20of%20Korean%20%EC%9D%98%20in%20%EC%82%B6%EC%9D%98%20and%20Ukrainian%20target%20mapping
 
 Do not mark the literature task complete until its returned papers have been inspected and exact relevant claims have been verified.
+
+
+## Implementation hardening on the existing PR branch
+
+The code now carries a per-entry `ipa_adjudication_status` in the dated overlay `data/korean/lexical_additions_ipa-adjudication-2026-10-24.csv`. The canonical base lexicon schema remains unchanged. The existing native loader merges dated overlays, so the entry keeps its official surface-Hangul evidence and candidate IPA while recording `diagnostic_only_unresolved_pronunciation`.
+
+For this entry, `phoneticize_korean("삶의")` now adds an `IPA_ADJUDICATION` unresolved context and returns the candidate IPA as diagnostic-only with reason `independent_ipa_adjudication_required`. `transliterate_korean("삶의")` must return no Ukrainian orthography and `target_status="unresolved"` until the IPA is independently adjudicated. The regression test asserts all of these conditions.
+
+Relevant research leads returned by the workspace's semantic search:
+- Kim, Ryang-jin (2025), “A Study on the Realization of the Korean phoneme 'ui(의)'.” DOI: https://doi.org/10.22557/hg.2025.3.86.1.5. Metadata is available but no abstract/full text was available in the retrieved record; it is not treated as verified evidence for the exact form.
+- Park, Sunwoo (2019), “On the Phonological Representation and Acoustic Properties of the Diphthong /ɨi/ in Korean.” DOI: https://doi.org/10.14342/SMOG.2019.102.165. Metadata is available but no abstract/full text was available in the retrieved record.
+- Wei et al. (2023), “Assessing Intelligibility in Non-native Speech: Comparing Measures Obtained at Different Levels.” DOI: https://doi.org/10.21437/interspeech.2023-1635. The retrieved abstract distinguishes intelligibility measures based on orthographic transcription from subjective comprehensibility ratings, supporting separate evaluation measures rather than one blended “quality” score. It is methodological context, not direct evidence for Korean-to-Ukrainian mapping.
+
+**Verification state:** source and regression changes are committed to this branch, but the follow-up exact-head CI has not been observed in the available GitHub workflow/status responses. The earlier green CI applies only to the earlier implementation head and must not be reused as evidence for these latest commits. A local clone/test run was attempted but blocked because this environment could not resolve github.com.
