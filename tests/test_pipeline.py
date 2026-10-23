@@ -361,16 +361,17 @@ def test_source_backed_complex_coda_lexicon_entry_resolves_its_own_pronunciation
     assert analysis["unresolved_contexts"] == []
 
 
-def test_unlicensed_morphological_fortition_is_not_rendered_as_definitive_ipa():
+def test_nikl_attested_l_ge_ending_has_sourced_fortition():
     from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
 
     analysis = phoneticize_korean("할게")
-    assert analysis["pronunciation_status"] == "unresolved"
-    assert any(item["rule_id"] == "R013" and item["input_span"] == "할게"
-               for item in analysis["unresolved_contexts"])
+    assert analysis["pronunciation_status"] == "provisional"
+    assert analysis["ipa"]["ipa"] == "hal.k͈e"
+    trace = next(item for item in analysis["rules"] if item["rule_id"] == "R013" and item["changed"])
+    assert "attested_l_ge_ending" in trace["license_context"]
+    assert "qna_seq=330963" in trace["source"]
     result = transliterate_korean("할게")
-    assert result["ukrainian_orthography"] is None
-    assert result["target_status"] == "unresolved"
+    assert result["phonetics"]["ipa"]["ipa"] == "hal.k͈e"
 
 
 def test_unambiguous_productive_tensification_remains_available():
