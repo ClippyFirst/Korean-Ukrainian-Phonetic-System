@@ -74,6 +74,8 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     from korean_ukrainian.pipeline import phoneticize_korean
 
     scored: list[dict[str, Any]] = []
+    unresolved_examples: list[dict[str, str]] = []
+    unresolved_tokens = 0
     skipped_non_hangul_or_multitoken = 0
     skipped_missing_gold = 0
     skipped_empty_variants = 0
@@ -89,7 +91,19 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 skipped_missing_gold += 1
                 continue
             try:
-                predicted_raw = phoneticize_korean(canonical)["ipa"]["ipa"]
+                engine_result = phoneticize_korean(canonical)
+                if engine_result.get("pronunciation_status") == "unresolved":
+                    unresolved_tokens += 1
+                    if len(unresolved_examples) < 100:
+                        unresolved_examples.append({
+                            "id": row["id"], "token": canonical,
+                            "contexts": "; ".join(
+                                f"{item.get('rule_id')} {item.get('pair')}: {item.get('reason')}"
+                                for item in engine_result.get("unresolved_contexts", [])
+                            ),
+                        })
+                    continue
+                predicted_raw = engine_result["ipa"]["ipa"]
             except Exception as exc:  # diagnostic must record, not conceal, engine failures
                 errors += 1
                 scored.append({
@@ -124,6 +138,8 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "exact_matches": exact,
         "exact_match_rate": round(exact / len(comparable), 6) if comparable else None,
         "character_error_rate": round(total_distance / total_chars, 6) if total_chars else None,
+        "unresolved_tokens": unresolved_tokens,
+        "unresolved_examples": unresolved_examples,
         "skipped_tokens": skipped_non_hangul_or_multitoken + skipped_missing_gold + skipped_empty_variants,
         "skipped_non_hangul_or_multitoken": skipped_non_hangul_or_multitoken,
         "skipped_missing_gold": skipped_missing_gold,
@@ -137,6 +153,7 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "Gold IPA follows UGTPHON/IPA-Dict annotation conventions and may not match this project's broad-IPA convention exactly.",
             "Token-level evaluation loses sentence prosody and cross-token context; it is a diagnostic, not a complete sentence-level score.",
             "Do not interpret this result as validation of Ukrainian orthographic rendering.",
+            "Tokens explicitly marked unresolved by the native engine are excluded from IPA scores and reported separately.",
             "Review mismatches by phonological class and source before changing any engine rule.",
         ],
     }
