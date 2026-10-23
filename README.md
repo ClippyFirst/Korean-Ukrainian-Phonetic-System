@@ -126,6 +126,8 @@ The browser practical adapter uses the reduced browser-only G2P core; the native
   R009 / R010–R016. Full contract:
   [docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md](docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md).
 
+The native Python R009 implementation additionally applies a finite, exact-form license list for examples explicitly enumerated in NIKL §29 (including 한여름, 솜이불, 꽃잎, 색연필, 서울역); listed cross-word examples require explicit `boundary_mode="phrase"`. This is not a productive n-insertion heuristic: unlisted forms still require exact licensing. See [the native Rule 29 license audit](docs/NATIVE-ENGINE-NIKL-RULE-29-EXACT-LICENSES-2026-10-23.md).
+
 It deliberately does **not** claim to be a complete lexical, morphological or acoustic Korean pronunciation engine. Research-layer rules that require lexical or morphological licensing remain outside the browser's automatic scope. For §17 palatalization, the browser accepts exact sourced lexical entries; an unlisted ㄷ/ㅌ/ㄾ + 이-looking sequence is marked unresolved instead of inferring a formal-morpheme boundary from spelling alone. The Python §29 n-insertion rule requires a full-form and pair-specific license rather than a global boolean. The Python research layer and browser both require exact full-form/pair evidence for morphologically ambiguous complex-coda liaison and for simple-coda cases where §15 neutralization could change the result; sourced lexical entries cover known examples.
 
 ## Exhaustive Hangul inventory
