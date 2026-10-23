@@ -49,7 +49,7 @@ The script deliberately performs no network access. It scores Hangul-only canoni
 ## Current acceptance status
 
 - External data discovered and source/license inspected: **DONE_VERIFIED**.
-- Benchmark adapter and unit tests authored: **implemented; CI verification pending**.
+- Benchmark adapter and unit tests authored: **DONE_VERIFIED** at PR head `eb4c5d19522b76ea1f64af869e7306eda48d7a0e`; CI passed (Python 3.11/3.12/3.13, browser tests/build, master table and corpus artifact generation). Runs: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40018032086), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40018032034), [master artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40018032018).
 - Run against actual 275-row corpus: **BLOCKED** until the dataset is obtained in a permitted environment; no live download or corpus execution was available here.
 - Independent normative IPA gold corpus: **TODO / specialist adjudication**.
 - Independent Ukrainian target review: **TODO / specialist adjudication**.
