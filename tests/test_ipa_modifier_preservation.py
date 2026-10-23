@@ -192,7 +192,7 @@ def test_selected_candidates_retain_word_boundary_for_final_rendering():
     assert render_sequence(selected["segments"]) == "ка м"
 
 
-@pytest.mark.parametrize("text", ["", "   ", "\\u00a0"])
+@pytest.mark.parametrize("text", ["", "   ", " "])
 def test_empty_or_whitespace_only_input_fails_closed_at_all_public_stages(text):
     from korean_ukrainian.pipeline import (
         analyze_korean,
