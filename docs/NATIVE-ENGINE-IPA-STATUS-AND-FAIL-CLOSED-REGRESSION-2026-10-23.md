@@ -12,7 +12,7 @@ The native pipeline already distinguished `pronunciation_status=unresolved` from
 
 ## Implementation
 
-Both `phoneticize_korean()` and `transliterate_korean()` now expose:
+Both `phoneticize_korean()` and `transliterate_korean()` now expose root-level status fields and mirror the status inside the returned IPA object. Root-level fields are:
 
 - `ipa_status`: `diagnostic_only_unresolved_pronunciation` when the engine has a known unresolved morphophonological context; otherwise `provisional`.
 - `ipa_is_diagnostic_only`: boolean guard for callers that need a machine-readable gate.
