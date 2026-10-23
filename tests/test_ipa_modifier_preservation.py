@@ -239,3 +239,24 @@ def test_source_features_preserve_fortis_separately_from_aspiration():
     # weights remain unchanged until the Ukrainian inventory/policy explicitly
     # defines a target-side treatment for this Korean contrast.
     assert "fortis" not in DEFAULT_WEIGHTS
+
+
+def test_selected_candidate_retains_source_fortis_feature_vector():
+    selected = _select_target({
+        "segments": [{
+            "source_ipa": "p͈",
+            "source_features": {"consonantal": "1", "syllabic": "0", "fortis": "1"},
+            "source_length": "unspecified",
+            "source_diacritics": {"unreleased": False},
+            "source_syllable_index": 0,
+            "source_word_index": 0,
+            "source_boundary_before": "start",
+            "target": {"candidates": [{
+                "candidate_id": "test-p",
+                "mapping_id": "map-p",
+                "grapheme": "п",
+            }]},
+        }]
+    })
+    assert selected is not None
+    assert selected["segments"][0]["source_features"]["fortis"] == "1"
