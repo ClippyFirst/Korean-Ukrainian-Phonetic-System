@@ -43,12 +43,15 @@ test('browser G2P preserves punctuation, spaces, and protected Latin/digits',()=
   assert.equal(result.source,input);
 });
 
-test('practical mode surface is exactly the vendored g2pK JS port output (no lexical override)',()=>{
+test('practical mode applies exact NIKL surface correction before IPA while retaining raw port parity',()=>{
   const port=new G2pBrowser();
   const input='값어치';
   const expected=port.convert(input,{descriptive:false,verbose:false,groupVowels:false,toSyl:true});
   const result=g2p.convert(input);
-  assert.equal(result.surfaceHangul,expected);
+  assert.equal(expected, '갑써치', 'raw vendored port remains unchanged');
+  assert.equal(result.surfaceHangul, '가버치', 'NIKL §15 correction precedes IPA');
+  assert.equal(result.normativeCorrections.length, 1);
+  assert.match(result.analysis, /값어치 → 가버치/u);
   assert.notEqual(result.status,'lexical');
   assert.ok(!result.trace.some(item=>(item.rules||[]).includes('sourced-lexical-ipa')));
   assert.equal(result.issues.length,0);
