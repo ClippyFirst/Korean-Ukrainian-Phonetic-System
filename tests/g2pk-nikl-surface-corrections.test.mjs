@@ -4,10 +4,12 @@ import { readFileSync } from 'node:fs';
 import { createEngine } from '../src/app/engine.js';
 import { createG2pWebAdapter } from '../src/app/g2pk_web.js';
 import { traceIpaMapping } from '../src/app/engine_ipa.js';
+import { parseCsv } from '../src/app/engine.js';
 
 const root = new URL('../', import.meta.url);
 const canonical = readFileSync(new URL('data/korean/canonical_correspondence.csv', root), 'utf8');
 const lexical = readFileSync(new URL('data/korean/lexical_pronunciations.csv', root), 'utf8');
+const sourceRegister = parseCsv(readFileSync(new URL('research/SOURCE-REGISTER.csv', root), 'utf8'));
 const adapter = createG2pWebAdapter(createEngine(canonical, lexical));
 
 const cases = [
@@ -76,4 +78,18 @@ test('a correction preserves source offsets and punctuation in running text', ()
   const mapped = traceIpaMapping(result.ipa);
   assert.equal(mapped.unknown, '');
   assert.equal(result.ukrainian, mapped.tokens.map(token => token.ukrainian).join(''));
+});
+
+test('every correction is backed by a registered official NIKL source', () => {
+  const byId = new Map(sourceRegister.map(row => [row.source_id, row]));
+  for (const id of ['SRC-NIKL-MCFAQ-5949', 'SRC-NIKL-QNA-307508', 'SRC-NIKL-QNA-322805', 'SRC-NIKL-QNA-315279']) {
+    assert.ok(byId.has(id), id + ': evidence source must be registered');
+    assert.match(byId.get(id).url, /korean\.go\.kr/u);
+    assert.match(byId.get(id).license_status, /KOGL|reuse|marking|not checked/i,
+      id + ': source-rights uncertainty must remain explicit');
+  }
+  const readgo = parseCsv(lexical).find(row => row.input === '읽고');
+  assert.ok(readgo);
+  assert.match(readgo.source_url, /qna_seq=315279/u);
+  assert.match(readgo.rule_notes, /directly lists 읽고\[일꼬\]/u);
 });
