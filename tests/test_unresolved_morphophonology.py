@@ -6,7 +6,14 @@ def test_nikl_attested_particle_readings_for_salmui_are_explicit_variants():
     word = "\uc0b6\uc758"
     result = phoneticize_korean(word)
     assert result["surface_hangul"] == "\uc0b4\ubbdc"
-    assert result["ipa"]["ipa"] == "sal.m\u0270i"
+    assert result["ipa"]["ipa"] == "sal.mi"
+    assert result["ipa"]["lexical_alternatives"] == [{
+        "input": word,
+        "surface_hangul": "\\uc0b4\\uba54",
+        "ipa": "sal.me",
+        "status": "diagnostic_only_unresolved_pronunciation",
+        "source": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
+    }]
     assert result["pronunciation_status"] == "unresolved"
     assert result["ipa_is_diagnostic_only"] is True
     assert result["ipa_status"] == "diagnostic_only_unresolved_pronunciation"
