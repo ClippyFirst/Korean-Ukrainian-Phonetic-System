@@ -47,3 +47,10 @@ The previous `tokenize_ipa` skipped the length mark `ː` as if it were punctuati
 - Implementation committed on the dedicated branch; tests added for long-vowel metadata, compatibility tokenization, invalid length placement, unknown modifiers, and adapter-boundary reporting.
 - Local test execution is unavailable through the current GitHub API-only environment. The new tests are not marked passed until CI runs on this exact branch/PR head.
 - This is a bounded correctness improvement, not a claim of full IPA coverage or complete Ukrainian length adaptation. The IPA inventory remains deliberately finite; additional symbols require explicit, tested handling.
+
+
+### Registry-wide audit finding
+
+A one-off scan of all 642 lexical rows found two IPA values using ASCII `r` rather than the repository's intended IPA flap `ɾ`: `발음과` (`pa|rɯm|ɡwa`) and `발음의` (`pa|rɯ|mi`). Both were corrected to `ɾ`. The Korean surface spellings and Ukrainian target reference fields were not changed. A new regression now tokenizes every non-empty lexical IPA syllable through the same fail-closed adapter parser, so unsupported IPA symbols cannot remain hidden in untested dictionary rows.
+
+This is a syntactic/inventory compatibility check, **not** independent adjudication that every lexical IPA transcription is phonetically correct.
