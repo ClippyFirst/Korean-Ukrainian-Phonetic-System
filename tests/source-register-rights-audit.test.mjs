@@ -18,6 +18,17 @@ test('CSV parser rejects unterminated quotes and junk after a closing quote', ()
   assert.throws(() => parseCsv('id,value\nA,"closed"x'), /Unexpected character after closing quote/u);
 });
 
+test('source register rejects malformed and non-HTTPS URLs', () => {
+  const csv = [
+    'source_id,source_type,title_or_project,url,version_or_date,authority_or_role,license_status,coverage,contribution_expected,review_status,integration_status,limitations_or_next_action',
+    'SRC-BAD,normative,Bad URL,https://,2026,authority,not_assessed,rule,rule,unreviewed,not integrated,fix URL',
+    'SRC-HTTP,normative,HTTP URL,http://example.org/source,2026,authority,not_assessed,rule,rule,unreviewed,not integrated,upgrade URL',
+  ].join('\\n');
+  const report = auditSourceRegister(csv);
+  assert.equal(report.structuralErrorCount, 2);
+  assert.deepEqual(report.structuralErrors.map(item => item.sourceId), ['SRC-BAD', 'SRC-HTTP']);
+});
+
 test('source rights triage never promotes vague source descriptions to a license decision', () => {
   const csv = [
     'source_id,source_type,title_or_project,url,version_or_date,authority_or_role,license_status,coverage,contribution_expected,review_status,integration_status,limitations_or_next_action',
