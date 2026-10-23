@@ -917,3 +917,10 @@ Commit with implementation and tests: `f296014d5980123c8c64b9dde9abd47c43382131`
 - **PARTIAL:** exhaustive article/subparagraph/exception/variant coverage for *표준 발음법* 1–30 and independent adjudication of generic IPA remain incomplete. Internal IPA-to-Ukrainian recomputation is an invariant, not an independent gold standard.
 - **BLOCKED:** live NIKL retrieval returned HTTP 403 in the recorded work; do not claim live source validation until a reproducible permitted route or a source file with provenance is available.
 - **Release status:** not release-ready as a fully validated normative transcription system. The web service and automated tests exist, but independent linguistic evaluation and source-backed rule coverage remain acceptance blockers.
+
+
+## 2026-10-23 source-retention defect
+
+- **TODO → CI pending:** mixed-text conversions previously left some unresolved Hangul units blank in the Ukrainian target, even though trace/issues recorded them. This was a silent source-loss defect.
+- **Candidate fix:** branch `fix/research-unresolved-source-retention-2026-10-23` adds `⟦source-character⟧` target markers for unresolved/unsupported units in mixed text; IPA remains withheld. Single-token fail-closed behavior remains unchanged.
+- **Acceptance criterion:** JS/browser regression tests prove markers appear for unresolved units in mixed text, no unsupported source unit is emitted as IPA, and the full suite/build/Python/artifact checks pass on the exact head SHA. Until then this item remains **PARTIAL**.
