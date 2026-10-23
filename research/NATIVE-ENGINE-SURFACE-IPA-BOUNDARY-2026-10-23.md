@@ -104,3 +104,8 @@ The registry gate now reads the raw base CSV **and every** `lexical_additions_*.
 ### CI-driven alternate-form correction
 
 The expanded raw-registry test found one additional error that the previous merged-lexicon check could not see: `발음의` had correct primary IPA but its alternate form `pa|rɯ|me` used ASCII `r`. Corrected the alternate to `pa|ɾɯ|me`. A raw-file scan of primary and alternate IPA columns found no other ASCII-`r` occurrences in the base lexicon and the active `lexical_additions_2026-10-15.csv` overlay. The full CI suite must rerun on the corrected head.
+
+
+### Cross-runtime regression fixture correction
+
+After the alternate IPA was corrected, CI exposed one stale JavaScript test fixture asserting the former malformed ASCII-`r` string. Updated that fixture to expect the corrected IPA flap `ɾ`. This is a test-only parity adjustment for the shared lexical data; the practical JS transcription implementation itself was not changed.
