@@ -169,3 +169,35 @@ The first exact-head CI caught a test-only NameError: the new end-to-end boundar
 - **DONE_VERIFIED:** IPA token inventory → source feature vector coverage; primary/alternate raw lexical IPA syntax and syllable alignment; length/unreleased-stop metadata; strict invalid modifier rejection; source syllable/word boundary metadata preserved through target selection; word spaces preserved by rendering.
 - **Still BLOCKED / evidence-limited:** independent IPA adjudication for all 20 queued cases, independent Ukrainian target review, exhaustive subparagraph/exception/variant adjudication for all 30 normative articles, item-level KOGL verification, and live NIKL crawl (HTTP 403; CI step skipped).
 - The changes establish technical boundary integrity, not scientific correctness of every IPA transcription or Ukrainian correspondence. Local tests were not run in this API-only session.
+
+
+## Follow-up: fail closed on empty native input — 2026-10-23
+
+### Gap and implementation
+
+Review of the end-to-end native pipeline found that an empty IPA segment list could be passed to target selection. The selector returned an empty-but-non-null selection, so an empty/whitespace-only input could reach a misleading `model-selected` status with an empty Ukrainian string. This was a state-contract defect, not a pronunciation-rule defect.
+
+- Added shared `_validate_korean_input` validation and invoked it from orthographic analysis, phonological analysis, and surface phoneticization.
+- Empty and whitespace-only strings now raise a clear `ValueError`; non-Hangul characters are rejected consistently before rule processing.
+- `_select_target` returns unresolved (`None`) for an empty segment list rather than treating zero segments as a successful selection.
+- Added regression tests across `analyze_korean`, `phonologize_korean`, `phoneticize_korean`, and `transliterate_korean`, plus empty target selection and unsupported text.
+- Removed a duplicate import from the IPA modifier test module.
+
+### CI-driven corrections and verification
+
+The first CI pass exposed two test/validation-order issues rather than hidden linguistic evidence:
+1. The non-Hangul fixture `hello` was being classified as “no Hangul present” before the validator reported the unsupported character. Validation order was corrected so unsupported characters receive the specific error.
+2. A proposed escaped non-breaking-space fixture encoded the literal characters `\\u00a0`, not whitespace. It was replaced with a literal Unicode non-breaking space.
+
+Final implementation/test head: `052f8ef0155be23ad86b8f58f94b8c7a5ffa3af6`.
+- Tests, Python 3.11–3.13, and web build: PASS [run 40006290986](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290986).
+- System verification / Python regression / browser build: PASS [run 40006290971](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290971). The live NIKL source inventory step was skipped and is not a pass.
+- Generated research corpus artifacts: PASS [run 40006290630](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290630).
+- Optional g2pK integration on Python 3.11/3.12: PASS [run 40006292252](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006292252).
+- Local tests were not run in this GitHub API-only session.
+
+### Acceptance status
+
+- `DONE_VERIFIED` at the implementation/test head above: consistent empty-input rejection, fail-closed empty target selection, and regressions.
+- The later documentation-only commits still require final exact-PR-head CI before merge.
+- This does not validate any IPA gold, Ukrainian adaptation choice, or normative Korean rule. Independent IPA and target review, source/license verification, exhaustive rule coverage, and live source access remain open.
