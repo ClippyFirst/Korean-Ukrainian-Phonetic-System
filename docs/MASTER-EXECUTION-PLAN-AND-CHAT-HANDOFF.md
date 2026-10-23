@@ -1,3 +1,17 @@
+## Independent UGTPHON validation intake — 2026-10-23
+
+- Working branch: `research/ugtphon-independent-validation-2026-10-23`.
+- User directive: validate the project's own research engine against independent sources; do not modify or blindly privilege third-party g2pK.
+- External discovery: Naver AI's UGTPHON repository `naver-ai/UGTPHON`, paper https://arxiv.org/abs/2609.27205. Upstream `ko/test.json` was inspected through the GitHub connector: 275 rows (107 `multilexnorm2026`, 168 `dc_inside`); its per-language `ko/LICENSE` declares Apache-2.0 and documents upstream KoMultiText/MultiLexNorm++ sources. This is noisy user-generated text, not a normative dictionary; the IPA conventions differ from this project's broad IPA.
+- Added `scripts/benchmark_ugtphon_ko.py`: opt-in local-file benchmark; no network access; token-aligned comparison; Unicode normalization; exact match/CER, skipped-token and engine-error counts; worst-mismatch report. It never edits production rules or treats g2pK as gold.
+- Added `tests/test_ugtphon_benchmark.py` for normalization, metric, schema, split, and duplicate-ID invariants. Added `docs/INDEPENDENT-KOREAN-PHONOLOGY-VALIDATION-2026-10-23.md` with source provenance, interpretation limits, commands, and the separate Ukrainian-target review gate.
+- Task ledger: `DONE_VERIFIED` — upstream dataset structure and per-language license inspected; benchmark harness and tests committed to this branch. `BLOCKED / execution` — the full external JSON was inspected through the connector, but the runtime cannot clone/download GitHub and the corpus was intentionally not copied into the project; therefore no benchmark score is claimed. Run after obtaining the dataset lawfully: `python scripts/benchmark_ugtphon_ko.py --corpus /path/to/UGTPHON/ko/test.json --output artifacts/ugtphon-ko-test-report.json`.
+- `TODO / specialist adjudication` — adjudicate external mismatches by source/convention, normalization, morphology/context, IPA inventory, or true engine defect; do not blindly change rules to match the benchmark. `TODO / specialist adjudication` — independent Ukrainian target-layer review remains separate and unperformed.
+- Verification status: GitHub connector writes succeeded; no local checkout/network access was available to run pytest, Vite, or the complete corpus benchmark. CI on the proposed PR is required before these changes can be marked `DONE_VERIFIED`.
+- Release disposition remains deployed research preview / partial prototype, not a scientifically validated release.
+
+---
+
 ## NIKL multi-page evidence import continuation — 2026-10-22
 
 - Starting default-branch commit: `916b2b5b3e9c5a472f729b6de79bcbb6c777b6dc`.
