@@ -94,7 +94,7 @@ def test_every_raw_lexical_ipa_form_is_supported_and_syllable_aligned():
                                         f"syllable {index}: IPA segment {token['segment']!r} "
                                         "has no source feature vector"
                                     )
-                                elif "consonantal" not in features or "syllabic" not in features:
+                                elif any(key not in features for key in ("consonantal", "syllabic", "fortis")):
                                     problems.append(
                                         f"{path.name}:{line_number} {orthography} {ipa_field} "
                                         f"syllable {index}: IPA segment {token['segment']!r} "
@@ -216,3 +216,25 @@ def test_non_hangul_input_is_rejected_consistently_before_phonology():
     for operation in (phonologize_korean, phoneticize_korean):
         with pytest.raises(ValueError, match="unsupported non-Hangul character"):
             operation("hello")
+
+
+
+def test_source_features_preserve_fortis_separately_from_aspiration():
+    plain = source_features_for_ipa("p")
+    fortis = source_features_for_ipa("p͈")
+    aspirated = source_features_for_ipa("pʰ")
+    tense_affricate = source_features_for_ipa("tɕ͈")
+    plain_affricate = source_features_for_ipa("tɕ")
+
+    assert plain["fortis"] == "0"
+    assert fortis["fortis"] == "1"
+    assert aspirated["fortis"] == "0"
+    assert fortis["aspirated"] == "0"
+    assert aspirated["aspirated"] == "1"
+    assert tense_affricate["fortis"] == "1"
+    assert plain_affricate["fortis"] == "0"
+
+    # The source adapter retains the contrast for audit. The target ranking
+    # weights remain unchanged until the Ukrainian inventory/policy explicitly
+    # defines a target-side treatment for this Korean contrast.
+    assert "fortis" not in __import__("korean_ukrainian.pipeline", fromlist=["DEFAULT_WEIGHTS"]).DEFAULT_WEIGHTS
