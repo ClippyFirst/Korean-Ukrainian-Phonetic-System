@@ -983,3 +983,11 @@ Implementation/test head `052f8ef0155be23ad86b8f58f94b8c7a5ffa3af6` passed:
 - optional g2pK integration [run 40006292252](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006292252).
 
 CI found and helped fix validation-order and whitespace-fixture defects. The live NIKL inventory job was skipped. Local tests were not run. This change improves runtime contract integrity only; it does not change or validate phonetic transcriptions. Final exact-PR-head CI remains required after documentation-only commits.
+
+
+## Follow-up finding — direct IPA adapter empty input (2026-10-23)
+
+- The native Korean entry-point empty-input work does not, by itself, protect callers invoking the downstream IPA adapter directly. Empty or boundary-only IPA could still return a zero-segment result with an analysis-like status.
+- Added type and non-empty-token guards plus focused regressions on `fix/native-ipa-adapter-empty-input-2026-10-23`.
+- Classification remains **PARTIAL / PENDING_CI** until exact-head CI passes. Local tests were not run in this API-only environment.
+- No scientific correctness or release-readiness claim changes.
