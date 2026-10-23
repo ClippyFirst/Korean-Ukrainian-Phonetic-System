@@ -111,3 +111,20 @@ Code/deployment commit `dae8ebdabb396d1be51afbe891d80c9c48a29f1c`; code-equivale
 - Corpus generation/artifacts: PASS [39604039164](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039164).
 - Pages deploy, public HTTP smoke and headless Chromium interaction: PASS [39604039154](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39604039154).
 - The browser smoke exercised the 1,443-character repository fixture and verified non-empty Ukrainian/IPA output, the practical JS-port mode, and absence of page errors. It does not establish scientific accuracy or prove identity with the earlier user-pasted passage.
+
+
+## Current native research-engine evidence snapshot — 2026-10-23
+
+This addendum supersedes technical-gate observations from the older snapshot above; it does not change scientific/rights blockers into passes.
+
+| Gate | Current status | Evidence / remaining acceptance criterion |
+|---|---|---|
+| 0 — Repository integrity | PARTIAL | PRs #257–#260 merged; exact merge commits and CI evidence are in the native-engine report and canonical handoff. Post-merge Pages deployment was not independently verified for these native-only changes. |
+| 1 — Source and licensing | PARTIAL / BLOCKED | Live NIKL inventory workflow remains skipped because the source crawl is blocked (HTTP 403). Item-level KOGL markings remain unchecked for many records; project root license remains owner-dependent. |
+| 2 — Rule and data integrity | PARTIAL | Raw base and every dated lexical overlay are audited for primary/alternate IPA syntax and syllable alignment. Every token must map to a core source feature vector. This does not adjudicate phonetic truth or exhaust all article subparagraphs/exceptions. |
+| 3 — Independent evaluation corpus | BLOCKED_SPECIALIST_ADJUDICATION | The 20-case broad-IPA queue remains unadjudicated. Acceptance requires two distinct qualified reviewers, independent transcription/review, explicit length/boundary decisions, and documented reconciliation. Ukrainian target review is separate. |
+| 4 — Runtime correctness | PARTIAL | Exact PR-head CI passed Python 3.11–3.13, web tests, system/data integrity, browser/build, generated artifacts, and optional g2pK integration. Local tests were not run in the API-only session. |
+| 5 — Product / deployment | PARTIAL | Native API now retains source word/syllable boundaries and renderer preserves word spaces. Live public deployment/smoke for these specific merge commits was not checked. |
+| 6 — Release / independent review | BLOCKED | Independent IPA and Ukrainian target evaluation, full rule/exception coverage, item-level rights, and source-access closure remain acceptance blockers. |
+
+Readiness: **research preview / partial prototype**, not release-ready as a scientifically validated transcription standard. The skipped NIKL job is not a pass.
