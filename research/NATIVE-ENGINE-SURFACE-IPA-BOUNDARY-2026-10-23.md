@@ -59,3 +59,19 @@ This is a syntactic/inventory compatibility check, **not** independent adjudicat
 ### CI-driven correction to length parsing
 
 The registry-wide regression initially failed on 12 valid entries such as `anː`, `toŋː`, and `samː`: in this dataset's syllable notation, the length mark can follow the coda even though it marks the vowel. The parser was corrected to associate `ː` with the last supported vowel in the same syllable, while still rejecting a length mark in a syllable with no preceding vowel. The same CI run also exposed the active overlay copy of `발음과` in `lexical_additions_2026-10-15.csv`; that duplicate was corrected alongside the base lexicon row. The all-lexicon parser test remains enabled to guard both base and overlay data.
+
+
+## Final verification for IPA modifier-preservation batch
+
+- PR: [#257](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/257), merged by squash.
+- Squash commit: `6b2ebf9826f48084b738020f73b819ccb689f958`.
+- Tested PR head: `eee3a29b7ddabb57a1ea5dde1b2a50cafda37d7f`.
+- CI passed on that exact PR head:
+  - Python test matrix (3.11, 3.12, 3.13) and web tests/build: [run 39970762976](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39970762976).
+  - System verification: [run 39970762800](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39970762800). Browser regression/build and Python regression/data integrity passed; optional live NIKL source inventory was skipped.
+  - Generated master table and strict corpus artifacts: [run 39970762941](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39970762941).
+  - Browser G2P integration: [run 39970762844](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39970762844).
+  - Optional g2pK integration on supported Python versions: [run 39970762886](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39970762886).
+- The registry-wide IPA test first failed for real data/parser issues, then passed after correcting post-coda length association and the active `발음과` overlay row. This failure-and-fix is retained as evidence that the new gate catches issues that narrower tests missed.
+- Local tests were not run in this session; CI is the execution evidence.
+- This batch improves IPA-boundary integrity but does not establish independent IPA gold, independent Ukrainian target gold, complete NIKL rule coverage, or source-license closure.
