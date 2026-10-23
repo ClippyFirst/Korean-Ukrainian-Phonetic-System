@@ -17,16 +17,23 @@ test('CSV parser rejects unterminated quotes and junk after a closing quote', ()
 });
 
 test('source rights triage never promotes vague source descriptions to a license decision', () => {
-  const report = auditSourceRegister([
+  const csv = [
     'source_id,source_type,title_or_project,url,version_or_date,authority_or_role,license_status,coverage,contribution_expected,review_status,integration_status,limitations_or_next_action',
     'SRC-A,normative,Official source,https://example.org/a,2026,authority,not_assessed,rule,rule,unreviewed,not integrated,review terms',
     'SRC-B,normative,Policy page,https://example.org/b,2026,authority,"site-wide policy found; item-level KOGL type not checked",rule,rule,reviewed,registered,check item',
     'SRC-C,software,Package,https://example.org/c,1.0,upstream,Apache-2.0 verified on upstream LICENSE,package,adapter,reviewed,integrated,check retained files',
     'SRC-D,other,Not applicable,https://example.org/d,2026,authority,not_applicable,none,none,reviewed,not used,out of scope',
     'SRC-E,other,Unclear,https://example.org/e,2026,authority,Official case-specific pronunciation clarification,pronunciation,context,reviewed,fixture,rights still unclear',
-  ].join('\n')),
-  report = null;
-  assert.equal(report, null);
+  ].join('\\n');
+  const report = auditSourceRegister(csv);
+  assert.equal(report.structuralErrorCount, 0);
+  assert.deepEqual(report.rightsClassificationCounts, {
+    ITEM_LEVEL_LICENSE_RECORDED: 1,
+    NOT_APPLICABLE_RECORDED: 1,
+    REVIEW_REQUIRED: 2,
+    MANUAL_CLASSIFICATION_REQUIRED: 1,
+  });
+  assert.deepEqual(report.itemLevelRightsNotClosed.map(item => item.sourceId), ['SRC-A', 'SRC-B', 'SRC-E']);
 });
 
 test('real source register is structurally valid and unresolved rights remain visible', () => {
