@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "title": "Independent broad-IPA adjudication queue for the NIKL surface regression set",
-  "purpose": "Prepare a review queue without fabricating IPA gold. Korean surface strings and NIKL citations are source evidence for Korean surface forms only; they do not independently determine broad IPA or Ukrainian target choices.",
+  "title": "Independent broad-IPA adjudication queue for source-backed NIKL surface cases",
+  "purpose": "Queue source-backed Korean surface forms for independent IPA review. It covers the pinned surface-regression fixture and may include separately sourced high-risk forms. Korean surface strings and NIKL citations are evidence for Korean surface forms only; they do not independently determine broad IPA or Ukrainian target choices.",
   "acceptanceCriteria": [
     "At least one qualified Korean phonetics reviewer independently transcribes each case into broad IPA from the source-backed Korean surface, without seeing another reviewer's IPA first.",
     "Record syllable boundaries and preserve relevant vowel length, aspiration, fortisness, affrication, and other contrasts required by the project's broad-IPA convention.",
