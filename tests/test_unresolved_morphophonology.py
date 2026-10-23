@@ -7,8 +7,15 @@ def test_nikl_attested_particle_readings_for_salmui_are_explicit_variants():
     result = phoneticize_korean(word)
     assert result["surface_hangul"] == "\uc0b4\ubbdc"
     assert result["ipa"]["ipa"] == "sal.m\u0270i"
-    assert result["pronunciation_status"] == "provisional"
-    assert result["unresolved_contexts"] == []
+    assert result["pronunciation_status"] == "unresolved"
+    assert result["ipa_is_diagnostic_only"] is True
+    assert result["ipa_status"] == "diagnostic_only_unresolved_pronunciation"
+    assert result["ipa_status_reason"] == "independent_ipa_adjudication_required"
+    assert any(
+        item["rule_id"] == "IPA_ADJUDICATION"
+        and item["status"] == "unresolved-ipa-adjudication"
+        for item in result["unresolved_contexts"]
+    )
     assert any(
         trace.get("rule_id") == "LEXICON"
         and trace.get("status") == "lexical-override"
