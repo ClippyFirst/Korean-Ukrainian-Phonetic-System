@@ -5,8 +5,11 @@ from korean_ukrainian.pipeline import (
     map_ipa_to_ukrainian,
     source_features_for_ipa,
     tokenize_ipa,
+    source_features_for_ipa,
     tokenize_ipa_with_modifiers,
+    _select_target,
 )
+from korean_ukrainian.orthography import render_sequence
 
 
 def test_long_vowel_is_retained_as_metadata_not_a_phantom_segment():
@@ -120,3 +123,71 @@ def test_duplicate_ipa_modifiers_fail_closed():
         tokenize_ipa_with_modifiers("aːː")
     with pytest.raises(ValueError, match="duplicate IPA unreleased-stop diacritic"):
         tokenize_ipa_with_modifiers("k̚̚")
+
+
+def test_ipa_syllable_and_word_boundaries_survive_the_adapter_boundary():
+    parsed = tokenize_ipa_with_modifiers("ɰiː.nan kʌ")
+    assert [(item["segment"], item["syllable_index"], item["word_index"], item["boundary_before"])
+            for item in parsed] == [
+        ("ɰ", 0, 0, "start"),
+        ("i", 0, 0, "within"),
+        ("n", 1, 0, "syllable"),
+        ("a", 1, 0, "within"),
+        ("n", 1, 0, "within"),
+        ("k", 2, 1, "word"),
+        ("ʌ", 2, 1, "within"),
+    ]
+
+    mapped = map_ipa_to_ukrainian("ɰiː.nan kʌ")
+    assert [(item["source_syllable_index"], item["source_word_index"], item["source_boundary_before"])
+            for item in mapped["segments"]] == [
+        (item["syllable_index"], item["word_index"], item["boundary_before"])
+        for item in parsed
+    ]
+
+
+def test_ukrainian_renderer_preserves_word_boundaries_but_not_ipa_syllable_dots():
+    assert render_sequence([
+        {"grapheme": "ґ", "source_boundary_before": "start"},
+        {"grapheme": "а", "source_boundary_before": "within"},
+        {"grapheme": "б", "source_boundary_before": "syllable"},
+        {"grapheme": "в", "source_boundary_before": "word"},
+    ]) == "ґаб в"
+
+
+def test_selected_candidates_retain_word_boundary_for_final_rendering():
+    target = {
+        "segments": [
+            {
+                "source_ipa": "k",
+                "source_boundary_before": "start",
+                "source_syllable_index": 0,
+                "source_word_index": 0,
+                "source_length": "unspecified",
+                "source_diacritics": {"unreleased": False},
+                "target": {"candidates": [{"candidate_id": "test-k", "mapping_id": "map-k", "grapheme": "к"}]},
+            },
+            {
+                "source_ipa": "a",
+                "source_boundary_before": "within",
+                "source_syllable_index": 0,
+                "source_word_index": 0,
+                "source_length": "unspecified",
+                "source_diacritics": {"unreleased": False},
+                "target": {"candidates": [{"candidate_id": "test-a", "mapping_id": "map-a", "grapheme": "а"}]},
+            },
+            {
+                "source_ipa": "m",
+                "source_boundary_before": "word",
+                "source_syllable_index": 1,
+                "source_word_index": 1,
+                "source_length": "unspecified",
+                "source_diacritics": {"unreleased": False},
+                "target": {"candidates": [{"candidate_id": "test-m", "mapping_id": "map-m", "grapheme": "м"}]},
+            },
+        ]
+    }
+    selected = _select_target(target)
+    assert selected is not None
+    assert selected["segments"][2]["source_boundary_before"] == "word"
+    assert render_sequence(selected["segments"]) == "ка м"

@@ -178,17 +178,36 @@ _IPA_SEGMENT_INVENTORY=("tɕ͈","tɕʰ","tɕ","dʑ","ɕ͈","ɕ","s͈","pʰ","tʰ
 _IPA_VOWEL_TOKENS={"a","e","i","o","u","y","ɯ","ʌ","ɛ","ø"}
 
 def tokenize_ipa_with_modifiers(ipa:str)->list[dict]:
-    """Tokenize IPA while retaining length as metadata on its preceding vowel.
+    """Tokenize IPA while preserving boundaries and modifier metadata.
 
-    Length is not a standalone segment and is not currently rendered as a
-    separate Ukrainian grapheme. It must nevertheless survive the IPA adapter
-    boundary for auditability. Unsupported modifiers fail closed instead of
-    being silently discarded.
+    The compatibility tokenizer exposes only segment strings, but the research
+    adapter retains source syllable/word indices and the boundary before each
+    segment. Length is analysis metadata, not a Ukrainian grapheme. Unsupported
+    modifiers and invalid modifier placement fail closed.
     """
     tokens=[]; i=0; syllable_start=0
+    syllable_index=0; word_index=0; pending_boundary="start"
+    last_boundary_token_count=-1
     while i<len(ipa):
         char=ipa[i]
-        if char in ".# " or char.isspace():
+        if char==".":
+            if tokens and last_boundary_token_count!=len(tokens):
+                syllable_index+=1
+                last_boundary_token_count=len(tokens)
+            if pending_boundary!="word":
+                pending_boundary="syllable"
+            syllable_start=len(tokens)
+            i+=1
+            continue
+        if char=="#" or char.isspace():
+            if tokens:
+                if last_boundary_token_count!=len(tokens):
+                    syllable_index+=1
+                    word_index+=1
+                    last_boundary_token_count=len(tokens)
+                elif pending_boundary!="word":
+                    word_index+=1
+            pending_boundary="word"
             syllable_start=len(tokens)
             i+=1
             continue
@@ -224,7 +243,15 @@ def tokenize_ipa_with_modifiers(ipa:str)->list[dict]:
         match=next((x for x in _IPA_SEGMENT_INVENTORY if ipa.startswith(x,i)),None)
         if match is None:
             raise ValueError(f"unsupported IPA segment or modifier at index {i}: {ipa[i]!r}")
-        tokens.append({"segment":"ɡ" if match=="g" else match,"long":False,"unreleased":False})
+        tokens.append({
+            "segment":"ɡ" if match=="g" else match,
+            "long":False,
+            "unreleased":False,
+            "syllable_index":syllable_index,
+            "word_index":word_index,
+            "boundary_before":pending_boundary,
+        })
+        pending_boundary="within"
         i+=len(match)
     return tokens
 
@@ -245,6 +272,9 @@ def map_ipa_to_ukrainian(ipa,target_adapter=None,source_features=None,weights=No
             "source_features":features,
             "source_length":"long" if item["long"] else "unspecified",
             "source_diacritics":{"unreleased":item["unreleased"]},
+            "source_syllable_index":item["syllable_index"],
+            "source_word_index":item["word_index"],
+            "source_boundary_before":item["boundary_before"],
             "length_adaptation_status":"preserved-in-analysis-not-rendered" if item["long"] else "not-marked",
             "target":adapter.candidates(features,weights,source_ipa=segment)
         })
@@ -263,7 +293,14 @@ def _select_target(target):
         licensed=[candidate for candidate in candidates
                   if candidate.get("mapping_id") and candidate.get("grapheme")]
         if not licensed: return None
-        selected.append(licensed[0])
+        chosen=dict(licensed[0])
+        # Carry source provenance through candidate selection so the final
+        # orthographic renderer can preserve word boundaries without inventing
+        # a Ukrainian grapheme for a Korean syllable boundary.
+        for key in ("source_ipa","source_length","source_diacritics",
+                    "source_syllable_index","source_word_index","source_boundary_before"):
+            chosen[key]=segment.get(key)
+        selected.append(chosen)
     return {"segments":selected,"score_type":"heuristic_cost","status":"top_ranked_segmentwise"}
 
 def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict"):
