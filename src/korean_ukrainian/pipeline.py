@@ -145,6 +145,31 @@ def _apply_lexical_ipa(items,ipa_result):
         rendered+=separator+syllable_ipa[i]
     ipa_result["syllables"]=syllable_ipa
     ipa_result["ipa"]=rendered
+    # Preserve explicitly licensed lexical alternatives as separate typed
+    # candidates. They are not silently selected as the Ukrainian target.
+    lexical_alternatives=[]
+    i=0
+    while i<len(items):
+        j=i+1
+        while j<len(items) and items[j-1].boundary_after!="word":
+            j+=1
+        word="".join(s.text for s in items[i:j])
+        entry=LEXICAL_PRONUNCIATIONS.get(word)
+        if entry:
+            alternate=entry.get("alternate_ipa_syllables","").split("|")
+            if len(alternate)==j-i and all(alternate):
+                alternate_ipa=alternate[0]
+                for k in range(1,len(alternate)):
+                    alternate_ipa+=(" " if items[i+k-1].boundary_after=="word" else ".")+alternate[k]
+                lexical_alternatives.append({
+                    "input":word,
+                    "surface_hangul":entry.get("alternate_surface_hangul",""),
+                    "ipa":alternate_ipa,
+                    "status":entry.get("ipa_adjudication_status") or "provisional",
+                    "source":entry.get("source_url",""),
+                })
+        i=j
+    ipa_result["lexical_alternatives"]=lexical_alternatives
     # Recompute §4 alternatives after lexical IPA has restored sourced length
     # and segment detail, so variants inherit the exact primary syllables.
     ipa_result["variants"]=generate_vowel_variants(items,syllable_ipa,level=ipa_result.get("level","broad"))
