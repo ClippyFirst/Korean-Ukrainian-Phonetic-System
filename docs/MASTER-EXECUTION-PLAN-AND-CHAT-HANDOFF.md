@@ -393,3 +393,12 @@ Task ledger, reconciled against code and exact-head CI:
 - `DONE_VERIFIED` for the code/test head; final PR-head CI must be rechecked after documentation commits. Mainline is not changed by this open PR.
 - Remaining scientific blockers unchanged: independent IPA adjudication queue (20 cases), independent Ukrainian target review, exhaustive article/subparagraph/exception coverage, item-level KOGL evidence, and live NIKL access (HTTP 403).
 - Release status remains research preview / partial prototype, not scientifically validated or release-ready.
+
+
+## Native IPA adapter empty-input guard — 2026-10-23
+
+- Branch: `fix/native-ipa-adapter-empty-input-2026-10-23`; implementation report: `research/NATIVE-IPA-ADAPTER-EMPTY-INPUT-2026-10-23.md`.
+- Found an additional public-boundary gap while reconciling the empty-input work: `map_ipa_to_ukrainian("")` and boundary-only IPA strings could yield an empty `segmentwise-candidate-analysis` result. The IPA adapter is directly callable, so Korean-input validation alone does not close this case.
+- Added explicit type validation and a post-tokenization non-empty-segment requirement; added regressions for empty, true whitespace-only, boundary-only, non-string and valid IPA inputs.
+- Current task ledger: **PARTIAL / PENDING_CI** — implementation and tests committed on the branch; no local test execution in this GitHub API-only environment and exact-head CI not yet verified. Do not mark DONE_VERIFIED until CI passes on the final PR head.
+- This is a contract/empty-state hardening only. It is not evidence of independent broad-IPA gold, Ukrainian-target correctness, complete Korean rule coverage, licensing clearance, or release readiness.
