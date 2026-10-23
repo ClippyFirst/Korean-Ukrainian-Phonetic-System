@@ -145,7 +145,7 @@ Readiness: **research preview / partial prototype**, not release-ready as a scie
 
 | Gate | Status | Evidence / acceptance |
 |---|---|---|
-| IPA adapter input contract | PARTIAL / PENDING_CI | Branch `fix/native-ipa-adapter-empty-input-2026-10-23`; implementation rejects non-string IPA and empty token lists after strict tokenization. |
-| Regression coverage | PARTIAL / PENDING_CI | Tests cover empty, genuine whitespace-only, boundary-only, non-string, and valid single-segment inputs. Must pass on the final PR head. |
+| IPA adapter input contract | DONE_VERIFIED (code/test head) | Branch `fix/native-ipa-adapter-empty-input-2026-10-23`; code/test head `04c767ca56f5add8b5d7829eb6051a863cc9d63f`. |
+| Regression coverage | DONE_VERIFIED (code/test head) | Python/web tests passed in [run 40007019581](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019581); system verification [run 40007019470](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019470); generated corpus artifacts [run 40007019405](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019405); optional g2pK integration [run 40007019497](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019497).
 | Local tests | BLOCKED | This session has GitHub API repository access, not a local checkout/runtime. No local pass is claimed. |
 | Scientific validity | BLOCKED / UNCHANGED | No independent IPA gold, Ukrainian-target review, exhaustive normative coverage, item-level rights review, or live NIKL source verification is provided by this guard. |
