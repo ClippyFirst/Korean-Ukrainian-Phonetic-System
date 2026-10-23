@@ -110,6 +110,7 @@ export function createG2pWebAdapter(engine) {
       }
       result.normativeCorrections = normalized.corrections;
       if (result.issues.length) result.status = 'unresolved';
+      else if (normalized.corrections.length) result.status = 'lexical';
       else result.status = surface === text ? 'canonical' : 'contextual';
       return result;
     }
