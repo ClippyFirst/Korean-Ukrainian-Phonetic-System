@@ -431,6 +431,9 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 changed=True
                 license_context=f"R015:saisiot:{full_form}:{pair}"
     name,source,confidence=RULE_META[rule_id]
+    if rule_id=="R013" and license_context and license_context.startswith("R013:attested_l_ge_ending:"):
+        source="NIKL §27; official Q&A https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330963"
+        confidence="high"
     status=("conditional-disabled" if conditional_disabled and not changed else ("partially-conditional" if conditional_disabled else ("established" if changed or rule_id not in {"R009","R010","R011","R012","R013","R014","R015","R016"} else "conditional-nochange")))
     return RuleTrace(rule_id,name,changed,before,_snap(items),status,confidence,source,license_context)
 
