@@ -18,9 +18,9 @@ The five lexical surface expectations are present in the project's Korean pronun
 
 ## Acceptance status
 
-- Implementation: **PARTIAL pending exact-head CI**.
-- Native Python test execution in this session: **not run locally**; repository access here is through the GitHub API, not a local checkout.
-- Required acceptance: Python test suite on the PR head, including supported Python 3.11–3.13 CI; confirm surface composition for the six regressions; inspect PR diff.
+- Implementation: **DONE_VERIFIED on exact PR head** `92c7526d07c8fc53d06cb53eeb1884222c52bc23`.
+- Native Python test execution in this session: **not run locally**; repository access here is through the GitHub API, not a local checkout. Remote CI passed Python 3.11, 3.12, and 3.13, plus the browser/build and system-verification jobs.
+- Exact-head CI: tests/build/Python 3.11–3.13 passed [run 39966776804](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39966776804); system verification passed [run 39966776820](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39966776820); generated corpus artifacts passed [run 39966776813](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39966776813). Optional g2pK integration passed [run 39966776801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39966776801); it is not the implementation target of this change. The optional live NIKL inventory was skipped and is not claimed as passed.
 - Scientific release blockers remain: independent IPA gold, independent Ukrainian adaptation review, full normative rule/subparagraph coverage, licensing, and reproducible permitted access to all primary sources.
 
 ## Scope boundary
