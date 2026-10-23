@@ -1,3 +1,12 @@
+## Native engine Rule 29 exact n-insertion licensing — 2026-10-23
+
+- Scope: own Python research engine, branch `research/native-engine-sourced-n-insertion-2026-10-23`, based on main after PR #277.
+- Evidence: NIKL Standard Pronunciation Rule 29 explicitly lists the exact word examples and attached examples. The official rule URL is recorded in `src/korean_ukrainian/rules.py`; a current NIKL Q&A also explicitly explains 한여름[한녀름] and 솜이불[솜ː니불]: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=97&pageIndex=1&qna_seq=336242.
+- Implementation: added a finite exact-form/pair license registry for 28 listed word forms plus six listed cross-word examples. Cross-word examples require `boundary_mode="phrase"`; no global boolean or spelling-only guess grants a license. R009 trace now records the exact license context.
+- Tests: all listed word forms must apply the expected pair-specific R009 rule; listed phrase examples must not change in same-word mode and must change only in explicit phrase mode; NIKL no-insertion exceptions `육이오`, `삼일절`, `송별연`, and `등용문` remain unchanged. The pipeline test checks `한여름 → 한녀름` without a caller-supplied license and confirms an unlisted near-match remains conservative.
+- Task ledger: `DONE_VERIFIED` — source evidence and implementation are recorded; `TODO` — exact-head CI is running/pending and this batch must not be considered complete until Python 3.11–3.13, browser/build, system regression, and generated-corpus checks pass.
+- Scientific boundary: NIKL bracketed Hangul pronunciations validate Korean surface behavior, not broad IPA or Ukrainian adaptation. Independent IPA and Ukrainian target reviews remain separate blockers.
+
 ## Native engine IPA-status hardening — 2026-10-23
 
 - Scope: own Python research engine only; branch `research/native-engine-evidence-hardening-2026-10-23`, based on default-branch checkpoint `f351c2e2ef65de12ae05212ca0f43cff3c012676`.
