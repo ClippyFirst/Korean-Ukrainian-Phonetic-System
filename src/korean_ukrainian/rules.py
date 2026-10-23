@@ -35,6 +35,35 @@ RULE_META={
 "R016":("verbal-stem-rieul-giyeok-exception","NIKL §11; lexical/morphological conditioning","high"),
 }
 
+# Exact, source-backed examples explicitly listed in NIKL Standard Pronunciation Rule 29.
+# Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+_NIKL_R009_WORD_LICENSES = {
+    "솜이불": "솜>이", "홑이불": "홑>이", "막일": "막>일", "삯일": "삯>일",
+    "맨입": "맨>입", "꽃잎": "꽃>잎", "내복약": "복>약", "한여름": "한>여",
+    "남존여비": "존>여", "신여성": "신>여", "색연필": "색>연",
+    "직행열차": "행>열", "늑막염": "막>염", "콩엿": "콩>엿", "담요": "담>요",
+    "눈요기": "눈>요", "영업용": "업>용", "식용유": "용>유", "백분율": "분>율",
+    "밤윷": "밤>윷", "들일": "들>일", "솔잎": "솔>잎", "설익다": "설>익",
+    "물약": "물>약", "불여우": "불>여", "서울역": "울>역", "물엿": "물>엿",
+    "서른여섯": "른>여",
+}
+_NIKL_R009_PHRASE_LICENSES = {
+    "한 입": "한>입", "옷 입다": "옷>입", "먹은 엿": "은>엿",
+    "할 일": "할>일", "잘 입다": "잘>입", "먹을 엿": "을>엿",
+}
+
+def _source_backed_r009_licenses(items, boundary_mode):
+    full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
+    licenses = set()
+    pair = _NIKL_R009_WORD_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R009:word:{full_form}:{pair}")
+    if boundary_mode == "phrase":
+        pair = _NIKL_R009_PHRASE_LICENSES.get(full_form)
+        if pair is not None:
+            licenses.add(f"R009:phrase:{full_form}:{pair}")
+    return licenses
+
 @dataclass
 class RuleTrace:
     rule_id:str; name:str; changed:bool; before:list[dict]; after:list[dict]; status:str; confidence:str; source:str
