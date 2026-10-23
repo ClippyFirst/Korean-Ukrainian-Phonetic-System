@@ -220,3 +220,21 @@ A repeatable test-reference index is proposed in `research/nikl-article-test-ind
 At main snapshot `3a2052c9c27d7af6b5efa7c744d9e2ef14a70d41`, CI recorded 1205 Node tests passing with zero failures, Python 3.11/3.12/3.13 passing, browser G2P integration passing, system browser regression/build and Python integrity passing, and master table/research artifact generation passing. Pages run [40015664039](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40015664039) subsequently completed successfully, including public HTTP and live Playwright practical-mode smoke.
 
 The official-source inventory job explicitly logged HTTP 403; its workflow handling as a nonfatal blocked dependency is not evidence that source crawling succeeded. The release gate remains blocked by independent IPA review (0/20 submissions in each slot), Ukrainian target-layer review, unproven atomic article coverage, and unresolved item-level rights (96 review-required, 2 manual classification, 1 license-recorded, 1 not applicable out of 100). The reference index is not coverage proof.
+
+
+## Follow-up exact-form IPA adjudication guard — 2026-10-24
+
+Branch: `research/native-engine-unresolved-cases-2026-10-24`; PR #281.
+
+| Gate | Status | Evidence / acceptance criterion |
+|---|---|---|
+| Exact surface-Hangul evidence for 삶의 | DONE_VERIFIED | NIKL MCFAQ 5716 attests [살믜] and [살메]. These are Korean pronunciation spellings, not IPA. |
+| Form-specific IPA acceptance | DONE_VERIFIED for guard behavior | The dated overlay `data/korean/lexical_additions_ipa-adjudication-2026-10-24.csv` marks the project-rendered `sal.mɰi` candidate as `diagnostic_only_unresolved_pronunciation` pending review. Native API keeps IPA inspectable, adds an `IPA_ADJUDICATION` unresolved context, and blocks Ukrainian output for this form. Regression tests cover the status and target block. |
+| Runtime / data integrity | PASS at code/test state `ea14a6d9b7f332a3b88a181d841bb34841eb893d` | Tests + Python 3.11–3.13 + web build [40027594483](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594483); system verification [40027594485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594485); corpus artifacts [40027594415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594415); optional g2pK [40027594547](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594547); UGTPHON diagnostic [40027594361](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594361). |
+| Live official-source inventory | BLOCKED / skipped | The official NIKL metadata-only job was skipped; do not count as pass. |
+| Independent IPA gold | BLOCKED_SPECIALIST_ADJUDICATION | Two qualified reviewers must independently adjudicate IPA convention, ㅢ realization, syllable boundaries, and accepted alternatives. |
+| Ukrainian target quality | BLOCKED_SPECIALIST_REVIEW | Separate review on frozen, adjudicated IPA inputs; evaluate phonetic preservation and Ukrainian reader usability separately. |
+| Compact morphology | BLOCKED_INPUT_ANALYSIS | `많이본` and `좋아보인다고` remain unresolved without explicit segmentation or validated morphology/spacing analysis. |
+| Scientific release | BLOCKED | Current status remains research preview / partial prototype. CI verifies implementation, not phonetic truth or target-layer quality. |
+
+The later commits `0348043653e7489e98e0f68dc2bb9a820e9cb99a` and `baff6c24c996fc0d92a34ef808d24a4d031d06a8` are documentation-only additions after the green code/test state; the Python/CSV/test implementation did not change after the verified code/test state. Local execution was unavailable because GitHub DNS resolution failed in this environment.
