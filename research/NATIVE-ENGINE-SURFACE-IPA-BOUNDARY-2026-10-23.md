@@ -94,3 +94,8 @@ The first modifier-preservation implementation retained `ː` and `̚`, but its p
 ### Verification gate
 
 This is on branch `research/native-ipa-modifier-boundaries-2026-10-23`. It is not considered verified until CI passes on the exact PR head. Local test execution is unavailable in the GitHub API-only session. This change validates modifier syntax/attachment, not the phonetic truth of each lexical transcription.
+
+
+### Registry audit hardening
+
+The registry gate now reads the raw base CSV **and every** `lexical_additions_*.csv` file, rather than only the merged in-memory dictionary. This matters because overlay rows can hide earlier rows for the same key. It checks primary and alternate IPA forms, rejects missing primary IPA and empty IPA syllables, verifies IPA-to-surface syllable counts, and parses each syllable through the strict modifier-aware tokenizer. This remains a syntax/alignment gate, not an independent phonetic gold standard.
