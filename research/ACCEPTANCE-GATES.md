@@ -139,3 +139,15 @@ Readiness: **research preview / partial prototype**, not release-ready as a scie
 | Live official-source inventory | BLOCKED / skipped | The workflow's live NIKL inventory job was skipped; no pass is claimed. |
 | Scientific release acceptance | BLOCKED | Independent IPA gold, Ukrainian target review, complete normative rule coverage, item-level licensing evidence, and source access remain outstanding. |
 | Final PR acceptance | PENDING | Documentation was appended after the verified code/test head; CI must pass on the final PR head before merge. |
+
+
+## Native IPA fortis-feature gate — 2026-10-23
+
+| Gate | Status | Evidence / reason |
+|---|---|---|
+| Source fortis distinction | DONE_VERIFIED at implementation/test head | PR #262 adds `fortis` to supported source vectors and tests plain/fortis/aspirated stops and fortis affricates. |
+| Registry-wide feature coverage | PASS at head `a7b159baccba147837d979e3428a6cca486662b1` | Raw base and overlay IPA audit now requires `consonantal`, `syllabic`, and `fortis`; candidate selection preserves source feature provenance. |
+| Regression CI | PASS at implementation/test head | Tests/Python 3.11–3.13/web [40006952606](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952606); system/browser/Python integrity [40006952310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952310); corpus [40006952531](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952531); optional g2pK [40006952377](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006952377). |
+| Ukrainian target fortis policy | PARTIAL / evidence-limited | No target-side fortis feature is defined in the reviewed Ukrainian feature schema; no ranking weight or target mapping was invented. |
+| Live source inventory | BLOCKED / skipped | NIKL inventory job skipped. |
+| Final PR acceptance | PENDING | Re-run exact-head CI after the documentation commits. |
