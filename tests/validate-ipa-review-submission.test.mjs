@@ -30,11 +30,11 @@ function completePacket(slot = 'A') {
   return packet;
 }
 
-test('accepts a structurally complete 20-case submission tied to the exact queue revision', () => {
+test('accepts a structurally complete submission tied to the exact queue revision', () => {
   const report = validateReviewerSubmission(JSON.stringify(completePacket('A')), queueText, 'A');
   assert.equal(report.valid, true, report.errors.join('\\n'));
-  assert.equal(report.expectedCaseCount, 20);
-  assert.equal(report.submittedCaseCount, 20);
+  assert.equal(report.expectedCaseCount, queue.cases.length);
+  assert.equal(report.submittedCaseCount, queue.cases.length);
   assert.equal(report.reviewerSlot, 'A');
   assert.match(report.notice, /does not judge IPA correctness/u);
 });
