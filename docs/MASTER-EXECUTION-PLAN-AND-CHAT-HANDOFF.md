@@ -458,3 +458,19 @@ Main after PR #270 is `1f91d0c3817153d8a07004778ed916fda39d4ec5`. Tests, Python 
 Working branch: `research/blinded-ipa-review-packets-2026-10-23`. It adds `scripts/build-ipa-review-packet.mjs`, `tests/blinded-ipa-review-packet.test.mjs`, and `npm run ipa:review-packet`. Generate a packet with `npm run ipa:review-packet -- --reviewer A` or `--reviewer B`; JSON is written to stdout, the canonical queue is not modified, and the output includes a SHA-256 of the exact queue text. The projection omits candidate IPA, both existing reviewer records, reconciliation, Ukrainian target review, and free-text source notes. Tests use secret sentinel values to verify that hidden fields cannot leak.
 
 This is workflow preparation only. No IPA value was added and the independent-review queue remains 0/20 in both slots. The official NIKL live inventory remains skipped/blocked by access restrictions; no bypass was attempted.
+
+### Final continuation state after PR #270 and PR #271 — 2026-10-23
+
+- Current main at the time of this handoff: `df733c7f7afdf1262bea6c46d07876d6f315ccaf`.
+- PR #270 merged: read-only source-register integrity/right-triage command and tests. Audit result for 100 rows: 96 review required, 2 manual classification required, 1 explicit license recorded, 1 not applicable recorded. These are not legal decisions.
+- PR #271 merged: blinded IPA reviewer packet generator, with SHA-256 of the exact queue text and sentinel tests proving that candidate IPA, reviewer A/B records, reconciliation, target review, and source notes are omitted.
+- Exact PR #271 head `c709fdb785b4b1614fa1aa785ae35227886bb072`: Node tests **1195 passed / 0 failed**; Python 3.11–3.13, system verification, browser G2P and corpus artifact checks passed.
+- Post-merge main tests, system verification, browser G2P and corpus artifacts passed. Pages run [40012736801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012736801) completed successfully: deploy, public HTTP smoke, and live Playwright practical-mode interaction all passed.
+
+Commands added:
+- `npm run audit:source-register`
+- `npm run audit:source-register -- --require-reviewed-rights` (expected to exit 3 until all rights statuses are resolved)
+- `npm run ipa:review-packet -- --reviewer A`
+- `npm run ipa:review-packet -- --reviewer B`
+
+The live NIKL inventory remains skipped/blocked by HTTP 403. IPA remains 0/20 independent submissions in both reviewer slots; Ukrainian target review is separate. Scientific release remains blocked.
