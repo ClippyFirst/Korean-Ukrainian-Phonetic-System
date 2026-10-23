@@ -309,3 +309,24 @@ def test_python_ipa_inventory_matches_browser_surface_segments():
     assert source_features_for_ipa("ɡ")["voice"] == "1"
     assert source_features_for_ipa("dʑ")["voice"] == "1"
     assert source_features_for_ipa("ɕ͈")["palatalized"] == "1"
+
+
+@pytest.mark.parametrize("ipa", ["", " \\t\\n", "...", " . # "])
+def test_ipa_adapter_rejects_empty_or_boundary_only_input(ipa):
+    from korean_ukrainian.pipeline import map_ipa_to_ukrainian
+    with pytest.raises(ValueError, match="at least one supported segment"):
+        map_ipa_to_ukrainian(ipa)
+
+
+@pytest.mark.parametrize("ipa", [None, 7, [], {}])
+def test_ipa_adapter_rejects_non_string_input(ipa):
+    from korean_ukrainian.pipeline import map_ipa_to_ukrainian
+    with pytest.raises(TypeError, match="IPA input must be a string"):
+        map_ipa_to_ukrainian(ipa)
+
+
+def test_ipa_adapter_still_accepts_a_supported_segment():
+    from korean_ukrainian.pipeline import map_ipa_to_ukrainian
+    result = map_ipa_to_ukrainian("a")
+    assert len(result["segments"]) == 1
+    assert result["segments"][0]["source_ipa"] == "a"
