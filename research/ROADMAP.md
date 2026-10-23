@@ -172,6 +172,6 @@ Add a deterministic index of explicit NIKL article references in tests, with one
 
 ### Current implementation and acceptance status — 2026-10-23
 
-Verified code snapshot: `3a2052c9c27d7af6b5efa7c744d9e2ef14a70d41`. CI: 1205 Node tests pass; Python 3.11/3.12/3.13, browser G2P integration, system verification, and research artifact generation pass. Pages live smoke was still pending at checkpoint time; official NIKL crawl remains blocked by HTTP 403.
+Verified code snapshot: `3a2052c9c27d7af6b5efa7c744d9e2ef14a70d41`. CI: 1205 Node tests pass; Python 3.11/3.12/3.13, browser G2P integration, system verification, and research artifact generation pass. Pages run [40015664039](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40015664039) subsequently passed deployment, public HTTP smoke, and live Playwright practical-mode smoke; official NIKL crawl remains blocked by HTTP 403.
 
 The workstream is now stronger in reproducibility and reviewer handoff, but not scientifically release-ready. Outstanding acceptance depends on independent IPA and Ukrainian-target review, atomic rule/variant coverage from permitted primary-source evidence, item-level rights resolution, and permitted source access. The article-reference index must not be mistaken for complete rule coverage.
