@@ -333,3 +333,50 @@ def test_ipa_adapter_still_accepts_a_supported_segment():
     result = map_ipa_to_ukrainian("a")
     assert len(result["segments"]) == 1
     assert result["segments"][0]["source_ipa"] == "a"
+
+
+def test_unlicensed_complex_coda_liaison_is_explicitly_unresolved_and_fails_closed():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    analysis = phoneticize_korean("앉아라")
+    assert analysis["pronunciation_status"] == "unresolved"
+    assert any(
+        item["rule_id"] == "R002"
+        and item["input_span"] == "앉아라"
+        and item["status"] == "unresolved-no-exact-license"
+        for item in analysis["unresolved_contexts"]
+    )
+    result = transliterate_korean("앉아라")
+    assert result["ukrainian_orthography"] is None
+    assert result["target_status"] == "unresolved"
+    assert result["selection_status"] == "unresolved_due_to_ambiguous_korean_phonology"
+    assert result["target_analysis"]["status"] == "unresolved_due_to_ambiguous_korean_phonology"
+
+
+def test_source_backed_complex_coda_lexicon_entry_resolves_its_own_pronunciation():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    analysis = phoneticize_korean("값어치")
+    assert analysis["pronunciation_status"] == "provisional"
+    assert analysis["unresolved_contexts"] == []
+
+
+def test_nikl_attested_l_ge_ending_has_sourced_fortition():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    analysis = phoneticize_korean("할게")
+    assert analysis["pronunciation_status"] == "provisional"
+    assert analysis["ipa"]["ipa"] == "hal.k͈e"
+    trace = next(item for item in analysis["rules"] if item["rule_id"] == "R013" and item["changed"])
+    assert "attested_l_ge_ending" in trace["license_context"]
+    assert "qna_seq=330963" in trace["source"]
+    result = transliterate_korean("할게")
+    assert result["phonetics"]["ipa"]["ipa"] == "hal.k͈e"
+
+
+def test_unambiguous_productive_tensification_remains_available():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    analysis = phoneticize_korean("국밥")
+    assert analysis["pronunciation_status"] == "provisional"
+    assert analysis["ipa"]["ipa"] == "kuk̚.p͈ap̚"

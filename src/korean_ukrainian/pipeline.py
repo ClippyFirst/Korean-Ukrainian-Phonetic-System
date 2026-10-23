@@ -150,6 +150,93 @@ def _apply_lexical_ipa(items,ipa_result):
     ipa_result["variants"]=generate_vowel_variants(items,syllable_ipa,level=ipa_result.get("level","broad"))
     return ipa_result
 
+def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items):
+    """Find withheld morphophonological contexts before they become definitive IPA.
+
+    Exact source-backed lexical entries resolve their own full-word pronunciation.
+    For unlicensed contexts, keep diagnostic IPA inspectable but prevent target
+    rendering from treating that guessed path as a validated pronunciation.
+    """
+    complex_codas = {"ㄳ", "ㄵ", "ㄺ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ", "ㅄ"}
+    representative = {"ㄳ": "ㄱ", "ㄵ": "ㄴ", "ㄶ": "ㄴ", "ㄺ": "ㄱ", "ㄻ": "ㅁ",
+                      "ㄼ": "ㄹ", "ㄽ": "ㄹ", "ㄾ": "ㄹ", "ㄿ": "ㅂ", "ㅀ": "ㄹ",
+                      "ㅄ": "ㅂ", "ㅅ": "ㄷ", "ㅆ": "ㄷ", "ㅈ": "ㄷ", "ㅊ": "ㄷ",
+                      "ㅌ": "ㄷ", "ㅎ": "ㄷ", "ㄲ": "ㄱ", "ㅋ": "ㄱ", "ㅍ": "ㅂ"}
+    findings = []
+    seen = set()
+    for trace in traces:
+        if trace.get("status") not in {"conditional-disabled", "partially-conditional"}:
+            continue
+        rule_id = trace.get("rule_id")
+        if rule_id not in {"R002", "R003", "R004", "R007", "R008", "R013"}:
+            continue
+        before = trace.get("before") or []
+        for i in range(len(before) - 1):
+            a, b = before[i], before[i + 1]
+            if a.get("boundary_after") == "word":
+                continue
+            coda, onset, nucleus = a.get("coda", ""), b.get("onset", ""), b.get("nucleus", "")
+            candidate = False
+            reason = ""
+            if rule_id == "R002" and onset == "ㅇ":
+                candidate = coda in complex_codas or (
+                    coda in representative and representative[coda] != coda
+                    and nucleus in {"ㅏ", "ㅓ", "ㅗ", "ㅜ", "ㅟ"}
+                )
+                reason = "liaison/neutralization requires exact morpheme evidence"
+            elif rule_id == "R003" and coda in {"ㅎ", "ㄶ", "ㅀ"} and onset == "ㅇ":
+                candidate = True
+                reason = "ㅎ-coda deletion requires an ending/suffix license"
+            elif rule_id == "R004" and coda in complex_codas and onset == "ㅎ":
+                candidate = True
+                reason = "complex-coda + ㅎ aspiration requires exact morphophonemic evidence"
+            elif rule_id == "R007" and coda in {"ㄷ", "ㅌ", "ㄾ"} and onset == "ㅇ" and nucleus == "ㅣ":
+                candidate = True
+                reason = "palatalization requires exact formal-morpheme evidence"
+            elif rule_id == "R008" and coda == "ㄺ" and onset == "ㄱ":
+                candidate = True
+                reason = "ㄺ-before-ㄱ fortition depends on lexical/morphological class"
+            elif rule_id == "R013" and coda == "ㄹ" and onset == "ㄱ" and b.get("text") == "게":
+                # NIKL Standard Pronunciation Rule 27's attached ending -ㄹ게
+                # is explicitly documented as [ㄹ께]. Keep this narrow so
+                # unrelated lexical sequences such as 일본/실수 are not
+                # falsely treated as unresolved adnominal constructions.
+                candidate = True
+                reason = "the -ㄹ게 ending requires fortition evidence or a licensed morphology mode"
+            if not candidate:
+                continue
+            # A later rule may have resolved this exact pair. Do not mark it
+            # unresolved when the final onset differs from the withheld trace.
+            if i + 1 < len(final_items) and final_items[i + 1].onset != onset:
+                continue
+
+            start = i
+            while start > 0 and before[start - 1].get("boundary_after") != "word":
+                start -= 1
+            end = i + 1
+            while end < len(before) and before[end - 1].get("boundary_after") != "word":
+                end += 1
+            word = "".join(item.get("text", "") for item in before[start:end])
+            entry = LEXICAL_PRONUNCIATIONS.get(word)
+            if entry:
+                values = entry.get("ipa_syllables", "").split("|")
+                if len(values) == end - start and all(values):
+                    continue
+            key = (rule_id, word, f"{a.get('text', '')}>{b.get('text', '')}")
+            if key in seen:
+                continue
+            seen.add(key)
+            findings.append({
+                "rule_id": rule_id,
+                "input_span": word,
+                "pair": key[2],
+                "reason": reason,
+                "source": trace.get("source"),
+                "status": "unresolved-no-exact-license",
+            })
+    return findings
+
+
 def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict"):
     _validate_korean_input(text)
     items=parse_syllables(text)
@@ -157,14 +244,18 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     lexical_traces=_apply_lexical_pronunciations(items)
     surface_hangul=_render_surface_hangul(items)
     ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level))
+    all_traces=[x.to_dict() for x in traces]+lexical_traces
+    unresolved_contexts=_unlicensed_ambiguous_pronunciation_contexts(all_traces, items)
     return {
         "input":text,
         "surface_hangul":surface_hangul,
         "surface_syllables":[x.to_dict() for x in items],
-        "rules":[x.to_dict() for x in traces]+lexical_traces,
+        "rules":all_traces,
         "ipa":ipa,
         "morphology_mode":morphology_mode,
         "surface_status":"rule-and-lexicon-derived-research-analysis",
+        "pronunciation_status":"unresolved" if unresolved_contexts else "provisional",
+        "unresolved_contexts":unresolved_contexts,
     }
 
 def _feature_vector_for_ipa(ipa:str)->dict:
@@ -326,8 +417,12 @@ def _select_target(target):
 
 def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict"):
     surface=phoneticize_korean(text,rule_ids=rule_ids,boundary_mode=boundary_mode,ipa_level=ipa_level,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses,morphology_mode=morphology_mode)
-    target=map_ipa_to_ukrainian(surface["ipa"]["ipa"],target_adapter)
-    selected=_select_target(target)
+    if surface["pronunciation_status"] == "unresolved":
+        target={"segments":[],"status":"unresolved_due_to_ambiguous_korean_phonology"}
+        selected=None
+    else:
+        target=map_ipa_to_ukrainian(surface["ipa"]["ipa"],target_adapter)
+        selected=_select_target(target)
     orthographic=render_sequence(selected["segments"]) if selected else None
     lexical=LEXICAL_PRONUNCIATIONS.get(text)
     lexical_reference="".join(lexical["target_syllables"].split("|")) if lexical and lexical.get("target_syllables") else None
@@ -341,6 +436,10 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
     # The lexical target is an audit reference only. Never use a stored Ukrainian
     # target to bypass the required IPA -> Ukrainian inventory adapter boundary.
     target_status="model-selected" if selected else "unresolved"
-    selection_status=("top-ranked segmentwise IPA-derived heuristic candidate; not probability"
-                      if selected else "unavailable_without_target_inventory")
+    selection_status=(
+        "unresolved_due_to_ambiguous_korean_phonology"
+        if surface["pronunciation_status"] == "unresolved"
+        else ("top-ranked segmentwise IPA-derived heuristic candidate; not probability"
+              if selected else "unavailable_without_target_inventory")
+    )
     return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"lexical_target_reference":lexical_reference,"lexical_target_reference_status":lexical_reference_status,"lexical_target_comparison":lexical_comparison,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype","morphology_mode":morphology_mode}
