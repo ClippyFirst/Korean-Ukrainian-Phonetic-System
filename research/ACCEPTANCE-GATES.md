@@ -210,3 +210,7 @@ Source rights triage: 100 rows; 96 review required, 2 manual classification requ
 ## Follow-up branch — validating reviewer submissions
 
 The branch `research/validate-ipa-review-submissions-2026-10-23` pairs the blinded packet generator with a strict returned-packet validator. The validator checks exact queue revision hash, all case IDs, unchanged source evidence, no forbidden extra fields, reviewer slot, and required review metadata/values. It does not grade IPA or assert that a reviewer is qualified. The test fixtures are synthetic only and must never be treated as linguistic evidence. Merge only after exact-head CI passes.
+
+## Follow-up branch — NIKL article reference index
+
+A repeatable test-reference index is proposed in `research/nikl-article-test-index-2026-10-23`. It records explicit filename and text references for articles 1–30, including missing references, without inferring unlisted range members. It is not an exhaustive coverage report. Acceptance still requires source-backed atomic rule inventory and linked positive, negative, interaction, runtime-parity, and independent-review evidence.

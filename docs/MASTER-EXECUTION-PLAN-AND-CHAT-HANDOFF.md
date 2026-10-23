@@ -482,3 +482,7 @@ On top of merged PR #271, branch `research/validate-ipa-review-submissions-2026-
 The validator fails closed on stale queue hashes, missing/duplicate/unknown cases, modified source evidence, unexpected fields that could leak candidate IPA or another reviewer's data, missing reviewer/method/timestamp/IPA/boundary/length fields, and reviewer-slot mismatch. It requires a timezone-bearing timestamp and one of `present|absent|not_applicable|uncertain` for the length assessment. It only validates structure and provenance; it cannot certify phonetic correctness, expertise, independence, or target-layer quality. It does not alter the packet or canonical queue.
 
 Tests use explicitly synthetic IPA fixture strings solely to exercise validation. No fixture is added to the research corpus and no gold IPA is created. The 20 cases remain blocked pending genuine independent reviewers.
+
+### Continuation — executable NIKL article-reference index (2026-10-23)
+
+Branch `research/nikl-article-test-index-2026-10-23` adds `scripts/audit-nikl-article-test-index.mjs` and `npm run audit:nikl-test-index -- --format json|csv`. It inventories literal article/section references found in test filenames and test text for all 30 NIKL articles, lists the referenced files, and marks articles with no explicit reference. It does not infer a complete numeric range from endpoint notation and does not equate a reference with coverage. This is a repeatable navigation/audit aid; source-derived atomic coverage and independent review remain separate acceptance requirements.
