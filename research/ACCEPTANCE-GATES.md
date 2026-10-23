@@ -161,4 +161,16 @@ Readiness: **research preview / partial prototype**, not release-ready as a scie
 | Regression CI | PASS at head `4c7bda56c6feda4b82b1ffa9c9028c7fb02d8ce3` | Python 3.11–3.13/web [40007944889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007944889); system/browser/Python integrity [40007944954](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007944954); corpus [40007945023](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007945023); optional g2pK [40007945019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007945019). |
 | Live official-source inventory | BLOCKED / skipped | NIKL inventory job skipped, not passed. |
 | Scientific release acceptance | BLOCKED | Independent IPA gold, Ukrainian target review, complete normative coverage, item-level rights evidence, and permitted source access remain outstanding. |
-| Final PR acceptance | PENDING | Documentation was added after the passing implementation/test head; final exact PR-head CI is required. |
+| Final PR acceptance | DONE_VERIFIED for PR #264 | PR #264 merged as `5bb9178243604d169c2209671a953f8683b48408` after final-head tests/Python 3.11–3.13/web [40008141619](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40008141619), system verification [40008141681](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40008141681), corpus artifacts [40008141709](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40008141709), and optional g2pK [40008141856](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40008141856) passed. Scientific release gates remain blocked. |
+
+## Current scientific release blocker snapshot — 2026-10-23
+
+| Gate | Status | Evidence / acceptance criterion |
+|---|---|---|
+| Independent IPA evaluation | BLOCKED_SPECIALIST_ADJUDICATION | Existing queue: 20 cases; reviewer A 0/20, reviewer B 0/20. Requires two distinct qualified reviewers, independent transcription, and documented reconciliation. |
+| Ukrainian target evaluation | BLOCKED_SPECIALIST_REVIEW | Requires separate independent review of IPA→Ukrainian mappings, ambiguity, and orthographic readability; source IPA adjudication does not close this gate. |
+| Normative rule coverage | PARTIAL | R001–R016 plus IPA-UKR-MAPPING (19 data rows); no atomic evidence that every NIKL §9–30 subparagraph, exception, variant and interaction is covered. |
+| Source rights | BLOCKED_RIGHTS_REVIEW | Source register has 101 data rows; item-level KOGL marking and reuse scope remain unchecked for multiple records. |
+| Official-source access | BLOCKED_EXTERNAL_ACCESS | Live NIKL inventory remains skipped/blocked; do not count a skipped job as a pass. |
+| Pages deployment smoke | PARTIAL / PENDING_LIVE_VERIFY | Baseline run [40007564481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007564481) deployed but failed on an obsolete text grep. PR #266 updates the expected text to the current UI claim. Require exact-head PR CI and fresh post-merge public HTTP + Playwright smoke before marking verified. |
+| Release readiness | BLOCKED | Research preview / partial prototype only; no scientific release claim until independent review, atomic coverage, rights, source access and deployment gates have evidence. |

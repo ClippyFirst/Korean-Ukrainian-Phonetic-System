@@ -27,5 +27,5 @@ Implementation/test head: `4c7bda56c6feda4b82b1ffa9c9028c7fb02d8ce3`.
 ## Acceptance status
 
 - `DONE_VERIFIED` at the implementation/test head: direct IPA adapter input must be a string and must contain at least one supported segment.
-- The following documentation-only commits require final exact-PR-head CI before merge.
+- PR #264 merged as `5bb9178243604d169c2209671a953f8683b48408` after final-head CI passed: tests/Python 3.11–3.13/web [40008141619](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40008141619), system verification [40008141681](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40008141681), corpus artifacts [40008141709](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40008141709), and optional g2pK [40008141856](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40008141856).
 - This is an API-contract correction only. It does not establish independent IPA gold, Ukrainian target correctness, exhaustive Korean pronunciation-rule coverage, item-level licensing, or release readiness.
