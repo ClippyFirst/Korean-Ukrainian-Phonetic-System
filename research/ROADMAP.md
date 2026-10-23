@@ -165,3 +165,7 @@ Current source-rights triage flags 96 of 100 rows for review and 2 for manual cl
 ### Reviewer workflow hardening — 2026-10-23
 
 The next branch adds a fail-closed validator for returned blinded IPA packets. Acceptance is structural only: packet must match the exact canonical queue hash; contain each expected case once; preserve source-backed evidence unchanged; avoid candidate/other-reviewer fields; and provide reviewer ID, qualification, timezone-bearing timestamp, method reference, broad IPA, syllable-boundary record, and explicit length assessment. This reduces handoff errors but does not replace specialist adjudication.
+
+### NIKL coverage visibility — 2026-10-23
+
+Add a deterministic index of explicit NIKL article references in tests, with one row per article 1–30 and no range extrapolation. Use it to navigate existing evidence and identify absent references, not to claim exhaustive coverage. The remaining acceptance unit is each source-grounded paragraph/subparagraph/exception/variant and its implementation/test/review evidence.
