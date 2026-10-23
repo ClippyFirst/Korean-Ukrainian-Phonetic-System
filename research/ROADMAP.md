@@ -114,7 +114,7 @@ The current bounded task is native Python surface-boundary observability, not th
 
 PR #261 adds consistent non-empty Hangul input validation across the native public analysis stages and prevents an empty IPA segment list from being treated as a successful Ukrainian target selection. Tests cover empty strings, whitespace-only strings including a non-breaking space, non-Hangul input, and empty target selection.
 
-The implementation/test head `052f8ef0155be23ad86b8f58f94b8c7a5ffa3af6` passed the Python 3.11–3.13/web, system/browser, corpus-artifact, and optional g2pK CI runs linked in the canonical handoff. CI failures caught a validation-order issue and a malformed whitespace fixture; both were fixed before the recorded passing head. Live NIKL inventory was skipped. The subsequent documentation-only commits require exact final PR-head CI.
+The implementation/test head `052f8ef0155be23ad86b8f58f94b8c7a5ffa3af6` passed the Python 3.11–3.13/web, system/browser, corpus-artifact, and optional g2pK CI runs linked in the canonical handoff. CI failures caught a validation-order issue and a malformed whitespace fixture; both were fixed before the recorded passing head. Live NIKL inventory was skipped. PR #261 then merged as `1860616a15a664ef189ffdaff50fe559aa1339a5` after exact final-head CI passed.
 
 Next genuine priority remains evidence-limited: secure permitted primary-source intake and independent specialist review for the 20-case IPA adjudication queue; do not generate guessed IPA gold to unblock it.
 
