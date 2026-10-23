@@ -27,7 +27,7 @@ The native Python rule engine now maintains a finite list of exact Rule 29 examp
 - Phrase examples are checked in both default same-word mode (must not change) and explicit phrase mode (must change only for the listed pair).
 - Explicit no-insertion exceptions remain unchanged.
 - A pipeline integration test verifies `한여름 → 한녀름` and checks rule-trace provenance without manually supplying a license.
-- An unlisted structural near-match (`각여름`) confirms that the exact registry is not generalized by spelling alone.
+- An unlisted coda-bearing near-match (`각여름`) confirms that R009 itself is not generalized by spelling alone; other rules are still traced independently.
 
 ## Acceptance and limits
 
