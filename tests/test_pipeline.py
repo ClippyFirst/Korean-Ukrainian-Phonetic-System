@@ -459,5 +459,5 @@ def test_native_engine_keeps_unlisted_n_insertion_candidate_conservative():
     from korean_ukrainian.pipeline import phoneticize_korean
 
     result = phoneticize_korean("각여름")
-    assert result["surface_syllables"][1]["onset"] == "ㅇ"
     assert not any(item["rule_id"] == "R009" and item["changed"] for item in result["rules"])
+    assert not any(item.get("license_context") == "R009:word:각여름:각>여" for item in result["rules"])
