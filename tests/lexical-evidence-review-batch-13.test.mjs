@@ -43,7 +43,7 @@ test('발음의 stores the permitted [바르메] variant alongside [바르미]',
   assert.equal(row.surface_hangul, '바르미');
   assert.equal(row.alternate_surface_hangul, '바르메');
   assert.equal(row.alternate_target_syllables, 'па|ри|ме');
-  assert.equal(row.alternate_ipa_syllables, 'pa|rɯ|me');
+  assert.equal(row.alternate_ipa_syllables, 'pa|ɾɯ|me');
   assert.match(row.variant_note, /§5 permits particle 의 \[의\] or \[에\]/u);
 });
 
