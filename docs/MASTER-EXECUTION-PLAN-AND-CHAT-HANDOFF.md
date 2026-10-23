@@ -1,3 +1,13 @@
+## Native engine IPA-status hardening — 2026-10-23
+
+- Scope: own Python research engine only; branch `research/native-engine-evidence-hardening-2026-10-23`, based on default-branch checkpoint `f351c2e2ef65de12ae05212ca0f43cff3c012676`. No third-party engine implementation was edited.
+- Implementation: `phoneticize_korean()` and `transliterate_korean()` now both expose top-level `ipa_status`, `ipa_is_diagnostic_only`, and `ipa_status_reason`. When a recognized morphophonological context is unresolved, diagnostic IPA remains inspectable but is explicitly labelled; Ukrainian target selection remains fail-closed.
+- Regression expansion: unresolved cases `앉아라`/R002, `쌓아`/R003, `넋하고`/R004, `갇이`/R007, and `긁고`/R008 must be marked diagnostic-only and must not render a Ukrainian target. Negative controls `먹이`, `일본`, `실수`, `밭에`, `국밥` must not be falsely marked unresolved. Source-backed lexical forms (`값어치`, `싫어`, `늙고`, `깎아`) remain provisional, not diagnostic-only; they are not used as unresolved tests because the exact lexicon entries intentionally resolve them.
+- Documentation: README Python/API section defines the status contract; [focused contract and acceptance report](NATIVE-ENGINE-IPA-STATUS-AND-FAIL-CLOSED-REGRESSION-2026-10-23.md) records scope, test matrix, and evidence limits.
+- Task ledger: `DONE_VERIFIED` — API status contract, native unresolved-context regression matrix, negative controls, README and focused report; [test workflow #2173](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40020824792) passed Python 3.11/3.12/3.13 and browser tests/build; [system verification #5030](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40020824867) passed browser regression/build and Python regression/data-integrity; [corpus artifacts #2037](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40020824940) passed. Source inventory was skipped/blocked and is not claimed passed. `BLOCKED_SPECIALIST_ADJUDICATION` — independent broad-IPA review and Ukrainian target-layer review remain open.
+- Verification code head: `89567e77c7ea19cd3d2200b77685e0b12f338c6c`; subsequent branch commits update documentation only. Local clone was blocked by DNS resolution failure for `github.com`; repository CI provided the verification evidence.
+- Release disposition: research preview / partial prototype; this API clarity improvement does not substitute for independent phonetic or Ukrainian-output adjudication.
+
 ## Independent UGTPHON validation and fail-closed correction — 2026-10-23
 
 - Working branch / PR: `research/ugtphon-independent-validation-2026-10-23` / [PR #276](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/276).
