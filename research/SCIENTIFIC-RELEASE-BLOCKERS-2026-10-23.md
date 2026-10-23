@@ -110,3 +110,15 @@ PR #270 has merged as `1f91d0c3817153d8a07004778ed916fda39d4ec5`. Exact-main tes
 A follow-up branch `research/blinded-ipa-review-packets-2026-10-23` adds `scripts/build-ipa-review-packet.mjs` and `npm run ipa:review-packet -- --reviewer A|B`. It projects the canonical 20-case queue into a reproducibly hashed, blinded packet containing only Korean input, source-backed surface evidence, and blank IPA-review fields. It deliberately omits candidate IPA, both reviewer records, reconciliation, Ukrainian target review, and source-note fields that could expose hidden review data. Regression tests inject secret sentinel values into those forbidden fields and assert that no value leaks into either packet.
 
 This enables a clean handoff but does not complete adjudication: the queue remains 0/20 independent IPA submissions for reviewer A and 0/20 for reviewer B. The packet's source comparator is Hangul notation, not IPA; the reviewer protocol states this explicitly. Exact-head CI is required before merging the tooling.
+
+## Current main reconciliation after PR #271 — 2026-10-23
+
+PR #270 (source-register audit) merged as `1f91d0c3817153d8a07004778ed916fda39d4ec5`; PR #271 (blinded IPA reviewer packets) merged as `df733c7f7afdf1262bea6c46d07876d6f315ccaf`. No open PRs remained at the time of this update.
+
+Exact-head CI for PR #271 passed: 1,195 Node tests, 0 failures; Python 3.11/3.12/3.13; system verification and browser build; browser G2P; and research corpus artifacts. Post-merge main tests, system verification, browser G2P and corpus artifact workflows also passed. Pages run [40012736801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012736801) had completed deployment and public HTTP smoke; its live Playwright job was still installing Chromium at the time of this note, so final live-browser status must be read from that run rather than assumed.
+
+Two new no-network tools are in main:
+- `npm run audit:source-register`: checks CSV shape and emits conservative rights triage. Current 100-row register: 96 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`, 1 `NOT_APPLICABLE_RECORDED`. These labels are not legal clearance.
+- `npm run ipa:review-packet -- --reviewer A|B`: generates a deterministic, SHA-256-pinned blinded packet from the canonical 20-case queue, excluding candidate IPA, both reviewer records, reconciliation, Ukrainian target review and free-text source notes.
+
+The IPA queue is still 0/20 independent submissions in each reviewer slot. No IPA gold was fabricated. Independent Ukrainian target review, exhaustive atomic subparagraph/exception coverage, item-level rights evidence and authorized live NIKL inventory remain unresolved. The live source-inventory workflow was skipped/blocked; no access restriction was bypassed.
