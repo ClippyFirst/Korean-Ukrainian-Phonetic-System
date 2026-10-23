@@ -255,6 +255,13 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
         "morphology_mode":morphology_mode,
         "surface_status":"rule-and-lexicon-derived-research-analysis",
         "pronunciation_status":"unresolved" if unresolved_contexts else "provisional",
+        # Keep diagnostic IPA inspectable for research, but make its acceptance
+        # status explicit at the same API level as the IPA value. Downstream
+        # callers must not infer that a syntactically valid IPA string is
+        # approved when a morphophonological context remains unresolved.
+        "ipa_status":"diagnostic_only_unresolved_pronunciation" if unresolved_contexts else "provisional",
+        "ipa_is_diagnostic_only":bool(unresolved_contexts),
+        "ipa_status_reason":"unresolved_morphophonological_context" if unresolved_contexts else None,
         "unresolved_contexts":unresolved_contexts,
     }
 
@@ -442,4 +449,4 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
         else ("top-ranked segmentwise IPA-derived heuristic candidate; not probability"
               if selected else "unavailable_without_target_inventory")
     )
-    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"lexical_target_reference":lexical_reference,"lexical_target_reference_status":lexical_reference_status,"lexical_target_comparison":lexical_comparison,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype","morphology_mode":morphology_mode}
+    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"ipa_status":surface["ipa_status"],"ipa_is_diagnostic_only":surface["ipa_is_diagnostic_only"],"ipa_status_reason":surface["ipa_status_reason"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"lexical_target_reference":lexical_reference,"lexical_target_reference_status":lexical_reference_status,"lexical_target_comparison":lexical_comparison,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype","morphology_mode":morphology_mode}
