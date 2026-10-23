@@ -99,3 +99,12 @@ The current bounded task is native Python surface-boundary observability, not th
 - CI exposed and enabled correction of one alternate IPA ASCII-`r` typo in `발음의` and a stale regression assertion. The final exact-head CI passed.
 - **Still BLOCKED:** independent IPA gold (20-case queue unadjudicated), independent Ukrainian adaptation review, full article/subparagraph/exception coverage, item-level KOGL checks, and live NIKL crawl (HTTP 403/optional step skipped).
 - Status remains **research preview / partial prototype**, not a fully validated transcription standard.
+
+
+## 2026-10-23 follow-up — IPA feature and boundary propagation
+
+- **DONE_VERIFIED:** PR #259 (`25c098ce46a355b810a60550ea77f1a026bc1c7d`) adds a raw-registry gate requiring every primary/alternate IPA segment to have a source feature vector.
+- **DONE_VERIFIED:** PR #260 (`a378cb28068fe645b4a68bcc587dd94c39514501`) carries syllable/word boundary metadata through native IPA→target analysis and preserves word spaces in Ukrainian rendering. Exact code/test commit passed Python 3.11–3.13, web, system/browser, corpus artifact, and optional g2pK CI; links and exact SHAs are in the native-engine report.
+- **CI surfaced and fixed:** hidden alternate IPA typo, stale regression fixture, and missing import in the new boundary E2E test. The corrected exact code/test heads passed.
+- **Still BLOCKED:** independent broad IPA adjudication (20 queued cases), independent Ukrainian target review, full article/subparagraph/exception review, item-level KOGL verification, and live NIKL crawl. Optional source inventory is skipped, not passed.
+- **Readiness remains:** research preview / partial prototype, not a fully scientifically validated transcriber.
