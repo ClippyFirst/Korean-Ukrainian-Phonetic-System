@@ -90,3 +90,12 @@ The code/deployment commit `dae8ebdabb396d1be51afbe891d80c9c48a29f1c` and code-e
 
 ## Native research-engine continuation — 2026-10-23
 The current bounded task is native Python surface-boundary observability, not the practical JS port. PR #255, branch `research/native-engine-surface-boundary-2026-10-23`, was squash-merged to `main` as `6df6a5d2e5d8a472ce7b8ceee7365b57451ccfcd`. It adds a composer that exposes the rule/lexicon-derived Korean surface string before IPA in `phoneticize_korean`, plus source-attested surface regressions and word-boundary checks. Evidence report: `research/NATIVE-ENGINE-SURFACE-IPA-BOUNDARY-2026-10-23.md`. DONE_VERIFIED: final PR head `6ed03a0f5c5b26c0afb8764a6dfc94eaf8eadc36` passed tests/build/Python 3.11–3.13, system verification, and corpus artifacts. No local tests are claimed because this session has API-only repository access. Next: review exact diff and CI, fix failures, then continue independent IPA gold and target-adaptation evaluation. This change does not validate the provisional IPA or Ukrainian target values.
+
+
+## 2026-10-23 native research-engine verification update
+
+- **DONE_VERIFIED:** PR #258 merged as `f2cfda570d424c23425fdf948edc91cea65a6d7b`. Exact PR-head Python 3.11–3.13/web tests, Python data integrity, browser/build, generated artifacts, and optional g2pK integration passed. Evidence is recorded in `research/NATIVE-ENGINE-SURFACE-IPA-BOUNDARY-2026-10-23.md`.
+- The native IPA adapter now fails closed on duplicate length marks, misplaced/duplicate unreleased-stop diacritics, and unsupported modifiers. The test suite inspects the raw base lexicon and every `lexical_additions_*.csv` file, including alternate IPA rows that were previously hidden by the merged dictionary.
+- CI exposed and enabled correction of one alternate IPA ASCII-`r` typo in `발음의` and a stale regression assertion. The final exact-head CI passed.
+- **Still BLOCKED:** independent IPA gold (20-case queue unadjudicated), independent Ukrainian adaptation review, full article/subparagraph/exception coverage, item-level KOGL checks, and live NIKL crawl (HTTP 403/optional step skipped).
+- Status remains **research preview / partial prototype**, not a fully validated transcription standard.
