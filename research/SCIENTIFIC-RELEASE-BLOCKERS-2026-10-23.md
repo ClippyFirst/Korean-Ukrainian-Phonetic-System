@@ -115,7 +115,7 @@ This enables a clean handoff but does not complete adjudication: the queue remai
 
 PR #270 (source-register audit) merged as `1f91d0c3817153d8a07004778ed916fda39d4ec5`; PR #271 (blinded IPA reviewer packets) merged as `df733c7f7afdf1262bea6c46d07876d6f315ccaf`. No open PRs remained at the time of this update.
 
-Exact-head CI for PR #271 passed: 1,195 Node tests, 0 failures; Python 3.11/3.12/3.13; system verification and browser build; browser G2P; and research corpus artifacts. Post-merge main tests, system verification, browser G2P and corpus artifact workflows also passed. Pages run [40012736801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012736801) had completed deployment and public HTTP smoke; its live Playwright job was still installing Chromium at the time of this note, so final live-browser status must be read from that run rather than assumed.
+Exact-head CI for PR #271 passed: 1,195 Node tests, 0 failures; Python 3.11/3.12/3.13; system verification and browser build; browser G2P; and research corpus artifacts. Post-merge main tests, system verification, browser G2P and corpus artifact workflows also passed. Pages run [40012736801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012736801) completed successfully: deploy, public HTTP smoke, and live Playwright practical-mode smoke all passed.
 
 Two new no-network tools are in main:
 - `npm run audit:source-register`: checks CSV shape and emits conservative rights triage. Current 100-row register: 96 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`, 1 `NOT_APPLICABLE_RECORDED`. These labels are not legal clearance.
