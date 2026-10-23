@@ -608,3 +608,16 @@ Current task ledger:
 - **BLOCKED_EXTERNAL_ACCESS:** official NIKL inventory job remains skipped due source-access restrictions; no bypass was attempted.
 
 Readiness remains **research preview / partial prototype**, not a scientifically validated transcription standard. Do not mark the release gate complete based on CI.
+
+
+### Correction — literature-led broad IPA candidates and explicit alternatives (2026-10-24)
+
+The focused Undermind search completed and surfaced Park, Cho & Han (2016), “한국어 이중모음 /의/의 단모음화 양상,” DOI https://doi.org/10.17959/SPPM.2016.22.1.35. Its abstract reports 2,370 Seoul Corpus tokens, 93.04% overall monophthongization of /ɨi/, [i] for 94.40% of monophthongized tokens, and predominantly [e] for genitive-particle tokens. This strengthens the case that the broad surface candidate for [살믜] should be `sal.mi`, not the legacy `sal.mɰi`; [살메] remains represented as `sal.me`. The study does not directly measure 삶의 and its full text was unavailable, so both remain diagnostic-only hypotheses pending expert adjudication.
+
+Implementation follow-up:
+- Changed the primary project-rendered IPA candidate in the base lexical row and adjudication overlay to `sal.mi`; retained `sal.me` as the alternate.
+- Extended the native IPA adapter to expose explicitly licensed lexical alternatives as `ipa.lexical_alternatives` instead of leaving them hidden only in CSV metadata.
+- Kept the form-level `diagnostic_only_unresolved_pronunciation` gate, so both candidates remain inspectable but Ukrainian target selection is blocked.
+- Updated regression tests to assert the primary candidate, alternate candidate/provenance, diagnostic status and target blocking.
+
+Code/data/test commits: pipeline `f14472836232045665b80cc5dcce4b0b06a6af73`; base data `e872b184db1fe947c14b66dd2116eafa8654b51a`; overlay `2d4841b27f583931d58e6769f023809e13f77a9a`; final test fix `5beb7a8eb6e6e02f148658340c272f7296048943`. New exact-head CI is running for the changed code/test state: tests run 40028069871, system verification 40028069927, optional g2pK 40028069969, corpus artifacts 40028069909, and UGTPHON diagnostic 40028069920. Do not call this follow-up verified until all complete; the official NIKL inventory remains a known skipped/blocked external gate.
