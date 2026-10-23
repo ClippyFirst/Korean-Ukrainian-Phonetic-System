@@ -3,9 +3,9 @@
 ## Reproducibility
 
 - Project branch: `research/ugtphon-independent-validation-2026-10-23`.
-- Code head for this result: `3f59af5f8d5302cfacac4e6fb84a395a973b1c41`.
-- External benchmark workflow: [run #6](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40018727120).
-- Machine-readable artifact: [ugtphon-korean-ipa-diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40018727120/artifacts/12528888952).
+- Code head for this result: `6c4f9269f473f62ad6128e7d3c59664354a7f902`.
+- External benchmark workflow: [run #14](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40019431202).
+- Machine-readable artifact: [ugtphon-korean-ipa-diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40019431202/artifacts/12530266549).
 - Upstream corpus commit: `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`; file `ko/test.json`; per-language license `ko/LICENSE` declares Apache-2.0.
 - The workflow downloads the pinned external file temporarily, verifies the license and the 275-row Korean test split, and does not commit corpus text into this repository.
 
@@ -17,7 +17,7 @@
 | Token IPA comparisons scored | 2,653 |
 | Exact matches after declared normalization | 648 |
 | Exact-match rate among scored tokens | 24.4252% |
-| Character error rate (reference-length denominator) | 17.0766% |
+| Character error rate (reference-length denominator) | 17.0604% |
 | Tokens explicitly marked unresolved by the native engine | 50 |
 | Tokens skipped as non-Hangul/multi-token or otherwise not token-comparable | 437 |
 | Missing-gold / empty-variant skips | 0 |
@@ -29,11 +29,13 @@ The 50 unresolved tokens are excluded from the accuracy denominator, not counted
 
 ### 1. A real fail-closed contract gap
 
-For `앉아라`, the native rule trace withheld complex-coda liaison under R002 because the exact morphological license was absent, yet the downstream pipeline still exposed an apparently definitive IPA string (`an.a.ɾa`) and allowed target mapping to proceed. The issue was not that the engine should blindly imitate a benchmark string; it was that an explicitly withheld pronunciation was still being presented as if it were resolved.
+For `앉아라`, the native rule trace withheld complex-coda liaison under R002 because the exact morphological license was absent, yet the downstream pipeline still exposed an apparently definitive IPA string (`an.a.ɾa`) and allowed target mapping to proceed. The issue was not that the engine should blindly imitate a benchmark string; it was that an explicitly withheld pronunciation was still being presented as if it were resolved. The correction keeps this form unresolved unless evidence or an explicit morphology mode licenses it.
 
 The research pipeline now exposes `pronunciation_status: unresolved` plus structured `unresolved_contexts` for the identified unlicensed ambiguity gates, and `transliterate_korean()` stops before IPA-to-Ukrainian mapping when the Korean pronunciation is unresolved. A regression test verifies this for `앉아라`; a source-backed `값어치` lexical override remains resolved by its own evidence. The diagnostic IPA remains inspectable for audit, but is not used as a Ukrainian target input.
 
 The same fail-closed gate surfaced other unresolved examples, including `삶의`, `많이본`, `없어도`, and `좋아보인다고`. These require source-backed lexical/morphological adjudication or an explicit soft/heuristic mode; do not silently infer their morphology from Hangul adjacency.
+
+A separate NIKL check found that attached `-ㄹ게` is explicitly pronounced with fortis ㄲ under Standard Pronunciation Rule 27. NIKL's official Q&A confirms `할게` → `[할께]` (https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330963). The engine now licenses this narrow, attested ending and emits `hal.k͈e` with the official source URL in its rule trace; it does not generalize the exception to unrelated sequences such as `일본` or `실수`.
 
 ### 2. Not every IPA mismatch is an engine defect
 
@@ -48,8 +50,8 @@ The mismatch artifact includes up to 50 scored mismatches and the separate unres
 
 ## Verification
 
-At code head `3f59af5f8d5302cfacac4e6fb84a395a973b1c41`:
-- [External UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40018727120): passed; pinned source/license and corpus structure validated; benchmark completed with zero engine exceptions.
+At code head `6c4f9269f473f62ad6128e7d3c59664354a7f902`:
+- [External UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40019431202): passed; pinned source/license and corpus structure validated; benchmark completed with zero engine exceptions.
 - [Python tests / browser tests and build](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40018727056): completed successfully for Python 3.11/3.12/3.13 and browser regression/build.
 - [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40018727169): browser regression/build and Python regression/data-integrity completed successfully.
 - [Master corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40018727152): strict corpus and master-table generation passed.
