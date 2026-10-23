@@ -21,6 +21,10 @@ The native Python rule engine now maintains a finite list of exact Rule 29 examp
 - Each changed R009 trace now records the exact license context, for example `R009:word:한여름:한>여`.
 - Unlisted forms remain conservative unless a caller supplies an exact license. Explicit NIKL exceptions such as 육이오, 삼일절, 송별연, and 등용문 remain negative controls.
 
+## Deliberate boundary
+
+The official Rule 29 phrase list also includes `3연대` and `1연대`. They are not added to the native exact-license table because the native phonology API currently rejects mixed-script numeric input. Supporting them requires a separately specified Korean numeral-reading/normalization stage before phonology; silently treating the digits as Korean syllables would be incorrect. This remains outside this focused change.
+
 ## Regression coverage
 
 - Exact Rule 29 word examples are checked against their full-form/pair licenses.
