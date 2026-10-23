@@ -78,6 +78,8 @@ export function validateReviewerSubmission(packetText, queueText, expectedSlot =
   const cases = packet.cases;
   if (cases.length !== expectedIds.length) errors.push('Submission must contain exactly ' + expectedIds.length + ' cases.');
   const byId = new Map();
+  let packetReviewerId = null;
+  let packetQualification = null;
   for (const item of cases) {
     if (!item || typeof item !== 'object' || Array.isArray(item)) {
       errors.push('Every submission case must be an object.');
@@ -106,7 +108,11 @@ export function validateReviewerSubmission(packetText, queueText, expectedSlot =
     onlyKeys(form, FORM_KEYS, item.caseId + '.reviewForm', errors);
     if (form.reviewerSlot !== packet.reviewerSlot) errors.push(item.caseId + ': reviewer slot mismatch.');
     if (!nonBlank(form.reviewerId)) errors.push(item.caseId + ': reviewerId is required.');
+    else if (packetReviewerId === null) packetReviewerId = form.reviewerId.trim();
+    else if (packetReviewerId !== form.reviewerId.trim()) errors.push(item.caseId + ': reviewerId must be consistent across the packet.');
     if (!nonBlank(form.qualification)) errors.push(item.caseId + ': qualification is required.');
+    else if (packetQualification === null) packetQualification = form.qualification.trim();
+    else if (packetQualification !== form.qualification.trim()) errors.push(item.caseId + ': qualification must be consistent across the packet.');
     if (!validateReviewedAt(form.reviewedAt)) errors.push(item.caseId + ': reviewedAt must be a valid ISO timestamp with timezone.');
     if (!nonBlank(form.methodReference)) errors.push(item.caseId + ': methodReference is required.');
     if (!nonBlank(form.broadIpa)) errors.push(item.caseId + ': broadIpa is required.');
