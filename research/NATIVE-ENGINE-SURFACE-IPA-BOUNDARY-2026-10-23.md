@@ -75,3 +75,22 @@ The registry-wide regression initially failed on 12 valid entries such as `anː`
 - The registry-wide IPA test first failed for real data/parser issues, then passed after correcting post-coda length association and the active `발음과` overlay row. This failure-and-fix is retained as evidence that the new gate catches issues that narrower tests missed.
 - Local tests were not run in this session; CI is the execution evidence.
 - This batch improves IPA-boundary integrity but does not establish independent IPA gold, independent Ukrainian target gold, complete NIKL rule coverage, or source-license closure.
+
+
+## Follow-up: strict IPA modifier placement — 2026-10-23
+
+### Defect addressed
+
+The first modifier-preservation implementation retained `ː` and `̚`, but its parser could still accept malformed inputs: repeated length/unreleased markers, an unreleased-stop diacritic after a vowel or nasal, or a diacritic immediately after a syllable separator that accidentally attached to the preceding syllable's last token.
+
+### Change
+
+- A length marker may occur only once per syllable; duplicates fail closed.
+- The unreleased-stop diacritic must immediately follow a supported stop token in the same syllable.
+- It cannot attach across `.`, whitespace, or other syllable boundaries; it cannot attach to a vowel or sonorant; duplicates fail closed.
+- Added explicit tests for valid `k̚`, invalid `a̚`, `m̚`, boundary-separated modifiers, and duplicate modifiers.
+- The registry-wide lexical IPA compatibility test remains enabled.
+
+### Verification gate
+
+This is on branch `research/native-ipa-modifier-boundaries-2026-10-23`. It is not considered verified until CI passes on the exact PR head. Local test execution is unavailable in the GitHub API-only session. This change validates modifier syntax/attachment, not the phonetic truth of each lexical transcription.
