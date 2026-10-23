@@ -689,6 +689,40 @@
       "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
       "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
       "normativeSurfaceComparator": "수페"
+    },
+    {
+      "caseId": "IPA-021",
+      "input": "삶의",
+      "surfaceEvidenceStatus": "direct-NIKL-MCFAQ",
+      "surfaceEvidenceUrl": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
+      "sourceLocator": "NIKL MCFAQ 5716 directly gives 삶의[살믜] and also permits [살메] under Standard Pronunciation Rule §5. These Hangul pronunciation forms are not IPA; reviewers must transcribe each supported reading independently.",
+      "candidateBroadIpa": null,
+      "syllableBoundaries": null,
+      "vowelLengthAssessment": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
+        "ipa": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
+        "ipa": null,
+        "notes": null
+      },
+      "reconciliation": {
+        "status": "BLOCKED_SPECIALIST_ADJUDICATION",
+        "finalIpa": null,
+        "decisionNotes": null
+      },
+      "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
+      "notes": "Two official surface-Hangul readings are attested. Do not infer sal.mɰi, sal.mi or sal.me by copying Hangul; transcribe independently and state the broad-IPA convention. Ukrainian target review remains separate.",
+      "normativeSurfaceComparator": "살믜 / 살메"
     }
   ]
 }
