@@ -16,8 +16,15 @@ def test_long_vowel_is_retained_as_metadata_not_a_phantom_segment():
 
 
 def test_length_marker_without_supported_vowel_fails_closed():
-    with pytest.raises(ValueError, match="does not follow a supported vowel"):
+    with pytest.raises(ValueError, match="no supported vowel in its syllable"):
         tokenize_ipa_with_modifiers("kːa")
+
+
+def test_post_coda_length_mark_is_attached_to_the_vowel_nucleus():
+    for ipa, vowel in (("anː", "a"), ("toŋː", "o"), ("ɰiː", "i")):
+        parsed = tokenize_ipa_with_modifiers(ipa)
+        long = [item["segment"] for item in parsed if item["long"]]
+        assert long == [vowel]
 
 
 def test_unknown_modifier_is_not_silently_discarded():
