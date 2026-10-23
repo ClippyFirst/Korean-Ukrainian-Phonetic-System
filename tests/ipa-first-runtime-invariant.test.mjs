@@ -169,6 +169,18 @@ test('standalone compatibility Jamo inventories are preserved as literal notatio
   assert.ok(!/[ㄱ-ㅎㅏ-ㅣ]/u.test(contextual.ipa), 'preserved notation must not leak into the IPA result');
 });
 
+test('whitespace-separated Jamo inventories are preserved literally without being treated as pronunciation', () => {
+  const consonants = 'ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ';
+  const vowels = 'ㅏ ㅐ ㅑ ㅒ ㅓ ㅔ ㅕ ㅖ ㅗ ㅘ ㅙ ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ ㅠ ㅡ ㅢ ㅣ';
+  const result = engine.convert('자음 목록: ' + consonants + '. 모음 목록: ' + vowels + '.');
+  assert.ok(result.ukrainian.includes(consonants), 'all consonants and the original spacing must survive');
+  assert.ok(result.ukrainian.includes(vowels), 'all vowels and the original spacing must survive');
+  assert.ok(!/[ㄱ-ㅎㅏ-ㅣ]/u.test(result.ipa), 'standalone inventory notation must not be assigned invented IPA');
+  const inventoryTrace = (result.trace || []).filter((item) => /^[ㄱ-ㅎㅏ-ㅣ]$/u.test(item.source));
+  assert.ok(inventoryTrace.length >= 40, 'inventory members must remain individually traceable');
+  assert.ok(inventoryTrace.every((item) => item.status === 'literal' && item.ipa === ''), 'inventory members must be literal, not phonetic units');
+});
+
 test('single Jamo inside square-bracket pronunciation notation is preserved in the target text', () => {
   const result = engine.convert('허용되는 [ㅔ] 발음과 ㅢ를 [ㅣ]로 발음하시오.');
   assert.ok(result.ukrainian.includes('[ㅔ]'), 'the bracketed [ㅔ] notation must not collapse to []');
