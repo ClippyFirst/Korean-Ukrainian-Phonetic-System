@@ -139,3 +139,13 @@ Readiness: **research preview / partial prototype**, not release-ready as a scie
 | Live official-source inventory | BLOCKED / skipped | The workflow's live NIKL inventory job was skipped; no pass is claimed. |
 | Scientific release acceptance | BLOCKED | Independent IPA gold, Ukrainian target review, complete normative rule coverage, item-level licensing evidence, and source access remain outstanding. |
 | Final PR acceptance | PENDING | Documentation was appended after the verified code/test head; CI must pass on the final PR head before merge. |
+
+
+## Native IPA adapter empty-input guard (2026-10-23)
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| IPA adapter input contract | PARTIAL / PENDING_CI | Branch `fix/native-ipa-adapter-empty-input-2026-10-23`; implementation rejects non-string IPA and empty token lists after strict tokenization. |
+| Regression coverage | PARTIAL / PENDING_CI | Tests cover empty, genuine whitespace-only, boundary-only, non-string, and valid single-segment inputs. Must pass on the final PR head. |
+| Local tests | BLOCKED | This session has GitHub API repository access, not a local checkout/runtime. No local pass is claimed. |
+| Scientific validity | BLOCKED / UNCHANGED | No independent IPA gold, Ukrainian-target review, exhaustive normative coverage, item-level rights review, or live NIKL source verification is provided by this guard. |
