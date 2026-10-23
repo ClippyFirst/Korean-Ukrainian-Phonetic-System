@@ -99,7 +99,7 @@ test('qna_seq=335263 directly attests 실없다[시럽따] and corrects the ques
   assert.equal(byInput('실없다').source_url, source.url);
 });
 
-test('qna_seq=307508 directly attests 넓죽하다 while the second spelling remains unresolved', () => {
+test('qna_seq=307508 directly attests 넓죽하다 and qna_seq=322805 independently attests the second form', () => {
   const source = bySource('SRC-NIKL-QNA-307508');
   assert.ok(source);
   assert.equal(source.review_status, 'direct_attestation_2026-10-23');
