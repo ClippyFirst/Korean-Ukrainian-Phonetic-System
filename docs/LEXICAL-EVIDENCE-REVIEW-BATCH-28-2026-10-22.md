@@ -31,7 +31,7 @@ The stored Korean surface, project IPA, and Ukrainian target are unchanged.
 
 ## Task ledger
 
-- DONE_VERIFIED after exact-head CI: official answer, title/date, direct source claim, source-register status, and queue tests reconciled.
+- PARTIAL / CI repair in progress: initial exact-head CI found one batch-28 regression-test failure because the source-register `integration_status` field did not contain the phrase the test contract required. The source row has now been corrected to state the exact official reading and §13 claim. Re-run exact-head CI before marking this batch DONE_VERIFIED.
 - DIRECT_ATTESTATION: exact standard reading [며츠로] and §13 are stated in the official answer.
 - BLOCKED / rights: item-level KOGL mark remains unverified.
 - TODO: review the remaining 17 citation-only sources; three PDFs require the separate saved-PDF workflow.
