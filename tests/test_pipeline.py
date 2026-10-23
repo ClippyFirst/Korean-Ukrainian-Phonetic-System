@@ -380,3 +380,57 @@ def test_unambiguous_productive_tensification_remains_available():
     analysis = phoneticize_korean("국밥")
     assert analysis["pronunciation_status"] == "provisional"
     assert analysis["ipa"]["ipa"] == "kuk̚.p͈ap̚"
+
+
+@pytest.mark.parametrize(
+    ("word", "rule_id"),
+    [
+        ("앉아라", "R002"),
+        ("싫어", "R003"),
+        ("넋하고", "R004"),
+        ("갇이", "R007"),
+        ("늙고", "R008"),
+        ("깎아", "R002"),
+    ],
+)
+def test_native_engine_marks_unlicensed_ambiguous_ipa_as_diagnostic_only(word, rule_id):
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    analysis = phoneticize_korean(word)
+    assert analysis["pronunciation_status"] == "unresolved", word
+    assert analysis["ipa_status"] == "diagnostic_only_unresolved_pronunciation", word
+    assert analysis["ipa_is_diagnostic_only"] is True, word
+    assert analysis["ipa_status_reason"] == "unresolved_morphophonological_context", word
+    assert any(item["rule_id"] == rule_id for item in analysis["unresolved_contexts"]), word
+
+    result = transliterate_korean(word)
+    assert result["ipa_status"] == "diagnostic_only_unresolved_pronunciation", word
+    assert result["ipa_is_diagnostic_only"] is True, word
+    assert result["ukrainian_orthography"] is None, word
+    assert result["target_status"] == "unresolved", word
+    assert result["selected_candidate"] is None, word
+
+
+@pytest.mark.parametrize("word", ["먹이", "일본", "실수", "밭에", "국밥"])
+def test_native_engine_does_not_mark_unrelated_or_resolved_contexts_unresolved(word):
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    analysis = phoneticize_korean(word)
+    assert analysis["pronunciation_status"] == "provisional", word
+    assert analysis["ipa_status"] == "provisional", word
+    assert analysis["ipa_is_diagnostic_only"] is False, word
+    assert analysis["unresolved_contexts"] == [], word
+
+    result = transliterate_korean(word)
+    assert result["ipa_status"] == "provisional", word
+    assert result["ipa_is_diagnostic_only"] is False, word
+
+
+def test_sourced_lexical_override_marks_ipa_provisional_not_diagnostic_only():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    analysis = phoneticize_korean("값어치")
+    assert analysis["pronunciation_status"] == "provisional"
+    assert analysis["ipa_status"] == "provisional"
+    assert analysis["ipa_is_diagnostic_only"] is False
+    assert analysis["ipa_status_reason"] is None
