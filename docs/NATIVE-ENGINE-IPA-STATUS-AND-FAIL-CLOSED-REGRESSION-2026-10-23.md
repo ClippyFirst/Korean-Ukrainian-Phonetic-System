@@ -38,7 +38,7 @@ Negative controls ensure that unrelated or already-resolved forms (`먹이`, `�
 ## Verification ledger
 
 - `DONE_VERIFIED`: API status fields implemented in both native entry points; README contract documented; regression cases added.
-- `TODO / CI`: run exact-head Node/browser build, Python regression/data-integrity across supported Python versions, and repository-defined generated-artifact checks. Do not call this batch verified until exact-head workflows finish green.
+- `DONE_VERIFIED / CI`: PR-head test workflow [#2173](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40020824792) passed Python 3.11, 3.12, 3.13 and browser tests/build; system workflow [#5030](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40020824867) passed browser regression/build and Python regression/data-integrity; master table/research corpus artifact workflow [#2037](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40020824940) passed. The live NIKL source-inventory step was skipped/blocked, not passed, and is not claimed as evidence for this code change. A local clone could not resolve `github.com` in this environment, so verification was performed by the repository's CI.
 - `BLOCKED_SPECIALIST_ADJUDICATION`: broad IPA still requires independent qualified review; Korean standard-pronunciation Hangul notation is evidence for surface forms, not by itself an IPA gold transcription.
 - `BLOCKED_SPECIALIST_ADJUDICATION`: Ukrainian target-layer review remains a separate acceptance gate.
 
