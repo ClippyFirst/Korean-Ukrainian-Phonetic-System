@@ -124,3 +124,22 @@ After the alternate IPA was corrected, CI exposed one stale JavaScript test fixt
 - **DONE_VERIFIED:** strict duplicate/misplaced IPA modifier rejection, all raw primary/alternate IPA syntax and syllable alignment, two IPA data fixes plus a stale fixture correction.
 - **PARTIAL / BLOCKED:** this is not independent IPA adjudication. The 20-case `research/ipa-adjudication-queue.json` remains unadjudicated; qualified Korean phonetics review is needed. Independent Ukrainian target policy, exhaustive subparagraph/exception coverage, item-level KOGL verification, and reproducible live NIKL access remain open.
 - Local tests were not run in this API-only session; exact-head remote CI is the verification evidence. The PR did not alter the practical JS transcription implementation.
+
+
+## Follow-up: preserve IPA syllable and word boundaries through adaptation — 2026-10-23
+
+### Defect addressed
+
+The tokenizer previously discarded `.`, whitespace and `#` after splitting the IPA string. Consequently, downstream segmentwise target analysis could no longer tell syllable boundaries from word boundaries, and the orthographic renderer had no source boundary metadata to preserve spaces between Korean words.
+
+### Change
+
+- Each parsed IPA segment now carries `syllable_index`, `word_index`, and `boundary_before` metadata (`start`, `within`, `syllable`, or `word`).
+- `map_ipa_to_ukrainian` exposes the source boundary metadata alongside IPA, length and diacritic provenance.
+- `_select_target` carries that provenance into the selected segment records.
+- The Ukrainian orthographic renderer inserts a space at a source word boundary but does not render IPA syllable dots as Ukrainian punctuation.
+- Compatibility API `tokenize_ipa` continues returning segment strings.
+
+### Verification gate
+
+Regression tests assert the precise boundary/index sequence for `ɰiː.nan kʌ`, metadata propagation through target analysis, and rendering behavior. CI must pass on the exact PR head. This change preserves source segmentation metadata; it does not claim that every target grapheme or adaptation is linguistically correct.
