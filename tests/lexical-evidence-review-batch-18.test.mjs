@@ -104,8 +104,8 @@ test('qna_seq=307508 directly attests 넓죽하다 while the second spelling rem
   assert.ok(source);
   assert.equal(source.review_status, 'partial_claim_scope_reviewed_2026-10-22');
   assert.match(source.coverage, /넓죽하다\[넙쭈카다\].*넓둥굴다\[넙뚱글다\]/u);
-  assert.match(byInput('넓둥글다').rule_notes, /exact orthographic match as unresolved/u);
-  assert.doesNotMatch(byInput('넓둥글다').rule_notes, /directly confirms/u);
+  assert.match(byInput('넓둥글다').rule_notes, /qna_seq=322805 directly discusses.*넓둥글다\[넙뚱글다\]/u);
+  assert.equal(byInput('넓둥글다').source_url, bySource('SRC-NIKL-QNA-322805').url);
 });
 
 test('qna_seq=317229 directly attests 외곬에 and the lexical URL matches the source register', () => {
