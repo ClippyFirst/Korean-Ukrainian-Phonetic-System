@@ -630,3 +630,24 @@ The focused literature search now supports a better broad-surface candidate for 
 Added case `IPA-021` for 삶의 to `research/ipa-adjudication-queue.json`, with direct NIKL MCFAQ evidence, both official Hangul surface readings, no candidate IPA, blank reviewer fields, and `BLOCKED_SPECIALIST_ADJUDICATION`. The queue now has 21 cases: 20 in the pinned surface-regression fixture plus this separately sourced high-risk case. The blinded packet builder and validator remain generic; fixed-size tests were updated, and the queue-coverage test now requires all fixture cases while permitting separately sourced cases with official evidence. A 2016 corpus/acoustic paper was added to `research/SOURCE-REGISTER.csv` as limited evidence only; its full text and item-level reuse license remain unavailable/unassessed.
 
 The first CI pass after queue expansion correctly caught fixed-count assumptions and a mismatch between the revised IPA and stored Ukrainian reference. These were repaired: queue size assertions now use the canonical queue size, the queue-coverage test allows the separately sourced case, and the provisional Ukrainian reference is aligned with the revised IPA without bypassing the target gate. The later system verification at run 40028573329 and test suite at run 40028573395 completed successfully (Python 3.11–3.13, web tests/build, Python regression/data integrity, browser regression/build). The NIKL metadata-only job was skipped. The source-register row then increased its audited row count from 101 to 102, and the corresponding audit-test expectation was updated; final CI for that latest source-register/test adjustment must be checked before marking the whole branch verified.
+
+
+### Final verification closeout — 2026-10-24
+
+The final code/data/test state is commit `30f1eab3043148193a74fb5d977033b74937726c`. All available relevant workflows passed:
+- Tests (Python 3.11, 3.12, 3.13 and web): [run 40028810510](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810510).
+- System verification: [run 40028810736](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810736).
+- Master table / strict research corpus artifacts: [run 40028810589](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810589).
+- Optional g2pK integration: [run 40028810621](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810621).
+- External UGTPHON diagnostic: [run 40028810616](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810616).
+
+The official NIKL metadata-only source inventory was skipped; this is not a pass. The current branch head later received only a source-register wording correction from “20-case” to “21-case” (`59b17390cca11142618df348019f8b02f0781239`); no runtime or test logic changed after the green code/test commit. Structural CSV validation after the correction found 102 source rows, 12 columns, and zero malformed-width rows. Local cloning remained blocked by unavailable DNS for github.com.
+
+The focused research work is now complete as a documented evidence review, not a scientific adjudication. Current status:
+- **DONE_VERIFIED:** form-specific diagnostic-only IPA gate; explicit primary/alternate candidate fields; target selection blocked while unresolved; queue expanded to 21 cases; queue/packet tests use canonical case count; source registry updated; full available CI passed.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** qualified independent reviewers must adjudicate the exact 삶의 broad IPA and convention. The 2016 Seoul Corpus study is indirect evidence only.
+- **BLOCKED_SPECIALIST_REVIEW:** Ukrainian target adaptation must be evaluated separately on frozen, adjudicated IPA.
+- **BLOCKED_EXTERNAL_ACCESS:** official NIKL inventory remains skipped.
+- **DEFERRED:** probabilistic n-insertion modeling; compact forms requiring morphology/spacing analysis.
+
+Do not merge this as a scientific release claim: the implementation is safer and the regression evidence is green, but the product remains a research preview / partial prototype until specialist adjudication and target-layer validation are complete.
