@@ -110,8 +110,8 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
             })
 
     comparable = [item for item in scored if item["distance"] is not None]
-    total_chars = sum(max(len(item["normalized_predicted"]), len(item["closest_normalized_gold"]))
-                      for item in comparable)
+    # Standard CER denominator is the total reference length, not max(pred, ref).
+    total_chars = sum(len(item["closest_normalized_gold"]) for item in comparable)
     total_distance = sum(item["distance"] for item in comparable)
     exact = sum(item["exact"] for item in comparable)
     return {
