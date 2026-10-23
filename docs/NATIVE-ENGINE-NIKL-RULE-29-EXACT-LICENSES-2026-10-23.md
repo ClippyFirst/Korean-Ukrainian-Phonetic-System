@@ -31,6 +31,6 @@ The native Python rule engine now maintains a finite list of exact Rule 29 examp
 
 ## Acceptance and limits
 
-- `DONE_VERIFIED` after exact-head CI: implementation, source-attributed rule trace, and regression tests.
+- `TODO / CI`: implementation, source-attributed rule trace, and regression tests are present on the working branch; exact-head Python/browser/system/artifact workflows must finish green before this batch is marked verified.
 - The official Korean surface examples do not themselves establish a unique broad IPA or Ukrainian target. Those outputs remain provisional until the independent IPA and target-layer review gates are completed.
 - This registry intentionally covers only the source-listed forms. It is not a general Korean morphological analyzer and does not infer unseen compounds or phrase boundaries.
