@@ -169,6 +169,19 @@ test('standalone compatibility Jamo inventories are preserved as literal notatio
   assert.ok(!/[ㄱ-ㅎㅏ-ㅣ]/u.test(contextual.ipa), 'preserved notation must not leak into the IPA result');
 });
 
+test('unresolved source segments remain visible in mixed text while their IPA is withheld', () => {
+  const tokenOnly = engine.convert('짧은소리의');
+  assert.equal(tokenOnly.ukrainian, '', 'single-token research behavior remains fail-closed');
+  assert.equal(tokenOnly.ipa, '', 'single-token unresolved IPA remains withheld');
+
+  const passage = engine.convert('앞말 짧은소리의 뒷말.');
+  const unresolved = (passage.trace || []).filter((item) => item.status === 'unresolved' || item.status === 'unsupported-jamo');
+  assert.ok(unresolved.length > 0, 'the mixed passage should expose unresolved trace entries');
+  assert.ok(passage.ukrainian.includes('⟦') && passage.ukrainian.includes('⟧'), 'unresolved source characters must be visibly marked rather than silently dropped');
+  assert.ok(unresolved.every((item) => item.output === '' || item.output === '⟦' + item.source + '⟧'), 'unresolved trace output must be empty only in single-token fail-closed mode or visibly marked');
+  assert.ok(!/[가-힣ㄱ-ㅎㅏ-ㅣ]/u.test(passage.ipa), 'unresolved source characters must not be fabricated as IPA');
+});
+
 test('whitespace-separated Jamo inventories are preserved literally without being treated as pronunciation', () => {
   const consonants = 'ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ';
   const vowels = 'ㅏ ㅐ ㅑ ㅒ ㅓ ㅔ ㅕ ㅖ ㅗ ㅘ ㅙ ㅚ ㅛ ㅜ ㅝ ㅞ ㅟ ㅠ ㅡ ㅢ ㅣ';
