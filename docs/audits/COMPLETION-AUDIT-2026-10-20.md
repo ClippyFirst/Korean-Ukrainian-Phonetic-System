@@ -945,7 +945,7 @@ Commit with implementation and tests: `f296014d5980123c8c64b9dde9abd47c43382131`
 - Readiness remains research preview / partial prototype.
 
 
-## Batch 29 exact-head verification result — 2026-10-23
+## Batch 29 exact-head verification and merge result — 2026-10-23
 
 - **DONE_VERIFIED:** commit `a6309e19e2b0d3c2bca33041cddde8343baa8d66` passed 1,182/1,182 JavaScript tests, production build, browser G2P integration, Python 3.11/3.12/3.13 regression/data-integrity, and generated corpus artifact checks. Runs: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917834), [browser G2P](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917781), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917899), [artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963918041).
 - The earlier batch-28 checkpoint's pending CI status was superseded by the successful run on `5c95f700d42f5c5f7ac4c32309f2bac852064faf` and merge commit `74b773bc59deb8c381de20a0d5404da231083ce5`.
