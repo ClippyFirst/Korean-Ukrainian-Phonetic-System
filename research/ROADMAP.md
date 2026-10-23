@@ -136,7 +136,7 @@ The implementation/test head passed Python 3.11–3.13/web, system/browser, corp
 
 ## Scientific release blocker ledger and Pages smoke assertion — 2026-10-23
 
-The current blocker ledger is in research/SCIENTIFIC-RELEASE-BLOCKERS-2026-10-23.md. The existing IPA adjudication queue has 20 cases and 0/20 independent reviewer submissions from each of two reviewer slots. The source register has 101 rows with item-level KOGL review incomplete; rule coverage has 19 data rows and does not establish exhaustive atomic coverage of NIKL §§9–30.
+The current blocker ledger is in research/SCIENTIFIC-RELEASE-BLOCKERS-2026-10-23.md. The existing IPA adjudication queue has 20 cases and 0/20 independent reviewer submissions from each of two reviewer slots. The source register has 100 data rows with item-level KOGL review incomplete. The separate standard-pronunciation-rule-coverage.json fixture maps articles 1–30 (29 finite-example statuses verified, Article 1 not applicable); research/RULE-COVERAGE.csv has 19 rows as a cross-runtime phenomenon matrix. Neither establishes exhaustive atomic coverage of every NIKL subparagraph, exception, variant, productive environment, and morphology interaction.
 
 PR #265 was inspected rather than merged blindly because its branch was one commit behind and overlapped the updated handoff. Its useful .github/workflows/deploy-pages.yml smoke assertion fix and blocker ledger were ported into PR #266, which also reconciles PR #264's merged status. The baseline deployment did reach the deploy step; the job failed on a stale grep for wording the current UI no longer uses. The corrected assertion is not yet proof of a successful live deployment: post-merge public HTTP and Playwright smoke must pass.
 
