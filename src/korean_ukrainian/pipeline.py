@@ -272,7 +272,11 @@ def tokenize_ipa(ipa:str)->list[str]:
 def map_ipa_to_ukrainian(ipa,target_adapter=None,source_features=None,weights=None):
     adapter=target_adapter if isinstance(target_adapter,UkrainianTargetAdapter) else UkrainianTargetAdapter()
     weights=weights or DEFAULT_WEIGHTS
+    if not isinstance(ipa,str):
+        raise TypeError("IPA input must be a string")
     tokens=tokenize_ipa_with_modifiers(ipa)
+    if not tokens:
+        raise ValueError("IPA input must contain at least one supported segment")
     grouped=[]
     for index,item in enumerate(tokens):
         segment=item["segment"]
