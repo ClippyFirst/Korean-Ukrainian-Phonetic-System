@@ -49,7 +49,7 @@ def test_saisiot_requires_explicit_license():
 
 def test_saisiot_license_is_exact_to_form_and_pair():
     items,traces=apply_ordered_rules(
-        parse_syllables("냇가"),rule_ids=["R015"],
+        parse_syllables("낫가"),rule_ids=["R015"],
         rule_licenses={"R015:saisiot"},
     )
     assert items[1].onset=="ㄱ"
