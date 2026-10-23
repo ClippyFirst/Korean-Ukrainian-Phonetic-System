@@ -441,3 +441,10 @@ A follow-up Node test now checks that the workflow's expected UI phrase, practic
 
 The Pages workflow for main commit `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e` passed in [run 40009408019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40009408019). All three Python versions passed; browser regression/build passed; the deploy job's public HTTP smoke and live Playwright interaction smoke both passed. This verifies the public deployment path for that commit. It does not establish IPA correctness, Ukrainian target adequacy, or source licensing. The separate live NIKL inventory job was skipped/blocked.
 
+### Continuation — source-rights audit implementation, 2026-10-23
+
+Current main is `b795575c0d8b122123561c682e510ed5c171b5cc`; the exact-head CI and deployed Pages smoke all passed on this commit (runs 40010110375, 40010110416, 40010110513, 40010110447).
+
+Working branch: `research/source-rights-ledger-validator-2026-10-23`. This batch adds `scripts/audit-source-register.mjs`, `tests/source-register-rights-audit.test.mjs`, and `npm run audit:source-register`. It parses quoted CSV correctly, checks required columns/row widths/duplicate IDs/HTTPS source URLs, and conservatively triages rights text into item-level license recorded, not applicable recorded, review required, or manual classification required. It emits an ephemeral queue instead of a second canonical registry and never marks a source cleared automatically.
+
+Acceptance is still pending exact-head CI. Run `npm run audit:source-register` for a structural report; use `npm run audit:source-register -- --require-reviewed-rights` as a strict gate after the owner/reviewer has resolved every record. A non-zero strict result is expected until item-level rights are evidenced. This audit is not legal advice and cannot establish permission by itself.
