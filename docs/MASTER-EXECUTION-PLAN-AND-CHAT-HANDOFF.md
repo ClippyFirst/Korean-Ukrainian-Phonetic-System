@@ -1,6 +1,7 @@
 ## Native engine Rule 28/30 exact compound and saisiot licenses — 2026-10-23
 
 - Scope: own Python research engine, branch `research/native-engine-nikl-compound-saisiot-2026-10-23`, based on current main after PR #278.
+- Merge status: [PR #279](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/279) squash-merged successfully as `1d67f9fad7689853bac68554b4b00c2edcfa5e23`. Tested code head: `ba694566dfe51adb22a344010d78893a88f89442`; subsequent commits only reconciled documentation.
 - Evidence: official NIKL Standard Pronunciation Rules, §§28 and 30: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002.
 - Implementation: finite exact full-form/pair licenses for 18 Rule 28 compound-fortition examples and 15 Rule 30 saisiot examples; official URL added to trace source metadata. No blanket ㅅ-coda rule was introduced. Ambiguous homograph `잠자리` is intentionally excluded from automatic Rule 28 licensing.
 - Tests: expected fortis onsets for all listed Rule 28 examples; expected coda/onset outcomes for Rule 30 fortition, nasal, and 이-initial examples; negative controls for `잠자리` and `옷가게`.
