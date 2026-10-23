@@ -386,7 +386,7 @@ def test_unambiguous_productive_tensification_remains_available():
     ("word", "rule_id"),
     [
         ("앉아라", "R002"),
-        ("앓아", "R003"),
+        ("쌓아", "R003"),
         ("넋하고", "R004"),
         ("갇이", "R007"),
         ("긁고", "R008"),
