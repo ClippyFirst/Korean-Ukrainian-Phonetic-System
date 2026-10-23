@@ -1,6 +1,7 @@
 ## Independent UGTPHON validation and fail-closed correction — 2026-10-23
 
 - Working branch / PR: `research/ugtphon-independent-validation-2026-10-23` / [PR #276](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/276).
+- Final implementation merge: PR #276 was squash-merged into `main` as `8340c453d1e41654c5b154ff332e30e1bee22baf`. Verified PR-head code commit: `6c4f9269f473f62ad6128e7d3c59664354a7f902`; post-merge workflows are not configured to trigger on `push` in this repository, so the acceptance evidence is the green PR-head CI recorded below.
 - User directive: validate the project's own research engine against independent sources; do not modify or blindly privilege third-party g2pK.
 - External source: Naver AI's UGTPHON, pinned upstream commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`. The Korean test split contains 275 sentence rows (107 `multilexnorm2026`, 168 `dc_inside`); per-language `ko/LICENSE` declares Apache-2.0 and records KoMultiText/MultiLexNorm++ provenance. Dataset is noisy user-generated text, not a normative dictionary.
 - Added `scripts/benchmark_ugtphon_ko.py` and `.github/workflows/ugtphon-benchmark.yml`: pinned external data is downloaded only to a temporary CI directory, license and split structure are checked, no raw corpus is committed, and the report is uploaded as an artifact. Scores exclude native-engine results explicitly marked unresolved.
