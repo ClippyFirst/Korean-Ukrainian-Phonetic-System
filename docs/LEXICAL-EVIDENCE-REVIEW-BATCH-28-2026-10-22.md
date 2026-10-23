@@ -31,7 +31,7 @@ The stored Korean surface, project IPA, and Ukrainian target are unchanged.
 
 ## Task ledger
 
-- PARTIAL / CI repair in progress: initial exact-head CI found one batch-28 regression-test failure because the source-register `integration_status` field did not contain the phrase the test contract required. The source row has now been corrected to state the exact official reading and §13 claim. Re-run exact-head CI before marking this batch DONE_VERIFIED.
+- DONE_VERIFIED: the source-register `integration_status` field was corrected, then exact-head CI passed on commit `5c95f700d42f5c5f7ac4c32309f2bac852064faf`: 1,178/1,178 JavaScript tests, browser regression/build, Python 3.11–3.13, and generated corpus artifact checks. This verifies the batch-28 implementation and regression contract, not independent IPA/Ukrainian correctness.
 - DIRECT_ATTESTATION: exact standard reading [며츠로] and §13 are stated in the official answer.
 - BLOCKED / rights: item-level KOGL mark remains unverified.
 - TODO: review the remaining 17 citation-only sources; three PDFs require the separate saved-PDF workflow.
