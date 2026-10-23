@@ -22,6 +22,11 @@ def test_nikl_attested_particle_readings_for_salmui_are_explicit_variants():
         and "mcfaq_seq=5716" in trace.get("source", "")
         for trace in result["rules"]
     )
+    from korean_ukrainian.pipeline import transliterate_korean
+    target = transliterate_korean(word)
+    assert target["ukrainian_orthography"] is None
+    assert target["target_status"] == "unresolved"
+    assert target["ipa_is_diagnostic_only"] is True
 
 
 def test_nikl_rule_14_formal_liaison_licenses_attested_inflectional_forms_only():
