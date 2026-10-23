@@ -144,7 +144,7 @@ This index is navigational evidence only. A named test or textual citation does 
 - Main code snapshot: `3a2052c9c27d7af6b5efa7c744d9e2ef14a70d41`.
 - Merged implementation PRs in this continuation: #270 (read-only source-register rights audit), #271 (blinded independent IPA review packet), #273 (returned-packet structural validator), and #274 (explicit NIKL article test-reference index). PR #272 reconciled the handoff after #270/#271.
 - Exact-main CI at `3a2052c`: Node suite **1205 passed, 0 failed**; Python 3.11/3.12/3.13 jobs passed; browser G2P integration passed; browser regression/build and Python data integrity passed; master table/research corpus artifact workflow passed.
-- Pages workflow run [40015664039](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40015664039) had passed Python 3.11/3.12/3.13 checks and browser/static build and was still deploying / awaiting live smoke at checkpoint creation. Do not claim live HTTP or Playwright smoke passed for this SHA until the workflow reports completion.
+- Pages workflow run [40015664039](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40015664039) subsequently completed successfully: Python 3.11/3.12/3.13 checks, browser/static build, Pages deployment, public HTTP smoke, and live Playwright practical-mode smoke all passed on this SHA.
 - Official NIKL live inventory is not accepted: runner log explicitly records HTTP 403 and the workflow intentionally treats it as BLOCKED, not as a successful crawl.
 
 ### Current task ledger
