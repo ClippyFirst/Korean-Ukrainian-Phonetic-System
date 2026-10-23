@@ -2,8 +2,8 @@ from __future__ import annotations
 import csv
 import sysconfig
 from pathlib import Path
-from .hangul import decompose_hangul
-from .phonology import parse_syllables
+from .hangul import decompose_hangul, compose_hangul
+from .phonology import parse_syllables, L_JAMO, V_JAMO, T_JAMO
 from .rules import apply_ordered_rules
 from .ipa import generate_vowel_variants, realize_syllables
 from .ukrainian_adapter import UkrainianTargetAdapter
@@ -87,6 +87,32 @@ def phonologize_korean(text):
     items=parse_syllables(text)
     return {"input":text,"syllables":[x.to_dict() for x in items],"analysis_status":"canonical_structural_representation"}
 
+def _render_surface_hangul(items):
+    """Compose the current phonological state back into inspectable Hangul.
+
+    Syllable.text intentionally remains the source orthography for tracing.
+    This renderer uses the mutable onset/nucleus/coda fields, making the
+    research engine's surface-form boundary explicit instead of forcing
+    callers to infer it from source text mixed with changed jamo fields.
+    """
+    rendered=[]
+    for item in items:
+        try:
+            indices={
+                "L":L_JAMO.index(item.onset),
+                "V":V_JAMO.index(item.nucleus),
+                "T":T_JAMO.index(item.coda),
+            }
+        except ValueError as exc:
+            raise ValueError(
+                f"cannot compose research surface for syllable {item.text!r}: "
+                f"{item.onset!r}/{item.nucleus!r}/{item.coda!r}"
+            ) from exc
+        rendered.append(compose_hangul(indices))
+        if item.boundary_after=="word":
+            rendered.append(" ")
+    return "".join(rendered).strip()
+
 def _apply_lexical_ipa(items,ipa_result):
     """Use sourced surface IPA for matched forms without overriding phonemic mode."""
     if ipa_result.get("level")!="broad":
@@ -119,8 +145,17 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     items=parse_syllables(text)
     items,traces=apply_ordered_rules(items,rule_ids,boundary_mode=boundary_mode,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses,morphology_mode=morphology_mode)
     lexical_traces=_apply_lexical_pronunciations(items)
+    surface_hangul=_render_surface_hangul(items)
     ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level))
-    return {"input":text,"surface_syllables":[x.to_dict() for x in items],"rules":[x.to_dict() for x in traces]+lexical_traces,"ipa":ipa,"morphology_mode":morphology_mode}
+    return {
+        "input":text,
+        "surface_hangul":surface_hangul,
+        "surface_syllables":[x.to_dict() for x in items],
+        "rules":[x.to_dict() for x in traces]+lexical_traces,
+        "ipa":ipa,
+        "morphology_mode":morphology_mode,
+        "surface_status":"rule-and-lexicon-derived-research-analysis",
+    }
 
 def _feature_vector_for_ipa(ipa:str)->dict:
     if ipa=="g": ipa="ɡ"
