@@ -27,7 +27,7 @@ The IPA remains inspectable for research and debugging. This is intentional: the
 The new parametrized test covers native-engine contexts that must remain explicitly unresolved and block target rendering:
 
 - `앉아라` — R002 complex-coda liaison;
-- `앓아` — R003 ㅎ-coda deletion;
+- `쌓아` — R003 ㅎ-coda deletion;
 - `넋하고` — R004 complex-coda + ㅎ;
 - `갇이` — R007 morphology-conditioned palatalization;
 - `긁고` — R008 ㄺ-before-ㄱ fortition;
