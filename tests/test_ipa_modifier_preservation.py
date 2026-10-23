@@ -56,3 +56,17 @@ def test_every_lexical_ipa_syllable_is_supported_by_the_adapter():
             except ValueError as exc:
                 problems.append(f"{orthography} syllable {index + 1} {ipa_syllable!r}: {exc}")
     assert not problems, "\\n".join(problems)
+
+
+def test_unreleased_stop_modifier_requires_a_stop_in_the_same_syllable():
+    assert tokenize_ipa_with_modifiers("k̚")[0]["unreleased"] is True
+    for ipa in ("a̚", "m̚", "a.̚", "a ̚"):
+        with pytest.raises(ValueError, match="unreleased-stop diacritic"):
+            tokenize_ipa_with_modifiers(ipa)
+
+
+def test_duplicate_ipa_modifiers_fail_closed():
+    with pytest.raises(ValueError, match="duplicate IPA length mark"):
+        tokenize_ipa_with_modifiers("aːː")
+    with pytest.raises(ValueError, match="duplicate IPA unreleased-stop diacritic"):
+        tokenize_ipa_with_modifiers("k̚̚")
