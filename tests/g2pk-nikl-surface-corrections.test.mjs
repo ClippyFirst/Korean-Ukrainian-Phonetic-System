@@ -31,7 +31,7 @@ const cases = [
     input: '넓둥글다',
     surface: '넙뚱글다',
     source: '넓둥글다',
-    evidence: /NIKL §10 exception/u
+    evidence: /qna_seq=322805/u
   },
   {
     input: '넓적하다',
