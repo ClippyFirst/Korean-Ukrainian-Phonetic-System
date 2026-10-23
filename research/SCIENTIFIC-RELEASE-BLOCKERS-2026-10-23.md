@@ -86,3 +86,7 @@ Current main is `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`. This supersedes the 
 - **Additional safeguard:** a Node regression test is being added to catch drift between the workflow's grep assertion and the source HTML before deployment. Its status is pending exact-head CI.
 
 Scientific release disposition remains blocked; deployed research preview / partial prototype only.
+
+## Deployment acceptance update — 2026-10-23
+
+The corrected Pages workflow is now verified on main commit `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`: [run 40009408019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40009408019) passed Python 3.11/3.12/3.13, browser tests/build, the public HTTP smoke, and the live Playwright practical-mode interaction. Therefore SR-06 is `DONE_VERIFIED` for that deployed commit. The additional source-HTML regression test in the current follow-up branch still needs exact-head CI. The live NIKL inventory remained skipped/blocked, not passed.
