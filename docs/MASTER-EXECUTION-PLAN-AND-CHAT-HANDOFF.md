@@ -342,3 +342,11 @@ Open evidence-review PRs #244 and #246 were inspected but intentionally left unt
 - **IMPLEMENTED / CI pending:** PR #253 contains the adapter, source updates, regressions, and evidence report. Await exact-head GitHub Actions before merge.
 - Fixed intake queue remains 43/60 content-checked; 17 remain unreviewed (14 HTML + 3 PDFs). Item-level KOGL marks, independent broad IPA gold, independent Ukrainian-target gold, exhaustive rule/subparagraph/exception mapping, and permitted live NIKL captures remain open.
 - **Readiness:** research preview / partial prototype, not a fully validated normative transcriber.
+
+
+## Final batch 29 verification checkpoint — 2026-10-23
+
+- **DONE_VERIFIED on implementation head** `a6309e19e2b0d3c2bca33041cddde8343baa8d66`: 1,182/1,182 JavaScript tests passed; production build, browser G2P integration, Python 3.11/3.12/3.13, and generated corpus artifacts passed. Evidence: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917834), [browser G2P](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917781), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917899), [artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963918041).
+- The earlier batch-28 pending-CI wording is historical; exact-head CI passed and PR #252 was merged as `74b773bc59deb8c381de20a0d5404da231083ce5`.
+- **Still open:** independent IPA gold, independent Ukrainian adaptation gold, exhaustive *표준 발음법* article/subparagraph/exception/variant mapping, item-level KOGL rights, and permitted reproducible live source access (HTTP 403 remains the recorded block). This run skipped the optional live-source inventory step; do not count it as successful source retrieval.
+- Release status remains research preview / partial prototype until those linguistic and rights gates are satisfied.
