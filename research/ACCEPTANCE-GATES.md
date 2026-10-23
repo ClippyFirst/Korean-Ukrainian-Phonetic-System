@@ -255,3 +255,21 @@ The later commits `0348043653e7489e98e0f68dc2bb9a820e9cb99a` and `baff6c24c996fc
 Latest executable/test changes passed all available CI at code/test commit `30f1eab3043148193a74fb5d977033b74937726c`: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810510), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810736), [corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810589), [g2pK integration](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810621), and [UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810616). The official NIKL inventory was skipped. A subsequent source-register wording-only commit updated the queue count to 21; CSV structure remains valid (102 rows, 12 columns, no width errors).
 
 The engine now uses `sal.mi` as the better-supported broad-surface candidate for [살믜], exposes `sal.me` as a separate alternative for [살메], marks both diagnostic-only, and blocks Ukrainian target output. The 21-case blinded reviewer queue includes IPA-021 삶의 with no candidate IPA and no reviewer data. Full scientific acceptance remains **BLOCKED_SPECIALIST_ADJUDICATION** and **BLOCKED_SPECIALIST_REVIEW**; release readiness remains research preview / partial prototype.
+
+### NIKL inventory follow-up — actual execution evidence (2026-10-24)
+
+The earlier status “skipped” described the ordinary PR run only. The gate was then explicitly executed on diagnostic branch `research/nikl-metadata-inventory-2026-10-24` using the existing metadata-only crawler and three official URL variants:
+
+| Workflow run | Endpoint variant | Crawl outcome |
+|---|---|---|
+| [40029487614](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029487614) | `www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002` | BLOCKED: HTTP 403 |
+| [40029571329](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029571329) | `www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002` | BLOCKED: HTTP 403 |
+| [40029630066](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029630066) | `korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002` | BLOCKED: HTTP 403 |
+
+The collector's exact block reason is “Official source denied or rate-limited this request (HTTP 403); do not bypass access controls.” The workflow job can conclude success because `continue-on-error` and the classifier intentionally treat this specific block as an evidence-bearing warning. This is **not** an accepted inventory: no complete manifest was emitted. The official page is visible in public search-index results, but direct open also returns 403; indexed snippets cannot prove complete 1–30 coverage or source/article hashes. The first run's log artifact is [available here](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029487614/artifacts/12533748777).
+
+| Gate | Current status | Acceptance criterion |
+|---|---|---|
+| Official NIKL source inventory | **BLOCKED_EXTERNAL_ACCESS** | Obtain permitted direct retrieval or an official export; validate all 30 articles with zero missing/duplicate/incomplete records; emit and audit metadata-only source/article hashes and manifest. Do not bypass access controls or retain full text before terms review. |
+
+This replaces “skipped” as the overall task status: the collector has now been attempted three times against approved official endpoints, with the access block evidenced and classified. The blocker remains external source access, not an unrun job or an untested parser.
