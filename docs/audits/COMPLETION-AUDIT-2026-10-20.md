@@ -982,7 +982,7 @@ Implementation/test head `052f8ef0155be23ad86b8f58f94b8c7a5ffa3af6` passed:
 - corpus artifacts [run 40006290630](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290630);
 - optional g2pK integration [run 40006292252](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006292252).
 
-CI found and helped fix validation-order and whitespace-fixture defects. The live NIKL inventory job was skipped. Local tests were not run. This change improves runtime contract integrity only; it does not change or validate phonetic transcriptions. Final exact-PR-head CI remains required after documentation-only commits.
+CI found and helped fix validation-order and whitespace-fixture defects. The live NIKL inventory job was skipped. Local tests were not run. This change improves runtime contract integrity only; it does not change or validate phonetic transcriptions. PR #261 merged as `1860616a15a664ef189ffdaff50fe559aa1339a5` after exact final-head CI passed (tests/Python 3.11–3.13/web [40006505307](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006505307); system verification [40006505329](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006505329); corpus artifacts [40006505319](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006505319); optional g2pK [40006505314](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006505314)).
 
 
 ## Native IPA fortis-feature preservation audit — 2026-10-23
