@@ -311,7 +311,7 @@ def _select_target(target):
         # Carry source provenance through candidate selection so the final
         # orthographic renderer can preserve word boundaries without inventing
         # a Ukrainian grapheme for a Korean syllable boundary.
-        for key in ("source_ipa","source_length","source_diacritics",
+        for key in ("source_ipa","source_features","source_length","source_diacritics",
                     "source_syllable_index","source_word_index","source_boundary_before"):
             chosen[key]=segment.get(key)
         selected.append(chosen)
