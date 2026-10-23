@@ -335,18 +335,19 @@ def test_ipa_adapter_still_accepts_a_supported_segment():
     assert result["segments"][0]["source_ipa"] == "a"
 
 
-def test_unlicensed_complex_coda_liaison_is_explicitly_unresolved_and_fails_closed():
+def test_unlicensed_complex_coda_lookalike_is_explicitly_unresolved_and_fails_closed():
     from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
 
-    analysis = phoneticize_korean("앉아라")
+    word = "앉어라"
+    analysis = phoneticize_korean(word)
     assert analysis["pronunciation_status"] == "unresolved"
     assert any(
         item["rule_id"] == "R002"
-        and item["input_span"] == "앉아라"
+        and item["input_span"] == word
         and item["status"] == "unresolved-no-exact-license"
         for item in analysis["unresolved_contexts"]
     )
-    result = transliterate_korean("앉아라")
+    result = transliterate_korean(word)
     assert result["ukrainian_orthography"] is None
     assert result["target_status"] == "unresolved"
     assert result["selection_status"] == "unresolved_due_to_ambiguous_korean_phonology"
@@ -385,7 +386,6 @@ def test_unambiguous_productive_tensification_remains_available():
 @pytest.mark.parametrize(
     ("word", "rule_id"),
     [
-        ("앉아라", "R002"),
         ("쌓아", "R003"),
         ("넋하고", "R004"),
         ("갇이", "R007"),
