@@ -651,3 +651,15 @@ The focused research work is now complete as a documented evidence review, not a
 - **DEFERRED:** probabilistic n-insertion modeling; compact forms requiring morphology/spacing analysis.
 
 Do not merge this as a scientific release claim: the implementation is safer and the regression evidence is green, but the product remains a research preview / partial prototype until specialist adjudication and target-layer validation are complete.
+
+### Direct NIKL inventory follow-up — 2026-10-24 (supersedes “skipped” as the final status)
+
+The previous PR-run status showed the official NIKL metadata-only inventory as skipped because the job's condition only permits `research/nikl-*` refs. I did not leave the gate there. On dedicated diagnostic branch `research/nikl-metadata-inventory-2026-10-24`, the existing crawler was executed against three official URL variants without changing crawler safeguards:
+
+- [Run 40029487614](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029487614): canonical `www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002` → HTTP 403.
+- [Run 40029571329](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029571329): official mobile `www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002` → HTTP 403.
+- [Run 40029630066](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029630066): canonical hostname without `www` → HTTP 403.
+
+In each case, the collector logged `NIKL crawl BLOCKED: Official source denied or rate-limited this request (HTTP 403); do not bypass access controls.` and exited 3; the workflow records the expected access block as a warning. A green job conclusion therefore means the block was correctly classified, **not** that the source inventory passed. The first run's evidence artifact is [nikl-source-crawl-40029487614](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029487614/artifacts/12533748777). The official source URL is discoverable via public search indexing, but direct page retrieval also returns 403 in the web retrieval environment; search excerpts cannot supply a trustworthy full-page response hash or complete item-level metadata manifest.
+
+**Current gate: `BLOCKED_EXTERNAL_ACCESS`, not `DONE_VERIFIED` and not merely `skipped`.** Completion acceptance remains: authorized direct source retrieval or an official export; all 30 articles reconciled with no missing, duplicate, or incomplete extraction; a validated metadata-only manifest with source and article hashes; and artifact/log review. Do not bypass the 403 or retain full article text without terms review. The diagnostic branch contains workflow-only endpoint experiments and is not part of PR #281's proposed production change.
