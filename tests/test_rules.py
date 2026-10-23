@@ -576,3 +576,91 @@ def test_nikl_rule_29_explicit_no_insertion_exceptions_remain_unlicensed():
         assert not traces[0].changed, word
         assert traces[0].status == "conditional-disabled", word
         assert all(item.onset != "ㄴ" for item in items), word
+
+
+def test_nikl_rule_28_listed_compound_fortition_examples_have_exact_licenses():
+    examples = {
+        "문고리": ("문>고", "ㄲ"),
+        "눈동자": ("눈>동", "ㄸ"),
+        "신바람": ("신>바", "ㅃ"),
+        "산새": ("산>새", "ㅆ"),
+        "손재주": ("손>재", "ㅉ"),
+        "길가": ("길>가", "ㄲ"),
+        "물동이": ("물>동", "ㄸ"),
+        "발바닥": ("발>바", "ㅃ"),
+        "바람결": ("람>결", "ㄲ"),
+        "그믐달": ("믐>달", "ㄸ"),
+        "강가": ("강>가", "ㄲ"),
+        "초승달": ("승>달", "ㄸ"),
+        "등불": ("등>불", "ㅃ"),
+        "창살": ("창>살", "ㅆ"),
+        "강줄기": ("강>줄", "ㅉ"),
+        "아침밥": ("침>밥", "ㅃ"),
+        "굴속": ("굴>속", "ㅆ"),
+        "술잔": ("술>잔", "ㅉ"),
+    }
+    for word, (pair, expected_onset) in examples.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R014"])
+        left, right = pair.split(">")
+        right_index = next(i for i, item in enumerate(items) if item.text == right)
+        assert items[right_index].onset == expected_onset, word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R014:compound:{word}:{pair}", word
+        assert traces[0].source.startswith("NIKL §28"), word
+
+
+def test_nikl_rule_30_saisiot_examples_have_exact_pair_licenses():
+    fortition = {
+        "냇가": ("냇>가", "ㄲ"),
+        "샛길": ("샛>길", "ㄲ"),
+        "빨랫돌": ("랫>돌", "ㄸ"),
+        "콧등": ("콧>등", "ㄸ"),
+        "깃발": ("깃>발", "ㅃ"),
+        "대폿밥": ("폿>밥", "ㅃ"),
+        "햇살": ("햇>살", "ㅆ"),
+        "뱃속": ("뱃>속", "ㅆ"),
+        "뱃전": ("뱃>전", "ㅉ"),
+        "고갯짓": ("갯>짓", "ㅉ"),
+    }
+    for word, (pair, expected_onset) in fortition.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R015"])
+        _, right = pair.split(">")
+        right_index = next(i for i, item in enumerate(items) if item.text == right)
+        assert items[right_index].onset == expected_onset, word
+        assert items[next(i for i, item in enumerate(items) if item.text == pair.split(">")[0])].coda == "", word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R015:saisiot:{word}:{pair}", word
+        assert traces[0].source.startswith("NIKL §30"), word
+
+    nasalization = {
+        "아랫니": ("랫>니", "랫"),
+        "뒷마루": ("뒷>마", "뒷"),
+        "뱃머리": ("뱃>머", "뱃"),
+    }
+    for word, (pair, left) in nasalization.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R015"])
+        left_index = next(i for i, item in enumerate(items) if item.text == left)
+        assert items[left_index].coda == "ㄴ", word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R015:saisiot:{word}:{pair}", word
+
+    for word, pair in {"깻잎": "깻>잎", "나뭇잎": "뭇>잎"}.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R015"])
+        left, right = pair.split(">")
+        left_index = next(i for i, item in enumerate(items) if item.text == left)
+        right_index = next(i for i, item in enumerate(items) if item.text == right)
+        assert items[left_index].coda == "ㄴ", word
+        assert items[right_index].onset == "ㄴ", word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R015:saisiot:{word}:{pair}", word
+
+
+def test_rule_28_and_30_exact_licenses_do_not_generalize_to_unlisted_homographs():
+    items, traces = apply_ordered_rules(parse_syllables("잠자리"), ["R014"])
+    assert items[1].onset == "ㅈ"
+    assert not traces[0].changed
+
+    items, traces = apply_ordered_rules(parse_syllables("옷가게"), ["R015"])
+    assert items[0].coda == "ㅅ"
+    assert items[1].onset == "ㄱ"
+    assert not traces[0].changed
