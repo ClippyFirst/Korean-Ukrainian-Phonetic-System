@@ -25,7 +25,7 @@ RULE_META={
 "R006":("liquid-assimilation","NIKL §§19–20","high"),
 "R007":("palatalization","NIKL §17","high"),
 "R008":("tensification","NIKL §§23–27","high"),
-"R009":("n-insertion","NIKL §29","high"),
+"R009":("n-insertion","NIKL §29; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R010":("stem-nm-fortition","NIKL §24","high"),
 "R011":("stem-lb-lt-fortition","NIKL §25","high"),
 "R012":("sino-korean-l-fortition","NIKL §26","high"),
@@ -34,6 +34,35 @@ RULE_META={
 "R015":("saisiot-pronunciation","NIKL §30","high"),
 "R016":("verbal-stem-rieul-giyeok-exception","NIKL §11; lexical/morphological conditioning","high"),
 }
+
+# Exact, source-backed examples explicitly listed in NIKL Standard Pronunciation Rule 29.
+# Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+_NIKL_R009_WORD_LICENSES = {
+    "솜이불": "솜>이", "홑이불": "홑>이", "막일": "막>일", "삯일": "삯>일",
+    "맨입": "맨>입", "꽃잎": "꽃>잎", "내복약": "복>약", "한여름": "한>여",
+    "남존여비": "존>여", "신여성": "신>여", "색연필": "색>연",
+    "직행열차": "행>열", "늑막염": "막>염", "콩엿": "콩>엿", "담요": "담>요",
+    "눈요기": "눈>요", "영업용": "업>용", "식용유": "용>유", "백분율": "분>율",
+    "밤윷": "밤>윷", "들일": "들>일", "솔잎": "솔>잎", "설익다": "설>익",
+    "물약": "물>약", "불여우": "불>여", "서울역": "울>역", "물엿": "물>엿",
+    "서른여섯": "른>여", "스물여섯": "물>여",
+}
+_NIKL_R009_PHRASE_LICENSES = {
+    "한 입": "한>입", "옷 입다": "옷>입", "먹은 엿": "은>엿",
+    "할 일": "할>일", "잘 입다": "잘>입", "먹을 엿": "을>엿",
+}
+
+def _source_backed_r009_licenses(items, boundary_mode):
+    full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
+    licenses = set()
+    pair = _NIKL_R009_WORD_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R009:word:{full_form}:{pair}")
+    if boundary_mode == "phrase":
+        pair = _NIKL_R009_PHRASE_LICENSES.get(full_form)
+        if pair is not None:
+            licenses.add(f"R009:phrase:{full_form}:{pair}")
+    return licenses
 
 @dataclass
 class RuleTrace:
@@ -297,6 +326,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if not a.coda: continue
             pair=f"{a.text}>{b.text}"
             permitted=False
+            permitted_scope=None
             for license in insertion_licenses:
                 parts=license.split(":",3)
                 if len(parts)!=4: continue
@@ -304,8 +334,10 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 if licensed_form!=full_form or licensed_pair!=pair: continue
                 if scope=="word" and a.boundary_after!="word" and " " not in licensed_form:
                     permitted=True
+                    permitted_scope=scope
                 elif scope=="phrase" and boundary_mode=="phrase" and a.boundary_after=="word" and " " in licensed_form:
                     permitted=True
+                    permitted_scope=scope
                 if permitted: break
             if not permitted: continue
             # NIKL §29 and its commentary include ㅣ and j-initial
@@ -313,6 +345,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             # exact license, not in this segmental environment check.
             b.onset="ㄹ" if FINAL_REPRESENTATIVE.get(a.coda,a.coda)=="ㄹ" else "ㄴ"
             changed=True
+            license_context=f"R009:{permitted_scope}:{full_form}:{pair}"
     elif rule_id in {"R010","R011","R012","R013","R014"}:
         # These rules depend on morphology or lexical class, not just the
         # consonant sequence. Require a full-form + adjacent-pair license.
@@ -463,6 +496,9 @@ def apply_ordered_rules(
         "R010", "R011", "R012", "R013", "R014", "R015", "R016", "R008", "R001",
     ]
     exact = list(rule_licenses or ())
+    # Use only exact-form licenses for examples explicitly listed in NIKL §29.
+    # Other words still need an explicit caller license.
+    exact.extend(_source_backed_r009_licenses(items, boundary_mode))
     soft = soft_formal_licenses(items) if morphology_mode == "soft" else []
     merged = merge_licenses(exact, soft, morphology_mode=morphology_mode)
     soft_set = set(soft)

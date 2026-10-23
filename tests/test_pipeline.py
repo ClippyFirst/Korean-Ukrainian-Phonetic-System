@@ -15,7 +15,7 @@ def test_unknown_boundary_does_not_apply_contextual_rules():
 
 def test_n_insertion_requires_explicit_licensing():
     assert not any(x["changed"] for x in phoneticize_korean("먹이")["rules"] if x["rule_id"]=="R009")
-    q=phoneticize_korean("한여름",n_insertion_licensed=True,rule_licenses={"R009:word:한여름:한>여"})
+    q=phoneticize_korean("각여름",n_insertion_licensed=True,rule_licenses={"R009:word:각여름:각>여"})
     assert any(x["rule_id"]=="R009" and x["changed"] for x in q["rules"])
     assert q["surface_syllables"][1]["onset"]=="ㄴ"
 
@@ -439,3 +439,25 @@ def test_sourced_lexical_override_marks_ipa_provisional_not_diagnostic_only():
     assert analysis["ipa"]["status"] == "provisional"
     assert analysis["ipa"]["is_diagnostic_only"] is False
     assert analysis["ipa"]["status_reason"] is None
+
+
+def test_native_engine_applies_direct_nikl_n_insertion_example_without_caller_license():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("한여름")
+    assert result["surface_hangul"] == "한녀름"
+    assert result["surface_syllables"][1]["onset"] == "ㄴ"
+    trace = next(item for item in result["rules"] if item["rule_id"] == "R009")
+    assert trace["changed"] is True
+    assert trace["license_context"] == "R009:word:한여름:한>여"
+    assert trace["source"].startswith("NIKL §29")
+    assert result["pronunciation_status"] == "provisional"
+    assert result["ipa_is_diagnostic_only"] is False
+
+
+def test_native_engine_keeps_unlisted_n_insertion_candidate_conservative():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("각여름")
+    assert not any(item["rule_id"] == "R009" and item["changed"] for item in result["rules"])
+    assert not any(item.get("license_context") == "R009:word:각여름:각>여" for item in result["rules"])
