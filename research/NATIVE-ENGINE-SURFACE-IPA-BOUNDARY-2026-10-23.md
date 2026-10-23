@@ -109,3 +109,18 @@ The expanded raw-registry test found one additional error that the previous merg
 ### Cross-runtime regression fixture correction
 
 After the alternate IPA was corrected, CI exposed one stale JavaScript test fixture asserting the former malformed ASCII-`r` string. Updated that fixture to expect the corrected IPA flap `ɾ`. This is a test-only parity adjustment for the shared lexical data; the practical JS transcription implementation itself was not changed.
+
+
+## Final verification: strict IPA modifier and raw-registry audit — 2026-10-23
+
+- PR [#258](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/258) merged to `main`; merge commit `f2cfda570d424c23425fdf948edc91cea65a6d7b`. Final PR head: `995417e23e772297520017a4ac51f13ae4986cb5`.
+- Exact-head CI passed:
+  - Python 3.11/3.12/3.13 and web tests: [run 40003785817](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40003785817).
+  - Python regression/data integrity and browser regression/build: [run 40003785800](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40003785800).
+  - Master table and strict corpus artifacts: [run 40003785656](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40003785656).
+  - Optional g2pK integration: [run 40003785813](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40003785813).
+  - Live NIKL source inventory was skipped; it is not a pass.
+- CI first caught a hidden alternate IPA typo (`발음의` `pa|rɯ|me`) and then a stale JS regression assertion. Both were corrected and all tests passed on the final PR head. A raw scan found no other ASCII-`r` residues in primary/alternate IPA fields in the base lexicon and the active 2026-10-15 overlay; the regression now scans every dated overlay file at runtime.
+- **DONE_VERIFIED:** strict duplicate/misplaced IPA modifier rejection, all raw primary/alternate IPA syntax and syllable alignment, two IPA data fixes plus a stale fixture correction.
+- **PARTIAL / BLOCKED:** this is not independent IPA adjudication. The 20-case `research/ipa-adjudication-queue.json` remains unadjudicated; qualified Korean phonetics review is needed. Independent Ukrainian target policy, exhaustive subparagraph/exception coverage, item-level KOGL verification, and reproducible live NIKL access remain open.
+- Local tests were not run in this API-only session; exact-head remote CI is the verification evidence. The PR did not alter the practical JS transcription implementation.
