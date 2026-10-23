@@ -554,3 +554,14 @@ Branch: `research/native-engine-unresolved-cases-2026-10-24`. This work is limit
 - Deliberately did not auto-resolve `많이본` or `좋아보인다고`: the likely spacing boundaries (`많이 본`, `좋아 보인다고`) cannot be safely inferred from Hangul adjacency. Compact forms remain unresolved; explicitly spaced controls are tested separately.
 - Scholarly evidence and case-by-case decisions are documented in [docs/NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md](NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md). Literature reviewed includes Lee & Chung 2007 on morphology-conditioned pronunciation variation, Jeon et al. 1998 on staged rule processing, Jun 2015/2021 on gradient n-insertion, and the K-SPAN paper's limits as a non-recording-based lexical reference.
 - CI acceptance is pending at the time of this entry; do not mark the batch DONE_VERIFIED until the new Python regression test, full tests, system verification, and corpus artifacts finish successfully. The compact forms and independent IPA/Ukrainian specialist reviews remain open blockers.
+
+### Continuation — evidence-led native unresolved-case repairs (2026-10-24)
+
+Branch: `research/native-engine-unresolved-cases-2026-10-24`. This work is limited to the native Python research engine, source-backed lexical data, and regression tests; it does not adopt or modify a third-party G2P engine.
+
+- Added exact full-form NIKL §14 formal-morpheme licenses for `앉아라` (pair `앉>아`) and `없어도` (pair `없>어`). These are rule-derived forms from transparent morphology and the official examples `앉아[안자]` / `없어[업써]`; the report does not claim that the official source directly lists the complete inflected forms.
+- R002 now records its exact license scope, full form and adjacent pair in the trace.
+- Added an exact `삶의` lexical entry based on NIKL's direct statement that the particle phrase is pronounced `[살믜]` or `[살메]`. The project IPA renderings are `sal.mɰi` / `sal.me`; they remain project-derived and Ukrainian target status remains provisional.
+- Deliberately did not auto-resolve `많이본` or `좋아보인다고`: the likely spacing boundaries (`많이 본`, `좋아 보인다고`) cannot be safely inferred from Hangul adjacency. Compact forms remain unresolved; explicitly spaced controls are tested separately.
+- Scholarly evidence and case-by-case decisions are documented in [docs/NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md](NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md). Literature reviewed includes Lee & Chung 2007 on morphology-conditioned pronunciation variation, Jeon et al. 1998 on staged rule processing, Jun 2015/2021 on gradient n-insertion, and the K-SPAN paper's limits as a non-recording-based lexical reference.
+- CI acceptance is pending at the time of this entry; do not mark the batch DONE_VERIFIED until the new Python regression test, full tests, system verification, and corpus artifacts finish successfully. The compact forms and independent IPA/Ukrainian specialist reviews remain open blockers.
