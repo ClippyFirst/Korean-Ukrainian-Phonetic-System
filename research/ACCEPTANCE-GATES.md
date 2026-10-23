@@ -200,3 +200,9 @@ The read-only rights triage on the current 100-row register yields 96 `REVIEW_RE
 Main `1f91d0c3817153d8a07004778ed916fda39d4ec5` passed tests, Python 3.11–3.13, browser G2P, system verification, corpus artifacts, and Pages live smoke ([run 40012122568](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012122568)).
 
 The new branch `research/blinded-ipa-review-packets-2026-10-23` provides a one-way, read-only projection of the canonical 20-case IPA queue for reviewer A or B. It hashes the exact queue revision and omits candidate IPA, the other reviewer’s record, reconciliation, target review, and source notes. Exact-head CI remains required; reviewer submissions themselves are external evidence and are not simulated by code.
+
+## Current mainline status after PR #270 / #271 — 2026-10-23
+
+Main is `df733c7f7afdf1262bea6c46d07876d6f315ccaf`. Exact-head PR #271 CI passed 1,195 Node tests (0 failures), Python 3.11–3.13, system verification, browser G2P and corpus artifacts. Post-merge main tests, system verification, browser G2P and corpus artifacts passed. Pages run [40012736801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40012736801) had passed deploy and public HTTP smoke; live Playwright Chromium installation was still in progress at this note and must be checked before marking the entire deployment workflow complete.
+
+Source rights triage: 100 rows; 96 review required, 2 manual classification required, 1 item-level license recorded, 1 not applicable recorded. This is not a permission decision. IPA review tooling is ready, but independent submissions remain 0/20 in each slot. The live NIKL inventory is skipped/blocked, not passed.
