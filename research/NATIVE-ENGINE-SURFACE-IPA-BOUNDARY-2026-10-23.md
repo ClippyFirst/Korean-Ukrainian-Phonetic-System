@@ -148,3 +148,24 @@ Regression tests assert the precise boundary/index sequence for `ɰiː.nan kʌ`,
 ### CI-driven test correction
 
 The first exact-head CI caught a test-only NameError: the new end-to-end boundary test called the private target selector without importing it. Added the explicit import. The implementation and assertion remain unchanged; the test must pass on the subsequent exact head before merge.
+
+
+## Final verification: feature coverage and boundary preservation — 2026-10-23
+
+### PR #259 — IPA-to-feature inventory gate
+- Merged commit: `25c098ce46a355b810a60550ea77f1a026bc1c7d`.
+- Every segment in every raw primary and alternate IPA form must now produce a non-empty source feature vector containing the core `consonantal` and `syllabic` fields.
+- This check is integrated with the raw CSV audit, so overlays and alternate forms are not hidden by dictionary overrides.
+- Exact-head CI passed Python 3.11–3.13/web, system/data integrity/browser build, and generated corpus artifacts: [tests 40004118905](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40004118905), [system 40004118883](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40004118883), [artifacts 40004118959](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40004118959). The live NIKL inventory step was skipped.
+
+### PR #260 — IPA boundary metadata
+- Merged commit: `a378cb28068fe645b4a68bcc587dd94c39514501`; final PR head `88b942b82b536ba94f2affd328c71ffbe779d85`.
+- Parsed IPA segments now retain `syllable_index`, `word_index`, and `boundary_before`; these values pass through IPA→target analysis and selected-candidate records.
+- Ukrainian rendering now preserves source word spaces while not printing IPA syllable dots. The compatibility `tokenize_ipa` API still returns plain segment strings.
+- Exact code/test commit `03e56964c263bfff3a128591bb3750569f1acc0d` passed Python 3.11–3.13/web [tests 40004783735](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40004783735), system verification/browser build [40004783586](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40004783586), generated artifacts [40004783701](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40004783701), and optional g2pK integration [40004783755](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40004783755). Live NIKL inventory was skipped.
+- CI initially caught a missing test import; the import was fixed and the final code/test commit passed. This failure/fix is recorded rather than hidden.
+
+### Current boundary status
+- **DONE_VERIFIED:** IPA token inventory → source feature vector coverage; primary/alternate raw lexical IPA syntax and syllable alignment; length/unreleased-stop metadata; strict invalid modifier rejection; source syllable/word boundary metadata preserved through target selection; word spaces preserved by rendering.
+- **Still BLOCKED / evidence-limited:** independent IPA adjudication for all 20 queued cases, independent Ukrainian target review, exhaustive subparagraph/exception/variant adjudication for all 30 normative articles, item-level KOGL verification, and live NIKL crawl (HTTP 403; CI step skipped).
+- The changes establish technical boundary integrity, not scientific correctness of every IPA transcription or Ukrainian correspondence. Local tests were not run in this API-only session.
