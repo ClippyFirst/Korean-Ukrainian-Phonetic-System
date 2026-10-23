@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
 import { auditSourceRegister, parseCsv } from '../scripts/audit-source-register.mjs';
 
@@ -51,4 +53,17 @@ test('real source register is structurally valid and unresolved rights remain vi
     report.rightsClassificationCounts.REVIEW_REQUIRED + report.rightsClassificationCounts.MANUAL_CLASSIFICATION_REQUIRED,
   );
   assert.ok(report.itemLevelRightsNotClosed.every(item => item.sourceId && item.currentLicenseStatus !== null));
+});
+
+test('CLI reports structure by default and keeps strict rights acceptance blocked', () => {
+  const script = fileURLToPath(new URL('../scripts/audit-source-register.mjs', import.meta.url));
+  const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
+  assert.equal(normal.status, 0, normal.stderr);
+  const report = JSON.parse(normal.stdout);
+  assert.equal(report.sourceRegisterRows, 100);
+  assert.equal(report.structuralErrorCount, 0);
+  assert.ok(report.itemLevelRightsNotClosed.length > 0);
+
+  const strict = spawnSync(process.execPath, [script, '--require-reviewed-rights'], { cwd: process.cwd(), encoding: 'utf8' });
+  assert.equal(strict.status, 3, 'strict rights gate must remain blocked while item-level rights are unresolved');
 });
