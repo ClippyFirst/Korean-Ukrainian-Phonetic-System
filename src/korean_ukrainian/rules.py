@@ -170,9 +170,11 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 if scope=="formal":
                     retained,moved=COMPLEX_LIAISON[a.coda]
                     a.coda=retained; b.onset=moved or "ㅇ"; changed=True
+                    license_context=f"R002:formal:{full_form}:{pair}"
                 elif scope=="substantive":
                     representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
                     a.coda=""; b.onset=representative; changed=True
+                    license_context=f"R002:substantive:{full_form}:{pair}"
                 else:
                     conditional_disabled=True
             elif a.coda in {"ㄷ","ㅌ"} and b.nucleus=="ㅣ":
