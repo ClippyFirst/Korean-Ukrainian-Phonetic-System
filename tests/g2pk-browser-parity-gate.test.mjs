@@ -32,7 +32,7 @@ test('practical browser mode is wired to the vendored JavaScript g2pK adapter', 
   assert.match(adapter, /descriptive: false/u);
   assert.match(adapter, /toSyl: true/u);
   assert.match(adapter, /exact-form corrections/u);
-  assert.match(adapter, /before the IPA adapter/u);
+  assert.match(adapter, /before the IPA adapter/iu);
   assert.doesNotMatch(adapter, /applyLexical(?:Surface|Ipa)Controls/u);
   assert.match(port, /Ported from g2pk\/g2pk\.py/u);
 });
