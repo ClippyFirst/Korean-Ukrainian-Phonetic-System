@@ -9,7 +9,7 @@ def test_nikl_attested_particle_readings_for_salmui_are_explicit_variants():
     assert result["ipa"]["ipa"] == "sal.mi"
     assert result["ipa"]["lexical_alternatives"] == [{
         "input": word,
-        "surface_hangul": "\\uc0b4\\uba54",
+        "surface_hangul": "\uc0b4\uba54",
         "ipa": "sal.me",
         "status": "diagnostic_only_unresolved_pronunciation",
         "source": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
