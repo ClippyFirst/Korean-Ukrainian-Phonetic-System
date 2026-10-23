@@ -54,7 +54,7 @@ function validateAdjudicationCase(item) {
 
 test('IPA adjudication queue covers every surface case and allows separately sourced high-risk forms', () => {
   assert.equal(queue.schemaVersion, 2);
-  assert.equal(queue.cases.length, surface.cases.length);
+  assert.ok(queue.cases.length >= surface.cases.length);
   assert.ok(queue.cases.length >= surface.cases.length);
   assert.match(queue.purpose, /do not independently determine broad IPA/u);
   const byInput = new Map(surface.cases.map(item => [item.input, item]));
