@@ -76,6 +76,16 @@ test('rejects stale queue hashes, changed source fields, duplicate/missing cases
   assert.ok(validateReviewerSubmission(JSON.stringify(wrongSlot), queueText, 'A').errors.some(error => error.includes('does not match the requested slot')));
 });
 
+test('requires one consistent reviewer identity and qualification across the packet', () => {
+  const packet = completePacket('A');
+  packet.cases[7].reviewForm.reviewerId = 'a-different-reviewer';
+  packet.cases[8].reviewForm.qualification = 'A different qualification statement';
+  const report = validateReviewerSubmission(JSON.stringify(packet), queueText, 'A');
+  assert.equal(report.valid, false);
+  assert.ok(report.errors.some(error => error.includes('IPA-008: reviewerId must be consistent across the packet')));
+  assert.ok(report.errors.some(error => error.includes('IPA-009: qualification must be consistent across the packet')));
+});
+
 test('rejects fields that could leak candidate IPA or another reviewer’s decision', () => {
   const packet = completePacket('A');
   packet.cases[0].candidateBroadIpa = 'LEAKED_CANDIDATE';
