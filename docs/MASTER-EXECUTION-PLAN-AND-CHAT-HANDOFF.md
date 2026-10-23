@@ -1,6 +1,7 @@
 ## Native engine Rule 29 exact n-insertion licensing — 2026-10-23
 
 - Scope: own Python research engine, branch `research/native-engine-sourced-n-insertion-2026-10-23`, based on main after PR #277.
+- Merge status: [PR #278](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/278) squash-merged successfully as `31548f606a260d920293583b886b8bd4d51aa1a6`. Tested code head: `c95ec90692f1012fefd045514d7b7b0c6b08edcb`; subsequent branch commits only updated documentation.
 - Evidence: NIKL Standard Pronunciation Rule 29 explicitly lists the exact word examples and attached examples. The official rule URL is recorded in `src/korean_ukrainian/rules.py`; a current NIKL Q&A also explicitly explains 한여름[한녀름] and 솜이불[솜ː니불]: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=97&pageIndex=1&qna_seq=336242.
 - Implementation: added a finite exact-form/pair license registry for 29 listed word forms plus six listed cross-word examples. Cross-word examples require `boundary_mode="phrase"`; no global boolean or spelling-only guess grants a license. R009 trace now records the exact license context.
 - Scope boundary: NIKL also lists `3연대` and `1연대`, but native input validation rejects mixed-script numeric strings. Those require a separately specified Korean numeral-reading stage and are not silently coerced by this patch.
@@ -11,7 +12,7 @@
 ## Native engine IPA-status hardening — 2026-10-23
 
 - Scope: own Python research engine only; branch `research/native-engine-evidence-hardening-2026-10-23`, based on default-branch checkpoint `f351c2e2ef65de12ae05212ca0f43cff3c012676`.
-- Merge status: [PR #277](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/277) squash-merged successfully as `faad03498793a15d8f6f179568412a9c8ffb0611`. The tested code head was `89567e77c7ea19cd3d2200b77685e0b12f338c6c`; subsequent commits before merge only reconciled documentation. No third-party engine implementation was edited.
+- Merge status: [PR #277](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/277) squash-merged successfully as `faad03498793a15d8f6f179568412a9c8ffb0611`. The tested code head was `89567e77c7ea19cd3d2200b77685e0b12f338c6c`; subsequent commits before merge only reconciled documentation.
 - Implementation: `phoneticize_korean()` and `transliterate_korean()` now both expose top-level `ipa_status`, `ipa_is_diagnostic_only`, and `ipa_status_reason`. When a recognized morphophonological context is unresolved, diagnostic IPA remains inspectable but is explicitly labelled; Ukrainian target selection remains fail-closed.
 - Regression expansion: unresolved cases `앉아라`/R002, `쌓아`/R003, `넋하고`/R004, `갇이`/R007, and `긁고`/R008 must be marked diagnostic-only and must not render a Ukrainian target. Negative controls `먹이`, `일본`, `실수`, `밭에`, `국밥` must not be falsely marked unresolved. Source-backed lexical forms (`값어치`, `싫어`, `늙고`, `깎아`) remain provisional, not diagnostic-only; they are not used as unresolved tests because the exact lexicon entries intentionally resolve them.
 - Documentation: README Python/API section defines the status contract; [focused contract and acceptance report](NATIVE-ENGINE-IPA-STATUS-AND-FAIL-CLOSED-REGRESSION-2026-10-23.md) records scope, test matrix, and evidence limits.
