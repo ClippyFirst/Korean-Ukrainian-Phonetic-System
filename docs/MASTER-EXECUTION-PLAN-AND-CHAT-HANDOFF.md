@@ -344,7 +344,7 @@ Open evidence-review PRs #244 and #246 were inspected but intentionally left unt
 - **Readiness:** research preview / partial prototype, not a fully validated normative transcriber.
 
 
-## Final batch 29 verification checkpoint — 2026-10-23
+## Final batch 29 verification and merge checkpoint — 2026-10-23
 
 - **DONE_VERIFIED on implementation head** `a6309e19e2b0d3c2bca33041cddde8343baa8d66`: 1,182/1,182 JavaScript tests passed; production build, browser G2P integration, Python 3.11/3.12/3.13, and generated corpus artifacts passed. Evidence: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917834), [browser G2P](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917781), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917899), [artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963918041).
 - The earlier batch-28 pending-CI wording is historical; exact-head CI passed and PR #252 was merged as `74b773bc59deb8c381de20a0d5404da231083ce5`.
