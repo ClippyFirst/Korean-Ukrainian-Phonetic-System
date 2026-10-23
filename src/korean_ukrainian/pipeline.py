@@ -79,13 +79,13 @@ def _validate_korean_input(text):
     """Reject empty and non-Hangul input consistently at every public stage."""
     if not isinstance(text, str):
         raise TypeError("Korean input must be a string")
-    if not any("가" <= char <= "힣" for char in text):
-        raise ValueError("input must contain at least one precomposed Hangul syllable")
     for i, char in enumerate(text):
         if char.isspace():
             continue
         if not ("가" <= char <= "힣"):
             raise ValueError(f"unsupported non-Hangul character at index {i}: {char!r}")
+    if not any("가" <= char <= "힣" for char in text):
+        raise ValueError("input must contain at least one precomposed Hangul syllable")
 
 def analyze_korean(text):
     _validate_korean_input(text)
