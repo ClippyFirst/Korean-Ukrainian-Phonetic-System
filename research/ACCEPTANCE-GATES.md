@@ -151,3 +151,14 @@ Readiness: **research preview / partial prototype**, not release-ready as a scie
 | Ukrainian target fortis policy | PARTIAL / evidence-limited | No target-side fortis feature is defined in the reviewed Ukrainian feature schema; no ranking weight or target mapping was invented. |
 | Live source inventory | BLOCKED / skipped | NIKL inventory job skipped. |
 | Final PR acceptance | PENDING | Re-run exact-head CI after the documentation commits. |
+
+
+## Direct IPA adapter empty-input gate — 2026-10-23
+
+| Gate | Status | Evidence / reason |
+|---|---|---|
+| IPA input contract | DONE_VERIFIED at implementation/test head | PR #264 validates string input before target-inventory initialization and rejects an empty supported-token sequence. |
+| Regression CI | PASS at head `4c7bda56c6feda4b82b1ffa9c9028c7fb02d8ce3` | Python 3.11–3.13/web [40007944889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007944889); system/browser/Python integrity [40007944954](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007944954); corpus [40007945023](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007945023); optional g2pK [40007945019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007945019). |
+| Live official-source inventory | BLOCKED / skipped | NIKL inventory job skipped, not passed. |
+| Scientific release acceptance | BLOCKED | Independent IPA gold, Ukrainian target review, complete normative coverage, item-level rights evidence, and permitted source access remain outstanding. |
+| Final PR acceptance | PENDING | Documentation was added after the passing implementation/test head; final exact PR-head CI is required. |
