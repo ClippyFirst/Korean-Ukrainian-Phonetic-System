@@ -30,8 +30,8 @@ RULE_META={
 "R011":("stem-lb-lt-fortition","NIKL §25","high"),
 "R012":("sino-korean-l-fortition","NIKL §26","high"),
 "R013":("adnominal-l-fortition","NIKL §27","high"),
-"R014":("compound-fortition","NIKL §28","high"),
-"R015":("saisiot-pronunciation","NIKL §30","high"),
+"R014":("compound-fortition","NIKL §28; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
+"R015":("saisiot-pronunciation","NIKL §30; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R016":("verbal-stem-rieul-giyeok-exception","NIKL §11; lexical/morphological conditioning","high"),
 }
 
@@ -52,7 +52,30 @@ _NIKL_R009_PHRASE_LICENSES = {
     "할 일": "할>일", "잘 입다": "잘>입", "먹을 엿": "을>엿",
 }
 
-def _source_backed_r009_licenses(items, boundary_mode):
+# Exact examples explicitly listed in NIKL §28 (fortition in compounds
+# without a written 사이시옷). Homographs whose reading depends on meaning
+# are deliberately omitted from automatic licensing.
+_NIKL_R014_WORD_LICENSES = {
+    "문고리": "문>고", "눈동자": "눈>동", "신바람": "신>바",
+    "산새": "산>새", "손재주": "손>재", "길가": "길>가",
+    "물동이": "물>동", "발바닥": "발>바", "바람결": "람>결",
+    "그믐달": "믐>달", "강가": "강>가", "초승달": "승>달",
+    "등불": "등>불", "창살": "창>살", "강줄기": "강>줄",
+    "아침밥": "침>밥", "굴속": "굴>속", "술잔": "술>잔",
+}
+
+# Exact examples explicitly listed in NIKL §30. Each form is licensed only
+# for its attested pair; the registry does not treat every written ㅅ coda
+# as a saisiot.
+_NIKL_R015_WORD_LICENSES = {
+    "냇가": "냇>가", "샛길": "샛>길", "빨랫돌": "랫>돌",
+    "콧등": "콧>등", "깃발": "깃>발", "대폿밥": "폿>밥",
+    "햇살": "햇>살", "뱃속": "뱃>속", "뱃전": "뱃>전",
+    "고갯짓": "갯>짓", "아랫니": "랫>니", "뒷마루": "뒷>마",
+    "뱃머리": "뱃>머", "깻잎": "깻>잎", "나뭇잎": "뭇>잎",
+}
+
+def _source_backed_rule_licenses(items, boundary_mode):
     full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
     licenses = set()
     pair = _NIKL_R009_WORD_LICENSES.get(full_form)
@@ -62,6 +85,12 @@ def _source_backed_r009_licenses(items, boundary_mode):
         pair = _NIKL_R009_PHRASE_LICENSES.get(full_form)
         if pair is not None:
             licenses.add(f"R009:phrase:{full_form}:{pair}")
+    pair = _NIKL_R014_WORD_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R014:compound:{full_form}:{pair}")
+    pair = _NIKL_R015_WORD_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R015:saisiot:{full_form}:{pair}")
     return licenses
 
 @dataclass
@@ -496,9 +525,9 @@ def apply_ordered_rules(
         "R010", "R011", "R012", "R013", "R014", "R015", "R016", "R008", "R001",
     ]
     exact = list(rule_licenses or ())
-    # Use only exact-form licenses for examples explicitly listed in NIKL §29.
+    # Use only exact-form licenses for examples explicitly listed in NIKL §§28–30.
     # Other words still need an explicit caller license.
-    exact.extend(_source_backed_r009_licenses(items, boundary_mode))
+    exact.extend(_source_backed_rule_licenses(items, boundary_mode))
     soft = soft_formal_licenses(items) if morphology_mode == "soft" else []
     merged = merge_licenses(exact, soft, morphology_mode=morphology_mode)
     soft_set = set(soft)

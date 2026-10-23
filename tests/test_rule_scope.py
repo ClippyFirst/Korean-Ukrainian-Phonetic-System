@@ -32,24 +32,25 @@ def test_adnominal_l_fortition_requires_license():
     apply_ordered_rules(items,rule_ids=["R013"],boundary_mode="phrase",rule_licenses={"R013:adnominal_l:할 것:할>것"})
     assert items[1].onset=="ㄲ"
 
+# These license-mechanics probes intentionally use forms outside the exact NIKL example registry.
 def test_compound_fortition_requires_license():
-    items=parse_syllables("문고리")
+    items=parse_syllables("산고")
     apply_ordered_rules(items, rule_ids=["R014"])
     assert items[1].onset=="ㄱ"
-    items=_run("문고리","R014","R014:compound:문고리:문>고")
+    items=_run("산고","R014","R014:compound:산고:산>고")
     assert items[1].onset=="ㄲ"
 
 def test_saisiot_requires_explicit_license():
-    items=parse_syllables("냇가")
+    items=parse_syllables("낫가")
     apply_ordered_rules(items, rule_ids=["R015"])
     assert items[1].onset=="ㄱ"
-    items=_run("냇가","R015","R015:saisiot:냇가:냇>가")
+    items=_run("낫가","R015","R015:saisiot:낫가:낫>가")
     assert items[1].onset=="ㄲ"
     assert items[0].coda==""
 
 def test_saisiot_license_is_exact_to_form_and_pair():
     items,traces=apply_ordered_rules(
-        parse_syllables("냇가"),rule_ids=["R015"],
+        parse_syllables("낫가"),rule_ids=["R015"],
         rule_licenses={"R015:saisiot"},
     )
     assert items[1].onset=="ㄱ"
@@ -57,7 +58,7 @@ def test_saisiot_license_is_exact_to_form_and_pair():
 
     items,traces=apply_ordered_rules(
         parse_syllables("뱃사공"),rule_ids=["R015"],
-        rule_licenses={"R015:saisiot:냇가:냇>가"},
+        rule_licenses={"R015:saisiot:낫가:낫>가"},
     )
     assert items[1].onset=="ㅅ"
     assert traces[0].status=="conditional-disabled"
