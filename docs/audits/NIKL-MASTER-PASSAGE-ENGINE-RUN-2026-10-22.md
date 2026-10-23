@@ -310,3 +310,27 @@ The user's Ukrainian result contains `[]` in places where the Korean source has 
 ### Verification status
 
 Implementation branch: `fix/research-jamo-notation-preservation-2026-10-22`, PR #249. This is a targeted source-fidelity correction, not a Korean pronunciation-rule correction. CI must pass the latest bracketed-Jamo regression and full browser suite. This does not establish normative correctness of generic IPA or exhaustive coverage of *표준 발음법* articles 1–30.
+
+
+
+## Follow-up verification — standalone Jamo notation fix — 2026-10-23
+
+### Integration evidence
+
+- PR [#249](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/249) was merged into `main` with squash commit `e9f769035172eb43387443f8e33fdfef04733a42`.
+- The PR head was `655aca5ed8199fe493c3a649a368045d4fe7d74d`; the recorded GitHub Actions run [39848905827](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39848905827) completed successfully for the Python regression/data-integrity job and browser regression/build job. The metadata-only official-source inventory job was skipped, not passed.
+- The merged change preserves a single compatibility Jamo in square brackets (for example `[ㅔ]`, `[ㅣ]`) and punctuation-separated Jamo inventories as literal notation. Such notation is not assigned IPA. Unrecognized isolated Jamo remain fail-closed.
+
+### Additional gap found after merge
+
+The master passage contains both punctuation-separated inventories and may contain whitespace-separated inventories in future research prose. The prior inventory detector only grouped comma, middle-dot, and slash separators; a plain whitespace-separated inventory could still be interpreted as unrelated unsupported Jamo and disappear from target text. A follow-up regression and narrowly scoped detector change are being added on branch `fix/research-source-fidelity-followup-2026-10-23`. The new test must pass in CI before this extension is considered verified.
+
+### Current status and limits
+
+- Jamo notation preservation from PR #249: `DONE_VERIFIED` for the exact tested contexts and successful CI run.
+- Whitespace-separated inventory preservation: `PARTIAL` until the follow-up regression passes CI.
+- Normative coverage of every subparagraph/exception/variant in *표준 발음법* 1–30: `PARTIAL`; the integrated passage and engine smoke tests are not a complete rule-to-evidence map.
+- Generic IPA correctness and Ukrainian adaptation quality: `PARTIAL`; runtime IPA-to-target consistency proves internal consistency, not independent phonetic accuracy.
+- Official NIKL live-source retrieval: `BLOCKED` in the recorded run by HTTP 403; the skipped metadata-only CI job must not be represented as successful source verification.
+
+This audit update records implementation and CI evidence, not a claim that the system is fully normatively validated or release-ready.
