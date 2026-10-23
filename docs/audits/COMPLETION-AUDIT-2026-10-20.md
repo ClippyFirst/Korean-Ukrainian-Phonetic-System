@@ -970,3 +970,16 @@ The audit baseline above is historical and must not be read as the current commi
 - **DONE_VERIFIED:** technical IPA parsing, modifier metadata, raw-registry syntax/alignment, IPA-to-feature coverage, and boundary propagation/rendering.
 - **PARTIAL/BLOCKED:** independent IPA gold remains absent (20 queued cases await qualified review); Ukrainian target-policy review, exhaustive subparagraph/exception coverage, item-level KOGL rights, and permitted live NIKL source access remain unresolved.
 - **Disposition:** technically improved research preview / partial prototype, not a scientifically validated or release-ready transcription standard. Local tests were not run in this API-only session.
+
+
+## Native empty-input contract audit — 2026-10-23
+
+The native pipeline had an empty-state defect: zero IPA segments could be represented as a non-null target selection and a misleading `model-selected` status. PR #261 (`research/native-empty-input-fail-closed-2026-10-23`) adds shared input validation and returns unresolved for an empty target segment list. Regression tests cover empty strings, spaces, Unicode non-breaking space, unsupported non-Hangul text, and the target selector's empty-list behavior.
+
+Implementation/test head `052f8ef0155be23ad86b8f58f94b8c7a5ffa3af6` passed:
+- tests/Python 3.11–3.13/web build [run 40006290986](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290986);
+- system/browser/Python integrity [run 40006290971](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290971);
+- corpus artifacts [run 40006290630](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290630);
+- optional g2pK integration [run 40006292252](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006292252).
+
+CI found and helped fix validation-order and whitespace-fixture defects. The live NIKL inventory job was skipped. Local tests were not run. This change improves runtime contract integrity only; it does not change or validate phonetic transcriptions. Final exact-PR-head CI remains required after documentation-only commits.
