@@ -170,15 +170,19 @@ Readiness: **research preview / partial prototype**, not release-ready as a scie
 | Independent IPA evaluation | BLOCKED_SPECIALIST_ADJUDICATION | Existing queue: 20 cases; reviewer A 0/20, reviewer B 0/20. Requires two distinct qualified reviewers, independent transcription, and documented reconciliation. |
 | Ukrainian target evaluation | BLOCKED_SPECIALIST_REVIEW | Requires separate independent review of IPA→Ukrainian mappings, ambiguity, and orthographic readability; source IPA adjudication does not close this gate. |
 | Normative rule coverage | PARTIAL, finite-example coverage mapped | The dedicated article fixture maps all 30 articles: 29 `verified`, Article 1 `not-applicable`; the separate phenomenon matrix does not prove atomic exhaustive coverage of every subparagraph, exception, variant or productive environment. |
-| Source rights | BLOCKED_RIGHTS_REVIEW | Source register has 101 data rows; item-level KOGL marking and reuse scope remain unchecked for multiple records. |
+| Source rights | BLOCKED_RIGHTS_REVIEW | Current source register has 100 data rows; item-level KOGL marking and reuse scope remain unchecked for multiple records. |
 | Official-source access | BLOCKED_EXTERNAL_ACCESS | Live NIKL inventory remains skipped/blocked; do not count a skipped job as a pass. |
-| Pages deployment smoke | PARTIAL / PENDING_LIVE_VERIFY | Baseline run [40007564481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007564481) deployed but failed on an obsolete text grep. PR #266 updates the expected text to the current UI claim. Require exact-head PR CI and fresh post-merge public HTTP + Playwright smoke before marking verified. |
+| Pages deployment smoke | DONE_VERIFIED for main commit `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e` | Post-merge Pages workflow [40009408019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40009408019) passed Python 3.11/3.12/3.13, browser tests/build, public HTTP smoke, and live Playwright practical-mode interaction. The new regression test on PR #268 still needs exact-head CI. |
 | Release readiness | BLOCKED | Research preview / partial prototype only; no scientific release claim until independent review, atomic coverage, rights, source access and deployment gates have evidence. |
 
 ## Corrected normative-coverage and rights snapshot — 2026-10-23
 
 The dedicated `tests/fixtures/standard-pronunciation-rule-coverage.json` maps articles 1–30 in order (29 `verified`, Article 1 `not-applicable`). The CI gate verifies evidence-index integrity, including exact test-title references. This is finite normative-example coverage, not a claim of exhaustive productive or lexical/morphological coverage. `research/RULE-COVERAGE.csv` is a separate cross-runtime phenomenon matrix.
 
-Current main `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e` has 100 data rows in `research/SOURCE-REGISTER.csv`; multiple records still lack item-level KOGL marking review. The 20-case IPA queue has 0/20 independent submissions in each reviewer slot. The Pages smoke assertion fix is merged, but a fresh public HTTP + Playwright smoke result is still required. The live NIKL inventory step was skipped/blocked, not passed.
+Current main `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e` has 100 data rows in `research/SOURCE-REGISTER.csv`; multiple records still lack item-level KOGL marking review. The 20-case IPA queue has 0/20 independent submissions in each reviewer slot. The Pages smoke assertion fix is merged and post-merge public HTTP + Playwright smoke passed in run 40009408019. The live NIKL inventory step was skipped/blocked, not passed.
 
 Readiness remains research preview / partial prototype, not a scientifically validated release.
+
+## Post-merge Pages verification — 2026-10-23
+
+Deployment verification is `DONE_VERIFIED` for main commit `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`: [run 40009408019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40009408019) passed Python 3.11–3.13, browser tests/build, public HTTP smoke and live Playwright practical-mode interaction. This verifies the deployment workflow and tested UI path for that commit only. The live NIKL source inventory was skipped/blocked, not passed. The added smoke-contract regression test remains pending exact-head CI on PR #268.
