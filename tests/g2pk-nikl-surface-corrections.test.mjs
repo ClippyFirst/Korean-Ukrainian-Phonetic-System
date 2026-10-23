@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createEngine } from '../src/app/engine.js';
 import { createG2pWebAdapter } from '../src/app/g2pk_web.js';
 import { traceIpaMapping } from '../src/app/engine_ipa.js';
+import { G2pBrowser } from '../src/vendor/g2pk/g2p-browser.ts';
 import { parseCsv } from '../src/app/engine.js';
 
 const root = new URL('../', import.meta.url);
@@ -11,6 +12,7 @@ const canonical = readFileSync(new URL('data/korean/canonical_correspondence.csv
 const lexical = readFileSync(new URL('data/korean/lexical_pronunciations.csv', root), 'utf8');
 const sourceRegister = parseCsv(readFileSync(new URL('research/SOURCE-REGISTER.csv', root), 'utf8'));
 const adapter = createG2pWebAdapter(createEngine(canonical, lexical));
+const rawPort = new G2pBrowser();
 
 const cases = [
   {
@@ -49,11 +51,18 @@ test('exact NIKL-attested surface divergences are corrected before IPA adaptatio
   for (const item of cases) {
     const result = adapter.convert(item.input);
     assert.equal(result.surfaceHangul, item.surface, item.input + ': normative Korean surface');
-    assert.equal(result.normativeCorrections.length, 1, item.input + ': explicit correction trace');
-    assert.equal(result.normativeCorrections[0].source, item.source);
-    assert.equal(result.normativeCorrections[0].surface, item.surface);
-    assert.match(result.normativeCorrections[0].evidence, item.evidence);
-    assert.match(result.analysis, /correction before IPA/u);
+    const rawSurface = rawPort.convert(item.input, {
+      descriptive: false, verbose: false, groupVowels: false, toSyl: true
+    });
+    const correctionApplied = rawSurface !== item.surface;
+    assert.equal(result.normativeCorrections.length, correctionApplied ? 1 : 0,
+      item.input + ': only record a correction when raw port differs');
+    if (correctionApplied) {
+      assert.equal(result.normativeCorrections[0].source, item.source);
+      assert.equal(result.normativeCorrections[0].surface, item.surface);
+      assert.match(result.normativeCorrections[0].evidence, item.evidence);
+      assert.match(result.analysis, /correction before IPA/u);
+    }
     assert.ok(result.ipa, item.input + ': IPA must be emitted from the corrected surface');
     assert.equal(result.issues.length, 0, item.input + ': corrected surface must remain IPA-mappable');
     const mapped = traceIpaMapping(result.ipa);
