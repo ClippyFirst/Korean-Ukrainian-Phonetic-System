@@ -14,7 +14,7 @@ Implementation is an exact-form allowlist in `src/app/g2pk_web.js`. It corrects 
 
 ## Source-register reconciliation
 
-- Reclassified `SRC-NIKL-QNA-307508` as direct attestation for `넓죽하다[넙쭈카다]` only. The indexed second example's spelling differs from the repository's `넓둥글다`; that orthographic discrepancy is not erased.
+- Reclassified `SRC-NIKL-QNA-307508` as direct attestation for `넓죽하다[넙쭈카다]` only. The indexed second example's spelling differs from the repository's `넓둥글다`; qna_seq=307508 alone does not establish that spelling. Independent qna_seq=322805 now directly attests `넓둥글다[넙뚱글다]`.
 - Added `SRC-NIKL-QNA-322805` for the exact official `넓둥글다[넙뚱글다]` and `넓적하다[넙쩌카다]` surfaces. This independently resolves the spelling mismatch left open by qna_seq=307508 alone.
 - Corrected the lexical `읽고` citation from a contextual rule-discussion to `SRC-NIKL-QNA-315279`, which directly lists `읽고[일꼬]`.
 - The fixed intake queue remains 43/60 content-checked and 17 unreviewed (14 HTML + 3 PDFs). The new Q&A is registered as additional direct evidence, not counted as one of the fixed 60. Within the existing 43 checked items, one previous partial review is reclassified as direct for its exact first form only.
