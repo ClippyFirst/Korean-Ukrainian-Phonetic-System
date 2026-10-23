@@ -293,3 +293,20 @@ tɕʰø dʑoŋ kʌm dʑɯŋ e sʌ nɯn tɕehaŋ ɰi wʌn tɕʰik̚ p͈u tʰʌ t�
 чведжон комджинесонин че1ганий вончікпуто че30ганий саішіот паримкаджі, как ганий понмунґва путім, єве, гойон паримил пйолдоий комджин ганмоґиро тиннокашіо. модин ємуненин ганґил вонмун, гьонтесо міт имджол куджо, чоґйондвенин кюджонґва сунсо, пйоджун паримі кинґо, IPA, укираінао имсон чоґин, укираінао шірйон пйоґірил кірокашіо. пйоджун паримі гваґіндвен кйонува кючіґиробуто точулган кйону, саджоні кебйол огві чонбоґа пірйоган кйону, поксу паримі гойондвенин кйонурил кубйолгашіо. кинґоґа пуджокаґона гьонтесо кйонґєрил пандангал су омнин ганмоґин мігвакчониро намґіґо, пйоґіманиро чучикан кйолґварил пйоджун паримиро чешігаджі машіо. IPAка гвакчондвеґі чоненин укираінао транскрипцію сенсонгаджі машіо.
 
 ~~~
+
+## Research-output fidelity bug: bracketed Jamo notation — 2026-10-22
+
+### Reproduced diagnosis
+
+The user's Ukrainian result contains `[]` in places where the Korean source has `[ㅔ]` and `[ㅣ]`. These bracketed compatibility Jamo are metalinguistic pronunciation notation, not syllables to pronounce. The engine's isolated-Jamo guard correctly withholds IPA, but the bracketed symbols were not recognized as literal notation in the mixed-script tokenization path and were therefore omitted from the Ukrainian/documentary output. The raw IPA output's omission of standalone Jamo is expected; that alone is not a target-output bug.
+
+### Correction made
+
+- Treat a single compatibility Jamo enclosed in square brackets (for example `[ㅔ]`, `[ㅣ]`) as a literal notation token in mixed-script segmentation and preserve it in the Ukrainian/documentary output, without emitting it as IPA.
+- Recognize multi-item comma/dot/slash-separated Jamo inventories as literal notation, preserving their symbols while excluding them from IPA and phonological analysis.
+- Keep isolated Jamo outside recognized notation contexts fail-closed: they remain unresolved and are not emitted as Ukrainian pronunciation.
+- Add regressions for bracketed Jamo and consonant/vowel inventories, both alone and embedded in explanatory Korean prose.
+
+### Verification status
+
+Implementation branch: `fix/research-jamo-notation-preservation-2026-10-22`, PR #249. This is a targeted source-fidelity correction, not a Korean pronunciation-rule correction. CI must pass the latest bracketed-Jamo regression and full browser suite. This does not establish normative correctness of generic IPA or exhaustive coverage of *표준 발음법* articles 1–30.
