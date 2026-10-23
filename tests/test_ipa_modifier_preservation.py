@@ -2,6 +2,7 @@
 import pytest
 
 from korean_ukrainian.pipeline import (
+    DEFAULT_WEIGHTS,
     map_ipa_to_ukrainian,
     source_features_for_ipa,
     tokenize_ipa,
@@ -237,4 +238,4 @@ def test_source_features_preserve_fortis_separately_from_aspiration():
     # The source adapter retains the contrast for audit. The target ranking
     # weights remain unchanged until the Ukrainian inventory/policy explicitly
     # defines a target-side treatment for this Korean contrast.
-    assert "fortis" not in __import__("korean_ukrainian.pipeline", fromlist=["DEFAULT_WEIGHTS"]).DEFAULT_WEIGHTS
+    assert "fortis" not in DEFAULT_WEIGHTS
