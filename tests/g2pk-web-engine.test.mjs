@@ -52,7 +52,7 @@ test('practical mode applies exact NIKL surface correction before IPA while reta
   assert.equal(result.surfaceHangul, '가버치', 'NIKL §15 correction precedes IPA');
   assert.equal(result.normativeCorrections.length, 1);
   assert.match(result.analysis, /값어치 → 가버치/u);
-  assert.notEqual(result.status,'lexical');
+  assert.equal(result.status,'lexical');
   assert.ok(!result.trace.some(item=>(item.rules||[]).includes('sourced-lexical-ipa')));
   assert.equal(result.issues.length,0);
 });
