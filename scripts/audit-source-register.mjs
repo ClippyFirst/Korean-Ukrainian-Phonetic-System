@@ -131,8 +131,13 @@ export function auditSourceRegister(csvText) {
     if (!record.source_id) errors.push({ row: index + 1, sourceId: null, error: 'source_id is blank' });
     else if (seenIds.has(record.source_id)) errors.push({ row: index + 1, sourceId: record.source_id, error: 'duplicate source_id' });
     else seenIds.add(record.source_id);
-    if (record.url && !/^https:\/\//iu.test(record.url)) {
-      errors.push({ row: index + 1, sourceId: record.source_id || null, error: 'non-empty source URL must use HTTPS' });
+    if (record.url) {
+      try {
+        const parsedUrl = new URL(record.url);
+        if (parsedUrl.protocol !== 'https:' || !parsedUrl.hostname) throw new Error('invalid HTTPS URL');
+      } catch {
+        errors.push({ row: index + 1, sourceId: record.source_id || null, error: 'non-empty source URL must be a valid HTTPS URL' });
+      }
     }
     const rights = classifyRights(record.license_status);
     records.push({
