@@ -199,7 +199,7 @@ Final implementation/test head: `052f8ef0155be23ad86b8f58f94b8c7a5ffa3af6`.
 ### Acceptance status
 
 - `DONE_VERIFIED` at the implementation/test head above: consistent empty-input rejection, fail-closed empty target selection, and regressions.
-- The later documentation-only commits still require final exact-PR-head CI before merge.
+- PR #261 merged as `1860616a15a664ef189ffdaff50fe559aa1339a5` after exact final-head CI passed (tests/Python 3.11–3.13/web: [40006505307](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006505307); system verification: [40006505329](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006505329); corpus artifacts: [40006505319](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006505319); optional g2pK: [40006505314](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006505314)).
 - This does not validate any IPA gold, Ukrainian adaptation choice, or normative Korean rule. Independent IPA and target review, source/license verification, exhaustive rule coverage, and live source access remain open.
 
 
