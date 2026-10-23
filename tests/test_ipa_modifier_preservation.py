@@ -6,6 +6,7 @@ from korean_ukrainian.pipeline import (
     tokenize_ipa,
     tokenize_ipa_with_modifiers,
 )
+from korean_ukrainian.orthography import render_sequence
 
 
 def test_long_vowel_is_retained_as_metadata_not_a_phantom_segment():
@@ -105,3 +106,33 @@ def test_duplicate_ipa_modifiers_fail_closed():
         tokenize_ipa_with_modifiers("aːː")
     with pytest.raises(ValueError, match="duplicate IPA unreleased-stop diacritic"):
         tokenize_ipa_with_modifiers("k̚̚")
+
+
+def test_ipa_syllable_and_word_boundaries_survive_the_adapter_boundary():
+    parsed = tokenize_ipa_with_modifiers("ɰiː.nan kʌ")
+    assert [(item["segment"], item["syllable_index"], item["word_index"], item["boundary_before"])
+            for item in parsed] == [
+        ("ɰ", 0, 0, "start"),
+        ("i", 0, 0, "within"),
+        ("n", 1, 0, "syllable"),
+        ("a", 1, 0, "within"),
+        ("n", 1, 0, "within"),
+        ("k", 2, 1, "word"),
+        ("ʌ", 2, 1, "within"),
+    ]
+
+    mapped = map_ipa_to_ukrainian("ɰiː.nan kʌ")
+    assert [(item["source_syllable_index"], item["source_word_index"], item["source_boundary_before"])
+            for item in mapped["segments"]] == [
+        (item["syllable_index"], item["word_index"], item["boundary_before"])
+        for item in parsed
+    ]
+
+
+def test_ukrainian_renderer_preserves_word_boundaries_but_not_ipa_syllable_dots():
+    assert render_sequence([
+        {"grapheme": "ґ", "source_boundary_before": "start"},
+        {"grapheme": "а", "source_boundary_before": "within"},
+        {"grapheme": "б", "source_boundary_before": "syllable"},
+        {"grapheme": "в", "source_boundary_before": "word"},
+    ]) == "ґабв"
