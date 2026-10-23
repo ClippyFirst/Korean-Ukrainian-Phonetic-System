@@ -169,6 +169,7 @@ def _apply_lexical_ipa(items,ipa_result):
                     "source":entry.get("source_url",""),
                 })
         i=j
+    # The target adapter must not consume these as approved alternatives until the case gate clears.
     ipa_result["lexical_alternatives"]=lexical_alternatives
     # Recompute §4 alternatives after lexical IPA has restored sourced length
     # and segment detail, so variants inherit the exact primary syllables.
