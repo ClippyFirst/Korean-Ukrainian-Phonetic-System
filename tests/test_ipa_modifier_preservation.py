@@ -6,6 +6,7 @@ from korean_ukrainian.pipeline import (
     tokenize_ipa,
     source_features_for_ipa,
     tokenize_ipa_with_modifiers,
+    _select_target,
 )
 from korean_ukrainian.orthography import render_sequence
 
