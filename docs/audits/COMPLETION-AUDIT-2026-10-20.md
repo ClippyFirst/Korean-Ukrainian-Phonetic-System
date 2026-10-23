@@ -938,15 +938,16 @@ Commit with implementation and tests: `f296014d5980123c8c64b9dde9abd47c43382131`
 
 ## 2026-10-23 batch 29 — NIKL-backed practical surface corrections
 
-- **IMPLEMENTED / CI pending:** exact-form corrections in `src/app/g2pk_web.js` for `값어치→가버치`, `넓죽하다→넙쭈카다`, `넓둥글다→넙뚱글다`, `넓적하다→넙쩌카다`, and `읽고→일꼬`. Corrections occur before IPA generation; Ukrainian output remains IPA-derived.
+- **DONE_VERIFIED / MERGED:** exact-form corrections in `src/app/g2pk_web.js` for `값어치→가버치`, `넓죽하다→넙쭈카다`, `넓둥글다→넙뚱글다`, `넓적하다→넙쩌카다`, and `읽고→일꼬`. Corrections occur before IPA generation; Ukrainian output remains IPA-derived.
 - The raw vendored g2pK output remains independently recorded. The finite allowlist does not generalize to arbitrary `ㄺ`/`ㄼ` words; length changes fail closed.
 - Added source-backed regressions and the batch-29 evidence report. `읽고` now cites Q&A qna_seq=315279; qna_seq=307508 is direct for `넓죽하다` only; qna_seq=322805 directly supports `넓둥글다[넙뚱글다]` and `넓적하다[넙쩌카다]`, resolving the former spelling gap with independent evidence.
 - Fixed intake queue remains 43/60 checked and 17 unreviewed (14 HTML + 3 PDFs). Independent IPA/Ukrainian gold, full rule/exception mapping, item-level KOGL review, and permitted live source access remain open. Live NIKL CI access returns HTTP 403; no bypass attempted.
 - Readiness remains research preview / partial prototype.
 
 
-## Batch 29 exact-head verification result — 2026-10-23
+## Batch 29 exact-head verification and merge result — 2026-10-23
 
-- **DONE_VERIFIED:** commit `a6309e19e2b0d3c2bca33041cddde8343baa8d66` passed 1,182/1,182 JavaScript tests, production build, browser G2P integration, Python 3.11/3.12/3.13 regression/data-integrity, and generated corpus artifact checks. Runs: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917834), [browser G2P](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917781), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917899), [artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963918041).
+- **DONE_VERIFIED:** exact PR head `bfe04acce510b400ed1f8208b24ef49ac61065be` passed and was squash-merged as `46de5d71aae12380c353642d73b0b13743b97662`; it passed 1,182/1,182 JavaScript tests, production build, browser G2P integration, Python 3.11/3.12/3.13 regression/data-integrity, and generated corpus artifact checks. Runs: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917834), [browser G2P](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917781), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963917899), [artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39963918041).
+- Post-merge main CI and GitHub Pages deployment/live smoke were not independently confirmed in this session; do not infer deployment success from PR-head CI alone.
 - The earlier batch-28 checkpoint's pending CI status was superseded by the successful run on `5c95f700d42f5c5f7ac4c32309f2bac852064faf` and merge commit `74b773bc59deb8c381de20a0d5404da231083ce5`.
 - **Still PARTIAL/BLOCKED:** independent IPA and Ukrainian gold sets; exhaustive article/subparagraph/exception/variant coverage; item-level KOGL rights; live NIKL access (HTTP 403). The optional live source inventory job was skipped in this run and is not claimed as passed.
