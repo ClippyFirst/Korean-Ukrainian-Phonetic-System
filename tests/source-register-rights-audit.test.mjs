@@ -24,16 +24,19 @@ test('source rights triage never promotes vague source descriptions to a license
     'SRC-C,software,Package,https://example.org/c,1.0,upstream,Apache-2.0 verified on upstream LICENSE,package,adapter,reviewed,integrated,check retained files',
     'SRC-D,other,Not applicable,https://example.org/d,2026,authority,not_applicable,none,none,reviewed,not used,out of scope',
     'SRC-E,other,Unclear,https://example.org/e,2026,authority,Official case-specific pronunciation clarification,pronunciation,context,reviewed,fixture,rights still unclear',
+    'SRC-F,other,Unverified,https://example.org/f,2026,authority,not_verified,unknown,unknown,unreviewed,not integrated,review rights',
+    'SRC-G,other,PDF,https://example.org/g,2026,authority,verify PDF terms,unknown,unknown,unreviewed,not integrated,review terms',
+    'SRC-H,normative,Policy,https://example.org/h,2026,authority,site-wide policy permits use unless item-specific KOGL is marked,unknown,unknown,unreviewed,not integrated,inspect exact item',
   ].join('\\n');
   const report = auditSourceRegister(csv);
   assert.equal(report.structuralErrorCount, 0);
   assert.deepEqual(report.rightsClassificationCounts, {
     ITEM_LEVEL_LICENSE_RECORDED: 1,
     NOT_APPLICABLE_RECORDED: 1,
-    REVIEW_REQUIRED: 2,
+    REVIEW_REQUIRED: 5,
     MANUAL_CLASSIFICATION_REQUIRED: 1,
   });
-  assert.deepEqual(report.itemLevelRightsNotClosed.map(item => item.sourceId), ['SRC-A', 'SRC-B', 'SRC-E']);
+  assert.deepEqual(report.itemLevelRightsNotClosed.map(item => item.sourceId), ['SRC-A', 'SRC-B', 'SRC-E', 'SRC-F', 'SRC-G', 'SRC-H']);
 });
 
 test('real source register is structurally valid and unresolved rights remain visible', () => {
