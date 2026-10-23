@@ -41,18 +41,67 @@ def test_adapter_analysis_exposes_length_loss_boundary_explicitly():
 
 
 
-def test_every_lexical_ipa_syllable_is_supported_by_the_adapter():
-    from korean_ukrainian.pipeline import LEXICAL_PRONUNCIATIONS
+def test_every_raw_lexical_ipa_form_is_supported_and_syllable_aligned():
+    """Audit every base/overlay CSV row, including alternatives hidden by overrides."""
+    import csv
+    from pathlib import Path
 
+    data_dir = Path(__file__).resolve().parents[1] / "data" / "korean"
+    registry_files = [data_dir / "lexical_pronunciations.csv"]
+    registry_files.extend(sorted(data_dir.glob("lexical_additions_*.csv")))
     problems = []
-    for orthography, entry in LEXICAL_PRONUNCIATIONS.items():
-        ipa_syllables = entry.get("ipa_syllables", "").split("|")
-        if not ipa_syllables or not all(ipa_syllables):
-            problems.append(f"{orthography}: missing IPA syllable(s)")
+    rows_checked = 0
+
+    for path in registry_files:
+        if not path.is_file():
+            problems.append(f"{path.name}: registry file is missing")
             continue
-        for index, ipa_syllable in enumerate(ipa_syllables):
-            try:
-                tokenize_ipa_with_modifiers(ipa_syllable)
-            except ValueError as exc:
-                problems.append(f"{orthography} syllable {index + 1} {ipa_syllable!r}: {exc}")
+        with path.open(encoding="utf-8-sig", newline="") as stream:
+            for line_number, entry in enumerate(csv.DictReader(stream), start=2):
+                orthography = entry.get("input", f"{path.name}:{line_number}")
+                rows_checked += 1
+                for ipa_field, surface_field in (
+                    ("ipa_syllables", "surface_hangul"),
+                    ("alternate_ipa_syllables", "alternate_surface_hangul"),
+                ):
+                    raw_ipa = (entry.get(ipa_field) or "").strip()
+                    if not raw_ipa:
+                        if ipa_field == "ipa_syllables":
+                            problems.append(f"{path.name}:{line_number} {orthography}: missing primary IPA")
+                        continue
+                    ipa_syllables = raw_ipa.split("|")
+                    if any(not part.strip() for part in ipa_syllables):
+                        problems.append(f"{path.name}:{line_number} {orthography}: empty syllable in {ipa_field}")
+                        continue
+                    surface = entry.get(surface_field) or ""
+                    surface_count = len([char for char in surface if "가" <= char <= "힣"])
+                    if surface_count != len(ipa_syllables):
+                        problems.append(
+                            f"{path.name}:{line_number} {orthography}: {ipa_field} has "
+                            f"{len(ipa_syllables)} syllables but {surface_field} has {surface_count}"
+                        )
+                    for index, ipa_syllable in enumerate(ipa_syllables, start=1):
+                        try:
+                            tokenize_ipa_with_modifiers(ipa_syllable)
+                        except ValueError as exc:
+                            problems.append(
+                                f"{path.name}:{line_number} {orthography} {ipa_field} "
+                                f"syllable {index} {ipa_syllable!r}: {exc}"
+                            )
+
+    assert rows_checked > 0, "no raw lexical rows were inspected"
     assert not problems, "\\n".join(problems)
+
+
+def test_unreleased_stop_modifier_requires_a_stop_in_the_same_syllable():
+    assert tokenize_ipa_with_modifiers("k̚")[0]["unreleased"] is True
+    for ipa in ("a̚", "m̚", "a.̚", "a ̚"):
+        with pytest.raises(ValueError, match="unreleased-stop diacritic"):
+            tokenize_ipa_with_modifiers(ipa)
+
+
+def test_duplicate_ipa_modifiers_fail_closed():
+    with pytest.raises(ValueError, match="duplicate IPA length mark"):
+        tokenize_ipa_with_modifiers("aːː")
+    with pytest.raises(ValueError, match="duplicate IPA unreleased-stop diacritic"):
+        tokenize_ipa_with_modifiers("k̚̚")

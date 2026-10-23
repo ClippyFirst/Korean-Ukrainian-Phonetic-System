@@ -75,3 +75,37 @@ The registry-wide regression initially failed on 12 valid entries such as `anː`
 - The registry-wide IPA test first failed for real data/parser issues, then passed after correcting post-coda length association and the active `발음과` overlay row. This failure-and-fix is retained as evidence that the new gate catches issues that narrower tests missed.
 - Local tests were not run in this session; CI is the execution evidence.
 - This batch improves IPA-boundary integrity but does not establish independent IPA gold, independent Ukrainian target gold, complete NIKL rule coverage, or source-license closure.
+
+
+## Follow-up: strict IPA modifier placement — 2026-10-23
+
+### Defect addressed
+
+The first modifier-preservation implementation retained `ː` and `̚`, but its parser could still accept malformed inputs: repeated length/unreleased markers, an unreleased-stop diacritic after a vowel or nasal, or a diacritic immediately after a syllable separator that accidentally attached to the preceding syllable's last token.
+
+### Change
+
+- A length marker may occur only once per syllable; duplicates fail closed.
+- The unreleased-stop diacritic must immediately follow a supported stop token in the same syllable.
+- It cannot attach across `.`, whitespace, or other syllable boundaries; it cannot attach to a vowel or sonorant; duplicates fail closed.
+- Added explicit tests for valid `k̚`, invalid `a̚`, `m̚`, boundary-separated modifiers, and duplicate modifiers.
+- The registry-wide lexical IPA compatibility test remains enabled.
+
+### Verification gate
+
+This is on branch `research/native-ipa-modifier-boundaries-2026-10-23`. It is not considered verified until CI passes on the exact PR head. Local test execution is unavailable in the GitHub API-only session. This change validates modifier syntax/attachment, not the phonetic truth of each lexical transcription.
+
+
+### Registry audit hardening
+
+The registry gate now reads the raw base CSV **and every** `lexical_additions_*.csv` file, rather than only the merged in-memory dictionary. This matters because overlay rows can hide earlier rows for the same key. It checks primary and alternate IPA forms, rejects missing primary IPA and empty IPA syllables, verifies IPA-to-surface syllable counts, and parses each syllable through the strict modifier-aware tokenizer. This remains a syntax/alignment gate, not an independent phonetic gold standard.
+
+
+### CI-driven alternate-form correction
+
+The expanded raw-registry test found one additional error that the previous merged-lexicon check could not see: `발음의` had correct primary IPA but its alternate form `pa|rɯ|me` used ASCII `r`. Corrected the alternate to `pa|ɾɯ|me`. A raw-file scan of primary and alternate IPA columns found no other ASCII-`r` occurrences in the base lexicon and the active `lexical_additions_2026-10-15.csv` overlay. The full CI suite must rerun on the corrected head.
+
+
+### Cross-runtime regression fixture correction
+
+After the alternate IPA was corrected, CI exposed one stale JavaScript test fixture asserting the former malformed ASCII-`r` string. Updated that fixture to expect the corrected IPA flap `ɾ`. This is a test-only parity adjustment for the shared lexical data; the practical JS transcription implementation itself was not changed.
