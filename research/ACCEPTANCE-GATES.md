@@ -162,3 +162,19 @@ Readiness: **research preview / partial prototype**, not release-ready as a scie
 | Live official-source inventory | BLOCKED / skipped | NIKL inventory job skipped, not passed. |
 | Scientific release acceptance | BLOCKED | Independent IPA gold, Ukrainian target review, complete normative coverage, item-level rights evidence, and permitted source access remain outstanding. |
 | Final PR acceptance | PENDING | Documentation was added after the passing implementation/test head; final exact PR-head CI is required. |
+
+## Evidence reconciliation — 2026-10-23 continuation branch
+
+This is a current status snapshot, not a scientific acceptance decision. It corrects the previous blocker note's undercount of normative article coverage.
+
+| Gate | Status | Current evidence / acceptance criterion |
+|---|---|---|
+| 0 — Repository integrity | PARTIAL | Current main baseline `5bb9178243604d169c2209671a953f8683b48408`; previous PR #265 was based on a stale base and non-mergeable. Replacement branch is based on current main. PR #263 was superseded and its useful adapter change merged via #264. |
+| 1 — Source and rights | BLOCKED / PARTIAL | Source register has 100 data rows. Site-wide NIKL policy is recorded, but exact item-level KOGL markings remain unchecked for multiple sources. Review each item and artifact type; do not infer a page-specific mark. |
+| 2 — Rule/data integrity | PARTIAL with substantial existing coverage | `tests/fixtures/standard-pronunciation-rule-coverage.json` covers articles 1–30, with 29 finite-example statuses `verified` and Article 1 `not-applicable`; CI validates exact test-title references. This does not prove exhaustive atomic subparagraph/exception/productive-morphology coverage. |
+| 3 — Independent evaluation | BLOCKED_SPECIALIST_ADJUDICATION | 20 IPA cases; 0/20 independent reviewer submissions and no final IPA. Ukrainian target evaluation remains separate and unreviewed. |
+| 4 — Runtime / CI | PASS only for named exact heads | Previous branch head `69d0cc042ab83ce724a7e9bf8419a64bb53afb4b`: tests, system verification and corpus-artifact workflows passed (runs 40008078959, 40008079001, 40008079016). Replacement branch requires its own exact-head CI. No local tests are claimed. |
+| 5 — Deployment | PARTIAL | Mainline Pages job failed its smoke step due to a stale phrase assertion after deployment succeeded. Assertion is corrected in this continuation and protected by a Node test; public HTTP and Playwright smoke are not yet re-run. |
+| 6 — Scientific release | BLOCKED | Requires independent IPA and target review, auditable rights decisions, exhaustive atomic rule coverage, and source-access resolution. |
+
+Readiness remains **research preview / partial prototype**, not a scientifically validated release. Passing automated tests does not replace independent linguistic or rights review.
