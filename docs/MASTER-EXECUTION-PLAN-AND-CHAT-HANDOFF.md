@@ -1,3 +1,12 @@
+## Native engine Rule 28/30 exact compound and saisiot licenses — 2026-10-23
+
+- Scope: own Python research engine, branch `research/native-engine-nikl-compound-saisiot-2026-10-23`, based on current main after PR #278.
+- Evidence: official NIKL Standard Pronunciation Rules, §§28 and 30: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002.
+- Implementation: finite exact full-form/pair licenses for 18 Rule 28 compound-fortition examples and 15 Rule 30 saisiot examples; official URL added to trace source metadata. No blanket ㅅ-coda rule was introduced. Ambiguous homograph `잠자리` is intentionally excluded from automatic Rule 28 licensing.
+- Tests: expected fortis onsets for all listed Rule 28 examples; expected coda/onset outcomes for Rule 30 fortition, nasal, and 이-initial examples; negative controls for `잠자리` and `옷가게`.
+- Task ledger: `DONE_VERIFIED` — source mapping, implementation, and test cases are committed to the working branch. `TODO` — exact-head CI must pass Python 3.11–3.13, browser/build, system regression/data-integrity, and generated-corpus checks before merge. `BLOCKED_SPECIALIST_ADJUDICATION` — broad IPA and Ukrainian target review remain separate.
+- Evidence boundary: NIKL's Hangul surface examples do not by themselves certify IPA or Ukrainian adaptation.
+
 ## Native engine Rule 29 exact n-insertion licensing — 2026-10-23
 
 - Scope: own Python research engine, branch `research/native-engine-sourced-n-insertion-2026-10-23`, based on main after PR #277.
