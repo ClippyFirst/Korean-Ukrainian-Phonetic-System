@@ -364,7 +364,7 @@ def test_sections_24_to_28_require_exact_full_form_and_pair_licenses():
         ("R010", "안고", "stem_n_m+suffix", "안>고", "ㄲ"),
         ("R011", "넓게", "stem_lb_lt+suffix", "넓>게", "ㄲ"),
         ("R012", "갈등", "sino_ryeon", "갈>등", "ㄸ"),
-        ("R014", "문고리", "compound", "문>고", "ㄲ"),
+        ("R014", "산고", "compound", "산>고", "ㄲ"),
     ]
     for rule, word, scope, pair, expected_onset in cases:
         items,traces=apply_ordered_rules(
@@ -398,7 +398,7 @@ def test_section_27_adnominal_l_fortition_can_cross_a_word_boundary_only_with_ph
 
 def test_compound_fortition_license_cannot_be_reused_for_another_word():
     items,traces=apply_ordered_rules(
-        parse_syllables("눈동자"),["R014"],
+        parse_syllables("산고"),["R014"],
         rule_licenses={"R014:compound:문고리:문>고"},
     )
     assert items[1].onset=="ㄷ"
