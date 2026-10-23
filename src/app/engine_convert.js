@@ -91,7 +91,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
 
   const characters=[...text];
   const sourceText=characters.join('');
-  const jamoInventoryRanges=[...sourceText.matchAll(/[ㄱ-ㅎㅏ-ㅣ]+(?:\s*[,·/]\s*[ㄱ-ㅎㅏ-ㅣ]+){2,}/gu)]
+  const jamoInventoryRanges=[...sourceText.matchAll(/[ㄱ-ㅎㅏ-ㅣ]+(?:[\s,·/]+[ㄱ-ㅎㅏ-ㅣ]+){4,}/gu)]
     .map(match=>[match.index,match.index+match[0].length]);
   const units=characters.map((ch,index)=>{
     const d=decompose(ch);
