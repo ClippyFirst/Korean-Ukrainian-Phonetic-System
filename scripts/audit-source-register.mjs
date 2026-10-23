@@ -83,14 +83,14 @@ export function parseCsv(input) {
 }
 
 const UNASSESSED_PATTERNS = [
-  /\bnot[_ -]?assessed\b/iu,
-  /\bnot\s+(?:yet\s+)?(?:checked|verified|reviewed|confirmed)\b/iu,
-  /\bverify\s+(?:the\s+)?(?:original\s+publication|terms|article\s+terms|document\s+terms|reuse\s+terms)\b/iu,
-  /\bitem[- ]level\b.{0,100}\bnot\s+(?:yet\s+)?(?:checked|verified|assessed)\b/iu,
-  /\bsite[- ]wide\b.{0,100}\b(?:item[- ]level|per[- ]item|page[- ]level)\b.{0,80}\bnot\b/iu,
+  /\bnot[_ -]?(?:yet[_ -]?)?(?:assessed|checked|verified|reviewed|confirmed)\b/iu,
+  /\bverify\b.{0,120}\b(?:original\s+publication|terms|notices|article\s+terms|document\s+terms|reuse\s+terms|license|licence|pdf)\b/iu,
+  /\bitem[- ]level\b.{0,100}\bnot[_ -]?(?:yet[_ -]?)?(?:checked|verified|assessed)\b/iu,
+  /\bsite[- ]wide\b.{0,180}\b(?:item[- ]level|per[- ]item|page[- ]level|unless\b.{0,80}\bKOGL)\b/iu,
   /\bper[- ]dataset\b/iu,
+  /\beach\s+(?:corpus|dataset|item)\s+has\s+its\s+own\b/iu,
   /\baccess\s+and\s+terms\s+vary\b/iu,
-  /\bdeclared\s+by\s+upstream\b.{0,120}\b(?:lacks|missing|verify|not\s+verified)\b/iu,
+  /\bupstream\b.{0,120}\b(?:verify|notices|not[_ -]?verified|reported)\b/iu,
 ];
 
 function classifyRights(value) {
