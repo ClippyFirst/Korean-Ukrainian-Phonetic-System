@@ -955,3 +955,18 @@ Commit with implementation and tests: `f296014d5980123c8c64b9dde9abd47c43382131`
 
 ## Native research-engine surface boundary — 2026-10-23
 PR #255 was merged as `6df6a5d2e5d8a472ce7b8ceee7365b57451ccfcd`. It adds explicit recomposed `surface_hangul` output to the native Python research pipeline and regression tests for five NIKL-attested surface forms, one rule-only ㄼ exception, and word boundaries. This is a research observability/contract improvement, not a claim of independently verified IPA or Ukrainian accuracy. Final PR-head CI passed tests/build/Python 3.11–3.13 [run 39967012003](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39967012003), system verification [run 39967011633](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39967011633), and generated corpus artifacts [run 39967011496](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39967011496). No local tests are claimed. See `research/NATIVE-ENGINE-SURFACE-IPA-BOUNDARY-2026-10-23.md`.
+
+
+## Native IPA-boundary follow-up — 2026-10-23
+
+The audit baseline above is historical and must not be read as the current commit. Subsequent native-engine work was completed and verified:
+
+- PR #257 merged as `6b2ebf9826f48084b738020f73b819ccb689f958`: retain IPA length/unreleased metadata, fail closed on unsupported modifiers, correct primary IPA symbol typos, and add raw registry parsing checks.
+- PR #258 merged as `f2cfda570d424c23425fdf948edc91cea65a6d7b`: strict modifier placement, raw base plus every dated overlay audit, primary/alternate IPA validation, syllable alignment, alternate IPA typo correction, and stale regression fixture correction.
+- PR #259 merged as `25c098ce46a355b810a60550ea77f1a026bc1c7d`: every raw IPA segment must have a non-empty source feature vector with core fields.
+- PR #260 merged as `a378cb28068fe645b4a68bcc587dd94c39514501`: syllable/word boundary metadata now flows through IPA→target analysis and selected candidates; Ukrainian rendering preserves word spaces without rendering IPA syllable dots.
+- Exact PR-head CI passed for the relevant Python 3.11–3.13, web, system/data integrity, browser/build, generated-artifact and optional g2pK jobs. Exact links and details are in `research/NATIVE-ENGINE-SURFACE-IPA-BOUNDARY-2026-10-23.md`. The live NIKL inventory step was skipped and is not claimed as successful.
+- The expanded raw-registry tests uncovered an alternate IPA ASCII-`r` typo and a stale test assertion; both were fixed. The boundary E2E test uncovered a missing import; it was fixed and the final code/test head passed.
+- **DONE_VERIFIED:** technical IPA parsing, modifier metadata, raw-registry syntax/alignment, IPA-to-feature coverage, and boundary propagation/rendering.
+- **PARTIAL/BLOCKED:** independent IPA gold remains absent (20 queued cases await qualified review); Ukrainian target-policy review, exhaustive subparagraph/exception coverage, item-level KOGL rights, and permitted live NIKL source access remain unresolved.
+- **Disposition:** technically improved research preview / partial prototype, not a scientifically validated or release-ready transcription standard. Local tests were not run in this API-only session.
