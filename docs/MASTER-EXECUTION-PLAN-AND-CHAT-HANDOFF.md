@@ -1,5 +1,3 @@
-undefined
-
 ## NIKL multi-page evidence import continuation — 2026-10-22
 
 - Starting default-branch commit: `916b2b5b3e9c5a472f729b6de79bcbb6c777b6dc`.
@@ -422,7 +420,19 @@ Task ledger, reconciled against code and exact-head CI:
 
 - Current base before this follow-up: 5bb9178243604d169c2209671a953f8683b48408 (PR #264 merged).
 - Ported from inspected open PR #265: research/SCIENTIFIC-RELEASE-BLOCKERS-2026-10-23.md and the corrected assertion in .github/workflows/deploy-pages.yml. The original #265 branch is one commit behind and conflicts with current documentation; this branch integrates the changes with the current-mainline #261/#262/#264 statuses.
-- Release evidence counts: IPA queue 20 cases, reviewer A 0/20, reviewer B 0/20; source register 101 rows with item-level KOGL review incomplete; rule coverage R001–R016 plus IPA-UKR-MAPPING (19 data rows), not an atomic proof of every NIKL §9–30 subparagraph, exception, and variant.
+- Release evidence reconciled against the current repository: IPA queue 20 cases with 0/20 independent reviewer submissions in each reviewer slot; current source register 100 data rows with item-level KOGL review incomplete for multiple records; the separate article fixture maps NIKL articles 1–30 (29 finite-example statuses verified, Article 1 not-applicable), while research/RULE-COVERAGE.csv is a separate phenomenon/workstream matrix. Article mapping is not atomic proof of every subparagraph, exception, productive environment, or variant.
 - Pages failure diagnosis: run [40007564481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007564481), job 120599746894; deploy itself succeeded, then the smoke step failed because its grep expected obsolete wording that the current UI no longer uses. The workflow assertion now checks the UI's current narrower claim about a few exact NIKL-backed surface-form corrections. This change still needs exact PR-head CI and a fresh post-merge Pages + live Playwright smoke before deployment is marked verified.
 - The earlier PR #265 was inspected, not blindly merged; its useful workflow assertion and blocker ledger were ported here. PR #266 already carries the #264 merge-state reconciliation, so these updates are integrated rather than duplicating or reverting it.
 - Release status remains research preview / partial prototype. Do not promote it to release-ready until independent IPA and Ukrainian review, atomic normative coverage, item-level rights, source access, and live deployment smoke are evidenced.
+
+## Corrected coverage and current-main checkpoint — 2026-10-23
+
+Current main after PR #266: `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`.
+
+The earlier blocker note understated the existing article inventory. `tests/fixtures/standard-pronunciation-rule-coverage.json` contains all article numbers 1–30 in order; 29 are marked `verified` and Article 1 is `not-applicable`. The associated test `tests/standard-pronunciation-rule-coverage-gate.test.mjs` checks exact evidence anchors and test titles. Its declared meaning is finite normative-example coverage, not exhaustive coverage of every subparagraph, exception, productive environment or lexical/morphological context. Keep that distinction explicit in future reports.
+
+The current `research/SOURCE-REGISTER.csv` contains 100 data rows. Exact item-level KOGL marks remain unverified for multiple NIKL records. The 20-case IPA queue remains 0/20 independently submitted in both reviewer slots. Independent Ukrainian target review remains separate and outstanding.
+
+PR #266 merged the stale Pages smoke assertion fix and blocker ledger as `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`. The source-level assertion is now aligned with the current UI, but the public HTTP and live Playwright smoke still need confirmation from the post-merge deployment workflow. The live NIKL source inventory job was skipped/blocked, not passed.
+
+A follow-up Node test now checks that the workflow's expected UI phrase, practical-mode selector, and system-page title match the source HTML. Exact-head CI on this continuation is required before merging that test. No local commands were run in this API-only session.
