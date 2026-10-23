@@ -338,7 +338,7 @@ Open evidence-review PRs #244 and #246 were inspected but intentionally left unt
 
 - Added a finite exact-form correction layer before IPA for `값어치→가버치`, `넓죽하다→넙쭈카다`, `넓둥글다→넙뚱글다`, `넓적하다→넙쩌카다`, and `읽고→일꼬`. The raw g2pK implementation and raw-port fixture remain unchanged; no general grapheme rule was added.
 - Ukrainian output continues to be generated from IPA. Correction provenance is visible in analysis; the adapter skips offset-sensitive correction if the port changes string length.
-- Source evidence registered: NIKL *표준 발음법* §§10/11/15/23 and official Q&A/FAQ qna_seq=307508, qna_seq=315279, qna_seq=322805, mcfaq_seq=5949. See `docs/audits/NIKL-PRACTICAL-SURFACE-CORRECTIONS-BATCH-29-2026-10-23.md`.
+- Source evidence registered: NIKL *표준 발음법* §§10/11/15/23 and official Q&A/FAQ qna_seq=307508, qna_seq=315279, qna_seq=322805, mcfaq_seq=5949. qna_seq=307508 is direct for `넓죽하다` only; qna_seq=322805 directly supports `넓둥글다[넙뚱글다]` and `넓적하다[넙쩌카다]`, resolving the earlier spelling gap with independent evidence. See `docs/audits/NIKL-PRACTICAL-SURFACE-CORRECTIONS-BATCH-29-2026-10-23.md`.
 - **IMPLEMENTED / CI pending:** PR #253 contains the adapter, source updates, regressions, and evidence report. Await exact-head GitHub Actions before merge.
 - Fixed intake queue remains 43/60 content-checked; 17 remain unreviewed (14 HTML + 3 PDFs). Item-level KOGL marks, independent broad IPA gold, independent Ukrainian-target gold, exhaustive rule/subparagraph/exception mapping, and permitted live NIKL captures remain open.
 - **Readiness:** research preview / partial prototype, not a fully validated normative transcriber.
