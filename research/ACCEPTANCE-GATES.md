@@ -186,3 +186,9 @@ Readiness remains research preview / partial prototype, not a scientifically val
 ## Post-merge Pages verification — 2026-10-23
 
 Deployment verification is `DONE_VERIFIED` for main commit `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`: [run 40009408019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40009408019) passed Python 3.11–3.13, browser tests/build, public HTTP smoke and live Playwright practical-mode interaction. This verifies the deployment workflow and tested UI path for that commit only. The live NIKL source inventory was skipped/blocked, not passed. The added smoke-contract regression test remains pending exact-head CI on PR #268.
+
+## Follow-up branch — source-register rights audit, 2026-10-23
+
+Main `b795575c0d8b122123561c682e510ed5c171b5cc` has passed tests, system verification, corpus artifact generation, and deployed Pages public HTTP + live Playwright smoke. These checks verify the current software/deployment path, not scientific correctness.
+
+The new branch `research/source-rights-ledger-validator-2026-10-23` adds a read-only CSV parser/auditor and a conservative rights-review queue generated from `research/SOURCE-REGISTER.csv`. The report separates explicit unresolved status from ambiguous free-text status; it does not modify the register or infer legal permission. Exact-head CI is pending. Source-rights acceptance remains blocked until item-level evidence is reviewed.
