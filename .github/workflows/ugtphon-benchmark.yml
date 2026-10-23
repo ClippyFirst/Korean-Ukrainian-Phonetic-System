@@ -56,8 +56,9 @@ jobs:
           from pathlib import Path
           report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
           for key in ("benchmark", "rows", "scored_tokens", "exact_matches",
-                      "exact_match_rate", "character_error_rate", "skipped_tokens",
-                      "engine_errors"):
+                      "exact_match_rate", "character_error_rate", "unresolved_tokens",
+                      "skipped_tokens", "skipped_non_hangul_or_multitoken",
+                      "skipped_missing_gold", "skipped_empty_variants", "engine_errors"):
               print(f"{key}: {report.get(key)}")
           print("Diagnostic only: do not treat this score as normative accuracy or a release gate.")
           PY
