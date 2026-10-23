@@ -26,3 +26,36 @@ The five lexical surface expectations are present in the project's Korean pronun
 ## Scope boundary
 
 This batch is specifically for the **native research engine** in `src/korean_ukrainian/`. It does not modify `src/app/g2pk_web.js`, the vendored JS g2pK port, or the practical browser-mode correction table.
+
+
+## Follow-up: preserve IPA modifiers at the target-adapter boundary — 2026-10-23
+
+### Defect addressed
+
+The previous `tokenize_ipa` skipped the length mark `ː` as if it were punctuation. Thus an evidence-backed long vowel (for example `ɰiː` in a lexical IPA row) entered Ukrainian candidate analysis as plain `i` with no audit trace that length had been present. Unsupported combining modifiers could also be skipped only if they happened to be among the explicitly ignored characters; this is not an acceptable research boundary.
+
+### Change on branch `research/native-ipa-length-preservation-2026-10-23`
+
+- Added `tokenize_ipa_with_modifiers`, returning segment tokens with explicit `long` and `unreleased` metadata.
+- Kept `tokenize_ipa` as a compatibility wrapper returning segment strings.
+- `map_ipa_to_ukrainian` now exposes `source_length`, `source_diacritics`, and `length_adaptation_status` for every source segment.
+- Length is **preserved as source analysis metadata**, not claimed to be represented in Ukrainian spelling or fed into candidate ranking. This makes the unresolved target-language treatment explicit instead of silently erasing source information.
+- Unsupported IPA symbols/modifiers and misplaced length marks fail closed with a `ValueError`.
+
+### Acceptance and limitations
+
+- Implementation committed on the dedicated branch; tests added for long-vowel metadata, compatibility tokenization, invalid length placement, unknown modifiers, and adapter-boundary reporting.
+- Local test execution is unavailable through the current GitHub API-only environment. The new tests are not marked passed until CI runs on this exact branch/PR head.
+- This is a bounded correctness improvement, not a claim of full IPA coverage or complete Ukrainian length adaptation. The IPA inventory remains deliberately finite; additional symbols require explicit, tested handling.
+
+
+### Registry-wide audit finding
+
+A one-off scan of all 642 lexical rows found two IPA values using ASCII `r` rather than the repository's intended IPA flap `ɾ`: `발음과` (`pa|rɯm|ɡwa`) and `발음의` (`pa|rɯ|mi`). Both were corrected to `ɾ`. The Korean surface spellings and Ukrainian target reference fields were not changed. A new regression now tokenizes every non-empty lexical IPA syllable through the same fail-closed adapter parser, so unsupported IPA symbols cannot remain hidden in untested dictionary rows.
+
+This is a syntactic/inventory compatibility check, **not** independent adjudication that every lexical IPA transcription is phonetically correct.
+
+
+### CI-driven correction to length parsing
+
+The registry-wide regression initially failed on 12 valid entries such as `anː`, `toŋː`, and `samː`: in this dataset's syllable notation, the length mark can follow the coda even though it marks the vowel. The parser was corrected to associate `ː` with the last supported vowel in the same syllable, while still rejecting a length mark in a syllable with no preceding vowel. The same CI run also exposed the active overlay copy of `발음과` in `lexical_additions_2026-10-15.csv`; that duplicate was corrected alongside the base lexicon row. The all-lexicon parser test remains enabled to guard both base and overlay data.

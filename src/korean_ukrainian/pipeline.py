@@ -174,24 +174,71 @@ def _feature_vector_for_ipa(ipa:str)->dict:
 
 def source_features_for_ipa(ipa:str)->dict: return _feature_vector_for_ipa(ipa)
 
-def tokenize_ipa(ipa:str)->list[str]:
-    tokens=[]; i=0
-    inventory=("tɕ͈","tɕʰ","tɕ","dʑ","ɕ͈","ɕ","s͈","pʰ","tʰ","kʰ","p͈","t͈","k͈","ɡ","g","ɾ","ŋ","ɲ","ɯ","ʌ","ɛ","ø","ɰ","j","w","p","t","k","b","d","m","n","s","h","a","e","o","u","i","l","y")
+_IPA_SEGMENT_INVENTORY=("tɕ͈","tɕʰ","tɕ","dʑ","ɕ͈","ɕ","s͈","pʰ","tʰ","kʰ","p͈","t͈","k͈","ɡ","g","ɾ","ŋ","ɲ","ɯ","ʌ","ɛ","ø","ɰ","j","w","p","t","k","b","d","m","n","s","h","a","e","o","u","i","l","y")
+_IPA_VOWEL_TOKENS={"a","e","i","o","u","y","ɯ","ʌ","ɛ","ø"}
+
+def tokenize_ipa_with_modifiers(ipa:str)->list[dict]:
+    """Tokenize IPA while retaining length as metadata on its preceding vowel.
+
+    Length is not a standalone segment and is not currently rendered as a
+    separate Ukrainian grapheme. It must nevertheless survive the IPA adapter
+    boundary for auditability. Unsupported modifiers fail closed instead of
+    being silently discarded.
+    """
+    tokens=[]; i=0; syllable_start=0
     while i<len(ipa):
-        if ipa[i] in ".#̚ː " or ipa[i].isspace(): i+=1; continue
-        match=next((x for x in inventory if ipa.startswith(x,i)),None)
-        if match is None: raise ValueError(f"unsupported IPA segment at index {i}: {ipa[i]!r}")
-        tokens.append("ɡ" if match=="g" else match); i+=len(match)
+        char=ipa[i]
+        if char in ".# " or char.isspace():
+            syllable_start=len(tokens)
+            i+=1
+            continue
+        if char=="ː":
+            # Some lexical rows place the length mark after the coda (e.g.
+            # anː), although length belongs to the vowel nucleus. Associate
+            # it with the last supported vowel in this syllable, not blindly
+            # with the immediately preceding segment.
+            vowel=next((token for token in reversed(tokens[syllable_start:])
+                        if token["segment"] in _IPA_VOWEL_TOKENS),None)
+            if vowel is None:
+                raise ValueError(f"IPA length mark at index {i} has no supported vowel in its syllable")
+            vowel["long"]=True
+            i+=1
+            continue
+        if char=="̚":
+            # Unreleased-stop diacritic is represented by the supported
+            # broad coda segment itself; retain the fact that it was present.
+            if not tokens:
+                raise ValueError(f"IPA diacritic at index {i} has no preceding segment")
+            tokens[-1]["unreleased"]=True
+            i+=1
+            continue
+        match=next((x for x in _IPA_SEGMENT_INVENTORY if ipa.startswith(x,i)),None)
+        if match is None:
+            raise ValueError(f"unsupported IPA segment or modifier at index {i}: {ipa[i]!r}")
+        tokens.append({"segment":"ɡ" if match=="g" else match,"long":False,"unreleased":False})
+        i+=len(match)
     return tokens
+
+def tokenize_ipa(ipa:str)->list[str]:
+    """Return segment tokens for compatibility; use the metadata API for audits."""
+    return [item["segment"] for item in tokenize_ipa_with_modifiers(ipa)]
 
 def map_ipa_to_ukrainian(ipa,target_adapter=None,source_features=None,weights=None):
     adapter=target_adapter if isinstance(target_adapter,UkrainianTargetAdapter) else UkrainianTargetAdapter()
     weights=weights or DEFAULT_WEIGHTS
-    segments=tokenize_ipa(ipa)
+    tokens=tokenize_ipa_with_modifiers(ipa)
     grouped=[]
-    for segment in segments:
-        features=source_features if source_features and len(segments)==1 else source_features_for_ipa(segment)
-        grouped.append({"source_ipa":segment,"source_features":features,"target":adapter.candidates(features,weights,source_ipa=segment)})
+    for index,item in enumerate(tokens):
+        segment=item["segment"]
+        features=source_features if source_features and len(tokens)==1 else source_features_for_ipa(segment)
+        grouped.append({
+            "source_ipa":segment,
+            "source_features":features,
+            "source_length":"long" if item["long"] else "unspecified",
+            "source_diacritics":{"unreleased":item["unreleased"]},
+            "length_adaptation_status":"preserved-in-analysis-not-rendered" if item["long"] else "not-marked",
+            "target":adapter.candidates(features,weights,source_ipa=segment)
+        })
     return {"ipa":ipa,"segments":grouped,"status":"segmentwise-candidate-analysis"}
 
 def rank_ukrainian_candidates(candidates):
