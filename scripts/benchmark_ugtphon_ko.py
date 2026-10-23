@@ -74,17 +74,19 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     from korean_ukrainian.pipeline import phoneticize_korean
 
     scored: list[dict[str, Any]] = []
-    skipped = 0
+    skipped_non_hangul_or_multitoken = 0
+    skipped_missing_gold = 0
+    skipped_empty_variants = 0
     errors = 0
     for row in rows:
         for token in row["tokens"]:
             canonical = token.get("canonical", "")
             gold_raw = token.get("phoneme", "")
             if not isinstance(canonical, str) or not _HANGUL_TOKEN.fullmatch(canonical):
-                skipped += 1
+                skipped_non_hangul_or_multitoken += 1
                 continue
             if not isinstance(gold_raw, str) or not gold_raw.strip():
-                skipped += 1
+                skipped_missing_gold += 1
                 continue
             try:
                 predicted_raw = phoneticize_korean(canonical)["ipa"]["ipa"]
@@ -98,7 +100,7 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
             predicted = normalize_ipa(predicted_raw)
             gold_variants = [normalize_ipa(x) for x in gold_raw.split(",") if x.strip()]
             if not gold_variants:
-                skipped += 1
+                skipped_empty_variants += 1
                 continue
             distances = [(edit_distance(predicted, gold), gold) for gold in gold_variants]
             distance, closest_gold = min(distances, key=lambda item: item[0])
@@ -122,7 +124,10 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "exact_matches": exact,
         "exact_match_rate": round(exact / len(comparable), 6) if comparable else None,
         "character_error_rate": round(total_distance / total_chars, 6) if total_chars else None,
-        "skipped_tokens": skipped,
+        "skipped_tokens": skipped_non_hangul_or_multitoken + skipped_missing_gold + skipped_empty_variants,
+        "skipped_non_hangul_or_multitoken": skipped_non_hangul_or_multitoken,
+        "skipped_missing_gold": skipped_missing_gold,
+        "skipped_empty_variants": skipped_empty_variants,
         "engine_errors": errors,
         "worst_mismatches": sorted(
             (item for item in comparable if not item["exact"]),
