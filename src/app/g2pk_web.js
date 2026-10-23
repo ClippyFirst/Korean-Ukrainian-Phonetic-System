@@ -4,10 +4,12 @@
  * Contract: original Hangul -> g2pK JS surface spelling -> project IPA
  * adapter -> Ukrainian target mapped from that IPA.
  *
- * The practical mode intentionally applies NO project lexical surface/IPA
- * overrides after g2pK. This keeps its Korean pronunciation strictly tied to
- * the selected port/version and options. Source-backed lexical research data
- * remains available to the separate research engine only.
+ * The practical adapter preserves the raw port as its first stage, then
+ * applies a tiny allowlist of exact Korean surface corrections when official
+ * NIKL evidence directly contradicts the pinned port. The raw port remains
+ * independently regression-tested. All Ukrainian output is still generated
+ * from IPA derived from the corrected Hangul surface; no direct Hangul-to-UA
+ * override exists, and no exception is generalized to unseen words.
  */
 import { G2pBrowser } from '../vendor/g2pk/g2p-browser.ts';
 
