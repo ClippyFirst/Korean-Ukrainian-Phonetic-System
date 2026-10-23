@@ -25,7 +25,7 @@ RULE_META={
 "R006":("liquid-assimilation","NIKL §§19–20","high"),
 "R007":("palatalization","NIKL §17","high"),
 "R008":("tensification","NIKL §§23–27","high"),
-"R009":("n-insertion","NIKL §29","high"),
+"R009":("n-insertion","NIKL §29; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R010":("stem-nm-fortition","NIKL §24","high"),
 "R011":("stem-lb-lt-fortition","NIKL §25","high"),
 "R012":("sino-korean-l-fortition","NIKL §26","high"),
