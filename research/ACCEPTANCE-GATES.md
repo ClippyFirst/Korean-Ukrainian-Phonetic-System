@@ -128,3 +128,14 @@ This addendum supersedes technical-gate observations from the older snapshot abo
 | 6 — Release / independent review | BLOCKED | Independent IPA and Ukrainian target evaluation, full rule/exception coverage, item-level rights, and source-access closure remain acceptance blockers. |
 
 Readiness: **research preview / partial prototype**, not release-ready as a scientifically validated transcription standard. The skipped NIKL job is not a pass.
+
+
+## Native empty-input fail-closed gate — 2026-10-23
+
+| Gate | Status | Evidence / reason |
+|---|---|---|
+| Empty-input contract | DONE_VERIFIED at code/test head | PR #261 branch `research/native-empty-input-fail-closed-2026-10-23`; shared validation rejects empty/whitespace-only input and unsupported characters before native analysis; empty target segment lists remain unresolved. |
+| Regression verification | PASS at implementation/test head `052f8ef0155be23ad86b8f58f94b8c7a5ffa3af6` | Tests/Python 3.11–3.13/web build [40006290986](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290986); system/browser/Python integrity [40006290971](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290971); corpus artifacts [40006290630](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006290630); optional g2pK [40006292252](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40006292252). |
+| Live official-source inventory | BLOCKED / skipped | The workflow's live NIKL inventory job was skipped; no pass is claimed. |
+| Scientific release acceptance | BLOCKED | Independent IPA gold, Ukrainian target review, complete normative rule coverage, item-level licensing evidence, and source access remain outstanding. |
+| Final PR acceptance | PENDING | Documentation was appended after the verified code/test head; CI must pass on the final PR head before merge. |
