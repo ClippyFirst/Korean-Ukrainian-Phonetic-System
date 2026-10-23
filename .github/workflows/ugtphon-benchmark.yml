@@ -5,10 +5,12 @@ on:
   pull_request:
     paths:
       - "scripts/benchmark_ugtphon_ko.py"
+      - "scripts/benchmark_native_vs_g2pk_ko.py"
       - "tests/test_ugtphon_benchmark.py"
       - ".github/workflows/ugtphon-benchmark.yml"
       - "src/korean_ukrainian/**"
       - "data/korean/**"
+      - ".github/workflows/native-vs-g2pk-benchmark.yml"
 
 permissions:
   contents: read
@@ -23,7 +25,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install project
-        run: python -m pip install -e .
+        run: python -m pip install -e ".[g2pk]"
       - name: Fetch pinned upstream data and verify license
         env:
           UGT_PHON_COMMIT: ef0d5a09c2ea1874c7206020f875cbd9cfea2f54
@@ -62,6 +64,37 @@ jobs:
               print(f"{key}: {report.get(key)}")
           print("Diagnostic only: do not treat this score as normative accuracy or a release gate.")
           PY
+      - name: Run paired native-vs-g2pk comparison
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_native_vs_g2pk_ko.py \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --output "$RUNNER_TEMP/native-vs-g2pk-report.json" \
+            > "$RUNNER_TEMP/native-vs-g2pk-stdout.json"
+          python - "$RUNNER_TEMP/native-vs-g2pk-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          print("DATASET:", r["benchmark"], "rows=", r["dataset_rows"])
+          for engine in ("native_engine", "g2pk"):
+              m = r[engine]
+              print(f"{engine}: scored={m['scored_tokens']} exact={m['exact_matches']} "
+                    f"exact_rate={m['exact_match_rate']} CER={m['character_error_rate']} "
+                    f"unresolved={m['unresolved_tokens']} errors={m['engine_errors']}")
+          p = r["paired_subset"]
+          print("PAIRED TOKENS:", p["tokens_scored_by_both"])
+          print("PAIRED DELTA (g2pk - native): exact=", p["exact_match_rate_delta_g2pk_minus_native"],
+                "CER=", p["cer_delta_g2pk_minus_native"])
+          print("Diagnostic only; not normative accuracy or a release gate.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-vs-g2pk-ugtphon-diagnostic
+          path: |
+            ${{ runner.temp }}/native-vs-g2pk-report.json
+            ${{ runner.temp }}/native-vs-g2pk-stdout.json
+          if-no-files-found: warn
       - uses: actions/upload-artifact@v4
         if: always()
         with:
