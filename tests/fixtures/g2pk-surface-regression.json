@@ -61,7 +61,7 @@
       "pythonComparisonStatus": "compared-g2pk-0.9.4-python-3.11-and-3.12-2026-10-20",
       "expectedSurfaceProvenance": "Observed output of the pinned vendored JavaScript g2pK port; normative surface is recorded separately and differs.",
       "differentialStatus": "js-port-and-python-g2pk-diverge-from-nikl-normative-output",
-      "differentialNote": "NIKL explicitly gives the standard pronunciation [가버치]. The practical mode preserves the pinned JS port output [갑써치] by contract; this is a known upstream-model divergence, not an override opportunity.",
+      "differentialNote": "NIKL explicitly gives [가버치], while the raw pinned JS port outputs [갑써치]. The raw-port fixture preserves that divergence for regression; production applies the exact source-backed correction to 가버치 before IPA generation.",
       "sourceUrl": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=217",
       "normativeEvidenceStatus": "direct-NIKL-example",
       "normativeSourceLocator": "§15 붙임 explicitly lists 값어치[가버치]",
@@ -163,8 +163,8 @@
       "normativeEvidenceStatus": "direct-NIKL-example",
       "normativeSourceLocator": "§10 explicitly gives 넓-죽하다[넙쭈카다]",
       "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "normativeNotes": "The JS port intentionally differs from the official standard; expectedSurface remains port output.",
-      "differentialNote": "NIKL §10 explicitly gives 넓죽하다[넙쭈카다], while the pinned JavaScript g2pK port yields 널쭈카다. Keep both values visible; do not silently rewrite practical-mode output or treat either Hangul surface string as IPA/Ukrainian gold."
+      "normativeNotes": "The raw JS port differs from the official standard; expectedSurface remains the raw-port output for diagnostics. Production corrects this exact lexical form before IPA generation.",
+      "differentialNote": "NIKL §10 explicitly gives 넓죽하다[넙쭈카다], while the pinned JavaScript g2pK port yields 널쭈카다. Keep both raw-port and normative values visible. Production applies only the exact NIKL-backed surface correction before IPA; neither Hangul string is IPA or Ukrainian gold."
     },
     {
       "input": "읽고",
@@ -182,7 +182,7 @@
       "normativeSourceLocator": "§1 해설 explicitly states the verbal-stem ㄺ + ㄱ environment and gives 읽고[일꼬].",
       "normativeSourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
       "normativeNotes": "Direct primary-rule commentary attestation: NIKL §1 commentary explicitly gives 읽고[일꼬]. This confirms Korean surface spelling only, not broad IPA or Ukrainian target.",
-      "differentialNote": "NIKL §1 commentary explicitly gives 읽고[일꼬], while the pinned JavaScript g2pK port yields 익꼬. The NIKL Q&A qna_seq=321743 independently explains the ㄺ exception by contrasting 칡과[칙꽈] with 읽고[일꼬]. Keep the practical-port comparator unchanged; this is not IPA/Ukrainian gold."
+      "differentialNote": "NIKL §1 commentary explicitly gives 읽고[일꼬], while the pinned JavaScript g2pK port yields 익꼬. The NIKL Q&A qna_seq=321743 independently explains the ㄺ exception by contrasting 칡과[칙꽈] with 읽고[일꼬]. Keep the raw-port comparator unchanged; production applies the exact NIKL-backed correction to 일꼬 before IPA. This is not IPA/Ukrainian gold."
     },
     {
       "input": "읽는",

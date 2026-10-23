@@ -31,12 +31,13 @@ test('practical browser mode is wired to the vendored JavaScript g2pK adapter', 
   assert.match(adapter, /new G2pBrowser\(\)/u);
   assert.match(adapter, /descriptive: false/u);
   assert.match(adapter, /toSyl: true/u);
-  assert.match(adapter, /NO project lexical surface\/IPA/u);
+  assert.match(adapter, /exact-form corrections/u);
+  assert.match(adapter, /before the IPA adapter/iu);
   assert.doesNotMatch(adapter, /applyLexical(?:Surface|Ipa)Controls/u);
   assert.match(port, /Ported from g2pk\/g2pk\.py/u);
 });
 
-test('practical browser surface exactly matches the vendored JavaScript port', () => {
+test('raw port output remains pinned while the practical adapter applies only explicit NIKL corrections', () => {
   const cases = JSON.parse(read('tests/fixtures/g2pk-surface-regression.json')).cases;
   const port = new G2pBrowser();
   assert.equal(cases.length, 20);
@@ -47,9 +48,16 @@ test('practical browser surface exactly matches the vendored JavaScript port', (
     const expectedPortSurface = port.convert(item.input, {
       descriptive: false, verbose: false, groupVowels: false, toSyl: true
     });
+    assert.equal(expectedPortSurface, item.expectedSurface, item.input + ': raw-port regression changed');
     const result = webEngine.convert(item.input);
-    assert.equal(result.surfaceHangul, expectedPortSurface, item.input + ': practical adapter changed port output');
-    assert.equal(result.surfaceHangul, item.expectedSurface, item.input + ': port regression changed');
+    const expectedCorrection = new Map([
+      ['값어치', '가버치'],
+      ['넓죽하다', '넙쭈카다'],
+      ['읽고', '일꼬']
+    ]).get(item.input);
+    const actualSurface = result.surfaceHangul || item.input;
+    assert.equal(actualSurface, expectedCorrection || item.expectedSurface, item.input + ': adapter surface contract');
+    assert.equal(result.normativeCorrections.length, expectedCorrection ? 1 : 0, item.input + ': correction allowlist scope');
     assert.ok(result.ipa.length > 0, item.input + ': missing IPA');
     assert.ok(result.ukrainian.length > 0, item.input + ': missing Ukrainian target');
     assert.deepEqual(result.issues, [], item.input + ': unexpected unresolved issues');
