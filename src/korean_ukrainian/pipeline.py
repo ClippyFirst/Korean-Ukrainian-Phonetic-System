@@ -150,7 +150,7 @@ def _apply_lexical_ipa(items,ipa_result):
     ipa_result["variants"]=generate_vowel_variants(items,syllable_ipa,level=ipa_result.get("level","broad"))
     return ipa_result
 
-def _unlicensed_ambiguous_pronunciation_contexts(traces):
+def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items):
     """Find withheld morphophonological contexts before they become definitive IPA.
 
     Exact source-backed lexical entries resolve their own full-word pronunciation.
@@ -168,7 +168,8 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces):
         if trace.get("status") not in {"conditional-disabled", "partially-conditional"}:
             continue
         rule_id = trace.get("rule_id")
-        if rule_id not in {"R002", "R003", "R004", "R007", "R008"}:
+        if rule_id not in {"R002", "R003", "R004", "R007", "R008", "R009",
+                            "R010", "R011", "R012", "R013", "R014", "R015", "R016"}:
             continue
         before = trace.get("before") or []
         for i in range(len(before) - 1):
@@ -196,7 +197,38 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces):
             elif rule_id == "R008" and coda == "ㄺ" and onset == "ㄱ":
                 candidate = True
                 reason = "ㄺ-before-ㄱ fortition depends on lexical/morphological class"
+            elif rule_id == "R009" and onset == "ㅇ" and nucleus in {"ㅣ", "ㅑ", "ㅕ", "ㅛ", "ㅠ", "ㅖ", "ㅒ"} and coda:
+                candidate = True
+                reason = "optional/lexical n-insertion requires exact word or phrase evidence"
+            elif rule_id == "R010" and representative.get(coda, coda) in {"ㄴ", "ㅁ"} and onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"}:
+                candidate = True
+                reason = "stem ㄴ/ㅁ fortition requires morphological license"
+            elif rule_id == "R011" and coda in {"ㄼ", "ㄾ"} and onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"}:
+                candidate = True
+                reason = "stem ㄼ/ㄾ fortition requires morphological license"
+            elif rule_id == "R012" and coda == "ㄹ" and onset in {"ㄷ", "ㅅ", "ㅈ"}:
+                candidate = True
+                reason = "Sino-Korean ㄹ fortition requires lexical-class evidence"
+            elif rule_id == "R013" and coda == "ㄹ" and onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"}:
+                candidate = True
+                reason = "adnominal/ㄹ-ending fortition requires morphological license"
+            elif rule_id == "R014" and coda and onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"}:
+                candidate = True
+                reason = "compound fortition requires lexical/morphological license"
+            elif rule_id == "R015" and coda == "ㅅ" and (
+                onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ", "ㄴ", "ㅁ"}
+                or (onset == "ㅇ" and nucleus == "ㅣ")
+            ):
+                candidate = True
+                reason = "saisiot realization requires exact lexical/morphological evidence"
+            elif rule_id == "R016" and coda == "ㄺ" and onset == "ㄱ":
+                candidate = True
+                reason = "ㄺ-before-ㄱ stem exception requires exact morphological evidence"
             if not candidate:
+                continue
+            # A later rule may have resolved this exact pair. Do not mark it
+            # unresolved when the final onset differs from the withheld trace.
+            if i + 1 < len(final_items) and final_items[i + 1].onset != onset:
                 continue
 
             start = i
@@ -234,7 +266,7 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     surface_hangul=_render_surface_hangul(items)
     ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level))
     all_traces=[x.to_dict() for x in traces]+lexical_traces
-    unresolved_contexts=_unlicensed_ambiguous_pronunciation_contexts(all_traces)
+    unresolved_contexts=_unlicensed_ambiguous_pronunciation_contexts(all_traces, items)
     return {
         "input":text,
         "surface_hangul":surface_hangul,
