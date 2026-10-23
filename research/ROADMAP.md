@@ -126,3 +126,10 @@ PR #262 adds an explicit `fortis` feature to supported source IPA vectors, disti
 The implementation/test head `a7b159baccba147837d979e3428a6cca486662b1` passed Python 3.11–3.13/web, system/browser, corpus artifact, and optional g2pK CI. Live NIKL inventory was skipped; local tests were not run. Final exact PR-head CI is required after documentation updates.
 
 The target-language treatment of Korean fortisness remains an explicit open research question; preserving the source feature is not equivalent to claiming it can or should be rendered as Ukrainian consonant doubling.
+
+
+## Follow-up completed at code/test head — direct IPA adapter empty input (2026-10-23)
+
+PR #264 ports the direct-adapter empty-input guard from the non-mergeable, one-commit-behind PR #263 onto current mainline. `map_ipa_to_ukrainian` now rejects non-string input before loading the optional target inventory and rejects empty/whitespace/boundary-only tokenization results. Regression coverage includes a valid segment as a positive control.
+
+The implementation/test head passed Python 3.11–3.13/web, system/browser, corpus-artifact, and optional g2pK CI. The live NIKL inventory job was skipped. Exact final PR-head CI is required after the documentation updates. The remaining priority is independent source access and specialist adjudication, not inventing IPA gold.
