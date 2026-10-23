@@ -185,16 +185,23 @@ def tokenize_ipa_with_modifiers(ipa:str)->list[dict]:
     boundary for auditability. Unsupported modifiers fail closed instead of
     being silently discarded.
     """
-    tokens=[]; i=0
+    tokens=[]; i=0; syllable_start=0
     while i<len(ipa):
         char=ipa[i]
         if char in ".# " or char.isspace():
+            syllable_start=len(tokens)
             i+=1
             continue
         if char=="ː":
-            if not tokens or tokens[-1]["segment"] not in _IPA_VOWEL_TOKENS:
-                raise ValueError(f"IPA length mark at index {i} does not follow a supported vowel")
-            tokens[-1]["long"]=True
+            # Some lexical rows place the length mark after the coda (e.g.
+            # anː), although length belongs to the vowel nucleus. Associate
+            # it with the last supported vowel in this syllable, not blindly
+            # with the immediately preceding segment.
+            vowel=next((token for token in reversed(tokens[syllable_start:])
+                        if token["segment"] in _IPA_VOWEL_TOKENS),None)
+            if vowel is None:
+                raise ValueError(f"IPA length mark at index {i} has no supported vowel in its syllable")
+            vowel["long"]=True
             i+=1
             continue
         if char=="̚":
