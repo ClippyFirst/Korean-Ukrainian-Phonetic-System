@@ -67,7 +67,7 @@ def test_sourced_lexical_records_adapt_to_sequence_rows_without_inventing_target
 
     sequences = generator.adapt_lexical_sequences(lexical_rows, source_rows)
 
-    assert len(sequences) == len(lexical_rows) == 642
+    assert len(sequences) == len(lexical_rows) == 643
     assert len({row["sequence_id"] for row in sequences}) == len(sequences)
     by_input = {row["word_or_phrase"]: row for row in sequences}
     source_row = next(row for row in lexical_rows if row["input"] == "값없다")
