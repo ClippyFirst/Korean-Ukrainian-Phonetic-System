@@ -48,14 +48,14 @@ def test_aspiration():
 
 def test_n_insertion_requires_exact_word_pair_license_not_a_global_boolean():
     items,traces=apply_ordered_rules(
-        parse_syllables("가여름"),["R009"],n_insertion_licensed=True
+        parse_syllables("각여름"),["R009"],n_insertion_licensed=True
     )
     assert items[1].onset=="ㅇ"
     assert traces[0].status=="conditional-disabled"
 
     items,traces=apply_ordered_rules(
-        parse_syllables("가여름"),["R009"],
-        rule_licenses={"R009:word:가여름:가>여"},
+        parse_syllables("각여름"),["R009"],
+        rule_licenses={"R009:word:각여름:각>여"},
     )
     assert items[1].onset=="ㄴ"
     assert traces[0].changed
@@ -70,7 +70,7 @@ def test_n_insertion_license_cannot_be_reused_for_a_different_word():
     assert not traces[0].changed
 
 def test_n_insertion_disabled_by_default_for_unlisted_form():
-    items,_=apply_ordered_rules(parse_syllables("가여름"),["R009"]); assert items[1].onset=="ㅇ"
+    items,_=apply_ordered_rules(parse_syllables("각여름"),["R009"]); assert items[1].onset=="ㅇ"
 
 def test_complex_coda_liaison_requires_exact_formal_morpheme_license():
     expected={"넋이":(("ㄱ","ㅆ"),"넋>이"),"값이":(("ㅂ","ㅆ"),"값>이"),"앉아":(("ㄴ","ㅈ"),"앉>아"),"닭을":(("ㄹ","ㄱ"),"닭>을"),"젊어":(("ㄹ","ㅁ"),"젊>어")}
@@ -184,8 +184,8 @@ def test_complex_coda_plus_h_requires_exact_morphophonemic_license():
 
 def test_n_insertion_does_not_apply_after_open_syllable_even_when_enabled():
     items, traces = apply_ordered_rules(
-        parse_syllables("가여름"), ["R009"], n_insertion_licensed=True,
-        rule_licenses={"R009:word:가여름:가>여"}
+        parse_syllables("각여름"), ["R009"], n_insertion_licensed=True,
+        rule_licenses={"R009:word:각여름:각>여"}
     )
     assert items[1].onset == "ㅇ"
     assert not traces[0].changed
