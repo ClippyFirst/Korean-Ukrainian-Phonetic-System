@@ -15,7 +15,7 @@ def test_unknown_boundary_does_not_apply_contextual_rules():
 
 def test_n_insertion_requires_explicit_licensing():
     assert not any(x["changed"] for x in phoneticize_korean("먹이")["rules"] if x["rule_id"]=="R009")
-    q=phoneticize_korean("가여름",n_insertion_licensed=True,rule_licenses={"R009:word:가여름:가>여"})
+    q=phoneticize_korean("각여름",n_insertion_licensed=True,rule_licenses={"R009:word:각여름:각>여"})
     assert any(x["rule_id"]=="R009" and x["changed"] for x in q["rules"])
     assert q["surface_syllables"][1]["onset"]=="ㄴ"
 
@@ -458,6 +458,6 @@ def test_native_engine_applies_direct_nikl_n_insertion_example_without_caller_li
 def test_native_engine_keeps_unlisted_n_insertion_candidate_conservative():
     from korean_ukrainian.pipeline import phoneticize_korean
 
-    result = phoneticize_korean("가여름")
+    result = phoneticize_korean("각여름")
     assert result["surface_syllables"][1]["onset"] == "ㅇ"
     assert not any(item["rule_id"] == "R009" and item["changed"] for item in result["rules"])
