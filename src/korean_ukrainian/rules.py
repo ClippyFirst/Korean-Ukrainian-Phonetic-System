@@ -326,6 +326,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if not a.coda: continue
             pair=f"{a.text}>{b.text}"
             permitted=False
+            permitted_scope=None
             for license in insertion_licenses:
                 parts=license.split(":",3)
                 if len(parts)!=4: continue
@@ -333,8 +334,10 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 if licensed_form!=full_form or licensed_pair!=pair: continue
                 if scope=="word" and a.boundary_after!="word" and " " not in licensed_form:
                     permitted=True
+                    permitted_scope=scope
                 elif scope=="phrase" and boundary_mode=="phrase" and a.boundary_after=="word" and " " in licensed_form:
                     permitted=True
+                    permitted_scope=scope
                 if permitted: break
             if not permitted: continue
             # NIKL §29 and its commentary include ㅣ and j-initial
@@ -342,6 +345,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             # exact license, not in this segmental environment check.
             b.onset="ㄹ" if FINAL_REPRESENTATIVE.get(a.coda,a.coda)=="ㄹ" else "ㄴ"
             changed=True
+            license_context=f"R009:{permitted_scope}:{full_form}:{pair}"
     elif rule_id in {"R010","R011","R012","R013","R014"}:
         # These rules depend on morphology or lexical class, not just the
         # consonant sequence. Require a full-form + adjacent-pair license.
@@ -492,6 +496,9 @@ def apply_ordered_rules(
         "R010", "R011", "R012", "R013", "R014", "R015", "R016", "R008", "R001",
     ]
     exact = list(rule_licenses or ())
+    # Use only exact-form licenses for examples explicitly listed in NIKL §29.
+    # Other words still need an explicit caller license.
+    exact.extend(_source_backed_r009_licenses(items, boundary_mode))
     soft = soft_formal_licenses(items) if morphology_mode == "soft" else []
     merged = merge_licenses(exact, soft, morphology_mode=morphology_mode)
     soft_set = set(soft)
