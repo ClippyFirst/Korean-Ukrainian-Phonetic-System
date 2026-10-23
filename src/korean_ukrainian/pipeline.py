@@ -168,8 +168,7 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items):
         if trace.get("status") not in {"conditional-disabled", "partially-conditional"}:
             continue
         rule_id = trace.get("rule_id")
-        if rule_id not in {"R002", "R003", "R004", "R007", "R008", "R009",
-                            "R010", "R011", "R012", "R013", "R014", "R015", "R016"}:
+        if rule_id not in {"R002", "R003", "R004", "R007", "R008", "R013"}:
             continue
         before = trace.get("before") or []
         for i in range(len(before) - 1):
@@ -197,33 +196,13 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items):
             elif rule_id == "R008" and coda == "ㄺ" and onset == "ㄱ":
                 candidate = True
                 reason = "ㄺ-before-ㄱ fortition depends on lexical/morphological class"
-            elif rule_id == "R009" and onset == "ㅇ" and nucleus in {"ㅣ", "ㅑ", "ㅕ", "ㅛ", "ㅠ", "ㅖ", "ㅒ"} and coda:
+            elif rule_id == "R013" and coda == "ㄹ" and onset == "ㄱ" and b.get("text") == "게":
+                # NIKL Standard Pronunciation Rule 27's attached ending -ㄹ게
+                # is explicitly documented as [ㄹ께]. Keep this narrow so
+                # unrelated lexical sequences such as 일본/실수 are not
+                # falsely treated as unresolved adnominal constructions.
                 candidate = True
-                reason = "optional/lexical n-insertion requires exact word or phrase evidence"
-            elif rule_id == "R010" and representative.get(coda, coda) in {"ㄴ", "ㅁ"} and onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"}:
-                candidate = True
-                reason = "stem ㄴ/ㅁ fortition requires morphological license"
-            elif rule_id == "R011" and coda in {"ㄼ", "ㄾ"} and onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"}:
-                candidate = True
-                reason = "stem ㄼ/ㄾ fortition requires morphological license"
-            elif rule_id == "R012" and coda == "ㄹ" and onset in {"ㄷ", "ㅅ", "ㅈ"}:
-                candidate = True
-                reason = "Sino-Korean ㄹ fortition requires lexical-class evidence"
-            elif rule_id == "R013" and coda == "ㄹ" and onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"}:
-                candidate = True
-                reason = "adnominal/ㄹ-ending fortition requires morphological license"
-            elif rule_id == "R014" and coda and onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"}:
-                candidate = True
-                reason = "compound fortition requires lexical/morphological license"
-            elif rule_id == "R015" and coda == "ㅅ" and (
-                onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ", "ㄴ", "ㅁ"}
-                or (onset == "ㅇ" and nucleus == "ㅣ")
-            ):
-                candidate = True
-                reason = "saisiot realization requires exact lexical/morphological evidence"
-            elif rule_id == "R016" and coda == "ㄺ" and onset == "ㄱ":
-                candidate = True
-                reason = "ㄺ-before-ㄱ stem exception requires exact morphological evidence"
+                reason = "the -ㄹ게 ending requires fortition evidence or a licensed morphology mode"
             if not candidate:
                 continue
             # A later rule may have resolved this exact pair. Do not mark it
