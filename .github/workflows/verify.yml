@@ -38,7 +38,7 @@ jobs:
       - name: Crawl official article inventory
         id: live-crawl
         continue-on-error: true
-        run: set -o pipefail; npm run crawl:nikl -- --url 'https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002' --output reports/nikl/ci-manifest.json 2>&1 | tee reports/nikl-live-crawl.log
+        run: set -o pipefail; npm run crawl:nikl -- --url 'https://korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002' --output reports/nikl/ci-manifest.json 2>&1 | tee reports/nikl-live-crawl.log
       - name: Upload crawl evidence, including failures
         if: always()
         uses: actions/upload-artifact@v4
