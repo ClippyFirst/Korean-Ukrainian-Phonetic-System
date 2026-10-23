@@ -136,3 +136,32 @@ The new test suite covers a complete fixture, incomplete review fields, stale ha
 Added `scripts/audit-nikl-article-test-index.mjs` and `npm run audit:nikl-test-index -- --format json|csv`. It inventories explicit article references in existing `tests/*.test.mjs` filenames and text, emits one row for each of articles 1–30, and reports which test files mention each article. It intentionally does not expand a filename such as `articles-24-30` into assumed coverage of §§25–29; only printed endpoints are indexed.
 
 This index is navigational evidence only. A named test or textual citation does not establish that every subparagraph, exception, variant, or interaction is implemented or tested. The atomic coverage acceptance gate remains blocked until every normative item is enumerated from permitted primary-source evidence, mapped to executable implementation and positive/negative tests, and independently reviewed. The tool performs no network access and does not change the source corpus.
+
+## End-to-end continuation checkpoint — 2026-10-23 20:00 UTC
+
+### Verified code state
+
+- Main code snapshot: `3a2052c9c27d7af6b5efa7c744d9e2ef14a70d41`.
+- Merged implementation PRs in this continuation: #270 (read-only source-register rights audit), #271 (blinded independent IPA review packet), #273 (returned-packet structural validator), and #274 (explicit NIKL article test-reference index). PR #272 reconciled the handoff after #270/#271.
+- Exact-main CI at `3a2052c`: Node suite **1205 passed, 0 failed**; Python 3.11/3.12/3.13 jobs passed; browser G2P integration passed; browser regression/build and Python data integrity passed; master table/research corpus artifact workflow passed.
+- Pages workflow run [40015664039](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40015664039) had passed Python 3.11/3.12/3.13 checks and browser/static build and was still deploying / awaiting live smoke at checkpoint creation. Do not claim live HTTP or Playwright smoke passed for this SHA until the workflow reports completion.
+- Official NIKL live inventory is not accepted: runner log explicitly records HTTP 403 and the workflow intentionally treats it as BLOCKED, not as a successful crawl.
+
+### Current task ledger
+
+| Work item | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Read-only source-register structure and rights triage | DONE_VERIFIED | `audit:source-register`; CI tests; triage is not legal clearance |
+| Blinded A/B broad-IPA packet generation | DONE_VERIFIED | `ipa:review-packet`; secret-sentinel leakage tests |
+| Returned reviewer packet structural validation | DONE_VERIFIED | `ipa:validate-submission`; stale hash, full case set, immutable source fields, reviewer identity consistency, required metadata and forbidden-field tests |
+| Explicit NIKL test-reference index | DONE_VERIFIED | `audit:nikl-test-index`; one row per §§1–30; no numeric range extrapolation |
+| Independent IPA adjudication | BLOCKED | Queue still 0/20 submissions from reviewer A and 0/20 from reviewer B; needs two genuinely independent qualified reviewers and documented reconciliation |
+| Ukrainian target-layer linguistic review | BLOCKED | Needs a qualified Ukrainian phonetics/transcription reviewer and item-level decisions |
+| Atomic coverage of all NIKL paragraphs/subparagraphs/exceptions/variants | PARTIAL / EVIDENCE-LIMITED | Existing rule/test references are substantial but not a proven source-grounded atomic inventory; requires permitted source text, per-item traceability, positive/negative/interaction tests and independent review |
+| Item-level source rights | BLOCKED | Current 100-row register triage: 96 REVIEW_REQUIRED, 2 MANUAL_CLASSIFICATION_REQUIRED, 1 ITEM_LEVEL_LICENSE_RECORDED, 1 NOT_APPLICABLE_RECORDED. These are free-text triage classes, not legal decisions |
+| Official live source crawl | BLOCKED | HTTP 403; no access-control bypass attempted |
+| Local clean-install test run | NOT RUN HERE | This continuation used connected GitHub workflows; do not claim a local checkout/install was executed |
+
+### Stop-condition assessment
+
+All feasible repository-side work in this continuation was implemented and CI-verified at the cited commits. Remaining blockers require external human linguistic review, item-level rights evidence, and permitted access to normative source material; no code-only workaround can legitimately satisfy them. Keep the project classified as a research preview / partial prototype, not scientifically release-ready.
