@@ -359,3 +359,23 @@ def test_source_backed_complex_coda_lexicon_entry_resolves_its_own_pronunciation
     analysis = phoneticize_korean("값어치")
     assert analysis["pronunciation_status"] == "provisional"
     assert analysis["unresolved_contexts"] == []
+
+
+def test_unlicensed_morphological_fortition_is_not_rendered_as_definitive_ipa():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    analysis = phoneticize_korean("할게")
+    assert analysis["pronunciation_status"] == "unresolved"
+    assert any(item["rule_id"] == "R013" and item["input_span"] == "할게"
+               for item in analysis["unresolved_contexts"])
+    result = transliterate_korean("할게")
+    assert result["ukrainian_orthography"] is None
+    assert result["target_status"] == "unresolved"
+
+
+def test_unambiguous_productive_tensification_remains_available():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    analysis = phoneticize_korean("국밥")
+    assert analysis["pronunciation_status"] == "provisional"
+    assert analysis["ipa"]["ipa"] == "kuk̚.p͈ap̚"
