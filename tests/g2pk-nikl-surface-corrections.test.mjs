@@ -75,9 +75,17 @@ test('a correction preserves source offsets and punctuation in running text', ()
   assert.equal(result.surfaceHangul, '일꼬, 넙쭈카다!');
   assert.deepEqual(result.normativeCorrections.map(item => item.source), ['읽고', '넓죽하다']);
   assert.equal(result.issues.length, 0);
-  const mapped = traceIpaMapping(result.ipa);
-  assert.equal(mapped.unknown, '');
-  assert.equal(result.ukrainian, mapped.tokens.map(token => token.ukrainian).join(''));
+  let expectedTarget = '';
+  for (const item of result.trace) {
+    if (item.status === 'literal') {
+      expectedTarget += item.source;
+      continue;
+    }
+    const mapped = traceIpaMapping(item.ipa || '');
+    assert.equal(mapped.unknown, '', item.source + ': unmapped IPA');
+    expectedTarget += mapped.tokens.map(token => token.ukrainian).join('');
+  }
+  assert.equal(result.ukrainian, expectedTarget, 'running-text target must be reproducible from per-unit IPA');
 });
 
 test('every correction is backed by a registered official NIKL source', () => {
