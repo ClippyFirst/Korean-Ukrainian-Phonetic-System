@@ -433,6 +433,11 @@ The earlier blocker note understated the existing article inventory. `tests/fixt
 
 The current `research/SOURCE-REGISTER.csv` contains 100 data rows. Exact item-level KOGL marks remain unverified for multiple NIKL records. The 20-case IPA queue remains 0/20 independently submitted in both reviewer slots. Independent Ukrainian target review remains separate and outstanding.
 
-PR #266 merged the stale Pages smoke assertion fix and blocker ledger as `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`. The source-level assertion is now aligned with the current UI, but the public HTTP and live Playwright smoke still need confirmation from the post-merge deployment workflow. The live NIKL source inventory job was skipped/blocked, not passed.
+PR #266 merged the stale Pages smoke assertion fix and blocker ledger as `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`. Post-merge Pages run [40009408019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40009408019) passed the Python 3.11/3.12/3.13 matrix, browser tests/build, public HTTP smoke for index/system/JS asset, and live Playwright practical-mode interaction. This closes the deployment smoke gate for commit `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`; the live NIKL source inventory job remains skipped/blocked, not passed.
 
 A follow-up Node test now checks that the workflow's expected UI phrase, practical-mode selector, and system-page title match the source HTML. Exact-head CI on this continuation is required before merging that test. No local commands were run in this API-only session.
+
+### Post-merge deployment verification — 2026-10-23
+
+The Pages workflow for main commit `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e` passed in [run 40009408019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40009408019). All three Python versions passed; browser regression/build passed; the deploy job's public HTTP smoke and live Playwright interaction smoke both passed. This verifies the public deployment path for that commit. It does not establish IPA correctness, Ukrainian target adequacy, or source licensing. The separate live NIKL inventory job was skipped/blocked.
+
