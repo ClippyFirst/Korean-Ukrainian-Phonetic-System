@@ -238,3 +238,13 @@ Branch: `research/native-engine-unresolved-cases-2026-10-24`; PR #281.
 | Scientific release | BLOCKED | Current status remains research preview / partial prototype. CI verifies implementation, not phonetic truth or target-layer quality. |
 
 The later commits `0348043653e7489e98e0f68dc2bb9a820e9cb99a` and `baff6c24c996fc0d92a34ef808d24a4d031d06a8` are documentation-only additions after the green code/test state; the Python/CSV/test implementation did not change after the verified code/test state. Local execution was unavailable because GitHub DNS resolution failed in this environment.
+
+
+### 2026-10-24 correction after completed ㅢ literature search
+
+- **Primary candidate updated:** 삶의 [살믜] → candidate broad IPA `sal.mi`; official alternative [살메] → `sal.me`. This follows the reported general surface pattern in Park, Cho & Han (2016), DOI 10.17959/SPPM.2016.22.1.35, but the paper does not directly measure 삶의. Both remain diagnostic-only and require independent adjudication.
+- **Variation representation:** the native IPA result now exposes `ipa.lexical_alternatives`; it does not silently select the alternate as a Ukrainian target.
+- **Target-layer guard:** lexical target reference is provisionally aligned to `салмі`, but the transliteration API returns no Ukrainian output while the IPA adjudication gate is unresolved.
+- **Independent reviewer queue:** expanded from 20 to 21 cases, adding IPA-021 for 삶의. The extra case has an official NIKL source URL and no candidate IPA; the queue remains blinded and reviewer fields remain empty. The 20-case fixed-count assumptions in packet/validator tests were replaced with canonical queue-size assertions.
+- **Source registry:** added SRC-PARK-CHO-HAN-2016-UI as limited corpus/acoustic evidence; exact-form coverage and item-level reuse rights are still unverified.
+- **Verification:** system verification run 40028573329 and tests run 40028573395 passed after the IPA/queue changes; the official NIKL metadata-only job was skipped. The source-register row and corresponding expected row-count/rights-triage test were updated afterward; verify the newest CI runs before marking the full current branch green.
