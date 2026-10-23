@@ -321,3 +321,14 @@ Open evidence-review PRs #244 and #246 were inspected but intentionally left unt
 
 **Readiness at this handoff:** the technical service is deployable and its regression suite is green, but the project remains a research preview/partial prototype for normative claims. The remaining blockers are exhaustive rule/subparagraph/exception/variant mapping, independent adjudication of generic Korean IPA/surface outputs, a genuinely independent Ukrainian adaptation gold set, and a reproducible permitted route to official source captures. Do not describe it as a fully validated normative system.
 - Remaining release blockers: exhaustive *표준 발음법* 1–30 rule/subparagraph/exception/variant evidence mapping; independent adjudication of generic IPA and Korean surface readings; independent Ukrainian adaptation gold set; resolve HTTP 403 to live NIKL or use reproducibly sourced local official captures. Green CI establishes technical regressions only, not linguistic correctness.
+
+
+## Continuation checkpoint — NIKL Q&A 326601 claim-scope review (2026-10-23)
+
+- Reconciled the open batch-28 work against current `main` rather than merging its divergent branch. PR #246's useful source adjudication is ported as a small, reviewable change: official indexed answer “몇으로 발음” (question 2026-01-18; answer 2026-01-20) directly attests 몇으로[며츠로] and explicitly cites Standard Pronunciation Rules §13 for liaison of final ㅊ before vowel-initial 으로.
+- Updated `research/SOURCE-REGISTER.csv` to distinguish the official surface-form attestation from IPA and Ukrainian adaptation, and clarified the lexical row without changing its Korean surface, project IPA, or Ukrainian target.
+- Inventory moves from 42/60 to **43/60 citations content-checked**; **17 citation-only/unreviewed** remain (14 eligible HTML + 3 PDFs). This is claim-level source review, not full coverage of the 30 normative articles.
+- Item-level KOGL/reuse rights remain unverified. Broad independent IPA gold and Ukrainian-target adjudication remain outstanding; no pronunciation or Ukrainian output was changed.
+- Direct live NIKL retrieval remains HTTP 403 in the existing checks. This review is bounded to the official indexed answer content already examined; no access-control workaround is used.
+- Task ledger: `DONE_VERIFIED` — exact source claim-scope classification and inventory reconciliation once CI passes; `BLOCKED / rights` — item-level reuse marks; `TODO` — inspect remaining 17 citations via authorized saved copies; `BLOCKED_SPECIALIST_ADJUDICATION` — independent broad IPA and Ukrainian practical-target review.
+- Release disposition remains **deployed research preview / partial prototype**, not a scientifically validated release.
