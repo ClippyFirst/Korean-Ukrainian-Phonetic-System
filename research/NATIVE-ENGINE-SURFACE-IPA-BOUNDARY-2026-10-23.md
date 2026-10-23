@@ -99,3 +99,8 @@ This is on branch `research/native-ipa-modifier-boundaries-2026-10-23`. It is no
 ### Registry audit hardening
 
 The registry gate now reads the raw base CSV **and every** `lexical_additions_*.csv` file, rather than only the merged in-memory dictionary. This matters because overlay rows can hide earlier rows for the same key. It checks primary and alternate IPA forms, rejects missing primary IPA and empty IPA syllables, verifies IPA-to-surface syllable counts, and parses each syllable through the strict modifier-aware tokenizer. This remains a syntax/alignment gate, not an independent phonetic gold standard.
+
+
+### CI-driven alternate-form correction
+
+The expanded raw-registry test found one additional error that the previous merged-lexicon check could not see: `발음의` had correct primary IPA but its alternate form `pa|rɯ|me` used ASCII `r`. Corrected the alternate to `pa|ɾɯ|me`. A raw-file scan of primary and alternate IPA columns found no other ASCII-`r` occurrences in the base lexicon and the active `lexical_additions_2026-10-15.csv` overlay. The full CI suite must rerun on the corrected head.
