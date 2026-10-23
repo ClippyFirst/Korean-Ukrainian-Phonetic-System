@@ -400,6 +400,9 @@ def test_native_engine_marks_unlicensed_ambiguous_ipa_as_diagnostic_only(word, r
     assert analysis["ipa_status"] == "diagnostic_only_unresolved_pronunciation", word
     assert analysis["ipa_is_diagnostic_only"] is True, word
     assert analysis["ipa_status_reason"] == "unresolved_morphophonological_context", word
+    assert analysis["ipa"]["status"] == "diagnostic_only_unresolved_pronunciation", word
+    assert analysis["ipa"]["is_diagnostic_only"] is True, word
+    assert analysis["ipa"]["status_reason"] == "unresolved_morphophonological_context", word
     assert any(item["rule_id"] == rule_id for item in analysis["unresolved_contexts"]), word
 
     result = transliterate_korean(word)
@@ -433,3 +436,6 @@ def test_sourced_lexical_override_marks_ipa_provisional_not_diagnostic_only():
     assert analysis["ipa_status"] == "provisional"
     assert analysis["ipa_is_diagnostic_only"] is False
     assert analysis["ipa_status_reason"] is None
+    assert analysis["ipa"]["status"] == "provisional"
+    assert analysis["ipa"]["is_diagnostic_only"] is False
+    assert analysis["ipa"]["status_reason"] is None
