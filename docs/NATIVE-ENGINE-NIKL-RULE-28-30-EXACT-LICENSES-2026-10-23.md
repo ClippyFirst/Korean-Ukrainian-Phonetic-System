@@ -31,6 +31,6 @@ These official Hangul pronunciations support Korean surface behavior. They do no
 
 ## Scope and acceptance
 
-- `TODO / CI`: the implementation and regression suite are on the working branch; do not mark this batch verified until Python 3.11–3.13, browser/build, system regression/data-integrity, and generated-corpus workflows pass.
+- `DONE_VERIFIED / CI`: [test workflow #2194](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40022568933) passed Python 3.11/3.12/3.13 and browser tests/build; [system verification #5093](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40022568864) passed Python regression/data-integrity and browser regression/build; [master table/research corpus artifacts #2058](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40022568699) passed. The live NIKL source inventory step was skipped/blocked, not passed.
 - This exact list is not a productive compound parser. Unlisted compounds and homographs remain dependent on explicit lexical/morphological evidence.
 - Independent IPA adjudication and Ukrainian target-layer review remain separate scientific acceptance gates.
