@@ -31,3 +31,21 @@ def test_adapter_analysis_exposes_length_loss_boundary_explicitly():
     assert len(long_segments) == 1
     assert long_segments[0]["source_ipa"] == "i"
     assert long_segments[0]["length_adaptation_status"] == "preserved-in-analysis-not-rendered"
+
+
+
+def test_every_lexical_ipa_syllable_is_supported_by_the_adapter():
+    from korean_ukrainian.pipeline import LEXICAL_PRONUNCIATIONS
+
+    problems = []
+    for orthography, entry in LEXICAL_PRONUNCIATIONS.items():
+        ipa_syllables = entry.get("ipa_syllables", "").split("|")
+        if not ipa_syllables or not all(ipa_syllables):
+            problems.append(f"{orthography}: missing IPA syllable(s)")
+            continue
+        for index, ipa_syllable in enumerate(ipa_syllables):
+            try:
+                tokenize_ipa_with_modifiers(ipa_syllable)
+            except ValueError as exc:
+                problems.append(f"{orthography} syllable {index + 1} {ipa_syllable!r}: {exc}")
+    assert not problems, "\\n".join(problems)
