@@ -133,3 +133,11 @@ The target-language treatment of Korean fortisness remains an explicit open rese
 PR #264 ports the direct-adapter empty-input guard from the non-mergeable, one-commit-behind PR #263 onto current mainline. `map_ipa_to_ukrainian` now rejects non-string input before loading the optional target inventory and rejects empty/whitespace/boundary-only tokenization results. Regression coverage includes a valid segment as a positive control.
 
 The implementation/test head passed Python 3.11–3.13/web, system/browser, corpus-artifact, and optional g2pK CI. The live NIKL inventory job was skipped. PR #264 merged as `5bb9178243604d169c2209671a953f8683b48408` after final exact-head CI passed. PR #263 was closed as superseded after its code/test change was ported; its branch was retained. The remaining priority is independent source access and specialist adjudication, not inventing IPA gold.
+
+## Scientific release blocker ledger and Pages smoke assertion — 2026-10-23
+
+The current blocker ledger is in research/SCIENTIFIC-RELEASE-BLOCKERS-2026-10-23.md. The existing IPA adjudication queue has 20 cases and 0/20 independent reviewer submissions from each of two reviewer slots. The source register has 101 rows with item-level KOGL review incomplete; rule coverage has 19 data rows and does not establish exhaustive atomic coverage of NIKL §§9–30.
+
+PR #265 was inspected rather than merged blindly because its branch was one commit behind and overlapped the updated handoff. Its useful .github/workflows/deploy-pages.yml smoke assertion fix and blocker ledger were ported into PR #266, which also reconciles PR #264's merged status. The baseline deployment did reach the deploy step; the job failed on a stale grep for wording the current UI no longer uses. The corrected assertion is not yet proof of a successful live deployment: post-merge public HTTP and Playwright smoke must pass.
+
+The project remains a research preview / partial prototype. Next acceptance blockers are qualified independent IPA review, separate Ukrainian target review, atomic normative-rule coverage, item-level KOGL evidence, authorized source intake, and verified live deployment.
