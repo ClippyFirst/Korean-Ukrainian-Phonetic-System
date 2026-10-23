@@ -145,3 +145,7 @@ The project remains a research preview / partial prototype. Next acceptance bloc
 ### Deployment gate update — 2026-10-23
 
 Pages deployment smoke is `DONE_VERIFIED` for main commit `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e` based on [run 40009408019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40009408019). The separate NIKL live inventory job was skipped/blocked. Independent IPA and Ukrainian-target review and item-level rights evidence remain release blockers.
+
+### Next executable batch — source register audit
+
+The current main/deployment gates passed on `b795575c0d8b122123561c682e510ed5c171b5cc`. A dedicated branch now implements a no-dependency source-register auditor and regression tests. It should be merged only after exact-head CI passes and the reported row count / rights triage is inspected. This tool improves auditability; it does not resolve the underlying item-level licensing blocker. Next independent blockers remain IPA adjudication, Ukrainian target review, exhaustive atomic NIKL coverage, and permitted live-source access.
