@@ -23,7 +23,7 @@ const PROTECTED = /^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ]+$/u;
 const NIKL_SURFACE_CORRECTIONS = new Map([
   ['값어치', { surface: '가버치', evidence: 'NIKL §15 붙임; official FAQ mcfaq_seq=5949' }],
   ['넓죽하다', { surface: '넙쭈카다', evidence: 'NIKL §§10, 23; official examples' }],
-  ['넓둥글다', { surface: '넙뚱글다', evidence: 'NIKL §10 exception; official examples' }],
+  ['넓둥글다', { surface: '넙뚱글다', evidence: 'NIKL Q&A qna_seq=322805; §10 exception' }],
   ['넓적하다', { surface: '넙쩌카다', evidence: 'NIKL Q&A qna_seq=322805; §§10, 23' }],
   ['읽고', { surface: '일꼬', evidence: 'NIKL §§1 commentary, 11, 23; Q&A qna_seq=315279' }]
 ]);
