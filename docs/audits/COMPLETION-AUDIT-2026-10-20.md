@@ -991,3 +991,14 @@ CI found and helped fix validation-order and whitespace-fixture defects. The liv
 - Added type and non-empty-token guards plus focused regressions on `fix/native-ipa-adapter-empty-input-2026-10-23`.
 - Classification remains **PARTIAL / PENDING_CI** until exact-head CI passes. Local tests were not run in this API-only environment.
 - No scientific correctness or release-readiness claim changes.
+
+
+### Verification update — native IPA adapter guard
+
+The code/test head `04c767ca56f5add8b5d7829eb6051a863cc9d63f` passed:
+- Python/web tests: [run 40007019581](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019581)
+- System verification: [run 40007019470](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019470)
+- Generated corpus artifacts: [run 40007019405](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019405)
+- Optional g2pK integration: [run 40007019497](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007019497)
+
+The evidence-only documentation update still requires its own exact-head CI. Local tests were not run. Scientific release blockers are unchanged.
