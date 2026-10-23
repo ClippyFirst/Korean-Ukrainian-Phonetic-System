@@ -32,6 +32,7 @@ def test_adnominal_l_fortition_requires_license():
     apply_ordered_rules(items,rule_ids=["R013"],boundary_mode="phrase",rule_licenses={"R013:adnominal_l:할 것:할>것"})
     assert items[1].onset=="ㄲ"
 
+# These license-mechanics probes intentionally use forms outside the exact NIKL example registry.
 def test_compound_fortition_requires_license():
     items=parse_syllables("산고")
     apply_ordered_rules(items, rule_ids=["R014"])
