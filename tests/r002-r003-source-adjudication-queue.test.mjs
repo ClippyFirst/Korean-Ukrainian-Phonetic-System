@@ -39,6 +39,14 @@ test('R002/R003 triage queue contains the intended 14 distinct source-review cas
     }
     assert.equal(item.grammaticalSegmentation, null, item.input + ': do not guess morphology');
     assert.equal(item.finalBroadIpa, null, item.input + ': no independent IPA gold exists yet');
+    if (item.relatedSourceEvidence) {
+      assert.ok(item.relatedSourceEvidence.length > 0, item.input + ': related source evidence must be an array');
+      for (const source of item.relatedSourceEvidence) {
+        assert.match(source.url, /^https:\/\//u, item.input + ': related source URL required');
+        assert.ok(source.excerpt, item.input + ': related source excerpt required');
+        assert.match(source.scope, /Related lexical-form evidence only/u, item.input + ': related source must not be treated as exact-form adjudication');
+      }
+    }
     assert.equal(item.reviewerA.ipa, null, item.input + ': reviewer A has not adjudicated');
     assert.equal(item.reviewerB.ipa, null, item.input + ': reviewer B has not adjudicated');
     assert.equal(item.ukrainianTargetStatus, 'SEPARATE_UNREVIEWED_TASK', item.input);
