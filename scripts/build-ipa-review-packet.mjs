@@ -98,12 +98,19 @@ export function buildReviewerPacket(queueText, reviewerSlot) {
 
 async function main(argv = process.argv.slice(2)) {
   let reviewer = null;
+  let queuePath = null;
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node scripts/build-ipa-review-packet.mjs --reviewer A|B');
+      console.log('Usage: node scripts/build-ipa-review-packet.mjs --reviewer A|B [--queue <queue.json>]');
       console.log('Writes a blinded reviewer packet as JSON to stdout; no files or network requests are made.');
       return 0;
+    }
+    if (arg === '--queue') {
+      if (queuePath !== null) throw new Error('--queue may be supplied only once.');
+      queuePath = argv[++i];
+      if (!queuePath || queuePath.startsWith('--')) throw new Error('--queue requires a JSON file path.');
+      continue;
     }
     if (arg === '--reviewer') {
       if (reviewer !== null) throw new Error('--reviewer may be supplied only once.');
@@ -114,7 +121,7 @@ async function main(argv = process.argv.slice(2)) {
     throw new Error('Unknown argument: ' + arg);
   }
   if (reviewer === null) throw new Error('--reviewer A or --reviewer B is required.');
-  const queueText = await readFile(QUEUE_URL, 'utf8');
+  const queueText = await readFile(queuePath ? resolve(queuePath) : QUEUE_URL, 'utf8');
   const packet = buildReviewerPacket(queueText, reviewer);
   process.stdout.write(JSON.stringify(packet, null, 2) + '\n');
   return 0;
