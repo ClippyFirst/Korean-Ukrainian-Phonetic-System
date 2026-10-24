@@ -42,13 +42,19 @@ def test_holdout_diagnostic_covers_frozen_manifest():
         engines = row["engines"]
         native_target = engines["native_strict_ukrainian_target"]
         g2pk_target = engines["g2pk_ukrainian_target"]
+        assert native_target["available"] is True
         for target in (native_target, g2pk_target):
-            assert target["available"] is True
-            assert isinstance(target["target_analysis_statuses"], list)
-            assert isinstance(target["target_analysis_uninspectable_items"], int)
-            assert target["target_analysis_uninspectable_items"] == 0
+            if target["available"]:
+                assert isinstance(target["target_analysis_statuses"], list)
+                assert isinstance(target["target_analysis_uninspectable_items"], int)
+                assert target["target_analysis_uninspectable_items"] == 0
+            else:
+                # g2pK is intentionally optional and is not installed on Python
+                # 3.13+; the diagnostic must preserve the explicit blocker.
+                assert isinstance(target.get("error"), str) and target["error"]
         assert isinstance(native_target["target_analysis_status"], (str, type(None)))
-        assert isinstance(g2pk_target["target_analysis_status"], (str, type(None)))
+        if g2pk_target["available"]:
+            assert isinstance(g2pk_target["target_analysis_status"], (str, type(None)))
 
 
 def test_holdout_tokens_remain_disjoint_from_runtime_data_and_test_fixtures():
