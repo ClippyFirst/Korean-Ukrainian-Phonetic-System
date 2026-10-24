@@ -4,14 +4,14 @@
   "createdAt": "2026-10-24",
   "contract": "docs/IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md",
   "split": "HOLDOUT",
-  "status": "FROZEN_INPUT_PENDING_EXTERNAL_BENCHMARK_OVERLAP_CHECK_AND_IPA_ANNOTATION",
+  "status": "FROZEN_INPUT_OVERLAP_CHECKED_IPA_ANNOTATION_PENDING",
   "purpose": "Source-backed Korean surface-form items selected from NIKL Standard Pronunciation Rules to support independent broad-IPA annotation and evaluation. This manifest deliberately contains no engine outputs and no IPA gold.",
   "independenceNotes": [
     "Inputs are not to be used for rule or normalization tuning.",
     "Surface evidence is official Hangul pronunciation notation, not IPA.",
-    "These items were selected from official rule examples; external-benchmark overlap is not yet certified because the licensed UGTPHON source corpus is not stored in this repository.",
-    "Before scoring, run the overlap validator against the exact pinned benchmark input and remove or disclose all overlaps.",
-    "Two reviewers must independently produce IPA under the versioned contract; disagreements require adjudication."
+    "Exact-token overlap was checked against the pinned multi-engine artifact 12559692692 (head 94c21ea957c28225caea27b9df69aa8772fea6f7); 0 of these final 24 inputs overlap its 1,907 unique Hangul token forms.",
+    "The initially selected form 앞 overlapped the benchmark and was replaced with the NIKL Rule 9 example 꽃 before this manifest version was frozen.",
+    "Two reviewers must independently produce broad IPA under the versioned contract; disagreements require adjudication."
   ],
   "sourceSet": {
     "rule5": {
