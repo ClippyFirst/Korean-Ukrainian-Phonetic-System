@@ -188,7 +188,7 @@ def _load_espeak(words: list[str]) -> tuple[dict[str, str], str]:
     return dict(zip(words, rendered)), "phonemizer==3.3.0 / eSpeak NG Korean voice; direct IPA output"
 
 
-def _load_phonemize(path: Path, corpus: Path, output: Path) -> tuple[dict[str, str], str]:
+def _load_phonemize(path: Path, corpus: Path, output: Path, eligible_words: list[str]) -> tuple[dict[str, str], str]:
     adapter = Path(__file__).with_name("benchmark_phonemize_adapter.cjs")
     env = os.environ.copy()
     env["PHONEMIZE_BASELINE_DIR"] = str(path)
@@ -200,9 +200,10 @@ def _load_phonemize(path: Path, corpus: Path, output: Path) -> tuple[dict[str, s
     predictions = data.get("predictions")
     if not isinstance(predictions, dict):
         raise ValueError("phonemize adapter output has no predictions object")
+    eligible = set(eligible_words)
     return {
         word: entry["ipa"] for word, entry in predictions.items()
-        if isinstance(entry, dict) and isinstance(entry.get("ipa"), str)
+        if word in eligible and isinstance(entry, dict) and isinstance(entry.get("ipa"), str)
     }, "phonemize@2.0.1 all-language preset; direct IPA output, stripStress=true"
 
 
@@ -210,6 +211,7 @@ def _load_rows_and_words(rows: list[dict[str, Any]]) -> tuple[list[dict[str, str
     items: list[dict[str, str]] = []
     unique: list[str] = []
     seen: set[str] = set()
+    occurrence_id = 0
     for row in rows:
         for token in row["tokens"]:
             word = token.get("canonical", "")
@@ -218,7 +220,8 @@ def _load_rows_and_words(rows: list[dict[str, Any]]) -> tuple[list[dict[str, str
                 continue
             if not isinstance(gold, str) or not _gold_variants(gold):
                 continue
-            items.append({"row_id": str(row["id"]), "word": word, "gold": gold})
+            items.append({"occurrence_id": str(occurrence_id), "row_id": str(row["id"]), "word": word, "gold": gold})
+            occurrence_id += 1
             if word not in seen:
                 unique.append(word)
                 seen.add(word)
@@ -316,7 +319,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
 
     try:
         phonemize_map, phonemize_adapter = _load_phonemize(
-            args.phonemize_root, args.corpus, args.phonemize_output,
+            args.phonemize_root, args.corpus, args.phonemize_output, words,
         )
         predictions["phonemize_2_0_1"] = {word: {"ipa": ipa} for word, ipa in phonemize_map.items()}
         engine_meta["phonemize_2_0_1"] = {
@@ -350,6 +353,19 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             }
         except Exception as exc:
             native_cache[word] = {"error": f"{type(exc).__name__}: {exc}"}
+    native_abstentions_unique = sum(bool(value.get("unresolved")) for value in native_cache.values())
+    native_runtime_errors_unique = sum(bool(value.get("error")) for value in native_cache.values())
+    engine_meta["clippyfirst_native"].update({
+        "status": "PARTIAL" if native_abstentions_unique or native_runtime_errors_unique else "AVAILABLE",
+        "outputs": len(words) - native_abstentions_unique - native_runtime_errors_unique,
+        "engine_errors": native_runtime_errors_unique,
+        "abstentions": native_abstentions_unique,
+        "error_examples": [
+            {"word": word, "error": value.get("error") or value.get("reason") or "unresolved"}
+            for word, value in native_cache.items()
+            if value.get("error") or value.get("unresolved")
+        ][:30],
+    })
 
     for item in items:
         word, gold = item["word"], item["gold"]
@@ -372,7 +388,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 raw_prediction = entry["ipa"]
             try:
                 scored = _score(raw_prediction, gold)
-                scored.update({"row_id": row_id, "token": word, "gold": gold})
+                scored.update({"occurrence_id": item["occurrence_id"], "row_id": row_id, "token": word, "gold": gold})
                 scored_by_engine[name].append(scored)
             except Exception:
                 errors_by_engine[name] += 1
@@ -392,8 +408,8 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "bootstrap_95pct_ci": _bootstrap_ci(scored),
         }
         if name != "clippyfirst_native":
-            by_key = {(x["row_id"], x["token"], x["gold"]): x for x in scored}
-            native_by_key = {(x["row_id"], x["token"], x["gold"]): x for x in native_scored}
+            by_key = {x["occurrence_id"]: x for x in scored}
+            native_by_key = {x["occurrence_id"]: x for x in native_scored}
             keys = sorted(set(by_key) & set(native_by_key))
             paired_candidate = [by_key[k] for k in keys]
             paired_native = [native_by_key[k] for k in keys]
