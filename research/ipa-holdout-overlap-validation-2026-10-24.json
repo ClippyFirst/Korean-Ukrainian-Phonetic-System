@@ -4,8 +4,8 @@
   "holdout": {
     "path": "data/korean/ipa_holdout_2026-10-24.json",
     "caseCount": 24,
-    "manifestGitBlobSha": "19ab5184192b21dc7f02873dcba8ac77a2b672f7",
-    "manifestCommitSha": "b388b0500b95381fe1d150028ff220cc8b3abb37",
+    "manifestGitBlobSha": "f30c5fa8a59753df3d7c06bbbe7d4e43d0b8fb26",
+    "manifestCommitSha": "a61aa83c8a7711afea7e399e08491ed9eb5dd184",
     "ipaGoldCount": 0
   },
   "benchmark": {
@@ -17,13 +17,13 @@
     "uniqueTokenCount": 1907
   },
   "externalExactTokenOverlap": {
-    "method": "Compare every final holdout input to the exact token field in native_g2pk_pairwise_audit.occurrences from the pinned artifact.",
+    "method": "Compare all 24 final manifest inputs to exact token values in native_g2pk_pairwise_audit.occurrences from the pinned artifact; all final input forms are absent.",
     "overlapCount": 0,
     "overlappingInputs": [],
     "removedBeforeFreeze": [
       {
         "input": "앞",
-        "reason": "Exact token overlap in pinned benchmark; replaced by source-backed Rule 9 example 꽃."
+        "reason": "Exact token overlap in the pinned benchmark; replaced by the source-backed Rule 19 example 석류? Wait: final set now uses only official source forms and contains no 앞."
       }
     ],
     "result": "PASS_NO_EXACT_TOKEN_OVERLAP"
