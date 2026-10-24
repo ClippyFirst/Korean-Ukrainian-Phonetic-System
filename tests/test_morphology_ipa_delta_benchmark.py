@@ -85,7 +85,12 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
     assert report["morphology"]["unique_words_analyzed"] == 2
     assert report["morphology"]["multi_morpheme_words"] == 1
     assert "no gold morphology labels" in report["morphology"]["interpretation"]
-    assert "no analyzer output was injected into the IPA engine" in report["morphology"]["interpretation"]
+    assert "default native strict/soft paths are unchanged" in report["morphology"]["interpretation"]
+    gated = report["native_ipa"]["boundary_gated_by_analyzer"]
+    assert gated["status"] == "counterfactual_research_only"
+    assert gated["exact_match_rate"] == 1.0
+    assert gated["selected_native_soft_rule_licenses"] == 0
+    assert gated["suppressed_native_soft_rule_licenses"] == 1
     alignment = report["morphology"]["native_soft_rule_boundary_alignment"]
     assert alignment["events"] == 1
     assert alignment["boundary_observed"] == 0
