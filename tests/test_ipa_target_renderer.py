@@ -107,7 +107,7 @@ def test_ipa_target_override_registry_is_traceable_and_unambiguous():
     with path.open(encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
 
-    assert len(rows) == 25
+    assert len(rows) == 28
     assert len({row["mapping_id"] for row in rows}) == len(rows)
     assert len({row["source_ipa"] for row in rows}) == len(rows)
     for row in rows:
@@ -118,3 +118,17 @@ def test_ipa_target_override_registry_is_traceable_and_unambiguous():
         assert row["scope"]
         assert row["source_ref"]
         assert row["notes"]
+
+
+def test_rounded_vowel_target_mappings_are_explicitly_provisional():
+    from korean_ukrainian.ipa_target_renderer import render_ipa_sequence_to_ukrainian
+
+    for source_ipa, expected_target in [("y", "ві"), ("ø", "ве")]:
+        result = render_ipa_sequence_to_ukrainian(source_ipa)
+        assert result["ukrainian_orthography"] == expected_target
+        assert result["status"] == "provisional"
+        assert result["segments"][0]["mapping_source"] == "ipa_target_overrides"
+
+    for source_ipa, expected_target in [("wi", "ві"), ("we", "ве")]:
+        result = render_ipa_sequence_to_ukrainian(source_ipa)
+        assert result["ukrainian_orthography"] == expected_target

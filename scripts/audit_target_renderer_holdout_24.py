@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from korean_ukrainian.pipeline import transliterate_korean
+from korean_ukrainian.ipa_target_renderer import render_ipa_sequence_to_ukrainian
 from korean_ukrainian import g2pk_engine
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,12 +29,28 @@ def _native_record(form: str, fixture_row: dict[str, str]) -> dict[str, Any]:
     target = result.get("target_analysis") or {}
     inventory = result.get("target_inventory_diagnostic") or {}
     trace = target.get("segments", []) if isinstance(target, dict) else []
+    ipa_variants = []
+    for variant in ipa.get("variants", []):
+        variant_ipa = variant.get("ipa", "")
+        rendered_variant = render_ipa_sequence_to_ukrainian(variant_ipa)
+        ipa_variants.append({
+            "ipa": variant_ipa,
+            "note": variant.get("note"),
+            "vowels": variant.get("vowels", []),
+            "target_status": rendered_variant.get("status"),
+            "ukrainian_orthography": rendered_variant.get("ukrainian_orthography"),
+            "reason": rendered_variant.get("reason"),
+            "unmapped_fragment": rendered_variant.get("unmapped_fragment"),
+            "mapping_ids": [item.get("mapping_id") for item in rendered_variant.get("segments", []) if item.get("mapping_id")],
+            "mapping_trace": rendered_variant.get("segments", []),
+        })
     return {
         "pronunciation_status": phonetics.get("pronunciation_status"),
         "ipa_status": result.get("ipa_status"),
         "ipa_is_diagnostic_only": result.get("ipa_is_diagnostic_only"),
         "ipa_status_reason": result.get("ipa_status_reason"),
         "ipa": ipa.get("ipa"),
+        "ipa_variants_with_target_rendering": ipa_variants,
         "target_status": result.get("target_status"),
         "target_unavailable_reason": result.get("target_unavailable_reason"),
         "target_unavailable_segments": result.get("target_unavailable_segments", []),
