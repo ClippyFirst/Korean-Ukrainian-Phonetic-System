@@ -10,6 +10,7 @@ from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _load_rows_and_words,
     _metrics,
+    _paired_bootstrap_delta_ci,
     _score,
     kog2p_phones_to_ipa,
 )
@@ -74,3 +75,20 @@ def test_bootstrap_is_deterministic_and_reports_interval_contract():
     assert first == second
     assert first["replicates"] == 100
     assert first["exact_match_rate_95pct_ci"] is not None
+
+
+def test_paired_bootstrap_delta_is_deterministic_and_paired():
+    candidate = [
+        {"occurrence_id": "1", "row_id": "a", "exact": True, "distance": 0, "reference_length": 2},
+        {"occurrence_id": "2", "row_id": "b", "exact": False, "distance": 1, "reference_length": 2},
+    ]
+    native = [
+        {"occurrence_id": "1", "row_id": "a", "exact": False, "distance": 1, "reference_length": 2},
+        {"occurrence_id": "2", "row_id": "b", "exact": False, "distance": 2, "reference_length": 2},
+    ]
+    first = _paired_bootstrap_delta_ci(candidate, native, replicates=100)
+    second = _paired_bootstrap_delta_ci(candidate, native, replicates=100)
+    assert first == second
+    assert first["replicates"] == 100
+    assert first["exact_rate_delta_candidate_minus_native_95pct_ci"] is not None
+    assert first["cer_delta_candidate_minus_native_95pct_ci"] is not None
