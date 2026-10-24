@@ -15,7 +15,8 @@
       "count": 525,
       "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
       "reason": "Candidate coda-lateral allophone/broad-symbol difference.",
-      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED",
+      "sourceEvidence": "https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf"
     },
     {
       "reference": "ʰ",
@@ -23,7 +24,8 @@
       "count": 194,
       "proposedAction": "CONTEXTUAL_SIBILANT_ONLY",
       "reason": "The alignment suggests reference sibilant aspiration versus broad sibilant; only the sibilant sequence sʰ is collapsed, never stop aspiration.",
-      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED",
+      "sourceEvidence": "https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf"
     },
     {
       "reference": "ɦ",
@@ -31,7 +33,8 @@
       "count": 165,
       "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
       "reason": "Candidate contextual /h/ allophone difference.",
-      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED",
+      "sourceEvidence": "https://www.cambridge.org/core/journals/applied-psycholinguistics/article/abs/influence-of-spelling-on-the-production-and-storage-of-words-with-allophonic-variants-of-h-in-korean/695C8A620FADB77A80F9DA02D65AFE42"
     },
     {
       "reference": "ɲ",
@@ -39,7 +42,8 @@
       "count": 73,
       "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
       "reason": "Candidate palatal nasal allophone; inspect context near a palatal glide.",
-      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED",
+      "sourceEvidence": "https://www.cambridge.org/core/journals/phonology/article/korean-ninsertion-a-mismatch-between-data-and-learning/6C53BDA0D8F55B2DA793E043D10B968D"
     },
     {
       "reference": "ç",
@@ -47,7 +51,8 @@
       "count": 40,
       "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
       "reason": "Candidate contextual /h/ allophone difference.",
-      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED",
+      "sourceEvidence": "https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf"
     },
     {
       "reference": "ʎ",
@@ -55,7 +60,8 @@
       "count": 33,
       "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
       "reason": "Candidate palatalized lateral allophone difference.",
-      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED",
+      "sourceEvidence": "https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf"
     },
     {
       "reference": "ɕ",
@@ -63,7 +69,8 @@
       "count": 30,
       "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
       "reason": "Candidate palatalized sibilant allophone difference.",
-      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED",
+      "sourceEvidence": "https://doi.org/10.17959/sppm.2010.16.1.3"
     },
     {
       "reference": "i",
@@ -194,6 +201,8 @@
     "noExactSourceRecorded": 7,
     "independentlyAdjudicatedIpaGold": 0,
     "ukrainianTargetAdjudication": "SEPARATE_UNREVIEWED_TASK",
-    "note": "Official Korean bracketed surface notation is Hangul notation, not IPA. The 14 cases were selected from discrepancies/abstentions and are not a blind holdout."
+    "note": "Official Korean bracketed surface notation is Hangul notation, not IPA. The 14 cases were selected from discrepancies/abstentions and are not a blind holdout.",
+    "mappingEvidenceStatus": "SOURCES_FOUND_FOR_ALL_PROPOSED_ALLOPHONE_CLASSES; ITEM-LEVEL IPA REVIEW STILL REQUIRED",
+    "mappingEvidenceNote": "Sources support phonological plausibility of broad allophone collapsing, but they do not adjudicate individual UGTPHON reference strings or prove that the candidate normalization is valid in every context."
   }
 }
