@@ -90,6 +90,9 @@ def _load_mappings() -> tuple[dict[str, dict[str, Any]], dict[str, str]]:
             "notes": (row.get("notes") or "").strip(),
             "mapping_source": "ipa_target_overrides",
         }
+        # An explicit reviewed override is the documented resolution for a
+        # same-key conflict in the broader canonical correspondence table.
+        conflicts.pop(ipa, None)
 
     return mappings, conflicts
 
@@ -166,6 +169,19 @@ def render_ipa_sequence_to_ukrainian(ipa: str) -> dict[str, Any]:
                     "preserved-in-IPA-not-rendered-in-practical-orthography"
                     if ignored_markers else "not-marked"
                 ),
+            }
+
+        if key in _IPA_MAPPING_CONFLICTS:
+            return {
+                "ipa": source_ipa,
+                "status": "unavailable",
+                "reason": "ambiguous_ipa_mapping",
+                "ukrainian_orthography": None,
+                "segments": trace,
+                "unmapped_fragment": key,
+                "unmapped_offset": i,
+                "ignored_source_markers": ignored_markers,
+                "mapping_conflict": _IPA_MAPPING_CONFLICTS[key],
             }
 
         mapping = _IPA_MAPPINGS[key]
