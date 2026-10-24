@@ -63,7 +63,7 @@ def test_repeated_surface_spans_are_reported_not_hidden_by_character_boundaries(
     assert shape["words_with_repeated_source_spans"] == 1
     assert shape["repeated_source_span_groups"] == 1
     assert shape["overlapping_source_span_pairs"] == 1
-    assert shape["forms_not_equal_to_source_substring"] == 1
+    assert shape["forms_not_equal_to_source_substring"] == 2
 
 
 def test_native_soft_rule_boundary_alignment_is_compared_separately():
@@ -92,4 +92,4 @@ def test_native_soft_rule_boundary_alignment_is_compared_separately():
     assert alignment["kiwi_only_observed"] == 1
     assert alignment["mecab_only_observed"] == 0
     assert alignment["agreement_rate"] == 0.0
-    assert "correlation only" in alignment["interpretation"]
+    assert "descriptive only" in alignment["interpretation"]
