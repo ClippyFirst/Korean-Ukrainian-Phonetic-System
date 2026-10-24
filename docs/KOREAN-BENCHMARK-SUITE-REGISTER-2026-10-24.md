@@ -12,6 +12,15 @@ Latest complete six-engine run: [40092929978](https://github.com/ClippyFirst/Kor
 
 On SIGMORPHON, native is 357/997 exact (35.8074%) versus g2pk 353/997 on the same scored subset (35.4062%); g2pk's paired exact delta is −0.4012 pp (95% CI −0.8024 to −0.1003). The two datasets do not support a universal g2pk advantage. All 48 UGTPHON abstention occurrences and both SIGMORPHON abstentions are present in the complete schema-v4 pairwise artifact.
 
+### Verified root-cause findings added after occurrence-level inspection
+
+Detailed evidence and source adjudication are recorded in [the multi-engine benchmark report](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md# error-analysis-what-the-pairwise-results-actually-diagnose) (see its “Error analysis” section; direct anchor may be normalized by GitHub).
+
+- UGTPHON: native and g2pk emit identical IPA strings on 2,634/2,655 shared scored occurrences (99.21%); 1,222/1,239 both-not-exact occurrences (98.63%) also have identical strings. The remaining paired score difference is not evidence of broad model superiority.
+- All four g2pk-only exact occurrences are repeated instances of 없는. The pinned reference omits vowel length, while NIKL explicitly gives 없는 [업ː는 → 엄ː는]. This is a reference-convention conflict pending a formally adjudicated gold correction, not an accepted production-rule change.
+- NIKL Rule 15 independently supports native outputs for 값어치 [가버치] and 맛없다 [마덥따] where g2pk differs; the SIGMORPHON comparison also has four native-only exact occurrences and no g2pk-only exact occurrences.
+- Decision: do not import g2pk rules wholesale or strip length/aspiration/fortis distinctions to maximize exact match. Source-adjudicate the 14 distinct UGTPHON forms where engines differ, and prioritize R002/R003 adjudication for the 45 context labels within 48 native abstention occurrences. Abstentions remain explicit until individually licensed.
+
 ## Eight complementary benchmark suites
 
 | # | Suite | Primary question and metrics | Current state | Acceptance evidence still required |
