@@ -2,9 +2,9 @@
   "schemaVersion": "1.0.0",
   "generatedAt": "2026-10-24",
   "sourceArtifact": {
-    "runId": 40092929978,
-    "artifactId": 12559692692,
-    "artifactZipSha256": "66876b0d748595e556e99d3421f43145cbc12ff74b82fc79b2836431bd257795",
+    "runId": 40113136399,
+    "artifactId": 12567083852,
+    "artifactZipSha256": "33fa50e938ddca77b8a366433d25e6c5f10918f96210719fd14f0315c543c4be",
     "reportFile": "multi-engine-ipa-report.json",
     "reportSha256": "448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f",
     "benchmarkVersion": "multi-engine-ipa-diagnostic-v4",
@@ -52,16 +52,16 @@
         "denominator": 2655,
         "exactMatchRate": 0.910358,
         "totalEditDistance": 370,
-        "referenceCharacters": 21763,
-        "cer": 0.017001
+        "referenceCharacters": 21962,
+        "cer": 0.016847
       },
       "g2pk_0_9_4": {
         "exactMatches": 2415,
         "denominator": 2655,
         "exactMatchRate": 0.909605,
         "totalEditDistance": 380,
-        "referenceCharacters": 21763,
-        "cer": 0.017461
+        "referenceCharacters": 21962,
+        "cer": 0.017303
       },
       "engineDelta": {
         "g2pkMinusNativeExactDeltaPercentagePoints": -0.07533,
@@ -135,8 +135,8 @@
         "name": "plus sibilant sʰ→s collapse",
         "nativeExactRate": 0.910358,
         "g2pkExactRate": 0.909605,
-        "nativeCer": 0.017001,
-        "g2pkCer": 0.017461
+        "nativeCer": 0.016847,
+        "g2pkCer": 0.017303
       }
     ]
   },
@@ -270,6 +270,13 @@
         "claim": "The Korean IPA chart describes [sʰ] as the phonetic realization of the lax sibilant phoneme rather than a separate aspirated-fricative phoneme."
       }
     ],
-    "engineComparison": "Under candidate broad-v1 the native engine has two more exact matches than g2pk on the paired sample, but the lexical-type cluster bootstrap interval for g2pk minus native includes zero. Do not claim a statistically reliable engine ranking."
+    "engineComparison": "Under candidate broad-v1 the native engine has two more exact matches than g2pk on the paired sample, but the lexical-type cluster bootstrap interval for g2pk minus native includes zero. Do not claim a statistically reliable engine ranking.",
+    "affricatePreservation": "The final broad-v1 profile preserves tɕ affricates. Recomputed CER uses 21,962 reference characters; the earlier 21,763-character denominator reflected the erroneous tɕʰ→ts collapse."
+  },
+  "normalizationImplementationCorrection": {
+    "commit": "48fc6c1688a7b8833a216f013d2560853fbe1ab5",
+    "change": "Protect the tɕ affricate before applying standalone ɕ→s; restore tɕ afterward. This preserves contrastive tɕʰ and tɕ͈ instead of collapsing tɕʰ to ts.",
+    "impact": "Exact-match counts are unchanged on the pinned artifact; broad-v1 reference length and CER were recomputed after preserving the affricate sequence.",
+    "testStatus": "Normalizer regression passed on a code-equivalent CI run; full exact-head suite pending."
   }
 }
