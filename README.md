@@ -64,7 +64,7 @@ Added eight official examples from the attached note to Rule 29, including `ë“¤ì
 - Frozen 24-form NIKL input manifest (IPA gold intentionally blank): `data/korean/ipa_holdout_2026-10-24.json`
 - Validators: `scripts/validate_ipa_holdout.py`; profile-sensitivity analysis: `scripts/analyze_korean_benchmark_correlations.py`
 
-The broad-v1 profile is currently a sensitivity analysis, not a new claimed accuracy score. Exact overlap with the licensed external benchmark and independent IPA review are still required before the holdout can be certified.
+The broad-v1 profile is currently a sensitivity analysis, not a new claimed accuracy score. Exact-token overlap against the pinned benchmark artifact is verified at 0/24; local leakage CI and independent IPA review are still required before the holdout can be scored.
 
 ## Research-only morphological analyzers (2026-10-24)
 
