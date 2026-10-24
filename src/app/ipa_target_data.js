@@ -100,7 +100,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "гьо",
     "status": "model-selected",
     "scope": "ipa-sequence",
-    "source_ref": "src/app/engine_ipa.js#IPA_TO_UKRAINIAN",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "The sequence /hjʌ/ maps to гьо rather than a literal гйо.",
     "mapping_source": "ipa_target_overrides"
   },
@@ -230,7 +230,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "кхьо",
     "status": "provisional",
     "scope": "ipa-sequence",
-    "source_ref": "src/app/engine_ipa.js#IPA_TO_UKRAINIAN",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "Existing project-level exception retained as provisional; aspiration spelling remains an explicit review item and is not generalized to other contexts.",
     "mapping_source": "ipa_target_overrides"
   },
@@ -316,7 +316,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "льо",
     "status": "model-selected",
     "scope": "ipa-sequence",
-    "source_ref": "src/app/engine_ipa.js#IPA_TO_UKRAINIAN",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "Explicit coda-liquid plus yod-vowel mapping from the current IPA-first target table.",
     "mapping_source": "ipa_target_overrides"
   },
@@ -386,7 +386,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "ньо",
     "status": "model-selected",
     "scope": "ipa-sequence",
-    "source_ref": "src/app/engine_ipa.js#IPA_TO_UKRAINIAN",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "The sequence /njo/ maps to ньо.",
     "mapping_source": "ipa_target_overrides"
   },
@@ -399,7 +399,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "ню",
     "status": "model-selected",
     "scope": "ipa-sequence",
-    "source_ref": "src/app/engine_ipa.js#IPA_TO_UKRAINIAN",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "The sequence uses Ukrainian ю rather than ньу.",
     "mapping_source": "ipa_target_overrides"
   },
@@ -412,7 +412,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "ньо",
     "status": "model-selected",
     "scope": "ipa-sequence",
-    "source_ref": "src/app/engine_ipa.js#IPA_TO_UKRAINIAN",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "Explicit nasal plus yod-vowel mapping from the current IPA-first target table.",
     "mapping_source": "ipa_target_overrides"
   },
@@ -798,7 +798,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "ий",
     "status": "provisional",
     "scope": "ipa-sequence",
-    "source_ref": "src/app/engine_ipa.js#IPA_TO_UKRAINIAN",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "Existing target sequence for ㅢ; only render when the upstream IPA has passed its pronunciation-adjudication gate.",
     "mapping_source": "ipa_target_overrides"
   },
@@ -811,7 +811,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "нь",
     "status": "model-selected",
     "scope": "surface-segment",
-    "source_ref": "src/korean_ukrainian/pipeline.py#_feature_vector_for_ipa",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "The source IPA palatal nasal maps to Ukrainian нь.",
     "mapping_source": "ipa_target_overrides"
   },
@@ -824,7 +824,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "ня",
     "status": "model-selected",
     "scope": "ipa-sequence",
-    "source_ref": "src/app/engine_ipa.js#IPA_TO_UKRAINIAN",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "The sequence uses Ukrainian я rather than ньа.",
     "mapping_source": "ipa_target_overrides"
   },
@@ -850,7 +850,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "ньо",
     "status": "model-selected",
     "scope": "ipa-sequence",
-    "source_ref": "src/app/engine_ipa.js#IPA_TO_UKRAINIAN",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "The palatal nasal before /o/ maps to ньо.",
     "mapping_source": "ipa_target_overrides"
   },
@@ -876,7 +876,7 @@ export const IPA_TARGET_MAPPINGS = [
     "target_grapheme": "ньо",
     "status": "model-selected",
     "scope": "ipa-sequence",
-    "source_ref": "src/app/engine_ipa.js#IPA_TO_UKRAINIAN",
+    "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "The palatal nasal before /ʌ/ maps to ньо.",
     "mapping_source": "ipa_target_overrides"
   },
