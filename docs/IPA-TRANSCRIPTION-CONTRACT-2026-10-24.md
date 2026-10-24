@@ -83,3 +83,15 @@ On the pinned multi-engine artifact (JSON SHA-256 `448c23993032e7a30a7f2cff716a9
 | Candidate broad v1 | 2,417/2,655 (91.04%) | 1.70% | 2,415/2,655 (90.96%) | 1.75% |
 
 These are normalization-sensitivity results on the same reference strings, not newly validated accuracy estimates. After the other proposed allophone collapses, exact match is 71.30%; adding `ɕ→s` alone gives 71.86%; collapsing sibilant `sʰ→s` alone gives 83.92%; applying both gives 91.04%. Independent IPA labels are required to confirm that the broad comparison is linguistically appropriate rather than an over-collapse.
+
+
+## 7. Evidence supporting the candidate equivalences
+
+These references support the *phonological plausibility* of the mappings, not the correctness of each individual benchmark transcription:
+
+- **Korean consonant/allophone chart (Ohio State University, Spoken English Program):** [Korean consonants, IPA](https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf). Its explanatory notes identify bracketed `[ɭ]` and `[ʎ]` as non-phonemic lateral phones, describe taps and lateral approximants as allophones of /l/, describe `[ç]` and other non-phonemic fricatives as allophones of /h/, and describes the aspirated fricative `[sʰ]` as corresponding to the lax sibilant phoneme rather than a separate aspirated-fricative phoneme.
+- **Sibilant coarticulation:** Kang, Hyunsook (2010), “Coarticulation effects of Korean sibilant /s/ before a high front segment,” *Studies in Phonetics, Phonology and Morphology* 16(1), 3–18. [DOI: 10.17959/sppm.2010.16.1.3](https://doi.org/10.17959/sppm.2010.16.1.3). The study finds measurable palatalized acoustic properties of /s/ before high-front segments; it supports treating `ɕ/s` as a broad-vs-allophonic representation question, not unconditional identity in every context.
+- **Allophonic /h/:** Han & Choi (2015), “The influence of spelling on the production and storage of words with allophonic variants of /h/ in Korean,” *Applied Psycholinguistics*. [Cambridge University Press](https://www.cambridge.org/core/journals/applied-psycholinguistics/article/abs/influence-of-spelling-on-the-production-and-storage-of-words-with-allophonic-variants-of-h-in-korean/695C8A620FADB77A80F9DA02D65AFE42). The study explicitly investigates [ɦ] as an allophonic variant of /h/.
+- **Palatalized nasal:** “Korean n-insertion: a mismatch between data and learning,” *Phonology* (Cambridge University Press). [Article](https://www.cambridge.org/core/journals/phonology/article/korean-ninsertion-a-mismatch-between-data-and-learning/6C53BDA0D8F55B2DA793E043D10B968D). The article notes that the sequence /nj/ may be realized phonetically as [ɲ]. The candidate normalizer maps [ɲ] to broad `n` while retaining a following `j` if present; it does not delete the glide.
+
+The evidence supports a broad-phonological comparison profile, but does not license indiscriminate normalization of unrelated symbols. Keep `i/y`, stress, length, fortisness, stop aspiration and unreleased-coda marks distinct until their own evidence review.
