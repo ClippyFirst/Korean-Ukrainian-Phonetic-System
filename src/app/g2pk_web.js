@@ -127,10 +127,12 @@ export function createG2pWebAdapter(engine) {
       // form. Preserve length in IPA only; the Ukrainian target stays a
       // separate, provisional adaptation and is not generated from Hangul.
       const lexicalLength = NIKL_LEXICAL_LENGTH.get(text);
+      let lexicalLengthApplied = false;
       if (lexicalLength && surface === lexicalLength.surface && result.trace?.[lexicalLength.syllableIndex]?.ipa) {
         const item = result.trace[lexicalLength.syllableIndex];
         if (!item.ipa.includes('ː')) {
           item.ipa += 'ː';
+          lexicalLengthApplied = true;
           result.ipa = renderIpa(result.trace);
           result.analysis += '; NIKL lexical vowel length retained in IPA (' + lexicalLength.evidence + ')';
         }
@@ -141,6 +143,7 @@ export function createG2pWebAdapter(engine) {
       // of those forms. IPA and Ukrainian are rendered through the same
       // surface → IPA → Ukrainian adapter; they are not asserted as gold.
       const variantEvidence = NIKL_VARIANT_SURFACES.get(text);
+      let alternativeVariantAdded = false;
       if (variantEvidence && variantEvidence.surfaces.includes(surface)) {
         const alternativeSurface = variantEvidence.surfaces.find(value => value !== surface);
         const alternative = engine.convertSurface(alternativeSurface);
@@ -153,12 +156,13 @@ export function createG2pWebAdapter(engine) {
             note: variantEvidence.evidence + '; IPA/український відповідник згенеровані адаптером ClippyFirst і потребують окремої перевірки.',
             status: 'lexical-review'
           }];
+          alternativeVariantAdded = true;
         }
       }
 
       result.normativeCorrections = normalized.corrections;
       if (result.issues.length) result.status = 'unresolved';
-      else if (normalized.corrections.length || lexicalLength || variantEvidence) result.status = 'lexical';
+      else if (normalized.corrections.length || lexicalLengthApplied || alternativeVariantAdded) result.status = 'lexical';
       else result.status = surface === text ? 'canonical' : 'contextual';
       return result;
     }
