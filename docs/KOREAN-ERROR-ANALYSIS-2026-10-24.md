@@ -4,7 +4,7 @@
 
 **DONE_VERIFIED:** R002 coda-ㅇ loss fix (PR #298), broad-IPA palatal-yod absorption fix (PR #299), complete native-vs-g2pk occurrence-level benchmark audit, and Python R010 exact-form licenses for 닮다 and 넘게 on open PR #297. The current branch also contains corresponding browser-engine licenses and regressions; their latest cross-runtime CI is the final acceptance gate.
 
-Latest post-fix six-engine run: [40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799), [artifact 12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356). The artifact includes full native-vs-g2pk occurrence ledgers for UGTPHON and SIGMORPHON, not a capped mismatch sample.
+Latest post-fix six-engine run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978), [artifact 12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692). The artifact includes full native-vs-g2pk occurrence ledgers for UGTPHON and SIGMORPHON, not a capped mismatch sample.
 
 Key source files:
 - R002 native rule: src/korean_ukrainian/rules.py
@@ -54,7 +54,7 @@ After the yod fix, the full audit found six g2pk-only exact occurrences:
 
 The native rule engine deliberately requires exact full-form + adjacent-pair evidence for morphology-conditioned R010 (§24) fortition. The two first cases were not licensed, so the engine conservatively left ㄷ/ㄱ lenis. PR #297 adds exact-form licenses for 닮다 and 넘게 to the Python engine and corresponding browser engine, with tests. The license is scoped to those complete forms; it does not turn on a global fortition heuristic or silently claim a productive morphology parser.
 
-The latest Python benchmark after these licenses gained two more exact matches (1,410 → 1,412 of 2,655) and CER fell from 9.2060% to 9.1883%. This improvement is measured in run 40092327799. The browser port is subject to the latest browser/Python/parity CI before the code is accepted as cross-runtime complete.
+The latest Python benchmark after these licenses gained two more exact matches (1,410 → 1,412 of 2,655) and CER fell from 9.2060% to 9.1883%. This improvement is measured in run 40092929978. The browser port is subject to the latest browser/Python/parity CI before the code is accepted as cross-runtime complete.
 
 ## 4. The four remaining g2pk-only exact matches are an annotation mismatch for 없는
 
@@ -66,7 +66,7 @@ Do not delete a sourced length contrast from production IPA just to raise exact 
 
 ### UGTPHON
 
-Latest artifact [12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356) reports 2,703 eligible occurrences:
+Latest artifact [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692) reports 2,703 eligible occurrences:
 
 | Paired category | Occurrences |
 |---|---:|
@@ -131,7 +131,7 @@ This comparison is not fully independent end-to-end: g2pk emits surface Hangul a
 |---|---|---|
 | Diagnose and fix coda-ㅇ loss | DONE_VERIFIED | PR #298 merged; same-profile benchmark improvement and regression tests. |
 | Diagnose and fix broad-IPA palatal-yod retention | DONE_VERIFIED | PR #299 merged; 13 exact-match gains on revised profile and official NIKL Rule 5 evidence. |
-| Complete pairwise audit | DONE_VERIFIED | Artifact 12559731356; category totals reconcile to all 2,703 UGTPHON and 999 SIGMORPHON occurrences. |
+| Complete pairwise audit | DONE_VERIFIED | Artifact 12559692692; category totals reconcile to all 2,703 UGTPHON and 999 SIGMORPHON occurrences. |
 | Add R010 exact-form licenses for 닮다 and 넘게 | DONE_VERIFIED for Python benchmark; browser parity pending | Two additional exact matches and CER improvement; strict full-form licenses only. |
 | Explain all remaining native-vs-g2pk differences | PARTIAL | Four reference-length mismatches remain; 48 abstentions still require adjudication. |
 | Normative acceptance benchmark | TODO | Independently reviewed IPA gold with NIKL article/environment provenance. |

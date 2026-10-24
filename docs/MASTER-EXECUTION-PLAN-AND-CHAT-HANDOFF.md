@@ -19,7 +19,7 @@
 
 ### Current benchmark evidence
 
-- Latest successful six-engine run: [40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799); artifact [12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356).
+- Latest successful six-engine run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978); artifact [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692).
 - Revised broad-IPA UGTPHON: native 1,412/2,655 exact (53.1827%), CER 9.1883%, coverage 98.2242%; g2pk 1,416/2,655 exact on the common scored subset (53.3333%), CER 9.2414%.
 - Revised broad-IPA SIGMORPHON public paired file: native 357/997 exact (35.8074%), CER 14.7037%; g2pk 353/997 exact on the common scored subset (35.4062%), CER 14.8222%. This is not a leaderboard reproduction because the pinned public file contains paired references despite the upstream README describing word-only test inputs.
 - Full UGTPHON pairwise categories: 1,412 both-exact; 1,239 both-not-exact; 4 g2pk-only exact; 19 native-abstained/g2pk-exact; 29 native-abstained/g2pk-not-exact.
@@ -28,12 +28,12 @@
 
 ### Verification and PR state
 
-- Run 40092327799: multi-engine benchmark passed on the Python R010-fix head; artifact uploaded and inspected.
+- Run 40092929978: multi-engine benchmark passed on the Python R010-fix head; artifact uploaded and inspected.
 - Run 40092327808: Python regression, browser tests/build and related test jobs passed before the browser R010 port was added.
 - Run 40092327874: research morphology adapter smoke passed before the browser R010 port.
 - The browser R010 implementation and new parity test were subsequently added. Current-head CI runs 40092929979 (tests) and 40092929989 (system verification) are queued as of this handoff; do not mark browser parity DONE_VERIFIED until they pass.
 - PR #297 remains open: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/297. PRs #298 and #299 are merged. PRs #280 and #281 are merged and their existing work is preserved.
-- Functional Python benchmark head: 5962a9a8dbeacd04f4bd607a52d068d9aa97319a. The docs/handoff integration branch is bench/ko-eight-suite-and-abstention-audit-2026-10-24; it remains a research branch pending PR review, not mainline release evidence.
+- Python R010 benchmark head: 5962a9a8dbeacd04f4bd607a52d068d9aa97319a; browser R010 port is present by benchmark head 94c21ea957c28225caea27b9df69aa8772fea6f7. The latest successful six-engine run 40092929978 tests the same code state. The docs/handoff integration branch is bench/ko-eight-suite-and-abstention-audit-2026-10-24; it remains a research branch pending PR review, not mainline release evidence.
 
 ### Readiness
 

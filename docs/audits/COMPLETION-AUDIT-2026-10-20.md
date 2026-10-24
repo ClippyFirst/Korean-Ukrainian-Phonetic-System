@@ -1022,7 +1022,7 @@ PR #265 was not merged blindly because it was one commit behind and overlapped c
 
 ### Latest benchmark evidence
 
-Latest successful multi-engine run: [40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799), artifact [12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356).
+Latest successful multi-engine run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978), artifact [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692).
 
 - UGTPHON native: 1,412/2,655 exact (53.1827%), CER 9.1883%, coverage 98.2242%.
 - UGTPHON g2pk on the same 2,655 scored occurrences: 1,416 exact (53.3333%), CER 9.2414%. Paired g2pk-minus-native exact delta +0.1506 pp (95% CI +0.0351 to +0.3243); CER delta +0.0531 pp (95% CI −0.0139 to +0.1302, crosses zero).
