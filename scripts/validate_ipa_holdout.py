@@ -81,12 +81,13 @@ def benchmark_tokens(path: Path) -> set[str]:
                 if isinstance(value, str):
                     tokens.add(value)
             row_tokens = row.get("tokens", [])
-            for token in row_tokens if isinstance(row_tokens, list) else []:
-                if isinstance(token, dict):
-                    for field in ("text", "canonical"):
-                        value = token.get(field)
-                        if isinstance(value, str):
-                            tokens.add(value)
+            if isinstance(row_tokens, list):
+                for token in row_tokens:
+                    if isinstance(token, dict):
+                        for field in ("text", "canonical"):
+                            value = token.get(field)
+                            if isinstance(value, str):
+                                tokens.add(value)
     return tokens
 
 
