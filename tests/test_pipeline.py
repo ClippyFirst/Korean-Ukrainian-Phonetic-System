@@ -527,3 +527,24 @@ def test_shared_ipa_target_renderer_fails_closed_on_word_analysis_misalignment(m
         for item in result["target_analysis"]
     )
 
+
+
+def test_unlicensed_stem_nasal_fortition_is_not_promoted_to_confident_ipa():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    for word in ("닮다", "넘게"):
+        result = phoneticize_korean(word)
+        assert result["pronunciation_status"] == "unresolved", word
+        assert result["ipa_status"] == "diagnostic_only_unresolved_pronunciation", word
+        assert result["ipa_is_diagnostic_only"] is True, word
+        assert any(
+            item["rule_id"] == "R010"
+            and item["reason"] == "stem-final ㄴ/ㅁ fortition requires exact morphology evidence"
+            for item in result["unresolved_contexts"]
+        ), word
+
+    # A disabled R010 rule alone is not enough to abstain if no candidate
+    # environment exists in the word.
+    ordinary = phoneticize_korean("가나다")
+    assert ordinary["pronunciation_status"] == "provisional"
+    assert ordinary["ipa_is_diagnostic_only"] is False
