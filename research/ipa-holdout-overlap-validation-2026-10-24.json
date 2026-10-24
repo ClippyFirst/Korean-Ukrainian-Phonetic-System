@@ -6,7 +6,10 @@
     "caseCount": 24,
     "manifestGitBlobSha": "3a69a915e475f08d0c6aba0c0e52638bcf3d6121",
     "manifestCommitSha": "936e7fbe62a74f7d660f5063f66bfacf88635637",
-    "ipaGoldCount": 0
+    "ipaGoldCount": 0,
+    "artifactId": 12567746123,
+    "runId": 40113742248,
+    "artifactZipSha256": "9b071513543a103f26dc56ba74ddde3c20a0a62d5e48f0e1aa0a01c612178fa2"
   },
   "benchmark": {
     "workflowRunId": 40092929978,
@@ -17,7 +20,7 @@
     "uniqueTokenCount": 1907
   },
   "externalExactTokenOverlap": {
-    "method": "Compare all 24 revised manifest inputs to exact token values in native_g2pk_pairwise_audit.occurrences from pinned artifact 12567083852. All 24 distinct inputs are absent from the 1,907 unique Hangul tokens.",
+    "method": "Compare all 24 revised manifest inputs to exact token values in native_g2pk_pairwise_audit.occurrences from successful artifact 12567746123. All 24 distinct inputs are absent from the 1,907 unique Hangul tokens; report JSON SHA-256 matches the previously inspected artifact.",
     "overlapCount": 0,
     "overlappingInputs": [],
     "removedBeforeFreeze": [
@@ -26,7 +29,10 @@
         "reason": "Removed after an exact-token overlap was detected in an earlier candidate manifest; the final 24-item set was rebuilt from NIKL rule examples."
       }
     ],
-    "result": "PASS_NO_EXACT_TOKEN_OVERLAP"
+    "result": "PASS_NO_EXACT_TOKEN_OVERLAP",
+    "artifactId": 12567746123,
+    "runId": 40113742248,
+    "artifactZipSha256": "9b071513543a103f26dc56ba74ddde3c20a0a62d5e48f0e1aa0a01c612178fa2"
   },
   "localLeakageValidation": {
     "status": "PENDING_EXACT_HEAD_CI",
