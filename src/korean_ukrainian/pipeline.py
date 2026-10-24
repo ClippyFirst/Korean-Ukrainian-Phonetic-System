@@ -622,7 +622,13 @@ def render_ipa_analysis_to_ukrainian(
             word_index += 1
             continue
 
-        word_ipa = word_analyses[word_index].get("ipa")
+        word_analysis = word_analyses[word_index]
+        word_ipa = word_analysis.get("ipa")
+        word_diagnostic_only = bool(
+            ipa_diagnostic_only
+            or word_analysis.get("is_diagnostic_only")
+            or word_analysis.get("status") == "diagnostic_only_unresolved_pronunciation"
+        )
         word_index += 1
         if not word_ipa:
             all_mapped = False
@@ -647,7 +653,7 @@ def render_ipa_analysis_to_ukrainian(
             "summary": inventory_diagnostic,
         })
 
-        if ipa_diagnostic_only:
+        if word_diagnostic_only:
             local = {
                 "ipa": word_ipa,
                 "status": "unavailable",
