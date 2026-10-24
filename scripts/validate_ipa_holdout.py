@@ -49,7 +49,7 @@ def collect_local_forms(root: Path) -> dict[str, set[str]]:
         if not folder.exists():
             continue
         for path in folder.rglob("*"):
-            if not path.is_file() or path.suffix.lower() not in {".csv", ".json", ".txt", ".tsv"}:
+            if not path.is_file() or path.suffix.lower() not in {".csv", ".json", ".txt", ".tsv", ".py", ".mjs", ".js", ".ts"}:
                 continue
             if path.name in {"ipa_holdout_2026-10-24.json", "nikl-article-review-1-30.json"}:
                 continue
