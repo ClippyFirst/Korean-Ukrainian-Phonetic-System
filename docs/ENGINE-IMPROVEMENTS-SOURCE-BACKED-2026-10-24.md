@@ -60,3 +60,8 @@ The result panel also explains this distinction to users in Ukrainian and explic
 ### Additional exact-form source control: 싫어서
 
 The source register now includes NIKL Online Q&A qna_seq=313981, which directly gives the Hangul surface form 싫어서[시러서] and explains the ㅀ-before-vowel process. A browser integration regression checks the practical G2P surface against that attestation, then verifies that the Ukrainian target is still reproducible from the generated IPA. The test explicitly asserts that neither IPA nor Ukrainian output is promoted to gold. This is a surface-form regression, not an independent phonetic adjudication.
+
+
+### IPA boundary interoperability fix
+
+The shared browser IPA-to-Ukrainian utility previously split only on whitespace, so a valid dot-separated syllable sequence from the Python research renderer could be treated as one unknown IPA unit. It now treats dots and whitespace as syllable-boundary metadata while preserving the original Korean source spacing in the Ukrainian target. Actual unmapped IPA symbols still fail closed. Regression coverage added; exact-head CI pending.

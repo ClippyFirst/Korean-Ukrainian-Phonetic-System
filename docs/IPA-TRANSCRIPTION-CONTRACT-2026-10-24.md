@@ -95,3 +95,8 @@ These references support the *phonological plausibility* of the mappings, not th
 - **Palatalized nasal:** “Korean n-insertion: a mismatch between data and learning,” *Phonology* (Cambridge University Press). [Article](https://www.cambridge.org/core/journals/phonology/article/korean-ninsertion-a-mismatch-between-data-and-learning/6C53BDA0D8F55B2DA793E043D10B968D). The article notes that the sequence /nj/ may be realized phonetically as [ɲ]. The candidate normalizer maps [ɲ] to broad `n` while retaining a following `j` if present; it does not delete the glide.
 
 The evidence supports a broad-phonological comparison profile, but does not license indiscriminate normalization of unrelated symbols. Keep `i/y`, stress, length, fortisness, stop aspiration and unreleased-coda marks distinct until their own evidence review.
+
+
+### Boundary interoperability
+
+The exported IPA-to-Ukrainian adapter accepts both whitespace-separated browser IPA and dot-separated syllable boundaries from the Python research renderer. Dots are treated as boundary metadata, not as phonetic segments; unknown actual IPA symbols still fail closed. A regression covers contiguous and whitespace-separated Korean source text.

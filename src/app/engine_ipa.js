@@ -55,7 +55,10 @@ export function ipaSyllablesToUkrainian(ipaSyllables){
 }
 
 export function ipaTargetForSource(source,ipa){
-  const ipaUnits=(ipa||'').split(/\s+/u).filter(Boolean);
+  // Accept either the browser's whitespace-separated syllables or the
+  // dot-separated syllable boundaries used by the Python research renderer.
+  // Dots are boundary metadata here, never consonant/vowel phones.
+  const ipaUnits=(ipa||'').split(/[.\s]+/u).filter(Boolean);
   const mapped=ipaSyllablesToUkrainian(ipaUnits);
   if(mapped.unknown||!ipaUnits.length)return {text:'',syllables:mapped.syllables,unknown:mapped.unknown};
   if(!/\s/u.test(source||''))return {text:mapped.syllables.join(''),syllables:mapped.syllables,unknown:''};

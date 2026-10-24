@@ -126,3 +126,15 @@ test('every long-vowel marker in the lexical IPA inventory is surfaced as a targ
   }
   assert.ok(checked > 0, 'fixture must exercise real lexical IPA length markers');
 });
+
+
+test('IPA target adapter accepts dot-separated syllable boundaries as metadata', () => {
+  const contiguous = ipaTargetForSource('시구고', 'ɕi.ɡu.ɡo');
+  assert.equal(contiguous.unknown, '');
+  assert.deepEqual(contiguous.syllables, ['ші', 'ґу', 'ґо']);
+  assert.equal(contiguous.text, 'шіґуґо');
+
+  const spaced = ipaTargetForSource('시 구', 'ɕi.ɡu');
+  assert.equal(spaced.unknown, '');
+  assert.equal(spaced.text, 'ші ґу', 'source word spacing must survive IPA dot boundaries');
+});
