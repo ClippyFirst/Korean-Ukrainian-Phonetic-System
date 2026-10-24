@@ -545,12 +545,24 @@ Exact-main CI at this snapshot: Node tests **1205/1205 pass**; Python 3.11, 3.12
 Remaining blockers are scientific, not simply technical: 20/20 independent IPA cases remain unsubmitted by each of two reviewers; Ukrainian target-layer review is outstanding; source-grounded atomic coverage of all paragraphs, exceptions, variants and interactions is unproven; 96/100 source records remain rights-review required and 2 require manual classification; live official-source access is blocked. The article index is only navigation evidence. Project status remains research preview / partial prototype.
 
 
-### Continuation — paired native engine vs g2pk diagnostic benchmark (2026-10-23)
+### Continuation — multi-engine Korean-to-IPA diagnostic benchmark (2026-10-24)
 
-PR #280, branch `research/independent-engine-benchmark-2026-10-23`, adds a reproducible paired comparison script and CI workflow. The chat's local Python environment cannot access PyPI, so `g2pk==0.9.4` was installed and executed in GitHub Actions on Python 3.12; the dependency installation and pinned UGTPHON download/license checks passed.
+PR #280, branch research/independent-engine-benchmark-2026-10-23, expands the original native-vs-g2pk comparison with KoG2P, hangul_to_ipa, eSpeak NG via phonemizer, and phonemize 2.0.1. It adds a pinned, repeatable CI workflow, explicit output adapters, exact-match/CER/coverage metrics, abstention/error reporting, and deterministic row-cluster bootstrap intervals. External source code and the raw corpus are not vendored.
 
-Successful run: [40023490867](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40023490867). Report artifact: [12531162645](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40023490867/artifacts/12531162645). Results are recorded in [docs/NATIVE-VS-G2PK-UGTPHON-RESULTS-2026-10-23.md](NATIVE-VS-G2PK-UGTPHON-RESULTS-2026-10-23.md).
+Successful exact-head scoring run: [40069800681](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069800681); artifact: [12550916606](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069800681/artifacts/12550916606). The scoring code was unchanged in subsequent documentation-only commits. The full report and candidate/source register are in [docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md).
 
-On pinned UGTPHON Korean test split (275 rows): native engine scored 2,653 tokens, 648 exact (24.4252%), CER 17.0604%, with 50 unresolved and 0 exceptions. g2pk scored 2,703 tokens, 675 exact (24.9723%), CER 16.6931%, with 0 exceptions. On the 2,653-token paired subset, g2pk scored 669 exact (25.2167%) vs native 648 (24.4252%); paired CER was 16.6782% vs 17.0604%. Thus g2pk is slightly ahead on this particular diagnostic corpus, by +0.7915 percentage points exact match and -0.3822 percentage points CER on the paired subset.
+Pinned UGTPHON Korean test split: 275 rows, 2,703 eligible token occurrences, 1,907 unique Hangul words:
+- ClippyFirst native: 2,653 scored, 648 exact (24.4252%), CER 17.0604%, 98.15% coverage; 50 unresolved abstentions and zero runtime exceptions.
+- g2pk 0.9.4: 2,703 scored, 675 exact (24.9723%), CER 16.6931%, 100% coverage.
+- KoG2P: 402 exact (14.8724%), CER 26.0795%.
+- hangul_to_ipa: 404 exact (14.9464%), CER 30.9851%.
+- eSpeak NG / phonemizer: 220 exact (8.1391%), CER 39.0498%.
+- phonemize 2.0.1 with corrected adapter: 542 exact (20.0518%), CER 21.3645%.
 
-Do not generalize this into “g2pk is the better Korean engine” yet. UGTPHON is noisy user-generated text, IPA annotation conventions differ, and g2pk's Hangul output was converted using this repository's segment IPA renderer (without rerunning native phonological rules). This shared rendering layer is a limitation. The benchmark does not assess Ukrainian orthography. Next gates: independent surface-Hangul-to-IPA cross-check, NIKL-grounded normative evaluation corpus, phonological error stratification, uncertainty analysis, independent Korean IPA review, and separate Ukrainian target review. The PR adds benchmarking infrastructure only and remains open/unmerged.
+On the 2,653-occurrence paired subset, g2pk exact match is 25.2167% vs native 24.4252%; paired delta +0.7915 percentage points, 95% row-cluster bootstrap CI +0.4538 to +1.1924 pp. Paired CER delta is −0.3822 pp, 95% CI −0.6055 to −0.2083 pp. These intervals exclude zero on this dataset, but the result is not a universal ranking: UGTPHON is noisy user-generated text, IPA conventions differ, no multiple-comparison correction is applied, and g2pk output uses the repository's segment renderer.
+
+The initial phonemize run is invalid and excluded because the adapter returned unchanged Hangul with anyAscii disabled. The adapter was corrected to enable and smoke-test Hangul preprocessing; the results above use the corrected IPA output. KoG2P's custom phone alphabet requires a disclosed lossy adapter. KPD remains BLOCKED_ACCESS_AND_TERMS pending authorized access and license review; the 2022 research modification remains BLOCKED_REPRODUCIBLE_IMPLEMENTATION until an exact executable version can be pinned.
+
+This benchmark does not use a normative NIKL gold set and does not evaluate IPA-to-Ukrainian adaptation. The official NIKL full-text inventory remains BLOCKED_EXTERNAL_ACCESS after HTTP 403. Independent broad-IPA adjudication and separate Ukrainian target-layer review remain scientific release blockers. Repository status remains research preview / partial prototype.
+
+No production pronunciation rules were changed by this PR. PR #280 remains open/unmerged. PR #281 independently updates the same canonical handoff; reconcile the sections and references after choosing merge order rather than merging either branch blindly.
