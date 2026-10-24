@@ -665,6 +665,7 @@ def render_ipa_analysis_to_ukrainian(
                 "ignored_source_markers": local.get("ignored_source_markers", []),
                 "target_inventory_analysis_status": inventory_diagnostic["status"],
                 "target_inventory_unavailable_reason": inventory_diagnostic["reason"],
+                "target_inventory_segment_reasons": inventory_diagnostic["segment_reasons"],
                 "target_inventory_adapter_status": inventory_diagnostic["adapter_status"],
             })
             continue
@@ -682,6 +683,7 @@ def render_ipa_analysis_to_ukrainian(
             "length_adaptation_status": local.get("length_adaptation_status"),
             "target_inventory_analysis_status": inventory_diagnostic["status"],
             "target_inventory_unavailable_reason": inventory_diagnostic["reason"],
+            "target_inventory_segment_reasons": inventory_diagnostic["segment_reasons"],
             "target_inventory_adapter_status": inventory_diagnostic["adapter_status"],
             "target_inventory_selected": bool(inventory_selected),
         })
