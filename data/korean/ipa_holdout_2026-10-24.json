@@ -134,14 +134,14 @@
     },
     {
       "caseId": "KUA-HO-004",
-      "input": "눈보라",
-      "sourceRule": "§6",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "눈보라[눈ː보라]",
+      "input": "보잘것없지만",
+      "sourceRule": "§23",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=336615",
+      "sourceExcerpt": "보잘것없지만[보잘꺼덥찌만]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "눈ː보라"
+        "보잘꺼덥찌만"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -167,7 +167,8 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "보잘꺼덥찌만"
     },
     {
       "caseId": "KUA-HO-005",
@@ -282,14 +283,14 @@
     },
     {
       "caseId": "KUA-HO-008",
-      "input": "말씨",
-      "sourceRule": "§6",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "말씨[말ː씨]",
+      "input": "국보급",
+      "sourceRule": "dictionary-specific",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332987",
+      "sourceExcerpt": "국보급[국뽀끕]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "말ː씨"
+        "국뽀끕"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -315,18 +316,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "국뽀끕"
     },
     {
       "caseId": "KUA-HO-009",
-      "input": "밤나무",
-      "sourceRule": "§6",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "밤나무[밤ː나무]",
+      "input": "비교급",
+      "sourceRule": "dictionary-specific",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332987",
+      "sourceExcerpt": "비교급[비ː교끕]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "밤ː나무"
+        "비ː교끕"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -352,18 +354,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "비ː교끕"
     },
     {
       "caseId": "KUA-HO-010",
-      "input": "많다",
-      "sourceRule": "§6",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "많다[만ː타]",
+      "input": "수준급",
+      "sourceRule": "dictionary-specific",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332987",
+      "sourceExcerpt": "수준급[수준끕]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "만ː타"
+        "수준끕"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -389,18 +392,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "수준끕"
     },
     {
       "caseId": "KUA-HO-011",
-      "input": "멀리",
-      "sourceRule": "§6",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "멀리[멀ː리]",
+      "input": "범위",
+      "sourceRule": "§15",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=330950",
+      "sourceExcerpt": "범위[버뮈]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "멀ː리"
+        "버뮈"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -426,18 +430,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "버뮈"
     },
     {
       "caseId": "KUA-HO-012",
-      "input": "벌리다",
-      "sourceRule": "§6",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "벌리다[벌ː리다]",
+      "input": "절약",
+      "sourceRule": "§20",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=332190",
+      "sourceExcerpt": "절약[저략]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "벌ː리다"
+        "저략"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -463,18 +468,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "저략"
     },
     {
       "caseId": "KUA-HO-013",
-      "input": "재삼재사",
-      "sourceRule": "§6",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "재삼재사[재ː삼재ː사]",
+      "input": "찜닭",
+      "sourceRule": "dictionary-specific",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=334398",
+      "sourceExcerpt": "찜닭[찜닥]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "재ː삼재ː사"
+        "찜닥"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -500,18 +506,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "찜닥"
     },
     {
       "caseId": "KUA-HO-014",
-      "input": "뵈다",
-      "sourceRule": "§6",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "뵈다[뵈ː다]",
+      "input": "신기다",
+      "sourceRule": "§24",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332991",
+      "sourceExcerpt": "신기다[신기다]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "뵈ː다"
+        "신기다"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -537,18 +544,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "신기다"
     },
     {
       "caseId": "KUA-HO-015",
-      "input": "띄다",
-      "sourceRule": "§6",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "띄다[띠ː다]",
+      "input": "싶었던",
+      "sourceRule": "§13/§9/§23",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=334548",
+      "sourceExcerpt": "싶었던[시펃떤]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "띠ː다"
+        "시펃떤"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -574,18 +582,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "시펃떤"
     },
     {
       "caseId": "KUA-HO-016",
-      "input": "넋과",
-      "sourceRule": "§10",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "넋과[넉꽈]",
+      "input": "발걸음",
+      "sourceRule": "§28",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332481",
+      "sourceExcerpt": "발걸음[발꺼름]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "넉꽈"
+        "발꺼름"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -611,18 +620,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "발꺼름"
     },
     {
       "caseId": "KUA-HO-017",
-      "input": "외곬",
-      "sourceRule": "§10",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "외곬[외골]",
+      "input": "끝을",
+      "sourceRule": "§13",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=326711",
+      "sourceExcerpt": "끝을[끄틀]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "외골"
+        "끄틀"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -648,18 +658,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "끄틀"
     },
     {
       "caseId": "KUA-HO-018",
-      "input": "얽거나",
-      "sourceRule": "§11",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "얽거나[얼꺼나]",
+      "input": "여덟과",
+      "sourceRule": "dictionary-specific",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=334808",
+      "sourceExcerpt": "여덟과[여덜과]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "얼꺼나"
+        "여덜과"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -685,18 +696,19 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "여덜과"
     },
     {
       "caseId": "KUA-HO-019",
-      "input": "닿소",
-      "sourceRule": "§12",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "닿소[다ː쏘]",
+      "input": "팔심",
+      "sourceRule": "§28",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=308599",
+      "sourceExcerpt": "팔심[팔씸]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "다ː쏘"
+        "팔씸"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -722,7 +734,8 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "팔씸"
     },
     {
       "caseId": "KUA-HO-020",
@@ -763,14 +776,15 @@
     },
     {
       "caseId": "KUA-HO-021",
-      "input": "많소",
-      "sourceRule": "§12",
-      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
-      "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "많소[만ː쏘]",
+      "input": "계산",
+      "sourceRule": "§4/§5",
+      "sourceAuthority": "National Institute of Korean Language (Online Q&A)",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=333694",
+      "sourceExcerpt": "계산[계ː산~게ː산]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "만ː쏘"
+        "계ː산",
+        "게ː산"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -796,7 +810,8 @@
         "notes": null
       },
       "engineOutputsStored": false,
-      "tuningUseProhibited": true
+      "tuningUseProhibited": true,
+      "surfaceReading": "계ː산"
     },
     {
       "caseId": "KUA-HO-022",
@@ -910,5 +925,5 @@
       "tuningUseProhibited": true
     }
   ],
-  "notes": " Replaced benchmark/test-overlapping cases after full repository leakage validation; the revised candidate set must pass exact local and pinned-artifact overlap checks before certification."
+  "notes": " Replaced benchmark/test-overlapping cases after full repository leakage validation; the revised candidate set must pass exact local and pinned-artifact overlap checks before certification. Fourteen cases overlapping existing rule-page regression data were replaced with exact-form, source-attested NIKL Online Q&A examples. This revised set still requires the full exact-head overlap gate and independent IPA annotation."
 }
