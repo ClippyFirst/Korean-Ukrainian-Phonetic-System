@@ -4,8 +4,8 @@
   "holdout": {
     "path": "data/korean/ipa_holdout_2026-10-24.json",
     "caseCount": 24,
-    "manifestGitBlobSha": "f3c525ed7d97c4cdc12031486b58110392cff6a0",
-    "manifestCommitSha": "927367067bc752b0205174814ba0826fc3bf035d",
+    "manifestGitBlobSha": "3a69a915e475f08d0c6aba0c0e52638bcf3d6121",
+    "manifestCommitSha": "936e7fbe62a74f7d660f5063f66bfacf88635637",
     "ipaGoldCount": 0
   },
   "benchmark": {
@@ -17,7 +17,7 @@
     "uniqueTokenCount": 1907
   },
   "externalExactTokenOverlap": {
-    "method": "Compare all 24 revised manifest inputs to exact token values in native_g2pk_pairwise_audit.occurrences from the pinned artifact. All 24 distinct inputs are absent from the 1,907 unique Hangul tokens.",
+    "method": "Compare all 24 revised manifest inputs to exact token values in native_g2pk_pairwise_audit.occurrences from pinned artifact 12567083852. All 24 distinct inputs are absent from the 1,907 unique Hangul tokens.",
     "overlapCount": 0,
     "overlappingInputs": [],
     "removedBeforeFreeze": [
@@ -30,17 +30,16 @@
   },
   "localLeakageValidation": {
     "status": "PENDING_EXACT_HEAD_CI",
-    "reason": "The full repository validator now checks CSV runtime input columns rather than Korean words in explanatory notes, and excludes two official NIKL source-only snapshots. The revised 24-case candidate set awaits exact-head CI verification; no local clone was available because outbound DNS to github.com failed.",
+    "reason": "The revised holdout replaces 14 overlapping rule-page examples with exact-form readings attested in official NIKL Online Q&A pages. Full local overlap verification on the current head is pending; local checkout is blocked by DNS failure to github.com.",
     "excludedSourceOnlyFixture": "tests/fixtures/nikl-article-review-1-30.json",
     "exclusionRationale": "Both fixtures are official NIKL source snapshots, not engine predictions or expected outputs. Source evidence may inform the holdout; runtime input data and expected-output fixtures remain subject to overlap checks.",
     "checkedPaths": [
       "data/korean/lexical_pronunciations.csv",
-      "data/korean/canonical_correspondence.csv",
-      "tests/nikl-human-review-surface-regression.test.mjs",
-      "tests/fixtures/nikl-surface-only-complex-coda.json",
-      "tests/test_benchmark_score_causality.py",
-      "tests/test_ipa_contract_and_holdout.py",
-      "tests/test_ipa_profile_sensitivity_snapshot.py"
+      "tests/nikl-pronunciation-regression.test.mjs",
+      "tests/nikl-articles-6-7-exhaustive-listed-examples.test.mjs",
+      "tests/nikl-articles-6-7-complete-corpus.test.mjs",
+      "tests/nikl-articles-8-23-gap-closure.test.mjs",
+      "tests/nikl-articles-10-11-complex-coda-contrast.test.mjs"
     ],
     "checkedPathExactOverlapCount": 0,
     "excludedSourceOnlyFixtures": [
