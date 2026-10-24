@@ -11,6 +11,8 @@ scripts={korean-ua="korean_ukrainian.cli:main"}
 
 [project.optional-dependencies]
 dev=["pytest>=8","jsonschema>=4","g2pk==0.9.4; python_version < '3.13'"]
+research-kiwi=["kiwipiepy>=0.20"]
+research-mecab-ko=["mecab-ko-python"]
 cli=["openpyxl>=3.1"]
 api=["fastapi>=0.115","uvicorn>=0.30"]
 g2pk=["g2pk==0.9.4; python_version < '3.13'"]
