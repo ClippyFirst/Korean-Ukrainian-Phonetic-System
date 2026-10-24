@@ -46,6 +46,21 @@ test('§§24–28: generic mode does not claim morphology-specific fortition', (
   }
 });
 
+test('§24 exact-form stem-n/m ending licenses match the native engine without enabling productive guessing', () => {
+  const expected = [['닮다', 'tam t͈a'], ['넘게', 'nʌm k͈e']];
+  for (const [input, ipa] of expected) {
+    const result = generic.convert(input);
+    assert.equal(result.ipa, ipa, input + ': source-backed broad IPA');
+    assert.ok(result.trace.some((item) => item.rules.includes('stem-n-m-fortition-§24')), input + ': exact §24 trace');
+  }
+
+  const unlicensed = generic.convert('닮고');
+  assert.ok(
+    !unlicensed.trace.some((item) => item.rules.includes('stem-n-m-fortition-§24')),
+    '닮고 remains withheld without its own exact-form license',
+  );
+});
+
 test('§27 punctuation-separated pause controls suppress adnominal fortition', () => {
   const connected = generic.convert('할 것을');
   assert.ok(connected.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')));
