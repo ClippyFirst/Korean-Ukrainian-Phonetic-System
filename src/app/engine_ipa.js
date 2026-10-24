@@ -91,12 +91,14 @@ export function traceIpaMapping(ipa){
 
 export function ipaSyllableToUkrainian(ipa,{allowProvisional=false}={}){
   const mapped=traceIpaMappingDetailed(ipa);
-  if(mapped.unknown) return {text:'',unknown:mapped.unknown,status:'unavailable'};
+  if(mapped.unknown) return {text:'',unknown:mapped.unknown};
   const candidateText=mapped.tokens.map(token=>token.ukrainian).join('');
   if(mapped.status==='provisional'&&!allowProvisional){
     return {text:null,candidateText,unknown:'',status:'unavailable',candidateStatus:'provisional',reason:'provisional_mapping_requires_review'};
   }
-  return {text:candidateText,unknown:'',status:mapped.status};
+  return mapped.status==='provisional'
+    ? {text:candidateText,unknown:'',status:'provisional'}
+    : {text:candidateText,unknown:''};
 }
 
 export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
@@ -105,7 +107,7 @@ export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
     syllables:mapped.map(item=>item.text),
     candidates:mapped.map(item=>item.candidateText??item.text),
     unknown:mapped.find(item=>item.unknown)?.unknown||'',
-    status:mapped.some(item=>item.status==='unavailable')?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+    status:mapped.some(item=>item.unknown||item.status==='unavailable')?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
   };
 }
 

@@ -157,7 +157,7 @@ def test_python_lexical_target_reference_cannot_override_ipa_adapter_output(monk
     monkeypatch.setattr(
         pipeline,
         "render_ipa_sequence_to_ukrainian",
-        lambda ipa: {
+        lambda ipa, *, allow_provisional=False: {
             "ipa": ipa,
             "status": "model-selected",
             "reason": None,
