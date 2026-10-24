@@ -164,7 +164,7 @@ def test_browser_and_python_renderers_match_on_shared_ipa_sequences():
     )
     completed = subprocess.run(
         ["node", "--input-type=module", "-e", script],
-        cwd=ROOT,
+        cwd=root,
         check=False,
         capture_output=True,
         text=True,
