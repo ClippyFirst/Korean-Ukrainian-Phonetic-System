@@ -34,7 +34,7 @@ def normalize_ipa(value: str) -> str:
 
 
 
-BROAD_ALL0PHONE_REPLACEMENTS = (
+BROAD_ALLOPHONE_REPLACEMENTS = (
     ("ɭ", "l"),
     ("ʎ", "l"),
     ("ɲ", "n"),
@@ -58,7 +58,7 @@ def normalize_ipa_profile(value: str, profile: str = LEGACY_PROFILE) -> str:
         return normalized
     if profile != BROAD_PROFILE:
         raise ValueError(f"unknown IPA comparison profile: {profile}")
-    for source, target in BROAD_ALL0PHONE_REPLACEMENTS:
+    for source, target in BROAD_ALLOPHONE_REPLACEMENTS:
         normalized = normalized.replace(source, target)
     # Korean sibilant aspiration/palatalization is allophonic in this project
     # profile; do not remove aspiration from stop/affricate symbols.
