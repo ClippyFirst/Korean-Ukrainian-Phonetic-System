@@ -1,0 +1,91 @@
+name: NIKL local HTML source inventory
+
+on:
+  push:
+    branches: ["main", "research/nikl-local-html-import-2026-10-24"]
+    paths:
+      - "한국어 어문 규범.htm"
+      - "scripts/nikl-norm-crawler.mjs"
+      - "schemas/nikl-source-manifest.schema.json"
+      - ".github/workflows/nikl-local-html-inventory.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "한국어 어문 규범.htm"
+      - "scripts/nikl-norm-crawler.mjs"
+      - "schemas/nikl-source-manifest.schema.json"
+      - ".github/workflows/nikl-local-html-inventory.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Import the repository-held official HTML as metadata only
+        run: >-
+          node scripts/nikl-norm-crawler.mjs
+          --url "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
+          --input-html "한국어 어문 규범.htm"
+          --output "reports/nikl/standard-pronunciation-manifest.json"
+
+      - name: Validate inventory and emit reviewable metadata manifest
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync } from "node:fs";
+          const path = "reports/nikl/standard-pronunciation-manifest.json";
+          const manifest = JSON.parse(readFileSync(path, "utf8"));
+          if (manifest.inventory.expectedCount !== 30 ||
+              manifest.inventory.extractedCount !== 30 ||
+              manifest.inventory.complete !== true ||
+              manifest.inventory.missing.length ||
+              manifest.inventory.duplicates.length ||
+              manifest.inventory.unexpected.length ||
+              manifest.inventory.incomplete.length ||
+              manifest.articles.length !== 30) {
+            console.error(JSON.stringify(manifest.inventory, null, 2));
+            process.exit(1);
+          }
+          if (manifest.source.retrievalMode !== "local-html-import" ||
+              manifest.source.httpStatus !== null ||
+              manifest.source.retrievedAt !== null ||
+              manifest.source.robots.decision !== "not_checked_local_import" ||
+              manifest.source.termsReview !== "not_assessed" ||
+              manifest.articles.some(article => "sourceText" in article)) {
+            throw new Error("Manifest violates local-import provenance or metadata-only retention.");
+          }
+          console.log("NIKL_LOCAL_IMPORT_SUMMARY=" + JSON.stringify({
+            sourceSha256: manifest.source.responseSha256,
+            sourceBytes: manifest.source.responseBytes,
+            retrievalMode: manifest.source.retrievalMode,
+            expectedCount: manifest.inventory.expectedCount,
+            extractedCount: manifest.inventory.extractedCount,
+            complete: manifest.inventory.complete,
+            articleIds: manifest.inventory.articleIds,
+            missing: manifest.inventory.missing,
+            duplicates: manifest.inventory.duplicates,
+            unexpected: manifest.inventory.unexpected,
+            incomplete: manifest.inventory.incomplete,
+            httpStatus: manifest.source.httpStatus,
+            robotsDecision: manifest.source.robots.decision,
+            termsReview: manifest.source.termsReview
+          }));
+          console.log("MANIFEST_JSON_BEGIN");
+          console.log(JSON.stringify(manifest, null, 2));
+          console.log("MANIFEST_JSON_END");
+          NODE
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nikl-local-html-metadata-manifest
+          path: reports/nikl/standard-pronunciation-manifest.json
+          if-no-files-found: error
+          retention-days: 30
