@@ -467,14 +467,14 @@
     },
     {
       "caseId": "KUA-HO-013",
-      "input": "반반",
+      "input": "재삼재사",
       "sourceRule": "§6",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "반반[반ː반]",
+      "sourceExcerpt": "재삼재사[재ː삼재ː사]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "반ː반"
+        "재ː삼재ː사"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
