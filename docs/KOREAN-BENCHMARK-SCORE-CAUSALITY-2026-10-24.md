@@ -265,3 +265,44 @@ The previous report's analysis-only work is now paired with a versioned output/s
 A 24-item NIKL-sourced input manifest is frozen at `data/korean/ipa_holdout_2026-10-24.json`. It has no engine outputs and no IPA gold. [The validator](../scripts/validate_ipa_holdout.py) checks local runtime/fixture leakage and can check exact overlap against the external benchmark artifact. Current status is deliberately `FROZEN_INPUTS_EXTERNAL_OVERLAP_CHECK_PENDING` until that artifact is passed to the validator; this is not yet a certified independent scored holdout. The 14 R002/R003 source-adjudication cases remain at 0/14 independent IPA gold, despite surface evidence for three exact forms.
 
 See [discrepancy adjudication and holdout report](IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md) for acceptance gates and primary-source references.
+
+
+## 8. Actual broad-v1 sensitivity result on the pinned artifact
+
+I downloaded and inspected the pinned artifact `12559692692` from run `40092929978`. Its report JSON SHA-256 is `448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f`. On the **same 2,655 paired scored occurrences** (48 native abstentions excluded from both paired scores), the candidate profile changes the result substantially:
+
+| Engine | Legacy exact match | Candidate broad-v1 exact match | Legacy CER | Candidate broad-v1 CER |
+|---|---:|---:|---:|---:|
+| ClippyFirst native | 1,412/2,655 = 53.18% | 2,417/2,655 = **91.04%** | 9.19% | **1.70%** |
+| g2pk 0.9.4 | 1,416/2,655 = 53.33% | 2,415/2,655 = **90.96%** | 9.24% | **1.75%** |
+
+This is the strongest direct evidence so far that the original 53% exact-match score was heavily confounded by transcription convention. But 91% is **not yet an independent accuracy estimate**: the profile was chosen after inspecting mismatch patterns and still needs independent Korean IPA review.
+
+### Which mappings drive the jump?
+
+The ablation was run on the same 2,655 paired rows:
+
+| Candidate normalization stage | Native exact match | g2pk exact match |
+|---|---:|---:|
+| Legacy profile | 53.18% | 53.33% |
+| Collapse `ɭ→l` | 63.43% | 63.43% |
+| Plus `ʎ→l` | 64.37% | 64.37% |
+| Plus `ɲ→n` | 65.95% | 65.95% |
+| Plus `ɦ→h` | 69.98% | 69.98% |
+| Plus `ç→h` | 71.30% | 71.30% |
+| Plus `ɕ→s` only | 71.86% | 71.86% |
+| Plus collapse of sibilant `sʰ→s` | **91.04%** | **90.96%** |
+
+The sibilant-aspiration convention is by far the largest individual driver. This is plausible because Korean sibilant aspiration/palatalization is often represented explicitly in phonetic transcription but omitted in broad phonological transcription. Nevertheless, the exact 20-point increase from the `sʰ` collapse makes it the highest-priority decision for independent reviewers. The profile preserves aspiration on stops/affricates, fortisness, length, and the coda unreleased mark.
+
+The machine-readable aggregate is [`research/broad-ipa-profile-sensitivity-2026-10-24.json`](../research/broad-ipa-profile-sensitivity-2026-10-24.json). The executable analyzer now emits both profiles' exact match/CER and symbol-alignment profiles for each profile. These metrics should not be presented as “91% validated accuracy” until annotation and adjudication are complete.
+
+### Residual differences after broad-v1
+
+The native output still has 238 non-exact paired occurrences. The most frequent remaining aligned substitutions include `i→y` (37), `β→h` (29), `x→ʰ` (24), `h→ʰ` (20), and `ʝ→h` (19). Reference-only symbols include `ɥ` (36), stress `ˈ` (14), fortis mark `͈` (12), and length `ː` (10); engine-only coda unreleased marks `̚` occur 29 times. Do not normalize these automatically: inspect each context, particularly `i/y`, stress, length and consonant-symbol differences. The same deterministic alignment caveat applies; these are prioritization counts, not adjudicated error labels.
+
+## 9. Holdout exact-token overlap check
+
+The final 24-item NIKL holdout manifest was checked against the exact token field in all 2,703 occurrence rows of artifact 12559692692 (1,907 unique Hangul tokens). **Exact input overlap: 0/24.** An earlier candidate `앞` overlapped and was replaced with the NIKL Rule 9 example `꽃` before the final manifest was frozen. The manifest's Git blob SHA is `19ab5184192b21dc7f02873dcba8ac77a2b672f7`; the pinned check is recorded in [`research/ipa-holdout-overlap-validation-2026-10-24.json`](../research/ipa-holdout-overlap-validation-2026-10-24.json).
+
+This certifies exact-token disjointness from that benchmark artifact only. The holdout still has **0 IPA gold labels** and is not ready for scoring until two independent reviewers annotate and adjudicate it. Repository-hosted CI still needs to confirm the local runtime/fixture leakage validator.
