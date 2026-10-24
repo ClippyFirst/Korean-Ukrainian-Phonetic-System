@@ -1,6 +1,6 @@
 # Research morphology adapters (2026-10-24)
 
-**Status:** integrated adapter boundary; optional engines and corpus benchmark remain environment-dependent.  
+**Status:** integrated research adapters; real-engine smoke passed, and a same-corpus paired IPA/morphology benchmark is now being added. The full-corpus benchmark remains pending CI evidence.  
 **Scope:** research engine only. This work must not change the public browser service or its practical-mode output.
 
 ## Why this layer exists
@@ -29,13 +29,14 @@ Both return form, tag, source offsets and (only when exposed reliably by the API
 
 ## Diagnostic benchmark
 
-The repository includes an unlabelled diagnostic input list at `data/korean/morphology-review-corpus.txt`. It contains ambiguous and control forms for inspection only; it is **not** gold annotation and must not be used to claim accuracy. Run:
+The repository includes an unlabelled diagnostic input list at `data/korean/morphology-review-corpus.txt`. It contains ambiguous and control forms for inspection only; it is **not** gold annotation and must not be used to claim accuracy. The real-engine smoke proves both adapters execute, not that either is more accurate. For a same-corpus comparison against the pinned UGTPHON Korean test split, run the new paired benchmark (one analyzer per environment):
 
 ```powershell
-uv run python scripts/benchmark_research_morphology.py data/korean/morphology-review-corpus.txt --output artifacts/morphology-diagnostic.jsonl
+uv run python scripts/benchmark_morphology_ipa_delta.py --corpus PATH_TO_PINNED_UGTPHON_KO_TEST_JSON --analyzer kiwi --output artifacts/paired-ipa-morphology-kiwi.json
+# Run separately with --analyzer mecab-ko in an environment with that extra installed
 ```
 
-The output records per-engine availability, selected binding, elapsed time, tokenization, offsets, and errors. It is deliberately **not** an accuracy score: accuracy requires a versioned gold set with independently reviewed morpheme boundaries/POS labels. Do not use token count or successful execution as a proxy for accuracy.
+The paired report evaluates native `morphology_mode=strict` and `morphology_mode=soft` against the same UGTPHON IPA references, reports paired exact-match/CER deltas and coverage, and runs the selected morphology analyzer on the exact same unique Hangul word inventory. It also identifies words whose native IPA/status changes and whether the analyzer segmented those words into multiple morphemes. This is correlation/diagnostics only: Kiwi/MeCab output is deliberately not injected into phonological rules, so no causal improvement is claimed. Morphology token counts and tags remain unscored until independently adjudicated gold segmentation/POS labels exist.
 
 ## Acceptance gates before morphology may license phonological rules
 
@@ -48,7 +49,7 @@ The output records per-engine availability, selected binding, elapsed time, toke
 
 ## Known limitations
 
-- This integration creates an adapter boundary, not a claim that both engines have been installed or run in CI.
+- Real-engine smoke has passed for both optional analyzers on the 16-input review corpus; full-corpus same-inventory benchmark evidence is pending the new CI workflow.
 - MeCab-Ko's Python bindings are OS-sensitive; initialization failures are surfaced with the underlying API errors.
 - Kiwi/MeCab segmentation conventions differ; raw tag strings are retained instead of being collapsed into a possibly incorrect universal POS inventory.
 - Lemma is nullable and is not guessed from surface form.
