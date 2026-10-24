@@ -247,4 +247,7 @@ The committed official-source HTML is now paired with a machine-readable review 
 - [Human-review record](docs/NIKL-HUMAN-REVIEW-2026-10-24.md)
 - [Machine-readable review fixture](tests/fixtures/nikl-article-review-1-30.json)
 - [Source-boundary regression test](tests/nikl-article-review-1-30.test.mjs)
-- [Cross-rule engine surface/IPA regression (19 source-backed cases)](tests/nikl-human-review-surface-regression.test.mjs)
+- [Cross-rule engine surface/IPA regression (24 source-backed project-IPA cases)](tests/nikl-human-review-surface-regression.test.mjs)
+
+- [Surface-only evidence for unresolved 긁고](tests/fixtures/nikl-surface-only-complex-coda.json)
+- [Guard test keeping that case out of IPA/target gold](tests/nikl-surface-only-complex-coda.test.mjs)

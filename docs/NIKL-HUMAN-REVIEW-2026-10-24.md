@@ -46,3 +46,12 @@ node --test tests/nikl-article-review-1-30.test.mjs tests/nikl-human-review-surf
 ```
 
 The repository's full release gate remains `npm run check:release`; it has not been run by this remote GitHub-only edit.
+
+
+## Follow-up: complex-coda regression expansion (2026-10-24)
+
+The cross-rule native-engine regression now covers **24 source-backed Korean surface / project-broad-IPA pairs** (up from the initial 19), adding five exact forms from existing source-backed lexical records: `늙고` [늘꼬], `않았다` [아낟따], `얇은` [얄븐], `읽어` [일거], and `헛웃음` [허두슴]. A sixth case, `긁고` [글꼬], is deliberately kept in a separate surface-only evidence fixture. NIKL Online Q&A qna_seq=328946 (question dated 2026-04-05; answer dated 2026-04-06) explicitly confirms [글꼬] and explains the connection to the §11 ㄺ-before-ㄱ example. The answer notes that the fortis realization is inferred from the examples rather than spelled out as a separate clause; this nuance is preserved in the fixture and source register.
+
+**Evidence boundary:** these official pages attest Korean surface spellings, not IPA or Ukrainian target strings. Broad IPA in the regression is the project's inspectable analysis layer; Ukrainian strings remain provisional and are not asserted as normative gold. The `얇은` record comes from the official Korean-English Learners' Dictionary domain, so the regression's source allowlist explicitly permits that official NIKL dictionary host for this case.
+
+This adds finite, exact-form coverage only. It does not generalize `ㄼ` behaviour from `얇은` to every adjective, nor infer morphology for unlisted compounds. See the [surface-only evidence fixture](../tests/fixtures/nikl-surface-only-complex-coda.json) and [guard test](../tests/nikl-surface-only-complex-coda.test.mjs). The source-boundary test, 30-article fixture, blinded 21-case independent IPA review queue, and separate IPA→Ukrainian target-review gate remain unchanged.

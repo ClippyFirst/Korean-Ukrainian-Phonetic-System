@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "title": "NIKL Korean surface-only evidence for unresolved complex-coda cases",
+  "source_boundary": {
+    "surface_hangul": "directly attested Korean pronunciation spelling",
+    "ipa": "not supplied by the cited NIKL answer; deliberately absent pending independent adjudication",
+    "ukrainian_target": "deliberately absent; target adaptation is a separate review stage",
+    "lexical_integration": "do not insert into data/korean/lexical_pronunciations.csv until IPA acceptance criteria are met"
+  },
+  "cases": [
+    {
+      "id": "NIKL-SURFACE-001",
+      "input": "긁고",
+      "article": "표준 발음법 제11항",
+      "attested_surface_hangul": "글꼬",
+      "source": {
+        "institution": "국립국어원",
+        "type": "Online Q&A",
+        "qna_seq": "328946",
+        "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=328946",
+        "question_date": "2026-04-05",
+        "answer_date": "2026-04-06"
+      },
+      "source_interpretation": "The answer explicitly confirms the surface form and explains that the fortis ㄱ in 고 is inferred from the §11 ㄺ-before-ㄱ example; it notes this outcome is not separately stated as an explicit clause.",
+      "ipa_status": "not_adjudicated",
+      "ipa_candidate": null,
+      "ukrainian_target_status": "not_reviewed",
+      "ukrainian_target": null,
+      "reason_not_in_lexicon": "Surface evidence alone does not license a project IPA or Ukrainian output. Preserve the existing unresolved guard until IPA is independently adjudicated.",
+      "python_pipeline_expected_status": "unresolved"
+    }
+  ]
+}
