@@ -149,3 +149,20 @@ def test_shared_renderer_never_promotes_diagnostic_only_ipa_to_orthography():
     assert out["target_status"] == "unavailable"
     assert out["target_analysis"][0]["reason"] == "diagnostic_ipa_not_accepted"
     assert out["unavailable_reasons"] == ["diagnostic_ipa_not_accepted"]
+
+
+def test_shared_renderer_honors_per_word_diagnostic_status_without_top_level_flag():
+    from korean_ukrainian.pipeline import render_ipa_analysis_to_ukrainian
+    out=render_ipa_analysis_to_ukrainian(
+        "가", [{
+            "input":"가",
+            "ipa":"k.a",
+            "status":"diagnostic_only_unresolved_pronunciation",
+        }],
+        pronunciation_surface="가", phonetics={},
+        ipa={"ipa":"k.a", "is_diagnostic_only": False},
+        pronunciation_engine="test",
+    )
+    assert out["ukrainian_orthography"] is None
+    assert out["target_analysis"][0]["reason"] == "diagnostic_ipa_not_accepted"
+    assert out["unavailable_reasons"] == ["diagnostic_ipa_not_accepted"]
