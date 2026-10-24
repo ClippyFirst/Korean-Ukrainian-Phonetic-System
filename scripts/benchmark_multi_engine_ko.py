@@ -139,6 +139,61 @@ def _bootstrap_ci(items: list[dict[str, Any]], replicates: int = BOOTSTRAP_REPLI
     }
 
 
+def _paired_bootstrap_delta_ci(
+    candidate: list[dict[str, Any]],
+    native: list[dict[str, Any]],
+    replicates: int = BOOTSTRAP_REPLICATES,
+) -> dict[str, Any]:
+    """Paired row-cluster bootstrap for candidate-minus-native score deltas."""
+    candidate_by_id = {str(x["occurrence_id"]): x for x in candidate}
+    native_by_id = {str(x["occurrence_id"]): x for x in native}
+    common = sorted(set(candidate_by_id) & set(native_by_id))
+    grouped: dict[str, list[tuple[dict[str, Any], dict[str, Any]]]] = defaultdict(list)
+    for occurrence_id in common:
+        cand = candidate_by_id[occurrence_id]
+        ref = native_by_id[occurrence_id]
+        grouped[str(cand["row_id"])].append((cand, ref))
+    clusters = list(grouped.values())
+    if len(clusters) < 2:
+        return {
+            "method": "paired row-cluster percentile bootstrap",
+            "replicates": 0,
+            "note": "fewer than two paired rows",
+        }
+    rng = random.Random(SEED + 1)
+    exact_deltas: list[float] = []
+    cer_deltas: list[float] = []
+    for _ in range(replicates):
+        sample: list[tuple[dict[str, Any], dict[str, Any]]] = []
+        for _ in clusters:
+            sample.extend(rng.choice(clusters))
+        if not sample:
+            continue
+        cand_exact = sum(bool(cand["exact"]) for cand, _ in sample) / len(sample)
+        native_exact = sum(bool(ref["exact"]) for _, ref in sample) / len(sample)
+        exact_deltas.append(cand_exact - native_exact)
+        cand_chars = sum(int(cand["reference_length"]) for cand, _ in sample)
+        native_chars = sum(int(ref["reference_length"]) for _, ref in sample)
+        if cand_chars and native_chars:
+            cand_cer = sum(int(cand["distance"]) for cand, _ in sample) / cand_chars
+            native_cer = sum(int(ref["distance"]) for _, ref in sample) / native_chars
+            cer_deltas.append(cand_cer - native_cer)
+    def bounds(values: list[float]) -> list[float] | None:
+        if not values:
+            return None
+        values.sort()
+        return [round(values[int((len(values) - 1) * 0.025)], 6),
+                round(values[int((len(values) - 1) * 0.975)], 6)]
+    return {
+        "method": "paired row-cluster percentile bootstrap",
+        "seed": SEED + 1,
+        "replicates": len(exact_deltas),
+        "exact_rate_delta_candidate_minus_native_95pct_ci": bounds(exact_deltas),
+        "cer_delta_candidate_minus_native_95pct_ci": bounds(cer_deltas),
+        "interpretation": "paired uncertainty interval; positive exact delta favors candidate, negative CER delta favors candidate",
+    }
+
+
 def _load_kog2p(root: Path) -> tuple[Callable[[str], str], str]:
     script = root / "g2p.py"
     rulebook = root / "rulebook.txt"
@@ -427,6 +482,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 ),
                 "candidate_bootstrap_95pct_ci": _bootstrap_ci(paired_candidate),
                 "native_bootstrap_95pct_ci": _bootstrap_ci(paired_native),
+                "paired_bootstrap_delta_95pct_ci": _paired_bootstrap_delta_ci(paired_candidate, paired_native),
             }
         engine_results[name] = result
 
