@@ -194,7 +194,7 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items):
         if trace.get("status") not in {"conditional-disabled", "partially-conditional"}:
             continue
         rule_id = trace.get("rule_id")
-        if rule_id not in {"R002", "R003", "R004", "R007", "R008", "R013"}:
+        if rule_id not in {"R002", "R003", "R004", "R007", "R008", "R010", "R013"}:
             continue
         before = trace.get("before") or []
         for i in range(len(before) - 1):
@@ -222,6 +222,11 @@ def _unlicensed_ambiguous_pronunciation_contexts(traces, final_items):
             elif rule_id == "R008" and coda == "ㄺ" and onset == "ㄱ":
                 candidate = True
                 reason = "ㄺ-before-ㄱ fortition depends on lexical/morphological class"
+            elif (rule_id == "R010"
+                  and representative.get(coda, coda) in {"ㄴ", "ㅁ"}
+                  and onset in {"ㄱ", "ㄷ", "ㅂ", "ㅅ", "ㅈ"}):
+                candidate = True
+                reason = "stem-final ㄴ/ㅁ fortition requires exact morphology evidence"
             elif rule_id == "R013" and coda == "ㄹ" and onset == "ㄱ" and b.get("text") == "게":
                 # NIKL Standard Pronunciation Rule 27's attached ending -ㄹ게
                 # is explicitly documented as [ㄹ께]. Keep this narrow so
