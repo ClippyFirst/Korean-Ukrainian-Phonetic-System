@@ -486,7 +486,7 @@
         {
           "url": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
           "excerpt": "NIKL Standard Pronunciation Rules, Article 12 commentary: when ㅎ is followed by a vowel in a conjugated form with a vowel-initial formal morpheme, ㅎ is deleted; examples include 쌓이다[싸이다].",
-          "scope": "Related rule-environment evidence: supports deletion of stem-final ㅎ before a vowel-initial ending, but the exact benchmark form 쌓아서 is not directly listed as a whole and no IPA gold is established.",
+          "scope": "Related rule-environment evidence only: supports deletion of stem-final ㅎ before a vowel-initial ending, but the exact benchmark form 쌓아서 is not directly listed as a whole and no IPA gold is established.",
           "accessDate": "2026-10-24"
         }
       ]
