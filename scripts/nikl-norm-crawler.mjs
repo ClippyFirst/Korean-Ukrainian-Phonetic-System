@@ -177,7 +177,7 @@ export function parseNiklStandardHtml(html, sourceUrl = DEFAULT_SOURCE_URL) {
     const end = Math.min(deduped[index + 1]?.node.start ?? sectionEnd, sectionEnd);
     const sourceText = stripHtml(html.slice(item.node.start, end));
     const anchorId = item.node.attrs.id || null;
-    const titleRemainder = item.heading.text.replace(/^제\\s*\\d+\\s*항/u, "").trim();
+    const titleRemainder = item.heading.text.replace(/^제\s*\d+\s*항/u, "").trim();
     return {
       articleNumber: item.heading.number,
       articleId: "NIKL-SP-" + String(item.heading.number).padStart(2, "0"),
