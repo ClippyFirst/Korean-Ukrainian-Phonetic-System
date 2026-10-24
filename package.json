@@ -20,7 +20,8 @@
     "audit:source-register": "node scripts/audit-source-register.mjs",
     "ipa:review-packet": "node scripts/build-ipa-review-packet.mjs",
     "ipa:validate-submission": "node scripts/validate-ipa-review-submission.mjs",
-    "audit:nikl-test-index": "node scripts/audit-nikl-article-test-index.mjs"
+    "audit:nikl-test-index": "node scripts/audit-nikl-article-test-index.mjs",
+    "ipa:holdout-queue": "node scripts/build-korean-holdout-ipa-queue.mjs"
   },
   "devDependencies": {
     "vite": "8.3.1"
