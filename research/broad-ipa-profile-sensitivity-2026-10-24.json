@@ -1,0 +1,219 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-10-24",
+  "sourceArtifact": {
+    "runId": 40092929978,
+    "artifactId": 12559692692,
+    "artifactZipSha256": "66876b0d748595e556e99d3421f43145cbc12ff74b82fc79b2836431bd257795",
+    "reportFile": "multi-engine-ipa-report.json",
+    "reportSha256": "448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f",
+    "benchmarkVersion": "multi-engine-ipa-diagnostic-v4",
+    "pairedScoredOccurrences": 2655,
+    "nativeAbstentions": 48,
+    "uniqueHangulWordsInBenchmark": 1907,
+    "uniqueTokenTypesInPairedSubset": 1860
+  },
+  "profileResults": {
+    "legacy-broad-diagnostic-v0": {
+      "native": {
+        "exactMatches": 1412,
+        "denominator": 2655,
+        "exactMatchRate": 0.531827,
+        "totalEditDistance": 2076,
+        "referenceCharacters": 22594,
+        "cer": 0.091883
+      },
+      "g2pk_0_9_4": {
+        "exactMatches": 1416,
+        "denominator": 2655,
+        "exactMatchRate": 0.533333,
+        "totalEditDistance": 2088,
+        "referenceCharacters": 22594,
+        "cer": 0.092414
+      }
+    },
+    "clippyfirst-broad-v1": {
+      "native": {
+        "exactMatches": 2417,
+        "denominator": 2655,
+        "exactMatchRate": 0.910358,
+        "totalEditDistance": 370,
+        "referenceCharacters": 21763,
+        "cer": 0.017001
+      },
+      "g2pk_0_9_4": {
+        "exactMatches": 2415,
+        "denominator": 2655,
+        "exactMatchRate": 0.909605,
+        "totalEditDistance": 380,
+        "referenceCharacters": 21763,
+        "cer": 0.017461
+      }
+    }
+  },
+  "ablation": {
+    "description": "Sequential normalization sensitivity; all rows use the same 2,655 paired occurrences. These are profile experiments, not accuracy adjudications.",
+    "stages": [
+      {
+        "name": "legacy",
+        "nativeExactRate": 0.531827,
+        "g2pkExactRate": 0.533333,
+        "nativeCer": 0.091883,
+        "g2pkCer": 0.092414
+      },
+      {
+        "name": "collapse ɭ→l",
+        "nativeExactRate": 0.634275,
+        "g2pkExactRate": 0.634275,
+        "nativeCer": 0.06816,
+        "g2pkCer": 0.068691
+      },
+      {
+        "name": "plus ʎ→l",
+        "nativeExactRate": 0.643691,
+        "g2pkExactRate": 0.643691,
+        "nativeCer": 0.066699,
+        "g2pkCer": 0.06723
+      },
+      {
+        "name": "plus ɲ→n",
+        "nativeExactRate": 0.65951,
+        "g2pkExactRate": 0.65951,
+        "nativeCer": 0.063468,
+        "g2pkCer": 0.063999
+      },
+      {
+        "name": "plus ɦ→h",
+        "nativeExactRate": 0.699812,
+        "g2pkExactRate": 0.699812,
+        "nativeCer": 0.056165,
+        "g2pkCer": 0.056696
+      },
+      {
+        "name": "plus ç→h",
+        "nativeExactRate": 0.712994,
+        "g2pkExactRate": 0.712994,
+        "nativeCer": 0.054395,
+        "g2pkCer": 0.054926
+      },
+      {
+        "name": "plus ɕ→s only",
+        "nativeExactRate": 0.718644,
+        "g2pkExactRate": 0.718644,
+        "nativeCer": 0.044304,
+        "g2pkCer": 0.044746
+      },
+      {
+        "name": "plus sibilant sʰ→s collapse",
+        "nativeExactRate": 0.910358,
+        "g2pkExactRate": 0.909605,
+        "nativeCer": 0.017001,
+        "g2pkCer": 0.017461
+      }
+    ]
+  },
+  "residualNativeSymbolAlignmentAfterBroadProfile": {
+    "nonexactOccurrences": 238,
+    "topSubstitutions": [
+      {
+        "reference": "i",
+        "prediction": "y",
+        "count": 37
+      },
+      {
+        "reference": "β",
+        "prediction": "h",
+        "count": 29
+      },
+      {
+        "reference": "x",
+        "prediction": "ʰ",
+        "count": 24
+      },
+      {
+        "reference": "h",
+        "prediction": "ʰ",
+        "count": 20
+      },
+      {
+        "reference": "ʝ",
+        "prediction": "h",
+        "count": 19
+      },
+      {
+        "reference": "ɾ",
+        "prediction": "l",
+        "count": 12
+      },
+      {
+        "reference": "ɸ",
+        "prediction": "h",
+        "count": 11
+      },
+      {
+        "reference": "ʷ",
+        "prediction": "h",
+        "count": 9
+      },
+      {
+        "reference": "͈",
+        "prediction": "ɡ",
+        "count": 7
+      }
+    ],
+    "topReferenceOnlySymbols": [
+      {
+        "symbol": "ɥ",
+        "count": 36
+      },
+      {
+        "symbol": "ˈ",
+        "count": 14
+      },
+      {
+        "symbol": "͈",
+        "count": 12
+      },
+      {
+        "symbol": "ː",
+        "count": 10
+      },
+      {
+        "symbol": "ɸ",
+        "count": 9
+      },
+      {
+        "symbol": "k",
+        "count": 7
+      },
+      {
+        "symbol": "t",
+        "count": 7
+      }
+    ],
+    "topPredictionOnlySymbols": [
+      {
+        "symbol": "̚",
+        "count": 29
+      },
+      {
+        "symbol": "ː",
+        "count": 6
+      }
+    ]
+  },
+  "interpretation": {
+    "validatedAccuracyClaim": false,
+    "meaning": "The candidate profile explains most legacy exact-match disagreement as broad-vs-narrow or symbol-convention sensitivity, but 91% is not independent normative accuracy.",
+    "highestImpactDecision": "The sibilant aspiration collapse is the largest score driver and requires independent Korean IPA review.",
+    "doNotNormalizeWithoutEvidence": [
+      "i/y",
+      "stress ˈ",
+      "vowel length ː",
+      "stop aspiration ʰ",
+      "fortisness ͈",
+      "unreleased coda mark ̚"
+    ],
+    "nextStep": "Run two independent IPA annotations and adjudicate representative cases, prioritizing sibilant aspiration, i/y, stress/length and remaining consonant-symbol differences."
+  }
+}
