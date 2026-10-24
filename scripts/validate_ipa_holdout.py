@@ -119,7 +119,7 @@ def validate(root: Path, manifest_path: Path, benchmark_path: Path | None) -> di
             record = json.loads(record_path.read_text(encoding="utf-8"))
             raw_manifest = manifest_path.read_bytes()
             actual_blob_sha = hashlib.sha1(
-                b"blob " + str(len(raw_manifest)).encode("ascii") + b"\\0" + raw_manifest
+                b"blob " + str(len(raw_manifest)).encode("ascii") + b"\0" + raw_manifest
             ).hexdigest()
             if record.get("holdout", {}).get("manifestGitBlobSha") == actual_blob_sha:
                 recorded = record.get("externalExactTokenOverlap", {})
