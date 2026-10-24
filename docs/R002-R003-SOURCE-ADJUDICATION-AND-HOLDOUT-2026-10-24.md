@@ -76,3 +76,10 @@ The search also found useful component-form evidence for three additional cases:
 - `좋은데`: [NIKL Korean Basic Dictionary, 좋다](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=79033) lists `좋은[조ː은]`; it does not directly adjudicate the complete form `좋은데`.
 
 These are stored as `relatedSourceEvidence`, without changing the cases' `PENDING_EXACT_FORM_SOURCE` status. The queue test explicitly distinguishes related component-form evidence from exact-form source adjudication.
+
+
+Two further component/rule references were added without changing exact-form status:
+- `되었어`: [NIKL Korean Basic Dictionary, 되다](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=89858) lists `되어[되어/뒈여]` and `돼[돼ː]`, but does not directly list `되었어`.
+- `쌓아서`: the [NIKL Standard Pronunciation Rules, Article 12 commentary](https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002) explains deletion of stem-final ㅎ before a vowel-initial ending and includes `쌓이다[싸이다]`; together with the dictionary's `쌓아[싸아]`, this supports the rule environment but still does not directly list the complete form `쌓아서`.
+
+The case register therefore has exact-form official evidence for three forms and related component/rule evidence for four other forms (`되었어`, `붙어야`, `쌓아서`, `좋은데`). The remaining seven cases have no official evidence recorded in this pass. These counts describe source discovery only, not IPA adjudication.
