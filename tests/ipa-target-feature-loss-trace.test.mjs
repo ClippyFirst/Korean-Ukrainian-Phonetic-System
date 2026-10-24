@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { traceIpaMapping, ipaSyllableToUkrainian } from '../src/app/engine_ipa.js';
-import { parseCsv } from '../src/app/engine.js';
+import { parseCsv, traceIpaMapping as exportedTraceIpaMapping } from '../src/app/engine.js';
 import { readFileSync } from 'node:fs';
 
 const lexicalCsv = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -64,4 +64,10 @@ test('every mapped lexical IPA token with a target-neutralized feature has a cor
     }
   }
   assert.ok(covered > 0, 'the lexical inventory should contain target-neutralized features');
+});
+
+
+test('public engine entry point exports the machine-readable IPA feature trace', () => {
+  assert.equal(exportedTraceIpaMapping, traceIpaMapping);
+  assert.equal(exportedTraceIpaMapping('kʰ').features[0].feature, 'aspiration');
 });
