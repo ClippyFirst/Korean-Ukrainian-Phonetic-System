@@ -135,3 +135,17 @@ def test_shared_renderer_identifies_the_unmapped_ipa_segment_in_a_word():
         {"source_ipa":"b","reason":"grapheme_without_licensed_mapping"}
     ]
     assert out["unavailable_reasons"] == []
+
+
+def test_shared_renderer_never_promotes_diagnostic_only_ipa_to_orthography():
+    from korean_ukrainian.pipeline import render_ipa_analysis_to_ukrainian
+    out=render_ipa_analysis_to_ukrainian(
+        "가", [{"input":"가", "ipa":"k.a"}],
+        pronunciation_surface="가", phonetics={"ipa_is_diagnostic_only": True},
+        ipa={"ipa":"k.a", "is_diagnostic_only": True},
+        pronunciation_engine="test",
+    )
+    assert out["ukrainian_orthography"] is None
+    assert out["target_status"] == "unavailable"
+    assert out["target_analysis"][0]["reason"] == "diagnostic_ipa_not_accepted"
+    assert out["unavailable_reasons"] == ["diagnostic_ipa_not_accepted"]
