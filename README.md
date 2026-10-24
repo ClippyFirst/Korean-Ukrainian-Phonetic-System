@@ -57,6 +57,15 @@ Added eight official examples from the attached note to Rule 29, including `ë“¤ì
 
 - [Consolidated benchmark review, exact metrics, interpretation and remaining gates](docs/BENCHMARK-REVIEW-2026-10-24.md)
 
+## IPA contract and independent holdout (2026-10-24)
+
+- [Versioned broad-IPA contract and scoring profiles](docs/IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md)
+- [Symbol-level discrepancy adjudication and holdout gates](docs/IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md)
+- Frozen 24-form NIKL input manifest (IPA gold intentionally blank): `data/korean/ipa_holdout_2026-10-24.json`
+- Validators: `scripts/validate_ipa_holdout.py`; profile-sensitivity analysis: `scripts/analyze_korean_benchmark_correlations.py`
+
+The broad-v1 profile is currently a sensitivity analysis, not a new claimed accuracy score. Exact overlap with the licensed external benchmark and independent IPA review are still required before the holdout can be certified.
+
 ## Research-only morphological analyzers (2026-10-24)
 
 The Python research package has optional adapters for [Kiwi](https://github.com/bab2min/kiwi) and MeCab-Ko. They return inspectable morpheme forms, analyzer tags and source offsets only; they do not produce pronunciation, IPA, Ukrainian output, or automatic NIKL rule licenses. The public browser practical mode does not load or call these adapters.
