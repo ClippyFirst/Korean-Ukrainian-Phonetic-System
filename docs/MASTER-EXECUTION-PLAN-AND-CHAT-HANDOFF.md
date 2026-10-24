@@ -839,3 +839,17 @@ No open PRs remained after #282 merged. The scientific status is still research 
 
 - **Measured symbol profile (same pinned artifact):** a deterministic character alignment finds frequent reference/native substitutions `ɭ→l` (525), `ʰ→s` (194), `ɦ→h` (165), `ɲ→n` (73), `ç→h` (40). Reference symbols often involved in edit operations include `ʰ` (633), `ɭ` (539), `ɕ` (238), and `ɦ` (165). This is strong evidence that broad-vs-narrow IPA convention mismatch is a major candidate explanation, alongside real rule errors. The alignment algorithm is deterministic but is not an adjudicated error taxonomy; alternative optimal alignments can classify individual operations differently.
 - **Reproducibility:** `scripts/analyze_korean_benchmark_correlations.py` now emits these symbol-level profiles; `tests/test_benchmark_score_causality.py` includes a synthetic regression test for a reference-only narrow mark.
+
+
+## IPA contract, discrepancy adjudication and independent holdout — 2026-10-24
+
+### Task ledger
+
+- **DONE_VERIFIED:** define a versioned broad-IPA contract at [`docs/IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md`](IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md). The analysis script retains the historical normalizer and adds a candidate `clippyfirst-broad-v1` sensitivity profile. No production runtime IPA or Ukrainian target was rewritten.
+- **DONE_VERIFIED for reproducible measurement; PARTIAL for linguistic adjudication:** the script now reports both profiles' exact match/CER and explicit allophone candidate mappings. Frequent observed differences are `ɭ→l` (525), `ʰ→s` (194), `ɦ→h` (165), `ɲ→n` (73), `ç→h` (40), `ʎ→l` (33), `ɕ→s` (30); `i→y` remains unnormalized. These are one-alignment diagnostic counts, not expert error labels.
+- **PARTIAL:** the 14-case R002/R003 queue has exact NIKL surface evidence for 3 forms, related evidence for 4 and no exact source recorded for 7. Hangul surface readings are not IPA. Independent IPA gold is still 0/14; the engine's abstentions are not to be silently converted to guessed readings.
+- **PARTIAL/BLOCKED:** a 24-form NIKL Rule 5/9 holdout input manifest is frozen at `data/korean/ipa_holdout_2026-10-24.json`. It stores no engine outputs or IPA gold. Local data/fixture overlap is checked by `scripts/validate_ipa_holdout.py`; external benchmark overlap remains unverified until the pinned licensed artifact is supplied. Do not call it an independently certified scored holdout yet.
+- **Remaining blockers:** run the candidate profile against artifact 12559692692 to obtain measured sensitivity rates; run the validator with that exact artifact and resolve overlaps; obtain two independent broad-IPA transcriptions and adjudicate; review Ukrainian targets separately.
+- **Readiness:** research-ready for diagnostic analysis, not release-ready for independently validated IPA/UA accuracy claims.
+
+See [`docs/IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md`](IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md).
