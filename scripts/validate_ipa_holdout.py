@@ -38,7 +38,11 @@ def load_manifest(path: Path) -> dict[str, Any]:
 
 
 def collect_local_forms(root: Path) -> dict[str, set[str]]:
-    """Collect exact Hangul token forms from runtime data and text fixtures."""
+    """Collect exact forms from runtime data and expected-output fixtures.
+
+    The official NIKL article-review fixture is source text, not engine output;
+    source citation is allowed for a source-backed holdout and is excluded.
+    """
     inputs: dict[str, set[str]] = {}
     for relative in ("data/korean", "tests/fixtures"):
         folder = root / relative
@@ -47,7 +51,7 @@ def collect_local_forms(root: Path) -> dict[str, set[str]]:
         for path in folder.rglob("*"):
             if not path.is_file() or path.suffix.lower() not in {".csv", ".json", ".txt", ".tsv"}:
                 continue
-            if path.name == "ipa_holdout_2026-10-24.json":
+            if path.name in {"ipa_holdout_2026-10-24.json", "nikl-article-review-1-30.json"}:
                 continue
             try:
                 content = path.read_text(encoding="utf-8")
@@ -110,6 +114,7 @@ def validate(root: Path, manifest_path: Path, benchmark_path: Path | None) -> di
         "ipa_gold_count": sum(case["ipaGold"] is not None for case in cases),
         "local_runtime_or_fixture_overlap_count": len(local_overlaps),
         "local_runtime_or_fixture_overlaps": local_overlaps,
+        "excluded_source_only_fixtures": ["tests/fixtures/nikl-article-review-1-30.json"],
         "external_benchmark_overlap_check": "CHECKED" if benchmark_path is not None else "NOT_CHECKED",
         "external_benchmark_path": str(benchmark_path) if benchmark_path is not None else None,
         "external_benchmark_overlap_count": len(benchmark_overlaps),
