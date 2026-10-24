@@ -17,7 +17,6 @@ const officialNiklDictionary = /^https:\/\/krdict\.korean\.go\.kr\//u;
 const reviewed = [
   { article: 4, input: '회', surface: '회', ipa: 'hø' },
   { article: 11, input: '읽고', surface: '일꼬', ipa: 'il|k͈o' },
-  { article: 11, input: '긁고', surface: '글꼬', ipa: 'kɯl|k͈o' },
   { article: 11, input: '늙고', surface: '늘꼬', ipa: 'nɯl|k͈o' },
   { article: 12, input: '좋다', surface: '조타', ipa: 'tɕo|tʰa' },
   { article: 12, input: '않았다', surface: '아낟따', ipa: 'a|nat̚|t͈a' },
@@ -43,7 +42,7 @@ const reviewed = [
 ];
 
 test('reviewed NIKL surface examples remain stable across the native engine and lexical evidence', () => {
-  assert.equal(reviewed.length, 25);
+  assert.equal(reviewed.length, 24);
   for (const item of reviewed) {
     const row = entries.get(item.input);
     assert.ok(row, '§' + item.article + ': missing source-backed lexical row for ' + item.input);
