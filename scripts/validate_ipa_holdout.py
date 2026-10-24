@@ -95,6 +95,46 @@ def suggest_source_candidates(root: Path, local_forms: dict[str, set[str]], excl
             headings.append((heading.end(), f"§{article.group(1)}"))
     candidates: list[dict[str, str]] = []
     seen: set[str] = set()
+    # Curated exact-form readings from official NIKL Online Q&A pages. They
+    # supplement the rule-page examples, most of which already appear in this
+    # repository's lexical table and regression suite.
+    qna_candidates = [
+        ("보잘것없다", ["보잘꺼덥따"], "§23", "보잘것없다[보잘꺼덥따]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=336615"),
+        ("보잘것없지만", ["보잘꺼덥찌만"], "§23", "보잘것없지만[보잘꺼덥찌만]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=336615"),
+        ("국보급", ["국뽀끕"], "dictionary-specific", "국보급[국뽀끕]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332987"),
+        ("비교급", ["비ː교끕"], "dictionary-specific", "비교급[비ː교끕]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332987"),
+        ("수준급", ["수준끕"], "dictionary-specific", "수준급[수준끕]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332987"),
+        ("이급", ["이ː급"], "dictionary-specific", "이급[이ː급]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332987"),
+        ("상급", ["상ː급"], "dictionary-specific", "상급[상ː급]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332987"),
+        ("하급", ["하ː급"], "dictionary-specific", "하급[하ː급]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332987"),
+        ("범위", ["버뮈"], "§15", "범위[버뮈]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=330950"),
+        ("입원료", ["이붠뇨"], "§15/§20", "입원료[이붠뇨]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=330950"),
+        ("절약", ["저략"], "§20", "절약[저략]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=332190"),
+        ("찜닭", ["찜닥"], "dictionary-specific", "찜닭[찜닥]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=334398"),
+        ("신기다", ["신기다"], "§24", "신기다[신기다]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332991"),
+        ("싶었던", ["시펃떤"], "§13/§9/§23", "싶었던[시펃떤]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=334548"),
+        ("발걸음", ["발꺼름"], "§28", "발걸음[발꺼름]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332481"),
+        ("끝을", ["끄틀"], "§13", "끝을[끄틀]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=326711"),
+        ("여덟과", ["여덜과"], "dictionary-specific", "여덟과[여덜과]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=334808"),
+        ("팔심", ["팔씸"], "§28", "팔심[팔씸]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=308599"),
+        ("알심", ["알씸"], "§28", "알심[알씸]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=308599"),
+        ("문고리", ["문꼬리"], "§28", "문고리[문꼬리]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=308599"),
+        ("눈동자", ["눈똥자"], "§28", "눈동자[눈똥자]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=308599"),
+        ("신바람", ["신빠람"], "§28", "신바람[신빠람]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=308599"),
+        ("산새", ["산쌔"], "§28", "산새[산쌔]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=308599"),
+        ("계산", ["계ː산", "게ː산"], "§4/§5", "계산[계ː산~게ː산]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=73&pageIndex=1&qna_seq=333694"),
+    ]
+    for word, readings, rule, excerpt, locator in qna_candidates:
+        if word in used or word in seen:
+            continue
+        seen.add(word)
+        candidates.append({
+            "input": word,
+            "surfaceReadings": readings,
+            "sourceRule": rule,
+            "sourceExcerpt": excerpt,
+            "sourceLocator": locator,
+        })
     # Scan individual HTML text nodes, not flattened HTML: flattening can
     # accidentally pair a prose word with the next example's bracketed reading.
     pair_pattern = re.compile(r"([가-힣]{2,10})\[([가-힣ː]+)\]")
