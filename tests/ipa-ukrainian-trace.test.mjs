@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
-import { ipaSyllableToUkrainian, traceIpaMapping } from '../src/app/engine_ipa.js';
+import { ipaSyllableToUkrainian, ipaTargetForSource, traceIpaMapping } from '../src/app/engine_ipa.js';
 
 const canonicalCsv = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexicalCsv = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
