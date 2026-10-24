@@ -43,7 +43,7 @@ The paired report evaluates native `morphology_mode=strict` and `morphology_mode
 
 The benchmark was run on pinned [UGTPHON](https://github.com/naver-ai/UGTPHON) Korean `ko/test.json` at commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`: 275 rows, 2,703 eligible Hangul-token occurrences, 1,907 unique Hangul words. It is noisy user-generated text, **not** normative NIKL gold.
 
-Exact-head paired workflow [40085540426](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085540426) passed for both real analyzers and pairwise comparison. Reports: [Kiwi artifact 12556298125](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085540426/artifacts/12556298125), [MeCab-Ko artifact 12556389787](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085540426/artifacts/12556389787), and [boundary-agreement artifact 12556373180](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085540426/artifacts/12556373180). The reports are retained as CI artifacts; they are not committed as fabricated gold data.
+Exact-head paired workflow [40085814755](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814755) passed for both real analyzers and pairwise comparison. Reports: [Kiwi artifact 12556189316](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814755/artifacts/12556189316), [MeCab-Ko artifact 12556159351](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814755/artifacts/12556159351), and [boundary-agreement artifact 12557345848](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814755/artifacts/12557345848). The reports are retained as CI artifacts; they are not committed as fabricated gold data.
 
 ### Existing native IPA engine: strict vs soft
 
@@ -125,7 +125,7 @@ Boundary-observation rate was 208/238 = **87.3950%** for Kiwi and 207/238 = **86
 
 ### Existing independent IPA-engine baseline
 
-The same pinned-corpus multi-engine diagnostic [run 40085066512](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085066512) retains the earlier comparative context:
+The same pinned-corpus multi-engine diagnostic [run 40085814704](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814704) retains the earlier comparative context:
 
 | IPA path | Exact-match rate | CER | Coverage |
 |---|---:|---:|---:|
