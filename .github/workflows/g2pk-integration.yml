@@ -17,6 +17,22 @@ on:
       - "tests/test_target_renderer_holdout_24.py"
       - "scripts/audit_target_renderer_holdout_24.py"
       - ".github/workflows/g2pk-integration.yml"
+  push:
+    paths:
+      - "src/korean_ukrainian/g2pk_engine.py"
+      - "src/korean_ukrainian/api.py"
+      - "src/korean_ukrainian/cli.py"
+      - "src/korean_ukrainian/pipeline.py"
+      - "src/korean_ukrainian/ipa_target_renderer.py"
+      - "data/korean/canonical_correspondence.csv"
+      - "data/korean/ipa_target_overrides.csv"
+      - "data/korean/benchmarks/target-renderer-holdout-24.csv"
+      - "tests/test_ipa_target_renderer.py"
+      - "tests/test_g2pk_engine.py"
+      - "tests/test_target_renderer_holdout_24.py"
+      - "scripts/audit_target_renderer_holdout_24.py"
+      - "pyproject.toml"
+      - ".github/workflows/g2pk-integration.yml"
   workflow_dispatch:
 jobs:
   g2pk-integration:
