@@ -7,7 +7,7 @@
 Baseline diagnostic sources:
 - [Multi-engine benchmark run 40089295231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231)
 - [Artifact 12558044694](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231/artifacts/12558044694)
-- [Current benchmark report](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md)
+- [Revised benchmark report on open PR #297 branch](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/bench/ko-eight-suite-and-abstention-audit-2026-10-24/docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md)
 - Rule implementation: `src/korean_ukrainian/rules.py`, R002
 - IPA renderer: `src/korean_ukrainian/ipa.py`
 
