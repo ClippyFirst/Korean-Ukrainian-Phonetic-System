@@ -4,6 +4,7 @@ import json
 
 def test_ipa_normalization_removes_boundaries_and_known_narrow_vowel_marks():
     assert normalize_ipa("t͡ɕʰɛ̝.k̚") == normalize_ipa("tɕʰɛk̚")
+    assert normalize_ipa("a̠") == normalize_ipa("a")
 
 
 def test_ipa_normalization_preserves_phonologically_relevant_markers():
