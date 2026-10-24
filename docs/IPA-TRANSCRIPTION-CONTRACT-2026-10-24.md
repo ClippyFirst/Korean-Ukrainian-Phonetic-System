@@ -71,3 +71,15 @@ A broad-IPA release claim requires:
 - Ukrainian target review as a separate acceptance task.
 
 Until those gates pass, the status is **research-ready for diagnostics, not independently validated for release**.
+
+
+### Measured profile sensitivity (2026-10-24)
+
+On the pinned multi-engine artifact (JSON SHA-256 `448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f`), 2,655 paired occurrences were scored after excluding 48 native abstentions.
+
+| Profile | ClippyFirst exact match | ClippyFirst CER | g2pk exact match | g2pk CER |
+|---|---:|---:|---:|---:|
+| Legacy | 1,412/2,655 (53.18%) | 9.19% | 1,416/2,655 (53.33%) | 9.24% |
+| Candidate broad v1 | 2,417/2,655 (91.04%) | 1.70% | 2,415/2,655 (90.96%) | 1.75% |
+
+These are normalization-sensitivity results on the same reference strings, not newly validated accuracy estimates. After the other proposed allophone collapses, exact match is 71.30%; adding `ɕ→s` alone gives 71.86%; collapsing sibilant `sʰ→s` alone gives 83.92%; applying both gives 91.04%. Independent IPA labels are required to confirm that the broad comparison is linguistically appropriate rather than an over-collapse.
