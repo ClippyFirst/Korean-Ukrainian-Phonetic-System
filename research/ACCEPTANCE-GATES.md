@@ -307,3 +307,16 @@ The repository-held HTML inventory and schema v2 metadata-boundary correction ar
 
 Merged PR: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/286  
 Merge commit: `c4efa90e1b24b33a8692c383f58b6bf966506871`.
+
+
+## Follow-up branch — source-backed complex-coda regression expansion, 2026-10-24
+
+| Task | Status | Evidence / acceptance boundary |
+|---|---|---|
+| Extend exact-form NIKL surface/IPA regression | DONE_VERIFIED pending exact-head CI | Cross-rule test now covers 25 items, including six new official-source-backed forms: 긁고[글꼬], 늙고[늘꼬], 않았다[아낟따], 얇은[얄븐], 읽어[일거], 헛웃음[허두슴]. New 긁고 source: NIKL Online Q&A qna_seq=328946, https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=328946. |
+| IPA provenance | PARTIAL / project analysis | The cited NIKL pages attest Hangul pronunciation spellings, not IPA. Broad IPA values are explicit project analysis and must remain independently adjudicated. |
+| Ukrainian target | BLOCKED_SPECIALIST_REVIEW | Target syllables remain provisional and are not normative gold labels. |
+| Generalization to productive morphology / unseen compounds | BLOCKED_INPUT_ANALYSIS | Exact-form examples must not be generalized to all ㄼ/ㄺ stems or unknown compounds without evidence and morphology. |
+| Release readiness | BLOCKED | Research preview / partial prototype. The independent IPA queue, Ukrainian target review, source rights and permitted live-source retrieval remain open. |
+
+Current branch: `research/nikl-cross-rule-complex-coda-regressions-2026-10-24`. Exact-head CI is required before merge.
