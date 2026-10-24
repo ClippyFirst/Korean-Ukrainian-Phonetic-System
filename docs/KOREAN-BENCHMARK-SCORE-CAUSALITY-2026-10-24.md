@@ -295,6 +295,8 @@ The ablation was run on the same 2,655 paired rows:
 
 The sibilant-aspiration convention is by far the largest individual driver. This is plausible because Korean sibilant aspiration/palatalization is often represented explicitly in phonetic transcription but omitted in broad phonological transcription. Nevertheless, the exact 20-point increase from the `sʰ` collapse makes it the highest-priority decision for independent reviewers. The profile preserves aspiration on stops/affricates, fortisness, length, and the coda unreleased mark.
 
+A lexical-type cluster bootstrap (10,000 replicates; 1,860 types) gives a g2pk-minus-native exact-match delta of +0.15 percentage points under legacy with 95% interval [0.00, 0.47], and −0.08 points under broad-v1 with interval [−0.47, 0.37]. The broad-v1 interval includes zero, so the two engines are not meaningfully separated by exact match on this sample. The legacy apparent g2pk advantage is sensitive to the repeated lexical type `없는`.
+
 The machine-readable aggregate is [`research/broad-ipa-profile-sensitivity-2026-10-24.json`](../research/broad-ipa-profile-sensitivity-2026-10-24.json). The executable analyzer now emits both profiles' exact match/CER and symbol-alignment profiles for each profile. These metrics should not be presented as “91% validated accuracy” until annotation and adjudication are complete.
 
 ### Residual differences after broad-v1
