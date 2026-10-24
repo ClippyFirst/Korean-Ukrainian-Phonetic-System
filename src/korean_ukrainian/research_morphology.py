@@ -107,21 +107,44 @@ class MecabKoMorphologyAnalyzer:
     def __init__(self, tagger: Any | None = None) -> None:
         if tagger is None:
             try:
-                mecab_module = import_module("MeCab")
-                tagger = mecab_module.Tagger()
+                try:
+                    mecab_module = import_module("mecab_ko")
+                    tagger_type = getattr(mecab_module, "Mecab")
+                    tagger = tagger_type()
+                except (ImportError, AttributeError):
+                    mecab_module = import_module("MeCab")
+                    tagger = mecab_module.Tagger()
             except (ImportError, AttributeError, RuntimeError) as exc:
                 raise RuntimeError(
-                    "MeCab-Ko adapter needs the optional MeCab Python binding "
-                    "and a configured Korean dictionary. Install/configure it "
-                    "for this OS, then retry; no fallback was attempted."
+                    "MeCab-Ko adapter needs mecab-ko-python (mecab_ko.Mecab) or a "
+                    "compatible MeCab Python binding and a Korean dictionary. "
+                    "Install/configure it for this OS; no fallback was attempted."
                 ) from exc
         self._tagger = tagger
 
     def analyze(self, text: str) -> MorphologyResult:
         _validate_text(text)
+        # The Rust mecab-ko-python package exposes .pos(); older MeCab
+        # bindings expose .parseToNode(). Support both documented API shapes.
+        if callable(getattr(self._tagger, "pos", None)):
+            result: list[Morpheme] = []
+            cursor = 0
+            for surface, tag in self._tagger.pos(text):
+                surface = str(surface)
+                start = text.find(surface, cursor)
+                if not surface or start < 0:
+                    raise RuntimeError("MeCab-Ko token cannot be aligned to source text")
+                end = start + len(surface)
+                cursor = end
+                result.append(Morpheme(
+                    form=surface, tag=str(tag), start=start, end=end,
+                    lemma=None, analyzer=self.name,
+                ))
+            return MorphologyResult(text, self.name, tuple(result))
+
         node = self._tagger.parseToNode(text)
         cursor = 0
-        result: list[Morpheme] = []
+        result = []
         while node is not None:
             surface = str(getattr(node, "surface", "") or "")
             feature = str(getattr(node, "feature", "") or "")
