@@ -30,6 +30,10 @@ test("extracts exactly the 30 articles from the Standard Pronunciation Rules sec
   assert.deepEqual(parsed.articles.map((article) => article.articleNumber), EXPECTED_ARTICLES);
   assert.equal(parsed.validation.complete, true);
   assert.equal(parsed.articles[0].articleId, "NIKL-SP-01");
+  assert.equal(parsed.articles[0].title, "제1항");
+  assert.equal(parsed.articles[0].normativeCharCount, [..."표준 발음 규정 예시 1"].length);
+  assert.equal(parsed.articles[0].normativeTextSha256, sha256("표준 발음 규정 예시 1".normalize("NFC")));
+  assert.equal(parsed.articles[0].sourceUnitScope, "article-block-including-official-commentary-and-examples");
   assert.equal(parsed.articles[0].anchorId, "article-1");
   assert.match(parsed.articles[0].sourceText, /규정 본문 1의 예시/);
   assert.doesNotMatch(parsed.articles[0].sourceText, /제3부 외래어 표기법/);
@@ -241,6 +245,9 @@ test("repository-held NIKL HTML matches its complete metadata-only inventory man
   assert.deepEqual(parsed.articles.map(article => ({
     articleNumber: article.articleNumber,
     title: article.title,
+    normativeTextSha256: article.normativeTextSha256,
+    normativeCharCount: article.normativeCharCount,
+    sourceUnitScope: article.sourceUnitScope,
     anchorId: article.anchorId,
     normalizedCharCount: article.normalizedCharCount,
     extractionStatus: article.extractionStatus,
@@ -248,6 +255,9 @@ test("repository-held NIKL HTML matches its complete metadata-only inventory man
   })), manifest.articles.map(article => ({
     articleNumber: article.articleNumber,
     title: article.title,
+    normativeTextSha256: article.normativeTextSha256,
+    normativeCharCount: article.normativeCharCount,
+    sourceUnitScope: article.sourceUnitScope,
     anchorId: article.anchorId,
     normalizedCharCount: article.normalizedCharCount,
     extractionStatus: article.extractionStatus,
