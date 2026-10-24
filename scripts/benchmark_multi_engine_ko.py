@@ -614,7 +614,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
 
     return {
         "benchmark": args.benchmark_name,
-        "benchmark_version": "multi-engine-ipa-diagnostic-v3",
+        "benchmark_version": "multi-engine-ipa-diagnostic-v4",
         "dataset_source": args.dataset_source,
         "native_abstention_audit": {
             "occurrence_count": len(native_abstention_audit),
