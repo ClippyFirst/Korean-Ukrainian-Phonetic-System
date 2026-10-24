@@ -17,7 +17,7 @@ test('surface-only NIKL evidence does not become invented IPA or Ukrainian gold'
   assert.equal(item.ipa_candidate, null);
   assert.equal(item.ukrainian_target_status, 'not_reviewed');
   assert.equal(item.ukrainian_target, null);
-  assert.equal(item.engine_expected_status, 'unresolved');
+  assert.equal(item.python_pipeline_expected_status, 'unresolved');
   assert.equal(lexical.some(row => row.input === item.input), false,
     'surface-only evidence must not enter the lexical IPA/target table');
 });
