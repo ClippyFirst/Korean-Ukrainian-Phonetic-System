@@ -163,6 +163,8 @@ All relevant workflow families passed on implementation head `a80cacf0f2c36c40a1
 The strict IPA→Ukrainian renderer and direct browser target adapter abstain by default whenever any mapping is `provisional`; the research pipeline/UI explicitly opt in to show a candidate with provisional status and trace. Tests verify strict abstention, candidate traceability, explicit research opt-in, and Python/browser parity. Do not score candidate-only outputs as successful exact matches in a production accuracy benchmark.
 
 
-### Target correctness gate added — 2026-10-25
+### Final exact-head verification — 2026-10-25
 
-The production IPA→Ukrainian renderer now abstains by default whenever any mapping is `provisional`. The proposed spelling remains available only as an explicitly labelled candidate through research opt-in. Tests must verify (a) no final orthography is emitted, (b) the candidate is traceable, (c) the explicit research mode reproduces the candidate, and (d) Python/browser contracts agree. Do not score candidate-only outputs as successful exact matches in a production accuracy benchmark.
+Verified on code head `4f65943b514992b89ce31df5db2d4e971dc0b6a9`. System verification, focused tests/wheel install, browser G2P, optional g2pK, generated master table/research corpus, paired native-vs-g2pK, UGTPHON, morphology adapter smoke, and multi-engine IPA comparison all passed (runs 40135565733, 40135565670, 40135565682, 40135565680, 40135565706, 40135565751, 40135565684, 40135565675, 40135565671). NIKL live inventory was skipped, not passed.
+
+Strict IPA→Ukrainian adapters abstain on `provisional` mappings by default and return a separate candidate with trace. Research UI/pipeline explicitly opts in to display candidate output with provisional status. Candidate-only matches must not count as verified accuracy. The original 24-form source, independent Korean IPA gold, and independent Ukrainian target gold remain blockers; release status remains `PARTIAL / NOT RELEASE-READY`.
