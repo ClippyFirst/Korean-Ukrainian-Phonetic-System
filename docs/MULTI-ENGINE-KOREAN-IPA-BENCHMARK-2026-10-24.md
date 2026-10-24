@@ -2,11 +2,11 @@
 
 ## Status
 
-**DONE_VERIFIED for two diagnostic datasets and six engines** on code-equivalent benchmark head. Exact-head run: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231 ; artifact: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231/artifacts/12558044694. The full reports and all 48 UGTPHON abstention occurrences and 2 SIGMORPHON abstentions were inspected. The current result section supersedes the earlier score table because the broad-IPA normalization profile was corrected to ignore retraction U+0320.
+**DONE_VERIFIED for two diagnostic datasets, six engines, and complete occurrence-level native-vs-g2pk audits** on the post-fix benchmark head. Latest run: [40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799); artifact: [12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356). This head includes the merged coda-ㅇ and broad-IPA palatal-yod fixes plus the branch's source-backed exact-form R010 licenses for 닮다 and 넘게. All 48 UGTPHON abstention occurrences and both SIGMORPHON abstentions were retained; the full pairwise ledger replaces the old capped mismatch sample.
 
 - Repository: ClippyFirst/Korean-Ukrainian-Phonetic-System
-- Benchmark branch: research/independent-engine-benchmark-2026-10-23
-- Existing benchmark PR: [#280](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/280)
+- Benchmark branch: bench/ko-eight-suite-and-abstention-audit-2026-10-24
+- Active benchmark and error-analysis PR: [#297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/297); earlier benchmark PR [#280](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/280) is merged
 - Pinned dataset: [UGTPHON](https://github.com/naver-ai/UGTPHON), commit ef0d5a09c2ea1874c7206020f875cbd9cfea2f54, Korean ko/test.json, 275 rows, Apache-2.0 verified by CI.
 - Harness: scripts/benchmark_multi_engine_ko.py
 - JavaScript adapter: scripts/benchmark_phonemize_adapter.cjs
@@ -49,7 +49,7 @@ This benchmark scores Korean IPA only. It does **not** measure IPA-to-Ukrainian 
 
 ## Current verified results — revised broad-IPA profile (2026-10-24)
 
-Machine-readable reports and occurrence-level audits: [successful run 40089295231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231), [artifact 12558044694](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231/artifacts/12558044694). Values are percentages; exact-match 95% CIs are deterministic 1,000-replicate row-cluster percentile bootstrap intervals. CER is lower-is-better.
+Machine-readable reports and the complete occurrence-level native-vs-g2pk audit: [latest successful run 40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799), [artifact 12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356). Values are percentages; exact-match 95% CIs are deterministic 1,000-replicate row-cluster percentile bootstrap intervals. CER is lower-is-better. These are diagnostics, not normative NIKL accuracy.
 
 ### UGTPHON noisy user-generated text
 
@@ -57,7 +57,7 @@ Machine-readable reports and occurrence-level audits: [successful run 4008929523
 
 | Engine | Scored / eligible | Coverage | Exact match (95% CI) | CER |
 |---|---:|---:|---:|---:|
-| ClippyFirst native | 2,655 / 2,703 | 98.2242% | 50.8851% (46.8726–54.9358%) | 9.6619% |
+| ClippyFirst native (post-R002, yod, and R010 fixes) | 2,655 / 2,703 | 98.2242% | 53.1827% (48.4860–58.1989%) | 9.1883% |
 | g2pk 0.9.4 + ClippyFirst IPA renderer | 2,703 / 2,703 | 100% | 53.0892% (48.5190–58.0085%) | 9.2285% |
 | phonemize 2.0.1 | 2,703 / 2,703 | 100% | 42.5453% (37.2093–48.6478%) | 14.3531% |
 | KoG2P 2019 | 2,703 / 2,703 | 100% | 27.3030% (25.1766–29.4688%) | 19.5122% |
@@ -68,11 +68,13 @@ Paired candidate-minus-native deltas on the 2,655 shared scored occurrences:
 
 | Candidate | Exact-rate delta (95% CI) | CER delta (95% CI) |
 |---|---:|---:|
-| g2pk + project renderer | +2.4482 pp (+1.2378 to +4.2219 pp) | −0.4205 pp (−0.6625 to −0.2298 pp) |
-| phonemize 2.0.1 | −7.8343 pp (−10.1440 to −5.1367 pp) | +4.5410 pp (+3.7271 to +5.3596 pp) |
-| KoG2P 2019 | −23.3521 pp (−27.4139 to −19.8230 pp) | +9.9318 pp (+8.9473 to +10.9994 pp) |
-| hangul_to_ipa | −34.4256 pp (−37.5207 to −31.1349 pp) | +15.1057 pp (+14.0576 to +16.2182 pp) |
-| eSpeak NG | −42.6742 pp (−47.0011 to −38.3526 pp) | +23.9090 pp (+22.7362 to +25.1519 pp) |
+| g2pk + project renderer | +0.1506 pp (+0.0351 to +0.3243 pp) | +0.0531 pp (−0.0139 to +0.1302 pp) |
+| phonemize 2.0.1 | −10.1319 pp (−11.9038 to −8.3370 pp) | +5.0146 pp (+4.2801 to +5.8326 pp) |
+| KoG2P 2019 | −25.6497 pp (−30.3777 to −21.2985 pp) | +10.4054 pp (+9.4870 to +11.4157 pp) |
+| hangul_to_ipa | −36.7232 pp (−40.6274 to −33.0227 pp) | +15.5793 pp (+14.5573 to +16.6784 pp) |
+| eSpeak NG | −44.9718 pp (−50.3340 to −39.9636 pp) | +24.3826 pp (+23.2720 to +25.5759 pp) |
+
+The native engine's scored-set exact rate is marginally higher than g2pk's full-set rate, but the denominators differ because native abstains on 48 occurrences. The paired comparison is the fairer comparison: g2pk has four more exact matches among 2,655 shared scored occurrences, a small +0.1506 pp difference. The paired CER interval crosses zero; native's measured CER is slightly lower.
 
 ### SIGMORPHON 2021 public paired lexical file
 
@@ -80,7 +82,7 @@ Paired candidate-minus-native deltas on the 2,655 shared scored occurrences:
 
 | Engine | Scored / eligible | Coverage | Exact match (95% CI) | CER |
 |---|---:|---:|---:|---:|
-| ClippyFirst native | 997 / 999 | 99.7998% | 35.1053% (32.0963–38.0140%) | 14.8920% |
+| ClippyFirst native | 997 / 999 | 99.7998% | 35.8074% (32.7984–38.7161%) | 14.7037% |
 | g2pk 0.9.4 + ClippyFirst IPA renderer | 999 / 999 | 100% | 35.3353% (32.5325–38.2382%) | 14.8222% |
 | phonemize 2.0.1 | 999 / 999 | 100% | 28.9289% (26.2262–31.6316%) | 17.4387% |
 | KoG2P 2019 | 999 / 999 | 100% | 18.7187% (16.3163–21.2212%) | 21.8327% |
@@ -91,26 +93,29 @@ Paired deltas on the 997 shared scored occurrences:
 
 | Candidate | Exact-rate delta (95% CI) | CER delta (95% CI) |
 |---|---:|---:|
-| g2pk + project renderer | +0.3009 pp (−0.3009 to +1.0030 pp) | −0.0753 pp (−0.2584 to +0.0889 pp) |
-| phonemize 2.0.1 | −6.1183 pp (−8.0241 to −4.2126 pp) | +2.4988 pp (+1.8514 to +3.1605 pp) |
-| KoG2P 2019 | −16.3490 pp (−18.7563 to −13.6409 pp) | +6.9061 pp (+6.1807 to +7.7190 pp) |
-| hangul_to_ipa | −26.1785 pp (−29.0873 to −23.2698 pp) | +14.9297 pp (+14.0973 to +15.7538 pp) |
-| eSpeak NG | −30.7924 pp (−33.8014 to −27.7834 pp) | +25.8287 pp (+24.6903 to +26.8993 pp) |
+| g2pk + project renderer | −0.4012 pp (−0.8024 to −0.1003 pp) | +0.1130 pp (−0.0250 to +0.2732 pp) |
+| phonemize 2.0.1 | −6.8204 pp (−8.6259 to −5.0150 pp) | +2.6871 pp (+2.0350 to +3.3528 pp) |
+| KoG2P 2019 | −17.0511 pp (−19.4584 to −14.5436 pp) | +7.0944 pp (+6.3877 to +7.9047 pp) |
+| hangul_to_ipa | −26.8806 pp (−29.5888 to −23.9719 pp) | +15.1180 pp (+14.2910 to +15.9478 pp) |
+| eSpeak NG | −31.4945 pp (−34.5035 to −28.4855 pp) | +26.0170 pp (+24.8802 to +27.1048 pp) |
 
-The paired g2pk intervals on SIGMORPHON cross zero for both metrics; this dataset does not establish a statistically clear native-versus-g2pk difference. The contrast with UGTPHON argues against declaring one engine universally best.
+On this dataset ClippyFirst has four native-only exact matches and no g2pk-only exact matches among the shared scored occurrences. The exact-match interval favors native; the CER interval crosses zero. The two datasets therefore do not support a universal g2pk advantage.
 
-### Native abstention audit
+### Complete paired error ledger and abstentions
 
-- UGTPHON: 48 occurrences across 47 unique words. There are 49 unresolved context labels because one occurrence has two contexts: R002 liaison/neutralization (25), R003 ㅎ-coda deletion (20), R007 palatalization (2), R004 complex-coda plus ㅎ aspiration (1), and one IPA-adjudication gap.
-- SIGMORPHON: 2 abstentions: 닭갈비 (R008, ㄺ-before-ㄱ fortition depends on lexical/morphological class) and 중심닮음 (R002, liaison/neutralization requires exact morpheme evidence).
-- External predictions are diagnostic evidence only. They were not copied into production rules without source adjudication.
+- **UGTPHON pairwise categories (2,703 occurrences):** both exact 1,412; both not exact 1,239; g2pk-only exact 4; native abstained while g2pk was exact 19; native abstained and g2pk was not exact 29. There were no native-only exact occurrences in this dataset.
+- The four g2pk-only exact occurrences are all the same word, **없는**, repeated in four corpus rows. ClippyFirst's source-backed lexical entry preserves the NIKL-attested long vowel [엄ː는] (ʌːm.nɯn); the UGTPHON reference omits the length mark. Do not delete length from production IPA merely to fit this annotation convention. This is an evidence-backed reference/normalization mismatch, not a proven native phonology error.
+- The two prior g2pk-only exact cases **닮다** and **넘게** were resolved on this branch with exact-form R010 (§24 stem-n/m + ending) licenses. Their outputs now match the reference. The rule remains scoped to these full forms; no unrestricted morphology guess was added.
+- **SIGMORPHON pairwise categories (999 occurrences):** both exact 353; both not exact 640; native-only exact 4; native abstained while g2pk was not exact 2.
+- UGTPHON native abstentions remain 48 occurrences across 47 unique words, with 49 context labels: R002 liaison/neutralization 25; R003 ㅎ-coda deletion 20; R007 palatalization 2; R004 complex-coda plus ㅎ aspiration 1; one IPA-adjudication gap. Among the 48, g2pk matches the reference in 19 cases and does not in 29 (diagnostic comparison only).
+- The official broad-IPA renderer fix for ㅈ/ㅉ/ㅊ + ㅕ removed 13 g2pk-only exact mismatches from the prior paired audit. The R010 licenses resolved two further cases. Full occurrence-level evidence is preserved in the linked JSON artifact.
 
 ### Current conclusions
 
-- g2pk plus the project renderer leads native on the noisy UGTPHON paired set; exact delta +2.4482 pp with a 95% interval above zero. The renderer is shared, so this is not a fully independent end-to-end IPA comparison.
-- On the SIGMORPHON public paired file, the paired exact delta is only +0.3009 pp and its interval crosses zero.
-- phonemize is the strongest of the other independent candidates on both datasets under this adapter and normalization contract. These scores are diagnostic, not normative NIKL accuracy and not IPA-to-Ukrainian quality.
-- The prior table below is historical under the earlier normalization profile and should not be used as the current score snapshot.
+- The old claim that g2pk led UGTPHON by +2.4482 pp is superseded. After the coda-ㅇ fix, broad-IPA glide absorption, and two exact-form R010 licenses, its paired exact-match lead is only +0.1506 pp. All four remaining g2pk-only exact occurrences are a repeated vowel-length annotation mismatch for 없는; paired CER does not show a clear g2pk advantage.
+- On SIGMORPHON, native has a small but statistically detectable exact-match advantage on the shared scored set; CER does not clearly distinguish the engines.
+- g2pk plus the project renderer is not a fully independent IPA stack because both systems share the renderer. These are noisy/public paired-file diagnostics, not normative NIKL accuracy and not IPA-to-Ukrainian quality measurements.
+- A NIKL-grounded, independently adjudicated holdout and a separately reviewed Korean-IPA-to-Ukrainian gold set remain required for any release-quality accuracy claim.
 
 ## Historical results — earlier normalization profile (superseded)
 
