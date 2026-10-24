@@ -112,3 +112,14 @@ def test_section5_combines_generic_ye_variants():
         "pʰje.ɡi.ɡe",
         "pʰe.ɡi.ɡe",
     ]
+
+
+def test_broad_ipa_preserves_final_ng_before_vowel_initial_syllable():
+    expected = {
+        "공인": "koŋ.in",
+        "양아치": "jaŋ.a.tɕʰi",
+        "동요": "toŋ.jo",
+        "동이": "toŋ.i",
+    }
+    for word, ipa in expected.items():
+        assert phoneticize_korean(word)["ipa"]["ipa"] == ipa, word
