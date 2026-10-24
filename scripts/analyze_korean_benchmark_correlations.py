@@ -12,6 +12,7 @@ import argparse
 import collections
 import json
 import random
+import re
 import statistics
 import unicodedata
 from pathlib import Path
@@ -30,6 +31,80 @@ def normalize_ipa(value: str) -> str:
         if not char.isspace() and char != "." and char not in IGNORABLE_DIACRITICS
     )
     return unicodedata.normalize("NFC", value)
+
+
+
+BROAD_ALL0PHONE_REPLACEMENTS = (
+    ("ɭ", "l"),
+    ("ʎ", "l"),
+    ("ɲ", "n"),
+    ("ɦ", "h"),
+    ("ç", "h"),
+    ("ɕ", "s"),
+)
+LEGACY_PROFILE = "legacy-broad-diagnostic-v0"
+BROAD_PROFILE = "clippyfirst-broad-v1"
+
+
+def normalize_ipa_profile(value: str, profile: str = LEGACY_PROFILE) -> str:
+    """Normalize for a named, versioned comparison profile.
+
+    The legacy profile is intentionally immutable for historical comparability.
+    clippyfirst-broad-v1 applies explicit broad-allophone equivalences only for
+    scoring; it never rewrites raw engine output or the stored reference.
+    """
+    normalized = normalize_ipa(value)
+    if profile == LEGACY_PROFILE:
+        return normalized
+    if profile != BROAD_PROFILE:
+        raise ValueError(f"unknown IPA comparison profile: {profile}")
+    for source, target in BROAD_ALL0PHONE_REPLACEMENTS:
+        normalized = normalized.replace(source, target)
+    # Korean sibilant aspiration/palatalization is allophonic in this project
+    # profile; do not remove aspiration from stop/affricate symbols.
+    normalized = re.sub(r"sʰ", "s", normalized)
+    return normalized
+
+
+def _edit_distance(left: str, right: str) -> int:
+    if len(left) < len(right):
+        left, right = right, left
+    previous = list(range(len(right) + 1))
+    for i, a in enumerate(left, 1):
+        current = [i]
+        for j, b in enumerate(right, 1):
+            current.append(min(
+                current[-1] + 1,
+                previous[j] + 1,
+                previous[j - 1] + (a != b),
+            ))
+        previous = current
+    return previous[-1]
+
+
+def _profile_metrics(rows: list[dict[str, Any]], engine: str, profile: str) -> dict[str, Any]:
+    eligible = [row for row in rows if row[NATIVE]["status"] == "scored"]
+    distances: list[int] = []
+    exact = 0
+    reference_characters = 0
+    for row in eligible:
+        reference = normalize_ipa_profile(str(row["gold"]), profile)
+        prediction = normalize_ipa_profile(str(row[engine]["ipa"]), profile)
+        distance = _edit_distance(reference, prediction)
+        distances.append(distance)
+        exact += distance == 0
+        reference_characters += len(reference)
+    return {
+        "profile": profile,
+        "eligible_occurrences": len(eligible),
+        "exact_matches": exact,
+        "exact_match_rate": round(exact / len(eligible), 6) if eligible else None,
+        "total_edit_distance": sum(distances),
+        "reference_characters": reference_characters,
+        "cer": round(sum(distances) / reference_characters, 6) if reference_characters else None,
+        "status": "SENSITIVITY_ONLY_UNTIL_INDEPENDENT_IPA_REVIEW",
+    }
+
 
 
 def _source(row_id: str) -> str:
@@ -324,6 +399,13 @@ def summarize_report(report: dict[str, Any], type_bootstrap_replicates: int = 10
         "eligible_token_occurrences": report.get("eligible_token_occurrences"),
         "unique_hangul_words": report.get("unique_hangul_words"),
         "normalization": report.get("normalization"),
+        "profile_sensitivity": {
+            profile: {
+                NATIVE: _profile_metrics(paired, NATIVE, profile),
+                G2PK: _profile_metrics(paired, G2PK, profile),
+            }
+            for profile in (LEGACY_PROFILE, BROAD_PROFILE)
+        },
         "occurrence_level": {
             "total_occurrences": len(rows),
             "paired_scored_occurrences": len(paired),
