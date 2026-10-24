@@ -25,6 +25,10 @@ const { phonemize } = requireFromPrefix('phonemize/all');
 if (typeof phonemize !== 'function') {
   throw new TypeError('phonemize/all does not export a callable phonemize function');
 }
+const smoke = phonemize('안녕', { language: 'ko', anyAscii: true, stripStress: true, separator: '' });
+if (typeof smoke !== 'string' || !smoke.trim() || /[\\uAC00-\\uD7A3]/u.test(smoke)) {
+  throw new Error('phonemize Korean adapter smoke test failed; expected non-Hangul IPA, got ' + JSON.stringify(smoke));
+}
 
 const rows = JSON.parse(fs.readFileSync(corpusPath, 'utf8'));
 if (!Array.isArray(rows)) throw new TypeError('UGTPHON root must be an array');
@@ -46,6 +50,7 @@ for (const word of words) {
   try {
     const result = phonemize(word, {
       language: 'ko',
+      anyAscii: true,
       stripStress: true,
       separator: '',
     });
@@ -62,7 +67,7 @@ const report = {
   engine: 'hans00/phonemize',
   version: '2.0.1',
   language: 'ko',
-  output_contract: 'direct package IPA output; stripStress=true',
+  output_contract: 'direct package IPA output; anyAscii=true and stripStress=true',
   unique_words: words.size,
   outputs: Object.values(predictions).filter((x) => typeof x.ipa === 'string').length,
   errors: Object.values(predictions).filter((x) => x.error).length,
