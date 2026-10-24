@@ -59,6 +59,8 @@ def run(output: Path | None = None) -> dict:
     manifest, manifest_sha = read_manifest(MANIFEST)
     from src.korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
     from src.korean_ukrainian.g2pk_engine import phoneticize_with_g2pk, transliterate_with_g2pk
+    from src.korean_ukrainian.ukrainian_adapter import UkrainianTargetAdapter
+    target_inventory_status = UkrainianTargetAdapter().status()
     records = []
     family_summary = defaultdict(lambda: {'cases': 0, 'native_surface_exact': 0, 'g2pk_surface_exact': 0, 'native_surface_edit_distance': 0, 'g2pk_surface_edit_distance': 0, 'native_unresolved': 0, 'g2pk_unavailable': 0, 'ukrainian_native_available': 0, 'ukrainian_g2pk_available': 0})
     rule_summary = Counter()
@@ -105,19 +107,46 @@ def run(output: Path | None = None) -> dict:
             if result['available']:
                 value = result['value']
                 target_analysis = value.get('target_analysis', [])
-                # Native output exposes a target-analysis object with a `segments` list;
-                # the shared G2P adapter exposes a list directly. Normalize both shapes
-                # without iterating dict keys as if they were segment records.
+                # Native IPA mapping has {status, segments:[{target:{status,adapter,...}}]};
+                # the external G2P target renderer has a list of word-level
+                # {status, reason} records. Read the status at the actual level
+                # instead of silently collecting null segment-level fields.
+                target_adapter_status = None
                 if isinstance(target_analysis, dict):
                     target_records = target_analysis.get('segments', [])
                     target_analysis_status = target_analysis.get('status')
+                    target_analysis_statuses = [
+                        item.get('target', {}).get('status')
+                        if isinstance(item.get('target'), dict)
+                        else item.get('status')
+                        for item in target_records if isinstance(item, dict)
+                    ]
+                    target_adapter_status = next((
+                        item.get('target', {}).get('adapter')
+                        for item in target_records
+                        if isinstance(item.get('target'), dict)
+                        and isinstance(item['target'].get('adapter'), dict)
+                    ), None)
                 elif isinstance(target_analysis, list):
                     target_records = target_analysis
                     target_analysis_status = None
+                    target_analysis_statuses = [
+                        item.get('status') for item in target_records if isinstance(item, dict)
+                    ]
                 else:
                     target_records = []
                     target_analysis_status = 'unexpected-target-analysis-shape'
-                engines[name + '_ukrainian_target'] = {'available': True, 'ukrainian_orthography': value.get('ukrainian_orthography'), 'target_status': value.get('target_status'), 'selection_status': value.get('selection_status'), 'target_analysis_status': target_analysis_status, 'target_analysis_statuses': [item.get('status') for item in target_records if isinstance(item, dict)], 'target_analysis_uninspectable_items': sum(not isinstance(item, dict) for item in target_records)}
+                    target_analysis_statuses = []
+                engines[name + '_ukrainian_target'] = {
+                    'available': True,
+                    'ukrainian_orthography': value.get('ukrainian_orthography'),
+                    'target_status': value.get('target_status'),
+                    'selection_status': value.get('selection_status'),
+                    'target_analysis_status': target_analysis_status,
+                    'target_analysis_statuses': target_analysis_statuses,
+                    'target_adapter_status': target_adapter_status,
+                    'target_analysis_uninspectable_items': sum(not isinstance(item, dict) for item in target_records),
+                }
                 row['_target_' + name] = bool(value.get('ukrainian_orthography'))
             else:
                 engines[name + '_ukrainian_target'] = {'available': False, 'error': result['error']}
@@ -141,7 +170,7 @@ def run(output: Path | None = None) -> dict:
         n = value['cases']
         value['native_surface_exact_rate'] = round(value['native_surface_exact'] / n, 6) if n else None
         value['g2pk_surface_exact_rate'] = round(value['g2pk_surface_exact'] / n, 6) if n else None
-    report = {'schemaVersion': 1, 'title': 'ClippyFirst frozen Korean 24-form pre-adjudication diagnostics', 'status': 'DIAGNOSTIC_ONLY_NOT_GOLD_NOT_FOR_TUNING', 'generatedBy': 'scripts/diagnose-korean-ipa-holdout.py', 'manifestPath': 'data/korean/ipa_holdout_2026-10-24.json', 'manifestSha256': manifest_sha, 'caseCount': len(records), 'split': 'HOLDOUT', 'tuningUseProhibited': True, 'goldStatus': '0/24 independently adjudicated IPA labels; no IPA or Ukrainian accuracy claims', 'comparisonPolicy': 'NIKL Hangul surface spelling is used only as a coarse diagnostic comparator; no output is promoted to IPA gold; no rule is automatically changed.', 'ruleTraceCounts': dict(sorted(rule_summary.items())), 'sourceRuleSummary': dict(sorted(family_summary.items())), 'cases': records}
+    report = {'schemaVersion': 1, 'title': 'ClippyFirst frozen Korean 24-form pre-adjudication diagnostics', 'status': 'DIAGNOSTIC_ONLY_NOT_GOLD_NOT_FOR_TUNING', 'generatedBy': 'scripts/diagnose-korean-ipa-holdout.py', 'manifestPath': 'data/korean/ipa_holdout_2026-10-24.json', 'manifestSha256': manifest_sha, 'caseCount': len(records), 'split': 'HOLDOUT', 'tuningUseProhibited': True, 'goldStatus': '0/24 independently adjudicated IPA labels; no IPA or Ukrainian accuracy claims', 'comparisonPolicy': 'NIKL Hangul surface spelling is used only as a coarse diagnostic comparator; no output is promoted to IPA gold; no rule is automatically changed.', 'ukrainianTargetInventory': target_inventory_status, 'ruleTraceCounts': dict(sorted(rule_summary.items())), 'sourceRuleSummary': dict(sorted(family_summary.items())), 'cases': records}
     serialized = json.dumps(report, ensure_ascii=False, indent=2) + '\n'
     if output:
         output.parent.mkdir(parents=True, exist_ok=True)
