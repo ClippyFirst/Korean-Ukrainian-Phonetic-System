@@ -20,6 +20,7 @@ jobs:
           cache: pip
       - run: python -m pip install -e ".[dev,all]"
       - run: python -m pytest -q
+      # Keep detailed holdout predictions in a short-lived artifact, never in tracked fixtures.
       - name: Generate quarantined 24-form Korean diagnostic artifact
         if: matrix.python-version == '3.12'
         run: python scripts/diagnose-korean-ipa-holdout.py --output "$RUNNER_TEMP/clippyfirst-korean-24-form-diagnostics.json"
