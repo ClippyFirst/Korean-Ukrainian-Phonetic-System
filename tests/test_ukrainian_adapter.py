@@ -166,3 +166,22 @@ def test_shared_renderer_honors_per_word_diagnostic_status_without_top_level_fla
     assert out["ukrainian_orthography"] is None
     assert out["target_analysis"][0]["reason"] == "diagnostic_ipa_not_accepted"
     assert out["unavailable_reasons"] == ["diagnostic_ipa_not_accepted"]
+
+
+def test_shared_renderer_propagates_source_ipa_status_fields():
+    from korean_ukrainian.pipeline import render_ipa_analysis_to_ukrainian
+    out=render_ipa_analysis_to_ukrainian(
+        "가", [{"input":"가", "ipa":"k.a"}],
+        pronunciation_surface="가",
+        phonetics={"ipa_status_reason":"surface IPA reason"},
+        ipa={
+            "ipa":"k.a",
+            "status":"ipa-derived-from-g2pk-surface-form",
+            "is_diagnostic_only":False,
+            "status_reason":None,
+        },
+        pronunciation_engine="test",
+    )
+    assert out["ipa_status"] == "ipa-derived-from-g2pk-surface-form"
+    assert out["ipa_is_diagnostic_only"] is False
+    assert out["ipa_status_reason"] == "surface IPA reason"

@@ -730,6 +730,11 @@ def render_ipa_analysis_to_ukrainian(
         "pronunciation_surface": pronunciation_surface,
         "phonetics": phonetics,
         "ipa": ipa,
+        "ipa_status": ipa.get("status") if isinstance(ipa, dict) else None,
+        "ipa_is_diagnostic_only": ipa_diagnostic_only,
+        "ipa_status_reason": (
+            ipa.get("status_reason") if isinstance(ipa, dict) else None
+        ) or (phonetics.get("ipa_status_reason") if isinstance(phonetics, dict) else None),
         "target_analysis": targets,
         "target_inventory_analysis": inventory_analyses,
         "target_inventory_status": inventory_status,
