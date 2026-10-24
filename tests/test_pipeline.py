@@ -527,3 +527,17 @@ def test_shared_ipa_target_renderer_fails_closed_on_word_analysis_misalignment(m
         for item in result["target_analysis"]
     )
 
+
+
+def test_nikl_section_24_exact_form_licenses_render_correct_surface_ipa():
+    expected = {
+        "닮다": ("tam.t͈a", "닮>다"),
+        "넘게": ("nʌm.k͈e", "넘>게"),
+    }
+    for word, (ipa, pair) in expected.items():
+        result = phoneticize_korean(word)
+        assert result["ipa"]["ipa"] == ipa, word
+        trace = next(item for item in result["rules"] if item["rule_id"] == "R010")
+        assert trace["changed"], word
+        assert trace["license_context"] == f"R010:stem_n_m+suffix:{word}:{pair}", word
+        assert not any(item["rule_id"] == "R010" for item in result["unresolved_contexts"]), word
