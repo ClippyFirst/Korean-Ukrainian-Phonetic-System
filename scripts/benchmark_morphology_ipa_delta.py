@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Paired native IPA strict/soft and optional morphology diagnostics on UGTPHON.
 
-Important: Kiwi/MeCab output is never injected into phonological rules. This
-benchmark measures (1) the existing native strict-vs-soft IPA delta against
-the same IPA references and (2) how each morphology engine segments those same
-unique Hangul words. It cannot attribute an IPA change to Kiwi/MeCab until a
-separately reviewed, gold-validated morphology-to-rule adapter exists.
+Default native strict/soft IPA results are always measured unchanged. A separate
+counterfactual mode retains a native soft-rule license only when the selected
+analyzer exposes the corresponding orthographic boundary. This deliberately
+naive boundary-only gate is diagnostic, not a valid rule-licensing adapter:
+boundary evidence is not sufficient to decide morphophonological class.
 """
 from __future__ import annotations
 
@@ -61,8 +61,92 @@ def _metrics(rows: list[dict[str, Any]], attempted: int) -> dict[str, Any]:
     }
 
 
-def _native_prediction(fn: Callable[..., dict[str, Any]], word: str, mode: str) -> dict[str, Any]:
-    result = fn(word, morphology_mode=mode)
+def _score_paired_primary_reference(prediction: str, gold_raw: str) -> dict[str, Any]:
+    """Score a paired comparison against one fixed primary reference variant.
+
+    Exact match accepts any explicitly listed gold variant. CER uses the first
+    variant for every strategy, keeping the denominator identical within a
+    paired subset instead of allowing each engine to choose a different-length
+    closest reference.
+    """
+    predicted = normalize_ipa(prediction)
+    variants = _gold_variants(gold_raw)
+    if not variants:
+        raise ValueError("no usable IPA gold variants")
+    primary = variants[0]
+    return {
+        "normalized_predicted": predicted,
+        "closest_normalized_gold": primary,
+        "distance": edit_distance(predicted, primary),
+        "exact": predicted in variants,
+        "reference_length": len(primary),
+    }
+
+
+def _paired_comparison(
+    scores_by_strategy: dict[str, list[dict[str, Any]]],
+    attempted: int,
+    baseline: str,
+    candidate: str,
+) -> dict[str, Any]:
+    """Summarize strategies on the same occurrences and fixed CER references."""
+    baseline_rows = scores_by_strategy[baseline]
+    candidate_rows = scores_by_strategy[candidate]
+    if len(baseline_rows) != len(candidate_rows):
+        raise ValueError("paired strategy scores must have identical occurrence counts")
+    count = len(baseline_rows)
+    base_metrics = _metrics(baseline_rows, attempted)
+    candidate_metrics = _metrics(candidate_rows, attempted)
+    exact_wins = exact_losses = distance_wins = distance_losses = ties = 0
+    for base, cand in zip(baseline_rows, candidate_rows):
+        if bool(cand["exact"]) and not bool(base["exact"]):
+            exact_wins += 1
+        elif bool(base["exact"]) and not bool(cand["exact"]):
+            exact_losses += 1
+        if int(cand["distance"]) < int(base["distance"]):
+            distance_wins += 1
+        elif int(cand["distance"]) > int(base["distance"]):
+            distance_losses += 1
+        else:
+            ties += 1
+    exact_delta = (
+        candidate_metrics["exact_match_rate"] - base_metrics["exact_match_rate"]
+        if candidate_metrics["exact_match_rate"] is not None and base_metrics["exact_match_rate"] is not None
+        else None
+    )
+    cer_delta = (
+        candidate_metrics["character_error_rate"] - base_metrics["character_error_rate"]
+        if candidate_metrics["character_error_rate"] is not None and base_metrics["character_error_rate"] is not None
+        else None
+    )
+    return {
+        "baseline": baseline,
+        "candidate": candidate,
+        "paired_occurrences_scored_by_both": count,
+        "baseline_metrics": base_metrics,
+        "candidate_metrics": candidate_metrics,
+        "exact_rate_delta_candidate_minus_baseline": round(exact_delta, 6) if exact_delta is not None else None,
+        "cer_delta_candidate_minus_baseline": round(cer_delta, 6) if cer_delta is not None else None,
+        "occurrence_outcomes": {
+            "candidate_exact_wins": exact_wins,
+            "candidate_exact_losses": exact_losses,
+            "candidate_lower_edit_distance": distance_wins,
+            "candidate_higher_edit_distance": distance_losses,
+            "equal_edit_distance": ties,
+        },
+        "cer_contract": "fixed first listed gold IPA variant per occurrence; identical denominator across paired strategies",
+        "interpretation": "positive exact delta favors candidate; negative CER delta favors candidate",
+    }
+
+
+def _native_prediction(
+    fn: Callable[..., dict[str, Any]], word: str, mode: str,
+    rule_licenses: list[str] | None = None,
+) -> dict[str, Any]:
+    if rule_licenses is None:
+        result = fn(word, morphology_mode=mode)
+    else:
+        result = fn(word, morphology_mode=mode, rule_licenses=rule_licenses)
     ipa = result.get("ipa", {}).get("ipa")
     unresolved = result.get("pronunciation_status") == "unresolved"
     return {
@@ -79,9 +163,98 @@ def _native_prediction(fn: Callable[..., dict[str, Any]], word: str, mode: str) 
     }
 
 
+def _rule_boundary_alignment(
+    soft_rule_candidates: list[dict[str, Any]],
+    morphology_rows: list[dict[str, Any]],
+    soft_licenses_by_word: dict[str, list[str]],
+) -> dict[str, Any]:
+    """Compare every actually changed soft-rule pair with analyzer source offsets.
+
+    RuleTrace exposes only one license_context even when a rule can change
+    several pairs. Reconstruct the full set of candidate soft licenses, then
+    keep only pairs whose syllable state changed in that rule trace. This avoids
+    treating the trace's single context string as a complete event inventory.
+    """
+    by_word = {str(item["word"]): item for item in morphology_rows}
+    events: list[dict[str, Any]] = []
+    for candidate in soft_rule_candidates:
+        word = str(candidate["word"])
+        morphology = by_word.get(word)
+        if morphology is None:
+            continue
+        morphemes = morphology.get("morphemes", [])
+        valid_spans = [
+            (int(morpheme.get("start", -1)), int(morpheme.get("end", -1)))
+            for morpheme in morphemes
+            if 0 <= int(morpheme.get("start", -1)) < int(morpheme.get("end", -1)) <= len(word)
+        ]
+        starts = {start for start, _ in valid_spans}
+        ends = {end for _, end in valid_spans}
+        boundaries = {offset for offset in starts & ends if 0 < offset < len(word)}
+        for trace in candidate.get("soft_heuristic_rules", []):
+            rule_id = str(trace.get("rule_id", ""))
+            before = trace.get("before", [])
+            after = trace.get("after", [])
+            if len(before) != len(after):
+                continue
+            for license_context in soft_licenses_by_word.get(word, []):
+                parts = str(license_context).split(":", 3)
+                if len(parts) != 4 or parts[0] != rule_id or ">" not in parts[3]:
+                    continue
+                pair = parts[3]
+                left, right = pair.split(">", 1)
+                for index in range(len(before) - 1):
+                    if (str(before[index].get("text", "")) != left
+                            or str(before[index + 1].get("text", "")) != right):
+                        continue
+                    left_changed = any(
+                        before[index].get(field) != after[index].get(field)
+                        for field in ("onset", "nucleus", "coda")
+                    )
+                    right_changed = any(
+                        before[index + 1].get(field) != after[index + 1].get(field)
+                        for field in ("onset", "nucleus", "coda")
+                    )
+                    if not (left_changed or right_changed):
+                        continue
+                    offset = sum(len(str(item.get("text", ""))) for item in before[:index + 1])
+                    if not 0 < offset < len(word):
+                        continue
+                    events.append({
+                        "word": word,
+                        "rule_id": rule_id,
+                        "rule_name": trace.get("name"),
+                        "pair": pair,
+                        "license_context": license_context,
+                        "orthographic_offset": offset,
+                        "morphological_boundary_observed": offset in boundaries,
+                        "interpretation": (
+                            "boundary observed at this orthographic character offset"
+                            if offset in boundaries else
+                            "no boundary observed at this orthographic character offset"
+                        ),
+                        "morpheme_forms": [item.get("form") for item in morphemes],
+                    })
+    observed = sum(bool(event["morphological_boundary_observed"]) for event in events)
+    return {
+        "events": len(events),
+        "boundary_observed": observed,
+        "boundary_not_observed": len(events) - observed,
+        "boundary_observation_rate": round(observed / len(events), 6) if events else None,
+        "events_detail": events,
+        "interpretation": (
+            "descriptive boundary alignment only, not rule licensing or accuracy; "
+            "absence of a boundary is not proof that a phonological rule is invalid"
+        ),
+    }
+
+
 def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
     from korean_ukrainian.pipeline import phoneticize_korean
+    from korean_ukrainian.phonology import parse_syllables
     from korean_ukrainian.research_morphology import analyzer_by_name
+    from korean_ukrainian.rules import _source_backed_rule_licenses
+    from korean_ukrainian.soft_morphology import soft_formal_licenses
 
     occurrences: list[dict[str, str]] = []
     unique_words: list[str] = []
@@ -198,6 +371,140 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
             })
 
     morph_by_word = {item["word"]: item for item in morphology_rows}
+    soft_rule_candidates = [
+        {"word": word, "soft_heuristic_rules": pred.get("heuristic_rules", [])}
+        for word, pred in native["soft"].items()
+        if pred.get("heuristic_rules")
+    ]
+    soft_licenses_by_word: dict[str, list[str]] = {}
+    for word in unique_words:
+        syllables = parse_syllables(word)
+        exact_licenses = set(_source_backed_rule_licenses(syllables, "same_word"))
+        soft_licenses_by_word[word] = [
+            license for license in soft_formal_licenses(syllables)
+            if license not in exact_licenses
+        ]
+    rule_boundary_alignment = _rule_boundary_alignment(
+        soft_rule_candidates, morphology_rows, soft_licenses_by_word
+    )
+    events_by_word: dict[str, list[dict[str, Any]]] = {}
+    for event in rule_boundary_alignment["events_detail"]:
+        events_by_word.setdefault(str(event["word"]), []).append(event)
+    for item in morphology_rows:
+        item["native_soft_rule_boundary_events"] = events_by_word.get(str(item["word"]), [])
+
+    # Counterfactual only: keep the native soft engine's proposed exact rule
+    # contexts only when the selected analyzer exposes a boundary at that
+    # orthographic offset. This does NOT establish that the rule is licensed;
+    # it measures the effect of a boundary-only gate without changing runtime.
+    boundary_gated_predictions: dict[str, dict[str, Any]] = {}
+    boundary_gated_errors: dict[str, str] = {}
+    selected_licenses = 0
+    suppressed_licenses = 0
+    for word in unique_words:
+        events = events_by_word.get(word, [])
+        licenses = sorted({
+            str(event["license_context"])
+            for event in events
+            if event.get("morphological_boundary_observed") and event.get("license_context")
+        })
+        selected_licenses += len(licenses)
+        suppressed_licenses += sum(
+            1 for event in events
+            if not event.get("morphological_boundary_observed") and event.get("license_context")
+        )
+        try:
+            boundary_gated_predictions[word] = _native_prediction(
+                phoneticize_korean, word, "strict", rule_licenses=licenses
+            )
+        except Exception as exc:
+            boundary_gated_errors[word] = f"{type(exc).__name__}: {exc}"
+    boundary_gated_scored: list[dict[str, Any]] = []
+    for occurrence in occurrences:
+        word = occurrence["word"]
+        pred = boundary_gated_predictions.get(word)
+        if not pred or pred["unresolved"] or not pred["ipa"]:
+            continue
+        score = _score(pred["ipa"], occurrence["gold"])
+        score.update({"row_id": occurrence["row_id"], "word": word, "gold": occurrence["gold"]})
+        boundary_gated_scored.append(score)
+    boundary_gated_metrics = _metrics(boundary_gated_scored, len(occurrences))
+
+    # Fair three-way ablation: compare strict, soft and boundary-gated outputs
+    # only where all three strategies return a scorable IPA prediction. For
+    # CER, use the same primary reference variant for each strategy/occurrence.
+    triad_scores: dict[str, list[dict[str, Any]]] = {
+        "strict": [], "soft": [], "boundary_gated": [],
+    }
+    triad_occurrences = 0
+    for occurrence in occurrences:
+        word = occurrence["word"]
+        predictions = {
+            "strict": native["strict"].get(word),
+            "soft": native["soft"].get(word),
+            "boundary_gated": boundary_gated_predictions.get(word),
+        }
+        if any(not pred or pred.get("unresolved") or not pred.get("ipa") for pred in predictions.values()):
+            continue
+        triad_occurrences += 1
+        for strategy, pred in predictions.items():
+            score = _score_paired_primary_reference(pred["ipa"], occurrence["gold"])
+            score.update({"row_id": occurrence["row_id"], "word": word, "gold": occurrence["gold"]})
+            triad_scores[strategy].append(score)
+    triad_comparison = {
+        "scored_occurrences_by_all_three": triad_occurrences,
+        "boundary_gated_vs_strict": _paired_comparison(
+            triad_scores, triad_occurrences, "strict", "boundary_gated"
+        ),
+        "boundary_gated_vs_soft": _paired_comparison(
+            triad_scores, triad_occurrences, "soft", "boundary_gated"
+        ),
+        "soft_vs_strict": _paired_comparison(
+            triad_scores, triad_occurrences, "strict", "soft"
+        ),
+        "interpretation": (
+            "paired diagnostic only; strict, soft and boundary-gated are scored on the same "
+            "occurrences; exact accepts any listed variant while CER uses the first listed variant"
+        ),
+    }
+    boundary_gated_changed_vs_strict = [
+        word for word in unique_words
+        if (
+            boundary_gated_predictions.get(word, {}).get("normalized_ipa")
+            != native["strict"].get(word, {}).get("normalized_ipa")
+            or boundary_gated_predictions.get(word, {}).get("unresolved")
+            != native["strict"].get(word, {}).get("unresolved")
+        )
+    ]
+    boundary_gated_changed_vs_soft = [
+        word for word in unique_words
+        if (
+            boundary_gated_predictions.get(word, {}).get("normalized_ipa")
+            != native["soft"].get(word, {}).get("normalized_ipa")
+            or boundary_gated_predictions.get(word, {}).get("unresolved")
+            != native["soft"].get(word, {}).get("unresolved")
+        )
+    ]
+    boundary_gated_changed_examples = [
+        {
+            "word": word,
+            "strict_ipa": native["strict"].get(word, {}).get("ipa"),
+            "soft_ipa": native["soft"].get(word, {}).get("ipa"),
+            "boundary_gated_ipa": boundary_gated_predictions.get(word, {}).get("ipa"),
+            "strict_unresolved": native["strict"].get(word, {}).get("unresolved"),
+            "soft_unresolved": native["soft"].get(word, {}).get("unresolved"),
+            "boundary_gated_unresolved": boundary_gated_predictions.get(word, {}).get("unresolved"),
+            "observed_licenses": [
+                event.get("license_context") for event in events_by_word.get(word, [])
+                if event.get("morphological_boundary_observed") and event.get("license_context")
+            ],
+            "suppressed_licenses": [
+                event.get("license_context") for event in events_by_word.get(word, [])
+                if not event.get("morphological_boundary_observed") and event.get("license_context")
+            ],
+        }
+        for word in boundary_gated_changed_vs_strict
+    ][:100]
     split_changed = [
         item for item in changed_words
         if morph_by_word.get(item["word"], {}).get("split_into_multiple_morphemes")
@@ -209,7 +516,7 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
 
     return {
         "benchmark": "UGTPHON Korean test split",
-        "benchmark_type": "paired native IPA strict-vs-soft plus morphology diagnostic",
+        "benchmark_type": "native strict/soft IPA, counterfactual boundary-gated IPA, and morphology diagnostics",
         "dataset_rows": len(rows),
         "eligible_token_occurrences": len(occurrences),
         "unique_hangul_words": len(unique_words),
@@ -236,8 +543,30 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
             "changed_words_with_multi_morpheme_segmentation": len(split_changed),
             "changed_word_examples": changed_words[:200],
             "changed_words_also_split_by_analyzer": split_changed[:100],
+            "boundary_gated_by_analyzer": {
+                **boundary_gated_metrics,
+                "status": "counterfactual_research_only",
+                "unique_words_with_output_or_status_change_vs_strict": len(boundary_gated_changed_vs_strict),
+                "unique_words_with_output_or_status_change_vs_soft": len(boundary_gated_changed_vs_soft),
+                "changed_examples_vs_strict": boundary_gated_changed_examples,
+                "selected_native_soft_rule_licenses": selected_licenses,
+                "suppressed_native_soft_rule_licenses": suppressed_licenses,
+                "paired_comparison": triad_comparison,
+                "runtime_errors_unique_words": len(boundary_gated_errors),
+                "runtime_error_examples": dict(list(boundary_gated_errors.items())[:20]),
+                "interpretation": (
+                    "counterfactual: only native soft-rule licenses whose exact orthographic boundary "
+                    "was observed by this analyzer were retained; boundary evidence is not sufficient "
+                    "to license phonology, so this must not be used in production"
+                ),
+            },
+            "morphology_rule_boundary_alignment": {
+                key: value for key, value in rule_boundary_alignment.items()
+                if key != "events_detail"
+            },
         },
         "morphology": {
+            "native_soft_rule_boundary_alignment": rule_boundary_alignment,
             "analyzer": analyzer_name,
             "status": "completed_diagnostic" if analyzer is not None and not morphology_errors else (
                 "blocked_dependency" if analyzer is None else "partial_errors"
@@ -267,16 +596,18 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
             "errors": morphology_errors[:100],
             "results": morphology_rows,
             "interpretation": (
-                "segmentation and tags only; no gold morphology labels, no accuracy score, "
-                "and no analyzer output was injected into the IPA engine"
+                "segmentation and tags only; no gold morphology labels or morphology accuracy score; "
+                "the default native strict/soft paths are unchanged, and a separate boundary-gated "
+                "counterfactual is scored only as a research ablation"
             ),
         },
         "limitations": [
             "UGTPHON is noisy user-generated text, not normative NIKL gold.",
             "The reference IPA convention may differ from this project's broad IPA conventions.",
             "Strict/soft compares an existing native heuristic mode; soft is not the Kiwi or MeCab output.",
-            "Kiwi/MeCab are measured on the exact same unique Hangul word inventory, but their segmentation is not fed into phonology.",
-            "A causal morphology-to-IPA comparison requires an independently adjudicated morphology gold set and a reviewed rule-licensing adapter.",
+            "Kiwi/MeCab are measured on the exact same unique Hangul word inventory; the default native strict/soft paths do not consume their output.",
+            "The boundary-gated path is an intentionally naive counterfactual ablation, not a linguistically valid rule-licensing adapter.",
+            "A production morphology-to-IPA integration requires an independently adjudicated morphology gold set and a reviewed rule-licensing adapter.",
             "This report evaluates Korean IPA only, not Ukrainian target adaptation.",
         ],
     }

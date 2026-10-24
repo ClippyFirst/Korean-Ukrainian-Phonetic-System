@@ -73,6 +73,22 @@ def test_rejects_empty_or_non_hangul_input(text):
         KiwiMorphologyAnalyzer(FakeKiwi()).analyze(text)
 
 
+def test_kiwi_zero_width_morpheme_is_explicitly_preserved():
+    engine = SimpleNamespace(tokenize=lambda text: [
+        SimpleNamespace(form="가", tag="NNG", start=0, len=1),
+        SimpleNamespace(form="이", tag="VCP", start=1, len=0),
+        SimpleNamespace(form="다", tag="EF", start=1, len=1),
+    ])
+    result = KiwiMorphologyAnalyzer(engine).analyze("가다")
+    zero_width = result.morphemes[1]
+    assert (zero_width.start, zero_width.end) == (1, 1)
+    assert zero_width.form == "이"
+    assert zero_width.surface == ""
+    assert zero_width.span_status == "zero_width_morph"
+    assert result.morphemes[2].surface == "다"
+    assert result.morphemes[2].span_status == "surface_aligned"
+
+
 def test_bad_spans_fail_closed():
     broken = SimpleNamespace(tokenize=lambda text: [
         SimpleNamespace(form="있", tag="VV", start=9, len=1)

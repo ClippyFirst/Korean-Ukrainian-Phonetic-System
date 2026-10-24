@@ -31,8 +31,9 @@ def test_metrics_keep_coverage_separate_from_accuracy():
 def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(monkeypatch):
     import korean_ukrainian.pipeline as pipeline
     import korean_ukrainian.research_morphology as morphology
+    import korean_ukrainian.soft_morphology as soft_morphology
 
-    def fake_phoneticize(word, morphology_mode="strict"):
+    def fake_phoneticize(word, morphology_mode="strict", rule_licenses=None):
         if word == "한국어":
             ipa = "han.gu.ɡʌ" if morphology_mode == "strict" else "han.ɡu.ʌ"
         else:
@@ -42,7 +43,18 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
             "pronunciation_status": "provisional",
             "ipa_status": "provisional",
             "unresolved_contexts": [],
-            "rules": ([{"rule_id": "R002", "confidence": "low", "status": "heuristic"}]
+            "rules": ([{"rule_id": "R002", "name": "liaison", "confidence": "low", "status": "heuristic",
+                       "license_context": "R002:formal:한국어:국>어",
+                       "before": [
+                           {"text": "한", "onset": "ㅎ", "nucleus": "ㅏ", "coda": "ㄴ"},
+                           {"text": "국", "onset": "ㄱ", "nucleus": "ㅜ", "coda": "ㄱ"},
+                           {"text": "어", "onset": "ㅇ", "nucleus": "ㅓ", "coda": ""},
+                       ],
+                       "after": [
+                           {"text": "한", "onset": "ㅎ", "nucleus": "ㅏ", "coda": "ㄴ"},
+                           {"text": "국", "onset": "ㄱ", "nucleus": "ㅜ", "coda": ""},
+                           {"text": "어", "onset": "ㄱ", "nucleus": "ㅓ", "coda": ""},
+                       ]}]
                       if morphology_mode == "soft" and word == "한국어" else []),
         }
 
@@ -68,6 +80,10 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
 
     monkeypatch.setattr(pipeline, "phoneticize_korean", fake_phoneticize)
     monkeypatch.setattr(morphology, "analyzer_by_name", lambda name: FakeAnalyzer())
+    monkeypatch.setattr(
+        soft_morphology, "soft_formal_licenses",
+        lambda items, full_form=None: ["R002:formal:한국어:국>어"],
+    )
     rows = [{
         "id": "r1", "lang": "ko", "split": "test",
         "tokens": [
@@ -83,4 +99,21 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
     assert report["morphology"]["unique_words_analyzed"] == 2
     assert report["morphology"]["multi_morpheme_words"] == 1
     assert "no gold morphology labels" in report["morphology"]["interpretation"]
-    assert "no analyzer output was injected into the IPA engine" in report["morphology"]["interpretation"]
+    assert "default native strict/soft paths are unchanged" in report["morphology"]["interpretation"]
+    gated = report["native_ipa"]["boundary_gated_by_analyzer"]
+    assert gated["status"] == "counterfactual_research_only"
+    assert gated["exact_match_rate"] == 1.0
+    assert gated["selected_native_soft_rule_licenses"] == 0
+    assert gated["suppressed_native_soft_rule_licenses"] == 1
+    alignment = report["morphology"]["native_soft_rule_boundary_alignment"]
+    assert alignment["events"] == 1
+    assert alignment["boundary_observed"] == 0
+    assert alignment["boundary_not_observed"] == 1
+    assert report["morphology"]["results"][1]["native_soft_rule_boundary_events"][0]["pair"] == "국>어"
+    paired = gated["paired_comparison"]
+    assert paired["scored_occurrences_by_all_three"] == 2
+    assert paired["boundary_gated_vs_strict"]["exact_rate_delta_candidate_minus_baseline"] == 0.0
+    assert paired["boundary_gated_vs_soft"]["exact_rate_delta_candidate_minus_baseline"] == 0.5
+    assert paired["boundary_gated_vs_soft"]["occurrence_outcomes"]["candidate_exact_wins"] == 1
+    assert paired["boundary_gated_vs_soft"]["occurrence_outcomes"]["candidate_exact_losses"] == 0
+    assert "identical denominator" in paired["boundary_gated_vs_strict"]["cer_contract"]
