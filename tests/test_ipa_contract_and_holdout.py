@@ -27,7 +27,7 @@ def test_holdout_validation_uses_hash_bound_external_overlap_record():
     result = validate(ROOT, path, None)
     assert result["case_count"] == 24
     assert result["ipa_gold_count"] == 0
-    assert result["local_runtime_or_fixture_overlap_count"] == 0
+    assert result["local_runtime_or_fixture_overlap_count"] == 0, json.dumps(result["local_runtime_or_fixture_overlaps"], ensure_ascii=False)
     assert result["excluded_source_only_fixtures"] == ["tests/fixtures/nikl-article-review-1-30.json"]
     assert result["external_benchmark_overlap_check"] == "RECORDED_PINNED_ARTIFACT_CHECK"
     assert result["external_benchmark_overlap_count"] == 0
