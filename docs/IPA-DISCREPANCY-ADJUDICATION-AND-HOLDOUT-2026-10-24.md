@@ -1,3 +1,13 @@
+## Frozen holdout reviewer workflow — continuation update (2026-10-24)
+
+- The 24-item manifest remains frozen, source-backed, and unannotated: 24 unique case IDs, 0 IPA gold labels, no stored engine outputs, and tuning prohibited on every item.
+- Added `scripts/build-korean-holdout-ipa-queue.mjs` plus `npm run ipa:holdout-queue` to project the manifest into the existing schema-2 reviewer queue. The generator fails closed on manifest/count drift, duplicate IDs, non-frozen status, non-official NIKL URLs, missing Hangul comparators, stored engine outputs, or premature IPA labels.
+- The existing `scripts/build-ipa-review-packet.mjs` and `scripts/validate-ipa-review-submission.mjs` accept an explicit `--queue` path. Two reviewers can therefore use separate blinded packets and validate against the exact same generated queue hash without duplicating a new packet/validator implementation.
+- Added `tests/korean-holdout-ipa-queue.test.mjs` covering the 24-case projection, variant preservation, no-gold/no-engine-output guarantees, fail-closed conditions, and the packet/validator handoff; usage is documented in `KOREAN-IPA-HOLDOUT-REVIEW-PROCEDURE-2026-10-24.md`.
+- **Verification boundary:** manifest invariants were independently rechecked from the repository file (24/24 unique IDs; all 24 source URLs on `www.korean.go.kr`; no invalid gold/output state). The full JavaScript/Python CI matrix has not yet reported a run for the latest packet-integration test commit. Do not mark this implementation `DONE_VERIFIED` until exact-head CI completes; no local test pass is claimed.
+- **Scientific boundary unchanged:** external benchmark exact-token overlap is 0/24 in the pinned report, but local leakage CI is a separate gate; independent IPA annotation is still 0/24, and Ukrainian-target gold is absent. These cases must not be used to tune engine rules or normalization.
+
+---
 # IPA contract, discrepancy adjudication and independent holdout — 2026-10-24
 
 ## Task ledger
