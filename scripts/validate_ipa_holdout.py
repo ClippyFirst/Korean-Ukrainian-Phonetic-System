@@ -78,6 +78,40 @@ def collect_local_forms(root: Path) -> dict[str, set[str]]:
     return inputs
 
 
+
+def suggest_source_candidates(root: Path, local_forms: dict[str, set[str]], excluded_inputs: set[str] | None = None) -> list[dict[str, str]]:
+    """Find unused, explicitly bracketed Hangul surface examples in saved NIKL HTML."""
+    source_path = root / "한국어 어문 규범.htm"
+    if not source_path.exists():
+        return []
+    html = source_path.read_text(encoding="utf-8")
+    used = set().union(*local_forms.values()) if local_forms else set()
+    used.update(excluded_inputs or set())
+    headings: list[tuple[int, str]] = []
+    for heading in re.finditer(r"<h6[^>]*>(.*?)</h6>", html, re.DOTALL):
+        heading_text = re.sub(r"<[^>]+>", "", heading.group(1))
+        article = re.search(r"제[^0-9]{0,4}([0-9]{1,2})항", heading_text)
+        if article:
+            headings.append((heading.end(), f"§{article.group(1)}"))
+    candidates: list[dict[str, str]] = []
+    seen: set[str] = set()
+    pattern = re.compile(r"<li>[ \t\r\n]*([가-힣]{2,8})\[([가-힣ː]+)\][ \t\r\n]*</li>")
+    for match in pattern.finditer(html):
+        word, reading = match.group(1), match.group(2)
+        if word in used or word in seen:
+            continue
+        prior_headings = [rule for end, rule in headings if end <= match.start()]
+        if not prior_headings:
+            continue
+        seen.add(word)
+        candidates.append({
+            "input": word,
+            "surfaceReading": reading,
+            "sourceRule": prior_headings[-1],
+            "sourceExcerpt": f"{word}[{reading}]",
+        })
+    return candidates
+
 def benchmark_tokens(path: Path) -> set[str]:
     data = json.loads(path.read_text(encoding="utf-8"))
     tokens: set[str] = set()
@@ -149,6 +183,7 @@ def validate(root: Path, manifest_path: Path, benchmark_path: Path | None) -> di
         "manifest": str(manifest_path),
         "case_count": len(cases),
         "source_backed_surface_forms": sum(case["surfaceEvidenceStatus"] == "SOURCE_ATTESTED" for case in cases),
+        "candidate_suggestions": suggest_source_candidates(root, local, {case["input"] for case in cases})[:80],
         "ipa_gold_count": sum(case["ipaGold"] is not None for case in cases),
         "local_runtime_or_fixture_overlap_count": len(local_overlaps),
         "local_runtime_or_fixture_overlaps": local_overlaps,
