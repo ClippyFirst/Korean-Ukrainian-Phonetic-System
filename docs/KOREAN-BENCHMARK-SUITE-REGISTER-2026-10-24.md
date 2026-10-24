@@ -134,3 +134,6 @@ Paired g2pk-minus-native exact delta is +0.1506 pp (95% CI +0.0351 to +0.3243) o
 - **Statistical caution:** existing row-cluster paired interval (+0.0351 to +0.3243 pp) excludes zero, but lexical-type-cluster sensitivity interval is 0.00 to +0.4726 pp and includes zero. Because all four wins are one repeated type, the data do not support a robust broad g2pk advantage.
 - **PARTIAL:** source, length, repetition and edit-distance strata are now computed. Rule × morphology × interaction correlations remain TODO/evidence-limited until scored mismatches have independent gold rule/morpheme/variant labels.
 - **Acceptance:** report occurrence-weighted and unique-type metrics, row and lexical-type dependence sensitivity, and source/rule strata separately; do not tune the 14-case queue and call it a holdout.
+
+
+- **DONE_VERIFIED (descriptive symbol profile):** the reproducible alignment report identifies frequent reference/native differences `ɭ→l` (525), `ʰ→s` (194), `ɦ→h` (165), `ɲ→n` (73), `ç→h` (40). This strengthens the hypothesis that broad-vs-narrow IPA conventions explain a substantial portion of exact-string failures. Alignment counts are not phonological gold labels; independent review remains required.
