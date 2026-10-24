@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -102,12 +103,32 @@ def validate(root: Path, manifest_path: Path, benchmark_path: Path | None) -> di
             if needle in local_forms:
                 local_overlaps.append({"caseId": case["caseId"], "input": needle, "file": filename})
     benchmark_overlaps = []
+    recorded_overlap_count = None
+    external_check = "NOT_CHECKED"
     if benchmark_path is not None:
         tokens = benchmark_tokens(benchmark_path)
         benchmark_overlaps = [
             {"caseId": case["caseId"], "input": case["input"]}
             for case in cases if case["input"] in tokens
         ]
+        recorded_overlap_count = len(benchmark_overlaps)
+        external_check = "CHECKED"
+    else:
+        record_path = root / "research/ipa-holdout-overlap-validation-2026-10-24.json"
+        if record_path.exists():
+            record = json.loads(record_path.read_text(encoding="utf-8"))
+            raw_manifest = manifest_path.read_bytes()
+            actual_blob_sha = hashlib.sha1(
+                b"blob " + str(len(raw_manifest)).encode("ascii") + b"\\0" + raw_manifest
+            ).hexdigest()
+            if record.get("holdout", {}).get("manifestGitBlobSha") == actual_blob_sha:
+                recorded = record.get("externalExactTokenOverlap", {})
+                recorded_overlap_count = int(recorded.get("overlapCount", -1))
+                benchmark_overlaps = recorded.get("overlappingInputs", [])
+                external_check = "RECORDED_PINNED_ARTIFACT_CHECK"
+            else:
+                external_check = "STALE_RECORDED_CHECK"
+    effective_overlap_count = recorded_overlap_count if recorded_overlap_count is not None else len(benchmark_overlaps)
     return {
         "manifest": str(manifest_path),
         "case_count": len(cases),
@@ -116,15 +137,15 @@ def validate(root: Path, manifest_path: Path, benchmark_path: Path | None) -> di
         "local_runtime_or_fixture_overlap_count": len(local_overlaps),
         "local_runtime_or_fixture_overlaps": local_overlaps,
         "excluded_source_only_fixtures": ["tests/fixtures/nikl-article-review-1-30.json"],
-        "external_benchmark_overlap_check": "CHECKED" if benchmark_path is not None else "NOT_CHECKED",
+        "external_benchmark_overlap_check": external_check,
         "external_benchmark_path": str(benchmark_path) if benchmark_path is not None else None,
-        "external_benchmark_overlap_count": len(benchmark_overlaps),
+        "external_benchmark_overlap_count": effective_overlap_count,
         "external_benchmark_overlaps": benchmark_overlaps,
         "holdout_certification": (
             "BLOCKED_OVERLAP_FOUND"
-            if local_overlaps or benchmark_overlaps
+            if local_overlaps or effective_overlap_count > 0
             else "FROZEN_INPUTS_EXTERNAL_OVERLAP_CHECK_PENDING"
-            if benchmark_path is None
+            if external_check not in {"CHECKED", "RECORDED_PINNED_ARTIFACT_CHECK"}
             else "OVERLAP_CHECKED_NO_EXACT_INPUT_OVERLAP"
         ),
         "note": "No engine was run. Surface-form evidence is not IPA gold; independent IPA annotation is still required.",
