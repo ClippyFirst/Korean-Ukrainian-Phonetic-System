@@ -33,8 +33,12 @@ def _native_record(form: str, fixture_row: dict[str, str]) -> dict[str, Any]:
         "ipa": ipa.get("ipa"),
         "target_status": result.get("target_status"),
         "target_unavailable_reason": result.get("target_unavailable_reason"),
+        "target_unavailable_segments": result.get("target_unavailable_segments", []),
+        "target_unmapped_fragment": target.get("unmapped_fragment"),
+        "target_unmapped_offset": target.get("unmapped_offset"),
         "ukrainian_orthography": result.get("ukrainian_orthography"),
         "target_mapping_ids": [item.get("mapping_id") for item in trace if item.get("mapping_id")],
+        "target_mapping_trace": trace,
         "target_inventory_status": result.get("target_inventory_status"),
         "target_inventory_diagnostic_reason": inventory.get("reason"),
         "lexical_target_reference": result.get("lexical_target_reference"),
@@ -73,9 +77,26 @@ def _g2pk_record(form: str, fixture_row: dict[str, str]) -> dict[str, Any]:
         "ukrainian_orthography": result.get("ukrainian_orthography"),
         "unavailable_reasons": result.get("unavailable_reasons", []),
         "target_mapping_ids": mapping_ids,
+        "target_mapping_trace": [
+            {
+                "surface_hangul": word.get("surface_hangul"),
+                "ipa": word.get("ipa"),
+                "status": word.get("status"),
+                "reason": word.get("reason"),
+                "unmapped_fragment": word.get("unmapped_fragment"),
+                "segments": word.get("mapping_trace", []),
+            }
+            for word in target
+        ],
         "target_inventory_status": result.get("target_inventory_status"),
-        "target_inventory_diagnostic_reasons": [
-            item.get("summary", {}).get("reason") for item in inventory
+        "target_inventory_diagnostics": [
+            {
+                "surface_hangul": item.get("surface_hangul"),
+                "reason": item.get("summary", {}).get("reason"),
+                "segment_reasons": item.get("summary", {}).get("segment_reasons", []),
+                "adapter_status": item.get("summary", {}).get("adapter_status"),
+            }
+            for item in inventory
         ],
         "ipa_gold_status": fixture_row["ipa_gold_status"],
         "ukrainian_gold_status": fixture_row["ukrainian_gold_status"],
