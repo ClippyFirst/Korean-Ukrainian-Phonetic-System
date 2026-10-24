@@ -149,7 +149,7 @@ This is diagnostic, not normative ranking: UGTPHON is noisy user-generated text,
 
 ## Known limitations
 
-- Real-engine smoke has passed for both optional analyzers on the 16-input review corpus; full-corpus same-inventory benchmark evidence is pending the new CI workflow.
+- Real-engine smoke and the full same-inventory benchmark have passed for both analyzers on the pinned UGTPHON test split; exact-head reports are linked in the results section. This still does not establish morphology accuracy because no adjudicated gold segmentation exists.
 - MeCab-Ko's Python bindings are OS-sensitive; initialization failures are surfaced with the underlying API errors.
 - Kiwi/MeCab segmentation conventions differ; raw tag strings are retained instead of being collapsed into a possibly incorrect universal POS inventory.
 - Lemma is nullable and is not guessed from surface form.
