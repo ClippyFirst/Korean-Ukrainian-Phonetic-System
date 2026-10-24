@@ -44,7 +44,7 @@ def collect_local_forms(root: Path) -> dict[str, set[str]]:
     source citation is allowed for a source-backed holdout and is excluded.
     """
     inputs: dict[str, set[str]] = {}
-    for relative in ("data/korean", "tests/fixtures"):
+    for relative in ("data/korean", "tests"):
         folder = root / relative
         if not folder.exists():
             continue
