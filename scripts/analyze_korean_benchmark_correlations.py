@@ -231,7 +231,7 @@ def _alignment_operations(reference: str, prediction: str) -> list[tuple[str, st
 
 
 def _symbol_error_profile(
-    rows: list[dict[str, Any]], engine: str, limit: int = 20
+    rows: list[dict[str, Any]], engine: str, limit: int = 20, profile: str = LEGACY_PROFILE
 ) -> dict[str, Any]:
     substitutions: collections.Counter[tuple[str, str]] = collections.Counter()
     reference_only: collections.Counter[str] = collections.Counter()
@@ -241,8 +241,8 @@ def _symbol_error_profile(
     for row in rows:
         if row[NATIVE]["status"] != "scored":
             continue
-        reference = normalize_ipa(str(row["gold"]))
-        prediction = normalize_ipa(str(row[engine]["ipa"]))
+        reference = normalize_ipa_profile(str(row["gold"]), profile)
+        prediction = normalize_ipa_profile(str(row[engine]["ipa"]), profile)
         if reference == prediction:
             continue
         nonexact += 1
@@ -421,8 +421,15 @@ def summarize_report(report: dict[str, Any], type_bootstrap_replicates: int = 10
         },
         "edit_distance": edit_histograms,
         "symbol_error_profile": {
-            NATIVE: _symbol_error_profile(paired, NATIVE),
-            G2PK: _symbol_error_profile(paired, G2PK),
+            NATIVE: _symbol_error_profile(paired, NATIVE, profile=LEGACY_PROFILE),
+            G2PK: _symbol_error_profile(paired, G2PK, profile=LEGACY_PROFILE),
+        },
+        "symbol_error_profile_by_profile": {
+            profile: {
+                NATIVE: _symbol_error_profile(paired, NATIVE, profile=profile),
+                G2PK: _symbol_error_profile(paired, G2PK, profile=profile),
+            }
+            for profile in (LEGACY_PROFILE, BROAD_PROFILE)
         },
         "strata": strata,
         "lexical_type_macro": {
