@@ -136,3 +136,28 @@ This comparison is not fully independent end-to-end: g2pk emits surface Hangul a
 | Explain all remaining native-vs-g2pk differences | PARTIAL | Four reference-length mismatches remain; 48 abstentions still require adjudication. |
 | Normative acceptance benchmark | TODO | Independently reviewed IPA gold with NIKL article/environment provenance. |
 | Ukrainian output accuracy | BLOCKED | No independently adjudicated Korean-to-Ukrainian gold corpus in the current benchmark. |
+
+
+## 14-form R002/R003 source-adjudication continuation (2026-10-24)
+
+A bounded triage register now captures 14 distinct native-abstention forms from the six-engine diagnostic artifact: seven tagged R002 and seven tagged R003. See [the case register](../research/r002-r003-source-adjudication-2026-10-24.json) and [adjudication/holdout protocol](R002-R003-SOURCE-ADJUDICATION-AND-HOLDOUT-2026-10-24.md).
+
+**Status: PARTIAL, not linguistically completed.** The new records preserve the benchmark occurrence/row identifiers, unresolved spans, corpus IPA reference, and g2pk output only to make the disagreement traceable. The corpus is noisy user-generated data and the shared renderer means engine agreement is not independent phonetic evidence. Every case remains `PENDING_EXACT_FORM_SOURCE`; no final broad IPA or Ukrainian target is populated.
+
+The general NIKL Standard Pronunciation Rules URL is only the rule-family entry point. Exact-form source verification must record the precise rule passage, official Q&A or dictionary entry, grammatical segmentation, and whether the form is directly attested or merely derived. Forms without enough spacing/context remain unresolved rather than being assigned a guessed morphology.
+
+- **DONE_VERIFIED (bookkeeping):** 14 unique forms registered; queue-integrity test added.
+- **TODO:** exact official source and morphology review for each case.
+- **BLOCKED pending qualified reviewers:** independent dual broad-IPA transcription and documented reconciliation.
+- **TODO:** freeze a separate NIKL holdout only after adjudication, then measure the fixed engine without tuning on that split.
+- **BLOCKED:** Ukrainian target accuracy still requires a separate independently reviewed IPA-to-Ukrainian gold set.
+
+
+### Official web-source findings — 2026-10-24
+
+The follow-up source search found exact official NIKL surface-pronunciation evidence for three queued forms:
+- `멋있어`: NIKL Online Q&A explicitly accepts both [머디써] and [머시써] (https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166).
+- `싫어서`: NIKL Online Q&A explains ㅎ deletion from ㅀ before a vowel-initial ending and liaison of ㄹ, yielding [시러서] (https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313981).
+- `수많은`: NIKL Korean Basic Dictionary directly lists `수많은[수ː마는]` (https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144).
+
+These are official Hangul pronunciation notations, not IPA. Their queue status is `SOURCE_FOUND_PENDING_IPA`; no `finalBroadIpa` was populated. Eleven cases still need exact-form source evidence. For `멋있어`, the officially attested variant pair also means evaluation must specify whether it accepts alternatives or tests one chosen target convention. The full source excerpts and access date are in the case-level JSON register.

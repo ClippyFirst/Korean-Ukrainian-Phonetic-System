@@ -811,3 +811,38 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **Scope guard:** research-only Python adapter. It emits token forms, raw tags, source offsets, nullable lemma, and selected MeCab binding in diagnostic output; it does not emit pronunciation/IPA/Ukrainian output or automatically change phonology. The browser practical mode was not modified by the PR; post-merge live practical-mode regression passed.
 - **Remaining blockers:** independent IPA adjudication; Ukrainian target-layer review; NIKL source reuse/terms and human clause-boundary review; specialist review of any future morphology-to-rule licensing; accuracy benchmarking against an adjudicated morphology corpus.
 - **Release classification:** research preview / partial prototype, not release-ready. Successful analyzer installation and tokenization do not prove phonological correctness or Ukrainian transcription accuracy.
+
+
+## R002/R003 source adjudication and holdout — 2026-10-24 continuation
+
+- **DONE_VERIFIED (triage bookkeeping only):** registered 14 distinct R002/R003 native-abstention forms (7 per rule) from diagnostic artifact [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692) in `research/r002-r003-source-adjudication-2026-10-24.json`.
+- **DONE_VERIFIED (guard only):** added `tests/r002-r003-source-adjudication-queue.test.mjs` to require unique forms, retained benchmark provenance, exact-form source status, and null adjudicated IPA fields until actual review.
+- **PARTIAL:** `docs/R002-R003-SOURCE-ADJUDICATION-AND-HOLDOUT-2026-10-24.md` specifies exact-form source checks, morphology review, blinded dual IPA adjudication, frozen holdout, and separate Ukrainian target review. The register is not gold data and does not change runtime rules.
+- **TODO:** verify an exact official NIKL source for each of the 14 forms. The common rule URL alone is insufficient evidence for a particular word or grammatical environment.
+- **BLOCKED pending specialist review:** two independent qualified broad-IPA reviewers and reconciliation records. No IPA or Ukrainian gold has been invented.
+- **TODO:** freeze the NIKL holdout only after exact-form source review and independent IPA adjudication; then run before/after measurement without tuning on the holdout.
+- **Verification status:** exact-head CI for this branch has not yet been observed. Do not reuse prior mainline CI as evidence for this branch. The new test is expected to run through the existing `npm test` workflow.
+- **Release status unchanged:** research-ready for diagnostic comparison; partial prototype, not release-ready. The full IPA-to-Ukrainian accuracy gate remains blocked by the absence of independently adjudicated Ukrainian target gold.
+
+
+### Internet source search update — 2026-10-24
+
+- **DONE_VERIFIED (official source discovery only):** exact-form NIKL surface evidence found for `멋있어` (two accepted Hangul pronunciations), `싫어서` (ㅎ deletion + ㄹ liaison), and `수많은` (dictionary-listed `수ː마는`). Case-level excerpts, source URLs, access date, and notes are in `research/r002-r003-source-adjudication-2026-10-24.json`.
+- **PARTIAL:** three of 14 cases now have official source evidence, but remain `SOURCE_FOUND_PENDING_IPA`. Official bracketed Hangul notation is not IPA and is not copied into `finalBroadIpa`.
+- **TODO:** find exact-form source evidence for the other 11 forms; complete two independent broad-IPA reviews for all accepted variants; freeze the holdout only after adjudication.
+- **Important design note:** `멋있어` has two official pronunciation variants, [머디써] and [머시써]. A benchmark with one string as sole gold could mis-score a valid variant unless its acceptance policy is explicit.
+- **CI:** latest source/test changes are on the existing research branch and require new exact-head CI; earlier green runs predate these latest commits and do not verify the updated queue test.
+
+
+- **Related-source search expanded:** component/rule evidence is also recorded for `되었어` (dictionary `되다` lists `되어/돼` forms), `붙어야` (dictionary `붙어[부터]`), `쌓아서` (dictionary `쌓아[싸아]` plus Article 12 ㅎ-deletion explanation), and `좋은데` (dictionary `좋은[조ː은]`). These do not count as exact-form adjudication; those cases remain pending.
+- **Current evidence count:** 3 exact-form official source records, 4 related component/rule evidence records, and 7 forms without source evidence recorded in this search pass. All 14 still need broad-IPA adjudication; none has final IPA gold.
+
+
+### Verification result after official-source search — 2026-10-24
+
+The latest source/test state at commit `0605398d5b9554bf4ac694b673f2728da17c0f08` passed all three repository CI workflows:
+- **PASS — tests:** [run 40095464926](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464926); npm tests/build and Python 3.11, 3.12, 3.13.
+- **PASS — system verification:** [run 40095464989](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464989).
+- **PASS — master table and research corpus artifacts:** [run 40095464893](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464893).
+
+Earlier attempts on intermediate commits failed only in the new queue test as its assertions were tightened to distinguish exact-form source evidence from related rule/component evidence. The assertions were corrected; the listed passing runs include the final correction to the related-source scope check. The linguistic status remains PARTIAL: three exact-form official surface sources, four related-source records, seven cases without source evidence recorded in this search pass, and zero independently adjudicated IPA gold forms.
