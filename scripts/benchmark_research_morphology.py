@@ -50,6 +50,7 @@ def main() -> int:
             elapsed = time.perf_counter() - started
             stream.write(json.dumps({
                 "analyzer": name,
+                "binding": getattr(analyzer, "binding", "kiwipiepy"),
                 "status": "completed_diagnostic" if error is None else "failed",
                 "inputs": len(lines), "elapsed_seconds": round(elapsed, 6),
                 "tokens": sum(len(row["morphemes"]) for row in rows),
