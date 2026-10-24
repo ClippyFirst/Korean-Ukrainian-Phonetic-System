@@ -14,7 +14,10 @@ def _valid_manifest():
         {
             "articleNumber": number,
             "articleId": article_ids[number - 1],
-            "title": f"제{number}항 표준 발음법 fixture",
+            "title": f"제{number}항",
+            "normativeTextSha256": "c" * 64,
+            "normativeCharCount": 5,
+            "sourceUnitScope": "article-block-including-official-commentary-and-examples",
             "anchorId": None,
             "sourceUrl": redirected_url,
             "textSha256": "a" * 64,
@@ -24,7 +27,7 @@ def _valid_manifest():
         for number in range(1, 31)
     ]
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "collector": {"name": "nikl-norm-crawler", "version": "0.1.0"},
         "standard": {
             "id": "NIKL-SP",
