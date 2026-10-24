@@ -201,3 +201,6 @@ Key measured findings on the 2,655 occurrences scored by both native and g2pk:
 - Paired source slices: MultiLexNorm++ 55.36% native/g2pk exact (784 cases); DC Inside 52.27% native and 52.49% g2pk (1,871 cases). Source, length and repetition are confounded, so this is descriptive only.
 
 The script and test are in `scripts/analyze_korean_benchmark_correlations.py` and `tests/test_benchmark_score_causality.py`. These cross-tabs still cannot establish per-rule causality because gold rule/morphology labels are not available for every scored mismatch.
+
+
+A deterministic minimum-edit symbol profile is now included in the reproducible correlation script. On the native-vs-reference alignment, frequent substitutions include `ɭ→l` (525), `ʰ→s` (194), `ɦ→h` (165), `ɲ→n` (73), and `ç→h` (40). Reference symbols most often involved in edit operations include `ʰ` (633), `ɭ` (539), `ɕ` (238), and `ɦ` (165). This supports a broad-vs-narrow IPA convention mismatch hypothesis, but alignment operations are not independently adjudicated phonological error labels. See [score-causality report §7.1E](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md#e-the-most-common-character-differences-point-to-a-broad-vs-narrow-ipa-convention-mismatch).
