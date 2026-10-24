@@ -109,7 +109,7 @@ export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
   };
 }
 
-export function ipaTargetForSource(source,ipa){
+export function ipaTargetForSource(source,ipa,options={}){
   const sourceText=String(source??'');
   const sourceIpa=String(ipa??'').normalize('NFC');
   const ipaUnits=sourceIpa.split(/[.\s]+/u).filter(Boolean);

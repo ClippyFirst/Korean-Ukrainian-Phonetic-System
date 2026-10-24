@@ -108,7 +108,9 @@ def render_ipa_sequence_to_ukrainian(ipa: str, *, allow_provisional: bool = Fals
     but are never consulted to choose a Ukrainian grapheme. Dots preserve
     syllable-boundary metadata and are not emitted in practical Ukrainian.
     Source vowel length remains in the returned IPA and trace metadata; it is
-    deliberately not encoded in Ukrainian practical orthography.
+    deliberately not encoded in Ukrainian practical orthography. Provisional
+    correspondences are withheld from final output unless the caller explicitly
+    opts into research-candidate mode with allow_provisional=True.
     """
     if not isinstance(ipa, str):
         raise TypeError("IPA input must be a string")
