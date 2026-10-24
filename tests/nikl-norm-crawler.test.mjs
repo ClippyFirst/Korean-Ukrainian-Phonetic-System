@@ -270,4 +270,8 @@ test("repository-held NIKL HTML matches its complete metadata-only inventory man
   assert.equal(manifest.source.robots.decision, "not_checked_local_import");
   assert.equal(manifest.source.termsReview, "not_assessed");
   assert.ok(manifest.articles.every(article => !("sourceText" in article)));
+  assert.ok(manifest.articles.every(article => article.title === "제" + article.articleNumber + "항"));
+  assert.ok(manifest.articles.every(article => article.normativeCharCount > 0));
+  assert.ok(manifest.articles.every(article => /^[a-f0-9]{64}$/.test(article.normativeTextSha256)));
+  assert.ok(manifest.articles.every(article => article.sourceUnitScope === "article-block-including-official-commentary-and-examples"));
 });
