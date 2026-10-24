@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
-const html = readFileSync(new URL('../../한국어 어문 규범.htm', import.meta.url), 'utf8');
-const fixture = JSON.parse(readFileSync(new URL('./nikl-article-review-1-30.json', import.meta.url), 'utf8'));
+const html = readFileSync(new URL('../한국어 어문 규범.htm', import.meta.url), 'utf8');
+const fixture = JSON.parse(readFileSync(new URL('./fixtures/nikl-article-review-1-30.json', import.meta.url), 'utf8'));
 
 function textOnly(value) {
   return value
@@ -30,7 +30,9 @@ test('official saved HTML has a complete, ordered review record for Standard Pro
 });
 
 test('normative article text is captured separately from the explanatory 해설 paragraph', () => {
-  const section = html.slice(html.indexOf('id="a346"'));
+  const sectionStart = html.indexOf('id="a346"');
+  const sectionEnd = html.indexOf('<h3', sectionStart + 10);
+  const section = html.slice(sectionStart, sectionEnd < 0 ? html.length : sectionEnd);
   const headings = [...section.matchAll(/<h6\b[^>]*>([\s\S]*?)<\/h6>/giu)];
   const actual = headings.map((match, index) => {
     const headingText = textOnly(match[1]);
