@@ -135,7 +135,7 @@ def test_broad_profile_can_separate_symbol_convention_from_raw_exact_match():
 
 
 def test_symbol_profile_uses_selected_ipa_comparison_profile():
-    row = _occurrence("dc_inside_11", "꽃", "ɭa", "scored", False, 1, False, 1)
+    row = _occurrence("dc_inside_11", "synthetic-token-11", "ɭa", "scored", False, 1, False, 1)
     row["native"]["ipa"] = "la"
     legacy = _symbol_error_profile([row], "native", profile=LEGACY_PROFILE)
     broad = _symbol_error_profile([row], "native", profile=BROAD_PROFILE)
