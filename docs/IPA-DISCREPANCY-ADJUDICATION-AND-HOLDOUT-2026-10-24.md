@@ -6,7 +6,7 @@
 |---|---|---|
 | Versioned broad-IPA contract | **DONE_VERIFIED for specification and executable normalizer** | `docs/IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md`; deterministic legacy and `clippyfirst-broad-v1` profiles are separately reported. The candidate profile is sensitivity-only pending independent review. |
 | Adjudicate observed engine/reference differences | **PARTIAL** | Measured symbol-level mismatch classes are classified as candidate convention differences, not automatically declared harmless. Three of the 14 R002/R003 cases have exact official Hangul surface evidence; four have related evidence; seven have no exact source recorded. **Independent IPA labels: 0/14.** |
-| Independent holdout | **PARTIAL: external exact-token disjointness verified; independent IPA labels remain blocked** | 24 source-backed NIKL Rule 5/9 forms are frozen in `data/korean/ipa_holdout_2026-10-24.json`, with no engine outputs and no IPA gold. Local runtime/fixture overlap is checked by the validator. Exact overlap with the licensed UGTPHON benchmark remains unchecked until the pinned artifact is supplied to the validator. |
+| Independent holdout | **PARTIAL: external exact-token disjointness verified; independent IPA labels remain blocked** | 24 source-backed NIKL Rules 6, 10–13, 19–20 and 29 forms are frozen in `data/korean/ipa_holdout_2026-10-24.json`, with no engine outputs and no IPA gold. Local runtime/fixture overlap is checked by the validator. Exact overlap with the licensed UGTPHON benchmark remains unchecked until the pinned artifact is supplied to the validator. |
 
 ## 1. Versioned contract and scoring profiles
 
