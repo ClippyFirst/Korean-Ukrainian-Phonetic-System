@@ -825,3 +825,13 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **BLOCKED_SPECIALIST_ADJUDICATION:** independent review of IPA convention and source-backed morphology is still required for the 14 R002/R003 cases and broader mismatches.
 - **BLOCKED:** Korean IPA → Ukrainian target accuracy still needs a separately adjudicated Ukrainian gold corpus.
 - **Release status:** research-ready for diagnostics, still a partial prototype and not release-ready.
+
+
+### Full-artifact benchmark correlation results — 2026-10-24
+
+- **DONE_VERIFIED:** downloaded artifact [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692) and computed reproducible source, Hangul-length, IPA-reference-length, test-repetition, edit-distance and lexical-type strata with `scripts/analyze_korean_benchmark_correlations.py`; synthetic contract tests are in `tests/test_benchmark_score_causality.py`.
+- **Measured paired outcomes:** of 2,655 common scored occurrences, g2pk exact wins 4, native wins 0, 2,651 tie. All four wins are the same form `없는` repeated four times, with a reference that omits the source-backed long vowel. Removing it only for sensitivity yields equal exact counts (1,412 each); native has 2,072 total edits vs g2pk 2,088 on the remaining cases.
+- **Dependence caution:** row-cluster CI for the exact delta excludes zero, but lexical-type-cluster sensitivity CI is 0.00 to +0.4726 pp and includes zero. The repeated lexical type explains the apparent exact-match lead; do not claim a general g2pk advantage from the row-only interval.
+- **Length correlation:** native exact match is 61.91% for 1–2 Hangul blocks, 53.18% for 3, and 41.43% for 4+; one-edit differences make up 56.88% of native non-exact outputs, and 83.99% are within two edits.
+- **PARTIAL:** descriptive correlations are now measured. Rule × morphology × interaction causality remains TODO until scored errors have independent source-backed labels; the 14 R002/R003 cases remain a selected adjudication queue, not gold.
+- **Verification status:** tests and system verification are being rerun on the latest documentation/script head; prior run 40102099298 / 40102099430 and master artifact run 40102099312 passed before this latest addition. Replace this line with the exact final run status after CI completes.
