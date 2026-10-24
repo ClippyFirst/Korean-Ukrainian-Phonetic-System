@@ -177,11 +177,16 @@ export function parseNiklStandardHtml(html, sourceUrl = DEFAULT_SOURCE_URL) {
     const end = Math.min(deduped[index + 1]?.node.start ?? sectionEnd, sectionEnd);
     const sourceText = stripHtml(html.slice(item.node.start, end));
     const anchorId = item.node.attrs.id || null;
-    const titleRemainder = item.heading.text.replace(/^제\s*\d+\s*항/u, "").trim();
+    const titleRemainder = item.heading.text.replace(/^제\\s*\\d+\\s*항/u, "").trim();
     return {
       articleNumber: item.heading.number,
       articleId: "NIKL-SP-" + String(item.heading.number).padStart(2, "0"),
-      title: item.heading.text,
+      // Keep the manifest metadata-only: the article label is not the clause text.
+      // A separate hash detects wording drift without retaining the clause itself.
+      title: "제" + item.heading.number + "항",
+      normativeTextSha256: sha256(titleRemainder.normalize("NFC")),
+      normativeCharCount: [...titleRemainder].length,
+      sourceUnitScope: "article-block-including-official-commentary-and-examples",
       anchorId,
       sourceUrl: anchorId ? sourceUrl.split("#")[0] + "#" + encodeURIComponent(anchorId) : sourceUrl.split("#")[0],
       sourceText,
@@ -308,13 +313,15 @@ export async function fetchOfficialSource(url = DEFAULT_SOURCE_URL, { fetchImpl 
 
 export function buildManifest(parsed, sourceMetadata, { includeText = false } = {}) {
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     collector: { name: "nikl-norm-crawler", version: "0.1.0" },
     standard: { id: "NIKL-SP", title: "국립국어원 표준 발음법", authority: "국립국어원", scope: "Articles 1–30 of 제2부 표준 발음법 only; adjacent parts are excluded.", canonicalUrl: "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" },
     source: sourceMetadata,
     inventory: { ...parsed.validation, articleIds: parsed.articles.map((article) => article.articleId) },
     articles: parsed.articles.map((article) => ({
       articleNumber: article.articleNumber, articleId: article.articleId, title: article.title,
+      normativeTextSha256: article.normativeTextSha256, normativeCharCount: article.normativeCharCount,
+      sourceUnitScope: article.sourceUnitScope,
       anchorId: article.anchorId, sourceUrl: article.sourceUrl, textSha256: article.textSha256,
       normalizedCharCount: article.normalizedCharCount, extractionStatus: article.extractionStatus,
       ...(includeText ? { sourceText: article.sourceText } : {}),
