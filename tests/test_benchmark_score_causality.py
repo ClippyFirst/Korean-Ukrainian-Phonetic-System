@@ -6,7 +6,10 @@ from pathlib import Path
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
-from analyze_korean_benchmark_correlations import summarize_report  # noqa: E402
+from analyze_korean_benchmark_correlations import (  # noqa: E402
+    _symbol_error_profile,
+    summarize_report,
+)
 
 
 def _occurrence(row_id, token, gold, native_status, native_exact, native_distance, g2pk_exact, g2pk_distance):
@@ -86,3 +89,12 @@ def test_summary_fails_closed_on_malformed_pairwise_rows():
         assert "lacks required fields" in str(exc)
     else:
         raise AssertionError("malformed occurrence rows must be rejected")
+
+
+def test_symbol_profile_detects_reference_only_narrow_mark():
+    row = _occurrence("dc_inside_9", "수", "sʰu", "scored", False, 1, False, 1)
+    row["native"]["ipa"] = "su"
+    profile = _symbol_error_profile([row], "native")
+    assert profile["nonexact_occurrences_aligned"] == 1
+    assert profile["top_reference_only_symbols"] == [{"symbol": "ʰ", "count": 1}]
+    assert profile["top_substitutions"] == []
