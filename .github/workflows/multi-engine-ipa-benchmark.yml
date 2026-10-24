@@ -7,6 +7,7 @@ on:
       - "scripts/benchmark_multi_engine_ko.py"
       - "scripts/benchmark_phonemize_adapter.cjs"
       - "tests/test_multi_engine_benchmark.py"
+      - "tests/test_sigmorphon_benchmark.py"
       - ".github/workflows/multi-engine-ipa-benchmark.yml"
       - "scripts/benchmark_ugtphon_ko.py"
       - "scripts/convert_sigmorphon_ko.py"
