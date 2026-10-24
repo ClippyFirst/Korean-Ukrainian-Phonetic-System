@@ -46,14 +46,25 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
               result.surfaceHangul=sourceSurface===part?'':sourceSurface;
             }
             if(/^[가-힣]+$/u.test(part)&&sourceIpa.length===[...part].length&&sourceIpa.every(Boolean)){
-              const mapped=ipaSyllablesToUkrainian(sourceIpa);
+              const mapped=ipaSyllablesToUkrainian(sourceIpa,{allowProvisional:true});
               if(!mapped.unknown){
+                const mappedSegments=sourceIpa.map(ipa=>traceIpaMappingDetailed(ipa));
                 result.ipa=sourceIpa.join(' ');
                 result.ukrainian=mapped.syllables.join('');
+                result.target_status=mapped.status;
                 let index=0;
                 for(const item of result.trace||[]){
                   if(item.status==='literal')continue;
-                  if(index<sourceIpa.length)item.ipa=sourceIpa[index++];
+                  if(index<sourceIpa.length){
+                    const target=mappedSegments[index];
+                    item.ipa=sourceIpa[index];
+                    item.output=target.tokens.map(token=>token.ukrainian).join('');
+                    item.targetStatus=target.status;
+                    item.targetReason=target.reason||null;
+                    item.targetMappings=target.tokens;
+                    item.targetFeatures=target.features;
+                    index++;
+                  }
                 }
               }else{
                 result.issues=[...(result.issues||[]),part+': sourced lexical IPA contains an unmapped segment "'+mapped.unknown+'".'];
@@ -85,6 +96,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         }))),
         trace:results.flatMap(r=>r.trace||[]),
         issues,
+        target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
         status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical'
       };
     }
