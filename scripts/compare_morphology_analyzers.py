@@ -35,14 +35,22 @@ def _load(path: Path, expected_analyzer: str) -> dict[str, dict[str, Any]]:
 
 
 def _boundaries(item: dict[str, Any]) -> set[int]:
+    """Return shared end/start offsets between adjacent source spans.
+
+    Using end offsets alone can mistake an overlapping token span for a
+    sequential morpheme boundary. Requiring an end and a start at the same
+    orthographic offset is still only a surface-character approximation.
+    """
     word = str(item["word"])
-    boundaries: set[int] = set()
+    starts: set[int] = set()
+    ends: set[int] = set()
     for morpheme in item.get("morphemes", []):
-        end = int(morpheme["end"])
-        start = int(morpheme.get("start", 0))
-        if 0 < end < len(word) and start < end:
-            boundaries.add(end)
-    return boundaries
+        start = int(morpheme.get("start", -1))
+        end = int(morpheme.get("end", -1))
+        if 0 <= start < end <= len(word):
+            starts.add(start)
+            ends.add(end)
+    return {offset for offset in starts & ends if 0 < offset < len(word)}
 
 
 def _shape_diagnostics(indexed: dict[str, dict[str, Any]]) -> dict[str, Any]:
