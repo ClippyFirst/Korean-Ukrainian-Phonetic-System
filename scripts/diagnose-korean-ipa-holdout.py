@@ -104,7 +104,20 @@ def run(output: Path | None = None) -> dict:
         for name, result in [('native_strict', native_target), ('g2pk', g2pk_target)]:
             if result['available']:
                 value = result['value']
-                engines[name + '_ukrainian_target'] = {'available': True, 'ukrainian_orthography': value.get('ukrainian_orthography'), 'target_status': value.get('target_status'), 'selection_status': value.get('selection_status'), 'target_analysis_statuses': [item.get('status') for item in value.get('target_analysis', [])]}
+                target_analysis = value.get('target_analysis', [])
+                # Native output exposes a target-analysis object with a `segments` list;
+                # the shared G2P adapter exposes a list directly. Normalize both shapes
+                # without iterating dict keys as if they were segment records.
+                if isinstance(target_analysis, dict):
+                    target_records = target_analysis.get('segments', [])
+                    target_analysis_status = target_analysis.get('status')
+                elif isinstance(target_analysis, list):
+                    target_records = target_analysis
+                    target_analysis_status = None
+                else:
+                    target_records = []
+                    target_analysis_status = 'unexpected-target-analysis-shape'
+                engines[name + '_ukrainian_target'] = {'available': True, 'ukrainian_orthography': value.get('ukrainian_orthography'), 'target_status': value.get('target_status'), 'selection_status': value.get('selection_status'), 'target_analysis_status': target_analysis_status, 'target_analysis_statuses': [item.get('status') for item in target_records if isinstance(item, dict)], 'target_analysis_uninspectable_items': sum(not isinstance(item, dict) for item in target_records)}
                 row['_target_' + name] = bool(value.get('ukrainian_orthography'))
             else:
                 engines[name + '_ukrainian_target'] = {'available': False, 'error': result['error']}
