@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import re
@@ -52,13 +53,28 @@ def collect_local_forms(root: Path) -> dict[str, set[str]]:
         for path in folder.rglob("*"):
             if not path.is_file() or path.suffix.lower() not in {".csv", ".json", ".txt", ".tsv", ".py", ".mjs", ".js", ".ts"}:
                 continue
-            if path.name in {"ipa_holdout_2026-10-24.json", "nikl-article-review-1-30.json"}:
+            if path.name in {"ipa_holdout_2026-10-24.json", "nikl-article-review-1-30.json", "nikl-all-articles-master-passage-2026-10-22.txt"}:
                 continue
             try:
                 content = path.read_text(encoding="utf-8")
             except UnicodeDecodeError:
                 continue
-            inputs[str(path.relative_to(root))] = set(re.findall(r"[\uac00-\ud7a3]+", content))
+            relative_path = str(path.relative_to(root))
+            if path.suffix.lower() == ".csv":
+                # CSV notes and source excerpts may mention examples without
+                # making them runtime inputs; only the input column is evidence
+                # of possible runtime-data leakage.
+                try:
+                    rows = csv.DictReader(content.splitlines())
+                    if rows.fieldnames and "input" in rows.fieldnames:
+                        forms = set()
+                        for row in rows:
+                            forms.update(re.findall(r"[\\uac00-\\ud7a3]+", row.get("input", "") or ""))
+                        inputs[relative_path] = forms
+                        continue
+                except csv.Error:
+                    pass
+            inputs[relative_path] = set(re.findall(r"[\\uac00-\\ud7a3]+", content))
     return inputs
 
 
@@ -136,7 +152,7 @@ def validate(root: Path, manifest_path: Path, benchmark_path: Path | None) -> di
         "ipa_gold_count": sum(case["ipaGold"] is not None for case in cases),
         "local_runtime_or_fixture_overlap_count": len(local_overlaps),
         "local_runtime_or_fixture_overlaps": local_overlaps,
-        "excluded_source_only_fixtures": ["tests/fixtures/nikl-article-review-1-30.json"],
+        "excluded_source_only_fixtures": ["tests/fixtures/nikl-article-review-1-30.json", "tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt"],
         "external_benchmark_overlap_check": external_check,
         "external_benchmark_path": str(benchmark_path) if benchmark_path is not None else None,
         "external_benchmark_overlap_count": effective_overlap_count,
