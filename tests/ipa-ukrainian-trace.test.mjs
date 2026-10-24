@@ -98,6 +98,8 @@ test('IPA vowel length remains visible in IPA and is explicitly explained when o
   assert.equal(traced.unknown, '');
   assert.equal(ipaSyllableToUkrainian('aː').text, 'а', 'target spelling stays unchanged');
   assert.equal(ipaSyllableToUkrainian('aː').unknown, '');
+  assert.equal(ipaSyllableToUkrainian('y').text, null, 'provisional target must not become production output');
+  assert.equal(ipaSyllableToUkrainian('y').candidateText, 'ві');
 });
 
 test('the visible IPA trace renders non-orthographic feature handling rather than silently dropping it', () => {
@@ -172,11 +174,18 @@ test('IPA/source syllable misalignment fails closed instead of shifting targets'
   assert.equal(result.reason, 'ipa_source_alignment_mismatch');
 });
 
-test('direct IPA target adapter exposes provisional mapping status without claiming phonology is resolved', () => {
+test('provisional IPA target is withheld by default and remains inspectable as a research candidate', () => {
   const result = ipaTargetForSource('위', 'y');
-  assert.equal(result.text, 'ві');
-  assert.equal(result.status, 'provisional');
+  assert.equal(result.text, null);
+  assert.equal(result.candidateText, 'ві');
+  assert.equal(result.status, 'unavailable');
+  assert.equal(result.candidateStatus, 'provisional');
+  assert.equal(result.reason, 'provisional_mapping_requires_review');
   assert.equal(result.mappingTrace[0].mapping_id, 'KUA-IPA-027');
+
+  const research = ipaTargetForSource('위', 'y', {allowProvisional:true});
+  assert.equal(research.text, 'ві');
+  assert.equal(research.status, 'provisional');
   assert.equal(traceIpaMappingDetailed('').status, 'unavailable');
 });
 

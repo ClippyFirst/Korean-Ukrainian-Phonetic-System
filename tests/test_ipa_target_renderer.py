@@ -32,7 +32,7 @@ def test_ipa_renderer_applies_specific_surface_and_sequence_correspondences():
         "kʰjʌ": ("кхьо", "provisional"),
     }
     for ipa, (expected, status) in cases.items():
-        result = render_ipa_sequence_to_ukrainian(ipa)
+        result = render_ipa_sequence_to_ukrainian(ipa, allow_provisional=(status == "provisional"))
         assert result["ukrainian_orthography"] == expected, ipa
         assert result["status"] == status, ipa
 
@@ -70,7 +70,7 @@ def test_all_canonical_lexical_pronunciations_are_reproducible_from_ipa():
         assert len(ipa_syllables) == len(target_syllables), row["input"]
         rendered = []
         for ipa_syllable in ipa_syllables:
-            result = render_ipa_sequence_to_ukrainian(ipa_syllable)
+            result = render_ipa_sequence_to_ukrainian(ipa_syllable, allow_provisional=True)
             assert result["ukrainian_orthography"] is not None, (
                 row["input"], ipa_syllable, result.get("unmapped_fragment")
             )
@@ -86,7 +86,7 @@ def test_all_canonical_lexical_pronunciations_are_reproducible_from_ipa():
             assert len(alternate_ipa) == len(alternate_target), row["input"]
             alternate_rendered = []
             for ipa_syllable in alternate_ipa:
-                result = render_ipa_sequence_to_ukrainian(ipa_syllable)
+                result = render_ipa_sequence_to_ukrainian(ipa_syllable, allow_provisional=True)
                 assert result["ukrainian_orthography"] is not None, (
                     row["input"], ipa_syllable, result.get("unmapped_fragment")
                 )
@@ -124,7 +124,7 @@ def test_rounded_vowel_target_mappings_are_explicitly_provisional():
     from korean_ukrainian.ipa_target_renderer import render_ipa_sequence_to_ukrainian
 
     for source_ipa, expected_target in [("y", "ві"), ("ø", "ве")]:
-        result = render_ipa_sequence_to_ukrainian(source_ipa)
+        result = render_ipa_sequence_to_ukrainian(source_ipa, allow_provisional=True)
         assert result["ukrainian_orthography"] == expected_target
         assert result["status"] == "provisional"
         assert result["segments"][0]["mapping_source"] == "ipa_target_overrides"
@@ -191,3 +191,22 @@ def test_browser_and_python_renderers_match_on_shared_ipa_sequences():
         ]
         assert browser_trace == python_trace, ipa
 
+
+def test_provisional_mapping_fails_closed_by_default_but_is_available_as_a_candidate():
+    result = render_ipa_sequence_to_ukrainian("ɰi")
+    assert result["ukrainian_orthography"] is None
+    assert result["status"] == "unavailable"
+    assert result["reason"] == "provisional_mapping_requires_review"
+    assert result["candidate_orthography"] == "ий"
+    assert result["candidate_status"] == "provisional"
+    assert result["segments"][0]["mapping_id"] == "KUA-IPA-025"
+
+    research = render_ipa_sequence_to_ukrainian("ɰi", allow_provisional=True)
+    assert research["ukrainian_orthography"] == "ий"
+    assert research["status"] == "provisional"
+
+
+def test_allow_provisional_must_be_explicit_boolean():
+    import pytest
+    with pytest.raises(TypeError, match="allow_provisional"):
+        render_ipa_sequence_to_ukrainian("ka", allow_provisional="yes")

@@ -89,16 +89,24 @@ export function traceIpaMapping(ipa){
   };
 }
 
-export function ipaSyllableToUkrainian(ipa){
+export function ipaSyllableToUkrainian(ipa,{allowProvisional=false}={}){
   const mapped=traceIpaMappingDetailed(ipa);
-  return mapped.unknown
-    ? {text:'',unknown:mapped.unknown}
-    : {text:mapped.tokens.map(token=>token.ukrainian).join(''),unknown:''};
+  if(mapped.unknown) return {text:'',unknown:mapped.unknown,status:'unavailable'};
+  const candidateText=mapped.tokens.map(token=>token.ukrainian).join('');
+  if(mapped.status==='provisional'&&!allowProvisional){
+    return {text:null,candidateText,unknown:'',status:'unavailable',candidateStatus:'provisional',reason:'provisional_mapping_requires_review'};
+  }
+  return {text:candidateText,unknown:'',status:mapped.status};
 }
 
-export function ipaSyllablesToUkrainian(ipaSyllables){
-  const mapped=ipaSyllables.map(ipaSyllableToUkrainian);
-  return {syllables:mapped.map(item=>item.text),unknown:mapped.find(item=>item.unknown)?.unknown||''};
+export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
+  const mapped=ipaSyllables.map(ipa=>ipaSyllableToUkrainian(ipa,options));
+  return {
+    syllables:mapped.map(item=>item.text),
+    candidates:mapped.map(item=>item.candidateText??item.text),
+    unknown:mapped.find(item=>item.unknown)?.unknown||'',
+    status:mapped.some(item=>item.status==='unavailable')?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+  };
 }
 
 export function ipaTargetForSource(source,ipa){
@@ -117,7 +125,7 @@ export function ipaTargetForSource(source,ipa){
     : detailed.some(item=>item.status==='provisional')?'provisional':'model-selected';
   if(unknown){
     const failed=detailed.find(item=>item.unknown);
-    return {text:'',syllables,unknown,status,reason:failed?.reason||'unmapped_ipa_sequence',mappingTrace};
+    return {text:null,syllables,unknown,status,reason:failed?.reason||'unmapped_ipa_sequence',mappingTrace};
   }
 
   // The IPA contract is syllable-aligned. A mismatch is not repaired by
@@ -128,7 +136,11 @@ export function ipaTargetForSource(source,ipa){
   }
 
   if(!/[가-힣]/u.test(sourceText)){
-    return {text:syllables.join(''),syllables,unknown:'',status,reason:null,mappingTrace};
+    const candidateText=syllables.join('');
+    if(status==='provisional'&&!options.allowProvisional){
+      return {text:null,candidateText,syllables,unknown:'',status:'unavailable',candidateStatus:'provisional',reason:'provisional_mapping_requires_review',mappingTrace};
+    }
+    return {text:candidateText,syllables,unknown:'',status,reason:null,mappingTrace};
   }
   let text='';
   let targetIndex=0;
@@ -141,6 +153,9 @@ export function ipaTargetForSource(source,ipa){
     }else{
       text+=token;
     }
+  }
+  if(status==='provisional'&&!options.allowProvisional){
+    return {text:null,candidateText:text,syllables,unknown:'',status:'unavailable',candidateStatus:'provisional',reason:'provisional_mapping_requires_review',mappingTrace};
   }
   return {text,syllables,unknown:'',status,reason:null,mappingTrace};
 }

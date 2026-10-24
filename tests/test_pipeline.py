@@ -119,11 +119,18 @@ def test_python_transliteration_uses_ipa_derived_target_and_keeps_lexical_target
             assert value["target_status"] == "unresolved"
             assert value["target_unavailable_reason"] == "unresolved_korean_phonology"
             assert value["lexical_target_comparison"] == "unavailable_without_ipa_target"
+        elif expected_reference_status == "provisional":
+            # A provisional IPA→Ukrainian correspondence is candidate-only.
+            assert value["ukrainian_orthography"] is None
+            assert value["target_status"] == "unavailable"
+            assert value["target_unavailable_reason"] == "provisional_mapping_requires_review"
+            assert value["lexical_target_comparison"] == "unavailable_without_ipa_target"
+            assert value["target_analysis"]["candidate_orthography"] == expected_reference
         else:
             # The local source-specific correspondence layer owns output;
             # optional UPI candidate ranking is diagnostic only.
             assert value["ukrainian_orthography"] is not None
-            assert value["target_status"] in {"model-selected", "provisional"}
+            assert value["target_status"] == "model-selected"
             assert value["lexical_target_comparison"] in {"matches_reference", "differs_from_reference"}
             assert "source IPA" in value["selection_status"]
         assert "author-designed" not in value["selection_status"]

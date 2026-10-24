@@ -51,3 +51,10 @@ The original frozen 24-form holdout has **not** been recovered from a verifiable
 5. Continue auditing rule exceptions, morphology licensing, variants and Python/browser parity. Passing CI does not establish exhaustive normative coverage.
 
 **Release classification:** research preview / partial prototype, not release-ready.
+
+
+## Production acceptance gate for provisional target correspondences
+
+The default Python API `render_ipa_sequence_to_ukrainian(ipa)` and browser source adapter withhold final Ukrainian orthography whenever any matched IPA→Ukrainian correspondence is `provisional`. They return an unavailable production result, an explicit `provisional_mapping_requires_review` reason, and a separate `candidate_orthography`/`candidateText` for inspection. The research-only opt-in is explicit: Python `allow_provisional=True`; browser `{ allowProvisional: true }`. The candidate is never relabelled as accepted output.
+
+This gate is deliberately conservative: a candidate such as `ɰi → ий`, `ø → ве`, `y → ві`, or `kʰjʌ → кхьо` is not asserted to be correct merely because a project row exists. Existing model-selected mappings remain explicit project decisions rather than independently adjudicated gold. To promote any provisional row, add independent linguistic/target review evidence and regression cases first.

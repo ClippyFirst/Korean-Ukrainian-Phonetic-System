@@ -101,7 +101,7 @@ _IPA_MAPPINGS, _IPA_MAPPING_CONFLICTS = _load_mappings()
 _IPA_KEYS = tuple(sorted(_IPA_MAPPINGS, key=lambda value: (-len(value), value)))
 
 
-def render_ipa_sequence_to_ukrainian(ipa: str) -> dict[str, Any]:
+def render_ipa_sequence_to_ukrainian(ipa: str, *, allow_provisional: bool = False) -> dict[str, Any]:
     """Render a source IPA sequence through the project's licensed target policy.
 
     Runtime input is IPA only. Hangul/Jamo are retained as provenance upstream,
@@ -112,6 +112,8 @@ def render_ipa_sequence_to_ukrainian(ipa: str) -> dict[str, Any]:
     """
     if not isinstance(ipa, str):
         raise TypeError("IPA input must be a string")
+    if not isinstance(allow_provisional, bool):
+        raise TypeError("allow_provisional must be a bool")
     source_ipa = unicodedata.normalize("NFC", ipa.strip())
     if not source_ipa:
         return {
@@ -206,6 +208,26 @@ def render_ipa_sequence_to_ukrainian(ipa: str) -> dict[str, Any]:
         if any(item["mapping_status"] == "provisional" for item in trace)
         else "model-selected"
     )
+    candidate_orthography = "".join(output)
+    # A provisional target correspondence is useful for research comparison,
+    # but must never be promoted to a production orthographic answer by default.
+    if overall_status == "provisional" and not allow_provisional:
+        return {
+            "ipa": source_ipa,
+            "status": "unavailable",
+            "reason": "provisional_mapping_requires_review",
+            "ukrainian_orthography": None,
+            "candidate_orthography": candidate_orthography,
+            "candidate_status": "provisional",
+            "segments": trace,
+            "ignored_source_markers": ignored_markers,
+            "length_adaptation_status": (
+                "preserved-in-IPA-not-rendered-in-practical-orthography"
+                if ignored_markers else "not-marked"
+            ),
+            "renderer": "korean_ipa_correspondence",
+            "score_type": "explicit_correspondence_not_probability",
+        }
     return {
         "ipa": source_ipa,
         "status": overall_status,
