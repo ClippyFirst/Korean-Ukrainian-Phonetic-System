@@ -1,5 +1,8 @@
 # UGTPHON Korean IPA diagnostic results — 2026-10-23
 
+
+> **Historical score snapshot.** The multi-engine benchmark was rerun on 2026-10-24 with a broad-IPA normalization correction that removes the narrow retraction marker U+0320. Do not compare this document's exact-match/CER values directly with the current scores. See [current multi-engine report](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md) and [successful run 40089295231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231).
+
 ## Reproducibility
 
 - Project branch: `research/ugtphon-independent-validation-2026-10-23`.
