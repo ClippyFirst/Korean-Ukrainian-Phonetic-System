@@ -174,3 +174,15 @@ A higher score on UGTPHON does not establish that an engine is best for NIKL sta
 ## Reproduction
 
 The workflow checks out the exact upstream revisions into the ephemeral runner, checks their declared licenses, installs the pinned packages, downloads the pinned UGTPHON test split, runs adapter tests, emits a JSON report, and uploads the report artifact. External engine code and the raw corpus are not added to the project tree.
+
+
+## Score-causality review — 2026-10-24
+
+See [Why Korean G2P benchmark scores look low](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md) for the cross-study metric comparison, dataset/IPA-convention confounds, measured versus hypothesized correlations, and next stratified error-analysis requirements.
+
+Key interpretation guardrails:
+- Earlier 24.4068% native exact match and revised 53.1827% are from different normalization profiles; do not describe this as a code-only accuracy gain.
+- The current exact match is a whole-token IPA string metric; published 90–99% values often refer to human acceptability or phoneme-level accuracy on cleaner, different datasets.
+- The 48 abstentions (1.78% of all eligible UGTPHON occurrences) cannot explain the low exact rate among the 2,655 scored outputs.
+- Native vs g2pk is near-tied on the paired UGTPHON metric and reverses slightly on SIGMORPHON; g2pk shares the project IPA renderer.
+- A full correlation claim requires per-item gold rule/morphology/variant labels; do not infer error causes from engine output alone.
