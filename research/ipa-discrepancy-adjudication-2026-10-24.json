@@ -1,0 +1,199 @@
+{
+  "schemaVersion": "1.0.0",
+  "createdAt": "2026-10-24",
+  "benchmarkArtifact": {
+    "runId": 40092929978,
+    "artifactId": 12559692692,
+    "headSha": "94c21ea957c28225caea27b9df69aa8772fea6f7"
+  },
+  "purpose": "Machine-readable discrepancy adjudication ledger. Symbol-alignment classes are candidate broad-IPA convention differences, not expert-confirmed equivalences. Selected R002/R003 cases preserve source-evidence status but contain no independent IPA gold.",
+  "symbolAlignmentProfile": "legacy-broad-diagnostic-v0",
+  "symbolClasses": [
+    {
+      "reference": "ɭ",
+      "prediction": "l",
+      "count": 525,
+      "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
+      "reason": "Candidate coda-lateral allophone/broad-symbol difference.",
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+    },
+    {
+      "reference": "ʰ",
+      "prediction": "s",
+      "count": 194,
+      "proposedAction": "CONTEXTUAL_SIBILANT_ONLY",
+      "reason": "The alignment suggests reference sibilant aspiration versus broad sibilant; only the sibilant sequence sʰ is collapsed, never stop aspiration.",
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+    },
+    {
+      "reference": "ɦ",
+      "prediction": "h",
+      "count": 165,
+      "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
+      "reason": "Candidate contextual /h/ allophone difference.",
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+    },
+    {
+      "reference": "ɲ",
+      "prediction": "n",
+      "count": 73,
+      "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
+      "reason": "Candidate palatal nasal allophone; inspect context near a palatal glide.",
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+    },
+    {
+      "reference": "ç",
+      "prediction": "h",
+      "count": 40,
+      "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
+      "reason": "Candidate contextual /h/ allophone difference.",
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+    },
+    {
+      "reference": "ʎ",
+      "prediction": "l",
+      "count": 33,
+      "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
+      "reason": "Candidate palatalized lateral allophone difference.",
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+    },
+    {
+      "reference": "ɕ",
+      "prediction": "s",
+      "count": 30,
+      "proposedAction": "COLLAPSE_FOR_BROAD_PROFILE_SENSITIVITY_ONLY",
+      "reason": "Candidate palatalized sibilant allophone difference.",
+      "reviewStatus": "NOT_INDEPENDENTLY_ADJUDICATED"
+    },
+    {
+      "reference": "i",
+      "prediction": "y",
+      "count": 36,
+      "proposedAction": "PRESERVE_AND_REVIEW_CONTEXT",
+      "reason": "Vowel/glide contrast cannot be assumed equivalent from symbol counts alone.",
+      "reviewStatus": "NO_NORMALIZATION_APPLIED"
+    }
+  ],
+  "selectedR002R003Cases": [
+    {
+      "caseId": "R002-01",
+      "input": "되었어",
+      "surfaceEvidence": "RELATED_COMPONENT_ONLY",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R002-02",
+      "input": "찢었으면",
+      "surfaceEvidence": "NO_EXACT_SOURCE_RECORDED",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R002-03",
+      "input": "했었음",
+      "surfaceEvidence": "NO_EXACT_SOURCE_RECORDED",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R002-04",
+      "input": "붙어야",
+      "surfaceEvidence": "RELATED_COMPONENT_ONLY",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R002-05",
+      "input": "멋있어",
+      "surfaceEvidence": "EXACT_FORM_SOURCE_SURFACE_VARIANTS",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166",
+      "ipaGold": null,
+      "allowedSurfaceReadings": [
+        "머디써",
+        "머시써"
+      ],
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R002-06",
+      "input": "칡칡이",
+      "surfaceEvidence": "NO_EXACT_SOURCE_RECORDED",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R002-07",
+      "input": "이런삶은",
+      "surfaceEvidence": "NO_EXACT_SOURCE_RECORDED",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R003-01",
+      "input": "수많은",
+      "surfaceEvidence": "EXACT_FORM_SOURCE_SURFACE",
+      "sourceLocator": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144",
+      "ipaGold": null,
+      "allowedSurfaceReadings": [
+        "수ː마는"
+      ],
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R003-02",
+      "input": "괜찮아보이는디",
+      "surfaceEvidence": "NO_EXACT_SOURCE_RECORDED",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R003-03",
+      "input": "많을거같이",
+      "surfaceEvidence": "NO_EXACT_SOURCE_RECORDED",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R003-04",
+      "input": "싫어서",
+      "surfaceEvidence": "EXACT_FORM_SOURCE_SURFACE",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313981",
+      "ipaGold": null,
+      "allowedSurfaceReadings": [
+        "시러서"
+      ],
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R003-05",
+      "input": "쌓아서",
+      "surfaceEvidence": "RELATED_COMPONENT_AND_RULE_ONLY",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R003-06",
+      "input": "좋아보인다고",
+      "surfaceEvidence": "NO_EXACT_SOURCE_RECORDED",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    },
+    {
+      "caseId": "R003-07",
+      "input": "좋은데",
+      "surfaceEvidence": "RELATED_COMPONENT_ONLY",
+      "ipaGold": null,
+      "reviewStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS"
+    }
+  ],
+  "summary": {
+    "symbolAlignmentCountsAreNotGoldLabels": true,
+    "exactFormSurfaceSources": 3,
+    "relatedEvidenceOnly": 4,
+    "noExactSourceRecorded": 7,
+    "independentlyAdjudicatedIpaGold": 0,
+    "ukrainianTargetAdjudication": "SEPARATE_UNREVIEWED_TASK",
+    "note": "Official Korean bracketed surface notation is Hangul notation, not IPA. The 14 cases were selected from discrepancies/abstentions and are not a blind holdout."
+  }
+}
