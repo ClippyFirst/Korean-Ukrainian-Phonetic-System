@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/schemas/nikl-source-manifest.schema.json",
   "title": "NIKL Standard Pronunciation Rules source manifest",
-  "description": "Metadata-first inventory emitted only after the official source's 30 article headings and non-empty article extracts reconcile. Optional article text is permitted only for local use after explicit human acknowledgement; this schema does not grant reuse rights.",
+  "description": "Metadata-only inventory of the official NIKL Standard Pronunciation Rules. Article labels are retained, normative clause wording is represented only by a SHA-256 fingerprint and character count, and each source-block hash covers the article plus page commentary/examples up to the next article heading. Optional sourceText retention requires explicit human acknowledgement and does not grant reuse rights.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,7 +15,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": 1
+      "const": 2
     },
     "collector": {
       "type": "object",
@@ -265,6 +265,9 @@
           "articleNumber",
           "articleId",
           "title",
+          "normativeTextSha256",
+          "normativeCharCount",
+          "sourceUnitScope",
           "anchorId",
           "sourceUrl",
           "textSha256",
@@ -283,7 +286,7 @@
           },
           "title": {
             "type": "string",
-            "minLength": 1
+            "pattern": "^제(?:[1-9]|[12][0-9]|30)항$"
           },
           "anchorId": {
             "type": [
@@ -310,6 +313,17 @@
           "sourceText": {
             "type": "string",
             "minLength": 1
+          },
+          "normativeTextSha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "normativeCharCount": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sourceUnitScope": {
+            "const": "article-block-including-official-commentary-and-examples"
           }
         }
       }
