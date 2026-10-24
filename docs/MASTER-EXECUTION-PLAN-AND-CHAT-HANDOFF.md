@@ -695,3 +695,19 @@ Full protocol, candidate register, confidence intervals and limitations: [docs/M
 Remaining scientific gates are unchanged: official NIKL full-text inventory remains BLOCKED_EXTERNAL_ACCESS after HTTP 403; independent broad-IPA adjudication and separate Ukrainian target-layer review remain outstanding. This benchmark is not NIKL normative gold and does not score Ukrainian adaptation. The repository remains a research preview / partial prototype, not release-ready.
 
 Integration outcome — 2026-10-24: PR #281 was squash-merged first as `f1c06f00a3cc6a724a8c5f155dbb8dbb50749c3e`; PR #280 was then reconciled against the updated `main` handoff and squash-merged as `6dc576db96ee12b0201a6271c5b3ea6b3710ae21`. The two PRs' shared handoff changes are reconciled; GitHub reports no open PRs at this checkpoint. The official NIKL full-text inventory remains blocked by HTTP 403, and CI on the final main commit must finish before treating the merged snapshot as fully verified.
+
+
+### NIKL local HTML inventory — 2026-10-24
+
+The repository already contained `한국어 어문 규범.htm`; no user upload or duplicate source file was needed. The existing metadata-first importer was run against this committed file on dedicated branch `research/nikl-local-html-import-2026-10-24`.
+
+- [Workflow run 40072018648](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072018648) succeeded.
+- Manifest: `reports/nikl/standard-pronunciation-manifest.json`.
+- Source size/hash: 322,678 bytes; SHA-256 `11dccd3c6eafb5167a6f448c2ccb5fc45fd698c5b2d1570ed3d1e5c177fa7a1e`.
+- Parser inventory: 30/30 article records, IDs `NIKL-SP-01`–`NIKL-SP-30`; missing, duplicates, unexpected, incomplete, and parser errors all empty.
+- Manifest contains article titles, anchors, normalized character counts, extraction status, and per-article text hashes; article text and raw HTML are not copied into the manifest.
+- Provenance correctly remains `local-html-import`; no live HTTP response, robots check, or terms review is claimed.
+
+The PR adds a source/manifest parity regression test and a reproducible GitHub Actions workflow that schema-validates the manifest, re-runs the parser against the checked-in HTML, and compares all generated metadata while normalizing only the import timestamp.
+
+**Gate classification:** extraction from the exact repository file is technically complete. Source-capture authenticity and reuse rights remain `BLOCKED_EXTERNAL_ACCESS` / `not_assessed` because direct NIKL endpoints previously returned HTTP 403 and the local import cannot independently establish the capture history or license terms. Human spot-check of article/subparagraph structure and individual rule interpretation is still required. This does not unblock independent IPA adjudication or Ukrainian target-layer review; release status remains research preview / partial prototype.
