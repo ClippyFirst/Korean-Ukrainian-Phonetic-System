@@ -11,7 +11,7 @@ test('retains the NIKL-attested long vowel in the exact dictionary form 수많�
   const result = adapter.convert('수많은');
 
   assert.equal(result.surfaceHangul, '수마는');
-  assert.match(result.ipa, /(?:^|\\s)suː(?:\\s|$)/u);
+  assert.match(result.ipa, /(?:^|\s)suː(?:\s|$)/u);
   assert.equal(result.trace[0].ipa, 'suː');
   assert.match(result.analysis, /word 71144/u);
   // Length is represented at the IPA boundary; the Ukrainian target remains
