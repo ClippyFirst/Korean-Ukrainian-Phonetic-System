@@ -14,6 +14,8 @@ The ClippyFirst engine owns the Korean-specific IPA→Ukrainian practical mappin
 
 The Python native and G2P adapters share the same target renderer. The unresolved-Korean-phonology gate remains upstream: IPA marked `diagnostic_only_unresolved_pronunciation` is inspectable for research but must not produce Ukrainian orthography. Unknown IPA, conflicting mappings, empty IPA and unmapped sequences fail closed; no nearest-feature fallback or Hangul-keyed Ukrainian fallback is allowed.
 
+The browser's `src/app/ipa_target_data.js` is a generated projection of these same CSVs, produced by `scripts/generate_ipa_target_data.py`; the Python suite runs the generator with `--check` to detect drift. Browser and Python target traces should agree on target text, mapping IDs and status for the same IPA.
+
 The contract is recorded in `data/correspondence/target_contract.csv`:
 - `ukrainian_inventory`: optional external UPI metadata/candidate diagnostics.
 - `korean_ipa_to_ukrainian`: local ClippyFirst practical output from canonical correspondences and explicit overrides.
