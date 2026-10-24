@@ -118,3 +118,14 @@ def test_summary_reports_legacy_and_broad_profile_sensitivity_separately():
     assert profiles[LEGACY_PROFILE]["native"]["eligible_occurrences"] == 3
     assert profiles[BROAD_PROFILE]["native"]["status"] == "SENSITIVITY_ONLY_UNTIL_INDEPENDENT_IPA_REVIEW"
     assert profiles[LEGACY_PROFILE]["native"]["exact_matches"] == 1
+
+
+
+def test_broad_profile_can_separate_symbol_convention_from_raw_exact_match():
+    row = _occurrence("dc_inside_10", "낱말", "ɭa", "scored", False, 1, False, 1)
+    row["native"]["ipa"] = "la"
+    row["g2pk_0_9_4"]["ipa"] = "la"
+    legacy = normalize_ipa_profile(row["gold"], LEGACY_PROFILE)
+    broad = normalize_ipa_profile(row["gold"], BROAD_PROFILE)
+    assert legacy != normalize_ipa_profile(row["native"]["ipa"], LEGACY_PROFILE)
+    assert broad == normalize_ipa_profile(row["native"]["ipa"], BROAD_PROFILE)
