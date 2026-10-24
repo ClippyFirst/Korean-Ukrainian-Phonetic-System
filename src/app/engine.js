@@ -4,10 +4,10 @@
  */
 import { parseCsv, decompose, createMap } from './engine_shared.js';
 import { convertText } from './engine_convert.js';
-import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource } from './engine_ipa.js';
+import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource, traceIpaMapping } from './engine_ipa.js';
 
 export { decompose, parseCsv } from './engine_shared.js';
-export { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource };
+export { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource, traceIpaMapping };
 
 export function createEngine(csv, lexiconCsv=''){
   const map=createMap(csv);
