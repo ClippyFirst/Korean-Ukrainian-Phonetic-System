@@ -927,3 +927,17 @@ The engine ranking is not statistically resolved by this sample: a 10,000-replic
 - **Current acceptance state: PARTIAL / CI_PENDING.** Rerun workflow 40119430374 and associated current-head workflows were queued at the latest check; no pass is claimed for the corrected head until these complete. Local clone remains blocked by outbound DNS to github.com.
 - Prior code-equivalent head 7feecec040bb15c79dd843e598ac92e7dc882d4b passed tests, browser integration, system verification, master/research artifact checks, paired benchmark, multi-engine benchmark and external UGTPHON diagnostic (runs 40114235652, 40114235661, 40114235705, 40114235740, 40114235725, 40114235676, 40114235643). That evidence predates the new feature-loss trace and its tests.
 - Next action: wait for exact-head workflows, inspect any new failure logs, repair and rerun; do not merge PR #305 while required checks are queued or failing.
+
+
+## Final verification reconciliation for IPA feature-loss trace — 2026-10-24
+
+### Code/test head
+
+- **Verified code/test head:** f4899f49ea8c9f970be9ff687bf042bce07e470d.
+- Browser G2P integration [40119566772](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40119566772): **PASS**. Node suite reported 1,225 tests, 1,225 pass, 0 fail; Vite production build succeeded.
+- System verification [40119566906](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40119566906): **PASS** — Python regression/data integrity and browser regression/build jobs succeeded. Metadata-only NIKL source inventory was skipped by workflow conditions, not counted as a pass.
+- Cross-runtime and research workflows: standalone test matrix [40119566854](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40119566854) **PASS** for web and Python 3.11/3.12/3.13; master table/artifacts [40119566774](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40119566774) **PASS**; external UGTPHON [40119566813](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40119566813) **PASS**; paired native-vs-g2pk [40119566818](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40119566818) **PASS**.
+- Multi-engine benchmark [40119566955](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40119566955): first multi-engine comparison step passed; the subsequent SIGMORPHON portfolio step remained in progress at this handoff update. Do not mark the entire workflow complete until the run concludes.
+- Two CI-discovered stale test expectations were corrected: the missing IPA adapter test import and the source-register count updated to 104 rows / 100 rights-review-required rows. The corrected code/test head passed the workflows listed above.
+- **Readiness:** target-layer feature reporting is implemented and CI-verified at the code/test head. Overall repository remains a research-ready partial prototype, not release-ready: no independent IPA gold adjudication, no separate Ukrainian-target gold/reader study, unresolved native abstentions and unintegrated research morphology remain. No score-sensitivity profile is to be presented as validated accuracy.
+- Local clean-clone execution remains unavailable in this session because outbound DNS to github.com fails; CI supplied the code/test verification. PR #305 remains open and must not be merged until the multi-engine workflow concludes and the owner/reviewers decide on the remaining scientific gates.
