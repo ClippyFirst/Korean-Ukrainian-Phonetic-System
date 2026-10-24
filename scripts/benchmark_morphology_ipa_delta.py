@@ -164,8 +164,6 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
     paired_soft = [item["soft"] for item in paired]
     paired_metrics_strict = _metrics(paired_strict, len(paired))
     paired_metrics_soft = _metrics(paired_soft, len(paired))
-    strict_by_key = {(x["row_id"], x["word"], x["gold"]): x for x in paired_strict}
-    soft_by_key = {(x["row_id"], x["word"], x["gold"]): x for x in paired_soft}
     exact_delta = (
         paired_metrics_soft["exact_match_rate"] - paired_metrics_strict["exact_match_rate"]
         if paired_metrics_soft["exact_match_rate"] is not None and paired_metrics_strict["exact_match_rate"] is not None
