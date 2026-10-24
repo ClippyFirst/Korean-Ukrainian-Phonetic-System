@@ -916,3 +916,5 @@ The engine ranking is not statistically resolved by this sample: a 10,000-replic
 - Regression: tests/ipa-target-feature-loss-trace.test.mjs.
 - **TODO_VERIFY:** run exact-head tests, build, browser integration and Python/browser parity checks; implementation and committed tests alone are not verification evidence.
 - **BLOCKED:** independent Ukrainian target review is still required to decide whether the current neutralization is acceptable or whether a separately versioned target notation should preserve selected distinctions. No gold accuracy claim is made.
+
+- The feature trace is exported from the public engine entry point as `traceIpaMapping`; the new regression also scans all lexical IPA syllables for mapped feature markers.
