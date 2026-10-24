@@ -43,7 +43,7 @@ This benchmark scores Korean IPA only. It does **not** measure IPA-to-Ukrainian 
 - CER is total Levenshtein distance divided by total length of the selected reference variants.
 - Coverage is scored token occurrences divided by eligible token occurrences. Native unresolved cases are abstentions, not engine exceptions.
 - Paired comparison uses the same occurrence IDs so repeated words in a row do not collapse into a single observation.
-- Deterministic 1,000-replicate row-cluster percentile bootstrap intervals are emitted for exact-match rate and CER. They describe sampling variability on this dataset; they do not correct reference-label errors or annotation-convention mismatch.
+- Deterministic 1,000-replicate row-cluster percentile bootstrap intervals are emitted for exact-match rate and CER; paired row-cluster intervals estimate candidate-minus-native deltas. They describe sampling variability on this dataset; they do not correct reference-label errors or annotation-convention mismatch.
 - The report includes per-engine status, error samples, paired deltas, confidence intervals, and a capped mismatch sample. The raw external corpus is not committed.
 
 ## Results
