@@ -160,3 +160,10 @@ Do not fit a large correlation model to 275 sentence rows / 2,703 occurrences be
 | Independently adjudicate remaining scored mismatches and 14 R002/R003 forms | BLOCKED_SPECIALIST_ADJUDICATION | Exact source evidence, two independent IPA reviews, reconciliation and accepted variants. |
 | Frozen NIKL normative holdout | TODO / dependency-blocked | Independent source-backed gold, split locked before tuning, full per-rule report. |
 | Korean IPA → Ukrainian target evaluation | BLOCKED | Separate expert-reviewed Ukrainian gold corpus and fixed IPA inputs. |
+
+
+### Small descriptive cross-tab from the 14-case R002/R003 triage queue
+
+The existing 14-case queue has seven R002 and seven R003 cases. Against the **noisy corpus reference only**, g2pk is marked exact on 4/7 R002 cases and 3/7 R003 cases (7/14 overall). Exact-form official surface evidence has been found for three cases (`멋있어`, `수많은`, `싫어서)); four more have related component/rule evidence (`되었어`, `붙어야`, `쌓아서`, `좋은데`); seven have no source evidence recorded in this search pass. All 14 still lack independently adjudicated broad-IPA gold.
+
+This is **not** a valid estimate of R002-vs-R003 accuracy: the 14 cases are a deliberately selected diagnostic queue, the reference is not normative gold, and source discovery status is not a correctness label. The small split does not show a meaningful rule-level correlation. It does show why raw engine/reference exactness cannot settle the cases: the official source confirms variants or surface forms in some cases, but the IPA representation and morphology still need independent review.
