@@ -204,3 +204,13 @@ The script and test are in `scripts/analyze_korean_benchmark_correlations.py` an
 
 
 A deterministic minimum-edit symbol profile is now included in the reproducible correlation script. On the native-vs-reference alignment, frequent substitutions include `ɭ→l` (525), `ʰ→s` (194), `ɦ→h` (165), `ɲ→n` (73), and `ç→h` (40). Reference symbols most often involved in edit operations include `ʰ` (633), `ɭ` (539), `ɕ` (238), and `ɦ` (165). This supports a broad-vs-narrow IPA convention mismatch hypothesis, but alignment operations are not independently adjudicated phonological error labels. See [score-causality report §7.1E](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md#e-the-most-common-character-differences-point-to-a-broad-vs-narrow-ipa-convention-mismatch).
+
+
+## Broad-IPA profile sensitivity and holdout status (2026-10-24)
+
+The historical benchmark rates above remain under the legacy comparison profile. The pinned artifact was additionally scored with the candidate broad-v1 profile: on 2,655 paired scored occurrences, ClippyFirst moves from 53.18% exact match / 9.19% CER to 91.04% / 1.70%; g2pk moves from 53.33% / 9.24% to 90.96% / 1.75%. This is a normalization sensitivity result, not a validated accuracy claim. The dominant change is the broad-vs-narrow sibilant convention `sʰ→s`; independent IPA review is required before using broad-v1 as the sole headline metric.
+
+- [Versioned IPA contract](IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md)
+- [Profile metrics and ablation JSON](../research/broad-ipa-profile-sensitivity-2026-10-24.json)
+- [Discrepancy adjudication and holdout report](IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md)
+- The 24-input NIKL holdout is exact-token-disjoint from the pinned artifact (0/24 overlaps), recorded in `research/ipa-holdout-overlap-validation-2026-10-24.json`. IPA gold is still 0/24 and local runtime/fixture leakage CI remains pending.
