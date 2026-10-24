@@ -6,7 +6,7 @@ import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, IPA_TO_UKRAINIAN } fro
 
 export function lexicalResult(text,entry){
   const ipas=entry.ipa_syllables.split('|');
-  const mappedTargets=ipas.map(ipaSyllableToUkrainian);
+  const mappedTargets=ipas.map(ipa=>ipaSyllableToUkrainian(ipa,{allowProvisional:true}));
   const targets=mappedTargets.map((item,i)=>item.unknown?'⟦'+ipas[i]+'⟧':item.text);
   const targetIssues=mappedTargets.flatMap((item,i)=>item.unknown
     ?[text+': IPA syllable "'+ipas[i]+'" contains an unmapped segment "'+item.unknown+'"; add an explicit Ukrainian mapping or correct the IPA.']:[]
@@ -46,7 +46,7 @@ export function lexicalResult(text,entry){
     const d=decompose(ch);
     return d?`${ch}[${d.onset}+${d.vowel}${d.coda?'+'+d.coda:''}]`:ch;
   }).join(' · ');
-  const targetReview=entry.target_status==='provisional';
+  const targetReview=entry.target_status==='provisional'||mappedTargets.some(item=>item.status==='provisional');
   return {
     source:text,
     surfaceHangul:entry.surface_hangul||'',
@@ -57,7 +57,7 @@ export function lexicalResult(text,entry){
       const alternateIpas=(entry.alternate_ipa_syllables||'').split('|');
       const alternateSurface=entry.alternate_surface_hangul||'';
       if(!alternateSurface||!entry.alternate_ipa_syllables||alternateIpas.some(value=>!value))return [];
-      const mapped=alternateIpas.map(ipaSyllableToUkrainian);
+      const mapped=alternateIpas.map(ipa=>ipaSyllableToUkrainian(ipa,{allowProvisional:true}));
       if(mapped.some(item=>item.unknown))return [];
       return [{
         source:text,
@@ -80,6 +80,7 @@ export function lexicalResult(text,entry){
       ipa:ipas[i]
     })),
     issues:targetIssues,
+    target_status:targetIssues.length?'unavailable':targetReview?'provisional':'model-selected',
     status:targetIssues.length?'unresolved':targetReview?'lexical-review':'lexical'
   };
 }
@@ -119,7 +120,8 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status)
     for(const site of changed){
       alternateIpa[site.index]=alternateIpa[site.index].replace(site.primary,site.alternate);
     }
-    const alternateOutput=alternateIpa.map(value=>ipaSyllableToUkrainian(value).text);
+    const alternateMapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+    const alternateOutput=alternateMapped.map(item=>item.text);
     const labels=changed.map(site=>{
       if(site.vowel==='ㅚ')return 'ㅚ [we]';
       if(site.vowel==='ㅟ')return 'ㅟ [wi]';
