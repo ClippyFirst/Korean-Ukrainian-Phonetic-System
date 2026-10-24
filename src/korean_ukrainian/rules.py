@@ -44,6 +44,16 @@ _NIKL_R002_FORMAL_LICENSES = {
     "없어도": "없>어",  # 없- + connective ending -어도; NIKL §14 attests 없어[업써].
 }
 
+# Exact full-form licenses for transparent verb-stem + ending cases under NIKL §24.
+# These are rule-derived applications, not claimed as direct quoted examples.
+# Scope each license to the complete input and adjacent pair until a morphology
+# analyzer can establish stem/ending boundaries productively.
+# Official source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+_NIKL_R010_FORM_LICENSES = {
+    "닮다": "닮>다",  # 닮- + -다; ㄻ (ㅁ representative) before ending-initial ㄷ.
+    "넘게": "넘>게",  # 넘- + -게; ㅁ coda before ending-initial ㄱ.
+}
+
 # Exact, source-backed examples explicitly listed in NIKL Standard Pronunciation Rule 29.
 # Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 _NIKL_R009_WORD_LICENSES = {
@@ -90,6 +100,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R002_FORMAL_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R002:formal:{full_form}:{pair}")
+    pair = _NIKL_R010_FORM_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R010:stem_n_m+suffix:{full_form}:{pair}")
     pair = _NIKL_R009_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R009:word:{full_form}:{pair}")
