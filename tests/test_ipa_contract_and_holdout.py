@@ -22,7 +22,7 @@ def test_holdout_is_source_backed_frozen_and_contains_no_ipa_gold():
     assert {case["sourceRule"] for case in manifest["cases"]} == {"§10 commentary", "§11", "§11 commentary", "§12/§13 commentary", "§12 commentary", "§19", "§19 commentary", "§20", "§29", "§6 commentary"}
 
 
-def test_holdout_validation_discloses_external_overlap_blocker():
+def test_holdout_validation_uses_hash_bound_external_overlap_record():
     path = ROOT / "data/korean/ipa_holdout_2026-10-24.json"
     result = validate(ROOT, path, None)
     assert result["case_count"] == 24
