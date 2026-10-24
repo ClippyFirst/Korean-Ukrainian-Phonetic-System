@@ -92,7 +92,7 @@ test('browser output remains IPA-first for the adversarial long passage', () => 
 
   for (const item of result.trace) {
     if (item.status === 'literal' || !item.ipa || !item.output) continue;
-    const mapped = ipaSyllableToUkrainian(item.ipa);
+    const mapped = ipaSyllableToUkrainian(item.ipa, {allowProvisional:true});
     assert.equal(mapped.unknown, '', item.source + ': unmapped IPA ' + item.ipa);
     assert.equal(item.output, mapped.text, item.source + ': target is not reproducible from IPA');
   }
