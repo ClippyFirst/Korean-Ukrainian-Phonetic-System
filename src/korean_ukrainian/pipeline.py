@@ -549,7 +549,7 @@ def _target_inventory_diagnostic(ipa, target_adapter=None):
             "adapter_status": adapter_status,
             "segment_reasons": segment_reasons,
         }
-    except (TypeError, ValueError, OSError) as exc:
+    except Exception as exc:
         return {
             "ipa": ipa,
             "segments": [],
@@ -587,7 +587,15 @@ def render_ipa_analysis_to_ukrainian(
     word_index = 0
     output_statuses = []
     adapter = target_adapter if isinstance(target_adapter, UkrainianTargetAdapter) else UkrainianTargetAdapter()
-    inventory_status = adapter.status()
+    try:
+        inventory_status = adapter.status()
+    except Exception as exc:
+        inventory_status = {
+            "available": False,
+            "package": getattr(adapter, "package_name", None),
+            "version": getattr(adapter, "version", None),
+            "error": f"optional target-inventory diagnostics failed: {type(exc).__name__}: {exc}",
+        }
     ipa_diagnostic_only = bool(
         (isinstance(ipa, dict) and ipa.get("is_diagnostic_only"))
         or (isinstance(phonetics, dict) and phonetics.get("ipa_is_diagnostic_only"))
@@ -647,7 +655,18 @@ def render_ipa_analysis_to_ukrainian(
                 "ignored_source_markers": [],
             }
         else:
-            local = render_ipa_sequence_to_ukrainian(word_ipa)
+            try:
+                local = render_ipa_sequence_to_ukrainian(word_ipa)
+            except (TypeError, ValueError) as exc:
+                local = {
+                    "ipa": word_ipa,
+                    "status": "unavailable",
+                    "reason": "invalid_ipa_input",
+                    "error": str(exc),
+                    "ukrainian_orthography": None,
+                    "segments": [],
+                    "ignored_source_markers": [],
+                }
 
         if local.get("ukrainian_orthography") is None:
             all_mapped = False
