@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Paired native IPA strict/soft and optional morphology diagnostics on UGTPHON.
 
-Important: Kiwi/MeCab output is never injected into phonological rules. This
-benchmark measures (1) the existing native strict-vs-soft IPA delta against
-the same IPA references and (2) how each morphology engine segments those same
-unique Hangul words. It cannot attribute an IPA change to Kiwi/MeCab until a
-separately reviewed, gold-validated morphology-to-rule adapter exists.
+Default native strict/soft IPA results are always measured unchanged. A separate
+counterfactual mode retains a native soft-rule license only when the selected
+analyzer exposes the corresponding orthographic boundary. This deliberately
+naive boundary-only gate is diagnostic, not a valid rule-licensing adapter:
+boundary evidence is not sufficient to decide morphophonological class.
 """
 from __future__ import annotations
 
@@ -357,7 +357,7 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
 
     return {
         "benchmark": "UGTPHON Korean test split",
-        "benchmark_type": "paired native IPA strict-vs-soft plus morphology diagnostic",
+        "benchmark_type": "native strict/soft IPA, counterfactual boundary-gated IPA, and morphology diagnostics",
         "dataset_rows": len(rows),
         "eligible_token_occurrences": len(occurrences),
         "unique_hangul_words": len(unique_words),
@@ -434,16 +434,18 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
             "errors": morphology_errors[:100],
             "results": morphology_rows,
             "interpretation": (
-                "segmentation and tags only; no gold morphology labels, no accuracy score, "
-                "and no analyzer output was injected into the IPA engine"
+                "segmentation and tags only; no gold morphology labels or morphology accuracy score; "
+                "the default native strict/soft paths are unchanged, and a separate boundary-gated "
+                "counterfactual is scored only as a research ablation"
             ),
         },
         "limitations": [
             "UGTPHON is noisy user-generated text, not normative NIKL gold.",
             "The reference IPA convention may differ from this project's broad IPA conventions.",
             "Strict/soft compares an existing native heuristic mode; soft is not the Kiwi or MeCab output.",
-            "Kiwi/MeCab are measured on the exact same unique Hangul word inventory, but their segmentation is not fed into phonology.",
-            "A causal morphology-to-IPA comparison requires an independently adjudicated morphology gold set and a reviewed rule-licensing adapter.",
+            "Kiwi/MeCab are measured on the exact same unique Hangul word inventory; the default native strict/soft paths do not consume their output.",
+            "The boundary-gated path is an intentionally naive counterfactual ablation, not a linguistically valid rule-licensing adapter.",
+            "A production morphology-to-IPA integration requires an independently adjudicated morphology gold set and a reviewed rule-licensing adapter.",
             "This report evaluates Korean IPA only, not Ukrainian target adaptation.",
         ],
     }
