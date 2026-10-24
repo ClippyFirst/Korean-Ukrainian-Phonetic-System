@@ -1,3 +1,44 @@
+## Korean native-engine error analysis and post-fix benchmark — 2026-10-24
+
+### Task ledger
+
+- **DONE_VERIFIED on merged main:** R002 coda-ㅇ preservation; broad-IPA /j/ absorption after ㅈ/ㅉ/ㅊ + ㅕ. These are source-backed fixes with regression tests and measured gains.
+- **DONE_VERIFIED on the benchmark branch:** complete occurrence-level native-vs-g2pk audit for UGTPHON and SIGMORPHON; the report artifact retains every occurrence rather than a capped mismatch sample.
+- **DONE_VERIFIED for Python native benchmark:** exact-form R010 (§24) licenses for 닮다 and 넘게 add two further exact matches; native CER also improves. Corresponding browser-engine licenses and tests are added on this branch; latest cross-runtime CI is still pending.
+- **PARTIAL:** 48 UGTPHON native abstentions remain across 47 unique words; 19 coincide with g2pk exact matches and 29 do not. R002 and R003 account for most unresolved contexts.
+- **TODO:** source-adjudicate remaining abstentions and build an independent NIKL holdout.
+- **BLOCKED:** full Korean IPA → Ukrainian accuracy is not measured because there is no independently adjudicated Ukrainian-output gold corpus.
+
+### Confirmed causes and evidence
+
+1. **R002 coda ㅇ loss.** The generic liaison branch treated coda ㅇ (/ŋ/) like a consonant that can move to silent onset ㅇ, dropping /ŋ/. PR #298 merged this fix. On the older normalization profile it gained 11 exact matches; on the revised broad-IPA profile the same-profile progression was 1,351 → 1,397 exact matches and CER 9.6619% → 9.3122%.
+2. **Broad IPA retained an extra /j/ after ㅈ/ㅉ/ㅊ before ㅕ.** The official NIKL Standard Pronunciation Rule 5, exception 1, plus its explanation supports absorption in broad surface IPA while retaining the glide in phonemic output. PR #299 merged the fix. The revised-profile benchmark gained 13 exact matches and native CER fell from 9.3122% to 9.2060%.
+3. **R010 (§24) fortition was withheld for two exact forms.** 닮다 and 넘게 were missing full-form licenses for stem-n/m + ending fortition. PR #297 adds narrow licenses in the Python engine and matching browser code. The latest Python benchmark gained two exact matches (1,410 → 1,412 of 2,655) and native CER fell from 9.2060% to 9.1883%. This is not a productive morphology analyzer and must not generalize to unlicensed forms.
+4. **Four remaining g2pk-only exact occurrences are a reference convention mismatch.** All four are the word 없는. ClippyFirst preserves the NIKL-attested long vowel [엄ː는] as ʌːm.nɯn, while UGTPHON's reference omits length. Do not remove vowel length from production IPA to chase this score.
+5. **g2pk is not universally better.** On UGTPHON, paired g2pk-minus-native exact delta is +0.1506 pp (95% CI +0.0351 to +0.3243) and paired CER delta +0.0531 pp (95% CI −0.0139 to +0.1302, crosses zero). On SIGMORPHON, native leads paired exact match by 0.4012 pp (95% CI for g2pk-minus-native −0.8024 to −0.1003); paired CER difference crosses zero. g2pk and native share the project's IPA segment renderer, so the comparison is not a fully independent end-to-end IPA stack.
+
+### Current benchmark evidence
+
+- Latest successful six-engine run: [40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799); artifact [12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356).
+- Revised broad-IPA UGTPHON: native 1,412/2,655 exact (53.1827%), CER 9.1883%, coverage 98.2242%; g2pk 1,416/2,655 exact on the common scored subset (53.3333%), CER 9.2414%.
+- Revised broad-IPA SIGMORPHON public paired file: native 357/997 exact (35.8074%), CER 14.7037%; g2pk 353/997 exact on the common scored subset (35.4062%), CER 14.8222%. This is not a leaderboard reproduction because the pinned public file contains paired references despite the upstream README describing word-only test inputs.
+- Full UGTPHON pairwise categories: 1,412 both-exact; 1,239 both-not-exact; 4 g2pk-only exact; 19 native-abstained/g2pk-exact; 29 native-abstained/g2pk-not-exact.
+- Full SIGMORPHON pairwise categories: 353 both-exact; 640 both-not-exact; 4 native-only exact; 2 native abstentions where g2pk is not exact.
+- Canonical report: docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md. Error analysis: docs/KOREAN-ERROR-ANALYSIS-2026-10-24.md. Master suite register: docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md.
+
+### Verification and PR state
+
+- Run 40092327799: multi-engine benchmark passed on the Python R010-fix head; artifact uploaded and inspected.
+- Run 40092327808: Python regression, browser tests/build and related test jobs passed before the browser R010 port was added.
+- Run 40092327874: research morphology adapter smoke passed before the browser R010 port.
+- The browser R010 implementation and new parity test were subsequently added. Current-head CI runs 40092929979 (tests) and 40092929989 (system verification) are queued as of this handoff; do not mark browser parity DONE_VERIFIED until they pass.
+- PR #297 remains open: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/297. PRs #298 and #299 are merged. PRs #280 and #281 are merged and their existing work is preserved.
+- Functional Python benchmark head: 5962a9a8dbeacd04f4bd607a52d068d9aa97319a. The docs/handoff integration branch is bench/ko-eight-suite-and-abstention-audit-2026-10-24; it remains a research branch pending PR review, not mainline release evidence.
+
+### Readiness
+
+**Research-ready for diagnostic comparisons; still a partial prototype, not release-ready.** The benchmark supports targeted code fixes and a clear remaining-error ledger, but it does not establish normative NIKL accuracy or Korean-to-Ukrainian output accuracy. The next real gate is current-head browser/Python/parity CI, followed by source adjudication of the 48 abstentions and a separately reviewed target-output gold corpus.
+
 ## Paired native IPA + morphology benchmark — 2026-10-24
 
 - **Task ledger:** `DONE_VERIFIED` — paired native strict/soft IPA scoring; Kiwi and MeCab-Ko full-inventory diagnostics; rule-event boundary alignment; counterfactual boundary-gated ablation; pairwise segmentation comparison; representation-span audit; unit tests, CI workflow, and documentation. `BLOCKED` — morphology accuracy and rule-license correctness cannot be established without adjudicated gold morphology and a reviewed rule-licensing adapter.
