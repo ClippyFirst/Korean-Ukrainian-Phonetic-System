@@ -53,6 +53,17 @@ Added eight official examples from the attached note to Rule 29, including `들�
 - [Audit report](docs/rule29-liquid-assimilation-audit-2026-10-10.md)
 - [Regression test](tests/adversarial-rule29-liquid-assimilation-2026-10-10.test.mjs)
 
+## Research-only morphological analyzers (2026-10-24)
+
+The Python research package has optional adapters for [Kiwi](https://github.com/bab2min/kiwi) and MeCab-Ko. They return inspectable morpheme forms, analyzer tags and source offsets only; they do not produce pronunciation, IPA, Ukrainian output, or automatic NIKL rule licenses. The public browser practical mode does not load or call these adapters.
+
+- [Research morphology integration contract and acceptance gates](docs/RESEARCH-MORPHOLOGY-ADAPTERS-2026-10-24.md)
+- Adapter: `src/korean_ukrainian/research_morphology.py`
+- Tests with fake engines: `tests/test_research_morphology.py`
+- Diagnostic runner (not an accuracy benchmark without gold annotations): `scripts/benchmark_research_morphology.py`
+
+Install Kiwi with `uv pip install -e '.[research-kiwi]'`. MeCab-Ko requires its optional binding and a working Korean dictionary on the host OS. Engine availability and actual segmentation accuracy have not been asserted by this adapter-only integration; see the research document for the evidence gates.
+
 ## Pronunciation engines: browser and Python
 
 ### Browser service — JavaScript G2P (default practical mode)
