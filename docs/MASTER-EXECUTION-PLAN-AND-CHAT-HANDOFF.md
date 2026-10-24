@@ -811,3 +811,17 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **Scope guard:** research-only Python adapter. It emits token forms, raw tags, source offsets, nullable lemma, and selected MeCab binding in diagnostic output; it does not emit pronunciation/IPA/Ukrainian output or automatically change phonology. The browser practical mode was not modified by the PR; post-merge live practical-mode regression passed.
 - **Remaining blockers:** independent IPA adjudication; Ukrainian target-layer review; NIKL source reuse/terms and human clause-boundary review; specialist review of any future morphology-to-rule licensing; accuracy benchmarking against an adjudicated morphology corpus.
 - **Release classification:** research preview / partial prototype, not release-ready. Successful analyzer installation and tokenization do not prove phonological correctness or Ukrainian transcription accuracy.
+
+
+## Benchmark score causality review — 2026-10-24
+
+- **Branch:** `research/benchmark-score-causality-2026-10-24`, based on main `8144675c6b5496c8b1f3c05b15b085f6b78b4b2b`.
+- **Report:** [KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md); linked from the canonical multi-engine report and benchmark suite register.
+- **DONE_VERIFIED (aggregate synthesis):** reconciled current native/g2pk results across UGTPHON and SIGMORPHON; distinguished whole-token exact IPA match from phoneme-level accuracy/human acceptability in earlier published work; recorded dataset, normalization, adapter, shared-renderer, and IPA-reference convention confounds.
+- **DONE_VERIFIED (key numerical guardrails):** older 24.4068% and revised 53.1827% UGTPHON exact scores use different normalization profiles and are not a code-only before/after comparison. Current UGTPHON paired g2pk advantage is only +0.1506 pp with CER CI crossing zero; SIGMORPHON slightly favors native exact match. 48 abstentions are only 1.78% of all eligible UGTPHON occurrences and do not explain the low exact rate among scored outputs.
+- **DONE_VERIFIED (literature discovery):** reviewed Yoon & Brew (2006), Lee & Lee (2009), Mun, Kim & Ko (2022), and UGTPHON/EMNLP 2026 source documentation; these studies use differing datasets, annotation conventions, and scoring units. Their 90–99% figures are not directly comparable to whole-token exact IPA equality on the repository's current corpora.
+- **PARTIAL:** correlation mechanisms and evidence are classified as measured versus hypothesis. A full per-item correlation analysis has not been computed because the current aggregate report does not provide reviewed gold labels for every error's rule, morphology, and accepted variant.
+- **TODO:** extend the existing occurrence-level benchmark ledger, compute source/rule/morphology/length/variant/edit-class cross-tabs and unique-type versus occurrence-weighted scores, and use clustered uncertainty. Do not infer phonological correctness from agreement between engines.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** independent review of IPA convention and source-backed morphology is still required for the 14 R002/R003 cases and broader mismatches.
+- **BLOCKED:** Korean IPA → Ukrainian target accuracy still needs a separately adjudicated Ukrainian gold corpus.
+- **Release status:** research-ready for diagnostics, still a partial prototype and not release-ready.
