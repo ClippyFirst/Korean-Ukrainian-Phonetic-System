@@ -25,7 +25,19 @@ const NIKL_SURFACE_CORRECTIONS = new Map([
   ['넓죽하다', { surface: '넙쭈카다', evidence: 'NIKL §§10, 23; official examples' }],
   ['넓둥글다', { surface: '넙뚱글다', evidence: 'NIKL Q&A qna_seq=322805; §10 exception' }],
   ['넓적하다', { surface: '넙쩌카다', evidence: 'NIKL Q&A qna_seq=322805; §§10, 23' }],
-  ['읽고', { surface: '일꼬', evidence: 'NIKL §§1 commentary, 11, 23; Q&A qna_seq=315279' }]
+  ['읽고', { surface: '일꼬', evidence: 'NIKL §§1 commentary, 11, 23; Q&A qna_seq=315279' }],
+  ['수많은', { surface: '수마는', evidence: 'NIKL Korean Basic Dictionary, word 71144: 수많은[수ː마는]' }]
+]);
+
+const NIKL_VARIANT_SURFACES = new Map([
+  ['멋있어', {
+    surfaces: ['머디써', '머시써'],
+    evidence: 'NIKL Online Q&A qna_seq=306166 explicitly accepts both [머디써] and [머시써]'
+  }]
+]);
+
+const NIKL_LEXICAL_LENGTH = new Map([
+  ['수많은', { surface: '수마는', syllableIndex: 0, evidence: 'NIKL Korean Basic Dictionary, word 71144: 수많은[수ː마는]' }]
 ]);
 
 function applyNiklSurfaceCorrections(source, surface) {
@@ -108,9 +120,42 @@ export function createG2pWebAdapter(engine) {
         result.analysis += '; NIKL exact-form correction before IPA: ' + normalized.corrections
           .map(item => item.source + ' → ' + item.surface + ' (' + item.evidence + ')').join('; ');
       }
+      // NIKL gives a lexical long-vowel reading for this exact dictionary
+      // form. Preserve length in IPA only; the Ukrainian target stays a
+      // separate, provisional adaptation and is not generated from Hangul.
+      const lexicalLength = NIKL_LEXICAL_LENGTH.get(text);
+      if (lexicalLength && surface === lexicalLength.surface && result.trace?.[lexicalLength.syllableIndex]?.ipa) {
+        const item = result.trace[lexicalLength.syllableIndex];
+        if (!item.ipa.includes('ː')) {
+          item.ipa += 'ː';
+          result.ipa = renderIpa(result.trace);
+          result.analysis += '; NIKL lexical vowel length retained in IPA (' + lexicalLength.evidence + ')';
+        }
+      }
+
+      // NIKL explicitly accepts two surface forms for 멋있어. Offer the
+      // other attested surface only when the pinned G2P output is itself one
+      // of those forms. IPA and Ukrainian are rendered through the same
+      // surface → IPA → Ukrainian adapter; they are not asserted as gold.
+      const variantEvidence = NIKL_VARIANT_SURFACES.get(text);
+      if (variantEvidence && variantEvidence.surfaces.includes(surface)) {
+        const alternativeSurface = variantEvidence.surfaces.find(value => value !== surface);
+        const alternative = engine.convertSurface(alternativeSurface);
+        if (!alternative.issues?.length && alternative.ipa && alternative.ukrainian) {
+          result.variants = [...(result.variants || []), {
+            source: text,
+            surface: alternativeSurface,
+            ukrainian: renderTarget(alternative.trace),
+            ipa: renderIpa(alternative.trace),
+            note: variantEvidence.evidence + '; IPA/український відповідник згенеровані адаптером ClippyFirst і потребують окремої перевірки.',
+            status: 'lexical-review'
+          }];
+        }
+      }
+
       result.normativeCorrections = normalized.corrections;
       if (result.issues.length) result.status = 'unresolved';
-      else if (normalized.corrections.length) result.status = 'lexical';
+      else if (normalized.corrections.length || lexicalLength || variantEvidence) result.status = 'lexical';
       else result.status = surface === text ? 'canonical' : 'contextual';
       return result;
     }
