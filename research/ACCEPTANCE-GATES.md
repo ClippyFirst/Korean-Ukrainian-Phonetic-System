@@ -313,13 +313,44 @@ Merge commit: `c4efa90e1b24b33a8692c383f58b6bf966506871`.
 
 | Task | Status | Evidence / acceptance boundary |
 |---|---|---|
-| Extend exact-form NIKL surface/IPA regression | DONE_VERIFIED pending exact-head CI | Cross-rule engine test now covers 24 source-backed Korean surface/project-IPA pairs, including five added lexical forms: 늙고[늘꼬], 않았다[아낟따], 얇은[얄븐], 읽어[일거], 헛웃음[허두슴]. A sixth case, 긁고[글꼬], is stored in `tests/fixtures/nikl-surface-only-complex-coda.json` and guarded by `tests/nikl-surface-only-complex-coda.test.mjs`; its source is NIKL Online Q&A qna_seq=328946, https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=328946. The surface is attested, but the source supplies no IPA, so the Python pipeline's existing unresolved-status guard remains in force and the form is not added to the lexical IPA/target table. |
+| Extend exact-form NIKL surface/IPA regression | DONE_VERIFIED — PR #288 merged | Cross-rule engine test covers 24 source-backed Korean surface/project-IPA pairs, including five added lexical forms: 늙고[늘꼬], 않았다[아낟따], 얇은[얄븐], 읽어[일거], 헛웃음[허두슴]. A sixth case, 긁고[글꼬], is stored in `tests/fixtures/nikl-surface-only-complex-coda.json` and guarded by `tests/nikl-surface-only-complex-coda.test.mjs`; its source is NIKL Online Q&A qna_seq=328946, https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=328946. The surface is attested, but the source supplies no IPA, so the Python pipeline's existing unresolved-status guard remains in force and the form is not added to the lexical IPA/target table. |
 | IPA provenance | PARTIAL / project analysis | The cited NIKL pages attest Hangul pronunciation spellings, not IPA. Broad IPA values are explicit project analysis and must remain independently adjudicated. |
 | Ukrainian target | BLOCKED_SPECIALIST_REVIEW | Target syllables remain provisional and are not normative gold labels. |
 | Generalization to productive morphology / unseen compounds | BLOCKED_INPUT_ANALYSIS | Exact-form examples must not be generalized to all ㄼ/ㄺ stems or unknown compounds without evidence and morphology. |
 | Release readiness | BLOCKED | Research preview / partial prototype. The independent IPA queue, Ukrainian target review, source rights and permitted live-source retrieval remain open. |
 
-Current branch: `research/nikl-cross-rule-complex-coda-regressions-2026-10-24`. Exact-head CI is required before merge.
+Merged PR: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/288  
+Merge commit: `94b59752ebcd9b38f0e7a537dd662e3fea1f3ac4`. Exact-head CI at PR head `57365db812f7d428ccfc6434121c2233d1f0d8db` passed: 1,213 Node tests (0 failures), Python 3.11/3.12/3.13, browser tests/build, Python regression/data integrity, and corpus artifact generation. Run links: [tests 40075912255](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912255), [system verification 40075912274](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912274), [corpus artifacts 40075912368](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912368). [Paired native-vs-g2pk diagnostic 40075912232](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912232) and [UGTPHON diagnostic 40075912262](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912262) passed. The multi-engine diagnostic benchmark [40075912330](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912330) was still running at the last check; its result is not claimed here.
 
 
 The first exact-head CI run for PR #288 exposed an important acceptance failure: adding `긁고` to the lexical table changed its Python status from `unresolved` to `provisional`, even though the source only attests Hangul surface spelling and does not provide IPA. That promotion was reverted. The source is now preserved in a separate surface-only fixture with `ipa_candidate: null`, `ukrainian_target: null`, and an explicit unresolved expectation. The five other new exact-form regressions use already-existing project IPA candidates and do not claim independent IPA gold.
+
+
+## Post-merge verification — complex-coda review follow-up, 2026-10-24
+
+| Task | Status | Evidence |
+|---|---|---|
+| Exact-form regression expansion and surface-only guard | DONE_VERIFIED | PR #288 merged to main as `94b59752ebcd9b38f0e7a537dd662e3fea1f3ac4`; source-backed IPA candidates are regression-pinned separately from the `긁고` surface-only evidence. |
+| JavaScript regression suite and production build | PASS | [Workflow 40075912255](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912255): 1,213 tests, 1,213 passed, 0 failed; build passed. |
+| Python matrix | PASS | Python 3.11, 3.12 and 3.13 jobs passed in workflow 40075912255. |
+| Browser/system verification | PASS | [Workflow 40075912274](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912274): browser tests/build and Python regression/data integrity passed. The metadata-only NIKL job's success is not a claim that the live crawl succeeded. |
+| Generated corpus / research artifacts | PASS | [Workflow 40075912368](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912368). |
+| Paired native-vs-g2pk and UGTPHON diagnostics | PASS | [Workflow 40075912232](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912232); [workflow 40075912262](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912262). These are diagnostics, not independent phonetic gold. |
+| Multi-engine IPA benchmark | PASS as diagnostic execution | [Workflow 40075912330](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912330) completed and emitted artifact [12552947424](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912330/artifacts/12552947424). Metrics and limitations are recorded below; this is not normative gold evaluation. |
+| Scientific release acceptance | BLOCKED | Independent IPA gold, Ukrainian target-layer review, full subparagraph/table adjudication, source-rights review and permitted live NIKL retrieval remain open. |
+
+
+### Multi-engine benchmark outcome (2026-10-24)
+
+Artifact: [multi-engine-korean-ipa-diagnostic.zip](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912330/artifacts/12552947424), benchmark `multi-engine-ipa-diagnostic-v1`. Dataset: 275 rows, 2,703 eligible Hangul token occurrences, 1,907 unique words. The reference set is the noisy user-generated UGTPHON Korean test split, not a balanced official pronunciation standard. Scores are diagnostic only; normalization preserves fortis, aspiration and length, while stripping a defined set of narrow diacritics and separators.
+
+| Engine | Exact match | Character error rate | Coverage | Abstentions / unresolved |
+|---|---:|---:|---:|---:|
+| ClippyFirst native | 24.41% (95% CI 22.12–26.97%) | 17.06% | 98.22% | 48 |
+| g2pk 0.9.4 | 24.97% (95% CI 22.80–27.38%) | 16.69% | 100% | 0 |
+| phonemize 2.0.1 | 20.05% | 21.36% | 100% | 0 |
+| hangul_to_ipa | 14.95% | 30.99% | 100% | 0 |
+| KoG2P | 14.87% | 26.08% | 100% | 0 |
+| eSpeak NG Korean | 8.14% | 39.05% | 100% | 0 |
+
+**Interpretation:** the native engine's point exact-match score is slightly below g2pk on this dataset, with overlapping bootstrap intervals; it abstains on 48 token occurrences rather than forcing output. These scores do not establish which IPA is correct because UGTPHON annotations are not a fully adjudicated independent gold set, and the g2pk adapter shares parts of the project's representation layer. The benchmark does not evaluate Ukrainian adaptation. It is evidence that the diagnostic pipeline executes reproducibly, not a release-acceptance pass for linguistic correctness.
