@@ -664,3 +664,12 @@ def test_rule_28_and_30_exact_licenses_do_not_generalize_to_unlisted_homographs(
     assert items[0].coda == "ㅅ"
     assert items[1].onset == "ㄱ"
     assert not traces[0].changed
+
+
+def test_velar_nasal_coda_is_not_resyllabified_to_silent_onset():
+    # Coda ㅇ is /ŋ/; onset ㅇ is silent. R002 must preserve the former.
+    for word in ("공인", "동요", "동이", "양아치"):
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R002"])
+        assert items[0].coda == "ㅇ", word
+        assert items[1].onset == "ㅇ", word
+        assert not traces[0].changed, word

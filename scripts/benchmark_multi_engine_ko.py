@@ -553,6 +553,65 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 }
         native_abstention_audit.append(occurrence)
 
+    # Keep the complete native-vs-g2pk occurrence-level ledger in the artifact.
+    # The capped multi-engine mismatch sample is useful for quick reading but
+    # cannot support a full error count or explain aggregate score differences.
+    native_g2pk_pairwise_audit: list[dict[str, Any]] = []
+    pairwise_category_counts: dict[str, int] = defaultdict(int)
+    g2pk_predictions = predictions.get("g2pk_0_9_4", {})
+    for item in items:
+        word, gold = item["word"], item["gold"]
+        native = native_cache.get(word, {})
+        candidate = g2pk_predictions.get(word, {})
+        native_score = None
+        g2pk_score = None
+        if not native.get("unresolved") and not native.get("error") and native.get("ipa"):
+            native_score = _score(native["ipa"], gold)
+        if isinstance(candidate, dict) and not candidate.get("error") and candidate.get("ipa"):
+            g2pk_score = _score(candidate["ipa"], gold)
+
+        if native.get("unresolved"):
+            category = "native_abstained_g2pk_exact" if g2pk_score and g2pk_score["exact"] else "native_abstained_g2pk_not_exact"
+        elif native.get("error") or not native.get("ipa"):
+            category = "native_error_g2pk_exact" if g2pk_score and g2pk_score["exact"] else "native_error_g2pk_not_exact"
+        elif not g2pk_score:
+            category = "g2pk_error_native_exact" if native_score and native_score["exact"] else "g2pk_error_native_not_exact"
+        elif native_score["exact"] and g2pk_score["exact"]:
+            category = "both_exact"
+        elif native_score["exact"]:
+            category = "native_only_exact"
+        elif g2pk_score["exact"]:
+            category = "g2pk_only_exact"
+        else:
+            category = "both_not_exact"
+        pairwise_category_counts[category] += 1
+
+        native_entry: dict[str, Any] = {
+            "status": "unresolved" if native.get("unresolved") else "error" if native.get("error") else "scored" if native_score else "no_output",
+            "ipa": native.get("ipa"),
+            "reason": native.get("reason") or native.get("error"),
+            "exact": native_score["exact"] if native_score else None,
+            "distance": native_score["distance"] if native_score else None,
+        }
+        if native.get("unresolved_contexts"):
+            native_entry["unresolved_contexts"] = native["unresolved_contexts"]
+        g2pk_entry: dict[str, Any] = {
+            "status": "scored" if g2pk_score else "error_or_no_output",
+            "ipa": candidate.get("ipa") if isinstance(candidate, dict) else None,
+            "reason": candidate.get("error") if isinstance(candidate, dict) else None,
+            "exact": g2pk_score["exact"] if g2pk_score else None,
+            "distance": g2pk_score["distance"] if g2pk_score else None,
+        }
+        native_g2pk_pairwise_audit.append({
+            "occurrence_id": item["occurrence_id"],
+            "row_id": item["row_id"],
+            "token": word,
+            "gold": gold,
+            "category": category,
+            "native": native_entry,
+            "g2pk_0_9_4": g2pk_entry,
+        })
+
     return {
         "benchmark": args.benchmark_name,
         "benchmark_version": "multi-engine-ipa-diagnostic-v3",
@@ -576,6 +635,12 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "engine_order": list(engine_results),
         "engines": engine_results,
         "diagnostic_mismatch_sample": mismatch_details,
+        "native_g2pk_pairwise_audit": {
+            "occurrence_count": len(native_g2pk_pairwise_audit),
+            "category_counts": dict(sorted(pairwise_category_counts.items())),
+            "interpretation": "complete occurrence-level native-vs-g2pk diagnostic; categories compare each prediction to the corpus annotation, which is not normative gold",
+            "occurrences": native_g2pk_pairwise_audit,
+        },
         "upstream_pins": {
             "g2pk": "0.9.4",
             "KoG2P": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7; GPL-3.0; executed as external checkout, not vendored",
