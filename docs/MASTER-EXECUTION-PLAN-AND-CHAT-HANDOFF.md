@@ -37,7 +37,7 @@
 
 ### Readiness
 
-**Research-ready for diagnostic comparisons; still a partial prototype, not release-ready.** The benchmark supports targeted code fixes and a clear remaining-error ledger, but it does not establish normative NIKL accuracy or Korean-to-Ukrainian output accuracy. The next real gate is current-head browser/Python/parity CI, followed by source adjudication of the 48 abstentions and a separately reviewed target-output gold corpus.
+**Research-ready for diagnostic comparisons; still a partial prototype, not release-ready.** The benchmark supports targeted code fixes and a clear remaining-error ledger, but it does not establish normative NIKL accuracy or Korean-to-Ukrainian output accuracy. Post-merge mainline tests, system verification, and master-table/research-artifact validation passed on 2f7b58f0b7d976b9d660f21a739145ce19c533ab; Pages deployment 40093211042 remains queued. The next research gates are source adjudication of the 48 abstentions, an independently adjudicated NIKL holdout, and a separately reviewed Korean-IPA-to-Ukrainian gold corpus.
 
 ## Paired native IPA + morphology benchmark — 2026-10-24
 
