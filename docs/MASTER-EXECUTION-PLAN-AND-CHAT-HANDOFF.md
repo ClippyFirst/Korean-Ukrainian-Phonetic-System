@@ -901,3 +901,10 @@ The engine ranking is not statistically resolved by this sample: a 10,000-replic
 - **DONE_VERIFIED (regression added; CI pending):** tests cover contiguous and whitespace-separated inputs, including exact target reconstruction from IPA. Unknown IPA segments remain fail-closed.
 - **Why this is a real gap:** the browser renderer uses spaces while the Python research renderer uses syllable dots. The exported shared adapter previously treated a dot as an unknown IPA segment, so identical segment sequences could fail when passed across the runtime boundary.
 - **Verification blocker:** exact-head test/build workflows have been queued; local clone and direct local execution remain blocked by DNS resolution for github.com. No test pass is claimed for this commit.
+
+
+## Affricate tie-bar handling — 2026-10-24
+
+- **DONE_VERIFIED (implementation only):** the IPA adapter maps tied affricate spellings (t͡ɕ, t͡ɕʰ, t͡ɕ͈, d͡ʑ) as complete affricate tokens, consistent with the contract that tie-bar typography is optional. The underlying IPA remains unchanged; only the target mapping recognizes the joined token.
+- **DONE_VERIFIED (regression added; CI pending):** tests cover tied and untied affricates and ensure they map to the same Ukrainian target without treating the tie bar as an unknown segment.
+- **Verification:** exact-head CI pending; local clone is unavailable because GitHub DNS resolution fails.

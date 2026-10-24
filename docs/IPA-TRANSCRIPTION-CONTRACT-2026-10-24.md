@@ -100,3 +100,8 @@ The evidence supports a broad-phonological comparison profile, but does not lice
 ### Boundary interoperability
 
 The exported IPA-to-Ukrainian adapter accepts both whitespace-separated browser IPA and dot-separated syllable boundaries from the Python research renderer. Dots are treated as boundary metadata, not as phonetic segments; unknown actual IPA symbols still fail closed. A regression covers contiguous and whitespace-separated Korean source text.
+
+
+### Affricate tie-bar interoperability
+
+The IPA-to-Ukrainian inventory accepts both untied and tied broad-IPA affricate spellings (including aspirated and fortis alveolo-palatal affricates). The tie bar is a typographic segment-joining mark, not a separate sound; the whole affricate is mapped as one token so it cannot degrade into separate stop-plus-fricative Ukrainian output. This does not remove aspiration or fortisness from the IPA string itself.

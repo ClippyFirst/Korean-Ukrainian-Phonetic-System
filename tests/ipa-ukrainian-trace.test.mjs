@@ -138,3 +138,18 @@ test('IPA target adapter accepts dot-separated syllable boundaries as metadata',
   assert.equal(spaced.unknown, '');
   assert.equal(spaced.text, 'ші ґу', 'source word spacing must survive IPA dot boundaries');
 });
+
+
+test('IPA adapter treats affricate tie bars as optional notation without splitting affricates', () => {
+  for (const [ipa, target] of [
+    ['t͡ɕi', 'чі'],
+    ['t͡ɕʰi', 'чі'],
+    ['t͡ɕ͈i', 'чі'],
+    ['d͡ʑi', 'джі']
+  ]) {
+    const traced = traceIpaMapping(ipa);
+    assert.equal(traced.unknown, '', ipa + ': tie-bar notation must remain mappable');
+    assert.equal(ipaSyllableToUkrainian(ipa).text, target, ipa);
+    assert.equal(traced.tokens[0].ukrainian, target.slice(0, ipa.startsWith('d') ? 2 : 1));
+  }
+});
