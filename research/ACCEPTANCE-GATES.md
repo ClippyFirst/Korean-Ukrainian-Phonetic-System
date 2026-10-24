@@ -273,3 +273,18 @@ The collector's exact block reason is “Official source denied or rate-limited 
 | Official NIKL source inventory | **BLOCKED_EXTERNAL_ACCESS** | Obtain permitted direct retrieval or an official export; validate all 30 articles with zero missing/duplicate/incomplete records; emit and audit metadata-only source/article hashes and manifest. Do not bypass access controls or retain full text before terms review. |
 
 This replaces “skipped” as the overall task status: the collector has now been attempted three times against approved official endpoints, with the access block evidenced and classified. The blocker remains external source access, not an unrun job or an untested parser.
+
+
+## NIKL local HTML inventory update — 2026-10-24
+
+This entry supersedes earlier descriptions of the technical inventory as merely skipped. The exact repository-held `한국어 어문 규범.htm` was parsed by the existing local-import route on dedicated branch `research/nikl-local-html-import-2026-10-24`.
+
+| Gate | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Article inventory from the committed HTML | DONE_VERIFIED after source/manifest parity test passes on final PR head | [Workflow run 40072018648](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072018648); 30/30 articles; zero missing, duplicate, unexpected, or incomplete records; metadata-only manifest at `reports/nikl/standard-pronunciation-manifest.json`; source SHA-256 `11dccd3c6eafb5167a6f448c2ccb5fc45fd698c5b2d1570ed3d1e5c177fa7a1e`. |
+| Authenticity of the local capture as a complete, unmodified official response | BLOCKED_EXTERNAL_ACCESS | Direct NIKL HTTP endpoints previously returned 403; local import records no HTTP status, retrieval timestamp, or robots decision. Acceptance requires an authorized official export/capture provenance or permitted direct retrieval. |
+| Rights / terms for article text and derived redistribution | BLOCKED / not_assessed | No permission is inferred from the presence of the HTML in the repository. Review applicable source terms and item-level rights before retaining or redistributing article text. |
+| Human source adjudication | TODO | Spot-check article/subparagraph boundaries, examples, exceptions, cross-references, and the normative claims used by individual engine tests. |
+| Scientific release acceptance | BLOCKED | Independent broad-IPA adjudication and Ukrainian target-layer review remain outstanding; source inventory completion alone is not a release gate pass. |
+
+The importer manifest is metadata-only: per-article title, anchor, normalized character count, extraction status, and SHA-256 are retained; raw HTML and article text are not. The workflow validates the schema and requires re-generated metadata to match the committed manifest except for the naturally changing `importedAt` timestamp.
