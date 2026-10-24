@@ -1,6 +1,6 @@
 # Research morphology adapters (2026-10-24)
 
-**Status:** integrated adapter boundary; optional engines and corpus benchmark remain environment-dependent.  
+**Status:** integrated research adapters; same-corpus full benchmark completed in CI for Kiwi and MeCab-Ko. A paired boundary-agreement report is added as a separate diagnostic, not a gold-accuracy measure.  
 **Scope:** research engine only. This work must not change the public browser service or its practical-mode output.
 
 ## Why this layer exists
@@ -29,13 +29,63 @@ Both return form, tag, source offsets and (only when exposed reliably by the API
 
 ## Diagnostic benchmark
 
-The repository includes an unlabelled diagnostic input list at `data/korean/morphology-review-corpus.txt`. It contains ambiguous and control forms for inspection only; it is **not** gold annotation and must not be used to claim accuracy. Run:
+The repository includes an unlabelled diagnostic input list at `data/korean/morphology-review-corpus.txt`. It contains ambiguous and control forms for inspection only; it is **not** gold annotation and must not be used to claim accuracy. The real-engine smoke proves both adapters execute, not that either is more accurate. For a same-corpus comparison against the pinned UGTPHON Korean test split, run the new paired benchmark (one analyzer per environment):
 
 ```powershell
-uv run python scripts/benchmark_research_morphology.py data/korean/morphology-review-corpus.txt --output artifacts/morphology-diagnostic.jsonl
+uv run python scripts/benchmark_morphology_ipa_delta.py --corpus PATH_TO_PINNED_UGTPHON_KO_TEST_JSON --analyzer kiwi --output artifacts/paired-ipa-morphology-kiwi.json
+# Run separately with --analyzer mecab-ko in an environment with that extra installed
 ```
 
-The output records per-engine availability, selected binding, elapsed time, tokenization, offsets, and errors. It is deliberately **not** an accuracy score: accuracy requires a versioned gold set with independently reviewed morpheme boundaries/POS labels. Do not use token count or successful execution as a proxy for accuracy.
+The paired report evaluates native `morphology_mode=strict` and `morphology_mode=soft` against the same UGTPHON IPA references, reports paired exact-match/CER deltas and coverage, and runs the selected morphology analyzer on the exact same unique Hangul word inventory. It also identifies words whose native IPA/status changes and whether the analyzer segmented those words into multiple morphemes. This is correlation/diagnostics only: Kiwi/MeCab output is deliberately not injected into phonological rules, so no causal improvement is claimed. Morphology token counts and tags remain unscored until independently adjudicated gold segmentation/POS labels exist.
+
+
+## Same-corpus benchmark results — 2026-10-24
+
+The paired workflow uses the pinned UGTPHON Korean test split (275 rows; Apache-2.0 source dataset), with 2,703 eligible Hangul-token occurrences and 1,907 unique Hangul words. Run: [paired benchmark workflow 40080512584](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40080512584). Full JSON reports are attached as CI artifacts named paired-ipa-morphology-kiwi and paired-ipa-morphology-mecab-ko.
+
+### Existing native IPA engine: strict vs soft mode
+
+| Measure | Strict | Soft | Difference |
+|---|---:|---:|---:|
+| Scored occurrences | 2,655 / 2,703 | 2,677 / 2,703 | +22 scored |
+| Coverage | 98.2242% | 99.0381% | +0.8139 percentage points |
+| Exact IPA matches | 648 | 650 | +2 |
+| Exact-match rate among scored | 24.4068% | 24.2809% | −0.1259 percentage points |
+| Character error rate (CER) | 17.0648% | 17.0906% | +0.0258 percentage points (worse) |
+| Unique words marked unresolved | 47 | 25 | −22 (−46.8%) |
+
+On the **2,655 occurrences scored by both modes**, the output metrics are identical: 648 exact matches, 24.4068% exact rate, CER 17.0648%. The soft mode expands coverage to 22 additional occurrences, but only 2 of those are exact matches. Its overall exact rate and CER therefore do not improve. This is a coverage/abstention trade-off, not evidence of better IPA accuracy.
+
+### Morphological engines on the exact same 1,907 words
+
+| Engine | Words analyzed | Multi-morpheme segmentations | Share | Elapsed time in CI |
+|---|---:|---:|---:|---:|
+| Kiwi (kiwipiepy) | 1,907 / 1,907 | 1,321 | 69.27% | 1.795 s |
+| MeCab-Ko (python-mecab-ko) | 1,907 / 1,907 | 1,282 | 67.23% | 0.051 s |
+
+Both achieved 100% execution coverage on this inventory. Kiwi emitted 39 more multi-morpheme analyses; MeCab-Ko ran about 35× faster in this run. These are runtime and segmentation-shape observations only. Neither count is a segmentation accuracy score, and the raw POS tagsets are not assumed equivalent. The reports flag unusually long segmentations (10+ morphemes) for manual review: Kiwi flagged 9 words (maximum 48 morphemes), while MeCab-Ko flagged 5 (maximum 26). Inspection of the top outliers shows highly repetitive, long user-generated strings rather than representative clean lexical items. These are corpus-noise review candidates, not evidence that one analyzer is wrong on normal Korean.
+
+The native soft-mode changes affected 22 unique words/statuses, and **both analyzers split all 22 into multiple morphemes** in this run. This is an interesting alignment for follow-up review, but it is not causal evidence: the analyzer outputs were never passed to the phonology engine. The strict/soft native experiment is independent of Kiwi/MeCab.
+
+### Existing independent IPA-engine baseline (same pinned corpus)
+
+The earlier multi-engine report [run 40078877803](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40078877803) measured the following diagnostic exact-match rates / CER:
+
+| IPA path | Exact-match rate | CER | Coverage |
+|---|---:|---:|---:|
+| ClippyFirst native strict | 24.4068% | 17.0648% | 98.2242% |
+| g2pk 0.9.4 + project IPA renderer | 24.9723% | 16.6931% | 100% |
+| phonemize 2.0.1 | 20.0518% | — | — |
+| hangul_to_ipa | 14.9464% | — | — |
+| KoG2P + explicit label-to-IPA adapter | 14.8724% | — | — |
+| eSpeak NG Korean | 8.1391% | — | — |
+
+The comparison is diagnostic rather than normative: UGTPHON is noisy user-generated text, its IPA conventions differ from the project's broad IPA conventions, some candidates use representation adapters, and unresolved native tokens affect coverage. These scores evaluate Korean IPA only, not Ukrainian adaptation. The native strict score exactly matches the new paired run, confirming that the benchmark is comparing the same baseline behavior.
+
+### Pairwise Kiwi/MeCab boundary agreement
+
+The [paired workflow run 40080512584](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40080512584) compared boundary sets on all 1,907 common words: exact boundary-set agreement was 1,492/1,907 (78.24%); micro boundary overlap had 1,891 shared boundaries, 373 Kiwi-only boundaries and 302 MeCab-only boundaries, for F1 = 84.86%. This is **pairwise agreement, not accuracy**; neither analyzer is gold, and raw POS tags are not compared. The JSON report is attached as the morphology-analyzer-boundary-agreement artifact.
+
 
 ## Acceptance gates before morphology may license phonological rules
 
@@ -48,7 +98,7 @@ The output records per-engine availability, selected binding, elapsed time, toke
 
 ## Known limitations
 
-- This integration creates an adapter boundary, not a claim that both engines have been installed or run in CI.
+- Real-engine smoke has passed for both optional analyzers on the 16-input review corpus; full-corpus same-inventory benchmark evidence is pending the new CI workflow.
 - MeCab-Ko's Python bindings are OS-sensitive; initialization failures are surfaced with the underlying API errors.
 - Kiwi/MeCab segmentation conventions differ; raw tag strings are retained instead of being collapsed into a possibly incorrect universal POS inventory.
 - Lemma is nullable and is not guessed from surface form.

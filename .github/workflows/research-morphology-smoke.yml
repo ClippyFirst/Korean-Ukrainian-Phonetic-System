@@ -7,6 +7,13 @@ on:
       - "scripts/benchmark_research_morphology.py"
       - "data/korean/morphology-review-corpus.txt"
       - "pyproject.toml"
+      - "scripts/benchmark_morphology_ipa_delta.py"
+      - "scripts/compare_morphology_analyzers.py"
+      - "tests/test_compare_morphology_analyzers.py"
+      - "tests/test_morphology_ipa_delta_benchmark.py"
+      - "src/korean_ukrainian/soft_morphology.py"
+      - "src/korean_ukrainian/pipeline.py"
+      - "src/korean_ukrainian/rules.py"
       - ".github/workflows/research-morphology-smoke.yml"
   workflow_dispatch:
 
@@ -71,3 +78,131 @@ jobs:
           name: morphology-${{ matrix.engine }}-diagnostic
           path: artifacts/morphology-${{ matrix.engine }}.jsonl
           if-no-files-found: ignore
+
+
+  paired-ipa-benchmark:
+    name: ${{ matrix.engine }} + native strict/soft IPA (Python 3.12)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - engine: kiwi
+            extra: research-kiwi
+          - engine: mecab-ko
+            extra: research-mecab-ko
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install project, test dependencies, and selected analyzer
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[${{ matrix.extra }},dev]"
+      - name: Fetch and validate the pinned UGTPHON Korean test split
+        env:
+          UGT_PHON_COMMIT: ef0d5a09c2ea1874c7206020f875cbd9cfea2f54
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/$UGT_PHON_COMMIT/ko/test.json" \
+            --output "$RUNNER_TEMP/ko-test.json"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/$UGT_PHON_COMMIT/ko/LICENSE" \
+            --output "$RUNNER_TEMP/ko-LICENSE"
+          grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
+          python - "$RUNNER_TEMP/ko-test.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          rows = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          assert len(rows) == 275, f"pinned corpus row-count drift: {len(rows)}"
+          assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
+          assert len({row["id"] for row in rows}) == len(rows)
+          print(f"Validated {len(rows)} pinned Korean test rows; Apache-2.0 source license.")
+          PY
+      - name: Run paired benchmark unit tests
+        run: python -m pytest -q tests/test_morphology_ipa_delta_benchmark.py tests/test_research_morphology.py
+      - name: Run same-corpus IPA and morphology comparison
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_morphology_ipa_delta.py \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --analyzer "${{ matrix.engine }}" \
+            --output "artifacts/paired-ipa-morphology-${{ matrix.engine }}.json"
+      - name: Validate benchmark report and print comparable deltas
+        env:
+          REPORT: artifacts/paired-ipa-morphology-${{ matrix.engine }}.json
+          ENGINE: ${{ matrix.engine }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          r = json.loads(Path(os.environ["REPORT"]).read_text(encoding="utf-8"))
+          assert r["morphology"]["status"] == "completed_diagnostic", r["morphology"]
+          assert r["morphology"]["unique_words_analyzed"] > 0
+          assert r["native_ipa"]["strict"]["attempted_occurrences"] == r["eligible_token_occurrences"]
+          assert r["native_ipa"]["soft"]["attempted_occurrences"] == r["eligible_token_occurrences"]
+          assert r["native_ipa"]["paired_subset"]["occurrences_scored_by_both"] > 0
+          print(json.dumps({
+            "engine": os.environ["ENGINE"],
+            "dataset_rows": r["dataset_rows"],
+            "eligible_occurrences": r["eligible_token_occurrences"],
+            "unique_words": r["unique_hangul_words"],
+            "strict": r["native_ipa"]["strict"],
+            "soft": r["native_ipa"]["soft"],
+            "paired_delta": r["native_ipa"]["paired_subset"],
+            "morphology": {k:v for k,v in r["morphology"].items()
+                           if k not in {"results","errors","tag_counts_top_50"}},
+            "changed_words": r["native_ipa"]["unique_words_with_changed_ipa_or_status"],
+            "changed_words_also_split": r["native_ipa"]["changed_words_with_multi_morpheme_segmentation"],
+          }, ensure_ascii=False, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: paired-ipa-morphology-${{ matrix.engine }}
+          path: |
+            artifacts/paired-ipa-morphology-${{ matrix.engine }}.json
+            ${{ runner.temp }}/ko-LICENSE
+          if-no-files-found: warn
+          retention-days: 30
+
+
+  analyzer-agreement:
+    name: Kiwi vs MeCab-Ko boundary agreement
+    runs-on: ubuntu-24.04
+    needs: paired-ipa-benchmark
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download both same-corpus analyzer reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: paired-ipa-morphology-*
+          merge-multiple: true
+          path: artifacts/morphology
+      - name: Compare boundary agreement, not gold accuracy
+        run: |
+          set -euo pipefail
+          find artifacts/morphology -type f -print
+          KIWI_REPORT="$(find artifacts/morphology -type f -name 'paired-ipa-morphology-kiwi.json' -print -quit)"
+          MECAB_REPORT="$(find artifacts/morphology -type f -name 'paired-ipa-morphology-mecab-ko.json' -print -quit)"
+          test -n "$KIWI_REPORT"
+          test -n "$MECAB_REPORT"
+          python scripts/compare_morphology_analyzers.py \
+            --kiwi "$KIWI_REPORT" \
+            --mecab-ko "$MECAB_REPORT" \
+            --output artifacts/morphology/analyzer-boundary-agreement.json
+      - name: Upload pairwise agreement report
+        uses: actions/upload-artifact@v4
+        with:
+          name: morphology-analyzer-boundary-agreement
+          path: artifacts/morphology/analyzer-boundary-agreement.json
+          retention-days: 30

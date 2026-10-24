@@ -61,7 +61,11 @@ The Python research package has optional adapters for [Kiwi](https://github.com/
 - Adapter: `src/korean_ukrainian/research_morphology.py`
 - Tests with fake engines: `tests/test_research_morphology.py`
 - Diagnostic inputs (unlabelled, not gold): `data/korean/morphology-review-corpus.txt`
-- Diagnostic runner (not an accuracy benchmark without gold annotations): `scripts/benchmark_research_morphology.py`
+- Diagnostic runner on the 16-item review list: `scripts/benchmark_research_morphology.py`
+- [Paired full-corpus IPA/morphology benchmark and measured results](docs/RESEARCH-MORPHOLOGY-ADAPTERS-2026-10-24.md#same-corpus-benchmark-results--2026-10-24): `scripts/benchmark_morphology_ipa_delta.py`
+- Pairwise Kiwi-vs-MeCab boundary comparison (agreement is not accuracy): `scripts/compare_morphology_analyzers.py`
+
+The pinned UGTPHON benchmark found that the existing native soft mode raised coverage from 98.22% to 99.04% but lowered exact-match rate from 24.41% to 24.28% and slightly worsened CER. Kiwi and MeCab-Ko each analyzed all 1,907 unique words, but their outputs are not yet used by the IPA engine. See the report for detailed limits and pairwise boundary agreement.
 
 Install Kiwi with `uv pip install -e '.[research-kiwi]'`; install MeCab-Ko bindings with `uv pip install -e '.[research-mecab-ko]'`. A real-engine CI smoke run successfully installed and ran both adapters against the 16-input diagnostic list (Kiwi: 40 tokens; MeCab-Ko: 37 tokens). These counts and runtime are diagnostic only, not accuracy metrics: no independently adjudicated gold segmentation/POS set exists. The MeCab adapter records its selected binding and never substitutes a different analyzer family; see the research document for the evidence gates.
 
