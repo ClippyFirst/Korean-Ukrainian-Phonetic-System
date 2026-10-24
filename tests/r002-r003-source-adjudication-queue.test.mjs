@@ -48,7 +48,7 @@ test('R002/R003 triage queue contains the intended 14 distinct source-review cas
       for (const source of item.relatedSourceEvidence) {
         assert.match(source.url, /^https:\/\//u, item.input + ': related source URL required');
         assert.ok(source.excerpt, item.input + ': related source excerpt required');
-        assert.match(source.scope, /Related lexical-form evidence only/u, item.input + ': related source must not be treated as exact-form adjudication');
+        assert.match(source.scope, /Related (lexical-form|rule-environment) evidence only/u, item.input + ': related source must not be treated as exact-form adjudication');
       }
     }
     assert.equal(item.reviewerA.ipa, null, item.input + ': reviewer A has not adjudicated');
