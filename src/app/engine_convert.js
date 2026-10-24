@@ -250,8 +250,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       status:targetMapping.status,
       reason:targetMapping.reason
     };
-    if(targetFromIpa.unknown){
-      issues.push(u.char+': IPA target mapping unavailable ('+(targetFromIpa.reason||'unmapped_ipa_sequence')+'): '+targetFromIpa.unknown);
+    if(targetFromIpa.unknown || targetFromIpa.status==='unavailable'){
+      issues.push(u.char+': IPA target mapping unavailable ('+(targetFromIpa.reason||'unmapped_ipa_sequence')+'): '+(targetFromIpa.unknown||'(empty IPA)'));
       output[i]=preserveUnresolvedSource?'⟦'+u.char+'⟧':'';
       status='unresolved';
     }else{
