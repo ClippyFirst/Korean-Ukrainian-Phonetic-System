@@ -61,6 +61,7 @@ def test_all_canonical_lexical_pronunciations_are_reproducible_from_ipa():
         rows = list(csv.DictReader(handle))
 
     checked = 0
+    alternate_checked = 0
     for row in rows:
         if not row.get("ipa_syllables") or not row.get("target_syllables"):
             continue
@@ -79,4 +80,22 @@ def test_all_canonical_lexical_pronunciations_are_reproducible_from_ipa():
         )
         checked += 1
 
+        if row.get("alternate_ipa_syllables") and row.get("alternate_target_syllables"):
+            alternate_ipa = row["alternate_ipa_syllables"].split("|")
+            alternate_target = row["alternate_target_syllables"].split("|")
+            assert len(alternate_ipa) == len(alternate_target), row["input"]
+            alternate_rendered = []
+            for ipa_syllable in alternate_ipa:
+                result = render_ipa_sequence_to_ukrainian(ipa_syllable)
+                assert result["ukrainian_orthography"] is not None, (
+                    row["input"], ipa_syllable, result.get("unmapped_fragment")
+                )
+                alternate_rendered.append(result["ukrainian_orthography"])
+            assert alternate_rendered == alternate_target, (
+                row["input"], row["alternate_ipa_syllables"],
+                alternate_target, alternate_rendered
+            )
+            alternate_checked += 1
+
     assert checked == len(rows) == 643
+    assert alternate_checked == 45
