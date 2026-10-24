@@ -483,6 +483,54 @@ def _select_target(target):
     return {"segments":selected,"score_type":"heuristic_cost","status":"top_ranked_segmentwise"}
 
 
+def _target_unavailable_reason(target):
+    """Explain target abstention at the smallest inspectable IPA-segment boundary."""
+    segments = target.get("segments", [])
+    if not segments:
+        return "no_target_segments", None, []
+
+    first_target = segments[0].get("target", {})
+    adapter_status = first_target.get("adapter", {}) if isinstance(first_target, dict) else {}
+    if not adapter_status.get("available", False):
+        return "target_inventory_unavailable", adapter_status or None, []
+    error = str(adapter_status.get("error") or "")
+    if error.startswith("mapping export unavailable:"):
+        return "target_mapping_export_unavailable", adapter_status, []
+
+    segment_reasons = []
+    for segment in segments:
+        target_result = segment.get("target", {})
+        candidates = target_result.get("candidates", []) if isinstance(target_result, dict) else []
+        licensed = [
+            candidate for candidate in candidates
+            if candidate.get("mapping_id") and candidate.get("grapheme")
+        ]
+        if licensed:
+            continue
+        if not candidates:
+            reason = "no_target_candidates"
+        elif any(candidate.get("mapping_id") and not candidate.get("grapheme")
+                 for candidate in candidates):
+            reason = "licensed_mapping_missing_grapheme"
+        elif any(candidate.get("grapheme") and not candidate.get("mapping_id")
+                 for candidate in candidates):
+            reason = "grapheme_without_licensed_mapping"
+        else:
+            reason = "no_licensed_ipa_to_ukrainian_mapping"
+        segment_reasons.append({
+            "source_ipa": segment.get("source_ipa"),
+            "reason": reason,
+        })
+
+    if not segment_reasons:
+        # Defensive fallback: _select_target() and this diagnostic helper should
+        # agree. Keep abstaining rather than inventing a target if they diverge.
+        return "target_selection_inconsistent", adapter_status, []
+    reasons = sorted({item["reason"] for item in segment_reasons})
+    reason = reasons[0] if len(reasons) == 1 else "multiple_target_blockers"
+    return reason, adapter_status, segment_reasons
+
+
 def render_ipa_analysis_to_ukrainian(
     text, word_analyses, *, pronunciation_surface, phonetics, ipa,
     pronunciation_engine, target_adapter=None, morphology_mode="unspecified",
@@ -533,10 +581,14 @@ def render_ipa_analysis_to_ukrainian(
         selected = _select_target(target)
         if not selected:
             all_mapped = False
+            reason, adapter_status, segment_reasons = _target_unavailable_reason(target)
             targets.append({
                 "surface_hangul": token,
                 "ipa": word_ipa,
                 "status": "unavailable",
+                "reason": reason,
+                "segment_reasons": segment_reasons,
+                "target_adapter_status": adapter_status or None,
             })
             continue
 
@@ -558,6 +610,9 @@ def render_ipa_analysis_to_ukrainian(
         "phonetics": phonetics,
         "ipa": ipa,
         "target_analysis": targets,
+        "unavailable_reasons": sorted({
+            item["reason"] for item in targets if item.get("reason")
+        }),
         "ukrainian_orthography": "".join(output_parts) if all_mapped else None,
         "target_status": "model-selected" if all_mapped else "unavailable",
         "score_type": "heuristic_cost",
@@ -594,10 +649,17 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
     # The lexical target is an audit reference only. Never use a stored Ukrainian
     # target to bypass the required IPA -> Ukrainian inventory adapter boundary.
     target_status="model-selected" if selected else "unresolved"
+    target_unavailable_segments = []
+    if surface["pronunciation_status"] == "unresolved":
+        target_unavailable_reason = "unresolved_korean_phonology"
+    elif selected:
+        target_unavailable_reason = None
+    else:
+        target_unavailable_reason, _, target_unavailable_segments = _target_unavailable_reason(target)
     selection_status=(
         "unresolved_due_to_ambiguous_korean_phonology"
         if surface["pronunciation_status"] == "unresolved"
         else ("top-ranked segmentwise IPA-derived heuristic candidate; not probability"
               if selected else "unavailable_without_target_inventory")
     )
-    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"ipa_status":surface["ipa_status"],"ipa_is_diagnostic_only":surface["ipa_is_diagnostic_only"],"ipa_status_reason":surface["ipa_status_reason"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"lexical_target_reference":lexical_reference,"lexical_target_reference_status":lexical_reference_status,"lexical_target_comparison":lexical_comparison,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype","morphology_mode":morphology_mode}
+    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"ipa_status":surface["ipa_status"],"ipa_is_diagnostic_only":surface["ipa_is_diagnostic_only"],"ipa_status_reason":surface["ipa_status_reason"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"target_unavailable_reason":target_unavailable_reason,"target_unavailable_segments":target_unavailable_segments,"lexical_target_reference":lexical_reference,"lexical_target_reference_status":lexical_reference_status,"lexical_target_comparison":lexical_comparison,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype","morphology_mode":morphology_mode}
