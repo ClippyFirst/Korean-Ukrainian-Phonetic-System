@@ -672,3 +672,26 @@ The collector already supports importing a locally saved official HTML page with
 Added `docs/NIKL-LOCAL-CAPTURE-AND-INVENTORY-2026-10-24.md` with the authorized browser-save procedure, exact Windows PowerShell-compatible command shape, fail-closed acceptance checks, and explicit limits of local-import provenance. Raw HTML must remain local and must not be committed. The manifest defaults to metadata and hashes only; it does not certify rights, rule interpretation, or IPA/target correctness.
 
 Acceptance remains pending until a complete manifest is generated from an authorized official capture, reports all 30 articles with no missing/duplicate/incomplete records, and receives a human spot-check of article and subarticle structure. This documentation change does not claim the external inventory is complete and does not change the research-preview release status.
+
+
+### Independent Korean IPA engine comparison — 2026-10-24
+
+PR [#280](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/280) expands the existing native-vs-g2pk diagnostic to four additional executable baselines: KoG2P (pinned GPL-3.0 external checkout), hangul_to_ipa (pinned MIT external checkout), eSpeak NG via phonemizer, and phonemize 2.0.1. The raw corpus and third-party engine source are not vendored. KPD remains BLOCKED_ACCESS_AND_TERMS because authorized access and terms have not been verified; the 2022 research modification is not treated as executable until a reproducible implementation can be pinned.
+
+Verified scoring run: [40069800681](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069800681), artifact [12550916606](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069800681/artifacts/12550916606). The scoring implementation was unchanged by subsequent report/matrix documentation commits on PR #280. The initial phonemize run is excluded because its adapter returned unchanged Hangul; after enabling and smoke-testing anyAscii preprocessing, the corrected run produced non-Hangul IPA and scored all eligible tokens.
+
+Pinned UGTPHON Korean test split: 275 rows, 2,703 eligible token occurrences, 1,907 unique words. Results:
+- ClippyFirst native: 2,653/2,703 scored; 648 exact (24.4252%); CER 17.0604%; 50 explicit abstentions; no runtime exceptions.
+- g2pk 0.9.4: 2,703/2,703 scored; 675 exact (24.9723%); CER 16.6931%.
+- KoG2P: 402 exact (14.8724%); CER 26.0795%.
+- hangul_to_ipa: 404 exact (14.9464%); CER 30.9851%.
+- eSpeak NG / phonemizer: 220 exact (8.1391%); CER 39.0498%.
+- phonemize 2.0.1 with corrected adapter: 542 exact (20.0518%); CER 21.3645%.
+
+On the 2,653-occurrence paired subset, g2pk scored 25.2167% exact vs native 24.4252%; paired delta +0.7915 percentage points (95% row-cluster bootstrap CI +0.4538 to +1.1924 pp). Paired CER delta was −0.3822 pp (95% CI −0.6055 to −0.2083 pp). These intervals exclude zero on this particular diagnostic set, but no multiple-comparison correction is applied, IPA annotations may be noisy/convention-dependent, and g2pk output is converted through the repository's segment renderer. This is evidence for a modest benchmark-specific g2pk advantage, not proof of universal superiority.
+
+Full protocol, candidate register, confidence intervals and limitations: [docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md). The coverage matrix is updated on the benchmark PR branch. No production pronunciation rules were changed by this benchmark.
+
+Remaining scientific gates are unchanged: official NIKL full-text inventory remains BLOCKED_EXTERNAL_ACCESS after HTTP 403; independent broad-IPA adjudication and separate Ukrainian target-layer review remain outstanding. This benchmark is not NIKL normative gold and does not score Ukrainian adaptation. The repository remains a research preview / partial prototype, not release-ready.
+
+Integration note: PR #280 and PR #281 both update this canonical handoff from separate branches. Do not merge them blindly; reconcile the appended sections and matrix references after the owner chooses merge order. Both PRs remain open and unmerged.
