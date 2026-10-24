@@ -86,6 +86,10 @@ def test_nikl_manifest_schema_rejects_incomplete_inventory_and_unreviewed_text_r
     manifest["source"]["termsReview"] = "redistribution_permitted"
     assert list(validator.iter_errors(manifest))
 
+    manifest = _valid_manifest()
+    manifest["articles"][0]["title"] = "제1항 표준 발음법은 표준어의 실제 발음을 따른다."
+    assert list(validator.iter_errors(manifest)), "metadata-only article labels must not retain clause wording"
+
 
 
 def test_nikl_manifest_schema_accepts_local_html_import_with_explicitly_unknown_http_provenance():
