@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Reproduce native/G2P outputs for the 24-form holdout without treating them as gold."""
+"""Reproduce native/G2P outputs for the 24-form holdout without treating them as gold.
+
+The optional g2pK engine is initialized explicitly because its adapter is lazy-loaded.
+"""
 
 from __future__ import annotations
 
