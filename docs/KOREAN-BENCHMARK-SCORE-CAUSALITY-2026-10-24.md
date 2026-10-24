@@ -139,6 +139,71 @@ Then compute, without leaking the holdout into rule tuning:
 
 Do not fit a large correlation model to 275 sentence rows / 2,703 occurrences before these labels exist. Occurrences within a row and repeated lexical forms are dependent; use clustered intervals and avoid treating every occurrence as an independent sample.
 
+## 7.1 Re-analysis of the full occurrence-level artifact
+
+After downloading and inspecting the complete [pinned benchmark artifact 12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692), I computed descriptive strata from all 2,703 native-vs-g2pk occurrences. The reproducible analysis is now in `scripts/analyze_korean_benchmark_correlations.py`; it consumes the report JSON from the artifact and does not require or commit the raw corpus. The figures below are diagnostics against the selected corpus references, not normative pronunciation accuracy.
+
+### A. The exact-match difference is concentrated in one repeated word
+
+On the **2,655 occurrences scored by both systems**:
+
+- Native: 1,412 exact; g2pk: 1,416 exact.
+- Paired exact outcomes: **g2pk wins 4 occurrences, native wins 0, ties 2,651**.
+- All four g2pk exact wins are the same lexical form, `없는`, repeated four times. The corpus reference omits vowel length that the source-backed native form preserves.
+- The 1,860 unique lexical types in the paired set have macro type exact rates of 49.839% native and 49.892% g2pk (difference +0.0538 pp); only one type favors g2pk, none favors native, and 1,859 tie.
+- A lexical-type cluster bootstrap sensitivity analysis gives a 95% interval of 0.00 to +0.4726 pp for the occurrence-weighted g2pk-minus-native exact-rate delta. Unlike the row-cluster interval, this interval includes zero. It is a sensitivity analysis, not a definitive two-way clustered interval.
+
+If the four `없는` occurrences are removed **only as a sensitivity check**, the exact counts become 1,412 vs 1,412. Native has 2,072 total edits versus g2pk's 2,088 on the remaining 2,651 occurrences. This does not authorize changing production output to match the reference; it shows the headline exact-match lead is driven by one repeated reference-convention discrepancy.
+
+**Important correction to the earlier interpretation:** the row-cluster bootstrap treats occurrences in separate rows as separate clusters even when they are the same lexical type. The reported positive row-cluster exact-match interval should not be read as robust evidence of a general g2pk advantage. Report row-cluster and lexical-type sensitivity together until a defensible multiway dependence treatment is implemented.
+
+### B. Longer words are much less likely to be an exact string match
+
+Rates below use the common paired subset and group the input by number of precomposed Hangul syllable blocks:
+
+| Hangul blocks in token | Paired occurrences | Native exact | g2pk exact |
+|---|---:|---:|---:|
+| 1–2 | 1,108 | 61.91% | 62.27% |
+| 3 | 724 | 53.18% | 53.18% |
+| 4+ | 823 | 41.43% | 41.43% |
+
+A similar pattern appears when grouped by normalized IPA reference length:
+
+| Normalized reference length | Paired occurrences | Native exact | g2pk exact |
+|---|---:|---:|---:|
+| ≤5 characters | 688 | 71.22% | 71.80% |
+| 6–7 characters | 630 | 59.68% | 59.68% |
+| 8+ characters | 1,337 | 40.84% | 40.84% |
+
+This is the clearest measured association in the current artifact: exact whole-token matching falls as the sequence gets longer. Longer forms have more opportunities for a single symbol-level difference, and may also contain more phonological interactions or morphology boundaries. The aggregate cross-tab cannot distinguish those mechanisms; it is not evidence that length itself causes errors.
+
+### C. Most mismatches are small edit-distance differences
+
+Among the 1,243 native non-exact outputs in the paired set, 707 (56.88%) are exactly one edit away from the selected reference, and 1,044 (83.99%) are at most two edits away. For g2pk, 695/1,239 (56.09%) non-exact outputs are one edit away and 1,031/1,239 (83.21%) are at most two edits away.
+
+This supports a precise reading of the metrics: the engines fail exact whole-token IPA equality often, but most failures are not long arbitrary strings. They are often one- or two-character/segment differences. A single IPA character can encode a real contrast, so this does **not** mean the errors are harmless; the next step is to classify edits as genuine phonology, transcription convention, syllabification, or reference error.
+
+### D. Source and test-set repetition are associated with different rates, but do not prove causation
+
+| UGTPHON source | Paired occurrences | Native exact | g2pk exact | Paired exact wins |
+|---|---:|---:|---:|---|
+| MultiLexNorm++ | 784 | 55.36% | 55.36% | 0 vs 0 |
+| DC Inside | 1,871 | 52.27% | 52.49% | 4 g2pk, 0 native |
+
+The MultiLexNorm++ slice has a 3.09 pp higher native exact rate than the DC Inside slice, but source, word length, repetition and vocabulary are not controlled. The entire paired g2pk exact advantage again comes from the four `없는` occurrences in the DC Inside slice.
+
+By **frequency within this test file** (not external Korean lexical frequency), native exact rate is 48.33% for single-occurrence types (1,612 scored occurrences), 59.29% for types appearing 2–3 times (452), and 61.76% for types appearing 4+ times (591). The 4+ group contains only 61 distinct types and receives much more occurrence weight; it includes the repeated `없는` discrepancy. This is evidence that occurrence-weighted metrics can be influenced by the composition/repetition of this small test set, not proof that common Korean words are generally easier.
+
+### E. What the artifact still cannot tell us
+
+The full artifact supports source, length, test-frequency, and edit-distance strata. It does not provide independently reviewed rule/morpheme labels for every scored mismatch. Therefore it cannot yet establish that R002, R003, fortition, ㅎ deletion, or any other rule statistically explains the remaining 1,200+ mismatches. The 14-case R002/R003 queue is a selected adjudication queue, not a random sample and not gold.
+
+Run the new analysis locally after extracting `multi-engine-ipa-report.json` from artifact 12559692692:
+
+```bash
+python scripts/analyze_korean_benchmark_correlations.py --input multi-engine-ipa-report.json --output korean-benchmark-correlation-summary.json
+```
+
 ## 8. Practical conclusions and acceptance gates
 
 - **Do not set a 90–95% target against the current raw exact-string metric and assume the engine is deficient by 40 points.** First define a defensible, independently adjudicated IPA convention and report exact match, phoneme error rate/edit distance, CER, coverage and accepted variants separately.
@@ -156,7 +221,8 @@ Do not fit a large correlation model to 275 sentence rows / 2,703 occurrences be
 | Summarize current native/g2pk paired results | DONE_VERIFIED | Uses pinned run 40092929978 and occurrence-level artifact. |
 | Cross-check why published 90–99% figures are not comparable | DONE_VERIFIED | Primary paper records and scoring units documented. |
 | Explain measured convention and adapter confounds | DONE_VERIFIED | Explicitly documented; no blanket dismissal of references. |
-| Full per-item error correlation analysis | TODO | Emit stratified occurrence ledger and measured cross-tabs from the pinned artifact. |
+| Aggregate item-level stratification (source, length, test repetition, edit distance, lexical-type sensitivity) | DONE_VERIFIED | Reproducible analysis script and inspected full occurrence-level artifact; descriptive results are recorded in §7.1. |
+| Rule × morphology × interaction correlation analysis | TODO / evidence-limited | Requires independently reviewed rule, morpheme-boundary and reference-adjudication labels for scored mismatches. |
 | Independently adjudicate remaining scored mismatches and 14 R002/R003 forms | BLOCKED_SPECIALIST_ADJUDICATION | Exact source evidence, two independent IPA reviews, reconciliation and accepted variants. |
 | Frozen NIKL normative holdout | TODO / dependency-blocked | Independent source-backed gold, split locked before tuning, full per-rule report. |
 | Korean IPA → Ukrainian target evaluation | BLOCKED | Separate expert-reviewed Ukrainian gold corpus and fixed IPA inputs. |
