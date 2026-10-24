@@ -126,3 +126,15 @@ PR [#306](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 - Earlier head `f399ed03dddd543ff768135376b6c65f9e184c4b` passed the baseline Python, browser/build, data-integrity, g2pK and research diagnostic workflows. Later per-segment code/test changes are **CI PENDING** until the final PR-head checks finish; do not carry forward the earlier pass as final-head evidence.
 
 **Ledger:** Suite 6 remains **TODO/PARTIAL** for independent Ukrainian target accuracy; diagnostics are **PARTIAL** pending final-head CI and reproducible reconciliation of the exact 24-form fixture. The exact 24-form input list is not present in the reviewed tracked files at this point, so this note does not invent it. The 7 source-phonology abstentions remain evidence-limited, and target-layer gaps still need an accessible, compatible UPI 0.8.0 inventory plus reviewed correspondence evidence. Do not promote guessed mappings or lexical references to gold output.
+
+
+## Execution update — IPA-first target renderer (2026-10-24)
+
+PR [#306](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/306) merged at `d12b41b1440de27f54a7ff63340e164d7759b024`, adding per-word/per-segment target abstention diagnostics. The follow-on branch `feat/ipa-first-korean-target-renderer-2026-10-24` implements the output path itself.
+
+- `ipa_target_renderer.py` now maps **IPA sequences only** to Ukrainian practical orthography, using `canonical_correspondence.csv` and the explicit `ipa_target_overrides.csv` registry. No Hangul/Jamo lookup is used to choose output graphemes.
+- UPI 0.8.0 is now an optional target-inventory diagnostic, not a prerequisite for local licensed IPA→Ukrainian output. Candidate scores remain heuristic diagnostics and are not presented as probabilities or output-selection evidence.
+- The new regression fixture checks 643 primary lexical IPA rows and 45 licensed alternates. A deterministic pre-CI simulation produced zero mismatches; the Python regression and full CI on the final PR head are **PENDING** at this note.
+- Mapping overrides `ɰi → ий` and `kʰjʌ → кхьо` are marked provisional. The native strict engine must still withhold output for diagnostic-only/unresolved IPA, regardless of whether a target mapping exists.
+- **Ledger:** target output generation is **PARTIAL** until final-head CI passes and mapping status is independently reviewed; Ukrainian target accuracy remains **BLOCKED** without an independently adjudicated Ukrainian-output gold set. The exact frozen 24-form fixture is not currently tracked, so no claim is made that the original 24 forms have all been reconciled.
+- UPI packaging PR #10 is open but its Actions run exposes no job steps/logs after rerun. This does not block the new local IPA renderer, but UPI candidate diagnostics remain unavailable in a clean install.
