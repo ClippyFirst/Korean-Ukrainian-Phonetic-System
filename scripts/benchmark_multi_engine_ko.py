@@ -405,6 +405,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 "ipa": result.get("ipa", {}).get("ipa"),
                 "unresolved": result.get("pronunciation_status") == "unresolved",
                 "reason": result.get("ipa_status_reason"),
+                "unresolved_contexts": result.get("unresolved_contexts", []),
             }
         except Exception as exc:
             native_cache[word] = {"error": f"{type(exc).__name__}: {exc}"}
@@ -509,9 +510,59 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         if any_error and len(mismatch_details) < 250:
             mismatch_details.append(row)
 
+    # Preserve every abstained token occurrence, not just a truncated sample.
+    # Repeated words in separate rows count as separate occurrences.
+    native_abstention_audit: list[dict[str, Any]] = []
+    unresolved_context_counts: dict[str, int] = defaultdict(int)
+    for item in items:
+        native = native_cache.get(item["word"], {})
+        if not native.get("unresolved"):
+            continue
+        contexts = native.get("unresolved_contexts", [])
+        for context in contexts:
+            label = str(context.get("rule_id") or "unknown_rule") + ":" + str(
+                context.get("reason") or "unspecified_reason"
+            )
+            unresolved_context_counts[label] += 1
+        occurrence: dict[str, Any] = {
+            "occurrence_id": item["occurrence_id"],
+            "row_id": item["row_id"],
+            "token": item["word"],
+            "gold": item["gold"],
+            "native_status": "unresolved",
+            "native_reason": native.get("reason"),
+            "unresolved_contexts": contexts,
+            "candidate_outputs": {},
+        }
+        for name, engine_predictions in predictions.items():
+            if name == "clippyfirst_native":
+                continue
+            candidate = engine_predictions.get(item["word"], {})
+            value = candidate.get("ipa") if isinstance(candidate, dict) else None
+            if isinstance(value, str) and value:
+                scored_candidate = _score(value, item["gold"])
+                occurrence["candidate_outputs"][name] = {
+                    "ipa": value,
+                    "exact": scored_candidate["exact"],
+                    "distance": scored_candidate["distance"],
+                }
+            else:
+                occurrence["candidate_outputs"][name] = {
+                    "status": "error_or_no_output",
+                    "reason": candidate.get("error") if isinstance(candidate, dict) else None,
+                }
+        native_abstention_audit.append(occurrence)
+
     return {
         "benchmark": "UGTPHON Korean test split",
-        "benchmark_version": "multi-engine-ipa-diagnostic-v1",
+        "benchmark_version": "multi-engine-ipa-diagnostic-v2",
+        "native_abstention_audit": {
+            "occurrence_count": len(native_abstention_audit),
+            "unique_words": len({item["token"] for item in native_abstention_audit}),
+            "context_counts": dict(sorted(unresolved_context_counts.items())),
+            "occurrences": native_abstention_audit,
+            "interpretation": "diagnostic triage only; external predictions are not gold and must not be copied into production rules without source adjudication",
+        },
         "purpose": "diagnostic comparison only; UGTPHON is not normative NIKL gold and this does not score Ukrainian orthography",
         "dataset_rows": len(rows),
         "eligible_token_occurrences": len(items),
