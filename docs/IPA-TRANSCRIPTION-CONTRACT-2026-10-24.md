@@ -6,7 +6,7 @@
 
 ## 1. What the output means
 
-The canonical ClippyFirst IPA layer is a **broad surface-phonetic transcription**: it represents the result of Korean pronunciation rules at segment level without claiming acoustic narrow transcription. It is not merely a grapheme-to-phoneme spelling table and is not an underlying phonemic transcription. Rule order and morphologically conditioned environments must be resolved or explicitly marked uncertain before downstream Ukrainian adaptation.
+The canonical ClippyFirst IPA layer is a **broad IPA representation of the resolved Korean surface pronunciation**: it represents the result of Korean pronunciation rules at segment level without claiming acoustic narrow transcription. It is not merely a grapheme-to-phoneme spelling table and is not an underlying phonemic transcription. Rule order and morphologically conditioned environments must be resolved or explicitly marked uncertain before downstream Ukrainian adaptation.
 
 The pipeline contract remains:
 
@@ -29,7 +29,7 @@ The Korean Standard Pronunciation Rules and NIKL dictionary/Q&A can establish a 
 | Vowel/glide differences such as `i/y` | Do not assume equivalence | Preserve and adjudicate by context |
 | Unresolved morphology or competing readings | Do not guess an IPA gold | Mark unresolved/abstain; never score an abstention as a correct pronunciation |
 
-The allophone mappings above are a **versioned project decision for broad-level comparison**, not a claim that the symbols are interchangeable in every language or context. They must be reviewed against Korean phonetic literature and a representative, independently labelled sample. If a review rejects any mapping, create a new profile version; do not silently edit v1 after results are published.
+The allophone mappings above are a **versioned project decision for broad-level comparison**, not a claim that the symbols are interchangeable in every language or context. The candidate profile materially changes exact-match scores and must be reviewed against Korean phonetic literature and a representative, independently labelled sample. If a review rejects any mapping, create a new profile version; do not silently edit v1 after results are published.
 
 ## 3. Two metrics must be published
 
