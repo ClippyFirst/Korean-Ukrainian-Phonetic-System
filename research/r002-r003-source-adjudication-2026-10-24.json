@@ -173,7 +173,15 @@
       },
       "finalBroadIpa": null,
       "decisionNotes": null,
-      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "relatedSourceEvidence": [
+        {
+          "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=74181",
+          "excerpt": "NIKL Korean Basic Dictionary, 붙다: 활용 ‘붙어[부터]’.",
+          "scope": "Related lexical-form evidence only: dictionary lists 붙어, not the full form 붙어야.",
+          "accessDate": "2026-10-24"
+        }
+      ]
     },
     {
       "caseId": "R002-05",
@@ -459,7 +467,15 @@
       },
       "finalBroadIpa": null,
       "decisionNotes": null,
-      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "relatedSourceEvidence": [
+        {
+          "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=62095",
+          "excerpt": "NIKL Korean Basic Dictionary, 쌓다 (verb): 활용 ‘쌓아[싸아]’.",
+          "scope": "Related lexical-form evidence only: dictionary lists 쌓아, not the full form 쌓아서; do not infer an exact full-form IPA target from this alone.",
+          "accessDate": "2026-10-24"
+        }
+      ]
     },
     {
       "caseId": "R003-06",
@@ -529,7 +545,15 @@
       },
       "finalBroadIpa": null,
       "decisionNotes": null,
-      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "relatedSourceEvidence": [
+        {
+          "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=79033",
+          "excerpt": "NIKL Korean Basic Dictionary, 좋다: 활용 ‘좋은[조ː은]’.",
+          "scope": "Related lexical-form evidence only: dictionary lists 좋은, not the full form 좋은데; exact target IPA still requires review.",
+          "accessDate": "2026-10-24"
+        }
+      ]
     }
   ]
 }
