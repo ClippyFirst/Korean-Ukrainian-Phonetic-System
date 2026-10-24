@@ -111,6 +111,97 @@ def _summarize_group(rows: list[dict[str, Any]]) -> dict[str, Any]:
     return result
 
 
+def _alignment_operations(reference: str, prediction: str) -> list[tuple[str, str, str]]:
+    """Return one minimum-edit alignment; tied optimal alignments can differ."""
+    n, m = len(reference), len(prediction)
+    costs = [[0] * (m + 1) for _ in range(n + 1)]
+    back: list[list[str | None]] = [[None] * (m + 1) for _ in range(n + 1)]
+    for i in range(1, n + 1):
+        costs[i][0] = i
+        back[i][0] = "reference_only"
+    for j in range(1, m + 1):
+        costs[0][j] = j
+        back[0][j] = "prediction_only"
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            diagonal = costs[i - 1][j - 1] + (reference[i - 1] != prediction[j - 1])
+            options = [
+                (diagonal, "match" if reference[i - 1] == prediction[j - 1] else "substitution"),
+                (costs[i - 1][j] + 1, "reference_only"),
+                (costs[i][j - 1] + 1, "prediction_only"),
+            ]
+            costs[i][j], back[i][j] = min(
+                options,
+                key=lambda item: (
+                    item[0],
+                    {"match": 0, "substitution": 0, "reference_only": 1, "prediction_only": 2}[item[1]],
+                ),
+            )
+    operations: list[tuple[str, str, str]] = []
+    i, j = n, m
+    while i or j:
+        operation = back[i][j]
+        if operation in ("match", "substitution"):
+            if operation == "substitution":
+                operations.append((operation, reference[i - 1], prediction[j - 1]))
+            i -= 1
+            j -= 1
+        elif operation == "reference_only":
+            operations.append((operation, reference[i - 1], ""))
+            i -= 1
+        else:
+            operations.append(("prediction_only", "", prediction[j - 1]))
+            j -= 1
+    return list(reversed(operations))
+
+
+def _symbol_error_profile(
+    rows: list[dict[str, Any]], engine: str, limit: int = 20
+) -> dict[str, Any]:
+    substitutions: collections.Counter[tuple[str, str]] = collections.Counter()
+    reference_only: collections.Counter[str] = collections.Counter()
+    prediction_only: collections.Counter[str] = collections.Counter()
+    reference_symbols_edited: collections.Counter[str] = collections.Counter()
+    nonexact = 0
+    for row in rows:
+        if row[NATIVE]["status"] != "scored":
+            continue
+        reference = normalize_ipa(str(row["gold"]))
+        prediction = normalize_ipa(str(row[engine]["ipa"]))
+        if reference == prediction:
+            continue
+        nonexact += 1
+        for operation, ref_char, pred_char in _alignment_operations(reference, prediction):
+            if operation == "substitution":
+                substitutions[(ref_char, pred_char)] += 1
+                reference_symbols_edited[ref_char] += 1
+            elif operation == "reference_only":
+                reference_only[ref_char] += 1
+                reference_symbols_edited[ref_char] += 1
+            elif operation == "prediction_only":
+                prediction_only[pred_char] += 1
+    return {
+        "nonexact_occurrences_aligned": nonexact,
+        "top_substitutions": [
+            {"reference": ref_char, "prediction": pred_char, "count": count}
+            for (ref_char, pred_char), count in substitutions.most_common(limit)
+        ],
+        "top_reference_only_symbols": [
+            {"symbol": symbol, "count": count}
+            for symbol, count in reference_only.most_common(limit)
+        ],
+        "top_prediction_only_symbols": [
+            {"symbol": symbol, "count": count}
+            for symbol, count in prediction_only.most_common(limit)
+        ],
+        "top_reference_symbols_in_edit_operations": [
+            {"symbol": symbol, "count": count}
+            for symbol, count in reference_symbols_edited.most_common(limit)
+        ],
+        "warning": "One optimal character alignment is not a phonological error label; tied alignments may assign edits differently.",
+    }
+
+
 def _type_cluster_delta_ci(
     paired: list[dict[str, Any]], replicates: int = 10_000, seed: int = 20261025
 ) -> dict[str, Any]:
@@ -247,6 +338,10 @@ def summarize_report(report: dict[str, Any], type_bootstrap_replicates: int = 10
             ),
         },
         "edit_distance": edit_histograms,
+        "symbol_error_profile": {
+            NATIVE: _symbol_error_profile(paired, NATIVE),
+            G2PK: _symbol_error_profile(paired, G2PK),
+        },
         "strata": strata,
         "lexical_type_macro": {
             "unique_types": len(by_type),
