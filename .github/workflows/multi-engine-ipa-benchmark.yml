@@ -128,8 +128,11 @@ jobs:
                     f"errors={m['engine_errors_on_token_loop']}")
               if "paired_with_native" in m:
                   p = m["paired_with_native"]
+                  ci_delta = p.get("paired_bootstrap_delta_95pct_ci", {})
                   print(f"  paired={p['paired_tokens']} delta_exact={p['exact_rate_delta_candidate_minus_native']} "
-                        f"delta_CER={p['cer_delta_candidate_minus_native']}")
+                        f"delta_CER={p['cer_delta_candidate_minus_native']} "
+                        f"CI_delta_exact={ci_delta.get('exact_rate_delta_candidate_minus_native_95pct_ci')} "
+                        f"CI_delta_CER={ci_delta.get('cer_delta_candidate_minus_native_95pct_ci')}")
           print("Diagnostic only. This corpus is not normative NIKL gold and does not evaluate Ukrainian output.")
           engines = r["engines"]
           for required in ("clippyfirst_native", "g2pk_0_9_4"):
