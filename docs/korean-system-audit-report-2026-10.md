@@ -255,3 +255,14 @@ The engine recognizes these exact entries both as standalone inputs and inside s
 Added [`docs/ukrainian-target-review-2026-10-10.md`](./ukrainian-target-review-2026-10-10.md), a first-pass internal-consistency review of the Ukrainian target layer against the canonical correspondence table. It identifies policy questions around vowel-length omission, neutralization of aspiration/fortisness, approximations for `/ʌ ɯ ø y/`, coda `/ŋ/`, liquid sequences, and the role of segmentation bars.
 
 The review deliberately does not bulk-rewrite target strings. These are model choices that need a stated objective and empirical evaluation; without a native Korean source-audio check and Ukrainian-reader comparison, declaring a particular approximation definitively wrong would overstate the evidence. The report includes a ten-item review queue and a reproducible validation protocol. Korean-source confidence, IPA-analysis confidence, and Ukrainian-target confidence must remain separate dimensions.
+
+
+
+
+## 24. Native IPA target renderer follow-up: CI-driven corrections (2026-10-24)
+
+The first exact-head run for the browser target adapter and provenance trace failed two suites. The browser failures were assertions still pinned to the old feature schema and a deep-equality result shape that predated the added status/mapping trace. The Python failure was a case-sensitive `ROOT`/ `root` variable typo in the newly added browser/Python parity test. These were fixed in test contracts and the subprocess path; no linguistic mapping was altered to make CI green.
+
+The browser regression suite passed on intermediate head `428f8e1dae2bf2c86e80bd203ee8939cf538d8f3`, but Python still failed on that same head due to the root-variable typo. Correction commit `317f0f106d230b10bbc42219ca1f9c3e5a369aa2` is the first head intended to contain the complete fixes. Its own CI must finish before marking the renderer verified.
+
+**Status:** `PARTIAL`, not release-ready. A code-level parity suite is not an independent linguistic gold set. The original 24-form source manifest remains missing, official NIKL live retrieval is still blocked by documented HTTP 403 responses, and the Korean phonology / Ukrainian target gold sets require separate evidence-gated adjudication.
