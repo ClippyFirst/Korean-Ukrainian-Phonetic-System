@@ -288,3 +288,8 @@ This entry supersedes earlier descriptions of the technical inventory as merely 
 | Scientific release acceptance | BLOCKED | Independent broad-IPA adjudication and Ukrainian target-layer review remain outstanding; source inventory completion alone is not a release gate pass. |
 
 The importer manifest is metadata-only: per-article title, anchor, normalized character count, extraction status, and SHA-256 are retained; raw HTML and article text are not. The workflow validates the schema and requires re-generated metadata to match the committed manifest except for the naturally changing `importedAt` timestamp.
+
+
+### NIKL manifest schema v2 metadata boundary — 2026-10-24
+
+The repository-held HTML inventory remains `DONE_VERIFIED` for technical completeness (30/30 source blocks; source SHA-256 `11dccd3c6eafb5167a6f448c2ccb5fc45fd698c5b2d1570ed3d1e5c177fa7a1e`). A follow-up identified that schema v1's article `title` duplicated each full normative clause, conflicting with the stated metadata-only retention policy. PR #284 changes the title to the article label, records a clause hash/character count, and labels the per-article block hash as including official commentary and examples. The v2 manifest and schema/test updates are on the PR branch; do not mark this correction `DONE_VERIFIED` until exact-head tests, schema validation and deterministic manifest regeneration all pass. Capture authenticity, source reuse terms and human rule/example spot-check remain `BLOCKED` / evidence-limited. This is not linguistic or product-release acceptance.
