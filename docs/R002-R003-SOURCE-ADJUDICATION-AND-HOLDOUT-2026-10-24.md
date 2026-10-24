@@ -49,3 +49,20 @@ The case-level register preserves diagnostic references and engine outputs solel
 ## Verification caveat
 
 The repository's configured test workflow runs `npm test`, Python tests, and `npm run build`. This branch adds a test to that suite, but a passing result must not be claimed until the PR's exact-head CI has completed successfully. The register itself is not a benchmark score and does not change runtime behavior.
+
+
+## Internet source review — 2026-10-24
+
+A focused search of official National Institute of Korean Language (NIKL) resources found exact-form evidence for three of the 14 cases. This is a real source-review advance, but **not** completion of IPA adjudication: the cited sources use Hangul pronunciation notation, not IPA.
+
+| Form | Official source | What it establishes | What remains open |
+|---|---|---|---|
+| `멋있어` | [NIKL Online Q&A, 2024-11-18](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166) | Explicitly says both [머디써] and [머시써] occur as pronunciations of 멋있어 | Independent broad-IPA transcription of both accepted variants; confirm benchmark convention and how alternatives are represented |
+| `싫어서` | [NIKL Online Q&A, 2025-04-29](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313981) | Explicitly explains ㅎ deletion from ㅀ before the vowel-initial ending and liaison of ㄹ, yielding [시러서] | Independent broad-IPA transcription and comparison against the benchmark's target convention |
+| `수많은` | [NIKL Korean Basic Dictionary, 수많다](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144) | The lexical entry directly lists the attributive form `수많은[수ː마는]`, including length notation | Independent broad-IPA transcription; verify how lexical length is encoded in the target corpus |
+
+The full URLs, source excerpts, access date, source type, and reviewed morphological notes are stored on each case in the JSON register with status `SOURCE_FOUND_PENDING_IPA`. The other 11 cases remain `PENDING_EXACT_FORM_SOURCE`. The rule-family NIKL URL remains a navigation aid only and is not counted as exact-form evidence.
+
+### Important distinction for the benchmark
+
+NIKL's bracketed outputs above are **Hangul-based pronunciation notation**. They are valuable official surface evidence but must not be copied into `finalBroadIpa` or treated as broad IPA gold. In particular, the two official variants for `멋있어` mean that a single deterministic output may be an incomplete acceptance criterion unless the product explicitly chooses a preferred variant or represents alternatives. Ukrainian rendering must be evaluated later against a frozen, independently reviewed IPA form, not inferred directly from the Hangul answer.
