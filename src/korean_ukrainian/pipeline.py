@@ -774,7 +774,10 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
             "segments":[],"ignored_source_markers":[],
         }
     else:
-        target_mapping=render_ipa_sequence_to_ukrainian(source_ipa)
+        # Public research conversion returns the best declared candidate while
+        # retaining its provisional status; strict integrations call the renderer
+        # directly without this opt-in.
+        target_mapping=render_ipa_sequence_to_ukrainian(source_ipa, allow_provisional=True)
 
     orthographic=target_mapping.get("ukrainian_orthography")
     lexical=LEXICAL_PRONUNCIATIONS.get(text)

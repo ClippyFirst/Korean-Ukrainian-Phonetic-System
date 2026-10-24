@@ -468,7 +468,7 @@ def test_native_engine_keeps_unlisted_n_insertion_candidate_conservative():
 def test_shared_ipa_target_renderer_is_owned_by_clippyfirst_core(monkeypatch):
     from korean_ukrainian import pipeline
 
-    def fake_renderer(ipa):
+    def fake_renderer(ipa, *, allow_provisional=False):
         target = {"a": "а", "b": "б"}[ipa]
         return {
             "ipa": ipa,
