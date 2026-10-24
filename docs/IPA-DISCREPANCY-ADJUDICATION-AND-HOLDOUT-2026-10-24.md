@@ -6,7 +6,7 @@
 |---|---|---|
 | Versioned broad-IPA contract | **DONE_VERIFIED for specification and executable normalizer** | `docs/IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md`; deterministic legacy and `clippyfirst-broad-v1` profiles are separately reported. The candidate profile is sensitivity-only pending independent review. |
 | Adjudicate observed engine/reference differences | **PARTIAL** | Measured symbol-level mismatch classes are classified as candidate convention differences, not automatically declared harmless. Three of the 14 R002/R003 cases have exact official Hangul surface evidence; four have related evidence; seven have no exact source recorded. **Independent IPA labels: 0/14.** |
-| Independent holdout | **PARTIAL / BLOCKED on external overlap verification and expert labels** | 24 source-backed NIKL Rule 5/9 forms are frozen in `data/korean/ipa_holdout_2026-10-24.json`, with no engine outputs and no IPA gold. Local runtime/fixture overlap is checked by the validator. Exact overlap with the licensed UGTPHON benchmark remains unchecked until the pinned artifact is supplied to the validator. |
+| Independent holdout | **PARTIAL: external exact-token disjointness verified; independent IPA labels remain blocked** | 24 source-backed NIKL Rule 5/9 forms are frozen in `data/korean/ipa_holdout_2026-10-24.json`, with no engine outputs and no IPA gold. Local runtime/fixture overlap is checked by the validator. Exact overlap with the licensed UGTPHON benchmark remains unchecked until the pinned artifact is supplied to the validator. |
 
 ## 1. Versioned contract and scoring profiles
 
@@ -61,7 +61,7 @@ Validation:
 - inputs must not be present in the repository's local runtime pronunciation data or existing text fixtures;
 - `scripts/validate_ipa_holdout.py` can check exact overlap against either the pinned benchmark artifact (`native_g2pk_pairwise_audit.occurrences`) or the original corpus JSON.
 
-**Not yet certified as an independent scored holdout:** the licensed UGTPHON source data is not stored in this repository. The validator correctly reports `FROZEN_INPUTS_EXTERNAL_OVERLAP_CHECK_PENDING` when no benchmark artifact is supplied. Before scoring, pass the exact pinned artifact to the validator; remove or disclose any overlap and record the result. Do not tune on this set. The 24 inputs are frozen candidates, not 24 IPA gold labels.
+**External token overlap check completed; IPA gold still pending:** the exact pinned artifact has 0/24 token overlaps with the final manifest. The result and manifest Git blob SHA are recorded in `research/ipa-holdout-overlap-validation-2026-10-24.json`. The validator CLI can repeat this check when the artifact is available. Do not tune on this set. The 24 inputs are frozen candidates, not 24 IPA gold labels.
 
 ## Verification commands
 
@@ -80,8 +80,13 @@ The last two commands require the pinned benchmark artifact produced by the exis
 
 1. Run the candidate profile on the exact pinned artifact and publish both profiles' measured rates. Do not estimate a new score from symbol counts.
 2. Obtain two independent IPA transcriptions for all selected mismatch cases and holdout inputs, then adjudicate disagreements with the contract.
-3. Check holdout overlap against the pinned external artifact; freeze the final disjoint case list and record its manifest commit/hash.
+3. **DONE for exact-token overlap:** final manifest has 0/24 exact overlaps with the pinned artifact and is frozen by Git blob SHA. Remaining: confirm local runtime/fixture leakage check in CI.
 4. Only after those gates, decide whether `clippyfirst-broad-v1` becomes the sole primary metric. Until then, retain the legacy score and publish sensitivity results side by side.
 5. Review Ukrainian targets separately; this report does not certify target-language accuracy.
 
 **Readiness:** research-ready for reproducible diagnostics; not release-ready for an independently validated Korean IPA or Ukrainian transcription accuracy claim.
+
+
+## Quantified profile sensitivity
+
+The pinned artifact was re-scored with the versioned comparison profiles. On 2,655 paired occurrences, native exact match/CER changes from 53.18% / 9.19% under legacy normalization to 91.04% / 1.70% under candidate broad-v1; g2pk changes from 53.33% / 9.24% to 90.96% / 1.75%. The sibilant `sʰ→s` collapse is the largest score driver. These are sensitivity measurements, not independently validated accuracy claims. See [the aggregate results](../research/broad-ipa-profile-sensitivity-2026-10-24.json) and [full report](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md).
