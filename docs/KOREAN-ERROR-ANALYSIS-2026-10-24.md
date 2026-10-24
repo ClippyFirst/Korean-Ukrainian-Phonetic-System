@@ -21,15 +21,16 @@ This is an implementation error, not a need for a lexical exception: it follows 
 
 ### Observed benchmark evidence
 
-The diagnostic artifact's occurrence-level mismatch sample contains these examples:
+The two diagnostic artifacts' capped occurrence-level mismatch samples contain these examples. The first three are from UGTPHON; the last two are from the separate SIGMORPHON paired-file diagnostic:
 
-| Word | Gold after declared broad-level normalization | Native before fix | g2pk 0.9.4 + same project renderer | Interpretation |
-|---|---|---|---|---|
-| 공인 | `koŋin` | `ko.in` | `koŋ.in` | native loses /ŋ/ |
-| 양아치 | `jaŋatɕʰi` | `ja.a.tɕʰi` | `jaŋ.a.tɕʰi` | native loses /ŋ/ |
-| 동요 | `toŋjo` | `to.jo` | `toŋ.jo` | native loses /ŋ/ |
-| 동이 | `toŋi` | `to.i` | `toŋ.i` | native loses /ŋ/ |
-| 심장은 | `ɕimdʑaŋɯn` | `sim.dʑa.ɯn` | `sim.dʑaŋ.ɯn` | native loses /ŋ/ |
+| Dataset | Word | Gold after declared broad-level normalization | Native before fix | g2pk 0.9.4 + same project renderer | Interpretation |
+|---|---|---|---|---|---|
+| UGTPHON | 공인 | `koŋin` | `ko.in` | `koŋ.in` | native loses /ŋ/; g2pk matches |
+| UGTPHON | 양아치 | `jaŋatɕʰi` | `ja.a.tɕʰi` | `jaŋ.a.tɕʰi` | native loses /ŋ/; g2pk matches |
+| UGTPHON | 심장은 | `ɕimdʑaŋɯn` | `sim.dʑa.ɯn` | `sim.dʑaŋ.ɯn` | native loses /ŋ/; neither exactly matches the reference |
+| SIGMORPHON | 놀이공원 | `noɾiɡoŋwʌn` | `no.ɾi.ɡo.wʌn` | `no.ɾi.ɡoŋ.wʌn` | native loses /ŋ/; g2pk matches |
+| SIGMORPHON | 동요 | `toŋjo` | `to.jo` | `toŋ.jo` | native loses /ŋ/; g2pk matches |
+| SIGMORPHON | 동이 | `toŋi` | `to.i` | `toŋ.i` | native loses /ŋ/; g2pk matches |
 
 The displayed gold strings are normalized forms used by the diagnostic scorer, not an independent normative IPA adjudication. The repeated error pattern and code path establish the implementation defect even though UGTPHON is not a normative gold set.
 
