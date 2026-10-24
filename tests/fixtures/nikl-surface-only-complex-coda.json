@@ -26,8 +26,8 @@
       "ipa_candidate": null,
       "ukrainian_target_status": "not_reviewed",
       "ukrainian_target": null,
-      "engine_expected_status": "unresolved",
-      "reason_not_in_lexicon": "Surface evidence alone does not license a project IPA or Ukrainian output. Preserve the existing unresolved guard until IPA is independently adjudicated."
+      "reason_not_in_lexicon": "Surface evidence alone does not license a project IPA or Ukrainian output. Preserve the existing unresolved guard until IPA is independently adjudicated.",
+      "python_pipeline_expected_status": "unresolved"
     }
   ]
 }
