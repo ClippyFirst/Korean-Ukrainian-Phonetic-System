@@ -84,4 +84,6 @@ test('runtime status is separate from independent IPA and Ukrainian-target revie
     assert.equal(result.ukrainianTargetIsGold, false, 'a generated Ukrainian target must not imply target-layer gold');
     assert.equal(result.ukrainianTargetReviewStatus, 'not-independently-reviewed');
   }
+  assert.match(read('index.html'), /не є незалежно перевіреним фахівцями еталоном/u,
+    'the result panel must disclose the distinction between runtime status and independent validation');
 });

@@ -54,4 +54,4 @@ The new browser G2P integration workflow passed on code-equivalent head `519f833
 
 The browser engine now adds the fields ipaReviewStatus, ipaIsGold, ukrainianTargetReviewStatus, and ukrainianTargetIsGold to both native-engine results and the IPA adapter used by practical G2P mode. These fields deliberately remain negative until independent review is actually recorded. They are separate from the runtime status values (canonical, contextual, lexical, unresolved), which describe processing behavior rather than scientific validation.
 
-The result panel also explains this distinction to users. This is a transparency improvement, not an accuracy increase: independent IPA adjudication and separate Ukrainian-target review remain open acceptance gates.
+The result panel also explains this distinction to users in Ukrainian and explicitly states that generated outputs are not independently expert-validated gold. This is a transparency improvement, not an accuracy increase: independent IPA adjudication and separate Ukrainian-target review remain open acceptance gates.
