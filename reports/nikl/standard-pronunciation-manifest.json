@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 1,
+  "collector": {
+    "name": "nikl-norm-crawler",
+    "version": "0.1.0"
+  },
+  "standard": {
+    "id": "NIKL-SP",
+    "title": "국립국어원 표준 발음법",
+    "authority": "국립국어원",
+    "scope": "Articles 1–30 of 제2부 표준 발음법 only; adjacent parts are excluded.",
+    "canonicalUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002"
+  },
+  "source": {
+    "retrievalMode": "local-html-import",
+    "requestedUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+    "finalUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+    "retrievedAt": null,
+    "importedAt": "2026-10-24T06:54:12.121Z",
+    "httpStatus": null,
+    "contentType": "text/html; local-file",
+    "etag": null,
+    "lastModified": null,
+    "responseBytes": 322678,
+    "responseSha256": "11dccd3c6eafb5167a6f448c2ccb5fc45fd698c5b2d1570ed3d1e5c177fa7a1e",
+    "userAgent": null,
+    "robots": {
+      "url": "https://www.korean.go.kr/robots.txt",
+      "status": null,
+      "decision": "not_checked_local_import"
+    },
+    "termsReview": "not_assessed",
+    "retentionPolicy": "metadata-only; raw HTML is never written by this command"
+  },
+  "inventory": {
+    "expectedCount": 30,
+    "extractedCount": 30,
+    "missing": [],
+    "duplicates": [],
+    "unexpected": [],
+    "incomplete": [],
+    "complete": true,
+    "errors": [],
+    "articleIds": [
+      "NIKL-SP-01",
+      "NIKL-SP-02",
+      "NIKL-SP-03",
+      "NIKL-SP-04",
+      "NIKL-SP-05",
+      "NIKL-SP-06",
+      "NIKL-SP-07",
+      "NIKL-SP-08",
+      "NIKL-SP-09",
+      "NIKL-SP-10",
+      "NIKL-SP-11",
+      "NIKL-SP-12",
+      "NIKL-SP-13",
+      "NIKL-SP-14",
+      "NIKL-SP-15",
+      "NIKL-SP-16",
+      "NIKL-SP-17",
+      "NIKL-SP-18",
+      "NIKL-SP-19",
+      "NIKL-SP-20",
+      "NIKL-SP-21",
+      "NIKL-SP-22",
+      "NIKL-SP-23",
+      "NIKL-SP-24",
+      "NIKL-SP-25",
+      "NIKL-SP-26",
+      "NIKL-SP-27",
+      "NIKL-SP-28",
+      "NIKL-SP-29",
+      "NIKL-SP-30"
+    ]
+  },
+  "articles": [
+    {
+      "articleNumber": 1,
+      "articleId": "NIKL-SP-01",
+      "title": "제1항 표준 발음법은 표준어의 실제 발음을 따르되, 국어의 전통성과 합리성을 고려하여 정함을 원칙으로 한다.",
+      "anchorId": "a394",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a394",
+      "textSha256": "6c90fc9da1dd4873214b865c66a447ca9f52148922ec13c339161a553c77d196",
+      "normalizedCharCount": 2266,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 2,
+      "articleId": "NIKL-SP-02",
+      "title": "제2항 표준어의 자음은 다음 19개로 한다.",
+      "anchorId": "a395",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a395",
+      "textSha256": "103369111cc5e87788ca0d3d2e9d0522f8f4ebb914ab80ea7f98610de66f73a1",
+      "normalizedCharCount": 1262,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 3,
+      "articleId": "NIKL-SP-03",
+      "title": "제3항 표준어의 모음은 다음 21개로 한다.",
+      "anchorId": "a396",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a396",
+      "textSha256": "0d5e8ad31e4f254eef69b2944c6b1561b2c5b1ec400e789e03be7af749e71ce5",
+      "normalizedCharCount": 346,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 4,
+      "articleId": "NIKL-SP-04",
+      "title": "제4항 ‘ㅏ ㅐ ㅓ ㅔ ㅗ ㅚ ㅜ ㅟ ㅡ ㅣ’는 단모음(單母音)으로 발음한다.",
+      "anchorId": "a397",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a397",
+      "textSha256": "19a88831b4c91f1d7080bf45f6a46a0e0b5484a36af6b9542e308cd5d2a75e73",
+      "normalizedCharCount": 1128,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 5,
+      "articleId": "NIKL-SP-05",
+      "title": "제5항 ‘ㅑ ㅒ ㅕ ㅖ ㅘ ㅙ ㅛ ㅝ ㅞ ㅠ ㅢ’는 이중 모음으로 발음한다.",
+      "anchorId": "a398",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a398",
+      "textSha256": "674151f6faafb7a32ad1a229cdb51d66f089ce9d5020a61bc721a20a15238ec9",
+      "normalizedCharCount": 3073,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 6,
+      "articleId": "NIKL-SP-06",
+      "title": "제6항 모음의 장단을 구별하여 발음하되, 단어의 첫음절에서만 긴소리가 나타나는 것을 원칙으로 한다.",
+      "anchorId": "a399",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a399",
+      "textSha256": "0c59b7a0582694d44903f48c511fb96549e5e50b1b06f9f83fa6c14c34e36a31",
+      "normalizedCharCount": 1936,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 7,
+      "articleId": "NIKL-SP-07",
+      "title": "제7항 긴소리를 가진 음절이라도, 다음과 같은 경우에는 짧게 발음한다.",
+      "anchorId": "a400",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a400",
+      "textSha256": "0ce62463e4305e8589899a31d86884a1bbdd4139997d5de3e55f1119957043f4",
+      "normalizedCharCount": 2152,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 8,
+      "articleId": "NIKL-SP-08",
+      "title": "제8항 받침소리로는 ‘ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅇ’의 7개 자음만 발음한다.",
+      "anchorId": "a401",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a401",
+      "textSha256": "737a9560e45db3f9e9584ea8313550aa9aefbe441c3ac97aba657caa1053920f",
+      "normalizedCharCount": 403,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 9,
+      "articleId": "NIKL-SP-09",
+      "title": "제9항 받침 ‘ㄲ, ㅋ’, ‘ㅅ, ㅆ, ㅈ, ㅊ, ㅌ’, ‘ㅍ’은 어말 또는 자음 앞에서 각각 대표음 [ㄱ, ㄷ, ㅂ]으로 발음한다.",
+      "anchorId": "a402",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a402",
+      "textSha256": "14ec4b19f5b7e0adb10d94f92f96d22499399f34428c9c23c84fc3bf5d72ccdb",
+      "normalizedCharCount": 726,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 10,
+      "articleId": "NIKL-SP-10",
+      "title": "제10항 겹받침 ‘ㄳ’, ‘ㄵ’, ‘ㄼ, ㄽ, ㄾ’, ‘ㅄ’은 어말 또는 자음 앞에서 각각 [ㄱ, ㄴ, ㄹ, ㅂ]으로 발음한다.",
+      "anchorId": "a403",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a403",
+      "textSha256": "cbbf15f5c537295709b51b9edc435dffd0fa2b3036aeae660c6c20079a37db63",
+      "normalizedCharCount": 1204,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 11,
+      "articleId": "NIKL-SP-11",
+      "title": "제11항 겹받침 ‘ㄺ, ㄻ, ㄿ’은 어말 또는 자음 앞에서 각각 [ㄱ, ㅁ, ㅂ]으로 발음한다.",
+      "anchorId": "a404",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a404",
+      "textSha256": "944f3feb22b9b444a4f569898d98a8d4e8d9e44b8d22bf91b4a47199bb94cff3",
+      "normalizedCharCount": 636,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 12,
+      "articleId": "NIKL-SP-12",
+      "title": "제12항 받침 ‘ㅎ’의 발음은 다음과 같다.",
+      "anchorId": "a405",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a405",
+      "textSha256": "6408618b1f1686c75f53b95893ed89f888b22104eb84ad2ab09ce582566a721b",
+      "normalizedCharCount": 3734,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 13,
+      "articleId": "NIKL-SP-13",
+      "title": "제13항 홑받침이나 쌍받침이 모음으로 시작된 조사나 어미, 접미사와 결합되는 경우에는, 제 음가대로 뒤 음절 첫소리로 옮겨 발음한다.",
+      "anchorId": "a406",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a406",
+      "textSha256": "373df6a0ddb26303256672744f9292faf6f695f0cd493109251f032c1a35af91",
+      "normalizedCharCount": 931,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 14,
+      "articleId": "NIKL-SP-14",
+      "title": "제14항 겹받침이 모음으로 시작된 조사나 어미, 접미사와 결합되는 경우에는, 뒤엣것만을 뒤 음절 첫소리로 옮겨 발음한다.(이 경우, ‘ㅅ’은 된소리로 발음함.)",
+      "anchorId": "a407",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a407",
+      "textSha256": "a4cfa0a936c87ce49ed38fdddbf67aa1eae12b2779150f9044899ca75a873d98",
+      "normalizedCharCount": 724,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 15,
+      "articleId": "NIKL-SP-15",
+      "title": "제15항 받침 뒤에 모음 ‘ㅏ, ㅓ, ㅗ, ㅜ, ㅟ’ 들로 시작되는 실질 형태소가 연결되는 경우에는, 대표음으로 바꾸어서 뒤 음절 첫소리로 옮겨 발음한다.",
+      "anchorId": "a408",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a408",
+      "textSha256": "37b79bc2e95f6f02f49e939f78a8f73a04109ba81c87ab69b5b44ed822b9d9f0",
+      "normalizedCharCount": 1965,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 16,
+      "articleId": "NIKL-SP-16",
+      "title": "제16항 한글 자모의 이름은 그 받침소리를 연음하되, ‘ㄷ, ㅈ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ’의 경우에는 특별히 다음과 같이 발음한다.",
+      "anchorId": "a409",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a409",
+      "textSha256": "a205b33bdf18188f224cf80b83865d9374082628a6e4dfad579edf06c3a96f6c",
+      "normalizedCharCount": 1108,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 17,
+      "articleId": "NIKL-SP-17",
+      "title": "제17항 받침 ‘ㄷ, ㅌ(ㄾ)’이 조사나 접미사의 모음 ‘ㅣ’와 결합되는 경우에는, [ㅈ, ㅊ]으로 바꾸어서 뒤 음절 첫소리로 옮겨 발음한다.",
+      "anchorId": "a410",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a410",
+      "textSha256": "0f0c3b7c0b124d953e31c117fc27db19add050693ee783b18765bce1eaa0eabd",
+      "normalizedCharCount": 606,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 18,
+      "articleId": "NIKL-SP-18",
+      "title": "제18항 받침 ‘ㄱ(ㄲ, ㅋ, ㄳ, ㄺ), ㄷ(ㅅ, ㅆ, ㅈ, ㅊ, ㅌ, ㅎ), ㅂ(ㅍ, ㄼ, ㄿ, ㅄ)’은 ‘ㄴ, ㅁ’ 앞에서 [ㅇ, ㄴ, ㅁ]으로 발음한다.",
+      "anchorId": "a411",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a411",
+      "textSha256": "48a6f90b880da6382f9f45469847c8d7454fbf3f894e0a89b19fab7380bbb477",
+      "normalizedCharCount": 1154,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 19,
+      "articleId": "NIKL-SP-19",
+      "title": "제19항 받침 ‘ㅁ, ㅇ’ 뒤에 연결되는 ‘ㄹ’은 [ㄴ]으로 발음한다.",
+      "anchorId": "a412",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a412",
+      "textSha256": "414c5d870462e8cd21c6e1b059be11c9823fe425fbcda1c1c58b3ad8cba481ae",
+      "normalizedCharCount": 1863,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 20,
+      "articleId": "NIKL-SP-20",
+      "title": "제20항 ‘ㄴ’은 ‘ㄹ’의 앞이나 뒤에서 [ㄹ]로 발음한다.",
+      "anchorId": "a413",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a413",
+      "textSha256": "ff494865ab05b51aea1777bcc5e4ae63e4f6239dab55ae0333039b8cb0339a63",
+      "normalizedCharCount": 1511,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 21,
+      "articleId": "NIKL-SP-21",
+      "title": "제21항 위에서 지적한 이외의 자음 동화는 인정하지 않는다.",
+      "anchorId": "a414",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a414",
+      "textSha256": "0b5abfad854b1a8550571cf5e3f0caf70e082178a1520ed1c7df7d6db9d27c67",
+      "normalizedCharCount": 464,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 22,
+      "articleId": "NIKL-SP-22",
+      "title": "제22항 다음과 같은 용언의 어미는 [어]로 발음함을 원칙으로 하되, [여]로 발음함도 허용한다.",
+      "anchorId": "a415",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a415",
+      "textSha256": "c5f4ac0579d7da0b618fd8713f1e3a9046c2a0b2f7bb4db9a0fc00d9a07e48d8",
+      "normalizedCharCount": 1036,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 23,
+      "articleId": "NIKL-SP-23",
+      "title": "제23항 받침 ‘ㄱ(ㄲ, ㅋ, ㄳ, ㄺ), ㄷ(ㅅ, ㅆ, ㅈ, ㅊ, ㅌ), ㅂ(ㅍ, ㄼ, ㄿ, ㅄ)’ 뒤에 연결되는 ‘ㄱ, ㄷ, ㅂ, ㅅ, ㅈ’은 된소리로 발음한다.",
+      "anchorId": "a416",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a416",
+      "textSha256": "d803f9304638d168b06fe618dbee4fabc8ff716f2d035169d553678bcb752bf0",
+      "normalizedCharCount": 505,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 24,
+      "articleId": "NIKL-SP-24",
+      "title": "제24항 어간 받침 ‘ㄴ(ㄵ), ㅁ(ㄻ)’ 뒤에 결합되는 어미의 첫소리 ‘ㄱ, ㄷ, ㅅ, ㅈ’은 된소리로 발음한다.",
+      "anchorId": "a417",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a417",
+      "textSha256": "1c77734594238c5612cb374996b63297f9d74ab154b59a4d4d55bcb500bc0829",
+      "normalizedCharCount": 922,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 25,
+      "articleId": "NIKL-SP-25",
+      "title": "제25항 어간 받침 ‘ㄼ, ㄾ’ 뒤에 결합되는 어미의 첫소리 ‘ㄱ, ㄷ, ㅅ, ㅈ’은 된소리로 발음한다.",
+      "anchorId": "a418",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a418",
+      "textSha256": "acb35c4bb955ff839052180c02c1f3d460432bbface8875e26cc4074a60f6d8d",
+      "normalizedCharCount": 917,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 26,
+      "articleId": "NIKL-SP-26",
+      "title": "제26항 한자어에서, ‘ㄹ’ 받침 뒤에 연결되는 ‘ㄷ, ㅅ, ㅈ’은 된소리로 발음한다.",
+      "anchorId": "a419",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a419",
+      "textSha256": "28ac8bb747e3a4e52040baa34be95428ab1bfb6808657979cacc5582f086a68d",
+      "normalizedCharCount": 567,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 27,
+      "articleId": "NIKL-SP-27",
+      "title": "제27항 관형사형 ‘-(으)ㄹ’ 뒤에 연결되는 ‘ㄱ, ㄷ, ㅂ, ㅅ, ㅈ’은 된소리로 발음한다.",
+      "anchorId": "a420",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a420",
+      "textSha256": "26a1bbc6bd37a8159428d42a5404dd3c12bb0da7f5884d07a7898e43c02bc1e4",
+      "normalizedCharCount": 1129,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 28,
+      "articleId": "NIKL-SP-28",
+      "title": "제28항 표기상으로는 사이시옷이 없더라도, 관형격 기능을 지니는 사이시옷이 있어야 할(휴지가 성립되는) 합성어의 경우에는, 뒤 단어의 첫소리 ‘ㄱ, ㄷ, ㅂ, ㅅ, ㅈ’을 된소리로 발음한다.",
+      "anchorId": "a421",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a421",
+      "textSha256": "6f577ffe7680557f0979d0cbbe0047549bdd41b2c0cc7257ea62a58afb5da7b3",
+      "normalizedCharCount": 1251,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 29,
+      "articleId": "NIKL-SP-29",
+      "title": "제29항 합성어 및 파생어에서, 앞 단어나 접두사의 끝이 자음이고 뒤 단어나 접미사의 첫음절이 ‘이, 야, 여, 요, 유’인 경우에는, ‘ㄴ’ 음을 첨가하여 [니, 냐, 녀, 뇨, 뉴]로 발음한다.",
+      "anchorId": "a422",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a422",
+      "textSha256": "b75acd08723fe5c5f988a8e941907172c89c318f8344fe656cdb238ab8f34a85",
+      "normalizedCharCount": 2029,
+      "extractionStatus": "parsed"
+    },
+    {
+      "articleNumber": 30,
+      "articleId": "NIKL-SP-30",
+      "title": "제30항 사이시옷이 붙은 단어는 다음과 같이 발음한다.",
+      "anchorId": "a423",
+      "sourceUrl": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a423",
+      "textSha256": "914d96e1acfe04b6c9e6af9c57fd18f327fc91976b73556d79aef1dd7a5fd925",
+      "normalizedCharCount": 2143,
+      "extractionStatus": "parsed"
+    }
+  ]
+}
