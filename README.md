@@ -60,6 +60,7 @@ The Python research package has optional adapters for [Kiwi](https://github.com/
 - [Research morphology integration contract and acceptance gates](docs/RESEARCH-MORPHOLOGY-ADAPTERS-2026-10-24.md)
 - Adapter: `src/korean_ukrainian/research_morphology.py`
 - Tests with fake engines: `tests/test_research_morphology.py`
+- Diagnostic inputs (unlabelled, not gold): `data/korean/morphology-review-corpus.txt`
 - Diagnostic runner (not an accuracy benchmark without gold annotations): `scripts/benchmark_research_morphology.py`
 
 Install Kiwi with `uv pip install -e '.[research-kiwi]'`. MeCab-Ko uses `mecab-ko-python` (`mecab_ko.Mecab().pos`) where available, with a legacy MeCab API fallback; the optional binding and Korean dictionary must work on the host OS. Engine availability and actual segmentation accuracy have not been asserted by this adapter-only integration; see the research document for the evidence gates.
