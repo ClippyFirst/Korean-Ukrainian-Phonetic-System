@@ -29,7 +29,7 @@ Both return form, tag, source offsets and (only when exposed reliably by the API
 
 ## Diagnostic benchmark
 
-Prepare a UTF-8 text file with one eojeol or sentence per line, ideally a hand-reviewed mix of the unresolved morphology cases and control cases, then run:
+The repository includes an unlabelled diagnostic input list at `data/korean/morphology-review-corpus.txt`. It contains ambiguous and control forms for inspection only; it is **not** gold annotation and must not be used to claim accuracy. Run:
 
 ```powershell
 uv run python scripts/benchmark_research_morphology.py data/korean/morphology-review-corpus.txt --output artifacts/morphology-diagnostic.jsonl
