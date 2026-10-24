@@ -689,4 +689,4 @@ def test_nikl_stem_fortition_rules_do_not_include_ㅂ():
             rule_licenses={f"{rule_id}:{license_scope}:{word}:{pair}"},
         )
         assert items[1].onset == "ㅂ", word
-        assert trace.status == "unchanged", word
+        assert not trace.changed, word
