@@ -19,7 +19,6 @@ Audit date: 2026-10-02
 | UPI mapping penalties and selection gate | Integrated; fail-closed gate tested | adapter loads `transliteration_mapping.csv`, ranking exposes component costs, and selection requires an explicit mapping ID plus renderable grapheme |
 | Ukrainian sequence-level orthography | Delegated, not duplicated | UPI remains authoritative; this repo exposes segmentwise candidates and does not select unmapped candidates or fall back to Hangul-keyed lexical targets |
 | Validation corpus | Rule-demonstration corpus implemented | `data/validation/cases.csv` |
-| Comparative Korean IPA engine benchmark | Diagnostic benchmark executed on pinned UGTPHON (275 rows; 2,703 eligible token occurrences); native vs g2pk paired delta +0.79 percentage points exact match and −0.38 points CER, with paired row-cluster intervals excluding zero; KoG2P, hangul_to_ipa, eSpeak NG and phonemize also run. Evidence remains on open PR #280, not merged. This is not NIKL normative gold and does not assess Ukrainian adaptation. | [Benchmark protocol/results](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md), [run 40069800681](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069800681), PR #280 |
 | Lexical/corpus attestation | Not claimed | No corpus dataset is fabricated |
 | Evidence/provenance | Implemented for current claims | `sources.csv`, `evidence.csv`, rule source IDs |
 | Generated-artifact reproducibility | Implemented | exact `syllables.csv` vs generator test |
