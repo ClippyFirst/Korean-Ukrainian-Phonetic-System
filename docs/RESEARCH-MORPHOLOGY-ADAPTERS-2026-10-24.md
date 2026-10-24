@@ -23,7 +23,7 @@ Neither adapter generates surface pronunciation, IPA, Ukrainian spelling, or NIK
 ## Engines
 
 - **Kiwi** uses the optional `kiwipiepy` Python package. Install with `python -m pip install -e '.[research-kiwi]'`.
-- **MeCab-Ko** supports `mecab-ko-python` (`mecab_ko.Mecab().pos`) and a compatible legacy `MeCab.Tagger().parseToNode()` API. Installation and dictionary setup differ by platform; this repository does not bundle a native binary or dictionary. Install the optional `research-mecab-ko` extra and configure a Korean dictionary for your OS before use. If the binding is unavailable, the benchmark records a blocker instead of switching engines.
+- **MeCab-Ko** supports the Rust `mecab-ko-python` binding (`mecab_ko.Mecab().pos`), `python-mecab-ko` (`mecab.MeCab().pos`), and a compatible legacy `MeCab.Tagger().parseToNode()` API. The optional `research-mecab-ko` extra installs the first two bindings; runtime initialization tries those binding APIs in order and records the selected binding in the diagnostic output. This is binding-level compatibility within the MeCab-Ko family, not substitution with a different analyzer. If no binding initializes, the benchmark records a blocker.
 
 Both return form, tag, source offsets and (only when exposed reliably by the API) a lemma. Confidence remains `unscored`; a POS tag is not a confidence estimate.
 
@@ -35,7 +35,7 @@ The repository includes an unlabelled diagnostic input list at `data/korean/morp
 uv run python scripts/benchmark_research_morphology.py data/korean/morphology-review-corpus.txt --output artifacts/morphology-diagnostic.jsonl
 ```
 
-The output records per-engine availability, elapsed time, tokenization, offsets, and errors. It is deliberately **not** an accuracy score: accuracy requires a versioned gold set with independently reviewed morpheme boundaries/POS labels. Do not use token count or successful execution as a proxy for accuracy.
+The output records per-engine availability, selected binding, elapsed time, tokenization, offsets, and errors. It is deliberately **not** an accuracy score: accuracy requires a versioned gold set with independently reviewed morpheme boundaries/POS labels. Do not use token count or successful execution as a proxy for accuracy.
 
 ## Acceptance gates before morphology may license phonological rules
 
@@ -49,7 +49,7 @@ The output records per-engine availability, elapsed time, tokenization, offsets,
 ## Known limitations
 
 - This integration creates an adapter boundary, not a claim that both engines have been installed or run in CI.
-- MeCab-Ko's Python bindings/dictionary are OS-sensitive and may require platform-specific setup.
+- MeCab-Ko's Python bindings are OS-sensitive; initialization failures are surfaced with the underlying API errors.
 - Kiwi/MeCab segmentation conventions differ; raw tag strings are retained instead of being collapsed into a possibly incorrect universal POS inventory.
 - Lemma is nullable and is not guessed from surface form.
 - The benchmark currently requires a local corpus path; no corpus or labels are fabricated by this change.
