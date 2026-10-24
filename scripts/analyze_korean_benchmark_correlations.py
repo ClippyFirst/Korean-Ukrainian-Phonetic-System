@@ -12,6 +12,7 @@ import argparse
 import collections
 import json
 import random
+import statistics
 import unicodedata
 from pathlib import Path
 from typing import Any
@@ -89,7 +90,7 @@ def _summarize_group(rows: list[dict[str, Any]]) -> dict[str, Any]:
             "cer": round(edits / reference_chars, 6) if reference_chars else None,
             "mean_edits_per_token": round(edits / len(scored), 6) if scored else None,
             "median_edit_distance_on_nonexact": (
-                sorted(wrong_distances)[len(wrong_distances) // 2]
+                statistics.median(wrong_distances)
                 if wrong_distances else 0
             ),
         }
