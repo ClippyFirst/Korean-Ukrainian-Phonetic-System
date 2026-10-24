@@ -1,0 +1,79 @@
+name: Paired native Korean engine vs g2pk diagnostic
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/benchmark_native_vs_g2pk_ko.py"
+      - "scripts/benchmark_ugtphon_ko.py"
+      - ".github/workflows/native-vs-g2pk-benchmark.yml"
+      - "src/korean_ukrainian/**"
+      - "data/korean/**"
+
+permissions:
+  contents: read
+
+jobs:
+  paired-ugtphon-benchmark:
+    name: Paired UGTPHON comparison (Python 3.12)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install native engine and pinned optional g2pk dependency
+        run: python -m pip install -e ".[g2pk]"
+      - name: Fetch pinned UGTPHON data and verify license
+        env:
+          UGT_PHON_COMMIT: ef0d5a09c2ea1874c7206020f875cbd9cfea2f54
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/test.json" \
+            --output "$RUNNER_TEMP/ko-test.json"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/LICENSE" \
+            --output "$RUNNER_TEMP/ko-LICENSE"
+          grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
+          python - "$RUNNER_TEMP/ko-test.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          rows = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          assert len(rows) == 275, f"pinned corpus row-count drift: {len(rows)}"
+          assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
+          print(f"Validated pinned UGTPHON Korean test split: {len(rows)} rows")
+          PY
+      - name: Run paired benchmark
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_native_vs_g2pk_ko.py \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --output "$RUNNER_TEMP/native-vs-g2pk-report.json" \
+            > "$RUNNER_TEMP/benchmark-stdout.json"
+          python - "$RUNNER_TEMP/native-vs-g2pk-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          print("DATASET:", r["benchmark"], "rows=", r["dataset_rows"])
+          for engine in ("native_engine", "g2pk"):
+              m = r[engine]
+              print(f"{engine}: scored={m['scored_tokens']} exact={m['exact_matches']} "
+                    f"exact_rate={m['exact_match_rate']} CER={m['character_error_rate']} "
+                    f"unresolved={m['unresolved_tokens']} errors={m['engine_errors']}")
+          p = r["paired_subset"]
+          print("PAIRED TOKENS:", p["tokens_scored_by_both"])
+          print("PAIRED DELTA (g2pk - native): exact=", p["exact_match_rate_delta_g2pk_minus_native"],
+                "CER=", p["cer_delta_g2pk_minus_native"])
+          print("Diagnostic only; not normative accuracy or a release gate.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-vs-g2pk-ugtphon-diagnostic
+          path: |
+            ${{ runner.temp }}/native-vs-g2pk-report.json
+            ${{ runner.temp }}/benchmark-stdout.json
+            ${{ runner.temp }}/ko-LICENSE
+          if-no-files-found: warn
