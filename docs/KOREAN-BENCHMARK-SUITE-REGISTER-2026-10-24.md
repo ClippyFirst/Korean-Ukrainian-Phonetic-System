@@ -124,3 +124,13 @@ Paired g2pk-minus-native exact delta is +0.1506 pp (95% CI +0.0351 to +0.3243) o
 - **TODO:** extend the existing occurrence ledger with normalized/raw outputs, word-type and occurrence weighting, source corpus, reference-variant count, length, adjudication status, gold rule tags and morphology/boundary labels; report per-rule and interaction strata with row/type-clustered uncertainty.
 - **BLOCKED_SPECIALIST_ADJUDICATION:** 14 R002/R003 cases and remaining scored disagreements require exact-source review and independent broad-IPA adjudication before they can serve as gold.
 - **Release classification unchanged:** research-ready for diagnostic comparison; partial prototype, not release-ready. Normative IPA accuracy and Ukrainian target-layer accuracy are not yet established.
+
+
+### Full-artifact score-correlation analysis — 2026-10-24
+
+- **DONE_VERIFIED (descriptive item-level stratification):** downloaded and analyzed the complete 2,703-occurrence UGTPHON native-vs-g2pk ledger. Reproducible script: `scripts/analyze_korean_benchmark_correlations.py`; tests: `tests/test_benchmark_score_causality.py`. Full interpretation: [score-causality report §7.1](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md#71-re-analysis-of-the-full-occurrence-level-artifact).
+- **Measured:** on the 2,655 common scored occurrences, g2pk exact wins 4, native exact wins 0, 2,651 ties; all four wins are `없는` repeated four times with a vowel-length reference mismatch. Excluding this lexical form as a sensitivity check yields equal exact counts (1,412 each) and fewer total edit operations for native (2,072 vs 2,088).
+- **Measured:** exact match decreases with input length (native 61.91% for 1–2 Hangul blocks, 53.18% for 3, 41.43% for 4+); 56.88% of native non-exact outputs are one edit away and 83.99% are within two edits.
+- **Statistical caution:** existing row-cluster paired interval (+0.0351 to +0.3243 pp) excludes zero, but lexical-type-cluster sensitivity interval is 0.00 to +0.4726 pp and includes zero. Because all four wins are one repeated type, the data do not support a robust broad g2pk advantage.
+- **PARTIAL:** source, length, repetition and edit-distance strata are now computed. Rule × morphology × interaction correlations remain TODO/evidence-limited until scored mismatches have independent gold rule/morpheme/variant labels.
+- **Acceptance:** report occurrence-weighted and unique-type metrics, row and lexical-type dependence sensitivity, and source/rule strata separately; do not tune the 14-case queue and call it a holdout.
