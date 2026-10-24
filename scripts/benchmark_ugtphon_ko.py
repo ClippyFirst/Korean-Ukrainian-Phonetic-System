@@ -22,7 +22,7 @@ _HANGUL_TOKEN = re.compile(r"^[\uac00-\ud7a3]+$")
 # These narrow transcription diacritics are normalized away for a broad-level
 # diagnostic comparison. Fortis (U+0348), aspiration (ʰ), length (ː), and
 # unreleased-stop (̚) are intentionally retained.
-_IGNORABLE_DIACRITICS = {"\u031d", "\u0339", "\u031e"}
+_IGNORABLE_DIACRITICS = {"\u031d", "\u0339", "\u031e", "\u0320"}
 _TIE_BAR = "\u0361"
 
 
