@@ -836,3 +836,13 @@ No open PRs remained after #282 merged. The scientific status is still research 
 
 - **Related-source search expanded:** component/rule evidence is also recorded for `되었어` (dictionary `되다` lists `되어/돼` forms), `붙어야` (dictionary `붙어[부터]`), `쌓아서` (dictionary `쌓아[싸아]` plus Article 12 ㅎ-deletion explanation), and `좋은데` (dictionary `좋은[조ː은]`). These do not count as exact-form adjudication; those cases remain pending.
 - **Current evidence count:** 3 exact-form official source records, 4 related component/rule evidence records, and 7 forms without source evidence recorded in this search pass. All 14 still need broad-IPA adjudication; none has final IPA gold.
+
+
+### Verification result after official-source search — 2026-10-24
+
+The latest source/test state at commit `0605398d5b9554bf4ac694b673f2728da17c0f08` passed all three repository CI workflows:
+- **PASS — tests:** [run 40095464926](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464926); npm tests/build and Python 3.11, 3.12, 3.13.
+- **PASS — system verification:** [run 40095464989](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464989).
+- **PASS — master table and research corpus artifacts:** [run 40095464893](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464893).
+
+Earlier attempts on intermediate commits failed only in the new queue test as its assertions were tightened to distinguish exact-form source evidence from related rule/component evidence. The assertions were corrected; the listed passing runs include the final correction to the related-source scope check. The linguistic status remains PARTIAL: three exact-form official surface sources, four related-source records, seven cases without source evidence recorded in this search pass, and zero independently adjudicated IPA gold forms.
