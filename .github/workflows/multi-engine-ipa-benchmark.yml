@@ -10,6 +10,7 @@ on:
       - "tests/test_sigmorphon_benchmark.py"
       - ".github/workflows/multi-engine-ipa-benchmark.yml"
       - "scripts/benchmark_ugtphon_ko.py"
+      - "tests/test_ugtphon_benchmark.py"
       - "scripts/convert_sigmorphon_ko.py"
       - "src/korean_ukrainian/**"
       - "data/korean/**"
