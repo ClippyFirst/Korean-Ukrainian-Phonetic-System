@@ -876,3 +876,28 @@ Latest follow-up commits on the same PR branch add the browser mapping-data proj
 - Stale override `source_ref` values that pointed to code paths were changed to the stable project-decision documentation anchor; this avoids pretending the implementation code itself is the linguistic evidence.
 
 **Verification state:** GitHub Actions runs were created for head `5ef8393ecb1565d4ae6ba3f8e62ca52c09d74d98`, but were still queued at last check. Earlier CI results do not verify this final head. Do not report these additions as passing until the exact-head workflows complete. If parity tests fail, correct the contract or implementation rather than weakening assertions to force green. 
+
+
+### Follow-up: exact-head CI failure triage and regression fixes (2026-10-24)
+
+**Observed exact-head CI result:** run [40131875165](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40131875165) on `94631cc169d74146d12cb0c70b004288523775ab` failed both browser and Python suites. The failure logs were inspected, not inferred from the red badge.
+
+- Browser failures were stale assertions against the pre-detail trace schema: the old length-marker test expected `omitted-from-ukrainian-target` and a lower-case note, while the detailed renderer now emits a typed `vowel-length` feature and explicit `preserved-in-IPA-not-rendered-in-ukrainian-target` handling. The test now asserts the actual documented detailed contract.
+- Browser runtime-invariant test used deep equality against the legacy three-field result despite the new trace contract exposing status, reason, mapping trace, and provenance. It now checks the compatibility fields individually while also asserting the new status/provenance contract; implementation detail is not hidden merely to satisfy an outdated snapshot.
+- Python/browser parity test introduced a repository-root variable but passed the misspelled uppercase `ROOT` to subprocess. This was corrected to use `root`.
+- The browser suite passed on intermediate head `428f8e1dae2bf2c86e80bd203ee8939cf538d8f3`; its Python suite still failed because of the case-sensitive root variable. The final correction is commit `317f0f106d230b10bbc42219ca1f9c3e5a369aa2`. New exact-head CI is required before any PASS claim.
+
+**Task ledger at this handoff:**
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Local ClippyFirst IPA→Ukrainian renderer and trace provenance | PARTIAL | Implementation exists in Python and browser layers; exact-head CI must pass and the independent target gold set remains missing. |
+| Browser/Python mapping parity | PARTIAL | Cross-runtime test covers 13 shared IPA inputs; final-head run must pass without weakening the comparisons. |
+| Deterministic browser mapping artifact | PARTIAL | Generator and `--check` drift test added; generator/build checks must pass on final head. |
+| Restore original 24-form fixture | BLOCKED_MISSING_SOURCE | Candidate list remains provenance-tagged as reconstructed from a prior handoff. Acceptance requires an authoritative tracked artifact or a verifiable source plus exact membership/order; do not promote candidates to gold. |
+| Independent Korean broad-IPA adjudication | BLOCKED_SPECIALIST_ADJUDICATION | Internal engine agreement is not independent gold; resolve with source-grounded rule environments and reviewed pronunciation evidence. |
+| Independent Ukrainian target accuracy | BLOCKED_SPECIALIST_REVIEW | Project-selected mappings and provisional overrides are not adjudicated target gold; acceptance requires a reviewed, licensed target set and explicit scoring protocol. |
+| Official NIKL live metadata inventory | BLOCKED_EXTERNAL_ACCESS | Previous direct official endpoints returned HTTP 403; the normal-branch job being skipped is not a pass. Acceptance requires authorized retrieval, complete articles 1–30 reconciliation and hashed metadata manifest. |
+| Release gate | PARTIAL / NOT RELEASE-READY | PR #310 remains open; final-head CI and empirical source/target gates are outstanding. |
+
+No test is considered passing solely because a test file exists. The latest known head at this edit is `317f0f106d230b10bbc42219ca1f9c3e5a369aa2`; refresh branch refs and CI before finalizing this record.
