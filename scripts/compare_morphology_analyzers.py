@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""Compare Kiwi and MeCab-Ko segmentation outputs on the same benchmark words.
+"""Compare Kiwi and MeCab-Ko segmentation diagnostics on the same words.
 
-This computes pairwise boundary agreement only. Neither analyzer is treated as
-gold, and their raw POS tag inventories are intentionally not compared because
-the tag schemes are not guaranteed to be equivalent.
+This computes pairwise agreement, not accuracy. Character-offset boundaries
+cannot represent a morpheme split inside one Hangul syllable; overlapping
+source spans and analyzer forms that differ from their source substring are
+therefore surfaced explicitly rather than silently treated as ordinary spans.
 """
 from __future__ import annotations
 
 import argparse
 import json
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -34,13 +36,71 @@ def _load(path: Path, expected_analyzer: str) -> dict[str, dict[str, Any]]:
 
 def _boundaries(item: dict[str, Any]) -> set[int]:
     word = str(item["word"])
-    morphemes = item.get("morphemes", [])
     boundaries: set[int] = set()
-    for morpheme in morphemes:
+    for morpheme in item.get("morphemes", []):
         end = int(morpheme["end"])
-        if 0 < end < len(word):
+        start = int(morpheme.get("start", 0))
+        if 0 < end < len(word) and start < end:
             boundaries.add(end)
     return boundaries
+
+
+def _shape_diagnostics(indexed: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    repeated_span_words = 0
+    repeated_span_groups = 0
+    overlapping_span_pairs = 0
+    forms_different_from_surface = 0
+    invalid_spans = 0
+    total_morphemes = 0
+    for word, item in indexed.items():
+        spans: list[tuple[int, int]] = []
+        for morpheme in item.get("morphemes", []):
+            total_morphemes += 1
+            start = int(morpheme.get("start", -1))
+            end = int(morpheme.get("end", -1))
+            form = str(morpheme.get("form", ""))
+            if not (0 <= start < end <= len(word)):
+                invalid_spans += 1
+                continue
+            spans.append((start, end))
+            if form != word[start:end]:
+                forms_different_from_surface += 1
+        counts = Counter(spans)
+        groups = sum(count > 1 for count in counts.values())
+        if groups:
+            repeated_span_words += 1
+            repeated_span_groups += groups
+        for i, (left_start, left_end) in enumerate(spans):
+            for right_start, right_end in spans[i + 1:]:
+                if max(left_start, right_start) < min(left_end, right_end):
+                    overlapping_span_pairs += 1
+    return {
+        "words": len(indexed),
+        "total_morphemes": total_morphemes,
+        "words_with_repeated_source_spans": repeated_span_words,
+        "repeated_source_span_groups": repeated_span_groups,
+        "overlapping_source_span_pairs": overlapping_span_pairs,
+        "forms_not_equal_to_source_substring": forms_different_from_surface,
+        "invalid_source_spans": invalid_spans,
+        "interpretation": (
+            "diagnostic representation counts, not errors by themselves: analyzer forms may be "
+            "normalized morphemes while offsets identify the source surface"
+        ),
+    }
+
+
+def _rule_events(indexed: dict[str, dict[str, Any]]) -> dict[tuple[str, str, str, int], bool]:
+    events: dict[tuple[str, str, str, int], bool] = {}
+    for word, item in indexed.items():
+        for event in item.get("native_soft_rule_boundary_events", []):
+            key = (
+                word,
+                str(event.get("rule_id", "")),
+                str(event.get("pair", "")),
+                int(event.get("orthographic_offset", -1)),
+            )
+            events[key] = bool(event.get("morphological_boundary_observed"))
+    return events
 
 
 def compare(kiwi: dict[str, dict[str, Any]], mecab: dict[str, dict[str, Any]]) -> dict[str, Any]:
@@ -69,6 +129,24 @@ def compare(kiwi: dict[str, dict[str, Any]], mecab: dict[str, dict[str, Any]]) -
     precision = true_positive / (true_positive + false_positive) if true_positive + false_positive else None
     recall = true_positive / (true_positive + false_negative) if true_positive + false_negative else None
     f1 = 2 * precision * recall / (precision + recall) if precision is not None and recall is not None and precision + recall else None
+
+    kiwi_events = _rule_events(kiwi)
+    mecab_events = _rule_events(mecab)
+    common_events = sorted(set(kiwi_events) & set(mecab_events))
+    both_observed = sum(kiwi_events[key] and mecab_events[key] for key in common_events)
+    neither_observed = sum(not kiwi_events[key] and not mecab_events[key] for key in common_events)
+    kiwi_only = sum(kiwi_events[key] and not mecab_events[key] for key in common_events)
+    mecab_only = sum(not kiwi_events[key] and mecab_events[key] for key in common_events)
+    event_disagreements = [
+        {
+            "word": key[0], "rule_id": key[1], "pair": key[2],
+            "orthographic_offset": key[3],
+            "kiwi_boundary_observed": kiwi_events[key],
+            "mecab_boundary_observed": mecab_events[key],
+        }
+        for key in common_events if kiwi_events[key] != mecab_events[key]
+    ]
+
     return {
         "comparison": "Kiwi vs MeCab-Ko pairwise segmentation agreement",
         "status": "diagnostic_pairwise_not_gold_accuracy",
@@ -77,6 +155,9 @@ def compare(kiwi: dict[str, dict[str, Any]], mecab: dict[str, dict[str, Any]]) -
         "common_words": len(common),
         "exact_boundary_set_agreement_words": exact,
         "exact_boundary_set_agreement_rate": round(exact / len(common), 6),
+        "boundary_metric_scope": (
+            "orthographic character offsets only; cannot represent a morpheme split inside a Hangul syllable"
+        ),
         "boundary_micro": {
             "shared_boundaries": true_positive,
             "kiwi_only_boundaries": false_positive,
@@ -85,10 +166,30 @@ def compare(kiwi: dict[str, dict[str, Any]], mecab: dict[str, dict[str, Any]]) -
             "recall_kiwi_boundaries_against_mecab": round(recall, 6) if recall is not None else None,
             "f1_pairwise_boundary_overlap": round(f1, 6) if f1 is not None else None,
         },
+        "analyzer_output_shape": {
+            "kiwi": _shape_diagnostics(kiwi),
+            "mecab_ko": _shape_diagnostics(mecab),
+        },
+        "native_soft_rule_boundary_alignment": {
+            "common_rule_events": len(common_events),
+            "both_observed": both_observed,
+            "neither_observed": neither_observed,
+            "kiwi_only_observed": kiwi_only,
+            "mecab_only_observed": mecab_only,
+            "agreement_rate": round((both_observed + neither_observed) / len(common_events), 6) if common_events else None,
+            "disagreement_examples": event_disagreements[:100],
+            "interpretation": (
+                "descriptive only: observed analyzer boundaries do not prove a rule is licensed, "
+                "and missing boundaries do not prove a rule is invalid"
+            ),
+        },
         "disagreement_examples": disagreements,
         "limitations": [
             "Neither analyzer is gold; agreement is not correctness.",
-            "Only morpheme boundary offsets are compared. Raw POS tags are not comparable without an explicit tagset mapping.",
+            "Boundary agreement is computed on source-character offsets and under-represents within-syllable morpheme splits.",
+            "Analyzer forms can be normalized morpheme forms rather than literal source substrings; offsets refer to source text.",
+            "Native soft-rule boundary alignment is correlation only, not a phonological license or accuracy score.",
+            "Raw POS tags are not compared because the tag schemes are not guaranteed to be equivalent.",
             "The underlying corpus is noisy user-generated text; tokenization and context can affect analyzer output.",
         ],
     }
