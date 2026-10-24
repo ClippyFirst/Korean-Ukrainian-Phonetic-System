@@ -48,6 +48,18 @@ class FakeTagger:
         )
 
 
+
+class FakeMecabKo:
+    def pos(self, text):
+        return [("있", "VV"), ("었", "EP"), ("고", "EC")]
+
+
+def test_mecab_ko_python_pos_api():
+    result = MecabKoMorphologyAnalyzer(FakeMecabKo()).analyze("있었고")
+    assert [(m.form, m.tag, m.start, m.end) for m in result.morphemes] == [
+        ("있", "VV", 0, 1), ("었", "EP", 1, 2), ("고", "EC", 2, 3)
+    ]
+
 def test_mecab_adapter_extracts_tokens_and_aligns_offsets():
     result = MecabKoMorphologyAnalyzer(FakeTagger()).analyze("있었고")
     assert [m.form for m in result.morphemes] == ["있", "었", "고"]
