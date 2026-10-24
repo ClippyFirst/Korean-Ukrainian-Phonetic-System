@@ -47,6 +47,7 @@ def test_repeated_surface_spans_are_reported_not_hidden_by_character_boundaries(
             {"form": "가", "start": 0, "end": 1},
             {"form": "하", "start": 1, "end": 2},
             {"form": "ᆫ", "start": 1, "end": 2},
+            {"form": "이", "start": 2, "end": 2, "span_status": "zero_width_morph"},
             {"form": "걸", "start": 2, "end": 3},
         ]},
     }
@@ -64,6 +65,9 @@ def test_repeated_surface_spans_are_reported_not_hidden_by_character_boundaries(
     assert shape["repeated_source_span_groups"] == 1
     assert shape["overlapping_source_span_pairs"] == 1
     assert shape["forms_not_equal_to_source_substring"] == 2
+    assert shape["zero_width_morphemes"] == 1
+    assert shape["words_with_zero_width_morphemes"] == 1
+    assert shape["invalid_source_spans"] == 0
 
 
 def test_native_soft_rule_boundary_alignment_is_compared_separately():
