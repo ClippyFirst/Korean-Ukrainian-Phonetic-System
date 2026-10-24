@@ -1,11 +1,11 @@
 ## Source-backed practical-engine improvements — 2026-10-24
 
-- **DONE (implementation only):** practical g2pK adapter preserves the NIKL dictionary's lexical length in exact-form `수많은[수ː마는]` as IPA `suː`, while leaving the Ukrainian target unchanged and separately model-selected.
-- **DONE (implementation only):** for `멋있어`, the adapter exposes the other NIKL-accepted surface (`머디써` / `머시써`) only when the primary output is one of those two official forms. The alternate IPA and Ukrainian target are generated through the same surface → IPA → Ukrainian path and remain marked `lexical-review`.
+- **PARTIAL (source-backed runtime implementation):** practical g2pK adapter preserves the NIKL dictionary's lexical length in exact-form `수많은[수ː마는]` as IPA `suː`, while leaving the Ukrainian target unchanged and separately model-selected.
+- **PARTIAL (source-backed runtime implementation):** for `멋있어`, the adapter exposes the other NIKL-accepted surface (`머디써` / `머시써`) only when the primary output is one of those two official forms. The alternate IPA and Ukrainian target are generated through the same surface → IPA → Ukrainian path and remain marked `lexical-review`; the UI links to the official NIKL Q&A source.
 - Evidence: [NIKL Korean Basic Dictionary, 수많은](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144); [NIKL Online Q&A, 멋있어](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166).
-- **PARTIAL:** regression tests added at `tests/nikl-lexical-ipa-variants.test.mjs`; no current-head test/build result has been verified. Do not call these tests passed.
-- **BLOCKED:** local clone remains unavailable due outbound DNS and GitHub returned no workflow runs/statuses for the branch head during this pass.
-- **TODO:** independent IPA review, separate Ukrainian-target review, and successful exact-head `npm test` + `npm run build`. Full detail: [source-backed engine improvement report](ENGINE-IMPROVEMENTS-SOURCE-BACKED-2026-10-24.md).
+- **PARTIAL / CI evidence:** browser G2P integration passed on code-equivalent head `519f8331222aca623d93dafc41bd741ec82dd9e1`; the runtime regression tests passed in that workflow. The Python test run on holdout revision `7671e33501371cc699d81fb02ee525732ddaa69c` failed only at the local-overlap gate because the then-current manifest still contained 14 contaminated rule examples. Those cases were replaced; exact-head full-suite verification for the revised manifest is pending.
+- **BLOCKED:** local clone remains unavailable because outbound DNS to github.com fails. The revised exact-head GitHub Actions test/build workflows have been queued; do not claim a complete suite pass until they finish.
+- **TODO:** successful exact-head Python regression/data-integrity and browser/build workflows; two independent IPA reviews plus adjudication; separate Ukrainian-target review. Full detail: [source-backed engine improvement report](ENGINE-IMPROVEMENTS-SOURCE-BACKED-2026-10-24.md).
 
 ## Korean native-engine error analysis and post-fix benchmark — 2026-10-24
 
@@ -15,7 +15,7 @@
 - **DONE_VERIFIED and merged:** complete occurrence-level native-vs-g2pk audit for UGTPHON and SIGMORPHON; artifact 12559692692 retains every occurrence rather than a capped mismatch sample.
 - **DONE_VERIFIED for Python native benchmark:** exact-form R010 (§24) licenses for 닮다 and 넘게 add two further exact matches; native CER also improves. The matching browser-engine licenses and tests were included in the merged PR.
 - **PARTIAL:** 48 UGTPHON native abstentions remain across 47 unique words; 19 coincide with g2pk exact matches and 29 do not. R002 and R003 account for most unresolved contexts.
-- **TODO:** source-adjudicate remaining abstentions and build an independent NIKL holdout.
+- **TODO:** source-adjudicate remaining abstentions; run the full local leakage validator for the revised 24-item NIKL holdout and obtain two independent IPA labels plus adjudication.
 - **BLOCKED:** full Korean IPA → Ukrainian accuracy is not measured because there is no independently adjudicated Ukrainian-output gold corpus.
 
 ### Confirmed causes and evidence
@@ -28,8 +28,8 @@
 
 ### Current benchmark evidence
 
-- Latest successful six-engine run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978); artifact [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692).
-- Revised broad-IPA UGTPHON: native 1,412/2,655 exact (53.1827%), CER 9.1883%, coverage 98.2242%; g2pk 1,416/2,655 exact on the common scored subset (53.3333%), CER 9.2414%.
+- Latest successful six-engine raw benchmark run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978); artifact [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692). Broad-v1 normalization sensitivity was recomputed on report-identical artifact [12567083852](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40113136399/artifacts/12567083852) after the affricate-preservation fix.
+- Legacy UGTPHON: native 1,412/2,655 exact (53.1827%), CER 9.1883%, coverage 98.2242%; g2pk 1,416/2,655 exact on the common scored subset (53.3333%), CER 9.2414%. Candidate broad-v1: native 2,417/2,655 exact (91.0358%), CER 1.6847%; g2pk 2,415/2,655 exact (90.9605%), CER 1.7303%. These are normalization-sensitivity scores, not independently validated accuracy.
 - Revised broad-IPA SIGMORPHON public paired file: native 357/997 exact (35.8074%), CER 14.7037%; g2pk 353/997 exact on the common scored subset (35.4062%), CER 14.8222%. This is not a leaderboard reproduction because the pinned public file contains paired references despite the upstream README describing word-only test inputs.
 - Full UGTPHON pairwise categories: 1,412 both-exact; 1,239 both-not-exact; 4 g2pk-only exact; 19 native-abstained/g2pk-exact; 29 native-abstained/g2pk-not-exact.
 - Full SIGMORPHON pairwise categories: 353 both-exact; 640 both-not-exact; 4 native-only exact; 2 native abstentions where g2pk is not exact.
