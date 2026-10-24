@@ -79,6 +79,70 @@ def _native_prediction(fn: Callable[..., dict[str, Any]], word: str, mode: str) 
     }
 
 
+def _rule_boundary_alignment(
+    changed_words: list[dict[str, Any]], morphology_rows: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """Compare soft-mode heuristic rule contexts with analyzer surface offsets.
+
+    This asks only whether an analyzer emits a boundary at the orthographic
+    character offset between the two syllables named by a heuristic trace. It
+    does not decide whether the phonological rule is licensed or correct.
+    """
+    by_word = {str(item["word"]): item for item in morphology_rows}
+    events: list[dict[str, Any]] = []
+    for changed in changed_words:
+        word = str(changed["word"])
+        morphology = by_word.get(word)
+        if morphology is None:
+            continue
+        boundaries = {
+            int(morpheme["end"])
+            for morpheme in morphology.get("morphemes", [])
+            if 0 < int(morpheme.get("end", 0)) < len(word)
+            and int(morpheme.get("start", 0)) < int(morpheme.get("end", 0))
+        }
+        for trace in changed.get("soft_heuristic_rules", []):
+            context = str(trace.get("license_context", ""))
+            pair = context.rsplit(":", 1)[-1]
+            if ">" not in pair:
+                continue
+            left, right = pair.split(">", 1)
+            before = trace.get("before", [])
+            for index in range(len(before) - 1):
+                if (str(before[index].get("text", "")) != left
+                        or str(before[index + 1].get("text", "")) != right):
+                    continue
+                offset = sum(len(str(item.get("text", ""))) for item in before[:index + 1])
+                if not 0 < offset < len(word):
+                    continue
+                events.append({
+                    "word": word,
+                    "rule_id": trace.get("rule_id"),
+                    "rule_name": trace.get("name"),
+                    "pair": pair,
+                    "orthographic_offset": offset,
+                    "morphological_boundary_observed": offset in boundaries,
+                    "interpretation": (
+                        "boundary observed at this orthographic character offset"
+                        if offset in boundaries else
+                        "no boundary observed at this orthographic character offset"
+                    ),
+                    "morpheme_forms": [item.get("form") for item in morphology.get("morphemes", [])],
+                })
+    observed = sum(bool(event["morphological_boundary_observed"]) for event in events)
+    return {
+        "events": len(events),
+        "boundary_observed": observed,
+        "boundary_not_observed": len(events) - observed,
+        "boundary_observation_rate": round(observed / len(events), 6) if events else None,
+        "events_detail": events,
+        "interpretation": (
+            "descriptive boundary alignment only, not rule licensing or accuracy; "
+            "absence of a boundary is not proof that a phonological rule is invalid"
+        ),
+    }
+
+
 def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
     from korean_ukrainian.pipeline import phoneticize_korean
     from korean_ukrainian.research_morphology import analyzer_by_name
@@ -198,6 +262,12 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
             })
 
     morph_by_word = {item["word"]: item for item in morphology_rows}
+    rule_boundary_alignment = _rule_boundary_alignment(changed_words, morphology_rows)
+    events_by_word: dict[str, list[dict[str, Any]]] = {}
+    for event in rule_boundary_alignment["events_detail"]:
+        events_by_word.setdefault(str(event["word"]), []).append(event)
+    for item in morphology_rows:
+        item["native_soft_rule_boundary_events"] = events_by_word.get(str(item["word"]), [])
     split_changed = [
         item for item in changed_words
         if morph_by_word.get(item["word"], {}).get("split_into_multiple_morphemes")
@@ -236,8 +306,13 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
             "changed_words_with_multi_morpheme_segmentation": len(split_changed),
             "changed_word_examples": changed_words[:200],
             "changed_words_also_split_by_analyzer": split_changed[:100],
+            "morphology_rule_boundary_alignment": {
+                key: value for key, value in rule_boundary_alignment.items()
+                if key != "events_detail"
+            },
         },
         "morphology": {
+            "native_soft_rule_boundary_alignment": rule_boundary_alignment,
             "analyzer": analyzer_name,
             "status": "completed_diagnostic" if analyzer is not None and not morphology_errors else (
                 "blocked_dependency" if analyzer is None else "partial_errors"
