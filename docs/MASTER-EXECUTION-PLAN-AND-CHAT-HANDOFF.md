@@ -912,3 +912,25 @@ No test is considered passing solely because a test file exists. The latest know
 - **PARTIAL — remaining benchmark workflows:** optional g2pK integration, research morphology adapter smoke, and multi-engine IPA diagnostic were still running at last check. Recheck their terminal status before a release decision; earlier successful runs on other heads do not substitute for these exact-head runs.
 - **PR convergence:** PR #310 contains the same Python renderer and pipeline blobs as still-open PR #307, while #310 additionally carries browser-side generated mapping data, browser trace integration, and cross-runtime tests. PR #307 carries the unverified 24-form candidate fixture and its provenance audit. Keep both open until the current checks finish and compare the final file sets; do not merge duplicate overlapping changes blindly or discard the fixture audit. Neither PR establishes the original 24-form source.
 - **Latest tracked branch head at this note:** `e462d15d9d31d4889ad562095ecb93f39247e8fe`. A documentation-only update will trigger fresh checks; refresh the branch ref and wait for those checks before declaring the final PR head verified.
+
+
+### Final exact-head verification — 2026-10-24
+
+**Verified implementation head:** `a80cacf0f2c36c40a172ea24aad5a67bb9ba5756`. The latest code change is `317f0f106d230b10bbc42219ca1f9c3e5a369aa2`; commits after that are documentation/task-ledger changes only.
+
+All nine relevant workflow families completed successfully on `a80cacf`:
+- System verification: [40132976136](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132976136) — Python regression/data integrity and browser regression/build passed.
+- Focused test matrix: [40132976087](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132976087) — passed.
+- Generated master table and research corpus: [40132976175](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132976175) — passed.
+- Optional g2pK integration: [40132976258](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132976258) — passed.
+- Browser G2P integration: [40132976122](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132976122) — passed.
+- Paired native-vs-g2pK diagnostic: [40132976161](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132976161) — passed as diagnostic only.
+- External UGTPHON diagnostic: [40132976197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132976197) — passed as diagnostic only.
+- Multi-engine IPA diagnostic benchmark: [40132976215](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132976215) — passed as diagnostic only.
+- Research morphology adapter smoke: [40132976263](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132976263) — passed, including Kiwi and MeCab-Ko adapter contract/real-engine smoke and strict/soft IPA comparisons.
+
+**Explicit non-pass:** the official NIKL live metadata inventory job was skipped in system verification. Prior official endpoint attempts returned HTTP 403; no complete live inventory was generated.
+
+**PR reconciliation:** PR #310 and PR #307 are both still open and mergeable. Their Python IPA renderer and pipeline blobs are identical; #310 adds browser-side generated mapping/trace/parity work, while #307 carries the candidate 24-form input-only fixture and provenance audit. Keep the candidate fixture quarantined as `reconstructed_unverified`; do not close or merge either PR blindly. The 24-form manifest `data/korean/ipa_holdout_2026-10-24.json` referenced by an earlier diagnostic script is absent from the tracked refs inspected, so the original membership/order has not been restored.
+
+**Final task ledger:** core implementation/regression verification `DONE_VERIFIED` on the recorded code head; original 24-form provenance `BLOCKED_MISSING_SOURCE`; independent Korean IPA adjudication `BLOCKED_SPECIALIST_ADJUDICATION`; independent Ukrainian target gold `BLOCKED_SPECIALIST_REVIEW`; official live NIKL inventory `BLOCKED_EXTERNAL_ACCESS`; release readiness `PARTIAL / NOT RELEASE-READY`. No IPA or Ukrainian gold labels, benchmark accuracy, or source licenses were fabricated.
