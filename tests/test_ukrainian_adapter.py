@@ -11,6 +11,7 @@ def test_selection_is_explicit_when_target_inventory_is_unavailable():
     out=transliterate_korean("가",target_adapter=a)
     assert out["selected_candidate"] is None
     assert out["ukrainian_orthography"] is None
+    assert out["target_unavailable_reason"] == "target_inventory_unavailable"
 
 
 def test_upi_mapping_penalties_are_consumed():
@@ -66,3 +67,28 @@ def test_shared_renderer_distinguishes_unlicensed_mapping_from_inventory_failure
     assert out["ukrainian_orthography"] is None
     assert out["target_analysis"][0]["reason"]=="grapheme_without_licensed_mapping"
     assert out["unavailable_reasons"]==["grapheme_without_licensed_mapping"]
+
+
+def test_shared_renderer_reports_mapping_export_failure_separately():
+    from korean_ukrainian.pipeline import render_ipa_analysis_to_ukrainian
+    a=UkrainianTargetAdapter.__new__(UkrainianTargetAdapter)
+    a.package_name="fake"
+    a.available=True
+    a.version="0.8.0"
+    a.error="mapping export unavailable: FileNotFoundError"
+    a.inventory={"phonemes":[
+        {"id":"UA-A","ipa":"a","features":{"consonantal":"0"}},
+    ]}
+    a.grapheme_map={"a":"а"}
+    a.mapping_index={}
+    out=render_ipa_analysis_to_ukrainian(
+        "가", [{"input":"가", "ipa":"a"}],
+        pronunciation_surface="가", phonetics={},
+        ipa={"ipa":"a"}, pronunciation_engine="test",
+        target_adapter=a,
+    )
+    assert out["ukrainian_orthography"] is None
+    assert out["target_analysis"][0]["reason"] == "target_mapping_export_unavailable"
+    assert out["target_analysis"][0]["target_adapter_status"]["error"].startswith(
+        "mapping export unavailable:"
+    )
