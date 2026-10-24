@@ -3,7 +3,7 @@
  */
 import {
   COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
-  NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -162,8 +162,13 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
       continue;
     }
 
+    const exactR010Pair=NIKL_24_STEM_NM_ENDING_FORMS.get(sourceText);
+    const currentPair=a.char+'>'+b.char;
     const fortisRep=representative(a.coda);
-    if(PLAIN_TO_FORTIS[b.onset]&&['ㄱ','ㄷ','ㅂ'].includes(fortisRep)){
+    if(exactR010Pair===currentPair&&['ㄴ','ㅁ'].includes(fortisRep)&&PLAIN_TO_FORTIS[b.onset]){
+      b.onset=PLAIN_TO_FORTIS[b.onset];
+      nextRules.push('stem-n-m-fortition-§24');
+    }else if(PLAIN_TO_FORTIS[b.onset]&&['ㄱ','ㄷ','ㅂ'].includes(fortisRep)){
       b.onset=PLAIN_TO_FORTIS[b.onset];
       nextRules.push('tensification');
     }

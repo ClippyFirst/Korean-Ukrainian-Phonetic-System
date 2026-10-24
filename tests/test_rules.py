@@ -1,5 +1,5 @@
 from korean_ukrainian.phonology import parse_syllables
-from korean_ukrainian.rules import apply_ordered_rules
+from korean_ukrainian.rules import apply_ordered_rules, apply_rule
 
 def test_final_neutralization():
     items,traces=apply_ordered_rules(parse_syllables("낫"),["R001"]); assert items[0].coda=="ㄷ" and traces[0].changed
@@ -381,6 +381,21 @@ def test_sections_24_to_28_require_exact_full_form_and_pair_licenses():
         assert items[1].onset==expected_onset
         assert traces[0].changed
 
+def test_nikl_section_24_exact_form_licenses_cover_dalmda_and_neomge_without_generalizing():
+    expected = {"닮다": ("닮>다", "ㄸ"), "넘게": ("넘>게", "ㄲ")}
+    for word, (pair, onset) in expected.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R010"])
+        assert items[1].onset == onset, word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R010:stem_n_m+suffix:{word}:{pair}"
+
+    # The full-form license is intentionally not a productive morphology guess.
+    items, traces = apply_ordered_rules(parse_syllables("닮고"), ["R010"])
+    assert items[1].onset == "ㄱ"
+    assert not traces[0].changed
+    assert traces[0].status == "conditional-disabled"
+
+
 def test_section_27_adnominal_l_fortition_can_cross_a_word_boundary_only_with_phrase_evidence():
     items,traces=apply_ordered_rules(
         parse_syllables("할 것"),["R013"],boundary_mode="phrase",
@@ -667,10 +682,24 @@ def test_rule_28_and_30_exact_licenses_do_not_generalize_to_unlisted_homographs(
 
 
 def test_velar_nasal_coda_is_not_resyllabified_to_silent_onset():
-    # ㅇ as a coda is /ŋ/; as an onset it is silent. Moving it under R002
-    # silently deletes the nasal, e.g. 공인 must retain [ŋ] in [koŋ.in].
+    # Coda ㅇ is /ŋ/; onset ㅇ is silent. R002 must preserve the former.
     for word in ("공인", "동요", "동이", "양아치"):
         items, traces = apply_ordered_rules(parse_syllables(word), ["R002"])
         assert items[0].coda == "ㅇ", word
         assert items[1].onset == "ㅇ", word
         assert not traces[0].changed, word
+
+
+def test_nikl_stem_fortition_rules_do_not_include_ㅂ():
+    # Exercise a licensed branch directly: NIKL §§24–25 do not tense ㅂ.
+    for word, rule_id, scope, pair in (
+        ("남봐", "R010", "stem_n_m+suffix", "남>봐"),
+        ("넓봐", "R011", "stem_lb_lt+suffix", "넓>봐"),
+    ):
+        items = parse_syllables(word)
+        trace = apply_rule(
+            items, rule_id,
+            rule_licenses={f"{rule_id}:{scope}:{word}:{pair}"},
+        )
+        assert items[1].onset == "ㅂ", word
+        assert not trace.changed, word

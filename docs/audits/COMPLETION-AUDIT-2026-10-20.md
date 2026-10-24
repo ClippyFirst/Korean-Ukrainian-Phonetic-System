@@ -1007,3 +1007,34 @@ The release blocker ledger is now available at research/SCIENTIFIC-RELEASE-BLOCK
 The inspected Pages failure at [run 40007564481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40007564481), job 120599746894, occurred after the deploy step succeeded: a smoke-test grep expected obsolete UI wording about no lexical corrections. The current UI instead accurately states that only a few exact NIKL-backed surface-form corrections are present. PR #266 ports the corrected assertion from the inspected #265 work onto the current mainline and updates the blocker ledger. Post-merge Pages workflow [40009408019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40009408019) passed Python 3.11/3.12/3.13, browser tests/build, public HTTP smoke, and live Playwright practical-mode interaction on main commit `dae9ed1bf5806fd8d33d86e70e0fb607b998d04e`. Deployment smoke is therefore DONE_VERIFIED for that commit; the live NIKL inventory step remained skipped/blocked.
 
 PR #265 was not merged blindly because it was one commit behind and overlapped current documentation. Its useful change was ported into the current-mainline branch. Scientific blockers remain open; readiness remains research preview / partial prototype.
+
+
+## Follow-up error investigation and paired benchmark results — 2026-10-24
+
+**Scope note:** this follow-up was executed on the open benchmark branch PR #297, not on the mainline commit recorded in the original 2026-10-20 audit. The merged mainline fixes in PRs #298 and #299 are part of the current branch base; the R010 exact-form licenses remain branch-local until PR #297 is reviewed and merged.
+
+### Findings and verified fixes
+
+- R002 coda-ㅇ liaison was dropping /ŋ/ by moving it to a silent onset. The guard is merged in PR #298 and has regression tests.
+- Broad IPA retained /j/ after ㅈ/ㅉ/ㅊ + ㅕ. Official NIKL Standard Pronunciation Rule 5, exception 1 and the linked NIKL explanation support the broad-IPA absorption fix, merged in PR #299.
+- The full occurrence-level audit found two additional source-rule gaps: 닮다 and 넘게 did not receive R010 (§24) stem-n/m + ending fortition because the strict native engine had no exact full-form licenses. PR #297 adds narrow licenses and Python regressions; the corresponding browser implementation and parity test are present, with current-head CI pending.
+- The remaining four g2pk-only exact UGTPHON occurrences are all instances of 없는 where the reference omits the NIKL-attested vowel length. The engine should retain sourced length; the reference needs independent adjudication rather than a production-rule change.
+
+### Latest benchmark evidence
+
+Latest successful multi-engine run: [40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799), artifact [12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356).
+
+- UGTPHON native: 1,412/2,655 exact (53.1827%), CER 9.1883%, coverage 98.2242%.
+- UGTPHON g2pk on the same 2,655 scored occurrences: 1,416 exact (53.3333%), CER 9.2414%. Paired g2pk-minus-native exact delta +0.1506 pp (95% CI +0.0351 to +0.3243); CER delta +0.0531 pp (95% CI −0.0139 to +0.1302, crosses zero).
+- SIGMORPHON native: 357/997 exact (35.8074%), CER 14.7037%; g2pk on the same 997 scored occurrences: 353 exact (35.4062%), CER 14.8167%. Paired exact delta for g2pk-minus-native −0.4012 pp (95% CI −0.8024 to −0.1003); CER delta +0.1130 pp (95% CI −0.0250 to +0.2732, crosses zero).
+- The complete UGTPHON ledger contains 1,412 both-exact, 1,239 both-not-exact, four g2pk-only exact, 19 native-abstained/g2pk-exact, and 29 native-abstained/g2pk-not-exact cases. The complete SIGMORPHON ledger contains 353 both-exact, 640 both-not-exact, four native-only exact, and two native abstentions where g2pk is not exact.
+- These are IPA diagnostics, not a normative NIKL score and not an IPA-to-Ukrainian accuracy result. The g2pk comparator uses the project IPA renderer, so it is not an independent end-to-end IPA stack.
+
+### Remaining acceptance gates
+
+1. **PARTIAL:** current-head browser/Python/parity CI for the R010 port; runs 40092929979 and 40092929989 were queued at the time of this update.
+2. **TODO:** source-adjudicate the 48 native abstentions, prioritizing R002 liaison/neutralization (25 context labels) and R003 ㅎ-coda deletion (20 labels). Do not infer production rules from external-engine output alone.
+3. **TODO:** build a source-grounded, independently adjudicated NIKL holdout with per-rule and interaction strata.
+4. **BLOCKED:** independently reviewed Korean-IPA-to-Ukrainian gold output remains unavailable; do not claim full-system accuracy.
+
+**Readiness remains research-ready for diagnostic comparison but still a partial prototype, not release-ready.**

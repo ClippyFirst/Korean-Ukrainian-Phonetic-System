@@ -30,6 +30,14 @@ const H_CODA_ASPIRATION={
 // the final consonant alone. In particular, 밟- is [ㅂ] before consonants.
 const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥','넓적']);
 
+// Exact-form applications of NIKL §24 for two benchmark-identified
+// verb-stem + ending forms. These do not enable productive morphology guessing.
+// Official source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
+  ['닮다','닮>다'],
+  ['넘게','넘>게'],
+]);
+
 // Exact, source-licensed phrase boundaries whose rules require syntax or a
 // known compound. These maps deliberately do not generalize from ㄹ/ㄴ codas.
 const NIKL_27_ADNOMINAL_PHRASES=new Map([
@@ -106,7 +114,7 @@ export {
   HANGUL_BASE, HANGUL_END, V_COUNT, T_COUNT, N_COUNT,
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
-  LEXICAL_B_CODA_PREFIXES, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
+  LEXICAL_B_CODA_PREFIXES, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
   NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,

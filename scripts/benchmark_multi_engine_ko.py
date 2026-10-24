@@ -405,6 +405,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 "ipa": result.get("ipa", {}).get("ipa"),
                 "unresolved": result.get("pronunciation_status") == "unresolved",
                 "reason": result.get("ipa_status_reason"),
+                "unresolved_contexts": result.get("unresolved_contexts", []),
             }
         except Exception as exc:
             native_cache[word] = {"error": f"{type(exc).__name__}: {exc}"}
@@ -509,23 +510,138 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         if any_error and len(mismatch_details) < 250:
             mismatch_details.append(row)
 
+    # Preserve every abstained token occurrence, not just a truncated sample.
+    # Repeated words in separate rows count as separate occurrences.
+    native_abstention_audit: list[dict[str, Any]] = []
+    unresolved_context_counts: dict[str, int] = defaultdict(int)
+    for item in items:
+        native = native_cache.get(item["word"], {})
+        if not native.get("unresolved"):
+            continue
+        contexts = native.get("unresolved_contexts", [])
+        for context in contexts:
+            label = str(context.get("rule_id") or "unknown_rule") + ":" + str(
+                context.get("reason") or "unspecified_reason"
+            )
+            unresolved_context_counts[label] += 1
+        occurrence: dict[str, Any] = {
+            "occurrence_id": item["occurrence_id"],
+            "row_id": item["row_id"],
+            "token": item["word"],
+            "gold": item["gold"],
+            "native_status": "unresolved",
+            "native_reason": native.get("reason"),
+            "unresolved_contexts": contexts,
+            "candidate_outputs": {},
+        }
+        for name, engine_predictions in predictions.items():
+            if name == "clippyfirst_native":
+                continue
+            candidate = engine_predictions.get(item["word"], {})
+            value = candidate.get("ipa") if isinstance(candidate, dict) else None
+            if isinstance(value, str) and value:
+                scored_candidate = _score(value, item["gold"])
+                occurrence["candidate_outputs"][name] = {
+                    "ipa": value,
+                    "exact": scored_candidate["exact"],
+                    "distance": scored_candidate["distance"],
+                }
+            else:
+                occurrence["candidate_outputs"][name] = {
+                    "status": "error_or_no_output",
+                    "reason": candidate.get("error") if isinstance(candidate, dict) else None,
+                }
+        native_abstention_audit.append(occurrence)
+
+    # Keep the complete native-vs-g2pk occurrence-level ledger in the artifact.
+    # The capped multi-engine mismatch sample is useful for quick reading but
+    # cannot support a full error count or explain aggregate score differences.
+    native_g2pk_pairwise_audit: list[dict[str, Any]] = []
+    pairwise_category_counts: dict[str, int] = defaultdict(int)
+    g2pk_predictions = predictions.get("g2pk_0_9_4", {})
+    for item in items:
+        word, gold = item["word"], item["gold"]
+        native = native_cache.get(word, {})
+        candidate = g2pk_predictions.get(word, {})
+        native_score = None
+        g2pk_score = None
+        if not native.get("unresolved") and not native.get("error") and native.get("ipa"):
+            native_score = _score(native["ipa"], gold)
+        if isinstance(candidate, dict) and not candidate.get("error") and candidate.get("ipa"):
+            g2pk_score = _score(candidate["ipa"], gold)
+
+        if native.get("unresolved"):
+            category = "native_abstained_g2pk_exact" if g2pk_score and g2pk_score["exact"] else "native_abstained_g2pk_not_exact"
+        elif native.get("error") or not native.get("ipa"):
+            category = "native_error_g2pk_exact" if g2pk_score and g2pk_score["exact"] else "native_error_g2pk_not_exact"
+        elif not g2pk_score:
+            category = "g2pk_error_native_exact" if native_score and native_score["exact"] else "g2pk_error_native_not_exact"
+        elif native_score["exact"] and g2pk_score["exact"]:
+            category = "both_exact"
+        elif native_score["exact"]:
+            category = "native_only_exact"
+        elif g2pk_score["exact"]:
+            category = "g2pk_only_exact"
+        else:
+            category = "both_not_exact"
+        pairwise_category_counts[category] += 1
+
+        native_entry: dict[str, Any] = {
+            "status": "unresolved" if native.get("unresolved") else "error" if native.get("error") else "scored" if native_score else "no_output",
+            "ipa": native.get("ipa"),
+            "reason": native.get("reason") or native.get("error"),
+            "exact": native_score["exact"] if native_score else None,
+            "distance": native_score["distance"] if native_score else None,
+        }
+        if native.get("unresolved_contexts"):
+            native_entry["unresolved_contexts"] = native["unresolved_contexts"]
+        g2pk_entry: dict[str, Any] = {
+            "status": "scored" if g2pk_score else "error_or_no_output",
+            "ipa": candidate.get("ipa") if isinstance(candidate, dict) else None,
+            "reason": candidate.get("error") if isinstance(candidate, dict) else None,
+            "exact": g2pk_score["exact"] if g2pk_score else None,
+            "distance": g2pk_score["distance"] if g2pk_score else None,
+        }
+        native_g2pk_pairwise_audit.append({
+            "occurrence_id": item["occurrence_id"],
+            "row_id": item["row_id"],
+            "token": word,
+            "gold": gold,
+            "category": category,
+            "native": native_entry,
+            "g2pk_0_9_4": g2pk_entry,
+        })
+
     return {
-        "benchmark": "UGTPHON Korean test split",
-        "benchmark_version": "multi-engine-ipa-diagnostic-v1",
-        "purpose": "diagnostic comparison only; UGTPHON is not normative NIKL gold and this does not score Ukrainian orthography",
+        "benchmark": args.benchmark_name,
+        "benchmark_version": "multi-engine-ipa-diagnostic-v4",
+        "dataset_source": args.dataset_source,
+        "native_abstention_audit": {
+            "occurrence_count": len(native_abstention_audit),
+            "unique_words": len({item["token"] for item in native_abstention_audit}),
+            "context_counts": dict(sorted(unresolved_context_counts.items())),
+            "occurrences": native_abstention_audit,
+            "interpretation": "diagnostic triage only; external predictions are not gold and must not be copied into production rules without source adjudication",
+        },
+        "purpose": "diagnostic G2P comparison only; this dataset is not a normative NIKL acceptance set and this benchmark does not score Ukrainian orthography",
         "dataset_rows": len(rows),
         "eligible_token_occurrences": len(items),
         "unique_hangul_words": len(words),
         "normalization": {
             "function": "benchmark_ugtphon_ko.normalize_ipa",
-            "rules": "NFD canonicalization, g->ɡ, tie bars and specified narrow diacritics removed, spaces/periods removed; stress/length/aspiration/fortis retained",
+            "rules": "NFD canonicalization, g->ɡ, tie bars and selected narrow diacritics (including retraction U+0320) removed, spaces/periods removed; stress/length/aspiration/fortis/unreleased stops retained",
             "gold_variants": "best distance among comma-separated IPA alternatives",
         },
         "engine_order": list(engine_results),
         "engines": engine_results,
         "diagnostic_mismatch_sample": mismatch_details,
+        "native_g2pk_pairwise_audit": {
+            "occurrence_count": len(native_g2pk_pairwise_audit),
+            "category_counts": dict(sorted(pairwise_category_counts.items())),
+            "interpretation": "complete occurrence-level native-vs-g2pk diagnostic; categories compare each prediction to the corpus annotation, which is not normative gold",
+            "occurrences": native_g2pk_pairwise_audit,
+        },
         "upstream_pins": {
-            "UGTPHON": "naver-ai/UGTPHON commit ef0d5a09c2ea1874c7206020f875cbd9cfea2f54; ko/test.json; Apache-2.0 verified by CI",
             "g2pk": "0.9.4",
             "KoG2P": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7; GPL-3.0; executed as external checkout, not vendored",
             "hangul_to_ipa": "stannam/hangul_to_ipa commit 942abf132ea969a7e3476a1487c06710fb8db74b; MIT; executed as external checkout, not vendored",
@@ -533,7 +649,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "eSpeak": "eSpeak NG system package via phonemizer==3.3.0; exact runtime version recorded in CI logs",
         },
         "limitations": [
-            "UGTPHON contains noisy user-generated text, not a balanced official standard-pronunciation test set.",
+            ("UGTPHON contains noisy user-generated text, not a balanced official standard-pronunciation test set." if "UGTPHON" in args.benchmark_name else "SIGMORPHON is a lexical word-level test set, not a sentence-context or normative NIKL test set."),
             "IPA conventions differ between systems and reference annotations; exact match and CER are diagnostic, not absolute truth.",
             "g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison.",
             "KoG2P uses a documented custom phone alphabet; the explicit adapter is lossy, and its score must be read with adapter limitations.",
@@ -560,6 +676,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corpus", type=Path, default=os.environ.get("UGTPHON_KO_TEST_PATH"))
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--benchmark-name", default="UGTPHON Korean test split", help="human-readable dataset/split label")
+    parser.add_argument("--dataset-source", default="naver-ai/UGTPHON@ef0d5a09c2ea1874c7206020f875cbd9cfea2f54:ko/test.json (Apache-2.0)", help="dataset provenance and license statement")
     parser.add_argument("--kog2p-root", type=Path, default=os.environ.get("KOG2P_ROOT", "/tmp/KoG2P"))
     parser.add_argument("--hangul-to-ipa-root", type=Path, default=os.environ.get("HANGUL_TO_IPA_ROOT", "/tmp/hangul_to_ipa"))
     parser.add_argument("--phonemize-root", type=Path, default=os.environ.get("PHONEMIZE_BASELINE_DIR", "/tmp/phonemize-baseline"))

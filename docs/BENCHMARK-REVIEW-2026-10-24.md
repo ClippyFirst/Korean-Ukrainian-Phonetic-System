@@ -6,7 +6,7 @@
 
 The renderer refactor is a software architecture correction, not a phonological model change. Available IPA benchmark results show no claimed improvement from the refactor itself. The core/native engine remains substantially more conservative than external G2P engines: it abstains on some cases, while external engines emit a result for all scored tokens. On the pinned noisy UGTPHON corpus, g2pK has slightly better measured exact match and CER than native strict mode, but this is not normative NIKL accuracy and does not evaluate Ukrainian target rendering.
 
-No independently adjudicated gold corpus for Korean-to-Ukrainian practical output was available in these benchmark runs. Therefore the accuracy of the Ukrainian rendering layer remains unmeasured as a full-system metric.
+The initial pre-fix benchmark showed a small g2pk lead on UGTPHON, but that result is superseded by the current post-R002, post-yod, post-R010 comparison in run 40092327799. On the 2,655 shared UGTPHON occurrences, g2pk's exact-match lead is now only +0.1506 pp and its paired CER difference crosses zero; on SIGMORPHON, native leads exact match by 0.4012 pp. The evidence does not support a universal winner. No independently adjudicated gold corpus for Korean-to-Ukrainian practical output is available, so the Ukrainian rendering layer remains unmeasured as a full-system accuracy metric.
 
 ## 1. Multi-engine IPA comparison
 
@@ -83,6 +83,20 @@ The NIKL live metadata crawl was skipped in the system verification workflow; do
 4. **TODO — adjudicate the two Python/browser surface mismatches** against the exact official NIKL source environments before changing either runtime.
 5. **BLOCKED — production morphology licensing:** require expert-reviewed morpheme labels and a rule-specific licensing adapter; raw analyzer boundaries alone do not satisfy acceptance.
 6. **BLOCKED — external accuracy claim:** UGTPHON is noisy and its IPA convention differs in places from this project's broad-IPA representation; report it as diagnostic until an independently adjudicated, source-grounded holdout is available.
+
+
+## Verified multi-engine results (2026-10-24)
+
+The earlier results below in this document are historical snapshots. The latest post-fix results are in [run 40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799), artifact [12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356). This run includes the coda-ㅇ fix, broad-IPA yod absorption after palatal affricates, and the Python exact-form R010 licenses for 닮다 and 넘게.
+
+- **UGTPHON, 2,703 eligible occurrences:** native scored 2,655 with 98.2242% coverage, 53.1827% exact match and 9.1883% CER. g2pk scored all 2,703 with 53.0892% exact match and 9.2285% CER. On the 2,655 shared scored occurrences, native exact is 1,412/2,655 and g2pk exact is 1,416/2,655; g2pk-minus-native exact delta +0.1506 pp (95% CI +0.0351 to +0.3243), paired CER delta +0.0531 pp (95% CI −0.0139 to +0.1302; crosses zero).
+- **SIGMORPHON public paired lexical file, 999 eligible words:** native coverage 99.7998%, exact 35.8074%, CER 14.7037%; g2pk coverage 100%, exact 35.3353%, CER 14.8222%. On 997 shared scored occurrences, g2pk-minus-native exact delta −0.4012 pp (95% CI −0.8024 to −0.1003), favoring native; paired CER delta +0.1130 pp (95% CI −0.0250 to +0.2732; crosses zero).
+- The complete paired ledger shows 1,412 both-exact, 1,239 both-not-exact, four g2pk-only exact, 19 native-abstained/g2pk-exact, and 29 native-abstained/g2pk-not-exact UGTPHON occurrences. The four remaining g2pk-only exact occurrences are all the word 없는, repeated four times; ClippyFirst preserves the NIKL-attested long vowel that the corpus reference omits.
+- These are diagnostic IPA results, not normative NIKL accuracy and not IPA-to-Ukrainian accuracy. g2pk uses the project's IPA segment renderer, so it is not a fully independent end-to-end IPA stack.
+
+## Follow-up benchmark suite register
+
+The eight-suite validation matrix and task ledger are maintained in [KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md). The multi-engine driver emits occurrence-level native-abstention records and these have now been inspected in a completed two-dataset run.
 
 ## Reproduction links
 

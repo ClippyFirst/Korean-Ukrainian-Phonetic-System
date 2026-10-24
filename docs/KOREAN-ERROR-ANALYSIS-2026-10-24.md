@@ -2,121 +2,137 @@
 
 ## Status
 
-**DONE_VERIFIED for the coda-ㅇ fix; PARTIAL for the newly identified palatal-yod fix until its CI completes.** The coda fix passed Python regression/data-integrity, browser tests/build, and both pinned benchmark profiles. A full occurrence-level audit then identified a second independent native defect, now patched on branch `fix/korean-yod-after-affricates-2026-10-24`.
+**DONE_VERIFIED:** R002 coda-ㅇ loss fix (PR #298), broad-IPA palatal-yod absorption fix (PR #299), complete native-vs-g2pk occurrence-level benchmark audit, and Python R010 exact-form licenses for 닮다 and 넘게 on open PR #297. The current branch also contains corresponding browser-engine licenses and regressions; their latest cross-runtime CI is the final acceptance gate.
 
-Baseline diagnostic sources:
-- [Multi-engine benchmark run 40089295231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231)
-- [Artifact 12558044694](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231/artifacts/12558044694)
-- [Revised benchmark report on open PR #297 branch](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/bench/ko-eight-suite-and-abstention-audit-2026-10-24/docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md)
-- Rule implementation: `src/korean_ukrainian/rules.py`, R002
-- IPA renderer: `src/korean_ukrainian/ipa.py`
+Latest post-fix six-engine run: [40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799), [artifact 12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356). The artifact includes full native-vs-g2pk occurrence ledgers for UGTPHON and SIGMORPHON, not a capped mismatch sample.
 
-## 1. Confirmed defect: coda ㅇ is incorrectly resyllabified and then becomes silent
+Key source files:
+- R002 native rule: src/korean_ukrainian/rules.py
+- IPA renderer: src/korean_ukrainian/ipa.py
+- Exact-form R010 licenses: src/korean_ukrainian/rules.py and src/app/engine_shared.js
+- Complete benchmark report: [MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md)
+- Master benchmark register: [KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md)
+
+## 1. Confirmed defect: coda ㅇ was incorrectly resyllabified and then became silent
 
 ### Mechanism
 
-The R002 liaison loop accepts a preceding coda whenever the next syllable has onset ㅇ. For a coda such as ㄴ, ㄹ, or ㅁ, moving it into the next onset can represent ordinary liaison. But coda ㅇ represents the velar nasal /ŋ/. The code's generic branch set `b.onset = a.coda` and `a.coda = ""`, which changed the following onset to Hangul ㅇ. In the IPA renderer, `onset_ipa()` correctly emits no consonant for onset ㅇ. Thus the /ŋ/ disappeared.
+The R002 liaison loop accepted a preceding coda whenever the next syllable had onset ㅇ. For a coda such as ㄴ, ㄹ, or ㅁ, moving the consonant into the next onset can represent ordinary liaison. But coda ㅇ represents the velar nasal /ŋ/. The generic branch changed the following onset to Hangul ㅇ and cleared the coda; the IPA renderer correctly emits no consonant for onset ㅇ, so /ŋ/ disappeared.
 
-This is an implementation error, not a need for a lexical exception: it follows from conflating coda ㅇ (/ŋ/) with onset ㅇ (zero onset).
+This is an implementation defect, not a need for a lexical exception: it conflated coda ㅇ (/ŋ/) with onset ㅇ (zero onset).
 
-### Observed benchmark evidence
+### Direct evidence
 
-The two diagnostic artifacts' capped occurrence-level mismatch samples contain these examples. The first three are from UGTPHON; the last two are from the separate SIGMORPHON paired-file diagnostic:
-
-| Dataset | Word | Gold after declared broad-level normalization | Native before fix | g2pk 0.9.4 + same project renderer | Interpretation |
+| Dataset | Word | Gold after declared broad-level normalization | Native before fix | g2pk + shared project renderer | Diagnosis |
 |---|---|---|---|---|---|
-| UGTPHON | 공인 | `koŋin` | `ko.in` | `koŋ.in` | native loses /ŋ/; g2pk matches |
-| UGTPHON | 양아치 | `jaŋatɕʰi` | `ja.a.tɕʰi` | `jaŋ.a.tɕʰi` | native loses /ŋ/; g2pk matches |
-| UGTPHON | 심장은 | `ɕimdʑaŋɯn` | `sim.dʑa.ɯn` | `sim.dʑaŋ.ɯn` | native loses /ŋ/; neither exactly matches the reference |
-| SIGMORPHON | 놀이공원 | `noɾiɡoŋwʌn` | `no.ɾi.ɡo.wʌn` | `no.ɾi.ɡoŋ.wʌn` | native loses /ŋ/; g2pk matches |
-| SIGMORPHON | 동요 | `toŋjo` | `to.jo` | `toŋ.jo` | native loses /ŋ/; g2pk matches |
-| SIGMORPHON | 동이 | `toŋi` | `to.i` | `toŋ.i` | native loses /ŋ/; g2pk matches |
+| UGTPHON | 공인 | koŋin | ko.in | koŋ.in | /ŋ/ disappears |
+| UGTPHON | 양아치 | jaŋatɕʰi | ja.a.tɕʰi | jaŋ.a.tɕʰi | /ŋ/ disappears |
+| UGTPHON | 심장은 | ɕimdʑaŋɯn | sim.dʑa.ɯn | sim.dʑaŋ.ɯn | /ŋ/ disappears |
+| SIGMORPHON | 놀이공원 | noɾiɡoŋwʌn | no.ɾi.ɡo.wʌn | no.ɾi.ɡoŋ.wʌn | /ŋ/ disappears |
+| SIGMORPHON | 동요 | toŋjo | to.jo | toŋ.jo | /ŋ/ disappears |
 
-The displayed gold strings are normalized forms used by the diagnostic scorer, not an independent normative IPA adjudication. The repeated error pattern and code path establish the implementation defect even though UGTPHON is not a normative gold set.
+PR #298 is merged at [468ac8a690812e455eef1437ecf4b91ea67bdc75](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/468ac8a690812e455eef1437ecf4b91ea67bdc75). The guard now preserves coda ㅇ and regression tests cover 공인, 양아치, 동요, and 동이.
 
-### Correction
+### Measured effect
 
-R002 now skips resyllabification when the preceding coda is ㅇ, preserving it in the preceding syllable. Regression tests cover the direct rule transition and full broad-IPA outputs for 공인, 양아치, 동요, and 동이. The patch is not considered verified until repository CI passes and the multi-engine benchmark is rerun on the patched head.
+The older normalization profile measured +11 exact matches (648 → 659 of 2,655 scored occurrences) and native CER fell from 17.0648% to 16.7439%. Under the revised broad-IPA profile, the same-profile comparison was 1,351 → 1,397 exact matches and CER 9.6619% → 9.3122%. These two profiles use different normalization contracts; compare only within each profile.
 
-## 2. Other error sources established by current evidence
+## 2. Confirmed second defect: broad IPA retained /j/ after ㅈ/ㅉ/ㅊ before ㅕ
 
-### A. Morphophonological abstentions are a separate coverage issue
+The complete paired audit before this fix found 19 UGTPHON occurrences where g2pk exactly matched the normalized reference and native did not. Thirteen had the same one-character error: native rendered a palatal affricate followed by an extra [j], e.g. tɕʰjʌ instead of tɕʰʌ. Examples included 던져주다, 조져버리고, 졌으면, 책임져라, 무쳣다, 쳐버려가지고, 쳐먹은, 까졍, 쳐먹고, 쳐받어, 빠져, 헤어졋겟지, and 자빠졌네.
 
-The baseline strict native engine abstained on 48 of 2,703 UGTPHON token occurrences (47 unique words). Recorded unresolved-context labels were:
-- R002 liaison / neutralization requiring exact morpheme evidence: 25;
-- R003 ㅎ-coda deletion requiring an ending/suffix license: 20;
-- R007 palatalization requiring formal-morpheme evidence: 2;
-- R004 complex-coda + ㅎ aspiration requiring morphophonemic evidence: 1;
-- one IPA-adjudication gap.
+This was a second implementation defect, not proof that g2pk is generally superior. The official National Institute of Korean Language source explicitly states Standard Pronunciation Rule 5, exception 1: verbal forms 져/쪄/쳐 are pronounced [저/쩌/처], and the explanation identifies the restriction on [j] immediately after these palatal affricates: [official rule](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002), [NIKL explanation](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=302312).
 
-There are 49 labels for 48 occurrences because one occurrence has two unresolved contexts. Some abstained words are pronounced transparently in the corpus context, and g2pk matches the corpus reference for some (e.g. 되었어, 찢었으면, 붙어야, 있었). This suggests a conservative coverage limitation caused by requiring exact-form/morpheme licenses without a complete production morphology layer. It does **not** justify indiscriminately adding lexical licenses from noisy corpus labels. Each candidate needs official NIKL rule-environment verification or independently reviewed morphology evidence.
+PR #299 is merged at [f1267f700b2a7ff726765fc17b6d2fa093561dfb](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/f1267f700b2a7ff726765fc17b6d2fa093561dfb). The renderer absorbs /j/ in broad surface IPA only for ㅈ/ㅉ/ㅊ + ㅕ and preserves the glide in phonemic output. The revised-profile paired native exact count rose from 1,397 to 1,410 (+13), and native CER fell from 9.3122% to 9.2060% on the same 2,655 scored occurrences.
 
-### B. Confirmed second defect: broad IPA retains /j/ after ㅈ/ㅉ/ㅊ before ㅕ
+## 3. Two remaining R010 (§24) errors were missing exact-form licenses
 
-The full occurrence-level audit from [post-coda-fix multi-engine run 40091465391](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40091465391) found 19 UGTPHON occurrences where g2pk exactly matched the normalized reference and native did not. **Thirteen of those 19 had the same one-character error:** native rendered a palatal affricate followed by an extra [j] glide, e.g. `tɕʰjʌ` instead of `tɕʰʌ`, while g2pk's surface-Hangul output passed through the shared renderer as `tɕʰʌ`. Examples include 던져주다 (`dʑjʌ` vs `dʑʌ`), 쳐먹고 (`tɕʰjʌ` vs `tɕʰʌ`), 빠져 (`dʑjʌ` vs `dʑʌ`), and 졌으면 (`tɕjʌ` vs `tɕʌ`). All 13 had native edit distance 1.
+After the yod fix, the full audit found six g2pk-only exact occurrences:
+- 닮다 — native tam.da; g2pk tam.t͈a; the missing change is fortition after a verb stem ending in ㄻ (representative ㅁ) before ending-initial ㄷ.
+- 넘게 — native nʌm.ɡe; g2pk nʌm.k͈e; the missing change is fortition after a verb stem ending in ㅁ before ending-initial ㄱ.
+- 없는 — four repeated corpus occurrences; native ʌːm.nɯn; g2pk ʌm.nɯn.
 
-This is a separate renderer-boundary defect from coda-ㅇ loss. The native IPA renderer maps ㅕ to `jʌ` without considering the onset, so it retains a glide that standard Korean does not realize after the palatal affricates ㅈ/ㅉ/ㅊ in the relevant forms. The official National Institute of Korean Language source explicitly states Standard Pronunciation Rule 5, exception 1: verbal forms 져/쪄/쳐 are pronounced [저/쩌/처], and its explanation identifies a restriction on [j] immediately after these palatal affricates: [official rule](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002), [NIKL explanation](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=302312).
+The native rule engine deliberately requires exact full-form + adjacent-pair evidence for morphology-conditioned R010 (§24) fortition. The two first cases were not licensed, so the engine conservatively left ㄷ/ㄱ lenis. PR #297 adds exact-form licenses for 닮다 and 넘게 to the Python engine and corresponding browser engine, with tests. The license is scoped to those complete forms; it does not turn on a global fortition heuristic or silently claim a productive morphology parser.
 
-The patch on `fix/korean-yod-after-affricates-2026-10-24` absorbs /j/ in **broad surface IPA only** for ㅈ/ㅉ/ㅊ + ㅕ, while preserving the glide in phonemic output. Regression cases cover 져/쪄/쳐, 던져주다, 쳐먹고, and 빠져. This patch is source-backed but its CI and post-fix benchmark effect are still pending; do not count the expected score gain until the benchmark reruns.
+The latest Python benchmark after these licenses gained two more exact matches (1,410 → 1,412 of 2,655) and CER fell from 9.2060% to 9.1883%. This improvement is measured in run 40092327799. The browser port is subject to the latest browser/Python/parity CI before the code is accepted as cross-runtime complete.
 
-### C. g2pk is not uniformly better
+## 4. The four remaining g2pk-only exact matches are an annotation mismatch for 없는
 
-On the separate SIGMORPHON public paired lexical file, the capped diagnostic sample contains cases where ClippyFirst matches and g2pk does not:
-- 값어치: native `ka.bʌ.tɕʰi` matches the normalized reference; g2pk's `kap̚.s͈ʌ.tɕʰi` does not. The project already has a source-backed NIKL lexical override for this form.
-- 놓치다: native preserves `t̚` in `not̚.tɕʰi.da`; g2pk's rendered `no.tɕʰi.da` does not match the reference's unreleased-stop marker.
+The native lexicon has a source-backed entry for 없는 with IPA ʌːm.nɯn, reflecting the NIKL-attested long-vowel form [엄ː는]. The UGTPHON reference for the four occurrences is ʌ̹mnɯn and omits the length mark. The scorer intentionally retains vowel length, so these are four repeated instances of one reference convention mismatch.
 
-Conversely, the sample includes g2pk-only matches for words affected by the coda-ㅇ defect. These examples show why the correct response is targeted, evidence-backed fixes rather than replacing native rules wholesale with g2pk behavior.
+Do not delete a sourced length contrast from production IPA just to raise exact match. These four items should be independently adjudicated before the benchmark can be treated as normative gold. This is not established as a native phonology bug.
 
-### D. Benchmark convention limits the meaning of exact match
+## 5. Full paired error analysis after the fixes
 
-UGTPHON is noisy user-generated text, not an independently adjudicated NIKL rule suite. Its IPA annotations include diacritics and conventions not identical to the project's broad IPA. The scorer removes only declared diacritics and separators; it retains contrasts such as aspiration, fortis, vowel length, and unreleased stops. Some score differences therefore reflect reference conventions or real phonetic distinctions, and a non-exact score alone does not diagnose which. A normative challenge set with exact NIKL article/environment provenance and independently reviewed IPA is still needed.
+### UGTPHON
 
-### E. The current paired comparison is not fully independent
+Latest artifact [12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356) reports 2,703 eligible occurrences:
 
-g2pk emits surface Hangul and both systems use the project's IPA segment renderer. The benchmark primarily compares the phonological surface-form decisions and their effect on the shared renderer; it does not independently validate the renderer or Ukrainian output. This is useful for finding structural differences but cannot establish that g2pk's IPA is universally more correct.
+| Paired category | Occurrences |
+|---|---:|
+| Both engines exact | 1,412 |
+| Both engines not exact | 1,239 |
+| g2pk exact, native scored but not exact | 4 |
+| Native abstained, g2pk exact | 19 |
+| Native abstained, g2pk not exact | 29 |
+| **Total** | **2,703** |
 
-## 3. Paired pre-/post-fix measurement
+There are no native-only exact occurrences in this UGTPHON set. The four g2pk-only exact entries are the repeated 없는 reference mismatch described above.
 
-The pre-fix and post-fix runs below use the same older normalization profile and six-engine workflow contract, so this comparison is like-for-like. The post-fix run is [40090827524](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40090827524), artifact [12558762097](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40090827524/artifacts/12558762097). Python regression/data integrity and browser tests/build passed in [system verification run 40090827438](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40090827438).
+### SIGMORPHON 2021 public paired lexical file
 
-| Measure (older normalization profile) | Pre-fix run 40087193952 | Post-fix run 40090827524 | Change |
-|---|---:|---:|---:|
-| Native exact matches on scored subset | 648 / 2,655 | 659 / 2,655 | **+11 exact matches** |
-| Native exact-match rate | 24.4068% | 24.8211% | **+0.4143 pp** |
-| Native CER | 17.0648% | 16.7439% | **−0.3209 pp** |
-| g2pk exact matches on same paired subset | 669 / 2,655 | 669 / 2,655 | unchanged |
-| g2pk-minus-native exact-rate delta | +0.7909 pp | +0.3766 pp | advantage reduced by 0.4143 pp |
-| g2pk-minus-native CER delta | −0.3819 pp | −0.0610 pp | gap reduced by 0.3209 pp |
+| Paired category | Occurrences |
+|---|---:|
+| Both engines exact | 353 |
+| Both engines not exact | 640 |
+| Native exact, g2pk not exact | 4 |
+| Native abstained, g2pk not exact | 2 |
+| **Total** | **999** |
 
-Post-fix paired row-cluster bootstrap 95% intervals are +0.1527 to +0.6505 percentage points for g2pk-minus-native exact match, and −0.1457 to +0.0284 pp for the CER delta. Thus the exact-match advantage remains detectable under this diagnostic scoring contract, but the CER difference no longer clearly excludes zero. The fix removed about half of the baseline exact-match gap on the common scored set.
+The four native-only exact entries are 값어치, 놓치다, 많다, and 맛없다. The 값어치 and 맛없다 differences align with source-backed native decisions; 많다 is a vowel-length contrast also present in the reference. 놓치다 requires independent phonetic review because the paired reference itself may be questionable. These cases show that external-engine outputs should be used to find disagreements, not copied blindly into production.
 
-Because R002 coda-ㅇ handling is the only runtime change between these heads, the 11 additional exact matches and CER improvement are strong aggregate evidence that the defect materially affected the benchmark. However, the artifact still retains only a capped 250-row mismatch sample, so it does not yet count every corrected /ŋ/-loss occurrence or fully classify all remaining errors. The exact post-fix scores above use the older normalization profile; the revised broad-IPA profile on PR #297 reports a different absolute score scale and must be compared only against a matching run on that same profile.
+### Remaining abstentions
 
-## 4. Baseline numbers and interpretation
+The native engine still abstains on 48 UGTPHON occurrences across 47 unique words. There are 49 unresolved context labels because one occurrence has two contexts:
 
-Before this fix, on UGTPHON:
-- ClippyFirst native: 2,655/2,703 scored, 98.2242% coverage, 50.8851% exact match, CER 9.6619%.
-- g2pk 0.9.4 + project renderer: 2,703/2,703 scored, 100% coverage, 53.0892% exact match, CER 9.2285%.
-- On the 2,655 shared scored occurrences, g2pk's exact-rate advantage was +2.4482 percentage points (95% row-cluster bootstrap interval +1.2378 to +4.2219 pp); its CER delta was −0.4205 pp (−0.6625 to −0.2298 pp).
+- R002 liaison / neutralization requiring exact morpheme evidence: 25 labels.
+- R003 ㅎ-coda deletion requiring an ending/suffix license: 20 labels.
+- R007 palatalization requiring formal-morpheme evidence: 2 labels.
+- R004 complex-coda + ㅎ aspiration requiring morphophonemic evidence: 1 label.
+- One IPA-adjudication gap.
 
-These are **pre-fix baseline results**. It is not yet known how many of the 65 net extra exact matches for g2pk on the shared subset are attributable to the coda-ㅇ defect. The artifact's diagnostic mismatch sample is capped at 250 rows, so it cannot support a full-corpus causal count.
+Among the 48 abstentions, g2pk matches the corpus reference on 19 and does not on 29. This suggests conservative coverage limits from the lack of a complete morphology layer, but does not justify blanket licensing from noisy corpus labels. Each case needs official NIKL environment verification or independently reviewed morphology evidence.
 
-## 4. Required next verification
+The SIGMORPHON set has two native abstentions: 닭갈비 (R008, ㄺ-before-ㄱ fortition depends on lexical/morphological class) and 중심닮음 (R002, liaison/neutralization requires exact morpheme evidence).
 
-1. **DONE_VERIFIED** — Python regression/data-integrity tests passed; browser tests and build passed; pinned multi-engine and paired UGTPHON benchmarks completed on the patched head.
-2. **PARTIAL** — aggregate pre-/post-fix effect is quantified (+11 exact matches; native CER −0.3209 pp on the older profile), but the capped mismatch sample prevents counting all corrected /ŋ/-loss cases.
-3. **TODO** — extend the benchmark artifact to retain complete occurrence-level predictions (or a complete paired error ledger) and classify every native/g2pk disagreement by rule ID / phonological environment.
-4. **TODO** — rerun the revised broad-IPA profile from PR #297 on the patched runtime after that benchmark branch is reconciled; compare only like-for-like normalization profiles.
-5. **TODO** — build an independently adjudicated NIKL-based holdout, stratified by rule and interaction, before using exact-match scores as a release-quality claim.
+## 6. Current paired metrics and conclusion
+
+| Dataset | Native exact match | g2pk exact on shared scored set | Paired g2pk-minus-native exact delta (95% CI) | Paired CER delta (95% CI) |
+|---|---:|---:|---:|---:|
+| UGTPHON, 2,655 shared scored occurrences | 1,412/2,655 (53.1827%) | 1,416/2,655 (53.3333%) | +0.1506 pp (+0.0351 to +0.3243) | +0.0531 pp (−0.0139 to +0.1302) |
+| SIGMORPHON, 997 shared scored occurrences | 357/997 (35.8074%) | 353/997 (35.4062%) | −0.4012 pp (−0.8024 to −0.1003) | +0.1130 pp (−0.0250 to +0.2732) |
+
+On UGTPHON, g2pk has four more exact matches among the shared scored cases, but all four are the same length-annotation mismatch; the CER interval crosses zero. On SIGMORPHON, native has four more exact matches and the paired exact interval favors native; the CER interval crosses zero. Therefore there is no evidence that g2pk is universally better than ClippyFirst.
+
+This comparison is not fully independent end-to-end: g2pk emits surface Hangul and both systems use the ClippyFirst IPA segment renderer. The benchmark measures Korean IPA only; it does not score IPA-to-Ukrainian adaptation or Ukrainian output quality.
+
+## 7. Required next verification
+
+1. **DONE_VERIFIED** — full occurrence-level native-vs-g2pk ledger emitted and inspected for both pinned datasets.
+2. **DONE_VERIFIED** — R002 coda-ㅇ fix and broad-IPA palatal-yod fix have merged regression tests and measured benchmark gains.
+3. **DONE_VERIFIED for Python benchmark; CI gate pending for browser parity** — exact-form R010 licenses for 닮다 and 넘게; accept only after latest browser/Python/parity tests pass on the current branch head.
+4. **TODO** — review the remaining 48 abstentions against NIKL and morphology evidence, prioritizing R002 and R003. Do not infer production rules from another engine's output alone.
+5. **TODO** — build an independently adjudicated NIKL holdout stratified by rule, environment, and rule interactions, with a separate held-out split.
 6. **BLOCKED** — independently adjudicated Korean IPA → Ukrainian practical-output gold corpus is not available; keep target-rendering evaluation separate.
 
 ## Task ledger
 
 | Task | Status | Evidence / acceptance criterion |
 |---|---|---|
-| Diagnose coda-ㅇ loss | DONE_VERIFIED | Source path in R002 and multiple concrete benchmark mismatches agree. |
-| Patch R002 and add regressions | DONE_VERIFIED | PR #298 head `7f2bafc90cb85c4fff76697a38687d14d9d4e101`; Python regression/data-integrity and browser test/build jobs passed; targeted multi-engine benchmark completed. |
-| Quantify full-corpus effect | PARTIAL | Same-profile aggregate pre/post comparison: +11 exact matches, native CER −0.3209 pp. Full per-occurrence corrected-case count remains unavailable because artifact mismatch sample is capped at 250. |
-| Explain all remaining native-vs-g2pk differences | PARTIAL | Several mechanisms and caveats established; full paired predictions and adjudication still required. |
+| Diagnose and fix coda-ㅇ loss | DONE_VERIFIED | PR #298 merged; same-profile benchmark improvement and regression tests. |
+| Diagnose and fix broad-IPA palatal-yod retention | DONE_VERIFIED | PR #299 merged; 13 exact-match gains on revised profile and official NIKL Rule 5 evidence. |
+| Complete pairwise audit | DONE_VERIFIED | Artifact 12559731356; category totals reconcile to all 2,703 UGTPHON and 999 SIGMORPHON occurrences. |
+| Add R010 exact-form licenses for 닮다 and 넘게 | DONE_VERIFIED for Python benchmark; browser parity pending | Two additional exact matches and CER improvement; strict full-form licenses only. |
+| Explain all remaining native-vs-g2pk differences | PARTIAL | Four reference-length mismatches remain; 48 abstentions still require adjudication. |
 | Normative acceptance benchmark | TODO | Independently reviewed IPA gold with NIKL article/environment provenance. |
 | Ukrainian output accuracy | BLOCKED | No independently adjudicated Korean-to-Ukrainian gold corpus in the current benchmark. |
