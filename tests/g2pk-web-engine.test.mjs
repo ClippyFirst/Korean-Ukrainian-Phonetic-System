@@ -75,3 +75,13 @@ test('full adversarial Korean passage completes with IPA-first output and no pla
   assert.ok(!result.trace.some(item=>(item.rules||[]).includes('sourced-lexical-ipa')),'research lexical IPA override leaked into practical mode');
   assert.ok(result.ukrainian.includes('“')&&result.ukrainian.includes('”'),'quotation punctuation was not preserved');
 });
+
+
+test('runtime status is separate from independent IPA and Ukrainian-target review status', () => {
+  for (const result of [engine.convert('시'), engine.convertSurface('시'), g2p.convert('시')]) {
+    assert.equal(result.ipaIsGold, false, 'a generated IPA string must not imply expert-adjudicated gold');
+    assert.equal(result.ipaReviewStatus, 'not-independently-adjudicated');
+    assert.equal(result.ukrainianTargetIsGold, false, 'a generated Ukrainian target must not imply target-layer gold');
+    assert.equal(result.ukrainianTargetReviewStatus, 'not-independently-reviewed');
+  }
+});

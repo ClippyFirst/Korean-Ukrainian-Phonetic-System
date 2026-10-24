@@ -885,3 +885,11 @@ The engine ranking is not statistically resolved by this sample: a 10,000-replic
 - **Production/practical-adapter changes:** added an exact-form, NIKL-backed `수많은[수ː마는]` IPA length overlay and a source-attested alternate `멋있어` surface in `src/app/g2pk_web.js`; the UI exposes the NIKL Q&A source link. The broad-v1 normalizer is a scoring-only profile and does not rewrite raw engine output. Ukrainian adaptation remains separate and its accuracy is not independently validated.
 - **Open blockers:** (1) complete repository-hosted CI for the revised holdout/current head and fix any failures; (2) confirm local runtime/test disjointness; (3) get two independent IPA annotations and adjudicate; (4) separately review Ukrainian targets; (5) retain both profiles until broad-v1 mappings are approved by review.
 - **Readiness:** research-ready for reproducible benchmark diagnostics and holdout design; not release-ready for independently validated accuracy claims.
+
+
+## Explicit linguistic review boundary in runtime output — 2026-10-24
+
+- **DONE_VERIFIED (implementation; CI pending):** native convert, convertSurface, and practical browser G2P results now carry ipaReviewStatus=not-independently-adjudicated, ipaIsGold=false, ukrainianTargetReviewStatus=not-independently-reviewed, and ukrainianTargetIsGold=false.
+- **DONE_VERIFIED (UI change; CI pending):** result panel explicitly distinguishes runtime processing status (canonical, contextual, lexical, etc.) from independent linguistic validation. This prevents a “canonical” runtime label from being mistaken for expert-adjudicated IPA or Ukrainian-target gold.
+- **Why this matters:** no independently adjudicated Ukrainian target corpus exists yet; source-attested Hangul surfaces do not establish IPA gold. The new metadata is intentionally conservative and must not be flipped by inference or benchmark agreement.
+- **Verification:** added a browser/native contract test for the metadata fields. Exact-head tests/build must still pass; local execution is blocked by the environment DNS failure resolving github.com.
