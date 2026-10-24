@@ -544,25 +544,154 @@ Exact-main CI at this snapshot: Node tests **1205/1205 pass**; Python 3.11, 3.12
 
 Remaining blockers are scientific, not simply technical: 20/20 independent IPA cases remain unsubmitted by each of two reviewers; Ukrainian target-layer review is outstanding; source-grounded atomic coverage of all paragraphs, exceptions, variants and interactions is unproven; 96/100 source records remain rights-review required and 2 require manual classification; live official-source access is blocked. The article index is only navigation evidence. Project status remains research preview / partial prototype.
 
+### Continuation — evidence-led native unresolved-case repairs (2026-10-24)
 
-### Continuation — multi-engine Korean-to-IPA diagnostic benchmark (2026-10-24)
+Branch: `research/native-engine-unresolved-cases-2026-10-24`. This work is limited to the native Python research engine, source-backed lexical data, and regression tests; it does not adopt or modify a third-party G2P engine.
 
-PR #280, branch research/independent-engine-benchmark-2026-10-23, expands the original native-vs-g2pk comparison with KoG2P, hangul_to_ipa, eSpeak NG via phonemizer, and phonemize 2.0.1. It adds a pinned, repeatable CI workflow, explicit output adapters, exact-match/CER/coverage metrics, abstention/error reporting, and deterministic row-cluster bootstrap intervals. External source code and the raw corpus are not vendored.
+- Added exact full-form NIKL §14 formal-morpheme licenses for `앉아라` (pair `앉>아`) and `없어도` (pair `없>어`). These are rule-derived forms from transparent morphology and the official examples `앉아[안자]` / `없어[업써]`; the report does not claim that the official source directly lists the complete inflected forms.
+- R002 now records its exact license scope, full form and adjacent pair in the trace.
+- Added an exact `삶의` lexical entry based on NIKL's direct statement that the particle phrase is pronounced `[살믜]` or `[살메]`. The project IPA renderings are `sal.mɰi` / `sal.me`; they remain project-derived and Ukrainian target status remains provisional.
+- Deliberately did not auto-resolve `많이본` or `좋아보인다고`: the likely spacing boundaries (`많이 본`, `좋아 보인다고`) cannot be safely inferred from Hangul adjacency. Compact forms remain unresolved; explicitly spaced controls are tested separately.
+- Scholarly evidence and case-by-case decisions are documented in [docs/NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md](NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md). Literature reviewed includes Lee & Chung 2007 on morphology-conditioned pronunciation variation, Jeon et al. 1998 on staged rule processing, Jun 2015/2021 on gradient n-insertion, and the K-SPAN paper's limits as a non-recording-based lexical reference.
+- Acceptance: **DONE_VERIFIED for code/tests and generated artifacts** at tested head `24dac25d625dc648ae421412aeb6ccb430a60034`. [Python/browser tests, Python 3.11–3.13](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472569) passed; [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472504) passed Python regression/data integrity and browser regression/build (official NIKL inventory skipped); [master table/corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472604) passed; [UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40026472528) passed. The compact forms and independent IPA/Ukrainian specialist reviews remain open blockers.
 
-Successful exact-head scoring run: [40069800681](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069800681); artifact: [12550916606](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069800681/artifacts/12550916606). The scoring code was unchanged in subsequent documentation-only commits. The full report and candidate/source register are in [docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md).
+### Continuation — evidence-led native unresolved-case repairs (2026-10-24)
 
-Pinned UGTPHON Korean test split: 275 rows, 2,703 eligible token occurrences, 1,907 unique Hangul words:
-- ClippyFirst native: 2,653 scored, 648 exact (24.4252%), CER 17.0604%, 98.15% coverage; 50 unresolved abstentions and zero runtime exceptions.
-- g2pk 0.9.4: 2,703 scored, 675 exact (24.9723%), CER 16.6931%, 100% coverage.
-- KoG2P: 402 exact (14.8724%), CER 26.0795%.
-- hangul_to_ipa: 404 exact (14.9464%), CER 30.9851%.
-- eSpeak NG / phonemizer: 220 exact (8.1391%), CER 39.0498%.
-- phonemize 2.0.1 with corrected adapter: 542 exact (20.0518%), CER 21.3645%.
+Branch: `research/native-engine-unresolved-cases-2026-10-24`. This work is limited to the native Python research engine, source-backed lexical data, and regression tests; it does not adopt or modify a third-party G2P engine.
 
-On the 2,653-occurrence paired subset, g2pk exact match is 25.2167% vs native 24.4252%; paired delta +0.7915 percentage points, 95% row-cluster bootstrap CI +0.4538 to +1.1924 pp. Paired CER delta is −0.3822 pp, 95% CI −0.6055 to −0.2083 pp. These intervals exclude zero on this dataset, but the result is not a universal ranking: UGTPHON is noisy user-generated text, IPA conventions differ, no multiple-comparison correction is applied, and g2pk output uses the repository's segment renderer.
+- Added exact full-form NIKL §14 formal-morpheme licenses for `앉아라` (pair `앉>아`) and `없어도` (pair `없>어`). These are rule-derived forms from transparent morphology and the official examples `앉아[안자]` / `없어[업써]`; the report does not claim that the official source directly lists the complete inflected forms.
+- R002 now records its exact license scope, full form and adjacent pair in the trace.
+- Added an exact `삶의` lexical entry based on NIKL's direct statement that the particle phrase is pronounced `[살믜]` or `[살메]`. The project IPA renderings are `sal.mɰi` / `sal.me`; they remain project-derived and Ukrainian target status remains provisional.
+- Deliberately did not auto-resolve `많이본` or `좋아보인다고`: the likely spacing boundaries (`많이 본`, `좋아 보인다고`) cannot be safely inferred from Hangul adjacency. Compact forms remain unresolved; explicitly spaced controls are tested separately.
+- Scholarly evidence and case-by-case decisions are documented in [docs/NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md](NATIVE-ENGINE-UNRESOLVED-CASES-2026-10-24.md). Literature reviewed includes Lee & Chung 2007 on morphology-conditioned pronunciation variation, Jeon et al. 1998 on staged rule processing, Jun 2015/2021 on gradient n-insertion, and the K-SPAN paper's limits as a non-recording-based lexical reference.
+- CI acceptance is pending at the time of this entry; do not mark the batch DONE_VERIFIED until the new Python regression test, full tests, system verification, and corpus artifacts finish successfully. The compact forms and independent IPA/Ukrainian specialist reviews remain open blockers.
 
-The initial phonemize run is invalid and excluded because the adapter returned unchanged Hangul with anyAscii disabled. The adapter was corrected to enable and smoke-test Hangul preprocessing; the results above use the corrected IPA output. KoG2P's custom phone alphabet requires a disclosed lossy adapter. KPD remains BLOCKED_ACCESS_AND_TERMS pending authorized access and license review; the 2022 research modification remains BLOCKED_REPRODUCIBLE_IMPLEMENTATION until an exact executable version can be pinned.
 
-This benchmark does not use a normative NIKL gold set and does not evaluate IPA-to-Ukrainian adaptation. The official NIKL full-text inventory remains BLOCKED_EXTERNAL_ACCESS after HTTP 403. Independent broad-IPA adjudication and separate Ukrainian target-layer review remain scientific release blockers. Repository status remains research preview / partial prototype.
+### Continuation — IPA adjudication gate for 삶의 and target-layer separation (2026-10-24)
 
-No production pronunciation rules were changed by this PR. PR #280 remains open/unmerged. PR #281 independently updates the same canonical handoff; reconcile the sections and references after choosing merge order rather than merging either branch blindly.
+Branch / PR: `research/native-engine-unresolved-cases-2026-10-24` / [PR #281](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/281).
+
+This continuation found a critical evidence distinction: NIKL MCFAQ 5716 directly attests Korean surface-Hangul readings `[살믜]` and `[살메]`, but does not supply IPA `sal.mɰi` or `sal.me`. Those IPA strings are project-rendered and remain unadjudicated. Rather than guessing that either is correct or silently changing it, the native engine now:
+- stores the form-specific `ipa_adjudication_status=diagnostic_only_unresolved_pronunciation` in the existing dated lexical overlay `data/korean/lexical_additions_ipa-adjudication-2026-10-24.csv` (the canonical base lexicon schema remains unchanged);
+- adds an `IPA_ADJUDICATION` unresolved context, keeps the candidate IPA inspectable, and returns `pronunciation_status=unresolved` / `ipa_is_diagnostic_only=true`;
+- blocks IPA→Ukrainian target selection for `삶의` until independent IPA adjudication is complete;
+- tests the explicit status/reason and confirms `transliterate_korean("삶의")` returns no Ukrainian orthography;
+- records a separate blinded target-layer review protocol and source limitations in `docs/IPA-TARGET-ADJUDICATION-BLOCKERS-2026-10-24.md`.
+
+The existing PR's source-backed exact-form work remains intact: `앉아라` and `없어도` use narrow NIKL-rule-derived licenses; `많이본` and `좋아보인다고` remain unresolved without explicit segmentation. No third-party G2P rules were adopted.
+
+#### Verification evidence
+
+The code/data/test state at `ea14a6d9b7f332a3b88a181d841bb34841eb893d` passed:
+- Tests + Python 3.11/3.12/3.13 + web build: [run 40027594483](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594483).
+- System verification: [run 40027594485](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594485).
+- Master table / strict research corpus artifacts: [run 40027594415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594415).
+- Optional g2pK integration: [run 40027594547](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594547).
+- External UGTPHON IPA diagnostic: [run 40027594361](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40027594361).
+
+All listed workflows concluded success. The official NIKL metadata-only inventory job was **skipped**, not passed. A later documentation-only commit `0348043653e7489e98e0f68dc2bb9a820e9cb99a` added extracted literature findings; no code/data/test files changed after the green code/test state. A local clone/test attempt was blocked because this execution environment could not resolve `github.com`; CI supplied the executable verification instead.
+
+#### Evidence-based conclusions and remaining blockers
+
+- Jun (2015, DOI 10.1017/S0952675715000275) shows n-insertion tendencies that differ between existing and novel words; the existing-word M1-length effect did not generalize in the novel-word experiment. Do not encode it as a universal categorical rewrite or copy study rates as calibrated engine probabilities.
+- Jun (2021, DOI 10.5334/GJGL.1401) reports interacting gradient factors and no single absolute condition for n-insertion.
+- Wei et al. (2023, DOI 10.21437/interspeech.2023-1635) distinguishes orthographic transcription accuracy from subjective comprehensibility ratings. It is methodological context only; it does not validate Korean IPA or Ukrainian mappings.
+- Park (2019, DOI 10.14342/SMOG.2019.102.165) and Kim (2025, DOI 10.22557/hg.2025.3.86.1.5) are relevant ㅢ research leads, but their abstracts/full texts were unavailable in the retrieved records and they are not treated as evidence for the exact form.
+
+Current task ledger:
+- **DONE_VERIFIED:** form-specific IPA review gate; base lexicon schema preserved; overlay metadata structurally checked; regression tests and CI passed at the code/test state above.
+- **PARTIAL:** official surface-Hangul evidence for 삶의 is present, but neither IPA candidate is independently validated.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** two qualified Korean phonetics reviewers must independently assess the exact construction, IPA convention, segmental realization, boundaries, and accepted alternatives.
+- **BLOCKED_SPECIALIST_REVIEW:** Ukrainian target policy must be reviewed separately on a frozen, adjudicated IPA input.
+- **BLOCKED_INPUT_ANALYSIS:** compact `많이본` / `좋아보인다고` require caller-supplied segmentation or a validated morphology/spacing component.
+- **DEFERRED:** probabilistic modeling of optional variants requires a documented alternative representation and calibrated evidence.
+- **BLOCKED_EXTERNAL_ACCESS:** official NIKL inventory job remains skipped due source-access restrictions; no bypass was attempted.
+
+Readiness remains **research preview / partial prototype**, not a scientifically validated transcription standard. Do not mark the release gate complete based on CI.
+
+
+### Correction — literature-led broad IPA candidates and explicit alternatives (2026-10-24)
+
+The focused Undermind search completed and surfaced Park, Cho & Han (2016), “한국어 이중모음 /의/의 단모음화 양상,” DOI https://doi.org/10.17959/SPPM.2016.22.1.35. Its abstract reports 2,370 Seoul Corpus tokens, 93.04% overall monophthongization of /ɨi/, [i] for 94.40% of monophthongized tokens, and predominantly [e] for genitive-particle tokens. This strengthens the case that the broad surface candidate for [살믜] should be `sal.mi`, not the legacy `sal.mɰi`; [살메] remains represented as `sal.me`. The study does not directly measure 삶의 and its full text was unavailable, so both remain diagnostic-only hypotheses pending expert adjudication.
+
+Implementation follow-up:
+- Changed the primary project-rendered IPA candidate in the base lexical row and adjudication overlay to `sal.mi`; retained `sal.me` as the alternate.
+- Extended the native IPA adapter to expose explicitly licensed lexical alternatives as `ipa.lexical_alternatives` instead of leaving them hidden only in CSV metadata.
+- Kept the form-level `diagnostic_only_unresolved_pronunciation` gate, so both candidates remain inspectable but Ukrainian target selection is blocked.
+- Updated regression tests to assert the primary candidate, alternate candidate/provenance, diagnostic status and target blocking.
+
+Code/data/test commits: pipeline `f14472836232045665b80cc5dcce4b0b06a6af73`; base data `e872b184db1fe947c14b66dd2116eafa8654b51a`; overlay `2d4841b27f583931d58e6769f023809e13f77a9a`; final test fix `5beb7a8eb6e6e02f148658340c272f7296048943`. New exact-head CI is running for the changed code/test state: tests run 40028069871, system verification 40028069927, optional g2pK 40028069969, corpus artifacts 40028069909, and UGTPHON diagnostic 40028069920. Do not call this follow-up verified until all complete; the official NIKL inventory remains a known skipped/blocked external gate.
+
+
+### Reviewer-queue expansion and target-reference correction — 2026-10-24
+
+The focused literature search now supports a better broad-surface candidate for [살믜]: `sal.mi` rather than the earlier `sal.mɰi`. The primary candidate remains diagnostic-only because the corpus study does not directly measure 삶의 and no qualified independent reviewers have adjudicated the exact form. The alternative [살메] is separately exposed as `sal.me` in `ipa.lexical_alternatives`. The lexical Ukrainian target reference was aligned mechanically to the primary IPA candidate (`салмі`) but remains provisional and is **not** selected by `transliterate_korean` while IPA status is unresolved.
+
+Added case `IPA-021` for 삶의 to `research/ipa-adjudication-queue.json`, with direct NIKL MCFAQ evidence, both official Hangul surface readings, no candidate IPA, blank reviewer fields, and `BLOCKED_SPECIALIST_ADJUDICATION`. The queue now has 21 cases: 20 in the pinned surface-regression fixture plus this separately sourced high-risk case. The blinded packet builder and validator remain generic; fixed-size tests were updated, and the queue-coverage test now requires all fixture cases while permitting separately sourced cases with official evidence. A 2016 corpus/acoustic paper was added to `research/SOURCE-REGISTER.csv` as limited evidence only; its full text and item-level reuse license remain unavailable/unassessed.
+
+The first CI pass after queue expansion correctly caught fixed-count assumptions and a mismatch between the revised IPA and stored Ukrainian reference. These were repaired: queue size assertions now use the canonical queue size, the queue-coverage test allows the separately sourced case, and the provisional Ukrainian reference is aligned with the revised IPA without bypassing the target gate. The later system verification at run 40028573329 and test suite at run 40028573395 completed successfully (Python 3.11–3.13, web tests/build, Python regression/data integrity, browser regression/build). The NIKL metadata-only job was skipped. The source-register row then increased its audited row count from 101 to 102, and the corresponding audit-test expectation was updated; final CI for that latest source-register/test adjustment must be checked before marking the whole branch verified.
+
+
+### Final verification closeout — 2026-10-24
+
+The final code/data/test state is commit `30f1eab3043148193a74fb5d977033b74937726c`. All available relevant workflows passed:
+- Tests (Python 3.11, 3.12, 3.13 and web): [run 40028810510](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810510).
+- System verification: [run 40028810736](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810736).
+- Master table / strict research corpus artifacts: [run 40028810589](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810589).
+- Optional g2pK integration: [run 40028810621](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810621).
+- External UGTPHON diagnostic: [run 40028810616](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40028810616).
+
+The official NIKL metadata-only source inventory was skipped; this is not a pass. The current branch head later received only a source-register wording correction from “20-case” to “21-case” (`59b17390cca11142618df348019f8b02f0781239`); no runtime or test logic changed after the green code/test commit. Structural CSV validation after the correction found 102 source rows, 12 columns, and zero malformed-width rows. Local cloning remained blocked by unavailable DNS for github.com.
+
+The focused research work is now complete as a documented evidence review, not a scientific adjudication. Current status:
+- **DONE_VERIFIED:** form-specific diagnostic-only IPA gate; explicit primary/alternate candidate fields; target selection blocked while unresolved; queue expanded to 21 cases; queue/packet tests use canonical case count; source registry updated; full available CI passed.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** qualified independent reviewers must adjudicate the exact 삶의 broad IPA and convention. The 2016 Seoul Corpus study is indirect evidence only.
+- **BLOCKED_SPECIALIST_REVIEW:** Ukrainian target adaptation must be evaluated separately on frozen, adjudicated IPA.
+- **BLOCKED_EXTERNAL_ACCESS:** official NIKL inventory remains skipped.
+- **DEFERRED:** probabilistic n-insertion modeling; compact forms requiring morphology/spacing analysis.
+
+Do not merge this as a scientific release claim: the implementation is safer and the regression evidence is green, but the product remains a research preview / partial prototype until specialist adjudication and target-layer validation are complete.
+
+### Direct NIKL inventory follow-up — 2026-10-24 (supersedes “skipped” as the final status)
+
+The previous PR-run status showed the official NIKL metadata-only inventory as skipped because the job's condition only permits `research/nikl-*` refs. I did not leave the gate there. On dedicated diagnostic branch `research/nikl-metadata-inventory-2026-10-24`, the existing crawler was executed against three official URL variants without changing crawler safeguards:
+
+- [Run 40029487614](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029487614): canonical `www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002` → HTTP 403.
+- [Run 40029571329](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029571329): official mobile `www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002` → HTTP 403.
+- [Run 40029630066](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029630066): canonical hostname without `www` → HTTP 403.
+
+In each case, the collector logged `NIKL crawl BLOCKED: Official source denied or rate-limited this request (HTTP 403); do not bypass access controls.` and exited 3; the workflow records the expected access block as a warning. A green job conclusion therefore means the block was correctly classified, **not** that the source inventory passed. The first run's evidence artifact is [nikl-source-crawl-40029487614](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40029487614/artifacts/12533748777). The official source URL is discoverable via public search indexing, but direct page retrieval also returns 403 in the web retrieval environment; search excerpts cannot supply a trustworthy full-page response hash or complete item-level metadata manifest.
+
+**Current gate: `BLOCKED_EXTERNAL_ACCESS`, not `DONE_VERIFIED` and not merely `skipped`.** Completion acceptance remains: authorized direct source retrieval or an official export; all 30 articles reconciled with no missing, duplicate, or incomplete extraction; a validated metadata-only manifest with source and article hashes; and artifact/log review. Do not bypass the 403 or retain full article text without terms review. The diagnostic branch contains workflow-only endpoint experiments and is not part of PR #281's proposed production change.
+
+
+### Local NIKL source capture and metadata inventory route — 2026-10-24
+
+The collector already supports importing a locally saved official HTML page with `--input-html`; no duplicate crawler was added. Direct official desktop, mobile and bare-host endpoint attempts all returned HTTP 403 and must remain classified as `BLOCKED_EXTERNAL_ACCESS`. Search-index snippets are not equivalent to the original captured response.
+
+Added `docs/NIKL-LOCAL-CAPTURE-AND-INVENTORY-2026-10-24.md` with the authorized browser-save procedure, exact Windows PowerShell-compatible command shape, fail-closed acceptance checks, and explicit limits of local-import provenance. Raw HTML must remain local and must not be committed. The manifest defaults to metadata and hashes only; it does not certify rights, rule interpretation, or IPA/target correctness.
+
+Acceptance remains pending until a complete manifest is generated from an authorized official capture, reports all 30 articles with no missing/duplicate/incomplete records, and receives a human spot-check of article and subarticle structure. This documentation change does not claim the external inventory is complete and does not change the research-preview release status.
+
+
+### Independent Korean IPA engine comparison — 2026-10-24
+
+PR [#280](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/280) expands the existing native-vs-g2pk diagnostic to four additional executable baselines: KoG2P (pinned GPL-3.0 external checkout), hangul_to_ipa (pinned MIT external checkout), eSpeak NG via phonemizer, and phonemize 2.0.1. The raw corpus and third-party engine source are not vendored. KPD remains BLOCKED_ACCESS_AND_TERMS because authorized access and terms have not been verified; the 2022 research modification is not treated as executable until a reproducible implementation can be pinned.
+
+Verified scoring run: [40069800681](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069800681), artifact [12550916606](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069800681/artifacts/12550916606). The scoring implementation was unchanged by subsequent report/matrix documentation commits on PR #280. The initial phonemize run is excluded because its adapter returned unchanged Hangul; after enabling and smoke-testing anyAscii preprocessing, the corrected run produced non-Hangul IPA and scored all eligible tokens.
+
+Pinned UGTPHON Korean test split: 275 rows, 2,703 eligible token occurrences, 1,907 unique words. Results:
+- ClippyFirst native: 2,653/2,703 scored; 648 exact (24.4252%); CER 17.0604%; 50 explicit abstentions; no runtime exceptions.
+- g2pk 0.9.4: 2,703/2,703 scored; 675 exact (24.9723%); CER 16.6931%.
+- KoG2P: 402 exact (14.8724%); CER 26.0795%.
+- hangul_to_ipa: 404 exact (14.9464%); CER 30.9851%.
+- eSpeak NG / phonemizer: 220 exact (8.1391%); CER 39.0498%.
+- phonemize 2.0.1 with corrected adapter: 542 exact (20.0518%); CER 21.3645%.
+
+On the 2,653-occurrence paired subset, g2pk scored 25.2167% exact vs native 24.4252%; paired delta +0.7915 percentage points (95% row-cluster bootstrap CI +0.4538 to +1.1924 pp). Paired CER delta was −0.3822 pp (95% CI −0.6055 to −0.2083 pp). These intervals exclude zero on this particular diagnostic set, but no multiple-comparison correction is applied, IPA annotations may be noisy/convention-dependent, and g2pk output is converted through the repository's segment renderer. This is evidence for a modest benchmark-specific g2pk advantage, not proof of universal superiority.
+
+Full protocol, candidate register, confidence intervals and limitations: [docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md). The coverage matrix is updated on the benchmark PR branch. No production pronunciation rules were changed by this benchmark.
+
+Remaining scientific gates are unchanged: official NIKL full-text inventory remains BLOCKED_EXTERNAL_ACCESS after HTTP 403; independent broad-IPA adjudication and separate Ukrainian target-layer review remain outstanding. This benchmark is not NIKL normative gold and does not score Ukrainian adaptation. The repository remains a research preview / partial prototype, not release-ready.
+
+Integration note: PR #280 and PR #281 both update this canonical handoff from separate branches. Do not merge them blindly; reconcile the appended sections and matrix references after the owner chooses merge order. Both PRs remain open and unmerged.
