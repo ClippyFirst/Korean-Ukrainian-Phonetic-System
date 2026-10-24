@@ -27,6 +27,7 @@ def main() -> int:
 
     lines = [line.strip() for line in args.corpus.read_text(encoding="utf-8").splitlines()
              if line.strip()]
+    args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8") as stream:
         for name in args.engines:
             try:
