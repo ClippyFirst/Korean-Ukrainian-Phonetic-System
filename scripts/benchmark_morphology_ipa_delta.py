@@ -61,8 +61,14 @@ def _metrics(rows: list[dict[str, Any]], attempted: int) -> dict[str, Any]:
     }
 
 
-def _native_prediction(fn: Callable[..., dict[str, Any]], word: str, mode: str) -> dict[str, Any]:
-    result = fn(word, morphology_mode=mode)
+def _native_prediction(
+    fn: Callable[..., dict[str, Any]], word: str, mode: str,
+    rule_licenses: list[str] | None = None,
+) -> dict[str, Any]:
+    if rule_licenses is None:
+        result = fn(word, morphology_mode=mode)
+    else:
+        result = fn(word, morphology_mode=mode, rule_licenses=rule_licenses)
     ipa = result.get("ipa", {}).get("ipa")
     unresolved = result.get("pronunciation_status") == "unresolved"
     return {
@@ -140,6 +146,7 @@ def _rule_boundary_alignment(
                     "rule_id": trace.get("rule_id"),
                     "rule_name": trace.get("name"),
                     "pair": pair,
+                    "license_context": context,
                     "orthographic_offset": offset,
                     "morphological_boundary_observed": offset in boundaries,
                     "interpretation": (
@@ -282,12 +289,63 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
             })
 
     morph_by_word = {item["word"]: item for item in morphology_rows}
-    rule_boundary_alignment = _rule_boundary_alignment(changed_words, morphology_rows)
+    soft_rule_candidates = [
+        {"word": word, "soft_heuristic_rules": pred.get("heuristic_rules", [])}
+        for word, pred in native["soft"].items()
+        if pred.get("heuristic_rules")
+    ]
+    rule_boundary_alignment = _rule_boundary_alignment(soft_rule_candidates, morphology_rows)
     events_by_word: dict[str, list[dict[str, Any]]] = {}
     for event in rule_boundary_alignment["events_detail"]:
         events_by_word.setdefault(str(event["word"]), []).append(event)
     for item in morphology_rows:
         item["native_soft_rule_boundary_events"] = events_by_word.get(str(item["word"]), [])
+
+    # Counterfactual only: keep the native soft engine's proposed exact rule
+    # contexts only when the selected analyzer exposes a boundary at that
+    # orthographic offset. This does NOT establish that the rule is licensed;
+    # it measures the effect of a boundary-only gate without changing runtime.
+    boundary_gated_predictions: dict[str, dict[str, Any]] = {}
+    boundary_gated_errors: dict[str, str] = {}
+    selected_licenses = 0
+    suppressed_licenses = 0
+    for word in unique_words:
+        events = events_by_word.get(word, [])
+        licenses = sorted({
+            str(event["license_context"])
+            for event in events
+            if event.get("morphological_boundary_observed") and event.get("license_context")
+        })
+        selected_licenses += len(licenses)
+        suppressed_licenses += sum(
+            1 for event in events
+            if not event.get("morphological_boundary_observed") and event.get("license_context")
+        )
+        try:
+            boundary_gated_predictions[word] = _native_prediction(
+                phoneticize_korean, word, "strict", rule_licenses=licenses
+            )
+        except Exception as exc:
+            boundary_gated_errors[word] = f"{type(exc).__name__}: {exc}"
+    boundary_gated_scored: list[dict[str, Any]] = []
+    for occurrence in occurrences:
+        word = occurrence["word"]
+        pred = boundary_gated_predictions.get(word)
+        if not pred or pred["unresolved"] or not pred["ipa"]:
+            continue
+        score = _score(pred["ipa"], occurrence["gold"])
+        score.update({"row_id": occurrence["row_id"], "word": word, "gold": occurrence["gold"]})
+        boundary_gated_scored.append(score)
+    boundary_gated_metrics = _metrics(boundary_gated_scored, len(occurrences))
+    boundary_gated_changed_vs_strict = [
+        word for word in unique_words
+        if (
+            boundary_gated_predictions.get(word, {}).get("normalized_ipa")
+            != native["strict"].get(word, {}).get("normalized_ipa")
+            or boundary_gated_predictions.get(word, {}).get("unresolved")
+            != native["strict"].get(word, {}).get("unresolved")
+        )
+    ]
     split_changed = [
         item for item in changed_words
         if morph_by_word.get(item["word"], {}).get("split_into_multiple_morphemes")
@@ -326,6 +384,20 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
             "changed_words_with_multi_morpheme_segmentation": len(split_changed),
             "changed_word_examples": changed_words[:200],
             "changed_words_also_split_by_analyzer": split_changed[:100],
+            "boundary_gated_by_analyzer": {
+                **boundary_gated_metrics,
+                "status": "counterfactual_research_only",
+                "unique_words_with_output_or_status_change_vs_strict": len(boundary_gated_changed_vs_strict),
+                "selected_native_soft_rule_licenses": selected_licenses,
+                "suppressed_native_soft_rule_licenses": suppressed_licenses,
+                "runtime_errors_unique_words": len(boundary_gated_errors),
+                "runtime_error_examples": dict(list(boundary_gated_errors.items())[:20]),
+                "interpretation": (
+                    "counterfactual: only native soft-rule licenses whose exact orthographic boundary "
+                    "was observed by this analyzer were retained; boundary evidence is not sufficient "
+                    "to license phonology, so this must not be used in production"
+                ),
+            },
             "morphology_rule_boundary_alignment": {
                 key: value for key, value in rule_boundary_alignment.items()
                 if key != "events_detail"
