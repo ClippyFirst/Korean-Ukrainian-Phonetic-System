@@ -19,5 +19,6 @@ def test_target_renderer_holdout_has_24_unique_inputs_and_no_fabricated_gold():
     assert len({row["holdout_id"] for row in rows}) == 24
     assert all(row["ipa_gold_status"] == "not_available" for row in rows)
     assert all(row["ukrainian_gold_status"] == "not_available" for row in rows)
-    assert all(row["source_manifest_status"] == "restored_from_prior_handoff" for row in rows)
-    assert all("gold labels were not found" in row["provenance_note"] for row in rows)
+    assert all(row["source_manifest_status"] == "reconstructed_unverified" for row in rows)
+    assert all("Candidate reconstruction transcribed from prior handoff text" in row["provenance_note"] for row in rows)
+    assert all("original source artifact/manifest" in row["provenance_note"] for row in rows)
