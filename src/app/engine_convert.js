@@ -245,14 +245,17 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     ipa[i]=unitIpa;
     const targetMapping=traceIpaMappingDetailed(unitIpa);
     const targetCandidateText=targetMapping.tokens.map(token=>token.ukrainian).join('');
+    // This is the research-preview UI: show a declared candidate when useful,
+    // but preserve provisional status so it is never represented as adjudicated.
+    // Strict consumers can use ipaTargetForSource() without allowProvisional.
     const provisionalTarget=targetMapping.status==='provisional';
     const targetFromIpa={
-      text:provisionalTarget?'':targetCandidateText,
+      text:targetCandidateText,
       candidateText:provisionalTarget?targetCandidateText:null,
-      unknown:provisionalTarget?'provisional_mapping_requires_review':targetMapping.unknown,
-      status:provisionalTarget?'unavailable':targetMapping.status,
+      unknown:targetMapping.unknown,
+      status:targetMapping.status,
       candidateStatus:provisionalTarget?'provisional':null,
-      reason:provisionalTarget?'provisional_mapping_requires_review':targetMapping.reason
+      reason:targetMapping.reason
     };
     if(targetFromIpa.unknown || targetFromIpa.status==='unavailable'){
       issues.push(u.char+': IPA target mapping unavailable ('+(targetFromIpa.reason||'unmapped_ipa_sequence')+'): '+(targetFromIpa.unknown||'(empty IPA)'));

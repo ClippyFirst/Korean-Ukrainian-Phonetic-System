@@ -664,7 +664,10 @@ def render_ipa_analysis_to_ukrainian(
             }
         else:
             try:
-                local = render_ipa_sequence_to_ukrainian(word_ipa)
+                # The research pipeline may display the best declared candidate,
+                # but the renderer keeps its strict default for integrations. The
+                # returned status remains provisional and is surfaced to the caller.
+                local = render_ipa_sequence_to_ukrainian(word_ipa, allow_provisional=True)
             except (TypeError, ValueError) as exc:
                 local = {
                     "ipa": word_ipa,
