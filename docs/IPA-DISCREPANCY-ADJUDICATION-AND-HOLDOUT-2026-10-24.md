@@ -90,3 +90,15 @@ The last two commands require the pinned benchmark artifact produced by the exis
 ## Quantified profile sensitivity
 
 The pinned artifact was re-scored with the versioned comparison profiles. On 2,655 paired occurrences, native exact match/CER changes from 53.18% / 9.19% under legacy normalization to 91.04% / 1.70% under candidate broad-v1; g2pk changes from 53.33% / 9.24% to 90.96% / 1.75%. The sibilant `sʰ→s` collapse is the largest score driver. These are sensitivity measurements, not independently validated accuracy claims. See [the aggregate results](../research/broad-ipa-profile-sensitivity-2026-10-24.json) and [full report](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md).
+
+
+### Primary phonetic literature for the broad-profile candidates
+
+The allophone decisions are now linked to descriptive and experimental sources:
+
+- [Ohio State University Korean IPA chart](https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf) labels `[ɭ]` and `[ʎ]` as non-phonemic lateral phones/allophones of /l/, identifies `[ç]` as an /h/ allophone, and treats `[sʰ]` as the phonetic realization of the lax sibilant phoneme.
+- Kang (2010), [“Coarticulation effects of Korean sibilant /s/ before a high front segment”](https://doi.org/10.17959/sppm.2010.16.1.3), reports palatalized acoustic properties of /s/ before high-front segments.
+- Han & Choi (2015), [“The influence of spelling on the production and storage of words with allophonic variants of /h/ in Korean”](https://www.cambridge.org/core/journals/applied-psycholinguistics/article/abs/influence-of-spelling-on-the-production-and-storage-of-words-with-allophonic-variants-of-h-in-korean/695C8A620FADB77A80F9DA02D65AFE42), studies [ɦ] as an allophonic variant of /h/.
+- [“Korean n-insertion: a mismatch between data and learning”](https://www.cambridge.org/core/journals/phonology/article/korean-ninsertion-a-mismatch-between-data-and-learning/6C53BDA0D8F55B2DA793E043D10B968D) discusses [ɲ] as a phonetic realization of /nj/; the candidate profile maps [ɲ] to `n` while retaining the following `j` when present.
+
+These sources support the broad-vs-narrow hypothesis, but they do not replace independent annotation of the exact benchmark items. The remaining `i/y`, stress, length and consonant-symbol mismatches remain separate adjudication targets.
