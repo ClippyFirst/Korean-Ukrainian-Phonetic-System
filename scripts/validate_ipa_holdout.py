@@ -69,12 +69,12 @@ def collect_local_forms(root: Path) -> dict[str, set[str]]:
                     if rows.fieldnames and "input" in rows.fieldnames:
                         forms = set()
                         for row in rows:
-                            forms.update(re.findall(r"[\\uac00-\\ud7a3]+", row.get("input", "") or ""))
+                            forms.update(re.findall(r"[\uac00-\ud7a3]+", row.get("input", "") or ""))
                         inputs[relative_path] = forms
                         continue
                 except csv.Error:
                     pass
-            inputs[relative_path] = set(re.findall(r"[\\uac00-\\ud7a3]+", content))
+            inputs[relative_path] = set(re.findall(r"[\uac00-\ud7a3]+", content))
     return inputs
 
 
