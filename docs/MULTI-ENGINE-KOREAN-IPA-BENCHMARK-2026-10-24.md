@@ -186,3 +186,18 @@ Key interpretation guardrails:
 - The 48 abstentions (1.78% of all eligible UGTPHON occurrences) cannot explain the low exact rate among the 2,655 scored outputs.
 - Native vs g2pk is near-tied on the paired UGTPHON metric and reverses slightly on SIGMORPHON; g2pk shares the project IPA renderer.
 - A full correlation claim requires per-item gold rule/morphology/variant labels; do not infer error causes from engine output alone.
+
+
+## Full-artifact correlation analysis addendum — 2026-10-24
+
+The full occurrence-level artifact was downloaded and stratified with `scripts/analyze_korean_benchmark_correlations.py`; see [the analysis report](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md#71-re-analysis-of-the-full-occurrence-level-artifact) for counts and limitations.
+
+Key measured findings on the 2,655 occurrences scored by both native and g2pk:
+- Paired exact outcomes: g2pk wins 4 occurrences, native wins 0, ties 2,651. All four wins are repeated occurrences of `없는`, where the corpus reference omits the long vowel present in the source-backed native form.
+- Sensitivity check excluding those four occurrences: both engines have 1,412 exact matches; native has 2,072 total edit operations vs g2pk's 2,088 over the remaining 2,651 occurrences. This is not a revised official score; it isolates the reference mismatch's influence.
+- Lexical-type macro exact rate is 49.839% native vs 49.892% g2pk over 1,860 paired types. A lexical-type cluster bootstrap 95% sensitivity interval for g2pk-minus-native occurrence-weighted exact rate is 0.00 to +0.4726 pp, including zero. The earlier row-cluster interval excludes zero; do not interpret it as a robust general advantage because the same lexical type occurs in multiple row clusters.
+- Native exact rate falls with token length: 61.91% for 1–2 Hangul blocks, 53.18% for 3, and 41.43% for 4+; by normalized reference length, it falls from 71.22% at ≤5 IPA characters to 40.84% at 8+.
+- 56.88% of native non-exact outputs are one edit from the selected reference and 83.99% are within two edits. This describes mismatch size, not whether a phonetic difference is harmless.
+- Paired source slices: MultiLexNorm++ 55.36% native/g2pk exact (784 cases); DC Inside 52.27% native and 52.49% g2pk (1,871 cases). Source, length and repetition are confounded, so this is descriptive only.
+
+The script and test are in `scripts/analyze_korean_benchmark_correlations.py` and `tests/test_benchmark_score_causality.py`. These cross-tabs still cannot establish per-rule causality because gold rule/morphology labels are not available for every scored mismatch.
