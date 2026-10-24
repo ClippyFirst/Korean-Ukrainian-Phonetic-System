@@ -862,3 +862,17 @@ The pinned artifact has now been re-scored under both normalization profiles. On
 The final holdout manifest has 24 NIKL-sourced forms and zero exact-token overlaps with the pinned artifact (1,907 unique tokens). An earlier candidate `앞` was excluded due overlap and replaced by `꽃`. External disjointness is verified; local runtime/fixture leakage CI and two independent IPA annotations remain the next blockers. The holdout contains no IPA gold and must not be used for tuning.
 
 The engine ranking is not statistically resolved by this sample: a 10,000-replicate lexical-type cluster bootstrap over 1,860 types gives g2pk-minus-native exact-match delta +0.15 percentage points [0.00, 0.47] under legacy and −0.08 points [−0.47, 0.37] under broad-v1. The broad-v1 interval includes zero. Do not claim g2pk is better from the old four occurrence wins; all four are repeated `없는` references.
+
+
+## Final execution ledger — IPA contract / adjudication / holdout (2026-10-24)
+
+- **Starting default-branch commit:** `8144675c6b5496c8b1f3c05b15b085f6b78b4b2b`.
+- **Working branch / PR:** `research/benchmark-score-causality-2026-10-24`, [PR #305](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/305), still open and unmerged.
+- **Pinned analysis source:** workflow run `40092929978`, artifact `12559692692`; report JSON SHA-256 `448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f`.
+- **Measured profile sensitivity:** 2,655 paired occurrences; native 53.18% / 9.19% CER legacy vs 91.04% / 1.70% candidate broad-v1; g2pk 53.33% / 9.24% vs 90.96% / 1.75%. Lexical-type bootstrap (10,000 replicates; 1,860 types) gives g2pk-minus-native delta +0.15 pp [0.00, 0.47] legacy and −0.08 pp [−0.47, 0.37] broad-v1. The broad interval includes zero. These are profile-sensitivity metrics, not independently validated accuracy.
+- **Holdout exact-token overlap:** DONE_VERIFIED against the pinned artifact: 0/24 final input forms overlap its 1,907 unique Hangul tokens. The earlier `앞` candidate was removed and replaced by `꽃`. Final manifest Git blob SHA: `19ab5184192b21dc7f02873dcba8ac77a2b672f7`; record: `research/ipa-holdout-overlap-validation-2026-10-24.json`.
+- **Independent IPA gold:** BLOCKED / pending. The holdout has 0/24 IPA gold and the selected R002/R003 queue has 0/14 independently adjudicated IPA labels. Official Hangul pronunciation notation is not IPA.
+- **Local test status:** exact-head CI could not be verified in this session: the GitHub connector returned no workflow runs/statuses for the latest branch commits, and a local clone attempt failed because outbound DNS to github.com was unavailable. Do not claim tests passed. The new tests are committed for the next repository-hosted run: `tests/test_benchmark_score_causality.py`, `tests/test_ipa_contract_and_holdout.py`, `tests/test_ipa_profile_sensitivity_snapshot.py`.
+- **Production changes:** none. No production Korean pronunciation rules, IPA output, or Ukrainian target logic changed.
+- **Open blockers:** (1) obtain repository-hosted CI on the current head and resolve any failures; (2) run the validator against local runtime/fixture tree in CI; (3) get two independent IPA annotations and adjudicate; (4) separately review Ukrainian targets; (5) retain both profiles until broad-v1 mappings are approved by review.
+- **Readiness:** research-ready for reproducible benchmark diagnostics and holdout design; not release-ready for independently validated accuracy claims.
