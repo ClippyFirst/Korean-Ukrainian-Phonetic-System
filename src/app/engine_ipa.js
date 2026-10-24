@@ -67,6 +67,9 @@ export function traceIpaMappingDetailed(ipa){
     }
     i+=match.source_ipa.length;
   }
+  if(!tokens.length && !features.length){
+    return {tokens,features,unknown:'',reason:'empty_ipa',status:'unavailable'};
+  }
   return {
     tokens,
     features,
