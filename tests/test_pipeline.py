@@ -461,3 +461,69 @@ def test_native_engine_keeps_unlisted_n_insertion_candidate_conservative():
     result = phoneticize_korean("각여름")
     assert not any(item["rule_id"] == "R009" and item["changed"] for item in result["rules"])
     assert not any(item.get("license_context") == "R009:word:각여름:각>여" for item in result["rules"])
+
+def test_shared_ipa_target_renderer_is_owned_by_clippyfirst_core(monkeypatch):
+    from korean_ukrainian import pipeline
+
+    monkeypatch.setattr(
+        pipeline, "map_ipa_to_ukrainian",
+        lambda ipa, adapter=None: {"ipa": ipa},
+    )
+    monkeypatch.setattr(
+        pipeline, "_select_target",
+        lambda target: {"segments": [{
+            "grapheme": {"a": "а", "b": "б"}[target["ipa"]],
+            "source_boundary_before": None,
+            "candidate_id": "test",
+        }]},
+    )
+
+    result = pipeline.render_ipa_analysis_to_ukrainian(
+        "안녕, 세계!",
+        [{"ipa": "a"}, {"ipa": "b"}],
+        pronunciation_surface="안녕, 세계!",
+        phonetics={"status": "test"},
+        ipa={"ipa": "a b"},
+        pronunciation_engine="test-engine",
+    )
+
+    assert result["ukrainian_orthography"] == "а, б!"
+    assert result["target_status"] == "model-selected"
+    assert result["selection_status"].startswith(
+        "test-engine surface pronunciation → IPA → ClippyFirst Ukrainian target mapping"
+    )
+    assert [item["ipa"] for item in result["target_analysis"]] == ["a", "b"]
+
+
+def test_shared_ipa_target_renderer_fails_closed_on_word_analysis_misalignment(monkeypatch):
+    from korean_ukrainian import pipeline
+
+    monkeypatch.setattr(
+        pipeline, "map_ipa_to_ukrainian",
+        lambda ipa, adapter=None: {"ipa": ipa},
+    )
+    monkeypatch.setattr(
+        pipeline, "_select_target",
+        lambda target: {"segments": [{
+            "grapheme": "а",
+            "source_boundary_before": None,
+            "candidate_id": "test",
+        }]},
+    )
+
+    result = pipeline.render_ipa_analysis_to_ukrainian(
+        "안녕 세계",
+        [{"ipa": "a"}],
+        pronunciation_surface="안녕 세계",
+        phonetics={},
+        ipa={"ipa": "a"},
+        pronunciation_engine="test-engine",
+    )
+
+    assert result["ukrainian_orthography"] is None
+    assert result["target_status"] == "unavailable"
+    assert any(
+        item.get("reason") == "missing_word_ipa_analysis"
+        for item in result["target_analysis"]
+    )
+
