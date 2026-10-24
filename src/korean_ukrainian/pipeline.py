@@ -728,7 +728,7 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
 
     if surface["pronunciation_status"] == "unresolved":
         target_mapping={
-            "ipa":source_ipa,"status":"unavailable",
+            "ipa":source_ipa,"status":"unresolved_due_to_ambiguous_korean_phonology",
             "reason":"unresolved_korean_phonology","ukrainian_orthography":None,
             "segments":[],"ignored_source_markers":[],
         }
@@ -752,7 +752,10 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
     else:
         lexical_comparison="matches_reference" if orthographic==lexical_reference else "differs_from_reference"
 
-    target_status=target_mapping.get("status","unavailable")
+    target_status=(
+        "unresolved" if surface["pronunciation_status"] == "unresolved"
+        else target_mapping.get("status","unavailable")
+    )
     target_unavailable_reason=target_mapping.get("reason") if orthographic is None else None
     target_unavailable_segments=[]
     if target_unavailable_reason=="unmapped_ipa_sequence":
