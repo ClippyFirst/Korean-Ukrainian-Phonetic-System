@@ -42,7 +42,9 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
             "pronunciation_status": "provisional",
             "ipa_status": "provisional",
             "unresolved_contexts": [],
-            "rules": ([{"rule_id": "R002", "confidence": "low", "status": "heuristic"}]
+            "rules": ([{"rule_id": "R002", "name": "liaison", "confidence": "low", "status": "heuristic",
+                       "license_context": "R002:formal:한국어:국>어",
+                       "before": [{"text": "한"}, {"text": "국"}, {"text": "어"}]}]
                       if morphology_mode == "soft" and word == "한국어" else []),
         }
 
@@ -84,3 +86,8 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
     assert report["morphology"]["multi_morpheme_words"] == 1
     assert "no gold morphology labels" in report["morphology"]["interpretation"]
     assert "no analyzer output was injected into the IPA engine" in report["morphology"]["interpretation"]
+    alignment = report["morphology"]["native_soft_rule_boundary_alignment"]
+    assert alignment["events"] == 1
+    assert alignment["boundary_observed"] == 0
+    assert alignment["boundary_not_observed"] == 1
+    assert report["morphology"]["results"][1]["native_soft_rule_boundary_events"][0]["pair"] == "国>어"
