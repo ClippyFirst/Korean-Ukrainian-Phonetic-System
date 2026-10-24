@@ -1,3 +1,14 @@
+## Final 24-form diagnostic integration state (2026-10-24)
+
+- Latest code/test snapshot before this handoff reconciliation: `6ce068645ff1c76902513804e7ce8bb8889ffd98`; research PR #305 remains open.
+- The diagnostic now records source manifest hash, per-case source provenance, normalized Hangul surface comparator (explicitly not IPA gold), native strict and soft traces, g2pK output when available, syllable records, provisional IPA, IPA variants, unresolved contexts, and Ukrainian-target availability. It aggregates exact Hangul-surface matches/edit distances by source-rule label only as a diagnostic.
+- Exact 24-case table and interpretation hypotheses are documented in `docs/KOREAN-24-FORM-HOLDOUT-DIAGNOSTICS-2026-10-24.md`, including the contrastive coda pair, negative fortition control, compound n-insertion/length, and the evidence-based caveat that Korean vowel-length realization varies with speaker/dialect and speech style.
+- **Observed CI failure and fix:** run `40121486377` failed at collection because `scripts` was not importable as a package. Fixed by adding the repo's `scripts/` directory to `sys.path`; `tests/test_korean_holdout_diagnostic.py` also asserts no exact overlap with tracked `data/korean` and `tests` fixture inputs.
+- **Verification remains pending:** the test matrix run `40121835008` is queued and the prior pre-fix diagnostic run is the only completed diagnostic-specific run. Current code includes the fix, but neither the current test matrix nor diagnostic artifact has completed. The runner cannot be marked `DONE_VERIFIED` yet.
+- **No engine tuning occurred:** the 24-case manifest remains frozen, 0/24 IPA gold, and no Ukrainian gold. No production rule, lexical pronunciation, normalizer, or target mapping was changed. The generated predictions are kept outside tracked files; independent reviewers must not be shown the diagnostic artifact.
+- **Next acceptance gate:** complete tests on code-equivalent head `be79352da6176c36d423e8ff7da7599764d6cad8` / workflow-integrated head `6ce068645ff1c76902513804e7ce8bb8889ffd98`, inspect the 30-day diagnostic artifact for all 24 cases, then use the blinded review packets with two qualified reviewers and adjudication. If CI identifies fixture overlap, treat it as a holdout integrity issue rather than silently excluding files.
+
+---
 ## CI feedback and correction — 24-form diagnostic (2026-10-24)
 
 - The first diagnostic-specific CI run `40121486377` failed during pytest collection: `ModuleNotFoundError: No module named 'scripts.diagnose_korean_ipa_holdout'`. This was a test import-path defect, not an engine/linguistic failure.
