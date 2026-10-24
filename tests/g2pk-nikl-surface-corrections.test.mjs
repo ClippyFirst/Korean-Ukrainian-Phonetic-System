@@ -110,3 +110,20 @@ test('every correction is backed by a registered official NIKL source', () => {
   assert.match(readgo.source_url, /qna_seq=315279/u);
   assert.match(readgo.rule_notes, /directly lists 읽고\[일꼬\]/u);
 });
+
+
+test('the NIKL-attested form 싫어서 keeps its official surface reading without claiming IPA gold', () => {
+  const result = adapter.convert('싫어서');
+  assert.equal(result.surfaceHangul || '싫어서', '시러서');
+  assert.ok(result.ipa, 'surface-attested form should pass through the IPA adapter');
+  assert.equal(result.issues.length, 0);
+  const mapped = traceIpaMapping(result.ipa);
+  assert.equal(mapped.unknown, '');
+  assert.equal(result.ukrainian, mapped.tokens.map(token => token.ukrainian).join(''));
+  assert.equal(result.ipaIsGold, false);
+  assert.equal(result.ukrainianTargetIsGold, false);
+  const source = sourceRegister.find(row => row.source_id === 'SRC-NIKL-QNA-313981');
+  assert.ok(source, 'exact-form NIKL evidence must be registered');
+  assert.match(source.url, /qna_seq=313981/u);
+  assert.match(source.coverage, /싫어서\[시러서\]/u);
+});

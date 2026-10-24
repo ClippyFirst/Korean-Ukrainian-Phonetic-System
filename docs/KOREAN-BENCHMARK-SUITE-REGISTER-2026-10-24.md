@@ -113,3 +113,40 @@ Successful post-fix run: [40092929978](https://github.com/ClippyFirst/Korean-Ukr
 | SIGMORPHON public paired file | eSpeak NG | 100% | 4.3043% | 40.7236% |
 
 Paired g2pk-minus-native exact delta is +0.1506 pp (95% CI +0.0351 to +0.3243) on UGTPHON, with CER delta +0.0531 pp (95% CI −0.0139 to +0.1302; crosses zero). On SIGMORPHON the paired exact delta is −0.4012 pp (95% CI −0.8024 to −0.1003), favoring native, while CER delta +0.1130 pp (95% CI −0.0250 to +0.2732) crosses zero. The SIGMORPHON README/file-schema mismatch means this is a public paired-file diagnostic, not a leaderboard reproduction. g2pk uses the project's segment renderer, so it is not a fully independent IPA stack.
+
+
+## Benchmark score causality and metric comparability — 2026-10-24
+
+- **DONE_VERIFIED (literature/report synthesis):** [KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md) distinguishes engine errors, reference/IPA convention mismatch, exact-match metric effects, corpus domain, and adapter limitations. It records why historical 24% and revised 53% scores are not a code-only before/after comparison.
+- **DONE_VERIFIED (aggregate evidence reconciliation):** latest UGTPHON native exact 53.1827% / CER 9.1883%; paired g2pk exact advantage only +0.1506 percentage points and CER difference crosses zero. On SIGMORPHON, native exact 35.8074% vs g2pk 35.4062% on the shared subset. No universal winner is established.
+- **DONE_VERIFIED (scope guard):** native abstentions are 48/2,703 = 1.78%; the remaining exact-match deficit is predominantly among scored predictions, so abstention count alone cannot explain it. Four g2pk-only exact occurrences all repeat `없는` and expose a length-mark reference discrepancy.
+- **PARTIAL:** plausible correlation factors are now documented, but no complete per-item rule × morphology × reference-variant cross-tab has been computed. Avoid claiming quantitative correlations until gold labels and edit-distance classes exist.
+- **TODO:** extend the existing occurrence ledger with normalized/raw outputs, word-type and occurrence weighting, source corpus, reference-variant count, length, adjudication status, gold rule tags and morphology/boundary labels; report per-rule and interaction strata with row/type-clustered uncertainty.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** 14 R002/R003 cases and remaining scored disagreements require exact-source review and independent broad-IPA adjudication before they can serve as gold.
+- **Release classification unchanged:** research-ready for diagnostic comparison; partial prototype, not release-ready. Normative IPA accuracy and Ukrainian target-layer accuracy are not yet established.
+
+
+### Full-artifact score-correlation analysis — 2026-10-24
+
+- **DONE_VERIFIED (descriptive item-level stratification):** downloaded and analyzed the complete 2,703-occurrence UGTPHON native-vs-g2pk ledger. Reproducible script: `scripts/analyze_korean_benchmark_correlations.py`; tests: `tests/test_benchmark_score_causality.py`. Full interpretation: [score-causality report §7.1](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md#71-re-analysis-of-the-full-occurrence-level-artifact).
+- **Measured:** on the 2,655 common scored occurrences, g2pk exact wins 4, native exact wins 0, 2,651 ties; all four wins are `없는` repeated four times with a vowel-length reference mismatch. Excluding this lexical form as a sensitivity check yields equal exact counts (1,412 each) and fewer total edit operations for native (2,072 vs 2,088).
+- **Measured:** exact match decreases with input length (native 61.91% for 1–2 Hangul blocks, 53.18% for 3, 41.43% for 4+); 56.88% of native non-exact outputs are one edit away and 83.99% are within two edits.
+- **Statistical caution:** existing row-cluster paired interval (+0.0351 to +0.3243 pp) excludes zero, but lexical-type-cluster sensitivity interval is 0.00 to +0.4726 pp and includes zero. Because all four wins are one repeated type, the data do not support a robust broad g2pk advantage.
+- **PARTIAL:** source, length, repetition and edit-distance strata are now computed. Rule × morphology × interaction correlations remain TODO/evidence-limited until scored mismatches have independent gold rule/morpheme/variant labels.
+- **Acceptance:** report occurrence-weighted and unique-type metrics, row and lexical-type dependence sensitivity, and source/rule strata separately; do not tune the 14-case queue and call it a holdout.
+
+
+- **DONE_VERIFIED (descriptive symbol profile):** the reproducible alignment report identifies frequent reference/native differences `ɭ→l` (525), `ʰ→s` (194), `ɦ→h` (165), `ɲ→n` (73), `ç→h` (40). This strengthens the hypothesis that broad-vs-narrow IPA conventions explain a substantial portion of exact-string failures. Alignment counts are not phonological gold labels; independent review remains required.
+
+
+### IPA contract and holdout status (2026-10-24)
+
+- **DONE_VERIFIED (contract specification + executable normalizer):** [versioned broad-IPA contract](IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md) and `normalize_ipa_profile` now distinguish the immutable legacy score from the proposed broad-v1 sensitivity profile. Both exact match and CER are emitted by `scripts/analyze_korean_benchmark_correlations.py` with coverage/denominator; no production pronunciation output is rewritten.
+- **PARTIAL (discrepancy adjudication):** frequent symbol-level classes have explicit candidate decisions, but alignment is not gold. The 14 selected R002/R003 cases have official Hangul surface evidence for 3 exact forms, related evidence for 4 and no exact source for 7; independently adjudicated IPA gold remains 0/14.
+- **PARTIAL/BLOCKED (holdout):** the 24-item manifest combines remaining source-attested rule examples with 14 unused exact-form readings from official NIKL Online Q&A pages. It contains no engine outputs or IPA gold. Exact-token overlap against artifact 12567746123 is verified at 0/24; local runtime/test leakage CI and independent IPA labels remain pending. Manifest blob SHA `3a69a915e475f08d0c6aba0c0e52638bcf3d6121` and artifact digest are recorded in `research/ipa-holdout-overlap-validation-2026-10-24.json`.
+- **Acceptance:** do not tune on the holdout. Two independent IPA labels plus adjudication are required; Ukrainian target review remains separate. Preserve legacy and broad-v1 sensitivity metrics side by side until expert review accepts the mappings.
+- Full report: [IPA discrepancy adjudication and holdout](IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md).
+
+- **DONE_VERIFIED (measured profile sensitivity):** on 2,655 paired scored occurrences, native exact match is 53.18% legacy versus 91.04% candidate broad-v1; g2pk is 53.33% versus 90.96%. After fixing the normalizer to preserve `tɕ` affricates, broad-v1 CER is 1.6847% for native and 1.7303% for g2pk. This is a normalization-sensitivity result, not validated accuracy; sibilant aspiration normalization is the largest driver and requires independent IPA review. See `research/broad-ipa-profile-sensitivity-2026-10-24.json`.
+
+- **Engine comparison uncertainty:** lexical-type cluster bootstrap (10,000 replicates; 1,860 types) gives g2pk-minus-native exact-match delta +0.15 pp [0.00, 0.47] under legacy and −0.08 pp [−0.47, 0.37] under broad-v1. Broad-v1 CI includes zero; no reliable engine ranking. Aggregate: `research/broad-ipa-profile-sensitivity-2026-10-24.json`.

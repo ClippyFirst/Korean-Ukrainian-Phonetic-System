@@ -174,3 +174,43 @@ A higher score on UGTPHON does not establish that an engine is best for NIKL sta
 ## Reproduction
 
 The workflow checks out the exact upstream revisions into the ephemeral runner, checks their declared licenses, installs the pinned packages, downloads the pinned UGTPHON test split, runs adapter tests, emits a JSON report, and uploads the report artifact. External engine code and the raw corpus are not added to the project tree.
+
+
+## Score-causality review — 2026-10-24
+
+See [Why Korean G2P benchmark scores look low](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md) for the cross-study metric comparison, dataset/IPA-convention confounds, measured versus hypothesized correlations, and next stratified error-analysis requirements.
+
+Key interpretation guardrails:
+- Earlier 24.4068% native exact match and revised 53.1827% are from different normalization profiles; do not describe this as a code-only accuracy gain.
+- The current exact match is a whole-token IPA string metric; published 90–99% values often refer to human acceptability or phoneme-level accuracy on cleaner, different datasets.
+- The 48 abstentions (1.78% of all eligible UGTPHON occurrences) cannot explain the low exact rate among the 2,655 scored outputs.
+- Native vs g2pk is near-tied on the paired UGTPHON metric and reverses slightly on SIGMORPHON; g2pk shares the project IPA renderer.
+- A full correlation claim requires per-item gold rule/morphology/variant labels; do not infer error causes from engine output alone.
+
+
+## Full-artifact correlation analysis addendum — 2026-10-24
+
+The full occurrence-level artifact was downloaded and stratified with `scripts/analyze_korean_benchmark_correlations.py`; see [the analysis report](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md#71-re-analysis-of-the-full-occurrence-level-artifact) for counts and limitations.
+
+Key measured findings on the 2,655 occurrences scored by both native and g2pk:
+- Paired exact outcomes: g2pk wins 4 occurrences, native wins 0, ties 2,651. All four wins are repeated occurrences of `없는`, where the corpus reference omits the long vowel present in the source-backed native form.
+- Sensitivity check excluding those four occurrences: both engines have 1,412 exact matches; native has 2,072 total edit operations vs g2pk's 2,088 over the remaining 2,651 occurrences. This is not a revised official score; it isolates the reference mismatch's influence.
+- Lexical-type macro exact rate is 49.839% native vs 49.892% g2pk over 1,860 paired types. A lexical-type cluster bootstrap 95% sensitivity interval for g2pk-minus-native occurrence-weighted exact rate is 0.00 to +0.4726 pp, including zero. The earlier row-cluster interval excludes zero; do not interpret it as a robust general advantage because the same lexical type occurs in multiple row clusters.
+- Native exact rate falls with token length: 61.91% for 1–2 Hangul blocks, 53.18% for 3, and 41.43% for 4+; by normalized reference length, it falls from 71.22% at ≤5 IPA characters to 40.84% at 8+.
+- 56.88% of native non-exact outputs are one edit from the selected reference and 83.99% are within two edits. This describes mismatch size, not whether a phonetic difference is harmless.
+- Paired source slices: MultiLexNorm++ 55.36% native/g2pk exact (784 cases); DC Inside 52.27% native and 52.49% g2pk (1,871 cases). Source, length and repetition are confounded, so this is descriptive only.
+
+The script and test are in `scripts/analyze_korean_benchmark_correlations.py` and `tests/test_benchmark_score_causality.py`. These cross-tabs still cannot establish per-rule causality because gold rule/morphology labels are not available for every scored mismatch.
+
+
+A deterministic minimum-edit symbol profile is now included in the reproducible correlation script. On the native-vs-reference alignment, frequent substitutions include `ɭ→l` (525), `ʰ→s` (194), `ɦ→h` (165), `ɲ→n` (73), and `ç→h` (40). Reference symbols most often involved in edit operations include `ʰ` (633), `ɭ` (539), `ɕ` (238), and `ɦ` (165). This supports a broad-vs-narrow IPA convention mismatch hypothesis, but alignment operations are not independently adjudicated phonological error labels. See [score-causality report §7.1E](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md#e-the-most-common-character-differences-point-to-a-broad-vs-narrow-ipa-convention-mismatch).
+
+
+## Broad-IPA profile sensitivity and holdout status (2026-10-24)
+
+The historical benchmark rates above remain under the legacy comparison profile. The pinned artifact was additionally scored with the candidate broad-v1 profile: on 2,655 paired scored occurrences, ClippyFirst moves from 53.18% exact match / 9.19% CER to 91.04% / 1.70%; g2pk moves from 53.33% / 9.24% to 90.96% / 1.75%. This is a normalization sensitivity result, not a validated accuracy claim. The dominant change is the broad-vs-narrow sibilant convention `sʰ→s`; independent IPA review is required before using broad-v1 as the sole headline metric.
+
+- [Versioned IPA contract](IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md)
+- [Profile metrics and ablation JSON](../research/broad-ipa-profile-sensitivity-2026-10-24.json)
+- [Discrepancy adjudication and holdout report](IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md)
+- The 24-input NIKL holdout is exact-token-disjoint from the pinned artifact (0/24 overlaps), recorded in `research/ipa-holdout-overlap-validation-2026-10-24.json`. IPA gold is still 0/24 and local runtime/fixture leakage CI remains pending.

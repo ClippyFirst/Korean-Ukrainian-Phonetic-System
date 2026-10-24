@@ -25,7 +25,20 @@ const NIKL_SURFACE_CORRECTIONS = new Map([
   ['넓죽하다', { surface: '넙쭈카다', evidence: 'NIKL §§10, 23; official examples' }],
   ['넓둥글다', { surface: '넙뚱글다', evidence: 'NIKL Q&A qna_seq=322805; §10 exception' }],
   ['넓적하다', { surface: '넙쩌카다', evidence: 'NIKL Q&A qna_seq=322805; §§10, 23' }],
-  ['읽고', { surface: '일꼬', evidence: 'NIKL §§1 commentary, 11, 23; Q&A qna_seq=315279' }]
+  ['읽고', { surface: '일꼬', evidence: 'NIKL §§1 commentary, 11, 23; Q&A qna_seq=315279' }],
+  ['수많은', { surface: '수마는', evidence: 'NIKL Korean Basic Dictionary, word 71144: 수많은[수ː마는]' }]
+]);
+
+const NIKL_VARIANT_SURFACES = new Map([
+  ['멋있어', {
+    surfaces: ['머디써', '머시써'],
+    evidence: 'NIKL Online Q&A qna_seq=306166 explicitly accepts both [머디써] and [머시써]',
+    sourceLocator: 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166'
+  }]
+]);
+
+const NIKL_LEXICAL_LENGTH = new Map([
+  ['수많은', { surface: '수마는', syllableIndex: 0, evidence: 'NIKL Korean Basic Dictionary, word 71144: 수많은[수ː마는]' }]
 ]);
 
 function applyNiklSurfaceCorrections(source, surface) {
@@ -35,6 +48,9 @@ function applyNiklSurfaceCorrections(source, surface) {
   if (source.length !== surface.length) return { surface, corrections: [] };
   const corrections = [];
   for (const match of source.matchAll(/[가-힣]+/gu)) {
+    // 수많은's lexical-length overlay is licensed for the exact dictionary
+    // form only; do not silently generalize it to a larger Korean compound.
+    if (match[0] === '수많은' && source !== match[0] && /[가-힣]/u.test(source.replace(match[0], ''))) continue;
     const entry = NIKL_SURFACE_CORRECTIONS.get(match[0]);
     if (!entry || surface.slice(match.index, match.index + match[0].length) === entry.surface) continue;
     const before = surface.slice(0, match.index);
@@ -108,9 +124,47 @@ export function createG2pWebAdapter(engine) {
         result.analysis += '; NIKL exact-form correction before IPA: ' + normalized.corrections
           .map(item => item.source + ' → ' + item.surface + ' (' + item.evidence + ')').join('; ');
       }
+      // NIKL gives a lexical long-vowel reading for this exact dictionary
+      // form. Preserve length in IPA only; the Ukrainian target stays a
+      // separate, provisional adaptation and is not generated from Hangul.
+      const lexicalLength = NIKL_LEXICAL_LENGTH.get(text);
+      let lexicalLengthApplied = false;
+      if (lexicalLength && surface === lexicalLength.surface && result.trace?.[lexicalLength.syllableIndex]?.ipa) {
+        const item = result.trace[lexicalLength.syllableIndex];
+        if (!item.ipa.includes('ː')) {
+          item.ipa += 'ː';
+          lexicalLengthApplied = true;
+          result.ipa = renderIpa(result.trace);
+          result.analysis += '; NIKL lexical vowel length retained in IPA (' + lexicalLength.evidence + ')';
+        }
+      }
+
+      // NIKL explicitly accepts two surface forms for 멋있어. Offer the
+      // other attested surface only when the pinned G2P output is itself one
+      // of those forms. IPA and Ukrainian are rendered through the same
+      // surface → IPA → Ukrainian adapter; they are not asserted as gold.
+      const variantEvidence = NIKL_VARIANT_SURFACES.get(text);
+      let alternativeVariantAdded = false;
+      if (variantEvidence && variantEvidence.surfaces.includes(surface)) {
+        const alternativeSurface = variantEvidence.surfaces.find(value => value !== surface);
+        const alternative = engine.convertSurface(alternativeSurface);
+        if (!alternative.issues?.length && alternative.ipa && alternative.ukrainian) {
+          result.variants = [...(result.variants || []), {
+            source: text,
+            sourceLocator: variantEvidence.sourceLocator,
+            surface: alternativeSurface,
+            ukrainian: renderTarget(alternative.trace),
+            ipa: renderIpa(alternative.trace),
+            note: variantEvidence.evidence + '; IPA/український відповідник згенеровані адаптером ClippyFirst і потребують окремої перевірки.',
+            status: 'lexical-review'
+          }];
+          alternativeVariantAdded = true;
+        }
+      }
+
       result.normativeCorrections = normalized.corrections;
       if (result.issues.length) result.status = 'unresolved';
-      else if (normalized.corrections.length) result.status = 'lexical';
+      else if (normalized.corrections.length || lexicalLengthApplied || alternativeVariantAdded) result.status = 'lexical';
       else result.status = surface === text ? 'canonical' : 'contextual';
       return result;
     }

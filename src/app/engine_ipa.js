@@ -1,15 +1,15 @@
 /**
  * IPA → Ukrainian mapping layer.
  */
-// Canonical second stage: Ukrainian output is rendered from the generated IPA,
+// Canonical second stage: Ukrainian output is rendered from generated IPA,
 // never independently from Hangul jamo. Longest-match tokenization preserves
-// Korean phonetic contrasts that matter to the project target (e.g. ɡ/ k,
-// dʑ/tɕ, ɕ/s, and coda unreleased stops).
+// the declared mapping distinctions (e.g. ɡ/k and dʑ/tɕ); distinctions that
+// Ukrainian orthography cannot encode are surfaced as explicit feature records.
 export const IPA_TO_UKRAINIAN = [
   ['kʰjʌ','кхьо'],['hjʌ','гьо'],['njʌ','ньо'],['njo','ньо'],['nju','ню'],
   ['ɲʌ','ньо'],['ɲa','ня'],['ɲo','ньо'],['ɲu','ню'],
   ['ljʌ','льо'],['lju','лю'],
-  ['tɕ͈','ч'],['tɕʰ','ч'],['tɕ','ч'],['dʑ','дж'],['ɕ͈','ш'],['ɕ','ш'],
+  ['t͡ɕ͈','ч'],['t͡ɕʰ','ч'],['t͡ɕ','ч'],['d͡ʑ','дж'],['tɕ͈','ч'],['tɕʰ','ч'],['tɕ','ч'],['dʑ','дж'],['ɕ͈','ш'],['ɕ','ш'],
   ['k͈','к'],['t͈','т'],['p͈','п'],['s͈','с'],
   ['kʰ','к'],['tʰ','т'],['pʰ','п'],['k̚','к'],['t̚','т'],['p̚','п'],
   ['ɰi','ий'],['jʌ','йо'],['jɛ','є'],['ja','я'],['je','є'],['jo','йо'],['ju','ю'],
@@ -38,8 +38,40 @@ export function traceIpaMapping(ipa){
     }
     const match=IPA_TO_UKRAINIAN.find(([token])=>ipa.startsWith(token,i));
     if(!match)return {tokens,features,unknown:ipa.slice(i)};
-    tokens.push({ipa:match[0],ukrainian:match[1]});
-    i+=match[0].length;
+    const token=match[0];
+    tokens.push({ipa:token,ukrainian:match[1]});
+    // Do not imply that a successful grapheme mapping preserves every IPA
+    // feature. The IPA remains intact in the token trace; these records make
+    // target-layer neutralizations visible to both the UI and API consumers.
+    const omittedFeatures=[
+      {
+        marker:'ʰ',
+        feature:'aspiration',
+        note:'аспірація збережена в IPA, але не має окремого позначення в українському відповіднику'
+      },
+      {
+        marker:'͈',
+        feature:'fortisness',
+        note:'фортисність збережена в IPA, але не має окремого позначення в українському відповіднику'
+      },
+      {
+        marker:'̚',
+        feature:'unreleased-stop',
+        note:'непідривність кінцевого проривного збережена в IPA, але не має окремого позначення в українському відповіднику'
+      }
+    ];
+    for(const item of omittedFeatures){
+      if(token.includes(item.marker)){
+        features.push({
+          ipa:token,
+          offset:i,
+          feature:item.feature,
+          handling:'not-encoded-in-ukrainian-target',
+          note:item.note
+        });
+      }
+    }
+    i+=token.length;
   }
   return {tokens,features,unknown:''};
 }
@@ -55,7 +87,10 @@ export function ipaSyllablesToUkrainian(ipaSyllables){
 }
 
 export function ipaTargetForSource(source,ipa){
-  const ipaUnits=(ipa||'').split(/\s+/u).filter(Boolean);
+  // Accept either the browser's whitespace-separated syllables or the
+  // dot-separated syllable boundaries used by the Python research renderer.
+  // Dots are boundary metadata here, never consonant/vowel phones.
+  const ipaUnits=(ipa||'').split(/[.\s]+/u).filter(Boolean);
   const mapped=ipaSyllablesToUkrainian(ipaUnits);
   if(mapped.unknown||!ipaUnits.length)return {text:'',syllables:mapped.syllables,unknown:mapped.unknown};
   if(!/\s/u.test(source||''))return {text:mapped.syllables.join(''),syllables:mapped.syllables,unknown:''};

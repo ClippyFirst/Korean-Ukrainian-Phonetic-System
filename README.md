@@ -16,6 +16,10 @@ The service is intentionally modelled on the functional architecture of the Chin
 
 The Korean visual identity uses South Korean national colours: Taegeuk red #CD2E3A and Taegeuk blue #0047A0.
 
+## Source-backed practical-engine edge cases
+
+The practical adapter preserves the NIKL-attested lexical length in the exact form `수많은[수ː마는]` at the IPA boundary and exposes the second accepted NIKL surface for `멋있어` when the primary surface is itself attested. Generated IPA and Ukrainian alternatives remain subject to review. [Implementation and verification status](docs/ENGINE-IMPROVEMENTS-SOURCE-BACKED-2026-10-24.md).
+
 ## Sentence-level adversarial corpus
 
 The system page now publishes a five-line running-text test corpus that stresses complex-coda liaison, coda neutralization, fortition, palatalization, the particle `의`, and the contracted form `설명했어요`. The regression fixture and tests keep the normative Korean surface form separate from the provisional Ukrainian target.
@@ -56,6 +60,17 @@ Added eight official examples from the attached note to Rule 29, including `들�
 ## Benchmark review after renderer integration (2026-10-24)
 
 - [Consolidated benchmark review, exact metrics, interpretation and remaining gates](docs/BENCHMARK-REVIEW-2026-10-24.md)
+
+## IPA contract and independent holdout (2026-10-24)
+
+- [Versioned broad-IPA contract and scoring profiles](docs/IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md)
+- [Symbol-level discrepancy adjudication and holdout gates](docs/IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md)
+- Frozen 24-form NIKL input manifest (IPA gold intentionally blank): `data/korean/ipa_holdout_2026-10-24.json`
+- Validators: `scripts/validate_ipa_holdout.py`; profile-sensitivity analysis: `scripts/analyze_korean_benchmark_correlations.py`
+- [Pinned-artifact profile sensitivity results](research/broad-ipa-profile-sensitivity-2026-10-24.json)
+- [Exact-token holdout overlap record](research/ipa-holdout-overlap-validation-2026-10-24.json)
+
+The broad-v1 profile is currently a sensitivity analysis, not a new claimed accuracy score. Exact-token overlap against the pinned benchmark artifact is verified at 0/24; local leakage CI and independent IPA review are still required before the holdout can be scored.
 
 ## Research-only morphological analyzers (2026-10-24)
 

@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0.0",
+  "checkedAt": "2026-10-24",
+  "holdout": {
+    "path": "data/korean/ipa_holdout_2026-10-24.json",
+    "caseCount": 24,
+    "manifestGitBlobSha": "3a69a915e475f08d0c6aba0c0e52638bcf3d6121",
+    "manifestCommitSha": "936e7fbe62a74f7d660f5063f66bfacf88635637",
+    "ipaGoldCount": 0,
+    "artifactId": 12567746123,
+    "runId": 40113742248,
+    "artifactZipSha256": "9b071513543a103f26dc56ba74ddde3c20a0a62d5e48f0e1aa0a01c612178fa2"
+  },
+  "benchmark": {
+    "workflowRunId": 40092929978,
+    "artifactId": 12559692692,
+    "sourceCommitSha": "94c21ea957c28225caea27b9df69aa8772fea6f7",
+    "artifactZipSha256": "66876b0d748595e556e99d3421f43145cbc12ff74b82fc79b2836431bd257795",
+    "reportFileSha256": "448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f",
+    "uniqueTokenCount": 1907
+  },
+  "externalExactTokenOverlap": {
+    "method": "Compare all 24 revised manifest inputs to exact token values in native_g2pk_pairwise_audit.occurrences from successful artifact 12567746123. All 24 distinct inputs are absent from the 1,907 unique Hangul tokens; report JSON SHA-256 matches the previously inspected artifact.",
+    "overlapCount": 0,
+    "overlappingInputs": [],
+    "removedBeforeFreeze": [
+      {
+        "input": "앞",
+        "reason": "Removed after an exact-token overlap was detected in an earlier candidate manifest; the final set now combines unused NIKL rule-page and official Online Q&A examples."
+      }
+    ],
+    "result": "PASS_NO_EXACT_TOKEN_OVERLAP",
+    "artifactId": 12567746123,
+    "runId": 40113742248,
+    "artifactZipSha256": "9b071513543a103f26dc56ba74ddde3c20a0a62d5e48f0e1aa0a01c612178fa2"
+  },
+  "localLeakageValidation": {
+    "status": "PENDING_EXACT_HEAD_CI",
+    "reason": "The revised holdout replaces 14 overlapping rule-page examples with exact-form readings attested in official NIKL Online Q&A pages. Full local overlap verification on the current head is pending; local checkout is blocked by DNS failure to github.com.",
+    "excludedSourceOnlyFixture": "Official NIKL source-only snapshots: tests/fixtures/nikl-article-review-1-30.json and tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt.",
+    "exclusionRationale": "Both fixtures are official NIKL source snapshots, not engine predictions or expected outputs. Source evidence may inform the holdout; runtime input data and expected-output fixtures remain subject to overlap checks.",
+    "checkedPaths": [
+      "data/korean/lexical_pronunciations.csv",
+      "tests/nikl-pronunciation-regression.test.mjs",
+      "tests/nikl-articles-6-7-exhaustive-listed-examples.test.mjs",
+      "tests/nikl-articles-6-7-complete-corpus.test.mjs",
+      "tests/nikl-articles-8-23-gap-closure.test.mjs",
+      "tests/nikl-articles-10-11-complex-coda-contrast.test.mjs"
+    ],
+    "checkedPathExactOverlapCount": 0,
+    "excludedSourceOnlyFixtures": [
+      "tests/fixtures/nikl-article-review-1-30.json",
+      "tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt"
+    ]
+  },
+  "ipaAnnotation": {
+    "independentReviewerCount": 0,
+    "goldCount": 0,
+    "status": "BLOCKED_PENDING_TWO_INDEPENDENT_REVIEWERS",
+    "note": "Official Hangul surface readings are not IPA; do not score this holdout before independent transcription and adjudication."
+  },
+  "overallStatus": "EXTERNAL_TOKEN_DISJOINTNESS_VERIFIED; LOCAL_LEAKAGE_CI_AND_INDEPENDENT_IPA_ANNOTATION_PENDING"
+}

@@ -140,12 +140,19 @@ export function validateReviewerSubmission(packetText, queueText, expectedSlot =
 async function main(argv = process.argv.slice(2)) {
   let file = null;
   let expectedSlot = null;
+  let queuePath = null;
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node scripts/validate-ipa-review-submission.mjs <submission.json> [--reviewer A|B]');
+      console.log('Usage: node scripts/validate-ipa-review-submission.mjs <submission.json> [--reviewer A|B] [--queue <queue.json>]');
       console.log('Validates a completed packet against the current canonical queue; report is JSON on stdout.');
       return 0;
+    }
+    if (arg === '--queue') {
+      if (queuePath !== null) throw new Error('--queue may be supplied only once.');
+      queuePath = argv[++i];
+      if (!queuePath || queuePath.startsWith('--')) throw new Error('--queue requires a JSON file path.');
+      continue;
     }
     if (arg === '--reviewer') {
       if (expectedSlot !== null) throw new Error('--reviewer may be supplied only once.');
@@ -160,7 +167,7 @@ async function main(argv = process.argv.slice(2)) {
   if (!file) throw new Error('A reviewer submission JSON path is required.');
   const [packetText, queueText] = await Promise.all([
     readFile(resolve(file), 'utf8'),
-    readFile(QUEUE_URL, 'utf8'),
+    readFile(queuePath ? resolve(queuePath) : QUEUE_URL, 'utf8'),
   ]);
   const report = validateReviewerSubmission(packetText, queueText, expectedSlot);
   process.stdout.write(JSON.stringify(report, null, 2) + '\n');

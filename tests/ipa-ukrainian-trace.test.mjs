@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
-import { ipaSyllableToUkrainian, traceIpaMapping } from '../src/app/engine_ipa.js';
+import { ipaSyllableToUkrainian, ipaTargetForSource, traceIpaMapping } from '../src/app/engine_ipa.js';
 
 const canonicalCsv = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexicalCsv = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -125,4 +125,31 @@ test('every long-vowel marker in the lexical IPA inventory is surfaced as a targ
     }
   }
   assert.ok(checked > 0, 'fixture must exercise real lexical IPA length markers');
+});
+
+
+test('IPA target adapter accepts dot-separated syllable boundaries as metadata', () => {
+  const contiguous = ipaTargetForSource('시구고', 'ɕi.ɡu.ɡo');
+  assert.equal(contiguous.unknown, '');
+  assert.deepEqual(contiguous.syllables, ['ші', 'ґу', 'ґо']);
+  assert.equal(contiguous.text, 'шіґуґо');
+
+  const spaced = ipaTargetForSource('시 구', 'ɕi.ɡu');
+  assert.equal(spaced.unknown, '');
+  assert.equal(spaced.text, 'ші ґу', 'source word spacing must survive IPA dot boundaries');
+});
+
+
+test('IPA adapter treats affricate tie bars as optional notation without splitting affricates', () => {
+  for (const [ipa, target] of [
+    ['t͡ɕi', 'чі'],
+    ['t͡ɕʰi', 'чі'],
+    ['t͡ɕ͈i', 'чі'],
+    ['d͡ʑi', 'джі']
+  ]) {
+    const traced = traceIpaMapping(ipa);
+    assert.equal(traced.unknown, '', ipa + ': tie-bar notation must remain mappable');
+    assert.equal(ipaSyllableToUkrainian(ipa).text, target, ipa);
+    assert.equal(traced.tokens[0].ukrainian, target.slice(0, ipa.startsWith('d') ? 2 : 1));
+  }
 });
