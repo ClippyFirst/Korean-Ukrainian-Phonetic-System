@@ -117,6 +117,57 @@ On this dataset ClippyFirst has four native-only exact matches and no g2pk-only 
 - g2pk plus the project renderer is not a fully independent IPA stack because both systems share the renderer. These are noisy/public paired-file diagnostics, not normative NIKL accuracy and not IPA-to-Ukrainian quality measurements.
 - A NIKL-grounded, independently adjudicated holdout and a separately reviewed Korean-IPA-to-Ukrainian gold set remain required for any release-quality accuracy claim.
 
+## Error analysis: what the pairwise results actually diagnose
+
+This section inspects the full occurrence-level JSON in artifact [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692), rather than inferring causes from aggregate scores.
+
+### 1. The two engines almost always emit the same IPA string
+
+On UGTPHON, native and g2pk emitted an identical IPA string for **2,634 of 2,655 shared scored occurrences (99.21%)**. Of the 1,239 occurrences where both failed exact match, **1,222 (98.63%) have identical native and g2pk strings**. Only 21 shared occurrences differ, representing 14 unique Hangul forms (repeated corpus occurrences account for the rest).
+
+This is a key result: the small aggregate score difference is not evidence that g2pk has a broadly superior phonological model. Most scored cases cannot distinguish the phonological engines because their emitted strings are identical; many remaining mismatches are shared by both engines. The two engines also share the project's broad-IPA segment renderer, so they are not independent at the output-phonetics layer.
+
+### 2. Four apparent g2pk wins on UGTPHON are a reference-convention conflict
+
+All four g2pk-only exact occurrences are repetitions of **없는**. The corpus reference normalizes to `ʌmnɯn` (no length mark), while the native output is `ʌːm.nɯn`. The National Institute of Korean Language's official answer explicitly gives **없는 [업ː는 → 엄ː는]**, confirming the long vowel: [NIKL, “알 수 없는” pronunciation (2026-05-28)](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=331601).
+
+Therefore these four occurrences should be treated as a **probable gold-annotation/convention mismatch**, not accepted as proof that native pronunciation is wrong. If the reference is independently corrected to retain the NIKL-attested length, these four exact-match outcomes reverse: on the same 2,655 shared occurrences native would have 1,416 exact and g2pk 1,412. This is a clearly labelled counterfactual, not a replacement benchmark score; the pinned upstream reference remains unchanged.
+
+### 3. SIGMORPHON supplies concrete cases where native is better
+
+There are four native-only exact occurrences and no g2pk-only exact occurrences on the 997 shared scored SIGMORPHON items. At least two of these are supported by the official NIKL rule explanation:
+
+- **값어치**: native `ka.bʌ.tɕʰi` matches the expected [가버치], whereas g2pk emits `kap̚.s͈ʌ.tɕʰi`. NIKL's official Standard Pronunciation Rule 15 explicitly lists 값어치 [가버치] and explains the special treatment of this form: [official rule and commentary](https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002).
+- **맛없다**: native `ma.dʌp̚.t͈a` matches [마덥따], while g2pk emits `ma.sʌp̚.t͈a`. The same official Rule 15 explicitly lists 맛없다 [마덥따].
+- **많다**: native preserves the long-vowel mark present in the paired reference; g2pk does not. This is a lexical-length distinction, not evidence of a better general coda rule.
+- **놓치다**: this is a native-only exact match under the pinned IPA reference, but its annotation should be independently adjudicated before treating it as a normative phonological win. Exact-match status alone is not sufficient authority.
+
+These examples refute a universal “g2pk is better” conclusion. They also show why a source-backed rule set and an independently reviewed reference are necessary to interpret exact match.
+
+### 4. What the 21 differing UGTPHON outputs suggest
+
+The full audit's 21 native-vs-g2pk string differences are concentrated in a small number of forms, not distributed across the whole corpus. They include:
+
+- **Morphology-sensitive fortition**: `다를게`, `안타까울게`, and `할게` differ in whether ㄱ is realized as fortis `k͈` or lenis `ɡ`. The native output agrees with this corpus's reference on these forms; the rule must remain tied to an evidenced ending/morphological environment rather than generalized from spelling alone.
+- **Coda-to-onset realization**: `무릎을` differs as native `mu.ɾɯ.pʰɯl` vs g2pk `mu.ɾɯ.bɯl`. This is a high-value source-backed regression candidate because the coda ㅍ should not be silently converted to a lenis ㅂ when linked to the particle; verify the exact official lexical/rule environment before adding a broad rule.
+- **Lexical length**: `많이`, `없다`, `없는`, and `없어` differ in preservation of long-vowel marking. Each item needs dictionary/rule evidence; never remove length globally to increase benchmark exact match.
+- **Other lexical/morphological contrasts**: `삼기는`, `살아남다`, `올게이`, and `대한민국` also differ, but these isolated strings do not establish which engine is correct. The user-generated corpus may contain nonstandard forms and its broad/narrow IPA convention is not a normative gold standard.
+
+The benchmark's normalization removes selected narrow diacritics, tie bars, spaces, and syllable separators, but deliberately retains length, aspiration, fortis, and unreleased-stop marks. Thus differences in those retained features can dominate exact match even when the underlying phonological rule is shared. Conversely, normalizing them away would hide real distinctions. Keep this profile explicit and do not tune it merely to maximize a preferred engine's score.
+
+### 5. Abstentions are a separate, actionable workstream
+
+The native engine abstains on 48 UGTPHON occurrences: 19 have a g2pk output that matches the corpus reference, while 29 do not. The contexts are 25 R002 liaison/neutralization cases, 20 R003 ㅎ-coda deletion cases, one R004 complex-coda-plus-ㅎ case, two R007 palatalization cases, and one IPA-adjudication gap (49 context labels because one occurrence has two contexts). The SIGMORPHON abstentions are 닭갈비 (R008 morphology-sensitive ㄺ-before-ㄱ fortition) and 중심닮음 (R002 morpheme-sensitive liaison/neutralization).
+
+These are candidates for adjudication, not 19 proven misses: g2pk's match to a noisy reference does not establish correctness. The next implementation batch should be driven by exact NIKL source context and regression tests, prioritizing R002/R003 because they account for 45 of the 48 UGTPHON abstentions. Do not replace explicit abstention with a guessed output.
+
+### Findings and implementation decision
+
+- **Established:** the residual UGTPHON paired difference is only four exact-match occurrences, all repetitions of 없는; the two engines' outputs are identical on 99.21% of their shared scored occurrences.
+- **Established:** the official NIKL examples support native over g2pk for 값어치 and 맛없다; SIGMORPHON also exposes a native advantage for lexical length in 많다.
+- **Not established:** that every common mismatch is a reference error, that every native-only exact is normatively correct, or that g2pk's other outputs are generally better.
+- **Decision:** do not copy g2pk rules wholesale or weaken native length/phonetic distinctions to improve this noisy score. Adjudicate the small set of differing forms against exact NIKL rule environments, then expand a held-out, source-cited challenge set. Keep UGTPHON as a diagnostic set and preserve all unresolved cases until individually licensed.
+
 ## Historical results — earlier normalization profile (superseded)
 
 The latest exact-head scoring run is [40085814704](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814704), with report artifact [12557450401](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814704/artifacts/12557450401). The invalid first-run phonemize result (0 exact, CER 100%) is excluded: its adapter returned unchanged Hangul because `anyAscii` was disabled. The corrected adapter enables `anyAscii=true`; this current report confirms non-Hangul IPA outputs. These are adapter smoke examples, not proof that individual predictions are phonetically correct.
