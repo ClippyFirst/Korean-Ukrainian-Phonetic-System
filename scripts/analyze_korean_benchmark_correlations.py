@@ -354,6 +354,23 @@ def _profile_type_cluster_delta_ci(
     }
 
 
+def _profile_summary(
+    paired: list[dict[str, Any]], profile: str, type_bootstrap_replicates: int
+) -> dict[str, Any]:
+    native = _profile_metrics(paired, NATIVE, profile)
+    g2pk = _profile_metrics(paired, G2PK, profile)
+    return {
+        NATIVE: native,
+        G2PK: g2pk,
+        "g2pk_minus_native_exact_delta_pp": round(
+            100 * (g2pk["exact_match_rate"] - native["exact_match_rate"]), 6
+        ) if native["exact_match_rate"] is not None and g2pk["exact_match_rate"] is not None else None,
+        "type_cluster_bootstrap_delta_ci": _profile_type_cluster_delta_ci(
+            paired, profile, replicates=type_bootstrap_replicates
+        ),
+    }
+
+
 def summarize_report(report: dict[str, Any], type_bootstrap_replicates: int = 10_000) -> dict[str, Any]:
     audit = report.get("native_g2pk_pairwise_audit")
     if not isinstance(audit, dict) or not isinstance(audit.get("occurrences"), list):
@@ -439,19 +456,7 @@ def summarize_report(report: dict[str, Any], type_bootstrap_replicates: int = 10
         "unique_hangul_words": report.get("unique_hangul_words"),
         "normalization": report.get("normalization"),
         "profile_sensitivity": {
-            profile: {
-                NATIVE: _profile_metrics(paired, NATIVE, profile),
-                G2PK: _profile_metrics(paired, G2PK, profile),
-                "g2pk_minus_native_exact_delta_pp": round(
-                    100 * (
-                        _profile_metrics(paired, G2PK, profile)["exact_match_rate"]
-                        - _profile_metrics(paired, NATIVE, profile)["exact_match_rate"]
-                    ), 6
-                ),
-                "type_cluster_bootstrap_delta_ci": _profile_type_cluster_delta_ci(
-                    paired, profile, replicates=type_bootstrap_replicates
-                ),
-            }
+            profile: _profile_summary(paired, profile, type_bootstrap_replicates)
             for profile in (LEGACY_PROFILE, BROAD_PROFILE)
         },
         "occurrence_level": {
