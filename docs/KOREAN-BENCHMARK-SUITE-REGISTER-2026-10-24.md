@@ -142,3 +142,13 @@ PR [#306](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 - Final known code correction: `317f0f106d230b10bbc42219ca1f9c3e5a369aa2`. Exact-head workflows were triggered; do not count any intermediate success as final verification.
 - The diagnostic-only Python/G2P report continues to show two known JS-port differences against recorded normative surface expectations: `넓죽하다` and `읽고`. The report explicitly says IPA comparison was not performed and gold was not independently adjudicated. These are linguistic regression-review items, not failures to be hidden by changing the benchmark labels.
 - The official NIKL metadata-only inventory remains blocked by HTTP 403, and the original 24-form source manifest remains unverified. Neither is a successful benchmark or a gold set.
+
+
+### Verification closeout after IPA target regression fixes — 2026-10-24
+
+- System verification [40132735568](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132735568) passed Python regression/data integrity and browser regression/build on `e462d15d9d31d4889ad562095ecb93f39247e8fe`. The official NIKL metadata job was skipped and is not a pass.
+- Focused tests [40132671600](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132671600) passed on code head `317f0f106d230b10bbc42219ca1f9c3e5a369aa2`; the later `e462d15` change was documentation-only.
+- Generated master table/corpus [40132738836](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132738836), paired native-vs-g2pK [40132738928](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132738928), external UGTPHON [40132738858](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132738858), and browser G2P [40132738885](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132738885) passed on `e462d15`.
+- Optional g2pK integration, morphology adapter smoke, and multi-engine diagnostic were still in progress at the last poll. Their outcomes must be refreshed.
+- Known differential warnings remain: `넓죽하다` and `읽고` differ between browser native surface and Python/g2pK recorded expectations. This is reported as a source/engine discrepancy with IPA gold not independently adjudicated; do not silently rewrite expected outputs to remove it.
+- The reconstructed 24-form fixture remains unverified; no target accuracy score can be inferred from these checks.
