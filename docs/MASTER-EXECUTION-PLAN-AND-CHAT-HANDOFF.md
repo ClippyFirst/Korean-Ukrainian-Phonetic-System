@@ -861,3 +861,18 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - Remaining blockers: independent Korean broad-IPA adjudication; independently reviewed Ukrainian target gold set; source-grounded resolution of the original 24-form list; exhaustive rule/exception/variant coverage; final exact-head CI.
 
 **Status:** `PARTIAL` until exact-head CI completes; research preview / partial prototype, not release-ready.
+
+
+### Follow-up: browser target renderer parity and trace audit (2026-10-24)
+
+Latest follow-up commits on the same PR branch add the browser mapping-data projection, make target confidence/status visible in browser trace, and add cross-runtime parity coverage.
+
+- `src/app/ipa_target_data.js` is generated from the canonical correspondence CSV and explicit override registry; `scripts/generate_ipa_target_data.py --check` is now asserted by Python tests to prevent drift.
+- `src/app/engine_ipa.js` exposes detailed per-token provenance, project mapping status, unknown-sequence fail-closed behavior, and feature-loss notes for aspiration, fortisness, unreleased stops, and vowel length.
+- `src/app/engine_convert.js` now returns `target_status`, detailed target mappings/features in trace, and fails closed for empty IPA as well as unknown mappings.
+- `src/main.js` surfaces provisional/unavailable target status rather than presenting every mapped string as equally certain.
+- `tests/test_ipa_target_renderer.py` compares browser and Python rendered text, overall status, token mapping IDs and token statuses across 13 shared IPA inputs. The assertion uses the actual Python trace key `mapping_status` (not `status`).
+- `tests/ipa-ukrainian-trace.test.mjs` checks provisional mapping provenance, IPA feature losses, source/IPA syllable alignment, punctuation retention, and empty-IPA fail-closed behavior.
+- Stale override `source_ref` values that pointed to code paths were changed to the stable project-decision documentation anchor; this avoids pretending the implementation code itself is the linguistic evidence.
+
+**Verification state:** GitHub Actions runs were created for head `5ef8393ecb1565d4ae6ba3f8e62ca52c09d74d98`, but were still queued at last check. Earlier CI results do not verify this final head. Do not report these additions as passing until the exact-head workflows complete. If parity tests fail, correct the contract or implementation rather than weakening assertions to force green. 
