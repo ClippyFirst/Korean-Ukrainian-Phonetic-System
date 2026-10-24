@@ -570,7 +570,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "unique_hangul_words": len(words),
         "normalization": {
             "function": "benchmark_ugtphon_ko.normalize_ipa",
-            "rules": "NFD canonicalization, g->ɡ, tie bars and specified narrow diacritics removed, spaces/periods removed; stress/length/aspiration/fortis retained",
+            "rules": "NFD canonicalization, g->ɡ, tie bars and selected narrow diacritics (including retraction U+0320) removed, spaces/periods removed; stress/length/aspiration/fortis/unreleased stops retained",
             "gold_variants": "best distance among comma-separated IPA alternatives",
         },
         "engine_order": list(engine_results),
