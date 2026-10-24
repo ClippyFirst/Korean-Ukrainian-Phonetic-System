@@ -1,5 +1,5 @@
 from korean_ukrainian.phonology import parse_syllables
-from korean_ukrainian.rules import apply_ordered_rules
+from korean_ukrainian.rules import apply_ordered_rules, apply_rule
 
 def test_final_neutralization():
     items,traces=apply_ordered_rules(parse_syllables("낫"),["R001"]); assert items[0].coda=="ㄷ" and traces[0].changed
@@ -688,3 +688,18 @@ def test_velar_nasal_coda_is_not_resyllabified_to_silent_onset():
         assert items[0].coda == "ㅇ", word
         assert items[1].onset == "ㅇ", word
         assert not traces[0].changed, word
+
+
+def test_nikl_stem_fortition_rules_do_not_include_ㅂ():
+    # Exercise a licensed branch directly: NIKL §§24–25 do not tense ㅂ.
+    for word, rule_id, scope, pair in (
+        ("남봐", "R010", "stem_n_m+suffix", "남>봐"),
+        ("넓봐", "R011", "stem_lb_lt+suffix", "넓>봐"),
+    ):
+        items = parse_syllables(word)
+        trace = apply_rule(
+            items, rule_id,
+            rule_licenses={f"{rule_id}:{scope}:{word}:{pair}"},
+        )
+        assert items[1].onset == "ㅂ", word
+        assert not trace.changed, word
