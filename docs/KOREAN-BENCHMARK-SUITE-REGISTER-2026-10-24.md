@@ -80,3 +80,25 @@ The g2pK comparison is not fully independent at the representation layer: the be
 - The official test TSV includes some non-standard Hangul code points outside the engine's current syllable-token contract; those are intentionally excluded by the shared engine scorer rather than guessed or silently normalized. The report's eligible denominator must be read alongside the 1,000 source rows.
 - **Not yet verified** — benchmark results are pending the new GitHub Actions run. Do not treat converter tests or workflow definition alone as successful engine execution.
 - **PARTIAL** — NIKL rules 1–30 already have a passing native-engine regression gate and a 30-article evidence ledger (29 verified, Article 1 not applicable as a standalone rewrite); a cross-engine score still needs independent IPA gold. The 2022 paper's item-level golden corpus needs author/source verification; commercial CJKI and Nexdata data remain excluded without explicit reuse permission.
+
+
+## Verified multi-engine results (2026-10-24)
+
+Successful run: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231 ; artifact: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231/artifacts/12558044694. Values use the revised broad-IPA normalization profile. These are diagnostics, not normative NIKL accuracy.
+
+| Dataset | Engine | Coverage | Exact match | CER |
+|---|---|---:|---:|---:|
+| UGTPHON (2,703 eligible occurrences) | ClippyFirst native | 98.2242% | 50.8851% | 9.6619% |
+| UGTPHON | g2pk 0.9.4 + ClippyFirst renderer | 100% | 53.0892% | 9.2285% |
+| UGTPHON | phonemize 2.0.1 | 100% | 42.5453% | 14.3531% |
+| UGTPHON | KoG2P 2019 | 100% | 27.3030% | 19.5122% |
+| UGTPHON | hangul_to_ipa | 100% | 16.2412% | 24.8054% |
+| UGTPHON | eSpeak NG | 100% | 8.1391% | 33.6101% |
+| SIGMORPHON public paired file (999 eligible words) | ClippyFirst native | 99.7998% | 35.1053% | 14.8920% |
+| SIGMORPHON public paired file | g2pk 0.9.4 + ClippyFirst renderer | 100% | 35.3353% | 14.8222% |
+| SIGMORPHON public paired file | phonemize 2.0.1 | 100% | 28.9289% | 17.4387% |
+| SIGMORPHON public paired file | KoG2P 2019 | 100% | 18.7187% | 21.8327% |
+| SIGMORPHON public paired file | hangul_to_ipa | 100% | 8.9089% | 29.8448% |
+| SIGMORPHON public paired file | eSpeak NG | 100% | 4.3043% | 40.7236% |
+
+Paired g2pk-minus-native exact delta is +2.4482 pp (95% CI +1.2378 to +4.2219) on UGTPHON, but +0.3009 pp (95% CI -0.3009 to +1.0030) on SIGMORPHON; the latter interval crosses zero. The SIGMORPHON README/file-schema mismatch means this is a public paired-file diagnostic, not a leaderboard reproduction. The g2pk result uses the project's segment renderer, so it is not a fully independent IPA stack.
