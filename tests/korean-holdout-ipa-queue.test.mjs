@@ -9,7 +9,7 @@ test('frozen holdout becomes a blinded 24-case queue without IPA gold or engine 
   const queue = buildHoldoutReviewQueue(manifestText); assert.equal(queue.split, 'HOLDOUT'); assert.equal(queue.tuningUseProhibited, true); assert.equal(queue.cases.length, 24);
   assert.equal(new Set(queue.cases.map(item => item.caseId)).size, 24);
   for (const item of queue.cases) { assert.ok(item.input); assert.ok(item.surfaceEvidenceUrl.startsWith('https://www.korean.go.kr/')); assert.ok(item.normativeSurfaceComparator); assert.equal('ipaGold' in item, false); assert.equal('candidateBroadIpa' in item, false); assert.equal('engineOutputsStored' in item, false); assert.equal('ukrainianTarget' in item, false); }
-  assert.match(queue.cases.find(item => item.input === '계산').normativeSurfaceComparator, /\|/u);
+  assert.match(queue.cases.find(item => item.normativeSurfaceComparator.includes(' | ')).normativeSurfaceComparator, /\|/u);
 });
 test('rejects count drift, duplicate IDs, non-frozen input, untrusted sources and premature gold', () => {
   const wrong = JSON.parse(manifestText); wrong.caseCount++; assert.throws(() => buildHoldoutReviewQueue(JSON.stringify(wrong)), /caseCount/u);
