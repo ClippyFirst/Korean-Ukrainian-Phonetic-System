@@ -168,3 +168,17 @@ The strict IPA→Ukrainian renderer and direct browser target adapter abstain by
 Verified on code head `4f65943b514992b89ce31df5db2d4e971dc0b6a9`. System verification, focused tests/wheel install, browser G2P, optional g2pK, generated master table/research corpus, paired native-vs-g2pK, UGTPHON, morphology adapter smoke, and multi-engine IPA comparison all passed (runs 40135565733, 40135565670, 40135565682, 40135565680, 40135565706, 40135565751, 40135565684, 40135565675, 40135565671). NIKL live inventory was skipped, not passed.
 
 Strict IPA→Ukrainian adapters abstain on `provisional` mappings by default and return a separate candidate with trace. Research UI/pipeline explicitly opts in to display candidate output with provisional status. Candidate-only matches must not count as verified accuracy. The original 24-form source, independent Korean IPA gold, and independent Ukrainian target gold remain blockers; release status remains `PARTIAL / NOT RELEASE-READY`.
+
+
+### Benchmark outcome and interpretation — exact code head `4f65943` (verified 2026-10-25)
+
+The multi-engine workflow passed and produced these **Korean IPA** diagnostic results; they are not Ukrainian-target accuracy scores:
+
+| Dataset | ClippyFirst native | g2pK 0.9.4 | Interpretation |
+|---|---|---|---|
+| UGTPHON Korean test, 275 rows / 2,703 token occurrences | 2,655 scored; 98.22% coverage; 1,412 exact; exact rate 53.18% (bootstrap 95% CI 48.49–58.20%); CER 9.19%; 48 abstentions; 0 runtime errors | 2,703 scored; 100% coverage; 1,435 exact; exact rate 53.09%; CER 9.23%; 0 runtime errors | Near parity on paired examples; native is more conservative. |
+| SIGMORPHON 2021 Korean lexical test, 1,000 rows / 999 token occurrences | 997 scored; 99.80% coverage; 357 exact; exact rate 35.81%; CER 14.70%; 2 abstentions; 0 runtime errors | 999 scored; 100% coverage; 353 exact; exact rate 35.34%; CER 14.82%; 0 runtime errors | Small paired advantage to native on this pinned lexical split. |
+
+These exact-match rates are **not 90–95%**. The reference sets use IPA conventions that are not identical to the project's broad IPA (including phonetic diacritics and segment/annotation differences); normalization removes only selected convention differences. The corpora also have scope/annotation limitations. The 9.19% and 14.70% character error rates show substantially closer sequences than exact-match rates alone suggest, but neither metric proves normative correctness. Some differences may be real phonological errors; do not attribute all to notation. The next benchmark improvement must come from categorized mismatch review against independently adjudicated IPA, not from relaxing normalization until the score rises.
+
+Most native abstentions on UGTPHON are deliberate unresolved morphophonological contexts: 25 R002 liaison/neutralization cases, 20 R003 ㅎ deletion cases, 2 R007 palatalization cases, and 1 each for R004 aspiration and IPA adjudication. These are coverage limitations, not runtime exceptions. This benchmark does not measure IPA→Ukrainian mapping accuracy.
