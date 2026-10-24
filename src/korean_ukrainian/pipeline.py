@@ -534,7 +534,11 @@ def render_ipa_analysis_to_ukrainian(
         if not selected:
             all_mapped = False
             adapter_state = target.get("segments", [])
-            if not target_adapter or not target_adapter.status().get("available", False):
+            adapter_status = (
+                adapter_state[0].get("target", {}).get("adapter", {})
+                if adapter_state else {}
+            )
+            if not adapter_status.get("available", False):
                 reason = "target_inventory_unavailable"
             elif not adapter_state:
                 reason = "no_target_segments"
@@ -559,8 +563,7 @@ def render_ipa_analysis_to_ukrainian(
                 "ipa": word_ipa,
                 "status": "unavailable",
                 "reason": reason,
-                "target_adapter_status": target.get("segments", [{}])[0].get("target", {}).get("adapter")
-                    if adapter_state else (target_adapter.status() if target_adapter else None),
+                "target_adapter_status": adapter_status or None,
             })
             continue
 
