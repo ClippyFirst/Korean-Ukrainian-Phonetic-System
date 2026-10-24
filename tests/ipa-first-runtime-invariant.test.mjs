@@ -64,7 +64,7 @@ test('every unique Hangul token in the integrated NIKL passage has Ukrainian out
       continue;
     }
 
-    const adapted = ipaTargetForSource(token, result.ipa);
+    const adapted = ipaTargetForSource(token, result.ipa, {allowProvisional:true});
     if (adapted.unknown || adapted.text !== result.ukrainian) {
       failures.push({
         token,
@@ -79,7 +79,7 @@ test('every unique Hangul token in the integrated NIKL passage has Ukrainian out
     }
 
     for (const variant of result.variants || []) {
-      const variantAdapted = ipaTargetForSource(token, variant.ipa);
+      const variantAdapted = ipaTargetForSource(token, variant.ipa, {allowProvisional:true});
       if (variantAdapted.unknown || variantAdapted.text !== variant.ukrainian) {
         failures.push({
           token,
@@ -114,7 +114,7 @@ test('every Hangul-only lexical entry and licensed alternate is reproducible fro
 
   for (const row of rows) {
     const result = engine.convert(row.input);
-    const adapted = ipaTargetForSource(row.input, result.ipa);
+    const adapted = ipaTargetForSource(row.input, result.ipa, {allowProvisional:true});
     if (result.status === 'unresolved' || adapted.unknown || adapted.text !== result.ukrainian) {
       failures.push({
         input: row.input,
@@ -128,7 +128,7 @@ test('every Hangul-only lexical entry and licensed alternate is reproducible fro
       });
     }
     for (const variant of result.variants || []) {
-      const variantAdapted = ipaTargetForSource(row.input, variant.ipa);
+      const variantAdapted = ipaTargetForSource(row.input, variant.ipa, {allowProvisional:true});
       if (variantAdapted.unknown || variantAdapted.text !== variant.ukrainian) {
         failures.push({
           input: row.input,

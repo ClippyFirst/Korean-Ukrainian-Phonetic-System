@@ -127,7 +127,7 @@ export function ipaTargetForSource(source,ipa,options={}){
     : detailed.some(item=>item.status==='provisional')?'provisional':'model-selected';
   if(unknown){
     const failed=detailed.find(item=>item.unknown);
-    return {text:null,syllables,unknown,status,reason:failed?.reason||'unmapped_ipa_sequence',mappingTrace};
+    return {text:'',syllables,unknown,status,reason:failed?.reason||'unmapped_ipa_sequence',mappingTrace};
   }
 
   // The IPA contract is syllable-aligned. A mismatch is not repaired by
