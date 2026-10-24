@@ -48,9 +48,7 @@ This benchmark scores Korean IPA only. It does **not** measure IPA-to-Ukrainian 
 
 ## Results
 
-The corrected multi-engine scoring run [40069738385](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069738385) completed successfully at scoring-code commit 5b97b80a80c6c49333cc351dc8e4da33b62b05d1. It uploaded artifact [12550429481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069738385/artifacts/12550429481). The later changes add tests and print the paired confidence intervals in the workflow log; they do not change the scoring implementation. An exact-head workflow rerun is also tracked separately.
-
-The invalid first-run phonemize result (0 exact, CER 100%) is **excluded**: its adapter returned unchanged Hangul because anyAscii was disabled. The corrected adapter enables anyAscii=true; the subsequent report confirms non-Hangul IPA outputs such as 대 → tɛ, 범 → pʌm, 학교 → hak̚ɡjo, and 삶의 → salmɰi. These examples only smoke-test the adapter, not the linguistic correctness of those particular references.
+The latest exact-head scoring run is [40085814704](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814704), with report artifact [12557450401](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814704/artifacts/12557450401). The invalid first-run phonemize result (0 exact, CER 100%) is excluded: its adapter returned unchanged Hangul because `anyAscii` was disabled. The corrected adapter enables `anyAscii=true`; this current report confirms non-Hangul IPA outputs. These are adapter smoke examples, not proof that individual predictions are phonetically correct.
 
 ### Full eligible set
 
@@ -58,35 +56,37 @@ UGTPHON Korean test split: 275 rows, 2,703 eligible token occurrences, 1,907 uni
 
 | Engine | Status / scored tokens | Coverage | Exact match (95% CI) | CER (95% CI) |
 |---|---:|---:|---:|---:|
-| ClippyFirst native | PARTIAL; 2,653/2,703 | 98.15% | 24.43% (22.14–27.00%) | 17.06% (16.34–17.76%) |
-| g2pk 0.9.4 | AVAILABLE; 2,703/2,703 | 100% | **24.97% (22.80–27.38%)** | **16.69% (15.94–17.44%)** |
-| KoG2P 2019 | AVAILABLE; 2,703/2,703 | 100% | 14.87% (12.77–17.10%) | 26.08% (25.05–27.13%) |
-| hangul_to_ipa 2026 | AVAILABLE; 2,703/2,703 | 100% | 14.95% (12.59–17.18%) | 30.99% (29.70–32.24%) |
-| eSpeak NG / phonemizer | AVAILABLE; 2,703/2,703 | 100% | 8.14% (6.37–10.19%) | 39.05% (37.82–40.28%) |
-| phonemize 2.0.1 (corrected adapter) | AVAILABLE; 2,703/2,703 | 100% | 20.05% (17.68–22.58%) | 21.36% (20.43–22.23%) |
+| ClippyFirst native strict | PARTIAL; 2,655/2,703 | 98.2242% | 24.4068% (22.12–26.97%) | 17.0648% (16.34–17.77%) |
+| g2pk 0.9.4 | AVAILABLE; 2,703/2,703 | 100% | **24.9723% (22.80–27.38%)** | **16.6931% (15.94–17.44%)** |
+| KoG2P 2019 | AVAILABLE; 2,703/2,703 | 100% | 14.8724% (12.77–17.10%) | 26.0795% (25.05–27.13%) |
+| hangul_to_ipa 2026 | AVAILABLE; 2,703/2,703 | 100% | 14.9464% (12.59–17.18%) | 30.9851% (29.70–32.24%) |
+| eSpeak NG / phonemizer | AVAILABLE; 2,703/2,703 | 100% | 8.1391% (6.37–10.19%) | 39.0498% (37.82–40.28%) |
+| phonemize 2.0.1 (corrected adapter) | AVAILABLE; 2,703/2,703 | 100% | 20.0518% (17.68–22.58%) | 21.3645% (20.43–22.23%) |
+
+The native score in this exact-head report is 2,655 scored occurrences and 48 abstentions (47 unique unresolved words can appear in multiple/zero-frequency contexts; occurrence and unique-word counts are different units). Earlier report snapshots with 2,653 native-scored occurrences are superseded by this exact-head artifact.
 
 ### Paired comparison against native
 
-The paired analysis uses the same 2,653 occurrences for which the native engine returned a scored IPA result. Deltas are candidate minus native. Positive exact-match delta favours the candidate; negative CER delta favours the candidate. The intervals below are paired 1,000-replicate row-cluster bootstrap intervals; they do not correct for multiple comparisons or gold-label noise.
+The paired analysis uses the same **2,655 occurrences** for which the native engine returned a scored IPA result. Deltas are candidate minus native. Positive exact-match delta favours the candidate; negative CER delta favours the candidate. Intervals are paired 1,000-replicate row-cluster bootstrap intervals; they do not correct for multiple comparisons or gold-label noise.
 
 | Candidate | Paired exact rate | Exact-rate delta (95% CI) | CER delta (95% CI) | Interpretation on this corpus |
 |---|---:|---:|---:|---|
-| g2pk 0.9.4 | 25.22% vs native 24.43% | **+0.79 pp (+0.45 to +1.19 pp)** | **−0.38 pp (−0.61 to −0.21 pp)** | Small but positive paired difference on UGTPHON; not proof of universal superiority |
-| KoG2P 2019 | 15.04% | −9.39 pp (−11.53 to −7.38 pp) | +9.06 pp (+8.16 to +10.02 pp) | Clearly worse under this custom-phone IPA adapter and this gold convention |
-| hangul_to_ipa 2026 | 15.19% | −9.23 pp (−10.75 to −7.82 pp) | +13.86 pp (+12.94 to +14.81 pp) | Clearly worse on this corpus; its documented process omissions are relevant |
-| eSpeak NG / phonemizer | 8.22% | −16.21 pp (−18.50 to −14.05 pp) | +21.94 pp (+20.92 to +22.97 pp) | TTS-oriented output is a weak match to these IPA annotations |
-| phonemize 2.0.1 | 20.32% | −4.11 pp (−5.20 to −3.09 pp) | +4.14 pp (+3.38 to +4.88 pp) | Better than the other new candidates here, but behind native/g2pk |
+| g2pk 0.9.4 | 25.1977% vs native 24.4068% | **+0.7909 pp (+0.45 to +1.19 pp)** | **−0.3819 pp (−0.61 to −0.21 pp)** | Small positive paired difference; not proof of universal superiority |
+| KoG2P 2019 | 15.0282% | −9.3786 pp (−11.53 to −7.37 pp) | +9.0688 pp (+8.16 to +10.04 pp) | Worse under this lossy custom-phone IPA adapter and this reference convention |
+| hangul_to_ipa 2026 | 15.1789% | −9.2279 pp (−10.75 to −7.81 pp) | +13.8673 pp (+12.93 to +14.82 pp) | Worse on this corpus; documented process omissions are relevant |
+| eSpeak NG / phonemizer | 8.2109% | −16.1959 pp (−18.50 to −14.05 pp) | +21.9324 pp (+20.92 to +22.98 pp) | TTS-oriented output is a weak match to these IPA annotations |
+| phonemize 2.0.1 | 20.3013% | −4.1055 pp (−5.20 to −3.09 pp) | +4.1484 pp (+3.40 to +4.89 pp) | Strongest of the other new candidates here, but behind native/g2pk |
 
-“pp” means percentage points. The paired candidate exact rates are computed on the 2,653-token common subset; the full-set table above uses each engine's own scored coverage.
+“pp” means percentage points. Full-set exact rates use each engine's own coverage. Paired scores compare the same 2,655 occurrences, and paired CER deltas use the same selected reference characters.
 
 ### What can and cannot be concluded
 
-- On this particular UGTPHON diagnostic, g2pk 0.9.4 ranks first on exact match and CER, with full coverage. Its paired advantage over native is small but the row-cluster interval excludes zero for both metrics.
-- ClippyFirst abstains on 50 items rather than silently guessing. Coverage and abstention behaviour are part of the result, not a defect to erase.
-- phonemize 2.0.1 is the strongest of the four newly added external candidates on this set after fixing its adapter, but its 20.05% exact score and 21.36% CER do not establish quality on NIKL's normative rules.
+- On this particular UGTPHON diagnostic, g2pk 0.9.4 ranks first on exact match and CER, with full coverage. Its paired advantage over native is small; the paired row-cluster interval excludes zero for both metrics.
+- ClippyFirst abstains on 48 occurrences rather than silently guessing. Coverage and abstention behaviour are part of the result, not a defect to erase.
+- phonemize 2.0.1 is the strongest of the other new external candidates on this set after fixing its adapter, but its 20.0518% exact score and 21.3645% CER do not establish quality on NIKL's normative rules.
 - KoG2P's score depends on a documented but lossy custom-phone-to-IPA mapping. A different mapping or reference convention could change its score; this adapter is not claimed to be a canonical conversion.
 - The native engine and g2pk comparison share the repository's segment renderer. This is a limitation and could advantage g2pk relative to a fully independent IPA renderer.
-- These results do **not** show that ClippyFirst is the best Korean-to-IPA engine, nor that any competitor is the best overall. They show that the native engine is competitive with the tested alternatives on this corpus, while g2pk is modestly ahead under this evaluation contract.
+- These results do **not** show that ClippyFirst is the best Korean-to-IPA engine, nor that any competitor is best overall. They show that g2pk is modestly ahead under this evaluation contract on this corpus.
 - No result here evaluates IPA-to-Ukrainian adaptation. A separate NIKL-grounded, independently adjudicated IPA test set and a separate Ukrainian target-layer review remain necessary.
 
 ## Interpretation gates
