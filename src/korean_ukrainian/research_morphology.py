@@ -95,31 +95,46 @@ class KiwiMorphologyAnalyzer:
 
 
 class MecabKoMorphologyAnalyzer:
-    """Adapter for the MeCab Python API when built with a Korean dictionary.
+    """Adapter for MeCab-Ko Python bindings with a Korean dictionary.
 
-    The adapter supports `mecab-ko-python` (`mecab_ko.Mecab().pos`) and a compatible legacy `MeCab.Tagger().parseToNode()` API.
-    Installation and dictionary configuration vary by platform; failures are
-    surfaced explicitly and never trigger a silent fallback to another engine.
+    Supported APIs, tried in order: Rust `mecab-ko-python` (`mecab_ko.Mecab`),
+    `python-mecab-ko` (`mecab.MeCab`), and compatible legacy
+    `MeCab.Tagger().parseToNode()`. These are binding-level compatibility
+    attempts for the same analyzer family, not fallbacks to another engine.
+    The selected binding is recorded for diagnostics; initialization errors are
+    retained if no supported API can be initialized.
     """
 
     name = "mecab-ko"
 
     def __init__(self, tagger: Any | None = None) -> None:
+        self.binding = "injected" if tagger is not None else ""
         if tagger is None:
-            try:
+            errors: list[str] = []
+            candidates = (
+                ("mecab_ko", "Mecab", "rust-mecab-ko-python"),
+                ("mecab", "MeCab", "python-mecab-ko"),
+            )
+            for module_name, class_name, binding_name in candidates:
                 try:
-                    mecab_module = import_module("mecab_ko")
-                    tagger_type = getattr(mecab_module, "Mecab")
+                    module = import_module(module_name)
+                    tagger_type = getattr(module, class_name)
                     tagger = tagger_type()
-                except (ImportError, AttributeError):
-                    mecab_module = import_module("MeCab")
-                    tagger = mecab_module.Tagger()
-            except (ImportError, AttributeError, RuntimeError) as exc:
-                raise RuntimeError(
-                    "MeCab-Ko adapter needs mecab-ko-python (mecab_ko.Mecab) or a "
-                    "compatible MeCab Python binding and a Korean dictionary. "
-                    "Install/configure it for this OS; no fallback was attempted."
-                ) from exc
+                    self.binding = binding_name
+                    break
+                except (ImportError, AttributeError, RuntimeError, OSError) as exc:
+                    errors.append(f"{module_name}.{class_name}: {type(exc).__name__}: {exc}")
+            if tagger is None:
+                try:
+                    module = import_module("MeCab")
+                    tagger = module.Tagger()
+                    self.binding = "legacy-MeCab"
+                except (ImportError, AttributeError, RuntimeError, OSError) as exc:
+                    errors.append(f"MeCab.Tagger: {type(exc).__name__}: {exc}")
+                    raise RuntimeError(
+                        "No supported MeCab-Ko binding initialized. Tried mecab-ko-python, "
+                        "python-mecab-ko, and legacy MeCab API. " + " | ".join(errors)
+                    ) from exc
         self._tagger = tagger
 
     def analyze(self, text: str) -> MorphologyResult:
