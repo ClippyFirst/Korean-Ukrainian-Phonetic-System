@@ -464,21 +464,31 @@ def test_native_engine_keeps_unlisted_n_insertion_candidate_conservative():
     assert not any(item.get("license_context") == "R009:word:각여름:각>여" for item in result["rules"])
 
 
+
 def test_shared_ipa_target_renderer_is_owned_by_clippyfirst_core(monkeypatch):
     from korean_ukrainian import pipeline
 
-    monkeypatch.setattr(
-        pipeline, "map_ipa_to_ukrainian",
-        lambda ipa, adapter=None: {"ipa": ipa},
-    )
-    monkeypatch.setattr(
-        pipeline, "_select_target",
-        lambda target: {"segments": [{
-            "grapheme": {"a": "а", "b": "б"}[target["ipa"]],
-            "source_boundary_before": None,
-            "candidate_id": "test",
-        }]},
-    )
+    def fake_renderer(ipa):
+        target = {"a": "а", "b": "б"}[ipa]
+        return {
+            "ipa": ipa,
+            "status": "model-selected",
+            "reason": None,
+            "ukrainian_orthography": target,
+            "segments": [{
+                "source_ipa": ipa,
+                "target_grapheme": target,
+                "mapping_id": "TEST-MAP",
+                "mapping_status": "model-selected",
+                "source_syllable_index": 0,
+                "source_word_index": 0,
+            }],
+            "ignored_source_markers": [],
+            "renderer": "korean_ipa_correspondence",
+            "score_type": "explicit_correspondence_not_probability",
+        }
+
+    monkeypatch.setattr(pipeline, "render_ipa_sequence_to_ukrainian", fake_renderer)
 
     result = pipeline.render_ipa_analysis_to_ukrainian(
         "안녕, 세계!",
