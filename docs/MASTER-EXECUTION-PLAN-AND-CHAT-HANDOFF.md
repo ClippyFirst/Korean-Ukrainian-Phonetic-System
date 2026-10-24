@@ -1,3 +1,13 @@
+## Continuation: quarantined 24-form research-engine diagnostic (2026-10-24)
+
+- Added `scripts/diagnose-korean-ipa-holdout.py`, `tests/test_korean_holdout_diagnostic.py`, `.github/workflows/korean-holdout-diagnostic.yml`, and `docs/KOREAN-24-FORM-HOLDOUT-DIAGNOSTICS-2026-10-24.md`; `npm run research:holdout-diagnostics` exposes the read-only runner.
+- The diagnostic reads but never edits `data/korean/ipa_holdout_2026-10-24.json`; it fails closed unless the manifest remains frozen, exactly 24 unique cases, no IPA gold, and every item prohibits tuning. It runs native strict/soft and g2pK (when installed), captures rule traces and provisional IPA, compares only the official Hangul surface spelling as a coarse proxy, and records Ukrainian target availability separately.
+- The generated per-case report is written to the CI runner temp directory and uploaded as a 30-day artifact; it is deliberately not committed, to avoid putting frozen inputs/predictions into tracked fixtures and triggering local leakage checks. No engine rule, lexical row, normalizer, gold label, or target mapping was changed.
+- Source-level pattern inventory documented: complex codas/liaison (001–003, 005, 018), compound/lexical/morphological fortition (004, 006, 008–010, 013–016, 019), ㅎ deletion/liaison (007, 017), vowel variants (011, 021), §20 context (012), compound n-insertion plus length (020), and length contrasts (022–024). These are hypotheses to inspect against the generated traces, not measured engine findings or accuracy scores.
+- **Current acceptance status:** diagnostic tests and report generation are added but not yet verified on exact current head; no local test execution was possible in the connector environment. Do not call the implementation DONE_VERIFIED until the new workflow passes and its artifact is inspected. The 24-item set remains 0/24 adjudicated IPA gold, and is prohibited for tuning.
+- One temporary contents-API commit added the diagnostic runner to the default branch by omitting the optional branch parameter; I immediately removed that file from `main` in a subsequent commit. The default-branch tree no longer contains the runner, but the add/remove commits remain in history. All intended work is on `research/benchmark-score-causality-2026-10-24` / PR #305.
+
+---
 ## Holdout-leakage self-check correction (2026-10-24)
 
 - During review of the local leakage validator's scan scope, I found the new test initially embedded one frozen holdout token as a literal in its assertion. That would make the test source itself overlap with the holdout even though it was not an engine fixture.
