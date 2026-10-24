@@ -67,7 +67,7 @@ def test_sourced_lexical_records_adapt_to_sequence_rows_without_inventing_target
 
     sequences = generator.adapt_lexical_sequences(lexical_rows, source_rows)
 
-    assert len(sequences) == len(lexical_rows) == 642
+    assert len(sequences) == len(lexical_rows) == 643
     assert len({row["sequence_id"] for row in sequences}) == len(sequences)
     by_input = {row["word_or_phrase"]: row for row in sequences}
     source_row = next(row for row in lexical_rows if row["input"] == "값없다")
@@ -78,4 +78,11 @@ def test_sourced_lexical_records_adapt_to_sequence_rows_without_inventing_target
     assert sequence["source_ids"] == "S007"
     assert source_row["source_url"] in sequence["notes"]
     assert "lexical_target_status=model-selected" in sequence["notes"]
+
+    salmui_source = next(row for row in lexical_rows if row["input"] == "삶의")
+    salmui_sequence = by_input["삶의"]
+    assert salmui_sequence["source_ids"] == "S012"
+    assert salmui_source["source_url"] in salmui_sequence["notes"]
+    assert salmui_sequence["surface_ipa"] == salmui_source["ipa_syllables"]
+
 

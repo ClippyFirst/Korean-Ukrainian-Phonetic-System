@@ -145,6 +145,32 @@ def _apply_lexical_ipa(items,ipa_result):
         rendered+=separator+syllable_ipa[i]
     ipa_result["syllables"]=syllable_ipa
     ipa_result["ipa"]=rendered
+    # Preserve explicitly licensed lexical alternatives as separate typed
+    # candidates. They are not silently selected as the Ukrainian target.
+    lexical_alternatives=[]
+    i=0
+    while i<len(items):
+        j=i+1
+        while j<len(items) and items[j-1].boundary_after!="word":
+            j+=1
+        word="".join(s.text for s in items[i:j])
+        entry=LEXICAL_PRONUNCIATIONS.get(word)
+        if entry:
+            alternate=entry.get("alternate_ipa_syllables","").split("|")
+            if len(alternate)==j-i and all(alternate):
+                alternate_ipa=alternate[0]
+                for k in range(1,len(alternate)):
+                    alternate_ipa+=(" " if items[i+k-1].boundary_after=="word" else ".")+alternate[k]
+                lexical_alternatives.append({
+                    "input":word,
+                    "surface_hangul":entry.get("alternate_surface_hangul",""),
+                    "ipa":alternate_ipa,
+                    "status":entry.get("ipa_adjudication_status") or "provisional",
+                    "source":entry.get("source_url",""),
+                })
+        i=j
+    # The target adapter must not consume these as approved alternatives until the case gate clears.
+    ipa_result["lexical_alternatives"]=lexical_alternatives
     # Recompute §4 alternatives after lexical IPA has restored sourced length
     # and segment detail, so variants inherit the exact primary syllables.
     ipa_result["variants"]=generate_vowel_variants(items,syllable_ipa,level=ipa_result.get("level","broad"))
@@ -246,9 +272,32 @@ def phoneticize_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level=
     ipa=_apply_lexical_ipa(items,realize_syllables(items,level=ipa_level))
     all_traces=[x.to_dict() for x in traces]+lexical_traces
     unresolved_contexts=_unlicensed_ambiguous_pronunciation_contexts(all_traces, items)
+    # A lexicon entry may have directly attested Korean surface Hangul while
+    # its IPA rendering remains unreviewed. Do not let a lexical override
+    # silently promote project-generated IPA to an accepted pronunciation.
+    i=0
+    while i<len(items):
+        j=i+1
+        while j<len(items) and items[j-1].boundary_after!="word":
+            j+=1
+        word="".join(s.text for s in items[i:j])
+        entry=LEXICAL_PRONUNCIATIONS.get(word)
+        if entry and entry.get("ipa_adjudication_status")=="diagnostic_only_unresolved_pronunciation":
+            unresolved_contexts.append({
+                "rule_id":"IPA_ADJUDICATION",
+                "input_span":word,
+                "reason":"source-backed Korean surface spelling exists, but project IPA lacks independent adjudication",
+                "source":entry.get("source_url",""),
+                "status":"unresolved-ipa-adjudication",
+            })
+        i=j
     ipa_status="diagnostic_only_unresolved_pronunciation" if unresolved_contexts else "provisional"
     ipa_is_diagnostic_only=bool(unresolved_contexts)
-    ipa_status_reason="unresolved_morphophonological_context" if unresolved_contexts else None
+    ipa_status_reason=(
+        "independent_ipa_adjudication_required"
+        if any(x.get("rule_id")=="IPA_ADJUDICATION" for x in unresolved_contexts)
+        else "unresolved_morphophonological_context" if unresolved_contexts else None
+    )
     # Mirror acceptance metadata inside the IPA payload as well as at the
     # analysis root. This protects clients that pass the IPA object around
     # without carrying the enclosing pronunciation analysis.

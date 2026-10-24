@@ -8,10 +8,10 @@ import { buildReviewerPacket } from '../scripts/build-ipa-review-packet.mjs';
 const queueText = readFileSync(new URL('../research/ipa-adjudication-queue.json', import.meta.url), 'utf8');
 const queue = JSON.parse(queueText);
 
-test('packet contains all 20 source-backed cases and a reproducible queue hash', () => {
+test('packet contains all source-backed cases and a reproducible queue hash', () => {
   const packetA = buildReviewerPacket(queueText, 'A');
   const packetB = buildReviewerPacket(queueText, 'B');
-  assert.equal(packetA.cases.length, 20);
+  assert.equal(packetA.cases.length, queue.cases.length);
   assert.equal(packetA.queueSha256, packetB.queueSha256);
   assert.match(packetA.queueSha256, /^[a-f0-9]{64}$/u);
   assert.equal(packetA.reviewerSlot, 'A');
@@ -71,7 +71,7 @@ test('CLI writes valid blinded JSON to stdout without modifying the canonical qu
   assert.equal(before, after, 'packet generation must not modify the canonical queue');
   const packet = JSON.parse(run.stdout);
   assert.equal(packet.reviewerSlot, 'B');
-  assert.equal(packet.cases.length, 20);
+  assert.equal(packet.cases.length, queue.cases.length);
   assert.ok(!run.stdout.includes('candidateBroadIpa'));
   assert.ok(!run.stdout.includes('reviewerA'));
   assert.ok(!run.stdout.includes('reviewerB'));

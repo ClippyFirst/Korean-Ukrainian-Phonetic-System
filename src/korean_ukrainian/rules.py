@@ -35,6 +35,15 @@ RULE_META={
 "R016":("verbal-stem-rieul-giyeok-exception","NIKL §11; lexical/morphological conditioning","high"),
 }
 
+# Exact-form licenses for clear formal-morpheme liaison examples derived from NIKL §14.
+# The rule is general, but this engine intentionally requires a full-form license
+# until it has a morphological analyzer. The examples below have transparent
+# inflectional morphology and official rule support; this is not a broad coda rule.
+_NIKL_R002_FORMAL_LICENSES = {
+    "앉아라": "앉>아",  # 앉- + imperative ending -아라; NIKL §14 explicitly attests 앉아[안자].
+    "없어도": "없>어",  # 없- + connective ending -어도; NIKL §14 attests 없어[업써].
+}
+
 # Exact, source-backed examples explicitly listed in NIKL Standard Pronunciation Rule 29.
 # Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 _NIKL_R009_WORD_LICENSES = {
@@ -78,6 +87,9 @@ _NIKL_R015_WORD_LICENSES = {
 def _source_backed_rule_licenses(items, boundary_mode):
     full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
     licenses = set()
+    pair = _NIKL_R002_FORMAL_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R002:formal:{full_form}:{pair}")
     pair = _NIKL_R009_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R009:word:{full_form}:{pair}")
@@ -158,9 +170,11 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 if scope=="formal":
                     retained,moved=COMPLEX_LIAISON[a.coda]
                     a.coda=retained; b.onset=moved or "ㅇ"; changed=True
+                    license_context=f"R002:formal:{full_form}:{pair}"
                 elif scope=="substantive":
                     representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
                     a.coda=""; b.onset=representative; changed=True
+                    license_context=f"R002:substantive:{full_form}:{pair}"
                 else:
                     conditional_disabled=True
             elif a.coda in {"ㄷ","ㅌ"} and b.nucleus=="ㅣ":

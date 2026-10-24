@@ -52,10 +52,10 @@ function validateAdjudicationCase(item) {
   assert.ok(nonblank(item.reconciliation.decisionNotes), item.caseId + ': reconciliation rationale required');
 }
 
-test('IPA adjudication queue mirrors every surface case and fails closed while specialist review is absent', () => {
+test('IPA adjudication queue covers every surface case and allows separately sourced high-risk forms', () => {
   assert.equal(queue.schemaVersion, 2);
-  assert.equal(queue.cases.length, surface.cases.length);
-  assert.equal(queue.cases.length, 20);
+  assert.ok(queue.cases.length >= surface.cases.length);
+  assert.ok(queue.cases.length >= surface.cases.length);
   assert.match(queue.purpose, /do not independently determine broad IPA/u);
   const byInput = new Map(surface.cases.map(item => [item.input, item]));
   const seenInputs = new Set();
@@ -66,15 +66,24 @@ test('IPA adjudication queue mirrors every surface case and fails closed while s
     seenInputs.add(item.input);
     seenIds.add(item.caseId);
     const source = byInput.get(item.input);
-    assert.ok(source, item.input + ': missing surface-fixture source');
-    assert.equal(item.normativeSurfaceComparator, source.normativeSurface, item.input);
-    assert.equal(item.surfaceEvidenceStatus, source.normativeEvidenceStatus, item.input);
-    assert.equal(item.surfaceEvidenceUrl, source.normativeSourceUrl, item.input);
-    assert.equal(item.sourceLocator, source.normativeSourceLocator, item.input);
+    if (source) {
+      assert.equal(item.normativeSurfaceComparator, source.normativeSurface, item.input);
+      assert.equal(item.surfaceEvidenceStatus, source.normativeEvidenceStatus, item.input);
+      assert.equal(item.surfaceEvidenceUrl, source.normativeSourceUrl, item.input);
+      assert.equal(item.sourceLocator, source.normativeSourceLocator, item.input);
+    } else {
+      // The queue may contain a separately sourced high-risk case not present
+      // in the pinned G2P regression fixture. Such cases still need official
+      // source provenance and must remain independently adjudicated.
+      assert.equal(item.input, '삶의', item.input + ': unexpected non-fixture case');
+      assert.equal(item.surfaceEvidenceStatus, 'direct-NIKL-MCFAQ', item.input);
+      assert.match(item.surfaceEvidenceUrl, /mcfaq_seq=5716/u);
+      assert.equal(item.normativeSurfaceComparator, '살믜 / 살메');
+    }
     assert.equal(item.ukrainianTargetReview, 'SEPARATE_UNREVIEWED_TASK', item.input);
     validateAdjudicationCase(item);
   }
-  assert.equal(seenInputs.size, surface.cases.length);
+  assert.ok(surface.cases.every(item => seenInputs.has(item.input)), 'every pinned surface case must be represented');
 });
 
 test('the queue keeps rule-derived lexical evidence visibly separate from direct attestations', () => {
