@@ -47,6 +47,9 @@ function applyNiklSurfaceCorrections(source, surface) {
   if (source.length !== surface.length) return { surface, corrections: [] };
   const corrections = [];
   for (const match of source.matchAll(/[가-힣]+/gu)) {
+    // 수많은's lexical-length overlay is licensed for the exact dictionary
+    // form only; do not silently generalize it to a larger Korean compound.
+    if (match[0] === '수많은' && source !== match[0] && /[가-힣]/u.test(source.replace(match[0], ''))) continue;
     const entry = NIKL_SURFACE_CORRECTIONS.get(match[0]);
     if (!entry || surface.slice(match.index, match.index + match[0].length) === entry.surface) continue;
     const before = surface.slice(0, match.index);
