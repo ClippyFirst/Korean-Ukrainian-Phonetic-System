@@ -1,3 +1,4 @@
+# Provenance is deliberately unverified until the original source artifact is recovered.
 import csv
 from pathlib import Path
 
