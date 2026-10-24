@@ -26,7 +26,7 @@ if (typeof phonemize !== 'function') {
   throw new TypeError('phonemize/all does not export a callable phonemize function');
 }
 const smoke = phonemize('안녕', { language: 'ko', anyAscii: true, stripStress: true, separator: '' });
-if (typeof smoke !== 'string' || !smoke.trim() || /[\\uAC00-\\uD7A3]/u.test(smoke)) {
+if (typeof smoke !== 'string' || !smoke.trim() || /[\uAC00-\uD7A3]/u.test(smoke)) {
   throw new Error('phonemize Korean adapter smoke test failed; expected non-Hangul IPA, got ' + JSON.stringify(smoke));
 }
 
