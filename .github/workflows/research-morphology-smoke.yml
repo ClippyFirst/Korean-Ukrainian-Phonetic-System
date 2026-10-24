@@ -148,6 +148,12 @@ jobs:
           assert r["native_ipa"]["strict"]["attempted_occurrences"] == r["eligible_token_occurrences"]
           assert r["native_ipa"]["soft"]["attempted_occurrences"] == r["eligible_token_occurrences"]
           assert r["native_ipa"]["paired_subset"]["occurrences_scored_by_both"] > 0
+          gated = r["native_ipa"]["boundary_gated_by_analyzer"]
+          assert gated["status"] == "counterfactual_research_only", gated
+          assert gated["attempted_occurrences"] == r["eligible_token_occurrences"], gated
+          assert "not be used in production" in gated["interpretation"], gated
+          alignment = r["morphology"]["native_soft_rule_boundary_alignment"]
+          assert alignment["events"] == alignment["boundary_observed"] + alignment["boundary_not_observed"], alignment
           print(json.dumps({
             "engine": os.environ["ENGINE"],
             "dataset_rows": r["dataset_rows"],
@@ -156,6 +162,10 @@ jobs:
             "strict": r["native_ipa"]["strict"],
             "soft": r["native_ipa"]["soft"],
             "paired_delta": r["native_ipa"]["paired_subset"],
+            "boundary_gated_counterfactual": {
+              k:v for k,v in gated.items()
+              if k not in {"changed_examples_vs_strict", "runtime_error_examples"}
+            },
             "morphology": {k:v for k,v in r["morphology"].items()
                            if k not in {"results","errors","tag_counts_top_50"}},
             "changed_words": r["native_ipa"]["unique_words_with_changed_ipa_or_status"],
