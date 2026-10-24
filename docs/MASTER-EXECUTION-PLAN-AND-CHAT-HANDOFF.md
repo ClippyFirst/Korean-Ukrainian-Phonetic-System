@@ -1,3 +1,10 @@
+## Holdout-leakage self-check correction (2026-10-24)
+
+- During review of the local leakage validator's scan scope, I found the new test initially embedded one frozen holdout token as a literal in its assertion. That would make the test source itself overlap with the holdout even though it was not an engine fixture.
+- Fixed in test commit `0615a42175b1c75acaf067b7e0665bbcb62f3025`: the variant-preservation assertion now locates the multi-reading case structurally (`normativeSurfaceComparator` contains the separator) rather than spelling a holdout input. No holdout data, IPA gold, or engine rule was changed.
+- Recheck the full local leakage validator on exact head; do not infer PASS from this source inspection. Latest implementation now requires fresh exact-head CI after this correction.
+
+---
 ## Final continuation ledger — review tooling and verification boundary (2026-10-24)
 
 - **Implementation commit:** `d2d2fefc405d03d422e7c2936e054a5ce2de18aa` adds the holdout-to-queue projection, `--queue` support in the existing reviewer packet builder/validator, package script, and integration regression. The following report reconciliation commit is `cc28230e835ee38caaefd375eb99db07009993ca`.
