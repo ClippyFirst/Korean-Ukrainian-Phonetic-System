@@ -178,10 +178,10 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 
 ## Architecture correction: shared Ukrainian target renderer (2026-10-24)
 
-- **Status:** PARTIAL — implementation and focused regression tests are committed on `fix/native-core-owns-ipa-target-renderer-2026-10-24`; PR #296 is open against `main`.
+- **Status:** DONE_VERIFIED on the PR branch for implementation and automated verification; integration remains pending because PR #296 is open and unmerged.
 - **Problem:** the optional `g2pk_engine.transliterate_with_g2pk()` contained its own IPA-to-Ukrainian mapping / selection / orthographic rendering loop, which blurred the ownership boundary between an external pronunciation provider and the ClippyFirst engine.
 - **Change:** `pipeline.render_ipa_analysis_to_ukrainian()` is now the shared core renderer; the g2pK adapter delegates to it. The core preserves punctuation and spacing and fails closed when IPA word analyses are missing, empty, or misaligned.
 - **Tests added:** shared renderer ownership and punctuation preservation; missing-word-analysis fail-closed regression.
-- **Verified so far:** GitHub source checks confirm the core function exists, the g2pK adapter delegates to it, and the adapter no longer contains its own target-rendering loop. CI runs `40087097243` and `40087097189` were observed queued/in progress at handoff; no pass/fail result is claimed here.
-- **Acceptance:** PR CI must pass; review output compatibility for `transliterate_with_g2pk`; run `pytest` and the relevant integration tests; verify no generated-artifact drift. Keep the PR unmerged until these gates are satisfied.
+- **Verification evidence:** exact-head CI on the PR branch passed `pytest -q` on Python 3.11, 3.12, and 3.13, `tests/test_g2pk_engine.py` on Python 3.11 and 3.12, `npm test`, `npm run build`, and the Python regression/data-integrity job. Runs: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40087128047), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40087127940), [optional g2pK integration](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40087128014). The official NIKL metadata inventory job was skipped, not passed. No local test run is claimed because this session used the GitHub API rather than a local checkout.
+- **Remaining integration task:** PR #296 is still unmerged. Confirm its latest-head checks remain green after the final documentation update, review output compatibility for `transliterate_with_g2pk`, and merge only through the normal repository process. Scientific IPA/target validation remains separate and is not closed by these software tests.
 
