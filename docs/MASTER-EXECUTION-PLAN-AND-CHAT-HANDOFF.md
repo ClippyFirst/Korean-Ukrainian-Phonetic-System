@@ -1,3 +1,12 @@
+## Source-backed practical-engine improvements — 2026-10-24
+
+- **DONE (implementation only):** practical g2pK adapter preserves the NIKL dictionary's lexical length in exact-form `수많은[수ː마는]` as IPA `suː`, while leaving the Ukrainian target unchanged and separately model-selected.
+- **DONE (implementation only):** for `멋있어`, the adapter exposes the other NIKL-accepted surface (`머디써` / `머시써`) only when the primary output is one of those two official forms. The alternate IPA and Ukrainian target are generated through the same surface → IPA → Ukrainian path and remain marked `lexical-review`.
+- Evidence: [NIKL Korean Basic Dictionary, 수많은](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144); [NIKL Online Q&A, 멋있어](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166).
+- **PARTIAL:** regression tests added at `tests/nikl-lexical-ipa-variants.test.mjs`; no current-head test/build result has been verified. Do not call these tests passed.
+- **BLOCKED:** local clone remains unavailable due outbound DNS and GitHub returned no workflow runs/statuses for the branch head during this pass.
+- **TODO:** independent IPA review, separate Ukrainian-target review, and successful exact-head `npm test` + `npm run build`. Full detail: [source-backed engine improvement report](ENGINE-IMPROVEMENTS-SOURCE-BACKED-2026-10-24.md).
+
 ## Korean native-engine error analysis and post-fix benchmark — 2026-10-24
 
 ### Task ledger
