@@ -99,3 +99,22 @@ def test_all_canonical_lexical_pronunciations_are_reproducible_from_ipa():
 
     assert checked == len(rows) == 643
     assert alternate_checked == 45
+
+
+def test_ipa_target_override_registry_is_traceable_and_unambiguous():
+    root = Path(__file__).resolve().parents[1]
+    path = root / "data" / "korean" / "ipa_target_overrides.csv"
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+
+    assert len(rows) == 26
+    assert len({row["mapping_id"] for row in rows}) == len(rows)
+    assert len({row["source_ipa"] for row in rows}) == len(rows)
+    for row in rows:
+        assert row["mapping_id"].startswith("KUA-IPA-")
+        assert row["source_ipa"]
+        assert row["target_grapheme"]
+        assert row["status"] in {"model-selected", "provisional"}
+        assert row["scope"]
+        assert row["source_ref"]
+        assert row["notes"]
