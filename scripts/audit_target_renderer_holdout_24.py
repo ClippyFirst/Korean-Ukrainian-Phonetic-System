@@ -49,10 +49,14 @@ def _native_record(form: str, fixture_row: dict[str, str]) -> dict[str, Any]:
 
 
 def _g2pk_record(form: str, fixture_row: dict[str, str]) -> dict[str, Any]:
-    if getattr(g2pk_engine, "_ENGINE", None) is None:
+    try:
+        # The production adapter initializes g2pK lazily; checking _ENGINE
+        # before calling _get_engine() would falsely report it as unavailable.
+        g2pk_engine._get_engine()
+    except RuntimeError as exc:
         return {
             "status": "blocked_engine_unavailable",
-            "reason": "optional g2pK engine is not installed in this environment",
+            "reason": str(exc),
             "ipa_gold_status": fixture_row["ipa_gold_status"],
             "ukrainian_gold_status": fixture_row["ukrainian_gold_status"],
         }
