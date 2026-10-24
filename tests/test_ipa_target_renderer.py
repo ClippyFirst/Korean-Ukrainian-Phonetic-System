@@ -132,3 +132,61 @@ def test_rounded_vowel_target_mappings_are_explicitly_provisional():
     for source_ipa, expected_target in [("wi", "ві"), ("we", "ве")]:
         result = render_ipa_sequence_to_ukrainian(source_ipa)
         assert result["ukrainian_orthography"] == expected_target
+
+
+def test_browser_and_python_renderers_match_on_shared_ipa_sequences():
+    import json
+    import subprocess
+
+    from korean_ukrainian.ipa_target_renderer import render_ipa_sequence_to_ukrainian
+
+    samples = [
+        ("kʰjʌ", "가"),
+        ("ɰi", "가"),
+        ("ø", "가"),
+        ("y", "가"),
+        ("hje", "가"),
+        ("nja", "가"),
+        ("nje", "가"),
+        ("lja", "가"),
+        ("ɲju", "가"),
+        ("sʌ.ul.ljʌk̚", "가가가"),
+        ("tɕʰi", "가"),
+        ("k͈a", "가"),
+        ("p̚", "가"),
+    ]
+    script = (
+        "import { ipaTargetForSource } from './src/app/engine_ipa.js';\n"
+        f"const samples = {json.dumps(samples, ensure_ascii=False)};\n"
+        "console.log(JSON.stringify(samples.map(([ipa, source]) => "
+        "({ipa, ...ipaTargetForSource(source, ipa)}))));"
+    )
+    completed = subprocess.run(
+        ["node", "--input-type=module", "-e", script],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    browser_rows = json.loads(completed.stdout)
+
+    for (ipa, _source), browser in zip(samples, browser_rows, strict=True):
+        python = render_ipa_sequence_to_ukrainian(ipa)
+        assert browser["text"] == python["ukrainian_orthography"], ipa
+        assert browser["status"] == python["status"], ipa
+        browser_trace = [
+            (item["ipa"], item["ukrainian"], item["status"], item["mapping_id"])
+            for item in browser["mappingTrace"]
+        ]
+        python_trace = [
+            (
+                item["source_ipa"],
+                item["target_grapheme"],
+                item["status"],
+                item["mapping_id"],
+            )
+            for item in python["segments"]
+        ]
+        assert browser_trace == python_trace, ipa
+
