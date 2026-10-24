@@ -151,3 +151,13 @@ The general NIKL Standard Pronunciation Rules URL is only the rule-family entry 
 - **BLOCKED pending qualified reviewers:** independent dual broad-IPA transcription and documented reconciliation.
 - **TODO:** freeze a separate NIKL holdout only after adjudication, then measure the fixed engine without tuning on that split.
 - **BLOCKED:** Ukrainian target accuracy still requires a separate independently reviewed IPA-to-Ukrainian gold set.
+
+
+### Official web-source findings — 2026-10-24
+
+The follow-up source search found exact official NIKL surface-pronunciation evidence for three queued forms:
+- `멋있어`: NIKL Online Q&A explicitly accepts both [머디써] and [머시써] (https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166).
+- `싫어서`: NIKL Online Q&A explains ㅎ deletion from ㅀ before a vowel-initial ending and liaison of ㄹ, yielding [시러서] (https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313981).
+- `수많은`: NIKL Korean Basic Dictionary directly lists `수많은[수ː마는]` (https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144).
+
+These are official Hangul pronunciation notations, not IPA. Their queue status is `SOURCE_FOUND_PENDING_IPA`; no `finalBroadIpa` was populated. Eleven cases still need exact-form source evidence. For `멋있어`, the officially attested variant pair also means evaluation must specify whether it accepts alternatives or tests one chosen target convention. The full source excerpts and access date are in the case-level JSON register.
