@@ -35,6 +35,17 @@ Local-import provenance is intentionally explicit: `retrievalMode=local-html-imp
 
 Share the generated `reports/nikl/standard-pronunciation-manifest.json` and the collector's terminal summary for review. Keep the raw HTML local unless a separately reviewed, authorized sharing route is available. If the collector rejects the saved page, share the exact error and the reported article counts; do not hand-edit the manifest to make the gate green.
 
-## Current gate
+## Current status — 2026-10-24
 
-Until a complete manifest generated from an authorized official capture is reviewed, classify the source inventory as `BLOCKED_EXTERNAL_ACCESS` / evidence pending, not `DONE_VERIFIED`. Even after the inventory passes, a human must spot-check Korean text, clause/example order, subparagraphs, exceptions and cross-references against the official page. This inventory is a source-capture gate, not a linguistic adjudication or license decision.
+The repository-held file `한국어 어문 규범.htm` was processed by the existing `scripts/nikl-norm-crawler.mjs` local-import path in [workflow run 40072018648](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072018648). The run succeeded and emitted a metadata-only manifest at `reports/nikl/standard-pronunciation-manifest.json`.
+
+- Source byte length: 322,678.
+- Source SHA-256: `11dccd3c6eafb5167a6f448c2ccb5fc45fd698c5b2d1570ed3d1e5c177fa7a1e`.
+- Inventory: 30 expected / 30 extracted; no missing, duplicate, unexpected, or incomplete article records.
+- Article IDs: `NIKL-SP-01` through `NIKL-SP-30`.
+- Manifest stores per-article normalized character counts and SHA-256 hashes, not article text or the raw HTML.
+- Provenance is `retrievalMode=local-html-import`, `httpStatus=null`, `retrievedAt=null`, `robots.decision=not_checked_local_import`, and `termsReview=not_assessed`.
+
+**Status split:** the technical inventory of this exact repository file is `DONE_VERIFIED` pending the committed source/manifest parity test on the final PR head. The authenticity of the saved capture as an unmodified official response, live HTTP access, robots policy for the original capture, applicable reuse terms, and permission to redistribute derived article text remain unverified. The manifest is not a licensing decision and does not establish that each extracted rule or example has been correctly interpreted.
+
+Before using individual passages as normative evidence, a human reviewer must spot-check article/subparagraph boundaries, example ordering, exceptions, and cross-references against the official source. Do not convert this source inventory pass into a claim of linguistic adjudication, full pronunciation-engine correctness, or release readiness.
