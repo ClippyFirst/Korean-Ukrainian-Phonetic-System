@@ -694,7 +694,7 @@ Full protocol, candidate register, confidence intervals and limitations: [docs/M
 
 Remaining scientific gates are unchanged: official NIKL full-text inventory remains BLOCKED_EXTERNAL_ACCESS after HTTP 403; independent broad-IPA adjudication and separate Ukrainian target-layer review remain outstanding. This benchmark is not NIKL normative gold and does not score Ukrainian adaptation. The repository remains a research preview / partial prototype, not release-ready.
 
-Integration outcome — 2026-10-24: PR #281 was squash-merged first as `f1c06f00a3cc6a724a8c5f155dbb8dbb50749c3e`; PR #280 was then reconciled against the updated `main` handoff and squash-merged as `6dc576db96ee12b0201a6271c5b3ea6b3710ae21`. The two PRs' shared handoff changes are reconciled; GitHub reports no open PRs at this checkpoint. The official NIKL full-text inventory remains blocked by HTTP 403, and CI on the final main commit must finish before treating the merged snapshot as fully verified.
+Integration outcome — 2026-10-24: PR #281 was squash-merged first as `f1c06f00a3cc6a724a8c5f155dbb8dbb50749c3e`; PR #280 was then reconciled against the updated `main` handoff and squash-merged as `6dc576db96ee12b0201a6271c5b3ea6b3710ae21`. The two PRs' shared handoff changes are reconciled; GitHub reports no open PRs at this checkpoint. The live official NIKL HTTP inventory remains blocked by HTTP 403; the local-file inventory is separately verified below. Post-merge CI on implementation commit `ddaf07ede4b83adb730e83269dcb50f7959fdbef` subsequently passed; see the post-merge verification record at the end of this handoff.
 
 
 ### NIKL local HTML inventory — 2026-10-24
@@ -711,3 +711,16 @@ The repository already contained `한국어 어문 규범.htm`; no user upload o
 The PR adds a source/manifest parity regression test and a reproducible GitHub Actions workflow that schema-validates the manifest, re-runs the parser against the checked-in HTML, and compares all generated metadata while normalizing only the import timestamp.
 
 **Gate classification:** extraction from the exact repository file is technically complete. Source-capture authenticity and reuse rights remain `BLOCKED_EXTERNAL_ACCESS` / `not_assessed` because direct NIKL endpoints previously returned HTTP 403 and the local import cannot independently establish the capture history or license terms. Human spot-check of article/subparagraph structure and individual rule interpretation is still required. This does not unblock independent IPA adjudication or Ukrainian target-layer review; release status remains research preview / partial prototype.
+
+
+### Post-merge verification — implementation commit ddaf07ede4b83adb730e83269dcb50f7959fdbef
+
+PR [#282](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/282) was squash-merged into `main` as `ddaf07ede4b83adb730e83269dcb50f7959fdbef`. Post-merge checks tied to that exact commit:
+
+- [tests — run 40072283801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072283801): PASS.
+- [NIKL local HTML inventory — run 40072283788](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072283788): PASS; JSON schema validation and deterministic metadata parity pass, 30/30 articles, manifest artifact uploaded.
+- [system verification — run 40072283773](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072283773): PASS; its live NIKL crawl correctly remained BLOCKED by HTTP 403 and was not counted as an inventory pass.
+- [master table and research corpus artifacts — run 40072283771](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072283771): PASS.
+- [GitHub Pages deployment and live browser smoke — run 40072283743](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40072283743): PASS; live browser smoke exercised 1,443 Korean input characters and observed 2,780 Ukrainian output characters and 3,725 IPA characters.
+
+No open PRs remained after #282 merged. The scientific status is still research preview / partial prototype, not release-ready: capture authenticity/reuse rights and human rule-structure review remain open, as do independent IPA adjudication and Ukrainian target-layer review.
