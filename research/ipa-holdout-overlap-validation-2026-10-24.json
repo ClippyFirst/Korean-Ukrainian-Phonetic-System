@@ -29,10 +29,20 @@
     "result": "PASS_NO_EXACT_TOKEN_OVERLAP"
   },
   "localLeakageValidation": {
-    "status": "PENDING_REPOSITORY_CI",
+    "status": "PARTIAL_FILE_CHECK_CI_PENDING",
     "reason": "The local data/runtime/fixture leakage check is encoded in scripts/validate_ipa_holdout.py and tests/test_ipa_contract_and_holdout.py; repository-hosted CI has not yet returned runs for the latest connector-created commit. A local clone was unavailable because outbound DNS to github.com failed.",
     "excludedSourceOnlyFixture": "tests/fixtures/nikl-article-review-1-30.json",
-    "exclusionRationale": "Contains official source text, not engine predictions or expected outputs. It is allowed as source evidence; engine runtime data and expected-output fixtures are still checked."
+    "exclusionRationale": "Contains official source text, not engine predictions or expected outputs. It is allowed as source evidence; engine runtime data and expected-output fixtures are still checked.",
+    "checkedPaths": [
+      "data/korean/lexical_pronunciations.csv",
+      "data/korean/canonical_correspondence.csv",
+      "tests/nikl-human-review-surface-regression.test.mjs",
+      "tests/fixtures/nikl-surface-only-complex-coda.json",
+      "tests/test_benchmark_score_causality.py",
+      "tests/test_ipa_contract_and_holdout.py",
+      "tests/test_ipa_profile_sensitivity_snapshot.py"
+    ],
+    "checkedPathExactOverlapCount": 0
   },
   "ipaAnnotation": {
     "independentReviewerCount": 0,
