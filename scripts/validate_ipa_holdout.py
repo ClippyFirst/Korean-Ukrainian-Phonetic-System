@@ -109,7 +109,7 @@ def suggest_source_candidates(root: Path, local_forms: dict[str, set[str]], excl
         ("하급", ["하ː급"], "dictionary-specific", "하급[하ː급]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332987"),
         ("범위", ["버뮈"], "§15", "범위[버뮈]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=330950"),
         ("입원료", ["이붠뇨"], "§15/§20", "입원료[이붠뇨]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=330950"),
-        ("절약", ["저략"], "§20", "절약[저략]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=332190"),
+        ("절약", ["저략"], "§20", "절약[저략]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332190"),
         ("찜닭", ["찜닥"], "dictionary-specific", "찜닭[찜닥]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=334398"),
         ("신기다", ["신기다"], "§24", "신기다[신기다]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=332991"),
         ("싶었던", ["시펃떤"], "§13/§9/§23", "싶었던[시펃떤]", "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=334548"),
