@@ -15,6 +15,8 @@ def test_holdout_diagnostic_covers_frozen_manifest():
     assert all(row['engines']['native_strict']['available'] for row in report['cases'])
     assert all('ipaGold' not in row and 'ukrainianGold' not in row for row in report['cases'])
     assert all(row['comparatorType'].endswith('not IPA gold') for row in report['cases'])
+    assert all(isinstance(row['engines']['native_strict']['ipa_variants'], list) for row in report['cases'])
+    assert all(isinstance(row['engines']['native_strict']['surface_syllables'], list) for row in report['cases'])
 
 def test_holdout_tokens_remain_disjoint_from_runtime_data_and_test_fixtures():
     manifest, _ = read_manifest(ROOT / 'data/korean/ipa_holdout_2026-10-24.json')
