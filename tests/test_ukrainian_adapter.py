@@ -64,5 +64,5 @@ def test_shared_renderer_distinguishes_unlicensed_mapping_from_inventory_failure
         target_adapter=a,
     )
     assert out["ukrainian_orthography"] is None
-    assert out["target_analysis"][0]["reason"]=="no_licensed_ipa_to_ukrainian_mapping"
-    assert out["unavailable_reasons"]==["no_licensed_ipa_to_ukrainian_mapping"]
+    assert out["target_analysis"][0]["reason"]=="grapheme_without_licensed_mapping"
+    assert out["unavailable_reasons"]==["grapheme_without_licensed_mapping"]
