@@ -305,6 +305,6 @@ The native output still has 238 non-exact paired occurrences. The most frequent 
 
 ## 9. Holdout exact-token overlap check
 
-The final 24-item NIKL holdout manifest was checked against the exact token field in all 2,703 occurrence rows of artifact 12559692692 (1,907 unique Hangul tokens). **Exact input overlap: 0/24.** An earlier candidate `앞` overlapped and was replaced with the NIKL Rule 9 example `꽃` before the final manifest was frozen. The manifest's Git blob SHA is `19ab5184192b21dc7f02873dcba8ac77a2b672f7`; the pinned check is recorded in [`research/ipa-holdout-overlap-validation-2026-10-24.json`](../research/ipa-holdout-overlap-validation-2026-10-24.json).
+The final 24-item NIKL holdout manifest was checked against the exact token field in all 2,703 occurrence rows of artifact 12559692692 (1,907 unique Hangul tokens). **Exact input overlap: 0/24.** An earlier candidate manifest contained lexicon and benchmark overlaps; the final set was rebuilt from additional NIKL rule examples. The manifest's Git blob SHA is `19ab5184192b21dc7f02873dcba8ac77a2b672f7`; the pinned check is recorded in [`research/ipa-holdout-overlap-validation-2026-10-24.json`](../research/ipa-holdout-overlap-validation-2026-10-24.json).
 
 This certifies exact-token disjointness from that benchmark artifact only. The holdout still has **0 IPA gold labels** and is not ready for scoring until two independent reviewers annotate and adjudicate it. Repository-hosted CI still needs to confirm the local runtime/fixture leakage validator.
