@@ -215,3 +215,49 @@ test("robots parser prefers Allow when allow and disallow rules have equal speci
   ].join("\n");
   assert.equal(robotsPathAllowed(robots, "https://www.korean.go.kr/same/path"), true);
 });
+
+
+test("repository-held NIKL HTML matches its complete metadata-only inventory manifest", async () => {
+  const sourceBuffer = await readFile(new URL("../한국어 어문 규범.htm", import.meta.url));
+  const html = sourceBuffer.toString("utf8");
+  const manifest = JSON.parse(await readFile(
+    new URL("../reports/nikl/standard-pronunciation-manifest.json", import.meta.url), "utf8",
+  ));
+  const parsed = parseNiklStandardHtml(html, DEFAULT_SOURCE_URL);
+
+  assert.equal(sha256(sourceBuffer), manifest.source.responseSha256);
+  assert.equal(sourceBuffer.length, manifest.source.responseBytes);
+  assert.equal(parsed.validation.complete, true);
+  assert.deepEqual(parsed.validation.missing, []);
+  assert.deepEqual(parsed.validation.duplicates, []);
+  assert.deepEqual(parsed.validation.unexpected, []);
+  assert.deepEqual(parsed.validation.incomplete, []);
+  assert.equal(manifest.inventory.expectedCount, 30);
+  assert.equal(manifest.inventory.extractedCount, 30);
+  assert.equal(manifest.inventory.complete, true);
+  assert.equal(manifest.articles.length, 30);
+  assert.deepEqual(parsed.articles.map(article => article.articleNumber),
+    Array.from({ length: 30 }, (_, index) => index + 1));
+  assert.deepEqual(parsed.articles.map(article => ({
+    articleNumber: article.articleNumber,
+    title: article.title,
+    anchorId: article.anchorId,
+    normalizedCharCount: article.normalizedCharCount,
+    extractionStatus: article.extractionStatus,
+    textSha256: article.textSha256,
+  })), manifest.articles.map(article => ({
+    articleNumber: article.articleNumber,
+    title: article.title,
+    anchorId: article.anchorId,
+    normalizedCharCount: article.normalizedCharCount,
+    extractionStatus: article.extractionStatus,
+    textSha256: article.textSha256,
+  })));
+
+  assert.equal(manifest.source.retrievalMode, "local-html-import");
+  assert.equal(manifest.source.httpStatus, null);
+  assert.equal(manifest.source.retrievedAt, null);
+  assert.equal(manifest.source.robots.decision, "not_checked_local_import");
+  assert.equal(manifest.source.termsReview, "not_assessed");
+  assert.ok(manifest.articles.every(article => !("sourceText" in article)));
+});
