@@ -183,7 +183,7 @@ def test_browser_and_python_renderers_match_on_shared_ipa_sequences():
             (
                 item["source_ipa"],
                 item["target_grapheme"],
-                item["status"],
+                item["mapping_status"],
                 item["mapping_id"],
             )
             for item in python["segments"]
