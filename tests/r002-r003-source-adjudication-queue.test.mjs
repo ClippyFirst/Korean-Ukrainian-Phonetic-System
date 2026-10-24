@@ -9,7 +9,7 @@ test('R002/R003 triage queue contains the intended 14 distinct source-review cas
   assert.equal(queue.cases.length, 14);
   assert.equal(queue.cases.filter((item) => item.ruleId === 'R002').length, 7);
   assert.equal(queue.cases.filter((item) => item.ruleId === 'R003').length, 7);
-  assert.match(queue.purpose, /not normative IPA gold/u);
+  assert.match(queue.purpose, /none is normative IPA gold/u);
   assert.match(queue.purpose, /not a holdout score set/u);
   assert.equal(queue.benchmark.workflowRun, 40092929978);
   assert.equal(queue.benchmark.artifactId, 12559692692);
