@@ -812,6 +812,7 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **Remaining blockers:** independent IPA adjudication; Ukrainian target-layer review; NIKL source reuse/terms and human clause-boundary review; specialist review of any future morphology-to-rule licensing; accuracy benchmarking against an adjudicated morphology corpus.
 - **Release classification:** research preview / partial prototype, not release-ready. Successful analyzer installation and tokenization do not prove phonological correctness or Ukrainian transcription accuracy.
 
+
 ## Continuation update — IPA→Ukrainian target abstention diagnostics (2026-10-24)
 
 **Status:** diagnostic implementation merged and CI-verified.  
@@ -828,3 +829,35 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **Release classification:** research preview / partial prototype, not release-ready. The diagnostic code is verified, but full Korean→Ukrainian accuracy is not: there is no independently adjudicated target-output gold set, and the 24-form list is not yet reproducibly committed.
 
 **Next acceptance gate:** find or recover the original 24-form list from a verifiable repository artifact/run input; add it as a tracked fixture without altering its membership; produce a per-form JSON/Markdown reconciliation; then resolve only evidence-supported phonology and target mappings.
+
+## Continuation update — IPA-first Ukrainian output renderer (2026-10-24)
+
+**Branch:** `feat/ipa-first-korean-target-renderer-2026-10-24`  
+**Prior merged diagnostic PR:** [#306](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/306), merge commit `d12b41b1440de27f54a7ff63340e164d7759b024`.
+
+- **Implemented; final-head CI pending:** added `src/korean_ukrainian/ipa_target_renderer.py`, which consumes source IPA only and produces Ukrainian practical orthography using the existing canonical correspondence table plus traceable sequence/allophone overrides in `data/korean/ipa_target_overrides.csv`.
+- **Architecture correction:** UPI 0.8.0 remains the external source for Ukrainian phoneme/features/grapheme metadata and candidate diagnostics. Korean-specific cross-language correspondences belong downstream in this repository. The optional UPI candidate score no longer determines or suppresses the actual IPA-derived output. `target_inventory_analysis` remains inspectable but is explicitly not the output source.
+- **Fail-closed boundaries:** diagnostic-only IPA remains blocked; an unmapped IPA fragment withholds the complete orthographic result; IPA length remains in the source IPA/trace but is not written as a target character. `ɰi → ий` is a provisional mapping and cannot bypass the native pronunciation-adjudication gate. `kʰjʌ → кхьо` remains explicitly provisional because its local target decision needs review against the general aspiration policy.
+- **Evidence added:** a Python regression checks the full 643-row canonical lexical corpus and 45 licensed alternate IPA readings against declared target outputs. A pre-CI deterministic simulation of the exact tracked CSV inputs found 643/643 primary rows and 45/45 alternates reproducible with zero mismatches after the explicit overrides; this simulation is not a substitute for the pending repository CI.
+- **DONE_VERIFIED on merged main:** PR #306's Python 3.11/3.12/3.13 tests, browser tests/build, system regression/data integrity, generated-artifact checks, optional g2pK integration, paired native-vs-g2pK and external UGTPHON diagnostic workflows passed. Its multi-engine IPA diagnostic benchmark subsequently completed successfully.
+- **BLOCKED separately:** UPI wheel-packaging PR [#10](https://github.com/ClippyFirst/Ukrainian-Phonetic-Inventory/pull/10) remains open. Its Actions run failed with no exposed job steps/logs, including after rerun; do not claim wheel validation. The Korean IPA output path no longer requires that package, but UPI diagnostics still do.
+- **Still TODO/BLOCKED:** the seven native strict Korean phonology cases remain unresolved and must not produce output. A 24-row input-only candidate reconstruction is present on PR #307's branch at `data/korean/benchmarks/target-renderer-holdout-24.csv`, with an audit runner at `scripts/audit_target_renderer_holdout_24.py`. This is not verified as the original frozen holdout: the original source artifact/manifest and an independent record of its membership were not located. The fixture now explicitly labels its provenance `reconstructed_unverified`; do not describe it as the exact original list until source identity is established. No IPA or Ukrainian gold labels are available. The new 643+45 corpus regression validates software consistency with declared project targets, not independent Ukrainian accuracy.
+
+**Acceptance for this branch:** final-head CI passes; the local renderer reproduces the 643 primary and 45 alternate target references; unresolved/diagnostic-only IPA remains withheld; the master matrix and target contract describe the actual code path. No target-accuracy or release-readiness claim is made until independent adjudication exists.
+
+
+### Provenance correction — 24-form holdout (2026-10-24)
+
+The PR #307 fixture must not be described as an exact restoration. The earlier merged PR #306 explicitly required the exact frozen list to be preserved as a tracked fixture, while the current mainline handoff still records that the exact list was not located. PR #307 introduced 24 candidate forms with status `restored_from_prior_handoff`, but its own notes say the original manifest was not found. That status overstated the available evidence. The fixture and its regression test now use `reconstructed_unverified` and explicitly identify the prior handoff text as the immediate provenance, not as the original source.
+
+**Acceptance still blocked:** locate a verifiable original artifact/run input or a historical tracked revision that establishes the exact membership and ordering; compare all 24 rows byte-for-byte/ID-for-ID where possible; preserve a source locator and hash; then generate the per-form report from that verified fixture. Until then, the current 24 rows are useful diagnostic candidates only and cannot support a claim that the original holdout has been restored.
+
+
+### Holdout diagnostic result — 2026-10-24
+
+The input-only candidate fixture is labelled `reconstructed_unverified`; its original source manifest and independent membership record remain unavailable. The successful optional g2pK workflow [run 40129831527](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527) generated reports for Python 3.11 ([artifact 12573827559](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527/artifacts/12573827559)) and Python 3.12 ([artifact 12574198636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527/artifacts/12574198636)). The fixture SHA-256 is `bd2dd4e28f40345a8aed50ec3ec24021efeaa9101bef7f943bed917a50ddaeeb`; neither IPA nor Ukrainian gold labels are available.
+
+- Native strict: **19/24 candidate outputs**; 5 forms withheld as `unresolved_korean_phonology`: `닭은`, `흙은`, `여덟은`, `긁개`, `끓이다`.
+- g2pK: **24/24 candidate outputs**. All 24 source IPA records are typed `ipa-derived-from-g2pk-surface-form`; target output statuses are 23 `model-selected` and 1 `provisional`. These are candidate outputs, not gold.
+- `뒷일` illustrates the distinction: primary IPA `ty.sil` yields `твісіл` provisionally; the explicit alternate IPA `twi.sil` yields the same target as a model-selected sequence mapping.
+- This candidate fixture's 5/19 split does **not** reconcile with the earlier 7-unresolved/17-target-inventory summary. The evidence cannot establish whether the discrepancy comes from input membership, engine state, or blocker taxonomy. Do not force counts or promote G2P output to normative truth. Full per-form evidence and provenance are in [`docs/HOLDOUT-24-PROVENANCE-AUDIT-2026-10-24.md`](HOLDOUT-24-PROVENANCE-AUDIT-2026-10-24.md).

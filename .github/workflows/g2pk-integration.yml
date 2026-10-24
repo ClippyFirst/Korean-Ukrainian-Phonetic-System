@@ -6,9 +6,32 @@ on:
       - "src/korean_ukrainian/api.py"
       - "src/korean_ukrainian/cli.py"
       - "src/korean_ukrainian/pipeline.py"
+      - "src/korean_ukrainian/ipa_target_renderer.py"
+      - "data/korean/canonical_correspondence.csv"
+      - "data/korean/ipa_target_overrides.csv"
+      - "data/korean/benchmarks/target-renderer-holdout-24.csv"
+      - "tests/test_ipa_target_renderer.py"
       - "pyproject.toml"
       - "data/korean/lexical_additions_2026-10-15-g2pk.csv"
       - "tests/test_g2pk_engine.py"
+      - "tests/test_target_renderer_holdout_24.py"
+      - "scripts/audit_target_renderer_holdout_24.py"
+      - ".github/workflows/g2pk-integration.yml"
+  push:
+    paths:
+      - "src/korean_ukrainian/g2pk_engine.py"
+      - "src/korean_ukrainian/api.py"
+      - "src/korean_ukrainian/cli.py"
+      - "src/korean_ukrainian/pipeline.py"
+      - "src/korean_ukrainian/ipa_target_renderer.py"
+      - "data/korean/canonical_correspondence.csv"
+      - "data/korean/ipa_target_overrides.csv"
+      - "data/korean/benchmarks/target-renderer-holdout-24.csv"
+      - "tests/test_ipa_target_renderer.py"
+      - "tests/test_g2pk_engine.py"
+      - "tests/test_target_renderer_holdout_24.py"
+      - "scripts/audit_target_renderer_holdout_24.py"
+      - "pyproject.toml"
       - ".github/workflows/g2pk-integration.yml"
   workflow_dispatch:
 jobs:
@@ -27,7 +50,14 @@ jobs:
           cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e ".[dev,g2pk]"
-      - run: python -m pytest tests/test_g2pk_engine.py
+      - run: python -m pytest tests/test_g2pk_engine.py tests/test_ipa_target_renderer.py tests/test_ukrainian_adapter.py tests/test_target_renderer_holdout_24.py
+      - name: Reproduce the 24-form target-renderer holdout
+        run: python scripts/audit_target_renderer_holdout_24.py --output "$RUNNER_TEMP/target-renderer-holdout-24.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: target-renderer-holdout-24-py${{ matrix.python-version }}
+          path: ${{ runner.temp }}/target-renderer-holdout-24.json
+          if-no-files-found: error
       - run: python -m pip wheel . --no-deps --wheel-dir dist
       - name: Verify sourced lexical data is included in the wheel
         run: |

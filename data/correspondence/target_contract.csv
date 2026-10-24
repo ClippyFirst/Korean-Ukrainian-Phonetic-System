@@ -1,2 +1,3 @@
 target_system,repository,expected_version,interface,source_of_truth
-ukrainian,ClippyFirst/Ukrainian-Phonetic-Inventory,0.8.0,IPA-features-candidates-orthography,external repository
+ukrainian_inventory,ClippyFirst/Ukrainian-Phonetic-Inventory,0.8.0,phoneme-features-grapheme-metadata-candidate-analysis,external repository
+korean_ipa_to_ukrainian,ClippyFirst/Korean-Ukrainian-Phonetic-System,0.1.0,IPA-sequence-to-practical-graphemes,data/korean/canonical_correspondence.csv+data/korean/ipa_target_overrides.csv

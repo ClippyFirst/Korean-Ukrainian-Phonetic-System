@@ -31,3 +31,19 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm test
       - run: npm run build
+
+  wheel-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install build
+      - run: python -m build --wheel
+      - name: Verify IPA target data in a clean wheel installation
+        run: |
+          python -m venv "$RUNNER_TEMP/korean-ua-wheel"
+          "$RUNNER_TEMP/korean-ua-wheel/bin/python" -m pip install dist/*.whl
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/korean-ua-wheel/bin/python" -c "from korean_ukrainian.ipa_target_renderer import render_ipa_sequence_to_ukrainian as render; a=render('k.a'); b=render('kʰjʌ'); assert a['ukrainian_orthography']=='ка' and len(a['segments'])==2; assert b['ukrainian_orthography']=='кхьо' and b['status']=='provisional'; print('wheel IPA target data OK')"

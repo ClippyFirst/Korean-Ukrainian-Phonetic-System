@@ -120,3 +120,25 @@ The collector first checks `robots.txt`; each attempt then stopped because the o
 The official NIKL page is discoverable through the public search index, but a direct open of the indexed official URL also returned HTTP 403 in the web retrieval environment. Search-index excerpts can support narrowly cited rule lookups, but cannot substitute for the crawler's complete response body, verified article 1–30 reconciliation, source response hash, or article-level hashes. No proxy, alternate mirror, forged user-agent, or other access-control bypass was attempted.
 
 **Status correction:** the NIKL gate is now `BLOCKED_EXTERNAL_ACCESS` with reproducible evidence, not merely `skipped`. Acceptance requires a permitted direct retrieval of the official page (or an official export provided through an authorized channel), a complete 30-article inventory with zero missing/duplicate/incomplete records, a valid metadata manifest and hashes, and an artifact/log audit. Preserve metadata-only retention; do not persist article text until applicable reuse terms are reviewed.
+
+
+## Execution update — output-path correction (2026-10-24)
+
+The missing target-inventory dependency was a software architecture blocker, not evidence that every resolved IPA string lacked a Ukrainian correspondence. The Korean repository already owns source-specific correspondence data; UPI's role is target phoneme/features/grapheme metadata, not a complete Korean mapping table.
+
+- Added the IPA-only renderer `src/korean_ukrainian/ipa_target_renderer.py` and explicit overrides `data/korean/ipa_target_overrides.csv`.
+- The renderer's input is IPA, and output includes mapping IDs, source references, scope, status, syllable indices, and ignored-length-marker metadata. Missing IPA fragments cause a full-word abstention.
+- A deterministic pre-CI simulation of the tracked canonical corpus showed 643/643 primary and 45/45 alternate outputs match the declared target references. This is a reproducibility check, not an independent linguistic gold score; final-head CI remains pending.
+- The seven native strict unresolved phonology cases remain blocked. A 24-row input-only candidate reconstruction is present on this PR branch at `data/korean/benchmarks/target-renderer-holdout-24.csv`, labelled `reconstructed_unverified`. The original source manifest and independent membership record were not found, so this is not verified as the original frozen holdout. The audit script records native/G2P IPA and target statuses, but no IPA or Ukrainian gold labels are available, so target accuracy remains unscored.
+- The provisional target rules `ɰi → ий` and `kʰjʌ → кхьо` are explicit and traceable; the former cannot bypass the unresolved-IPA gate. The latter remains a target-policy review item because it is a specific exception within the broader aspiration-neutralization policy.
+- UPI wheel packaging PR [#10](https://github.com/ClippyFirst/Ukrainian-Phonetic-Inventory/pull/10) remains unverified because the Actions run failed without exposed job steps/logs.
+
+
+### Holdout diagnostic result — 2026-10-24
+
+The input-only candidate fixture is labelled `reconstructed_unverified`; its original source manifest and independent membership record remain unavailable. The successful optional g2pK workflow [run 40129831527](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527) generated reports for Python 3.11 ([artifact 12573827559](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527/artifacts/12573827559)) and Python 3.12 ([artifact 12574198636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527/artifacts/12574198636)). The fixture SHA-256 is `bd2dd4e28f40345a8aed50ec3ec24021efeaa9101bef7f943bed917a50ddaeeb`; neither IPA nor Ukrainian gold labels are available.
+
+- Native strict: **19/24 candidate outputs**; 5 forms withheld as `unresolved_korean_phonology`: `닭은`, `흙은`, `여덟은`, `긁개`, `끓이다`.
+- g2pK: **24/24 candidate outputs**. All 24 source IPA records are typed `ipa-derived-from-g2pk-surface-form`; target output statuses are 23 `model-selected` and 1 `provisional`. These are candidate outputs, not gold.
+- `뒷일` illustrates the distinction: primary IPA `ty.sil` yields `твісіл` provisionally; the explicit alternate IPA `twi.sil` yields the same target as a model-selected sequence mapping.
+- This candidate fixture's 5/19 split does **not** reconcile with the earlier 7-unresolved/17-target-inventory summary. The evidence cannot establish whether the discrepancy comes from input membership, engine state, or blocker taxonomy. Do not force counts or promote G2P output to normative truth. Full per-form evidence and provenance are in [`docs/HOLDOUT-24-PROVENANCE-AUDIT-2026-10-24.md`](HOLDOUT-24-PROVENANCE-AUDIT-2026-10-24.md).

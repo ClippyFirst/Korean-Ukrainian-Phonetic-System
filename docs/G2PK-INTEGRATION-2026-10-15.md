@@ -32,14 +32,17 @@ The browser port preserves punctuation, whitespace, Latin text, and digits throu
       → optional Python g2pK 0.9.4 (prescriptive by default)
       → Korean surface spelling
       → project IPA renderer
-      → exact source-backed corrections when licensed
-      → project Ukrainian target inventory
+      → local Korean-specific IPA correspondence table
+      → Ukrainian practical orthography
+      ↘ optional UPI target-inventory candidate diagnostics
 
-The native Python target adapter depends on the separate `ClippyFirst/Ukrainian-Phonetic-Inventory` repository, expected version `0.8.0`. It is deliberately not vendored here or added as a private VCS dependency. In a development checkout where both repositories are sibling directories, install it into the same environment:
+The actual Python output renderer is `korean_ukrainian.ipa_target_renderer`. It consumes IPA only and uses this repository's `canonical_correspondence.csv` plus explicit `ipa_target_overrides.csv` sequence/allophone mappings. The separate `ClippyFirst/Ukrainian-Phonetic-Inventory` repository (expected version `0.8.0`) remains optional for Ukrainian phoneme/features/grapheme metadata and candidate diagnostics; its heuristic candidate ranking does not determine output.
+
+In a development checkout where both repositories are sibling directories, install UPI into the same environment if target-inventory diagnostics are needed:
 
     python -m pip install -e ../Ukrainian-Phonetic-Inventory
 
-If the shared inventory is unavailable, native Korean surface/IPA analysis still runs, but Ukrainian orthography is returned as unresolved/unavailable. A stored `target_syllables` value is retained only as a comparison reference; it must not override the IPA-derived adapter result.
+Without UPI, IPA-derived output can still be generated for fully mapped IPA sequences. Missing/conflicting IPA correspondences fail closed. A stored `target_syllables` value is retained only as a comparison reference; it must not override the IPA-derived result.
 
 Install the optional g2pK dependency on a compatible Python environment with:
 
@@ -83,13 +86,13 @@ The public UI now identifies exact NIKL-backed surface corrections and still war
 
 ## Shared target-rendering ownership — 2026-10-24
 
-The Python g2pK adapter is a pronunciation provider, not the owner of Ukrainian rendering. `transliterate_with_g2pk()` delegates to `pipeline.render_ipa_analysis_to_ukrainian()`, the shared ClippyFirst core boundary also available to other pronunciation engines. That core performs IPA-to-target mapping, candidate selection, Ukrainian orthographic rendering, punctuation preservation, and fail-closed handling when per-word IPA analyses do not align with the surface text.
+The Python g2pK adapter is a pronunciation provider, not the owner of Ukrainian rendering. `transliterate_with_g2pk()` delegates to `pipeline.render_ipa_analysis_to_ukrainian()`, the shared ClippyFirst core boundary also available to other pronunciation engines. That boundary calls the IPA-only local correspondence renderer for the actual Ukrainian output and retains UPI candidate analysis as a separate diagnostic.
 
 Acceptance checks:
 - external G2P adapters provide surface pronunciation and IPA analysis only;
-- target mapping and Ukrainian orthography remain in the ClippyFirst core;
+- actual Ukrainian output is generated from IPA sequence mappings, never from Hangul/Jamo lookup or UPI heuristic ranking;
 - punctuation and spacing are preserved;
-- missing/misaligned IPA word analyses never produce a partial string presented as a complete result;
-- the native pipeline and external G2P paths use the same `render_sequence()` orthographic primitive.
+- diagnostic-only/unresolved IPA, missing/conflicting IPA correspondences, and misaligned word analyses never produce a partial string presented as a complete result;
+- native and external G2P paths use the same IPA→Ukrainian correspondence renderer.
 
-This is an architecture correction, not a claim that the external pronunciation engine or Ukrainian target mapping is independently linguistically validated.
+The G2P adapter also propagates lexical IPA rows marked `diagnostic_only_unresolved_pronunciation`; those rows cannot be promoted to Ukrainian output merely because a G2P surface or a target mapping exists. This is an architecture correction, not a claim that the external pronunciation engine or Ukrainian target mapping is independently linguistically validated.
