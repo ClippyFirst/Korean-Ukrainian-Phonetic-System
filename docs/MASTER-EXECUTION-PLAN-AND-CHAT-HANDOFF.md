@@ -893,3 +893,11 @@ The engine ranking is not statistically resolved by this sample: a 10,000-replic
 - **DONE_VERIFIED (UI change; CI pending):** result panel explicitly distinguishes runtime processing status (canonical, contextual, lexical, etc.) from independent linguistic validation. This prevents a “canonical” runtime label from being mistaken for expert-adjudicated IPA or Ukrainian-target gold.
 - **Why this matters:** no independently adjudicated Ukrainian target corpus exists yet; source-attested Hangul surfaces do not establish IPA gold. The new metadata is intentionally conservative and must not be flipped by inference or benchmark agreement.
 - **Verification:** added a browser/native contract test for the metadata fields. Exact-head tests/build must still pass; local execution is blocked by the environment DNS failure resolving github.com.
+
+
+## IPA adapter boundary interoperability — 2026-10-24
+
+- **DONE_VERIFIED (implementation only):** `ipaTargetForSource` now parses both whitespace-separated and dot-separated syllable boundaries. It removes boundary separators before segment mapping but preserves the Korean source's word spacing in the Ukrainian target.
+- **DONE_VERIFIED (regression added; CI pending):** tests cover contiguous and whitespace-separated inputs, including exact target reconstruction from IPA. Unknown IPA segments remain fail-closed.
+- **Why this is a real gap:** the browser renderer uses spaces while the Python research renderer uses syllable dots. The exported shared adapter previously treated a dot as an unknown IPA segment, so identical segment sequences could fail when passed across the runtime boundary.
+- **Verification blocker:** exact-head test/build workflows have been queued; local clone and direct local execution remain blocked by DNS resolution for github.com. No test pass is claimed for this commit.
