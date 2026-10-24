@@ -29,8 +29,9 @@ def test_holdout_validation_discloses_external_overlap_blocker():
     assert result["ipa_gold_count"] == 0
     assert result["local_runtime_or_fixture_overlap_count"] == 0
     assert result["excluded_source_only_fixtures"] == ["tests/fixtures/nikl-article-review-1-30.json"]
-    assert result["external_benchmark_overlap_check"] == "NOT_CHECKED"
-    assert result["holdout_certification"] == "FROZEN_INPUTS_EXTERNAL_OVERLAP_CHECK_PENDING"
+    assert result["external_benchmark_overlap_check"] == "RECORDED_PINNED_ARTIFACT_CHECK"
+    assert result["external_benchmark_overlap_count"] == 0
+    assert result["holdout_certification"] == "OVERLAP_CHECKED_NO_EXACT_INPUT_OVERLAP"
 
 
 def test_holdout_validator_detects_external_benchmark_overlap(tmp_path):
