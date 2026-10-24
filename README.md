@@ -87,14 +87,11 @@ The browser preserves Latin text, digits, punctuation, and whitespace. The pract
 
 ### Python / CLI / API
 
-The native Python research pipeline uses the separate `ClippyFirst/Ukrainian-Phonetic-Inventory` package (expected version `0.8.0`) for IPA-to-Ukrainian target selection. It is not bundled or duplicated in this repository. In a development environment with both repositories checked out as siblings, install the shared inventory into the same virtual environment:
+The native Python research pipeline uses the **author-owned ClippyFirst IPA-to-Ukrainian renderer** in `src/korean_ukrainian/ipa_target_renderer.py` for practical output. It consumes source IPA only and applies this repository's canonical correspondence table plus explicit, traceable sequence overrides. The separate `ClippyFirst/Ukrainian-Phonetic-Inventory` package (expected version `0.8.0`) remains optional and is used only for Ukrainian feature/candidate diagnostics, never to choose the practical output. See [the target-layer contract](docs/ukrainian-target-layer.md).
 
-```sh
-python -m pip install -e ../Ukrainian-Phonetic-Inventory
-python -m pip install -e ".[all]"
-```
+The browser renderer uses a generated projection of the same two CSV sources; it carries mapping IDs/statuses into the trace and reports provisional target mappings separately from Korean pronunciation status. Regenerate with `npm run generate:ipa-target-data` and verify no drift with `npm run check:ipa-target-data` (also enforced by Python tests).
 
-Without that package, the native engine still exposes Korean surface/IPA analysis but leaves Ukrainian output unresolved; stored lexical Ukrainian forms are audit references only and are never used as a Hangul-keyed fallback.
+A clean installation can therefore render IPA sequences covered by local correspondence data without UPI. If UPI is unavailable, its candidate-analysis diagnostics are marked unavailable separately; this does not make unmapped IPA renderable or validate the Ukrainian mapping linguistically. Stored lexical Ukrainian forms remain audit references only and never bypass the IPA boundary.
 
 **Native IPA status contract:** `phoneticize_korean()` and `transliterate_korean()` expose `ipa_status`, `ipa_is_diagnostic_only`, and `ipa_status_reason` at the analysis root and mirror equivalent `status`, `is_diagnostic_only`, and `status_reason` fields inside the IPA object. When a source/morphology-dependent context cannot be resolved, the IPA string remains available for inspection but is explicitly marked `diagnostic_only_unresolved_pronunciation`; Ukrainian target selection is blocked and the rendered target is `null`. Otherwise the result is `provisional`, not expert-adjudicated gold. Consumers must check the status fields rather than treating the presence of an IPA string as proof of a resolved pronunciation.
 

@@ -7,7 +7,7 @@ import {
 } from './engine_shared.js';
 import { applyContextualRules } from './engine_rules_ctx.js';
 import { applyPhraseBoundaryAssimilation } from './engine_rules_phrase.js';
-import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource, IPA_TO_UKRAINIAN } from './engine_ipa.js';
+import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource, IPA_TO_UKRAINIAN, traceIpaMappingDetailed } from './engine_ipa.js';
 import { lexicalResult, firstSyllableInWord, genericVowelVariants } from './engine_lexical.js';
 import { practicalStatusForUnit, softStatusForUnit } from './soft_morphology.js';
 
@@ -46,14 +46,25 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
               result.surfaceHangul=sourceSurface===part?'':sourceSurface;
             }
             if(/^[가-힣]+$/u.test(part)&&sourceIpa.length===[...part].length&&sourceIpa.every(Boolean)){
-              const mapped=ipaSyllablesToUkrainian(sourceIpa);
+              const mapped=ipaSyllablesToUkrainian(sourceIpa,{allowProvisional:true});
               if(!mapped.unknown){
+                const mappedSegments=sourceIpa.map(ipa=>traceIpaMappingDetailed(ipa));
                 result.ipa=sourceIpa.join(' ');
                 result.ukrainian=mapped.syllables.join('');
+                result.target_status=mapped.status;
                 let index=0;
                 for(const item of result.trace||[]){
                   if(item.status==='literal')continue;
-                  if(index<sourceIpa.length)item.ipa=sourceIpa[index++];
+                  if(index<sourceIpa.length){
+                    const target=mappedSegments[index];
+                    item.ipa=sourceIpa[index];
+                    item.output=target.tokens.map(token=>token.ukrainian).join('');
+                    item.targetStatus=target.status;
+                    item.targetReason=target.reason||null;
+                    item.targetMappings=target.tokens;
+                    item.targetFeatures=target.features;
+                    index++;
+                  }
                 }
               }else{
                 result.issues=[...(result.issues||[]),part+': sourced lexical IPA contains an unmapped segment "'+mapped.unknown+'".'];
@@ -85,6 +96,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         }))),
         trace:results.flatMap(r=>r.trace||[]),
         issues,
+        target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
         status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical'
       };
     }
@@ -243,16 +255,36 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       if(fortisIpa)unitIpa=fortisIpa+vowelIpa+(c?.ipa||'');
     }
     ipa[i]=unitIpa;
-    const targetFromIpa=ipaSyllableToUkrainian(unitIpa);
-    if(targetFromIpa.unknown){
-      issues.push(u.char+': IPA segment has no Ukrainian mapping: '+targetFromIpa.unknown);
+    const targetMapping=traceIpaMappingDetailed(unitIpa);
+    const targetCandidateText=targetMapping.tokens.map(token=>token.ukrainian).join('');
+    // This is the research-preview UI: show a declared candidate when useful,
+    // but preserve provisional status so it is never represented as adjudicated.
+    // Strict consumers can use ipaTargetForSource() without allowProvisional.
+    const provisionalTarget=targetMapping.status==='provisional';
+    const targetFromIpa={
+      text:targetCandidateText,
+      candidateText:provisionalTarget?targetCandidateText:null,
+      unknown:targetMapping.unknown,
+      status:targetMapping.status,
+      candidateStatus:provisionalTarget?'provisional':null,
+      reason:targetMapping.reason
+    };
+    if(targetFromIpa.unknown || targetFromIpa.status==='unavailable'){
+      issues.push(u.char+': IPA target mapping unavailable ('+(targetFromIpa.reason||'unmapped_ipa_sequence')+'): '+(targetFromIpa.unknown||'(empty IPA)'));
       output[i]=preserveUnresolvedSource?'⟦'+u.char+'⟧':'';
       status='unresolved';
     }else{
       output[i]=targetFromIpa.text;
     }
     analysis[i]=u.char+'['+(u.onset||'')+'+'+(u.vowel||'')+(u.coda?'+'+u.coda:'')+']';
-    trace[i]={source:u.char,surface:compose(u.onset,u.vowel,u.coda||''),status,rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa};
+    trace[i]={
+      source:u.char,surface:compose(u.onset,u.vowel,u.coda||''),status,
+      rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa,
+      targetStatus:targetFromIpa.status,
+      targetReason:targetFromIpa.reason||null,
+      targetMappings:targetMapping.tokens,
+      targetFeatures:targetMapping.features
+    };
   }
 
   if(!units.some(u=>u.type==='hangul')&&!units.some(u=>u.type==='jamo')&&!skipLexicon)issues.push('Input contains no Hangul syllable; pronunciation cannot be generated.');
@@ -277,6 +309,13 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // result boundary. Phrase conversion still preserves surrounding resolved
   // words because the phrase path recursively converts each token.
   const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
+  const target_status=unresolvedWholeHangulToken||!hasHangulSyllables
+    ? 'unavailable'
+    : trace.some(item=>item?.targetStatus==='unavailable'||item?.status==='unresolved')
+      ? 'unavailable'
+      : trace.some(item=>item?.targetStatus==='provisional')
+        ? 'provisional'
+        : 'model-selected';
   return{
     source:text,
     surfaceHangul:recomposed===originalHangul?'':recomposed,
@@ -286,7 +325,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     trace,
     variants:unresolvedWholeHangulToken?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status),
     issues,
-    status
+    status,
+    target_status
   };
 }
 

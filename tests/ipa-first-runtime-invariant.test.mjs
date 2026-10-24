@@ -64,7 +64,7 @@ test('every unique Hangul token in the integrated NIKL passage has Ukrainian out
       continue;
     }
 
-    const adapted = ipaTargetForSource(token, result.ipa);
+    const adapted = ipaTargetForSource(token, result.ipa, {allowProvisional:true});
     if (adapted.unknown || adapted.text !== result.ukrainian) {
       failures.push({
         token,
@@ -79,7 +79,7 @@ test('every unique Hangul token in the integrated NIKL passage has Ukrainian out
     }
 
     for (const variant of result.variants || []) {
-      const variantAdapted = ipaTargetForSource(token, variant.ipa);
+      const variantAdapted = ipaTargetForSource(token, variant.ipa, {allowProvisional:true});
       if (variantAdapted.unknown || variantAdapted.text !== variant.ukrainian) {
         failures.push({
           token,
@@ -114,7 +114,7 @@ test('every Hangul-only lexical entry and licensed alternate is reproducible fro
 
   for (const row of rows) {
     const result = engine.convert(row.input);
-    const adapted = ipaTargetForSource(row.input, result.ipa);
+    const adapted = ipaTargetForSource(row.input, result.ipa, {allowProvisional:true});
     if (result.status === 'unresolved' || adapted.unknown || adapted.text !== result.ukrainian) {
       failures.push({
         input: row.input,
@@ -128,7 +128,7 @@ test('every Hangul-only lexical entry and licensed alternate is reproducible fro
       });
     }
     for (const variant of result.variants || []) {
-      const variantAdapted = ipaTargetForSource(row.input, variant.ipa);
+      const variantAdapted = ipaTargetForSource(row.input, variant.ipa, {allowProvisional:true});
       if (variantAdapted.unknown || variantAdapted.text !== variant.ukrainian) {
         failures.push({
           input: row.input,
@@ -202,14 +202,15 @@ test('single Jamo inside square-bracket pronunciation notation is preserved in t
 });
 
 test('IPA-derived targets preserve whitespace and align multiword inputs without guessing missing IPA', () => {
-  assert.deepEqual(ipaTargetForSource('국립 국어원', 'kuŋ nim k͈u ɡʌ wʌn'), {
-    text: 'куннім куґовон',
-    syllables: ['кун', 'нім', 'ку', 'ґо', 'вон'],
-    unknown: '',
-  });
-  assert.deepEqual(ipaTargetForSource('가', '💥'), {
-    text: '',
-    syllables: [''],
-    unknown: '💥',
-  });
+  const multiword = ipaTargetForSource('국립 국어원', 'kuŋ nim k͈u ɡʌ wʌn');
+  assert.equal(multiword.text, 'куннім куґовон');
+  assert.deepEqual(multiword.syllables, ['кун', 'нім', 'ку', 'ґо', 'вон']);
+  assert.equal(multiword.unknown, '');
+  assert.equal(multiword.status, 'model-selected');
+
+  const unknown = ipaTargetForSource('가', '💥');
+  assert.equal(unknown.text, '');
+  assert.deepEqual(unknown.syllables, ['']);
+  assert.equal(unknown.unknown, '💥');
+  assert.equal(unknown.status, 'unavailable');
 });
