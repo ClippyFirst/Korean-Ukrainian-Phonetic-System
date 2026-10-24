@@ -37,7 +37,11 @@ test('R002/R003 triage queue contains the intended 14 distinct source-review cas
       assert.equal(item.sourceAccessed, '2026-10-24', item.input + ': access date required');
       assert.match(item.sourceType, /official/u, item.input + ': source type must be recorded');
     }
-    assert.equal(item.grammaticalSegmentation, null, item.input + ': do not guess morphology');
+    if (item.sourceStatus === 'PENDING_EXACT_FORM_SOURCE') {
+      assert.equal(item.grammaticalSegmentation, null, item.input + ': do not guess morphology before exact-form source review');
+    } else {
+      assert.ok(item.grammaticalSegmentation, item.input + ': source-backed morphological note required');
+    }
     assert.equal(item.finalBroadIpa, null, item.input + ': no independent IPA gold exists yet');
     if (item.relatedSourceEvidence) {
       assert.ok(item.relatedSourceEvidence.length > 0, item.input + ': related source evidence must be an array');
