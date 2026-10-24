@@ -19,7 +19,7 @@ The saved official HTML was reviewed at the article-structure level for all 30 r
 
 ## Article-by-article review ledger
 
-The detailed normative lead-ins and separately stored explanatory paragraphs are in the JSON fixture. The established implementation/positive-negative test inventory remains in [the existing 30-article audit](NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md), especially its **Article-by-article coverage map** and **Machine-checked article coverage ledger**. This pass preserves those tests rather than duplicating a second engine corpus.
+The detailed normative lead-ins and separately stored explanatory paragraphs are in the JSON fixture. A new cross-rule engine regression, [`tests/nikl-human-review-surface-regression.test.mjs`](../tests/nikl-human-review-surface-regression.test.mjs), pins 19 NIKL-backed surface/IPA pairs plus optional-reading metadata; it intentionally leaves Ukrainian target gold separate. The established implementation/positive-negative test inventory remains in [the existing 30-article audit](NIKL-STANDARD-PRONUNCIATION-AUDIT-2026-10-09.md), especially its **Article-by-article coverage map** and **Machine-checked article coverage ledger**. This pass preserves those tests rather than duplicating a second engine corpus.
 
 | Articles | Human-review finding | Existing regression evidence to preserve |
 |---|---|---|
@@ -33,7 +33,7 @@ The detailed normative lead-ins and separately stored explanatory paragraphs are
 
 ## Status and limits
 
-- **DONE_VERIFIED:** all 30 normative article lead-ins and their separate first explanatory paragraphs are captured from the committed HTML snapshot; the new test compares them byte-for-byte after conservative HTML text normalization.
+- **DONE_VERIFIED:** all 30 normative article lead-ins and their separate first explanatory paragraphs are captured from the committed HTML snapshot; the new test compares the normalized text exactly.
 - **DONE_VERIFIED (existing work preserved):** the earlier article-level audit and the rule-specific engine regression suites already cover the listed examples and many negative controls. They were not replaced with a parallel corpus.
 - **PARTIAL:** this pass does not claim a fresh expert adjudication of every subparagraph/table example, independently gold IPA for every case, or independent Ukrainian-target validation. The detailed rule tests remain the pronunciation acceptance layer; the new test validates source structure and the normative/explanatory boundary.
 - **BLOCKED for live-source verification:** an earlier official-site crawl was blocked by HTTP 403 in automation. The checked-in official-source HTML is the reproducible input for this review; no access-control workaround was attempted.
@@ -42,7 +42,7 @@ The detailed normative lead-ins and separately stored explanatory paragraphs are
 ## Verification command
 
 ```sh
-node --test tests/nikl-article-review-1-30.test.mjs
+node --test tests/nikl-article-review-1-30.test.mjs tests/nikl-human-review-surface-regression.test.mjs
 ```
 
 The repository's full release gate remains `npm run check:release`; it has not been run by this remote GitHub-only edit.
