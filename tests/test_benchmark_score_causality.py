@@ -129,3 +129,13 @@ def test_broad_profile_can_separate_symbol_convention_from_raw_exact_match():
     broad = normalize_ipa_profile(row["gold"], BROAD_PROFILE)
     assert legacy != normalize_ipa_profile(row["native"]["ipa"], LEGACY_PROFILE)
     assert broad == normalize_ipa_profile(row["native"]["ipa"], BROAD_PROFILE)
+
+
+
+def test_symbol_profile_uses_selected_ipa_comparison_profile():
+    row = _occurrence("dc_inside_11", "꽃", "ɭa", "scored", False, 1, False, 1)
+    row["native"]["ipa"] = "la"
+    legacy = _symbol_error_profile([row], "native", profile=LEGACY_PROFILE)
+    broad = _symbol_error_profile([row], "native", profile=BROAD_PROFILE)
+    assert legacy["nonexact_occurrences_aligned"] == 1
+    assert broad["nonexact_occurrences_aligned"] == 0
