@@ -832,3 +832,7 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **TODO:** find exact-form source evidence for the other 11 forms; complete two independent broad-IPA reviews for all accepted variants; freeze the holdout only after adjudication.
 - **Important design note:** `멋있어` has two official pronunciation variants, [머디써] and [머시써]. A benchmark with one string as sole gold could mis-score a valid variant unless its acceptance policy is explicit.
 - **CI:** latest source/test changes are on the existing research branch and require new exact-head CI; earlier green runs predate these latest commits and do not verify the updated queue test.
+
+
+- **Related-source search expanded:** component/rule evidence is also recorded for `되었어` (dictionary `되다` lists `되어/돼` forms), `붙어야` (dictionary `붙어[부터]`), `쌓아서` (dictionary `쌓아[싸아]` plus Article 12 ㅎ-deletion explanation), and `좋은데` (dictionary `좋은[조ː은]`). These do not count as exact-form adjudication; those cases remain pending.
+- **Current evidence count:** 3 exact-form official source records, 4 related component/rule evidence records, and 7 forms without source evidence recorded in this search pass. All 14 still need broad-IPA adjudication; none has final IPA gold.
