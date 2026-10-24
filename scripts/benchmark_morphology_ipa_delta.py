@@ -61,6 +61,84 @@ def _metrics(rows: list[dict[str, Any]], attempted: int) -> dict[str, Any]:
     }
 
 
+def _score_paired_primary_reference(prediction: str, gold_raw: str) -> dict[str, Any]:
+    """Score a paired comparison against one fixed primary reference variant.
+
+    Exact match accepts any explicitly listed gold variant. CER uses the first
+    variant for every strategy, keeping the denominator identical within a
+    paired subset instead of allowing each engine to choose a different-length
+    closest reference.
+    """
+    predicted = normalize_ipa(prediction)
+    variants = _gold_variants(gold_raw)
+    if not variants:
+        raise ValueError("no usable IPA gold variants")
+    primary = variants[0]
+    return {
+        "normalized_predicted": predicted,
+        "closest_normalized_gold": primary,
+        "distance": edit_distance(predicted, primary),
+        "exact": predicted in variants,
+        "reference_length": len(primary),
+    }
+
+
+def _paired_comparison(
+    scores_by_strategy: dict[str, list[dict[str, Any]]],
+    attempted: int,
+    baseline: str,
+    candidate: str,
+) -> dict[str, Any]:
+    """Summarize strategies on the same occurrences and fixed CER references."""
+    baseline_rows = scores_by_strategy[baseline]
+    candidate_rows = scores_by_strategy[candidate]
+    if len(baseline_rows) != len(candidate_rows):
+        raise ValueError("paired strategy scores must have identical occurrence counts")
+    count = len(baseline_rows)
+    base_metrics = _metrics(baseline_rows, attempted)
+    candidate_metrics = _metrics(candidate_rows, attempted)
+    exact_wins = exact_losses = distance_wins = distance_losses = ties = 0
+    for base, cand in zip(baseline_rows, candidate_rows):
+        if bool(cand["exact"]) and not bool(base["exact"]):
+            exact_wins += 1
+        elif bool(base["exact"]) and not bool(cand["exact"]):
+            exact_losses += 1
+        if int(cand["distance"]) < int(base["distance"]):
+            distance_wins += 1
+        elif int(cand["distance"]) > int(base["distance"]):
+            distance_losses += 1
+        else:
+            ties += 1
+    exact_delta = (
+        candidate_metrics["exact_match_rate"] - base_metrics["exact_match_rate"]
+        if candidate_metrics["exact_match_rate"] is not None and base_metrics["exact_match_rate"] is not None
+        else None
+    )
+    cer_delta = (
+        candidate_metrics["character_error_rate"] - base_metrics["character_error_rate"]
+        if candidate_metrics["character_error_rate"] is not None and base_metrics["character_error_rate"] is not None
+        else None
+    )
+    return {
+        "baseline": baseline,
+        "candidate": candidate,
+        "paired_occurrences_scored_by_both": count,
+        "baseline_metrics": base_metrics,
+        "candidate_metrics": candidate_metrics,
+        "exact_rate_delta_candidate_minus_baseline": round(exact_delta, 6) if exact_delta is not None else None,
+        "cer_delta_candidate_minus_baseline": round(cer_delta, 6) if cer_delta is not None else None,
+        "occurrence_outcomes": {
+            "candidate_exact_wins": exact_wins,
+            "candidate_exact_losses": exact_losses,
+            "candidate_lower_edit_distance": distance_wins,
+            "candidate_higher_edit_distance": distance_losses,
+            "equal_edit_distance": ties,
+        },
+        "cer_contract": "fixed first listed gold IPA variant per occurrence; identical denominator across paired strategies",
+        "interpretation": "positive exact delta favors candidate; negative CER delta favors candidate",
+    }
+
+
 def _native_prediction(
     fn: Callable[..., dict[str, Any]], word: str, mode: str,
     rule_licenses: list[str] | None = None,
@@ -351,6 +429,44 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
         score.update({"row_id": occurrence["row_id"], "word": word, "gold": occurrence["gold"]})
         boundary_gated_scored.append(score)
     boundary_gated_metrics = _metrics(boundary_gated_scored, len(occurrences))
+
+    # Fair three-way ablation: compare strict, soft and boundary-gated outputs
+    # only where all three strategies return a scorable IPA prediction. For
+    # CER, use the same primary reference variant for each strategy/occurrence.
+    triad_scores: dict[str, list[dict[str, Any]]] = {
+        "strict": [], "soft": [], "boundary_gated": [],
+    }
+    triad_occurrences = 0
+    for occurrence in occurrences:
+        word = occurrence["word"]
+        predictions = {
+            "strict": native["strict"].get(word),
+            "soft": native["soft"].get(word),
+            "boundary_gated": boundary_gated_predictions.get(word),
+        }
+        if any(not pred or pred.get("unresolved") or not pred.get("ipa") for pred in predictions.values()):
+            continue
+        triad_occurrences += 1
+        for strategy, pred in predictions.items():
+            score = _score_paired_primary_reference(pred["ipa"], occurrence["gold"])
+            score.update({"row_id": occurrence["row_id"], "word": word, "gold": occurrence["gold"]})
+            triad_scores[strategy].append(score)
+    triad_comparison = {
+        "scored_occurrences_by_all_three": triad_occurrences,
+        "boundary_gated_vs_strict": _paired_comparison(
+            triad_scores, triad_occurrences, "strict", "boundary_gated"
+        ),
+        "boundary_gated_vs_soft": _paired_comparison(
+            triad_scores, triad_occurrences, "soft", "boundary_gated"
+        ),
+        "soft_vs_strict": _paired_comparison(
+            triad_scores, triad_occurrences, "strict", "soft"
+        ),
+        "interpretation": (
+            "paired diagnostic only; strict, soft and boundary-gated are scored on the same "
+            "occurrences; exact accepts any listed variant while CER uses the first listed variant"
+        ),
+    }
     boundary_gated_changed_vs_strict = [
         word for word in unique_words
         if (
@@ -435,6 +551,7 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
                 "changed_examples_vs_strict": boundary_gated_changed_examples,
                 "selected_native_soft_rule_licenses": selected_licenses,
                 "suppressed_native_soft_rule_licenses": suppressed_licenses,
+                "paired_comparison": triad_comparison,
                 "runtime_errors_unique_words": len(boundary_gated_errors),
                 "runtime_error_examples": dict(list(boundary_gated_errors.items())[:20]),
                 "interpretation": (
