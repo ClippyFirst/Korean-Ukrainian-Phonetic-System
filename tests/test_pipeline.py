@@ -214,17 +214,14 @@ def test_second_pass_lexical_targets_are_references_not_ukrainian_overrides():
         assert result["lexical_target_comparison"] in {"matches_reference", "differs_from_reference"}, word
 
 
-def test_seoul_station_uses_sourced_surface_ipa_and_does_not_bypass_target_adapter():
-    from korean_ukrainian.pipeline import transliterate_korean, render_sequence
+def test_seoul_station_uses_sourced_surface_ipa_without_requiring_upi_selection():
+    from korean_ukrainian.pipeline import transliterate_korean
     result = phoneticize_korean("서울역")
     assert result["ipa"]["ipa"] == "sʌ.ul.ljʌk̚"
     target = transliterate_korean("서울역")
-    if target["selected_candidate"] is None:
-        assert target["ukrainian_orthography"] is None
-        assert target["target_status"] == "unresolved"
-    else:
-        assert target["ukrainian_orthography"] == render_sequence(target["selected_candidate"]["segments"])
-        assert target["target_status"] == "model-selected"
+    assert target["ukrainian_orthography"] == "соулльок"
+    assert target["target_status"] == "model-selected"
+    assert target["selected_candidate_is_output_source"] is False
 
 
 def test_python_surface_ipa_matches_nikl_19_and_18_for_dongnimmun():
