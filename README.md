@@ -53,6 +53,10 @@ Added eight official examples from the attached note to Rule 29, including `ë“¤ì
 - [Audit report](docs/rule29-liquid-assimilation-audit-2026-10-10.md)
 - [Regression test](tests/adversarial-rule29-liquid-assimilation-2026-10-10.test.mjs)
 
+## Benchmark review after renderer integration (2026-10-24)
+
+- [Consolidated benchmark review, exact metrics, interpretation and remaining gates](docs/BENCHMARK-REVIEW-2026-10-24.md)
+
 ## Research-only morphological analyzers (2026-10-24)
 
 The Python research package has optional adapters for [Kiwi](https://github.com/bab2min/kiwi) and MeCab-Ko. They return inspectable morpheme forms, analyzer tags and source offsets only; they do not produce pronunciation, IPA, Ukrainian output, or automatic NIKL rule licenses. The public browser practical mode does not load or call these adapters.
