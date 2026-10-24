@@ -59,6 +59,8 @@ def _shape_diagnostics(indexed: dict[str, dict[str, Any]]) -> dict[str, Any]:
     overlapping_span_pairs = 0
     forms_different_from_surface = 0
     invalid_spans = 0
+    zero_width_morphemes = 0
+    words_with_zero_width_morphemes = 0
     total_morphemes = 0
     for word, item in indexed.items():
         spans: list[tuple[int, int]] = []
@@ -67,12 +69,21 @@ def _shape_diagnostics(indexed: dict[str, dict[str, Any]]) -> dict[str, Any]:
             start = int(morpheme.get("start", -1))
             end = int(morpheme.get("end", -1))
             form = str(morpheme.get("form", ""))
-            if not (0 <= start < end <= len(word)):
+            if not (0 <= start <= end <= len(word)):
                 invalid_spans += 1
+                continue
+            if start == end:
+                zero_width_morphemes += 1
                 continue
             spans.append((start, end))
             if form != word[start:end]:
                 forms_different_from_surface += 1
+        if any(
+            int(morpheme.get("start", -1)) == int(morpheme.get("end", -2))
+            and 0 <= int(morpheme.get("start", -1)) <= len(word)
+            for morpheme in item.get("morphemes", [])
+        ):
+            words_with_zero_width_morphemes += 1
         counts = Counter(spans)
         groups = sum(count > 1 for count in counts.values())
         if groups:
@@ -89,10 +100,13 @@ def _shape_diagnostics(indexed: dict[str, dict[str, Any]]) -> dict[str, Any]:
         "repeated_source_span_groups": repeated_span_groups,
         "overlapping_source_span_pairs": overlapping_span_pairs,
         "forms_not_equal_to_source_substring": forms_different_from_surface,
+        "zero_width_morphemes": zero_width_morphemes,
+        "words_with_zero_width_morphemes": words_with_zero_width_morphemes,
         "invalid_source_spans": invalid_spans,
         "interpretation": (
             "diagnostic representation counts, not errors by themselves: analyzer forms may be "
-            "normalized morphemes while offsets identify the source surface"
+            "normalized morphemes while offsets identify the source surface; zero-width morphemes "
+            "are kept separate from invalid spans and are not counted as surface boundaries"
         ),
     }
 
