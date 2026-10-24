@@ -53,7 +53,7 @@ def collect_local_forms(root: Path) -> dict[str, set[str]]:
                 content = path.read_text(encoding="utf-8")
             except UnicodeDecodeError:
                 continue
-            inputs[str(path.relative_to(root))] = set(re.findall(r"[\\uac00-\\ud7a3]+", content))
+            inputs[str(path.relative_to(root))] = set(re.findall(r"[\uac00-\ud7a3]+", content))
     return inputs
 
 
