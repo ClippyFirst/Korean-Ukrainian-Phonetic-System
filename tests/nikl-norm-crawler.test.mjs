@@ -31,7 +31,7 @@ test("extracts exactly the 30 articles from the Standard Pronunciation Rules sec
   assert.equal(parsed.validation.complete, true);
   assert.equal(parsed.articles[0].articleId, "NIKL-SP-01");
   assert.equal(parsed.articles[0].title, "제1항");
-  assert.equal(parsed.articles[0].normativeCharCount, 17);
+  assert.equal(parsed.articles[0].normativeCharCount, 13);
   assert.equal(parsed.articles[0].normativeTextSha256, sha256("표준 발음 규정 예시 1".normalize("NFC")));
   assert.equal(parsed.articles[0].sourceUnitScope, "article-block-including-official-commentary-and-examples");
   assert.equal(parsed.articles[0].anchorId, "article-1");
