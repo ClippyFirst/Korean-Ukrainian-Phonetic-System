@@ -210,7 +210,7 @@ jobs:
                   print(f"  paired={p['paired_tokens']} delta_exact={p['exact_rate_delta_candidate_minus_native']} "
                         f"delta_CER={p['cer_delta_candidate_minus_native']} "
                         f"CI_delta_exact={ci_delta.get('exact_rate_delta_candidate_minus_native_95pct_ci')} "
-                        f"CI_delta_CER={ci_delta.get('cer_delta_delta_candidate_minus_native_95pct_ci') or ci_delta.get('cer_delta_candidate_minus_native_95pct_ci')}")
+                        f"CI_delta_CER={ci_delta.get('cer_delta_candidate_minus_native_95pct_ci')}")
           audit = r.get("native_abstention_audit", {})
           print("Native abstention audit:", audit.get("occurrence_count"), "occurrences across",
                 audit.get("unique_words"), "unique words; context counts=", audit.get("context_counts"))
