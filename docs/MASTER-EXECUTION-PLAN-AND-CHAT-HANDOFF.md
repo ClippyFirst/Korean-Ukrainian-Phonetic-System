@@ -811,3 +811,15 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **Scope guard:** research-only Python adapter. It emits token forms, raw tags, source offsets, nullable lemma, and selected MeCab binding in diagnostic output; it does not emit pronunciation/IPA/Ukrainian output or automatically change phonology. The browser practical mode was not modified by the PR; post-merge live practical-mode regression passed.
 - **Remaining blockers:** independent IPA adjudication; Ukrainian target-layer review; NIKL source reuse/terms and human clause-boundary review; specialist review of any future morphology-to-rule licensing; accuracy benchmarking against an adjudicated morphology corpus.
 - **Release classification:** research preview / partial prototype, not release-ready. Successful analyzer installation and tokenization do not prove phonological correctness or Ukrainian transcription accuracy.
+
+
+## R002/R003 source adjudication and holdout — 2026-10-24 continuation
+
+- **DONE_VERIFIED (triage bookkeeping only):** registered 14 distinct R002/R003 native-abstention forms (7 per rule) from diagnostic artifact [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692) in `research/r002-r003-source-adjudication-2026-10-24.json`.
+- **DONE_VERIFIED (guard only):** added `tests/r002-r003-source-adjudication-queue.test.mjs` to require unique forms, retained benchmark provenance, exact-form source status, and null adjudicated IPA fields until actual review.
+- **PARTIAL:** `docs/R002-R003-SOURCE-ADJUDICATION-AND-HOLDOUT-2026-10-24.md` specifies exact-form source checks, morphology review, blinded dual IPA adjudication, frozen holdout, and separate Ukrainian target review. The register is not gold data and does not change runtime rules.
+- **TODO:** verify an exact official NIKL source for each of the 14 forms. The common rule URL alone is insufficient evidence for a particular word or grammatical environment.
+- **BLOCKED pending specialist review:** two independent qualified broad-IPA reviewers and reconciliation records. No IPA or Ukrainian gold has been invented.
+- **TODO:** freeze the NIKL holdout only after exact-form source review and independent IPA adjudication; then run before/after measurement without tuning on the holdout.
+- **Verification status:** exact-head CI for this branch has not yet been observed. Do not reuse prior mainline CI as evidence for this branch. The new test is expected to run through the existing `npm test` workflow.
+- **Release status unchanged:** research-ready for diagnostic comparison; partial prototype, not release-ready. The full IPA-to-Ukrainian accuracy gate remains blocked by the absence of independently adjudicated Ukrainian target gold.
