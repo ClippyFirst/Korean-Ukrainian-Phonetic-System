@@ -122,7 +122,7 @@ def test_g2pk_cannot_promote_diagnostic_only_lexical_ipa_to_ukrainian_output(mon
             return text
 
     monkeypatch.setattr(g2pk_engine, "_ENGINE", IncorrectG2p())
-    input_text = "\\uC0B6\\uC758"
+    input_text = "\uC0B6\uC758"
     pronunciation = g2pk_engine.phoneticize_with_g2pk(input_text)
     assert pronunciation["ipa_is_diagnostic_only"] is True
     assert pronunciation["ipa"]["status"] == "diagnostic_only_unresolved_pronunciation"
