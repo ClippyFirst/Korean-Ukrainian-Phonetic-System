@@ -1,0 +1,19 @@
+# Diagnostic-only inputs for optional Korean morphology analyzers.
+# NOT a gold segmentation/POS corpus. No IPA or Ukrainian targets are asserted.
+# One input per line; retain ambiguous and control forms for qualitative inspection.
+있었고
+삯일을
+넓어졌다
+웃었고
+신고
+굵고
+놓아라
+값어치
+긁고
+학교에
+한국어
+읽고
+밟으며
+넓으니
+값이
+아버지가 방에 들어가신다
