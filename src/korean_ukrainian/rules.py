@@ -155,6 +155,11 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode) or b.onset!="ㅇ" or not a.coda: continue
+            # A final ㅇ is the coda /ŋ/, not a liaison consonant that can
+            # become the silent onset ㅇ. Keep it in the preceding syllable
+            # (e.g. 공인 [koŋ.in], 동요 [toŋ.jo]); otherwise /ŋ/ disappears.
+            if a.coda == "ㅇ":
+                continue
             if a.coda in {"ㄶ","ㅀ"}:
                 # These clusters are governed by §12(4) before vowel-initial
                 # endings/suffixes, not by the generic §§13–15 liaison path.
