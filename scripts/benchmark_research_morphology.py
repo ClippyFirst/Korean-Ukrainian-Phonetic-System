@@ -26,7 +26,7 @@ def main() -> int:
     args = parser.parse_args()
 
     lines = [line.strip() for line in args.corpus.read_text(encoding="utf-8").splitlines()
-             if line.strip()]
+             if line.strip() and not line.lstrip().startswith("#")]
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8") as stream:
         for name in args.engines:
