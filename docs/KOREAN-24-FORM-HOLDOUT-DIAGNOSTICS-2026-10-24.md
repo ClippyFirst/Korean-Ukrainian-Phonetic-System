@@ -74,6 +74,12 @@ The report validates that the manifest is still frozen, exactly 24 cases, unique
 4. **Length and vowel variants are orthogonal to consonant rules.** The §6 and §4/§5 cases are useful checks that the IPA layer preserves length and accepted variants rather than collapsing them during comparison.
 5. **IPA and Ukrainian target readiness must be measured separately.** A source-comparator match only indicates a plausible Korean surface path. IPA remains provisional until two independent reviews and adjudication; Ukrainian output remains a heuristic target-layer result until a separately reviewed Ukrainian gold set exists.
 
+## Important linguistic qualification: vowel length is dialect- and speech-style-sensitive
+
+The official NIKL length mark is a normative source annotation, but it should not be mistaken for a guarantee that every contemporary speaker realizes a stable phonemic duration contrast. Research on Seoul Korean reports substantial weakening/merger among younger speakers; corpus work also reports lexical-frequency effects ([Kang et al., *Frequency Effects on the Vowel Length Contrast Merger in Seoul Korean*](https://www.degruyterbrill.com/document/doi/10.1515/lp-2015-0014/html)). Experimental work finds that read-aloud and spontaneous/map-task speech can differ: length differences were small but significant in read speech and absent in the spontaneous task for the study sample ([Lee & Shin 2016](https://doi.org/10.13064/KSSS.2016.8.1.037)).
+
+**Implication for ClippyFirst:** cases 009 and 020–024 should test whether the system preserves the source's length annotation in the declared broad-IPA contract, not prove that every current speaker will produce that duration. The reviewer protocol should state the target variety (e.g. standard Seoul Korean), source type (normative/dictionary vs recorded speech), and transcription convention. If the project is transcribing an actual speaker, audio and speech style may override a dictionary length mark; if it is rendering normative dictionary pronunciation, retain the mark with provenance. Do not remove `ː` just to increase normalized benchmark exact match.
+
 ## Acceptance and interpretation
 
 - The generated artifact is the auditable place to inspect per-case native strict/soft traces, g2pK surface/IPA, and Ukrainian target availability.
