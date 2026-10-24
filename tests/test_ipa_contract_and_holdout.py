@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -75,3 +76,16 @@ def test_symbol_discrepancy_ledger_never_promotes_alignment_to_gold():
     assert len(ledger["selectedR002R003Cases"]) == 14
     assert all(case["ipaGold"] is None for case in ledger["selectedR002R003Cases"])
     assert sum(case["surfaceEvidence"].startswith("EXACT_FORM_SOURCE") for case in ledger["selectedR002R003Cases"]) == 3
+
+
+
+def test_holdout_overlap_record_is_bound_to_exact_manifest_blob():
+    manifest_path = ROOT / "data/korean/ipa_holdout_2026-10-24.json"
+    record_path = ROOT / "research/ipa-holdout-overlap-validation-2026-10-24.json"
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    raw = manifest_path.read_bytes()
+    git_blob_sha = hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw).hexdigest()
+    assert git_blob_sha == record["holdout"]["manifestGitBlobSha"]
+    assert record["externalExactTokenOverlap"]["overlapCount"] == 0
+    assert record["externalExactTokenOverlap"]["result"] == "PASS_NO_EXACT_TOKEN_OVERLAP"
+    assert record["ipaAnnotation"]["goldCount"] == 0
