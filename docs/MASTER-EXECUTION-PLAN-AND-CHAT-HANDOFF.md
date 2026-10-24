@@ -1,3 +1,13 @@
+## Final continuation ledger — review tooling and verification boundary (2026-10-24)
+
+- **Implementation commit:** `d2d2fefc405d03d422e7c2936e054a5ce2de18aa` adds the holdout-to-queue projection, `--queue` support in the existing reviewer packet builder/validator, package script, and integration regression. The following report reconciliation commit is `cc28230e835ee38caaefd375eb99db07009993ca`.
+- **Data-level check:** manifest blob `3a69a915e475f08d0c6aba0c0e52638bcf3d6121` independently rechecked: 24 cases, 24 unique IDs, all source URLs HTTPS on `www.korean.go.kr`, every case has source excerpt/authority/rule and allowed surface readings, all have `tuningUseProhibited=true`, `engineOutputsStored=false`, and null IPA gold. One item (`계산`) preserves two accepted Hangul surface variants.
+- **Tests added but not yet CI-verified on latest code commit:** `tests/korean-holdout-ipa-queue.test.mjs` includes both manifest projection/fail-closed tests and a packet-builder/validator integration check. No local execution was possible in this connector-only environment, so do not describe these as passing.
+- **CI status at last inspection:** the previous exact-head workflow batch was still queued for tests, browser integration, system verification and master artifacts, with the multi-engine benchmark in progress; the latest follow-up commits `d2d2fef…` and `cc28230…` have no workflow runs returned by the PR-run query. Therefore exact-current-head CI is **BLOCKED/PENDING**, not PASS. Re-trigger or verify CI through a repository event that runs on the latest branch head before merging.
+- **Current scientific state:** holdout remains 0/24 independent IPA labels and Ukrainian target gold remains absent. External token disjointness 0/24 does not substitute for local leakage CI or reviewer adjudication. Do not tune against this holdout.
+- **PR reconciliation:** PR #305 remains open on `research/benchmark-score-causality-2026-10-24`; PR #304 remains open with overlapping source-adjudication/handoff work. Neither was merged or closed; compare the latest diffs and avoid blind merging.
+
+---
 ## Continuation update — frozen IPA holdout reviewer workflow (2026-10-24)
 
 - **Implementation added on the active research PR branch:** `scripts/build-korean-holdout-ipa-queue.mjs` projects the frozen 24-case NIKL manifest into the existing blinded IPA-review queue schema. It checks the frozen status, case count/unique IDs, official NIKL HTTPS source host, tuning prohibition, absence of stored engine outputs, and null IPA gold before projection.
