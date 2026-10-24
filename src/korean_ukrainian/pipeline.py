@@ -533,10 +533,34 @@ def render_ipa_analysis_to_ukrainian(
         selected = _select_target(target)
         if not selected:
             all_mapped = False
+            adapter_state = target.get("segments", [])
+            if not target_adapter or not target_adapter.status().get("available", False):
+                reason = "target_inventory_unavailable"
+            elif not adapter_state:
+                reason = "no_target_segments"
+            else:
+                candidate_rows = [
+                    candidate
+                    for segment in adapter_state
+                    for candidate in segment.get("target", {}).get("candidates", [])
+                ]
+                if not candidate_rows:
+                    reason = "no_target_candidates"
+                elif any(candidate.get("mapping_id") and not candidate.get("grapheme")
+                         for candidate in candidate_rows):
+                    reason = "licensed_mapping_missing_grapheme"
+                elif any(candidate.get("grapheme") and not candidate.get("mapping_id")
+                         for candidate in candidate_rows):
+                    reason = "grapheme_without_licensed_mapping"
+                else:
+                    reason = "no_licensed_ipa_to_ukrainian_mapping"
             targets.append({
                 "surface_hangul": token,
                 "ipa": word_ipa,
                 "status": "unavailable",
+                "reason": reason,
+                "target_adapter_status": target.get("segments", [{}])[0].get("target", {}).get("adapter")
+                    if adapter_state else (target_adapter.status() if target_adapter else None),
             })
             continue
 
@@ -558,6 +582,9 @@ def render_ipa_analysis_to_ukrainian(
         "phonetics": phonetics,
         "ipa": ipa,
         "target_analysis": targets,
+        "unavailable_reasons": sorted({
+            item["reason"] for item in targets if item.get("reason")
+        }),
         "ukrainian_orthography": "".join(output_parts) if all_mapped else None,
         "target_status": "model-selected" if all_mapped else "unavailable",
         "score_type": "heuristic_cost",
