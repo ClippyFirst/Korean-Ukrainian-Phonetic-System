@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -36,8 +37,9 @@ def load_manifest(path: Path) -> dict[str, Any]:
     return data
 
 
-def collect_local_forms(root: Path) -> dict[str, list[str]]:
-    inputs: dict[str, list[str]] = {}
+def collect_local_forms(root: Path) -> dict[str, set[str]]:
+    """Collect exact Hangul token forms from runtime data and text fixtures."""
+    inputs: dict[str, set[str]] = {}
     for relative in ("data/korean", "tests/fixtures"):
         folder = root / relative
         if not folder.exists():
@@ -51,7 +53,7 @@ def collect_local_forms(root: Path) -> dict[str, list[str]]:
                 content = path.read_text(encoding="utf-8")
             except UnicodeDecodeError:
                 continue
-            inputs[str(path.relative_to(root))] = [content]
+            inputs[str(path.relative_to(root))] = set(re.findall(r"[\\uac00-\\ud7a3]+", content))
     return inputs
 
 
@@ -74,7 +76,8 @@ def benchmark_tokens(path: Path) -> set[str]:
                 value = row.get(field)
                 if isinstance(value, str):
                     tokens.add(value)
-            for token in row.get("tokens", []) if isinstance(row.get("tokens"), list) else []:
+            row_tokens = row.get("tokens", [])
+            for token in row_tokens if isinstance(row_tokens, list) else []:
                 if isinstance(token, dict):
                     for field in ("text", "canonical"):
                         value = token.get(field)
@@ -90,8 +93,8 @@ def validate(root: Path, manifest_path: Path, benchmark_path: Path | None) -> di
     local_overlaps = []
     for case in cases:
         needle = case["input"]
-        for filename, contents in local.items():
-            if any(needle in content for content in contents):
+        for filename, local_forms in local.items():
+            if needle in local_forms:
                 local_overlaps.append({"caseId": case["caseId"], "input": needle, "file": filename})
     benchmark_overlaps = []
     if benchmark_path is not None:
