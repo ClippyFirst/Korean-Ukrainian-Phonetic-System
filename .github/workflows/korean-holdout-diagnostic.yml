@@ -1,0 +1,35 @@
+name: Korean 24-form holdout diagnostics
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'data/korean/ipa_holdout_2026-10-24.json'
+      - 'scripts/diagnose-korean-ipa-holdout.py'
+      - 'src/korean_ukrainian/**'
+      - 'tests/test_korean_holdout_diagnostic.py'
+      - '.github/workflows/korean-holdout-diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -e '.[dev,all]'
+      - run: python -m pytest -q tests/test_korean_holdout_diagnostic.py
+      - name: Generate quarantined diagnostic report
+        run: python scripts/diagnose-korean-ipa-holdout.py --output "$RUNNER_TEMP/clippyfirst-korean-24-form-diagnostics.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clippyfirst-korean-24-form-holdout-diagnostics
+          path: ${{ runner.temp }}/clippyfirst-korean-24-form-diagnostics.json
+          if-no-files-found: error
+          retention-days: 30
