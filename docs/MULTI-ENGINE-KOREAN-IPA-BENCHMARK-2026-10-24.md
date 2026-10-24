@@ -48,16 +48,46 @@ This benchmark scores Korean IPA only. It does **not** measure IPA-to-Ukrainian 
 
 ## Results
 
-**Awaiting the completed exact-head workflow artifact.** Populate this section only from the multi-engine-ipa-diagnostic artifact for the final benchmark commit. If a candidate fails to install, lacks the Korean voice, returns no output, or cannot be mapped, report it as blocked/partial; do not turn it into a zero-error score or omit it without explanation.
+The corrected multi-engine scoring run [40069738385](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069738385) completed successfully at scoring-code commit 5b97b80a80c6c49333cc351dc8e4da33b62b05d1. It uploaded artifact [12550429481](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40069738385/artifacts/12550429481). The later changes add tests and print the paired confidence intervals in the workflow log; they do not change the scoring implementation. An exact-head workflow rerun is also tracked separately.
 
-| Engine | Status | Scored / eligible | Coverage | Exact match | CER | Paired exact-rate delta vs native | Notes |
-|---|---|---:|---:|---:|---:|---:|---|
-| ClippyFirst native | Pending CI artifact | — | — | — | — | reference | Abstentions reported separately |
-| g2pk 0.9.4 | Pending CI artifact | — | — | — | — | — | Shared segment renderer |
-| KoG2P 2019 | Pending CI artifact | — | — | — | — | — | Custom-phone IPA adapter |
-| hangul_to_ipa 2026 | Pending CI artifact | — | — | — | — | — | Direct IPA; documented process omissions |
-| eSpeak NG / phonemizer | Pending CI artifact | — | — | — | — | — | TTS-oriented baseline |
-| phonemize 2.0.1 | Pending CI artifact | — | — | — | — | — | Direct IPA |
+The invalid first-run phonemize result (0 exact, CER 100%) is **excluded**: its adapter returned unchanged Hangul because anyAscii was disabled. The corrected adapter enables anyAscii=true; the subsequent report confirms non-Hangul IPA outputs such as 대 → tɛ, 범 → pʌm, 학교 → hak̚ɡjo, and 삶의 → salmɰi. These examples only smoke-test the adapter, not the linguistic correctness of those particular references.
+
+### Full eligible set
+
+UGTPHON Korean test split: 275 rows, 2,703 eligible token occurrences, 1,907 unique Hangul words. Exact-match and CER confidence intervals are deterministic 1,000-replicate row-cluster percentile bootstrap intervals. CER is lower-is-better.
+
+| Engine | Status / scored tokens | Coverage | Exact match (95% CI) | CER (95% CI) |
+|---|---:|---:|---:|---:|
+| ClippyFirst native | PARTIAL; 2,653/2,703 | 98.15% | 24.43% (22.14–27.00%) | 17.06% (16.34–17.76%) |
+| g2pk 0.9.4 | AVAILABLE; 2,703/2,703 | 100% | **24.97% (22.80–27.38%)** | **16.69% (15.94–17.44%)** |
+| KoG2P 2019 | AVAILABLE; 2,703/2,703 | 100% | 14.87% (12.77–17.10%) | 26.08% (25.05–27.13%) |
+| hangul_to_ipa 2026 | AVAILABLE; 2,703/2,703 | 100% | 14.95% (12.59–17.18%) | 30.99% (29.70–32.24%) |
+| eSpeak NG / phonemizer | AVAILABLE; 2,703/2,703 | 100% | 8.14% (6.37–10.19%) | 39.05% (37.82–40.28%) |
+| phonemize 2.0.1 (corrected adapter) | AVAILABLE; 2,703/2,703 | 100% | 20.05% (17.68–22.58%) | 21.36% (20.43–22.23%) |
+
+### Paired comparison against native
+
+The paired analysis uses the same 2,653 occurrences for which the native engine returned a scored IPA result. Deltas are candidate minus native. Positive exact-match delta favours the candidate; negative CER delta favours the candidate. The intervals below are paired 1,000-replicate row-cluster bootstrap intervals; they do not correct for multiple comparisons or gold-label noise.
+
+| Candidate | Paired exact rate | Exact-rate delta (95% CI) | CER delta (95% CI) | Interpretation on this corpus |
+|---|---:|---:|---:|---|
+| g2pk 0.9.4 | 25.22% vs native 24.43% | **+0.79 pp (+0.45 to +1.19 pp)** | **−0.38 pp (−0.61 to −0.21 pp)** | Small but positive paired difference on UGTPHON; not proof of universal superiority |
+| KoG2P 2019 | 15.04% | −9.39 pp (−11.53 to −7.38 pp) | +9.06 pp (+8.16 to +10.02 pp) | Clearly worse under this custom-phone IPA adapter and this gold convention |
+| hangul_to_ipa 2026 | 15.19% | −9.23 pp (−10.75 to −7.82 pp) | +13.86 pp (+12.94 to +14.81 pp) | Clearly worse on this corpus; its documented process omissions are relevant |
+| eSpeak NG / phonemizer | 8.22% | −16.21 pp (−18.50 to −14.05 pp) | +21.94 pp (+20.92 to +22.97 pp) | TTS-oriented output is a weak match to these IPA annotations |
+| phonemize 2.0.1 | 20.35% | −4.11 pp (−5.20 to −3.09 pp) | +4.14 pp (+3.38 to +4.88 pp) | Better than the other new candidates here, but behind native/g2pk |
+
+“pp” means percentage points. The paired candidate exact rates are computed on the 2,653-token common subset; the full-set table above uses each engine's own scored coverage.
+
+### What can and cannot be concluded
+
+- On this particular UGTPHON diagnostic, g2pk 0.9.4 ranks first on exact match and CER, with full coverage. Its paired advantage over native is small but the row-cluster interval excludes zero for both metrics.
+- ClippyFirst abstains on 50 items rather than silently guessing. Coverage and abstention behaviour are part of the result, not a defect to erase.
+- phonemize 2.0.1 is the strongest of the four newly added external candidates on this set after fixing its adapter, but its 20.05% exact score and 21.36% CER do not establish quality on NIKL's normative rules.
+- KoG2P's score depends on a documented but lossy custom-phone-to-IPA mapping. A different mapping or reference convention could change its score; this adapter is not claimed to be a canonical conversion.
+- The native engine and g2pk comparison share the repository's segment renderer. This is a limitation and could advantage g2pk relative to a fully independent IPA renderer.
+- These results do **not** show that ClippyFirst is the best Korean-to-IPA engine, nor that any competitor is the best overall. They show that the native engine is competitive with the tested alternatives on this corpus, while g2pk is modestly ahead under this evaluation contract.
+- No result here evaluates IPA-to-Ukrainian adaptation. A separate NIKL-grounded, independently adjudicated IPA test set and a separate Ukrainian target-layer review remain necessary.
 
 ## Interpretation gates
 
