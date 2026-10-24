@@ -9,6 +9,7 @@ on:
       - "tests/test_multi_engine_benchmark.py"
       - ".github/workflows/multi-engine-ipa-benchmark.yml"
       - "scripts/benchmark_ugtphon_ko.py"
+      - "scripts/convert_sigmorphon_ko.py"
       - "src/korean_ukrainian/**"
       - "data/korean/**"
 
@@ -90,11 +91,37 @@ jobs:
           print(f"Validated pinned UGTPHON Korean test split: {len(rows)} rows; Apache-2.0")
           PY
 
+      - name: Fetch and validate the pinned SIGMORPHON 2021 Korean test split
+        env:
+          SIGMORPHON_COMMIT: 821bcdece5a47820872215969f275004b0abe80c
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/sigmorphon/2021-task1/$SIGMORPHON_COMMIT/data/medium/kor_test.tsv" \
+            --output "$RUNNER_TEMP/sigmorphon-kor-test.tsv"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/sigmorphon/2021-task1/$SIGMORPHON_COMMIT/README.md" \
+            --output "$RUNNER_TEMP/sigmorphon-README.md"
+          grep -qi "Creative Commons Attribution-ShareAlike 3.0" "$RUNNER_TEMP/sigmorphon-README.md"
+          python scripts/convert_sigmorphon_ko.py \
+            --input "$RUNNER_TEMP/sigmorphon-kor-test.tsv" \
+            --output "$RUNNER_TEMP/sigmorphon-kor-test.json" \
+            --expected-rows 1000
+          python - "$RUNNER_TEMP/sigmorphon-kor-test.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          rows = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          assert len(rows) == 1000, f"SIGMORPHON test row-count drift: {len(rows)}"
+          assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
+          assert len({row["tokens"][0]["canonical"] for row in rows}) == 1000
+          print("Validated SIGMORPHON 2021 Korean test split: 1,000 unique word/IPA pairs; CC BY-SA 3.0 data")
+          PY
+
       - name: Run benchmark adapter tests
         run: |
           set -euo pipefail
           node --check scripts/benchmark_phonemize_adapter.cjs
-          python -m pytest tests/test_multi_engine_benchmark.py
+          python -m pytest tests/test_multi_engine_benchmark.py tests/test_sigmorphon_benchmark.py
 
       - name: Run multi-engine comparison
         env:
@@ -145,6 +172,49 @@ jobs:
           print("Scored independent candidates:", ", ".join(usable))
           PY
 
+
+      - name: Run the same pinned engine portfolio on SIGMORPHON lexical gold
+        env:
+          KOG2P_ROOT: ${{ runner.temp }}/KoG2P
+          HANGUL_TO_IPA_ROOT: ${{ runner.temp }}/hangul_to_ipa
+          PHONEMIZE_BASELINE_DIR: ${{ runner.temp }}/phonemize-baseline
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_multi_engine_ko.py \
+            --corpus "$RUNNER_TEMP/sigmorphon-kor-test.json" \
+            --output "$RUNNER_TEMP/sigmorphon-multi-engine-ipa-report.json" \
+            --benchmark-name "SIGMORPHON 2021 Korean lexical test split" \
+            --dataset-source "sigmorphon/2021-task1@821bcdece5a47820872215969f275004b0abe80c:data/medium/kor_test.tsv; data CC BY-SA 3.0; 1,000 paired word/IPA rows" \
+            --kog2p-root "$KOG2P_ROOT" \
+            --hangul-to-ipa-root "$HANGUL_TO_IPA_ROOT" \
+            --phonemize-root "$PHONEMIZE_BASELINE_DIR" \
+            --phonemize-output "$RUNNER_TEMP/sigmorphon-phonemize-predictions.json" \
+            > "$RUNNER_TEMP/sigmorphon-multi-engine-ipa-stdout.json"
+          python - "$RUNNER_TEMP/sigmorphon-multi-engine-ipa-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          print("DATASET:", r["benchmark"], "rows=", r["dataset_rows"],
+                "eligible token occurrences=", r["eligible_token_occurrences"],
+                "unique Hangul words=", r["unique_hangul_words"])
+          for name, m in r["engines"].items():
+              print(f"{name}: status={m['unique_word_engine_status']['status']} "
+                    f"scored={m['scored_tokens']}/{m['attempted_tokens']} "
+                    f"coverage={m['coverage']} exact={m['exact_matches']} "
+                    f"exact_rate={m['exact_match_rate']} CER={m['character_error_rate']} "
+                    f"abstentions={m['abstentions_or_unresolved']} errors={m['engine_errors_on_token_loop']}")
+          print("Diagnostic lexical test only; not a normative NIKL gate and not an IPA-to-Ukrainian score.")
+          engines = r["engines"]
+          for required in ("clippyfirst_native", "g2pk_0_9_4"):
+              if engines[required]["scored_tokens"] <= 0:
+                  raise SystemExit(f"required baseline produced no scored tokens: {required}")
+          candidates = ("KoG2P_2019", "hangul_to_ipa_2026", "espeak_ng_ko", "phonemize_2_0_1")
+          usable = [name for name in candidates if engines[name]["scored_tokens"] > 0]
+          if len(usable) < 2:
+              raise SystemExit("fewer than two independent external candidates produced scores: " + repr(usable))
+          print("Scored independent candidates:", ", ".join(usable))
+          PY
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -154,5 +224,10 @@ jobs:
             ${{ runner.temp }}/multi-engine-ipa-stdout.json
             ${{ runner.temp }}/phonemize-predictions.json
             ${{ runner.temp }}/ko-LICENSE
+            ${{ runner.temp }}/sigmorphon-kor-test.tsv
+            ${{ runner.temp }}/sigmorphon-README.md
+            ${{ runner.temp }}/sigmorphon-multi-engine-ipa-report.json
+            ${{ runner.temp }}/sigmorphon-multi-engine-ipa-stdout.json
+            ${{ runner.temp }}/sigmorphon-phonemize-predictions.json
           if-no-files-found: warn
           retention-days: 30
