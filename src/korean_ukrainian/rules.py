@@ -442,9 +442,11 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=(rule_id=="R013")): continue
             if b.onset not in PLAIN_TO_FORTIS: continue
+            # NIKL §§24–25 enumerate ㄱ, ㄷ, ㅅ, ㅈ; ㅂ is not
+            # licensed by either stem-nasal or stem-ㄼ/ㄾ fortition rule.
             applies = (
                 (rule_id=="R010" and FINAL_REPRESENTATIVE.get(a.coda,a.coda) in {"ㄴ","ㅁ"} and b.onset in {"ㄱ","ㄷ","ㅅ","ㅈ"}) or
-                (rule_id=="R011" and a.coda in {"ㄼ","ㄾ"}) or
+                (rule_id=="R011" and a.coda in {"ㄼ","ㄾ"} and b.onset in {"ㄱ","ㄷ","ㅅ","ㅈ"}) or
                 (rule_id=="R012" and a.coda=="ㄹ" and b.onset in {"ㄷ","ㅅ","ㅈ"}) or
                 (rule_id=="R013" and a.coda=="ㄹ") or
                 (rule_id=="R014" and bool(a.coda))
