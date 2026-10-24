@@ -143,7 +143,7 @@ def validate(root: Path, manifest_path: Path, benchmark_path: Path | None) -> di
         "external_benchmark_overlaps": benchmark_overlaps,
         "holdout_certification": (
             "BLOCKED_OVERLAP_FOUND"
-            if local_overlaps or effective_overlap_count > 0
+            if local_overlaps or effective_overlap_count > 0 or benchmark_overlaps
             else "FROZEN_INPUTS_EXTERNAL_OVERLAP_CHECK_PENDING"
             if external_check not in {"CHECKED", "RECORDED_PINNED_ARTIFACT_CHECK"}
             else "OVERLAP_CHECKED_NO_EXACT_INPUT_OVERLAP"
