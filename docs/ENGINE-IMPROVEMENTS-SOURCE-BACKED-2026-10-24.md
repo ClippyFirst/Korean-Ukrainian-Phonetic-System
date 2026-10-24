@@ -78,3 +78,6 @@ Regression coverage: tests/ipa-target-feature-loss-trace.test.mjs checks aspirat
 - **DONE_IMPLEMENTED:** feature-loss records added at the IPA-to-Ukrainian adapter boundary.
 - **TODO_VERIFY:** exact-head Node tests/build and cross-runtime CI must pass before this is marked DONE_VERIFIED.
 - **BLOCKED:** the target policy itself still needs independent Ukrainian-reader/phonetic review; exposing a loss is not the same as resolving it.
+
+
+The feature trace is also exported from the public browser engine entry point (`src/app/engine.js`) as `traceIpaMapping`, so downstream callers need not import an internal module. The regression suite checks this public export and scans the lexical IPA inventory for feature-marker coverage.
