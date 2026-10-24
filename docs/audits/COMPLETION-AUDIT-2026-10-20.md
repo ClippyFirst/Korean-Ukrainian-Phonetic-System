@@ -1011,7 +1011,7 @@ PR #265 was not merged blindly because it was one commit behind and overlapped c
 
 ## Follow-up error investigation and paired benchmark results — 2026-10-24
 
-**Scope note:** this follow-up is now integrated into main by PR #297 merge commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab. The R002 and broad-IPA yod fixes from PRs #298 and #299 were already merged; PR #297 integrated the R010 exact-form licenses and complete paired audit. Code-equivalent CI on superseded PR #300 passed, and post-merge mainline tests 40093211039, system verification 40093211139, and master-table/research-artifact validation 40093211099 all passed on merge commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab. The Pages deployment run 40093211042 remains queued.
+**Scope note:** this follow-up is now integrated into main by PR #297 merge commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab. The R002 and broad-IPA yod fixes from PRs #298 and #299 were already merged; PR #297 integrated the R010 exact-form licenses and complete paired audit. Code-equivalent CI on superseded PR #300 passed, and post-merge mainline tests 40093211039, system verification 40093211139, and master-table/research-artifact validation 40093211099 all passed on merge commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab. The Pages deployment run 40093211042 subsequently completed successfully.
 
 ### Findings and verified fixes
 
@@ -1032,7 +1032,7 @@ Latest successful multi-engine run: [40092929978](https://github.com/ClippyFirst
 
 ### Remaining acceptance gates
 
-1. **DONE_VERIFIED:** code-equivalent browser/Python/parity CI passed on PR #300 (40092757353, 40092757419), and post-merge mainline tests/system verification passed (40093211039, 40093211139). Pages deployment 40093211042 remains queued.
+1. **DONE_VERIFIED:** code-equivalent browser/Python/parity CI passed on PR #300 (40092757353, 40092757419), and post-merge mainline tests/system verification passed (40093211039, 40093211139). Pages deployment 40093211042 subsequently completed successfully.
 2. **TODO:** source-adjudicate the 48 native abstentions, prioritizing R002 liaison/neutralization (25 context labels) and R003 ㅎ-coda deletion (20 labels). Do not infer production rules from external-engine output alone.
 3. **TODO:** build a source-grounded, independently adjudicated NIKL holdout with per-rule and interaction strata.
 4. **BLOCKED:** independently reviewed Korean-IPA-to-Ukrainian gold output remains unavailable; do not claim full-system accuracy.
