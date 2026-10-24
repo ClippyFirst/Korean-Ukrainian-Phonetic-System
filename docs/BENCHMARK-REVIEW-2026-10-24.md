@@ -84,9 +84,19 @@ The NIKL live metadata crawl was skipped in the system verification workflow; do
 5. **BLOCKED — production morphology licensing:** require expert-reviewed morpheme labels and a rule-specific licensing adapter; raw analyzer boundaries alone do not satisfy acceptance.
 6. **BLOCKED — external accuracy claim:** UGTPHON is noisy and its IPA convention differs in places from this project's broad-IPA representation; report it as diagnostic until an independently adjudicated, source-grounded holdout is available.
 
+
+## Verified multi-engine results (2026-10-24)
+
+The multi-engine workflow passed on code-equivalent head: [run 40089295231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231); reports and abstention audit: [artifact 12558044694](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231/artifacts/12558044694). Broad-IPA normalization was revised to ignore the narrow retraction marker U+0320; these results supersede earlier exact-match/CER values.
+
+- UGTPHON (2,703 eligible occurrences): native exact 50.8851%, CER 9.6619%, coverage 98.2242%; g2pk plus the project renderer exact 53.0892%, CER 9.2285%, coverage 100%. Paired g2pk-minus-native exact delta +2.4482 pp (95% CI +1.2378 to +4.2219), CER delta -0.4205 pp (-0.6625 to -0.2298).
+- SIGMORPHON public paired lexical file (999 eligible words): native exact 35.1053%, CER 14.8920%, coverage 99.7998%; g2pk plus the project renderer exact 35.3353%, CER 14.8222%, coverage 100%. Paired exact delta +0.3009 pp (95% CI -0.3009 to +1.0030), CER delta -0.0753 pp (-0.2584 to +0.0889); both intervals cross zero.
+- The full six-engine tables and all abstention occurrences are in the current multi-engine report. UGTPHON has 48 unresolved occurrences across 47 words; SIGMORPHON has two (닭갈비 and 중심닮음). External predictions remain diagnostic and are not copied into production rules without source adjudication.
+- SIGMORPHON's README says the shared-task test input is word-only, but the pinned public file contains paired word/IPA labels. Treat it as a public paired-file diagnostic, not a leaderboard reproduction.
+
 ## Follow-up benchmark suite register
 
-The proposed eight-suite validation matrix and its task ledger are maintained in [KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md). The multi-engine diagnostic driver now emits an occurrence-level `native_abstention_audit` in report schema v2 so repeated tokens, unresolved contexts, and alternative-engine predictions can be inspected separately. This new report has not yet been validated until the benchmark workflow completes.
+The eight-suite validation matrix and task ledger are maintained in [KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md). The multi-engine driver emits occurrence-level native-abstention records and these have now been inspected in a completed two-dataset run.
 
 ## Reproduction links
 
