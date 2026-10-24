@@ -336,5 +336,21 @@ The first exact-head CI run for PR #288 exposed an important acceptance failure:
 | Browser/system verification | PASS | [Workflow 40075912274](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912274): browser tests/build and Python regression/data integrity passed. The metadata-only NIKL job's success is not a claim that the live crawl succeeded. |
 | Generated corpus / research artifacts | PASS | [Workflow 40075912368](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912368). |
 | Paired native-vs-g2pk and UGTPHON diagnostics | PASS | [Workflow 40075912232](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912232); [workflow 40075912262](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912262). These are diagnostics, not independent phonetic gold. |
-| Multi-engine IPA benchmark | IN_PROGRESS at last check | [Workflow 40075912330](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912330); no result claimed until it completes. |
+| Multi-engine IPA benchmark | PASS as diagnostic execution | [Workflow 40075912330](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912330) completed and emitted artifact [12552947424](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912330/artifacts/12552947424). Metrics and limitations are recorded below; this is not normative gold evaluation. |
 | Scientific release acceptance | BLOCKED | Independent IPA gold, Ukrainian target-layer review, full subparagraph/table adjudication, source-rights review and permitted live NIKL retrieval remain open. |
+
+
+### Multi-engine benchmark outcome (2026-10-24)
+
+Artifact: [multi-engine-korean-ipa-diagnostic.zip](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40075912330/artifacts/12552947424), benchmark `multi-engine-ipa-diagnostic-v1`. Dataset: 275 rows, 2,703 eligible Hangul token occurrences, 1,907 unique words. The reference set is the noisy user-generated UGTPHON Korean test split, not a balanced official pronunciation standard. Scores are diagnostic only; normalization preserves fortis, aspiration and length, while stripping a defined set of narrow diacritics and separators.
+
+| Engine | Exact match | Character error rate | Coverage | Abstentions / unresolved |
+|---|---:|---:|---:|---:|
+| ClippyFirst native | 24.41% (95% CI 22.12–26.97%) | 17.06% | 98.22% | 48 |
+| g2pk 0.9.4 | 24.97% (95% CI 22.80–27.38%) | 16.69% | 100% | 0 |
+| phonemize 2.0.1 | 20.05% | 21.36% | 100% | 0 |
+| hangul_to_ipa | 14.95% | 30.99% | 100% | 0 |
+| KoG2P | 14.87% | 26.08% | 100% | 0 |
+| eSpeak NG Korean | 8.14% | 39.05% | 100% | 0 |
+
+**Interpretation:** the native engine's point exact-match score is slightly below g2pk on this dataset, with overlapping bootstrap intervals; it abstains on 48 token occurrences rather than forcing output. These scores do not establish which IPA is correct because UGTPHON annotations are not a fully adjudicated independent gold set, and the g2pk adapter shares parts of the project's representation layer. The benchmark does not evaluate Ukrainian adaptation. It is evidence that the diagnostic pipeline executes reproducibly, not a release-acceptance pass for linguistic correctness.
