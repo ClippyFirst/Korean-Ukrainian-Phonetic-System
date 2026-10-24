@@ -23,7 +23,7 @@ These are candidates for ingestion or derived, provenance-preserving fixtures, n
 
 | Candidate | What it adds | Decision |
 |---|---|---|
-| SIGMORPHON 2021 Korean G2P / WikiPron (`kor`) | Published word-level G2P evaluation split; documented task uses 10,000 words total with 8,000 train / 1,000 dev / 1,000 test across ten languages, including Korean. Complements noisy UGTPHON with a lexical test. | **HIGH PRIORITY to inspect and add as a separate lexical benchmark**, not mix into UGTPHON. Preserve the official test split; inspect source provenance and license before vendoring. Sources: https://github.com/sigmorphon/2021-task1 and https://github.com/kr-MATAGI/IPA_G2P-Testing |
+| SIGMORPHON 2021 Korean G2P / WikiPron (`kor`) | Published word-level G2P evaluation split; Korean test file has 1,000 word/IPA pairs and complements noisy UGTPHON with a lexical test. | **IMPLEMENTED — awaiting workflow results** in scripts/convert_sigmorphon_ko.py + the multi-engine workflow. Uses pinned source commit 821bcdece5a47820872215969f275004b0abe80c; verifies the upstream README’s CC BY-SA 3.0 data terms; does not vendor corpus data. Scores the same native and external engine portfolio as UGTPHON in a separate report. Source: https://github.com/sigmorphon/2021-task1 |
 | Mun, Kim & Ko (2022), “A proposal to improve on existing Grapheme-to-Phoneme conversion models informed by linguistics” | Reports a manually phonetic-transcribed golden corpus and per-phenomenon comparison of g2pk and KoG2P; highlights /h/ deletion, 의 variation, place assimilation, rule ordering, and prosodic boundaries. | **HIGH PRIORITY for rule-stratified evaluation**. First verify whether item-level corpus and annotations are publicly available and reusable; do not recreate unseen gold labels from paper summaries. DOI: https://doi.org/10.29403/LI.26.2.2 ; full text: https://seongmin-mun.github.io/MyWebsite/Seongmin/Resources/2.Publicated%20Papers/KCI/The%20Korean%20Society%20for%20Language%20and%20Information/A%20proposal%20to%20improve%20on%20existing%20Grapheme-to-Phoneme%20conversion%20models%20informed%20by%20linguistics/KCI_FI002922160.pdf |
 | NIKL dictionaries (한국어기초사전 / 표준국어대사전 / 우리말샘) | Potential lexical headwords and pronunciation fields, depending on which downloadable dataset exposes the needed fields. Third-party mirrored XML is not proof of NIKL endorsement. | **HIGH PRIORITY to inspect primary NIKL downloads and applicable license/terms**. Preserve pronunciation records and source identifiers; do not assume every entry is an IPA transcription. Dataset mirror: https://github.com/spellcheck-ko/korean-dict-nikl |
 | CJKI Korean Phonetic Database (KPD) | Vendor describes 120,000+ Korean entries with IPA, POS, and phonological attributes. | **BLOCKED pending commercial access and written reuse terms**; do not copy/vendor its data absent permission. https://www.cjk.org/data/korean/nlp/korean-phonetic-database/ |
@@ -34,8 +34,8 @@ These are candidates for ingestion or derived, provenance-preserving fixtures, n
 ### Recommended benchmark portfolio
 
 1. Keep UGTPHON for noisy user-generated text.
-2. Add SIGMORPHON/WikiPron as a clean lexical G2P comparison after verifying the exact Korean test split and license.
-3. Reconstruct NIKL items 1–30 as a small normative rule suite directly from the repository's official source file.
+2. Run SIGMORPHON/WikiPron as a separate 1,000-item lexical benchmark; the adapter and workflow are implemented, but results are not accepted until CI finishes and the generated report is inspected.
+3. Reconstruct NIKL items 1–30 as a normative rule suite directly from the repository's official source file; this remains a distinct acceptance gate.
 4. Obtain and verify the 2022 paper's manual gold corpus if the authors' release is available.
 5. Keep morphology, Python/browser parity, IPA-to-Ukrainian rendering, abstention robustness, and regression/reproducibility as separate suites.
 
@@ -65,3 +65,13 @@ The g2pK comparison is not fully independent at the representation layer: the be
 - Main-commit tests/build: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40087346890
 - Main-commit system verification: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40087346894
 - Benchmark driver: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/scripts/benchmark_multi_engine_ko.py
+
+
+## Execution update — SIGMORPHON lexical suite (2026-10-24)
+
+- **IMPLEMENTED / CI PENDING** — added a converter for the pinned SIGMORPHON 2021 Korean kor_test.tsv file and extended the multi-engine workflow to run the same engine portfolio separately on this lexical gold split.
+- Upstream source pin: sigmorphon/2021-task1@821bcdece5a47820872215969f275004b0abe80c; test file data/medium/kor_test.tsv; expected 1,000 unique word/IPA pairs. The upstream README declares the dataset under CC BY-SA 3.0 inherited from Wiktionary. The benchmark downloads the test data in CI and does not commit a copy.
+- The converter rejects malformed TSV, missing phones, duplicate words, and row-count drift. The shared driver records the dataset name/source in the JSON report and keeps abstention and engine errors separate from scored outputs.
+- The official test TSV includes some non-standard Hangul code points outside the engine's current syllable-token contract; those are intentionally excluded by the shared engine scorer rather than guessed or silently normalized. The report's eligible denominator must be read alongside the 1,000 source rows.
+- **Not yet verified** — benchmark results are pending the new GitHub Actions run. Do not treat converter tests or workflow definition alone as successful engine execution.
+- **Still blocked** — NIKL rules 1–30 require extraction and adjudication from 한국어 어문 규범.htm; the 2022 paper's item-level golden corpus needs author/source verification; commercial CJKI and Nexdata data remain excluded without explicit reuse permission.
