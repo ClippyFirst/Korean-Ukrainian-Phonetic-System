@@ -30,6 +30,7 @@ test('exposes the second NIKL-accepted pronunciation of 멋있어 without callin
 
   assert.ok(alternative, 'the other NIKL-accepted surface should be offered as a variant');
   assert.match(alternative.note, /qna_seq=306166/u);
+  assert.equal(alternative.sourceLocator, 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166');
   assert.match(alternative.note, /потребують окремої перевірки/u);
   assert.equal(alternative.status, 'lexical-review');
   assert.ok(alternative.ipa);
