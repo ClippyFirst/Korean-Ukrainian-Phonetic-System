@@ -10,8 +10,11 @@ def test_selection_is_explicit_when_target_inventory_is_unavailable():
     from korean_ukrainian.pipeline import transliterate_korean
     out=transliterate_korean("가",target_adapter=a)
     assert out["selected_candidate"] is None
-    assert out["ukrainian_orthography"] is None
-    assert out["target_unavailable_reason"] == "target_inventory_unavailable"
+    assert out["ukrainian_orthography"] == "ка"
+    assert out["target_status"] == "model-selected"
+    assert out["target_unavailable_reason"] is None
+    assert out["target_inventory_diagnostic"]["reason"] == "target_inventory_unavailable"
+    assert out["selected_candidate_is_output_source"] is False
 
 
 def test_upi_mapping_penalties_are_consumed():
@@ -41,9 +44,11 @@ def test_shared_renderer_explains_target_inventory_abstention():
         ipa={"ipa":"k.a"}, pronunciation_engine="test",
         target_adapter=a,
     )
-    assert out["ukrainian_orthography"] is None
-    assert out["target_analysis"][0]["reason"]=="target_inventory_unavailable"
-    assert out["unavailable_reasons"]==["target_inventory_unavailable"]
+    assert out["ukrainian_orthography"] == "ка"
+    assert out["target_analysis"][0]["status"] == "model-selected"
+    assert out["target_inventory_status"]["available"] is False
+    assert out["target_analysis"][0]["target_inventory_unavailable_reason"] == "target_inventory_unavailable"
+    assert out["unavailable_reasons"] == []
 
 
 def test_shared_renderer_distinguishes_unlicensed_mapping_from_inventory_failure():
@@ -64,12 +69,13 @@ def test_shared_renderer_distinguishes_unlicensed_mapping_from_inventory_failure
         ipa={"ipa":"a"}, pronunciation_engine="test",
         target_adapter=a,
     )
-    assert out["ukrainian_orthography"] is None
-    assert out["target_analysis"][0]["reason"]=="grapheme_without_licensed_mapping"
-    assert out["unavailable_reasons"]==["grapheme_without_licensed_mapping"]
-    assert out["target_analysis"][0]["segment_reasons"] == [
+    assert out["ukrainian_orthography"] == "а"
+    assert out["target_analysis"][0]["status"] == "model-selected"
+    assert out["target_analysis"][0]["target_inventory_unavailable_reason"] == "grapheme_without_licensed_mapping"
+    assert out["target_inventory_analysis"][0]["summary"]["segment_reasons"] == [
         {"source_ipa": "a", "reason": "grapheme_without_licensed_mapping"}
     ]
+    assert out["unavailable_reasons"] == []
 
 
 def test_shared_renderer_reports_mapping_export_failure_separately():
@@ -90,11 +96,13 @@ def test_shared_renderer_reports_mapping_export_failure_separately():
         ipa={"ipa":"a"}, pronunciation_engine="test",
         target_adapter=a,
     )
-    assert out["ukrainian_orthography"] is None
-    assert out["target_analysis"][0]["reason"] == "target_mapping_export_unavailable"
-    assert out["target_analysis"][0]["target_adapter_status"]["error"].startswith(
+    assert out["ukrainian_orthography"] == "а"
+    assert out["target_analysis"][0]["status"] == "model-selected"
+    assert out["target_analysis"][0]["target_inventory_unavailable_reason"] == "target_mapping_export_unavailable"
+    assert out["target_inventory_analysis"][0]["summary"]["adapter_status"]["error"].startswith(
         "mapping export unavailable:"
     )
+    assert out["unavailable_reasons"] == []
 
 
 def test_shared_renderer_identifies_the_unmapped_ipa_segment_in_a_word():
@@ -119,9 +127,11 @@ def test_shared_renderer_identifies_the_unmapped_ipa_segment_in_a_word():
         ipa={"ipa":"a.b"}, pronunciation_engine="test",
         target_adapter=a,
     )
-    assert out["ukrainian_orthography"] is None
+    assert out["ukrainian_orthography"] == "аб"
     row=out["target_analysis"][0]
-    assert row["reason"] == "grapheme_without_licensed_mapping"
-    assert row["segment_reasons"] == [
+    assert row["status"] == "model-selected"
+    assert row["target_inventory_unavailable_reason"] == "grapheme_without_licensed_mapping"
+    assert out["target_inventory_analysis"][0]["summary"]["segment_reasons"] == [
         {"source_ipa":"b","reason":"grapheme_without_licensed_mapping"}
     ]
+    assert out["unavailable_reasons"] == []
