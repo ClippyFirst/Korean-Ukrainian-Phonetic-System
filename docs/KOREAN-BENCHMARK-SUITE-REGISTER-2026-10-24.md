@@ -113,3 +113,14 @@ Successful post-fix run: [40092929978](https://github.com/ClippyFirst/Korean-Ukr
 | SIGMORPHON public paired file | eSpeak NG | 100% | 4.3043% | 40.7236% |
 
 Paired g2pk-minus-native exact delta is +0.1506 pp (95% CI +0.0351 to +0.3243) on UGTPHON, with CER delta +0.0531 pp (95% CI −0.0139 to +0.1302; crosses zero). On SIGMORPHON the paired exact delta is −0.4012 pp (95% CI −0.8024 to −0.1003), favoring native, while CER delta +0.1130 pp (95% CI −0.0250 to +0.2732) crosses zero. The SIGMORPHON README/file-schema mismatch means this is a public paired-file diagnostic, not a leaderboard reproduction. g2pk uses the project's segment renderer, so it is not a fully independent IPA stack.
+
+
+## Benchmark score causality and metric comparability — 2026-10-24
+
+- **DONE_VERIFIED (literature/report synthesis):** [KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md](KOREAN-BENCHMARK-SCORE-CAUSALITY-2026-10-24.md) distinguishes engine errors, reference/IPA convention mismatch, exact-match metric effects, corpus domain, and adapter limitations. It records why historical 24% and revised 53% scores are not a code-only before/after comparison.
+- **DONE_VERIFIED (aggregate evidence reconciliation):** latest UGTPHON native exact 53.1827% / CER 9.1883%; paired g2pk exact advantage only +0.1506 percentage points and CER difference crosses zero. On SIGMORPHON, native exact 35.8074% vs g2pk 35.4062% on the shared subset. No universal winner is established.
+- **DONE_VERIFIED (scope guard):** native abstentions are 48/2,703 = 1.78%; the remaining exact-match deficit is predominantly among scored predictions, so abstention count alone cannot explain it. Four g2pk-only exact occurrences all repeat `없는` and expose a length-mark reference discrepancy.
+- **PARTIAL:** plausible correlation factors are now documented, but no complete per-item rule × morphology × reference-variant cross-tab has been computed. Avoid claiming quantitative correlations until gold labels and edit-distance classes exist.
+- **TODO:** extend the existing occurrence ledger with normalized/raw outputs, word-type and occurrence weighting, source corpus, reference-variant count, length, adjudication status, gold rule tags and morphology/boundary labels; report per-rule and interaction strata with row/type-clustered uncertainty.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** 14 R002/R003 cases and remaining scored disagreements require exact-source review and independent broad-IPA adjudication before they can serve as gold.
+- **Release classification unchanged:** research-ready for diagnostic comparison; partial prototype, not release-ready. Normative IPA accuracy and Ukrainian target-layer accuracy are not yet established.
