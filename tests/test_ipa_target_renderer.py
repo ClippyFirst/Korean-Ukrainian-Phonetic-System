@@ -140,6 +140,7 @@ def test_browser_and_python_renderers_match_on_shared_ipa_sequences():
 
     from korean_ukrainian.ipa_target_renderer import render_ipa_sequence_to_ukrainian
 
+    root = Path(__file__).resolve().parents[1]
     samples = [
         ("kʰjʌ", "가"),
         ("ɰi", "가"),
