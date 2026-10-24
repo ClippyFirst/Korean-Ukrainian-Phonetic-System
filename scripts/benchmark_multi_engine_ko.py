@@ -204,7 +204,7 @@ def _load_phonemize(path: Path, corpus: Path, output: Path, eligible_words: list
     return {
         word: entry["ipa"] for word, entry in predictions.items()
         if word in eligible and isinstance(entry, dict) and isinstance(entry.get("ipa"), str)
-    }, "phonemize@2.0.1 all-language preset; direct IPA output, stripStress=true"
+    }, "phonemize@2.0.1 all-language preset; anyAscii=true and stripStress=true; direct IPA output"
 
 
 def _load_rows_and_words(rows: list[dict[str, Any]]) -> tuple[list[dict[str, str]], list[str]]:
