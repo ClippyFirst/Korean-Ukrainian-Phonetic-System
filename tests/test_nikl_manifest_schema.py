@@ -14,7 +14,10 @@ def _valid_manifest():
         {
             "articleNumber": number,
             "articleId": article_ids[number - 1],
-            "title": f"제{number}항 표준 발음법 fixture",
+            "title": f"제{number}항",
+            "normativeTextSha256": "c" * 64,
+            "normativeCharCount": 5,
+            "sourceUnitScope": "article-block-including-official-commentary-and-examples",
             "anchorId": None,
             "sourceUrl": redirected_url,
             "textSha256": "a" * 64,
@@ -24,7 +27,7 @@ def _valid_manifest():
         for number in range(1, 31)
     ]
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "collector": {"name": "nikl-norm-crawler", "version": "0.1.0"},
         "standard": {
             "id": "NIKL-SP",
@@ -82,6 +85,10 @@ def test_nikl_manifest_schema_rejects_incomplete_inventory_and_unreviewed_text_r
     manifest = _valid_manifest()
     manifest["source"]["termsReview"] = "redistribution_permitted"
     assert list(validator.iter_errors(manifest))
+
+    manifest = _valid_manifest()
+    manifest["articles"][0]["title"] = "제1항 표준 발음법은 표준어의 실제 발음을 따른다."
+    assert list(validator.iter_errors(manifest)), "metadata-only article labels must not retain clause wording"
 
 
 

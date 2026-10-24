@@ -2,7 +2,7 @@ name: NIKL local HTML source inventory
 
 on:
   push:
-    branches: ["main", "research/nikl-local-html-import-2026-10-24"]
+    branches: ["main", "research/**"]
     paths:
       - "한국어 어문 규범.htm"
       - "scripts/nikl-norm-crawler.mjs"
