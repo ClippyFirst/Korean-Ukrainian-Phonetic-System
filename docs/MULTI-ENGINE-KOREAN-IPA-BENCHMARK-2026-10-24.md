@@ -75,7 +75,7 @@ The paired analysis uses the same 2,653 occurrences for which the native engine 
 | KoG2P 2019 | 15.04% | −9.39 pp (−11.53 to −7.38 pp) | +9.06 pp (+8.16 to +10.02 pp) | Clearly worse under this custom-phone IPA adapter and this gold convention |
 | hangul_to_ipa 2026 | 15.19% | −9.23 pp (−10.75 to −7.82 pp) | +13.86 pp (+12.94 to +14.81 pp) | Clearly worse on this corpus; its documented process omissions are relevant |
 | eSpeak NG / phonemizer | 8.22% | −16.21 pp (−18.50 to −14.05 pp) | +21.94 pp (+20.92 to +22.97 pp) | TTS-oriented output is a weak match to these IPA annotations |
-| phonemize 2.0.1 | 20.35% | −4.11 pp (−5.20 to −3.09 pp) | +4.14 pp (+3.38 to +4.88 pp) | Better than the other new candidates here, but behind native/g2pk |
+| phonemize 2.0.1 | 20.32% | −4.11 pp (−5.20 to −3.09 pp) | +4.14 pp (+3.38 to +4.88 pp) | Better than the other new candidates here, but behind native/g2pk |
 
 “pp” means percentage points. The paired candidate exact rates are computed on the 2,653-token common subset; the full-set table above uses each engine's own scored coverage.
 
