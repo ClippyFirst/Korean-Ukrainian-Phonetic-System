@@ -66,3 +66,13 @@ The full URLs, source excerpts, access date, source type, and reviewed morpholog
 ### Important distinction for the benchmark
 
 NIKL's bracketed outputs above are **Hangul-based pronunciation notation**. They are valuable official surface evidence but must not be copied into `finalBroadIpa` or treated as broad IPA gold. In particular, the two official variants for `멋있어` mean that a single deterministic output may be an incomplete acceptance criterion unless the product explicitly chooses a preferred variant or represents alternatives. Ukrainian rendering must be evaluated later against a frozen, independently reviewed IPA form, not inferred directly from the Hangul answer.
+
+
+### Related official dictionary entries (not exact-form adjudication)
+
+The search also found useful component-form evidence for three additional cases:
+- `붙어야`: [NIKL Korean Basic Dictionary, 붙다](https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=74181) lists `붙어[부터]`; it does not list the full form `붙어야`.
+- `쌓아서`: [NIKL Korean Basic Dictionary, 쌓다](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=62095) lists `쌓아[싸아]`; it does not directly adjudicate the complete form `쌓아서`.
+- `좋은데`: [NIKL Korean Basic Dictionary, 좋다](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=79033) lists `좋은[조ː은]`; it does not directly adjudicate the complete form `좋은데`.
+
+These are stored as `relatedSourceEvidence`, without changing the cases' `PENDING_EXACT_FORM_SOURCE` status. The queue test explicitly distinguishes related component-form evidence from exact-form source adjudication.
