@@ -19,13 +19,13 @@ The Korean Standard Pronunciation Rules and NIKL dictionary/Q&A can establish a 
 | Feature | ClippyFirst policy | Scoring policy |
 |---|---|---|
 | Korean fortis series, e.g. `k͈`, `s͈`, `tɕ͈` | Preserve explicitly | Never normalize away |
-| Aspirated stops/affricates, e.g. `kʰ`, `tʰ`, `pʰ`, `tɕʰ` | Preserve explicitly | Never normalize away |
+| Aspirated stops/affricates, e.g. `kʰ`, `tʰ`, `pʰ`, `tɕʰ` | Preserve explicitly | Never normalize away; protect `tɕ` before standalone `ɕ→s` normalization |
 | Source-attested vowel length `ː` | Preserve when licensed by the source analysis | Never normalize away |
 | Coda unreleased mark `̚` | Preserve in emitted IPA for now; this is an explicit project representation choice | Preserve in both profiles until separately reviewed |
 | Affricate tie bar `͡` | Optional typographic segmentation, not a different segment sequence | Ignore in scoring, as in the legacy profile |
 | Syllable dots / whitespace | Boundary metadata, not IPA phones | Ignore for phone-string comparison; preserve separately when the API provides boundaries |
 | Narrow vowel-position diacritics `̝ ̠ ̞` in the currently supported contexts | Not required by this broad layer | Historical profile removes the explicitly listed marks; no other diacritic is silently dropped |
-| Allophone-symbol variants `ɭ/l`, `ʎ/l`, `ɕ/s`, `ɦ/h`, `ç/h`, `ɲ/n`, and sibilant `sʰ/s` | The proposed canonical comparison maps these to the project’s broad symbols only for scoring; it does not rewrite raw engine output | Mappings are explicit in `normalize_ipa_profile(..., "clippyfirst-broad-v1")`; report sensitivity against legacy scores until independent review signs off |
+| Allophone-symbol variants `ɭ/l`, `ʎ/l`, standalone `ɕ/s`, `ɦ/h`, `ç/h`, `ɲ/n`, and sibilant `sʰ/s` | The proposed canonical comparison maps these to the project’s broad symbols only for scoring; it does not rewrite raw engine output. The `tɕ` affricate sequence is protected and restored around standalone `ɕ→s` normalization. | Mappings are explicit in `normalize_ipa_profile(..., "clippyfirst-broad-v1")`; report sensitivity against legacy scores until independent review signs off |
 | Vowel/glide differences such as `i/y` | Do not assume equivalence | Preserve and adjudicate by context |
 | Unresolved morphology or competing readings | Do not guess an IPA gold | Mark unresolved/abstain; never score an abstention as a correct pronunciation |
 
@@ -56,7 +56,7 @@ Two reviewers independently record broad IPA and classification. Disagreement go
 - UGTPHON/MultiLexNorm++ and SIGMORPHON remain **diagnostic external benchmarks**, not normative Korean standard gold.
 - Do not tune rules or normalization mappings on the frozen NIKL holdout.
 - The holdout manifest stores only input, rule/source evidence and Korean surface-form evidence. IPA gold, reviewer identities and adjudication remain empty until independent annotation.
-- The holdout is not certified independent of the licensed external benchmark until exact overlap checking is run against the pinned source corpus. No third-party dataset is copied into the repository.
+- Exact-token overlap against the pinned external benchmark is currently 0/24. Full local runtime/test leakage CI remains a separate gate. No third-party dataset is copied into the repository.
 - Any overlap, even if surface forms are the same, is excluded from the independent holdout or disclosed before scoring. The accepted set is frozen by its manifest hash in the validation record.
 - Keep a separate development/error-analysis set; never use the holdout for rule selection and then continue calling it a holdout.
 
@@ -75,14 +75,14 @@ Until those gates pass, the status is **research-ready for diagnostics, not inde
 
 ### Measured profile sensitivity (2026-10-24)
 
-On the pinned multi-engine artifact (JSON SHA-256 `448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f`), 2,655 paired occurrences were scored after excluding 48 native abstentions.
+On pinned multi-engine artifact 12567083852 (report JSON SHA-256 `448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f`), 2,655 paired occurrences were scored after excluding 48 native abstentions.
 
 | Profile | ClippyFirst exact match | ClippyFirst CER | g2pk exact match | g2pk CER |
 |---|---:|---:|---:|---:|
 | Legacy | 1,412/2,655 (53.18%) | 9.19% | 1,416/2,655 (53.33%) | 9.24% |
-| Candidate broad v1 | 2,417/2,655 (91.04%) | 1.70% | 2,415/2,655 (90.96%) | 1.75% |
+| Candidate broad v1 | 2,417/2,655 (91.04%) | 1.6847% | 2,415/2,655 (90.96%) | 1.7303% |
 
-These are normalization-sensitivity results on the same reference strings, not newly validated accuracy estimates. After the other proposed allophone collapses, exact match is 71.30%; adding `ɕ→s` alone gives 71.86%; collapsing sibilant `sʰ→s` alone gives 83.92%; applying both gives 91.04%. Independent IPA labels are required to confirm that the broad comparison is linguistically appropriate rather than an over-collapse.
+These are normalization-sensitivity results on the same reference strings, not newly validated accuracy estimates. The final broad-v1 normalizer preserves `tɕ` affricates; the corrected reference-character denominator is 21,962. After the other proposed allophone collapses, exact match is 71.30%; adding `ɕ→s` alone gives 71.86%; collapsing sibilant `sʰ→s` alone gives 83.92%; applying both gives 91.04%. Independent IPA labels are required to confirm that the broad comparison is linguistically appropriate rather than an over-collapse.
 
 
 ## 7. Evidence supporting the candidate equivalences
