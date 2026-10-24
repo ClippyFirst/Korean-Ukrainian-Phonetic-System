@@ -125,6 +125,18 @@ def test_broad_ipa_preserves_final_ng_before_vowel_initial_syllable():
         assert phoneticize_korean(word)["ipa"]["ipa"] == ipa, word
 
 
+def test_nikl_section_24_source_backed_fortition_examples():
+    expected = {"닮다": "tam.t͈a", "넘게": "nʌm.k͈e"}
+    for word, ipa in expected.items():
+        result = phoneticize_korean(word)
+        assert result["ipa"]["ipa"] == ipa, word
+        assert any(
+            trace.get("rule_id") == "R010"
+            and trace.get("license_context") == f"R010:stem_n_m+suffix:{word}:{word[0]}>" + word[1]
+            for trace in result["rules"]
+        ), word
+
+
 def test_broad_ipa_absorbs_yod_after_palatal_affricates():
     from korean_ukrainian.ipa import realize_syllables
     from korean_ukrainian.phonology import parse_syllables
