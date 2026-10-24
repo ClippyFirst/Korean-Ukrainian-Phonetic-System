@@ -823,3 +823,12 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **TODO:** freeze the NIKL holdout only after exact-form source review and independent IPA adjudication; then run before/after measurement without tuning on the holdout.
 - **Verification status:** exact-head CI for this branch has not yet been observed. Do not reuse prior mainline CI as evidence for this branch. The new test is expected to run through the existing `npm test` workflow.
 - **Release status unchanged:** research-ready for diagnostic comparison; partial prototype, not release-ready. The full IPA-to-Ukrainian accuracy gate remains blocked by the absence of independently adjudicated Ukrainian target gold.
+
+
+### Internet source search update — 2026-10-24
+
+- **DONE_VERIFIED (official source discovery only):** exact-form NIKL surface evidence found for `멋있어` (two accepted Hangul pronunciations), `싫어서` (ㅎ deletion + ㄹ liaison), and `수많은` (dictionary-listed `수ː마는`). Case-level excerpts, source URLs, access date, and notes are in `research/r002-r003-source-adjudication-2026-10-24.json`.
+- **PARTIAL:** three of 14 cases now have official source evidence, but remain `SOURCE_FOUND_PENDING_IPA`. Official bracketed Hangul notation is not IPA and is not copied into `finalBroadIpa`.
+- **TODO:** find exact-form source evidence for the other 11 forms; complete two independent broad-IPA reviews for all accepted variants; freeze the holdout only after adjudication.
+- **Important design note:** `멋있어` has two official pronunciation variants, [머디써] and [머시써]. A benchmark with one string as sole gold could mis-score a valid variant unless its acceptance policy is explicit.
+- **CI:** latest source/test changes are on the existing research branch and require new exact-head CI; earlier green runs predate these latest commits and do not verify the updated queue test.
