@@ -97,7 +97,7 @@ class KiwiMorphologyAnalyzer:
 class MecabKoMorphologyAnalyzer:
     """Adapter for the MeCab Python API when built with a Korean dictionary.
 
-    The adapter expects the conventional `MeCab.Tagger.parseToNode` API.
+    The adapter supports `mecab-ko-python` (`mecab_ko.Mecab().pos`) and a compatible legacy `MeCab.Tagger().parseToNode()` API.
     Installation and dictionary configuration vary by platform; failures are
     surfaced explicitly and never trigger a silent fallback to another engine.
     """
@@ -159,7 +159,7 @@ class MecabKoMorphologyAnalyzer:
             end = start + len(surface)
             cursor = end
             features = feature.split(",")
-            tag = ",".join(features[:2]) if features else "unknown"
+            tag = features[0] if features and features[0] else "unknown"
             lemma = features[6] if len(features) > 6 and features[6] not in {"*", ""} else None
             result.append(Morpheme(
                 form=surface, tag=tag, start=start, end=end,
