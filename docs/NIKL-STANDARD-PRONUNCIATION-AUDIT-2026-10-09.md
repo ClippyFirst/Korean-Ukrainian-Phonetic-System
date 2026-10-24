@@ -250,3 +250,10 @@ A whole-file audit exposed a higher-priority failure than adding further isolate
 Added `tests/lexical-csv-integrity-ipa-first.test.mjs` to guard the full inventory, require valid target statuses and source URLs, and check runtime IPA/Ukrainian consistency for every Hangul-only lexical entry not marked `surface-only`. Added a fail-closed regression in `reported-placeholder-regressions.test.mjs` so unmapped IPA segments and mismatched IPA/Hangul syllable counts remain visible and produce blocking issues instead of silently disappearing.
 
 Static audit after repair: 642 lexical records parsed; all rows have the expected 13 fields; no unmatched quote lines; no unexpected target statuses; no unmapped primary or alternate IPA segments; no IPA-to-target mismatches; and no Hangul-only lexical IPA syllable-count mismatches. This is a data-integrity audit, not a claim that GitHub Actions or the complete Node test suite has passed.
+
+
+## Human review of saved official HTML, §§1–30 (2026-10-24)
+
+A dedicated offline review fixture now records the normative lead-in of each of the 30 `표준 발음법` articles separately from the first paragraph under the official page's `해설` label. The fixture is sourced to the committed `한국어 어문 규범.htm` blob SHA `c6b5aedf7774a0238ff58cfe51457f6975ca1b36`; `tests/nikl-article-review-1-30.test.mjs` verifies article numbering/order, source anchors, exact normalized article text, and the explanatory boundary. See [the human-review record](NIKL-HUMAN-REVIEW-2026-10-24.md) and [machine-readable fixture](../tests/fixtures/nikl-article-review-1-30.json).
+
+**Scope caveat:** this adds a reproducible article-lead-in/explanation-boundary gate, not a claim that every subordinate clause or table has received independent expert adjudication in this pass. Existing article-specific regression suites remain the pronunciation gold-test layer. The official live crawl remains BLOCKED by HTTP 403 in automation; the saved source was used without attempting to bypass access controls. IPA and Ukrainian adaptation remain separate project layers, neither of which is standardized by this Korean source.

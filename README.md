@@ -238,3 +238,13 @@ The metadata-first collector for the official Korean-language norms portal is im
 ## Repository-local agent skills
 
 Specialized agent workflows for official NIKL scraping, article-by-article rule coverage, and evidence-gated pronunciation adjudication are documented in [docs/AGENT-SKILLS-NIKL.md](docs/AGENT-SKILLS-NIKL.md) and installed under `.agents/skills/`. These are workflow instructions; they do not claim that a live crawl or new linguistic validation has already run.
+
+
+## Human review of official Standard Pronunciation Rules (2026-10-24)
+
+The committed official-source HTML is now paired with a machine-readable review of all 30 article lead-ins and their separately labelled `해설` paragraphs. The regression checks preserve the boundary between normative Korean text, explanatory commentary, broad IPA, and provisional Ukrainian adaptation.
+
+- [Human-review record](docs/NIKL-HUMAN-REVIEW-2026-10-24.md)
+- [Machine-readable review fixture](tests/fixtures/nikl-article-review-1-30.json)
+- [Source-boundary regression test](tests/nikl-article-review-1-30.test.mjs)
+- [Cross-rule engine surface/IPA regression (19 source-backed cases)](tests/nikl-human-review-surface-regression.test.mjs)

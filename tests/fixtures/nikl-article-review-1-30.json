@@ -1,0 +1,292 @@
+{
+  "schema_version": "1.0.0",
+  "source": {
+    "title": "한국어 어문 규범 — 제2부 표준 발음법",
+    "institution": "국립국어원",
+    "url": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+    "repository_path": "한국어 어문 규범.htm",
+    "repository_blob_sha": "c6b5aedf7774a0238ff58cfe51457f6975ca1b36",
+    "retrieval_note": "Repository-saved HTML supplied as the reproducible official-source snapshot; this fixture does not claim a fresh live fetch.",
+    "section_anchor": "a346"
+  },
+  "boundary_contract": {
+    "normative_text": "The text inside each article's h6 heading, including the clause lead-in, is the normative heading text captured here.",
+    "explanatory_text": "The first paragraph under the separate 해설 label is stored only as explanatory context.",
+    "examples": "Examples and subclauses may occur in tables or subordinate blocks after the heading; rule-specific engine regressions remain the authoritative test layer for expected surfaces.",
+    "ipa": "Broad IPA is an analysis layer, not text promulgated by this standard.",
+    "ukrainian": "Ukrainian adaptation is a project decision, not an official NIKL output."
+  },
+  "review_date": "2026-10-24",
+  "articles": [
+    {
+      "article": 1,
+      "source_anchor": "a394",
+      "normative_text": "표준 발음법은 표준어의 실제 발음을 따르되, 국어의 전통성과 합리성을 고려하여 정함을 원칙으로 한다.",
+      "explanation_first_paragraph": "이 조항은 표준 발음법의 기본 원칙을 제시하고 있다. 여기에 따르면 가장 중요한 원칙은 표준어로 규정된 단어들의 실제적인 발음을 따르는 것이며, 이때 국어의 전통성과 합리성을 함께 고려하도록 되어 있다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 2,
+      "source_anchor": "a395",
+      "normative_text": "표준어의 자음은 다음 19개로 한다.",
+      "explanation_first_paragraph": "이 조항은 국어 자음의 수를 규정하고 있다. 국어에는 19개의 자음이 있으며 이러한 자음의 개수는 방언에 따른 차이가 거의 없다. 일부 지역에 ‘ㅆ’이 없는 경우를 제외하면 대체로 동일한 모습을 보인다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 3,
+      "source_anchor": "a396",
+      "normative_text": "표준어의 모음은 다음 21개로 한다.",
+      "explanation_first_paragraph": "이 조항은 국어 모음의 수를 규정하고 있다. 국어에는 총 21개의 모음이 있다. 이러한 모음은 크게 단모음(單母音)과 이중 모음으로 구분할 수 있다. 단모음은 발음할 때 입의 모양이나 혀의 위치가 일정하게 유지되는 모음이다. 반면 이중 모음은 발음할 때 입의 모양이나 혀의 위치가 바뀌는 모음이다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 4,
+      "source_anchor": "a397",
+      "normative_text": "‘ㅏ ㅐ ㅓ ㅔ ㅗ ㅚ ㅜ ㅟ ㅡ ㅣ’는 단모음(單母音)으로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 국어 단모음의 수를 규정하고 있다. 국어 표준 발음으로는 10개의 단모음을 인정하고 있다. 그런데 자음과 달리 단모음의 개수는 지역이나 세대에 따라 상당한 차이가 있다. 가령 방언에 따라 단모음의 수가 6개에서 10개까지 다양하며 같은 지역이라도 세대에 따라 차이가 나기도 한다. 그렇지만 서울말의 전통적인 발음을 기준으로 하여 10개의 단모음을 원칙으로 삼았다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 5,
+      "source_anchor": "a398",
+      "normative_text": "‘ㅑ ㅒ ㅕ ㅖ ㅘ ㅙ ㅛ ㅝ ㅞ ㅠ ㅢ’는 이중 모음으로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 국어 이중 모음의 수를 규정하고 있다. 여기에 따르면 국어에는 총 11개의 이중 모음이 있다. 이러한 이중 모음은 그 구성 요소 중 하나인 반모음의 종류 및 위치에 따라 다음과 같이 분류할 수 있다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 6,
+      "source_anchor": "a399",
+      "normative_text": "모음의 장단을 구별하여 발음하되, 단어의 첫음절에서만 긴소리가 나타나는 것을 원칙으로 한다.",
+      "explanation_first_paragraph": "이 조항은 국어의 장단에 대해 규정하고 있다. 내용상 크게 세 부분으로 나눌 수 있다. 첫째, 장단을 구별해서 발음해야 한다는 점, 둘째, 장모음의 실현 위치에 제약이 있다는 점, 셋째, 장단의 변동 현상이 있다는 점을 다루고 있다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 7,
+      "source_anchor": "a400",
+      "normative_text": "긴소리를 가진 음절이라도, 다음과 같은 경우에는 짧게 발음한다.",
+      "explanation_first_paragraph": "이 조항은 장단의 변동 중에서도 특히 장모음의 길이가 짧아지는 현상에 대해 규정하고 있다. 이처럼 길이가 짧아지는 현상에는 앞의 제6항에서 언급한 바와 같이 장모음이 단어의 둘째 음절 이하에 놓일 때 일어나는 것도 있지만, 이 조항에서는 용언 어간 뒤에 어미나 접미사가 결합할 때 일어나는 현상을 다루고 있다. 체언의 경우에는 특정한 조사 앞에서 길이가 짧아지는 현상이 일어나지 않는다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 8,
+      "source_anchor": "a401",
+      "normative_text": "받침소리로는 ‘ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅇ’의 7개 자음만 발음한다.",
+      "explanation_first_paragraph": "이 조항은 국어의 음절 종성에서 실제로 발음될 수 있는 자음이 7개로 제한되어 있음을 규정하고 있다. 현대 국어의 표기법상으로는 일부 쌍자음을 제외한 대부분의 자음을 종성에 표기할 수 있지만 실제로 발음할 수 있는 것은 ‘ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅇ’의 7개 자음밖에 없다. 그래서 여기에 속하지 않는 자음이 종성에 놓일 때에는 이 7개 자음 중 하나로 바뀐다. 가령 ‘ㅋ, ㅌ, ㅍ’과 같은 홑받침이나 ‘ㄲ, ㅆ’과 같은 쌍받침은 각각 ‘ㄱ, ㄷ, ㅂ’, ‘ㄱ, ㄷ’으로 바뀐다. 또한 겹받침의 경우에는 기본적으로 겹받침 중 하나가 탈락하게 되며, 탈락 후 남은 자음도 7개 자음에 속하지 않으면 그중 하나로 바뀌게 된다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 9,
+      "source_anchor": "a402",
+      "normative_text": "받침 ‘ㄲ, ㅋ’, ‘ㅅ, ㅆ, ㅈ, ㅊ, ㅌ’, ‘ㅍ’은 어말 또는 자음 앞에서 각각 대표음 [ㄱ, ㄷ, ㅂ]으로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 앞선 제8항의 내용을 구체화한 것으로 특히 종성에 놓인 홑받침 및 쌍받침의 발음에 대하여 규정하고 있다. 자음이 단어의 끝에 오거나 다른 자음 앞에 오면 음절 종성에 놓이게 된다. 그런데 종성에서는 7개 자음만 발음할 수 있기 때문에 이 조항에 제시된 자음들은 [ㄱ, ㄷ, ㅂ] 중 하나로 발음이 바뀌어야 한다. 이때 ‘ㄲ, ㅋ’은 [ㄱ]으로, ‘ㅅ, ㅆ, ㅈ, ㅊ, ㅌ’은 [ㄷ]으로, ‘ㅍ’은 [ㅂ]으로 바뀐다. 그래서 ‘낫, 낮, 낯, 낱’과 같은 단어들은 받침이 다르게 쓰였더라도 어말이나 자음 앞에서는 모두 동일하게 [낟]으로 발음되는 것이다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 10,
+      "source_anchor": "a403",
+      "normative_text": "겹받침 ‘ㄳ’, ‘ㄵ’, ‘ㄼ, ㄽ, ㄾ’, ‘ㅄ’은 어말 또는 자음 앞에서 각각 [ㄱ, ㄴ, ㄹ, ㅂ]으로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 제9항과 동일하게 제8항의 내용을 구체화한 것으로, 종성에 놓인 겹받침의 발음에 대하여 규정하고 있다. 겹받침이 단어의 끝에 오거나 다른 자음 앞에 오면 홑받침이나 쌍받침과는 달리 겹받침을 이루는 두 자음 중 하나가 탈락하게 된다. 이것은 음절 종성에서 두 개의 자음이 발음되지 못하는 국어의 음절 구조 제약 때문이며, 이로 인해 결과적으로 겹받침도 음절 종성에서는 제8항에서 규정된 7개 자음 중 하나로 실현된다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 11,
+      "source_anchor": "a404",
+      "normative_text": "겹받침 ‘ㄺ, ㄻ, ㄿ’은 어말 또는 자음 앞에서 각각 [ㄱ, ㅁ, ㅂ]으로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 제10항과 더불어 겹받침이 어말이나 자음 앞과 같은 음절 종성에서 어떻게 발음되는지를 규정하고 있다. 제10항과 반대로 이 조항에서는 겹받침을 이루는 두 개의 자음 중 앞선 자음이 탈락하는 경우를 규정하고 있다. 여기에 따라 ‘ㄺ, ㄻ, ㄿ’은 음절 종성에서 앞선 ‘ㄹ’이 탈락하게 된다. 그 결과 ‘ㄺ, ㄻ’은 각각 [ㄱ]과 [ㅁ]으로 발음되며, ‘ㄿ’에서는 ‘ㅍ’이 남게 되는데 ‘ㅍ’은 음절 종성에서 [ㅂ]으로 발음되므로 결과적으로 ‘ㄿ’은 [ㅂ]으로 발음된다. 다만 용언 어간의 겹받침 ‘ㄺ’은 ‘ㄱ’ 앞에서 앞 자음 ‘ㄹ’이 탈락하는 대신 뒤 자음 ‘ㄱ’이 탈락하여 [ㄹ]로 발음된다. 그래서 ‘ㄺ’으로 끝나는 어간 뒤에 ‘-고, -거나, -거든’ 등과 같은 어미가 결합하는 경우에는 ‘ㄺ’을 [ㄹ]로 발음한다. 이것은 용언의 활용형뿐만 아니라 ‘긁개[글깨], 밝기[발끼]’와 같은 파생어에도 그대로 적용된다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 12,
+      "source_anchor": "a405",
+      "normative_text": "받침 ‘ㅎ’의 발음은 다음과 같다.",
+      "explanation_first_paragraph": "이 조항은 받침으로 쓰이는 ‘ㅎ’의 발음을 규정하고 있다. 받침으로 쓰인 ‘ㅎ’은 뒤에 어떠한 말이 오든 원래 음가대로 발음되지 못하고 변동을 겪게 된다. 그런데 이러한 변동의 양상이 조건에 따라 상이하기 때문에 이 조항에서 받침 ‘ㅎ’의 여러 가지 발음에 대해 규정하였다. 이 조항의 내용은 크게 네 가지로 구성되어 있는데, 그 조건에 따라 받침 ‘ㅎ’ 뒤에 자음이 오는 경우와 모음이 오는 경우의 두 가지로 나눌 수 있다. 1~3은 받침 ‘ㅎ’ 뒤에 자음이 오는 경우이고 4는 모음이 오는 경우이다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 13,
+      "source_anchor": "a406",
+      "normative_text": "홑받침이나 쌍받침이 모음으로 시작된 조사나 어미, 접미사와 결합되는 경우에는, 제 음가대로 뒤 음절 첫소리로 옮겨 발음한다.",
+      "explanation_first_paragraph": "이 조항은 홑받침이나 쌍받침과 같이 하나의 자음으로 끝나는 말 뒤에 모음으로 시작하는 형식 형태소(조사, 어미, 접미사)가 결합할 때 받침을 어떻게 발음할 것인지를 규정하고 있다. 이런 경우 받침을 그대로 옮겨 뒤 음절 초성으로 발음하는 것이 국어의 원칙이며, 이것을 흔히 연음이라고 부른다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 14,
+      "source_anchor": "a407",
+      "normative_text": "겹받침이 모음으로 시작된 조사나 어미, 접미사와 결합되는 경우에는, 뒤엣것만을 뒤 음절 첫소리로 옮겨 발음한다.(이 경우, ‘ㅅ’은 된소리로 발음함.)",
+      "explanation_first_paragraph": "이 조항은 제13항과 더불어 받침의 연음에 대해 규정하고 있다. 제13항이 홑받침 또는 쌍받침과 같은 단일한 자음으로 된 받침의 연음에 대해 다루었다면 이 조항은 두 개의 자음으로 이루어진 겹받침의 연음에 대해 다루었다. 겹받침을 가진 말 뒤에 모음으로 시작하는 형식 형태소(조사, 어미, 접미사)가 결합하면 겹받침의 앞 자음은 음절의 종성에서 발음되고 겹받침의 뒤 자음은 다음 음절 초성으로 이동하여 발음된다. 받침의 자음 중 하나가 뒤 음절의 초성으로 옮겨 간다는 점에서 연음 현상에 포함된다. 다만 겹받침의 두 번째 자음이 ‘ㅅ’인 ‘ㄳ, ㄽ, ㅄ’의 경우 연음이 될 때 ‘ㅅ’ 대신 [ㅆ]으로 발음된다는 점은 주의할 필요가 있다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 15,
+      "source_anchor": "a408",
+      "normative_text": "받침 뒤에 모음 ‘ㅏ, ㅓ, ㅗ, ㅜ, ㅟ’ 들로 시작되는 실질 형태소가 연결되는 경우에는, 대표음으로 바꾸어서 뒤 음절 첫소리로 옮겨 발음한다.",
+      "explanation_first_paragraph": "이 조항은 받침을 가진 말 뒤에 모음으로 시작하는 실질 형태소가 올 때 해당 받침을 어떻게 발음해야 하는지를 규정하고 있다. 제13항, 제14항과 비교할 때, 받침을 가진 말 뒤에 오는 형태소가 형식 형태소가 아닌 실질 형태소라는 차이점이 있다. 그런데 이러한 차이로 받침의 발음 양상도 달라진다. 가장 큰 차이점은 연음이 되지 않는 대신, 받침이 대표음인 [ㄱ, ㄷ, ㅂ] 중 하나로 바뀐 후 뒤 음절의 초성으로 이동한다는 점이다. 이러한 현상을 흔히 연음과 대비하여 절음이라고 부르기도 한다. 그래서 ‘젖어미, 겉옷’의 ‘젖, 겉’과 같은 홑받침을 가진 말의 경우 대표음 중 하나로 바뀐 후 뒤 음절의 초성으로 이동하여 ‘[저더미], [거돋]’이 된다. ‘값있다’의 ‘값’과 같이 겹받침을 가진 말은 자음이 하나 탈락하여 대표음으로 바뀐 후 역시 뒤 음절의 초성으로 이동하여 [가빋따]가 된다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 16,
+      "source_anchor": "a409",
+      "normative_text": "한글 자모의 이름은 그 받침소리를 연음하되, ‘ㄷ, ㅈ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ’의 경우에는 특별히 다음과 같이 발음한다.",
+      "explanation_first_paragraph": "이 조항은 자음 글자를 나타내는 명칭 뒤에 모음으로 시작하는 형식 형태소가 결합할 때의 발음에 대해 규정하고 있다. 받침을 가진 말 뒤에 모음으로 시작하는 형식 형태소가 오면 연음이 되는 것이 원칙이다. 그러므로 ‘지읒이, 치읓이, 피읖이’ 등은 각각 ‘[지으지], [치으치], [피으피]’로 발음하는 것이 타당하다. 그러나 이 조항에 따르면 ‘디귿, 지읒, 치읓, 키읔, 티읕, 피읖, 히읗’에는 이러한 원칙을 적용하지 않는다. 이것은 자음의 명칭이 정해진 당시의 현실 발음을 고려한 조치이다. 사실 ‘디귿’을 제외한 ‘지읒, 치읓, 키읔, 티읕, 피읖, 히읗’과 같은 명칭은 1933년의 ‘한글 마춤법 통일안’ 제정 당시 새로 만들어진 것이다. 한글 자모의 명칭은 최세진의 “훈몽자회(1527)”에서 비롯하는데, 당시에는 ‘ㅈ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ’이 초성에만 쓰이는 글자였기 때문에 그 명칭도 ‘지, 치, 키, 티, 피, 히’와 같이 1음절이었다. 그러다가 모든 글자들을 종성에 표기하도록 표기법이 바뀌면서 이 글자들의 명칭도 2음절로 바뀌었다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 17,
+      "source_anchor": "a410",
+      "normative_text": "받침 ‘ㄷ, ㅌ(ㄾ)’이 조사나 접미사의 모음 ‘ㅣ’와 결합되는 경우에는, [ㅈ, ㅊ]으로 바꾸어서 뒤 음절 첫소리로 옮겨 발음한다.",
+      "explanation_first_paragraph": "이 조항은 구개음화 현상에 대해 규정하고 있다. ‘ㄷ, ㅌ(ㄾ)’으로 끝나는 말 뒤에 ‘ㅣ’로 시작하는 형식 형태소가 결합할 때 ‘ㄷ, ㅌ’이 [ㅈ, ㅊ]으로 발음된다. 이 현상은 치조음인 ‘ㄷ, ㅌ’이 모음 ‘ㅣ’의 조음 위치에 가까워져 경구개음 ‘ㅈ, ㅊ’으로 바뀐 것이기 때문에 자음의 조음 위치가 모음의 조음 위치에 동화된 것으로 해석할 수 있다. 이 현상은 주격 조사 ‘이’ 앞에서도 일어나고 접미사 ‘-이’ 앞에서도 일어난다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 18,
+      "source_anchor": "a411",
+      "normative_text": "받침 ‘ㄱ(ㄲ, ㅋ, ㄳ, ㄺ), ㄷ(ㅅ, ㅆ, ㅈ, ㅊ, ㅌ, ㅎ), ㅂ(ㅍ, ㄼ, ㄿ, ㅄ)’은 ‘ㄴ, ㅁ’ 앞에서 [ㅇ, ㄴ, ㅁ]으로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 비음화 현상에 대해 규정하고 있다. 국어에는 ‘ㄱ, ㄷ, ㅂ’ 뒤에 비음인 ‘ㄴ, ㅁ’이 올 때 앞선 자음인 ‘ㄱ, ㄷ, ㅂ’이 뒤에 오는 비음의 조음 방식에 동화되어 동일한 조음 위치의 ‘ㅇ, ㄴ, ㅁ’으로 바뀌는 음운 변동이 있다. 이 변동은 예외 없이 적용되며 서로 다른 단어 사이에서도 적용될 만큼 강력하다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 19,
+      "source_anchor": "a412",
+      "normative_text": "받침 ‘ㅁ, ㅇ’ 뒤에 연결되는 ‘ㄹ’은 [ㄴ]으로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 ‘ㄹ’이 특정 자음 뒤에서 ‘ㄴ’으로 바뀌는 현상을 규정하고 있다. 이 현상은 자음으로 끝나는 말 뒤에 ‘ㄹ’로 시작하는 말이 결합할 때 일어나며 주로 한자어에서 찾아볼 수 있다. 자음과 자음이 결합할 때 일어나기 때문에 자음 동화의 하나로 다루어져 왔지만 그 해석에는 논란이 없지 않다.(‘더 알아보기’ 참조)",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 20,
+      "source_anchor": "a413",
+      "normative_text": "‘ㄴ’은 ‘ㄹ’의 앞이나 뒤에서 [ㄹ]로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 유음화 현상에 대해 규정한 것이다. ‘ㄹ’과 ‘ㄴ’이 인접하면 ‘ㄴ’이 ‘ㄹ’에 동화되어 ‘ㄹ’로 바뀌게 된다. 이 현상이 동화에 속한다는 점은 의심의 여지가 없다. 이 현상은 ‘ㄴ’이 ‘ㄹ’에 앞서는 경우와 ‘ㄴ’이 ‘ㄹ’ 뒤에 오는 경우로 나눌 수 있다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 21,
+      "source_anchor": "a414",
+      "normative_text": "위에서 지적한 이외의 자음 동화는 인정하지 않는다.",
+      "explanation_first_paragraph": "이 조항은 표준 발음을 규정하는 것이 아니라 표준 발음이 아닌 경우를 규정하고 있다는 점에서 다른 조항과는 차이가 난다. 이 조항에서 언급하는 자음 동화는 자음의 조음 위치가 같아지는 경우이다. 가령 ‘감기[강ː기], 옷감[옥깜]’ 등은 앞 음절의 받침이 뒤에 오는 연구개음의 조음 위치에 동화된 예이고, ‘문법[뭄뻡], 꽃밭[꼽빧]’ 등은 뒤에 오는 양순음의 조음 위치에 동화된 예이다. 이러한 조음 위치의 동화는 모두 필수적으로 일어나는 현상이 아니라 수의적으로 일어나는 현상이며, 표준 발음으로 인정하지도 않는다. 따라서 종성의 자음은 원래의 조음 위치대로 발음해야만 한다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 22,
+      "source_anchor": "a415",
+      "normative_text": "다음과 같은 용언의 어미는 [어]로 발음함을 원칙으로 하되, [여]로 발음함도 허용한다.",
+      "explanation_first_paragraph": "이 조항은 전통적으로 ‘ㅣ’ 모음 순행 동화라고 불리던 현상을 규정하고 있다. 예전의 문법에서는 ‘ㅣ, ㅔ, ㅐ, ㅚ, ㅟ’와 같이 문자의 측면에서 ‘ㅣ’로 끝나는 어간 뒤에 ‘어’로 시작하는 어미가 올 때 ‘어’를 [ㅕ]로 발음하는 현상을 ‘ㅣ’ 모음 순행 동화로 규정했다. ‘어’를 [ㅕ]로 발음하는 것은 반모음 ‘ㅣ[j]’가 첨가된 것인데 이것은 앞에 오는 모음들에 동화된 결과라는 해석이다. ‘ㅣ, ㅔ, ㅐ, ㅚ, ㅟ’는 모두 전설 모음이며 반모음 ‘ㅣ[j]’의 조음 위치가 전설 모음의 조음 위치와 비슷하므로 전설 모음 뒤에 반모음 ‘ㅣ[j]’를 첨가하여 ‘어’를 [ㅕ]로 발음하면 동화가 일어난 것과 비슷한 결과가 된다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 23,
+      "source_anchor": "a416",
+      "normative_text": "받침 ‘ㄱ(ㄲ, ㅋ, ㄳ, ㄺ), ㄷ(ㅅ, ㅆ, ㅈ, ㅊ, ㅌ), ㅂ(ㅍ, ㄼ, ㄿ, ㅄ)’ 뒤에 연결되는 ‘ㄱ, ㄷ, ㅂ, ㅅ, ㅈ’은 된소리로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 ‘ㄱ, ㄷ, ㅂ’과 같이 종성으로 발음되는 파열음 뒤에서의 경음화를 규정하고 있다. ‘ㄱ, ㄷ, ㅂ’으로 끝나는 말 뒤에서는 물론이고 ‘ㄲ, ㅋ, ㄳ, ㄺ’, ‘ㅅ, ㅆ, ㅈ, ㅊ, ㅌ’, ‘ㅍ, ㄼ, ㄿ, ㅄ’과 같이 표면적으로는 ‘ㄱ, ㄷ, ㅂ’으로 끝나지 않아도 종성에서 대표음 [ㄱ, ㄷ, ㅂ]으로 발음되는 경우 동일한 성격의 경음화가 적용된다. 이러한 경음화는 어떠한 예외도 없이 반드시 적용되는 국어의 대표적인 현상이다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 24,
+      "source_anchor": "a417",
+      "normative_text": "어간 받침 ‘ㄴ(ㄵ), ㅁ(ㄻ)’ 뒤에 결합되는 어미의 첫소리 ‘ㄱ, ㄷ, ㅅ, ㅈ’은 된소리로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 비음으로 끝나는 용언 어간 뒤에 어미가 결합할 때 일어나는 경음화에 대해 규정하고 있다. 비음 중에서 ‘ㄴ, ㅁ’만 제시된 것은 ‘ㅇ’으로 끝나는 용언 어간이 없기 때문이다. 이러한 경음화는 용언 어간 뒤에 피동, 사동 접미사가 결합할 때에는 일어나지 않는 것이 표준 발음이다. 따라서 현실 발음에서 흔히 들을 수 있는 ‘신기다[신끼다]’는 표준 발음이 아니며 [신기다]가 표준 발음이라는 데 주의할 필요가 있다. 이 조항의 경음화는 ‘용언 어간 뒤’와 ‘어미’라는 문법적 조건이 충족되어야 한다는 점에서 앞선 제23항의 경음화와는 차이가 있다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 25,
+      "source_anchor": "a418",
+      "normative_text": "어간 받침 ‘ㄼ, ㄾ’ 뒤에 결합되는 어미의 첫소리 ‘ㄱ, ㄷ, ㅅ, ㅈ’은 된소리로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 겹받침 중 ‘ㄼ, ㄾ’ 뒤에서 일어나는 경음화에 대해 규정하고 있다. 이때의 경음화는 어간이 ‘ㄼ, ㄾ’으로 끝나는 용언의 활용형에서만 일어난다. ‘여덟’과 같이 ‘ㄼ’으로 끝나는 체언 뒤에서는 경음화가 일어나지 않는다. 그래서 ‘여덟도, 여덟과’의 경우 ‘[여덜또], [여덜꽈]’ 대신 ‘[여덜도], [여덜과]’로 발음하게 된다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 26,
+      "source_anchor": "a419",
+      "normative_text": "한자어에서, ‘ㄹ’ 받침 뒤에 연결되는 ‘ㄷ, ㅅ, ㅈ’은 된소리로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 한자어에서 일어나는 특수한 경음화에 대해 규정하고 있다. ‘ㄹ’로 끝나는 한자와 ‘ㄷ, ㅅ, ㅈ’으로 시작하는 한자가 결합하면 ‘ㄷ, ㅅ, ㅈ’이 [ㄸ, ㅆ, ㅉ]과 같은 경음으로 발음된다. ‘ㄷ, ㅅ, ㅈ’은 자음의 조음 위치에서, 입안의 중앙에서 발음된다는 공통점이 있다. ‘ㄱ’이나 ‘ㅂ’과 같이 입안의 중앙이 아닌 양 끝에서 나는 자음에서는 경음화가 일어나지 않는다. ‘갈증, 발동’에서는 경음화가 일어나지만 ‘갈구, 출발’에서는 경음화가 일어나지 않는 것이 이를 보여 준다. 또한 ‘다만’에서 규정하고 있듯이 동일한 한자가 연속되어 만들어진 첩어에서는 ‘ㄹ’ 뒤에 ‘ㄷ, ㅅ, ㅈ’이 오더라도 경음화가 일어나지 않는다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 27,
+      "source_anchor": "a420",
+      "normative_text": "관형사형 ‘-(으)ㄹ’ 뒤에 연결되는 ‘ㄱ, ㄷ, ㅂ, ㅅ, ㅈ’은 된소리로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 관형사형 어미 중 ‘-(으)ㄹ’ 뒤에서 일어나는 경음화에 대해 규정하고 있다. 관형사형 어미라고 하더라도 ‘-(으)ㄹ’이 아닌 ‘-(으)ㄴ’이나 ‘-는’ 뒤에서는 경음화가 일어나지 않는다. 또한 ‘을’과 같은 목적격 조사 뒤에서도 경음화가 일어나지는 않는다. 이런 점에서 이 조항의 경음화에는 특수한 제약이 있다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 28,
+      "source_anchor": "a421",
+      "normative_text": "표기상으로는 사이시옷이 없더라도, 관형격 기능을 지니는 사이시옷이 있어야 할(휴지가 성립되는) 합성어의 경우에는, 뒤 단어의 첫소리 ‘ㄱ, ㄷ, ㅂ, ㅅ, ㅈ’을 된소리로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 사잇소리 현상으로서의 경음화 중 앞말이 자음으로 끝나는 경우에 대해 규정하고 있다. 자음으로 끝나는 명사와 자음으로 시작하는 명사가 결합하여 합성 명사를 이룰 때에는 경음화가 적용되는 경우가 있다. 이 조항에서 다루는 경음화는 모두 이러한 부류에 속한다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 29,
+      "source_anchor": "a422",
+      "normative_text": "합성어 및 파생어에서, 앞 단어나 접두사의 끝이 자음이고 뒤 단어나 접미사의 첫음절이 ‘이, 야, 여, 요, 유’인 경우에는, ‘ㄴ’ 음을 첨가하여 [니, 냐, 녀, 뇨, 뉴]로 발음한다.",
+      "explanation_first_paragraph": "이 조항은 ‘ㄴ’이 첨가되는 현상에 대해 규정하고 있다. 이 조항에 따르면 ‘ㄴ’이 첨가되는 조건은 두 가지이다. 우선 문법적 측면에서 보면 뒷말이 어휘적인 의미를 나타내는 경우가 대부분이다. ‘영업용’과 같이 접미사 ‘-용’이 결합된 경우에도 ‘ㄴ’이 첨가되지만 이때의 ‘-용’은 어휘적인 의미를 강하게 지닌다. 다음으로 소리의 측면에서 보면 앞말은 자음으로 끝나고 뒷말은 단모음 ‘이’ 또는 이중 모음 ‘야, 여, 요, 유’로 시작해야 한다. 이때 첨가되는 ‘ㄴ’은 뒷말의 첫소리에 놓인다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    },
+    {
+      "article": 30,
+      "source_anchor": "a423",
+      "normative_text": "사이시옷이 붙은 단어는 다음과 같이 발음한다.",
+      "explanation_first_paragraph": "이 조항은 사이시옷이 표기된 단어의 발음에 대한 규정이다. 첨가된 자음의 종류에 따라 3개의 하위 조항으로 구성되어 있다. 각각의 하위 조항은 ‘ㄷ’이 첨가된 경우, ‘ㄴ’이 첨가된 경우, ‘ㄴㄴ’이 첨가된 경우로 구분할 수 있다.",
+      "explanation_is_normative": false,
+      "review_status": "reviewed_against_saved_official_html",
+      "review_note": "Normative lead clause and explanatory paragraph are stored separately; explanatory prose must not be treated as a normative rule."
+    }
+  ]
+}
