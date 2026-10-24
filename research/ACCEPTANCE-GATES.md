@@ -313,10 +313,13 @@ Merge commit: `c4efa90e1b24b33a8692c383f58b6bf966506871`.
 
 | Task | Status | Evidence / acceptance boundary |
 |---|---|---|
-| Extend exact-form NIKL surface/IPA regression | DONE_VERIFIED pending exact-head CI | Cross-rule test now covers 25 items, including six new official-source-backed forms: 긁고[글꼬], 늙고[늘꼬], 않았다[아낟따], 얇은[얄븐], 읽어[일거], 헛웃음[허두슴]. New 긁고 source: NIKL Online Q&A qna_seq=328946, https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=328946. |
+| Extend exact-form NIKL surface/IPA regression | DONE_VERIFIED pending exact-head CI | Cross-rule engine test now covers 24 source-backed Korean surface/project-IPA pairs, including five added lexical forms: 늙고[늘꼬], 않았다[아낟따], 얇은[얄븐], 읽어[일거], 헛웃음[허두슴]. A sixth case, 긁고[글꼬], is stored in `tests/fixtures/nikl-surface-only-complex-coda.json` and guarded by `tests/nikl-surface-only-complex-coda.test.mjs`; its source is NIKL Online Q&A qna_seq=328946, https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=328946. The surface is attested, but the source supplies no IPA, so the engine remains unresolved and the form is not added to the lexical IPA/target table. |
 | IPA provenance | PARTIAL / project analysis | The cited NIKL pages attest Hangul pronunciation spellings, not IPA. Broad IPA values are explicit project analysis and must remain independently adjudicated. |
 | Ukrainian target | BLOCKED_SPECIALIST_REVIEW | Target syllables remain provisional and are not normative gold labels. |
 | Generalization to productive morphology / unseen compounds | BLOCKED_INPUT_ANALYSIS | Exact-form examples must not be generalized to all ㄼ/ㄺ stems or unknown compounds without evidence and morphology. |
 | Release readiness | BLOCKED | Research preview / partial prototype. The independent IPA queue, Ukrainian target review, source rights and permitted live-source retrieval remain open. |
 
 Current branch: `research/nikl-cross-rule-complex-coda-regressions-2026-10-24`. Exact-head CI is required before merge.
+
+
+The first exact-head CI run for PR #288 exposed an important acceptance failure: adding `긁고` to the lexical table changed its Python status from `unresolved` to `provisional`, even though the source only attests Hangul surface spelling and does not provide IPA. That promotion was reverted. The source is now preserved in a separate surface-only fixture with `ipa_candidate: null`, `ukrainian_target: null`, and an explicit unresolved expectation. The five other new exact-form regressions use already-existing project IPA candidates and do not claim independent IPA gold.
