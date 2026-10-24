@@ -148,3 +148,5 @@ Paired g2pk-minus-native exact delta is +0.1506 pp (95% CI +0.0351 to +0.3243) o
 - Full report: [IPA discrepancy adjudication and holdout](IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md).
 
 - **DONE_VERIFIED (measured profile sensitivity):** on 2,655 paired scored occurrences, native exact match is 53.18% legacy versus 91.04% candidate broad-v1; g2pk is 53.33% versus 90.96%. CER drops from 9.19% to 1.70% for native and 9.24% to 1.75% for g2pk. This is a normalization-sensitivity result, not validated accuracy; sibilant aspiration normalization is the largest driver and requires independent IPA review. See `research/broad-ipa-profile-sensitivity-2026-10-24.json`.
+
+- **Engine comparison uncertainty:** lexical-type cluster bootstrap (10,000 replicates; 1,860 types) gives g2pk-minus-native exact-match delta +0.15 pp [0.00, 0.47] under legacy and −0.08 pp [−0.47, 0.37] under broad-v1. Broad-v1 CI includes zero; no reliable engine ranking. Aggregate: `research/broad-ipa-profile-sensitivity-2026-10-24.json`.
