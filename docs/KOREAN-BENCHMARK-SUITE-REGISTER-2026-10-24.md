@@ -137,3 +137,12 @@ Paired g2pk-minus-native exact delta is +0.1506 pp (95% CI +0.0351 to +0.3243) o
 
 
 - **DONE_VERIFIED (descriptive symbol profile):** the reproducible alignment report identifies frequent reference/native differences `ɭ→l` (525), `ʰ→s` (194), `ɦ→h` (165), `ɲ→n` (73), `ç→h` (40). This strengthens the hypothesis that broad-vs-narrow IPA conventions explain a substantial portion of exact-string failures. Alignment counts are not phonological gold labels; independent review remains required.
+
+
+### IPA contract and holdout status (2026-10-24)
+
+- **DONE_VERIFIED (contract specification + executable normalizer):** [versioned broad-IPA contract](IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md) and `normalize_ipa_profile` now distinguish the immutable legacy score from the proposed broad-v1 sensitivity profile. Both exact match and CER are emitted by `scripts/analyze_korean_benchmark_correlations.py` with coverage/denominator; no production pronunciation output is rewritten.
+- **PARTIAL (discrepancy adjudication):** frequent symbol-level classes have explicit candidate decisions, but alignment is not gold. The 14 selected R002/R003 cases have official Hangul surface evidence for 3 exact forms, related evidence for 4 and no exact source for 7; independently adjudicated IPA gold remains 0/14.
+- **PARTIAL/BLOCKED (holdout):** 24 NIKL-sourced Rule 5/9 forms are frozen in `data/korean/ipa_holdout_2026-10-24.json`. The manifest contains no engine outputs or IPA gold. Local runtime/fixture leakage is checked; exact overlap against the pinned licensed UGTPHON artifact must be checked before the set is certified independent. The validator reports the external-overlap gate as pending when the artifact is absent.
+- **Acceptance:** do not tune on the holdout. Two independent IPA labels plus adjudication are required; Ukrainian target review remains separate. Preserve legacy and broad-v1 sensitivity metrics side by side until expert review accepts the mappings.
+- Full report: [IPA discrepancy adjudication and holdout](IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md).
