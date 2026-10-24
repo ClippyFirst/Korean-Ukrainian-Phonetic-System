@@ -169,3 +169,12 @@ test('IPA/source syllable misalignment fails closed instead of shifting targets'
   assert.equal(result.status, 'unavailable');
   assert.equal(result.reason, 'ipa_source_alignment_mismatch');
 });
+
+test('direct IPA target adapter exposes provisional mapping status without claiming phonology is resolved', () => {
+  const result = ipaTargetForSource('위', 'y');
+  assert.equal(result.text, 'ві');
+  assert.equal(result.status, 'provisional');
+  assert.equal(result.mappingTrace[0].mapping_id, 'KUA-IPA-027');
+  assert.equal(traceIpaMappingDetailed('').status, 'unavailable');
+});
+
