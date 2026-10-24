@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
-import { ipaSyllableToUkrainian, traceIpaMapping } from '../src/app/engine_ipa.js';
+import { ipaSyllableToUkrainian, traceIpaMapping, traceIpaMappingDetailed, ipaTargetForSource } from '../src/app/engine_ipa.js';
 
 const canonicalCsv = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexicalCsv = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -125,4 +125,47 @@ test('every long-vowel marker in the lexical IPA inventory is surfaced as a targ
     }
   }
   assert.ok(checked > 0, 'fixture must exercise real lexical IPA length markers');
+});
+
+
+test('browser IPA mappings carry the same explicit status and provenance as the Python target contract', () => {
+  const provisional = traceIpaMappingDetailed('kʰjʌ');
+  assert.equal(provisional.status, 'provisional');
+  assert.equal(provisional.tokens.length, 1);
+  assert.equal(provisional.tokens[0].ipa, 'kʰjʌ');
+  assert.equal(provisional.tokens[0].ukrainian, 'кхьо');
+  assert.equal(provisional.tokens[0].mapping_id, 'KUA-IPA-015');
+  assert.equal(provisional.tokens[0].source_ref.length > 0, true);
+  assert.ok(provisional.features.some(feature => feature.feature === 'aspiration'));
+
+  for (const ipa of ['ɰi', 'ø', 'y']) {
+    assert.equal(traceIpaMappingDetailed(ipa).status, 'provisional', ipa);
+  }
+});
+
+test('IPA feature losses are inspectable without erasing the source IPA contrast', () => {
+  const aspirated = traceIpaMappingDetailed('kʰ');
+  const fortis = traceIpaMappingDetailed('k͈');
+  const unreleased = traceIpaMappingDetailed('k̚');
+  assert.equal(aspirated.tokens[0].ipa, 'kʰ');
+  assert.equal(aspirated.features[0].feature, 'aspiration');
+  assert.equal(fortis.features[0].feature, 'fortisness');
+  assert.equal(unreleased.features[0].feature, 'unreleased-stop');
+  assert.ok([aspirated, fortis, unreleased].every(item =>
+    item.features[0].handling === 'preserved-in-ipa-not-rendered-in-ukrainian-target'
+  ));
+});
+
+test('dot-separated IPA syllables align to Hangul source and preserve punctuation', () => {
+  const result = ipaTargetForSource('서울역!', 'sʌ.ul.ljʌk̚');
+  assert.equal(result.text, 'соулльок!');
+  assert.equal(result.status, 'model-selected');
+  assert.equal(result.mappingTrace.length > 0, true);
+});
+
+test('IPA/source syllable misalignment fails closed instead of shifting targets', () => {
+  const result = ipaTargetForSource('서울역', 'sʌ.ul');
+  assert.equal(result.text, '');
+  assert.equal(result.status, 'unavailable');
+  assert.equal(result.reason, 'ipa_source_alignment_mismatch');
 });
