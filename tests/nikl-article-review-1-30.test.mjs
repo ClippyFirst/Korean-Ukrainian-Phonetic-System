@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { test } from 'node:test';
 
 const html = readFileSync(new URL('../한국어 어문 규범.htm', import.meta.url), 'utf8');
@@ -24,6 +25,9 @@ test('official saved HTML has a complete, ordered review record for Standard Pro
   assert.equal(fixture.articles.length, 30);
   assert.deepEqual(fixture.articles.map((item) => item.article), Array.from({ length: 30 }, (_, i) => i + 1));
   assert.equal(fixture.source.repository_path, '한국어 어문 규범.htm');
+  const gitBlobHeader = Buffer.from('blob ' + Buffer.byteLength(html, 'utf8') + '\0');
+  const actualBlobSha = createHash('sha1').update(gitBlobHeader).update(Buffer.from(html, 'utf8')).digest('hex');
+  assert.equal(actualBlobSha, fixture.source.repository_blob_sha, 'saved official-source snapshot must match the pinned Git blob SHA');
   assert.match(fixture.source.url, /^https:\/\/www\.korean\.go\.kr\//u);
   assert.equal(fixture.boundary_contract.ipa.includes('not text promulgated'), true);
   assert.equal(fixture.boundary_contract.ukrainian.includes('not an official'), true);
