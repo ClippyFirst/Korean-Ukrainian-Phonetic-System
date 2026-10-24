@@ -13,7 +13,13 @@ from typing import Any, Protocol
 
 @dataclass(frozen=True, slots=True)
 class Morpheme:
-    """One analyzer token; offsets are Python string indices into source text."""
+    """Analyzer morpheme with source offsets and explicit surface alignment.
+
+    "form" is the analyzer's morpheme form and may be normalized or
+    decomposed; "surface" is the literal source substring at [start:end].
+    Some Korean analyzers emit zero-width morphemes, which are preserved and
+    labeled rather than mistaken for ordinary source-aligned spans.
+    """
 
     form: str
     tag: str
@@ -22,6 +28,8 @@ class Morpheme:
     lemma: str | None = None
     analyzer: str = ""
     confidence: str = "unscored"
+    surface: str = ""
+    span_status: str = "surface_aligned"
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -89,7 +97,8 @@ class KiwiMorphologyAnalyzer:
             # Keep lemma null rather than infer it from surface spelling.
             result.append(Morpheme(
                 form=form, tag=str(token.tag), start=start, end=start + length,
-                lemma=None, analyzer=self.name,
+                lemma=None, analyzer=self.name, surface=text[start:start + length],
+                span_status="zero_width_morph" if length == 0 else "surface_aligned",
             ))
         return MorphologyResult(text, self.name, tuple(result))
 
@@ -153,7 +162,8 @@ class MecabKoMorphologyAnalyzer:
                 cursor = end
                 result.append(Morpheme(
                     form=surface, tag=str(tag), start=start, end=end,
-                    lemma=None, analyzer=self.name,
+                    lemma=None, analyzer=self.name, surface=text[start:end],
+                    span_status="surface_aligned",
                 ))
             return MorphologyResult(text, self.name, tuple(result))
 
@@ -178,7 +188,8 @@ class MecabKoMorphologyAnalyzer:
             lemma = features[6] if len(features) > 6 and features[6] not in {"*", ""} else None
             result.append(Morpheme(
                 form=surface, tag=tag, start=start, end=end,
-                lemma=lemma, analyzer=self.name,
+                lemma=lemma, analyzer=self.name, surface=text[start:end],
+                span_status="surface_aligned",
             ))
         return MorphologyResult(text, self.name, tuple(result))
 
