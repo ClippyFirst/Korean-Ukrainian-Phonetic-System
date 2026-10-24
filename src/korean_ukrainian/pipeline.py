@@ -8,6 +8,7 @@ from .rules import apply_ordered_rules
 from .ipa import generate_vowel_variants, realize_syllables
 from .ukrainian_adapter import UkrainianTargetAdapter
 from .orthography import render_sequence
+from .ipa_target_renderer import render_ipa_sequence_to_ukrainian
 
 _LEXICON_PATH=Path(__file__).resolve().parents[2]/"data"/"korean"/"lexical_pronunciations.csv"
 _INSTALLED_LEXICON_PATH=Path(sysconfig.get_path("data"))/"share"/"korean-ukrainian-phonetic-system"/"lexical_pronunciations.csv"
@@ -531,23 +532,66 @@ def _target_unavailable_reason(target):
     return reason, adapter_status, segment_reasons
 
 
+def _target_inventory_diagnostic(ipa, target_adapter=None):
+    """Keep UPI candidate analysis inspectable, but never use it as output authority."""
+    try:
+        target = map_ipa_to_ukrainian(ipa, target_adapter)
+        selected = _select_target(target)
+        if selected:
+            reason, adapter_status, segment_reasons = None, None, []
+            status = "selected"
+        else:
+            reason, adapter_status, segment_reasons = _target_unavailable_reason(target)
+            status = "unavailable"
+        return target, selected, {
+            "status": status,
+            "reason": reason,
+            "adapter_status": adapter_status,
+            "segment_reasons": segment_reasons,
+        }
+    except (TypeError, ValueError, OSError) as exc:
+        return {
+            "ipa": ipa,
+            "segments": [],
+            "status": "unavailable",
+            "error": str(exc),
+        }, None, {
+            "status": "unavailable",
+            "reason": "target_inventory_analysis_failed",
+            "error": str(exc),
+            "adapter_status": None,
+            "segment_reasons": [],
+        }
+
+
 def render_ipa_analysis_to_ukrainian(
     text, word_analyses, *, pronunciation_surface, phonetics, ipa,
     pronunciation_engine, target_adapter=None, morphology_mode="unspecified",
 ):
-    """Render an engine's IPA analysis through the ClippyFirst Ukrainian target layer.
+    """Render Ukrainian practical orthography from IPA using local licensed correspondences.
 
-    This is the shared target-rendering boundary for native and external
-    pronunciation engines. Upstream G2P adapters supply surface/IPA analyses;
-    they do not own Ukrainian mapping, candidate selection, or orthography.
+    UPI remains the external source for Ukrainian phoneme/features/grapheme
+    candidate analysis. Korean-specific source-to-target correspondence policy
+    is owned downstream in canonical_correspondence.csv and explicit IPA
+    sequence overrides. UPI availability is reported separately and cannot
+    silently suppress or fabricate the actual IPA-derived output.
     """
     import re
 
     surface_tokens = re.findall(r"[가-힣]+|[^가-힣]+", pronunciation_surface)
     output_parts = []
     targets = []
+    inventory_analyses = []
+    unavailable_reasons = set()
     all_mapped = True
     word_index = 0
+    output_statuses = []
+    adapter = target_adapter if isinstance(target_adapter, UkrainianTargetAdapter) else UkrainianTargetAdapter()
+    inventory_status = adapter.status()
+    ipa_diagnostic_only = bool(
+        (isinstance(ipa, dict) and ipa.get("is_diagnostic_only"))
+        or (isinstance(phonetics, dict) and phonetics.get("ipa_is_diagnostic_only"))
+    )
 
     for token in surface_tokens:
         if not re.fullmatch(r"[가-힣]+", token):
@@ -556,11 +600,14 @@ def render_ipa_analysis_to_ukrainian(
 
         if word_index >= len(word_analyses):
             all_mapped = False
+            unavailable_reasons.add("missing_word_ipa_analysis")
             targets.append({
                 "surface_hangul": token,
                 "ipa": None,
                 "status": "unavailable",
                 "reason": "missing_word_ipa_analysis",
+                "renderer": "korean_ipa_correspondence",
+                "mapping_trace": [],
             })
             word_index += 1
             continue
@@ -569,40 +616,85 @@ def render_ipa_analysis_to_ukrainian(
         word_index += 1
         if not word_ipa:
             all_mapped = False
+            unavailable_reasons.add("empty_word_ipa_analysis")
             targets.append({
                 "surface_hangul": token,
                 "ipa": word_ipa,
                 "status": "unavailable",
                 "reason": "empty_word_ipa_analysis",
+                "renderer": "korean_ipa_correspondence",
+                "mapping_trace": [],
             })
             continue
 
-        target = map_ipa_to_ukrainian(word_ipa, target_adapter)
-        selected = _select_target(target)
-        if not selected:
+        inventory_analysis, inventory_selected, inventory_diagnostic = _target_inventory_diagnostic(
+            word_ipa, adapter
+        )
+        inventory_analyses.append({
+            "surface_hangul": token,
+            "ipa": word_ipa,
+            "analysis": inventory_analysis,
+            "summary": inventory_diagnostic,
+        })
+
+        if ipa_diagnostic_only:
+            local = {
+                "ipa": word_ipa,
+                "status": "unavailable",
+                "reason": "diagnostic_ipa_not_accepted",
+                "ukrainian_orthography": None,
+                "segments": [],
+                "ignored_source_markers": [],
+            }
+        else:
+            local = render_ipa_sequence_to_ukrainian(word_ipa)
+
+        if local.get("ukrainian_orthography") is None:
             all_mapped = False
-            reason, adapter_status, segment_reasons = _target_unavailable_reason(target)
+            reason = local.get("reason") or "target_mapping_unavailable"
+            unavailable_reasons.add(reason)
             targets.append({
                 "surface_hangul": token,
                 "ipa": word_ipa,
                 "status": "unavailable",
                 "reason": reason,
-                "segment_reasons": segment_reasons,
-                "target_adapter_status": adapter_status or None,
+                "renderer": "korean_ipa_correspondence",
+                "mapping_trace": local.get("segments", []),
+                "unmapped_fragment": local.get("unmapped_fragment"),
+                "unmapped_offset": local.get("unmapped_offset"),
+                "ignored_source_markers": local.get("ignored_source_markers", []),
+                "target_inventory_analysis_status": inventory_diagnostic["status"],
+                "target_inventory_unavailable_reason": inventory_diagnostic["reason"],
+                "target_inventory_adapter_status": inventory_diagnostic["adapter_status"],
             })
             continue
 
-        output_parts.append(render_sequence(selected["segments"]))
+        output_parts.append(local["ukrainian_orthography"])
+        output_statuses.append(local["status"])
         targets.append({
             "surface_hangul": token,
             "ipa": word_ipa,
-            "status": "model-selected",
-            "selection": selected,
+            "status": local["status"],
+            "renderer": local["renderer"],
+            "ukrainian_orthography": local["ukrainian_orthography"],
+            "mapping_trace": local["segments"],
+            "ignored_source_markers": local.get("ignored_source_markers", []),
+            "length_adaptation_status": local.get("length_adaptation_status"),
+            "target_inventory_analysis_status": inventory_diagnostic["status"],
+            "target_inventory_unavailable_reason": inventory_diagnostic["reason"],
+            "target_inventory_adapter_status": inventory_diagnostic["adapter_status"],
+            "target_inventory_selected": bool(inventory_selected),
         })
 
     if word_index != len(word_analyses):
         all_mapped = False
+        unavailable_reasons.add("word_ipa_analysis_alignment_mismatch")
 
+    overall_status = (
+        "unavailable" if not all_mapped
+        else "provisional" if "provisional" in output_statuses
+        else "model-selected"
+    )
     return {
         "input": text,
         "pronunciation_engine": pronunciation_engine,
@@ -610,18 +702,17 @@ def render_ipa_analysis_to_ukrainian(
         "phonetics": phonetics,
         "ipa": ipa,
         "target_analysis": targets,
-        "unavailable_reasons": sorted({
-            item["reason"] for item in targets if item.get("reason")
-        }),
+        "target_inventory_analysis": inventory_analyses,
+        "target_inventory_status": inventory_status,
+        "unavailable_reasons": sorted(unavailable_reasons),
         "ukrainian_orthography": "".join(output_parts) if all_mapped else None,
-        "target_status": "model-selected" if all_mapped else "unavailable",
-        "score_type": "heuristic_cost",
+        "target_status": overall_status,
+        "score_type": "explicit_correspondence_not_probability",
         "confidence": None,
         "selection_status": (
-            f"{pronunciation_engine} surface pronunciation → IPA → "
-            "ClippyFirst Ukrainian target mapping"
+            "source IPA → Korean-specific licensed correspondence → Ukrainian practical orthography"
             if all_mapped else
-            "Ukrainian target unavailable or misaligned for at least one IPA word; failed closed"
+            "Ukrainian output withheld because IPA is diagnostic-only, a correspondence is missing, or word alignment failed"
         ),
         "analysis_status": "research-prototype",
         "morphology_mode": morphology_mode,
@@ -630,13 +721,25 @@ def render_ipa_analysis_to_ukrainian(
 
 def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict"):
     surface=phoneticize_korean(text,rule_ids=rule_ids,boundary_mode=boundary_mode,ipa_level=ipa_level,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses,morphology_mode=morphology_mode)
+    source_ipa=surface["ipa"]["ipa"]
+    target_inventory_analysis,selected,inventory_diagnostic=_target_inventory_diagnostic(source_ipa,target_adapter)
+
     if surface["pronunciation_status"] == "unresolved":
-        target={"segments":[],"status":"unresolved_due_to_ambiguous_korean_phonology"}
-        selected=None
+        target_mapping={
+            "ipa":source_ipa,"status":"unavailable",
+            "reason":"unresolved_korean_phonology","ukrainian_orthography":None,
+            "segments":[],"ignored_source_markers":[],
+        }
+    elif surface["ipa_is_diagnostic_only"]:
+        target_mapping={
+            "ipa":source_ipa,"status":"unavailable",
+            "reason":"diagnostic_ipa_not_accepted","ukrainian_orthography":None,
+            "segments":[],"ignored_source_markers":[],
+        }
     else:
-        target=map_ipa_to_ukrainian(surface["ipa"]["ipa"],target_adapter)
-        selected=_select_target(target)
-    orthographic=render_sequence(selected["segments"]) if selected else None
+        target_mapping=render_ipa_sequence_to_ukrainian(source_ipa)
+
+    orthographic=target_mapping.get("ukrainian_orthography")
     lexical=LEXICAL_PRONUNCIATIONS.get(text)
     lexical_reference="".join(lexical["target_syllables"].split("|")) if lexical and lexical.get("target_syllables") else None
     lexical_reference_status=lexical.get("target_status","model-selected") if lexical_reference is not None else None
@@ -646,20 +749,57 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
         lexical_comparison="unavailable_without_ipa_target"
     else:
         lexical_comparison="matches_reference" if orthographic==lexical_reference else "differs_from_reference"
-    # The lexical target is an audit reference only. Never use a stored Ukrainian
-    # target to bypass the required IPA -> Ukrainian inventory adapter boundary.
-    target_status="model-selected" if selected else "unresolved"
-    target_unavailable_segments = []
-    if surface["pronunciation_status"] == "unresolved":
-        target_unavailable_reason = "unresolved_korean_phonology"
-    elif selected:
-        target_unavailable_reason = None
-    else:
-        target_unavailable_reason, _, target_unavailable_segments = _target_unavailable_reason(target)
+
+    target_status=target_mapping.get("status","unavailable")
+    target_unavailable_reason=target_mapping.get("reason") if orthographic is None else None
+    target_unavailable_segments=[]
+    if target_unavailable_reason=="unmapped_ipa_sequence":
+        target_unavailable_segments=[{
+            "source_ipa":target_mapping.get("unmapped_fragment"),
+            "reason":"unmapped_ipa_sequence",
+            "offset":target_mapping.get("unmapped_offset"),
+        }]
     selection_status=(
         "unresolved_due_to_ambiguous_korean_phonology"
-        if surface["pronunciation_status"] == "unresolved"
-        else ("top-ranked segmentwise IPA-derived heuristic candidate; not probability"
-              if selected else "unavailable_without_target_inventory")
+        if surface["pronunciation_status"]=="unresolved"
+        else "diagnostic_ipa_not_accepted"
+        if target_unavailable_reason=="diagnostic_ipa_not_accepted"
+        else "source IPA → Korean-specific licensed correspondence → Ukrainian practical orthography"
+        if orthographic is not None
+        else f"Ukrainian target unavailable: {target_unavailable_reason}"
     )
-    return {"input":text,"orthography":analyze_korean(text),"phonology":phonologize_korean(text),"phonetics":surface,"ipa":surface["ipa"],"ipa_status":surface["ipa_status"],"ipa_is_diagnostic_only":surface["ipa_is_diagnostic_only"],"ipa_status_reason":surface["ipa_status_reason"],"target_analysis":target,"candidates":[g["target"]["candidates"] for g in target["segments"]],"selected_candidate":selected,"ukrainian_orthography":orthographic,"target_status":target_status,"target_unavailable_reason":target_unavailable_reason,"target_unavailable_segments":target_unavailable_segments,"lexical_target_reference":lexical_reference,"lexical_target_reference_status":lexical_reference_status,"lexical_target_comparison":lexical_comparison,"score_type":"heuristic_cost","confidence":None,"selection_status":selection_status,"sources":["S001","S003","S004","S005"],"analysis_status":"research-prototype","morphology_mode":morphology_mode}
+    return {
+        "input":text,
+        "orthography":analyze_korean(text),
+        "phonology":phonologize_korean(text),
+        "phonetics":surface,
+        "ipa":surface["ipa"],
+        "ipa_status":surface["ipa_status"],
+        "ipa_is_diagnostic_only":surface["ipa_is_diagnostic_only"],
+        "ipa_status_reason":surface["ipa_status_reason"],
+        "target_analysis":target_mapping,
+        "target_inventory_analysis":target_inventory_analysis,
+        "target_inventory_diagnostic":inventory_diagnostic,
+        "target_inventory_status":(
+            inventory_diagnostic.get("adapter_status")
+            or target_inventory_analysis.get("segments", [{}])[0].get("target", {}).get("adapter")
+            if target_inventory_analysis.get("segments") else inventory_diagnostic.get("adapter_status")
+        ),
+        "candidates":[g["target"]["candidates"] for g in target_inventory_analysis.get("segments", [])],
+        "selected_candidate":selected,
+        "selected_candidate_is_output_source":False,
+        "ukrainian_orthography":orthographic,
+        "target_status":target_status,
+        "target_unavailable_reason":target_unavailable_reason,
+        "target_unavailable_segments":target_unavailable_segments,
+        "lexical_target_reference":lexical_reference,
+        "lexical_target_reference_status":lexical_reference_status,
+        "lexical_target_comparison":lexical_comparison,
+        "score_type":"explicit_correspondence_not_probability",
+        "target_inventory_score_type":"heuristic_cost",
+        "confidence":None,
+        "selection_status":selection_status,
+        "sources":["S001","S003","S004","S005"],
+        "analysis_status":"research-prototype",
+        "morphology_mode":morphology_mode,
+    }
