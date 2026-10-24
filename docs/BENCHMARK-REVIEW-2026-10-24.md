@@ -84,6 +84,10 @@ The NIKL live metadata crawl was skipped in the system verification workflow; do
 5. **BLOCKED — production morphology licensing:** require expert-reviewed morpheme labels and a rule-specific licensing adapter; raw analyzer boundaries alone do not satisfy acceptance.
 6. **BLOCKED — external accuracy claim:** UGTPHON is noisy and its IPA convention differs in places from this project's broad-IPA representation; report it as diagnostic until an independently adjudicated, source-grounded holdout is available.
 
+## Follow-up benchmark suite register
+
+The proposed eight-suite validation matrix and its task ledger are maintained in [KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md). The multi-engine diagnostic driver now emits an occurrence-level `native_abstention_audit` in report schema v2 so repeated tokens, unresolved contexts, and alternative-engine predictions can be inspected separately. This new report has not yet been validated until the benchmark workflow completes.
+
 ## Reproduction links
 
 - [Multi-engine IPA benchmark](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40087193952)
