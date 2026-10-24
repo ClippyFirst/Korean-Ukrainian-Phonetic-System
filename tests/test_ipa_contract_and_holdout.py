@@ -41,9 +41,11 @@ def test_holdout_validator_detects_external_benchmark_overlap(tmp_path):
     target_manifest = root / "data/korean/ipa_holdout_2026-10-24.json"
     target_manifest.write_text(source_manifest.read_text(encoding="utf-8"), encoding="utf-8")
     benchmark = tmp_path / "benchmark.json"
+    manifest_data = json.loads(target_manifest.read_text(encoding="utf-8"))
+    overlap_form = manifest_data["cases"][0]["input"]
     benchmark.write_text(json.dumps({
         "native_g2pk_pairwise_audit": {
-            "occurrences": [{"token": "주의"}]
+            "occurrences": [{"token": overlap_form}]
         }
     }, ensure_ascii=False), encoding="utf-8")
     result = validate(root, target_manifest, benchmark)
