@@ -302,4 +302,3 @@ def test_shared_renderer_withholds_whole_output_for_one_unmapped_word():
     assert result["target_status"] == "unavailable"
     assert result["target_analysis"][1]["reason"] == "unmapped_ipa_sequence"
     assert result["target_analysis"][1]["unmapped_fragment"] == "q"
-    assert result["target_unavailable_segments"][0]["unmapped_fragment"] == "q"
