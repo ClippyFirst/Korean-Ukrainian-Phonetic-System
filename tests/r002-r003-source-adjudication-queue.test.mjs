@@ -27,9 +27,16 @@ test('R002/R003 triage queue contains the intended 14 distinct source-review cas
     assert.ok(item.pair, item.input + ': unresolved morphophonological span must be retained');
     assert.ok(item.goldDiagnostic, item.input + ': preserve the diagnostic reference for triage only');
     assert.ok(item.g2pkIpa, item.input + ': preserve comparison output for triage only');
-    assert.equal(item.sourceStatus, 'PENDING_EXACT_FORM_SOURCE', item.input);
-    assert.equal(item.sourceLocator, null, item.input + ': do not imply exact-form source review happened');
-    assert.equal(item.sourceExcerpt, null, item.input + ': do not invent source excerpts');
+    assert.ok(['PENDING_EXACT_FORM_SOURCE', 'SOURCE_FOUND_PENDING_IPA'].includes(item.sourceStatus), item.input);
+    if (item.sourceStatus === 'PENDING_EXACT_FORM_SOURCE') {
+      assert.equal(item.sourceLocator, null, item.input + ': do not imply exact-form source review happened');
+      assert.equal(item.sourceExcerpt, null, item.input + ': do not invent source excerpts');
+    } else {
+      assert.match(item.sourceLocator, /^https:\/\//u, item.input + ': exact official source URL required');
+      assert.ok(item.sourceExcerpt, item.input + ': source excerpt required');
+      assert.equal(item.sourceAccessed, '2026-10-24', item.input + ': access date required');
+      assert.match(item.sourceType, /official/u, item.input + ': source type must be recorded');
+    }
     assert.equal(item.grammaticalSegmentation, null, item.input + ': do not guess morphology');
     assert.equal(item.finalBroadIpa, null, item.input + ': no independent IPA gold exists yet');
     assert.equal(item.reviewerA.ipa, null, item.input + ': reviewer A has not adjudicated');
@@ -43,6 +50,12 @@ test('R002/R003 triage queue contains the intended 14 distinct source-review cas
 test('R002/R003 queue explicitly prevents corpus references and engine agreement from becoming normative evidence', () => {
   assert.ok(queue.acceptanceCriteria.some((item) => /corpus IPA and every engine output as hypotheses/u.test(item)));
   assert.ok(queue.acceptanceCriteria.some((item) => /exact official source passage/u.test(item)));
+  assert.ok(queue.cases.some((item) => item.sourceStatus === 'SOURCE_FOUND_PENDING_IPA'));
+  for (const item of queue.cases.filter((item) => item.sourceStatus === 'SOURCE_FOUND_PENDING_IPA')) {
+    assert.equal(item.finalBroadIpa, null, item.input + ': source evidence must not be misrepresented as IPA gold');
+    assert.equal(item.reviewerA.ipa, null, item.input + ': independent review still required');
+    assert.equal(item.reviewerB.ipa, null, item.input + ': independent review still required');
+  }
   assert.ok(queue.acceptanceCriteria.some((item) => /two independent broad-IPA reviews/u.test(item)));
   assert.ok(queue.acceptanceCriteria.some((item) => /frozen NIKL holdout/u.test(item)));
   assert.ok(queue.acceptanceCriteria.some((item) => /Review Ukrainian rendering separately/u.test(item)));
