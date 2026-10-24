@@ -1011,18 +1011,18 @@ PR #265 was not merged blindly because it was one commit behind and overlapped c
 
 ## Follow-up error investigation and paired benchmark results — 2026-10-24
 
-**Scope note:** this follow-up was executed on the open benchmark branch PR #297, not on the mainline commit recorded in the original 2026-10-20 audit. The merged mainline fixes in PRs #298 and #299 are part of the current branch base; the R010 exact-form licenses remain branch-local until PR #297 is reviewed and merged.
+**Scope note:** this follow-up is now integrated into main by PR #297 merge commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab. The R002 and broad-IPA yod fixes from PRs #298 and #299 were already merged; PR #297 integrated the R010 exact-form licenses and complete paired audit. Code-equivalent CI on superseded PR #300 passed; post-merge mainline tests/verification were queued at the time of this update.
 
 ### Findings and verified fixes
 
 - R002 coda-ㅇ liaison was dropping /ŋ/ by moving it to a silent onset. The guard is merged in PR #298 and has regression tests.
 - Broad IPA retained /j/ after ㅈ/ㅉ/ㅊ + ㅕ. Official NIKL Standard Pronunciation Rule 5, exception 1 and the linked NIKL explanation support the broad-IPA absorption fix, merged in PR #299.
-- The full occurrence-level audit found two additional source-rule gaps: 닮다 and 넘게 did not receive R010 (§24) stem-n/m + ending fortition because the strict native engine had no exact full-form licenses. PR #297 adds narrow licenses and Python regressions; the corresponding browser implementation and parity test are present, with current-head CI pending.
+- The full occurrence-level audit found two additional source-rule gaps: 닮다 and 넘게 did not receive R010 (§24) stem-n/m + ending fortition because the strict native engine had no exact full-form licenses. PR #297 merged the narrow licenses, Python regressions, corresponding browser implementation, and parity test. Code-equivalent PR #300 CI passed; mainline post-merge CI was still pending at the time of this update.
 - The remaining four g2pk-only exact UGTPHON occurrences are all instances of 없는 where the reference omits the NIKL-attested vowel length. The engine should retain sourced length; the reference needs independent adjudication rather than a production-rule change.
 
 ### Latest benchmark evidence
 
-Latest successful multi-engine run: [40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799), artifact [12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356).
+Latest successful multi-engine run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978), artifact [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692).
 
 - UGTPHON native: 1,412/2,655 exact (53.1827%), CER 9.1883%, coverage 98.2242%.
 - UGTPHON g2pk on the same 2,655 scored occurrences: 1,416 exact (53.3333%), CER 9.2414%. Paired g2pk-minus-native exact delta +0.1506 pp (95% CI +0.0351 to +0.3243); CER delta +0.0531 pp (95% CI −0.0139 to +0.1302, crosses zero).

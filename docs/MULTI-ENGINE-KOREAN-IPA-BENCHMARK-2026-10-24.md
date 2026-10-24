@@ -2,11 +2,11 @@
 
 ## Status
 
-**DONE_VERIFIED for two diagnostic datasets, six engines, and complete occurrence-level native-vs-g2pk audits** on the post-fix benchmark head. Latest run: [40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799); artifact: [12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356). This head includes the merged coda-ㅇ and broad-IPA palatal-yod fixes plus the branch's source-backed exact-form R010 licenses for 닮다 and 넘게. All 48 UGTPHON abstention occurrences and both SIGMORPHON abstentions were retained; the full pairwise ledger replaces the old capped mismatch sample.
+**DONE_VERIFIED for two diagnostic datasets, six engines, and complete occurrence-level native-vs-g2pk audits** on the post-fix benchmark head. Latest run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978); artifact: [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692). The merged implementation includes the coda-ㅇ and broad-IPA palatal-yod fixes plus source-backed exact-form R010 licenses for 닮다 and 넘게. All 48 UGTPHON abstention occurrences and both SIGMORPHON abstentions were retained; the full pairwise ledger replaces the old capped mismatch sample.
 
 - Repository: ClippyFirst/Korean-Ukrainian-Phonetic-System
 - Benchmark branch: bench/ko-eight-suite-and-abstention-audit-2026-10-24
-- Active benchmark and error-analysis PR: [#297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/297); earlier benchmark PR [#280](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/280) is merged
+- Benchmark implementation merged via PR [#297](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/297) as commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab; earlier benchmark PR [#280](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/280) is merged
 - Pinned dataset: [UGTPHON](https://github.com/naver-ai/UGTPHON), commit ef0d5a09c2ea1874c7206020f875cbd9cfea2f54, Korean ko/test.json, 275 rows, Apache-2.0 verified by CI.
 - Harness: scripts/benchmark_multi_engine_ko.py
 - JavaScript adapter: scripts/benchmark_phonemize_adapter.cjs
@@ -49,7 +49,7 @@ This benchmark scores Korean IPA only. It does **not** measure IPA-to-Ukrainian 
 
 ## Current verified results — revised broad-IPA profile (2026-10-24)
 
-Machine-readable reports and the complete occurrence-level native-vs-g2pk audit: [latest successful run 40092327799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799), [artifact 12559731356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092327799/artifacts/12559731356). Values are percentages; exact-match 95% CIs are deterministic 1,000-replicate row-cluster percentile bootstrap intervals. CER is lower-is-better. These are diagnostics, not normative NIKL accuracy.
+Machine-readable reports and the complete occurrence-level native-vs-g2pk audit: [latest successful run 40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978), [artifact 12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692). Values are percentages; exact-match 95% CIs are deterministic 1,000-replicate row-cluster percentile bootstrap intervals. CER is lower-is-better. These are diagnostics, not normative NIKL accuracy.
 
 ### UGTPHON noisy user-generated text
 
