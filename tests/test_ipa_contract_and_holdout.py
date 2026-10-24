@@ -84,7 +84,7 @@ def test_holdout_overlap_record_is_bound_to_exact_manifest_blob():
     record_path = ROOT / "research/ipa-holdout-overlap-validation-2026-10-24.json"
     record = json.loads(record_path.read_text(encoding="utf-8"))
     raw = manifest_path.read_bytes()
-    git_blob_sha = hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw).hexdigest()
+    git_blob_sha = hashlib.sha1(b"blob " + str(len(raw)).encode("ascii") + b"\0" + raw).hexdigest()
     assert git_blob_sha == record["holdout"]["manifestGitBlobSha"]
     assert record["externalExactTokenOverlap"]["overlapCount"] == 0
     assert record["externalExactTokenOverlap"]["result"] == "PASS_NO_EXACT_TOKEN_OVERLAP"
