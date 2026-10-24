@@ -24,4 +24,3 @@ KUA-IPA-022,ɲʌ,ньо,model-selected,ipa-sequence,src/app/engine_ipa.js#IPA_TO
 KUA-IPA-023,ɲo,ньо,model-selected,ipa-sequence,src/app/engine_ipa.js#IPA_TO_UKRAINIAN,The palatal nasal before /o/ maps to ньо.
 KUA-IPA-024,ɲju,нью,model-selected,ipa-sequence,src/app/engine_ipa.js#IPA_TO_UKRAINIAN,The sequence /ɲju/ maps to нью.
 KUA-IPA-025,ɰi,ий,provisional,ipa-sequence,src/app/engine_ipa.js#IPA_TO_UKRAINIAN,Existing target sequence for ㅢ; only render when the upstream IPA has passed its pronunciation-adjudication gate.
-KUA-IPA-026,ɲju,нью,model-selected,ipa-sequence,src/app/engine_ipa.js#IPA_TO_UKRAINIAN,The palatal nasal plus glide-vowel sequence maps to нью.
