@@ -26,6 +26,8 @@ def test_holdout_validation_discloses_external_overlap_blocker():
     result = validate(ROOT, path, None)
     assert result["case_count"] == 24
     assert result["ipa_gold_count"] == 0
+    assert result["local_runtime_or_fixture_overlap_count"] == 0
+    assert result["excluded_source_only_fixtures"] == ["tests/fixtures/nikl-article-review-1-30.json"]
     assert result["external_benchmark_overlap_check"] == "NOT_CHECKED"
     assert result["holdout_certification"] == "FROZEN_INPUTS_EXTERNAL_OVERLAP_CHECK_PENDING"
 
