@@ -143,8 +143,13 @@ def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
             source_index += 1
             entry = LEXICAL_PRONUNCIATIONS.get(source_word)
             values = entry.get("ipa_syllables", "").split("|") if entry else []
+            diagnostic_only = bool(
+                entry
+                and entry.get("ipa_adjudication_status") == "diagnostic_only_unresolved_pronunciation"
+            )
             exact_override = bool(
                 entry
+                and not diagnostic_only
                 and entry.get("surface_hangul") == token
                 and len(values) == len(items)
                 and all(values)
@@ -172,13 +177,23 @@ def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
                 "surface_hangul": token,
                 "ipa": word_ipa,
                 "ipa_syllables": word_ipa.split("."),
-                "status": "sourced-lexical-ipa-override" if exact_override else "derived-from-surface",
+                "status": (
+                    "diagnostic_only_unresolved_pronunciation" if diagnostic_only
+                    else "sourced-lexical-ipa-override" if exact_override
+                    else "derived-from-surface"
+                ),
+                "is_diagnostic_only": diagnostic_only,
+                "status_reason": (
+                    entry.get("rule_notes", "unresolved pronunciation context")
+                    if diagnostic_only and entry else None
+                ),
             })
         else:
             # Keep punctuation and non-Korean material in a display-aligned
             # string, but never pretend it is part of the IPA-only field.
             display_parts.append(token)
 
+    is_diagnostic_only = any(item.get("is_diagnostic_only") for item in word_analyses)
     return {
         "level": "broad",
         "ipa": " ".join(ipa_words),
@@ -188,7 +203,15 @@ def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
         "word_analyses": word_analyses,
         "lexical_overrides": lexical_overrides,
         "variants": [],
-        "status": "ipa-derived-from-g2pk-surface-form",
+        "status": (
+            "diagnostic_only_unresolved_pronunciation"
+            if is_diagnostic_only else "ipa-derived-from-g2pk-surface-form"
+        ),
+        "is_diagnostic_only": is_diagnostic_only,
+        "status_reason": (
+            "one or more source words have a lexical IPA row explicitly marked diagnostic-only"
+            if is_diagnostic_only else None
+        ),
         "surface_hangul": surface,
         "note": (
             "IPA is derived from g2pK's Hangul pronunciation spelling. "
@@ -247,6 +270,9 @@ def phoneticize_with_g2pk(text: str, *, descriptive: bool = False,
         "surface_syllables": ipa["surface_syllables"],
         "rules": rules,
         "ipa": ipa,
+        "ipa_status": ipa["status"],
+        "ipa_is_diagnostic_only": ipa["is_diagnostic_only"],
+        "ipa_status_reason": ipa["status_reason"],
         "pronunciation_engine": "g2pK",
         "morphology_mode": "external-g2pK",
     }
