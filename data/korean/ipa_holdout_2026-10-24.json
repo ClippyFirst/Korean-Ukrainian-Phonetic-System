@@ -134,14 +134,14 @@
     },
     {
       "caseId": "KUA-HO-004",
-      "input": "늙지",
-      "sourceRule": "§11",
+      "input": "눈보라",
+      "sourceRule": "§6",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "늙지[늑찌]",
+      "sourceExcerpt": "눈보라[눈ː보라]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "늑찌"
+        "눈ː보라"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -282,14 +282,14 @@
     },
     {
       "caseId": "KUA-HO-008",
-      "input": "침략",
-      "sourceRule": "§19",
+      "input": "말씨",
+      "sourceRule": "§6",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "침략[침ː냑]",
+      "sourceExcerpt": "말씨[말ː씨]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "침ː냑"
+        "말ː씨"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -319,14 +319,14 @@
     },
     {
       "caseId": "KUA-HO-009",
-      "input": "강릉",
-      "sourceRule": "§19",
+      "input": "밤나무",
+      "sourceRule": "§6",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "강릉[강능]",
+      "sourceExcerpt": "밤나무[밤ː나무]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "강능"
+        "밤ː나무"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -356,14 +356,14 @@
     },
     {
       "caseId": "KUA-HO-010",
-      "input": "천리",
-      "sourceRule": "§20",
+      "input": "많다",
+      "sourceRule": "§6",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "천리[철리]",
+      "sourceExcerpt": "많다[만ː타]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "철리"
+        "만ː타"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -393,14 +393,14 @@
     },
     {
       "caseId": "KUA-HO-011",
-      "input": "물난리",
-      "sourceRule": "§20",
+      "input": "멀리",
+      "sourceRule": "§6",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "물난리[물랄리]",
+      "sourceExcerpt": "멀리[멀ː리]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "물랄리"
+        "멀ː리"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -430,14 +430,14 @@
     },
     {
       "caseId": "KUA-HO-012",
-      "input": "할는지",
-      "sourceRule": "§20",
+      "input": "벌리다",
+      "sourceRule": "§6",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "할는지[할른지]",
+      "sourceExcerpt": "벌리다[벌ː리다]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "할른지"
+        "벌ː리다"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -467,14 +467,14 @@
     },
     {
       "caseId": "KUA-HO-013",
-      "input": "닳는",
-      "sourceRule": "§20",
+      "input": "반반",
+      "sourceRule": "§6",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "닳는[달른]",
+      "sourceExcerpt": "반반[반ː반]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "달른"
+        "반ː반"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -504,14 +504,14 @@
     },
     {
       "caseId": "KUA-HO-014",
-      "input": "뚫는",
-      "sourceRule": "§20",
+      "input": "뵈다",
+      "sourceRule": "§6",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "뚫는[뚤른]",
+      "sourceExcerpt": "뵈다[뵈ː다]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "뚤른"
+        "뵈ː다"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -541,14 +541,14 @@
     },
     {
       "caseId": "KUA-HO-015",
-      "input": "핥네",
-      "sourceRule": "§20",
+      "input": "띄다",
+      "sourceRule": "§6",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "핥네[할레]",
+      "sourceExcerpt": "띄다[띠ː다]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "할레"
+        "띠ː다"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -578,14 +578,14 @@
     },
     {
       "caseId": "KUA-HO-016",
-      "input": "법리",
-      "sourceRule": "§19",
+      "input": "넋과",
+      "sourceRule": "§10",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "법리[법니]",
+      "sourceExcerpt": "넋과[넉꽈]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "법니"
+        "넉꽈"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -615,14 +615,14 @@
     },
     {
       "caseId": "KUA-HO-017",
-      "input": "협력",
-      "sourceRule": "§19",
+      "input": "외곬",
+      "sourceRule": "§10",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "협력[협녁→혐녁]",
+      "sourceExcerpt": "외곬[외골]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "혐녁"
+        "외골"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -652,14 +652,14 @@
     },
     {
       "caseId": "KUA-HO-018",
-      "input": "막론",
-      "sourceRule": "§19 commentary",
+      "input": "얽거나",
+      "sourceRule": "§11",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "막론[막논→망논]",
+      "sourceExcerpt": "얽거나[얼꺼나]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "망논"
+        "얼꺼나"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -689,14 +689,14 @@
     },
     {
       "caseId": "KUA-HO-019",
-      "input": "석류",
-      "sourceRule": "§19 commentary",
+      "input": "닿소",
+      "sourceRule": "§12",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "석류[석뉴→성뉴]",
+      "sourceExcerpt": "닿소[다ː쏘]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "성뉴"
+        "다ː쏘"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -763,14 +763,14 @@
     },
     {
       "caseId": "KUA-HO-021",
-      "input": "뒷일",
-      "sourceRule": "§29",
+      "input": "많소",
+      "sourceRule": "§12",
       "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
       "sourceLocator": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
-      "sourceExcerpt": "뒷일[뒨ː닐]",
+      "sourceExcerpt": "많소[만ː쏘]",
       "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
       "allowedSurfaceReadings": [
-        "뒨ː닐"
+        "만ː쏘"
       ],
       "surfaceEvidenceStatus": "SOURCE_ATTESTED",
       "ipaGold": null,
@@ -909,5 +909,6 @@
       "engineOutputsStored": false,
       "tuningUseProhibited": true
     }
-  ]
+  ],
+  "notes": " Replaced benchmark/test-overlapping cases after full repository leakage validation; the revised candidate set must pass exact local and pinned-artifact overlap checks before certification."
 }
