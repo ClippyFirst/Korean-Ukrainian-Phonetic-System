@@ -54,7 +54,7 @@ After the yod fix, the full audit found six g2pk-only exact occurrences:
 
 The native rule engine deliberately requires exact full-form + adjacent-pair evidence for morphology-conditioned R010 (§24) fortition. The two first cases were not licensed, so the engine conservatively left ㄷ/ㄱ lenis. PR #297 adds exact-form licenses for 닮다 and 넘게 to the Python engine and corresponding browser engine, with tests. The license is scoped to those complete forms; it does not turn on a global fortition heuristic or silently claim a productive morphology parser.
 
-The latest Python benchmark after these licenses gained two more exact matches (1,410 → 1,412 of 2,655) and CER fell from 9.2060% to 9.1883%. This improvement is measured in run 40092929978. The browser port passed the code-equivalent verification and tests in PR #300; post-merge mainline verification remains a separate gate.
+The latest Python benchmark after these licenses gained two more exact matches (1,410 → 1,412 of 2,655) and CER fell from 9.2060% to 9.1883%. This improvement is measured in run 40092929978. The browser port passed code-equivalent verification and tests in PR #300. Post-merge mainline verification also passed on merge commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab: tests 40093211039, system verification 40093211139, and master-table/research-artifact validation 40093211099.
 
 ## 4. The four remaining g2pk-only exact matches are an annotation mismatch for 없는
 
