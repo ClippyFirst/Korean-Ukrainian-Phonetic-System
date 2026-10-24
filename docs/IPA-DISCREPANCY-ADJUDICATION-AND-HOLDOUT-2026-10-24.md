@@ -6,7 +6,7 @@
 |---|---|---|
 | Versioned broad-IPA contract | **DONE_VERIFIED for specification and executable normalizer** | `docs/IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md`; deterministic legacy and `clippyfirst-broad-v1` profiles are separately reported. The candidate profile is sensitivity-only pending independent review. |
 | Adjudicate observed engine/reference differences | **PARTIAL** | Measured symbol-level mismatch classes are classified as candidate convention differences, not automatically declared harmless. Three of the 14 R002/R003 cases have exact official Hangul surface evidence; four have related evidence; seven have no exact source recorded. **Independent IPA labels: 0/14.** |
-| Independent holdout | **PARTIAL: external exact-token disjointness verified; independent IPA labels remain blocked** | 24 source-backed NIKL Rules 6, 10–13, 19–20 and 29 forms are frozen in `data/korean/ipa_holdout_2026-10-24.json`, with no engine outputs and no IPA gold. Local runtime/fixture overlap is checked by the validator. Exact overlap with the licensed UGTPHON benchmark remains unchecked until the pinned artifact is supplied to the validator. |
+| Independent holdout | **PARTIAL: external exact-token disjointness verified; independent IPA labels remain blocked** | 24 source-backed NIKL Rules 6, 10–13, 19–20 and 29 forms are frozen in `data/korean/ipa_holdout_2026-10-24.json`, with no engine outputs and no IPA gold. Exact-token overlap against pinned artifact 12559692692 is verified at 0/24. Local runtime/fixture leakage CI and independent IPA annotation remain pending. |
 
 ## 1. Versioned contract and scoring profiles
 
@@ -52,7 +52,7 @@ Primary source locators:
 
 ## 3. Frozen independent-holdout inputs
 
-`data/korean/ipa_holdout_2026-10-24.json` contains 24 official-source examples drawn from NIKL Rule 5 (ㅢ readings) and Rule 9 (coda neutralization). The manifest stores the exact Korean input, official Hangul surface reading, rule and source locator. It deliberately stores **no engine outputs and no IPA gold**.
+`data/korean/ipa_holdout_2026-10-24.json` contains 24 official-source examples drawn from NIKL Rules 6, 10–13, 19–20 and 29, including long vowels, coda clusters, liquidization and sound insertion. The manifest stores the exact Korean input, official Hangul surface reading, rule and source locator. It deliberately stores **no engine outputs and no IPA gold**.
 
 Validation:
 - every item has an official NIKL URL and surface notation is explicitly labelled “not IPA”;
