@@ -46,9 +46,9 @@ The case-level register preserves diagnostic references and engine outputs solel
 | Frozen NIKL holdout and post-fix measurement | TODO | Held-out manifest frozen before development; score only adjudicated IPA and report coverage/abstention separately |
 | Korean IPA → Ukrainian evaluation | BLOCKED | Separate independently reviewed Ukrainian target gold set and blinded evaluation protocol |
 
-## Verification caveat
+## Verification status
 
-The repository's configured test workflow runs `npm test`, Python tests, and `npm run build`. This branch adds a test to that suite, but a passing result must not be claimed until the PR's exact-head CI has completed successfully. The register itself is not a benchmark score and does not change runtime behavior.
+The queue test is included in the repository's configured `npm test` suite, and the source/test state at commit `0605398d5b9554bf4ac694b673f2728da17c0f08` passed all three workflows: [tests 40095464926](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464926), [system verification 40095464989](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464989), and [research-artifact validation 40095464893](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464893). This document-only follow-up requires its own exact-head CI run; do not treat the predecessor's passing checks as verification of a later commit. The register itself is not a benchmark score and does not change runtime behavior.
 
 
 ## Internet source review — 2026-10-24
