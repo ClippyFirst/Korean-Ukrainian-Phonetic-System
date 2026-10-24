@@ -161,3 +161,8 @@ All relevant workflow families passed on implementation head `a80cacf0f2c36c40a1
 ### Target correctness gate added — 2026-10-25
 
 The production IPA→Ukrainian renderer now abstains by default whenever any mapping is `provisional`. The proposed spelling remains available only as an explicitly labelled candidate through research opt-in. Tests must verify (a) no final orthography is emitted, (b) the candidate is traceable, (c) the explicit research mode reproduces the candidate, and (d) Python/browser contracts agree. Do not score candidate-only outputs as successful exact matches in a production accuracy benchmark.
+
+
+### Target correctness gate added — 2026-10-25
+
+The production IPA→Ukrainian renderer now abstains by default whenever any mapping is `provisional`. The proposed spelling remains available only as an explicitly labelled candidate through research opt-in. Tests must verify (a) no final orthography is emitted, (b) the candidate is traceable, (c) the explicit research mode reproduces the candidate, and (d) Python/browser contracts agree. Do not score candidate-only outputs as successful exact matches in a production accuracy benchmark.
