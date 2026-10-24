@@ -79,3 +79,17 @@ The practical browser mode is intentionally strict about the selected JavaScript
 See [surface regression source adjudication](audits/SURFACE-REGRESSION-SOURCE-ADJUDICATION-2026-10-21.md). The 18-case fixture now keeps the pinned JS-port expected output separate from the NIKL normative comparator. Eleven cases have direct NIKL example/Q&A support; seven are rule-derived candidates and remain explicitly unadjudicated. All 18 IPA gold values remain pending independent review.
 
 The public UI now identifies exact NIKL-backed surface corrections and still warns that other practical-mode outputs may differ from NIKL. These corrections cover only five listed lexical forms; they are not proof that the entire port is normatively correct.
+
+
+## Shared target-rendering ownership — 2026-10-24
+
+The Python g2pK adapter is a pronunciation provider, not the owner of Ukrainian rendering. `transliterate_with_g2pk()` delegates to `pipeline.render_ipa_analysis_to_ukrainian()`, the shared ClippyFirst core boundary also available to other pronunciation engines. That core performs IPA-to-target mapping, candidate selection, Ukrainian orthographic rendering, punctuation preservation, and fail-closed handling when per-word IPA analyses do not align with the surface text.
+
+Acceptance checks:
+- external G2P adapters provide surface pronunciation and IPA analysis only;
+- target mapping and Ukrainian orthography remain in the ClippyFirst core;
+- punctuation and spacing are preserved;
+- missing/misaligned IPA word analyses never produce a partial string presented as a complete result;
+- the native pipeline and external G2P paths use the same `render_sequence()` orthographic primitive.
+
+This is an architecture correction, not a claim that the external pronunciation engine or Ukrainian target mapping is independently linguistically validated.

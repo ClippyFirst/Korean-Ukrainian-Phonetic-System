@@ -482,6 +482,97 @@ def _select_target(target):
         selected.append(chosen)
     return {"segments":selected,"score_type":"heuristic_cost","status":"top_ranked_segmentwise"}
 
+
+def render_ipa_analysis_to_ukrainian(
+    text, word_analyses, *, pronunciation_surface, phonetics, ipa,
+    pronunciation_engine, target_adapter=None, morphology_mode="unspecified",
+):
+    """Render an engine's IPA analysis through the ClippyFirst Ukrainian target layer.
+
+    This is the shared target-rendering boundary for native and external
+    pronunciation engines. Upstream G2P adapters supply surface/IPA analyses;
+    they do not own Ukrainian mapping, candidate selection, or orthography.
+    """
+    import re
+
+    surface_tokens = re.findall(r"[가-힣]+|[^가-힣]+", pronunciation_surface)
+    output_parts = []
+    targets = []
+    all_mapped = True
+    word_index = 0
+
+    for token in surface_tokens:
+        if not re.fullmatch(r"[가-힣]+", token):
+            output_parts.append(token)
+            continue
+
+        if word_index >= len(word_analyses):
+            all_mapped = False
+            targets.append({
+                "surface_hangul": token,
+                "ipa": None,
+                "status": "unavailable",
+                "reason": "missing_word_ipa_analysis",
+            })
+            word_index += 1
+            continue
+
+        word_ipa = word_analyses[word_index].get("ipa")
+        word_index += 1
+        if not word_ipa:
+            all_mapped = False
+            targets.append({
+                "surface_hangul": token,
+                "ipa": word_ipa,
+                "status": "unavailable",
+                "reason": "empty_word_ipa_analysis",
+            })
+            continue
+
+        target = map_ipa_to_ukrainian(word_ipa, target_adapter)
+        selected = _select_target(target)
+        if not selected:
+            all_mapped = False
+            targets.append({
+                "surface_hangul": token,
+                "ipa": word_ipa,
+                "status": "unavailable",
+            })
+            continue
+
+        output_parts.append(render_sequence(selected["segments"]))
+        targets.append({
+            "surface_hangul": token,
+            "ipa": word_ipa,
+            "status": "model-selected",
+            "selection": selected,
+        })
+
+    if word_index != len(word_analyses):
+        all_mapped = False
+
+    return {
+        "input": text,
+        "pronunciation_engine": pronunciation_engine,
+        "pronunciation_surface": pronunciation_surface,
+        "phonetics": phonetics,
+        "ipa": ipa,
+        "target_analysis": targets,
+        "ukrainian_orthography": "".join(output_parts) if all_mapped else None,
+        "target_status": "model-selected" if all_mapped else "unavailable",
+        "score_type": "heuristic_cost",
+        "confidence": None,
+        "selection_status": (
+            f"{pronunciation_engine} surface pronunciation → IPA → "
+            "ClippyFirst Ukrainian target mapping"
+            if all_mapped else
+            "Ukrainian target unavailable or misaligned for at least one IPA word; failed closed"
+        ),
+        "analysis_status": "research-prototype",
+        "morphology_mode": morphology_mode,
+    }
+
+
 def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict"):
     surface=phoneticize_korean(text,rule_ids=rule_ids,boundary_mode=boundary_mode,ipa_level=ipa_level,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses,morphology_mode=morphology_mode)
     if surface["pronunciation_status"] == "unresolved":
