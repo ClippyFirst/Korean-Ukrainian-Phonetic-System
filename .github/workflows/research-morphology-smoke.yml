@@ -191,9 +191,14 @@ jobs:
       - name: Compare boundary agreement, not gold accuracy
         run: |
           set -euo pipefail
+          find artifacts/morphology -type f -print
+          KIWI_REPORT="$(find artifacts/morphology -type f -name 'paired-ipa-morphology-kiwi.json' -print -quit)"
+          MECAB_REPORT="$(find artifacts/morphology -type f -name 'paired-ipa-morphology-mecab-ko.json' -print -quit)"
+          test -n "$KIWI_REPORT"
+          test -n "$MECAB_REPORT"
           python scripts/compare_morphology_analyzers.py \
-            --kiwi artifacts/morphology/paired-ipa-morphology-kiwi.json \
-            --mecab-ko artifacts/morphology/paired-ipa-morphology-mecab-ko.json \
+            --kiwi "$KIWI_REPORT" \
+            --mecab-ko "$MECAB_REPORT" \
             --output artifacts/morphology/analyzer-boundary-agreement.json
       - name: Upload pairwise agreement report
         uses: actions/upload-artifact@v4
