@@ -75,7 +75,7 @@ Until those gates pass, the status is **research-ready for diagnostics, not inde
 
 ### Measured profile sensitivity (2026-10-24)
 
-On pinned multi-engine artifact 12567083852 (report JSON SHA-256 `448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f`), 2,655 paired occurrences were scored after excluding 48 native abstentions.
+On pinned multi-engine artifact 12567746123 (report JSON SHA-256 `448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f`), 2,655 paired occurrences were scored after excluding 48 native abstentions.
 
 | Profile | ClippyFirst exact match | ClippyFirst CER | g2pk exact match | g2pk CER |
 |---|---:|---:|---:|---:|
