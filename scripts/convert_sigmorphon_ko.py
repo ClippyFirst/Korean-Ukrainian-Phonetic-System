@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Convert the pinned SIGMORPHON 2021 Korean test TSV to benchmark-driver JSON.
 
-The upstream test file has word-only input and a separate gold TSV. This tool
-requires the paired official two-column test file used by the SIGMORPHON
-repository. It does not train on, merge with, or derive labels from train/dev.
-The upstream data is CC BY-SA 3.0 (inherited from Wiktionary); retain attribution.
+The pinned repository copy of kor_test.tsv contains paired word/IPA rows, even
+though the SIGMORPHON README describes the shared-task test input as word-only.
+This provenance/schema discrepancy is retained as a benchmark limitation: use
+only this exact pinned public file, do not call the score a shared-task leaderboard
+reproduction, and do not merge train/dev. The data is CC BY-SA 3.0 (Wiktionary).
 """
 from __future__ import annotations
 
