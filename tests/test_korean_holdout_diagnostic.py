@@ -1,7 +1,10 @@
+import sys
 from pathlib import Path
-from scripts.diagnose_korean_ipa_holdout import read_manifest, run
-from scripts.validate_ipa_holdout import collect_local_forms
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'scripts'))
+from diagnose_korean_ipa_holdout import read_manifest, run
+from validate_ipa_holdout import collect_local_forms
+
 def test_holdout_diagnostic_covers_frozen_manifest():
     manifest, digest = read_manifest(ROOT / 'data/korean/ipa_holdout_2026-10-24.json')
     report = run()
