@@ -68,7 +68,15 @@
       },
       "finalBroadIpa": null,
       "decisionNotes": null,
-      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "relatedSourceEvidence": [
+        {
+          "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=89858",
+          "excerpt": "NIKL Korean Basic Dictionary, 되다: 발음 [되다/뒈다], 활용 되어[되어/뒈여](돼[돼ː]).",
+          "scope": "Related lexical-form evidence only: this entry does not directly list 되었어 or establish the full form's IPA.",
+          "accessDate": "2026-10-24"
+        }
+      ]
     },
     {
       "caseId": "R002-02",
@@ -473,6 +481,12 @@
           "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=62095",
           "excerpt": "NIKL Korean Basic Dictionary, 쌓다 (verb): 활용 ‘쌓아[싸아]’.",
           "scope": "Related lexical-form evidence only: dictionary lists 쌓아, not the full form 쌓아서; do not infer an exact full-form IPA target from this alone.",
+          "accessDate": "2026-10-24"
+        },
+        {
+          "url": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+          "excerpt": "NIKL Standard Pronunciation Rules, Article 12 commentary: when ㅎ is followed by a vowel in a conjugated form with a vowel-initial formal morpheme, ㅎ is deleted; examples include 쌓이다[싸이다].",
+          "scope": "Related rule-environment evidence: supports deletion of stem-final ㅎ before a vowel-initial ending, but the exact benchmark form 쌓아서 is not directly listed as a whole and no IPA gold is established.",
           "accessDate": "2026-10-24"
         }
       ]
