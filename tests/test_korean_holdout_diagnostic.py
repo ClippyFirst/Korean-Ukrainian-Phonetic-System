@@ -26,6 +26,12 @@ def test_holdout_diagnostic_covers_frozen_manifest():
     report = run()
     assert manifest["caseCount"] == 24 and len(digest) == 64
     assert report["manifestSha256"] == digest
+    target_inventory = report["ukrainianTargetInventory"]
+    assert isinstance(target_inventory["available"], bool)
+    assert target_inventory["package"] == "ukrainian_phonetic_inventory"
+    assert target_inventory["expected_version"] == "0.8.0"
+    if not target_inventory["available"]:
+        assert isinstance(target_inventory["error"], str) and target_inventory["error"]
     assert report["status"] == "DIAGNOSTIC_ONLY_NOT_GOLD_NOT_FOR_TUNING"
     assert report["tuningUseProhibited"] is True and len(report["cases"]) == 24
     assert len({row["caseId"] for row in report["cases"]}) == 24
@@ -46,8 +52,11 @@ def test_holdout_diagnostic_covers_frozen_manifest():
         for target in (native_target, g2pk_target):
             if target["available"]:
                 assert isinstance(target["target_analysis_statuses"], list)
+                assert all(isinstance(status, str) for status in target["target_analysis_statuses"])
                 assert isinstance(target["target_analysis_uninspectable_items"], int)
                 assert target["target_analysis_uninspectable_items"] == 0
+                adapter_status = target.get("target_adapter_status")
+                assert adapter_status is None or isinstance(adapter_status, dict)
             else:
                 # g2pK is intentionally optional and is not installed on Python
                 # 3.13+; the diagnostic must preserve the explicit blocker.
