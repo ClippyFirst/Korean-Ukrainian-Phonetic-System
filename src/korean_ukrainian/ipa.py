@@ -28,6 +28,14 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False)->list[
     return [CONSONANT_PHONEMES[c].strip("/")]
 
 def nucleus_ipa(s:Syllable,*,phonemic=False)->list[str]:
+    # NIKL Standard Pronunciation Rule 5, exception 1:
+    # https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+    # verbal forms with 져/쪄/쳐 are [저/쩌/처]. The official explanation
+    # attributes this to the restriction against [j] immediately after the
+    # palatal affricates ㅈ/ㅉ/ㅊ. Keep the glide in phonemic mode; absorb it
+    # only in the broad surface-IPA representation.
+    if not phonemic and s.nucleus=="ㅕ" and s.onset in {"ㅈ","ㅉ","ㅊ"}:
+        return ["ʌ"]
     # Korean standard pronunciation: ㅢ in a syllable with a consonant
     # onset is realized as [i]. Keep the underlying /ɰi/ at the phonemic
     # level; ㅇ+ㅢ remains lexically/morphologically ambiguous.

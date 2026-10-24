@@ -123,3 +123,26 @@ def test_broad_ipa_preserves_final_ng_before_vowel_initial_syllable():
     }
     for word, ipa in expected.items():
         assert phoneticize_korean(word)["ipa"]["ipa"] == ipa, word
+
+
+def test_broad_ipa_absorbs_yod_after_palatal_affricates():
+    from korean_ukrainian.ipa import realize_syllables
+    from korean_ukrainian.phonology import parse_syllables
+
+    expected = {"져": "tɕʌ", "쪄": "tɕ͈ʌ", "쳐": "tɕʰʌ"}
+    phonemic_expected = {"져": "tɕjʌ", "쪄": "tɕ͈jʌ", "쳐": "tɕʰjʌ"}
+    for word, ipa in expected.items():
+        assert realize_syllables(parse_syllables(word), level="broad")["ipa"] == ipa
+        # The phonemic layer preserves the underlying glide; only broad
+        # surface IPA applies NIKL Standard Pronunciation Rule 5's exception.
+        assert realize_syllables(parse_syllables(word), level="phonemic")["ipa"] == phonemic_expected[word]
+
+
+def test_yod_absorption_fixes_benchmark_mismatches():
+    expected = {
+        "던져주다": "tʌn.dʑʌ.dʑu.da",
+        "쳐먹고": "tɕʰʌ.mʌk̚.k͈o",
+        "빠져": "p͈a.dʑʌ",
+    }
+    for word, ipa in expected.items():
+        assert phoneticize_korean(word)["ipa"]["ipa"] == ipa, word

@@ -2,7 +2,7 @@
 
 ## Status
 
-**DONE_VERIFIED for the targeted coda-ㅇ fix and core CI; broader error taxonomy remains PARTIAL.** The patched head passed the Python regression/data-integrity job, browser tests/build, and the pinned multi-engine benchmark. The older-profile post-fix benchmark is run 40090827524; do not compare its scores directly with the revised-normalization results on open PR #297.
+**DONE_VERIFIED for the coda-ㅇ fix; PARTIAL for the newly identified palatal-yod fix until its CI completes.** The coda fix passed Python regression/data-integrity, browser tests/build, and both pinned benchmark profiles. A full occurrence-level audit then identified a second independent native defect, now patched on branch `fix/korean-yod-after-affricates-2026-10-24`.
 
 Baseline diagnostic sources:
 - [Multi-engine benchmark run 40089295231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231)
@@ -51,7 +51,15 @@ The baseline strict native engine abstained on 48 of 2,703 UGTPHON token occurre
 
 There are 49 labels for 48 occurrences because one occurrence has two unresolved contexts. Some abstained words are pronounced transparently in the corpus context, and g2pk matches the corpus reference for some (e.g. 되었어, 찢었으면, 붙어야, 있었). This suggests a conservative coverage limitation caused by requiring exact-form/morpheme licenses without a complete production morphology layer. It does **not** justify indiscriminately adding lexical licenses from noisy corpus labels. Each candidate needs official NIKL rule-environment verification or independently reviewed morphology evidence.
 
-### B. g2pk is not uniformly better
+### B. Confirmed second defect: broad IPA retains /j/ after ㅈ/ㅉ/ㅊ before ㅕ
+
+The full occurrence-level audit from [post-coda-fix multi-engine run 40091465391](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40091465391) found 19 UGTPHON occurrences where g2pk exactly matched the normalized reference and native did not. **Thirteen of those 19 had the same one-character error:** native rendered a palatal affricate followed by an extra [j] glide, e.g. `tɕʰjʌ` instead of `tɕʰʌ`, while g2pk's surface-Hangul output passed through the shared renderer as `tɕʰʌ`. Examples include 던져주다 (`dʑjʌ` vs `dʑʌ`), 쳐먹고 (`tɕʰjʌ` vs `tɕʰʌ`), 빠져 (`dʑjʌ` vs `dʑʌ`), and 졌으면 (`tɕjʌ` vs `tɕʌ`). All 13 had native edit distance 1.
+
+This is a separate renderer-boundary defect from coda-ㅇ loss. The native IPA renderer maps ㅕ to `jʌ` without considering the onset, so it retains a glide that standard Korean does not realize after the palatal affricates ㅈ/ㅉ/ㅊ in the relevant forms. The official National Institute of Korean Language source explicitly states Standard Pronunciation Rule 5, exception 1: verbal forms 져/쪄/쳐 are pronounced [저/쩌/처], and its explanation identifies a restriction on [j] immediately after these palatal affricates: [official rule](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002), [NIKL explanation](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=302312).
+
+The patch on `fix/korean-yod-after-affricates-2026-10-24` absorbs /j/ in **broad surface IPA only** for ㅈ/ㅉ/ㅊ + ㅕ, while preserving the glide in phonemic output. Regression cases cover 져/쪄/쳐, 던져주다, 쳐먹고, and 빠져. This patch is source-backed but its CI and post-fix benchmark effect are still pending; do not count the expected score gain until the benchmark reruns.
+
+### C. g2pk is not uniformly better
 
 On the separate SIGMORPHON public paired lexical file, the capped diagnostic sample contains cases where ClippyFirst matches and g2pk does not:
 - 값어치: native `ka.bʌ.tɕʰi` matches the normalized reference; g2pk's `kap̚.s͈ʌ.tɕʰi` does not. The project already has a source-backed NIKL lexical override for this form.
@@ -59,11 +67,11 @@ On the separate SIGMORPHON public paired lexical file, the capped diagnostic sam
 
 Conversely, the sample includes g2pk-only matches for words affected by the coda-ㅇ defect. These examples show why the correct response is targeted, evidence-backed fixes rather than replacing native rules wholesale with g2pk behavior.
 
-### C. Benchmark convention limits the meaning of exact match
+### D. Benchmark convention limits the meaning of exact match
 
 UGTPHON is noisy user-generated text, not an independently adjudicated NIKL rule suite. Its IPA annotations include diacritics and conventions not identical to the project's broad IPA. The scorer removes only declared diacritics and separators; it retains contrasts such as aspiration, fortis, vowel length, and unreleased stops. Some score differences therefore reflect reference conventions or real phonetic distinctions, and a non-exact score alone does not diagnose which. A normative challenge set with exact NIKL article/environment provenance and independently reviewed IPA is still needed.
 
-### D. The current paired comparison is not fully independent
+### E. The current paired comparison is not fully independent
 
 g2pk emits surface Hangul and both systems use the project's IPA segment renderer. The benchmark primarily compares the phonological surface-form decisions and their effect on the shared renderer; it does not independently validate the renderer or Ukrainian output. This is useful for finding structural differences but cannot establish that g2pk's IPA is universally more correct.
 
