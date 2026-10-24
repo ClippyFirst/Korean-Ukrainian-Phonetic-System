@@ -7,7 +7,10 @@ SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 from analyze_korean_benchmark_correlations import (  # noqa: E402
+    BROAD_PROFILE,
+    LEGACY_PROFILE,
     _symbol_error_profile,
+    normalize_ipa_profile,
     summarize_report,
 )
 
@@ -22,13 +25,13 @@ def _occurrence(row_id, token, gold, native_status, native_exact, native_distanc
             "status": native_status,
             "exact": native_exact,
             "distance": native_distance,
-            "ipa": "x" if native_exact else "y",
+            "ipa": gold if native_exact else "y",
         },
         "g2pk_0_9_4": {
             "status": "scored",
             "exact": g2pk_exact,
             "distance": g2pk_distance,
-            "ipa": "x" if g2pk_exact else "y",
+            "ipa": gold if g2pk_exact else "y",
         },
     }
 
@@ -98,3 +101,20 @@ def test_symbol_profile_detects_reference_only_narrow_mark():
     assert profile["nonexact_occurrences_aligned"] == 1
     assert profile["top_reference_only_symbols"] == [{"symbol": "ʰ", "count": 1}]
     assert profile["top_substitutions"] == []
+
+
+
+def test_versioned_broad_profile_collapses_only_declared_allophone_candidates():
+    assert normalize_ipa_profile("ɭ ʎ ɲ ɦ ç ɕʰ", BROAD_PROFILE) == "llnhhs"
+    assert normalize_ipa_profile("kʰ tɕʰ k͈ aː k̚", BROAD_PROFILE) == "kʰtɕʰk͈aːk̚"
+    assert normalize_ipa_profile("ɭ", LEGACY_PROFILE) == "ɭ"
+    assert normalize_ipa_profile("ɭ", BROAD_PROFILE) == "l"
+
+
+def test_summary_reports_legacy_and_broad_profile_sensitivity_separately():
+    result = summarize_report(_report(), type_bootstrap_replicates=100)
+    profiles = result["profile_sensitivity"]
+    assert set(profiles) == {LEGACY_PROFILE, BROAD_PROFILE}
+    assert profiles[LEGACY_PROFILE]["native"]["eligible_occurrences"] == 3
+    assert profiles[BROAD_PROFILE]["native"]["status"] == "SENSITIVITY_ONLY_UNTIL_INDEPENDENT_IPA_REVIEW"
+    assert profiles[LEGACY_PROFILE]["native"]["exact_matches"] == 1
