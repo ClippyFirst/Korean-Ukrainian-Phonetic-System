@@ -266,3 +266,14 @@ The first exact-head run for the browser target adapter and provenance trace fai
 The browser regression suite passed on intermediate head `428f8e1dae2bf2c86e80bd203ee8939cf538d8f3`, but Python still failed on that same head due to the root-variable typo. Correction commit `317f0f106d230b10bbc42219ca1f9c3e5a369aa2` is the first head intended to contain the complete fixes. Its own CI must finish before marking the renderer verified.
 
 **Status:** `PARTIAL`, not release-ready. A code-level parity suite is not an independent linguistic gold set. The original 24-form source manifest remains missing, official NIKL live retrieval is still blocked by documented HTTP 403 responses, and the Korean phonology / Ukrainian target gold sets require separate evidence-gated adjudication.
+
+
+
+
+## 25. Verification closeout after IPA target regression fixes (2026-10-24)
+
+System verification run [40132735568](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132735568) passed Python regression/data integrity and browser regression/build on head `e462d15d9d31d4889ad562095ecb93f39247e8fe`. The focused tests workflow [40132671600](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132671600) passed on `317f0f106d230b10bbc42219ca1f9c3e5a369aa2`; subsequent commits through `e462d15` updated the handoff/register/audit documentation only. Generated master table/corpus, paired native-vs-g2pK diagnostic, external UGTPHON diagnostic and browser G2P integration also passed on `e462d15` (runs 40132738836, 40132738928, 40132738858, 40132738885).
+
+The official NIKL live inventory was skipped. Optional g2pK integration, morphology adapter smoke and multi-engine IPA diagnostic were still running at the last poll. Two known Korean surface differential cases, `넓죽하다` and `읽고`, remain explicit review items because the IPA reference is not independently adjudicated. The 24-form candidate fixture remains reconstructed/unverified.
+
+**Updated status:** implementation regressions fixed and core system tests verified on the recorded heads; full task status remains `PARTIAL`, not release-ready, pending final-head checks, original holdout provenance, independent Korean IPA adjudication, independent Ukrainian target review, and permitted NIKL inventory retrieval.
