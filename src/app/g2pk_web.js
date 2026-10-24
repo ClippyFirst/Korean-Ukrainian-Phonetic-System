@@ -32,7 +32,8 @@ const NIKL_SURFACE_CORRECTIONS = new Map([
 const NIKL_VARIANT_SURFACES = new Map([
   ['멋있어', {
     surfaces: ['머디써', '머시써'],
-    evidence: 'NIKL Online Q&A qna_seq=306166 explicitly accepts both [머디써] and [머시써]'
+    evidence: 'NIKL Online Q&A qna_seq=306166 explicitly accepts both [머디써] and [머시써]',
+    sourceLocator: 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166'
   }]
 ]);
 
@@ -150,6 +151,7 @@ export function createG2pWebAdapter(engine) {
         if (!alternative.issues?.length && alternative.ipa && alternative.ukrainian) {
           result.variants = [...(result.variants || []), {
             source: text,
+            sourceLocator: variantEvidence.sourceLocator,
             surface: alternativeSurface,
             ukrainian: renderTarget(alternative.trace),
             ipa: renderIpa(alternative.trace),
