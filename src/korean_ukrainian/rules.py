@@ -61,6 +61,15 @@ _NIKL_R009_PHRASE_LICENSES = {
     "할 일": "할>일", "잘 입다": "잘>입", "먹을 엿": "을>엿",
 }
 
+# Rule-derived exact-form licenses for transparent inflectional morphology under
+# NIKL §24. These forms were surfaced by a noisy diagnostic benchmark and are
+# development examples, not held-out acceptance data. 닮- + -다 and 넘- + -게
+# meet §24's stem-final ㄴ(ㄵ)/ㅁ(ㄻ) + ending-initial ㄱ/ㄷ/ㅅ/ㅈ environment.
+_NIKL_R010_WORD_LICENSES = {
+    "닮다": "닮>다",
+    "넘게": "넘>게",
+}
+
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds
 # without a written 사이시옷). Homographs whose reading depends on meaning
 # are deliberately omitted from automatic licensing.
@@ -97,6 +106,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
         pair = _NIKL_R009_PHRASE_LICENSES.get(full_form)
         if pair is not None:
             licenses.add(f"R009:phrase:{full_form}:{pair}")
+    pair = _NIKL_R010_WORD_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R010:stem_n_m+suffix:{full_form}:{pair}")
     pair = _NIKL_R014_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R014:compound:{full_form}:{pair}")
@@ -431,7 +443,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if not _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=(rule_id=="R013")): continue
             if b.onset not in PLAIN_TO_FORTIS: continue
             applies = (
-                (rule_id=="R010" and FINAL_REPRESENTATIVE.get(a.coda,a.coda) in {"ㄴ","ㅁ"}) or
+                (rule_id=="R010" and FINAL_REPRESENTATIVE.get(a.coda,a.coda) in {"ㄴ","ㅁ"} and b.onset in {"ㄱ","ㄷ","ㅅ","ㅈ"}) or
                 (rule_id=="R011" and a.coda in {"ㄼ","ㄾ"}) or
                 (rule_id=="R012" and a.coda=="ㄹ" and b.onset in {"ㄷ","ㅅ","ㅈ"}) or
                 (rule_id=="R013" and a.coda=="ㄹ") or
