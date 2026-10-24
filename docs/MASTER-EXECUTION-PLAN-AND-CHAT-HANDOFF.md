@@ -828,3 +828,36 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **Release classification:** research preview / partial prototype, not release-ready. The diagnostic code is verified, but full Korean→Ukrainian accuracy is not: there is no independently adjudicated target-output gold set, and the 24-form list is not yet reproducibly committed.
 
 **Next acceptance gate:** find or recover the original 24-form list from a verifiable repository artifact/run input; add it as a tracked fixture without altering its membership; produce a per-form JSON/Markdown reconciliation; then resolve only evidence-supported phonology and target mappings.
+
+
+## Continuation — author-owned ClippyFirst target renderer (2026-10-24)
+
+**Work branch:** `fix/clippyfirst-core-ipa-target-2026-10-24`  
+**PR:** [#310 — make ClippyFirst native IPA target renderer self-contained](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/310)  
+**Base:** `main` at `cf77fcba215172d64a3f46d9401f662529fc947e`. Latest handoff edit is followed by further CI runs; retrieve the branch ref before recording a final head SHA.
+
+### Implementation completed on the branch
+
+- Added `src/korean_ukrainian/ipa_target_renderer.py`: IPA-only, longest-match rendering using local canonical correspondence rows plus explicit sequence overrides; trace includes mapping IDs, source references, status, word/syllable indices and source-length treatment.
+- Added `data/korean/ipa_target_overrides.csv` and extended `data/correspondence/target_contract.csv` to distinguish the external Ukrainian Phonetic Inventory (UPI) metadata/candidate diagnostics from the locally owned Korean IPA→Ukrainian practical mapping.
+- Routed native and G2P-derived Python practical output through the local renderer. UPI is optional and diagnostic-only; it no longer selects the output. The existing fail-closed gate for unresolved/diagnostic-only Korean IPA remains upstream.
+- Added renderer tests for explicit/longest matches, 643 canonical lexical rows and 45 declared alternate readings, length markers, unknown IPA, trace provenance and provisional rounded-vowel mappings.
+- Updated Python integration tests to distinguish target correspondence status from UPI's heuristic candidate score. Updated README, target-layer contract, benchmark register and target-adjudication blockers in place.
+- The original frozen 24-form holdout is intentionally not copied into this PR: the reviewed mainline trees do not establish its exact membership/order. No candidate reconstruction is promoted to source-verified gold.
+
+### CI feedback and fixes
+
+- Browser regression/build passed on early PR head `3e4d94db795caa5efe78fdf9aec20d87b038d7ce` in the system-verification workflow.
+- Python system verification on that head failed one remaining stale assertion in `tests/test_end_to_end.py`: it expected `score_type=heuristic_cost` for practical output. The contract now correctly distinguishes `explicit_correspondence_not_probability` for the locally rendered target from `heuristic_cost` for optional UPI candidate diagnostics; the end-to-end test was updated to assert both fields.
+- An earlier run on an intermediate test head also exposed old adapter tests that expected UPI absence to suppress local output. Those assertions were updated to test local practical rendering and UPI diagnostic failure separately.
+- Exact-head checks after these fixes are queued/in progress. Do not mark PR #310 `DONE_VERIFIED` until the latest branch head's Python 3.11–3.13 tests, browser tests/build, wheel clean-install check, system verification and relevant artifacts complete successfully. The official NIKL live inventory job may remain skipped/blocked by HTTP 403 and is not a pass.
+
+### Scientific acceptance boundary
+
+- The 643-row and 45-alternate checks prove reproducibility of project-declared outputs, not independent Ukrainian accuracy.
+- `model-selected` means an explicit project mapping, not gold. `ɰi→ий`, `ø→ве`, `y→ві`, and `kʰjʌ→кхьо` remain provisional where marked.
+- The target renderer does not repair Korean source phonology. Diagnostic-only IPA must continue to withhold Ukrainian output.
+- The historic 7 unresolved-phonology / 17 target-blocker count is not reconciled with the candidate fixture's 5 / 19 diagnostic split. Recover the exact original fixture and its report first; never force the counts.
+- Remaining blockers: independent Korean broad-IPA adjudication; independently reviewed Ukrainian target gold set; source-grounded resolution of the original 24-form list; exhaustive rule/exception/variant coverage; final exact-head CI.
+
+**Status:** `PARTIAL` until exact-head CI completes; research preview / partial prototype, not release-ready.
