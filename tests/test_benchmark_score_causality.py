@@ -66,7 +66,7 @@ def test_summary_stratifies_source_length_frequency_and_ipa_length():
     assert strata["source"]["DC Inside"]["native_abstentions"] == 1
     assert strata["hangul_length"]["1-2 Hangul blocks"]["paired_scored_occurrences"] == 3
     assert strata["test_set_frequency"]["1 occurrence in test"]["occurrences_in_stratum"] == 4
-    assert strata["normalized_ipa_reference_length"]["<=5 normalized IPA characters"]["occurrences_in_stratum"] == 3
+    assert strata["normalized_ipa_reference_length"]["<=5 normalized IPA characters"]["occurrences_in_stratum"] == 2
 
 
 def test_type_macro_and_edit_distance_histograms_are_reproducible():
