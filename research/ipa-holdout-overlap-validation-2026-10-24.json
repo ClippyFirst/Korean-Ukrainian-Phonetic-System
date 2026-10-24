@@ -4,8 +4,8 @@
   "holdout": {
     "path": "data/korean/ipa_holdout_2026-10-24.json",
     "caseCount": 24,
-    "manifestGitBlobSha": "f30c5fa8a59753df3d7c06bbbe7d4e43d0b8fb26",
-    "manifestCommitSha": "a61aa83c8a7711afea7e399e08491ed9eb5dd184",
+    "manifestGitBlobSha": "f3c525ed7d97c4cdc12031486b58110392cff6a0",
+    "manifestCommitSha": "927367067bc752b0205174814ba0826fc3bf035d",
     "ipaGoldCount": 0
   },
   "benchmark": {
@@ -17,7 +17,7 @@
     "uniqueTokenCount": 1907
   },
   "externalExactTokenOverlap": {
-    "method": "Compare all 24 final manifest inputs to exact token values in native_g2pk_pairwise_audit.occurrences from the pinned artifact; all final input forms are absent.",
+    "method": "Compare all 24 revised manifest inputs to exact token values in native_g2pk_pairwise_audit.occurrences from the pinned artifact. All 24 distinct inputs are absent from the 1,907 unique Hangul tokens.",
     "overlapCount": 0,
     "overlappingInputs": [],
     "removedBeforeFreeze": [
@@ -29,10 +29,10 @@
     "result": "PASS_NO_EXACT_TOKEN_OVERLAP"
   },
   "localLeakageValidation": {
-    "status": "PARTIAL_FILE_CHECK_CI_PENDING",
-    "reason": "The local data/runtime/fixture leakage check is encoded in scripts/validate_ipa_holdout.py and tests/test_ipa_contract_and_holdout.py; repository-hosted CI has not yet returned runs for the latest connector-created commit. A local clone was unavailable because outbound DNS to github.com failed.",
+    "status": "PENDING_EXACT_HEAD_CI",
+    "reason": "The full repository validator now checks CSV runtime input columns rather than Korean words in explanatory notes, and excludes two official NIKL source-only snapshots. The revised 24-case candidate set awaits exact-head CI verification; no local clone was available because outbound DNS to github.com failed.",
     "excludedSourceOnlyFixture": "tests/fixtures/nikl-article-review-1-30.json",
-    "exclusionRationale": "Contains official source text, not engine predictions or expected outputs. It is allowed as source evidence; engine runtime data and expected-output fixtures are still checked.",
+    "exclusionRationale": "Both fixtures are official NIKL source snapshots, not engine predictions or expected outputs. Source evidence may inform the holdout; runtime input data and expected-output fixtures remain subject to overlap checks.",
     "checkedPaths": [
       "data/korean/lexical_pronunciations.csv",
       "data/korean/canonical_correspondence.csv",
@@ -42,7 +42,11 @@
       "tests/test_ipa_contract_and_holdout.py",
       "tests/test_ipa_profile_sensitivity_snapshot.py"
     ],
-    "checkedPathExactOverlapCount": 0
+    "checkedPathExactOverlapCount": 0,
+    "excludedSourceOnlyFixtures": [
+      "tests/fixtures/nikl-article-review-1-30.json",
+      "tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt"
+    ]
   },
   "ipaAnnotation": {
     "independentReviewerCount": 0,
