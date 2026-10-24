@@ -185,3 +185,121 @@ def test_shared_renderer_propagates_source_ipa_status_fields():
     assert out["ipa_status"] == "ipa-derived-from-g2pk-surface-form"
     assert out["ipa_is_diagnostic_only"] is False
     assert out["ipa_status_reason"] == "surface IPA reason"
+
+
+def _reason_test_adapter(*, phonemes, grapheme_map, mapping_index, error=None):
+    adapter = UkrainianTargetAdapter.__new__(UkrainianTargetAdapter)
+    adapter.package_name = "fake"
+    adapter.available = True
+    adapter.version = "0.8.0"
+    adapter.error = error
+    adapter.inventory = {"phonemes": phonemes}
+    adapter.grapheme_map = grapheme_map
+    adapter.mapping_index = mapping_index
+    return adapter
+
+
+def test_native_strict_reports_unresolved_korean_phonology_separately():
+    from korean_ukrainian.pipeline import transliterate_korean
+
+    adapter = UkrainianTargetAdapter("definitely_missing_upi_package")
+    result = transliterate_korean("앉어라", target_adapter=adapter)
+
+    assert result["ukrainian_orthography"] is None
+    assert result["target_unavailable_reason"] == "unresolved_korean_phonology"
+    assert result["target_unavailable_segments"] == []
+
+
+def test_target_inventory_diagnostic_reports_missing_grapheme_without_blocking_local_output():
+    from korean_ukrainian.pipeline import render_ipa_analysis_to_ukrainian
+
+    adapter = _reason_test_adapter(
+        phonemes=[{"id": "UA-A", "ipa": "a", "features": {"consonantal": "0"}}],
+        grapheme_map={},
+        mapping_index={("a", "a"): [{
+            "mapping_id": "M-A", "input_ipa": "a", "target_ipa": "a",
+            "target_grapheme": "", "context": "default", "status": "established",
+        }]},
+    )
+    result = render_ipa_analysis_to_ukrainian(
+        "가", [{"input": "가", "ipa": "a"}],
+        pronunciation_surface="가", phonetics={}, ipa={"ipa": "a"},
+        pronunciation_engine="test", target_adapter=adapter,
+    )
+
+    assert result["ukrainian_orthography"] == "а"
+    summary = result["target_inventory_analysis"][0]["summary"]
+    assert summary["reason"] == "licensed_mapping_missing_grapheme"
+    assert summary["segment_reasons"] == [
+        {"source_ipa": "a", "reason": "licensed_mapping_missing_grapheme"}
+    ]
+    assert result["unavailable_reasons"] == []
+
+
+def test_target_inventory_diagnostic_reports_empty_inventory_without_blocking_local_output():
+    from korean_ukrainian.pipeline import render_ipa_analysis_to_ukrainian
+
+    adapter = _reason_test_adapter(phonemes=[], grapheme_map={}, mapping_index={})
+    result = render_ipa_analysis_to_ukrainian(
+        "가", [{"input": "가", "ipa": "a"}],
+        pronunciation_surface="가", phonetics={}, ipa={"ipa": "a"},
+        pronunciation_engine="test", target_adapter=adapter,
+    )
+
+    assert result["ukrainian_orthography"] == "а"
+    assert result["target_inventory_analysis"][0]["summary"]["reason"] == "no_target_candidates"
+    assert result["unavailable_reasons"] == []
+
+
+def test_target_inventory_diagnostic_summarizes_multiple_blockers_without_hiding_them():
+    from korean_ukrainian.pipeline import render_ipa_analysis_to_ukrainian
+
+    adapter = _reason_test_adapter(
+        phonemes=[
+            {"id": "UA-A", "ipa": "a", "features": {"consonantal": "0"}},
+            {"id": "UA-B", "ipa": "b", "features": {"consonantal": "1"}},
+        ],
+        grapheme_map={"b": "б"},
+        mapping_index={("a", "a"): [{
+            "mapping_id": "M-A", "input_ipa": "a", "target_ipa": "a",
+            "target_grapheme": "", "context": "default", "status": "established",
+        }]},
+    )
+    result = render_ipa_analysis_to_ukrainian(
+        "가", [{"input": "가", "ipa": "a.b"}],
+        pronunciation_surface="가", phonetics={}, ipa={"ipa": "a.b"},
+        pronunciation_engine="test", target_adapter=adapter,
+    )
+
+    assert result["ukrainian_orthography"] == "аб"
+    summary = result["target_inventory_analysis"][0]["summary"]
+    assert summary["reason"] == "multiple_target_blockers"
+    assert summary["segment_reasons"] == [
+        {"source_ipa": "a", "reason": "licensed_mapping_missing_grapheme"},
+        {"source_ipa": "b", "reason": "grapheme_without_licensed_mapping"},
+    ]
+    assert result["unavailable_reasons"] == []
+
+
+def test_shared_renderer_withholds_whole_output_for_one_unmapped_word():
+    from korean_ukrainian.pipeline import render_ipa_analysis_to_ukrainian
+
+    adapter = _reason_test_adapter(
+        phonemes=[{"id": "UA-A", "ipa": "a", "features": {"consonantal": "0"}}],
+        grapheme_map={"a": "а"},
+        mapping_index={("a", "a"): [{
+            "mapping_id": "M-A", "input_ipa": "a", "target_ipa": "a",
+            "target_grapheme": "а", "context": "default", "status": "established",
+        }]},
+    )
+    result = render_ipa_analysis_to_ukrainian(
+        "가 나", [{"input": "가", "ipa": "a"}, {"input": "나", "ipa": "q"}],
+        pronunciation_surface="가 나", phonetics={}, ipa={"ipa": "a q"},
+        pronunciation_engine="test", target_adapter=adapter,
+    )
+
+    assert result["ukrainian_orthography"] is None
+    assert result["target_status"] == "unavailable"
+    assert result["target_analysis"][1]["reason"] == "unmapped_ipa_sequence"
+    assert result["target_analysis"][1]["unmapped_fragment"] == "q"
+    assert result["target_unavailable_segments"][0]["unmapped_fragment"] == "q"
