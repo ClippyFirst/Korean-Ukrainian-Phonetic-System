@@ -3,7 +3,7 @@
 ### Task ledger
 
 - **DONE_VERIFIED on merged main:** R002 coda-ㅇ preservation; broad-IPA /j/ absorption after ㅈ/ㅉ/ㅊ + ㅕ. These are source-backed fixes with regression tests and measured gains.
-- **DONE_VERIFIED on the benchmark branch:** complete occurrence-level native-vs-g2pk audit for UGTPHON and SIGMORPHON; the report artifact retains every occurrence rather than a capped mismatch sample.
+- **DONE_VERIFIED and merged:** complete occurrence-level native-vs-g2pk audit for UGTPHON and SIGMORPHON; artifact 12559692692 retains every occurrence rather than a capped mismatch sample.
 - **DONE_VERIFIED for Python native benchmark:** exact-form R010 (§24) licenses for 닮다 and 넘게 add two further exact matches; native CER also improves. The matching browser-engine licenses and tests were included in the merged PR.
 - **PARTIAL:** 48 UGTPHON native abstentions remain across 47 unique words; 19 coincide with g2pk exact matches and 29 do not. R002 and R003 account for most unresolved contexts.
 - **TODO:** source-adjudicate remaining abstentions and build an independent NIKL holdout.
@@ -31,7 +31,7 @@
 - Run 40092929978: multi-engine benchmark passed on the Python R010-fix head; artifact uploaded and inspected.
 - Run 40092327808: Python regression, browser tests/build and related test jobs passed before the browser R010 port was added.
 - Run 40092327874: research morphology adapter smoke passed before the browser R010 port.
-- The browser R010 implementation and parity test were merged with PR #297. Code-equivalent PR #300 CI passed: verification 40092757353, tests 40092757419, and multi-engine benchmark 40092757409. Post-merge mainline CI runs 40093211039 (tests) and 40093211139 (verification) were queued at the time of this update; verify their final status before declaring the merge commit green.
+- The browser R010 implementation and parity test were merged with PR #297. Code-equivalent PR #300 CI passed: verification 40092757353, tests 40092757419, and multi-engine benchmark 40092757409. Post-merge mainline CI passed: tests 40093211039, system verification 40093211139, and master-table/research-artifact validation 40093211099 all succeeded on merge commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab. The Pages deployment run 40093211042 remains queued.
 - PR #297 merged into main as 2f7b58f0b7d976b9d660f21a739145ce19c533ab. PR #300 was closed unmerged as superseded by #297; its relevant R010/R011 validation was preserved. PRs #298 and #299 are merged. PRs #280 and #281 are merged and their existing work is preserved.
 - Functional Python benchmark head: 5962a9a8dbeacd04f4bd607a52d068d9aa97319a. The implementation is now on main via PR #297 merge commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab. The current docs-only reconciliation branch is docs/korean-error-audit-post-merge-2026-10-24; it does not change runtime code.
 

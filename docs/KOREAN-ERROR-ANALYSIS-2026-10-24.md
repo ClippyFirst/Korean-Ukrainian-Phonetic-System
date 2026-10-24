@@ -2,7 +2,7 @@
 
 ## Status
 
-**DONE_VERIFIED for implementation and paired benchmark:** PR #297 merged into main as commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab; PRs #298 and #299 supplied the R002 and palatal-yod fixes, and PR #297 integrated the R010 exact-form licenses for 닮다 and 넘게 in both Python and browser engines. Code-equivalent CI on superseded PR #300 passed (verify 40092757353, tests 40092757419, multi-engine benchmark 40092757409). Post-merge mainline CI runs 40093211039 (tests) and 40093211139 (verification) were queued at the time of this update; do not call the merge commit fully verified until those finish.
+**DONE_VERIFIED for implementation and paired benchmark:** PR #297 merged into main as commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab; PRs #298 and #299 supplied the R002 and palatal-yod fixes, and PR #297 integrated the R010 exact-form licenses for 닮다 and 넘게 in both Python and browser engines. Code-equivalent CI on superseded PR #300 passed (verify 40092757353, tests 40092757419, multi-engine benchmark 40092757409). Post-merge mainline verification is now complete: [tests 40093211039](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40093211039), [system verification 40093211139](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40093211139), and [master-table/research-artifact validation 40093211099](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40093211099) all passed on merge commit 2f7b58f0b7d976b9d660f21a739145ce19c533ab. The Pages deployment run 40093211042 is still queued.
 
 Latest post-fix six-engine run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978), [artifact 12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692). The artifact includes full native-vs-g2pk occurrence ledgers for UGTPHON and SIGMORPHON, not a capped mismatch sample.
 
@@ -120,7 +120,7 @@ This comparison is not fully independent end-to-end: g2pk emits surface Hangul a
 
 1. **DONE_VERIFIED** — full occurrence-level native-vs-g2pk ledger emitted and inspected for both pinned datasets.
 2. **DONE_VERIFIED** — R002 coda-ㅇ fix and broad-IPA palatal-yod fix have merged regression tests and measured benchmark gains.
-3. **DONE_VERIFIED for Python benchmark; CI gate pending for browser parity** — exact-form R010 licenses for 닮다 and 넘게; accept only after latest browser/Python/parity tests pass on the current branch head.
+3. **DONE_VERIFIED** — exact-form R010 licenses for 닮다 and 넘게 are merged; code-equivalent PR #300 checks passed and post-merge mainline tests/system verification passed.
 4. **TODO** — review the remaining 48 abstentions against NIKL and morphology evidence, prioritizing R002 and R003. Do not infer production rules from another engine's output alone.
 5. **TODO** — build an independently adjudicated NIKL holdout stratified by rule, environment, and rule interactions, with a separate held-out split.
 6. **BLOCKED** — independently adjudicated Korean IPA → Ukrainian practical-output gold corpus is not available; keep target-rendering evaluation separate.
