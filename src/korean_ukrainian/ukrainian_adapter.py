@@ -1,3 +1,9 @@
+"""Optional UPI target-inventory candidate diagnostics.
+
+This adapter does not own Korean-specific IPA→Ukrainian correspondences and
+must not be used as the practical-output renderer. The production output path
+is `korean_ukrainian.ipa_target_renderer`.
+"""
 from __future__ import annotations
 from importlib import import_module
 from typing import Mapping
@@ -6,6 +12,8 @@ DEFAULT_PACKAGE="ukrainian_phonetic_inventory"
 EXPECTED_VERSION="0.8.0"
 
 class UkrainianTargetAdapter:
+    """Load target inventory metadata for research diagnostics, not output selection."""
+
     def __init__(self,package_name=DEFAULT_PACKAGE):
         self.package_name=package_name
         self.available=False
