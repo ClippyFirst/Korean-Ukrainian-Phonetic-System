@@ -95,12 +95,15 @@ def _rule_boundary_alignment(
         morphology = by_word.get(word)
         if morphology is None:
             continue
-        boundaries = {
-            int(morpheme["end"])
-            for morpheme in morphology.get("morphemes", [])
-            if 0 < int(morpheme.get("end", 0)) < len(word)
-            and int(morpheme.get("start", 0)) < int(morpheme.get("end", 0))
-        }
+        morphemes = morphology.get("morphemes", [])
+        valid_spans = [
+            (int(morpheme.get("start", -1)), int(morpheme.get("end", -1)))
+            for morpheme in morphemes
+            if 0 <= int(morpheme.get("start", -1)) < int(morpheme.get("end", -1)) <= len(word)
+        ]
+        starts = {start for start, _ in valid_spans}
+        ends = {end for _, end in valid_spans}
+        boundaries = {offset for offset in starts & ends if 0 < offset < len(word)}
         for trace in changed.get("soft_heuristic_rules", []):
             context = str(trace.get("license_context", ""))
             pair = context.rsplit(":", 1)[-1]
@@ -108,10 +111,27 @@ def _rule_boundary_alignment(
                 continue
             left, right = pair.split(">", 1)
             before = trace.get("before", [])
-            for index in range(len(before) - 1):
-                if (str(before[index].get("text", "")) != left
-                        or str(before[index + 1].get("text", "")) != right):
-                    continue
+            after = trace.get("after", [])
+            changed_positions = {
+                position for position in range(min(len(before), len(after)))
+                if any(before[position].get(field) != after[position].get(field)
+                       for field in ("onset", "nucleus", "coda"))
+            }
+            matching_pairs = [
+                index for index in range(len(before) - 1)
+                if str(before[index].get("text", "")) == left
+                and str(before[index + 1].get("text", "")) == right
+            ]
+            # Prefer the pair touching a syllable that this rule actually changed;
+            # the same textual pair can occur more than once in a noisy word.
+            if changed_positions:
+                targeted = [
+                    index for index in matching_pairs
+                    if index in changed_positions or index + 1 in changed_positions
+                ]
+                if targeted:
+                    matching_pairs = targeted
+            for index in matching_pairs:
                 offset = sum(len(str(item.get("text", ""))) for item in before[:index + 1])
                 if not 0 < offset < len(word):
                     continue
