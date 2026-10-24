@@ -53,6 +53,18 @@ Added eight official examples from the attached note to Rule 29, including `들�
 - [Audit report](docs/rule29-liquid-assimilation-audit-2026-10-10.md)
 - [Regression test](tests/adversarial-rule29-liquid-assimilation-2026-10-10.test.mjs)
 
+## Research-only morphological analyzers (2026-10-24)
+
+The Python research package has optional adapters for [Kiwi](https://github.com/bab2min/kiwi) and MeCab-Ko. They return inspectable morpheme forms, analyzer tags and source offsets only; they do not produce pronunciation, IPA, Ukrainian output, or automatic NIKL rule licenses. The public browser practical mode does not load or call these adapters.
+
+- [Research morphology integration contract and acceptance gates](docs/RESEARCH-MORPHOLOGY-ADAPTERS-2026-10-24.md)
+- Adapter: `src/korean_ukrainian/research_morphology.py`
+- Tests with fake engines: `tests/test_research_morphology.py`
+- Diagnostic inputs (unlabelled, not gold): `data/korean/morphology-review-corpus.txt`
+- Diagnostic runner (not an accuracy benchmark without gold annotations): `scripts/benchmark_research_morphology.py`
+
+Install Kiwi with `uv pip install -e '.[research-kiwi]'`; install MeCab-Ko bindings with `uv pip install -e '.[research-mecab-ko]'`. A real-engine CI smoke run successfully installed and ran both adapters against the 16-input diagnostic list (Kiwi: 40 tokens; MeCab-Ko: 37 tokens). These counts and runtime are diagnostic only, not accuracy metrics: no independently adjudicated gold segmentation/POS set exists. The MeCab adapter records its selected binding and never substitutes a different analyzer family; see the research document for the evidence gates.
+
 ## Pronunciation engines: browser and Python
 
 ### Browser service — JavaScript G2P (default practical mode)

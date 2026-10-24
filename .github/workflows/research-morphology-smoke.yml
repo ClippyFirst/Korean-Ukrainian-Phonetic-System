@@ -1,0 +1,73 @@
+name: Research morphology adapter smoke
+
+on:
+  pull_request:
+    paths:
+      - "src/korean_ukrainian/research_morphology.py"
+      - "scripts/benchmark_research_morphology.py"
+      - "data/korean/morphology-review-corpus.txt"
+      - "pyproject.toml"
+      - ".github/workflows/research-morphology-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  adapter-smoke:
+    name: ${{ matrix.engine }} real-engine smoke (Python 3.12)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - engine: kiwi
+            extra: research-kiwi
+          - engine: mecab-ko
+            extra: research-mecab-ko
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install project and selected optional analyzer
+        run: python -m pip install -e ".[${{ matrix.extra }},dev]"
+      - name: Run adapter contract tests
+        run: python -m pytest -q tests/test_research_morphology.py
+      - name: Run real analyzer against diagnostic corpus
+        run: |
+          python scripts/benchmark_research_morphology.py data/korean/morphology-review-corpus.txt \
+            --engines "${{ matrix.engine }}" \
+            --output "artifacts/morphology-${{ matrix.engine }}.jsonl"
+      - name: Validate diagnostic output
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("artifacts/morphology-${{ matrix.engine }}.jsonl")
+          rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+          assert len(rows) == 1, rows
+          result = rows[0]
+          assert result["status"] == "completed_diagnostic", result
+          assert result["inputs"] == 16, result
+          assert result["accuracy_claim"] == "none_no_gold_segmentation", result
+          assert result["results"], result
+          assert all(item["morphemes"] for item in result["results"]), result
+          print(json.dumps({
+              "engine": result["analyzer"],
+              "status": result["status"],
+              "inputs": result["inputs"],
+              "tokens": result["tokens"],
+              "elapsed_seconds": result["elapsed_seconds"],
+              "accuracy_claim": result["accuracy_claim"],
+          }, ensure_ascii=False))
+          PY
+      - name: Upload diagnostic JSONL
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: morphology-${{ matrix.engine }}-diagnostic
+          path: artifacts/morphology-${{ matrix.engine }}.jsonl
+          if-no-files-found: ignore
