@@ -58,12 +58,17 @@ def normalize_ipa_profile(value: str, profile: str = LEGACY_PROFILE) -> str:
         return normalized
     if profile != BROAD_PROFILE:
         raise ValueError(f"unknown IPA comparison profile: {profile}")
+    # Protect the affricate /tɕ/ before collapsing the standalone
+    # allophonic fricative [ɕ]. A global ɕ→s replacement would corrupt
+    # contrastive affricates such as tɕʰ into ts.
+    affricate_placeholder = "\\uE000"
+    normalized = normalized.replace("tɕ", affricate_placeholder)
     for source, target in BROAD_ALLOPHONE_REPLACEMENTS:
         normalized = normalized.replace(source, target)
     # Korean sibilant aspiration/palatalization is allophonic in this project
     # profile; do not remove aspiration from stop/affricate symbols.
     normalized = re.sub(r"sʰ", "s", normalized)
-    return normalized
+    return normalized.replace(affricate_placeholder, "tɕ")
 
 
 def _edit_distance(left: str, right: str) -> int:
