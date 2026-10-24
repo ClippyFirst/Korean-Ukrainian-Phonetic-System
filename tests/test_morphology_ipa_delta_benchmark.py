@@ -90,4 +90,4 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
     assert alignment["events"] == 1
     assert alignment["boundary_observed"] == 0
     assert alignment["boundary_not_observed"] == 1
-    assert report["morphology"]["results"][1]["native_soft_rule_boundary_events"][0]["pair"] == "国>어"
+    assert report["morphology"]["results"][1]["native_soft_rule_boundary_events"][0]["pair"] == "국>어"
