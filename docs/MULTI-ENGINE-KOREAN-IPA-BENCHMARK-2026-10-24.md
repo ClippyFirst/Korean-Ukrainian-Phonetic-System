@@ -2,7 +2,7 @@
 
 ## Status
 
-**Implementation committed; execution status is determined only by the exact-head GitHub Actions run and its JSON artifact.** Do not treat a workflow that is queued/in progress, a dependency installation, or a successful test of the harness as a completed benchmark. The measured table below is to be updated from the artifact for the latest head commit; no result is inferred from upstream marketing scores.
+**DONE_VERIFIED for two diagnostic datasets and six engines** on code-equivalent benchmark head. Exact-head run: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231 ; artifact: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231/artifacts/12558044694. The full reports and all 48 UGTPHON abstention occurrences and 2 SIGMORPHON abstentions were inspected. The current result section supersedes the earlier score table because the broad-IPA normalization profile was corrected to ignore retraction U+0320.
 
 - Repository: ClippyFirst/Korean-Ukrainian-Phonetic-System
 - Benchmark branch: research/independent-engine-benchmark-2026-10-23
@@ -38,7 +38,7 @@ This benchmark scores Korean IPA only. It does **not** measure IPA-to-Ukrainian 
 
 - Corpus validation requires 275 unique row IDs, Korean language, test split, and required fields.
 - Only single-token Hangul entries with at least one gold IPA variant are scored; eligible token occurrences and unique words are both reported.
-- IPA normalization reuses the existing benchmark_ugtphon_ko.normalize_ipa function: Unicode canonicalization, g → ɡ, removal of tie bars and the declared narrow diacritics, spaces and periods removed. Stress, length, aspiration, and fortis diacritics remain.
+- IPA normalization reuses benchmark_ugtphon_ko.normalize_ipa: Unicode canonicalization, g → ɡ, tie bars and selected narrow diacritics (including retraction U+0320) removed, spaces and periods removed. Stress, length, aspiration, fortis and unreleased-stop markers remain. This profile revision materially changes exact-match/CER values.
 - Exact match accepts the closest comma-separated gold IPA variant.
 - CER is total Levenshtein distance divided by total length of the selected reference variants.
 - Coverage is scored token occurrences divided by eligible token occurrences. Native unresolved cases are abstentions, not engine exceptions.
@@ -46,7 +46,73 @@ This benchmark scores Korean IPA only. It does **not** measure IPA-to-Ukrainian 
 - Deterministic 1,000-replicate row-cluster percentile bootstrap intervals are emitted for exact-match rate and CER; paired row-cluster intervals estimate candidate-minus-native deltas. They describe sampling variability on this dataset; they do not correct reference-label errors or annotation-convention mismatch.
 - The report includes per-engine status, error samples, paired deltas, confidence intervals, and a capped mismatch sample. The raw external corpus is not committed.
 
-## Results
+
+## Current verified results — revised broad-IPA profile (2026-10-24)
+
+Machine-readable reports and occurrence-level audits: [successful run 40089295231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231), [artifact 12558044694](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40089295231/artifacts/12558044694). Values are percentages; exact-match 95% CIs are deterministic 1,000-replicate row-cluster percentile bootstrap intervals. CER is lower-is-better.
+
+### UGTPHON noisy user-generated text
+
+275 rows, 2,703 eligible token occurrences, 1,907 unique Hangul words.
+
+| Engine | Scored / eligible | Coverage | Exact match (95% CI) | CER |
+|---|---:|---:|---:|---:|
+| ClippyFirst native | 2,655 / 2,703 | 98.2242% | 50.8851% (46.8726–54.9358%) | 9.6619% |
+| g2pk 0.9.4 + ClippyFirst IPA renderer | 2,703 / 2,703 | 100% | 53.0892% (48.5190–58.0085%) | 9.2285% |
+| phonemize 2.0.1 | 2,703 / 2,703 | 100% | 42.5453% (37.2093–48.6478%) | 14.3531% |
+| KoG2P 2019 | 2,703 / 2,703 | 100% | 27.3030% (25.1766–29.4688%) | 19.5122% |
+| hangul_to_ipa | 2,703 / 2,703 | 100% | 16.2412% (14.0375–18.5143%) | 24.8054% |
+| eSpeak NG | 2,703 / 2,703 | 100% | 8.1391% (6.3679–10.1852%) | 33.6101% |
+
+Paired candidate-minus-native deltas on the 2,655 shared scored occurrences:
+
+| Candidate | Exact-rate delta (95% CI) | CER delta (95% CI) |
+|---|---:|---:|
+| g2pk + project renderer | +2.4482 pp (+1.2378 to +4.2219 pp) | −0.4205 pp (−0.6625 to −0.2298 pp) |
+| phonemize 2.0.1 | −7.8343 pp (−10.1440 to −5.1367 pp) | +4.5410 pp (+3.7271 to +5.3596 pp) |
+| KoG2P 2019 | −23.3521 pp (−27.4139 to −19.8230 pp) | +9.9318 pp (+8.9473 to +10.9994 pp) |
+| hangul_to_ipa | −34.4256 pp (−37.5207 to −31.1349 pp) | +15.1057 pp (+14.0576 to +16.2182 pp) |
+| eSpeak NG | −42.6742 pp (−47.0011 to −38.3526 pp) | +23.9090 pp (+22.7362 to +25.1519 pp) |
+
+### SIGMORPHON 2021 public paired lexical file
+
+1,000 source rows; 999 eligible syllable-token occurrences and 999 unique eligible words. One source row, ᆸ니다, uses a standalone archaic Hangul jamo outside the current engine's syllable-token contract and is excluded rather than guessed. The pinned public file contains word/IPA pairs, despite the upstream README describing the shared-task test input as word-only. This is therefore a public paired-file diagnostic, not a leaderboard reproduction.
+
+| Engine | Scored / eligible | Coverage | Exact match (95% CI) | CER |
+|---|---:|---:|---:|---:|
+| ClippyFirst native | 997 / 999 | 99.7998% | 35.1053% (32.0963–38.0140%) | 14.8920% |
+| g2pk 0.9.4 + ClippyFirst IPA renderer | 999 / 999 | 100% | 35.3353% (32.5325–38.2382%) | 14.8222% |
+| phonemize 2.0.1 | 999 / 999 | 100% | 28.9289% (26.2262–31.6316%) | 17.4387% |
+| KoG2P 2019 | 999 / 999 | 100% | 18.7187% (16.3163–21.2212%) | 21.8327% |
+| hangul_to_ipa | 999 / 999 | 100% | 8.9089% (7.2072–10.6106%) | 29.8448% |
+| eSpeak NG | 999 / 999 | 100% | 4.3043% (3.1031–5.7057%) | 40.7236% |
+
+Paired deltas on the 997 shared scored occurrences:
+
+| Candidate | Exact-rate delta (95% CI) | CER delta (95% CI) |
+|---|---:|---:|
+| g2pk + project renderer | +0.3009 pp (−0.3009 to +1.0030 pp) | −0.0753 pp (−0.2584 to +0.0889 pp) |
+| phonemize 2.0.1 | −6.1183 pp (−8.0241 to −4.2126 pp) | +2.4988 pp (+1.8514 to +3.1605 pp) |
+| KoG2P 2019 | −16.3490 pp (−18.7563 to −13.6409 pp) | +6.9061 pp (+6.1807 to +7.7190 pp) |
+| hangul_to_ipa | −26.1785 pp (−29.0873 to −23.2698 pp) | +14.9297 pp (+14.0973 to +15.7538 pp) |
+| eSpeak NG | −30.7924 pp (−33.8014 to −27.7834 pp) | +25.8287 pp (+24.6903 to +26.8993 pp) |
+
+The paired g2pk intervals on SIGMORPHON cross zero for both metrics; this dataset does not establish a statistically clear native-versus-g2pk difference. The contrast with UGTPHON argues against declaring one engine universally best.
+
+### Native abstention audit
+
+- UGTPHON: 48 occurrences across 47 unique words. There are 49 unresolved context labels because one occurrence has two contexts: R002 liaison/neutralization (25), R003 ㅎ-coda deletion (20), R007 palatalization (2), R004 complex-coda plus ㅎ aspiration (1), and one IPA-adjudication gap.
+- SIGMORPHON: 2 abstentions: 닭갈비 (R008, ㄺ-before-ㄱ fortition depends on lexical/morphological class) and 중심닮음 (R002, liaison/neutralization requires exact morpheme evidence).
+- External predictions are diagnostic evidence only. They were not copied into production rules without source adjudication.
+
+### Current conclusions
+
+- g2pk plus the project renderer leads native on the noisy UGTPHON paired set; exact delta +2.4482 pp with a 95% interval above zero. The renderer is shared, so this is not a fully independent end-to-end IPA comparison.
+- On the SIGMORPHON public paired file, the paired exact delta is only +0.3009 pp and its interval crosses zero.
+- phonemize is the strongest of the other independent candidates on both datasets under this adapter and normalization contract. These scores are diagnostic, not normative NIKL accuracy and not IPA-to-Ukrainian quality.
+- The prior table below is historical under the earlier normalization profile and should not be used as the current score snapshot.
+
+## Historical results — earlier normalization profile (superseded)
 
 The latest exact-head scoring run is [40085814704](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814704), with report artifact [12557450401](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40085814704/artifacts/12557450401). The invalid first-run phonemize result (0 exact, CER 100%) is excluded: its adapter returned unchanged Hangul because `anyAscii` was disabled. The corrected adapter enables `anyAscii=true`; this current report confirms non-Hangul IPA outputs. These are adapter smoke examples, not proof that individual predictions are phonetically correct.
 
