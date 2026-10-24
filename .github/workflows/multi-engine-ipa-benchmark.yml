@@ -1,0 +1,155 @@
+name: Multi-engine Korean IPA diagnostic benchmark
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/benchmark_multi_engine_ko.py"
+      - "scripts/benchmark_phonemize_adapter.cjs"
+      - "tests/test_multi_engine_benchmark.py"
+      - ".github/workflows/multi-engine-ipa-benchmark.yml"
+      - "scripts/benchmark_ugtphon_ko.py"
+      - "src/korean_ukrainian/**"
+      - "data/korean/**"
+
+permissions:
+  contents: read
+
+jobs:
+  multi-engine-ipa:
+    name: Pinned multi-engine IPA comparison (Python 3.12)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install the native engine, comparison dependencies, and eSpeak NG
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes espeak-ng
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[g2pk]" "regex==2024.5.10" "phonemizer==3.3.0" "pytest>=8"
+
+      - name: Fetch pinned external implementations and verify declared licenses
+        env:
+          KOG2P_COMMIT: cbc69bbe1439862364d4ffd1552f59b930f655c7
+          HANGUL_TO_IPA_COMMIT: 942abf132ea969a7e3476a1487c06710fb8db74b
+        run: |
+          set -euo pipefail
+          git clone https://github.com/scarletcho/KoG2P.git "$RUNNER_TEMP/KoG2P"
+          git -C "$RUNNER_TEMP/KoG2P" checkout --detach "$KOG2P_COMMIT"
+          git clone https://github.com/stannam/hangul_to_ipa.git "$RUNNER_TEMP/hangul_to_ipa"
+          git -C "$RUNNER_TEMP/hangul_to_ipa" checkout --detach "$HANGUL_TO_IPA_COMMIT"
+          grep -qi "GNU GENERAL PUBLIC LICENSE" "$RUNNER_TEMP/KoG2P/LICENSE.md"
+          grep -qi "MIT License" "$RUNNER_TEMP/hangul_to_ipa/LICENSE"
+          echo "KoG2P pinned commit: $(git -C "$RUNNER_TEMP/KoG2P" rev-parse HEAD) (GPL-3.0; external checkout only)"
+          echo "hangul_to_ipa pinned commit: $(git -C "$RUNNER_TEMP/hangul_to_ipa" rev-parse HEAD) (MIT; external checkout only)"
+          echo "eSpeak NG runtime:"
+          espeak-ng --version
+          espeak-ng --voices=ko
+
+      - name: Install the separately pinned JavaScript phonemizer baseline
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/phonemize-baseline"
+          npm install --prefix "$RUNNER_TEMP/phonemize-baseline" --no-save phonemize@2.0.1
+          node - "$RUNNER_TEMP/phonemize-baseline/node_modules/phonemize/package.json" <<'JS'
+          const fs = require('node:fs');
+          const p = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+          if (p.version !== '2.0.1' || p.license !== 'MIT') {
+            throw new Error('Unexpected phonemize package version/license: ' + p.version + ' / ' + p.license);
+          }
+          console.log('Validated phonemize@' + p.version + ' (' + p.license + ')');
+          JS
+
+      - name: Fetch and validate the pinned UGTPHON Korean test split
+        env:
+          UGT_PHON_COMMIT: ef0d5a09c2ea1874c7206020f875cbd9cfea2f54
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/$UGT_PHON_COMMIT/ko/test.json" \
+            --output "$RUNNER_TEMP/ko-test.json"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/$UGT_PHON_COMMIT/ko/LICENSE" \
+            --output "$RUNNER_TEMP/ko-LICENSE"
+          grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
+          python - "$RUNNER_TEMP/ko-test.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          rows = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          assert len(rows) == 275, f"pinned corpus row-count drift: {len(rows)}"
+          assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
+          ids = [row["id"] for row in rows]
+          assert len(ids) == len(set(ids)), "duplicate corpus row IDs"
+          print(f"Validated pinned UGTPHON Korean test split: {len(rows)} rows; Apache-2.0")
+          PY
+
+      - name: Run benchmark adapter tests
+        run: |
+          set -euo pipefail
+          node --check scripts/benchmark_phonemize_adapter.cjs
+          python -m pytest tests/test_multi_engine_benchmark.py
+
+      - name: Run multi-engine comparison
+        env:
+          KOG2P_ROOT: ${{ runner.temp }}/KoG2P
+          HANGUL_TO_IPA_ROOT: ${{ runner.temp }}/hangul_to_ipa
+          PHONEMIZE_BASELINE_DIR: ${{ runner.temp }}/phonemize-baseline
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_multi_engine_ko.py \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --output "$RUNNER_TEMP/multi-engine-ipa-report.json" \
+            --kog2p-root "$KOG2P_ROOT" \
+            --hangul-to-ipa-root "$HANGUL_TO_IPA_ROOT" \
+            --phonemize-root "$PHONEMIZE_BASELINE_DIR" \
+            --phonemize-output "$RUNNER_TEMP/phonemize-predictions.json" \
+            > "$RUNNER_TEMP/multi-engine-ipa-stdout.json"
+          python - "$RUNNER_TEMP/multi-engine-ipa-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          print("DATASET:", r["benchmark"], "rows=", r["dataset_rows"],
+                "eligible token occurrences=", r["eligible_token_occurrences"],
+                "unique words=", r["unique_hangul_words"])
+          for name, m in r["engines"].items():
+              ci = m.get("bootstrap_95pct_ci", {}).get("exact_match_rate_95pct_ci")
+              print(f"{name}: status={m['unique_word_engine_status']['status']} "
+                    f"scored={m['scored_tokens']}/{m['attempted_tokens']} "
+                    f"coverage={m['coverage']} exact={m['exact_matches']} "
+                    f"exact_rate={m['exact_match_rate']} CER={m['character_error_rate']} "
+                    f"CI95={ci} abstentions={m['abstentions_or_unresolved']} "
+                    f"errors={m['engine_errors_on_token_loop']}")
+              if "paired_with_native" in m:
+                  p = m["paired_with_native"]
+                  print(f"  paired={p['paired_tokens']} delta_exact={p['exact_rate_delta_candidate_minus_native']} "
+                        f"delta_CER={p['cer_delta_candidate_minus_native']}")
+          print("Diagnostic only. This corpus is not normative NIKL gold and does not evaluate Ukrainian output.")
+          engines = r["engines"]
+          for required in ("clippyfirst_native", "g2pk_0_9_4"):
+              if engines[required]["scored_tokens"] <= 0:
+                  raise SystemExit(f"required baseline produced no scored tokens: {required}")
+          candidates = ("KoG2P_2019", "hangul_to_ipa_2026", "espeak_ng_ko", "phonemize_2_0_1")
+          usable = [name for name in candidates if engines[name]["scored_tokens"] > 0]
+          if len(usable) < 2:
+              raise SystemExit("fewer than two independent external candidates produced scores: " + repr(usable))
+          print("Scored independent candidates:", ", ".join(usable))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: multi-engine-korean-ipa-diagnostic
+          path: |
+            ${{ runner.temp }}/multi-engine-ipa-report.json
+            ${{ runner.temp }}/multi-engine-ipa-stdout.json
+            ${{ runner.temp }}/phonemize-predictions.json
+            ${{ runner.temp }}/ko-LICENSE
+          if-no-files-found: warn
+          retention-days: 30
