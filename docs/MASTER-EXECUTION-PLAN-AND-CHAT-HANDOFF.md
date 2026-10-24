@@ -1,3 +1,11 @@
+## CI feedback and correction — 24-form diagnostic (2026-10-24)
+
+- The first diagnostic-specific CI run `40121486377` failed during pytest collection: `ModuleNotFoundError: No module named 'scripts.diagnose_korean_ipa_holdout'`. This was a test import-path defect, not an engine/linguistic failure.
+- Fixed by adding the repository's `scripts/` directory to `sys.path` before importing the diagnostic and leakage-validator modules in `tests/test_korean_holdout_diagnostic.py` (commit `a94da1f921846f0a0b7f02992d0800ddcbd6f341`). Added an explicit runtime-data/test-fixture overlap assertion.
+- The diagnostic artifact generation was moved into the existing `.github/workflows/test.yml` Python 3.12 job because a new workflow introduced only on the PR branch is not a reliable base-branch `pull_request` trigger. Duplicate workflow file removed.
+- Latest full test-matrix run `40121739206` and companion system checks are queued; the prior post-fix test run `40121732645` is also queued. Do not mark exact-head verification passed until one run on the final code head finishes and the uploaded diagnostic artifact is inspected.
+
+---
 ## Continuation: quarantined 24-form research-engine diagnostic (2026-10-24)
 
 - Added `scripts/diagnose-korean-ipa-holdout.py`, `tests/test_korean_holdout_diagnostic.py`, `.github/workflows/test.yml` (existing Python matrix; report generation on Python 3.12), and `docs/KOREAN-24-FORM-HOLDOUT-DIAGNOSTICS-2026-10-24.md`; `npm run research:holdout-diagnostics` exposes the read-only runner.
