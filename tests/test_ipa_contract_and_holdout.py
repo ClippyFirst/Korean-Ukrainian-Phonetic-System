@@ -91,3 +91,4 @@ def test_holdout_overlap_record_is_bound_to_exact_manifest_blob():
     assert record["externalExactTokenOverlap"]["overlapCount"] == 0
     assert record["externalExactTokenOverlap"]["result"] == "PASS_NO_EXACT_TOKEN_OVERLAP"
     assert record["ipaAnnotation"]["goldCount"] == 0
+    assert record["localLeakageValidation"]["checkedPathExactOverlapCount"] == 0
