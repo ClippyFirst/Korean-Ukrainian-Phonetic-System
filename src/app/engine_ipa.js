@@ -1,52 +1,96 @@
 /**
  * IPA → Ukrainian mapping layer.
+ *
+ * The generated table is a projection of canonical_correspondence.csv plus
+ * ipa_target_overrides.csv. Those CSVs are the source of truth; CI checks
+ * that this browser artifact has not drifted from them.
  */
-// Canonical second stage: Ukrainian output is rendered from the generated IPA,
-// never independently from Hangul jamo. Longest-match tokenization preserves
-// Korean phonetic contrasts that matter to the project target (e.g. ɡ/ k,
-// dʑ/tɕ, ɕ/s, and coda unreleased stops).
-export const IPA_TO_UKRAINIAN = [
-  ['kʰjʌ','кхьо'],['hjʌ','гьо'],['njʌ','ньо'],['njo','ньо'],['nju','ню'],
-  ['ɲʌ','ньо'],['ɲa','ня'],['ɲo','ньо'],['ɲu','ню'],
-  ['ljʌ','льо'],['lju','лю'],
-  ['tɕ͈','ч'],['tɕʰ','ч'],['tɕ','ч'],['dʑ','дж'],['ɕ͈','ш'],['ɕ','ш'],
-  ['k͈','к'],['t͈','т'],['p͈','п'],['s͈','с'],
-  ['kʰ','к'],['tʰ','т'],['pʰ','п'],['k̚','к'],['t̚','т'],['p̚','п'],
-  ['ɰi','ий'],['jʌ','йо'],['jɛ','є'],['ja','я'],['je','є'],['jo','йо'],['ju','ю'],
-  ['wa','ва'],['wɛ','ве'],['wʌ','во'],['we','ве'],
-  ['ɡ','ґ'],['k','к'],['t','т'],['d','д'],['p','п'],['b','б'],
-  ['ɲ','нь'],['n','н'],['m','м'],['ŋ','н'],['ɾ','р'],['r','р'],['l','л'],['h','г'],
-  ['s','с'],['a','а'],['ɛ','е'],['ʌ','о'],['e','е'],['o','о'],['u','у'],
-  ['ɯ','и'],['i','і'],['ø','ве'],['y','ві'],['w','в'],['j','й']
-].sort((a,b)=>b[0].length-a[0].length);
+import { IPA_TARGET_MAPPINGS, IPA_MAPPING_CONFLICTS } from './ipa_target_data.js';
 
-export function traceIpaMapping(ipa){
-  ipa=String(ipa??'');
+const ORDERED_MAPPINGS = [...IPA_TARGET_MAPPINGS].sort(
+  (a,b) => b.source_ipa.length-a.source_ipa.length || a.source_ipa.localeCompare(b.source_ipa)
+);
+const MAPPING_BY_IPA = new Map(IPA_TARGET_MAPPINGS.map(row => [row.source_ipa,row]));
+
+// Compatibility export for consumers that need the simple IPA/grapheme pairs.
+export const IPA_TO_UKRAINIAN = ORDERED_MAPPINGS.map(
+  row => [row.source_ipa,row.target_grapheme]
+);
+
+function addFeature(features, ipa, offset, feature, note){
+  features.push({
+    ipa,
+    offset,
+    feature,
+    handling:'preserved-in-ipa-not-rendered-in-ukrainian-target',
+    note
+  });
+}
+
+export function traceIpaMappingDetailed(ipa){
+  ipa=String(ipa??'').normalize('NFC');
   const tokens=[];
   const features=[];
   for(let i=0;i<ipa.length;){
-    if(/\s/u.test(ipa[i])){i++;continue;}
+    if(/\s/u.test(ipa[i]) || ipa[i]==='.' || ipa[i]==='#'){i++;continue;}
     if(ipa[i]==='ː'){
-      features.push({
-        ipa:'ː',
-        offset:i,
-        handling:'omitted-from-ukrainian-target',
-        note:'довгота збережена в IPA; український запис не має окремого знака довготи'
-      });
+      addFeature(features,'ː',i,'vowel-length','Довгота збережена в IPA; окремого знака довготи в практичному українському записі немає.');
       i++;
       continue;
     }
-    const match=IPA_TO_UKRAINIAN.find(([token])=>ipa.startsWith(token,i));
-    if(!match)return {tokens,features,unknown:ipa.slice(i)};
-    tokens.push({ipa:match[0],ukrainian:match[1]});
-    i+=match[0].length;
+    const match=ORDERED_MAPPINGS.find(row=>ipa.startsWith(row.source_ipa,i));
+    if(!match){
+      return {tokens,features,unknown:ipa.slice(i),reason:'unmapped_ipa_sequence',status:'unavailable'};
+    }
+    if(Object.hasOwn(IPA_MAPPING_CONFLICTS,match.source_ipa)){
+      return {tokens,features,unknown:match.source_ipa,reason:'ambiguous_ipa_mapping',status:'unavailable'};
+    }
+    tokens.push({
+      ipa:match.source_ipa,
+      ukrainian:match.target_grapheme,
+      mapping_id:match.mapping_id,
+      status:match.status,
+      scope:match.scope,
+      source_ref:match.source_ref,
+      notes:match.notes,
+      mapping_source:match.mapping_source,
+      offset:i
+    });
+    if(match.source_ipa.includes('ʰ')){
+      addFeature(features,'ʰ',i+match.source_ipa.indexOf('ʰ'),'aspiration','Аспірація збережена в IPA, але окремо не позначена українською графемою.');
+    }
+    if(match.source_ipa.includes('͈')){
+      addFeature(features,'͈',i+match.source_ipa.indexOf('͈'),'fortisness','Фортісність збережена в IPA, але окремо не позначена українською графемою.');
+    }
+    if(match.source_ipa.includes('̚')){
+      addFeature(features,'̚',i+match.source_ipa.indexOf('̚'),'unreleased-stop','Невибуховість коди збережена в IPA, але окремо не позначена українською графемою.');
+    }
+    i+=match.source_ipa.length;
   }
-  return {tokens,features,unknown:''};
+  return {
+    tokens,
+    features,
+    unknown:'',
+    reason:null,
+    status:tokens.some(token=>token.status==='provisional')?'provisional':'model-selected'
+  };
+}
+
+// Stable legacy trace shape; detailed metadata is available via the new API.
+export function traceIpaMapping(ipa){
+  const result=traceIpaMappingDetailed(ipa);
+  return {
+    tokens:result.tokens.map(({ipa,ukrainian})=>({ipa,ukrainian})),
+    features:result.features,
+    unknown:result.unknown
+  };
 }
 
 export function ipaSyllableToUkrainian(ipa){
-  const mapped=traceIpaMapping(ipa);
-  return mapped.unknown?{text:'',unknown:mapped.unknown}:{text:mapped.tokens.map(token=>token.ukrainian).join(''),unknown:''};
+  const mapped=traceIpaMappingDetailed(ipa);
+  return mapped.unknown
+    ? {text:'',unknown:mapped.unknown}
+    : {text:mapped.tokens.map(token=>token.ukrainian).join(''),unknown:''};
 }
 
 export function ipaSyllablesToUkrainian(ipaSyllables){
@@ -55,19 +99,45 @@ export function ipaSyllablesToUkrainian(ipaSyllables){
 }
 
 export function ipaTargetForSource(source,ipa){
-  const ipaUnits=(ipa||'').split(/\s+/u).filter(Boolean);
-  const mapped=ipaSyllablesToUkrainian(ipaUnits);
-  if(mapped.unknown||!ipaUnits.length)return {text:'',syllables:mapped.syllables,unknown:mapped.unknown};
-  if(!/\s/u.test(source||''))return {text:mapped.syllables.join(''),syllables:mapped.syllables,unknown:''};
+  const sourceText=String(source??'');
+  const sourceIpa=String(ipa??'').normalize('NFC');
+  const ipaUnits=sourceIpa.split(/[.\s]+/u).filter(Boolean);
+  if(!ipaUnits.length){
+    return {text:'',syllables:[],unknown:'',status:'unavailable',reason:'empty_ipa',mappingTrace:[]};
+  }
+  const detailed=ipaUnits.map(traceIpaMappingDetailed);
+  const syllables=detailed.map(item=>item.unknown?'':item.tokens.map(token=>token.ukrainian).join(''));
+  const unknown=detailed.find(item=>item.unknown)?.unknown||'';
+  const mappingTrace=detailed.flatMap(item=>item.tokens);
+  const status=unknown
+    ? 'unavailable'
+    : detailed.some(item=>item.status==='provisional')?'provisional':'model-selected';
+  if(unknown){
+    const failed=detailed.find(item=>item.unknown);
+    return {text:'',syllables,unknown,status,reason:failed?.reason||'unmapped_ipa_sequence',mappingTrace};
+  }
+
+  // The IPA contract is syllable-aligned. A mismatch is not repaired by
+  // guessing which Ukrainian syllable belongs to which Hangul syllable.
+  const expectedSyllables=[...sourceText].filter(ch=>/[가-힣]/u.test(ch)).length;
+  if(expectedSyllables && expectedSyllables!==ipaUnits.length){
+    return {text:'',syllables,unknown:'',status:'unavailable',reason:'ipa_source_alignment_mismatch',mappingTrace};
+  }
+
+  if(!/[가-힣]/u.test(sourceText)){
+    return {text:syllables.join(''),syllables,unknown:'',status,reason:null,mappingTrace};
+  }
   let text='';
   let targetIndex=0;
-  for(const token of ((source||'').match(/\s+|[^\s]+/gu)||[])){
+  for(const token of (sourceText.match(/\s+|[가-힣]+|[^\s가-힣]+/gu)||[])){
     if(/^\s+$/u.test(token)){text+=token;continue;}
-    const count=/^[가-힣]+$/u.test(token)?[...token].length:1;
-    text+=mapped.syllables.slice(targetIndex,targetIndex+count).join('');
-    targetIndex+=count;
+    if(/^[가-힣]+$/u.test(token)){
+      const count=[...token].length;
+      text+=syllables.slice(targetIndex,targetIndex+count).join('');
+      targetIndex+=count;
+    }else{
+      text+=token;
+    }
   }
-  text+=mapped.syllables.slice(targetIndex).join('');
-  return {text,syllables:mapped.syllables,unknown:''};
+  return {text,syllables,unknown:'',status,reason:null,mappingTrace};
 }
-
