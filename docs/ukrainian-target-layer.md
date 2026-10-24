@@ -36,3 +36,13 @@ UPI 0.8.0 is maintained in the separate private repository [ClippyFirst/Ukrainia
 The IPA renderer does not resolve upstream phonology. Seven native strict cases remain blocked by unresolved Korean pronunciation; these must stay withheld. The input-only 24-form fixture is now tracked at `data/korean/benchmarks/target-renderer-holdout-24.csv`, and `scripts/audit_target_renderer_holdout_24.py` records native/G2P IPA, output status, abstention reasons and mapping IDs. The original source manifest was not found, and the fixture contains no IPA or Ukrainian gold labels; the report is diagnostic only and does not establish target accuracy.
 
 The mapping table is a project research decision surface. New target mappings require a source reference, scope, explicit status and a regression; do not add speculative mappings solely to improve a benchmark count.
+
+
+### Holdout diagnostic result — 2026-10-24
+
+The input-only candidate fixture is labelled `reconstructed_unverified`; its original source manifest and independent membership record remain unavailable. The successful optional g2pK workflow [run 40129831527](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527) generated reports for Python 3.11 ([artifact 12573827559](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527/artifacts/12573827559)) and Python 3.12 ([artifact 12574198636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527/artifacts/12574198636)). The fixture SHA-256 is `bd2dd4e28f40345a8aed50ec3ec24021efeaa9101bef7f943bed917a50ddaeeb`; neither IPA nor Ukrainian gold labels are available.
+
+- Native strict: **19/24 candidate outputs**; 5 forms withheld as `unresolved_korean_phonology`: `닭은`, `흙은`, `여덟은`, `긁개`, `끓이다`.
+- g2pK: **24/24 candidate outputs**. All 24 source IPA records are typed `ipa-derived-from-g2pk-surface-form`; target output statuses are 23 `model-selected` and 1 `provisional`. These are candidate outputs, not gold.
+- `뒷일` illustrates the distinction: primary IPA `ty.sil` yields `твісіл` provisionally; the explicit alternate IPA `twi.sil` yields the same target as a model-selected sequence mapping.
+- This candidate fixture's 5/19 split does **not** reconcile with the earlier 7-unresolved/17-target-inventory summary. The evidence cannot establish whether the discrepancy comes from input membership, engine state, or blocker taxonomy. Do not force counts or promote G2P output to normative truth. Full per-form evidence and provenance are in [`docs/HOLDOUT-24-PROVENANCE-AUDIT-2026-10-24.md`](HOLDOUT-24-PROVENANCE-AUDIT-2026-10-24.md).

@@ -138,3 +138,13 @@ PR [#306](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 - Mapping overrides `ɰi → ий` and `kʰjʌ → кхьо` are marked provisional. The native strict engine must still withhold output for diagnostic-only/unresolved IPA, regardless of whether a target mapping exists.
 - **Ledger:** target output generation is **PARTIAL** until final-head CI passes and mapping status is independently reviewed; Ukrainian target accuracy remains **BLOCKED** without an independently adjudicated Ukrainian-output gold set. The candidate reconstruction is tracked only on this open PR branch; the original frozen 24-form fixture remains unverified, so no claim is made that the original forms have been restored or reconciled.
 - UPI packaging PR #10 is open but its Actions run exposes no job steps/logs after rerun. This does not block the new local IPA renderer, but UPI candidate diagnostics remain unavailable in a clean install.
+
+
+### Holdout diagnostic result — 2026-10-24
+
+The input-only candidate fixture is labelled `reconstructed_unverified`; its original source manifest and independent membership record remain unavailable. The successful optional g2pK workflow [run 40129831527](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527) generated reports for Python 3.11 ([artifact 12573827559](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527/artifacts/12573827559)) and Python 3.12 ([artifact 12574198636](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40129831527/artifacts/12574198636)). The fixture SHA-256 is `bd2dd4e28f40345a8aed50ec3ec24021efeaa9101bef7f943bed917a50ddaeeb`; neither IPA nor Ukrainian gold labels are available.
+
+- Native strict: **19/24 candidate outputs**; 5 forms withheld as `unresolved_korean_phonology`: `닭은`, `흙은`, `여덟은`, `긁개`, `끓이다`.
+- g2pK: **24/24 candidate outputs**. All 24 source IPA records are typed `ipa-derived-from-g2pk-surface-form`; target output statuses are 23 `model-selected` and 1 `provisional`. These are candidate outputs, not gold.
+- `뒷일` illustrates the distinction: primary IPA `ty.sil` yields `твісіл` provisionally; the explicit alternate IPA `twi.sil` yields the same target as a model-selected sequence mapping.
+- This candidate fixture's 5/19 split does **not** reconcile with the earlier 7-unresolved/17-target-inventory summary. The evidence cannot establish whether the discrepancy comes from input membership, engine state, or blocker taxonomy. Do not force counts or promote G2P output to normative truth. Full per-form evidence and provenance are in [`docs/HOLDOUT-24-PROVENANCE-AUDIT-2026-10-24.md`](HOLDOUT-24-PROVENANCE-AUDIT-2026-10-24.md).
