@@ -86,18 +86,21 @@ def _native_prediction(
 
 
 def _rule_boundary_alignment(
-    changed_words: list[dict[str, Any]], morphology_rows: list[dict[str, Any]]
+    soft_rule_candidates: list[dict[str, Any]],
+    morphology_rows: list[dict[str, Any]],
+    soft_licenses_by_word: dict[str, list[str]],
 ) -> dict[str, Any]:
-    """Compare soft-mode heuristic rule contexts with analyzer surface offsets.
+    """Compare every actually changed soft-rule pair with analyzer source offsets.
 
-    This asks only whether an analyzer emits a boundary at the orthographic
-    character offset between the two syllables named by a heuristic trace. It
-    does not decide whether the phonological rule is licensed or correct.
+    RuleTrace exposes only one license_context even when a rule can change
+    several pairs. Reconstruct the full set of candidate soft licenses, then
+    keep only pairs whose syllable state changed in that rule trace. This avoids
+    treating the trace's single context string as a complete event inventory.
     """
     by_word = {str(item["word"]): item for item in morphology_rows}
     events: list[dict[str, Any]] = []
-    for changed in changed_words:
-        word = str(changed["word"])
+    for candidate in soft_rule_candidates:
+        word = str(candidate["word"])
         morphology = by_word.get(word)
         if morphology is None:
             continue
@@ -110,52 +113,50 @@ def _rule_boundary_alignment(
         starts = {start for start, _ in valid_spans}
         ends = {end for _, end in valid_spans}
         boundaries = {offset for offset in starts & ends if 0 < offset < len(word)}
-        for trace in changed.get("soft_heuristic_rules", []):
-            context = str(trace.get("license_context", ""))
-            pair = context.rsplit(":", 1)[-1]
-            if ">" not in pair:
-                continue
-            left, right = pair.split(">", 1)
+        for trace in candidate.get("soft_heuristic_rules", []):
+            rule_id = str(trace.get("rule_id", ""))
             before = trace.get("before", [])
             after = trace.get("after", [])
-            changed_positions = {
-                position for position in range(min(len(before), len(after)))
-                if any(before[position].get(field) != after[position].get(field)
-                       for field in ("onset", "nucleus", "coda"))
-            }
-            matching_pairs = [
-                index for index in range(len(before) - 1)
-                if str(before[index].get("text", "")) == left
-                and str(before[index + 1].get("text", "")) == right
-            ]
-            # Prefer the pair touching a syllable that this rule actually changed;
-            # the same textual pair can occur more than once in a noisy word.
-            if changed_positions:
-                targeted = [
-                    index for index in matching_pairs
-                    if index in changed_positions or index + 1 in changed_positions
-                ]
-                if targeted:
-                    matching_pairs = targeted
-            for index in matching_pairs:
-                offset = sum(len(str(item.get("text", ""))) for item in before[:index + 1])
-                if not 0 < offset < len(word):
+            if len(before) != len(after):
+                continue
+            for license_context in soft_licenses_by_word.get(word, []):
+                parts = str(license_context).split(":", 3)
+                if len(parts) != 4 or parts[0] != rule_id or ">" not in parts[3]:
                     continue
-                events.append({
-                    "word": word,
-                    "rule_id": trace.get("rule_id"),
-                    "rule_name": trace.get("name"),
-                    "pair": pair,
-                    "license_context": context,
-                    "orthographic_offset": offset,
-                    "morphological_boundary_observed": offset in boundaries,
-                    "interpretation": (
-                        "boundary observed at this orthographic character offset"
-                        if offset in boundaries else
-                        "no boundary observed at this orthographic character offset"
-                    ),
-                    "morpheme_forms": [item.get("form") for item in morphology.get("morphemes", [])],
-                })
+                pair = parts[3]
+                left, right = pair.split(">", 1)
+                for index in range(len(before) - 1):
+                    if (str(before[index].get("text", "")) != left
+                            or str(before[index + 1].get("text", "")) != right):
+                        continue
+                    left_changed = any(
+                        before[index].get(field) != after[index].get(field)
+                        for field in ("onset", "nucleus", "coda")
+                    )
+                    right_changed = any(
+                        before[index + 1].get(field) != after[index + 1].get(field)
+                        for field in ("onset", "nucleus", "coda")
+                    )
+                    if not (left_changed or right_changed):
+                        continue
+                    offset = sum(len(str(item.get("text", ""))) for item in before[:index + 1])
+                    if not 0 < offset < len(word):
+                        continue
+                    events.append({
+                        "word": word,
+                        "rule_id": rule_id,
+                        "rule_name": trace.get("name"),
+                        "pair": pair,
+                        "license_context": license_context,
+                        "orthographic_offset": offset,
+                        "morphological_boundary_observed": offset in boundaries,
+                        "interpretation": (
+                            "boundary observed at this orthographic character offset"
+                            if offset in boundaries else
+                            "no boundary observed at this orthographic character offset"
+                        ),
+                        "morpheme_forms": [item.get("form") for item in morphemes],
+                    })
     observed = sum(bool(event["morphological_boundary_observed"]) for event in events)
     return {
         "events": len(events),
@@ -172,7 +173,10 @@ def _rule_boundary_alignment(
 
 def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
     from korean_ukrainian.pipeline import phoneticize_korean
+    from korean_ukrainian.phonology import parse_syllables
     from korean_ukrainian.research_morphology import analyzer_by_name
+    from korean_ukrainian.rules import _source_backed_rule_licenses
+    from korean_ukrainian.soft_morphology import soft_formal_licenses
 
     occurrences: list[dict[str, str]] = []
     unique_words: list[str] = []
@@ -294,7 +298,17 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
         for word, pred in native["soft"].items()
         if pred.get("heuristic_rules")
     ]
-    rule_boundary_alignment = _rule_boundary_alignment(soft_rule_candidates, morphology_rows)
+    soft_licenses_by_word: dict[str, list[str]] = {}
+    for word in unique_words:
+        syllables = parse_syllables(word)
+        exact_licenses = set(_source_backed_rule_licenses(syllables, "same_word"))
+        soft_licenses_by_word[word] = [
+            license for license in soft_formal_licenses(syllables)
+            if license not in exact_licenses
+        ]
+    rule_boundary_alignment = _rule_boundary_alignment(
+        soft_rule_candidates, morphology_rows, soft_licenses_by_word
+    )
     events_by_word: dict[str, list[dict[str, Any]]] = {}
     for event in rule_boundary_alignment["events_detail"]:
         events_by_word.setdefault(str(event["word"]), []).append(event)
