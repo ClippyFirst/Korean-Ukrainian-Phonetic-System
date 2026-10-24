@@ -30,6 +30,20 @@
         "totalEditDistance": 2088,
         "referenceCharacters": 22594,
         "cer": 0.092414
+      },
+      "engineDelta": {
+        "g2pkMinusNativeExactDeltaPercentagePoints": 0.150659,
+        "typeClusterBootstrap": {
+          "method": "lexical-type cluster bootstrap; occurrence-weighted rate within sampled types",
+          "seed": 20261026,
+          "replicates": 10000,
+          "uniqueTypes": 1860,
+          "ci95": [
+            0,
+            0.472813
+          ],
+          "interpretation": "CI lower bound at zero; the observed exact-match advantage is driven by repeated lexical type 없는."
+        }
       }
     },
     "clippyfirst-broad-v1": {
@@ -48,6 +62,20 @@
         "totalEditDistance": 380,
         "referenceCharacters": 21763,
         "cer": 0.017461
+      },
+      "engineDelta": {
+        "g2pkMinusNativeExactDeltaPercentagePoints": -0.07533,
+        "typeClusterBootstrap": {
+          "method": "lexical-type cluster bootstrap; occurrence-weighted rate within sampled types",
+          "seed": 20261026,
+          "replicates": 10000,
+          "uniqueTypes": 1860,
+          "ci95": [
+            -0.473934,
+            0.366972
+          ],
+          "interpretation": "CI includes zero; no evidence of a reliable exact-match advantage for either engine under broad-v1."
+        }
       }
     }
   },
@@ -241,6 +269,7 @@
         "source": "https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf",
         "claim": "The Korean IPA chart describes [sʰ] as the phonetic realization of the lax sibilant phoneme rather than a separate aspirated-fricative phoneme."
       }
-    ]
+    ],
+    "engineComparison": "Under candidate broad-v1 the native engine has two more exact matches than g2pk on the paired sample, but the lexical-type cluster bootstrap interval for g2pk minus native includes zero. Do not claim a statistically reliable engine ranking."
   }
 }
