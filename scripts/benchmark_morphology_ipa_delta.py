@@ -249,6 +249,19 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
             "unique_words_analyzed": len(morphology_rows),
             "word_coverage": round(len(morphology_rows) / len(unique_words), 6) if unique_words else None,
             "multi_morpheme_words": sum(item["split_into_multiple_morphemes"] for item in morphology_rows),
+            "max_morphemes_per_word": max((item["morpheme_count"] for item in morphology_rows), default=0),
+            "words_with_10_or_more_morphemes": sum(item["morpheme_count"] >= 10 for item in morphology_rows),
+            "high_segmentation_examples": [
+                {
+                    "word": item["word"],
+                    "hangul_length": len(item["word"]),
+                    "morpheme_count": item["morpheme_count"],
+                    "morpheme_forms": [m.get("form") for m in item["morphemes"][:30]],
+                    "truncated": len(item["morphemes"]) > 30,
+                }
+                for item in sorted(morphology_rows, key=lambda row: (-row["morpheme_count"], row["word"]))
+                if item["morpheme_count"] >= 10
+            ][:25],
             "morpheme_count_distribution": dict(sorted(Counter(str(item["morpheme_count"]) for item in morphology_rows).items())),
             "tag_counts_top_50": tag_counts.most_common(50),
             "elapsed_seconds": round(morphology_elapsed, 6),
