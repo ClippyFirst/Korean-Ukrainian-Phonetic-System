@@ -554,8 +554,9 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         native_abstention_audit.append(occurrence)
 
     return {
-        "benchmark": "UGTPHON Korean test split",
-        "benchmark_version": "multi-engine-ipa-diagnostic-v2",
+        "benchmark": args.benchmark_name,
+        "benchmark_version": "multi-engine-ipa-diagnostic-v3",
+        "dataset_source": args.dataset_source,
         "native_abstention_audit": {
             "occurrence_count": len(native_abstention_audit),
             "unique_words": len({item["token"] for item in native_abstention_audit}),
@@ -563,7 +564,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "occurrences": native_abstention_audit,
             "interpretation": "diagnostic triage only; external predictions are not gold and must not be copied into production rules without source adjudication",
         },
-        "purpose": "diagnostic comparison only; UGTPHON is not normative NIKL gold and this does not score Ukrainian orthography",
+        "purpose": "diagnostic G2P comparison only; this dataset is not a normative NIKL acceptance set and this benchmark does not score Ukrainian orthography",
         "dataset_rows": len(rows),
         "eligible_token_occurrences": len(items),
         "unique_hangul_words": len(words),
@@ -576,7 +577,6 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "engines": engine_results,
         "diagnostic_mismatch_sample": mismatch_details,
         "upstream_pins": {
-            "UGTPHON": "naver-ai/UGTPHON commit ef0d5a09c2ea1874c7206020f875cbd9cfea2f54; ko/test.json; Apache-2.0 verified by CI",
             "g2pk": "0.9.4",
             "KoG2P": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7; GPL-3.0; executed as external checkout, not vendored",
             "hangul_to_ipa": "stannam/hangul_to_ipa commit 942abf132ea969a7e3476a1487c06710fb8db74b; MIT; executed as external checkout, not vendored",
@@ -611,6 +611,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corpus", type=Path, default=os.environ.get("UGTPHON_KO_TEST_PATH"))
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--benchmark-name", default="UGTPHON Korean test split", help="human-readable dataset/split label")
+    parser.add_argument("--dataset-source", default="naver-ai/UGTPHON@ef0d5a09c2ea1874c7206020f875cbd9cfea2f54:ko/test.json (Apache-2.0)", help="dataset provenance and license statement")
     parser.add_argument("--kog2p-root", type=Path, default=os.environ.get("KOG2P_ROOT", "/tmp/KoG2P"))
     parser.add_argument("--hangul-to-ipa-root", type=Path, default=os.environ.get("HANGUL_TO_IPA_ROOT", "/tmp/hangul_to_ipa"))
     parser.add_argument("--phonemize-root", type=Path, default=os.environ.get("PHONEMIZE_BASELINE_DIR", "/tmp/phonemize-baseline"))
