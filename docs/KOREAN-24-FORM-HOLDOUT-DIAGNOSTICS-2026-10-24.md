@@ -4,7 +4,7 @@
 
 ## Research contract
 
-The source manifest `data/korean/ipa_holdout_2026-10-24.json` remains unchanged and frozen. `scripts/diagnose-korean-ipa-holdout.py` runs the current native strict and soft research modes, the g2pK adapter when available, and the shared Ukrainian target path. It records source-rule traces, surface Hangul, provisional IPA, unresolved contexts, and target availability in a separate generated report. CI uploads that report as a 30-day artifact; it is not checked into the repository, so its input forms and engine outputs cannot silently contaminate local fixture/leakage scans.
+The source manifest `data/korean/ipa_holdout_2026-10-24.json` remains unchanged and frozen. `scripts/diagnose-korean-ipa-holdout.py` runs the current native strict and soft research modes, the g2pK adapter when available, and the shared Ukrainian target path. It records source-rule traces, surface Hangul, syllable structures, provisional IPA and IPA variants, unresolved contexts, and Ukrainian target availability in a separate generated report. CI uploads that report as a 30-day artifact; it is not checked into the repository, so its input forms and engine outputs cannot silently contaminate local fixture/leakage scans.
 
 Run locally when intentionally doing a quarantined research inspection:
 
