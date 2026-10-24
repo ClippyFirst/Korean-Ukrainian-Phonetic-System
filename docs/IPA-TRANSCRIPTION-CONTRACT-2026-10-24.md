@@ -105,3 +105,10 @@ The exported IPA-to-Ukrainian adapter accepts both whitespace-separated browser 
 ### Affricate tie-bar interoperability
 
 The IPA-to-Ukrainian inventory accepts both untied and tied broad-IPA affricate spellings (including aspirated and fortis alveolo-palatal affricates). The tie bar is a typographic segment-joining mark, not a separate sound; the whole affricate is mapped as one token so it cannot degrade into separate stop-plus-fricative Ukrainian output. This does not remove aspiration or fortisness from the IPA string itself.
+
+
+## Target-layer feature accounting
+
+The IPA-to-Ukrainian adapter must not silently imply that a successful grapheme mapping preserves all source-IPA features. In addition to the existing vowel-length record, runtime trace now reports aspiration (ʰ), fortisness (͈), and unreleased-stop (̚) markers when they occur inside a mapped IPA token. These are marked not-encoded-in-ukrainian-target: the IPA token is preserved unchanged, while the target orthography does not independently mark that feature.
+
+This is a transparent loss ledger, not a new Korean pronunciation rule and not an assertion that these contrasts must be represented by a particular Ukrainian spelling. Any future policy that adds diacritics or alternate notation must be separately versioned and reviewed for readability and contrast preservation.
