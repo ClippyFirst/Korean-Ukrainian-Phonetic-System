@@ -61,3 +61,15 @@ def test_holdout_validator_rejects_populated_ipa_gold(tmp_path):
         assert "IPA gold must remain unfilled" in str(exc)
     else:
         raise AssertionError("holdout must reject unadjudicated IPA gold")
+
+
+
+def test_symbol_discrepancy_ledger_never_promotes_alignment_to_gold():
+    ledger_path = ROOT / "research/ipa-discrepancy-adjudication-2026-10-24.json"
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    assert len(ledger["symbolClasses"]) == 8
+    assert all(item["reviewStatus"] in {"NOT_INDEPENDENTLY_ADJUDICATED", "NO_NORMALIZATION_APPLIED"} for item in ledger["symbolClasses"])
+    assert ledger["summary"]["independentlyAdjudicatedIpaGold"] == 0
+    assert len(ledger["selectedR002R003Cases"]) == 14
+    assert all(case["ipaGold"] is None for case in ledger["selectedR002R003Cases"])
+    assert sum(case["surfaceEvidence"].startswith("EXACT_FORM_SOURCE") for case in ledger["selectedR002R003Cases"]) == 3
