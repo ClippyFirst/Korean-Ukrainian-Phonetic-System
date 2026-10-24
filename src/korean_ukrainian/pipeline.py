@@ -429,6 +429,7 @@ def tokenize_ipa(ipa:str)->list[str]:
     return [item["segment"] for item in tokenize_ipa_with_modifiers(ipa)]
 
 def map_ipa_to_ukrainian(ipa,target_adapter=None,source_features=None,weights=None):
+    """Return optional UPI candidate analysis for IPA; this does not render output."""
     # This public boundary can be called without Korean orthographic input.
     # Validate before loading the optional target inventory so invalid/empty
     # IPA cannot look like a successful zero-segment analysis.
@@ -460,6 +461,7 @@ def rank_ukrainian_candidates(candidates):
     return sorted(candidates,key=lambda x:(x.get("score",float("inf")),x.get("candidate_id","")))
 
 def _select_target(target):
+    """Select an inventory candidate for diagnostics; not the production output renderer."""
     # Empty IPA is not a successful zero-segment transcription. Fail closed so
     # blank input cannot be reported as a selected Ukrainian target.
     if not target.get("segments"):
