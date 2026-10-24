@@ -25,6 +25,7 @@ def test_holdout_diagnostic_covers_frozen_manifest():
     manifest, digest = read_manifest(ROOT / "data/korean/ipa_holdout_2026-10-24.json")
     report = run()
     assert manifest["caseCount"] == 24 and len(digest) == 64
+    assert report["manifestSha256"] == digest
     assert report["status"] == "DIAGNOSTIC_ONLY_NOT_GOLD_NOT_FOR_TUNING"
     assert report["tuningUseProhibited"] is True and len(report["cases"]) == 24
     assert len({row["caseId"] for row in report["cases"]}) == 24
@@ -33,6 +34,21 @@ def test_holdout_diagnostic_covers_frozen_manifest():
     assert all(row["comparatorType"].endswith("not IPA gold") for row in report["cases"])
     assert all(isinstance(row["engines"]["native_strict"]["ipa_variants"], list) for row in report["cases"])
     assert all(isinstance(row["engines"]["native_strict"]["surface_syllables"], list) for row in report["cases"])
+
+    # Both target adapters have different analysis shapes (native object vs
+    # shared-G2P list). Assert the diagnostic preserves a typed, inspectable
+    # record instead of silently iterating dict keys or dropping the status.
+    for row in report["cases"]:
+        engines = row["engines"]
+        native_target = engines["native_strict_ukrainian_target"]
+        g2pk_target = engines["g2pk_ukrainian_target"]
+        for target in (native_target, g2pk_target):
+            assert target["available"] is True
+            assert isinstance(target["target_analysis_statuses"], list)
+            assert isinstance(target["target_analysis_uninspectable_items"], int)
+            assert target["target_analysis_uninspectable_items"] == 0
+        assert isinstance(native_target["target_analysis_status"], (str, type(None)))
+        assert isinstance(g2pk_target["target_analysis_status"], (str, type(None)))
 
 
 def test_holdout_tokens_remain_disjoint_from_runtime_data_and_test_fixtures():
