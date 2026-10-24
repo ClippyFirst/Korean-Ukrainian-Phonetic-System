@@ -138,7 +138,8 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status)
       ukrainian:alternateOutput.join(''),
       ipa:renderStructured(units,alternateIpa,' '),
       note,
-      status
+      status:alternateMapped.some(item=>item.status==='provisional')?'lexical-review':status,
+      target_status:alternateMapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':alternateMapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
     };
   });
 }
