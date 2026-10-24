@@ -908,3 +908,11 @@ The engine ranking is not statistically resolved by this sample: a 10,000-replic
 - **DONE_VERIFIED (implementation only):** the IPA adapter maps tied affricate spellings (t͡ɕ, t͡ɕʰ, t͡ɕ͈, d͡ʑ) as complete affricate tokens, consistent with the contract that tie-bar typography is optional. The underlying IPA remains unchanged; only the target mapping recognizes the joined token.
 - **DONE_VERIFIED (regression added; CI pending):** tests cover tied and untied affricates and ensure they map to the same Ukrainian target without treating the tie bar as an unknown segment.
 - **Verification:** exact-head CI pending; local clone is unavailable because GitHub DNS resolution fails.
+
+
+## IPA → Ukrainian feature-loss transparency — 2026-10-24
+
+- **DONE_IMPLEMENTED:** the target adapter now emits explicit feature records for aspiration (ʰ), fortisness (͈) and unreleased stops (̚) when their IPA token maps to a Ukrainian grapheme that does not encode that feature. IPA tokens are not rewritten; the existing visible trace renders the symbol and Ukrainian explanation.
+- Regression: tests/ipa-target-feature-loss-trace.test.mjs.
+- **TODO_VERIFY:** run exact-head tests, build, browser integration and Python/browser parity checks; implementation and committed tests alone are not verification evidence.
+- **BLOCKED:** independent Ukrainian target review is still required to decide whether the current neutralization is acceptable or whether a separately versioned target notation should preserve selected distinctions. No gold accuracy claim is made.
