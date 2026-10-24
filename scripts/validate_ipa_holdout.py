@@ -95,21 +95,24 @@ def suggest_source_candidates(root: Path, local_forms: dict[str, set[str]], excl
             headings.append((heading.end(), f"§{article.group(1)}"))
     candidates: list[dict[str, str]] = []
     seen: set[str] = set()
-    pattern = re.compile(r"<li>[ \t\r\n]*([가-힣]{2,8})\[([가-힣ː]+)\][ \t\r\n]*</li>")
-    for match in pattern.finditer(html):
-        word, reading = match.group(1), match.group(2)
-        if word in used or word in seen:
-            continue
-        prior_headings = [rule for end, rule in headings if end <= match.start()]
-        if not prior_headings:
-            continue
-        seen.add(word)
-        candidates.append({
-            "input": word,
-            "surfaceReading": reading,
-            "sourceRule": prior_headings[-1],
-            "sourceExcerpt": f"{word}[{reading}]",
-        })
+    # Scan individual HTML text nodes, not flattened HTML: flattening can
+    # accidentally pair a prose word with the next example's bracketed reading.
+    pair_pattern = re.compile(r"([가-힣]{2,10})\[([가-힣ː]+)\]")
+    for node in re.finditer(r">([^<>]+)<", html):
+        for match in pair_pattern.finditer(node.group(1)):
+            word, reading = match.group(1), match.group(2)
+            if word in used or word in seen:
+                continue
+            prior_headings = [rule for end, rule in headings if end <= node.start()]
+            if not prior_headings:
+                continue
+            seen.add(word)
+            candidates.append({
+                "input": word,
+                "surfaceReading": reading,
+                "sourceRule": prior_headings[-1],
+                "sourceExcerpt": f"{word}[{reading}]",
+            })
     return candidates
 
 def benchmark_tokens(path: Path) -> set[str]:
