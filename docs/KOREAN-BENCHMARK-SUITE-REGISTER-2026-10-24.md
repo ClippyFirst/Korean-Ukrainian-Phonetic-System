@@ -114,15 +114,14 @@ Successful post-fix run: [40092929978](https://github.com/ClippyFirst/Korean-Ukr
 
 Paired g2pk-minus-native exact delta is +0.1506 pp (95% CI +0.0351 to +0.3243) on UGTPHON, with CER delta +0.0531 pp (95% CI −0.0139 to +0.1302; crosses zero). On SIGMORPHON the paired exact delta is −0.4012 pp (95% CI −0.8024 to −0.1003), favoring native, while CER delta +0.1130 pp (95% CI −0.0250 to +0.2732) crosses zero. The SIGMORPHON README/file-schema mismatch means this is a public paired-file diagnostic, not a leaderboard reproduction. g2pk uses the project's segment renderer, so it is not a fully independent IPA stack.
 
-
 ## Execution update — target abstention diagnostics (2026-10-24)
 
-PR [#306](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/306), branch `fix/target-abstention-diagnostics-2026-10-24`, extends suite 6/7 observability without changing linguistic decisions.
+PR [#306](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/306) was merged as `d12b41b1440de27f54a7ff63340e164d7759b024`; the tested code head was `2f12ec34daa7a595d7bd411ab3d268294fbb71fb`.
 
-- Shared renderer now records per-word `reason`, per-segment `segment_reasons`, adapter status and a sorted `unavailable_reasons` summary.
-- Native strict output now records `target_unavailable_reason` and `target_unavailable_segments`; an unresolved source-phonology state is distinguished from target-layer failure.
-- The reason taxonomy distinguishes absent target inventory, failed mapping-table export, no candidates, a candidate grapheme without a licensed mapping, a licensed mapping with no renderable grapheme, and mixed blockers within one word.
-- Regression coverage includes absent inventory, unlicensed mapping, mapping-export failure and locating the exact unmapped IPA segment. The code deliberately remains fail-closed.
-- Earlier head `f399ed03dddd543ff768135376b6c65f9e184c4b` passed the baseline Python, browser/build, data-integrity, g2pK and research diagnostic workflows. Later per-segment code/test changes are **CI PENDING** until the final PR-head checks finish; do not carry forward the earlier pass as final-head evidence.
-
-**Ledger:** Suite 6 remains **TODO/PARTIAL** for independent Ukrainian target accuracy; diagnostics are **PARTIAL** pending final-head CI and reproducible reconciliation of the exact 24-form fixture. The exact 24-form input list is not present in the reviewed tracked files at this point, so this note does not invent it. The 7 source-phonology abstentions remain evidence-limited, and target-layer gaps still need an accessible, compatible UPI 0.8.0 inventory plus reviewed correspondence evidence. Do not promote guessed mappings or lexical references to gold output.
+- **DONE_VERIFIED:** shared renderer per-word and per-segment abstention reasons; native target failure diagnostics; aggregate reason list; fail-closed whole-output contract.
+- **DONE_VERIFIED:** all eight PR-triggered workflows passed on the tested code head: Python tests, browser tests/build and system regression/data integrity, generated corpus artifacts, optional g2pK integration, external UGTPHON diagnostic, paired native-vs-g2pK diagnostic, morphology adapter smoke, and multi-engine IPA diagnostic. Evidence run IDs: 40126739786, 40126739821, 40126739758, 40126739753, 40126739791, 40126739773, 40126739772, 40126739752. NIKL live metadata is a separate known skipped step and is not represented as passed by this statement.
+- **TODO:** commit and reconcile the exact frozen 24-form fixture. The exact form list was not found in the reviewed tracked fixtures; no inputs have been guessed or reconstructed. Acceptance: fixture provenance + stable input membership + deterministic per-form status/reason report.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** 7 unresolved native strict phonology cases need source-grounded Korean rule-environment adjudication and independent pronunciation review where sources do not decide them.
+- **BLOCKED_DEPENDENCY / PARTIAL_TARGET_COVERAGE:** 17 target-layer cases need compatible access to UPI 0.8.0 plus reviewed IPA→Ukrainian correspondences. Missing package, mapping-export failure, absent correspondence and missing grapheme are distinct blockers; do not collapse them into one “phonology error”.
+- **Scope:** this PR improves observability only. It does not repair phonological coverage, certify Ukrainian orthography, or justify guessed mappings. The multi-engine IPA benchmark is diagnostic and is not a Korean→Ukrainian target-accuracy score.
+- **Release status:** research preview / partial prototype; not release-ready until the target layer is independently evaluated and unresolved source/target evidence gates are closed.
