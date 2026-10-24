@@ -26,7 +26,7 @@
     "removedBeforeFreeze": [
       {
         "input": "앞",
-        "reason": "Removed after an exact-token overlap was detected in an earlier candidate manifest; the final 24-item set was rebuilt from NIKL rule examples."
+        "reason": "Removed after an exact-token overlap was detected in an earlier candidate manifest; the final set now combines unused NIKL rule-page and official Online Q&A examples."
       }
     ],
     "result": "PASS_NO_EXACT_TOKEN_OVERLAP",
@@ -37,7 +37,7 @@
   "localLeakageValidation": {
     "status": "PENDING_EXACT_HEAD_CI",
     "reason": "The revised holdout replaces 14 overlapping rule-page examples with exact-form readings attested in official NIKL Online Q&A pages. Full local overlap verification on the current head is pending; local checkout is blocked by DNS failure to github.com.",
-    "excludedSourceOnlyFixture": "tests/fixtures/nikl-article-review-1-30.json",
+    "excludedSourceOnlyFixture": "Official NIKL source-only snapshots: tests/fixtures/nikl-article-review-1-30.json and tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt.",
     "exclusionRationale": "Both fixtures are official NIKL source snapshots, not engine predictions or expected outputs. Source evidence may inform the holdout; runtime input data and expected-output fixtures remain subject to overlap checks.",
     "checkedPaths": [
       "data/korean/lexical_pronunciations.csv",
