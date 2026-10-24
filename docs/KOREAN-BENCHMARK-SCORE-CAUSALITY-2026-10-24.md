@@ -194,7 +194,30 @@ The MultiLexNorm++ slice has a 3.09 pp higher native exact rate than the DC Insi
 
 By **frequency within this test file** (not external Korean lexical frequency), native exact rate is 48.33% for single-occurrence types (1,612 scored occurrences), 59.29% for types appearing 2–3 times (452), and 61.76% for types appearing 4+ times (591). The 4+ group contains only 61 distinct types and receives much more occurrence weight; it includes the repeated `없는` discrepancy. This is evidence that occurrence-weighted metrics can be influenced by the composition/repetition of this small test set, not proof that common Korean words are generally easier.
 
-### E. What the artifact still cannot tell us
+### E. The most common character differences point to a broad-vs-narrow IPA convention mismatch
+
+I also aligned normalized reference and native IPA strings with a deterministic minimum-edit alignment. This is a **symbol-level diagnostic**, not a phonological error classifier; where multiple optimal alignments exist, the individual operation labels can vary.
+
+Among the 1,243 non-exact native occurrences, the most frequent aligned substitutions were:
+
+| Reference symbol → native symbol | Count | Plausible issue to adjudicate |
+|---|---:|---|
+| `ɭ → l` | 525 | Coda-lateral symbol convention / degree of phonetic detail |
+| `ʰ → s` | 194 | IPA-Dict's sibilant transcription convention versus the engine's broad representation |
+| `ɦ → h` | 165 | Contextual allophone of Korean /h/ versus broad /h/ |
+| `ɲ → n` | 73 | Palatal nasal versus `n+j` sequence |
+| `ç → h` | 40 | Contextual realization of /h/ |
+| `i → y` | 36 | Vowel/glide representation |
+| `ʎ → l` | 33 | Palatalized lateral versus broad lateral |
+| `ɕ → s` | 30 | Palatalized sibilant versus broad /s/ |
+
+In the same alignment, the reference symbols most often involved in any substitution/deletion operation were `ʰ` (633), `ɭ` (539), `ɕ` (238), `ɦ` (165), `ɲ` (78), and `ç` (60). Other observed reference-only marks included stress `ˈ` (14) and length `ː` (10 deletions, with additional substitutions); the engine-only unreleased-stop mark `̚` was inserted 29 times.
+
+This profile strongly suggests that a large share of exact-match failures involve the reference's narrow/allophonic choices versus the project's broad IPA output, not only missing phonological rules. For example, `돈을` aligns as reference `to̞nɯɭ` versus output `tonɯl`, and `수` as `sʰu` versus `su`. Those differences still need linguistic adjudication: broad-vs-narrow convention is a plausible explanation, not permission to call every symbol difference harmless. The acceptance protocol must decide which allophones and diacritics the target IPA layer promises to preserve.
+
+The analysis script now reports the same alignment profiles in its JSON output under `symbol_error_profile`, with a warning that alignment operations are not gold error labels.
+
+### F. What the artifact still cannot tell us
 
 The full artifact supports source, length, test-frequency, and edit-distance strata. It does not provide independently reviewed rule/morpheme labels for every scored mismatch. Therefore it cannot yet establish that R002, R003, fortition, ㅎ deletion, or any other rule statistically explains the remaining 1,200+ mismatches. The 14-case R002/R003 queue is a selected adjudication queue, not a random sample and not gold.
 
