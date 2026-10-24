@@ -31,6 +31,7 @@ def test_metrics_keep_coverage_separate_from_accuracy():
 def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(monkeypatch):
     import korean_ukrainian.pipeline as pipeline
     import korean_ukrainian.research_morphology as morphology
+    import korean_ukrainian.soft_morphology as soft_morphology
 
     def fake_phoneticize(word, morphology_mode="strict", rule_licenses=None):
         if word == "한국어":
@@ -44,7 +45,16 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
             "unresolved_contexts": [],
             "rules": ([{"rule_id": "R002", "name": "liaison", "confidence": "low", "status": "heuristic",
                        "license_context": "R002:formal:한국어:국>어",
-                       "before": [{"text": "한"}, {"text": "국"}, {"text": "어"}]}]
+                       "before": [
+                           {"text": "한", "onset": "ㅎ", "nucleus": "ㅏ", "coda": "ㄴ"},
+                           {"text": "국", "onset": "ㄱ", "nucleus": "ㅜ", "coda": "ㄱ"},
+                           {"text": "어", "onset": "ㅇ", "nucleus": "ㅓ", "coda": ""},
+                       ],
+                       "after": [
+                           {"text": "한", "onset": "ㅎ", "nucleus": "ㅏ", "coda": "ㄴ"},
+                           {"text": "국", "onset": "ㄱ", "nucleus": "ㅜ", "coda": ""},
+                           {"text": "어", "onset": "ㄱ", "nucleus": "ㅓ", "coda": ""},
+                       ]}]
                       if morphology_mode == "soft" and word == "한국어" else []),
         }
 
@@ -70,6 +80,10 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
 
     monkeypatch.setattr(pipeline, "phoneticize_korean", fake_phoneticize)
     monkeypatch.setattr(morphology, "analyzer_by_name", lambda name: FakeAnalyzer())
+    monkeypatch.setattr(
+        soft_morphology, "soft_formal_licenses",
+        lambda items, full_form=None: ["R002:formal:한국어:국>어"],
+    )
     rows = [{
         "id": "r1", "lang": "ko", "split": "test",
         "tokens": [
