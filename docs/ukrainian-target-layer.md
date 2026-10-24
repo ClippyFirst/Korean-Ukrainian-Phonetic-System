@@ -18,7 +18,7 @@ The contract is recorded in `data/correspondence/target_contract.csv`:
 - `ukrainian_inventory`: optional external UPI metadata/candidate diagnostics.
 - `korean_ipa_to_ukrainian`: local ClippyFirst practical output from canonical correspondences and explicit overrides.
 
-## Status semantics
+## Mapping status and project decisions
 
 - `model-selected`: the repository contains an explicit mapping decision. It is not a normative Ukrainian standard and is not independently adjudicated gold.
 - `provisional`: at least one mapping in the output remains a research hypothesis/review item.
