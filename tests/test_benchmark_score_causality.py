@@ -118,6 +118,8 @@ def test_summary_reports_legacy_and_broad_profile_sensitivity_separately():
     assert profiles[LEGACY_PROFILE]["native"]["eligible_occurrences"] == 3
     assert profiles[BROAD_PROFILE]["native"]["status"] == "SENSITIVITY_ONLY_UNTIL_INDEPENDENT_IPA_REVIEW"
     assert profiles[LEGACY_PROFILE]["native"]["exact_matches"] == 1
+    assert profiles[BROAD_PROFILE]["type_cluster_bootstrap_delta_ci"]["replicates"] == 100
+    assert "ci_95" in profiles[BROAD_PROFILE]["type_cluster_bootstrap_delta_ci"]
 
 
 
