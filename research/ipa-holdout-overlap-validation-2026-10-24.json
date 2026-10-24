@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "checkedAt": "2026-10-24",
+  "holdout": {
+    "path": "data/korean/ipa_holdout_2026-10-24.json",
+    "caseCount": 24,
+    "manifestGitBlobSha": "19ab5184192b21dc7f02873dcba8ac77a2b672f7",
+    "manifestCommitSha": "b388b0500b95381fe1d150028ff220cc8b3abb37",
+    "ipaGoldCount": 0
+  },
+  "benchmark": {
+    "workflowRunId": 40092929978,
+    "artifactId": 12559692692,
+    "sourceCommitSha": "94c21ea957c28225caea27b9df69aa8772fea6f7",
+    "artifactZipSha256": "66876b0d748595e556e99d3421f43145cbc12ff74b82fc79b2836431bd257795",
+    "reportFileSha256": "448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f",
+    "uniqueTokenCount": 1907
+  },
+  "externalExactTokenOverlap": {
+    "method": "Compare every final holdout input to the exact token field in native_g2pk_pairwise_audit.occurrences from the pinned artifact.",
+    "overlapCount": 0,
+    "overlappingInputs": [],
+    "removedBeforeFreeze": [
+      {
+        "input": "앞",
+        "reason": "Exact token overlap in pinned benchmark; replaced by source-backed Rule 9 example 꽃."
+      }
+    ],
+    "result": "PASS_NO_EXACT_TOKEN_OVERLAP"
+  },
+  "localLeakageValidation": {
+    "status": "PENDING_REPOSITORY_CI",
+    "reason": "The local data/runtime/fixture leakage check is encoded in scripts/validate_ipa_holdout.py and tests/test_ipa_contract_and_holdout.py; repository-hosted CI has not yet returned runs for the latest connector-created commit. A local clone was unavailable because outbound DNS to github.com failed.",
+    "excludedSourceOnlyFixture": "tests/fixtures/nikl-article-review-1-30.json",
+    "exclusionRationale": "Contains official source text, not engine predictions or expected outputs. It is allowed as source evidence; engine runtime data and expected-output fixtures are still checked."
+  },
+  "ipaAnnotation": {
+    "independentReviewerCount": 0,
+    "goldCount": 0,
+    "status": "BLOCKED_PENDING_TWO_INDEPENDENT_REVIEWERS",
+    "note": "Official Hangul surface readings are not IPA; do not score this holdout before independent transcription and adjudication."
+  },
+  "overallStatus": "EXTERNAL_TOKEN_DISJOINTNESS_VERIFIED; LOCAL_LEAKAGE_CI_AND_INDEPENDENT_IPA_ANNOTATION_PENDING"
+}
