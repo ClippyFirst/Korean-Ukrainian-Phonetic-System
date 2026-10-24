@@ -63,7 +63,7 @@ The Python research package has optional adapters for [Kiwi](https://github.com/
 - Diagnostic inputs (unlabelled, not gold): `data/korean/morphology-review-corpus.txt`
 - Diagnostic runner (not an accuracy benchmark without gold annotations): `scripts/benchmark_research_morphology.py`
 
-Install Kiwi with `uv pip install -e '.[research-kiwi]'`. MeCab-Ko uses `mecab-ko-python` (`mecab_ko.Mecab().pos`) where available, with a legacy MeCab API fallback; the optional binding and Korean dictionary must work on the host OS. Engine availability and actual segmentation accuracy have not been asserted by this adapter-only integration; see the research document for the evidence gates.
+Install Kiwi with `uv pip install -e '.[research-kiwi]'`; install MeCab-Ko bindings with `uv pip install -e '.[research-mecab-ko]'`. A real-engine CI smoke run successfully installed and ran both adapters against the 16-input diagnostic list (Kiwi: 40 tokens; MeCab-Ko: 37 tokens). These counts and runtime are diagnostic only, not accuracy metrics: no independently adjudicated gold segmentation/POS set exists. The MeCab adapter records its selected binding and never substitutes a different analyzer family; see the research document for the evidence gates.
 
 ## Pronunciation engines: browser and Python
 
