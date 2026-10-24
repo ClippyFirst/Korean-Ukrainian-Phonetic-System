@@ -19,7 +19,7 @@ def test_holdout_is_source_backed_frozen_and_contains_no_ipa_gold():
     assert all(case["ipaGold"] is None for case in manifest["cases"])
     assert all(case["engineOutputsStored"] is False for case in manifest["cases"])
     assert all(case["tuningUseProhibited"] is True for case in manifest["cases"])
-    assert {case["sourceRule"] for case in manifest["cases"]} == {"§10 commentary", "§11", "§11 commentary", "§12/§13 commentary", "§12 commentary", "§19", "§19 commentary", "§20", "§29", "§6 commentary"}
+    assert {case["sourceRule"] for case in manifest["cases"]} == {"§6", "§6 commentary", "§10", "§10 commentary", "§11", "§11 commentary", "§12", "§12/§13 commentary", "§12 commentary", "§29"}
 
 
 def test_holdout_validation_uses_hash_bound_external_overlap_record():
