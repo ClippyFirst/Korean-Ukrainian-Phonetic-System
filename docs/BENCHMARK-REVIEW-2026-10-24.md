@@ -1,5 +1,7 @@
 # Benchmark review after ClippyFirst renderer integration — 2026-10-24
 
+> **Updated investigation note (2026-10-24):** The score table in this document is a historical snapshot under an earlier IPA-normalization profile. Use [the current multi-engine report](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md) for the revised diagnostic scores. Review of its occurrence-level artifact identified a concrete native R002 defect: coda ㅇ (/ŋ/) can be moved into a silent onset and disappear. A targeted fix and regression tests are proposed in [PR #298](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/298); see [the error analysis](KOREAN-ERROR-ANALYSIS-2026-10-24.md). The old scores are pre-fix, and the defect's full-corpus impact remains unmeasured until CI and an exact-head benchmark rerun succeed.
+
 **Code under review:** merged commit `b87e78c702e9278c8a84592b8d054113f74f18b9`. The benchmark jobs ran against PR head `9f9509b6617de7d0e4cfaef40f31b6bd74c28885`, whose executable source and tests are identical to the merged commit; the intervening commit before merge changed only the roadmap documentation. This is therefore an exact-code benchmark snapshot, although the benchmark workflows were not rerun on the merge commit itself.
 
 ## Executive conclusion
