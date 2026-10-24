@@ -110,3 +110,10 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
     assert alignment["boundary_observed"] == 0
     assert alignment["boundary_not_observed"] == 1
     assert report["morphology"]["results"][1]["native_soft_rule_boundary_events"][0]["pair"] == "국>어"
+    paired = gated["paired_comparison"]
+    assert paired["scored_occurrences_by_all_three"] == 2
+    assert paired["boundary_gated_vs_strict"]["exact_rate_delta_candidate_minus_baseline"] == 0.0
+    assert paired["boundary_gated_vs_soft"]["exact_rate_delta_candidate_minus_baseline"] == 0.5
+    assert paired["boundary_gated_vs_soft"]["occurrence_outcomes"]["candidate_exact_wins"] == 1
+    assert paired["boundary_gated_vs_soft"]["occurrence_outcomes"]["candidate_exact_losses"] == 0
+    assert "identical denominator" in paired["boundary_gated_vs_strict"]["cer_contract"]
