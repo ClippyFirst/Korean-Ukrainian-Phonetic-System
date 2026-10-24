@@ -774,7 +774,8 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
         lexical_comparison="matches_reference" if orthographic==lexical_reference else "differs_from_reference"
 
     target_status=(
-        "unresolved" if surface["pronunciation_status"] == "unresolved"
+        "unresolved"
+        if surface["pronunciation_status"] == "unresolved" or surface["ipa_is_diagnostic_only"]
         else target_mapping.get("status","unavailable")
     )
     target_unavailable_reason=target_mapping.get("reason") if orthographic is None else None
@@ -794,6 +795,14 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
         if orthographic is not None
         else f"Ukrainian target unavailable: {target_unavailable_reason}"
     )
+    target_inventory_status = inventory_diagnostic.get("adapter_status")
+    if not target_inventory_status:
+        for segment in target_inventory_analysis.get("segments", []):
+            target_result = segment.get("target", {})
+            if isinstance(target_result, dict) and target_result.get("adapter"):
+                target_inventory_status = target_result["adapter"]
+                break
+
     return {
         "input":text,
         "orthography":analyze_korean(text),
@@ -806,11 +815,7 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
         "target_analysis":target_mapping,
         "target_inventory_analysis":target_inventory_analysis,
         "target_inventory_diagnostic":inventory_diagnostic,
-        "target_inventory_status":(
-            inventory_diagnostic.get("adapter_status")
-            or target_inventory_analysis.get("segments", [{}])[0].get("target", {}).get("adapter")
-            if target_inventory_analysis.get("segments") else inventory_diagnostic.get("adapter_status")
-        ),
+        "target_inventory_status":target_inventory_status,
         "candidates":[g["target"]["candidates"] for g in target_inventory_analysis.get("segments", [])],
         "selected_candidate":selected,
         "selected_candidate_is_output_source":False,
