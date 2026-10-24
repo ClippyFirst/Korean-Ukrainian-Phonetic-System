@@ -2,9 +2,9 @@
   "schemaVersion": "1.0.0",
   "generatedAt": "2026-10-24",
   "sourceArtifact": {
-    "runId": 40113136399,
-    "artifactId": 12567083852,
-    "artifactZipSha256": "33fa50e938ddca77b8a366433d25e6c5f10918f96210719fd14f0315c543c4be",
+    "runId": 40113742248,
+    "artifactId": 12567746123,
+    "artifactZipSha256": "9b071513543a103f26dc56ba74ddde3c20a0a62d5e48f0e1aa0a01c612178fa2",
     "reportFile": "multi-engine-ipa-report.json",
     "reportSha256": "448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f",
     "benchmarkVersion": "multi-engine-ipa-diagnostic-v4",
