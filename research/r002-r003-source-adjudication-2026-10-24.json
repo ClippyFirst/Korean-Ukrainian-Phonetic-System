@@ -25,6 +25,7 @@
     }
   },
   "acceptanceCriteria": [
+    "For a sourceStatus of SOURCE_FOUND_PENDING_IPA, retain an exact official locator and excerpt but keep finalBroadIpa and both reviewer IPA fields empty until independent IPA review; source discovery alone does not mean the case is adjudicated.",
     "Open and record exact official source passage or official lexical answer for each exact form; rule-family citations alone are insufficient.",
     "Record source text/locator, date accessed, grammatical segmentation, lexical/morphological class, and whether the environment is actually licensed.",
     "Treat corpus IPA and every engine output as hypotheses, not gold.",
@@ -185,10 +186,10 @@
       "g2pkIpa": "mʌ.si.s͈ʌ",
       "g2pkExact": false,
       "selectionReason": "R002 native abstention; candidate systems do not settle normative analysis.",
-      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
-      "sourceLocator": null,
-      "sourceExcerpt": null,
-      "grammaticalSegmentation": null,
+      "sourceStatus": "SOURCE_FOUND_PENDING_IPA",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166",
+      "sourceExcerpt": "국립국어원 온라인가나다 답변(2024-11-18): ‘멋있어’는 [머디써]로 발음되기도 하고 [머시써]로 발음되기도 합니다.",
+      "grammaticalSegmentation": "Lexical item 멋있어; the official answer explicitly permits two pronunciations in this lexical form.",
       "reviewerA": {
         "id": null,
         "qualification": null,
@@ -206,8 +207,10 @@
         "notes": null
       },
       "finalBroadIpa": null,
-      "decisionNotes": null,
-      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+      "decisionNotes": "Official source confirms two Hangul surface-pronunciation variants. Do not convert these strings directly into IPA gold; independent broad-IPA transcription and the exact benchmark target convention remain outstanding.",
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "sourceAccessed": "2026-10-24",
+      "sourceType": "NIKL official Online Q&A; Hangul pronunciation notation, not IPA"
     },
     {
       "caseId": "R002-06",
@@ -290,10 +293,10 @@
       "g2pkIpa": "su.ma.nɯn",
       "g2pkExact": false,
       "selectionReason": "R003 native abstention; suffix/ending environment needs exact evidence.",
-      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
-      "sourceLocator": null,
-      "sourceExcerpt": null,
-      "grammaticalSegmentation": null,
+      "sourceStatus": "SOURCE_FOUND_PENDING_IPA",
+      "sourceLocator": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144",
+      "sourceExcerpt": "한국어기초사전 entry 수많다: 활용 ‘수많은[수ː마는]’.",
+      "grammaticalSegmentation": "Lexical adjective 수많다, attributive form 수많은; the dictionary directly lists this inflected form.",
       "reviewerA": {
         "id": null,
         "qualification": null,
@@ -311,8 +314,10 @@
         "notes": null
       },
       "finalBroadIpa": null,
-      "decisionNotes": null,
-      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+      "decisionNotes": "Official dictionary directly attests the form and its Hangul pronunciation, including lexical length notation. It does not supply IPA, and the corpus diagnostic target must not be promoted to IPA gold.",
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "sourceAccessed": "2026-10-24",
+      "sourceType": "National Institute of Korean Language Korean Basic Dictionary; official lexical entry with Hangul pronunciation notation"
     },
     {
       "caseId": "R003-02",
@@ -395,10 +400,10 @@
       "g2pkIpa": "si.ɾʌ.sʌ",
       "g2pkExact": false,
       "selectionReason": "R003 native abstention; exact stem/ending analysis must be sourced.",
-      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
-      "sourceLocator": null,
-      "sourceExcerpt": null,
-      "grammaticalSegmentation": null,
+      "sourceStatus": "SOURCE_FOUND_PENDING_IPA",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313981",
+      "sourceExcerpt": "국립국어원 온라인가나다 답변(2025-04-29): ‘싫어서’는 ㅀ 뒤에 모음으로 시작하는 어미가 결합되어 ㅎ이 탈락하고, ㄹ이 연음되어 [시러서]로 발음됩니다.",
+      "grammaticalSegmentation": "싫- + -어서 (the official answer explicitly discusses the ㅀ stem-final cluster followed by a vowel-initial ending).",
       "reviewerA": {
         "id": null,
         "qualification": null,
@@ -416,8 +421,10 @@
         "notes": null
       },
       "finalBroadIpa": null,
-      "decisionNotes": null,
-      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+      "decisionNotes": "Exact-form rule environment is supported by the official answer. The surface Hangul [시러서] is not itself an IPA transcription; dual independent broad-IPA review remains required.",
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "sourceAccessed": "2026-10-24",
+      "sourceType": "NIKL official Online Q&A; Hangul pronunciation notation, not IPA"
     },
     {
       "caseId": "R003-05",
