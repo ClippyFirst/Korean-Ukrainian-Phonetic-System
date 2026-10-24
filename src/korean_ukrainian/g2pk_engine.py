@@ -254,56 +254,22 @@ def phoneticize_with_g2pk(text: str, *, descriptive: bool = False,
 
 def transliterate_with_g2pk(text: str, *, descriptive: bool = False,
                             target_adapter=None) -> dict[str, Any]:
-    """Map g2pK-derived IPA to Ukrainian while preserving punctuation.
+    """Run external g2pK pronunciation, then delegate target rendering to ClippyFirst core.
 
-    The Ukrainian mapping remains the project's own provisional target layer;
-    it is never generated directly from Hangul.
+    This adapter owns Korean surface pronunciation and IPA derivation only.
+    Ukrainian mapping, candidate selection, and orthographic rendering are
+    centralized in pipeline.render_ipa_analysis_to_ukrainian.
     """
-    from .pipeline import _select_target, map_ipa_to_ukrainian
-    from .orthography import render_sequence
+    from .pipeline import render_ipa_analysis_to_ukrainian
 
     pronunciation = phoneticize_with_g2pk(text, descriptive=descriptive)
-    surface = pronunciation["surface_hangul"]
-    output_parts: list[str] = []
-    targets: list[dict[str, Any]] = []
-    all_mapped = True
-    word_index = 0
-    analyses = pronunciation["ipa"]["word_analyses"]
-
-    for token in _SURFACE_TOKENS.findall(surface):
-        if not re.fullmatch(r"[가-힣]+", token):
-            output_parts.append(token)
-            continue
-
-        word_ipa = analyses[word_index]["ipa"]
-        word_index += 1
-        target = map_ipa_to_ukrainian(word_ipa, target_adapter)
-        selected = _select_target(target)
-        if not selected:
-            all_mapped = False
-            targets.append({"surface_hangul": token, "ipa": word_ipa,
-                            "status": "unavailable"})
-            continue
-        output_parts.append(render_sequence(selected["segments"]))
-        targets.append({"surface_hangul": token, "ipa": word_ipa,
-                        "status": "model-selected", "selection": selected})
-
-    return {
-        "input": text,
-        "pronunciation_engine": "g2pK",
-        "pronunciation_surface": surface,
-        "phonetics": pronunciation,
-        "ipa": pronunciation["ipa"],
-        "target_analysis": targets,
-        "ukrainian_orthography": "".join(output_parts) if all_mapped else None,
-        "target_status": "model-selected" if all_mapped else "unavailable",
-        "score_type": "heuristic_cost",
-        "confidence": None,
-        "selection_status": (
-            "g2pK surface pronunciation → IPA → project Ukrainian target mapping"
-            if all_mapped else
-            "Ukrainian target unavailable for at least one IPA segment; failed closed"
-        ),
-        "analysis_status": "research-prototype",
-        "morphology_mode": "external-g2pK",
-    }
+    return render_ipa_analysis_to_ukrainian(
+        text,
+        pronunciation["ipa"]["word_analyses"],
+        pronunciation_surface=pronunciation["surface_hangul"],
+        phonetics=pronunciation,
+        ipa=pronunciation["ipa"],
+        pronunciation_engine="g2pK",
+        target_adapter=target_adapter,
+        morphology_mode="external-g2pK",
+    )
