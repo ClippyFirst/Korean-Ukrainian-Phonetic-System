@@ -1,3 +1,13 @@
+## Continuation update — frozen IPA holdout reviewer workflow (2026-10-24)
+
+- **Implementation added on the active research PR branch:** `scripts/build-korean-holdout-ipa-queue.mjs` projects the frozen 24-case NIKL manifest into the existing blinded IPA-review queue schema. It checks the frozen status, case count/unique IDs, official NIKL HTTPS source host, tuning prohibition, absence of stored engine outputs, and null IPA gold before projection.
+- **Existing packet tools extended, not duplicated:** `scripts/build-ipa-review-packet.mjs` and `scripts/validate-ipa-review-submission.mjs` now accept `--queue <queue.json>`, so two independent packets can be generated and validated against the exact same frozen-manifest-derived queue hash.
+- **Regression coverage added:** `tests/korean-holdout-ipa-queue.test.mjs` checks all 24 items, absence of IPA/Ukrainian gold and engine outputs, variant preservation, and fail-closed behavior for count drift, duplicate IDs, draft state, untrusted source URLs, and premature gold labels.
+- **Reviewer procedure:** `docs/KOREAN-IPA-HOLDOUT-REVIEW-PROCEDURE-2026-10-24.md` documents packet generation and validation commands. The surface comparator is explicitly Hangul, not IPA. No reviewer labels or engine outputs were invented or inserted.
+- **Verification status at this update:** code is committed on `research/benchmark-score-causality-2026-10-24`; exact-head CI runs are queued and must complete before this batch is marked `DONE_VERIFIED`. No local test pass is claimed. The frozen holdout remains 0/24 IPA gold; independent reviewer participation is still an external dependency. Do not tune the engine or IPA normalizer against this holdout.
+- **Next gate:** inspect the exact-head Python/browser/build/data/benchmark CI results, fix any failures and rerun; then have two qualified reviewers annotate independently, structurally validate both submissions against the same queue SHA, adjudicate disagreements, and review Ukrainian targets separately.
+
+---
 ## Source-backed practical-engine improvements — 2026-10-24
 
 - **PARTIAL (source-backed runtime implementation):** practical g2pK adapter preserves the NIKL dictionary's lexical length in exact-form `수많은[수ː마는]` as IPA `suː`, while leaving the Ukrainian target unchanged and separately model-selected.
