@@ -133,3 +133,12 @@ PR [#306](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 - Implementation routes native and G2P-derived Python output through `src/korean_ukrainian/ipa_target_renderer.py`, consuming IPA only and using local canonical correspondences plus explicit overrides. UPI candidate ranking is diagnostic-only, not output authority.
 - Regression scope includes 643 canonical lexical rows, 45 declared alternates, length-marker traces, unknown IPA fail-closed behavior, mapping provenance, and explicit provisional status.
 - **Status remains PARTIAL until latest-head CI passes.** The original 24-form list remains unverified and is not included as gold. A passing internal corpus reproduction test is not independent target accuracy.
+
+
+### Final-head CI triage for native IPA target renderer — 2026-10-24
+
+- Run [40131875165](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40131875165) on `94631cc169d74146d12cb0c70b004288523775ab` failed: browser tests found stale assertions for the newly detailed vowel-length trace and a deep-equality snapshot that rejected added provenance/status fields; Python tests found a `ROOT`/ `root` NameError in the new cross-runtime parity test.
+- Browser assertions were updated to the explicit feature/status schema; the invariant test now verifies the legacy output fields plus the detailed status contract; Python subprocess cwd now uses the defined lowercase `root` path. Browser suite passed on intermediate run [40132583499](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132583499), but Python remained red there because the root-variable correction had not yet reached that run.
+- Final known code correction: `317f0f106d230b10bbc42219ca1f9c3e5a369aa2`. Exact-head workflows were triggered; do not count any intermediate success as final verification.
+- The diagnostic-only Python/G2P report continues to show two known JS-port differences against recorded normative surface expectations: `넓죽하다` and `읽고`. The report explicitly says IPA comparison was not performed and gold was not independently adjudicated. These are linguistic regression-review items, not failures to be hidden by changing the benchmark labels.
+- The official NIKL metadata-only inventory remains blocked by HTTP 403, and the original 24-form source manifest remains unverified. Neither is a successful benchmark or a gold set.
