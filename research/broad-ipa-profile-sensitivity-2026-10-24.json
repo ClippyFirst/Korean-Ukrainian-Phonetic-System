@@ -214,6 +214,33 @@
       "fortisness ͈",
       "unreleased coda mark ̚"
     ],
-    "nextStep": "Run two independent IPA annotations and adjudicate representative cases, prioritizing sibilant aspiration, i/y, stress/length and remaining consonant-symbol differences."
+    "nextStep": "Run two independent IPA annotations and adjudicate representative cases, prioritizing sibilant aspiration, i/y, stress/length and remaining consonant-symbol differences.",
+    "mappingEvidence": [
+      {
+        "mapping": "ɭ/ʎ -> l",
+        "source": "https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf",
+        "claim": "The university Korean IPA chart treats [ɭ] and [ʎ] as non-phonemic lateral phones/allophones of /l/."
+      },
+      {
+        "mapping": "ɕ -> s",
+        "source": "https://doi.org/10.17959/sppm.2010.16.1.3",
+        "claim": "Kang (2010) reports palatalized acoustic properties of Korean /s/ before high-front segments."
+      },
+      {
+        "mapping": "ɦ/ç -> h",
+        "source": "https://www.cambridge.org/core/journals/applied-psycholinguistics/article/abs/influence-of-spelling-on-the-production-and-storage-of-words-with-allophonic-variants-of-h-in-korean/695C8A620FADB77A80F9DA02D65AFE42",
+        "claim": "Han and Choi (2015) explicitly study [ɦ] as an allophonic variant of /h/; the OSU chart identifies non-phonemic [ç] as an /h/ allophone."
+      },
+      {
+        "mapping": "ɲ -> n",
+        "source": "https://www.cambridge.org/core/journals/phonology/article/korean-ninsertion-a-mismatch-between-data-and-learning/6C53BDA0D8F55B2DA793E043D10B968D",
+        "claim": "The paper notes that /nj/ may be phonetically realized as [ɲ]; the candidate normalizer preserves the following glide j."
+      },
+      {
+        "mapping": "sʰ -> s",
+        "source": "https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf",
+        "claim": "The Korean IPA chart describes [sʰ] as the phonetic realization of the lax sibilant phoneme rather than a separate aspirated-fricative phoneme."
+      }
+    ]
   }
 }
