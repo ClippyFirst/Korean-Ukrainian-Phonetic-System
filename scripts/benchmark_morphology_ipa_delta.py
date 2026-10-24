@@ -181,13 +181,19 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
     for word in unique_words:
         strict_pred = native["strict"].get(word, {})
         soft_pred = native["soft"].get(word, {})
-        if strict_pred.get("normalized_ipa") != soft_pred.get("normalized_ipa"):
+        ipa_changed = strict_pred.get("normalized_ipa") != soft_pred.get("normalized_ipa")
+        status_changed = strict_pred.get("unresolved") != soft_pred.get("unresolved")
+        if ipa_changed or status_changed:
             changed_words.append({
                 "word": word,
+                "ipa_changed": ipa_changed,
+                "status_changed": status_changed,
                 "strict_ipa": strict_pred.get("ipa"),
                 "soft_ipa": soft_pred.get("ipa"),
                 "strict_unresolved": strict_pred.get("unresolved"),
                 "soft_unresolved": soft_pred.get("unresolved"),
+                "strict_ipa_status": strict_pred.get("ipa_status"),
+                "soft_ipa_status": soft_pred.get("ipa_status"),
                 "soft_heuristic_rules": soft_pred.get("heuristic_rules", []),
                 "strict_error": native_errors["strict"].get(word),
                 "soft_error": native_errors["soft"].get(word),
