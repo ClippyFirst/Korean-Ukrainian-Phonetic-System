@@ -23,7 +23,7 @@
     "removedBeforeFreeze": [
       {
         "input": "앞",
-        "reason": "Exact token overlap in the pinned benchmark; replaced by the source-backed Rule 19 example 석류? Wait: final set now uses only official source forms and contains no 앞."
+        "reason": "Removed after an exact-token overlap was detected in an earlier candidate manifest; the final 24-item set was rebuilt from NIKL rule examples."
       }
     ],
     "result": "PASS_NO_EXACT_TOKEN_OVERLAP"
