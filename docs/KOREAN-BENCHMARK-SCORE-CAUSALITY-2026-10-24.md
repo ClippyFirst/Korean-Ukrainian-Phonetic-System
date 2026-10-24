@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-**PARTIAL — evidence-backed explanation; item-level correlation analysis remains TODO.** This report reconciles the repository's actual scoring contract and pinned results with external research. It does not claim that the engines are 90–95% accurate, nor that the low scores are all measurement artefacts. It separates measured findings, well-supported explanations, and hypotheses requiring a new stratified run.
+**DONE_VERIFIED for descriptive occurrence/type, length, source, repetition, edit-distance and symbol-alignment analysis; PARTIAL for independent phonetic adjudication and holdout certification.** This report reconciles the repository's actual scoring contract and pinned results with external research. It does not claim that the engines are 90–95% accurate, nor that the low scores are all measurement artefacts. It separates measured findings, well-supported explanations, and hypotheses requiring a new stratified run.
 
 - Baseline commit: `8144675c6b5496c8b1f3c05b15b085f6b78b4b2b` (`main`, 2026-10-24).
 - Benchmark implementation and full paired ledger: [run 40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978), [artifact 12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692).
@@ -256,3 +256,12 @@ python scripts/analyze_korean_benchmark_correlations.py --input multi-engine-ipa
 The existing 14-case queue has seven R002 and seven R003 cases. Against the **noisy corpus reference only**, g2pk is marked exact on 4/7 R002 cases and 3/7 R003 cases (7/14 overall). Exact-form official surface evidence has been found for three cases (`멋있어`, `수많은`, `싫어서)); four more have related component/rule evidence (`되었어`, `붙어야`, `쌓아서`, `좋은데`); seven have no source evidence recorded in this search pass. All 14 still lack independently adjudicated broad-IPA gold.
 
 This is **not** a valid estimate of R002-vs-R003 accuracy: the 14 cases are a deliberately selected diagnostic queue, the reference is not normative gold, and source discovery status is not a correctness label. The small split does not show a meaningful rule-level correlation. It does show why raw engine/reference exactness cannot settle the cases: the official source confirms variants or surface forms in some cases, but the IPA representation and morphology still need independent review.
+
+
+## Versioned IPA contract and holdout gate (2026-10-24)
+
+The previous report's analysis-only work is now paired with a versioned output/scoring contract: [IPA transcription contract](IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md). The correlation script emits both immutable `legacy-broad-diagnostic-v0` metrics and the candidate `clippyfirst-broad-v1` sensitivity profile. The candidate explicitly collapses `ɭ/l`, `ʎ/l`, `ɲ/n`, `ɦ/h`, `ç/h`, `ɕ/s`, and sibilant `sʰ/s`; it preserves stop aspiration, fortisness, vowel length, coda unreleased marks and `i/y`. No new benchmark rate is asserted in this document because the licensed pinned artifact is not mounted in the repository checkout; run the analyzer on artifact 12559692692 before reporting candidate-profile rates.
+
+A 24-item NIKL-sourced input manifest is frozen at `data/korean/ipa_holdout_2026-10-24.json`. It has no engine outputs and no IPA gold. [The validator](../scripts/validate_ipa_holdout.py) checks local runtime/fixture leakage and can check exact overlap against the external benchmark artifact. Current status is deliberately `FROZEN_INPUTS_EXTERNAL_OVERLAP_CHECK_PENDING` until that artifact is passed to the validator; this is not yet a certified independent scored holdout. The 14 R002/R003 source-adjudication cases remain at 0/14 independent IPA gold, despite surface evidence for three exact forms.
+
+See [discrepancy adjudication and holdout report](IPA-DISCREPANCY-ADJUDICATION-AND-HOLDOUT-2026-10-24.md) for acceptance gates and primary-source references.
