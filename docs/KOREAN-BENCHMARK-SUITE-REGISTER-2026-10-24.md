@@ -14,7 +14,7 @@ On SIGMORPHON, native is 357/997 exact (35.8074%) versus g2pk 353/997 on the sam
 
 ### Verified root-cause findings added after occurrence-level inspection
 
-Detailed evidence and source adjudication are recorded in [the multi-engine benchmark report](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md# error-analysis-what-the-pairwise-results-actually-diagnose) (see its “Error analysis” section; direct anchor may be normalized by GitHub).
+Detailed evidence and source adjudication are recorded in [the multi-engine benchmark report](MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md#error-analysis-what-the-pairwise-results-actually-diagnose) (see its “Error analysis” section; direct anchor may be normalized by GitHub).
 
 - UGTPHON: native and g2pk emit identical IPA strings on 2,634/2,655 shared scored occurrences (99.21%); 1,222/1,239 both-not-exact occurrences (98.63%) also have identical strings. The remaining paired score difference is not evidence of broad model superiority.
 - All four g2pk-only exact occurrences are repeated instances of 없는. The pinned reference omits vowel length, while NIKL explicitly gives 없는 [업ː는 → 엄ː는]. This is a reference-convention conflict pending a formally adjudicated gold correction, not an accepted production-rule change.
