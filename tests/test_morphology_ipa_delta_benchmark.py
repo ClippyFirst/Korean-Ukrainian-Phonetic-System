@@ -32,7 +32,7 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
     import korean_ukrainian.pipeline as pipeline
     import korean_ukrainian.research_morphology as morphology
 
-    def fake_phoneticize(word, morphology_mode="strict"):
+    def fake_phoneticize(word, morphology_mode="strict", rule_licenses=None):
         if word == "한국어":
             ipa = "han.gu.ɡʌ" if morphology_mode == "strict" else "han.ɡu.ʌ"
         else:
