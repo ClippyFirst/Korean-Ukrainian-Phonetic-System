@@ -152,6 +152,13 @@ jobs:
           assert gated["status"] == "counterfactual_research_only", gated
           assert gated["attempted_occurrences"] == r["eligible_token_occurrences"], gated
           assert "not be used in production" in gated["interpretation"], gated
+          paired = gated["paired_comparison"]
+          assert paired["scored_occurrences_by_all_three"] > 0, paired
+          for comparison in ("boundary_gated_vs_strict", "boundary_gated_vs_soft", "soft_vs_strict"):
+              pair = paired[comparison]
+              assert pair["baseline_metrics"]["scored_occurrences"] == paired["scored_occurrences_by_all_three"], pair
+              assert pair["candidate_metrics"]["scored_occurrences"] == paired["scored_occurrences_by_all_three"], pair
+              assert pair["baseline_metrics"]["reference_characters"] == pair["candidate_metrics"]["reference_characters"], pair
           alignment = r["morphology"]["native_soft_rule_boundary_alignment"]
           assert alignment["events"] == alignment["boundary_observed"] + alignment["boundary_not_observed"], alignment
           print(json.dumps({
@@ -161,13 +168,15 @@ jobs:
             "unique_words": r["unique_hangul_words"],
             "strict": r["native_ipa"]["strict"],
             "soft": r["native_ipa"]["soft"],
-            "paired_delta": r["native_ipa"]["paired_subset"],
+            "strict_soft_paired_delta": r["native_ipa"]["paired_subset"],
             "boundary_gated_counterfactual": {
               k:v for k,v in gated.items()
               if k not in {"changed_examples_vs_strict", "runtime_error_examples"}
             },
+            "paired_three_way_comparison": paired,
+            "rule_boundary_alignment": {k:v for k,v in alignment.items() if k != "events_detail"},
             "morphology": {k:v for k,v in r["morphology"].items()
-                           if k not in {"results","errors","tag_counts_top_50"}},
+                           if k not in {"results","errors","tag_counts_top_50","native_soft_rule_boundary_alignment"}},
             "changed_words": r["native_ipa"]["unique_words_with_changed_ipa_or_status"],
             "changed_words_also_split": r["native_ipa"]["changed_words_with_multi_morpheme_segmentation"],
           }, ensure_ascii=False, indent=2))
