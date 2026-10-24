@@ -175,3 +175,13 @@ Add a deterministic index of explicit NIKL article references in tests, with one
 Verified code snapshot: `3a2052c9c27d7af6b5efa7c744d9e2ef14a70d41`. CI: 1205 Node tests pass; Python 3.11/3.12/3.13, browser G2P integration, system verification, and research artifact generation pass. Pages run [40015664039](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40015664039) subsequently passed deployment, public HTTP smoke, and live Playwright practical-mode smoke; official NIKL crawl remains blocked by HTTP 403.
 
 The workstream is now stronger in reproducibility and reviewer handoff, but not scientifically release-ready. Outstanding acceptance depends on independent IPA and Ukrainian-target review, atomic rule/variant coverage from permitted primary-source evidence, item-level rights resolution, and permitted source access. The article-reference index must not be mistaken for complete rule coverage.
+
+## Architecture correction: shared Ukrainian target renderer (2026-10-24)
+
+- **Status:** PARTIAL — implementation and focused regression tests are committed on `fix/native-core-owns-ipa-target-renderer-2026-10-24`; PR #296 is open against `main`.
+- **Problem:** the optional `g2pk_engine.transliterate_with_g2pk()` contained its own IPA-to-Ukrainian mapping / selection / orthographic rendering loop, which blurred the ownership boundary between an external pronunciation provider and the ClippyFirst engine.
+- **Change:** `pipeline.render_ipa_analysis_to_ukrainian()` is now the shared core renderer; the g2pK adapter delegates to it. The core preserves punctuation and spacing and fails closed when IPA word analyses are missing, empty, or misaligned.
+- **Tests added:** shared renderer ownership and punctuation preservation; missing-word-analysis fail-closed regression.
+- **Verified so far:** GitHub source checks confirm the core function exists, the g2pK adapter delegates to it, and the adapter no longer contains its own target-rendering loop. CI runs `40087097243` and `40087097189` were observed queued/in progress at handoff; no pass/fail result is claimed here.
+- **Acceptance:** PR CI must pass; review output compatibility for `transliterate_with_g2pk`; run `pytest` and the relevant integration tests; verify no generated-artifact drift. Keep the PR unmerged until these gates are satisfied.
+
