@@ -63,7 +63,7 @@ UGTPHON Korean test split: 275 rows, 2,703 eligible token occurrences, 1,907 uni
 | eSpeak NG / phonemizer | AVAILABLE; 2,703/2,703 | 100% | 8.1391% (6.37–10.19%) | 39.0498% (37.82–40.28%) |
 | phonemize 2.0.1 (corrected adapter) | AVAILABLE; 2,703/2,703 | 100% | 20.0518% (17.68–22.58%) | 21.3645% (20.43–22.23%) |
 
-The native score in this exact-head report is 2,655 scored occurrences and 48 abstentions (47 unique unresolved words can appear in multiple/zero-frequency contexts; occurrence and unique-word counts are different units). Earlier report snapshots with 2,653 native-scored occurrences are superseded by this exact-head artifact.
+The native score in this exact-head report is 2,655 scored occurrences and 48 abstentions (47 unique unresolved words; 48 occurrence-level abstentions because one unresolved word appears twice). Earlier report snapshots with 2,653 native-scored occurrences are superseded by this exact-head artifact.
 
 ### Paired comparison against native
 
