@@ -20,7 +20,9 @@
     "audit:source-register": "node scripts/audit-source-register.mjs",
     "ipa:review-packet": "node scripts/build-ipa-review-packet.mjs",
     "ipa:validate-submission": "node scripts/validate-ipa-review-submission.mjs",
-    "audit:nikl-test-index": "node scripts/audit-nikl-article-test-index.mjs"
+    "audit:nikl-test-index": "node scripts/audit-nikl-article-test-index.mjs",
+    "generate:ipa-target-data": "python scripts/generate_ipa_target_data.py",
+    "check:ipa-target-data": "python scripts/generate_ipa_target_data.py --check"
   },
   "devDependencies": {
     "vite": "8.3.1"
