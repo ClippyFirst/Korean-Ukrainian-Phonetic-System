@@ -112,17 +112,19 @@ def test_python_transliteration_uses_ipa_derived_target_and_keeps_lexical_target
         value = transliterate_korean(word)
         assert value["lexical_target_reference"] == expected_reference
         assert value["lexical_target_reference_status"] == expected_reference_status
-        if value["selected_candidate"] is None:
-            # Optional UPI is unavailable in minimal CI: never fall back to a
-            # Hangul-keyed Ukrainian target just to make the output look complete.
+        if value["ipa_is_diagnostic_only"]:
+            # Diagnostic-only IPA is not promoted to an orthographic result.
             assert value["ukrainian_orthography"] is None
             assert value["target_status"] == "unresolved"
+            assert value["target_unavailable_reason"] == "unresolved_korean_phonology"
             assert value["lexical_target_comparison"] == "unavailable_without_ipa_target"
         else:
-            assert value["ukrainian_orthography"] == render_sequence(value["selected_candidate"]["segments"])
-            assert value["target_status"] == "model-selected"
+            # The local source-specific correspondence layer owns output;
+            # optional UPI candidate ranking is diagnostic only.
+            assert value["ukrainian_orthography"] is not None
+            assert value["target_status"] in {"model-selected", "provisional"}
             assert value["lexical_target_comparison"] in {"matches_reference", "differs_from_reference"}
-            assert "IPA-derived" in value["selection_status"]
+            assert "source IPA" in value["selection_status"]
         assert "author-designed" not in value["selection_status"]
 
 
@@ -153,11 +155,16 @@ def test_python_lexical_target_reference_cannot_override_ipa_adapter_output(monk
     import korean_ukrainian.pipeline as pipeline
     monkeypatch.setattr(
         pipeline,
-        "_select_target",
-        lambda target: {
-            "segments": [{"grapheme": "тест"}],
-            "score_type": "heuristic_cost",
-            "status": "top_ranked_segmentwise",
+        "render_ipa_sequence_to_ukrainian",
+        lambda ipa: {
+            "ipa": ipa,
+            "status": "model-selected",
+            "reason": None,
+            "ukrainian_orthography": "тест",
+            "segments": [],
+            "ignored_source_markers": [],
+            "renderer": "korean_ipa_correspondence",
+            "score_type": "explicit_correspondence_not_probability",
         },
     )
     result = pipeline.transliterate_korean("값없다")
@@ -202,13 +209,9 @@ def test_second_pass_lexical_targets_are_references_not_ukrainian_overrides():
     for word, reference in expected.items():
         result = transliterate_korean(word)
         assert result["lexical_target_reference"] == reference, word
-        if result["selected_candidate"] is None:
-            assert result["ukrainian_orthography"] is None, word
-            assert result["target_status"] == "unresolved", word
-            assert result["lexical_target_comparison"] == "unavailable_without_ipa_target", word
-        else:
-            assert result["ukrainian_orthography"] == render_sequence(result["selected_candidate"]["segments"]), word
-            assert result["target_status"] == "model-selected", word
+        assert result["ukrainian_orthography"] is not None, word
+        assert result["target_status"] in {"model-selected", "provisional"}, word
+        assert result["lexical_target_comparison"] in {"matches_reference", "differs_from_reference"}, word
 
 
 def test_seoul_station_uses_sourced_surface_ipa_and_does_not_bypass_target_adapter():
@@ -490,7 +493,7 @@ def test_shared_ipa_target_renderer_is_owned_by_clippyfirst_core(monkeypatch):
     assert result["ukrainian_orthography"] == "а, б!"
     assert result["target_status"] == "model-selected"
     assert result["selection_status"].startswith(
-        "test-engine surface pronunciation → IPA → ClippyFirst Ukrainian target mapping"
+        "source IPA → Korean-specific licensed correspondence"
     )
     assert [item["ipa"] for item in result["target_analysis"]] == ["a", "b"]
 
