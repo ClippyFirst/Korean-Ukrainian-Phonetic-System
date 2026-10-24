@@ -65,3 +65,16 @@ The source register now includes NIKL Online Q&A qna_seq=313981, which directly 
 ### IPA boundary interoperability fix
 
 The shared browser IPA-to-Ukrainian utility previously split only on whitespace, so a valid dot-separated syllable sequence from the Python research renderer could be treated as one unknown IPA unit. It now treats dots and whitespace as syllable-boundary metadata while preserving the original Korean source spacing in the Ukrainian target. Actual unmapped IPA symbols still fail closed. Regression coverage added; exact-head CI pending.
+
+
+### IPA-to-Ukrainian feature-loss trace (2026-10-24)
+
+A code audit found that the target adapter mapped aspirated, fortis, and unreleased-stop IPA tokens to ordinary Ukrainian graphemes without an explicit trace record. That was not a source-pronunciation error, but it concealed a real information loss at the IPA → Ukrainian boundary.
+
+The adapter now keeps the original IPA token unchanged and emits a machine-readable features entry when a matched token contains ʰ (aspiration), ͈ (fortisness), or ̚ (unreleased stop). Each record states handling: not-encoded-in-ukrainian-target and explains in Ukrainian that the feature remains in IPA but has no separate target-orthographic marker. This is deliberately a disclosure change, not a new phonology rule or a claim that Ukrainian spelling can represent these contrasts exactly. Existing vowel-length trace behavior is unchanged.
+
+Regression coverage: tests/ipa-target-feature-loss-trace.test.mjs checks aspirated stops, fortis stops/affricates, unreleased stops, and that feature reporting never rewrites the IPA token sequence. The visible trace already renders each feature's IPA symbol and explanatory note.
+
+- **DONE_IMPLEMENTED:** feature-loss records added at the IPA-to-Ukrainian adapter boundary.
+- **TODO_VERIFY:** exact-head Node tests/build and cross-runtime CI must pass before this is marked DONE_VERIFIED.
+- **BLOCKED:** the target policy itself still needs independent Ukrainian-reader/phonetic review; exposing a loss is not the same as resolving it.
