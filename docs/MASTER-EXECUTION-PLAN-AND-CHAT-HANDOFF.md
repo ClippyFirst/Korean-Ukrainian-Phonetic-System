@@ -811,3 +811,19 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **Scope guard:** research-only Python adapter. It emits token forms, raw tags, source offsets, nullable lemma, and selected MeCab binding in diagnostic output; it does not emit pronunciation/IPA/Ukrainian output or automatically change phonology. The browser practical mode was not modified by the PR; post-merge live practical-mode regression passed.
 - **Remaining blockers:** independent IPA adjudication; Ukrainian target-layer review; NIKL source reuse/terms and human clause-boundary review; specialist review of any future morphology-to-rule licensing; accuracy benchmarking against an adjudicated morphology corpus.
 - **Release classification:** research preview / partial prototype, not release-ready. Successful analyzer installation and tokenization do not prove phonological correctness or Ukrainian transcription accuracy.
+
+
+## Continuation update — IPA→Ukrainian target abstention diagnostics (2026-10-24)
+
+**Branch:** `fix/target-abstention-diagnostics-2026-10-24`  
+**PR:** [#306](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/306)  
+**Latest code/test commit at this note:** `48fe1fcc52f1d918d5f23b6cc1244077b54c47f5` (subsequent documentation commits, if any, supersede this code SHA).
+
+- **DONE_VERIFIED on the preceding PR head `f399ed03`:** baseline Python tests, browser regression/build, generated artifact/data checks, optional g2pK, morphology smoke and diagnostic benchmark workflows all passed. This evidence applies to that earlier head only.
+- **PARTIAL / CI pending on the current implementation head:** shared IPA renderer now exposes a word-level abstention reason and segment-level reasons; native `transliterate_korean` exposes `target_unavailable_reason` and `target_unavailable_segments`. The new per-segment regression and mapping-export-failure tests have been added, but must be verified by CI on the final PR head.
+- **Implemented diagnostic distinctions:** `unresolved_korean_phonology`, `target_inventory_unavailable`, `target_mapping_export_unavailable`, `no_target_segments`, `no_target_candidates`, `licensed_mapping_missing_grapheme`, `grapheme_without_licensed_mapping`, `no_licensed_ipa_to_ukrainian_mapping`, and `multiple_target_blockers`.
+- **Scientific boundary preserved:** no Ukrainian grapheme is inferred from a near phoneme match alone; lexical Ukrainian references do not bypass IPA→target mapping; full orthographic output remains unavailable when any word is unresolved.
+- **Still TODO/BLOCKED:** this is not a coverage repair. The exact frozen 24-form list and per-form evidence must be available in a committed fixture or artifact before claiming the 7 phonology and 17 target-layer cases are individually reconciled. The 7 strict cases require source-grounded Korean phonology adjudication; target cases require an accessible compatible UPI 0.8.0 inventory and reviewed IPA→Ukrainian correspondences. Do not add speculative mappings to make the count pass.
+- **CI observation:** commit `48fe1fcc` has new workflow runs queued/in progress at the time of this note; no final result is claimed here. See PR #306 checks for the exact latest head.
+
+**Acceptance for this work item:** tests and build pass on final PR head; diagnostics distinguish inventory unavailability from per-segment mapping gaps; all 24 frozen inputs are reproducibly recorded with status/reason; no unsupported output is fabricated. The current PR meets only the diagnostic implementation portion until the final-head CI and corpus reconciliation are complete.
