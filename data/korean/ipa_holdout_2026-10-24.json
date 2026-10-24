@@ -1,0 +1,919 @@
+{
+  "schemaVersion": "1.0.0",
+  "title": "ClippyFirst Korean Broad-IPA Independent Holdout — frozen input manifest",
+  "createdAt": "2026-10-24",
+  "contract": "docs/IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md",
+  "split": "HOLDOUT",
+  "status": "FROZEN_INPUT_PENDING_EXTERNAL_BENCHMARK_OVERLAP_CHECK_AND_IPA_ANNOTATION",
+  "purpose": "Source-backed Korean surface-form items selected from NIKL Standard Pronunciation Rules to support independent broad-IPA annotation and evaluation. This manifest deliberately contains no engine outputs and no IPA gold.",
+  "independenceNotes": [
+    "Inputs are not to be used for rule or normalization tuning.",
+    "Surface evidence is official Hangul pronunciation notation, not IPA.",
+    "These items were selected from official rule examples; external-benchmark overlap is not yet certified because the licensed UGTPHON source corpus is not stored in this repository.",
+    "Before scoring, run the overlap validator against the exact pinned benchmark input and remove or disclose all overlaps.",
+    "Two reviewers must independently produce IPA under the versioned contract; disagreements require adjudication."
+  ],
+  "sourceSet": {
+    "rule5": {
+      "url": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "scope": "NIKL Standard Pronunciation Rules, Rule 5 examples for ㅢ"
+    },
+    "rule9": {
+      "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "scope": "NIKL Online Q&A quoting Rule 9 and its explicit examples"
+    }
+  },
+  "caseCount": 24,
+  "cases": [
+    {
+      "caseId": "KUA-HO-001",
+      "input": "의의",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "의의(意義) | 의이",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "의이"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-002",
+      "input": "본의",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "본의(本義) | 본이",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "본이"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-003",
+      "input": "무늬",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "무늬[紋] | 무니",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "무니"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-004",
+      "input": "씌어",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "씌어 | 씨어",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "씨어"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-005",
+      "input": "보늬",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "보늬 | 보니",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "보니"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-006",
+      "input": "오늬",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "오늬 | 오니",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "오니"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-007",
+      "input": "하늬바람",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "하늬바람 | 하니바람",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "하니바람"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-008",
+      "input": "늴리리",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "늴리리 | 닐리리",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "닐리리"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-009",
+      "input": "유희",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "유희(遊戱) | 유히",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "유히"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-010",
+      "input": "희다",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "희다 | 히다",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "히다"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-011",
+      "input": "주의",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "주의[주의/주이]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "주의",
+        "주이"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-012",
+      "input": "우리의",
+      "sourceRule": "§5",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/kornorms/m/m_regltn.do",
+      "sourceExcerpt": "우리의[우리의/우리에]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "우리의",
+        "우리에"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-013",
+      "input": "키읔",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "키읔[키윽]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "키윽"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-014",
+      "input": "키읔과",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "키읔과[키윽꽈]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "키윽꽈"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-015",
+      "input": "웃다",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "웃다[욷ː따]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "욷ː따"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-016",
+      "input": "젖",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "젖[젇]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "젇"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-017",
+      "input": "빚다",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "빚다[빋따]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "빋따"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-018",
+      "input": "쫓다",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "쫓다[쫃따]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "쫃따"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-019",
+      "input": "솥",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "솥[솓]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "솓"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-020",
+      "input": "뱉다",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "뱉다[밷ː따]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "밷ː따"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-021",
+      "input": "덮다",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "덮다[덥따]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "덥따"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-022",
+      "input": "닦다",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "닦다[닥따]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "닥따"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-023",
+      "input": "옷",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "옷[옫]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "옫"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    },
+    {
+      "caseId": "KUA-HO-024",
+      "input": "앞",
+      "sourceRule": "§9",
+      "sourceAuthority": "National Institute of Korean Language (국립국어원), Standard Pronunciation Rules",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=318280",
+      "sourceExcerpt": "앞[압]",
+      "sourceRepresentation": "official Hangul surface-pronunciation notation; not IPA",
+      "allowedSurfaceReadings": [
+        "압"
+      ],
+      "surfaceEvidenceStatus": "SOURCE_ATTESTED",
+      "ipaGold": null,
+      "ipaGoldStatus": "PENDING_TWO_INDEPENDENT_REVIEWERS",
+      "reviewerA": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "ipa": null,
+        "decision": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "adjudicator": {
+        "ipa": null,
+        "decision": null,
+        "reviewedAt": null,
+        "notes": null
+      },
+      "engineOutputsStored": false,
+      "tuningUseProhibited": true
+    }
+  ]
+}
