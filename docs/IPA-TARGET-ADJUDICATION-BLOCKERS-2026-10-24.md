@@ -120,3 +120,15 @@ The collector first checks `robots.txt`; each attempt then stopped because the o
 The official NIKL page is discoverable through the public search index, but a direct open of the indexed official URL also returned HTTP 403 in the web retrieval environment. Search-index excerpts can support narrowly cited rule lookups, but cannot substitute for the crawler's complete response body, verified article 1–30 reconciliation, source response hash, or article-level hashes. No proxy, alternate mirror, forged user-agent, or other access-control bypass was attempted.
 
 **Status correction:** the NIKL gate is now `BLOCKED_EXTERNAL_ACCESS` with reproducible evidence, not merely `skipped`. Acceptance requires a permitted direct retrieval of the official page (or an official export provided through an authorized channel), a complete 30-article inventory with zero missing/duplicate/incomplete records, a valid metadata manifest and hashes, and an artifact/log audit. Preserve metadata-only retention; do not persist article text until applicable reuse terms are reviewed.
+
+
+## Execution update — output-path correction (2026-10-24)
+
+The missing target-inventory dependency was a software architecture blocker, not evidence that every resolved IPA string lacked a Ukrainian correspondence. The Korean repository already owns source-specific correspondence data; UPI's role is target phoneme/features/grapheme metadata, not a complete Korean mapping table.
+
+- Added the IPA-only renderer `src/korean_ukrainian/ipa_target_renderer.py` and explicit overrides `data/korean/ipa_target_overrides.csv`.
+- The renderer's input is IPA, and output includes mapping IDs, source references, scope, status, syllable indices, and ignored-length-marker metadata. Missing IPA fragments cause a full-word abstention.
+- A deterministic pre-CI simulation of the tracked canonical corpus showed 643/643 primary and 45/45 alternate outputs match the declared target references. This is a reproducibility check, not an independent linguistic gold score; final-head CI remains pending.
+- The seven native strict unresolved phonology cases remain blocked. The original frozen 24-form list is not tracked, so per-form closure cannot be independently verified yet.
+- The provisional target rules `ɰi → ий` and `kʰjʌ → кхьо` are explicit and traceable; the former cannot bypass the unresolved-IPA gate. The latter remains a target-policy review item because it is a specific exception within the broader aspiration-neutralization policy.
+- UPI wheel packaging PR [#10](https://github.com/ClippyFirst/Ukrainian-Phonetic-Inventory/pull/10) remains unverified because the Actions run failed without exposed job steps/logs.
