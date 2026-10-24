@@ -260,7 +260,7 @@ This is **not** a valid estimate of R002-vs-R003 accuracy: the 14 cases are a de
 
 ## Versioned IPA contract and holdout gate (2026-10-24)
 
-The previous report's analysis-only work is now paired with a versioned output/scoring contract: [IPA transcription contract](IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md). The correlation script emits both immutable `legacy-broad-diagnostic-v0` metrics and the candidate `clippyfirst-broad-v1` sensitivity profile. The candidate explicitly collapses `ɭ/l`, `ʎ/l`, `ɲ/n`, `ɦ/h`, `ç/h`, `ɕ/s`, and sibilant `sʰ/s`; it preserves stop aspiration, fortisness, vowel length, coda unreleased marks and `i/y`. No new benchmark rate is asserted in this document because the licensed pinned artifact is not mounted in the repository checkout; run the analyzer on artifact 12559692692 before reporting candidate-profile rates.
+The previous report's analysis-only work is now paired with a versioned output/scoring contract: [IPA transcription contract](IPA-TRANSCRIPTION-CONTRACT-2026-10-24.md). The correlation script emits immutable `legacy-broad-diagnostic-v0` metrics and candidate `clippyfirst-broad-v1` sensitivity metrics. The broad profile collapses `ɭ/l`, `ʎ/l`, `ɲ/n`, `ɦ/h`, `ç/h`, standalone `ɕ/s`, and sibilant `sʰ/s`; it preserves `tɕ` affricates, stop aspiration, fortisness, vowel length, coda unreleased marks and `i/y`. Recomputed on pinned artifact 12567083852, broad-v1 exact rates remain 91.0358% native and 90.9605% g2pk, while CER is 1.6847% and 1.7303% respectively. These remain sensitivity results, not validated accuracy.
 
 A 24-item NIKL-sourced input manifest is frozen at `data/korean/ipa_holdout_2026-10-24.json`. It has no engine outputs and no IPA gold. [The validator](../scripts/validate_ipa_holdout.py) checks local runtime/fixture leakage and can check exact overlap against the external benchmark artifact. Current status is deliberately `FROZEN_INPUTS_EXTERNAL_OVERLAP_CHECK_PENDING` until that artifact is passed to the validator; this is not yet a certified independent scored holdout. The 14 R002/R003 source-adjudication cases remain at 0/14 independent IPA gold, despite surface evidence for three exact forms.
 
@@ -273,8 +273,8 @@ I downloaded and inspected the pinned artifact `12559692692` from run `400929299
 
 | Engine | Legacy exact match | Candidate broad-v1 exact match | Legacy CER | Candidate broad-v1 CER |
 |---|---:|---:|---:|---:|
-| ClippyFirst native | 1,412/2,655 = 53.18% | 2,417/2,655 = **91.04%** | 9.19% | **1.70%** |
-| g2pk 0.9.4 | 1,416/2,655 = 53.33% | 2,415/2,655 = **90.96%** | 9.24% | **1.75%** |
+| ClippyFirst native | 1,412/2,655 = 53.18% | 2,417/2,655 = **91.04%** | 9.19% | **1.6847%** |
+| g2pk 0.9.4 | 1,416/2,655 = 53.33% | 2,415/2,655 = **90.96%** | 9.24% | **1.7303%** |
 
 This is the strongest direct evidence so far that the original 53% exact-match score was heavily confounded by transcription convention. But 91% is **not yet an independent accuracy estimate**: the profile was chosen after inspecting mismatch patterns and still needs independent Korean IPA review.
 
@@ -305,6 +305,6 @@ The native output still has 238 non-exact paired occurrences. The most frequent 
 
 ## 9. Holdout exact-token overlap check
 
-The final 24-item NIKL holdout manifest was checked against the exact token field in all 2,703 occurrence rows of artifact 12559692692 (1,907 unique Hangul tokens). **Exact input overlap: 0/24.** An earlier candidate manifest contained lexicon and benchmark overlaps; the final set was rebuilt from additional NIKL rule examples. The manifest's Git blob SHA is `19ab5184192b21dc7f02873dcba8ac77a2b672f7`; the pinned check is recorded in [`research/ipa-holdout-overlap-validation-2026-10-24.json`](../research/ipa-holdout-overlap-validation-2026-10-24.json).
+The revised 24-item NIKL holdout manifest was checked against the exact token field in all 2,703 occurrence rows of artifact 12567083852 (1,907 unique Hangul tokens). **Exact input overlap: 0/24.** Fourteen rule-page examples were replaced with unused, exact-form readings from official NIKL Online Q&A sources after the full repository scan exposed contamination. The manifest Git blob SHA is `3a69a915e475f08d0c6aba0c0e52638bcf3d6121`; the pinned check is recorded in [`research/ipa-holdout-overlap-validation-2026-10-24.json`](../research/ipa-holdout-overlap-validation-2026-10-24.json).
 
 This certifies exact-token disjointness from that benchmark artifact only. The holdout still has **0 IPA gold labels** and is not ready for scoring until two independent reviewers annotate and adjudicate it. Repository-hosted CI still needs to confirm the local runtime/fixture leakage validator.
