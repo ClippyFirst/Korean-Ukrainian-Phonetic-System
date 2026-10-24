@@ -89,4 +89,4 @@ The official NIKL length mark is a normative source annotation, but it should no
 
 ## CI
 
-Workflow: `.github/workflows/korean-holdout-diagnostic.yml`. It runs the diagnostic-specific tests, creates the JSON in the runner temporary directory, and uploads `clippyfirst-korean-24-form-holdout-diagnostics` as a 30-day artifact. The exact-head workflow result is authoritative; do not call this complete until it passes.
+Workflow integration: `.github/workflows/test.yml` runs the diagnostic-specific tests within the normal Python matrix, then Python 3.12 creates the JSON in the runner temporary directory and uploads `clippyfirst-korean-24-form-holdout-diagnostics` as a 30-day artifact. This uses the repository's existing PR-triggered workflow rather than introducing a duplicate workflow that would not be available from the base branch. The exact-head result is authoritative; do not call this complete until it passes.
