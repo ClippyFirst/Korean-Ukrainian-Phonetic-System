@@ -184,8 +184,8 @@ jobs:
           python scripts/benchmark_multi_engine_ko.py \
             --corpus "$RUNNER_TEMP/sigmorphon-kor-test.json" \
             --output "$RUNNER_TEMP/sigmorphon-multi-engine-ipa-report.json" \
-            --benchmark-name "SIGMORPHON 2021 Korean lexical test split" \
-            --dataset-source "sigmorphon/2021-task1@821bcdece5a47820872215969f275004b0abe80c:data/medium/kor_test.tsv; data CC BY-SA 3.0; 1,000 paired word/IPA rows" \
+            --benchmark-name "SIGMORPHON 2021 Korean public paired lexical test file" \
+            --dataset-source "sigmorphon/2021-task1@821bcdece5a47820872215969f275004b0abe80c:data/medium/kor_test.tsv; CC BY-SA 3.0; 1,000 paired word/IPA rows; README format description differs from pinned file contents" \
             --kog2p-root "$KOG2P_ROOT" \
             --hangul-to-ipa-root "$HANGUL_TO_IPA_ROOT" \
             --phonemize-root "$PHONEMIZE_BASELINE_DIR" \
