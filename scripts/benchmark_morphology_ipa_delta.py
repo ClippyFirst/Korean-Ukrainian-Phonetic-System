@@ -346,6 +346,35 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
             != native["strict"].get(word, {}).get("unresolved")
         )
     ]
+    boundary_gated_changed_vs_soft = [
+        word for word in unique_words
+        if (
+            boundary_gated_predictions.get(word, {}).get("normalized_ipa")
+            != native["soft"].get(word, {}).get("normalized_ipa")
+            or boundary_gated_predictions.get(word, {}).get("unresolved")
+            != native["soft"].get(word, {}).get("unresolved")
+        )
+    ]
+    boundary_gated_changed_examples = [
+        {
+            "word": word,
+            "strict_ipa": native["strict"].get(word, {}).get("ipa"),
+            "soft_ipa": native["soft"].get(word, {}).get("ipa"),
+            "boundary_gated_ipa": boundary_gated_predictions.get(word, {}).get("ipa"),
+            "strict_unresolved": native["strict"].get(word, {}).get("unresolved"),
+            "soft_unresolved": native["soft"].get(word, {}).get("unresolved"),
+            "boundary_gated_unresolved": boundary_gated_predictions.get(word, {}).get("unresolved"),
+            "observed_licenses": [
+                event.get("license_context") for event in events_by_word.get(word, [])
+                if event.get("morphological_boundary_observed") and event.get("license_context")
+            ],
+            "suppressed_licenses": [
+                event.get("license_context") for event in events_by_word.get(word, [])
+                if not event.get("morphological_boundary_observed") and event.get("license_context")
+            ],
+        }
+        for word in boundary_gated_changed_vs_strict
+    ][:100]
     split_changed = [
         item for item in changed_words
         if morph_by_word.get(item["word"], {}).get("split_into_multiple_morphemes")
@@ -388,6 +417,8 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
                 **boundary_gated_metrics,
                 "status": "counterfactual_research_only",
                 "unique_words_with_output_or_status_change_vs_strict": len(boundary_gated_changed_vs_strict),
+                "unique_words_with_output_or_status_change_vs_soft": len(boundary_gated_changed_vs_soft),
+                "changed_examples_vs_strict": boundary_gated_changed_examples,
                 "selected_native_soft_rule_licenses": selected_licenses,
                 "suppressed_native_soft_rule_licenses": suppressed_licenses,
                 "runtime_errors_unique_words": len(boundary_gated_errors),
