@@ -22,7 +22,7 @@
     "ipa:validate-submission": "node scripts/validate-ipa-review-submission.mjs",
     "audit:nikl-test-index": "node scripts/audit-nikl-article-test-index.mjs",
     "ipa:holdout-queue": "node scripts/build-korean-holdout-ipa-queue.mjs",
-    "research:holdout-diagnostics": "python scripts/diagnose-korean-ipa-holdout.py --output research/holdout-diagnostics-2026-10-24.json"
+    "research:holdout-diagnostics": "python scripts/diagnose-korean-ipa-holdout.py"
   },
   "devDependencies": {
     "vite": "8.3.1"
