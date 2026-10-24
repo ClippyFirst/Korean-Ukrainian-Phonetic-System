@@ -16,6 +16,10 @@ The service is intentionally modelled on the functional architecture of the Chin
 
 The Korean visual identity uses South Korean national colours: Taegeuk red #CD2E3A and Taegeuk blue #0047A0.
 
+## Source-backed practical-engine edge cases
+
+The practical adapter preserves the NIKL-attested lexical length in the exact form `수많은[수ː마는]` at the IPA boundary and exposes the second accepted NIKL surface for `멋있어` when the primary surface is itself attested. Generated IPA and Ukrainian alternatives remain subject to review. [Implementation and verification status](docs/ENGINE-IMPROVEMENTS-SOURCE-BACKED-2026-10-24.md).
+
 ## Sentence-level adversarial corpus
 
 The system page now publishes a five-line running-text test corpus that stresses complex-coda liaison, coda neutralization, fortition, palatalization, the particle `의`, and the contracted form `설명했어요`. The regression fixture and tests keep the normative Korean surface form separate from the provisional Ukrainian target.
