@@ -91,8 +91,9 @@ test('IPA vowel length remains visible in IPA and is explicitly explained when o
   assert.deepEqual(traced.features, [{
     ipa: 'ː',
     offset: 1,
-    handling: 'omitted-from-ukrainian-target',
-    note: 'довгота збережена в IPA; український запис не має окремого знака довготи'
+    feature: 'vowel-length',
+    handling: 'preserved-in-ipa-not-rendered-in-ukrainian-target',
+    note: 'Довгота збережена в IPA; окремого знака довготи в практичному українському записі немає.'
   }]);
   assert.equal(traced.unknown, '');
   assert.equal(ipaSyllableToUkrainian('aː').text, 'а', 'target spelling stays unchanged');
@@ -103,7 +104,7 @@ test('the visible IPA trace renders non-orthographic feature handling rather tha
   const app = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   const ipaEngine = readFileSync(new URL('../src/app/engine_ipa.js', import.meta.url), 'utf8');
   assert.ok(app.includes('const featureTrace=(mappingResult.features||[])'));
-  assert.ok(ipaEngine.includes('довгота збережена в IPA'));
+  assert.ok(ipaEngine.includes('Довгота збережена в IPA'));
 });
 
 
