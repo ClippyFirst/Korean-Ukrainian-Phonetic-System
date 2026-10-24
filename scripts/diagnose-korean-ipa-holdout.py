@@ -93,7 +93,7 @@ def run(output: Path | None = None) -> dict:
             distance = min((levenshtein(norm_surface, candidate) for candidate in normalized_readings), default=None)
             rule_counts = Counter(item.get('rule_id', 'UNKNOWN') for item in rules)
             for rule_id, count in rule_counts.items(): rule_summary[f'{name}:{rule_id}'] += count
-            engines[name] = {'available': True, 'surface_hangul': surface, 'normalized_surface_hangul': norm_surface, 'surface_comparator_exact': exact, 'surface_comparator_min_edit_distance': distance, 'ipa': ipa, 'ipa_status': ipa_status, 'pronunciation_status': value.get('pronunciation_status'), 'unresolved_contexts': value.get('unresolved_contexts', []), 'rule_trace': rules, 'rule_ids': sorted(rule_counts)}
+            engines[name] = {'available': True, 'morphology_mode': value.get('morphology_mode'), 'surface_hangul': surface, 'normalized_surface_hangul': norm_surface, 'surface_syllables': value.get('surface_syllables', value.get('surface_syllables', [])), 'surface_comparator_exact': exact, 'surface_comparator_min_edit_distance': distance, 'ipa': ipa, 'ipa_variants': value.get('ipa', {}).get('variants', []), 'ipa_status': ipa_status, 'pronunciation_status': value.get('pronunciation_status'), 'unresolved_contexts': value.get('unresolved_contexts', []), 'rule_trace': rules, 'rule_ids': sorted(rule_counts)}
             if name == 'native_strict':
                 row['_native_strict_surface_exact'] = exact
                 row['_native_strict_distance'] = distance
