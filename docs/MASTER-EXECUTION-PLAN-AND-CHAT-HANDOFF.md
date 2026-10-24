@@ -918,3 +918,12 @@ The engine ranking is not statistically resolved by this sample: a 10,000-replic
 - **BLOCKED:** independent Ukrainian target review is still required to decide whether the current neutralization is acceptable or whether a separately versioned target notation should preserve selected distinctions. No gold accuracy claim is made.
 
 - The feature trace is exported from the public engine entry point as `traceIpaMapping`; the new regression also scans all lexical IPA syllables for mapped feature markers.
+
+
+## Exact-head verification follow-up — 2026-10-24
+
+- A repository-side static scan of the current lexical IPA inventory examined 1,680 syllable strings across 643 CSV rows. The current longest-match table mapped all scanned IPA syllables (0 unknowns); it encountered 113 aspirated-token, 323 fortis-token, and 150 unreleased-stop marker occurrences for which the new trace should report target-layer neutralization. This is a source scan, not a substitute for executing the committed tests.
+- First browser integration run after the feature-loss patch: 1,222 passed, 3 failed. One failure was an existing test's missing import of ipaTargetForSource; two were stale source-register expectations (the exact-form NIKL Q&A entry had increased rows from 103 to 104 and review-required records from 99 to 100). Both causes were confirmed in workflow logs and corrected on the branch. The new source remains rights-review-required.
+- **Current acceptance state: PARTIAL / CI_PENDING.** Rerun workflow 40119430374 and associated current-head workflows were queued at the latest check; no pass is claimed for the corrected head until these complete. Local clone remains blocked by outbound DNS to github.com.
+- Prior code-equivalent head 7feecec040bb15c79dd843e598ac92e7dc882d4b passed tests, browser integration, system verification, master/research artifact checks, paired benchmark, multi-engine benchmark and external UGTPHON diagnostic (runs 40114235652, 40114235661, 40114235705, 40114235740, 40114235725, 40114235676, 40114235643). That evidence predates the new feature-loss trace and its tests.
+- Next action: wait for exact-head workflows, inspect any new failure logs, repair and rerun; do not merge PR #305 while required checks are queued or failing.
