@@ -315,6 +315,45 @@ def _type_cluster_delta_ci(
     }
 
 
+def _profile_type_cluster_delta_ci(
+    paired: list[dict[str, Any]], profile: str, replicates: int = 10_000, seed: int = 20261026
+) -> dict[str, Any]:
+    """Bootstrap g2pk-minus-native exact-match delta by lexical type for a named profile."""
+    by_type: dict[str, list[dict[str, Any]]] = collections.defaultdict(list)
+    for row in paired:
+        by_type[str(row["token"])].append(row)
+    type_stats = []
+    for group in by_type.values():
+        type_stats.append((
+            len(group),
+            sum(normalize_ipa_profile(str(row["gold"]), profile) == normalize_ipa_profile(str(row[NATIVE]["ipa"]), profile) for row in group),
+            sum(normalize_ipa_profile(str(row["gold"]), profile) == normalize_ipa_profile(str(row[G2PK]["ipa"]), profile) for row in group),
+        ))
+    if len(type_stats) < 2:
+        return {"method": "lexical-type cluster bootstrap", "replicates": 0, "unique_types": len(type_stats), "ci_95": None}
+    rng = random.Random(seed)
+    deltas: list[float] = []
+    for _ in range(replicates):
+        sample = [rng.choice(type_stats) for _ in range(len(type_stats))]
+        denominator = sum(item[0] for item in sample)
+        native_exact = sum(item[1] for item in sample)
+        g2pk_exact = sum(item[2] for item in sample)
+        if denominator:
+            deltas.append(100 * (g2pk_exact - native_exact) / denominator)
+    deltas.sort()
+    return {
+        "method": "lexical-type cluster bootstrap; occurrence-weighted rate within sampled types",
+        "seed": seed,
+        "replicates": len(deltas),
+        "unique_types": len(type_stats),
+        "ci_95": [
+            round(deltas[int((len(deltas) - 1) * 0.025)], 6),
+            round(deltas[int((len(deltas) - 1) * 0.975)], 6),
+        ] if deltas else None,
+        "warning": "Sensitivity interval only; it does not jointly cluster by sentence row and lexical type.",
+    }
+
+
 def summarize_report(report: dict[str, Any], type_bootstrap_replicates: int = 10_000) -> dict[str, Any]:
     audit = report.get("native_g2pk_pairwise_audit")
     if not isinstance(audit, dict) or not isinstance(audit.get("occurrences"), list):
@@ -403,6 +442,15 @@ def summarize_report(report: dict[str, Any], type_bootstrap_replicates: int = 10
             profile: {
                 NATIVE: _profile_metrics(paired, NATIVE, profile),
                 G2PK: _profile_metrics(paired, G2PK, profile),
+                "g2pk_minus_native_exact_delta_pp": round(
+                    100 * (
+                        _profile_metrics(paired, G2PK, profile)["exact_match_rate"]
+                        - _profile_metrics(paired, NATIVE, profile)["exact_match_rate"]
+                    ), 6
+                ),
+                "type_cluster_bootstrap_delta_ci": _profile_type_cluster_delta_ci(
+                    paired, profile, replicates=type_bootstrap_replicates
+                ),
             }
             for profile in (LEGACY_PROFILE, BROAD_PROFILE)
         },
