@@ -21,14 +21,13 @@
     "reviewerRecruitmentStatus": "OPEN_NO_VERIFIED_SUBMISSIONS",
     "externalTextSearch": {
       "checkedAt": "2026-10-25",
-      "scope": "Targeted public text-source searches to supplement the existing repository audit; excluded PDF/audio discovery and inspection in this pass.",
+      "scope": "Targeted public text-page searches; PDF/audio sources were excluded from evidence review. A PDF result surfaced in general search output but was not opened or used.",
       "sourcesAdded": [
         "https://www.gugak.go.kr/ency/topic/view/947",
         "https://encykorea.aks.ac.kr/Article/E0000867",
-        "https://www.korean.go.kr/common/download.do%3Bfront%3D502A18DED158F4EE2EB44635ECE7B987?c_file_name=d0d8ab58-23ac-41ce-9bd5-405970002d1c.pdf&file_path=reportData&o_file_name=%EA%B5%AC%EB%AC%B8+%EB%B0%8F+%EB%AC%B4%ED%98%95+%EB%8C%80%EC%9A%A9%EC%96%B4+%EB%B3%B5%EC%9B%90+%EB%A7%90%EB%AD%AD%EC%B9%98+%EC%97%B0%EA%B5%AC+%EB%B6%84%EC%84%9D_%EC%B5%9C%EC%A2%85%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf",
         "https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001912604"
       ],
-      "outcome": "Search found authoritative descriptions of Korean interjections and spoken-language fillers, supporting a new working hypothesis that the tail 유유유 may be non-lexical/expressive vocalization or transcription noise. No source specifically identifies this exact utterance, so intent remains unverified and no lexical/phonological output is accepted."
+      "outcome": "Official cultural source supports the existence/category of 칭칭이소리; authoritative Korean-language descriptions support that interjections and fillers are a valid general category. No exact-form evidence resolves the remaining uncertainty."
     }
   },
   "policy": [
@@ -104,11 +103,6 @@
           "url": "https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001912604",
           "claim": "A KCI-indexed study of Korean textbook dialogue describes short verbal/non-verbal listener responses, including 감탄형 간투사 and laughter or tongue-clicking.",
           "scope": "Supports that Korean conversational discourse includes short affective/backchannel and non-lexical-like responses; not direct evidence for this exact token."
-        },
-        {
-          "url": "https://www.korean.go.kr/common/download.do%3Bfront%3D502A18DED158F4EE2EB44635ECE7B987?c_file_name=d0d8ab58-23ac-41ce-9bd5-405970002d1c.pdf&file_path=reportData&o_file_name=%EA%B5%AC%EB%AC%B8+%EB%B0%8F+%EB%AC%B4%ED%98%95+%EB%8C%80%EC%9A%A9%EC%96%B4+%EB%B3%B5%EC%9B%90+%EB%A7%90%EB%AD%AD%EC%B9%98+%EC%97%B0%EA%B5%AC+%EB%B6%84%EC%84%9D_%EC%B5%9C%EC%A2%85%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf",
-          "claim": "An NIKL corpus annotation report has a dedicated section on annotating interjections in spoken Korean and notes that frequent forms such as 뭐 can be confused with other grammatical categories without context.",
-          "scope": "Supports context-sensitive handling of conversational material; it does not identify 유유유 or prove this string is a filler."
         }
       ],
       "productionChange": "No lexical correction or pronunciation output. Preserve the raw input and present a low-confidence classification hypothesis: possible expressive vocalization/filler/transcription noise. Do not normalize to ㅠㅠㅠ, 우우우, or another form without original context.",
@@ -116,7 +110,7 @@
       "acceptanceCriterion": "Obtain the original message/audio or adjacent turns. If no context can be recovered, retain the raw string, mark the tail as an unresolved expressive/non-lexical candidate, and abstain from lexical morphology, source phonology and Ukrainian rendering.",
       "externalTextSearch": {
         "checkedAt": "2026-10-25",
-        "scope": "Public text search for exact string plus authoritative Korean descriptions of interjections and spoken-language annotation; no PDF/audio discovery or inspection was performed in this pass.",
+        "scope": "Public text-page search for the exact string and authoritative online descriptions of interjections; PDF/audio sources excluded from evidence review. A PDF result surfaced in general search output but was not opened or used.",
         "result": "General references support the category of filler/interjection/non-lexical conversational material, but no exact-form evidence was found.",
         "status": "HYPOTHESIS_PLAUSIBLE_NOT_CONFIRMED"
       }
