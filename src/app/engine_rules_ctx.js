@@ -3,7 +3,7 @@
  */
 import {
   COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
-  NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -17,6 +17,14 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     if(a.type!=='hangul'||b.type!=='hangul')continue;
     const rules=ruleSets[i];
     const nextRules=ruleSets[i+1];
+    let wordStart=i;
+    while(wordStart>0&&units[wordStart-1].type==='hangul')wordStart--;
+    let wordEnd=i;
+    while(wordEnd<units.length&&units[wordEnd].type==='hangul')wordEnd++;
+    const currentWord=units.slice(wordStart,wordEnd).map(unit=>unit.char).join('');
+    const exactMorphPair=a.char+'>'+b.char;
+    const exactR002Pair=NIKL_13_14_FORMAL_LIAISON_FORMS.get(currentWord);
+    const exactR002Licensed=exactR002Pair===exactMorphPair;
 
     if(a.coda==='ㄼ'&&b.onset!=='ㅇ'){
       if(a.char==='밟'){a.coda='ㅂ';rules.push('lexical-coda-balm');}
@@ -24,6 +32,15 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     }
 
     if(['ㄷ','ㅌ','ㄾ'].includes(a.coda)&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
+      const exactR007Pair=NIKL_17_FORMAL_I_FORMS.get(currentWord);
+      if(exactR007Pair===exactMorphPair){
+        const originalCoda=a.coda;
+        a.coda=originalCoda==='ㄾ'?'ㄹ':'';
+        b.onset=originalCoda==='ㄷ'?'ㅈ':'ㅊ';
+        rules.push('palatalization-§17-exact-form');
+        nextRules.push('palatalization-§17-exact-form');
+        continue;
+      }
       if(softOn&&trySoftFormal(a,b,rules,nextRules,{COMPLEX,FINAL_REPRESENTATIVE})){
         continue;
       }
@@ -55,27 +72,52 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
         continue;
       }
       if(['ㅎ','ㄶ','ㅀ'].includes(a.coda)){
-        a.__hDeletionUnlicensed='left';
-        b.__hDeletionUnlicensed='right';
-        rules.push('h-deletion-requires-morphology');
-        nextRules.push('h-deletion-requires-morphology');
-        continue;
+        let wordStart=i;
+        while(wordStart>0&&units[wordStart-1].type==='hangul')wordStart--;
+        let wordEnd=i;
+        while(wordEnd<units.length&&units[wordEnd].type==='hangul')wordEnd++;
+        const currentWord=units.slice(wordStart,wordEnd).map(unit=>unit.char).join('');
+        const exactR003Pair=NIKL_12_H_DELETION_FORMS.get(currentWord);
+        const currentPair=a.char+'>'+b.char;
+        if(exactR003Pair===currentPair){
+          a.coda=a.coda==='ㅎ'?'':a.coda==='ㄶ'?'ㄴ':'ㄹ';
+          rules.push('h-deletion-§12(4)-exact-form');
+        }else{
+          a.__hDeletionUnlicensed='left';
+          b.__hDeletionUnlicensed='right';
+          rules.push('h-deletion-requires-morphology');
+          nextRules.push('h-deletion-requires-morphology');
+          continue;
+        }
       }
       const pair=COMPLEX[a.coda];
       if(pair&&!['ㄶ','ㅀ'].includes(a.coda)){
-        a.__complexLiaisonUnlicensed='left';
-        b.__complexLiaisonUnlicensed='right';
-        rules.push('complex-coda-liaison-requires-morphology');
-        nextRules.push('complex-coda-liaison-requires-morphology');
-        continue;
+        if(exactR002Licensed){
+          a.coda=pair[0];
+          if(pair[1]){b.onset=pair[1];b.__liaison=true;}
+          rules.push('complex-coda-liaison-exact-form-formal');
+        }else{
+          a.__complexLiaisonUnlicensed='left';
+          b.__complexLiaisonUnlicensed='right';
+          rules.push('complex-coda-liaison-requires-morphology');
+          nextRules.push('complex-coda-liaison-requires-morphology');
+          continue;
+        }
       }else if(!pair&&a.coda!=='ㅎ'&&a.coda!=='ㅇ'&&
                representative(a.coda)!==a.coda&&
                ['ㅏ','ㅓ','ㅗ','ㅜ','ㅟ'].includes(b.vowel)){
-        a.__substantiveLiaisonUnlicensed='left';
-        b.__substantiveLiaisonUnlicensed='right';
-        rules.push('substantive-morpheme-liaison-requires-morphology');
-        nextRules.push('substantive-morpheme-liaison-requires-morphology');
-        continue;
+        if(exactR002Licensed){
+          b.onset=a.coda;
+          b.__liaison=true;
+          a.coda='';
+          rules.push('liaison-exact-form-formal');
+        }else{
+          a.__substantiveLiaisonUnlicensed='left';
+          b.__substantiveLiaisonUnlicensed='right';
+          rules.push('substantive-morpheme-liaison-requires-morphology');
+          nextRules.push('substantive-morpheme-liaison-requires-morphology');
+          continue;
+        }
       }else if(pair){
         a.coda=pair[0];
         if(pair[1]){b.onset=pair[1];b.__liaison=true;}
@@ -108,11 +150,27 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     }else if(a.coda&&b.onset==='ㅎ'){
       const pair=COMPLEX[a.coda];
       if(pair){
-        a.__complexHAspirationUnlicensed='left';
-        b.__complexHAspirationUnlicensed='right';
-        rules.push('complex-coda-h-aspiration-requires-morphology');
-        nextRules.push('complex-coda-h-aspiration-requires-morphology');
-        continue;
+        const exactR004Pair=NIKL_COMPLEX_H_SUFFIX_FORMS.get(currentWord);
+        if(['ㄺ','ㄵ','ㄼ'].includes(a.coda)&&exactR004Pair===exactMorphPair){
+          const aspirated=ASPIRATION[pair[1]]||ASPIRATION[representative(pair[1])];
+          if(aspirated){
+            a.coda=pair[0];
+            b.onset=aspirated;
+            rules.push('complex-coda-h-aspiration-exact-form');
+          }else{
+            a.__complexHAspirationUnlicensed='left';
+            b.__complexHAspirationUnlicensed='right';
+            rules.push('complex-coda-h-aspiration-requires-morphology');
+            nextRules.push('complex-coda-h-aspiration-requires-morphology');
+            continue;
+          }
+        }else{
+          a.__complexHAspirationUnlicensed='left';
+          b.__complexHAspirationUnlicensed='right';
+          rules.push('complex-coda-h-aspiration-requires-morphology');
+          nextRules.push('complex-coda-h-aspiration-requires-morphology');
+          continue;
+        }
       }else{
         const aspirated=a.coda==='ㅈ'?'ㅊ':(ASPIRATION[a.coda]||ASPIRATION[rep]);
         if(aspirated){

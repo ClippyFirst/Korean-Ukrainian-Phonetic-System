@@ -564,8 +564,8 @@ def test_nikl_section_24_exact_form_licenses_render_correct_surface_ipa():
 def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
     from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
 
-    strict = phoneticize_korean("수많은")
-    soft = phoneticize_korean("수많은", morphology_mode="soft")
+    strict = phoneticize_korean("많아보임")
+    soft = phoneticize_korean("많아보임", morphology_mode="soft")
     assert strict["pronunciation_status"] == "unresolved"
     assert soft["pronunciation_status"] == "provisional"
     trace = next(rule for rule in soft["rules"] if rule["rule_id"] == "R003")
@@ -573,7 +573,7 @@ def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
     assert trace["source"] == "soft-heuristic-morphology"
     assert soft["ipa_is_diagnostic_only"] is False
 
-    target = transliterate_korean("수많은", morphology_mode="soft")
+    target = transliterate_korean("많아보임", morphology_mode="soft")
     assert target["morphology_mode"] == "soft"
     assert target["ipa_status"] == "provisional"
 
@@ -593,3 +593,45 @@ def test_cli_does_not_silently_ignore_soft_mode_for_decomposition():
 
     with pytest.raises(ValueError, match="only with mode='transliterate'"):
         _result("좋아", "decompose", morphology_mode="soft")
+
+
+def test_nikl_exact_r003_forms_resolve_h_deletion_without_opening_a_productive_heuristic():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    # NIKL official exact-form evidence: 싫어서 [시러서] and 수많은 [수ː마는].
+    # The source validates Korean surface behavior only; it is not IPA or
+    # Ukrainian-output gold, and unrelated forms must remain fail-closed.
+    expected_surfaces = {"싫어서": (1, "ㄹ"), "수많은": (2, "ㄴ"), "많아서": (1, "ㄴ")}
+    for form, (syllable_index, expected_onset) in expected_surfaces.items():
+        result = phoneticize_korean(form)
+        r003 = [rule for rule in result["rules"] if rule["rule_id"] == "R003"]
+        assert any(rule["changed"] for rule in r003), form
+        # After ㅎ deletion, the retained ㄹ/ㄴ resyllabifies onto the next
+        # vowel-initial syllable in the surface representation.
+        assert result["surface_syllables"][syllable_index]["onset"] == expected_onset, form
+
+    unlicensed = phoneticize_korean("많아보임")
+    assert not any(rule["rule_id"] == "R003" and rule["changed"] for rule in unlicensed["rules"])
+
+
+def test_new_exact_form_abstention_recovery_batch_resolves_only_named_pairs():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    cases = {
+        "좃같아서": ("R002", "같>아"),
+        "없을듯": ("R002", "없>을"),
+        "괜찮아보이는디": ("R003", "찮>아"),
+        "많을거같이": ("R003", "많>을"),
+        "많이본": ("R003", "많>이"),
+        "알잖아아침에": ("R003", "잖>아"),
+        "좋아보인다고": ("R003", "좋>아"),
+        "좋아해주는": ("R003", "좋>아"),
+        "개같이못하고": ("R007", "같>이"),
+    }
+    for form, (rule_id, pair) in cases.items():
+        result = phoneticize_korean(form)
+        assert not any(context.get("rule_id") == rule_id and context.get("pair") == pair for context in result.get("unresolved_contexts", [])), (form, result.get("unresolved_contexts"))
+        assert result.get("pronunciation_status") != "unresolved", (form, result.get("unresolved_contexts"))
+    for form, rule_id in (("많이봄", "R003"), ("좋을거같이", "R007")):
+        result = phoneticize_korean(form)
+        assert any(context.get("rule_id") == rule_id for context in result.get("unresolved_contexts", [])), form

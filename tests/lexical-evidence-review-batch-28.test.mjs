@@ -34,8 +34,9 @@ test('몇으로 keeps its Korean surface, project IPA, and provisional Ukrainian
 
 test('batch 28 updates the live backlog without rewriting historical batch-27 counts', () => {
   const unreviewed = sources.filter(row => row.review_status === 'unverified_lexical_citation_inventory_2026-10-22');
-  assert.equal(unreviewed.length, 17);
+  assert.equal(unreviewed.length, 16, 'live backlog reflects the later review of Q&A 326978');
   assert.match(report, /43\/60/);
+  assert.match(report, /17.*13 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
   assert.match(report, /28 direct target-form \/ official-rule-example attestations, 1 official dictionary attestation, 9 partial, 5 contextual-example-only/u);
   assert.match(report, /17.*13 Q&A\/FAQ pages, one Korean Basic Dictionary entry, and three NIKL-hosted PDFs/su);
   assert.match(report, /14.*13 Q&A\/FAQ \+ one dictionary entry/su);

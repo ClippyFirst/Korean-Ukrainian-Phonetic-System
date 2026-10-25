@@ -1,3 +1,14 @@
+# One-pass continuation — source-backed Korean abstention recovery — 2026-10-25
+
+- **Branch:** fix/source-backed-r003-exact-forms-2026-10-25; based on main commit 4a3f39b1df682dac0254db917d867405deee71fb.
+- **Verified code/test head:** 66532e78eb75042e6b958c5e5bf313adf7e0f244. The final documentation/source-register follow-up is a separate commit and does not change runtime logic.
+- **Implementation:** 19 new exact-form R002 formal-liaison licenses, nine new R003 ㅎ-deletion licenses, and one R004 complex-coda + ㅎ-suffix license; mirrored across Python and browser strict engines. Added regression tests for positive forms and negative controls.
+- **Source evidence:** registered NIKL FAQ 8391 for 없음[업씀], reconciled Q&A 326978 (있- + -었-) and Q&A 306166 (two accepted 멋있어 variants), and registered Korean Basic Dictionary entry 긁히다 / 긁혀[글켜] for the R004 environment. Direct Hangul evidence is not IPA or Ukrainian-target gold.
+- **Verification passed:** Python regression/data integrity and browser regression/build in Verify run [40216156212](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156212); full test matrix including Python 3.11, 3.12, 3.13, wheel install and web tests in [40216156229](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156229); multi-engine benchmark [40216156253](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156253); external UGTPHON diagnostic [40216156302](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156302).
+- **Measured result:** 2,688/2,703 scored, 1,425 exact, CER 9.1757%, 99.4451% coverage, 15 unresolved occurrences, zero engine errors. Relative to the previous three-form baseline: 30 fewer abstentions, 13 more exact matches, CER improves by 0.0253 percentage points. Confidence intervals overlap; do not claim a robust accuracy gain.
+- **Remaining unresolved:** 좃같아서, 괜찮아보이는디, 많을거같이, 많이본, 없을듯, 칡칡이, 못잃어, 알잖아아침에, 쫒아내면, 많앗구나유유유, 삶의, 개같이못하고, 좋아보인다고, 무서웟어, 좋아해주는. They remain fail-closed due compact phrase boundaries, likely spelling errors, uncertain lexical morphology, or independent IPA adjudication.
+- **Status:** PARTIAL, not release-ready. Korean surface coverage is materially better; independent broad-IPA gold, Ukrainian target gold, and remaining source/morphology adjudication are still outstanding.
+
 ## Korean native-engine error analysis and post-fix benchmark — 2026-10-24
 
 ### Task ledger
@@ -1151,7 +1162,7 @@ The final documentation successor will record these exact-head results; because 
 
 ### Root cause, not a runtime failure
 
-The pinned UGTPHON Korean test split contains 2,703 eligible token occurrences. Native strict mode scores 2,655 and abstains on 48 occurrences across 47 unique forms, with zero engine exceptions. The contexts are morphology-conditioned: R002 liaison/neutralization (25 contexts), R003 ㅎ-coda deletion (20), R007 palatalization (2), R004 complex-coda + ㅎ aspiration (1), and one independent IPA-adjudication block. The context counts sum to 49 because one occurrence has two unresolved contexts.
+Historical pre-recovery baseline: the pinned UGTPHON Korean test split contains 2,703 eligible token occurrences. Native strict mode scored 2,655 and abstained on 48 occurrences across 47 unique forms, with zero engine exceptions. The contexts are morphology-conditioned: R002 liaison/neutralization (25 contexts), R003 ㅎ-coda deletion (20), R007 palatalization (2), R004 complex-coda + ㅎ aspiration (1), and one independent IPA-adjudication block. The context counts sum to 49 because one occurrence has two unresolved contexts.
 
 The strict/soft and boundary-gated comparison already exists in the repository; its artifact is run [40191515056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056). Strict scores 53.1827% exact / 9.1883% CER at 98.2242% coverage. Soft scores 53.0818% exact / 9.1868% CER at 99.0381% coverage. MeCab boundary-gated scores 53.1063% exact / 9.1927% CER at 98.8531% coverage; Kiwi boundary-gated scores 53.1086% exact / 9.1984% CER at 98.7791% coverage. The paired strict/soft subset has unchanged exact/CER metrics. This evidence does not support changing strict default: reducing abstentions alone does not demonstrate higher accuracy.
 
@@ -1188,7 +1199,7 @@ Release classification remains **software-verified research prototype / partial 
 
 ### Findings and measured behavior
 
-The 48 strict-mode abstentions on UGTPHON are **fail-closed unresolved contexts, not runtime errors**: 48 occurrences across 47 unique forms. Context counts are R002 liaison/neutralization (25), R003 ㅎ-coda deletion (20), R007 palatalization (2), R004 complex-coda + ㅎ aspiration (1), and one independent IPA-adjudication blocker. These total 49 contexts because `많을거같이` contains two unresolved contexts.
+At the pre-recovery checkpoint, the 48 strict-mode abstentions on UGTPHON were **fail-closed unresolved contexts, not runtime errors**: 48 occurrences across 47 unique forms. Context counts are R002 liaison/neutralization (25), R003 ㅎ-coda deletion (20), R007 palatalization (2), R004 complex-coda + ㅎ aspiration (1), and one independent IPA-adjudication blocker. These total 49 contexts because `많을거같이` contains two unresolved contexts.
 
 Existing strict/soft and boundary-gated results are from the pinned research artifact [40191515056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056); the strict/soft benchmark was reused, not duplicated:
 
@@ -1270,7 +1281,7 @@ Release classification remains **software-verified research prototype / partial 
 - Added exact-form NIKL surface evidence records for `멋있어` (Q&A 306166), `싫어서` (Q&A 313981), and `수많은` (Korean Basic Dictionary entry 71144). All remain `SOURCE_FOUND_PENDING_IPA`; none supplies independent broad IPA or Ukrainian target gold.
 - Browser G2P runtime now uses the exact source readings `싫어서 → 시러서` and `수많은 → 수마는`; the exact dictionary form `수많은` retains `ː` in the inspectable IPA trace. The alternate `멋있어` surface is exposed only when the main surface matches one of the two NIKL-attested forms and the alternate target mapping is fully supported; the generated alternative is `lexical-review`, not gold. No source-Hangul-to-Ukrainian shortcut was added.
 - Native strict 48-case abstention count is not changed by these browser-only corrections. Do not report it as resolved; the 14-case queue still needs independent broad-IPA review and separate Ukrainian target review.
-- Source register count is now 109. Rights audit: 105 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `NOT_APPLICABLE_RECORDED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`. Human item-level rights review remains open for 107 records.
+- At this earlier checkpoint the source register had 109 rows (105 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `NOT_APPLICABLE_RECORDED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`); this count is superseded by the continuation update below.
 - Current implementation branch: `fix/nikl-surface-abstention-corrections-2026-10-25`. Exact-head CI pending; no local test run is claimed. Keep the strict native default unchanged.
 
 ## Final continuation — source queue, browser corrections, and mainline verification (2026-10-25)
@@ -1279,8 +1290,8 @@ Release classification remains **software-verified research prototype / partial 
 - PR #320 merged as `e7d8ad8371df4b19674b0e05be2dddcf5ad65f92`. Exact-head browser G2P integration [40207971356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40207971356), tests/wheel/Python matrix [40207971370](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40207971370), system verification [40207971359](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40207971359), and research-artifact generation [40207971388](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40207971388) all passed. Post-merge mainline checks on `e7d8ad8...` also passed Python/browser/system and wheel checks; the Pages deployment workflow is running its post-deploy browser smoke.
 - Source-backed browser corrections now cover seven exact forms: the previous five plus `싫어서 → 시러서` (NIKL Q&A 313981) and `수많은 → 수마는` (NIKL Korean Basic Dictionary 71144). The exact dictionary form preserves `ː` in inspectable IPA. For `멋있어`, the other NIKL-attested surface may be exposed only when the primary surface is itself one of the two cited variants and the alternative IPA-to-target mapping is fully supported; the generated variant remains `lexical-review`, not gold. The pipeline remains Hangul → surface reading → IPA → target; no direct Hangul-to-Ukrainian override was added.
 - The existing 14-form R002/R003 source queue is now on mainline, with three cases `SOURCE_FOUND_PENDING_IPA` (`멋있어`, `싫어서`, `수많은`) and eleven still lacking exact-form source evidence. Queue: `research/r002-r003-source-adjudication-2026-10-24.json`; review protocol: `docs/R002-R003-SOURCE-ADJUDICATION-AND-HOLDOUT-2026-10-24.md`.
-- Native strict abstention remains 48 occurrences/47 unique forms; this was not reduced by browser corrections. Soft heuristic and analyzer consensus remain opt-in diagnostics (26 and 19 unresolved occurrences respectively), with no demonstrated exact-match accuracy improvement. Strict remains the default. See `docs/NATIVE-ABSTENTION-AUDIT-2026-10-25.md` and the reconciled `docs/KOREAN-ERROR-ANALYSIS-2026-10-24.md`.
-- Source registry now has 109 rows: 105 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `NOT_APPLICABLE_RECORDED`, and 1 `ITEM_LEVEL_LICENSE_RECORDED`. 107 item-level rights decisions remain open. The official live NIKL inventory crawl was HTTP 403 on the dedicated research branch and is `BLOCKED_EXTERNAL_ACCESS`; a skipped crawl in non-`research/nikl-` workflows is not a pass.
+- At this earlier mainline checkpoint native strict mode had 48 abstentions/47 unique forms. PR #328 subsequently reduces the code-equivalent benchmark to six unresolved forms while preserving strict default behavior; the exact-head benchmark and source limits are documented below. Soft heuristic and analyzer consensus remain opt-in diagnostics.
+- At this earlier mainline checkpoint the source registry had 109 rows; PR #328 adds four source records across the recovery work, bringing the current branch to 113 rows (109 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `NOT_APPLICABLE_RECORDED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`). The official live NIKL inventory crawl remains `BLOCKED_EXTERNAL_ACCESS`; a skipped crawl is not a pass.
 - PR #307 was closed unmerged as superseded by the newer self-contained renderer on mainline. PR #304's source queue and adjudication protocol have been ported; close it only after the error-analysis status reconciliation in the current docs PR is merged. PR #305 remains open for a separate broad-IPA normalization/score-causality audit; its large, diverged branch was not merged wholesale. The 24-form holdout membership is recovered and integrity-verified, but historical origin remains partial, IPA gold is absent, and Ukrainian target gold is absent.
 
 ## Follow-up — preserve lexical length in the target feature trace (2026-10-25)
@@ -1297,3 +1308,50 @@ Release classification remains **software-verified research prototype / partial 
 - The live smoke acceptance now permits either (a) accepted Ukrainian output, or (b) a substantial candidate shown in the separate visible candidate panel with the explicit provisional label/status. It still requires substantial IPA, practical-mode identification, and zero browser exceptions; it fails if the provisional panel is empty or mislabeled. The smoke-contract regression protects this distinction.
 - This is not a relaxation of linguistic acceptance: provisional output is never reclassified as accepted output. The mainline deployment after this change must still pass its live smoke; until then deployment verification remains pending.
 
+
+
+## Korean abstention recovery continuation — 2026-10-25
+
+- The latest pre-batch exact-head benchmark (run https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216452439) scored 2,688/2,703, exact 1,425, CER 9.1757%, 15 unresolved, zero engine errors. This is baseline, not the result of the new batch.
+- PR #328 adds nine narrow exact-form/pair recoveries in both Python and browser engines. NIKL Q&A 327454 directly confirms 같이 [가치] under Rule 17; the two R007 licenses are restricted to 많을거같이 and 개같이못하고. Other entries are form-scoped applications of existing NIKL rules, not direct full-token source attestations.
+- Intentionally withheld: 칡칡이 (uncertain reduplicated morphology), 못잃어 (phrase-level boundary), 쫒아내면 / 많앗구나유유유 / 무서웟어 (no silent spelling repair), and 삶의 (independent IPA adjudication). Exact-head CI and multi-engine artifact must complete before the batch is marked verified.
+- Source registry: 113 rows; 109 item-level rights reviews remain REVIEW_REQUIRED.
+
+
+## Verified status after exact-form recovery batch — 2026-10-25 17:46 UTC
+
+- Branch `fix/source-backed-r003-exact-forms-2026-10-25`, PR #328; latest head `8629906353b4062ccade013b151441a34651d05b`.
+- Nine source-scoped recoveries are implemented across R002/R003/R007 in Python and browser strict engines. NIKL Q&A 327454 directly confirms 같이 [가치]; all other new licenses remain exact full-form + adjacent-pair derivations, not direct attestations of every noisy token.
+- Full test workflow passed on the latest head: Python 3.11/3.12/3.13, browser suite/build, wheel install. System verification passed Python data integrity and browser regression/build. Master table/research artifact validation and external UGTPHON diagnostic passed. Official live NIKL inventory remained skipped due the existing access limitation.
+- Completed multi-engine run on the code-equivalent head `723497ab18a9c71c9d25b1e3055ebe2fdfc3e2a8` reported 2,697/2,703 scored, 1,429 exact, CER 9.1725%, six unresolved, zero engine errors. The latest-head benchmark rerun remains in progress; do not mark it complete until its artifact is published.
+- Remaining strict unresolved forms: `칡칡이` (reduplicated morphology unverified), `못잃어` (phrase-level boundary and variable ㄴ-insertion), `쫒아내면` (nonstandard spelling is not silently corrected), `많앗구나유유유` and `무서웟어` (likely spelling errors not normalized), and `삶의` (official source gives variants but independent IPA/target adjudication remains required).
+- Source register: 112 rows; 108 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `NOT_APPLICABLE_RECORDED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`. No rights decisions were inferred from source citations.
+
+
+- Additional residual evidence: NIKL's 2022 language-use survey discusses variable ㄴ-insertion responses in the 못 잃어 phrase family, but its surfaced percentage table is for 못 잇는다 only. Source registered as `SRC-NIKL-USAGE-SURVEY-2022`; no variant or frequency is inferred for the exact token 못잃어.
+
+
+## Repository-local NIKL skills applied to current evidence batch — 2026-10-25
+
+- Applied `.agents/skills/nikl-evidence-audit/SKILL.md` and `.agents/skills/nikl-rule-coverage/SKILL.md` to the active abstention-recovery PR. The review distinguishes direct NIKL surface attestation, exact-form rule derivation, project IPA, and Ukrainian target; no source reading was promoted to IPA/target gold.
+- Applied the evidence-scope inventory from `docs/LEXICAL-EVIDENCE-REVIEW-BATCH-28-2026-10-22.md` to correct a stale skill catalog: current reviewed inventory is 43/60, with 17 citation-only/unreviewed. The count is for the 60-item lexical citation audit, not the full source-register size or the item-level rights audit. Updated the contract test so this documentation drift fails CI.
+- Updated existing `research/RULE-COVERAGE.csv` rows R002/R003/R004/R007 in place to reflect the new finite licenses and their limits. Applied the rule-coverage skill's assertion-quality gate by adding output-layer checks in `tests/test_ugtphon_abstention_recovery.py`: source-attested Korean surfaces (`없음`, `싫어서`, `수많은`, `많아서`), actual `같>이` palatalized onset/coda, and the narrow complex-H coda/onset structure. Browser tests independently assert exact Korean surface for the directly attested R003 forms. Exact-head tests passed on `3da5e4deea9dcfb305a5f61dcb0bb4630380cd3b`. These checks validate Korean surface/structure only, not broad IPA or Ukrainian target gold.
+- No live NIKL crawl was retried: the official endpoint's recorded HTTP 403 remains an explicit blocker under the crawler skill. No access-control bypass or rights assumption was introduced.
+
+
+## Final exact-head verification — 2026-10-25 17:54 UTC
+
+- Latest verified code/test head: `3da5e4deea9dcfb305a5f61dcb0bb4630380cd3b`; PR #328 remains open and unmerged.
+- The exact-head full test suite, Python/browser system verification, master table/research validation, paired native-vs-g2pk, morphology consensus, research adapter smoke, external UGTPHON diagnostic, and multi-engine benchmark all passed. The official live NIKL inventory job remains skipped because the live collector is blocked by HTTP 403.
+- Strict native benchmark: 2,697/2,703 scored, 1,429 exact, CER 9.1725%, six unresolved, zero engine errors. Baseline before this batch was 2,688 scored, 1,425 exact, CER 9.1757%, 15 unresolved. The gain is nine additional scored cases and four exact matches; the CER difference is small and does not prove global accuracy.
+- Remaining unresolved cases and criteria: `칡칡이` — independently establish reduplicated morphology; `못잃어` — implement explicit phrase-boundary/variant handling backed by usage evidence; `쫒아내면`, `많앗구나유유유`, `무서웟어` — no silent spelling repair; `삶의` — represent the official surface variants and obtain independent IPA/target adjudication. None should be forced into a single output merely to reduce the counter.
+- Current source register: 113 rows; 109 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `NOT_APPLICABLE_RECORDED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`. Live NIKL inventory access remains blocked; rights review remains open.
+
+
+## Skill-gated output verification checkpoint — 2026-10-25 17:54 UTC
+
+- Added output-layer assertions after reviewing the test suite against `.agents/skills/nikl-rule-coverage/SKILL.md`. Exact-head tests and Python/browser system verification passed on `3da5e4deea9dcfb305a5f61dcb0bb4630380cd3b` (see runs [40218462136](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40218462136) and [40218462072](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40218462072)).
+- Official NIKL evidence directly confirms `싫어서[시러서]` (Q&A 313981), `많아서[마ː나서]` (Q&A 334550), and `같이[가치]` (Q&A 306624 / 327454); the Korean Basic Dictionary directly lists `수많은[수ː마는]`. Browser and Python checks assert Korean surface forms/structure without promoting bracket notation to IPA gold.
+- Current UGTPHON diagnostic on this head: native 2,697/2,703 scored, 1,429 exact, CER 9.1725%, 6 unresolved, 0 errors; pre-batch baseline was 2,688 scored, 1,425 exact, CER 9.1757%, 15 unresolved. Paired g2pk: 2,703 scored, 1,435 exact, CER 9.2285%. This batch gains 9 scored cases and 4 exact matches; CER improvement is small and does not prove global accuracy. Diagnostic [40218462070](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40218462070).
+- The separate SIGMORPHON diagnostic is not interchangeable with the UGTPHON split: native 997/999 scored, 357 exact, CER 14.7037%; g2pk 999/999 scored, 353 exact, CER 14.8222%. Paired exact delta native-minus-g2pk is about +0.401 percentage points on the 997 shared cases; paired CER delta native-minus-g2pk is about -0.113 points. This is a diagnostic benchmark only, not an official NIKL gate or IPA-to-Ukrainian score. [Run 40218462123](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40218462123).
+- Next acceptance criteria: specialist adjudication for unlisted morphology and independent broad-IPA/Ukrainian-target review. Keep the live NIKL inventory marked `BLOCKED_EXTERNAL_ACCESS` (HTTP 403); no access-control bypass was attempted.

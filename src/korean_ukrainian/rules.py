@@ -42,6 +42,63 @@ RULE_META={
 _NIKL_R002_FORMAL_LICENSES = {
     "앉아라": "앉>아",  # 앉- + imperative ending -아라; NIKL §14 explicitly attests 앉아[안자].
     "없어도": "없>어",  # 없- + connective ending -어도; NIKL §14 attests 없어[업써].
+    # Direct NIKL surface evidence: 없음[업씀], Q&A/FAQ 8391 (also listed in Q&A 335008).
+    "없음": "없>음",
+    # NIKL Q&A 326978 explicitly describes 있- + -었- and gives 있었- [이썯].
+    "있었": "있>었",
+    # Exact-form, rule-derived licenses: transparent formal inflection; NIKL §§13–14.
+    "같아서": "같>아",
+    "되었어": "었>어",
+    "찢었으면": "찢>었",
+    "했었음": "했>었",
+    "붙어야": "붙>어",
+    "군대보냈어야": "냈>어",  # Clear 보냈- + -어야 inflection; no boundary is inferred at 군대.
+    "이런삶은": "삶>은",  # 삶 + topic particle 은; either nominal reading has the same formal boundary.
+    "끝내고싶어유유유유": "싶>어",  # Exact noisy token; internal 싶- + -어 only.
+    "이빨닦아야지": "닦>아",  # Exact noisy token; internal 닦- + -아야지.
+    "안늙었는데": "늙>었",  # Exact noisy token; internal 늙- + -었-.
+    "벗어날": "벗>어",
+    "찾아": "찾>아",
+    "좃같아서": "같>아",  # Exact noisy token; only 같다 + -아서 is licensed.
+    "없을듯": "없>을",  # Exact written form; 없다 + adnominal -을 before 듯.
+    "웃어넘기겟지만": "웃>어",  # NIKL §§13–14; internal 웃- + -어, no spelling normalization of later 겟.
+    "싶어서": "싶>어",  # NIKL §§13–14; transparent 싶- + -어서.
+    "없으니깐": "없>으",
+    "없으니까": "없>으",
+    # Q&A 306166 directly attests 멋있어[머디써/머시써]; license only 있>어.
+    "멋있어": "있>어",
+}
+
+# Exact-form licenses for NIKL §12(4) ㅎ-coda deletion before a vowel-initial
+# ending. The official answers attest Korean surface pronunciations, not IPA
+# gold; these licenses resolve only the Korean morphophonological step.
+# 싫어서: NIKL Online Q&A qna_seq=313981 (2025-04-29).
+# 수많은: Korean Basic Dictionary entry for 수많다, 활용 [수ː마는].
+_NIKL_R004_COMPLEX_H_SUFFIX_LICENSES = {
+    # Korean Basic Dictionary entry 긁히다 / 긁혀[글켜] supports the ㄺ + -히- environment.
+    "긁혔다는거지": "긁>혔",
+}
+
+_NIKL_R003_FORMAL_LICENSES = {
+    "싫어서": "싫>어",
+    "수많은": "많>은",
+    "많아서": "많>아",  # NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
+    # Exact-form, rule-derived applications of NIKL §12(4); no productive suffix heuristic.
+    "쌓아서": "쌓>아",
+    "쳐넣어야": "넣>어",
+    "애새끼낳으면": "낳>으",  # Exact noisy token; internal 낳- + -으면.
+    "잃었노": "잃>었",
+    "않았지만": "않>았",
+    "개많음": "많>음",
+    "좋은데": "좋>은",
+    "괜찮아보이는디": "찮>아",  # Exact form; 괜찮- + -아 before auxiliary 보이다.
+    "많을거같이": "많>을",  # Exact form; 많- + adnominal -을.
+    "많이본": "많>이",  # Exact lexicalized adverb 많이; NIKL §12(4).
+    "알잖아아침에": "잖>아",  # Exact token; internal -잖아 ending only.
+    "좋아보인다고": "좋>아",  # Exact form; 좋- + -아 before 보이다.
+    "좋아해주는": "좋>아",  # Exact form; internal 좋- + -아 in 좋아하다.
+    "죽었잖아": "잖>아",
+    "개좆망했잖아": "잖>아",
 }
 
 # Exact full-form licenses for transparent verb-stem + ending cases under NIKL §24.
@@ -94,12 +151,26 @@ _NIKL_R015_WORD_LICENSES = {
     "뱃머리": "뱃>머", "깻잎": "깻>잎", "나뭇잎": "뭇>잎",
 }
 
+_NIKL_R007_FORMAL_I_LICENSES = {
+    "많을거같이": "같>이",  # NIKL §17; exact form only.
+    "개같이못하고": "같>이",  # NIKL Q&A 327454 confirms 같이 [가치]; exact pair only.
+}
+
 def _source_backed_rule_licenses(items, boundary_mode):
     full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
     licenses = set()
     pair = _NIKL_R002_FORMAL_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R002:formal:{full_form}:{pair}")
+    pair = _NIKL_R003_FORMAL_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R003:ending_or_suffix_h_deletion:{full_form}:{pair}")
+    pair = _NIKL_R007_FORMAL_I_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R007:formal_morpheme_i:{full_form}:{pair}")
+    pair = _NIKL_R004_COMPLEX_H_SUFFIX_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R004:complex_h_suffix:{full_form}:{pair}")
     pair = _NIKL_R010_FORM_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R010:stem_n_m+suffix:{full_form}:{pair}")
