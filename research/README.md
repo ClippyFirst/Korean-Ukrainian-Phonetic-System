@@ -59,3 +59,5 @@ This branch is based on `fix/ipa-review-source-blinding-20261025` (PR #329) so t
 - Explicit spelling suggestions for `쫒아내면` and `무서웟어` are integrated into the web UI and require user selection; sources are visible beside candidates.
 
 Fresh exact-head CI for this stacked branch is the acceptance gate. Independent qualified reviewer submissions and the subsequent Ukrainian target review remain external blockers.
+
+Current pull request: [#335](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/335), based on `main`; source-blinding implementation is reused from PR #329 and is not intended as a second runtime feature.
