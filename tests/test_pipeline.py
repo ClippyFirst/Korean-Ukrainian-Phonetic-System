@@ -104,6 +104,18 @@ def test_ipa_tokenizer_accepts_length_marks_in_lexical_pronunciations():
 
 
 
+def test_provisional_lexical_target_never_leaks_as_accepted_orthography():
+    from korean_ukrainian.pipeline import transliterate_korean
+
+    result = transliterate_korean("못잃어")
+    assert result["lexical_target_reference_status"] == "provisional"
+    assert result["ukrainian_orthography"] is None
+    assert result["target_status"] == "unavailable"
+    assert result["target_unavailable_reason"] == "provisional_lexical_target_requires_review"
+    assert result["candidate_orthography"]
+    assert result["candidate_status"] == "provisional"
+
+
 def test_python_transliteration_uses_ipa_derived_target_and_keeps_lexical_target_as_reference():
     from korean_ukrainian.pipeline import transliterate_korean, render_sequence
     for word, expected_reference, expected_reference_status in (

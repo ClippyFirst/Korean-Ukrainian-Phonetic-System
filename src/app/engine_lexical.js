@@ -47,10 +47,13 @@ export function lexicalResult(text,entry){
     return d?`${ch}[${d.onset}+${d.vowel}${d.coda?'+'+d.coda:''}]`:ch;
   }).join(' · ');
   const targetReview=entry.target_status==='provisional'||mappedTargets.some(item=>item.status==='provisional');
+  const candidateOnly=entry.input_kind==='variant-aware-research'&&entry.target_status==='provisional';
   return {
     source:text,
     surfaceHangul:entry.surface_hangul||'',
-    ukrainian:targets.join('')+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
+    ukrainian:candidateOnly?'':targets.join('')+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
+    candidate_ukrainian:candidateOnly?targets.join(''):null,
+    candidate_status:candidateOnly?'provisional':null,
     ipa:ipas.join(' '),
     analysis:analysis+' → lexical',
     variants:(()=>{
@@ -76,7 +79,9 @@ export function lexicalResult(text,entry){
         :targetReview
           ?['lexical-pronunciation','ukrainian-target-provisional']
           :['lexical-pronunciation'],
-      output:targets[i],
+      output:candidateOnly?'':targets[i],
+      candidateOutput:candidateOnly?targets[i]:null,
+      candidateStatus:candidateOnly?'provisional':null,
       ipa:ipas[i]
     })),
     issues:targetIssues,

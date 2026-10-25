@@ -46,7 +46,7 @@ test('every lexical row has valid provenance, explicit confidence/status, and al
     assert.match(row.source_url, officialSource, row.input + ': source must be the official NIKL domain');
     assert.equal(row.confidence, 'high', row.input + ': confidence must be explicit');
     assert.ok(['model-selected', 'provisional', 'surface-only'].includes(row.target_status), row.input + ': invalid target_status');
-    assert.ok(['', 'mixed-script'].includes(row.input_kind), row.input + ': unknown input_kind');
+    assert.ok(['', 'mixed-script', 'variant-aware-research'].includes(row.input_kind), row.input + ': unknown input_kind');
     assert.ok([...row.surface_hangul].every((char) => /[가-힣]/u.test(char)), row.input + ': surface must contain Hangul syllables only');
     const syllables = [...row.surface_hangul].length;
     assert.equal(row.target_syllables.split('|').length, syllables, row.input + ': Ukrainian target alignment');
