@@ -18,7 +18,15 @@
     },
     "note": "The earlier 45-case count belongs to an earlier commit. This register describes the five remaining linguistic cases after source-backed rule licenses and the variant-aware 못잃어 entry. CI success verifies implementation and build contracts, not independent phonetic correctness.",
     "reviewerRecruitmentIssue": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337",
-    "reviewerRecruitmentStatus": "OPEN_NO_VERIFIED_SUBMISSIONS"
+    "reviewerRecruitmentStatus": "OPEN_NO_VERIFIED_SUBMISSIONS",
+    "externalTextSearch": {
+      "checkedAt": "2026-10-25",
+      "scope": "Targeted public text-source searches to supplement the existing repository audit; excluded PDF/audio discovery and inspection in this pass.",
+      "sourcesAdded": [
+        "https://www.gugak.go.kr/ency/topic/view/947"
+      ],
+      "outcome": "One authoritative text source supports the existence and cultural category of 칭칭이소리, but none of the three remaining uncertainties is resolved by this search."
+    }
   },
   "policy": [
     "Do not clear strict-mode abstention by silently correcting source spelling.",
@@ -37,11 +45,22 @@
           "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
           "claim": "The search-index snippet and extracted PDF text layer disagree. The PDF text layer reads 칭칭이 and cites 이소라, 양산의 민요 (1992), p. 180. Other passages in the same volume also use 칭칭이 as a folk-song/refrain label and cite pp. 184–185.",
           "scope": "Supports only a plausible source-specific transcription correction candidate. The exact heading at p. 180 has not been visually inspected; no lexical meaning or morphology for the isolated input 칡칡이 is established."
+        },
+        {
+          "url": "https://www.gugak.go.kr/ency/topic/view/947",
+          "claim": "The National Gugak Center encyclopedia entry for 칭칭이소리 lists 칭칭이 among the song's alternate names and describes it as a folk song associated with Gyeongsang-do.",
+          "scope": "Independent text-only contextual evidence that 칭칭이 is a real folk-song label; it does not establish that the isolated input 칡칡이 refers to this song or verify the disputed source heading."
         }
       ],
       "productionChange": "Opt-in UI candidate 칭칭이 only when the folk-song source context is relevant; no silent rewrite, no pronunciation attributed to original 칡칡이, and no new production rule.",
       "whyNotResolved": "The page image could not be fetched, the cited print source/audio was not inspected, and the user's isolated token may have a different origin. Repetition-looking spelling does not establish 칡+칡+이 segmentation.",
-      "acceptanceCriterion": "Visually inspect the exact PDF page and compare against 이소라, 양산의 민요 (1992), p. 180 or rights-cleared field audio/notes. Only after confirming the source form may the occurrence be classified as an OCR/corpus transcription error. If the user's form has a different origin, find an exact lexical source before analyzing morphology."
+      "acceptanceCriterion": "Visually inspect the exact PDF page and compare against 이소라, 양산의 민요 (1992), p. 180 or rights-cleared field audio/notes. Only after confirming the source form may the occurrence be classified as an OCR/corpus transcription error. If the user's form has a different origin, find an exact lexical source before analyzing morphology.",
+      "externalTextSearch": {
+        "checkedAt": "2026-10-25",
+        "scope": "Public text-index search for exact 칡칡이 and related 칭칭이 terms; no PDF/audio discovery or inspection performed in this pass.",
+        "result": "No reliable text-only source found that identifies the isolated string 칡칡이. Official cultural reference confirms the candidate label 칭칭이소리 exists, but source identity remains unverified.",
+        "status": "BLOCKED_SOURCE_VERIFICATION"
+      }
     },
     {
       "input": "쫒아내면",
@@ -76,7 +95,13 @@
       ],
       "productionChange": "UI preserves three separately labelled candidates: 많았구나유유유 (spelling only), 많았구나 ㅠㅠㅠ (spelling plus emoticon/tokenization hypothesis), and 많앗구나 유유유 (spacing hypothesis). No candidate is automatically applied.",
       "whyNotResolved": "The probable spelling correction is not proof of the user's intended spelling or whether the repeated ending is lexical, expressive, or a tokenization artifact.",
-      "acceptanceCriterion": "Obtain the original message context or user-confirmed segmentation. Keep candidate selection separate from the original input and run the confirmed Korean span through the IPA-first pipeline only."
+      "acceptanceCriterion": "Obtain the original message context or user-confirmed segmentation. Keep candidate selection separate from the original input and run the confirmed Korean span through the IPA-first pipeline only.",
+      "externalTextSearch": {
+        "checkedAt": "2026-10-25",
+        "scope": "Public text-index searches for exact 많앗구나유유유, 많았구나유유유, 많았구나 유유유, and contextual 유유유 / ㅠㅠㅠ usage.",
+        "result": "No indexed source was found for the exact concatenated input. Search results show 유유유 can occur independently in unrelated contexts, which does not identify the intended segmentation here.",
+        "status": "BLOCKED_CONTEXT"
+      }
     },
     {
       "input": "삶의",
@@ -130,6 +155,12 @@
         "countVerified": 0,
         "publicIssuePolicy": "No candidate IPA or source citations; preserve independent first-pass review.",
         "nextAction": "Obtain two qualified independent packet submissions; validate queue fingerprint and reviewer qualifications; reconcile only after both are frozen."
+      },
+      "externalTextSearch": {
+        "checkedAt": "2026-10-25",
+        "scope": "Public text-index search for an exact IPA transcription of 삶의 and sal.mɰi.",
+        "result": "No independent text source was found that supplies a case-specific IPA gold transcription. NIKL's [살믜]/[살메] remains official Hangul surface notation only; the existing CSV candidates remain provisional.",
+        "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
       }
     },
     {
