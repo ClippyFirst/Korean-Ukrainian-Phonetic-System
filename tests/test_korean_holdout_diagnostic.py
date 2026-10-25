@@ -35,7 +35,12 @@ def test_holdout_diagnostic_covers_frozen_manifest():
     assert report["status"] == "DIAGNOSTIC_ONLY_NOT_GOLD_NOT_FOR_TUNING"
     assert report["tuningUseProhibited"] is True and len(report["cases"]) == 24
     assert len({row["caseId"] for row in report["cases"]}) == 24
-    assert all(row["engines"]["native_strict"]["available"] for row in report["cases"])
+    native_failures = [
+        {"caseId": row["caseId"], "input": row["input"], "error": row["engines"]["native_strict"].get("error")}
+        for row in report["cases"]
+        if not row["engines"]["native_strict"]["available"]
+    ]
+    assert not native_failures, json.dumps(native_failures, ensure_ascii=False)
     assert all("ipaGold" not in row and "ukrainianGold" not in row for row in report["cases"])
     assert all(row["comparatorType"].endswith("not IPA gold") for row in report["cases"])
     assert all(isinstance(row["engines"]["native_strict"]["ipa_variants"], list) for row in report["cases"])
