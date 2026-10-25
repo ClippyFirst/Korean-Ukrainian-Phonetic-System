@@ -197,4 +197,5 @@ test('main browser conversion withholds provisional orthography and exposes a se
   assert.equal(result.target_status, 'unavailable');
   assert.equal(result.candidate_ukrainian, 'ві');
   assert.equal(result.candidate_status, 'provisional');
+  assert.equal(result.trace[0].candidateOutput, 'ві');
 });
