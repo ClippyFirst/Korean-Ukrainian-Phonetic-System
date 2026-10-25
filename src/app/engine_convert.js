@@ -324,9 +324,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // Unchanged general forms stay empty so lexical vs general remains distinguishable.
   // A single Hangul token with unresolved morphology must not expose a
   // partial IPA string or a plausible-looking partial Ukrainian transcription.
-  // Keep the trace and diagnostics for research, but fail closed at the public
-  // result boundary. Phrase conversion still preserves surrounding resolved
-  // words because the phrase path recursively converts each token.
+  // A phrase containing any provisional target also has no complete accepted
+  // orthography: withhold the whole public result and return the complete,
+  // separately labelled candidate. Research traces retain per-token detail.
   const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
   const provisionalCandidateAvailable=/[가-힣]/u.test(text)&&status!=='unresolved'&&trace.some(item=>item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review');
   const target_status=unresolvedWholeHangulToken||!hasHangulSyllables

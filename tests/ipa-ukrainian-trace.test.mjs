@@ -203,3 +203,14 @@ test('main browser conversion withholds provisional target output and exposes on
   assert.equal(result.trace[0].output, '');
   assert.equal(result.trace[0].targetReason, 'provisional_mapping_requires_review');
 });
+ 
+test('a phrase with a provisional target withholds partial output but preserves the complete candidate', () => {
+  const engine = createEngine(canonicalCsv, lexicalCsv);
+  const result = engine.convert('가 의!');
+  assert.equal(result.ukrainian, '');
+  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.candidate_status, 'provisional');
+  assert.ok(result.candidate_ukrainian.includes('ий'));
+  assert.ok(result.candidate_ukrainian.includes('!'));
+  assert.ok(result.candidate_ukrainian.includes(' '));
+});
