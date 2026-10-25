@@ -44,6 +44,11 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
   ['찢었으면','찢>었'], // NIKL §§13–14, verb stem + past ending.
   ['했었음','했>었'], // NIKL §§13–14, transparent inflectional sequence.
   ['붙어야','붙>어'], // NIKL §§13–14, 붙- + -어야.
+  ['군대보냈어야','냈>어'], // Exact noisy token; only internal 보냈- + -어야.
+  ['이런삶은','삶>은'], // 삶 + topic particle 은; formal boundary.
+  ['끝내고싶어유유유유','싶>어'], // Exact noisy token; only internal 싶- + -어.
+  ['이빨닦아야지','닦>아'], // Exact noisy token; only internal 닦- + -아야지.
+  ['안늙었는데','늙>었'], // Exact noisy token; only internal 늙- + -었-.
   ['벗어날','벗>어'], // NIKL §§13–14, 벗- + -어.
   ['찾아','찾>아'], // NIKL §§13–14, 찾- + -아.
   ['없으니깐','없>으'], // Exact noisy form; no productive ending heuristic.
@@ -58,6 +63,7 @@ const NIKL_12_H_DELETION_FORMS=new Map([
   ['많아서','많>아'], // NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
   ['쌓아서','쌓>아'], // NIKL §12(4), 쌓- + -아서.
   ['쳐넣어야','넣>어'], // NIKL §12(4), 넣- + -어야 in compound verb.
+  ['애새끼낳으면','낳>으'], // Exact noisy token; only internal 낳- + -으면.
   ['잃었노','잃>었'], // NIKL §12(4), 잃- + -었-; colloquial ending.
   ['않았지만','않>았'], // NIKL §12(4), 않- + -았-.
   ['개많음','많>음'], // NIKL §12(4), 많- + nominalizer -음.
