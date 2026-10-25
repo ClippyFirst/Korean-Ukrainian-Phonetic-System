@@ -191,13 +191,15 @@ test('provisional IPA target is withheld by default and remains inspectable as a
 });
 
 
-test('main browser research conversion labels provisional output as a candidate', () => {
+test('main browser conversion withholds provisional target output and exposes only a labelled candidate', () => {
   const engine = createEngine(jamoCsv, lexicalCsv);
   const result = engine.convert('의', { morphologyMode: 'strict' });
-  assert.equal(result.ukrainian, 'ий');
-  assert.equal(result.target_status, 'provisional');
+  assert.equal(result.ukrainian, '');
+  assert.equal(result.target_status, 'unavailable');
   assert.equal(result.candidate_ukrainian, 'ий');
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.trace[0].candidateOutput, 'ий');
-  assert.equal(result.trace[0].output, 'ий');
+  assert.equal(result.trace[0].candidateStatus, 'provisional');
+  assert.equal(result.trace[0].output, '');
+  assert.equal(result.trace[0].targetReason, 'provisional_mapping_requires_review');
 });

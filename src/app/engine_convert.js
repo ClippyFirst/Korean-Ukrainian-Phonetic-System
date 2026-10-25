@@ -268,12 +268,14 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const targetCandidateText=targetMapping.tokens.map(token=>token.ukrainian).join('');
     const provisionalTarget=targetMapping.status==='provisional';
     const targetFromIpa={
-      text:targetCandidateText,
+      // A provisional correspondence is candidate-only. Keep it in the trace,
+      // but do not let it enter the public orthography output buffer.
+      text:provisionalTarget?'':targetCandidateText,
       candidateText:provisionalTarget?targetCandidateText:null,
-      unknown:targetMapping.unknown,
-      status:targetMapping.status,
+      unknown:provisionalTarget?'provisional_mapping_requires_review':targetMapping.unknown,
+      status:provisionalTarget?'unavailable':targetMapping.status,
       candidateStatus:provisionalTarget?'provisional':null,
-      reason:targetMapping.reason
+      reason:provisionalTarget?'provisional_mapping_requires_review':targetMapping.reason
     };
     if(targetFromIpa.unknown || targetFromIpa.status==='unavailable'){
       issues.push(u.char+': IPA target mapping unavailable ('+(targetFromIpa.reason||'unmapped_ipa_sequence')+'): '+(targetFromIpa.unknown||'(empty IPA)'));
