@@ -3,9 +3,9 @@
 ## Current state
 
 - PR #336: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/336
-- Current branch head at this update: d1a431a3ae39a92497088e206e792b7c8fcfa34f.
+- Current branch head at this update: df24a840e6da9e59cd22ccaec9a845f11b6b4fe2 (latest commit is documentation-only).
 - Previous full benchmark baseline remains run 40238222133, artifact 12616575071, executable head ff14ec72e3167d9268f1348f399abb155098caee.
-- Latest exact-head benchmark run: [40239817889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40239817889), in progress at handoff. Latest full test run [40239817458](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40239817458) is queued. Do not claim the latest changes are verified until these runs complete.
+- Latest benchmark run covering the current implementation code: [40239856395](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40239856395), SHA 89d5e55c573a33e39302bbebc2da061fa679284b, in progress. Full tests for that code SHA [40239856407](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40239856407) are queued. The later commit df24a840e6da9e59cd22ccaec9a845f11b6b4fe2 changes documentation only. Do not claim the latest code changes are verified until these runs complete.
 
 ## New implementation
 
