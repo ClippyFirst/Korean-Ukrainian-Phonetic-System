@@ -50,7 +50,7 @@ test('IPA adapter is the only source of Ukrainian targets for representative IPA
   assert.equal(ipaSyllableToUkrainian('💥').unknown, '💥');
 });
 
-test('every unique Hangul token in the integrated NIKL passage has Ukrainian output reproducible from its runtime IPA', () => {
+test('every unique Hangul token in the integrated NIKL passage has an accepted output or a traceable IPA-derived candidate', () => {
   const tokens = [...new Set(corpus.match(/[가-힣]+/gu) || [])];
   const failures = [];
   const unresolved = [];
