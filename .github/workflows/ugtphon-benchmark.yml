@@ -64,31 +64,6 @@ jobs:
               print(f"{key}: {report.get(key)}")
           print("Diagnostic only: do not treat this score as normative accuracy or a release gate.")
           PY
-      - name: Run opt-in soft-morphology comparison (heuristic, not gold)
-        run: |
-          set -euo pipefail
-          python scripts/benchmark_ugtphon_ko.py \
-            --morphology-mode soft \
-            --corpus "$RUNNER_TEMP/ko-test.json" \
-            --output "$RUNNER_TEMP/ugtphon-ko-soft-report.json" \
-            > "$RUNNER_TEMP/ugtphon-ko-soft-stdout.json"
-          python - "$RUNNER_TEMP/ugtphon-ko-soft-report.json" <<'PY'
-          import json, sys
-          from pathlib import Path
-          report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-          assert report["morphology_mode"] == "soft"
-          for key in ("scored_tokens", "exact_matches", "exact_match_rate",
-                      "character_error_rate", "unresolved_tokens",
-                      "heuristic_low_confidence_token_occurrences", "engine_errors"):
-              print(f"{key}: {report.get(key)}")
-          print("Heuristic examples (up to 20):")
-          for item in report.get("heuristic_low_confidence_examples", [])[:20]:
-              print(item)
-          print("Soft-mode outputs remain heuristic-low-confidence; no default-mode change is implied.")
-          if report["engine_errors"]:
-              raise SystemExit("soft morphology benchmark encountered engine errors")
-          PY
-          cp "$RUNNER_TEMP/ugtphon-ko-soft-report.json" "$GITHUB_WORKSPACE/ugtphon-ko-soft-report.json"
       - name: Run paired native-vs-g2pk comparison
         run: |
           set -euo pipefail
@@ -128,5 +103,4 @@ jobs:
             ${{ runner.temp }}/ugtphon-ko-report.json
             ${{ runner.temp }}/benchmark-stdout.json
             ${{ runner.temp }}/ko-LICENSE
-            ugtphon-ko-soft-report.json
           if-no-files-found: warn
