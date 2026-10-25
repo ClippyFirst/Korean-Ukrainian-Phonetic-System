@@ -77,7 +77,9 @@ test('§2–§3 every standard onset–vowel combination survives the generic en
       const result = genericEngine.convert(syllable);
       assert.equal(result.issues.length, 0, syllable + ': unexpected unresolved issue');
       assert.ok(result.ipa.length > 0, syllable + ': missing IPA');
-      assert.ok(result.ukrainian.length > 0, syllable + ': missing Ukrainian target');
+      const visibleTarget=result.ukrainian||result.candidate_ukrainian||'';
+      assert.ok(visibleTarget.length > 0, syllable + ': missing Ukrainian output/candidate');
+      if(result.target_status==='unavailable') assert.equal(result.candidate_status,'provisional',syllable+': unavailable target must be labelled candidate-only');
       assert.ok(!result.ukrainian.includes('⟦'), syllable + ': unresolved output placeholder');
       assert.ok(!result.ipa.includes('undefined'), syllable + ': invalid IPA serialization');
     }

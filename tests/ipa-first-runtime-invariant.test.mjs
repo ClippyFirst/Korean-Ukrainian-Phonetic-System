@@ -57,21 +57,23 @@ test('every unique Hangul token in the integrated NIKL passage has an accepted o
 
   for (const token of tokens) {
     const result = engine.convert(token);
-    if (result.status === 'unresolved' || !result.ipa || /[⟦⟧]/u.test(result.ukrainian)) {
-      unresolved.push({ token, status: result.status, ipa: result.ipa, ukrainian: result.ukrainian, issues: result.issues });
+    const runtimeTarget=result.ukrainian||result.candidate_ukrainian||'';
+    if (result.status === 'unresolved' || !result.ipa || /[⟦⟧]/u.test(runtimeTarget) || !runtimeTarget) {
+      unresolved.push({ token, status: result.status, target_status:result.target_status, ipa: result.ipa, ukrainian: result.ukrainian, candidate_ukrainian:result.candidate_ukrainian, issues: result.issues });
       if (!expectedMorphologyGaps.has(token)) failures.push({ token, kind: 'unexpected-unresolved', status: result.status, ipa: result.ipa, ukrainian: result.ukrainian, issues: result.issues });
       if (result.ipa !== '' || result.ukrainian !== '') failures.push({ token, kind: 'unresolved-output-not-withheld', status: result.status, ipa: result.ipa, ukrainian: result.ukrainian });
       continue;
     }
 
     const adapted = ipaTargetForSource(token, result.ipa, {allowProvisional:true});
-    if (adapted.unknown || adapted.text !== result.ukrainian) {
+    if (adapted.unknown || adapted.text !== runtimeTarget) {
       failures.push({
         token,
         kind: 'ipa-target-divergence',
         status: result.status,
         ipa: result.ipa,
         runtimeUkrainian: result.ukrainian,
+        candidateUkrainian:result.candidate_ukrainian,
         adapterUkrainian: adapted.text,
         unknownIpa: adapted.unknown,
         issues: result.issues,
@@ -115,13 +117,15 @@ test('every Hangul-only lexical entry and licensed alternate is reproducible fro
   for (const row of rows) {
     const result = engine.convert(row.input);
     const adapted = ipaTargetForSource(row.input, result.ipa, {allowProvisional:true});
-    if (result.status === 'unresolved' || adapted.unknown || adapted.text !== result.ukrainian) {
+    const runtimeTarget=result.ukrainian||result.candidate_ukrainian||'';
+    if (result.status === 'unresolved' || !runtimeTarget || adapted.unknown || adapted.text !== runtimeTarget) {
       failures.push({
         input: row.input,
         kind: 'primary',
         status: result.status,
         ipa: result.ipa,
         runtimeUkrainian: result.ukrainian,
+        candidateUkrainian:result.candidate_ukrainian,
         adapterUkrainian: adapted.text,
         unknownIpa: adapted.unknown,
         issues: result.issues,
