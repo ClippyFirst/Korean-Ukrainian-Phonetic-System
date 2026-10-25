@@ -68,7 +68,7 @@ The answer accepts both `멋있어[머디써]` and `멋있어[머시써]`. The e
 
 ## Form-scoped rule derivations — additional abstention batch
 
-The new exact-form licenses for `같아서`, `되었어`, `찢었으면`, `했었음`, `붙어야`, `벗어날`, `찾아`, `싶어서`, `없으니까`, `없으니깐`, `군대보냈어야`, `이런삶은`, `끝내고싶어유유유유`, `이빨닦아야지`, `안늙었는데`, `쌓아서`, `쳐넣어야`, `애새끼낳으면`, `잃었노`, `않았지만`, `개많음`, `좋은데`, `죽었잖아`, and `개좆망했잖아` are **form-scoped rule derivations**, not a claim that every complete input is directly listed by NIKL. They apply §§12(4), 13–14 only at the named pair. The source-backed implementation remains strict for unlisted forms and preserves independent IPA/Ukrainian acceptance gates.
+The new exact-form licenses for `같아서`, `되었어`, `찢었으면`, `했었음`, `붙어야`, `벗어날`, `찾아`, `싶어서`, `없으니까`, `없으니깐`, `군대보냈어야`, `이런삶은`, `끝내고싶어유유유유`, `이빨닦아야지`, `안늙었는데`, `쌓아서`, `쳐넣어야`, `애새끼낳으면`, `잃었노`, `않았지만`, `개많음`, `좋은데`, `죽었잖아`, and `개좆망했잖아` are **form-scoped rule derivations**, not a claim that every complete input is directly listed by NIKL. They apply §§12(4), 13–14 only at the named pair. The R002 license for 웃어넘기겟지만 applies only to the internal 웃>어 boundary in the compound verb; it does not normalize the later spelling 겟. The source-backed implementation remains strict for unlisted forms and preserves independent IPA/Ukrainian acceptance gates.
 
 ## Case G — 긁히다 / 긁혔 (complex ㄺ + ㅎ-suffix environment)
 
