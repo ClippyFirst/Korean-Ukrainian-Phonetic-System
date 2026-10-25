@@ -57,9 +57,12 @@ def _metrics(scored: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def evaluate(rows: list[dict[str, Any]], *, morphology_mode: str = "strict") -> dict[str, Any]:
     # Deliberately imported here so the native engine is exercised at its public API.
+    from collections import Counter
     from korean_ukrainian.pipeline import phoneticize_korean
+    if morphology_mode not in {"strict", "soft"}:
+        raise ValueError('morphology_mode must be "strict" or "soft"')
     from korean_ukrainian.phonology import parse_syllables
     from korean_ukrainian.ipa import realize_syllables
     from g2pk import G2p
@@ -73,6 +76,9 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     errors_g2pk = 0
     skipped = 0
     details: list[dict[str, Any]] = []
+    unresolved_audit: list[dict[str, Any]] = []
+    unresolved_context_counts: Counter[str] = Counter()
+    unresolved_words: set[str] = set()
 
     for row in rows:
         for token in row["tokens"]:
@@ -91,9 +97,20 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
             g2pk_error = None
 
             try:
-                result = phoneticize_korean(word)
+                result = phoneticize_korean(word, morphology_mode=morphology_mode)
                 if result.get("pronunciation_status") == "unresolved":
                     unresolved_native += 1
+                    unresolved_words.add(word)
+                    contexts = result.get("unresolved_contexts", [])
+                    for context in contexts:
+                        key = f"{context.get('rule_id', 'UNKNOWN')}:{context.get('reason', 'unspecified')}"
+                        unresolved_context_counts[key] += 1
+                    unresolved_audit.append({
+                        "id": row["id"], "token": word, "gold": gold,
+                        "native_status": result.get("pronunciation_status"),
+                        "native_reason": result.get("ipa_status_reason"),
+                        "unresolved_contexts": contexts,
+                    })
                 else:
                     native_item = _score_prediction(result["ipa"]["ipa"], gold)
                     native_item.update({"id": row["id"], "token": word, "gold": gold})
@@ -143,12 +160,24 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     paired_g2pk = _metrics([x["g2pk"] for x in paired])
     return {
         "benchmark": "UGTPHON Korean test split",
+        "morphology_mode": morphology_mode,
         "purpose": "paired diagnostic comparison; not normative accuracy or release gate",
         "dataset_rows": len(rows),
         "scorable_hangul_tokens_attempted": len(native_scored) + unresolved_native + errors_native,
         "skipped_tokens": skipped,
         "native_engine": {
-            **native_metrics, "unresolved_tokens": unresolved_native, "engine_errors": errors_native,
+            **native_metrics, "unresolved_tokens": unresolved_native, "unique_unresolved_words": len(unresolved_words),
+            "engine_errors": errors_native,
+            "coverage": round(len(native_scored) / (len(native_scored) + unresolved_native + errors_native), 6)
+                if (len(native_scored) + unresolved_native + errors_native) else None,
+            "coverage_adjusted_exact_match_rate": round(native_metrics["exact_matches"] / (len(native_scored) + unresolved_native + errors_native), 6)
+                if (len(native_scored) + unresolved_native + errors_native) else None,
+        },
+        "native_abstention_audit": {
+            "occurrence_count": unresolved_native,
+            "unique_words": len(unresolved_words),
+            "context_counts": dict(sorted(unresolved_context_counts.items())),
+            "occurrences": unresolved_audit,
         },
         "g2pk": {
             **g2pk_metrics, "unresolved_tokens": 0, "engine_errors": errors_g2pk,
@@ -184,11 +213,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corpus", type=Path, default=os.environ.get("UGTPHON_KO_TEST_PATH"))
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--morphology-mode", choices=["strict", "soft"], default="strict",
+                        help="strict abstains without exact morphology licenses; soft permits explicitly low-confidence heuristic licenses")
     args = parser.parse_args()
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH")
     try:
-        report = evaluate(load_corpus(Path(args.corpus)))
+        report = evaluate(load_corpus(Path(args.corpus)), morphology_mode=args.morphology_mode)
     except Exception as exc:
         print(f"comparison failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
