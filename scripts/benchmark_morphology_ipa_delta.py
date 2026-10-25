@@ -724,6 +724,7 @@ def evaluate_consensus(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 "unresolved_occurrences": len(occurrences) - len(consensus_scored),
                 "unresolved_unique_words": unresolved_unique,
                 "runtime_errors_unique_words": len(errors),
+                "withheld_for_unspaced_phrase_boundary_unique_words": sum(bool(item.get("morphology_analysis", {}).get("blocked_unspaced_multiword_boundaries")) for item in consensus_by_word.values()),
                 "runtime_error_examples": dict(list(errors.items())[:50]),
                 "newly_resolved_unique_words_vs_strict": len({item["word"] for item in resolved_words}),
                 "newly_resolved_examples": resolved_words[:100],
@@ -733,6 +734,7 @@ def evaluate_consensus(rows: list[dict[str, Any]]) -> dict[str, Any]:
                         "strict_contexts": strict_by_word.get(word, {}).get("unresolved_contexts", []),
                         "consensus_contexts": candidate.get("unresolved_contexts", []),
                         "candidate_licenses": candidate.get("morphology_analysis", {}).get("candidate_licenses", []),
+                        "blocked_unspaced_multiword_boundaries": candidate.get("morphology_analysis", {}).get("blocked_unspaced_multiword_boundaries", []),
                     }
                     for word, candidate in consensus_by_word.items()
                     if candidate.get("unresolved")
