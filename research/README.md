@@ -59,3 +59,8 @@ Continuation branch: [PR #334](https://github.com/ClippyFirst/Korean-Ukrainian-P
 - New regression tests: `tests/spelling-suggestions.test.mjs` and `tests/residual-five-evidence-and-blind-review.test.mjs`.
 
 The exact-head GitHub Actions workflows are the executable verification gate. UI/code tests do not establish linguistic correctness; external qualified reviewers are still required for IPA and Ukrainian adaptation.
+
+
+### Verification update — 2026-10-25
+
+On `1e2288293c63e88dbb8150270e7910e625b3c48c`, the Node test suite passed **1,256/1,256**, Python tests passed on 3.11/3.12/3.13, the wheel build/clean-install check passed, Browser G2P integration passed, system browser/Python verification passed, and master-table/strict-corpus generation passed. Evidence: runs [40227008756](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008756), [40227008757](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008757), [40227008762](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008762), and [40227008739](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008739). The official NIKL live-inventory job was skipped, not passed. These are implementation/data-contract checks only; the `삶의` blind packets still await two qualified independent submissions and subsequent Ukrainian target review.
