@@ -5,6 +5,9 @@
 export function getSpellingSuggestions(value) {
   const input = String(value ?? '').normalize('NFC');
   const candidates = {
+    '칡칡이': [
+      { text: '칭칭이', label: 'Можлива корекція транскрипції джерела', reason: 'Пошуковий фрагмент PDF показує 칡칡이, але текстовий шар відповідної сторінки читається як 칭칭이 і узгоджується з приспівом 칭칭나네. Це лише кандидат: візуальне звірення сторінки ще потрібне.', sources: [{ label: 'PDF: 동부산 문화권 민요(Ⅱ)', url: 'https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf' }] }
+    ],
     '쫒아내면': [
       { text: '쫓아내면', label: 'Ймовірне виправлення написання', reason: 'Кандидат від стандартного 쫓아내다; вимова стосується лише вибраної форми.', sources: [{ label: 'Корейський базовий словник', url: 'https://krdict.korean.go.kr/m/eng/dicSearch/SearchView?ParaWordNo=78895&currentPage=2&exaType=&font_size=12&mainSearchWord=%EB%82%B4%EB%8B%A4&nation=eng&nationCode=6&proverbType=&searchType=W&sort=W&viewType=A&wordMatchFlag=N' }] }
     ],
