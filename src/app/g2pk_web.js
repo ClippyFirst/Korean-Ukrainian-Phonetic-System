@@ -22,10 +22,10 @@ const PROTECTED = /^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ]+$/u;
 // inspectable. Never generalize these exceptions to arbitrary ㄺ/ㄼ words.
 const NIKL_SURFACE_CORRECTIONS = new Map([
   ['값어치', { surface: '가버치', evidence: 'NIKL §15 붙임; official FAQ mcfaq_seq=5949' }],
-  ['넓죽하다', { surface: '넙쭈카다', evidence: 'NIKL §§10, 23; official examples' }],
+  ['넓죽하다', { surface: '넙쭈카다', evidence: 'NIKL Rule 10 exact example; qna_seq=307219 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219' }],
   ['넓둥글다', { surface: '넙뚱글다', evidence: 'NIKL Q&A qna_seq=322805; §10 exception' }],
   ['넓적하다', { surface: '넙쩌카다', evidence: 'NIKL Q&A qna_seq=322805; §§10, 23' }],
-  ['읽고', { surface: '일꼬', evidence: 'NIKL §§1 commentary, 11, 23; Q&A qna_seq=315279' }]
+  ['읽고', { surface: '일꼬', evidence: 'NIKL exact-form rule explanation; qna_seq=329463 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=329463' }]
 ]);
 
 function applyNiklSurfaceCorrections(source, surface) {
