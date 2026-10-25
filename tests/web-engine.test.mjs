@@ -67,3 +67,21 @@ test('strict mode still surfaces issues for unlicensed morphology', () => {
   assert.ok(typeof r.status === 'string');
   assert.ok(Array.isArray(r.issues));
 });
+
+
+test('NIKL exact-form R003 licenses resolve two attested forms in browser strict mode', () => {
+  const cases = [
+    ['싫어서', '시러서'],
+    ['수많은', '수마는'],
+  ];
+  for (const [input, expectedSurface] of cases) {
+    const result = engine.convert(input);
+    assert.equal(result.surfaceHangul, expectedSurface, input);
+    assert.doesNotMatch(result.ipa, /⟦/u, input);
+  }
+});
+
+test('NIKL R003 exact-form licenses do not generalize to unreviewed lookalikes', () => {
+  const result = engine.convert('많아보임');
+  assert.ok(result.issues.some((issue) => /h-deletion-requires-morphology/u.test(JSON.stringify(issue))));
+});
