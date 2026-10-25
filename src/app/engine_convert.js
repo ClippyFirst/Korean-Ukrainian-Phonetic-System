@@ -7,7 +7,7 @@ import {
 } from './engine_shared.js';
 import { applyContextualRules } from './engine_rules_ctx.js';
 import { applyPhraseBoundaryAssimilation } from './engine_rules_phrase.js';
-import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource, IPA_TO_UKRAINIAN } from './engine_ipa.js';
+import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, ipaTargetForSource, IPA_TO_UKRAINIAN, traceIpaMappingDetailed } from './engine_ipa.js';
 import { lexicalResult, firstSyllableInWord, genericVowelVariants } from './engine_lexical.js';
 import { practicalStatusForUnit, softStatusForUnit } from './soft_morphology.js';
 
@@ -46,14 +46,32 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
               result.surfaceHangul=sourceSurface===part?'':sourceSurface;
             }
             if(/^[가-힣]+$/u.test(part)&&sourceIpa.length===[...part].length&&sourceIpa.every(Boolean)){
-              const mapped=ipaSyllablesToUkrainian(sourceIpa);
+              const mapped=ipaSyllablesToUkrainian(sourceIpa,{allowProvisional:true});
               if(!mapped.unknown){
+                const mappedSegments=sourceIpa.map(ipa=>traceIpaMappingDetailed(ipa));
                 result.ipa=sourceIpa.join(' ');
-                result.ukrainian=mapped.syllables.join('');
+                const hasProvisionalCandidate=mapped.status==='provisional'||(mapped.status==='unavailable'&&mapped.candidates.some(Boolean));
+                result.ukrainian=hasProvisionalCandidate?'':mapped.syllables.join('');
+                result.candidate_ukrainian=hasProvisionalCandidate?mapped.candidates.join(''):null;
+                result.candidate_status=hasProvisionalCandidate?'provisional':null;
+                result.target_status=hasProvisionalCandidate?'unavailable':mapped.status;
                 let index=0;
                 for(const item of result.trace||[]){
                   if(item.status==='literal')continue;
-                  if(index<sourceIpa.length)item.ipa=sourceIpa[index++];
+                  if(index<sourceIpa.length){
+                    const target=mappedSegments[index];
+                    item.ipa=sourceIpa[index];
+                    const candidateText=target.tokens.map(token=>token.ukrainian).join('');
+                    const provisional=target.status==='provisional';
+                    item.output=provisional?'':candidateText;
+                    item.candidateOutput=provisional?candidateText:null;
+                    item.candidateStatus=provisional?'provisional':null;
+                    item.targetStatus=target.status;
+                    item.targetReason=target.reason||null;
+                    item.targetMappings=target.tokens;
+                    item.targetFeatures=target.features;
+                    index++;
+                  }
                 }
               }else{
                 result.issues=[...(result.issues||[]),part+': sourced lexical IPA contains an unmapped segment "'+mapped.unknown+'".'];
@@ -70,10 +88,15 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       applyPhraseBoundaryAssimilation(results,parts,map);
       const issues=results.flatMap(r=>r.issues||[]);
       if(/[가-힣][A-Za-z]/u.test(text))issues.push('Mixed Hangul and Latin residue without a boundary; non-Korean characters are withheld from IPA.');
+      const hasCandidate=results.some(r=>r.candidate_ukrainian);
+      const candidateText=hasCandidate?results.map(r=>r.candidate_ukrainian??r.ukrainian).join(''):null;
       return{
         source:text,
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
-        ukrainian:results.map(r=>r.ukrainian).join(''),
+        // A phrase with any provisional target has no complete accepted
+        // orthography. Return the complete candidate separately, not partial
+        // accepted fragments that could be mistaken for the full result.
+        ukrainian:hasCandidate?'':results.map(r=>r.ukrainian).join(''),
         ipa:results.map((r,index)=>(lexicon.has(parts[index])||/^[가-힣]+$/u.test(parts[index]))?r.ipa:ipaSafeLiteral(parts[index])).join(''),
         analysis:results.map(r=>r.analysis).filter(Boolean).join(' · '),
         variants:results.flatMap((result,variantIndex)=>(result.variants||[]).map(variant=>({
@@ -85,6 +108,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         }))),
         trace:results.flatMap(r=>r.trace||[]),
         issues,
+        target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
+        candidate_ukrainian:candidateText,
+        candidate_status:hasCandidate?'provisional':null,
         status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical'
       };
     }
@@ -243,16 +269,41 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       if(fortisIpa)unitIpa=fortisIpa+vowelIpa+(c?.ipa||'');
     }
     ipa[i]=unitIpa;
-    const targetFromIpa=ipaSyllableToUkrainian(unitIpa);
-    if(targetFromIpa.unknown){
-      issues.push(u.char+': IPA segment has no Ukrainian mapping: '+targetFromIpa.unknown);
+    const targetMapping=traceIpaMappingDetailed(unitIpa);
+    const targetCandidateText=targetMapping.tokens.map(token=>token.ukrainian).join('');
+    const provisionalTarget=targetMapping.status==='provisional';
+    const targetFromIpa={
+      // A provisional correspondence is candidate-only. Keep it in the trace,
+      // but do not let it enter the public orthography output buffer.
+      text:provisionalTarget?'':targetCandidateText,
+      candidateText:provisionalTarget?targetCandidateText:null,
+      unknown:targetMapping.unknown,
+      status:provisionalTarget?'unavailable':targetMapping.status,
+      candidateStatus:provisionalTarget?'provisional':null,
+      reason:provisionalTarget?'provisional_mapping_requires_review':targetMapping.reason
+    };
+    if(targetFromIpa.unknown || (targetFromIpa.status==='unavailable'&&!provisionalTarget)){
+      issues.push(u.char+': IPA target mapping unavailable ('+(targetFromIpa.reason||'unmapped_ipa_sequence')+'): '+(targetFromIpa.unknown||'(empty IPA)'));
       output[i]=preserveUnresolvedSource?'⟦'+u.char+'⟧':'';
       status='unresolved';
+    }else if(provisionalTarget){
+      // Target uncertainty is not Korean phonology failure: retain the IPA
+      // analysis and expose the proposed spelling only in candidate fields.
+      output[i]='';
     }else{
       output[i]=targetFromIpa.text;
     }
     analysis[i]=u.char+'['+(u.onset||'')+'+'+(u.vowel||'')+(u.coda?'+'+u.coda:'')+']';
-    trace[i]={source:u.char,surface:compose(u.onset,u.vowel,u.coda||''),status,rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa};
+    trace[i]={
+      source:u.char,surface:compose(u.onset,u.vowel,u.coda||''),status,
+      rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa,
+      targetStatus:targetFromIpa.status,
+      targetReason:targetFromIpa.reason||null,
+      candidateOutput:targetFromIpa.candidateText||null,
+      candidateStatus:targetFromIpa.candidateStatus||null,
+      targetMappings:targetMapping.tokens,
+      targetFeatures:targetMapping.features
+    };
   }
 
   if(!units.some(u=>u.type==='hangul')&&!units.some(u=>u.type==='jamo')&&!skipLexicon)issues.push('Input contains no Hangul syllable; pronunciation cannot be generated.');
@@ -273,20 +324,31 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // Unchanged general forms stay empty so lexical vs general remains distinguishable.
   // A single Hangul token with unresolved morphology must not expose a
   // partial IPA string or a plausible-looking partial Ukrainian transcription.
-  // Keep the trace and diagnostics for research, but fail closed at the public
-  // result boundary. Phrase conversion still preserves surrounding resolved
-  // words because the phrase path recursively converts each token.
+  // A phrase containing any provisional target also has no complete accepted
+  // orthography: withhold the whole public result and return the complete,
+  // separately labelled candidate. Research traces retain per-token detail.
   const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
+  const provisionalCandidateAvailable=/[가-힣]/u.test(text)&&status!=='unresolved'&&trace.some(item=>item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review');
+  const target_status=unresolvedWholeHangulToken||!hasHangulSyllables
+    ? 'unavailable'
+    : trace.some(item=>item?.targetStatus==='unavailable'||item?.status==='unresolved')
+      ? 'unavailable'
+      : trace.some(item=>item?.targetStatus==='provisional')
+        ? 'provisional'
+        : 'model-selected';
   return{
     source:text,
     surfaceHangul:recomposed===originalHangul?'':recomposed,
-    ukrainian:unresolvedWholeHangulToken?'':output.join(''),
+    ukrainian:unresolvedWholeHangulToken||provisionalCandidateAvailable?'':output.join(''),
+    candidate_ukrainian:provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
+    candidate_status:provisionalCandidateAvailable?'provisional':null,
     ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,' '),
     analysis:renderStructured(units,analysis,' · '),
     trace,
     variants:unresolvedWholeHangulToken?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status),
     issues,
-    status
+    status,
+    target_status
   };
 }
 

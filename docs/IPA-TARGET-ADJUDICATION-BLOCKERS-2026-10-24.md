@@ -120,3 +120,10 @@ The collector first checks `robots.txt`; each attempt then stopped because the o
 The official NIKL page is discoverable through the public search index, but a direct open of the indexed official URL also returned HTTP 403 in the web retrieval environment. Search-index excerpts can support narrowly cited rule lookups, but cannot substitute for the crawler's complete response body, verified article 1–30 reconciliation, source response hash, or article-level hashes. No proxy, alternate mirror, forged user-agent, or other access-control bypass was attempted.
 
 **Status correction:** the NIKL gate is now `BLOCKED_EXTERNAL_ACCESS` with reproducible evidence, not merely `skipped`. Acceptance requires a permitted direct retrieval of the official page (or an official export provided through an authorized channel), a complete 30-article inventory with zero missing/duplicate/incomplete records, a valid metadata manifest and hashes, and an artifact/log audit. Preserve metadata-only retention; do not persist article text until applicable reuse terms are reviewed.
+
+
+## Core-owned target renderer update — PR #310 (2026-10-24)
+
+The native Python engine is being updated to use the local `korean_ukrainian.ipa_target_renderer` as the practical-output authority. The external UPI 0.8.0 package remains optional for feature/candidate diagnostics; it must not be described as a prerequisite for IPA-derived Ukrainian output. This removes a software dependency blocker but **does not** resolve any target-mapping evidence gap or establish Ukrainian accuracy. Unknown/conflicting IPA mappings still fail closed; mappings marked provisional remain provisional.
+
+The new renderer and regressions are on [PR #310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/310). Its final-head CI is pending. The original 24-form source artifact and independent IPA/Ukrainian gold remain unverified; do not use the candidate reconstruction as an acceptance benchmark.

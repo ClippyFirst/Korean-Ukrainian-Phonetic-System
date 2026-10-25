@@ -2,7 +2,9 @@ from korean_ukrainian.pipeline import transliterate_korean, tokenize_ipa
 
 def test_end_to_end_preserves_layers():
     out=transliterate_korean("국밥")
-    assert out["phonology"]["syllables"] and out["ipa"]["ipa"] and out["score_type"]=="heuristic_cost"
+    assert out["phonology"]["syllables"] and out["ipa"]["ipa"]
+    assert out["score_type"] == "explicit_correspondence_not_probability"
+    assert out["target_inventory_score_type"] == "heuristic_cost"
 
 def test_unsupported_ipa_is_rejected():
     try:

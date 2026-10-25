@@ -99,7 +99,7 @@ export function createG2pWebAdapter(engine) {
       const result = engine.convertSurface(surface);
       result.source = text;
       result.surfaceHangul = surface === text ? '' : surface;
-      result.ukrainian = renderTarget(result.trace);
+      result.ukrainian = result.candidate_status === 'provisional' ? '' : renderTarget(result.trace);
       result.ipa = renderIpa(result.trace);
       result.analysis = surface === text
         ? 'g2pK JavaScript: незмінена поверхнева форма → IPA → український запис'

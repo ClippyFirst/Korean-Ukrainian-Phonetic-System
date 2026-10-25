@@ -10,10 +10,13 @@ const engine = createEngine(canonical, lexical);
 test('§4 generic ㅚ words expose [we] without changing Korean spelling or Ukrainian output', () => {
   const result = engine.convert('괴물');
   assert.equal(result.ipa, 'kø mul');
-  assert.equal(result.ukrainian, 'квемул');
+  assert.equal(result.ukrainian, '');
+  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.candidate_ukrainian, 'квемул');
+  assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '괴물');
-  assert.equal(result.variants[0].ukrainian, result.ukrainian);
+  assert.equal(result.variants[0].ukrainian, result.candidate_ukrainian);
   assert.equal(result.variants[0].ipa, 'kwe mul');
   assert.match(result.variants[0].note, /§4/u);
   assert.match(result.variants[0].note, /철자|нап(u|и)с/u);
@@ -22,10 +25,13 @@ test('§4 generic ㅚ words expose [we] without changing Korean spelling or Ukra
 test('§4 generic ㅟ words expose [wi] without changing Korean spelling or Ukrainian output', () => {
   const result = engine.convert('귀');
   assert.equal(result.ipa, 'ky');
-  assert.equal(result.ukrainian, 'кві');
+  assert.equal(result.ukrainian, '');
+  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.candidate_ukrainian, 'кві');
+  assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '귀');
-  assert.equal(result.variants[0].ukrainian, result.ukrainian);
+  assert.equal(result.variants[0].ukrainian, result.candidate_ukrainian);
   assert.equal(result.variants[0].ipa, 'kwi');
   assert.match(result.variants[0].note, /§4/u);
 });
@@ -41,7 +47,7 @@ test('§4 enumerates every combination for up to three optional vowels', () => {
   ]);
   for (const variant of result.variants) {
     assert.equal(variant.surface, '괴물귀');
-    assert.equal(variant.ukrainian, result.ukrainian);
+    assert.equal(variant.ukrainian, result.candidate_ukrainian);
   }
 });
 
@@ -66,7 +72,10 @@ test('§5 non-initial ㅢ exposes the permitted [i] reading and adjusts the Ukra
   const genericEngine = createEngine(canonical, '');
   const result = genericEngine.convert('민주주의');
   assert.equal(result.ipa, 'min dʑu dʑu ɰi');
-  assert.equal(result.ukrainian, 'мінджуджуий');
+  assert.equal(result.ukrainian, '');
+  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.candidate_ukrainian, 'мінджуджуий');
+  assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].ipa, 'min dʑu dʑu i');
   assert.equal(result.variants[0].ukrainian, 'мінджуджуі');

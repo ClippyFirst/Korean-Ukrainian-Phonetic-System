@@ -50,7 +50,10 @@ test('ㅇ+ㅢ uses the normative [ɰi] default instead of an unresolved placehol
   const result = engine.convert('한국어의 표준 발음');
   assert.equal(result.issues.length, 0);
   assert.ok(!result.ukrainian.includes('⟦'));
-  assert.ok(result.ukrainian.includes('ий'));
+  assert.equal(result.ukrainian, '');
+  assert.equal(result.target_status, 'unavailable');
+  assert.ok(result.candidate_ukrainian.includes('ий'));
+  assert.equal(result.candidate_status, 'provisional');
   assert.match(result.ipa, /ɰi/);
   assert.ok(result.trace.some((item) => item.rules.includes('vowel-ui-default-ɰi')));
 });

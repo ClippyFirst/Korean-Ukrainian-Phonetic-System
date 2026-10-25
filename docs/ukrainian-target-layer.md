@@ -1,32 +1,73 @@
 # Ukrainian target layer
 
-The Korean repository does not copy the Ukrainian phoneme inventory. It consumes ClippyFirst/Ukrainian-Phonetic-Inventory as the authoritative Ukrainian phoneme, feature and orthographic target dataset.
+## Contract
 
-The verified target contract is UPI 0.8.0. The adapter checks the runtime version, consumes the UPI feature vectors for candidate ranking, and retrieves grapheme realizations from UPI's machine-readable grapheme/transliteration exports.
+The intended pipeline is:
 
-Candidate score remains a heuristic cost, never a probability.
+`Korean orthography → structural and morphophonological analysis → Korean surface IPA → ClippyFirst IPA correspondence → Ukrainian practical orthography`.
 
-The adapter exposes external inventory availability, detected package version, source IPA, source features, ranked UPI candidates, mismatches, heuristic score and target grapheme when UPI supplies one.
+The production target renderer is `src/korean_ukrainian/ipa_target_renderer.py`. It accepts IPA only; it does not accept Hangul or Jamo as mapping inputs. It reads `data/korean/canonical_correspondence.csv` plus explicit sequence overrides in `data/korean/ipa_target_overrides.csv`, applies longest-match tokenization, and returns a per-segment trace with mapping ID, status, provenance, word/syllable indices and length-marker handling.
 
-A missing or incompatible UPI dependency is an explicit unavailable state rather than a silent fallback.
+## Runtime ownership and optional dependency
 
-This is still not a complete Ukrainian orthographic grammar: sequence-level choices, palatalization/iotation, apostrophe, ь, я/ю/є/ї, дж/дз/щ and proper-name conventions require further target-layer integration.
+The ClippyFirst engine owns the Korean-specific IPA→Ukrainian practical mapping. The separate `ClippyFirst/Ukrainian-Phonetic-Inventory` package (UPI 0.8.0) is optional and is used only for target phoneme/feature metadata and candidate-analysis diagnostics. UPI's feature similarity and heuristic ranking never select the production practical output. Missing UPI therefore makes its diagnostics unavailable, not the IPA-derived target output.
+
+The Python native and G2P adapters share the same target renderer. The unresolved-Korean-phonology gate remains upstream: IPA marked `diagnostic_only_unresolved_pronunciation` is inspectable for research but must not produce Ukrainian orthography. Unknown IPA, conflicting mappings, empty IPA and unmapped sequences fail closed; no nearest-feature fallback or Hangul-keyed Ukrainian fallback is allowed.
+
+The browser's `src/app/ipa_target_data.js` is a generated projection of these same CSVs, produced by `scripts/generate_ipa_target_data.py`; the Python suite runs the generator with `--check` to detect drift. Browser and Python target traces should agree on target text, mapping IDs and status for the same IPA.
+
+The contract is recorded in `data/correspondence/target_contract.csv`:
+- `ukrainian_inventory`: optional external UPI metadata/candidate diagnostics.
+- `korean_ipa_to_ukrainian`: local ClippyFirst practical output from canonical correspondences and explicit overrides.
+
+## Mapping status and project decisions
+
+- `model-selected`: the repository contains an explicit mapping decision. It is not a normative Ukrainian standard and is not independently adjudicated gold.
+- `provisional`: at least one mapping in the output remains a research hypothesis/review item.
+- `unavailable`: input is empty/invalid, an IPA sequence is unmapped, mappings conflict, or the upstream pronunciation is diagnostic-only.
+
+The score type for practical output is `explicit_correspondence_not_probability`. The optional UPI score type is `heuristic_cost`; it is diagnostic and must never be reported as a probability or used as the output authority.
+
+## Verification and scientific limits
+
+The regression suite checks:
+- longest-match tokenization and trace/output consistency;
+- explicit sequence overrides and mapping provenance;
+- retention of source IPA length markers without inventing a Ukrainian length sign;
+- fail-closed behavior for unknown or ambiguous IPA;
+- reproducibility of the 643 declared lexical rows and 45 declared alternate readings;
+- provisional status for `ɰi → ий`, `ø → ве`, `y → ві`, and `kʰjʌ → кхьо` where those mappings are used.
+
+The lexical reproduction checks are internal consistency tests: they prove that declared project data reproduces itself, not that the declared Ukrainian forms are independently correct.
+
+The original frozen 24-form holdout has **not** been recovered from a verifiable source in the reviewed mainline history. This PR intentionally does not add the unverified candidate reconstruction or treat it as gold. Acceptance of the original holdout requires a source artifact/run input or historical revision establishing exact membership and order, plus a separate evidence record.
+
+## Remaining gates
+
+1. Recover and verify the original 24-form fixture; preserve its membership and order and record an immutable source locator/hash.
+2. Reconcile the historical 7 phonology / 17 target blocker report against the exact same input list and blocker taxonomy.
+3. Obtain independent Korean phonology/IPA adjudication for unresolved cases. NIKL surface Hangul evidence is not automatically IPA gold.
+4. Review Ukrainian practical mappings independently on a frozen IPA input set; keep source pronunciation and target adaptation as separate decisions.
+5. Continue auditing rule exceptions, morphology licensing, variants and Python/browser parity. Passing CI does not establish exhaustive normative coverage.
+
+**Release classification:** research preview / partial prototype, not release-ready.
 
 
-## Runtime dependency availability (2026-10-24)
+## Production acceptance gate for provisional target correspondences
 
-The target inventory is maintained in the separate private repository [ClippyFirst/Ukrainian-Phonetic-Inventory](https://github.com/ClippyFirst/Ukrainian-Phonetic-Inventory), version 0.8.0. The Korean project's base `pyproject.toml` has no UPI dependency, and the package is not a public PyPI dependency. Consequently, a clean install of this repository does **not** make UPI available automatically. The adapter intentionally returns an unavailable status and the Korean→Ukrainian pipeline abstains rather than substituting an unreviewed local mapping.
+The strict Python API `render_ipa_sequence_to_ukrainian(ipa)` and browser source adapter `ipaTargetForSource(source, ipa)` withhold final Ukrainian orthography whenever any matched IPA→Ukrainian correspondence is `provisional`. They return an unavailable result, an explicit `provisional_mapping_requires_review` reason, and a separate `candidate_orthography`/`candidateText` for inspection. Research-only candidate rendering is explicit: Python `allow_provisional=True`; browser `{ allowProvisional: true }`. The interactive research pipeline opts in to display a candidate, but preserves `provisional` status and trace metadata in its result. This is a research-preview usability choice, not a claim of adjudicated correctness.
 
-For an authorized development checkout, install the target inventory from its source checkout in the same environment (editable installation is currently the verified source-tree path):
+This gate is deliberately conservative: a candidate such as `ɰi → ий`, `ø → ве`, `y → ві`, or `kʰjʌ → кхьо` is not asserted to be correct merely because a project row exists. Existing model-selected mappings remain explicit project decisions rather than independently adjudicated gold. To promote any provisional row, add independent linguistic/target review evidence and regression cases first.
 
-```sh
-python -m pip install -e /path/to/Ukrainian-Phonetic-Inventory
-```
 
-The UPI repository currently has open, unmerged PRs #8 (v0.9.0) and #9 (v1.0.0); neither is treated as integrated. A separate packaging PR [#10](https://github.com/ClippyFirst/Ukrainian-Phonetic-Inventory/pull/10) is testing whether a built wheel can load the canonical CSV tables outside the source checkout. Until that packaging gate is observed green and the dependency is made installable for the intended runtime, clean-install target abstention is an expected integration limitation, not evidence that Korean IPA itself is unresolved.
+## Unavailable browser IPA results are not empty-string successes
 
-Even when UPI loads, its current 18-row transliteration mapping table is only a partial correspondence inventory. Package availability and correspondence coverage are separate gates: installing UPI can resolve the dependency-unavailable state but cannot by itself justify missing IPA→Ukrainian mappings.
+The public `ipaTargetForSource` adapter returns `text: null` when IPA is empty, contains an unmapped segment, or does not align with the Hangul syllable count. In these cases it also withholds partial syllable output and partial mapping traces from the result. This distinguishes a genuine empty string (not a valid Korean transcription) from a failed target rendering and mirrors the Python renderer's `ukrainian_orthography: null` contract.
 
-### Packaging follow-up status (2026-10-24)
 
-UPI packaging PR [#10](https://github.com/ClippyFirst/Ukrainian-Phonetic-Inventory/pull/10) adds wheel data-file inclusion and an isolated-install smoke check, but its latest observed CI run [40126696199](https://github.com/ClippyFirst/Ukrainian-Phonetic-Inventory/actions/runs/40126696199) concluded **failure**. The GitHub Actions job-log endpoint returned `BlobNotFound` when inspected, so the failure cause has not been independently established from logs. Treat wheel-install support as **BLOCKED / unverified** until the maintainer inspects the failed run, fixes the demonstrated cause, and obtains a green fresh-environment wheel test. Do not treat an open PR or its intended test as proof that UPI is installable from a wheel.
+### Reject IPA with no renderable segments
+
+A sequence made only of syllable delimiters, word-boundary markers, or vowel-length marks (for example `.`, `#`, or `ː`) is not a valid successful target rendering. Both Python and browser adapters now return an unavailable result with `no_renderable_ipa_segments`; they do not return an empty Ukrainian spelling or mark modifier-only IPA as `model-selected`.
+
+
+The browser labels `model-selected` output as a project-defined correspondence that has not been independently validated. This is not a claim that the output is wrong; it accurately distinguishes deterministic application of the author's system from independent target-language adjudication.

@@ -255,3 +255,80 @@ The engine recognizes these exact entries both as standalone inputs and inside s
 Added [`docs/ukrainian-target-review-2026-10-10.md`](./ukrainian-target-review-2026-10-10.md), a first-pass internal-consistency review of the Ukrainian target layer against the canonical correspondence table. It identifies policy questions around vowel-length omission, neutralization of aspiration/fortisness, approximations for `/ʌ ɯ ø y/`, coda `/ŋ/`, liquid sequences, and the role of segmentation bars.
 
 The review deliberately does not bulk-rewrite target strings. These are model choices that need a stated objective and empirical evaluation; without a native Korean source-audio check and Ukrainian-reader comparison, declaring a particular approximation definitively wrong would overstate the evidence. The report includes a ten-item review queue and a reproducible validation protocol. Korean-source confidence, IPA-analysis confidence, and Ukrainian-target confidence must remain separate dimensions.
+
+
+
+
+## 24. Native IPA target renderer follow-up: CI-driven corrections (2026-10-24)
+
+The first exact-head run for the browser target adapter and provenance trace failed two suites. The browser failures were assertions still pinned to the old feature schema and a deep-equality result shape that predated the added status/mapping trace. The Python failure was a case-sensitive `ROOT`/ `root` variable typo in the newly added browser/Python parity test. These were fixed in test contracts and the subprocess path; no linguistic mapping was altered to make CI green.
+
+The browser regression suite passed on intermediate head `428f8e1dae2bf2c86e80bd203ee8939cf538d8f3`, but Python still failed on that same head due to the root-variable typo. Correction commit `317f0f106d230b10bbc42219ca1f9c3e5a369aa2` is the first head intended to contain the complete fixes. Its own CI must finish before marking the renderer verified.
+
+**Status:** `PARTIAL`, not release-ready. A code-level parity suite is not an independent linguistic gold set. The original 24-form source manifest remains missing, official NIKL live retrieval is still blocked by documented HTTP 403 responses, and the Korean phonology / Ukrainian target gold sets require separate evidence-gated adjudication.
+
+
+
+
+## 25. Verification closeout after IPA target regression fixes (2026-10-24)
+
+System verification run [40132735568](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132735568) passed Python regression/data integrity and browser regression/build on head `e462d15d9d31d4889ad562095ecb93f39247e8fe`. The focused tests workflow [40132671600](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40132671600) passed on `317f0f106d230b10bbc42219ca1f9c3e5a369aa2`; subsequent commits through `e462d15` updated the handoff/register/audit documentation only. Generated master table/corpus, paired native-vs-g2pK diagnostic, external UGTPHON diagnostic and browser G2P integration also passed on `e462d15` (runs 40132738836, 40132738928, 40132738858, 40132738885).
+
+The official NIKL live inventory was skipped. Optional g2pK integration, morphology adapter smoke and multi-engine IPA diagnostic were still running at the last poll. Two known Korean surface differential cases, `넓죽하다` and `읽고`, remain explicit review items because the IPA reference is not independently adjudicated. The 24-form candidate fixture remains reconstructed/unverified.
+
+**Updated status:** implementation regressions fixed and core system tests verified on the recorded heads; full task status remains `PARTIAL`, not release-ready, pending final-head checks, original holdout provenance, independent Korean IPA adjudication, independent Ukrainian target review, and permitted NIKL inventory retrieval.
+
+
+## 26. Final verification status — 2026-10-24
+
+All nine workflow families passed on implementation head `a80cacf0f2c36c40a172ea24aad5a67bb9ba5756`: system verification (40132976136), focused tests (40132976087), generated artifacts (40132976175), optional g2pK integration (40132976258), browser G2P (40132976122), paired native/g2pK diagnostic (40132976161), external UGTPHON diagnostic (40132976197), multi-engine IPA benchmark (40132976215), and research morphology adapter smoke (40132976263). The official NIKL metadata-only job was skipped and is not a pass. The 24-form source manifest remains missing from inspected tracked refs; the current 24-row CSV is explicitly unverified and has no independent IPA/Ukrainian gold. PRs #307 and #310 remain open/mergeable with overlapping Python renderer files; no blind merge/closure was performed. **Classification remains partial research prototype, not release-ready**, until original holdout provenance, independent Korean IPA adjudication, independent Ukrainian target review, and authorized NIKL inventory retrieval are resolved.
+
+## 27. Exact-head verification after strict/candidate target-mode split — 2026-10-25
+
+Code/test head `4f65943b514992b89ce31df5db2d4e971dc0b6a9` passed all nine relevant workflow families: system verification [40135565733](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40135565733), tests and clean wheel [40135565670](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40135565670), browser G2P [40135565682](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40135565682), optional g2pK [40135565680](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40135565680), generated master table/corpus [40135565706](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40135565706), paired native/g2pK [40135565751](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40135565751), UGTPHON [40135565684](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40135565684), morphology adapter smoke [40135565675](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40135565675), and multi-engine IPA/SIGMORPHON comparison [40135565671](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40135565671).
+
+A correctness regression was caught and fixed during this pass: strict target APIs now withhold provisional mappings by default, while the interactive research path opts in to display the best declared candidate with a visible provisional status. Lexical surface-only IPA mapping and vowel variants now use the same explicit candidate mode, retain target status in traces, and pass runtime IPA parity checks. The clean wheel check exercises both strict abstention and research-candidate output.
+
+NIKL live inventory remains skipped because access is blocked; no claim of complete inventory validation. The 24-form source manifest remains unrecovered; independent Korean IPA and Ukrainian target gold are still unavailable. Two surface differential cases remain evidence-backed correction paths, not independent IPA/target gold. **Status: partial research prototype, not release-ready.**
+
+
+### Benchmark outcome and interpretation — exact code head `4f65943` (verified 2026-10-25)
+
+The multi-engine workflow passed and produced these **Korean IPA** diagnostic results; they are not Ukrainian-target accuracy scores:
+
+| Dataset | ClippyFirst native | g2pK 0.9.4 | Interpretation |
+|---|---|---|---|
+| UGTPHON Korean test, 275 rows / 2,703 token occurrences | 2,655 scored; 98.22% coverage; 1,412 exact; exact rate 53.18% (bootstrap 95% CI 48.49–58.20%); CER 9.19%; 48 abstentions; 0 runtime errors | 2,703 scored; 100% coverage; 1,435 exact; exact rate 53.09%; CER 9.23%; 0 runtime errors | Near parity on paired examples; native is more conservative. |
+| SIGMORPHON 2021 Korean lexical test, 1,000 rows / 999 token occurrences | 997 scored; 99.80% coverage; 357 exact; exact rate 35.81%; CER 14.70%; 2 abstentions; 0 runtime errors | 999 scored; 100% coverage; 353 exact; exact rate 35.34%; CER 14.82%; 0 runtime errors | Small paired advantage to native on this pinned lexical split. |
+
+These exact-match rates are **not 90–95%**. The reference sets use IPA conventions that are not identical to the project's broad IPA (including phonetic diacritics and segment/annotation differences); normalization removes only selected convention differences. The corpora also have scope/annotation limitations. The 9.19% and 14.70% character error rates show substantially closer sequences than exact-match rates alone suggest, but neither metric proves normative correctness. Some differences may be real phonological errors; do not attribute all to notation. The next benchmark improvement must come from categorized mismatch review against independently adjudicated IPA, not from relaxing normalization until the score rises.
+
+Most native abstentions on UGTPHON are deliberate unresolved morphophonological contexts: 25 R002 liaison/neutralization cases, 20 R003 ㅎ deletion cases, 2 R007 palatalization cases, and 1 each for R004 aspiration and IPA adjudication. These are coverage limitations, not runtime exceptions. This benchmark does not measure IPA→Ukrainian mapping accuracy.
+
+
+### Correctness / UI candidate contract audit — 2026-10-25
+
+Audited the full route from IPA adapter to Python pipeline and browser UI. The strict IPA renderer withholds final orthography for provisional target mappings and returns a candidate field. The Python pipeline now preserves that strict contract. The browser research UI intentionally keeps a useful candidate visible but explicitly labels the primary result, copy action and trace as provisional; no candidate is described as independent gold.
+
+CI evidence at code head `5ccb880d0c0611efa1f7ef8ffd00a0d303778410`: system verification success (40177877602), browser G2P integration success with 1,220/1,220 tests (40177877624), dedicated test workflow success (40177877599), optional g2pK success (40177877654), native/g2pK differential success as diagnostic (40177877600), UGTPHON diagnostic success (40177877596). Python surface differential remains 18/20 with disagreements `넓죽하다` and `읽고`; IPA gold remains unadjudicated. NIKL live inventory skipped. Original holdout provenance, independent IPA gold, and independent Ukrainian target gold remain blockers. Classification: partial research prototype, not release-ready.
+
+
+### PR convergence status correction — 2026-10-25
+
+Earlier audit text recorded identical Python renderer/pipeline blobs for PR #307 and #310. That is stale after the latest correctness-gate changes: current blobs diverge. PR #310 has strict Python target abstention and browser UI candidate labeling; PR #307 retains the candidate 24-form fixture/provenance audit. Keep the fixture quarantined and reconcile only after reviewing the current diff. Both PRs remain open; no blind merge or closure.
+
+
+### Exact-head evidence — 2026-10-25
+
+All relevant workflows passed on implementation head `b41da53614f660d7f4b71fc9613730661715262b`: system verification, 1,220/1,220 browser tests, Python 3.11/3.12/3.13, wheel installation, generated artifacts, optional g2pK, paired native/g2pK diagnostic, UGTPHON, multi-engine benchmark, and Kiwi/MeCab-Ko morphology smoke. NIKL live inventory was skipped, not passed. The G2P differential still has two surface disagreements (`넓죽하다`, `읽고`) and no independent IPA gold. Provisional target spellings are labelled candidates in the browser UI and withheld from the strict Python renderer/pipeline. The original 24-form source, independent IPA adjudication, and Ukrainian target gold remain blockers. Not release-ready.
+
+
+### Correctness hardening and holdout report restored — 2026-10-25
+
+On branch `fix/clippyfirst-core-ipa-target-2026-10-24`, code/evidence head `aca93752c5d059300baf33bd576a5a0fea8fa4fa`, the public browser IPA helper API was hardened against false empty success and partial multi-syllable output. Provisional correspondences remain candidate-only by default; explicit research opt-in is type-checked and does not erase provisional status. Diagnostic traces remain available for failed inputs while target strings are withheld.
+
+The PR #307 24-form candidate fixture, provenance audit, regression test and report runner were ported to the active branch. Exact-head g2pK workflow succeeded on Python 3.11/3.12, with 20 focused tests passing per runtime and a JSON report artifact uploaded. The current report shows 18 accepted native outputs + 1 candidate, and 23 accepted g2pK outputs + 1 candidate out of 24. This is not an accuracy score: the fixture remains `reconstructed_unverified` and has no independent IPA/Ukrainian gold.
+
+Exact-head CI: system verification [40191515073](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515073), browser tests/build [40191515088](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515088), g2pK + fixture report [40191515065](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515065), browser G2P [40191515045](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515045), UGTPHON [40191515110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515110), paired native/g2pK [40191515125](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515125), multi-engine [40191515023](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515023), morphology [40191515056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056), and master artifacts [40191515019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515019) all passed. The official live NIKL inventory step was skipped.
+
+Still blocked: original holdout manifest, independent IPA adjudication, independent Ukrainian target gold/scoring, primary-evidence resolution of `넓죽하다` and `읽고`, and authorized live NIKL inventory. Status remains partial research prototype, not release-ready.

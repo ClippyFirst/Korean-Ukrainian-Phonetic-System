@@ -105,7 +105,7 @@
     </div>
     <div class="result-grid">
       <article class="result-card">
-        <div class="result-meta"><span>UA</span><strong>Український запис</strong><button class="copy-button" data-copy="ukrainian" type="button">Копіювати</button></div>
+        <div class="result-meta"><span>UA</span><strong id="ukrainian-output-label">Український запис</strong><button id="ukrainian-copy-button" class="copy-button" data-copy="ukrainian" type="button">Копіювати</button></div>
         <p id="result-ukrainian" class="result-body"></p>
         <div id="surface-reading" class="surface-reading" hidden><span>Поверхнева форма</span><strong id="result-surface"></strong></div>
       </article>
@@ -117,6 +117,10 @@
         <div class="result-meta"><span>AN</span><strong>Аналіз</strong><button class="copy-button" data-copy="analysis" type="button">Копіювати</button></div>
         <p id="result-analysis" class="result-body analysis"></p>
       </article>
+    </div>
+    <div id="candidate-panel" class="issue-state" hidden>
+      <p><strong>Увага: остаточний український запис не підтверджено.</strong> Нижче наведено лише дослідницького кандидата, а не прийнятий результат. Не використовуйте його як нормативний запис без перевірки IPA та цільової адаптації.</p>
+      <p id="candidate-value" class="result-body" aria-label="Попередній український кандидат"></p>
     </div>
     <div id="issue-state" class="issue-state" hidden><p id="issue-text"></p></div>
     <div id="variant-panel" class="variant-panel" hidden>
