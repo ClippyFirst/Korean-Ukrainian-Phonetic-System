@@ -88,10 +88,15 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       applyPhraseBoundaryAssimilation(results,parts,map);
       const issues=results.flatMap(r=>r.issues||[]);
       if(/[가-힣][A-Za-z]/u.test(text))issues.push('Mixed Hangul and Latin residue without a boundary; non-Korean characters are withheld from IPA.');
+      const hasCandidate=results.some(r=>r.candidate_ukrainian);
+      const candidateText=hasCandidate?results.map(r=>r.candidate_ukrainian??r.ukrainian).join(''):null;
       return{
         source:text,
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
-        ukrainian:results.map(r=>r.ukrainian).join(''),
+        // A phrase with any provisional target has no complete accepted
+        // orthography. Return the complete candidate separately, not partial
+        // accepted fragments that could be mistaken for the full result.
+        ukrainian:hasCandidate?'':results.map(r=>r.ukrainian).join(''),
         ipa:results.map((r,index)=>(lexicon.has(parts[index])||/^[가-힣]+$/u.test(parts[index]))?r.ipa:ipaSafeLiteral(parts[index])).join(''),
         analysis:results.map(r=>r.analysis).filter(Boolean).join(' · '),
         variants:results.flatMap((result,variantIndex)=>(result.variants||[]).map(variant=>({
@@ -104,8 +109,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         trace:results.flatMap(r=>r.trace||[]),
         issues,
         target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
-        candidate_ukrainian:results.some(r=>r.candidate_ukrainian)?results.map(r=>r.candidate_ukrainian??r.ukrainian).join(''):null,
-        candidate_status:results.some(r=>r.candidate_ukrainian)?'provisional':null,
+        candidate_ukrainian:candidateText,
+        candidate_status:hasCandidate?'provisional':null,
         status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical'
       };
     }
@@ -334,7 +339,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   return{
     source:text,
     surfaceHangul:recomposed===originalHangul?'':recomposed,
-    ukrainian:unresolvedWholeHangulToken?'':output.join(''),
+    ukrainian:unresolvedWholeHangulToken||provisionalCandidateAvailable?'':output.join(''),
     candidate_ukrainian:provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
     candidate_status:provisionalCandidateAvailable?'provisional':null,
     ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,' '),
