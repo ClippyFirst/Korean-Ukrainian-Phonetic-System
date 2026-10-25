@@ -11,6 +11,9 @@ on:
       - ".github/workflows/multi-engine-ipa-benchmark.yml"
       - "scripts/benchmark_ugtphon_ko.py"
       - "tests/test_ugtphon_benchmark.py"
+      - "docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md"
+      - "docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md"
+      - "docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md"
       - "scripts/convert_sigmorphon_ko.py"
       - "src/korean_ukrainian/**"
       - "data/korean/**"
@@ -171,7 +174,9 @@ jobs:
           assert sum(discrepancy_audit["category_counts"].values()) == discrepancy_audit["occurrence_count"]
           assert all(item.get("category") for item in discrepancy_audit["occurrences"])
           print("ClippyFirst-vs-gold discrepancy audit:",
-                discrepancy_audit["occurrence_count"], discrepancy_audit["category_counts"])
+                discrepancy_audit["occurrence_count"], discrepancy_audit["category_counts"],
+                "profile_sensitivity_occurrences=",
+                discrepancy_audit["profile_sensitivity_occurrence_count"])
           pairwise_audit = r["native_g2pk_pairwise_audit"]
           assert pairwise_audit["status"] == "completed"
           assert pairwise_audit["occurrence_count"] == r["eligible_token_occurrences"]
@@ -242,7 +247,9 @@ jobs:
           assert sum(discrepancy_audit["category_counts"].values()) == discrepancy_audit["occurrence_count"]
           assert all(item.get("category") for item in discrepancy_audit["occurrences"])
           print("ClippyFirst-vs-gold discrepancy audit:",
-                discrepancy_audit["occurrence_count"], discrepancy_audit["category_counts"])
+                discrepancy_audit["occurrence_count"], discrepancy_audit["category_counts"],
+                "profile_sensitivity_occurrences=",
+                discrepancy_audit["profile_sensitivity_occurrence_count"])
           pairwise_audit = r["native_g2pk_pairwise_audit"]
           assert pairwise_audit["status"] == "completed"
           assert pairwise_audit["occurrence_count"] == r["eligible_token_occurrences"]
