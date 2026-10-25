@@ -44,6 +44,18 @@ const cases = [
     surface: '일꼬',
     source: '읽고',
     evidence: /qna_seq=329463/u
+  },
+  {
+    input: '싫어서',
+    surface: '시러서',
+    source: '싫어서',
+    evidence: /qna_seq=313981/u
+  },
+  {
+    input: '수많은',
+    surface: '수마는',
+    source: '수많은',
+    evidence: /word 71144/u
   }
 ];
 
@@ -64,6 +76,10 @@ test('exact NIKL-attested surface divergences are corrected before IPA adaptatio
       assert.match(result.analysis, /correction before IPA/u);
     }
     assert.ok(result.ipa, item.input + ': IPA must be emitted from the corrected surface');
+    if (item.input === '수많은') {
+      assert.match(result.ipa, /ː/u, 'dictionary length mark must survive into IPA');
+      assert.match(result.analysis, /lexical vowel length retained in IPA/u);
+    }
     assert.equal(result.issues.length, 0, item.input + ': corrected surface must remain IPA-mappable');
     const mapped = traceIpaMapping(result.ipa);
     assert.equal(mapped.unknown, '', item.input + ': all IPA segments must map');
@@ -99,7 +115,7 @@ test('a correction preserves source offsets and punctuation in running text', ()
 
 test('every correction is backed by a registered official NIKL source', () => {
   const byId = new Map(sourceRegister.map(row => [row.source_id, row]));
-  for (const id of ['SRC-NIKL-MCFAQ-5949', 'SRC-NIKL-QNA-307508', 'SRC-NIKL-QNA-322805', 'SRC-NIKL-QNA-315279', 'SRC-NIKL-QNA-307219', 'SRC-NIKL-QNA-329463']) {
+  for (const id of ['SRC-NIKL-MCFAQ-5949', 'SRC-NIKL-QNA-307508', 'SRC-NIKL-QNA-322805', 'SRC-NIKL-QNA-315279', 'SRC-NIKL-QNA-307219', 'SRC-NIKL-QNA-329463', 'SRC-NIKL-QNA-306166', 'SRC-NIKL-QNA-313981', 'SRC-NIKL-KRDICT-71144']) {
     assert.ok(byId.has(id), id + ': evidence source must be registered');
     assert.match(byId.get(id).url, /korean\.go\.kr/u);
     assert.match(byId.get(id).license_status, /KOGL|reuse|marking|not checked/i,
@@ -110,3 +126,18 @@ test('every correction is backed by a registered official NIKL source', () => {
   assert.match(readgo.source_url, /qna_seq=329463/u);
   assert.match(readgo.rule_notes, /directly attests 읽고\[일꼬\]/u);
 });
+
+test('the NIKL-attested 멋있어 variants are explicit alternatives, never gold labels', () => {
+  const result = adapter.convert('멋있어');
+  const surface = result.surfaceHangul || '멋있어';
+  assert.ok(['머디써', '머시써'].includes(surface), 'surface must match one of the official exact-form variants');
+  const variants = result.variants || [];
+  assert.equal(variants.length, 1, 'the other official variant should be exposed when its IPA-to-target path is fully supported');
+  assert.ok(['머디써', '머시써'].includes(variants[0].surface));
+  assert.notEqual(variants[0].surface, surface);
+  assert.equal(variants[0].status, 'lexical-review');
+  assert.equal(variants[0].ipaIsGold, false);
+  assert.equal(variants[0].ukrainianTargetIsGold, false);
+  assert.match(variants[0].sourceLocator, /qna_seq=306166/u);
+});
+
