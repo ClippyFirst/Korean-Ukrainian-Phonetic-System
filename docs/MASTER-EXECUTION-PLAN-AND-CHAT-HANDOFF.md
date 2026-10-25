@@ -1184,3 +1184,13 @@ The new consensus implementation has not yet been validated by a fresh exact-hea
 
 Release classification remains **software-verified research prototype / partial prototype, not release-ready**. The correct near-term objective is evidence-backed candidate coverage with visible uncertainty, not forcing all 48 abstentions to disappear.
 
+## Continuation — strict/soft interface and abstention-aware scoring (2026-10-25)
+
+- The existing morphology-consensus work in PR #314 is preserved and used as the implementation base. This continuation adds no second consensus adapter and no duplicate consensus workflow.
+- The Python CLI and FastAPI now expose the already-existing `morphology_mode="strict"|"soft"` option. Strict remains the default. Soft is rejected with g2pk and in decomposition mode rather than being silently ignored. Its rule trace must remain `heuristic-low-confidence`; the IPA target gate remains in place.
+- The existing `scripts/benchmark_morphology_ipa_delta.py` now reports `coverage_adjusted_exact_match_rate = exact_matches / attempted_occurrences` alongside conditional exact-match rate and coverage. This makes the cost of abstentions explicit without counting unresolved output as a correct prediction.
+- Tests cover the strict default, soft-mode trace provenance, CLI flag parsing, invalid mode combinations, and coverage-adjusted scoring.
+- README documents the CLI/API usage and points to `docs/NATIVE-ABSTENTION-AUDIT-2026-10-25.md`. The previous root-cause table and the analyzer-consensus implementation remain canonical in PR #314; no duplicate 48-case audit document or second benchmark workflow is being added.
+- **Exact-head CI pending:** branch `fix/abstention-consensus-api-modes-2026-10-25`; current code head before this handoff update was `ee2b41b2c76314226d689d992642a51e2f90b148`. Verify tests and the existing consensus workflow on the final head before claiming success.
+- **Acceptance boundary:** soft mode may raise coverage, but historical measurements show the coverage gain is not an accuracy gain on the common scored subset. Keep strict default and do not promote analyzer-derived IPA to accepted Ukrainian output.
+
