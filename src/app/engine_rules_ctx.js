@@ -3,7 +3,7 @@
  */
 import {
   COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
-  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -141,11 +141,27 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     }else if(a.coda&&b.onset==='ㅎ'){
       const pair=COMPLEX[a.coda];
       if(pair){
-        a.__complexHAspirationUnlicensed='left';
-        b.__complexHAspirationUnlicensed='right';
-        rules.push('complex-coda-h-aspiration-requires-morphology');
-        nextRules.push('complex-coda-h-aspiration-requires-morphology');
-        continue;
+        const exactR004Pair=NIKL_COMPLEX_H_SUFFIX_FORMS.get(currentWord);
+        if(['ㄺ','ㄵ','ㄼ'].includes(a.coda)&&exactR004Pair===currentPair){
+          const aspirated=ASPIRATION[pair[1]]||ASPIRATION[representative(pair[1])];
+          if(aspirated){
+            a.coda=pair[0];
+            b.onset=aspirated;
+            rules.push('complex-coda-h-aspiration-exact-form');
+          }else{
+            a.__complexHAspirationUnlicensed='left';
+            b.__complexHAspirationUnlicensed='right';
+            rules.push('complex-coda-h-aspiration-requires-morphology');
+            nextRules.push('complex-coda-h-aspiration-requires-morphology');
+            continue;
+          }
+        }else{
+          a.__complexHAspirationUnlicensed='left';
+          b.__complexHAspirationUnlicensed='right';
+          rules.push('complex-coda-h-aspiration-requires-morphology');
+          nextRules.push('complex-coda-h-aspiration-requires-morphology');
+          continue;
+        }
       }else{
         const aspirated=a.coda==='ㅈ'?'ㅊ':(ASPIRATION[a.coda]||ASPIRATION[rep]);
         if(aspirated){

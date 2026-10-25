@@ -71,6 +71,11 @@ _NIKL_R002_FORMAL_LICENSES = {
 # gold; these licenses resolve only the Korean morphophonological step.
 # 싫어서: NIKL Online Q&A qna_seq=313981 (2025-04-29).
 # 수많은: Korean Basic Dictionary entry for 수많다, 활용 [수ː마는].
+_NIKL_R004_COMPLEX_H_SUFFIX_LICENSES = {
+    # Korean Basic Dictionary entry 긁히다 / 긁혀[글켜] supports the ㄺ + -히- environment.
+    "긁혔다는거지": "긁>혔",
+}
+
 _NIKL_R003_FORMAL_LICENSES = {
     "싫어서": "싫>어",
     "수많은": "많>은",
@@ -146,6 +151,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R003_FORMAL_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R003:ending_or_suffix_h_deletion:{full_form}:{pair}")
+    pair = _NIKL_R004_COMPLEX_H_SUFFIX_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R004:complex_h_suffix:{full_form}:{pair}")
     pair = _NIKL_R010_FORM_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R010:stem_n_m+suffix:{full_form}:{pair}")
