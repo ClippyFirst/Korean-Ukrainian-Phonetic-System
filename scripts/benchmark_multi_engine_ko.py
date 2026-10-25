@@ -62,14 +62,39 @@ def kog2p_phones_to_ipa(value: str) -> str:
 
 
 def _normalize_broad_fricative_aspiration(value: str) -> str:
-    """Sensitivity-only profile: ignore narrow aspiration on Korean /s, ɕ/.
+    """Sensitivity-only profile: ignore narrow aspiration on Korean /s, ɕ/."""
+    return re.sub(r"(?<=[sɕ])ʰ", "", normalize_ipa(value))
 
-    This is not the primary score and does not normalize aspirated stops, vowel
-    length, fortis, or unreleased codas. It measures one known broad-vs-narrow
-    convention mismatch without silently redefining the canonical benchmark.
-    """
-    normalized = normalize_ipa(value)
-    return re.sub(r"(?<=[sɕ])ʰ", "", normalized)
+
+def _normalize_ignore_aspiration(value: str) -> str:
+    """Diagnostic only: remove aspiration marks after any segment."""
+    return normalize_ipa(value).replace("ʰ", "")
+
+
+def _normalize_ignore_length(value: str) -> str:
+    """Diagnostic only: ignore IPA length marks; not a canonical Korean score."""
+    return normalize_ipa(value).replace("ː", "").replace("ˑ", "")
+
+
+def _normalize_ignore_stress(value: str) -> str:
+    """Diagnostic only: ignore primary/secondary stress marks."""
+    return normalize_ipa(value).replace("ˈ", "").replace("ˌ", "")
+
+
+DIAGNOSTIC_NORMALIZERS: dict[str, Callable[[str], str]] = {
+    "primary": normalize_ipa,
+    "broad_fricative_aspiration": _normalize_broad_fricative_aspiration,
+    "ignore_all_aspiration": _normalize_ignore_aspiration,
+    "ignore_length": _normalize_ignore_length,
+    "ignore_stress": _normalize_ignore_stress,
+}
+DIAGNOSTIC_PROFILE_WARNINGS = {
+    "primary": "primary benchmark contract; only declared Unicode/format normalization",
+    "broad_fricative_aspiration": "sʰ/ɕʰ distinctions removed; sensitivity only, not accepted gold convention",
+    "ignore_all_aspiration": "all aspiration distinctions removed; deliberately over-permissive diagnostic, not accuracy",
+    "ignore_length": "length distinctions removed; diagnostic only, may erase lexical/prosodic information",
+    "ignore_stress": "stress marks removed; diagnostic only, not engine-specific gold",
+}
 
 
 def _classify_native_discrepancy(
@@ -439,7 +464,10 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         }
 
     scored_by_engine: dict[str, list[dict[str, Any]]] = {name: [] for name in predictions}
-    broad_sensitivity_by_engine: dict[str, list[dict[str, Any]]] = {name: [] for name in predictions}
+    profile_scores_by_engine: dict[str, dict[str, list[dict[str, Any]]]] = {
+        name: {profile: [] for profile in DIAGNOSTIC_NORMALIZERS}
+        for name in predictions
+    }
     errors_by_engine: dict[str, int] = {name: 0 for name in predictions}
     unresolved_native = 0
     mismatch_details: list[dict[str, Any]] = []
@@ -496,15 +524,13 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 scored = _score(raw_prediction, gold)
                 scored.update({"occurrence_id": item["occurrence_id"], "row_id": row_id, "token": word, "gold": gold})
                 scored_by_engine[name].append(scored)
-                broad_scored = _score(
-                    raw_prediction, gold,
-                    normalizer=_normalize_broad_fricative_aspiration,
-                )
-                broad_scored.update({
-                    "occurrence_id": item["occurrence_id"], "row_id": row_id,
-                    "token": word, "gold": gold,
-                })
-                broad_sensitivity_by_engine[name].append(broad_scored)
+                for profile_name, normalizer in DIAGNOSTIC_NORMALIZERS.items():
+                    profile_scored = _score(raw_prediction, gold, normalizer=normalizer)
+                    profile_scored.update({
+                        "occurrence_id": item["occurrence_id"], "row_id": row_id,
+                        "token": word, "gold": gold,
+                    })
+                    profile_scores_by_engine[name][profile_name].append(profile_scored)
             except Exception:
                 errors_by_engine[name] += 1
 
@@ -513,14 +539,29 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     for name, scored in scored_by_engine.items():
         attempted = len(items)
         metrics = _metrics(scored)
-        broad_sensitivity = _metrics(broad_sensitivity_by_engine[name])
+        diagnostic_profiles = {
+            profile_name: {
+                **_metrics(profile_items),
+                "normalization": DIAGNOSTIC_PROFILE_WARNINGS[profile_name],
+                "warning": "diagnostic sensitivity only; never substitute for primary scores",
+                "delta_exact_rate_vs_primary": (
+                    round(_metrics(profile_items)["exact_match_rate"] - metrics["exact_match_rate"], 6)
+                    if _metrics(profile_items)["exact_match_rate"] is not None and metrics["exact_match_rate"] is not None
+                    else None
+                ),
+                "delta_cer_vs_primary": (
+                    round(_metrics(profile_items)["character_error_rate"] - metrics["character_error_rate"], 6)
+                    if _metrics(profile_items)["character_error_rate"] is not None and metrics["character_error_rate"] is not None
+                    else None
+                ),
+            }
+            for profile_name, profile_items in profile_scores_by_engine[name].items()
+        }
         result: dict[str, Any] = {
             **metrics,
+            "normalization_profile_sensitivity": diagnostic_profiles,
             "broad_fricative_aspiration_sensitivity": {
-                **broad_sensitivity,
-                "normalization": "primary normalization plus sʰ→s and ɕʰ→ɕ on both prediction and reference",
-                "warning": "sensitivity analysis only; primary metrics above remain unchanged",
-            },
+                **diagnostic_profiles["broad_fricative_aspiration"],
             "attempted_tokens": attempted,
             "coverage": round(len(scored) / attempted, 6) if attempted else None,
             "abstentions_or_unresolved": unresolved_native if name == "clippyfirst_native" else 0,
