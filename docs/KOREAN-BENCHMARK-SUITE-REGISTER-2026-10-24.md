@@ -1,3 +1,11 @@
+## Engine-convention profile matrix — 2026-10-26
+
+- Added normalization_profile_sensitivity to scripts/benchmark_multi_engine_ko.py. It reports primary plus four diagnostic profiles (s/ɕ aspiration only, all aspiration, length, stress) with exact match, CER, and deltas from primary.
+- Primary normalization and scoring remain unchanged. Profiles are not claimed to be each engine's native standard; they quantify sensitivity to selected representational differences only.
+- The benchmark runner now triggers a new exact-head run: [40239625851](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40239625851) on SHA db5b53b9afc1220e51fb78ae1f46e52d47dc9d40. Status at register update: QUEUED. No profile score is yet verified.
+- Convention audit documentation was added to docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md, including source-backed representation/adapter caveats for g2pK, KoG2P, hangul_to_ipa, phonemize and eSpeak NG.
+- **Acceptance:** inspect exact-head CI and artifact; report all profiles with denominators and coverage; only claim engine-specific standard scores when backed by pinned upstream behavior and case-level reference adjudication. Do not promote the most permissive profile as accuracy or claim 80–90% general Korean accuracy.
+
 ## Latest g2pK-inclusive run and v3 training readiness — 2026-10-26
 
 - **DONE_VERIFIED for benchmark execution at prior exact head:** [run 40238222133](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40238222133), artifact [12616575071](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40238222133/artifacts/12616575071), executable head ff14ec72e3167d9268f1348f399abb155098caee. UGTPHON: ClippyFirst 1,430/2,698 exact (53.0022%), CER 9.1697%, coverage 99.8150%; g2pK 1,435/2,703 (53.0892%), CER 9.2285%, coverage 100%. SIGMORPHON: ClippyFirst 357/997 exact (35.8074%), CER 14.7037%, coverage 99.7998%; g2pK 353/999 (35.3353%), CER 14.8222%, coverage 100%.
