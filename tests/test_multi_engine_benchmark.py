@@ -8,6 +8,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
+    _classify_native_discrepancy,
     _load_rows_and_words,
     _metrics,
     _normalize_broad_fricative_aspiration,
@@ -105,4 +106,19 @@ def test_broad_fricative_aspiration_sensitivity_is_narrowly_scoped():
     assert strict["exact"] is False
     assert broad["exact"] is True
     assert broad["reference_length"] == strict["reference_length"] - 1
+
+
+def test_discrepancy_classifier_only_assigns_evidence_supported_categories():
+    convention = _classify_native_discrepancy("kasɯm", "ka̠sʰɯm", False, True)
+    assert convention["category"] == "IPA_CONVENTION"
+    assert convention["strict_profile_exact"] is False
+    assert convention["broad_fricative_aspiration_exact"] is True
+
+    unicode_only = _classify_native_discrepancy("ã", "ã", False, False)
+    assert unicode_only["category"] == "UNICODE_OR_FORMAT"
+
+    unresolved = _classify_native_discrepancy("kʰa", "ka", False, False)
+    assert unresolved["category"] == "UNCLASSIFIED"
+    assert "does not distinguish" in unresolved["rationale"]
+
 
