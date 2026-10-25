@@ -174,3 +174,10 @@ A higher score on UGTPHON does not establish that an engine is best for NIKL sta
 ## Reproduction
 
 The workflow checks out the exact upstream revisions into the ephemeral runner, checks their declared licenses, installs the pinned packages, downloads the pinned UGTPHON test split, runs adapter tests, emits a JSON report, and uploads the report artifact. External engine code and the raw corpus are not added to the project tree.
+
+## Continuation — score-profile sensitivity and second holdout (2026-10-25)
+
+The frozen `research/broad-ipa-profile-sensitivity-2026-10-24.json` separates the legacy and proposed broad-v1 scoring profiles. On the same pinned UGTPHON paired subset, exact match changes from 53.1827% to 91.04% for native and from 53.3333% to 90.96% for g2pk; broad-v1 CER is 1.6847% and 1.7303%, respectively. This is not a code-level pronunciation improvement: the largest score change comes from the candidate profile's `sʰ → s` normalization, which still requires independent phonetic review. Preserve both profile identifiers and historical scores.
+
+The source-backed broad-IPA holdout `data/korean/ipa_holdout_2026-10-24.json` is a distinct 24-form set. Its official Hangul surface readings do not count as IPA gold; it currently has 0/24 gold labels. External exact-token overlap was checked against artifact [12567746123](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40113742248/artifacts/12567746123), with 0/24 overlaps. Current-main local leakage CI and two independent IPA reviewers are still required. Do not conflate this with `data/korean/benchmarks/ipa-holdout-24-manifest.json`, the separately recovered target-renderer holdout.
+
