@@ -5,21 +5,45 @@
   "surfaceEvidence": {
     "status": "official-NIKL-variant",
     "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
-    "reportedHangulVariants": ["살믜", "살메"],
+    "reportedHangulVariants": [
+      "살믜",
+      "살메"
+    ],
     "scope": "Official Korean surface-pronunciation alternatives for particle 의; not IPA."
   },
   "blindQueue": "research/salmui-ipa-review-queue.json",
   "queueSha256": "c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3",
   "reviewerPackets": [
-    {"slot": "A", "path": "research/ipa-review-packets/salmui-reviewer-A.json", "status": "AWAITING_INDEPENDENT_REVIEW", "broadIpa": null},
-    {"slot": "B", "path": "research/ipa-review-packets/salmui-reviewer-B.json", "status": "AWAITING_INDEPENDENT_REVIEW", "broadIpa": null}
+    {
+      "slot": "A",
+      "path": "research/ipa-review-packets/salmui-reviewer-A.json",
+      "status": "AWAITING_INDEPENDENT_REVIEW",
+      "broadIpa": null
+    },
+    {
+      "slot": "B",
+      "path": "research/ipa-review-packets/salmui-reviewer-B.json",
+      "status": "AWAITING_INDEPENDENT_REVIEW",
+      "broadIpa": null
+    }
   ],
-  "reconciliation": {"status": "BLOCKED_SPECIALIST_ADJUDICATION", "finalIpa": null, "notes": null},
+  "reconciliation": {
+    "status": "BLOCKED_SPECIALIST_ADJUDICATION",
+    "finalIpa": null,
+    "notes": null
+  },
   "ukrainianTargetReview": {
     "status": "BLOCKED_PENDING_FROZEN_IPA",
     "reviewers": [],
     "acceptedTarget": null,
     "candidateTargets": [],
     "notes": "Do not derive or accept Ukrainian target until independent IPA annotations are received and reconciled."
+  },
+  "reviewerRecruitment": {
+    "status": "OPEN_REQUEST_FOR_TWO_INDEPENDENT_QUALIFIED_REVIEWERS",
+    "issue": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337",
+    "createdAt": "2026-10-25",
+    "submissionsReceived": 0,
+    "note": "Public recruitment issue deliberately omits IPA candidates and source citations to reduce first-pass contamination. No reviewer identities or qualifications are inferred; no IPA is accepted until submissions are independently verified."
   }
 }
