@@ -64,3 +64,8 @@ The remaining gates require external evidence or specialist input: (1) visual/pr
 ### Repository-only fingerprint audit — 2026-10-25
 
 A bounded audit of existing text/data files found an earlier `삶의` footprint in `data/korean/lexical_pronunciations.csv` (line 644): `sal|mi` / `сал|мі`, with `sal|me` / `сал|ме` as alternate fields and status `provisional`. This is a candidate record, not independent gold. It does not match the separate triage notation `sal.mɰi`; the discrepancy is now recorded in the residual-case handoff and guarded by a regression test. Do not silently promote or rewrite the row. The reviewed page and sentence-corpus fixtures did not contain the other unresolved input fingerprints. This pass searched repository text/data only and did not search for PDF or audio files.
+
+
+### Independent IPA reviewer recruitment
+
+Issue [#337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337) requests two qualified independent Korean phonetics reviews for the `삶의` broad-IPA gate. The public issue intentionally omits candidate transcriptions and source citations to reduce contamination of the first pass. The coordinator records recruitment status; until two qualified submissions are verified and reconciled, no IPA or Ukrainian target is accepted.
