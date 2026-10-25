@@ -1132,3 +1132,18 @@ The follow-up changes are committed on the same dedicated branch. At the moment 
 
 Current acceptance boundary is unchanged: NIKL surface-form evidence is verified for the two exact forms, but independent IPA gold, Ukrainian target gold, original 24-form holdout provenance, and live NIKL inventory retrieval are still blocked. PR #311 is open and unmerged on top of PR #310; current GitHub metadata reports it mergeable, which is not a substitute for passing checks.
 
+## Exact-head verification outcome after source-contract repair — 2026-10-25
+
+The source-register/lexical-provenance/test repairs are now verified on code head `3b60d971bb7916b0418c90474c62fd4bb033dfdc`:
+
+- **Browser G2P integration:** PASS, run [40192863070](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40192863070), 1,231 tests passed, 0 failed.
+- **System verification:** PASS, run [40192863065](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40192863065): Python regression/data integrity and browser regression/build passed. The official NIKL live inventory step was skipped, not passed.
+- **Paired native-vs-g2pk diagnostic:** PASS, run [40192863167](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40192863167). On the pinned UGTPHON Korean test split (275 rows, 2,703 eligible token occurrences): native exact rate 0.531827, CER 0.091883, 48 abstentions; g2pk 0.530892 exact, CER 0.092285, zero abstentions. Diagnostic only; no Ukrainian target evaluation.
+- **External UGTPHON diagnostic:** PASS, run [40192863206](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40192863206).
+- **Multi-engine IPA benchmark:** PASS, run [40192863213](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40192863213). On the same 2,703 UGTPHON occurrences, exact rates/CER were: native 0.531827/0.091883 (48 abstentions); g2pk 0.530892/0.092285; KoG2P 0.273030/0.195122; hangul_to_ipa 0.162412/0.248054; eSpeak NG Korean 0.081391/0.336101; phonemize 0.425453/0.143531. On SIGMORPHON 2021 Korean lexical test (999 eligible forms), native 0.358074 exact / CER 0.147037 (2 abstentions); g2pk 0.353353 / 0.148222; KoG2P 0.187187 / 0.218327; hangul_to_ipa 0.089089 / 0.298448; eSpeak NG 0.043043 / 0.407236; phonemize 0.289289 / 0.174387.
+- **Interpretation boundary:** these public datasets score Korean surface-pronunciation predictions, not IPA independently adjudicated by Korean specialists and not Ukrainian practical transcription. They support a reproducible comparative diagnostic, not a target-accuracy or linguistic-gold claim.
+- **Source registry:** 105 records; 101 remain in REVIEW_REQUIRED, and item-level reuse/KOGL status remains unresolved for the newly registered Q&A records. Strict rights acceptance stays blocked.
+- **Status ledger:** exact Korean surface source claims for `넓죽하다` and `읽고` are `DONE_VERIFIED_SOURCE`; focused regression and system tests are `DONE_VERIFIED` on the code head; the 24-form original manifest, independent Korean IPA adjudication, independent Ukrainian target gold, and live NIKL inventory remain blocked. No PR was merged.
+
+The final documentation successor will record these exact-head results; because that successor is a new commit, do not call its checks passed until its own workflow runs complete.
+
