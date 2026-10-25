@@ -79,3 +79,25 @@ These are implementation/data/build checks, not linguistic adjudication.
 6. **Release:** re-run exact-head CI after any code change. Until the source image/print evidence and independent specialist reviews are supplied, the project remains a tested research prototype / partial prototype, not scientifically release-ready.
 
 Current PR: [#336](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/336). The next genuine blockers are external source verification, original user context, and independent qualified reviewers—not missing implementation of the candidate UI or blind-packet workflow.
+
+
+## Repository text-fingerprint audit — 2026-10-25
+
+Scope of this pass: existing repository text/data artifacts only. No PDF or audio discovery was performed.
+
+### Confirmed repository footprint for `삶의`
+
+- `data/korean/lexical_pronunciations.csv`, line 644, already contains the row `삶의,살믜,сал|мі,sal|mi,...`, with alternate fields `살메,сал|ме,sal|me` and status `provisional`.
+- This is a repository-internal candidate footprint, not independent IPA evidence. The row's Ukrainian forms are also provisional and must not be treated as accepted targets.
+- There is a real unresolved notation difference between the existing table's `sal|mi` and the residual triage candidate `sal.mɰi` for the Hangul surface notation `[살믜]`. Neither string is promoted here. The blind review must establish the broad-IPA convention and syllable boundary, and reconciliation must explicitly record whether the difference reflects notation, analysis, or an actual candidate error.
+- The same CSV row contains `sal|me` / `сал|ме` as an alternative candidate. This too remains provisional until the source-/candidate-blind IPA review is complete and the Ukrainian adaptation is separately reviewed.
+
+### Other checked text footprints
+
+The following files were checked for the four unresolved input fingerprints and related variants: `README.md`, `index.html`, `system.html`, `data/korean/morphology-review-corpus.txt`, `tests/fixtures/adversarial-sentence-corpus.txt`, and `tests/fixtures/adversarial-sentence-corpus-3.txt`. No matches for `칡칡이`, `많앗구나유유유`, or `칭칭이` were found in those sampled service/corpus files; `삶의` was not found in those sampled page/fixture files. This is a bounded file-by-file check, not a claim that GitHub's repository-wide search index is exhaustive.
+
+The residual-case research JSON, handoff, blind queue, coordinator, and two reviewer packets also contain the expected `삶의` workflow references. Both reviewer packets remain blank and source-/candidate-blind. These duplicated research references document the workflow; they do not constitute independent reviews.
+
+### Action taken / gate
+
+Keep the pre-existing lexical row intact as a provisional research artifact; do not promote it to runtime gold or overwrite it merely to match another candidate. The regression suite now guards that the row remains explicitly provisional and that the coordinator's final IPA and accepted Ukrainian target stay null until their separate gates are satisfied. Resolve the `sal|mi` versus `sal.mɰi` candidate discrepancy in the post-submission reconciliation record.
