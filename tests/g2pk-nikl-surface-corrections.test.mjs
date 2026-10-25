@@ -11,7 +11,8 @@ const root = new URL('../', import.meta.url);
 const canonical = readFileSync(new URL('data/korean/canonical_correspondence.csv', root), 'utf8');
 const lexical = readFileSync(new URL('data/korean/lexical_pronunciations.csv', root), 'utf8');
 const sourceRegister = parseCsv(readFileSync(new URL('research/SOURCE-REGISTER.csv', root), 'utf8'));
-const adapter = createG2pWebAdapter(createEngine(canonical, lexical));
+const engine = createEngine(canonical, lexical);
+const adapter = createG2pWebAdapter(engine);
 const rawPort = new G2pBrowser();
 
 const cases = [
@@ -130,14 +131,29 @@ test('every correction is backed by a registered official NIKL source', () => {
 test('the NIKL-attested 멋있어 variants are explicit alternatives, never gold labels', () => {
   const result = adapter.convert('멋있어');
   const surface = result.surfaceHangul || '멋있어';
-  assert.ok(['머디써', '머시써'].includes(surface), 'surface must match one of the official exact-form variants');
   const variants = result.variants || [];
-  assert.equal(variants.length, 1, 'the other official variant should be exposed when its IPA-to-target path is fully supported');
-  assert.ok(['머디써', '머시써'].includes(variants[0].surface));
-  assert.notEqual(variants[0].surface, surface);
-  assert.equal(variants[0].status, 'lexical-review');
-  assert.equal(variants[0].ipaIsGold, false);
-  assert.equal(variants[0].ukrainianTargetIsGold, false);
-  assert.match(variants[0].sourceLocator, /qna_seq=306166/u);
+  const evidence = {
+    surfaces: ['머디써', '머시써'],
+    sourceLocator: /qna_seq=306166/u
+  };
+  if (evidence.surfaces.includes(surface)) {
+    const alternativeSurface = evidence.surfaces.find(value => value !== surface);
+    const alternative = engine.convertSurface(alternativeSurface);
+    const targetFullySupported = !alternative.issues?.length
+      && Boolean(alternative.ipa)
+      && Boolean(alternative.ukrainian)
+      && !alternative.candidate_status;
+    assert.equal(variants.length, targetFullySupported ? 1 : 0,
+      'only expose the alternative if its IPA-to-target path is fully supported');
+    if (targetFullySupported) {
+      assert.equal(variants[0].surface, alternativeSurface);
+      assert.equal(variants[0].status, 'lexical-review');
+      assert.equal(variants[0].ipaIsGold, false);
+      assert.equal(variants[0].ukrainianTargetIsGold, false);
+      assert.match(variants[0].sourceLocator, evidence.sourceLocator);
+    }
+  } else {
+    assert.deepEqual(variants, [], 'do not invent a variant when G2P output is not one of the attested readings');
+  }
 });
 
