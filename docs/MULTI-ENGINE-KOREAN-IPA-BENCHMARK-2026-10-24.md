@@ -280,3 +280,32 @@ The run above emitted the following primary-profile values (do not substitute th
 On UGTPHON, the g2pK exact rate is only 0.0870 percentage points above native using each engine's own coverage; on SIGMORPHON, native is 0.4721 percentage points above g2pK under the same caveat. These are not broad claims of engine superiority. The shared renderer means g2pK is not an independent end-to-end IPA renderer. Current occurrence-level discrepancy audit remains conservative: 1,268 UGTPHON and 640 SIGMORPHON non-abstention mismatches are UNCLASSIFIED until adjudicated.
 
 The v3 training-readiness audit is tracked separately in docs/CLIPPYFIRST-V3-TRAINING-AND-BENCHMARK-PROTOCOL.md. It does not change benchmark scoring or create an 80–90% headline. A curated source-backed rule challenge may be reported as its own track once independently gold-labelled, but it must not be represented as general Korean accuracy.
+
+## Cross-engine convention audit — next run
+
+The benchmark runner now emits normalization_profile_sensitivity for every engine, alongside the unchanged primary result. Profiles are calculated against the same reference alternatives and denominators where the engine produced a score. The primary profile is the canonical benchmark contract; all other profiles are sensitivity analyses only.
+
+| Profile | Transformation | What it can diagnose | Why it is not the headline score |
+|---|---|---|---|
+| primary | Existing Unicode/format normalization; preserves aspiration, length, fortis and unreleased-coda marks | Strict comparable baseline | This remains the official diagnostic number |
+| broad_fricative_aspiration | Removes ʰ only after s and ɕ | Previously observed narrow-vs-broad fricative aspiration difference | Gold convention is not independently adjudicated |
+| ignore_all_aspiration | Removes all ʰ | Upper-bound sensitivity to aspiration annotation | Erases meaningful contrasts, including aspirated stops |
+| ignore_length | Removes ː and ˑ | Sensitivity to length notation | May erase meaningful lexical/prosodic information |
+| ignore_stress | Removes ˈ and ˌ | Sensitivity to stress-marking conventions | May hide a real stress or output mismatch |
+
+Every profile reports exact match, CER, and deltas from primary, with coverage/denominators left visible. These are deliberately not asserted to be the native standard of any one engine. A single global transformation cannot make all six engines share the same phonological contract.
+
+### Engine output contracts and adapter limits
+
+- **ClippyFirst native:** direct project IPA output; unresolved cases are abstentions and coverage is reported separately.
+- **g2pK 0.9.4:** returns surface Hangul, not IPA. The benchmark passes that surface through ClippyFirst's segment renderer, so this is a G2P-surface comparison with a shared IPA realization layer, not independent g2pK IPA. Upstream documents output as standard Korean script and allows vowel grouping for contemporary colloquial mergers ([g2pK README](https://github.com/kyubyong/g2pK)).
+- **KoG2P:** returns a custom romanized phone alphabet (for example, p0 aa ng mm uu ll), not IPA. The benchmark uses an explicit, lossy symbol-to-IPA adapter; unknown labels fail closed ([KoG2P README and symbol table](https://github.com/scarletcho/KoG2P)).
+- **hangul_to_ipa:** emits IPA with selectable phonological rules; current run uses the pinned upstream default rule set. Upstream describes selected Korean phonological rules based on Shin, Kiaer and Cha, not a universal normative IPA authority ([repository](https://github.com/stannam/hangul_to_ipa)).
+- **phonemize 2.0.1:** direct IPA via the all-language preset with anyAscii=true and stripStress=true; its published quality evaluation uses an LLM-judged rubric, not this benchmark's independently adjudicated IPA gold ([API/readme](https://www.npmjs.com/package/phonemize)).
+- **eSpeak NG Korean:** direct IPA from a TTS-oriented phonemizer via phonemizer==3.3.0; output is tied to its voice/phoneme tables and runtime version, not a claim of normative narrow IPA ([eSpeak NG phoneme tables](https://github.com/espeak-ng/espeak-ng/blob/master/docs/phontab.md)).
+
+### What is needed to calculate a true engine-standard score
+
+A true engine-standard comparison requires a documented, versioned convention map for each output, plus case-level alignment/adjudication of the reference to that convention. The new profiles measure a few common differences, but they do not yet establish that a given reference is correct under eSpeak's, KoG2P's, phonemize's, or any other engine's native contract. Read exact profile scores from the next successful run artifact; do not infer or pre-fill them from old results.
+
+**Decision rule:** use a native-standard profile only where upstream documentation or source code establishes the representation; use source-adjudicated pronunciation for correctness; keep permissive sensitivity profiles visibly separate. No result is promoted to 80–90% general Korean accuracy solely because a permissive profile raises exact match.
