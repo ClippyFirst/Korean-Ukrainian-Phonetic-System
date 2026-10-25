@@ -77,6 +77,52 @@ def _formal_boundary_offsets(text: str, analysis: Mapping[str, Any]) -> set[int]
     return result
 
 
+
+def _unspaced_adverb_verb_offsets(text: str, analysis: Mapping[str, Any]) -> set[int]:
+    """Find likely missing eojeol spaces between an adverb and a lexical verb.
+
+    The native IPA rules operate on a single token. If both analyzers identify
+    an unspaced MAG→VV/VA/VX boundary, phrase-level phonology may differ from
+    within-word phonology; this adapter therefore withholds all licenses for
+    that token rather than pretending it has reconstructed orthographic spaces.
+    """
+    morphemes = analysis.get("morphemes")
+    if not isinstance(morphemes, list):
+        return set()
+    spans: list[dict[str, Any]] = []
+    zero_width: set[int] = set()
+    for item in morphemes:
+        if not isinstance(item, Mapping):
+            continue
+        start, end = item.get("start"), item.get("end")
+        if isinstance(start, bool) or isinstance(end, bool):
+            continue
+        if not isinstance(start, int) or not isinstance(end, int):
+            continue
+        if start < 0 or end < start or end > len(text):
+            continue
+        if start == end:
+            zero_width.add(start)
+            continue
+        surface = item.get("surface")
+        if isinstance(surface, str) and surface and surface != text[start:end]:
+            continue
+        spans.append({"start": start, "end": end, "tag": item.get("tag")})
+
+    result: set[int] = set()
+    for offset in range(1, len(text)):
+        if offset in zero_width:
+            continue
+        left = [item for item in spans if item["end"] == offset and item["start"] < offset]
+        right = [item for item in spans if item["start"] == offset and item["end"] > offset]
+        crosses = any(item["start"] < offset < item["end"] for item in spans)
+        if crosses or len(left) != 1 or len(right) != 1:
+            continue
+        if "MAG" in _tag_parts(left[0]["tag"]) and _tag_parts(right[0]["tag"]) & {"VV", "VA", "VX"}:
+            result.add(offset)
+    return result
+
+
 def analyzer_consensus_rule_licenses(
     text: str,
     analyses: Sequence[Mapping[str, Any]],
@@ -102,6 +148,10 @@ def analyzer_consensus_rule_licenses(
 
     boundary_sets = [_formal_boundary_offsets(text, item) for item in analyses]
     common_boundaries = set.intersection(*boundary_sets) if boundary_sets else set()
+    adverb_verb_sets = [_unspaced_adverb_verb_offsets(text, item) for item in analyses]
+    unspaced_multiword_boundaries = set.intersection(*adverb_verb_sets) if adverb_verb_sets else set()
+    if unspaced_multiword_boundaries:
+        common_boundaries = set()
     syllables = parse_syllables(text)
     if len(syllables) != len(text):
         raise ValueError("source text did not map one-to-one to Hangul syllables")
@@ -143,6 +193,7 @@ def analyzer_consensus_rule_licenses(
         "analyzers": sorted(names),
         "candidate_licenses": sorted(licenses),
         "consensus_boundaries": sorted(common_boundaries),
+        "blocked_unspaced_multiword_boundaries": sorted(unspaced_multiword_boundaries),
         "licensed_boundaries": details,
         "limitations": [
             "morphology agreement is not independent pronunciation gold",
