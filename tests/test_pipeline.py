@@ -575,3 +575,11 @@ def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
     assert target["morphology_mode"] == "soft"
     assert target["ipa_status"] == "provisional"
 
+def test_cli_exposes_soft_morphology_without_changing_default():
+    from korean_ukrainian.cli import build_parser
+
+    strict = build_parser().parse_args(["analyze", "좋아"])
+    soft = build_parser().parse_args(["analyze", "좋아", "--morphology-mode", "soft"])
+    assert strict.morphology_mode == "strict"
+    assert soft.morphology_mode == "soft"
+
