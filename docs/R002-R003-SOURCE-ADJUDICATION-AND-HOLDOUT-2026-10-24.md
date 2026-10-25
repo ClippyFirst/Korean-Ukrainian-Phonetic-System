@@ -83,3 +83,17 @@ Two further component/rule references were added without changing exact-form sta
 - `쌓아서`: the [NIKL Standard Pronunciation Rules, Article 12 commentary](https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002) explains deletion of stem-final ㅎ before a vowel-initial ending and includes `쌓이다[싸이다]`; together with the dictionary's `쌓아[싸아]`, this supports the rule environment but still does not directly list the complete form `쌓아서`.
 
 The case register therefore has exact-form official evidence for three forms and related component/rule evidence for four other forms (`되었어`, `붙어야`, `쌓아서`, `좋은데`). The remaining seven cases have no official evidence recorded in this pass. These counts describe source discovery only, not IPA adjudication.
+
+## Blinded IPA packet generation
+
+The repository's blinded packet generator now accepts this schema-version-1 queue and filters strictly to `SOURCE_FOUND_PENDING_IPA` cases. It does not copy `g2pkIpa`, noisy `goldDiagnostic`, existing reviewer fields, Ukrainian target status, or reconciliation notes into the reviewer packet.
+
+Generate separate packets locally (do not let reviewer A see reviewer B's submission before both are complete):
+
+```bash
+node scripts/build-ipa-review-packet.mjs --reviewer A --queue research/r002-r003-source-adjudication-2026-10-24.json > /tmp/r002-r003-ipa-review-A.json
+node scripts/build-ipa-review-packet.mjs --reviewer B --queue research/r002-r003-source-adjudication-2026-10-24.json > /tmp/r002-r003-ipa-review-B.json
+```
+
+Current packet size is three forms: `멋있어`, `수많은`, and `싫어서`. The other eleven cases are intentionally excluded until exact-form source evidence is recorded. Each packet carries the SHA-256 of the original source queue so submissions can be tied to the frozen input. Generation is local and read-only; it does not fill IPA or Ukrainian gold automatically. Independent IPA status remains blocked until qualified reviewers return their signed/referenced annotations and a reconciliation is recorded.
+
