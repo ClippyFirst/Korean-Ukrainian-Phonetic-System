@@ -61,7 +61,6 @@ _NIKL_R002_FORMAL_LICENSES = {
     "찾아": "찾>아",
     "좃같아서": "같>아",  # Exact noisy token; only 같다 + -아서 is licensed.
     "없을듯": "없>을",  # Exact written form; 없다 + adnominal -을 before 듯.
-    "칡칡이": "칡>이",  # Exact repeated form; second 칡 + particle 이 only.
     "웃어넘기겟지만": "웃>어",  # NIKL §§13–14; internal 웃- + -어, no spelling normalization of later 겟.
     "싶어서": "싶>어",  # NIKL §§13–14; transparent 싶- + -어서.
     "없으니깐": "없>으",
