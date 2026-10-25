@@ -131,3 +131,17 @@ Public text pages establish the general category, not this token:
 **Inference:** do not force `유유유` into a lexical/morphological analysis or auto-convert it to `ㅠㅠㅠ`. Treat “expressive vocalization / filler / transcription artifact” as the leading hypothesis while preserving the raw string. This is still a hypothesis because no source identifies the exact utterance. The best next evidence is the original audio/message or neighboring turns; without it, abstain from assigning phonology or Ukrainian output.
 
 The other UI candidates remain non-destructive alternatives for now. This follow-up changes the interpretation recorded in the research triage, not the strict production engine's accepted output.
+
+## Literal-IPA decision and exact-head verification — 2026-10-25
+
+The project owner confirmed the transcription contract for \`많앗구나유유유\`: do not normalize the source spelling; expose the IPA derived from the exact written sequence. The existing ClippyFirst API returns a non-empty rule-derived IPA string even when a morphophonological context is not licensed. The result remains explicitly diagnostic/provisional, and no Ukrainian target is accepted while that gate is unresolved. The regression now checks exact input preservation, non-empty diagnostic IPA, and target abstention. This is not a claim that the diagnostic IPA has independent expert adjudication.
+
+Verification at code/test head \`09222317efd8dca013e141e3bd10a5be5664d8fa\`:
+
+- Tests workflow [40234349890](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40234349890): **1,260 Node tests passed, 0 failed**; Python 3.11, 3.12, and 3.13 passed; clean wheel build/install passed.
+- Browser G2P integration [40234349866](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40234349866): **passed**.
+- System verification [40234349846](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40234349846): browser regression/build and Python regression/data integrity passed. The official NIKL source-inventory job was **skipped by workflow configuration**, not passed.
+- Master table/research corpus artifacts [40234349891](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40234349891): **passed**.
+
+The source-register audit count is 116 rows: 1 item-level license recorded, 1 not-applicable, 110 review-required, and 4 manual-classification-required. The corresponding stale test expectations were corrected against the parsed CSV and the complete workflow set now passes. Remaining genuine blockers are the original context for classifying \`유유유\`, source identity for \`칡칡이\`, two qualified blind IPA reviews for \`삶의\`, and separate Ukrainian-target review after IPA is frozen. The repository remains a research prototype, not release-ready.
+
