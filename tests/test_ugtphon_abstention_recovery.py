@@ -30,7 +30,6 @@ R002_CASES = {
 R003_CASES = {
     "괜찮아보이는디": "찮>아",
     "많을거같이": "많>을",
-    "많이본": "많>이",
     "쌓아서": "쌓>아",
     "쳐넣어야": "넣>어",
     "애새끼낳으면": "낳>으",
@@ -39,7 +38,6 @@ R003_CASES = {
     "않았지만": "않>았",
     "개많음": "많>음",
     "좋은데": "좋>은",
-    "좋아보인다고": "좋>아",
     "좋아해주는": "좋>아",
     "죽었잖아": "잖>아",
     "개좆망했잖아": "잖>아",
@@ -80,6 +78,8 @@ def test_misspelled_and_unreviewed_lookalikes_remain_fail_closed():
         ("무서웟어", "R002"),
         ("많앗구나유유유", "R003"),
         ("많아보임", "R003"),
+        ("많이본", "R003"),
+        ("좋아보인다고", "R003"),
     ):
         result = phoneticize_korean(form)
         assert result.get("pronunciation_status") == "unresolved", (form, result)
