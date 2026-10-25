@@ -35,7 +35,8 @@
     "Official Hangul pronunciation notation is not IPA gold.",
     "A spelling candidate is not a pronunciation result; a candidate IPA is not an accepted Ukrainian target.",
     "Keep unresolved when lexical identity, morphology, user intent, or independent IPA evidence is missing.",
-    "The source-/candidate-blind reviewer packets are a workflow artifact; blank submissions are not reviews."
+    "The source-/candidate-blind reviewer packets are a workflow artifact; blank submissions are not reviews.",
+    "Preserve exact source orthography for transcription: never silently replace a typo with a spelling candidate. If the author-designed engine can produce a rule-derived IPA string from the written form, expose it as diagnostic/provisional IPA even when unresolved morphology blocks accepted pronunciation or Ukrainian output."
   ],
   "cases": [
     {
@@ -105,15 +106,16 @@
           "scope": "Supports that Korean conversational discourse includes short affective/backchannel and non-lexical-like responses; not direct evidence for this exact token."
         }
       ],
-      "productionChange": "No candidate is automatically applied. No lexical correction or pronunciation output. Preserve the raw input and present a low-confidence classification hypothesis: possible expressive vocalization/filler/transcription noise. Do not normalize to ㅠㅠㅠ, 우우우, or another form without original context.",
+      "productionChange": "Preserve the exact raw input 많앗구나유유유. Expose the ClippyFirst engine's IPA derived from the written syllables without correcting 앗 to 았 or interpreting 유유유 as another form. If contextual morphophonology remains unlicensed, label the IPA diagnostic/provisional and keep accepted Ukrainian output unavailable. No candidate is automatically applied.",
       "whyNotResolved": "The general Korean literature establishes that interjections, fillers, and short non-lexical listener responses occur, but no source or original recording/context identifies this exact sequence. 유유유 could still be deliberate text, a stylized ending, or a transcription artifact.",
-      "acceptanceCriterion": "Obtain the original message/audio or adjacent turns. If no context can be recovered, retain the raw string, mark the tail as an unresolved expressive/non-lexical candidate, and abstain from lexical morphology, source phonology and Ukrainian rendering.",
+      "acceptanceCriterion": "Regression-test that the exact source string is preserved and a non-empty diagnostic IPA is exposed from the written form without spelling repair. Keep any unresolved morphophonological context visibly diagnostic rather than claiming independent gold. Classify 유유유 as lexical, expressive/non-lexical, or transcription noise only if original message context or adjacent turns establish it; otherwise retain the raw string and uncertainty.",
       "externalTextSearch": {
         "checkedAt": "2026-10-25",
         "scope": "Public text-page search for the exact string and authoritative online descriptions of interjections; PDF/audio sources excluded from evidence review. A PDF result surfaced in general search output but was not opened or used.",
         "result": "General references support the category of filler/interjection/non-lexical conversational material, but no exact-form evidence was found.",
         "status": "HYPOTHESIS_PLAUSIBLE_NOT_CONFIRMED"
-      }
+      },
+      "literalTranscriptionPolicy": "Literal-source transcription: input orthography remains unchanged; no spelling normalization or emoticon substitution. IPA may be emitted as diagnostic output from the literal written sequence; uncertainty about contextual rules must remain explicit. Ukrainian target is not accepted while the IPA/context gate remains unresolved."
     },
     {
       "input": "삶의",
