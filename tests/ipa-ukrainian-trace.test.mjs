@@ -5,6 +5,7 @@ import { createEngine, parseCsv } from '../src/app/engine.js';
 import { ipaSyllableToUkrainian, traceIpaMapping, traceIpaMappingDetailed, ipaTargetForSource } from '../src/app/engine_ipa.js';
 
 const canonicalCsv = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
+const jamoCsv = readFileSync(new URL('../data/korean/jamo.csv', import.meta.url), 'utf8');
 const lexicalCsv = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 
 test('IPA trace exposes exact longest-match token to Ukrainian grapheme mappings', () => {
@@ -191,7 +192,7 @@ test('provisional IPA target is withheld by default and remains inspectable as a
 
 
 test('main browser research conversion labels provisional output as a candidate', () => {
-  const engine = createEngine();
+  const engine = createEngine(jamoCsv, lexicalCsv);
   const result = engine.convert('위', { morphologyMode: 'strict' });
   assert.equal(result.ukrainian, 'ві');
   assert.equal(result.target_status, 'provisional');
