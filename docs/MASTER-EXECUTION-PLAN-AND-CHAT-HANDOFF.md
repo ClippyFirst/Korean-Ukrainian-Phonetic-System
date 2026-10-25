@@ -1290,3 +1290,10 @@ Release classification remains **software-verified research prototype / partial 
 - Current branch: `fix/nikl-length-trace-provenance-2026-10-25`; head `c5ccf9987f99e0e130182a0297e6ff00b4b5c183`. Exact-head CI is pending.
 - PR #322 merged as `e2404ed378d8c509ce559f835346d0e518fda82f`; it adds cache-busting and structured diagnostics to the live Pages browser smoke. The next mainline deployment will verify whether the previous repeated render timeout was CDN propagation or an application defect. Do not call live deployment healthy until that smoke passes.
 
+## Live Pages smoke root cause and corrected acceptance contract (2026-10-25)
+
+- The diagnostic run [40208716593](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40208716593) established that the repeated live smoke timeout was **a test-contract mismatch, not a browser JavaScript exception**: page errors were empty, IPA output was 3,725 characters, but accepted Ukrainian output was empty and the UI status explicitly said it was showing a provisional candidate.
+- The existing UI intentionally withholds `#result-ukrainian` when a target mapping is provisional and instead exposes a separate `#candidate-panel` / `#candidate-value`, labelled `Попередній український кандидат`. The old smoke script incorrectly required accepted output for the entire long adversarial passage, contradicting this fail-closed contract.
+- The live smoke acceptance now permits either (a) accepted Ukrainian output, or (b) a substantial candidate shown in the separate visible candidate panel with the explicit provisional label/status. It still requires substantial IPA, practical-mode identification, and zero browser exceptions; it fails if the provisional panel is empty or mislabeled. The smoke-contract regression protects this distinction.
+- This is not a relaxation of linguistic acceptance: provisional output is never reclassified as accepted output. The mainline deployment after this change must still pass its live smoke; until then deployment verification remains pending.
+
