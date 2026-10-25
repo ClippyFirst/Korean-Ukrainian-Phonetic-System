@@ -309,3 +309,11 @@ Every profile reports exact match, CER, and deltas from primary, with coverage/d
 A true engine-standard comparison requires a documented, versioned convention map for each output, plus case-level alignment/adjudication of the reference to that convention. The new profiles measure a few common differences, but they do not yet establish that a given reference is correct under eSpeak's, KoG2P's, phonemize's, or any other engine's native contract. Read exact profile scores from the next successful run artifact; do not infer or pre-fill them from old results.
 
 **Decision rule:** use a native-standard profile only where upstream documentation or source code establishes the representation; use source-adjudicated pronunciation for correctness; keep permissive sensitivity profiles visibly separate. No result is promoted to 80–90% general Korean accuracy solely because a permissive profile raises exact match.
+
+
+### Case-level audit of normalization-induced score changes
+
+Each non-primary profile now emits `case_transition_audit` with the paired occurrence denominator, counts of primary mismatches becoming exact, primary exact matches becoming mismatches, unchanged exact/mismatch counts, and up to 25 examples of each transition. Each example retains the occurrence ID, token, reference, raw prediction and edit distances before/after the profile. This makes score changes inspectable rather than reporting only a higher aggregate percentage.
+
+A case that becomes exact after a transformation is not automatically a correct pronunciation. The audit establishes only that the transformation removed a string-level difference. Review each example against the pinned engine contract and independently adjudicated pronunciation before classifying it as notation-only. Primary scores, gold data, and corpus splits are not rewritten by these diagnostics.
+
