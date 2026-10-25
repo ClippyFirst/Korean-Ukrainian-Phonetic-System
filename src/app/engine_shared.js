@@ -33,6 +33,13 @@ const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥','넓적']);
 // Exact-form applications of NIKL §24 for two benchmark-identified
 // verb-stem + ending forms. These do not enable productive morphology guessing.
 // Official source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+// Exact-form NIKL §12(4) ㅎ-coda deletion licenses. These attest only
+// Korean surface behavior, not independent IPA or Ukrainian-output gold.
+const NIKL_12_H_DELETION_FORMS=new Map([
+  ['싫어서','싫>어'], // NIKL Online Q&A qna_seq=313981 (2025-04-29): [시러서].
+  ['수많은','많>은'], // Korean Basic Dictionary, 수많다: [수ː마는].
+]);
+
 const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
   ['닮다','닮>다'],
   ['넘게','넘>게'],
@@ -114,7 +121,7 @@ export {
   HANGUL_BASE, HANGUL_END, V_COUNT, T_COUNT, N_COUNT,
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
-  LEXICAL_B_CODA_PREFIXES, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
+  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
   NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,
