@@ -1,3 +1,19 @@
+# Current residual gate — 2026-10-25 19:xx UTC
+
+**Current status: PARTIAL; five evidence-limited strict-mode cases remain.** The original 45-unresolved figure is a historical benchmark state, not the current main state. The last recorded exact-head benchmark for the merged variant-aware implementation is [run 40223272365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40223272365): 2,698/2,703 scored, 1,430 exact, CER 9.1697%, five unresolved, zero engine exceptions. It is a noisy-corpus diagnostic, not normative IPA or Ukrainian-target gold.
+
+A new residual register, `research/final-residual-abstention-triage-2026-10-25.json`, records each remaining form, reviewed evidence, the precise blocker, and acceptance criteria. Regression guard `tests/test_final_residual_abstention_triage.py` asserts that these cases remain unresolved and that no accepted Ukrainian orthography is emitted while their gates remain unmet.
+
+| Input | Current classification | Action in this batch |
+|---|---|---|
+| `칡칡이` | `BLOCKED_LEXICAL_MORPHOLOGY` | No verified lexical segmentation or exact source; no production rule added |
+| `쫒아내면` | `BLOCKED_NONSTANDARD_ORTHOGRAPHY` | Official dictionary supports canonical `쫓아내다[쪼차내다]`, not silent rewriting of `쫒` |
+| `많앗구나유유유` | `BLOCKED_NONSTANDARD_ORTHOGRAPHY_AND_REGISTER` | Standard-looking `많았구나` appears in an official quotation, but this does not establish the noisy token's intended spelling or expressive ending |
+| `삶의` | `BLOCKED_SPECIALIST_IPA_ADJUDICATION` | NIKL allows `[살믜]` and `[살메]`; project IPA remains diagnostic-only and Ukrainian output withheld |
+| `무서웟어` | `BLOCKED_NONSTANDARD_ORTHOGRAPHY` | Official dictionary attests standard `무서웠어` in an example, not normalization of the distinct input `무서웟어` |
+
+These are not all the same bug and must not be “fixed” with a global normalization rule. The three nonstandard spellings need a separate, explicitly candidate-only spelling-assistance layer if that feature is added; their correction candidates must not replace the original input or be reported as its literal pronunciation. `칡칡이` needs lexical/morphological evidence. `삶의` needs two independent qualified IPA reviews and a separate Ukrainian-target review. No new production pronunciation license was justified by the evidence gathered in this batch.
+
 # Abstention recovery batch — 2026-10-25
 
 **Status: PARTIAL; current code/test head verified.** The branch adds 19 exact-form + adjacent-pair R002 formal-liaison licenses, nine exact-form R003 ㅎ-deletion licenses, and one R004 complex-coda + ㅎ-suffix license in both the Python native engine and browser strict engine. These are scoped licenses, not productive morphology heuristics.
