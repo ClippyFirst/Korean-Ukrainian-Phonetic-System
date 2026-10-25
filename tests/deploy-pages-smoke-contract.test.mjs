@@ -5,6 +5,7 @@ import { test } from 'node:test';
 const workflow = readFileSync(new URL('../.github/workflows/deploy-pages.yml', import.meta.url), 'utf8');
 const index = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const system = readFileSync(new URL('../system.html', import.meta.url), 'utf8');
+const browserSmoke = readFileSync(new URL('../scripts/smoke-live-pages-browser.mjs', import.meta.url), 'utf8');
 
 function firstIndexSmokeAssertion(source) {
   const match = source.match(/grep -Fq '([^']+)' "\$index_file"/u);
@@ -24,3 +25,13 @@ test('Pages smoke contracts cover the mode selector and system-page title', () =
   assert.match(workflow, /grep -Fq '<title>Система \/ 한국어 → УКРАЇНСЬКА<\/title>' "\$system_file"/u);
   assert.ok(system.includes('<title>Система / 한국어 → УКРАЇНСЬКА</title>'), 'system-page title must match smoke assertion');
 });
+
+test('live browser smoke accepts only a visible, explicitly labelled provisional candidate', () => {
+  assert.match(browserSmoke, /#candidate-panel/u);
+  assert.match(browserSmoke, /#candidate-value/u);
+  assert.match(browserSmoke, /Попередній український кандидат/u);
+  assert.match(browserSmoke, /попередній кандидат, не підтверджений результат/u);
+  assert.match(browserSmoke, /provisional output must not leave the Ukrainian\/candidate panel empty/u);
+  assert.match(browserSmoke, /ukrainian\.length > 20 \|\| candidateVisible/u);
+});
+
