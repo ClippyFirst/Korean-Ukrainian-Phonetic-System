@@ -29,8 +29,8 @@ test('qna_seq=334294 is contextual support and no longer falsely claims direct a
   assert.equal(source.review_status, 'partial_claim_scope_reviewed_2026-10-22');
   assert.match(source.coverage, /맑게\[말께\].*묽고\[물꼬\].*밝기\[발끼\]/u);
   assert.match(source.coverage, /does not directly attest.*읽고\[일꼬\].*밝는\[방는\]/u);
-  assert.match(byInput('읽고').rule_notes, /qna_seq=315279 directly lists 읽고/u);
-  assert.equal(byInput('읽고').source_url, bySource('SRC-NIKL-QNA-315279').url);
+  assert.match(byInput('읽고').rule_notes, /qna_seq=329463 directly attests 읽고/u);
+  assert.equal(byInput('읽고').source_url, bySource('SRC-NIKL-QNA-329463').url);
   assert.match(byInput('밝는').rule_notes, /Rule-derived, not directly attested/u);
   assert.doesNotMatch(byInput('읽고').rule_notes, /NIKL Q&A directly confirms/u);
   assert.doesNotMatch(byInput('밝는').rule_notes, /NIKL Q&A directly confirms/u);
