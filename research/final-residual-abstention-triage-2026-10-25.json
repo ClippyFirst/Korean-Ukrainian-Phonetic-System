@@ -16,7 +16,9 @@
       "result": "success",
       "scope": "1,258 Node tests passed; browser integration/build, system/browser/Python regression/data integrity, strict corpus/master-table generation, Python 3.11/3.12/3.13 tests, wheel build and clean wheel install passed. Live NIKL inventory remains skipped by configuration."
     },
-    "note": "The earlier 45-case count belongs to an earlier commit. This register describes the five remaining linguistic cases after source-backed rule licenses and the variant-aware 못잃어 entry. CI success verifies implementation and build contracts, not independent phonetic correctness."
+    "note": "The earlier 45-case count belongs to an earlier commit. This register describes the five remaining linguistic cases after source-backed rule licenses and the variant-aware 못잃어 entry. CI success verifies implementation and build contracts, not independent phonetic correctness.",
+    "reviewerRecruitmentIssue": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337",
+    "reviewerRecruitmentStatus": "OPEN_NO_VERIFIED_SUBMISSIONS"
   },
   "policy": [
     "Do not clear strict-mode abstention by silently correcting source spelling.",
@@ -120,7 +122,15 @@
           "interpretation": "Repository-internal candidate record only; not independent IPA evidence and not accepted Ukrainian target.",
           "unresolvedDiscrepancy": "Existing table sal|mi versus residual triage candidate sal.mɰi for the Hangul surface notation [살믜]. Preserve both as unaccepted until independent review and reconciliation."
         }
-      ]
+      ],
+      "reviewerRecruitment": {
+        "issue": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337",
+        "status": "OPEN_NO_VERIFIED_SUBMISSIONS",
+        "countReceived": 0,
+        "countVerified": 0,
+        "publicIssuePolicy": "No candidate IPA or source citations; preserve independent first-pass review.",
+        "nextAction": "Obtain two qualified independent packet submissions; validate queue fingerprint and reviewer qualifications; reconcile only after both are frozen."
+      }
     },
     {
       "input": "무서웟어",
