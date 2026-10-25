@@ -33,12 +33,37 @@ const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥','넓적']);
 // Exact-form applications of NIKL §24 for two benchmark-identified
 // verb-stem + ending forms. These do not enable productive morphology guessing.
 // Official source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+// Exact-form formal liaison licenses. Direct NIKL surface attestations and
+// transparent rule-derived applications are distinguished in comments.
+const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
+  ['없음','없>음'], // NIKL FAQ 8391 / Q&A 335008: 없음[업씀].
+  ['있었','있>었'], // NIKL Q&A 326978 explains 있- + -었- as [이썯].
+  ['멋있어','있>어'], // NIKL Q&A 306166 gives [머디써] and [머시써]; preserve variant status.
+  ['같아서','같>아'], // NIKL §§13–14, transparent 같다 + -아서 inflection.
+  ['되었어','었>어'], // NIKL §§13–14, past ending -었- + vowel-initial -어.
+  ['찢었으면','찢>었'], // NIKL §§13–14, verb stem + past ending.
+  ['했었음','했>었'], // NIKL §§13–14, transparent inflectional sequence.
+  ['붙어야','붙>어'], // NIKL §§13–14, 붙- + -어야.
+  ['벗어날','벗>어'], // NIKL §§13–14, 벗- + -어.
+  ['찾아','찾>아'], // NIKL §§13–14, 찾- + -아.
+  ['없으니깐','없>으'], // Exact noisy form; no productive ending heuristic.
+  ['없으니까','없>으'], // NIKL §§13–14, 없다 + -으니까.
+]);
+
 // Exact-form NIKL §12(4) ㅎ-coda deletion licenses. These attest only
 // Korean surface behavior, not independent IPA or Ukrainian-output gold.
 const NIKL_12_H_DELETION_FORMS=new Map([
   ['싫어서','싫>어'], // NIKL Online Q&A qna_seq=313981 (2025-04-29): [시러서].
   ['수많은','많>은'], // Korean Basic Dictionary, 수많다: [수ː마는].
   ['많아서','많>아'], // NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
+  ['쌓아서','쌓>아'], // NIKL §12(4), 쌓- + -아서.
+  ['쳐넣어야','넣>어'], // NIKL §12(4), 넣- + -어야 in compound verb.
+  ['잃었노','잃>었'], // NIKL §12(4), 잃- + -었-; colloquial ending.
+  ['않았지만','않>았'], // NIKL §12(4), 않- + -았-.
+  ['개많음','많>음'], // NIKL §12(4), 많- + nominalizer -음.
+  ['좋은데','좋>은'], // NIKL §12(4), 좋- + adnominal ending -은.
+  ['죽었잖아','잖>아'], // NIKL §12(4), ending -잖아.
+  ['개좆망했잖아','잖>아'], // Exact colloquial input; scoped only to -잖아.
 ]);
 
 const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
@@ -122,7 +147,7 @@ export {
   HANGUL_BASE, HANGUL_END, V_COUNT, T_COUNT, N_COUNT,
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
-  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
+  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
   NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,
