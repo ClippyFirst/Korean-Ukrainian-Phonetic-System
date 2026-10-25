@@ -213,3 +213,14 @@ A higher score on UGTPHON does not establish that an engine is best for NIKL sta
 ## Reproduction
 
 The workflow checks out the exact upstream revisions into the ephemeral runner, checks their declared licenses, installs the pinned packages, downloads the pinned UGTPHON test split, runs adapter tests, emits a JSON report, and uploads the report artifact. External engine code and the raw corpus are not added to the project tree.
+
+
+## Continuation audit — conservative case labels (2026-10-25)
+
+The benchmark harness now exposes, for each item in its existing capped multi-engine mismatch sample, the original IPA output, the existing benchmark-normalized prediction/reference, and the corresponding values under the already-declared `s/ɕ` aspiration sensitivity profile. A conservative `discrepancy` label is attached to ClippyFirst mismatches:
+
+- `IPA_CONVENTION` only when that explicit sensitivity profile changes the occurrence from non-exact to exact;
+- `UNICODE_OR_FORMAT` only when raw strings differ but NFC-canonical strings match;
+- `UNCLASSIFIED` for all other mismatches, because the current data do not independently establish a phonology error, segmentation error, or gold defect.
+
+This is intentionally not a claim that all discrepancies have been classified. The mismatch sample remains capped at 250 entries and therefore cannot be used for complete category counts. The profile remains a sensitivity analysis, not a new primary score or production IPA rewrite. The existing exact-match/CER semantics and native abstention behavior are unchanged. New unit tests cover all three classification branches. Exact-head CI must pass before this change is marked verified.
