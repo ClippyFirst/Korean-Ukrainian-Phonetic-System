@@ -2,6 +2,45 @@
 
 ## Status
 
+## Latest owner-constrained rerun — 2026-10-25
+
+**DONE_VERIFIED:** [multi-engine run 40235216645](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216645), artifact [12615110277](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216645/artifacts/12615110277). The run used five engines only: ClippyFirst native, KoG2P, hangul_to_ipa, eSpeak NG, and phonemize. Per the project owner's standing instruction, g2pK was not installed by this workflow, imported, or executed. The corpus was fetched at the same pinned upstream commit and validated; no licensed corpus text was committed.
+
+### UGTPHON Korean test split
+
+275 sentence rows, 2,703 eligible token occurrences, 1,907 unique words. Exact-match denominator is scored tokens; coverage is scored / eligible. CER uses the declared reference-length denominator. Scores are diagnostic and not normative NIKL accuracy.
+
+| Engine | Scored / eligible | Coverage | Exact | Exact rate | CER | Engine errors |
+|---|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 2,698 / 2,703 | 99.8150% | 1,430 | 53.0022% | 9.1697% | 0 |
+| KoG2P (pinned 2019) | 2,703 / 2,703 | 100% | 738 | 27.3030% | 19.5122% | 0 |
+| hangul_to_ipa (pinned 2026) | 2,703 / 2,703 | 100% | 439 | 16.2412% | 24.8054% | 0 |
+| eSpeak NG Korean | 2,703 / 2,703 | 100% | 220 | 8.1391% | 33.6101% | 0 |
+| phonemize 2.0.1 | 2,703 / 2,703 | 100% | 1,150 | 42.5453% | 14.3531% | 0 |
+
+Native exact-match 95% row-cluster bootstrap CI: 48.3480–57.9275%. Native withheld five occurrences (no runtime exceptions); all four external engines emitted results for all eligible occurrences. This illustrates the coverage/abstention trade-off: do not score a withheld output as a guess or infer that coverage alone means better pronunciation.
+
+### SIGMORPHON 2021 Korean public paired lexical file
+
+1,000 source rows, 999 eligible unique word/IPA occurrences. One source row is not eligible under the benchmark's token/gold criteria.
+
+| Engine | Scored / eligible | Coverage | Exact | Exact rate | CER | Engine errors |
+|---|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 997 / 999 | 99.7998% | 357 | 35.8074% | 14.7037% | 0 |
+| KoG2P (pinned 2019) | 999 / 999 | 100% | 187 | 18.7187% | 21.8327% | 0 |
+| hangul_to_ipa (pinned 2026) | 999 / 999 | 100% | 89 | 8.9089% | 29.8448% | 0 |
+| eSpeak NG Korean | 999 / 999 | 100% | 43 | 4.3043% | 40.7236% | 0 |
+| phonemize 2.0.1 | 999 / 999 | 100% | 289 | 28.9289% | 17.4387% | 0 |
+
+Native withheld two occurrences, both with explicit rule/context reasons; no runtime exceptions. The external scores are not interchangeable with independent expert-adjudicated IPA because annotation conventions and adapters differ. This is IPA-only evaluation, not Ukrainian-target accuracy.
+
+### Native strict/soft and morphology reruns
+
+- [Kiwi + MeCab-Ko consensus](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216623), artifact [12613989972](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216623/artifacts/12613989972): strict 2,698/2,703 scored, exact 1,430 (53.0022%), CER 9.1697%; soft 2,699/2,703, exact 1,430 (52.9826%), CER 9.1689%. Analyzer consensus matches soft on the aggregate. On the 2,698 occurrences scored by both strict and consensus, exact and CER deltas are both zero. Consensus resolves one unique word relative to strict; 24 unique unspaced phrase-like forms remain withheld by the boundary guard. Runtime errors: zero.
+- [Research morphology smoke and paired IPA](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216702): Kiwi and MeCab-Ko each completed on the 16-input smoke corpus. The pinned UGTPHON split contained 1,907 unique words; Kiwi/MeCab exact orthographic boundary-set agreement was 1,537/1,907 (80.5978%), boundary micro-F1 85.7926%. This is analyzer agreement, not gold segmentation accuracy. MeCab observed 191/217 native soft-rule boundary events (88.0184%); the alignment is descriptive only and does not license phonological rules.
+- CI: [tests 40235216596](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216596) passed browser tests/build, Python 3.11–3.13, and wheel install; [system verification 40235216615](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216615) and [master corpus 40235216603](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216603) passed. The official NIKL source inventory remained skipped by workflow configuration.
+
+
 **DONE_VERIFIED for two diagnostic datasets, six engines, and complete occurrence-level native-vs-g2pk audits** on the post-fix benchmark head. Latest run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978); artifact: [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692). The merged implementation includes the coda-ㅇ and broad-IPA palatal-yod fixes plus source-backed exact-form R010 licenses for 닮다 and 넘게. All 48 UGTPHON abstention occurrences and both SIGMORPHON abstentions were retained; the full pairwise ledger replaces the old capped mismatch sample.
 
 - Repository: ClippyFirst/Korean-Ukrainian-Phonetic-System
