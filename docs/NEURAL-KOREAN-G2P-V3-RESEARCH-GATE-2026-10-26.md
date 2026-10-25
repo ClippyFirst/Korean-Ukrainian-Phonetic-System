@@ -38,9 +38,10 @@ Neural inference must remain optional and must not make the browser runtime depe
 
 ## Benchmark execution plan and acceptance gates
 
-### Stage A — reproducible external baseline (next executable step)
+### Stage A — reproducible external baseline (adapter implemented; scored run pending)
 
-- Add CharsiuG2P multilingual ByT5 as a separately named neural candidate to the existing multi-engine benchmark; do not change production engine behavior.
+- **Implemented on this branch:** `scripts/benchmark_charsiu_g2p.py` is an optional runner that uses the existing broad-IPA normalization and emits per-occurrence predictions, coverage, exact match, CER, and missing outputs. It is separate from production runtime and keeps the original corpus untouched. Regression tests are in `tests/test_charsiu_g2p_benchmark.py`.
+- **Still TODO:** run the adapter with pinned model/tokenizer revisions and dependencies on both corpus splits. The current implementation is a separate scorer, not yet wired into the existing six-engine aggregate report or CI workflow.
 - Pin the upstream repository commit, Hugging Face model revision, tokenizer revision, Python/Transformers/Torch versions, and hashes of downloaded model files. Never use floating `main`/latest for scored runs.
 - Smoke-test Korean language code, output shape, empty/malformed input, batch ordering, and deterministic decoding. Validate outputs are non-empty and contain no unhandled Hangul or control tokens.
 - Run the same pinned UGTPHON Korean test split and the same pinned SIGMORPHON file as current engines. Report per-dataset coverage, abstentions/errors, exact match, CER/PER, row-cluster intervals, paired deltas, and case-level wins/losses. Preserve original gold and current normalization profile.
@@ -73,7 +74,8 @@ Measure coverage and accuracy separately. A higher coverage rate is not an accur
 | Identify candidate neural G2P | DONE_VERIFIED | CharsiuG2P upstream documentation explicitly includes Korean-capable multilingual ByT5 models and reports PER/WER. |
 | Check whether neural baseline is already in repo | DONE_VERIFIED | Main-branch tree and code search found no CharsiuG2P/ByT5/neural adapter; existing harness is six non-neural baselines. |
 | Compare upstream reported metrics with repo metrics | PARTIAL | External metrics recorded but are not comparable without same dataset/protocol. |
-| Run neural baseline on repository benchmark | TODO | Add pinned adapter + optional workflow; requires model download and runtime. |
+| Build optional neural benchmark runner | DONE_VERIFIED for code presence; test/CI pending | `scripts/benchmark_charsiu_g2p.py` and `tests/test_charsiu_g2p_benchmark.py`; no scored model run claimed. |
+| Run neural baseline on repository benchmark | TODO | Pin model/tokenizer revisions, install optional dependencies, execute on exact existing corpus splits, inspect artifact and paired outcomes. |
 | Verify model license/data provenance | PARTIAL | Upstream code repo declares MIT; individual model artifact revision and underlying training data terms still require review. |
 | Train/fine-tune ClippyFirst V3 | DEFERRED | Do not train before Stage A establishes a measured gap and data rights are clear. |
 | Validate IPA-to-Ukrainian path with neural candidates | BLOCKED | No independent, adjudicated full-system Ukrainian-output gold corpus exists yet. |
