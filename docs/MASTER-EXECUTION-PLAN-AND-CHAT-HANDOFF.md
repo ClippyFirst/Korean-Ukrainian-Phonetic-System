@@ -1337,3 +1337,12 @@ Release classification remains **software-verified research prototype / partial 
 - Applied the evidence-scope inventory from `docs/LEXICAL-EVIDENCE-REVIEW-BATCH-28-2026-10-22.md` to correct a stale skill catalog: current reviewed inventory is 43/60, with 17 citation-only/unreviewed. The count is for the 60-item lexical citation audit, not the full source-register size or the item-level rights audit. Updated the contract test so this documentation drift fails CI.
 - Updated existing `research/RULE-COVERAGE.csv` rows R002/R003/R004/R007 in place to reflect the new finite licenses and their limits. The next research gate is stronger output-layer assertions for source-attested Korean surface forms; status-only recovery tests do not establish IPA or Ukrainian accuracy.
 - No live NIKL crawl was retried: the official endpoint's recorded HTTP 403 remains an explicit blocker under the crawler skill. No access-control bypass or rights assumption was introduced.
+
+
+## Final exact-head verification — 2026-10-25 17:54 UTC
+
+- Latest verified code/test head: `3da5e4deea9dcfb305a5f61dcb0bb4630380cd3b`; PR #328 remains open and unmerged.
+- The exact-head full test suite, Python/browser system verification, master table/research validation, paired native-vs-g2pk, morphology consensus, research adapter smoke, external UGTPHON diagnostic, and multi-engine benchmark all passed. The official live NIKL inventory job remains skipped because the live collector is blocked by HTTP 403.
+- Strict native benchmark: 2,697/2,703 scored, 1,429 exact, CER 9.1725%, six unresolved, zero engine errors. Baseline before this batch was 2,688 scored, 1,425 exact, CER 9.1757%, 15 unresolved. The gain is nine additional scored cases and four exact matches; the CER difference is small and does not prove global accuracy.
+- Remaining unresolved cases and criteria: `칡칡이` — independently establish reduplicated morphology; `못잃어` — implement explicit phrase-boundary/variant handling backed by usage evidence; `쫒아내면`, `많앗구나유유유`, `무서웟어` — no silent spelling repair; `삶의` — represent the official surface variants and obtain independent IPA/target adjudication. None should be forced into a single output merely to reduce the counter.
+- Current source register: 113 rows; 109 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `NOT_APPLICABLE_RECORDED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`. Live NIKL inventory access remains blocked; rights review remains open.
