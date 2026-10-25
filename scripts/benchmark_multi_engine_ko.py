@@ -61,13 +61,29 @@ def kog2p_phones_to_ipa(value: str) -> str:
     return "".join(_KOG2P_PHONE_TO_IPA[token] for token in tokens)
 
 
-def _gold_variants(raw: str) -> list[str]:
-    return [normalize_ipa(part) for part in raw.split(",") if part.strip()]
+def _normalize_broad_fricative_aspiration(value: str) -> str:
+    """Sensitivity-only profile: ignore narrow aspiration on Korean /s, ɕ/.
+
+    This is not the primary score and does not normalize aspirated stops, vowel
+    length, fortis, or unreleased codas. It measures one known broad-vs-narrow
+    convention mismatch without silently redefining the canonical benchmark.
+    """
+    normalized = normalize_ipa(value)
+    return re.sub(r"(?<=[sɕ])ʰ", "", normalized)
 
 
-def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
-    predicted = normalize_ipa(prediction)
-    variants = _gold_variants(gold_raw)
+def _gold_variants(raw: str, normalizer: Callable[[str], str] = normalize_ipa) -> list[str]:
+    return [normalizer(part) for part in raw.split(",") if part.strip()]
+
+
+def _score(
+    prediction: str,
+    gold_raw: str,
+    *,
+    normalizer: Callable[[str], str] = normalize_ipa,
+) -> dict[str, Any]:
+    predicted = normalizer(prediction)
+    variants = _gold_variants(gold_raw, normalizer)
     if not variants:
         raise ValueError("no usable IPA reference variants")
     distance, closest = min(
@@ -394,6 +410,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         }
 
     scored_by_engine: dict[str, list[dict[str, Any]]] = {name: [] for name in predictions}
+    broad_sensitivity_by_engine: dict[str, list[dict[str, Any]]] = {name: [] for name in predictions}
     errors_by_engine: dict[str, int] = {name: 0 for name in predictions}
     unresolved_native = 0
     mismatch_details: list[dict[str, Any]] = []
@@ -448,6 +465,15 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 scored = _score(raw_prediction, gold)
                 scored.update({"occurrence_id": item["occurrence_id"], "row_id": row_id, "token": word, "gold": gold})
                 scored_by_engine[name].append(scored)
+                broad_scored = _score(
+                    raw_prediction, gold,
+                    normalizer=_normalize_broad_fricative_aspiration,
+                )
+                broad_scored.update({
+                    "occurrence_id": item["occurrence_id"], "row_id": row_id,
+                    "token": word, "gold": gold,
+                })
+                broad_sensitivity_by_engine[name].append(broad_scored)
             except Exception:
                 errors_by_engine[name] += 1
 
@@ -456,8 +482,14 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     for name, scored in scored_by_engine.items():
         attempted = len(items)
         metrics = _metrics(scored)
+        broad_sensitivity = _metrics(broad_sensitivity_by_engine[name])
         result: dict[str, Any] = {
             **metrics,
+            "broad_fricative_aspiration_sensitivity": {
+                **broad_sensitivity,
+                "normalization": "primary normalization plus sʰ→s and ɕʰ→ɕ on both prediction and reference",
+                "warning": "sensitivity analysis only; primary metrics above remain unchanged",
+            },
             "attempted_tokens": attempted,
             "coverage": round(len(scored) / attempted, 6) if attempted else None,
             "abstentions_or_unresolved": unresolved_native if name == "clippyfirst_native" else 0,
@@ -506,7 +538,14 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 any_error = True
                 continue
             scored = _score(value, gold)
-            row[name] = {"ipa": value, "exact": scored["exact"], "distance": scored["distance"]}
+            broad_scored = _score(
+                value, gold, normalizer=_normalize_broad_fricative_aspiration,
+            )
+            row[name] = {
+                "ipa": value, "exact": scored["exact"], "distance": scored["distance"],
+                "broad_fricative_aspiration_exact": broad_scored["exact"],
+                "broad_fricative_aspiration_distance": broad_scored["distance"],
+            }
             if not scored["exact"]:
                 any_error = True
         if any_error and len(mismatch_details) < 250:
@@ -654,6 +693,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "limitations": [
             ("UGTPHON contains noisy user-generated text, not a balanced official standard-pronunciation test set." if "UGTPHON" in args.benchmark_name else "SIGMORPHON is a lexical word-level test set, not a sentence-context or normative NIKL test set."),
             "IPA conventions differ between systems and reference annotations; exact match and CER are diagnostic, not absolute truth.",
+            "broad_fricative_aspiration_sensitivity is a secondary convention check that ignores narrow aspiration on Korean s/ɕ only; it is not a replacement for the primary score.",
             *([] if args.exclude_g2pk else ["g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison."]),
             "KoG2P uses a documented custom phone alphabet; the explicit adapter is lossy, and its score must be read with adapter limitations.",
             "hangul_to_ipa explicitly omits several morphology-sensitive processes (including n-insertion and liquid tensification); this is a scope limitation, not an unexpected runtime failure.",
