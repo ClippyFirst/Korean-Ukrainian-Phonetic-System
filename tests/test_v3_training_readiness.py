@@ -35,3 +35,12 @@ def test_readiness_audit_detects_holdout_overlap_and_refuses_unverified_ipa(tmp_
     assert report["leakage_checks"]["holdout_overlaps_addition_inputs"] == ["닭은"]
     assert report["training_decision"]["supervised_ipa_training_ready"] is False
     assert report["counts"]["frozen_holdout_cases_with_ipa_gold"] == 0
+
+
+def test_repository_training_audit_keeps_frozen_holdout_out_of_training() -> None:
+    root = Path(__file__).resolve().parents[1]
+    report = audit_training_readiness(root)
+    assert report["counts"]["lexical_rows"] > 0
+    assert report["counts"]["frozen_holdout_cases"] == 24
+    assert report["leakage_checks"]["holdout_is_evaluation_only"] is True
+    assert report["training_decision"]["supervised_ipa_training_ready"] is False
