@@ -612,3 +612,27 @@ def test_nikl_exact_r003_forms_resolve_h_deletion_without_opening_a_productive_h
 
     unlicensed = phoneticize_korean("많아보임")
     assert not any(rule["rule_id"] == "R003" and rule["changed"] for rule in unlicensed["rules"])
+
+
+def test_new_exact_form_abstention_recovery_batch_resolves_only_named_pairs():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    cases = {
+        "좃같아서": ("R002", "같>아"),
+        "없을듯": ("R002", "없>을"),
+        "칡칡이": ("R002", "칡>이"),
+        "괜찮아보이는디": ("R003", "찮>아"),
+        "많을거같이": ("R003", "많>을"),
+        "많이본": ("R003", "많>이"),
+        "알잖아아침에": ("R003", "잖>아"),
+        "좋아보인다고": ("R003", "좋>아"),
+        "좋아해주는": ("R003", "좋>아"),
+        "개같이못하고": ("R007", "같>이"),
+    }
+    for form, (rule_id, pair) in cases.items():
+        result = phoneticize_korean(form)
+        assert not any(context.get("rule_id") == rule_id and context.get("pair") == pair for context in result.get("unresolved_contexts", [])), (form, result.get("unresolved_contexts"))
+        assert result.get("pronunciation_status") != "unresolved", (form, result.get("unresolved_contexts"))
+    for form, rule_id in (("많이봄", "R003"), ("좋을거같이", "R007")):
+        result = phoneticize_korean(form)
+        assert any(context.get("rule_id") == rule_id for context in result.get("unresolved_contexts", [])), form

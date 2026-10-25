@@ -89,7 +89,7 @@ test('NIKL exact-form R003 licenses resolve two attested forms in browser strict
 });
 
 test('NIKL R003 exact-form licenses do not generalize to unreviewed lookalikes', () => {
-  for (const input of ['많아보임', '많이본', '좋아보인다고']) {
+  for (const input of ['많아보임', '많이봄', '좋아보임']) {
     const result = engine.convert(input);
     assert.notEqual(result.surfaceHangul, input === '많아보임' ? '마나보임' : input);
     assert.equal(result.status, 'unresolved', input);
@@ -109,17 +109,28 @@ test('exact-form R002 licenses resolve Korean surface contexts in browser strict
   assert.doesNotMatch(past.ipa, /⟦/u, '있었');
 });
 
-test('transparent single-word R002/R003 licenses do not leave morphology placeholders', () => {
+test('transparent single-word and exact-context R002/R003/R007 licenses do not leave morphology placeholders', () => {
   const cases = [
     '같아서', '되었어', '찢었으면', '했었음', '붙어야',
     '벗어날', '찾아', '없으니깐', '없으니까', '멋있어',
     '군대보냈어야', '이런삶은', '끝내고싶어유유유유', '이빨닦아야지', '안늙었는데', '싶어서', '웃어넘기겟지만',
     '쌓아서', '쳐넣어야', '애새끼낳으면', '잃었노', '않았지만', '개많음',
     '좋은데', '죽었잖아', '개좆망했잖아',
+    '좃같아서', '없을듯', '칡칡이', '괜찮아보이는디', '많을거같이',
+    '많이본', '알잖아아침에', '좋아보인다고', '좋아해주는', '개같이못하고',
   ];
   for (const input of cases) {
     const result = engine.convert(input);
     assert.notEqual(result.status, 'unresolved', input);
     assert.doesNotMatch(result.ipa, /⟦/u, input);
   }
+});
+
+test('exact-form R007 licenses resolve 같이 but do not generalize to unlisted forms', () => {
+  for (const input of ['많을거같이', '개같이못하고']) {
+    const result = engine.convert(input);
+    assert.notEqual(result.status, 'unresolved', input);
+    assert.doesNotMatch(result.ipa, /⟦/u, input);
+  }
+  assert.equal(engine.convert('좋을거같이').status, 'unresolved');
 });

@@ -22,6 +22,9 @@ R002_CASES = {
     "있었": "있>었",
     "벗어날": "벗>어",
     "찾아": "찾>아",
+    "좃같아서": "같>아",
+    "없을듯": "없>을",
+    "칡칡이": "칡>이",
     "웃어넘기겟지만": "웃>어",
     "싶어서": "싶>어",
     "없으니깐": "없>으",
@@ -37,6 +40,12 @@ R003_CASES = {
     "않았지만": "않>았",
     "개많음": "많>음",
     "좋은데": "좋>은",
+    "괜찮아보이는디": "찮>아",
+    "많을거같이": "많>을",
+    "많이본": "많>이",
+    "알잖아아침에": "잖>아",
+    "좋아보인다고": "좋>아",
+    "좋아해주는": "좋>아",
     "죽었잖아": "잖>아",
     "개좆망했잖아": "잖>아",
 }
@@ -63,12 +72,13 @@ def test_transparent_r003_abstentions_have_narrow_exact_form_licenses():
         assert result.get("pronunciation_status") != "unresolved", (form, result.get("unresolved_contexts"))
 
 
-def test_r007_remains_unresolved_when_compact_phrase_boundary_is_ambiguous():
-    # The local surface resembles the -이 environment, but the compact noisy
-    # input does not independently establish the formal-morpheme boundary.
-    result = phoneticize_korean("많을거같이")
+def test_r007_exact_licensed_forms_resolve_only_the_named_pair():
+    for form in ("많을거같이", "개같이못하고"):
+        result = phoneticize_korean(form)
+        assert not _matching_contexts(result, "R007", "같>이"), (form, result.get("unresolved_contexts"))
+        assert result.get("pronunciation_status") != "unresolved", (form, result.get("unresolved_contexts"))
+    result = phoneticize_korean("좋을거같이")
     assert _matching_contexts(result, "R007", "같>이")
-    assert result.get("pronunciation_status") == "unresolved"
 
 
 def test_misspelled_and_unreviewed_lookalikes_remain_fail_closed():
@@ -78,12 +88,10 @@ def test_misspelled_and_unreviewed_lookalikes_remain_fail_closed():
         ("무서웟어", "R002"),
         ("많앗구나유유유", "R003"),
         ("많아보임", "R003"),
-        ("많이본", "R003"),
-        ("좋아보인다고", "R003"),
-        ("괜찮아보이는디", "R003"),
-        ("많을거같이", "R003"),
-        ("알잖아아침에", "R003"),
-        ("좋아해주는", "R003"),
+        ("많이봄", "R003"),
+        ("좋아보임", "R003"),
+        ("괜찮아보임", "R003"),
+        ("좋아해줌", "R003"),
     ):
         result = phoneticize_korean(form)
         assert result.get("pronunciation_status") == "unresolved", (form, result)
