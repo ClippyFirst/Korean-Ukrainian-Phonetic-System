@@ -79,7 +79,7 @@
     {
       "input": "삶의",
       "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION",
-      "observedIssue": "NIKL permits two Korean surface readings; project-derived IPA candidates are not independent gold.",
+      "observedIssue": "NIKL permits two Korean surface readings; project-derived IPA candidates are not independent gold. Repository text audit also found an existing provisional lexical-table row with sal|mi / сал|мі and alternate sal|me / сал|ме; sal|mi does not match the separate diagnostic candidate sal.mɰi, so this notation/analysis difference must be explicitly reconciled rather than silently normalized.",
       "evidenceReviewed": [
         {
           "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
@@ -101,7 +101,26 @@
       },
       "productionChange": "No accepted Ukrainian output. Keep diagnostic IPA candidates provisional; the blind packets contain only opaque case ID, Hangul input, instructions and blank review fields.",
       "whyNotResolved": "The [살믜]/[살메] alternatives do not by themselves settle broad IPA, syllable boundary, variant status or Ukrainian target. No qualified independent submissions are present.",
-      "acceptanceCriterion": "Two independent qualified reviewers annotate broad IPA, convention/reference, syllable boundary, vowel-length assessment and uncertainty without seeing each other's work or source evidence. Validate and reconcile after both first passes are frozen; then conduct a separate Ukrainian-target review on frozen IPA."
+      "acceptanceCriterion": "Two independent qualified reviewers annotate broad IPA, convention/reference, syllable boundary, vowel-length assessment and uncertainty without seeing each other's work or source evidence. Validate and reconcile after both first passes are frozen; then conduct a separate Ukrainian-target review on frozen IPA. Reconcile the pre-existing lexical-table candidate sal|mi with the separate sal.mɰi notation explicitly after independent submissions; do not silently promote the CSV's provisional Ukrainian fields.",
+      "repositoryTextFootprints": [
+        {
+          "path": "data/korean/lexical_pronunciations.csv",
+          "line": 644,
+          "status": "provisional",
+          "existingCandidate": {
+            "surface": "살믜",
+            "broadIpaLike": "sal|mi",
+            "ukrainian": "сал|мі"
+          },
+          "alternateCandidate": {
+            "surface": "살메",
+            "broadIpaLike": "sal|me",
+            "ukrainian": "сал|ме"
+          },
+          "interpretation": "Repository-internal candidate record only; not independent IPA evidence and not accepted Ukrainian target.",
+          "unresolvedDiscrepancy": "Existing table sal|mi versus residual triage candidate sal.mɰi for the Hangul surface notation [살믜]. Preserve both as unaccepted until independent review and reconciliation."
+        }
+      ]
     },
     {
       "input": "무서웟어",
