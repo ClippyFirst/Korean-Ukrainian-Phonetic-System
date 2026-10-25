@@ -77,10 +77,15 @@ def _classify_native_discrepancy(
 ) -> dict[str, Any]:
     """Conservative label for a score discrepancy; never infer phonology from mismatch alone."""
     gold_variants = [part.strip() for part in gold_raw.split(",") if part.strip()]
-    if broad_exact and not strict_exact:
-        category = "IPA_CONVENTION"
-        rationale = "the explicitly declared s/ɕ aspiration-sensitivity profile changes this occurrence to exact"
-        confidence = "profile-level only; not a phonetic adjudication"
+    profile_sensitivity_detected = broad_exact and not strict_exact
+    if profile_sensitivity_detected:
+        category = "UNCLASSIFIED"
+        rationale = (
+            "the declared s/ɕ aspiration-sensitivity profile changes exactness, but the "
+            "gold transcription policy is not independently established; this is not "
+            "sufficient evidence to label the difference IPA_CONVENTION"
+        )
+        confidence = "profile sensitivity observed; convention status unverified"
     elif any(
         unicodedata.normalize("NFC", prediction) == unicodedata.normalize("NFC", gold)
         for gold in gold_variants
@@ -98,6 +103,8 @@ def _classify_native_discrepancy(
         "confidence": confidence,
         "strict_profile_exact": strict_exact,
         "broad_fricative_aspiration_exact": broad_exact,
+        "profile_sensitivity_detected": profile_sensitivity_detected,
+        "profile_sensitivity_name": "broad_fricative_aspiration" if profile_sensitivity_detected else None,
     }
 
 
@@ -618,6 +625,8 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 "category": category,
                 "classification_rationale": discrepancy.get("rationale"),
                 "classification_confidence": discrepancy.get("confidence"),
+                "profile_sensitivity_detected": discrepancy.get("profile_sensitivity_detected", False),
+                "profile_sensitivity_name": discrepancy.get("profile_sensitivity_name"),
             })
             native_discrepancy_category_counts[category] += 1
 
@@ -750,6 +759,9 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "scope": "complete eligible occurrence-level ClippyFirst-vs-gold discrepancy and abstention ledger",
             "occurrence_count": len(native_gold_discrepancy_audit),
             "category_counts": dict(sorted(native_discrepancy_category_counts.items())),
+            "profile_sensitivity_occurrence_count": sum(
+                bool(item.get("profile_sensitivity_detected")) for item in native_gold_discrepancy_audit
+            ),
             "occurrences": native_gold_discrepancy_audit,
             "limitations": "Gold IPA is not independently adjudicated; UNCLASSIFIED is not evidence of an engine error. ABSTENTION is a coverage outcome, not an accuracy failure.",
         },
