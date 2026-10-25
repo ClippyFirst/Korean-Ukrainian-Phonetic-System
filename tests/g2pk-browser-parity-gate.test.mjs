@@ -58,6 +58,13 @@ test('raw port output remains pinned while the practical adapter applies only ex
     const actualSurface = result.surfaceHangul || item.input;
     assert.equal(actualSurface, expectedCorrection || item.expectedSurface, item.input + ': adapter surface contract');
     assert.equal(result.normativeCorrections.length, expectedCorrection ? 1 : 0, item.input + ': correction allowlist scope');
+    const primarySourceId = new Map([
+      ['넓죽하다', 'qna_seq=307219'],
+      ['읽고', 'qna_seq=329463']
+    ]).get(item.input);
+    if (primarySourceId) {
+      assert.match(result.normativeCorrections[0].evidence, new RegExp(primarySourceId), item.input + ': correction must cite the verified primary source');
+    }
     assert.ok(result.ipa.length > 0, item.input + ': missing IPA');
     const visibleTarget=result.ukrainian||result.candidate_ukrainian||'';
     assert.ok(visibleTarget.length > 0, item.input + ': missing Ukrainian output/candidate');
