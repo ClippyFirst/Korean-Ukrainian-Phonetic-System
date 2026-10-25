@@ -17,6 +17,7 @@ from typing import Any
 from korean_ukrainian.pipeline import transliterate_korean
 from korean_ukrainian.ipa_target_renderer import render_ipa_sequence_to_ukrainian
 from korean_ukrainian import g2pk_engine
+from audit_holdout_manifest_recovery import audit as audit_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "data" / "korean" / "benchmarks" / "target-renderer-holdout-24.csv"
@@ -138,13 +139,16 @@ def main() -> None:
     parser.add_argument("--output", type=Path, help="write JSON report to this path")
     args = parser.parse_args()
 
+    manifest_audit = audit_manifest()
+    if manifest_audit["status"] != "PASS":
+        raise SystemExit("refusing to run: recovered original manifest integrity check failed")
     raw_fixture = FIXTURE.read_bytes()
     with FIXTURE.open(encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
     if len(rows) != 24 or len({row["form"] for row in rows}) != 24:
         raise SystemExit("holdout fixture must contain exactly 24 unique forms")
-    if any(row.get("source_manifest_status") != "reconstructed_unverified" for row in rows):
-        raise SystemExit("refusing to run: fixture provenance status must remain reconstructed_unverified")
+    if any(row.get("source_manifest_status") != "original_manifest_blob_recovered" for row in rows):
+        raise SystemExit("refusing to run: fixture must match the recovered original manifest")
     if any(row.get("ipa_gold_status") != "not_available" or row.get("ukrainian_gold_status") != "not_available" for row in rows):
         raise SystemExit("refusing to run: candidate fixture must not claim independent gold labels")
 
@@ -153,6 +157,7 @@ def main() -> None:
         form = row["form"]
         report_rows.append({
             "holdout_id": row["holdout_id"],
+            "original_case_id": row["original_case_id"],
             "form": form,
             "source_manifest_status": row["source_manifest_status"],
             "provenance_note": row["provenance_note"],
@@ -164,6 +169,10 @@ def main() -> None:
         "report": "target-renderer-holdout-24",
         "source_commit": os.environ.get("GITHUB_SHA"),
         "fixture_sha256": hashlib.sha256(raw_fixture).hexdigest(),
+        "original_manifest_blob_sha1": manifest_audit["original_blob_sha1"],
+        "original_manifest_sha256": manifest_audit["sha256"],
+        "manifest_membership_and_order_verified": manifest_audit["same_membership_and_order"],
+        "original_manifest_historical_ref_status": "UNRESOLVED_BLOB_HAS_NO_RECOVERED_COMMIT_OR_TREE_REFERENCE",
         "input_count": len(report_rows),
         "ipa_gold_labels_available": False,
         "ukrainian_gold_labels_available": False,
