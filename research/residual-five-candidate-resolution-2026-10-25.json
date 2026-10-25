@@ -14,7 +14,7 @@
       "input": "칡칡이",
       "class": "SOURCE_TRANSCRIPTION_MISMATCH_AND_UNKNOWN_LEXICAL_IDENTITY",
       "status": "CANDIDATE_ONLY",
-      "observedRelation": "The search-result snippet for the local-culture PDF labels the song heading 칡칡이, but the opened PDF text layer at the corresponding [철마면 민요 26] passage reads 칭칭이 and gives the refrain 치기타 칭칭나네. This is a source/index transcription mismatch, not evidence that 칡칡이 has a transparent 칡+칡+이 morphology.",
+      "observedRelation": "The search-result snippet for the local-culture PDF labels the song heading 칡칡이, but the opened PDF text layer at [철마면 민요 26] reads 칭칭이 and gives the refrain 치기타 칭칭나네. The same volume also has a separate [장안읍 민요 13] heading 칭칭이 with a 쾌지나 칭칭나네 refrain. This is strong evidence of a source/index transcription mismatch, not transparent 칡+칡+이 morphology.",
       "candidateForms": [
         {
           "text": "칭칭이",
@@ -26,12 +26,12 @@
       ],
       "candidateIPA": [],
       "productionAction": "Offer 칭칭이 only as a source-specific transcription candidate when this folk-song citation is the intended context. Do not silently replace 칡칡이 and do not emit a pronunciation for the original from this evidence.",
-      "why": "The cited folk-song source does not establish a lexical meaning or morpheme segmentation for 칡칡이. The search snippet and PDF text layer disagree; the latter reads 칭칭이, which matches the refrain, but a visual/print-source check is still needed. Do not infer 칡+칡+이.",
+      "why": "The local-culture source's searchable snippet and extracted text disagree, while the PDF text layer and a second regional folk-song entry consistently support 칭칭이 as the title/refrain form. This makes 칭칭이 a strong source-specific correction candidate, but not a confirmed replacement for every occurrence of 칡칡이. No lexical meaning or morpheme segmentation for 칡칡이 is established.",
       "nextEvidence": "Inspect a locally downloaded/print copy of the exact PDF page and compare against 이소라, 양산의 민요 (1992), p. 180 or field audio. If the title is confirmed as 칭칭이, classify 칡칡이 as a corpus/OCR error in that source context; if not, find a separate lexical source before attempting morphology.",
       "evidence": [
         {
           "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
-          "scope": "The search index snippet reports the heading as 칡칡이, while the opened PDF text layer at printed page 587 / PDF text page P596 reads [철마면 민요 26] 칭칭이, identifies singer 이문찬 (male, born 1923), date 1991-10-19, location 철마면 이곡리, and records the refrain 치기타 칭칭나네. It cites 이소라, 양산의 민요 (1992), p. 180. A screenshot fetch failed, so the glyph-level discrepancy is not visually resolved."
+          "scope": "The search index snippet reports 칡칡이, while the opened PDF text layer at printed page 587 / PDF text page P596 reads [철마면 민요 26] 칭칭이, identifies singer/date/location, and records the refrain 치기타 칭칭나네. The same volume separately lists [장안읍 민요 13] 칭칭이 with a 쾌지나 칭칭나네 refrain. The former cites 이소라, 양산의 민요 (1992), p. 180. A screenshot fetch failed, so the glyph-level discrepancy is not visually resolved."
         }
       ]
     },
