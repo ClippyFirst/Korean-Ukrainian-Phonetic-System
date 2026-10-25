@@ -34,6 +34,38 @@ Native exact-match 95% row-cluster bootstrap CI: 48.3480–57.9275%. Native with
 
 Native withheld two occurrences, both with explicit rule/context reasons; no runtime exceptions. The external scores are not interchangeable with independent expert-adjudicated IPA because annotation conventions and adapters differ. This is IPA-only evaluation, not Ukrainian-target accuracy.
 
+### Latest successful g2pK-inclusive benchmark rerun (2026-10-25)
+
+**Scores verified on executable head `8cf5750c35fce99d5cae9a16acfd7b778abe0063`:** [GitHub Actions run 40237240032](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40237240032), [artifact 12615567419](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40237240032/artifacts/12615567419). Both UGTPHON and SIGMORPHON runs succeeded with g2pK 0.9.4 included. These are the latest successful scores; the subsequent discrepancy-classifier/import refinements are awaiting a fresh exact-head CI run. Their score definitions were not changed.
+
+UGTPHON (2,703 eligible occurrences; 1,907 unique words):
+
+| Engine | Scored / eligible | Coverage | Exact | Exact rate | CER |
+|---|---:|---:|---:|---:|---:|
+| ClippyFirst native | 2,698 / 2,703 | 99.8150% | 1,430 | 53.0022% | 9.1697% |
+| g2pK 0.9.4 + shared ClippyFirst segment renderer | 2,703 / 2,703 | 100% | 1,435 | 53.0892% | 9.2285% |
+| phonemize 2.0.1 | 2,703 / 2,703 | 100% | 1,150 | 42.5453% | 14.3531% |
+| KoG2P (pinned 2019) | 2,703 / 2,703 | 100% | 738 | 27.3030% | 19.5122% |
+| hangul_to_ipa (pinned 2026) | 2,703 / 2,703 | 100% | 439 | 16.2412% | 24.8054% |
+| eSpeak NG Korean | 2,703 / 2,703 | 100% | 220 | 8.1391% | 33.6101% |
+
+On the 2,698 occurrences scored by both native ClippyFirst and g2pK, g2pK's exact-rate delta is **+0.1112 percentage points** and its CER delta is **+0.0607 percentage points** (higher CER is worse). Pairwise categories over all 2,703 occurrences: both exact 1,429; both non-exact 1,264; g2pK-only exact 4; native-only exact 1; native abstained / g2pK exact 2; native abstained / g2pK non-exact 3.
+
+SIGMORPHON 2021 Korean (999 eligible occurrences; 999 unique forms):
+
+| Engine | Scored / eligible | Coverage | Exact | Exact rate | CER |
+|---|---:|---:|---:|---:|---:|
+| ClippyFirst native | 997 / 999 | 99.7998% | 357 | 35.8074% | 14.7037% |
+| g2pK 0.9.4 + shared ClippyFirst segment renderer | 999 / 999 | 100% | 353 | 35.3353% | 14.8222% |
+| phonemize 2.0.1 | 999 / 999 | 100% | 289 | 28.9289% | 17.4387% |
+| KoG2P (pinned 2019) | 999 / 999 | 100% | 187 | 18.7187% | 21.8327% |
+| hangul_to_ipa (pinned 2026) | 999 / 999 | 100% | 89 | 8.9089% | 29.8448% |
+| eSpeak NG Korean | 999 / 999 | 100% | 43 | 4.3043% | 40.7236% |
+
+On the 997 shared scored occurrences, g2pK's exact-rate delta is **−0.4012 percentage points** and its CER delta is **+0.1130 percentage points**. Pairwise categories over all 999 occurrences: both exact 353; both non-exact 640; native-only exact 4; native abstained / g2pK non-exact 2.
+
+**Interpretation:** neither corpus establishes a universal winner. On UGTPHON the g2pK adapter has slightly higher exact match but slightly worse CER; on SIGMORPHON native ClippyFirst has slightly higher exact match and lower CER while abstaining on two cases. g2pK's adapter uses its G2P surface followed by ClippyFirst's shared segment renderer, so it is not an independent IPA-realization baseline. All scores remain diagnostic against source annotations, not independently adjudicated phonetic truth and not Ukrainian-output accuracy. The fresh discrepancy labels will use the stricter policy that profile sensitivity alone does not prove an `IPA_CONVENTION`.
+
 ### Native strict/soft and morphology reruns
 
 - [Kiwi + MeCab-Ko consensus](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216623), artifact [12613989972](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216623/artifacts/12613989972): strict 2,698/2,703 scored, exact 1,430 (53.0022%), CER 9.1697%; soft 2,699/2,703, exact 1,430 (52.9826%), CER 9.1689%. Analyzer consensus matches soft on the aggregate. On the 2,698 occurrences scored by both strict and consensus, exact and CER deltas are both zero. Consensus resolves one unique word relative to strict; 24 unique unspaced phrase-like forms remain withheld by the boundary guard. Runtime errors: zero.
