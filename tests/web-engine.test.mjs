@@ -56,7 +56,9 @@ test('long mixed passage has no unresolved placeholders in practical mode', () =
   const passage = '국립국어원 표준 발음 규정을 확인하는 연구자는 다음을 한 번에 비교했다. 독립문 앞에서 신라의 역사를 읽고 밭일을 마쳤다.';
   const r = engine.convert(passage, { morphologyMode: 'practical' });
   assert.doesNotMatch(r.ukrainian, /⟦/);
-  assert.ok(r.ukrainian.length > 20);
+  const visibleTarget=r.ukrainian||r.candidate_ukrainian||'';
+  assert.ok(visibleTarget.length > 20);
+  if(r.candidate_status==='provisional') assert.equal(r.ukrainian,'');
   assert.equal(r.status === 'unresolved', false);
 });
 

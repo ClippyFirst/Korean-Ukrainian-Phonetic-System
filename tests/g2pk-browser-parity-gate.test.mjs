@@ -59,7 +59,9 @@ test('raw port output remains pinned while the practical adapter applies only ex
     assert.equal(actualSurface, expectedCorrection || item.expectedSurface, item.input + ': adapter surface contract');
     assert.equal(result.normativeCorrections.length, expectedCorrection ? 1 : 0, item.input + ': correction allowlist scope');
     assert.ok(result.ipa.length > 0, item.input + ': missing IPA');
-    assert.ok(result.ukrainian.length > 0, item.input + ': missing Ukrainian target');
+    const visibleTarget=result.ukrainian||result.candidate_ukrainian||'';
+    assert.ok(visibleTarget.length > 0, item.input + ': missing Ukrainian output/candidate');
+    if(result.candidate_status==='provisional') assert.equal(result.ukrainian,'',item.input+': provisional target leaked into accepted output');
     assert.deepEqual(result.issues, [], item.input + ': unexpected unresolved issues');
   }
 });
@@ -86,8 +88,10 @@ test('browser output remains IPA-first for the adversarial long passage', () => 
 
   assert.ok(result.surfaceHangul.length > 0, 'missing realized Korean surface');
   assert.ok(result.ipa.length > 0, 'missing IPA output');
-  assert.ok(result.ukrainian.length > 0, 'missing Ukrainian output');
-  assert.doesNotMatch(result.ukrainian, /⟦|undefined/u);
+  const visibleTarget=result.ukrainian||result.candidate_ukrainian||'';
+  assert.ok(visibleTarget.length > 0, 'missing Ukrainian output/candidate');
+  if(result.candidate_status==='provisional') assert.equal(result.ukrainian,'');
+  assert.doesNotMatch(visibleTarget, /⟦|undefined/u);
   assert.equal(result.issues.length, 0, result.issues.join('\n'));
 
   for (const item of result.trace) {

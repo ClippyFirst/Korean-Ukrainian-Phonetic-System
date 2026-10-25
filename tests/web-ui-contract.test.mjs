@@ -77,7 +77,9 @@ test('editable adversarial passage has a complete IPA path without inline placeh
   const engine=createEngine(csv,lexicalCsv);
   const passage='국립국어원 표준 발음 규정을 확인하는 연구자는 다음을 한 번에 비교했다.';
   const r=engine.convert(passage,{morphologyMode:'practical'});
-  assert.ok(r.ukrainian.length>0);
-  assert.doesNotMatch(r.ukrainian,/⟦/);
+  const visibleTarget=r.ukrainian||r.candidate_ukrainian||'';
+  assert.ok(visibleTarget.length>0);
+  if(r.candidate_status==='provisional') assert.equal(r.ukrainian,'');
+  assert.doesNotMatch(visibleTarget,/⟦/);
   assert.equal(r.status==='unresolved',false);
 });

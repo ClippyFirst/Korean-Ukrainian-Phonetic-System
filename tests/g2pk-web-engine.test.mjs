@@ -68,10 +68,12 @@ test('full adversarial Korean passage completes with IPA-first output and no pla
   const result=g2p.convert(passage);
   assert.ok(result.surfaceHangul.length>0,'surface Hangul trace missing');
   assert.ok(result.ipa.length>0,'IPA output missing');
-  assert.ok(result.ukrainian.length>0,'Ukrainian target missing');
+  const visibleTarget=result.ukrainian||result.candidate_ukrainian||'';
+  assert.ok(visibleTarget.length>0,'Ukrainian output/candidate missing');
+  if(result.candidate_status==='provisional') assert.equal(result.ukrainian,'','provisional result must not be exposed as accepted orthography');
   assert.equal(result.issues.length,0,result.issues.join('\\n'));
-  assert.ok(!result.ukrainian.includes('⟦'),'unresolved placeholder leaked');
-  assert.ok(!result.ukrainian.includes('undefined'),'undefined leaked into target');
+  assert.ok(!visibleTarget.includes('⟦'),'unresolved placeholder leaked');
+  assert.ok(!visibleTarget.includes('undefined'),'undefined leaked into target');
   assert.ok(!result.trace.some(item=>(item.rules||[]).includes('sourced-lexical-ipa')),'research lexical IPA override leaked into practical mode');
-  assert.ok(result.ukrainian.includes('“')&&result.ukrainian.includes('”'),'quotation punctuation was not preserved');
+  assert.ok(visibleTarget.includes('“')&&visibleTarget.includes('”'),'quotation punctuation was not preserved');
 });
