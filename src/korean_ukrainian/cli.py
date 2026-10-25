@@ -18,6 +18,8 @@ def _result(text: str, mode: str, pronunciation_engine: str = "native",
     if pronunciation_engine == "g2pk" and morphology_mode != "strict":
         raise ValueError("morphology_mode is available only with pronunciation_engine='native'")
     if mode == "decompose":
+        if morphology_mode != "strict":
+            raise ValueError("morphology_mode is available only with mode='transliterate'")
         if pronunciation_engine != "native":
             raise ValueError("decompose mode is available only with pronunciation_engine='native'")
         return {"input": text, "analysis": analyze_korean(text)}
