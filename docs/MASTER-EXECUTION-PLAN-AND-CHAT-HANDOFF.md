@@ -1408,3 +1408,7 @@ Release classification remains **software-verified research prototype / partial 
 - Added unit tests for all classifier branches. Exact-head CI is required before this change becomes `DONE_VERIFIED`.
 - Ledger: **PARTIAL** — diagnostic labels now exist, but the mismatch list is still capped at 250 and does not satisfy the requested complete occurrence-level ClippyFirst-vs-gold audit. Next code task is to emit a complete per-occurrence ledger with all profiles, abstentions, and category counts using fixed denominators.
 - Existing broad-IPA sensitivity profile remains diagnostic only; no global diacritic deletion, production rule changes, or g2pK execution were introduced by this change.
+
+### Follow-up — full ClippyFirst discrepancy ledger implementation
+
+The benchmark harness now constructs `clippyfirst_gold_discrepancy_audit` over every eligible occurrence where native ClippyFirst is unresolved/errors or is non-exact under the existing scoring contract. It records original Hangul, raw gold IPA, raw engine IPA if available, existing-profile and sensitivity-profile strings/distances, and a conservative category/rationale. It preserves the previous metric definitions and the capped all-engine sample; no gold or source corpus was modified. The category denominator is the number of ledger occurrences, not all eligible tokens, and abstentions are coverage outcomes rather than wrong predictions. The new exact-head workflows are queued as of the latest check; do not mark this DONE_VERIFIED until they pass and the artifact is inspected.
