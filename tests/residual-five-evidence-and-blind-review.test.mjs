@@ -63,3 +63,16 @@ test('the context evidence for the expressive tail does not force one interpreta
   assert.ok(item.evidence.some(source => source.scope.includes('different interpretations')));
   assert.ok(item.candidateForms.every(candidate => candidate.pronunciationMayBeAttributedToOriginal === false));
 });
+
+test('the existing 삶의 lexical-table row stays provisional and cannot bypass the independent IPA/target gate', async () => {
+  const csv = await readFile(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
+  const row = csv.split(/\r?\n/).find(line => line.startsWith('삶의,살믜,'));
+  assert.ok(row, 'the repository lexical table must retain the source-backed surface entry');
+  assert.match(row, /,high,provisional,살메,сал\|ме,sal\|me,/,
+    'both IPA-like and Ukrainian fields in the table remain provisional candidates, not accepted gold');
+  assert.match(row, /сал\|мі,sal\|mi,/,
+    'preserve the existing candidate as a repository fingerprint; do not silently rewrite it during review setup');
+  const coordinator = JSON.parse(await readFile(new URL('../research/salmui-ipa-adjudication-coordinator.json', import.meta.url), 'utf8'));
+  assert.equal(coordinator.reconciliation.finalIpa, null);
+  assert.equal(coordinator.ukrainianTargetReview.acceptedTarget, null);
+});
