@@ -1102,3 +1102,19 @@ Disposition remains **PARTIAL / research prototype, not release-ready**. Outstan
 - **BLOCKED_MISSING_ORIGINAL:** original 24-form holdout provenance is still unverified; keep the fixture labelled `reconstructed_unverified`.
 - **BLOCKED_EXTERNAL_ACCESS:** live NIKL inventory retrieval remains skipped/unverified; a skipped workflow is not a successful retrieval.
 - **Release classification:** software-verified research prototype, not release-ready. The two Korean surface-form disputes now have primary-source evidence, but no full-system accuracy claim is justified.
+
+## Continuation update — CI regression repaired at source-contract level (2026-10-25)
+
+- **CI evidence on prior head:** workflow runs for commit `11a82dba4c43b704caabd495c773c537e06d3a4a` reported Browser G2P failure (run 40192385447) and system verification failure (run 40192385433). Python regression/data-integrity passed; browser tests failed at `tests/g2pk-nikl-surface-corrections.test.mjs:63` because the assertion still required obsolete wording `NIKL §§10, 23` after the evidence was tightened to the exact NIKL Q&A identifier `qna_seq=307219`. Result: 1 failing browser test, 1,230 passing; build skipped due to test failure.
+- **Repair made:** source register now contains explicit rows `SRC-NIKL-QNA-307219` and `SRC-NIKL-QNA-329463`; the `읽고` lexical row points to qna_seq=329463 and accurately labels the Hangul surface reading as directly attested, while IPA/target remain provisional. The exact-form regression test now checks the exact source IDs rather than stale general-rule prose, and checks the lexical source URL/note against the current NIKL answer.
+- **Latest branch commit at this update:** `81408985218837736077366edfe6e495f6db35e1`. GitHub Actions runs/statuses for this exact head were not yet returned by the connector when queried; therefore the repair is **not yet CI-verified**. Do not mark the gate passed until fresh exact-head workflows complete.
+- **PR status:** PR #311 remains open and unmerged, layered on PR #310's branch. Its mergeability signal changed to false after the successive content commits; inspect/reconcile the branch relationship and fresh GitHub mergeability before merge. Do not merge blindly.
+- **Status ledger:**
+  - `DONE_VERIFIED_SOURCE`: exact NIKL surface evidence for `넓죽하다 → 넙쭈카다` and `읽고 → 일꼬`.
+  - `PARTIAL`: source-linked correction allowlist, source register, lexical provenance, and tests updated; exact-head browser CI pending.
+  - `BLOCKED_MISSING_ORIGINAL`: original 24-form holdout manifest/order remains unverified; candidate fixture stays quarantined as `reconstructed_unverified`.
+  - `BLOCKED_SPECIALIST_ADJUDICATION`: independent Korean IPA labels/convention still missing.
+  - `BLOCKED_INDEPENDENT_TARGET_GOLD`: independently annotated Ukrainian practical targets and scoring protocol still missing; no target accuracy claim.
+  - `BLOCKED_EXTERNAL_ACCESS`: official live NIKL inventory job is skipped under workflow conditions; it is not a successful retrieval.
+- **Acceptance criterion for this repair:** fresh workflows on the latest head pass the focused NIKL correction tests, the full browser suite/build, Python regression/data integrity, and source-register validation. The project remains a software-verified research prototype, not release-ready, until the independent linguistic and provenance gates are resolved.
+
