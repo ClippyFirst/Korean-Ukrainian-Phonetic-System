@@ -16,7 +16,7 @@ This document records the current evidence, implemented candidate UI, and remain
 
 ### `칡칡이`: do not mistake an index snippet for the source text
 
-The search-result snippet for the local-culture PDF labels `철마면 민요 26` as `칡칡이`. The opened PDF text layer at the corresponding passage instead reads `칭칭이`, with the refrain `치기타 칭칭나네`, singer/date/location metadata, and a citation to 이소라, *양산의 민요* (1992), p. 180. [Source PDF](https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf).
+The search-result snippet for the local-culture PDF labels `철마면 민요 26` as `칡칡이`. The opened PDF text layer at the corresponding passage instead reads `칭칭이`, with the refrain `치기타 칭칭나네`, singer/date/location metadata, and a citation to 이소라, *양산의 민요* (1992), p. 180. The same volume separately lists `[장안읍 민요 13] 칭칭이` with a `쾌지나 칭칭나네` refrain, strengthening the source-specific correction candidate. [Source PDF](https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf).
 
 This discrepancy makes `칭칭이` a plausible source-specific transcription correction, not a proven replacement for every occurrence of `칡칡이`. A page screenshot could not be fetched in this session, so the exact glyphs still need visual verification. The source does not provide a lexical gloss or morpheme analysis for `칡칡이`; do not infer a `칡+칡+이` parse. The UI now offers `칭칭이` as a labelled candidate only, with the source link, and never applies it automatically.
 
