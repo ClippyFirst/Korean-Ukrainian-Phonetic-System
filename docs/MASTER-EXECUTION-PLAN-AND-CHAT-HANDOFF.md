@@ -1157,3 +1157,12 @@ The final documentation successor will record these exact-head results; because 
 - **Live NIKL inventory:** branch `research/nikl-holdout-provenance-2026-10-25` intentionally matches the existing `verify.yml` gate `startsWith(github.head_ref, 'research/nikl-')`, so CI should attempt the official metadata-only crawl. Inspect the workflow and artifact to distinguish a genuine successful inventory from the existing skip/access block. No bypass is permitted.
 - **Task ledger:** original membership/order `DONE_VERIFIED_MANIFEST_BLOB`; immutable content SHA-1 `DONE_VERIFIED`; SHA-256 exact-head report `TODO_CI_ARTIFACT`; historical ref `PARTIAL`; independent IPA gold `BLOCKED_SPECIALIST_ADJUDICATION`; Ukrainian target gold `BLOCKED_INDEPENDENT_TARGET_GOLD`; live NIKL inventory `TODO_CI_CRAWL`; item-level licensing for 101/105 registry records `PARTIAL`.
 
+## Integrity report completed — recovered 24-form holdout (2026-10-25)
+
+- Exact-head workflow [40197942950](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197942950) passed the manifest integrity script and focused provenance test.
+- Recovered manifest Git blob SHA-1: `f30c5fa8a59753df3d7c06bbbe7d4e43d0b8fb26`.
+- Manifest bytes SHA-256: `4596d9ba0494f220dd0a72ba92853f9d33d8f47cb8ba81b700b490a02f0706d5`.
+- Integrity artifact: [12600733671](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197942950/artifacts/12600733671).
+- Verified: 24/24 form membership and order; 24/24 original case IDs; 0 IPA gold; 0 Ukrainian gold. The original blob's historical commit/tree/PR reference remains unresolved, so historical origin is `PARTIAL`, while the manifest bytes and exact fixture membership are now verified.
+- The separate live NIKL inventory job in `verify.yml` is still pending; do not treat it as passed until its own job/artifact completes.
+
