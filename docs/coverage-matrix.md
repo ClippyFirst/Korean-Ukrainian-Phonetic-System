@@ -47,4 +47,8 @@ The repository does not use the first set as a substitute for the last two.
 “Full readiness” here means the computational architecture, machine-readable contracts, conditional rule model, provenance, validation and reproducibility layers are closed to the extent supported by the available evidence. It does **not** mean that missing empirical datasets have been invented or that a computational heuristic has been promoted to a linguistic fact.
 
 
-| IPA→Ukrainian public adapter failure contract | Implemented; exact-head CI pending | Unavailable results use null, never partial/empty-string output; regression tests cover empty IPA, unmapped IPA, alignment mismatch and provisional mappings |
+## IPA→Ukrainian public adapter failure contract
+
+**Status:** implemented; exact-head CI pending at the time of this matrix update.
+
+Unavailable output uses `null`, not a successful-looking empty string. Empty IPA, delimiter-only IPA, unmapped IPA, source/IPA alignment mismatch, and provisional mappings are covered by regression cases. Partial target strings are withheld if a segment cannot be rendered or if a provisional correspondence prevents accepted output.
