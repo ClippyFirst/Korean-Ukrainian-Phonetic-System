@@ -1,4 +1,4 @@
-from scripts.benchmark_ugtphon_ko import edit_distance, load_corpus, normalize_ipa
+from scripts.benchmark_ugtphon_ko import edit_distance, evaluate, load_corpus, normalize_ipa
 import json
 
 
@@ -51,3 +51,53 @@ def test_corpus_loader_rejects_wrong_language(tmp_path):
         assert "Korean test split" in str(exc)
     else:
         raise AssertionError("wrong-language corpus must be rejected")
+
+
+
+def test_soft_morphology_mode_is_explicit_and_heuristics_are_counted(monkeypatch):
+    import korean_ukrainian.pipeline as pipeline
+
+    calls = []
+
+    def fake_phoneticize(text, *, morphology_mode="strict"):
+        calls.append((text, morphology_mode))
+        return {
+            "pronunciation_status": "provisional",
+            "ipa": {"ipa": "ka"},
+            "rules": [
+                {"rule_id": "R002", "status": "heuristic-low-confidence"},
+                {"rule_id": "R001", "status": "established"},
+            ],
+            "unresolved_contexts": [],
+        }
+
+    monkeypatch.setattr(pipeline, "phoneticize_korean", fake_phoneticize)
+    row = {
+        "id": "sample_1", "lang": "ko", "split": "test", "text": "가",
+        "canonical": "가", "phonemes": "ka",
+        "tokens": [{"text": "가", "canonical": "가", "phoneme": "ka"}],
+    }
+
+    report = evaluate([row], morphology_mode="soft")
+
+    assert calls == [("가", "soft")]
+    assert report["morphology_mode"] == "soft"
+    assert report["scored_tokens"] == 1
+    assert report["exact_matches"] == 1
+    assert report["heuristic_low_confidence_token_occurrences"] == 1
+    assert report["heuristic_low_confidence_examples"][0]["rules"] == ["R002"]
+    assert "not source-adjudicated" in report["heuristic_low_confidence_examples"][0]["note"]
+
+
+def test_morphology_mode_rejects_unknown_values():
+    row = {
+        "id": "sample_1", "lang": "ko", "split": "test", "text": "가",
+        "canonical": "가", "phonemes": "ka",
+        "tokens": [{"text": "가", "canonical": "가", "phoneme": "ka"}],
+    }
+    try:
+        evaluate([row], morphology_mode="guess")
+    except ValueError as exc:
+        assert "morphology_mode" in str(exc)
+    else:
+        raise AssertionError("unknown morphology mode must be rejected")
