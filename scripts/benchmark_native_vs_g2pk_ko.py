@@ -201,7 +201,7 @@ def evaluate(rows: list[dict[str, Any]], *, morphology_mode: str = "strict") -> 
         "details_sample": details,
         "limitations": [
             "UGTPHON is noisy user-generated text and is not a normative Korean standard-pronunciation corpus.",
-            "Both systems are compared on the same tokenized rows and gold IPA; tokens unresolved by the native engine are excluded from its own and the paired scores.",
+            "Both systems are compared on the same tokenized rows and gold IPA; native conditional exact match/CER exclude unresolved tokens, so coverage and coverage-adjusted exact match are reported separately.",
             "g2pk emits Hangul surface forms, not IPA. Its output is converted using the repository's IPA segment renderer without running native phonological rules; this shares the IPA rendering layer and can bias segment-level comparisons.",
             "Gold IPA conventions may differ from the project's broad IPA conventions; scores are diagnostic.",
             "This benchmark evaluates Korean IPA only, not Ukrainian orthographic adaptation.",
