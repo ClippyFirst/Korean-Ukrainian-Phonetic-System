@@ -1,0 +1,52 @@
+"""Evidence-gated regression for the five residual strict-mode abstentions.
+
+This test intentionally does not force a pronunciation. It prevents spelling
+repair, lexical guesses, or Hangul-to-IPA assumptions from being treated as
+accepted output until the named evidence gates are met.
+"""
+import json
+from pathlib import Path
+
+from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+
+QUEUE = Path(__file__).parents[1] / "research" / "final-residual-abstention-triage-2026-10-25.json"
+
+
+def test_residual_abstention_register_is_complete_and_evidence_scoped():
+    queue = json.loads(QUEUE.read_text(encoding="utf-8"))
+    assert queue["schemaVersion"] == 1
+    assert queue["basis"]["latestRecordedUnresolvedCount"] == 5
+    cases = queue["cases"]
+    assert [case["input"] for case in cases] == [
+        "칡칡이",
+        "쫒아내면",
+        "많앗구나유유유",
+        "삶의",
+        "무서웟어",
+    ]
+    assert len({case["input"] for case in cases}) == 5
+    assert all(case["acceptanceCriterion"] for case in cases)
+    assert all(case["productionChange"] == "none" or case["productionChange"].startswith("none;") for case in cases)
+    assert all("IPA" in " ".join(queue["policy"]) or "IPA" in case["status"] for case in cases)
+
+
+def test_residual_cases_remain_unresolved_and_never_emit_accepted_ukrainian_output():
+    queue = json.loads(QUEUE.read_text(encoding="utf-8"))
+    for case in queue["cases"]:
+        form = case["input"]
+        phonetics = phoneticize_korean(form)
+        result = transliterate_korean(form)
+        assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
+        assert result["target_status"] == "unresolved", (form, result)
+        assert result["ukrainian_orthography"] is None, (form, result)
+        assert result["candidate_orthography"] is None, (form, result)
+
+
+def test_spelling_sources_are_not_misrepresented_as_authorizing_normalization():
+    queue = json.loads(QUEUE.read_text(encoding="utf-8"))
+    by_input = {case["input"]: case for case in queue["cases"]}
+    assert "not automatic normalization" in by_input["쫒아내면"]["evidenceReviewed"][0]["scope"]
+    assert "not authorization to normalize" in by_input["무서웟어"]["evidenceReviewed"][0]["scope"]
+    assert "not IPA" in by_input["삶의"]["evidenceReviewed"][0]["scope"]
+    assert by_input["삶의"]["status"] == "BLOCKED_SPECIALIST_IPA_ADJUDICATION"
