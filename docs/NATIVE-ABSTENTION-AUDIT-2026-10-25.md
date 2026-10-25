@@ -1,6 +1,6 @@
 # Source-backed R003 exact-form implementation — 2026-10-25
 
-- **Status: PARTIAL pending CI and benchmark rerun.** The implementation now adds strict, full-form + adjacent-pair licenses for two R003 cases whose exact Korean surface pronunciations are attested by NIKL sources:
+- **Status: PARTIAL; three-form benchmark passed, full regression suite for the latest code head pending.** The implementation now adds strict, full-form + adjacent-pair licenses for three R003 cases whose exact Korean surface pronunciations are attested by NIKL sources:
   - `싫어서`, pair `싫>어`, official NIKL Online Q&A (2025-04-29): [source](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313981), explicitly explains ㅎ deletion and ㄹ liaison, pronunciation [시러서].
   - `수많은`, pair `많>은`, Korean Basic Dictionary entry for 수많다: [source](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144), lists 활용 [수ː마는].
   - `많아서`, pair `많>아`, official NIKL Online Q&A (2026-08-06): [source](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=57&pageIndex=1&qna_seq=334550), explicitly lists [마ː나서].
@@ -15,11 +15,11 @@
 
 ## Exact-head benchmark verification — 2026-10-25
 
-- Latest multi-engine benchmark passed: [run 40212705617](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40212705617), artifact [12606785170](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40212705617/artifacts/12606785170). The pinned UGTPHON result is 2,657/2,703 scored (98.2982% coverage), 1,412 exact (53.1426%), CER 9.1995%, 46 unresolved, zero engine errors.
+- Three-form multi-engine benchmark passed: [run 40213109664](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40213109664), artifact [12606328134](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40213109664/artifacts/12606328134). The pinned UGTPHON result is 2,658/2,703 scored (98.3352% coverage), 1,412 exact (53.1226%), CER 9.2010%, 45 unresolved, zero engine errors.
 - Current context inventory from that artifact: R002 25, R003 17, R007 2, R004 1, IPA adjudication 1; 46 labels across 45 occurrences because one occurrence has two contexts.
 - The native engine remains slightly better than g2pk on the common subset for CER (9.2010% vs 9.2525%) but lower on exact rate (53.1226% vs 53.2932%); this is diagnostic-only noisy-corpus comparison, not normative validation. Neither comparator nor the corpus labels certify Ukrainian target output.
 - Verification passed on code/test head `918b0f8a07e2cbf4c9b3bfe42cae7d263f7b9ef8`: Python 3.11/3.12/3.13, wheel install, browser tests/build, system verification, external UGTPHON, paired native-vs-g2pk, morphology-consensus diagnostic, research morphology adapter smoke, and master-table/research-artifact validation. The latest documentation-only head has additional CI queued.
-- Current status remains `PARTIAL`: 46 unresolved cases, no independent IPA adjudication for the target corpus, no Ukrainian-output gold corpus, and live NIKL inventory blocked/skipped. Not release-ready.
+- Current status remains `PARTIAL`: 45 unresolved cases, no independent IPA adjudication for the target corpus, no Ukrainian-output gold corpus, and live NIKL inventory blocked/skipped. Not release-ready.
 
 ## Finding
 
@@ -30,7 +30,7 @@ After all three exact-form R003 licenses in PR #328, the pinned diagnostic repor
 | Context class | Context count | Interpretation |
 |---|---:|---|
 | R002 liaison / neutralization | 25 | Formal vs substantive morpheme or exact inflection boundary is not licensed |
-| R003 ㅎ-coda deletion | 18 current (20 baseline) | Requires an ending/suffix license; exact-form licenses resolve `싫어서` and `수많은` |
+| R003 ㅎ-coda deletion | 17 current (20 baseline) | Requires an ending/suffix license; exact-form licenses resolve `싫어서`, `수많은`, and `많아서` |
 | R007 palatalization | 2 | Formal-morpheme /i/ context is not licensed |
 | R004 complex coda + ㅎ aspiration | 1 | Morphophonemic context is not licensed |
 | IPA_ADJUDICATION | 1 | Korean surface evidence exists, but project IPA has no independent adjudication |
