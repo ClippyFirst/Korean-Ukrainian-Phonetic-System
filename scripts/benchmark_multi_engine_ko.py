@@ -287,7 +287,6 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     from korean_ukrainian.pipeline import phoneticize_korean
     from korean_ukrainian.phonology import parse_syllables
     from korean_ukrainian.ipa import realize_syllables
-    from g2pk import G2p
 
     items, words = _load_rows_and_words(rows)
     predictions: dict[str, dict[str, Any]] = {}
@@ -319,17 +318,20 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         lambda word: _native_ipa(phoneticize_korean, word),
         "native public pipeline output; unresolved predictions are abstentions",
     )
-    g2p = G2p()
-    def g2pk_ipa(word: str) -> str:
-        surface = g2p(word)
-        if not isinstance(surface, str):
-            raise TypeError(f"g2pk returned {type(surface).__name__}")
-        surface = "".join(surface.split())
-        if not _HANGUL_TOKEN.fullmatch(surface):
-            raise ValueError(f"not a single Hangul surface form: {surface!r}")
-        return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
-    execute("g2pk_0_9_4", "g2pk==0.9.4", g2pk_ipa,
-            "g2pk surface Hangul -> project segment renderer; native rules not rerun")
+    if not args.exclude_g2pk:
+        from g2pk import G2p
+
+        g2p = G2p()
+        def g2pk_ipa(word: str) -> str:
+            surface = g2p(word)
+            if not isinstance(surface, str):
+                raise TypeError(f"g2pk returned {type(surface).__name__}")
+            surface = "".join(surface.split())
+            if not _HANGUL_TOKEN.fullmatch(surface):
+                raise ValueError(f"not a single Hangul surface form: {surface!r}")
+            return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
+        execute("g2pk_0_9_4", "g2pk==0.9.4", g2pk_ipa,
+                "g2pk surface Hangul -> project segment renderer; native rules not rerun")
 
     try:
         kog2p_fn, kog2p_adapter = _load_kog2p(args.kog2p_root)
@@ -559,7 +561,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     native_g2pk_pairwise_audit: list[dict[str, Any]] = []
     pairwise_category_counts: dict[str, int] = defaultdict(int)
     g2pk_predictions = predictions.get("g2pk_0_9_4", {})
-    for item in items:
+    for item in (items if not args.exclude_g2pk else []):
         word, gold = item["word"], item["gold"]
         native = native_cache.get(word, {})
         candidate = g2pk_predictions.get(word, {})
@@ -636,13 +638,14 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "engines": engine_results,
         "diagnostic_mismatch_sample": mismatch_details,
         "native_g2pk_pairwise_audit": {
+            "status": "excluded_by_user_request" if args.exclude_g2pk else "completed",
             "occurrence_count": len(native_g2pk_pairwise_audit),
             "category_counts": dict(sorted(pairwise_category_counts.items())),
-            "interpretation": "complete occurrence-level native-vs-g2pk diagnostic; categories compare each prediction to the corpus annotation, which is not normative gold",
+            "interpretation": "not run because the user requested exclusion" if args.exclude_g2pk else "complete occurrence-level diagnostic; corpus annotation is not normative gold",
             "occurrences": native_g2pk_pairwise_audit,
         },
         "upstream_pins": {
-            "g2pk": "0.9.4",
+            **({} if args.exclude_g2pk else {"g2pk": "0.9.4"}),
             "KoG2P": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7; GPL-3.0; executed as external checkout, not vendored",
             "hangul_to_ipa": "stannam/hangul_to_ipa commit 942abf132ea969a7e3476a1487c06710fb8db74b; MIT; executed as external checkout, not vendored",
             "phonemize": "hans00/phonemize npm 2.0.1; MIT",
@@ -651,7 +654,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "limitations": [
             ("UGTPHON contains noisy user-generated text, not a balanced official standard-pronunciation test set." if "UGTPHON" in args.benchmark_name else "SIGMORPHON is a lexical word-level test set, not a sentence-context or normative NIKL test set."),
             "IPA conventions differ between systems and reference annotations; exact match and CER are diagnostic, not absolute truth.",
-            "g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison.",
+            *([] if args.exclude_g2pk else ["g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison."]),
             "KoG2P uses a documented custom phone alphabet; the explicit adapter is lossy, and its score must be read with adapter limitations.",
             "hangul_to_ipa explicitly omits several morphology-sensitive processes (including n-insertion and liquid tensification); this is a scope limitation, not an unexpected runtime failure.",
             "phonemize's published Korean evaluation uses a small LLM-judged sample, not this benchmark's independent human-gold IPA.",
@@ -682,6 +685,8 @@ def main() -> int:
     parser.add_argument("--hangul-to-ipa-root", type=Path, default=os.environ.get("HANGUL_TO_IPA_ROOT", "/tmp/hangul_to_ipa"))
     parser.add_argument("--phonemize-root", type=Path, default=os.environ.get("PHONEMIZE_BASELINE_DIR", "/tmp/phonemize-baseline"))
     parser.add_argument("--phonemize-output", type=Path, default=Path("/tmp/phonemize-predictions.json"))
+    parser.add_argument("--exclude-g2pk", action="store_true",
+                        help="do not import, install, or execute g2pk; omit its score and pairwise audit")
     args = parser.parse_args()
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH")
