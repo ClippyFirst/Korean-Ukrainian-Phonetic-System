@@ -124,3 +124,12 @@ The paired morphology reports also show 93.70% Kiwi/MeCab agreement on 238 obser
 - `BLOCKED_INDEPENDENT_TARGET_GOLD`: no independent Ukrainian practical-transcription gold set or scoring protocol.
 - `BLOCKED_EXTERNAL_ACCESS`: official live NIKL inventory workflow was skipped in prior runs; it is not a pass.
 - `PARTIAL / RIGHTS_REVIEW`: source references are not blanket reuse licenses; the existing source registry still requires item-level license/KOGL review.
+
+## First analyzer-consensus CI result and false-positive guard
+
+The first exact-head consensus workflow passed on commit `f3bd48b668e3b72f7dbe7e00c417a5438170ff25` (run [40196004838](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40196004838)). It scored 2,686/2,703 occurrences (99.3711% coverage), exact 1,423/2,686 (52.9784%), CER 9.1981%, with 17 unresolved occurrences/unique forms and zero engine exceptions. It produced low-confidence candidates for 30 unique strict-mode abstentions. The paired strict-vs-consensus subset remained exactly unchanged: 2,655 paired occurrences, 0 exact-rate delta, 0 CER delta.
+
+The first report exposed an important input-boundary hazard: `못잃어` and `안늙었는데` have a likely unspaced adverb-to-verb boundary (`MAG → VV)). Applying a local ending rule does not reconstruct the missing eojeol space or the phrase-level phonology. I therefore added a stricter guard: if both analyzers agree on an unspaced `MAG → VV/VA/VX` boundary, the consensus adapter withholds all licenses for that token. This is intentionally conservative and is being re-benchmarked on the updated head; do not reuse the first run's 30-form coverage as the final result.
+
+The final acceptance criterion remains: exact-head CI passes, the consensus report enumerates remaining abstentions, all analyzer-derived IPA stays diagnostic-only, and strict default output is unchanged.
+
