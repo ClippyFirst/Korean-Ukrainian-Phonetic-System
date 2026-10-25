@@ -52,6 +52,7 @@ _NIKL_R002_FORMAL_LICENSES = {
 _NIKL_R003_FORMAL_LICENSES = {
     "싫어서": "싫>어",
     "수많은": "많>은",
+    "많아서": "많>아",  # NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
 }
 
 # Exact full-form licenses for transparent verb-stem + ending cases under NIKL §24.
