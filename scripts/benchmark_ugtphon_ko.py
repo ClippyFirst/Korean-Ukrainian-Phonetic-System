@@ -82,6 +82,8 @@ def evaluate(rows: list[dict[str, Any]], *, morphology_mode: str = "strict") -> 
     skipped_missing_gold = 0
     skipped_empty_variants = 0
     errors = 0
+    heuristic_token_occurrences = 0
+    heuristic_examples: list[dict[str, Any]] = []
     for row in rows:
         for token in row["tokens"]:
             canonical = token.get("canonical", "")
