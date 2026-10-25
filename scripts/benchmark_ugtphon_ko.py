@@ -95,7 +95,7 @@ def evaluate(rows: list[dict[str, Any]], *, morphology_mode: str = "strict") -> 
                 skipped_missing_gold += 1
                 continue
             try:
-                engine_result = phoneticize_korean(canonical)
+                engine_result = phoneticize_korean(canonical, morphology_mode=morphology_mode)
                 if engine_result.get("pronunciation_status") == "unresolved":
                     unresolved_tokens += 1
                     if len(unresolved_examples) < 100:
