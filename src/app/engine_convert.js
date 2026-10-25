@@ -50,11 +50,11 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
               if(!mapped.unknown){
                 const mappedSegments=sourceIpa.map(ipa=>traceIpaMappingDetailed(ipa));
                 result.ipa=sourceIpa.join(' ');
-                const hasProvisionalCandidate=mapped.status==='unavailable'&&mapped.candidates.some(Boolean);
-                result.ukrainian=hasProvisionalCandidate?mapped.candidates.join(''):mapped.syllables.join('');
+                const hasProvisionalCandidate=mapped.status==='provisional'||(mapped.status==='unavailable'&&mapped.candidates.some(Boolean));
+                result.ukrainian=hasProvisionalCandidate?'':mapped.syllables.join('');
                 result.candidate_ukrainian=hasProvisionalCandidate?mapped.candidates.join(''):null;
                 result.candidate_status=hasProvisionalCandidate?'provisional':null;
-                result.target_status=hasProvisionalCandidate?'provisional':mapped.status;
+                result.target_status=hasProvisionalCandidate?'unavailable':mapped.status;
                 let index=0;
                 for(const item of result.trace||[]){
                   if(item.status==='literal')continue;
