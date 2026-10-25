@@ -1,3 +1,42 @@
+# Current continuation — engine-specific IPA convention audit — 2026-10-26
+
+## Current branch state
+
+- PR #336 remains open: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/336
+- Current branch head: cd532cd1a755b62f22131edbb7b80daf6eba0b6d.
+- The last completed full benchmark remains run 40238222133, artifact 12616575071, on executable head ff14ec72e3167d9268f1348f399abb155098caee. Its verified primary scores are recorded below in the prior continuation.
+- New normalization-profile code has triggered a fresh benchmark run [40239593700](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40239593700), but at this handoff it is still QUEUED. Do not claim the new profile metrics or latest CI pass until the exact-head run completes and its artifact is inspected.
+
+## Work completed in this continuation
+
+- Added four diagnostic normalization profiles to scripts/benchmark_multi_engine_ko.py in addition to the unchanged primary score:
+  - broad_fricative_aspiration (existing sensitivity profile);
+  - ignore_all_aspiration;
+  - ignore_length;
+  - ignore_stress.
+- Each engine result now emits normalization_profile_sensitivity with exact match, CER, and deltas from primary. Primary normalization remains unchanged; profile metrics use the same eligible corpus occurrences for which that engine produced a valid IPA output.
+- Added unit tests for profile behavior and explicit checks that the primary scorer still distinguishes aspiration, length and stress marks.
+- Expanded docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md with the actual output contract/adapter limits for all six engines and source links for g2pK, KoG2P, hangul_to_ipa, phonemize and eSpeak NG.
+- Important interpretation: these are sensitivity profiles, not claims that all engines use one of these exact conventions. A true per-engine-native score still requires a versioned source-backed convention map and case-level reference adjudication. Do not infer that an 80–90% score will result from normalization; new numbers are pending CI.
+
+## Verification ledger
+
+- DONE_VERIFIED: prior six-engine primary comparison including g2pK at run 40238222133.
+- PARTIAL: profile implementation and tests are committed; exact-head CI and output artifact are pending.
+- BLOCKED: independent IPA gold remains unavailable for the frozen 24-form holdout; external benchmark annotations are diagnostic and not universal normative IPA.
+- BLOCKED: full per-engine convention alignment needs case-level comparison to upstream source behavior and independently adjudicated references.
+- NOT RELEASE-READY: current broad primary exact match is 53.0022% on UGTPHON and 35.8074% on SIGMORPHON.
+
+## Next steps
+
+1. Verify run 40239593700 (and any later rerun on this exact head); fix any syntax/test/CI failure and rerun.
+2. Inspect profile-level metrics for all engines on both datasets; report each profile separately with its exact denominator and coverage.
+3. Do not choose a profile because it gives the largest score. Only promote an engine-specific profile after the representation convention is established from that engine's pinned upstream code/docs and reference cases are adjudicated.
+4. Build case-level rankings of discrepancies still unresolved after representation-only differences are identified.
+5. Preserve external test splits and the frozen 24-form holdout as evaluation-only.
+
+---
+
 # Current continuation — v3 training readiness and benchmark honesty — 2026-10-26
 
 ## Current state
