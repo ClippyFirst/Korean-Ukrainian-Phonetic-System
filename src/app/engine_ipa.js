@@ -89,25 +89,61 @@ export function traceIpaMapping(ipa){
   };
 }
 
-export function ipaSyllableToUkrainian(ipa,{allowProvisional=false}={}){
+export function ipaSyllableToUkrainian(ipa,options={}){
+  if(!options||typeof options!=='object'||Array.isArray(options)){
+    throw new TypeError('IPA target options must be an object');
+  }
+  const allowProvisional=options.allowProvisional??false;
+  if(typeof allowProvisional!=='boolean'){
+    throw new TypeError('allowProvisional must be a boolean');
+  }
   const mapped=traceIpaMappingDetailed(ipa);
+  // Preserve the legacy unknown-fragment shape, but never report an empty or
+  // feature-only IPA input as a successful empty Ukrainian spelling.
   if(mapped.unknown) return {text:'',unknown:mapped.unknown};
   const candidateText=mapped.tokens.map(token=>token.ukrainian).join('');
+  if(mapped.status==='unavailable'){
+    return {
+      text:null,candidateText:'',unknown:'',status:'unavailable',
+      reason:mapped.reason||'no_renderable_ipa_segments'
+    };
+  }
   if(mapped.status==='provisional'&&!allowProvisional){
     return {text:null,candidateText,unknown:'',status:'unavailable',candidateStatus:'provisional',reason:'provisional_mapping_requires_review'};
   }
   return mapped.status==='provisional'
     ? {text:candidateText,unknown:'',status:'provisional'}
-    : {text:candidateText,unknown:''};
+    : {text:candidateText,unknown:'',status:'model-selected'};
 }
 
 export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
+  if(!Array.isArray(ipaSyllables)){
+    throw new TypeError('IPA syllables must be an array');
+  }
   const mapped=ipaSyllables.map(ipa=>ipaSyllableToUkrainian(ipa,options));
+  const unknown=mapped.find(item=>item.unknown)?.unknown||'';
+  const unavailable=mapped.find(item=>item.status==='unavailable'||item.unknown);
+  const provisional=mapped.some(item=>item.status==='provisional'||item.candidateStatus==='provisional');
+  if(unavailable){
+    return {
+      syllables:[],candidates:[],unknown,
+      status:'unavailable',
+      reason:unavailable.reason||'unmapped_ipa_sequence'
+    };
+  }
+  if(provisional){
+    return {
+      syllables:[],candidates:mapped.map(item=>item.candidateText??item.text),
+      unknown:'',status:'unavailable',
+      reason:'provisional_mapping_requires_review',
+      candidateStatus:'provisional'
+    };
+  }
   return {
     syllables:mapped.map(item=>item.text),
-    candidates:mapped.map(item=>item.candidateText??item.text),
-    unknown:mapped.find(item=>item.unknown)?.unknown||'',
-    status:mapped.some(item=>item.unknown||item.status==='unavailable')?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+    candidates:mapped.map(item=>item.text),
+    unknown:'',
+    status:'model-selected'
   };
 }
 

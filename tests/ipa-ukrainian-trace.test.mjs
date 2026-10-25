@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
-import { ipaSyllableToUkrainian, traceIpaMapping, traceIpaMappingDetailed, ipaTargetForSource } from '../src/app/engine_ipa.js';
+import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, traceIpaMapping, traceIpaMappingDetailed, ipaTargetForSource } from '../src/app/engine_ipa.js';
 
 const canonicalCsv = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const jamoCsv = readFileSync(new URL('../data/korean/jamo.csv', import.meta.url), 'utf8');
@@ -241,4 +241,41 @@ test('a phrase with a provisional target withholds partial output but preserves 
   assert.ok(result.candidate_ukrainian.includes('ий'));
   assert.ok(result.candidate_ukrainian.includes('!'));
   assert.ok(result.candidate_ukrainian.includes(' '));
+});
+
+
+test('empty and feature-only IPA inputs cannot become successful empty Ukrainian spellings', () => {
+  for (const ipa of ['', '.', '...', 'ː', '.ː.']) {
+    const result = ipaSyllableToUkrainian(ipa);
+    assert.equal(result.text, null, JSON.stringify(ipa));
+    assert.equal(result.status, 'unavailable', JSON.stringify(ipa));
+    assert.equal(result.reason, 'no_renderable_ipa_segments', JSON.stringify(ipa));
+  }
+});
+
+test('multi-syllable target helper fails closed as a whole on an unavailable IPA segment', () => {
+  const result = ipaSyllablesToUkrainian(['k', '', 'a']);
+  assert.deepEqual(result.syllables, []);
+  assert.deepEqual(result.candidates, []);
+  assert.equal(result.status, 'unavailable');
+  assert.equal(result.reason, 'no_renderable_ipa_segments');
+});
+
+test('provisional target status and explicit research opt-in are consistent across helper APIs', () => {
+  const production = ipaSyllablesToUkrainian(['kʰ', 'y']);
+  assert.deepEqual(production.syllables, []);
+  assert.deepEqual(production.candidates, ['кх', 'ві']);
+  assert.equal(production.status, 'unavailable');
+  assert.equal(production.candidateStatus, 'provisional');
+
+  const research = ipaSyllablesToUkrainian(['kʰ', 'y'], {allowProvisional:true});
+  assert.deepEqual(research.syllables, ['кх', 'ві']);
+  assert.equal(research.status, 'model-selected', 'opted-in result is still composed of project correspondences');
+});
+
+test('provisional opt-in must be an explicit boolean in public IPA helpers', () => {
+  assert.throws(
+    () => ipaSyllableToUkrainian('y', {allowProvisional:'yes'}),
+    {name:'TypeError', message:'allowProvisional must be a boolean'}
+  );
 });
