@@ -76,3 +76,13 @@ test('the existing 삶의 lexical-table row stays provisional and cannot bypass 
   assert.equal(coordinator.reconciliation.finalIpa, null);
   assert.equal(coordinator.ukrainianTargetReview.acceptedTarget, null);
 });
+
+
+test('reviewer recruitment is tracked without fabricating submissions or accepting a target', async () => {
+  const coordinator = JSON.parse(await readFile(new URL('salmui-ipa-adjudication-coordinator.json', root), 'utf8'));
+  assert.equal(coordinator.reviewerRecruitment.status, 'OPEN_REQUEST_FOR_TWO_INDEPENDENT_QUALIFIED_REVIEWERS');
+  assert.equal(coordinator.reviewerRecruitment.issue, 'https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337');
+  assert.equal(coordinator.reviewerRecruitment.submissionsReceived, 0);
+  assert.equal(coordinator.reconciliation.finalIpa, null);
+  assert.equal(coordinator.ukrainianTargetReview.acceptedTarget, null);
+});
