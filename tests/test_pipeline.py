@@ -562,8 +562,8 @@ def test_nikl_section_24_exact_form_licenses_render_correct_surface_ipa():
 def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
     from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
 
-    strict = phoneticize_korean("좋아")
-    soft = phoneticize_korean("좋아", morphology_mode="soft")
+    strict = phoneticize_korean("수많은")
+    soft = phoneticize_korean("수많은", morphology_mode="soft")
     assert strict["pronunciation_status"] == "unresolved"
     assert soft["pronunciation_status"] == "provisional"
     trace = next(rule for rule in soft["rules"] if rule["rule_id"] == "R003")
@@ -571,7 +571,7 @@ def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
     assert trace["source"] == "soft-heuristic-morphology"
     assert soft["ipa_is_diagnostic_only"] is False
 
-    target = transliterate_korean("좋아", morphology_mode="soft")
+    target = transliterate_korean("수많은", morphology_mode="soft")
     assert target["morphology_mode"] == "soft"
     assert target["ipa_status"] == "provisional"
 
