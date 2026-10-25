@@ -75,5 +75,6 @@ jobs:
           path: |
             ${{ runner.temp }}/strict-abstention-audit.json
             ${{ runner.temp }}/soft-abstention-audit.json
+            ${{ runner.temp }}/paired-ipa-morphology-kiwi.json
             ${{ runner.temp }}/ko-LICENSE
           if-no-files-found: error
