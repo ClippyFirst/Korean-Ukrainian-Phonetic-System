@@ -76,3 +76,17 @@ def test_analyzer_consensus_rejects_zero_width_boundary_evidence():
     ]
     report = analyzer_consensus_rule_licenses("좋아", analyses)
     assert report["candidate_licenses"] == []
+
+
+def test_analyzer_consensus_withholds_candidate_when_unspaced_phrase_boundary_is_likely():
+    analyses = [
+        _analysis("mecab-ko", "못잃어", [
+            ("못", "MAG", 0, 1), ("잃", "VV", 1, 2), ("어", "EC", 2, 3),
+        ]),
+        _analysis("kiwi", "못잃어", [
+            ("못", "MAG", 0, 1), ("잃", "VV", 1, 2), ("어", "EC", 2, 3),
+        ]),
+    ]
+    report = analyzer_consensus_rule_licenses("못잃어", analyses)
+    assert report["blocked_unspaced_multiword_boundaries"] == [1]
+    assert report["candidate_licenses"] == []
