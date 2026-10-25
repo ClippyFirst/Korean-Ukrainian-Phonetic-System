@@ -255,9 +255,9 @@ The external Korean IPA benchmark remains diagnostic rather than a Ukrainian tar
 
 ## Neural G2P / V3 candidate — 2026-10-26
 
-- **Research gate:** [Neural Korean G2P / ClippyFirst V3 research gate](NEURAL-KOREAN-G2P-V3-RESEARCH-GATE-2026-10-26.md).
+- **Research gate:** [Neural Korean G2P / ClippyFirst V3 research gate](NEURAL-KOREAN-G2P-V3-RESEARCH-GATE-2026-10-26.md). The optional runner and unit tests are now implemented on branch `research/neural-korean-g2p-v3-2026-10-26`; no model inference has run yet.
 - **Repository inventory:** the existing six-engine harness has no integrated neural model. CharsiuG2P multilingual ByT5 is an external candidate, not an already executed repository baseline.
 - **External evidence:** upstream reports Korean-capable multilingual model PER/WER from 0.107/0.314 (tiny 8-layer) through 0.089/0.261 (small). These values are upstream-reported and are not comparable to this repo's scores until test split, tokenization, normalization, and evaluation protocol are aligned.
-- **Decision:** `PARTIAL`. Candidate identification is verified; local benchmark execution, pinned model revision, artifact hashes, and license/data provenance audit remain TODO/PARTIAL. No neural accuracy result is claimed for ClippyFirst's benchmark.
+- **Decision:** `PARTIAL`. Candidate identification and runner implementation are present; unit/CI verification and local benchmark execution are pending. Model revision/hash and training-data rights remain PARTIAL. No neural accuracy result is claimed for ClippyFirst's benchmark.
 - **Next acceptance gate:** implement an optional pinned neural adapter and run it on the exact existing UGTPHON and SIGMORPHON inputs; report case-level paired outcomes, coverage, errors, CER/PER, and bootstrap intervals. Keep the current engine and gold files unchanged. Do not use benchmark/holdout examples for training or tuning.
 - **Architecture constraint:** neural predictions must be candidate IPA entering the existing IPA-to-Ukrainian adapter; never add a parallel neural Hangul-to-Ukrainian path. The model must not be treated as independent evidence if it shares data/conventions with the gold.
