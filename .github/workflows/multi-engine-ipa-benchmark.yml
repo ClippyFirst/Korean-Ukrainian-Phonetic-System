@@ -163,7 +163,11 @@ jobs:
                         f"delta_CER={p['cer_delta_candidate_minus_native']} "
                         f"CI_delta_exact={ci_delta.get('exact_rate_delta_candidate_minus_native_95pct_ci')} "
                         f"CI_delta_CER={ci_delta.get('cer_delta_candidate_minus_native_95pct_ci')}")
-          assert r["native_g2pk_pairwise_audit"]["status"] == "excluded_by_user_request"\n          assert "g2pk_0_9_4" not in engines\n          print("g2pK was not installed or run by explicit project-owner constraint.")\n          print("Diagnostic only. This corpus is not normative NIKL gold and does not evaluate Ukrainian output.")
+          engines = r["engines"]
+          assert r["native_g2pk_pairwise_audit"]["status"] == "excluded_by_user_request"
+          assert "g2pk_0_9_4" not in engines
+          print("g2pK was not installed or run by explicit project-owner constraint.")
+          print("Diagnostic only. This corpus is not normative NIKL gold and does not evaluate Ukrainian output.")
           engines = r["engines"]
           for required in ("clippyfirst_native",):
               if engines[required]["scored_tokens"] <= 0:
@@ -219,7 +223,9 @@ jobs:
                 audit.get("unique_words"), "unique words; context counts=", audit.get("context_counts"))
           print("Diagnostic lexical test only; not a normative NIKL gate and not an IPA-to-Ukrainian score.")
           engines = r["engines"]
-          for required in ("clippyfirst_native", "g2pk_0_9_4"):
+          assert r["native_g2pk_pairwise_audit"]["status"] == "excluded_by_user_request"
+          assert "g2pk_0_9_4" not in engines
+          for required in ("clippyfirst_native",):
               if engines[required]["scored_tokens"] <= 0:
                   raise SystemExit(f"required baseline produced no scored tokens: {required}")
           candidates = ("KoG2P_2019", "hangul_to_ipa_2026", "espeak_ng_ko", "phonemize_2_0_1")
