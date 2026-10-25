@@ -3,7 +3,7 @@
  */
 import {
   COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
-  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -32,6 +32,15 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     }
 
     if(['ㄷ','ㅌ','ㄾ'].includes(a.coda)&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
+      const exactR007Pair=NIKL_17_FORMAL_I_FORMS.get(currentWord);
+      if(exactR007Pair===exactMorphPair){
+        const originalCoda=a.coda;
+        a.coda=originalCoda==='ㄾ'?'ㄹ':'';
+        b.onset=originalCoda==='ㄷ'?'ㅈ':'ㅊ';
+        rules.push('palatalization-§17-exact-form');
+        nextRules.push('palatalization-§17-exact-form');
+        continue;
+      }
       if(softOn&&trySoftFormal(a,b,rules,nextRules,{COMPLEX,FINAL_REPRESENTATIVE})){
         continue;
       }

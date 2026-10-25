@@ -51,6 +51,9 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
   ['안늙었는데','늙>었'], // Exact noisy token; only internal 늙- + -었-.
   ['벗어날','벗>어'], // NIKL §§13–14, 벗- + -어.
   ['찾아','찾>아'], // NIKL §§13–14, 찾- + -아.
+  ['좃같아서','같>아'], // Exact noisy token; only 같다 + -아서 is licensed.
+  ['없을듯','없>을'], // Exact written form; 없다 + adnominal -을 before 듯.
+  ['칡칡이','칡>이'], // Exact repeated form; second 칡 + particle 이 only.
   ['웃어넘기겟지만','웃>어'], // NIKL §§13–14; internal 웃- + -어, no normalization of later 겟.
   ['싶어서','싶>어'], // NIKL §§13–14, transparent 싶- + -어서.
   ['없으니깐','없>으'], // Exact noisy form; no productive ending heuristic.
@@ -74,8 +77,19 @@ const NIKL_12_H_DELETION_FORMS=new Map([
   ['않았지만','않>았'], // NIKL §12(4), 않- + -았-.
   ['개많음','많>음'], // NIKL §12(4), 많- + nominalizer -음.
   ['좋은데','좋>은'], // NIKL §12(4), 좋- + adnominal ending -은.
+  ['괜찮아보이는디','찮>아'], // Exact form; 괜찮- + -아 before auxiliary 보이다.
+  ['많을거같이','많>을'], // Exact form; 많- + adnominal -을.
+  ['많이본','많>이'], // Exact lexicalized adverb 많이; NIKL §12(4).
+  ['알잖아아침에','잖>아'], // Exact token; internal -잖아 ending only.
+  ['좋아보인다고','좋>아'], // Exact form; 좋- + -아 before 보이다.
+  ['좋아해주는','좋>아'], // Exact form; internal 좋- + -아 in 좋아하다.
   ['죽었잖아','잖>아'], // NIKL §12(4), ending -잖아.
   ['개좆망했잖아','잖>아'], // Exact colloquial input; scoped only to -잖아.
+]);
+
+const NIKL_17_FORMAL_I_FORMS=new Map([
+  ['많을거같이','같>이'], // NIKL §17; exact form only.
+  ['개같이못하고','같>이'], // NIKL Q&A 327454 confirms 같이 [가치]; exact token/pair only.
 ]);
 
 const NIKL_24_STEM_NM_ENDING_FORMS=new Map([

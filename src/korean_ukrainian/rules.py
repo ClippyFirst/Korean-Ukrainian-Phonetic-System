@@ -59,6 +59,9 @@ _NIKL_R002_FORMAL_LICENSES = {
     "안늙었는데": "늙>었",  # Exact noisy token; internal 늙- + -었-.
     "벗어날": "벗>어",
     "찾아": "찾>아",
+    "좃같아서": "같>아",  # Exact noisy token; only 같다 + -아서 is licensed.
+    "없을듯": "없>을",  # Exact written form; 없다 + adnominal -을 before 듯.
+    "칡칡이": "칡>이",  # Exact repeated form; second 칡 + particle 이 only.
     "웃어넘기겟지만": "웃>어",  # NIKL §§13–14; internal 웃- + -어, no spelling normalization of later 겟.
     "싶어서": "싶>어",  # NIKL §§13–14; transparent 싶- + -어서.
     "없으니깐": "없>으",
@@ -89,6 +92,12 @@ _NIKL_R003_FORMAL_LICENSES = {
     "않았지만": "않>았",
     "개많음": "많>음",
     "좋은데": "좋>은",
+    "괜찮아보이는디": "찮>아",  # Exact form; 괜찮- + -아 before auxiliary 보이다.
+    "많을거같이": "많>을",  # Exact form; 많- + adnominal -을.
+    "많이본": "많>이",  # Exact lexicalized adverb 많이; NIKL §12(4).
+    "알잖아아침에": "잖>아",  # Exact token; internal -잖아 ending only.
+    "좋아보인다고": "좋>아",  # Exact form; 좋- + -아 before 보이다.
+    "좋아해주는": "좋>아",  # Exact form; internal 좋- + -아 in 좋아하다.
     "죽었잖아": "잖>아",
     "개좆망했잖아": "잖>아",
 }
@@ -143,6 +152,11 @@ _NIKL_R015_WORD_LICENSES = {
     "뱃머리": "뱃>머", "깻잎": "깻>잎", "나뭇잎": "뭇>잎",
 }
 
+_NIKL_R007_FORMAL_I_LICENSES = {
+    "많을거같이": "같>이",  # NIKL §17; exact form only.
+    "개같이못하고": "같>이",  # NIKL Q&A 327454 confirms 같이 [가치]; exact pair only.
+}
+
 def _source_backed_rule_licenses(items, boundary_mode):
     full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
     licenses = set()
@@ -152,6 +166,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R003_FORMAL_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R003:ending_or_suffix_h_deletion:{full_form}:{pair}")
+    pair = _NIKL_R007_FORMAL_I_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R007:formal_morpheme_i:{full_form}:{pair}")
     pair = _NIKL_R004_COMPLEX_H_SUFFIX_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R004:complex_h_suffix:{full_form}:{pair}")
