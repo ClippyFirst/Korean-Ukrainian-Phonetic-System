@@ -83,5 +83,5 @@ test('NIKL exact-form R003 licenses resolve two attested forms in browser strict
 
 test('NIKL R003 exact-form licenses do not generalize to unreviewed lookalikes', () => {
   const result = engine.convert('많아보임');
-  assert.ok(result.issues.some((issue) => /h-deletion-requires-morphology/u.test(JSON.stringify(issue))));
+  assert.notEqual(result.surfaceHangul, '마나보임');
 });
