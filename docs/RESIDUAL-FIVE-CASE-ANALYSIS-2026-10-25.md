@@ -67,3 +67,16 @@ Two separate blank packets are staged:
 They expose only the Hangul input and fixed review instructions; they do not expose the NIKL Hangul comparator, source URL, engine output, candidate IPA, or each other's annotations. The coordinator record is `research/salmui-ipa-adjudication-coordinator.json`. Both reviewers' fields remain empty because this session has no verified identities/qualifications or submitted independent annotations. Filling them with generated guesses would falsely claim human adjudication.
 
 The target-layer gate remains separate and blocked until two qualified reviewers submit IPA annotations, disagreements are reconciled, and the IPA is frozen. Only then should a separate Ukrainian adaptation review record candidate targets, reader/reviewer evidence, and an accepted target if justified.
+
+
+### Verification record
+
+Exact-head checks on commit `1e2288293c63e88dbb8150270e7910e625b3c48c` completed successfully:
+
+- Tests workflow run [40227008756](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008756): Node suite **1,256 passed, 0 failed**; Python 3.11, 3.12, and 3.13 suites passed; wheel build and clean wheel IPA-data check passed.
+- Browser G2P integration run [40227008757](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008757): `npm test` and `npm run build` passed.
+- System verification run [40227008762](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008762): browser tests/build/page verification and Python regression/data-integrity tests passed.
+- Master table/corpus run [40227008739](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008739): master-table generation and strict Korean-corpus generation passed.
+- The live NIKL source inventory job was skipped by workflow configuration; this is not evidence of a new live source crawl.
+
+An earlier CI attempt exposed two issues: an inherited-object-key lookup crash and outdated source-register row/license-count assertions. The lookup now uses an own-property check; the source-register test expectations reflect the two new sources as manual rights review. The subsequent runs above passed. These checks verify code/data contracts, not independent linguistic adjudication.
