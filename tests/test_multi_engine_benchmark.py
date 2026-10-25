@@ -9,6 +9,7 @@ sys.path.insert(0, str(SCRIPTS))
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _classify_native_discrepancy,
+    _g2pk_surface_to_ipa,
     _load_rows_and_words,
     _metrics,
     _normalize_broad_fricative_aspiration,
@@ -120,5 +121,31 @@ def test_discrepancy_classifier_only_assigns_evidence_supported_categories():
     unresolved = _classify_native_discrepancy("kʰa", "ka", False, False)
     assert unresolved["category"] == "UNCLASSIFIED"
     assert "does not distinguish" in unresolved["rationale"]
+
+
+
+def test_g2pk_adapter_uses_shared_segment_renderer_without_silent_fallback():
+    from korean_ukrainian.phonology import parse_syllables, realize_syllables
+
+    expected = realize_syllables(parse_syllables("한국"), level="broad")["ipa"]
+    assert _g2pk_surface_to_ipa(lambda _: "한국", "입력") == expected
+
+
+def test_g2pk_adapter_rejects_non_hangul_surface():
+    try:
+        _g2pk_surface_to_ipa(lambda _: "한국!", "한국")
+    except ValueError as exc:
+        assert "not a single Hangul surface form" in str(exc)
+    else:
+        raise AssertionError("g2pK adapter must reject unsupported surface strings")
+
+
+def test_g2pk_adapter_rejects_non_string_surface():
+    try:
+        _g2pk_surface_to_ipa(lambda _: None, "한국")
+    except TypeError as exc:
+        assert "g2pk returned NoneType" in str(exc)
+    else:
+        raise AssertionError("g2pK adapter must reject non-string outputs")
 
 
