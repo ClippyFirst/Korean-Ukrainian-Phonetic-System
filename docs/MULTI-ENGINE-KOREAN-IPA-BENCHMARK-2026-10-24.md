@@ -36,7 +36,7 @@ Native withheld two occurrences, both with explicit rule/context reasons; no run
 
 ### Latest successful g2pK-inclusive benchmark rerun (2026-10-25)
 
-**Scores verified on executable head `8cf5750c35fce99d5cae9a16acfd7b778abe0063`:** [GitHub Actions run 40237240032](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40237240032), [artifact 12615567419](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40237240032/artifacts/12615567419). Both UGTPHON and SIGMORPHON runs succeeded with g2pK 0.9.4 included. These are the latest successful scores; the subsequent discrepancy-classifier/import refinements are awaiting a fresh exact-head CI run. Their score definitions were not changed.
+**Latest completed run:** [GitHub Actions run 40238222133](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40238222133), artifact [12616575071](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40238222133/artifacts/12616575071), executable head `ff14ec72e3167d9268f1348f399abb155098caee`. The benchmark job completed successfully with g2pK 0.9.4 included; strict primary metrics and denominators are unchanged. Newer v3-readiness changes are documentation/audit additions and require their own exact-head CI verification.
 
 UGTPHON (2,703 eligible occurrences; 1,907 unique words):
 
@@ -264,3 +264,19 @@ This is intentionally not a claim that all discrepancies have been classified. T
 The harness now emits `clippyfirst_gold_discrepancy_audit`, a complete ledger for every eligible occurrence where ClippyFirst abstains/errors or its existing normalized prediction is not exact against the available gold variants. Each row preserves occurrence/row IDs, original Hangul, original gold IPA, raw ClippyFirst IPA when available, the existing profile's normalized strings and distance, the sibilant-aspiration sensitivity strings/distance, category, rationale, and confidence. Category counts use this ledger's explicit occurrence count; they are not counts of adjudicated phonological errors. Abstentions are reported as coverage outcomes, not accuracy failures. Exact-score semantics and the existing capped multi-engine sample remain unchanged.
 
 The category policy is deliberately conservative: `UNICODE_OR_FORMAT` is used only for proven NFC-equivalent raw strings; explicit abstentions are `ABSTENTION`; all other unadjudicated mismatches remain `UNCLASSIFIED`. A separate `profile_sensitivity_detected` flag records when the s/ɕ aspiration-sensitivity profile changes exactness, but this is not labelled `IPA_CONVENTION` because the gold transcription policy has not been independently established. The ledger exposes `profile_sensitivity_occurrence_count` separately from category counts. The report does not automatically claim `PHONOLOGY_ENGINE`, `SEGMENTATION`, or `GOLD_UNCERTAIN` without additional adjudication evidence. Exact-head CI and inspection of the fresh artifact remain pending. Owner instruction dated 2026-10-25 authorizes g2pK 0.9.4 in new comparisons. The workflow now installs the pinned version and runs it on both corpora; interpretation must account for its adapter: g2pK produces a surface Hangul form which is passed through the shared ClippyFirst segment renderer, so this is not an independent end-to-end IPA renderer comparison.
+
+
+## Latest completed g2pK-inclusive result — 2026-10-25
+
+The run above emitted the following primary-profile values (do not substitute the aspiration-sensitivity profile):
+
+| Dataset | Engine | Scored / eligible | Exact | Exact rate | CER | Coverage |
+|---|---|---:|---:|---:|---:|---:|
+| UGTPHON | ClippyFirst native | 2,698 / 2,703 | 1,430 | 53.0022% | 9.1697% | 99.8150% |
+| UGTPHON | g2pK 0.9.4 + shared ClippyFirst segment renderer | 2,703 / 2,703 | 1,435 | 53.0892% | 9.2285% | 100% |
+| SIGMORPHON 2021 | ClippyFirst native | 997 / 999 | 357 | 35.8074% | 14.7037% | 99.7998% |
+| SIGMORPHON 2021 | g2pK 0.9.4 + shared ClippyFirst segment renderer | 999 / 999 | 353 | 35.3353% | 14.8222% | 100% |
+
+On UGTPHON, the g2pK exact rate is only 0.0870 percentage points above native using each engine's own coverage; on SIGMORPHON, native is 0.4721 percentage points above g2pK under the same caveat. These are not broad claims of engine superiority. The shared renderer means g2pK is not an independent end-to-end IPA renderer. Current occurrence-level discrepancy audit remains conservative: 1,268 UGTPHON and 640 SIGMORPHON non-abstention mismatches are UNCLASSIFIED until adjudicated.
+
+The v3 training-readiness audit is tracked separately in docs/CLIPPYFIRST-V3-TRAINING-AND-BENCHMARK-PROTOCOL.md. It does not change benchmark scoring or create an 80–90% headline. A curated source-backed rule challenge may be reported as its own track once independently gold-labelled, but it must not be represented as general Korean accuracy.
