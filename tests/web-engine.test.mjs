@@ -83,6 +83,36 @@ test('NIKL exact-form R003 licenses resolve two attested forms in browser strict
 });
 
 test('NIKL R003 exact-form licenses do not generalize to unreviewed lookalikes', () => {
-  const result = engine.convert('많아보임');
-  assert.notEqual(result.surfaceHangul, '마나보임');
+  for (const input of ['많아보임', '많이본', '좋아보인다고']) {
+    const result = engine.convert(input);
+    assert.notEqual(result.surfaceHangul, input === '많아보임' ? '마나보임' : input);
+    assert.equal(result.status, 'unresolved', input);
+  }
+});
+
+test('exact-form R002 licenses resolve Korean surface contexts in browser strict mode', () => {
+  const cases = [
+    ['없음', '업씀'],
+    ['있었', '이썯'],
+  ];
+  for (const [input, expectedSurface] of cases) {
+    const result = engine.convert(input);
+    assert.equal(result.surfaceHangul, expectedSurface, input);
+    assert.notEqual(result.status, 'unresolved', input);
+    assert.doesNotMatch(result.ipa, /⟦/u, input);
+  }
+});
+
+test('transparent single-word R002/R003 licenses do not leave morphology placeholders', () => {
+  const cases = [
+    '같아서', '되었어', '찢었으면', '했었음', '붙어야',
+    '벗어날', '찾아', '없으니깐', '없으니까', '멋있어',
+    '쌓아서', '쳐넣어야', '잃었노', '않았지만', '개많음',
+    '좋은데', '죽었잖아', '개좆망했잖아',
+  ];
+  for (const input of cases) {
+    const result = engine.convert(input);
+    assert.notEqual(result.status, 'unresolved', input);
+    assert.doesNotMatch(result.ipa, /⟦/u, input);
+  }
 });
