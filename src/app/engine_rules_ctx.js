@@ -3,7 +3,7 @@
  */
 import {
   COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
-  NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_12_H_DELETION_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -55,11 +55,18 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
         continue;
       }
       if(['ㅎ','ㄶ','ㅀ'].includes(a.coda)){
-        a.__hDeletionUnlicensed='left';
-        b.__hDeletionUnlicensed='right';
-        rules.push('h-deletion-requires-morphology');
-        nextRules.push('h-deletion-requires-morphology');
-        continue;
+        const exactR003Pair=NIKL_12_H_DELETION_FORMS.get(sourceText);
+        const currentPair=a.char+'>'+b.char;
+        if(exactR003Pair===currentPair){
+          a.coda=a.coda==='ㅎ'?'':a.coda==='ㄶ'?'ㄴ':'ㄹ';
+          rules.push('h-deletion-§12(4)-exact-form');
+        }else{
+          a.__hDeletionUnlicensed='left';
+          b.__hDeletionUnlicensed='right';
+          rules.push('h-deletion-requires-morphology');
+          nextRules.push('h-deletion-requires-morphology');
+          continue;
+        }
       }
       const pair=COMPLEX[a.coda];
       if(pair&&!['ㄶ','ㅀ'].includes(a.coda)){
