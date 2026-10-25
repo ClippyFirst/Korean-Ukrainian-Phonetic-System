@@ -1,64 +1,81 @@
 # Residual five Korean forms: evidence-gated resolution (2026-10-25)
 
-This document records the current evidence, implemented candidate UI, and remaining acceptance gates for five residual forms. The goal is correct behavior, not forced output: source orthography → structure/morphology → source phonology → IPA → Ukrainian adaptation → practical Ukrainian orthography. No unsupported pronunciation or Ukrainian target is promoted to gold.
+This is the continuation/handoff for five residual forms. The target is correct behavior, not forced output: source orthography → structure/morphology → source phonology → IPA → Ukrainian adaptation → practical Ukrainian orthography. No unsupported pronunciation or Ukrainian target is promoted to gold.
 
-## Case ledger
+## Task ledger
 
-| Input | Classification | Current behavior | Still unresolved |
+| Case/task | Status | Verified state | Acceptance gate |
 |---|---|---|---|
-| `칡칡이` | Source-index/PDF-text mismatch; lexical identity unknown | Offer `칭칭이` only as a source-specific, opt-in transcription candidate | Inspect the page image and cited print source/audio; do not infer `칡+칡+이` |
-| `쫒아내면` | Likely orthographic typo | Offer `쫓아내면` as a candidate | User confirmation is required before pronunciation is attributed to the corrected form |
-| `많앗구나유유유` | Orthography plus expressive-tokenization ambiguity | Keep three candidates separate | Original message context is needed to distinguish literal `유유유` from expressive `ㅠㅠㅠ` |
-| `삶의` | Surface-variant IPA adjudication | Keep official Hangul variants as source evidence; two source-/candidate-blind IPA packets are ready | Two qualified independent IPA submissions, reconciliation, then separate Ukrainian-target review |
-| `무서웟어` | Likely orthographic typo | Offer `무서웠어` as a candidate | User confirmation is required before pronunciation is attributed to the corrected form |
+| `칡칡이` source identity | PARTIAL / BLOCKED_SOURCE_VERIFICATION | Search-index title and extracted PDF text disagree; `칭칭이` is a source-specific candidate only | Visually inspect the page or inspect *양산의 민요* (1992), p. 180 / rights-cleared recording |
+| `쫒아내면` spelling | DONE_VERIFIED for opt-in UI; linguistic attribution remains conditional | Suggests `쫓아내면`; original text remains unchanged until explicit selection | Keep candidate-only behavior; user confirmation is needed to treat corrected text as intended input |
+| `무서웟어` spelling | DONE_VERIFIED for opt-in UI; linguistic attribution remains conditional | Suggests `무서웠어`; original text remains unchanged until explicit selection | Keep candidate-only behavior; user confirmation is needed to treat corrected text as intended input |
+| `많앗구나유유유` segmentation/intent | PARTIAL / BLOCKED_CONTEXT | Three non-destructive candidates are available | Obtain original message context or user confirmation; never auto-map `유유유` to `ㅠㅠㅠ` |
+| `삶의` broad IPA | PARTIAL / BLOCKED_SPECIALIST_REVIEW | Two source-/candidate-blind packets are generated and hash-bound; both submissions are blank | Two qualified, independent annotations with method references, syllable boundaries, vowel-length assessment and uncertainty |
+| `삶의` Ukrainian adaptation | TODO / DEPENDENCY_BLOCKED | Separate review is explicitly gated after IPA reconciliation | Freeze/reconcile IPA first, then obtain a separate target-language review |
+| Runtime, tests and artifacts | DONE_VERIFIED at commit `3031e7fcc7aee16fedc6f6537ad8a44aa17da972` | Exact-head workflows passed; details below | Re-run after any further code change |
 
 ## Findings and evidence
 
-### `칡칡이`: do not mistake an index snippet for the source text
+### `칡칡이`: source-index and PDF text-layer mismatch
 
-The search-result snippet for the local-culture PDF labels `철마면 민요 26` as `칡칡이`. The opened PDF text layer at the corresponding passage instead reads `칭칭이`, with the refrain `치기타 칭칭나네`, singer/date/location metadata, and a citation to 이소라, *양산의 민요* (1992), p. 180. The same volume separately lists `[장안읍 민요 13] 칭칭이` with a `쾌지나 칭칭나네` refrain, strengthening the source-specific correction candidate. [Source PDF](https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf).
+The search-result snippet for the local-culture PDF labels `철마면 민요 26` as `칡칡이`. The extracted text layer at the corresponding passage instead reads `칭칭이`, with the refrain `치기타 칭칭나네`, singer/date/location metadata, and a citation to 이소라, *양산의 민요* (1992), p. 180. The same volume contains other `칭칭이` folk-song passages; another indexed passage cites *양산의 민요*, pp. 184–185, and includes the refrain `치아 칭칭나네`. This supports the interpretation of `칭칭이` as a folk-song/refrain label in this source family, but does **not** visually verify the exact heading at p. 180. [Source PDF](https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf).
 
-This discrepancy makes `칭칭이` a plausible source-specific transcription correction, not a proven replacement for every occurrence of `칡칡이`. A page screenshot could not be fetched in this session, so the exact glyphs still need visual verification. The source does not provide a lexical gloss or morpheme analysis for `칡칡이`; do not infer a `칡+칡+이` parse. The UI now offers `칭칭이` as a labelled candidate only, with the source link, and never applies it automatically.
+The page screenshot could not be fetched in this session. Therefore `칭칭이` remains a plausible, source-specific transcription correction candidate—not a verified universal replacement for `칡칡이`. Neither lexical meaning nor morphology of the input `칡칡이` is established. Do not infer `칡+칡+이`, do not attach a pronunciation to the uncorrected input based on the candidate, and do not add a production rule. The UI exposes the candidate with an explanation and source link but never applies it automatically.
 
-### `쫒아내면` and `무서웟어`: correction is not pronunciation
+### `쫒아내면` and `무서웟어`: spelling correction is not pronunciation evidence
 
-The Korean Basic Dictionary supports standard `쫓아내다` and the corrected form `무서웠어`. The UI offers `쫓아내면` and `무서웠어` separately, with evidence links. The source input remains unchanged unless the user explicitly selects a candidate. The engine must not claim the corrected spelling's pronunciation as a transcription of the original typo.
+The Korean Basic Dictionary supports standard `쫓아내다` and the corrected spelling `무서웠어`. The UI offers `쫓아내면` and `무서웠어` separately. Original input remains intact unless the user selects a candidate. The corrected form may then enter the ordinary ClippyFirst pipeline; it must not be reported as a pronunciation of the uncorrected typo.
 
-### `많앗구나유유유`: two independent uncertainties
+### `많앗구나유유유`: spelling and tokenization remain independent uncertainties
 
-The candidates remain:
+The UI preserves three candidates:
 
 1. `많았구나유유유` — spelling candidate only;
 2. `많았구나 ㅠㅠㅠ` — assumes the final sequence is expressive crying notation;
 3. `많앗구나 유유유` — spacing/token-boundary hypothesis.
 
-A published interview demonstrates that `ㅠㅠㅠ` can be used for tears and that `유유유` can occur as a phrase/title, but this contextual example does not resolve the user's isolated input. No candidate is gold; original context or user confirmation is needed.
+A published interview shows that `ㅠㅠㅠ` can mark tears and that `유유유` can occur as a phrase/title. That example establishes contextual possibilities, not the intent of this isolated input. No candidate is gold. Obtain original message context or user confirmation before selecting one.
 
-### `삶의`: keep IPA and Ukrainian adaptation separate
+### `삶의`: Korean surface evidence, IPA, and Ukrainian adaptation are distinct
 
-NIKL MCFAQ 5716 reports Korean surface variants `[살믜]` and `[살메]`. Those are Hangul pronunciation representations, **not IPA**. The project queue is `research/salmui-ipa-review-queue.json`; coordinator-only source evidence is in `research/salmui-ipa-adjudication-coordinator.json`. The reviewer packets are:
+NIKL MCFAQ 5716 states that the genitive particle `의` has standard surface variants `[살믜]` and `[살메]` in `삶의`. These bracketed Hangul forms are **not IPA**. Official source: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225.
+
+The coordinator queue is `research/salmui-ipa-review-queue.json`; coordinator-only source evidence is in `research/salmui-ipa-adjudication-coordinator.json`. Blind packets:
 
 - `research/ipa-review-packets/salmui-reviewer-A.json`
 - `research/ipa-review-packets/salmui-reviewer-B.json`
 
-They use the canonical source-/candidate-blind packet schema and are bound to the exact queue bytes by SHA-256 `c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3`. Each packet contains only opaque ID `BLIND-001`, the input `삶의`, fixed instructions, and blank review fields. Neither official surface variants nor source URLs are exposed to reviewers before their first-pass annotations.
+Both use the canonical source-/candidate-blind packet schema and bind to queue SHA-256 `c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3`. Each packet contains only opaque ID `BLIND-001`, input `삶의`, fixed instructions and blank review fields. Neither official surface variants nor source URLs are exposed before first-pass annotations.
 
-The packets remain blank because no verified qualified reviewer identities or independent submissions are available in this session. Do not invent reviewer output. After both submissions arrive, reconcile IPA disagreements; only after IPA is frozen should Ukrainian adaptation be reviewed independently.
+Both submissions remain blank because no verified qualified independent submissions are available in this session. Do not invent reviewer identities or output. After two submissions arrive, compare them and reconcile only after both independent first passes are frozen. The Ukrainian target must then be reviewed separately; neither a Korean surface citation nor an accepted IPA automatically validates the Ukrainian spelling.
 
-## Runtime and regression behavior
+## Runtime contract and regression behavior
 
-- The spelling panel appears only for exact, known noisy inputs; it does not silently normalize text.
-- Each candidate has a distinct label/reason and evidence links where available.
-- `칡칡이` offers only the source-specific `칭칭이` candidate; it does not claim the source has established a dictionary meaning or morphology.
+- The spelling panel is shown only for exact, known noisy inputs; there is no silent normalization.
+- Each suggestion has a distinct label/reason and evidence link where available.
+- `칡칡이` offers only a source-specific `칭칭이` candidate and does not claim lexical meaning or morphology.
 - No new production pronunciation rule or accepted Ukrainian target is added for these cases.
-- Regression tests cover candidate-only behavior, prototype-key safety, evidence scope, packet hash/blinding, and the separate Ukrainian-target gate.
+- Regression tests cover candidate-only behavior, prototype-key safety, source-evidence scope, blind-packet hash binding, and the separate Ukrainian-target review gate.
 
-## Acceptance gates
+## Exact-head verification record
 
-1. **`칡칡이`:** visually inspect the exact PDF page and obtain *양산의 민요* (1992), p. 180 or rights-cleared field audio/notes. Confirm whether the intended title is `칭칭이` or another form before any morphology claim.
-2. **Orthographic candidates:** preserve the original by default; only the user-selected corrected spelling enters the normal pronunciation pipeline.
-3. **`많앗구나유유유`:** obtain message context or user confirmation; do not map `유유유` to `ㅠㅠㅠ` automatically.
-4. **`삶의` IPA:** obtain two qualified, independent blind annotations with method reference, broad IPA, syllable boundaries, vowel-length assessment, and uncertainty notes; reconcile only after both are submitted.
-5. **Ukrainian target:** review separately after IPA is frozen; Korean surface evidence and accepted IPA are not Ukrainian-target gold.
+At commit `3031e7fcc7aee16fedc6f6537ad8a44aa17da972`:
 
-The current PR is [#336](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/336). CI can verify code, data, build, and packet contracts; it cannot certify lexical interpretation or human IPA adjudication. The live NIKL inventory workflow remains skipped by configuration, not passed.
+- [Browser G2P integration run 40228232008](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232008): success; Node suite reported 1,258 passed, 0 failed; browser integration and build passed.
+- [System verification run 40228232002](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232002): success; browser tests/build/page verification and Python regression/data-integrity passed.
+- [Master table/corpus run 40228232001](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232001): success; master-table and strict-corpus generation passed.
+- [Multi-version tests and wheel run 40228232017](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232017): success; Python 3.11, 3.12, 3.13 tests, web tests/build, wheel build and clean wheel installation all passed.
+- The live NIKL inventory job is skipped by workflow configuration, not passed; previous direct runner access returned HTTP 403.
+
+These are implementation/data/build checks, not linguistic adjudication.
+
+## Acceptance gates and next actions
+
+1. **`칡칡이`:** visually inspect the exact page and compare it with *양산의 민요* (1992), p. 180, or a rights-cleared recording/field note. Confirm the source form before making a lexical or morphology claim.
+2. **Spelling candidates:** retain original text by default; only a user-selected correction enters the normal pronunciation pipeline.
+3. **`많앗구나유유유`:** obtain context or explicit user confirmation; do not auto-map `유유유` to `ㅠㅠㅠ`.
+4. **`삶의` IPA:** obtain two qualified, independent blind annotations; validate submissions, reconcile differences, and record uncertainty and the chosen broad-IPA convention.
+5. **Ukrainian target:** after IPA is frozen, perform a separate target-language review; do not use the Korean surface notation as target gold.
+6. **Release:** re-run exact-head CI after any code change. Until the source image/print evidence and independent specialist reviews are supplied, the project remains a tested research prototype / partial prototype, not scientifically release-ready.
+
+Current PR: [#336](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/336). The next genuine blockers are external source verification, original user context, and independent qualified reviewers—not missing implementation of the candidate UI or blind-packet workflow.
