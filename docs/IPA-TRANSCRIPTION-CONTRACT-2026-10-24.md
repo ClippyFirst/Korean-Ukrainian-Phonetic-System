@@ -112,3 +112,12 @@ The IPA-to-Ukrainian inventory accepts both untied and tied broad-IPA affricate 
 The IPA-to-Ukrainian adapter must not silently imply that a successful grapheme mapping preserves all source-IPA features. In addition to the existing vowel-length record, runtime trace now reports aspiration (ʰ), fortisness (͈), and unreleased-stop (̚) markers when they occur inside a mapped IPA token. These are marked not-encoded-in-ukrainian-target: the IPA token is preserved unchanged, while the target orthography does not independently mark that feature.
 
 This is a transparent loss ledger, not a new Korean pronunciation rule and not an assertion that these contrasts must be represented by a particular Ukrainian spelling. Any future policy that adds diacritics or alternate notation must be separately versioned and reviewed for readability and contrast preservation.
+
+## Continuation — current source-backed IPA features and abstentions (2026-10-25)
+
+The browser adapter now preserves the official dictionary length mark for the exact form `수많은[수ː마는]` in the IPA string and recomputes the per-syllable target trace so `vowel-length` is explicitly marked `preserved-in-ipa-not-rendered-in-ukrainian-target`. This is a trace/accounting improvement; it does not imply that Ukrainian practical orthography has a dedicated length marker.
+
+The current native strict audit still has 48 unresolved UGTPHON occurrences (47 unique forms). Optional soft mode and analyzer consensus improve coverage but do not establish better pronunciation accuracy. Keep the strict default, retain analyzer-derived IPA as diagnostic-only, and require two independent IPA annotations plus adjudication before any holdout score is reported.
+
+The proposed broad-v1 normalization profile is separate from emitted IPA. In particular, its `sʰ → s` scoring equivalence is not a runtime pronunciation rule and remains pending independent phonetic review.
+
