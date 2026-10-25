@@ -1147,3 +1147,13 @@ The source-register/lexical-provenance/test repairs are now verified on code hea
 
 The final documentation successor will record these exact-head results; because that successor is a new commit, do not call its checks passed until its own workflow runs complete.
 
+## Continuation — recovered original 24-form holdout and NIKL live-crawl attempt (2026-10-25)
+
+- **Holdout manifest recovered:** the Git object endpoint returned immutable blob `f30c5fa8a59753df3d7c06bbbe7d4e43d0b8fb26`, titled “ClippyFirst Korean Broad-IPA Independent Holdout — frozen input manifest”, dated 2026-10-24. Its exact bytes are now tracked at `data/korean/benchmarks/ipa-holdout-24-manifest.json`; the tracked file's Git blob SHA matches the recovered object.
+- **Membership/order verified:** 24/24 forms and original IDs `KUA-HO-001`–`KUA-HO-024) match the existing CSV exactly in order; no additions, omissions, substitutions, or reordering. CSV rows now retain local `TR24-xx` IDs plus `original_case_id`, and source status `original_manifest_blob_recovered`.
+- **Independent integrity tooling:** `scripts/audit_holdout_manifest_recovery.py` recomputes Git blob SHA-1, calculates SHA-256, compares exact ordered forms/IDs, and asserts IPA/Ukrainian gold remain absent. `.github/workflows/holdout-manifest-recovery.yml` uploads a deterministic report. Record the computed SHA-256 only after inspecting the exact-head artifact.
+- **Remaining provenance limit:** the blob's historical commit/tree/PR/run reference remains unfound. Exact manifest content and membership are recovered, but the historical origin link is only `PARTIAL`.
+- **Gold-label blockers remain:** the original manifest contains official Hangul surface readings, not independently adjudicated broad IPA. Two independent IPA reviewers plus adjudication, and separate Ukrainian practical-transcription gold, are still required before any accuracy score.
+- **Live NIKL inventory:** branch `research/nikl-holdout-provenance-2026-10-25` intentionally matches the existing `verify.yml` gate `startsWith(github.head_ref, 'research/nikl-')`, so CI should attempt the official metadata-only crawl. Inspect the workflow and artifact to distinguish a genuine successful inventory from the existing skip/access block. No bypass is permitted.
+- **Task ledger:** original membership/order `DONE_VERIFIED_MANIFEST_BLOB`; immutable content SHA-1 `DONE_VERIFIED`; SHA-256 exact-head report `TODO_CI_ARTIFACT`; historical ref `PARTIAL`; independent IPA gold `BLOCKED_SPECIALIST_ADJUDICATION`; Ukrainian target gold `BLOCKED_INDEPENDENT_TARGET_GOLD`; live NIKL inventory `TODO_CI_CRAWL`; item-level licensing for 101/105 registry records `PARTIAL`.
+
