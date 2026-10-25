@@ -40,29 +40,31 @@ Native withheld two occurrences, both with explicit rule/context reasons; no run
 
 UGTPHON (2,703 eligible occurrences; 1,907 unique words):
 
-| Engine | Scored / eligible | Coverage | Exact | Exact rate | CER |
-|---|---:|---:|---:|---:|---:|
-| ClippyFirst native | 2,698 / 2,703 | 99.8150% | 1,430 | 53.0022% | 9.1697% |
-| g2pK 0.9.4 + shared ClippyFirst segment renderer | 2,703 / 2,703 | 100% | 1,435 | 53.0892% | 9.2285% |
-| phonemize 2.0.1 | 2,703 / 2,703 | 100% | 1,150 | 42.5453% | 14.3531% |
-| KoG2P (pinned 2019) | 2,703 / 2,703 | 100% | 738 | 27.3030% | 19.5122% |
-| hangul_to_ipa (pinned 2026) | 2,703 / 2,703 | 100% | 439 | 16.2412% | 24.8054% |
-| eSpeak NG Korean | 2,703 / 2,703 | 100% | 220 | 8.1391% | 33.6101% |
+| Engine | Scored / eligible | Coverage | Primary exact | Primary CER | Sensitivity exact | Sensitivity CER |
+|---|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 2,698 / 2,703 | 99.8150% | 53.0022% | 9.1697% | 62.6761% | 6.6132% |
+| g2pK 0.9.4 + shared ClippyFirst segment renderer | 2,703 / 2,703 | 100% | 53.0892% | 9.2285% | 62.7081% | 6.6691% |
+| phonemize 2.0.1 | 2,703 / 2,703 | 100% | 42.5453% | 14.3531% | 51.0914% | 11.9684% |
+| KoG2P (pinned 2019) | 2,703 / 2,703 | 100% | 27.3030% | 19.5122% | 31.6315% | 17.3845% |
+| hangul_to_ipa (pinned 2026) | 2,703 / 2,703 | 100% | 16.2412% | 24.8054% | 19.5708% | 22.8275% |
+| eSpeak NG Korean | 2,703 / 2,703 | 100% | 8.1391% | 33.6101% | 10.8398% | 32.0025% |
 
 On the 2,698 occurrences scored by both native ClippyFirst and g2pK, g2pK's exact-rate delta is **+0.1112 percentage points** and its CER delta is **+0.0607 percentage points** (higher CER is worse). Pairwise categories over all 2,703 occurrences: both exact 1,429; both non-exact 1,264; g2pK-only exact 4; native-only exact 1; native abstained / g2pK exact 2; native abstained / g2pK non-exact 3.
 
 SIGMORPHON 2021 Korean (999 eligible occurrences; 999 unique forms):
 
-| Engine | Scored / eligible | Coverage | Exact | Exact rate | CER |
-|---|---:|---:|---:|---:|---:|
-| ClippyFirst native | 997 / 999 | 99.7998% | 357 | 35.8074% | 14.7037% |
-| g2pK 0.9.4 + shared ClippyFirst segment renderer | 999 / 999 | 100% | 353 | 35.3353% | 14.8222% |
-| phonemize 2.0.1 | 999 / 999 | 100% | 289 | 28.9289% | 17.4387% |
-| KoG2P (pinned 2019) | 999 / 999 | 100% | 187 | 18.7187% | 21.8327% |
-| hangul_to_ipa (pinned 2026) | 999 / 999 | 100% | 89 | 8.9089% | 29.8448% |
-| eSpeak NG Korean | 999 / 999 | 100% | 43 | 4.3043% | 40.7236% |
+| Engine | Scored / eligible | Coverage | Primary exact | Primary CER | Sensitivity exact | Sensitivity CER |
+|---|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 997 / 999 | 99.7998% | 35.8074% | 14.7037% | 45.0351% | 12.3504% |
+| g2pK 0.9.4 + shared ClippyFirst segment renderer | 999 / 999 | 100% | 35.3353% | 14.8222% | 44.4444% | 12.4836% |
+| phonemize 2.0.1 | 999 / 999 | 100% | 28.9289% | 17.4387% | 37.1371% | 15.2111% |
+| KoG2P (pinned 2019) | 999 / 999 | 100% | 18.7187% | 21.8327% | 24.7247% | 19.8400% |
+| hangul_to_ipa (pinned 2026) | 999 / 999 | 100% | 8.9089% | 29.8448% | 10.7107% | 28.2061% |
+| eSpeak NG Korean | 999 / 999 | 100% | 4.3043% | 40.7236% | 5.3053% | 39.5620% |
 
 On the 997 shared scored occurrences, g2pK's exact-rate delta is **−0.4012 percentage points** and its CER delta is **+0.1130 percentage points**. Pairwise categories over all 999 occurrences: both exact 353; both non-exact 640; native-only exact 4; native abstained / g2pK non-exact 2.
+
+The “Primary” columns use the benchmark's existing normalization and score contract. “Sensitivity” uses that same normalization plus removal of `ʰ` after `s` and `ɕ` on both prediction and reference. It is a deliberately narrow sensitivity profile, not a validated broad-IPA gold convention; the change in scores quantifies sensitivity to that one annotation feature and must not be read as a corrected pronunciation score. Coverage and eligible/scored denominators are unchanged, while CER reference lengths are recomputed after normalization.
 
 **Interpretation:** neither corpus establishes a universal winner. On UGTPHON the g2pK adapter has slightly higher exact match but slightly worse CER; on SIGMORPHON native ClippyFirst has slightly higher exact match and lower CER while abstaining on two cases. g2pK's adapter uses its G2P surface followed by ClippyFirst's shared segment renderer, so it is not an independent IPA-realization baseline. All scores remain diagnostic against source annotations, not independently adjudicated phonetic truth and not Ukrainian-output accuracy. The fresh discrepancy labels will use the stricter policy that profile sensitivity alone does not prove an `IPA_CONVENTION`.
 
