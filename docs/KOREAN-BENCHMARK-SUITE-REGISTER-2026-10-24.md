@@ -1,3 +1,11 @@
+## Latest g2pK-inclusive run and v3 training readiness — 2026-10-26
+
+- **DONE_VERIFIED for benchmark execution at prior exact head:** [run 40238222133](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40238222133), artifact [12616575071](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40238222133/artifacts/12616575071), executable head ff14ec72e3167d9268f1348f399abb155098caee. UGTPHON: ClippyFirst 1,430/2,698 exact (53.0022%), CER 9.1697%, coverage 99.8150%; g2pK 1,435/2,703 (53.0892%), CER 9.2285%, coverage 100%. SIGMORPHON: ClippyFirst 357/997 exact (35.8074%), CER 14.7037%, coverage 99.7998%; g2pK 353/999 (35.3353%), CER 14.8222%, coverage 100%.
+- g2pK returns surface Hangul which is passed through the shared ClippyFirst segment renderer; do not call this an independent end-to-end IPA engine. Strict primary metrics remain unchanged; the s/ɕ aspiration profile is sensitivity-only.
+- **PARTIAL:** v3 training-readiness audit added in scripts/audit_v3_training_readiness.py, with synthetic and real-repository tests in tests/test_v3_training_readiness.py. Exact-head CI is pending for the latest changes. The audit is intentionally not a trainer and refuses to treat candidate IPA as independent gold by default.
+- **BLOCKED:** supervised IPA training needs independently adjudicated IPA labels, a frozen leakage-proof split, and a separate Ukrainian-target gold set. The 24-form holdout and external test splits remain evaluation-only.
+- Do not claim 80–90% general Korean accuracy from a curated subset. If a separately labelled source-backed rule challenge reaches that range, report it as a distinct track with denominator, coverage, label authority, and uncertainty.
+
 # Korean engine benchmark suite register — 2026-10-24
 
 ## Purpose and rules
