@@ -55,7 +55,12 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
         continue;
       }
       if(['ㅎ','ㄶ','ㅀ'].includes(a.coda)){
-        const exactR003Pair=NIKL_12_H_DELETION_FORMS.get(sourceText);
+        let wordStart=i;
+        while(wordStart>0&&units[wordStart-1].type==='hangul')wordStart--;
+        let wordEnd=i;
+        while(wordEnd<units.length&&units[wordEnd].type==='hangul')wordEnd++;
+        const currentWord=units.slice(wordStart,wordEnd).map(unit=>unit.char).join('');
+        const exactR003Pair=NIKL_12_H_DELETION_FORMS.get(currentWord);
         const currentPair=a.char+'>'+b.char;
         if(exactR003Pair===currentPair){
           a.coda=a.coda==='ㅎ'?'':a.coda==='ㄶ'?'ㄴ':'ㄹ';
