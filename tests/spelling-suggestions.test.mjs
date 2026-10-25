@@ -30,7 +30,8 @@ test('keeps spelling and expressive-tail interpretations of 많앗구나유유�
 });
 
 test('does not normalize unrecognized or contextually different input', () => {
-  assert.deepEqual(getSpellingSuggestions('칡칡이'), []);
+  assert.equal(getSpellingSuggestions('칡칡이')[0].text, '칭칭이');
+  assert.equal(getSpellingSuggestions('칡칡이')[0].autoApplied, false);
   assert.deepEqual(getSpellingSuggestions('삶의'), []);
   assert.deepEqual(getSpellingSuggestions('무서웟어!'), []);
   assert.deepEqual(getSpellingSuggestions(''), []);
