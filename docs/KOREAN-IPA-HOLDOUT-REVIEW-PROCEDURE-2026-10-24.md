@@ -31,3 +31,15 @@ Validation checks schema, source-field integrity, queue hash, reviewer identity/
 - Both submissions pass structural validation against the exact same queue hash.
 - Differences are adjudicated by a third qualified reviewer or a documented reconciliation process.
 - Only then may an explicitly reviewed commit populate `ipaGold`; Ukrainian-target review remains a separate acceptance gate.
+
+## Additional source-adjudication queue (2026-10-25)
+
+The 14-case R002/R003 queue is a separate diagnostic triage set, not the frozen 24-form broad-IPA holdout. Three cases have exact-form NIKL surface sources but no IPA gold. Generate blinded packets from only those eligible cases:
+
+```bash
+node scripts/build-ipa-review-packet.mjs --reviewer A --queue research/r002-r003-source-adjudication-2026-10-24.json > /tmp/r002-r003-ipa-review-A.json
+node scripts/build-ipa-review-packet.mjs --reviewer B --queue research/r002-r003-source-adjudication-2026-10-24.json > /tmp/r002-r003-ipa-review-B.json
+```
+
+The generator selects only `SOURCE_FOUND_PENDING_IPA`, hashes the original queue bytes, and excludes engine IPA, corpus diagnostics, Ukrainian target output, and other reviewer fields. The remaining eleven cases are not packetized until exact-form source evidence is recorded. Reviewer A and B submissions must remain separate until both are complete; then disagreements require documented adjudication.
+
