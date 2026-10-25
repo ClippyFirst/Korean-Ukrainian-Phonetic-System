@@ -53,7 +53,20 @@ def collect_local_forms(root: Path) -> dict[str, set[str]]:
         for path in folder.rglob("*"):
             if not path.is_file() or path.suffix.lower() not in {".csv", ".json", ".txt", ".tsv", ".py", ".mjs", ".js", ".ts"}:
                 continue
-            if path.name in {"ipa_holdout_2026-10-24.json", "nikl-article-review-1-30.json", "nikl-all-articles-master-passage-2026-10-22.txt"}:
+            relative_path = str(path.relative_to(root))
+            # Quarantined holdout inputs are expected to contain the held-out
+            # forms. Exclude only the two exact, explicitly declared holdout
+            # assets—not arbitrary files with similar names—from the leakage
+            # scan. Their contents are source fixtures, not runtime examples.
+            excluded_quarantined_assets = {
+                "data/korean/ipa_holdout_2026-10-24.json",
+                "data/korean/benchmarks/ipa-holdout-24-manifest.json",
+                "data/korean/benchmarks/target-renderer-holdout-24.csv",
+            }
+            if relative_path in excluded_quarantined_assets or path.name in {
+                "nikl-article-review-1-30.json",
+                "nikl-all-articles-master-passage-2026-10-22.txt",
+            }:
                 continue
             try:
                 content = path.read_text(encoding="utf-8")
@@ -231,6 +244,11 @@ def validate(root: Path, manifest_path: Path, benchmark_path: Path | None) -> di
         "local_runtime_or_fixture_overlap_count": len(local_overlaps),
         "local_runtime_or_fixture_overlaps": local_overlaps,
         "excluded_source_only_fixtures": ["tests/fixtures/nikl-article-review-1-30.json", "tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt"],
+        "excluded_quarantined_holdout_assets": [
+            "data/korean/ipa_holdout_2026-10-24.json",
+            "data/korean/benchmarks/ipa-holdout-24-manifest.json",
+            "data/korean/benchmarks/target-renderer-holdout-24.csv",
+        ],
         "external_benchmark_overlap_check": external_check,
         "external_benchmark_path": str(benchmark_path) if benchmark_path is not None else None,
         "external_benchmark_overlap_count": effective_overlap_count,
