@@ -189,3 +189,12 @@ test('provisional IPA target is withheld by default and remains inspectable as a
   assert.equal(traceIpaMappingDetailed('').status, 'unavailable');
 });
 
+
+test('main browser conversion withholds provisional orthography and exposes a separate candidate', async () => {
+  const engine = createEngine();
+  const result = engine.convert('위', { morphologyMode: 'strict' });
+  assert.equal(result.ukrainian, '');
+  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.candidate_ukrainian, 'ві');
+  assert.equal(result.candidate_status, 'provisional');
+});

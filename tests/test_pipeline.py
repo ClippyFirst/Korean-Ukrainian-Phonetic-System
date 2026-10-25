@@ -119,9 +119,15 @@ def test_python_transliteration_uses_ipa_derived_target_and_keeps_lexical_target
             assert value["target_status"] == "unresolved"
             assert value["target_unavailable_reason"] == "unresolved_korean_phonology"
             assert value["lexical_target_comparison"] == "unavailable_without_ipa_target"
+        elif expected_reference_status == "provisional":
+            # Provisional target mappings are candidate-only, not accepted output.
+            assert value["ukrainian_orthography"] is None
+            assert value["target_status"] == "unavailable"
+            assert value["target_unavailable_reason"] == "provisional_mapping_requires_review"
+            assert value["candidate_orthography"] == expected_reference
+            assert value["candidate_status"] == "provisional"
+            assert value["lexical_target_comparison"] == "unavailable_without_ipa_target"
         else:
-            # The research pipeline may display a provisional candidate, but
-            # it must preserve that status and never call it adjudicated gold.
             assert value["ukrainian_orthography"] is not None
             assert value["target_status"] == expected_reference_status
             assert value["lexical_target_comparison"] in {"matches_reference", "differs_from_reference"}

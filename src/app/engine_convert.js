@@ -50,7 +50,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
               if(!mapped.unknown){
                 const mappedSegments=sourceIpa.map(ipa=>traceIpaMappingDetailed(ipa));
                 result.ipa=sourceIpa.join(' ');
-                result.ukrainian=mapped.syllables.join('');
+                result.ukrainian=mapped.status==='unavailable'?'':mapped.syllables.join('');
+                result.candidate_ukrainian=mapped.status==='unavailable'&&mapped.candidates.some(Boolean)?mapped.candidates.join(''):null;
+                result.candidate_status=result.candidate_ukrainian?'provisional':null;
                 result.target_status=mapped.status;
                 let index=0;
                 for(const item of result.trace||[]){
@@ -97,6 +99,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         trace:results.flatMap(r=>r.trace||[]),
         issues,
         target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
+        candidate_ukrainian:results.some(r=>r.candidate_ukrainian)?results.map(r=>r.candidate_ukrainian??r.ukrainian).join(''):null,
+        candidate_status:results.some(r=>r.candidate_ukrainian)?'provisional':null,
         status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical'
       };
     }
@@ -257,17 +261,14 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     ipa[i]=unitIpa;
     const targetMapping=traceIpaMappingDetailed(unitIpa);
     const targetCandidateText=targetMapping.tokens.map(token=>token.ukrainian).join('');
-    // This is the research-preview UI: show a declared candidate when useful,
-    // but preserve provisional status so it is never represented as adjudicated.
-    // Strict consumers can use ipaTargetForSource() without allowProvisional.
     const provisionalTarget=targetMapping.status==='provisional';
     const targetFromIpa={
-      text:targetCandidateText,
+      text:provisionalTarget?'':targetCandidateText,
       candidateText:provisionalTarget?targetCandidateText:null,
-      unknown:targetMapping.unknown,
-      status:targetMapping.status,
+      unknown:provisionalTarget?'provisional_mapping_requires_review':targetMapping.unknown,
+      status:provisionalTarget?'unavailable':targetMapping.status,
       candidateStatus:provisionalTarget?'provisional':null,
-      reason:targetMapping.reason
+      reason:provisionalTarget?'provisional_mapping_requires_review':targetMapping.reason
     };
     if(targetFromIpa.unknown || targetFromIpa.status==='unavailable'){
       issues.push(u.char+': IPA target mapping unavailable ('+(targetFromIpa.reason||'unmapped_ipa_sequence')+'): '+(targetFromIpa.unknown||'(empty IPA)'));
@@ -309,17 +310,18 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // result boundary. Phrase conversion still preserves surrounding resolved
   // words because the phrase path recursively converts each token.
   const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
-  const target_status=unresolvedWholeHangulToken||!hasHangulSyllables
+  const provisionalWholeHangulToken=/^[가-힣]+$/u.test(text)&&trace.some(item=>item?.targetStatus==='provisional');
+  const target_status=unresolvedWholeHangulToken||!hasHangulSyllables||provisionalWholeHangulToken
     ? 'unavailable'
     : trace.some(item=>item?.targetStatus==='unavailable'||item?.status==='unresolved')
       ? 'unavailable'
-      : trace.some(item=>item?.targetStatus==='provisional')
-        ? 'provisional'
-        : 'model-selected';
+      : 'model-selected';
   return{
     source:text,
     surfaceHangul:recomposed===originalHangul?'':recomposed,
-    ukrainian:unresolvedWholeHangulToken?'':output.join(''),
+    ukrainian:unresolvedWholeHangulToken||provisionalWholeHangulToken?'':output.join(''),
+    candidate_ukrainian:provisionalWholeHangulToken?output.join(''):null,
+    candidate_status:provisionalWholeHangulToken?'provisional':null,
     ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,' '),
     analysis:renderStructured(units,analysis,' · '),
     trace,

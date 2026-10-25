@@ -582,6 +582,8 @@ def render_ipa_analysis_to_ukrainian(
 
     surface_tokens = re.findall(r"[가-힣]+|[^가-힣]+", pronunciation_surface)
     output_parts = []
+    candidate_output_parts = []
+    all_candidates_available = True
     targets = []
     inventory_analyses = []
     unavailable_reasons = set()
@@ -606,6 +608,7 @@ def render_ipa_analysis_to_ukrainian(
     for token in surface_tokens:
         if not re.fullmatch(r"[가-힣]+", token):
             output_parts.append(token)
+            candidate_output_parts.append(token)
             continue
 
         if word_index >= len(word_analyses):
@@ -664,10 +667,10 @@ def render_ipa_analysis_to_ukrainian(
             }
         else:
             try:
-                # The research pipeline may display the best declared candidate,
-                # but the renderer keeps its strict default for integrations. The
-                # returned status remains provisional and is surfaced to the caller.
-                local = render_ipa_sequence_to_ukrainian(word_ipa, allow_provisional=True)
+                # Production-facing pipeline uses the strict renderer default.
+                # A provisional spelling remains candidate-only and cannot become
+                # the orthographic result merely because this is a research build.
+                local = render_ipa_sequence_to_ukrainian(word_ipa)
             except (TypeError, ValueError) as exc:
                 local = {
                     "ipa": word_ipa,
@@ -683,11 +686,19 @@ def render_ipa_analysis_to_ukrainian(
             all_mapped = False
             reason = local.get("reason") or "target_mapping_unavailable"
             unavailable_reasons.add(reason)
+            candidate = local.get("candidate_orthography")
+            if candidate is not None:
+                candidate_output_parts.append(candidate)
+            else:
+                candidate_output_parts.append("")
+                all_candidates_available = False
             targets.append({
                 "surface_hangul": token,
                 "ipa": word_ipa,
                 "status": "unavailable",
                 "reason": reason,
+                "candidate_orthography": candidate,
+                "candidate_status": local.get("candidate_status"),
                 "renderer": "korean_ipa_correspondence",
                 "mapping_trace": local.get("segments", []),
                 "unmapped_fragment": local.get("unmapped_fragment"),
@@ -701,6 +712,7 @@ def render_ipa_analysis_to_ukrainian(
             continue
 
         output_parts.append(local["ukrainian_orthography"])
+        candidate_output_parts.append(local["ukrainian_orthography"])
         output_statuses.append(local["status"])
         targets.append({
             "surface_hangul": token,
@@ -743,6 +755,8 @@ def render_ipa_analysis_to_ukrainian(
         "target_inventory_status": inventory_status,
         "unavailable_reasons": sorted(unavailable_reasons),
         "ukrainian_orthography": "".join(output_parts) if all_mapped else None,
+        "candidate_orthography": "".join(candidate_output_parts) if (not all_mapped and all_candidates_available and any(target.get("candidate_orthography") for target in targets)) else None,
+        "candidate_status": "provisional" if any(target.get("candidate_status") == "provisional" for target in targets) else None,
         "target_status": overall_status,
         "score_type": "explicit_correspondence_not_probability",
         "confidence": None,
@@ -774,10 +788,9 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
             "segments":[],"ignored_source_markers":[],
         }
     else:
-        # Public research conversion returns the best declared candidate while
-        # retaining its provisional status; strict integrations call the renderer
-        # directly without this opt-in.
-        target_mapping=render_ipa_sequence_to_ukrainian(source_ipa, allow_provisional=True)
+        # Use the strict default: provisional target mappings are candidates,
+        # never the accepted Ukrainian orthographic result.
+        target_mapping=render_ipa_sequence_to_ukrainian(source_ipa)
 
     orthographic=target_mapping.get("ukrainian_orthography")
     lexical=LEXICAL_PRONUNCIATIONS.get(text)
@@ -837,6 +850,8 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
         "selected_candidate":selected,
         "selected_candidate_is_output_source":False,
         "ukrainian_orthography":orthographic,
+        "candidate_orthography":target_mapping.get("candidate_orthography"),
+        "candidate_status":target_mapping.get("candidate_status"),
         "target_status":target_status,
         "target_unavailable_reason":target_unavailable_reason,
         "target_unavailable_segments":target_unavailable_segments,
