@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "packetType": "independent-blind-broad-IPA-review",
+  "caseId": "BLIND-001",
+  "reviewerSlot": "A",
+  "instructions": [
+    "Transcribe the Korean input independently into broad IPA using a stated reference/convention.",
+    "Do not consult another reviewer's packet or annotations before submitting.",
+    "Record syllable/morpheme boundaries separately; if more than one reading is linguistically licensed, list each candidate and the condition.",
+    "Do not provide a Ukrainian transcription in this packet. Ukrainian target adaptation is reviewed only after IPA is frozen.",
+    "This packet intentionally omits official surface pronunciations, candidate IPA, engine output, and source citations."
+  ],
+  "input": "삶의",
+  "reviewForm": {
+    "reviewerId": null,
+    "qualification": null,
+    "reviewedAt": null,
+    "methodReference": null,
+    "broadIpa": null,
+    "syllableBoundaries": null,
+    "vowelLengthAssessment": "uncertain",
+    "variants": null,
+    "confidence": null,
+    "notes": null
+  }
+}
