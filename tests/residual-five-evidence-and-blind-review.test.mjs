@@ -14,7 +14,7 @@ test('the 칡칡이 search-snippet/PDF-text discrepancy remains a candidate, not
   assert.equal(item.candidateIPA.length, 0);
   assert.ok(item.evidence.some(source => source.url.includes('EB_culture_song02.pdf')));
   assert.match(item.evidence[0].scope, /PDF text layer/i);
-  assert.match(item.why, /does not establish/i);
+  assert.match(item.why, /No lexical meaning/i);
 });
 
 test('삶의 packets are canonical source-and-candidate-blind packets bound to exact queue bytes', async () => {
