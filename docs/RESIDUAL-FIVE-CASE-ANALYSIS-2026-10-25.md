@@ -41,3 +41,29 @@ Spelling candidates remain outside that pronunciation pipeline until the user ex
 5. **Ukrainian target:** review separately on the frozen IPA candidate(s); do not infer target correctness from Korean surface spelling or successful code tests.
 
 The accompanying tests validate these evidence/status boundaries only. They do not certify linguistic accuracy or replace reviewer annotation.
+
+
+## Follow-up evidence and integration (2026-10-25)
+
+### `칡칡이`: exact attestation found, morphology still unresolved
+
+A local-culture PDF lists `칡칡이` as the heading for `철마면 민요 26`, with a singer, recording date/location, and a bibliographic pointer to 이소라, *양산의 민요* (1992), p. 180: [source PDF](https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf). This is an exact attestation of the string as a regional folk-song title. It is **not** a lexical definition and does not identify morpheme boundaries. The cited 1992 source/page or rights-cleared field notes are still needed to determine whether the title is lexicalized, dialectal, onomatopoeic/refrain-like, or opaque. Strict mode remains blocked; no `칡+칡+이` segmentation is inferred.
+
+### `많앗구나유유유`: external usage confirms ambiguity, not intent
+
+A published interview explains `ㅠㅠㅠ` as tears while separately discussing `유유유` as a title/phrase meaning “you you you”: [interview](https://v.daum.net/v/JU0MXB4lYJ). That is evidence that these strings can have distinct readings in different contexts. It cannot tell us which reading was intended in this isolated input, so the three candidate forms remain distinct and no one is promoted to gold.
+
+### Explicit UI spelling assistance
+
+The service now has a separate candidate panel for `쫒아내면`, `무서웟어`, and the three interpretations of `많앗구나유유유`. The original is never normalized on input. A candidate is applied only after the user presses its button, at which point the ordinary conversion pipeline receives the selected spelling. `칡칡이` deliberately has no correction suggestion; `삶의` is not an orthographic correction case.
+
+### `삶의`: source-blind packets are prepared, not adjudicated
+
+Two separate blank packets are staged:
+
+- `research/ipa-review-packets/salmui-reviewer-A.json`
+- `research/ipa-review-packets/salmui-reviewer-B.json`
+
+They expose only the Hangul input and fixed review instructions; they do not expose the NIKL Hangul comparator, source URL, engine output, candidate IPA, or each other's annotations. The coordinator record is `research/salmui-ipa-adjudication-coordinator.json`. Both reviewers' fields remain empty because this session has no verified identities/qualifications or submitted independent annotations. Filling them with generated guesses would falsely claim human adjudication.
+
+The target-layer gate remains separate and blocked until two qualified reviewers submit IPA annotations, disagreements are reconciled, and the IPA is frozen. Only then should a separate Ukrainian adaptation review record candidate targets, reader/reviewer evidence, and an accepted target if justified.
