@@ -193,11 +193,11 @@ test('provisional IPA target is withheld by default and remains inspectable as a
 
 test('main browser research conversion labels provisional output as a candidate', () => {
   const engine = createEngine(jamoCsv, lexicalCsv);
-  const result = engine.convert('위', { morphologyMode: 'strict' });
-  assert.equal(result.ukrainian, 'ві');
+  const result = engine.convert('의', { morphologyMode: 'strict' });
+  assert.equal(result.ukrainian, 'ий');
   assert.equal(result.target_status, 'provisional');
-  assert.equal(result.candidate_ukrainian, 'ві');
+  assert.equal(result.candidate_ukrainian, 'ий');
   assert.equal(result.candidate_status, 'provisional');
-  assert.equal(result.trace[0].candidateOutput, 'ві');
-  assert.equal(result.trace[0].output, 'ві');
+  assert.equal(result.trace[0].candidateOutput, 'ий');
+  assert.equal(result.trace[0].output, 'ий');
 });
