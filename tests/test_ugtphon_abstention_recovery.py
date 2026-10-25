@@ -72,12 +72,40 @@ def test_transparent_r003_abstentions_have_narrow_exact_form_licenses():
 
 
 def test_r007_exact_licensed_forms_resolve_only_the_named_pair():
-    for form in ("많을거같이", "개같이못하고"):
+    for form, palatalized_index in (("많을거같이", 4), ("개같이못하고", 2)):
         result = phoneticize_korean(form)
         assert not _matching_contexts(result, "R007", "같>이"), (form, result.get("unresolved_contexts"))
         assert result.get("pronunciation_status") != "unresolved", (form, result.get("unresolved_contexts"))
+        # NIKL Q&A 327454 directly attests 같이[가치]. Assert the actual
+        # Korean surface structure at 이, not only that the abstention vanished.
+        assert result["surface_syllables"][palatalized_index]["onset"] == "ㅊ", form
+        assert result["surface_syllables"][palatalized_index - 1]["coda"] == "", form
     result = phoneticize_korean("좋을거같이")
     assert _matching_contexts(result, "R007", "같>이")
+
+
+def test_official_surface_attestations_match_the_korean_surface_layer():
+    # NIKL surface notation only; these are not IPA or Ukrainian-output gold.
+    # Length marks in [수ː마는] and [마ː나서] remain separate phonetic metadata.
+    expected = {
+        "없음": "업씀",
+        "싫어서": "시러서",
+        "수많은": "수마는",
+        "많아서": "마나서",
+    }
+    for form, expected_surface in expected.items():
+        result = phoneticize_korean(form)
+        assert result["surface_hangul"] == expected_surface, form
+        assert result["pronunciation_status"] != "unresolved", form
+
+
+def test_official_dictionary_complex_h_suffix_license_changes_surface_structure():
+    # The dictionary supports 긁히다[글키다]/긁혀[글켜]; the complete noisy
+    # phrase is a rule-derived application, not a directly attested quote.
+    result = phoneticize_korean("긁혔다는거지")
+    assert result["surface_syllables"][0]["coda"] == "ㄹ"
+    assert result["surface_syllables"][1]["onset"] == "ㅋ"
+    assert not any(context.get("rule_id") == "R004" for context in result.get("unresolved_contexts", []))
 
 
 def test_misspelled_and_unreviewed_lookalikes_remain_fail_closed():
