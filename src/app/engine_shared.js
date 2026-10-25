@@ -38,6 +38,7 @@ const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥','넓적']);
 const NIKL_12_H_DELETION_FORMS=new Map([
   ['싫어서','싫>어'], // NIKL Online Q&A qna_seq=313981 (2025-04-29): [시러서].
   ['수많은','많>은'], // Korean Basic Dictionary, 수많다: [수ː마는].
+  ['많아서','많>아'], // NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
 ]);
 
 const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
