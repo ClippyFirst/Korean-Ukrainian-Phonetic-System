@@ -1402,7 +1402,7 @@ Release classification remains **software-verified research prototype / partial 
 
 ## 2026-10-25 continuation — benchmark discrepancy classification
 
-- Active PR branch: `feat/residual-korean-edge-cases-clean-2026-10-25`, PR #336. Preserve its existing owner-constrained workflow: g2pK is excluded from new runs; historical g2pK artifacts remain archival only.
+- Active PR branch: `feat/residual-korean-edge-cases-clean-2026-10-25`, PR #336. Updated by the owner on 2026-10-25: g2pK 0.9.4 is authorized and should be included in new comparison runs. The benchmark workflow now installs the pinned package and scores it on both UGTPHON and SIGMORPHON. Historical runs remain historical; fresh exact-head artifacts are required before reporting new scores.
 - Implemented conservative case-level fields in the capped multi-engine mismatch sample: raw engine IPA, existing-normalizer output/reference, sensitivity-profile output/reference, and a classification rationale/confidence.
 - Classification policy is fail-closed: `IPA_CONVENTION` only when the declared sibilant-aspiration sensitivity profile changes exactness; `UNICODE_OR_FORMAT` only for NFC-equivalent raw strings; otherwise `UNCLASSIFIED`. This avoids claiming a phonological cause from string mismatch alone.
 - Added unit tests for all classifier branches. Exact-head CI is required before this change becomes `DONE_VERIFIED`.
