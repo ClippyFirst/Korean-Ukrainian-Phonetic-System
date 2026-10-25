@@ -222,3 +222,17 @@ Readiness: **software-verified research prototype; not release-ready** until sou
 The phrase-level fail-closed regression was added and verified on source/test commit `4686fd7119fe85043c4e6b32199188bd23487a1c`. The dedicated suite passed **1,221/1,221 browser tests**, Python 3.11/3.12/3.13, and clean wheel installation ([tests 40183919607](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40183919607)). System verification passed ([40183915965](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40183915965)); browser G2P ([40183919654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40183919654)), optional g2pK ([40183919624](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40183919624)), generated master table/research artifacts ([40183919655](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40183919655)), paired native/g2pK ([40183919614](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40183919614)), external UGTPHON ([40183919696](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40183919696)), multi-engine IPA diagnostic benchmark ([40183919643](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40183919643)), and morphology adapter smoke ([40183919637](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40183919637)) also passed. Official live NIKL inventory was skipped, so source-level acceptance remains open.
 
 A subsequent documentation-only commit records this status; it does not change the implementation tested above. The repository remains a software-verified **partial research prototype**, not release-ready. Original 24-form manifest provenance, independent Korean IPA adjudication, independent Ukrainian target gold, and authorized live NIKL access remain acceptance blockers.
+
+
+## Final pinned benchmark results — 2026-10-25
+
+Exact-head run: [40189298339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40189298339), success. Source snapshots are pinned in workflow configuration; UGTPHON Korean split is 275 rows (Apache-2.0), and SIGMORPHON 2021 Korean lexical test split is 1,000 unique word/IPA pairs (CC BY-SA 3.0). These evaluate Korean pronunciation/IPA engines, not Ukrainian target adaptation.
+
+| Dataset | Engine | Eligible occurrences | Coverage | Exact match | CER | Abstentions | Engine errors |
+|---|---|---:|---:|---:|---:|---:|---:|
+| UGTPHON Korean test | ClippyFirst native | 2,703 | 98.22% | 53.18% | 9.19% | 48 | 0 |
+| UGTPHON Korean test | g2pk 0.9.4 | 2,703 | 100% | 53.09% | 9.23% | 0 | 0 |
+| SIGMORPHON 2021 Korean test | ClippyFirst native | 999 | 99.80% | 35.81% | 14.70% | 2 | 0 |
+| SIGMORPHON 2021 Korean test | g2pk 0.9.4 | 999 | 100% | 35.34% | 14.82% | 0 | 0 |
+
+Interpretation: native ClippyFirst slightly exceeds g2pk on exact match in these pinned splits while abstaining on unresolved cases. The exact-match rate and CER still show substantial pronunciation errors; zero engine errors means no runtime exceptions, not zero linguistic errors. These metrics must not be reused as Ukrainian transcription accuracy.
