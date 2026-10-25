@@ -50,7 +50,7 @@ The metadata-first collector is available at `scripts/nikl-norm-crawler.mjs`; se
 
 ## Residual Korean edge cases — 2026-10-25
 
-- `칡칡이`: exact string attested as a regional folk-song heading in [the local-culture PDF](https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf), which cites 이소라, *양산의 민요* (1992), p. 180. This does not establish lexical meaning or morpheme boundaries; status remains `blocked`.
+- `칡칡이`: the search-result snippet labels a folk-song heading `칡칡이`, but the opened PDF text layer reads `칭칭이` and gives the refrain `치기타 칭칭나네`. This is an index/text-layer discrepancy; `칭칭이` is an opt-in source-specific candidate only, pending visual/print-source verification. No lexical meaning or morphology for `칡칡이` is established.
 - `쫒아내면` and `무서웟어`: added explicit, opt-in spelling candidates `쫓아내면` and `무서웠어`; the original is not silently rewritten.
 - `많앗구나유유유`: preserve three candidate interpretations; published context examples show both `ㅠㅠㅠ` as crying and `유유유` as a phrase/title, but do not resolve this isolated input.
 - `삶의`: one-case queue `research/salmui-ipa-review-queue.json` and canonical source-/candidate-blind packets A/B are bound to queue SHA-256 `c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3`. The packets expose only `BLIND-001`, `삶의`, fixed instructions, and blank review fields. The coordinator keeps official variants/citations out of the reviewer packets.
