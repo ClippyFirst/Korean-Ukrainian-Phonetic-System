@@ -92,7 +92,7 @@ The g2pk column is only a comparator distance against the dataset's IPA annotati
 
 - **DONE_VERIFIED_SOURCE:** two exact browser surface corrections are pinned to NIKL primary sources in `docs/PRIMARY-SOURCE-ADJUDICATION-2026-10-25.md`.
 - **DONE_VERIFIED_PRIOR_HEAD:** the repository already has a strict/soft and analyzer-boundary benchmark; reuse its pinned artifact rather than duplicating its workflow. See the quantitative follow-up below.
-- **TODO pending exact-head CI:** new two-analyzer formal-tag consensus adapter and benchmark; its output is explicitly diagnostic-only.
+- **PARTIAL:** two-analyzer formal-tag consensus adapter and benchmark passed in [run 40196942415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40196942415) on a prior code head; exact-head rerun after the later IPA-status, source-register, and diagnostic-report assertions is queued and not yet verified.
 - **BLOCKED_SPECIALIST_ADJUDICATION:** independent IPA review; one occurrence is withheld for this reason rather than a phonological rule.
 - **BLOCKED_INPUT_NORMALIZATION / MORPHOLOGY:** word segmentation and morpheme-boundary inference for unspaced noisy input.
 - **BLOCKED_INDEPENDENT_TARGET_GOLD:** this audit evaluates Korean IPA annotations only, not Ukrainian output.
@@ -132,4 +132,26 @@ The first exact-head consensus workflow passed on commit `f3bd48b668e3b72f7dbe7e
 The first report exposed an important input-boundary hazard: `못잃어` and `안늙었는데` have a likely unspaced adverb-to-verb boundary (`MAG → VV)). Applying a local ending rule does not reconstruct the missing eojeol space or the phrase-level phonology. I therefore added a stricter guard: if both analyzers agree on an unspaced `MAG → VV/VA/VX` boundary, the consensus adapter withholds all licenses for that token. This is intentionally conservative and is being re-benchmarked on the updated head; do not reuse the first run's 30-form coverage as the final result.
 
 The final acceptance criterion remains: exact-head CI passes, the consensus report enumerates remaining abstentions, all analyzer-derived IPA stays diagnostic-only, and strict default output is unchanged.
+
+## Second consensus result after the unspaced-phrase guard
+
+The second consensus workflow passed in [run 40196942415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40196942415) on a prior code head. After withholding licenses for tokens where both analyzers agree on an unspaced `MAG → VV/VA/VX` boundary:
+
+| Strategy | Scored / 2703 | Coverage | Exact matches | Exact rate | CER | Unresolved occurrences |
+|---|---:|---:|---:|---:|---:|---:|
+| Native strict | 2655 | 98.2242% | 1412 | 53.1827% | 9.1883% | 48 |
+| Native soft | 2677 | 99.0381% | 1421 | 53.0818% | 9.1868% | 26 |
+| Analyzer-consensus candidate | 2684 | 99.2971% | 1423 | 53.0179% | 9.1930% | 19 |
+
+The consensus candidate scores 29 more occurrences than strict (28 unique forms), but its exact rate is 0.1648 percentage points lower and CER is 0.0047 percentage points worse. The strict-vs-consensus paired subset is unchanged. This is a **coverage/diagnostic improvement, not an accuracy improvement**; keep it opt-in and diagnostic-only. The report identifies 24 unique tokens with a shared likely missing-space adverb-to-verb boundary; no rules are licensed for those tokens.
+
+The remaining 19 unresolved forms are evidence-limited rather than runtime failures. They include: an IPA-adjudication blocker (`삶의`); a complex-coda/ㅎ context without a source-aligned boundary (`긁혔다는거지`); analyzer/orthographic contractions (`있었`, `했었음`, `군대보냈어야`, `벗어날`, `좋아해주는`); lexicalized or phrase-level boundaries (`많이본`, `많을거같이`, `못잃어`, `안늙었는데`, `개같이못하고`, `알잖아아침에`, `개좆망했잖아`); and noisy spellings or ending segmentation (`쫒아내면`, `많앗구나유유유`, `무서웟어`, `죽었잖아`, `웃어넘기겟지만`). One occurrence can contain multiple unresolved contexts, which is why the 48 occurrence count and 49 context count differ.
+
+## Raw port versus practical browser adapter
+
+The Python differential warning compares the **raw vendored JavaScript g2pK port** against Python g2pk; it does not call the practical adapter. Its two raw mismatches are intentional and source-backed: raw JS gives `널쭈카다` / `익꼬`, while the practical browser adapter applies exact-form NIKL corrections to `넙쭈카다` / `일꼬` before IPA. The raw port remains pinned for upstream parity. The differential report now carries the practical adapter surface and labels the mismatch as an expected raw-port divergence covered by the adapter. Browser regression coverage independently checks the corrected output and the source IDs.
+
+## Exact-head verification boundary
+
+Core consensus logic and the diagnostic-only g2pK gate passed the previous head's test/system/browser/benchmark workflows. The latest head `839fd65748ab88f9c0054b8b9b023d48c427c307` includes the final source-register count update and sharper regression assertions; its workflow set is currently queued, not passed. Do not mark those final-head checks successful until GitHub reports completion.
 
