@@ -49,11 +49,11 @@ test('rejects an incomplete reviewer form without accepting empty IPA or missing
   packet.cases[5].reviewForm.reviewedAt = '2026-10-23T20:00:00';
   const report = validateReviewerSubmission(JSON.stringify(packet), queueText, 'A');
   assert.equal(report.valid, false);
-  assert.ok(report.errors.some(error => error.includes('IPA-001: broadIpa is required')));
-  assert.ok(report.errors.some(error => error.includes('IPA-002: methodReference is required')));
-  assert.ok(report.errors.some(error => error.includes('IPA-003: reviewerId is required')));
-  assert.ok(report.errors.some(error => error.includes('IPA-004: syllableBoundaries')));
-  assert.ok(report.errors.some(error => error.includes('IPA-005: vowelLengthAssessment')));
+  assert.ok(report.errors.some(error => error.includes('BLIND-001: broadIpa is required')));
+  assert.ok(report.errors.some(error => error.includes('BLIND-002: methodReference is required')));
+  assert.ok(report.errors.some(error => error.includes('BLIND-003: reviewerId is required')));
+  assert.ok(report.errors.some(error => error.includes('BLIND-004: syllableBoundaries')));
+  assert.ok(report.errors.some(error => error.includes('BLIND-005: vowelLengthAssessment')));
   assert.ok(report.errors.some(error => error.includes('BLIND-006: reviewedAt')));
 });
 
