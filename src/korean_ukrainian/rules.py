@@ -47,8 +47,8 @@ _NIKL_R002_FORMAL_LICENSES = {
 # Exact-form licenses for NIKL §12(4) ㅎ-coda deletion before a vowel-initial
 # ending. The official answers attest Korean surface pronunciations, not IPA
 # gold; these licenses resolve only the Korean morphophonological step.
-# 싫어서: NIKL Online Q&A qna_seq=336? (see research adjudication register).
-# 수많은: NIKL Korean Basic Dictionary entry for 수많다, 발음 [수ː마는].
+# 싫어서: NIKL Online Q&A qna_seq=313981 (2025-04-29).
+# 수많은: Korean Basic Dictionary entry for 수많다, 활용 [수ː마는].
 _NIKL_R003_FORMAL_LICENSES = {
     "싫어서": "싫>어",
     "수많은": "많>은",
