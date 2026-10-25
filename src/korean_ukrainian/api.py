@@ -18,6 +18,7 @@ def create_app():
         mode: str = "transliterate"
         pronunciation_engine: str = "native"
         descriptive_pronunciation: bool = False
+        morphology_mode: str = "strict"
 
     app = FastAPI(title="Korean → Ukrainian Phonetic System", version="0.6.0")
 
@@ -28,6 +29,10 @@ def create_app():
     def _run(req: AnalyzeRequest) -> dict[str, Any]:
         if req.pronunciation_engine not in {"native", "g2pk"}:
             raise ValueError("pronunciation_engine must be 'native' or 'g2pk'")
+        if req.morphology_mode not in {"strict", "soft"}:
+            raise ValueError("morphology_mode must be 'strict' or 'soft'")
+        if req.pronunciation_engine == "g2pk" and req.morphology_mode != "strict":
+            raise ValueError("morphology_mode is available only with pronunciation_engine='native'")
         if req.mode == "decompose":
             if req.pronunciation_engine != "native":
                 raise ValueError("decompose mode is available only with pronunciation_engine='native'")
@@ -38,7 +43,7 @@ def create_app():
             return transliterate_with_g2pk(
                 req.text, descriptive=req.descriptive_pronunciation
             )
-        return transliterate_korean(req.text)
+        return transliterate_korean(req.text, morphology_mode=req.morphology_mode)
 
     @app.post("/v1/analyze")
     def analyze(req: AnalyzeRequest) -> dict[str, Any]:
