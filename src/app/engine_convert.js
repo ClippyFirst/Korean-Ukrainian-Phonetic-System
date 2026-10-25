@@ -60,9 +60,13 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
                   if(index<sourceIpa.length){
                     const target=mappedSegments[index];
                     item.ipa=sourceIpa[index];
-                    item.output=target.tokens.map(token=>token.ukrainian).join('');
-                    item.targetStatus=target.status;
-                    item.targetReason=target.reason||null;
+                    const candidateText=target.tokens.map(token=>token.ukrainian).join('');
+                    const provisional=target.status==='provisional';
+                    item.output=provisional?'':candidateText;
+                    item.candidateOutput=provisional?candidateText:null;
+                    item.candidateStatus=provisional?'provisional':null;
+                    item.targetStatus=provisional?'unavailable':target.status;
+                    item.targetReason=provisional?'provisional_mapping_requires_review':(target.reason||null);
                     item.targetMappings=target.tokens;
                     item.targetFeatures=target.features;
                     index++;
