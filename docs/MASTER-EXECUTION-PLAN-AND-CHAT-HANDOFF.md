@@ -1,8 +1,6 @@
 # One-pass continuation — exact R003 licenses — 2026-10-25
 
-## One-pass continuation — exact R003 licenses — 2026-10-25
-
-- **Branch:** `fix/source-backed-r003-exact-forms-2026-10-25`, based on `main` at tree `4a3f39b1df682dac0254db917d867405deee71fb`.
+- **Branch:** `fix/source-backed-r003-exact-forms-2026-10-25`, based on `main` commit `4a3f39b1df682dac0254db917d867405deee71fb`.
 - **Implemented, verification pending:** strict exact-form R003 licenses for `싫어서` (official NIKL Online Q&A qna_seq=313981) and `수많은` (Korean Basic Dictionary entry ParaWordNo=71144), ported to both Python and browser engines. Each license is scoped to the complete input and one adjacent pair; no productive heuristic was introduced.
 - **Tests added, not yet executed here:** `tests/test_pipeline.py` and `tests/web-engine.test.mjs` include positive cases and a negative control.
 - **Evidence limitation:** source notation confirms Korean surface pronunciations, not independently reviewed broad IPA or Ukrainian practical orthography. Do not count these as gold labels or claim the 48 historical abstentions are reduced until exact-head CI and the pinned benchmark are inspected.
