@@ -161,6 +161,57 @@ def _score(
     }
 
 
+def _profile_change_audit(
+    primary_items: list[dict[str, Any]],
+    profile_items: list[dict[str, Any]],
+    *,
+    sample_limit: int = 25,
+) -> dict[str, Any]:
+    """Explain which individual cases change status under a diagnostic profile."""
+    primary_by_id = {str(item["occurrence_id"]): item for item in primary_items}
+    profile_by_id = {str(item["occurrence_id"]): item for item in profile_items}
+    shared_ids = sorted(set(primary_by_id) & set(profile_by_id))
+    rescued: list[dict[str, Any]] = []
+    regressed: list[dict[str, Any]] = []
+    unchanged_exact = 0
+    unchanged_mismatch = 0
+    for occurrence_id in shared_ids:
+        primary = primary_by_id[occurrence_id]
+        profile = profile_by_id[occurrence_id]
+        if not primary["exact"] and profile["exact"]:
+            rescued.append({
+                "occurrence_id": occurrence_id,
+                "token": primary.get("token"),
+                "gold": primary.get("gold"),
+                "prediction": primary.get("predicted"),
+                "primary_distance": primary.get("distance"),
+                "profile_distance": profile.get("distance"),
+            })
+        elif primary["exact"] and not profile["exact"]:
+            regressed.append({
+                "occurrence_id": occurrence_id,
+                "token": primary.get("token"),
+                "gold": primary.get("gold"),
+                "prediction": primary.get("predicted"),
+                "primary_distance": primary.get("distance"),
+                "profile_distance": profile.get("distance"),
+            })
+        elif primary["exact"]:
+            unchanged_exact += 1
+        else:
+            unchanged_mismatch += 1
+    return {
+        "paired_occurrences": len(shared_ids),
+        "primary_mismatch_became_exact": len(rescued),
+        "primary_exact_became_mismatch": len(regressed),
+        "unchanged_exact": unchanged_exact,
+        "unchanged_mismatch": unchanged_mismatch,
+        "rescued_case_examples": rescued[:sample_limit],
+        "regressed_case_examples": regressed[:sample_limit],
+        "warning": "case transitions explain score sensitivity only; they do not establish that the profile is linguistically valid",
+    }
+
+
 def _metrics(items: list[dict[str, Any]]) -> dict[str, Any]:
     if not items:
         return {
@@ -544,6 +595,9 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 **_metrics(profile_items),
                 "normalization": DIAGNOSTIC_PROFILE_WARNINGS[profile_name],
                 "warning": "diagnostic sensitivity only; never substitute for primary scores",
+                "case_transition_audit": _profile_change_audit(
+                    profile_scores_by_engine[name]["primary"], profile_items,
+                ),
                 "delta_exact_rate_vs_primary": (
                     round(_metrics(profile_items)["exact_match_rate"] - metrics["exact_match_rate"], 6)
                     if _metrics(profile_items)["exact_match_rate"] is not None and metrics["exact_match_rate"] is not None
