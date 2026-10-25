@@ -1089,3 +1089,16 @@ Exact-head checks on the code/evidence head:
 Current diagnostic fixture report: **18/24 accepted native orthographies + 1 provisional native candidate**; **23/24 accepted g2pK orthographies + 1 provisional g2pK candidate**. These are output/abstention counts only, not accuracy: both gold-label sets are unavailable. The 24 inputs remain an unverified reconstruction and must not be described as the original frozen holdout.
 
 Disposition remains **PARTIAL / research prototype, not release-ready**. Outstanding acceptance gates: recover and hash the original 24-form manifest or create a separately named verified benchmark; obtain independent Korean IPA adjudication; obtain independent Ukrainian target gold and a scoring protocol; resolve the known native-vs-g2pK surface disagreements `넓죽하다` and `읽고` with primary evidence; obtain authorized official NIKL inventory evidence. No gold labels, linguistic forms, or target-accuracy scores were invented.
+
+## Continuation update — primary-source adjudication of two G2P disagreements (2026-10-25)
+
+- **DONE_VERIFIED_SOURCE — `넓죽하다`:** NIKL Rule 10 explicitly gives `넓-죽하다[넙쭈카다]` and explains the lexically restricted ㄼ → [ㅂ] exception. Primary source: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219. NIKL also gives `넓죽한[넙쭈칸]` in a 2025 answer: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=317348.
+- **DONE_VERIFIED_SOURCE — `읽고`:** NIKL explicitly gives `읽고[일꼬]` and explains why the fortition must not be naively attributed to a surviving [ㄹ]. Primary source: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=329463.
+- **Evidence artifact:** `docs/PRIMARY-SOURCE-ADJUDICATION-2026-10-25.md` records the source scope, exact surface forms, rule interpretation, test implications and remaining acceptance gates.
+- **Important boundary:** these sources adjudicate official Hangul surface-form expectations only. They do not constitute IPA gold or Ukrainian target gold. Raw upstream G2P outputs must remain inspectable; any correction is exact-form, narrow, and provenance-carrying.
+- **TODO — implementation regression confirmation:** ensure the current branch has source-linked exact-form tests for both forms, test raw engine outputs separately from corrected surface forms, and run the relevant browser/native/G2P workflows on the exact resulting head. This connector session can commit repository files but cannot execute the checkout's local test suite.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** independent broad IPA for both forms.
+- **BLOCKED_INDEPENDENT_TARGET_GOLD:** Ukrainian practical output accuracy remains unmeasured.
+- **BLOCKED_MISSING_ORIGINAL:** original 24-form holdout provenance is still unverified; keep the fixture labelled `reconstructed_unverified`.
+- **BLOCKED_EXTERNAL_ACCESS:** live NIKL inventory retrieval remains skipped/unverified; a skipped workflow is not a successful retrieval.
+- **Release classification:** software-verified research prototype, not release-ready. The two Korean surface-form disputes now have primary-source evidence, but no full-system accuracy claim is justified.
