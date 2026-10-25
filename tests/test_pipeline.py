@@ -583,3 +583,10 @@ def test_cli_exposes_soft_morphology_without_changing_default():
     assert strict.morphology_mode == "strict"
     assert soft.morphology_mode == "soft"
 
+def test_cli_does_not_silently_ignore_soft_mode_for_decomposition():
+    import pytest
+    from korean_ukrainian.cli import _result
+
+    with pytest.raises(ValueError, match="only with mode='transliterate'"):
+        _result("좋아", "decompose", morphology_mode="soft")
+
