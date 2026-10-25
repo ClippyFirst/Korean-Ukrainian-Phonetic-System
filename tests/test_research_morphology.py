@@ -100,3 +100,90 @@ def test_bad_spans_fail_closed():
 def test_unknown_analyzer_does_not_fallback():
     with pytest.raises(ValueError, match="unsupported morphology analyzer"):
         analyzer_by_name("guess")
+
+
+
+def _analysis(name, text, morphemes):
+    return {
+        "text": text,
+        "analyzer": name,
+        "morphemes": [
+            {
+                "form": form, "tag": tag, "start": start, "end": end,
+                "surface": text[start:end], "span_status": "surface_aligned",
+            }
+            for form, tag, start, end in morphemes
+        ],
+    }
+
+
+def test_analyzer_consensus_licenses_formal_ending_not_just_adjacent_vowels():
+    from korean_ukrainian.morphology_rule_licenses import analyzer_consensus_rule_licenses
+
+    analyses = [
+        _analysis("mecab-ko", "같아서", [("같", "VA", 0, 1), ("아서", "EC", 1, 3)]),
+        _analysis("kiwi", "같아서", [("같", "VA", 0, 1), ("어서", "EC", 1, 3)]),
+    ]
+    report = analyzer_consensus_rule_licenses("같아서", analyses)
+    assert "R002:formal:같아서:같>아" in report["candidate_licenses"]
+    assert report["analyzers"] == ["kiwi", "mecab-ko"]
+    assert report["status"] == "analyzed_not_adjudicated"
+
+
+def test_analyzer_consensus_does_not_license_lexicalized_many_i():
+    from korean_ukrainian.morphology_rule_licenses import analyzer_consensus_rule_licenses
+
+    analyses = [
+        _analysis("mecab-ko", "많이", [("많이", "MAG", 0, 2)]),
+        _analysis("kiwi", "많이", [("많이", "MAG", 0, 2)]),
+    ]
+    report = analyzer_consensus_rule_licenses("많이", analyses)
+    assert report["candidate_licenses"] == []
+    assert report["consensus_boundaries"] == []
+
+
+def test_analyzer_consensus_rejects_one_analyzer_boundary_disagreement():
+    from korean_ukrainian.morphology_rule_licenses import analyzer_consensus_rule_licenses
+
+    analyses = [
+        _analysis("mecab-ko", "같이", [("같", "VA", 0, 1), ("이", "JKS", 1, 2)]),
+        _analysis("kiwi", "같이", [("같이", "MAG", 0, 2)]),
+    ]
+    report = analyzer_consensus_rule_licenses("같이", analyses)
+    assert report["candidate_licenses"] == []
+
+
+def test_analyzer_consensus_candidate_is_never_promoted_to_accepted_ipa():
+    from korean_ukrainian.morphology_rule_licenses import phoneticize_korean_with_analyzer_consensus
+
+    analyses = [
+        _analysis("mecab-ko", "좋아", [("좋", "VA", 0, 1), ("아", "EC", 1, 2)]),
+        _analysis("kiwi", "좋아", [("좋", "VA", 0, 1), ("아", "EC", 1, 2)]),
+    ]
+    result = phoneticize_korean_with_analyzer_consensus("좋아", analyses)
+    assert result["morphology_mode"] == "analyzer-consensus"
+    assert result["ipa_is_diagnostic_only"] is True
+    assert result["ipa_status"] == "diagnostic_only_analyzer_morphology"
+    assert "R003:ending_or_suffix_h_deletion:좋아:좋>아" in result["morphology_analysis"]["applied_licenses"]
+    assert any(
+        trace.get("status") == "analyzer-supported-low-confidence"
+        for trace in result["rules"]
+    )
+
+
+def test_analyzer_consensus_rejects_zero_width_boundary_evidence():
+    from korean_ukrainian.morphology_rule_licenses import analyzer_consensus_rule_licenses
+
+    analyses = [
+        _analysis("mecab-ko", "좋아", [("좋", "VA", 0, 1), ("아", "EC", 1, 2)]),
+        {
+            "text": "좋아", "analyzer": "kiwi",
+            "morphemes": [
+                {"form": "좋", "tag": "VA", "start": 0, "end": 1, "surface": "좋"},
+                {"form": "zero", "tag": "EF", "start": 1, "end": 1, "surface": "", "span_status": "zero_width_morph"},
+                {"form": "아", "tag": "EC", "start": 1, "end": 2, "surface": "아"},
+            ],
+        },
+    ]
+    report = analyzer_consensus_rule_licenses("좋아", analyses)
+    assert report["candidate_licenses"] == []
