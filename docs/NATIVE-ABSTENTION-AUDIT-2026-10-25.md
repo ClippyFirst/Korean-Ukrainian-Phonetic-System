@@ -155,3 +155,14 @@ The Python differential warning compares the **raw vendored JavaScript g2pK port
 
 Core consensus logic and the diagnostic-only g2pK gate passed the previous head's test/system/browser/benchmark workflows. The latest head `839fd65748ab88f9c0054b8b9b023d48c427c307` includes the final source-register count update and sharper regression assertions; its workflow set is currently queued, not passed. Do not mark those final-head checks successful until GitHub reports completion.
 
+## Reconciled strict/soft/consensus result on current implementation head
+
+The exact-head morphology-consensus workflow [40197611605](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611605) passed on code head `781dc5d0d1956d216afd30a04671b2db93e853d6`. Artifact [12600583566](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611605/artifacts/12600583566) reports the same pinned 2,703-occurrence UGTPHON split:
+
+| Mode | Coverage | Exact among scored | Coverage-adjusted exact | CER | Unresolved occurrences |
+|---|---:|---:|---:|---:|---:|
+| Strict | 98.2242% | 53.1827% | 52.2383% | 9.1883% | 48 |
+| Soft heuristic | 99.0381% | 53.0818% | 52.5712% | 9.1868% | 26 |
+| Kiwi + MeCab-Ko consensus (diagnostic only) | 99.2971% | 53.0179% | 52.6452% | 9.1930% | 19 |
+
+Consensus resolves 28 unique words relative to strict and leaves 19 unresolved occurrences/unique words. This is a coverage gain, not a demonstrated improvement in pronunciation accuracy: exact match among scored cases falls slightly, while coverage-adjusted exact rises because more cases receive a candidate. All consensus-derived IPA remains `diagnostic_only_analyzer_morphology`; it is not independent IPA gold and is not promoted to Ukrainian output. The strict default and target-rendering evidence gate remain unchanged.
