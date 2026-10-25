@@ -116,9 +116,18 @@ def run(output: Path | None = None) -> dict:
                     target_records = target_analysis.get('segments', [])
                     target_analysis_status = target_analysis.get('status')
                     target_analysis_statuses = [
-                        item.get('target', {}).get('status')
-                        if isinstance(item.get('target'), dict)
-                        else item.get('status')
+                        (
+                            item.get('target', {}).get('status')
+                            if isinstance(item.get('target'), dict)
+                            else item.get('status')
+                        )
+                        if isinstance(
+                            item.get('target', {}).get('status')
+                            if isinstance(item.get('target'), dict)
+                            else item.get('status'),
+                            str,
+                        )
+                        else 'status-unavailable'
                         for item in target_records if isinstance(item, dict)
                     ]
                     target_adapter_status = next((
@@ -131,7 +140,8 @@ def run(output: Path | None = None) -> dict:
                     target_records = target_analysis
                     target_analysis_status = None
                     target_analysis_statuses = [
-                        item.get('status') for item in target_records if isinstance(item, dict)
+                        item.get('status') if isinstance(item.get('status'), str) else 'status-unavailable'
+                        for item in target_records if isinstance(item, dict)
                     ]
                 else:
                     target_records = []
