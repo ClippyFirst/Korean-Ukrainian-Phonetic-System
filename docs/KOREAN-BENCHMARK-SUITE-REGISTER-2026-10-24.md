@@ -187,3 +187,8 @@ Most native abstentions on UGTPHON are deliberate unresolved morphophonological 
 ### Verification update — 2026-10-25
 
 Provisional IPA→Ukrainian candidates are now visibly labelled in the browser research workbench, including the primary result label and copy action; the Python renderer and public pipeline remain strict by default and expose provisional spellings only as separate candidates. The system verification and browser integration passed at code head `5ccb880d0c0611efa1f7ef8ffd00a0d303778410`: browser suite 1,220/1,220 passed; Python regression/data-integrity passed; dedicated test workflow passed. See runs 40177877602, 40177877624, 40177877599. NIKL live inventory was skipped. The g2pK differential diagnostic reports 18/20 surface matches and two unresolved disagreements (`넓죽하다`, `읽고`); this is not an IPA accuracy score. Original 24-form provenance and independent IPA/target adjudication remain blocked. Do not interpret these software passes as linguistic gold validation.
+
+
+### PR #307/#310 convergence status correction — 2026-10-25
+
+The earlier note that the Python renderer/pipeline blobs matched was true only for an earlier snapshot. PR #310 now has the strict provisional target gate and Python pipeline abstention behavior; those blobs diverge from PR #307. PR #307 remains valuable for the quarantined unverified 24-form fixture/provenance audit. Both PRs remain open and mergeable; no blind merge or closure. Reconcile current diffs before any integration.

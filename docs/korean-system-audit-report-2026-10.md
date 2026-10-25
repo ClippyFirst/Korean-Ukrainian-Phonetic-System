@@ -311,3 +311,8 @@ Most native abstentions on UGTPHON are deliberate unresolved morphophonological 
 Audited the full route from IPA adapter to Python pipeline and browser UI. The strict IPA renderer withholds final orthography for provisional target mappings and returns a candidate field. The Python pipeline now preserves that strict contract. The browser research UI intentionally keeps a useful candidate visible but explicitly labels the primary result, copy action and trace as provisional; no candidate is described as independent gold.
 
 CI evidence at code head `5ccb880d0c0611efa1f7ef8ffd00a0d303778410`: system verification success (40177877602), browser G2P integration success with 1,220/1,220 tests (40177877624), dedicated test workflow success (40177877599), optional g2pK success (40177877654), native/g2pK differential success as diagnostic (40177877600), UGTPHON diagnostic success (40177877596). Python surface differential remains 18/20 with disagreements `넓죽하다` and `읽고`; IPA gold remains unadjudicated. NIKL live inventory skipped. Original holdout provenance, independent IPA gold, and independent Ukrainian target gold remain blockers. Classification: partial research prototype, not release-ready.
+
+
+### PR convergence status correction — 2026-10-25
+
+Earlier audit text recorded identical Python renderer/pipeline blobs for PR #307 and #310. That is stale after the latest correctness-gate changes: current blobs diverge. PR #310 has strict Python target abstention and browser UI candidate labeling; PR #307 retains the candidate 24-form fixture/provenance audit. Keep the fixture quarantined and reconcile only after reviewing the current diff. Both PRs remain open; no blind merge or closure.
