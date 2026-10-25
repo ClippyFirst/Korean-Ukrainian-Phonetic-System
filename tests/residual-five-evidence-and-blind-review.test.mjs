@@ -8,10 +8,12 @@ const root = new URL('../research/', import.meta.url);
 test('the exact 칡칡이 attestation is scoped to a folk-song heading, not a lexical parse', async () => {
   const data = JSON.parse(await readFile(new URL('residual-five-candidate-resolution-2026-10-25.json', root), 'utf8'));
   const item = data.cases.find(entry => entry.input === '칡칡이');
-  assert.equal(item.status, 'BLOCKED');
-  assert.equal(item.candidateForms.length, 0);
+  assert.equal(item.status, 'CANDIDATE_ONLY');
+  assert.deepEqual(item.candidateForms.map(candidate => candidate.text), ['칭칭이']);
+  assert.equal(item.candidateForms[0].pronunciationMayBeAttributedToOriginal, false);
+  assert.equal(item.candidateIPA.length, 0);
   assert.ok(item.evidence.some(source => source.url.includes('EB_culture_song02.pdf')));
-  assert.match(item.evidence[0].scope, /heading/i);
+  assert.match(item.evidence[0].scope, /PDF text layer/i);
   assert.match(item.why, /does not establish/i);
 });
 
