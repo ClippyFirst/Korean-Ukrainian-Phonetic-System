@@ -1264,3 +1264,12 @@ Release classification remains **software-verified research prototype / partial 
 - Fix commits: `32ecab1e80f915891188275db2303f89a46fae52` and `d797335c2e0922efa6f0e87d90cbb79e08834780`. Exact-head system/browser reruns are pending; do not mark those checks complete until they pass.
 - The live NIKL crawl itself is **blocked** with HTTP 403 on this runner. The workflow correctly refuses to retry/bypass; the metadata-only inventory is not verified live.
 
+## Continuation — exact-form source evidence for abstention cases (2026-10-25)
+
+- Ported the existing 14-case R002/R003 source-adjudication queue from the stale PR #304 branch without promoting its diagnostic IPA to gold. Queue: `research/r002-r003-source-adjudication-2026-10-24.json`; companion schema/provenance test: `tests/r002-r003-source-adjudication-queue.test.mjs`; review protocol: `docs/R002-R003-SOURCE-ADJUDICATION-AND-HOLDOUT-2026-10-24.md`.
+- Added exact-form NIKL surface evidence records for `멋있어` (Q&A 306166), `싫어서` (Q&A 313981), and `수많은` (Korean Basic Dictionary entry 71144). All remain `SOURCE_FOUND_PENDING_IPA`; none supplies independent broad IPA or Ukrainian target gold.
+- Browser G2P runtime now uses the exact source readings `싫어서 → 시러서` and `수많은 → 수마는`; the exact dictionary form `수많은` retains `ː` in the inspectable IPA trace. The alternate `멋있어` surface is exposed only when the main surface matches one of the two NIKL-attested forms and the alternate target mapping is fully supported; the generated alternative is `lexical-review`, not gold. No source-Hangul-to-Ukrainian shortcut was added.
+- Native strict 48-case abstention count is not changed by these browser-only corrections. Do not report it as resolved; the 14-case queue still needs independent broad-IPA review and separate Ukrainian target review.
+- Source register count is now 109. Rights audit: 105 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `NOT_APPLICABLE_RECORDED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`. Human item-level rights review remains open for 107 records.
+- Current implementation branch: `fix/nikl-surface-abstention-corrections-2026-10-25`. Exact-head CI pending; no local test run is claimed. Keep the strict native default unchanged.
+

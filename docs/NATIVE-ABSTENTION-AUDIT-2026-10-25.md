@@ -166,3 +166,18 @@ The exact-head morphology-consensus workflow [40197611605](https://github.com/Cl
 | Kiwi + MeCab-Ko consensus (diagnostic only) | 99.2971% | 53.0179% | 52.6452% | 9.1930% | 19 |
 
 Consensus resolves 28 unique words relative to strict and leaves 19 unresolved occurrences/unique words. This is a coverage gain, not a demonstrated improvement in pronunciation accuracy: exact match among scored cases falls slightly, while coverage-adjusted exact rises because more cases receive a candidate. All consensus-derived IPA remains `diagnostic_only_analyzer_morphology`; it is not independent IPA gold and is not promoted to Ukrainian output. The strict default and target-rendering evidence gate remain unchanged.
+
+## Additional exact-form evidence and runtime boundary (2026-10-25)
+
+The 14-case R002/R003 triage queue is now tracked at `research/r002-r003-source-adjudication-2026-10-24.json`, with schema regression `tests/r002-r003-source-adjudication-queue.test.mjs`. Three exact-form official source findings are recorded as `SOURCE_FOUND_PENDING_IPA`:
+
+- `멋있어`: NIKL Q&A qna_seq=306166 accepts `[머디써]` and `[머시써]` as variants.
+- `싫어서`: NIKL Q&A qna_seq=313981 explains ㅎ deletion from ㅀ before a vowel-initial ending and gives `[시러서]`.
+- `수많은`: NIKL Korean Basic Dictionary entry 71144 gives `[수ː마는]`.
+
+These are Hangul surface-pronunciation sources, not IPA gold. The browser G2P adapter now applies exact-form source corrections for `싫어서 → 시러서` and `수많은 → 수마는`, preserves the dictionary's `ː` in inspectable IPA only for the exact form `수많은`, and exposes the alternate `멋있어` reading only when the primary G2P surface is one of the two officially attested forms and the alternative IPA-to-target mapping is fully supported. The alternate is marked `lexical-review`; neither generated IPA nor Ukrainian output is labeled gold. The corrections run before IPA adaptation; no direct Hangul-to-Ukrainian mapping was added and no general rule was inferred.
+
+**Important limit:** these source-backed browser corrections do not change native strict-mode decisions for the 48 UGTPHON occurrences. Those remain unresolved in native strict mode until the native engine has an accepted IPA-level exact-form license or independent specialist adjudication. The source queue is for adjudication, not a tuning or scoring split.
+
+The source register now contains 109 records. Its rights audit classifies 105 as `REVIEW_REQUIRED`, 2 as `MANUAL_CLASSIFICATION_REQUIRED`, 1 as `NOT_APPLICABLE_RECORDED`, and 1 as `ITEM_LEVEL_LICENSE_RECORDED`. Thus 107 records still need a human rights decision; adding evidence does not clear item-level reuse terms.
+

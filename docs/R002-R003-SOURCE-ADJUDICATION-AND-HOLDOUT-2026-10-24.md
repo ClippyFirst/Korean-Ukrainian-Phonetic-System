@@ -1,0 +1,85 @@
+# R002/R003 source adjudication: 14-form triage register (2026-10-24)
+
+## Status
+
+**PARTIAL — the 14-form triage set is registered and structurally guarded; exact-form source adjudication and independent IPA review remain open.** This change does not claim that any of the 14 forms has been linguistically adjudicated, and it does not add or alter production pronunciation rules.
+
+The register is `research/r002-r003-source-adjudication-2026-10-24.json`. Its companion test, `tests/r002-r003-source-adjudication-queue.test.mjs`, requires 14 distinct inputs (7 R002 and 7 R003), preserves the exact benchmark row and morphophonological span, and prevents the diagnostic corpus reference or a competing engine output from being represented as normative IPA gold.
+
+## Provenance and scope
+
+- Benchmark workflow run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978)
+- Artifact: [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692)
+- Artifact commit: `94c21ea957c28225caea27b9df69aa8772fea6f7`
+- Primary rule reference: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002)
+- Existing error analysis: [KOREAN-ERROR-ANALYSIS-2026-10-24.md](KOREAN-ERROR-ANALYSIS-2026-10-24.md)
+
+The 14 items were selected from the pinned diagnostic artifact's native abstention ledger: seven R002 cases and seven R003 cases. The artifact's IPA reference is noisy user-generated data, not a NIKL gold set. The rule-family URL gives the relevant normative framework but does **not** prove that each exact lexical form, segmentation, or morphophonological environment is licensed. Every item therefore remains `PENDING_EXACT_FORM_SOURCE`.
+
+## Case register
+
+| Case IDs | Forms | Why queued | Current gate |
+|---|---|---|---|
+| R002-01–07 | 되었어, 찢었으면, 했었음, 붙어야, 멋있어, 칡칡이, 이런삶은 | R002 native abstentions; some corpus references agree with g2pk, others do not; compact or lexical cases need segmentation review | Exact-form source + morphology + independent IPA |
+| R003-01–07 | 수많은, 괜찮아보이는디, 많을거같이, 싫어서, 쌓아서, 좋아보인다고, 좋은데 | R003 native abstentions; includes compact colloquial strings and contexts where morphology/spacing is not independently established | Exact-form source + morphology + independent IPA |
+
+The case-level register preserves diagnostic references and engine outputs solely to help reviewers locate the disagreements. These values are not accepted IPA gold. No candidate IPA is filled into the adjudication fields, no Ukrainian target is certified, and no production heuristic is licensed by this register.
+
+## Required adjudication procedure
+
+1. **Exact-form source review:** open the official NIKL rule text and relevant official Q&A/dictionary entry. Record the exact passage or answer, source locator, date, and whether the exact word and grammatical environment are directly attested or merely derived from a general rule.
+2. **Morphological review:** record segmentation and the grammatical status of the following element. If a compact string such as `괜찮아보이는디`, `많을거같이`, `좋아보인다고`, or `이런삶은` cannot be safely segmented from the available evidence, keep it unresolved rather than inferring boundaries from adjacency.
+3. **Independent broad IPA:** two qualified reviewers independently transcribe from the verified Korean form without seeing one another's IPA first. Record the transcription convention, syllable boundaries, relevant length/fortis/aspiration distinctions, qualifications, date, and method references.
+4. **Reconciliation:** preserve disagreements until an evidence-backed reconciliation is documented. A rule citation alone, majority engine agreement, or match to noisy corpus IPA is not enough.
+5. **Holdout freeze:** only source-verified, independently adjudicated items may be promoted to a normative holdout. Freeze the split and manifest before any rule changes are evaluated. Do not tune on the holdout.
+6. **Separate target review:** evaluate Ukrainian rendering only after the Korean IPA input is frozen; report that result separately.
+
+## Task ledger
+
+| Task | Status | Acceptance criterion |
+|---|---|---|
+| Identify and register 14 distinct R002/R003 cases | DONE_VERIFIED as triage bookkeeping | 14 unique case IDs/inputs; 7 per rule; benchmark provenance retained |
+| Keep noisy corpus and engine outputs out of normative gold | DONE_VERIFIED as schema/test guard | Automated test requires exact-form source and independent review fields to remain empty until reviewed |
+| Verify exact NIKL source for all 14 forms | TODO | Each form has an exact official locator and excerpt; direct evidence is distinguished from rule-derived inference |
+| Resolve morphological segmentation and rule applicability | TODO / BLOCKED where input context is insufficient | Each case has a reviewed parse and explicit licensed environment, or remains unresolved |
+| Independent broad-IPA review | TODO / BLOCKED pending qualified reviewers | Two independent reviews, explicit convention, boundaries and reconciliation record |
+| Frozen NIKL holdout and post-fix measurement | TODO | Held-out manifest frozen before development; score only adjudicated IPA and report coverage/abstention separately |
+| Korean IPA → Ukrainian evaluation | BLOCKED | Separate independently reviewed Ukrainian target gold set and blinded evaluation protocol |
+
+## Verification status
+
+The queue test is included in the repository's configured `npm test` suite, and the source/test state at commit `0605398d5b9554bf4ac694b673f2728da17c0f08` passed all three workflows: [tests 40095464926](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464926), [system verification 40095464989](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464989), and [research-artifact validation 40095464893](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40095464893). This document-only follow-up requires its own exact-head CI run; do not treat the predecessor's passing checks as verification of a later commit. The register itself is not a benchmark score and does not change runtime behavior.
+
+
+## Internet source review — 2026-10-24
+
+A focused search of official National Institute of Korean Language (NIKL) resources found exact-form evidence for three of the 14 cases. This is a real source-review advance, but **not** completion of IPA adjudication: the cited sources use Hangul pronunciation notation, not IPA.
+
+| Form | Official source | What it establishes | What remains open |
+|---|---|---|---|
+| `멋있어` | [NIKL Online Q&A, 2024-11-18](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166) | Explicitly says both [머디써] and [머시써] occur as pronunciations of 멋있어 | Independent broad-IPA transcription of both accepted variants; confirm benchmark convention and how alternatives are represented |
+| `싫어서` | [NIKL Online Q&A, 2025-04-29](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313981) | Explicitly explains ㅎ deletion from ㅀ before the vowel-initial ending and liaison of ㄹ, yielding [시러서] | Independent broad-IPA transcription and comparison against the benchmark's target convention |
+| `수많은` | [NIKL Korean Basic Dictionary, 수많다](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144) | The lexical entry directly lists the attributive form `수많은[수ː마는]`, including length notation | Independent broad-IPA transcription; verify how lexical length is encoded in the target corpus |
+
+The full URLs, source excerpts, access date, source type, and reviewed morphological notes are stored on each case in the JSON register with status `SOURCE_FOUND_PENDING_IPA`. The other 11 cases remain `PENDING_EXACT_FORM_SOURCE`. The rule-family NIKL URL remains a navigation aid only and is not counted as exact-form evidence.
+
+### Important distinction for the benchmark
+
+NIKL's bracketed outputs above are **Hangul-based pronunciation notation**. They are valuable official surface evidence but must not be copied into `finalBroadIpa` or treated as broad IPA gold. In particular, the two official variants for `멋있어` mean that a single deterministic output may be an incomplete acceptance criterion unless the product explicitly chooses a preferred variant or represents alternatives. Ukrainian rendering must be evaluated later against a frozen, independently reviewed IPA form, not inferred directly from the Hangul answer.
+
+
+### Related official dictionary entries (not exact-form adjudication)
+
+The search also found useful component-form evidence for three additional cases:
+- `붙어야`: [NIKL Korean Basic Dictionary, 붙다](https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=74181) lists `붙어[부터]`; it does not list the full form `붙어야`.
+- `쌓아서`: [NIKL Korean Basic Dictionary, 쌓다](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=62095) lists `쌓아[싸아]`; it does not directly adjudicate the complete form `쌓아서`.
+- `좋은데`: [NIKL Korean Basic Dictionary, 좋다](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=79033) lists `좋은[조ː은]`; it does not directly adjudicate the complete form `좋은데`.
+
+These are stored as `relatedSourceEvidence`, without changing the cases' `PENDING_EXACT_FORM_SOURCE` status. The queue test explicitly distinguishes related component-form evidence from exact-form source adjudication.
+
+
+Two further component/rule references were added without changing exact-form status:
+- `되었어`: [NIKL Korean Basic Dictionary, 되다](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=89858) lists `되어[되어/뒈여]` and `돼[돼ː]`, but does not directly list `되었어`.
+- `쌓아서`: the [NIKL Standard Pronunciation Rules, Article 12 commentary](https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002) explains deletion of stem-final ㅎ before a vowel-initial ending and includes `쌓이다[싸이다]`; together with the dictionary's `쌓아[싸아]`, this supports the rule environment but still does not directly list the complete form `쌓아서`.
+
+The case register therefore has exact-form official evidence for three forms and related component/rule evidence for four other forms (`되었어`, `붙어야`, `쌓아서`, `좋은데`). The remaining seven cases have no official evidence recorded in this pass. These counts describe source discovery only, not IPA adjudication.
