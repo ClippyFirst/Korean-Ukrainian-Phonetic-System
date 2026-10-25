@@ -92,7 +92,7 @@ The g2pk column is only a comparator distance against the dataset's IPA annotati
 
 - **DONE_VERIFIED_SOURCE:** two exact browser surface corrections are pinned to NIKL primary sources in `docs/PRIMARY-SOURCE-ADJUDICATION-2026-10-25.md`.
 - **DONE_VERIFIED_PRIOR_HEAD:** the repository already has a strict/soft and analyzer-boundary benchmark; reuse its pinned artifact rather than duplicating its workflow. See the quantitative follow-up below.
-- **TODO pending exact-head CI:** new two-analyzer formal-tag consensus adapter and benchmark; its output is explicitly diagnostic-only.
+- **PARTIAL:** two-analyzer formal-tag consensus adapter and benchmark passed in [run 40196942415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40196942415) on a prior code head; exact-head rerun after the later IPA-status, source-register, and diagnostic-report assertions is queued and not yet verified.
 - **BLOCKED_SPECIALIST_ADJUDICATION:** independent IPA review; one occurrence is withheld for this reason rather than a phonological rule.
 - **BLOCKED_INPUT_NORMALIZATION / MORPHOLOGY:** word segmentation and morpheme-boundary inference for unspaced noisy input.
 - **BLOCKED_INDEPENDENT_TARGET_GOLD:** this audit evaluates Korean IPA annotations only, not Ukrainian output.
@@ -119,7 +119,7 @@ The paired morphology reports also show 93.70% Kiwi/MeCab agreement on 238 obser
 - `DONE_VERIFIED_SOURCE`: exact NIKL evidence for `넓죽하다 → 넙쭈카다` and `읽고 → 일꼬` is already present on current main; the regression test checks both Q&A IDs.
 - `DONE_VERIFIED_PRIOR_HEAD`: strict/soft and boundary-gated metrics above are backed by the existing research artifact, but are not a fresh run on the current PR head.
 - `TODO / pending exact-head CI`: analyzer-consensus helper, tests, and dual-analyzer UGTPHON workflow added on the current continuation branch.
-- `PARTIAL_MANIFEST_PROVENANCE`: the original frozen 24-form manifest has now been recovered by immutable Git blob SHA `f30c5fa8a59753df3d7c06bbbe7d4e43d0b8fb26`; its exact 24 forms, order, and original case IDs match the tracked CSV. The historical commit/tree/PR/run reference remains unresolved; IPA and Ukrainian gold remain unavailable.
+- `PARTIAL_MANIFEST_PROVENANCE`: the original frozen 24-form manifest has been recovered by immutable Git blob SHA `f30c5fa8a59753df3d7c06bbbe7d4e43d0b8fb26`; exact forms, order, and original case IDs match the tracked CSV. The historical commit/tree/PR/run reference remains unresolved; IPA and Ukrainian gold remain unavailable.
 - `BLOCKED_SPECIALIST_ADJUDICATION`: no independent Korean broad-IPA gold set.
 - `BLOCKED_INDEPENDENT_TARGET_GOLD`: no independent Ukrainian practical-transcription gold set or scoring protocol.
 - `BLOCKED_EXTERNAL_ACCESS`: official live NIKL inventory workflow was skipped in prior runs; it is not a pass.
@@ -133,6 +133,28 @@ The first report exposed an important input-boundary hazard: `못잃어` and `�
 
 The final acceptance criterion remains: exact-head CI passes, the consensus report enumerates remaining abstentions, all analyzer-derived IPA stays diagnostic-only, and strict default output is unchanged.
 
+## Second consensus result after the unspaced-phrase guard
+
+The second consensus workflow passed in [run 40196942415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40196942415) on a prior code head. After withholding licenses for tokens where both analyzers agree on an unspaced `MAG → VV/VA/VX` boundary:
+
+| Strategy | Scored / 2703 | Coverage | Exact matches | Exact rate | CER | Unresolved occurrences |
+|---|---:|---:|---:|---:|---:|---:|
+| Native strict | 2655 | 98.2242% | 1412 | 53.1827% | 9.1883% | 48 |
+| Native soft | 2677 | 99.0381% | 1421 | 53.0818% | 9.1868% | 26 |
+| Analyzer-consensus candidate | 2684 | 99.2971% | 1423 | 53.0179% | 9.1930% | 19 |
+
+The consensus candidate scores 29 more occurrences than strict (28 unique forms), but its exact rate is 0.1648 percentage points lower and CER is 0.0047 percentage points worse. The strict-vs-consensus paired subset is unchanged. This is a **coverage/diagnostic improvement, not an accuracy improvement**; keep it opt-in and diagnostic-only. The report identifies 24 unique tokens with a shared likely missing-space adverb-to-verb boundary; no rules are licensed for those tokens.
+
+The remaining 19 unresolved forms are evidence-limited rather than runtime failures. They include: an IPA-adjudication blocker (`삶의`); a complex-coda/ㅎ context without a source-aligned boundary (`긁혔다는거지`); analyzer/orthographic contractions (`있었`, `했었음`, `군대보냈어야`, `벗어날`, `좋아해주는`); lexicalized or phrase-level boundaries (`많이본`, `많을거같이`, `못잃어`, `안늙었는데`, `개같이못하고`, `알잖아아침에`, `개좆망했잖아`); and noisy spellings or ending segmentation (`쫒아내면`, `많앗구나유유유`, `무서웟어`, `죽었잖아`, `웃어넘기겟지만`). One occurrence can contain multiple unresolved contexts, which is why the 48 occurrence count and 49 context count differ.
+
+## Raw port versus practical browser adapter
+
+The Python differential warning compares the **raw vendored JavaScript g2pK port** against Python g2pk; it does not call the practical adapter. Its two raw mismatches are intentional and source-backed: raw JS gives `널쭈카다` / `익꼬`, while the practical browser adapter applies exact-form NIKL corrections to `넙쭈카다` / `일꼬` before IPA. The raw port remains pinned for upstream parity. The differential report now carries the practical adapter surface and labels the mismatch as an expected raw-port divergence covered by the adapter. Browser regression coverage independently checks the corrected output and the source IDs.
+
+## Exact-head verification boundary
+
+Core consensus logic and the diagnostic-only g2pK gate passed the previous head's test/system/browser/benchmark workflows. The latest head `839fd65748ab88f9c0054b8b9b023d48c427c307` includes the final source-register count update and sharper regression assertions; its workflow set is currently queued, not passed. Do not mark those final-head checks successful until GitHub reports completion.
+
 ## Reconciled strict/soft/consensus result on current implementation head
 
 The exact-head morphology-consensus workflow [40197611605](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611605) passed on code head `781dc5d0d1956d216afd30a04671b2db93e853d6`. Artifact [12600583566](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611605/artifacts/12600583566) reports the same pinned 2,703-occurrence UGTPHON split:
@@ -144,4 +166,3 @@ The exact-head morphology-consensus workflow [40197611605](https://github.com/Cl
 | Kiwi + MeCab-Ko consensus (diagnostic only) | 99.2971% | 53.0179% | 52.6452% | 9.1930% | 19 |
 
 Consensus resolves 28 unique words relative to strict and leaves 19 unresolved occurrences/unique words. This is a coverage gain, not a demonstrated improvement in pronunciation accuracy: exact match among scored cases falls slightly, while coverage-adjusted exact rises because more cases receive a candidate. All consensus-derived IPA remains `diagnostic_only_analyzer_morphology`; it is not independent IPA gold and is not promoted to Ukrainian output. The strict default and target-rendering evidence gate remain unchanged.
-
