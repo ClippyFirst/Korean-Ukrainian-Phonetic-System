@@ -77,7 +77,7 @@ test('CLI reports structure by default and keeps strict rights acceptance blocke
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
-  assert.equal(report.sourceRegisterRows, 109);
+  assert.equal(report.sourceRegisterRows, 110);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
 
