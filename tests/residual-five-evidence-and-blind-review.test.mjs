@@ -10,7 +10,7 @@ test('the exact 칡칡이 attestation is scoped to a folk-song title, not a lexi
   assert.equal(item.status, 'BLOCKED');
   assert.equal(item.candidateForms.length, 0);
   assert.ok(item.evidence.some(source => source.url.includes('EB_culture_song02.pdf')));
-  assert.match(item.evidence[0].scope, /title/i);
+  assert.match(item.evidence[0].scope, /heading/i);
   assert.match(item.why, /does not establish/i);
 });
 
