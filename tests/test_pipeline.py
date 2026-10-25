@@ -564,8 +564,8 @@ def test_nikl_section_24_exact_form_licenses_render_correct_surface_ipa():
 def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
     from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
 
-    strict = phoneticize_korean("수많은")
-    soft = phoneticize_korean("수많은", morphology_mode="soft")
+    strict = phoneticize_korean("많아보임")
+    soft = phoneticize_korean("많아보임", morphology_mode="soft")
     assert strict["pronunciation_status"] == "unresolved"
     assert soft["pronunciation_status"] == "provisional"
     trace = next(rule for rule in soft["rules"] if rule["rule_id"] == "R003")
@@ -573,7 +573,7 @@ def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
     assert trace["source"] == "soft-heuristic-morphology"
     assert soft["ipa_is_diagnostic_only"] is False
 
-    target = transliterate_korean("수많은", morphology_mode="soft")
+    target = transliterate_korean("많아보임", morphology_mode="soft")
     assert target["morphology_mode"] == "soft"
     assert target["ipa_status"] == "provisional"
 
@@ -601,12 +601,14 @@ def test_nikl_exact_r003_forms_resolve_h_deletion_without_opening_a_productive_h
     # NIKL official exact-form evidence: 싫어서 [시러서] and 수많은 [수ː마는].
     # The source validates Korean surface behavior only; it is not IPA or
     # Ukrainian-output gold, and unrelated forms must remain fail-closed.
-    expected_codas = {"싫어서": (0, "ㄹ"), "수많은": (1, "ㄴ")}
-    for form, (syllable_index, expected_coda) in expected_codas.items():
+    expected_surfaces = {"싫어서": (1, "ㄹ"), "수많은": (2, "ㄴ")}
+    for form, (syllable_index, expected_onset) in expected_surfaces.items():
         result = phoneticize_korean(form)
         r003 = [rule for rule in result["rules"] if rule["rule_id"] == "R003"]
         assert any(rule["changed"] for rule in r003), form
-        assert result["surface_syllables"][syllable_index]["coda"] == expected_coda, form
+        # After ㅎ deletion, the retained ㄹ/ㄴ resyllabifies onto the next
+        # vowel-initial syllable in the surface representation.
+        assert result["surface_syllables"][syllable_index]["onset"] == expected_onset, form
 
     unlicensed = phoneticize_korean("많아보임")
     assert not any(rule["rule_id"] == "R003" and rule["changed"] for rule in unlicensed["rules"])
