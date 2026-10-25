@@ -88,6 +88,7 @@ jobs:
           if report["engine_errors"]:
               raise SystemExit("soft morphology benchmark encountered engine errors")
           PY
+          cp "$RUNNER_TEMP/ugtphon-ko-soft-report.json" "$GITHUB_WORKSPACE/ugtphon-ko-soft-report.json"
       - name: Run paired native-vs-g2pk comparison
         run: |
           set -euo pipefail
@@ -127,4 +128,5 @@ jobs:
             ${{ runner.temp }}/ugtphon-ko-report.json
             ${{ runner.temp }}/benchmark-stdout.json
             ${{ runner.temp }}/ko-LICENSE
+            ugtphon-ko-soft-report.json
           if-no-files-found: warn
