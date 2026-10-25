@@ -12,16 +12,24 @@
 
 # Native Korean abstention audit — 2026-10-25
 
+## Exact-head benchmark verification — 2026-10-25
+
+- Latest multi-engine benchmark passed: [run 40212705617](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40212705617), artifact [12606785170](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40212705617/artifacts/12606785170). The pinned UGTPHON result is 2,657/2,703 scored (98.2982% coverage), 1,412 exact (53.1426%), CER 9.1995%, 46 unresolved, zero engine errors.
+- Current context inventory from that artifact: R002 25, R003 18, R007 2, R004 1, IPA adjudication 1; 47 labels across 46 occurrences because one occurrence has two contexts.
+- The native engine remains slightly better than g2pk on the common subset for CER (9.1995% vs 9.2525%) but lower on exact rate (53.1426% vs 53.2932%); this is diagnostic-only noisy-corpus comparison, not normative validation. Neither comparator nor the corpus labels certify Ukrainian target output.
+- Verification passed on code/test head `918b0f8a07e2cbf4c9b3bfe42cae7d263f7b9ef8`: Python 3.11/3.12/3.13, wheel install, browser tests/build, system verification, external UGTPHON, paired native-vs-g2pk, morphology-consensus diagnostic, research morphology adapter smoke, and master-table/research-artifact validation. The latest documentation-only head has additional CI queued.
+- Current status remains `PARTIAL`: 46 unresolved cases, no independent IPA adjudication for the target corpus, no Ukrainian-output gold corpus, and live NIKL inventory blocked/skipped. Not release-ready.
+
 ## Finding
 
-The 48 UGTPHON native abstentions are **not runtime errors**. The pinned diagnostic reports 2,703 eligible token occurrences, 2,655 scored, 48 unresolved, and zero engine exceptions. They arise because the default `morphology_mode="strict"` intentionally requires exact full-form/pair evidence before applying morphology-conditioned rules. The same benchmark gives g2pk output for all 2,703 tokens, but its output is a comparator—not gold.
+Before PR #328, the pinned UGTPHON diagnostic had 48 native abstentions (47 unique input strings), 2,655 scored occurrences, and zero engine exceptions. Those were **not runtime errors**: strict mode intentionally requires exact full-form/pair evidence before applying morphology-conditioned rules. The g2pk output is a comparator, not gold.
 
-The audit covers 48 occurrences across 47 unique input strings. Rule-context counts sum to 49 because one occurrence has two unresolved contexts.
+After the two exact-form R003 licenses in PR #328, the latest pinned diagnostic reports **46 unresolved occurrences across 45 unique strings**, 2,657 scored, and zero engine errors. This is a coverage increase of two, not a demonstrated accuracy improvement: exact matches remain 1,412 and CER moves from 9.1883% to 9.1995%. The occurrence table below records the pre-patch baseline; it must not be read as the current unresolved set. The baseline context counts sum to 49 because one occurrence had two contexts.
 
 | Context class | Context count | Interpretation |
 |---|---:|---|
 | R002 liaison / neutralization | 25 | Formal vs substantive morpheme or exact inflection boundary is not licensed |
-| R003 ㅎ-coda deletion | 20 | Requires an ending/suffix license |
+| R003 ㅎ-coda deletion | 18 current (20 baseline) | Requires an ending/suffix license; exact-form licenses resolve `싫어서` and `수많은` |
 | R007 palatalization | 2 | Formal-morpheme /i/ context is not licensed |
 | R004 complex coda + ㅎ aspiration | 1 | Morphophonemic context is not licensed |
 | IPA_ADJUDICATION | 1 | Korean surface evidence exists, but project IPA has no independent adjudication |
