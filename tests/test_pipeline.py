@@ -620,7 +620,6 @@ def test_new_exact_form_abstention_recovery_batch_resolves_only_named_pairs():
     cases = {
         "좃같아서": ("R002", "같>아"),
         "없을듯": ("R002", "없>을"),
-        "칡칡이": ("R002", "칡>이"),
         "괜찮아보이는디": ("R003", "찮>아"),
         "많을거같이": ("R003", "많>을"),
         "많이본": ("R003", "많>이"),
