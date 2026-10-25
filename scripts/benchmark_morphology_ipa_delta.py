@@ -613,17 +613,153 @@ def evaluate(rows: list[dict[str, Any]], analyzer_name: str) -> dict[str, Any]:
     }
 
 
+
+def evaluate_consensus(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Compare an optional two-analyzer formal-boundary consensus against strict/soft.
+
+    Reuses the existing analyzer reports and score contract. The consensus path
+    is a research candidate only: it does not provide IPA gold and cannot
+    authorize Ukrainian output.
+    """
+    from korean_ukrainian.pipeline import phoneticize_korean
+    from korean_ukrainian.morphology_rule_licenses import phoneticize_korean_with_analyzer_consensus
+
+    mecab_report = evaluate(rows, "mecab-ko")
+    kiwi_report = evaluate(rows, "kiwi")
+    for report in (mecab_report, kiwi_report):
+        if report["morphology"]["status"] != "completed_diagnostic":
+            raise RuntimeError("both morphology analyzers must complete before consensus evaluation")
+
+    mecab_by_word = {item["word"]: item for item in mecab_report["morphology"]["results"]}
+    kiwi_by_word = {item["word"]: item for item in kiwi_report["morphology"]["results"]}
+    unique_words = list(mecab_by_word)
+    occurrences: list[dict[str, str]] = []
+    for row in rows:
+        for token in row["tokens"]:
+            word = token.get("canonical", "")
+            gold = token.get("phoneme", "")
+            if isinstance(word, str) and _HANGUL_TOKEN.fullmatch(word) and isinstance(gold, str) and _gold_variants(gold):
+                occurrences.append({"row_id": str(row["id"]), "word": word, "gold": gold})
+
+    consensus_by_word: dict[str, dict[str, Any]] = {}
+    strict_by_word: dict[str, dict[str, Any]] = {}
+    errors: dict[str, str] = {}
+    for word in unique_words:
+        try:
+            analyses = [
+                {"text": word, "analyzer": "mecab-ko", "morphemes": mecab_by_word[word]["morphemes"]},
+                {"text": word, "analyzer": "kiwi", "morphemes": kiwi_by_word[word]["morphemes"]},
+            ]
+            result = phoneticize_korean_with_analyzer_consensus(word, analyses)
+            ipa = result.get("ipa", {}).get("ipa")
+            consensus_by_word[word] = {
+                "ipa": ipa,
+                "normalized_ipa": normalize_ipa(ipa) if isinstance(ipa, str) and ipa else None,
+                "unresolved": result.get("pronunciation_status") == "unresolved",
+                "ipa_status": result.get("ipa_status"),
+                "morphology_analysis": result.get("morphology_analysis", {}),
+                "unresolved_contexts": result.get("unresolved_contexts", []),
+            }
+            strict_by_word[word] = _native_prediction(phoneticize_korean, word, "strict")
+        except Exception as exc:
+            errors[word] = f"{type(exc).__name__}: {exc}"
+
+    consensus_scored: list[dict[str, Any]] = []
+    paired_scores: dict[str, list[dict[str, Any]]] = {"strict": [], "analyzer_consensus": []}
+    resolved_words: list[dict[str, Any]] = []
+    changed_words: list[dict[str, Any]] = []
+    for occurrence in occurrences:
+        word = occurrence["word"]
+        candidate = consensus_by_word.get(word)
+        strict = strict_by_word.get(word)
+        if not candidate or not strict:
+            continue
+        if strict.get("unresolved") and not candidate.get("unresolved") and candidate.get("ipa"):
+            resolved_words.append({
+                "word": word,
+                "ipa": candidate["ipa"],
+                "ipa_status": candidate.get("ipa_status"),
+                "applied_licenses": candidate.get("morphology_analysis", {}).get("applied_licenses", []),
+            })
+        if (
+            strict.get("unresolved") != candidate.get("unresolved")
+            or strict.get("normalized_ipa") != candidate.get("normalized_ipa")
+        ) and not any(item["word"] == word for item in changed_words):
+            changed_words.append({
+                "word": word,
+                "strict_ipa": strict.get("ipa"),
+                "consensus_ipa": candidate.get("ipa"),
+                "strict_unresolved": strict.get("unresolved"),
+                "consensus_unresolved": candidate.get("unresolved"),
+                "ipa_status": candidate.get("ipa_status"),
+                "applied_licenses": candidate.get("morphology_analysis", {}).get("applied_licenses", []),
+            })
+        if candidate.get("unresolved") or not candidate.get("ipa"):
+            continue
+        score = _score(candidate["ipa"], occurrence["gold"])
+        score.update({"row_id": occurrence["row_id"], "word": word, "gold": occurrence["gold"]})
+        consensus_scored.append(score)
+        if not strict.get("unresolved") and strict.get("ipa"):
+            paired_scores["strict"].append(_score_paired_primary_reference(strict["ipa"], occurrence["gold"]))
+            paired_scores["analyzer_consensus"].append(_score_paired_primary_reference(candidate["ipa"], occurrence["gold"]))
+
+    consensus_metrics = _metrics(consensus_scored, len(occurrences))
+    paired = _paired_comparison(paired_scores, len(occurrences), "strict", "analyzer_consensus")
+    unresolved_unique = sum(
+        bool(item.get("unresolved")) for item in consensus_by_word.values()
+    )
+    return {
+        "benchmark": "UGTPHON Korean test split",
+        "benchmark_type": "strict/soft plus two-analyzer formal-boundary consensus candidate",
+        "dataset_rows": len(rows),
+        "eligible_token_occurrences": len(occurrences),
+        "unique_hangul_words": len(unique_words),
+        "native_ipa": {
+            "strict": mecab_report["native_ipa"]["strict"],
+            "soft": mecab_report["native_ipa"]["soft"],
+            "analyzer_consensus": {
+                **consensus_metrics,
+                "unresolved_occurrences": len(occurrences) - len(consensus_scored),
+                "unresolved_unique_words": unresolved_unique,
+                "runtime_errors_unique_words": len(errors),
+                "runtime_error_examples": dict(list(errors.items())[:50]),
+                "newly_resolved_unique_words_vs_strict": len({item["word"] for item in resolved_words}),
+                "newly_resolved_examples": resolved_words[:100],
+                "changed_unique_words_vs_strict": len(changed_words),
+                "changed_examples": changed_words[:100],
+                "paired_vs_strict": paired,
+                "status": "diagnostic_only_analyzer_consensus",
+            },
+        },
+        "morphology": {
+            "status": "completed_diagnostic",
+            "analyzers": ["kiwi", "mecab-ko"],
+            "analysis_count_per_word": 2,
+            "rule_licensing": "only shared orthographic boundaries with formal POS tags; exact forms only",
+            "interpretation": "candidate morphology support, not gold segmentation or pronunciation",
+        },
+        "limitations": [
+            "UGTPHON is noisy user-generated text, not normative NIKL gold.",
+            "The reference IPA convention may differ from this project's broad IPA conventions.",
+            "Morphological analyzer consensus supports a boundary/tag hypothesis; it does not prove the phonological reading.",
+            "Candidate IPA is explicitly diagnostic-only and must not bypass the IPA-to-Ukrainian acceptance gate.",
+            "Unspaced multiword inputs may still have cross-word phonology errors even when a local ending is recognized.",
+            "This report evaluates Korean IPA only, not Ukrainian target adaptation.",
+        ],
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corpus", type=Path, default=os.environ.get("UGTPHON_KO_TEST_PATH"))
-    parser.add_argument("--analyzer", required=True, choices=["kiwi", "mecab-ko"])
+    parser.add_argument("--analyzer", required=True, choices=["kiwi", "mecab-ko", "consensus"])
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH")
     try:
         rows = load_corpus(Path(args.corpus))
-        report = evaluate(rows, args.analyzer)
+        report = evaluate_consensus(rows) if args.analyzer == "consensus" else evaluate(rows, args.analyzer)
     except Exception as exc:
         print(f"benchmark failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
@@ -637,6 +773,7 @@ def main() -> int:
         "unique_hangul_words": report["unique_hangul_words"],
         "strict": report["native_ipa"]["strict"],
         "soft": report["native_ipa"]["soft"],
+        "analyzer_consensus": report["native_ipa"].get("analyzer_consensus"),
         "paired_delta": report["native_ipa"]["paired_subset"],
         "morphology": {key: value for key, value in report["morphology"].items()
                        if key not in {"results", "errors", "tag_counts_top_50"}},
@@ -647,6 +784,8 @@ def main() -> int:
     if report["morphology"]["status"] != "completed_diagnostic":
         return 1
     if report["native_ipa"]["strict"]["runtime_errors_unique_words"] or report["native_ipa"]["soft"]["runtime_errors_unique_words"]:
+        return 1
+    if args.analyzer == "consensus" and report["native_ipa"]["analyzer_consensus"]["runtime_errors_unique_words"]:
         return 1
     return 0
 
