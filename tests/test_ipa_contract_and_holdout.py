@@ -29,6 +29,11 @@ def test_holdout_validation_uses_hash_bound_external_overlap_record():
     assert result["ipa_gold_count"] == 0
     assert result["local_runtime_or_fixture_overlap_count"] == 0, json.dumps({"overlaps": result["local_runtime_or_fixture_overlaps"], "unused_nikl_candidates": result["candidate_suggestions"]}, ensure_ascii=False)
     assert result["excluded_source_only_fixtures"] == ["tests/fixtures/nikl-article-review-1-30.json", "tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt"]
+    assert result["excluded_quarantined_holdout_assets"] == [
+        "data/korean/ipa_holdout_2026-10-24.json",
+        "data/korean/benchmarks/ipa-holdout-24-manifest.json",
+        "data/korean/benchmarks/target-renderer-holdout-24.csv",
+    ]
     assert result["external_benchmark_overlap_check"] == "RECORDED_PINNED_ARTIFACT_CHECK"
     assert result["external_benchmark_overlap_count"] == 0
     assert result["holdout_certification"] == "OVERLAP_CHECKED_NO_EXACT_INPUT_OVERLAP"
