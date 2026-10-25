@@ -132,6 +132,7 @@ def evaluate(rows: list[dict[str, Any]], *, morphology_mode: str = "strict") -> 
                 "predicted": predicted_raw, "normalized_predicted": predicted,
                 "closest_normalized_gold": closest_gold, "distance": distance,
                 "exact": distance == 0,
+                "heuristic_rules": heuristic_rules,
             })
 
     comparable = [item for item in scored if item["distance"] is not None]
@@ -141,6 +142,9 @@ def evaluate(rows: list[dict[str, Any]], *, morphology_mode: str = "strict") -> 
     exact = sum(item["exact"] for item in comparable)
     return {
         "benchmark": "UGTPHON Korean test split",
+        "morphology_mode": morphology_mode,
+        "heuristic_low_confidence_token_occurrences": heuristic_token_occurrences,
+        "heuristic_low_confidence_examples": heuristic_examples,
         "purpose": "diagnostic external IPA comparison; not a normative acceptance gate",
         "rows": len(rows),
         "scored_tokens": len(comparable),
@@ -173,12 +177,14 @@ def main() -> int:
     parser.add_argument("--corpus", type=Path, default=os.environ.get("UGTPHON_KO_TEST_PATH"),
                         help="path to external UGTPHON ko/test.json (or set UGTPHON_KO_TEST_PATH)")
     parser.add_argument("--output", type=Path, help="optional JSON report destination")
+    parser.add_argument("--morphology-mode", choices=("strict", "soft"), default="strict",
+                        help="strict fail-closed default or opt-in low-confidence formal-ending hypotheses")
     args = parser.parse_args()
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH; no network download is performed")
     try:
         rows = load_corpus(Path(args.corpus))
-        report = evaluate(rows)
+        report = evaluate(rows, morphology_mode=args.morphology_mode)
     except Exception as exc:
         print(f"benchmark failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
