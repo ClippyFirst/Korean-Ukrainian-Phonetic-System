@@ -45,3 +45,6 @@ The repository does not use the first set as a substitute for the last two.
 ## Readiness interpretation
 
 “Full readiness” here means the computational architecture, machine-readable contracts, conditional rule model, provenance, validation and reproducibility layers are closed to the extent supported by the available evidence. It does **not** mean that missing empirical datasets have been invented or that a computational heuristic has been promoted to a linguistic fact.
+
+
+| IPA→Ukrainian public adapter failure contract | Implemented; exact-head CI pending | Unavailable results use null, never partial/empty-string output; regression tests cover empty IPA, unmapped IPA, alignment mismatch and provisional mappings |

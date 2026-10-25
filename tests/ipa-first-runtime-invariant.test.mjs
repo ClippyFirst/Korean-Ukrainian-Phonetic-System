@@ -216,8 +216,9 @@ test('IPA-derived targets preserve whitespace and align multiword inputs without
   assert.equal(multiword.status, 'model-selected');
 
   const unknown = ipaTargetForSource('가', '💥');
-  assert.equal(unknown.text, '');
-  assert.deepEqual(unknown.syllables, ['']);
+  assert.equal(unknown.text, null);
+  assert.deepEqual(unknown.syllables, []);
   assert.equal(unknown.unknown, '💥');
   assert.equal(unknown.status, 'unavailable');
+  assert.deepEqual(unknown.mappingTrace, []);
 });
