@@ -170,6 +170,14 @@ jobs:
           assert discrepancy_audit["occurrence_count"] == len(discrepancy_audit["occurrences"])
           assert sum(discrepancy_audit["category_counts"].values()) == discrepancy_audit["occurrence_count"]
           assert all(item.get("category") for item in discrepancy_audit["occurrences"])
+          print("ClippyFirst-vs-gold discrepancy audit:",
+                discrepancy_audit["occurrence_count"], discrepancy_audit["category_counts"])
+          pairwise_audit = r["native_g2pk_pairwise_audit"]
+          assert pairwise_audit["status"] == "completed"
+          assert pairwise_audit["occurrence_count"] == r["eligible_token_occurrences"]
+          assert sum(pairwise_audit["category_counts"].values()) == pairwise_audit["occurrence_count"]
+          print("ClippyFirst-vs-g2pK pairwise audit:",
+                pairwise_audit["occurrence_count"], pairwise_audit["category_counts"])
           print("g2pK 0.9.4 included as an external comparison baseline; its IPA adaptation path is documented in the report.")
           print("Diagnostic only. This corpus is not normative NIKL gold and does not evaluate Ukrainian output.")
           engines = r["engines"]
@@ -233,6 +241,14 @@ jobs:
           assert discrepancy_audit["occurrence_count"] == len(discrepancy_audit["occurrences"])
           assert sum(discrepancy_audit["category_counts"].values()) == discrepancy_audit["occurrence_count"]
           assert all(item.get("category") for item in discrepancy_audit["occurrences"])
+          print("ClippyFirst-vs-gold discrepancy audit:",
+                discrepancy_audit["occurrence_count"], discrepancy_audit["category_counts"])
+          pairwise_audit = r["native_g2pk_pairwise_audit"]
+          assert pairwise_audit["status"] == "completed"
+          assert pairwise_audit["occurrence_count"] == r["eligible_token_occurrences"]
+          assert sum(pairwise_audit["category_counts"].values()) == pairwise_audit["occurrence_count"]
+          print("ClippyFirst-vs-g2pK pairwise audit:",
+                pairwise_audit["occurrence_count"], pairwise_audit["category_counts"])
           for required in ("clippyfirst_native",):
               if engines[required]["scored_tokens"] <= 0:
                   raise SystemExit(f"required baseline produced no scored tokens: {required}")
