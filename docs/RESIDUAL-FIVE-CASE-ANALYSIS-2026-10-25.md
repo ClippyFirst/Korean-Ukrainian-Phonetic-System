@@ -47,7 +47,7 @@ The accompanying tests validate these evidence/status boundaries only. They do n
 
 ### `칡칡이`: exact attestation found, morphology still unresolved
 
-A local-culture PDF lists `칡칡이` as the heading for `철마면 민요 26`, with a singer, recording date/location, and a bibliographic pointer to 이소라, *양산의 민요* (1992), p. 180: [source PDF](https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf). This is an exact attestation of the string as a regional folk-song title. It is **not** a lexical definition and does not identify morpheme boundaries. The cited 1992 source/page or rights-cleared field notes are still needed to determine whether the title is lexicalized, dialectal, onomatopoeic/refrain-like, or opaque. Strict mode remains blocked; no `칡+칡+이` segmentation is inferred.
+A local-culture PDF lists `칡칡이` as the heading for `철마면 민요 26`, identifies singer 이문춘, recording date 1991-10-19 and location 철마면 이곡리, and cites 이소라, *양산의 민요* (1992), p. 180: [source PDF](https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf). The short call-and-response text includes “노자 좋다 젊어 놀아” and the refrain “치기타 칭칭나네”. This establishes a title/context attestation, **not** a lexical definition or morpheme boundary. The cited 1992 source/page or rights-cleared field notes/audio are still needed to determine whether the title is lexicalized, dialectal, a refrain label, a transcription variant, or opaque. Strict mode remains blocked; no `칡+칡+이` segmentation is inferred.
 
 ### `많앗구나유유유`: external usage confirms ambiguity, not intent
 
