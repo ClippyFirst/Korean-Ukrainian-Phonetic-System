@@ -231,8 +231,17 @@ def phoneticize_korean_with_analyzer_consensus(
         "acceptance": "diagnostic-only; not independent IPA adjudication",
     }
     if applied:
-        status = "diagnostic_only_analyzer_morphology"
-        reason = "Morphology-assisted rule licensing is low-confidence and requires independent pronunciation review."
+        if result.get("pronunciation_status") == "unresolved":
+            # Preserve the stronger blocker (e.g. independent IPA adjudication)
+            # instead of overwriting it with the less-specific morphology status.
+            status = result.get("ipa_status")
+            if not isinstance(status, str) or not status.startswith("diagnostic_only_"):
+                status = "diagnostic_only_unresolved_pronunciation"
+            reason = result.get("ipa_status_reason") or "Unresolved pronunciation contexts remain."
+            reason += " Analyzer-supported licenses are low-confidence and do not resolve these blockers."
+        else:
+            status = "diagnostic_only_analyzer_morphology"
+            reason = "Morphology-assisted rule licensing is low-confidence and requires independent pronunciation review."
         result["ipa_status"] = status
         result["ipa_is_diagnostic_only"] = True
         result["ipa_status_reason"] = reason
