@@ -170,9 +170,24 @@ test('dot-separated IPA syllables align to Hangul source and preserve punctuatio
 
 test('IPA/source syllable misalignment fails closed instead of shifting targets', () => {
   const result = ipaTargetForSource('서울역', 'sʌ.ul');
-  assert.equal(result.text, '');
+  assert.equal(result.text, null, 'unavailable is distinct from a successful empty spelling');
+  assert.deepEqual(result.syllables, [], 'misaligned output must not expose partial syllables');
   assert.equal(result.status, 'unavailable');
   assert.equal(result.reason, 'ipa_source_alignment_mismatch');
+});
+
+test('unknown IPA and empty IPA return an unavailable result, never a partial or empty-string success', () => {
+  const unknown = ipaTargetForSource('가나', 'ka.☃');
+  assert.equal(unknown.text, null);
+  assert.equal(unknown.status, 'unavailable');
+  assert.equal(unknown.reason, 'unmapped_ipa_sequence');
+  assert.deepEqual(unknown.syllables, []);
+  assert.deepEqual(unknown.mappingTrace, []);
+
+  const empty = ipaTargetForSource('가', '');
+  assert.equal(empty.text, null);
+  assert.equal(empty.status, 'unavailable');
+  assert.equal(empty.reason, 'empty_ipa');
 });
 
 test('provisional IPA target is withheld by default and remains inspectable as a research candidate', () => {

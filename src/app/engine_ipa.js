@@ -116,7 +116,7 @@ export function ipaTargetForSource(source,ipa,options={}){
   const sourceIpa=String(ipa??'').normalize('NFC');
   const ipaUnits=sourceIpa.split(/[.\s]+/u).filter(Boolean);
   if(!ipaUnits.length){
-    return {text:'',syllables:[],unknown:'',status:'unavailable',reason:'empty_ipa',mappingTrace:[]};
+    return {text:null,syllables:[],unknown:'',status:'unavailable',reason:'empty_ipa',mappingTrace:[]};
   }
   const detailed=ipaUnits.map(traceIpaMappingDetailed);
   const syllables=detailed.map(item=>item.unknown?'':item.tokens.map(token=>token.ukrainian).join(''));
@@ -127,14 +127,16 @@ export function ipaTargetForSource(source,ipa,options={}){
     : detailed.some(item=>item.status==='provisional')?'provisional':'model-selected';
   if(unknown){
     const failed=detailed.find(item=>item.unknown);
-    return {text:'',syllables,unknown,status,reason:failed?.reason||'unmapped_ipa_sequence',mappingTrace};
+    // Never return an empty string as if it were a successful target spelling,
+    // and never expose partial syllables when any IPA segment is unmapped.
+    return {text:null,syllables:[],unknown,status:'unavailable',reason:failed?.reason||'unmapped_ipa_sequence',mappingTrace:[]};
   }
 
   // The IPA contract is syllable-aligned. A mismatch is not repaired by
   // guessing which Ukrainian syllable belongs to which Hangul syllable.
   const expectedSyllables=[...sourceText].filter(ch=>/[가-힣]/u.test(ch)).length;
   if(expectedSyllables && expectedSyllables!==ipaUnits.length){
-    return {text:'',syllables,unknown:'',status:'unavailable',reason:'ipa_source_alignment_mismatch',mappingTrace};
+    return {text:null,syllables:[],unknown:'',status:'unavailable',reason:'ipa_source_alignment_mismatch',mappingTrace:[]};
   }
 
   if(!/[가-힣]/u.test(sourceText)){

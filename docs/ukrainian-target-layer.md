@@ -58,3 +58,8 @@ The original frozen 24-form holdout has **not** been recovered from a verifiable
 The strict Python API `render_ipa_sequence_to_ukrainian(ipa)` and browser source adapter `ipaTargetForSource(source, ipa)` withhold final Ukrainian orthography whenever any matched IPA→Ukrainian correspondence is `provisional`. They return an unavailable result, an explicit `provisional_mapping_requires_review` reason, and a separate `candidate_orthography`/`candidateText` for inspection. Research-only candidate rendering is explicit: Python `allow_provisional=True`; browser `{ allowProvisional: true }`. The interactive research pipeline opts in to display a candidate, but preserves `provisional` status and trace metadata in its result. This is a research-preview usability choice, not a claim of adjudicated correctness.
 
 This gate is deliberately conservative: a candidate such as `ɰi → ий`, `ø → ве`, `y → ві`, or `kʰjʌ → кхьо` is not asserted to be correct merely because a project row exists. Existing model-selected mappings remain explicit project decisions rather than independently adjudicated gold. To promote any provisional row, add independent linguistic/target review evidence and regression cases first.
+
+
+## Unavailable browser IPA results are not empty-string successes
+
+The public `ipaTargetForSource` adapter returns `text: null` when IPA is empty, contains an unmapped segment, or does not align with the Hangul syllable count. In these cases it also withholds partial syllable output and partial mapping traces from the result. This distinguishes a genuine empty string (not a valid Korean transcription) from a failed target rendering and mirrors the Python renderer's `ukrainian_orthography: null` contract.
