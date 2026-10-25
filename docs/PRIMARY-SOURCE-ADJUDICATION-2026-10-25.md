@@ -115,3 +115,10 @@ Primary source: NIKL Online Q&A, qna_seq=327454, answered 2026-02-19: https://ww
 The answer explicitly identifies the standard pronunciation of 같이 as [가치] under Standard Pronunciation Rule 17. The Python and browser engines now license only the exact 같>이 pair in 많을거같이 and 개같이못하고; they do not enable productive palatalization for other ㄷ/ㅌ + ㅣ strings.
 
 The same batch adds narrowly scoped derivations for 좃같아서 (같>아), 없을듯 (없>을), 칡칡이 (칡>이), 괜찮아보이는디 (찮>아), 많을거같이 (많>을), 많이본 (많>이), 알잖아아침에 (잖>아), 좋아보인다고 and 좋아해주는 (좋>아). These are exact full-form + adjacent-pair applications of existing NIKL rules, not claims that NIKL lists every noisy full token. No spelling normalization, inferred whitespace insertion, IPA gold, or Ukrainian target gold is introduced. 쫒아내면, 많앗구나유유유, 무서웟어 and 삶의 remain unresolved.
+
+
+## Case I — 못잃어: phrase-level ㄴ-insertion evidence, not a production license
+
+The National Institute of Korean Language's 2022 language-use survey discusses ㄴ-insertion responses for both “못 잇는다” and “못 잃어”. The indexed excerpt's detailed table is explicitly titled for “못 잇는다”; its reported percentages must not be transferred to “못 잃어”. Source: https://korean.go.kr/common/download.do%3Bfront%3DCCA5B0393BE746038C8D8FD7E20DAACF?c_file_name=f3b36689-d64e-457f-8a64-e79302bcb55c.pdf&file_path=reportData&o_file_name=2022%EB%85%84+%EA%B5%AD%EC%96%B4+%EC%82%AC%EC%9A%A9+%EC%8B%A4%ED%83%9C+%EC%A1%B0%EC%82%AC+%EA%B2%B0%EA%B3%BC%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf
+
+This supports treating the compact phrase as potentially variable, not selecting one deterministic surface IPA. The source does not supply a verified IPA variant set for the exact input, so `못잃어` remains withheld until the engine can represent the phrase boundary and its alternatives explicitly. No single survey variant is promoted to normative pronunciation or Ukrainian target gold.
