@@ -97,7 +97,7 @@ def test_all_canonical_lexical_pronunciations_are_reproducible_from_ipa():
             )
             alternate_checked += 1
 
-    assert checked == len(rows) == 643
+    assert checked == len(rows) == 644
     assert alternate_checked == 45
 
 
