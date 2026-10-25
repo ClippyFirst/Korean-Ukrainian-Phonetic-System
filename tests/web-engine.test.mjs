@@ -88,6 +88,18 @@ test('NIKL exact-form R003 licenses resolve two attested forms in browser strict
   }
 });
 
+test('NIKL usage-survey phrase variants are explicit provisional lexical candidates', () => {
+  const result = engine.convert('못잃어');
+  assert.equal(result.surfaceHangul, '몬니러');
+  assert.equal(result.ipa, 'mon ni ɾʌ');
+  assert.equal(result.status, 'lexical-review');
+  assert.equal(result.target_status, 'provisional');
+  assert.equal(result.variants.length, 1);
+  assert.equal(result.variants[0].surface, '모시러');
+  assert.equal(result.variants[0].ipa, 'mo ɕi ɾʌ');
+  assert.match(result.variants[0].note, /NIKL 2022/u);
+});
+
 test('NIKL R003 exact-form licenses do not generalize to unreviewed lookalikes', () => {
   for (const input of ['많아보임', '많이봄', '좋아보임']) {
     const result = engine.convert(input);

@@ -128,6 +128,20 @@ def test_misspelled_and_unreviewed_lookalikes_remain_fail_closed():
         ), (form, result.get("unresolved_contexts"))
 
 
+def test_mot_ireoyo_phrase_exposes_source_supported_n_insertion_variants():
+    # NIKL's 2022 usage survey discusses both ㄴ-insertion and no-insertion
+    # responses for 못 잃어. It does not provide an exact IPA transcription or
+    # transferable percentages; these are provisional surface/IPA candidates.
+    result = phoneticize_korean("못잃어")
+    assert result["pronunciation_status"] == "provisional"
+    assert result["surface_hangul"] == "몬니러"
+    assert result["ipa"]["ipa"] == "mon.ni.ɾʌ"
+    assert result["ipa"]["lexical_alternatives"][0]["surface_hangul"] == "모시러"
+    assert result["ipa"]["lexical_alternatives"][0]["ipa"] == "mo.ɕi.ɾʌ"
+    assert result["ipa"]["lexical_alternatives"][0]["status"] == "provisional"
+    assert result["unresolved_contexts"] == []
+
+
 def test_official_dictionary_supported_r004_cluster_h_suffix_is_resolved():
     result = phoneticize_korean("긁혔다는거지")
     assert not any(context.get("rule_id") == "R004" for context in result.get("unresolved_contexts", []))
