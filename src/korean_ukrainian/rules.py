@@ -52,6 +52,11 @@ _NIKL_R002_FORMAL_LICENSES = {
     "찢었으면": "찢>었",
     "했었음": "했>었",
     "붙어야": "붙>어",
+    "군대보냈어야": "냈>어",  # Clear 보냈- + -어야 inflection; no boundary is inferred at 군대.
+    "이런삶은": "삶>은",  # 삶 + topic particle 은; either nominal reading has the same formal boundary.
+    "끝내고싶어유유유유": "싶>어",  # Exact noisy token; internal 싶- + -어 only.
+    "이빨닦아야지": "닦>아",  # Exact noisy token; internal 닦- + -아야지.
+    "안늙었는데": "늙>었",  # Exact noisy token; internal 늙- + -었-.
     "벗어날": "벗>어",
     "찾아": "찾>아",
     "없으니깐": "없>으",
@@ -72,6 +77,7 @@ _NIKL_R003_FORMAL_LICENSES = {
     # Exact-form, rule-derived applications of NIKL §12(4); no productive suffix heuristic.
     "쌓아서": "쌓>아",
     "쳐넣어야": "넣>어",
+    "애새끼낳으면": "낳>으",  # Exact noisy token; internal 낳- + -으면.
     "잃었노": "잃>었",
     "않았지만": "않>았",
     "개많음": "많>음",
