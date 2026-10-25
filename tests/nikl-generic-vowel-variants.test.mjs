@@ -47,7 +47,7 @@ test('§4 enumerates every combination for up to three optional vowels', () => {
   ]);
   for (const variant of result.variants) {
     assert.equal(variant.surface, '괴물귀');
-    assert.equal(variant.ukrainian, result.ukrainian);
+    assert.equal(variant.ukrainian, result.candidate_ukrainian);
   }
 });
 
