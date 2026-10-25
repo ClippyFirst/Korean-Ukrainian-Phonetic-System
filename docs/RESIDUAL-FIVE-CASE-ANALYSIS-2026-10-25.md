@@ -125,7 +125,7 @@ The text-only search improves provenance for the proposed `칭칭이` candidate 
 
 The user's hypothesis that the tail may be noise-like material (comparable in function to a drawn-out “ууу” or an exclamation such as “ухти”) is linguistically plausible and is now the leading **working hypothesis**, not a confirmed parse.
 
-Public text sources establish the general category, not this token:
+Public text pages establish the general category, not this token:
 - The Academy of Korean Studies' encyclopedia entry on [감탄사](https://encykorea.aks.ac.kr/Article/E0000867) includes affective interjections and filler-like/hesitation sounds (examples include `허`, `하하`, `에`, `후유`). This makes expressive or non-lexical material a legitimate analysis category; it does not classify `유유유`.
 - A KCI-indexed study of [Korean listener-response expressions](https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001912604) describes short verbal and non-verbal responses, including expressive interjections, laughter and tongue-clicking.
 - An [NIKL spoken-corpus annotation report](https://www.korean.go.kr/common/download.do%3Bfront%3D502A18DED158F4EE2EB44635ECE7B987?c_file_name=d0d8ab58-23ac-41ce-9bd5-405970002d1c_0.pdf&file_path=reportData&o_file_name=%EA%B5%AC%EB%AC%B8+%EB%B0%8F+%EB%AC%B4%ED%98%95+%EB%8C%80%EC%9A%A9%EC%96%B4+%EB%B3%B5%EC%9B%90+%EB%A7%90%EB%AD%89%EC%B9%98+%EC%97%B0%EA%B5%AC+%EB%B6%84%EC%84%9D_%EC%B5%9C%EC%A2%85%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf) has a dedicated section on interjection annotation and warns that spoken forms require contextual analysis.
