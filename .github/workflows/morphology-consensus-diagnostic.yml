@@ -30,10 +30,10 @@ jobs:
         run: |
           set -euo pipefail
           curl --fail --location --retry 3 \
-            "https://raw.githubusercontent.com/naver-ai/UGTPHON/\${UGT_PHON_COMMIT}/ko/test.json" \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/test.json" \
             --output "$RUNNER_TEMP/ko-test.json"
           curl --fail --location --retry 3 \
-            "https://raw.githubusercontent.com/naver-ai/UGTPHON/\${UGT_PHON_COMMIT}/ko/LICENSE" \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/LICENSE" \
             --output "$RUNNER_TEMP/ko-LICENSE"
           grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
           python - "$RUNNER_TEMP/ko-test.json" <<'PY'
