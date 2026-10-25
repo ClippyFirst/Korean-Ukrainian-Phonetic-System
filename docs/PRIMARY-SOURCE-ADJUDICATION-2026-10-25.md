@@ -40,6 +40,36 @@ The answer explicitly lists `많아서[마ː나서]` as an inflected form of `�
 
 **Engineering action:** the strict Python and browser engines now license only the exact form `많아서` and pair `많>아`. This does not authorize generic R003 application to other `많+` sequences, and the source's Hangul notation is not broad-IPA gold or Ukrainian target gold.
 
+## Case D — 없음
+
+**Status:** `DIRECT_OFFICIAL_ATTESTATION` for the Korean surface reading; IPA and Ukrainian target remain separate.
+
+Primary sources:
+- NIKL 상담 사례 모음, “'없음', '없슴'의 표기” (FAQ 8391): https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=8391
+- NIKL Online Q&A 335008 (2026-08-24) also explicitly lists `없음[업씀]`: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=90&pageIndex=1&qna_seq=335008
+
+The FAQ identifies `없음` as the nominalized form of `없다` plus `-음` and gives the reading `[업씀]`. The exact-form R002 license is restricted to `없>음` in `없음`; it is not a general rule for every `ㅄ + vowel` sequence.
+
+## Case E — 있었 (stem + past ending)
+
+**Status:** `SOURCE_FOUND_RULE_ENVIRONMENT`; broad IPA and Ukrainian target adjudication remain separate.
+
+Primary source: NIKL Online Q&A, “받침 'ㅆ'의 발음” (answer dated 2026-02-02), qna_seq=326978: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=326978
+
+The answer explains that `있-` combines with the vowel-initial past ending `-었-`, and derives `있었다[이썯따]`. It therefore supports the internal boundary `있>었`; the source discusses the inflected word `있었다`, not a standalone token consisting only of `있었`. The engine license is exact-form scoped and must not be described as a direct quote for a standalone `있었`.
+
+## Case F — 멋있어 (surface variants)
+
+**Status:** `DIRECT_OFFICIAL_ATTESTATION_WITH_VARIANTS`; unique IPA target remains unadjudicated.
+
+Primary source: NIKL Online Q&A, “멋있어, 멋있다 발음” (answer dated 2024-11-18), qna_seq=306166: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166
+
+The answer accepts both `멋있어[머디써]` and `멋있어[머시써]`. The engine's exact R002 license addresses only the internal `있>어` ending boundary. It does not adjudicate the alternate `멋>있` lexicalized boundary or establish a single broad IPA or Ukrainian spelling. Keep both official surface variants visible in research records.
+
+## Form-scoped rule derivations — additional abstention batch
+
+The new exact-form licenses for `같아서`, `되었어`, `찢었으면`, `했었음`, `붙어야`, `벗어날`, `찾아`, `싶어서`, `없으니까`, `없으니깐`, `군대보냈어야`, `이런삶은`, `끝내고싶어유유유유`, `이빨닦아야지`, `안늙었는데`, `쌓아서`, `쳐넣어야`, `애새끼낳으면`, `잃었노`, `않았지만`, `개많음`, `좋은데`, `죽었잖아`, and `개좆망했잖아` are **form-scoped rule derivations**, not a claim that every complete input is directly listed by NIKL. They apply §§12(4), 13–14 only at the named pair. The source-backed implementation remains strict for unlisted forms and preserves independent IPA/Ukrainian acceptance gates.
+
 ## Engineering and benchmark consequences
 
 1. The two official sources resolve the *normative Hangul surface-form question* for these exact forms. They do not, by themselves, prove that any particular G2P implementation is globally superior.
