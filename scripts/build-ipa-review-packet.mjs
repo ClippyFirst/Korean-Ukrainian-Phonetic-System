@@ -109,7 +109,6 @@ export function buildReviewerPacket(queueText, reviewerSlot) {
     packetType: 'independent-broad-IPA-review',
     reviewerSlot: slot,
     queueSha256: sha256(queueText),
-    sourceQueueSchemaVersion: queue.schemaVersion,
     instructions: [
       'Transcribe each Korean form independently into broad IPA under the agreed project convention.',
       'Do not infer IPA by copying the Korean Hangul surface comparator; it is evidence for the Korean surface form, not IPA.',
