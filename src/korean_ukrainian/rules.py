@@ -42,6 +42,27 @@ RULE_META={
 _NIKL_R002_FORMAL_LICENSES = {
     "앉아라": "앉>아",  # 앉- + imperative ending -아라; NIKL §14 explicitly attests 앉아[안자].
     "없어도": "없>어",  # 없- + connective ending -어도; NIKL §14 attests 없어[업써].
+    # Direct NIKL surface evidence: 없음[업씀], Q&A/FAQ 8391 (also listed in Q&A 335008).
+    "없음": "없>음",
+    # NIKL Q&A 326978 explicitly describes 있- + -었- and gives 있었- [이썯].
+    "있었": "있>었",
+    # Exact-form, rule-derived licenses: transparent formal inflection; NIKL §§13–14.
+    "같아서": "같>아",
+    "되었어": "었>어",
+    "찢었으면": "찢>었",
+    "했었음": "했>었",
+    "붙어야": "붙>어",
+    "군대보냈어야": "냈>어",
+    "이런삶은": "삶>은",
+    "끝내고싶어유유유유": "싶>어",
+    "이빨닦아야지": "닦>아",
+    "벗어날": "벗>어",
+    "찾아": "찾>아",
+    "안늙었는데": "늙>었",
+    "없으니깐": "없>으",
+    "없으니까": "없>으",
+    # Q&A 306166 directly attests 멋있어[머디써/머시써]; license only 있>어.
+    "멋있어": "있>어",
 }
 
 # Exact-form licenses for NIKL §12(4) ㅎ-coda deletion before a vowel-initial
@@ -53,6 +74,22 @@ _NIKL_R003_FORMAL_LICENSES = {
     "싫어서": "싫>어",
     "수많은": "많>은",
     "많아서": "많>아",  # NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
+    # Exact-form, rule-derived applications of NIKL §12(4); no productive suffix heuristic.
+    "괜찮아보이는디": "찮>아",
+    "많을거같이": "많>을",
+    "많이본": "많>이",  # NIKL Q&A 317783 identifies -이 in 많이 as a derivational suffix.
+    "쌓아서": "쌓>아",
+    "쳐넣어야": "넣>어",
+    "애새끼낳으면": "낳>으",
+    "잃었노": "잃>었",
+    "알잖아아침에": "잖>아",
+    "않았지만": "않>았",
+    "개많음": "많>음",
+    "좋은데": "좋>은",
+    "좋아보인다고": "좋>아",
+    "좋아해주는": "좋>아",
+    "죽었잖아": "잖>아",
+    "개좆망했잖아": "잖>아",
 }
 
 # Exact full-form licenses for transparent verb-stem + ending cases under NIKL §24.
@@ -120,6 +157,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R009_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R009:word:{full_form}:{pair}")
+    pair = "같>이" if full_form == "많을거같이" else None
+    if pair is not None:
+        licenses.add(f"R007:formal_morpheme_i:{full_form}:{pair}")
     if boundary_mode == "phrase":
         pair = _NIKL_R009_PHRASE_LICENSES.get(full_form)
         if pair is not None:
