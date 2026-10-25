@@ -22,9 +22,9 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     let wordEnd=i;
     while(wordEnd<units.length&&units[wordEnd].type==='hangul')wordEnd++;
     const currentWord=units.slice(wordStart,wordEnd).map(unit=>unit.char).join('');
-    const currentPair=a.char+'>'+b.char;
+    const exactMorphPair=a.char+'>'+b.char;
     const exactR002Pair=NIKL_13_14_FORMAL_LIAISON_FORMS.get(currentWord);
-    const exactR002Licensed=exactR002Pair===currentPair;
+    const exactR002Licensed=exactR002Pair===exactMorphPair;
 
     if(a.coda==='ㄼ'&&b.onset!=='ㅇ'){
       if(a.char==='밟'){a.coda='ㅂ';rules.push('lexical-coda-balm');}
@@ -142,7 +142,7 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
       const pair=COMPLEX[a.coda];
       if(pair){
         const exactR004Pair=NIKL_COMPLEX_H_SUFFIX_FORMS.get(currentWord);
-        if(['ㄺ','ㄵ','ㄼ'].includes(a.coda)&&exactR004Pair===currentPair){
+        if(['ㄺ','ㄵ','ㄼ'].includes(a.coda)&&exactR004Pair===exactMorphPair){
           const aspirated=ASPIRATION[pair[1]]||ASPIRATION[representative(pair[1])];
           if(aspirated){
             a.coda=pair[0];
