@@ -17,7 +17,8 @@ export function getSpellingSuggestions(value) {
       { text: '많앗구나 유유유', label: 'Варіант C · межа токенів', reason: 'Лише гіпотеза про пробіл; написання 앗 лишається незвичним.', sources: [{ label: 'Приклад уживання 유유유', url: 'https://v.daum.net/v/JU0MXB4lYJ' }] }
     ]
   };
-  return (candidates[input] || []).map(candidate => ({
+  const matches = Object.hasOwn(candidates, input) ? candidates[input] : [];
+  return matches.map(candidate => ({
     ...candidate,
     sourceInput: input,
     kind: 'candidate-only',
