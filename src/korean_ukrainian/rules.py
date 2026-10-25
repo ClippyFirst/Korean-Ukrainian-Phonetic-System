@@ -59,6 +59,7 @@ _NIKL_R002_FORMAL_LICENSES = {
     "안늙었는데": "늙>었",  # Exact noisy token; internal 늙- + -었-.
     "벗어날": "벗>어",
     "찾아": "찾>아",
+    "싶어서": "싶>어",  # NIKL §§13–14; transparent 싶- + -어서.
     "없으니깐": "없>으",
     "없으니까": "없>으",
     # Q&A 306166 directly attests 멋있어[머디써/머시써]; license only 있>어.
