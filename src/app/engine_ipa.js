@@ -148,6 +148,13 @@ export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
 }
 
 export function ipaTargetForSource(source,ipa,options={}){
+  if(!options||typeof options!=='object'||Array.isArray(options)){
+    throw new TypeError('IPA target options must be an object');
+  }
+  const allowProvisional=options.allowProvisional??false;
+  if(typeof allowProvisional!=='boolean'){
+    throw new TypeError('allowProvisional must be a boolean');
+  }
   const sourceText=String(source??'');
   const sourceIpa=String(ipa??'').normalize('NFC');
   const ipaUnits=sourceIpa.split(/[.\s]+/u).filter(Boolean);
@@ -171,19 +178,19 @@ export function ipaTargetForSource(source,ipa,options={}){
     // Never return an empty string as if it were a successful target spelling,
     // and never expose partial syllables when any IPA segment is unmapped or
     // contains no renderable IPA segment.
-    return {text:null,syllables:[],unknown,status:'unavailable',reason:failed?.reason||'unmapped_ipa_sequence',mappingTrace:[]};
+    return {text:null,syllables:[],unknown,status:'unavailable',reason:failed?.reason||'unmapped_ipa_sequence',mappingTrace};
   }
 
   // The IPA contract is syllable-aligned. A mismatch is not repaired by
   // guessing which Ukrainian syllable belongs to which Hangul syllable.
   const expectedSyllables=[...sourceText].filter(ch=>/[가-힣]/u.test(ch)).length;
   if(expectedSyllables && expectedSyllables!==ipaUnits.length){
-    return {text:null,syllables:[],unknown:'',status:'unavailable',reason:'ipa_source_alignment_mismatch',mappingTrace:[]};
+    return {text:null,syllables:[],unknown:'',status:'unavailable',reason:'ipa_source_alignment_mismatch',mappingTrace};
   }
 
   if(!/[가-힣]/u.test(sourceText)){
     const candidateText=syllables.join('');
-    if(status==='provisional'&&!options.allowProvisional){
+    if(status==='provisional'&&!allowProvisional){
       return {text:null,candidateText,syllables,unknown:'',status:'unavailable',candidateStatus:'provisional',reason:'provisional_mapping_requires_review',mappingTrace};
     }
     return {text:candidateText,syllables,unknown:'',status,reason:null,mappingTrace};
@@ -200,7 +207,7 @@ export function ipaTargetForSource(source,ipa,options={}){
       text+=token;
     }
   }
-  if(status==='provisional'&&!options.allowProvisional){
+  if(status==='provisional'&&!allowProvisional){
     return {text:null,candidateText:text,syllables,unknown:'',status:'unavailable',candidateStatus:'provisional',reason:'provisional_mapping_requires_review',mappingTrace};
   }
   return {text,syllables,unknown:'',status,reason:null,mappingTrace};

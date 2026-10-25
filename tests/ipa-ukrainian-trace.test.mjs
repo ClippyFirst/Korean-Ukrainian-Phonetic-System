@@ -279,3 +279,17 @@ test('provisional opt-in must be an explicit boolean in public IPA helpers', () 
     {name:'TypeError', message:'allowProvisional must be a boolean'}
   );
 });
+
+
+test('source-aware IPA target adapter validates provisional opt-in and keeps diagnostic trace on failure', () => {
+  assert.throws(
+    () => ipaTargetForSource('위', 'y', {allowProvisional:'yes'}),
+    {name:'TypeError', message:'allowProvisional must be a boolean'}
+  );
+  const result = ipaTargetForSource('서울역', 'sʌ.ul.☃');
+  assert.equal(result.text, null);
+  assert.equal(result.status, 'unavailable');
+  assert.equal(result.reason, 'unmapped_ipa_sequence');
+  assert.ok(result.mappingTrace.length > 0, 'mapped prefixes remain inspectable even though output is withheld');
+  assert.deepEqual(result.syllables, [], 'no partial target syllables may leak from a failed result');
+});
