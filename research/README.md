@@ -46,3 +46,16 @@ A single item may need separate source, implementation, testing, and review stat
 ## Official NIKL collection continuation — 2026-10-21
 
 The metadata-first collector is available at `scripts/nikl-norm-crawler.mjs`; see `docs/NIKL-NORM-CRAWLER.md`. It is designed to inventory only the 30 articles of 제2부 표준 발음법, checks robots.txt, records exact response and per-article hashes, and fails closed on incomplete extraction. Fixture-based tests are part of the existing Node regression suite. The live crawl was attempted by GitHub Actions but the official page returned HTTP 403; the workflow recorded BLOCKED and did not try alternate hosts or bypasses. No live article inventory was produced. Source reuse terms remain unassessed, and the default output does not retain article text. See `research/SOURCE-REGISTER.csv`, `research/RULE-COVERAGE.csv`, and the latest master handoff for current status.
+
+
+## Residual Korean edge cases — 2026-10-25
+
+Continuation branch: [PR #334](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/334).
+
+- `칡칡이`: exact string found as a regional folk-song title in [this local-culture PDF](https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf); lexical meaning and morpheme boundaries are still unverified. Status remains `blocked`.
+- `쫒아내면` and `무서웟어`: the service now presents explicit, opt-in spelling candidates (`쫓아내면`, `무서웠어`). The original input is preserved unless the user selects a candidate.
+- `많앗구나유유유`: the UI preserves three separate spelling/tokenization interpretations; contextual web evidence shows both `ㅠㅠㅠ` as crying and `유유유` as a phrase/title exist, but it does not resolve this input. Status remains multiple candidates only.
+- `삶의`: two source-blind review packets are prepared under `research/ipa-review-packets/`; no reviewer annotations have been fabricated. `research/salmui-ipa-adjudication-coordinator.json` keeps independent IPA adjudication and subsequent Ukrainian target review as separate blocked gates.
+- New regression tests: `tests/spelling-suggestions.test.mjs` and `tests/residual-five-evidence-and-blind-review.test.mjs`.
+
+The exact-head GitHub Actions workflows are the executable verification gate. UI/code tests do not establish linguistic correctness; external qualified reviewers are still required for IPA and Ukrainian adaptation.
