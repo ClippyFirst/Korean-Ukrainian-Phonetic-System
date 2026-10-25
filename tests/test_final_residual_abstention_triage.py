@@ -27,7 +27,13 @@ def test_residual_abstention_register_is_complete_and_evidence_scoped():
     ]
     assert len({case["input"] for case in cases}) == 5
     assert all(case["acceptanceCriterion"] for case in cases)
-    assert all(case["productionChange"] == "none" or case["productionChange"].startswith("none;") for case in cases)
+    # Candidate-only UI improvements are allowed; the production phonetic/target pipeline must still abstain.
+    assert all(case["productionChange"].strip() not in ("", "none") for case in cases)
+    assert "no silent rewrite" in cases[0]["productionChange"]
+    assert "Original input" in cases[1]["productionChange"]
+    assert "No candidate is automatically applied" in cases[2]["productionChange"]
+    assert "No accepted Ukrainian output" in cases[3]["productionChange"]
+    assert "Original input" in cases[4]["productionChange"]
     assert all("IPA" in " ".join(queue["policy"]) or "IPA" in case["status"] for case in cases)
 
 
