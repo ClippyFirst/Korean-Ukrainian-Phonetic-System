@@ -317,7 +317,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // result boundary. Phrase conversion still preserves surrounding resolved
   // words because the phrase path recursively converts each token.
   const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
-  const provisionalWholeHangulToken=/^[가-힣]+$/u.test(text)&&trace.some(item=>item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review');
+  const provisionalWholeHangulToken=/^[가-힣]+$/u.test(text)&&status!=='unresolved'&&trace.some(item=>item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review');
   const target_status=unresolvedWholeHangulToken||!hasHangulSyllables
     ? 'unavailable'
     : trace.some(item=>item?.targetStatus==='unavailable'||item?.status==='unresolved')
