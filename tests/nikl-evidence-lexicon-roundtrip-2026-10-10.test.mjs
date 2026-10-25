@@ -28,11 +28,17 @@ for (const row of singleScriptRows) {
     );
     const result = engine.convert(row.input);
     assert.equal(result.surfaceHangul, row.surface_hangul, row.input + ': standard surface form');
-    assert.equal(
-      result.ukrainian,
-      row.target_syllables.replaceAll('|', ''),
-      row.input + ': reviewed Ukrainian target',
-    );
+    if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
+      assert.equal(result.ukrainian, '', row.input + ': provisional target must not be accepted');
+      assert.equal(result.candidate_ukrainian, row.target_syllables.replaceAll('|', ''), row.input + ': candidate target');
+      assert.equal(result.candidate_status, 'provisional', row.input + ': candidate status');
+    } else {
+      assert.equal(
+        result.ukrainian,
+        row.target_syllables.replaceAll('|', ''),
+        row.input + ': reviewed Ukrainian target',
+      );
+    }
     assert.equal(
       result.ipa,
       row.ipa_syllables.split('|').join(' '),

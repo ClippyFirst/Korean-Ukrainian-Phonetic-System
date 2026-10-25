@@ -55,11 +55,14 @@ test('every Hangul-only lexical target is rendered from its stored IPA, not inde
   for (const row of candidates) {
     const result = engine.convert(row.input);
     assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), row.input + ': runtime IPA');
-    assert.equal(
-      result.ukrainian,
-      row.target_syllables.split('|').join(''),
-      row.input + ': Ukrainian target must equal the IPA-derived mapping',
-    );
+    const expectedTarget = row.target_syllables.split('|').join('');
+    if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
+      assert.equal(result.ukrainian, '', row.input + ': provisional target must not be accepted');
+      assert.equal(result.candidate_ukrainian, expectedTarget, row.input + ': IPA-derived candidate');
+      assert.equal(result.candidate_status, 'provisional', row.input + ': candidate status');
+    } else {
+      assert.equal(result.ukrainian, expectedTarget, row.input + ': Ukrainian target must equal the IPA-derived mapping');
+    }
     assert.equal(result.issues.length, 0, row.input + ': exact sourced entry should not have an unresolved issue');
   }
 });
