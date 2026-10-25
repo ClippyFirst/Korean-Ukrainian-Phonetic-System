@@ -1,0 +1,80 @@
+name: Korean morphology-consensus IPA diagnostic
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "src/korean_ukrainian/**"
+      - "scripts/benchmark_morphology_ipa_delta.py"
+      - "tests/test_research_morphology.py"
+      - "tests/test_morphology_rule_licenses.py"
+      - ".github/workflows/morphology-consensus-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  morphology-consensus:
+    name: Kiwi + MeCab-Ko rule-license consensus on UGTPHON
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install project and both optional morphology analyzers
+        run: python -m pip install -e ".[research-kiwi,research-mecab-ko]"
+      - name: Fetch pinned upstream data and verify license
+        env:
+          UGT_PHON_COMMIT: ef0d5a09c2ea1874c7206020f875cbd9cfea2f54
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/test.json" \
+            --output "$RUNNER_TEMP/ko-test.json"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/LICENSE" \
+            --output "$RUNNER_TEMP/ko-LICENSE"
+          grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
+          python - "$RUNNER_TEMP/ko-test.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          rows = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          assert len(rows) == 275, f"pinned corpus row-count drift: {len(rows)}"
+          assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
+          print(f"Validated pinned UGTPHON Korean test split: {len(rows)} rows")
+          PY
+      - name: Run strict / soft / analyzer-consensus comparison
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_morphology_ipa_delta.py \
+            --analyzer consensus \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --output "$RUNNER_TEMP/morphology-consensus-report.json" \
+            > "$RUNNER_TEMP/morphology-consensus-stdout.json"
+          python - "$RUNNER_TEMP/morphology-consensus-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          consensus = report["native_ipa"]["analyzer_consensus"]
+          print("strict:", report["native_ipa"]["strict"])
+          print("soft:", report["native_ipa"]["soft"])
+          print("analyzer_consensus:", {k: v for k, v in consensus.items()
+                if k not in {"newly_resolved_examples", "changed_examples", "runtime_error_examples", "paired_vs_strict"}})
+          print("newly_resolved examples:", consensus["newly_resolved_examples"][:30])
+          print("changed examples:", consensus["changed_examples"][:30])
+          print("remaining unresolved examples:", consensus["unresolved_examples"][:30])
+          print("paired comparison:", consensus["paired_vs_strict"])
+          assert consensus["status"] == "diagnostic_only_analyzer_consensus"
+          assert consensus["runtime_errors_unique_words"] == 0
+          PY
+          cp "$RUNNER_TEMP/morphology-consensus-report.json" "$GITHUB_WORKSPACE/morphology-consensus-report.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: morphology-consensus-ugtphon-diagnostic
+          path: |
+            morphology-consensus-report.json
+            ${{ runner.temp }}/morphology-consensus-stdout.json
+            ${{ runner.temp }}/ko-LICENSE
+          if-no-files-found: warn

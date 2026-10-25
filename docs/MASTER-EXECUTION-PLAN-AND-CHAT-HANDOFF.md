@@ -1147,3 +1147,120 @@ The source-register/lexical-provenance/test repairs are now verified on code hea
 
 The final documentation successor will record these exact-head results; because that successor is a new commit, do not call its checks passed until its own workflow runs complete.
 
+## Continuation — 48 native abstentions and morphology-consensus path (2026-10-25)
+
+### Root cause, not a runtime failure
+
+The pinned UGTPHON Korean test split contains 2,703 eligible token occurrences. Native strict mode scores 2,655 and abstains on 48 occurrences across 47 unique forms, with zero engine exceptions. The contexts are morphology-conditioned: R002 liaison/neutralization (25 contexts), R003 ㅎ-coda deletion (20), R007 palatalization (2), R004 complex-coda + ㅎ aspiration (1), and one independent IPA-adjudication block. The context counts sum to 49 because one occurrence has two unresolved contexts.
+
+The strict/soft and boundary-gated comparison already exists in the repository; its artifact is run [40191515056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056). Strict scores 53.1827% exact / 9.1883% CER at 98.2242% coverage. Soft scores 53.0818% exact / 9.1868% CER at 99.0381% coverage. MeCab boundary-gated scores 53.1063% exact / 9.1927% CER at 98.8531% coverage; Kiwi boundary-gated scores 53.1086% exact / 9.1984% CER at 98.7791% coverage. The paired strict/soft subset has unchanged exact/CER metrics. This evidence does not support changing strict default: reducing abstentions alone does not demonstrate higher accuracy.
+
+### Implementation added on `fix/native-abstention-consensus-current-main-2026-10-25`
+
+- Added `src/korean_ukrainian/morphology_rule_licenses.py`: exact-form licenses are derived only where two distinct optional morphology analyzers agree on a character-aligned boundary and the right-hand POS tag belongs to a conservative formal-morpheme class. Overlapping/zero-width spans and one-analyzer disagreements are rejected. It does not infer spaces or license substantive-morpheme contexts.
+- Any rule applied from this source is marked `analyzer-supported-low-confidence`; the resulting IPA is `diagnostic_only_analyzer_morphology`. The adapter cannot produce accepted Ukrainian output.
+- Extended the existing `scripts/benchmark_morphology_ipa_delta.py` with `--analyzer consensus`, reusing the established strict/soft benchmark and scoring contract rather than creating a duplicate strict/soft benchmark.
+- Added `.github/workflows/morphology-consensus-diagnostic.yml` to run both optional analyzers on the pinned UGTPHON split and upload the diagnostic report.
+- Added unit tests for consensus on `같아서` / `좋아`, lexicalized `많이`, a disagreement on `같이`, zero-width morphology, and the diagnostic-only IPA status.
+- Exact NIKL source IDs for `넓죽하다 → 넙쭈카다` and `읽고 → 일꼬` are already present in the current mainline adapter and regression test; the source adjudication is documented in `docs/PRIMARY-SOURCE-ADJUDICATION-2026-10-25.md`.
+
+### Task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Explain 48 strict abstentions | `DONE_VERIFIED_PRIOR_HEAD` | Occurrence-level audit and existing CI artifact show morphology-conditioned fail-closed behavior, not runtime errors |
+| Strict vs soft comparison | `DONE_VERIFIED_PRIOR_HEAD` | Existing artifact is diagnostic and not a fresh run on this branch |
+| Analyzer-consensus licensing implementation | `PARTIAL` | Code and fixture tests added; must pass exact-head CI and consensus benchmark before adoption |
+| Reduce all 48 abstentions | `DEFERRED_UNSAFE_AS_A_BLANKET_GOAL` | No blind removal of abstentions; some cases need segmentation, others source/IPA review |
+| Original 24-form holdout provenance | `BLOCKED_MISSING_ORIGINAL` | `data/korean/benchmarks/target-renderer-holdout-24.csv` is `reconstructed_unverified`; no reviewed historical tree or artifact established exact original membership/order |
+| Independent Korean IPA gold | `BLOCKED_SPECIALIST_ADJUDICATION` | Independent broad-IPA annotation/convention still missing |
+| Independent Ukrainian target gold | `BLOCKED_INDEPENDENT_TARGET_GOLD` | Independently annotated target outputs and a scoring protocol still missing |
+| Live official NIKL inventory | `BLOCKED_EXTERNAL_ACCESS` | Prior workflow skipped live retrieval; a skip is not a pass |
+| Source rights | `PARTIAL` | Existing registry has 105 records; 101 still require item-level license/KOGL review |
+
+### Verification boundary
+
+The new consensus implementation has not yet been validated by a fresh exact-head workflow at the time of this handoff update. The current branch is based on the current `main` ref, and the final PR must wait for its own test, system verification, browser regression, and morphology-consensus benchmark results. Do not merge or call release-ready on the basis of prior-head benchmark artifacts.
+
+Release classification remains **software-verified research prototype / partial prototype, not release-ready**. The correct near-term objective is evidence-backed candidate coverage with visible uncertainty, not forcing all 48 abstentions to disappear.
+
+## Final continuation update — abstention, morphology consensus, and source provenance (2026-10-25)
+
+### Findings and measured behavior
+
+The 48 strict-mode abstentions on UGTPHON are **fail-closed unresolved contexts, not runtime errors**: 48 occurrences across 47 unique forms. Context counts are R002 liaison/neutralization (25), R003 ㅎ-coda deletion (20), R007 palatalization (2), R004 complex-coda + ㅎ aspiration (1), and one independent IPA-adjudication blocker. These total 49 contexts because `많을거같이` contains two unresolved contexts.
+
+Existing strict/soft and boundary-gated results are from the pinned research artifact [40191515056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056); the strict/soft benchmark was reused, not duplicated:
+
+| Strategy | Scored / 2703 | Coverage | Exact matches | Exact rate | CER | Unresolved occurrences |
+|---|---:|---:|---:|---:|---:|---:|
+| Native strict | 2655 | 98.2242% | 1412 | 53.1827% | 9.1883% | 48 |
+| Native soft | 2677 | 99.0381% | 1421 | 53.0818% | 9.1868% | 26 |
+| MeCab boundary-gated | 2672 | 98.8531% | 1419 | 53.1063% | 9.1927% | 31 |
+| Kiwi boundary-gated | 2670 | 98.7791% | 1418 | 53.1086% | 9.1984% | 33 |
+
+Soft mode adds 22 scored occurrences but lowers exact rate slightly. Boundary-only gating is not sufficient evidence for rule licensing. The new optional two-analyzer consensus mode requires both analyzers to agree on a source-aligned boundary and formal POS tag; it rejects overlapping/zero-width spans and withholds all licenses where both analyzers indicate an unspaced MAG→VV/VA/VX boundary.
+
+The guarded consensus benchmark passed in [run 40196942415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40196942415) on a prior code head: 2,684/2,703 scored (99.2971% coverage), 1,423 exact (53.0179%), CER 9.1930%, 19 unresolved occurrences, 0 engine exceptions. It yielded diagnostic candidates for 28 unique strict-mode abstentions (29 occurrences). Paired strict-vs-consensus exact/CER were unchanged. Compared with strict, coverage improves but exact rate and CER are slightly worse; this is a **candidate-coverage improvement, not an accuracy improvement**. The strict default is unchanged, and all analyzer-derived IPA remains diagnostic-only.
+
+### Correctness and provenance changes
+
+- Added `src/korean_ukrainian/morphology_rule_licenses.py` and `--analyzer consensus` to the existing benchmark, plus a pinned dual-analyzer UGTPHON workflow.
+- The adapter withholds licenses for likely unspaced adverb-to-verb phrases, preserving phrase-level uncertainty instead of pretending to reconstruct missing spaces.
+- The remaining 19 unresolved forms include independent IPA review (`삶의`), complex-coda/ㅎ morphology (`긁혔다는거지`), analyzer disagreements/contractions (`있었`, `했었음`, `군대보냈어야`, `좋아해주는`), lexicalized boundaries (`많이본`, `많을거같이`), likely unspaced phrases (`못잃어`, `안늙었는데`, `개같이못하고`), and noisy/contracted endings (`쫒아내면`, `많앗구나유유유`, `무서웟어`, `죽었잖아`, `웃어넘기겟지만`). The current head's refreshed report enumerates the exact remaining contexts.
+- Ported the unique diagnostic-only IPA safety invariant from stale PR #307 into `g2pk_engine.py`: lexical IPA marked `diagnostic_only_unresolved_pronunciation` is not treated as an exact accepted override, its status is propagated through the g2pK adapter, and the target gate must return unavailable. The regression test exercises the real IPA-adjudication overlay for `삶의`.
+- The raw JavaScript g2pK port intentionally remains pinned. The Python differential warning compares that raw port, not the practical browser adapter. For `넓죽하다` and `읽고`, raw JS differs from NIKL, while `src/app/g2pk_web.js` applies exact-form corrections to `넙쭈카다` and `일꼬` before IPA. The differential report now labels this as an expected raw-port divergence covered by the adapter, and the browser regression asserts the corrected surfaces.
+- Added the corroborating NIKL Q&A qna_seq=317348 to `research/SOURCE-REGISTER.csv`. The register now has 106 records; 102 remain `REVIEW_REQUIRED`. This row is not rights-cleared; item-level KOGL review remains open.
+
+### Current task ledger
+
+| Task | Status | Acceptance / blocker |
+|---|---|---|
+| Explain strict 48 abstentions | `DONE_VERIFIED_PRIOR_HEAD` | Reproducible artifact; fail-closed contexts, not runtime errors |
+| Strict/soft/boundary benchmark | `DONE_VERIFIED_PRIOR_HEAD` | Existing pinned artifact, not a fresh target-accuracy evaluation |
+| Dual-analyzer consensus implementation | `DONE_VERIFIED_PRIOR_HEAD` | Guarded benchmark passed on prior head; final-head rerun still pending |
+| Diagnostic-only IPA target gate | `PARTIAL` | Code and regression added; final-head tests still pending |
+| Raw-port versus practical-adapter report | `PARTIAL` | Corrected report/assertions added; final-head test run pending |
+| Original 24-form holdout provenance | `BLOCKED_MISSING_ORIGINAL` | The CSV remains `reconstructed_unverified`; exact original membership/order not recovered |
+| Independent Korean IPA gold | `BLOCKED_SPECIALIST_ADJUDICATION` | Requires independent expert annotation and convention |
+| Independent Ukrainian practical-transcription gold | `BLOCKED_INDEPENDENT_TARGET_GOLD` | Requires independently annotated targets and a scoring protocol |
+| Live NIKL inventory retrieval | `BLOCKED_EXTERNAL_ACCESS` | Prior official live-inventory workflow skipped; not a pass |
+| Source rights | `PARTIAL` | 106 records, 102 require item-level rights review |
+
+### Branch and verification state
+
+- Current branch: `fix/native-abstention-consensus-current-main-2026-10-25`, based on main commit `c55230a5ae864578205d9d3dc392e3f1dd097a4b`.
+- PR #314 is the active continuation. PR #313 was closed as superseded; its branch was not deleted. PR #310 is merged. PR #311 is closed/unmerged, but its exact-source records and corrections are present on current main.
+- PR #307 remains open pending final-head verification; its unique diagnostic-only IPA gate is now ported here, while its older renderer/holdout changes are superseded by the newer mainline implementation. Close it only after the current safety test passes.
+- The latest code head before this documentation-only update is `839fd65748ab88f9c0054b8b9b023d48c427c307`; the refreshed workflow set was queued, not completed, at the time of this update. Earlier code-head test/system/browser/benchmark workflows passed, but they do not verify the latest source-register count and regression-report changes. Do not claim the final head passed until its own workflows complete.
+- Local checkout/tests remain unavailable in this session due the earlier GitHub DNS failure; CI is the verification source.
+
+Release classification remains **software-verified research prototype / partial prototype, not release-ready**. The next acceptance gate is exact-head CI plus independent IPA and Ukrainian target gold; removing every abstention is not a valid goal if it requires guessing.
+## Continuation — strict/soft interface and abstention-aware scoring (2026-10-25)
+
+- The existing morphology-consensus work in PR #314 is preserved and used as the implementation base. This continuation adds no second consensus adapter and no duplicate consensus workflow.
+- The Python CLI and FastAPI now expose the already-existing `morphology_mode="strict"|"soft"` option. Strict remains the default. Soft is rejected with g2pk and in decomposition mode rather than being silently ignored. Its rule trace must remain `heuristic-low-confidence`; the IPA target gate remains in place.
+- The existing `scripts/benchmark_morphology_ipa_delta.py` now reports `coverage_adjusted_exact_match_rate = exact_matches / attempted_occurrences` alongside conditional exact-match rate and coverage. This makes the cost of abstentions explicit without counting unresolved output as a correct prediction.
+- Tests cover the strict default, soft-mode trace provenance, CLI flag parsing, invalid mode combinations, and coverage-adjusted scoring.
+- README documents the CLI/API usage and points to `docs/NATIVE-ABSTENTION-AUDIT-2026-10-25.md`. The previous root-cause table and the analyzer-consensus implementation remain canonical in PR #314; no duplicate 48-case audit document or second benchmark workflow is being added.
+- **Exact-head CI pending:** branch `fix/abstention-consensus-api-modes-2026-10-25`; current code head before this handoff update was `ee2b41b2c76314226d689d992642a51e2f90b148`. Verify tests and the existing consensus workflow on the final head before claiming success.
+- **Acceptance boundary:** soft mode may raise coverage, but historical measurements show the coverage gain is not an accuracy gain on the common scored subset. Keep strict default and do not promote analyzer-derived IPA to accepted Ukrainian output.
+
+## Consolidated continuation — abstention metrics and recovered holdout (2026-10-25)
+
+- **48-abstention diagnosis is evidence-backed:** strict native has 48 unresolved token occurrences over 47 unique forms, zero runtime errors. The exact-head Kiwi + MeCab-Ko consensus diagnostic passed on [run 40197611605](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611605), artifact [12600583566](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611605/artifacts/12600583566). Strict: 98.2242% coverage / 53.1827% exact among scored / 52.2383% coverage-adjusted exact / CER 9.1883% / 48 abstentions. Soft: 99.0381% / 53.0818% / 52.5712% / CER 9.1868% / 26 abstentions. Analyzer consensus: 99.2971% / 53.0179% / 52.6452% / CER 9.1930% / 19 unresolved occurrences. Zero runtime errors.
+- **Interpretation:** consensus resolves 28 unique words compared with strict, but it remains diagnostic-only and exact match among scored cases decreases slightly. This is not a proven pronunciation-accuracy improvement. Do not remove the strict fail-closed default or promote analyzer IPA to accepted Ukrainian output without independent adjudication.
+- **Other CI evidence on that same code head:** paired UGTPHON [40197611630](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611630), multi-engine [40197611644](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611644), g2pK integration (Python 3.11/3.12) [40197611672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611672), morphology smoke [40197611658](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611658), and external UGTPHON [40197611715](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611715) passed. Full Python/browser verification was still queued at the time of this note; exact-head system checks must finish before the code PR is accepted.
+- **Original holdout recovered:** exact frozen manifest Git blob `f30c5fa8a59753df3d7c06bbbe7d4e43d0b8fb26` is now tracked at `data/korean/benchmarks/ipa-holdout-24-manifest.json`; SHA-256 `4596d9ba0494f220dd0a72ba92853f9d33d8f47cb8ba81b700b490a02f0706d5`. Exact 24/24 forms, order, and original case IDs match. Integrity workflow [40197942950](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197942950) passed; artifact [12600733671](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197942950/artifacts/12600733671). Historical commit/tree/PR/run reference remains unresolved, so membership is `DONE_VERIFIED_MANIFEST_BLOB`, historical origin `PARTIAL`.
+- **Gold labels:** the manifest supplies official Hangul surface examples, not broad IPA gold. Independent two-reviewer IPA annotation and adjudication remain `BLOCKED_SPECIALIST_ADJUDICATION`; Ukrainian practical-transcription gold and scoring protocol remain `BLOCKED_INDEPENDENT_TARGET_GOLD`.
+- **Live NIKL inventory:** the `research/nikl-` branch is intended to trigger the existing metadata-only official-source crawl. Inspect its actual job outcome; prior runs were skipped or HTTP 403 and are not passes. Site-wide NIKL copyright policy was independently checked in the public web view on 2026-10-25: materials are reusable under Korean Copyright Act Article 24-2 unless a separate KOGL type is displayed ([official policy](https://www.korean.go.kr/front/page/pageView.do?mn_id=105&page_id=P000189)). Individual rules/Q&A item markings remain unverified; keep rights status `PARTIAL` and do not bulk-clear the source registry.
+- **PR dependency chain:** PR #314 contains the research-only morphology-consensus adapter; PR #316 adds strict/soft API/CLI access and coverage-adjusted metrics; PR #318 is the holdout recovery and NIKL-crawl follow-up stacked on #316. PR #315 was closed as a duplicate after its complementary changes were ported into #316. Do not merge the stacked PRs out of order.
+
+## CI failure diagnosis and repair — consolidated PR #319
+
+- The first consolidated-head system/browser run [40199083940](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40199083940) surfaced two stale assertions, not production runtime failures:
+  1. `tests/nikl-r11-exception-contrast-evidence.test.mjs` still expected `js-port-diverges-from-nikl-normative-output`, while the evidence fixture correctly records the more specific `raw-js-port-diverges-python-matches-nikl-practical-adapter-corrects`. Updated the test to assert the current explicit differential state.
+  2. `tests/test_source_register_integrity.py` requires the rights note to state that the item-level KOGL type is “not established.” The new note had described the same uncertainty but omitted that required phrase. Updated the register wording without claiming clearance.
+- Fix commits: `32ecab1e80f915891188275db2303f89a46fae52` and `d797335c2e0922efa6f0e87d90cbb79e08834780`. Exact-head system/browser reruns are pending; do not mark those checks complete until they pass.
+- The live NIKL crawl itself is **blocked** with HTTP 403 on this runner. The workflow correctly refuses to retry/bypass; the metadata-only inventory is not verified live.
+

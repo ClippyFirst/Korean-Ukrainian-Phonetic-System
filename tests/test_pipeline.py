@@ -275,6 +275,7 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
             "equal": python_surface == case["expectedSurface"],
             "ipa_gold_status": case["ipaGoldStatus"],
             "differential_status": case["differentialStatus"],
+            "practical_adapter_surface": case.get("normativeSurface"),
         })
     mismatches = [row for row in rows if not row["equal"]]
     # These are known, evidence-backed JS-port divergences, not interchangeable
@@ -294,6 +295,8 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
         assert case["normativeSurface"] == expected["python"], row["input"]
         assert case["expectedSurface"] != case["normativeSurface"], row["input"]
         assert case["normativeEvidenceStatus"] in {"direct-NIKL-example", "direct-NIKL-QA"}
+        assert row["practical_adapter_surface"] == expected["python"]
+        assert row["differential_status"] == "raw-js-port-diverges-python-matches-nikl-practical-adapter-corrects"
     report = {
         "kind": "diagnostic-only",
         "rows_compared": len(rows),
@@ -558,3 +561,35 @@ def test_nikl_section_24_exact_form_licenses_render_correct_surface_ipa():
         assert trace["changed"], word
         assert trace["license_context"] == f"R010:stem_n_m+suffix:{word}:{pair}", word
         assert not any(item["rule_id"] == "R010" for item in result["unresolved_contexts"]), word
+def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    strict = phoneticize_korean("수많은")
+    soft = phoneticize_korean("수많은", morphology_mode="soft")
+    assert strict["pronunciation_status"] == "unresolved"
+    assert soft["pronunciation_status"] == "provisional"
+    trace = next(rule for rule in soft["rules"] if rule["rule_id"] == "R003")
+    assert trace["status"] == "heuristic-low-confidence"
+    assert trace["source"] == "soft-heuristic-morphology"
+    assert soft["ipa_is_diagnostic_only"] is False
+
+    target = transliterate_korean("수많은", morphology_mode="soft")
+    assert target["morphology_mode"] == "soft"
+    assert target["ipa_status"] == "provisional"
+
+
+def test_cli_exposes_soft_morphology_without_changing_default():
+    from korean_ukrainian.cli import build_parser
+
+    strict = build_parser().parse_args(["analyze", "좋아"])
+    soft = build_parser().parse_args(["analyze", "좋아", "--morphology-mode", "soft"])
+    assert strict.morphology_mode == "strict"
+    assert soft.morphology_mode == "soft"
+
+
+def test_cli_does_not_silently_ignore_soft_mode_for_decomposition():
+    import pytest
+    from korean_ukrainian.cli import _result
+
+    with pytest.raises(ValueError, match="only with mode='transliterate'"):
+        _result("좋아", "decompose", morphology_mode="soft")

@@ -23,7 +23,7 @@ test('NIKL §10 넓죽하다 and §1 읽고 divergences remain explicit rather t
     assert.equal(item.normativeSurface, values.normative, input + ': preserve the separate official comparator');
     assert.equal(item.normativeSourceUrl, 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002');
     assert.equal(item.normativeSourceLocator, values.locator);
-    assert.equal(item.differentialStatus, 'js-port-diverges-from-nikl-normative-output');
+    assert.equal(item.differentialStatus, 'raw-js-port-diverges-python-matches-nikl-practical-adapter-corrects');
     assert.match(item.differentialNote, /do not silently rewrite|Keep both values visible|Keep the raw-port comparator unchanged|Production applies only the exact NIKL-backed surface correction/u);
     assert.match(item.differentialNote, /IPA(?:\/| or )Ukrainian gold/u);
   }
