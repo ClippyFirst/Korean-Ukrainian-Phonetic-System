@@ -558,3 +558,37 @@ def test_nikl_section_24_exact_form_licenses_render_correct_surface_ipa():
         assert trace["changed"], word
         assert trace["license_context"] == f"R010:stem_n_m+suffix:{word}:{pair}", word
         assert not any(item["rule_id"] == "R010" for item in result["unresolved_contexts"]), word
+
+def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    strict = phoneticize_korean("좋아")
+    soft = phoneticize_korean("좋아", morphology_mode="soft")
+    assert strict["pronunciation_status"] == "unresolved"
+    assert soft["pronunciation_status"] == "provisional"
+    trace = next(rule for rule in soft["rules"] if rule["rule_id"] == "R003")
+    assert trace["status"] == "heuristic-low-confidence"
+    assert trace["source"] == "soft-heuristic-morphology"
+    assert soft["ipa_is_diagnostic_only"] is False
+
+    target = transliterate_korean("좋아", morphology_mode="soft")
+    assert target["morphology_mode"] == "soft"
+    assert target["ipa_status"] == "provisional"
+
+
+def test_cli_exposes_soft_morphology_without_changing_default():
+    from korean_ukrainian.cli import build_parser
+
+    strict = build_parser().parse_args(["analyze", "좋아"])
+    soft = build_parser().parse_args(["analyze", "좋아", "--morphology-mode", "soft"])
+    assert strict.morphology_mode == "strict"
+    assert soft.morphology_mode == "soft"
+
+
+def test_cli_does_not_silently_ignore_soft_mode_for_decomposition():
+    import pytest
+    from korean_ukrainian.cli import _result
+
+    with pytest.raises(ValueError, match="only with mode='transliterate'"):
+        _result("좋아", "decompose", morphology_mode="soft")
+
