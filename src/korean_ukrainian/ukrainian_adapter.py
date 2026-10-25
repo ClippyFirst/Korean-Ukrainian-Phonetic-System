@@ -1,3 +1,9 @@
+"""Optional UPI target-inventory diagnostics, not the production output renderer.
+
+The production contract is source orthography → Korean phonology → inspectable IPA
+→ Ukrainian target adaptation. This adapter only inspects a candidate inventory and
+must not bypass IPA provenance, confidence, or target acceptance gates.
+"""
 from __future__ import annotations
 from importlib import import_module
 from typing import Mapping
@@ -6,6 +12,8 @@ DEFAULT_PACKAGE="ukrainian_phonetic_inventory"
 EXPECTED_VERSION="0.8.0"
 
 class UkrainianTargetAdapter:
+    """Research adapter for candidate-target diagnostics; never a spelling authority."""
+
     def __init__(self,package_name=DEFAULT_PACKAGE):
         self.package_name=package_name
         self.available=False
