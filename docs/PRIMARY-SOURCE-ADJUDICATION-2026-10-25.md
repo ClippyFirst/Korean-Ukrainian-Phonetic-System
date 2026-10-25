@@ -1,4 +1,4 @@
-# Primary-source adjudication: 넓죽하다 and 읽고 — 2026-10-25
+# Primary-source adjudication: Korean surface-form cases — 2026-10-25
 
 ## Purpose and scope
 
