@@ -77,7 +77,6 @@ _NIKL_R003_FORMAL_LICENSES = {
     # Exact-form, rule-derived applications of NIKL §12(4); no productive suffix heuristic.
     "괜찮아보이는디": "찮>아",
     "많을거같이": "많>을",
-    "많이본": "많>이",  # NIKL Q&A 317783 identifies -이 in 많이 as a derivational suffix.
     "쌓아서": "쌓>아",
     "쳐넣어야": "넣>어",
     "애새끼낳으면": "낳>으",
@@ -86,7 +85,6 @@ _NIKL_R003_FORMAL_LICENSES = {
     "않았지만": "않>았",
     "개많음": "많>음",
     "좋은데": "좋>은",
-    "좋아보인다고": "좋>아",
     "좋아해주는": "좋>아",
     "죽었잖아": "잖>아",
     "개좆망했잖아": "잖>아",
