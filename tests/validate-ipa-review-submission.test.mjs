@@ -54,17 +54,17 @@ test('rejects an incomplete reviewer form without accepting empty IPA or missing
   assert.ok(report.errors.some(error => error.includes('IPA-003: reviewerId is required')));
   assert.ok(report.errors.some(error => error.includes('IPA-004: syllableBoundaries')));
   assert.ok(report.errors.some(error => error.includes('IPA-005: vowelLengthAssessment')));
-  assert.ok(report.errors.some(error => error.includes('IPA-006: reviewedAt')));
+  assert.ok(report.errors.some(error => error.includes('BLIND-006: reviewedAt')));
 });
 
-test('rejects stale queue hashes, changed source fields, duplicate/missing cases and wrong reviewer slot', () => {
+test('rejects stale queue hashes, changed inputs, duplicate/missing cases and wrong reviewer slot', () => {
   const stale = completePacket('A');
   stale.queueSha256 = '0'.repeat(64);
   assert.ok(validateReviewerSubmission(JSON.stringify(stale), queueText, 'A').errors.some(error => error.includes('different queue revision')));
 
   const changed = completePacket('A');
-  changed.cases[0].normativeSurfaceComparator = 'changed';
-  assert.ok(validateReviewerSubmission(JSON.stringify(changed), queueText, 'A').errors.some(error => error.includes('source field "normativeSurfaceComparator" was changed')));
+  changed.cases[0].input = 'tampered input';
+  assert.ok(validateReviewerSubmission(JSON.stringify(changed), queueText, 'A').errors.some(error => error.includes('input was changed')));
 
   const duplicate = completePacket('A');
   duplicate.cases[1].caseId = duplicate.cases[0].caseId;
@@ -82,20 +82,52 @@ test('requires one consistent reviewer identity and qualification across the pac
   packet.cases[8].reviewForm.qualification = 'A different qualification statement';
   const report = validateReviewerSubmission(JSON.stringify(packet), queueText, 'A');
   assert.equal(report.valid, false);
-  assert.ok(report.errors.some(error => error.includes('IPA-008: reviewerId must be consistent across the packet')));
-  assert.ok(report.errors.some(error => error.includes('IPA-009: qualification must be consistent across the packet')));
+  assert.ok(report.errors.some(error => error.includes('BLIND-008: reviewerId must be consistent across the packet')));
+  assert.ok(report.errors.some(error => error.includes('BLIND-009: qualification must be consistent across the packet')));
 });
 
-test('rejects fields that could leak candidate IPA or another reviewer’s decision', () => {
+test('rejects source evidence and candidate fields added to a blinded submission', () => {
   const packet = completePacket('A');
   packet.cases[0].candidateBroadIpa = 'LEAKED_CANDIDATE';
   packet.cases[1].reviewerB = { ipa: 'LEAKED_REVIEWER_B' };
   packet.cases[2].reconciliation = { finalIpa: 'LEAKED_FINAL' };
+  packet.cases[3].surfaceEvidenceUrl = 'https://www.korean.go.kr/source';
+  packet.cases[4].normativeSurfaceComparator = 'LEAKED_SURFACE';
   const report = validateReviewerSubmission(JSON.stringify(packet), queueText, 'A');
   assert.equal(report.valid, false);
-  assert.ok(report.errors.some(error => error.includes('unexpected field "candidateBroadIpa"')));
-  assert.ok(report.errors.some(error => error.includes('unexpected field "reviewerB"')));
-  assert.ok(report.errors.some(error => error.includes('unexpected field "reconciliation"')));
+  for (const field of ['candidateBroadIpa', 'reviewerB', 'reconciliation', 'surfaceEvidenceUrl', 'normativeSurfaceComparator']) {
+    assert.ok(report.errors.some(error => error.includes('unexpected field "' + field + '"')), field);
+  }
+});
+
+test('rejects modified reviewer instructions because they can undermine blinding', () => {
+  const packet = completePacket('A');
+  packet.instructions[0] = 'Use the official surface comparator to infer IPA.';
+  const report = validateReviewerSubmission(JSON.stringify(packet), queueText, 'A');
+  assert.equal(report.valid, false);
+  assert.ok(report.errors.some(error => error.includes('instructions do not match the required source-blind protocol')));
+});
+
+test('validates a source-blind R002/R003 packet against its explicit queue path', () => {
+  const sourceQueueText = readFileSync(new URL('../research/r002-r003-source-adjudication-2026-10-24.json', import.meta.url), 'utf8');
+  const packet = buildReviewerPacket(sourceQueueText, 'B');
+  packet.cases = packet.cases.map((item, index) => ({
+    ...item,
+    reviewForm: {
+      ...item.reviewForm,
+      reviewerId: 'reviewer-B',
+      qualification: 'Qualified Korean phonetics reviewer; qualification to be independently checked',
+      reviewedAt: '2026-10-23T20:00:00Z',
+      methodReference: 'Documented broad IPA transcription protocol v1, section 3',
+      broadIpa: 'tɛst' + index,
+      syllableBoundaries: 'test.boundaries.' + index,
+      vowelLengthAssessment: 'uncertain',
+      notes: null,
+    },
+  }));
+  const report = validateReviewerSubmission(JSON.stringify(packet), sourceQueueText, 'B');
+  assert.equal(report.valid, true, report.errors.join('\\n'));
+  assert.equal(report.expectedCaseCount, 3);
 });
 
 test('CLI emits a machine-readable report and returns nonzero for an invalid submission', () => {
