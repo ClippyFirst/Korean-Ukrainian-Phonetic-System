@@ -1397,3 +1397,11 @@ Release classification remains **software-verified research prototype / partial 
 - **Not done in this task:** no neural model was downloaded or executed, no scores were fabricated, no runtime engine or gold corpus was changed, and no model weights/training data were vendored. The benchmark run is a genuine next implementation step, not a completed result.
 - **Next concrete step:** add an opt-in pinned CharsiuG2P adapter/workflow to the existing harness; pin repository/model/tokenizer revisions and dependencies; run exact existing UGTPHON and SIGMORPHON inputs; retain per-occurrence predictions and paired win/loss analysis; inspect any apparent gain against independently adjudicated cases. Do not use the 24-form holdout or test splits for training/tuning.
 - **Readiness:** research-ready for the neural baseline experiment; ClippyFirst remains a research-ready partial prototype, not release-ready for validated Korean-to-Ukrainian output.
+
+
+### Implementation update — neural benchmark adapter — 2026-10-26
+
+- Added `scripts/benchmark_charsiu_g2p.py`: optional Hugging Face ByT5 inference adapter with required explicit model and tokenizer revisions, batching, Korean-prefix input, Hangul/empty-output guards, shared broad-IPA normalization, occurrence-preserving scoring, coverage, exact match, CER, and per-occurrence predictions. It is not imported by the production engine and does not produce Ukrainian output.
+- Added `tests/test_charsiu_g2p_benchmark.py` for normalization/scoring, repeated occurrence accounting, coverage vs accuracy, empty gold rejection, and Hangul-only token contract.
+- Added a research gate and updated the suite register. **Code presence is not yet equivalent to DONE_VERIFIED**: the new tests and CI must pass, and model inference still needs an actual run with pinned revisions. No model score is reported.
+- Next: verify current branch head/CI; correct any test or runtime failures; then add a separately-triggered expensive model workflow after the model/tokenizer revision and dependencies are pinned and tested. Compare against the same UGTPHON and SIGMORPHON inputs; retain case-level output and no training on holdouts.
