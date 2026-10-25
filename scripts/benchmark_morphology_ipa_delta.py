@@ -56,6 +56,7 @@ def _metrics(rows: list[dict[str, Any]], attempted: int) -> dict[str, Any]:
         "coverage": round(len(rows) / attempted, 6) if attempted else None,
         "exact_matches": exact,
         "exact_match_rate": round(exact / len(rows), 6) if rows else None,
+        "coverage_adjusted_exact_match_rate": round(exact / attempted, 6) if attempted else None,
         "character_error_rate": round(distance / denominator, 6) if denominator else None,
         "reference_characters": denominator,
     }
