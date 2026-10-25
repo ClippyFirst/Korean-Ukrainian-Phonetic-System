@@ -1067,3 +1067,25 @@ The latest software hardening:
 - UI wording distinguishes candidate/unavailable status and states that `model-selected` target spellings are project-defined, not independently adjudicated.
 
 **Disposition:** software-verified partial research prototype, **not release-ready**. Remaining acceptance blockers: verified primary source for the original 24-form list; independent Korean IPA adjudication/gold; independent Ukrainian target gold and evaluation protocol; authorized live NIKL inventory. No invented gold labels, phonological forms, or accuracy claims were added.
+
+
+### End-to-end correctness continuation — 2026-10-25
+
+**Implementation branch:** `fix/clippyfirst-core-ipa-target-2026-10-24`. **Code/evidence head:** `aca93752c5d059300baf33bd576a5a0fea8fa4fa`.
+
+Changes completed in this batch:
+- Public browser IPA helper APIs now fail closed for empty, separator-only, feature-only and hard-unmapped IPA; a multi-syllable call does not return partial Ukrainian output if any segment fails.
+- Provisional mappings remain candidates unless research opt-in is explicitly boolean; opting in preserves the `provisional` status rather than relabelling it as model-selected.
+- Failure results retain diagnostic mapping traces without returning a partial target string.
+- Restored the 24-form diagnostic candidate fixture, provenance audit, regression test and JSON report runner from PR #307 onto the active renderer branch. The fixture remains explicitly `reconstructed_unverified`, with no fabricated IPA or Ukrainian gold.
+- The optional g2pK workflow now runs the fixture audit on Python 3.11 and 3.12 and uploads per-runtime JSON artifacts.
+
+Exact-head checks on the code/evidence head:
+- Browser tests/build [40191515088](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515088): **success**, 1,231 browser tests passed, 0 failed; public build succeeded.
+- System verification [40191515073](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515073): **success**; Python regression/data integrity and browser build passed. Official live NIKL inventory was **skipped**, not passed.
+- Optional g2pK [40191515065](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515065): **success** on Python 3.11 and 3.12; target-renderer tests **20 passed** per runtime, fixture report generated and artifact uploaded, wheel data check passed.
+- Browser G2P [40191515045](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515045), UGTPHON diagnostic [40191515110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515110), paired native/g2pK diagnostic [40191515125](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515125), multi-engine benchmark [40191515023](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515023), morphology smoke [40191515056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056), and generated master/research artifacts [40191515019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515019): **all success**.
+
+Current diagnostic fixture report: **18/24 accepted native orthographies + 1 provisional native candidate**; **23/24 accepted g2pK orthographies + 1 provisional g2pK candidate**. These are output/abstention counts only, not accuracy: both gold-label sets are unavailable. The 24 inputs remain an unverified reconstruction and must not be described as the original frozen holdout.
+
+Disposition remains **PARTIAL / research prototype, not release-ready**. Outstanding acceptance gates: recover and hash the original 24-form manifest or create a separately named verified benchmark; obtain independent Korean IPA adjudication; obtain independent Ukrainian target gold and a scoring protocol; resolve the known native-vs-g2pK surface disagreements `넓죽하다` and `읽고` with primary evidence; obtain authorized official NIKL inventory evidence. No gold labels, linguistic forms, or target-accuracy scores were invented.
