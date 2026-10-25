@@ -443,6 +443,8 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     errors_by_engine: dict[str, int] = {name: 0 for name in predictions}
     unresolved_native = 0
     mismatch_details: list[dict[str, Any]] = []
+    native_gold_discrepancy_audit: list[dict[str, Any]] = []
+    native_discrepancy_category_counts: dict[str, int] = defaultdict(int)
 
     # Re-evaluate native separately to preserve its explicit abstention state.
     native_cache: dict[str, dict[str, Any]] = {}
@@ -590,6 +592,42 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         if any_error and len(mismatch_details) < 250:
             mismatch_details.append(row)
 
+        native_row = row.get("clippyfirst_native", {})
+        if native_row.get("status") == "unresolved_or_error":
+            category = "ABSTENTION" if native.get("unresolved") else "UNCLASSIFIED"
+            native_gold_discrepancy_audit.append({
+                "occurrence_id": item["occurrence_id"],
+                "row_id": row_id,
+                "original_hangul": word,
+                "original_gold_ipa": gold,
+                "clippyfirst_status": "abstained" if native.get("unresolved") else "runtime_error_or_no_output",
+                "clippyfirst_raw_ipa": native.get("ipa"),
+                "reason": native.get("reason") or native.get("error"),
+                "category": category,
+                "classification_confidence": "status-derived; not an IPA correctness judgement",
+            })
+            native_discrepancy_category_counts[category] += 1
+        elif native_row and not native_row.get("exact", False):
+            discrepancy = native_row.get("discrepancy", {})
+            category = discrepancy.get("category", "UNCLASSIFIED")
+            native_gold_discrepancy_audit.append({
+                "occurrence_id": item["occurrence_id"],
+                "row_id": row_id,
+                "original_hangul": word,
+                "original_gold_ipa": gold,
+                "clippyfirst_raw_ipa": native_row.get("ipa"),
+                "existing_profile_prediction": native_row.get("normalized_ipa"),
+                "existing_profile_gold": native_row.get("normalized_gold"),
+                "broad_fricative_aspiration_prediction": native_row.get("broad_fricative_aspiration_normalized_ipa"),
+                "broad_fricative_aspiration_gold": native_row.get("broad_fricative_aspiration_normalized_gold"),
+                "existing_profile_distance": native_row.get("distance"),
+                "broad_fricative_aspiration_distance": native_row.get("broad_fricative_aspiration_distance"),
+                "category": category,
+                "classification_rationale": discrepancy.get("rationale"),
+                "classification_confidence": discrepancy.get("confidence"),
+            })
+            native_discrepancy_category_counts[category] += 1
+
     # Preserve every abstained token occurrence, not just a truncated sample.
     # Repeated words in separate rows count as separate occurrences.
     native_abstention_audit: list[dict[str, Any]] = []
@@ -715,8 +753,15 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "engine_order": list(engine_results),
         "engines": engine_results,
         "diagnostic_mismatch_sample": mismatch_details,
+        "clippyfirst_gold_discrepancy_audit": {
+            "scope": "complete eligible occurrence-level ClippyFirst-vs-gold discrepancy and abstention ledger",
+            "occurrence_count": len(native_gold_discrepancy_audit),
+            "category_counts": dict(sorted(native_discrepancy_category_counts.items())),
+            "occurrences": native_gold_discrepancy_audit,
+            "limitations": "Gold IPA is not independently adjudicated; UNCLASSIFIED is not evidence of an engine error. ABSTENTION is a coverage outcome, not an accuracy failure.",
+        },
         "discrepancy_audit_contract": {
-            "scope": "capped multi-engine mismatch sample only; not a complete all-occurrence ledger",
+            "scope": "complete native ledger plus capped multi-engine sample",
             "categories": ["PHONOLOGY_ENGINE", "IPA_CONVENTION", "UNICODE_OR_FORMAT", "SEGMENTATION", "GOLD_UNCERTAIN", "ABSTENTION", "UNCLASSIFIED"],
             "policy": "Only IPA_CONVENTION is assigned when the declared narrow s/ɕ aspiration sensitivity profile alone changes exactness; Unicode equivalence is assigned only when NFC strings match. Other mismatches remain UNCLASSIFIED rather than being guessed as engine errors.",
             "warning": "This sampled diagnostic does not satisfy the full case-by-case adjudication requirement. Gold variants and source context may be insufficient to resolve a mismatch.",
