@@ -25,6 +25,7 @@ def test_metrics_keep_coverage_separate_from_accuracy():
     assert metrics["scored_occurrences"] == 2
     assert metrics["coverage"] == 0.5
     assert metrics["exact_match_rate"] == 0.5
+    assert metrics["coverage_adjusted_exact_match_rate"] == 0.25
     assert metrics["character_error_rate"] == 0.25
 
 
