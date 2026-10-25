@@ -1,3 +1,49 @@
+# Current continuation — v3 training readiness and benchmark honesty — 2026-10-26
+
+## Current state
+
+- PR #336 remains open: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/336
+- Latest branch head before this handoff update: 17bc504b1a9d10cf1f66006c39a87284bc11b92b.
+- g2pK is included in the current multi-engine benchmark by the owner's latest instruction.
+- Latest completed full multi-engine run: [40238222133](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40238222133), artifact [12616575071](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40238222133/artifacts/12616575071). The benchmark job succeeded on executable head ff14ec72e3167d9268f1348f399abb155098caee.
+
+## Current measured baseline (primary profile, not the sensitivity profile)
+
+| Dataset | Engine | Scored / eligible | Exact | Exact rate | CER | Coverage |
+|---|---|---:|---:|---:|---:|---:|
+| UGTPHON | ClippyFirst native | 2,698 / 2,703 | 1,430 | 53.0022% | 9.1697% | 99.8150% |
+| UGTPHON | g2pK 0.9.4 + shared ClippyFirst segment renderer | 2,703 / 2,703 | 1,435 | 53.0892% | 9.2285% | 100% |
+| SIGMORPHON 2021 | ClippyFirst native | 997 / 999 | 357 | 35.8074% | 14.7037% | 99.7998% |
+| SIGMORPHON 2021 | g2pK 0.9.4 + shared ClippyFirst segment renderer | 999 / 999 | 353 | 35.3353% | 14.8222% | 100% |
+
+The sensitivity profile that ignores aspiration after s/ɕ is diagnostic only; it must not replace the primary score or be labelled as the gold convention without independent adjudication. Current discrepancy classification intentionally leaves 1,268 UGTPHON and 640 SIGMORPHON non-abstention mismatches UNCLASSIFIED pending case-level evidence. Do not relabel those as normalization errors by assumption.
+
+## Work added in this continuation
+
+- Added scripts/audit_v3_training_readiness.py: counts lexical/addition rows, duplicates, holdout overlap, candidate IPA labels, and explicit adjudication markers. It is a leakage/readiness audit, not a trainer.
+- Added tests/test_v3_training_readiness.py to check duplicate detection, holdout overlap detection, and fail-closed refusal to declare supervised IPA training ready.
+- Added docs/CLIPPYFIRST-V3-TRAINING-AND-BENCHMARK-PROTOCOL.md with a hybrid v3 direction, separated benchmark tracks, training gates, and criteria for reporting 80–90% honestly.
+- Rationale: current lexical table has about 644 rows, but IPA candidate values are not necessarily independent gold. The frozen 24-form holdout remains unannotated and is evaluation-only. Do not train on UGTPHON or SIGMORPHON test rows.
+
+## Status ledger
+
+- DONE_VERIFIED: current six-engine comparison including g2pK on both pinned corpora; run 40238222133 passed and uploaded artifact 12616575071.
+- PARTIAL: discrepancy taxonomy; non-abstention mismatches remain unclassified pending independent adjudication.
+- PARTIAL: v3 training readiness audit is implemented, but it must pass its new CI run and should be run against the repository's actual data.
+- BLOCKED: supervised IPA training is not evidence-ready until independent IPA gold exists and provenance/label leakage are reviewed.
+- BLOCKED: Ukrainian target accuracy cannot be claimed without an independently adjudicated Ukrainian-output test set.
+- NOT RELEASE-READY: current broad exact-match rates remain 53.0022% (UGTPHON) and 35.8074% (SIGMORPHON), not 80–90%.
+
+## Required next work
+
+1. Verify the v3 readiness script and test on CI at the new exact head; inspect actual row/overlap report.
+2. Generate a ranked, case-level error taxonomy for the current two corpora without changing strict scoring.
+3. Source and adjudicate independent IPA annotations for the frozen holdout and a larger train/dev/test sample; freeze splits before model experiments.
+4. Build a separately adjudicated Ukrainian-target set for the IPA-to-Ukrainian adapter.
+5. Prototype a learned residual model only after the label audit; compare on locked holdout and external test sets with unchanged denominators, abstention, CER, and paired uncertainty.
+
+---
+
 # One-pass continuation — source-backed Korean abstention recovery — 2026-10-25
 
 
