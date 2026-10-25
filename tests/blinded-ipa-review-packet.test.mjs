@@ -7,6 +7,8 @@ import { buildReviewerPacket } from '../scripts/build-ipa-review-packet.mjs';
 
 const queueText = readFileSync(new URL('../research/ipa-adjudication-queue.json', import.meta.url), 'utf8');
 const queue = JSON.parse(queueText);
+const r002QueueText = readFileSync(new URL('../research/r002-r003-source-adjudication-2026-10-24.json', import.meta.url), 'utf8');
+const r002Queue = JSON.parse(r002QueueText);
 
 test('packet contains all source-backed cases and a reproducible queue hash', () => {
   const packetA = buildReviewerPacket(queueText, 'A');
@@ -83,3 +85,48 @@ test('CLI requires an explicit reviewer slot and fails closed for missing argume
   assert.equal(run.status, 2);
   assert.match(run.stderr, /--reviewer A or --reviewer B is required/u);
 });
+
+test('R002/R003 source queue creates a blinded packet only for exact-form sources found', () => {
+  const packetA = buildReviewerPacket(r002QueueText, 'A');
+  const packetB = buildReviewerPacket(r002QueueText, 'B');
+  assert.equal(packetA.sourceQueueSchemaVersion, 1);
+  assert.equal(packetA.queueSha256, packetB.queueSha256);
+  assert.deepEqual(packetA.cases.map(item => item.caseId), ['R002-05', 'R003-01', 'R003-04']);
+  assert.deepEqual(packetA.cases.map(item => item.input), ['멋있어', '수많은', '싫어서']);
+  assert.ok(packetA.cases.every(item => item.surfaceEvidenceStatus === 'SOURCE_FOUND_PENDING_IPA'));
+  assert.ok(packetA.cases.every(item => item.reviewForm.reviewerSlot === 'A'));
+  const serialized = JSON.stringify(packetA);
+  for (const forbidden of ['g2pkIpa', 'goldDiagnostic', 'finalBroadIpa', 'ukrainianTargetStatus', 'reviewerB', 'decisionNotes']) {
+    assert.ok(!serialized.includes(forbidden), 'source queue candidate data must not leak: ' + forbidden);
+  }
+  assert.ok(packetA.cases.every(item => item.reviewForm.broadIpa === null));
+  assert.ok(packetA.cases.every(item => item.reviewForm.syllableBoundaries === null));
+  assert.ok(packetA.cases.every(item => item.reviewForm.vowelLengthAssessment === null));
+});
+
+test('R002/R003 packet generation fails closed when no exact-form source is verified', () => {
+  const pending = structuredClone(r002Queue);
+  for (const item of pending.cases) {
+    item.sourceStatus = 'PENDING_EXACT_FORM_SOURCE';
+    item.sourceLocator = null;
+    item.sourceExcerpt = null;
+  }
+  assert.throws(() => buildReviewerPacket(JSON.stringify(pending), 'A'), /no SOURCE_FOUND_PENDING_IPA cases/u);
+});
+
+test('CLI can build a blinded packet from the R002/R003 queue without modifying the queue', () => {
+  const script = fileURLToPath(new URL('../scripts/build-ipa-review-packet.mjs', import.meta.url));
+  const before = readFileSync(new URL('../research/r002-r003-source-adjudication-2026-10-24.json', import.meta.url), 'utf8');
+  const run = spawnSync(process.execPath, [
+    script, '--reviewer', 'B', '--queue', 'research/r002-r003-source-adjudication-2026-10-24.json'
+  ], { cwd: process.cwd(), encoding: 'utf8' });
+  const after = readFileSync(new URL('../research/r002-r003-source-adjudication-2026-10-24.json', import.meta.url), 'utf8');
+  assert.equal(run.status, 0, run.stderr);
+  assert.equal(before, after, 'packet generation must not mutate the source queue');
+  const packet = JSON.parse(run.stdout);
+  assert.equal(packet.reviewerSlot, 'B');
+  assert.deepEqual(packet.cases.map(item => item.caseId), ['R002-05', 'R003-01', 'R003-04']);
+  assert.ok(!run.stdout.includes('g2pkIpa'));
+  assert.ok(!run.stdout.includes('goldDiagnostic'));
+});
+
