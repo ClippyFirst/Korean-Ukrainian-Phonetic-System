@@ -67,8 +67,8 @@ export function traceIpaMappingDetailed(ipa){
     }
     i+=match.source_ipa.length;
   }
-  if(!tokens.length && !features.length){
-    return {tokens,features,unknown:'',reason:'empty_ipa',status:'unavailable'};
+  if(!tokens.length){
+    return {tokens:[],features,unknown:'',reason:'no_renderable_ipa_segments',status:'unavailable'};
   }
   return {
     tokens,
@@ -121,14 +121,16 @@ export function ipaTargetForSource(source,ipa,options={}){
   const detailed=ipaUnits.map(traceIpaMappingDetailed);
   const syllables=detailed.map(item=>item.unknown?'':item.tokens.map(token=>token.ukrainian).join(''));
   const unknown=detailed.find(item=>item.unknown)?.unknown||'';
+  const unavailable=detailed.find(item=>item.status==='unavailable');
   const mappingTrace=detailed.flatMap(item=>item.tokens);
-  const status=unknown
+  const status=unknown||unavailable
     ? 'unavailable'
     : detailed.some(item=>item.status==='provisional')?'provisional':'model-selected';
-  if(unknown){
-    const failed=detailed.find(item=>item.unknown);
+  if(unknown||unavailable){
+    const failed=detailed.find(item=>item.unknown)||unavailable;
     // Never return an empty string as if it were a successful target spelling,
-    // and never expose partial syllables when any IPA segment is unmapped.
+    // and never expose partial syllables when any IPA segment is unmapped or
+    // contains no renderable IPA segment.
     return {text:null,syllables:[],unknown,status:'unavailable',reason:failed?.reason||'unmapped_ipa_sequence',mappingTrace:[]};
   }
 

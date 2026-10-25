@@ -1038,3 +1038,8 @@ The public `ipaTargetForSource` API now returns `text: null`, an explicit unavai
 ### UI status wording correction — 2026-10-25
 
 The workbench now checks `candidate_status === 'provisional'` before displaying the generic unavailable-target note. This prevents a result that includes a clearly labelled provisional candidate from being described only as “Ukrainian output unavailable.” The candidate remains explicitly unaccepted; this is a status-communication fix, not a linguistic-confidence upgrade. Exact-head CI is pending.
+
+
+### Empty-render hardening — 2026-10-25
+
+Closed a fail-open edge case: IPA containing only separators or length marks could previously pass through the Python renderer as an empty `model-selected` spelling; the browser detailed trace could similarly treat length-mark-only IPA as model-selected. Both adapters now require at least one mapped IPA token. Added regression cases for `.`, `...`, `ː`, `.ː.`, and `#`. Exact-head CI is pending.

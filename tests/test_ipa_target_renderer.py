@@ -210,3 +210,11 @@ def test_allow_provisional_must_be_explicit_boolean():
     import pytest
     with pytest.raises(TypeError, match="allow_provisional"):
         render_ipa_sequence_to_ukrainian("ka", allow_provisional="yes")
+
+
+def test_separator_or_length_marker_only_input_cannot_render_as_empty_success():
+    for ipa in (".", "...", "ː", ".ː.", "#"):
+        result = render_ipa_sequence_to_ukrainian(ipa)
+        assert result["ukrainian_orthography"] is None, ipa
+        assert result["status"] == "unavailable", ipa
+        assert result["reason"] == "no_renderable_ipa_segments", ipa

@@ -176,6 +176,19 @@ test('IPA/source syllable misalignment fails closed instead of shifting targets'
   assert.equal(result.reason, 'ipa_source_alignment_mismatch');
 });
 
+test('IPA consisting only of separators or a length mark cannot render as an empty success', () => {
+  for (const ipa of ['.', '...', 'ː', '.ː.', '#']) {
+    const trace = traceIpaMappingDetailed(ipa);
+    assert.equal(trace.status, 'unavailable', ipa);
+    assert.equal(trace.reason, 'no_renderable_ipa_segments', ipa);
+    const result = ipaTargetForSource('가', ipa);
+    assert.equal(result.text, null, ipa);
+    assert.equal(result.status, 'unavailable', ipa);
+    assert.equal(result.reason, 'no_renderable_ipa_segments', ipa);
+    assert.deepEqual(result.syllables, [], ipa);
+  }
+});
+
 test('unknown IPA and empty IPA return an unavailable result, never a partial or empty-string success', () => {
   const unknown = ipaTargetForSource('가나', 'ka.☃');
   assert.equal(unknown.text, null);

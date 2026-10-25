@@ -63,3 +63,8 @@ This gate is deliberately conservative: a candidate such as `ɰi → ий`, `ø 
 ## Unavailable browser IPA results are not empty-string successes
 
 The public `ipaTargetForSource` adapter returns `text: null` when IPA is empty, contains an unmapped segment, or does not align with the Hangul syllable count. In these cases it also withholds partial syllable output and partial mapping traces from the result. This distinguishes a genuine empty string (not a valid Korean transcription) from a failed target rendering and mirrors the Python renderer's `ukrainian_orthography: null` contract.
+
+
+### Reject IPA with no renderable segments
+
+A sequence made only of syllable delimiters, word-boundary markers, or vowel-length marks (for example `.`, `#`, or `ː`) is not a valid successful target rendering. Both Python and browser adapters now return an unavailable result with `no_renderable_ipa_segments`; they do not return an empty Ukrainian spelling or mark modifier-only IPA as `model-selected`.

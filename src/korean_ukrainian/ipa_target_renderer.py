@@ -205,6 +205,22 @@ def render_ipa_sequence_to_ukrainian(ipa: str, *, allow_provisional: bool = Fals
         })
         i += len(key)
 
+    if not trace:
+        return {
+            "ipa": source_ipa,
+            "status": "unavailable",
+            "reason": "no_renderable_ipa_segments",
+            "ukrainian_orthography": None,
+            "segments": [],
+            "ignored_source_markers": ignored_markers,
+            "length_adaptation_status": (
+                "preserved-in-IPA-not-rendered-in-practical-orthography"
+                if ignored_markers else "not-marked"
+            ),
+            "renderer": "korean_ipa_correspondence",
+            "score_type": "explicit_correspondence_not_probability",
+        }
+
     overall_status = (
         "provisional"
         if any(item["mapping_status"] == "provisional" for item in trace)
