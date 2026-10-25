@@ -25,7 +25,21 @@ const NIKL_SURFACE_CORRECTIONS = new Map([
   ['넓죽하다', { surface: '넙쭈카다', evidence: 'NIKL Rule 10 exact example; qna_seq=307219 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219' }],
   ['넓둥글다', { surface: '넙뚱글다', evidence: 'NIKL Q&A qna_seq=322805; §10 exception' }],
   ['넓적하다', { surface: '넙쩌카다', evidence: 'NIKL Q&A qna_seq=322805; §§10, 23' }],
-  ['읽고', { surface: '일꼬', evidence: 'NIKL exact-form rule explanation; qna_seq=329463 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=329463' }]
+  ['읽고', { surface: '일꼬', evidence: 'NIKL exact-form rule explanation; qna_seq=329463 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=329463' }],
+  ['싫어서', { surface: '시러서', evidence: 'NIKL exact-form explanation; qna_seq=313981 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313981' }],
+  ['수많은', { surface: '수마는', evidence: 'NIKL Korean Basic Dictionary, word 71144: 수많은[수ː마는] https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144' }]
+]);
+
+const NIKL_LEXICAL_LENGTH = new Map([
+  ['수많은', { surface: '수마는', syllableIndex: 0, evidence: 'NIKL Korean Basic Dictionary, word 71144: 수많은[수ː마는]' }]
+]);
+
+const NIKL_VARIANT_SURFACES = new Map([
+  ['멋있어', {
+    surfaces: ['머디써', '머시써'],
+    evidence: 'NIKL Online Q&A qna_seq=306166 explicitly accepts both [머디써] and [머시써]',
+    sourceLocator: 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166'
+  }]
 ]);
 
 function applyNiklSurfaceCorrections(source, surface) {
@@ -35,6 +49,9 @@ function applyNiklSurfaceCorrections(source, surface) {
   if (source.length !== surface.length) return { surface, corrections: [] };
   const corrections = [];
   for (const match of source.matchAll(/[가-힣]+/gu)) {
+    // The dictionary's long-vowel reading is licensed only for the exact
+    // inflected form, not automatically for a compound or running-text phrase.
+    if (match[0] === '수많은' && source !== match[0] && /[가-힣]/u.test(source.replace(match[0], ''))) continue;
     const entry = NIKL_SURFACE_CORRECTIONS.get(match[0]);
     if (!entry || surface.slice(match.index, match.index + match[0].length) === entry.surface) continue;
     const before = surface.slice(0, match.index);
@@ -108,6 +125,43 @@ export function createG2pWebAdapter(engine) {
         result.analysis += '; NIKL exact-form correction before IPA: ' + normalized.corrections
           .map(item => item.source + ' → ' + item.surface + ' (' + item.evidence + ')').join('; ');
       }
+
+      // The official dictionary marks lexical length with ː. Preserve it in
+      // inspectable IPA for this exact form only; the target renderer still
+      // owns Ukrainian output, and this overlay does not assert IPA gold.
+      const lexicalLength = NIKL_LEXICAL_LENGTH.get(text);
+      if (lexicalLength && surface === lexicalLength.surface && result.trace?.[lexicalLength.syllableIndex]?.ipa) {
+        const item = result.trace[lexicalLength.syllableIndex];
+        if (!item.ipa.includes('ː')) {
+          item.ipa += 'ː';
+          result.ipa = renderIpa(result.trace);
+          result.analysis += '; NIKL lexical vowel length retained in IPA (' + lexicalLength.evidence + ')';
+        }
+      }
+
+      // NIKL explicitly accepts two Hangul surface variants for this exact
+      // lexical form. Add an alternative only when the pinned G2P surface is
+      // one of the attested variants and the IPA-to-target path fully succeeds.
+      // The generated IPA/target are project candidates, never independent gold.
+      const variantEvidence = text === '멋있어' ? NIKL_VARIANT_SURFACES.get(text) : null;
+      if (variantEvidence && variantEvidence.surfaces.includes(surface)) {
+        const alternativeSurface = variantEvidence.surfaces.find(value => value !== surface);
+        const alternative = engine.convertSurface(alternativeSurface);
+        if (!alternative.issues?.length && alternative.ipa && alternative.ukrainian && !alternative.candidate_status) {
+          result.variants = [...(result.variants || []), {
+            source: text,
+            sourceLocator: variantEvidence.sourceLocator,
+            surface: alternativeSurface,
+            ukrainian: alternative.ukrainian,
+            ipa: alternative.ipa,
+            note: variantEvidence.evidence + '; IPA/український відповідник згенеровані адаптером ClippyFirst і потребують окремої перевірки.',
+            status: 'lexical-review',
+            ipaIsGold: false,
+            ukrainianTargetIsGold: false
+          }];
+        }
+      }
+
       result.normativeCorrections = normalized.corrections;
       if (result.issues.length) result.status = 'unresolved';
       else if (normalized.corrections.length) result.status = 'lexical';
