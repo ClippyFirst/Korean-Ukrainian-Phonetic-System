@@ -2,7 +2,7 @@
 
 ## Status
 
-## Latest owner-constrained rerun — 2026-10-25
+## Historical five-engine rerun — 2026-10-25 (g2pK inclusion is now authorized for subsequent runs)
 
 **DONE_VERIFIED:** [multi-engine run 40235216645](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216645), artifact [12615110277](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216645/artifacts/12615110277). The run used five engines only: ClippyFirst native, KoG2P, hangul_to_ipa, eSpeak NG, and phonemize. Per the project owner's standing instruction, g2pK was not installed by this workflow, imported, or executed. The corpus was fetched at the same pinned upstream commit and validated; no licensed corpus text was committed.
 
