@@ -1375,3 +1375,12 @@ Release classification remains **software-verified research prototype / partial 
 - Five remaining evidence-limited cases: `칡칡이` (compact morphology/boundary), `쫒아내면` and `무서웟어` (likely spelling errors; no silent correction), `많앗구나유유유` (nonstandard spelling/stylized suffix uncertain), and `삶의` (specialist IPA adjudication still blocked). Do not force production licenses to clear these.
 - The live official NIKL inventory remains blocked/skipped because its collector receives HTTP 403; no access-control bypass was attempted. Rights review and independent IPA/Ukrainian-target gold remain open.
 - Status: **PARTIAL / research prototype**, not release-ready for validated Ukrainian output.
+
+
+## Final residual-case evidence gate — 2026-10-25
+
+- Reconciled the stale “45 unresolved” request against current main and the latest recorded merged benchmark: the residual count is **5**, not 45. The benchmark run is [40223272365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40223272365); it reports 2,698/2,703 scored, 1,430 exact, CER 9.1697%, five unresolved, and zero engine exceptions.
+- Added `research/final-residual-abstention-triage-2026-10-25.json` and `tests/test_final_residual_abstention_triage.py`. The gate tests ensure no residual case emits accepted Ukrainian orthography until the relevant blocker is resolved.
+- Source checks: NIKL MCFAQ 5716 explicitly permits `삶의[살믜]/[살메]` (Hangul pronunciation, not IPA); the Korean Basic Dictionary entry for `쫓아내다` gives `[쪼차내다]`; the official dictionary example includes correctly spelled `무서웠어`; an official NIKL Q&A quotes `많았구나`. These support source-level observations only, not silent spelling repair or exact noisy-form pronunciation.
+- No production pronunciation rule was added for `칡칡이`, `쫒아내면`, `많앗구나유유유`, or `무서웟어`: the first lacks a verified lexical parse and the other three are nonstandard spellings whose intended correction must not be silently substituted. `삶의` remains diagnostic-only until independent IPA review; Ukrainian target review remains a separate gate.
+- New branch: `fix/final-abstention-evidence-2026-10-25`, based on current main `d23646af23b10be6b9f5223002cf634cd128ea06`. Exact-head CI for this branch is not yet known; do not mark these new tests `DONE_VERIFIED` until Actions finishes.
