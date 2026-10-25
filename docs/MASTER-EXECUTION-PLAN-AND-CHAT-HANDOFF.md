@@ -1407,7 +1407,7 @@ Release classification remains **software-verified research prototype / partial 
 - Classification policy is fail-closed: `IPA_CONVENTION` only when the declared sibilant-aspiration sensitivity profile changes exactness; `UNICODE_OR_FORMAT` only for NFC-equivalent raw strings; otherwise `UNCLASSIFIED`. This avoids claiming a phonological cause from string mismatch alone.
 - Added unit tests for all classifier branches. Exact-head CI is required before this change becomes `DONE_VERIFIED`.
 - Ledger: **PARTIAL** — diagnostic labels now exist, but the mismatch list is still capped at 250 and does not satisfy the requested complete occurrence-level ClippyFirst-vs-gold audit. Next code task is to emit a complete per-occurrence ledger with all profiles, abstentions, and category counts using fixed denominators.
-- Existing broad-IPA sensitivity profile remains diagnostic only; no global diacritic deletion, production rule changes, or g2pK execution were introduced by this change.
+- Existing broad-IPA sensitivity profile remains diagnostic only; no global diacritic deletion or production rule changes were introduced by this change. g2pK is now included as an external comparison baseline by explicit owner instruction; its output is a G2P surface passed through the project's shared segment renderer, not an independent IPA renderer.
 
 ### Follow-up — full ClippyFirst discrepancy ledger implementation
 
