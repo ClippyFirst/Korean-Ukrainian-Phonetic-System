@@ -112,3 +112,10 @@ The allophone decisions are now linked to descriptive and experimental sources:
 - [“Korean n-insertion: a mismatch between data and learning”](https://www.cambridge.org/core/journals/phonology/article/korean-ninsertion-a-mismatch-between-data-and-learning/6C53BDA0D8F55B2DA793E043D10B968D) discusses [ɲ] as a phonetic realization of /nj/; the candidate profile maps [ɲ] to `n` while retaining the following `j` when present.
 
 These sources support the broad-vs-narrow hypothesis, but they do not replace independent annotation of the exact benchmark items. The remaining `i/y`, stress, length and consonant-symbol mismatches remain separate adjudication targets.
+
+## Current adjudication status (2026-10-25)
+
+The R002/R003 source queue now has three exact-form sources found (`멋있어`, `수많은`, `싫어서`) and eleven cases still pending exact-form source evidence. The three found cases are `SOURCE_FOUND_PENDING_IPA`, not IPA gold. The blinded packet generator can now create separate reviewer A/B packets from only those cases; it does not expose engine IPA, Ukrainian target output, or another reviewer's submission.
+
+The separate 24-form broad-IPA holdout `data/korean/ipa_holdout_2026-10-24.json` is source-backed and externally token-disjoint (0/24 overlap with pinned benchmark artifact 12567746123), but it has 0 IPA gold labels. The local runtime/fixture leakage check is now run in the current repository CI and emits its detailed predictions only as a 30-day workflow artifact. Neither holdout is a scored accuracy set until two independent IPA reviews and any required adjudication are complete.
+
