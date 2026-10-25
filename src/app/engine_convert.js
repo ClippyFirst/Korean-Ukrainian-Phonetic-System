@@ -318,15 +318,17 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // words because the phrase path recursively converts each token.
   const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
   const provisionalWholeHangulToken=/^[가-힣]+$/u.test(text)&&trace.some(item=>item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review');
-  const target_status=unresolvedWholeHangulToken||!hasHangulSyllables||provisionalWholeHangulToken
+  const target_status=unresolvedWholeHangulToken||!hasHangulSyllables
     ? 'unavailable'
     : trace.some(item=>item?.targetStatus==='unavailable'||item?.status==='unresolved')
       ? 'unavailable'
-      : 'model-selected';
+      : trace.some(item=>item?.targetStatus==='provisional')
+        ? 'provisional'
+        : 'model-selected';
   return{
     source:text,
     surfaceHangul:recomposed===originalHangul?'':recomposed,
-    ukrainian:unresolvedWholeHangulToken||provisionalWholeHangulToken?'':output.join(''),
+    ukrainian:unresolvedWholeHangulToken?'':output.join(''),
     candidate_ukrainian:provisionalWholeHangulToken?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
     candidate_status:provisionalWholeHangulToken?'provisional':null,
     ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,' '),
