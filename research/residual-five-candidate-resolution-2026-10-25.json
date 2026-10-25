@@ -14,12 +14,18 @@
       "input": "칡칡이",
       "class": "LEXICAL_IDENTITY_AND_MORPHOLOGY",
       "status": "BLOCKED",
-      "observedRelation": "A repeated-looking stem plus final 이 can resemble a stem/particle or stem/suffix boundary, but spelling alone does not establish lexical identity or segmentation.",
+      "observedRelation": "The exact string is attested as the title/label of a Cheolma-myeon folk song in a local-culture PDF; that proves an attested title use, not a dictionary lexeme or a transparent morpheme boundary.",
       "candidateForms": [],
       "candidateIPA": [],
       "productionAction": "none",
-      "why": "Do not parse the final 이 as a particle or suffix merely because it follows a Hangul syllable. No verified exact lexical source/context has been established.",
-      "nextEvidence": "Exact dictionary entry or contextual corpus citation establishing the intended lexeme and morpheme boundary, plus a negative control with a non-morphemic boundary."
+      "why": "A source-backed exact-string use exists as a regional folk-song title, but it does not establish whether the title is compositional, dialectal, playful, or opaque. Do not infer a 칡+칡+이 parse from the title.",
+      "nextEvidence": "Obtain the cited 양산의 민요 (1992), p. 180 or a rights-cleared reliable transcription with surrounding field notes; determine whether 칡칡이 is a lexicalized title, a refrain/onomatopoeic form, or morphologically analyzable. Until then keep strict-mode abstention.",
+      "evidence": [
+        {
+          "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
+          "scope": "The PDF lists 칡칡이 as the heading for 철마면 민요 26, with singer/date/location metadata and a citation to 이소라, 양산의 민요 (1992), p. 180. It does not provide a lexical gloss or morpheme segmentation."
+        }
+      ]
     },
     {
       "input": "쫒아내면",
@@ -78,6 +84,10 @@
         {
           "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316156",
           "scope": "The NIKL answer contains standard spelling 많았구나 in a quotation; it does not adjudicate this noisy token or its final sequence."
+        },
+        {
+          "url": "https://v.daum.net/v/JU0MXB4lYJ",
+          "scope": "A published interview explicitly explains ㅠㅠㅠ as 'tears' and separately describes 유유유 as a title/phrase meaning 'you you you'. This demonstrates that the strings can have different interpretations in different contexts; it does not identify the intended meaning in the user's isolated input."
         }
       ],
       "nextEvidence": "User/context confirmation of whether the tail is ㅠㅠㅠ, literal 유유유, or a separate token; then analyze the confirmed Korean span only."
