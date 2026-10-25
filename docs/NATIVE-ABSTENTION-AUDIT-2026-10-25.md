@@ -1,3 +1,16 @@
+# Source-backed R003 exact-form implementation — 2026-10-25
+
+## Source-backed R003 exact-form implementation — 2026-10-25
+
+- **Status: PARTIAL pending CI and benchmark rerun.** The implementation now adds strict, full-form + adjacent-pair licenses for two R003 cases whose exact Korean surface pronunciations are attested by NIKL sources:
+  - `싫어서`, pair `싫>어`, official NIKL Online Q&A (2025-04-29): [source](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313981), explicitly explains ㅎ deletion and ㄹ liaison, pronunciation [시러서].
+  - `수많은`, pair `많>은`, Korean Basic Dictionary entry for 수많다: [source](https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144), lists 활용 [수ː마는].
+- Python native rules and browser rules use the same exact-form scope; neither change adds a productive suffix heuristic. An unlisted lookalike such as `많아보임` remains fail-closed.
+- **Evidence boundary:** the official Hangul pronunciation notation supports the Korean surface rule application only. It is not independent broad-IPA gold, Ukrainian target gold, or a frozen holdout label. Those fields remain unadjudicated.
+- Regression tests were added for Python rule traces/surface codas and browser strict-mode surface forms plus a negative control. They have **not yet been run in this environment**; the PR CI and pinned UGTPHON benchmark must confirm the behavior before the status can become `DONE_VERIFIED`.
+- The historical 48-occurrence abstention count remains the baseline until a same-profile benchmark is rerun. Do not claim that the count is now 46, that total error count is zero, or that overall accuracy improved before CI artifacts establish it.
+
+
 # Native Korean abstention audit — 2026-10-25
 
 ## Finding
