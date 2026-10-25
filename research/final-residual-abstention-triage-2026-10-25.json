@@ -23,9 +23,12 @@
       "checkedAt": "2026-10-25",
       "scope": "Targeted public text-source searches to supplement the existing repository audit; excluded PDF/audio discovery and inspection in this pass.",
       "sourcesAdded": [
-        "https://www.gugak.go.kr/ency/topic/view/947"
+        "https://www.gugak.go.kr/ency/topic/view/947",
+        "https://encykorea.aks.ac.kr/Article/E0000867",
+        "https://www.korean.go.kr/common/download.do%3Bfront%3D502A18DED158F4EE2EB44635ECE7B987?c_file_name=d0d8ab58-23ac-41ce-9bd5-405970002d1c.pdf&file_path=reportData&o_file_name=%EA%B5%AC%EB%AC%B8+%EB%B0%8F+%EB%AC%B4%ED%98%95+%EB%8C%80%EC%9A%A9%EC%96%B4+%EB%B3%B5%EC%9B%90+%EB%A7%90%EB%AD%AD%EC%B9%98+%EC%97%B0%EA%B5%AC+%EB%B6%84%EC%84%9D_%EC%B5%9C%EC%A2%85%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf",
+        "https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001912604"
       ],
-      "outcome": "One authoritative text source supports the existence and cultural category of 칭칭이소리, but none of the three remaining uncertainties is resolved by this search."
+      "outcome": "Search found authoritative descriptions of Korean interjections and spoken-language fillers, supporting a new working hypothesis that the tail 유유유 may be non-lexical/expressive vocalization or transcription noise. No source specifically identifies this exact utterance, so intent remains unverified and no lexical/phonological output is accepted."
     }
   },
   "policy": [
@@ -79,8 +82,8 @@
     },
     {
       "input": "많앗구나유유유",
-      "status": "MULTIPLE_CANDIDATES_ONLY; BLOCKED_CONTEXT",
-      "observedIssue": "There are at least two independent uncertainties: 앗 versus standard past-tense 았, and whether final 유유유 is literal syllabic text or intended crying emoticon ㅠㅠㅠ.",
+      "status": "PARTIAL / HYPOTHESIS_NONLEXICAL_VOCALIZATION; BLOCKED_CONTEXT",
+      "observedIssue": "The input ends in 유유유 after a likely misspelled clause. User hypothesis and Korean spoken-language references make an expressive vocalization, filler-like sequence, or transcription artifact plausible; the sequence is not independently established as a lexical item in this utterance.",
       "evidenceReviewed": [
         {
           "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316156",
@@ -91,16 +94,31 @@
           "url": "https://v.daum.net/v/JU0MXB4lYJ",
           "claim": "A published interview explicitly explains ㅠㅠㅠ as tears and separately describes 유유유 as a title/phrase meaning 'you you you'.",
           "scope": "Demonstrates that the strings can have different interpretations in different contexts; it does not identify the intended meaning in the user's isolated input."
+        },
+        {
+          "url": "https://encykorea.aks.ac.kr/Article/E0000867",
+          "claim": "The Academy of Korean Studies encyclopedia describes interjections as including emotional reactions and filler-like sounds/hesitations, with examples such as 허, 하하, 에, 후유 and similar forms.",
+          "scope": "Supports the general linguistic category of expressive/interjectional material in Korean; does not classify this exact 유유유 sequence."
+        },
+        {
+          "url": "https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001912604",
+          "claim": "A KCI-indexed study of Korean textbook dialogue describes short verbal/non-verbal listener responses, including 감탄형 간투사 and laughter or tongue-clicking.",
+          "scope": "Supports that Korean conversational discourse includes short affective/backchannel and non-lexical-like responses; not direct evidence for this exact token."
+        },
+        {
+          "url": "https://www.korean.go.kr/common/download.do%3Bfront%3D502A18DED158F4EE2EB44635ECE7B987?c_file_name=d0d8ab58-23ac-41ce-9bd5-405970002d1c.pdf&file_path=reportData&o_file_name=%EA%B5%AC%EB%AC%B8+%EB%B0%8F+%EB%AC%B4%ED%98%95+%EB%8C%80%EC%9A%A9%EC%96%B4+%EB%B3%B5%EC%9B%90+%EB%A7%90%EB%AD%AD%EC%B9%98+%EC%97%B0%EA%B5%AC+%EB%B6%84%EC%84%9D_%EC%B5%9C%EC%A2%85%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf",
+          "claim": "An NIKL corpus annotation report has a dedicated section on annotating interjections in spoken Korean and notes that frequent forms such as 뭐 can be confused with other grammatical categories without context.",
+          "scope": "Supports context-sensitive handling of conversational material; it does not identify 유유유 or prove this string is a filler."
         }
       ],
-      "productionChange": "UI preserves three separately labelled candidates: 많았구나유유유 (spelling only), 많았구나 ㅠㅠㅠ (spelling plus emoticon/tokenization hypothesis), and 많앗구나 유유유 (spacing hypothesis). No candidate is automatically applied.",
-      "whyNotResolved": "The probable spelling correction is not proof of the user's intended spelling or whether the repeated ending is lexical, expressive, or a tokenization artifact.",
-      "acceptanceCriterion": "Obtain the original message context or user-confirmed segmentation. Keep candidate selection separate from the original input and run the confirmed Korean span through the IPA-first pipeline only.",
+      "productionChange": "No lexical correction or pronunciation output. Preserve the raw input and present a low-confidence classification hypothesis: possible expressive vocalization/filler/transcription noise. Do not normalize to ㅠㅠㅠ, 우우우, or another form without original context.",
+      "whyNotResolved": "The general Korean literature establishes that interjections, fillers, and short non-lexical listener responses occur, but no source or original recording/context identifies this exact sequence. 유유유 could still be deliberate text, a stylized ending, or a transcription artifact.",
+      "acceptanceCriterion": "Obtain the original message/audio or adjacent turns. If no context can be recovered, retain the raw string, mark the tail as an unresolved expressive/non-lexical candidate, and abstain from lexical morphology, source phonology and Ukrainian rendering.",
       "externalTextSearch": {
         "checkedAt": "2026-10-25",
-        "scope": "Public text-index searches for exact 많앗구나유유유, 많았구나유유유, 많았구나 유유유, and contextual 유유유 / ㅠㅠㅠ usage.",
-        "result": "No indexed source was found for the exact concatenated input. Search results show 유유유 can occur independently in unrelated contexts, which does not identify the intended segmentation here.",
-        "status": "BLOCKED_CONTEXT"
+        "scope": "Public text search for exact string plus authoritative Korean descriptions of interjections and spoken-language annotation; no PDF/audio discovery or inspection was performed in this pass.",
+        "result": "General references support the category of filler/interjection/non-lexical conversational material, but no exact-form evidence was found.",
+        "status": "HYPOTHESIS_PLAUSIBLE_NOT_CONFIRMED"
       }
     },
     {
