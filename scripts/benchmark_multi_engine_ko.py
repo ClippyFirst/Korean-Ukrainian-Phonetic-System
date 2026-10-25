@@ -806,6 +806,9 @@ def _g2pk_surface_to_ipa(g2p: Callable[[str], Any], word: str) -> str:
     This intentionally evaluates the g2pK G2P surface plus ClippyFirst's
     segment renderer, not an independent g2pK IPA realization.
     """
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.ipa import realize_syllables
+
     surface = g2p(word)
     if not isinstance(surface, str):
         raise TypeError(f"g2pk returned {type(surface).__name__}")
