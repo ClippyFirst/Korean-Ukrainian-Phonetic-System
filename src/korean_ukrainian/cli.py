@@ -10,9 +10,13 @@ from .g2pk_engine import transliterate_with_g2pk
 
 
 def _result(text: str, mode: str, pronunciation_engine: str = "native",
-            descriptive_pronunciation: bool = False) -> dict[str, Any]:
+            descriptive_pronunciation: bool = False, morphology_mode: str = "strict") -> dict[str, Any]:
     if pronunciation_engine not in {"native", "g2pk"}:
         raise ValueError("pronunciation_engine must be 'native' or 'g2pk'")
+    if morphology_mode not in {"strict", "soft"}:
+        raise ValueError("morphology_mode must be 'strict' or 'soft'")
+    if pronunciation_engine == "g2pk" and morphology_mode != "strict":
+        raise ValueError("morphology_mode is available only with pronunciation_engine='native'")
     if mode == "decompose":
         if pronunciation_engine != "native":
             raise ValueError("decompose mode is available only with pronunciation_engine='native'")
@@ -20,7 +24,7 @@ def _result(text: str, mode: str, pronunciation_engine: str = "native",
     if mode == "transliterate":
         if pronunciation_engine == "g2pk":
             return transliterate_with_g2pk(text, descriptive=descriptive_pronunciation)
-        return transliterate_korean(text)
+        return transliterate_korean(text, morphology_mode=morphology_mode)
     raise ValueError(f"unsupported mode: {mode}")
 
 
@@ -82,7 +86,7 @@ def _write_rows(path: Path, output_format: str, rows: list[dict[str, Any]], head
 
 def run_batch(input_path: Path, output_path: Path, input_format: str, output_format: str,
               column: str, sheet: str | None, mode: str, pronunciation_engine: str = "native",
-              descriptive_pronunciation: bool = False) -> int:
+              descriptive_pronunciation: bool = False, morphology_mode: str = "strict") -> int:
     rows, headers = _read_rows(input_path, input_format, column, sheet)
     output_rows: list[dict[str, Any]] = []
     extra = ["input", "ukrainian_orthography", "ipa", "analysis_status", "result_json"]
@@ -92,7 +96,7 @@ def run_batch(input_path: Path, output_path: Path, input_format: str, output_for
             result = {"input": text, "error": "empty input"}
         else:
             try:
-                result = _result(text, mode, pronunciation_engine, descriptive_pronunciation)
+                result = _result(text, mode, pronunciation_engine, descriptive_pronunciation, morphology_mode)
             except Exception as exc:
                 result = {"input": text, "error": f"{type(exc).__name__}: {exc}"}
         enriched = dict(row)
@@ -119,6 +123,8 @@ def build_parser() -> argparse.ArgumentParser:
     one.add_argument("--pronunciation-engine", choices=["native", "g2pk"], default="native")
     one.add_argument("--descriptive-pronunciation", action="store_true",
                      help="Use g2pK's descriptive mode (only with --pronunciation-engine g2pk)")
+    one.add_argument("--morphology-mode", choices=["strict", "soft"], default="strict",
+                     help="strict is fail-closed; soft enables low-confidence morphology heuristics for the native engine")
 
     batch = sub.add_parser("batch", help="Process TXT, CSV or XLSX in batch")
     batch.add_argument("input", type=Path)
@@ -131,6 +137,8 @@ def build_parser() -> argparse.ArgumentParser:
     batch.add_argument("--pronunciation-engine", choices=["native", "g2pk"], default="native")
     batch.add_argument("--descriptive-pronunciation", action="store_true",
                      help="Use g2pK's descriptive mode (only with --pronunciation-engine g2pk)")
+    batch.add_argument("--morphology-mode", choices=["strict", "soft"], default="strict",
+                       help="strict is fail-closed; soft enables low-confidence morphology heuristics for the native engine")
     return p
 
 
@@ -138,13 +146,13 @@ def main() -> int:
     args = build_parser().parse_args()
     if args.command == "analyze":
         print(json.dumps(_result(args.text, args.mode, args.pronunciation_engine,
-                                 args.descriptive_pronunciation), ensure_ascii=False, indent=2))
+                                 args.descriptive_pronunciation, args.morphology_mode), ensure_ascii=False, indent=2))
         return 0
     input_format = args.input_format or args.input.suffix.lower().lstrip(".")
     output_format = args.output_format or ("jsonl" if args.output.suffix.lower() in {".jsonl", ".ndjson"} else args.output.suffix.lower().lstrip("."))
     count = run_batch(args.input, args.output, input_format, output_format, args.column,
                       args.sheet, args.mode, args.pronunciation_engine,
-                      args.descriptive_pronunciation)
+                      args.descriptive_pronunciation, args.morphology_mode)
     print(f"processed={count} output={args.output}")
     return 0
 
