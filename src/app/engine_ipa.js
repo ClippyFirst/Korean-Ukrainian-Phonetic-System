@@ -120,7 +120,17 @@ export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
   if(!Array.isArray(ipaSyllables)){
     throw new TypeError('IPA syllables must be an array');
   }
-  const mapped=ipaSyllables.map(ipa=>ipaSyllableToUkrainian(ipa,options));
+  if(!options||typeof options!=='object'||Array.isArray(options)){
+    throw new TypeError('IPA target options must be an object');
+  }
+  const allowProvisional=options.allowProvisional??false;
+  if(typeof allowProvisional!=='boolean'){
+    throw new TypeError('allowProvisional must be a boolean');
+  }
+  if(!ipaSyllables.length){
+    return {syllables:[],candidates:[],unknown:'',status:'unavailable',reason:'no_renderable_ipa_segments'};
+  }
+  const mapped=ipaSyllables.map(ipa=>ipaSyllableToUkrainian(ipa,{allowProvisional}));
   const unknown=mapped.find(item=>item.unknown)?.unknown||'';
   const hardUnavailable=mapped.find(item=>(item.status==='unavailable'&&!item.candidateStatus)||item.unknown);
   const provisional=mapped.some(item=>item.status==='provisional'||item.candidateStatus==='provisional');
@@ -131,7 +141,7 @@ export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
       reason:hardUnavailable.reason||'unmapped_ipa_sequence'
     };
   }
-  if(provisional && options.allowProvisional!==true){
+  if(provisional && !allowProvisional){
     return {
       syllables:[],candidates:mapped.map(item=>item.candidateText??item.text),
       unknown:'',status:'unavailable',

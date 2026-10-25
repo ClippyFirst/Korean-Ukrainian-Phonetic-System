@@ -293,3 +293,15 @@ test('source-aware IPA target adapter validates provisional opt-in and keeps dia
   assert.ok(result.mappingTrace.length > 0, 'mapped prefixes remain inspectable even though output is withheld');
   assert.deepEqual(result.syllables, [], 'no partial target syllables may leak from a failed result');
 });
+
+
+test('empty IPA syllable lists and malformed options are unavailable rather than model-selected', () => {
+  assert.deepEqual(ipaSyllablesToUkrainian([]), {
+    syllables:[], candidates:[], unknown:'',
+    status:'unavailable', reason:'no_renderable_ipa_segments'
+  });
+  assert.throws(
+    () => ipaSyllablesToUkrainian([], {allowProvisional:'yes'}),
+    {name:'TypeError', message:'allowProvisional must be a boolean'}
+  );
+});
