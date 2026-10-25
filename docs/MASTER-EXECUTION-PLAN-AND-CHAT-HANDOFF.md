@@ -1033,3 +1033,8 @@ A subsequent documentation-only commit records this status; it does not change t
 ### Browser adapter failure semantics hardening — 2026-10-25
 
 The public `ipaTargetForSource` API now returns `text: null`, an explicit unavailable reason, and no partial syllable/mapping trace for empty IPA, unknown IPA, or source/IPA alignment mismatch. It no longer uses an empty string that consumers could accidentally interpret as a successful spelling. Added regression cases for unknown/empty input and partial-output suppression. Exact-head CI is required before treating this change as verified.
+
+
+### UI status wording correction — 2026-10-25
+
+The workbench now checks `candidate_status === 'provisional'` before displaying the generic unavailable-target note. This prevents a result that includes a clearly labelled provisional candidate from being described only as “Ukrainian output unavailable.” The candidate remains explicitly unaccepted; this is a status-communication fix, not a linguistic-confidence upgrade. Exact-head CI is pending.
