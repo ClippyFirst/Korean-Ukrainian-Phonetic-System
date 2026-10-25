@@ -1,4 +1,4 @@
-# Current residual gate — 2026-10-25 19:xx UTC
+# Current residual gate — 2026-10-25 (post-merge verification)
 
 **Current status: PARTIAL; five evidence-limited strict-mode cases remain.** The original 45-unresolved figure is a historical benchmark state, not the current main state. The last recorded exact-head benchmark for the merged variant-aware implementation is [run 40223272365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40223272365): 2,698/2,703 scored, 1,430 exact, CER 9.1697%, five unresolved, zero engine exceptions. It is a noisy-corpus diagnostic, not normative IPA or Ukrainian-target gold.
 
