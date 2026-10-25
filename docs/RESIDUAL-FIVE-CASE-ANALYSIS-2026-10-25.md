@@ -76,3 +76,16 @@ The predecessor branch `fix/residual-korean-edge-cases-2026-10-25` passed the re
 An earlier CI attempt exposed an inherited-object-key lookup crash and stale source-register test expectations. The lookup now uses an own-property check, and the source-register test expectations account for the two new sources as manual rights review. Those fixes passed on the predecessor branch; the current branch's fresh CI remains the acceptance gate.
 
 The live NIKL source inventory job is skipped by workflow configuration; this is not evidence of a new live source crawl. CI validates code/data contracts, not reviewer expertise or IPA correctness.
+
+
+### Clean-mainline verification — 2026-10-25
+
+The clean-mainline branch passed its exact-head checks on commit `9662c8a004de5f5b2a534754a296ddfccf0ffc62`:
+
+- Node test workflow [40227679249](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227679249): **1,258 passed, 0 failed**; Python 3.11, 3.12, and 3.13 passed; wheel build and clean-install IPA data check passed.
+- Browser G2P integration [40227679240](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227679240): tests and build passed.
+- System verification [40227679237](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227679237): browser tests/build/page verification and Python regression/data-integrity passed.
+- Master table and strict corpus generation [40227679244](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227679244): passed.
+- The live NIKL inventory job was skipped by workflow configuration; it was not a successful live source crawl.
+
+These results validate implementation and data contracts only. The two source-blind packets are still blank; qualified independent IPA submissions, reconciliation, and a separate Ukrainian target review remain outstanding.
