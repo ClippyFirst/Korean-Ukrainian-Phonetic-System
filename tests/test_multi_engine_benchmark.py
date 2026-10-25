@@ -16,6 +16,7 @@ from benchmark_multi_engine_ko import (  # noqa: E402
     _normalize_ignore_aspiration,
     _normalize_ignore_length,
     _normalize_ignore_stress,
+    _profile_change_audit,
     _paired_bootstrap_delta_ci,
     _score,
     kog2p_phones_to_ipa,
@@ -168,3 +169,31 @@ def test_diagnostic_normalization_profiles_are_explicit_and_separate():
     assert _score("kaː", "ka")["exact"] is False
     assert _score("kʰa", "ka")["exact"] is False
     assert _score("ˈka", "ka")["exact"] is False
+
+
+
+def test_profile_change_audit_reports_case_transitions_without_relabeling_gold():
+    primary = [
+        {"occurrence_id": "a", "token": "값", "gold": "kap", "predicted": "kab",
+         "distance": 1, "exact": False},
+        {"occurrence_id": "b", "token": "가", "gold": "ka", "predicted": "ka",
+         "distance": 0, "exact": True},
+        {"occurrence_id": "c", "token": "꽃", "gold": "k͈ot", "predicted": "kot",
+         "distance": 1, "exact": False},
+    ]
+    profile = [
+        {"occurrence_id": "a", "token": "값", "gold": "kap", "predicted": "kab",
+         "distance": 0, "exact": True},
+        {"occurrence_id": "b", "token": "가", "gold": "ka", "predicted": "ka",
+         "distance": 0, "exact": True},
+        {"occurrence_id": "c", "token": "꽃", "gold": "k͈ot", "predicted": "kot",
+         "distance": 1, "exact": False},
+    ]
+    audit = _profile_change_audit(primary, profile)
+    assert audit["paired_occurrences"] == 3
+    assert audit["primary_mismatch_became_exact"] == 1
+    assert audit["primary_exact_became_mismatch"] == 0
+    assert audit["unchanged_exact"] == 1
+    assert audit["unchanged_mismatch"] == 1
+    assert audit["rescued_case_examples"][0]["occurrence_id"] == "a"
+    assert "do not establish" in audit["warning"]
