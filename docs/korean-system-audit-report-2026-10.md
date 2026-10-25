@@ -316,3 +316,8 @@ CI evidence at code head `5ccb880d0c0611efa1f7ef8ffd00a0d303778410`: system veri
 ### PR convergence status correction — 2026-10-25
 
 Earlier audit text recorded identical Python renderer/pipeline blobs for PR #307 and #310. That is stale after the latest correctness-gate changes: current blobs diverge. PR #310 has strict Python target abstention and browser UI candidate labeling; PR #307 retains the candidate 24-form fixture/provenance audit. Keep the fixture quarantined and reconcile only after reviewing the current diff. Both PRs remain open; no blind merge or closure.
+
+
+### Exact-head evidence — 2026-10-25
+
+All relevant workflows passed on implementation head `b41da53614f660d7f4b71fc9613730661715262b`: system verification, 1,220/1,220 browser tests, Python 3.11/3.12/3.13, wheel installation, generated artifacts, optional g2pK, paired native/g2pK diagnostic, UGTPHON, multi-engine benchmark, and Kiwi/MeCab-Ko morphology smoke. NIKL live inventory was skipped, not passed. The G2P differential still has two surface disagreements (`넓죽하다`, `읽고`) and no independent IPA gold. Provisional target spellings are labelled candidates in the browser UI and withheld from the strict Python renderer/pipeline. The original 24-form source, independent IPA adjudication, and Ukrainian target gold remain blockers. Not release-ready.

@@ -991,3 +991,15 @@ The browser research workbench and Python public pipeline now have deliberately 
 - Python G2P differential report remains diagnostic: 18/20 surface forms equal, with differences on `넓죽하다` and `읽고`; IPA gold was not independently adjudicated.
 
 A subsequent UI-copy wording-only commit is `239f6fc6dc5dfc9478d552fa99c3ca2c60fa4f30`. This is not a claim of full linguistic correctness. The original 24-form holdout provenance, independent IPA adjudication, independent Ukrainian target gold, and live NIKL inventory remain open blockers. Release classification remains **partial research prototype, not release-ready**.
+
+
+### Final exact implementation-head verification — 2026-10-25
+
+The final code head for the provisional-candidate gate and UI safeguards is `b41da53614f660d7f4b71fc9613730661715262b`. All nine relevant workflow families passed on this head:
+- System verification [40178373051](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40178373051): Python regression/data integrity and browser regression/build passed. Official NIKL live inventory was skipped and is not a pass.
+- Browser G2P [40178373030](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40178373030): 1,220/1,220 tests passed.
+- Dedicated tests [40178373064](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40178373064): web suite, Python 3.11/3.12/3.13, and clean wheel installation passed.
+- Generated master table/research artifacts [40178373059](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40178373059), optional g2pK [40178373090](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40178373090), paired native/g2pK [40178373033](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40178373033), external UGTPHON [40178373035](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40178373035), multi-engine IPA diagnostic benchmark [40178373027](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40178373027), and morphology adapter smoke [40178373061](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40178373061): all passed.
+- The Python G2P differential remains 18/20 surface forms equal; `넓죽하다` and `읽고` still differ. These are diagnostic differences, not IPA gold-scored errors.
+
+The implementation is software-verified, but linguistic correctness is not fully established: original 24-form source/ordering, independent Korean IPA adjudication, independent Ukrainian target gold, and authorized live NIKL inventory remain blocked. Classification remains **partial research prototype, not release-ready**.

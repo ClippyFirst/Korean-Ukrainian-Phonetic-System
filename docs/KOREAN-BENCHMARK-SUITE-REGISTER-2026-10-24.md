@@ -192,3 +192,8 @@ Provisional IPA→Ukrainian candidates are now visibly labelled in the browser r
 ### PR #307/#310 convergence status correction — 2026-10-25
 
 The earlier note that the Python renderer/pipeline blobs matched was true only for an earlier snapshot. PR #310 now has the strict provisional target gate and Python pipeline abstention behavior; those blobs diverge from PR #307. PR #307 remains valuable for the quarantined unverified 24-form fixture/provenance audit. Both PRs remain open and mergeable; no blind merge or closure. Reconcile current diffs before any integration.
+
+
+### Exact-head verification — 2026-10-25
+
+Implementation head `b41da53614f660d7f4b71fc9613730661715262b` passed system verification (40178373051), browser G2P with 1,220/1,220 tests (40178373030), dedicated web/Python 3.11–3.13/wheel tests (40178373064), generated artifacts (40178373059), optional g2pK (40178373090), paired native/g2pK diagnostic (40178373033), UGTPHON diagnostic (40178373035), multi-engine benchmark (40178373027), and morphology adapter smoke (40178373061). NIKL live inventory was skipped. Python G2P surface differential is 18/20 with unresolved disagreements `넓죽하다` and `읽고`; no independently adjudicated IPA gold was used. Original holdout provenance and independent target review remain blocked.
