@@ -977,3 +977,17 @@ Most native abstentions on UGTPHON are deliberate unresolved morphophonological 
 ### Research UI candidate presentation — 2026-10-25
 
 The strict IPA adapter remains fail-closed by default. The interactive research workbench, however, is designed to provide the best available candidate for inspection rather than blanking common cases with provisional target mappings. The main output card and its copy action now explicitly say **provisional Ukrainian candidate** whenever the target status is provisional; a warning explains that it is not independently validated. Trace rows label provisional segment spellings as candidates. This preserves research usability without representing candidates as confirmed orthography. The Python public pipeline remains strict and returns `candidate_orthography` separately when the target mapping is provisional.
+
+
+### Final correctness-focused implementation batch — 2026-10-25
+
+The browser research workbench and Python public pipeline now have deliberately different, explicit presentation contracts. The low-level Python IPA renderer remains strict: provisional correspondences yield no accepted `ukrainian_orthography` and return a separate `candidate_orthography` plus `provisional_mapping_requires_review`. The Python public pipeline no longer opts into provisional output. The interactive browser workbench still presents the best declared candidate for research usefulness, but its main result label, copy button, warning, trace rows and status explicitly identify it as provisional. This avoids silently hiding common candidate output while preventing it from being represented as independently validated orthography.
+
+**Verification evidence at code head `5ccb880d0c0611efa1f7ef8ffd00a0d303778410`:**
+- System verification [40177877602](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40177877602): success. Browser regression/build and Python regression/data integrity jobs passed; official live NIKL inventory was skipped, not passed.
+- Browser G2P integration [40177877624](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40177877624): success; 1,220 tests passed, 0 failed.
+- Dedicated test workflow [40177877599](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40177877599): success.
+- Optional g2pK [40177877654](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40177877654), paired native/g2pK [40177877600](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40177877600), external UGTPHON [40177877596](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40177877596): success as integration/diagnostic checks, not independent IPA or Ukrainian gold.
+- Python G2P differential report remains diagnostic: 18/20 surface forms equal, with differences on `넓죽하다` and `읽고`; IPA gold was not independently adjudicated.
+
+A subsequent UI-copy wording-only commit is `239f6fc6dc5dfc9478d552fa99c3ca2c60fa4f30`. This is not a claim of full linguistic correctness. The original 24-form holdout provenance, independent IPA adjudication, independent Ukrainian target gold, and live NIKL inventory remain open blockers. Release classification remains **partial research prototype, not release-ready**.
