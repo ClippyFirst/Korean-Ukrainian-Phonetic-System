@@ -72,6 +72,35 @@ def _normalize_broad_fricative_aspiration(value: str) -> str:
     return re.sub(r"(?<=[sɕ])ʰ", "", normalized)
 
 
+def _classify_native_discrepancy(
+    prediction: str, gold_raw: str, strict_exact: bool, broad_exact: bool,
+) -> dict[str, Any]:
+    """Conservative label for a score discrepancy; never infer phonology from mismatch alone."""
+    gold_variants = [part.strip() for part in gold_raw.split(",") if part.strip()]
+    if broad_exact and not strict_exact:
+        category = "IPA_CONVENTION"
+        rationale = "the explicitly declared s/ɕ aspiration-sensitivity profile changes this occurrence to exact"
+        confidence = "profile-level only; not a phonetic adjudication"
+    elif any(
+        unicodedata.normalize("NFC", prediction) == unicodedata.normalize("NFC", gold)
+        for gold in gold_variants
+    ):
+        category = "UNICODE_OR_FORMAT"
+        rationale = "raw strings differ but NFC-canonical strings match"
+        confidence = "high for canonical Unicode equivalence"
+    else:
+        category = "UNCLASSIFIED"
+        rationale = "the current evidence does not distinguish engine error from reference/convention/segmentation issues"
+        confidence = "unresolved; requires case-level source review"
+    return {
+        "category": category,
+        "rationale": rationale,
+        "confidence": confidence,
+        "strict_profile_exact": strict_exact,
+        "broad_fricative_aspiration_exact": broad_exact,
+    }
+
+
 def _gold_variants(raw: str, normalizer: Callable[[str], str] = normalize_ipa) -> list[str]:
     return [normalizer(part) for part in raw.split(",") if part.strip()]
 
@@ -542,10 +571,20 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 value, gold, normalizer=_normalize_broad_fricative_aspiration,
             )
             row[name] = {
-                "ipa": value, "exact": scored["exact"], "distance": scored["distance"],
+                "ipa": value,
+                "normalized_ipa": scored["normalized_predicted"],
+                "normalized_gold": scored["closest_normalized_gold"],
+                "exact": scored["exact"],
+                "distance": scored["distance"],
+                "broad_fricative_aspiration_normalized_ipa": broad_scored["normalized_predicted"],
+                "broad_fricative_aspiration_normalized_gold": broad_scored["closest_normalized_gold"],
                 "broad_fricative_aspiration_exact": broad_scored["exact"],
                 "broad_fricative_aspiration_distance": broad_scored["distance"],
             }
+            if name == "clippyfirst_native" and not scored["exact"]:
+                row[name]["discrepancy"] = _classify_native_discrepancy(
+                    value, gold, bool(scored["exact"]), bool(broad_scored["exact"]),
+                )
             if not scored["exact"]:
                 any_error = True
         if any_error and len(mismatch_details) < 250:
@@ -676,6 +715,12 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "engine_order": list(engine_results),
         "engines": engine_results,
         "diagnostic_mismatch_sample": mismatch_details,
+        "discrepancy_audit_contract": {
+            "scope": "capped multi-engine mismatch sample only; not a complete all-occurrence ledger",
+            "categories": ["PHONOLOGY_ENGINE", "IPA_CONVENTION", "UNICODE_OR_FORMAT", "SEGMENTATION", "GOLD_UNCERTAIN", "ABSTENTION", "UNCLASSIFIED"],
+            "policy": "Only IPA_CONVENTION is assigned when the declared narrow s/ɕ aspiration sensitivity profile alone changes exactness; Unicode equivalence is assigned only when NFC strings match. Other mismatches remain UNCLASSIFIED rather than being guessed as engine errors.",
+            "warning": "This sampled diagnostic does not satisfy the full case-by-case adjudication requirement. Gold variants and source context may be insufficient to resolve a mismatch.",
+        },
         "native_g2pk_pairwise_audit": {
             "status": "excluded_by_user_request" if args.exclude_g2pk else "completed",
             "occurrence_count": len(native_g2pk_pairwise_audit),
