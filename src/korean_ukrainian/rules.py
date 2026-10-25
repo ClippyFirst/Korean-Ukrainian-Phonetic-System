@@ -52,13 +52,8 @@ _NIKL_R002_FORMAL_LICENSES = {
     "찢었으면": "찢>었",
     "했었음": "했>었",
     "붙어야": "붙>어",
-    "군대보냈어야": "냈>어",
-    "이런삶은": "삶>은",
-    "끝내고싶어유유유유": "싶>어",
-    "이빨닦아야지": "닦>아",
     "벗어날": "벗>어",
     "찾아": "찾>아",
-    "안늙었는데": "늙>었",
     "없으니깐": "없>으",
     "없으니까": "없>으",
     # Q&A 306166 directly attests 멋있어[머디써/머시써]; license only 있>어.
@@ -75,17 +70,12 @@ _NIKL_R003_FORMAL_LICENSES = {
     "수많은": "많>은",
     "많아서": "많>아",  # NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
     # Exact-form, rule-derived applications of NIKL §12(4); no productive suffix heuristic.
-    "괜찮아보이는디": "찮>아",
-    "많을거같이": "많>을",
     "쌓아서": "쌓>아",
     "쳐넣어야": "넣>어",
-    "애새끼낳으면": "낳>으",
     "잃었노": "잃>었",
-    "알잖아아침에": "잖>아",
     "않았지만": "않>았",
     "개많음": "많>음",
     "좋은데": "좋>은",
-    "좋아해주는": "좋>아",
     "죽었잖아": "잖>아",
     "개좆망했잖아": "잖>아",
 }
@@ -155,9 +145,6 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R009_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R009:word:{full_form}:{pair}")
-    pair = "같>이" if full_form == "많을거같이" else None
-    if pair is not None:
-        licenses.add(f"R007:formal_morpheme_i:{full_form}:{pair}")
     if boundary_mode == "phrase":
         pair = _NIKL_R009_PHRASE_LICENSES.get(full_form)
         if pair is not None:
