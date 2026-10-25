@@ -91,8 +91,36 @@ The g2pk column is only a comparator distance against the dataset's IPA annotati
 ## Status
 
 - **DONE_VERIFIED_SOURCE:** two exact browser surface corrections are pinned to NIKL primary sources in `docs/PRIMARY-SOURCE-ADJUDICATION-2026-10-25.md`.
-- **TODO until exact-head CI:** strict-vs-soft benchmark instrumentation and its tests.
+- **DONE_VERIFIED_PRIOR_HEAD:** the repository already has a strict/soft and analyzer-boundary benchmark; reuse its pinned artifact rather than duplicating its workflow. See the quantitative follow-up below.
+- **TODO pending exact-head CI:** new two-analyzer formal-tag consensus adapter and benchmark; its output is explicitly diagnostic-only.
 - **BLOCKED_SPECIALIST_ADJUDICATION:** independent IPA review; one occurrence is withheld for this reason rather than a phonological rule.
 - **BLOCKED_INPUT_NORMALIZATION / MORPHOLOGY:** word segmentation and morpheme-boundary inference for unspaced noisy input.
 - **BLOCKED_INDEPENDENT_TARGET_GOLD:** this audit evaluates Korean IPA annotations only, not Ukrainian output.
 - **BLOCKED_EXTERNAL_ACCESS / RIGHTS_REVIEW:** live NIKL inventory and item-level reuse review remain unresolved.
+
+
+## Quantitative follow-up from the existing paired morphology artifacts
+
+The existing research benchmark (run [40191515056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056), artifacts [MeCab-Ko](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056/artifacts/12598531053) and [Kiwi](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056/artifacts/12598625698)) already measures strict, soft, and boundary-gated IPA. No duplicate strict/soft benchmark was added.
+
+| Strategy | Scored / 2703 | Coverage | Exact matches | Exact rate | CER | Unresolved occurrences |
+|---|---:|---:|---:|---:|---:|---:|
+| Native strict | 2655 | 98.2242% | 1412 | 53.1827% | 9.1883% | 48 |
+| Native soft | 2677 | 99.0381% | 1421 | 53.0818% | 9.1868% | 26 |
+| MeCab boundary-gated counterfactual | 2672 | 98.8531% | 1419 | 53.1063% | 9.1927% | 31 |
+| Kiwi boundary-gated counterfactual | 2670 | 98.7791% | 1418 | 53.1086% | 9.1984% | 33 |
+
+The strict/soft numbers show that 22 unique forms change status under soft mode, but exact rate is slightly lower overall and the strict-vs-soft paired subset has identical exact/CER scores. Boundary-only gating is more conservative but does not improve paired accuracy; it also resolves fewer forms than soft. The boundary-only approach is not a valid rule-licensing adapter, because a character boundary alone does not prove that a following syllable is a formal ending/particle.
+
+The paired morphology reports also show 93.70% Kiwi/MeCab agreement on 238 observed soft-rule events, but 31 MeCab and 30 Kiwi candidate licenses lack a matching observed boundary. Across all word segmentations, exact boundary-set agreement is 80.60%; neither analyzer is gold. The new consensus helper therefore requires **two distinct analyzers to agree on the exact source offset and a formal POS-tag class**, does not license substantive contexts, preserves exact-form scope, and marks any applied rule as `analyzer-supported-low-confidence`. It does not convert candidate IPA into accepted IPA or Ukrainian output.
+
+## Current acceptance ledger
+
+- `DONE_VERIFIED_SOURCE`: exact NIKL evidence for `넓죽하다 → 넙쭈카다` and `읽고 → 일꼬` is already present on current main; the regression test checks both Q&A IDs.
+- `DONE_VERIFIED_PRIOR_HEAD`: strict/soft and boundary-gated metrics above are backed by the existing research artifact, but are not a fresh run on the current PR head.
+- `TODO / pending exact-head CI`: analyzer-consensus helper, tests, and dual-analyzer UGTPHON workflow added on the current continuation branch.
+- `BLOCKED_MISSING_ORIGINAL`: the tracked 24-row candidate CSV is `reconstructed_unverified`; its provenance audit records that no reviewed historical tree or artifact established original membership/order. Do not relabel it as restored.
+- `BLOCKED_SPECIALIST_ADJUDICATION`: no independent Korean broad-IPA gold set.
+- `BLOCKED_INDEPENDENT_TARGET_GOLD`: no independent Ukrainian practical-transcription gold set or scoring protocol.
+- `BLOCKED_EXTERNAL_ACCESS`: official live NIKL inventory workflow was skipped in prior runs; it is not a pass.
+- `PARTIAL / RIGHTS_REVIEW`: source references are not blanket reuse licenses; the existing source registry still requires item-level license/KOGL review.
