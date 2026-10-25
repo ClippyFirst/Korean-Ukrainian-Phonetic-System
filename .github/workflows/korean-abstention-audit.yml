@@ -21,7 +21,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: python -m pip install --upgrade pip
-      - run: python -m pip install -e ".[dev,g2pk]"
+      - run: python -m pip install -e ".[dev,g2pk,research-kiwi]"
       - name: Fetch pinned Korean UGTPHON test split
         shell: bash
         run: |
@@ -47,6 +47,12 @@ jobs:
             --morphology-mode soft \
             --output "$RUNNER_TEMP/soft-abstention-audit.json" \
             > "$RUNNER_TEMP/soft-stdout.json"
+      - name: Reconcile strict/soft metrics with the existing paired morphology benchmark
+        run: |
+          python scripts/benchmark_morphology_ipa_delta.py \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --analyzer kiwi \
+            --output "$RUNNER_TEMP/paired-ipa-morphology-kiwi.json"
       - name: Print coverage and abstention comparison
         run: |
           python - "$RUNNER_TEMP/strict-abstention-audit.json" "$RUNNER_TEMP/soft-abstention-audit.json" <<'PY'
