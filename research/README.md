@@ -46,3 +46,16 @@ A single item may need separate source, implementation, testing, and review stat
 ## Official NIKL collection continuation — 2026-10-21
 
 The metadata-first collector is available at `scripts/nikl-norm-crawler.mjs`; see `docs/NIKL-NORM-CRAWLER.md`. It is designed to inventory only the 30 articles of 제2부 표준 발음법, checks robots.txt, records exact response and per-article hashes, and fails closed on incomplete extraction. Fixture-based tests are part of the existing Node regression suite. The live crawl was attempted by GitHub Actions but the official page returned HTTP 403; the workflow recorded BLOCKED and did not try alternate hosts or bypasses. No live article inventory was produced. Source reuse terms remain unassessed, and the default output does not retain article text. See `research/SOURCE-REGISTER.csv`, `research/RULE-COVERAGE.csv`, and the latest master handoff for current status.
+
+
+## Residual Korean edge cases — continuation on source-blind review workflow (2026-10-25)
+
+This branch is based on `fix/ipa-review-source-blinding-20261025` (PR #329) so the new `삶의` review reuses the canonical source-and-candidate-blind packet builder and submission validator instead of duplicating a weaker packet format.
+
+- Source evidence remains in `research/salmui-ipa-review-queue.json`; the reviewer packets contain only opaque `BLIND-001`, the Hangul input, fixed instructions, and empty fields.
+- Packets A/B are bound to the exact queue bytes by SHA-256 `c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3`.
+- Reviewer fields are intentionally blank. No IPA annotation or Ukrainian target is invented.
+- `칡칡이` remains blocked despite an exact folk-song-heading attestation; `많앗구나유유유` remains multi-candidate because no original context identifies the tail.
+- Explicit spelling suggestions for `쫒아내면` and `무서웟어` are integrated into the web UI and require user selection; sources are visible beside candidates.
+
+Fresh exact-head CI for this stacked branch is the acceptance gate. Independent qualified reviewer submissions and the subsequent Ukrainian target review remain external blockers.
