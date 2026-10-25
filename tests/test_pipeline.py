@@ -562,7 +562,7 @@ def test_nikl_section_24_exact_form_licenses_render_correct_surface_ipa():
 def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
     from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
 
-    strict = phoneticize_korean("좋아")
+    strict = phoneticize_korean("수많은")
     soft = phoneticize_korean("수많은", morphology_mode="soft")
     assert strict["pronunciation_status"] == "unresolved"
     assert soft["pronunciation_status"] == "provisional"
