@@ -50,10 +50,11 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
               if(!mapped.unknown){
                 const mappedSegments=sourceIpa.map(ipa=>traceIpaMappingDetailed(ipa));
                 result.ipa=sourceIpa.join(' ');
-                result.ukrainian=mapped.status==='unavailable'?'':mapped.syllables.join('');
-                result.candidate_ukrainian=mapped.status==='unavailable'&&mapped.candidates.some(Boolean)?mapped.candidates.join(''):null;
-                result.candidate_status=result.candidate_ukrainian?'provisional':null;
-                result.target_status=mapped.status;
+                const hasProvisionalCandidate=mapped.status==='unavailable'&&mapped.candidates.some(Boolean);
+                result.ukrainian=hasProvisionalCandidate?mapped.candidates.join(''):mapped.syllables.join('');
+                result.candidate_ukrainian=hasProvisionalCandidate?mapped.candidates.join(''):null;
+                result.candidate_status=hasProvisionalCandidate?'provisional':null;
+                result.target_status=hasProvisionalCandidate?'provisional':mapped.status;
                 let index=0;
                 for(const item of result.trace||[]){
                   if(item.status==='literal')continue;
@@ -267,12 +268,12 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const targetCandidateText=targetMapping.tokens.map(token=>token.ukrainian).join('');
     const provisionalTarget=targetMapping.status==='provisional';
     const targetFromIpa={
-      text:provisionalTarget?'':targetCandidateText,
+      text:targetCandidateText,
       candidateText:provisionalTarget?targetCandidateText:null,
-      unknown:provisionalTarget?'provisional_mapping_requires_review':targetMapping.unknown,
-      status:provisionalTarget?'unavailable':targetMapping.status,
+      unknown:targetMapping.unknown,
+      status:targetMapping.status,
       candidateStatus:provisionalTarget?'provisional':null,
-      reason:provisionalTarget?'provisional_mapping_requires_review':targetMapping.reason
+      reason:targetMapping.reason
     };
     if(targetFromIpa.unknown || targetFromIpa.status==='unavailable'){
       issues.push(u.char+': IPA target mapping unavailable ('+(targetFromIpa.reason||'unmapped_ipa_sequence')+'): '+(targetFromIpa.unknown||'(empty IPA)'));
