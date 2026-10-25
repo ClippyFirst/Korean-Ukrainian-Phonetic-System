@@ -73,6 +73,7 @@ test('NIKL exact-form R003 licenses resolve two attested forms in browser strict
   const cases = [
     ['싫어서', '시러서'],
     ['수많은', '수마는'],
+    ['많아서', '마나서'],
   ];
   for (const [input, expectedSurface] of cases) {
     const result = engine.convert(input);
