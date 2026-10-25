@@ -323,7 +323,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // result boundary. Phrase conversion still preserves surrounding resolved
   // words because the phrase path recursively converts each token.
   const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
-  const provisionalWholeHangulToken=/^[가-힣]+$/u.test(text)&&status!=='unresolved'&&trace.some(item=>item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review');
+  const provisionalCandidateAvailable=/[가-힣]/u.test(text)&&status!=='unresolved'&&trace.some(item=>item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review');
   const target_status=unresolvedWholeHangulToken||!hasHangulSyllables
     ? 'unavailable'
     : trace.some(item=>item?.targetStatus==='unavailable'||item?.status==='unresolved')
@@ -335,7 +335,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     source:text,
     surfaceHangul:recomposed===originalHangul?'':recomposed,
     ukrainian:unresolvedWholeHangulToken?'':output.join(''),
-    candidate_ukrainian:provisionalWholeHangulToken?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
+    candidate_ukrainian:provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
     candidate_status:provisionalWholeHangulToken?'provisional':null,
     ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,' '),
     analysis:renderStructured(units,analysis,' · '),
