@@ -1398,3 +1398,13 @@ Release classification remains **software-verified research prototype / partial 
 - Source checks: NIKL MCFAQ 5716 explicitly permits `삶의[살믜]/[살메]` (Hangul pronunciation, not IPA); the Korean Basic Dictionary entry for `쫓아내다` gives `[쪼차내다]`; the official dictionary example includes correctly spelled `무서웠어`; an official NIKL Q&A quotes `많았구나`. These support source-level observations only, not silent spelling repair or exact noisy-form pronunciation.
 - No production pronunciation rule was added for `칡칡이`, `쫒아내면`, `많앗구나유유유`, or `무서웟어`: the first lacks a verified lexical parse and the other three are nonstandard spellings whose intended correction must not be silently substituted. `삶의` remains diagnostic-only until independent IPA review; Ukrainian target review remains a separate gate.
 - New branch: `fix/final-abstention-evidence-2026-10-25`, based on current main `d23646af23b10be6b9f5223002cf634cd128ea06`. Exact-head CI for this branch is not yet known; do not mark these new tests `DONE_VERIFIED` until Actions finishes.
+
+
+## 2026-10-25 continuation — benchmark discrepancy classification
+
+- Active PR branch: `feat/residual-korean-edge-cases-clean-2026-10-25`, PR #336. Preserve its existing owner-constrained workflow: g2pK is excluded from new runs; historical g2pK artifacts remain archival only.
+- Implemented conservative case-level fields in the capped multi-engine mismatch sample: raw engine IPA, existing-normalizer output/reference, sensitivity-profile output/reference, and a classification rationale/confidence.
+- Classification policy is fail-closed: `IPA_CONVENTION` only when the declared sibilant-aspiration sensitivity profile changes exactness; `UNICODE_OR_FORMAT` only for NFC-equivalent raw strings; otherwise `UNCLASSIFIED`. This avoids claiming a phonological cause from string mismatch alone.
+- Added unit tests for all classifier branches. Exact-head CI is required before this change becomes `DONE_VERIFIED`.
+- Ledger: **PARTIAL** — diagnostic labels now exist, but the mismatch list is still capped at 250 and does not satisfy the requested complete occurrence-level ClippyFirst-vs-gold audit. Next code task is to emit a complete per-occurrence ledger with all profiles, abstentions, and category counts using fixed denominators.
+- Existing broad-IPA sensitivity profile remains diagnostic only; no global diacritic deletion, production rule changes, or g2pK execution were introduced by this change.
