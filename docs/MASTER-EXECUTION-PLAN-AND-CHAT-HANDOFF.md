@@ -1043,3 +1043,8 @@ The workbench now checks `candidate_status === 'provisional'` before displaying 
 ### Empty-render hardening — 2026-10-25
 
 Closed a fail-open edge case: IPA containing only separators or length marks could previously pass through the Python renderer as an empty `model-selected` spelling; the browser detailed trace could similarly treat length-mark-only IPA as model-selected. Both adapters now require at least one mapped IPA token. Added regression cases for `.`, `...`, `ː`, `.ː.`, and `#`. Exact-head CI is pending.
+
+
+### Target-layer truth-in-labeling — 2026-10-25
+
+The workbench now states that `model-selected` Ukrainian output follows project-defined correspondences and has not been independently validated. The status is intentionally distinct from Korean phonology status: the source IPA may be resolved while the target spelling remains a project decision. Provisional correspondences remain candidate-only. This avoids implying that successful deterministic rendering equals independently proven linguistic correctness.

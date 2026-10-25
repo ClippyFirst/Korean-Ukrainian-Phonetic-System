@@ -68,3 +68,6 @@ The public `ipaTargetForSource` adapter returns `text: null` when IPA is empty, 
 ### Reject IPA with no renderable segments
 
 A sequence made only of syllable delimiters, word-boundary markers, or vowel-length marks (for example `.`, `#`, or `ː`) is not a valid successful target rendering. Both Python and browser adapters now return an unavailable result with `no_renderable_ipa_segments`; they do not return an empty Ukrainian spelling or mark modifier-only IPA as `model-selected`.
+
+
+The browser labels `model-selected` output as a project-defined correspondence that has not been independently validated. This is not a claim that the output is wrong; it accurately distinguishes deterministic application of the author's system from independent target-language adjudication.

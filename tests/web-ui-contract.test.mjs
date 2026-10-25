@@ -89,3 +89,9 @@ test('provisional target candidate is announced before generic unavailable statu
   const main=read('src/main.js');
   assert.match(main,/r\.candidate_status==='provisional'\?' · Показано попередній кандидат, не підтверджений результат':r\.target_status==='unavailable'/);
 });
+
+
+test('model-selected target output is not presented as independently validated',()=>{
+  const main=read('src/main.js');
+  assert.match(main,/r\.target_status==='model-selected'\?' · Український запис за проєктними відповідностями; незалежно не валідований'/);
+});
