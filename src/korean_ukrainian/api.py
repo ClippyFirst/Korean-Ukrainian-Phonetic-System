@@ -34,6 +34,8 @@ def create_app():
         if req.pronunciation_engine == "g2pk" and req.morphology_mode != "strict":
             raise ValueError("morphology_mode is available only with pronunciation_engine='native'")
         if req.mode == "decompose":
+            if req.morphology_mode != "strict":
+                raise ValueError("morphology_mode is available only with mode='transliterate'")
             if req.pronunciation_engine != "native":
                 raise ValueError("decompose mode is available only with pronunciation_engine='native'")
             return {"input": req.text, "analysis": analyze_korean(req.text)}
