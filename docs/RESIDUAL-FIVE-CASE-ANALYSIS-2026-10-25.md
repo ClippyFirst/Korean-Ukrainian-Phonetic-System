@@ -106,3 +106,16 @@ Keep the pre-existing lexical row intact as a provisional research artifact; do 
 ## Reviewer recruitment action — 2026-10-25
 
 Created [issue #337: recruit two independent Korean phonetics reviewers](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337). It requests two qualified independent broad-IPA annotations and explicitly asks contributors not to post candidate transcriptions or source citations in the public issue. The coordinator now records the recruitment status. At the time of this update, no submissions have been received or verified, so the IPA and Ukrainian-target gates remain blocked. Recruitment is a genuine next step, not evidence that review has happened.
+
+
+## External text-only search follow-up — 2026-10-25
+
+This follow-up searched public text-index results for the unresolved forms and related terminology. It did **not** search for, open, or inspect PDFs or audio.
+
+- **`칡칡이`:** the [National Gugak Center encyclopedia entry for 칭칭이소리](https://www.gugak.go.kr/ency/topic/view/947) identifies **칭칭이** as an alternate name for a Gyeongsang-do folk song. This independently confirms that the proposed candidate is a real folk-song label. It does not establish that the isolated input `칡칡이` refers to that song, nor does it verify the disputed heading in the previously noted source. Keep the correction source-specific and candidate-only.
+- **`많앗구나유유유`:** exact-phrase searches for `많앗구나유유유`, `많았구나유유유`, and `많았구나 유유유` found no reliable indexed source for this particular string. Occurrences of `유유유` in unrelated contexts cannot determine whether this input is literal text, expressive spelling, or a tokenization issue. Context is still required.
+- **`삶의`:** no independent text source was found that establishes a case-specific IPA gold form for `삶의` or the candidate string `sal.mɰi`. The official NIKL answer remains evidence for Hangul surface variants `[살믜]` and `[살메]`, not IPA. The CSV's `sal|mi` and `sal|me` candidates remain provisional and the notation discrepancy is unresolved.
+
+### Search outcome
+
+The text-only search improves provenance for the proposed `칭칭이` candidate but does not clear any linguistic acceptance gate. No source, IPA, or Ukrainian output has been promoted to gold. The next acceptance criteria remain source-identity confirmation for `칡칡이`, original context for `많앗구나유유유`, and two independent qualified IPA annotations followed by separate Ukrainian-target review for `삶의`.
