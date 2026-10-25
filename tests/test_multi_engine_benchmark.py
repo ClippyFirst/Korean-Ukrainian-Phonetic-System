@@ -125,7 +125,8 @@ def test_discrepancy_classifier_only_assigns_evidence_supported_categories():
 
 
 def test_g2pk_adapter_uses_shared_segment_renderer_without_silent_fallback():
-    from korean_ukrainian.phonology import parse_syllables, realize_syllables
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.ipa import realize_syllables
 
     expected = realize_syllables(parse_syllables("한국"), level="broad")["ipa"]
     assert _g2pk_surface_to_ipa(lambda _: "한국", "입력") == expected
