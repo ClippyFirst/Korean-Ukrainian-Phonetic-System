@@ -111,9 +111,12 @@ def test_broad_fricative_aspiration_sensitivity_is_narrowly_scoped():
 
 def test_discrepancy_classifier_only_assigns_evidence_supported_categories():
     convention = _classify_native_discrepancy("kasɯm", "ka̠sʰɯm", False, True)
-    assert convention["category"] == "IPA_CONVENTION"
+    assert convention["category"] == "UNCLASSIFIED"
     assert convention["strict_profile_exact"] is False
     assert convention["broad_fricative_aspiration_exact"] is True
+    assert convention["profile_sensitivity_detected"] is True
+    assert convention["profile_sensitivity_name"] == "broad_fricative_aspiration"
+    assert "convention status is not independently established" in convention["rationale"]
 
     unicode_only = _classify_native_discrepancy("ã", "ã", False, False)
     assert unicode_only["category"] == "UNICODE_OR_FORMAT"
