@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "title": "Residual five Korean forms: candidate-only resolution map",
+  "date": "2026-10-25",
+  "policy": {
+    "originalInputIsImmutable": true,
+    "spellingCandidatesArePronunciationInputs": false,
+    "ipaCandidatesAreGold": false,
+    "ukrainianTargetAllowedBeforeIndependentReview": false,
+    "unknownLexicalMorphologyMustAbstain": true
+  },
+  "cases": [
+    {
+      "input": "칡칡이",
+      "class": "LEXICAL_IDENTITY_AND_MORPHOLOGY",
+      "status": "BLOCKED",
+      "observedRelation": "The exact string is attested as the title/label of a Cheolma-myeon folk song in a local-culture PDF; that proves an attested title use, not a dictionary lexeme or a transparent morpheme boundary.",
+      "candidateForms": [],
+      "candidateIPA": [],
+      "productionAction": "none",
+      "why": "A source-backed exact-string use exists as a regional folk-song title, but it does not establish whether the title is compositional, dialectal, playful, or opaque. Do not infer a 칡+칡+이 parse from the title.",
+      "nextEvidence": "Obtain the cited 양산의 민요 (1992), p. 180 or a rights-cleared reliable transcription with surrounding field notes; determine whether 칡칡이 is a lexicalized title, a refrain/onomatopoeic form, or morphologically analyzable. Until then keep strict-mode abstention.",
+      "evidence": [
+        {
+          "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
+          "scope": "The PDF lists 칡칡이 as the heading for 철마면 민요 26, with singer/date/location metadata and a citation to 이소라, 양산의 민요 (1992), p. 180. It does not provide a lexical gloss or morpheme segmentation."
+        }
+      ]
+    },
+    {
+      "input": "쫒아내면",
+      "class": "NONSTANDARD_ORTHOGRAPHY",
+      "status": "CANDIDATE_ONLY",
+      "observedRelation": "쫒 is one consonant away from the attested standard lexeme 쫓다; this is a spelling relation, not a phonological rule.",
+      "candidateForms": [
+        {
+          "text": "쫓아내면",
+          "kind": "probable_spelling_correction",
+          "confidence": "plausible_not_user_confirmed",
+          "pronunciationMayBeAttributedToOriginal": false
+        }
+      ],
+      "candidateIPA": [],
+      "productionAction": "Do not alter the input or clear strict-mode abstention. A separate spelling-assistance UI may show the candidate.",
+      "evidence": [
+        {
+          "url": "https://krdict.korean.go.kr/m/eng/dicSearch/SearchView?ParaWordNo=78895&currentPage=2&exaType=&font_size=12&mainSearchWord=%EB%82%B4%EB%8B%A4&nation=eng&nationCode=6&proverbType=&searchType=W&sort=W&viewType=A&wordMatchFlag=N",
+          "scope": "The Korean Basic Dictionary supports 쫓아내다 and its standard surface pronunciation [쪼차내다], not a literal pronunciation of misspelled 쫒아내면."
+        }
+      ],
+      "nextEvidence": "If user confirms the correction, analyze 쫓아내면 as the corrected input through the normal source-phonology → IPA → Ukrainian pipeline; independently verify broad IPA before accepting a Ukrainian target."
+    },
+    {
+      "input": "많앗구나유유유",
+      "class": "ORTHOGRAPHY_PLUS_EXPRESSIVE_TOKENIZATION",
+      "status": "MULTIPLE_CANDIDATES_ONLY",
+      "observedRelation": "There are at least two independent uncertainties: 앗 versus standard past-tense 았, and whether final 유유유 is literal syllabic text or intended crying emoticon ㅠㅠㅠ.",
+      "candidateForms": [
+        {
+          "text": "많았구나유유유",
+          "kind": "orthography_candidate_only",
+          "confidence": "plausible_not_user_confirmed",
+          "normalization": "앗→았",
+          "pronunciationMayBeAttributedToOriginal": false
+        },
+        {
+          "text": "많았구나 ㅠㅠㅠ",
+          "kind": "orthography_and_tokenization_candidate",
+          "confidence": "plausible_not_user_confirmed",
+          "normalization": "앗→았; 유유유→ㅠㅠㅠ with a token boundary",
+          "pronunciationMayBeAttributedToOriginal": false
+        },
+        {
+          "text": "많앗구나 유유유",
+          "kind": "spacing_candidate_only",
+          "confidence": "low_without_context",
+          "normalization": "insert a boundary only",
+          "pronunciationMayBeAttributedToOriginal": false
+        }
+      ],
+      "candidateIPA": [],
+      "productionAction": "Keep all candidates separate from the original. Do not treat expressive ㅠㅠㅠ as Korean lexical syllables or discard it without a candidate label.",
+      "evidence": [
+        {
+          "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316156",
+          "scope": "The NIKL answer contains standard spelling 많았구나 in a quotation; it does not adjudicate this noisy token or its final sequence."
+        },
+        {
+          "url": "https://v.daum.net/v/JU0MXB4lYJ",
+          "scope": "A published interview explicitly explains ㅠㅠㅠ as 'tears' and separately describes 유유유 as a title/phrase meaning 'you you you'. This demonstrates that the strings can have different interpretations in different contexts; it does not identify the intended meaning in the user's isolated input."
+        }
+      ],
+      "nextEvidence": "User/context confirmation of whether the tail is ㅠㅠㅠ, literal 유유유, or a separate token; then analyze the confirmed Korean span only."
+    },
+    {
+      "input": "삶의",
+      "class": "IPA_VARIANT_ADJUDICATION",
+      "status": "MULTIPLE_DIAGNOSTIC_CANDIDATES",
+      "observedRelation": "NIKL explicitly permits the surface readings [살믜] and [살메] for the particle phrase. These Hangul readings constrain the candidate set but are not IPA transcriptions.",
+      "candidateForms": [
+        {
+          "text": "삶의",
+          "kind": "original_orthography",
+          "pronunciationMayBeAttributedToOriginal": true
+        }
+      ],
+      "candidateIPA": [
+        {
+          "value": "sal.mɰi",
+          "sourceSurface": "[살믜]",
+          "status": "provisional_candidate_not_gold",
+          "reviewRequired": true
+        },
+        {
+          "value": "sal.me",
+          "sourceSurface": "[살메]",
+          "status": "provisional_candidate_not_gold",
+          "reviewRequired": true
+        }
+      ],
+      "productionAction": "Keep both candidates visible only in diagnostic/review output; accepted Ukrainian target remains withheld.",
+      "evidence": [
+        {
+          "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
+          "scope": "Official Hangul surface-pronunciation alternatives [살믜]/[살메], not independently adjudicated IPA."
+        }
+      ],
+      "nextEvidence": "Two independent qualified reviewers annotate broad IPA, syllable boundary, and variant status blind to engine output; reconcile disagreements; then conduct a separate Ukrainian-target review on frozen IPA."
+    },
+    {
+      "input": "무서웟어",
+      "class": "NONSTANDARD_ORTHOGRAPHY",
+      "status": "CANDIDATE_ONLY",
+      "observedRelation": "Likely spelling correction 웟→웠 in the standard form 무서웠어; do not silently rewrite the original.",
+      "candidateForms": [
+        {
+          "text": "무서웠어",
+          "kind": "probable_spelling_correction",
+          "confidence": "plausible_not_user_confirmed",
+          "pronunciationMayBeAttributedToOriginal": false
+        }
+      ],
+      "candidateIPA": [],
+      "productionAction": "Do not alter the input or clear strict-mode abstention. A separate spelling-assistance UI may show the candidate.",
+      "evidence": [
+        {
+          "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=79798",
+          "scope": "The Korean Basic Dictionary attests the standard spelling 무서웠어 in an example, not automatic normalization of 무서웟어."
+        }
+      ],
+      "nextEvidence": "If user confirms the correction, analyze the corrected form through the existing IPA-first path and independently review the resulting IPA and Ukrainian target."
+    }
+  ]
+}
