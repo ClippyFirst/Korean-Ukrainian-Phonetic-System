@@ -7,23 +7,12 @@ def test_g2pk_cannot_promote_diagnostic_only_lexical_ipa_to_ukrainian_output(mon
         def __call__(self, text, descriptive=False):
             return text
 
-    # Inject the status contract explicitly: the live lexical row for 삶의 is
-    # provisional, not diagnostic-only, so it must not be used as a fake gold
-    # fixture for this guard.
-    monkeypatch.setattr(g2pk_engine, "_ENGINE", IncorrectG2p())
-    monkeypatch.setattr(
-        pipeline,
-        "LEXICAL_PRONUNCIATIONS",
-        {
-            "삶의": {
-                "input": "삶의",
-                "surface_hangul": "삶의",
-                "ipa_syllables": "sal|mi",
-                "ipa_adjudication_status": "diagnostic_only_unresolved_pronunciation",
-                "rule_notes": "test fixture: unresolved IPA context",
-            }
-        },
+    # The base lexical row is target-provisional; the dated IPA-adjudication
+    # overlay explicitly marks its project-derived IPA as diagnostic-only.
+    assert pipeline.LEXICAL_PRONUNCIATIONS["삶의"]["ipa_adjudication_status"] == (
+        "diagnostic_only_unresolved_pronunciation"
     )
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", IncorrectG2p())
 
     pronunciation = g2pk_engine.phoneticize_with_g2pk("삶의")
     assert pronunciation["ipa_is_diagnostic_only"] is True
