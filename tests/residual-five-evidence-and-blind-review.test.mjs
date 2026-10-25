@@ -5,7 +5,7 @@ import { buildReviewerPacket } from '../scripts/build-ipa-review-packet.mjs';
 
 const root = new URL('../research/', import.meta.url);
 
-test('the exact 칡칡이 attestation is scoped to a folk-song heading, not a lexical parse', async () => {
+test('the 칡칡이 search-snippet/PDF-text discrepancy remains a candidate, not a lexical parse', async () => {
   const data = JSON.parse(await readFile(new URL('residual-five-candidate-resolution-2026-10-25.json', root), 'utf8'));
   const item = data.cases.find(entry => entry.input === '칡칡이');
   assert.equal(item.status, 'CANDIDATE_ONLY');
