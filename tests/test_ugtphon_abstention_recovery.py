@@ -90,3 +90,9 @@ def test_misspelled_and_unreviewed_lookalikes_remain_fail_closed():
             context.get("rule_id") == rule_id
             for context in result.get("unresolved_contexts", [])
         ), (form, result.get("unresolved_contexts"))
+
+
+def test_official_dictionary_supported_r004_cluster_h_suffix_is_resolved():
+    result = phoneticize_korean("긁혔다는거지")
+    assert not any(context.get("rule_id") == "R004" for context in result.get("unresolved_contexts", []))
+    assert result.get("pronunciation_status") != "unresolved", result.get("unresolved_contexts")

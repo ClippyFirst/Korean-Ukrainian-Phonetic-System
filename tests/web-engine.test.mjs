@@ -68,6 +68,12 @@ test('strict mode still surfaces issues for unlicensed morphology', () => {
   assert.ok(Array.isArray(r.issues));
 });
 
+test('official dictionary-supported R004 cluster-plus-ㅎ form resolves in browser strict mode', () => {
+  const result = engine.convert('긁혔다는거지');
+  assert.notEqual(result.status, 'unresolved');
+  assert.doesNotMatch(result.ipa, /⟦/u);
+});
+
 
 test('NIKL exact-form R003 licenses resolve two attested forms in browser strict mode', () => {
   const cases = [
