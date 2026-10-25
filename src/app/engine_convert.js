@@ -272,7 +272,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       // but do not let it enter the public orthography output buffer.
       text:provisionalTarget?'':targetCandidateText,
       candidateText:provisionalTarget?targetCandidateText:null,
-      unknown:provisionalTarget?'provisional_mapping_requires_review':targetMapping.unknown,
+      unknown:targetMapping.unknown,
       status:provisionalTarget?'unavailable':targetMapping.status,
       candidateStatus:provisionalTarget?'provisional':null,
       reason:provisionalTarget?'provisional_mapping_requires_review':targetMapping.reason
