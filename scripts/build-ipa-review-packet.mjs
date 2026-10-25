@@ -12,7 +12,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const QUEUE_URL = new URL('../research/ipa-adjudication-queue.json', import.meta.url);
-const OFFICIAL_HOSTS = new Set(['korean.go.kr', 'www.korean.go.kr']);
+const OFFICIAL_HOSTS = new Set(['korean.go.kr', 'www.korean.go.kr', 'krdict.korean.go.kr']);
 
 function sha256(value) {
   return createHash('sha256').update(value, 'utf8').digest('hex');
@@ -33,12 +33,37 @@ export function buildReviewerPacket(queueText, reviewerSlot) {
   } catch {
     throw new Error('IPA queue is not valid JSON.');
   }
-  if (!queue || queue.schemaVersion !== 2 || !Array.isArray(queue.cases) || queue.cases.length === 0) {
-    throw new Error('Expected IPA adjudication queue schemaVersion 2 with at least one case.');
+  if (!queue || !Array.isArray(queue.cases) || queue.cases.length === 0) {
+    throw new Error('Expected a non-empty IPA adjudication queue.');
+  }
+
+  // The R002/R003 triage queue has a separate schema and intentionally includes
+  // noisy corpus references and engine outputs. Only project the cases whose
+  // exact-form NIKL surface evidence has been found; all candidate IPA/target
+  // fields are dropped before a reviewer packet is built.
+  let sourceCases;
+  if (queue.schemaVersion === 2) {
+    sourceCases = queue.cases;
+  } else if (queue.schemaVersion === 1) {
+    sourceCases = queue.cases
+      .filter(item => item?.sourceStatus === 'SOURCE_FOUND_PENDING_IPA')
+      .map(item => ({
+        caseId: item.caseId,
+        input: item.input,
+        surfaceEvidenceStatus: item.sourceStatus,
+        surfaceEvidenceUrl: item.sourceLocator,
+        sourceLocator: item.sourceLocator,
+        normativeSurfaceComparator: item.sourceExcerpt,
+      }));
+    if (sourceCases.length === 0) {
+      throw new Error('R002/R003 queue has no SOURCE_FOUND_PENDING_IPA cases; resolve exact-form sources before preparing IPA review.');
+    }
+  } else {
+    throw new Error('Expected IPA adjudication queue schemaVersion 2 or R002/R003 source queue schemaVersion 1.');
   }
 
   const seen = new Set();
-  const cases = queue.cases.map((item) => {
+  const cases = sourceCases.map((item) => {
     if (!item || typeof item !== 'object') throw new Error('Each queue case must be an object.');
     for (const field of ['caseId', 'input', 'surfaceEvidenceStatus', 'surfaceEvidenceUrl', 'sourceLocator', 'normativeSurfaceComparator']) {
       if (typeof item[field] !== 'string' || !item[field].trim()) {
@@ -98,10 +123,11 @@ export function buildReviewerPacket(queueText, reviewerSlot) {
 
 async function main(argv = process.argv.slice(2)) {
   let reviewer = null;
+  let queuePath = null;
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--help' || arg === '-h') {
-      console.log('Usage: node scripts/build-ipa-review-packet.mjs --reviewer A|B');
+      console.log('Usage: node scripts/build-ipa-review-packet.mjs --reviewer A|B [--queue path.json]');
       console.log('Writes a blinded reviewer packet as JSON to stdout; no files or network requests are made.');
       return 0;
     }
@@ -111,10 +137,16 @@ async function main(argv = process.argv.slice(2)) {
       if (!reviewer || reviewer.startsWith('--')) throw new Error('--reviewer requires A or B.');
       continue;
     }
+    if (arg === '--queue') {
+      if (queuePath !== null) throw new Error('--queue may be supplied only once.');
+      queuePath = argv[++i];
+      if (!queuePath || queuePath.startsWith('--')) throw new Error('--queue requires a JSON path.');
+      continue;
+    }
     throw new Error('Unknown argument: ' + arg);
   }
   if (reviewer === null) throw new Error('--reviewer A or --reviewer B is required.');
-  const queueText = await readFile(QUEUE_URL, 'utf8');
+  const queueText = await readFile(queuePath ? resolve(queuePath) : fileURLToPath(QUEUE_URL), 'utf8');
   const packet = buildReviewerPacket(queueText, reviewer);
   process.stdout.write(JSON.stringify(packet, null, 2) + '\n');
   return 0;
