@@ -119,7 +119,7 @@ The paired morphology reports also show 93.70% Kiwi/MeCab agreement on 238 obser
 - `DONE_VERIFIED_SOURCE`: exact NIKL evidence for `넓죽하다 → 넙쭈카다` and `읽고 → 일꼬` is already present on current main; the regression test checks both Q&A IDs.
 - `DONE_VERIFIED_PRIOR_HEAD`: strict/soft and boundary-gated metrics above are backed by the existing research artifact, but are not a fresh run on the current PR head.
 - `TODO / pending exact-head CI`: analyzer-consensus helper, tests, and dual-analyzer UGTPHON workflow added on the current continuation branch.
-- `BLOCKED_MISSING_ORIGINAL`: the tracked 24-row candidate CSV is `reconstructed_unverified`; its provenance audit records that no reviewed historical tree or artifact established original membership/order. Do not relabel it as restored.
+- `PARTIAL_MANIFEST_PROVENANCE`: the original frozen 24-form manifest has now been recovered by immutable Git blob SHA `f30c5fa8a59753df3d7c06bbbe7d4e43d0b8fb26`; its exact 24 forms, order, and original case IDs match the tracked CSV. The historical commit/tree/PR/run reference remains unresolved; IPA and Ukrainian gold remain unavailable.
 - `BLOCKED_SPECIALIST_ADJUDICATION`: no independent Korean broad-IPA gold set.
 - `BLOCKED_INDEPENDENT_TARGET_GOLD`: no independent Ukrainian practical-transcription gold set or scoring protocol.
 - `BLOCKED_EXTERNAL_ACCESS`: official live NIKL inventory workflow was skipped in prior runs; it is not a pass.
@@ -132,4 +132,16 @@ The first exact-head consensus workflow passed on commit `f3bd48b668e3b72f7dbe7e
 The first report exposed an important input-boundary hazard: `못잃어` and `안늙었는데` have a likely unspaced adverb-to-verb boundary (`MAG → VV)). Applying a local ending rule does not reconstruct the missing eojeol space or the phrase-level phonology. I therefore added a stricter guard: if both analyzers agree on an unspaced `MAG → VV/VA/VX` boundary, the consensus adapter withholds all licenses for that token. This is intentionally conservative and is being re-benchmarked on the updated head; do not reuse the first run's 30-form coverage as the final result.
 
 The final acceptance criterion remains: exact-head CI passes, the consensus report enumerates remaining abstentions, all analyzer-derived IPA stays diagnostic-only, and strict default output is unchanged.
+
+## Reconciled strict/soft/consensus result on current implementation head
+
+The exact-head morphology-consensus workflow [40197611605](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611605) passed on code head `781dc5d0d1956d216afd30a04671b2db93e853d6`. Artifact [12600583566](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40197611605/artifacts/12600583566) reports the same pinned 2,703-occurrence UGTPHON split:
+
+| Mode | Coverage | Exact among scored | Coverage-adjusted exact | CER | Unresolved occurrences |
+|---|---:|---:|---:|---:|---:|
+| Strict | 98.2242% | 53.1827% | 52.2383% | 9.1883% | 48 |
+| Soft heuristic | 99.0381% | 53.0818% | 52.5712% | 9.1868% | 26 |
+| Kiwi + MeCab-Ko consensus (diagnostic only) | 99.2971% | 53.0179% | 52.6452% | 9.1930% | 19 |
+
+Consensus resolves 28 unique words relative to strict and leaves 19 unresolved occurrences/unique words. This is a coverage gain, not a demonstrated improvement in pronunciation accuracy: exact match among scored cases falls slightly, while coverage-adjusted exact rises because more cases receive a candidate. All consensus-derived IPA remains `diagnostic_only_analyzer_morphology`; it is not independent IPA gold and is not promoted to Ukrainian output. The strict default and target-rendering evidence gate remain unchanged.
 
