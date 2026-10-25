@@ -69,9 +69,11 @@ def load_corpus(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def evaluate(rows: list[dict[str, Any]], *, morphology_mode: str = "strict") -> dict[str, Any]:
     # Import lazily so the schema/unit tests can run without the package installed.
     from korean_ukrainian.pipeline import phoneticize_korean
+    if morphology_mode not in {"strict", "soft"}:
+        raise ValueError("morphology_mode must be \"strict\" or \"soft\"")
 
     scored: list[dict[str, Any]] = []
     unresolved_examples: list[dict[str, str]] = []
@@ -80,6 +82,8 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     skipped_missing_gold = 0
     skipped_empty_variants = 0
     errors = 0
+    heuristic_token_occurrences = 0
+    heuristic_examples: list[dict[str, Any]] = []
     for row in rows:
         for token in row["tokens"]:
             canonical = token.get("canonical", "")
@@ -91,7 +95,19 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 skipped_missing_gold += 1
                 continue
             try:
-                engine_result = phoneticize_korean(canonical)
+                engine_result = phoneticize_korean(canonical, morphology_mode=morphology_mode)
+                heuristic_rules = [
+                    trace.get("rule_id") for trace in engine_result.get("rules", [])
+                    if trace.get("status") == "heuristic-low-confidence"
+                ]
+                if heuristic_rules:
+                    heuristic_token_occurrences += 1
+                    if len(heuristic_examples) < 100:
+                        heuristic_examples.append({
+                            "id": row["id"], "token": canonical,
+                            "rules": heuristic_rules,
+                            "note": "heuristic-low-confidence; not source-adjudicated",
+                        })
                 if engine_result.get("pronunciation_status") == "unresolved":
                     unresolved_tokens += 1
                     if len(unresolved_examples) < 100:
@@ -123,6 +139,7 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 "predicted": predicted_raw, "normalized_predicted": predicted,
                 "closest_normalized_gold": closest_gold, "distance": distance,
                 "exact": distance == 0,
+                "heuristic_rules": heuristic_rules,
             })
 
     comparable = [item for item in scored if item["distance"] is not None]
@@ -132,6 +149,9 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     exact = sum(item["exact"] for item in comparable)
     return {
         "benchmark": "UGTPHON Korean test split",
+        "morphology_mode": morphology_mode,
+        "heuristic_low_confidence_token_occurrences": heuristic_token_occurrences,
+        "heuristic_low_confidence_examples": heuristic_examples,
         "purpose": "diagnostic external IPA comparison; not a normative acceptance gate",
         "rows": len(rows),
         "scored_tokens": len(comparable),
@@ -164,12 +184,14 @@ def main() -> int:
     parser.add_argument("--corpus", type=Path, default=os.environ.get("UGTPHON_KO_TEST_PATH"),
                         help="path to external UGTPHON ko/test.json (or set UGTPHON_KO_TEST_PATH)")
     parser.add_argument("--output", type=Path, help="optional JSON report destination")
+    parser.add_argument("--morphology-mode", choices=("strict", "soft"), default="strict",
+                        help="strict fail-closed default or opt-in low-confidence formal-ending hypotheses")
     args = parser.parse_args()
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH; no network download is performed")
     try:
         rows = load_corpus(Path(args.corpus))
-        report = evaluate(rows)
+        report = evaluate(rows, morphology_mode=args.morphology_mode)
     except Exception as exc:
         print(f"benchmark failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
