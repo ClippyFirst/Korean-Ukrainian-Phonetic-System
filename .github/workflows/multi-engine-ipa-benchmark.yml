@@ -166,6 +166,10 @@ jobs:
           engines = r["engines"]
           assert r["native_g2pk_pairwise_audit"]["status"] == "excluded_by_user_request"
           assert "g2pk_0_9_4" not in engines
+          discrepancy_audit = r["clippyfirst_gold_discrepancy_audit"]
+          assert discrepancy_audit["occurrence_count"] == len(discrepancy_audit["occurrences"])
+          assert sum(discrepancy_audit["category_counts"].values()) == discrepancy_audit["occurrence_count"]
+          assert all(item.get("category") for item in discrepancy_audit["occurrences"])
           print("g2pK was not installed or run by explicit project-owner constraint.")
           print("Diagnostic only. This corpus is not normative NIKL gold and does not evaluate Ukrainian output.")
           engines = r["engines"]
@@ -225,6 +229,10 @@ jobs:
           engines = r["engines"]
           assert r["native_g2pk_pairwise_audit"]["status"] == "excluded_by_user_request"
           assert "g2pk_0_9_4" not in engines
+          discrepancy_audit = r["clippyfirst_gold_discrepancy_audit"]
+          assert discrepancy_audit["occurrence_count"] == len(discrepancy_audit["occurrences"])
+          assert sum(discrepancy_audit["category_counts"].values()) == discrepancy_audit["occurrence_count"]
+          assert all(item.get("category") for item in discrepancy_audit["occurrences"])
           for required in ("clippyfirst_native",):
               if engines[required]["scored_tokens"] <= 0:
                   raise SystemExit(f"required baseline produced no scored tokens: {required}")
