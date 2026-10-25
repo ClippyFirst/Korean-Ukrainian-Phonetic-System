@@ -26,15 +26,13 @@ The page screenshot could not be fetched in this session. Therefore `칭칭이` 
 
 The Korean Basic Dictionary supports standard `쫓아내다` and the corrected spelling `무서웠어`. The UI offers `쫓아내면` and `무서웠어` separately. Original input remains intact unless the user selects a candidate. The corrected form may then enter the ordinary ClippyFirst pipeline; it must not be reported as a pronunciation of the uncorrected typo.
 
-### `많앗구나유유유`: spelling and tokenization remain independent uncertainties
+### \`많앗구나유유유\`: literal spelling must reach IPA unchanged
 
-The UI preserves three candidates:
+The UI may offer non-destructive spelling/tokenization candidates, but the transcription engine must not apply any of them automatically. The original input \`많앗구나유유유\` is the transcription source, including the written syllable \`앗\` and the tail \`유유유\`.
 
-1. `많았구나유유유` — spelling candidate only;
-2. `많았구나 ㅠㅠㅠ` — assumes the final sequence is expressive crying notation;
-3. `많앗구나 유유유` — spacing/token-boundary hypothesis.
+**Literal transcription rule (confirmed by the project owner, 2026-10-25):** derive and expose IPA from the exact written form, without changing \`앗\` to \`았\`, converting \`유유유\` to \`ㅠㅠㅠ\`, inserting a space, or deleting the tail. The engine may return a non-empty diagnostic/provisional IPA even while a contextual morphophonological rule remains unresolved. In that case it must label the IPA as diagnostic and keep the accepted Ukrainian target unavailable; it must not present the diagnostic string as independently adjudicated gold.
 
-A published interview shows that `ㅠㅠㅠ` can mark tears and that `유유유` can occur as a phrase/title. That example establishes contextual possibilities, not the intent of this isolated input. No candidate is gold. Obtain original message context or user confirmation before selecting one.
+A published interview shows that \`ㅠㅠㅠ\` can mark tears and that \`유유유\` can occur as a phrase/title. Those examples establish contextual possibilities, not the intent of this isolated input. The hypothesis that the tail is expressive vocalization or transcription noise remains unconfirmed. Obtain the original message or adjacent turns before classifying its intent; this context requirement must not block a literal, uncertainty-labelled IPA rendering of the written input.
 
 ### `삶의`: Korean surface evidence, IPA, and Ukrainian adaptation are distinct
 
