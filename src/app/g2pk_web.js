@@ -12,6 +12,7 @@
  * override exists, and no exception is generalized to unseen words.
  */
 import { G2pBrowser } from '../vendor/g2pk/g2p-browser.ts';
+import { traceIpaMappingDetailed } from './engine_ipa.js';
 
 const PROTECTED = /^[A-Za-z0-9ㄱ-ㅎㅏ-ㅣ]+$/u;
 
@@ -134,6 +135,15 @@ export function createG2pWebAdapter(engine) {
         const item = result.trace[lexicalLength.syllableIndex];
         if (!item.ipa.includes('ː')) {
           item.ipa += 'ː';
+          // Keep the feature loss explicit in the same per-syllable trace:
+          // length survives in IPA but has no dedicated Ukrainian character.
+          const detailedTarget = traceIpaMappingDetailed(item.ipa);
+          if (!detailedTarget.unknown) {
+            item.targetMappings = detailedTarget.tokens;
+            item.targetFeatures = detailedTarget.features;
+            item.targetStatus = detailedTarget.status;
+            item.targetReason = detailedTarget.reason || null;
+          }
           result.ipa = renderIpa(result.trace);
           result.analysis += '; NIKL lexical vowel length retained in IPA (' + lexicalLength.evidence + ')';
         }

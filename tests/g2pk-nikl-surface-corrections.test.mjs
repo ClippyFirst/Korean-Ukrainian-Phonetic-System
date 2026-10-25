@@ -80,6 +80,10 @@ test('exact NIKL-attested surface divergences are corrected before IPA adaptatio
     if (item.input === '수많은') {
       assert.match(result.ipa, /ː/u, 'dictionary length mark must survive into IPA');
       assert.match(result.analysis, /lexical vowel length retained in IPA/u);
+      assert.ok(result.trace[0].targetFeatures.some(feature => feature.feature === 'vowel-length'),
+        'target trace must explicitly report that IPA length is not encoded in Ukrainian orthography');
+      assert.equal(result.trace[0].targetFeatures.find(feature => feature.feature === 'vowel-length').handling,
+        'preserved-in-ipa-not-rendered-in-ukrainian-target');
     }
     assert.equal(result.issues.length, 0, item.input + ': corrected surface must remain IPA-mappable');
     const mapped = traceIpaMapping(result.ipa);
