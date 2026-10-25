@@ -195,7 +195,7 @@ test('unknown IPA and empty IPA return an unavailable result, never a partial or
   assert.equal(unknown.status, 'unavailable');
   assert.equal(unknown.reason, 'unmapped_ipa_sequence');
   assert.deepEqual(unknown.syllables, []);
-  assert.deepEqual(unknown.mappingTrace, []);
+  assert.ok(unknown.mappingTrace.length > 0, 'resolved IPA prefix remains available as diagnostic trace');
 
   const empty = ipaTargetForSource('가', '');
   assert.equal(empty.text, null);

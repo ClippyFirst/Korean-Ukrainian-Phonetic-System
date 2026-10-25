@@ -122,13 +122,13 @@ export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
   }
   const mapped=ipaSyllables.map(ipa=>ipaSyllableToUkrainian(ipa,options));
   const unknown=mapped.find(item=>item.unknown)?.unknown||'';
-  const unavailable=mapped.find(item=>item.status==='unavailable'||item.unknown);
+  const hardUnavailable=mapped.find(item=>(item.status==='unavailable'&&!item.candidateStatus)||item.unknown);
   const provisional=mapped.some(item=>item.status==='provisional'||item.candidateStatus==='provisional');
-  if(unavailable){
+  if(hardUnavailable){
     return {
       syllables:[],candidates:[],unknown,
       status:'unavailable',
-      reason:unavailable.reason||'unmapped_ipa_sequence'
+      reason:hardUnavailable.reason||'unmapped_ipa_sequence'
     };
   }
   if(provisional && options.allowProvisional!==true){
