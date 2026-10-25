@@ -44,6 +44,16 @@ _NIKL_R002_FORMAL_LICENSES = {
     "없어도": "없>어",  # 없- + connective ending -어도; NIKL §14 attests 없어[업써].
 }
 
+# Exact-form licenses for NIKL §12(4) ㅎ-coda deletion before a vowel-initial
+# ending. The official answers attest Korean surface pronunciations, not IPA
+# gold; these licenses resolve only the Korean morphophonological step.
+# 싫어서: NIKL Online Q&A qna_seq=336? (see research adjudication register).
+# 수많은: NIKL Korean Basic Dictionary entry for 수많다, 발음 [수ː마는].
+_NIKL_R003_FORMAL_LICENSES = {
+    "싫어서": "싫>어",
+    "수많은": "많>은",
+}
+
 # Exact full-form licenses for transparent verb-stem + ending cases under NIKL §24.
 # These are rule-derived applications, not claimed as direct quoted examples.
 # Scope each license to the complete input and adjacent pair until a morphology
@@ -100,6 +110,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R002_FORMAL_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R002:formal:{full_form}:{pair}")
+    pair = _NIKL_R003_FORMAL_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R003:ending_or_suffix_h_deletion:{full_form}:{pair}")
     pair = _NIKL_R010_FORM_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R010:stem_n_m+suffix:{full_form}:{pair}")
