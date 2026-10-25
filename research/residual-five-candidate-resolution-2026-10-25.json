@@ -12,18 +12,26 @@
   "cases": [
     {
       "input": "칡칡이",
-      "class": "LEXICAL_IDENTITY_AND_MORPHOLOGY",
-      "status": "BLOCKED",
-      "observedRelation": "The exact string is attested as the heading of 철마면 민요 26, with singer/location/date metadata and a short call-and-response song text. The excerpt includes “노자 좋다 젊어 놀아” and the refrain “치기타 칭칭나네”; it still gives no lexical gloss or segmentation of the title.",
-      "candidateForms": [],
+      "class": "SOURCE_TRANSCRIPTION_MISMATCH_AND_UNKNOWN_LEXICAL_IDENTITY",
+      "status": "CANDIDATE_ONLY",
+      "observedRelation": "The search-result snippet for the local-culture PDF labels the song heading 칡칡이, but the opened PDF text layer at the corresponding [철마면 민요 26] passage reads 칭칭이 and gives the refrain 치기타 칭칭나네. This is a source/index transcription mismatch, not evidence that 칡칡이 has a transparent 칡+칡+이 morphology.",
+      "candidateForms": [
+        {
+          "text": "칭칭이",
+          "kind": "source_specific_transcription_correction_candidate",
+          "confidence": "plausible_not_image_verified",
+          "pronunciationMayBeAttributedToOriginal": false,
+          "note": "The PDF text layer and refrain support this as a candidate for the folk-song title; the page image could not be fetched in this session, and the user's isolated token may have a different origin."
+        }
+      ],
       "candidateIPA": [],
-      "productionAction": "none",
-      "why": "A source-backed exact-string use exists as a regional folk-song title with a small amount of song context, but this does not establish whether the title is compositional, dialectal, playful, a refrain label, or opaque. Do not infer a 칡+칡+이 parse from the title.",
-      "nextEvidence": "Obtain the cited 양산의 민요 (1992), p. 180 or rights-cleared field notes/interview audio; establish whether 칡칡이 is a lexicalized title, dialect form, refrain/onomatopoeic label, or transcription variant and only then analyze morphology. Until then keep strict-mode abstention.",
+      "productionAction": "Offer 칭칭이 only as a source-specific transcription candidate when this folk-song citation is the intended context. Do not silently replace 칡칡이 and do not emit a pronunciation for the original from this evidence.",
+      "why": "The cited folk-song source does not establish a lexical meaning or morpheme segmentation for 칡칡이. The search snippet and PDF text layer disagree; the latter reads 칭칭이, which matches the refrain, but a visual/print-source check is still needed. Do not infer 칡+칡+이.",
+      "nextEvidence": "Inspect a locally downloaded/print copy of the exact PDF page and compare against 이소라, 양산의 민요 (1992), p. 180 or field audio. If the title is confirmed as 칭칭이, classify 칡칡이 as a corpus/OCR error in that source context; if not, find a separate lexical source before attempting morphology.",
       "evidence": [
         {
           "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
-          "scope": "The PDF lists 칡칡이 as the heading for 철마면 민요 26; singer 이문춘 (male, born 1923), recording date 1991-10-19, location 철마면 이곡리, and a short song text are provided. It cites 이소라, 양산의 민요 (1992), p. 180. No meaning or morpheme boundary for the title is explained."
+          "scope": "The search index snippet reports the heading as 칡칡이, while the opened PDF text layer at printed page 587 / PDF text page P596 reads [철마면 민요 26] 칭칭이, identifies singer 이문찬 (male, born 1923), date 1991-10-19, location 철마면 이곡리, and records the refrain 치기타 칭칭나네. It cites 이소라, 양산의 민요 (1992), p. 180. A screenshot fetch failed, so the glyph-level discrepancy is not visually resolved."
         }
       ]
     },
