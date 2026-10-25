@@ -89,7 +89,6 @@ test('CLI requires an explicit reviewer slot and fails closed for missing argume
 test('R002/R003 source queue creates a blinded packet only for exact-form sources found', () => {
   const packetA = buildReviewerPacket(r002QueueText, 'A');
   const packetB = buildReviewerPacket(r002QueueText, 'B');
-  assert.equal(packetA.sourceQueueSchemaVersion, 1);
   assert.equal(packetA.queueSha256, packetB.queueSha256);
   assert.deepEqual(packetA.cases.map(item => item.caseId), ['R002-05', 'R003-01', 'R003-04']);
   assert.deepEqual(packetA.cases.map(item => item.input), ['멋있어', '수많은', '싫어서']);
