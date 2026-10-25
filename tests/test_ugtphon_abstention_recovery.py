@@ -61,10 +61,12 @@ def test_transparent_r003_abstentions_have_narrow_exact_form_licenses():
         assert result.get("pronunciation_status") != "unresolved", (form, result.get("unresolved_contexts"))
 
 
-def test_r007_case_is_licensed_only_for_the_exact_noisy_input():
+def test_r007_remains_unresolved_when_compact_phrase_boundary_is_ambiguous():
+    # The local surface resembles the -이 environment, but the compact noisy
+    # input does not independently establish the formal-morpheme boundary.
     result = phoneticize_korean("많을거같이")
-    assert not _matching_contexts(result, "R007", "같>이")
-    assert result.get("pronunciation_status") != "unresolved"
+    assert _matching_contexts(result, "R007", "같>이")
+    assert result.get("pronunciation_status") == "unresolved"
 
 
 def test_misspelled_and_unreviewed_lookalikes_remain_fail_closed():
