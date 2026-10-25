@@ -10,6 +10,7 @@ from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _load_rows_and_words,
     _metrics,
+    _normalize_broad_fricative_aspiration,
     _paired_bootstrap_delta_ci,
     _score,
     kog2p_phones_to_ipa,
@@ -92,3 +93,16 @@ def test_paired_bootstrap_delta_is_deterministic_and_paired():
     assert first["replicates"] == 100
     assert first["exact_rate_delta_candidate_minus_native_95pct_ci"] is not None
     assert first["cer_delta_candidate_minus_native_95pct_ci"] is not None
+
+def test_broad_fricative_aspiration_sensitivity_is_narrowly_scoped():
+    assert _normalize_broad_fricative_aspiration("sʰɕʰa̠") == "sɕa"
+    assert _normalize_broad_fricative_aspiration("kʰaːt̚") == "kʰaːt̚"
+    strict = _score("kasɯm", "ka̠sʰɯm")
+    broad = _score(
+        "kasɯm", "ka̠sʰɯm",
+        normalizer=_normalize_broad_fricative_aspiration,
+    )
+    assert strict["exact"] is False
+    assert broad["exact"] is True
+    assert broad["reference_length"] == strict["reference_length"] - 1
+
