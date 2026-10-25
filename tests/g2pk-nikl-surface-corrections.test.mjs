@@ -25,7 +25,7 @@ const cases = [
     input: '넓죽하다',
     surface: '넙쭈카다',
     source: '넓죽하다',
-    evidence: /NIKL §§10, 23/u
+    evidence: /qna_seq=307219/u
   },
   {
     input: '넓둥글다',
@@ -43,7 +43,7 @@ const cases = [
     input: '읽고',
     surface: '일꼬',
     source: '읽고',
-    evidence: /qna_seq=315279/u
+    evidence: /qna_seq=329463/u
   }
 ];
 
@@ -99,7 +99,7 @@ test('a correction preserves source offsets and punctuation in running text', ()
 
 test('every correction is backed by a registered official NIKL source', () => {
   const byId = new Map(sourceRegister.map(row => [row.source_id, row]));
-  for (const id of ['SRC-NIKL-MCFAQ-5949', 'SRC-NIKL-QNA-307508', 'SRC-NIKL-QNA-322805', 'SRC-NIKL-QNA-315279']) {
+  for (const id of ['SRC-NIKL-MCFAQ-5949', 'SRC-NIKL-QNA-307508', 'SRC-NIKL-QNA-322805', 'SRC-NIKL-QNA-315279', 'SRC-NIKL-QNA-307219', 'SRC-NIKL-QNA-329463']) {
     assert.ok(byId.has(id), id + ': evidence source must be registered');
     assert.match(byId.get(id).url, /korean\.go\.kr/u);
     assert.match(byId.get(id).license_status, /KOGL|reuse|marking|not checked/i,
@@ -107,6 +107,6 @@ test('every correction is backed by a registered official NIKL source', () => {
   }
   const readgo = parseCsv(lexical).find(row => row.input === '읽고');
   assert.ok(readgo);
-  assert.match(readgo.source_url, /qna_seq=315279/u);
-  assert.match(readgo.rule_notes, /directly lists 읽고\[일꼬\]/u);
+  assert.match(readgo.source_url, /qna_seq=329463/u);
+  assert.match(readgo.rule_notes, /directly attests 읽고\[일꼬\]/u);
 });
