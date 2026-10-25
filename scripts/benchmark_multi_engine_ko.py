@@ -768,7 +768,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "discrepancy_audit_contract": {
             "scope": "complete native ledger plus capped multi-engine sample",
             "categories": ["PHONOLOGY_ENGINE", "IPA_CONVENTION", "UNICODE_OR_FORMAT", "SEGMENTATION", "GOLD_UNCERTAIN", "ABSTENTION", "UNCLASSIFIED"],
-            "policy": "Only IPA_CONVENTION is assigned when the declared narrow s/ɕ aspiration sensitivity profile alone changes exactness; Unicode equivalence is assigned only when NFC strings match. Other mismatches remain UNCLASSIFIED rather than being guessed as engine errors.",
+            "policy": "UNICODE_OR_FORMAT is assigned only when raw strings are proven NFC-equivalent; explicit native abstentions are ABSTENTION. A score change under the s/ɕ aspiration sensitivity profile is recorded as profile_sensitivity_detected but remains UNCLASSIFIED unless independent source evidence establishes an IPA convention. PHONOLOGY_ENGINE, SEGMENTATION, and GOLD_UNCERTAIN require case-level adjudication; other mismatches remain UNCLASSIFIED.",
             "warning": "This sampled diagnostic does not satisfy the full case-by-case adjudication requirement. Gold variants and source context may be insufficient to resolve a mismatch.",
         },
         "native_g2pk_pairwise_audit": {
