@@ -560,8 +560,6 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         result: dict[str, Any] = {
             **metrics,
             "normalization_profile_sensitivity": diagnostic_profiles,
-            "broad_fricative_aspiration_sensitivity": {
-                **diagnostic_profiles["broad_fricative_aspiration"],
             "attempted_tokens": attempted,
             "coverage": round(len(scored) / attempted, 6) if attempted else None,
             "abstentions_or_unresolved": unresolved_native if name == "clippyfirst_native" else 0,
