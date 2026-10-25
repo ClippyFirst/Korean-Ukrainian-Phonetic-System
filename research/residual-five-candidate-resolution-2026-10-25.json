@@ -14,16 +14,16 @@
       "input": "칡칡이",
       "class": "LEXICAL_IDENTITY_AND_MORPHOLOGY",
       "status": "BLOCKED",
-      "observedRelation": "The exact string is attested as the title/label of a Cheolma-myeon folk song in a local-culture PDF; that proves an attested title use, not a dictionary lexeme or a transparent morpheme boundary.",
+      "observedRelation": "The exact string is attested as the heading of 철마면 민요 26, with singer/location/date metadata and a short call-and-response song text. The excerpt includes “노자 좋다 젊어 놀아” and the refrain “치기타 칭칭나네”; it still gives no lexical gloss or segmentation of the title.",
       "candidateForms": [],
       "candidateIPA": [],
       "productionAction": "none",
-      "why": "A source-backed exact-string use exists as a regional folk-song title, but it does not establish whether the title is compositional, dialectal, playful, or opaque. Do not infer a 칡+칡+이 parse from the title.",
-      "nextEvidence": "Obtain the cited 양산의 민요 (1992), p. 180 or a rights-cleared reliable transcription with surrounding field notes; determine whether 칡칡이 is a lexicalized title, a refrain/onomatopoeic form, or morphologically analyzable. Until then keep strict-mode abstention.",
+      "why": "A source-backed exact-string use exists as a regional folk-song title with a small amount of song context, but this does not establish whether the title is compositional, dialectal, playful, a refrain label, or opaque. Do not infer a 칡+칡+이 parse from the title.",
+      "nextEvidence": "Obtain the cited 양산의 민요 (1992), p. 180 or rights-cleared field notes/interview audio; establish whether 칡칡이 is a lexicalized title, dialect form, refrain/onomatopoeic label, or transcription variant and only then analyze morphology. Until then keep strict-mode abstention.",
       "evidence": [
         {
           "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
-          "scope": "The PDF lists 칡칡이 as the heading for 철마면 민요 26, with singer/date/location metadata and a citation to 이소라, 양산의 민요 (1992), p. 180. It does not provide a lexical gloss or morpheme segmentation."
+          "scope": "The PDF lists 칡칡이 as the heading for 철마면 민요 26; singer 이문춘 (male, born 1923), recording date 1991-10-19, location 철마면 이곡리, and a short song text are provided. It cites 이소라, 양산의 민요 (1992), p. 180. No meaning or morpheme boundary for the title is explained."
         }
       ]
     },
