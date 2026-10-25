@@ -2,7 +2,9 @@
 
 ## Result
 
-**Status: BLOCKED — original frozen membership is not verified.**
+**Current status (2026-10-25): PARTIAL — the original frozen manifest blob is recovered and the exact 24-form membership/order matches; its historical commit/tree/PR reference is still unresolved. IPA and Ukrainian gold remain unavailable.**
+
+The following 2026-10-24 audit notes are historical: at that time the original manifest had not yet been recovered from the Git object database. The recovery evidence below supersedes the earlier `reconstructed_unverified` classification for membership and ordering, but does not establish expert gold labels or the manifest's original commit reference.
 
 The 24-row CSV introduced on PR #307 is retained as a diagnostic candidate fixture, but it must not be represented as an exact restoration of the original holdout. The fixture's own initial note said that the original manifest was not found; the earlier status `restored_from_prior_handoff` overstated the evidence. It has been corrected to `reconstructed_unverified`.
 
@@ -19,17 +21,17 @@ These checks establish that the original list was **not found in the reviewed tr
 ## Corrected fixture contract
 
 - Exactly 24 unique input strings and stable IDs are asserted by the regression test.
-- `source_manifest_status=reconstructed_unverified` explicitly states that membership and ordering have not been independently verified.
+- `source_manifest_status=original_manifest_blob_recovered` states that membership and order match the recovered frozen manifest blob; the original manifest's case IDs are retained in `original_case_id`.
 - `ipa_gold_status` and `ukrainian_gold_status` remain `not_available`; no engine output is promoted to gold.
 - The audit runner may report native/G2P outputs and abstention reasons, but those results are diagnostic only.
 
 ## Acceptance criteria to unblock
 
-1. Locate the original source artifact/run input, an original manifest, or a historical tracked revision that establishes the exact list.
-2. Record its immutable locator (commit/run/artifact ID), retrieval time, and SHA-256 where bytes are available.
-3. Compare the original 24 forms and their order/IDs against the candidate CSV; report additions, omissions, substitutions, and order changes explicitly.
-4. Restore the original membership without adding or dropping items based on model expectations. If the original cannot be recovered, keep the candidate list labelled unverified and create a newly named benchmark rather than claiming restoration.
-5. Generate and inspect the deterministic per-form report only after fixture provenance is explicit. Keep source-pronunciation adjudication and Ukrainian target review as separate gates.
+1. **Completed:** recovered the frozen manifest from Git blob `f30c5fa8a59753df3d7c06bbbe7d4e43d0b8fb26`, then restored its exact bytes at `data/korean/benchmarks/ipa-holdout-24-manifest.json`. The tracked file's blob SHA matches the recovered object.
+2. **Completed:** exact ordered comparison found 24/24 forms and 24/24 original case IDs matched, with zero additions, omissions, substitutions, or order changes.
+3. **Partial:** `scripts/audit_holdout_manifest_recovery.py` independently recomputes the Git blob SHA-1 and SHA-256 and emits a JSON integrity report; the exact-head workflow artifact is pending.
+4. **Still blocked:** the historical commit/tree/PR/run that originally referenced this blob has not been recovered. The blob is now preserved in a tracked path, so the manifest bytes and membership are stable, but historical provenance remains incomplete.
+5. Independent broad-IPA annotation by two reviewers, disagreement adjudication, and Ukrainian practical-transcription gold remain separate gates. Do not run target-accuracy claims from the holdout until those labels exist.
 
 ## Commands and verification
 
@@ -57,3 +59,21 @@ The inspected Python 3.12 JSON report records fixture SHA-256 `bd2dd4e28f40345a8
 This is diagnostic output, not accuracy. The difference between the earlier reported split of 7 strict phonology blockers / 17 target-layer blockers and the current candidate fixture's 5 native abstentions / 19 provisional IPA results is a **reconciliation warning**. It may reflect the unverified input membership, changed engine state, or differing blocker definitions; the available evidence does not determine which. Do not patch two more cases or change mappings merely to force the historical 7/17 counts. First recover the original input fixture and its original per-form report, then compare the exact rows and blocker taxonomy.
 
 The fresh exact-head rerun after a comment-only test change is queued as of this audit; the successful run above is tied to commit `9f8730c4e5714b80bb66398eadb0e7870ad554c9`, not the latest branch head. Mainline post-merge verification for PR #309 separately passed Python regression/data integrity, browser tests/build, and strict corpus generation on merge commit `cf77fcba215172d64a3f46d9401f662529fc947e`; the test matrix and deployment workflow were still in progress at the latest check. The official NIKL live-inventory job was skipped, not passed.
+
+## Recovery of the original frozen manifest blob — 2026-10-25
+
+The Git object endpoint returned the exact manifest at immutable blob SHA `f30c5fa8a59753df3d7c06bbbe7d4e43d0b8fb26`. It identifies itself as **“ClippyFirst Korean Broad-IPA Independent Holdout — frozen input manifest”**, created 2026-10-24, with status `FROZEN_INPUT_OVERLAP_CHECKED_IPA_ANNOTATION_PENDING`. It contains 24 cases, stable IDs `KUA-HO-001` through `KUA-HO-024`, official NIKL source locators/excerpts, no engine outputs, and explicitly empty IPA reviewer fields.
+
+The exact bytes are now tracked at [`data/korean/benchmarks/ipa-holdout-24-manifest.json`](../data/korean/benchmarks/ipa-holdout-24-manifest.json). The tracked file's Git blob SHA is exactly the recovered SHA above. The CSV remains at its existing path and stable `TR24-01`–`TR24-24` IDs, with a new `original_case_id` column and `source_manifest_status=original_manifest_blob_recovered`.
+
+The comparison performed before updating the CSV was exact:
+- 24 manifest cases / 24 fixture rows;
+- 24 unique forms on both sides;
+- same form membership **and order** (zero differences);
+- all 24 original case IDs map in order;
+- 0 IPA gold labels and 0 Ukrainian gold labels.
+
+A deterministic audit script, `scripts/audit_holdout_manifest_recovery.py`, recomputes the Git blob SHA-1 from the blob header plus exact file bytes, calculates SHA-256, compares all ordered inputs/IDs, and fails if any gold status is promoted. The workflow `.github/workflows/holdout-manifest-recovery.yml` uploads its report. The SHA-256 value will be copied from the exact-head CI report after that workflow passes.
+
+**Remaining limitation:** the original blob's historical commit/tree/PR/run reference was not found. Thus the exact original manifest bytes and membership are recovered and preserved, but the historical origin link is still `PARTIAL`, not falsely marked complete. The manifest only records official Korean Hangul surface readings; it contains no independent IPA or Ukrainian target gold.
+
