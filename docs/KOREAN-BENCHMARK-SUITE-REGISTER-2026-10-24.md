@@ -263,3 +263,11 @@ Exact-head evidence:
 - [Browser G2P — 40191515045](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515045), [UGTPHON — 40191515110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515110), [native/g2pK — 40191515125](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515125), [multi-engine benchmark — 40191515023](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515023), [morphology smoke — 40191515056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056), and [master/research artifacts — 40191515019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515019): all success.
 
 The external Korean IPA benchmark remains diagnostic rather than a Ukrainian target evaluation. Independent IPA and target gold, verified holdout provenance, and live NIKL evidence remain blockers; disposition: **not release-ready**.
+
+
+## Continuation ledger — discrepancy labels (2026-10-25)
+
+- **PARTIAL:** `scripts/benchmark_multi_engine_ko.py` now attaches raw/normalized strings and conservative discrepancy labels to the existing mismatch sample. Only explicit sibilant-aspiration profile sensitivity and proven NFC equivalence receive specific categories; other mismatches remain `UNCLASSIFIED`.
+- **DONE_VERIFIED (historical, unchanged):** owner-constrained five-engine benchmark runs on UGTPHON and SIGMORPHON remain the evidence for the aggregate scores; the new code does not alter the historical report or score definitions.
+- **TODO:** expand from the capped sample to a complete per-occurrence ClippyFirst-vs-gold ledger, including abstentions and every applicable profile; report category counts on fixed eligible and scored denominators. This requires a schema addition and a fresh artifact run.
+- **BLOCKED / evidence-limited:** no automatic label can establish that a mismatch is a true phonology error without independent IPA adjudication and source-level case evidence. The benchmark's raw gold remains noisy and is not normative NIKL gold.
