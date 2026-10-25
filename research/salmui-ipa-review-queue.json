@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 2,
+  "title": "Independent broad-IPA review queue for 삶의",
+  "purpose": "Queue the exact Korean form 삶의 for independent source-blind broad-IPA annotation. Official surface evidence is held by the coordinator and must not be shown before first-pass annotations are submitted.",
+  "acceptanceCriteria": [
+    "Two qualified Korean phonetics reviewers independently annotate broad IPA without seeing source citations, surface comparators, engine outputs, candidate IPA, Ukrainian targets, or the other reviewer's annotation.",
+    "Record syllable boundaries, vowel-length assessment, method reference, qualification, reviewer identity, timestamp, and uncertainty.",
+    "Reconcile differences only after both independent submissions are complete.",
+    "Review Ukrainian adaptation separately after IPA is frozen."
+  ],
+  "cases": [
+    {
+      "caseId": "SALMUI-001",
+      "input": "삶의",
+      "surfaceEvidenceStatus": "official-NIKL-variant",
+      "surfaceEvidenceUrl": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
+      "sourceLocator": "NIKL MCFAQ 5716 reports Hangul surface variants [살믜] and [살메] for particle 의; this metadata is withheld from reviewer packets.",
+      "candidateBroadIpa": null,
+      "syllableBoundaries": null,
+      "vowelLengthAssessment": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
+        "ipa": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
+        "ipa": null,
+        "notes": null
+      },
+      "reconciliation": {
+        "status": "BLOCKED_SPECIALIST_ADJUDICATION",
+        "finalIpa": null,
+        "decisionNotes": null
+      },
+      "ukrainianTargetReview": "SEPARATE_UNREVIEWED_TASK",
+      "notes": "No IPA candidate supplied; reviewers must adjudicate independently.",
+      "normativeSurfaceComparator": "[살믜] / [살메]"
+    }
+  ]
+}
