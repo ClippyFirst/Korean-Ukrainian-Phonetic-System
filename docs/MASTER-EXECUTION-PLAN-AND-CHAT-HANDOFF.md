@@ -1329,3 +1329,11 @@ Release classification remains **software-verified research prototype / partial 
 
 
 - Additional residual evidence: NIKL's 2022 language-use survey discusses variable ㄴ-insertion responses in the 못 잃어 phrase family, but its surfaced percentage table is for 못 잇는다 only. Source registered as `SRC-NIKL-USAGE-SURVEY-2022`; no variant or frequency is inferred for the exact token 못잃어.
+
+
+## Repository-local NIKL skills applied to current evidence batch — 2026-10-25
+
+- Applied `.agents/skills/nikl-evidence-audit/SKILL.md` and `.agents/skills/nikl-rule-coverage/SKILL.md` to the active abstention-recovery PR. The review distinguishes direct NIKL surface attestation, exact-form rule derivation, project IPA, and Ukrainian target; no source reading was promoted to IPA/target gold.
+- Applied the evidence-scope inventory from `docs/LEXICAL-EVIDENCE-REVIEW-BATCH-28-2026-10-22.md` to correct a stale skill catalog: current reviewed inventory is 43/60, with 17 citation-only/unreviewed. The count is for the 60-item lexical citation audit, not the full source-register size or the item-level rights audit. Updated the contract test so this documentation drift fails CI.
+- Updated existing `research/RULE-COVERAGE.csv` rows R002/R003/R004/R007 in place to reflect the new finite licenses and their limits. The next research gate is stronger output-layer assertions for source-attested Korean surface forms; status-only recovery tests do not establish IPA or Ukrainian accuracy.
+- No live NIKL crawl was retried: the official endpoint's recorded HTTP 403 remains an explicit blocker under the crawler skill. No access-control bypass or rights assumption was introduced.
