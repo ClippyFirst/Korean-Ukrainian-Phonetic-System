@@ -70,6 +70,14 @@ The answer accepts both `멋있어[머디써]` and `멋있어[머시써]`. The e
 
 The new exact-form licenses for `같아서`, `되었어`, `찢었으면`, `했었음`, `붙어야`, `벗어날`, `찾아`, `싶어서`, `없으니까`, `없으니깐`, `군대보냈어야`, `이런삶은`, `끝내고싶어유유유유`, `이빨닦아야지`, `안늙었는데`, `쌓아서`, `쳐넣어야`, `애새끼낳으면`, `잃었노`, `않았지만`, `개많음`, `좋은데`, `죽었잖아`, and `개좆망했잖아` are **form-scoped rule derivations**, not a claim that every complete input is directly listed by NIKL. They apply §§12(4), 13–14 only at the named pair. The source-backed implementation remains strict for unlisted forms and preserves independent IPA/Ukrainian acceptance gates.
 
+## Case G — 긁히다 / 긁혔 (complex ㄺ + ㅎ-suffix environment)
+
+**Status:** `DIRECT_DICTIONARY_SURFACE_AND_MORPHOLOGY_EVIDENCE` for the rule environment; exact full phrase is rule-derived.
+
+Primary source: Korean Basic Dictionary, entry `긁히다`, ParaWordNo=33493: https://krdict.korean.go.kr/mon/dicSearch/SearchView?ParaWordNo=33493&nation=mon
+
+The official dictionary gives `긁히다[글키다]`, `긁히어[글키어/글키여]`, and contracted `긁혀[글켜]`. This directly supports the ㄺ + `-히-` environment and the retained ㄹ + aspirated ㅋ surface pattern. The unresolved benchmark token `긁혔다는거지` is not itself quoted by the dictionary; the engine licenses only its internal `긁>혔` pair, leaving the rest of the compact phrase outside the source claim. This is a scoped rule derivation, not broad IPA or Ukrainian target gold.
+
 ## Engineering and benchmark consequences
 
 1. The two official sources resolve the *normative Hangul surface-form question* for these exact forms. They do not, by themselves, prove that any particular G2P implementation is globally superior.
