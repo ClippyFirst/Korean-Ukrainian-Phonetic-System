@@ -6,7 +6,7 @@ from pathlib import Path
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
-from benchmark_morphology_ipa_delta import _metrics, _score, evaluate  # noqa: E402
+from benchmark_morphology_ipa_delta import _metrics, _paired_comparison, _score, evaluate  # noqa: E402
 
 
 def test_score_uses_best_gold_variant_and_reference_length():
@@ -118,3 +118,25 @@ def test_paired_benchmark_compares_strict_soft_and_keeps_morphology_separate(mon
     assert paired["boundary_gated_vs_soft"]["occurrence_outcomes"]["candidate_exact_wins"] == 1
     assert paired["boundary_gated_vs_soft"]["occurrence_outcomes"]["candidate_exact_losses"] == 0
     assert "identical denominator" in paired["boundary_gated_vs_strict"]["cer_contract"]
+
+def test_paired_comparison_uses_same_occurrences_and_fixed_cer_reference():
+    baseline = [
+        {"occurrence_id": "1", "exact": False, "distance": 1, "reference_length": 3},
+        {"occurrence_id": "2", "exact": True, "distance": 0, "reference_length": 2},
+    ]
+    candidate = [
+        {"occurrence_id": "1", "exact": True, "distance": 0, "reference_length": 3},
+        {"occurrence_id": "2", "exact": False, "distance": 1, "reference_length": 2},
+    ]
+    report = _paired_comparison(
+        {"strict": baseline, "candidate": candidate},
+        attempted=3, baseline="strict", candidate="candidate",
+    )
+    assert report["paired_occurrences_scored_by_both"] == 2
+    assert report["exact_rate_delta_candidate_minus_baseline"] == 0.0
+    assert report["baseline_metrics"]["reference_characters"] == 5
+    assert report["candidate_metrics"]["reference_characters"] == 5
+    assert report["occurrence_outcomes"]["candidate_exact_wins"] == 1
+    assert report["occurrence_outcomes"]["candidate_exact_losses"] == 1
+    assert "identical denominator" in report["cer_contract"]
+
