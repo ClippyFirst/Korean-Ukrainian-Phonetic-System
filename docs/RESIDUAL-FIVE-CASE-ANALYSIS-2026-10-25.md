@@ -101,3 +101,8 @@ The residual-case research JSON, handoff, blind queue, coordinator, and two revi
 ### Action taken / gate
 
 Keep the pre-existing lexical row intact as a provisional research artifact; do not promote it to runtime gold or overwrite it merely to match another candidate. The regression suite now guards that the row remains explicitly provisional and that the coordinator's final IPA and accepted Ukrainian target stay null until their separate gates are satisfied. Resolve the `sal|mi` versus `sal.mɰi` candidate discrepancy in the post-submission reconciliation record.
+
+
+## Reviewer recruitment action — 2026-10-25
+
+Created [issue #337: recruit two independent Korean phonetics reviewers](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337). It requests two qualified independent broad-IPA annotations and explicitly asks contributors not to post candidate transcriptions or source citations in the public issue. The coordinator now records the recruitment status. At the time of this update, no submissions have been received or verified, so the IPA and Ukrainian-target gates remain blocked. Recruitment is a genuine next step, not evidence that review has happened.
