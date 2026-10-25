@@ -3,30 +3,48 @@
   "title": "Final residual abstention triage — 2026-10-25",
   "basis": {
     "mergedImplementation": "398b9a591907be7d9e1561ae721c157788fcad6b",
+    "candidateImplementationCommit": "3031e7fcc7aee16fedc6f6537ad8a44aa17da972",
+    "documentationFollowUpCommit": "a31efd9183518c1863a669c582c77c728c691155",
+    "currentPullRequest": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/336",
     "latestRecordedBenchmark": "40223272365",
     "latestRecordedUnresolvedCount": 5,
-    "note": "The earlier 45-case count belongs to an earlier commit. This register describes the five remaining cases after source-backed rule licenses and the variant-aware 못잃어 entry."
+    "exactHeadVerification": {
+      "browserG2pIntegration": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232008",
+      "systemVerification": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232002",
+      "masterTableAndCorpus": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232001",
+      "pythonMatrixAndWheel": "https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232017",
+      "result": "success",
+      "scope": "1,258 Node tests passed; browser integration/build, system/browser/Python regression/data integrity, strict corpus/master-table generation, Python 3.11/3.12/3.13 tests, wheel build and clean wheel install passed. Live NIKL inventory remains skipped by configuration."
+    },
+    "note": "The earlier 45-case count belongs to an earlier commit. This register describes the five remaining linguistic cases after source-backed rule licenses and the variant-aware 못잃어 entry. CI success verifies implementation and build contracts, not independent phonetic correctness."
   },
   "policy": [
     "Do not clear strict-mode abstention by silently correcting source spelling.",
     "Official Hangul pronunciation notation is not IPA gold.",
     "A spelling candidate is not a pronunciation result; a candidate IPA is not an accepted Ukrainian target.",
-    "Keep unresolved when lexical identity, morphology, or independent IPA evidence is missing."
+    "Keep unresolved when lexical identity, morphology, user intent, or independent IPA evidence is missing.",
+    "The source-/candidate-blind reviewer packets are a workflow artifact; blank submissions are not reviews."
   ],
   "cases": [
     {
       "input": "칡칡이",
-      "status": "BLOCKED_LEXICAL_MORPHOLOGY",
-      "observedIssue": "R002 liaison context at 칡>이; the token's lexical identity and morpheme boundary are not established.",
-      "evidenceReviewed": [],
-      "productionChange": "none",
-      "whyNotResolved": "No exact official lexical source or verified segmentation was found. Repetition-looking form is not sufficient evidence that the final 이 is a particle or suffix.",
-      "acceptanceCriterion": "Record an exact official lexical entry or a reviewed corpus/context that establishes segmentation; then verify the corresponding surface structure and a negative control with a non-morphemic boundary."
+      "status": "CANDIDATE_ONLY_SOURCE_MISMATCH; BLOCKED_SOURCE_VERIFICATION",
+      "observedIssue": "The token's lexical identity and morpheme boundary remain unknown. A source-index snippet labels a folk-song heading 칡칡이, but the extracted PDF text layer at [철마면 민요 26] reads 칭칭이 and gives the refrain 치기타 칭칭나네.",
+      "evidenceReviewed": [
+        {
+          "url": "https://www.busandabom.net/data/history/ebook/EB_culture_song02.pdf",
+          "claim": "The search-index snippet and extracted PDF text layer disagree. The PDF text layer reads 칭칭이 and cites 이소라, 양산의 민요 (1992), p. 180. Other passages in the same volume also use 칭칭이 as a folk-song/refrain label and cite pp. 184–185.",
+          "scope": "Supports only a plausible source-specific transcription correction candidate. The exact heading at p. 180 has not been visually inspected; no lexical meaning or morphology for the isolated input 칡칡이 is established."
+        }
+      ],
+      "productionChange": "Opt-in UI candidate 칭칭이 only when the folk-song source context is relevant; no silent rewrite, no pronunciation attributed to original 칡칡이, and no new production rule.",
+      "whyNotResolved": "The page image could not be fetched, the cited print source/audio was not inspected, and the user's isolated token may have a different origin. Repetition-looking spelling does not establish 칡+칡+이 segmentation.",
+      "acceptanceCriterion": "Visually inspect the exact PDF page and compare against 이소라, 양산의 민요 (1992), p. 180 or rights-cleared field audio/notes. Only after confirming the source form may the occurrence be classified as an OCR/corpus transcription error. If the user's form has a different origin, find an exact lexical source before analyzing morphology."
     },
     {
       "input": "쫒아내면",
-      "status": "BLOCKED_NONSTANDARD_ORTHOGRAPHY",
-      "observedIssue": "The input uses 쫒 where the standard verb is 쫓다; the engine must not silently substitute one consonant.",
+      "status": "CANDIDATE_ONLY_SPELLING_SUGGESTION_IMPLEMENTED",
+      "observedIssue": "The input uses 쫒 where the standard verb is 쫓다; this is a spelling relation, not a phonological rule.",
       "evidenceReviewed": [
         {
           "url": "https://krdict.korean.go.kr/m/eng/dicSearch/SearchView?ParaWordNo=78895&currentPage=2&exaType=&font_size=12&mainSearchWord=%EB%82%B4%EB%8B%A4&nation=eng&nationCode=6&proverbType=&searchType=W&sort=W&viewType=A&wordMatchFlag=N",
@@ -34,43 +52,60 @@
           "scope": "Supports the canonical spelling and lexeme 쫓아내다, not automatic normalization of the misspelled input 쫒아내면."
         }
       ],
-      "productionChange": "none",
-      "whyNotResolved": "The official source supports the likely intended lexeme but does not license changing the user's input invisibly.",
-      "acceptanceCriterion": "If spelling assistance is added, expose 쫓아내면 as a separately labelled correction candidate, preserve the original input, and never present the corrected form's pronunciation as a literal reading of 쫒아내면."
+      "productionChange": "The separate spelling-assistance UI offers 쫓아내면 as an explicit candidate. Original input is preserved unless the user selects the candidate; no candidate IPA or Ukrainian target is assigned to the typo.",
+      "whyNotResolved": "The official source supports the likely intended lexeme but does not prove the user's intended correction or license changing the input invisibly.",
+      "acceptanceCriterion": "Retain the non-destructive candidate-only UI and regression tests. If the user confirms the correction, analyze 쫓아내면 as the corrected input through the normal source-phonology → IPA → Ukrainian pipeline and independently review the IPA/target before gold acceptance."
     },
     {
       "input": "많앗구나유유유",
-      "status": "BLOCKED_NONSTANDARD_ORTHOGRAPHY_AND_REGISTER",
-      "observedIssue": "Likely nonstandard spelling 앗 for 았 plus an expressive repeated 유 ending; the intended morpheme sequence and reading are not directly attested.",
+      "status": "MULTIPLE_CANDIDATES_ONLY; BLOCKED_CONTEXT",
+      "observedIssue": "There are at least two independent uncertainties: 앗 versus standard past-tense 았, and whether final 유유유 is literal syllabic text or intended crying emoticon ㅠㅠㅠ.",
       "evidenceReviewed": [
         {
           "url": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=316156",
           "claim": "An official NIKL answer reproduces 많았구나 in a quoted poem.",
           "scope": "Attests the standard written sequence in quoted text only; it does not adjudicate 많앗구나유유유 or its intended pronunciation."
+        },
+        {
+          "url": "https://v.daum.net/v/JU0MXB4lYJ",
+          "claim": "A published interview explicitly explains ㅠㅠㅠ as tears and separately describes 유유유 as a title/phrase meaning 'you you you'.",
+          "scope": "Demonstrates that the strings can have different interpretations in different contexts; it does not identify the intended meaning in the user's isolated input."
         }
       ],
-      "productionChange": "none",
-      "whyNotResolved": "The probable correction is not proof of the user's intended spelling or whether the repeated ending is lexical, expressive, or a tokenization artifact.",
-      "acceptanceCriterion": "Obtain context or user-confirmed segmentation; keep any spelling correction separate from the literal input and test both the standard spelling and the original noisy form."
+      "productionChange": "UI preserves three separately labelled candidates: 많았구나유유유 (spelling only), 많았구나 ㅠㅠㅠ (spelling plus emoticon/tokenization hypothesis), and 많앗구나 유유유 (spacing hypothesis). No candidate is automatically applied.",
+      "whyNotResolved": "The probable spelling correction is not proof of the user's intended spelling or whether the repeated ending is lexical, expressive, or a tokenization artifact.",
+      "acceptanceCriterion": "Obtain the original message context or user-confirmed segmentation. Keep candidate selection separate from the original input and run the confirmed Korean span through the IPA-first pipeline only."
     },
     {
       "input": "삶의",
       "status": "BLOCKED_SPECIALIST_IPA_ADJUDICATION",
-      "observedIssue": "NIKL permits two Korean surface readings; the project-derived IPA candidates are not independent gold.",
+      "observedIssue": "NIKL permits two Korean surface readings; project-derived IPA candidates are not independent gold.",
       "evidenceReviewed": [
         {
           "url": "https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225",
           "claim": "NIKL states that particle phrase 삶의 may be pronounced [살믜] or [살메].",
           "scope": "Official Hangul surface-pronunciation notation, not IPA."
+        },
+        {
+          "url": "https://doi.org/10.17959/SPPM.2016.22.1.35",
+          "claim": "Park, Cho & Han (2016) examine positional and grammatical variation in monophthongization of /의/.",
+          "scope": "Abstract-level contextual evidence only; exact form 삶의 was not directly measured and the study is not IPA gold for this token."
         }
       ],
-      "productionChange": "none; retain the diagnostic-only IPA candidates and withhold accepted Ukrainian output.",
-      "whyNotResolved": "The [살믜]/[살메] alternatives do not by themselves settle broad surface IPA, syllable boundary, or the Ukrainian target.",
-      "acceptanceCriterion": "Two independent qualified broad-IPA reviews must record convention, syllable boundary, and variant status; reconcile differences, then review Ukrainian rendering separately on frozen IPA."
+      "reviewWorkflow": {
+        "queue": "research/salmui-ipa-review-queue.json",
+        "reviewerA": "research/ipa-review-packets/salmui-reviewer-A.json",
+        "reviewerB": "research/ipa-review-packets/salmui-reviewer-B.json",
+        "queueSha256": "c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3",
+        "submissionsStatus": "both_blank"
+      },
+      "productionChange": "No accepted Ukrainian output. Keep diagnostic IPA candidates provisional; the blind packets contain only opaque case ID, Hangul input, instructions and blank review fields.",
+      "whyNotResolved": "The [살믜]/[살메] alternatives do not by themselves settle broad IPA, syllable boundary, variant status or Ukrainian target. No qualified independent submissions are present.",
+      "acceptanceCriterion": "Two independent qualified reviewers annotate broad IPA, convention/reference, syllable boundary, vowel-length assessment and uncertainty without seeing each other's work or source evidence. Validate and reconcile after both first passes are frozen; then conduct a separate Ukrainian-target review on frozen IPA."
     },
     {
       "input": "무서웟어",
-      "status": "BLOCKED_NONSTANDARD_ORTHOGRAPHY",
+      "status": "CANDIDATE_ONLY_SPELLING_SUGGESTION_IMPLEMENTED",
       "observedIssue": "The input likely intends standard 무서웠어, but 웟 and 웠 are distinct written syllables.",
       "evidenceReviewed": [
         {
@@ -79,9 +114,9 @@
           "scope": "Evidence for the standard spelling in use, not authorization to normalize the different input 무서웟어."
         }
       ],
-      "productionChange": "none",
+      "productionChange": "The separate spelling-assistance UI offers 무서웠어 as an explicit candidate. Original input remains unchanged unless selected; no pronunciation of the typo is invented.",
       "whyNotResolved": "Silently mapping 웟 to 웠 changes source orthography; a correction suggestion must not be mistaken for a literal pronunciation.",
-      "acceptanceCriterion": "Expose 무서웠어 only as an explicitly labelled spelling candidate if correction support is implemented; preserve the original and keep its literal analysis distinct."
+      "acceptanceCriterion": "Retain candidate-only behavior. If the user confirms the correction, analyze the corrected form through the existing IPA-first path and independently review IPA and Ukrainian target."
     }
   ]
 }
