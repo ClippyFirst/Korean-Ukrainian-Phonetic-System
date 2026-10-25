@@ -119,3 +119,17 @@ This follow-up searched public text-index results for the unresolved forms and r
 ### Search outcome
 
 The text-only search improves provenance for the proposed `칭칭이` candidate but does not clear any linguistic acceptance gate. No source, IPA, or Ukrainian output has been promoted to gold. The next acceptance criteria remain source-identity confirmation for `칡칡이`, original context for `많앗구나유유유`, and two independent qualified IPA annotations followed by separate Ukrainian-target review for `삶의`.
+
+
+### `많앗구나유유유`: revised hypothesis — expressive vocalization or transcription noise
+
+The user's hypothesis that the tail may be noise-like material (comparable in function to a drawn-out “ууу” or an exclamation such as “ухти”) is linguistically plausible and is now the leading **working hypothesis**, not a confirmed parse.
+
+Public text sources establish the general category, not this token:
+- The Academy of Korean Studies' encyclopedia entry on [감탄사](https://encykorea.aks.ac.kr/Article/E0000867) includes affective interjections and filler-like/hesitation sounds (examples include `허`, `하하`, `에`, `후유`). This makes expressive or non-lexical material a legitimate analysis category; it does not classify `유유유`.
+- A KCI-indexed study of [Korean listener-response expressions](https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001912604) describes short verbal and non-verbal responses, including expressive interjections, laughter and tongue-clicking.
+- An [NIKL spoken-corpus annotation report](https://www.korean.go.kr/common/download.do%3Bfront%3D502A18DED158F4EE2EB44635ECE7B987?c_file_name=d0d8ab58-23ac-41ce-9bd5-405970002d1c_0.pdf&file_path=reportData&o_file_name=%EA%B5%AC%EB%AC%B8+%EB%B0%8F+%EB%AC%B4%ED%98%95+%EB%8C%80%EC%9A%A9%EC%96%B4+%EB%B3%B5%EC%9B%90+%EB%A7%90%EB%AD%89%EC%B9%98+%EC%97%B0%EA%B5%AC+%EB%B6%84%EC%84%9D_%EC%B5%9C%EC%A2%85%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf) has a dedicated section on interjection annotation and warns that spoken forms require contextual analysis.
+
+**Inference:** do not force `유유유` into a lexical/morphological analysis or auto-convert it to `ㅠㅠㅠ`. Treat “expressive vocalization / filler / transcription artifact” as the leading hypothesis while preserving the raw string. This is still a hypothesis because no source identifies the exact utterance. The best next evidence is the original audio/message or neighboring turns; without it, abstain from assigning phonology or Ukrainian output.
+
+The other UI candidates remain non-destructive alternatives for now. This follow-up changes the interpretation recorded in the research triage, not the strict production engine's accepted output.
