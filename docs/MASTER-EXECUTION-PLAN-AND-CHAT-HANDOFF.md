@@ -1118,3 +1118,17 @@ Disposition remains **PARTIAL / research prototype, not release-ready**. Outstan
   - `BLOCKED_EXTERNAL_ACCESS`: official live NIKL inventory job is skipped under workflow conditions; it is not a successful retrieval.
 - **Acceptance criterion for this repair:** fresh workflows on the latest head pass the focused NIKL correction tests, the full browser suite/build, Python regression/data integrity, and source-register validation. The project remains a software-verified research prototype, not release-ready, until the independent linguistic and provenance gates are resolved.
 
+## Follow-up continuation — second exact-head CI regression pass (2026-10-25)
+
+A later CI cycle on `64e0e5650551593e2602f4d165fa9b139f019756` exposed six stale assertions/inventory expectations after the source update. The failures were not suppressed; the implementation/data/tests were reconciled:
+
+- **Rule-mapping assertions:** restored explicit `§§11, 23` in the `읽고` lexical note while retaining the direct qna_seq=329463 citation and keeping IPA/Ukrainian target provisional.
+- **Source-scope assertion:** updated batch-18 tests to expect the exact qna_seq=329463 attestation and source-register URL, while preserving the distinction that qna_seq=334294 is contextual support only.
+- **Traceability audit:** the lexical note now has explicit article references, so the repository's audit snapshot of 0 unnumbered-rule notes matches the dynamically calculated test expectation.
+- **Source-register inventory:** two new official-source rows raise the expected row count from 103 to 105 and REVIEW_REQUIRED from 99 to 101; unresolved item-level rights remain visible.
+- **Focused correction regression:** the prior obsolete `NIKL §§10, 23` assertion was replaced with exact source-ID assertions; lexical provenance and source-register records are aligned.
+
+The follow-up changes are committed on the same dedicated branch. At the moment of this update, the latest commit is `86223328ae9c88b294a0793fff2a7814e4052c37`; the connector had not yet returned fresh workflow runs for this exact commit. Therefore all fixes remain **pending exact-head CI verification** until the next workflow cycle is inspected. The previous failures remain part of the audit trail and must not be represented as passes.
+
+Current acceptance boundary is unchanged: NIKL surface-form evidence is verified for the two exact forms, but independent IPA gold, Ukrainian target gold, original 24-form holdout provenance, and live NIKL inventory retrieval are still blocked. PR #311 is open and unmerged on top of PR #310; current GitHub metadata reports it mergeable, which is not a substitute for passing checks.
+
