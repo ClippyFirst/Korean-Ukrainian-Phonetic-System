@@ -71,12 +71,8 @@ The target-layer gate remains separate and blocked until two qualified reviewers
 
 ### Verification record
 
-Exact-head checks on commit `1e2288293c63e88dbb8150270e7910e625b3c48c` completed successfully:
+The predecessor branch `fix/residual-korean-edge-cases-2026-10-25` passed the relevant Node, Python, browser/build, corpus-generation, and wheel checks on commit `1e2288293c63e88dbb8150270e7910e625b3c48c` (runs 40227008756, 40227008757, 40227008762, and 40227008739). This branch additionally layers on the repository's canonical source-and-candidate-blind packet builder from PR #329 and replaces the earlier custom packet format with packets bound to the one-case queue. Fresh exact-head CI is required for this stacked branch.
 
-- Tests workflow run [40227008756](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008756): Node suite **1,256 passed, 0 failed**; Python 3.11, 3.12, and 3.13 suites passed; wheel build and clean wheel IPA-data check passed.
-- Browser G2P integration run [40227008757](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008757): `npm test` and `npm run build` passed.
-- System verification run [40227008762](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008762): browser tests/build/page verification and Python regression/data-integrity tests passed.
-- Master table/corpus run [40227008739](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40227008739): master-table generation and strict Korean-corpus generation passed.
-- The live NIKL source inventory job was skipped by workflow configuration; this is not evidence of a new live source crawl.
+An earlier CI attempt exposed an inherited-object-key lookup crash and stale source-register test expectations. The lookup now uses an own-property check, and the source-register test expectations account for the two new sources as manual rights review. Those fixes passed on the predecessor branch; the current branch's fresh CI remains the acceptance gate.
 
-An earlier CI attempt exposed two issues: an inherited-object-key lookup crash and outdated source-register row/license-count assertions. The lookup now uses an own-property check; the source-register test expectations reflect the two new sources as manual rights review. The subsequent runs above passed. These checks verify code/data contracts, not independent linguistic adjudication.
+The live NIKL source inventory job is skipped by workflow configuration; this is not evidence of a new live source crawl. CI validates code/data contracts, not reviewer expertise or IPA correctness.
