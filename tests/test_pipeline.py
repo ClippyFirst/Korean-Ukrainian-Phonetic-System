@@ -275,6 +275,7 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
             "equal": python_surface == case["expectedSurface"],
             "ipa_gold_status": case["ipaGoldStatus"],
             "differential_status": case["differentialStatus"],
+            "practical_adapter_surface": case.get("normativeSurface"),
         })
     mismatches = [row for row in rows if not row["equal"]]
     # These are known, evidence-backed JS-port divergences, not interchangeable
@@ -294,6 +295,8 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
         assert case["normativeSurface"] == expected["python"], row["input"]
         assert case["expectedSurface"] != case["normativeSurface"], row["input"]
         assert case["normativeEvidenceStatus"] in {"direct-NIKL-example", "direct-NIKL-QA"}
+        assert row["practical_adapter_surface"] == expected["python"]
+        assert row["differential_status"] == "raw-js-port-diverges-python-matches-nikl-practical-adapter-corrects"
     report = {
         "kind": "diagnostic-only",
         "rows_compared": len(rows),
