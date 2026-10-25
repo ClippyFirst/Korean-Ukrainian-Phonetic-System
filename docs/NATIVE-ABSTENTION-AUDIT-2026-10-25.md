@@ -92,7 +92,7 @@ The g2pk column is only a comparator distance against the dataset's IPA annotati
 
 - **DONE_VERIFIED_SOURCE:** two exact browser surface corrections are pinned to NIKL primary sources in `docs/PRIMARY-SOURCE-ADJUDICATION-2026-10-25.md`.
 - **DONE_VERIFIED_PRIOR_HEAD:** the repository already has a strict/soft and analyzer-boundary benchmark; reuse its pinned artifact rather than duplicating its workflow. See the quantitative follow-up below.
-- **PARTIAL:** two-analyzer formal-tag consensus adapter and benchmark passed on prior code head `5b4f5f0b...`; exact-head rerun after the later IPA-status, source-register, and diagnostic-report assertions is queued and not yet verified.
+- **PARTIAL:** two-analyzer formal-tag consensus adapter and benchmark passed in [run 40196942415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40196942415) on a prior code head; exact-head rerun after the later IPA-status, source-register, and diagnostic-report assertions is queued and not yet verified.
 - **BLOCKED_SPECIALIST_ADJUDICATION:** independent IPA review; one occurrence is withheld for this reason rather than a phonological rule.
 - **BLOCKED_INPUT_NORMALIZATION / MORPHOLOGY:** word segmentation and morpheme-boundary inference for unspaced noisy input.
 - **BLOCKED_INDEPENDENT_TARGET_GOLD:** this audit evaluates Korean IPA annotations only, not Ukrainian output.
@@ -135,7 +135,7 @@ The final acceptance criterion remains: exact-head CI passes, the consensus repo
 
 ## Second consensus result after the unspaced-phrase guard
 
-The second consensus workflow passed on code head `5b4f5f0b...` (run [40196942415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40196942415)). After withholding licenses for tokens where both analyzers agree on an unspaced `MAG → VV/VA/VX` boundary:
+The second consensus workflow passed in [run 40196942415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40196942415) on a prior code head. After withholding licenses for tokens where both analyzers agree on an unspaced `MAG → VV/VA/VX` boundary:
 
 | Strategy | Scored / 2703 | Coverage | Exact matches | Exact rate | CER | Unresolved occurrences |
 |---|---:|---:|---:|---:|---:|---:|
