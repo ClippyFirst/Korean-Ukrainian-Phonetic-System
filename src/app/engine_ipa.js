@@ -131,7 +131,7 @@ export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
       reason:unavailable.reason||'unmapped_ipa_sequence'
     };
   }
-  if(provisional){
+  if(provisional && options.allowProvisional!==true){
     return {
       syllables:[],candidates:mapped.map(item=>item.candidateText??item.text),
       unknown:'',status:'unavailable',
@@ -141,9 +141,9 @@ export function ipaSyllablesToUkrainian(ipaSyllables,options={}){
   }
   return {
     syllables:mapped.map(item=>item.text),
-    candidates:mapped.map(item=>item.text),
+    candidates:mapped.map(item=>item.candidateText??item.text),
     unknown:'',
-    status:'model-selected'
+    status:provisional?'provisional':'model-selected'
   };
 }
 

@@ -262,15 +262,15 @@ test('multi-syllable target helper fails closed as a whole on an unavailable IPA
 });
 
 test('provisional target status and explicit research opt-in are consistent across helper APIs', () => {
-  const production = ipaSyllablesToUkrainian(['kʰ', 'y']);
+  const production = ipaSyllablesToUkrainian(['k', 'y']);
   assert.deepEqual(production.syllables, []);
-  assert.deepEqual(production.candidates, ['кх', 'ві']);
+  assert.deepEqual(production.candidates, ['к', 'ві']);
   assert.equal(production.status, 'unavailable');
   assert.equal(production.candidateStatus, 'provisional');
 
-  const research = ipaSyllablesToUkrainian(['kʰ', 'y'], {allowProvisional:true});
-  assert.deepEqual(research.syllables, ['кх', 'ві']);
-  assert.equal(research.status, 'model-selected', 'opted-in result is still composed of project correspondences');
+  const research = ipaSyllablesToUkrainian(['k', 'y'], {allowProvisional:true});
+  assert.deepEqual(research.syllables, ['к', 'ві']);
+  assert.equal(research.status, 'provisional', 'research opt-in must not erase the provisional status');
 });
 
 test('provisional opt-in must be an explicit boolean in public IPA helpers', () => {
