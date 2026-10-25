@@ -104,3 +104,14 @@ The official dictionary gives `긁히다[글키다]`, `긁히어[글키어/글�
 - NIKL Online 가나다, “읽고 발음”, answer 2026-04-16: exact `읽고[일꼬]` and Rule 25/Rule 23 explanation.
 
 This is a source adjudication note, not a claim that all implementation, IPA, Ukrainian output, holdout provenance, or release gates are complete.
+
+
+## Case H — 같이 [가치] and exact-form recovery batch (2026-10-25)
+
+**Status:** DIRECT_OFFICIAL_SURFACE_ATTESTATION for 같이 [가치]; exact compact inputs remain form-scoped derivations, not directly quoted source entries.
+
+Primary source: NIKL Online Q&A, qna_seq=327454, answered 2026-02-19: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327454
+
+The answer explicitly identifies the standard pronunciation of 같이 as [가치] under Standard Pronunciation Rule 17. The Python and browser engines now license only the exact 같>이 pair in 많을거같이 and 개같이못하고; they do not enable productive palatalization for other ㄷ/ㅌ + ㅣ strings.
+
+The same batch adds narrowly scoped derivations for 좃같아서 (같>아), 없을듯 (없>을), 칡칡이 (칡>이), 괜찮아보이는디 (찮>아), 많을거같이 (많>을), 많이본 (많>이), 알잖아아침에 (잖>아), 좋아보인다고 and 좋아해주는 (좋>아). These are exact full-form + adjacent-pair applications of existing NIKL rules, not claims that NIKL lists every noisy full token. No spelling normalization, inferred whitespace insertion, IPA gold, or Ukrainian target gold is introduced. 쫒아내면, 많앗구나유유유, 무서웟어 and 삶의 remain unresolved.
