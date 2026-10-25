@@ -108,5 +108,5 @@ test('every correction is backed by a registered official NIKL source', () => {
   const readgo = parseCsv(lexical).find(row => row.input === '읽고');
   assert.ok(readgo);
   assert.match(readgo.source_url, /qna_seq=329463/u);
-  assert.match(readgo.rule_notes, /directly lists 읽고\[일꼬\]/u);
+  assert.match(readgo.rule_notes, /directly attests 읽고\[일꼬\]/u);
 });
