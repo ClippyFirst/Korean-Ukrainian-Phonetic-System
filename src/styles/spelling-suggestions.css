@@ -19,3 +19,6 @@
   .spelling-suggestion { grid-template-columns: minmax(0,1fr); }
   .spelling-suggestion-choose { justify-self: start; }
 }
+
+.spelling-suggestion-sources { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 2px; }
+.spelling-suggestion-sources a { font-size: .7rem; color: var(--blue); }
