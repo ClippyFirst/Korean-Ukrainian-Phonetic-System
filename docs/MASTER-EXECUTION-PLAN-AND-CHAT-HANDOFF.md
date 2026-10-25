@@ -1308,3 +1308,11 @@ Release classification remains **software-verified research prototype / partial 
 - The live smoke acceptance now permits either (a) accepted Ukrainian output, or (b) a substantial candidate shown in the separate visible candidate panel with the explicit provisional label/status. It still requires substantial IPA, practical-mode identification, and zero browser exceptions; it fails if the provisional panel is empty or mislabeled. The smoke-contract regression protects this distinction.
 - This is not a relaxation of linguistic acceptance: provisional output is never reclassified as accepted output. The mainline deployment after this change must still pass its live smoke; until then deployment verification remains pending.
 
+
+
+## Korean abstention recovery continuation — 2026-10-25
+
+- The latest pre-batch exact-head benchmark (run https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216452439) scored 2,688/2,703, exact 1,425, CER 9.1757%, 15 unresolved, zero engine errors. This is baseline, not the result of the new batch.
+- PR #328 adds ten narrow exact-form/pair recoveries in both Python and browser engines. NIKL Q&A 327454 directly confirms 같이 [가치] under Rule 17; the two R007 licenses are restricted to 많을거같이 and 개같이못하고. Other entries are form-scoped applications of existing NIKL rules, not direct full-token source attestations.
+- Intentionally withheld: 못잃어 (phrase-level boundary), 쫒아내면 / 많앗구나유유유 / 무서웟어 (no silent spelling repair), and 삶의 (independent IPA adjudication). Exact-head CI and multi-engine artifact must complete before the batch is marked verified.
+- Source registry: 112 rows; 108 item-level rights reviews remain REVIEW_REQUIRED.

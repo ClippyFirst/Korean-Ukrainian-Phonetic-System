@@ -200,3 +200,12 @@ These are Hangul surface-pronunciation sources, not IPA gold. The browser G2P ad
 
 The source register now contains 109 records. Its rights audit classifies 105 as `REVIEW_REQUIRED`, 2 as `MANUAL_CLASSIFICATION_REQUIRED`, 1 as `NOT_APPLICABLE_RECORDED`, and 1 as `ITEM_LEVEL_LICENSE_RECORDED`. Thus 107 records still need a human rights decision; adding evidence does not clear item-level reuse terms.
 
+
+
+## Exact-form batch — 2026-10-25 (PR #328 continuation)
+
+The latest verified pre-batch strict benchmark scored 2,688/2,703 occurrences (99.4451% coverage), 1,425 exact matches, CER 9.1757%, with 15 unresolved occurrences and zero engine exceptions. Its cases were 좃같아서, 괜찮아보이는디, 많을거같이, 많이본, 없을듯, 칡칡이, 못잃어, 알잖아아침에, 쫒아내면, 많앗구나유유유, 삶의, 개같이못하고, 좋아보인다고, 무서웟어 and 좋아해주는.
+
+The current code batch applies exact-form + pair licenses to ten of those occurrences, including R007 같>이 where NIKL Q&A 327454 directly confirms [가치]. Other new entries are form-scoped applications of existing NIKL rules, not direct full-token source attestations. The intentionally withheld cases are 못잃어 (phrase-level boundary), 쫒아내면 (nonstandard 쫒 is not normalized to 쫓), 많앗구나유유유 and 무서웟어 (spelling errors are not normalized), and 삶의 (independent IPA adjudication). Do not state post-change benchmark metrics until latest-head Actions artifacts complete.
+
+The source registry now has 112 rows; rights audit: 108 REVIEW_REQUIRED, 2 MANUAL_CLASSIFICATION_REQUIRED, 1 NOT_APPLICABLE_RECORDED, 1 ITEM_LEVEL_LICENSE_RECORDED. Item-level reuse decisions remain open.
