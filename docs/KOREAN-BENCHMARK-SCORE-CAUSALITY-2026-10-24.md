@@ -308,3 +308,12 @@ The native output still has 238 non-exact paired occurrences. The most frequent 
 The revised 24-item NIKL holdout manifest was checked against the exact token field in all 2,703 occurrence rows of artifact 12567746123 (1,907 unique Hangul tokens). **Exact input overlap: 0/24.** Fourteen rule-page examples were replaced with unused, exact-form readings from official NIKL Online Q&A sources after the full repository scan exposed contamination. The manifest Git blob SHA is `3a69a915e475f08d0c6aba0c0e52638bcf3d6121`; the pinned check is recorded in [`research/ipa-holdout-overlap-validation-2026-10-24.json`](../research/ipa-holdout-overlap-validation-2026-10-24.json).
 
 This certifies exact-token disjointness from that benchmark artifact only. The holdout still has **0 IPA gold labels** and is not ready for scoring until two independent reviewers annotate and adjudicate it. Repository-hosted CI still needs to confirm the local runtime/fixture leakage validator.
+
+## Continuation — current abstention and source-backed corrections (2026-10-25)
+
+The native strict engine's 48 UGTPHON abstentions are now audited as 48 occurrences over 47 unique forms, with 49 unresolved rule-context events: R002=25, R003=20, R004=1, R007=2, and one independent IPA-adjudication gate. There were zero runtime errors. Explicit soft heuristic mode leaves 26 unresolved occurrences; two-analyzer morphology consensus leaves 19, but exact match among scored cases is slightly lower for both modes. The coverage-adjusted exact metric rises only because fewer cases are withheld. Neither result establishes an accuracy gain, and consensus IPA remains diagnostic-only.
+
+The current source review found official Hangul surface readings for `멋있어`, `수많은`, and `싫어서`; these are recorded as `SOURCE_FOUND_PENDING_IPA` in the R002/R003 queue. Browser practical mode now applies the narrow exact-form readings and preserves `수많은[수ː마는]` length in IPA and its feature-loss trace. This is a source-backed runtime edge-case improvement, not independent IPA gold, and it does not reduce the native strict 48-case count.
+
+The proposed `clippyfirst-broad-v1` profile remains a versioned comparison hypothesis. Its approximately 91% exact match is highly sensitive to `sʰ → s` normalization and must not be presented as normative accuracy until independently reviewed. Keep the legacy and broad-v1 scores side by side.
+
