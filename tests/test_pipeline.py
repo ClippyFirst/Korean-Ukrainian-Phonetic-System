@@ -601,12 +601,12 @@ def test_nikl_exact_r003_forms_resolve_h_deletion_without_opening_a_productive_h
     # NIKL official exact-form evidence: 싫어서 [시러서] and 수많은 [수ː마는].
     # The source validates Korean surface behavior only; it is not IPA or
     # Ukrainian-output gold, and unrelated forms must remain fail-closed.
-    expected_codas = {"싫어서": "ㄹ", "수많은": "ㄴ"}
-    for form, expected_coda in expected_codas.items():
+    expected_codas = {"싫어서": (0, "ㄹ"), "수많은": (1, "ㄴ")}
+    for form, (syllable_index, expected_coda) in expected_codas.items():
         result = phoneticize_korean(form)
         r003 = [rule for rule in result["rules"] if rule["rule_id"] == "R003"]
         assert any(rule["changed"] for rule in r003), form
-        assert result["surface_syllables"][1]["coda"] == expected_coda, form
+        assert result["surface_syllables"][syllable_index]["coda"] == expected_coda, form
 
     unlicensed = phoneticize_korean("많아보임")
     assert not any(rule["rule_id"] == "R003" and rule["changed"] for rule in unlicensed["rules"])
