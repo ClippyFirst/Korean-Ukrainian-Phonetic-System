@@ -1,0 +1,282 @@
+{
+  "schemaVersion": "1.0.0",
+  "generatedAt": "2026-10-24",
+  "sourceArtifact": {
+    "runId": 40113742248,
+    "artifactId": 12567746123,
+    "artifactZipSha256": "9b071513543a103f26dc56ba74ddde3c20a0a62d5e48f0e1aa0a01c612178fa2",
+    "reportFile": "multi-engine-ipa-report.json",
+    "reportSha256": "448c23993032e7a30a7f2cff716a9b048bf856481e1cc839c734c3de9b5f082f",
+    "benchmarkVersion": "multi-engine-ipa-diagnostic-v4",
+    "pairedScoredOccurrences": 2655,
+    "nativeAbstentions": 48,
+    "uniqueHangulWordsInBenchmark": 1907,
+    "uniqueTokenTypesInPairedSubset": 1860
+  },
+  "profileResults": {
+    "legacy-broad-diagnostic-v0": {
+      "native": {
+        "exactMatches": 1412,
+        "denominator": 2655,
+        "exactMatchRate": 0.531827,
+        "totalEditDistance": 2076,
+        "referenceCharacters": 22594,
+        "cer": 0.091883
+      },
+      "g2pk_0_9_4": {
+        "exactMatches": 1416,
+        "denominator": 2655,
+        "exactMatchRate": 0.533333,
+        "totalEditDistance": 2088,
+        "referenceCharacters": 22594,
+        "cer": 0.092414
+      },
+      "engineDelta": {
+        "g2pkMinusNativeExactDeltaPercentagePoints": 0.150659,
+        "typeClusterBootstrap": {
+          "method": "lexical-type cluster bootstrap; occurrence-weighted rate within sampled types",
+          "seed": 20261026,
+          "replicates": 10000,
+          "uniqueTypes": 1860,
+          "ci95": [
+            0,
+            0.472813
+          ],
+          "interpretation": "CI lower bound at zero; the observed exact-match advantage is driven by repeated lexical type 없는."
+        }
+      }
+    },
+    "clippyfirst-broad-v1": {
+      "native": {
+        "exactMatches": 2417,
+        "denominator": 2655,
+        "exactMatchRate": 0.910358,
+        "totalEditDistance": 370,
+        "referenceCharacters": 21962,
+        "cer": 0.016847
+      },
+      "g2pk_0_9_4": {
+        "exactMatches": 2415,
+        "denominator": 2655,
+        "exactMatchRate": 0.909605,
+        "totalEditDistance": 380,
+        "referenceCharacters": 21962,
+        "cer": 0.017303
+      },
+      "engineDelta": {
+        "g2pkMinusNativeExactDeltaPercentagePoints": -0.07533,
+        "typeClusterBootstrap": {
+          "method": "lexical-type cluster bootstrap; occurrence-weighted rate within sampled types",
+          "seed": 20261026,
+          "replicates": 10000,
+          "uniqueTypes": 1860,
+          "ci95": [
+            -0.473934,
+            0.366972
+          ],
+          "interpretation": "CI includes zero; no evidence of a reliable exact-match advantage for either engine under broad-v1."
+        }
+      }
+    }
+  },
+  "ablation": {
+    "description": "Sequential normalization sensitivity; all rows use the same 2,655 paired occurrences. These are profile experiments, not accuracy adjudications.",
+    "stages": [
+      {
+        "name": "legacy",
+        "nativeExactRate": 0.531827,
+        "g2pkExactRate": 0.533333,
+        "nativeCer": 0.091883,
+        "g2pkCer": 0.092414
+      },
+      {
+        "name": "collapse ɭ→l",
+        "nativeExactRate": 0.634275,
+        "g2pkExactRate": 0.634275,
+        "nativeCer": 0.06816,
+        "g2pkCer": 0.068691
+      },
+      {
+        "name": "plus ʎ→l",
+        "nativeExactRate": 0.643691,
+        "g2pkExactRate": 0.643691,
+        "nativeCer": 0.066699,
+        "g2pkCer": 0.06723
+      },
+      {
+        "name": "plus ɲ→n",
+        "nativeExactRate": 0.65951,
+        "g2pkExactRate": 0.65951,
+        "nativeCer": 0.063468,
+        "g2pkCer": 0.063999
+      },
+      {
+        "name": "plus ɦ→h",
+        "nativeExactRate": 0.699812,
+        "g2pkExactRate": 0.699812,
+        "nativeCer": 0.056165,
+        "g2pkCer": 0.056696
+      },
+      {
+        "name": "plus ç→h",
+        "nativeExactRate": 0.712994,
+        "g2pkExactRate": 0.712994,
+        "nativeCer": 0.054395,
+        "g2pkCer": 0.054926
+      },
+      {
+        "name": "plus ɕ→s only",
+        "nativeExactRate": 0.718644,
+        "g2pkExactRate": 0.718644,
+        "nativeCer": 0.044304,
+        "g2pkCer": 0.044746
+      },
+      {
+        "name": "plus sibilant sʰ→s collapse",
+        "nativeExactRate": 0.910358,
+        "g2pkExactRate": 0.909605,
+        "nativeCer": 0.016847,
+        "g2pkCer": 0.017303
+      }
+    ]
+  },
+  "residualNativeSymbolAlignmentAfterBroadProfile": {
+    "nonexactOccurrences": 238,
+    "topSubstitutions": [
+      {
+        "reference": "i",
+        "prediction": "y",
+        "count": 37
+      },
+      {
+        "reference": "β",
+        "prediction": "h",
+        "count": 29
+      },
+      {
+        "reference": "x",
+        "prediction": "ʰ",
+        "count": 24
+      },
+      {
+        "reference": "h",
+        "prediction": "ʰ",
+        "count": 20
+      },
+      {
+        "reference": "ʝ",
+        "prediction": "h",
+        "count": 19
+      },
+      {
+        "reference": "ɾ",
+        "prediction": "l",
+        "count": 12
+      },
+      {
+        "reference": "ɸ",
+        "prediction": "h",
+        "count": 11
+      },
+      {
+        "reference": "ʷ",
+        "prediction": "h",
+        "count": 9
+      },
+      {
+        "reference": "͈",
+        "prediction": "ɡ",
+        "count": 7
+      }
+    ],
+    "topReferenceOnlySymbols": [
+      {
+        "symbol": "ɥ",
+        "count": 36
+      },
+      {
+        "symbol": "ˈ",
+        "count": 14
+      },
+      {
+        "symbol": "͈",
+        "count": 12
+      },
+      {
+        "symbol": "ː",
+        "count": 10
+      },
+      {
+        "symbol": "ɸ",
+        "count": 9
+      },
+      {
+        "symbol": "k",
+        "count": 7
+      },
+      {
+        "symbol": "t",
+        "count": 7
+      }
+    ],
+    "topPredictionOnlySymbols": [
+      {
+        "symbol": "̚",
+        "count": 29
+      },
+      {
+        "symbol": "ː",
+        "count": 6
+      }
+    ]
+  },
+  "interpretation": {
+    "validatedAccuracyClaim": false,
+    "meaning": "The candidate profile explains most legacy exact-match disagreement as broad-vs-narrow or symbol-convention sensitivity, but 91% is not independent normative accuracy.",
+    "highestImpactDecision": "The sibilant aspiration collapse is the largest score driver and requires independent Korean IPA review.",
+    "doNotNormalizeWithoutEvidence": [
+      "i/y",
+      "stress ˈ",
+      "vowel length ː",
+      "stop aspiration ʰ",
+      "fortisness ͈",
+      "unreleased coda mark ̚"
+    ],
+    "nextStep": "Run two independent IPA annotations and adjudicate representative cases, prioritizing sibilant aspiration, i/y, stress/length and remaining consonant-symbol differences.",
+    "mappingEvidence": [
+      {
+        "mapping": "ɭ/ʎ -> l",
+        "source": "https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf",
+        "claim": "The university Korean IPA chart treats [ɭ] and [ʎ] as non-phonemic lateral phones/allophones of /l/."
+      },
+      {
+        "mapping": "ɕ -> s",
+        "source": "https://doi.org/10.17959/sppm.2010.16.1.3",
+        "claim": "Kang (2010) reports palatalized acoustic properties of Korean /s/ before high-front segments."
+      },
+      {
+        "mapping": "ɦ/ç -> h",
+        "source": "https://www.cambridge.org/core/journals/applied-psycholinguistics/article/abs/influence-of-spelling-on-the-production-and-storage-of-words-with-allophonic-variants-of-h-in-korean/695C8A620FADB77A80F9DA02D65AFE42",
+        "claim": "Han and Choi (2015) explicitly study [ɦ] as an allophonic variant of /h/; the OSU chart identifies non-phonemic [ç] as an /h/ allophone."
+      },
+      {
+        "mapping": "ɲ -> n",
+        "source": "https://www.cambridge.org/core/journals/phonology/article/korean-ninsertion-a-mismatch-between-data-and-learning/6C53BDA0D8F55B2DA793E043D10B968D",
+        "claim": "The paper notes that /nj/ may be phonetically realized as [ɲ]; the candidate normalizer preserves the following glide j."
+      },
+      {
+        "mapping": "sʰ -> s",
+        "source": "https://ielp.ehe.osu.edu/files/2022/08/Korean_IPA.pdf",
+        "claim": "The Korean IPA chart describes [sʰ] as the phonetic realization of the lax sibilant phoneme rather than a separate aspirated-fricative phoneme."
+      }
+    ],
+    "engineComparison": "Under candidate broad-v1 the native engine has two more exact matches than g2pk on the paired sample, but the lexical-type cluster bootstrap interval for g2pk minus native includes zero. Do not claim a statistically reliable engine ranking.",
+    "affricatePreservation": "The final broad-v1 profile preserves tɕ affricates. Recomputed CER uses 21,962 reference characters; the earlier 21,763-character denominator reflected the erroneous tɕʰ→ts collapse."
+  },
+  "normalizationImplementationCorrection": {
+    "commit": "48fc6c1688a7b8833a216f013d2560853fbe1ab5",
+    "change": "Protect the tɕ affricate before applying standalone ɕ→s; restore tɕ afterward. This preserves contrastive tɕʰ and tɕ͈ instead of collapsing tɕʰ to ts.",
+    "impact": "Exact-match counts are unchanged on the pinned artifact; broad-v1 reference length and CER were recomputed after preserving the affricate sequence.",
+    "testStatus": "Normalizer regression passed on a code-equivalent CI run; full exact-head suite pending."
+  }
+}
