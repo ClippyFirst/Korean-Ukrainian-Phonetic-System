@@ -277,10 +277,14 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       candidateStatus:provisionalTarget?'provisional':null,
       reason:provisionalTarget?'provisional_mapping_requires_review':targetMapping.reason
     };
-    if(targetFromIpa.unknown || targetFromIpa.status==='unavailable'){
+    if(targetFromIpa.unknown || (targetFromIpa.status==='unavailable'&&!provisionalTarget)){
       issues.push(u.char+': IPA target mapping unavailable ('+(targetFromIpa.reason||'unmapped_ipa_sequence')+'): '+(targetFromIpa.unknown||'(empty IPA)'));
       output[i]=preserveUnresolvedSource?'⟦'+u.char+'⟧':'';
       status='unresolved';
+    }else if(provisionalTarget){
+      // Target uncertainty is not Korean phonology failure: retain the IPA
+      // analysis and expose the proposed spelling only in candidate fields.
+      output[i]='';
     }else{
       output[i]=targetFromIpa.text;
     }
