@@ -96,6 +96,11 @@ def evaluate(rows: list[dict[str, Any]], *, morphology_mode: str = "strict") -> 
                 continue
             try:
                 engine_result = phoneticize_korean(canonical, morphology_mode=morphology_mode)
+                heuristic_rules = [trace.get("rule_id") for trace in engine_result.get("rules", []) if trace.get("status") == "heuristic-low-confidence"]
+                if heuristic_rules:
+                    heuristic_token_occurrences += 1
+                    if len(heuristic_examples) < 100:
+                        heuristic_examples.append({"id": row["id"], "token": canonical, "rules": heuristic_rules})
                 if engine_result.get("pronunciation_status") == "unresolved":
                     unresolved_tokens += 1
                     if len(unresolved_examples) < 100:
