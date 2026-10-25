@@ -7,6 +7,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none';">
   <title>한국어 / УКРАЇНСЬКА</title>
   <link rel="stylesheet" href="./src/styles/main.css?v=20261015-editorial">
+  <link rel="stylesheet" href="./src/styles/spelling-suggestions.css">
 </head>
 <body>
 <a class="skip-link" href="#input-heading">Перейти до інструмента</a>
@@ -50,6 +51,13 @@
       <textarea id="source-input" rows="6" spellcheck="false" lang="ko" placeholder="한국어를 입력하세요"></textarea>
       <div class="input-hint"><span id="character-count">0 символів</span><span class="mode-note"><i aria-hidden="true"></i> практичний український</span></div>
     </div>
+    <section id="spelling-suggestions" class="spelling-suggestions" aria-label="Підказки щодо написання" aria-live="polite" hidden>
+      <div class="spelling-suggestions-heading">
+        <strong>Можливі виправлення</strong>
+        <span>Оригінал не змінюється автоматично. Виберіть варіант лише якщо він відповідає вашому задуму.</span>
+      </div>
+      <div id="spelling-suggestions-list" class="spelling-suggestions-list"></div>
+    </section>
     <div class="action-row">
       <div class="chip-row" role="group" aria-label="Швидкі приклади">
         <button class="mini-button" data-example="현대 한국어의 표준 발음" type="button">현대 한국어의 표준 발음</button>
@@ -144,5 +152,6 @@
   <div id="live-region" class="sr-only" aria-live="polite"></div>
 </main>
 <script type="module" src="./src/main.js"></script>
+<script type="module" src="./src/spelling-suggestions.js"></script>
 </body>
 </html>
