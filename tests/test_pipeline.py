@@ -558,3 +558,20 @@ def test_nikl_section_24_exact_form_licenses_render_correct_surface_ipa():
         assert trace["changed"], word
         assert trace["license_context"] == f"R010:stem_n_m+suffix:{word}:{pair}", word
         assert not any(item["rule_id"] == "R010" for item in result["unresolved_contexts"]), word
+
+def test_soft_morphology_is_explicit_and_keeps_heuristic_provenance():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    strict = phoneticize_korean("좋아")
+    soft = phoneticize_korean("좋아", morphology_mode="soft")
+    assert strict["pronunciation_status"] == "unresolved"
+    assert soft["pronunciation_status"] == "provisional"
+    trace = next(rule for rule in soft["rules"] if rule["rule_id"] == "R003")
+    assert trace["status"] == "heuristic-low-confidence"
+    assert trace["source"] == "soft-heuristic-morphology"
+    assert soft["ipa_is_diagnostic_only"] is False
+
+    target = transliterate_korean("좋아", morphology_mode="soft")
+    assert target["morphology_mode"] == "soft"
+    assert target["ipa_status"] == "provisional"
+
