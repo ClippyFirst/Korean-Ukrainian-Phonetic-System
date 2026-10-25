@@ -10,9 +10,11 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Any
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from benchmark_ugtphon_ko import edit_distance, load_corpus, normalize_ipa
 
 HANGUL = __import__("re").compile(r"^[\uac00-\ud7a3]+$")
