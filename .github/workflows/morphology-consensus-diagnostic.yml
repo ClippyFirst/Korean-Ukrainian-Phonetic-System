@@ -8,6 +8,7 @@ on:
       - "scripts/benchmark_morphology_ipa_delta.py"
       - "tests/test_research_morphology.py"
       - "tests/test_morphology_rule_licenses.py"
+      - "tests/test_morphology_ipa_delta_benchmark.py"
       - ".github/workflows/morphology-consensus-diagnostic.yml"
 
 permissions:
