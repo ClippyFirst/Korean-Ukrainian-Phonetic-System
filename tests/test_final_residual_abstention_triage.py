@@ -37,16 +37,25 @@ def test_residual_abstention_register_is_complete_and_evidence_scoped():
     assert all("IPA" in " ".join(queue["policy"]) or "IPA" in case["status"] for case in cases)
 
 
-def test_residual_cases_remain_unresolved_and_never_emit_accepted_ukrainian_output():
+def test_residual_cases_preserve_abstention_and_literal_ipa_contract():
     queue = json.loads(QUEUE.read_text(encoding="utf-8"))
     for case in queue["cases"]:
         form = case["input"]
         phonetics = phoneticize_korean(form)
         result = transliterate_korean(form)
-        assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
+        assert phonetics["input"] == form, (form, phonetics)
         assert result["target_status"] == "unresolved", (form, result)
         assert result["ukrainian_orthography"] is None, (form, result)
         assert result["candidate_orthography"] is None, (form, result)
+        if form == "많앗구나유유유":
+            # The literal written form receives an inspectable IPA diagnostic;
+            # the engine must not silently substitute a corrected spelling.
+            assert phonetics["ipa"]["ipa"], (form, phonetics)
+            assert phonetics["ipa"]["is_diagnostic_only"] is True, (form, phonetics)
+            assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
+            assert phonetics["input"] == "많앗구나유유유"
+        else:
+            assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
 
 
 def test_spelling_sources_are_not_misrepresented_as_authorizing_normalization():
