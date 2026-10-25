@@ -1089,3 +1089,61 @@ Exact-head checks on the code/evidence head:
 Current diagnostic fixture report: **18/24 accepted native orthographies + 1 provisional native candidate**; **23/24 accepted g2pK orthographies + 1 provisional g2pK candidate**. These are output/abstention counts only, not accuracy: both gold-label sets are unavailable. The 24 inputs remain an unverified reconstruction and must not be described as the original frozen holdout.
 
 Disposition remains **PARTIAL / research prototype, not release-ready**. Outstanding acceptance gates: recover and hash the original 24-form manifest or create a separately named verified benchmark; obtain independent Korean IPA adjudication; obtain independent Ukrainian target gold and a scoring protocol; resolve the known native-vs-g2pK surface disagreements `넓죽하다` and `읽고` with primary evidence; obtain authorized official NIKL inventory evidence. No gold labels, linguistic forms, or target-accuracy scores were invented.
+
+## Continuation update — primary-source adjudication of two G2P disagreements (2026-10-25)
+
+- **DONE_VERIFIED_SOURCE — `넓죽하다`:** NIKL Rule 10 explicitly gives `넓-죽하다[넙쭈카다]` and explains the lexically restricted ㄼ → [ㅂ] exception. Primary source: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=307219. NIKL also gives `넓죽한[넙쭈칸]` in a 2025 answer: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=317348.
+- **DONE_VERIFIED_SOURCE — `읽고`:** NIKL explicitly gives `읽고[일꼬]` and explains why the fortition must not be naively attributed to a surviving [ㄹ]. Primary source: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=329463.
+- **Evidence artifact:** `docs/PRIMARY-SOURCE-ADJUDICATION-2026-10-25.md` records the source scope, exact surface forms, rule interpretation, test implications and remaining acceptance gates.
+- **Important boundary:** these sources adjudicate official Hangul surface-form expectations only. They do not constitute IPA gold or Ukrainian target gold. Raw upstream G2P outputs must remain inspectable; any correction is exact-form, narrow, and provenance-carrying.
+- **TODO — implementation regression confirmation:** ensure the current branch has source-linked exact-form tests for both forms, test raw engine outputs separately from corrected surface forms, and run the relevant browser/native/G2P workflows on the exact resulting head. This connector session can commit repository files but cannot execute the checkout's local test suite.
+- **BLOCKED_SPECIALIST_ADJUDICATION:** independent broad IPA for both forms.
+- **BLOCKED_INDEPENDENT_TARGET_GOLD:** Ukrainian practical output accuracy remains unmeasured.
+- **BLOCKED_MISSING_ORIGINAL:** original 24-form holdout provenance is still unverified; keep the fixture labelled `reconstructed_unverified`.
+- **BLOCKED_EXTERNAL_ACCESS:** live NIKL inventory retrieval remains skipped/unverified; a skipped workflow is not a successful retrieval.
+- **Release classification:** software-verified research prototype, not release-ready. The two Korean surface-form disputes now have primary-source evidence, but no full-system accuracy claim is justified.
+
+## Continuation update — CI regression repaired at source-contract level (2026-10-25)
+
+- **CI evidence on prior head:** workflow runs for commit `11a82dba4c43b704caabd495c773c537e06d3a4a` reported Browser G2P failure (run 40192385447) and system verification failure (run 40192385433). Python regression/data-integrity passed; browser tests failed at `tests/g2pk-nikl-surface-corrections.test.mjs:63` because the assertion still required obsolete wording `NIKL §§10, 23` after the evidence was tightened to the exact NIKL Q&A identifier `qna_seq=307219`. Result: 1 failing browser test, 1,230 passing; build skipped due to test failure.
+- **Repair made:** source register now contains explicit rows `SRC-NIKL-QNA-307219` and `SRC-NIKL-QNA-329463`; the `읽고` lexical row points to qna_seq=329463 and accurately labels the Hangul surface reading as directly attested, while IPA/target remain provisional. The exact-form regression test now checks the exact source IDs rather than stale general-rule prose, and checks the lexical source URL/note against the current NIKL answer.
+- **Latest branch commit at this update:** `81408985218837736077366edfe6e495f6db35e1`. GitHub Actions runs/statuses for this exact head were not yet returned by the connector when queried; therefore the repair is **not yet CI-verified**. Do not mark the gate passed until fresh exact-head workflows complete.
+- **PR status:** PR #311 remains open and unmerged, layered on PR #310's branch. Its mergeability signal changed to false after the successive content commits; inspect/reconcile the branch relationship and fresh GitHub mergeability before merge. Do not merge blindly.
+- **Status ledger:**
+  - `DONE_VERIFIED_SOURCE`: exact NIKL surface evidence for `넓죽하다 → 넙쭈카다` and `읽고 → 일꼬`.
+  - `PARTIAL`: source-linked correction allowlist, source register, lexical provenance, and tests updated; exact-head browser CI pending.
+  - `BLOCKED_MISSING_ORIGINAL`: original 24-form holdout manifest/order remains unverified; candidate fixture stays quarantined as `reconstructed_unverified`.
+  - `BLOCKED_SPECIALIST_ADJUDICATION`: independent Korean IPA labels/convention still missing.
+  - `BLOCKED_INDEPENDENT_TARGET_GOLD`: independently annotated Ukrainian practical targets and scoring protocol still missing; no target accuracy claim.
+  - `BLOCKED_EXTERNAL_ACCESS`: official live NIKL inventory job is skipped under workflow conditions; it is not a successful retrieval.
+- **Acceptance criterion for this repair:** fresh workflows on the latest head pass the focused NIKL correction tests, the full browser suite/build, Python regression/data integrity, and source-register validation. The project remains a software-verified research prototype, not release-ready, until the independent linguistic and provenance gates are resolved.
+
+## Follow-up continuation — second exact-head CI regression pass (2026-10-25)
+
+A later CI cycle on `64e0e5650551593e2602f4d165fa9b139f019756` exposed six stale assertions/inventory expectations after the source update. The failures were not suppressed; the implementation/data/tests were reconciled:
+
+- **Rule-mapping assertions:** restored explicit `§§11, 23` in the `읽고` lexical note while retaining the direct qna_seq=329463 citation and keeping IPA/Ukrainian target provisional.
+- **Source-scope assertion:** updated batch-18 tests to expect the exact qna_seq=329463 attestation and source-register URL, while preserving the distinction that qna_seq=334294 is contextual support only.
+- **Traceability audit:** the lexical note now has explicit article references, so the repository's audit snapshot of 0 unnumbered-rule notes matches the dynamically calculated test expectation.
+- **Source-register inventory:** two new official-source rows raise the expected row count from 103 to 105 and REVIEW_REQUIRED from 99 to 101; unresolved item-level rights remain visible.
+- **Focused correction regression:** the prior obsolete `NIKL §§10, 23` assertion was replaced with exact source-ID assertions; lexical provenance and source-register records are aligned.
+
+The follow-up changes are committed on the same dedicated branch. At the moment of this update, the latest commit is `86223328ae9c88b294a0793fff2a7814e4052c37`; the connector had not yet returned fresh workflow runs for this exact commit. Therefore all fixes remain **pending exact-head CI verification** until the next workflow cycle is inspected. The previous failures remain part of the audit trail and must not be represented as passes.
+
+Current acceptance boundary is unchanged: NIKL surface-form evidence is verified for the two exact forms, but independent IPA gold, Ukrainian target gold, original 24-form holdout provenance, and live NIKL inventory retrieval are still blocked. PR #311 is open and unmerged on top of PR #310; current GitHub metadata reports it mergeable, which is not a substitute for passing checks.
+
+## Exact-head verification outcome after source-contract repair — 2026-10-25
+
+The source-register/lexical-provenance/test repairs are now verified on code head `3b60d971bb7916b0418c90474c62fd4bb033dfdc`:
+
+- **Browser G2P integration:** PASS, run [40192863070](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40192863070), 1,231 tests passed, 0 failed.
+- **System verification:** PASS, run [40192863065](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40192863065): Python regression/data integrity and browser regression/build passed. The official NIKL live inventory step was skipped, not passed.
+- **Paired native-vs-g2pk diagnostic:** PASS, run [40192863167](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40192863167). On the pinned UGTPHON Korean test split (275 rows, 2,703 eligible token occurrences): native exact rate 0.531827, CER 0.091883, 48 abstentions; g2pk 0.530892 exact, CER 0.092285, zero abstentions. Diagnostic only; no Ukrainian target evaluation.
+- **External UGTPHON diagnostic:** PASS, run [40192863206](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40192863206).
+- **Multi-engine IPA benchmark:** PASS, run [40192863213](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40192863213). On the same 2,703 UGTPHON occurrences, exact rates/CER were: native 0.531827/0.091883 (48 abstentions); g2pk 0.530892/0.092285; KoG2P 0.273030/0.195122; hangul_to_ipa 0.162412/0.248054; eSpeak NG Korean 0.081391/0.336101; phonemize 0.425453/0.143531. On SIGMORPHON 2021 Korean lexical test (999 eligible forms), native 0.358074 exact / CER 0.147037 (2 abstentions); g2pk 0.353353 / 0.148222; KoG2P 0.187187 / 0.218327; hangul_to_ipa 0.089089 / 0.298448; eSpeak NG 0.043043 / 0.407236; phonemize 0.289289 / 0.174387.
+- **Interpretation boundary:** these public datasets score Korean surface-pronunciation predictions, not IPA independently adjudicated by Korean specialists and not Ukrainian practical transcription. They support a reproducible comparative diagnostic, not a target-accuracy or linguistic-gold claim.
+- **Source registry:** 105 records; 101 remain in REVIEW_REQUIRED, and item-level reuse/KOGL status remains unresolved for the newly registered Q&A records. Strict rights acceptance stays blocked.
+- **Status ledger:** exact Korean surface source claims for `넓죽하다` and `읽고` are `DONE_VERIFIED_SOURCE`; focused regression and system tests are `DONE_VERIFIED` on the code head; the 24-form original manifest, independent Korean IPA adjudication, independent Ukrainian target gold, and live NIKL inventory remain blocked. No PR was merged.
+
+The final documentation successor will record these exact-head results; because that successor is a new commit, do not call its checks passed until its own workflow runs complete.
+
