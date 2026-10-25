@@ -94,6 +94,9 @@ test('NIKL usage-survey phrase variants are explicit provisional lexical candida
   assert.equal(result.ipa, 'mon ni ɾʌ');
   assert.equal(result.status, 'lexical-review');
   assert.equal(result.target_status, 'provisional');
+  assert.equal(result.ukrainian, '', 'provisional lexical target must not look accepted');
+  assert.ok(result.candidate_ukrainian);
+  assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '모시러');
   assert.equal(result.variants[0].ipa, 'mo ɕi ɾʌ');

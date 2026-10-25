@@ -50,7 +50,9 @@ export function lexicalResult(text,entry){
   return {
     source:text,
     surfaceHangul:entry.surface_hangul||'',
-    ukrainian:targets.join('')+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
+    ukrainian:targetReview?'':targets.join('')+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
+    candidate_ukrainian:targetReview?targets.join(''):null,
+    candidate_status:targetReview?'provisional':null,
     ipa:ipas.join(' '),
     analysis:analysis+' → lexical',
     variants:(()=>{
@@ -76,7 +78,9 @@ export function lexicalResult(text,entry){
         :targetReview
           ?['lexical-pronunciation','ukrainian-target-provisional']
           :['lexical-pronunciation'],
-      output:targets[i],
+      output:targetReview?'':targets[i],
+      candidateOutput:targetReview?targets[i]:null,
+      candidateStatus:targetReview?'provisional':null,
       ipa:ipas[i]
     })),
     issues:targetIssues,

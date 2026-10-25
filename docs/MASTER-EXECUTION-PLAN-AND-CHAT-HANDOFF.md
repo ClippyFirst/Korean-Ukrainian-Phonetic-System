@@ -1362,3 +1362,5 @@ Release classification remains **software-verified research prototype / partial 
 - The entry is available in the base lexical CSV used by both the native loader and browser test harness. Regression tests assert both candidates and their provisional status.
 - Remaining unresolved forms after the code change are expected to be `칡칡이`, `쫒아내면`, `많앗구나유유유`, `삶의`, and `무서웟어`; this is not a verified benchmark result until current-head CI completes.
 - Acceptance boundary: this is a variant-aware candidate recovery, not a normative pronunciation selection or independent IPA/Ukrainian-target gold.
+
+- Added a target-layer acceptance regression for the `못잃어` phrase candidates: even if all IPA segments map through model-selected correspondences, the lexical record's `target_status=provisional` now forces candidate-only output in native and browser runtimes. This prevents a provisional lexical Ukrainian rendering from being exposed as accepted output.
