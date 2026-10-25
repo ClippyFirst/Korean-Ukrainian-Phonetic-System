@@ -1,3 +1,38 @@
+# Current continuation — IPA convention profiles and case-level audit — 2026-10-26
+
+## Current state
+
+- PR #336: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/336
+- Current branch head at this update: d1a431a3ae39a92497088e206e792b7c8fcfa34f.
+- Previous full benchmark baseline remains run 40238222133, artifact 12616575071, executable head ff14ec72e3167d9268f1348f399abb155098caee.
+- Latest exact-head benchmark run: [40239817889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40239817889), in progress at handoff. Latest full test run [40239817458](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40239817458) is queued. Do not claim the latest changes are verified until these runs complete.
+
+## New implementation
+
+- scripts/benchmark_multi_engine_ko.py now calculates five normalization profiles per engine: primary, broad fricative aspiration, ignore all aspiration, ignore length, ignore stress.
+- Every non-primary profile now includes a case_transition_audit: count of primary mismatches that become exact, primary exact matches that regress, unchanged exact/mismatch counts, and up to 25 case-level examples of each transition.
+- Added tests/test_multi_engine_benchmark.py coverage for normalization semantics, preservation of strict primary scoring, and case-transition audit behavior.
+- Expanded docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md with output-contract and adapter caveats for all six engines; updated docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md with acceptance criteria.
+- These are diagnostic sensitivities, not engine-native scores. We must not treat increased exact match as proof that the transformed IPA is linguistically correct.
+
+## Verification and remaining work
+
+- DONE_VERIFIED (prior state): six-engine primary comparison including g2pK, run 40238222133 succeeded with artifact 12616575071.
+- PARTIAL: new profile and case-transition implementation is on branch; exact-head CI and benchmark artifacts pending.
+- BLOCKED: actual engine-native conventions cannot be made apples-to-apples by a few generic string transforms. Need pinned upstream behavior and case-level IPA adjudication.
+- BLOCKED: independent IPA labels for the frozen 24-form holdout and a larger train/dev sample are not yet available.
+- NOT RELEASE-READY: established primary exact-match baseline remains 53.0022% UGTPHON and 35.8074% SIGMORPHON; no Ukrainian target-output accuracy claim exists.
+
+## Next actions
+
+1. Poll exact-head CI and benchmark; inspect test failures and benchmark artifacts.
+2. Read exact profile metrics and case transition counts for each engine and both datasets; do not copy scores from old runs.
+3. Audit the 25 case examples per profile against pinned upstream source conventions and adjudicated references.
+4. Classify confirmed representation-only differences separately from phonological errors, preserving unclassified cases where evidence is insufficient.
+5. Keep primary benchmark, corpus splits, coverage and abstention rules unchanged.
+
+---
+
 # Current continuation — engine-specific IPA convention audit — 2026-10-26
 
 ## Current branch state
