@@ -31,7 +31,7 @@ test('live browser smoke accepts only a visible, explicitly labelled provisional
   assert.match(browserSmoke, /#candidate-value/u);
   assert.match(browserSmoke, /Попередній український кандидат/u);
   assert.match(browserSmoke, /попередній кандидат, не підтверджений результат/u);
-  assert.match(browserSmoke, /provisional output must not leave the Ukrainian\/candidate panel empty/u);
+  assert.match(browserSmoke, /provisional status must not leave the Ukrainian\/candidate panel empty/u);
   assert.match(browserSmoke, /ukrainian\.length > 20 \|\| candidateVisible/u);
 });
 
