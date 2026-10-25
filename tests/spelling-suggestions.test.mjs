@@ -41,3 +41,8 @@ test('normalizes Unicode canonically but preserves candidate-only behavior', () 
   assert.equal(suggestions[0].text, '쫓아내면');
   assert.equal(suggestions[0].autoApplied, false);
 });
+
+test('treats inherited object-property names as unknown input instead of crashing', () => {
+  assert.deepEqual(getSpellingSuggestions('constructor'), []);
+  assert.deepEqual(getSpellingSuggestions('toString'), []);
+});
