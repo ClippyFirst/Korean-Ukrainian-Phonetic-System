@@ -143,6 +143,15 @@ The browser practical adapter uses the reduced browser-only G2P core; the native
   R009 / R010–R016. Full contract:
   [docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md](docs/SOFT-HEURISTIC-MORPHOLOGY-LAYER-2026-10-11.md).
 
+The Python CLI and FastAPI now expose this choice explicitly; strict remains the default, and soft-mode rule traces remain low-confidence. Examples:
+
+```sh
+korean-ua analyze "좋아" --morphology-mode strict
+korean-ua analyze "좋아" --morphology-mode soft
+```
+
+For the API, send `"morphology_mode": "soft"` alongside `"pronunciation_engine": "native"` to `/v1/transliterate`. The `g2pk` engine does not accept this native morphology setting. Compare modes with the pinned diagnostic workflow and inspect both coverage and coverage-adjusted exact match; do not judge the soft mode by abstention count alone. See [the 48-abstention root-cause audit](docs/KOREAN-48-ABSTENTIONS-ROOT-CAUSE-2026-10-25.md).
+
 The native Python R009 implementation additionally applies a finite, exact-form license list for examples explicitly enumerated in NIKL §29 (including 한여름, 솜이불, 꽃잎, 색연필, 서울역); listed cross-word examples require explicit `boundary_mode="phrase"`. This is not a productive n-insertion heuristic: unlisted forms still require exact licensing. See [the native Rule 29 license audit](docs/NATIVE-ENGINE-NIKL-RULE-29-EXACT-LICENSES-2026-10-23.md).
 
 The native Python engine also has exact, source-backed Rule 28 compound-fortition and Rule 30 saisiot licenses for listed examples; each license is full-form and pair-specific, and ambiguous homographs are not automatically guessed. See [the Rule 28/30 license audit](docs/NATIVE-ENGINE-NIKL-RULE-28-30-EXACT-LICENSES-2026-10-23.md).
