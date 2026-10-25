@@ -60,7 +60,7 @@ test('real source register is structurally valid and unresolved rights remain vi
   assert.deepEqual(report.rightsClassificationCounts, {
     ITEM_LEVEL_LICENSE_RECORDED: 1,
     NOT_APPLICABLE_RECORDED: 1,
-    REVIEW_REQUIRED: 111,
+    REVIEW_REQUIRED: 110,
     MANUAL_CLASSIFICATION_REQUIRED: 4,
   });
   assert.ok(report.rightsClassificationCounts.REVIEW_REQUIRED > 0);
