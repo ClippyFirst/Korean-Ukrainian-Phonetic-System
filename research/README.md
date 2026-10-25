@@ -1,7 +1,7 @@
 # Korean–Ukrainian Phonetic System: Research Programme
 
 Status: research programme established; baseline repository and runtime audits substantially reconstructed; official NIKL inventory crawl is blocked by HTTP 403 from the GitHub Actions runner.
-Last updated: 2026-10-21.
+Last updated: 2026-10-25.
 
 This directory is the durable source of truth for research planning, evidence tracking, implementation coverage, decisions, and release acceptance. Continue work from these files rather than relying on chat history.
 
@@ -19,7 +19,7 @@ This directory is the durable source of truth for research planning, evidence tr
 11. [Release acceptance gates](ACCEPTANCE-GATES.md) — evidence required before a release is accepted.
 
 ## Current state
-The Phase 0 reconstruction is substantially complete on the current mainline, with current CI and deployment evidence recorded in the master handoff. Do not treat the programme as scientifically complete: the official NIKL source inventory has not yet been crawled by the new collector, full browser/Python morphology parity is not established, and independent IPA/Ukrainian target validation remains open.
+The Phase 0 reconstruction is substantially complete on the current mainline, with CI and deployment evidence recorded in the master handoff. Do not treat the programme as scientifically complete: the official NIKL source inventory has not been retrieved by the new collector, full browser/Python morphology parity is not established, and independent IPA/Ukrainian target validation remains open.
 
 Current evidence gaps:
 - run the official NIKL collector in a network-enabled environment and reconcile all 30 article headings;
@@ -42,18 +42,20 @@ Use controlled statuses where possible: not_started, in_progress, blocked, sourc
 
 A single item may need separate source, implementation, testing, and review statuses. Do not collapse them into one ambiguous “done” field.
 
-
 ## Official NIKL collection continuation — 2026-10-21
 
 The metadata-first collector is available at `scripts/nikl-norm-crawler.mjs`; see `docs/NIKL-NORM-CRAWLER.md`. It is designed to inventory only the 30 articles of 제2부 표준 발음법, checks robots.txt, records exact response and per-article hashes, and fails closed on incomplete extraction. Fixture-based tests are part of the existing Node regression suite. The live crawl was attempted by GitHub Actions but the official page returned HTTP 403; the workflow recorded BLOCKED and did not try alternate hosts or bypasses. No live article inventory was produced. Source reuse terms remain unassessed, and the default output does not retain article text. See `research/SOURCE-REGISTER.csv`, `research/RULE-COVERAGE.csv`, and the latest master handoff for current status.
 
-
 ## Residual Korean edge cases — 2026-10-25
 
-- `칡칡이`: the search-result snippet labels a folk-song heading `칡칡이`, but the opened PDF text layer reads `칭칭이` and gives the refrain `치기타 칭칭나네`. This is an index/text-layer discrepancy; `칭칭이` is an opt-in source-specific candidate only, pending visual/print-source verification. No lexical meaning or morphology for `칡칡이` is established.
-- `쫒아내면` and `무서웟어`: added explicit, opt-in spelling candidates `쫓아내면` and `무서웠어`; the original is not silently rewritten.
-- `많앗구나유유유`: preserve three candidate interpretations; published context examples show both `ㅠㅠㅠ` as crying and `유유유` as a phrase/title, but do not resolve this isolated input.
-- `삶의`: one-case queue `research/salmui-ipa-review-queue.json` and canonical source-/candidate-blind packets A/B are bound to queue SHA-256 `c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3`. The packets expose only `BLIND-001`, `삶의`, fixed instructions, and blank review fields. The coordinator keeps official variants/citations out of the reviewer packets.
-- New tests cover spelling candidate behavior, source evidence scope, packet blindness/hash binding, and separate Ukrainian-target review gating.
+The implementation and candidate-only UI for the five residual forms are tracked in [PR #336](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/336); the case ledger and acceptance gates are maintained in [the residual-case handoff](../docs/RESIDUAL-FIVE-CASE-ANALYSIS-2026-10-25.md). The verified code head before the handoff-only follow-up was `3031e7fcc7aee16fedc6f6537ad8a44aa17da972`; the code itself was unchanged by the later documentation reconciliation.
 
-Two qualified reviewer submissions and later Ukrainian target review remain external blockers. A passing CI run is not linguistic adjudication.
+- `칡칡이`: the search-result snippet labels a folk-song heading `칡칡이`, but the opened PDF text layer reads `칭칭이` and gives the refrain `치기타 칭칭나네`. Other passages in the same PDF also use `칭칭이` as a folk-song/refrain label. This strengthens a source-specific correction candidate but does not visually verify the exact heading at p. 180; no lexical meaning or morphology for `칡칡이` is established.
+- `쫒아내면` and `무서웟어`: explicit, opt-in spelling candidates `쫓아내면` and `무서웠어`; the original is not silently rewritten.
+- `많앗구나유유유`: three candidate interpretations remain separate. Context examples show that `ㅠㅠㅠ` can mean tears and `유유유` can be literal text, but they do not resolve this isolated input.
+- `삶의`: queue `research/salmui-ipa-review-queue.json` and canonical source-/candidate-blind packets A/B are bound to queue SHA-256 `c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3`. Both reviewer submissions remain blank. NIKL's `[살믜]` and `[살메]` are Hangul surface variants, not IPA.
+- Ukrainian target adaptation remains a separate blocked step after independent IPA review; no unsupported IPA or Ukrainian target was promoted to gold.
+
+Exact-head CI at `3031e7fcc7aee16fedc6f6537ad8a44aa17da972) passed: 1,258 Node tests, browser integration/build, system/browser/Python regression and data-integrity checks, strict corpus/master-table generation, Python 3.11/3.12/3.13 test jobs, wheel build, and clean wheel installation. See [tests run 40228232017](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232017), [system verification 40228232002](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232002), [browser integration 40228232008](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232008), and [corpus artifacts 40228232001](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40228232001). The live NIKL inventory job remains skipped by configuration and is not a pass.
+
+The remaining gates require external evidence or specialist input: (1) visual/print-source verification of the folk-song title, (2) the original context or user confirmation for `많앗구나유유유`, (3) two qualified independent blind IPA submissions for `삶의`, and (4) a separate Ukrainian target review after IPA reconciliation. Passing CI does not resolve these linguistic questions.
