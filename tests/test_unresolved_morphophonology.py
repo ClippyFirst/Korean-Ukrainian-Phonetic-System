@@ -72,7 +72,11 @@ def test_compact_user_text_does_not_silently_invent_word_boundaries():
     ):
         compact_result = phoneticize_korean(compact)
         spaced_result = phoneticize_korean(spaced)
-        assert compact_result["pronunciation_status"] == "unresolved", compact
-        assert compact_result["ipa_is_diagnostic_only"] is True, compact
+        # Exact local morphology licenses the internal pair, but the engine
+        # must not invent an eojeol space in the compact source orthography.
+        assert compact_result["pronunciation_status"] != "unresolved", compact
+        assert compact_result["ipa_is_diagnostic_only"] is False, compact
+        assert " " not in compact_result["surface_hangul"], compact
         assert spaced_result["pronunciation_status"] != "unresolved", spaced
         assert spaced_result["ipa_is_diagnostic_only"] is False, spaced
+        assert " " in spaced_result["surface_hangul"], spaced
