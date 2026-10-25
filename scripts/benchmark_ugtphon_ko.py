@@ -72,6 +72,8 @@ def load_corpus(path: Path) -> list[dict[str, Any]]:
 def evaluate(rows: list[dict[str, Any]], *, morphology_mode: str = "strict") -> dict[str, Any]:
     # Import lazily so the schema/unit tests can run without the package installed.
     from korean_ukrainian.pipeline import phoneticize_korean
+    if morphology_mode not in {"strict", "soft"}:
+        raise ValueError("morphology_mode must be \"strict\" or \"soft\"")
 
     scored: list[dict[str, Any]] = []
     unresolved_examples: list[dict[str, str]] = []
