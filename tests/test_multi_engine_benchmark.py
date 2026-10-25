@@ -13,6 +13,9 @@ from benchmark_multi_engine_ko import (  # noqa: E402
     _load_rows_and_words,
     _metrics,
     _normalize_broad_fricative_aspiration,
+    _normalize_ignore_aspiration,
+    _normalize_ignore_length,
+    _normalize_ignore_stress,
     _paired_bootstrap_delta_ci,
     _score,
     kog2p_phones_to_ipa,
@@ -153,3 +156,15 @@ def test_g2pk_adapter_rejects_non_string_surface():
         raise AssertionError("g2pK adapter must reject non-string outputs")
 
 
+
+
+def test_diagnostic_normalization_profiles_are_explicit_and_separate():
+    # These are deliberately permissive sensitivity profiles, not canonical scores.
+    assert _normalize_ignore_aspiration("kʰa sʰɯm ɕʰi") == "kasɯmɕi"
+    assert _normalize_ignore_length("kaː kɯˑ") == "kakɯ"
+    assert _normalize_ignore_stress("ˈka ˌsɯm") == "kasɯm"
+
+    # Primary scoring must continue to preserve length and aspiration.
+    assert _score("kaː", "ka")["exact"] is False
+    assert _score("kʰa", "ka")["exact"] is False
+    assert _score("ˈka", "ka")["exact"] is False
