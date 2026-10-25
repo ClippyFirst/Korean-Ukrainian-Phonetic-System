@@ -1315,7 +1315,7 @@ Release classification remains **software-verified research prototype / partial 
 - The latest pre-batch exact-head benchmark (run https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216452439) scored 2,688/2,703, exact 1,425, CER 9.1757%, 15 unresolved, zero engine errors. This is baseline, not the result of the new batch.
 - PR #328 adds nine narrow exact-form/pair recoveries in both Python and browser engines. NIKL Q&A 327454 directly confirms 같이 [가치] under Rule 17; the two R007 licenses are restricted to 많을거같이 and 개같이못하고. Other entries are form-scoped applications of existing NIKL rules, not direct full-token source attestations.
 - Intentionally withheld: 칡칡이 (uncertain reduplicated morphology), 못잃어 (phrase-level boundary), 쫒아내면 / 많앗구나유유유 / 무서웟어 (no silent spelling repair), and 삶의 (independent IPA adjudication). Exact-head CI and multi-engine artifact must complete before the batch is marked verified.
-- Source registry: 112 rows; 108 item-level rights reviews remain REVIEW_REQUIRED.
+- Source registry: 113 rows; 109 item-level rights reviews remain REVIEW_REQUIRED.
 
 
 ## Verified status after exact-form recovery batch — 2026-10-25 17:46 UTC
@@ -1326,3 +1326,6 @@ Release classification remains **software-verified research prototype / partial 
 - Completed multi-engine run on the code-equivalent head `723497ab18a9c71c9d25b1e3055ebe2fdfc3e2a8` reported 2,697/2,703 scored, 1,429 exact, CER 9.1725%, six unresolved, zero engine errors. The latest-head benchmark rerun remains in progress; do not mark it complete until its artifact is published.
 - Remaining strict unresolved forms: `칡칡이` (reduplicated morphology unverified), `못잃어` (phrase-level boundary and variable ㄴ-insertion), `쫒아내면` (nonstandard spelling is not silently corrected), `많앗구나유유유` and `무서웟어` (likely spelling errors not normalized), and `삶의` (official source gives variants but independent IPA/target adjudication remains required).
 - Source register: 112 rows; 108 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `NOT_APPLICABLE_RECORDED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`. No rights decisions were inferred from source citations.
+
+
+- Additional residual evidence: NIKL's 2022 language-use survey discusses variable ㄴ-insertion responses in the 못 잃어 phrase family, but its surfaced percentage table is for 못 잇는다 only. Source registered as `SRC-NIKL-USAGE-SURVEY-2022`; no variant or frequency is inferred for the exact token 못잃어.
