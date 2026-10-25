@@ -116,7 +116,11 @@ export function ipaTargetForSource(source,ipa,options={}){
   const sourceIpa=String(ipa??'').normalize('NFC');
   const ipaUnits=sourceIpa.split(/[.\s]+/u).filter(Boolean);
   if(!ipaUnits.length){
-    return {text:null,syllables:[],unknown:'',status:'unavailable',reason:'empty_ipa',mappingTrace:[]};
+    return {
+      text:null,syllables:[],unknown:'',status:'unavailable',
+      reason:sourceIpa.trim()?'no_renderable_ipa_segments':'empty_ipa',
+      mappingTrace:[]
+    };
   }
   const detailed=ipaUnits.map(traceIpaMappingDetailed);
   const syllables=detailed.map(item=>item.unknown?'':item.tokens.map(token=>token.ukrainian).join(''));
