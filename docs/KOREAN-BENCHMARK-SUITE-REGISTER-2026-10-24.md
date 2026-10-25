@@ -271,3 +271,7 @@ The external Korean IPA benchmark remains diagnostic rather than a Ukrainian tar
 - **DONE_VERIFIED (historical, unchanged):** owner-constrained five-engine benchmark runs on UGTPHON and SIGMORPHON remain the evidence for the aggregate scores; the new code does not alter the historical report or score definitions.
 - **TODO:** expand from the capped sample to a complete per-occurrence ClippyFirst-vs-gold ledger, including abstentions and every applicable profile; report category counts on fixed eligible and scored denominators. This requires a schema addition and a fresh artifact run.
 - **BLOCKED / evidence-limited:** no automatic label can establish that a mismatch is a true phonology error without independent IPA adjudication and source-level case evidence. The benchmark's raw gold remains noisy and is not normative NIKL gold.
+
+### Ledger implementation update (2026-10-25)
+
+The current PR now adds a complete eligible-occurrence ledger for ClippyFirst-vs-gold discrepancies and abstentions, alongside the original capped multi-engine sample. It records raw input/gold/prediction and both existing and sibilant-aspiration sensitivity-profile values. Category counts have the ledger's own explicit denominator. They must not be described as counts of true phonology errors: only convention sensitivity, NFC equivalence, and explicit abstention status are classified automatically; all other cases remain unclassified pending review. The implementation and report are **PARTIAL until exact-head CI succeeds and the fresh artifact is inspected**.
