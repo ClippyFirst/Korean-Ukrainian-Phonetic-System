@@ -105,7 +105,7 @@
           "scope": "Supports that Korean conversational discourse includes short affective/backchannel and non-lexical-like responses; not direct evidence for this exact token."
         }
       ],
-      "productionChange": "No lexical correction or pronunciation output. Preserve the raw input and present a low-confidence classification hypothesis: possible expressive vocalization/filler/transcription noise. Do not normalize to ㅠㅠㅠ, 우우우, or another form without original context.",
+      "productionChange": "No candidate is automatically applied. No lexical correction or pronunciation output. Preserve the raw input and present a low-confidence classification hypothesis: possible expressive vocalization/filler/transcription noise. Do not normalize to ㅠㅠㅠ, 우우우, or another form without original context.",
       "whyNotResolved": "The general Korean literature establishes that interjections, fillers, and short non-lexical listener responses occur, but no source or original recording/context identifies this exact sequence. 유유유 could still be deliberate text, a stylized ending, or a transcription artifact.",
       "acceptanceCriterion": "Obtain the original message/audio or adjacent turns. If no context can be recovered, retain the raw string, mark the tail as an unresolved expressive/non-lexical candidate, and abstain from lexical morphology, source phonology and Ukrainian rendering.",
       "externalTextSearch": {
