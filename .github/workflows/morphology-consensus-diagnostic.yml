@@ -63,6 +63,7 @@ jobs:
                 if k not in {"newly_resolved_examples", "changed_examples", "runtime_error_examples", "paired_vs_strict"}})
           print("newly_resolved examples:", consensus["newly_resolved_examples"][:30])
           print("changed examples:", consensus["changed_examples"][:30])
+          print("remaining unresolved examples:", consensus["unresolved_examples"][:30])
           print("paired comparison:", consensus["paired_vs_strict"])
           assert consensus["status"] == "diagnostic_only_analyzer_consensus"
           assert consensus["runtime_errors_unique_words"] == 0
