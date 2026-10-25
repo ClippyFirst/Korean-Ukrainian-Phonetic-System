@@ -116,7 +116,7 @@ def test_discrepancy_classifier_only_assigns_evidence_supported_categories():
     assert convention["broad_fricative_aspiration_exact"] is True
     assert convention["profile_sensitivity_detected"] is True
     assert convention["profile_sensitivity_name"] == "broad_fricative_aspiration"
-    assert "convention status is not independently established" in convention["rationale"]
+    assert "gold transcription policy is not independently established" in convention["rationale"]
 
     unicode_only = _classify_native_discrepancy("ã", "ã", False, False)
     assert unicode_only["category"] == "UNICODE_OR_FORMAT"
