@@ -78,7 +78,14 @@ def _classify_native_discrepancy(
     """Conservative label for a score discrepancy; never infer phonology from mismatch alone."""
     gold_variants = [part.strip() for part in gold_raw.split(",") if part.strip()]
     profile_sensitivity_detected = broad_exact and not strict_exact
-    if profile_sensitivity_detected:
+    if any(
+        unicodedata.normalize("NFC", prediction) == unicodedata.normalize("NFC", gold)
+        for gold in gold_variants
+    ):
+        category = "UNICODE_OR_FORMAT"
+        rationale = "raw strings differ but NFC-canonical strings match"
+        confidence = "high for canonical Unicode equivalence"
+    elif profile_sensitivity_detected:
         category = "UNCLASSIFIED"
         rationale = (
             "the declared s/ɕ aspiration-sensitivity profile changes exactness, but the "
@@ -86,13 +93,6 @@ def _classify_native_discrepancy(
             "sufficient evidence to label the difference IPA_CONVENTION"
         )
         confidence = "profile sensitivity observed; convention status unverified"
-    elif any(
-        unicodedata.normalize("NFC", prediction) == unicodedata.normalize("NFC", gold)
-        for gold in gold_variants
-    ):
-        category = "UNICODE_OR_FORMAT"
-        rationale = "raw strings differ but NFC-canonical strings match"
-        confidence = "high for canonical Unicode equivalence"
     else:
         category = "UNCLASSIFIED"
         rationale = "the current evidence does not distinguish engine error from reference/convention/segmentation issues"
