@@ -98,7 +98,7 @@ def test_all_canonical_lexical_pronunciations_are_reproducible_from_ipa():
             alternate_checked += 1
 
     assert checked == len(rows) == 644
-    assert alternate_checked == 45
+    assert alternate_checked == 46
 
 
 def test_ipa_target_override_registry_is_traceable_and_unambiguous():
