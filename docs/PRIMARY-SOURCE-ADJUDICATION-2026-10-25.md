@@ -29,6 +29,17 @@ The answer explicitly cites `읽고[일꼬]` and explains the relevant interpret
 
 **Adjudication:** use `일꼬` as the official Korean surface-form expectation for this exact form in regression checks. Preserve the ordering/analysis explanation as source-specific evidence; do not promote a broad IPA transcription or Ukrainian target to gold without the corresponding independent adjudication.
 
+## Case C — 많아서 (R003 exact-form source)
+
+**Status:** `SOURCE_FOUND_EXACT_FORM_AND_RULE_ENVIRONMENT`; broad IPA and Ukrainian target adjudication remain pending.
+
+Primary source: NIKL Online 가나다, answer dated 2026-08-06, qna_seq=334550:  
+https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=57&pageIndex=1&qna_seq=334550
+
+The answer explicitly lists `많아서[마ː나서]` as an inflected form of `많다`, explaining that the long vowel is retained in this exceptional paradigm. This is direct surface-form evidence for the exact input and the R003 environment `많>아` (ㅎ deletion with ㄴ retained and resyllabification).
+
+**Engineering action:** the strict Python and browser engines now license only the exact form `많아서` and pair `많>아`. This does not authorize generic R003 application to other `많+` sequences, and the source's Hangul notation is not broad-IPA gold or Ukrainian target gold.
+
 ## Engineering and benchmark consequences
 
 1. The two official sources resolve the *normative Hangul surface-form question* for these exact forms. They do not, by themselves, prove that any particular G2P implementation is globally superior.
