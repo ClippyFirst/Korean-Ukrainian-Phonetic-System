@@ -1316,3 +1316,13 @@ Release classification remains **software-verified research prototype / partial 
 - PR #328 adds nine narrow exact-form/pair recoveries in both Python and browser engines. NIKL Q&A 327454 directly confirms 같이 [가치] under Rule 17; the two R007 licenses are restricted to 많을거같이 and 개같이못하고. Other entries are form-scoped applications of existing NIKL rules, not direct full-token source attestations.
 - Intentionally withheld: 칡칡이 (uncertain reduplicated morphology), 못잃어 (phrase-level boundary), 쫒아내면 / 많앗구나유유유 / 무서웟어 (no silent spelling repair), and 삶의 (independent IPA adjudication). Exact-head CI and multi-engine artifact must complete before the batch is marked verified.
 - Source registry: 112 rows; 108 item-level rights reviews remain REVIEW_REQUIRED.
+
+
+## Verified status after exact-form recovery batch — 2026-10-25 17:46 UTC
+
+- Branch `fix/source-backed-r003-exact-forms-2026-10-25`, PR #328; latest head `8629906353b4062ccade013b151441a34651d05b`.
+- Nine source-scoped recoveries are implemented across R002/R003/R007 in Python and browser strict engines. NIKL Q&A 327454 directly confirms 같이 [가치]; all other new licenses remain exact full-form + adjacent-pair derivations, not direct attestations of every noisy token.
+- Full test workflow passed on the latest head: Python 3.11/3.12/3.13, browser suite/build, wheel install. System verification passed Python data integrity and browser regression/build. Master table/research artifact validation and external UGTPHON diagnostic passed. Official live NIKL inventory remained skipped due the existing access limitation.
+- Completed multi-engine run on the code-equivalent head `723497ab18a9c71c9d25b1e3055ebe2fdfc3e2a8` reported 2,697/2,703 scored, 1,429 exact, CER 9.1725%, six unresolved, zero engine errors. The latest-head benchmark rerun remains in progress; do not mark it complete until its artifact is published.
+- Remaining strict unresolved forms: `칡칡이` (reduplicated morphology unverified), `못잃어` (phrase-level boundary and variable ㄴ-insertion), `쫒아내면` (nonstandard spelling is not silently corrected), `많앗구나유유유` and `무서웟어` (likely spelling errors not normalized), and `삶의` (official source gives variants but independent IPA/target adjudication remains required).
+- Source register: 112 rows; 108 `REVIEW_REQUIRED`, 2 `MANUAL_CLASSIFICATION_REQUIRED`, 1 `NOT_APPLICABLE_RECORDED`, 1 `ITEM_LEVEL_LICENSE_RECORDED`. No rights decisions were inferred from source citations.

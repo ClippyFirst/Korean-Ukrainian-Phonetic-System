@@ -209,3 +209,12 @@ The latest verified pre-batch strict benchmark scored 2,688/2,703 occurrences (9
 The current code batch applies exact-form + pair licenses to nine of those occurrences, including R007 같>이 where NIKL Q&A 327454 directly confirms [가치]. Other new entries are form-scoped applications of existing NIKL rules, not direct full-token source attestations. The intentionally withheld cases are 칡칡이 (the repeated form's morphology is not independently established), 못잃어 (phrase-level boundary), 쫒아내면 (nonstandard 쫒 is not normalized to 쫓), 많앗구나유유유 and 무서웟어 (spelling errors are not normalized), and 삶의 (independent IPA adjudication). Do not state post-change benchmark metrics until latest-head Actions artifacts complete.
 
 The source registry now has 112 rows; rights audit: 108 REVIEW_REQUIRED, 2 MANUAL_CLASSIFICATION_REQUIRED, 1 NOT_APPLICABLE_RECORDED, 1 ITEM_LEVEL_LICENSE_RECORDED. Item-level reuse decisions remain open.
+
+
+## Exact-head verification update — 2026-10-25 17:46 UTC
+
+**Supersedes the earlier pending-metric note above for code head `723497ab18a9c71c9d25b1e3055ebe2fdfc3e2a8`; the exact-head rerun is still in progress.** The completed multi-engine benchmark [run 40217616314](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40217616314) reports native strict 2,697/2,703 scored (99.7780% coverage), 1,429 exact matches, exact rate 52.9848%, CER 9.1725%, six unresolved occurrences/unique words, and zero engine errors. The six are `칡칡이`, `못잃어`, `쫒아내면`, `많앗구나유유유`, `삶의`, and `무서웟어`.
+
+Exact-head full regression suite passed on code head `8629906353b4062ccade013b151441a34651d05b`: Python 3.11, 3.12 and 3.13; browser tests; wheel install. System verification passed Python regression/data integrity and browser regression/build. Master table/research corpus validation and external UGTPHON diagnostic passed. The official NIKL inventory job was skipped, not passed. Exact-head multi-engine, paired-engine, morphology-consensus and research adapter runs were still in progress at this update.
+
+Compared with the immediately pre-batch baseline (2,688 scored, 1,425 exact, CER 9.1757%, 15 unresolved), the current code-equivalent benchmark scores 9 additional occurrences, 4 additional exact matches, and CER improves by 0.0032 percentage points. Treat this as a small diagnostic improvement on noisy UGTPHON labels, not proof of general or target-layer accuracy.
