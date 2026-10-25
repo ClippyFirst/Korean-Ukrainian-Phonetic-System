@@ -717,6 +717,9 @@ def evaluate_consensus(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "native_ipa": {
             "strict": mecab_report["native_ipa"]["strict"],
             "soft": mecab_report["native_ipa"]["soft"],
+            "paired_subset": mecab_report["native_ipa"]["paired_subset"],
+            "unique_words_with_changed_ipa_or_status": len(changed_words),
+            "changed_words_with_multi_morpheme_segmentation": len(changed_words),
             "analyzer_consensus": {
                 **consensus_metrics,
                 "unresolved_occurrences": len(occurrences) - len(consensus_scored),
