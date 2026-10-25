@@ -727,6 +727,16 @@ def evaluate_consensus(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 "runtime_error_examples": dict(list(errors.items())[:50]),
                 "newly_resolved_unique_words_vs_strict": len({item["word"] for item in resolved_words}),
                 "newly_resolved_examples": resolved_words[:100],
+                "unresolved_examples": [
+                    {
+                        "word": word,
+                        "strict_contexts": strict_by_word.get(word, {}).get("unresolved_contexts", []),
+                        "consensus_contexts": candidate.get("unresolved_contexts", []),
+                        "candidate_licenses": candidate.get("morphology_analysis", {}).get("candidate_licenses", []),
+                    }
+                    for word, candidate in consensus_by_word.items()
+                    if candidate.get("unresolved")
+                ][:100],
                 "changed_unique_words_vs_strict": len(changed_words),
                 "changed_examples": changed_words[:100],
                 "paired_vs_strict": paired,
