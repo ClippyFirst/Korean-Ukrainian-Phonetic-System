@@ -1,0 +1,573 @@
+{
+  "schemaVersion": 1,
+  "title": "R002/R003 source-adjudication queue extracted from the pinned multi-engine diagnostic run",
+  "purpose": "Triage 14 distinct forms from native-engine abstention contexts for exact-form source adjudication. Corpus IPA and engine outputs are diagnostic pointers only; none is normative IPA gold. This queue is not a holdout score set and must not be used to claim accuracy.",
+  "benchmark": {
+    "workflowRun": 40092929978,
+    "artifactId": 12559692692,
+    "commit": "94c21ea957c28225caea27b9df69aa8772fea6f7",
+    "dataset": "UGTPHON diagnostic artifact",
+    "limitations": [
+      "user-generated/noisy references",
+      "not NIKL normative gold",
+      "shared IPA renderer across native and g2pk",
+      "some forms lack trustworthy spacing/morphological segmentation"
+    ]
+  },
+  "ruleSources": {
+    "R002": {
+      "url": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "locator": "NIKL Standard Pronunciation Rules §§13–15; exact morphology/spacing still must be verified per item."
+    },
+    "R003": {
+      "url": "https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002",
+      "locator": "NIKL Standard Pronunciation Rules §12(4); the exact ending/suffix environment still must be verified per item."
+    }
+  },
+  "acceptanceCriteria": [
+    "For a sourceStatus of SOURCE_FOUND_PENDING_IPA, retain an exact official locator and excerpt but keep finalBroadIpa and both reviewer IPA fields empty until independent IPA review; source discovery alone does not mean the case is adjudicated.",
+    "Open and record exact official source passage or official lexical answer for each exact form; rule-family citations alone are insufficient.",
+    "Record source text/locator, date accessed, grammatical segmentation, lexical/morphological class, and whether the environment is actually licensed.",
+    "Treat corpus IPA and every engine output as hypotheses, not gold.",
+    "If the official source does not settle the form, keep BLOCKED_SPECIALIST_ADJUDICATION; do not add a productive heuristic.",
+    "After source review, obtain two independent broad-IPA reviews with convention and syllable boundaries explicit.",
+    "Only cases independently adjudicated may enter a frozen NIKL holdout; holdout membership must be locked before engine fixes are evaluated.",
+    "Review Ukrainian rendering separately on frozen IPA; do not infer target correctness from Korean surface spelling."
+  ],
+  "cases": [
+    {
+      "caseId": "R002-01",
+      "ruleId": "R002",
+      "input": "되었어",
+      "rowId": "multilexnorm2026_1945",
+      "occurrenceId": "222",
+      "pair": "었>어",
+      "goldDiagnostic": "tø̞ʌ̹s͈ʌ̹",
+      "g2pkIpa": "tø.ʌ.s͈ʌ",
+      "g2pkExact": true,
+      "selectionReason": "R002 native abstention; g2pk exact against noisy corpus reference.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "relatedSourceEvidence": [
+        {
+          "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=89858",
+          "excerpt": "NIKL Korean Basic Dictionary, 되다: 발음 [되다/뒈다], 활용 되어[되어/뒈여](돼[돼ː]).",
+          "scope": "Related lexical-form evidence only: this entry does not directly list 되었어 or establish the full form's IPA.",
+          "accessDate": "2026-10-24"
+        }
+      ]
+    },
+    {
+      "caseId": "R002-02",
+      "ruleId": "R002",
+      "input": "찢었으면",
+      "rowId": "multilexnorm2026_1962",
+      "occurrenceId": "294",
+      "pair": "찢>었",
+      "goldDiagnostic": "t͡ɕ͈id͡ʑʌ̹s͈ɯmjʌ̹n",
+      "g2pkIpa": "tɕ͈i.dʑʌ.s͈ɯ.mjʌn",
+      "g2pkExact": true,
+      "selectionReason": "R002 native abstention; morphology and exact boundary require review.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+    },
+    {
+      "caseId": "R002-03",
+      "ruleId": "R002",
+      "input": "했었음",
+      "rowId": "multilexnorm2026_1972",
+      "occurrenceId": "403",
+      "pair": "했>었",
+      "goldDiagnostic": "hɛ̝s͈ʌ̹s͈ɯm",
+      "g2pkIpa": "hɛ.s͈ʌ.s͈ɯm",
+      "g2pkExact": true,
+      "selectionReason": "R002 native abstention; benchmark reference is diagnostic only.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+    },
+    {
+      "caseId": "R002-04",
+      "ruleId": "R002",
+      "input": "붙어야",
+      "rowId": "multilexnorm2026_1979",
+      "occurrenceId": "484",
+      "pair": "붙>어",
+      "goldDiagnostic": "putʰʌ̹ja̠",
+      "g2pkIpa": "pu.tʰʌ.ja",
+      "g2pkExact": true,
+      "selectionReason": "R002 native abstention; ending boundary and surface process require exact-form evidence.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "relatedSourceEvidence": [
+        {
+          "url": "https://krdict.korean.go.kr/eng/dicSearch/SearchView?ParaWordNo=74181",
+          "excerpt": "NIKL Korean Basic Dictionary, 붙다: 활용 ‘붙어[부터]’.",
+          "scope": "Related lexical-form evidence only: dictionary lists 붙어, not the full form 붙어야.",
+          "accessDate": "2026-10-24"
+        }
+      ]
+    },
+    {
+      "caseId": "R002-05",
+      "ruleId": "R002",
+      "input": "멋있어",
+      "rowId": "multilexnorm2026_1985",
+      "occurrenceId": "538",
+      "pair": "있>어",
+      "goldDiagnostic": "mʌ̹ɕʰis͈ʌ̹",
+      "g2pkIpa": "mʌ.si.s͈ʌ",
+      "g2pkExact": false,
+      "selectionReason": "R002 native abstention; candidate systems do not settle normative analysis.",
+      "sourceStatus": "SOURCE_FOUND_PENDING_IPA",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306166",
+      "sourceExcerpt": "국립국어원 온라인가나다 답변(2024-11-18): ‘멋있어’는 [머디써]로 발음되기도 하고 [머시써]로 발음되기도 합니다.",
+      "grammaticalSegmentation": "Lexical item 멋있어; the official answer explicitly permits two pronunciations in this lexical form.",
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": "Official source confirms two Hangul surface-pronunciation variants. Do not convert these strings directly into IPA gold; independent broad-IPA transcription and the exact benchmark target convention remain outstanding.",
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "sourceAccessed": "2026-10-24",
+      "sourceType": "NIKL official Online Q&A; Hangul pronunciation notation, not IPA"
+    },
+    {
+      "caseId": "R002-06",
+      "ruleId": "R002",
+      "input": "칡칡이",
+      "rowId": "dc_inside_2050",
+      "occurrenceId": "",
+      "pair": "칡>이",
+      "goldDiagnostic": "t͡ɕʰik̚t͡ɕʰiɭɡi",
+      "g2pkIpa": "tɕʰik̚.tɕʰil.ɡi",
+      "g2pkExact": false,
+      "selectionReason": "R002 native abstention; user-generated corpus and lexical/morphological parse are uncertain.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+    },
+    {
+      "caseId": "R002-07",
+      "ruleId": "R002",
+      "input": "이런삶은",
+      "rowId": "dc_inside_2115",
+      "occurrenceId": "",
+      "pair": "삶>은",
+      "goldDiagnostic": "iɾʌ̹nsʰa̠ɭmɯn",
+      "g2pkIpa": "i.ɾʌn.sal.mɯn",
+      "g2pkExact": false,
+      "selectionReason": "R002 native abstention; spacing/morphology and lexical form need review.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+    },
+    {
+      "caseId": "R003-01",
+      "ruleId": "R003",
+      "input": "수많은",
+      "rowId": "multilexnorm2026_1977",
+      "occurrenceId": "469",
+      "pair": "많>은",
+      "goldDiagnostic": "sʰuma̠nɯn",
+      "g2pkIpa": "su.ma.nɯn",
+      "g2pkExact": false,
+      "selectionReason": "R003 native abstention; suffix/ending environment needs exact evidence.",
+      "sourceStatus": "SOURCE_FOUND_PENDING_IPA",
+      "sourceLocator": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144",
+      "sourceExcerpt": "한국어기초사전 entry 수많다: 활용 ‘수많은[수ː마는]’.",
+      "grammaticalSegmentation": "Lexical adjective 수많다, attributive form 수많은; the dictionary directly lists this inflected form.",
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": "Official dictionary directly attests the form and its Hangul pronunciation, including lexical length notation. It does not supply IPA, and the corpus diagnostic target must not be promoted to IPA gold.",
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "sourceAccessed": "2026-10-24",
+      "sourceType": "National Institute of Korean Language Korean Basic Dictionary; official lexical entry with Hangul pronunciation notation"
+    },
+    {
+      "caseId": "R003-02",
+      "ruleId": "R003",
+      "input": "괜찮아보이는디",
+      "rowId": "multilexnorm2026_1994",
+      "occurrenceId": "587",
+      "pair": "찮>아",
+      "goldDiagnostic": "kwɛ̝nt͡ɕʰa̠na̠bo̞inɯndi",
+      "g2pkIpa": "kwɛn.tɕʰa.na.bo.i.nɯn.di",
+      "g2pkExact": true,
+      "selectionReason": "R003 native abstention in a compact colloquial string; segmentation and register need review.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+    },
+    {
+      "caseId": "R003-03",
+      "ruleId": "R003",
+      "input": "많을거같이",
+      "rowId": "multilexnorm2026_2011",
+      "occurrenceId": "704",
+      "pair": "많>을",
+      "goldDiagnostic": "ma̠nɯɭk͈ʌ̹ɡa̠t͡ɕʰi",
+      "g2pkIpa": "ma.nɯl.ɡʌ.ɡa.tɕʰi",
+      "g2pkExact": false,
+      "selectionReason": "R003 native abstention; spacing and grammatical segmentation are not supplied.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+    },
+    {
+      "caseId": "R003-04",
+      "ruleId": "R003",
+      "input": "싫어서",
+      "rowId": "dc_inside_2124",
+      "occurrenceId": "",
+      "pair": "싫>어",
+      "goldDiagnostic": "ɕʰiɾʌ̹sʰʌ̹",
+      "g2pkIpa": "si.ɾʌ.sʌ",
+      "g2pkExact": false,
+      "selectionReason": "R003 native abstention; exact stem/ending analysis must be sourced.",
+      "sourceStatus": "SOURCE_FOUND_PENDING_IPA",
+      "sourceLocator": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313981",
+      "sourceExcerpt": "국립국어원 온라인가나다 답변(2025-04-29): ‘싫어서’는 ㅀ 뒤에 모음으로 시작하는 어미가 결합되어 ㅎ이 탈락하고, ㄹ이 연음되어 [시러서]로 발음됩니다.",
+      "grammaticalSegmentation": "싫- + -어서 (the official answer explicitly discusses the ㅀ stem-final cluster followed by a vowel-initial ending).",
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": "Exact-form rule environment is supported by the official answer. The surface Hangul [시러서] is not itself an IPA transcription; dual independent broad-IPA review remains required.",
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "sourceAccessed": "2026-10-24",
+      "sourceType": "NIKL official Online Q&A; Hangul pronunciation notation, not IPA"
+    },
+    {
+      "caseId": "R003-05",
+      "ruleId": "R003",
+      "input": "쌓아서",
+      "rowId": "dc_inside_2158",
+      "occurrenceId": "",
+      "pair": "쌓>아",
+      "goldDiagnostic": "s͈a̠a̠sʰʌ̹",
+      "g2pkIpa": "s͈a.a.sʌ",
+      "g2pkExact": false,
+      "selectionReason": "R003 native abstention; candidate output does not establish the standard surface.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "relatedSourceEvidence": [
+        {
+          "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=62095",
+          "excerpt": "NIKL Korean Basic Dictionary, 쌓다 (verb): 활용 ‘쌓아[싸아]’.",
+          "scope": "Related lexical-form evidence only: dictionary lists 쌓아, not the full form 쌓아서; do not infer an exact full-form IPA target from this alone.",
+          "accessDate": "2026-10-24"
+        },
+        {
+          "url": "https://www.korean.go.kr/kornorms/m/m_regltn.do?regltn_code=0002",
+          "excerpt": "NIKL Standard Pronunciation Rules, Article 12 commentary: when ㅎ is followed by a vowel in a conjugated form with a vowel-initial formal morpheme, ㅎ is deleted; examples include 쌓이다[싸이다].",
+          "scope": "Related rule-environment evidence only: supports deletion of stem-final ㅎ before a vowel-initial ending, but the exact benchmark form 쌓아서 is not directly listed as a whole and no IPA gold is established.",
+          "accessDate": "2026-10-24"
+        }
+      ]
+    },
+    {
+      "caseId": "R003-06",
+      "ruleId": "R003",
+      "input": "좋아보인다고",
+      "rowId": "dc_inside_2235",
+      "occurrenceId": "",
+      "pair": "좋>아",
+      "goldDiagnostic": "t͡ɕo̞a̠bo̞inda̠ɡo̞",
+      "g2pkIpa": "tɕo.a.bo.in.da.ɡo",
+      "g2pkExact": true,
+      "selectionReason": "R003 native abstention; compact string needs explicit morphology/spacing before adjudication.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK"
+    },
+    {
+      "caseId": "R003-07",
+      "ruleId": "R003",
+      "input": "좋은데",
+      "rowId": "dc_inside_2392",
+      "occurrenceId": "",
+      "pair": "좋>은",
+      "goldDiagnostic": "t͡ɕo̞ɯnde̞",
+      "g2pkIpa": "tɕo.ɯn.de",
+      "g2pkExact": true,
+      "selectionReason": "R003 native abstention; exact suffix/ending environment needs official lexical evidence.",
+      "sourceStatus": "PENDING_EXACT_FORM_SOURCE",
+      "sourceLocator": null,
+      "sourceExcerpt": null,
+      "grammaticalSegmentation": null,
+      "reviewerA": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "reviewerB": {
+        "id": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "ipa": null,
+        "methodReference": null,
+        "notes": null
+      },
+      "finalBroadIpa": null,
+      "decisionNotes": null,
+      "ukrainianTargetStatus": "SEPARATE_UNREVIEWED_TASK",
+      "relatedSourceEvidence": [
+        {
+          "url": "https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=79033",
+          "excerpt": "NIKL Korean Basic Dictionary, 좋다: 활용 ‘좋은[조ː은]’.",
+          "scope": "Related lexical-form evidence only: dictionary lists 좋은, not the full form 좋은데; exact target IPA still requires review.",
+          "accessDate": "2026-10-24"
+        }
+      ]
+    }
+  ]
+}
