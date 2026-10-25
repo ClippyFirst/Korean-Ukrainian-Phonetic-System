@@ -14,14 +14,14 @@ The register is `research/r002-r003-source-adjudication-2026-10-24.json`. Its co
 - Primary rule reference: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002)
 - Existing error analysis: [KOREAN-ERROR-ANALYSIS-2026-10-24.md](KOREAN-ERROR-ANALYSIS-2026-10-24.md)
 
-The 14 items were selected from the pinned diagnostic artifact's native abstention ledger: seven R002 cases and seven R003 cases. The artifact's IPA reference is noisy user-generated data, not a NIKL gold set. The rule-family URL gives the relevant normative framework but does **not** prove that each exact lexical form, segmentation, or morphophonological environment is licensed. Every item therefore remains `PENDING_EXACT_FORM_SOURCE`.
+The 14 items were selected from the pinned diagnostic artifact's native abstention ledger: seven R002 cases and seven R003 cases. The artifact's IPA reference is noisy user-generated data, not a NIKL gold set. The rule-family URL gives the relevant normative framework but does **not** prove that each exact lexical form, segmentation, or morphophonological environment is licensed. Current case-level statuses are three `SOURCE_FOUND_PENDING_IPA` and eleven `PENDING_EXACT_FORM_SOURCE`; none has independent IPA gold.
 
 ## Case register
 
 | Case IDs | Forms | Why queued | Current gate |
 |---|---|---|---|
-| R002-01–07 | 되었어, 찢었으면, 했었음, 붙어야, 멋있어, 칡칡이, 이런삶은 | R002 native abstentions; some corpus references agree with g2pk, others do not; compact or lexical cases need segmentation review | Exact-form source + morphology + independent IPA |
-| R003-01–07 | 수많은, 괜찮아보이는디, 많을거같이, 싫어서, 쌓아서, 좋아보인다고, 좋은데 | R003 native abstentions; includes compact colloquial strings and contexts where morphology/spacing is not independently established | Exact-form source + morphology + independent IPA |
+| R002-01–07 | 되었어, 찢었으면, 했었음, 붙어야, 멋있어, 칡칡이, 이런삶은 | R002 native abstentions; some corpus references agree with g2pk, others do not; compact or lexical cases need segmentation review | Exact-form source + morphology + independent IPA; `멋있어` has surface source only |
+| R003-01–07 | 수많은, 괜찮아보이는디, 많을거같이, 싫어서, 쌓아서, 좋아보인다고, 좋은데 | R003 native abstentions; includes compact colloquial strings and contexts where morphology/spacing is not independently established | Exact-form source + morphology + independent IPA; `수많은` and `싫어서` have surface sources only |
 
 The case-level register preserves diagnostic references and engine outputs solely to help reviewers locate the disagreements. These values are not accepted IPA gold. No candidate IPA is filled into the adjudication fields, no Ukrainian target is certified, and no production heuristic is licensed by this register.
 

@@ -121,7 +121,7 @@ This comparison is not fully independent end-to-end: g2pk emits surface Hangul a
 1. **DONE_VERIFIED** — full occurrence-level native-vs-g2pk ledger emitted and inspected for both pinned datasets.
 2. **DONE_VERIFIED** — R002 coda-ㅇ fix and broad-IPA palatal-yod fix have merged regression tests and measured benchmark gains.
 3. **DONE_VERIFIED** — exact-form R010 licenses for 닮다 and 넘게 are merged; code-equivalent PR #300 checks passed and post-merge mainline tests/system verification passed.
-4. **TODO** — review the remaining 48 abstentions against NIKL and morphology evidence, prioritizing R002 and R003. Do not infer production rules from another engine's output alone.
+4. **PARTIAL** — the 48 strict abstentions are now audited occurrence-by-occurrence; a 14-form R002/R003 source queue exists, and three exact-form official sources were found. The native strict count remains 48; opt-in soft mode leaves 26 and two-analyzer consensus leaves 19, but neither is a demonstrated accuracy gain. Do not infer production rules from another engine's output alone.
 5. **TODO** — build an independently adjudicated NIKL holdout stratified by rule, environment, and rule interactions, with a separate held-out split.
 6. **BLOCKED** — independently adjudicated Korean IPA → Ukrainian practical-output gold corpus is not available; keep target-rendering evaluation separate.
 
@@ -136,3 +136,20 @@ This comparison is not fully independent end-to-end: g2pk emits surface Hangul a
 | Explain all remaining native-vs-g2pk differences | PARTIAL | Four reference-length mismatches remain; 48 abstentions still require adjudication. |
 | Normative acceptance benchmark | TODO | Independently reviewed IPA gold with NIKL article/environment provenance. |
 | Ukrainian output accuracy | BLOCKED | No independently adjudicated Korean-to-Ukrainian gold corpus in the current benchmark. |
+
+## 8. Reconciled strict abstention status — 2026-10-25
+
+The current occurrence-level audit is [NATIVE-ABSTENTION-AUDIT-2026-10-25.md](NATIVE-ABSTENTION-AUDIT-2026-10-25.md). It separates 48 unresolved token occurrences (47 unique forms) from runtime errors: there were zero engine exceptions. The 49 unresolved rule-context events are R002=25, R003=20, R004=1, R007=2, and one independent IPA-adjudication gate.
+
+| Mode | Coverage | Exact among scored | Coverage-adjusted exact | CER | Unresolved occurrences |
+|---|---:|---:|---:|---:|---:|
+| Strict native (default) | 98.2242% | 53.1827% | 52.2383% | 9.1883% | 48 |
+| Explicit soft heuristic | 99.0381% | 53.0818% | 52.5712% | 9.1868% | 26 |
+| Two-analyzer morphology consensus, diagnostic-only | 99.2971% | 53.0179% | 52.6452% | 9.1930% | 19 |
+
+The benchmark is against the existing UGTPHON IPA annotation, not independent gold. Consensus resolves 28 unique words relative to strict, but exact match among scored cases is slightly lower; the coverage-adjusted score rises because fewer cases are withheld. These metrics support an explicit coverage/abstention trade-off, not an accuracy claim. Strict remains the default and analyzer-derived IPA remains diagnostic-only.
+
+The 14-case source queue records exact official surface evidence for `멋있어`, `싫어서`, and `수많은`, all `SOURCE_FOUND_PENDING_IPA`; eleven forms still lack exact-form source evidence. Surface evidence is not IPA gold. Browser-only exact-form corrections now use `싫어서 → 시러서` and `수많은 → 수마는`, preserving `ː` for the exact dictionary form, and conditionally expose the other official `멋있어` variant. This does not change the native strict abstention count.
+
+**Acceptance status:** diagnosis and transparent opt-in diagnostic modes are `DONE_VERIFIED`; linguistic resolution of all 48 is `PARTIAL`; independent IPA gold and Ukrainian practical-transcription gold remain blocked pending specialist annotation.
+
