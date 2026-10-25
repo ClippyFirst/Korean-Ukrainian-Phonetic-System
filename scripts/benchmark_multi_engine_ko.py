@@ -367,15 +367,8 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         from g2pk import G2p
 
         g2p = G2p()
-        def g2pk_ipa(word: str) -> str:
-            surface = g2p(word)
-            if not isinstance(surface, str):
-                raise TypeError(f"g2pk returned {type(surface).__name__}")
-            surface = "".join(surface.split())
-            if not _HANGUL_TOKEN.fullmatch(surface):
-                raise ValueError(f"not a single Hangul surface form: {surface!r}")
-            return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
-        execute("g2pk_0_9_4", "g2pk==0.9.4", g2pk_ipa,
+        execute("g2pk_0_9_4", "g2pk==0.9.4",
+                lambda word: _g2pk_surface_to_ipa(g2p, word),
                 "g2pk surface Hangul -> project segment renderer; native rules not rerun")
 
     try:
@@ -793,6 +786,21 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "No candidate is considered universally best based on one dataset. Report coverage, abstention, CER, exact match and confidence intervals together.",
         ],
     }
+
+
+def _g2pk_surface_to_ipa(g2p: Callable[[str], Any], word: str) -> str:
+    """Render g2pK's surface Hangul through the shared segment renderer.
+
+    This intentionally evaluates the g2pK G2P surface plus ClippyFirst's
+    segment renderer, not an independent g2pK IPA realization.
+    """
+    surface = g2p(word)
+    if not isinstance(surface, str):
+        raise TypeError(f"g2pk returned {type(surface).__name__}")
+    surface = "".join(surface.split())
+    if not _HANGUL_TOKEN.fullmatch(surface):
+        raise ValueError(f"not a single Hangul surface form: {surface!r}")
+    return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
 
 
 def _native_ipa(phoneticize: Callable[[str], dict[str, Any]], word: str) -> str:
