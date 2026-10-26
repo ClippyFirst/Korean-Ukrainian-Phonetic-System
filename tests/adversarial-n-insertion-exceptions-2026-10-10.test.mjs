@@ -12,7 +12,7 @@ const engine = createEngine(canonical, lexical);
 test('NIKL §29 negative and exceptional cases do not receive blanket ㄴ insertion', () => {
   const expected = {
     '값있다': { surface: '가빋따', ipa: 'ka.bit̚.t͈a' },
-    '곧이어': { surface: '고디어', ipa: 'ko di ʌ' },
+    '곧이어': { surface: '고디어', ipa: 'ko.di.ʌ' },
     '음용': { surface: '으묭', ipa: 'ɯ mjoŋ' },
   };
   for (const [input, want] of Object.entries(expected)) {
