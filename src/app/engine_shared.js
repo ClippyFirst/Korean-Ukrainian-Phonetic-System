@@ -165,7 +165,17 @@ const NIKL_29_PHRASE_INSERTION=new Map([
 // §30(3) compound examples need a lexical compound boundary: do not treat
 // their written 사이시옷 as ordinary coda-to-vowel liaison when the exact
 // sourced lexical reading is unavailable.
-const NIKL_30_SAISIOT_INSERTION_FORMS=new Set(['깻잎','나뭇잎','베갯잇','도리깻열']);
+const NIKL_30_SAISIOT_PRONUNCIATION_FORMS=new Map([
+  ['냇가','냇>가'], ['샛길','샛>길'], ['빨랫돌','랫>돌'],
+  ['콧등','콧>등'], ['깃발','깃>발'], ['대폿밥','폿>밥'],
+  ['햇살','햇>살'], ['뱃속','뱃>속'], ['뱃전','뱃>전'],
+  ['고갯짓','갯>짓'], ['아랫니','랫>니'], ['뒷마루','뒷>마'],
+  ['뱃머리','뱃>머'], ['깻잎','깻>잎'], ['나뭇잎','뭇>잎'],
+]);
+
+// These additional compounds remain explicitly unresolved because their exact
+// pronunciation is not in the adjudicated rule inventory.
+const NIKL_30_SAISIOT_INSERTION_FORMS=new Set(['베갯잇','도리깻열']);
 
 function parseCsv(text){
   const rows=[];let row=[],cell='',quoted=false;
@@ -228,7 +238,7 @@ export {
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
   LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
-  NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_30_SAISIOT_PRONUNCIATION_FORMS, NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,
 };
