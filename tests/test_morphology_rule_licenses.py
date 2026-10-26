@@ -180,3 +180,12 @@ def test_analyzer_consensus_does_not_extend_lexical_root_into_another_noun():
     ]
     report = analyzer_consensus_rule_licenses(word, analyses)
     assert not any(item.startswith(("R012:", "R014:", "R015:")) for item in report["candidate_licenses"])
+
+
+
+def test_analyzer_consensus_rejects_missing_or_nonliteral_surface_alignment():
+    good = _analysis("mecab-ko", "좋아", [("좋", "VA", 0, 1), ("아", "EC", 1, 2)])
+    bad = _analysis("kiwi", "좋아", [("좋", "VA", 0, 1), ("아", "EC", 1, 2)])
+    del bad["morphemes"][0]["surface"]
+    report = analyzer_consensus_rule_licenses("좋아", [good, bad])
+    assert report["candidate_licenses"] == []
