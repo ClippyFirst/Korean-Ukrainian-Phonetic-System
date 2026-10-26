@@ -2363,3 +2363,26 @@ After downloading artifact 12689091191, an independent local cross-check of the 
 - zero raw-line mismatches in either derived inventory.
 
 This verifies exact line-level provenance for those two derived inventories. It does not establish that each row is a distinct test case or that each lexical occurrence is semantically asserted. The local cross-check was performed against the downloaded CI artifact; repository clone and full local suite execution remain unavailable due to the GitHub DNS failure in the local environment.
+
+
+## Browser failure case ledger and assertion-candidate precision — 2026-10-26
+
+### Observed failure ledger
+
+Parsed the complete TAP log for browser test run [40400451313](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451313), job 121844594361, preserving one row per failing subtest's first observed assertion. The CSV is [research/BROWSER-FAILURE-REGISTER-2026-10-26.csv](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/research/strict-teacher-guided-rule-mining-2026-10-26/research/BROWSER-FAILURE-REGISTER-2026-10-26.csv), committed in [29349940519d47345a2859b1050ba9a884e900f0](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/29349940519d47345a2859b1050ba9a884e900f0).
+
+- 82 observed failing subtests have exact test title, source file, callback and assertion line/column, actual/expected values where present, run/job IDs, PR head SHA and checked-out merge SHA.
+- 77 are **POSSIBLE_IPA_SEPARATOR_EXPECTATION** only by a mechanical check that replacing output dots with spaces makes the expected string. This is a triage hypothesis, not proof that every expected value should be rewritten.
+- 4 are **OUTPUT_MISMATCH_REQUIRES_CASE_REVIEW**, including truncated outputs for “몇 리”, mixed-script numeric input, “밭 아래”, and “3 연대”.
+- 1 is **VARIANT_EXPECTATION_OR_BOUNDARY_FAILURE** for a generic ㅢ alternative assertion.
+- The tested PR head was ceda29b; GitHub Actions checked out merge commit ff01dd5 into main a452054. Keep those two SHAs distinct.
+
+### Assertion candidate detector hardening
+
+The original assertion-candidate regex also treated import lines such as “import assert from ...” as assertion candidates. The detector is now anchored to the start of a source line and records a specific assertion/declaration kind; regression tests assert that import lines are excluded while actual test declarations and assert.equal lines remain. Code commit [e13df2132e8301e6946f541ef4cdaa95534937b4](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/e13df2132e8301e6946f541ef4cdaa95534937b4), test commit [7aea60fc1cb1c4bfe7717044b9d0c8a0481fb328](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/7aea60fc1cb1c4bfe7717044b9d0c8a0481fb328). The exact-head extraction/test workflows for this detector change were queued at the last poll; do not reuse the previous 5,522 assertion-candidate count for the updated detector until the new artifact is generated.
+
+### Next bounded batch
+
+1. Confirm the updated extractor regression and regenerate the five inventories on the latest PR head; record the new counts and file hashes from the embedded report.
+2. Use the 82-row failure ledger to split the 77 possible separator cases from the five non-separator cases. Fix/normalize only assertions confirmed to conflict with the declared eojeol renderer contract; investigate the five remaining cases against their exact source inputs and stack locations.
+3. Continue semantic case extraction after preserving the original raw assertions and per-test provenance. No production rule promotion is justified by this browser failure ledger.
