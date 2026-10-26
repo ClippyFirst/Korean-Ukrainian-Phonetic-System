@@ -1978,3 +1978,10 @@ This entry supersedes the prior executable-head references in earlier continuati
 - Exact-head real morphology smoke: [40344662799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662799), queued.
 - The CI backlog remains the immediate verification blocker. No test pass is claimed for `36b8e90`; local test execution is unavailable because GitHub DNS resolution fails in the container.
 
+## Latest code/test delta — lexical-rule provenance and fail-closed consensus (2026-10-26)
+
+- Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`.
+- Lexical-root extension audit records now expose the registered root, the internal licensed syllable pair, and the exact full-form license separately from the external morpheme boundary. This prevents the report from misrepresenting a suffix boundary such as `가>로` as the internal R014 pair `물>가`.
+- A regression assertion checks that provenance for `물가로`.
+- Exact-head Actions for this SHA have not yet surfaced final results. The latest visible full matrix remains queued on earlier code/test heads; no test pass is claimed.
+
