@@ -2166,10 +2166,10 @@ The owner clarified that the next deliverable must be a register of **all rules 
 ### Test-case register progress — 2026-10-26
 
 - Created canonical case-register specification: docs/MASTER-TEST-CASE-AND-RULE-REGISTER-2026-10-26.md.
-- Created research/TEST-CASE-REGISTER-MANIFEST-2026-10-26.csv: 427 tracked inventory rows including 178 test-source files, 177 fixture files, one corpus file, and relevant Korean data/research scripts.
+- Created research/TEST-CASE-REGISTER-MANIFEST-2026-10-26.csv: 431 tracked inventory rows including 179 test-source files, 177 fixture files, one corpus file, and relevant Korean data/research scripts.
 - Created research/TEST-CASE-REGISTER-LEXICAL-BASE-2026-10-26.csv from the pinned lexical dictionary: all 644 rows preserved, 17 columns, zero malformed rows and zero duplicate input forms. Source blob SHA: 1bd0d8116a5f5a4e74bcdbf7fc4999445b4478c5.
 - These are inventory foundations, not completion. Every test assertion still needs a case-level link; non-lexical fixtures/literals need extraction; expected outputs must remain separate from observed outcomes; actual pass/fail evidence must tie to an exact commit and workflow run.
 - **No further production-rule changes until the exhaustive case-register completeness gate passes.**
 
 
-- Added scripts/build_test_case_register.py plus tests/test_build_test_case_register.py. The extractor produces three separate CSVs: lexical source rows, lexical-to-test text-occurrence links, and all Hangul spans from test/fixture/corpus text. Occurrences and literal spans remain unclassified; this avoids pretending that a string match proves a test input or a rule pass. Exact-head CI is pending; no local test result is claimed.
+- Added scripts/build_test_case_register.py plus tests/test_build_test_case_register.py. The extractor produces four separate CSVs: lexical source rows, lexical-to-test text-occurrence links, all Hangul spans, and a line-by-line inventory of every scannable test/fixture/corpus source line (including IPA-only and Latin-script assertions). Occurrences and literal spans remain unclassified; this avoids pretending that a string match proves a test input or a rule pass. Exact-head CI is pending; no local test result is claimed.
