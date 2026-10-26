@@ -30,6 +30,7 @@ def load_prepared_jsonl(path: Path, expected_split: str) -> tuple[list[dict[str,
     rows: list[dict[str, Any]] = []
     seen: set[str] = set()
     metadata: tuple[str, str, str] | None = None
+    non_hangul_rows = 0
     for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         if not line.strip():
             continue
@@ -50,8 +51,10 @@ def load_prepared_jsonl(path: Path, expected_split: str) -> tuple[list[dict[str,
             raise ValueError(f"line {line_no}: sealed test/holdout case id refused")
         source = item["source_text"]
         target = item["target_raw"]
-        if not isinstance(source, str) or not HANGUL.fullmatch(source):
-            raise ValueError(f"line {line_no}: source_text must be one Hangul token")
+        if not isinstance(source, str) or not source.strip():
+            raise ValueError(f"line {line_no}: source_text must be non-empty")
+        if not HANGUL.fullmatch(source):
+            non_hangul_rows += 1
         if not isinstance(target, str) or not target.strip():
             raise ValueError(f"line {line_no}: target_raw must be non-empty")
         current_metadata = (str(item["dataset_id"]), str(item["dataset_revision"]),
@@ -80,6 +83,7 @@ def load_prepared_jsonl(path: Path, expected_split: str) -> tuple[list[dict[str,
         "split": expected_split,
         "input_rows": len(rows),
         "unique_source_forms": len({row["canonical"] for row in rows}),
+        "non_hangul_rows_excluded_by_benchmark_adapter": non_hangul_rows,
     }
 
 
