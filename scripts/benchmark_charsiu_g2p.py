@@ -86,7 +86,8 @@ def load_model(model_id: str, revision: str, tokenizer_id: str, tokenizer_revisi
 
 
 def predict(words: list[str], *, model_id: str, revision: str,
-            tokenizer_id: str, tokenizer_revision: str, batch_size: int = 16
+            tokenizer_id: str, tokenizer_revision: str, batch_size: int = 16,
+            language_prefix: str = "<kor>:"
             ) -> tuple[dict[str, str], dict[str, dict[str, str]]]:
     """Return valid predictions and explicit per-word failures without hiding partial coverage."""
     if batch_size < 1:
@@ -94,12 +95,12 @@ def predict(words: list[str], *, model_id: str, revision: str,
     torch, tokenizer, model = load_model(model_id, revision, tokenizer_id, tokenizer_revision)
     result: dict[str, str] = {}
     failures: dict[str, dict[str, str]] = {}
-    # Upstream contract: pre-tokenized words with the exact <kor>: prefix.
+    # The input prefix is checkpoint-specific and is recorded in the run manifest.
     for start in range(0, len(words), batch_size):
         batch = words[start:start + batch_size]
         try:
             encoded = tokenizer(
-                [f"<kor>: {word}" for word in batch],
+                [f"{language_prefix} {word}" for word in batch],
                 padding=True, add_special_tokens=False, return_tensors="pt",
             )
             with torch.no_grad():
@@ -374,7 +375,7 @@ def main() -> int:
     predictions, prediction_failures = predict(
         words, model_id=args.model, revision=args.model_revision,
         tokenizer_id=args.tokenizer, tokenizer_revision=args.tokenizer_revision,
-        batch_size=args.batch_size,
+        batch_size=args.batch_size, language_prefix=args.language_prefix,
     )
     os.environ["CHARSIU_MODEL_ID"] = args.model
     os.environ["CHARSIU_MODEL_REVISION_REQUESTED"] = args.model_revision
