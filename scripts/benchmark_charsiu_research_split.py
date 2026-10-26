@@ -20,7 +20,12 @@ from benchmark_charsiu_g2p import (
     eligible_occurrences,
     predict,
 )
-from korean_ukrainian.pipeline import _apply_lexical_pronunciations, phoneticize_korean
+from korean_ukrainian.pipeline import (
+    LEXICAL_PRONUNCIATIONS,
+    _apply_lexical_pronunciations,
+    _unlicensed_ambiguous_pronunciation_contexts,
+    phoneticize_korean,
+)
 from korean_ukrainian.phonology import parse_syllables
 from korean_ukrainian.rules import apply_ordered_rules
 from korean_ukrainian.ipa import realize_syllables
