@@ -341,3 +341,12 @@ test('NIKL §30 exact saisiot pronunciation forms match the Python rule inventor
     assert.ok(result.trace.some(item => item.rules.includes('saisiot-pronunciation-§30-exact-form')), source);
   }
 });
+
+test('Exact Python/browser formal-liaison inventories stay aligned', () => {
+  for (const [source, expected] of [['앉아라', '안자라'], ['없어도', '업써도']]) {
+    const result = engine.convert(source);
+    assert.equal(result.surfaceHangul, expected, source);
+    assert.ok(result.trace.some(item => item.rules.includes('complex-coda-liaison-exact-form-formal')), source);
+  }
+});
+
