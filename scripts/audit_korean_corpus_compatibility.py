@@ -67,7 +67,7 @@ def load_corpus(directory: Path, expected_dataset_id: str) -> tuple[dict, dict]:
         if not expected_hash or sha256(data) != expected_hash:
             raise ValueError(f"{path}: output SHA-256 does not match manifest")
         rows = read_jsonl(path, split)
-        expected_rows = manifest["splits"][split].get("source_rows")
+        expected_rows = manifest["splits"][split].get("output_row_count")
         if len(rows) != expected_rows:
             raise ValueError(f"{path}: expected {expected_rows} rows, got {len(rows)}")
         rows_by_split[split] = rows
