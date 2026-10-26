@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -24,7 +25,7 @@ test('§30(2): saisiot before ㄴ/ㅁ has independently pinned nasalized surface
     assert.equal(row.target_status, 'provisional', input + ': Ukrainian rendering is not an official standard');
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': engine surface');
-    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': IPA');
     assert.equal(result.status, 'lexical-review', input + ': provisional target remains reviewable');
     assert.deepEqual(result.issues, [], input + ': no unresolved pronunciation issue');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no placeholder in target');
@@ -48,7 +49,7 @@ test('§30(3): saisiot before 이 yields the documented ㄴㄴ insertion sequenc
     assert.equal(row.target_status, 'provisional', input + ': Ukrainian rendering remains provisional');
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': engine surface');
-    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': IPA');
     assert.equal(result.status, 'lexical-review', input + ': provisional target remains reviewable');
     assert.deepEqual(result.issues, [], input + ': no unresolved pronunciation issue');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no placeholder in target');
