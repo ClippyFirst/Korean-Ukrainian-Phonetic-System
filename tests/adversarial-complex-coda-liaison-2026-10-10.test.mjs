@@ -11,14 +11,14 @@ const engine = createEngine(canonical, lexical);
 test('NIKL complex-coda liaison examples resolve without morphological guessing', () => {
   const expected = {
     '넋이': { surface: '넉씨', ipa: 'nʌk̚.ɕ͈i' },
-    '앉아': { surface: '안자', ipa: 'an dʑa' },
+    '앉아': { surface: '안자', ipa: 'an.dʑa' },
     '곬이': { surface: '골씨', ipa: 'kol ɕ͈i' },
     '핥아': { surface: '할타', ipa: 'hal tʰa' },
     '읊어': { surface: '을퍼', ipa: 'ɯl pʰʌ' },
     '몫이': { surface: '목씨', ipa: 'mok̚ ɕ͈i' },
     '값이': { surface: '갑씨', ipa: 'kap̚ ɕ͈i' },
     '값을': { surface: '갑쓸', ipa: 'kap̚ s͈ɯl' },
-    '넓어': { surface: '널버', ipa: 'nʌl bʌ' },
+    '넓어': { surface: '널버', ipa: 'nʌl.bʌ' },
   };
   for (const [input, want] of Object.entries(expected)) {
     const result = engine.convert(input);
@@ -30,7 +30,7 @@ test('NIKL complex-coda liaison examples resolve without morphological guessing'
 
 test('NIKL dictionary conjugations preserve the ㄼ coda alternation in 넓다 and 짧다', () => {
   const expected = {
-    '넓어': { surface: '널버', ipa: 'nʌl bʌ' },
+    '넓어': { surface: '널버', ipa: 'nʌl.bʌ' },
     '넓으니': { surface: '널브니', ipa: 'nʌl bɯ ni' },
     '넓은': { surface: '널븐', ipa: 'nʌl bɯn' },
     '넓습니다': { surface: '널씀니다', ipa: 'nʌl s͈ɯm ni da' },
