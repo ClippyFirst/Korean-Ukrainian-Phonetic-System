@@ -1,0 +1,107 @@
+name: Charsiu train-dev teacher rule-review queue
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/benchmark_charsiu_g2p.py"
+      - "scripts/benchmark_charsiu_research_split.py"
+      - "scripts/mine_deterministic_rule_candidates.py"
+      - "scripts/prepare_korean_g2p_corpus.py"
+      - "scripts/prepare_ugtphon_korean_corpus.py"
+      - "tests/test_charsiu_research_split.py"
+      - "tests/test_mine_deterministic_rule_candidates.py"
+      - ".github/workflows/charsiu-dev-rule-mining.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  charsiumodel-dev:
+    name: Charsiu train/dev comparisons (research only)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      CHARSIU_MODEL_ID: charsiu/g2p_multilingual_byT5_small_100
+      CHARSIU_MODEL_REVISION: ed5cf99707fb39f5f3ccc461530d56b6fb531fd3
+      CHARSIU_TOKENIZER_ID: google/byt5-small
+      CHARSIU_TOKENIZER_REVISION: 68377bdc18a2ffec8a0533fef03b1c513a4dd49d
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project, test and pinned inference dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e . pytest "g2pk==0.9.4" "transformers==4.44.2" "sentencepiece==0.2.0"
+          python -m pip install torch --index-url https://download.pytorch.org/whl/cpu --extra-index-url https://pypi.org/simple
+
+      - name: Test split guards and candidate mining safeguards
+        run: |
+          set -euo pipefail
+          python -m pytest -q tests/test_charsiu_research_split.py tests/test_mine_deterministic_rule_candidates.py
+
+      - name: Prepare pinned train/dev corpora (test is never serialized)
+        run: |
+          set -euo pipefail
+          python scripts/prepare_korean_g2p_corpus.py --output-dir "$RUNNER_TEMP/sigmorphon-corpus"
+          python scripts/prepare_ugtphon_korean_corpus.py --output-dir "$RUNNER_TEMP/ugtphon-corpus"
+
+      - name: Run Charsiu on SIGMORPHON dev only
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_charsiu_research_split.py \
+            --corpus-jsonl "$RUNNER_TEMP/sigmorphon-corpus/dev.jsonl" \
+            --split dev \
+            --output-json "$RUNNER_TEMP/charsiu-sigmorphon-dev.json" \
+            --pairs-jsonl "$RUNNER_TEMP/charsiu-sigmorphon-dev-pairs.jsonl" \
+            --model "$CHARSIU_MODEL_ID" --model-revision "$CHARSIU_MODEL_REVISION" \
+            --tokenizer "$CHARSIU_TOKENIZER_ID" --tokenizer-revision "$CHARSIU_TOKENIZER_REVISION" \
+            --batch-size 8
+
+      - name: Run Charsiu on UGTPHON dev only
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_charsiu_research_split.py \
+            --corpus-jsonl "$RUNNER_TEMP/ugtphon-corpus/dev.jsonl" \
+            --split dev \
+            --output-json "$RUNNER_TEMP/charsiu-ugtphon-dev.json" \
+            --pairs-jsonl "$RUNNER_TEMP/charsiu-ugtphon-dev-pairs.jsonl" \
+            --model "$CHARSIU_MODEL_ID" --model-revision "$CHARSIU_MODEL_REVISION" \
+            --tokenizer "$CHARSIU_TOKENIZER_ID" --tokenizer-revision "$CHARSIU_TOKENIZER_REVISION" \
+            --batch-size 8
+
+      - name: Assert provenance and sealed-split policy
+        run: |
+          python - "$RUNNER_TEMP" <<'PY'
+          import json, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          for name in ("charsiu-sigmorphon-dev.json", "charsiu-ugtphon-dev.json"):
+              report = json.loads((root / name).read_text(encoding="utf-8"))
+              assert report["dataset_metadata"]["split"] == "dev"
+              assert report["dataset_metadata"]["input_rows"] > 0
+              assert report["model_provenance"]["test_data_used_for_rule_selection"] is False
+              assert report["model_provenance"]["weights_license_status"].startswith("UNRESOLVED")
+              assert report["model_provenance"]["output_convention_status"].startswith("UNREVIEWED")
+              assert all(row["production_rule_promotion"] is False for row in report["paired_rule_review_cases"])
+              print(name, report["dataset_metadata"], report.get("charsiu_byt5"), report.get("clippyfirst_native"))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: charsiu-train-dev-rule-review-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/charsiu-sigmorphon-dev.json
+            ${{ runner.temp }}/charsiu-sigmorphon-dev-pairs.jsonl
+            ${{ runner.temp }}/charsiu-ugtphon-dev.json
+            ${{ runner.temp }}/charsiu-ugtphon-dev-pairs.jsonl
+            ${{ runner.temp }}/sigmorphon-corpus/manifest.json
+            ${{ runner.temp }}/ugtphon-corpus/manifest.json
+          if-no-files-found: warn
+          retention-days: 14
