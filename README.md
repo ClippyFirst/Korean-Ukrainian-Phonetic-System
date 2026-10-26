@@ -76,6 +76,8 @@ CharsiuG2P can be used as a research teacher to identify contexts where a determ
 - [Teacher error-analysis tests](tests/test_analyze_korean_g2p_teacher_errors.py)
 - [CPU training workflow](.github/workflows/train-korean-g2p-teacher.yml) — uploads a short-lived research checkpoint and dev-only predictions.
 
+**Metric interpretation:** the recorded 60.2% (602/1,000) is the exact token-sequence match of the separate, randomly initialized research-only GRU teacher on the SIGMORPHON dev convention. It is **not** an accuracy score for the deterministic ClippyFirst Strict engine, the browser G2P path, the IPA-to-Ukrainian adapter, or Ukrainian transcription. The dev split selected the checkpoint, so this is not an independent final evaluation. A valid Strict-versus-teacher score remains blocked until the source IPA conventions are independently mapped and a separate eligible evaluation set is established.
+
 The current CharsiuG2P checkpoint's weights-license status and training-data overlap remain unresolved. Do not redistribute its weights or use test/holdout predictions to tune Strict.
 
 ## Research-only morphological analyzers (2026-10-24)
