@@ -28,7 +28,7 @@ const engine = createEngine(canonical, lexical);
 test('obstruent coda before ㄹ triggers ㄹ-to-ㄴ and nasal assimilation', () => {
   const result = engine.convert('독립문');
   assert.equal(result.ukrainian, 'тонніммун');
-  assert.match(result.ipa, /toŋ nim mun/);
+  assert.match(result.ipa, /toŋ\.nim\.mun/);
   assert.ok(result.trace.some((item) => item.rules.includes('liquid-to-nasal-before-obstruent')));
   assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')));
 });
@@ -36,14 +36,14 @@ test('obstruent coda before ㄹ triggers ㄹ-to-ㄴ and nasal assimilation', () 
 test('서울역 applies §29 n-insertion and retains the coda ㄹ', () => {
   const result = engine.convert('서울역');
   assert.equal(result.ukrainian, 'соулльок');
-  assert.match(result.ipa, /sʌ ul ljʌk̚/);
+  assert.match(result.ipa, /sʌ\.ul\.ljʌk̚/);
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
 });
 
 test('nasalisation changes both the coda and following liquid in 국립', () => {
   const result = engine.convert('국립');
   assert.equal(result.ukrainian, 'кунніп');
-  assert.match(result.ipa, /kuŋ nip̚/);
+  assert.match(result.ipa, /kuŋ\.nip̚/);
 });
 
 test('ㅇ+ㅢ uses the normative [ɰi] default instead of an unresolved placeholder', () => {
@@ -61,14 +61,14 @@ test('ㅇ+ㅢ uses the normative [ɰi] default instead of an unresolved placehol
 test('ㅢ with a consonant onset follows §5 and is realized as [i]', () => {
   const result = engine.convert('희망');
   assert.equal(result.ukrainian, 'гіман');
-  assert.match(result.ipa, /hi maŋ/);
+  assert.match(result.ipa, /hi\.maŋ/);
   assert.ok(result.trace.some((item) => item.rules.includes('vowel-ui-to-i')));
 });
 
 test('palatalization applies to ㄷ/ㅌ before ㅣ, not every j-like vowel', () => {
   const result = engine.convert('같이');
   assert.equal(result.ukrainian, 'качі');
-  assert.match(result.ipa, /ka tɕʰi/);
+  assert.match(result.ipa, /ka\.tɕʰi/);
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
   assert.equal(result.status, 'lexical-review');
 });
@@ -76,7 +76,7 @@ test('palatalization applies to ㄷ/ㅌ before ㅣ, not every j-like vowel', () 
 test('ㄷ+히 follows aspiration and then palatalization (§12 + §17)', () => {
   const result = engine.convert('굳히다');
   assert.equal(result.ukrainian, 'кучіда');
-  assert.match(result.ipa, /ku tɕʰi da/);
+  assert.match(result.ipa, /ku\.tɕʰi\.da/);
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
   assert.equal(result.status, 'lexical-review');
 });
@@ -85,7 +85,7 @@ test('the complete official institution name uses its sourced standard surface f
   const result = engine.convert('국립국어원');
   assert.equal(result.surfaceHangul, '궁님꾸거원');
   assert.equal(result.ukrainian, 'куннімкуґовон');
-  assert.equal(result.ipa, 'kuŋ nim k͈u ɡʌ wʌn');
+  assert.equal(result.ipa, 'kuŋ.nim.k͈u.ɡʌ.wʌn');
   assert.equal(result.status, 'lexical-review');
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
 });
@@ -100,7 +100,7 @@ test('unlicensed spelling-only palatalization is withheld instead of guessed', (
 
 test('밭에 does not undergo §17 palatalization because the following vowel is ㅔ', () => {
   const result = engine.convert('밭에');
-  assert.match(result.ipa, /pa tʰe/);
+  assert.match(result.ipa, /pa\.tʰe/);
   assert.ok(!result.trace.some((item) => item.rules.includes('palatalization')));
 });
 
