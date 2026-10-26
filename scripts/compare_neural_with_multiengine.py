@@ -227,22 +227,22 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
         losses = sum(not a["exact"] and b["exact"] for a, b in zip(neural_common, baseline_common))
         paired[engine] = {
             "eligible_occurrences": expected_count,
-            "charsiu_scored_occurrences": len(neural_all_scored),
+            "neural_scored_occurrences": len(neural_all_scored),
             "baseline_scored_occurrences": len(baseline_scored),
             "common_scored_occurrences": len(common_ids),
-            "charsiu_metrics_on_common_subset": neural_metrics,
+            "neural_metrics_on_common_subset": neural_metrics,
             "baseline_metrics_on_common_subset": baseline_metrics,
-            "exact_match_delta_charsiu_minus_baseline": (
+            "exact_match_delta_neural_minus_baseline": (
                 round(neural_metrics["exact_match_rate"] - baseline_metrics["exact_match_rate"], 6)
                 if neural_metrics["exact_match_rate"] is not None and baseline_metrics["exact_match_rate"] is not None
                 else None
             ),
-            "cer_delta_charsiu_minus_baseline": (
+            "cer_delta_neural_minus_baseline": (
                 round(neural_metrics["character_error_rate"] - baseline_metrics["character_error_rate"], 6)
                 if neural_metrics["character_error_rate"] is not None and baseline_metrics["character_error_rate"] is not None
                 else None
             ),
-            "charsiu_only_exact": wins,
+            "neural_only_exact": wins,
             "baseline_only_exact": losses,
             "both_exact": sum(a["exact"] and b["exact"] for a, b in zip(neural_common, baseline_common)),
             "both_not_exact": sum(not a["exact"] and not b["exact"] for a, b in zip(neural_common, baseline_common)),
