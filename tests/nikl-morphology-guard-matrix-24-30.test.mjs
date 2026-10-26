@@ -46,7 +46,7 @@ test('§§24–28: generic mode does not claim morphology-specific fortition', (
 });
 
 test('§24 exact-form stem-n/m ending licenses match the native engine without enabling productive guessing', () => {
-  const expected = [['닮다', 'tam.t͈a'], ['넘게', 'nʌm.k͈e'], ['안지', 'an.tɕ͈i']];
+  const expected = [['닮다', 'tam.t͈a'], ['넘게', 'nʌm.k͈e'], ['안지', 'an.tɕ͈i'], ['신다', 'sin.t͈a']];
   for (const [input, ipa] of expected) {
     const result = generic.convert(input);
     assert.equal(result.ipa, ipa, input + ': source-backed broad IPA');
