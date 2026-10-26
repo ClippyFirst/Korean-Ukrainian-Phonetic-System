@@ -32,7 +32,7 @@ RULE_META={
 "R013":("adnominal-l-fortition","NIKL §27","high"),
 "R014":("compound-fortition","NIKL §28; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R015":("saisiot-pronunciation","NIKL §30; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
-"R016":("verbal-stem-rieul-giyeok-exception","NIKL §11; lexical/morphological conditioning","high"),
+"R016":("verbal-stem-rieul-giyeok-exception","NIKL §11; official Q&A qna_seq=329463 and Standard Pronunciation Rules examples","high"),
 }
 
 # Exact-form licenses for formal-morpheme liaison examples explicitly attested in or derived from NIKL §§13–14.
@@ -179,6 +179,15 @@ _NIKL_R007_FORMAL_I_LICENSES = {
     "개같이못하고": "같>이",  # NIKL Q&A 327454 confirms 같이 [가치]; exact pair only.
 }
 
+# Exact source-backed NIKL §11 verbal-stem ㄺ + ㄱ exception examples.
+# Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+# 읽고 is also directly attested by NIKL Online Q&A qna_seq=329463.
+_NIKL_R016_VERBAL_STEM_LICENSES = {
+    "읽고": "읽>고",
+    "묽고": "묽>고",
+    "얽거나": "얽>거",
+}
+
 def _source_backed_rule_licenses(items, boundary_mode):
     full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
     licenses = set()
@@ -213,6 +222,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R015_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R015:saisiot:{full_form}:{pair}")
+    pair = _NIKL_R016_VERBAL_STEM_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R016:verb_stem_rieul_giyeok_suffix:{full_form}:{pair}")
     return licenses
 
 @dataclass
@@ -574,7 +586,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             parts=license.split(":",3)
             if len(parts)==4 and parts[1]=="verb_stem_rieul_giyeok_suffix" and parts[2]==full_form:
                 exact_pairs.add(parts[3])
-        if not exact_pairs or boundary_mode!="morpheme":
+        if not exact_pairs or boundary_mode not in {"same_word","morpheme"}:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
