@@ -6,6 +6,11 @@ candidate keeps its own native output and a declared adapter. It never routes a
 competitor's output back through the ClippyFirst phonological rules. A few
 competitors need a representation adapter because they emit Hangul surface text
 or a documented custom phone alphabet instead of IPA.
+
+CharsiuG2P is evaluated by the separate optional benchmark_charsiu_g2p.py runner
+and workflow job. That neural word-level ablation shares the IPA normalizer and
+reports its own paired occurrence ledger; its outputs are not mixed into this
+deterministic/external-engine driver or treated as sentence-context predictions.
 """
 from __future__ import annotations
 
