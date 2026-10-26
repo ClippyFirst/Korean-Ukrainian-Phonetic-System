@@ -21,11 +21,11 @@ A secondary technical review describes the system as a feed-forward neural netwo
 |---|---|---|
 | Locate primary publication | DONE_VERIFIED | IEEE record and DOI linked above |
 | Verify a runnable public implementation and checkpoint | BLOCKED | No verifiable inference code/checkpoint found in the public materials checked during this attempt. Reopen when the authors' implementation or weights and terms are identified. |
-| Build a faithful adapter | TODO | Must consume required context/phrasing inputs and preserve source-to-output alignment; must not pretend isolated-token inference is equivalent |
-| Run UGTPHON | TODO / dependency-blocked | Requires verified model artifact, documented inference, exact test inputs, and token alignment |
-| Run SIGMORPHON | TODO / compatibility-blocked | Requires a documented input contract or a clearly labelled context-free ablation |
+| Build a faithful adapter | PARTIAL | Generic context-preserving sentence-level evaluator and tests added at `scripts/benchmark_contextual_g2p_ko.py`; authentic NN-KoG2P runtime adapter remains blocked on the actual model artifact, input contract, and phone-to-IPA mapping |
+| Run UGTPHON | BLOCKED | No NN-KoG2P inference run: requires verified model artifact, documented sentence-level inference, and a source-backed phone-to-IPA mapping. The evaluator is infrastructure only. |
+| Run SIGMORPHON | BLOCKED / compatibility-limited | The existing set is lexical/word-level and cannot validate sentence-context behavior. Only a clearly labelled context-free ablation is acceptable if the authentic model's word-level interface is documented. |
 | Compare paired cases and publish scores | TODO | Same rows, normalization, denominators, coverage, abstentions/errors, per-case predictions, and uncertainty estimates where appropriate |
-| Licensing and provenance review | BLOCKED | Model/code/data license cannot be inferred from the paper alone; verify before use or redistribution |
+| Licensing and provenance review | BLOCKED | Model/code/data license cannot be inferred from the paper alone; verify before use or redistribution. No model artifact or license was found in the public materials checked. |
 
 ## Next concrete action
 
