@@ -170,3 +170,25 @@ Beyond the controlled IPA profile correction, the exact source-backed pronunciat
 
 This closes source-table drift, not the IPA convention problem. The Charsiu model's output convention still lacks an independent mapping to ClippyFirst broad IPA, and the controlled profile-sensitivity workflow is still queued. The first run's apparent narrow-profile gain is not valid evidence. Full tests and system verification are also queued; no pass is claimed.
 
+## Production rule promotion batch: NIKL §24 stem–ending fortition
+
+**Status: implemented; awaiting exact-head CI.**
+
+The Charsiu/IPA disagreement work is used to prioritize source review, not as a pronunciation authority. The first closed-inventory production promotion from this continuation is NIKL Standard Pronunciation Rule 24. The official source explicitly lists the following stem+ending examples, and the existing R010 rule engine already enforces the correct consonant environment and exact full-form/pair license:
+
+- `껴안다 → 껴안따` (`안>다`)
+- `앉고 → 안꼬` (`앉>고`)
+- `얹다 → 언따` (`얹>다`)
+- `삼고 → 삼꼬` (`삼>고`)
+- `더듬지 → 더듬찌` (`듬>지`)
+- `닮고 → 담꼬` (`닮>고`)
+- `젊지 → 점찌` (`젊>지`)
+
+These were added to both the Python runtime inventory `_NIKL_R010_FORM_LICENSES` and the browser runtime `NIKL_24_STEM_NM_ENDING_FORMS`; the existing automated parity test compares the maps. Regression coverage also asserts the expected surface forms and guards against overgeneralization.
+
+Two important exclusions are deliberate:
+- `안기다` remains `안기다`: official §24 excludes passive/causative `-기-` from this fortition.
+- `신고` is not automatically promoted despite being a listed pronunciation example because the exact orthography is homographic with the noun meaning ‘report’; without morphology/sense evidence, unconditional whole-form licensing would be unsafe. `감도` is a negative control against coda-only inference.
+
+The canonical source registry now points S001 to the direct official Standard Pronunciation Rules page. This is a **source-verified closed-inventory production expansion**, not a claim of unrestricted productive morphological inference. Broader stem-class generalization still requires reliable morphological evidence and explicit exception controls.
+
