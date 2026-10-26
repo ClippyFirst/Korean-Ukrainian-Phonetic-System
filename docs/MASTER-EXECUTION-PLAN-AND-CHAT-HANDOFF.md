@@ -2350,3 +2350,16 @@ The web test log contains **82 failing subtests**. Most observed examples are se
 | Neural-teacher-to-production-rule promotion | BLOCKED | IPA conventions and independent source/target adjudication remain unresolved |
 
 The current PR head includes later documentation-only commits after ceda29b; the above executable verification is explicitly for ceda29b. Exact-head checks for the later documentation head must be confirmed separately. PR #339 remains draft and must not be merged while the browser gate is failing.
+
+
+## Artifact integrity cross-check and PR merge-ref provenance — 2026-10-26
+
+The extraction workflow was triggered by PR head ceda29b, but GitHub Actions checked out the PR merge ref at commit [ff01dd5fbfa35008c1ca24adc652ac1ee5a84310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/ff01dd5fbfa35008c1ca24adc652ac1ee5a84310), which merges ceda29b into main a452054a669de28426404d1110731715083423bb. The artifact's embedded extraction report correctly records ff01dd5 as the checked-out commit. Distinguish the PR head SHA from the tested merge-ref SHA in future evidence records.
+
+After downloading artifact 12689091191, an independent local cross-check of the generated CSVs verified:
+- all 34,509 source-line keys (path + line number) are unique;
+- all 50,753 Hangul candidate rows' raw_line values exactly match their corresponding source-line row;
+- all 6,794 lexical-link raw_test_line values exactly match their corresponding source-line row;
+- zero raw-line mismatches in either derived inventory.
+
+This verifies exact line-level provenance for those two derived inventories. It does not establish that each row is a distinct test case or that each lexical occurrence is semantically asserted. The local cross-check was performed against the downloaded CI artifact; repository clone and full local suite execution remain unavailable due to the GitHub DNS failure in the local environment.
