@@ -47,3 +47,15 @@ The same authors later published [Fast Bilingual Grapheme-To-Phoneme Conversion 
 Added `scripts/benchmark_contextual_g2p_ko.py` and `tests/test_contextual_g2p_benchmark.py`. The evaluator accepts sentence-level outputs only when the runner declares `input_granularity=sentence`, `output_kind=ipa`, and the exact canonical sentence input. It checks IDs, rejects Hangul output that has not passed through a verified phone-to-IPA adapter, reports missing predictions as reduced coverage, and emits per-sentence predictions plus exact match/CER. The existing multi-engine workflow now runs its unit tests.
 
 This is **benchmark infrastructure only**; it is not the NN-KoG2P model adapter, does not generate model predictions, and has not produced NN-KoG2P scores. It makes the sentence-level acceptance contract executable while the actual model and verified phone-to-IPA mapping remain unavailable. SIGMORPHON remains word-level and cannot test the model's sentence-context behavior without a separately labelled context-free experiment.
+
+
+
+## Broader neural candidate triage — 2026-10-26
+
+A runnable alternative is now wired into the repository's opt-in workflow: CharsiuG2P multilingual ByT5 small. It is a separate model and is **not** labelled NN-KoG2P. Its actual UGTPHON and SIGMORPHON metrics remain pending until the workflow's per-case artifact is inspected.
+
+- Official model page: https://huggingface.co/charsiu/g2p_multilingual_byT5_small_100. The CharsiuG2P code repository declares MIT, but the Hugging Face model page does not state a weights license. Rights for weights are **UNRESOLVED**; inference is research-only and weights are never uploaded.
+- Tokenizer page: https://huggingface.co/google/byt5-small (Apache-2.0). The workflow resolves model prefix ed5cf99 and tokenizer prefix 68377bd to full immutable SHAs and records hashes.
+- The public kr-MATAGI/IPA_G2P-Testing repository lists both a Charsiu T5 script and a KoGPT script. The latter is training/fine-tuning oriented; KakaoBrain's own model card declares pretrained KoGPT weights CC-BY-NC-ND 4.0 and recommends 32 GB GPU RAM for the 6B model. It is not a suitable, clearly licensed CPU G2P baseline for this run.
+- SMART-G2P handles code-mixed transliteration and uses g2pk/KoG2P for pronunciation; it is not an independent neural G2P model.
+- The current Charsiu adapter explicitly records empty outputs, invalid Hangul outputs and model errors; per-case outputs and paired ClippyFirst/g2pk comparisons are included in the artifact. No metric is claimed before real inference completes.
