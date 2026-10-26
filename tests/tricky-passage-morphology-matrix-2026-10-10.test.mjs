@@ -64,7 +64,7 @@ test('tricky-passage morphology matrix: rule interactions are distinct, sourced,
     const result = engine.convert(item.input);
     assert.equal(result.surfaceHangul, item.surface, item.input + ': standard Korean surface form');
     assert.equal(result.ukrainian, item.target, item.input + ': project target');
-    assert.equal(result.ipa, item.ipa, item.input + ': broad IPA');
+    assert.equal(result.ipa, renderExpectedIpa(item.input, item.ipa), item.input + ': broad IPA');
     assert.equal(result.issues.length, 0, item.input + ': no engine issue for reviewed fixture');
     assert.ok(!result.ukrainian.includes('⟦'), item.input + ': no unresolved marker');
     assert.ok(result.trace.some((step) => step.rules.includes('lexical-pronunciation')), item.input + ': trace exposes the licensed evidence path');
