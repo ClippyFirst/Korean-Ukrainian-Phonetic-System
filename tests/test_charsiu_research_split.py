@@ -69,7 +69,7 @@ def test_pair_ledger_never_promotes_a_rule():
         "per_occurrence": [{
             "occurrence_id": "0",
             "row_id": "row-1",
-            "token": "가곡",
+            "word": "가곡",
             "gold": "ka̠ɡo̞k̚",
             "charsiu_byt5": {"status": "scored", "ipa": "kaɡok̚", "exact": True, "distance": 0},
             "clippyfirst_native": {"status": "scored", "ipa": "ka.ɡo.k̚", "exact": False, "distance": 2},
