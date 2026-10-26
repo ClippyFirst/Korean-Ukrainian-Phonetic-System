@@ -2417,7 +2417,7 @@ The original assertion-candidate regex also treated import lines such as “impo
 
 ### Exact-head inventory after assertion-candidate detector hardening — 2026-10-26
 
-- **Verified code head:** `19832224daab7d17b56df75485bb5461ea3c9ef9` (merged PR #343; the extraction run checked this exact merged head).
+- **Merged branch result:** `19832224daab7d17b56df75485bb5461ea3c9ef9`. The extraction workflow checked out synthetic PR merge ref `456f764390441bab7a02d55c1020144ffb57c015` (PR #343 head `4019e233c2a07cbb2d4679ad85fd77a56a307af4` merged into base `a751e9b6657bc3958d4feb3e692de42c81aa1c82`); distinguish that CI merge ref from the final post-merge branch commit.
 - **Extraction PASS:** [run 40408709171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171), artifact [12691822644](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171/artifacts/12691822644), ZIP SHA-256 `28271fcbf18402e8046399721e6c6be1db42d4998e94d6f2dee7c9ca9d0b223e`.
 - **Current inventory:** 644 lexical records; 359 test files scanned; 387 source files scanned; 6,801 lexical-to-test text links; 34,573 exact source lines preserved; 5,241 assertion/test-declaration candidates; 644 lexical inputs with at least one text match.
 - **Interpretation:** the previous 5,522 assertion-candidate count is superseded by the stricter line-anchored detector. Text links and assertion candidates remain discovery inventories, not proof that every lexical input has a test assertion or that each assertion has been semantically classified.
@@ -2426,7 +2426,7 @@ The original assertion-candidate regex also treated import lines such as “impo
 
 ## Current PR #339 merge-ref CI reconciliation — 2026-10-27
 
-**Identity matters:** research branch head before this acceptance-doc-only commit was `256b27a454c992218ca87a0fdf58ea6135071560`; PR #339's Actions checked out synthetic merge ref commit `348a3dc18764191f68339333ce24bc0f54e2c523` (merge of that head into default `main` `a452054a669de28426404d1110731715083423bb`). The latest handoff/acceptance documentation commit is `e8ac6e623f2cdf2258414da9b53488d6d5857b57`; it changes documentation only, so it is not itself the code/test SHA run by those jobs.
+**Identity matters:** research branch head before this acceptance-doc-only commit was `256b27a454c992218ca87a0fdf58ea6135071560`; PR #339's Actions checked out synthetic merge ref commit `348a3dc18764191f68339333ce24bc0f54e2c523` (merge of that head into default `main` `a452054a669de28426404d1110731715083423bb`). Subsequent continuation commits update the handoff, case register, and acceptance gates only; they do not change the runtime/test code represented by this merge-ref run.
 
 ### Exact outcomes observed on merge ref 348a3dc
 
