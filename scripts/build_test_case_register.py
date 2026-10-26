@@ -31,6 +31,11 @@ CANDIDATE_COLUMNS = [
     "candidate_id", "source_path", "line_number", "hangul_span",
     "raw_line", "classification_status", "observed_run_status",
 ]
+SOURCE_LINE_COLUMNS = [
+    "line_id", "source_path", "source_category", "line_number",
+    "raw_line", "line_sha256", "classification_status",
+    "observed_run_status",
+]
 TEXT_SUFFIXES = {".mjs", ".js", ".cjs", ".py", ".json", ".jsonl", ".csv", ".txt", ".md", ".yaml", ".yml"}
 
 
@@ -92,10 +97,29 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
 
     links: list[dict[str, str]] = []
     candidates: list[dict[str, str]] = []
+    source_lines: list[dict[str, str]] = []
     candidate_index = 0
+    line_index = 0
     for path, lines in file_lines.items():
         rel = path.relative_to(repo_root).as_posix()
+        if "/fixtures/" in rel:
+            category = "fixture"
+        elif "/corpora/" in rel:
+            category = "test_corpus"
+        else:
+            category = "test_source"
         for line_number, line in enumerate(lines, start=1):
+            line_index += 1
+            source_lines.append({
+                "line_id": f"LINE-{line_index:08d}",
+                "source_path": rel,
+                "source_category": category,
+                "line_number": str(line_number),
+                "raw_line": line,
+                "line_sha256": __import__("hashlib").sha256(line.encode("utf-8")).hexdigest(),
+                "classification_status": "UNCLASSIFIED_SOURCE_LINE",
+                "observed_run_status": "NOT_TIED_TO_EXACT_HEAD_RUN",
+            })
             for match in HANGUL.finditer(line):
                 candidate_index += 1
                 candidates.append({
@@ -141,11 +165,13 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
     write_csv(output_dir / "TEST-CASE-REGISTER-LEXICAL-BASE-2026-10-26.csv", LEXICAL_COLUMNS, lexical_records)
     write_csv(output_dir / "TEST-CASE-REGISTER-LEXICAL-TEST-LINKS-2026-10-26.csv", LINK_COLUMNS, links)
     write_csv(output_dir / "TEST-CASE-REGISTER-HANGUL-LITERAL-CANDIDATES-2026-10-26.csv", CANDIDATE_COLUMNS, candidates)
+    write_csv(output_dir / "TEST-CASE-REGISTER-SOURCE-LINES-2026-10-26.csv", SOURCE_LINE_COLUMNS, source_lines)
     return {
         "lexical_records": len(lexical_records),
         "test_files_scanned": len(file_lines),
         "lexical_test_links": len(links),
         "hangul_literal_candidates": len(candidates),
+        "source_lines_preserved": len(source_lines),
         "lexical_inputs_with_text_matches": sum(
             row["test_provenance_status"] == "TEXT_OCCURRENCE_FOUND_REQUIRES_ASSERTION_CLASSIFICATION"
             for row in lexical_records
