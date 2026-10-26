@@ -59,6 +59,13 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
   ['없으니까','없>으'], // NIKL §§13–14, 없다 + -으니까.
 ]);
 
+// Exact-form substantive-morpheme liaison licenses under NIKL §15(붙임).
+// NIKL explicitly attests 값어치[가버치]; this is distinct from formal 값이[갑씨].
+// Source: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62
+const NIKL_15_SUBSTANTIVE_LIAISON_FORMS=new Map([
+  ['값어치','값>어'],
+]);
+
 // Exact-form NIKL §12(4) ㅎ-coda deletion licenses. These attest only
 // Korean surface behavior, not independent IPA or Ukrainian-output gold.
 const NIKL_COMPLEX_H_SUFFIX_FORMS=new Map([
@@ -172,7 +179,7 @@ export {
   HANGUL_BASE, HANGUL_END, V_COUNT, T_COUNT, N_COUNT,
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
-  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
+  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
   NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,
