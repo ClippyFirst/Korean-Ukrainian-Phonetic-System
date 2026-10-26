@@ -130,6 +130,7 @@ def build_pairs(
             strict_row = {
                 "case_id": case_id,
                 "input": source,
+                "_source_nfc": source,
                 "ipa": strict.get("ipa", {}),
                 "ipa_status": strict.get("ipa_status"),
                 "ipa_is_diagnostic_only": strict.get("ipa_is_diagnostic_only"),
