@@ -26,7 +26,7 @@ test('§17 all six listed palatalization examples and all three ㄷ+히 examples
     assert.ok(row, 'missing §17 official example: ' + word);
     assert.match(row.source_url, officialSource, word);
     assert.equal(row.surface_hangul, surface, word);
-    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word);
+    assert.equal(row.ipa_syllables.split('|').join('.'), ipa, word);
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     assert.equal(result.ipa, ipa, word);
@@ -67,7 +67,7 @@ test('§18 all twenty-four listed word examples are source-backed with exact sta
     assert.ok(row, 'missing §18 official example: ' + word);
     assert.match(row.source_url, officialSource, word);
     assert.equal(row.surface_hangul, surface, word);
-    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word);
+    assert.equal(row.ipa_syllables.split('|').join('.'), ipa, word);
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     if (row.target_status !== 'surface-only') {
