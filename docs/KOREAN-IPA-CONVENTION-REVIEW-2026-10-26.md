@@ -192,3 +192,9 @@ Two important exclusions are deliberate:
 
 The canonical source registry now points S001 to the direct official Standard Pronunciation Rules page. This is a **source-verified closed-inventory production expansion**, not a claim of unrestricted productive morphological inference. Broader stem-class generalization still requires reliable morphological evidence and explicit exception controls.
 
+## Additional production promotion: official NIKL §11 `읽거든`
+
+The closed Python and browser R016 inventories now also include `읽거든 → 일꺼든` (`읽>거`), an explicit official §11 example of verbal-stem ㄺ before ㄱ. This uses the existing exact-form + pair license and does not generalize to noun sequences such as `닭고기`. A regression asserts both the positive R016 trace and the negative noun trace. The existing Python/browser map parity gate covers the new entry.
+
+Official normative source: [NIKL Standard Pronunciation Rules](https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002); the source's §11 explanation explicitly contrasts the verbal-stem behavior in `읽고[일꼬]` and `읽거든[일꺼든]` with the ordinary ㄺ coda rule.
+
