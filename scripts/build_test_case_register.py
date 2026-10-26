@@ -106,8 +106,10 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
     for path in files:
         try:
             file_lines[path] = path.read_text(encoding="utf-8-sig").splitlines()
-        except (UnicodeDecodeError, OSError):
-            continue
+        except (UnicodeDecodeError, OSError) as exc:
+            # This register is an evidence inventory: silently skipping an unreadable
+            # candidate file would make the reported scan counts look complete.
+            raise RuntimeError(f"Cannot scan source file {path}: {exc}") from exc
 
     links: list[dict[str, str]] = []
     candidates: list[dict[str, str]] = []

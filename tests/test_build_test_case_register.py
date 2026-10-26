@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import tempfile
 import unittest
 from pathlib import Path
@@ -70,6 +71,11 @@ class TestBuildTestCaseRegister(unittest.TestCase):
                 source_lines = list(csv.DictReader(stream))
             self.assertEqual(stats["source_lines_preserved"], 9)
             self.assertTrue(any(row["raw_line"] == "  const a = '안지'; // expected surface 안찌 and IPA an.tɕ͈i" for row in source_lines))
+            self.assertTrue(any(
+                row["raw_line"] == "  const a = '안지'; // expected surface 안찌 and IPA an.tɕ͈i"
+                and row["line_sha256"] == hashlib.sha256(row["raw_line"].encode("utf-8")).hexdigest()
+                for row in source_lines
+            ))
             self.assertTrue(any(row["source_category"] == "fixture" and row["raw_line"] == "안지와 안다" for row in source_lines))
             self.assertTrue(any(row["source_category"] == "source_data" and row["source_path"] == "data/korean/lexical_pronunciations.csv" for row in source_lines))
             with (output / "TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv").open(encoding="utf-8", newline="") as stream:
@@ -79,6 +85,19 @@ class TestBuildTestCaseRegister(unittest.TestCase):
             self.assertFalse(any(row["raw_line"].lstrip().startswith("import assert") for row in assertions))
             self.assertTrue(any(row["assertion_kind"] == "assert.equal" for row in assertions))
 
+
+    def test_unreadable_source_fails_closed_instead_of_underreporting_inventory(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "data/korean").mkdir(parents=True)
+            (root / "tests").mkdir(parents=True)
+            (root / "data/korean/lexical_pronunciations.csv").write_text(
+                "input,surface_hangul,target_syllables,ipa_syllables\n", encoding="utf-8"
+            )
+            (root / "tests/bad.txt").write_bytes(b"valid prefix\xff invalid UTF-8")
+            with self.assertRaisesRegex(RuntimeError, "Cannot scan source file") as caught:
+                build(root, root / "out")
+            self.assertIn("bad.txt", str(caught.exception))
 
 if __name__ == "__main__":
     unittest.main()
