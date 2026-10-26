@@ -68,10 +68,10 @@ def test_pairing_uses_identical_occurrences_and_separates_coverage():
     assert report["eligible_occurrences"] == 3
     assert report["normalization_profile"].startswith("benchmark_ugtphon_ko.normalize_ipa")
     assert any("overlap" in x for x in report["limitations"])
-    assert g2pk["charsiu_scored_occurrences"] == 2
+    assert g2pk["neural_scored_occurrences"] == 2
     assert g2pk["baseline_scored_occurrences"] == 3
     assert g2pk["common_scored_occurrences"] == 2
-    assert g2pk["charsiu_only_exact"] == 1
+    assert g2pk["neural_only_exact"] == 1
     assert g2pk["baseline_only_exact"] == 1
     assert report["per_occurrence"][2]["charsiu_byt5"]["status"] == "empty_output"
     assert report["per_occurrence"][1]["baselines"]["clippyfirst_native"]["status"] == "abstained"
