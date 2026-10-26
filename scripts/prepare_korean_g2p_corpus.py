@@ -36,6 +36,8 @@ def sha256(data: bytes) -> str:
 
 
 def parse_tsv(data: bytes, split: str, *, expected_rows: int | None = None) -> list[dict[str, str | int]]:
+    if split not in EXPECTED_ROWS:
+        raise ValueError(f"unsupported split: {split!r}")
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError as exc:
@@ -105,6 +107,10 @@ def prepare(output_dir: Path) -> dict:
     dev_test_overlap = source_forms["dev"] & source_forms["test"]
     if train_dev_overlap:
         raise ValueError(f"train/dev source-form leakage: {len(train_dev_overlap)} forms overlap")
+    if train_test_overlap := (source_forms["train"] & source_forms["test"]):
+        raise ValueError(f"train/test source-form leakage: {len(train_test_overlap)} forms overlap")
+    if dev_test_overlap := (source_forms["dev"] & source_forms["test"]):
+        raise ValueError(f"dev/test source-form leakage: {len(dev_test_overlap)} forms overlap")
     # Test is inspected only for split-overlap diagnostics and is never serialized.
     overlap = {
         "train_dev": len(train_dev_overlap),
