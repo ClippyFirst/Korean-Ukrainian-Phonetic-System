@@ -6,6 +6,14 @@
 
 The current mainline has a layered Python engine (\`pipeline.py\` + \`rules.py\`) with source-backed licenses and deliberate abstention for ambiguous morphology. The public browser practical path is a separate pinned JavaScript g2pK port. Neither should be silently replaced or modified to imitate a checkpoint's raw outputs.
 
+## Benchmark corpus eligibility audit (2026-10-26)
+
+The existing benchmark files are not all training material. The immutable UGTPHON revision already pinned by the repository contains separate Korean `ko/train.json`, `ko/dev.json`, and `ko/test.json` files, plus `ko/LICENSE` declaring Apache-2.0. At that exact revision, Git tree entries report blob sizes of 3,651,448 bytes (train), 512,281 bytes (dev), and 729,354 bytes (test); the Korean dev/test files were fetched and declare their own split labels. The project's scored benchmark uses **only `ko/test.json`** (275 rows); it must remain evaluation-only. The separate train partition is a candidate for model fine-tuning after pinned download, SHA-256 capture, split-integrity validation, deduplication, and model-rights review. Use dev for checkpoint selection, not gradient training.
+
+The repository's SIGMORPHON converter explicitly consumes the pinned `kor_test.tsv` paired word/IPA file and labels the resulting rows as `test`; its provenance notes a Wiktionary CC BY-SA 3.0 basis and a mismatch between the pinned paired file and the shared-task README. That current test file is evaluation-only, not a training corpus. I did not verify an immutable official Korean train/dev artifact in this run, so SIGMORPHON train/dev remain **BLOCKED pending source/partition verification**. The project's frozen 24-form NIKL holdout has source-attested Hangul readings but no IPA gold and explicitly prohibits tuning; it is not training data.
+
+The candidate training plan is therefore: (1) acquire UGTPHON Korean train/dev/test from the pinned revision, recording SHA-256 for each file; (2) check duplicate row IDs and exact row/token overlap across partitions before fitting; (3) fine-tune only if the selected base checkpoint's license permits it; (4) use train for gradient updates, dev for early stopping/hyperparameter selection, and test once for final comparison; (5) separately use source-backed NIKL examples to adjudicate deterministic rules. A neural fine-tune is not itself a deterministic-rule license.
+
 ## What was implemented
 
 - \`scripts/mine_deterministic_rule_candidates.py\` reads raw teacher IPA and current Strict IPA from JSONL plus a required provenance manifest.
