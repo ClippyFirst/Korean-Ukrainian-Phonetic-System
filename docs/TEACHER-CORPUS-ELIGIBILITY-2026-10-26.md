@@ -162,3 +162,10 @@ For the train/train overlap, 151 of the 366 mismatching forms differ only when l
 ## Typed annotation packets (2026-10-26)
 
 The source-only builders now feed `scripts/packetize_korean_ipa_annotations.py` on train/dev only. The output preserves each source target string and exposes its representation-specific units/markers for inspection; it leaves `clippyfirst_broad_ipa` and Ukrainian output null until a reviewed mapping exists. This does not change the underlying source data, combine the corpora, or promote either corpus to normative IPA gold. The focused tests and CI artifact are maintained by `.github/workflows/teacher-corpus-audit.yml`.
+
+
+## Source convention and conflict queue follow-up (2026-10-26)
+
+The pinned source documentation has now been reviewed and summarized in [KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md](KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md). SIGMORPHON's target is a roughly-phonemic IPA phone sequence tokenized by `segments`; its preprocessing removes stress and syllable markers. UGTPHON's Korean token targets derive from IPA-Dict and native-speaker checks, with corpus-specific token and variant conventions. Therefore a shared IPA glyph does not, by itself, prove convention equivalence.
+
+The new `scripts/build_korean_ipa_adjudication_queue.py` turns the 366 train/train target disagreements into inspectable, provenance-preserving review records. It does not map symbols, erase length, merge corpora, select gold labels, or create runtime rules. The queue and its tests are wired into `.github/workflows/teacher-corpus-audit.yml`; exact-head CI evidence must be confirmed before marking the queue DONE_VERIFIED.
