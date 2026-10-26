@@ -106,6 +106,15 @@ The paired rows illustrate why the counts cannot be interpreted as missing phono
 
 These additions remain unverified until exact-head CI passes; commits and test files alone are not verification.
 
+
+## Existing train/train IPA conflict queue — reuse rather than duplicate
+
+The current PR #339 branch already contains a focused, provenance-pinned generator: scripts/build_korean_ipa_adjudication_queue.py, tests/test_build_korean_ipa_adjudication_queue.py, and the Teacher corpus split audit workflow. It compares only shared source forms from the pinned SIGMORPHON and UGTPHON **train** splits. It retains every raw target, source pin, case ID and literal Unicode codepoint inventory; it removes SIGMORPHON token-separator whitespace only for the comparison; it does not choose a gold corpus, map IPA symbols, label codepoints as phonemes, or generate production rules. The workflow is configured to upload korean-ipa-adjudication-queue.json with the separate train/dev corpus artifacts.
+
+A closed predecessor PR #340 contained an earlier version whose unit tests failed because build_queue expected precomputed _normalized_source and _comparison_target fields. The current PR #339 version includes _prepare_in_memory_rows and prepares the rows before grouping, so the defect from that closed predecessor has already been addressed in the current branch. PR #340 remains closed and was not merged or reopened; its useful functionality is already present in the current branch. Do not duplicate the generator.
+
+**Status: PARTIAL pending current-head CI and artifact retrieval.** Earlier predecessor workflow artifacts do not establish that the current branch's test suite passes, and the exact-tree CI runs checked during this session remained queued. Once the artifact is produced, the queue should be used as a source-convention adjudication workload—not as a pronunciation gold set or direct rule-mining input. Each item still requires independent source review before a symbol mapping or phonological candidate is promoted.
+
 ## How to calculate a real remaining-rule count
 
 1. Retrieve exact current CI artifacts for pinned train/dev; verify hashes, split metadata, teacher revision and row counts.
@@ -124,7 +133,7 @@ These additions remain unverified until exact-head CI passes; commits and test f
 | Candidate miner and train/dev/holdout guardrails | DONE_VERIFIED on previously documented CI; current exact-head rerun pending | Script and tests preserve raw outputs and forbid sealed splits |
 | Typed lossless IPA packets | DONE_VERIFIED on exact head 9fadae60373f3feac79098be7a37bdd49e2d7085 per master handoff | Does not map corpus conventions to ClippyFirst IPA |
 | Independent SIGMORPHON/UGTPHON-to-ClippyFirst IPA adapter | BLOCKED | Symbol mapping and independent adjudication incomplete |
-| Enumerated case-level residual rule list from current artifacts | TODO | Artifacts need retrieval and audit; reliable count unavailable |
+| Train/train IPA conflict queue generator and tests | PARTIAL | Present on current PR #339 branch; exact-head CI and current artifact retrieval pending |
 | Promote generalized rule based on teacher output | BLOCKED by evidence gate | No source-adjudicated candidate with reviewed IPA gold and eligible held-out gain |
 | Source-backed exact-form inventory extensions | PARTIAL until current exact-head CI passes | Code/tests exist; current PR workflow backlog was queued |
 | Independent IPA-to-Ukrainian target evaluation | BLOCKED | No independent reviewed target gold set |
