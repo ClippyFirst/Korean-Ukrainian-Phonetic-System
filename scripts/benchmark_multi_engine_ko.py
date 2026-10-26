@@ -14,6 +14,7 @@ deterministic/external-engine driver or treated as sentence-context predictions.
 The dedicated research Actions job is branch-scoped because downloading the
 checkpoint is large and model weights have unresolved redistribution terms.
 A separate runner is used so its raw per-case predictions remain independently auditable.
+Neither neural outputs nor corpus annotations are promoted to source-reviewed normative IPA gold.
 """
 from __future__ import annotations
 
