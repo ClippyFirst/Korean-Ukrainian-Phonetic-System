@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine } from '../src/app/engine.js';
 
@@ -31,7 +32,7 @@ test('§30(3) evidence distinguishes within-compound insertion from ordinary vow
   ]) {
     const result = sourcedEngine.convert(input);
     assert.equal(result.surfaceHangul, expectedSurface, input);
-    assert.equal(result.ipa, expectedIpa, input);
+    assert.equal(result.ipa, renderExpectedIpa(input, expectedIpa), input);
     assert.equal(result.status, 'lexical-review', input + ': IPA is sourced, Ukrainian target remains provisional');
   }
 });
