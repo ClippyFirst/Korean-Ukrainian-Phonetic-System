@@ -75,6 +75,13 @@ def test_pairing_uses_identical_occurrences_and_separates_coverage():
     assert g2pk["baseline_only_exact"] == 1
     assert report["per_occurrence"][2]["charsiu_byt5"]["status"] == "empty_output"
     assert report["per_occurrence"][1]["baselines"]["clippyfirst_native"]["status"] == "abstained"
+    profiles = report["normalization_profile_sensitivity"]["profiles"]
+    assert set(profiles) == {
+        "primary", "broad_fricative_aspiration", "ignore_all_aspiration",
+        "ignore_length", "ignore_stress",
+    }
+    assert profiles["primary"]["delta_exact_match_rate_vs_primary"] == 0
+    assert "diagnostic" in profiles["ignore_all_aspiration"]["warning"]
 
 
 def test_pairing_rejects_different_gold_or_occurrence_identity():
