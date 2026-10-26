@@ -1,3 +1,34 @@
+# Continuation — neural-teacher-guided deterministic Strict improvement (2026-10-26)
+
+## Current execution record
+
+- **Working branch:** `research/strict-teacher-guided-rule-mining-2026-10-26`, created from current `main` after verifying the latest mainline commit `a452054a669de28426404d1110731715083423bb`.
+- **Scope:** the existing deterministic Strict/native engine, not the neural V3 production proposal. The public browser practical mode's pinned JavaScript g2pK port remains a separate path.
+- **Design decision:** use CharsiuG2P as a research teacher only. Do not import neural weights into runtime, silently replace Strict output, or tune on UGTPHON/SIGMORPHON/project holdout examples.
+- **Implementation so far:** added `scripts/mine_deterministic_rule_candidates.py`, `tests/test_mine_deterministic_rule_candidates.py`, and `docs/TEACHER-GUIDED-STRICT-RULE-MINING-2026-10-26.md`; added a README entry. The utility requires pinned model/data provenance, explicit license/overlap status, IPA output, and train/dev-only split declarations. It preserves raw outputs and reports conservative teacher-vs-Strict differences plus coarse context associations; it never writes runtime rules.
+- **Commits on this branch so far:** `5d3af19df45f0077926ffb66e146958bb014af07` (utility), `572d28445735936b427668c6ded50a6f58c99a5c` (tests), `47143555682656909d387bf7cff97fae63a44131` (context-bucket correction), `d1b20d122adb8734f7e84d306d16a5eb400ea14e` (provenance gate), `9708ba550c2f29cd0e9938f7b33eb26d23c003f3` (test fixture update), `345135c5d4ce4b35972969d1911e3db923e49fbb` (protocol), `c032ca51b7864511212bac370c9ebcd425004b74` (README).
+- **Verification status:** tests have been authored but must not be called passed until the exact-head CI run completes. The model itself has not been run by this branch's utility; the utility consumes externally generated predictions only.
+- **Licensing/evidence limitation:** CharsiuG2P checkpoint weights have no verified explicit license in the checked model card; upstream training-data overlap is unknown. These are blockers for redistribution and for leakage-free generalization claims, not reasons to halt deterministic development.
+
+## Task ledger
+
+| Task | Status | Acceptance evidence |
+|---|---|---|
+| Add reproducible teacher-vs-Strict per-case diagnostic | PARTIAL | Script implemented; exact-head tests/CI and reproducibility run still required |
+| Prevent use of known test/holdout splits | PARTIAL | Explicit code and tests added; CI must pass; safeguards cannot prove an external corpus manifest is truthful |
+| Use model disagreements to add production rules | TODO | Independently source-adjudicated Korean rule, positive and negative controls, and separate dev-set improvement |
+| Run teacher inference on licensed train/dev corpus | BLOCKED | Need a suitable licensed corpus split, model rights review, pinned inference artifact, and training-data-overlap audit |
+| Change Strict runtime or Ukrainian rendering from teacher predictions | DEFERRED | No automatic distillation; keep IPA-to-Ukrainian boundary and production behavior unchanged until evidence gate clears |
+
+## Immediate continuation
+
+1. Inspect exact-head CI for this branch and fix failures.
+2. Validate the tool on a synthetic, explicitly non-benchmark development fixture; retain no fabricated quality score.
+3. Review any context associations only as a human review queue. Do not convert a teacher prediction into a source-backed rule without primary-source support.
+4. If CI passes, update this handoff with the exact final head and run IDs, then open/refresh a draft PR. Do not merge automatically.
+
+---
+
 # One-pass continuation — source-backed Korean abstention recovery — 2026-10-25
 
 - **Branch:** fix/source-backed-r003-exact-forms-2026-10-25; based on main commit 4a3f39b1df682dac0254db917d867405deee71fb.
