@@ -82,10 +82,15 @@ def validate_and_merge(queue: dict[str, Any], decisions_doc: dict[str, Any]) -> 
         if not isinstance(reviewers, dict):
             raise ValueError(f"{where}.reviewers must contain independent reviewer records")
         validated_reviewers = {}
+        reviewer_ids: set[str] = set()
         for reviewer in REVIEWERS:
             entry = reviewers.get(reviewer)
             if not isinstance(entry, dict):
                 raise ValueError(f"{where}.reviewers.{reviewer} is required")
+            reviewer_id = _nonempty_string(entry.get("reviewer_id"), f"{where}.reviewers.{reviewer}.reviewer_id")
+            if reviewer_id in reviewer_ids:
+                raise ValueError(f"{where}: reviewer records must identify two distinct reviewers")
+            reviewer_ids.add(reviewer_id)
             status = _nonempty_string(entry.get("decision"), f"{where}.{reviewer}.decision")
             if status not in DECISIONS:
                 raise ValueError(f"{where}.{reviewer}.decision must be one of {sorted(DECISIONS)}")
@@ -94,6 +99,7 @@ def validate_and_merge(queue: dict[str, Any], decisions_doc: dict[str, Any]) -> 
             if status != "UNRESOLVED" and source_ref is None:
                 raise ValueError(f"{where}.{reviewer}: evidence_reference required unless decision is UNRESOLVED")
             validated_reviewers[reviewer] = {
+                "reviewer_id": reviewer_id,
                 "decision": status,
                 "rationale": rationale,
                 "evidence_reference": source_ref,
@@ -102,8 +108,18 @@ def validate_and_merge(queue: dict[str, Any], decisions_doc: dict[str, Any]) -> 
         final_decision = _nonempty_string(record.get("final_decision"), f"{where}.final_decision", required=False)
         if final_decision is not None and final_decision not in DECISIONS:
             raise ValueError(f"{where}.final_decision must be one of {sorted(DECISIONS)}")
-        if final_decision is not None and (not adjudicator or not record.get("final_rationale", "").strip()):
-            raise ValueError(f"{where}: final decision requires adjudicator and final_rationale")
+        final_rationale = record.get("final_rationale")
+        final_evidence = _nonempty_string(
+            record.get("final_evidence_reference"),
+            f"{where}.final_evidence_reference",
+            required=False,
+        )
+        if final_decision is not None:
+            _nonempty_string(final_rationale, f"{where}.final_rationale")
+            if not adjudicator:
+                raise ValueError(f"{where}: final decision requires adjudicator and final_rationale")
+            if final_decision != "UNRESOLVED" and final_evidence is None:
+                raise ValueError(f"{where}: non-UNRESOLVED final decision requires final_evidence_reference")
         validated.append({
             "queue_id": qid,
             "source_text": item["source_text"],
@@ -118,7 +134,8 @@ def validate_and_merge(queue: dict[str, Any], decisions_doc: dict[str, Any]) -> 
             ),
             "adjudicator": adjudicator,
             "final_decision": final_decision,
-            "final_rationale": record.get("final_rationale"),
+            "final_rationale": final_rationale,
+            "final_evidence_reference": final_evidence,
             "review_status": "ADJUDICATED" if final_decision else "REVIEWED_PENDING_ADJUDICATION",
         })
     return {
