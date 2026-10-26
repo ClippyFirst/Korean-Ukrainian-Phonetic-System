@@ -1388,7 +1388,7 @@ Release classification remains **software-verified research prototype / partial 
 
 ### Deterministic R002 exact-form coverage extension — 2026-10-26
 
-**Implementation outcome: PARTIAL pending exact-head CI.** This is a real deterministic rule-layer change, not a neural-runtime integration. It is not an aggregate accuracy claim.
+**Implementation outcome: DONE_VERIFIED for this bounded R002 rule-coverage task.** This is a real deterministic rule-layer change, not a neural-runtime integration. It is not an aggregate accuracy claim.
 
 Primary evidence:
 - NIKL Standard Pronunciation Rules §§13–15: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
