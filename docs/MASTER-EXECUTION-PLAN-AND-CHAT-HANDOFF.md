@@ -2170,3 +2170,6 @@ The owner clarified that the next deliverable must be a register of **all rules 
 - Created research/TEST-CASE-REGISTER-LEXICAL-BASE-2026-10-26.csv from the pinned lexical dictionary: all 644 rows preserved, 17 columns, zero malformed rows and zero duplicate input forms. Source blob SHA: 1bd0d8116a5f5a4e74bcdbf7fc4999445b4478c5.
 - These are inventory foundations, not completion. Every test assertion still needs a case-level link; non-lexical fixtures/literals need extraction; expected outputs must remain separate from observed outcomes; actual pass/fail evidence must tie to an exact commit and workflow run.
 - **No further production-rule changes until the exhaustive case-register completeness gate passes.**
+
+
+- Added scripts/build_test_case_register.py plus tests/test_build_test_case_register.py. The extractor produces three separate CSVs: lexical source rows, lexical-to-test text-occurrence links, and all Hangul spans from test/fixture/corpus text. Occurrences and literal spans remain unclassified; this avoids pretending that a string match proves a test input or a rule pass. Exact-head CI is pending; no local test result is claimed.
