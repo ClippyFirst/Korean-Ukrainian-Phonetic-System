@@ -41,9 +41,9 @@ test('§4 enumerates every combination for up to three optional vowels', () => {
   assert.equal(result.ipa, 'kø.mul.ɡy');
   assert.equal(result.variants.length, 3);
   assert.deepEqual(result.variants.map((variant) => variant.ipa), [
-    'kwe mul ɡy',
+    'kwe.mul.ɡy',
     'kø.mul.ɡwi',
-    'kwe mul ɡwi',
+    'kwe.mul.ɡwi',
   ]);
   for (const variant of result.variants) {
     assert.equal(variant.surface, '괴물귀');
