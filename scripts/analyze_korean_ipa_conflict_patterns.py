@@ -14,6 +14,18 @@ from pathlib import Path
 
 SCHEMA_VERSION = "1.0"
 EXPECTED_QUEUE_COUNT = 366
+EXPECTED_SOURCE_PINS = {
+    "sigmorphon": {
+        "dataset_id": "sigmorphon-2021-task1-medium-korean",
+        "dataset_revision": "821bcdece5a47820872215969f275004b0abe80c",
+        "target_representation": "tokenized_ipa_from_sigmorphon_tsv",
+    },
+    "ugtphon": {
+        "dataset_id": "ugtphon-korean",
+        "dataset_revision": "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54",
+        "target_representation": "ugtphon_token_phoneme_ipa",
+    },
+}
 
 
 def _read_queue(path: Path) -> dict:
@@ -24,8 +36,12 @@ def _read_queue(path: Path) -> dict:
     if not isinstance(data, dict) or not isinstance(data.get("items"), list):
         raise ValueError("queue must be an object with an items array")
     pins = data.get("source_pins")
-    if not isinstance(pins, dict) or not {"sigmorphon", "ugtphon"}.issubset(pins):
-        raise ValueError("queue is missing both pinned source records")
+    if pins != EXPECTED_SOURCE_PINS:
+        raise ValueError("queue source pins do not match the reviewed SIGMORPHON/UGTPHON revisions")
+    decision = data.get("decision", {})
+    forbidden = ("corpora_merged", "ipa_mapping_applied", "production_rules_changed", "test_or_dev_rows_used")
+    if any(decision.get(key) is True for key in forbidden):
+        raise ValueError("queue decision flags contradict the raw train-only triage contract")
     return data
 
 
@@ -80,7 +96,10 @@ def build_report(queue: dict) -> dict:
     items = queue["items"]
     if not items:
         raise ValueError("queue has no conflict items")
+    if queue.get("source_pins") != EXPECTED_SOURCE_PINS:
+        raise ValueError("queue source pins do not match the reviewed SIGMORPHON/UGTPHON revisions")
     seen = set()
+    seen_sources = set()
     summaries = []
     category_counts = Counter()
     candidate_pairs = 0
@@ -98,6 +117,9 @@ def build_report(queue: dict) -> dict:
         queue_id = item.get("queue_id")
         if not isinstance(source, str) or not source:
             raise ValueError("each queue item needs a source_text")
+        if source in seen_sources:
+            raise ValueError(f"duplicate source_text in conflict queue: {source!r}")
+        seen_sources.add(source)
         if not isinstance(queue_id, str) or not queue_id or queue_id in seen:
             raise ValueError(f"missing or duplicate queue_id: {queue_id!r}")
         seen.add(queue_id)
