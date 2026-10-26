@@ -342,7 +342,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     ukrainian:unresolvedWholeHangulToken||provisionalCandidateAvailable?'':output.join(''),
     candidate_ukrainian:provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
     candidate_status:provisionalCandidateAvailable?'provisional':null,
-    ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,' '),
+    ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,'.'),
     analysis:renderStructured(units,analysis,' · '),
     trace,
     variants:unresolvedWholeHangulToken?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status),
