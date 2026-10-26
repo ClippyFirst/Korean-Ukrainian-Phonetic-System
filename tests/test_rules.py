@@ -334,7 +334,11 @@ def test_official_nikl_substantive_examples_use_coda_representatives():
         assert items[0].coda == "", word
         assert items[1].onset == expected_onset, word
         assert traces[0].changed, word
-        assert traces[0].license_context == f"R002:substantive:{word}:{pair}", word
+        if word == "헛웃음":
+            assert items[1].coda == "" and items[2].onset == "ㅅ"
+            assert traces[0].license_context == "R002:substantive:헛웃음:헛>웃;R002:formal:헛웃음:웃>음"
+        else:
+            assert traces[0].license_context == f"R002:substantive:{word}:{pair}", word
 
 def test_simple_coda_license_cannot_be_reused_for_another_full_form():
     items,traces=apply_ordered_rules(
