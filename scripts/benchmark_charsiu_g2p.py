@@ -116,7 +116,7 @@ def predict(words: list[str], *, model_id: str, revision: str,
                 failures[word] = {"status": "empty_output", "reason": "model returned an empty/non-string prediction"}
                 continue
             value = value.strip()
-            if any("\\uac00" <= ch <= "\\ud7a3" for ch in value):
+            if any("\uac00" <= ch <= "\ud7a3" for ch in value):
                 failures[word] = {
                     "status": "invalid_output",
                     "reason": f"unexpected Hangul in declared IPA output: {value!r}",
