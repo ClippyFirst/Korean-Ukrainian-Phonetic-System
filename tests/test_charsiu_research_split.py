@@ -88,9 +88,20 @@ def test_pair_ledger_never_promotes_a_rule():
             "clippyfirst_native": {"status": "scored", "ipa": "sʰa", "exact": True, "distance": 0},
         }]
     }
-    row = build_pair_ledger(report, metadata, narrow_report=narrow_report)[0]
+    broad_profile_report = {
+        "per_occurrence": [{
+            "occurrence_id": "0",
+            "row_id": "row-1",
+            "clippyfirst_native": {"status": "scored", "ipa": "ka.ɡo.k̚", "exact": False, "distance": 2},
+        }]
+    }
+    row = build_pair_ledger(
+        report, metadata, narrow_report=narrow_report, broad_profile_report=broad_profile_report
+    )[0]
     assert row["teacher_ipa_raw"] == "kaɡok̚"
     assert row["strict_ipa_raw"] == "ka.ɡo.k̚"
+    assert row["strict_broad_profile_ipa_raw"] == "ka.ɡo.k̚"
+    assert row["strict_broad_profile_status"] == "scored"
     assert row["strict_narrow_ipa_raw"] == "sʰa"
     assert row["comparison_status"] == "DIAGNOSTIC_ONLY_IPA_CONVENTION_UNREVIEWED"
     assert row["production_rule_promotion"] is False
