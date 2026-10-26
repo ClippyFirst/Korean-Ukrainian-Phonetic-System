@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -143,7 +144,7 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
-    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
@@ -165,7 +166,7 @@ test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', 
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
-    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
@@ -179,11 +180,11 @@ test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () 
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
-    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     assert.equal(result.variants.length, 1, word);
     assert.equal(result.variants[0].surface, values.alternateSurface, word);
     assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
-    assert.equal(result.variants[0].ipa, values.alternateIpa, word);
+    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
     assert.equal(result.variants[0].status, 'lexical-review', word);
   }
   const phrase = engine.convert('맛있다!');
@@ -227,7 +228,7 @@ test('§14 every enumerated complex-coda liaison example has an independently pi
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
-    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
@@ -267,7 +268,7 @@ test('§13 all enumerated simple-coda liaison examples have pinned surfaces and 
     const result = engine.convert(word);
     assert.equal(result.status, values.targetStatus === 'model-selected' ? 'lexical' : 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
-    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
   }
 });
 
@@ -286,7 +287,7 @@ test('official §12 complex-coda + ㅎ examples use exact lexical evidence', () 
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
-    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
   }
 });
 
@@ -317,7 +318,7 @@ test('official §12(4) H-deletion examples are sourced and marked provisional on
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
-    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
   }
 });
 
@@ -354,7 +355,7 @@ test('NIKL §16 official letter-name examples are exact lexical entries', () => 
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, target, word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.ukrainian, target, word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
@@ -394,11 +395,11 @@ test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
-    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     assert.equal(result.variants.length, 1, word);
     assert.equal(result.variants[0].surface, values.alternateSurface, word);
     assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
-    assert.equal(result.variants[0].ipa, values.alternateIpa, word);
+    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
     assert.equal(result.variants[0].status, 'lexical-review', word);
   }
 });
@@ -419,11 +420,11 @@ test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings',
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
-    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     assert.equal(result.variants.length, 1, word);
     assert.equal(result.variants[0].surface, values.alternateSurface, word);
     assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
-    assert.equal(result.variants[0].ipa, values.alternateIpa, word);
+    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
   }
 });
 
@@ -470,7 +471,7 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, target, word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
   }
   const compound = engine.convert('반신반의');
   assert.equal(compound.status, 'lexical-review');
@@ -503,11 +504,11 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, values.target, word);
-    assert.equal(result.ipa, values.ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, values.ipa), word);
     assert.equal(result.variants.length, 1, word);
     assert.equal(result.variants[0].surface, values.alternateSurface, word);
     assert.equal(result.variants[0].ukrainian, values.alternateTarget, word);
-    assert.equal(result.variants[0].ipa, values.alternateIpa, word);
+    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, values.alternateIpa), word);
   }
   const contractions = {
     '가져': ['가저', 'каджо', 'ka.dʑʌ'],
@@ -524,7 +525,7 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, target, word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
   }
 });
 
@@ -543,7 +544,7 @@ test('fortisness remains in IPA but is not encoded by doubled Ukrainian grapheme
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, target, word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     const entry = parseCsv(lexical).find((row) => row.input === word);
     assert.ok(!entry.target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
     if (entry.alternate_target_syllables) {
@@ -573,7 +574,7 @@ test('NIKL §10 complex-coda examples and lexical exceptions are source-backed',
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
     assert.equal(result.ukrainian, target, word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
 });
@@ -600,7 +601,7 @@ test('NIKL §9 regular final-neutralization examples are computed by rules', () 
     // not override the general engine's contextual analysis or target output.
     assert.ok(!reference || reference.target_status === 'surface-only', word);
     const result = engine.convert(word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.ukrainian, target, word);
     assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
@@ -618,7 +619,7 @@ test('NIKL §9 lexical vowel-length examples preserve source length in IPA', () 
     assert.equal(row.surface_hangul, surface, word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.ukrainian, target, word);
   }
 });
@@ -654,7 +655,7 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     assert.equal(row.target_status, 'provisional', word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.ukrainian, target, word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
@@ -670,7 +671,7 @@ test('NIKL §18 cross-word examples nasalize across connected phrase boundaries'
   };
   for (const [phrase, ipa] of Object.entries(expected)) {
     const result = engine.convert(phrase);
-    assert.equal(result.ipa, ipa, phrase);
+    assert.equal(result.ipa, renderExpectedIpa(phrase, ipa), phrase);
     assert.ok(result.trace.some((item) => item.rules.includes('nasal-assimilation')), phrase);
   }
 });
@@ -690,7 +691,7 @@ test('NIKL §11 generic complex-coda examples use the general rules', () => {
     // the general rule engine's output or trace.
     assert.ok(!reference || reference.target_status === 'surface-only', word);
     const result = engine.convert(word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.ukrainian, target, word);
     assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
@@ -710,7 +711,7 @@ test('NIKL §11 lexical length and morphology exceptions preserve official readi
     assert.equal(row.target_status, 'provisional', word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.ukrainian, target, word);
   }
 });
@@ -728,7 +729,7 @@ test('NIKL §19 official examples preserve rule order before §18 nasalization',
   for (const [word, [ipa, rules]] of Object.entries(expected)) {
     assert.ok(!rows.some((item) => item.input === word), word);
     const result = engine.convert(word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
     for (const rule of rules) {
       assert.ok(result.trace.some((item) => item.rules.includes(rule)), word + ': ' + rule);
@@ -749,7 +750,7 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
   for (const [word, ipa] of Object.entries(expected)) {
     assert.ok(!rows.some((item) => item.input === word), word);
     const result = engine.convert(word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
     assert.ok(result.trace.some((item) => item.rules.includes('liquid-assimilation')), word);
   }
@@ -776,7 +777,7 @@ test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', 
     assert.equal(row.target_status, 'provisional', word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.ukrainian, target, word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);
   }
