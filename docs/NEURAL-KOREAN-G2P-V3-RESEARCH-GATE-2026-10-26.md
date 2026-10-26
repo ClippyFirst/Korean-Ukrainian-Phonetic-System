@@ -98,3 +98,8 @@ Measure coverage and accuracy separately. A higher coverage rate is not an accur
 The NN-KoG2P paper was investigated as a separate candidate: Kim et al., ICASSP 2021 ([IEEE](https://ieeexplore.ieee.org/document/9414653), [DOI](https://doi.org/10.1109/ICASSP39728.2021.9414653)). This attempt did **not** find a verifiable public inference implementation/checkpoint with runnable instructions and licensing terms. The candidate is therefore **BLOCKED and unscored**; no NN-KoG2P results are claimed. The described FFNN uses surrounding eojeol context and phonological-phrasing features, so our existing isolated-token benchmark adapter would not be a faithful invocation. Details and acceptance criteria: [NN-KoG2P benchmark attempt](NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md).
 
 Next action is to locate an author-maintained release or obtain the artifact and terms, then implement a context-preserving adapter and score identical test rows. If unavailable, keep it explicitly blocked rather than train a lookalike or substitute another neural model under its name.
+
+
+## Context-level evaluation infrastructure (2026-10-26)
+
+Added a strict sentence-level scoring boundary in `scripts/benchmark_contextual_g2p_ko.py` with unit tests. It validates row IDs and canonical input, requires an explicit IPA output declaration, reports coverage and per-sentence exact/CER, and refuses unadapted Hangul outputs. This is infrastructure, **not** a runnable NN-KoG2P adapter or evidence of model scores. See [NN-KoG2P benchmark attempt](NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md).
