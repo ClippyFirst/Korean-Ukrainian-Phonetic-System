@@ -41,6 +41,17 @@ RULE_META={
 # inflectional morphology and official rule support; this is not a broad coda rule.
 _NIKL_R002_FORMAL_LICENSES = {
     "앉아라": "앉>아",  # 앉- + imperative ending -아라; NIKL §14 explicitly attests 앉아[안자].
+    # Exact examples explicitly attested in NIKL Standard Pronunciation Rules §§13–14.
+    "닭이": "닭>이",  # §13: 닭이[달기].
+    "넋이": "넋>이",  # §14: 넋이[넉씨].
+    "값이": "값>이",  # §14: 값이[갑씨].
+    "깎아": "깎>아",  # §13: 깎아[까까].
+    "있어": "있>어",  # §13: 있어[이써].
+    "쫓아": "쫓>아",  # §13: 쫓아[쪼차].
+    "덮어": "덮>어",  # §13: 덮어[더퍼].
+    "맞아": "맞>아",  # §13: 맞아[마자].
+    "붙어": "붙>어",  # §13: 붙어[부터].
+    "읽어": "읽>어",  # §14: 읽어[일거].
     "없어도": "없>어",  # 없- + connective ending -어도; NIKL §14 attests 없어[업써].
     # Direct NIKL surface evidence: 없음[업씀], Q&A/FAQ 8391 (also listed in Q&A 335008).
     "없음": "없>음",
