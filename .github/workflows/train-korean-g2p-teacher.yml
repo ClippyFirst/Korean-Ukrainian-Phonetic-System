@@ -1,0 +1,53 @@
+name: Train scratch Korean G2P research teacher
+
+on:
+  pull_request:
+    paths:
+      - "scripts/prepare_korean_g2p_corpus.py"
+      - "scripts/train_korean_g2p_teacher.py"
+      - "tests/test_prepare_korean_g2p_corpus.py"
+      - "tests/test_train_korean_g2p_teacher.py"
+      - ".github/workflows/train-korean-g2p-teacher.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  train-scratch-teacher:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test runner
+        run: python -m pip install pytest
+      - name: Test data validation and metrics without requiring PyTorch
+        run: python -m pytest -q tests/test_prepare_korean_g2p_corpus.py tests/test_train_korean_g2p_teacher.py
+      - name: Install CPU-only PyTorch
+        run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Build pinned train/dev corpus (never export test)
+        run: python scripts/prepare_korean_g2p_corpus.py --output-dir "$RUNNER_TEMP/korean-g2p-corpus"
+      - name: Train scratch sequence-to-sequence teacher and evaluate only on dev
+        run: >-
+          python scripts/train_korean_g2p_teacher.py
+          --input-dir "$RUNNER_TEMP/korean-g2p-corpus"
+          --output-dir "$RUNNER_TEMP/korean-g2p-teacher"
+          --epochs 12
+          --batch-size 64
+          --seed 20261026
+          --patience 3
+          --max-decode-length 64
+      - name: Upload research-only checkpoint, dev predictions, and provenance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: korean-g2p-scratch-teacher
+          path: |
+            ${{ runner.temp }}/korean-g2p-teacher/scratch_teacher.pt
+            ${{ runner.temp }}/korean-g2p-teacher/dev-predictions.jsonl
+            ${{ runner.temp }}/korean-g2p-teacher/training-report.json
+            ${{ runner.temp }}/korean-g2p-corpus/manifest.json
+          if-no-files-found: error
+          retention-days: 14
