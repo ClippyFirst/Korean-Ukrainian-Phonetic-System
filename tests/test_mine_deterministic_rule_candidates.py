@@ -30,6 +30,10 @@ def write_inputs(tmp_path: Path, *, split: str = "dev", dataset_id: str = "inter
         "model_license_status": "unresolved-local-research-only",
         "teacher_output_type": "IPA",
         "teacher_model_training_overlap_status": "unknown",
+        "teacher_ipa_convention": "example-reviewed-broad-ipa-v1",
+        "strict_ipa_convention": "example-reviewed-broad-ipa-v1",
+        "ipa_conventions_comparable": True,
+        "ipa_convention_review_id": "EXAMPLE-IPA-MAPPING-REVIEW-001",
         "test_data_used_for_tuning": False,
     }
     provenance_path = tmp_path / "provenance.json"
@@ -170,3 +174,11 @@ def test_cli_writes_reproducible_json_report(tmp_path, capsys):
     assert report["schema_version"] == "1.0"
     assert report["summary"]["case_count"] == 3
     assert json.loads(capsys.readouterr().out)["case_count"] == 3
+
+def test_provenance_rejects_unreviewed_ipa_convention_comparison(tmp_path):
+    _, provenance_path = write_inputs(tmp_path)
+    provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+    provenance["ipa_conventions_comparable"] = False
+    provenance_path.write_text(json.dumps(provenance), encoding="utf-8")
+    with pytest.raises(ValueError, match="must be explicitly reviewed as comparable"):
+        load_provenance(provenance_path)
