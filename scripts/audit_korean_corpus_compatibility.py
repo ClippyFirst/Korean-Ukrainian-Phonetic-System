@@ -96,8 +96,8 @@ def _target_comparison_key(row: dict) -> str:
     if representation == "tokenized_ipa_from_sigmorphon_tsv":
         # SIGMORPHON uses whitespace as phone-token separators. Joining those tokens
         # changes serialization only; it does not add syllable boundaries or map phones.
-        return "".join(target.split())
-    return target.strip()
+        target = "".join(target.split())
+    return unicodedata.normalize("NFC", target.strip())
 
 
 def compare_rows(left: list[dict], right: list[dict]) -> dict:
@@ -123,15 +123,37 @@ def compare_rows(left: list[dict], right: list[dict]) -> dict:
     compact_key_difference = sum(
         not bool(left_key_by_form[form] & right_key_by_form[form]) for form in shared
     )
+    dot_only_difference = 0
+    length_mark_only_difference = 0
+    other_difference = 0
+    for form in shared:
+        if left_key_by_form[form] & right_key_by_form[form]:
+            continue
+        left_targets, right_targets = left_key_by_form[form], right_key_by_form[form]
+        if any(a.replace(".", "") == b.replace(".", "") for a in left_targets for b in right_targets):
+            dot_only_difference += 1
+        elif any(
+            a.replace("ː", "").replace("ˑ", "") == b.replace("ː", "").replace("ˑ", "")
+            for a in left_targets for b in right_targets
+        ):
+            length_mark_only_difference += 1
+        else:
+            other_difference += 1
     return {
         "unique_source_form_intersection": len(shared),
         "shared_forms_with_any_exact_raw_target_match": exact_raw_target_match,
         "shared_forms_with_any_match_after_token_separator_removal": compact_key_match,
         "shared_forms_with_only_different_targets_after_token_separator_removal": compact_key_difference,
+        "mismatch_category_counts": {
+            "syllable_dot_only_difference": dot_only_difference,
+            "length_mark_only_difference": length_mark_only_difference,
+            "other_symbol_or_feature_difference": other_difference,
+        },
         "target_comparison_interpretation": (
-            "SIGMORPHON whitespace phone-token separators are removed for this diagnostic only; "
-            "no IPA symbols are mapped and no syllable boundaries are inferred. Results are not "
-            "proof of equivalence to ClippyFirst broad IPA."
+            "SIGMORPHON whitespace phone-token separators are removed and target strings are NFC-normalized "
+            "for diagnostics only. Dot/length categories are counterfactual comparisons, not proposed "
+            "normalization rules; no IPA symbols are mapped and no syllable boundaries are inferred. "
+            "Results are not proof of equivalence to ClippyFirst broad IPA."
         ),
     }
 
