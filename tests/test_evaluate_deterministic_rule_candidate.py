@@ -41,8 +41,12 @@ def cases():
     return [
         {"case_id": "dev-positive-1", "source_text": "국물", "gold_ipa": "kuŋ.mul",
          "baseline_ipa": "kuk.mul", "candidate_ipa": "kuŋ.mul", "role": "positive_control", "split": "dev"},
+        {"case_id": "dev-positive-2", "source_text": "국내", "gold_ipa": "kuŋ.dɛ",
+         "baseline_ipa": "kuk.tɛ", "candidate_ipa": "kuŋ.dɛ", "role": "positive_control", "split": "dev"},
         {"case_id": "dev-negative-1", "source_text": "국밥", "gold_ipa": "kuk̚.p͈ap̚",
          "baseline_ipa": "kuk̚.p͈ap̚", "candidate_ipa": "kuk̚.p͈ap̚", "role": "negative_control", "split": "dev"},
+        {"case_id": "dev-negative-2", "source_text": "가방", "gold_ipa": "ka.baŋ",
+         "baseline_ipa": "ka.baŋ", "candidate_ipa": "ka.baŋ", "role": "negative_control", "split": "dev"},
         {"case_id": "dev-eval-1", "source_text": "국내", "gold_ipa": "kuŋ.dɛ",
          "baseline_ipa": "kuk.tɛ", "candidate_ipa": "kuŋ.dɛ", "role": "evaluation", "split": "dev"},
         {"case_id": "dev-eval-2", "source_text": "국밥", "gold_ipa": "kuk̚.p͈ap̚",
