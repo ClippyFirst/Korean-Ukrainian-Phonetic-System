@@ -772,12 +772,12 @@ def test_nikl_section_25_source_examples_have_exact_stem_fortition_licenses():
     for word, (pair, onset) in expected.items():
         items, traces = apply_ordered_rules(parse_syllables(word))
         assert items[1].onset == onset, word
-        assert traces[10].changed, word
-        assert traces[10].license_context == f"R011:stem_lb_lt+suffix:{word}:{pair}", word
+        assert traces[8].changed, word
+        assert traces[8].license_context == f"R011:stem_lb_lt+suffix:{word}:{pair}", word
 
     items, traces = apply_ordered_rules(parse_syllables("넓게"))
     assert items[1].onset == "ㄱ"
-    assert traces[10].status == "conditional-disabled"
+    assert traces[8].status == "conditional-disabled"
 
 
 def test_nikl_section_26_source_examples_have_exact_sino_korean_fortition_licenses():
@@ -798,10 +798,10 @@ def test_nikl_section_26_source_examples_have_exact_sino_korean_fortition_licens
         right = pair.split(">")[1]
         right_index = next(i for i, item in enumerate(items) if item.text == right)
         assert items[right_index].onset == onset, word
-        assert traces[11].changed, word
-        assert traces[11].license_context == f"R012:sino_ryeon:{word}:{pair}", word
+        assert traces[9].changed, word
+        assert traces[9].license_context == f"R012:sino_ryeon:{word}:{pair}", word
 
     # A coda/onset sequence alone is not evidence that the word is Sino-Korean.
     items, traces = apply_ordered_rules(parse_syllables("갈구"))
     assert items[1].onset == "ㄱ"
-    assert traces[11].status == "conditional-disabled"
+    assert traces[9].status == "conditional-disabled"
