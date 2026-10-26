@@ -35,7 +35,7 @@ SOURCES = {
         "license": "MIXED/UNRESOLVED: sources/info/others/ko_info.txt says U/K; ko-2_info.txt says MIT; this repository data is only an overlap proxy, not proof of checkpoint training membership",
         "splits": {
             "train": ("https://raw.githubusercontent.com/lingjzhu/CharsiuG2P/0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4/data/train/kor.tsv", "dd90770d480ad6745ad8ea8c59bf8e04b3d814ff"),
-            "dev": ("https://raw.githubusercontent.com/lingjzhu/CharsiuG2P/0c929390759fb94f8ecdfc05bf2ff2dc0f4/data/dev/kor.tsv", "fefdcb6a600886f7e8c293ea272abb1a48927f9f"),
+            "dev": ("https://raw.githubusercontent.com/lingjzhu/CharsiuG2P/0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4/data/dev/kor.tsv", "fefdcb6a600886f7e8c293ea272abb1a48927f9f"),
             "test": ("https://raw.githubusercontent.com/lingjzhu/CharsiuG2P/0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4/data/test/kor.tsv", "bcadda872bef4c1f03f12d42e409ef9042f4b98c"),
         },
     },
@@ -113,7 +113,7 @@ def pairwise_overlaps(sets: dict[str, set[str]]) -> dict[str, dict[str, int]]:
 
 
 def build_report() -> dict:
-    report = {"schema_version": "1.0", "purpose": "pinned source/split integrity and lexical-overlap audit; no model inference", "datasets": {}, "cross_corpus_token_overlap": {}, "test_data_used_for_tuning": False}
+    report = {"schema_version": "1.0", "purpose": "pinned source/split integrity and lexical-overlap audit; no model inference", "datasets": {}, "cross_dataset_split_overlap_counts": {}, "test_data_used_for_tuning": False}
     token_forms_by_dataset = {}
     for dataset, meta in SOURCES.items():
         split_reports, forms_by_split, token_by_split, source_files = {}, {}, {}, {}
@@ -165,7 +165,7 @@ def main(argv: list[str] | None = None) -> int:
     report = build_report()
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
     args.output_json.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"datasets": {k: v["splits"] for k, v in report["datasets"].items()}, "cross_corpus_token_overlap": report["cross_corpus_token_overlap"]}, ensure_ascii=False))
+    print(json.dumps({"datasets": {k: v["splits"] for k, v in report["datasets"].items()}, "cross_corpus_token_overlap": report["cross_dataset_split_overlap_counts"]}, ensure_ascii=False))
     return 0
 
 
