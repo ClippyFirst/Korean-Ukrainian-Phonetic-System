@@ -80,8 +80,16 @@ class AdjudicationValidationTests(unittest.TestCase):
 
     def test_final_decision_requires_named_adjudicator_and_rationale(self):
         bad = review()
-        bad["decisions"][0]["final_decision"] = "CONVENTION_ONLY"
-        with self.assertRaisesRegex(ValueError, "final_rationale"):
+        bad["decisions"][0].update({
+            "final_decision": "CONVENTION_ONLY",
+            "final_rationale": "A reasoned decision",
+        })
+        with self.assertRaisesRegex(ValueError, "adjudicator and final_rationale"):
+            MODULE.validate_and_merge(queue(), bad)
+
+        bad["decisions"][0]["adjudicator"] = "adjudicator-x"
+        del bad["decisions"][0]["final_rationale"]
+        with self.assertRaisesRegex(ValueError, "final_rationale must be a non-empty string"):
             MODULE.validate_and_merge(queue(), bad)
 
     def test_two_review_slots_must_represent_distinct_people(self):
