@@ -20,6 +20,7 @@ from benchmark_charsiu_g2p import (
     eligible_occurrences,
     predict,
 )
+from korean_ukrainian.pipeline import phoneticize_korean
 
 HANGUL = re.compile(r"^[\uac00-\ud7a3]+$")
 
@@ -87,11 +88,21 @@ def load_prepared_jsonl(path: Path, expected_split: str) -> tuple[list[dict[str,
     }
 
 
-def build_pair_ledger(report: dict[str, Any], metadata: dict[str, Any]) -> list[dict[str, Any]]:
+def build_pair_ledger(
+    report: dict[str, Any],
+    metadata: dict[str, Any],
+    narrow_report: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
     output = []
+    narrow_rows = {
+        (row.get("row_id"), row.get("occurrence_id")): row
+        for row in (narrow_report or {}).get("per_occurrence", [])
+    }
     for row in report.get("per_occurrence", []):
         teacher = row.get("charsiu_byt5", {})
         native = row.get("clippyfirst_native", row.get("baselines", {}).get("clippyfirst_native", {}))
+        narrow_row = narrow_rows.get((row.get("row_id"), row.get("occurrence_id")), {})
+        narrow_native = narrow_row.get("clippyfirst_native", {})
         output.append({
             "case_id": f"{metadata['dataset_id']}:{metadata['split']}:{row['row_id']}:{row['occurrence_id']}",
             "split": metadata["split"],
@@ -108,6 +119,10 @@ def build_pair_ledger(report: dict[str, Any], metadata: dict[str, Any]) -> list[
             "strict_status": native.get("status", "missing"),
             "strict_exact_under_declared_diagnostic_normalizer": native.get("exact"),
             "strict_edit_distance": native.get("distance"),
+            "strict_narrow_ipa_raw": narrow_native.get("ipa"),
+            "strict_narrow_status": narrow_native.get("status", "missing"),
+            "strict_narrow_exact_under_declared_diagnostic_normalizer": narrow_native.get("exact"),
+            "strict_narrow_edit_distance": narrow_native.get("distance"),
             "comparison_status": "DIAGNOSTIC_ONLY_IPA_CONVENTION_UNREVIEWED",
             "production_rule_promotion": False,
         })
@@ -128,6 +143,31 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     )
     baselines = collect_existing_baselines(words)
     report = compare_baselines(rows, predictions, baselines, engine_key="charsiu_byt5")
+
+    # Run the same deterministic engine's explicitly partial narrow profile
+    # against the same teacher predictions. This is a diagnostic comparison
+    # only; it must not become accepted Ukrainian target input.
+    narrow_baselines = dict(baselines)
+    narrow_outputs: dict[str, dict[str, Any]] = {}
+    for word in words:
+        try:
+            narrow_result = phoneticize_korean(word, ipa_level="narrow")
+            narrow_outputs[word] = {
+                "status": "scored",
+                "ipa": narrow_result["ipa"]["ipa"],
+                "transcription_profile": narrow_result["ipa"].get("transcription_profile"),
+            }
+        except (TypeError, ValueError, RuntimeError) as exc:
+            narrow_outputs[word] = {"status": "abstained", "reason": str(exc)}
+    narrow_baselines["clippyfirst_native"] = narrow_outputs
+    narrow_report = compare_baselines(rows, predictions, narrow_baselines, engine_key="charsiu_byt5")
+    report["narrow_comparison"] = {
+        "clippyfirst_native": narrow_report.get("clippyfirst_native"),
+        "paired_comparisons": narrow_report.get("paired_comparisons", {}).get("clippyfirst_native"),
+        "per_occurrence": narrow_report.get("per_occurrence", []),
+        "profile": "korean-narrow-partial-sibilant-v1",
+        "target_compatible": False,
+    }
     report["dataset_metadata"] = metadata
     report["model_provenance"] = {
         "model_id": args.model,
@@ -144,7 +184,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "Teacher-guided hypothesis generation only. Raw IPA is preserved; the source convention "
         "is not assumed equivalent to ClippyFirst broad IPA. No rules are automatically promoted."
     )
-    report["paired_rule_review_cases"] = build_pair_ledger(report, metadata)
+    report["paired_rule_review_cases"] = build_pair_ledger(report, metadata, narrow_report=narrow_report)
     return report
 
 
