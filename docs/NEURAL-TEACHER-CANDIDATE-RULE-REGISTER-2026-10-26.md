@@ -14,10 +14,10 @@ Promotion requires primary-source evidence for the exact environment, a reviewed
 
 | Measure | Current defensible result | Interpretation |
 |---|---:|---|
-| Scratch teacher exact token-sequence match on SIGMORPHON dev | 596/1,000 (59.6%) in the later saved report | Source-convention-specific; not ClippyFirst broad-IPA accuracy |
-| Teacher dev mismatches in that report | 404 | Error pool, not 404 missing rules |
-| Mismatches classified as length-mark-only | 107 | Diagnostic category; not permission to remove length |
-| Other teacher dev mismatches | 297 | Mixed errors; not yet a count of phonological rules |
+| Scratch teacher exact token-sequence match in retrieved artifact 12638313059 | 602/1,000 (60.2%) | Source-convention-specific; not ClippyFirst broad-IPA accuracy; artifact identity is explicit |
+| Teacher dev mismatches in retrieved artifact 12638313059 | 398 | Error pool, not 398 missing rules |
+| Mismatches classified as length-mark-only in that artifact | 107 | Diagnostic category; not permission to remove length |
+| Other teacher dev mismatches in that artifact | 291 | Mixed errors; not yet a count of phonological rules |
 | Cross-corpus train/train shared forms | 1,084 | SIGMORPHON and UGTPHON forms intersect |
 | Shared forms with serialization-only target match | 718/1,084 | Compared after removing SIGMORPHON phone-token whitespace only |
 | Shared forms requiring source-convention review | 366/1,084 | 151 length-mark-only diagnostics + 215 other symbol/feature differences |
@@ -28,7 +28,7 @@ Promotion requires primary-source evidence for the exact environment, a reviewed
 
 ## Evidence and limitations
 
-1. The later scratch-teacher report supersedes the earlier 60.2% result: 59.6% exact match (596/1,000) on SIGMORPHON's tokenized roughly-phonemic IPA dev convention. The teacher was selected on that same dev split, so this is not an independent generalization evaluation.
+1. **Artifact reconciliation is now explicit:** retrieved artifact 12638313059 contains dev-error-analysis.json reporting 602/1,000 exact (60.2%), 107 length-mark-only mismatches, and 291 other mismatches. Later handoff text reports 596/1,000 (59.6%) from a purported later artifact, but that artifact was not available in the observed workflow artifact listing. Until the later artifact is retrieved and its manifest/revision verified, use 602/1,000 only when citing artifact 12638313059 and keep the reported 596/1,000 as a conflicting, not-yet-reconciled result. The teacher was selected on that same dev split, so neither figure is an independent generalization evaluation.
 2. SIGMORPHON and UGTPHON describe different annotation pipelines. Their target strings are not automatically interchangeable with each other or with ClippyFirst broad IPA. Source whitespace, stress, syllable boundaries, length and diacritics must not be normalized away without a reviewed mapping decision.
 3. Of 1,084 shared train forms, 366 target strings differ after serialization-only whitespace removal. Diagnostics split these into 151 length-mark-only cases and 215 other symbol/feature cases; zero were classified as dot-only. These are review categories, not normalization instructions.
 4. The Charsiu multilingual checkpoint's explicit weights license and exact original training overlap remain unresolved. The scratch teacher trained from random initialization on pinned SIGMORPHON train is a separate research artifact; neither result authorizes redistributing Charsiu weights or treating its outputs as gold.
@@ -85,7 +85,7 @@ These additions remain unverified until exact-head CI passes; commits and test f
 
 | Task | Status | Evidence / blocker |
 |---|---|---|
-| Scratch teacher train/dev error analyzer | DONE_VERIFIED on prior exact-head CI as documented in master handoff | Latest reported result: 596/1,000 exact; retrieve current artifacts before treating it as current |
+| Scratch teacher train/dev error analyzer | DONE_VERIFIED for artifact 12638313059; newer reported result needs reconciliation | Retrieved report: 602/1,000 exact; handoff also mentions 596/1,000 but matching artifact not yet retrieved |
 | Candidate miner and train/dev/holdout guardrails | DONE_VERIFIED on previously documented CI; current exact-head rerun pending | Script and tests preserve raw outputs and forbid sealed splits |
 | Typed lossless IPA packets | DONE_VERIFIED on exact head 9fadae60373f3feac79098be7a37bdd49e2d7085 per master handoff | Does not map corpus conventions to ClippyFirst IPA |
 | Independent SIGMORPHON/UGTPHON-to-ClippyFirst IPA adapter | BLOCKED | Symbol mapping and independent adjudication incomplete |
