@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "scripts/audit_teacher_corpus_splits.py"
+      - "scripts/prepare_korean_g2p_corpus.py"
+      - "tests/test_prepare_korean_g2p_corpus.py"
       - "tests/test_audit_teacher_corpus_splits.py"
       - "docs/TEACHER-CORPUS-ELIGIBILITY-2026-10-26.md"
       - ".github/workflows/teacher-corpus-audit.yml"
@@ -23,13 +25,19 @@ jobs:
           python-version: "3.12"
       - name: Install test dependency
         run: python -m pip install pytest
-      - name: Unit-test source parsing and overlap logic
-        run: python -m pytest -q tests/test_audit_teacher_corpus_splits.py
+      - name: Unit-test source parsing, overlap logic, and corpus preparation
+        run: python -m pytest -q tests/test_audit_teacher_corpus_splits.py tests/test_prepare_korean_g2p_corpus.py
       - name: Fetch pinned public corpora and audit split integrity
         run: python scripts/audit_teacher_corpus_splits.py --output-json "$RUNNER_TEMP/teacher-corpus-split-audit.json"
-      - name: Upload metadata-only audit report
+      - name: Prepare pinned SIGMORPHON train/dev corpus (test remains sealed)
+        run: python scripts/prepare_korean_g2p_corpus.py --output-dir "$RUNNER_TEMP/korean-g2p-corpus"
+      - name: Upload audit metadata and train/dev research corpus
         uses: actions/upload-artifact@v4
         with:
-          name: teacher-corpus-split-audit
-          path: ${{ runner.temp }}/teacher-corpus-split-audit.json
+          name: korean-g2p-train-dev-corpus
+          path: |
+            ${{ runner.temp }}/teacher-corpus-split-audit.json
+            ${{ runner.temp }}/korean-g2p-corpus/train.jsonl
+            ${{ runner.temp }}/korean-g2p-corpus/dev.jsonl
+            ${{ runner.temp }}/korean-g2p-corpus/manifest.json
           if-no-files-found: error
