@@ -164,7 +164,7 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
                     "source_category": category,
                     "line_number": str(line_number),
                     "hangul_span": match.group(0),
-                    "raw_line": line.strip(),
+                    "raw_line": line,
                     "classification_status": "UNCLASSIFIED_HANGUL_LITERAL",
                     "observed_run_status": "NOT_TIED_TO_EXACT_HEAD_RUN",
                 })
@@ -190,7 +190,7 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
                         "input": value,
                         "test_path": rel,
                         "line_number": str(line_number),
-                        "raw_test_line": line.strip(),
+                        "raw_test_line": line,
                         "expected_surface_hangul": record["expected_surface_hangul"],
                         "expected_ukrainian_syllables": record["expected_ukrainian_syllables"],
                         "expected_ipa_syllables": record["expected_ipa_syllables"],
