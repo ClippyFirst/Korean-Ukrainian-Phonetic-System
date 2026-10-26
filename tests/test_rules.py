@@ -806,6 +806,9 @@ def test_nikl_section_25_source_examples_have_exact_stem_fortition_licenses():
         assert items[1].onset == onset, word
         assert traces[8].changed, word
         assert traces[8].license_context == f"R011:stem_lb_lt+suffix:{word}:{pair}", word
+        if word.startswith("훑"):
+            assert items[0].coda == "ㄹ", word
+    assert phoneticize_korean("훑다")["surface_hangul"] == "훌따"
 
     items, traces = apply_ordered_rules(parse_syllables("넓게"))
     assert items[1].onset == "ㄱ"
