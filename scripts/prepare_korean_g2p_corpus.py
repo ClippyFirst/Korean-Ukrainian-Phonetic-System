@@ -35,7 +35,7 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def parse_tsv(data: bytes, split: str) -> list[dict[str, str | int]]:
+def parse_tsv(data: bytes, split: str, *, expected_rows: int | None = None) -> list[dict[str, str | int]]:
     try:
         text = data.decode("utf-8")
     except UnicodeDecodeError as exc:
@@ -63,8 +63,9 @@ def parse_tsv(data: bytes, split: str) -> list[dict[str, str | int]]:
             "target_normalization": "none; raw target preserved exactly",
             "source_line": line_number,
         })
-    if len(records) != EXPECTED_ROWS[split]:
-        raise ValueError(f"{split}: expected {EXPECTED_ROWS[split]} rows, got {len(records)}")
+    required_rows = EXPECTED_ROWS[split] if expected_rows is None else expected_rows
+    if len(records) != required_rows:
+        raise ValueError(f"{split}: expected {required_rows} rows, got {len(records)}")
     forms = [str(record["source_text"]) for record in records]
     if len(set(forms)) != len(forms):
         raise ValueError(f"{split}: duplicate NFC-normalized source forms; refusing implicit deduplication")
