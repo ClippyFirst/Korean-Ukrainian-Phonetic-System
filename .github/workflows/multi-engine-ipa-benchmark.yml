@@ -139,6 +139,9 @@ jobs:
           node --check scripts/benchmark_phonemize_adapter.cjs
           python -m pytest tests/test_multi_engine_benchmark.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py tests/test_v3_training_readiness.py
 
+      - name: Audit training readiness and frozen-holdout overlap
+        run: python scripts/audit_v3_training_readiness.py --output "$RUNNER_TEMP/v3-training-readiness.json"
+
       - name: Run multi-engine comparison
         env:
           KOG2P_ROOT: ${{ runner.temp }}/KoG2P
@@ -291,6 +294,7 @@ jobs:
             ${{ runner.temp }}/sigmorphon-multi-engine-ipa-report.json
             ${{ runner.temp }}/sigmorphon-multi-engine-ipa-stdout.json
             ${{ runner.temp }}/sigmorphon-phonemize-predictions.json
+            ${{ runner.temp }}/v3-training-readiness.json
           if-no-files-found: warn
           retention-days: 30
 
