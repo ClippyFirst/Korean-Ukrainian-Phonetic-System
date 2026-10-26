@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -28,7 +29,7 @@ test('user-corpus high-risk forms have exact NIKL-backed surface readings', () =
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     assert.equal(result.ukrainian, ukrainian, word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.status, 'lexical-review', word);
     assert.deepEqual(result.issues, [], word);
   }
