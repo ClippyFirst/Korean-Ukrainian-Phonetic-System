@@ -1384,3 +1384,23 @@ Release classification remains **software-verified research prototype / partial 
 - Source checks: NIKL MCFAQ 5716 explicitly permits `삶의[살믜]/[살메]` (Hangul pronunciation, not IPA); the Korean Basic Dictionary entry for `쫓아내다` gives `[쪼차내다]`; the official dictionary example includes correctly spelled `무서웠어`; an official NIKL Q&A quotes `많았구나`. These support source-level observations only, not silent spelling repair or exact noisy-form pronunciation.
 - No production pronunciation rule was added for `칡칡이`, `쫒아내면`, `많앗구나유유유`, or `무서웟어`: the first lacks a verified lexical parse and the other three are nonstandard spellings whose intended correction must not be silently substituted. `삶의` remains diagnostic-only until independent IPA review; Ukrainian target review remains a separate gate.
 - New branch: `fix/final-abstention-evidence-2026-10-25`, based on current main `d23646af23b10be6b9f5223002cf634cd128ea06`. Exact-head CI for this branch is not yet known; do not mark these new tests `DONE_VERIFIED` until Actions finishes.
+
+
+### Deterministic R002 exact-form coverage extension — 2026-10-26
+
+**Implementation outcome: PARTIAL pending exact-head CI.** This is a real deterministic rule-layer change, not a neural-runtime integration. It is not an aggregate accuracy claim.
+
+Primary evidence:
+- NIKL Standard Pronunciation Rules §§13–15: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+- NIKL official FAQ directly explains 값어치[가버치] and why §15(붙임), not the formal-morpheme pattern, licenses this form: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62
+- The source is already represented in \`research/SOURCE-REGISTER.csv\` as \`SRC-NIKL-MCFAQ-5949\`; no duplicate source registry was created.
+
+Changes:
+- Python \`src/korean_ukrainian/rules.py\` now source-licenses exact formal-morpheme R002 forms: \`닭이\`, \`넋이\`, \`값이\`, \`깎아\`, \`있어\`, \`쫓아\`, \`덮어\`, \`맞아\`, \`붙어\`, \`읽어\`, alongside the previously licensed forms.
+- Python and browser rule paths now separately license exact §15 substantive-morpheme cases: \`값어치\`, \`값있는\`, \`겉옷\`, \`헛웃음\`, \`맛없다\`. The complex-coda case moves the representative coda; it does not reuse §14's second-component formal-liaison behavior.
+- Browser implementation mirrors the Python rule boundary. Tests cover expected coda/onset changes and negative controls (\`닭을\`, \`밭어\`, \`젊어\`) to ensure exact-form licenses do not become productive guessing.
+
+Interpretation boundary:
+- Some listed forms already have lexical surface entries, so their user-visible output may have been correct before this patch. This patch improves consistency and direct coverage of the deterministic R002 rule layer when a lexical override is absent; it does **not** prove an aggregate percentage increase or neural-level accuracy.
+- IPA and Ukrainian target outputs for these rows remain provisional where independent phonetic/target adjudication is absent. Korean surface evidence must not be mistaken for independent IPA or Ukrainian gold.
+- Exact-head CI results must be recorded below before this task can be marked \`DONE_VERIFIED\`.
