@@ -315,7 +315,16 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   for(let i=0;i<units.length;i++){
     const u=units[i];
     if(u.type==='literal'){surfaceParts.push(u.char);continue;}
-    if(trace[i]?.status==='unresolved'||!output[i]){surfaceParts.push(u.char);continue;}
+    // Korean surface realization and Ukrainian target mapping are separate
+    // pipeline stages. A missing/provisional Ukrainian mapping must not erase a
+    // source-backed Korean surface change (e.g. §30 뒷마루 → 뒨마루).
+    const unresolvedKoreanMorphology=Boolean(
+      u.__palatalizationUnlicensed||u.__hDeletionUnlicensed||
+      u.__saisiotInsertionUnlicensed||u.__crossWordLiaisonUnlicensed||
+      u.__complexLiaisonUnlicensed||u.__complexHAspirationUnlicensed||
+      u.__substantiveLiaisonUnlicensed||u.__rieulGiyeokUnlicensed
+    );
+    if(unresolvedKoreanMorphology){surfaceParts.push(u.char);continue;}
     surfaceParts.push(compose(u.onset,u.vowel,u.coda||''));
   }
   const recomposed=surfaceParts.join('');
