@@ -331,3 +331,10 @@ The research-only morphology license adapter now supports:
 
 The rules remain exact-form licensed after expansion, carry low-confidence morphology provenance, and force IPA to diagnostic-only. No default strict/browser output changes. New tests include `읽고`, `넓고`, `많다`, `물가로`, `봄비가`, `냇가에`, `갈등이`, and negative controls `닭고기` and `물가공`. These tests are authored but are **not yet marked verified**; exact-head Actions evidence is pending.
 
+## Final status of this continuation batch
+
+- Latest executable code/test head: `e14b4b026738755dbee1c819da8635aec4f6c0f7`.
+- Latest visible test matrix [40343059002](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343059002), system verification [40343058844](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058844), and corrected Charsiu train/dev [40343058866](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058866) remain queued on the preceding code/test head; no exact-head pass is claimed.
+- The new morphology-consensus tests and fail-closed source-alignment test are authored but not verified. Do not interpret their existence as a pass.
+- The UGTPHON test token `물가로` is test-informed and must be excluded from any independent final accuracy claim or replaced by a fresh holdout.
+
