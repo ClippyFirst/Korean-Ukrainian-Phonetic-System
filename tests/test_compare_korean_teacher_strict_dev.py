@@ -37,6 +37,7 @@ def teacher_row(case_id="sig:dev:00001", source="국밥"):
 def strict_row(case_id="sig:dev:00001", source="국밥"):
     return {
         "case_id": case_id,
+        "split": "dev",
         "input": source,
         "ipa": {
             "ipa": "kuk̚.p͈ap̚",
