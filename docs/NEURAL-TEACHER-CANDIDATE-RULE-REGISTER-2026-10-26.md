@@ -99,7 +99,7 @@ The paired rows illustrate why the counts cannot be interpreted as missing phono
 ## Source-backed production changes — not neural discoveries
 
 - **R003 / NIKL §12(4):** six exact-form licenses: 낳은, 놓아, 쌓이다, 않은, 닳아, 싫어도. These extend an existing rule inventory; they are not six generalized rules.
-- **R010 / NIKL §24:** eleven exact stem+ending examples documented in the master handoff. The inventory remains closed and context-gated; noun-like lookalikes and ambiguous homographs are not licensed.
+- **R010 / NIKL §24:** the closed Python/browser inventory now contains 15 exact full-form+pair entries, including source-backed additions 안지 (S015) and 신다 (SRC-NIKL-QNA-325349). It remains context-gated; ambiguous 신고/감지, -기- forms and other lookalikes are not licensed.
 - **R016 / NIKL §11:** exact 읽거든 coverage alongside documented 읽고, with negative controls.
 - **R002 / NIKL §§13–15:** source-backed liaison additions exist in separate PR #341 and must be reconciled against main before a merge/port decision. They are not silently counted as teacher-discovered rules.
 
