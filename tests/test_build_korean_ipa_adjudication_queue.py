@@ -59,6 +59,21 @@ def test_queue_keeps_only_train_train_target_conflicts_and_preserves_raw_evidenc
     assert any(entry["codepoint"] == "U+02D0" for entry in item["ugtphon_candidates"][0]["unicode_codepoint_inventory"])
 
 
+def test_queue_retains_partial_annotation_overlap_when_one_variant_matches():
+    sig = [
+        row("sigmorphon", "train", "s1", "말", "mal"),
+        row("sigmorphon", "train", "s2", "말", "maːl"),
+    ]
+    ugt = [row("ugtphon", "train", "u1", "말", "mal")]
+    queue = build_queue(sig, ugt)
+    assert queue["summary"]["shared_train_forms"] == 1
+    assert queue["summary"]["exact_after_serialization_only"] == 0
+    assert queue["summary"]["queued_conflicts"] == 1
+    item = queue["items"][0]
+    assert item["difference_category"] == "partial_annotation_overlap_requires_review"
+    assert {candidate["target_raw"] for candidate in item["sigmorphon_candidates"]} == {"mal", "maːl"}
+
+
 def test_queue_does_not_call_codepoints_phonemes_or_strip_length():
     sig = [row("sigmorphon", "train", "s1", "말", "m a l")]
     ugt = [row("ugtphon", "train", "u1", "말", "maːl")]
