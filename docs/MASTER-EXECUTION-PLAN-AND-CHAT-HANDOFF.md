@@ -1839,3 +1839,37 @@ The figure 60.2% (602/1,000) belongs only to the standalone scratch-trained bidi
 - **Scratch research teacher / diagnostic pairing:** [40320537218](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40320537218) PASS. This is research-only and does not affect runtime.
 - The first candidate-gate test run exposed three test-fixture mistakes (wrong control index, JSONL newline literal, and wrong evaluation-row index). They were corrected; the exact code/test head above passes all five workflows.
 - **Outcome boundary:** no production phonology rule or runtime output changed. This gate makes future rule changes evidence- and regression-checkable, but it does not itself improve engine accuracy. The real rule-promotion blocker remains the independently reviewed IPA convention mapping and adjudication of the 366 train/train conflicts. Keep PR #339 draft until an evidence-backed deterministic change demonstrates same-convention improvement on eligible dev data.
+
+## Owner escalation — neural benchmark gap and runtime integration (2026-10-26)
+
+The owner correctly identified that the earlier R002/R016-only benchmark delta is much smaller than the neural-vs-Strict gap. This section distinguishes actual integration from infrastructure work.
+
+### What is now integrated on this continuation branch
+
+- Ported the already source-backed R002 exact-form formal/substantive liaison cases and R016 exact-form verbal-stem ㄺ-before-ㄱ cases, including Python and browser regression coverage, into this branch's shared runtime files/tests. The final browser test file is the superset version from the verified R002/R016 PR; research-only tests were not removed.
+- This makes the existing verified rule batch available alongside the teacher-guided corpus/error-analysis pipeline on this branch. It does **not** mean those two rules were distilled from Charsiu, and it does not claim they close the large benchmark gap.
+- PR #341 remains a separate open draft against main; no PR was merged and no branch was force-updated.
+
+### Model benchmark evidence and interpretation
+
+The already executed PR #338 artifact [12635458650](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290133252/artifacts/12635458650) reports CharsiuG2P exact-match results of 2,393/2,703 (88.5313%) on UGTPHON and 709/999 (70.9710%) on SIGMORPHON, compared with ClippyFirst native 1,430/2,698 (53.0022%) and 357/997 (35.8074%) respectively. On common-scored rows, the reported exact-rate deltas are +35.6561 pp (UGTPHON) and +35.1053 pp (SIGMORPHON). These are same-harness diagnostic scores, not normative IPA or Ukrainian-target accuracy; checkpoint training overlap and weights-license status remain unresolved.
+
+The scratch-trained model is a different experiment and must not be conflated with Charsiu. Its latest saved artifact [12638708277](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40297632775/artifacts/12638708277) reports 596/1,000 dev exact (59.6%), token error rate 12.7923%, compact-character error rate 12.1039%, 116 length-mark-only mismatches (92 under-predicted, 24 over-predicted), and 288 other token/feature mismatches. Earlier handoff passages saying 60.2% / 602 exact refer to an earlier artifact and are superseded by this later exact-head result.
+
+### Rule promotion ledger
+
+- `DONE_VERIFIED`: R002/R016 implementation + positive/negative regression tests exist in Python/browser on this branch.
+- `DONE_VERIFIED`: same-harness Charsiu-vs-native diagnostic outputs exist and preserve per-occurrence raw predictions.
+- `PARTIAL`: teacher error-analysis and candidate-mining tools exist, but no accepted Charsiu-derived production rule has yet been independently adjudicated and promoted.
+- `BLOCKED`: cannot safely distill exact test-set cases into runtime rules; UGTPHON/SIGMORPHON test are evaluation-only. The Charsiu checkpoint's training overlap is unknown, and its output convention is not independently mapped to ClippyFirst broad IPA. The 366 train/train cross-corpus conflicts remain unadjudicated.
+- `TODO`: run teacher inference only on eligible train/dev material, generate a review queue from those splits, adjudicate candidate environments against primary NIKL sources, add positive and negative controls, then evaluate the frozen test sets once without using their cases to select rules.
+
+### Required next engineering batch
+
+1. Run Charsiu inference on pinned train/dev partitions (not test) and preserve raw outputs + exact model/tokenizer revisions.
+2. Mine repeated *train/dev* contexts where the teacher and Strict disagree; separate true phonological environments from output-convention differences and lexical memorization.
+3. For each candidate, require primary-source support, explicit morphology/boundary conditions, counterexamples, and an IPA convention mapping before changing runtime.
+4. Implement only candidates that pass the existing rule evaluator and keep Python/browser parity; rerun the unchanged test benchmark as final evaluation, not as a tuning source.
+
+**Readiness remains:** research-ready partial prototype, not release-ready. The important gap is no longer hidden: the neural benchmark is strong, but evidence-backed model-to-rule distillation is not yet complete.
+
