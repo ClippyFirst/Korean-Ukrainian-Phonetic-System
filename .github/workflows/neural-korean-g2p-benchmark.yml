@@ -62,8 +62,6 @@ jobs:
           assert len(model.sha) == 40 and len(tokenizer.sha) == 40
           print("model_sha=" + model.sha)
           print("tokenizer_sha=" + tokenizer.sha)
-          print("Resolved Charsiu model revision:", model.sha)
-          print("Resolved ByT5 tokenizer revision:", tokenizer.sha)
           PY
 
       - name: Fetch and validate pinned UGTPHON Korean test split
