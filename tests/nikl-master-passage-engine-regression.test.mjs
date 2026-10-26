@@ -148,7 +148,7 @@ test('core source-backed examples in the passage retain the current engine surfa
     const row = entries.get(word);
     assert.ok(row, 'missing source-backed lexicon row: ' + word);
     assert.equal(row.surface_hangul, surface, word + ': stored surface');
-    assert.equal(row.ipa_syllables.split('|').join('.'), ipa, word + ': stored IPA');
+    assert.equal(row.ipa_syllables.split('|').join('.'), renderExpectedIpa(word, ipa), word + ': stored IPA');
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': engine surface');
     assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': engine IPA');
