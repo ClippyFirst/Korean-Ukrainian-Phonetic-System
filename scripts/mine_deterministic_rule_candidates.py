@@ -117,8 +117,12 @@ def context_buckets(source_text: str) -> list[str]:
             )
     # Word-boundary pairs are a separate context type; no punctuation/space
     # is silently treated as a morpheme boundary.
-    for match in re.finditer(r"([가-힣]+)\s+([가-힣]+)", source_text):
-        left, right = match.group(1), match.group(2)
+    word_matches = list(HANGUL_WORD.finditer(source_text))
+    for left_match, right_match in zip(word_matches, word_matches[1:]):
+        separator = source_text[left_match.end():right_match.start()]
+        if not separator or not separator.isspace():
+            continue
+        left, right = left_match.group(0), right_match.group(0)
         a, b = _hangul_parts(left[-1]), _hangul_parts(right[0])
         if a and b:
             contexts.append(
