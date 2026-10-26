@@ -1873,3 +1873,16 @@ The scratch-trained model is a different experiment and must not be conflated wi
 
 **Readiness remains:** research-ready partial prototype, not release-ready. The important gap is no longer hidden: the neural benchmark is strong, but evidence-backed model-to-rule distillation is not yet complete.
 
+## 2026-10-26 continuation: narrow IPA adapter and paired teacher evaluation
+
+The partial narrow profile is now implemented in `src/korean_ukrainian/ipa.py` without changing the default broad IPA path:
+- `ㅅ` is aspirated as `[sʰ]` in the narrow profile.
+- `ㅅ` before `ㅣ, ㅖ, ㅑ` is realized as `[ɕʰ]`, based on the cited Korean sibilant study.
+- Fortis `ㅆ` remains `[s͈]`; its palatalization is not assumed because evidence is mixed.
+- The profile explicitly declares itself partial and `target_compatible=false`. Ukrainian target rendering therefore fails closed for this profile; broad IPA remains the default and retains its existing output contract.
+- The new Charsiu train/dev runner now compares the same pinned teacher predictions against both broad Strict and the partial-narrow profile, preserving raw per-occurrence strings and not promoting rules automatically.
+
+The first train/dev inference attempt on run [40332391810](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40332391810) successfully installed pinned dependencies, passed its split-guard tests, and prepared both datasets with no test rows exported. It then failed at report serialization because the paired benchmark uses the key `word`, while the review ledger expected `token`. That schema bug was fixed in `23cf6c0804e402ce3e70e25804b2c7e68907ae66`; the regression fixture was corrected in `972b394c983f89a2146f145ca44377a57596527f`. The corrected exact-head test and Charsiu runs were queued at handoff update time; they are **not yet passes**.
+
+This is the first deterministic allophonic IPA feature batch derived through source review, not a claim that Charsiu's outputs are authoritative. No test split is used to choose these rules. Remaining high-frequency differences such as lateral retroflexion and /h/ allophony stay unimplemented because the available literature documents context/dialect variability and no independent adjudicated IPA gold set exists.
+
