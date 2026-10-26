@@ -87,7 +87,7 @@ def test_report_rejects_empty_target_candidate() -> None:
 def test_read_queue_rejects_missing_pinned_source_records(tmp_path: Path) -> None:
     path = tmp_path / "queue.json"
     path.write_text(json.dumps({"items": []}), encoding="utf-8")
-    with pytest.raises(ValueError, match="pinned source records"):
+    with pytest.raises(ValueError, match="source pins"):
         MODULE._read_queue(path)
 
 
