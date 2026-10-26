@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -17,7 +18,7 @@ test('§4 preserves the permitted monophthong/diphthong readings of ㅚ and ㅟ'
     assert.equal(result.surfaceHangul, row.surface_hangul, word);
     assert.equal(result.variants.length, 1, word);
     assert.equal(result.variants[0].surface, row.alternate_surface_hangul, word);
-    assert.equal(result.variants[0].ipa, row.alternate_ipa_syllables.split('|').join(' '), word);
+    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, row.alternate_ipa_syllables), word);
   }
 });
 

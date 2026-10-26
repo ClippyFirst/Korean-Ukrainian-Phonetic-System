@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -18,7 +19,7 @@ function assertOfficialReading(input, surface, ipa) {
 
   const result = engine.convert(input);
   assert.equal(result.surfaceHangul, surface, input + ': engine surface form');
-  assert.equal(result.ipa, ipa, input + ': engine IPA');
+  assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': engine IPA');
   assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), input + ': engine target agrees with reviewed record');
   assert.equal(result.issues.length, 0, input + ': sourced form must not be unresolved');
   assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholder');

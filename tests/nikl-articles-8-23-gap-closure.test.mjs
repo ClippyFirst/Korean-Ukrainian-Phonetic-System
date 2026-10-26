@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -61,7 +62,7 @@ test('§12 official aspiration, ㅎ deletion, and ㅎ+ㄴ examples are source-ba
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     assert.equal(result.ukrainian, expectedTarget(row), word);
-    assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), word);
+    assert.equal(result.ipa, renderExpectedIpa(word, row.ipa_syllables), word);
   }
 });
 
@@ -122,7 +123,7 @@ test('§12 aspiration and §10/§20 exception chains remain algorithmic without 
   for (const [word, expectedIpa] of Object.entries(aspiration)) {
     const result = genericEngine.convert(word);
     assert.equal(result.issues.length, 0, word);
-    assert.equal(result.ipa, expectedIpa, word + ': exact ordered aspiration IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, expectedIpa), word + ': exact ordered aspiration IPA');
     assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration')), word);
   }
   const complexCodaH = engine.convert('밝히다');
@@ -167,7 +168,7 @@ test('§23 every listed fortition example has its exact expected IPA, not merely
   for (const [word, ipa] of Object.entries(examples)) {
     const result = engine.convert(word);
     assert.equal(result.issues.length, 0, word);
-    assert.equal(result.ipa, ipa, word + ': exact ordered IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': exact ordered IPA');
     assert.ok(result.ipa.includes('͈'), word + ': expected fortis IPA marker');
   }
 });
@@ -190,7 +191,7 @@ test('§21 all seven official place-assimilation negative controls keep their ex
     assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word + ': source IPA');
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': engine surface');
-    assert.equal(result.ipa, ipa, word + ': engine IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': engine IPA');
     assert.equal(result.ukrainian, expectedTarget(row), word + ': project target');
   }
 });

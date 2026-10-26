@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -90,7 +91,7 @@ test('every registered NIKL article 24–30 exemplar is present and stable in th
       const result = engine.convert(word);
       assert.equal(result.surfaceHangul, surface, `${article}: engine surface for ${word}`);
       assert.equal(result.ukrainian, expectedTarget(row), `${article}: Ukrainian target for ${word}`);
-      assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), `${article}: IPA for ${word}`);
+      assert.equal(result.ipa, renderExpectedIpa(word, row.ipa_syllables), `${article}: IPA for ${word}`);
       assert.ok(['lexical-review', 'lexical', 'surface-only'].includes(result.status), `${article}: target status for ${word}`);
     }
   }
@@ -111,7 +112,7 @@ test('§24 신고 preserves noun and verb-form readings without a global fortiti
   assert.equal(result.surfaceHangul, '신고');
   assert.equal(result.status, 'lexical-review');
   assert.equal(result.ukrainian, expectedTarget(row));
-  assert.equal(result.ipa, 'ɕin ɡo');
+  assert.equal(result.ipa, 'ɕin.ɡo');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '신꼬');
   assert.equal(result.variants[0].ipa, 'ɕiːn k͈o');
@@ -140,7 +141,7 @@ test('§29 optional standard variants are preserved as explicit alternatives', (
     assert.equal(result.surfaceHangul, row.surface_hangul, word);
     assert.equal(result.variants.length, 1, word);
     assert.equal(result.variants[0].surface, row.alternate_surface_hangul, word);
-    assert.equal(result.variants[0].ipa, row.alternate_ipa_syllables.split('|').join(' '), word);
+    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, row.alternate_ipa_syllables), word);
   }
 });
 
@@ -168,7 +169,7 @@ test('every lexical row round-trips to its stored Korean surface, Ukrainian targ
       } else {
         assert.equal(result.ukrainian, expectedTarget(row), 'Ukrainian: ' + row.input);
       }
-      assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), 'IPA: ' + row.input);
+      assert.equal(result.ipa, renderExpectedIpa(row.input, row.ipa_syllables), 'IPA: ' + row.input);
     }
     if (row.alternate_surface_hangul) {
       assert.ok(result.variants.length > 0, 'alternate pronunciation must be surfaced: ' + row.input);
