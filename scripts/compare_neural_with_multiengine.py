@@ -60,6 +60,10 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
     base_ids = [str(x["occurrence_id"]) for x in first_ledger]
     if len(set(base_ids)) != len(base_ids):
         raise ValueError("duplicate occurrence IDs in baseline ledger")
+    base_identity_by_id = {
+        str(x["occurrence_id"]): (str(x["row_id"]), x["token"], x["gold"])
+        for x in first_ledger
+    }
 
     baseline_by_engine: dict[str, dict[str, dict[str, Any]]] = {}
     for engine, records in baseline_ledgers.items():
@@ -68,6 +72,10 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
         mapped = {str(x["occurrence_id"]): x for x in records}
         if set(mapped) != set(base_ids):
             raise ValueError(f"{engine}: occurrence ID set differs from other baseline engines")
+        for occurrence_id, record in mapped.items():
+            identity = (str(record["row_id"]), record["token"], record["gold"])
+            if identity != base_identity_by_id[occurrence_id]:
+                raise ValueError(f"{engine}: occurrence identity mismatch for {occurrence_id}")
         baseline_by_engine[engine] = mapped
 
     cases: list[dict[str, Any]] = []
