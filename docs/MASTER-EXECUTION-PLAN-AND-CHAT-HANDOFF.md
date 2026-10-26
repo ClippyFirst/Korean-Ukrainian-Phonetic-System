@@ -2231,3 +2231,37 @@ The first executable browser workflow after the inventory/miner changes (run `40
 
 These are code/test changes, not verified outcomes. The exact-head test-case-register workflow and full browser/Python suite were still queued at the last check because of the GitHub Actions backlog. Local execution is unavailable in this environment (no local checkout and network access to GitHub is blocked). Do not count any of the above as DONE_VERIFIED until the relevant exact-head jobs pass; if a new failure occurs, inspect its assertion and source evidence before changing the expected value.
 
+## One-pass continuation update — 2026-10-26, current branch head `44c3750cc874e9184471d1efc74b76050f47ee93`
+
+### Completed and evidence-backed
+
+- **DONE_VERIFIED — reproducible candidate inventory generation:** exact-head artifact run [40381081948](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40381081948), artifact [12681810325](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40381081948/artifacts/12681810325). It preserved 34,452 raw source lines from 385 files, extracted 50,737 Hangul-literal candidates and 5,512 assertion/test-declaration candidates, linked 644 lexical rows to 6,790 test-text occurrences, and retained 357 test files. These are candidates, not a semantically adjudicated 50k-case corpus. The artifact should be reused; no need to retrain a teacher for extraction.
+- **DONE_VERIFIED — Python test import repair:** `tests/test_rules.py` now imports the public `phoneticize_korean` function used by the §25/26 regression. Python 3.11 and 3.13 passed in run [40393795942](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40393795942); Python 3.12 was still in progress at the last check.
+- **DONE_VERIFIED — target-mapping failure no longer hides resolved Korean surface:** `src/app/engine_convert.js` now derives the displayed Korean surface from the resolved phonological units and only withholds it for explicitly unlicensed Korean morphology. This fixed the §30 `뒷마루` surface-visibility failure in system run [40394525415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40394525415): the browser suite decreased from 33 to 31 failures. This fix keeps the pipeline boundary intact: Korean surface/IPA analysis is not erased just because the Ukrainian mapping is unavailable.
+- **DONE_VERIFIED as a regression correction, pending exact-head CI — attached -ㄹ게 guard:** the browser rule now checks the original orthographic coda before applying the attached `-ㄹ게` fortition, avoiding accidental application when a complex coda has been reduced earlier. The contradictory `넓게` negative assertion was corrected: `넓게 → 널께` is independently source-licensed in the lexical dictionary (§25), while the productive -ㄹ게 rule itself must not generalize from that reduced coda.
+- **Implementation committed, verification pending — §24 exact forms:** the browser runtime now reduces only licensed complex codas in the exact §24 stem-n/m inventory before fortition (e.g. `닮고 → 담꼬`), rather than retaining the orthographic complex coda in the exposed surface.
+
+### Rejected experiment / preserved contract
+
+A trial changing lexical IPA syllable joining from spaces to dots raised the browser failure count from 33 to 49. It was reverted in commit `0520ea7dd64bc94ee693572d99e187d19e1eb1bd`. Do not repeat a global separator replacement. Existing tests mix dotted and whitespace-separated IPA expectations; resolve this by adjudicating the declared result contract and word/syllable boundaries, then make a coordinated renderer + test migration with positive and negative controls.
+
+### Exact current verification status
+
+The latest code head is `44c3750cc874e9184471d1efc74b76050f47ee93` on `research/strict-teacher-guided-rule-mining-2026-10-26`, PR #339 remains open and draft. Workflows for this head were queued/in progress at the last poll; **do not claim exact-head green CI**.
+
+The latest completed browser/system test evidence is run [40394525415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40394525415) on the preceding code head `61b2f5e44a5373eab254cebf7d4d45a5aae57555`: 1,225 passed, 31 failed. Remaining observed failure clusters include:
+- inconsistent IPA separator expectations (dots vs spaces) across lexical, generic and variant paths;
+- generic vowel-variant output/boundary handling;
+- the §24 `닮고` surface mismatch (targeted in the current head but not yet re-run);
+- several source-backed IPA/surface regressions whose expected/observed values need individual case records before changing production rules.
+
+The neural teacher's saved dev-pair artifact marks comparisons `BLOCKED_INCOMPATIBLE_OR_UNREVIEWED_IPA_CONVENTIONS`; it was trained/selected on the same dev split. Do not treat its outputs as gold, tune production rules from those dev examples, or claim accuracy gains. No new generalized production rule has been promoted from teacher output in this continuation.
+
+### Next actions, in order
+
+1. Poll the current-head test and system-verification workflows for `44c3750cc874e9184471d1efc74b76050f47ee93`; fix only failures supported by source evidence or a clear implementation defect, then rerun.
+2. Build case-level rows from the existing inventory artifact: exact input × mode × expected assertion, test title/path/line, raw expected IPA and Ukrainian target, source/license, observed current-head output/run. Keep duplicate provenance and distinguish expected-only from observed.
+3. Resolve IPA boundary serialization once against the documented contract, including variant generation, without lossy global normalization.
+4. After the register and adapter contract are reliable, use eligible training examples for exploratory teacher-guided clustering. Keep dev for validation and test/holdout sealed; do not retrain the scratch teacher unless the data or architecture changes.
+5. Update this handoff and the case register with final exact-head CI, final SHA and remaining blockers. Keep PR #339 draft until all required checks pass and the source/IPA/target gates are satisfied.
+
