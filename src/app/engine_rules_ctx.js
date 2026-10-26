@@ -3,7 +3,7 @@
  */
 import {
   COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
-  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -29,6 +29,10 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     const exactR002SubstantiveLicensed=exactR002SubstantivePair===exactMorphPair;
     const exactR016Pair=NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS.get(currentWord);
     const exactR016Licensed=exactR016Pair===exactMorphPair;
+    const exactR011Pair=NIKL_25_STEM_LB_LT_ENDING_FORMS.get(currentWord);
+    const exactR011Licensed=exactR011Pair===exactMorphPair;
+    const exactR012Pair=NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS.get(currentWord);
+    const exactR012Licensed=exactR012Pair===exactMorphPair;
     const exactR014Pair=NIKL_28_COMPOUND_FORTITION_FORMS.get(currentWord);
     const exactR014Licensed=exactR014Pair===exactMorphPair;
 
@@ -247,6 +251,22 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
         rules.push('rieul-giyeok-exception-requires-morphology');
         nextRules.push('rieul-giyeok-exception-requires-morphology');
       }
+      continue;
+    }
+
+    // NIKL §25: stem-final ㄼ/ㄾ + licensed ending-initial ㄱ/ㄷ/ㅅ/ㅈ.
+    if(exactR011Licensed&&['ㄼ','ㄾ'].includes(a.coda)&&['ㄱ','ㄷ','ㅅ','ㅈ'].includes(b.onset)&&PLAIN_TO_FORTIS[b.onset]){
+      b.onset=PLAIN_TO_FORTIS[b.onset];
+      rules.push('stem-lb-lt-fortition-§25-exact-form');
+      nextRules.push('stem-lb-lt-fortition-§25-exact-form');
+      continue;
+    }
+
+    // NIKL §26: exact Sino-Korean ㄹ + ㄷ/ㅅ/ㅈ fortition examples.
+    if(exactR012Licensed&&a.coda==='ㄹ'&&['ㄷ','ㅅ','ㅈ'].includes(b.onset)&&PLAIN_TO_FORTIS[b.onset]){
+      b.onset=PLAIN_TO_FORTIS[b.onset];
+      rules.push('sino-korean-rieul-fortition-§26-exact-form');
+      nextRules.push('sino-korean-rieul-fortition-§26-exact-form');
       continue;
     }
 
