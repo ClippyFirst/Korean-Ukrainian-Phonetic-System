@@ -98,7 +98,7 @@ jobs:
               assert report["narrow_comparison"]["clippyfirst_native"] is not None
               assert report["broad_profile_comparison"]["clippyfirst_native"] is not None
               assert "exact_match_delta_narrow_minus_broad" in report["ipa_profile_sensitivity"]
-              assert "controlled IPA-renderer sensitivity diagnostic" in report["ipa_profile_sensitivity"]["interpretation"]
+              assert "Controlled IPA-renderer sensitivity diagnostic" in report["ipa_profile_sensitivity"]["interpretation"]
               assert all(row["production_rule_promotion"] is False for row in report["paired_rule_review_cases"])
               assert all("strict_narrow_status" in row and "strict_broad_profile_status" in row for row in report["paired_rule_review_cases"])
               print(name, report["dataset_metadata"], report.get("charsiu_byt5"), report.get("clippyfirst_native"), report["ipa_profile_sensitivity"])
