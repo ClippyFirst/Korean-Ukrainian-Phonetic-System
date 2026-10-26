@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import importlib.util
 import sys
-from pathlib import Path
-import sys
 import types
+from pathlib import Path
 from contextlib import nullcontext
 from types import SimpleNamespace
 
@@ -197,3 +196,31 @@ def test_existing_g2pk_baseline_uses_project_phonology_and_ipa_modules(monkeypat
     outputs = MODULE.collect_existing_baselines(["학교"])
     assert outputs["g2pk_0_9_4"]["학교"]["status"] == "scored"
     assert outputs["g2pk_0_9_4"]["학교"]["ipa"] == "ha.kjo"
+
+
+def test_generic_licensed_model_metadata_and_engine_key():
+    rows = [{
+        "id": "row-1", "lang": "ko", "split": "test", "text": "가",
+        "canonical": "가", "phonemes": "ka",
+        "tokens": [{"canonical": "가", "phoneme": "ka"}],
+    }]
+    metadata = {
+        "engine_key": "willwade_byt5_g2p_tiny",
+        "model_label": "ByT5 multilingual G2P tiny (willwade)",
+        "model_code_license": "Training code license not independently verified",
+        "model_weights_license_status": "CC BY-SA 4.0 (model card)",
+        "tokenizer_license": "CC BY-SA 4.0 checkpoint repo; Apache-2.0 base",
+        "output_convention": "gruut-anchored, space-separated IPA",
+    }
+    report = MODULE.evaluate(rows, {"가": "k a"}, **metadata)
+    assert report["engine_key"] == "willwade_byt5_g2p_tiny"
+    assert report["engine"] == "ByT5 multilingual G2P tiny (willwade)"
+    assert report["model_weights_license_status"].startswith("CC BY-SA 4.0")
+    assert report["output_convention"].startswith("gruut-anchored")
+
+    paired = MODULE.compare_baselines(rows, {"가": "ka"}, {
+        "g2pk_0_9_4": {"가": {"status": "scored", "ipa": "ka"}},
+    }, engine_key="willwade_byt5_g2p_tiny")
+    assert "willwade_byt5_g2p_tiny" in paired
+    assert paired["paired_comparisons"]["g2pk_0_9_4"]["common_scored_occurrences"] == 1
+    assert paired["per_occurrence"][0]["willwade_byt5_g2p_tiny"]["status"] == "scored"
