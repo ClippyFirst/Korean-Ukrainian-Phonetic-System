@@ -36,7 +36,7 @@ def write_corpus(directory: Path, dataset_id: str, target_type: str, split_rows:
     for split, rows in split_rows.items():
         payload = "".join(json.dumps(item, ensure_ascii=False, sort_keys=True) + "\n" for item in rows).encode()
         (directory / f"{split}.jsonl").write_bytes(payload)
-        split_meta[split] = {"source_rows": len(rows), "output_file_sha256": sha256(payload)}
+        split_meta[split] = {"source_rows": len(rows), "output_row_count": len(rows), "output_file_sha256": sha256(payload)}
     manifest = {
         "dataset_id": dataset_id,
         "dataset_revision": "0123456789abcdef",
