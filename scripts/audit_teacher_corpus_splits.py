@@ -20,12 +20,23 @@ SOURCES = {
         },
     },
     "sigmorphon_2021_medium_korean": {
+        "format": "tsv",
         "revision": "821bcdece5a47820872215969f275004b0abe80c",
         "license": "CC BY-SA 3.0 per repository benchmark register; preserve attribution and re-check task terms",
         "splits": {
             "train": ("https://raw.githubusercontent.com/sigmorphon/2021-task1/821bcdece5a47820872215969f275004b0abe80c/data/medium/kor_train.tsv", "6bafb36d312625353e805506b349e18acd2dff84"),
             "dev": ("https://raw.githubusercontent.com/sigmorphon/2021-task1/821bcdece5a47820872215969f275004b0abe80c/data/medium/kor_dev.tsv", "5c5d725339b660db3ce86339dc3103354de1bfd1"),
             "test": ("https://raw.githubusercontent.com/sigmorphon/2021-task1/821bcdece5a47820872215969f275004b0abe80c/data/medium/kor_test.tsv", "ea0a329a6c958a67817558411fe6c059f40ff588"),
+        },
+    },
+    "charsiu_repository_korean_splits": {
+        "format": "tsv",
+        "revision": "0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4",
+        "license": "MIXED/UNRESOLVED: sources/info/others/ko_info.txt says U/K; ko-2_info.txt says MIT; this repository data is only an overlap proxy, not proof of checkpoint training membership",
+        "splits": {
+            "train": ("https://raw.githubusercontent.com/lingjzhu/CharsiuG2P/0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4/data/train/kor.tsv", "dd90770d480ad6745ad8ea8c59bf8e04b3d814ff"),
+            "dev": ("https://raw.githubusercontent.com/lingjzhu/CharsiuG2P/0c929390759fb94f8ecdfc05bf2ff2dc0f4/data/dev/kor.tsv", "fefdcb6a600886f7e8c293ea272abb1a48927f9f"),
+            "test": ("https://raw.githubusercontent.com/lingjzhu/CharsiuG2P/0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4/data/test/kor.tsv", "bcadda872bef4c1f03f12d42e409ef9042f4b98c"),
         },
     },
 }
@@ -103,7 +114,7 @@ def pairwise_overlaps(sets: dict[str, set[str]]) -> dict[str, dict[str, int]]:
 
 def build_report() -> dict:
     report = {"schema_version": "1.0", "purpose": "pinned source/split integrity and lexical-overlap audit; no model inference", "datasets": {}, "cross_corpus_token_overlap": {}, "test_data_used_for_tuning": False}
-    ugt_text, ugt_tokens, sig_forms = {}, {}, {}
+    token_forms_by_dataset = {}
     for dataset, meta in SOURCES.items():
         split_reports, forms_by_split, token_by_split, source_files = {}, {}, {}, {}
         for split, (url, expected_sha) in meta["splits"].items():
@@ -125,14 +136,18 @@ def build_report() -> dict:
             "raw_form_overlap": pairwise_overlaps(forms_by_split),
             "policy": "train may be used for fitting; dev for selection; test is sealed evaluation only",
         }
-        if dataset == "ugtphon":
-            ugt_text, ugt_tokens = forms_by_split, token_by_split
-        else:
-            sig_forms = forms_by_split
-    report["cross_corpus_token_overlap"] = {
-        f"ugtphon_{a}__vs__sigmorphon_{b}": len(ugt_tokens[a] & sig_forms[b])
-        for a in ugt_tokens for b in sig_forms
-    }
+        token_forms_by_dataset[dataset] = token_by_split
+    cross = {}
+    dataset_names = list(token_forms_by_dataset)
+    for i, left_dataset in enumerate(dataset_names):
+        for right_dataset in dataset_names[i + 1:]:
+            for left_split, left_forms in token_forms_by_dataset[left_dataset].items():
+                for right_split, right_forms in token_forms_by_dataset[right_dataset].items():
+                    cross[f"{left_dataset}:{left_split}__vs__{right_dataset}:{right_split}"] = len(left_forms & right_forms)
+    report["cross_dataset_split_overlap_counts"] = cross
+    report["charsiu_overlap_warning"] = (
+        "Charsiu repository train/dev/test files are an overlap proxy only; the exact training manifest for the selected Hugging Face checkpoint is not established."
+    )
     report["acceptance"] = {
         "all_pinned_blobs_verified": True,
         "all_declared_splits_verified": True,
