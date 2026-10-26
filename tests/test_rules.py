@@ -142,6 +142,33 @@ def test_h_deletion_before_vowel_requires_exact_ending_or_suffix_evidence():
         assert items[1].onset==expected
         assert traces[0].changed
 
+def test_nikl_rule_12_4_exact_examples_have_closed_form_licenses():
+    cases = {
+        "낳은": ("낳>은", "", "ㅇ"),
+        "놓아": ("놓>아", "", "ㅇ"),
+        "쌓이다": ("쌓>이", "", "ㅇ"),
+        "않은": ("않>은", "", "ㄴ"),
+        "닳아": ("닳>아", "", "ㄹ"),
+        "싫어도": ("싫>어", "", "ㄹ"),
+    }
+    for word, (pair, expected_coda, expected_onset) in cases.items():
+        items, traces = apply_ordered_rules(
+            parse_syllables(word), ["R003", "R002"],
+            rule_licenses={f"R003:ending_or_suffix_h_deletion:{word}:{pair}"},
+        )
+        assert items[0].coda == expected_coda, word
+        assert items[1].onset == expected_onset, word
+        assert traces[0].changed, word
+
+    # Exact-form licenses must not transfer to an unreviewed lookalike.
+    items, traces = apply_ordered_rules(
+        parse_syllables("낳아보임"), ["R003", "R002"],
+        rule_licenses={"R003:ending_or_suffix_h_deletion:낳은:낳>은"},
+    )
+    assert items[0].coda == "ㅎ"
+    assert traces[0].status == "conditional-disabled"
+
+
 def test_h_deletion_license_cannot_be_reused_for_another_form():
     items,traces=apply_ordered_rules(
         parse_syllables("싫어"),["R003"],
