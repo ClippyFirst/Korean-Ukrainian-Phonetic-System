@@ -1,4 +1,4 @@
-from korean_ukrainian.pipeline import phoneticize_korean
+from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
 
 
 def _ipa(word: str, level: str) -> dict:
@@ -41,3 +41,11 @@ def test_narrow_profile_is_explicitly_partial_and_does_not_change_target_default
     assert narrow["realization_status"] == "partial-narrow-sibilant-profile"
     assert broad["ipa"] == "sa"
     assert broad.get("transcription_profile") is None
+
+
+
+def test_partial_narrow_profile_is_not_accepted_as_ukrainian_target_input():
+    result = transliterate_korean("са", ipa_level="narrow")
+    assert result["target_status"] == "unavailable"
+    assert result["target_unavailable_reason"] == "narrow_ipa_profile_not_target_compatible"
+    assert result["ukrainian_orthography"] is None
