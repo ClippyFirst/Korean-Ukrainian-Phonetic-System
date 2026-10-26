@@ -153,7 +153,7 @@ test('§30 permitted saisiot variants remain visible as variants, not silently d
     const result = engine.convert(word);
     assert.equal(result.variants.length, 1, word);
     assert.equal(result.variants[0].surface, row.alternate_surface_hangul, word);
-    assert.equal(result.variants[0].ipa, row.alternate_ipa_syllables.split('|').join(' '), word);
+    assert.equal(result.variants[0].ipa, renderExpectedIpa(word, row.alternate_ipa_syllables), word);
   }
 });
 

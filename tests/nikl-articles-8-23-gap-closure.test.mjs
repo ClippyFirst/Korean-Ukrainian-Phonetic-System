@@ -74,7 +74,7 @@ test('§15 all official substantive-morpheme examples preserve spacing and exact
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     assert.equal(result.ukrainian, expectedTarget(row), word);
-    assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), word);
+    assert.equal(result.ipa, renderExpectedIpa(word, row.ipa_syllables), word);
   }
 });
 
@@ -90,7 +90,7 @@ test('§19 and §20 listed assimilation examples and lexical exceptions are regr
     assert.equal(row.surface_hangul, surface, word);
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
-    assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), word);
+    assert.equal(result.ipa, renderExpectedIpa(word, row.ipa_syllables), word);
   }
 });
 
