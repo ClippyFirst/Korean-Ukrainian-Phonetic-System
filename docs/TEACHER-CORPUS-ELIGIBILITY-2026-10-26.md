@@ -26,12 +26,16 @@ Finding train/dev files does **not** authorize fine-tuning an unlicensed checkpo
 - Charsiu's upstream GitHub repository documents training/fine-tuning code and is MIT-licensed as a repository, but the selected Hugging Face checkpoint `charsiu/g2p_multilingual_byT5_small_100` currently shows **“No model card”** and no explicit checkpoint license on the model page. A repository code license is not sufficient evidence that checkpoint weights have the same license.
 - The original Charsiu training-data inventory and overlap with these corpora have not been established. This blocks a leakage-free claim even if a fine-tuning run is technically possible.
 
-## Automated integrity audit\n\n`scripts/audit_teacher_corpus_splits.py` downloads only the pinned UGTPHON, SIGMORPHON and Charsiu-repository Korean split files, verifies each Git blob SHA-1, records byte SHA-256 and sizes, checks UGTPHON row split labels, and reports raw-form and cross-dataset split intersections without emitting example text. It is run by the existing `.github/workflows/test.yml` matrix and uploads a metadata-only artifact. This is a source/split audit, not model training or permission to fine-tune.\n\n
+## Automated integrity audit
+
+`scripts/audit_teacher_corpus_splits.py` downloads only the pinned UGTPHON, SIGMORPHON and Charsiu-repository Korean split files, verifies each Git blob SHA-1, records byte SHA-256 and sizes, checks UGTPHON row split labels, and reports raw-form and cross-dataset split intersections without emitting example text. It is run by the existing `.github/workflows/test.yml` matrix and uploads a metadata-only artifact. This is a source/split audit, not model training or permission to fine-tune.
+
+
 ## Charsiu repository's Korean data: overlap proxy, not checkpoint proof
 
 The upstream Charsiu repository also exposes Korean `data/train/kor.tsv`, `data/dev/kor.tsv`, and `data/test/kor.tsv` at repository commit `0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4` (file Git blob SHAs are pinned in `scripts/audit_teacher_corpus_splits.py`). Its source notes list `sources/info/others/ko_info.txt` with license marker `U/K` and `ko-2_info.txt` with MIT. This is mixed-source data with unresolved terms for at least one source. It is useful as an **overlap proxy** for assessing whether the public benchmark forms may already occur in Charsiu's published Korean data; it is not proof that this exact repository split was used to train the selected Hugging Face checkpoint.
 
-The automated audit now verifies the Charsiu source file blob hashes and compares every benchmark split against every Charsiu-repository split, alongside within-dataset train/dev/test overlap. It reports only counts and file hashes, not corpus rows. The exact checkpoint training manifest remains unknown, so even zero observed overlap with these files would not prove that a test set was unseen by the checkpoint.
+The exact-head automated audit passed in [Teacher corpus split audit run 40290981510](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290981510), with metadata-only artifact [12635583549](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290981510/artifacts/12635583549). It verified every pinned Git blob and reported: UGTPHON 1,976 train / 246 dev / 275 test rows; SIGMORPHON 8,000 / 1,000 / 1,000; Charsiu repository Korean data 62,126 train rows (61,900 unique forms; 226 duplicate-form rows), 50 dev and 500 test rows. Cross-corpus unique-form intersections include **508 UGTPHON test forms found in Charsiu repository train**, 237 UGTPHON test forms in SIGMORPHON train, and 729 SIGMORPHON test forms in Charsiu repository train. Other intersections are preserved in the JSON artifact. The audit reports counts and file hashes, not corpus rows.
 
 ## Required pipeline
 
@@ -51,7 +55,7 @@ The automated audit now verifies the Charsiu source file blob hashes and compare
 | Locate exact train/dev files and source revisions | DONE_VERIFIED | Pinned file paths/commits recorded above; SIGMORPHON row counts checked |
 | Record UGTPHON Korean data license | DONE_VERIFIED | Pinned `ko/LICENSE` identifies Apache-2.0 |
 | Record SIGMORPHON train/dev/test partition structure | DONE_VERIFIED | Pinned repository contains 8,000/1,000/1,000 Korean rows; source README reviewed |
-| Compute cross-split/cross-corpus overlap | PARTIAL pending exact-head CI | `scripts/audit_teacher_corpus_splits.py` verifies pinned Git blob IDs and emits overlap counts without copying corpus rows; the first exact-head workflow must confirm source schema and counts |
+| Compute cross-split/cross-corpus overlap | DONE_VERIFIED | Exact-head CI run 40290981510 verified pinned Git blob IDs and uploaded metadata-only artifact 12635583549; it reported 508 UGTPHON test forms intersecting Charsiu repository train and 237 intersecting SIGMORPHON train |
 | Verify Charsiu checkpoint weight license | BLOCKED | Exact selected checkpoint must expose applicable, explicit usage/modification terms |
 | Audit Charsiu original training-data overlap | BLOCKED | Source-level training inventory or documented uncertainty assessment with no false leakage-free claim |
 | Fine-tune Charsiu / run teacher inference | BLOCKED | Checkpoint rights, pinned environment, train/dev-only manifest, IPA convention adapter and overlap report |
