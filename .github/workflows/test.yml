@@ -55,6 +55,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install test runner
+        run: python -m pip install pytest
       - name: Unit-test pinned corpus parsers and overlap logic
         run: python -m pytest -q tests/test_audit_teacher_corpus_splits.py
       - name: Verify source pins and audit Korean train/dev/test overlaps
