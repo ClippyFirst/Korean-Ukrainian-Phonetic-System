@@ -1452,3 +1452,27 @@ Release classification remains **software-verified research prototype / partial 
 - **Still blocked:** no teacher inference or fine-tuning is claimed. The selected Hugging Face Charsiu checkpoint has no model card / explicit weight license on its page, and its original training-data overlap is unknown. A repository's MIT code license does not automatically license model weights. Exact normalized overlap across the source splits has not yet been computed. Fine-tuning and teacher inference remain BLOCKED pending these gates.
 - **Rule gate unchanged:** teacher predictions are hypotheses, not normative Korean evidence. Production Strict changes still require source adjudication, positive/negative controls, and separate dev/holdout evaluation. Preserve the IPA → Ukrainian adaptation boundary.
 - **Acceptance:** exact-head CI must pass after these code/test updates. The previous CI results do not verify this follow-up commit.
+
+
+
+## Continuation verification update — 2026-10-26 (current PR head)
+
+- **Current PR head verified:** `d9bf45628a0243ee46010c7cb706e5661057be8d` (PR #339 remains open, draft, based on `main` at `a452054a669de28426404d1110731715083423bb`). The earlier supplied SHA `7e3728e3aa62a96b7f5635bf4832f6c747d40677` is not the current PR head.
+- **Exact-head CI:** all four PR-triggered workflows associated with `d9bf45628a0243ee46010c7cb706e5661057be8d` completed successfully: tests [40291416230](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40291416230), system verification [40291416238](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40291416238), teacher corpus split audit [40291416210](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40291416210), and master table/research artifacts [40291416486](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40291416486). These establish software/workflow verification only; they do not establish teacher accuracy or any Strict quality gain.
+- **Alternative-model assessment:** SIGMORPHON 2021 Korean medium data are available as 8,000 train / 1,000 dev / 1,000 test examples under the task's stated CC BY-SA 3.0 data terms. The task documentation explicitly describes targets as tokenized *roughly-phonemic IPA*, not a guaranteed narrow phonetic IPA gold standard; its competition rules also restricted external resources for the medium subtask. A model trained from scratch on its train split could be a separate rough-phonemic research baseline, but cannot be represented as an IPA-equivalent teacher for Strict without an independently reviewed representation adapter. The source documents are [SIGMORPHON 2021 repository](https://github.com/sigmorphon/2021-task1) and [task README/search result](https://github.com/sigmorphon/2021-task1#readme).
+- **Current decision:** no alternative pretrained checkpoint with both verified weights license and appropriate IPA target contract was cleared in this run. Charsiu checkpoint rights and its exact training-data manifest remain unresolved. Therefore no checkpoint was downloaded/run, no inference or fine-tuning was performed, and no model result or Strict rule gain is claimed. Do not treat this as evidence that model training is impossible; it remains a separate option after source terms and target representation are reviewed.
+- **Strict changes:** none made in this continuation. The existing rule gate remains primary-source phonological evidence + positive and negative controls + eligible dev improvement + regression review. The 24-form project holdout and all official test splits remain sealed.
+- **Local verification:** the connected GitHub environment supplied CI evidence; local clone/network execution was not available in this run, so no local test command is claimed.
+
+### Updated task ledger
+
+| Task | Status | Evidence / remaining acceptance criterion |
+|---|---|---|
+| Verify latest PR head and queued CI | DONE_VERIFIED | PR head `d9bf45628a0243ee46010c7cb706e5661057be8d`; all four exact-head workflows completed successfully (run IDs above) |
+| Pin and audit UGTPHON / SIGMORPHON / Charsiu repository splits | DONE_VERIFIED | Source blobs, split counts, duplicate counts and overlap intersections recorded in the corpus audit artifact; lexical overlap is not proof of checkpoint training exposure |
+| Establish an eligible pretrained neural IPA teacher | BLOCKED | Need a checkpoint with explicit weights terms, reproducible immutable revision, training-data provenance/overlap assessment, and an output convention compatible with the miner's IPA contract |
+| Train a separate SIGMORPHON-only rough-phonemic baseline | TODO | Optional alternative, not an IPA teacher by default; acceptance requires a reproducible train/dev-only run, pinned environment, documented CC BY-SA attribution/terms, raw outputs, and an explicitly typed target representation |
+| Run Charsiu inference or fine-tuning | BLOCKED | Explicit checkpoint weights license and original training-data manifest/overlap remain unresolved; do not download/use weights for this workflow until cleared |
+| Promote teacher-derived Strict rules | TODO | Independent NIKL/primary-source adjudication, positive/negative controls, dev improvement, and regression evidence required; no teacher-derived rule is licensed yet |
+| Change production Strict in this continuation | DEFERRED | No source-backed candidate passed the acceptance gate in this run; do not invent rules from associations |
+
