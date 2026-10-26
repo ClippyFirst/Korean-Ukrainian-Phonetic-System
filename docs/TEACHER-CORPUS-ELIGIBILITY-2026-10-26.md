@@ -26,7 +26,7 @@ Finding train/dev files does **not** authorize fine-tuning an unlicensed checkpo
 - Charsiu's upstream GitHub repository documents training/fine-tuning code and is MIT-licensed as a repository, but the selected Hugging Face checkpoint `charsiu/g2p_multilingual_byT5_small_100` currently shows **“No model card”** and no explicit checkpoint license on the model page. A repository code license is not sufficient evidence that checkpoint weights have the same license.
 - The original Charsiu training-data inventory and overlap with these corpora have not been established. This blocks a leakage-free claim even if a fine-tuning run is technically possible.
 
-## Required pipeline
+## Automated integrity audit\n\n`scripts/audit_teacher_corpus_splits.py` downloads only the pinned source files, verifies each Git blob SHA-1, records byte SHA-256 and sizes, checks each row's declared split, and reports raw-form and cross-corpus token-form intersections without emitting example text. It is run by the existing `.github/workflows/test.yml` matrix and uploads a metadata-only artifact. This is a source/split audit, not model training or permission to fine-tune.\n\n## Required pipeline
 
 1. Download only the pinned train/dev files in an isolated, reproducible workflow and record their Git blob SHA, byte SHA-256, row count, split, and license evidence.
 2. Parse corpus records without flattening tokenized IPA or silently rewriting Hangul. For UGTPHON, explicitly decide whether training examples are token-level or phrase-level; retain source IDs and normalization metadata.
@@ -44,7 +44,7 @@ Finding train/dev files does **not** authorize fine-tuning an unlicensed checkpo
 | Locate exact train/dev files and source revisions | DONE_VERIFIED | Pinned file paths/commits recorded above; SIGMORPHON row counts checked |
 | Record UGTPHON Korean data license | DONE_VERIFIED | Pinned `ko/LICENSE` identifies Apache-2.0 |
 | Record SIGMORPHON train/dev/test partition structure | DONE_VERIFIED | Pinned repository contains 8,000/1,000/1,000 Korean rows; source README reviewed |
-| Compute cross-split/cross-corpus overlap and safe training manifest | TODO | Reproducible script emits exact normalized overlap counts and rejects any test row in training input |
+| Compute cross-split/cross-corpus overlap | PARTIAL pending exact-head CI | `scripts/audit_teacher_corpus_splits.py` verifies pinned Git blob IDs and emits overlap counts without copying corpus rows; the first exact-head workflow must confirm source schema and counts |
 | Verify Charsiu checkpoint weight license | BLOCKED | Exact selected checkpoint must expose applicable, explicit usage/modification terms |
 | Audit Charsiu original training-data overlap | BLOCKED | Source-level training inventory or documented uncertainty assessment with no false leakage-free claim |
 | Fine-tune Charsiu / run teacher inference | BLOCKED | Checkpoint rights, pinned environment, train/dev-only manifest, IPA convention adapter and overlap report |
