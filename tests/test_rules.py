@@ -276,6 +276,7 @@ def test_nikl_r016_official_examples_resolve_with_exact_form_source_licenses():
         assert (items[0].coda, items[1].onset) == ("ㄹ", "ㄲ"), word
         assert traces[0].changed, word
         assert traces[0].license_context == f"R016:verb_stem_rieul_giyeok_suffix:{word}:{pair}", word
+        assert "qna_seq=329463" in traces[0].source, word
 
     items, traces = apply_ordered_rules(parse_syllables("닭고기"), ["R016", "R008", "R001"])
     assert (items[0].coda, items[1].onset) == ("ㄺ", "ㄱ")
