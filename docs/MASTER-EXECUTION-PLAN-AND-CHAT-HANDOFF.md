@@ -1743,3 +1743,15 @@ These examples are **source-convention or phonology hypotheses only**. Because t
 - PR #336 also changes residual runtime edge cases; those changes were not ported because this batch's scope is source-convention evidence and train-only conflict triage. No runtime behavior changed.
 - Exact-head verification for documentation head `24ae7dd4991a20fc79aa03bc4d2d414dec0989d2`: full tests [40314686192](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314686192) PASS; system verification [40314686079](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314686079) PASS; corpus audit [40314686082](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314686082) PASS; scratch teacher/pairing [40314686014](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314686014) PASS; master artifacts [40314686101](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314686101) PASS.
 - The optional live NIKL source inventory remains skipped/blocked by its existing HTTP 403 condition; this continuation does not claim a live NIKL crawl succeeded.
+
+
+### Exact-head rerun after PR/branch reconciliation — 2026-10-26
+
+The complete current branch head before this final handoff evidence entry, `801b027627297e2311d428a28933fc295b014b4b`, passed all five relevant workflows:
+- Full tests: [40314920650](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314920650) PASS (Python 3.11/3.12/3.13, browser tests/build, clean wheel install, corpus audit tests).
+- System verification: [40314920643](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314920643) PASS; live NIKL source inventory step was skipped by condition, not passed.
+- Teacher corpus split audit + conflict triage artifact: [40314920750](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314920750) PASS.
+- Scratch teacher, dev error analysis, same-input pairing: [40314920646](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314920646) PASS.
+- Master artifacts: [40314920580](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314920580) PASS.
+
+The branch is still a research-ready partial prototype, not release-ready. The remaining work is evidence-limited: recover/pin the exact IPA-Dict revision used by UGTPHON if possible, independently adjudicate the 366 train/train conflicts, then build and review the versioned source-specific IPA adapter. Do not promote a deterministic rule or enable neural runtime fallback before those gates clear.
