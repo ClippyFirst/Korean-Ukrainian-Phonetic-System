@@ -124,6 +124,20 @@ const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
   ['넘게','넘>게'],
 ]);
 
+// Exact NIKL §25 stem ㄼ/ㄾ + ending fortition examples.
+const NIKL_25_STEM_LB_LT_ENDING_FORMS=new Map([
+  ['넓다','넓>다'], ['넓고','넓>고'], ['넓지','넓>지'],
+  ['훑다','훑>다'], ['훑고','훑>고'], ['훑지','훑>지'],
+]);
+
+// Exact NIKL §26 Sino-Korean ㄹ + ㄷ/ㅅ/ㅈ fortition examples.
+// 불소(弗素) is omitted because the reading depends on lexical sense.
+const NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS=new Map([
+  ['갈등','갈>등'], ['발동','발>동'], ['절도','절>도'], ['말살','말>살'],
+  ['일시','일>시'], ['갈증','갈>증'], ['물질','물>질'], ['발전','발>전'],
+  ['몰상식','몰>상'], ['불세출','불>세'],
+]);
+
 // Exact, source-backed NIKL §28 compound fortition cases. These licenses
 // are lexical: a coda + plain onset alone is not enough to infer a compound.
 const NIKL_28_COMPOUND_FORTITION_FORMS=new Map([
@@ -213,7 +227,7 @@ export {
   HANGUL_BASE, HANGUL_END, V_COUNT, T_COUNT, N_COUNT,
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
-  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
+  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
   NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,
