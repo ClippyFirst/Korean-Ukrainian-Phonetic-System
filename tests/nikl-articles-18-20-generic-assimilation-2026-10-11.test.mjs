@@ -14,9 +14,9 @@ function rulesFor(result) {
 
 test('§18: generic nasal assimilation changes the coda before ㄴ/ㅁ', () => {
   const cases = [
-    ['국물', 'kuŋ mul', '국', 'nasal-assimilation'],
-    ['앞마당', 'am ma daŋ', '앞', 'nasal-assimilation'],
-    ['닫는', 'tan nɯn', '닫', 'nasal-assimilation'],
+    ['국물', 'kuŋ.mul', '국', 'nasal-assimilation'],
+    ['앞마당', 'am.ma.daŋ', '앞', 'nasal-assimilation'],
+    ['닫는', 'tan.nɯn', '닫', 'nasal-assimilation'],
   ];
 
   for (const [input, expectedIpa, fragment, rule] of cases) {
