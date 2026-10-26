@@ -10,7 +10,7 @@ const genericEngine = createEngine(canonical, '');
 // followed by nasalization: https://korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=306188
 test('§§9 and 18: coda neutralization feeds nasal assimilation in 있네요', () => {
   const result = genericEngine.convert('있네요');
-  assert.equal(result.ipa, 'in ne jo');
+  assert.equal(result.ipa, 'in.ne.jo');
   assert.ok(result.trace.some((entry) => entry.rules.includes('nasal-assimilation')),
     'the nasalization stage must be visible in the trace');
   assert.deepEqual(result.issues, []);
@@ -28,7 +28,7 @@ test('§17: unknown ㄷ/ㅌ/ㄾ + vowel-initial ㅣ is not palatalized without m
 
 test('§17 interaction: ㄷ+ㅎ aspiration and palatalization are ordered for the explicit suffix pattern', () => {
   const result = genericEngine.convert('굳히다');
-  assert.equal(result.ipa, 'ku tɕʰi da');
+  assert.equal(result.ipa, 'ku.tɕʰi.da');
   assert.ok(result.trace.some((entry) => entry.rules.includes('h-aspiration-plus-palatalization')),
     'the combined rule must be traceable rather than simulated by an unrelated Hangul-to-Ukrainian path');
   assert.deepEqual(result.issues, []);
