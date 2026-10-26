@@ -122,6 +122,15 @@ const NIKL_17_FORMAL_I_FORMS=new Map([
 ]);
 
 const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
+  // Exact examples from official NIKL Rule 24. Keep this morphology-sensitive
+  // inventory closed; ambiguous 신고 is intentionally not auto-licensed.
+  ['껴안다','안>다'],
+  ['앉고','앉>고'],
+  ['얹다','얹>다'],
+  ['삼고','삼>고'],
+  ['더듬지','듬>지'],
+  ['닮고','닮>고'],
+  ['젊지','젊>지'],
   ['닮다','닮>다'],
   ['넘게','넘>게'],
 ]);
