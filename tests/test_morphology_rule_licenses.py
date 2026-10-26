@@ -123,8 +123,9 @@ def test_analyzer_consensus_productively_licenses_stem_fortition_but_not_nouns()
     cases = [
         ("넓고", [("넓", "VA", 0, 1), ("고", "EC", 1, 2)],
          "R011:stem_lb_lt+suffix:넓고:넓>고", "널꼬"),
+        # ㅎ-bearing ㄶ does not license §24 fortition; the surface is aspirated 만타.
         ("많다", [("많", "VA", 0, 1), ("다", "EF", 1, 2)],
-         "R010:stem_n_m+suffix:많다:많>다", "만따"),
+         None, "만타"),
     ]
     for word, morphemes, expected_license, expected_surface in cases:
         analyses = [
@@ -132,7 +133,10 @@ def test_analyzer_consensus_productively_licenses_stem_fortition_but_not_nouns()
             _analysis("kiwi", word, morphemes),
         ]
         report = analyzer_consensus_rule_licenses(word, analyses)
-        assert expected_license in report["candidate_licenses"]
+        if expected_license is None:
+            assert not any(item.startswith("R010:") for item in report["candidate_licenses"])
+        else:
+            assert expected_license in report["candidate_licenses"]
         if word == "물가로":
             detail = next(item for item in report["licensed_boundaries"] if item.get("lexical_root_extensions"))
             extension = detail["lexical_root_extensions"][0]
@@ -141,7 +145,10 @@ def test_analyzer_consensus_productively_licenses_stem_fortition_but_not_nouns()
             assert extension["license"] == expected_license
         result = phoneticize_korean_with_analyzer_consensus(word, analyses)
         assert result["surface_hangul"] == expected_surface
-        assert expected_license in result["morphology_analysis"]["applied_licenses"]
+        if expected_license is None:
+            assert not any(item.startswith("R010:") for item in result["morphology_analysis"]["applied_licenses"])
+        else:
+            assert expected_license in result["morphology_analysis"]["applied_licenses"]
         assert result["ipa_is_diagnostic_only"] is True
 
     noun = "닭고기"
