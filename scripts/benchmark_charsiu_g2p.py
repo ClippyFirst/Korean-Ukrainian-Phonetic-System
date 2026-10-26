@@ -203,7 +203,7 @@ def compare_baselines(rows: list[dict[str, Any]], neural: dict[str, str],
                 "distance": scored["distance"]
             }
         else:
-            entry["charsiu_byt5"] = {"status": "missing"}
+            entry[engine_key] = {"status": "missing"}
         for name, word_outputs in baselines.items():
             baseline = word_outputs.get(word, {"status": "missing"})
             if baseline.get("status") == "scored" and isinstance(baseline.get("ipa"), str):
@@ -229,7 +229,7 @@ def compare_baselines(rows: list[dict[str, Any]], neural: dict[str, str],
             "missing_or_unresolved_occurrences": total - len(scored),
         }
     paired: dict[str, Any] = {}
-    neural_by_id = {x["occurrence_id"]: x for x in scored_by_engine["charsiu_byt5"]}
+    neural_by_id = {x["occurrence_id"]: x for x in scored_by_engine[engine_key]}
     for name, scored in scored_by_engine.items():
         if name == engine_key:
             continue
