@@ -2135,3 +2135,16 @@ The useful functionality is already present in the current PR #339 branch and is
 The queue is deliberately conservative: it uses only pinned train/train forms, removes SIGMORPHON whitespace-token serialization for comparison only, preserves all raw IPA and source IDs, and does not select gold, map IPA symbols, or generate production rules. It is the appropriate case-level evidence queue for the next research stage. Its status remains PARTIAL until the current branch's unit tests and Teacher corpus split audit pass and the current artifact is retrieved.
 
 The relevant current-head workflow set was still queued when last checked. The earlier PR #340 failures are evidence about the predecessor only; they do not prove that the current PR #339 implementation fails or passes. The current branch implementation must be judged on its own exact-head run.
+
+
+## Train/train queue safety fix — partial annotation overlap — 2026-10-26
+
+Inspection of scripts/build_korean_ipa_adjudication_queue.py found a second edge case beyond the closed PR #340 unit-test defect: the prior difference classifier treated any non-empty intersection between target sets as exact and omitted the entire source form. That could silently discard a conflict when one corpus had multiple annotations and only one target overlapped the other corpus.
+
+Fixed the classifier to:
+- exclude a form as exact only when the complete normalized target sets are equal;
+- retain any non-empty-but-partial overlap as partial_annotation_overlap_requires_review;
+- classify dot-only or length-only diagnostics only when the full sets are equal after that diagnostic transform;
+- add a regression with two SIGMORPHON variants where only one overlaps UGTPHON, asserting both variants remain in the queue.
+
+This is an evidence-preservation fix, not a phonological rule or IPA mapping. Latest executable code/test commit: e825398429750af093bda60645bcb0efbadcb6b8. Exact-head workflow set 403630138xx was queued at the last check; no pass is claimed. The queue remains PARTIAL until the unit tests, Teacher corpus split audit, and artifact upload succeed.
