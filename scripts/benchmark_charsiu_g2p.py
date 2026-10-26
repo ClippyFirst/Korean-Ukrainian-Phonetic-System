@@ -151,7 +151,8 @@ def collect_existing_baselines(words: list[str]) -> dict[str, dict[str, dict[str
 
     try:
         from g2pk import G2p
-        from benchmark_multi_engine_ko import parse_syllables, realize_syllables
+        from korean_ukrainian.phonology import parse_syllables
+        from korean_ukrainian.ipa import realize_syllables
         g2p = G2p()
         for word in words:
             try:
