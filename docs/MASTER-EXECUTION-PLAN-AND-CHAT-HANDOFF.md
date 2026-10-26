@@ -1414,3 +1414,11 @@ Release classification remains **software-verified research prototype / partial 
 - Result: **BLOCKED / not scored**. No verifiable public inference implementation and checkpoint with runnable instructions and terms were identified in the materials checked. No NN-KoG2P benchmark predictions or scores were fabricated.
 - Methodological finding: the described model uses surrounding eojeol context and phonological-phrasing features; isolated-token evaluation is not a faithful model invocation. UGTPHON may support a context-preserving adapter after the real artifact is verified. SIGMORPHON compatibility needs a separate justification.
 - Next acceptance criterion: verify the actual model artifact, provenance, license and input contract; then run identical held-out test rows with case-level predictions, coverage, CER/exact match, errors and paired comparison. Never train/tune on test/holdout examples and never call a lookalike model NN-KoG2P.
+
+
+### NN-KoG2P continuation update — 2026-10-26 (second source search)
+
+- Checked [kr-MATAGI/IPA_G2P-Testing](https://github.com/kr-MATAGI/IPA_G2P-Testing): its documented neural scripts cover Charsiu T5 and KoGPT, but no runnable NN-KoG2P implementation is listed. Also identified the same authors' 2022 [Fast Bilingual G2P](https://aclanthology.org/2022.naacl-industry.32/) paper; it is a distinct bilingual NART-CRF model, not NN-KoG2P, and its in-domain paper metrics are not our benchmark results.
+- Added `scripts/benchmark_contextual_g2p_ko.py` and unit tests for a strict sentence-level IPA scoring contract; added it to the multi-engine CI test list. It validates canonical sentence inputs, ID alignment, IPA output declarations, coverage, exact match, CER and per-case predictions.
+- **Still blocked:** no authentic NN-KoG2P weights/inference code, verified licensing terms, or verified custom-phone-to-IPA mapping were found. No NN-KoG2P inference or scores have been produced. The new evaluator is infrastructure, not a substitute model.
+- SIGMORPHON is lexical/word-level; it cannot validate NN-KoG2P's sentence-context behavior without a clearly labelled context-free ablation. UGTPHON sentence-level evaluation is the appropriate first target once the authentic artifact exists.
