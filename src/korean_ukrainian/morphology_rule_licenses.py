@@ -20,7 +20,7 @@ _FORMAL_TAGS = {
 }
 _H_CODAS = {"ㅎ", "ㄶ", "ㅀ"}
 _R002_EXCLUDED_CODAS = _H_CODAS
-_STEM_TAGS = {"VV", "VA", "VX"}
+_STEM_TAGS = {"VV", "VA"}
 _ENDING_TAGS = {"EC", "EF", "EP", "ETM", "ETN"}
 _PLAIN_FORTITION_ONSETS = {"ㄱ", "ㄷ", "ㅅ", "ㅈ"}
 
@@ -167,7 +167,8 @@ def analyzer_consensus_rule_licenses(
 
     The first version intentionally supports a single precomposed-Hangul token
     with character-aligned spans. It does not infer spaces, decompose syllables,
-    or license substantive-morpheme rules.
+    or license substantive-morpheme rules. R010/R011/R016 additionally require
+    both analyzers to agree on a VV/VA stem followed by a grammatical ending.
     """
     if not isinstance(text, str) or not text or any(not ("\uac00" <= char <= "\ud7a3") for char in text):
         raise ValueError("analyzer consensus currently requires one precomposed-Hangul token without spaces")
