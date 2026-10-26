@@ -322,7 +322,7 @@ test('NIKL §30 exact saisiot pronunciation forms match the Python rule inventor
     냇가: '내까',
     샛길: '새낄',
     빨랫돌: '빨래똘',
-    콧등: '코똥',
+    콧등: '코뜽',
     깃발: '기빨',
     대폿밥: '대포빱',
     햇살: '해쌀',
