@@ -2148,3 +2148,16 @@ Fixed the classifier to:
 - add a regression with two SIGMORPHON variants where only one overlaps UGTPHON, asserting both variants remain in the queue.
 
 This is an evidence-preservation fix, not a phonological rule or IPA mapping. Latest executable code/test commit: e825398429750af093bda60645bcb0efbadcb6b8. Exact-head workflow set 403630138xx was queued at the last check; no pass is claimed. The queue remains PARTIAL until the unit tests, Teacher corpus split audit, and artifact upload succeed.
+
+
+## Owner-directed priority change — exhaustive test-case register first (2026-10-26)
+
+The owner clarified that the next deliverable must be a register of **all rules and every concrete example discovered or exercised by each test**, before any further implementation edits. The canonical new document is [Master test-case and rule-evidence register](MASTER-TEST-CASE-AND-RULE-REGISTER-2026-10-26.md).
+
+- Current register status: **PARTIAL INVENTORY**, not complete. It contains a first batch of directly inspected examples and a full-scope test-family index, but it does not yet contain every case from all 28 lexical evidence batches, all test fixtures/corpora, every test assertion, and all historical run artifacts.
+- Code-change freeze for this workstream: no additional production-rule edits until the completeness gate in the register is satisfied. This is a documentation/data-inventory phase, not a rule-mining or rule-promotion phase.
+- Keep expected values distinct from observed outputs. A passing test run is recorded only when its workflow run is tied to the exact commit; a test assertion by itself is EXPECTED_ONLY.
+- Keep every counterexample and forbidden trace, punctuation boundary, unresolved/abstention case, permitted variant, and repeated test provenance. Do not collapse different modes (generic/no lexicon, lexical override, strict morphology, research morphology, browser and Python) into one result.
+- Research-teacher and SIGMORPHON/UGTPHON/Charsiu discrepancies remain a separate typed case class. Annotation differences are not automatically missing phonological rules.
+- Next execution order: enumerate the repository test/fixture/corpus manifest; extract the complete lexical CSV and all lexical review batches; extract case literals and expected IPA/Ukrainian values from every test; reconcile actual CI outcomes/artifacts by commit; add machine-readable case rows and integrity checks; publish audited counts and only then return to rule-level work.
+- Exact current branch at the point this priority change began: `research/strict-teacher-guided-rule-mining-2026-10-26`. New register commit: `b7d6c9d0bcd5a8558d07589eedf5007d8454ef94`.
