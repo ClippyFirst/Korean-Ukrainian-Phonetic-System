@@ -251,7 +251,7 @@ jobs:
 
   neural-korean-g2p:
     name: Pinned CharsiuG2P inference (research opt-in)
-    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26' && github.event.pull_request.labels[0].name == 'enhancement'
+    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
