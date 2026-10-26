@@ -354,3 +354,22 @@ Artifact: [multi-engine-korean-ipa-diagnostic.zip](https://github.com/ClippyFirs
 | eSpeak NG Korean | 8.14% | 39.05% | 100% | 0 |
 
 **Interpretation:** the native engine's point exact-match score is slightly below g2pk on this dataset, with overlapping bootstrap intervals; it abstains on 48 token occurrences rather than forcing output. These scores do not establish which IPA is correct because UGTPHON annotations are not a fully adjudicated independent gold set, and the g2pk adapter shares parts of the project's representation layer. The benchmark does not evaluate Ukrainian adaptation. It is evidence that the diagnostic pipeline executes reproducibly, not a release-acceptance pass for linguistic correctness.
+
+
+## Exact-head verification update — 2026-10-26 (research continuation)
+
+This update supplements the older snapshot above; it does not turn historical checkboxes into a release approval.
+
+| Gate | Current status | Evidence / remaining acceptance criterion |
+|---|---|---|
+| 0 — Repository integrity | PARTIAL | Default `main` remains `a452054a669de28426404d1110731715083423bb`. Research branch `research/strict-teacher-guided-rule-mining-2026-10-26` carries a large, long-lived research delta and PR #339 remains open/Draft; do not merge it wholesale merely because individual workflows pass. Isolated fixes #342 and #343 were merged into the research branch only. |
+| 1 — Source and licensing | BLOCKED/PARTIAL | NIKL live source inventory remains skipped in metadata-only CI due to access restrictions; root project license is still an owner decision; IPA symbol conventions and Ukrainian target policy need independent review. Do not infer rights from third-party license notices. |
+| 2 — Rule and data integrity | PARTIAL | Fail-closed, loss-preserving register generator is verified. Exact-head artifact on merged research commit `19832224daab7d17b56df75485bb5461ea3c9ef9`: 644 lexical records, 359 test files, 387 source files, 6,801 lexical-to-test text links, 34,573 source lines, 5,241 assertion/test-declaration candidates; artifact ZIP SHA-256 `28271fcbf18402e8046399721e6c6be1db42d4998e94d6f2dee7c9ca9d0b223e`. Candidate links/lines are not a semantically adjudicated case register. |
+| 3 — Independent evaluation corpus | BLOCKED/PARTIAL | Scratch teacher and pinned corpus workflows are research-only. Cross-source IPA convention mapping remains unadjudicated; the 24-form holdout and native strict cases must not be used to fit rules. Acceptance requires independent source-specific IPA mapping and a truly held-out evaluation set. |
+| 4 — Runtime correctness | PASS for the isolated merged research head; overall branch still under current-head verification | On merged research commit `19832224daab7d17b56df75485bb5461ea3c9ef9`, [system verification run 40408709236](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709236) passed browser regression/build and Python regression/data integrity; [register run 40408709171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171) passed inventory generation and stable-ID checks. The exact current research head `256b27a454c992218ca87a0fdf58ea6135071560` has a new full workflow batch in progress; do not extrapolate the prior green run to that head. |
+| 5 — Product quality | PARTIAL | Passing CI does not independently verify the complete long-text UX, accessibility, mobile behavior, or public Pages deployment for the latest code. |
+| 6 — Release and independent review | BLOCKED | Still a research-ready partial prototype. Release acceptance requires independent Korean phonetic adjudication, Ukrainian adaptation review, source/license resolution, current-head full CI, and public deployment confirmation. |
+
+### Exact-head CI batch currently running
+
+On research head `256b27a454c992218ca87a0fdf58ea6135071560`, workflow runs were observed in progress: tests `40410859903`, system verification `40410859949`, case-register extraction `40410859892`, browser G2P integration `40410859840`, UGTPHON diagnostic `40410859897`, paired native-vs-g2pk diagnostic `40410859885`, morphology consensus `40410860218`, morphology adapter smoke `40410859942`, multi-engine IPA diagnostic `40410860080`, optional g2pK integration `40410859938`, scratch teacher training `40410859771`, Charsiu comparisons `40410860096`, and corpus split audit `40410860054`. Their existence/status is not a pass; refresh exact conclusions before any promotion or merge decision.
