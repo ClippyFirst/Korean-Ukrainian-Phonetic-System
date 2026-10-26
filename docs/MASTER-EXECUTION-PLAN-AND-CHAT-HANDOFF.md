@@ -2173,3 +2173,31 @@ The owner clarified that the next deliverable must be a register of **all rules 
 
 
 - Added scripts/build_test_case_register.py plus tests/test_build_test_case_register.py. The extractor produces five separate CSVs: lexical source rows, lexical-to-test text-occurrence links, all Hangul spans, a line-by-line inventory of every scannable test/fixture/corpus source line (including IPA-only and Latin-script assertions), and unclassified assertion/test-declaration candidates. Occurrences and literal spans remain unclassified; this avoids pretending that a string match proves a test input or a rule pass. Exact-head CI is pending; no local test result is claimed.
+
+## Efficient neural-teacher → deterministic-rule workflow — owner priority — 2026-10-26
+
+The goal is not to copy teacher predictions into the engine. The teacher is a hypothesis generator; each promotion must preserve the pipeline Hangul structure/morphology → Korean phonology → typed IPA → Ukrainian adaptation → Ukrainian orthography.
+
+### Resource-efficient execution order
+
+1. Reuse pinned corpora and existing teacher/engine artifacts; do not retrain or rerun an expensive model unless the current artifact is missing, incompatible, or fails integrity checks.
+2. Build a single case-level ledger keyed by stable case ID and source hashes. Preserve raw source/target strings, tokenization, tone/length/diacritics, word/syllable boundaries, model checkpoint, engine commit, run ID, mode, and provenance. Keep expected values, observed outputs, and adjudicated gold in separate fields.
+3. Run cheap deterministic checks first: exact token match, reviewed serialization-only comparison, known IPA convention mapping, and existing rule trace. Never normalize away length, stress, boundaries, or features without an explicit reviewed policy.
+4. Classify remaining mismatches by pipeline stage. Distinguish model error, reference/convention disagreement, engine bug, missing general rule, morphology uncertainty, Ukrainian mapping gap, and formatting defect. Unknown cases stay unresolved rather than being forced into a category.
+5. Cluster by shared phonological/morphological environment and ordered rule interaction, not just by surface spelling. Rank candidate clusters by estimated coverage × confidence × implementation simplicity, with uncertainty and regression risk as penalties. Prefer one verified general rule over many lexical exceptions.
+6. For each candidate, automatically assemble positive examples, nearest negative controls, counterexamples, source citations, and affected existing tests. Require exact-environment primary evidence or independently adjudicated pronunciation evidence before promotion.
+7. Implement a small coherent batch; add regression cases for every reviewed positive and negative example; run the relevant focused tests, then full Python/browser parity and independent held-out evaluation. Record baseline vs candidate counts and errors by class.
+8. Keep lexical overrides as explicit exceptions only when the evidence supports lexical specificity. A candidate that does not improve held-out performance or causes unexplained regressions is rejected or rolled back.
+
+### Current execution evidence and blockers
+
+- The latest inspected run for the test-case extractor failed because its unit test expected a Python test declaration even though the temporary fixture only contained JavaScript; the fixture now includes an actual JavaScript test declaration and assertion. The extractor must still pass on an exact-head run before its inventories can be trusted.
+- The latest inspected browser test failures include separator-contract mismatches caused by a temporary change to use spaces between adjacent Hangul syllables. The renderer preserves literal spaces itself; a dot is required between adjacent syllables within a token and does not cross literal whitespace. Restored the dot separator in `src/app/engine_convert.js`; exact-head verification is still pending.
+- Other failures remain to adjudicate, including exact-form outputs for `훑다`/surface `훑따` vs the test's `훌따`, saisiot `고갯짓` expected `고개찟` vs observed `고개찓`, the §29 `홑이불` license, the §24 `신다` IPA expected `sin.t͈a` vs observed `ɕin.t͈a`, and a CLI rights-inventory count (116 vs 117). Do not silently change gold values or broaden rules to make CI green; inspect the exact source and contract for each.
+- The latest inspected full test workflow failed in browser and Python jobs; one matrix leg was cancelled after another failure. The case-register workflow also failed. These are real failures from runs on earlier branch heads, not results for the latest edits. No exact-head green result is claimed.
+- Production changes are paused except reverting the identified IPA separator regression. The next high-value step is to retrieve the newly triggered exact-head workflow results, repair the extractor's own contract first, then turn the failure list and teacher prediction artifacts into linked case rows before promoting any teacher-derived rule.
+
+### Selection metric
+
+For each candidate cluster record: `eligible_cases`, `cases_explained`, `independent_source_count`, `positive_controls`, `negative_controls`, `heldout_delta`, `regressions`, `confidence`, and `implementation_cost`. Do not use teacher exact-match score alone as a production objective. Optimize verified error reduction on eligible held-out cases, with zero unexplained regression as the guardrail.
+
