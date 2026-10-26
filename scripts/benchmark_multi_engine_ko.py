@@ -6,20 +6,6 @@ candidate keeps its own native output and a declared adapter. It never routes a
 competitor's output back through the ClippyFirst phonological rules. A few
 competitors need a representation adapter because they emit Hangul surface text
 or a documented custom phone alphabet instead of IPA.
-
-CharsiuG2P is evaluated by the separate optional benchmark_charsiu_g2p.py runner
-and workflow job. That neural word-level ablation shares the IPA normalizer and
-reports its own paired occurrence ledger; its outputs are not mixed into this
-deterministic/external-engine driver or treated as sentence-context predictions.
-The dedicated research Actions job is branch-scoped because downloading the
-checkpoint is large and model weights have unresolved redistribution terms.
-A separate runner is used so its raw per-case predictions remain independently auditable.
-Neither neural outputs nor corpus annotations are promoted to source-reviewed normative IPA gold.
-The opt-in neural run must preserve its own raw output and revision provenance.
-Model scores are diagnostic only until independent IPA adjudication is complete.
-Model revisions and model-weight licensing remain separate provenance fields.
-The full per-engine occurrence ledger supports paired comparisons without a capped mismatch sample.
-The ledger contract is covered by unit tests and consumed by the neural comparison workflow.
 """
 from __future__ import annotations
 
@@ -75,13 +61,90 @@ def kog2p_phones_to_ipa(value: str) -> str:
     return "".join(_KOG2P_PHONE_TO_IPA[token] for token in tokens)
 
 
-def _gold_variants(raw: str) -> list[str]:
-    return [normalize_ipa(part) for part in raw.split(",") if part.strip()]
+def _normalize_broad_fricative_aspiration(value: str) -> str:
+    """Sensitivity-only profile: ignore narrow aspiration on Korean /s, ɕ/."""
+    return re.sub(r"(?<=[sɕ])ʰ", "", normalize_ipa(value))
 
 
-def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
-    predicted = normalize_ipa(prediction)
-    variants = _gold_variants(gold_raw)
+def _normalize_ignore_aspiration(value: str) -> str:
+    """Diagnostic only: remove aspiration marks after any segment."""
+    return normalize_ipa(value).replace("ʰ", "")
+
+
+def _normalize_ignore_length(value: str) -> str:
+    """Diagnostic only: ignore IPA length marks; not a canonical Korean score."""
+    return normalize_ipa(value).replace("ː", "").replace("ˑ", "")
+
+
+def _normalize_ignore_stress(value: str) -> str:
+    """Diagnostic only: ignore primary/secondary stress marks."""
+    return normalize_ipa(value).replace("ˈ", "").replace("ˌ", "")
+
+
+DIAGNOSTIC_NORMALIZERS: dict[str, Callable[[str], str]] = {
+    "primary": normalize_ipa,
+    "broad_fricative_aspiration": _normalize_broad_fricative_aspiration,
+    "ignore_all_aspiration": _normalize_ignore_aspiration,
+    "ignore_length": _normalize_ignore_length,
+    "ignore_stress": _normalize_ignore_stress,
+}
+DIAGNOSTIC_PROFILE_WARNINGS = {
+    "primary": "primary benchmark contract; only declared Unicode/format normalization",
+    "broad_fricative_aspiration": "sʰ/ɕʰ distinctions removed; sensitivity only, not accepted gold convention",
+    "ignore_all_aspiration": "all aspiration distinctions removed; deliberately over-permissive diagnostic, not accuracy",
+    "ignore_length": "length distinctions removed; diagnostic only, may erase lexical/prosodic information",
+    "ignore_stress": "stress marks removed; diagnostic only, not engine-specific gold",
+}
+
+
+def _classify_native_discrepancy(
+    prediction: str, gold_raw: str, strict_exact: bool, broad_exact: bool,
+) -> dict[str, Any]:
+    """Conservative label for a score discrepancy; never infer phonology from mismatch alone."""
+    gold_variants = [part.strip() for part in gold_raw.split(",") if part.strip()]
+    profile_sensitivity_detected = broad_exact and not strict_exact
+    if any(
+        unicodedata.normalize("NFC", prediction) == unicodedata.normalize("NFC", gold)
+        for gold in gold_variants
+    ):
+        category = "UNICODE_OR_FORMAT"
+        rationale = "raw strings differ but NFC-canonical strings match"
+        confidence = "high for canonical Unicode equivalence"
+    elif profile_sensitivity_detected:
+        category = "UNCLASSIFIED"
+        rationale = (
+            "the declared s/ɕ aspiration-sensitivity profile changes exactness, but the "
+            "gold transcription policy is not independently established; this is not "
+            "sufficient evidence to label the difference IPA_CONVENTION"
+        )
+        confidence = "profile sensitivity observed; convention status unverified"
+    else:
+        category = "UNCLASSIFIED"
+        rationale = "the current evidence does not distinguish engine error from reference/convention/segmentation issues"
+        confidence = "unresolved; requires case-level source review"
+    return {
+        "category": category,
+        "rationale": rationale,
+        "confidence": confidence,
+        "strict_profile_exact": strict_exact,
+        "broad_fricative_aspiration_exact": broad_exact,
+        "profile_sensitivity_detected": profile_sensitivity_detected,
+        "profile_sensitivity_name": "broad_fricative_aspiration" if profile_sensitivity_detected else None,
+    }
+
+
+def _gold_variants(raw: str, normalizer: Callable[[str], str] = normalize_ipa) -> list[str]:
+    return [normalizer(part) for part in raw.split(",") if part.strip()]
+
+
+def _score(
+    prediction: str,
+    gold_raw: str,
+    *,
+    normalizer: Callable[[str], str] = normalize_ipa,
+) -> dict[str, Any]:
+    predicted = normalizer(prediction)
+    variants = _gold_variants(gold_raw, normalizer)
     if not variants:
         raise ValueError("no usable IPA reference variants")
     distance, closest = min(
@@ -95,6 +158,57 @@ def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
         "distance": distance,
         "exact": distance == 0,
         "reference_length": len(closest),
+    }
+
+
+def _profile_change_audit(
+    primary_items: list[dict[str, Any]],
+    profile_items: list[dict[str, Any]],
+    *,
+    sample_limit: int = 25,
+) -> dict[str, Any]:
+    """Explain which individual cases change status under a diagnostic profile."""
+    primary_by_id = {str(item["occurrence_id"]): item for item in primary_items}
+    profile_by_id = {str(item["occurrence_id"]): item for item in profile_items}
+    shared_ids = sorted(set(primary_by_id) & set(profile_by_id))
+    rescued: list[dict[str, Any]] = []
+    regressed: list[dict[str, Any]] = []
+    unchanged_exact = 0
+    unchanged_mismatch = 0
+    for occurrence_id in shared_ids:
+        primary = primary_by_id[occurrence_id]
+        profile = profile_by_id[occurrence_id]
+        if not primary["exact"] and profile["exact"]:
+            rescued.append({
+                "occurrence_id": occurrence_id,
+                "token": primary.get("token"),
+                "gold": primary.get("gold"),
+                "prediction": primary.get("predicted"),
+                "primary_distance": primary.get("distance"),
+                "profile_distance": profile.get("distance"),
+            })
+        elif primary["exact"] and not profile["exact"]:
+            regressed.append({
+                "occurrence_id": occurrence_id,
+                "token": primary.get("token"),
+                "gold": primary.get("gold"),
+                "prediction": primary.get("predicted"),
+                "primary_distance": primary.get("distance"),
+                "profile_distance": profile.get("distance"),
+            })
+        elif primary["exact"]:
+            unchanged_exact += 1
+        else:
+            unchanged_mismatch += 1
+    return {
+        "paired_occurrences": len(shared_ids),
+        "primary_mismatch_became_exact": len(rescued),
+        "primary_exact_became_mismatch": len(regressed),
+        "unchanged_exact": unchanged_exact,
+        "unchanged_mismatch": unchanged_mismatch,
+        "rescued_case_examples": rescued[:sample_limit],
+        "regressed_case_examples": regressed[:sample_limit],
+        "warning": "case transitions explain score sensitivity only; they do not establish that the profile is linguistically valid",
     }
 
 
@@ -302,7 +416,7 @@ def _per_engine_occurrence_ledger(
     predictions: dict[str, dict[str, Any]],
     native_cache: dict[str, dict[str, Any]],
 ) -> dict[str, list[dict[str, Any]]]:
-    """Preserve every token occurrence and raw output/status for cross-engine pairing."""
+    """Preserve every eligible token occurrence and raw output/status for cross-engine pairing."""
     ledger: dict[str, list[dict[str, Any]]] = {}
     for name, engine_predictions in predictions.items():
         rows: list[dict[str, Any]] = []
@@ -351,7 +465,6 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     from korean_ukrainian.pipeline import phoneticize_korean
     from korean_ukrainian.phonology import parse_syllables
     from korean_ukrainian.ipa import realize_syllables
-    from g2pk import G2p
 
     items, words = _load_rows_and_words(rows)
     predictions: dict[str, dict[str, Any]] = {}
@@ -383,17 +496,13 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         lambda word: _native_ipa(phoneticize_korean, word),
         "native public pipeline output; unresolved predictions are abstentions",
     )
-    g2p = G2p()
-    def g2pk_ipa(word: str) -> str:
-        surface = g2p(word)
-        if not isinstance(surface, str):
-            raise TypeError(f"g2pk returned {type(surface).__name__}")
-        surface = "".join(surface.split())
-        if not _HANGUL_TOKEN.fullmatch(surface):
-            raise ValueError(f"not a single Hangul surface form: {surface!r}")
-        return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
-    execute("g2pk_0_9_4", "g2pk==0.9.4", g2pk_ipa,
-            "g2pk surface Hangul -> project segment renderer; native rules not rerun")
+    if not args.exclude_g2pk:
+        from g2pk import G2p
+
+        g2p = G2p()
+        execute("g2pk_0_9_4", "g2pk==0.9.4",
+                lambda word: _g2pk_surface_to_ipa(g2p, word),
+                "g2pk surface Hangul -> project segment renderer; native rules not rerun")
 
     try:
         kog2p_fn, kog2p_adapter = _load_kog2p(args.kog2p_root)
@@ -456,9 +565,15 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         }
 
     scored_by_engine: dict[str, list[dict[str, Any]]] = {name: [] for name in predictions}
+    profile_scores_by_engine: dict[str, dict[str, list[dict[str, Any]]]] = {
+        name: {profile: [] for profile in DIAGNOSTIC_NORMALIZERS}
+        for name in predictions
+    }
     errors_by_engine: dict[str, int] = {name: 0 for name in predictions}
     unresolved_native = 0
     mismatch_details: list[dict[str, Any]] = []
+    native_gold_discrepancy_audit: list[dict[str, Any]] = []
+    native_discrepancy_category_counts: dict[str, int] = defaultdict(int)
 
     # Re-evaluate native separately to preserve its explicit abstention state.
     native_cache: dict[str, dict[str, Any]] = {}
@@ -510,6 +625,13 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 scored = _score(raw_prediction, gold)
                 scored.update({"occurrence_id": item["occurrence_id"], "row_id": row_id, "token": word, "gold": gold})
                 scored_by_engine[name].append(scored)
+                for profile_name, normalizer in DIAGNOSTIC_NORMALIZERS.items():
+                    profile_scored = _score(raw_prediction, gold, normalizer=normalizer)
+                    profile_scored.update({
+                        "occurrence_id": item["occurrence_id"], "row_id": row_id,
+                        "token": word, "gold": gold,
+                    })
+                    profile_scores_by_engine[name][profile_name].append(profile_scored)
             except Exception:
                 errors_by_engine[name] += 1
 
@@ -518,8 +640,30 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     for name, scored in scored_by_engine.items():
         attempted = len(items)
         metrics = _metrics(scored)
+        diagnostic_profiles = {
+            profile_name: {
+                **_metrics(profile_items),
+                "normalization": DIAGNOSTIC_PROFILE_WARNINGS[profile_name],
+                "warning": "diagnostic sensitivity only; never substitute for primary scores",
+                "case_transition_audit": _profile_change_audit(
+                    profile_scores_by_engine[name]["primary"], profile_items,
+                ),
+                "delta_exact_rate_vs_primary": (
+                    round(_metrics(profile_items)["exact_match_rate"] - metrics["exact_match_rate"], 6)
+                    if _metrics(profile_items)["exact_match_rate"] is not None and metrics["exact_match_rate"] is not None
+                    else None
+                ),
+                "delta_cer_vs_primary": (
+                    round(_metrics(profile_items)["character_error_rate"] - metrics["character_error_rate"], 6)
+                    if _metrics(profile_items)["character_error_rate"] is not None and metrics["character_error_rate"] is not None
+                    else None
+                ),
+            }
+            for profile_name, profile_items in profile_scores_by_engine[name].items()
+        }
         result: dict[str, Any] = {
             **metrics,
+            "normalization_profile_sensitivity": diagnostic_profiles,
             "attempted_tokens": attempted,
             "coverage": round(len(scored) / attempted, 6) if attempted else None,
             "abstentions_or_unresolved": unresolved_native if name == "clippyfirst_native" else 0,
@@ -568,11 +712,66 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 any_error = True
                 continue
             scored = _score(value, gold)
-            row[name] = {"ipa": value, "exact": scored["exact"], "distance": scored["distance"]}
+            broad_scored = _score(
+                value, gold, normalizer=_normalize_broad_fricative_aspiration,
+            )
+            row[name] = {
+                "ipa": value,
+                "normalized_ipa": scored["normalized_predicted"],
+                "normalized_gold": scored["closest_normalized_gold"],
+                "exact": scored["exact"],
+                "distance": scored["distance"],
+                "broad_fricative_aspiration_normalized_ipa": broad_scored["normalized_predicted"],
+                "broad_fricative_aspiration_normalized_gold": broad_scored["closest_normalized_gold"],
+                "broad_fricative_aspiration_exact": broad_scored["exact"],
+                "broad_fricative_aspiration_distance": broad_scored["distance"],
+            }
+            if name == "clippyfirst_native" and not scored["exact"]:
+                row[name]["discrepancy"] = _classify_native_discrepancy(
+                    value, gold, bool(scored["exact"]), bool(broad_scored["exact"]),
+                )
             if not scored["exact"]:
                 any_error = True
         if any_error and len(mismatch_details) < 250:
             mismatch_details.append(row)
+
+        native_row = row.get("clippyfirst_native", {})
+        if native_row.get("status") == "unresolved_or_error":
+            category = "ABSTENTION" if native.get("unresolved") else "UNCLASSIFIED"
+            native_gold_discrepancy_audit.append({
+                "occurrence_id": item["occurrence_id"],
+                "row_id": row_id,
+                "original_hangul": word,
+                "original_gold_ipa": gold,
+                "clippyfirst_status": "abstained" if native.get("unresolved") else "runtime_error_or_no_output",
+                "clippyfirst_raw_ipa": native.get("ipa"),
+                "reason": native.get("reason") or native.get("error"),
+                "category": category,
+                "classification_confidence": "status-derived; not an IPA correctness judgement",
+            })
+            native_discrepancy_category_counts[category] += 1
+        elif native_row and not native_row.get("exact", False):
+            discrepancy = native_row.get("discrepancy", {})
+            category = discrepancy.get("category", "UNCLASSIFIED")
+            native_gold_discrepancy_audit.append({
+                "occurrence_id": item["occurrence_id"],
+                "row_id": row_id,
+                "original_hangul": word,
+                "original_gold_ipa": gold,
+                "clippyfirst_raw_ipa": native_row.get("ipa"),
+                "existing_profile_prediction": native_row.get("normalized_ipa"),
+                "existing_profile_gold": native_row.get("normalized_gold"),
+                "broad_fricative_aspiration_prediction": native_row.get("broad_fricative_aspiration_normalized_ipa"),
+                "broad_fricative_aspiration_gold": native_row.get("broad_fricative_aspiration_normalized_gold"),
+                "existing_profile_distance": native_row.get("distance"),
+                "broad_fricative_aspiration_distance": native_row.get("broad_fricative_aspiration_distance"),
+                "category": category,
+                "classification_rationale": discrepancy.get("rationale"),
+                "classification_confidence": discrepancy.get("confidence"),
+                "profile_sensitivity_detected": discrepancy.get("profile_sensitivity_detected", False),
+                "profile_sensitivity_name": discrepancy.get("profile_sensitivity_name"),
+            })
+            native_discrepancy_category_counts[category] += 1
 
     # Preserve every abstained token occurrence, not just a truncated sample.
     # Repeated words in separate rows count as separate occurrences.
@@ -623,7 +822,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     native_g2pk_pairwise_audit: list[dict[str, Any]] = []
     pairwise_category_counts: dict[str, int] = defaultdict(int)
     g2pk_predictions = predictions.get("g2pk_0_9_4", {})
-    for item in items:
+    for item in (items if not args.exclude_g2pk else []):
         word, gold = item["word"], item["gold"]
         native = native_cache.get(word, {})
         candidate = g2pk_predictions.get(word, {})
@@ -701,14 +900,31 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "per_engine_occurrences": _per_engine_occurrence_ledger(items, predictions, native_cache),
         "per_engine_occurrence_contract": "one record per eligible occurrence and engine; raw IPA plus status; no-output/error/abstention remain explicit",
         "diagnostic_mismatch_sample": mismatch_details,
+        "clippyfirst_gold_discrepancy_audit": {
+            "scope": "complete eligible occurrence-level ClippyFirst-vs-gold discrepancy and abstention ledger",
+            "occurrence_count": len(native_gold_discrepancy_audit),
+            "category_counts": dict(sorted(native_discrepancy_category_counts.items())),
+            "profile_sensitivity_occurrence_count": sum(
+                bool(item.get("profile_sensitivity_detected")) for item in native_gold_discrepancy_audit
+            ),
+            "occurrences": native_gold_discrepancy_audit,
+            "limitations": "Gold IPA is not independently adjudicated; UNCLASSIFIED is not evidence of an engine error. ABSTENTION is a coverage outcome, not an accuracy failure.",
+        },
+        "discrepancy_audit_contract": {
+            "scope": "complete native ledger plus capped multi-engine sample",
+            "categories": ["PHONOLOGY_ENGINE", "IPA_CONVENTION", "UNICODE_OR_FORMAT", "SEGMENTATION", "GOLD_UNCERTAIN", "ABSTENTION", "UNCLASSIFIED"],
+            "policy": "UNICODE_OR_FORMAT is assigned only when raw strings are proven NFC-equivalent; explicit native abstentions are ABSTENTION. A score change under the s/ɕ aspiration sensitivity profile is recorded as profile_sensitivity_detected but remains UNCLASSIFIED unless independent source evidence establishes an IPA convention. PHONOLOGY_ENGINE, SEGMENTATION, and GOLD_UNCERTAIN require case-level adjudication; other mismatches remain UNCLASSIFIED.",
+            "warning": "This sampled diagnostic does not satisfy the full case-by-case adjudication requirement. Gold variants and source context may be insufficient to resolve a mismatch.",
+        },
         "native_g2pk_pairwise_audit": {
+            "status": "excluded_by_user_request" if args.exclude_g2pk else "completed",
             "occurrence_count": len(native_g2pk_pairwise_audit),
             "category_counts": dict(sorted(pairwise_category_counts.items())),
-            "interpretation": "complete occurrence-level native-vs-g2pk diagnostic; categories compare each prediction to the corpus annotation, which is not normative gold",
+            "interpretation": "not run because the user requested exclusion" if args.exclude_g2pk else "complete occurrence-level diagnostic; corpus annotation is not normative gold",
             "occurrences": native_g2pk_pairwise_audit,
         },
         "upstream_pins": {
-            "g2pk": "0.9.4",
+            **({} if args.exclude_g2pk else {"g2pk": "0.9.4"}),
             "KoG2P": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7; GPL-3.0; executed as external checkout, not vendored",
             "hangul_to_ipa": "stannam/hangul_to_ipa commit 942abf132ea969a7e3476a1487c06710fb8db74b; MIT; executed as external checkout, not vendored",
             "phonemize": "hans00/phonemize npm 2.0.1; MIT",
@@ -717,7 +933,8 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "limitations": [
             ("UGTPHON contains noisy user-generated text, not a balanced official standard-pronunciation test set." if "UGTPHON" in args.benchmark_name else "SIGMORPHON is a lexical word-level test set, not a sentence-context or normative NIKL test set."),
             "IPA conventions differ between systems and reference annotations; exact match and CER are diagnostic, not absolute truth.",
-            "g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison.",
+            "broad_fricative_aspiration_sensitivity is a secondary convention check that ignores narrow aspiration on Korean s/ɕ only; it is not a replacement for the primary score.",
+            *([] if args.exclude_g2pk else ["g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison."]),
             "KoG2P uses a documented custom phone alphabet; the explicit adapter is lossy, and its score must be read with adapter limitations.",
             "hangul_to_ipa explicitly omits several morphology-sensitive processes (including n-insertion and liquid tensification); this is a scope limitation, not an unexpected runtime failure.",
             "phonemize's published Korean evaluation uses a small LLM-judged sample, not this benchmark's independent human-gold IPA.",
@@ -726,6 +943,24 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "No candidate is considered universally best based on one dataset. Report coverage, abstention, CER, exact match and confidence intervals together.",
         ],
     }
+
+
+def _g2pk_surface_to_ipa(g2p: Callable[[str], Any], word: str) -> str:
+    """Render g2pK's surface Hangul through the shared segment renderer.
+
+    This intentionally evaluates the g2pK G2P surface plus ClippyFirst's
+    segment renderer, not an independent g2pK IPA realization.
+    """
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.ipa import realize_syllables
+
+    surface = g2p(word)
+    if not isinstance(surface, str):
+        raise TypeError(f"g2pk returned {type(surface).__name__}")
+    surface = "".join(surface.split())
+    if not _HANGUL_TOKEN.fullmatch(surface):
+        raise ValueError(f"not a single Hangul surface form: {surface!r}")
+    return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
 
 
 def _native_ipa(phoneticize: Callable[[str], dict[str, Any]], word: str) -> str:
@@ -748,6 +983,8 @@ def main() -> int:
     parser.add_argument("--hangul-to-ipa-root", type=Path, default=os.environ.get("HANGUL_TO_IPA_ROOT", "/tmp/hangul_to_ipa"))
     parser.add_argument("--phonemize-root", type=Path, default=os.environ.get("PHONEMIZE_BASELINE_DIR", "/tmp/phonemize-baseline"))
     parser.add_argument("--phonemize-output", type=Path, default=Path("/tmp/phonemize-predictions.json"))
+    parser.add_argument("--exclude-g2pk", action="store_true",
+                        help="do not import, install, or execute g2pk; omit its score and pairwise audit")
     args = parser.parse_args()
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH")
