@@ -49,7 +49,6 @@ def test_pairing_uses_identical_occurrences_and_separates_coverage():
     }
     baseline = {
         "eligible_token_occurrences": 3,
-        "normalization": "shared test profile",
         "engines": {"g2pk_0_9_4": {"coverage": 1.0}},
         "per_engine_occurrences": {
             "clippyfirst_native": [
