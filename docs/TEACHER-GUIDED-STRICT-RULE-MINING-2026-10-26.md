@@ -113,3 +113,4 @@ Use a three-way separation where data availability permits: train partition for 
 | Run Charsiu teacher on benchmark train/dev | `BLOCKED` | Need actual permitted train/dev files, pinned inference environment, and checkpoint usage rights/overlap assessment |
 | Fine-tune Charsiu on benchmark data | `BLOCKED` | In addition to dataset rights, verify checkpoint license permits fine-tuning and define an uncontaminated held-out evaluation protocol |
 | Add source-adjudicated rules to deterministic Strict | `TODO` | Each rule backed by primary source, positive/negative regression tests, and a separate dev/holdout evaluation |
+\n\nSee [`TEACHER-CORPUS-ELIGIBILITY-2026-10-26.md`](TEACHER-CORPUS-ELIGIBILITY-2026-10-26.md) for the pinned train/dev file inventory, license notes, split boundaries, and the remaining checkpoint/overlap blockers.\n
