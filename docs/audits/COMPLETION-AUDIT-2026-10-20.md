@@ -1159,5 +1159,5 @@ The latest executable code/test head is `36b8e909d65ebf0e69af22f6183155853f34ae1
 
 ### Latest code/test delta — provenance trace
 
-Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. Lexical-root extensions now preserve three distinct pieces of evidence: registered lexical root, internal source-backed syllable pair, and generated full-form license. A new regression test checks that `물가ро` records internal pair `물>가` rather than confusing it with the suffix boundary. Exact-head CI has not returned a result; status remains PARTIAL.
+Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. Lexical-root extensions now preserve three distinct pieces of evidence: registered lexical root, internal source-backed syllable pair, and generated full-form license. A new regression test checks that `물가로` records internal pair `물>가` rather than confusing it with the suffix boundary. Exact-head CI has not returned a result; status remains PARTIAL.
 
