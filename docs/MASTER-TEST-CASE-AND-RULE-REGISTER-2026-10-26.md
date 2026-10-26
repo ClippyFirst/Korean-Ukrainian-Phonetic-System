@@ -379,3 +379,10 @@ The extractor was expanded to preserve **every source line** from all scannable 
 ### Assertion candidate inventory
 
 The extractor now also emits `TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv`. It captures test declarations and assertion-like lines from JS and Python tests, each with stable ID, file/category, line number, exact raw line, and unclassified status. This is a review queue, not proof that each row is a complete independent case: multiline assertions, parametrized cases and helper-generated cases must be reconciled against the full source-line inventory. The extraction workflow validates unique stable IDs across all five generated inventories and uploads them as a commit-specific artifact.
+
+## Inventory scope expanded — 2026-10-26
+
+The extractor now preserves line-level candidates not only from tests/fixtures/corpora, but also from checked-in `data/korean/` (including the 24-form benchmark manifest and target-renderer holdout file) and `examples/`. Every candidate carries a source category; the lexical-to-test links still search only `tests/`, so a match in a data CSV cannot be misrepresented as a test assertion. The generator deliberately does not scan its own `research/` output directory, which would recursively ingest generated CSVs on the next run.
+
+This is a broader **source inventory**, not yet a fully classified case register. Structured/minified JSON and historical CI artifacts still require dedicated parsers/importers; source-line preservation alone does not prove that each JSON object, model prediction, assertion, or actual run result has become an individual case row. The new unit test covers inclusion of a data CSV and verifies source-category separation. Exact-head CI has not yet passed, so generated counts remain pending.
+
