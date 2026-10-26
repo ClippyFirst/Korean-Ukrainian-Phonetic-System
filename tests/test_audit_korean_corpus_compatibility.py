@@ -52,7 +52,7 @@ def test_compare_rows_reports_overlap_and_raw_target_relation_without_claiming_i
     ]
     right = [
         {"_normalized_source": "국물", "target_raw": "kuŋ.mul", "target_representation": "ugtphon_token_phoneme_ipa"},
-        {"_normalized_source": "국밥", "target_raw": "kuk̚.p͈ap̚", "target_representation": "ugtphon_token_phoneme_ipa"},
+        {"_normalized_source": "국밥", "target_raw": "kʌk̚.p͈ap̚", "target_representation": "ugtphon_token_phoneme_ipa"},
     ]
     result = compare_rows(left, right)
     assert result["unique_source_form_intersection"] == 2
