@@ -119,7 +119,7 @@ test('core source-backed examples in the passage retain the current engine surfa
   const expected = {
     '굳이': ['구지', 'ku.dʑi'],
     '같이': ['가치', 'ka.tɕʰi'],
-    '읽다': ['익따', 'ik̚ t͈a'],
+    '읽다': ['익따', 'ik̚.t͈a'],
     '읽고': ['일꼬', 'il k͈o'],
     '맑다': ['막따', 'mak̚ t͈a'],
     '맑고': ['말꼬', 'mal k͈o'],
