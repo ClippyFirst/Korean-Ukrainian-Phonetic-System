@@ -35,7 +35,7 @@ RULE_META={
 "R016":("verbal-stem-rieul-giyeok-exception","NIKL §11; lexical/morphological conditioning","high"),
 }
 
-# Exact-form licenses for clear formal-morpheme liaison examples derived from NIKL §14.
+# Exact-form licenses for formal-morpheme liaison examples explicitly attested in or derived from NIKL §§13–14.
 # The rule is general, but this engine intentionally requires a full-form license
 # until it has a morphological analyzer. The examples below have transparent
 # inflectional morphology and official rule support; this is not a broad coda rule.
