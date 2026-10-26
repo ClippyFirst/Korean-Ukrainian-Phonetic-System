@@ -120,9 +120,9 @@ test('§5 combines optional ㅖ-to-[e] readings without changing Korean spelling
   assert.equal(result.ipa, 'pʰje.ɡi.ɡje');
   assert.equal(result.variants.length, 3);
   assert.deepEqual(result.variants.map((variant) => variant.ipa), [
-    'pʰe ɡi ɡje',
+    'pʰe.ɡi.ɡje',
     'pʰje.ɡi.ɡe',
-    'pʰe ɡi ɡe',
+    'pʰe.ɡi.ɡe',
   ]);
   assert.deepEqual(result.variants.map((variant) => variant.ukrainian), [
     'пеґіґє',
