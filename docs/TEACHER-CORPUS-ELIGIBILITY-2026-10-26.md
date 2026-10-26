@@ -177,3 +177,14 @@ The new `scripts/build_korean_ipa_adjudication_queue.py` turns the 366 train/tra
 - Same-input teacher/Strict pairing is **DONE_VERIFIED as an alignment artifact**: [workflow 40305148602](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148602), artifact [12642810161](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148602/artifacts/12642810161). It pairs 994 cases and excludes 6 diagnostic-only native IPA cases. It intentionally emits no accuracy metrics because the IPA adapter and independent evaluation gate remain incomplete.
 - Exact-head tests [40305148584](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148584), system verification [40305148531](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148531), and master artifacts [40305148646](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148646) passed. The optional NIKL inventory was skipped, not passed.
 - These CI passes verify tooling, not linguistic adjudication. The IPA adapter and all 366 decisions remain blocked/unadjudicated; production rules remain unchanged.
+
+
+## Source-specific symbol inventory audit — 2026-10-26
+
+The new `scripts/audit_korean_ipa_symbol_inventories.py` passed in [workflow 40305565459](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305565459), artifact [12641804746](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305565459/artifacts/12641804746). It records literal Unicode frequencies and, only for SIGMORPHON, the upstream whitespace-token inventory. UGTPHON compact targets are not segmented by the tool.
+
+- SIGMORPHON train/dev: 47/46 distinct code points; 60/59 source whitespace tokens.
+- UGTPHON train/dev: 51/50 distinct code points; 13,271/1,897 token occurrences and 8,753/1,629 unique forms.
+- UGTPHON includes `ç` and `ø` (among other symbols/diacritics not represented in SIGMORPHON); exact examples and counts are in the inventory artifact and source-convention review. These are flagged for evidence-based review, not assumed errors.
+
+The inventory is **DONE_VERIFIED as a data-audit tool**; the IPA adapter remains **BLOCKED** until source-specific symbols/features are mapped by evidence and independently reviewed.
