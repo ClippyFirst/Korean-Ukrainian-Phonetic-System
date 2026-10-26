@@ -350,3 +350,13 @@ test('Exact Python/browser formal-liaison inventories stay aligned', () => {
   }
 });
 
+test('NIKL section 29 word-internal n-insertion is exact-form licensed', () => {
+  for (const word of ['솜이불', '홑이불', '식용유', '들일']) {
+    const result = engine.convert(word);
+    assert.ok(result.trace.some(item => item.rules.includes('n-insertion-§29-exact-word')), word);
+  }
+  const unlicensed = engine.convert('솜이');
+  assert.ok(!unlicensed.trace.some(item => item.rules.includes('n-insertion-§29-exact-word')));
+  assert.notEqual(unlicensed.surfaceHangul, '솜니');
+});
+
