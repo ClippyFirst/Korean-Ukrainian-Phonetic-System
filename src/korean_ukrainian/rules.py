@@ -145,6 +145,7 @@ _NIKL_R010_FORM_LICENSES = {
     "안다": "안>다",  # Official NIKL training material §24 examples.
     "안고": "안>고",
     "안지": "안>지",  # Official NIKL training material §24 example.
+    "신다": "신>다",  # Official NIKL Online Q&A 325349 directly confirms [신따].
     "감다": "감>다",
     "감고": "감>고",
     "껴안다": "안>다",
