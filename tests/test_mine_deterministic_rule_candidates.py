@@ -126,7 +126,7 @@ def test_sealed_test_or_holdout_case_ids_are_rejected_even_when_split_says_dev(t
     rows = [json.loads(line) for line in input_path.read_text(encoding="utf-8").splitlines()]
     rows[1]["case_id"] = case_id
     input_path.write_text(
-        "\\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\\n",
+        "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
         encoding="utf-8",
     )
     with pytest.raises(ValueError, match="identifiers marked test/holdout"):
