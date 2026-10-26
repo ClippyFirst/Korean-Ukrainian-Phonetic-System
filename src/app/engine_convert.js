@@ -49,7 +49,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
               const mapped=ipaSyllablesToUkrainian(sourceIpa,{allowProvisional:true});
               if(!mapped.unknown){
                 const mappedSegments=sourceIpa.map(ipa=>traceIpaMappingDetailed(ipa));
-                result.ipa=sourceIpa.join(' ');
+                result.ipa=sourceIpa.join('.');
                 const hasProvisionalCandidate=mapped.status==='provisional'||(mapped.status==='unavailable'&&mapped.candidates.some(Boolean));
                 result.ukrainian=hasProvisionalCandidate?'':mapped.syllables.join('');
                 result.candidate_ukrainian=hasProvisionalCandidate?mapped.candidates.join(''):null;
@@ -76,7 +76,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
               }else{
                 result.issues=[...(result.issues||[]),part+': sourced lexical IPA contains an unmapped segment "'+mapped.unknown+'".'];
                 result.status='unresolved';
-                result.trace=[...(result.trace||[]),{source:part,status:'unresolved',rules:['ipa-to-ukrainian-unmapped-segment'],output:'',ipa:sourceIpa.join(' ')}];
+                result.trace=[...(result.trace||[]),{source:part,status:'unresolved',rules:['ipa-to-ukrainian-unmapped-segment'],output:'',ipa:sourceIpa.join('.')}];
               }
             }
             return result;
