@@ -151,15 +151,11 @@ def collect_existing_baselines(words: list[str]) -> dict[str, dict[str, dict[str
 
     try:
         from g2pk import G2p
-        from korean_ukrainian.phonology import parse_syllables
-        from korean_ukrainian.ipa import realize_syllables
+        from benchmark_multi_engine_ko import _g2pk_surface_to_ipa
         g2p = G2p()
         for word in words:
             try:
-                surface = "".join(g2p(word).split())
-                if not HANGUL.fullmatch(surface):
-                    raise ValueError(f"not a single Hangul surface form: {surface!r}")
-                ipa = realize_syllables(parse_syllables(surface), level="broad")["ipa"]
+                ipa = _g2pk_surface_to_ipa(g2p, word)
                 outputs["g2pk_0_9_4"][word] = {"status": "scored", "ipa": ipa}
             except Exception as exc:
                 outputs["g2pk_0_9_4"][word] = {
