@@ -85,19 +85,19 @@ def test_complex_coda_liaison_requires_exact_formal_morpheme_license():
         assert items[0].coda==coda and items[1].onset==onset
         assert traces[0].changed
 
-def test_substantive_morpheme_uses_representative_of_complex_coda():
-    # 값어치 [가버치] follows §15, not §14's 값이 [갑씨] pattern.
+def test_source_backed_substantive_morpheme_liaison_resolves_official_value_case():
+    # NIKL Q&A 5949 explicitly attests 값어치[가버치] under §15(붙임).
+    # This exact lexical license must not generalize to 값이[갑씨] or other forms.
     items,traces=apply_ordered_rules(parse_syllables("값어치"),["R002"])
-    assert items[0].coda=="ㅄ" and items[1].onset=="ㅇ"
-    assert traces[0].status=="conditional-disabled"
-
-    items,traces=apply_ordered_rules(
-        parse_syllables("값어치"),["R002"],
-        rule_licenses={"R002:substantive:값어치:값>어"},
-    )
     assert items[0].coda==""
     assert items[1].onset=="ㅂ"
     assert traces[0].changed
+    assert traces[0].license_context=="R002:substantive:값어치:값>어"
+    assert "§§13–15" in traces[0].source
+
+    items,traces=apply_ordered_rules(parse_syllables("값이"),["R002"])
+    assert items[0].coda=="ㅄ" and items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
 
 def test_complex_coda_license_cannot_be_reused_for_another_word():
     items,traces=apply_ordered_rules(
