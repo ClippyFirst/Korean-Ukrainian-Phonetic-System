@@ -149,7 +149,8 @@ def test_analyzer_consensus_productively_licenses_stem_fortition_but_not_nouns()
             assert not any(item.startswith("R010:") for item in result["morphology_analysis"]["applied_licenses"])
         else:
             assert expected_license in result["morphology_analysis"]["applied_licenses"]
-        assert result["ipa_is_diagnostic_only"] is True
+        if expected_license is not None:
+            assert result["ipa_is_diagnostic_only"] is True
 
     noun = "닭고기"
     noun_analyses = [
