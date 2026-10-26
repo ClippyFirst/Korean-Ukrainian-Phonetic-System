@@ -121,7 +121,7 @@ test('NIKL usage-survey phrase variants are explicit provisional lexical candida
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '모시러');
-  assert.equal(result.variants[0].ipa, 'mo ɕi ɾʌ');
+  assert.equal(result.variants[0].ipa, 'mo.ɕi.ɾʌ');
   assert.match(result.variants[0].note, /NIKL 2022/u);
 });
 
