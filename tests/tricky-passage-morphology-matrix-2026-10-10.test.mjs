@@ -22,7 +22,7 @@ const cases = [
     input: '같았다',
     surface: '가탇따',
     target: 'кататта',
-    ipa: 'ka tʰat̚ t͈a',
+    ipa: 'ka.tʰat̚.t͈a',
     source: 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002',
     article: '§13 liaison followed by §9 coda neutralization and §23 fortition',
   },
