@@ -10,11 +10,17 @@ on:
       - "tests/test_sigmorphon_benchmark.py"
       - ".github/workflows/multi-engine-ipa-benchmark.yml"
       - "scripts/benchmark_ugtphon_ko.py"
-      - "scripts/benchmark_contextual_g2p_ko.py"
-      - "tests/test_contextual_g2p_benchmark.py"
-      - "scripts/compare_neural_with_multiengine.py"
-      - "tests/test_compare_neural_with_multiengine.py"
       - "tests/test_ugtphon_benchmark.py"
+      - "docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md"
+      - "docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md"
+      - "docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md"
+      - "docs/NEURAL-KOREAN-G2P-V3-RESEARCH-GATE-2026-10-26.md"
+      - "docs/NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md"
+      - "scripts/benchmark_charsiu_g2p.py"
+      - "scripts/compare_neural_with_multiengine.py"
+      - "tests/test_charsiu_g2p_benchmark.py"
+      - "tests/test_contextual_g2p_benchmark.py"
+      - "tests/test_compare_neural_with_multiengine.py"
       - "scripts/convert_sigmorphon_ko.py"
       - "src/korean_ukrainian/**"
       - "data/korean/**"
@@ -41,7 +47,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes espeak-ng
           python -m pip install --upgrade pip
-          python -m pip install -e ".[g2pk]" "regex==2024.5.10" "phonemizer==3.3.0" "pytest>=8"
+          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "pytest>=8"
 
       - name: Fetch pinned external implementations and verify declared licenses
         env:
@@ -128,7 +134,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check scripts/benchmark_phonemize_adapter.cjs
-          python -m pytest tests/test_multi_engine_benchmark.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py
+          python -m pytest tests/test_multi_engine_benchmark.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py
 
       - name: Run multi-engine comparison
         env:
@@ -167,12 +173,31 @@ jobs:
                         f"delta_CER={p['cer_delta_candidate_minus_native']} "
                         f"CI_delta_exact={ci_delta.get('exact_rate_delta_candidate_minus_native_95pct_ci')} "
                         f"CI_delta_CER={ci_delta.get('cer_delta_candidate_minus_native_95pct_ci')}")
+          engines = r["engines"]
+          assert r["native_g2pk_pairwise_audit"]["status"] == "completed"
+          assert "g2pk_0_9_4" in engines
+          assert engines["g2pk_0_9_4"]["scored_tokens"] > 0
+          discrepancy_audit = r["clippyfirst_gold_discrepancy_audit"]
+          assert discrepancy_audit["occurrence_count"] == len(discrepancy_audit["occurrences"])
+          assert sum(discrepancy_audit["category_counts"].values()) == discrepancy_audit["occurrence_count"]
+          assert all(item.get("category") for item in discrepancy_audit["occurrences"])
+          print("ClippyFirst-vs-gold discrepancy audit:",
+                discrepancy_audit["occurrence_count"], discrepancy_audit["category_counts"],
+                "profile_sensitivity_occurrences=",
+                discrepancy_audit["profile_sensitivity_occurrence_count"])
+          pairwise_audit = r["native_g2pk_pairwise_audit"]
+          assert pairwise_audit["status"] == "completed"
+          assert pairwise_audit["occurrence_count"] == r["eligible_token_occurrences"]
+          assert sum(pairwise_audit["category_counts"].values()) == pairwise_audit["occurrence_count"]
+          print("ClippyFirst-vs-g2pK pairwise audit:",
+                pairwise_audit["occurrence_count"], pairwise_audit["category_counts"])
+          print("g2pK 0.9.4 included as an external comparison baseline; its IPA adaptation path is documented in the report.")
           print("Diagnostic only. This corpus is not normative NIKL gold and does not evaluate Ukrainian output.")
           engines = r["engines"]
-          for required in ("clippyfirst_native", "g2pk_0_9_4"):
+          for required in ("clippyfirst_native",):
               if engines[required]["scored_tokens"] <= 0:
                   raise SystemExit(f"required baseline produced no scored tokens: {required}")
-          candidates = ("KoG2P_2019", "hangul_to_ipa_2026", "espeak_ng_ko", "phonemize_2_0_1")
+          candidates = ("g2pk_0_9_4", "KoG2P_2019", "hangul_to_ipa_2026", "espeak_ng_ko", "phonemize_2_0_1")
           usable = [name for name in candidates if engines[name]["scored_tokens"] > 0]
           if len(usable) < 2:
               raise SystemExit("fewer than two independent external candidates produced scores: " + repr(usable))
@@ -222,10 +247,27 @@ jobs:
                 audit.get("unique_words"), "unique words; context counts=", audit.get("context_counts"))
           print("Diagnostic lexical test only; not a normative NIKL gate and not an IPA-to-Ukrainian score.")
           engines = r["engines"]
-          for required in ("clippyfirst_native", "g2pk_0_9_4"):
+          assert r["native_g2pk_pairwise_audit"]["status"] == "completed"
+          assert "g2pk_0_9_4" in engines
+          assert engines["g2pk_0_9_4"]["scored_tokens"] > 0
+          discrepancy_audit = r["clippyfirst_gold_discrepancy_audit"]
+          assert discrepancy_audit["occurrence_count"] == len(discrepancy_audit["occurrences"])
+          assert sum(discrepancy_audit["category_counts"].values()) == discrepancy_audit["occurrence_count"]
+          assert all(item.get("category") for item in discrepancy_audit["occurrences"])
+          print("ClippyFirst-vs-gold discrepancy audit:",
+                discrepancy_audit["occurrence_count"], discrepancy_audit["category_counts"],
+                "profile_sensitivity_occurrences=",
+                discrepancy_audit["profile_sensitivity_occurrence_count"])
+          pairwise_audit = r["native_g2pk_pairwise_audit"]
+          assert pairwise_audit["status"] == "completed"
+          assert pairwise_audit["occurrence_count"] == r["eligible_token_occurrences"]
+          assert sum(pairwise_audit["category_counts"].values()) == pairwise_audit["occurrence_count"]
+          print("ClippyFirst-vs-g2pK pairwise audit:",
+                pairwise_audit["occurrence_count"], pairwise_audit["category_counts"])
+          for required in ("clippyfirst_native",):
               if engines[required]["scored_tokens"] <= 0:
                   raise SystemExit(f"required baseline produced no scored tokens: {required}")
-          candidates = ("KoG2P_2019", "hangul_to_ipa_2026", "espeak_ng_ko", "phonemize_2_0_1")
+          candidates = ("g2pk_0_9_4", "KoG2P_2019", "hangul_to_ipa_2026", "espeak_ng_ko", "phonemize_2_0_1")
           usable = [name for name in candidates if engines[name]["scored_tokens"] > 0]
           if len(usable) < 2:
               raise SystemExit("fewer than two independent external candidates produced scores: " + repr(usable))
@@ -248,9 +290,6 @@ jobs:
             ${{ runner.temp }}/sigmorphon-phonemize-predictions.json
           if-no-files-found: warn
           retention-days: 30
-
-
-
 
   neural-korean-g2p:
     name: Pinned CharsiuG2P inference (research opt-in)
