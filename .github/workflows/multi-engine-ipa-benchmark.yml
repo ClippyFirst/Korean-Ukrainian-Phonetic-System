@@ -234,18 +234,18 @@ jobs:
           PY
 
       - name: Install pinned neural inference dependencies
-        if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+        if: contains(github.event.pull_request.labels.*.name, 'enhancement')
         run: |
           set -euo pipefail
           python -m pip install torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
           python -m pip install "transformers==4.44.2" "sentencepiece==0.2.0" "huggingface_hub==0.24.6"
 
       - name: Run CharsiuG2P adapter unit tests
-        if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+        if: contains(github.event.pull_request.labels.*.name, 'enhancement')
         run: python -m pytest tests/test_charsiu_g2p_benchmark.py tests/test_contextual_g2p_benchmark.py
 
       - name: Resolve immutable Charsiu model and ByT5 tokenizer revisions
-        if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+        if: contains(github.event.pull_request.labels.*.name, 'enhancement')
         id: neural-revisions
         run: |
           python - <<'PY' >> "$GITHUB_OUTPUT"
@@ -259,7 +259,7 @@ jobs:
           PY
 
       - name: Run CharsiuG2P on UGTPHON with paired native/g2pk comparison
-        if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+        if: contains(github.event.pull_request.labels.*.name, 'enhancement')
         env:
           MODEL_SHA: ${{ steps.neural-revisions.outputs.model_sha }}
           TOKENIZER_SHA: ${{ steps.neural-revisions.outputs.tokenizer_sha }}
@@ -275,7 +275,7 @@ jobs:
             | tee "$RUNNER_TEMP/neural-results/charsiu-ugtphon-summary.json"
 
       - name: Run CharsiuG2P on SIGMORPHON lexical test with paired native/g2pk comparison
-        if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+        if: contains(github.event.pull_request.labels.*.name, 'enhancement')
         env:
           MODEL_SHA: ${{ steps.neural-revisions.outputs.model_sha }}
           TOKENIZER_SHA: ${{ steps.neural-revisions.outputs.tokenizer_sha }}
@@ -290,7 +290,7 @@ jobs:
             | tee "$RUNNER_TEMP/neural-results/charsiu-sigmorphon-summary.json"
 
       - name: Record neural model file hashes and license/provenance status
-        if: always() && github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+        if: always() && contains(github.event.pull_request.labels.*.name, 'enhancement')
         env:
           MODEL_SHA: ${{ steps.neural-revisions.outputs.model_sha }}
           TOKENIZER_SHA: ${{ steps.neural-revisions.outputs.tokenizer_sha }}
@@ -335,7 +335,7 @@ jobs:
           PY
 
       - name: Upload neural per-case predictions and provenance (no weights)
-        if: always() && github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+        if: always() && contains(github.event.pull_request.labels.*.name, 'enhancement')
         uses: actions/upload-artifact@v4
         with:
           name: neural-korean-g2p-diagnostic-${{ github.run_id }}
