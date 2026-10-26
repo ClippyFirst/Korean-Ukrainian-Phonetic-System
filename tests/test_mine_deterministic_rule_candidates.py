@@ -25,6 +25,9 @@ def write_inputs(tmp_path: Path, *, split: str = "dev", dataset_id: str = "inter
         "split": split,
         "source_url": "https://example.org/corpus",
         "dataset_license_status": "reviewed-for-local-research",
+        "model_license_status": "unresolved-local-research-only",
+        "teacher_output_type": "IPA",
+        "teacher_model_training_overlap_status": "unknown",
         "test_data_used_for_tuning": False,
     }
     provenance_path = tmp_path / "provenance.json"
