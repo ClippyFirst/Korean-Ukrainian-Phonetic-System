@@ -2107,3 +2107,11 @@ Latest documentation/code/test commit observed while updating this handoff: 30d6
 - R010 inventory count is now 14 exact entries on both Python and browser sides by static map inspection. This is a source-backed closed-inventory completion, not a neural-teacher-derived generalized rule.
 - Latest executable code/test commit: 102242c93c95ee8e7300879a8716851c3a5baa01. Latest register update: b30762a81e6d15c80a28e00083785a674d8461f1. No local test execution is claimed.
 - Exact-head CI remains unverified: the connected workflow API returned no runs for the recent Contents-API commits after the queued 4dbe87f head. The earlier failing runs were inspected and corrected, but their results do not verify these later commits. The next acceptance gate is to obtain a genuine exact-head run for Python/browser tests, system verification, source audit, and research workflows; do not merge or mark DONE_VERIFIED before that.
+
+
+## Superseding source-backed R010 addition: 신다 — 2026-10-26
+
+- Primary source verified: official NIKL Online Q&A 325349 states that 신다 is pronounced [신따] under Standard Pronunciation Rule 24 and distinguishes it from 산다; the page was retrieved during this work session. It is now registered as SRC-NIKL-QNA-325349.
+- Added exact-form pair 신다 → 신>다 to the Python and browser R010 maps, with tests for surface 신따 and broad IPA sin.t͈a. The existing lexical record independently stores 신다[신ː따], but the Q&A provides the explicit §24 morphology explanation.
+- R010 now contains 15 exact entries on each runtime side by static inspection: the original 13, plus 안지 and 신다. The source register now has 117 data rows; the audit expectation is 113 review-required, one item-level license recorded, one not-applicable, and two manual-classification rows.
+- Latest runtime/test commit before this documentation note: 8fa826ce01f36f7b726a8ddb1caf3cbc4f6fe47d. Latest register note: 9da3bccd35b3603db00ecfea04c907ce17a2a119. Exact-head CI has not yet been observed for these latest commits; do not mark this batch DONE_VERIFIED until it runs.
