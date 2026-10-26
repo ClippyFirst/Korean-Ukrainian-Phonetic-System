@@ -157,3 +157,12 @@ This enables a concrete research corpus for ClippyFirst without loading or fine-
 The corpus workflow runs parser tests, performs the pinned-source audit, builds train/dev JSONL, and uploads a provenance-bearing research artifact. It does not change runtime code, run a neural model, or claim any accuracy gain. Further data work should inspect UGTPHON's exact token/phoneme alignment before combining it with SIGMORPHON, then create an audited cross-corpus deduplication report and independently review the target IPA convention.
 
 Updated status: corpus builder implementation is PARTIAL until exact-head CI confirms it; source-backed production-rule changes remain TODO and are still gated by independent phonological evidence and regression tests. Checkpoint rights are not a blocker for this source-only corpus preparation step.
+
+
+### Second source: conservative UGTPHON token labels
+
+The pinned upstream schema was inspected directly in its README at revision ef0d5a09c2ea1874c7206020f875cbd9cfea2f54. It explicitly distinguishes sentence-level phonemes from token-level phoneme annotations; the sentence field is not guaranteed to be the literal concatenation of token fields. The new scripts/prepare_ugtphon_korean_corpus.py therefore works from aligned token objects only.
+
+It exports a conservative baseline subset: canonical tokens with is_nc=false, exact surface/canonical equality, one token with no whitespace, a non-empty phoneme target, and no comma-joined alternatives or placeholder symbols. It keeps raw target text and source sentence/token IDs, counts exclusion reasons, and reports cases where the same normalized source form has multiple target strings. It does not autocorrect noncanonical spellings or guess which variant is intended. Only train/dev are serialized; test is used for source-integrity and aggregate overlap diagnostics only.
+
+The CI artifact now contains separate SIGMORPHON and UGTPHON train/dev JSONL files and manifests. Their targets remain separate typed representations. A future cross-corpus merger must compare normalized source forms and target conflicts, document IPA convention differences, and keep the test split sealed. This is a practical first data pipeline for ClippyFirst's own research; it is not yet a trained model or a new deterministic rule.
