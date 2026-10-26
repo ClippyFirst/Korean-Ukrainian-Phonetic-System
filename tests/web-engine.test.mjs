@@ -302,3 +302,15 @@ test('NIKL §25 and §26 exact fortition examples are mirrored in browser runtim
   assert.notEqual(engine.convert('넓게').surfaceHangul, '널께');
   assert.notEqual(engine.convert('갈구').surfaceHangul, '갈꾸');
 });
+
+
+
+test('NIKL §27 attached -ㄹ게 fortition is mirrored without crossing a space', () => {
+  const attached = engine.convert('할게');
+  assert.equal(attached.surfaceHangul, '할께');
+  assert.equal(attached.ipa, 'hal.k͈e');
+  assert.ok(attached.trace.some(item => item.rules.includes('adnominal-l-fortition-§27-attested-l-ge')));
+
+  const separated = engine.convert('할 게');
+  assert.notEqual(separated.surfaceHangul, '할께');
+});
