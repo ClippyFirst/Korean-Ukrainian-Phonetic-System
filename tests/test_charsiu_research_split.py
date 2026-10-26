@@ -72,7 +72,7 @@ def test_pair_ledger_never_promotes_a_rule():
             "token": "가곡",
             "gold": "ka̠ɡo̞k̚",
             "charsiu_byt5": {"status": "scored", "ipa": "kaɡok̚", "exact": True, "distance": 0},
-            "baselines": {"clippyfirst_native": {"status": "scored", "ipa": "ka.ɡo.k̚", "exact": False, "distance": 2}},
+            "clippyfirst_native": {"status": "scored", "ipa": "ka.ɡo.k̚", "exact": False, "distance": 2},
         }]
     }
     metadata = {
