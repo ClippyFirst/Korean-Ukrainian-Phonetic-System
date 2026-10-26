@@ -24,6 +24,14 @@
 - **Charsiu multilingual ByT5:** no training run was started because the checkpoint weight license and original training-data overlap are unresolved. This blocks a responsible fine-tuning/redistribution decision, not independent deterministic-rule work.
 
 - **CharsiuG2P upstream provenance:** code repo inspected at immutable commit `0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4` is MIT, but contains separate Korean `data/train/kor.tsv` (2,075,385 bytes), `data/dev/kor.tsv` (1,738 bytes), and `data/test/kor.tsv` (16,676 bytes). `ko_info.txt` cites SIGMORPHON 2020 with literal `U/K`; `ko-2_info.txt` cites ipa-dict MIT. The Hugging Face checkpoint page says “No model card” and provides no verified weight license. Do not conflate code license with weight/data rights; overlap with benchmark rows is not established.
+## Teacher-training corpus overlap audit (2026-10-26)
+
+Exact-head source/split audit: [run 40290981510](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290981510), metadata-only artifact [12635583549](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290981510/artifacts/12635583549). The workflow verified pinned Git blob identities for UGTPHON, SIGMORPHON 2021 medium Korean, and the public Charsiu repository's Korean splits. It passed after installing the test dependency; the first attempt failed only because pytest was not installed, then the unit assertion was corrected to test quoted form leakage rather than a single-character substring.
+
+- Split sizes: UGTPHON 1,976/246/275 train/dev/test; SIGMORPHON 8,000/1,000/1,000; Charsiu repository Korean data 62,126 train rows (61,900 unique forms; 226 duplicate-form rows), 50 dev, 500 test.
+- Cross-corpus overlap: 508 unique UGTPHON test token forms occur in Charsiu repository train; 237 UGTPHON test forms occur in SIGMORPHON train; 729 SIGMORPHON test forms occur in Charsiu repository train. The full intersection matrix is in the metadata-only artifact.
+- Interpretation: these are lexical overlap counts, not proof of checkpoint-level training exposure. But because the selected checkpoint's exact training manifest is unknown, do not claim UGTPHON/SIGMORPHON test performance is guaranteed independent for this teacher. Keep test splits sealed for rule tuning regardless.
+- **Still blocked:** Charsiu checkpoint weights have no verified explicit license/model card; the upstream Korean source inventory includes a `U/K` license marker; original checkpoint training overlap remains unproven. No teacher inference, fine-tuning, or production rule changes were performed.
 ## Task ledger
 
 | Task | Status | Acceptance evidence |
@@ -33,7 +41,7 @@
 | Validate conservative normalization and context associations | DONE_VERIFIED | Tests cover preservation of IPA contrasts, eojeol boundary classes, all adjacent word pairs, and reference-normalized CER |
 | Use model disagreements to add production rules | TODO | Each candidate needs independent primary-source adjudication, positive/negative controls, and separate dev-set improvement |
 | Audit benchmark corpus split eligibility and rights | DONE_VERIFIED | Pinned UGTPHON train/dev/test files and Apache-2.0 data notice verified; SIGMORPHON fixture confirmed test-only in this repo; Charsiu upstream source notes and missing checkpoint model card documented 
-| Run teacher inference / fine-tuning on a legally cleared train/dev corpus | BLOCKED | UGTPHON train/dev are candidates, but Charsiu checkpoint weight license and original-data overlap remain unresolved; SIGMORPHON train/dev source not verified |
+| Run teacher inference / fine-tuning on a legally cleared train/dev corpus | BLOCKED | UGTPHON and SIGMORPHON train/dev partitions are pinned and audited; Charsiu checkpoint weight license and exact original training overlap remain unresolved, with 508 UGTPHON test forms intersecting Charsiu repository train |
 | Change Strict runtime or Ukrainian rendering from teacher predictions | DEFERRED | No automatic distillation; preserve deterministic runtime and IPA-to-Ukrainian boundary until evidence gates clear |
 
 ## Immediate continuation
