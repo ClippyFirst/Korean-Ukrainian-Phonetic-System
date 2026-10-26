@@ -29,7 +29,7 @@ test('§18: generic nasal assimilation changes the coda before ㄴ/ㅁ', () => {
 
 test('§19 then §18: ㄹ-to-ㄴ precedes nasalization in 협력', () => {
   const result = genericEngine.convert('협력');
-  assert.equal(result.ipa, 'hjʌm njʌk̚');
+  assert.equal(result.ipa, 'hjʌm.njʌk̚');
   assert.ok(result.trace.some((entry) => entry.rules.includes('liquid-to-nasal-before-obstruent')),
     'the ㄹ onset must be nasalized before the preceding coda assimilates');
   assert.ok(result.trace.some((entry) => entry.rules.includes('nasal-assimilation')),
@@ -39,7 +39,7 @@ test('§19 then §18: ㄹ-to-ㄴ precedes nasalization in 협력', () => {
 
 test('§18: nasal assimilation applies across a connected whitespace phrase', () => {
   const result = genericEngine.convert('밥 먹는다');
-  assert.equal(result.ipa, 'pam mʌŋ nɯn da');
+  assert.equal(result.ipa, 'pam mʌŋ.nɯn.da');
   assert.ok(result.trace.some((entry) => entry.rules.includes('nasal-assimilation')),
     'phrase-boundary assimilation must be present in the trace');
   assert.deepEqual(result.issues, []);
@@ -48,7 +48,7 @@ test('§18: nasal assimilation applies across a connected whitespace phrase', ()
 test('§18 phrase assimilation does not cross punctuation', () => {
   const connected = genericEngine.convert('밥 먹는다');
   const punctuated = genericEngine.convert('밥, 먹는다');
-  assert.equal(connected.ipa, 'pam mʌŋ nɯn da');
+  assert.equal(connected.ipa, 'pam mʌŋ.nɯn.da');
   assert.notEqual(punctuated.ipa, connected.ipa,
     'a punctuation boundary must prevent the connected-phrase surface form');
   assert.ok(!punctuated.trace.some((entry) =>
