@@ -44,8 +44,9 @@ def test_build_report_preserves_variants_and_labels_diagnostic_only() -> None:
     assert report["summary"]["all_cross_corpus_candidate_pairs"] == 732
     assert report["summary"]["exact_raw_target_pairs_across_all_candidates"] == 0
     assert report["summary"]["forms_with_multiple_unique_ugtphon_targets"] == 366
+    assert report["form_level_diagnostics"][0]["ugtphon_candidate_occurrence_count"] == 2
     assert report["form_level_diagnostics"][0]["ugtphon_unique_target_count"] == 2
-    assert report["summary"]["forms_with_five_or_more_ugtphon_target_variants"] == 0
+    assert report["summary"]["forms_with_five_or_more_ugtphon_candidate_occurrences"] == 0
     assert "No ClippyFirst IPA mapping" in report["interpretation_limits"][-1]
     assert all("clippyfirst_broad_ipa" not in row for row in report["form_level_diagnostics"])
 
