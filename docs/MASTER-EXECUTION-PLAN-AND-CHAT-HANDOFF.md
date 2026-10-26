@@ -1795,3 +1795,12 @@ The input uses `schema_version: "1.0"`, the queue's exact `source_pins`, and a `
 - Commits for this batch: validator `21b613d8d0df299d9410bf829e9d9068b8ebc1c4`; test updates `5c3198324b63f4260bade25ca049359b7a3a615d`, `9c3ef572058d24ab89bed947fa3ae7dcb1c8bd68`; CI wiring `c4a08e877cd4153d75697f1359d0f0d911442cef`.
 - Verification limitation: the GitHub Actions run listing currently returns no PR-triggered runs for the new exact commit. The previous exact-head five-workflow set on `e8797b6dd6d45359f4247129a3d3e992a517cad8` passed, including the scratch-teacher training job; that does not verify these newer validator changes. Local execution remains unavailable because the environment could not resolve `github.com`. Treat the new code as **implemented, exact-head CI pending**, not `DONE_VERIFIED`.
 - Remaining evidence gate is unchanged: no actual human adjudication is fabricated; all 366 train/train source conflicts remain unadjudicated; exact IPA-Dict snapshot provenance remains unresolved; no IPA mapping or production Strict rule is promoted.
+
+
+### IPA-Dict provenance and licensing risk — 2026-10-26
+
+- Verified the pinned UGTPHON README identifies `data/ko.txt` (62,447 Korean entries) as IPA-Dict-derived and says labels are looked up, native-speaker checked, and manually transcribed when absent. It does not pin the exact IPA-Dict revision or hash.
+- The separately inspected IPA-Dict README at `972cd67dd5f96bc5660e28070cde26e3928abcd7` attributes the Korean subset to `laviande22/korean-word-ipa-dictionary`, extracted from Korean Wiktionary, under CC BY-SA 4.0. This is upstream provenance evidence, not proof that this exact snapshot fed UGTPHON.
+- Added a rights-risk note to `docs/KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md`: UGTPHON's stated Korean Apache-2.0 terms and the cited upstream IPA-Dict CC BY-SA terms require source-specific rights review before treating redistribution/commercial reuse of derived annotation artifacts as cleared. No legal conclusion is asserted; no IPA-Dict dump is copied into the repository.
+- Exact IPA-Dict snapshot recovery remains BLOCKED by missing upstream version/hash metadata. Do not infer the embedded revision from the current IPA-Dict README, and do not promote a mapping or runtime rule based on this evidence.
+- The latest code/docs head after this continuation is `f18fe4f2a6fdcfc598328419ea187705f5a366b2` (convention-review update); this handoff update itself will create a new head and therefore requires fresh exact-head CI before final verification.
