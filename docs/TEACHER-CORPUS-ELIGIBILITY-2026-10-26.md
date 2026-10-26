@@ -140,3 +140,8 @@ The zero exact raw-string matches before separator removal are expected from the
 UGTPHON itself has 538 eligible source forms overlapping between its sentence-level train/dev partitions, 510 between train/test, and 228 between dev/test. These are repeated token forms across sentence splits, not duplicate sentence IDs; report them explicitly and avoid describing the token-level evaluation as a novel-word-only test. The SIGMORPHON word-level partition has zero source-form overlap across train/dev/test in its pinned preparation run.
 
 Evidence: [Teacher corpus audit run 40295700341](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40295700341). The full metadata-only report and separate train/dev corpus files are included in artifact [12638605228](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40295700341/artifacts/12638605228).
+
+
+### Diagnostic categories for target-string mismatches
+
+The compatibility audit now classifies target-string differences that remain after token-separator removal into three non-destructive categories: strings that differ only by syllable-dot placement, strings that differ only by length marks (ː/ˑ), and all other symbol/feature differences. These are counterfactual comparison buckets only. They do not erase dots or length marks from the corpus, do not authorize changing ClippyFirst output, and do not treat any category as proof that one source is correct. The updated category counts await the latest exact-head CI result.
