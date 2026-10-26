@@ -103,6 +103,13 @@ _NIKL_R004_COMPLEX_H_SUFFIX_LICENSES = {
 }
 
 _NIKL_R003_FORMAL_LICENSES = {
+    # Exact examples explicitly listed in NIKL Standard Pronunciation Rule 12(4).
+    "낳은": "낳>은",
+    "놓아": "놓>아",
+    "쌓이다": "쌓>이",
+    "않은": "않>은",
+    "닳아": "닳>아",
+    "싫어도": "싫>어",
     "싫어서": "싫>어",
     "수많은": "많>은",
     "많아서": "많>아",  # NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
