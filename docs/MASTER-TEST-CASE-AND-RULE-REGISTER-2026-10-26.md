@@ -349,3 +349,12 @@ The repository has many more tests than the examples above. Every file must have
 ## Change log
 
 2026-10-26: Initial register created from direct inspection of core NIKL/adversarial/IPA tests and the current teacher-research register. Status remains PARTIAL INVENTORY; no claim of complete extraction or current-head CI success.
+
+
+## Machine-readable bases committed after initial inspection
+
+- File inventory: [TEST-CASE-REGISTER-MANIFEST-2026-10-26.csv](../research/TEST-CASE-REGISTER-MANIFEST-2026-10-26.csv). It records 427 relevant tracked files at the pinned tree: 178 test-source files, 177 fixture files, 1 test corpus file, plus Korean data and relevant research scripts/registers. Every discovered test/fixture is currently marked NOT_EXTRACTED until its individual cases are enumerated. This is a file manifest, not a case-completeness claim.
+- Lexical base: [TEST-CASE-REGISTER-LEXICAL-BASE-2026-10-26.csv](../research/TEST-CASE-REGISTER-LEXICAL-BASE-2026-10-26.csv). It preserves all 644 data rows from data/korean/lexical_pronunciations.csv with exact surface, Ukrainian syllables, IPA, source, notes, variants and target status. Static generation check: 644 source rows, 17 output columns, zero malformed rows, zero duplicate input forms. The base deliberately marks test cross-reference and exact-head observed-run status as pending.
+- Source lexical CSV blob SHA at extraction: 1bd0d8116a5f5a4e74bcdbf7fc4999445b4478c5.
+
+These two machine-readable files make the inventory reproducible and provide the lexical source-of-truth base. They do **not** yet satisfy the owner's “all examples from each test” requirement: each test assertion must still be linked to the case ledger, non-lexical test literals and fixture cases must be extracted, and actual results must be tied to exact commits/runs.
