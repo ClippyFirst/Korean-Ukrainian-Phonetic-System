@@ -775,7 +775,13 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
     source_ipa=surface["ipa"]["ipa"]
     target_inventory_analysis,selected,inventory_diagnostic=_target_inventory_diagnostic(source_ipa,target_adapter)
 
-    if surface["pronunciation_status"] == "unresolved":
+    if surface["ipa"].get("transcription_profile", {}).get("target_compatible") is False:
+        target_mapping={
+            "ipa":source_ipa,"status":"unavailable",
+            "reason":"narrow_ipa_profile_not_target_compatible","ukrainian_orthography":None,
+            "segments":[],"ignored_source_markers":[],
+        }
+    elif surface["pronunciation_status"] == "unresolved":
         target_mapping={
             "ipa":source_ipa,"status":"unresolved_due_to_ambiguous_korean_phonology",
             "reason":"unresolved_korean_phonology","ukrainian_orthography":None,
