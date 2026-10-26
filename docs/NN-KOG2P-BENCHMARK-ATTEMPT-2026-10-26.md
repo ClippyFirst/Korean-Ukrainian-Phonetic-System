@@ -34,3 +34,16 @@ Search for an author-maintained release, checkpoint, or an explicitly supported 
 ## Architectural constraint
 
 Even if NN-KoG2P becomes runnable, it is an IPA candidate provider only. It must not bypass ClippyFirst's typed IPA boundary or generate Ukrainian output independently from Hangul.
+
+
+## Additional source and release search — 2026-10-26
+
+A further search checked the public Korean G2P comparison repository [kr-MATAGI/IPA_G2P-Testing](https://github.com/kr-MATAGI/IPA_G2P-Testing). Its README lists several neural baselines and runnable scripts for Charsiu T5 and KoGPT, but does not list NN-KoG2P as an available implementation; its literature table names the NN-KoG2P paper without an open-source code link. This is corroborating evidence for the current blocker, not proof that no private or unindexed artifact exists.
+
+The same authors later published [Fast Bilingual Grapheme-To-Phoneme Conversion (NAACL 2022)](https://aclanthology.org/2022.naacl-industry.32/). That is a **different model** (a bilingual non-autoregressive Transformer/CRF), not NN-KoG2P itself. Its paper reports in-domain Korean PER figures, but neither those figures nor the paper's internal test set are results on our UGTPHON/SIGMORPHON inputs. The publication page does not expose a verified runnable implementation/checkpoint in the sources checked. Do not substitute it under the NN-KoG2P name.
+
+## Context-preserving evaluation boundary added
+
+Added `scripts/benchmark_contextual_g2p_ko.py` and `tests/test_contextual_g2p_benchmark.py`. The evaluator accepts sentence-level outputs only when the runner declares `input_granularity=sentence`, `output_kind=ipa`, and the exact canonical sentence input. It checks IDs, rejects Hangul output that has not passed through a verified phone-to-IPA adapter, reports missing predictions as reduced coverage, and emits per-sentence predictions plus exact match/CER. The existing multi-engine workflow now runs its unit tests.
+
+This is **benchmark infrastructure only**; it is not the NN-KoG2P model adapter, does not generate model predictions, and has not produced NN-KoG2P scores. It makes the sentence-level acceptance contract executable while the actual model and verified phone-to-IPA mapping remain unavailable. SIGMORPHON remains word-level and cannot test the model's sentence-context behavior without a separately labelled context-free experiment.
