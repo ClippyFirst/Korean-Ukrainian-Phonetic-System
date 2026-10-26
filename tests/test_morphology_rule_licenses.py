@@ -145,3 +145,38 @@ def test_analyzer_consensus_productively_licenses_stem_fortition_but_not_nouns()
     ]
     noun_report = analyzer_consensus_rule_licenses(noun, noun_analyses)
     assert not any(item.startswith("R016:") for item in noun_report["candidate_licenses"])
+
+
+
+def test_analyzer_consensus_extends_only_registered_lexical_roots_before_grammatical_suffixes():
+    cases = [
+        ("물가로", [("물가", "NNG", 0, 2), ("로", "JKB", 2, 3)],
+         "R014:compound:물가로:물>가", "물까로"),
+        ("봄비가", [("봄비", "NNG", 0, 2), ("가", "JKS", 2, 3)],
+         "R014:compound:봄비가:봄>비", "봄삐가"),
+        ("냇가에", [("냇가", "NNG", 0, 2), ("에", "JKB", 2, 3)],
+         "R015:saisiot:냇가에:냇>가", "내까에"),
+        ("갈등이", [("갈등", "NNG", 0, 2), ("이", "JKS", 2, 3)],
+         "R012:sino_ryeon:갈등이:갈>등", "갈뜽이"),
+    ]
+    for word, morphemes, expected_license, expected_surface in cases:
+        analyses = [
+            _analysis("mecab-ko", word, morphemes),
+            _analysis("kiwi", word, morphemes),
+        ]
+        report = analyzer_consensus_rule_licenses(word, analyses)
+        assert expected_license in report["candidate_licenses"]
+        result = phoneticize_korean_with_analyzer_consensus(word, analyses)
+        assert result["surface_hangul"] == expected_surface
+        assert expected_license in result["morphology_analysis"]["applied_licenses"]
+        assert result["ipa_is_diagnostic_only"] is True
+
+
+def test_analyzer_consensus_does_not_extend_lexical_root_into_another_noun():
+    word = "물가공"
+    analyses = [
+        _analysis("mecab-ko", word, [("물가", "NNG", 0, 2), ("공", "NNG", 2, 3)]),
+        _analysis("kiwi", word, [("물가", "NNG", 0, 2), ("공", "NNG", 2, 3)]),
+    ]
+    report = analyzer_consensus_rule_licenses(word, analyses)
+    assert not any(item.startswith(("R012:", "R014:", "R015:")) for item in report["candidate_licenses"])
