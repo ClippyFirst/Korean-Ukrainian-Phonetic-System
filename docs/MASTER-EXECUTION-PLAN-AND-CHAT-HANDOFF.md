@@ -2454,4 +2454,4 @@ The original assertion-candidate regex also treated import lines such as “impo
 
 ### Current disposition
 
-The isolated browser/test-oracle repair and register extraction are verified; the PR merge-ref core software gates are green. The research branch still contains a 566-commit delta over main and PR #339 remains open/Draft. Do not merge the full research branch solely because the currently completed jobs passed. Scientific release blockers remain independent IPA convention adjudication, independent Ukrainian target validation, source/license review, and a complete semantic case-level register.
+The isolated browser/test-oracle repair and register extraction are verified; the PR merge-ref core software gates are green. The research branch currently compares as 580 commits ahead of `main` and 0 behind (`main` base `a452054a669de28426404d1110731715083423bb`); PR #339 remains open/Draft. Do not merge the full research branch solely because the currently completed jobs passed. Scientific release blockers remain independent IPA convention adjudication, independent Ukrainian target validation, source/license review, and a complete semantic case-level register.
