@@ -1,5 +1,18 @@
 # Continuation — neural-teacher-guided deterministic Strict improvement (2026-10-26)
 
+
+## Latest continuation — source-only train/dev corpus preparation (2026-10-26)
+
+- **Direction confirmed by owner:** prioritize learning from strong, traceable pronunciation data to improve ClippyFirst's own engine. Do not make an external neural checkpoint a product dependency. Checkpoint licensing is not a blocker for preparing and analyzing independently sourced corpus data; provenance and applicable source terms remain recorded rather than used to halt unrelated work.
+- **Working branch / PR:** research/strict-teacher-guided-rule-mining-2026-10-26 / [draft PR #339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339).
+- **New implementation:** scripts/prepare_korean_g2p_corpus.py downloads the pinned SIGMORPHON 2021 medium Korean train/dev/test source files, verifies Git blob SHA-1 and expected row counts, writes only train/dev JSONL, preserves raw tokenized IPA targets, normalizes only the model-facing Hangul input to NFC, records source/output SHA-256 values, and refuses duplicate normalized forms or overlap across train/dev/test.
+- **Test split protection:** test is fetched only to verify its source pin, count, and overlap; no test records are serialized. The CI workflow uploads train/dev JSONL and the provenance manifest as a research artifact, not as committed repository data.
+- **Added verification:** tests/test_prepare_korean_g2p_corpus.py covers Git blob identity, NFC handling, raw IPA preservation, malformed TSV/UTF-8, duplicate normalized source forms, and row counts. The teacher corpus workflow now runs these tests and the real pinned-source preparation.
+- **Status at documentation time:** implementation is PARTIAL pending exact-head CI. Do not mark it DONE_VERIFIED until the new workflow and full tests pass on the final head. No neural inference, model training, production rule changes, or accuracy gains are claimed.
+- **Next data batch:** inspect UGTPHON token/phoneme schema and alignments before including it; then implement cross-corpus normalized-form overlap and conflict reports. Do not assume its sentence-level phoneme labels are word-level gold, and do not merge target conventions without an explicit adapter.
+- **Pipeline invariant:** source Hangul -> structural/phonological analysis -> typed phonetic/IPA representation -> Ukrainian target adaptation -> Ukrainian practical orthography. SIGMORPHON's tokenized IPA remains explicitly typed until its conventions are mapped and independently checked.
+
+
 ## Current execution record
 
 - **PR:** [Draft PR #339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339), based on `main` at `a452054a669de28426404d1110731715083423bb`. It remains draft and has not been merged.
