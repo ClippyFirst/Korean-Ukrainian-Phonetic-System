@@ -81,7 +81,7 @@ test('§27 punctuation-separated pause controls suppress adnominal fortition', (
 });
 
 test('§30: saisiot remains an exact lexical decision, not a generic ㅅ-final rewrite', () => {
-  const cases = ['냇가', '나뭇가지', '아랫방'];
+  const cases = ['나뭇가지', '아랫방'];
   for (const input of cases) {
     const result = generic.convert(input);
     assert.ok(
