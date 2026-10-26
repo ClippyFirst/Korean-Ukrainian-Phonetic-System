@@ -1153,3 +1153,7 @@ Readiness remains research-ready partial prototype, not release-ready.
 - No local tests were executed; the container's `git ls-remote` failed because github.com DNS could not be resolved.
 - Do not mark the new morphology batch DONE_VERIFIED until exact-head CI passes. The independent test-evaluation blocker for the test-informed `물가로` case remains open.
 
+### Superseding exact-head verification status — 2026-10-26
+
+The latest executable code/test head is `36b8e909d65ebf0e69af22f6183155853f34ae14`. It includes the fail-closed suffix-family agreement guard and its regression test. Exact-head checks are now visible but still queued: test matrix [40344662542](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662542), system verification [40344662684](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662684), Charsiu train/dev [40344662592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662592), and real morphology smoke [40344662799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662799). No exact-head pass exists yet; retain PARTIAL status until these complete.
+
