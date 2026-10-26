@@ -1476,3 +1476,11 @@ Release classification remains **software-verified research prototype / partial 
 | Promote teacher-derived Strict rules | TODO | Independent NIKL/primary-source adjudication, positive/negative controls, dev improvement, and regression evidence required; no teacher-derived rule is licensed yet |
 | Change production Strict in this continuation | DEFERRED | No source-backed candidate passed the acceptance gate in this run; do not invent rules from associations |
 
+## Continuation update — case-ID leakage guard (2026-10-26)
+
+- **Code review finding:** the teacher/Strict miner checked the manifest split, each row split, and known holdout markers in `dataset_id`, but a row with a misleading `case_id` like `test-001` could pass if labeled `dev`.
+- **Change made:** the miner now rejects obvious test/holdout/24-form markers in case IDs, with regression coverage for hyphenated, underscored, and project-style IDs. This tightens the research guard without changing runtime pronunciation or model behavior.
+- **Commits:** code `806d256e7be819569c24cf0cc1d8a8b4aaf6573b`; tests `5a90b3dadb2bc8729b1f30f1c7cef7ae5b385812`.
+- **Verification:** exact-head workflows for `5a90b3dadb2bc8729b1f30f1c7cef7ae5b385812` had not yet appeared in the connected workflow-run listing at the time of this update. Treat the new guard as implemented but not yet `DONE_VERIFIED`; re-check CI before merge. Prior head `a4cc5f55ba223e05d5372fe9e54c4ed90e11288b` had all four workflows pass.
+- **Limit:** this marker heuristic cannot infer provenance from opaque IDs. Source manifests and split membership still must be verified; never use the guard to justify relabeling or reusing sealed records.
+
