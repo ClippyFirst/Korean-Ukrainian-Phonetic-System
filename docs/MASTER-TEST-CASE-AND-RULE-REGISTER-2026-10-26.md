@@ -374,3 +374,8 @@ Added tests/test_build_test_case_register.py to check stable IDs, exact token bo
 
 
 The extractor was expanded to preserve **every source line** from all scannable text files beneath `tests/`, not only Hangul spans. It now emits `TEST-CASE-REGISTER-SOURCE-LINES-2026-10-26.csv`, with stable line IDs, file/category, line number, exact raw line, per-line SHA-256, and explicit unclassified/pending-run status. This makes IPA-only or Latin-script expected values recoverable from their original assertion context. The generated artifact is not yet available: the matching GitHub Actions run is queued, so no line/candidate counts or output hashes are asserted here.
+
+
+### Assertion candidate inventory
+
+The extractor now also emits `TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv`. It captures test declarations and assertion-like lines from JS and Python tests, each with stable ID, file/category, line number, exact raw line, and unclassified status. This is a review queue, not proof that each row is a complete independent case: multiline assertions, parametrized cases and helper-generated cases must be reconciled against the full source-line inventory. The extraction workflow validates unique stable IDs across all five generated inventories and uploads them as a commit-specific artifact.
