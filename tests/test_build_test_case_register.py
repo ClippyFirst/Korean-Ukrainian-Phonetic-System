@@ -76,6 +76,8 @@ class TestBuildTestCaseRegister(unittest.TestCase):
                 assertions = list(csv.DictReader(stream))
             self.assertTrue(any("test('example case'" in row["raw_line"] for row in assertions))
             self.assertTrue(any("assert.equal" in row["raw_line"] for row in assertions))
+            self.assertFalse(any(row["raw_line"].lstrip().startswith("import assert") for row in assertions))
+            self.assertTrue(any(row["assertion_kind"] == "assert.equal" for row in assertions))
 
 
 if __name__ == "__main__":
