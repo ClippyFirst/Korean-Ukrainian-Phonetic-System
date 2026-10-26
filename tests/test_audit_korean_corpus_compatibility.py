@@ -47,18 +47,19 @@ def write_corpus(directory: Path, dataset_id: str, target_type: str, split_rows:
 
 def test_compare_rows_reports_overlap_and_raw_target_relation_without_claiming_ipa_equivalence():
     left = [
-        {"_normalized_source": "국물", "target_raw": "k u ŋ . m u l"},
-        {"_normalized_source": "국밥", "target_raw": "k u k̚ . p͈ a p̚"},
+        {"_normalized_source": "국물", "target_raw": "k u ŋ . m u l", "target_representation": "tokenized_ipa_from_sigmorphon_tsv"},
+        {"_normalized_source": "국밥", "target_raw": "k u k̚ . p͈ a p̚", "target_representation": "tokenized_ipa_from_sigmorphon_tsv"},
     ]
     right = [
-        {"_normalized_source": "국물", "target_raw": "kuŋ.mul"},
-        {"_normalized_source": "국밥", "target_raw": "k u k̚ . p͈ a p̚"},
+        {"_normalized_source": "국물", "target_raw": "kuŋ.mul", "target_representation": "ugtphon_token_phoneme_ipa"},
+        {"_normalized_source": "국밥", "target_raw": "kuk̚.p͈ap̚", "target_representation": "ugtphon_token_phoneme_ipa"},
     ]
     result = compare_rows(left, right)
     assert result["unique_source_form_intersection"] == 2
-    assert result["shared_forms_with_any_exact_raw_target_match"] == 1
-    assert result["shared_forms_with_only_different_raw_target_strings"] == 1
-    assert "not linguistically comparable" in result["target_comparison_interpretation"]
+    assert result["shared_forms_with_any_exact_raw_target_match"] == 0
+    assert result["shared_forms_with_any_match_after_token_separator_removal"] == 1
+    assert result["shared_forms_with_only_different_targets_after_token_separator_removal"] == 1
+    assert "no syllable boundaries are inferred" in result["target_comparison_interpretation"]
 
 
 def test_build_report_verifies_manifests_and_never_merges(tmp_path):
