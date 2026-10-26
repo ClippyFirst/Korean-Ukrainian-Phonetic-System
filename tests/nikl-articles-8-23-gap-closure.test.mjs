@@ -143,7 +143,7 @@ test('§23 every listed fortition example has its exact expected IPA, not merely
   // pass when fortisness appears in the wrong syllable or a second segment is
   // missing, so compare the complete ordered output.
   const examples = {
-    '국밥': 'kuk̚ p͈ap̚',
+    '국밥': 'kuk̚.p͈ap̚',
     '깎다': 'k͈ak̚ t͈a',
     '넋받이': 'nʌk̚ p͈a dʑi',
     '삯돈': 'sak̚ t͈on',
@@ -174,7 +174,7 @@ test('§23 every listed fortition example has its exact expected IPA, not merely
 
 test('§21 all seven official place-assimilation negative controls keep their exact standard surfaces', () => {
   const examples = {
-    '감기': ['감기', 'kaːm ɡi'],
+    '감기': ['감기', 'kaːm.ɡi'],
     '옷감': ['옫깜', 'ot̚ k͈am'],
     '있고': ['읻꼬', 'it̚ k͈o'],
     '꽃길': ['꼳낄', 'k͈ot̚ k͈il'],

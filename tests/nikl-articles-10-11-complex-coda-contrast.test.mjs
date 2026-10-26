@@ -12,7 +12,7 @@ const officialSource = /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u;
 test('§10–11 official complex-coda examples preserve the standard distinction between coda simplification and ㄺ-before-ㄱ', () => {
   const expected = {
     // §11: ordinary consonant environment; ㄺ is simplified to [ㄱ].
-    '맑다': ['막따', 'mak̚ t͈a'],
+    '맑다': ['막따', 'mak̚.t͈a'],
     '흙과': ['흑꽈', 'hɯk̚ k͈wa'],
     // §11 exception for verb stems: ㄺ before ㄱ retains [ㄹ].
     '맑게': ['말께', 'mal k͈e'],

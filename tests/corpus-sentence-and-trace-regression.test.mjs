@@ -23,7 +23,7 @@ const entries = new Map(effectiveRows);
 
 test('high-risk user-corpus words use explicit standard surface readings', () => {
   const expected = {
-    '국립국어원': ['궁님꾸거원', 'куннімкуґовон', 'kuŋ nim k͈u ɡʌ wʌn'],
+    '국립국어원': ['궁님꾸거원', 'куннімкуґовон', 'kuŋ.nim.k͈u.ɡʌ.wʌn'],
     '먹었어요': ['머거써요', 'моґосойо', 'mʌ ɡʌ s͈ʌ jo'],
     '찍었어요': ['찌거써요', 'чіґосойо', 'tɕ͈i ɡʌ s͈ʌ jo'],
   };
@@ -122,7 +122,7 @@ test('second adversarial corpus resolves morphology-sensitive forms without plac
 
 test('phrase IPA and alternate readings preserve word boundaries and punctuation', () => {
   const result = engine.convert('맛있다, 값이!');
-  assert.equal(result.ipa, 'ma dit̚ t͈a, kap̚ ɕ͈i!');
+  assert.equal(result.ipa, 'ma.dit̚.t͈a, kap̚.ɕ͈i!');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].ipa, 'ma ɕit̚ t͈a, kap̚ ɕ͈i!');
   assert.ok(!result.variants[0].ipa.includes('\\\\s'));
@@ -150,7 +150,7 @@ test('user-supplied stress corpus: exact phrase entries preserve word boundaries
 
 test('user-supplied stress corpus: complex-coda and assimilation controls are covered', () => {
   const expected = {
-    '넋이': ['넉씨', 'nʌk̚ ɕ͈i'],
+    '넋이': ['넉씨', 'nʌk̚.ɕ͈i'],
     '몫을': ['목쓸', 'mok̚ s͈ɯl'],
     '값이': ['갑씨', 'kap̚ ɕ͈i'],
     '읽고': ['일꼬', 'il k͈o'],

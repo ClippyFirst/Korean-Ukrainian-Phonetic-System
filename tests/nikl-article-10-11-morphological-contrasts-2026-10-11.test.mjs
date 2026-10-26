@@ -13,7 +13,7 @@ test('§10–11 morphology contrasts distinguish ㄺ stems, 밟- exception, and 
   // Korean surface readings are attested by NIKL Q&A 315279 (2025-05-23)
   // and NIKL Q&A 307508 (2024-12-12); IPA is the project's broad rendering.
   const expected = {
-    '읽다': { surface: '익따', ipa: 'ik̚ t͈a', target: 'ікта' },
+    '읽다': { surface: '익따', ipa: 'ik̚.t͈a', target: 'ікта' },
     '읽고': { surface: '일꼬', ipa: 'il k͈o', target: 'ілко' },
     '붉다': { surface: '북따', ipa: 'puk̚ t͈a', target: 'пукта' },
     '붉지': { surface: '북찌', ipa: 'puk̚ tɕ͈i', target: 'пукчі' },

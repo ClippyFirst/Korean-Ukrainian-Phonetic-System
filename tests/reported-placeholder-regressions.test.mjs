@@ -92,7 +92,7 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
 test('§27 fortition survives mixed lexical/generic tokenization in 읽을 수 있습니다', () => {
   const result = engine.convert('읽을 수 있습니다');
   assert.equal(result.ukrainian, 'ілґил су ітсимніда');
-  assert.equal(result.ipa, 'il ɡɯl s͈u it̚ s͈ɯm ni da');
+  assert.equal(result.ipa, 'il.ɡɯl s͈u it̚.s͈ɯm.ni.da');
   assert.equal(result.issues.length, 0);
   assert.equal(result.status, 'lexical-review');
   assert.ok(result.trace.some(item => item.rules.includes('adnominal-r-fortition-§27')));
@@ -155,7 +155,7 @@ test('§14 NIKL complex-coda liaison examples preserve official particle reading
 
 test('lexical IPA consistently marks fortis sibilants as alveolo-palatal before the j-vowel set', () => {
   const expected = {
-    '넋이': 'nʌk̚ ɕ͈i',
+    '넋이': 'nʌk̚.ɕ͈i',
     '값이': 'kap̚ ɕ͈i',
     '말씨': 'maːl ɕ͈i',
     '몫몫이': 'moŋ mok̚ ɕ͈i',
@@ -199,12 +199,12 @@ test('Ukrainian rendering is derived from the IPA layer for lexical readings', (
 
 test('difficult passage forms have sourced IPA and render Ukrainian only from that IPA',()=>{
   const cases=[
-    ['읽었다는','il ɡʌt̚ t͈a nɯn','ілґоттанин'],
+    ['읽었다는','il.ɡʌt̚.t͈a.nɯn','ілґоттанин'],
     ['없어서','ʌp̚ s͈ʌ sʌ','опсосо'],
     ['찾았다','tɕʰa dʑa t͈a','чаджата'],
     ['앉히다','an tɕʰi da','анчіда'],
     ['해돋이','hɛ do dʑi','гедоджі'],
-    ['품삯이','pʰum s͈ak̚ ɕ͈i','пумсакші'],
+    ['품삯이','pʰum.s͈ak̚.ɕ͈i','пумсакші'],
     ['품삯을','pʰum s͈ak̚ s͈ɯl','пумсаксил'],
     ['품삯으로','pʰum s͈ak̚ s͈ɯ ɾo','пумсаксиро'],
     ['외곬에','ø ɡol s͈e','веґолсе'],

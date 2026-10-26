@@ -11,7 +11,7 @@ const officialSource = /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u;
 
 test('§15 substantive-morpheme liaison uses representative codas, not the §13 written-coda pattern', () => {
   const expected = {
-    '맛없다': { surface: '마덥따', ipa: 'ma dʌp̚ t͈a' },
+    '맛없다': { surface: '마덥따', ipa: 'ma.dʌp̚.t͈a' },
     '겉옷': { surface: '거돋', ipa: 'kʌ dot̚' },
     '값어치': { surface: '가버치', ipa: 'ka bʌ tɕʰi' },
     '밭 아래': { surface: '바다래', ipa: 'pa ta ɾɛ' },
@@ -44,7 +44,7 @@ test('§15 맛있다 keeps the normative primary reading and the explicitly perm
 
   const result = engine.convert('맛있다');
   assert.equal(result.surfaceHangul, '마딛따');
-  assert.equal(result.ipa, 'ma dit̚ t͈a');
+  assert.equal(result.ipa, 'ma.dit̚.t͈a');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '마싣따');
   assert.equal(result.variants[0].ipa, 'ma ɕit̚ t͈a');

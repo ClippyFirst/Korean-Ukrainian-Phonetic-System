@@ -113,7 +113,7 @@ test('NIKL exact-form R003 licenses resolve two attested forms in browser strict
 test('NIKL usage-survey phrase variants are explicit provisional lexical candidates', () => {
   const result = engine.convert('못잃어');
   assert.equal(result.surfaceHangul, '몬니러');
-  assert.equal(result.ipa, 'mon ni ɾʌ');
+  assert.equal(result.ipa, 'mon.ni.ɾʌ');
   assert.equal(result.status, 'lexical-review');
   assert.equal(result.target_status, 'provisional');
   assert.equal(result.ukrainian, '', 'provisional lexical target must not look accepted');

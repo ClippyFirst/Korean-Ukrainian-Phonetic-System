@@ -101,7 +101,7 @@ test('NIKL-attested 늙고 is resolved only by its exact sourced entry', () => {
   assert.ok(generic.ukrainian.includes('⟦') || generic.status === 'unresolved');
   assert.equal(engine.convert('늙고').surfaceHangul, '늘꼬');
   assert.equal(engine.convert('늙고').ukrainian, 'нилко');
-  assert.equal(engine.convert('늙고').ipa, 'nɯl k͈o');
+  assert.equal(engine.convert('늙고').ipa, 'nɯl.k͈o');
 });
 
 test('않았다 is resolved only by its exact sourced entry, not by generic morphology guessing', () => {

@@ -10,7 +10,7 @@ const engine = createEngine(canonical, lexical);
 // NIKL §14 examples plus dictionary/Q&A-attested forms; 몫이 is confirmed by NIKL Q&A 335008.
 test('NIKL complex-coda liaison examples resolve without morphological guessing', () => {
   const expected = {
-    '넋이': { surface: '넉씨', ipa: 'nʌk̚ ɕ͈i' },
+    '넋이': { surface: '넉씨', ipa: 'nʌk̚.ɕ͈i' },
     '앉아': { surface: '안자', ipa: 'an dʑa' },
     '곬이': { surface: '골씨', ipa: 'kol ɕ͈i' },
     '핥아': { surface: '할타', ipa: 'hal tʰa' },

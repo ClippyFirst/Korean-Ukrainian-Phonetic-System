@@ -13,7 +13,7 @@ const generic = createEngine(canonical, '');
 // them from lexical_pronunciations.csv: that would let a bad data edit update
 // both the actual result and the expected result without failing the test.
 const independentFixtures = [
-  ['밭일', '반닐', 'панніл', 'pan nil'],
+  ['밭일', '반닐', 'панніл', 'pan.nil'],
   ['굳이', '구지', 'куджі', 'ku dʑi'],
   ['않았다', '아낟따', 'анатта', 'a nat̚ t͈a'],
   ['밝은', '발근', 'палґин', 'pal ɡɯn'],

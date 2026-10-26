@@ -10,7 +10,7 @@ const engine = createEngine(canonical, lexical);
 // Source: NIKL Q&A 311728 (2025-03-21), Standard Pronunciation Rules §§10, 23, 29.
 test('additional NIKL examples expose compound boundaries and coda exceptions', () => {
   const expected = {
-    '밭이랑': { surface: '반니랑', ipa: 'pan ni ɾaŋ' },
+    '밭이랑': { surface: '반니랑', ipa: 'pan.ni.ɾaŋ' },
     '집안일': { surface: '지반닐', ipa: 'tɕi ban nil' },
     '공업용': { surface: '공엄뇽', ipa: 'koŋ ʌm njoŋ' },
     '얇실하다': { surface: '얄씰하다', ipa: 'jal ɕ͈il ha da' },
