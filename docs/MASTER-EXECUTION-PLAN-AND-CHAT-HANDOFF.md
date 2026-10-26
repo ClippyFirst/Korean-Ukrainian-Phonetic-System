@@ -2,34 +2,37 @@
 
 ## Current execution record
 
-- **PR:** [Draft PR #339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339), base `main` at `a452054a669de28426404d1110731715083423bb`; do not merge automatically.
+- **PR:** [Draft PR #339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339), based on `main` at `a452054a669de28426404d1110731715083423bb`. It remains draft and has not been merged.
 - **Working branch:** `research/strict-teacher-guided-rule-mining-2026-10-26`.
 - **Scope:** existing deterministic Strict/native engine, not the neural V3 production proposal. The public browser practical path's pinned JavaScript g2pK port remains separate.
 - **Design decision:** use CharsiuG2P only as a research teacher. Do not import neural weights into runtime, silently replace Strict output, or tune on UGTPHON/SIGMORPHON/project holdout examples.
 - **Implementation:** `scripts/mine_deterministic_rule_candidates.py`, `tests/test_mine_deterministic_rule_candidates.py`, `docs/TEACHER-GUIDED-STRICT-RULE-MINING-2026-10-26.md`; README link added. The utility preserves raw teacher/Strict outputs, uses conservative normalization, reports pairwise exact/CER and coarse context associations, and requires pinned model/data provenance, explicit license/overlap status, IPA output type, and train/dev-only split declarations. It never writes runtime rules.
-- **Latest code head:** `3febcbd78ca81bceddd3f45811a1747f10db5c8f`; current follow-up documentation commit is `b0096136417b645e606be0b8e7b89f21731fc843`. This handoff update will create one more documentation-only commit.
-- **Implementation commit trail:** `5d3af19df45f0077926ffb66e146958bb014af07`, `572d28445735936b427668c6ded50a6f58c99a5c`, `47143555682656909d387bf7cff97fae63a44131`, `d1b20d122adb8734f7e84d306d16a5eb400ea14e`, `9708ba550c2f29cd0e9938f7b33eb26d23c003f3`, `345135c5d4ce4b35972969d1911e3db923e49fbb`, `c032ca51b7864511212bac370c9ebcd425004b74`, `a013ffe890ac57c85003382f8b1935369486aa2d`, `bb6ab84b421c3eeccb77988fd0ca0310f4e6c0e3`, `aca0c91527a033b4c55a5f51258f40d617af5795`, `3febcbd78ca81bceddd3f45811a1747f10db5c8f`, `b0096136417b645e606be0b8e7b89f21731fc843`.
-- **CI evidence:** initial exact branch workflow on `bb6ab84` passed the Python matrix (3.11/3.12/3.13), wheel-install and web jobs in run [40289107200](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289107200); system verification [40289107159](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289107159) passed Python regression/data integrity and browser tests/build; corpus artifact validation [40289107112](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289107112) passed. The subsequent code head `3febcbd` has exact-head test run [40289270045](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289270045), system verification [40289270118](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289270118), and corpus validation [40289270094](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289270094); corpus validation passed, but test/system jobs were queued at last inspection. The newest doc-only commit requires checking its own CI before calling the final head fully verified.
-- **Local verification limitation:** attempted a shallow GitHub clone for local test execution, but the container could not resolve `github.com`; no local tests are claimed. CI is the available executable verification path.
+- **Latest implementation/test head:** `6eb54487c78ec5410971d4e50835db2874bf48ea`. Follow-up status docs commit: `fd17992a73840ed04b295a6f8525a0e11b4b5179`; this handoff update creates another docs-only commit.
+- **Verification on implementation head `6eb5448`:**
+  - Full Python test matrix (3.11, 3.12, 3.13), wheel install, and web test/build passed in [run 40289614006](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289614006).
+  - System verification passed Python regression/data integrity and browser regression/build in [run 40289613960](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289613960). The live NIKL inventory job was skipped by its workflow condition, not passed.
+  - Master-table/research artifact validation passed in [run 40289614088](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289614088).
+  - Earlier run [40289270045](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289270045) caught a test bug in the across-space context fixture (a non-overlapping regex test expectation). The boundary scanner was changed to inspect every adjacent Hangul-word pair; the corrected test and final exact-head matrix passed on `6eb5448`.
+- **Local verification limitation:** a shallow GitHub clone was attempted but the container could not resolve `github.com`; no local test result is claimed. CI supplied the executable verification.
 - **Licensing/evidence blocker:** CharsiuG2P checkpoint weights have no verified explicit license in the checked model card; upstream training-data overlap is unknown. This blocks redistribution and leakage-free generalization claims, not independent deterministic-engine development.
 
 ## Task ledger
 
 | Task | Status | Acceptance evidence |
 |---|---|---|
-| Add reproducible teacher-vs-Strict per-case diagnostic | PARTIAL | Script and unit tests exist; latest exact-head test matrix must finish after final code/test changes |
-| Prevent use of known test/holdout splits | PARTIAL | Code and regression tests cover known benchmark IDs, non-train/dev splits, split mismatch, and duplicate IDs; external manifests still require audit |
-| Validate conservative normalization and context associations | PARTIAL | Tests cover length, tense marks, syllable boundary preservation, eojeol context distinction, and teacher-reference CER denominator; exact-head CI pending |
+| Add reproducible teacher-vs-Strict per-case diagnostic | DONE_VERIFIED | Script emits machine-readable case-level raw/normalized outputs, exact-match and teacher-reference CER; full Python matrix passed |
+| Prevent use of known test/holdout splits | DONE_VERIFIED | Tests reject non-train/dev splits, known benchmark/holdout identifiers, row/provenance split mismatch, and duplicate case IDs |
+| Validate conservative normalization and context associations | DONE_VERIFIED | Tests cover preservation of IPA contrasts, eojeol boundary classes, all adjacent word pairs, and reference-normalized CER |
 | Use model disagreements to add production rules | TODO | Each candidate needs independent primary-source adjudication, positive/negative controls, and separate dev-set improvement |
 | Run teacher inference on a legally cleared train/dev corpus | BLOCKED | Need an eligible corpus split, model rights review, pinned inference artifact, and upstream training-data-overlap audit |
 | Change Strict runtime or Ukrainian rendering from teacher predictions | DEFERRED | No automatic distillation; preserve deterministic runtime and IPA-to-Ukrainian boundary until evidence gates clear |
 
 ## Immediate continuation
 
-1. Inspect CI on the final PR head and fix any test or validation failures.
-2. If exact-head CI passes, retain the PR as draft until the data/model rights and corpus-overlap gates are addressed.
+1. Check the CI started by the latest documentation-only commit; the executable code was already verified on `6eb5448`.
+2. Keep the PR draft until a suitable train/dev corpus, model rights, and overlap evidence are available.
 3. Review context associations only as a human review queue. Never convert a teacher prediction into a source-backed rule without primary-source support.
-4. Continue deterministic Strict improvement from sourced phonological evidence independently of unresolved neural-model licensing; do not tune on the benchmark holdouts.
+4. Continue deterministic Strict improvement from sourced phonological evidence independently of unresolved neural-model licensing; do not tune on benchmark holdouts.
 
 ---
 
