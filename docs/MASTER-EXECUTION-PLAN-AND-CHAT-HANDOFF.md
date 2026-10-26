@@ -42,6 +42,7 @@
 - Cross-corpus source-form intersections: SIGMORPHON train × UGTPHON train 1,084; train × dev 257; dev × train 140; dev × dev 33.
 - After removing only SIGMORPHON whitespace phone-token separators, target strings match for 718/1,084 train/train shared forms, 180/257 train/dev, 86/140 dev/train, and 23/33 dev/dev. Remaining differences are not automatically errors; no symbols were mapped and no syllable boundaries inferred. Target compatibility remains UNVERIFIED, and the corpora are not merged.
 - The first compatibility audit failed before a common output_row_count manifest field was added and the test fixtures were corrected. The subsequent audit run 40295700341 passed all preparation, audit, and upload steps. Preserve this failure/fix history; do not report the earlier run as passing.
+- The updated categorization run [40296047955](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40296047955) passed all unit tests, source audits, both corpus builders, compatibility audit, and artifact upload. For train/train mismatches, 151/366 are length-mark-only under a diagnostic removal test, 215/366 remain other symbol/feature differences, and 0 differ only by syllable dots. Do not remove length marks from source data or treat either source as gold by default.
 
 ## Current execution record
 
