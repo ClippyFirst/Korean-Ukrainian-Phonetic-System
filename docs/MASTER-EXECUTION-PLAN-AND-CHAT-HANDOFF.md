@@ -1918,4 +1918,17 @@ The g2pk comparison adapter was also made importable at module level. The earlie
 At handoff update time, corrected Charsiu train/dev run [40338300356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338300356) and later exact-head run [40338691112](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338691112) were queued. Latest system verification [40338700703](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338700703) was also queued. These are not passes. Latest code/source head before this documentation batch was 6b1eb894f15c74fdfb4afd11bebbb146f7e0dabf.
 
 Readiness remains research-ready partial prototype, not release-ready until exact-head CI passes, corrected dev artifacts are inspected, target IPA/Ukrainian adjudication is established, and remaining evidence gaps are resolved.
+## 2026-10-26 final rule-inventory parity addendum
+
+A second inventory comparison found and closed further Python/browser gaps:
+- R002 formal-liaison inventory was missing the exact Python licenses for 앉아라 and 없어도; these are now mirrored in the browser table.
+- R009 / NIKL §29 had 29 source-backed word-internal n-insertion licenses in Python but no matching browser word map. The full 29-form map is now mirrored; the existing six phrase-level insertion licenses are also represented in Python for explicit phrase-boundary mode.
+- Added tests/test_rule_license_parity.py, which compares the actual Python and JavaScript exact-form maps for R002/R003/R004/R007/R009/R010/R011/R012/R014/R015/R016 and compares R013/R009 phrase-license sets. This guards against the same class of cross-runtime drift recurring.
+- Added a browser behavior regression for representative R009 forms and a negative control (솜이 is not licensed merely because it has a coda before ㅣ).
+
+The full audited map counts now match across runtimes for the compared exact-form families: R002 formal 33; R002 substantive 5; R003 18; R004 1; R007 2; R009 word-internal 29; R010 2; R011 6; R012 10; R014 20; R015 15; R016 3. R013 adnominal phrase sets match at 9; R009 phrase sets match at 6. This is source-inventory parity, not proof that every pronunciation is independently adjudicated.
+
+Verification remains blocked by the hosted runner queue. At code/test head cbd4c90c383881e7346763da208295c7659a3044, the full tests workflow [40340319366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319366), system verification [40340318888](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340318888), and corrected Charsiu train/dev workflow [40340319150](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319150) were queued, not passed. A local git clone was attempted but failed because the environment could not resolve github.com; local tests were therefore not run. Do not mark these changes DONE_VERIFIED until the queued workflows return final results.
+
+The corrected Charsiu comparison remains evidence-only. No Charsiu output has been automatically promoted into production; the new runtime rules above are supported by the registered official NIKL rules/Q&A, and the benchmark disagreement only helped prioritize source review. Readiness remains research-ready partial prototype, not release-ready.
 

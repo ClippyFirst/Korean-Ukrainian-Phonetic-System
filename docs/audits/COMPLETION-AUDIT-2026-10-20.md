@@ -1108,4 +1108,14 @@ Task ledger:
 - BLOCKED: live official NIKL source inventory was skipped, not passed; independently adjudicated IPA→Ukrainian target gold is still missing.
 
 Corrected Charsiu run [40338691112](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338691112) and latest system verification [40338700703](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338700703) were queued at update time. Do not mark implementation DONE_VERIFIED until exact-head CI and the corrected dev artifact are inspected. The repository remains a research-ready partial prototype, not release-ready.
+## 2026-10-26 final inventory reconciliation addendum
+
+The Python/browser source-backed rule tables were compared directly. Additional parity gaps closed:
+- R002 formal liaison: browser now includes the two Python exact forms 앉아라 and 없어도.
+- R009 / §29: browser now includes the same 29 exact word-internal n-insertion licenses as Python; Python phrase-boundary mode now carries the same nine R013 adnominal phrase licenses as the browser.
+- Added automated test_rule_license_parity.py to compare exact map values and phrase-license key sets across runtimes. Representative R009 browser cases and a negative control are covered.
+
+The verified map counts match: R002 formal 33, R002 substantive 5, R003 18, R004 1, R007 2, R009 word 29, R010 2, R011 6, R012 10, R014 20, R015 15, R016 3; R013 phrase 9 and R009 phrase 6.
+
+At this update, exact-head tests [40340319366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319366), system verification [40340318888](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340318888), and corrected Charsiu train/dev [40340319150](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319150) were queued. Local cloning/testing was blocked by DNS failure resolving github.com. No pass is claimed. The repository remains a research-ready partial prototype.
 

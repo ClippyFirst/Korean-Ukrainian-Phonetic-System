@@ -160,4 +160,13 @@ The first completed Charsiu dev artifact [40334001997](https://github.com/Clippy
 The runner was corrected to render broad and narrow from one shared post-rule syllable analysis, exclude lexical IPA overrides from both controlled renderings, preserve unresolved abstentions in both, and report profile sensitivity separately from the full production pipeline. Raw IPA conventions remain unreviewed relative to ClippyFirst broad IPA; profile metrics are diagnostic only and cannot by themselves justify Ukrainian target adaptation.
 
 The deterministic rule inventory also now has source-backed browser parity for R011/R012/R013/R014/R015, including exact NIKL §28 물가[물까] and 봄비[봄삐] cases and the attached ending 할게[할께]. New official source pages are registered. Exact-head CI and the corrected Charsiu dev artifact were queued at update time; no pass is claimed.
+## 2026-10-26 cross-runtime inventory closure
+
+Beyond the controlled IPA profile correction, the exact source-backed pronunciation inventory was reconciled across Python and browser runtime:
+- R002 formal exact forms: 33 in both runtimes, including newly mirrored 앉아라 and 없어도.
+- R009 word-internal n-insertion: 29 exact forms in both runtimes; R009 phrase insertion: six exact phrase keys in both.
+- R013 adnominal phrases: nine exact keys in both runtimes.
+- R003/R004/R007/R010/R011/R012/R014/R015/R016 exact form inventories also match by a new automated parity test.
+
+This closes source-table drift, not the IPA convention problem. The Charsiu model's output convention still lacks an independent mapping to ClippyFirst broad IPA, and the controlled profile-sensitivity workflow is still queued. The first run's apparent narrow-profile gain is not valid evidence. Full tests and system verification are also queued; no pass is claimed.
 

@@ -305,4 +305,14 @@ The source-backed rule parity batch also added/mirrored:
 - R015 / NIKL §30: exact saisiot forms mirrored from the Python inventory, with unadjudicated compounds still withheld.
 
 All results remain diagnostic because the corpus IPA convention has not been independently mapped to ClippyFirst broad IPA. This benchmark register records workflow state, not a claim of model-to-rule accuracy improvement.
+## 2026-10-26 rule inventory parity addendum
+
+A direct Python/browser comparison found additional exact-form gaps beyond R011/R012/R014/R015:
+- R002 formal-liaison table now includes the Python exact forms 앉아라 and 없어도.
+- R009 / §29 now has the same 29 exact word-internal n-insertion licenses in the browser as in Python. Python phrase-boundary mode also has the same nine R013 phrase licenses as browser JavaScript.
+- An automated parity test compares source-backed Python/JS map values and phrase-license sets.
+
+Audited map counts match for R002 formal (33), R002 substantive (5), R003 (18), R004 (1), R007 (2), R009 word (29), R010 (2), R011 (6), R012 (10), R014 (20), R015 (15), R016 (3), R013 phrases (9), and R009 phrases (6).
+
+The corrected Charsiu workflow [40340319150](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319150) and full tests [40340319366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319366) were queued. The earlier uncontrolled narrow-score delta remains superseded. No model-to-rule accuracy gain is claimed.
 
