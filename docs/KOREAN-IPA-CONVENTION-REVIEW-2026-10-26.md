@@ -48,7 +48,7 @@ Until that gate is met, neural-versus-Strict accuracy comparisons across these t
 
 ## Neural integration decision — 2026-10-26
 
-**Keep the neural model outside the production runtime for now.** The current scratch teacher has 60.2% exact token-sequence match on the SIGMORPHON dev convention, was selected on that dev split, and has no independently normalized comparison against ClippyFirst broad IPA. That is insufficient evidence for a production fallback or ensemble. The owner-approved direction is to improve ClippyFirst's own engine with traceable data; therefore use the model offline as a hypothesis generator only. A candidate becomes a production rule only after primary-source phonological analysis, exact environment/exception definition, independent review, positive and negative regression controls, and improvement on a separate eligible evaluation set.
+**Keep the neural model outside the production runtime for now.** The latest saved scratch-teacher artifact has 59.6% exact token-sequence match (596/1,000) on the SIGMORPHON dev convention, was selected on that dev split, and has no independently normalized comparison against ClippyFirst broad IPA. The earlier 60.2% value is superseded by the later exact-head artifact. That is insufficient evidence for a production fallback or ensemble. The owner-approved direction is to improve ClippyFirst's own engine with traceable data; therefore use the model offline as a hypothesis generator only. A candidate becomes a production rule only after primary-source phonological analysis, exact environment/exception definition, independent review, positive and negative regression controls, and improvement on a separate eligible evaluation set.
 
 Revisit direct neural runtime integration only if a separately evaluated model has materially better independently adjudicated IPA performance, acceptable latency/resource behavior, reproducible packaging, and a justified operational benefit over the deterministic engine. No such evidence currently exists.
 
@@ -131,3 +131,26 @@ Consequences for this repository:
 - Keep short-lived CI artifacts separate from checked-in project data; before relying on derived annotations in a public product or releasing a derived corpus, obtain a source-specific rights review.
 - The exact IPA-Dict snapshot remains **BLOCKED / not recoverable from the inspected pinned UGTPHON metadata**. The current IPA-Dict README is contextual evidence only and must not be substituted as the missing source pin.
 - No source-specific IPA mapping, pronunciation decision, or production rule is justified by this licensing/provenance finding.
+
+## Partial narrow IPA implementation (2026-10-26)
+
+The engine previously raised an error for `ipa_level="narrow"`. A first explicitly partial, deterministic narrow profile now exists, while the default `broad` profile remains unchanged.
+
+### Implemented, source-backed scope
+
+- Lenis Korean `ㅅ` is represented as `[sʰ]` in the partial narrow profile. The Korean phonetics literature describes /s/ as phonetically aspirated; see the discussion of Cho, Jun & Ladefoged's Korean fricative findings in [High-toned [il] in Korean](https://escholarship.org/uc/item/0xd5n4gk).
+- Before the reviewed high-front contexts `ㅣ`, `ㅖ`, and `ㅑ`, the profile uses `[ɕʰ]`. Kang (2010) reports robust early spectral differences for Korean /s/ before /i, ye, ya/ and also reports that /yu/ and /yo/ differ; therefore this first profile deliberately does **not** generalize the palatalized form to every y-glide vowel. See [Kang (2010), DOI 10.17959/sppm.2010.16.1.3](https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770).
+- Fortis `ㅆ` remains `[s͈]` in this profile. The available evidence for its palatalization is mixed, so the engine does not infer `[ɕ͈]` from the lenis `ㅅ` pattern.
+
+### Explicit exclusions and target boundary
+
+This is **not a complete narrow transcription**. It does not model /h/ allophony, lateral retroflexion, dialect variation, prosody, or speaker-specific realization. Korean /h/ can be voiced or deleted after sonorants in Seoul speech, and variation differs by dialect; see Kang & Lee (2019), [The Realizations of /h/ in Seoul and Gwangju Koreans](https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART002495941). The Korean liquid literature also reports substantial variation and associates retroflex lateral realizations particularly with pause proximity, so a global `l → ɭ` substitution is not justified; see Crosby & Dalola (2021), [CC BY 4.0 article](https://journals.linguisticsociety.org/proceedings/index.php/PLSA/article/view/5002).
+
+The profile emits `transcription_profile.target_compatible=false`. `transliterate_korean(..., ipa_level="narrow")` therefore fails closed and withholds Ukrainian orthography instead of passing this partial narrow IPA into the current target correspondence table. The broad IPA path and its Ukrainian target behavior remain unchanged.
+
+### Acceptance
+
+- `DONE_VERIFIED` only after exact-head CI passes the new narrow-profile tests and existing broad regressions.
+- `PARTIAL` as a complete narrow-IPA system: additional allophones require source evidence, explicit variability/uncertainty handling, positive and negative controls, and independent IPA adjudication.
+- No Charsiu output has been copied into production. The neural teacher is used to identify high-value review areas; the implemented sibilant rules are independently supported by the cited phonetics literature.
+
