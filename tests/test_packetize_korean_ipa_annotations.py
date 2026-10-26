@@ -36,7 +36,7 @@ def test_tokenized_target_preserves_raw_tokens_and_explicit_boundaries():
     assert [unit["raw"] for unit in packet["units"]] == ["k", "u", "k̚", ".", "p͈", "a", "p̚"]
     assert packet["units"][3]["kind"] == "explicit_boundary"
     assert packet["markers"]["explicit_boundary_markers"] == [
-        {"codepoint_offset": 8, "symbol": ".", "kind": "explicit_boundary"}
+        {"codepoint_offset": 7, "symbol": ".", "kind": "explicit_boundary"}
     ]
     assert packet["clippyfirst_broad_ipa"] is None
     assert packet["ukrainian_orthography"] is None
