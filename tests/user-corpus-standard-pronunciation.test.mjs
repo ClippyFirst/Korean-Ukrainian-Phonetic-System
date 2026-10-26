@@ -11,7 +11,7 @@ const rows = new Map(parseCsv(lexical).map((row) => [row.input, row]));
 test('user-corpus high-risk forms have exact NIKL-backed surface readings', () => {
   const expected = {
     '해돋이': ['해도지', 'гедоджі', 'hɛ.do.dʑi'],
-    '맏이': ['마지', 'маджі', 'ma dʑi'],
+    '맏이': ['마지', 'маджі', 'ma.dʑi'],
     '숱이': ['수치', 'сучі', 'su tɕʰi'],
     '끝이': ['끄치', 'кичі', 'k͈ɯ tɕʰi'],
     '꽃이': ['꼬치', 'кочі', 'k͈o tɕʰi'],
