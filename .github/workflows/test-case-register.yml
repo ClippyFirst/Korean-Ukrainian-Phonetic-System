@@ -5,7 +5,8 @@ on:
     paths:
       - "scripts/build_test_case_register.py"
       - "tests/test_build_test_case_register.py"
-      - "data/korean/lexical_pronunciations.csv"
+      - "data/korean/**"
+      - "examples/**"
       - "tests/**"
       - ".github/workflows/test-case-register.yml"
   workflow_dispatch:
@@ -36,7 +37,7 @@ jobs:
           commit = sys.argv[2]
           expected = {
               "TEST-CASE-REGISTER-LEXICAL-BASE-2026-10-26.csv": "case_id",
-              "TEST-CASE-REGISTER-LEXICAL-TEST-LINKS-2026-10-26.csv": "case_id",
+              "TEST-CASE-REGISTER-LEXICAL-TEST-LINKS-2026-10-26.csv": "link_id",
               "TEST-CASE-REGISTER-HANGUL-LITERAL-CANDIDATES-2026-10-26.csv": "candidate_id",
               "TEST-CASE-REGISTER-SOURCE-LINES-2026-10-26.csv": "line_id",
               "TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv": "assertion_candidate_id",
