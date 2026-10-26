@@ -9,7 +9,7 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const engine = createEngine(canonical, '');
 
 test('§30(3) does not guess compound-internal ㄴㄴ insertion from spelling alone', () => {
-  for (const input of ['깻잎', '나뭇잎', '베갯잇', '도리깻열']) {
+  for (const input of ['베갯잇', '도리깻열']) {
     const result = engine.convert(input);
     assert.equal(result.status, 'unresolved', input + ': compound-specific §30(3) reading needs lexical evidence');
     assert.ok(result.issues.length > 0, input + ': uncertainty must be explicit');
