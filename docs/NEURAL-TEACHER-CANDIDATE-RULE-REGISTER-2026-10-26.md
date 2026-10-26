@@ -165,3 +165,30 @@ After adding both 안지 and 신다, the R010 inventory now has **15 exact entri
 ### Queue integrity hardening: partial target overlap
 
 The train/train queue was hardened so a shared annotation cannot hide a conflict when either corpus has multiple target variants for one source form. Previously, any intersection between target sets was classified as an exact match and omitted. The queue now excludes a source form only when the complete normalized target sets are equal; a partial overlap is retained as partial_annotation_overlap_requires_review, and dot-only / length-only diagnostics require equality of the full sets after the respective diagnostic transform. A regression test covers two SIGMORPHON variants where only one overlaps UGTPHON. This preserves all candidate annotations and prevents silent loss; it does not normalize away the underlying IPA difference. Status remains PARTIAL pending the current Teacher corpus split audit and tests workflow.
+
+## Latest retrieved scratch-teacher artifact and resource-efficient interpretation
+
+Artifact `12675765407` from workflow run `40376661106` was downloaded and inspected directly. It is the same pinned SIGMORPHON train/dev experiment family; checkpoint SHA-256 is `4062bff4941fefe1b499a29163471e17d3e7eff2af690456d16f1fd93cc70a45`. Training manifest: 8,000 train rows, 1,000 dev rows, zero test rows loaded, no pretrained weights; best epoch 11. The dev error report says:
+
+- exact token-sequence matches: 602/1,000 (60.2%);
+- length-mark-only differences: 107;
+- other token/feature differences: 291;
+- length marks underpredicted in 80 cases and overpredicted in 27;
+- reference contains 237 length-mark tokens, while the model predicts 145.
+
+The 80-vs-27 directionality is a useful **model error-analysis lead**, not a production rule. It specifically argues against blanket length normalization: the model both misses and adds length, and SIGMORPHON's length conventions still need item-level comparison with Korean source evidence.
+
+The same artifact's teacher/Strict pair summary contains 994 scored pairs and 6 excluded unresolved cases, but explicitly reports `comparison_metrics_computed=false` because the source-tokenized roughly-phonemic SIGMORPHON IPA has not been mapped through an independently reviewed adapter to ClippyFirst broad IPA. Do not calculate rule gains from those raw teacher/Strict strings. The teacher checkpoint was selected on this same dev split, so even teacher-vs-reference findings are discovery-only, not independent final evaluation.
+
+### Highest-value next analyses, in order
+
+1. Reuse this artifact and its exact hashes; do not retrain just to reproduce the same dev errors.
+2. Resolve the IPA-convention adapter and feature-loss ledger before interpreting teacher-vs-Strict disagreements.
+3. Stratify the 291 non-length-only teacher errors by reviewed segment/feature category and exact source environment; keep the 107 length-only cases separate.
+4. Use teacher errors only to propose candidate mechanisms. Verify every candidate against official pronunciation evidence and both positive and negative examples.
+5. Promote only after a separate eligible evaluation and Python/browser parity.
+
+### Candidate-miner safety gate
+
+The candidate miner now requires explicit `teacher_ipa_convention`, `strict_ipa_convention`, `ipa_conventions_comparable=true`, and a non-empty `ipa_convention_review_id` in provenance. This prevents raw SIGMORPHON/UGTPHON/Charsiu strings from being treated as comparable IPA merely because all are labelled “IPA”. A regression test verifies that an unreviewed comparison is rejected. This is a correctness guard, not proof that the current CI has passed; exact-head verification remains pending.
+
