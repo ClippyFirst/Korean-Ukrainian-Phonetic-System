@@ -223,3 +223,21 @@ test('exact-form R007 licenses resolve 같이 but do not generalize to unlisted 
   }
   assert.equal(engine.convert('좋을거같이').status, 'unresolved');
 });
+
+
+
+test('NIKL §28 compound fortition is mirrored for 물가 and 봄비 without genericizing ㄹ+ㄱ', () => {
+  const price = engine.convert('물가');
+  assert.equal(price.surfaceHangul, '물까');
+  assert.equal(price.ipa, 'mul.k͈a');
+  assert.ok(price.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')));
+
+  const springRain = engine.convert('봄비');
+  assert.equal(springRain.surfaceHangul, '봄삐');
+  assert.equal(springRain.ipa, 'pom.p͈i');
+  assert.ok(springRain.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')));
+
+  const ordinarySequence = engine.convert('물고');
+  assert.notEqual(ordinarySequence.surfaceHangul, '물꼬');
+  assert.equal(ordinarySequence.ipa, 'mul.ɡo');
+});
