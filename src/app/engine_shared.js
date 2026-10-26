@@ -125,6 +125,7 @@ const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
 ]);
 
 // Exact NIKL §25 stem ㄼ/ㄾ + ending fortition examples.
+// Official rules: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 const NIKL_25_STEM_LB_LT_ENDING_FORMS=new Map([
   ['넓다','넓>다'], ['넓고','넓>고'], ['넓지','넓>지'],
   ['훑다','훑>다'], ['훑고','훑>고'], ['훑지','훑>지'],
@@ -132,6 +133,7 @@ const NIKL_25_STEM_LB_LT_ENDING_FORMS=new Map([
 
 // Exact NIKL §26 Sino-Korean ㄹ + ㄷ/ㅅ/ㅈ fortition examples.
 // 불소(弗素) is omitted because the reading depends on lexical sense.
+// Official rules: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 const NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS=new Map([
   ['갈등','갈>등'], ['발동','발>동'], ['절도','절>도'], ['말살','말>살'],
   ['일시','일>시'], ['갈증','갈>증'], ['물질','물>질'], ['발전','발>전'],
@@ -140,6 +142,8 @@ const NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS=new Map([
 
 // Exact, source-backed NIKL §28 compound fortition cases. These licenses
 // are lexical: a coda + plain onset alone is not enough to infer a compound.
+// Official rules: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+// Additional official examples 물가[물까], 봄비[봄삐]: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=316282
 const NIKL_28_COMPOUND_FORTITION_FORMS=new Map([
   ['문고리','문>고'], ['눈동자','눈>동'], ['신바람','신>바'],
   ['산새','산>새'], ['손재주','손>재'], ['길가','길>가'],
