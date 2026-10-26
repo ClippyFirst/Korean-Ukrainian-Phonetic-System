@@ -151,7 +151,12 @@ def build_report() -> dict:
     report["acceptance"] = {
         "all_pinned_blobs_verified": True,
         "all_declared_splits_verified": True,
-        "test_partition_in_training_input": False,
+        "test_rows_loaded_as_training_records": False,
+        "observed_test_form_overlap_with_charsiu_repository_train": {
+            "ugtphon_unique_test_token_forms": cross.get("ugtphon:test__vs__charsiu_repository_korean_splits:train", 0),
+            "sigmorphon_test_words": cross.get("sigmorphon_2021_medium_korean:test__vs__charsiu_repository_korean_splits:train", 0),
+        },
+        "test_overlap_status": "present; this repository split is only a proxy for the selected checkpoint's unknown original training manifest",
         "model_training_or_inference_performed": False,
         "note": "Overlap counts are audit evidence only. Exclude or adjudicate overlaps before fitting; never tune against test outputs."
     }
@@ -165,7 +170,7 @@ def main(argv: list[str] | None = None) -> int:
     report = build_report()
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
     args.output_json.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"datasets": {k: v["splits"] for k, v in report["datasets"].items()}, "cross_corpus_token_overlap": report["cross_dataset_split_overlap_counts"]}, ensure_ascii=False))
+    print(json.dumps({"datasets": {k: v["splits"] for k, v in report["datasets"].items()}, "cross_dataset_split_overlap_counts": report["cross_dataset_split_overlap_counts"], "acceptance": report["acceptance"]}, ensure_ascii=False))
     return 0
 
 
