@@ -18,7 +18,7 @@ from audit_teacher_corpus_splits import (  # noqa: E402
 
 
 def test_git_blob_sha1_uses_git_blob_header():
-    assert git_blob_sha1(b"test") == "9daeafb9864cf43055ae93beb0afd6c7d144bfa4"
+    assert git_blob_sha1(b"test") == "30d74d258442c7c65512eafab474568dd706c430"
 
 
 def test_ugtphon_split_parser_checks_split_and_summarizes_tokens():
