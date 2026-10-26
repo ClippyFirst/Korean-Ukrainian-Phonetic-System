@@ -76,6 +76,22 @@ test('official dictionary-supported R004 cluster-plus-ㅎ form resolves in brows
 });
 
 
+test('NIKL §12(4) exact examples are licensed in browser strict mode', () => {
+  const cases = [
+    ['낳은', '나은'],
+    ['놓아', '노아'],
+    ['쌓이다', '싸이다'],
+    ['않은', '아는'],
+    ['닳아', '다라'],
+    ['싫어도', '시러도'],
+  ];
+  for (const [input, expectedSurface] of cases) {
+    const result = engine.convert(input);
+    assert.equal(result.surfaceHangul, expectedSurface, input);
+    assert.doesNotMatch(result.ipa, /⟦/u, input);
+  }
+});
+
 test('NIKL exact-form R003 licenses resolve two attested forms in browser strict mode', () => {
   const cases = [
     ['싫어서', '시러서'],
