@@ -349,7 +349,7 @@ test('NIKL §30 exact saisiot pronunciation forms match the Python rule inventor
     햇살: '해쌀',
     뱃속: '배쏙',
     뱃전: '배쩐',
-    고갯짓: '고개찟',
+    고갯짓: '고개찓',
     아랫니: '아랜니',
     뒷마루: '뒨마루',
     뱃머리: '밴머리',
@@ -375,6 +375,7 @@ test('NIKL section 29 word-internal n-insertion is exact-form licensed', () => {
   for (const word of ['솜이불', '홑이불', '식용유', '들일']) {
     const result = engine.convert(word);
     assert.ok(contextualRuleNames(word).includes('n-insertion-§29-exact-word'), word);
+    if (word === '홑이불') assert.equal(result.surfaceHangul, '혼니불');
   }
   const unlicensed = engine.convert('솜이');
   assert.ok(!unlicensed.trace.some(item => item.rules.includes('n-insertion-§29-exact-word')));
