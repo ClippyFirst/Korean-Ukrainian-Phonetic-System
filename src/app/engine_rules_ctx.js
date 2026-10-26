@@ -45,7 +45,7 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
       else if(a.char==='넓'&&LEXICAL_B_CODA_PREFIXES.has(a.char+b.char)){a.coda='ㅂ';rules.push('lexical-coda-neolp');}
     }
 
-    if(['ㄷ','ㅌ','ㄾ'].includes(a.coda)&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
+    if(['ㄷ','ㅌ','ㄾ'].includes(a.coda)&&b.onset==='ㅇ'&&b.vowel==='ㅣ'&&!exactR009Licensed){
       const exactR007Pair=NIKL_17_FORMAL_I_FORMS.get(currentWord);
       if(exactR007Pair===exactMorphPair){
         const originalCoda=a.coda;
@@ -301,6 +301,8 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
 
     // NIKL §25: stem-final ㄼ/ㄾ + licensed ending-initial ㄱ/ㄷ/ㅅ/ㅈ.
     if(exactR011Licensed&&['ㄼ','ㄾ'].includes(a.coda)&&['ㄱ','ㄷ','ㅅ','ㅈ'].includes(b.onset)&&PLAIN_TO_FORTIS[b.onset]){
+      // NIKL §25: ㄾ in 훑- is realized as ㄹ in the coda before the licensed ending.
+      if(a.coda==='ㄾ')a.coda='ㄹ';
       b.onset=PLAIN_TO_FORTIS[b.onset];
       rules.push('stem-lb-lt-fortition-§25-exact-form');
       nextRules.push('stem-lb-lt-fortition-§25-exact-form');
