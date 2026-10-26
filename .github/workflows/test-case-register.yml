@@ -38,6 +38,7 @@ jobs:
               "TEST-CASE-REGISTER-LEXICAL-BASE-2026-10-26.csv": "case_id",
               "TEST-CASE-REGISTER-LEXICAL-TEST-LINKS-2026-10-26.csv": "case_id",
               "TEST-CASE-REGISTER-HANGUL-LITERAL-CANDIDATES-2026-10-26.csv": "candidate_id",
+              "TEST-CASE-REGISTER-SOURCE-LINES-2026-10-26.csv": "line_id",
           }
           report = {"commit": commit, "files": {}}
           for name, id_column in expected.items():
