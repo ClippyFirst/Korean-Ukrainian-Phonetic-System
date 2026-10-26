@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """Optional, research-only CharsiuG2P multilingual ByT5 benchmark runner.
 
-This adapter is intentionally outside production dependencies. It scores the
-same already-tokenized Hangul tokens and IPA references as the existing
-UGTPHON benchmark; it does not segment Korean text or render Ukrainian output.
+The adapter evaluates corpus-tokenized Hangul words only. It does not perform
+Korean segmentation, sentence-context inference, or Ukrainian rendering.
 """
 from __future__ import annotations
 
 import argparse
 import json
 import os
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -17,7 +17,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from benchmark_ugtphon_ko import edit_distance, load_corpus, normalize_ipa
 
-HANGUL = __import__("re").compile(r"^[\uac00-\ud7a3]+$")
+HANGUL = re.compile(r"^[\uac00-\ud7a3]+$")
 
 
 def eligible_occurrences(rows: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[str]]:
@@ -67,6 +67,19 @@ def load_model(model_id: str, revision: str, tokenizer_id: str, tokenizer_revisi
         ) from exc
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id, revision=tokenizer_revision)
     model = T5ForConditionalGeneration.from_pretrained(model_id, revision=revision)
+    # Hugging Face resolves short immutable commit prefixes to full commit SHAs.
+    os.environ["CHARSIU_RESOLVED_MODEL_REVISION"] = (
+        getattr(model.config, "_commit_hash", None) or revision
+    )
+    tokenizer_init = getattr(tokenizer, "init_kwargs", {})
+    os.environ["CHARSIU_RESOLVED_TOKENIZER_REVISION"] = (
+        tokenizer_init.get("_commit_hash") or tokenizer_revision
+    )
+    torch.set_num_threads(max(1, min(4, os.cpu_count() or 1)))
+    try:
+        torch.set_num_interop_threads(1)
+    except RuntimeError:
+        pass
     model.eval()
     return torch, tokenizer, model
 
@@ -77,8 +90,7 @@ def predict(words: list[str], *, model_id: str, revision: str,
         raise ValueError("batch_size must be positive")
     torch, tokenizer, model = load_model(model_id, revision, tokenizer_id, tokenizer_revision)
     result: dict[str, str] = {}
-    # CharsiuG2P upstream documents the <kor>: language prefix and requires
-    # pre-tokenized words. This benchmark passes corpus token canonical forms.
+    # Upstream contract: pre-tokenized words with the exact <kor>: prefix.
     for start in range(0, len(words), batch_size):
         batch = words[start:start + batch_size]
         encoded = tokenizer(
@@ -98,6 +110,147 @@ def predict(words: list[str], *, model_id: str, revision: str,
                 raise ValueError(f"unexpected Hangul in IPA output for {word!r}: {value!r}")
             result[word] = value
     return result
+
+
+def collect_existing_baselines(words: list[str]) -> dict[str, dict[str, dict[str, Any]]]:
+    """Run existing native and g2pk baselines with the repository's IPA boundary."""
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    outputs: dict[str, dict[str, dict[str, Any]]] = {"clippyfirst_native": {}, "g2pk_0_9_4": {}}
+    for word in words:
+        try:
+            result = phoneticize_korean(word)
+            if result.get("pronunciation_status") == "unresolved":
+                outputs["clippyfirst_native"][word] = {
+                    "status": "abstained", "reason": result.get("ipa_status_reason")
+                }
+            else:
+                ipa = result.get("ipa", {}).get("ipa")
+                outputs["clippyfirst_native"][word] = (
+                    {"status": "scored", "ipa": ipa} if isinstance(ipa, str) and ipa.strip()
+                    else {"status": "error", "reason": "native engine returned no IPA"}
+                )
+        except Exception as exc:
+            outputs["clippyfirst_native"][word] = {
+                "status": "error", "reason": f"{type(exc).__name__}: {exc}"
+            }
+
+    try:
+        from g2pk import G2p
+        from benchmark_multi_engine_ko import parse_syllables, realize_syllables
+        g2p = G2p()
+        for word in words:
+            try:
+                surface = "".join(g2p(word).split())
+                if not HANGUL.fullmatch(surface):
+                    raise ValueError(f"not a single Hangul surface form: {surface!r}")
+                ipa = realize_syllables(parse_syllables(surface), level="broad")["ipa"]
+                outputs["g2pk_0_9_4"][word] = {"status": "scored", "ipa": ipa}
+            except Exception as exc:
+                outputs["g2pk_0_9_4"][word] = {
+                    "status": "error", "reason": f"{type(exc).__name__}: {exc}"
+                }
+    except Exception as exc:
+        for word in words:
+            outputs["g2pk_0_9_4"][word] = {
+                "status": "blocked", "reason": f"{type(exc).__name__}: {exc}"
+            }
+    return outputs
+
+
+def _metrics(scored: list[dict[str, Any]]) -> dict[str, Any]:
+    reference_length = sum(item["reference_length"] for item in scored)
+    distance = sum(item["distance"] for item in scored)
+    exact = sum(item["exact"] for item in scored)
+    return {
+        "scored_occurrences": len(scored),
+        "exact_matches": exact,
+        "exact_match_rate": round(exact / len(scored), 6) if scored else None,
+        "character_error_rate": round(distance / reference_length, 6) if reference_length else None,
+        "reference_characters": reference_length,
+    }
+
+
+def compare_baselines(rows: list[dict[str, Any]], neural: dict[str, str],
+                      baselines: dict[str, dict[str, dict[str, Any]]]) -> dict[str, Any]:
+    occurrences, _ = eligible_occurrences(rows)
+    report: dict[str, Any] = {}
+    scored_by_engine: dict[str, list[dict[str, Any]]] = {"charsiu_byt5": [], **{
+        name: [] for name in baselines
+    }}
+    pair_rows: list[dict[str, Any]] = []
+    for index, item in enumerate(occurrences):
+        word, gold = item["word"], item["gold"]
+        entry: dict[str, Any] = {
+            "occurrence_id": index, "row_id": item["row_id"], "word": word, "gold": gold
+        }
+        if word in neural:
+            scored = score_prediction(neural[word], gold)
+            scored_by_engine["charsiu_byt5"].append({**scored, **entry})
+            entry["charsiu_byt5"] = {
+                "status": "scored", "ipa": neural[word], "exact": scored["exact"],
+                "distance": scored["distance"]
+            }
+        else:
+            entry["charsiu_byt5"] = {"status": "missing"}
+        for name, word_outputs in baselines.items():
+            baseline = word_outputs.get(word, {"status": "missing"})
+            if baseline.get("status") == "scored" and isinstance(baseline.get("ipa"), str):
+                scored = score_prediction(baseline["ipa"], gold)
+                scored_by_engine[name].append({**scored, **entry})
+                entry[name] = {
+                    "status": "scored", "ipa": baseline["ipa"], "exact": scored["exact"],
+                    "distance": scored["distance"]
+                }
+            else:
+                entry[name] = {
+                    "status": baseline.get("status", "missing"),
+                    "reason": baseline.get("reason")
+                }
+        pair_rows.append(entry)
+
+    total = len(occurrences)
+    for name, scored in scored_by_engine.items():
+        report[name] = {
+            **_metrics(scored),
+            "eligible_occurrences": total,
+            "coverage": round(len(scored) / total, 6) if total else None,
+            "missing_or_unresolved_occurrences": total - len(scored),
+        }
+    paired: dict[str, Any] = {}
+    neural_by_id = {x["occurrence_id"]: x for x in scored_by_engine["charsiu_byt5"]}
+    for name, scored in scored_by_engine.items():
+        if name == "charsiu_byt5":
+            continue
+        baseline_by_id = {x["occurrence_id"]: x for x in scored}
+        common_ids = sorted(set(neural_by_id) & set(baseline_by_id))
+        neural_common = [neural_by_id[i] for i in common_ids]
+        baseline_common = [baseline_by_id[i] for i in common_ids]
+        neural_metrics, baseline_metrics = _metrics(neural_common), _metrics(baseline_common)
+        wins = sum(a["exact"] and not b["exact"] for a, b in zip(neural_common, baseline_common))
+        losses = sum(not a["exact"] and b["exact"] for a, b in zip(neural_common, baseline_common))
+        paired[name] = {
+            "common_scored_occurrences": len(common_ids),
+            "charsiu_metrics_on_common_subset": neural_metrics,
+            "baseline_metrics_on_common_subset": baseline_metrics,
+            "exact_match_delta_charsiu_minus_baseline": (
+                round(neural_metrics["exact_match_rate"] - baseline_metrics["exact_match_rate"], 6)
+                if neural_metrics["exact_match_rate"] is not None and baseline_metrics["exact_match_rate"] is not None
+                else None
+            ),
+            "cer_delta_charsiu_minus_baseline": (
+                round(neural_metrics["character_error_rate"] - baseline_metrics["character_error_rate"], 6)
+                if neural_metrics["character_error_rate"] is not None and baseline_metrics["character_error_rate"] is not None
+                else None
+            ),
+            "charsiu_only_exact": wins,
+            "baseline_only_exact": losses,
+            "both_exact": sum(a["exact"] and b["exact"] for a, b in zip(neural_common, baseline_common)),
+            "both_not_exact": sum(not a["exact"] and not b["exact"] for a, b in zip(neural_common, baseline_common)),
+        }
+    report["paired_comparisons"] = paired
+    report["per_occurrence"] = pair_rows
+    return report
 
 
 def evaluate(rows: list[dict[str, Any]], predictions: dict[str, str]) -> dict[str, Any]:
@@ -120,13 +273,18 @@ def evaluate(rows: list[dict[str, Any]], predictions: dict[str, str]) -> dict[st
     total_distance = sum(x["distance"] for x in scored)
     exact = sum(x["exact"] for x in scored)
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "engine": "CharsiuG2P multilingual ByT5",
         "model_id": os.environ.get("CHARSIU_MODEL_ID", "charsiu/g2p_multilingual_byT5_small_100"),
-        "model_revision": os.environ.get("CHARSIU_MODEL_REVISION", "UNPINNED"),
+        "model_revision_requested": os.environ.get("CHARSIU_MODEL_REVISION_REQUESTED", "UNPINNED"),
+        "model_revision": os.environ.get("CHARSIU_RESOLVED_MODEL_REVISION", os.environ.get("CHARSIU_MODEL_REVISION", "UNPINNED")),
+        "model_code_license": "MIT (CharsiuG2P upstream repository)",
+        "model_weights_license_status": "UNRESOLVED: Hugging Face model page has no explicit weights license; research-only, no redistribution",
         "tokenizer_id": os.environ.get("CHARSIU_TOKENIZER_ID", "google/byt5-small"),
-        "tokenizer_revision": os.environ.get("CHARSIU_TOKENIZER_REVISION", "UNPINNED"),
-        "dataset": "pinned input supplied by caller; score is diagnostic only",
+        "tokenizer_revision_requested": os.environ.get("CHARSIU_TOKENIZER_REVISION_REQUESTED", "UNPINNED"),
+        "tokenizer_revision": os.environ.get("CHARSIU_RESOLVED_TOKENIZER_REVISION", os.environ.get("CHARSIU_TOKENIZER_REVISION", "UNPINNED")),
+        "tokenizer_license": "Apache-2.0 (google/byt5-small model card)",
+        "dataset": "pinned input supplied by caller; diagnostic score only",
         "eligible_occurrences": len(occurrences),
         "unique_words": len(words),
         "scored_occurrences": len(scored),
@@ -138,10 +296,11 @@ def evaluate(rows: list[dict[str, Any]], predictions: dict[str, str]) -> dict[st
         "missing_word_examples": missing[:50],
         "predictions": scored,
         "limitations": [
-            "Upstream model results are not comparable unless dataset and normalization match.",
-            "Korean segmentation is inherited from corpus tokenization; this is not a sentence-level segmentation evaluation.",
+            "This is a word/token-level ablation; it does not preserve sentence context or perform Korean morphological segmentation.",
+            "CharsiuG2P expects pre-tokenized words; the repository's tokenization is inherited from each benchmark.",
+            "Upstream PER/WER are not scores measured on this repository's data.",
             "IPA exact/CER scores are diagnostic and do not validate Ukrainian target rendering.",
-            "Model and tokenizer revisions must be pinned before a run is accepted as reproducible.",
+            "Model code is MIT, but the official Hugging Face weights page has no explicit license; weights are not redistributed.",
         ],
     }
 
@@ -154,7 +313,8 @@ def main() -> int:
     parser.add_argument("--model-revision", default=os.environ.get("CHARSIU_MODEL_REVISION"))
     parser.add_argument("--tokenizer", default=os.environ.get("CHARSIU_TOKENIZER_ID", "google/byt5-small"))
     parser.add_argument("--tokenizer-revision", default=os.environ.get("CHARSIU_TOKENIZER_REVISION"))
-    parser.add_argument("--batch-size", type=int, default=16)
+    parser.add_argument("--batch-size", type=int, default=8)
+    parser.add_argument("--compare-existing-engines", action="store_true")
     args = parser.parse_args()
     if not args.model_revision or not args.tokenizer_revision:
         parser.error("--model-revision and --tokenizer-revision are required; floating model revisions are not reproducible")
@@ -164,17 +324,28 @@ def main() -> int:
                           tokenizer_id=args.tokenizer, tokenizer_revision=args.tokenizer_revision,
                           batch_size=args.batch_size)
     os.environ["CHARSIU_MODEL_ID"] = args.model
-    os.environ["CHARSIU_MODEL_REVISION"] = args.model_revision
+    os.environ["CHARSIU_MODEL_REVISION_REQUESTED"] = args.model_revision
     os.environ["CHARSIU_TOKENIZER_ID"] = args.tokenizer
-    os.environ["CHARSIU_TOKENIZER_REVISION"] = args.tokenizer_revision
+    os.environ["CHARSIU_TOKENIZER_REVISION_REQUESTED"] = args.tokenizer_revision
     report = evaluate(rows, predictions)
+    if args.compare_existing_engines:
+        baselines = collect_existing_baselines(words)
+        report["comparison"] = compare_baselines(rows, predictions, baselines)
+        report["comparison"]["method"] = (
+            "paired occurrence-level scoring with the same benchmark normalizer and gold variants; "
+            "native abstentions and engine errors reduce coverage, not accuracy denominators"
+        )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({k: report[k] for k in (
-        "engine", "model_id", "model_revision", "tokenizer_revision",
-        "eligible_occurrences", "scored_occurrences", "coverage", "exact_matches",
-        "exact_match_rate", "character_error_rate", "missing_predictions",
-    )}, ensure_ascii=False, indent=2))
+    summary = {k: report[k] for k in (
+        "engine", "model_id", "model_revision_requested", "model_revision",
+        "tokenizer_revision_requested", "tokenizer_revision", "eligible_occurrences",
+        "scored_occurrences", "coverage", "exact_matches", "exact_match_rate",
+        "character_error_rate", "missing_predictions",
+    )}
+    if "comparison" in report:
+        summary["paired_comparisons"] = report["comparison"]["paired_comparisons"]
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
 
 
