@@ -1957,3 +1957,12 @@ The UGTPHON test artifact [40328909490](https://github.com/ClippyFirst/Korean-Uk
 
 At this update, the latest visible Actions jobs from code/test head `16d07d752ecdb6ddb02b7a679edcaa528cfc5348` were still queued (including tests run [40343058866](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058866) for the Charsiu workflow and system verification [40343058844](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058844)); later code/test commits were not yet associated with final check results. Do not mark the current implementation DONE_VERIFIED until current-head checks finish.
 
+## Final handoff state for this one-pass continuation
+
+- Latest branch HEAD: `f9cd130ad57c119fc2d600e63a28c9f6d000aacb`.
+- Latest executable code/test HEAD: `e14b4b026738755dbee1c819da8635aec4f6c0f7`; later commits through branch HEAD update the handoff, audit, benchmark register, README, and PR description.
+- Full test matrix on the preceding code/test head `16d07d752ecdb6ddb02b7a679edcaa528cfc5348`: [40343059002](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343059002) is still queued across Python 3.11/3.12/3.13, browser/build, wheel install and corpus audit. System verification [40343058844](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058844) and corrected Charsiu train/dev [40343058866](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058866) are also still queued.
+- The current executable head `e14b4b0` has no final check result surfaced by the connected Actions listing. Therefore the morphology-consensus changes, source-alignment hardening, and newly added tests remain `PARTIAL`, not `DONE_VERIFIED`.
+- Local test execution was unavailable because the container cannot resolve github.com. No local or remote test pass is claimed for the latest code/test head.
+- Release status: research-ready partial prototype, not release-ready. Next genuine blocker is exact-head CI completion, followed by inspecting the corrected train/dev artifact and constructing an evaluation set that excludes test-informed cases such as `물가로`.
+
