@@ -189,3 +189,14 @@ def test_analyzer_consensus_rejects_missing_or_nonliteral_surface_alignment():
     del bad["morphemes"][0]["surface"]
     report = analyzer_consensus_rule_licenses("좋아", [good, bad])
     assert report["candidate_licenses"] == []
+
+
+
+def test_lexical_root_extension_requires_particle_versus_ending_class_agreement():
+    word = "물가로"
+    analyses = [
+        _analysis("mecab-ko", word, [("물가", "NNG", 0, 2), ("로", "JKB", 2, 3)]),
+        _analysis("kiwi", word, [("물가", "NNG", 0, 2), ("로", "EC", 2, 3)]),
+    ]
+    report = analyzer_consensus_rule_licenses(word, analyses)
+    assert not any(item.startswith(("R012:", "R014:", "R015:")) for item in report["candidate_licenses"])
