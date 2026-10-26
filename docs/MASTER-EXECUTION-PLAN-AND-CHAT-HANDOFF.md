@@ -1404,3 +1404,16 @@ Interpretation boundary:
 - Some listed forms already have lexical surface entries, so their user-visible output may have been correct before this patch. This patch improves consistency and direct coverage of the deterministic R002 rule layer when a lexical override is absent; it does **not** prove an aggregate percentage increase or neural-level accuracy.
 - IPA and Ukrainian target outputs for these rows remain provisional where independent phonetic/target adjudication is absent. Korean surface evidence must not be mistaken for independent IPA or Ukrainian gold.
 - Exact-head CI results must be recorded below before this task can be marked \`DONE_VERIFIED\`.
+
+
+### R016 browser/Python parity and multi-boundary R002 trace — 2026-10-26
+
+**Status: PARTIAL pending exact-head CI.** The earlier R002-only scope is already recorded as DONE_VERIFIED above; this is the follow-on implementation.
+
+- Added exact source-backed NIKL §11 verbal-stem ㄺ + ㄱ licenses for 읽고[일꼬], 묽고[물꼬], 얽거나[얼꺼나] in Python and browser JavaScript. The exact forms retain ㄹ and fortify ㄱ; unlisted forms and noun 닭고기 remain fail-closed.
+- The Python rule engine now accepts a matching exact source-backed R016 license in same-word mode, because the exact full-form + pair evidence itself establishes the morphology; a category-only license still fails.
+- The R002 trace now retains all exact pair licenses applied within a multi-boundary form. For 헛웃음, the §15 substantive boundary 헛>웃 is separately licensed, while the subsequent 웃>음 follows the existing unambiguous written-coda liaison path. This avoids overwriting the first rule's evidence when one rule pass transforms more than one boundary.
+- Primary evidence is already in the source register: NIKL Standard Pronunciation Rules §§11, 13–15; NIKL Q&A qna_seq=329463 directly attests 읽고[일꼬]; NIKL FAQ mcfaq_seq=5949 directly attests 값어치[가버치].
+- Regression tests cover three R016 forms, exact rule trace/source retention, the noun negative control, all five §15 forms, and the two-boundary 헛웃음 path.
+- Exact-head CI for the combined R002/R016/trace changes is currently queued behind earlier diagnostic runs. Do not mark this follow-on DONE_VERIFIED until the latest Python and browser test workflows pass. The optional live NIKL inventory remains separately skipped by workflow condition.
+- No aggregate accuracy percentage is claimed: several forms already had lexical overrides, and broad IPA/Ukrainian target gold remains independently unadjudicated.
