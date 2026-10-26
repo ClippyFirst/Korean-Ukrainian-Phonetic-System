@@ -1693,3 +1693,13 @@ These examples are **source-convention or phonology hypotheses only**. Because t
 - PR #339 remains the canonical draft for this train-only conflict queue, inventory audit, and scratch teacher/Strict alignment artifact.
 - PR #338 remains the separate canonical draft for pinned third-party neural model inference and paired multi-engine benchmark artifacts. Its existing results were reused as evidence; no code or branch changes were made to #338.
 - PR #340 was auto-closed as merged into the #339 branch when its commits were fast-forwarded; no work was discarded.
+
+
+## Continuation — conflict-pattern triage added (2026-10-26)
+
+- Added `scripts/analyze_korean_ipa_conflict_patterns.py` and `tests/test_analyze_korean_ipa_conflict_patterns.py`; wired them into `.github/workflows/teacher-corpus-audit.yml`.
+- The workflow now emits `korean-ipa-conflict-patterns.json` next to the train-only conflict queue. It summarizes all 366 conflict forms, retains every source candidate (including multiple UGTPHON targets for one Hangul form), counts cross-corpus target pairs and literal Unicode code points, and prioritizes forms with many source-internal target variants.
+- This is a **triage report, not adjudication**: it does not align characters as phones, select gold, map source IPA into ClippyFirst broad IPA, remove length marks, or emit runtime rules.
+- Inspection of the pinned corpus artifact showed that many queued UGTPHON forms have multiple candidate targets; `진짜` has 78 candidates in the current queue. This is a reason to review the source schema and candidate provenance before interpreting a simple corpus-to-corpus string mismatch. The new report preserves this multiplicity rather than silently taking the first candidate.
+- Illustrative disagreements include `가능하다` (`ka̠ːnɯŋɦa̠da̠` vs `ka̠nɯŋɦa̠da̠`), `갈등` (`ka̠ɭt͈ɯŋ` vs `ka̠ɭdɯŋ`), and `거인` (`kɘːin` vs `kʌ̹in`). These are unresolved examples, not claims that either annotation is wrong.
+- Acceptance: exact-head corpus workflow must pass the new unit tests, build the report from the freshly generated pinned queue, and upload it. The 366 forms remain `UNADJUDICATED`; no production runtime or Ukrainian output was changed.
