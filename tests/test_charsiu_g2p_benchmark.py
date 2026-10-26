@@ -3,6 +3,8 @@ from __future__ import annotations
 import importlib.util
 import sys
 from pathlib import Path
+from contextlib import nullcontext
+from types import SimpleNamespace
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "benchmark_charsiu_g2p.py"
 sys.path.insert(0, str(SCRIPT.parent))
@@ -109,3 +111,63 @@ def test_report_discloses_weights_license_uncertainty(monkeypatch):
     assert report["model_revision"] == "a" * 40
     assert report["tokenizer_revision"] == "b" * 40
     assert report["model_weights_license_status"].startswith("UNRESOLVED")
+
+
+
+def test_predict_preserves_empty_invalid_and_valid_outputs(monkeypatch):
+    class FakeTorch:
+        no_grad = staticmethod(nullcontext)
+
+    class FakeTokenizer:
+        def __call__(self, texts, **kwargs):
+            return {}
+
+        def batch_decode(self, output, skip_special_tokens=True):
+            return ["", "가", "ka"]
+
+    class FakeModel:
+        def generate(self, **kwargs):
+            return SimpleNamespace(tolist=lambda: [0, 1, 2])
+
+    monkeypatch.setattr(MODULE, "load_model", lambda *args: (FakeTorch(), FakeTokenizer(), FakeModel()))
+    predictions, failures = MODULE.predict(
+        ["가", "나", "다"], model_id="model", revision="a" * 40,
+        tokenizer_id="tokenizer", tokenizer_revision="b" * 40, batch_size=3,
+    )
+    assert predictions == {"다": "ka"}
+    assert failures["가"]["status"] == "empty_output"
+    assert failures["나"]["status"] == "invalid_output"
+    assert failures["나"]["reason"].startswith("unexpected Hangul")
+
+
+def test_predict_records_batch_runtime_errors_without_losing_other_batches(monkeypatch):
+    class FakeTorch:
+        no_grad = staticmethod(nullcontext)
+
+    class FakeTokenizer:
+        def __call__(self, texts, **kwargs):
+            return {}
+
+        def batch_decode(self, output, skip_special_tokens=True):
+            return ["ka"]
+
+    class FakeModel:
+        def __init__(self):
+            self.calls = 0
+
+        def generate(self, **kwargs):
+            self.calls += 1
+            if self.calls == 1:
+                raise RuntimeError("synthetic inference failure")
+            return SimpleNamespace(tolist=lambda: [0])
+
+    model = FakeModel()
+    monkeypatch.setattr(MODULE, "load_model", lambda *args: (FakeTorch(), FakeTokenizer(), model))
+    predictions, failures = MODULE.predict(
+        ["가", "나", "다"], model_id="model", revision="a" * 40,
+        tokenizer_id="tokenizer", tokenizer_revision="b" * 40, batch_size=2,
+    )
+    assert predictions == {"다": "ka"}
+    assert failures["가"]["status"] == "model_error"
+    assert failures["나"]["status"] == "model_error"
+    assert "synthetic inference failure" in failures["가"]["reason"]
