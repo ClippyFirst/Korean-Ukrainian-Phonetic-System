@@ -14,7 +14,7 @@ const generic = createEngine(canonical, '');
 // both the actual result and the expected result without failing the test.
 const independentFixtures = [
   ['밭일', '반닐', 'панніл', 'pan.nil'],
-  ['굳이', '구지', 'куджі', 'ku dʑi'],
+  ['굳이', '구지', 'куджі', 'ku.dʑi'],
   ['않았다', '아낟따', 'анатта', 'a nat̚ t͈a'],
   ['밝은', '발근', 'палґин', 'pal ɡɯn'],
   ['끝없이', '끄덥씨', 'китопші', 'k͈ɯ tʌp̚ ɕ͈i'],
