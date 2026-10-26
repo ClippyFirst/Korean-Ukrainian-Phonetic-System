@@ -298,3 +298,8 @@ The committed official-source HTML is now paired with a machine-readable review 
 
 - [Surface-only evidence for unresolved 긁고](tests/fixtures/nikl-surface-only-complex-coda.json)
 - [Guard test keeping that case out of IPA/target gold](tests/nikl-surface-only-complex-coda.test.mjs)
+
+
+## Research: neural teacher and IPA corpus reconciliation
+
+The research-only scratch G2P teacher, source-pinned SIGMORPHON/UGTPHON train/dev builders, and lossless typed IPA packets are available through [PR #339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339). The [source-convention review](docs/KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md) and [train-only adjudication queue](scripts/build_korean_ipa_adjudication_queue.py) preserve disagreements for review instead of treating either corpus as automatic IPA gold. The neural model is not in runtime; no production rules are changed by this research path.
