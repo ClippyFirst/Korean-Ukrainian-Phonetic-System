@@ -174,8 +174,9 @@ This closes source-table drift, not the IPA convention problem. The Charsiu mode
 
 **Status: implemented; awaiting exact-head CI.**
 
-The Charsiu/IPA disagreement work is used to prioritize source review, not as a pronunciation authority. The first closed-inventory production promotion from this continuation is NIKL Standard Pronunciation Rule 24. The official source explicitly lists the following stem+ending examples, and the existing R010 rule engine already enforces the correct consonant environment and exact full-form/pair license:
+The Charsiu/IPA disagreement work is used to prioritize source review, not as a pronunciation authority. The first closed-inventory production promotion from this continuation is NIKL Standard Pronunciation Rule 24. The official normative rule and NIKL's official 2009 teacher-training material explicitly support the following stem+ending examples, and the existing R010 rule engine enforces the correct consonant environment and exact full-form/pair license:
 
+- `안다 → 안따` (`안>다`), `안고 → 안꼬` (`안>고`), `감다 → 감따` (`감>다`), `감고 → 감꼬` (`감>고`) — official NIKL training material examples.
 - `껴안다 → 껴안따` (`안>다`)
 - `앉고 → 안꼬` (`앉>고`)
 - `얹다 → 언따` (`얹>다`)
@@ -190,7 +191,7 @@ Two important exclusions are deliberate:
 - `안기다` remains `안기다`: official §24 excludes passive/causative `-기-` from this fortition.
 - `신고` is not automatically promoted despite being a listed pronunciation example because the exact orthography is homographic with the noun meaning ‘report’; without morphology/sense evidence, unconditional whole-form licensing would be unsafe. `감도` is a negative control against coda-only inference.
 
-The canonical source registry now points S001 to the direct official Standard Pronunciation Rules page. This is a **source-verified closed-inventory production expansion**, not a claim of unrestricted productive morphological inference. Broader stem-class generalization still requires reliable morphological evidence and explicit exception controls.
+The canonical source registry points S001 to the direct official Standard Pronunciation Rules page and registers the official NIKL teacher-training material as S015. This is a **source-verified closed-inventory production expansion**, not a claim of unrestricted productive morphological inference. Broader stem-class generalization still requires reliable morphological evidence and explicit exception controls.
 
 ## Additional production promotion: official NIKL §11 `읽거든`
 
