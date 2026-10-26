@@ -16,6 +16,13 @@
 - **Local verification limitation:** a shallow GitHub clone was attempted but the container could not resolve `github.com`; no local test result is claimed. CI supplied the executable verification.
 - **Licensing/evidence blocker:** CharsiuG2P checkpoint weights have no verified explicit license in the checked model card; upstream training-data overlap is unknown. This blocks redistribution and leakage-free generalization claims, not independent deterministic-engine development.
 
+## Benchmark-as-training-corpus audit (2026-10-26)
+
+- **UGTPHON:** upstream pinned revision `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54` contains `ko/train.json`, `ko/dev.json`, `ko/test.json`; `ko/LICENSE` states Apache-2.0. Git tree blob sizes: train 3,651,448 bytes (SHA `771ef17ceed8127980f0be5103674cfa53627e55`), dev 512,281 bytes (SHA `71127176c1487741ed9a6492cdaabba78222461d`), test 729,354 bytes (SHA `59380491d5a797308c475f7d0007dcf6c4be00af`). The existing benchmark uses test only. Train/dev are candidate fine-tuning/validation partitions; full file hashes, row/token overlap checks, and model-rights review are still required.
+- **SIGMORPHON 2021 Korean fixture:** the repository converter documents only a pinned `kor_test.tsv` paired word/IPA artifact and a CC BY-SA 3.0 (Wiktionary) provenance caveat. Do not train on it. An immutable Korean train/dev source and exact license/partition mapping were not verified.
+- **Project NIKL 24-form holdout:** explicitly sealed for tuning and has no IPA gold; use only for future independent evaluation after two-reviewer annotation.
+- **Charsiu multilingual ByT5:** no training run was started because the checkpoint weight license and original training-data overlap are unresolved. This blocks a responsible fine-tuning/redistribution decision, not independent deterministic-rule work.
+
 ## Task ledger
 
 | Task | Status | Acceptance evidence |
