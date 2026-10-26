@@ -142,6 +142,11 @@ test('NIKL §15 substantive liaison covers exact official forms only', () => {
     assert.equal(units[0].coda, expectedCoda, input);
     assert.equal(units[1].onset, expectedOnset, input);
     assert.ok(rules[0].some(rule => rule.includes('substantive-liaison-§15-exact-form')), input);
+    if (input === '헛웃음') {
+      assert.equal(units[1].coda, '');
+      assert.equal(units[2].onset, 'ㅅ');
+      assert.ok(rules[0].includes('liaison-exact-form-formal'));
+    }
   }
 
   const formal = [...'값이'].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
