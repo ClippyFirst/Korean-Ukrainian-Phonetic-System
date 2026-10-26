@@ -12,6 +12,11 @@ from collections.abc import Mapping, Sequence
 from typing import Any
 
 from .phonology import parse_syllables
+from .rules import (
+    _NIKL_R012_WORD_LICENSES,
+    _NIKL_R014_WORD_LICENSES,
+    _NIKL_R015_WORD_LICENSES,
+)
 
 _FORMAL_TAGS = {
     "EC", "EF", "EP", "ETM", "ETN",
@@ -22,7 +27,13 @@ _H_CODAS = {"ㅎ", "ㄶ", "ㅀ"}
 _R002_EXCLUDED_CODAS = _H_CODAS
 _STEM_TAGS = {"VV", "VA"}
 _ENDING_TAGS = {"EC", "EF", "EP", "ETM", "ETN"}
+_PARTICLE_TAGS = {"JC", "JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX"}
 _PLAIN_FORTITION_ONSETS = {"ㄱ", "ㄷ", "ㅅ", "ㅈ"}
+_SOURCE_BACKED_LEXICAL_ROOT_LICENSES = (
+    *_NIKL_R012_WORD_LICENSES,
+    *_NIKL_R014_WORD_LICENSES,
+    *_NIKL_R015_WORD_LICENSES,
+)
 
 
 def _tag_parts(value: Any) -> set[str]:
@@ -241,6 +252,33 @@ def analyzer_consensus_rule_licenses(
                     license = f"R016:verb_stem_rieul_giyeok_suffix:{text}:{pair}"
                     licenses.add(license)
                     applied.append("R016")
+
+        # A source-backed lexical compound/Sino-Korean/saisiot root keeps its
+        # internal rule when a consensus analyzer identifies an attached
+        # particle or ending after the complete licensed root. This is not a
+        # category-only rule: the root and internal pair must already exist in
+        # the official exact-form inventory.
+        right_tags_at_boundary = [
+            _tag_parts(pairing[1].get("tag", "")) if pairing else set()
+            for pairing in aligned
+        ]
+        grammatical_suffix_agreement = all(
+            bool(tags & (_ENDING_TAGS | _PARTICLE_TAGS))
+            for tags in right_tags_at_boundary
+        )
+        if grammatical_suffix_agreement and offset < len(text):
+            for root_license in _SOURCE_BACKED_LEXICAL_ROOT_LICENSES:
+                parts = root_license.split(":", 3)
+                if len(parts) != 4:
+                    continue
+                rule_id, scope, licensed_root, licensed_pair = parts
+                if len(licensed_root) >= len(text) or not text.startswith(licensed_root):
+                    continue
+                if len(licensed_root) != offset:
+                    continue
+                extended = f"{rule_id}:{scope}:{text}:{licensed_pair}"
+                licenses.add(extended)
+                applied.append(rule_id)
 
         if applied:
             details.append({
