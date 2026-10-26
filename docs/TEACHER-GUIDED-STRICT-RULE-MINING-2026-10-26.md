@@ -14,6 +14,14 @@ The repository's SIGMORPHON converter explicitly consumes the pinned `kor_test.t
 
 The candidate training plan is therefore: (1) acquire UGTPHON Korean train/dev/test from the pinned revision, recording SHA-256 for each file; (2) check duplicate row IDs and exact row/token overlap across partitions before fitting; (3) fine-tune only if the selected base checkpoint's license permits it; (4) use train for gradient updates, dev for early stopping/hyperparameter selection, and test once for final comparison; (5) separately use source-backed NIKL examples to adjudicate deterministic rules. A neural fine-tune is not itself a deterministic-rule license.
 
+### Additional audit: CharsiuG2P's own Korean training files
+
+The upstream code repository `lingjzhu/CharsiuG2P` at commit `0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4` is MIT-licensed as a **code repository**, but that must not be assumed to license its separately hosted checkpoint weights or every bundled dataset. The repository contains `data/train/kor.tsv` (2,075,385 bytes), `data/dev/kor.tsv` (1,738 bytes), and `data/test/kor.tsv` (16,676 bytes). Its Korean source notes are mixed: `sources/info/others/ko_info.txt` points to the SIGMORPHON 2020 `kor_dev.tsv` source with the literal license value `U/K`, while `ko-2_info.txt` points to `open-dict-data/ipa-dict/data/ko.txt` with MIT. This is not a sufficiently clear, row-level license/provenance manifest for unrestricted redistribution or a clean overlap claim.
+
+The selected Hugging Face checkpoint page currently says **“No model card”** and exposes no clear license declaration in the inspected page. Therefore the MIT license on the source-code repository does not clear the checkpoint weights. The exact checkpoint's training overlap with UGTPHON and SIGMORPHON-derived items is also not proven. Before fine-tuning that checkpoint, obtain a rights clarification or select a checkpoint whose weights license and training sources are explicitly documented. The code's train/dev/test files are useful for provenance analysis, but the existing model's own train split is not a fresh independent evaluation set.
+
+Sources inspected: [CharsiuG2P source repository](https://github.com/lingjzhu/CharsiuG2P/tree/0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4), [Korean source note (`ko_info.txt`)](https://github.com/lingjzhu/CharsiuG2P/blob/0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4/sources/info/others/ko_info.txt), [Korean source note (`ko-2_info.txt`)](https://github.com/lingjzhu/CharsiuG2P/blob/0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4/sources/info/others/ko-2_info.txt), [Hugging Face checkpoint](https://huggingface.co/charsiu/g2p_multilingual_byT5_small_100).
+
 ## What was implemented
 
 - \`scripts/mine_deterministic_rule_candidates.py\` reads raw teacher IPA and current Strict IPA from JSONL plus a required provenance manifest.
