@@ -37,6 +37,20 @@ The upstream Charsiu repository also exposes Korean `data/train/kor.tsv`, `data/
 
 The exact-head automated audit passed in [Teacher corpus split audit run 40290981510](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290981510), with metadata-only artifact [12635583549](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290981510/artifacts/12635583549). It verified every pinned Git blob and reported: UGTPHON 1,976 train / 246 dev / 275 test rows; SIGMORPHON 8,000 / 1,000 / 1,000; Charsiu repository Korean data 62,126 train rows (61,900 unique forms; 226 duplicate-form rows), 50 dev and 500 test rows. Cross-corpus unique-form intersections include **508 UGTPHON test forms found in Charsiu repository train**, 237 UGTPHON test forms in SIGMORPHON train, and 729 SIGMORPHON test forms in Charsiu repository train. Other intersections are preserved in the JSON artifact. The audit reports counts and file hashes, not corpus rows.
 
+### First automated overlap results (audit run 40291000666)
+
+The pinned-source audit completed successfully and uploaded [metadata-only artifact 12635783073](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40291000666/artifacts/12635783073). Verified counts:
+
+- UGTPHON Korean: **1,976 train rows** (1,972 unique sentence strings; 10,341 unique token forms), **246 dev rows** (1,914 token forms), **275 test rows** (2,170 token forms).
+- SIGMORPHON Korean: **8,000 train / 1,000 dev / 1,000 test**; all grapheme forms are unique within each split.
+- Charsiu repository's Korean data: **62,126 train rows / 61,900 unique grapheme forms** (226 duplicate-form rows), 50 dev rows, 500 test rows.
+
+Most importantly, the public benchmark forms overlap materially with the Charsiu repository's published Korean training split: **508 unique UGTPHON test token forms** occur in Charsiu train; **729 of 1,000 SIGMORPHON test words** occur in Charsiu train. This is not proof that the selected Hugging Face checkpoint used this exact repository split, but it is a serious contamination signal. The original checkpoint's full training manifest remains unknown. The SIGMORPHON test set therefore cannot be described as an independent generalization test for a model trained on these Charsiu repository data. The UGTPHON figure is a token-form intersection, not a count of affected sentence rows.
+
+The audit also finds substantial overlap among the separate corpus families (for example, 1,093 UGTPHON train token forms intersect SIGMORPHON train; 237 UGTPHON test token forms intersect SIGMORPHON train). These counts are normalized exact-form overlaps, not pronunciation agreement. Deduplication and split policy must be explicit before any fitting or dev selection. The report contains only counts and hashes, no corpus examples.
+
+**Status correction:** source pinning, split-label checks, and overlap counting are now `DONE_VERIFIED` on the audited code head. Model inference/fine-tuning and contamination-free evaluation remain blocked.
+
 ## Required pipeline
 
 1. Download only the pinned train/dev files in an isolated, reproducible workflow and record their Git blob SHA, byte SHA-256, row count, split, and license evidence.
