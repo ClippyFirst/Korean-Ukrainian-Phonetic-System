@@ -51,3 +51,17 @@ Until that gate is met, neural-versus-Strict accuracy comparisons across these t
 **Keep the neural model outside the production runtime for now.** The current scratch teacher has 60.2% exact token-sequence match on the SIGMORPHON dev convention, was selected on that dev split, and has no independently normalized comparison against ClippyFirst broad IPA. That is insufficient evidence for a production fallback or ensemble. The owner-approved direction is to improve ClippyFirst's own engine with traceable data; therefore use the model offline as a hypothesis generator only. A candidate becomes a production rule only after primary-source phonological analysis, exact environment/exception definition, independent review, positive and negative regression controls, and improvement on a separate eligible evaluation set.
 
 Revisit direct neural runtime integration only if a separately evaluated model has materially better independently adjudicated IPA performance, acceptable latency/resource behavior, reproducible packaging, and a justified operational benefit over the deterministic engine. No such evidence currently exists.
+
+
+## Exact source-symbol inventory — 2026-10-26
+
+Added `scripts/audit_korean_ipa_symbol_inventories.py`, tests, and an artifact-producing step in the pinned-corpus workflow. Exact-head run [40305565459](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305565459) passed and uploaded artifact [12641804746](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305565459/artifacts/12641804746).
+
+Observed inventory (raw data counts, not adjudicated phone inventory):
+
+- SIGMORPHON: 8,000 train rows / 1,000 dev rows; 47 / 46 distinct Unicode code points; 60 / 59 distinct source-whitespace target tokens. The audit preserves those source tokens but does not claim that every token is a ClippyFirst segment.
+- UGTPHON: 13,271 train / 1,897 dev token occurrences; 8,753 / 1,629 unique source forms; 51 / 50 distinct Unicode code points. The tool deliberately does not segment compact target strings into phones.
+- Both sources contain numerous combining phonetic marks; their frequencies differ. For example, the length mark `ː` occurs 1,630 times in SIGMORPHON train targets versus 105 times in UGTPHON train targets; primary stress `ˈ` occurs 105 times in UGTPHON train and is absent from the SIGMORPHON train inventory. This is a measurable convention difference, not a rule to erase either feature.
+- UGTPHON's raw inventory includes `ç` (211 occurrences in train) and `ø` (300 occurrences in train), neither present in SIGMORPHON train. Example raw rows include `비키니 → pikçini` and `사인회 → sʰa̠inɦø̞`. These may reflect source-specific notation, a variant, or a data issue; the inventory alone cannot decide which. They are explicit review targets, not automatically mapped or discarded.
+
+This inventory narrows the work required for the adapter, but it is not the adapter. All source symbols and diacritics remain preserved, and all 366 shared-form conflicts remain unadjudicated.
