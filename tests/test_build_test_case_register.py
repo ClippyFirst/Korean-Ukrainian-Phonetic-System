@@ -34,7 +34,7 @@ class TestBuildTestCaseRegister(unittest.TestCase):
                 })
             (root / "tests/example.test.mjs").write_text(
                 "const a = '안지'; // expected surface 안찌 and IPA an.tɕ͈i\n"
-                "const b = '안다'; // must not count as exact input 안\n",
+                "const b = '안다'; // no exact standalone lexical token\n",
                 encoding="utf-8",
             )
             (root / "tests/fixtures/passage.txt").write_text("안지와 안다\n", encoding="utf-8")
