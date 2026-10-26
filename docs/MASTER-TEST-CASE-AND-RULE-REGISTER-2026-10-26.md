@@ -1,5 +1,16 @@
 # Master test-case and rule-evidence register — 2026-10-26
 
+## Latest verification addendum — 2026-10-27
+
+The test-only IPA serialization repair was verified on PR-head commit [4019e233c2a07cbb2d4679ad85fd77a56a307af4](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/4019e233c2a07cbb2d4679ad85fd77a56a307af4):
+
+- [System verification run 40408709236](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709236): browser regression/build **PASS**; Python regression/data integrity **PASS**; official NIKL source inventory **SKIPPED** (metadata-only workflow policy).
+- [Exhaustive test-case register extraction run 40408709171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171): **PASS**.
+- The earlier browser failure reported 1,213 pass / 39 fail. Those failures were traced to expected IPA separator serialization, assertions revealed after earlier failures, and an incorrectly escaped regular-expression whitespace class. The repair changed test expectations/serialization only, not runtime pronunciation or target output.
+- The register itself remains **PARTIAL INVENTORY**. Workflow success proves the extractor and its current gates passed; it does not prove all test cases and observed results have been enumerated or all linguistic targets adjudicated.
+- Independent broad-IPA review and Ukrainian-target review remain **BLOCKED** on qualified human adjudication; see [issue #337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337). Do not infer that CI success resolves these research gates.
+
+
 ## Purpose and change-control rule
 
 This is the canonical evidence index to use **before further production-rule edits** in the Korean → Ukrainian ClippyFirst engine. The task is not merely to list rule names: preserve every concrete source form, counterexample, variant, phrase, unresolved case, expected Korean surface, IPA, Ukrainian output, and the exact test/run that exposed or checked it.
