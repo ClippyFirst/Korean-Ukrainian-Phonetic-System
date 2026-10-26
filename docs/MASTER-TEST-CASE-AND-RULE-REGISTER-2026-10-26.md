@@ -486,3 +486,8 @@ The older 5,522 candidate count from artifact `12689091191` is historical and su
 ## System regression gate after IPA test-oracle repair
 
 Exact-head system verification [40408709236](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709236) passed both browser regression/build and Python regression/data-integrity jobs. The official NIKL source inventory job was skipped in metadata-only mode and is not counted as a pass. The independent pronunciation adjudication, Ukrainian adaptation review, and source-rights gates remain open.
+
+
+## Current PR #339 merge-ref artifact verification (2026-10-27)
+
+The latest case-register workflow [40410859892](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40410859892) ran on synthetic PR merge commit `348a3dc18764191f68339333ce24bc0f54e2c523`, which merged research head `256b27a454c992218ca87a0fdf58ea6135071560` into `main` `a452054a669de28426404d1110731715083423bb`. It passed extractor tests, generation, stable-ID checks, and artifact upload: artifact [12693590917](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40410859892/artifacts/12693590917), ZIP SHA-256 `c8e90fe5bd121fa31073d087faa6787cf2136c4fa4e6e71962ba63c6b2b4a34e` (3,083,199 bytes). Inventory counts: 644 lexical records, 359 test files, 387 source files, 6,801 lexical text links, 34,573 preserved lines, 5,241 assertion/test-declaration candidates, 644 lexical inputs with at least one text match. This is reproducible candidate extraction, not a semantically complete case ledger.
