@@ -1422,3 +1422,12 @@ Release classification remains **software-verified research prototype / partial 
 - Source checks: NIKL MCFAQ 5716 explicitly permits `삶의[살믜]/[살메]` (Hangul pronunciation, not IPA); the Korean Basic Dictionary entry for `쫓아내다` gives `[쪼차내다]`; the official dictionary example includes correctly spelled `무서웠어`; an official NIKL Q&A quotes `많았구나`. These support source-level observations only, not silent spelling repair or exact noisy-form pronunciation.
 - No production pronunciation rule was added for `칡칡이`, `쫒아내면`, `많앗구나유유유`, or `무서웟어`: the first lacks a verified lexical parse and the other three are nonstandard spellings whose intended correction must not be silently substituted. `삶의` remains diagnostic-only until independent IPA review; Ukrainian target review remains a separate gate.
 - New branch: `fix/final-abstention-evidence-2026-10-25`, based on current main `d23646af23b10be6b9f5223002cf634cd128ea06`. Exact-head CI for this branch is not yet known; do not mark these new tests `DONE_VERIFIED` until Actions finishes.
+
+
+## Benchmark corpora as teacher-training data — 2026-10-26 follow-up
+
+- **Decision:** benchmark families can be used for learning only through their actual licensed `train`/`dev` partitions. The existing UGTPHON/SIGMORPHON test snapshots remain evaluation-only; never re-label them as train/dev or use them to tune the teacher/rules.
+- **Code update:** the teacher disagreement miner now allows dataset identifiers such as UGTPHON and SIGMORPHON when the manifest declares a real train/dev split, while continuing to reject non-train/dev splits and explicit project holdout/test identifiers. Focused tests cover both allowed benchmark-family identifiers and the sealed 24-form holdout rejection.
+- **Not yet done:** no teacher inference or fine-tuning is claimed. The exact benchmark train/dev files still need to be located and pinned; dataset terms, Charsiu checkpoint training rights, and upstream training-data overlap need review. Fine-tuning stays BLOCKED until those are resolved.
+- **Rule gate unchanged:** teacher predictions are hypotheses, not normative Korean evidence. Production Strict changes still require source adjudication, positive/negative controls, and separate dev/holdout evaluation. Preserve the IPA → Ukrainian adaptation boundary.
+- **Acceptance:** exact-head CI must pass after these code/test updates. The previous CI results do not verify this follow-up commit.
