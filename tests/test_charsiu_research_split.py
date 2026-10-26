@@ -53,14 +53,15 @@ def test_loader_rejects_sealed_case_id_and_duplicate_ids(tmp_path):
         load_prepared_jsonl(path, "dev")
 
 
-def test_loader_rejects_mixed_revisions_and_non_hangul_source(tmp_path):
+def test_loader_rejects_mixed_revisions_and_reports_non_hangul_rows(tmp_path):
     path = tmp_path / "dev.jsonl"
     _write(path, [_row(), _row(case_id="sigmorphon:dev:00002", dataset_revision="other")])
     with pytest.raises(ValueError, match="mixes dataset revisions"):
         load_prepared_jsonl(path, "dev")
     _write(path, [_row(source_text="ABC")])
-    with pytest.raises(ValueError, match="one Hangul token"):
-        load_prepared_jsonl(path, "dev")
+    rows, metadata = load_prepared_jsonl(path, "dev")
+    assert rows[0]["canonical"] == "ABC"
+    assert metadata["non_hangul_rows_excluded_by_benchmark_adapter"] == 1
 
 
 def test_pair_ledger_never_promotes_a_rule():
