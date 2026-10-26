@@ -455,8 +455,13 @@ def test_nikl_section_24_exact_form_licenses_cover_dalmda_and_neomge_without_gen
         assert traces[0].changed, word
         assert traces[0].license_context == f"R010:stem_n_m+suffix:{word}:{pair}"
 
-    # The full-form license is intentionally not a productive morphology guess.
+    # 닮고 is an exact source-backed §24 example; do not generalize to 닮기.
     items, traces = apply_ordered_rules(parse_syllables("닮고"), ["R010"])
+    assert items[1].onset == "ㄲ"
+    assert traces[0].changed
+    assert traces[0].license_context == "R010:stem_n_m+suffix:닮고:닮>고"
+
+    items, traces = apply_ordered_rules(parse_syllables("닮기"), ["R010"])
     assert items[1].onset == "ㄱ"
     assert not traces[0].changed
     assert traces[0].status == "conditional-disabled"
@@ -632,7 +637,7 @@ def test_nikl_rule_29_listed_word_examples_receive_only_exact_builtin_licenses()
 
 def test_nikl_rule_29_phrase_examples_require_phrase_boundary_mode():
     examples = {
-        "한 입": ("한>입", "ㄴ"),
+        "한 일": ("한>일", "ㄴ"),
         "옷 입다": ("옷>입", "ㄴ"),
         "먹은 엿": ("은>엿", "ㄴ"),
         "할 일": ("할>일", "ㄹ"),
