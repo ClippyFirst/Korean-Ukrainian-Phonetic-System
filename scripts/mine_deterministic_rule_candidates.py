@@ -139,7 +139,7 @@ def _require(condition: bool, message: str) -> None:
 def _looks_like_sealed_case_id(case_id: str) -> bool:
     """Fail closed on obvious test/holdout identifiers, even if mislabeled."""
     normalized = unicodedata.normalize("NFC", case_id).strip().lower()
-    normalized = re.sub(r"[\\s_]+", "-", normalized)
+    normalized = re.sub(r"[\s_]+", "-", normalized)
     if re.search(r"(^|[-/])(test|holdout)([-/]|$)", normalized):
         return True
     if re.search(r"(^|[-/])24[-/]?form([-/]|$)", normalized):
