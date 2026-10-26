@@ -316,3 +316,18 @@ Audited map counts match for R002 formal (33), R002 substantive (5), R003 (18), 
 
 The corrected Charsiu workflow [40340319150](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319150) and full tests [40340319366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319366) were queued. The earlier uncontrolled narrow-score delta remains superseded. No model-to-rule accuracy gain is claimed.
 
+## Evaluation-integrity correction: UGTPHON test case used to prioritize R014 (2026-10-26)
+
+The historical UGTPHON test artifact [40328909490](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40328909490), artifact [12654815334](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40328909490/artifacts/12654815334), contains token `물가로` at row `dc_inside_2261`, occurrence `2001`. The model/native mismatch on this test token was explicitly used to prioritize review of compound fortition; official NIKL Q&A 316282 was then checked and confirms `물가[물까]` and `봄비[봄삐]`.
+
+The resulting R014 rule is source-backed, but the specific `물가로` test case is **not an untouched holdout**. Keep the historical report intact, but do not use that occurrence as independent final-evaluation evidence. The aggregate UGTPHON test metrics are still useful as historical diagnostics; they must not be described as fully independent after this test-informed rule selection. A replacement holdout or a separately reported exclusion is required before making a final accuracy claim.
+
+## Productive morphology-consensus licensing (implementation pending exact-head CI)
+
+The research-only morphology license adapter now supports:
+- R002/R003/R007 formal morpheme boundaries when two analyzer results agree on exact source-aligned spans;
+- R010/R011/R016 verb/adjective stem + ending contexts when both analyses agree on the boundary and tag families;
+- extension of already registered R012/R014/R015 lexical roots across an attached particle/ending when the root and grammatical boundary are both verified.
+
+The rules remain exact-form licensed after expansion, carry low-confidence morphology provenance, and force IPA to diagnostic-only. No default strict/browser output changes. New tests include `읽고`, `넓고`, `많다`, `물가로`, `봄비가`, `냇가에`, `갈등이`, and negative controls `닭고기` and `물가공`. These tests are authored but are **not yet marked verified**; exact-head Actions evidence is pending.
+
