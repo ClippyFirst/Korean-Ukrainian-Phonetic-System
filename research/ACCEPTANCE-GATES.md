@@ -377,7 +377,7 @@ On research head `256b27a454c992218ca87a0fdf58ea6135071560`, workflow runs were 
 
 ### Latest PR #339 merge-ref CI outcome (2026-10-27)
 
-The code/test snapshot was research head `256b27a454c992218ca87a0fdf58ea6135071560`, tested as synthetic merge commit `348a3dc18764191f68339333ce24bc0f54e2c523` into main `a452054a669de28426404d1110731715083423bb`. The subsequent branch head `e8ac6e623f2cdf2258414da9b53488d6d5857b57` is documentation-only and was not the SHA checked out by those runs.
+The code/test snapshot was research head `256b27a454c992218ca87a0fdf58ea6135071560`, tested as synthetic merge commit `348a3dc18764191f68339333ce24bc0f54e2c523` into main `a452054a669de28426404d1110731715083423bb`. Subsequent continuation commits updated only the handoff, case register, and acceptance-gate documentation; they did not change the runtime/test code represented by those runs.
 
 - PASS: test matrix [40410859903](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40410859903), including Python 3.11/3.12/3.13, wheel, web and teacher corpus audit.
 - PASS: system verification [40410859949](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40410859949); browser regression/build and Python integrity passed. Official NIKL inventory was skipped, not passed.
