@@ -1630,3 +1630,37 @@ The inventory tool is **DONE_VERIFIED**. It does not perform phoneme segmentatio
 ## Upstream example check for UGTPHON symbols
 
 Directly fetched the pinned upstream README files through the GitHub integration. SIGMORPHON's pinned README explicitly defines targets as a roughly-phonemic IPA phone sequence tokenized by `segments`, derived from Wiktionary via WikiPron. The pinned UGTPHON README includes the examples `키키 → kçikçi` and `킥킥 → kçik̚kçik̚`; this confirms that `ç` occurs as part of its source annotation convention and should not be discarded as an apparent typo. The inventory's `ç` and `ø` findings are therefore convention-review targets, not automatic data-cleaning rules. No mapping is promoted until the source-specific phonetic interpretation is independently checked.
+
+
+## Final execution ledger — code head and verification (2026-10-26)
+
+- **Starting code head for this continuation:** `e1258668d5ebf75815da64a3d768985776cb45de`.
+- **Latest implementation/test head:** `49db9150c2bd680d26eb4a04265376df06c7e56a` (queue, paired diagnostic, symbol inventory tools and their CI wiring).
+- **Documentation/review head before this final ledger update:** `af1c02a6908a849c7d89afbd351a4938053cf3a4`.
+- **Canonical branch/PR:** `research/strict-teacher-guided-rule-mining-2026-10-26`, Draft PR [#339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339).
+
+### Exact documentation-head CI before this ledger update
+
+On `af1c02a6908a849c7d89afbd351a4938053cf3a4):
+- [Tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40306010829) — PASS: Python 3.11, 3.12, 3.13; browser regression/build; clean wheel install; teacher corpus audit.
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40306010751) — PASS. Optional live NIKL source inventory was skipped by condition.
+- [Teacher corpus audit](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40306010856) — PASS.
+- [Scratch teacher, error analysis, and paired diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40306010764) — PASS; artifact [12641864872](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40306010764/artifacts/12641864872).
+- [Master artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40306010798) — PASS.
+- [Source IPA inventory + conflict queue + typed corpus packets](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40306010856) — PASS; artifact [12641804746](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40306010856/artifacts/12641804746).
+
+### Final task ledger
+
+| Task | Status | Acceptance evidence / remaining gate |
+|---|---|---|
+| Train-only SIGMORPHON/UGTPHON conflict queue | **DONE_VERIFIED** | Pinned inputs, tests, train-only guard, CI artifact; 366 conflicts retained for review |
+| Source-specific IPA Unicode/token inventory | **DONE_VERIFIED** | Tests and artifact; no segmentation assumptions |
+| Teacher/native Strict same-input pairing | **DONE_VERIFIED as alignment artifact** | 994 aligned cases, 6 diagnostic-only exclusions; no cross-engine metric |
+| Source-specific conversion to agreed ClippyFirst IPA | **BLOCKED / EVIDENCE-LIMITED** | Need independently reviewed mapping for source-specific diacritics, allophones, length and `kç` notation |
+| Adjudication of 366 train/train conflicts | **TODO / UNADJUDICATED** | Need evidence-backed decision per case, not automatic normalization |
+| Valid teacher-versus-Strict accuracy comparison | **BLOCKED** | Needs reviewed adapter and separate eligible evaluation data not used to select teacher checkpoint |
+| Production rule promotion | **DEFERRED pending evidence** | No candidate promoted without exact environment, exceptions, primary sources, independent review, regression controls and separate-set improvement |
+| Neural runtime integration | **DEFERRED** | Scratch teacher remains offline-only; current evidence does not justify production fallback/ensemble |
+| Production engine behavior | **PRESERVED** | No runtime phonological rule or Ukrainian output changed |
+
+The exact implementation commit above is verified by CI. This ledger itself is a documentation-only follow-up; the final branch commit is reported in the execution handoff/review summary. Overall product status remains **research-ready infrastructure / partial prototype**, not release-ready.
