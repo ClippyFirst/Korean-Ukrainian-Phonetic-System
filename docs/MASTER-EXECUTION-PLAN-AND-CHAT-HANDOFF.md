@@ -2161,3 +2161,12 @@ The owner clarified that the next deliverable must be a register of **all rules 
 - Research-teacher and SIGMORPHON/UGTPHON/Charsiu discrepancies remain a separate typed case class. Annotation differences are not automatically missing phonological rules.
 - Next execution order: enumerate the repository test/fixture/corpus manifest; extract the complete lexical CSV and all lexical review batches; extract case literals and expected IPA/Ukrainian values from every test; reconcile actual CI outcomes/artifacts by commit; add machine-readable case rows and integrity checks; publish audited counts and only then return to rule-level work.
 - Exact current branch at the point this priority change began: `research/strict-teacher-guided-rule-mining-2026-10-26`. New register commit: `b7d6c9d0bcd5a8558d07589eedf5007d8454ef94`.
+
+
+### Test-case register progress — 2026-10-26
+
+- Created canonical case-register specification: docs/MASTER-TEST-CASE-AND-RULE-REGISTER-2026-10-26.md.
+- Created research/TEST-CASE-REGISTER-MANIFEST-2026-10-26.csv: 427 tracked inventory rows including 178 test-source files, 177 fixture files, one corpus file, and relevant Korean data/research scripts.
+- Created research/TEST-CASE-REGISTER-LEXICAL-BASE-2026-10-26.csv from the pinned lexical dictionary: all 644 rows preserved, 17 columns, zero malformed rows and zero duplicate input forms. Source blob SHA: 1bd0d8116a5f5a4e74bcdbf7fc4999445b4478c5.
+- These are inventory foundations, not completion. Every test assertion still needs a case-level link; non-lexical fixtures/literals need extraction; expected outputs must remain separate from observed outcomes; actual pass/fail evidence must tie to an exact commit and workflow run.
+- **No further production-rule changes until the exhaustive case-register completeness gate passes.**
