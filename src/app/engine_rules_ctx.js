@@ -2,7 +2,7 @@
  * Contextual phonological rules (same-eojeol pass).
  */
 import {
-  COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
+  COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES, decompose,
   NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_29_WORD_INSERTION, NIKL_30_SAISIOT_PRONUNCIATION_FORMS, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
@@ -292,7 +292,10 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
 
     // NIKL §27 official Q&A 330963 confirms attached ending -ㄹ게 as [ㄹ께].
     // The rule is productive only for the orthographic -ㄹ게 ending inside one eojeol.
-    if(a.coda==='ㄹ'&&b.char==='게'&&b.onset==='ㄱ'){
+    // Check the source syllable's original coda: a complex coda may already have
+    // been reduced to ㄹ by an earlier ordered rule and must not be mistaken for
+    // the orthographic -ㄹ게 ending (e.g. 넓게 is not 널께).
+    if(a.coda==='ㄹ'&&decompose(a.char)?.coda==='ㄹ'&&b.char==='게'&&b.onset==='ㄱ'){
       b.onset='ㄲ';
       rules.push('adnominal-l-fortition-§27-attested-l-ge');
       nextRules.push('adnominal-l-fortition-§27-attested-l-ge');
