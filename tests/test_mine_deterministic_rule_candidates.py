@@ -14,6 +14,7 @@ from mine_deterministic_rule_candidates import (  # noqa: E402
     conservative_normalize,
     context_buckets,
     load_provenance,
+    main,
 )
 
 
@@ -129,3 +130,20 @@ def test_cer_uses_teacher_as_reference_denominator(tmp_path):
     first = next(row for row in report["cases"] if row["case_id"] == "dev-001")
     assert first["character_edit_distance"] == 1
     assert first["cer_teacher_vs_strict"] == 1.0
+
+
+def test_cli_writes_reproducible_json_report(tmp_path, capsys):
+    input_path, provenance_path = write_inputs(tmp_path)
+    output_path = tmp_path / "out" / "report.json"
+    exit_code = main([
+        "--input-jsonl", str(input_path),
+        "--provenance-json", str(provenance_path),
+        "--output-json", str(output_path),
+        "--min-context-support", "1",
+    ])
+    assert exit_code == 0
+    assert output_path.exists()
+    report = json.loads(output_path.read_text(encoding="utf-8"))
+    assert report["schema_version"] == "1.0"
+    assert report["summary"]["case_count"] == 3
+    assert json.loads(capsys.readouterr().out)["case_count"] == 3
