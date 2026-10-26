@@ -117,7 +117,7 @@ test('master passage is passed through the browser engine and emits a reproducib
 test('core source-backed examples in the passage retain the current engine surface and IPA', () => {
   const expected = {
     '굳이': ['구지', 'ku.dʑi'],
-    '같이': ['가치', 'ka tɕʰi'],
+    '같이': ['가치', 'ka.tɕʰi'],
     '읽다': ['익따', 'ik̚ t͈a'],
     '읽고': ['일꼬', 'il k͈o'],
     '맑다': ['막따', 'mak̚ t͈a'],
