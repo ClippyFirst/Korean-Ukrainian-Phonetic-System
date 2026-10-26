@@ -249,7 +249,7 @@ def analyzer_consensus_rule_licenses(
                     "ㅆ": "ㄷ", "ㅈ": "ㄷ", "ㅊ": "ㄷ", "ㅌ": "ㄷ",
                     "ㅎ": "ㄷ", "ㄲ": "ㄱ", "ㅋ": "ㄱ", "ㅍ": "ㅂ",
                 }.get(left.coda, left.coda)
-                if representative in {"ㄴ", "ㅁ"}:
+                if representative in {"ㄴ", "ㅁ"} and left.coda not in _H_CODAS:
                     license = f"R010:stem_n_m+suffix:{text}:{pair}"
                     licenses.add(license)
                     applied.append("R010")
