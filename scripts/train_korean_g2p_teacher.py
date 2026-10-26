@@ -203,6 +203,8 @@ def _torch_components():
             generated = []
             for _ in range(max_steps):
                 logits, hidden = self.decode(current, enc_out, enc_keys, hidden, source_mask)
+                logits[:, -1, self.pad_id] = -1e9
+                logits[:, -1, bos_id] = -1e9
                 next_token = logits[:, -1, :].argmax(dim=-1)
                 next_token = torch.where(finished, torch.full_like(next_token, eos_id), next_token)
                 generated.append(next_token)
