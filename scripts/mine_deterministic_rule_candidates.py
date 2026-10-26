@@ -152,10 +152,16 @@ def load_provenance(path: Path) -> dict[str, Any]:
     for field in ("model_id", "model_revision", "dataset_id", "dataset_revision",
                   "split", "source_url", "dataset_license_status",
                   "model_license_status", "teacher_output_type",
-                  "teacher_model_training_overlap_status"):
+                  "teacher_model_training_overlap_status",
+                  "teacher_ipa_convention", "strict_ipa_convention",
+                  "ipa_convention_review_id"):
         _require(bool(provenance.get(field)), f"provenance field {field!r} is required")
     _require(str(provenance["teacher_output_type"]).upper() == "IPA",
              "teacher_output_type must be IPA; do not mislabel custom phone alphabets")
+    _require(provenance.get("ipa_conventions_comparable") is True,
+             "IPA conventions must be explicitly reviewed as comparable before mining disagreements")
+    _require(bool(str(provenance.get("ipa_convention_review_id", "")).strip()),
+             "ipa_convention_review_id must identify the reviewed mapping decision")
     split = str(provenance["split"]).lower()
     _require(split in ALLOWED_SPLITS,
              f"refusing split {split!r}; only train/dev are allowed, never test/holdout")
