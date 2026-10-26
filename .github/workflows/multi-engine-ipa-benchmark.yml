@@ -255,7 +255,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
-      HF_HOME: ${{ runner.temp }}/huggingface-cache
+      HF_HOME: /home/runner/.cache/huggingface
       UGT_PHON_COMMIT: ef0d5a09c2ea1874c7206020f875cbd9cfea2f54
       SIGMORPHON_COMMIT: 821bcdece5a47820872215969f275004b0abe80c
     steps:
