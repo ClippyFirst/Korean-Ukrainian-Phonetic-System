@@ -28,12 +28,15 @@ def queue():
 
 
 def review(decision="UNRESOLVED", evidence=None):
-    entry = {"decision": decision, "rationale": "Reviewed but source convention remains uncertain"}
+    entry = {"reviewer_id": "reviewer-a", "decision": decision, "rationale": "Reviewed but source convention remains uncertain"}
     if evidence is not None:
         entry["evidence_reference"] = evidence
     return {"schema_version": "1.0", "source_pins": clone(PINS), "decisions": [{
         "queue_id": "KIPA-TRAIN-0001", "source_text": "삶의",
-        "reviewers": {"reviewer_1": dict(entry), "reviewer_2": dict(entry)},
+        "reviewers": {
+            "reviewer_1": dict(entry),
+            "reviewer_2": {**entry, "reviewer_id": "reviewer-b"},
+        },
     }]}
 
 
@@ -78,7 +81,37 @@ class AdjudicationValidationTests(unittest.TestCase):
     def test_final_decision_requires_named_adjudicator_and_rationale(self):
         bad = review()
         bad["decisions"][0]["final_decision"] = "CONVENTION_ONLY"
-        with self.assertRaisesRegex(ValueError, "final decision requires"):
+        with self.assertRaisesRegex(ValueError, "final_rationale"):
+            MODULE.validate_and_merge(queue(), bad)
+
+    def test_two_review_slots_must_represent_distinct_people(self):
+        bad = review()
+        bad["decisions"][0]["reviewers"]["reviewer_2"]["reviewer_id"] = "reviewer-a"
+        with self.assertRaisesRegex(ValueError, "two distinct reviewers"):
+            MODULE.validate_and_merge(queue(), bad)
+
+    def test_final_non_unresolved_decision_requires_evidence(self):
+        bad = review()
+        record = bad["decisions"][0]
+        record.update({
+            "adjudicator": "adjudicator-x",
+            "final_decision": "CONVENTION_ONLY",
+            "final_rationale": "A reviewed primary source supports this interpretation",
+        })
+        with self.assertRaisesRegex(ValueError, "final_evidence_reference"):
+            MODULE.validate_and_merge(queue(), bad)
+        record["final_evidence_reference"] = "official-rule-section-2.1"
+        result = MODULE.validate_and_merge(queue(), bad)
+        self.assertEqual(result["decisions"][0]["review_status"], "ADJUDICATED")
+
+    def test_non_string_final_rationale_is_rejected_cleanly(self):
+        bad = review()
+        bad["decisions"][0].update({
+            "adjudicator": "adjudicator-x",
+            "final_decision": "UNRESOLVED",
+            "final_rationale": [],
+        })
+        with self.assertRaisesRegex(ValueError, "final_rationale must be a non-empty string"):
             MODULE.validate_and_merge(queue(), bad)
 
     def test_partial_review_explicitly_lists_unreviewed_items(self):
