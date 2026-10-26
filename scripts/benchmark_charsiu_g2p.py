@@ -85,31 +85,45 @@ def load_model(model_id: str, revision: str, tokenizer_id: str, tokenizer_revisi
 
 
 def predict(words: list[str], *, model_id: str, revision: str,
-            tokenizer_id: str, tokenizer_revision: str, batch_size: int = 16) -> dict[str, str]:
+            tokenizer_id: str, tokenizer_revision: str, batch_size: int = 16
+            ) -> tuple[dict[str, str], dict[str, dict[str, str]]]:
+    """Return valid predictions and explicit per-word failures without hiding partial coverage."""
     if batch_size < 1:
         raise ValueError("batch_size must be positive")
     torch, tokenizer, model = load_model(model_id, revision, tokenizer_id, tokenizer_revision)
     result: dict[str, str] = {}
+    failures: dict[str, dict[str, str]] = {}
     # Upstream contract: pre-tokenized words with the exact <kor>: prefix.
     for start in range(0, len(words), batch_size):
         batch = words[start:start + batch_size]
-        encoded = tokenizer(
-            [f"<kor>: {word}" for word in batch],
-            padding=True, add_special_tokens=False, return_tensors="pt",
-        )
-        with torch.no_grad():
-            output = model.generate(**encoded, num_beams=1, max_length=80)
-        decoded = tokenizer.batch_decode(output.tolist(), skip_special_tokens=True)
-        if len(decoded) != len(batch):
-            raise RuntimeError(f"model returned {len(decoded)} predictions for {len(batch)} inputs")
+        try:
+            encoded = tokenizer(
+                [f"<kor>: {word}" for word in batch],
+                padding=True, add_special_tokens=False, return_tensors="pt",
+            )
+            with torch.no_grad():
+                output = model.generate(**encoded, num_beams=1, max_length=80)
+            decoded = tokenizer.batch_decode(output.tolist(), skip_special_tokens=True)
+            if len(decoded) != len(batch):
+                raise RuntimeError(f"model returned {len(decoded)} predictions for {len(batch)} inputs")
+        except Exception as exc:
+            reason = f"{type(exc).__name__}: {exc}"
+            for word in batch:
+                failures[word] = {"status": "model_error", "reason": reason}
+            continue
         for word, value in zip(batch, decoded):
+            if not isinstance(value, str) or not value.strip():
+                failures[word] = {"status": "empty_output", "reason": "model returned an empty/non-string prediction"}
+                continue
             value = value.strip()
-            if not value:
-                raise ValueError(f"empty neural prediction for {word!r}")
-            if any("\uac00" <= ch <= "\ud7a3" for ch in value):
-                raise ValueError(f"unexpected Hangul in IPA output for {word!r}: {value!r}")
+            if any("\\uac00" <= ch <= "\\ud7a3" for ch in value):
+                failures[word] = {
+                    "status": "invalid_output",
+                    "reason": f"unexpected Hangul in declared IPA output: {value!r}",
+                }
+                continue
             result[word] = value
-    return result
+    return result, failures
 
 
 def collect_existing_baselines(words: list[str]) -> dict[str, dict[str, dict[str, Any]]]:
@@ -253,7 +267,8 @@ def compare_baselines(rows: list[dict[str, Any]], neural: dict[str, str],
     return report
 
 
-def evaluate(rows: list[dict[str, Any]], predictions: dict[str, str]) -> dict[str, Any]:
+def evaluate(rows: list[dict[str, Any]], predictions: dict[str, str],
+             prediction_failures: dict[str, dict[str, str]] | None = None) -> dict[str, Any]:
     occurrences, words = eligible_occurrences(rows)
     scored = []
     missing = []
@@ -272,6 +287,9 @@ def evaluate(rows: list[dict[str, Any]], predictions: dict[str, str]) -> dict[st
     total_ref = sum(x["reference_length"] for x in scored)
     total_distance = sum(x["distance"] for x in scored)
     exact = sum(x["exact"] for x in scored)
+    prediction_failures = prediction_failures or {}
+    failure_counts = {status: sum(1 for item in prediction_failures.values() if item.get("status") == status)
+                      for status in ("empty_output", "invalid_output", "model_error")}
     return {
         "schema_version": 2,
         "engine": "CharsiuG2P multilingual ByT5",
@@ -294,6 +312,8 @@ def evaluate(rows: list[dict[str, Any]], predictions: dict[str, str]) -> dict[st
         "character_error_rate": round(total_distance / total_ref, 6) if total_ref else None,
         "missing_predictions": len(missing),
         "missing_word_examples": missing[:50],
+        "prediction_failures_by_word": prediction_failures,
+        "prediction_failure_counts_by_unique_word": failure_counts,
         "predictions": scored,
         "limitations": [
             "This is a word/token-level ablation; it does not preserve sentence context or perform Korean morphological segmentation.",
@@ -320,14 +340,16 @@ def main() -> int:
         parser.error("--model-revision and --tokenizer-revision are required; floating model revisions are not reproducible")
     rows = load_corpus(args.corpus)
     _, words = eligible_occurrences(rows)
-    predictions = predict(words, model_id=args.model, revision=args.model_revision,
-                          tokenizer_id=args.tokenizer, tokenizer_revision=args.tokenizer_revision,
-                          batch_size=args.batch_size)
+    predictions, prediction_failures = predict(
+        words, model_id=args.model, revision=args.model_revision,
+        tokenizer_id=args.tokenizer, tokenizer_revision=args.tokenizer_revision,
+        batch_size=args.batch_size,
+    )
     os.environ["CHARSIU_MODEL_ID"] = args.model
     os.environ["CHARSIU_MODEL_REVISION_REQUESTED"] = args.model_revision
     os.environ["CHARSIU_TOKENIZER_ID"] = args.tokenizer
     os.environ["CHARSIU_TOKENIZER_REVISION_REQUESTED"] = args.tokenizer_revision
-    report = evaluate(rows, predictions)
+    report = evaluate(rows, predictions, prediction_failures)
     if args.compare_existing_engines:
         baselines = collect_existing_baselines(words)
         report["comparison"] = compare_baselines(rows, predictions, baselines)
@@ -341,12 +363,12 @@ def main() -> int:
         "engine", "model_id", "model_revision_requested", "model_revision",
         "tokenizer_revision_requested", "tokenizer_revision", "eligible_occurrences",
         "scored_occurrences", "coverage", "exact_matches", "exact_match_rate",
-        "character_error_rate", "missing_predictions",
+        "character_error_rate", "missing_predictions", "prediction_failure_counts_by_unique_word",
     )}
     if "comparison" in report:
         summary["paired_comparisons"] = report["comparison"]["paired_comparisons"]
     print(json.dumps(summary, ensure_ascii=False, indent=2))
-    return 0
+    return 0 if predictions else 1
 
 
 if __name__ == "__main__":
