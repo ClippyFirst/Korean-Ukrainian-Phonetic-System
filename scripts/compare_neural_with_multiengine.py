@@ -265,6 +265,7 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
             "id": neural.get("model_id"),
             "revision": neural.get("model_revision"),
             "output_convention": neural.get("output_convention"),
+            "input_prefix": neural.get("input_prefix"),
             "code_license": neural.get("model_code_license"),
             "tokenizer_id": neural.get("tokenizer_id"),
             "tokenizer_revision": neural.get("tokenizer_revision"),
