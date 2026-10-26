@@ -386,3 +386,34 @@ The extractor now preserves line-level candidates not only from tests/fixtures/c
 
 This is a broader **source inventory**, not yet a fully classified case register. Structured/minified JSON and historical CI artifacts still require dedicated parsers/importers; source-line preservation alone does not prove that each JSON object, model prediction, assertion, or actual run result has become an individual case row. The new unit test covers inclusion of a data CSV and verifies source-category separation. Exact-head CI has not yet passed, so generated counts remain pending.
 
+## Exhaustive inventory extraction — verified artifact on 2026-10-26
+
+The workflow **Exhaustive test-case register extraction** passed on commit `ed1e9830673d7388d077ee56d780f7cfb4d9f439`, run [40381081948](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40381081948), artifact [12681810325](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40381081948/artifacts/12681810325). The artifact is a reproducible, loss-preserving *candidate inventory*, not a fully adjudicated case register.
+
+| Inventory measure | Extracted count | Meaning / limitation |
+|---|---:|---|
+| Lexical dictionary records | 644 | Every dictionary row has a stable lexical case ID; expected fields copied, not independently validated |
+| Test files scanned | 357 | Test file inventory, not test-case count |
+| Source files scanned | 385 | Tests, fixtures, and selected Korean data/examples |
+| Lexical-to-test text links | 6,790 | Text occurrences only; still require assertion/test-context classification |
+| Hangul literal candidates | 50,737 | Includes inputs, expected outputs, comments, examples and other contexts; not all are test cases |
+| Raw source lines preserved | 34,452 | Exact line provenance and hashes preserved |
+| Assertion/test-declaration candidates | 5,512 | Candidate declarations/assertions; requires semantic classification |
+| Lexical inputs with at least one test text match | 644 | A text match is not proof that the assertion tests that lexical input |
+
+The extraction gate is therefore **DONE_VERIFIED for reproducible candidate generation**, while the full semantic case register remains **PARTIAL**. The artifact must be retained as evidence and reused; do not rerun expensive teacher training merely to populate the case ledger. Next, classify assertions and connect cases to exact-head observed results, then join existing pinned teacher predictions by stable source/input identity.
+
+## Exact-head CI failure triage
+
+The current-head workflow batch for `ed1e9830673d7388d077ee56d780f7cfb4d9f439` did **not** pass:
+- Core test workflow [40381081899](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40381081899): browser tests failed; Python 3.13 tests failed; wheel-install and teacher-corpus audit passed.
+- System verification [40381081817](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40381081817): browser and Python regression jobs failed.
+- Browser G2P integration [40381082133](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40381082133): failed.
+- The same head's morphology-consensus IPA diagnostic, multi-engine IPA diagnostic, UGTPHON diagnostic, morphology adapter smoke, master artifacts, optional g2pK integration, teacher corpus split audit, paired native-vs-g2pk diagnostic, scratch teacher training, and teacher-corpus audit passed.
+
+The observed browser suite reported 33 failures. A substantial cluster is IPA serialization disagreement: some tests expect period-separated syllables (e.g. `paŋ.nɯn`, `ɰiː.ɡjʌn.nan`), while outputs from lexical records used spaces; other assertions expect spaces while generic same-token output uses periods. This is a contract inconsistency to adjudicate against the repository's IPA schema and test intent—not a reason to globally replace separators or rewrite expected values without evidence. Additional observed failures include optional-vowel variant assertions, the exact-form `담고`/surface `담꼬` case, and the §30 saisiot case `뒨마루`. Preserve these as FAIL_OBSERVED until the IPA boundary/serialization contract and source-specific forms are checked.
+
+The Python suite additionally exposed a test-only `NameError` because `tests/test_rules.py` called the public `phoneticize_korean` function without importing it. This was corrected in follow-up commit `b305cd7d0e7e8189d99e65d5c1d08be36014573e`; this fix is **not yet verified** until workflows for that exact head finish. Do not treat the pre-fix failure as a current-head result.
+
+The case inventory must next be converted from occurrence lists to case-level evidence: one row per exact input × mode × expected assertion, retaining duplicate provenance, with expected and observed IPA kept distinct. No generalized production rule should be derived solely from teacher predictions or these unclassified literals.
+
