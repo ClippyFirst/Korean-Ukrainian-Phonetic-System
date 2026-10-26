@@ -23,6 +23,7 @@
 - **Project NIKL 24-form holdout:** explicitly sealed for tuning and has no IPA gold; use only for future independent evaluation after two-reviewer annotation.
 - **Charsiu multilingual ByT5:** no training run was started because the checkpoint weight license and original training-data overlap are unresolved. This blocks a responsible fine-tuning/redistribution decision, not independent deterministic-rule work.
 
+- **CharsiuG2P upstream provenance:** code repo inspected at immutable commit `0c929390759fb94f8ecdfc05cc0bc5f2ff2dc0f4` is MIT, but contains separate Korean `data/train/kor.tsv` (2,075,385 bytes), `data/dev/kor.tsv` (1,738 bytes), and `data/test/kor.tsv` (16,676 bytes). `ko_info.txt` cites SIGMORPHON 2020 with literal `U/K`; `ko-2_info.txt` cites ipa-dict MIT. The Hugging Face checkpoint page says “No model card” and provides no verified weight license. Do not conflate code license with weight/data rights; overlap with benchmark rows is not established.
 ## Task ledger
 
 | Task | Status | Acceptance evidence |
