@@ -127,7 +127,30 @@ def _candidate(row: dict, dataset: str) -> dict:
     }
 
 
+def _prepare_in_memory_rows(rows: list[dict], dataset: str) -> list[dict]:
+    pin = PINS[dataset]
+    prepared = []
+    for row in rows:
+        if row.get("dataset_id") != pin["dataset_id"] or row.get("dataset_revision") != pin["dataset_revision"]:
+            raise ValueError(f"source pin mismatch for {dataset}")
+        if row.get("target_representation") != pin["target_representation"]:
+            raise ValueError(f"target representation mismatch for {dataset}")
+        if row.get("split") != "train":
+            raise ValueError("only train rows are accepted")
+        source = row.get("source_text")
+        target = row.get("target_raw")
+        if not isinstance(source, str) or not source.strip() or not isinstance(target, str) or not target.strip():
+            raise ValueError("source_text and target_raw must be non-empty strings")
+        prepared_row = dict(row)
+        prepared_row["_normalized_source"] = unicodedata.normalize("NFC", source.strip())
+        prepared_row["_comparison_target"] = comparison_target(prepared_row, dataset)
+        prepared.append(prepared_row)
+    return prepared
+
+
 def build_queue(sigmorphon_rows: list[dict], ugtphon_rows: list[dict]) -> dict:
+    sigmorphon_rows = _prepare_in_memory_rows(sigmorphon_rows, "sigmorphon")
+    ugtphon_rows = _prepare_in_memory_rows(ugtphon_rows, "ugtphon")
     left, right = _group(sigmorphon_rows), _group(ugtphon_rows)
     shared = sorted(set(left) & set(right))
     categories: Counter[str] = Counter()
