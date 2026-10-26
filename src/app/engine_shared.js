@@ -166,6 +166,20 @@ const NIKL_29_PHRASE_INSERTION=new Map([
   ['먹은 엿',{onset:'ㄴ'}],['할 일',{onset:'ㄹ'}],
   ['잘 입다',{onset:'ㄹ'}],['먹을 엿',{onset:'ㄹ'}]
 ]);
+
+// Exact NIKL §29 word-internal ㄴ insertion licenses; preserve lexical scope.
+const NIKL_29_WORD_INSERTION=new Map([
+  ['솜이불','솜>이'], ['홑이불','홑>이'], ['막일','막>일'],
+  ['삯일','삯>일'], ['맨입','맨>입'], ['꽃잎','꽃>잎'],
+  ['내복약','복>약'], ['한여름','한>여'], ['남존여비','존>여'],
+  ['신여성','신>여'], ['색연필','색>연'], ['직행열차','행>열'],
+  ['늑막염','막>염'], ['콩엿','콩>엿'], ['담요','담>요'],
+  ['눈요기','눈>요'], ['영업용','업>용'], ['식용유','용>유'],
+  ['백분율','분>율'], ['밤윷','밤>윷'], ['들일','들>일'],
+  ['솔잎','솔>잎'], ['설익다','설>익'], ['물약','물>약'],
+  ['불여우','불>여'], ['서울역','울>역'], ['물엿','물>엿'],
+  ['서른여섯','른>여'], ['스물여섯','물>여'],
+]);
 // §30(3) compound examples need a lexical compound boundary: do not treat
 // their written 사이시옷 as ordinary coda-to-vowel liaison when the exact
 // sourced lexical reading is unavailable.
@@ -241,7 +255,7 @@ export {
   HANGUL_BASE, HANGUL_END, V_COUNT, T_COUNT, N_COUNT,
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
-  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
+  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_29_WORD_INSERTION,
   NIKL_30_SAISIOT_PRONUNCIATION_FORMS, NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,
