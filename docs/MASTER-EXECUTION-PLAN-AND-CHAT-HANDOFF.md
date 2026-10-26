@@ -9,7 +9,7 @@
 
 ### Cross-corpus compatibility audit added
 
-- New script: scripts/audit_korean_corpus_compatibility.py. It verifies generated JSONL output hashes against each manifest, validates split labels and counts, then reports source-form intersections for SIGMORPHON train/dev against UGTPHON train/dev. It also counts exact raw target-string intersections versus different strings without interpreting these as phonological disagreement.
+- New script: scripts/audit_korean_corpus_compatibility.py. It verifies generated JSONL output hashes against each manifest, validates split labels and counts, then reports source-form intersections for SIGMORPHON train/dev against UGTPHON train/dev. It removes only SIGMORPHON's whitespace phone-token separators for a second target-string comparison; it does not map symbols or infer syllable boundaries, and the result is not asserted equivalent to ClippyFirst broad IPA.
 - The audit deliberately does not merge the corpora or run training. It marks target compatibility UNVERIFIED because the two datasets' IPA conventions have not yet been normalized through a reviewed adapter.
 - Added unit tests for hash mismatch rejection, split-count validation, cross-source form overlap, and non-merging behavior. Integrated the report into the same CI artifact.
 - **Verification state:** workflow run for the initial compatibility-audit commit is still in progress/queued at the time of this note; later fixes standardized output-row-count metadata across both manifests. Re-check the exact current head and inspect the compatibility report before marking this batch DONE_VERIFIED.
