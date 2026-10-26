@@ -101,3 +101,12 @@ Report counts for the 366 form-level conflicts:
 - 0/366 forms have multiple distinct UGTPHON comparison-target strings in this eligible queue. This finding is scoped to the builder's selected canonical token annotations; it does not assert that the complete upstream dataset has no variants.
 
 The report therefore helps rank source-form frequency and makes the candidate-pair denominator explicit. It is not a phonetic adjudication, not a segment alignment, and not evidence for a ClippyFirst symbol mapping.
+
+
+## Additional upstream provenance check: IPA-Dict's stated transcription level
+
+The pinned UGTPHON README says token phoneme annotations are looked up from IPA-Dict and checked by native-speaker annotators, with uncovered forms transcribed manually. The upstream IPA-Dict README at inspected commit [`972cd67dd5f96bc5660e28070cde26e3928abcd7`](https://github.com/open-dict-data/ipa-dict/blob/972cd67dd5f96bc5660e28070cde26e3928abcd7/README.md) describes its entries as broadly phonemic, optimized for readability/usefulness to learners, and notes that pronunciations can vary across reference works. It also credits the Korean subset to `korean-word-ipa-dictionary`, extracted from Korean Wiktionary.
+
+This is relevant because a broadly phonemic dictionary target and a roughly-phonemic WikiPron/Wiktionary-derived SIGMORPHON phone sequence need not encode the same features. However, the inspected IPA-Dict commit is **not proven to be the exact revision embedded/used by the pinned UGTPHON release**. The UGTPHON metadata does not provide that precise IPA-Dict source revision in the inspected README. Therefore this upstream description supports the need for source-specific convention handling, but it does not adjudicate any of the 366 individual forms or authorize symbol substitution.
+
+New provenance acceptance criterion: recover and pin the exact IPA-Dict snapshot used for the UGTPHON Korean targets, or record that source revision as irrecoverable. Until then, treat the IPA-Dict description as context only and retain the raw UGTPHON targets unchanged.
