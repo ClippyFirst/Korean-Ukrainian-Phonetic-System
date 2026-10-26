@@ -3,6 +3,8 @@ from __future__ import annotations
 import importlib.util
 import sys
 from pathlib import Path
+import sys
+import types
 from contextlib import nullcontext
 from types import SimpleNamespace
 
@@ -171,3 +173,27 @@ def test_predict_records_batch_runtime_errors_without_losing_other_batches(monke
     assert failures["가"]["status"] == "model_error"
     assert failures["나"]["status"] == "model_error"
     assert "synthetic inference failure" in failures["가"]["reason"]
+
+
+
+def test_existing_g2pk_baseline_uses_project_phonology_and_ipa_modules(monkeypatch):
+    import korean_ukrainian.ipa as ipa_module
+    import korean_ukrainian.phonology as phonology_module
+
+    fake_g2pk = types.ModuleType("g2pk")
+
+    class FakeG2p:
+        def __call__(self, word):
+            return word
+
+    fake_g2pk.G2p = FakeG2p
+    monkeypatch.setitem(sys.modules, "g2pk", fake_g2pk)
+    monkeypatch.setattr(MODULE, "phoneticize_korean", lambda word: {
+        "pronunciation_status": "resolved", "ipa": {"ipa": "ha.kjo"}
+    })
+    monkeypatch.setattr(phonology_module, "parse_syllables", lambda surface: surface)
+    monkeypatch.setattr(ipa_module, "realize_syllables", lambda parsed, level: {"ipa": "ha.kjo"})
+
+    outputs = MODULE.collect_existing_baselines(["학교"])
+    assert outputs["g2pk_0_9_4"]["학교"]["status"] == "scored"
+    assert outputs["g2pk_0_9_4"]["학교"]["ipa"] == "ha.kjo"
