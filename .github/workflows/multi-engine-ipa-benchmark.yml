@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   multi-engine-ipa:
@@ -410,4 +411,68 @@ jobs:
           name: neural-korean-g2p-diagnostic-${{ github.run_id }}
           path: ${{ runner.temp }}/neural-results/
           if-no-files-found: warn
+          retention-days: 30
+
+
+  paired-neural-report:
+    name: Pair pinned neural outputs with all engine predictions
+    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+    needs: multi-engine-ipa
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install report-join dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . "regex==2024.5.10"
+
+      - name: Download baseline occurrence ledger from this run
+        uses: actions/download-artifact@v4
+        with:
+          name: multi-engine-korean-ipa-diagnostic
+          path: ${{ runner.temp }}/baseline-artifact
+
+      - name: Download pinned neural inference artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: neural-korean-g2p-diagnostic-40285484220
+          run-id: 40285484220
+          repository: ${{ github.repository }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/neural-artifact
+
+      - name: Build paired per-occurrence comparisons for UGTPHON and SIGMORPHON
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/combined-results"
+          python scripts/compare_neural_with_multiengine.py \
+            --neural-report "$RUNNER_TEMP/neural-artifact/charsiu-ugtphon.json" \
+            --baseline-report "$RUNNER_TEMP/baseline-artifact/multi-engine-ipa-report.json" \
+            --dataset-name UGTPHON \
+            --neural-run-id 40285484220 --baseline-run-id "$GITHUB_RUN_ID" \
+            --provenance-json "$RUNNER_TEMP/neural-artifact/model-provenance.json" \
+            --output "$RUNNER_TEMP/combined-results/charsiu-ugtphon-all-engines.json"
+          python scripts/compare_neural_with_multiengine.py \
+            --neural-report "$RUNNER_TEMP/neural-artifact/charsiu-sigmorphon.json" \
+            --baseline-report "$RUNNER_TEMP/baseline-artifact/sigmorphon-multi-engine-ipa-report.json" \
+            --dataset-name SIGMORPHON \
+            --neural-run-id 40285484220 --baseline-run-id "$GITHUB_RUN_ID" \
+            --provenance-json "$RUNNER_TEMP/neural-artifact/model-provenance.json" \
+            --output "$RUNNER_TEMP/combined-results/charsiu-sigmorphon-all-engines.json"
+
+      - name: Upload paired neural-versus-all-engine reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: charsiu-all-engine-paired-comparison-${{ github.run_id }}
+          path: ${{ runner.temp }}/combined-results/
+          if-no-files-found: error
           retention-days: 30
