@@ -50,17 +50,17 @@ test('§19 every explicit example uses the correct ordered nasalization chain', 
 
 test('§20 every listed general liquid-assimilation example is computed algorithmically', () => {
   const expected = {
-    '난로':'nal lo',
-    '신라':'ɕil la',
-    '천리':'tɕʰʌl li',
-    '광한루':'kwaŋ hal lu',
-    '대관령':'tɛ ɡwal ljʌŋ',
-    '칼날':'kʰal lal',
-    '물난리':'mul lal li',
-    '할는지':'hal lɯn dʑi',
-    '닳는':'tal lɯn',
-    '뚫는':'t͈ul lɯn',
-    '핥네':'hal le',
+    '난로': 'nal.lo',
+    '신라': 'ɕil.la',
+    '천리': 'tɕʰʌl.li',
+    '광한루': 'kwaŋ.hal.lu',
+    '대관령': 'tɛ.ɡwal.ljʌŋ',
+    '칼날': 'kʰal.lal',
+    '물난리': 'mul.lal.li',
+    '할는지': 'hal.lɯn.dʑi',
+    '닳는': 'tal.lɯn',
+    '뚫는': 't͈ul.lɯn',
+    '핥네': 'hal.le',
   };
   for (const [word,ipa] of Object.entries(expected)) {
     const result = genericEngine.convert(word);
@@ -73,17 +73,17 @@ test('§20 every listed general liquid-assimilation example is computed algorith
 
 test('§20 all listed lexical ㄹ→ㄴ exceptions are sourced and remain exact', () => {
   const expected = {
-    '의견란':'의견난',
-    '임진란':'임진난',
-    '생산량':'생산냥',
-    '결단력':'결딴녁',
-    '공권력':'공꿘녁',
-    '동원령':'동원녕',
-    '상견례':'상견녜',
-    '횡단로':'횡단노',
-    '이원론':'이원논',
-    '입원료':'이붠뇨',
-    '구근류':'구근뉴',
+    '의견란': '의견난',
+    '임진란': '임진난',
+    '생산량': '생산냥',
+    '결단력': '결딴녁',
+    '공권력': '공꿘녁',
+    '동원령': '동원녕',
+    '상견례': '상견녜',
+    '횡단로': '횡단노',
+    '이원론': '이원논',
+    '입원료': '이붠뇨',
+    '구근류': '구근뉴',
   };
   for (const [word,surface] of Object.entries(expected)) {
     const row = entries.get(word);
