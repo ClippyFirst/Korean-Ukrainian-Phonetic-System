@@ -91,6 +91,17 @@ def load_prepared_jsonl(path: Path, expected_split: str) -> tuple[list[dict[str,
     }
 
 
+def render_profile_pair(words: list[str]) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+    """Render broad/narrow from one rule analysis, preserving unresolved abstentions.
+
+    Lexical IPA overrides are intentionally excluded from both outputs so this
+    diagnostic isolates the declared IPA renderer difference rather than mixing
+    profile changes with lexical override coverage.
+    """
+    broad_outputs, narrow_outputs = render_profile_pair(words)
+    return broad_outputs, narrow_outputs
+
+
 def build_pair_ledger(
     report: dict[str, Any],
     metadata: dict[str, Any],
