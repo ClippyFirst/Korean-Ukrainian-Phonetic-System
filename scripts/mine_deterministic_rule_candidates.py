@@ -89,7 +89,7 @@ def _coda_class(coda: str) -> str:
         return "open"
     if coda in {"ᆨ", "ᆩ", "ᆪ", "ᆿ"}:
         return "velar-family"
-    if coda in {"ᆮ", "ᆺ", "ᆻ", "ᆽ", "ᆾ", "ᆿ", "ᇂ"}:
+    if coda in {"ᆮ", "ᆺ", "ᆻ", "ᆽ", "ᆾ", "ᇂ"}:
         return "coronal-neutralizing-family"
     if coda in {"ᆸ", "ᆹ", "ᇁ"}:
         return "bilabial-family"
@@ -191,7 +191,9 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
         teacher_norm = conservative_normalize(teacher_raw)
         strict_norm = conservative_normalize(strict_raw)
         distance = edit_distance(teacher_norm, strict_norm)
-        max_len = max(len(teacher_norm), len(strict_norm), 1)
+        # Treat the teacher string as the explicit reference for this
+        # pairwise diagnostic, so CER uses the reference length denominator.
+        reference_length = max(len(teacher_norm), 1)
         contexts = context_buckets(source)
         for context in contexts:
             bucket = context_stats[context]
@@ -209,7 +211,7 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
             "strict_normalized": strict_norm,
             "exact_match_after_conservative_normalization": distance == 0,
             "character_edit_distance": distance,
-            "cer_teacher_vs_strict": distance / max_len,
+            "cer_teacher_vs_strict": distance / reference_length,
             "context_associations": contexts,
             "source_provenance": item.get("source_provenance", ""),
             "human_review_status": "not-reviewed",
@@ -252,7 +254,7 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
             "case_count": n,
             "teacher_strict_disagreements": disagreements,
             "teacher_strict_disagreement_rate": disagreements / n,
-            "mean_character_error_rate": sum(row["cer_teacher_vs_strict"] for row in rows) / n,
+            "mean_character_error_rate_teacher_reference": sum(row["cer_teacher_vs_strict"] for row in rows) / n,
             "context_candidate_count": len(candidates),
         },
         "cases": rows,
