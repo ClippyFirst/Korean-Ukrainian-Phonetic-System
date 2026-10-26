@@ -32,7 +32,7 @@ function renderExpectedIpa(input, ipaSyllables){
 }
 
 const expected = {
-  '밭일': ['반닐', 'панніл', 'pan nil'],
+  '밭일': ['반닐', 'панніл', 'pan.nil'],
   '밭일과': ['반닐과', 'паннілґва', 'pan nil ɡwa'],
   '밭일을': ['반니를', 'паннірил', 'pan ni ɾɯl'],
   '굳이': ['구지', 'куджі', 'ku dʑi'],
