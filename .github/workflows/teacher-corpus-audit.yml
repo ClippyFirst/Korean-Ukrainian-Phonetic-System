@@ -6,8 +6,10 @@ on:
       - "scripts/audit_teacher_corpus_splits.py"
       - "scripts/prepare_korean_g2p_corpus.py"
       - "scripts/prepare_ugtphon_korean_corpus.py"
+      - "scripts/audit_korean_corpus_compatibility.py"
       - "tests/test_prepare_korean_g2p_corpus.py"
       - "tests/test_prepare_ugtphon_korean_corpus.py"
+      - "tests/test_audit_korean_corpus_compatibility.py"
       - "tests/test_audit_teacher_corpus_splits.py"
       - "docs/TEACHER-CORPUS-ELIGIBILITY-2026-10-26.md"
       - ".github/workflows/teacher-corpus-audit.yml"
@@ -28,19 +30,22 @@ jobs:
       - name: Install test dependency
         run: python -m pip install pytest
       - name: Unit-test source parsing, overlap logic, and corpus preparation
-        run: python -m pytest -q tests/test_audit_teacher_corpus_splits.py tests/test_prepare_korean_g2p_corpus.py tests/test_prepare_ugtphon_korean_corpus.py
+        run: python -m pytest -q tests/test_audit_teacher_corpus_splits.py tests/test_prepare_korean_g2p_corpus.py tests/test_prepare_ugtphon_korean_corpus.py tests/test_audit_korean_corpus_compatibility.py
       - name: Fetch pinned public corpora and audit split integrity
         run: python scripts/audit_teacher_corpus_splits.py --output-json "$RUNNER_TEMP/teacher-corpus-split-audit.json"
       - name: Prepare pinned SIGMORPHON train/dev corpus (test remains sealed)
         run: python scripts/prepare_korean_g2p_corpus.py --output-dir "$RUNNER_TEMP/korean-g2p-corpus"
       - name: Prepare conservative UGTPHON Korean train/dev token corpus
         run: python scripts/prepare_ugtphon_korean_corpus.py --output-dir "$RUNNER_TEMP/ugtphon-korean-corpus"
-      - name: Upload audit metadata and separate train/dev research corpora
+      - name: Audit cross-corpus form overlap and representation compatibility
+        run: python scripts/audit_korean_corpus_compatibility.py --sigmorphon-dir "$RUNNER_TEMP/korean-g2p-corpus" --ugtphon-dir "$RUNNER_TEMP/ugtphon-korean-corpus" --output-json "$RUNNER_TEMP/korean-corpus-compatibility.json"
+      - name: Upload audit metadata, compatibility report, and separate train/dev corpora
         uses: actions/upload-artifact@v4
         with:
           name: korean-g2p-train-dev-corpus
           path: |
             ${{ runner.temp }}/teacher-corpus-split-audit.json
+            ${{ runner.temp }}/korean-corpus-compatibility.json
             ${{ runner.temp }}/korean-g2p-corpus/train.jsonl
             ${{ runner.temp }}/korean-g2p-corpus/dev.jsonl
             ${{ runner.temp }}/korean-g2p-corpus/manifest.json
