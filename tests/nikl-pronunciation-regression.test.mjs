@@ -204,18 +204,18 @@ test('unknown complex-coda liaison is unresolved rather than guessed as §14', (
 
 test('§14 every enumerated complex-coda liaison example has an independently pinned surface and IPA', () => {
   const expected = {
-    '넋이': {surface:'넉씨', target:'нокші', ipa:'nʌk̚ ɕ͈i'},
-    '값이': {surface:'갑씨', target:'капші', ipa:'kap̚ ɕ͈i'},
-    '앉아': {surface:'안자', target:'анджа', ipa:'an dʑa'},
-    '닭을': {surface:'달글', target:'талґил', ipa:'tal ɡɯl'},
-    '젊어': {surface:'절머', target:'чолмо', ipa:'tɕʌl mʌ'},
-    '곬이': {surface:'골씨', target:'колші', ipa:'kol ɕ͈i'},
-    '핥아': {surface:'할타', target:'галта', ipa:'hal tʰa'},
-    '읊어': {surface:'을퍼', target:'илпо', ipa:'ɯl pʰʌ'},
-    '값을': {surface:'갑쓸', target:'капсил', ipa:'kap̚ s͈ɯl'},
-    '없어': {surface:'업써', target:'опсо', ipa:'ʌːp̚ s͈ʌ'},
-    '여덟이': {surface:'여덜비', target:'йодолбі', ipa:'jʌ dʌl bi'},
-    '여덟을': {surface:'여덜블', target:'йодолбил', ipa:'jʌ dʌl bɯl'},
+    '넋이': {surface:'넉씨', target:'нокші', ipa:'nʌk̚.ɕ͈i'},
+    '값이': {surface:'갑씨', target:'капші', ipa:'kap̚.ɕ͈i'},
+    '앉아': {surface:'안자', target:'анджа', ipa:'an.dʑa'},
+    '닭을': {surface:'달글', target:'талґил', ipa:'tal.ɡɯl'},
+    '젊어': {surface:'절머', target:'чолмо', ipa:'tɕʌl.mʌ'},
+    '곬이': {surface:'골씨', target:'колші', ipa:'kol.ɕ͈i'},
+    '핥아': {surface:'할타', target:'галта', ipa:'hal.tʰa'},
+    '읊어': {surface:'을퍼', target:'илпо', ipa:'ɯl.pʰʌ'},
+    '값을': {surface:'갑쓸', target:'капсил', ipa:'kap̚.s͈ɯl'},
+    '없어': {surface:'업써', target:'опсо', ipa:'ʌːp̚.s͈ʌ'},
+    '여덟이': {surface:'여덜비', target:'йодолбі', ipa:'jʌ.dʌl.bi'},
+    '여덟을': {surface:'여덜블', target:'йодолбил', ipa:'jʌ.dʌl.bɯl'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
@@ -242,20 +242,20 @@ test('simple codas with §15-sensitive representatives are not transferred blind
 
 test('§13 all enumerated simple-coda liaison examples have pinned surfaces and IPA', () => {
   const expected = {
-    '깎아': {surface:'까까', target:'кака', ipa:'k͈a k͈a'},
-    '옷이': {surface:'오시', target:'оші', ipa:'o ɕi', targetStatus:'model-selected'},
-    '있어': {surface:'이써', target:'ісо', ipa:'i s͈ʌ'},
-    '낮이': {surface:'나지', target:'наджі', ipa:'na dʑi'},
-    '꽂아': {surface:'꼬자', target:'коджа', ipa:'k͈o dʑa'},
-    '꽃을': {surface:'꼬츨', target:'кочил', ipa:'k͈o tɕʰɯl'},
-    '밭에': {surface:'바테', target:'пате', ipa:'pa tʰe'},
-    '앞으로': {surface:'아프로', target:'апиро', ipa:'a pʰɯ ɾo'},
-    '덮이다': {surface:'더피다', target:'топіда', ipa:'tʌ pʰi da'},
-    '쫓아': {surface:'쪼차', target:'чоча', ipa:'tɕ͈o tɕʰa'},
-    '덮어': {surface:'더퍼', target:'топо', ipa:'tʌ pʰʌ'},
-    '맞아': {surface:'마자', target:'маджа', ipa:'ma dʑa'},
-    '낮아': {surface:'나자', target:'наджа', ipa:'na dʑa'},
-    '붙어': {surface:'부터', target:'путо', ipa:'pu tʰʌ'},
+    '깎아': {surface:'까까', target:'кака', ipa:'k͈a.k͈a'},
+    '옷이': {surface:'오시', target:'оші', ipa:'o.ɕi', targetStatus:'model-selected'},
+    '있어': {surface:'이써', target:'ісо', ipa:'i.s͈ʌ'},
+    '낮이': {surface:'나지', target:'наджі', ipa:'na.dʑi'},
+    '꽂아': {surface:'꼬자', target:'коджа', ipa:'k͈o.dʑa'},
+    '꽃을': {surface:'꼬츨', target:'кочил', ipa:'k͈o.tɕʰɯl'},
+    '밭에': {surface:'바테', target:'пате', ipa:'pa.tʰe'},
+    '앞으로': {surface:'아프로', target:'апиро', ipa:'a.pʰɯ.ɾo'},
+    '덮이다': {surface:'더피다', target:'топіда', ipa:'tʌ.pʰi.da'},
+    '쫓아': {surface:'쪼차', target:'чоча', ipa:'tɕ͈o.tɕʰa'},
+    '덮어': {surface:'더퍼', target:'топо', ipa:'tʌ.pʰʌ'},
+    '맞아': {surface:'마자', target:'маджа', ipa:'ma.dʑa'},
+    '낮아': {surface:'나자', target:'наджа', ipa:'na.dʑa'},
+    '붙어': {surface:'부터', target:'путо', ipa:'pu.tʰʌ'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
@@ -385,10 +385,10 @@ test('NIKL §21 negative controls prevent nonstandard place assimilation', () =>
 
 test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
   const expected = {
-    '되어': {target:'твео', ipa:'tø ʌ', alternateSurface:'되여', alternateTarget:'твейо', alternateIpa:'tø jʌ'},
-    '피어': {target:'піо', ipa:'pʰi ʌ', alternateSurface:'피여', alternateTarget:'пійо', alternateIpa:'pʰi jʌ'},
-    '이오': {target:'іо', ipa:'i o', alternateSurface:'이요', alternateTarget:'ійо', alternateIpa:'i jo'},
-    '아니오': {target:'аніо', ipa:'a ni o', alternateSurface:'아니요', alternateTarget:'анійо', alternateIpa:'a ni jo'},
+    '되어': {target:'твео', ipa:'tø.ʌ', alternateSurface:'되여', alternateTarget:'твейо', alternateIpa:'tø.jʌ'},
+    '피어': {target:'піо', ipa:'pʰi.ʌ', alternateSurface:'피여', alternateTarget:'пійо', alternateIpa:'pʰi.jʌ'},
+    '이오': {target:'іо', ipa:'i.o', alternateSurface:'이요', alternateTarget:'ійо', alternateIpa:'i.jo'},
+    '아니오': {target:'аніо', ipa:'a.ni.o', alternateSurface:'아니요', alternateTarget:'анійо', alternateIpa:'a.ni.jo'},
   };
   for (const [word, values] of Object.entries(expected)) {
     const result = engine.convert(word);
@@ -405,10 +405,10 @@ test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
 
 test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings', () => {
   const expected = {
-    '주의': {surface:'주의', target:'чуий', ipa:'tɕu ɰi', alternateSurface:'주이', alternateTarget:'чуі', alternateIpa:'tɕu i'},
-    '협의': {surface:'혀븨', target:'гьобі', ipa:'hjʌ bi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ bi'},
-    '우리의': {surface:'우리의', target:'уріий', ipa:'u ɾi ɰi', alternateSurface:'우리에', alternateTarget:'уріе', alternateIpa:'u ɾi e'},
-    '강의의': {surface:'강의의', target:'канийий', ipa:'kaːŋ ɰi ɰi', alternateSurface:'강이에', alternateTarget:'каніе', alternateIpa:'kaːŋ i e'},
+    '주의': {surface:'주의', target:'чуий', ipa:'tɕu.ɰi', alternateSurface:'주이', alternateTarget:'чуі', alternateIpa:'tɕu.i'},
+    '협의': {surface:'혀븨', target:'гьобі', ipa:'hjʌ.bi', alternateSurface:'혀비', alternateTarget:'гьобі', alternateIpa:'hjʌ.bi'},
+    '우리의': {surface:'우리의', target:'уріий', ipa:'u.ɾi.ɰi', alternateSurface:'우리에', alternateTarget:'уріе', alternateIpa:'u.ɾi.e'},
+    '강의의': {surface:'강의의', target:'канийий', ipa:'kaːŋ.ɰi.ɰi', alternateSurface:'강이에', alternateTarget:'каніе', alternateIpa:'kaːŋ.i.e'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
@@ -485,14 +485,14 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
   const variants = {
     '회': {surface:'회', target:'гве', ipa:'hø', alternateSurface:'회', alternateTarget:'гве', alternateIpa:'hwe'},
     '위': {surface:'위', target:'ві', ipa:'y', alternateSurface:'위', alternateTarget:'ві', alternateIpa:'wi'},
-    '계집': {surface:'계집', target:'кєджіп', ipa:'kjeː dʑip̚', alternateSurface:'게집', alternateTarget:'кеджіп', alternateIpa:'keː dʑip̚'},
-    '계시다': {surface:'계시다', target:'кєшіда', ipa:'kjeː ɕi da', alternateSurface:'게시다', alternateTarget:'кешіда', alternateIpa:'keː ɕi da'},
-    '시계': {surface:'시계', target:'шіґє', ipa:'ɕi ɡje', alternateSurface:'시게', alternateTarget:'шіґе', alternateIpa:'ɕi ɡe'},
-    '연계': {surface:'연계', target:'йонґє', ipa:'jʌn ɡje', alternateSurface:'연게', alternateTarget:'йонґе', alternateIpa:'jʌn ɡe'},
-    '몌별': {surface:'몌별', target:'мєбйол', ipa:'mje bjʌl', alternateSurface:'메별', alternateTarget:'мебйол', alternateIpa:'me bjʌl'},
-    '개폐': {surface:'개폐', target:'кепє', ipa:'kɛ pʰje', alternateSurface:'개페', alternateTarget:'кепе', alternateIpa:'kɛ pʰe'},
-    '혜택': {surface:'혜택', target:'гєтек', ipa:'hjeː tʰɛk̚', alternateSurface:'헤택', alternateTarget:'гетек', alternateIpa:'heː tʰɛk̚'},
-    '지혜': {surface:'지혜', target:'чігє', ipa:'tɕi hje', alternateSurface:'지헤', alternateTarget:'чіге', alternateIpa:'tɕi he'},
+    '계집': {surface:'계집', target:'кєджіп', ipa:'kjeː.dʑip̚', alternateSurface:'게집', alternateTarget:'кеджіп', alternateIpa:'keː.dʑip̚'},
+    '계시다': {surface:'계시다', target:'кєшіда', ipa:'kjeː.ɕi.da', alternateSurface:'게시다', alternateTarget:'кешіда', alternateIpa:'keː.ɕi.da'},
+    '시계': {surface:'시계', target:'шіґє', ipa:'ɕi.ɡje', alternateSurface:'시게', alternateTarget:'шіґе', alternateIpa:'ɕi.ɡe'},
+    '연계': {surface:'연계', target:'йонґє', ipa:'jʌn.ɡje', alternateSurface:'연게', alternateTarget:'йонґе', alternateIpa:'jʌn.ɡe'},
+    '몌별': {surface:'몌별', target:'мєбйол', ipa:'mje.bjʌl', alternateSurface:'메별', alternateTarget:'мебйол', alternateIpa:'me.bjʌl'},
+    '개폐': {surface:'개폐', target:'кепє', ipa:'kɛ.pʰje', alternateSurface:'개페', alternateTarget:'кепе', alternateIpa:'kɛ.pʰe'},
+    '혜택': {surface:'혜택', target:'гєтек', ipa:'hjeː.tʰɛk̚', alternateSurface:'헤택', alternateTarget:'гетек', alternateIpa:'heː.tʰɛk̚'},
+    '지혜': {surface:'지혜', target:'чігє', ipa:'tɕi.hje', alternateSurface:'지헤', alternateTarget:'чіге', alternateIpa:'tɕi.he'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(variants)) {
@@ -662,11 +662,11 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
 
 test('NIKL §18 cross-word examples nasalize across connected phrase boundaries', () => {
   const expected = {
-    '책 넣는다': 'tɕʰɛŋ nʌn nɯn da',
-    '흙 말리다': 'hɯŋ mal li da',
-    '옷 맞추다': 'on mat̚ tɕʰu da',
-    '밥 먹는다': 'pam mʌŋ nɯn da',
-    '값 매기다': 'kam mɛ ɡi da',
+    '책 넣는다': 'tɕʰɛŋ nʌn.nɯn.da',
+    '흙 말리다': 'hɯŋ mal.li.da',
+    '옷 맞추다': 'on mat̚.tɕʰu.da',
+    '밥 먹는다': 'pam mʌŋ.nɯn.da',
+    '값 매기다': 'kam mɛ.ɡi.da',
   };
   for (const [phrase, ipa] of Object.entries(expected)) {
     const result = engine.convert(phrase);
@@ -738,12 +738,12 @@ test('NIKL §19 official examples preserve rule order before §18 nasalization',
 
 test('NIKL §20 general liquid-assimilation examples use the general rules', () => {
   const expected = {
-    '천리': 'tɕʰʌl li',
-    '물난리': 'mul lal li',
-    '할는지': 'hal lɯn dʑi',
-    '닳는': 'tal lɯn',
-    '뚫는': 't͈ul lɯn',
-    '핥네': 'hal le',
+    '천리': 'tɕʰʌl.li',
+    '물난리': 'mul.lal.li',
+    '할는지': 'hal.lɯn.dʑi',
+    '닳는': 'tal.lɯn',
+    '뚫는': 't͈ul.lɯn',
+    '핥네': 'hal.le',
   };
   const rows = parseCsv(lexical);
   for (const [word, ipa] of Object.entries(expected)) {
@@ -785,57 +785,57 @@ test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', 
 
 test('user-supplied high-risk corpus has source-backed Korean surface forms', () => {
   const expected = {
-    '신라':'실라',
-    '설날':'설랄',
-    '종로':'종노',
-    '해돋이':'해도지',
-    '맏이':'마지',
-    '숱이':'수치',
-    '끝이':'끄치',
-    '값이':'갑씨',
-    '없어':'업써',
-    '맑다':'막따',
-    '밝다':'박따',
-    '넓다':'널따',
-    '넓고':'널꼬',
-    '밟다':'밥따',
-    '밟고':'밥꼬',
-    '밟는':'밤는',
-    '삶':'삼',
-    '젊다':'점따',
-    '읊다':'읍따',
-    '읊고':'읍꼬',
-    '앉다':'안따',
-    '앉고':'안꼬',
-    '앉는':'안는',
-    '많다':'만타',
-    '많고':'만코',
-    '많습니다':'만씀니다',
-    '좋다':'조타',
-    '좋고':'조코',
-    '좋지':'조치',
-    '좋습니다':'조씀니다',
-    '놓고':'노코',
-    '놓는':'논는',
-    '놓지':'노치',
-    '낳다':'나타',
-    '낳고':'나코',
-    '낫다':'낟따',
-    '낫고':'낟꼬',
-    '낫지':'낟찌',
-    '낯설다':'낟썰다',
-    '낮잠':'낟짬',
-    '꽃망울':'꼰망울',
-    '옷맵시':'온맵씨',
-    '앞문':'암문',
-    '앞니':'암니',
-    '콧물':'콘물',
-    '국민':'궁민',
-    '국물':'궁물',
-    '박물관':'방물관',
-    '서울역':'서울력',
-    '한국말':'한궁말',
-    '한국어':'한구거',
+    '신라': '실라',
+    '설날': '설랄',
+    '종로': '종노',
+    '해돋이': '해도지',
+    '맏이': '마지',
+    '숱이': '수치',
+    '끝이': '끄치',
+    '값이': '갑씨',
+    '없어': '업써',
+    '맑다': '막따',
+    '밝다': '박따',
+    '넓다': '널따',
+    '넓고': '널꼬',
+    '밟다': '밥따',
+    '밟고': '밥꼬',
+    '밟는': '밤는',
+    '삶': '삼',
+    '젊다': '점따',
+    '읊다': '읍따',
+    '읊고': '읍꼬',
+    '앉다': '안따',
+    '앉고': '안꼬',
+    '앉는': '안는',
+    '많다': '만타',
+    '많고': '만코',
+    '많습니다': '만씀니다',
+    '좋다': '조타',
+    '좋고': '조코',
+    '좋지': '조치',
+    '좋습니다': '조씀니다',
+    '놓고': '노코',
+    '놓는': '논는',
+    '놓지': '노치',
+    '낳다': '나타',
+    '낳고': '나코',
+    '낫다': '낟따',
+    '낫고': '낟꼬',
+    '낫지': '낟찌',
+    '낯설다': '낟썰다',
+    '낮잠': '낟짬',
+    '꽃망울': '꼰망울',
+    '옷맵시': '온맵씨',
+    '앞문': '암문',
+    '앞니': '암니',
+    '콧물': '콘물',
+    '국민': '궁민',
+    '국물': '궁물',
+    '박물관': '방물관',
+    '서울역': '서울력',
+    '한국말': '한궁말',
+    '한국어': '한구거',
   };
   const rows = parseCsv(lexical);
   for (const [word, surface] of Object.entries(expected)) {
