@@ -26,20 +26,20 @@ JS_SOURCE = (ROOT / "src" / "app" / "engine_shared.js").read_text(encoding="utf-
 
 def js_string_map(name: str) -> dict[str, str]:
     match = re.search(
-        rf"const {re.escape(name)}\\s*=\\s*new Map\\(\\[([\\s\\S]*?)\\]\\);",
+        rf"const {re.escape(name)}\s*=\s*new Map\(\[([\s\S]*?)\]\);",
         JS_SOURCE,
     )
     assert match, f"missing browser map {name}"
-    return dict(re.findall(r"\\['([^']+)'\\s*,\\s*'([^']+)'\\]", match.group(1)))
+    return dict(re.findall(r"\['([^']+)'\s*,\s*'([^']+)'\]", match.group(1)))
 
 
 def js_map_keys(name: str) -> set[str]:
     match = re.search(
-        rf"const {re.escape(name)}\\s*=\\s*new Map\\(\\[([\\s\\S]*?)\\]\\);",
+        rf"const {re.escape(name)}\s*=\s*new Map\(\[([\s\S]*?)\]\);",
         JS_SOURCE,
     )
     assert match, f"missing browser map {name}"
-    return set(re.findall(r"\\['([^']+)'\\s*,", match.group(1)))
+    return set(re.findall(r"\['([^']+)'\s*,", match.group(1)))
 
 
 def test_python_browser_exact_rule_licenses_match():
