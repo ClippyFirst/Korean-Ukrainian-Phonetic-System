@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -79,7 +80,7 @@ test('corpus-discovered source-backed and rule-derived pronunciation cases are r
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': standard surface form');
     assert.equal(result.ukrainian, target, word + ': Ukrainian approximation');
-    assert.equal(result.ipa, ipa, word + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': IPA');
     assert.equal(result.status, 'lexical-review', word + ': target review status');
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word + ': lexical evidence used');
     assert.ok(!result.ukrainian.includes('⟦'), word + ': no unresolved placeholder');
