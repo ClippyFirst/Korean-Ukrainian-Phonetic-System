@@ -12,6 +12,14 @@ Latest complete six-engine run: [40092929978](https://github.com/ClippyFirst/Kor
 
 On SIGMORPHON, native is 357/997 exact (35.8074%) versus g2pk 353/997 on the same scored subset (35.4062%); g2pk's paired exact delta is −0.4012 pp (95% CI −0.8024 to −0.1003). The two datasets do not support a universal g2pk advantage. All 48 UGTPHON abstention occurrences and both SIGMORPHON abstentions are present in the complete schema-v4 pairwise artifact.
 
+## Teacher corpus split and leakage audit — 2026-10-26
+
+Automated exact-head audit passed in [run 40290981510](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290981510); metadata-only report [12635583549](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290981510/artifacts/12635583549). The pinned files verified and row counts were UGTPHON 1,976/246/275, SIGMORPHON 8,000/1,000/1,000, and Charsiu repository Korean data 62,126 train (61,900 unique forms; 226 duplicate-form rows), 50 dev, 500 test.
+
+Critical overlap warnings: 508 unique UGTPHON test token forms intersect Charsiu repository train; 237 UGTPHON test forms intersect SIGMORPHON train; 729 SIGMORPHON test forms intersect Charsiu repository train. These counts do not prove the exact Hugging Face checkpoint saw each item, but its training manifest is unavailable, so neither public test set can be claimed as guaranteed independent evaluation for this teacher. Keep both test splits sealed for tuning. The 24-form NIKL set is also sealed and has no IPA gold pending independent annotation.
+
+**Training decision:** train/dev partitions are source-available candidates, not permission to fine-tune. The selected Charsiu checkpoint still has no verified explicit weight license/model card, and its original training overlap is unknown. No teacher inference, fine-tuning, or production rule changes were performed. Use disagreements only as a review queue; require primary-source phonology evidence, positive/negative controls, and a separate eligible dev improvement before implementing a Strict rule.
+
 ## Eight complementary benchmark suites
 
 | # | Suite | Primary question and metrics | Current state | Acceptance evidence still required |
