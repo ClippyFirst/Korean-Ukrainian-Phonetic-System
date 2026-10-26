@@ -170,6 +170,7 @@ const NIKL_29_PHRASE_INSERTION=new Map([
 ]);
 
 // Exact NIKL §29 word-internal ㄴ insertion licenses; preserve lexical scope.
+// Official rules: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 const NIKL_29_WORD_INSERTION=new Map([
   ['솜이불','솜>이'], ['홑이불','홑>이'], ['막일','막>일'],
   ['삯일','삯>일'], ['맨입','맨>입'], ['꽃잎','꽃>잎'],
