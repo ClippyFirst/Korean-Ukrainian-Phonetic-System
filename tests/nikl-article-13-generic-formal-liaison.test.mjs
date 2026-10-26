@@ -26,7 +26,7 @@ test('§13: unambiguous single-coda liaison works without lexical overrides', ()
 });
 
 test('§§13–15: complex-coda liaison stays unresolved without morphological evidence', () => {
-  const result = genericEngine.convert('읽어');
+  const result = genericEngine.convert('젊어');
   assert.equal(result.status, 'unresolved');
   assert.ok(result.issues.some(issue => /complex-coda liaison differs between formal and substantive morphemes/u.test(issue)));
   assert.ok(result.trace.some(item => item.rules.includes('complex-coda-liaison-requires-morphology')));
