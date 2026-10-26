@@ -16,6 +16,9 @@ on:
       - "docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md"
       - "docs/NEURAL-KOREAN-G2P-V3-RESEARCH-GATE-2026-10-26.md"
       - "docs/NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md"
+      - "docs/CLIPPYFIRST-V3-TRAINING-AND-BENCHMARK-PROTOCOL.md"
+      - "scripts/audit_v3_training_readiness.py"
+      - "tests/test_v3_training_readiness.py"
       - "scripts/benchmark_charsiu_g2p.py"
       - "scripts/compare_neural_with_multiengine.py"
       - "tests/test_charsiu_g2p_benchmark.py"
@@ -134,7 +137,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check scripts/benchmark_phonemize_adapter.cjs
-          python -m pytest tests/test_multi_engine_benchmark.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py
+          python -m pytest tests/test_multi_engine_benchmark.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py tests/test_v3_training_readiness.py
 
       - name: Run multi-engine comparison
         env:
