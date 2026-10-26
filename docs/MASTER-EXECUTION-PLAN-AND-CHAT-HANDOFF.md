@@ -1827,3 +1827,15 @@ The figure 60.2% (602/1,000) belongs only to the standalone scratch-trained bidi
 - Positive controls must be corrected; negative controls must remain unchanged and correct; dev exact match must improve, or tie while codepoint CER improves. CER is explicitly a Unicode-codepoint diagnostic, not phoneme error rate.
 - A pass only permits human review; the tool always sets `production_promotion=false`. No production rule was changed because the teacher/Strict IPA conventions remain unreviewed and the 366 train/train conflicts are not independently adjudicated.
 - This is an executable acceptance gate, not a claim that engine quality has already improved. The next genuine runtime change must cite primary Korean phonology evidence, include positive/negative regression controls, and show a same-convention gain on eligible held-out dev data without touching sealed test/holdout forms.
+
+
+### Verification of deterministic rule-candidate gate — 2026-10-26
+
+- **Verified code/test head:** `b2e460ae0c2315ac9fc3273f7451d4daedd236de`.
+- **Tests:** [40320537172](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40320537172) PASS — Python 3.11/3.12/3.13, browser tests/build, wheel install, and all Python tests including the new candidate gate.
+- **Corpus audit:** [40320537189](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40320537189) PASS — pinned corpus preparation, split/overlap audit, IPA packetization/conflict queue, and rule-gate tests.
+- **System verification:** [40320537156](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40320537156) PASS; live NIKL source inventory was skipped by workflow condition and is not counted as passed.
+- **Master artifacts:** [40320537166](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40320537166) PASS.
+- **Scratch research teacher / diagnostic pairing:** [40320537218](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40320537218) PASS. This is research-only and does not affect runtime.
+- The first candidate-gate test run exposed three test-fixture mistakes (wrong control index, JSONL newline literal, and wrong evaluation-row index). They were corrected; the exact code/test head above passes all five workflows.
+- **Outcome boundary:** no production phonology rule or runtime output changed. This gate makes future rule changes evidence- and regression-checkable, but it does not itself improve engine accuracy. The real rule-promotion blocker remains the independently reviewed IPA convention mapping and adjudication of the 366 train/train conflicts. Keep PR #339 draft until an evidence-backed deterministic change demonstrates same-convention improvement on eligible dev data.
