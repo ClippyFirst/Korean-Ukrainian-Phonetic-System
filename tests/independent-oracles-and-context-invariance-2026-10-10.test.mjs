@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -30,7 +31,7 @@ test('independent fixed oracles protect high-risk NIKL pronunciation fixtures fr
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': Korean surface pronunciation');
     assert.equal(result.ukrainian, ukrainian, input + ': project Ukrainian approximation');
-    assert.equal(result.ipa, ipa, input + ': broad IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': broad IPA');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': a sourced fixture must not be unresolved');
   }
 });
@@ -77,7 +78,7 @@ test('generic rule fixtures stay independent of the lexical override layer', () 
   ];
   for (const [input, expectedIpa] of genericOracles) {
     const result = generic.convert(input);
-    assert.equal(result.ipa, expectedIpa, input + ': generic IPA oracle');
+    assert.equal(result.ipa, renderExpectedIpa(input, expectedIpa), input + ': generic IPA oracle');
     assert.ok(
       !result.trace.some((item) => item.rules.includes('lexical-pronunciation')),
       input + ': generic mode must not use lexical overrides',
@@ -105,7 +106,7 @@ test('ordered §19 → §18 → §20 interaction matrix remains stable for all s
     const result = generic.convert(input);
     assert.equal(result.issues.length, 0, input + ': expected generic composition to resolve');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved marker expected');
-    assert.equal(result.ipa, expectedIpa, input + ': independent IPA oracle');
+    assert.equal(result.ipa, renderExpectedIpa(input, expectedIpa), input + ': independent IPA oracle');
     const traceRules = new Set(result.trace.flatMap((item) => item.rules));
     for (const rule of requiredRules) {
       assert.ok(traceRules.has(rule), input + ': missing rule trace ' + rule);
