@@ -256,7 +256,7 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
 
     // NIKL §27 official Q&A 330963 confirms attached ending -ㄹ게 as [ㄹ께].
     // The rule is productive only for the orthographic -ㄹ게 ending inside one eojeol.
-    if(a.coda==='ㄹ'&&b.char==='게'&&b.onset==='ㄱ'&&a.boundaryAfter!=='word'){
+    if(a.coda==='ㄹ'&&b.char==='게'&&b.onset==='ㄱ'){
       b.onset='ㄲ';
       rules.push('adnominal-l-fortition-§27-attested-l-ge');
       nextRules.push('adnominal-l-fortition-§27-attested-l-ge');
