@@ -1145,3 +1145,11 @@ The UGTPHON test artifact [40328909490](https://github.com/ClippyFirst/Korean-Uk
 
 Readiness remains research-ready partial prototype, not release-ready.
 
+### Exact final continuation status
+
+- Branch HEAD: `f9cd130ad57c119fc2d600e63a28c9f6d000aacb`.
+- Latest code/test HEAD: `e14b4b026738755dbee1c819da8635aec4f6c0f7`; the later commits are documentation/PR reconciliation.
+- The most recent visible test matrix [40343059002](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343059002), system verification [40343058844](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058844), and corrected Charsiu train/dev [40343058866](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058866) remain queued on preceding code/test head `16d07d7`. No exact-head pass is available for the new morphology rule-license tests.
+- No local tests were executed; the container's `git ls-remote` failed because github.com DNS could not be resolved.
+- Do not mark the new morphology batch DONE_VERIFIED until exact-head CI passes. The independent test-evaluation blocker for the test-informed `물가로` case remains open.
+
