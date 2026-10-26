@@ -888,6 +888,7 @@ def test_nikl_section_24_official_examples_have_exact_stem_ending_licenses():
     expected = {
         "안다": ("안>다", "ㄸ"),
         "안고": ("안>고", "ㄲ"),
+        "안지": ("안>지", "ㅉ"),
         "감다": ("감>다", "ㄸ"),
         "감고": ("감>고", "ㄲ"),
         "껴안다": ("안>다", "ㄸ"),
@@ -903,6 +904,7 @@ def test_nikl_section_24_official_examples_have_exact_stem_ending_licenses():
         assert result["surface_hangul"] == {
             "안다": "안따",
             "안고": "안꼬",
+            "안지": "안찌",
             "감다": "감따",
             "감고": "감꼬",
             "껴안다": "껴안따",
