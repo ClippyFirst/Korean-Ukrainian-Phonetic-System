@@ -85,11 +85,11 @@ test('§18 all twenty-four listed word examples are source-backed with exact sta
 
 test('§18 all five official cross-word examples remain connected and nasalize', () => {
   const expected = {
-    '책 넣는다':'tɕʰɛŋ nʌn.nɯn.da',
-    '흙 말리다':'hɯŋ mal li da',
-    '옷 맞추다':'on mat̚ tɕʰu da',
-    '밥 먹는다':'pam mʌŋ.nɯn.da',
-    '값 매기다':'kam mɛ ɡi da',
+    '책 넣는다': 'tɕʰɛŋ nʌn.nɯn.da',
+    '흙 말리다': 'hɯŋ mal.li.da',
+    '옷 맞추다': 'on mat̚.tɕʰu.da',
+    '밥 먹는다': 'pam mʌŋ.nɯn.da',
+    '값 매기다': 'kam mɛ.ɡi.da',
   };
   for (const [phrase,ipa] of Object.entries(expected)) {
     const result = engine.convert(phrase);
@@ -103,10 +103,10 @@ test('§18 cross-word nasal/liquid assimilation survives a lexical/generic split
   // token, so this specifically covers the mixed-tokenization adapter path.
   const cases = [
     ['읽어 책 넣는다', 'il ɡʌ tɕʰɛŋ nʌn.nɯn.da'],
-    ['읽어 흙 말리다', 'il ɡʌ hɯŋ mal li da'],
-    ['읽어 옷 맞추다', 'il ɡʌ on mat̚ tɕʰu da'],
-    ['읽어 밥 먹는다', 'il ɡʌ pam mʌŋ nɯn da'],
-    ['읽어 값 매기다', 'il ɡʌ kam mɛ ɡi da'],
+    ['읽어 흙 말리다', 'il.ɡʌ hɯŋ mal.li.da'],
+    ['읽어 옷 맞추다', 'il.ɡʌ on mat̚.tɕʰu.da'],
+    ['읽어 밥 먹는다', 'il.ɡʌ pam mʌŋ.nɯn.da'],
+    ['읽어 값 매기다', 'il.ɡʌ kam mɛ.ɡi.da'],
   ];
   for (const [phrase, expectedIpa] of cases) {
     const result = engine.convert(phrase);
