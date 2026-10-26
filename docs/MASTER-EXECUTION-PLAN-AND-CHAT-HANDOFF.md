@@ -34,6 +34,15 @@
 - **Pipeline invariant:** source Hangul -> structural/phonological analysis -> typed phonetic/IPA representation -> Ukrainian target adaptation -> Ukrainian practical orthography. SIGMORPHON's tokenized IPA remains explicitly typed until its conventions are mapped and independently checked.
 
 
+### Cross-corpus audit evidence (CI run 40295700341)
+
+- Teacher corpus audit, both builders, compatibility report, and artifact upload all passed on code/test head b3d7b1725047d254c3a46bf2217d16ca133095c3. Full artifact: [12638605228](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40295700341/artifacts/12638605228).
+- SIGMORPHON preparation: 8,000 train / 1,000 dev rows; zero normalized source-form overlap among train/dev/test.
+- UGTPHON conservative token extraction: 13,271 train and 1,897 dev occurrences; 8,753 / 1,629 unique eligible forms. Eligible form intersections: train-dev 538, train-test 510, dev-test 228. These are repeated token forms across sentence splits, not duplicate sentence IDs.
+- Cross-corpus source-form intersections: SIGMORPHON train × UGTPHON train 1,084; train × dev 257; dev × train 140; dev × dev 33.
+- After removing only SIGMORPHON whitespace phone-token separators, target strings match for 718/1,084 train/train shared forms, 180/257 train/dev, 86/140 dev/train, and 23/33 dev/dev. Remaining differences are not automatically errors; no symbols were mapped and no syllable boundaries inferred. Target compatibility remains UNVERIFIED, and the corpora are not merged.
+- The first compatibility audit failed before a common output_row_count manifest field was added and the test fixtures were corrected. The subsequent audit run 40295700341 passed all preparation, audit, and upload steps. Preserve this failure/fix history; do not report the earlier run as passing.
+
 ## Current execution record
 
 - **PR:** [Draft PR #339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339), based on `main` at `a452054a669de28426404d1110731715083423bb`. It remains draft and has not been merged.
