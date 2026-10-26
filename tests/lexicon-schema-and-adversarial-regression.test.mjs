@@ -135,11 +135,11 @@ test('punctuation is a hard boundary for cross-word sound-rule propagation', () 
 test('a representative set of generic rule cases stays algorithmic with and without the lexical layer', () => {
   const expected = {
     '국물':'kuŋ.mul',
-    '막론':'maŋ non',
-    '신라':'ɕil la',
+    '막론':'maŋ.non',
+    '신라':'ɕil.la',
     '값':'kap̚',
     '넋':'nʌk̚',
-    '낮이':'na dʑi',
+    '낮이':'na.dʑi',
   };
   for (const [word, ipa] of Object.entries(expected)) {
     const result = genericEngine.convert(word);
