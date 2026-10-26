@@ -1775,7 +1775,7 @@ python scripts/validate_korean_ipa_adjudications.py \
   --output-json path/to/validated-adjudication-ledger.json
 ```
 
-The input uses `schema_version: "1.0"`, the queue's exact `source_pins`, and a `decisions` array. Each decision includes `queue_id`, exact `source_text`, and `reviewer_1`/`reviewer_2` records. Each reviewer supplies a controlled decision and rationale; non-`UNRESOLVED` decisions also require an evidence reference. Partial submissions are allowed and explicitly list unreviewed queue IDs. The original queue is not modified, and the output asserts that no mapping or production rule was applied.
+The input uses `schema_version: "1.0"`, the queue's exact `source_pins`, and a `decisions` array. Each decision includes `queue_id`, exact `source_text`, and `reviewer_1`/`reviewer_2` records. Each reviewer supplies a distinct `reviewer_id`, controlled decision, and rationale; non-`UNRESOLVED` reviewer decisions require an evidence reference. The two reviewer IDs must differ. A final decision requires an adjudicator and a non-empty final rationale; any final decision other than `UNRESOLVED` also requires `final_evidence_reference`. Partial submissions are allowed and explicitly list unreviewed queue IDs. The original queue is not modified, and the output asserts that no mapping or production rule was applied.
 
 ### Verification status
 
@@ -1784,3 +1784,14 @@ The input uses `schema_version: "1.0"`, the queue's exact `source_pins`, and a `
 - Local clone/test execution was attempted but blocked because DNS/network access to `github.com` failed. No local test result is claimed. Exact-head GitHub Actions must verify the new validator before this task is fully verified.
 - Previously recorded exact-head workflows before this batch: tests [40315132582](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40315132582), system verification [40315132650](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40315132650), corpus audit [40315132568](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40315132568), scratch teacher/pairing [40315132667](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40315132667), and master artifacts [40315132603](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40315132603). These runs do not verify the new validator.
 - **Current assessment:** research-ready infrastructure / partial prototype; not release-ready. No production runtime behavior changed in this batch.
+
+
+### Validator hardening and CI wiring — 2026-10-26
+
+- Strengthened the human-adjudication ledger validator so `reviewer_1` and `reviewer_2` cannot silently represent the same person: both records require explicit, distinct `reviewer_id` values.
+- Final non-`UNRESOLVED` decisions now require a separate `final_evidence_reference`, in addition to adjudicator and rationale. Malformed non-string final rationale is rejected as a validation error rather than escaping as an unhandled attribute error.
+- Expanded regression tests for duplicate reviewer identity, final-evidence requirements, successful evidence-backed adjudication, and missing/malformed adjudicator metadata.
+- Wired `scripts/validate_korean_ipa_adjudications.py` and its tests into `.github/workflows/teacher-corpus-audit.yml`, both as path triggers and in the test command. This prevents the focused research gate from silently ignoring edits to the adjudication validator.
+- Commits for this batch: validator `21b613d8d0df299d9410bf829e9d9068b8ebc1c4`; test updates `5c3198324b63f4260bade25ca049359b7a3a615d`, `9c3ef572058d24ab89bed947fa3ae7dcb1c8bd68`; CI wiring `c4a08e877cd4153d75697f1359d0f0d911442cef`.
+- Verification limitation: the GitHub Actions run listing currently returns no PR-triggered runs for the new exact commit. The previous exact-head five-workflow set on `e8797b6dd6d45359f4247129a3d3e992a517cad8` passed, including the scratch-teacher training job; that does not verify these newer validator changes. Local execution remains unavailable because the environment could not resolve `github.com`. Treat the new code as **implemented, exact-head CI pending**, not `DONE_VERIFIED`.
+- Remaining evidence gate is unchanged: no actual human adjudication is fabricated; all 366 train/train source conflicts remain unadjudicated; exact IPA-Dict snapshot provenance remains unresolved; no IPA mapping or production Strict rule is promoted.
