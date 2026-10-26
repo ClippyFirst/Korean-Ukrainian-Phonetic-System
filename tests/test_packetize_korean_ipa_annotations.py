@@ -91,3 +91,10 @@ def test_refuses_missing_target_and_duplicate_case_ids(tmp_path):
     source.write_text(json.dumps(item) + "\n" + json.dumps(item) + "\n", encoding="utf-8")
     with pytest.raises(ValueError, match="duplicate case_id"):
         packetize_file(source, output)
+
+
+def test_dot_inside_token_is_not_promoted_to_an_explicit_boundary():
+    packet = packetize_row(row("k.a"))
+    assert packet["target_raw"] == "k.a"
+    assert packet["markers"]["explicit_boundary_markers"] == []
+    assert packet["units"][0]["raw"] == "k.a"
