@@ -4,7 +4,7 @@
 
 **Recommendation: pursue a research-only V3 prototype, not a replacement release.** A neural component is worth testing because Korean G2P ambiguity is not limited to letter-to-sound rules: lexical identity, morphology, boundary/prosodic context, non-canonical spelling, and pronunciation variants can matter. The existing ClippyFirst strict/soft engines and IPA-to-Ukrainian renderer should remain the reference architecture and safety boundary.
 
-The repository currently has no integrated neural G2P baseline: the multi-engine harness lists ClippyFirst native, g2pk, KoG2P, hangul_to_ipa, eSpeak NG, and phonemize. A GitHub code search on 2026-10-26 found no CharsiuG2P, ByT5, or neural-model references in this repository. This means there are **no neural-model benchmark scores in the repository yet**; external model claims below are candidate evidence, not results obtained by ClippyFirst.
+Before this branch, the six-engine harness had no integrated neural G2P baseline. This branch now contains a pinned CharsiuG2P adapter, unit tests, a complete per-engine occurrence ledger, and a pairing utility. **Actual CPU inference has completed on both pinned benchmark splits** (run [40285484220](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40285484220), neural artifact [12633674500](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40285484220/artifacts/12633674500)). The first raw inference artifact's embedded g2pk comparison was blocked by an adapter import mismatch; that import has been corrected, and a separate paired-report job is generating the authoritative comparison from the full baseline occurrence ledger. These are actual model predictions, not upstream paper scores, but remain diagnostic because upstream training-data overlap is unresolved.
 
 ## External model candidate
 
@@ -38,15 +38,41 @@ Neural inference must remain optional and must not make the browser runtime depe
 
 ## Benchmark execution plan and acceptance gates
 
-### Stage A — reproducible external baseline (adapter implemented; scored run pending)
+### Stage A — reproducible external baseline (DONE_VERIFIED for inference; paired report in CI)
 
-- **Implemented on this branch:** `scripts/benchmark_charsiu_g2p.py` is an optional runner that uses the existing broad-IPA normalization and emits per-occurrence predictions, coverage, exact match, CER, and missing outputs. It is separate from production runtime and keeps the original corpus untouched. Regression tests are in `tests/test_charsiu_g2p_benchmark.py`.
-- **Still TODO:** run the adapter with pinned model/tokenizer revisions and dependencies on both corpus splits. The current implementation is a separate scorer, not yet wired into the existing six-engine aggregate report or CI workflow.
-- Pin the upstream repository commit, Hugging Face model revision, tokenizer revision, Python/Transformers/Torch versions, and hashes of downloaded model files. Never use floating `main`/latest for scored runs.
-- Smoke-test Korean language code, output shape, empty/malformed input, batch ordering, and deterministic decoding. Validate outputs are non-empty and contain no unhandled Hangul or control tokens.
-- Run the same pinned UGTPHON Korean test split and the same pinned SIGMORPHON file as current engines. Report per-dataset coverage, abstentions/errors, exact match, CER/PER, row-cluster intervals, paired deltas, and case-level wins/losses. Preserve original gold and current normalization profile.
-- Report both word-only and context-aware conditions if sentence-level model usage is introduced. Do not compare a sentence-context model against word-only competitors without marking the condition.
-- Keep a model output artifact (predictions and run metadata) for audit, not weights. Model download/CI cost may justify a separate manual workflow rather than the fast test suite.
+- **Implemented:** `scripts/benchmark_charsiu_g2p.py` uses the existing `benchmark_ugtphon_ko.normalize_ipa` profile and emits per-occurrence raw/normalized predictions, coverage, exact match, CER, and explicit missing/error states. It is research-only and does not alter production or Ukrainian-target logic.
+- **Actual inference:** [run 40285484220](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40285484220), artifact [12633674500](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40285484220/artifacts/12633674500). The checkpoint returned a usable result for every eligible occurrence: UGTPHON 2,393/2,703 exact (88.5313%), CER 3.6239%, coverage 100%; SIGMORPHON 709/999 exact (70.9710%), CER 5.4081%, coverage 100%.
+- **Model provenance:** `charsiu/g2p_multilingual_byT5_small_100` revision `ed5cf99707fb39f5f3ccc461530d56b6fb531fd3`; tokenizer `google/byt5-small` revision `68377bdc18a2ffec8a0533fef03b1c513a4dd49d`. Python 3.12, CPU PyTorch 2.4.1, Transformers 4.44.2, SentencePiece 0.2.0, huggingface_hub 0.24.6. Model file SHA-256: `1ef4032409d33944e4249f959d028f78436f968e26b81cb6b0d508a6cf12ce6c` (1,198,608,045 bytes). Tokenizer/config hashes are retained in the run's `model-provenance.json`.
+- **Rights gate:** the upstream code repository declares MIT, but the Hugging Face checkpoint page does not state a separate weights license. **Weights license remains UNRESOLVED**; research inference only, no weight redistribution. The tokenizer is Apache-2.0. Do not treat the code license as automatically covering the checkpoint.
+- **Pinned data:** UGTPHON `naver-ai/UGTPHON@ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`, `ko/test.json`, Apache-2.0; SIGMORPHON `sigmorphon/2021-task1@821bcdece5a47820872215969f275004b0abe80c`, `data/medium/kor_test.tsv`, CC BY-SA 3.0. No test data were used for training or tuning.
+- **Baseline comparison:** six deterministic/external baselines were run on the same eligible occurrences. The combined per-case report is being produced by [workflow run 40286994417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40286994417); it downloads the neural artifact above and pairs it with the complete six-engine occurrence ledger. The paired comparison uses the same normalization profile and reports coverage separately, per-case raw outputs/statuses, wins/losses, and deterministic row-cluster bootstrap intervals. A local audit copy is available as a downloadable JSON from this chat; it is not committed because it is a generated 7.6-MB case-level artifact.
+- **Overall metrics (exact match / CER):**
+
+| System | UGTPHON (2,703 eligible) | SIGMORPHON (999 eligible) |
+|---|---:|---:|
+| CharsiuG2P multilingual ByT5 small | 2,393/2,703 (88.5313%) / 3.6239%; coverage 100% | 709/999 (70.9710%) / 5.4081%; coverage 100% |
+| ClippyFirst native | 1,430/2,698 (53.0022%) / 9.1697%; coverage 99.815% | 357/997 (35.8074%) / 14.7037%; coverage 99.800% |
+| g2pk 0.9.4 | 1,435/2,703 (53.0892%) / 9.2285%; coverage 100% | 353/999 (35.3353%) / 14.8222%; coverage 100% |
+| KoG2P | 738/2,703 (27.3030%) / 19.5122% | 187/999 (18.7187%) / 21.8327% |
+| hangul_to_ipa | 439/2,703 (16.2412%) / 24.8054% | 89/999 (8.9089%) / 29.8448% |
+| eSpeak NG | 220/2,703 (8.1391%) / 33.6101% | 43/999 (4.3043%) / 40.7236% |
+| phonemize 2.0.1 | 1,150/2,703 (42.5453%) / 14.3531% | 289/999 (28.9289%) / 17.4387% |
+
+- **Paired exact-rate / CER deltas (Charsiu minus baseline; negative CER delta favors Charsiu):**
+
+| Baseline | UGTPHON common cases; Δ exact / Δ CER | SIGMORPHON common cases; Δ exact / Δ CER |
+|---|---:|---:|
+| ClippyFirst native | 2,698; +35.656 pp / −5.567 pp | 997; +35.105 pp / −9.279 pp |
+| g2pk 0.9.4 | 2,703; +35.442 pp / −5.605 pp | 999; +35.636 pp / −9.414 pp |
+| KoG2P | 2,703; +61.228 pp / −15.889 pp | 999; +52.252 pp / −16.425 pp |
+| hangul_to_ipa | 2,703; +72.290 pp / −21.182 pp | 999; +62.062 pp / −24.437 pp |
+| eSpeak NG | 2,703; +80.392 pp / −29.986 pp | 999; +66.667 pp / −35.316 pp |
+| phonemize 2.0.1 | 2,703; +45.986 pp / −10.727 pp | 999; +42.042 pp / −12.031 pp |
+
+- The row-cluster bootstrap uses 1,000 replicates and a fixed seed. The full report includes 95% intervals and paired wins/losses. These large deltas are **not** a clean leakage-free generalization claim: the public checkpoint's training data may overlap public benchmark sources, and that overlap could not be verified from an official model card.
+- **Input condition:** UGTPHON is a token-level ablation using the corpus's existing tokenization; sentence context is not passed to CharsiuG2P. SIGMORPHON is lexical/word-level. These scores do not measure sentence-context performance, normative IPA correctness, or Ukrainian-target rendering.
+- **Adapter correction:** the first inference run's optional in-job g2pk comparator attempted to import the segment parser/renderer from the wrong module. The raw neural predictions are unaffected; the import was fixed in `scripts/benchmark_charsiu_g2p.py`, a regression test was added, and the authoritative paired report uses the six-engine ledger from the existing benchmark runner instead of the failed embedded g2pk comparison.
+- Keep the model artifact (predictions and provenance only), not weights. The inference stack is pinned; the pairing utility is `scripts/compare_neural_with_multiengine.py`. CI run [40286994417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40286994417) is the next acceptance check for the combined artifact.
 
 ### Stage B — architecture ablation
 
@@ -90,7 +116,7 @@ Measure coverage and accuracy separately. A higher coverage rate is not an accur
 
 ## Bottom line
 
-**Research-ready for an isolated neural baseline experiment; not ready to replace ClippyFirst or to claim V3 superiority.** The next concrete deliverable is a pinned, reproducible CharsiuG2P benchmark adapter, then a case-level hybrid ablation. Preserve the author's rule engine and IPA adapter as the system of record until independently measured results justify any production routing change.
+**Research-ready for a diagnostic neural baseline; not release-ready and not evidence that ClippyFirst V3 should be replaced.** The public checkpoint scores substantially better on these corpus annotations, but its weights license is unresolved, training-data overlap is unknown, and its UGTPHON condition is word-level. Preserve the authorial rule engine and typed IPA-to-Ukrainian adapter as the production system of record. A hybrid ablation is deferred until licensing and independent IPA adjudication are resolved.
 
 
 ## Additional candidate checked: NN-KoG2P (2026-10-26)
@@ -120,7 +146,7 @@ Added a strict sentence-level scoring boundary in `scripts/benchmark_contextual_
 - The optional adapter now records empty_output, invalid_output (including unexpected Hangul in declared IPA), and per-batch model_error separately. Partial failures reduce coverage rather than being silently dropped or mislabeled as accuracy errors.
 - The report retains raw and normalized predictions, gold, occurrence IDs, and paired comparison with ClippyFirst native and g2pk on the exact same eligible occurrences. Coverage and accuracy denominators remain separate.
 - UGTPHON remains a token-level ablation using the corpus's existing tokenization; it does not preserve sentence context for CharsiuG2P. SIGMORPHON remains a separate lexical benchmark, not a sentence-context test. Neither result validates Ukrainian target rendering.
-- The expensive model steps in the existing multi-engine PR workflow are gated behind the enhancement label on this research PR. This avoids downloading a 1.2-GB model on ordinary CI updates. The run and artifact must be inspected before any metric is marked verified.
+- The expensive model inference job is opt-in via the `enhancement` label on this research PR; the paired-report job can reuse the pinned model artifact without redownloading or rerunning the checkpoint. This avoids downloading a 1.2-GB model on ordinary CI updates.
 
 ### Other candidate triage
 
