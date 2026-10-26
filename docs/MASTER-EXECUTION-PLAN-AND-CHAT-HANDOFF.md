@@ -2064,3 +2064,8 @@ Key reconciled counts: the later scratch-teacher report is 596/1,000 exact on th
 The register enumerates ten review families, each explicitly labelled as a hypothesis/work queue rather than a discovered rule. It also defines the procedure to establish a defensible count: retrieve and hash exact-head artifacts; reconcile typed IPA conventions; enumerate case-level residuals; group source-confirmed environments; add positive/negative controls; evaluate only against reviewed ClippyFirst broad-IPA dev gold; then count source-confirmed-not-implemented candidates separately from hypothesis-only and blocked items.
 
 Current verification caveat remains: the current PR #339 head has not been verified by local execution, and the last observed exact-head workflow set was queued. The register and this handoff update are documentation commits; they do not change runtime behavior or establish a new test pass. Release status remains research-ready partial prototype, not release-ready.
+
+
+### Artifact-level metric reconciliation note
+
+Retrieved workflow artifact [12638313059](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40296965071/artifacts/12638313059) contains dev-error-analysis.json with 602/1,000 exact (60.2%), 107 length-mark-only errors, and 291 other errors. Later handoff text cites 596/1,000 (59.6%) from a later artifact, but no corresponding artifact was returned by the currently inspected workflow artifact listings. The separate candidate register now treats 602/1,000 as the verified result for artifact 12638313059 and 596/1,000 as an unresolved conflicting report pending retrieval and provenance comparison. Do not silently choose either as the latest model score until the artifact lineage is reconciled.
