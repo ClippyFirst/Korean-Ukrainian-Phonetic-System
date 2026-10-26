@@ -20,10 +20,24 @@ def _candidate(target: str) -> dict:
 def _queue(count: int = 366) -> dict:
     return {
         "source_pins": {
-            "sigmorphon": {"dataset_id": "pinned-sigmorphon", "dataset_revision": "a" * 40},
-            "ugtphon": {"dataset_id": "pinned-ugtphon", "dataset_revision": "b" * 40},
+            "sigmorphon": {
+                "dataset_id": "sigmorphon-2021-task1-medium-korean",
+                "dataset_revision": "821bcdece5a47820872215969f275004b0abe80c",
+                "target_representation": "tokenized_ipa_from_sigmorphon_tsv",
+            },
+            "ugtphon": {
+                "dataset_id": "ugtphon-korean",
+                "dataset_revision": "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54",
+                "target_representation": "ugtphon_token_phoneme_ipa",
+            },
         },
         "summary": {"queued_conflicts": count},
+        "decision": {
+            "corpora_merged": False,
+            "ipa_mapping_applied": False,
+            "production_rules_changed": False,
+            "test_or_dev_rows_used": False,
+        },
         "items": [
             {
                 "queue_id": f"KIPA-TRAIN-{i:04d}",
@@ -85,3 +99,26 @@ def test_repeated_occurrences_are_not_counted_as_distinct_target_variants() -> N
     assert row["ugtphon_candidate_occurrence_count"] == 3
     assert row["ugtphon_unique_target_count"] == 1
     assert row["ugtphon_target_occurrence_counts"] == [{"target": "kan", "occurrences": 3}]
+
+
+def test_report_rejects_duplicate_source_forms() -> None:
+    queue = _queue()
+    queue["items"][1]["source_text"] = queue["items"][0]["source_text"]
+    with pytest.raises(ValueError, match="duplicate source_text"):
+        MODULE.build_report(queue)
+
+
+def test_report_rejects_wrong_source_revision() -> None:
+    queue = _queue()
+    queue["source_pins"]["ugtphon"]["dataset_revision"] = "c" * 40
+    with pytest.raises(ValueError, match="source pins"):
+        MODULE.build_report(queue)
+
+
+def test_read_queue_rejects_decision_flags_that_break_train_only_contract(tmp_path: Path) -> None:
+    queue = _queue()
+    queue["decision"]["test_or_dev_rows_used"] = True
+    path = tmp_path / "queue.json"
+    path.write_text(json.dumps(queue), encoding="utf-8")
+    with pytest.raises(ValueError, match="decision flags"):
+        MODULE._read_queue(path)
