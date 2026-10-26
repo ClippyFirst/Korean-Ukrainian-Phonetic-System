@@ -27,7 +27,7 @@ Sources inspected: [CharsiuG2P source repository](https://github.com/lingjzhu/Ch
 - \`scripts/mine_deterministic_rule_candidates.py\` reads raw teacher IPA and current Strict IPA from JSONL plus a required provenance manifest.
 - It preserves raw outputs and IDs; normalization is conservative (Unicode NFC and whitespace collapse only). It does **not** erase vowel length, aspiration, tense consonants, tone/stress, syllable boundaries, or IPA segments.
 - It computes pairwise disagreement and CER for teacher-vs-Strict diagnostics and groups disagreements by coarse adjacent-Hangul coda/onset contexts.
-- It rejects non-\`train\`/\`dev\` splits and known benchmark/holdout identifiers, requires \`test_data_used_for_tuning=false\`, and requires explicit model/dataset license status, immutable revisions, IPA output type, and training-overlap status.
+- It rejects non-\\`train\\`/\\`dev\\` splits and explicit holdout/test identifiers, while allowing benchmark family names only for declared train/dev partitions; it requires \\`test_data_used_for_tuning=false\\` and explicit model/dataset license status, immutable revisions, IPA output type, and training-overlap status.
 - It labels context buckets as **associations, not causes**. It cannot emit executable rules and does not write to production lexicons or rule code.
 - \`tests/test_mine_deterministic_rule_candidates.py\` covers conservative normalization, raw-output preservation, provenance, forbidden benchmark/holdout splits, mismatched split metadata, and duplicate IDs.
 
