@@ -1625,3 +1625,8 @@ Observed inventory counts:
 - UGTPHON has `ç` (211 train occurrences) and `ø` (300 train occurrences), not present in SIGMORPHON train; example rows include `비키니 → pikçini` and `사인회 → sʰa̠inɦø̞`. These are review targets, not presumed errors or mapped symbols.
 
 The inventory tool is **DONE_VERIFIED**. It does not perform phoneme segmentation or conversion. The queue and pairer are also verified as tools, but the linguistic acceptance gate remains blocked: source IPA adapter not reviewed, 366 train/train target conflicts unadjudicated, and no valid cross-engine accuracy metric. The neural teacher remains offline-only; no production rule/runtime output changed.
+
+
+## Upstream example check for UGTPHON symbols
+
+Directly fetched the pinned upstream README files through the GitHub integration. SIGMORPHON's pinned README explicitly defines targets as a roughly-phonemic IPA phone sequence tokenized by `segments`, derived from Wiktionary via WikiPron. The pinned UGTPHON README includes the examples `키키 → kçikçi` and `킥킥 → kçik̚kçik̚`; this confirms that `ç` occurs as part of its source annotation convention and should not be discarded as an apparent typo. The inventory's `ç` and `ø` findings are therefore convention-review targets, not automatic data-cleaning rules. No mapping is promoted until the source-specific phonetic interpretation is independently checked.
