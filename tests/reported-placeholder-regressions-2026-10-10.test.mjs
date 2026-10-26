@@ -24,7 +24,7 @@ const exactOracles = [
     input: '없으며',
     surface: '업쓰며',
     ukrainian: 'опсимйо',
-    ipa: 'ʌːp̚ s͈ɯ mjʌ',
+    ipa: 'ʌːp̚.s͈ɯ.mjʌ',
     source: 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002',
     articles: ['§7', '§14'],
   },
