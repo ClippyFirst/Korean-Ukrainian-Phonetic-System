@@ -625,7 +625,7 @@ test('NIKL §9 lexical vowel-length examples preserve source length in IPA', () 
 
 test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
   const expected = {
-    '먹는': ['멍는', 'mʌŋ nɯn', 'моннин'],
+    '먹는': ['멍는', 'mʌŋ.nɯn', 'моннин'],
     '깎는': ['깡는', 'k͈aŋ nɯn', 'каннин'],
     '키읔만': ['키응만', 'kʰi ɯŋ man', 'кіинман'],
     '몫몫이': ['몽목씨', 'moŋ mok̚ ɕ͈i', 'монмокші'],
