@@ -166,3 +166,8 @@ The pinned upstream schema was inspected directly in its README at revision ef0d
 It exports a conservative baseline subset: canonical tokens with is_nc=false, exact surface/canonical equality, one token with no whitespace, a non-empty phoneme target, and no comma-joined alternatives or placeholder symbols. It keeps raw target text and source sentence/token IDs, counts exclusion reasons, and reports cases where the same normalized source form has multiple target strings. It does not autocorrect noncanonical spellings or guess which variant is intended. Only train/dev are serialized; test is used for source-integrity and aggregate overlap diagnostics only.
 
 The CI artifact now contains separate SIGMORPHON and UGTPHON train/dev JSONL files and manifests. Their targets remain separate typed representations. A future cross-corpus merger must compare normalized source forms and target conflicts, document IPA convention differences, and keep the test split sealed. This is a practical first data pipeline for ClippyFirst's own research; it is not yet a trained model or a new deterministic rule.
+
+
+### Cross-corpus compatibility audit
+
+scripts/audit_korean_corpus_compatibility.py now validates both generated manifests and JSONL hashes, checks output counts/split labels, and reports normalized source-form intersections across SIGMORPHON and UGTPHON train/dev. It reports raw target-string match/difference counts only as diagnostics, explicitly marks target compatibility UNVERIFIED, and never merges or trains. This audit is intended to make cross-source overlap visible before a future reviewed IPA adapter and data reconciliation step.
