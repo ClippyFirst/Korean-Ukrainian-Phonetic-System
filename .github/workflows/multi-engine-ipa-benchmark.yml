@@ -293,7 +293,7 @@ jobs:
 
   neural-korean-g2p:
     name: Pinned CharsiuG2P inference (research opt-in)
-    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26' && github.event.pull_request.labels[0].name == 'enhancement' && github.event.pull_request.labels[0].name == 'enhancement'
+    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26' && contains(github.event.pull_request.labels.*.name, 'enhancement')
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
@@ -316,7 +316,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
           python -m pip install "transformers==4.44.2" "sentencepiece==0.2.0" "huggingface_hub==0.24.6" "pytest==8.3.3"
-          python -m pip install -e ".[g2pk]" "regex==2024.5.10" "phonemizer==3.3.0"
+          python -m pip install -e . "g2pk==0.9.4" "regex==2024.5.10" "phonemizer==3.3.0"
 
       - name: Run adapter unit tests
         run: python -m pytest tests/test_charsiu_g2p_benchmark.py tests/test_contextual_g2p_benchmark.py
@@ -366,7 +366,14 @@ jobs:
             --output "$RUNNER_TEMP/neural-results/charsiu-ugtphon.json" \
             --model charsiu/g2p_multilingual_byT5_small_100 --model-revision "$MODEL_SHA" \
             --tokenizer google/byt5-small --tokenizer-revision "$TOKENIZER_SHA" \
-            --batch-size 8 --compare-existing-engines \
+            --batch-size 8 --engine-key charsiu_byt5 \
+            --model-label "CharsiuG2P multilingual ByT5" \
+            --model-code-license "MIT (CharsiuG2P upstream repository)" \
+            --model-weights-license-status "UNRESOLVED: official checkpoint page has no explicit weights license; research-only, no redistribution" \
+            --tokenizer-license "Apache-2.0 (google/byt5-small model card)" \
+            --output-convention "CharsiuG2P IPA output; raw convention retained for inspection" \
+            --model-limitation "Upstream training-data overlap with public benchmark sources is not ruled out." \
+            --compare-existing-engines \
             | tee "$RUNNER_TEMP/neural-results/charsiu-ugtphon-summary.json"
 
       - name: Fetch and convert pinned SIGMORPHON Korean lexical test split
@@ -453,10 +460,204 @@ jobs:
           retention-days: 30
 
 
+
+
+  licensed-byt5-korean-g2p:
+    name: Licensed multilingual ByT5 G2P tiny (CPU)
+    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      HF_HOME: /home/runner/.cache/huggingface
+      UGT_PHON_COMMIT: ef0d5a09c2ea1874c7206020f875cbd9cfea2f54
+      SIGMORPHON_COMMIT: 821bcdece5a47820872215969f275004b0abe80c
+      MODEL_ID: willwade/byt5-g2p-multilingual-tiny
+      MODEL_REVISION: 181c25807512f35851062afadf26d09db9fa1968
+      TOKENIZER_ID: willwade/byt5-g2p-multilingual-tiny
+      TOKENIZER_REVISION: 181c25807512f35851062afadf26d09db9fa1968
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install pinned CPU inference and baseline dependencies
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install torch==2.4.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install "transformers==4.44.2" "sentencepiece==0.2.0" "huggingface_hub==0.24.6" "pytest==8.3.3"
+          python -m pip install -e . "g2pk==0.9.4" "regex==2024.5.10" "phonemizer==3.3.0"
+
+      - name: Run neural adapter and pairing unit tests
+        run: python -m pytest tests/test_charsiu_g2p_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py
+
+      - name: Resolve and verify immutable licensed checkpoint revision
+        id: licensed_revisions
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import os
+          from huggingface_hub import HfApi
+          model_id = os.environ["MODEL_ID"]
+          revision = os.environ["MODEL_REVISION"]
+          tokenizer_id = os.environ["TOKENIZER_ID"]
+          tokenizer_revision = os.environ["TOKENIZER_REVISION"]
+          api = HfApi()
+          model = api.model_info(model_id, revision=revision)
+          tokenizer = api.model_info(tokenizer_id, revision=tokenizer_revision)
+          assert model.sha == revision, (model.sha, revision)
+          assert tokenizer.sha == tokenizer_revision, (tokenizer.sha, tokenizer_revision)
+          assert len(model.sha) == 40 and len(tokenizer.sha) == 40
+          print("model_sha=" + model.sha)
+          print("tokenizer_sha=" + tokenizer.sha)
+          PY
+
+      - name: Fetch and validate pinned UGTPHON Korean test split
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/licensed-neural-results"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/$UGT_PHON_COMMIT/ko/test.json" \
+            --output "$RUNNER_TEMP/ko-test.json"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/$UGT_PHON_COMMIT/ko/LICENSE" \
+            --output "$RUNNER_TEMP/ko-LICENSE"
+          grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
+          python - "$RUNNER_TEMP/ko-test.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          rows = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          assert len(rows) == 275, f"UGTPHON row-count drift: {len(rows)}"
+          assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
+          assert len({row["id"] for row in rows}) == len(rows)
+          print(f"Validated UGTPHON Korean test split: {len(rows)} rows; Apache-2.0")
+          PY
+
+      - name: Run licensed ByT5 tiny on UGTPHON
+        env:
+          MODEL_SHA: ${{ steps.licensed_revisions.outputs.model_sha }}
+          TOKENIZER_SHA: ${{ steps.licensed_revisions.outputs.tokenizer_sha }}
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_charsiu_g2p.py \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --output "$RUNNER_TEMP/licensed-neural-results/willwade-ugtphon.json" \
+            --model "$MODEL_ID" --model-revision "$MODEL_SHA" \
+            --tokenizer "$TOKENIZER_ID" --tokenizer-revision "$TOKENIZER_SHA" \
+            --batch-size 32 --engine-key willwade_byt5_g2p_tiny \
+            --model-label "ByT5 multilingual G2P tiny (willwade)" \
+            --model-code-license "Project-owned adapter; upstream training-code license not independently verified" \
+            --model-weights-license-status "CC BY-SA 4.0 (checkpoint model card; attribution and share-alike terms)" \
+            --tokenizer-license "CC BY-SA 4.0 for checkpoint repository; base google/byt5-small Apache-2.0" \
+            --output-convention "gruut-anchored IPA; space-separated IPA symbols" \
+            --model-limitation "Training corpus includes WikiPron/gruut; overlap with public benchmark sources cannot be excluded." \
+            --compare-existing-engines \
+            | tee "$RUNNER_TEMP/licensed-neural-results/willwade-ugtphon-summary.json"
+
+      - name: Fetch and convert pinned SIGMORPHON Korean lexical test split
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/sigmorphon/2021-task1/$SIGMORPHON_COMMIT/data/medium/kor_test.tsv" \
+            --output "$RUNNER_TEMP/sigmorphon-kor-test.tsv"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/sigmorphon/2021-task1/$SIGMORPHON_COMMIT/README.md" \
+            --output "$RUNNER_TEMP/sigmorphon-README.md"
+          grep -qi "Creative Commons Attribution-ShareAlike 3.0" "$RUNNER_TEMP/sigmorphon-README.md"
+          python scripts/convert_sigmorphon_ko.py \
+            --input "$RUNNER_TEMP/sigmorphon-kor-test.tsv" \
+            --output "$RUNNER_TEMP/sigmorphon-kor-test.json" \
+            --expected-rows 1000
+
+      - name: Run licensed ByT5 tiny on SIGMORPHON
+        env:
+          MODEL_SHA: ${{ steps.licensed_revisions.outputs.model_sha }}
+          TOKENIZER_SHA: ${{ steps.licensed_revisions.outputs.tokenizer_sha }}
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_charsiu_g2p.py \
+            --corpus "$RUNNER_TEMP/sigmorphon-kor-test.json" \
+            --output "$RUNNER_TEMP/licensed-neural-results/willwade-sigmorphon.json" \
+            --model "$MODEL_ID" --model-revision "$MODEL_SHA" \
+            --tokenizer "$TOKENIZER_ID" --tokenizer-revision "$TOKENIZER_SHA" \
+            --batch-size 32 --engine-key willwade_byt5_g2p_tiny \
+            --model-label "ByT5 multilingual G2P tiny (willwade)" \
+            --model-code-license "Project-owned adapter; upstream training-code license not independently verified" \
+            --model-weights-license-status "CC BY-SA 4.0 (checkpoint model card; attribution and share-alike terms)" \
+            --tokenizer-license "CC BY-SA 4.0 for checkpoint repository; base google/byt5-small Apache-2.0" \
+            --output-convention "gruut-anchored IPA; space-separated IPA symbols" \
+            --model-limitation "Training corpus includes WikiPron/gruut; overlap with public benchmark sources cannot be excluded." \
+            --compare-existing-engines \
+            | tee "$RUNNER_TEMP/licensed-neural-results/willwade-sigmorphon-summary.json"
+
+      - name: Record licensed checkpoint hashes, license, and data provenance
+        if: always()
+        env:
+          MODEL_SHA: ${{ steps.licensed_revisions.outputs.model_sha }}
+          TOKENIZER_SHA: ${{ steps.licensed_revisions.outputs.tokenizer_sha }}
+        run: |
+          python - "$RUNNER_TEMP/licensed-neural-results/model-provenance.json" <<'PY'
+          import hashlib, json, os, sys
+          from pathlib import Path
+          root = Path(os.environ["HF_HOME"]) / "hub"
+          model_sha, tokenizer_sha = os.getenv("MODEL_SHA", ""), os.getenv("TOKENIZER_SHA", "")
+          model_dir = root / "models--willwade--byt5-g2p-multilingual-tiny" / "snapshots" / model_sha
+          tokenizer_dir = root / "models--willwade--byt5-g2p-multilingual-tiny" / "snapshots" / tokenizer_sha
+          def digest(path):
+              h = hashlib.sha256()
+              with path.open("rb") as f:
+                  for chunk in iter(lambda: f.read(8 * 1024 * 1024), b""):
+                      h.update(chunk)
+              return h.hexdigest()
+          files = []
+          for base, candidates in (
+              (model_dir, ["model.safetensors", "pytorch_model.bin", "config.json"]),
+              (tokenizer_dir, ["tokenizer_config.json", "special_tokens_map.json", "spiece.model", "tokenizer.json", "added_tokens.json"]),
+          ):
+              for name in candidates:
+                  path = base / name
+                  if path.is_file():
+                      files.append({"path": name, "snapshot": base.name, "size_bytes": path.stat().st_size, "sha256": digest(path)})
+          model_files = [x for x in files if x["path"] == "model.safetensors"]
+          if model_files:
+              assert model_files[0]["sha256"] == "eee50959a73fe9ee8d6d332d70ef5251c097a67fc83b77828258e04edb64f59c"
+              assert model_files[0]["size_bytes"] == 71756136
+          payload = {
+              "schema_version": 1,
+              "model": {"id": "willwade/byt5-g2p-multilingual-tiny", "revision": model_sha,
+                        "code_license": "Project-owned adapter; upstream training-code license not independently verified",
+                        "weights_license_status": "CC BY-SA 4.0 (Hugging Face checkpoint model card; attribution and share-alike terms)"},
+              "tokenizer": {"id": "willwade/byt5-g2p-multilingual-tiny", "revision": tokenizer_sha,
+                            "license": "CC BY-SA 4.0 for checkpoint repository; base google/byt5-small Apache-2.0"},
+              "dependencies": {"python": "3.12", "torch": "2.4.1 CPU", "transformers": "4.44.2", "sentencepiece": "0.2.0", "huggingface_hub": "0.24.6"},
+              "datasets": [
+                {"id": "naver-ai/UGTPHON", "commit": "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54", "file": "ko/test.json", "license": "Apache-2.0", "rows": 275, "evaluation": "word/token-level ablation; sentence context not preserved"},
+                {"id": "sigmorphon/2021-task1", "commit": "821bcdece5a47820872215969f275004b0abe80c", "file": "data/medium/kor_test.tsv", "license": "CC BY-SA 3.0", "rows": 1000, "evaluation": "lexical word-level; not sentence-context evaluation"}
+              ],
+              "training_data_note": "Upstream model card describes a 4.12M-pair harmonized corpus derived from WikiPron and gruut; overlap with public benchmark sources has not been ruled out.",
+              "files": files,
+              "artifact_policy": "Predictions/provenance only; no model weights or caches are uploaded."
+          }
+          Path(sys.argv[1]).write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps(payload, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload licensed ByT5 tiny per-case results and provenance (no weights)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: licensed-byt5-korean-g2p-diagnostic-${{ github.run_id }}
+          path: ${{ runner.temp }}/licensed-neural-results/
+          if-no-files-found: warn
+          retention-days: 30
   paired-neural-report:
     name: Pair pinned neural outputs with all engine predictions
     if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
-    needs: multi-engine-ipa
+    needs: [multi-engine-ipa, licensed-byt5-korean-g2p]
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -489,6 +690,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ runner.temp }}/neural-artifact
 
+      - name: Download licensed ByT5 tiny inference artifact from this run
+        uses: actions/download-artifact@v4
+        with:
+          name: licensed-byt5-korean-g2p-diagnostic-${{ github.run_id }}
+          path: ${{ runner.temp }}/licensed-neural-artifact
+
       - name: Build paired per-occurrence comparisons for UGTPHON and SIGMORPHON
         run: |
           set -euo pipefail
@@ -507,11 +714,25 @@ jobs:
             --neural-run-id 40285484220 --baseline-run-id "$GITHUB_RUN_ID" \
             --provenance-json "$RUNNER_TEMP/neural-artifact/model-provenance.json" \
             --output "$RUNNER_TEMP/combined-results/charsiu-sigmorphon-all-engines.json"
+          python scripts/compare_neural_with_multiengine.py \
+            --neural-report "$RUNNER_TEMP/licensed-neural-artifact/willwade-ugtphon.json" \
+            --baseline-report "$RUNNER_TEMP/baseline-artifact/multi-engine-ipa-report.json" \
+            --dataset-name UGTPHON \
+            --neural-run-id "$GITHUB_RUN_ID" --baseline-run-id "$GITHUB_RUN_ID" \
+            --provenance-json "$RUNNER_TEMP/licensed-neural-artifact/model-provenance.json" \
+            --output "$RUNNER_TEMP/combined-results/willwade-ugtphon-all-engines.json"
+          python scripts/compare_neural_with_multiengine.py \
+            --neural-report "$RUNNER_TEMP/licensed-neural-artifact/willwade-sigmorphon.json" \
+            --baseline-report "$RUNNER_TEMP/baseline-artifact/sigmorphon-multi-engine-ipa-report.json" \
+            --dataset-name SIGMORPHON \
+            --neural-run-id "$GITHUB_RUN_ID" --baseline-run-id "$GITHUB_RUN_ID" \
+            --provenance-json "$RUNNER_TEMP/licensed-neural-artifact/model-provenance.json" \
+            --output "$RUNNER_TEMP/combined-results/willwade-sigmorphon-all-engines.json"
 
       - name: Upload paired neural-versus-all-engine reports
         uses: actions/upload-artifact@v4
         with:
-          name: charsiu-all-engine-paired-comparison-${{ github.run_id }}
+          name: neural-all-models-paired-comparison-${{ github.run_id }}
           path: ${{ runner.temp }}/combined-results/
           if-no-files-found: error
           retention-days: 30
