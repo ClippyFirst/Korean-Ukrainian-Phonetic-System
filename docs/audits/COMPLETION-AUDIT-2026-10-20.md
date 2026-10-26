@@ -1098,3 +1098,14 @@ The latest software hardening:
 - Regression tests cover expected transformations plus unlicensed negative controls; no model is imported into the runtime and no IPA/UA target is upgraded to independently verified gold.
 - Scope limitation: some exact forms already had lexical overrides, so this change improves deterministic rule-layer coverage and Python/browser parity rather than demonstrating an aggregate accuracy increase. Accuracy against a neural teacher remains unmeasured because IPA conventions and independent evaluation data are not yet reconciled.
 - Verification: code/test head `c827aa8884206b69df08fce29f6a333970296ad0` passed Python regression/data integrity and browser regression/build in [workflow 40323576453](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40323576453). Documentation descendants `f81d7a3152d36328ee637ba212039ec132d39e83` and `1d777e04c66d8c1c998a56708ccaa4f266e8a448` also passed [40323672074](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40323672074) and [40323702599](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40323702599). The optional live NIKL source inventory was skipped, not passed. Independent IPA adjudication, target-layer evaluation and a representative held-out benchmark remain separate release blockers.
+
+
+## Follow-up implementation audit — R016 exact-form parity and R002 trace integrity (2026-10-26)
+
+**Status: PARTIAL pending exact-head CI.**
+
+- Added official exact-form R016 coverage for 읽고, 묽고 and 얽거나 in both Python and browser rules; source-backed exact forms may resolve in same-word mode, while category-only and wrong-form licenses remain blocked.
+- Added a regression for multi-boundary 헛웃음: the substantive §15 boundary is licensed independently, and the following written-coda liaison is verified separately. Python R002 traces preserve all applied exact licenses rather than only the last pair.
+- Primary sources are registered already; no duplicate source registry was created. NIKL Q&A qna_seq=329463 directly attests 읽고[일꼬]; the official Standard Pronunciation Rules support the listed §11 examples and §§13–15 rule distinctions.
+- The combined implementation has new Python/browser tests, but exact-head CI for the latest combined code/test state is queued behind earlier diagnostic workflows. Do not mark this follow-up DONE_VERIFIED until both pass. The live NIKL inventory workflow condition remains SKIPPED.
+- This is targeted rule-layer coverage and Python/browser parity, not a measured aggregate accuracy gain. Independent IPA/UA gold and a representative held-out evaluation remain release blockers.
