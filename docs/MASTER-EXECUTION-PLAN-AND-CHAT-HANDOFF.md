@@ -2098,3 +2098,12 @@ The paired report artifact 12666733087 from run 40356670303 was parsed locally. 
 ### Verification status after corrections
 
 Latest documentation/code/test commit observed while updating this handoff: 30d69861940dc9a7be2ee5da23038d1d10f9695f. The earlier failing run proves the identified defects existed on its head. The connected Actions listing showed the 4dbe87f head's workflows queued; later commits were not associated with surfaced exact-head runs at the time of this update. No local repository checkout is available and no local pytest/npm suite is claimed. Therefore all corrections remain PARTIAL until the latest commit's Python 3.11–3.13, browser/build, system verification, corpus audit, scratch-teacher, and Charsiu workflows finish successfully. Do not merge PR #339 or mark release-ready on the basis of these commits alone.
+
+
+## Superseding follow-on: close omitted source-backed R010 example 안지 — 2026-10-26
+
+- Primary evidence: S015 / SRC-NIKL-TRAINING-2009 already registered the official NIKL teacher-training PDF and explicitly lists 안지[안찌] under §24. Item-level reuse marking remains unresolved; the source establishes Korean surface behavior only.
+- Added exact full-form + pair license 안지 → 안>지 in Python R010 and browser NIKL_24_STEM_NM_ENDING_FORMS. Added Python positive regression (surface 안찌, onset ㅉ) and browser generic-mode IPA/rule regression (an.tɕ͈i), while retaining the existing negative controls for 감도 and -기- forms.
+- R010 inventory count is now 14 exact entries on both Python and browser sides by static map inspection. This is a source-backed closed-inventory completion, not a neural-teacher-derived generalized rule.
+- Latest executable code/test commit: 102242c93c95ee8e7300879a8716851c3a5baa01. Latest register update: b30762a81e6d15c80a28e00083785a674d8461f1. No local test execution is claimed.
+- Exact-head CI remains unverified: the connected workflow API returned no runs for the recent Contents-API commits after the queued 4dbe87f head. The earlier failing runs were inspected and corrected, but their results do not verify these later commits. The next acceptance gate is to obtain a genuine exact-head run for Python/browser tests, system verification, source audit, and research workflows; do not merge or mark DONE_VERIFIED before that.
