@@ -314,3 +314,30 @@ test('NIKL §27 attached -ㄹ게 fortition is mirrored without crossing a space'
   const separated = engine.convert('할 게');
   assert.notEqual(separated.surfaceHangul, '할께');
 });
+
+
+
+test('NIKL §30 exact saisiot pronunciation forms match the Python rule inventory', () => {
+  const examples = {
+    냇가: '내까',
+    샛길: '새낄',
+    빨랫돌: '빨래똘',
+    콧등: '코똥',
+    깃발: '기빨',
+    대폿밥: '대포빱',
+    햇살: '해쌀',
+    뱃속: '배쏙',
+    뱃전: '배쩐',
+    고갯짓: '고개찟',
+    아랫니: '아랜니',
+    뒷마루: '뒨마루',
+    뱃머리: '밴머리',
+    깻잎: '깬닙',
+    나뭇잎: '나문닙',
+  };
+  for (const [source, expectedSurface] of Object.entries(examples)) {
+    const result = engine.convert(source);
+    assert.equal(result.surfaceHangul, expectedSurface, source);
+    assert.ok(result.trace.some(item => item.rules.includes('saisiot-pronunciation-§30-exact-form')), source);
+  }
+});
