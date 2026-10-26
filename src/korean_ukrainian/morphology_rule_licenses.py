@@ -1,6 +1,6 @@
 """Low-confidence, analyzer-consensus rule licensing for Korean research mode.
 
-Two independent morphology analyses can support a *candidate* morpheme boundary.
+Two distinct morphology analyses can support a *candidate* morpheme boundary.
 They are not pronunciation gold. This adapter only licenses rules when both
 analyses align a formal morpheme to the same orthographic syllable boundary;
 the resulting IPA remains diagnostic-only and must not bypass the IPA→target
@@ -71,7 +71,7 @@ def _formal_boundary_offsets(text: str, analysis: Mapping[str, Any]) -> set[int]
             zero_width_offsets.add(start)
             continue
         surface = item.get("surface")
-        if isinstance(surface, str) and surface and surface != text[start:end]:
+        if not isinstance(surface, str) or not surface or surface != text[start:end]:
             continue
         spans.append({"start": start, "end": end, "tag": item.get("tag")})
 
@@ -157,7 +157,7 @@ def _morphemes_at_boundary(
         if not isinstance(start, int) or not isinstance(end, int) or start < 0 or end > len(text) or start >= end:
             continue
         surface = item.get("surface")
-        if isinstance(surface, str) and surface and surface != text[start:end]:
+        if not isinstance(surface, str) or not surface or surface != text[start:end]:
             continue
         if end == offset:
             left.append(item)
