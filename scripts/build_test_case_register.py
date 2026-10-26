@@ -15,10 +15,10 @@ from pathlib import Path
 
 HANGUL = re.compile(r"[가-힣]+")
 ASSERTION_LINE = re.compile(
-    r"\b(?:def\s+test_[A-Za-z0-9_]+|(?:async\s+)?(?:test|it|describe)\s*\(|"
-    r"assert(?:Equal|NotEqual|True|False|In|NotIn|Raises|IsNone|IsNotNone|AlmostEqual)?\b|"
-    r"expect\s*\(|to(?:Be|Equal|Contain|Throw|Match|HaveLength)\s*\(|"
-    r"strictEqual\s*\(|deepEqual\s*\(|pytest\.raises|self\.assert)"
+    r"^\s*(?P<kind>(?:async\s+)?(?:test|it|describe)\s*\(|"
+    r"def\s+test_[A-Za-z0-9_]+\s*\(|assert(?:\.[A-Za-z_][A-Za-z0-9_]*)?\b|"
+    r"expect\s*\(|\.\s*to(?:Be|Equal|Contain|Throw|Match|HaveLength)\s*\(|"
+    r"strictEqual\s*\(|deepEqual\s*\(|pytest\.raises|self\.assert[A-Za-z0-9_]*\b)"
 )
 LEXICAL_COLUMNS = [
     "case_id", "source_record", "input", "expected_surface_hangul",
@@ -151,7 +151,7 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
                     "source_path": rel,
                     "source_category": category,
                     "line_number": str(line_number),
-                    "assertion_kind": assertion_match.group(0),
+                    "assertion_kind": assertion_match.group("kind").strip(),
                     "raw_line": line,
                     "classification_status": "UNCLASSIFIED_ASSERTION_OR_TEST_DECLARATION",
                     "observed_run_status": "NOT_TIED_TO_EXACT_HEAD_RUN",
