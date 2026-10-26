@@ -74,15 +74,15 @@ A second-stage, reproducible triage script is now wired into the pinned-corpus w
 - Script: `scripts/analyze_korean_ipa_conflict_patterns.py`.
 - Tests: `tests/test_analyze_korean_ipa_conflict_patterns.py`.
 - Output: `korean-ipa-conflict-patterns.json`, uploaded alongside the existing queue and separate train/dev corpora.
-- It summarizes all 366 conflict forms, preserves every UGTPHON candidate target rather than silently choosing the first, counts cross-corpus candidate pairs and literal code points, and ranks forms with high within-source target variation for review.
+- It summarizes all 366 conflict forms, preserves every UGTPHON candidate occurrence rather than silently choosing the first, distinguishes repeated occurrences from distinct target strings, counts cross-corpus candidate pairs and literal code points, and ranks high-frequency forms for review.
 - The report is explicitly `DIAGNOSTIC_TRIAGE_ONLY`. It does not infer phone alignment from character-level differences, choose a gold pronunciation, convert either source to ClippyFirst broad IPA, or generate a runtime rule.
-- The source-internal variation is important: UGTPHON can contain multiple candidate annotations for a single source form. A form-level comparison against only the first candidate would understate uncertainty; all candidates must remain visible to reviewers.
+- The occurrence multiplicity is important, but it must not be confused with pronunciation variation. Inspection of the generated queue shows that a high occurrence count can simply repeat the same target string; the report therefore counts both raw candidate occurrences and distinct target strings. No target is declared gold merely because it repeats often.
 
-The initial artifact inspection confirmed 366 queued source forms. Example target-string differences include SIGMORPHON `ka̠ːnɯŋɦa̠da̠` vs UGTPHON `ka̠nɯŋɦa̠da̠` for `가능하다`, `ka̠ɭt͈ɯŋ` vs `ka̠ɭdɯŋ` for `갈등`, and `kɘːin` vs `kʌ̹in` for `거인`. These are **examples of disagreement, not adjudicated corrections**. In particular, `ː`, `ɘ`, `ʌ̹`, `t͈`, and `d` must not be mapped or deleted just because one spelling is more frequent.
+The exact-head workflow produced 366 queued source forms and 803 cross-corpus candidate pairs. In the artifact, no form had more than one distinct UGTPHON comparison-target string among its retained occurrences; for example, `진짜` has 78 corpus occurrences but repeats the same target string. Thus occurrence frequency is not independent corroboration or a set of 78 pronunciation variants. Example target-string differences include SIGMORPHON `ka̠ːnɯŋɦa̠da̠` vs UGTPHON `ka̠nɯŋɦa̠da̠` for `가능하다`, `ka̠ɭt͈ɯŋ` vs `ka̠ɭdɯŋ` for `갈등`, and `kɘːin` vs `kʌ̹in` for `거인`. These are **examples of disagreement, not adjudicated corrections**. In particular, `ː`, `ɘ`, `ʌ̹`, `t͈`, and `d` must not be mapped or deleted just because one spelling is more frequent.
 
 ### Review order
 
-1. Start with source forms that have multiple distinct UGTPHON targets; resolve the annotation schema and candidate status before comparing corpora.
+1. Start with high-frequency source forms to inspect provenance and duplicate structure, then separately investigate any form that truly has multiple distinct UGTPHON target strings; resolve the annotation schema and candidate status before comparing corpora.
 2. Review repeated, source-grounded correspondence hypotheses (including length marking, `ɘː` vs `ʌ̹`, `ɲ` vs `n`, `ʎ` vs `ɭ`, and fortis/aspiration/voicing notation) against primary Korean phonetic sources and the exact source convention.
 3. Record one-to-one, one-to-many, many-to-one, or unmapped status in a versioned adapter table, with examples, reviewer status, and information-loss consequences.
 4. Only after independent review, apply the mapping to a separate eligible comparison set; keep source raw strings immutable and retain ambiguous cases as unmapped.
