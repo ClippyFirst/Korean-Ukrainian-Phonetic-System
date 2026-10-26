@@ -11,6 +11,7 @@ from benchmark_multi_engine_ko import (  # noqa: E402
     _load_rows_and_words,
     _metrics,
     _paired_bootstrap_delta_ci,
+    _per_engine_occurrence_ledger,
     _score,
     kog2p_phones_to_ipa,
 )
@@ -92,3 +93,34 @@ def test_paired_bootstrap_delta_is_deterministic_and_paired():
     assert first["replicates"] == 100
     assert first["exact_rate_delta_candidate_minus_native_95pct_ci"] is not None
     assert first["cer_delta_candidate_minus_native_95pct_ci"] is not None
+
+
+
+def test_per_engine_ledger_preserves_repeated_occurrences_and_failure_statuses():
+    items = [
+        {"occurrence_id": "0", "row_id": "row-1", "word": "학교", "gold": "hak.kjo"},
+        {"occurrence_id": "1", "row_id": "row-1", "word": "학교", "gold": "hak.kjo"},
+        {"occurrence_id": "2", "row_id": "row-2", "word": "국립", "gold": "kuŋ.nip"},
+    ]
+    predictions = {
+        "clippyfirst_native": {},
+        "g2pk_0_9_4": {
+            "학교": {"ipa": "hak.kjo"},
+            "국립": {"ipa": "kuŋ.nip"},
+        },
+        "broken_engine": {
+            "학교": {"error": "synthetic failure"},
+            "국립": {"error": "synthetic failure"},
+        },
+    }
+    native_cache = {
+        "학교": {"ipa": "hak.kjo", "unresolved": False},
+        "국립": {"ipa": None, "unresolved": True, "reason": "unresolved morphology"},
+    }
+    ledger = _per_engine_occurrence_ledger(items, predictions, native_cache)
+    assert [x["occurrence_id"] for x in ledger["g2pk_0_9_4"]] == ["0", "1", "2"]
+    assert ledger["g2pk_0_9_4"][0]["status"] == "scored"
+    assert ledger["g2pk_0_9_4"][0]["exact"] is True
+    assert ledger["clippyfirst_native"][2]["status"] == "abstained"
+    assert ledger["broken_engine"][0]["status"] == "error"
+    assert ledger["broken_engine"][0]["reason"] == "synthetic failure"
