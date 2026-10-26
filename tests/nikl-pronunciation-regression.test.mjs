@@ -324,7 +324,7 @@ test('official §12(4) H-deletion examples are sourced and marked provisional on
 test('NIKL §16 official letter-name examples are exact lexical entries', () => {
   const expected = {
     '디귿이': ['디그시', 'тіґиші', 'ti.ɡɯ.ɕi'],
-    '디귿을': ['디그슬', 'тіґисил', 'ti ɡɯ sɯl'],
+    '디귿을': ['디그슬', 'тіґисил', 'ti.ɡɯ.sɯl'],
     '디귿에': ['디그세', 'тіґисе', 'ti ɡɯ se'],
     '지읒이': ['지으시', 'чіиші', 'tɕi ɯ ɕi'],
     '지읒을': ['지으슬', 'чіисил', 'tɕi ɯ sɯl'],
@@ -430,7 +430,7 @@ test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings',
 test('NIKL §§6–7 source-backed length examples preserve long vowels and alternants', () => {
   const expected = {
     '눈보라': ['눈보라', 'нунбора', 'nuːn.bo.ɾa'],
-    '말씨': ['말씨', 'малші', 'maːl ɕ͈i'],
+    '말씨': ['말씨', 'малші', 'maːl.ɕ͈i'],
     '밤나무': ['밤나무', 'памнаму', 'paːm na mu'],
     '많다': ['만타', 'манта', 'maːn tʰa'],
     '멀리': ['멀리', 'моллі', 'mʌːl li'],
@@ -512,7 +512,7 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
   const contractions = {
     '가져': ['가저', 'каджо', 'ka.dʑʌ'],
     '쪄': ['쩌', 'чо', 'tɕ͈ʌ'],
-    '다쳐': ['다처', 'тачо', 'ta tɕʰʌ'],
+    '다쳐': ['다처', 'тачо', 'ta.tɕʰʌ'],
     '묻혀': ['무쳐', 'мучо', 'mu tɕʰʌ'],
     '붙여': ['부쳐', 'пучо', 'pu tɕʰʌ'],
     '잊혀': ['이쳐', 'ічо', 'i tɕʰʌ'],
@@ -531,7 +531,7 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
 test('fortisness remains in IPA but is not encoded by doubled Ukrainian graphemes', () => {
   const expected = {
     '맛없다': ['мадопта', 'ma.dʌp̚.t͈a'],
-    '맛있다': ['мадітта', 'ma dit̚ t͈a'],
+    '맛있다': ['мадітта', 'ma.dit̚.t͈a'],
     '멋있다': ['модітта', 'mʌ dit̚ t͈a'],
     '깎아': ['кака', 'k͈a k͈a'],
     '있어': ['ісо', 'i s͈ʌ'],
@@ -555,7 +555,7 @@ test('fortisness remains in IPA but is not encoded by doubled Ukrainian grapheme
 test('NIKL §10 complex-coda examples and lexical exceptions are source-backed', () => {
   const expected = {
     '넋과': ['넉꽈', 'нокква', 'nʌk̚.k͈wa'],
-    '앉다': ['안따', 'анта', 'an t͈a'],
+    '앉다': ['안따', 'анта', 'an.t͈a'],
     '여덟': ['여덜', 'йодол', 'jʌ dʌl'],
     '넓다': ['널따', 'нолта', 'nʌl t͈a'],
     '외곬': ['외골', 'веґол', 'ø ɡol'],
@@ -609,7 +609,7 @@ test('NIKL §9 regular final-neutralization examples are computed by rules', () 
 test('NIKL §9 lexical vowel-length examples preserve source length in IPA', () => {
   const expected = {
     '웃다': ['욷따', 'uːt̚.t͈a', 'утта'],
-    '뱉다': ['밷따', 'pɛːt̚ t͈a', 'петта'],
+    '뱉다': ['밷따', 'pɛːt̚.t͈a', 'петта'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
@@ -627,7 +627,7 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
   const expected = {
     '먹는': ['멍는', 'mʌŋ.nɯn', 'моннин'],
     '깎는': ['깡는', 'k͈aŋ.nɯn', 'каннин'],
-    '키읔만': ['키응만', 'kʰi ɯŋ man', 'кіинман'],
+    '키읔만': ['키응만', 'kʰi.ɯŋ.man', 'кіинман'],
     '몫몫이': ['몽목씨', 'moŋ mok̚ ɕ͈i', 'монмокші'],
     '긁는': ['긍는', 'kɯŋ nɯn', 'киннин'],
     '흙만': ['흥만', 'hɯŋ man', 'гинман'],
@@ -700,7 +700,7 @@ test('NIKL §11 lexical length and morphology exceptions preserve official readi
   const expected = {
     '흙과': ['흑꽈', 'hɯk̚.k͈wa', 'гикква'],
     '삶': ['삼', 'saːm', 'сам'],
-    '젊다': ['점따', 'tɕʌːm t͈a', 'чомта'],
+    '젊다': ['점따', 'tɕʌːm.t͈a', 'чомта'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
@@ -758,7 +758,7 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
 test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', () => {
   const expected = {
     '줄넘기': ['줄럼끼', 'tɕul.lʌm.k͈i', 'чулломкі'],
-    '임진란': ['임진난', 'imː dʑin nan', 'імджіннан'],
+    '임진란': ['임진난', 'imː.dʑin.nan', 'імджіннан'],
     '생산량': ['생산냥', 'sɛŋ san njaŋ', 'сенсаннян'],
     '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйолтанньок'],
     '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', 'конквонньок'],
