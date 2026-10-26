@@ -18,10 +18,15 @@ from packetize_korean_ipa_annotations import (  # noqa: E402
 
 
 def row(target, representation=SIGMORPHON, split="train"):
+    dataset_id, revision = (
+        ("sigmorphon-2021-task1-medium-korean", "821bcdece5a47820872215969f275004b0abe80c")
+        if representation == SIGMORPHON
+        else ("ugtphon-korean", "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54")
+    )
     return {
         "case_id": "example:001",
-        "dataset_id": "example-dataset",
-        "dataset_revision": "abc123",
+        "dataset_id": dataset_id,
+        "dataset_revision": revision,
         "split": split,
         "source_text": "국밥",
         "target_raw": target,
@@ -98,3 +103,14 @@ def test_dot_inside_token_is_not_promoted_to_an_explicit_boundary():
     assert packet["target_raw"] == "k.a"
     assert packet["markers"]["explicit_boundary_markers"] == []
     assert packet["units"][0]["raw"] == "k.a"
+
+
+def test_refuses_wrong_dataset_revision_or_mismatched_source_type():
+    wrong_revision = row("k a")
+    wrong_revision["dataset_revision"] = "moving-branch"
+    with pytest.raises(ValueError, match="source pin mismatch"):
+        packetize_row(wrong_revision)
+    mismatched = row("k a", UGTPHON)
+    mismatched["dataset_id"] = "sigmorphon-2021-task1-medium-korean"
+    with pytest.raises(ValueError, match="source pin mismatch"):
+        packetize_row(mismatched)
