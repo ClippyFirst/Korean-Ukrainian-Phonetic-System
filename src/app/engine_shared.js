@@ -97,6 +97,13 @@ const NIKL_COMPLEX_H_SUFFIX_FORMS=new Map([
 ]);
 
 const NIKL_12_H_DELETION_FORMS=new Map([
+  // Exact examples explicitly listed in NIKL Standard Pronunciation Rule 12(4).
+  ['낳은','낳>은'],
+  ['놓아','놓>아'],
+  ['쌓이다','쌓>이'],
+  ['않은','않>은'],
+  ['닳아','닳>아'],
+  ['싫어도','싫>어'],
   ['싫어서','싫>어'], // NIKL Online Q&A qna_seq=313981 (2025-04-29): [시러서].
   ['수많은','많>은'], // Korean Basic Dictionary, 수많다: [수ː마는].
   ['많아서','많>아'], // NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
