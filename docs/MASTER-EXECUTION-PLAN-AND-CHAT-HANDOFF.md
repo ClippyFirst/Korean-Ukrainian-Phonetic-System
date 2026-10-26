@@ -44,6 +44,14 @@
 - The first compatibility audit failed before a common output_row_count manifest field was added and the test fixtures were corrected. The subsequent audit run 40295700341 passed all preparation, audit, and upload steps. Preserve this failure/fix history; do not report the earlier run as passing.
 - The updated categorization run [40296047955](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40296047955) passed all unit tests, source audits, both corpus builders, compatibility audit, and artifact upload. For train/train mismatches, 151/366 are length-mark-only under a diagnostic removal test, 215/366 remain other symbol/feature differences, and 0 differ only by syllable dots. Do not remove length marks from source data or treat either source as gold by default.
 
+## Scratch teacher training added — 2026-10-26
+
+- Added scripts/train_korean_g2p_teacher.py: a small bidirectional-GRU encoder + attention-GRU decoder trained from random initialization, using only the pinned SIGMORPHON train partition. It does not load pretrained weights or read test examples.
+- The script verifies the generated train/dev hashes and target type, rejects train/dev source-form overlap, selects checkpoints on dev token error rate, and emits exact match, token error rate, and compact-character error rate. These metrics are source-convention-specific and are not broad-IPA accuracy.
+- Added tests/test_train_korean_g2p_teacher.py and a separate CPU-only workflow .github/workflows/train-korean-g2p-teacher.yml that prepares the pinned corpus, trains the teacher, and uploads a short-retention checkpoint, dev predictions, and provenance report.
+- **Status: PARTIAL until CI training completes.** Do not mark the model as useful until the actual training workflow succeeds and its dev metrics/error cases are inspected. This is a research teacher only; production remains deterministic and unchanged.
+- Next acceptance gate: confirm training stability and dev metrics; then inspect a stratified sample of dev mismatches and compare only after the IPA target convention is explicitly mapped. Do not use test/holdout data or automatically distill predicted outputs into runtime rules.
+
 ## Current execution record
 
 - **PR:** [Draft PR #339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339), based on `main` at `a452054a669de28426404d1110731715083423bb`. It remains draft and has not been merged.
