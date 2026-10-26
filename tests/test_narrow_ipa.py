@@ -28,9 +28,11 @@ def test_narrow_profile_palatalizes_sibilants_only_in_reviewed_contexts():
     assert _ipa("쇼", "narrow")["ipa"] == "sʰjo"
 
 
-def test_tense_sibilant_is_not_aspirated_in_narrow_profile():
+def test_tense_sibilant_is_not_aspirated_and_palatalization_is_not_assumed():
     assert _ipa("싸", "narrow")["ipa"] == "s͈a"
-    assert _ipa("쌰", "narrow")["ipa"] == "ɕ͈ja"
+    # Evidence for tense /s͈/ palatalization is mixed; do not infer it from
+    # the teacher's outputs or generalize the lenis /s/ rule.
+    assert _ipa("쌰", "narrow")["ipa"] == "s͈ja"
 
 
 def test_narrow_profile_is_explicitly_partial_and_does_not_change_target_default():
