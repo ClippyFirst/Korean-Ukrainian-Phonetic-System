@@ -1932,3 +1932,28 @@ Verification remains blocked by the hosted runner queue. At code/test head cbd4c
 
 The corrected Charsiu comparison remains evidence-only. No Charsiu output has been automatically promoted into production; the new runtime rules above are supported by the registered official NIKL rules/Q&A, and the benchmark disagreement only helped prioritize source review. Readiness remains research-ready partial prototype, not release-ready.
 
+## 2026-10-26 continuation: productive morphology licenses and benchmark integrity
+
+### Executable work added (verification pending)
+
+- Fixed the recursion defect in `scripts/benchmark_charsiu_research_split.py` (commit `4a1b4f5d1cd9c8dee985dd7858922dc07eedc1f4`). The broad/narrow renderer comparison now runs both renderers from one post-rule syllable analysis and shares the production ambiguity gate; lexical IPA overrides are excluded from both controlled outputs.
+- Extended the existing `src/korean_ukrainian/morphology_rule_licenses.py` rather than creating a duplicate module. The research-only helper now derives low-confidence exact-form licenses for R010/R011/R016 when two morphology analyses agree on a surface-aligned VV/VA stem + ending boundary. It also extends registered R012/R014/R015 lexical roots across a consensus-confirmed attached particle/ending. The strict default and browser runtime remain unchanged.
+- Added tests for productive examples `읽고 → 일꼬`, `넓고 → 널꼬`, `많다 → 만따`, and source-registered lexical roots `물가로 → 물까로`, `봄비가 → 봄삐가`, `냇가에 → 내까에`, `갈등이 → 갈뜽이`. Negative controls include `닭고기`, `물가공`, analyzer-boundary disagreement, zero-width morphology, and missing/nonliteral source alignment. These are expected assertions in new tests, not claimed test passes.
+- Updated README to document the research-only boundary and corrected the scratch-teacher metric to the latest saved result, 59.6% (596/1,000); the older 60.2% figure is superseded.
+
+### Benchmark-integrity correction
+
+The UGTPHON test artifact [40328909490](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40328909490), artifact [12654815334](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40328909490/artifacts/12654815334), contains `물가로` at row `dc_inside_2261`, occurrence `2001`. That test mismatch was explicitly used to prioritize review of R014 compound fortition. NIKL Q&A 316282 subsequently verified the underlying lexical examples `물가[물까]` and `봄비[봄삐]`, but the `물가로` test occurrence is now **test-informed and not an untouched holdout**. Historical benchmark outputs remain intact for reproducibility; do not cite this occurrence or the unadjusted aggregate as independent final-evaluation evidence. A replacement holdout or a clearly reported exclusion is required for a final accuracy claim.
+
+### Current task ledger
+
+- `DONE_VERIFIED`: source-backed Python/browser exact-form inventories R002/R009/R011–R016 have been reconciled; the existing parity test checks the audited maps.
+- `PARTIAL`: morphology-consensus licensing is implemented as an opt-in research helper, not as the default engine path. It remains low-confidence and diagnostic-only pending real-analyzer and exact-head CI.
+- `PARTIAL`: Charsiu train/dev runner exists and its previous successful artifact can be used for raw hypothesis review, but the corrected controlled run has not yet completed successfully on the latest head.
+- `BLOCKED`: Charsiu checkpoint weights license and training-data overlap remain unresolved; its output IPA convention is not independently mapped to ClippyFirst broad IPA.
+- `BLOCKED`: the UGTPHON `물가로` test case has been used to prioritize a rule and is no longer independent. A fresh or explicitly decontaminated evaluation set is required.
+- `BLOCKED`: independent IPA→Ukrainian target gold and authorized live NIKL source inventory remain unavailable/skipped.
+- `TODO`: exact-head CI, real Kiwi/MeCab morphology smoke, and corrected Charsiu train/dev artifact inspection. No local test run is claimed: `git ls-remote https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System.git HEAD` failed because this environment could not resolve `github.com`.
+
+At this update, the latest visible Actions jobs from code/test head `16d07d752ecdb6ddb02b7a679edcaa528cfc5348` were still queued (including tests run [40343058866](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058866) for the Charsiu workflow and system verification [40343058844](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058844)); later code/test commits were not yet associated with final check results. Do not mark the current implementation DONE_VERIFIED until current-head checks finish.
+
