@@ -94,7 +94,7 @@ class TestBuildTestCaseRegister(unittest.TestCase):
             (root / "data/korean/lexical_pronunciations.csv").write_text(
                 "input,surface_hangul,target_syllables,ipa_syllables\n", encoding="utf-8"
             )
-            (root / "tests/bad.txt").write_bytes(b"valid prefix\\xff invalid UTF-8")
+            (root / "tests/bad.txt").write_bytes(b"valid prefix\xff invalid UTF-8")
             with self.assertRaisesRegex(RuntimeError, "Cannot scan source file") as caught:
                 build(root, root / "out")
             self.assertIn("bad.txt", str(caught.exception))
