@@ -854,6 +854,10 @@ def test_nikl_section_24_official_examples_have_exact_stem_ending_licenses():
     from korean_ukrainian.pipeline import phoneticize_korean
 
     expected = {
+        "안다": ("안>다", "ㄸ"),
+        "안고": ("안>고", "ㄲ"),
+        "감다": ("감>다", "ㄸ"),
+        "감고": ("감>고", "ㄲ"),
         "껴안다": ("안>다", "ㄸ"),
         "앉고": ("앉>고", "ㄲ"),
         "얹다": ("얹>다", "ㄸ"),
@@ -865,6 +869,10 @@ def test_nikl_section_24_official_examples_have_exact_stem_ending_licenses():
     for word, (pair, onset) in expected.items():
         result = phoneticize_korean(word)
         assert result["surface_hangul"] == {
+            "안다": "안따",
+            "안고": "안꼬",
+            "감다": "감따",
+            "감고": "감꼬",
             "껴안다": "껴안따",
             "앉고": "안꼬",
             "얹다": "언따",
