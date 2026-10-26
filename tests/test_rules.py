@@ -805,3 +805,16 @@ def test_nikl_section_26_source_examples_have_exact_sino_korean_fortition_licens
     items, traces = apply_ordered_rules(parse_syllables("갈구"))
     assert items[1].onset == "ㄱ"
     assert traces[9].status == "conditional-disabled"
+
+
+
+def test_nikl_qna_330963_attested_attached_l_ge_fortition_is_productive_but_not_phrase_level():
+    items, traces = apply_ordered_rules(parse_syllables("할게"), ["R013"])
+    assert items[1].onset == "ㄲ"
+    assert traces[0].changed
+    assert traces[0].license_context == "R013:attested_l_ge_ending:할게:할>게"
+    assert "qna_seq=330963" in traces[0].source
+
+    items, traces = apply_ordered_rules(parse_syllables("할 게"), ["R013"], boundary_mode="same_word")
+    assert items[1].onset == "ㄱ"
+    assert not traces[0].changed
