@@ -171,3 +171,12 @@ The CI artifact now contains separate SIGMORPHON and UGTPHON train/dev JSONL fil
 ### Cross-corpus compatibility audit
 
 scripts/audit_korean_corpus_compatibility.py now validates both generated manifests and JSONL hashes, checks output counts/split labels, and reports normalized source-form intersections across SIGMORPHON and UGTPHON train/dev. It reports raw target-string relations and a second diagnostic after removing only SIGMORPHON's whitespace phone-token separators. This does not map symbols or infer syllable boundaries, explicitly marks target compatibility UNVERIFIED, and never merges or trains. This audit is intended to make cross-source overlap visible before a future reviewed IPA adapter and data reconciliation step.
+
+
+## Scratch-trained research teacher (2026-10-26 continuation)
+
+Added scripts/train_korean_g2p_teacher.py and .github/workflows/train-korean-g2p-teacher.yml. Unlike the previously considered pretrained Charsiu/MFA models, this experimental teacher is initialized from random weights and trained only on the pinned SIGMORPHON train partition. It is a small bidirectional-GRU encoder with an attention-based GRU decoder, trained on Hangul characters and the source's whitespace-tokenized IPA target sequence. No pretrained checkpoint is downloaded or loaded.
+
+The script verifies train/dev JSONL hashes against the corpus manifest, validates the target representation and split labels, rejects train/dev source-form overlap, and uses dev only for checkpoint selection and metrics. It reports token exact match, token error rate, and compact-character error rate; the last metric removes token separators only and is not broad-IPA accuracy. It writes a research checkpoint, dev-only predictions, and a provenance/training report as a short-retention CI artifact. It never reads test data and does not import the model into the production runtime.
+
+This model is a candidate hypothesis generator, not a claim of state-of-the-art accuracy. Acceptance requires a successful training workflow, inspectable dev metrics, and a review of failure cases before any teacher predictions are used to suggest deterministic rules. The target remains SIGMORPHON's roughly-phonemic tokenized IPA; a reviewed adapter to the ClippyFirst IPA contract is still required before direct engine scoring or rule promotion.
