@@ -120,7 +120,11 @@ def test_predict_preserves_empty_invalid_and_valid_outputs(monkeypatch):
         no_grad = staticmethod(nullcontext)
 
     class FakeTokenizer:
+        def __init__(self):
+            self.texts = []
+
         def __call__(self, texts, **kwargs):
+            self.texts.extend(texts)
             return {}
 
         def batch_decode(self, output, skip_special_tokens=True):
@@ -130,11 +134,13 @@ def test_predict_preserves_empty_invalid_and_valid_outputs(monkeypatch):
         def generate(self, **kwargs):
             return SimpleNamespace(tolist=lambda: [0, 1, 2])
 
-    monkeypatch.setattr(MODULE, "load_model", lambda *args: (FakeTorch(), FakeTokenizer(), FakeModel()))
+    tokenizer = FakeTokenizer()
+    monkeypatch.setattr(MODULE, "load_model", lambda *args: (FakeTorch(), tokenizer, FakeModel()))
     predictions, failures = MODULE.predict(
         ["가", "나", "다"], model_id="model", revision="a" * 40,
         tokenizer_id="tokenizer", tokenizer_revision="b" * 40, batch_size=3,
     )
+    assert tokenizer.texts == ["<kor>: 가", "<kor>: 나", "<kor>: 다"]
     assert predictions == {"다": "ka"}
     assert failures["가"]["status"] == "empty_output"
     assert failures["나"]["status"] == "invalid_output"
@@ -225,3 +231,34 @@ def test_generic_licensed_model_metadata_and_engine_key():
     assert "willwade_byt5_g2p_tiny" in paired
     assert paired["paired_comparisons"]["g2pk_0_9_4"]["common_scored_occurrences"] == 1
     assert paired["per_occurrence"][0]["willwade_byt5_g2p_tiny"]["status"] == "scored"
+
+
+def test_predict_accepts_checkpoint_specific_language_prefix(monkeypatch):
+    class FakeTorch:
+        no_grad = staticmethod(nullcontext)
+
+    class FakeTokenizer:
+        def __init__(self):
+            self.texts = []
+
+        def __call__(self, texts, **kwargs):
+            self.texts.extend(texts)
+            return {}
+
+        def batch_decode(self, output, skip_special_tokens=True):
+            return ["k a"]
+
+    class FakeModel:
+        def generate(self, **kwargs):
+            return SimpleNamespace(tolist=lambda: [0])
+
+    tokenizer = FakeTokenizer()
+    monkeypatch.setattr(MODULE, "load_model", lambda *args: (FakeTorch(), tokenizer, FakeModel()))
+    predictions, failures = MODULE.predict(
+        ["학교"], model_id="model", revision="a" * 40,
+        tokenizer_id="tokenizer", tokenizer_revision="b" * 40,
+        batch_size=1, language_prefix="kor:",
+    )
+    assert tokenizer.texts == ["kor: 학교"]
+    assert predictions == {"학교": "k a"}
+    assert failures == {}
