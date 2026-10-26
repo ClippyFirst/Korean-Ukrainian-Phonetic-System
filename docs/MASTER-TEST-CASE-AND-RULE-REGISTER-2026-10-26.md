@@ -358,3 +358,16 @@ The repository has many more tests than the examples above. Every file must have
 - Source lexical CSV blob SHA at extraction: 1bd0d8116a5f5a4e74bcdbf7fc4999445b4478c5.
 
 These two machine-readable files make the inventory reproducible and provide the lexical source-of-truth base. They do **not** yet satisfy the owner's “all examples from each test” requirement: each test assertion must still be linked to the case ledger, non-lexical test literals and fixture cases must be extracted, and actual results must be tied to exact commits/runs.
+
+
+## Deterministic extractor added; results still pending execution
+
+A standard-library-only extractor is now available at scripts/build_test_case_register.py. It is intentionally conservative:
+
+- exports every lexical dictionary row with stable LEX IDs and exact fields;
+- scans every textual file under tests/ and preserves each exact lexical-input occurrence with its file, line and raw line, but labels this TEXT_OCCURRENCE_REQUIRES_ASSERTION_CLASSIFICATION rather than pretending every occurrence is a test input;
+- captures every Hangul span from every scanned test/fixture/corpus line into an unclassified candidate inventory, preserving the raw line so expected outputs and context are not lost;
+- never reports pass/fail and never guesses a missing IPA or Ukrainian target;
+- emits deterministic CSVs for the lexical base, lexical-to-test links, and Hangul-literal candidates.
+
+Added tests/test_build_test_case_register.py to check stable IDs, exact token boundaries, test/fixture provenance and candidate preservation. These new tests have **not been run locally**; exact-head GitHub Actions results must be checked. The script's generated counts, malformed-row checks, candidate-review status and output hashes must be recorded only after an actual run. Its output is a high-recall candidate register, not automatic linguistic adjudication.
