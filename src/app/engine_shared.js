@@ -74,6 +74,10 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
 // Source: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62
 const NIKL_15_SUBSTANTIVE_LIAISON_FORMS=new Map([
   ['값어치','값>어'],
+  ['값있는','값>있'],
+  ['겉옷','겉>옷'],
+  ['헛웃음','헛>웃'],
+  ['맛없다','맛>없'],
 ]);
 
 // Exact-form NIKL §12(4) ㅎ-coda deletion licenses. These attest only
