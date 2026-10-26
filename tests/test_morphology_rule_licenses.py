@@ -133,6 +133,12 @@ def test_analyzer_consensus_productively_licenses_stem_fortition_but_not_nouns()
         ]
         report = analyzer_consensus_rule_licenses(word, analyses)
         assert expected_license in report["candidate_licenses"]
+        if word == "물가로":
+            detail = next(item for item in report["licensed_boundaries"] if item.get("lexical_root_extensions"))
+            extension = detail["lexical_root_extensions"][0]
+            assert extension["registered_root"] == "물가"
+            assert extension["internal_pair"] == "물>가"
+            assert extension["license"] == expected_license
         result = phoneticize_korean_with_analyzer_consensus(word, analyses)
         assert result["surface_hangul"] == expected_surface
         assert expected_license in result["morphology_analysis"]["applied_licenses"]
