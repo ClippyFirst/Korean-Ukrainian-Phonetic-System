@@ -85,6 +85,7 @@ const NIKL_15_SUBSTANTIVE_LIAISON_FORMS=new Map([
 // Exact source-backed NIKL §11 verbal-stem ㄺ + ㄱ exceptions.
 const NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS=new Map([
   ['읽고','읽>고'], // NIKL Online Q&A qna_seq=329463: 읽고[일꼬].
+  ['읽거든','읽>거'], // Official §11 example; verbal-stem ㄺ before ㄱ.
   ['묽고','묽>고'], // NIKL §11 example.
   ['얽거나','얽>거'], // NIKL §11 example.
 ]);
