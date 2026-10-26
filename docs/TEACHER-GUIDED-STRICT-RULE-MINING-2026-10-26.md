@@ -143,6 +143,6 @@ A code review found that the candidate miner rejected forbidden split labels and
 
 - Code commit: `806d256e7be819569c24cf0cc1d8a8b4aaf6573b`.
 - Regression-test commit: `5a90b3dadb2bc8729b1f30f1c7cef7ae5b385812`.
-- Exact-head CI for the new head has not yet returned in the connected workflow-run listing; do not mark this change `DONE_VERIFIED` until the relevant workflows finish successfully.
+- **Verification:** corrected code/test head `1a48567f042a25023df90258fde30497240b6bd4` passed all four workflows: tests [40293964930](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40293964930), system verification [40293964888](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40293964888), corpus split audit [40293964882](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40293964882), and master artifacts [40293964952](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40293964952). The first attempt exposed a malformed JSONL test fixture (literal `\\n`); the fixture was corrected and the full matrix passed. The current documentation-only head `c4306d171a726416f6a255c49b0842b361ff58cd` has four workflows queued and should be checked again before merge.
 - This is a defensive guard, not proof that every arbitrary opaque ID maps to the correct partition. The immutable source manifest and split membership remain authoritative; reviewers must not relabel test records as dev or use this heuristic as a substitute for row-level provenance.
 
