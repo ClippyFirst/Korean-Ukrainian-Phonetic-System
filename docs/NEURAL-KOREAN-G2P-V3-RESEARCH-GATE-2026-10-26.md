@@ -103,3 +103,28 @@ Next action is to locate an author-maintained release or obtain the artifact and
 ## Context-level evaluation infrastructure (2026-10-26)
 
 Added a strict sentence-level scoring boundary in `scripts/benchmark_contextual_g2p_ko.py` with unit tests. It validates row IDs and canonical input, requires an explicit IPA output declaration, reports coverage and per-sentence exact/CER, and refuses unadapted Hangul outputs. This is infrastructure, **not** a runnable NN-KoG2P adapter or evidence of model scores. See [NN-KoG2P benchmark attempt](NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md).
+
+
+
+## Executable inference continuation — 2026-10-26
+
+### Runnable candidate and rights gate
+
+- The selected first inference candidate is the upstream charsiu/g2p_multilingual_byT5_small_100 checkpoint (https://huggingface.co/charsiu/g2p_multilingual_byT5_small_100). The upstream CharsiuG2P code repository declares MIT, but the Hugging Face weights page has no explicit weights license metadata. **Weights status: UNRESOLVED**. The workflow may perform research inference, but it must not redistribute model weights or treat the code license as automatically licensing the weights.
+- Tokenizer: google/byt5-small, whose model card declares Apache-2.0: https://huggingface.co/google/byt5-small.
+- The workflow resolves the immutable commit prefixes ed5cf99 (model) and 68377bd (tokenizer) to full 40-character revisions before inference. It records resolved revisions and SHA-256 hashes for available model/tokenizer files.
+- Inference stack is pinned to Python 3.12, CPU PyTorch 2.4.1, Transformers 4.44.2, SentencePiece 0.2.0, and huggingface_hub 0.24.6. The 1.2-GB checkpoint is not vendored or uploaded; only reports and per-case predictions are retained as a 30-day Actions artifact.
+
+### Evaluation contract
+
+- The optional adapter now records empty_output, invalid_output (including unexpected Hangul in declared IPA), and per-batch model_error separately. Partial failures reduce coverage rather than being silently dropped or mislabeled as accuracy errors.
+- The report retains raw and normalized predictions, gold, occurrence IDs, and paired comparison with ClippyFirst native and g2pk on the exact same eligible occurrences. Coverage and accuracy denominators remain separate.
+- UGTPHON remains a token-level ablation using the corpus's existing tokenization; it does not preserve sentence context for CharsiuG2P. SIGMORPHON remains a separate lexical benchmark, not a sentence-context test. Neither result validates Ukrainian target rendering.
+- The expensive model steps in the existing multi-engine PR workflow are gated behind the enhancement label on this research PR. This avoids downloading a 1.2-GB model on ordinary CI updates. The run and artifact must be inspected before any metric is marked verified.
+
+### Other candidate triage
+
+- kr-MATAGI/IPA_G2P-Testing contains a Charsiu T5 runner and a KoGPT runner, but the KoGPT path is a fine-tuning/training script rather than a clearly documented, standalone Korean G2P checkpoint adapter. KakaoBrain states that KoGPT source is Apache-2.0 while pretrained weights are CC-BY-NC-ND 4.0; the cited 6B model guidance requires at least 32 GB GPU RAM. It is not selected for this CPU benchmark and is not assumed commercially redistributable.
+- SMART-TTS/SMART-G2P is a code-mixed transliteration component and delegates pronunciation conversion to g2pK/KoG2P; it is not an independent neural Korean G2P baseline.
+- NN-KoG2P remains BLOCKED / not scored because no authentic runnable implementation, weights, license terms, and verified phone-to-IPA map were found. The later Fast Bilingual G2P publication is a different model, not a substitute.
+- **Current score status:** no new CharsiuG2P score is claimed until the labelled workflow finishes and its artifact is inspected. A successful CI unit-test run is not evidence of neural inference quality.
