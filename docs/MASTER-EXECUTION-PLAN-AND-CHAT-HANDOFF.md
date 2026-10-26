@@ -1860,14 +1860,14 @@ The scratch-trained model is a different experiment and must not be conflated wi
 
 - `DONE_VERIFIED`: R002/R016 implementation + positive/negative regression tests exist in Python/browser on this branch.
 - `DONE_VERIFIED`: same-harness Charsiu-vs-native diagnostic outputs exist and preserve per-occurrence raw predictions.
-- `PARTIAL`: teacher error-analysis and candidate-mining tools exist, but no accepted Charsiu-derived production rule has yet been independently adjudicated and promoted.
+- `PARTIAL`: teacher error-analysis and candidate-mining tools exist; the Charsiu train/dev inference and raw pair-ledger workflow is now implemented, but its exact-head execution is pending and no accepted Charsiu-derived production rule has yet been independently adjudicated and promoted.
 - `BLOCKED`: cannot safely distill exact test-set cases into runtime rules; UGTPHON/SIGMORPHON test are evaluation-only. The Charsiu checkpoint's training overlap is unknown, and its output convention is not independently mapped to ClippyFirst broad IPA. The 366 train/train cross-corpus conflicts remain unadjudicated.
 - `TODO`: run teacher inference only on eligible train/dev material, generate a review queue from those splits, adjudicate candidate environments against primary NIKL sources, add positive and negative controls, then evaluate the frozen test sets once without using their cases to select rules.
 
 ### Required next engineering batch
 
-1. Run Charsiu inference on pinned train/dev partitions (not test) and preserve raw outputs + exact model/tokenizer revisions.
-2. Mine repeated *train/dev* contexts where the teacher and Strict disagree; separate true phonological environments from output-convention differences and lexical memorization.
+1. `DONE_PENDING_CI`: `scripts/benchmark_charsiu_research_split.py` and `.github/workflows/charsiu-dev-rule-mining.yml` now run the pinned Charsiu checkpoint on the prepared SIGMORPHON dev and UGTPHON dev partitions only. The workflow preserves raw per-occurrence teacher/native/gold strings, records immutable model/tokenizer revisions and unresolved license/training-overlap status, and does not export model weights. The frozen test split is never passed to this workflow.
+2. `TODO`: after the workflow artifact is available, inspect repeated *dev* contexts where the teacher and Strict disagree; separate true phonological environments from output-convention differences and lexical memorization. No test cases may be used to choose candidate rules.
 3. For each candidate, require primary-source support, explicit morphology/boundary conditions, counterexamples, and an IPA convention mapping before changing runtime.
 4. Implement only candidates that pass the existing rule evaluator and keep Python/browser parity; rerun the unchanged test benchmark as final evaluation, not as a tuning source.
 
