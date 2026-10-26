@@ -17,7 +17,7 @@ test('§4 generic ㅚ words expose [we] without changing Korean spelling or Ukra
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '괴물');
   assert.equal(result.variants[0].ukrainian, result.candidate_ukrainian);
-  assert.equal(result.variants[0].ipa, 'kwe mul');
+  assert.equal(result.variants[0].ipa, 'kwe.mul');
   assert.match(result.variants[0].note, /§4/u);
   assert.match(result.variants[0].note, /철자|нап(u|и)с/u);
 });
@@ -77,7 +77,7 @@ test('§5 non-initial ㅢ exposes the permitted [i] reading and adjusts the Ukra
   assert.equal(result.candidate_ukrainian, 'мінджуджуий');
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);
-  assert.equal(result.variants[0].ipa, 'min dʑu dʑu i');
+  assert.equal(result.variants[0].ipa, 'min.dʑu.dʑu.i');
   assert.equal(result.variants[0].ukrainian, 'мінджуджуі');
   assert.match(result.variants[0].note, /§5/u);
 });
@@ -93,9 +93,9 @@ test('§5 word boundaries prevent non-initial ㅢ alternatives from leaking acro
   const genericEngine = createEngine(canonical, '');
   const result = genericEngine.convert('민주주의 의의');
   assert.equal(result.variants.length, 3);
-  assert.ok(result.variants.some((variant) => variant.ipa === 'min dʑu dʑu i ɰi ɰi'));
+  assert.ok(result.variants.some((variant) => variant.ipa === 'min.dʑu.dʑu.i ɰi.ɰi'));
   assert.ok(result.variants.some((variant) => variant.ipa === 'min.dʑu.dʑu.ɰi ɰi.i'));
-  assert.ok(result.variants.some((variant) => variant.ipa === 'min dʑu dʑu i ɰi i'));
+  assert.ok(result.variants.some((variant) => variant.ipa === 'min.dʑu.dʑu.i ɰi.i'));
 });
 
 
@@ -106,7 +106,7 @@ test('§5 generic ㅖ may be [e] except in the syllables 예 and 례', () => {
   assert.equal(result.ukrainian, 'пєґі');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '폐기');
-  assert.equal(result.variants[0].ipa, 'pʰe ɡi');
+  assert.equal(result.variants[0].ipa, 'pʰe.ɡi');
   assert.equal(result.variants[0].ukrainian, 'пеґі');
   assert.match(result.variants[0].note, /§5/u);
 

@@ -7,19 +7,24 @@ import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, IPA_TO_UKRAINIAN } fro
 function renderLexicalIpa(text, ipas){
   // IPA entries are syllable-aligned. Use dots inside one eojeol and preserve
   // literal source whitespace between eojeols; never infer a boundary from IPA.
-  const tokens=text.match(/\\s+|[^\\s]+/gu)||[];
+  const tokens=text.match(/\s+|[^\s]+/gu)||[];
   let index=0;
-  return tokens.map(token=>{
-    if(/^\\s+$/u.test(token))return token;
+  return tokens.map((token,tokenIndex)=>{
+    if(/^\s+$/u.test(token))return token;
     if(/^[가-힣]+$/u.test(token)){
       const count=[...token].length;
       const syllables=ipas.slice(index,index+count);
       index+=count;
       return syllables.join('.');
     }
-    const value=ipas[index]||'';
-    index++;
-    return value;
+    const minimumForToken=Math.max(1,[...token].filter(ch=>/[가-힣]/u.test(ch)).length);
+    const requiredAfter=tokens.slice(tokenIndex+1)
+      .filter(next=>!(/^\s+$/u.test(next)))
+      .reduce((sum,next)=>sum+Math.max(1,[...next].filter(ch=>/[가-힣]/u.test(ch)).length),0);
+    const count=Math.max(minimumForToken,ipas.length-index-requiredAfter);
+    const syllables=ipas.slice(index,index+count);
+    index+=count;
+    return syllables.join('.');
   }).join('');
 }
 

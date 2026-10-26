@@ -10,19 +10,24 @@ const lexicon = new Map(rows.map((row) => [row.input, row]));
 const engine = createEngine(canonical, lexicalText);
 
 function renderExpectedIpa(input, ipaSyllables){
-  const tokens=input.match(/\\s+|[^\\s]+/gu)||[];
+  const tokens=input.match(/\s+|[^\s]+/gu)||[];
   let index=0;
-  return tokens.map(token=>{
-    if(/^\\s+$/u.test(token))return token;
+  return tokens.map((token,tokenIndex)=>{
+    if(/^\s+$/u.test(token))return token;
     if(/^[가-힣]+$/u.test(token)){
       const count=[...token].length;
       const values=ipaSyllables.slice(index,index+count);
       index+=count;
       return values.join('.');
     }
-    const value=ipaSyllables[index]||'';
-    index++;
-    return value;
+    const minimumForToken=Math.max(1,[...token].filter(ch=>/[가-힣]/u.test(ch)).length);
+    const requiredAfter=tokens.slice(tokenIndex+1)
+      .filter(next=>!(/^\s+$/u.test(next)))
+      .reduce((sum,next)=>sum+Math.max(1,[...next].filter(ch=>/[가-힣]/u.test(ch)).length),0);
+    const count=Math.max(minimumForToken,ipaSyllables.length-index-requiredAfter);
+    const values=ipaSyllables.slice(index,index+count);
+    index+=count;
+    return values.join('.');
   }).join('');
 }
 
