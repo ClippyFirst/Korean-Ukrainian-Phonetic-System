@@ -82,3 +82,10 @@ The audit also finds substantial overlap among the separate corpus families (for
 - SIGMORPHON 2021 task and split documentation: https://github.com/sigmorphon/2021-task1/tree/821bcdece5a47820872215969f275004b0abe80c
 - Selected Charsiu checkpoint page (no model card at inspection): https://huggingface.co/charsiu/g2p_multilingual_byT5_small_100
 - Charsiu code, data and fine-tuning instructions: https://github.com/lingjzhu/charsiug2p
+
+## Alternative pretrained model candidate: Montreal Forced Aligner Korean (Jamo) G2P v3.0.0
+
+The official MFA documentation lists [Korean (Jamo) MFA G2P v3.0.0](https://mfa-models.readthedocs.io/en/latest/g2p/Korean/Korean%20(Jamo)%20MFA%20G2P%20model%20v3_0_0.html), architecture Phonetisaurus, compatible with MFA v3.0.0, with an explicit **CC BY 4.0** model license and an MFA phone set. The model card reports 49,655 training words and 5,518 evaluation words; its published WER and PER are both **100.00%**. The official [Korean model index](https://mfa-models.readthedocs.io/en/latest/g2p/Korean/index.html) also lists other Korean MFA G2P versions under CC BY 4.0.
+
+**Decision: promising alternative candidate, not yet approved as an IPA teacher.** Unlike the Charsiu checkpoint currently under review, the MFA page does state a model license. However, licensing alone is insufficient: the output inventory is the MFA phone set, not a guaranteed IPA transcription, and the reported 100% WER/PER is a major quality warning that needs investigation. Before any benchmark use, pin the exact release artifact and hash, verify the artifact's accompanying terms and underlying dictionary provenance, inspect the phoneset, define and test an explicit MFA-phone-to-IPA adapter (including unmapped-symbol failure), and independently reproduce or explain the reported metrics. No model was downloaded or run in this continuation. Do not relabel MFA output as IPA and do not use its predictions as gold.
+
