@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Optional, research-only CharsiuG2P multilingual ByT5 benchmark runner.
+"""Research-only runner for pinned multilingual ByT5 Korean G2P checkpoints.
 
-The adapter evaluates corpus-tokenized Hangul words only. It does not perform
-Korean segmentation, sentence-context inference, or Ukrainian rendering.
+CharsiuG2P remains the default candidate; CLI metadata allows separately licensed
+checkpoints to be evaluated without mislabelling their model, tokenizer, or IPA convention.
+The adapter evaluates corpus-tokenized Hangul words only, not sentence context.
 """
 from __future__ import annotations
 
@@ -306,7 +307,7 @@ def evaluate(
     failure_counts = {status: sum(1 for item in prediction_failures.values() if item.get("status") == status)
                       for status in ("empty_output", "invalid_output", "model_error")}
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "engine": model_label,
         "engine_key": engine_key,
         "model_id": os.environ.get("CHARSIU_MODEL_ID", "charsiu/g2p_multilingual_byT5_small_100"),
