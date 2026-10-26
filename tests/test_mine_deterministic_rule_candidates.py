@@ -78,11 +78,17 @@ def test_provenance_rejects_non_train_dev_splits(tmp_path, split):
 @pytest.mark.parametrize("dataset_id", [
     "naver-ai/UGTPHON",
     "sigmorphon/2021-task1",
-    "project-24-form-holdout",
 ])
-def test_provenance_rejects_known_benchmark_and_holdout_ids(tmp_path, dataset_id):
-    _, provenance_path = write_inputs(tmp_path, dataset_id=dataset_id)
-    with pytest.raises(ValueError, match="known benchmark/holdout"):
+def test_verified_train_dev_partitions_of_benchmark_families_are_allowed(tmp_path, dataset_id):
+    _, provenance_path = write_inputs(tmp_path, dataset_id=dataset_id, split="train")
+    assert load_provenance(provenance_path)["dataset_id"] == dataset_id
+
+
+def test_provenance_rejects_sealed_holdout_ids_even_if_split_is_mislabeled(tmp_path):
+    _, provenance_path = write_inputs(
+        tmp_path, dataset_id="project-24-form-holdout", split="train"
+    )
+    with pytest.raises(ValueError, match="sealed holdout/test"):
         load_provenance(provenance_path)
 
 
