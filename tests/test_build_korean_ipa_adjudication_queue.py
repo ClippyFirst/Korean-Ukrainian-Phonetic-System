@@ -56,7 +56,7 @@ def test_queue_keeps_only_train_train_target_conflicts_and_preserves_raw_evidenc
     assert item["ugtphon_candidates"][0]["target_raw"] == "paːp̚"
     assert item["proposed_mapping"] is None
     assert item["review_status"] == "UNADJUDICATED"
-    assert "U+02D0" in item["unicode_codepoint_inventory"]["ugtphon"][0]["codepoints"]
+    assert any(entry["codepoint"] == "U+02D0" for entry in item["ugtphon_candidates"][0]["unicode_codepoint_inventory"])
 
 
 def test_queue_does_not_call_codepoints_phonemes_or_strip_length():
