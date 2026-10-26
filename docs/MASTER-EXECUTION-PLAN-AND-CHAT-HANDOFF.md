@@ -1989,3 +1989,42 @@ This entry supersedes the prior executable-head references in earlier continuati
 
 The earlier Python 3.13 failure in [run 40334002025](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40334002025) was the stale assertion `test_narrow_ipa_is_explicitly_unavailable` after the partial narrow profile had been implemented. The current branch's `tests/test_ipa.py` replaces that assertion with explicit partial-profile, source-scope, and unchanged-broad-default checks; `tests/test_narrow_ipa.py` adds positive/negative controls and the Ukrainian target fail-closed test. The old failure belongs to the earlier `81e5aa2` head, not the current code/test head. The replacement tests remain unverified until current-head run [40344916989](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344916989) finishes.
 
+## Latest continuation — systematic source-verified production-rule promotion (2026-10-26)
+
+### Executed in the production runtime
+
+Expanded the closed R010 inventory in both Python and browser runtimes with seven official NIKL §24 stem+ending examples:
+- `껴안다 → 껴안따`
+- `앉고 → 안꼬`
+- `얹다 → 언따`
+- `삼고 → 삼꼬`
+- `더듬지 → 더듬찌`
+- `닮고 → 담꼬`
+- `젊지 → 점찌`
+
+The production rule remains gated by an exact full-form + adjacent-pair license and the existing R010 coda/onset environment; this change does not create a broad coda-only heuristic. Added positive runtime regressions and negative controls for the official `-기-` exception (`안기다`), noun-like sequence `감도`, and ambiguous homograph `신고`. The latter is deliberately omitted from automatic licensing because the orthography can be a noun meaning ‘report’; an unconditional full-form rule would not be safe without morphology/sense evidence.
+
+The Python map and browser `NIKL_24_STEM_NM_ENDING_FORMS` map are covered by the existing exact parity test. The canonical S001 source record now points directly to the official NIKL Standard Pronunciation Rules page, and the IPA convention review records scope and exclusions.
+
+### Existing verified implementation preserved
+
+- Existing source-backed inventories R002/R003/R004/R007/R009/R011/R012/R013/R014/R015/R016 and their browser parity are reused rather than duplicated.
+- The partial narrow IPA profile remains optional/research-only; it is not treated as approved Ukrainian target input.
+- The morphology-consensus adapter remains research-only and low-confidence. No analyzer output or Charsiu prediction was automatically promoted to normative pronunciation gold.
+
+### Verification state and next acceptance gate
+
+Commits in this batch: `6f0937c` (Python R010 inventory), `6b7b3e3` (browser inventory), `58ee23c` (runtime regression tests), `0f323e1` (source registry), `272f7ac` (IPA review evidence). These changes were made on `research/strict-teacher-guided-rule-mining-2026-10-26` under PR #339.
+
+Exact-head GitHub Actions for `272f7ac9f0746d5005d2767495dd25361ed3c250` are queued, not passed:
+- tests: [40346869597](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40346869597)
+- system verification: [40346869660](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40346869660)
+- corrected Charsiu broad/narrow train/dev: [40346870076](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40346870076)
+- morphology-consensus diagnostic: [40346869726](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40346869726)
+
+No local repository tests were run; the connected GitHub API is available, but a local checkout/runtime is not. Do not describe the batch as verified until the exact-head jobs complete.
+
+### Remaining scope boundary
+
+This is a source-verified production expansion of the closed inventory, **not** unrestricted productive morphological inference. The official rule depends on stem/ending morphology; broad generalization from surface consonants would incorrectly tense nouns and excluded `-기-` constructions. The next expansion must either add independently source-backed unambiguous forms to the closed inventory or implement a separately opt-in, explicitly low-confidence morphological route with adversarial controls. Neural-teacher output alone is never sufficient evidence for promotion.
+
