@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -150,7 +151,7 @@ test('core source-backed examples in the passage retain the current engine surfa
     assert.equal(row.ipa_syllables.split('|').join('.'), ipa, word + ': stored IPA');
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': engine surface');
-    assert.equal(result.ipa, ipa, word + ': engine IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': engine IPA');
     assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), word + ': Ukrainian target must come from the stored IPA target');
   }
 });
