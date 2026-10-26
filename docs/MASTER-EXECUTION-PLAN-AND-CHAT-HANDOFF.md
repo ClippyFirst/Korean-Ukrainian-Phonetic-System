@@ -1422,3 +1422,14 @@ Release classification remains **software-verified research prototype / partial 
 - Added `scripts/benchmark_contextual_g2p_ko.py` and unit tests for a strict sentence-level IPA scoring contract; added it to the multi-engine CI test list. It validates canonical sentence inputs, ID alignment, IPA output declarations, coverage, exact match, CER and per-case predictions.
 - **Still blocked:** no authentic NN-KoG2P weights/inference code, verified licensing terms, or verified custom-phone-to-IPA mapping were found. No NN-KoG2P inference or scores have been produced. The new evaluator is infrastructure, not a substitute model.
 - SIGMORPHON is lexical/word-level; it cannot validate NN-KoG2P's sentence-context behavior without a clearly labelled context-free ablation. UGTPHON sentence-level evaluation is the appropriate first target once the authentic artifact exists.
+
+
+
+## Neural Korean G2P V3 — executable inference continuation — 2026-10-26
+
+- **Active PR/branch:** Draft PR #338, research/neural-korean-g2p-v3-2026-10-26. Latest code changes add explicit per-word neural failure statuses and a paired, occurrence-level report; production engine and IPA-to-Ukrainian renderer remain unchanged.
+- **Model candidate:** charsiu/g2p_multilingual_byT5_small_100; tokenizer google/byt5-small. The workflow resolves model revision prefix ed5cf99 and tokenizer prefix 68377bd to full immutable SHAs and records file hashes where available. Runtime stack is pinned.
+- **Licensing:** CharsiuG2P code declares MIT, but the official model page has no explicit license for the weights. The weights-rights status is unresolved; the workflow does not upload or vendor weights. The tokenizer declares Apache-2.0.
+- **Execution:** The existing multi-engine workflow contains a label-gated neural inference path for both pinned UGTPHON and SIGMORPHON inputs. It emits raw per-case outputs, normalized outputs, coverage, exact match, CER, missing/invalid/error counts, and paired comparisons with ClippyFirst native and g2pk. Model output remains an IPA candidate only; there is no neural-to-Ukrainian bypass.
+- **Benchmark interpretation:** UGTPHON evaluation is a token-level ablation, not a context-preserving Charsiu sentence test. SIGMORPHON is lexical only. Neither score validates Ukrainian target rendering. NN-KoG2P remains blocked/not scored.
+- **Verification status at this handoff:** code and tests have been updated; real inference and artifact inspection are still required before reporting neural scores. Do not infer benchmark success from unit tests or workflow configuration alone.
