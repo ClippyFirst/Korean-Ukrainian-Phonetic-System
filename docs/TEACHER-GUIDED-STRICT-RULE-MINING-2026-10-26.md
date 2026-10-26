@@ -137,3 +137,12 @@ Use a three-way separation where data availability permits: train partition for 
 | Promote teacher-derived Strict rules | TODO | Independent NIKL/primary-source adjudication, positive/negative controls, dev improvement, and regression evidence required; no teacher-derived rule is licensed yet |
 | Change production Strict in this continuation | DEFERRED | No source-backed candidate passed the acceptance gate in this run; do not invent rules from associations |
 
+## Continuation update — fail-closed case-ID guard (2026-10-26)
+
+A code review found that the candidate miner rejected forbidden split labels and holdout-marked dataset identifiers, but did not independently inspect each `case_id`. A mislabeled row such as `test-001` could therefore pass if the manifest and row split both claimed `dev`. This is now guarded at row ingestion: obvious `test`, `holdout`, and `24-form` identifier markers are rejected regardless of the declared split. Regression tests cover hyphenated, underscored, and project-style 24-form identifiers.
+
+- Code commit: `806d256e7be819569c24cf0cc1d8a8b4aaf6573b`.
+- Regression-test commit: `5a90b3dadb2bc8729b1f30f1c7cef7ae5b385812`.
+- Exact-head CI for the new head has not yet returned in the connected workflow-run listing; do not mark this change `DONE_VERIFIED` until the relevant workflows finish successfully.
+- This is a defensive guard, not proof that every arbitrary opaque ID maps to the correct partition. The immutable source manifest and split membership remain authoritative; reviewers must not relabel test records as dev or use this heuristic as a substitute for row-level provenance.
+
