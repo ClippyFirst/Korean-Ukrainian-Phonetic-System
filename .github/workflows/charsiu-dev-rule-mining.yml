@@ -90,8 +90,11 @@ jobs:
               assert report["model_provenance"]["test_data_used_for_rule_selection"] is False
               assert report["model_provenance"]["weights_license_status"].startswith("UNRESOLVED")
               assert report["model_provenance"]["output_convention_status"].startswith("UNREVIEWED")
+              assert report["narrow_comparison"]["target_compatible"] is False
+              assert report["narrow_comparison"]["clippyfirst_native"] is not None
               assert all(row["production_rule_promotion"] is False for row in report["paired_rule_review_cases"])
-              print(name, report["dataset_metadata"], report.get("charsiu_byt5"), report.get("clippyfirst_native"))
+              assert all("strict_narrow_status" in row for row in report["paired_rule_review_cases"])
+              print(name, report["dataset_metadata"], report.get("charsiu_byt5"), report.get("clippyfirst_native"), report["narrow_comparison"]["clippyfirst_native"])
           PY
 
       - uses: actions/upload-artifact@v4
