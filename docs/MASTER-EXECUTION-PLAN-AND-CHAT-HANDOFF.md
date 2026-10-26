@@ -1993,7 +1993,11 @@ The earlier Python 3.13 failure in [run 40334002025](https://github.com/ClippyFi
 
 ### Executed in the production runtime
 
-Expanded the closed R010 inventory in both Python and browser runtimes with seven official NIKL §24 stem+ending examples:
+Expanded the closed R010 inventory in both Python and browser runtimes with eleven source-backed NIKL §24 stem+ending examples (seven from the current normative rule page and four supported by the official teacher-training material):
+- `안다 → 안따`
+- `안고 → 안꼬`
+- `감다 → 감따`
+- `감고 → 감꼬`
 - `껴안다 → 껴안따`
 - `앉고 → 안꼬`
 - `얹다 → 언따`
@@ -2004,7 +2008,7 @@ Expanded the closed R010 inventory in both Python and browser runtimes with seve
 
 The production rule remains gated by an exact full-form + adjacent-pair license and the existing R010 coda/onset environment; this change does not create a broad coda-only heuristic. Added positive runtime regressions and negative controls for the official `-기-` exception (`안기다`), noun-like sequence `감도`, and ambiguous homograph `신고`. The latter is deliberately omitted from automatic licensing because the orthography can be a noun meaning ‘report’; an unconditional full-form rule would not be safe without morphology/sense evidence.
 
-The Python map and browser `NIKL_24_STEM_NM_ENDING_FORMS` map are covered by the existing exact parity test. The canonical S001 source record now points directly to the official NIKL Standard Pronunciation Rules page, and the IPA convention review records scope and exclusions.
+The Python map and browser `NIKL_24_STEM_NM_ENDING_FORMS` map are covered by the existing exact parity test. The canonical S001 source record points directly to the official NIKL Standard Pronunciation Rules page, and S015 registers the official 2009 teacher-training material used for the four supplementary examples. The IPA convention review records scope and exclusions.
 
 ### Existing verified implementation preserved
 
