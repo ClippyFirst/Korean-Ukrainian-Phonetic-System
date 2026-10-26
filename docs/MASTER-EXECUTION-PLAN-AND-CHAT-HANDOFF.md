@@ -1484,3 +1484,9 @@ Release classification remains **software-verified research prototype / partial 
 - **Verification:** exact-head workflows for `5a90b3dadb2bc8729b1f30f1c7cef7ae5b385812` had not yet appeared in the connected workflow-run listing at the time of this update. Treat the new guard as implemented but not yet `DONE_VERIFIED`; re-check CI before merge. Prior head `a4cc5f55ba223e05d5372fe9e54c4ed90e11288b` had all four workflows pass.
 - **Limit:** this marker heuristic cannot infer provenance from opaque IDs. Source manifests and split membership still must be verified; never use the guard to justify relabeling or reusing sealed records.
 
+### Additional model search — licensed MFA G2P candidate (2026-10-26)
+
+- Found the official Montreal Forced Aligner Korean (Jamo) G2P v3.0.0 card: Phonetisaurus architecture, MFA phone set, declared CC BY 4.0, 49,655 training words and 5,518 evaluation words. Official sources: https://mfa-models.readthedocs.io/en/latest/g2p/Korean/Korean%20(Jamo)%20MFA%20G2P%20model%20v3_0_0.html and https://mfa-models.readthedocs.io/en/latest/g2p/Korean/index.html.
+- This may offer a legally clearer alternative to Charsiu's undocumented checkpoint weights, but is **not yet cleared for IPA teacher use**. The phone set requires a verified adapter, and the published WER/PER are both 100%, a quality warning requiring investigation. No artifact was downloaded and no inference was run.
+- Next acceptance criteria: pin artifact/version/hash; inspect phone inventory and dictionary/data terms; explain/reproduce the published metrics; test an explicit phone-set-to-IPA adapter; then evaluate only on approved train/dev examples, keeping test/holdout sealed.
+
