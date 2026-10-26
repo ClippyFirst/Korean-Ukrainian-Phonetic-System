@@ -1985,3 +1985,7 @@ This entry supersedes the prior executable-head references in earlier continuati
 - A regression assertion checks that provenance for `물가로`.
 - Exact-head Actions for this SHA have not yet surfaced final results. The latest visible full matrix remains queued on earlier code/test heads; no test pass is claimed.
 
+### Prior CI failure reconciliation
+
+The earlier Python 3.13 failure in [run 40334002025](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40334002025) was the stale assertion `test_narrow_ipa_is_explicitly_unavailable` after the partial narrow profile had been implemented. The current branch's `tests/test_ipa.py` replaces that assertion with explicit partial-profile, source-scope, and unchanged-broad-default checks; `tests/test_narrow_ipa.py` adds positive/negative controls and the Ukrainian target fail-closed test. The old failure belongs to the earlier `81e5aa2` head, not the current code/test head. The replacement tests remain unverified until current-head run [40344916989](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344916989) finishes.
+
