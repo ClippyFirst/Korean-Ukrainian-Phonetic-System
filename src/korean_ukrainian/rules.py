@@ -69,6 +69,14 @@ _NIKL_R002_FORMAL_LICENSES = {
     "멋있어": "있>어",
 }
 
+# NIKL §15(붙임): substantive-morpheme liaison uses the coda representative;
+# the official NIKL answer explicitly attests 값어치[가버치]. Keep this exact-form
+# exception separate from formal-morpheme liaison (값이[갑씨]).
+# Source: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62
+_NIKL_R002_SUBSTANTIVE_LICENSES = {
+    "값어치": "값>어",
+}
+
 # Exact-form licenses for NIKL §12(4) ㅎ-coda deletion before a vowel-initial
 # ending. The official answers attest Korean surface pronunciations, not IPA
 # gold; these licenses resolve only the Korean morphophonological step.
@@ -162,6 +170,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R002_FORMAL_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R002:formal:{full_form}:{pair}")
+    pair = _NIKL_R002_SUBSTANTIVE_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R002:substantive:{full_form}:{pair}")
     pair = _NIKL_R003_FORMAL_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R003:ending_or_suffix_h_deletion:{full_form}:{pair}")
