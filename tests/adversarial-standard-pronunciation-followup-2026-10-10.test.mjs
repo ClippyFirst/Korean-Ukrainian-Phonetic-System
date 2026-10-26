@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine } from '../src/app/engine.js';
 
@@ -23,7 +24,7 @@ test('additional NIKL examples expose compound boundaries and coda exceptions', 
   for (const [input, want] of Object.entries(expected)) {
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, want.surface, input + ': NIKL standard surface');
-    assert.equal(result.ipa, want.ipa, input + ': broad IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, want.ipa), input + ': broad IPA');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholder');
   }
 });
