@@ -22,7 +22,7 @@ from korean_ukrainian.pipeline import phoneticize_korean  # noqa: E402
 DATASET_ID = "sigmorphon-2021-task1-medium-korean"
 DATASET_REVISION = "821bcdece5a47820872215969f275004b0abe80c"
 TARGET_REPRESENTATION = "tokenized_ipa_from_sigmorphon_tsv"
-SEALED_ID = re.compile(r"(^|[-/:])(test|holdout)([-/:]|$)|(^|[-/:])24[-/]?form([-/:]|$)", re.I)
+SEALED_ID = re.compile(r"(^|[-/:])(test|holdout)([-/:]|$)|(^|[-/:])24[-/]?form([-/:]|$)|(^|[-/:])KUA-HO-\\d+([-/:]|$)", re.I)
 
 
 def _load_jsonl(path: Path, label: str) -> list[dict[str, Any]]:
