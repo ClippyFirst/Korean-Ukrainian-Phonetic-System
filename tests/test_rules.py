@@ -898,5 +898,8 @@ def test_nikl_section_11_official_readgeodeun_example_is_licensed_in_production(
         and trace.get("license_context") == "R016:verb_stem_rieul_giyeok_suffix:읽거든:읽>거"
         for trace in result["rules"]
     )
-    # The same ㄺ+ㄱ shape in a noun remains fail-closed without a license.
-    assert phoneticize_korean("닭고기")["surface_hangul"] != "달꼬기"
+    # The same ㄺ+ㄱ shape in a noun remains unlicensed by R016.
+    noun = phoneticize_korean("닭고기")
+    r016 = next(trace for trace in noun["rules"] if trace.get("rule_id") == "R016")
+    assert not r016["changed"]
+    assert not (r016.get("license_context") or "").startswith("R016:")
