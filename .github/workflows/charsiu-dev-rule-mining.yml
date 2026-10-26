@@ -19,6 +19,7 @@ permissions:
 jobs:
   charsiumodel-dev:
     name: Charsiu train/dev comparisons (research only)
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'run-charsiu-dev')
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
