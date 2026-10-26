@@ -125,6 +125,10 @@ const NIKL_17_FORMAL_I_FORMS=new Map([
 const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
   // Exact examples from official NIKL Rule 24. Keep this morphology-sensitive
   // inventory closed; ambiguous 신고 is intentionally not auto-licensed.
+  ['안다','안>다'], // Official NIKL training material §24 example.
+  ['안고','안>고'],
+  ['감다','감>다'],
+  ['감고','감>고'],
   ['껴안다','안>다'],
   ['앉고','앉>고'],
   ['얹다','얹>다'],
