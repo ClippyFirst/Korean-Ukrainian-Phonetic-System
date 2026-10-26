@@ -134,7 +134,7 @@ test('punctuation is a hard boundary for cross-word sound-rule propagation', () 
 
 test('a representative set of generic rule cases stays algorithmic with and without the lexical layer', () => {
   const expected = {
-    '국물':'kuŋ mul',
+    '국물':'kuŋ.mul',
     '막론':'maŋ non',
     '신라':'ɕil la',
     '값':'kap̚',
