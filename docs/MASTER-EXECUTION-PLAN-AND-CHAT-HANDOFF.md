@@ -1612,3 +1612,16 @@ Release classification remains **software-verified research prototype / partial 
 5. **Runtime model integration:** deferred; current evidence supports offline teacher use only. No production phonological rule or runtime output changed in this batch.
 
 **Project status:** research infrastructure is release-verifiable, but the Korean-to-Ukrainian system as a whole remains a partial prototype, not release-ready.
+
+
+## Source-specific IPA inventory audit — exact verification
+
+Added `scripts/audit_korean_ipa_symbol_inventories.py` with tests and integrated it into the existing corpus workflow. Exact code/test head `49db9150c2bd680d26eb4a04265376df06c7e56a` passed all five relevant workflows: tests [40305565475](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305565475), system verification [40305565473](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305565473), corpus audit [40305565459](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305565459), scratch teacher + paired diagnostic [40305565649](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305565649), and master artifacts [40305565464](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305565464). Inventory artifact [12641804746](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305565459/artifacts/12641804746).
+
+Observed inventory counts:
+- SIGMORPHON train/dev: 47/46 distinct Unicode code points and 60/59 source-whitespace target tokens.
+- UGTPHON train/dev: 51/50 distinct Unicode code points; 13,271/1,897 token occurrences and 8,753/1,629 unique forms.
+- Length mark `ː`: 1,630 occurrences in SIGMORPHON train targets vs 105 in UGTPHON train targets. Primary stress `ˈ`: 105 in UGTPHON train, absent in SIGMORPHON train inventory.
+- UGTPHON has `ç` (211 train occurrences) and `ø` (300 train occurrences), not present in SIGMORPHON train; example rows include `비키니 → pikçini` and `사인회 → sʰa̠inɦø̞`. These are review targets, not presumed errors or mapped symbols.
+
+The inventory tool is **DONE_VERIFIED**. It does not perform phoneme segmentation or conversion. The queue and pairer are also verified as tools, but the linguistic acceptance gate remains blocked: source IPA adapter not reviewed, 366 train/train target conflicts unadjudicated, and no valid cross-engine accuracy metric. The neural teacher remains offline-only; no production rule/runtime output changed.
