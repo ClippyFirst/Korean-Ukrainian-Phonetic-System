@@ -269,6 +269,18 @@ def test_verbal_stem_rieul_giyeok_exception_requires_exact_morphological_license
     assert (items[0].coda, items[1].onset) == ("ㄹ", "ㄲ")
     assert traces[0].changed
 
+def test_nikl_r016_official_examples_resolve_with_exact_form_source_licenses():
+    cases = {"읽고": "읽>고", "묽고": "묽>고", "얽거나": "얽>거"}
+    for word, pair in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R016", "R008", "R001"])
+        assert (items[0].coda, items[1].onset) == ("ㄹ", "ㄲ"), word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R016:verb_stem_rieul_giyeok_suffix:{word}:{pair}", word
+
+    items, traces = apply_ordered_rules(parse_syllables("닭고기"), ["R016", "R008", "R001"])
+    assert (items[0].coda, items[1].onset) == ("ㄺ", "ㄱ")
+    assert traces[0].status == "conditional-disabled"
+
 def test_r016_license_cannot_be_reused_for_noun_dakgogi():
     items, traces = apply_ordered_rules(
         parse_syllables("닭고기"),
