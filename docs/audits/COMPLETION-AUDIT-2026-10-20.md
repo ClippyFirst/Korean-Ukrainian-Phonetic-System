@@ -1087,3 +1087,14 @@ The latest software hardening:
 - UI wording distinguishes candidate/unavailable status and states that `model-selected` target spellings are project-defined, not independently adjudicated.
 
 **Disposition:** software-verified partial research prototype, **not release-ready**. Remaining acceptance blockers: verified primary source for the original 24-form list; independent Korean IPA adjudication/gold; independent Ukrainian target gold and evaluation protocol; authorized live NIKL inventory. No invented gold labels, phonological forms, or accuracy claims were added.
+
+
+## Follow-up implementation audit — source-backed deterministic R002 coverage (2026-10-26)
+
+**Status at audit write: PARTIAL — implementation present, exact-head CI pending.**
+
+- Verified source basis: NIKL Standard Pronunciation Rules §§13–15 (https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002) and the official FAQ for 값어치[가버치] (https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62).
+- The exact-form R002 rule registries in Python and browser code now cover ten direct §13/§14 examples and five §15 substantive-morpheme examples. Formal and substantive paths are separate and remain exact-form licensed.
+- Regression tests cover expected transformations plus unlicensed negative controls; no model is imported into the runtime and no IPA/UA target is upgraded to independently verified gold.
+- Scope limitation: some exact forms already had lexical overrides, so this change improves deterministic rule-layer coverage and Python/browser parity rather than demonstrating an aggregate accuracy increase. Accuracy against a neural teacher remains unmeasured because IPA conventions and independent evaluation data are not yet reconciled.
+- Acceptance gate: exact-head Python/browser tests and build must pass; only then mark the implementation gate DONE_VERIFIED. Independent IPA adjudication, target-layer evaluation and a representative held-out benchmark remain separate release blockers.
