@@ -698,8 +698,8 @@ def apply_ordered_rules(
         "R010", "R011", "R012", "R013", "R014", "R015", "R016", "R008", "R001",
     ]
     exact = list(rule_licenses or ())
-    # Use only exact-form licenses for examples explicitly listed in NIKL §§28–30.
-    # Other words still need an explicit caller license.
+    # Use exact-form licenses for source-listed examples in NIKL §§25–30.
+    # Other words still need an explicit caller license or verified morphology.
     exact.extend(_source_backed_rule_licenses(items, boundary_mode))
     soft = soft_formal_licenses(items) if morphology_mode == "soft" else []
     merged = merge_licenses(exact, soft, morphology_mode=morphology_mode)
