@@ -2,6 +2,79 @@
 
 ## Status
 
+## Historical five-engine rerun — 2026-10-25 (g2pK inclusion is now authorized for subsequent runs)
+
+**DONE_VERIFIED:** [multi-engine run 40235216645](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216645), artifact [12615110277](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216645/artifacts/12615110277). The run used five engines only: ClippyFirst native, KoG2P, hangul_to_ipa, eSpeak NG, and phonemize. Per the project owner's standing instruction, g2pK was not installed by this workflow, imported, or executed. The corpus was fetched at the same pinned upstream commit and validated; no licensed corpus text was committed.
+
+### UGTPHON Korean test split
+
+275 sentence rows, 2,703 eligible token occurrences, 1,907 unique words. Exact-match denominator is scored tokens; coverage is scored / eligible. CER uses the declared reference-length denominator. Scores are diagnostic and not normative NIKL accuracy.
+
+| Engine | Scored / eligible | Coverage | Exact | Exact rate | CER | Engine errors |
+|---|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 2,698 / 2,703 | 99.8150% | 1,430 | 53.0022% | 9.1697% | 0 |
+| KoG2P (pinned 2019) | 2,703 / 2,703 | 100% | 738 | 27.3030% | 19.5122% | 0 |
+| hangul_to_ipa (pinned 2026) | 2,703 / 2,703 | 100% | 439 | 16.2412% | 24.8054% | 0 |
+| eSpeak NG Korean | 2,703 / 2,703 | 100% | 220 | 8.1391% | 33.6101% | 0 |
+| phonemize 2.0.1 | 2,703 / 2,703 | 100% | 1,150 | 42.5453% | 14.3531% | 0 |
+
+Native exact-match 95% row-cluster bootstrap CI: 48.3480–57.9275%. Native withheld five occurrences (no runtime exceptions); all four external engines emitted results for all eligible occurrences. This illustrates the coverage/abstention trade-off: do not score a withheld output as a guess or infer that coverage alone means better pronunciation.
+
+### SIGMORPHON 2021 Korean public paired lexical file
+
+1,000 source rows, 999 eligible unique word/IPA occurrences. One source row is not eligible under the benchmark's token/gold criteria.
+
+| Engine | Scored / eligible | Coverage | Exact | Exact rate | CER | Engine errors |
+|---|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 997 / 999 | 99.7998% | 357 | 35.8074% | 14.7037% | 0 |
+| KoG2P (pinned 2019) | 999 / 999 | 100% | 187 | 18.7187% | 21.8327% | 0 |
+| hangul_to_ipa (pinned 2026) | 999 / 999 | 100% | 89 | 8.9089% | 29.8448% | 0 |
+| eSpeak NG Korean | 999 / 999 | 100% | 43 | 4.3043% | 40.7236% | 0 |
+| phonemize 2.0.1 | 999 / 999 | 100% | 289 | 28.9289% | 17.4387% | 0 |
+
+Native withheld two occurrences, both with explicit rule/context reasons; no runtime exceptions. The external scores are not interchangeable with independent expert-adjudicated IPA because annotation conventions and adapters differ. This is IPA-only evaluation, not Ukrainian-target accuracy.
+
+### Latest successful g2pK-inclusive benchmark rerun (2026-10-25)
+
+**Latest completed run:** [GitHub Actions run 40238222133](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40238222133), artifact [12616575071](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40238222133/artifacts/12616575071), executable head `ff14ec72e3167d9268f1348f399abb155098caee`. The benchmark job completed successfully with g2pK 0.9.4 included; strict primary metrics and denominators are unchanged. Newer v3-readiness changes are documentation/audit additions and require their own exact-head CI verification.
+
+UGTPHON (2,703 eligible occurrences; 1,907 unique words):
+
+| Engine | Scored / eligible | Coverage | Primary exact | Primary CER | Sensitivity exact | Sensitivity CER |
+|---|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 2,698 / 2,703 | 99.8150% | 53.0022% | 9.1697% | 62.6761% | 6.6132% |
+| g2pK 0.9.4 + shared ClippyFirst segment renderer | 2,703 / 2,703 | 100% | 53.0892% | 9.2285% | 62.7081% | 6.6691% |
+| phonemize 2.0.1 | 2,703 / 2,703 | 100% | 42.5453% | 14.3531% | 51.0914% | 11.9684% |
+| KoG2P (pinned 2019) | 2,703 / 2,703 | 100% | 27.3030% | 19.5122% | 31.6315% | 17.3845% |
+| hangul_to_ipa (pinned 2026) | 2,703 / 2,703 | 100% | 16.2412% | 24.8054% | 19.5708% | 22.8275% |
+| eSpeak NG Korean | 2,703 / 2,703 | 100% | 8.1391% | 33.6101% | 10.8398% | 32.0025% |
+
+On the 2,698 occurrences scored by both native ClippyFirst and g2pK, g2pK's exact-rate delta is **+0.1112 percentage points** and its CER delta is **+0.0607 percentage points** (higher CER is worse). Pairwise categories over all 2,703 occurrences: both exact 1,429; both non-exact 1,264; g2pK-only exact 4; native-only exact 1; native abstained / g2pK exact 2; native abstained / g2pK non-exact 3.
+
+SIGMORPHON 2021 Korean (999 eligible occurrences; 999 unique forms):
+
+| Engine | Scored / eligible | Coverage | Primary exact | Primary CER | Sensitivity exact | Sensitivity CER |
+|---|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 997 / 999 | 99.7998% | 35.8074% | 14.7037% | 45.0351% | 12.3504% |
+| g2pK 0.9.4 + shared ClippyFirst segment renderer | 999 / 999 | 100% | 35.3353% | 14.8222% | 44.4444% | 12.4836% |
+| phonemize 2.0.1 | 999 / 999 | 100% | 28.9289% | 17.4387% | 37.1371% | 15.2111% |
+| KoG2P (pinned 2019) | 999 / 999 | 100% | 18.7187% | 21.8327% | 24.7247% | 19.8400% |
+| hangul_to_ipa (pinned 2026) | 999 / 999 | 100% | 8.9089% | 29.8448% | 10.7107% | 28.2061% |
+| eSpeak NG Korean | 999 / 999 | 100% | 4.3043% | 40.7236% | 5.3053% | 39.5620% |
+
+On the 997 shared scored occurrences, g2pK's exact-rate delta is **−0.4012 percentage points** and its CER delta is **+0.1130 percentage points**. Pairwise categories over all 999 occurrences: both exact 353; both non-exact 640; native-only exact 4; native abstained / g2pK non-exact 2.
+
+The “Primary” columns use the benchmark's existing normalization and score contract. “Sensitivity” uses that same normalization plus removal of `ʰ` after `s` and `ɕ` on both prediction and reference. It is a deliberately narrow sensitivity profile, not a validated broad-IPA gold convention; the change in scores quantifies sensitivity to that one annotation feature and must not be read as a corrected pronunciation score. Coverage and eligible/scored denominators are unchanged, while CER reference lengths are recomputed after normalization.
+
+**Interpretation:** neither corpus establishes a universal winner. On UGTPHON the g2pK adapter has slightly higher exact match but slightly worse CER; on SIGMORPHON native ClippyFirst has slightly higher exact match and lower CER while abstaining on two cases. g2pK's adapter uses its G2P surface followed by ClippyFirst's shared segment renderer, so it is not an independent IPA-realization baseline. All scores remain diagnostic against source annotations, not independently adjudicated phonetic truth and not Ukrainian-output accuracy. The fresh discrepancy labels will use the stricter policy that profile sensitivity alone does not prove an `IPA_CONVENTION`.
+
+### Native strict/soft and morphology reruns
+
+- [Kiwi + MeCab-Ko consensus](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216623), artifact [12613989972](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216623/artifacts/12613989972): strict 2,698/2,703 scored, exact 1,430 (53.0022%), CER 9.1697%; soft 2,699/2,703, exact 1,430 (52.9826%), CER 9.1689%. Analyzer consensus matches soft on the aggregate. On the 2,698 occurrences scored by both strict and consensus, exact and CER deltas are both zero. Consensus resolves one unique word relative to strict; 24 unique unspaced phrase-like forms remain withheld by the boundary guard. Runtime errors: zero.
+- [Research morphology smoke and paired IPA](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216702): Kiwi and MeCab-Ko each completed on the 16-input smoke corpus. The pinned UGTPHON split contained 1,907 unique words; Kiwi/MeCab exact orthographic boundary-set agreement was 1,537/1,907 (80.5978%), boundary micro-F1 85.7926%. This is analyzer agreement, not gold segmentation accuracy. MeCab observed 191/217 native soft-rule boundary events (88.0184%); the alignment is descriptive only and does not license phonological rules.
+- CI: [tests 40235216596](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216596) passed browser tests/build, Python 3.11–3.13, and wheel install; [system verification 40235216615](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216615) and [master corpus 40235216603](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40235216603) passed. The official NIKL source inventory remained skipped by workflow configuration.
+
+
 **DONE_VERIFIED for two diagnostic datasets, six engines, and complete occurrence-level native-vs-g2pk audits** on the post-fix benchmark head. Latest run: [40092929978](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978); artifact: [12559692692](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40092929978/artifacts/12559692692). The merged implementation includes the coda-ㅇ and broad-IPA palatal-yod fixes plus source-backed exact-form R010 licenses for 닮다 and 넘게. All 48 UGTPHON abstention occurrences and both SIGMORPHON abstentions were retained; the full pairwise ledger replaces the old capped mismatch sample.
 
 - Repository: ClippyFirst/Korean-Ukrainian-Phonetic-System
@@ -174,3 +247,119 @@ A higher score on UGTPHON does not establish that an engine is best for NIKL sta
 ## Reproduction
 
 The workflow checks out the exact upstream revisions into the ephemeral runner, checks their declared licenses, installs the pinned packages, downloads the pinned UGTPHON test split, runs adapter tests, emits a JSON report, and uploads the report artifact. External engine code and the raw corpus are not added to the project tree.
+
+
+## Continuation audit — conservative case labels (2026-10-25)
+
+The benchmark harness now exposes, for each item in its existing capped multi-engine mismatch sample, the original IPA output, the existing benchmark-normalized prediction/reference, and the corresponding values under the already-declared `s/ɕ` aspiration sensitivity profile. A conservative `discrepancy` label is attached to ClippyFirst mismatches:
+
+- `UNICODE_OR_FORMAT` only when raw strings are proven NFC-equivalent;
+- `UNICODE_OR_FORMAT` only when raw strings differ but NFC-canonical strings match;
+- `UNCLASSIFIED` for all other mismatches, because the current data do not independently establish a phonology error, segmentation error, or gold defect.
+
+This is intentionally not a claim that all discrepancies have been classified. The mismatch sample remains capped at 250 entries and therefore cannot be used for complete category counts. The profile remains a sensitivity analysis, not a new primary score or production IPA rewrite. The existing exact-match/CER semantics and native abstention behavior are unchanged. New unit tests cover all three classification branches. Exact-head CI must pass before this change is marked verified.
+
+### Full native occurrence-level ledger added (pending exact-head CI)
+
+The harness now emits `clippyfirst_gold_discrepancy_audit`, a complete ledger for every eligible occurrence where ClippyFirst abstains/errors or its existing normalized prediction is not exact against the available gold variants. Each row preserves occurrence/row IDs, original Hangul, original gold IPA, raw ClippyFirst IPA when available, the existing profile's normalized strings and distance, the sibilant-aspiration sensitivity strings/distance, category, rationale, and confidence. Category counts use this ledger's explicit occurrence count; they are not counts of adjudicated phonological errors. Abstentions are reported as coverage outcomes, not accuracy failures. Exact-score semantics and the existing capped multi-engine sample remain unchanged.
+
+The category policy is deliberately conservative: `UNICODE_OR_FORMAT` is used only for proven NFC-equivalent raw strings; explicit abstentions are `ABSTENTION`; all other unadjudicated mismatches remain `UNCLASSIFIED`. A separate `profile_sensitivity_detected` flag records when the s/ɕ aspiration-sensitivity profile changes exactness, but this is not labelled `IPA_CONVENTION` because the gold transcription policy has not been independently established. The ledger exposes `profile_sensitivity_occurrence_count` separately from category counts. The report does not automatically claim `PHONOLOGY_ENGINE`, `SEGMENTATION`, or `GOLD_UNCERTAIN` without additional adjudication evidence. Exact-head CI and inspection of the fresh artifact remain pending. Owner instruction dated 2026-10-25 authorizes g2pK 0.9.4 in new comparisons. The workflow now installs the pinned version and runs it on both corpora; interpretation must account for its adapter: g2pK produces a surface Hangul form which is passed through the shared ClippyFirst segment renderer, so this is not an independent end-to-end IPA renderer comparison.
+
+
+## Latest completed g2pK-inclusive result — 2026-10-25
+
+The run above emitted the following primary-profile values (do not substitute the aspiration-sensitivity profile):
+
+| Dataset | Engine | Scored / eligible | Exact | Exact rate | CER | Coverage |
+|---|---|---:|---:|---:|---:|---:|
+| UGTPHON | ClippyFirst native | 2,698 / 2,703 | 1,430 | 53.0022% | 9.1697% | 99.8150% |
+| UGTPHON | g2pK 0.9.4 + shared ClippyFirst segment renderer | 2,703 / 2,703 | 1,435 | 53.0892% | 9.2285% | 100% |
+| SIGMORPHON 2021 | ClippyFirst native | 997 / 999 | 357 | 35.8074% | 14.7037% | 99.7998% |
+| SIGMORPHON 2021 | g2pK 0.9.4 + shared ClippyFirst segment renderer | 999 / 999 | 353 | 35.3353% | 14.8222% | 100% |
+
+On UGTPHON, the g2pK exact rate is only 0.0870 percentage points above native using each engine's own coverage; on SIGMORPHON, native is 0.4721 percentage points above g2pK under the same caveat. These are not broad claims of engine superiority. The shared renderer means g2pK is not an independent end-to-end IPA renderer. Current occurrence-level discrepancy audit remains conservative: 1,268 UGTPHON and 640 SIGMORPHON non-abstention mismatches are UNCLASSIFIED until adjudicated.
+
+The v3 training-readiness audit is tracked separately in docs/CLIPPYFIRST-V3-TRAINING-AND-BENCHMARK-PROTOCOL.md. It does not change benchmark scoring or create an 80–90% headline. A curated source-backed rule challenge may be reported as its own track once independently gold-labelled, but it must not be represented as general Korean accuracy.
+
+## Cross-engine convention audit — next run
+
+The benchmark runner now emits normalization_profile_sensitivity for every engine, alongside the unchanged primary result. Profiles are calculated against the same reference alternatives and denominators where the engine produced a score. The primary profile is the canonical benchmark contract; all other profiles are sensitivity analyses only.
+
+| Profile | Transformation | What it can diagnose | Why it is not the headline score |
+|---|---|---|---|
+| primary | Existing Unicode/format normalization; preserves aspiration, length, fortis and unreleased-coda marks | Strict comparable baseline | This remains the official diagnostic number |
+| broad_fricative_aspiration | Removes ʰ only after s and ɕ | Previously observed narrow-vs-broad fricative aspiration difference | Gold convention is not independently adjudicated |
+| ignore_all_aspiration | Removes all ʰ | Upper-bound sensitivity to aspiration annotation | Erases meaningful contrasts, including aspirated stops |
+| ignore_length | Removes ː and ˑ | Sensitivity to length notation | May erase meaningful lexical/prosodic information |
+| ignore_stress | Removes ˈ and ˌ | Sensitivity to stress-marking conventions | May hide a real stress or output mismatch |
+
+Every profile reports exact match, CER, and deltas from primary, with coverage/denominators left visible. These are deliberately not asserted to be the native standard of any one engine. A single global transformation cannot make all six engines share the same phonological contract.
+
+### Engine output contracts and adapter limits
+
+- **ClippyFirst native:** direct project IPA output; unresolved cases are abstentions and coverage is reported separately.
+- **g2pK 0.9.4:** returns surface Hangul, not IPA. The benchmark passes that surface through ClippyFirst's segment renderer, so this is a G2P-surface comparison with a shared IPA realization layer, not independent g2pK IPA. Upstream documents output as standard Korean script and allows vowel grouping for contemporary colloquial mergers ([g2pK README](https://github.com/kyubyong/g2pK)).
+- **KoG2P:** returns a custom romanized phone alphabet (for example, p0 aa ng mm uu ll), not IPA. The benchmark uses an explicit, lossy symbol-to-IPA adapter; unknown labels fail closed ([KoG2P README and symbol table](https://github.com/scarletcho/KoG2P)).
+- **hangul_to_ipa:** emits IPA with selectable phonological rules; current run uses the pinned upstream default rule set. Upstream describes selected Korean phonological rules based on Shin, Kiaer and Cha, not a universal normative IPA authority ([repository](https://github.com/stannam/hangul_to_ipa)).
+- **phonemize 2.0.1:** direct IPA via the all-language preset with anyAscii=true and stripStress=true; its published quality evaluation uses an LLM-judged rubric, not this benchmark's independently adjudicated IPA gold ([API/readme](https://www.npmjs.com/package/phonemize)).
+- **eSpeak NG Korean:** direct IPA from a TTS-oriented phonemizer via phonemizer==3.3.0; output is tied to its voice/phoneme tables and runtime version, not a claim of normative narrow IPA ([eSpeak NG phoneme tables](https://github.com/espeak-ng/espeak-ng/blob/master/docs/phontab.md)).
+
+### What is needed to calculate a true engine-standard score
+
+A true engine-standard comparison requires a documented, versioned convention map for each output, plus case-level alignment/adjudication of the reference to that convention. The new profiles measure a few common differences, but they do not yet establish that a given reference is correct under eSpeak's, KoG2P's, phonemize's, or any other engine's native contract. Read exact profile scores from the next successful run artifact; do not infer or pre-fill them from old results.
+
+**Decision rule:** use a native-standard profile only where upstream documentation or source code establishes the representation; use source-adjudicated pronunciation for correctness; keep permissive sensitivity profiles visibly separate. No result is promoted to 80–90% general Korean accuracy solely because a permissive profile raises exact match.
+
+
+### Case-level audit of normalization-induced score changes
+
+Each non-primary profile now emits `case_transition_audit` with the paired occurrence denominator, counts of primary mismatches becoming exact, primary exact matches becoming mismatches, unchanged exact/mismatch counts, and up to 25 examples of each transition. Each example retains the occurrence ID, token, reference, raw prediction and edit distances before/after the profile. This makes score changes inspectable rather than reporting only a higher aggregate percentage.
+
+A case that becomes exact after a transformation is not automatically a correct pronunciation. The audit establishes only that the transformation removed a string-level difference. Review each example against the pinned engine contract and independently adjudicated pronunciation before classifying it as notation-only. Primary scores, gold data, and corpus splits are not rewritten by these diagnostics.
+
+
+
+## Neural G2P diagnostic extension — 2026-10-26
+
+### Executed model and provenance
+
+- Model: [CharsiuG2P multilingual ByT5 small 100](https://huggingface.co/charsiu/g2p_multilingual_byT5_small_100), revision `ed5cf99707fb39f5f3ccc461530d56b6fb531fd3`.
+- Tokenizer: [google/byt5-small](https://huggingface.co/google/byt5-small), revision `68377bdc18a2ffec8a0533fef03b1c513a4dd49d`.
+- Neural inference: [run 40285484220](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40285484220), raw predictions/provenance artifact [12633674500](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40285484220/artifacts/12633674500).
+- Baseline full per-engine occurrence ledger: [run 40286178462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40286178462), artifact [12634178267](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40286178462/artifacts/12634178267).
+- Model file SHA-256: `1ef4032409d33944e4249f959d028f78436f968e26b81cb6b0d508a6cf12ce6c` (1,198,608,045 bytes). Code repo declares MIT; the checkpoint itself has no explicit weights license. Weights license is **UNRESOLVED**; no weights or caches were uploaded.
+- Data revisions: UGTPHON `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54` (`ko/test.json`, Apache-2.0); SIGMORPHON `821bcdece5a47820872215969f275004b0abe80c` (`data/medium/kor_test.tsv`, CC BY-SA 3.0).
+
+### Same-split metrics
+
+| System | UGTPHON exact / CER | SIGMORPHON exact / CER |
+|---|---:|---:|
+| CharsiuG2P multilingual ByT5 small | 2,393/2,703 (88.5313%) / 3.6239%; 100% coverage | 709/999 (70.9710%) / 5.4081%; 100% coverage |
+| ClippyFirst native | 1,430/2,698 (53.0022%) / 9.1697%; 99.815% coverage | 357/997 (35.8074%) / 14.7037%; 99.800% coverage |
+| g2pk 0.9.4 | 1,435/2,703 (53.0892%) / 9.2285% | 353/999 (35.3353%) / 14.8222% |
+| KoG2P | 738/2,703 (27.3030%) / 19.5122% | 187/999 (18.7187%) / 21.8327% |
+| hangul_to_ipa | 439/2,703 (16.2412%) / 24.8054% | 89/999 (8.9089%) / 29.8448% |
+| eSpeak NG | 220/2,703 (8.1391%) / 33.6101% | 43/999 (4.3043%) / 40.7236% |
+| phonemize 2.0.1 | 1,150/2,703 (42.5453%) / 14.3531% | 289/999 (28.9289%) / 17.4387% |
+
+### Paired results on shared scored occurrences
+
+Charsiu minus baseline; exact-match deltas are percentage points, CER deltas are percentage points, and negative CER delta favors Charsiu.
+
+| Baseline | UGTPHON common; Δ exact / Δ CER | SIGMORPHON common; Δ exact / Δ CER |
+|---|---:|---:|
+| ClippyFirst native | 2,698; +35.656 / −5.567 | 997; +35.105 / −9.279 |
+| g2pk 0.9.4 | 2,703; +35.442 / −5.605 | 999; +35.636 / −9.414 |
+| KoG2P | 2,703; +61.228 / −15.889 | 999; +52.252 / −16.425 |
+| hangul_to_ipa | 2,703; +72.290 / −21.182 | 999; +62.062 / −24.437 |
+| eSpeak NG | 2,703; +80.392 / −29.986 | 999; +66.667 / −35.316 |
+| phonemize 2.0.1 | 2,703; +45.986 / −10.727 | 999; +42.042 / −12.031 |
+
+The per-case JSON retains raw IPA, normalized predictions, explicit failure/abstention status, exact/CER scores, paired wins/losses, and row-cluster bootstrap intervals. The corrected combined artifact is generated by [workflow run 40287361898](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40287361898) after the previous test-fixture failure is corrected in the branch; use the new run's artifact rather than the failed run 40286994417.
+
+### Interpretation limits
+
+- UGTPHON is a token-level ablation for CharsiuG2P; sentence context is not passed to the model. SIGMORPHON is lexical/word-level.
+- No local fine-tuning or test-set selection was performed, but overlap between the public checkpoint's training sources and public benchmark sources could not be excluded. These are diagnostic scores, not leakage-free generalization estimates.
+- Corpus annotations are not independently adjudicated normative IPA gold; no Ukrainian-target rendering accuracy is measured.
+- The checkpoint weights license is unresolved, so do not redistribute weights. The initial neural report's embedded g2pk comparator was blocked by an import-path mismatch; the adapter is fixed and the authoritative pairing uses the complete six-engine ledger.
