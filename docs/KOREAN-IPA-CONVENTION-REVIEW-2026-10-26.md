@@ -116,3 +116,18 @@ The pinned UGTPHON README says token phoneme annotations are looked up from IPA-
 This is relevant because a broadly phonemic dictionary target and a roughly-phonemic WikiPron/Wiktionary-derived SIGMORPHON phone sequence need not encode the same features. However, the inspected IPA-Dict commit is **not proven to be the exact revision embedded/used by the pinned UGTPHON release**. The UGTPHON metadata does not provide that precise IPA-Dict source revision in the inspected README. Therefore this upstream description supports the need for source-specific convention handling, but it does not adjudicate any of the 366 individual forms or authorize symbol substitution.
 
 New provenance acceptance criterion: recover and pin the exact IPA-Dict snapshot used for the UGTPHON Korean targets, or record that source revision as irrecoverable. Until then, treat the IPA-Dict description as context only and retain the raw UGTPHON targets unchanged.
+
+
+## Additional provenance and licensing gate — 2026-10-26
+
+The pinned UGTPHON README at [`ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`](https://github.com/naver-ai/UGTPHON/blob/ef0d5a09c2ea1874c7206020f875cbd9cfea2f54/README.md) explicitly says canonical forms are looked up in IPA-Dict, checked by native-speaker annotators, and manually transcribed when uncovered. It identifies the Korean IPA-Dict lexicon file as `data/ko.txt` with 62,447 entries, but does **not** identify the exact IPA-Dict commit or file hash used for those labels.
+
+The separately inspected IPA-Dict README at [`972cd67dd5f96bc5660e28070cde26e3928abcd7`](https://github.com/open-dict-data/ipa-dict/blob/972cd67dd5f96bc5660e28070cde26e3928abcd7/README.md) credits Korean data to `laviande22/korean-word-ipa-dictionary`, extracted from Korean Wiktionary, under CC BY-SA 4.0. This establishes a relevant upstream rights/provenance fact, **not** that this exact IPA-Dict revision was the one embedded in UGTPHON. UGTPHON labels its Korean subset Apache-2.0 while also describing IPA-Dict-derived annotations; the relationship between those stated terms and the upstream attribution/share-alike terms needs rights-holder/legal clarification before redistribution or commercial reuse of derived annotation artifacts is treated as cleared. This record is a risk flag, not a legal conclusion.
+
+Consequences for this repository:
+
+- Continue using the pinned UGTPHON Korean data only within the documented research workflow and retain source attribution/provenance.
+- Do not redistribute IPA-Dict data, recreate `data/ko.txt`, or commit extracted label dumps to this repository.
+- Keep short-lived CI artifacts separate from checked-in project data; before relying on derived annotations in a public product or releasing a derived corpus, obtain a source-specific rights review.
+- The exact IPA-Dict snapshot remains **BLOCKED / not recoverable from the inspected pinned UGTPHON metadata**. The current IPA-Dict README is contextual evidence only and must not be substituted as the missing source pin.
+- No source-specific IPA mapping, pronunciation decision, or production rule is justified by this licensing/provenance finding.
