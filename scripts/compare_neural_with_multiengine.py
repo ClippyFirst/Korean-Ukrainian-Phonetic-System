@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Join a neural CharsiuG2P report with a complete multi-engine occurrence ledger."""
+"""Join a pinned neural G2P report with a complete multi-engine occurrence ledger."""
 from __future__ import annotations
 
 import argparse
