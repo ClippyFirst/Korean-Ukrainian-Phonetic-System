@@ -46,7 +46,7 @@ test('punctuation wrapping does not change an exact lexical word pronunciation',
     // The wrapper is literal text; it must not be mistaken for a new lexical key.
     assert.equal(plain.surfaceHangul, surface);
     assert.equal(plain.ukrainian, ukrainian);
-    assert.equal(plain.ipa, ipa);
+    assert.equal(plain.ipa, renderExpectedIpa(input, ipa));
   }
 });
 
