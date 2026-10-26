@@ -69,9 +69,9 @@ test('unlicensed morphology stays unresolved when surrounded by punctuation or n
 
 test('generic rule fixtures stay independent of the lexical override layer', () => {
   const genericOracles = [
-    ['국물', 'kuŋ mul'],
-    ['막론', 'maŋ non'],
-    ['신라', 'ɕil la'],
+    ['국물', 'kuŋ.mul'],
+    ['막론', 'maŋ.non'],
+    ['신라', 'ɕil.la'],
     ['값', 'kap̚'],
     ['넋', 'nʌk̚'],
   ];
@@ -93,13 +93,13 @@ test('ordered §19 → §18 → §20 interaction matrix remains stable for all s
   // Expected IPA is written independently here; this specifically guards
   // against applying nasalization before changing the following ㄹ to ㄴ.
   const cases = [
-    ['각라', 'kaŋ na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
-    ['갇라', 'kan na', ['project-inferred-d-liquid-nasalization', 'nasal-assimilation']],
-    ['갑라', 'kam na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
-    ['간라', 'kal la', ['liquid-assimilation']],
-    ['갈라', 'kal la', []],
-    ['감라', 'kam na', ['liquid-to-nasal-before-obstruent']],
-    ['강라', 'kaŋ na', ['liquid-to-nasal-before-obstruent']],
+    ['각라', 'kaŋ.na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
+    ['갇라', 'kan.na', ['project-inferred-d-liquid-nasalization', 'nasal-assimilation']],
+    ['갑라', 'kam.na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
+    ['간라', 'kal.la', ['liquid-assimilation']],
+    ['갈라', 'kal.la', []],
+    ['감라', 'kam.na', ['liquid-to-nasal-before-obstruent']],
+    ['강라', 'kaŋ.na', ['liquid-to-nasal-before-obstruent']],
   ];
   for (const [input, expectedIpa, requiredRules] of cases) {
     const result = generic.convert(input);
