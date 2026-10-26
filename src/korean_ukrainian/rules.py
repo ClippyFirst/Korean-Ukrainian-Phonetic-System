@@ -223,6 +223,7 @@ _NIKL_R007_FORMAL_I_LICENSES = {
 # 읽고 is also directly attested by NIKL Online Q&A qna_seq=329463.
 _NIKL_R016_VERBAL_STEM_LICENSES = {
     "읽고": "읽>고",
+    "읽거든": "읽>거",  # Official §11 example; same verbal-stem ㄺ-before-ㄱ environment.
     "묽고": "묽>고",
     "얽거나": "얽>거",
 }
