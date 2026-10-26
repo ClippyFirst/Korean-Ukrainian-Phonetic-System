@@ -57,6 +57,16 @@ Added eight official examples from the attached note to Rule 29, including `ë“¤ì
 
 - [Consolidated benchmark review, exact metrics, interpretation and remaining gates](docs/BENCHMARK-REVIEW-2026-10-24.md)
 
+## Teacher-guided improvement of the neural-free Strict engine (2026-10-26)
+
+CharsiuG2P can be used as a research teacher to identify contexts where a deterministic engine disagrees with a neural model; it is not added to the Strict runtime. The new offline tool `scripts/mine_deterministic_rule_candidates.py` preserves raw outputs, records model/data provenance, rejects known benchmark/holdout splits, and produces review-only context associations. It does not generate or activate rules automatically. A rule can enter production only after independent NIKL/source review, positive and negative-control tests, and a separate development-set improvement.
+
+- [Teacher-guided rule-discovery protocol and acceptance gates](docs/TEACHER-GUIDED-STRICT-RULE-MINING-2026-10-26.md)
+- [Rule candidate mining script](scripts/mine_deterministic_rule_candidates.py)
+- [Regression tests](tests/test_mine_deterministic_rule_candidates.py)
+
+The current CharsiuG2P checkpoint's weights-license status and training-data overlap remain unresolved. Do not redistribute its weights or use test/holdout predictions to tune Strict.
+
 ## Research-only morphological analyzers (2026-10-24)
 
 The Python research package has optional adapters for [Kiwi](https://github.com/bab2min/kiwi) and MeCab-Ko. They return inspectable morpheme forms, analyzer tags and source offsets only; they do not produce pronunciation, IPA, Ukrainian output, or automatic NIKL rule licenses. The public browser practical mode does not load or call these adapters.
