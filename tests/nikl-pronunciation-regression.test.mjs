@@ -479,7 +479,7 @@ test('NIKL §§6–7 source-backed length examples preserve long vowels and alte
   assert.equal(compound.ipa, 'paːn ɕin baː ni');
   assert.equal(compound.variants[0].surface, '반신바니');
   assert.equal(compound.variants[0].ukrainian, 'паншінбані');
-  assert.equal(compound.variants[0].ipa, 'paːn ɕin baː ni');
+  assert.equal(compound.variants[0].ipa, renderExpectedIpa('반신반의', 'paːn ɕin baː ni'));
 });
 
 test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readings', () => {
