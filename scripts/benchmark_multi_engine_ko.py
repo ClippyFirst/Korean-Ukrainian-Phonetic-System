@@ -19,6 +19,7 @@ The opt-in neural run must preserve its own raw output and revision provenance.
 Model scores are diagnostic only until independent IPA adjudication is complete.
 Model revisions and model-weight licensing remain separate provenance fields.
 The full per-engine occurrence ledger supports paired comparisons without a capped mismatch sample.
+The ledger contract is covered by unit tests and consumed by the neural comparison workflow.
 """
 from __future__ import annotations
 
