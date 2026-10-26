@@ -145,3 +145,15 @@ Evidence: [Teacher corpus audit run 40295700341](https://github.com/ClippyFirst/
 ### Diagnostic categories for target-string mismatches
 
 The compatibility audit now classifies target-string differences that remain after token-separator removal into three non-destructive categories: strings that differ only by syllable-dot placement, strings that differ only by length marks (ː/ˑ), and all other symbol/feature differences. These are counterfactual comparison buckets only. They do not erase dots or length marks from the corpus, do not authorize changing ClippyFirst output, and do not treat any category as proof that one source is correct. The updated category counts await the latest exact-head CI result.
+
+
+### Latest mismatch-category counts (CI run 40296047955)
+
+| Shared-form split comparison | Length-mark-only differences | Other symbol/feature differences | Syllable-dot-only differences |
+|---|---:|---:|---:|
+| SIGMORPHON train vs UGTPHON train | 151 | 215 | 0 |
+| SIGMORPHON train vs UGTPHON dev | 39 | 38 | 0 |
+| SIGMORPHON dev vs UGTPHON train | 28 | 26 | 0 |
+| SIGMORPHON dev vs UGTPHON dev | 4 | 6 | 0 |
+
+For the train/train overlap, 151 of the 366 mismatching forms differ only when length marks are removed in this diagnostic; the other 215 still differ. This suggests target-convention differences are material and length handling is one contributor, but it does not prove the length mark is wrong in either source. Length remains phonologically meaningful and is never removed from exported data. No syllable-dot-only mismatch was observed under this particular comparison. These aggregate categories guide manual source review only.
