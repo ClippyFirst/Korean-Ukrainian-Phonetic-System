@@ -353,11 +353,11 @@ The repository has many more tests than the examples above. Every file must have
 
 ## Machine-readable bases committed after initial inspection
 
-- File inventory: [TEST-CASE-REGISTER-MANIFEST-2026-10-26.csv](../research/TEST-CASE-REGISTER-MANIFEST-2026-10-26.csv). It records 427 relevant tracked files at the pinned tree: 178 test-source files, 177 fixture files, 1 test corpus file, plus Korean data and relevant research scripts/registers. Every discovered test/fixture is currently marked NOT_EXTRACTED until its individual cases are enumerated. This is a file manifest, not a case-completeness claim.
+- File inventory: [TEST-CASE-REGISTER-MANIFEST-2026-10-26.csv](../research/TEST-CASE-REGISTER-MANIFEST-2026-10-26.csv). It records 431 relevant tracked files at the refreshed branch tree: 179 test-source files, 177 fixture files, 1 test corpus file, plus Korean data and relevant research scripts/registers. Every discovered test/fixture is currently marked NOT_EXTRACTED until its individual cases are enumerated. This is a file manifest, not a case-completeness claim. Every discovered test/fixture is currently marked NOT_EXTRACTED until its individual cases are enumerated. This is a file manifest, not a case-completeness claim.
 - Lexical base: [TEST-CASE-REGISTER-LEXICAL-BASE-2026-10-26.csv](../research/TEST-CASE-REGISTER-LEXICAL-BASE-2026-10-26.csv). It preserves all 644 data rows from data/korean/lexical_pronunciations.csv with exact surface, Ukrainian syllables, IPA, source, notes, variants and target status. Static generation check: 644 source rows, 17 output columns, zero malformed rows, zero duplicate input forms. The base deliberately marks test cross-reference and exact-head observed-run status as pending.
 - Source lexical CSV blob SHA at extraction: 1bd0d8116a5f5a4e74bcdbf7fc4999445b4478c5.
 
-These two machine-readable files make the inventory reproducible and provide the lexical source-of-truth base. They do **not** yet satisfy the owner's “all examples from each test” requirement: each test assertion must still be linked to the case ledger, non-lexical test literals and fixture cases must be extracted, and actual results must be tied to exact commits/runs.
+These machine-readable files make the inventory reproducible and provide the lexical source-of-truth base. They do **not** yet satisfy the owner's “all examples from each test” requirement: each test assertion must still be linked to the case ledger, non-lexical test literals and fixture cases must be extracted, and actual results must be tied to exact commits/runs.
 
 
 ## Deterministic extractor added; results still pending execution
@@ -371,3 +371,6 @@ A standard-library-only extractor is now available at scripts/build_test_case_re
 - emits deterministic CSVs for the lexical base, lexical-to-test links, and Hangul-literal candidates.
 
 Added tests/test_build_test_case_register.py to check stable IDs, exact token boundaries, test/fixture provenance and candidate preservation. These new tests have **not been run locally**; exact-head GitHub Actions results must be checked. The script's generated counts, malformed-row checks, candidate-review status and output hashes must be recorded only after an actual run. Its output is a high-recall candidate register, not automatic linguistic adjudication.
+
+
+The extractor was expanded to preserve **every source line** from all scannable text files beneath `tests/`, not only Hangul spans. It now emits `TEST-CASE-REGISTER-SOURCE-LINES-2026-10-26.csv`, with stable line IDs, file/category, line number, exact raw line, per-line SHA-256, and explicit unclassified/pending-run status. This makes IPA-only or Latin-script expected values recoverable from their original assertion context. The generated artifact is not yet available: the matching GitHub Actions run is queued, so no line/candidate counts or output hashes are asserted here.
