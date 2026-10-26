@@ -99,14 +99,24 @@ def _group(rows: list[dict]) -> dict[str, list[dict]]:
 def _difference_category(left: list[dict], right: list[dict]) -> str:
     left_targets = {row["_comparison_target"] for row in left}
     right_targets = {row["_comparison_target"] for row in right}
-    if left_targets & right_targets:
+    if left_targets == right_targets:
         return "exact_after_serialization_only"
-    if any(a.replace(".", "") == b.replace(".", "") for a in left_targets for b in right_targets):
+    if left_targets & right_targets:
+        # A partial overlap can hide genuine variation when either corpus has
+        # multiple annotations for the same source form. Never discard it as
+        # an exact match; retain every candidate for human review.
+        return "partial_annotation_overlap_requires_review"
+    left_without_dots = {target.replace(".", "") for target in left_targets}
+    right_without_dots = {target.replace(".", "") for target in right_targets}
+    if left_without_dots == right_without_dots:
         return "syllable_dot_only_diagnostic"
-    if any(
-        a.replace("ː", "").replace("ˑ", "") == b.replace("ː", "").replace("ˑ", "")
-        for a in left_targets for b in right_targets
-    ):
+    left_without_length = {
+        target.replace("ː", "").replace("ˑ", "") for target in left_targets
+    }
+    right_without_length = {
+        target.replace("ː", "").replace("ˑ", "") for target in right_targets
+    }
+    if left_without_length == right_without_length:
         return "length_mark_only_diagnostic"
     return "other_symbol_or_feature_difference"
 
