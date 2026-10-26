@@ -36,6 +36,7 @@ const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥','넓적']);
 // Exact-form formal liaison licenses. Direct NIKL surface attestations and
 // transparent rule-derived applications are distinguished in comments.
 const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
+  ['앉아라','앉>아'], // Exact formal-morpheme liaison license; retain the full form.
   ['닭이','닭>이'], // NIKL §13: 닭이[달기].
   ['넋이','넋>이'], // NIKL §14: 넋이[넉씨].
   ['값이','값>이'], // NIKL §14: 값이[갑씨].
@@ -46,6 +47,7 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
   ['맞아','맞>아'], // NIKL §13: 맞아[마자].
   ['붙어','붙>어'], // NIKL §13: 붙어[부터].
   ['읽어','읽>어'], // NIKL §14: 읽어[일거].
+  ['없어도','없>어'], // Exact formal-morpheme environment; no productive generalization.
   ['없음','없>음'], // NIKL FAQ 8391 / Q&A 335008: 없음[업씀].
   ['있었','있>었'], // NIKL Q&A 326978 explains 있- + -었- as [이썯].
   ['멋있어','있>어'], // NIKL Q&A 306166 gives [머디써] and [머시써]; preserve variant status.
