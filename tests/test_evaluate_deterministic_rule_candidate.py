@@ -77,7 +77,7 @@ def test_candidate_passes_only_for_review_not_production():
 
 def test_candidate_rejected_if_negative_control_changes():
     rows = cases()
-    rows[1]["candidate_ipa"] = "wrong"
+    rows[2]["candidate_ipa"] = "wrong"
     report = evaluate(manifest(), rows)
     assert report["status"] == "REJECT_OR_MORE_EVIDENCE_REQUIRED"
     assert not report["checks"]["negative_controls_unchanged"]
@@ -102,20 +102,20 @@ def test_case_loader_rejects_holdout_ids_and_duplicate_ids(tmp_path):
     path = tmp_path / "cases.jsonl"
     rows = cases()
     rows[0]["case_id"] = "holdout-24-form-001"
-    path.write_text("\\n".join(json.dumps(row, ensure_ascii=False) for row in rows), encoding="utf-8")
+    path.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in rows), encoding="utf-8")
     with pytest.raises(ValueError, match="sealed test/holdout"):
         load_cases(path)
 
     rows = cases()
     rows[1]["case_id"] = rows[0]["case_id"]
-    path.write_text("\\n".join(json.dumps(row, ensure_ascii=False) for row in rows), encoding="utf-8")
+    path.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in rows), encoding="utf-8")
     with pytest.raises(ValueError, match="duplicate"):
         load_cases(path)
 
 
 def test_no_improvement_is_not_a_pass():
     rows = cases()
-    rows[2]["candidate_ipa"] = rows[2]["baseline_ipa"]
+    rows[4]["candidate_ipa"] = rows[4]["baseline_ipa"]
     report = evaluate(manifest(), rows)
     assert report["status"] == "REJECT_OR_MORE_EVIDENCE_REQUIRED"
     assert not report["checks"]["held_out_dev_improves"]
