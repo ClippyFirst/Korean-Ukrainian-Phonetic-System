@@ -406,11 +406,12 @@ jobs:
             | tee "$RUNNER_TEMP/neural-results/charsiu-sigmorphon-summary.json"
 
       - name: Record model hashes, license status, and dataset provenance
-        if: always()
+        if: always() && steps.neural_revisions.outputs.model_sha != ''
         env:
           MODEL_SHA: ${{ steps.neural_revisions.outputs.model_sha }}
           TOKENIZER_SHA: ${{ steps.neural_revisions.outputs.tokenizer_sha }}
         run: |
+          mkdir -p "$RUNNER_TEMP/neural-results"
           python - "$RUNNER_TEMP/neural-results/model-provenance.json" <<'PY'
           import hashlib, json, os, sys
           from pathlib import Path
@@ -595,11 +596,12 @@ jobs:
             | tee "$RUNNER_TEMP/licensed-neural-results/willwade-sigmorphon-summary.json"
 
       - name: Record licensed checkpoint hashes, license, and data provenance
-        if: always()
+        if: always() && steps.licensed_revisions.outputs.model_sha != ''
         env:
           MODEL_SHA: ${{ steps.licensed_revisions.outputs.model_sha }}
           TOKENIZER_SHA: ${{ steps.licensed_revisions.outputs.tokenizer_sha }}
         run: |
+          mkdir -p "$RUNNER_TEMP/licensed-neural-results"
           python - "$RUNNER_TEMP/licensed-neural-results/model-provenance.json" <<'PY'
           import hashlib, json, os, sys
           from pathlib import Path
