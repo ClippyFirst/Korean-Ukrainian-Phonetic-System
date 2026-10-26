@@ -1157,3 +1157,7 @@ Readiness remains research-ready partial prototype, not release-ready.
 
 The latest executable code/test head is `36b8e909d65ebf0e69af22f6183155853f34ae14`. It includes the fail-closed suffix-family agreement guard and its regression test. Exact-head checks are now visible but still queued: test matrix [40344662542](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662542), system verification [40344662684](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662684), Charsiu train/dev [40344662592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662592), and real morphology smoke [40344662799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662799). No exact-head pass exists yet; retain PARTIAL status until these complete.
 
+### Latest code/test delta — provenance trace
+
+Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. Lexical-root extensions now preserve three distinct pieces of evidence: registered lexical root, internal source-backed syllable pair, and generated full-form license. A new regression test checks that `물가ро` records internal pair `물>가` rather than confusing it with the suffix boundary. Exact-head CI has not returned a result; status remains PARTIAL.
+
