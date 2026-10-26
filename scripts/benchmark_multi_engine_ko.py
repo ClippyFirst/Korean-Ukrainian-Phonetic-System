@@ -283,6 +283,20 @@ def _load_rows_and_words(rows: list[dict[str, Any]]) -> tuple[list[dict[str, str
     return items, unique
 
 
+def _g2pk_surface_to_ipa(g2p: Callable[[str], str], word: str) -> str:
+    """Render a g2pk surface Hangul form without reapplying native rules."""
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.ipa import realize_syllables
+
+    surface = g2p(word)
+    if not isinstance(surface, str):
+        raise TypeError(f"g2pk returned {type(surface).__name__}")
+    surface = "".join(surface.split())
+    if not _HANGUL_TOKEN.fullmatch(surface):
+        raise ValueError(f"not a single Hangul surface form: {surface!r}")
+    return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
+
+
 def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
     from korean_ukrainian.pipeline import phoneticize_korean
     from korean_ukrainian.phonology import parse_syllables
@@ -320,15 +334,8 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "native public pipeline output; unresolved predictions are abstentions",
     )
     g2p = G2p()
-    def g2pk_ipa(word: str) -> str:
-        surface = g2p(word)
-        if not isinstance(surface, str):
-            raise TypeError(f"g2pk returned {type(surface).__name__}")
-        surface = "".join(surface.split())
-        if not _HANGUL_TOKEN.fullmatch(surface):
-            raise ValueError(f"not a single Hangul surface form: {surface!r}")
-        return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
-    execute("g2pk_0_9_4", "g2pk==0.9.4", g2pk_ipa,
+    execute("g2pk_0_9_4", "g2pk==0.9.4",
+            lambda word: _g2pk_surface_to_ipa(g2p, word),
             "g2pk surface Hangul -> project segment renderer; native rules not rerun")
 
     try:
