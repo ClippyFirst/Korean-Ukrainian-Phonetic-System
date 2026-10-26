@@ -55,7 +55,7 @@ def write_json(path: Path, value):
 
 
 def test_only_whitespace_and_nfc_are_normalized():
-    assert normalize("  a\\u0303   b ") == "ã b"
+    assert normalize("  a\u0303   b ") == "ã b"
     assert normalize("aː") != normalize("a")
     assert normalize("t͈") != normalize("t")
     assert normalize("a.b") != normalize("ab")
