@@ -91,7 +91,7 @@ def build_pair_ledger(report: dict[str, Any], metadata: dict[str, Any]) -> list[
     output = []
     for row in report.get("per_occurrence", []):
         teacher = row.get("charsiu_byt5", {})
-        native = row.get("baselines", {}).get("clippyfirst_native", {})
+        native = row.get("clippyfirst_native", row.get("baselines", {}).get("clippyfirst_native", {}))
         output.append({
             "case_id": f"{metadata['dataset_id']}:{metadata['split']}:{row['row_id']}:{row['occurrence_id']}",
             "split": metadata["split"],
