@@ -135,6 +135,10 @@ _NIKL_R010_FORM_LICENSES = {
     # expand the closed production inventory without enabling category-only
     # guesses. Ambiguous 신고 (noun 'report' vs verb form) is deliberately
     # omitted; causative/passive -기- forms are explicit negative controls.
+    "안다": "안>다",  # Official NIKL training material §24 examples.
+    "안고": "안>고",
+    "감다": "감>다",
+    "감고": "감>고",
     "껴안다": "안>다",
     "앉고": "앉>고",
     "얹다": "얹>다",
