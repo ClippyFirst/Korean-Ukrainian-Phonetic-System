@@ -1,5 +1,16 @@
 # Continuation — neural-teacher-guided deterministic Strict improvement (2026-10-26)
 
+# Latest continuation — browser IPA serialization regression (2026-10-27)
+
+- **Implemented:** reconciled affected browser regression assertions with the engine's existing IPA display contract: `.` separates syllables within a Korean eojeol and source whitespace separates eojeol. The tests use the test-only `tests/render-expected-ipa.mjs` serializer where appropriate; raw source-data serialization checks remain separate.
+- **Scope guard:** no production engine, Korean pronunciation rule, IPA segment sequence, lexical evidence, or Ukrainian adaptation was changed. This is test-oracle/serialization repair only.
+- **Exact-head verification:** commit [4019e233c2a07cbb2d4679ad85fd77a56a307af4](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/4019e233c2a07cbb2d4679ad85fd77a56a307af4) passed system verification [40408709236](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709236): browser regression tests/build PASS; Python regression/data integrity PASS; official NIKL source inventory was skipped by workflow policy (metadata-only gate). The exhaustive test-case register extraction workflow [40408709171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171) also passed.
+- **Historical failure and repair:** the earlier browser run had 1,213 passing and 39 failing reported subtests. The failures exposed stale expected separator formatting, assertions hidden after earlier failures, and one regex-escaping issue in the long-passage test. These were corrected without changing runtime behavior; the exact-head run above is green.
+- **Remaining status:** the master case inventory is still PARTIAL; passing register generation is not proof that every assertion, observed result, linguistic adjudication, or Ukrainian target has been captured. Independent IPA adjudication and target adaptation review remain blocked on qualified human review. See issue [#337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337) for the blind-review gate.
+- **Local verification limitation:** this environment cannot resolve `github.com`, so a local clean checkout/test run was unavailable. Exact-head GitHub Actions is the verification evidence; do not claim local execution.
+- **Next:** continue loss-preserving case extraction and reconcile the inventory against all source tests and artifacts. Do not promote any pronunciation rule from separator-only test repairs.
+
+
 ## Latest continuation — typed IPA annotation boundary (2026-10-26)
 
 - Added `scripts/packetize_korean_ipa_annotations.py` and focused tests. It creates lossless, typed packets for SIGMORPHON tokenized IPA and UGTPHON compact token annotations, records explicit boundary/stress/length markers, preserves raw target strings and rejects test/holdout partitions.
