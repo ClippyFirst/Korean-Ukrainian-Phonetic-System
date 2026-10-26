@@ -18,6 +18,7 @@ Neither neural outputs nor corpus annotations are promoted to source-reviewed no
 The opt-in neural run must preserve its own raw output and revision provenance.
 Model scores are diagnostic only until independent IPA adjudication is complete.
 Model revisions and model-weight licensing remain separate provenance fields.
+The full per-engine occurrence ledger supports paired comparisons without a capped mismatch sample.
 """
 from __future__ import annotations
 
