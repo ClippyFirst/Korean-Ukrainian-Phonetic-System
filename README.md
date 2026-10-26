@@ -72,6 +72,8 @@ CharsiuG2P can be used as a research teacher to identify contexts where a determ
 - [Compatibility audit tests](tests/test_audit_korean_corpus_compatibility.py)
 - [Scratch G2P teacher training](scripts/train_korean_g2p_teacher.py) — trains from random initialization on SIGMORPHON train, selects on dev, and never loads test or pretrained weights.
 - [Scratch teacher tests](tests/test_train_korean_g2p_teacher.py)
+- [Dev-only teacher error analyzer](scripts/analyze_korean_g2p_teacher_errors.py) — groups errors by token sequence, length-mark differences, and source shape without producing rules.
+- [Teacher error-analysis tests](tests/test_analyze_korean_g2p_teacher_errors.py)
 - [CPU training workflow](.github/workflows/train-korean-g2p-teacher.yml) — uploads a short-lived research checkpoint and dev-only predictions.
 
 The current CharsiuG2P checkpoint's weights-license status and training-data overlap remain unresolved. Do not redistribute its weights or use test/holdout predictions to tune Strict.
