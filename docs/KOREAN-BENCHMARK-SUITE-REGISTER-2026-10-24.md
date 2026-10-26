@@ -342,3 +342,7 @@ The rules remain exact-form licensed after expansion, carry low-confidence morph
 
 The latest executable code/test head is `36b8e909d65ebf0e69af22f6183155853f34ae14`. The additional guard requires agreement on particle-versus-ending family before extending R012/R014/R015 lexical roots, with a negative regression case. Exact-head test matrix [40344662542](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662542), system verification [40344662684](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662684), real morphology smoke [40344662799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662799), and Charsiu train/dev [40344662592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662592) are queued. They are not passes.
 
+## Latest code/test delta — provenance trace
+
+Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. The morphology audit now records each lexical-root extension's registered root, internal source-backed pair, and full-form license as separate fields. The added provenance regression is pending exact-head CI; no pass is claimed.
+
