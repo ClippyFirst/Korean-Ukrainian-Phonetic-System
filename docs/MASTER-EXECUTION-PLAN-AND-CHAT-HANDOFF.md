@@ -1966,3 +1966,15 @@ At this update, the latest visible Actions jobs from code/test head `16d07d752ec
 - Local test execution was unavailable because the container cannot resolve github.com. No local or remote test pass is claimed for the latest code/test head.
 - Release status: research-ready partial prototype, not release-ready. Next genuine blocker is exact-head CI completion, followed by inspecting the corrected train/dev artifact and constructing an evaluation set that excludes test-informed cases such as `물가로`.
 
+## Superseding status correction — latest executable head 2026-10-26
+
+This entry supersedes the prior executable-head references in earlier continuation notes.
+
+- Latest executable code/test head: `36b8e909d65ebf0e69af22f6183155853f34ae14`.
+- The final morphology hardening now also requires both analyzers to agree on whether an attached lexical-root suffix is a particle or an ending; a dedicated negative test covers disagreement.
+- Exact-head test matrix: [40344662542](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662542), queued.
+- Exact-head system verification: [40344662684](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662684), queued.
+- Exact-head Charsiu train/dev: [40344662592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662592), queued.
+- Exact-head real morphology smoke: [40344662799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662799), queued.
+- The CI backlog remains the immediate verification blocker. No test pass is claimed for `36b8e90`; local test execution is unavailable because GitHub DNS resolution fails in the container.
+
