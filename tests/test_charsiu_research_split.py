@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.benchmark_charsiu_research_split import build_pair_ledger, load_prepared_jsonl
+from scripts.benchmark_charsiu_research_split import build_pair_ledger, load_prepared_jsonl, render_profile_pair
 
 
 def _row(**overrides):
@@ -105,3 +105,17 @@ def test_pair_ledger_never_promotes_a_rule():
     assert row["strict_narrow_ipa_raw"] == "sʰa"
     assert row["comparison_status"] == "DIAGNOSTIC_ONLY_IPA_CONVENTION_UNREVIEWED"
     assert row["production_rule_promotion"] is False
+
+
+
+def test_broad_narrow_profile_pair_is_controlled_and_preserves_unresolved_abstentions():
+    broad, narrow = render_profile_pair(["사", "시", "쇼", "값에서는"])
+    assert broad["사"]["ipa"] == "sa"
+    assert narrow["사"]["ipa"] == "sʰa"
+    assert broad["시"]["ipa"] == "si"
+    assert narrow["시"]["ipa"] == "ɕʰi"
+    assert broad["쇼"]["ipa"] == "sjo"
+    assert narrow["쇼"]["ipa"] == "sʰjo"
+    assert broad["값에서는"]["status"] == "abstained"
+    assert narrow["값에서는"]["status"] == "abstained"
+    assert broad["값에서는"]["reason"] == narrow["값에서는"]["reason"]
