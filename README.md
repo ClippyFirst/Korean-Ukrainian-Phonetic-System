@@ -68,6 +68,8 @@ CharsiuG2P can be used as a research teacher to identify contexts where a determ
 - [Corpus preparation tests](tests/test_prepare_korean_g2p_corpus.py)
 - [Conservative UGTPHON Korean token corpus builder](scripts/prepare_ugtphon_korean_corpus.py) — uses aligned token-level fields and excludes ambiguous/noisy targets rather than guessing.
 - [UGTPHON preparation tests](tests/test_prepare_ugtphon_korean_corpus.py)
+- [Cross-corpus overlap and target-compatibility audit](scripts/audit_korean_corpus_compatibility.py) — reports source-form intersections and raw target-string relations without merging incompatible IPA conventions.
+- [Compatibility audit tests](tests/test_audit_korean_corpus_compatibility.py)
 
 The current CharsiuG2P checkpoint's weights-license status and training-data overlap remain unresolved. Do not redistribute its weights or use test/holdout predictions to tune Strict.
 
