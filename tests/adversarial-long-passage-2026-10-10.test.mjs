@@ -63,7 +63,7 @@ test('adversarial long-passage forms have exact source-backed lexical entries', 
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': standard pronunciation');
     assert.equal(result.ukrainian, ukrainian, input + ': Ukrainian output');
-    assert.equal(result.ipa, renderExpectedIpa(input, ipa.split(/[|.\\s]+/u).filter(Boolean)), input + ': IPA output');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa.split(/[|.\s]+/u).filter(Boolean)), input + ': IPA output');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholder');
   }
 });
