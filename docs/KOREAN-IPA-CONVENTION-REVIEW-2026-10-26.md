@@ -191,7 +191,7 @@ Two important exclusions are deliberate:
 - `안기다` remains `안기다`: official §24 excludes passive/causative `-기-` from this fortition.
 - `신고` is not automatically promoted despite being a listed pronunciation example because the exact orthography is homographic with the noun meaning ‘report’; without morphology/sense evidence, unconditional whole-form licensing would be unsafe. `감도` is a negative control against coda-only inference.
 
-The canonical source registry points S001 to the direct official Standard Pronunciation Rules page and registers the official NIKL teacher-training material as S015. This is a **source-verified closed-inventory production expansion**, not a claim of unrestricted productive morphological inference. Broader stem-class generalization still requires reliable morphological evidence and explicit exception controls.
+The canonical source registry points S001 to the direct official Standard Pronunciation Rules page; S015 in `data/korean/sources.csv` and `SRC-NIKL-TRAINING-2009` in `research/SOURCE-REGISTER.csv` record the official 2009 teacher-training material and its item-level rights uncertainty. This is a **source-verified closed-inventory production expansion**, not a claim of unrestricted productive morphological inference. Broader stem-class generalization still requires reliable morphological evidence and explicit exception controls.
 
 ## Additional production promotion: official NIKL §11 `읽거든`
 
