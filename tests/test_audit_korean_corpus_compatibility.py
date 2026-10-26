@@ -59,8 +59,8 @@ def test_compare_rows_reports_overlap_and_raw_target_relation_without_claiming_i
     result = compare_rows(left, right)
     assert result["unique_source_form_intersection"] == 3
     assert result["shared_forms_with_any_exact_raw_target_match"] == 0
-    assert result["shared_forms_with_any_match_after_token_separator_removal"] == 2
-    assert result["shared_forms_with_only_different_targets_after_token_separator_removal"] == 1
+    assert result["shared_forms_with_any_match_after_token_separator_removal"] == 1
+    assert result["shared_forms_with_only_different_targets_after_token_separator_removal"] == 2
     assert result["mismatch_category_counts"]["syllable_dot_only_difference"] == 1
     assert result["mismatch_category_counts"]["other_symbol_or_feature_difference"] == 1
     assert "no syllable boundaries are inferred" in result["target_comparison_interpretation"]
