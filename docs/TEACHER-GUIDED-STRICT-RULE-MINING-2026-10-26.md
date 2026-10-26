@@ -195,3 +195,15 @@ The first end-to-end CPU training run succeeded and uploaded artifact [126388062
 An independent inspection of the saved dev predictions found 398 non-exact examples. Of these, 107 differ only by length marks when the marks are removed for diagnostic comparison; 80 of those underpredict length marks and 27 overpredict them. This is a warning that the scratch model tends to miss a contrast that the source encodes. Length marks must not be discarded from the corpus or promoted/removed in the engine based on this model. Exact-match rates also fall on longer forms with final codas in this dev sample, but these are descriptive associations, not causal rules.
 
 The teacher is now a verified training experiment and a potentially useful hypothesis generator, but not a production component. Its target is SIGMORPHON's tokenized roughly-phonemic IPA. The model's 60.2% exact match and 12.72% token error rate are not claims of normative pronunciation accuracy or ClippyFirst broad-IPA accuracy. The new automated dev error-analysis step is added separately and awaits its own CI run.
+
+
+### Automated dev error-analysis result — CI run 40296965071
+
+The extended workflow passed the new dev-only error analyzer and uploaded artifact [12638313059](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40296965071/artifacts/12638313059), including dev predictions, a structured error report, checkpoint, and provenance report. The automated categorization agrees with the independent inspection: 602 exact matches, 107 length-mark-only mismatches, and 291 other token/feature mismatches; among the length-only cases, 80 underpredict and 27 overpredict length marks.
+
+Descriptive exact-match rates by Hangul character count and whether the final syllable has a coda were:
+- 2 Hangul syllables: 66.1% with final coda (195/295), 62.3% without (137/220).
+- 3 syllables: 50.0% with coda (59/118), 62.3% without (109/175).
+- 4 syllables: 41.5% with coda (17/41), 62.9% without (73/116).
+
+Longer-form buckets have small samples (five or more syllables total only 35 cases), so their rates are unstable. The three-/four-syllable coda gap is a diagnostic lead for reviewing the model's contexts, not evidence of a Korean rule. The analysis only groups errors; it does not generate or change runtime rules. The current code/test head's Python tests, browser/build checks, system verification, corpus audit, and scratch training/error-analysis workflow all passed on commit 985bfbab0cfc1a696e4f69209bb84d41446aec43.
