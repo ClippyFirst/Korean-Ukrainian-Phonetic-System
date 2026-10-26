@@ -214,3 +214,12 @@ Longer-form buckets have small samples (five or more syllables total only 35 cas
 The executable packetizer in `scripts/packetize_korean_ipa_annotations.py` is intentionally lossless and non-converting. It preserves SIGMORPHON whitespace tokens and UGTPHON Unicode clusters as differently typed source units, records explicit dot-like boundaries, stress and length markers, and refuses sealed splits. It does not assert that a Unicode cluster is a phoneme, normalize away diacritics, infer missing syllable boundaries, or emit ClippyFirst broad IPA or Ukrainian text.
 
 The dedicated test suite and teacher-corpus workflow now packetize only train/dev examples from both corpora and upload separate artifacts. See [typed IPA boundary contract](TYPED-IPA-ANNOTATION-BOUNDARY-2026-10-26.md). This is an executable safety boundary, **not yet a conversion adapter**. The next requirement is a primary-source-backed symbol/feature mapping with explicit loss accounting and independent review. No production rules changed.
+
+
+## Deterministic rule-candidate acceptance gate — 2026-10-26
+
+Added `scripts/evaluate_deterministic_rule_candidate.py` and focused tests. The gate is deliberately separate from the production engine: it does not generate, install, or promote a rule.
+
+A candidate can reach human review only when its manifest declares a primary source and clause, source-evidence summary, immutable dataset revision and license status, independently reviewed `clippyfirst-broad-v1` gold convention, and two distinct reviewer IDs. The candidate must be selected using train data and evaluated on dev data; test/holdout markers are rejected in both the manifest and per-case IDs. The case set requires at least two positive controls, two negative controls, and evaluation rows. Positive controls must be corrected; negative controls must remain both unchanged and correct; the held-out dev evaluation must improve exact match, or tie exact match while lowering codepoint CER.
+
+The report labels CER as Unicode-codepoint diagnostic distance, not phoneme error rate. Even a passing result is `PASS_CANDIDATE_FOR_HUMAN_REVIEW`, with `production_promotion=false`; a qualified linguistic review and ordinary engine regression/release checks are still required. This gate cannot yet be populated with the neural teacher's outputs because the teacher IPA convention is not mapped and independently reviewed. No production pronunciation rule or runtime output changed in this step.
