@@ -2,6 +2,7 @@ name: Multi-engine Korean IPA diagnostic benchmark
 
 on:
   workflow_dispatch:
+  # Documentation-only edits are checked by the repository verification workflows; do not rerun CPU G2P inference for prose changes.
   pull_request:
     paths:
       - "scripts/benchmark_multi_engine_ko.py"
@@ -11,12 +12,6 @@ on:
       - ".github/workflows/multi-engine-ipa-benchmark.yml"
       - "scripts/benchmark_ugtphon_ko.py"
       - "tests/test_ugtphon_benchmark.py"
-      - "docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md"
-      - "docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md"
-      - "docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md"
-      - "docs/NEURAL-KOREAN-G2P-V3-RESEARCH-GATE-2026-10-26.md"
-      - "docs/NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md"
-      - "docs/CLIPPYFIRST-V3-TRAINING-AND-BENCHMARK-PROTOCOL.md"
       - "scripts/audit_v3_training_readiness.py"
       - "tests/test_v3_training_readiness.py"
       - "scripts/benchmark_charsiu_g2p.py"
