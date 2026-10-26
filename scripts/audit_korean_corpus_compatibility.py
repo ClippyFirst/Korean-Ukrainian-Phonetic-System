@@ -90,27 +90,48 @@ def load_corpus(directory: Path, expected_dataset_id: str) -> tuple[dict, dict]:
     }
 
 
+def _target_comparison_key(row: dict) -> str:
+    target = row["target_raw"]
+    representation = row["target_representation"]
+    if representation == "tokenized_ipa_from_sigmorphon_tsv":
+        # SIGMORPHON uses whitespace as phone-token separators. Joining those tokens
+        # changes serialization only; it does not add syllable boundaries or map phones.
+        return "".join(target.split())
+    return target.strip()
+
+
 def compare_rows(left: list[dict], right: list[dict]) -> dict:
     left_by_form: dict[str, set[str]] = defaultdict(set)
     right_by_form: dict[str, set[str]] = defaultdict(set)
+    left_key_by_form: dict[str, set[str]] = defaultdict(set)
+    right_key_by_form: dict[str, set[str]] = defaultdict(set)
     for row in left:
-        left_by_form[row["_normalized_source"]].add(row["target_raw"])
+        form = row["_normalized_source"]
+        left_by_form[form].add(row["target_raw"])
+        left_key_by_form[form].add(_target_comparison_key(row))
     for row in right:
-        right_by_form[row["_normalized_source"]].add(row["target_raw"])
+        form = row["_normalized_source"]
+        right_by_form[form].add(row["target_raw"])
+        right_key_by_form[form].add(_target_comparison_key(row))
     shared = set(left_by_form) & set(right_by_form)
     exact_raw_target_match = sum(
         bool(left_by_form[form] & right_by_form[form]) for form in shared
     )
-    raw_target_string_difference = sum(
-        not bool(left_by_form[form] & right_by_form[form]) for form in shared
+    compact_key_match = sum(
+        bool(left_key_by_form[form] & right_key_by_form[form]) for form in shared
+    )
+    compact_key_difference = sum(
+        not bool(left_key_by_form[form] & right_key_by_form[form]) for form in shared
     )
     return {
         "unique_source_form_intersection": len(shared),
         "shared_forms_with_any_exact_raw_target_match": exact_raw_target_match,
-        "shared_forms_with_only_different_raw_target_strings": raw_target_string_difference,
+        "shared_forms_with_any_match_after_token_separator_removal": compact_key_match,
+        "shared_forms_with_only_different_targets_after_token_separator_removal": compact_key_difference,
         "target_comparison_interpretation": (
-            "raw string comparison only; target conventions differ by source and are not "
-            "linguistically comparable until a reviewed adapter is applied"
+            "SIGMORPHON whitespace phone-token separators are removed for this diagnostic only; "
+            "no IPA symbols are mapped and no syllable boundaries are inferred. Results are not "
+            "proof of equivalence to ClippyFirst broad IPA."
         ),
     }
 
