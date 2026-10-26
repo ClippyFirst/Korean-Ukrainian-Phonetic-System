@@ -21,7 +21,7 @@ def test_git_blob_sha1_uses_git_blob_header():
 
 
 def test_parser_preserves_raw_tokenized_ipa_and_only_normalizes_hangul_nfc():
-    data = "국물\\tk u ŋ . m u l\\n국밥\\tk u k̚ . p͈ a p̚\\n".encode("utf-8")
+    data = "국물\tk u ŋ . m u l\n국밥\tk u k̚ . p͈ a p̚\n".encode("utf-8")
     records = parse_tsv(data, "train", expected_rows=2)
     assert records[0]["source_text"] == "국물"
     assert records[0]["source_text_raw"] == "국물"
@@ -33,10 +33,10 @@ def test_parser_preserves_raw_tokenized_ipa_and_only_normalizes_hangul_nfc():
 
 
 @pytest.mark.parametrize("data", [
-    b"\\n",
-    "국물\\n".encode("utf-8"),
-    "국물\\t\\n".encode("utf-8"),
-    b"\\xff\\tk u k\\n",
+    b"\n",
+    "국물\n".encode("utf-8"),
+    "국물\t\n".encode("utf-8"),
+    b"\\xff\tk u k\n",
 ])
 def test_parser_rejects_malformed_tsv(data):
     with pytest.raises(ValueError):
@@ -44,11 +44,11 @@ def test_parser_rejects_malformed_tsv(data):
 
 
 def test_parser_rejects_duplicate_normalized_source_forms():
-    data = "국물\\tk u ŋ . m u l\\n국물\\tk u ŋ . m u l\\n".encode("utf-8")
+    data = "국물\tk u ŋ . m u l\n국물\tk u ŋ . m u l\n".encode("utf-8")
     with pytest.raises(ValueError, match="duplicate NFC-normalized"):
         parse_tsv(data, "train", expected_rows=2)
 
 
 def test_parser_rejects_wrong_row_count():
     with pytest.raises(ValueError, match="expected 2 rows, got 1"):
-        parse_tsv("국물\\tk u ŋ . m u l\\n".encode("utf-8"), "train", expected_rows=2)
+        parse_tsv("국물\tk u ŋ . m u l\n".encode("utf-8"), "train", expected_rows=2)
