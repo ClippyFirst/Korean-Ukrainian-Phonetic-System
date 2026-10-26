@@ -402,7 +402,7 @@ def test_sections_24_to_28_require_exact_full_form_and_pair_licenses():
     cases = [
         ("R010", "안고", "stem_n_m+suffix", "안>고", "ㄲ"),
         ("R011", "넓게", "stem_lb_lt+suffix", "넓>게", "ㄲ"),
-        ("R012", "갈등", "sino_ryeon", "갈>등", "ㄸ"),
+        ("R012", "갈도", "sino_ryeon", "갈>도", "ㄸ"),
         ("R014", "산고", "compound", "산>고", "ㄲ"),
     ]
     for rule, word, scope, pair, expected_onset in cases:
@@ -757,3 +757,51 @@ def test_nikl_qna_316282_compound_fortition_examples_do_not_generalize_from_coda
     items, traces = apply_ordered_rules(parse_syllables("물고"), ["R014"])
     assert items[1].onset == "ㄱ"
     assert traces[0].status == "conditional-disabled"
+
+
+
+def test_nikl_section_25_source_examples_have_exact_stem_fortition_licenses():
+    expected = {
+        "넓다": ("넓>다", "ㄸ"),
+        "넓고": ("넓>고", "ㄲ"),
+        "넓지": ("넓>지", "ㅉ"),
+        "훑다": ("훑>다", "ㄸ"),
+        "훑고": ("훑>고", "ㄲ"),
+        "훑지": ("훑>지", "ㅉ"),
+    }
+    for word, (pair, onset) in expected.items():
+        items, traces = apply_ordered_rules(parse_syllables(word))
+        assert items[1].onset == onset, word
+        assert traces[10].changed, word
+        assert traces[10].license_context == f"R011:stem_lb_lt+suffix:{word}:{pair}", word
+
+    items, traces = apply_ordered_rules(parse_syllables("넓게"))
+    assert items[1].onset == "ㄱ"
+    assert traces[10].status == "conditional-disabled"
+
+
+def test_nikl_section_26_source_examples_have_exact_sino_korean_fortition_licenses():
+    expected = {
+        "갈등": ("갈>등", "ㄸ"),
+        "발동": ("발>동", "ㄸ"),
+        "절도": ("절>도", "ㄸ"),
+        "말살": ("말>살", "ㅆ"),
+        "일시": ("일>시", "ㅆ"),
+        "갈증": ("갈>증", "ㅉ"),
+        "물질": ("물>질", "ㅉ"),
+        "발전": ("발>전", "ㅉ"),
+        "몰상식": ("몰>상", "ㅆ"),
+        "불세출": ("불>세", "ㅆ"),
+    }
+    for word, (pair, onset) in expected.items():
+        items, traces = apply_ordered_rules(parse_syllables(word))
+        right = pair.split(">")[1]
+        right_index = next(i for i, item in enumerate(items) if item.text == right)
+        assert items[right_index].onset == onset, word
+        assert traces[11].changed, word
+        assert traces[11].license_context == f"R012:sino_ryeon:{word}:{pair}", word
+
+    # A coda/onset sequence alone is not evidence that the word is Sino-Korean.
+    items, traces = apply_ordered_rules(parse_syllables("갈구"))
+    assert items[1].onset == "ㄱ"
+    assert traces[11].status == "conditional-disabled"
