@@ -2069,3 +2069,32 @@ Current verification caveat remains: the current PR #339 head has not been verif
 ### Artifact-level metric reconciliation note
 
 Retrieved workflow artifact [12638313059](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40296965071/artifacts/12638313059) contains dev-error-analysis.json with 602/1,000 exact (60.2%), 107 length-mark-only errors, and 291 other errors. Later handoff text cites 596/1,000 (59.6%) from a later artifact, but no corresponding artifact was returned by the currently inspected workflow artifact listings. The separate candidate register now treats 602/1,000 as the verified result for artifact 12638313059 and 596/1,000 as an unresolved conflicting report pending retrieval and provenance comparison. Do not silently choose either as the latest model score until the artifact lineage is reconciled.
+
+
+## CI-driven correction batch and Charsiu case-level diagnostic — 2026-10-26
+
+### Exact failures inspected from the earlier current-head Actions run
+
+The run set associated with head eaf542ed259c89cde1fa3f9562083d94bacb01bb completed with failures, not passes:
+- Python/system tests exposed a stale R010 negative assertion for 닮고, an R010 test fixture using the already-built-in licensed form 안고, a morphology-consensus test incorrectly expecting R010 to tense 많다, and a Python/browser §29 phrase inventory mismatch (Python had 한 입 while the browser map had 한 일).
+- Browser tests exposed stale negative tests for newly source-licensed forms (깻잎, 나뭇잎, 냇가), rule-trace assertions against end-to-end lexical overrides that intentionally bypass the contextual-rule trace, a hard-coded source-register row count (113 vs current 116), and the attached -ㄹ게 IPA separator mismatch.
+- Charsiu train/dev inference and report generation completed and uploaded artifact 12666733087, but its final validation step failed because the workflow asserted a lowercase phrase while the report text begins with “Controlled”. The workflow assertion was corrected; no successful rerun is yet confirmed.
+
+### Corrections committed on the existing PR #339 branch
+
+- Corrected the Python §29 phrase inventory to 한 일 / 한>일 to match the official NIKL phrase example and the existing browser map; updated its positive test.
+- Tightened the research-only morphology-consensus helper so ㅎ-bearing codas in _H_CODAS cannot produce an R010 stem-n/m fortition candidate. Updated the 많다 test to expect the aspirated surface 만타 and no R010 license, and to require diagnostic-only marking only when a morphology license was actually applied.
+- Updated the R010 tests so 닮고 is a positive exact-form license (supported by the official §24 inventory), 닮기 is the unlicensed lookalike, and the generic exact-license guard uses an unlisted fixture instead of 안고, which is already source-licensed.
+- Updated the §30 negative tests to keep exact source-backed forms out of the unlicensed queue: 깻잎 and 나뭇잎 are no longer used as negative controls; 냇가 is no longer asserted to be unlicensed; 베갯잇 and 도리깻열 remain the unresolved negative controls.
+- Updated browser rule tests to inspect applyContextualRules directly for exact map behavior when the end-to-end conversion is intentionally intercepted by an exact lexical pronunciation record. End-to-end surface-output assertions remain in place.
+- Updated source-register integrity expectations from 113 to 116 rows and from 109 to 112 review-required entries, reflecting the three added NIKL sources.
+- Corrected the browser IPA renderer to emit a dot between adjacent syllables in a single eojeol, matching the explicit syllable-boundary convention exercised by the regression for 할게.
+- Corrected the Charsiu workflow assertion to match the report's case-sensitive wording.
+
+### Charsiu artifact review: diagnostic counts, not missing rules
+
+The paired report artifact 12666733087 from run 40356670303 was parsed locally. Its results and a 1,000-row SIGMORPHON / 1,834-row UGTPHON case cross-tab are documented in [NEURAL-TEACHER-CANDIDATE-RULE-REGISTER-2026-10-26.md](NEURAL-TEACHER-CANDIDATE-RULE-REGISTER-2026-10-26.md). Charsiu matches its corpus target while Strict broad does not on 345 SIGMORPHON and 728 UGTPHON dev rows under the declared diagnostic normalizer. The raw examples show diacritic, aspiration, syllable-boundary and source-tokenization differences; these 1,073 rows are a convention-review queue, not a count of missing rules. The partial narrow profile changes apparent exact-match rates materially, further establishing that source IPA convention mapping must precede phonological rule mining. Charsiu checkpoint licensing and exact training overlap remain unresolved.
+
+### Verification status after corrections
+
+Latest documentation/code/test commit observed while updating this handoff: 30d69861940dc9a7be2ee5da23038d1d10f9695f. The earlier failing run proves the identified defects existed on its head. The connected Actions listing showed the 4dbe87f head's workflows queued; later commits were not associated with surfaced exact-head runs at the time of this update. No local repository checkout is available and no local pytest/npm suite is claimed. Therefore all corrections remain PARTIAL until the latest commit's Python 3.11–3.13, browser/build, system verification, corpus audit, scratch-teacher, and Charsiu workflows finish successfully. Do not merge PR #339 or mark release-ready on the basis of these commits alone.
