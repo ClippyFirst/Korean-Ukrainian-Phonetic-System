@@ -16,6 +16,7 @@ checkpoint is large and model weights have unresolved redistribution terms.
 A separate runner is used so its raw per-case predictions remain independently auditable.
 Neither neural outputs nor corpus annotations are promoted to source-reviewed normative IPA gold.
 The opt-in neural run must preserve its own raw output and revision provenance.
+Model scores are diagnostic only until independent IPA adjudication is complete.
 """
 from __future__ import annotations
 
