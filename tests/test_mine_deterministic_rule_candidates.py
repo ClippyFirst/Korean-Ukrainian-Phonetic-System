@@ -110,10 +110,10 @@ def test_duplicate_case_ids_are_rejected(tmp_path):
 
 
 def test_context_buckets_distinguish_eojeol_space_from_within_word():
-    within = context_buckets("국밥")
-    across = context_buckets("국 물")
-    assert "within-eojeol:coda=velar-family:next-onset=bilabial" in within
-    assert "across-space:coda=velar-family:next-onset=nasal-m" in across
+    contexts = context_buckets("국밥 국 물")
+    assert "within-eojeol:coda=velar-family:next-onset=bilabial" in contexts
+    assert "across-space:coda=velar-family:next-onset=nasal-m" in contexts
+    assert "across-space:coda=bilabial-family:next-onset=velar" in contexts
 
 
 def test_cer_uses_teacher_as_reference_denominator(tmp_path):
