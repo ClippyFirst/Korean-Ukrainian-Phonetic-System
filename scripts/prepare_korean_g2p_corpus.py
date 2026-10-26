@@ -28,7 +28,7 @@ EXPECTED_ROWS = {"train": 8000, "dev": 1000, "test": 1000}
 
 
 def git_blob_sha1(data: bytes) -> str:
-    return hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\\0" + data).hexdigest()
+    return hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
 
 
 def sha256(data: bytes) -> str:
@@ -44,7 +44,7 @@ def parse_tsv(data: bytes, split: str) -> list[dict[str, str | int]]:
     for line_number, line in enumerate(text.splitlines(), start=1):
         if not line:
             continue
-        fields = line.split("\\t")
+        fields = line.split("\t")
         if len(fields) != 2 or not fields[0].strip() or not fields[1].strip():
             raise ValueError(f"{split}:{line_number}: expected non-empty grapheme<TAB>tokenized-IPA")
         source_raw, target_raw = fields
@@ -112,10 +112,10 @@ def prepare(output_dir: Path) -> dict:
     }
     for split in ("train", "dev"):
         payload = "".join(
-            json.dumps(row, ensure_ascii=False, sort_keys=True) + "\\n"
+            json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n"
             for row in loaded[split]
         )
-        (output_dir / f"{split}.jsonl").write_text(payload, encoding="utf-8", newline="\\n")
+        (output_dir / f"{split}.jsonl").write_text(payload, encoding="utf-8", newline="\n")
     manifest = {
         "schema_version": "1.0",
         "purpose": "research corpus preparation; raw tokenized IPA target preserved",
@@ -142,7 +142,7 @@ def prepare(output_dir: Path) -> dict:
         "test_data_used_for_training_or_tuning": False,
     }
     manifest_path = output_dir / "manifest.json"
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return manifest
 
 
