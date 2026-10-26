@@ -1,6 +1,9 @@
 name: Neural Korean G2P diagnostic benchmark
 
 on:
+  push:
+    branches:
+      - "research/neural-korean-g2p-v3-2026-10-26"
   pull_request:
     paths:
       - "scripts/benchmark_charsiu_g2p.py"
