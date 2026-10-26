@@ -102,3 +102,46 @@ def test_analyzer_license_does_not_mask_independent_ipa_adjudication_blocker():
     assert result["ipa_status"] == "diagnostic_only_unresolved_pronunciation"
     assert result["ipa_is_diagnostic_only"] is True
     assert any(context.get("rule_id") == "IPA_ADJUDICATION" for context in result["unresolved_contexts"])
+
+
+
+def test_analyzer_consensus_productively_licenses_verbal_stem_rieul_giyeok_exception():
+    analyses = [
+        _analysis("mecab-ko", "읽고", [("읽", "VV", 0, 1), ("고", "EC", 1, 2)]),
+        _analysis("kiwi", "읽고", [("읽", "VV", 0, 1), ("고", "EC", 1, 2)]),
+    ]
+    report = analyzer_consensus_rule_licenses("읽고", analyses)
+    license = "R016:verb_stem_rieul_giyeok_suffix:읽고:읽>고"
+    assert license in report["candidate_licenses"]
+    result = phoneticize_korean_with_analyzer_consensus("읽고", analyses)
+    assert result["surface_hangul"] == "일꼬"
+    assert license in result["morphology_analysis"]["applied_licenses"]
+    assert result["ipa_is_diagnostic_only"] is True
+
+
+def test_analyzer_consensus_productively_licenses_stem_fortition_but_not_nouns():
+    cases = [
+        ("넓고", [("넓", "VA", 0, 1), ("고", "EC", 1, 2)],
+         "R011:stem_lb_lt+suffix:넓고:넓>고", "널꼬"),
+        ("많다", [("많", "VA", 0, 1), ("다", "EF", 1, 2)],
+         "R010:stem_n_m+suffix:많다:많>다", "만따"),
+    ]
+    for word, morphemes, expected_license, expected_surface in cases:
+        analyses = [
+            _analysis("mecab-ko", word, morphemes),
+            _analysis("kiwi", word, morphemes),
+        ]
+        report = analyzer_consensus_rule_licenses(word, analyses)
+        assert expected_license in report["candidate_licenses"]
+        result = phoneticize_korean_with_analyzer_consensus(word, analyses)
+        assert result["surface_hangul"] == expected_surface
+        assert expected_license in result["morphology_analysis"]["applied_licenses"]
+        assert result["ipa_is_diagnostic_only"] is True
+
+    noun = "닭고기"
+    noun_analyses = [
+        _analysis("mecab-ko", noun, [("닭", "NNG", 0, 1), ("고기", "NNG", 1, 3)]),
+        _analysis("kiwi", noun, [("닭", "NNG", 0, 1), ("고기", "NNG", 1, 3)]),
+    ]
+    noun_report = analyzer_consensus_rule_licenses(noun, noun_analyses)
+    assert not any(item.startswith("R016:") for item in noun_report["candidate_licenses"])
