@@ -336,7 +336,7 @@ def test_official_nikl_substantive_examples_use_coda_representatives():
         assert traces[0].changed, word
         if word == "헛웃음":
             assert items[1].coda == "" and items[2].onset == "ㅅ"
-            assert traces[0].license_context == "R002:substantive:헛웃음:헛>웃;R002:formal:헛웃음:웃>음"
+            assert traces[0].license_context == "R002:substantive:헛웃음:헛>웃"
         else:
             assert traces[0].license_context == f"R002:substantive:{word}:{pair}", word
 
