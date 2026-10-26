@@ -36,7 +36,7 @@ test('§10–11 morphology contrasts distinguish ㄺ stems, 밟- exception, and 
     assert.equal(row.confidence, 'high', word + ': source confidence');
     assert.ok(['provisional', 'model-selected'].includes(row.target_status), word + ': Ukrainian target status must remain explicit and non-normative');
     assert.equal(row.surface_hangul, want.surface, word + ': recorded normative surface');
-    assert.deepEqual(row.ipa_syllables.split('|'), parseIpaSyllables(want.ipa), word + ': broad IPA syllables');
+    assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(want.ipa), word + ': broad IPA syllables');
     assert.equal(row.target_syllables.split('|').join(''), want.target, word + ': reviewed IPA-derived target');
 
     const result = engine.convert(word);

@@ -15,7 +15,7 @@ function assertOfficial(word, surface, ipa, { long = false, short = false } = {}
   assert.ok(row, 'missing sourced §6–7 example: ' + word);
   assert.match(row.source_url, officialSource, word);
   assert.equal(row.surface_hangul, surface, word);
-  assert.deepEqual(row.ipa_syllables.split('|'), parseIpaSyllables(ipa), word + ': source IPA syllables');
+  assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(ipa), word + ': source IPA syllables');
   const result = engine.convert(word);
   assert.equal(result.surfaceHangul, surface, word);
   assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);

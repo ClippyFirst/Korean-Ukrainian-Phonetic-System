@@ -40,7 +40,7 @@ test('§10–11 official complex-coda examples preserve the standard distinction
     assert.ok(row, 'missing official complex-coda lexical record: ' + word);
     assert.match(row.source_url, officialSource, word + ': source must be on the NIKL domain');
     assert.equal(row.surface_hangul, surface, word + ': recorded standard surface');
-    assert.deepEqual(row.ipa_syllables.split('|'), parseIpaSyllables(ipa), word + ': recorded broad IPA syllables');
+    assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(ipa), word + ': recorded broad IPA syllables');
 
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': engine standard surface');

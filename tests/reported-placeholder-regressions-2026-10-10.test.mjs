@@ -36,7 +36,7 @@ test('exact user-reported placeholder triggers now have narrow, source-backed re
     assert.ok(row, fixture.input + ': exact orthographic token needs its own lexical evidence row');
     assert.equal(row.surface_hangul, fixture.surface, fixture.input + ': CSV surface');
     assert.equal(row.target_syllables.replaceAll('|', ''), fixture.ukrainian, fixture.input + ': CSV Ukrainian target');
-    assert.deepEqual(row.ipa_syllables.split('|'), parseIpaSyllables(fixture.ipa), fixture.input + ': CSV IPA syllables');
+    assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(fixture.ipa), fixture.input + ': CSV IPA syllables');
     assert.equal(row.source_url, fixture.source, fixture.input + ': expected official source');
     assert.equal(row.target_status, 'provisional', fixture.input + ': Ukrainian rendering remains reviewable');
 

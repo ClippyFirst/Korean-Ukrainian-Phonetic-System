@@ -174,7 +174,7 @@ test('lexical IPA consistently marks fortis sibilants as alveolo-palatal before 
   for (const [input, ipa] of Object.entries(expected)) {
     const row = entries.get(input);
     assert.ok(row, `${input}: missing lexical evidence row`);
-    assert.deepEqual(row.ipa_syllables.split('|'), parseIpaSyllables(ipa), `${input}: stored broad IPA syllables`);
+    assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(ipa), `${input}: stored broad IPA syllables`);
     const result = engine.convert(input);
     assert.equal(result.ipa, renderExpectedIpa(input, ipa), `${input}: engine IPA`);
     assert.equal(result.status, 'lexical-review', `${input}: provisional mapping remains reviewable`);

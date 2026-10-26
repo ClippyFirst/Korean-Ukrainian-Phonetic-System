@@ -24,7 +24,7 @@ test('§15 substantive-morpheme liaison uses representative codas, not the §13 
     assert.match(row.source_url, officialSource, input + ': source must be on the NIKL domain');
     assert.match(row.rule_notes, /제15항|§15/u, input + ': evidence must identify §15');
     assert.equal(row.surface_hangul, want.surface, input + ': standard surface');
-    assert.deepEqual(row.ipa_syllables.split('|'), parseIpaSyllables(want.ipa), input + ': source-attested IPA syllables');
+    assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(want.ipa), input + ': source-attested IPA syllables');
 
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, want.surface, input + ': engine surface');
