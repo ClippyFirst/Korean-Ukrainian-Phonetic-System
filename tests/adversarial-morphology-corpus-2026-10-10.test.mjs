@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine } from '../src/app/engine.js';
 
@@ -20,7 +21,7 @@ test('morphology-sensitive past-tense and complex-coda forms have sourced surfac
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': surface Hangul');
     assert.equal(result.ukrainian, ukrainian, input + ': Ukrainian target');
-    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': IPA');
     assert.equal(result.status, 'lexical-review', input + ': provisional target must remain labelled');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholders');
   }
