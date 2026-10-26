@@ -2,30 +2,34 @@
 
 ## Current execution record
 
-- **Working branch:** `research/strict-teacher-guided-rule-mining-2026-10-26`, created from current `main` after verifying the latest mainline commit `a452054a669de28426404d1110731715083423bb`.
-- **Scope:** the existing deterministic Strict/native engine, not the neural V3 production proposal. The public browser practical mode's pinned JavaScript g2pK port remains a separate path.
-- **Design decision:** use CharsiuG2P as a research teacher only. Do not import neural weights into runtime, silently replace Strict output, or tune on UGTPHON/SIGMORPHON/project holdout examples.
-- **Implementation so far:** added `scripts/mine_deterministic_rule_candidates.py`, `tests/test_mine_deterministic_rule_candidates.py`, and `docs/TEACHER-GUIDED-STRICT-RULE-MINING-2026-10-26.md`; added a README entry. The utility requires pinned model/data provenance, explicit license/overlap status, IPA output, and train/dev-only split declarations. It preserves raw outputs and reports conservative teacher-vs-Strict differences plus coarse context associations; it never writes runtime rules.
-- **Commits on this branch so far:** `5d3af19df45f0077926ffb66e146958bb014af07` (utility), `572d28445735936b427668c6ded50a6f58c99a5c` (tests), `47143555682656909d387bf7cff97fae63a44131` (context-bucket correction), `d1b20d122adb8734f7e84d306d16a5eb400ea14e` (provenance gate), `9708ba550c2f29cd0e9938f7b33eb26d23c003f3` (test fixture update), `345135c5d4ce4b35972969d1911e3db923e49fbb` (protocol), `c032ca51b7864511212bac370c9ebcd425004b74` (README).
-- **Verification status:** tests have been authored but must not be called passed until the exact-head CI run completes. The model itself has not been run by this branch's utility; the utility consumes externally generated predictions only.
-- **Licensing/evidence limitation:** CharsiuG2P checkpoint weights have no verified explicit license in the checked model card; upstream training-data overlap is unknown. These are blockers for redistribution and for leakage-free generalization claims, not reasons to halt deterministic development.
+- **PR:** [Draft PR #339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339), base `main` at `a452054a669de28426404d1110731715083423bb`; do not merge automatically.
+- **Working branch:** `research/strict-teacher-guided-rule-mining-2026-10-26`.
+- **Scope:** existing deterministic Strict/native engine, not the neural V3 production proposal. The public browser practical path's pinned JavaScript g2pK port remains separate.
+- **Design decision:** use CharsiuG2P only as a research teacher. Do not import neural weights into runtime, silently replace Strict output, or tune on UGTPHON/SIGMORPHON/project holdout examples.
+- **Implementation:** `scripts/mine_deterministic_rule_candidates.py`, `tests/test_mine_deterministic_rule_candidates.py`, `docs/TEACHER-GUIDED-STRICT-RULE-MINING-2026-10-26.md`; README link added. The utility preserves raw teacher/Strict outputs, uses conservative normalization, reports pairwise exact/CER and coarse context associations, and requires pinned model/data provenance, explicit license/overlap status, IPA output type, and train/dev-only split declarations. It never writes runtime rules.
+- **Latest code head:** `3febcbd78ca81bceddd3f45811a1747f10db5c8f`; current follow-up documentation commit is `b0096136417b645e606be0b8e7b89f21731fc843`. This handoff update will create one more documentation-only commit.
+- **Implementation commit trail:** `5d3af19df45f0077926ffb66e146958bb014af07`, `572d28445735936b427668c6ded50a6f58c99a5c`, `47143555682656909d387bf7cff97fae63a44131`, `d1b20d122adb8734f7e84d306d16a5eb400ea14e`, `9708ba550c2f29cd0e9938f7b33eb26d23c003f3`, `345135c5d4ce4b35972969d1911e3db923e49fbb`, `c032ca51b7864511212bac370c9ebcd425004b74`, `a013ffe890ac57c85003382f8b1935369486aa2d`, `bb6ab84b421c3eeccb77988fd0ca0310f4e6c0e3`, `aca0c91527a033b4c55a5f51258f40d617af5795`, `3febcbd78ca81bceddd3f45811a1747f10db5c8f`, `b0096136417b645e606be0b8e7b89f21731fc843`.
+- **CI evidence:** initial exact branch workflow on `bb6ab84` passed the Python matrix (3.11/3.12/3.13), wheel-install and web jobs in run [40289107200](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289107200); system verification [40289107159](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289107159) passed Python regression/data integrity and browser tests/build; corpus artifact validation [40289107112](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289107112) passed. The subsequent code head `3febcbd` has exact-head test run [40289270045](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289270045), system verification [40289270118](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289270118), and corpus validation [40289270094](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40289270094); corpus validation passed, but test/system jobs were queued at last inspection. The newest doc-only commit requires checking its own CI before calling the final head fully verified.
+- **Local verification limitation:** attempted a shallow GitHub clone for local test execution, but the container could not resolve `github.com`; no local tests are claimed. CI is the available executable verification path.
+- **Licensing/evidence blocker:** CharsiuG2P checkpoint weights have no verified explicit license in the checked model card; upstream training-data overlap is unknown. This blocks redistribution and leakage-free generalization claims, not independent deterministic-engine development.
 
 ## Task ledger
 
 | Task | Status | Acceptance evidence |
 |---|---|---|
-| Add reproducible teacher-vs-Strict per-case diagnostic | PARTIAL | Script implemented; exact-head tests/CI and reproducibility run still required |
-| Prevent use of known test/holdout splits | PARTIAL | Explicit code and tests added; CI must pass; safeguards cannot prove an external corpus manifest is truthful |
-| Use model disagreements to add production rules | TODO | Independently source-adjudicated Korean rule, positive and negative controls, and separate dev-set improvement |
-| Run teacher inference on licensed train/dev corpus | BLOCKED | Need a suitable licensed corpus split, model rights review, pinned inference artifact, and training-data-overlap audit |
-| Change Strict runtime or Ukrainian rendering from teacher predictions | DEFERRED | No automatic distillation; keep IPA-to-Ukrainian boundary and production behavior unchanged until evidence gate clears |
+| Add reproducible teacher-vs-Strict per-case diagnostic | PARTIAL | Script and unit tests exist; latest exact-head test matrix must finish after final code/test changes |
+| Prevent use of known test/holdout splits | PARTIAL | Code and regression tests cover known benchmark IDs, non-train/dev splits, split mismatch, and duplicate IDs; external manifests still require audit |
+| Validate conservative normalization and context associations | PARTIAL | Tests cover length, tense marks, syllable boundary preservation, eojeol context distinction, and teacher-reference CER denominator; exact-head CI pending |
+| Use model disagreements to add production rules | TODO | Each candidate needs independent primary-source adjudication, positive/negative controls, and separate dev-set improvement |
+| Run teacher inference on a legally cleared train/dev corpus | BLOCKED | Need an eligible corpus split, model rights review, pinned inference artifact, and upstream training-data-overlap audit |
+| Change Strict runtime or Ukrainian rendering from teacher predictions | DEFERRED | No automatic distillation; preserve deterministic runtime and IPA-to-Ukrainian boundary until evidence gates clear |
 
 ## Immediate continuation
 
-1. Inspect exact-head CI for this branch and fix failures.
-2. Validate the tool on a synthetic, explicitly non-benchmark development fixture; retain no fabricated quality score.
-3. Review any context associations only as a human review queue. Do not convert a teacher prediction into a source-backed rule without primary-source support.
-4. If CI passes, update this handoff with the exact final head and run IDs, then open/refresh a draft PR. Do not merge automatically.
+1. Inspect CI on the final PR head and fix any test or validation failures.
+2. If exact-head CI passes, retain the PR as draft until the data/model rights and corpus-overlap gates are addressed.
+3. Review context associations only as a human review queue. Never convert a teacher prediction into a source-backed rule without primary-source support.
+4. Continue deterministic Strict improvement from sourced phonological evidence independently of unresolved neural-model licensing; do not tune on the benchmark holdouts.
 
 ---
 
