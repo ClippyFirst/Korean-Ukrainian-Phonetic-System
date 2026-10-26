@@ -91,3 +91,10 @@ Measure coverage and accuracy separately. A higher coverage rate is not an accur
 ## Bottom line
 
 **Research-ready for an isolated neural baseline experiment; not ready to replace ClippyFirst or to claim V3 superiority.** The next concrete deliverable is a pinned, reproducible CharsiuG2P benchmark adapter, then a case-level hybrid ablation. Preserve the author's rule engine and IPA adapter as the system of record until independently measured results justify any production routing change.
+
+
+## Additional candidate checked: NN-KoG2P (2026-10-26)
+
+The NN-KoG2P paper was investigated as a separate candidate: Kim et al., ICASSP 2021 ([IEEE](https://ieeexplore.ieee.org/document/9414653), [DOI](https://doi.org/10.1109/ICASSP39728.2021.9414653)). This attempt did **not** find a verifiable public inference implementation/checkpoint with runnable instructions and licensing terms. The candidate is therefore **BLOCKED and unscored**; no NN-KoG2P results are claimed. The described FFNN uses surrounding eojeol context and phonological-phrasing features, so our existing isolated-token benchmark adapter would not be a faithful invocation. Details and acceptance criteria: [NN-KoG2P benchmark attempt](NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md).
+
+Next action is to locate an author-maintained release or obtain the artifact and terms, then implement a context-preserving adapter and score identical test rows. If unavailable, keep it explicitly blocked rather than train a lookalike or substitute another neural model under its name.
