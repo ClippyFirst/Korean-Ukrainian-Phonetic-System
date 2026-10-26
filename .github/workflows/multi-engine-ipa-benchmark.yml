@@ -12,6 +12,8 @@ on:
       - "scripts/benchmark_ugtphon_ko.py"
       - "scripts/benchmark_contextual_g2p_ko.py"
       - "tests/test_contextual_g2p_benchmark.py"
+      - "scripts/compare_neural_with_multiengine.py"
+      - "tests/test_compare_neural_with_multiengine.py"
       - "tests/test_ugtphon_benchmark.py"
       - "scripts/convert_sigmorphon_ko.py"
       - "src/korean_ukrainian/**"
@@ -125,7 +127,7 @@ jobs:
         run: |
           set -euo pipefail
           node --check scripts/benchmark_phonemize_adapter.cjs
-          python -m pytest tests/test_multi_engine_benchmark.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py
+          python -m pytest tests/test_multi_engine_benchmark.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py
 
       - name: Run multi-engine comparison
         env:
