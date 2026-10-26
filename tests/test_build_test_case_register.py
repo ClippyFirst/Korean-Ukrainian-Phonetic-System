@@ -33,8 +33,11 @@ class TestBuildTestCaseRegister(unittest.TestCase):
                     "target_status": "unresolved", "input_kind": "Hangul",
                 })
             (root / "tests/example.test.mjs").write_text(
-                "const a = '안지'; // expected surface 안찌 and IPA an.tɕ͈i\n"
-                "const b = '안다'; // no exact standalone lexical token\n",
+                "test('example case', () => {\n"
+                "  const a = '안지'; // expected surface 안찌 and IPA an.tɕ͈i\n"
+                "  assert.equal(a, '안지');\n"
+                "  const b = '안다'; // no exact standalone lexical token\n"
+                "});\n",
                 encoding="utf-8",
             )
             (root / "tests/fixtures/passage.txt").write_text("안지와 안다\n", encoding="utf-8")
@@ -58,13 +61,13 @@ class TestBuildTestCaseRegister(unittest.TestCase):
             self.assertTrue(any(row["source_path"] == "tests/fixtures/passage.txt" for row in candidates))
             with (output / "TEST-CASE-REGISTER-SOURCE-LINES-2026-10-26.csv").open(encoding="utf-8", newline="") as stream:
                 source_lines = list(csv.DictReader(stream))
-            self.assertEqual(stats["source_lines_preserved"], 3)
+            self.assertEqual(stats["source_lines_preserved"], 6)
             self.assertTrue(any(row["raw_line"] == "const a = '안지'; // expected surface 안찌 and IPA an.tɕ͈i" for row in source_lines))
             self.assertTrue(any(row["source_category"] == "fixture" and row["raw_line"] == "안지와 안다" for row in source_lines))
             with (output / "TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv").open(encoding="utf-8", newline="") as stream:
                 assertions = list(csv.DictReader(stream))
-            self.assertTrue(any(row["raw_line"].lstrip().startswith("def test_exports_") for row in assertions))
-            self.assertTrue(any("self.assertEqual" in row["raw_line"] for row in assertions))
+            self.assertTrue(any("test('example case'" in row["raw_line"] for row in assertions))
+            self.assertTrue(any("assert.equal" in row["raw_line"] for row in assertions))
 
 
 if __name__ == "__main__":
