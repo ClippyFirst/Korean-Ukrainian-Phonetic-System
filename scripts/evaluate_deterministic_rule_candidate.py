@@ -145,7 +145,7 @@ def evaluate(manifest: dict[str, Any], cases: list[dict[str, Any]]) -> dict[str,
         for row in positives
     )
     negative_pass = all(
-        normalize(row["candidate_ipa"]) == normalize(row["baseline_ipa"])
+        normalize(row["candidate_ipa"]) == normalize(row["baseline_ipa"]) == normalize(row["gold_ipa"])
         for row in negatives
     )
     baseline = _score(evaluation, "baseline_ipa")
