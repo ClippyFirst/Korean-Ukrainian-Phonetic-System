@@ -136,6 +136,17 @@ def _require(condition: bool, message: str) -> None:
         raise ValueError(message)
 
 
+def _looks_like_sealed_case_id(case_id: str) -> bool:
+    """Fail closed on obvious test/holdout identifiers, even if mislabeled."""
+    normalized = unicodedata.normalize("NFC", case_id).strip().lower()
+    normalized = re.sub(r"[\\s_]+", "-", normalized)
+    if re.search(r"(^|[-/])(test|holdout)([-/]|$)", normalized):
+        return True
+    if re.search(r"(^|[-/])24[-/]?form([-/]|$)", normalized):
+        return True
+    return False
+
+
 def load_provenance(path: Path) -> dict[str, Any]:
     provenance = json.loads(path.read_text(encoding="utf-8"))
     for field in ("model_id", "model_revision", "dataset_id", "dataset_revision",
@@ -173,6 +184,10 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
             raise ValueError(f"invalid JSONL at line {line_no}: {exc}") from exc
         case_id = str(item.get("case_id", "")).strip()
         _require(bool(case_id), f"line {line_no}: case_id is required")
+        _require(
+            not _looks_like_sealed_case_id(case_id),
+            f"line {line_no}: refusing case_id {case_id!r}; identifiers marked test/holdout are forbidden",
+        )
         _require(case_id not in seen_ids, f"line {line_no}: duplicate case_id {case_id!r}")
         seen_ids.add(case_id)
         row_split = str(item.get("split", provenance["split"])).lower()
