@@ -295,35 +295,37 @@ def test_default_rule_order_produces_dongnimmun_surface():
     assert any(t.rule_id=="R006" and t.changed for t in traces)
     assert any(t.rule_id=="R005" and t.changed for t in traces)
 
-def test_simple_coda_liaison_requires_morphology_when_section_15_changes_the_representative():
-    items,traces=apply_ordered_rules(parse_syllables("깎아"),["R002"])
-    assert items[0].coda=="ㄲ" and items[1].onset=="ㅇ"
-    assert traces[0].status=="conditional-disabled"
-
-    items,traces=apply_ordered_rules(
-        parse_syllables("깎아"),["R002"],
-        rule_licenses={"R002:formal:깎아:깎>아"},
-    )
-    assert items[0].coda==""
-    assert items[1].onset=="ㄲ"
-    assert traces[0].changed
-
-def test_substantive_simple_coda_uses_representative_and_exact_pair_license():
-    items,traces=apply_ordered_rules(parse_syllables("겉옷"),["R002"])
+def test_unlisted_simple_coda_liaison_requires_morphology_when_representative_changes():
+    items,traces=apply_ordered_rules(parse_syllables("밭어"),["R002"])
     assert items[0].coda=="ㅌ" and items[1].onset=="ㅇ"
     assert traces[0].status=="conditional-disabled"
 
     items,traces=apply_ordered_rules(
-        parse_syllables("겉옷"),["R002"],
-        rule_licenses={"R002:substantive:겉옷:겉>옷"},
+        parse_syllables("밭어"),["R002"],
+        rule_licenses={"R002:formal:밭어:밭>어"},
     )
     assert items[0].coda==""
-    assert items[1].onset=="ㄷ"
+    assert items[1].onset=="ㅌ"
     assert traces[0].changed
+
+def test_official_nikl_substantive_examples_use_coda_representatives():
+    cases = {
+        "겉옷": ("겉>옷", "ㄷ"),
+        "헛웃음": ("헛>웃", "ㄷ"),
+        "맛없다": ("맛>없", "ㄷ"),
+        "값있는": ("값>있", "ㅂ"),
+        "값어치": ("값>어", "ㅂ"),
+    }
+    for word, (pair, expected_onset) in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R002"])
+        assert items[0].coda == "", word
+        assert items[1].onset == expected_onset, word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R002:substantive:{word}:{pair}", word
 
 def test_simple_coda_license_cannot_be_reused_for_another_full_form():
     items,traces=apply_ordered_rules(
-        parse_syllables("겉옷"),["R002"],
+        parse_syllables("밭어"),["R002"],
         rule_licenses={"R002:formal:깎아:깎>아"},
     )
     assert items[0].coda=="ㅌ" and items[1].onset=="ㅇ"
