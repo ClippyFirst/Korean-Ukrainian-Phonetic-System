@@ -1577,3 +1577,38 @@ Release classification remains **software-verified research prototype / partial 
 - The output deliberately computes **no exact-match, CER, WER, or ranking metric**. SIGMORPHON's tokenized roughly-phonemic IPA has not been independently mapped to the project's broad surface-IPA contract, and the teacher checkpoint was selected using this same dev split. Native diagnostic-only IPA rows are excluded and recorded, not scored.
 - The train-teacher workflow now runs this pairer and uploads paired raw outputs plus a summary alongside the scratch checkpoint and dev error analysis. This prepares aligned evidence but does not fulfill the valid-comparison acceptance gate yet.
 - Status: pairer implementation **PARTIAL until exact-head CI and artifact inspection**; valid cross-model comparison remains **BLOCKED** on the reviewed IPA adapter and an evaluation set not used for teacher checkpoint selection. Neural weights remain research-only; no production rules/runtime output changed.
+
+
+## Exact-head acceptance update — 2026-10-26 10:10 UTC
+
+**Branch head:** `80d5ba5bd7d90f19d4b818c97819a118bc3f4fcc` on `research/strict-teacher-guided-rule-mining-2026-10-26`; canonical review remains Draft PR [#339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339).
+
+### Train-only IPA adjudication queue — DONE_VERIFIED
+
+- Exact-head corpus workflow [40305148677](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148677) passed and uploaded artifact [12641213879](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148677/artifacts/12641213879).
+- Queue summary from the artifact: 8,000 SIGMORPHON train rows; 13,271 eligible UGTPHON train token occurrences; 1,084 shared source forms; 718 matches after only removing SIGMORPHON whitespace token separators; **366 queued conflicts** (151 length-mark-only diagnostics, 215 other symbol/feature diagnostics, zero dot-only). Queue status is unadjudicated; no source chosen as gold, no IPA mapping applied, and no production rule changed.
+
+### Same-input teacher / native Strict pairing — DONE_VERIFIED as an alignment artifact, not as a valid accuracy comparison
+
+- The scratch-teacher workflow passed on exact branch head in [run 40305148602](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148602), artifact [12642810161](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148602/artifacts/12642810161).
+- It paired 1,000 teacher dev predictions to 1,000 native Strict outputs by exact case ID/source form; 994 rows have non-diagnostic-only Strict IPA, 6 were excluded because native IPA remained diagnostic-only. **No teacher-versus-Strict accuracy metric was computed** because the source IPA conventions remain unmapped and this dev split was used to select the teacher checkpoint.
+- Exact-head scratch teacher metrics: 596/1,000 exact token sequences (59.6%); token error rate 12.7923%; compact-character error rate 12.1039%; best epoch 12; checkpoint SHA-256 `21cb99a696c911752694ec77b4dbd5f9d8496879e4ff3c3cf309485ad324be20`. These are SIGMORPHON source-convention metrics only, not ClippyFirst broad-IPA accuracy. Error categories: 596 exact, 116 length-mark-only diagnostics, 288 other token/feature differences.
+
+### Final workflow status on the exact branch head
+
+- Tests, Python 3.11/3.12/3.13, browser regression/build, and clean wheel install: [40305148584](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148584) — PASS.
+- System verification: [40305148531](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148531) — PASS; optional live NIKL source inventory was skipped by condition and is not claimed as passed.
+- Teacher corpus audit, builders, conflict queue, and typed packetization: [40305148677](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148677) — PASS.
+- Scratch training, dev error analysis, and same-input teacher/Strict pairing: [40305148602](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148602) — PASS.
+- Master artifacts: [40305148646](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40305148646) — PASS.
+- Local clone/test execution remains unavailable in this environment because the earlier GitHub DNS resolution failed; all verification claims above refer to remote CI.
+
+### Remaining acceptance blockers
+
+1. **IPA adapter:** no source-specific, independently reviewed mapping from SIGMORPHON tokenized roughly-phonemic IPA and UGTPHON IPA-Dict-derived token targets to ClippyFirst broad surface IPA. The queue is not a converter.
+2. **Adjudication:** all 366 train/train conflicts still require evidence-backed review; no normalization should delete length marks or collapse segment/feature distinctions by default.
+3. **Valid model comparison:** wait for a reviewed adapter and use a separate eligible evaluation set not used to select the checkpoint. Current paired output is diagnostic only.
+4. **Rule promotion:** no deterministic rule is promoted until exact phonological environments, exceptions, primary sources, independent review, positive/negative tests, and separate-set improvement are demonstrated.
+5. **Runtime model integration:** deferred; current evidence supports offline teacher use only. No production phonological rule or runtime output changed in this batch.
+
+**Project status:** research infrastructure is release-verifiable, but the Korean-to-Ukrainian system as a whole remains a partial prototype, not release-ready.
