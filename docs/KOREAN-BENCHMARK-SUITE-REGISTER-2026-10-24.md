@@ -284,3 +284,10 @@ The official MFA model documentation lists a Korean (Jamo) Phonetisaurus G2P mod
 CI [40296965071](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40296965071) passed training and automated dev error analysis; artifact [12638313059](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40296965071/artifacts/12638313059). Dev results: exact token sequence 60.2%; token error rate 12.72%; compact-character error rate 12.18%. Error categories: 602 exact, 107 length-mark-only, 291 other; among length-only errors, 80 underpredicted and 27 overpredicted length marks.
 
 The analyzer's source-shape table shows lower exact match for three-/four-Hangul-character words with final codas than for corresponding no-coda groups, but the groups are not balanced and larger-word buckets are small. Treat this as a diagnostic lead only. No test examples were read, no IPA symbols were normalized for scoring, and no production rule was added. Corpus preparation, cross-source audit, scratch training, and automated dev error analysis are now DONE_VERIFIED; common IPA representation mapping and independent rule adjudication remain TODO.
+
+
+## 2026-10-26 — source convention review and adjudication queue
+
+- Primary source review: [KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md](KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md). SIGMORPHON 2021 target format and preprocessing are not equivalent by default to UGTPHON's IPA-Dict-derived Korean token annotations.
+- Executable queue: `scripts/build_korean_ipa_adjudication_queue.py`, tested by `tests/test_build_korean_ipa_adjudication_queue.py` and run in the existing teacher-corpus workflow. It queues only train/train conflicts and preserves raw candidates, provenance, and Unicode code-point inventories. It does not claim phoneme segmentation.
+- Acceptance status: queue implementation is separate from annotation adjudication. The 366 target conflicts are still unadjudicated; no broad-IPA adapter, neural-versus-Strict comparison, or production-rule promotion is claimed until a reviewed source-specific mapping is available.
