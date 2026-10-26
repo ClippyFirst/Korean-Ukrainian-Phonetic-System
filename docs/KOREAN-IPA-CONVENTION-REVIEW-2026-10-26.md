@@ -92,7 +92,14 @@ The triage artifact is not the independent phonetic review itself. The 366 forms
 
 ### Exact-head triage artifact results
 
-The corrected conflict-triage implementation and the full corpus-preparation workflow passed on head `f33fcbc6fb7130111031e83e40266b9f0b3fff9c`: corpus audit [run 40313774415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313774415), full tests [run 40313774457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313774457), system verification [run 40313774352](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313774352), and master artifacts [run 40313774559](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313774559). The corpus artifact is [12645583079](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313643070/artifacts/12645583079), generated on the immediately preceding corrected code head; the latest head adds a regression specifically checking that repeated occurrences are not counted as distinct target variants. Exact-head corpus run [40313774415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313774415) also passed after that regression was added.
+The conflict-triage code now validates the exact dataset IDs/revisions/target representations, rejects duplicate queue forms and contradictory decision flags, and explicitly tests the distinction between repeated target occurrences and distinct target strings.
+
+Exact-head verification on `b0568099c2a2102196eb393e74529e2f8f353484`:
+- Corpus audit, pinned train/dev preparation, queue generation, typed packets, and conflict report: [run 40314470436](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314470436) PASS; artifact [12645294759](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314470436/artifacts/12645294759).
+- Full tests (Python 3.11/3.12/3.13, browser, build, clean wheel install): [run 40314470455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314470455) PASS.
+- System verification: [run 40314470467](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314470467) PASS.
+- Master artifacts: [run 40314470417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314470417) PASS.
+- Scratch teacher training and dev error analysis: [run 40314470435](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40314470435) PASS.
 
 Report counts for the 366 form-level conflicts:
 - 803 SIGMORPHON×UGTPHON candidate-occurrence pairs are compared because UGTPHON source forms repeat across sentences.
@@ -100,8 +107,7 @@ Report counts for the 366 form-level conflicts:
 - 33 forms have at least five UGTPHON candidate occurrences. `진짜` occurs 78 times, but all 78 occurrences carry the same target string `t͡ɕint͡ɕ͈a̠`; `보고` occurs 21 times with one target string. Repetition is not independent corroboration.
 - 0/366 forms have multiple distinct UGTPHON comparison-target strings in this eligible queue. This finding is scoped to the builder's selected canonical token annotations; it does not assert that the complete upstream dataset has no variants.
 
-The report therefore helps rank source-form frequency and makes the candidate-pair denominator explicit. It is not a phonetic adjudication, not a segment alignment, and not evidence for a ClippyFirst symbol mapping.
-
+The report ranks source-form frequency and makes the candidate-pair denominator explicit. It is not phonetic adjudication, segment alignment, or evidence for a ClippyFirst symbol mapping.
 
 ## Additional upstream provenance check: IPA-Dict's stated transcription level
 
