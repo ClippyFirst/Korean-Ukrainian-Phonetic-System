@@ -17,6 +17,7 @@ A separate runner is used so its raw per-case predictions remain independently a
 Neither neural outputs nor corpus annotations are promoted to source-reviewed normative IPA gold.
 The opt-in neural run must preserve its own raw output and revision provenance.
 Model scores are diagnostic only until independent IPA adjudication is complete.
+Model revisions and model-weight licensing remain separate provenance fields.
 """
 from __future__ import annotations
 
