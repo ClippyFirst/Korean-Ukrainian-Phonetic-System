@@ -136,6 +136,7 @@ def prepare(output_dir: Path) -> dict:
             split: {
                 **source_meta[split],
                 "source_rows": len(loaded[split]),
+                "output_row_count": len(loaded[split]) if split in {"train", "dev"} else 0,
                 "unique_nfc_source_forms": len(source_forms[split]),
                 "exported": split in {"train", "dev"},
                 "output_file_sha256": sha256((output_dir / f"{split}.jsonl").read_bytes())
