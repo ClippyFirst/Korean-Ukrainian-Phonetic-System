@@ -36,7 +36,7 @@ def test_parser_preserves_raw_tokenized_ipa_and_only_normalizes_hangul_nfc():
     b"\n",
     "국물\n".encode("utf-8"),
     "국물\t\n".encode("utf-8"),
-    b"\\xff\tk u k\n",
+    bytes([255, 9, 107, 32, 117, 32, 107, 10]),
 ])
 def test_parser_rejects_malformed_tsv(data):
     with pytest.raises(ValueError):
