@@ -218,6 +218,7 @@ def analyzer_consensus_rule_licenses(
         left, right = syllables[offset - 1], syllables[offset]
         pair = f"{left.text}>{right.text}"
         applied: list[str] = []
+        lexical_root_extensions: list[dict[str, str]] = []
         if left.coda and left.coda not in _R002_EXCLUDED_CODAS and right.onset == "ㅇ":
             license = f"R002:formal:{text}:{pair}"
             licenses.add(license)
@@ -285,6 +286,12 @@ def analyzer_consensus_rule_licenses(
                 extended = f"{rule_id}:{scope}:{text}:{licensed_pair}"
                 licenses.add(extended)
                 applied.append(rule_id)
+                lexical_root_extensions.append({
+                    "rule_id": rule_id,
+                    "registered_root": licensed_root,
+                    "internal_pair": licensed_pair,
+                    "license": extended,
+                })
 
         if applied:
             details.append({
@@ -298,6 +305,7 @@ def analyzer_consensus_rule_licenses(
                     for item in analyses
                 ],
                 "candidate_rules": list(dict.fromkeys(applied)),
+                "lexical_root_extensions": lexical_root_extensions,
             })
 
     return {
