@@ -101,7 +101,7 @@ def test_source_backed_substantive_morpheme_liaison_resolves_official_value_case
 
 def test_complex_coda_license_cannot_be_reused_for_another_word():
     items,traces=apply_ordered_rules(
-        parse_syllables("값어치"),["R002"],
+        parse_syllables("값이"),["R002"],
         rule_licenses={"R002:formal:넋이:넋>이"},
     )
     assert items[0].coda=="ㅄ" and items[1].onset=="ㅇ"
