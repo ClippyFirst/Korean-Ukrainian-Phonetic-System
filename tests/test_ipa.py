@@ -4,9 +4,17 @@ from korean_ukrainian.pipeline import phoneticize_korean
 def test_basic_broad_ipa(): assert phoneticize_korean("가")["ipa"]["ipa"]=="ka"
 def test_intervocalic_lenis_voicing(): assert "ɡ" in phoneticize_korean("아가")["ipa"]["ipa"]
 def test_ipa_level_is_explicit(): assert phoneticize_korean("가",ipa_level="phonemic")["ipa"]["level"]=="phonemic"
-def test_narrow_ipa_is_explicitly_unavailable():
-    with pytest.raises(ValueError,match="narrow IPA is unavailable"):
-        phoneticize_korean("가",ipa_level="narrow")
+def test_narrow_ipa_is_explicitly_partial_and_source_scoped():
+    narrow = phoneticize_korean("사", ipa_level="narrow")["ipa"]
+    assert narrow["ipa"] == "sʰa"
+    assert narrow["level"] == "narrow"
+    assert narrow["realization_status"] == "partial-narrow-sibilant-profile"
+    assert narrow["transcription_profile"]["target_compatible"] is False
+
+    # Default broad IPA remains stable; narrow is opt-in only.
+    assert phoneticize_korean("사")["ipa"]["ipa"] == "sa"
+    assert phoneticize_korean("시", ipa_level="narrow")["ipa"]["ipa"] == "ɕʰi"
+    assert phoneticize_korean("쇼", ipa_level="narrow")["ipa"]["ipa"] == "sʰjo"
 
 
 def test_broad_ipa_voicing_after_sonorant():
