@@ -1804,3 +1804,11 @@ The input uses `schema_version: "1.0"`, the queue's exact `source_pins`, and a `
 - Added a rights-risk note to `docs/KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md`: UGTPHON's stated Korean Apache-2.0 terms and the cited upstream IPA-Dict CC BY-SA terms require source-specific rights review before treating redistribution/commercial reuse of derived annotation artifacts as cleared. No legal conclusion is asserted; no IPA-Dict dump is copied into the repository.
 - Exact IPA-Dict snapshot recovery remains BLOCKED by missing upstream version/hash metadata. Do not infer the embedded revision from the current IPA-Dict README, and do not promote a mapping or runtime rule based on this evidence.
 - The convention-review update and subsequent handoff corrections are documentation-only descendants of the verified code/test head `e03cc4443926e534ff3afd5498815607ce9a32af`. No executable code or tests changed after that verified head; the docs-only commits do not change the recorded test result.
+
+
+### Final research-teacher pairing evidence — 2026-10-26
+
+- Scratch-teacher run [40317106628](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40317106628) completed successfully and uploaded artifact [12646399461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40317106628/artifacts/12646399461), SHA-256 `6b3c545fa4b1eb9c80268d54181f60c8be612b5bbda32376acc86cff6f111b1c`.
+- On 1,000 SIGMORPHON dev rows, the scratch teacher reproduced the existing metrics: 602 exact token-sequence matches (60.2%), token error rate 12.72%, compact-character error rate 12.18%; 107 mismatches were length-mark-only diagnostics and 291 were other token/feature differences (80 underpredicted and 27 overpredicted length marks).
+- Teacher/Strict same-input pairing produced 994 paired cases and excluded 6, but correctly reported `BLOCKED_INCOMPATIBLE_OR_UNREVIEWED_IPA_CONVENTIONS`; cross-convention comparison metrics were not computed. This is the correct fail-closed result, not a missing test or a failed model.
+- These figures are SIGMORPHON source-token-sequence metrics only. They are not broad-IPA accuracy, Ukrainian transcription accuracy, or evidence that any Strict rule should be changed.
