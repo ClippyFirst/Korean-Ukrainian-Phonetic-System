@@ -109,7 +109,7 @@ def build_pair_ledger(
             "dataset_id": metadata["dataset_id"],
             "dataset_revision": metadata["dataset_revision"],
             "target_representation": metadata["target_representation"],
-            "source_text": row["token"],
+            "source_text": row.get("word", row.get("token", "")),
             "gold_raw": row["gold"],
             "teacher_ipa_raw": teacher.get("ipa"),
             "teacher_status": teacher.get("status", "missing"),
