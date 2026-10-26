@@ -1405,3 +1405,12 @@ Release classification remains **software-verified research prototype / partial 
 - Added `tests/test_charsiu_g2p_benchmark.py` for normalization/scoring, repeated occurrence accounting, coverage vs accuracy, empty gold rejection, and Hangul-only token contract.
 - Added a research gate and updated the suite register. **Code presence is not yet equivalent to DONE_VERIFIED**: the new tests and CI must pass, and model inference still needs an actual run with pinned revisions. No model score is reported.
 - Next: verify current branch head/CI; correct any test or runtime failures; then add a separately-triggered expensive model workflow after the model/tokenizer revision and dependencies are pinned and tested. Compare against the same UGTPHON and SIGMORPHON inputs; retain case-level output and no training on holdouts.
+
+
+## Continuation update — NN-KoG2P attempt (2026-10-26)
+
+- Investigated NN-KoG2P (ICASSP 2021; [IEEE](https://ieeexplore.ieee.org/document/9414653), [DOI](https://doi.org/10.1109/ICASSP39728.2021.9414653)) as an additional neural baseline.
+- Added `docs/NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md` and updated the neural research gate and benchmark register.
+- Result: **BLOCKED / not scored**. No verifiable public inference implementation and checkpoint with runnable instructions and terms were identified in the materials checked. No NN-KoG2P benchmark predictions or scores were fabricated.
+- Methodological finding: the described model uses surrounding eojeol context and phonological-phrasing features; isolated-token evaluation is not a faithful model invocation. UGTPHON may support a context-preserving adapter after the real artifact is verified. SIGMORPHON compatibility needs a separate justification.
+- Next acceptance criterion: verify the actual model artifact, provenance, license and input contract; then run identical held-out test rows with case-level predictions, coverage, CER/exact match, errors and paired comparison. Never train/tune on test/holdout examples and never call a lookalike model NN-KoG2P.
