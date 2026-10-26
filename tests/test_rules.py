@@ -124,7 +124,7 @@ def test_complex_coda_license_cannot_be_reused_for_another_word():
         parse_syllables("닭을"),["R002"],
         rule_licenses={"R002:formal:넋이:넋>이"},
     )
-    assert items[0].coda=="ㅄ" and items[1].onset=="ㅇ"
+    assert items[0].coda=="ㄺ" and items[1].onset=="ㅇ"
     assert traces[0].status=="conditional-disabled"
 
 def test_h_deletion_before_vowel_requires_exact_ending_or_suffix_evidence():
