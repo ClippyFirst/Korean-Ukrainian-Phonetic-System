@@ -2265,3 +2265,15 @@ The neural teacher's saved dev-pair artifact marks comparisons `BLOCKED_INCOMPAT
 4. After the register and adapter contract are reliable, use eligible training examples for exploratory teacher-guided clustering. Keep dev for validation and test/holdout sealed; do not retrain the scratch teacher unless the data or architecture changes.
 5. Update this handoff and the case register with final exact-head CI, final SHA and remaining blockers. Keep PR #339 draft until all required checks pass and the source/IPA/target gates are satisfied.
 
+## Follow-up — IPA boundary migration and current CI blocker (2026-10-26)
+
+The code/test head before this note is `5bf3eba6da219aca76084ea9d9ac384206365806`.
+
+- **Implementation committed:** lexical IPA now renders `.` between syllables within a Korean eojeol and preserves literal source whitespace between eojeols. The same renderer contract is applied to generic vowel variants and source-backed surface-only lexical paths.
+- **Regression expectations updated:** single-word IPA fixtures that previously expected spaces now expect within-word dots; phrase-level expected IPA is generated from the Korean input's actual whitespace boundaries. This avoids both false word-boundary insertion and dots crossing real spaces.
+- **The previous completed browser result is not a verdict on this migration.** Run [40394805769](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40394805769), on pre-migration code head `44c3750cc874e9184471d1efc74b76050f47ee93`, reported 1,226 passing and 30 failing tests. Several were known separator-contract mismatches; other failures included generic-vowel variant expectations and exact-form surface handling. The current migration has not yet been verified by CI.
+- Current-head workflow batch for `5bf3eba6da219aca76084ea9d9ac384206365806` includes test run [40396716406](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40396716406) and system verification [40396716306](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40396716306). Both were queued at last poll. This is an external CI-queue blocker, not a pass.
+- **Do not close the phase or mark release-ready until the current-head browser suite, Python 3.11–3.13 matrix, wheel install, artifact regeneration, and parity checks finish.** If any new failure remains, inspect its exact assertion and source before editing expected values or production rules. The IPA serializer migration is complete as an implementation batch, but acceptance remains PARTIAL pending exact-head verification.
+
+The test-case inventory artifact remains the reusable source of candidate occurrences; full case-level semantic classification and the evidence-gated teacher-to-rule mining stage remain incomplete. Teacher dev comparisons are still blocked by IPA convention incompatibility and must not be used as gold labels.
+
