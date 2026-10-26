@@ -274,6 +274,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         # adjacency alone. Require an exact full-form + pair license:
         # R002:formal:넋이:넋>이 or R002:substantive:값어치:값>어.
         liaison_licenses={x for x in licenses if x.startswith("R002:")}
+        applied_license_contexts=[]
         full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
@@ -298,11 +299,11 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 if scope=="formal":
                     retained,moved=COMPLEX_LIAISON[a.coda]
                     a.coda=retained; b.onset=moved or "ㅇ"; changed=True
-                    license_context=f"R002:formal:{full_form}:{pair}"
+                    applied_license_contexts.append(f"R002:formal:{full_form}:{pair}")
                 elif scope=="substantive":
                     representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
                     a.coda=""; b.onset=representative; changed=True
-                    license_context=f"R002:substantive:{full_form}:{pair}"
+                    applied_license_contexts.append(f"R002:substantive:{full_form}:{pair}")
                 else:
                     conditional_disabled=True
             elif a.coda in {"ㄷ","ㅌ"} and b.nucleus=="ㅣ":
@@ -326,12 +327,16 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                             break
                     if scope=="formal":
                         b.onset=a.coda; a.coda=""; changed=True
+                        applied_license_contexts.append(f"R002:formal:{full_form}:{pair}")
                     elif scope=="substantive":
                         b.onset=representative; a.coda=""; changed=True
+                        applied_license_contexts.append(f"R002:substantive:{full_form}:{pair}")
                     else:
                         conditional_disabled=True
                 else:
                     b.onset=a.coda; a.coda=""; changed=True
+        if applied_license_contexts:
+            license_context=";".join(dict.fromkeys(applied_license_contexts))
     elif rule_id=="R003":
         # NIKL §12(4) deletes ㅎ in ㅎ/ㄶ/ㅀ before a vowel-initial ending
         # or suffix. Adjacent Hangul blocks alone do not prove that boundary.
