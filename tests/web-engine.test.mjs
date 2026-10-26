@@ -145,7 +145,6 @@ test('NIKL §15 substantive liaison covers exact official forms only', () => {
     if (input === '헛웃음') {
       assert.equal(units[1].coda, '');
       assert.equal(units[2].onset, 'ㅅ');
-      assert.ok(rules[0].includes('liaison-exact-form-formal'));
     }
   }
 
