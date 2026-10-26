@@ -280,7 +280,7 @@ jobs:
         run: python -m pytest tests/test_charsiu_g2p_benchmark.py tests/test_contextual_g2p_benchmark.py
 
       - name: Resolve immutable model and tokenizer revisions
-        id: neural-revisions
+        id: neural_revisions
         run: |
           python - <<'PY' >> "$GITHUB_OUTPUT"
           from huggingface_hub import HfApi
@@ -315,8 +315,8 @@ jobs:
 
       - name: Run CharsiuG2P on UGTPHON and compare paired baselines
         env:
-          MODEL_SHA: ${{ steps.neural-revisions.outputs.model_sha }}
-          TOKENIZER_SHA: ${{ steps.neural-revisions.outputs.tokenizer_sha }}
+          MODEL_SHA: ${{ steps.neural_revisions.outputs.model_sha }}
+          TOKENIZER_SHA: ${{ steps.neural_revisions.outputs.tokenizer_sha }}
         run: |
           set -euo pipefail
           python scripts/benchmark_charsiu_g2p.py \
@@ -344,8 +344,8 @@ jobs:
 
       - name: Run CharsiuG2P on SIGMORPHON and compare paired baselines
         env:
-          MODEL_SHA: ${{ steps.neural-revisions.outputs.model_sha }}
-          TOKENIZER_SHA: ${{ steps.neural-revisions.outputs.tokenizer_sha }}
+          MODEL_SHA: ${{ steps.neural_revisions.outputs.model_sha }}
+          TOKENIZER_SHA: ${{ steps.neural_revisions.outputs.tokenizer_sha }}
         run: |
           set -euo pipefail
           python scripts/benchmark_charsiu_g2p.py \
@@ -359,8 +359,8 @@ jobs:
       - name: Record model hashes, license status, and dataset provenance
         if: always()
         env:
-          MODEL_SHA: ${{ steps.neural-revisions.outputs.model_sha }}
-          TOKENIZER_SHA: ${{ steps.neural-revisions.outputs.tokenizer_sha }}
+          MODEL_SHA: ${{ steps.neural_revisions.outputs.model_sha }}
+          TOKENIZER_SHA: ${{ steps.neural_revisions.outputs.tokenizer_sha }}
         run: |
           python - "$RUNNER_TEMP/neural-results/model-provenance.json" <<'PY'
           import hashlib, json, os, sys
