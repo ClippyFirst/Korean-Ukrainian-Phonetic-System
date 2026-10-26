@@ -51,7 +51,7 @@ def edit_distance(left: str, right: str) -> int:
 
 
 def _sealed(value: str) -> bool:
-    normalized = re.sub(r"[\\s_]+", "-", unicodedata.normalize("NFC", value).strip().lower())
+    normalized = re.sub(r"[\s_]+", "-", unicodedata.normalize("NFC", value).strip().lower())
     return bool(SEALED_TOKEN.search(normalized))
 
 
