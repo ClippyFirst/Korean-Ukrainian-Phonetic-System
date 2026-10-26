@@ -3,7 +3,7 @@
  */
 import {
   COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
-  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -25,6 +25,8 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     const exactMorphPair=a.char+'>'+b.char;
     const exactR002Pair=NIKL_13_14_FORMAL_LIAISON_FORMS.get(currentWord);
     const exactR002Licensed=exactR002Pair===exactMorphPair;
+    const exactR002SubstantivePair=NIKL_15_SUBSTANTIVE_LIAISON_FORMS.get(currentWord);
+    const exactR002SubstantiveLicensed=exactR002SubstantivePair===exactMorphPair;
 
     if(a.coda==='ㄼ'&&b.onset!=='ㅇ'){
       if(a.char==='밟'){a.coda='ㅂ';rules.push('lexical-coda-balm');}
@@ -96,6 +98,16 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
           a.coda=pair[0];
           if(pair[1]){b.onset=pair[1];b.__liaison=true;}
           rules.push('complex-coda-liaison-exact-form-formal');
+        }else if(exactR002SubstantiveLicensed){
+          // NIKL §15(붙임): for substantive-morpheme liaison, move only the
+          // representative of a complex coda (값어치[가버치]), not §14's
+          // second-component formal liaison (값이[갑씨]).
+          const representativeCoda=representative(a.coda);
+          a.coda='';
+          b.onset=representativeCoda;
+          b.__liaison=true;
+          rules.push('complex-coda-substantive-liaison-§15-exact-form');
+          nextRules.push('complex-coda-substantive-liaison-§15-exact-form');
         }else{
           a.__complexLiaisonUnlicensed='left';
           b.__complexLiaisonUnlicensed='right';
@@ -111,6 +123,12 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
           b.__liaison=true;
           a.coda='';
           rules.push('liaison-exact-form-formal');
+        }else if(exactR002SubstantiveLicensed){
+          b.onset=representative(a.coda);
+          b.__liaison=true;
+          a.coda='';
+          rules.push('substantive-liaison-§15-exact-form');
+          nextRules.push('substantive-liaison-§15-exact-form');
         }else{
           a.__substantiveLiaisonUnlicensed='left';
           b.__substantiveLiaisonUnlicensed='right';
