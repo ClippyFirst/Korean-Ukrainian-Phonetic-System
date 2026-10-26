@@ -188,3 +188,8 @@ The new `scripts/audit_korean_ipa_symbol_inventories.py` passed in [workflow 403
 - UGTPHON includes `ç` and `ø` (among other symbols/diacritics not represented in SIGMORPHON); exact examples and counts are in the inventory artifact and source-convention review. These are flagged for evidence-based review, not assumed errors.
 
 The inventory is **DONE_VERIFIED as a data-audit tool**; the IPA adapter remains **BLOCKED** until source-specific symbols/features are mapped by evidence and independently reviewed.
+
+
+### Source-specific notation example clarified
+
+The pinned UGTPHON README explicitly includes `키키 → kçikçi` and `킥킥 → kçik̚kçik̚`. Therefore `ç` is an observed part of the upstream Korean annotation convention and must not be discarded as a presumed typo. The ClippyFirst mapping for the sequence `kç` remains unadjudicated; see [the convention review](KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md).
