@@ -55,6 +55,9 @@ class TestBuildTestCaseRegister(unittest.TestCase):
             with (output / "TEST-CASE-REGISTER-LEXICAL-TEST-LINKS-2026-10-26.csv").open(encoding="utf-8", newline="") as stream:
                 links = list(csv.DictReader(stream))
             self.assertTrue(any(row["input"] == "안지" and row["test_path"] == "tests/example.test.mjs" for row in links))
+            link_ids = [row["link_id"] for row in links]
+            self.assertEqual(len(link_ids), len(set(link_ids)))
+            self.assertTrue(all(link_id.startswith("LINK-") for link_id in link_ids))
             self.assertFalse(any(row["input"] == "안" and row["test_path"] == "tests/example.test.mjs" for row in links))
             with (output / "TEST-CASE-REGISTER-HANGUL-LITERAL-CANDIDATES-2026-10-26.csv").open(encoding="utf-8", newline="") as stream:
                 candidates = list(csv.DictReader(stream))
