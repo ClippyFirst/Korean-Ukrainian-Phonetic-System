@@ -81,8 +81,10 @@ def test_rejects_non_dev_or_sealed_rows():
         build_pairs([source_row()], [bad_teacher], [strict_row()])
 
 
-def test_rejects_diagnostic_only_native_ipa_for_pairing():
+def test_excludes_diagnostic_only_native_ipa_instead_of_scoring_it():
     strict = strict_row()
     strict["ipa_is_diagnostic_only"] = True
-    with pytest.raises(ValueError, match="diagnostic-only"):
-        build_pairs([source_row()], [teacher_row()], [strict])
+    result = build_pairs([source_row()], [teacher_row()], [strict])
+    assert result["pairs"] == []
+    assert result["summary"]["excluded_cases"] == 1
+    assert "diagnostic-only" in result["excluded_cases"][0]["reason"]
