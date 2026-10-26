@@ -170,6 +170,14 @@ _NIKL_R012_WORD_LICENSES = {
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds
 # without a written 사이시옷). Homographs whose reading depends on meaning
 # are deliberately omitted from automatic licensing.
+# Exact NIKL §27 adnominal phrases already mirrored by the browser runtime.
+# Licenses are emitted only when the caller explicitly selects phrase boundaries.
+_NIKL_R013_PHRASE_LICENSES = {
+    "할 것을": "할>것", "갈 데가": "갈>데", "할 바를": "할>바",
+    "할 수는": "할>수", "읽을 수": "을>수", "할 적에": "할>적",
+    "갈 곳": "갈>곳", "할 도리": "할>도", "만날 사람": "날>사",
+}
+
 _NIKL_R014_WORD_LICENSES = {
     "문고리": "문>고", "눈동자": "눈>동", "신바람": "신>바",
     "산새": "산>새", "손재주": "손>재", "길가": "길>가",
@@ -234,6 +242,10 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R012_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R012:sino_ryeon:{full_form}:{pair}")
+    if boundary_mode == "phrase":
+        pair = _NIKL_R013_PHRASE_LICENSES.get(full_form)
+        if pair is not None:
+            licenses.add(f"R013:adnominal_l:{full_form}:{pair}")
     pair = _NIKL_R009_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R009:word:{full_form}:{pair}")
