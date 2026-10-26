@@ -634,6 +634,9 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if pair not in exact_pairs:
                 conditional_disabled=True
                 continue
+            if rule_id=="R011" and a.coda=="ㄾ":
+                # NIKL §25: 훑- realizes ㄾ as ㄹ before the licensed ending.
+                a.coda="ㄹ"
             b.onset=PLAIN_TO_FORTIS[b.onset]
             changed=True
             if pair in attested_l_ge_pairs:
