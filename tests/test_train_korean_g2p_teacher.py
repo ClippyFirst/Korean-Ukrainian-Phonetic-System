@@ -98,8 +98,8 @@ def test_verify_corpus_manifest_rejects_tampered_jsonl(tmp_path):
     input_dir = tmp_path / "corpus"
     input_dir.mkdir()
     train_path, dev_path = input_dir / "train.jsonl", input_dir / "dev.jsonl"
-    train_bytes = b'{"source_text":"\uad6d\ubb3c"}\n'
-    dev_bytes = b'{"source_text":"\uad6d\ubc25"}\n'
+    train_bytes = (json.dumps({"source_text": "국물"}, ensure_ascii=False) + "\n").encode("utf-8")
+    dev_bytes = (json.dumps({"source_text": "국밥"}, ensure_ascii=False) + "\n").encode("utf-8")
     train_path.write_bytes(train_bytes)
     dev_path.write_bytes(dev_bytes)
     manifest = {
