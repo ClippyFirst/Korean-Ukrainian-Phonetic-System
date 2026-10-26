@@ -3,7 +3,7 @@
  */
 import {
   COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
-  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_PRONUNCIATION_FORMS, NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_29_WORD_INSERTION, NIKL_30_SAISIOT_PRONUNCIATION_FORMS, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -37,6 +37,8 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     const exactR014Licensed=exactR014Pair===exactMorphPair;
     const exactR015Pair=NIKL_30_SAISIOT_PRONUNCIATION_FORMS.get(currentWord);
     const exactR015Licensed=exactR015Pair===exactMorphPair;
+    const exactR009Pair=NIKL_29_WORD_INSERTION.get(currentWord);
+    const exactR009Licensed=exactR009Pair===exactMorphPair;
 
     if(a.coda==='ㄼ'&&b.onset!=='ㅇ'){
       if(a.char==='밟'){a.coda='ㅂ';rules.push('lexical-coda-balm');}
@@ -95,6 +97,15 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
         nextRules.push('saisiot-pronunciation-§30-exact-form');
         continue;
       }
+    }
+
+    // NIKL §29 word-internal n-insertion is lexical; only the exact
+    // full-form + pair inventory is licensed here. The coda remains for the
+    // following ordered nasal-assimilation step.
+    if(exactR009Licensed&&a.coda&&b.onset==='ㅇ'&&['ㅣ','ㅑ','ㅕ','ㅛ','ㅠ','ㅖ','ㅒ'].includes(b.vowel)){
+      b.onset=representative(a.coda)==='ㄹ'?'ㄹ':'ㄴ';
+      rules.push('n-insertion-§29-exact-word');
+      nextRules.push('n-insertion-§29-exact-word');
     }
 
     if(a.coda&&b.onset==='ㅇ'&&!a.__palatalizationUnlicensed){
