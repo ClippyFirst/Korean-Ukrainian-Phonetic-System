@@ -27,15 +27,27 @@ def _validate_text(value: object, field: str) -> str:
     return value
 
 
-def _marker_inventory(raw: str) -> dict:
-    """Record marker codepoints and offsets without changing or interpreting segments."""
+def _marker_inventory(raw: str, representation: str) -> dict:
+    """Record explicit markers without promoting punctuation inside a token to a boundary."""
     boundaries = []
     stress = []
     length = []
+    if representation == SIGMORPHON:
+        # A boundary token must be isolated by the source's whitespace tokenization.
+        offset = 0
+        for token in raw.split():
+            token_offset = raw.find(token, offset)
+            if token in BOUNDARY_SYMBOLS:
+                boundaries.append({"codepoint_offset": token_offset, "symbol": token, "kind": "explicit_boundary"})
+            offset = token_offset + len(token)
+    else:
+        # UGTPHON compact annotations encode dots directly; retain each literal marker.
+        boundaries = [
+            {"codepoint_offset": offset, "symbol": char, "kind": "explicit_boundary"}
+            for offset, char in enumerate(raw) if char in BOUNDARY_SYMBOLS
+        ]
     for offset, char in enumerate(raw):
-        if char in BOUNDARY_SYMBOLS:
-            boundaries.append({"codepoint_offset": offset, "symbol": char, "kind": "explicit_boundary"})
-        elif char in STRESS_SYMBOLS:
+        if char in STRESS_SYMBOLS:
             stress.append({"codepoint_offset": offset, "symbol": char, "kind": "stress_marker"})
         elif char in LENGTH_SYMBOLS:
             length.append({"codepoint_offset": offset, "symbol": char, "kind": "length_marker"})
@@ -124,7 +136,7 @@ def packetize_row(row: dict) -> dict:
         "target_raw": raw,
         "source_representation": representation,
         "units": units,
-        "markers": _marker_inventory(raw),
+        "markers": _marker_inventory(raw, representation),
         "unit_policy": unit_policy,
         "adapter_status": "SOURCE_TYPED_NOT_MAPPED",
         "clippyfirst_broad_ipa": None,
