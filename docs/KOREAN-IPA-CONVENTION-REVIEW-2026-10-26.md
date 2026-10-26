@@ -88,3 +88,16 @@ The exact-head workflow produced 366 queued source forms and 803 cross-corpus ca
 4. Only after independent review, apply the mapping to a separate eligible comparison set; keep source raw strings immutable and retain ambiguous cases as unmapped.
 
 The triage artifact is not the independent phonetic review itself. The 366 forms remain `UNADJUDICATED`, and the production runtime remains unchanged.
+
+
+### Exact-head triage artifact results
+
+The corrected conflict-triage implementation and the full corpus-preparation workflow passed on head `f33fcbc6fb7130111031e83e40266b9f0b3fff9c`: corpus audit [run 40313774415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313774415), full tests [run 40313774457](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313774457), system verification [run 40313774352](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313774352), and master artifacts [run 40313774559](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313774559). The corpus artifact is [12645583079](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313643070/artifacts/12645583079), generated on the immediately preceding corrected code head; the latest head adds a regression specifically checking that repeated occurrences are not counted as distinct target variants. Exact-head corpus run [40313774415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40313774415) also passed after that regression was added.
+
+Report counts for the 366 form-level conflicts:
+- 803 SIGMORPHON×UGTPHON candidate-occurrence pairs are compared because UGTPHON source forms repeat across sentences.
+- 0 exact target-string pairs across those candidate occurrences; 292 candidate pairs become equal only under the explicitly diagnostic removal of `ː`/`ˑ`. Those 292 are not independent forms and do not authorize length deletion.
+- 33 forms have at least five UGTPHON candidate occurrences. `진짜` occurs 78 times, but all 78 occurrences carry the same target string `t͡ɕint͡ɕ͈a̠`; `보고` occurs 21 times with one target string. Repetition is not independent corroboration.
+- 0/366 forms have multiple distinct UGTPHON comparison-target strings in this eligible queue. This finding is scoped to the builder's selected canonical token annotations; it does not assert that the complete upstream dataset has no variants.
+
+The report therefore helps rank source-form frequency and makes the candidate-pair denominator explicit. It is not a phonetic adjudication, not a segment alignment, and not evidence for a ClippyFirst symbol mapping.
