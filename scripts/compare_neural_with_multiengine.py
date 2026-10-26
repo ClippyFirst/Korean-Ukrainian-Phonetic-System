@@ -9,7 +9,14 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from benchmark_multi_engine_ko import _metrics, _paired_bootstrap_delta_ci
+from benchmark_multi_engine_ko import (
+    DIAGNOSTIC_NORMALIZERS,
+    DIAGNOSTIC_PROFILE_WARNINGS,
+    _metrics,
+    _paired_bootstrap_delta_ci,
+    _profile_change_audit,
+    _score,
+)
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -31,6 +38,68 @@ def _normalized_case(item: dict[str, Any]) -> dict[str, Any]:
         "predicted": item.get("predicted", item.get("ipa")),
         "normalized_predicted": item.get("normalized_predicted"),
         "closest_normalized_gold": item.get("closest_normalized_gold"),
+    }
+
+
+def _neural_profile_sensitivity(neural: dict[str, Any]) -> dict[str, Any]:
+    """Score raw neural outputs under every existing IPA profile without changing primary predictions."""
+    primary_items: list[dict[str, Any]] = []
+    for case in neural.get("predictions", []):
+        prediction = case.get("predicted")
+        gold = case.get("gold")
+        if not isinstance(prediction, str) or not isinstance(gold, str):
+            continue
+        if case.get("status") not in (None, "scored"):
+            continue
+        item = {
+            "occurrence_id": str(case.get("occurrence_id")),
+            "row_id": str(case.get("row_id", case.get("sentence_id", "unknown"))),
+            "token": case.get("token", case.get("word")),
+            "gold": gold,
+            "predicted": prediction,
+        }
+        item.update(_score(prediction, gold, normalizer=DIAGNOSTIC_NORMALIZERS["primary"]))
+        primary_items.append(item)
+
+    primary_metrics = _metrics(primary_items)
+    results: dict[str, Any] = {}
+    for profile_name, normalizer in DIAGNOSTIC_NORMALIZERS.items():
+        profile_items: list[dict[str, Any]] = []
+        for primary in primary_items:
+            item = {
+                "occurrence_id": primary["occurrence_id"],
+                "row_id": primary["row_id"],
+                "token": primary.get("token"),
+                "gold": primary["gold"],
+                "predicted": primary["predicted"],
+            }
+            item.update(_score(primary["predicted"], primary["gold"], normalizer=normalizer))
+            profile_items.append(item)
+        metrics = _metrics(profile_items)
+        primary_exact = primary_metrics.get("exact_match_rate")
+        profile_exact = metrics.get("exact_match_rate")
+        primary_cer = primary_metrics.get("character_error_rate")
+        profile_cer = metrics.get("character_error_rate")
+        results[profile_name] = {
+            "warning": DIAGNOSTIC_PROFILE_WARNINGS.get(profile_name, "diagnostic only"),
+            "metrics": metrics,
+            "coverage": neural.get("coverage"),
+            "delta_exact_match_rate_vs_primary": (
+                round(profile_exact - primary_exact, 6)
+                if profile_exact is not None and primary_exact is not None else None
+            ),
+            "delta_cer_vs_primary": (
+                round(profile_cer - primary_cer, 6)
+                if profile_cer is not None and primary_cer is not None else None
+            ),
+            "case_transition_audit": _profile_change_audit(primary_items, profile_items),
+        }
+    return {
+        "contract": "sensitivity only; primary scores remain unchanged; no profile is selected by test performance",
+        "primary_profile": "primary",
+        "scored_occurrences": len(primary_items),
+        "eligible_occurrences": neural.get("eligible_occurrences"),
+        "profiles": results,
     }
 
 
@@ -209,6 +278,7 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
         },
         "baseline_engines": baseline.get("engines"),
         "paired_comparisons": paired,
+        "normalization_profile_sensitivity": _neural_profile_sensitivity(neural),
         "per_occurrence": cases,
         "limitations": [
             "Both benchmarks are evaluated on corpus-tokenized words; sentence context is not passed to this neural model.",
