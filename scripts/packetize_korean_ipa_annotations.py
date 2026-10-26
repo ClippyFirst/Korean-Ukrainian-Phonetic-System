@@ -134,7 +134,7 @@ def packetize_row(row: dict) -> dict:
         "split": split,
         "source_text": source,
         "target_raw": raw,
-        "source_representation": representation,
+        "target_representation": representation,
         "units": units,
         "markers": _marker_inventory(raw, representation),
         "unit_policy": unit_policy,
