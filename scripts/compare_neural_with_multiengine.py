@@ -42,6 +42,7 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
         raise ValueError("neural report lacks comparison.per_occurrence or predictions")
     if not isinstance(baseline_ledgers, dict) or not baseline_ledgers:
         raise ValueError("baseline report lacks per_engine_occurrences; rerun the updated multi-engine runner")
+    neural_key = neural.get("engine_key", "charsiu_byt5")
     expected_count = baseline.get("eligible_token_occurrences")
     if expected_count != neural.get("eligible_occurrences") or expected_count != len(neural_cases):
         raise ValueError(
@@ -128,7 +129,7 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
             "row_id": identity[0],
             "token": identity[1],
             "gold": identity[2],
-            "charsiu_byt5": neural_entry,
+            neural_key: neural_entry,
             "baselines": engine_entries,
         })
 
@@ -190,8 +191,12 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
             or "benchmark_ugtphon_ko.normalize_ipa; shared scoring profile for neural and baseline runners"
         ),
         "neural_model": {
+            "engine_key": neural_key,
+            "label": neural.get("engine"),
             "id": neural.get("model_id"),
             "revision": neural.get("model_revision"),
+            "output_convention": neural.get("output_convention"),
+            "code_license": neural.get("model_code_license"),
             "tokenizer_id": neural.get("tokenizer_id"),
             "tokenizer_revision": neural.get("tokenizer_revision"),
             "code_license": neural.get("model_code_license"),
@@ -206,7 +211,7 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
         "paired_comparisons": paired,
         "per_occurrence": cases,
         "limitations": [
-            "UGTPHON is a token-level ablation for CharsiuG2P, not sentence-context inference.",
+            "Both benchmarks are evaluated on corpus-tokenized words; sentence context is not passed to this neural model.",
             "SIGMORPHON is lexical word-level, not a sentence-context benchmark.",
             "Scores are diagnostic comparisons to the supplied corpus annotations, not normative IPA gold or Ukrainian-target accuracy.",
             "A shared segment renderer can affect the native/g2pk comparison; see the baseline report's engine adapter notes.",
