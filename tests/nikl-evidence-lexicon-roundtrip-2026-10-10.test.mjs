@@ -41,7 +41,7 @@ for (const row of singleScriptRows) {
     }
     assert.equal(
       result.ipa,
-      row.ipa_syllables.split('|').join(' '),
+      row.ipa_syllables.split('|').join('.'),
       row.input + ': broad IPA representation',
     );
     assert.ok(!result.ukrainian.includes('⟦'), row.input + ': known sourced entry must not leak unresolved markers');

@@ -6,6 +6,23 @@ import { createEngine, parseCsv } from '../src/app/engine.js';
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
+
+function renderExpectedIpa(input, ipaSyllables){
+  const tokens=input.match(/\\s+|[^\\s]+/gu)||[];
+  let index=0;
+  return tokens.map(token=>{
+    if(/^\\s+$/u.test(token))return token;
+    if(/^[가-힣]+$/u.test(token)){
+      const count=[...token].length;
+      const values=ipaSyllables.slice(index,index+count);
+      index+=count;
+      return values.join('.');
+    }
+    const value=ipaSyllables[index]||'';
+    index++;
+    return value;
+  }).join('');
+}
 const rows = parseCsv(lexical);
 const entries = new Map(rows.map((row) => [row.input, row]));
 
@@ -320,7 +337,7 @@ test('all lexical Ukrainian targets are mechanically reproducible from their IPA
       }
     }
     const runtime = engine.convert(row.input);
-    assert.equal(runtime.ipa, ipa.join(' '), row.input + ': runtime IPA must match the lexical source');
+    assert.equal(runtime.ipa, renderExpectedIpa(row.input,ipa), row.input + ': runtime IPA must match the lexical source');
     if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
       assert.equal(runtime.ukrainian, '', row.input + ': provisional target must not be accepted');
       assert.equal(runtime.candidate_ukrainian, target.join(''), row.input + ': runtime candidate must remain IPA-derived');

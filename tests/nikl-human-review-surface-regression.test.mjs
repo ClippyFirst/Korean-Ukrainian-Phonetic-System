@@ -51,7 +51,7 @@ test('reviewed NIKL surface examples remain stable across the native engine and 
     assert.equal(row.ipa_syllables, item.ipa, '§' + item.article + ': recorded broad IPA ' + item.input);
     const result = engine.convert(item.input);
     assert.equal(result.surfaceHangul, item.surface, '§' + item.article + ': engine surface ' + item.input);
-    assert.equal(result.ipa, item.ipa.split('|').join(' '), '§' + item.article + ': engine IPA ' + item.input);
+    assert.equal(result.ipa, item.ipa.split('|').join('.'), '§' + item.article + ': engine IPA ' + item.input);
   }
 });
 
