@@ -63,6 +63,29 @@ def _validate_corpus_rows(rows: list[dict[str, Any]]) -> None:
             raise ValueError(f"source pin mismatch for case {row.get('case_id')!r}")
         if row.get("target_representation") != TARGET_REPRESENTATION:
             raise ValueError(f"target representation mismatch for case {row.get('case_id')!r}")
+        if row.get("split") != "dev":
+            raise ValueError("dev only; sealed train/test rows are not accepted")
+
+
+def _prepare_pair_rows(rows: list[dict[str, Any]], label: str) -> list[dict[str, Any]]:
+    prepared = []
+    seen: set[str] = set()
+    for row in rows:
+        case_id = row.get("case_id")
+        if not isinstance(case_id, str) or not case_id.strip() or case_id in seen:
+            raise ValueError(f"missing or duplicate case_id in {label}")
+        if SEALED_ID.search(case_id):
+            raise ValueError(f"sealed holdout/test case_id refused: {case_id!r}")
+        if row.get("split") != "dev":
+            raise ValueError(f"dev only; non-dev row in {label}")
+        source = row.get("source_text", row.get("input"))
+        if not isinstance(source, str) or not source.strip():
+            raise ValueError(f"missing source text in {label} for {case_id!r}")
+        item = dict(row)
+        item["_source_nfc"] = unicodedata.normalize("NFC", source.strip())
+        seen.add(case_id)
+        prepared.append(item)
+    return prepared
 
 
 def build_pairs(
@@ -72,6 +95,8 @@ def build_pairs(
 ) -> dict[str, Any]:
     """Validate exact alignment; optionally consume precomputed strict rows for tests."""
     _validate_corpus_rows(corpus_rows)
+    corpus_rows = _prepare_pair_rows(corpus_rows, "corpus")
+    teacher_rows = _prepare_pair_rows(teacher_rows, "teacher predictions")
     corpus_by_id = {row["case_id"]: row for row in corpus_rows}
     teacher_by_id = {row["case_id"]: row for row in teacher_rows}
     if set(corpus_by_id) != set(teacher_by_id):
@@ -79,6 +104,7 @@ def build_pairs(
 
     strict_by_id: dict[str, dict[str, Any]] = {}
     if strict_rows is not None:
+        strict_rows = _prepare_pair_rows(strict_rows, "Strict predictions")
         strict_by_id = {row["case_id"]: row for row in strict_rows}
         if set(corpus_by_id) != set(strict_by_id):
             raise ValueError("case_id sets differ between corpus and Strict predictions")
@@ -89,7 +115,7 @@ def build_pairs(
         source_row = corpus_by_id[case_id]
         teacher = teacher_by_id[case_id]
         source = source_row["_source_nfc"]
-        teacher_source = unicodedata.normalize("NFC", str(teacher.get("source_text", "")).strip())
+        teacher_source = teacher["_source_nfc"]
         if teacher_source != source:
             raise ValueError(f"source text mismatch for case {case_id!r}")
         ref_tokens = teacher.get("reference_target_tokens")
@@ -111,7 +137,7 @@ def build_pairs(
             }
         else:
             strict_row = strict_by_id[case_id]
-            strict_source = unicodedata.normalize("NFC", str(strict_row.get("input", "")).strip())
+            strict_source = strict_row["_source_nfc"]
             if strict_source != source:
                 raise ValueError(f"source text mismatch between corpus and Strict for case {case_id!r}")
 
