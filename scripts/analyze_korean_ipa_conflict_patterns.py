@@ -88,7 +88,7 @@ def build_report(queue: dict) -> dict:
     length_only_pairs = 0
     ugt_variant_forms = 0
     ugt_unique_targets = 0
-    high_occurrence_forms = 0
+    high_occurrence_count = 0
     glyph_counts = {"sigmorphon": Counter(), "ugtphon": Counter()}
     glyph_form_counts = {"sigmorphon": Counter(), "ugtphon": Counter()}
     glyph_examples = {"sigmorphon": defaultdict(list), "ugtphon": defaultdict(list)}
@@ -109,7 +109,7 @@ def build_report(queue: dict) -> dict:
         length_only_pairs += summary["length_only_pair_count_diagnostic"]
         ugt_variant_forms += summary["ugtphon_unique_target_count"] > 1
         ugt_unique_targets += summary["ugtphon_unique_target_count"]
-        high_occurrence_forms += summary["ugtphon_candidate_occurrence_count"] >= 5
+        high_occurrence_count += summary["ugtphon_candidate_occurrence_count"] >= 5
 
         for corpus, key in (("sigmorphon", "sigmorphon_candidates"), ("ugtphon", "ugtphon_candidates")):
             targets = _candidate_targets(item, key)
@@ -136,7 +136,7 @@ def build_report(queue: dict) -> dict:
             for char, count in glyph_counts[corpus].most_common(40)
         ]
 
-    high_occurrence_forms = sorted(
+    high_occurrence_rows = sorted(
         (row for row in summaries if row["ugtphon_candidate_occurrence_count"] >= 5),
         key=lambda row: (-row["ugtphon_candidate_occurrence_count"], row["source_text"]),
     )
@@ -153,10 +153,10 @@ def build_report(queue: dict) -> dict:
             "length_only_pairs_after_diagnostic_mark_removal": length_only_pairs,
             "forms_with_multiple_unique_ugtphon_targets": ugt_variant_forms,
             "total_unique_ugtphon_target_strings_across_conflict_forms": ugt_unique_targets,
-            "forms_with_five_or_more_ugtphon_candidate_occurrences": high_occurrence_forms,
+            "forms_with_five_or_more_ugtphon_candidate_occurrences": high_occurrence_count,
         },
         "top_literal_codepoints": top_glyphs,
-        "highest_occurrence_forms": high_occurrence_forms[:40],
+        "highest_occurrence_forms": high_occurrence_rows[:40],
         "form_level_diagnostics": summaries,
         "interpretation_limits": [
             "Unicode character counts and difflib-like string comparisons are not phoneme alignment.",
