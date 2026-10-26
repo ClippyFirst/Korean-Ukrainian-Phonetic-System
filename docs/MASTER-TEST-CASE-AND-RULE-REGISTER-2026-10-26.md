@@ -462,3 +462,27 @@ The browser engine's output contract separates syllables within one source word 
 **Status:** `DONE_VERIFIED` for this test-oracle repair. PR #343 was squash-merged into the research branch as `19832224daab7d17b56df75485bb5461ea3c9ef9`. Exact-head system verification [40408709236](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709236) passed browser regression/build and Python regression/data integrity; focused register extraction [40408709171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171) passed inventory generation and artifact upload. The system workflow's official NIKL source inventory was skipped in metadata-only mode and is not counted as passed.
 
 This change does not complete case-level classification, establish outcomes for every assertion, or resolve linguistic adjudication gates. No production runtime, IPA segment content, Ukrainian target, or pronunciation rule was changed.
+
+
+## Exact-head inventory after assertion-candidate detector hardening (2026-10-26)
+
+**Status:** `DONE_VERIFIED` for the lossless candidate-inventory generation on merged research head `19832224daab7d17b56df75485bb5461ea3c9ef9`.
+
+- Extraction workflow [40408709171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171) passed the extractor tests, generated all five inventories, validated stable IDs, and uploaded artifact [12691822644](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171/artifacts/12691822644).
+- Artifact ZIP SHA-256: `28271fcbf18402e8046399721e6c6be1db42d4998e94d6f2dee7c9ca9d0b223e` (3,083,197 bytes).
+
+| Inventory measure | Exact-head count | Meaning / limitation |
+|---|---:|---|
+| Lexical dictionary records | 644 | CSV records, not all independently reviewed |
+| Test files scanned | 359 | File count, not semantic test-case count |
+| Source files scanned | 387 | In-scope sources read successfully; fail-closed on unreadable/invalid UTF-8 |
+| Lexical-to-test text links | 6,801 | Text occurrences, not assertion coverage |
+| Raw source lines preserved | 34,573 | Exact line text, including indentation, with hashes |
+| Assertion/test-declaration candidates | 5,241 | Strictly detected source lines; still require semantic classification |
+| Lexical inputs with text matches | 644 | Text match alone does not establish a test oracle |
+
+The older 5,522 candidate count from artifact `12689091191` is historical and superseded by the stricter detector that excludes import/declaration false positives. This artifact validates reproducible candidate generation and preservation, **not** a complete case-level evidence ledger.
+
+## System regression gate after IPA test-oracle repair
+
+Exact-head system verification [40408709236](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709236) passed both browser regression/build and Python regression/data-integrity jobs. The official NIKL source inventory job was skipped in metadata-only mode and is not counted as a pass. The independent pronunciation adjudication, Ukrainian adaptation review, and source-rights gates remain open.
