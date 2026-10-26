@@ -9,6 +9,11 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexicalText);
 
+function contextualRuleNames(source) {
+  const units = [...source].map(char => ({ type: 'hangul', ...decompose(char) }));
+  return applyContextualRules(units, source).flat();
+}
+
 test('createEngine exposes convert and decompose', () => {
   assert.equal(typeof engine.convert, 'function');
   assert.equal(typeof engine.decompose, 'function');
@@ -268,7 +273,7 @@ test('NIKL §28 compound fortition is mirrored for every exact licensed form', (
   for (const [source, expectedSurface] of Object.entries(examples)) {
     const result = engine.convert(source);
     assert.equal(result.surfaceHangul, expectedSurface, source);
-    assert.ok(result.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')), source);
+    assert.ok(contextualRuleNames(source).includes('compound-fortition-§28-exact-form'), source);
   }
   assert.equal(engine.convert('물가').ipa, 'mul.k͈a');
   assert.equal(engine.convert('봄비').ipa, 'pom.p͈i');
@@ -293,7 +298,7 @@ test('NIKL §25 and §26 exact fortition examples are mirrored in browser runtim
   for (const [source, expectedSurface] of Object.entries(stemExamples)) {
     const result = engine.convert(source);
     assert.equal(result.surfaceHangul, expectedSurface, source);
-    assert.ok(result.trace.some(item => item.rules.includes('stem-lb-lt-fortition-§25-exact-form')), source);
+    assert.ok(contextualRuleNames(source).includes('stem-lb-lt-fortition-§25-exact-form'), source);
   }
 
   const sinoExamples = {
@@ -311,7 +316,7 @@ test('NIKL §25 and §26 exact fortition examples are mirrored in browser runtim
   for (const [source, expectedSurface] of Object.entries(sinoExamples)) {
     const result = engine.convert(source);
     assert.equal(result.surfaceHangul, expectedSurface, source);
-    assert.ok(result.trace.some(item => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')), source);
+    assert.ok(contextualRuleNames(source).includes('sino-korean-rieul-fortition-§26-exact-form'), source);
   }
 
   // Neither rule generalizes from coda/onset alone.
@@ -354,7 +359,7 @@ test('NIKL §30 exact saisiot pronunciation forms match the Python rule inventor
   for (const [source, expectedSurface] of Object.entries(examples)) {
     const result = engine.convert(source);
     assert.equal(result.surfaceHangul, expectedSurface, source);
-    assert.ok(result.trace.some(item => item.rules.includes('saisiot-pronunciation-§30-exact-form')), source);
+    assert.ok(contextualRuleNames(source).includes('saisiot-pronunciation-§30-exact-form'), source);
   }
 });
 
@@ -369,7 +374,7 @@ test('Exact Python/browser formal-liaison inventories stay aligned', () => {
 test('NIKL section 29 word-internal n-insertion is exact-form licensed', () => {
   for (const word of ['솜이불', '홑이불', '식용유', '들일']) {
     const result = engine.convert(word);
-    assert.ok(result.trace.some(item => item.rules.includes('n-insertion-§29-exact-word')), word);
+    assert.ok(contextualRuleNames(word).includes('n-insertion-§29-exact-word'), word);
   }
   const unlicensed = engine.convert('솜이');
   assert.ok(!unlicensed.trace.some(item => item.rules.includes('n-insertion-§29-exact-word')));
