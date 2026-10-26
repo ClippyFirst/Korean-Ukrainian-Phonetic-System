@@ -338,3 +338,7 @@ The rules remain exact-form licensed after expansion, carry low-confidence morph
 - The new morphology-consensus tests and fail-closed source-alignment test are authored but not verified. Do not interpret their existence as a pass.
 - The UGTPHON test token `물가로` is test-informed and must be excluded from any independent final accuracy claim or replaced by a fresh holdout.
 
+## Superseding executable-head status — 2026-10-26
+
+The latest executable code/test head is `36b8e909d65ebf0e69af22f6183155853f34ae14`. The additional guard requires agreement on particle-versus-ending family before extending R012/R014/R015 lexical roots, with a negative regression case. Exact-head test matrix [40344662542](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662542), system verification [40344662684](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662684), real morphology smoke [40344662799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662799), and Charsiu train/dev [40344662592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662592) are queued. They are not passes.
+
