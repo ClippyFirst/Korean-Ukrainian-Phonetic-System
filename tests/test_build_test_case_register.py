@@ -55,6 +55,7 @@ class TestBuildTestCaseRegister(unittest.TestCase):
             with (output / "TEST-CASE-REGISTER-LEXICAL-TEST-LINKS-2026-10-26.csv").open(encoding="utf-8", newline="") as stream:
                 links = list(csv.DictReader(stream))
             self.assertTrue(any(row["input"] == "안지" and row["test_path"] == "tests/example.test.mjs" for row in links))
+            self.assertTrue(any(row["raw_test_line"] == "  const a = '안지'; // expected surface 안찌 and IPA an.tɕ͈i" for row in links))
             link_ids = [row["link_id"] for row in links]
             self.assertEqual(len(link_ids), len(set(link_ids)))
             self.assertTrue(all(link_id.startswith("LINK-") for link_id in link_ids))
@@ -62,6 +63,7 @@ class TestBuildTestCaseRegister(unittest.TestCase):
             with (output / "TEST-CASE-REGISTER-HANGUL-LITERAL-CANDIDATES-2026-10-26.csv").open(encoding="utf-8", newline="") as stream:
                 candidates = list(csv.DictReader(stream))
             self.assertTrue(any(row["hangul_span"] == "안찌" for row in candidates))
+            self.assertTrue(any(row["hangul_span"] == "안지" and row["raw_line"] == "  const a = '안지'; // expected surface 안찌 and IPA an.tɕ͈i" for row in candidates))
             self.assertTrue(any(row["source_path"] == "tests/fixtures/passage.txt" for row in candidates))
             self.assertTrue(any(row["source_category"] == "source_data" and row["source_path"] == "data/korean/lexical_pronunciations.csv" for row in candidates))
             with (output / "TEST-CASE-REGISTER-SOURCE-LINES-2026-10-26.csv").open(encoding="utf-8", newline="") as stream:
