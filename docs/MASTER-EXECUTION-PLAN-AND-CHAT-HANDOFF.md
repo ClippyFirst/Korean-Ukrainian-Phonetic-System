@@ -2277,3 +2277,44 @@ The code/test head before this note is `5bf3eba6da219aca76084ea9d9ac384206365806
 
 The test-case inventory artifact remains the reusable source of candidate occurrences; full case-level semantic classification and the evidence-gated teacher-to-rule mining stage remain incomplete. Teacher dev comparisons are still blocked by IPA convention incompatibility and must not be used as gold labels.
 
+
+
+## Continuation checkpoint — lossless register rows and exact-head CI (2026-10-26)
+
+### Implementation completed
+
+- **DONE_VERIFIED at the focused-step level — exact raw source preservation:** removed whitespace stripping from the derived lexical-test-link and Hangul-literal candidate rows. Source indentation and trailing whitespace now survive consistently with the source-line inventory.
+- Added regression assertions for an indented test line to both output families. The extraction workflow's focused “Test extractor behavior” step passed on code/test head [ceda29b9e472f361cae5912e10e5896bcf7672b9](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/ceda29b9e472f361cae5912e10e5896bcf7672b9), workflow [40400451180](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451180).
+- Master case-register documentation updated in commit [7cb1202601026bd9f69511c9a2a12406c6d4cdc4](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/7cb1202601026bd9f69511c9a2a12406c6d4cdc4). No production phonological rule was changed.
+
+### Verification state — do not overstate
+
+- The exact-head extraction workflow was still generating the five inventories and uploading its artifact at the last poll. New generated counts and hashes remain **PENDING**.
+- The full test matrix for code/test head ceda29b was queued; the current branch's browser/system workflows show a broad IPA serialization regression cluster. The preceding executable head's Python 3.11, 3.12, 3.13, wheel-install and teacher-corpus-audit jobs passed, but its browser job failed. Those older passes do not prove the new head green.
+- Browser output currently renders within-eojeol syllable boundaries with dots, while many older test expectations still use spaces (e.g. actual nʌk̚.ɕ͈i vs expected nʌk̚ ɕ͈i). The intended dot-within-eojeol / preserve-source-whitespace-between-eojeols contract is documented in the preceding IPA-boundary migration note. This is a test/contract reconciliation task, not evidence to change Korean phonological rules. Preserve genuine surface/variant mismatches as separate failures.
+- PR #339 remains open and draft. No merge or release claim is justified.
+
+### Task ledger
+
+| Task | Status | Evidence / acceptance criterion |
+|---|---|---|
+| Preserve raw source lines in all derived register rows | DONE_VERIFIED (focused regression step) | Focused extractor step passed in run 40400451180; exact full inventory artifact still pending |
+| Regenerate all five inventories at the updated head | PARTIAL | Workflow generation/upload step was in progress; record counts, hashes and artifact URL after completion |
+| Run exact-head Python 3.11–3.13, browser, build and wheel checks | PARTIAL | Full matrix pending; do not reuse old-head green jobs |
+| Resolve remaining IPA serialization expectations | TODO | Reconcile each expected value against input eojeol boundaries and the declared renderer contract; do not blanket-replace spaces or modify source-backed pronunciation values |
+| Complete semantic case-level classification | TODO | Link every test/fixture assertion to stable input/mode/expected output/provenance and observed exact-head run; retain duplicate provenance and negative controls |
+| Promote any teacher-derived production rule | BLOCKED | Requires compatible IPA conventions, primary-source adjudication, positive/negative controls, Ukrainian target review and independent evaluation |
+
+### Commands / execution evidence
+
+- Updated scripts/build_test_case_register.py and tests/test_build_test_case_register.py through GitHub commits dccb093 and ceda29b.
+- Focused extractor behavior: PASS in workflow 40400451180.
+- Full exact-head test matrix: pending at last poll; no local clone or local test run was possible because the execution environment could not resolve github.com.
+- Do not retrain the scratch teacher just to rebuild the register. Reuse the existing pinned corpus/teacher artifacts and keep teacher disagreements separate from gold labels.
+
+### Next executable actions
+
+1. Poll workflow 40400451180 until inventory generation/upload ends; retain its artifact and record actual counts/hashes.
+2. Poll exact-head test workflow 40400451313 and system verification 40400451288; inspect the full logs for the updated head.
+3. Reconcile IPA dot/space failures in bounded batches with explicit word-boundary controls; keep unrelated phonological and target-layer failures separate.
+4. Continue from the generated inventory artifact to case-level assertion classification. Do not restart inventory generation or neural training unnecessarily.
