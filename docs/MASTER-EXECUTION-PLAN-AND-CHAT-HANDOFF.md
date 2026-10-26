@@ -126,12 +126,13 @@ Exact-head source/split audit: [run 40290981510](https://github.com/ClippyFirst/
 | Run Charsiu inference / fine-tuning on a legally cleared train/dev corpus | PARTIAL | Charsiu inference on pinned SIGMORPHON/UGTPHON dev partitions is DONE_VERIFIED (run 40410860096); fine-tuning/redistribution and leakage-free generalization claims remain BLOCKED by unverified checkpoint-weight license and unknown original training overlap, with 508 UGTPHON test forms intersecting Charsiu repository train |
 | Change Strict runtime or Ukrainian rendering from teacher predictions | DEFERRED | No automatic distillation; preserve deterministic runtime and IPA-to-Ukrainian boundary until evidence gates clear |
 
-## Immediate continuation
+## Immediate continuation — updated 2026-10-27
 
-1. Confirm exact-head CI for the current documentation updates; the executable code and train/dev eligibility tests passed on `7e3728e`.
-2. Keep the PR draft until a suitable train/dev corpus, model rights, and overlap evidence are available.
-3. Review context associations only as a human review queue. Never convert a teacher prediction into a source-backed rule without primary-source support.
-4. Continue deterministic Strict improvement from sourced phonological evidence independently of unresolved neural-model licensing; do not tune on benchmark holdouts.
+1. **DONE_VERIFIED:** test-oracle IPA separator repair and loss-preserving inventory generation; see exact-head CI and the 5-inventory artifact recorded at the top of this handoff and in the case register.
+2. **DONE_VERIFIED:** Charsiu train/dev comparison workflow ran to completion (run 40410860096). Treat its results as source-convention-specific diagnostics only; do not promote a rule from teacher output.
+3. **PARTIAL:** semantic case-level register. The inventory contains 5,241 assertion/declaration candidates, but each still needs classification and observed-result joins. Preserve repeated test provenance and distinguish expected IPA from observed IPA.
+4. **BLOCKED:** broad-IPA convention mapping and independent adjudication for shared corpus forms; independent Ukrainian target review; model-weight license and checkpoint training overlap for fine-tuning/redistribution. The blind review gate is tracked in issue #337.
+5. Continue deterministic Strict improvements only from primary-source-backed environments with positive/negative controls. Keep model disagreements as a review queue, keep benchmark test partitions sealed, and do not alter production rules based on separator-only repairs or teacher predictions.
 
 ---
 
