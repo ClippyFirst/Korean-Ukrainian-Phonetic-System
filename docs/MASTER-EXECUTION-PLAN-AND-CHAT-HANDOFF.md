@@ -2028,3 +2028,13 @@ No local repository tests were run; the connected GitHub API is available, but a
 
 This is a source-verified production expansion of the closed inventory, **not** unrestricted productive morphological inference. The official rule depends on stem/ending morphology; broad generalization from surface consonants would incorrectly tense nouns and excluded `-기-` constructions. The next expansion must either add independently source-backed unambiguous forms to the closed inventory or implement a separately opt-in, explicitly low-confidence morphological route with adversarial controls. Neural-teacher output alone is never sufficient evidence for promotion.
 
+## Follow-on source-backed promotion: R016 `읽거든` (2026-10-26)
+
+The same review of official NIKL examples found that §11 explicitly contrasts `읽고[일꼬]` and `읽거든[일꺼든]`. Added the second example to the exact R016 inventory in Python and browser JavaScript, plus a production regression for the exact R016 trace and a negative control ensuring `닭고기` is not licensed by R016. The exact-map parity test already covers this inventory. This is another closed-inventory promotion based on the official source, not on teacher output alone.
+
+Relevant code commits: `6f0937c` (R010 inventory), `6b7b3e3` (browser R010), `58ee23c` (R010 tests), `6f0937c`/subsequent map commit `6b2ffab` (R016 browser), `93431c3` and `ebba6ff` (R016 regression and negative-control assertion). Documentation continuation: `d6c3906`.
+
+Latest exact-code CI jobs are still queued; most recent visible run set for executable head `ebba6ff8aceefa899e5ca90edccb8b4e421e5553` includes tests [40347179149](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40347179149), system verification [40347179134](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40347179134), and morphology consensus [40347179334](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40347179334). The workflow queue is heavily backlogged; status is queued, not pass. No local execution was available.
+
+The next genuine step is to process any remaining source-confirmed cases against the existing inventory/rule scope and only widen productive morphology where the runtime can distinguish grammatical stem/ending boundaries from lexical lookalikes. Do not turn the model's higher exact-match score into a generic rule without that boundary evidence.
+
