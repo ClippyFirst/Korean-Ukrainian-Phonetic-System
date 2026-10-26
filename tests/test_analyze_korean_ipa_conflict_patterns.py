@@ -75,3 +75,13 @@ def test_read_queue_rejects_missing_pinned_source_records(tmp_path: Path) -> Non
     path.write_text(json.dumps({"items": []}), encoding="utf-8")
     with pytest.raises(ValueError, match="pinned source records"):
         MODULE._read_queue(path)
+
+
+def test_repeated_occurrences_are_not_counted_as_distinct_target_variants() -> None:
+    queue = _queue()
+    queue["items"][0]["ugtphon_candidates"] = [_candidate("kan"), _candidate("kan"), _candidate("kan")]
+    report = MODULE.build_report(queue)
+    row = next(item for item in report["form_level_diagnostics"] if item["queue_id"] == "KIPA-TRAIN-0001")
+    assert row["ugtphon_candidate_occurrence_count"] == 3
+    assert row["ugtphon_unique_target_count"] == 1
+    assert row["ugtphon_target_occurrence_counts"] == [{"target": "kan", "occurrences": 3}]
