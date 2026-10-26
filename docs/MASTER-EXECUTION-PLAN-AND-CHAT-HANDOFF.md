@@ -1,5 +1,14 @@
 # Continuation — neural-teacher-guided deterministic Strict improvement (2026-10-26)
 
+## Latest continuation — typed IPA annotation boundary (2026-10-26)
+
+- Added `scripts/packetize_korean_ipa_annotations.py` and focused tests. It creates lossless, typed packets for SIGMORPHON tokenized IPA and UGTPHON compact token annotations, records explicit boundary/stress/length markers, preserves raw target strings and rejects test/holdout partitions.
+- The packets explicitly use `SOURCE_TYPED_NOT_MAPPED`; they do **not** claim that Unicode clusters are phonemes, map either corpus to ClippyFirst broad IPA, or produce Ukrainian output.
+- The teacher-corpus workflow now tests the packetizer, runs it against both corpora's train/dev partitions, and uploads separate typed packets as artifacts.
+- **Status:** the executable typed boundary is implemented; the actual IPA conversion remains blocked on primary-source convention review and independent adjudication of shared-form differences. No production rule or runtime behavior changed.
+- Next engine-facing step: document exact source-specific segment inventories and build a reviewed, feature-preserving mapping table with explicit loss accounting and an unmapped state. Only then evaluate whether any deterministic phonological rule can be promoted.
+
+
 
 ## Latest continuation — source-only train/dev corpus preparation (2026-10-26)
 
