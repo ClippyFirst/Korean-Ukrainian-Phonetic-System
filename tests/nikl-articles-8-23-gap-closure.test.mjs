@@ -107,7 +107,7 @@ test('§11 exact ㄺ-before-ㄱ exceptions and §18 nasalization example are sou
 
 test('§12 aspiration and §10/§20 exception chains remain algorithmic without lexical overrides', () => {
   const aspiration = {
-    '각하':'ka kʰa',
+    '각하':'ka.kʰa',
     '좋던':'tɕo tʰʌn',
     '쌓지':'s͈a tɕʰi',
     '않던':'an tʰʌn',
