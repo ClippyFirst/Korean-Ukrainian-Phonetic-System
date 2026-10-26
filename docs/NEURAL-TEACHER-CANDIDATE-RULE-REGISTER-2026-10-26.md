@@ -136,3 +136,10 @@ These additions remain unverified until exact-head CI passes; commits and test f
 **No-go:** do not add a rule solely because the neural model differs; do not normalize away length, aspiration, fortisness, diacritics or syllable boundaries to improve apparent agreement; do not use test/holdout examples for selection; do not treat abstention as error without resolving pronunciation.
 
 **Current conclusion:** the project has useful leads and a growing research pipeline, but the number of genuinely missing rules remains **not yet measurable**. The next milestone is a complete, source-convention-aware case ledger, not an arbitrary count.
+
+
+## Follow-on source-backed production coverage: R010 안지
+
+A source audit found one omitted example in the official NIKL 2009 teacher-training material already registered as S015: 안지[안찌]. The source register describes this as an explicit §24 example and records the same material's negative controls (including 감도[감또] as rejected). Added the exact pair 안>지 to the existing closed R010 inventory in Python and browser JavaScript, and added regression assertions for surface 안찌 and the broad IPA candidate an.tɕ͈i. This is an exact-form inventory completion, **not a neural-teacher discovery** and not a productive coda-only rule.
+
+The new entry keeps the current exclusions: no automatic license for 안기다/-기- forms, ambiguous 신고/감지, or lookalikes such as 닮기. Python/browser parity is covered by the existing inventory parity test. The R010 map now has 14 exact entries on each side by source inspection; this count is static repository evidence only until the latest exact-head CI passes. S015 item-level reuse marking remains unresolved, and the source supports Korean surface pronunciation, not IPA or Ukrainian target gold.
