@@ -48,13 +48,13 @@ test('지식의 retains both NIKL-standard readings of genitive particle 의', (
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '지시게');
   assert.equal(result.variants[0].ukrainian, 'чішіґе');
-  assert.equal(result.variants[0].ipa, 'tɕi ɕi ɡe');
+  assert.equal(result.variants[0].ipa, 'tɕi.ɕi.ɡe');
 });
 
 test('the contrasting ㄺ/ㄼ/ㄿ/ㅄ contexts keep distinct readings', () => {
   const expected = {
     '읽고': ['일꼬', 'ілко', 'il.k͈o'],
-    '읽는': ['잉는', 'іннин', 'iŋ nɯn'],
+    '읽는': ['잉는', 'іннин', 'iŋ.nɯn'],
     '읽어': ['일거', 'ілґо', 'il ɡʌ'],
     '밟다': ['밥따', 'папта', 'paːp̚ t͈a'],
     '밟고': ['밥꼬', 'папко', 'paːp̚ k͈o'],
