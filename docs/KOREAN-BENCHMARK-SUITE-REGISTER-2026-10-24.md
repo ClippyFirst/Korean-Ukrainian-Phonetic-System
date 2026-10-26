@@ -251,3 +251,41 @@ Exact-head evidence:
 - [Browser G2P — 40191515045](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515045), [UGTPHON — 40191515110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515110), [native/g2pK — 40191515125](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515125), [multi-engine benchmark — 40191515023](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515023), [morphology smoke — 40191515056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515056), and [master/research artifacts — 40191515019](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40191515019): all success.
 
 The external Korean IPA benchmark remains diagnostic rather than a Ukrainian target evaluation. Independent IPA and target gold, verified holdout provenance, and live NIKL evidence remain blockers; disposition: **not release-ready**.
+
+
+## R002/R016 source-backed rule batch — exact-head benchmark reconciliation (2026-10-26)
+
+**Implementation head:** `66c8e62dd575e70edd24e0e837a13dcc5a2dbc1a` on PR #341. The subsequent handoff-only commit is `69bac527191c28001f5b9a4cacfd21364c75f2a0`; no runtime code changed between those SHAs. The benchmark runs below executed against the implementation head, not the documentation-only head.
+
+### Paired UGTPHON before/after comparison
+
+Pinned source: UGTPHON Korean `ko/test.json`, commit `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`, 275 rows. Compare previous exact-form baseline run [40216156302](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156302) with current R002/R016 implementation run [40325471662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471662) and paired native-vs-g2pk run [40325471709](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471709). Both are successful CI runs using the pinned dataset and existing diagnostic harness.
+
+| Metric | Prior baseline (run 40216156302) | R002/R016 head (run 40325471662) | Change |
+|---|---:|---:|---:|
+| Eligible occurrences | 2,703 | 2,703 | unchanged |
+| Native scored | 2,688 | 2,698 | +10 |
+| Native abstentions | 15 | 5 | −10 |
+| Native exact matches | 1,425 | 1,430 | +5 |
+| Exact match among scored | 53.0134% | 53.0022% | −0.0112 pp |
+| Native CER | 9.1757% | 9.1697% | −0.0060 pp |
+| Native runtime errors | 0 | 0 | unchanged |
+| g2pk scored | 2,703 | 2,703 | unchanged |
+| g2pk exact matches | 1,435 | 1,435 | unchanged |
+| g2pk CER | 9.2285% | 9.2285% | unchanged |
+
+**Interpretation:** on the same diagnostic corpus and metric implementation, the new head resolves ten more occurrences, five of those are exact matches, and aggregate CER improves by 0.0060 percentage points. Coverage rises from 99.4451% to 99.8150% (+0.3700 pp). Because the added scored occurrences include both matches and mismatches, exact match conditional on scored tokens decreases slightly (−0.0112 pp); it would be incorrect to report an unconditional accuracy improvement based only on coverage. On the fixed 2,703-occurrence denominator, exact matches rise from 52.7192% to 52.9042% (+0.1850 pp), with abstentions reported separately. The paired g2pk-minus-native exact-rate delta narrows from +0.1488 pp to +0.1112 pp; the paired CER delta changes from +0.0523 pp to +0.0607 pp. These are noisy-corpus diagnostics, not normative accuracy claims.
+
+### Independent lexical benchmark cross-check
+
+The same implementation head's [multi-engine run 40325471732](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471732) succeeded on the pinned SIGMORPHON 2021 Korean lexical test split (999 eligible occurrences). ClippyFirst scored 997/999, with 357 exact matches (35.8074%), CER 14.7037%, two abstentions and zero runtime errors. The preceding baseline run [40216156253](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156253) had the same scored count, exact matches, CER, and abstention count. Thus this batch shows **no measured SIGMORPHON change and no observed regression on that split**; this dataset does not establish a positive gain from R002/R016.
+
+### Rule-level verification versus end-to-end claims
+
+- R002 exact-form formal/substantive liaison and R016 exact-form ㄺ-before-ㄱ cases are covered by Python and browser tests, including negative controls and license-context traces.
+- Exact-form tests verify that licensed transformations fire and unsupported lookalikes remain fail-closed. They do not independently certify broad IPA or Ukrainian practical output.
+- UGTPHON is noisy user-generated reference data. A better coverage count or exact match is useful diagnostic evidence, not a normative pronunciation judgment.
+- The 24-form independent holdout remains frozen with IPA annotation pending; it must not be used to tune these rules. The Ukrainian target layer still lacks an independently adjudicated gold corpus.
+- Live NIKL inventory was skipped in current system verification workflow [40325471931](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471931); this is not a pass.
+
+**Disposition:** `DONE_VERIFIED` for exact-head software regression and diagnostic benchmark execution; `PARTIAL` for evidence that the rule batch improves aggregate pronunciation quality; `BLOCKED` for normative held-out IPA accuracy and Korean-IPA-to-Ukrainian target accuracy pending qualified independent adjudication. Keep the repository classified as a research prototype, not release-ready.
