@@ -178,6 +178,7 @@ def test_predict_records_batch_runtime_errors_without_losing_other_batches(monke
 def test_existing_g2pk_baseline_uses_project_phonology_and_ipa_modules(monkeypatch):
     import korean_ukrainian.ipa as ipa_module
     import korean_ukrainian.phonology as phonology_module
+    import korean_ukrainian.pipeline as pipeline_module
 
     fake_g2pk = types.ModuleType("g2pk")
 
@@ -187,7 +188,7 @@ def test_existing_g2pk_baseline_uses_project_phonology_and_ipa_modules(monkeypat
 
     fake_g2pk.G2p = FakeG2p
     monkeypatch.setitem(sys.modules, "g2pk", fake_g2pk)
-    monkeypatch.setattr(MODULE, "phoneticize_korean", lambda word: {
+    monkeypatch.setattr(pipeline_module, "phoneticize_korean", lambda word: {
         "pronunciation_status": "resolved", "ipa": {"ipa": "ha.kjo"}
     })
     monkeypatch.setattr(phonology_module, "parse_syllables", lambda surface: surface)
