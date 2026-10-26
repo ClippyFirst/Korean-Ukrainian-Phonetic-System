@@ -122,6 +122,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
         "syllables":rendered,
         "variants":generate_vowel_variants(items,rendered,level=level),
         "status":"phonemic" if phonemic else ("rule-supported-broad" if level=="broad" else "partial-narrow-sibilant-profile"),
+        "realization_status":"phonemic" if phonemic else ("rule-supported-broad" if level=="broad" else "partial-narrow-sibilant-profile"),
     }
     if level=="narrow":
         result["transcription_profile"]={
