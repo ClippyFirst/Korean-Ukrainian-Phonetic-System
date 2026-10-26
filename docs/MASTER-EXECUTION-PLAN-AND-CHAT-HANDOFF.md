@@ -3,6 +3,17 @@
 
 ## Latest continuation — source-only train/dev corpus preparation (2026-10-26)
 
+
+## Latest continuation — two-source corpus builders (2026-10-26)
+
+- **Current work:** alongside the pinned SIGMORPHON word-level train/dev builder, added scripts/prepare_ugtphon_korean_corpus.py after inspecting the pinned upstream README's explicit token schema. It uses token-level phoneme labels, not the sentence-level phonemes field, because the upstream docs state those are not always a literal token join.
+- **UGTPHON selection is deliberately conservative:** include only is_nc=false tokens whose surface exactly matches canonical, have a single-token canonical form, a non-empty phoneme string, and no comma variants/placeholders. Preserve sentence ID, token index, raw target, and source text. Report exclusions by reason and report source forms with conflicting targets; do not silently choose a variant.
+- **Split policy differs by corpus:** SIGMORPHON word-level forms are required to be disjoint across train/dev/test for this prepared dataset. UGTPHON is sentence-split user-generated text where the same token form may naturally recur; its builder reports token-form intersections instead of falsely treating every repeated word as leakage. Neither builder exports test examples.
+- **CI integration:** teacher-corpus workflow now runs both builders and both sets of parser tests, verifies the pinned-source audit, and uploads distinct train/dev JSONL plus provenance manifests as a single research artifact. Exact-head CI still needs to be confirmed after the most recent additions; do not mark this batch DONE_VERIFIED until the workflow logs show both preparation commands and artifact upload succeeded.
+- **Data contract:** SIGMORPHON tokenized IPA and UGTPHON token-level phoneme annotations remain separate target types. Do not concatenate them or call either one ClippyFirst broad IPA without an explicit reviewed adapter. No neural model was run, no runtime rules were changed, and no accuracy gain is claimed.
+- **Next:** inspect exact-head CI, then use the resulting artifact for corpus diagnostics; add cross-corpus canonical-form/target-conflict reports before any combination or training experiment. Only then decide which examples can safely supervise a shared target representation.
+
+
 - **Direction confirmed by owner:** prioritize learning from strong, traceable pronunciation data to improve ClippyFirst's own engine. Do not make an external neural checkpoint a product dependency. Checkpoint licensing is not a blocker for preparing and analyzing independently sourced corpus data; provenance and applicable source terms remain recorded rather than used to halt unrelated work.
 - **Working branch / PR:** research/strict-teacher-guided-rule-mining-2026-10-26 / [draft PR #339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339).
 - **New implementation:** scripts/prepare_korean_g2p_corpus.py downloads the pinned SIGMORPHON 2021 medium Korean train/dev/test source files, verifies Git blob SHA-1 and expected row counts, writes only train/dev JSONL, preserves raw tokenized IPA targets, normalizes only the model-facing Hangul input to NFC, records source/output SHA-256 values, and refuses duplicate normalized forms or overlap across train/dev/test.
