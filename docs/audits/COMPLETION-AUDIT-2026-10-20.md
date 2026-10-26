@@ -1091,10 +1091,10 @@ The latest software hardening:
 
 ## Follow-up implementation audit — source-backed deterministic R002 coverage (2026-10-26)
 
-**Status at audit write: PARTIAL — implementation present, exact-head CI pending.**
+**Status: DONE_VERIFIED for this bounded R002 rule-coverage task; overall project remains a partial research prototype.**
 
 - Verified source basis: NIKL Standard Pronunciation Rules §§13–15 (https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002) and the official FAQ for 값어치[가버치] (https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62).
 - The exact-form R002 rule registries in Python and browser code now cover ten direct §13/§14 examples and five §15 substantive-morpheme examples. Formal and substantive paths are separate and remain exact-form licensed.
 - Regression tests cover expected transformations plus unlicensed negative controls; no model is imported into the runtime and no IPA/UA target is upgraded to independently verified gold.
 - Scope limitation: some exact forms already had lexical overrides, so this change improves deterministic rule-layer coverage and Python/browser parity rather than demonstrating an aggregate accuracy increase. Accuracy against a neural teacher remains unmeasured because IPA conventions and independent evaluation data are not yet reconciled.
-- Acceptance gate: exact-head Python/browser tests and build must pass; only then mark the implementation gate DONE_VERIFIED. Independent IPA adjudication, target-layer evaluation and a representative held-out benchmark remain separate release blockers.
+- Verification: code/test head `c827aa8884206b69df08fce29f6a333970296ad0` passed Python regression/data integrity and browser regression/build in [workflow 40323576453](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40323576453). Documentation descendants `f81d7a3152d36328ee637ba212039ec132d39e83` and `1d777e04c66d8c1c998a56708ccaa4f266e8a448` also passed [40323672074](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40323672074) and [40323702599](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40323702599). The optional live NIKL source inventory was skipped, not passed. Independent IPA adjudication, target-layer evaluation and a representative held-out benchmark remain separate release blockers.
