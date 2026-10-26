@@ -5,7 +5,8 @@ This is deliberately an external-comparison harness, not production code. Each
 candidate keeps its own native output and a declared adapter. It never routes a
 competitor's output back through the ClippyFirst phonological rules. A few
 competitors need a representation adapter because they emit Hangul surface text
-or a documented custom phone alphabet instead of IPA.
+or a documented custom phone alphabet instead of IPA. The shared g2pk surface-to-IPA
+helper is also used by the neural adapter, and the full occurrence ledger feeds paired reports.
 """
 from __future__ import annotations
 
