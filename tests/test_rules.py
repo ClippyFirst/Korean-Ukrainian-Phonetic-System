@@ -1,3 +1,4 @@
+from korean_ukrainian import phoneticize_korean
 from korean_ukrainian.phonology import parse_syllables
 from korean_ukrainian.rules import apply_ordered_rules, apply_rule
 
