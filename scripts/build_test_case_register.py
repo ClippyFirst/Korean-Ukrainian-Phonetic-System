@@ -34,8 +34,8 @@ LINK_COLUMNS = [
     "provenance_kind", "observed_run_status",
 ]
 CANDIDATE_COLUMNS = [
-    "candidate_id", "source_path", "line_number", "hangul_span",
-    "raw_line", "classification_status", "observed_run_status",
+    "candidate_id", "source_path", "source_category", "line_number",
+    "hangul_span", "raw_line", "classification_status", "observed_run_status",
 ]
 SOURCE_LINE_COLUMNS = [
     "line_id", "source_path", "source_category", "line_number",
@@ -47,7 +47,7 @@ ASSERTION_COLUMNS = [
     "line_number", "assertion_kind", "raw_line",
     "classification_status", "observed_run_status",
 ]
-TEXT_SUFFIXES = {".mjs", ".js", ".cjs", ".py", ".json", ".jsonl", ".csv", ".txt", ".md", ".yaml", ".yml"}
+TEXT_SUFFIXES = {".mjs", ".js", ".cjs", ".py", ".json", ".jsonl", ".csv", ".tsv", ".txt", ".md", ".yaml", ".yml"}
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -94,7 +94,10 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
             "observed_run_status": "NOT_TIED_TO_EXACT_HEAD_RUN",
         })
 
-    roots = [repo_root / "tests"]
+    # Include executable tests plus checked-in Korean data/examples that tests
+    # consume. Do not scan research/ because this generator writes its own CSVs
+    # there and would recursively ingest generated output on subsequent runs.
+    roots = [repo_root / "tests", repo_root / "data/korean", repo_root / "examples"]
     files = sorted(
         p for root in roots if root.exists() for p in root.rglob("*")
         if p.is_file() and p.suffix.lower() in TEXT_SUFFIXES
@@ -115,12 +118,18 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
     assertion_index = 0
     for path, lines in file_lines.items():
         rel = path.relative_to(repo_root).as_posix()
-        if "/fixtures/" in rel:
+        if rel.startswith("tests/") and "/fixtures/" in rel:
             category = "fixture"
-        elif "/corpora/" in rel:
+        elif rel.startswith("tests/") and "/corpora/" in rel:
             category = "test_corpus"
-        else:
+        elif rel.startswith("tests/"):
             category = "test_source"
+        elif rel.startswith("data/korean/benchmarks/"):
+            category = "benchmark_corpus"
+        elif rel.startswith("data/korean/"):
+            category = "source_data"
+        else:
+            category = "example_source"
         for line_number, line in enumerate(lines, start=1):
             line_index += 1
             source_lines.append({
@@ -151,6 +160,7 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
                 candidates.append({
                     "candidate_id": f"LIT-{candidate_index:07d}",
                     "source_path": rel,
+                    "source_category": category,
                     "line_number": str(line_number),
                     "hangul_span": match.group(0),
                     "raw_line": line.strip(),
@@ -158,12 +168,16 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
                     "observed_run_status": "NOT_TIED_TO_EXACT_HEAD_RUN",
                 })
 
+    test_file_lines = {
+        path: lines for path, lines in file_lines.items()
+        if path.relative_to(repo_root).as_posix().startswith("tests/")
+    }
     for record in lexical_records:
         value = record["input"]
         found = 0
         if not value:
             continue
-        for path, lines in file_lines.items():
+        for path, lines in test_file_lines.items():
             rel = path.relative_to(repo_root).as_posix()
             for line_number, line in enumerate(lines, start=1):
                 if exact_occurrences(line, value):
@@ -195,7 +209,8 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
     write_csv(output_dir / "TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv", ASSERTION_COLUMNS, assertion_candidates)
     return {
         "lexical_records": len(lexical_records),
-        "test_files_scanned": len(file_lines),
+        "test_files_scanned": len(test_file_lines),
+        "source_files_scanned": len(file_lines),
         "lexical_test_links": len(links),
         "hangul_literal_candidates": len(candidates),
         "source_lines_preserved": len(source_lines),
