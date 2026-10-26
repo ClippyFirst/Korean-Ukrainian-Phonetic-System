@@ -446,3 +446,10 @@ The exact-head extraction workflow completed successfully: [run 40400451180](htt
 | Lexical inputs with at least one text match | 644 | Text match does not prove an assertion covers that input |
 
 Artifact ZIP SHA-256: 1b7ebaf1feaeb0139b395388b052c639c43ba0db58a40723f7c60178ad287b3b. The extractor's focused tests, full generation step and upload all passed. This verifies reproducible candidate generation and lossless source preservation; it does **not** complete the semantic case ledger.
+
+
+## Register extractor integrity gate — fail-closed source scanning (2026-10-26)
+
+The extractor now stops with the offending path if a candidate source file cannot be decoded as UTF-8 or read due to an I/O error. Previously, such files were silently skipped, which could understate the scan denominator and compromise any completeness claim. The regression suite also checks a malformed UTF-8 fixture and verifies preserved source-line SHA-256 values against the exact UTF-8 encoding of each recorded `raw_line`.
+
+**Status:** `PARTIAL` pending the exact-head GitHub Actions result for [PR #342](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/342). Local tests could not run because the container cannot resolve `github.com`. This fix improves inventory integrity but does not complete case-level extraction, establish observed outcomes for every assertion, or resolve linguistic adjudication gates.
