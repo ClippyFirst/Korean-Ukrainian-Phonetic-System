@@ -65,3 +65,26 @@ Observed inventory (raw data counts, not adjudicated phone inventory):
 - UGTPHON's raw inventory includes `ç` (211 occurrences in train) and `ø` (300 occurrences in train), neither present in SIGMORPHON train. Example raw rows include `비키니 → pikçini` and `사인회 → sʰa̠inɦø̞`. The pinned UGTPHON README itself shows `키키 → kçikçi` and `킥킥 → kçik̚kçik̚`, so the `kç` sequence is part of the upstream annotation convention and must not be discarded as a typo by default. Its correspondence to the ClippyFirst IPA contract still needs a source-specific, evidence-backed mapping. The `ø` examples remain a review target, not an automatically mapped or discarded symbol.
 
 This inventory narrows the work required for the adapter, but it is not the adapter. All source symbols and diacritics remain preserved, and all 366 shared-form conflicts remain unadjudicated.
+
+
+## Conflict-pattern triage — 2026-10-26
+
+A second-stage, reproducible triage script is now wired into the pinned-corpus workflow:
+
+- Script: `scripts/analyze_korean_ipa_conflict_patterns.py`.
+- Tests: `tests/test_analyze_korean_ipa_conflict_patterns.py`.
+- Output: `korean-ipa-conflict-patterns.json`, uploaded alongside the existing queue and separate train/dev corpora.
+- It summarizes all 366 conflict forms, preserves every UGTPHON candidate target rather than silently choosing the first, counts cross-corpus candidate pairs and literal code points, and ranks forms with high within-source target variation for review.
+- The report is explicitly `DIAGNOSTIC_TRIAGE_ONLY`. It does not infer phone alignment from character-level differences, choose a gold pronunciation, convert either source to ClippyFirst broad IPA, or generate a runtime rule.
+- The source-internal variation is important: UGTPHON can contain multiple candidate annotations for a single source form. A form-level comparison against only the first candidate would understate uncertainty; all candidates must remain visible to reviewers.
+
+The initial artifact inspection confirmed 366 queued source forms. Example target-string differences include SIGMORPHON `ka̠ːnɯŋɦa̠da̠` vs UGTPHON `ka̠nɯŋɦa̠da̠` for `가능하다`, `ka̠ɭt͈ɯŋ` vs `ka̠ɭdɯŋ` for `갈등`, and `kɘːin` vs `kʌ̹in` for `거인`. These are **examples of disagreement, not adjudicated corrections**. In particular, `ː`, `ɘ`, `ʌ̹`, `t͈`, and `d` must not be mapped or deleted just because one spelling is more frequent.
+
+### Review order
+
+1. Start with source forms that have multiple distinct UGTPHON targets; resolve the annotation schema and candidate status before comparing corpora.
+2. Review repeated, source-grounded correspondence hypotheses (including length marking, `ɘː` vs `ʌ̹`, `ɲ` vs `n`, `ʎ` vs `ɭ`, and fortis/aspiration/voicing notation) against primary Korean phonetic sources and the exact source convention.
+3. Record one-to-one, one-to-many, many-to-one, or unmapped status in a versioned adapter table, with examples, reviewer status, and information-loss consequences.
+4. Only after independent review, apply the mapping to a separate eligible comparison set; keep source raw strings immutable and retain ambiguous cases as unmapped.
+
+The triage artifact is not the independent phonetic review itself. The 366 forms remain `UNADJUDICATED`, and the production runtime remains unchanged.
