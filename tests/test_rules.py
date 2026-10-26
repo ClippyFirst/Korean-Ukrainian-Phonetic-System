@@ -427,7 +427,7 @@ def test_section_17_license_is_exact_to_full_form_and_pair():
 
 def test_sections_24_to_28_require_exact_full_form_and_pair_licenses():
     cases = [
-        ("R010", "안고", "stem_n_m+suffix", "안>고", "ㄲ"),
+        ("R010", "잔고", "stem_n_m+suffix", "잔>고", "ㄲ"),
         ("R011", "넓게", "stem_lb_lt+suffix", "넓>게", "ㄲ"),
         ("R012", "갈도", "sino_ryeon", "갈>도", "ㄸ"),
         ("R014", "산고", "compound", "산>고", "ㄲ"),
