@@ -144,6 +144,7 @@ _NIKL_R010_FORM_LICENSES = {
     # omitted; causative/passive -기- forms are explicit negative controls.
     "안다": "안>다",  # Official NIKL training material §24 examples.
     "안고": "안>고",
+    "안지": "안>지",  # Official NIKL training material §24 example.
     "감다": "감>다",
     "감고": "감>고",
     "껴안다": "안>다",
