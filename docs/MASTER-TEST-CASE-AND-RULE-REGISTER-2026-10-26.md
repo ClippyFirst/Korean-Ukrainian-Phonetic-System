@@ -428,3 +428,21 @@ The register generator previously stripped leading/trailing whitespace from two 
 - **Observed verification:** the Test extractor behavior step passed in the exact-head extraction workflow [40400451180](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451180). The full inventory-generation/upload step was still running at the last check; generated counts and artifact hashes are not yet re-asserted for this head.
 - **Full CI remains PARTIAL:** exact-head test matrix [40400451313](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451313) was queued at last check. Browser/system workflows have a separate failure cluster from the ongoing IPA dot-vs-space serialization migration; do not attribute those failures to this register patch or silently rewrite expected phonology.
 - The generated inventories remain **candidate inventories**, not semantically complete case-level adjudication. The next acceptance gate is to classify assertions/fixtures and link observed results only to exact commit/run evidence.
+
+
+## Updated lossless-inventory artifact — verified on code/test head ceda29b (2026-10-26)
+
+The exact-head extraction workflow completed successfully: [run 40400451180](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451180), [artifact 12689091191](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451180/artifacts/12689091191).
+
+| Inventory measure | Verified count | Interpretation |
+|---|---:|---|
+| Lexical dictionary records | 644 | Full lexical CSV row inventory |
+| Test files scanned | 357 | File count, not test-case count |
+| Source files scanned | 385 | Test sources, fixtures/corpora, selected Korean data and examples |
+| Lexical-to-test text links | 6,794 | Occurrences; assertion semantics still unclassified |
+| Hangul literal candidates | 50,753 | Includes inputs, expected values, comments and examples |
+| Raw source lines preserved | 34,509 | Exact line text and per-line SHA-256 |
+| Assertion/test-declaration candidates | 5,522 | Candidate lines; multiline/parameterized tests need semantic classification |
+| Lexical inputs with at least one text match | 644 | Text match does not prove an assertion covers that input |
+
+Artifact ZIP SHA-256: 1b7ebaf1feaeb0139b395388b052c639c43ba0db58a40723f7c60178ad287b3b. The extractor's focused tests, full generation step and upload all passed. This verifies reproducible candidate generation and lossless source preservation; it does **not** complete the semantic case ledger.
