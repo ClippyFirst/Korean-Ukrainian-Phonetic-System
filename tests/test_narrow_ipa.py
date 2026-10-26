@@ -45,7 +45,7 @@ def test_narrow_profile_is_explicitly_partial_and_does_not_change_target_default
 
 
 def test_partial_narrow_profile_is_not_accepted_as_ukrainian_target_input():
-    result = transliterate_korean("са", ipa_level="narrow")
+    result = transliterate_korean("사", ipa_level="narrow")
     assert result["target_status"] == "unavailable"
     assert result["target_unavailable_reason"] == "narrow_ipa_profile_not_target_compatible"
     assert result["ukrainian_orthography"] is None
