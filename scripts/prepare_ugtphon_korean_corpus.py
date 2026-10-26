@@ -161,6 +161,8 @@ def prepare(output_dir: Path) -> dict:
     for split in ("train", "dev", "test"):
         data, meta = fetch_split(split)
         records, summary = parse_split(data, split)
+        if split in {"train", "dev"} and not records:
+            raise ValueError(f"{split}: no eligible canonical token-level examples after filtering")
         source_meta[split] = meta
         summaries[split] = summary
         form_sets[split] = {str(row["source_text"]) for row in records}
