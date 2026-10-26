@@ -14,6 +14,12 @@ import re
 from pathlib import Path
 
 HANGUL = re.compile(r"[가-힣]+")
+ASSERTION_LINE = re.compile(
+    r"\b(?:def\s+test_[A-Za-z0-9_]+|(?:async\s+)?(?:test|it|describe)\s*\(|"
+    r"assert(?:Equal|NotEqual|True|False|In|NotIn|Raises|IsNone|IsNotNone|AlmostEqual)?\b|"
+    r"expect\s*\(|to(?:Be|Equal|Contain|Throw|Match|HaveLength)\s*\(|"
+    r"strictEqual\s*\(|deepEqual\s*\(|pytest\.raises|self\.assert)"
+)
 LEXICAL_COLUMNS = [
     "case_id", "source_record", "input", "expected_surface_hangul",
     "expected_ukrainian_syllables", "expected_ipa_syllables", "source_url",
@@ -35,6 +41,11 @@ SOURCE_LINE_COLUMNS = [
     "line_id", "source_path", "source_category", "line_number",
     "raw_line", "line_sha256", "classification_status",
     "observed_run_status",
+]
+ASSERTION_COLUMNS = [
+    "assertion_candidate_id", "source_path", "source_category",
+    "line_number", "assertion_kind", "raw_line",
+    "classification_status", "observed_run_status",
 ]
 TEXT_SUFFIXES = {".mjs", ".js", ".cjs", ".py", ".json", ".jsonl", ".csv", ".txt", ".md", ".yaml", ".yml"}
 
@@ -98,8 +109,10 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
     links: list[dict[str, str]] = []
     candidates: list[dict[str, str]] = []
     source_lines: list[dict[str, str]] = []
+    assertion_candidates: list[dict[str, str]] = []
     candidate_index = 0
     line_index = 0
+    assertion_index = 0
     for path, lines in file_lines.items():
         rel = path.relative_to(repo_root).as_posix()
         if "/fixtures/" in rel:
@@ -120,6 +133,19 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
                 "classification_status": "UNCLASSIFIED_SOURCE_LINE",
                 "observed_run_status": "NOT_TIED_TO_EXACT_HEAD_RUN",
             })
+            assertion_match = ASSERTION_LINE.search(line)
+            if assertion_match:
+                assertion_index += 1
+                assertion_candidates.append({
+                    "assertion_candidate_id": f"ASSERT-{assertion_index:07d}",
+                    "source_path": rel,
+                    "source_category": category,
+                    "line_number": str(line_number),
+                    "assertion_kind": assertion_match.group(0),
+                    "raw_line": line,
+                    "classification_status": "UNCLASSIFIED_ASSERTION_OR_TEST_DECLARATION",
+                    "observed_run_status": "NOT_TIED_TO_EXACT_HEAD_RUN",
+                })
             for match in HANGUL.finditer(line):
                 candidate_index += 1
                 candidates.append({
@@ -166,12 +192,14 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
     write_csv(output_dir / "TEST-CASE-REGISTER-LEXICAL-TEST-LINKS-2026-10-26.csv", LINK_COLUMNS, links)
     write_csv(output_dir / "TEST-CASE-REGISTER-HANGUL-LITERAL-CANDIDATES-2026-10-26.csv", CANDIDATE_COLUMNS, candidates)
     write_csv(output_dir / "TEST-CASE-REGISTER-SOURCE-LINES-2026-10-26.csv", SOURCE_LINE_COLUMNS, source_lines)
+    write_csv(output_dir / "TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv", ASSERTION_COLUMNS, assertion_candidates)
     return {
         "lexical_records": len(lexical_records),
         "test_files_scanned": len(file_lines),
         "lexical_test_links": len(links),
         "hangul_literal_candidates": len(candidates),
         "source_lines_preserved": len(source_lines),
+        "assertion_candidates": len(assertion_candidates),
         "lexical_inputs_with_text_matches": sum(
             row["test_provenance_status"] == "TEXT_OCCURRENCE_FOUND_REQUIRES_ASSERTION_CLASSIFICATION"
             for row in lexical_records
