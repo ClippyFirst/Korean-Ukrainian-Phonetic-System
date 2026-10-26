@@ -18,9 +18,9 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-FORBIDDEN_DATASET_MARKERS = (
-    "ugtphon", "sigmorphon", "24-form", "24_form", "holdout", "test-set",
-    "test_set", "benchmark-test", "benchmark_test",
+FORBIDDEN_HOLDOUT_MARKERS = (
+    "24-form", "24_form", "holdout", "test-set", "test_set",
+    "benchmark-test", "benchmark_test",
 )
 ALLOWED_SPLITS = {"train", "dev"}
 HANGUL_SYLLABLE = re.compile(r"^[\uac00-\ud7a3]$")
@@ -149,8 +149,8 @@ def load_provenance(path: Path) -> dict[str, Any]:
     _require(split in ALLOWED_SPLITS,
              f"refusing split {split!r}; only train/dev are allowed, never test/holdout")
     dataset_id = str(provenance["dataset_id"]).lower()
-    _require(not any(marker in dataset_id for marker in FORBIDDEN_DATASET_MARKERS),
-             f"refusing known benchmark/holdout dataset identifier {provenance['dataset_id']!r}")
+    _require(not any(marker in dataset_id for marker in FORBIDDEN_HOLDOUT_MARKERS),
+             f"refusing sealed holdout/test dataset identifier {provenance['dataset_id']!r}")
     _require(provenance.get("test_data_used_for_tuning") is False,
              "provenance must explicitly set test_data_used_for_tuning=false")
     return provenance
@@ -245,7 +245,8 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
         "provenance": provenance,
         "protocol": {
             "allowed_splits": sorted(ALLOWED_SPLITS),
-            "forbidden_dataset_markers": list(FORBIDDEN_DATASET_MARKERS),
+            "forbidden_holdout_markers": list(FORBIDDEN_HOLDOUT_MARKERS),
+            "benchmark_train_dev_policy": "benchmark datasets are permitted only when provenance pins an actual train/dev partition; test/holdout rows remain forbidden",
             "normalization": "Unicode NFC + whitespace collapse only; preserves length, tone, stress, syllable boundaries, and IPA segments",
             "context_features": "coarse adjacent Hangul coda/onset classes; not morphological analysis",
             "automatic_rule_generation": False,
