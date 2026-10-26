@@ -130,8 +130,20 @@ _NIKL_R003_FORMAL_LICENSES = {
 # analyzer can establish stem/ending boundaries productively.
 # Official source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 _NIKL_R010_FORM_LICENSES = {
-    "닮다": "닮>다",  # 닮- + -다; ㄻ (ㅁ representative) before ending-initial ㄷ.
-    "넘게": "넘>게",  # 넘- + -게; ㅁ coda before ending-initial ㄱ.
+    # Exact examples from NIKL Standard Pronunciation Rule 24. The official
+    # rule is morphological (verb/adjective stem + ending), so these examples
+    # expand the closed production inventory without enabling category-only
+    # guesses. Ambiguous 신고 (noun 'report' vs verb form) is deliberately
+    # omitted; causative/passive -기- forms are explicit negative controls.
+    "껴안다": "안>다",
+    "앉고": "앉>고",
+    "얹다": "얹>다",
+    "삼고": "삼>고",
+    "더듬지": "듬>지",
+    "닮고": "닮>고",
+    "젊지": "젊>지",
+    "닮다": "닮>다",  # Rule-derived extension; exact form only.
+    "넘게": "넘>게",  # Rule-derived extension; exact form only.
 }
 
 # Exact, source-backed examples explicitly listed in NIKL Standard Pronunciation Rule 29.
