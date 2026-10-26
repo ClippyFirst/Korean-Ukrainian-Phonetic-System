@@ -152,7 +152,7 @@ def build_report(queue: dict) -> dict:
             "exact_raw_target_pairs_across_all_candidates": exact_pairs,
             "length_only_pairs_after_diagnostic_mark_removal": length_only_pairs,
             "forms_with_multiple_unique_ugtphon_targets": ugt_variant_forms,
-            "total_unique_ugtphon_target_strings_across_conflict_forms": ugt_unique_targets,
+            "sum_of_per_form_unique_ugtphon_target_strings": ugt_unique_targets,
             "forms_with_five_or_more_ugtphon_candidate_occurrences": high_occurrence_count,
         },
         "top_literal_codepoints": top_glyphs,
