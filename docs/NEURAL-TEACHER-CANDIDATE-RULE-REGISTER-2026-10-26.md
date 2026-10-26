@@ -45,6 +45,22 @@ Primary project records:
 - Teacher dev error analyzer: scripts/analyze_korean_g2p_teacher_errors.py
 - Same-input teacher/Strict pairing: scripts/compare_korean_teacher_strict_dev.py
 
+
+### Descriptive source-shape signal from artifact 12638313059
+
+The same artifact's development report groups teacher exact-match rate by Hangul character count and whether any coda is present:
+
+| Source shape | Exact / total | Exact rate |
+|---|---:|---:|
+| 2 Hangul characters, coda present | 195/295 | 66.1% |
+| 2 Hangul characters, no coda | 137/220 | 62.3% |
+| 3 Hangul characters, coda present | 59/118 | 50.0% |
+| 3 Hangul characters, no coda | 109/175 | 62.3% |
+| 4 Hangul characters, coda present | 17/41 | 41.5% |
+| 4 Hangul characters, no coda | 73/116 | 62.9% |
+
+This is a useful prioritization signal for manual stratification: within this dev artifact, teacher exact match is lower for three- and four-character forms containing a coda than for same-length forms without one. It is **not** evidence that coda phonology causes the errors or that Strict is missing a coda rule. Bucket sizes above four characters are very small and must not support generalizations. The next useful analysis is to cross-tabulate these forms with reviewed IPA error types and current Strict traces, then separate model errors, convention differences, unresolved morphology and genuine Strict omissions.
+
 ## Candidate register
 
 **Important:** The families below are review queues inferred from documented disagreement types and existing rule boundaries. They are not seven rules extracted from the teacher and must not be counted as seven confirmed missing rules. Candidate-level case IDs, environments, sources and independent outcomes must be attached when artifacts are available.
