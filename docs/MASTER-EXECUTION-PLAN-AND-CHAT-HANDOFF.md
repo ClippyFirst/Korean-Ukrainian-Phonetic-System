@@ -6,6 +6,16 @@
 
 ## Latest continuation — two-source corpus builders (2026-10-26)
 
+
+### Cross-corpus compatibility audit added
+
+- New script: scripts/audit_korean_corpus_compatibility.py. It verifies generated JSONL output hashes against each manifest, validates split labels and counts, then reports source-form intersections for SIGMORPHON train/dev against UGTPHON train/dev. It also counts exact raw target-string intersections versus different strings without interpreting these as phonological disagreement.
+- The audit deliberately does not merge the corpora or run training. It marks target compatibility UNVERIFIED because the two datasets' IPA conventions have not yet been normalized through a reviewed adapter.
+- Added unit tests for hash mismatch rejection, split-count validation, cross-source form overlap, and non-merging behavior. Integrated the report into the same CI artifact.
+- **Verification state:** workflow run for the initial compatibility-audit commit is still in progress/queued at the time of this note; later fixes standardized output-row-count metadata across both manifests. Re-check the exact current head and inspect the compatibility report before marking this batch DONE_VERIFIED.
+- Expected output artifact contains the metadata-only split audit, compatibility report, and separate train/dev JSONL/manifests for both corpora. The artifacts expire under GitHub's normal artifact retention, so regenerate with the documented scripts when needed.
+
+
 - **Current work:** alongside the pinned SIGMORPHON word-level train/dev builder, added scripts/prepare_ugtphon_korean_corpus.py after inspecting the pinned upstream README's explicit token schema. It uses token-level phoneme labels, not the sentence-level phonemes field, because the upstream docs state those are not always a literal token join.
 - **UGTPHON selection is deliberately conservative:** include only is_nc=false tokens whose surface exactly matches canonical, have a single-token canonical form, a non-empty phoneme string, and no comma variants/placeholders. Preserve sentence ID, token index, raw target, and source text. Report exclusions by reason and report source forms with conflicting targets; do not silently choose a variant.
 - **Split policy differs by corpus:** SIGMORPHON word-level forms are required to be disjoint across train/dev/test for this prepared dataset. UGTPHON is sentence-split user-generated text where the same token form may naturally recur; its builder reports token-form intersections instead of falsely treating every repeated word as leakage. Neither builder exports test examples.
