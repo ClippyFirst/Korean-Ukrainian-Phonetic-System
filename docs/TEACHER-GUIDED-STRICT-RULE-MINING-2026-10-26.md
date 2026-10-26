@@ -180,3 +180,18 @@ Added scripts/train_korean_g2p_teacher.py and .github/workflows/train-korean-g2p
 The script verifies train/dev JSONL hashes against the corpus manifest, validates the target representation and split labels, rejects train/dev source-form overlap, and uses dev only for checkpoint selection and metrics. It reports token exact match, token error rate, and compact-character error rate; the last metric removes token separators only and is not broad-IPA accuracy. It writes a research checkpoint, dev-only predictions, and a provenance/training report as a short-retention CI artifact. It never reads test data and does not import the model into the production runtime.
 
 This model is a candidate hypothesis generator, not a claim of state-of-the-art accuracy. Acceptance requires a successful training workflow, inspectable dev metrics, and a review of failure cases before any teacher predictions are used to suggest deterministic rules. The target remains SIGMORPHON's roughly-phonemic tokenized IPA; a reviewed adapter to the ClippyFirst IPA contract is still required before direct engine scoring or rule promotion.
+
+
+### First scratch-teacher result — verified CI run 40296516593
+
+The first end-to-end CPU training run succeeded and uploaded artifact [12638806286](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40296516593/artifacts/12638806286). It trained from scratch on 8,000 train rows, selected the checkpoint on 1,000 dev rows, and did not load test examples or pretrained weights.
+
+- Best checkpoint: epoch 11 of 12.
+- Dev exact token-sequence match: 602/1,000 (60.2%).
+- Dev token error rate: 843 / 6,629 reference tokens = 12.72%.
+- Dev compact-character error rate: 1,257 / 10,319 reference characters = 12.18%.
+- Checkpoint SHA-256: 4062bff4941fefe1b499a29163471e17d3e7eff2af690456d16f1fd93cc70a45.
+
+An independent inspection of the saved dev predictions found 398 non-exact examples. Of these, 107 differ only by length marks when the marks are removed for diagnostic comparison; 80 of those underpredict length marks and 27 overpredict them. This is a warning that the scratch model tends to miss a contrast that the source encodes. Length marks must not be discarded from the corpus or promoted/removed in the engine based on this model. Exact-match rates also fall on longer forms with final codas in this dev sample, but these are descriptive associations, not causal rules.
+
+The teacher is now a verified training experiment and a potentially useful hypothesis generator, but not a production component. Its target is SIGMORPHON's tokenized roughly-phonemic IPA. The model's 60.2% exact match and 12.72% token error rate are not claims of normative pronunciation accuracy or ClippyFirst broad-IPA accuracy. The new automated dev error-analysis step is added separately and awaits its own CI run.
