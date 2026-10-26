@@ -1664,3 +1664,32 @@ On `af1c02a6908a849c7d89afbd351a4938053cf3a4):
 | Production engine behavior | **PRESERVED** | No runtime phonological rule or Ukrainian output changed |
 
 The exact implementation commit above is verified by CI. This ledger itself is a documentation-only follow-up; the final branch commit is reported in the execution handoff/review summary. Overall product status remains **research-ready infrastructure / partial prototype**, not release-ready.
+
+
+## Reuse of existing neural-vs-native benchmark evidence from PR #338
+
+Reviewed open Draft PR [#338](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/338), its latest successful multi-engine workflow [40290133252](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290133252), and paired artifact [12635458650](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40290133252/artifacts/12635458650). This already supplies an executed, same-occurrence, shared-normalizer diagnostic comparison of pinned CharsiuG2P against the deterministic native Strict pipeline. Reused the evidence rather than porting or duplicating PR #338's large benchmark harness into this branch. PR #338 remains open and untouched because it owns the separate neural benchmarking workflow; PR #339 adds source-convention adjudication and scratch-teacher pairing.
+
+### Existing CharsiuG2P diagnostic results
+
+Pinned model `charsiu/g2p_multilingual_byT5_small_100`, revision `ed5cf99707fb39f5f3ccc461530d56b6fb531fd3`; tokenizer `google/byt5-small`, revision `68377bdc18a2ffec8a0533fef03b1c513a4dd49d`. Model weights' redistribution license remains unresolved, so use is research-only and no weights are checked into artifacts.
+
+- **SIGMORPHON:** Charsiu 709/999 exact (70.971%), CER 5.4081%. On the 997 occurrences where both model and native Strict produced scorable outputs, Charsiu 707/997 exact (70.9127%), CER 5.4244%; native Strict 357/997 exact (35.8074%), CER 14.7037%. Paired exact-match delta +35.1053 percentage points; paired CER delta −9.2793 points. The report's paired row-cluster 95% CI for exact-match delta is [31.996, 38.014] percentage points.
+- **UGTPHON:** Charsiu 2,393/2,703 exact (88.5313%), CER 3.6239%. On the 2,698 common-scored occurrences, Charsiu 2,392/2,698 exact (88.6583%), CER 3.6029%; native Strict 1,430/2,698 exact (53.0022%), CER 9.1697%. Paired exact-match delta +35.6561 percentage points; paired CER delta −5.5668 points. The report's paired row-cluster 95% CI for exact-match delta is [31.5149, 40.0973] percentage points.
+
+**Interpretation:** these are valid *relative diagnostic comparisons under the same declared normalizer*, not normative IPA accuracy or Ukrainian-target quality. The normalizer applies NFD, maps `g` to `ɡ`, removes tie bars and selected narrow diacritics (including retraction), and removes spaces/periods while retaining length, aspiration, fortis, and unreleased-stop marks. The report includes sensitivity-only profiles; ignoring length raises SIGMORPHON exact match to 83.2833%, but that is explicitly diagnostic and must not be adopted as the primary score because it may erase lexical/prosodic information. The public model's training-source overlap cannot be excluded.
+
+### Observed discrepancy examples for adapter review — not rule promotions
+
+- SIGMORPHON `가까이하다`: source/Charsiu `ka̠k͈a̠iɦa̠da̠`; native Strict `ka.k͈a.i.ha.da`. Under the shared normalizer the remaining discrepancy is `ɦ` vs `h`.
+- SIGMORPHON `가는돌고기`: source/Charsiu `ka̠nɯndo̞ɭɡo̞ɡi`; native Strict `ka.nɯn.dol.ɡo.ɡi`. The normalized mismatch includes `ɭ` vs `l`.
+- UGTPHON `아끼셔`: source/Charsiu `a̠k͈iɕʰjʌ̹`; native Strict `a.k͈i.sjʌ`. The normalized mismatch includes `ɕʰ` vs `s`.
+- UGTPHON `현모양처다이기야`: source/Charsiu begins `çjʌ̹...`; native Strict begins `hjʌn...`. The pinned UGTPHON README uses `kçikçi` and `kçik̚kçik̚` in its own examples, so `ç` is source-convention notation, not something to delete as an assumed typo.
+
+These examples are **source-convention or phonology hypotheses only**. Because they come from benchmark/test rows, they must not be used to tune production rules. Use train/train evidence for candidate formation, the reviewed source adapter for normalization, and a separate adjudicated evaluation set for acceptance.
+
+### PR reconciliation
+
+- PR #339 remains the canonical draft for this train-only conflict queue, inventory audit, and scratch teacher/Strict alignment artifact.
+- PR #338 remains the separate canonical draft for pinned third-party neural model inference and paired multi-engine benchmark artifacts. Its existing results were reused as evidence; no code or branch changes were made to #338.
+- PR #340 was auto-closed as merged into the #339 branch when its commits were fast-forwarded; no work was discarded.
