@@ -3,11 +3,21 @@ from .phonology import Syllable, CONSONANT_PHONEMES, VOWEL_IPA, split_coda
 FORTIS={"ㄲ":"k͈","ㄸ":"t͈","ㅃ":"p͈","ㅆ":"s͈","ㅉ":"tɕ͈"}
 ASPIRATED={"ㅋ":"kʰ","ㅌ":"tʰ","ㅍ":"pʰ","ㅊ":"tɕʰ"}
 LENIS={"ㄱ":"k","ㄷ":"t","ㅂ":"p","ㅅ":"s","ㅈ":"tɕ"}
+# Partial narrow profile: Korean /s/ is phonetically aspirated; its onset
+# before /i, je, ja/ shows robust palatalization/coarticulation. Do not extend
+# this to /yu, yo/: Kang (2010) reports a distinct spectral pattern there.
+# https://www.sciencedirect.com/science/article/pii/S0095447015000339
+# https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770
+_NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
 CODA={"ㄱ":"k̚","ㄲ":"k̚","ㄳ":"k̚","ㄴ":"n","ㄵ":"n","ㄶ":"n","ㄷ":"t̚","ㄹ":"l","ㄺ":"k̚","ㄻ":"m","ㄼ":"l","ㄽ":"l","ㄾ":"l","ㄿ":"p̚","ㅀ":"l","ㅁ":"m","ㅂ":"p̚","ㅄ":"p̚","ㅅ":"t̚","ㅆ":"t̚","ㅇ":"ŋ","ㅈ":"t̚","ㅊ":"t̚","ㅋ":"k̚","ㅌ":"t̚","ㅍ":"p̚","ㅎ":"t̚"}
 
-def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False)->list[str]:
+def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="broad")->list[str]:
     c=s.onset
     if c=="ㅇ": return []
+    if not phonemic and level=="narrow" and c=="ㅅ":
+        return ["ɕʰ" if s.nucleus in _NARROW_HIGH_FRONT_SIBILANT_NUCLEI else "sʰ"]
+    if not phonemic and level=="narrow" and c=="ㅆ":
+        return ["ɕ͈" if s.nucleus in _NARROW_HIGH_FRONT_SIBILANT_NUCLEI else "s͈"]
     if c in FORTIS: return [FORTIS[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
     if c in ASPIRATED: return [ASPIRATED[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
     if c=="ㄹ":
@@ -103,15 +113,25 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
 
 def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     if level not in {"phonemic","broad","narrow"}: raise ValueError("level must be phonemic, broad, or narrow")
-    if level=="narrow":
-        raise ValueError("narrow IPA is unavailable: repository has no acoustic/allophonic model supporting a defensible narrow transcription")
     phonemic=level=="phonemic"
-    rendered=["".join(onset_ipa(s,i,items,phonemic=phonemic)+nucleus_ipa(s,phonemic=phonemic)+coda_ipa(s.coda,phonemic=phonemic)) for i,s in enumerate(items)]
+    rendered=["".join(onset_ipa(s,i,items,phonemic=phonemic,level=level)+nucleus_ipa(s,phonemic=phonemic)+coda_ipa(s.coda,phonemic=phonemic)) for i,s in enumerate(items)]
     ipa=render_syllable_sequence(items,rendered)
-    return {
+    result={
         "level":level,
         "ipa":ipa,
         "syllables":rendered,
         "variants":generate_vowel_variants(items,rendered,level=level),
-        "status":"phonemic" if phonemic else "rule-supported-broad"
+        "status":"phonemic" if phonemic else ("rule-supported-broad" if level=="broad" else "partial-narrow-sibilant-profile"),
     }
+    if level=="narrow":
+        result["transcription_profile"]={
+            "name":"korean-narrow-partial-sibilant-v1",
+            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅖ, ㅑ","tense ㅆ as [s͈], palatalized [ɕ͈] before ㅣ, ㅖ, ㅑ"],
+            "sources":[
+                "Cho, Jun & Ladefoged (2002), via High-toned [il] in Korean: https://www.sciencedirect.com/science/article/pii/S0095447015000339",
+                "Kang (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770",
+            ],
+            "limitations":["partial profile, not a complete narrow transcription","does not model /h/ allophony, lateral retroflexion, dialectal variation, or prosody","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
+            "target_compatible":False,
+        }
+    return result
