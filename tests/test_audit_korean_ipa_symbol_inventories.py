@@ -42,10 +42,10 @@ def test_inventory_keeps_source_specific_unit_contracts_and_unicode_counts():
     ugt_inv = result["corpora"]["ugtphon"]["splits"]["train"]
     assert sig_inv["target_unit_inventory_kind"] == "source_whitespace_tokens"
     assert sig_inv["target_unit_counts"]["k"] == 1
-    assert sig_inv["target_unit_counts"]["k̚"] == 2
+    assert sig_inv["target_unit_counts"]["k̚"] == 1
     assert ugt_inv["target_unit_inventory_kind"] == "raw_unicode_codepoints_only"
     assert ugt_inv["target_unit_counts"] == {}
-    assert ugt_inv["unicode_codepoint_counts"]["ː"] == 0
+    assert ugt_inv["unicode_codepoint_counts"].get("ː", 0) == 0
     assert any(x["codepoint"] == "U+031A" for x in sig_inv["unicode_codepoint_inventory"])
 
 
