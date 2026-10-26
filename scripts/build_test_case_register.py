@@ -28,7 +28,7 @@ LEXICAL_COLUMNS = [
     "input_kind", "test_provenance_status", "observed_run_status",
 ]
 LINK_COLUMNS = [
-    "case_id", "input", "test_path", "line_number", "raw_test_line",
+    "link_id", "case_id", "input", "test_path", "line_number", "raw_test_line",
     "expected_surface_hangul", "expected_ukrainian_syllables",
     "expected_ipa_syllables", "source_url", "rule_notes", "target_status",
     "provenance_kind", "observed_run_status",
@@ -116,6 +116,7 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
     candidate_index = 0
     line_index = 0
     assertion_index = 0
+    link_index = 0
     for path, lines in file_lines.items():
         rel = path.relative_to(repo_root).as_posix()
         if rel.startswith("tests/") and "/fixtures/" in rel:
@@ -182,7 +183,9 @@ def build(repo_root: Path, output_dir: Path) -> dict[str, int]:
             for line_number, line in enumerate(lines, start=1):
                 if exact_occurrences(line, value):
                     found += 1
+                    link_index += 1
                     links.append({
+                        "link_id": f"LINK-{link_index:08d}",
                         "case_id": record["case_id"],
                         "input": value,
                         "test_path": rel,
