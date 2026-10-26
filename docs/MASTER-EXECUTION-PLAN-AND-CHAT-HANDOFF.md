@@ -2042,3 +2042,14 @@ Latest exact-code CI jobs are still queued; most recent visible run set for exec
 
 The next genuine step is to process any remaining source-confirmed cases against the existing inventory/rule scope and only widen productive morphology where the runtime can distinguish grammatical stem/ending boundaries from lexical lookalikes. Do not turn the model's higher exact-match score into a generic rule without that boundary evidence.
 
+
+
+
+## Deterministic R003 exact-form coverage extension — 2026-10-26
+
+- **Implementation:** added the six closed-form NIKL §12(4) H-deletion licenses `낳은 → 낳>은`, `놓아 → 놓>아`, `쌓이다 → 쌓>이`, `않은 → 않>은`, `닳아 → 닳>아`, and `싫어도 → 싫>어` to both Python and browser rule inventories. These are exact-form licenses, not a productive morphology heuristic.
+- **Evidence:** NIKL Standard Pronunciation Rule 12(4) directly lists the cited examples and describes deletion of ㅎ before a vowel-initial ending/suffix. Official source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002. The rule establishes Korean surface behavior only; it is not independent IPA or Ukrainian-target gold.
+- **Regression coverage:** added Python positive cases plus a cross-form negative control, and browser surface-output checks for all six forms. Existing unresolved lookalikes remain fail-closed.
+- **Commit sequence:** runtime Python `38aabed6d65d2c6d6eb38a5303e2a954eb138c8c`; browser mirror `0ab9b1ae2b64b5de75ebff1025e10f20880c0d8a`; Python tests `02e0f0bc6023f2dc984e98e16868ccf72b9f8690`; browser tests/current head `349aed2224cd3a79a7822084480d0ff7fba6b7ca`.
+- **Verification status:** implementation and test additions are committed, but exact-head CI is still queued at the time of this entry. Do not mark DONE_VERIFIED until Python, browser/build, test-matrix and source/artifact workflows finish. The separate Charsiu research workflow previously failed before inference due to a missing import in `benchmark_charsiu_research_split.py`; that import was repaired in commit `17311ee275f154116b14a5915e5ddecfa9f5870f`, and its rerun is also queued.
+- **Scope boundary:** this source-backed R003 expansion is not claimed as a rule discovered by the neural model. Teacher error buckets remain hypotheses until the model target convention is independently mapped to ClippyFirst broad IPA. No length mark is deleted, no teacher prediction is copied into production, and no test/holdout data is used for rule selection.
