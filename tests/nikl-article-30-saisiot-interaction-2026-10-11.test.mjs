@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -12,7 +13,7 @@ const officialRulesUrl = 'https://www.korean.go.kr/kornorms/regltn/regltnView.do
 test('§30(2): saisiot before ㄴ/ㅁ has independently pinned nasalized surface readings', () => {
   const cases = [
     ['콧날', '콘날', 'kʰon.nal'],
-    ['아랫니', '아랜니', 'a ɾɛn ni'],
+    ['아랫니', '아랜니', 'a.ɾɛn.ni'],
     ['뱃머리', '밴머리', 'pɛn mʌ ɾi'],
   ];
   for (const [input, surface, ipa] of cases) {
@@ -24,7 +25,7 @@ test('§30(2): saisiot before ㄴ/ㅁ has independently pinned nasalized surface
     assert.equal(row.target_status, 'provisional', input + ': Ukrainian rendering is not an official standard');
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': engine surface');
-    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': IPA');
     assert.equal(result.status, 'lexical-review', input + ': provisional target remains reviewable');
     assert.deepEqual(result.issues, [], input + ': no unresolved pronunciation issue');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no placeholder in target');
@@ -34,7 +35,7 @@ test('§30(2): saisiot before ㄴ/ㅁ has independently pinned nasalized surface
 test('§30(3): saisiot before 이 yields the documented ㄴㄴ insertion sequence', () => {
   const cases = [
     ['깻잎', '깬닙', 'kɛn.nip̚'],
-    ['나뭇잎', '나문닙', 'na mun nip̚'],
+    ['나뭇잎', '나문닙', 'na.mun.nip̚'],
     ['베갯잇', '베갠닏', 'pe ɡɛn nit̚'],
     ['도리깻열', '도리깬녈', 'to ɾi ɡɛn ɲʌl'],
   ];
@@ -48,7 +49,7 @@ test('§30(3): saisiot before 이 yields the documented ㄴㄴ insertion sequenc
     assert.equal(row.target_status, 'provisional', input + ': Ukrainian rendering remains provisional');
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': engine surface');
-    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': IPA');
     assert.equal(result.status, 'lexical-review', input + ': provisional target remains reviewable');
     assert.deepEqual(result.issues, [], input + ': no unresolved pronunciation issue');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no placeholder in target');
@@ -67,7 +68,7 @@ test('§30(1): 냇가 retains both NIKL-listed coda realizations rather than col
   assert.equal(result.ipa, 'nɛː.k͈a');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '낻까');
-  assert.equal(result.variants[0].ipa, 'nɛːt̚ k͈a');
+  assert.equal(result.variants[0].ipa, 'nɛːt̚.k͈a');
   assert.equal(result.status, 'lexical-review');
   assert.equal(result.variants[0].status, 'lexical-review');
 });

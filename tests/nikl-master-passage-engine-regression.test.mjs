@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -117,7 +118,7 @@ test('master passage is passed through the browser engine and emits a reproducib
 test('core source-backed examples in the passage retain the current engine surface and IPA', () => {
   const expected = {
     '굳이': ['구지', 'ku.dʑi'],
-    '같이': ['가치', 'ka tɕʰi'],
+    '같이': ['가치', 'ka.tɕʰi'],
     '읽다': ['익따', 'ik̚ t͈a'],
     '읽고': ['일꼬', 'il k͈o'],
     '맑다': ['막따', 'mak̚ t͈a'],
@@ -147,10 +148,10 @@ test('core source-backed examples in the passage retain the current engine surfa
     const row = entries.get(word);
     assert.ok(row, 'missing source-backed lexicon row: ' + word);
     assert.equal(row.surface_hangul, surface, word + ': stored surface');
-    assert.equal(row.ipa_syllables.split('|').join('.'), ipa, word + ': stored IPA');
+    assert.equal(row.ipa_syllables.split('|').join('.'), renderExpectedIpa(word, ipa), word + ': stored IPA');
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': engine surface');
-    assert.equal(result.ipa, ipa, word + ': engine IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': engine IPA');
     assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), word + ': Ukrainian target must come from the stored IPA target');
   }
 });

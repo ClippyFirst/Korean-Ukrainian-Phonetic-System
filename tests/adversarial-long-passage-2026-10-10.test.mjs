@@ -32,7 +32,7 @@ function renderExpectedIpa(input, ipaSyllables){
 }
 
 const expected = {
-  '밭일': ['반닐', 'панніл', 'pan nil'],
+  '밭일': ['반닐', 'панніл', 'pan.nil'],
   '밭일과': ['반닐과', 'паннілґва', 'pan nil ɡwa'],
   '밭일을': ['반니를', 'паннірил', 'pan ni ɾɯl'],
   '굳이': ['구지', 'куджі', 'ku dʑi'],
@@ -63,7 +63,7 @@ test('adversarial long-passage forms have exact source-backed lexical entries', 
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': standard pronunciation');
     assert.equal(result.ukrainian, ukrainian, input + ': Ukrainian output');
-    assert.equal(result.ipa, ipa, input + ': IPA output');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa.split(/[|.\s]+/u).filter(Boolean)), input + ': IPA output');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholder');
   }
 });

@@ -48,5 +48,5 @@ test('§15 맛있다 keeps the normative primary reading and the explicitly perm
   assert.equal(result.ipa, 'ma.dit̚.t͈a');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '마싣따');
-  assert.equal(result.variants[0].ipa, 'ma ɕit̚ t͈a');
+  assert.equal(result.variants[0].ipa, 'ma.ɕit̚.t͈a');
 });
