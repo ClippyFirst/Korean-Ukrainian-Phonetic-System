@@ -20,6 +20,9 @@ _FORMAL_TAGS = {
 }
 _H_CODAS = {"ㅎ", "ㄶ", "ㅀ"}
 _R002_EXCLUDED_CODAS = _H_CODAS
+_STEM_TAGS = {"VV", "VA", "VX"}
+_ENDING_TAGS = {"EC", "EF", "EP", "ETM", "ETN"}
+_PLAIN_FORTITION_ONSETS = {"ㄱ", "ㄷ", "ㅅ", "ㅈ"}
 
 
 def _tag_parts(value: Any) -> set[str]:
@@ -123,6 +126,39 @@ def _unspaced_adverb_verb_offsets(text: str, analysis: Mapping[str, Any]) -> set
     return result
 
 
+def _morphemes_at_boundary(
+    text: str,
+    analysis: Mapping[str, Any],
+    offset: int,
+) -> tuple[Mapping[str, Any], Mapping[str, Any]] | None:
+    """Return one exact aligned morpheme on each side of an offset."""
+    morphemes = analysis.get("morphemes")
+    if not isinstance(morphemes, list):
+        return None
+    left = []
+    right = []
+    for item in morphemes:
+        if not isinstance(item, Mapping):
+            continue
+        start, end = item.get("start"), item.get("end")
+        if isinstance(start, bool) or isinstance(end, bool):
+            continue
+        if not isinstance(start, int) or not isinstance(end, int) or start < 0 or end > len(text) or start >= end:
+            continue
+        surface = item.get("surface")
+        if isinstance(surface, str) and surface and surface != text[start:end]:
+            continue
+        if end == offset:
+            left.append(item)
+        if start == offset:
+            right.append(item)
+        if start < offset < end:
+            return None
+    if len(left) != 1 or len(right) != 1:
+        return None
+    return left[0], right[0]
+
+
 def analyzer_consensus_rule_licenses(
     text: str,
     analyses: Sequence[Mapping[str, Any]],
@@ -174,6 +210,37 @@ def analyzer_consensus_rule_licenses(
             license = f"R007:formal_morpheme_i:{text}:{pair}"
             licenses.add(license)
             applied.append("R007")
+        # §§24–25 and §11 are productive only when both analyzers agree on
+        # the same surface-aligned verb/adjective stem + grammatical ending.
+        # The rule engine still checks the coda/onset class and applies only
+        # these exact-form licenses; no category-only license is emitted.
+        aligned = [_morphemes_at_boundary(text, item, offset) for item in analyses]
+        if all(pairing is not None for pairing in aligned):
+            left_tags = [_tag_parts(pairing[0].get("tag", "")) for pairing in aligned]
+            right_tags = [_tag_parts(pairing[1].get("tag", "")) for pairing in aligned]
+            stem_agreement = all(tags & _STEM_TAGS for tags in left_tags)
+            ending_agreement = all(tags & _ENDING_TAGS for tags in right_tags)
+            if stem_agreement and ending_agreement and right.onset in _PLAIN_FORTITION_ONSETS:
+                representative = {
+                    "ㄳ": "ㄱ", "ㄵ": "ㄴ", "ㄶ": "ㄴ", "ㄺ": "ㄱ",
+                    "ㄻ": "ㅁ", "ㄼ": "ㄹ", "ㄽ": "ㄹ", "ㄾ": "ㄹ",
+                    "ㄿ": "ㅂ", "ㅀ": "ㄹ", "ㅄ": "ㅂ", "ㅅ": "ㄷ",
+                    "ㅆ": "ㄷ", "ㅈ": "ㄷ", "ㅊ": "ㄷ", "ㅌ": "ㄷ",
+                    "ㅎ": "ㄷ", "ㄲ": "ㄱ", "ㅋ": "ㄱ", "ㅍ": "ㅂ",
+                }.get(left.coda, left.coda)
+                if representative in {"ㄴ", "ㅁ"}:
+                    license = f"R010:stem_n_m+suffix:{text}:{pair}"
+                    licenses.add(license)
+                    applied.append("R010")
+                if left.coda in {"ㄼ", "ㄾ"}:
+                    license = f"R011:stem_lb_lt+suffix:{text}:{pair}"
+                    licenses.add(license)
+                    applied.append("R011")
+                if left.coda == "ㄺ" and right.onset == "ㄱ":
+                    license = f"R016:verb_stem_rieul_giyeok_suffix:{text}:{pair}"
+                    licenses.add(license)
+                    applied.append("R016")
+
         if applied:
             details.append({
                 "offset": offset,
@@ -185,7 +252,7 @@ def analyzer_consensus_rule_licenses(
                     )))
                     for item in analyses
                 ],
-                "candidate_rules": applied,
+                "candidate_rules": list(dict.fromkeys(applied)),
             })
 
     return {
