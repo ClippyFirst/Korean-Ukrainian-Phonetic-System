@@ -417,3 +417,14 @@ The Python suite additionally exposed a test-only `NameError` because `tests/tes
 
 The case inventory must next be converted from occurrence lists to case-level evidence: one row per exact input × mode × expected assertion, retaining duplicate provenance, with expected and observed IPA kept distinct. No generalized production rule should be derived solely from teacher predictions or these unclassified literals.
 
+
+
+## Lossless raw-line preservation fix — 2026-10-26
+
+The register generator previously stripped leading/trailing whitespace from two derived inventories even though the source-line inventory preserved the original line. This made the derived occurrence rows non-lossless and could obscure indentation/context during later assertion classification.
+
+- **Fixed in code commit** [dccb093e03d0aa493cca02339a22f15d29f09c8d](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/dccb093e03d0aa493cca02339a22f15d29f09c8d): raw_line and raw_test_line now retain the exact line string.
+- **Regression added in** [ceda29b9e472f361cae5912e10e5896bcf7672b9](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/ceda29b9e472f361cae5912e10e5896bcf7672b9): tests assert that the two leading spaces in a fixture assertion survive in both derived inventories.
+- **Observed verification:** the Test extractor behavior step passed in the exact-head extraction workflow [40400451180](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451180). The full inventory-generation/upload step was still running at the last check; generated counts and artifact hashes are not yet re-asserted for this head.
+- **Full CI remains PARTIAL:** exact-head test matrix [40400451313](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451313) was queued at last check. Browser/system workflows have a separate failure cluster from the ongoing IPA dot-vs-space serialization migration; do not attribute those failures to this register patch or silently rewrite expected phonology.
+- The generated inventories remain **candidate inventories**, not semantically complete case-level adjudication. The next acceptance gate is to classify assertions/fixtures and link observed results only to exact commit/run evidence.
