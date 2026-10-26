@@ -1119,3 +1119,29 @@ The verified map counts match: R002 formal 33, R002 substantive 5, R003 18, R004
 
 At this update, exact-head tests [40340319366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319366), system verification [40340318888](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340318888), and corrected Charsiu train/dev [40340319150](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319150) were queued. Local cloning/testing was blocked by DNS failure resolving github.com. No pass is claimed. The repository remains a research-ready partial prototype.
 
+## 2026-10-26 continuation: productive morphology licensing and evaluation-integrity correction
+
+### Implementation
+
+- The existing morphology-consensus license module was extended (not duplicated) to license source-backed R010/R011/R016 only when two distinct analyzers agree on a source-aligned VV/VA stem + grammatical ending boundary.
+- Existing official exact-form inventories R012/R014/R015 may be extended across an attached particle/ending only when the full registered lexical root is present and the analyzer boundary is agreed. The derived license still names the full input form and the original licensed internal syllable pair.
+- Exact source-span checks now fail closed when literal surface alignment is missing or inconsistent. Zero-width morphemes, disagreements, unsupported tags, spaces, unregistered roots, and noun-to-noun lookalikes do not create licenses.
+- Every analyzer-supported application is explicitly marked low-confidence and forces IPA to diagnostic-only. No default strict behavior, browser runtime, Ukrainian adaptation, or model runtime was changed.
+- Added focused regression assertions for R010/R011/R016, lexical-root extension, source alignment, and negative controls. They remain **pending verification** until the latest code/test head has completed CI.
+
+### Evaluation integrity
+
+The UGTPHON test artifact [40328909490](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40328909490) includes `물가로` at row `dc_inside_2261`, occurrence `2001`. This test mismatch was explicitly used to prioritize R014 review. Official NIKL Q&A 316282 independently supports the lexical rule `물가[물까]` and `봄비[봄삐]`, so the rule itself has primary-source evidence; however, the specific `물가로` test case is now test-informed and must not be counted as untouched final-evaluation evidence. Historical metrics remain reproducible diagnostics, not an unbiased final accuracy claim. Establish a replacement holdout or report a predeclared exclusion before final evaluation.
+
+### Status
+
+- Rule inventory parity: implementation present; previous map comparison documented; latest exact-head CI not yet passed.
+- Productive morphology consensus: PARTIAL, research-only and low-confidence; real-engine exact-head smoke and full regression matrix pending.
+- Charsiu controlled broad/narrow train/dev runner: recursion fixed; corrected output artifact still pending.
+- Test contamination: BLOCKED for an independent aggregate UGTPHON test claim until the `물가로` case is excluded or a fresh holdout is built.
+- Model checkpoint rights/training overlap and source IPA convention mapping remain unresolved.
+- Independent IPA→Ukrainian gold and live official NIKL inventory remain blocked/skipped.
+- Local tests were not run because `git ls-remote` failed with DNS resolution failure for `github.com`. No unexecuted tests are reported as passing.
+
+Readiness remains research-ready partial prototype, not release-ready.
+
