@@ -151,6 +151,22 @@ _NIKL_R009_PHRASE_LICENSES = {
     "할 일": "할>일", "잘 입다": "잘>입", "먹을 엿": "을>엿",
 }
 
+# Exact NIKL §25 stem ㄼ/ㄾ + ending fortition examples.
+# Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+_NIKL_R011_FORM_LICENSES = {
+    "넓다": "넓>다", "넓고": "넓>고", "넓지": "넓>지",
+    "훑다": "훑>다", "훑고": "훑>고", "훑지": "훑>지",
+}
+
+# Exact NIKL §26 Sino-Korean ㄹ + ㄷ/ㅅ/ㅈ fortition examples.
+# 불소(弗素) is omitted because the reading depends on the intended lexical sense.
+# Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+_NIKL_R012_WORD_LICENSES = {
+    "갈등": "갈>등", "발동": "발>동", "절도": "절>도", "말살": "말>살",
+    "일시": "일>시", "갈증": "갈>증", "물질": "물>질", "발전": "발>전",
+    "몰상식": "몰>상", "불세출": "불>세",
+}
+
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds
 # without a written 사이시옷). Homographs whose reading depends on meaning
 # are deliberately omitted from automatic licensing.
@@ -212,6 +228,12 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R010_FORM_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R010:stem_n_m+suffix:{full_form}:{pair}")
+    pair = _NIKL_R011_FORM_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R011:stem_lb_lt+suffix:{full_form}:{pair}")
+    pair = _NIKL_R012_WORD_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R012:sino_ryeon:{full_form}:{pair}")
     pair = _NIKL_R009_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R009:word:{full_form}:{pair}")
