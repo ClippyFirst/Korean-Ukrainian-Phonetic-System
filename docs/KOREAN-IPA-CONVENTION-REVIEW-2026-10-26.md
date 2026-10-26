@@ -44,3 +44,10 @@ The next acceptable adapter must be a versioned, source-specific mapping table w
 - regression tests for mapped, ambiguous, and unmapped inputs.
 
 Until that gate is met, neural-versus-Strict accuracy comparisons across these targets would be invalid. The scratch teacher's 60.2% dev exact match remains only a SIGMORPHON-source-token-sequence metric, not ClippyFirst broad-IPA accuracy. No production phonological rule or runtime output is changed by this work.
+
+
+## Neural integration decision — 2026-10-26
+
+**Keep the neural model outside the production runtime for now.** The current scratch teacher has 60.2% exact token-sequence match on the SIGMORPHON dev convention, was selected on that dev split, and has no independently normalized comparison against ClippyFirst broad IPA. That is insufficient evidence for a production fallback or ensemble. The owner-approved direction is to improve ClippyFirst's own engine with traceable data; therefore use the model offline as a hypothesis generator only. A candidate becomes a production rule only after primary-source phonological analysis, exact environment/exception definition, independent review, positive and negative regression controls, and improvement on a separate eligible evaluation set.
+
+Revisit direct neural runtime integration only if a separately evaluated model has materially better independently adjudicated IPA performance, acceptable latency/resource behavior, reproducible packaging, and a justified operational benefit over the deterministic engine. No such evidence currently exists.
