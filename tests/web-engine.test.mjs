@@ -226,17 +226,38 @@ test('exact-form R007 licenses resolve 같이 but do not generalize to unlisted 
 
 
 
-test('NIKL §28 compound fortition is mirrored for 물가 and 봄비 without genericizing ㄹ+ㄱ', () => {
-  const price = engine.convert('물가');
-  assert.equal(price.surfaceHangul, '물까');
-  assert.equal(price.ipa, 'mul.k͈a');
-  assert.ok(price.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')));
+test('NIKL §28 compound fortition is mirrored for every exact licensed form', () => {
+  const examples = {
+    문고리: '문꼬리',
+    눈동자: '눈똥자',
+    신바람: '신빠람',
+    산새: '산쌔',
+    손재주: '손째주',
+    길가: '길까',
+    물동이: '물똥이',
+    발바닥: '발빠닥',
+    바람결: '바람껼',
+    그믐달: '그믐딸',
+    강가: '강까',
+    초승달: '초승딸',
+    등불: '등뿔',
+    창살: '창쌀',
+    강줄기: '강쭐기',
+    아침밥: '아침빱',
+    굴속: '굴쏙',
+    술잔: '술짠',
+    물가: '물까',
+    봄비: '봄삐',
+  };
+  for (const [source, expectedSurface] of Object.entries(examples)) {
+    const result = engine.convert(source);
+    assert.equal(result.surfaceHangul, expectedSurface, source);
+    assert.ok(result.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')), source);
+  }
+  assert.equal(engine.convert('물가').ipa, 'mul.k͈a');
+  assert.equal(engine.convert('봄비').ipa, 'pom.p͈i');
 
-  const springRain = engine.convert('봄비');
-  assert.equal(springRain.surfaceHangul, '봄삐');
-  assert.equal(springRain.ipa, 'pom.p͈i');
-  assert.ok(springRain.trace.some(item => item.rules.includes('compound-fortition-§28-exact-form')));
-
+  // Do not infer compound fortition from ㄹ+ㄱ alone.
   const ordinarySequence = engine.convert('물고');
   assert.notEqual(ordinarySequence.surfaceHangul, '물꼬');
   assert.equal(ordinarySequence.ipa, 'mul.ɡo');
