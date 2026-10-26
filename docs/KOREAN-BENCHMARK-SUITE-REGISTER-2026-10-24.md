@@ -271,3 +271,16 @@ The external Korean IPA benchmark remains diagnostic rather than a Ukrainian tar
 
 
 A context-preserving sentence-level evaluator is now available at `scripts/benchmark_contextual_g2p_ko.py`; its tests run in the multi-engine workflow. This enables reproducible evaluation of future context-aware candidates but does not change the current NN-KoG2P status: **BLOCKED / not scored** until the actual model artifact and a verified phone-to-IPA adapter are available. See [the attempt report](NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md).
+
+
+
+## Neural model run gate — 2026-10-26
+
+The CharsiuG2P ByT5 runner is now wired into the existing multi-engine workflow as a label-gated, opt-in inference job. It is **not DONE_VERIFIED for model quality until the real-inference artifact is inspected**.
+
+- Model: charsiu/g2p_multilingual_byT5_small_100; code repository declares MIT, but the Hugging Face weights page does not explicitly license the weights. Record weights rights as **UNRESOLVED**, do not redistribute weights, and do not infer the weights license from the code license.
+- Tokenizer: google/byt5-small, Apache-2.0.
+- Immutable revision prefixes ed5cf99 and 68377bd are resolved to full SHAs at runtime; artifact records those SHAs and SHA-256 hashes for downloaded files.
+- Inference: CPU PyTorch 2.4.1 / Transformers 4.44.2; per-case raw/normalized IPA, gold, exact/CER and coverage are recorded. Empty, invalid Hangul, and model-error outcomes are distinct.
+- Paired comparison is against ClippyFirst native and g2pk on the same eligible occurrences. UGTPHON is a token-level ablation only; SIGMORPHON is lexical only. These must not be merged into a sentence-context score or an IPA-to-Ukrainian score.
+- Status until artifact review: **PARTIAL / inference result pending**. NN-KoG2P remains **BLOCKED / not scored** for missing authentic runnable artifacts and a verified phone-to-IPA map.
