@@ -261,3 +261,10 @@ The external Korean IPA benchmark remains diagnostic rather than a Ukrainian tar
 - **Decision:** `PARTIAL`. Candidate identification and runner implementation are present; unit/CI verification and local benchmark execution are pending. Model revision/hash and training-data rights remain PARTIAL. No neural accuracy result is claimed for ClippyFirst's benchmark.
 - **Next acceptance gate:** implement an optional pinned neural adapter and run it on the exact existing UGTPHON and SIGMORPHON inputs; report case-level paired outcomes, coverage, errors, CER/PER, and bootstrap intervals. Keep the current engine and gold files unchanged. Do not use benchmark/holdout examples for training or tuning.
 - **Architecture constraint:** neural predictions must be candidate IPA entering the existing IPA-to-Ukrainian adapter; never add a parallel neural Hangul-to-Ukrainian path. The model must not be treated as independent evidence if it shares data/conventions with the gold.
+
+
+## NN-KoG2P candidate check — 2026-10-26
+
+**Status: BLOCKED / not scored.** See [NN-KoG2P benchmark attempt](NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md). The ICASSP 2021 paper is identifiable ([IEEE](https://ieeexplore.ieee.org/document/9414653), [DOI](https://doi.org/10.1109/ICASSP39728.2021.9414653)), but this attempt did not identify a verifiable public inference implementation and checkpoint/weights with runnable instructions and terms. Therefore no NN-KoG2P predictions or scores were generated. Its described sentence/context and phonological-phrasing features also mean the existing isolated-token scorer cannot be reused as if it were a faithful model invocation.
+
+**Acceptance gate:** locate and verify the actual implementation/checkpoint, license, hashes and input contract; build context-preserving input/output alignment; then score exact test rows without training/tuning on test or holdout examples. SIGMORPHON compatibility must be separately justified. Do not label a reimplementation or another model as NN-KoG2P.
