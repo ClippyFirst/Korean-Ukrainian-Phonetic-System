@@ -66,6 +66,8 @@ CharsiuG2P can be used as a research teacher to identify contexts where a determ
 - [Regression tests](tests/test_mine_deterministic_rule_candidates.py)
 - [Pinned train/dev corpus builder](scripts/prepare_korean_g2p_corpus.py) — emits provenance-bearing SIGMORPHON JSONL while preserving raw tokenized IPA; test records are never exported.
 - [Corpus preparation tests](tests/test_prepare_korean_g2p_corpus.py)
+- [Conservative UGTPHON Korean token corpus builder](scripts/prepare_ugtphon_korean_corpus.py) — uses aligned token-level fields and excludes ambiguous/noisy targets rather than guessing.
+- [UGTPHON preparation tests](tests/test_prepare_ugtphon_korean_corpus.py)
 
 The current CharsiuG2P checkpoint's weights-license status and training-data overlap remain unresolved. Do not redistribute its weights or use test/holdout predictions to tune Strict.
 
