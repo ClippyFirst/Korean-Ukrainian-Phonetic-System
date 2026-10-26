@@ -848,3 +848,40 @@ def test_nikl_section_27_adnominal_phrase_licenses_match_browser_inventory():
     )
     assert next(item for item in items if item.text == "것").onset == "ㄱ"
     assert traces[0].status == "conditional-disabled"
+
+
+def test_nikl_section_24_official_examples_have_exact_stem_ending_licenses():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    expected = {
+        "껴안다": ("안>다", "ㄸ"),
+        "앉고": ("앉>고", "ㄲ"),
+        "얹다": ("얹>다", "ㄸ"),
+        "삼고": ("삼>고", "ㄲ"),
+        "더듬지": ("듬>지", "ㅉ"),
+        "닮고": ("닮>고", "ㄲ"),
+        "젊지": ("젊>지", "ㅉ"),
+    }
+    for word, (pair, onset) in expected.items():
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == {
+            "껴안다": "껴안따",
+            "앉고": "안꼬",
+            "얹다": "언따",
+            "삼고": "삼꼬",
+            "더듬지": "더듬찌",
+            "닮고": "담꼬",
+            "젊지": "점찌",
+        }[word]
+        assert any(
+            trace.get("rule_id") == "R010"
+            and trace.get("changed")
+            and trace.get("license_context") == f"R010:stem_n_m+suffix:{word}:{pair}"
+            for trace in result["rules"]
+        ), word
+
+    # Rule 24 explicitly excludes passive/causative -기-; noun homographs
+    # must not be promoted merely because the adjacent consonants look right.
+    assert phoneticize_korean("안기다")["surface_hangul"] == "안기다"
+    assert phoneticize_korean("감도")["surface_hangul"] == "감도"
+    assert phoneticize_korean("신고")["surface_hangul"] != "신꼬"
