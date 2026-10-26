@@ -262,3 +262,43 @@ test('NIKL §28 compound fortition is mirrored for every exact licensed form', (
   assert.notEqual(ordinarySequence.surfaceHangul, '물꼬');
   assert.equal(ordinarySequence.ipa, 'mul.ɡo');
 });
+
+
+
+test('NIKL §25 and §26 exact fortition examples are mirrored in browser runtime', () => {
+  const stemExamples = {
+    넓다: '널따',
+    넓고: '널꼬',
+    넓지: '널찌',
+    훑다: '훌따',
+    훑고: '훌꼬',
+    훑지: '훌찌',
+  };
+  for (const [source, expectedSurface] of Object.entries(stemExamples)) {
+    const result = engine.convert(source);
+    assert.equal(result.surfaceHangul, expectedSurface, source);
+    assert.ok(result.trace.some(item => item.rules.includes('stem-lb-lt-fortition-§25-exact-form')), source);
+  }
+
+  const sinoExamples = {
+    갈등: '갈뜽',
+    발동: '발똥',
+    절도: '절또',
+    말살: '말쌀',
+    일시: '일씨',
+    갈증: '갈쯩',
+    물질: '물찔',
+    발전: '발쩐',
+    몰상식: '몰쌍식',
+    불세출: '불쎄출',
+  };
+  for (const [source, expectedSurface] of Object.entries(sinoExamples)) {
+    const result = engine.convert(source);
+    assert.equal(result.surfaceHangul, expectedSurface, source);
+    assert.ok(result.trace.some(item => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')), source);
+  }
+
+  // Neither rule generalizes from coda/onset alone.
+  assert.notEqual(engine.convert('넓게').surfaceHangul, '널께');
+  assert.notEqual(engine.convert('갈구').surfaceHangul, '갈꾸');
+});
