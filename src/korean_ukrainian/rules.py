@@ -86,6 +86,10 @@ _NIKL_R002_FORMAL_LICENSES = {
 # Source: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62
 _NIKL_R002_SUBSTANTIVE_LICENSES = {
     "값어치": "값>어",
+    "값있는": "값>있",
+    "겉옷": "겉>옷",
+    "헛웃음": "헛>웃",
+    "맛없다": "맛>없",
 }
 
 # Exact-form licenses for NIKL §12(4) ㅎ-coda deletion before a vowel-initial
