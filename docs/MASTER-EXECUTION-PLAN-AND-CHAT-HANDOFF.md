@@ -1462,3 +1462,35 @@ These results verify CI for the current head; they do not prove broad phonologic
 ### Next acceptance gate
 
 Freeze a pre-change snapshot and a disjoint holdout before further rule mining; run the exact same forms through Python and browser, compare Korean surface output first, IPA second, and Ukrainian target output separately. Report exact-match/CER (or a clearly defined feature error), coverage/abstentions, and positive/negative controls. Until that independent evaluation exists, describe R002/R016 as verified rule-coverage and parity improvements, not a proven overall accuracy increase.
+
+
+## Exact-head benchmark reconciliation after R002/R016 — 2026-10-26
+
+### Current branch / commit state
+- Branch: `fix/r002-source-backed-substantive-liaison-2026-10-26`.
+- Base main observed during this run: `a452054a669de28426404d1110731715083423bb`.
+- Runtime implementation/test head benchmarked: `66c8e62dd575e70edd24e0e837a13dcc5a2dbc1a`.
+- Handoff-only commit before this reconciliation: `69bac527191c28001f5b9a4cacfd21364c75f2a0`.
+- The benchmark register and completion audit are now updated in this branch; this handoff append is documentation-only and does not alter runtime code.
+- Draft PR [#341](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/341) remains open and mergeable. It was not merged.
+
+### Task ledger
+- **DONE_VERIFIED — R002 formal/substantive liaison and R016 exact-form ㄺ-before-ㄱ:** implementation is present in Python and browser code, with source-linked exact-form tests, negative controls, and trace assertions.
+- **DONE_VERIFIED — software checks on implementation head:** [system verification 40325471931](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471931), [test matrix 40325471784](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471784), [UGTPHON 40325471662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471662), [paired native-vs-g2pk 40325471709](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471709), and [multi-engine UGTPHON/SIGMORPHON 40325471732](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471732) all succeeded.
+- **DONE_VERIFIED — documentation-head checks:** Python regression/data integrity and browser regression/build passed on docs-only head `69bac527191c28001f5b9a4cacfd21364c75f2a0` in [40327789281](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40327789281). The live NIKL inventory job was skipped by workflow condition.
+- **PARTIAL — diagnostic benchmark impact:** same pinned UGTPHON corpus, previous run [40216156302](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156302) versus implementation-head run [40325471662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471662): scored native occurrences 2,688→2,698 (+10); abstentions 15→5 (−10); exact matches 1,425→1,430 (+5); CER 9.1757%→9.1697% (−0.0060 pp); exact match conditional on scored tokens 53.0134%→53.0022% (−0.0112 pp). Coverage rose 99.4451%→99.8150% (+0.3700 pp). The defensible result is better coverage, five more exact matches on the fixed corpus denominator, and a very small CER improvement—not a proven increase in conditional exact-match accuracy or normative accuracy.
+- **DONE_VERIFIED — independent lexical diagnostic cross-check:** on SIGMORPHON 2021 (999 eligible occurrences), native remains 357/997 exact (35.8074%), CER 14.7037%, two abstentions and zero runtime errors; comparison run [40216156253](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156253) reported the same values. No measured change on that split.
+- **PARTIAL — causal attribution to neural-model recommendations:** the measured delta is on the implementation batch that includes exact-form rules; it does not establish that any specific rule was first discovered by the neural model, nor that a neural teacher is more accurate. Model suggestions must remain hypotheses until linked to a source, a valid rule environment, and a held-out evaluation.
+- **BLOCKED — normative Korean IPA accuracy:** the 24-form holdout remains frozen but has no independently adjudicated IPA gold. Do not tune against it or treat official Hangul bracket readings as IPA.
+- **BLOCKED — Ukrainian target accuracy:** no independently adjudicated IPA-to-Ukrainian gold corpus is available.
+- **BLOCKED — fresh official source inventory:** the NIKL live metadata inventory was skipped, not passed; exact sources already registered remain usable only within their recorded scope.
+
+### How to continue without benchmark leakage
+1. Keep the 24-form frozen holdout untouched; use UGTPHON/SIGMORPHON only as diagnostic datasets, preserving their annotation-convention caveats.
+2. For each proposed model-derived pattern, record the model/version and exact observation separately from source evidence; verify the official NIKL rule and exact morphological/lexical environment before coding.
+3. Add a narrow deterministic rule only where exact-form or productive-environment evidence is adequate; mirror it in Python and browser implementations and include positive plus fail-closed negative controls.
+4. Run the same pinned benchmark workflows on the code head. Report coverage, abstentions, exact matches, CER, errors and paired deltas; do not use only the conditional exact-match rate to hide added abstentions.
+5. For normative acceptance, obtain two independent broad-IPA reviews and adjudicate disagreement on a frozen, disjoint set; evaluate Ukrainian target rendering only on separately reviewed target gold.
+6. Before merge, reconcile PR #341 description and this handoff to the latest exact-head evidence. Do not merge or mark release-ready on the basis of diagnostic benchmark gains alone.
+
+**Final classification:** software-verified research prototype with a measurable diagnostic coverage gain; still **not release-ready** because normative independent IPA and Ukrainian target gold remain unavailable.
