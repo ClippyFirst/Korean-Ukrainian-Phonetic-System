@@ -15,7 +15,11 @@ from pathlib import Path
 SCHEMA_VERSION = "1.0"
 SIGMORPHON = "tokenized_ipa_from_sigmorphon_tsv"
 UGTPHON = "ugtphon_token_phoneme_ipa"
-SUPPORTED = {SIGMORPHON, UGTPHON}
+SOURCE_PINS = {
+    SIGMORPHON: ("sigmorphon-2021-task1-medium-korean", "821bcdece5a47820872215969f275004b0abe80c"),
+    UGTPHON: ("ugtphon-korean", "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54"),
+}
+SUPPORTED = set(SOURCE_PINS)
 BOUNDARY_SYMBOLS = {".", "‧", "·"}
 STRESS_SYMBOLS = {"ˈ", "ˌ"}
 LENGTH_SYMBOLS = {"ː", "ˑ"}
@@ -115,6 +119,14 @@ def packetize_row(row: dict) -> dict:
     representation = _validate_text(row.get("target_representation"), "target_representation")
     if representation not in SUPPORTED:
         raise ValueError(f"unsupported target representation: {representation!r}")
+    dataset_id = _validate_text(row.get("dataset_id"), "dataset_id")
+    dataset_revision = _validate_text(row.get("dataset_revision"), "dataset_revision")
+    expected_dataset_id, expected_revision = SOURCE_PINS[representation]
+    if dataset_id != expected_dataset_id or dataset_revision != expected_revision:
+        raise ValueError(
+            f"source pin mismatch for {representation!r}: expected "
+            f"{expected_dataset_id}@{expected_revision}, got {dataset_id}@{dataset_revision}"
+        )
     split = row.get("split")
     if split not in {"train", "dev"}:
         raise ValueError("only train/dev rows may be packetized; test/holdout is sealed")
@@ -129,8 +141,8 @@ def packetize_row(row: dict) -> dict:
     return {
         "schema_version": SCHEMA_VERSION,
         "case_id": case_id,
-        "dataset_id": row.get("dataset_id"),
-        "dataset_revision": row.get("dataset_revision"),
+        "dataset_id": dataset_id,
+        "dataset_revision": dataset_revision,
         "split": split,
         "source_text": source,
         "target_raw": raw,
