@@ -2201,3 +2201,22 @@ The goal is not to copy teacher predictions into the engine. The teacher is a hy
 
 For each candidate cluster record: `eligible_cases`, `cases_explained`, `independent_source_count`, `positive_controls`, `negative_controls`, `heldout_delta`, `regressions`, `confidence`, and `implementation_cost`. Do not use teacher exact-match score alone as a production objective. Optimize verified error reduction on eligible held-out cases, with zero unexplained regression as the guardrail.
 
+## Latest continuation — efficiency improvements and teacher artifact triage (2026-10-26)
+
+### Evidence retrieved and analyzed
+- Retrieved and inspected GitHub Actions artifact `12675765407` from scratch-teacher run `40376661106`. Checkpoint SHA-256: `4062bff4941fefe1b499a29163471e17d3e7eff2af690456d16f1fd93cc70a45`; 8,000 train / 1,000 dev rows, zero test rows loaded, no pretrained weights, best epoch 11. Dev metrics: 602/1,000 exact, 107 length-mark-only differences, 291 other differences. Length marks were underpredicted in 80 cases and overpredicted in 27; reference had 237 length tokens and prediction 145. This is a model-error triage signal only, not permission to normalize length or infer production rules.
+- Re-read the paired teacher/Strict artifact: 994 scored pairs, six excluded unresolved cases, and no metrics computed because IPA conventions are unreviewed/incompatible. Do not mine production rules directly from these pairs.
+- Retrieved multi-engine diagnostic artifact `12675825441` from run `40376661231`. It reports 2,703 UGTPHON test-token occurrences and 999 eligible SIGMORPHON test words. Native exact rates are 53.00% and 35.81% under the artifact's diagnostic normalizer, respectively. These are noisy/non-normative test diagnostics and must not be used for candidate selection or rule tuning; the artifact itself says so. Use it to characterize coverage and failure modes only, not to claim generalization.
+- Reused rather than retrained the scratch teacher: the retrieved checkpoint SHA matches an earlier run's artifact, so repeating training would not currently add information.
+
+### Correctness guard added
+- `scripts/mine_deterministic_rule_candidates.py` now fails closed unless provenance explicitly supplies teacher and Strict IPA convention labels, `ipa_conventions_comparable=true`, and a reviewed mapping ID. “Both outputs are IPA” is not enough to make them comparable.
+- Added a regression test that an unreviewed convention comparison is rejected.
+- Added the miner script and its test to the teacher corpus audit workflow path filters and test command.
+- Updated `docs/NEURAL-TEACHER-CANDIDATE-RULE-REGISTER-2026-10-26.md` with exact artifact provenance, error counts, interpretation limits, and the new gate.
+
+### Verification status and next action
+- Current branch head after these changes is recorded in GitHub ref `research/strict-teacher-guided-rule-mining-2026-10-26`; retrieve the ref for the current SHA rather than copying a stale SHA from this handoff.
+- The exact-head Actions runs observed after the latest changes were queued due the repository's CI backlog. The case-register extractor had a real failure on the prior head: its assertion expected an unindented raw line although the fixture intentionally preserved source indentation. Corrected the expected line and committed that fix; the subsequent exact-head run still must pass before the register is trusted.
+- No new production phonology rule was promoted from the teacher. The efficient next step is to get the extractor and guard tests green, use the generated register to cross-link the complete set of test cases, and then classify existing dev/model mismatches by reviewed IPA feature before any rule-level experiment. Do not treat benchmark test splits as rule-selection data.
+
