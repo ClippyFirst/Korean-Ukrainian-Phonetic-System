@@ -319,8 +319,11 @@ test('NIKL §25 and §26 exact fortition examples are mirrored in browser runtim
     assert.ok(contextualRuleNames(source).includes('sino-korean-rieul-fortition-§26-exact-form'), source);
   }
 
-  // Neither rule generalizes from coda/onset alone.
-  assert.notEqual(engine.convert('넓게').surfaceHangul, '널께');
+  // 넓게 is independently source-licensed in the lexical dictionary (§25),
+  // but that lexical fact must not be generalized by the productive -ㄹ게 rule.
+  assert.equal(engine.convert('넓게').surfaceHangul, '널께');
+  assert.ok(!contextualRuleNames('넓게').includes('adnominal-l-fortition-§27-attested-l-ge'));
+  assert.notEqual(engine.convert('넓거든').surfaceHangul, '널꺼든');
   assert.notEqual(engine.convert('갈구').surfaceHangul, '갈꾸');
 });
 
