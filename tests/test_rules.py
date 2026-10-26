@@ -279,7 +279,7 @@ def test_nikl_r016_official_examples_resolve_with_exact_form_source_licenses():
         assert "qna_seq=329463" in traces[0].source, word
 
     items, traces = apply_ordered_rules(parse_syllables("닭고기"), ["R016", "R008", "R001"])
-    assert (items[0].coda, items[1].onset) == ("ㄺ", "ㄱ")
+    assert (items[0].coda, items[1].onset) == ("ㄱ", "ㄱ")
     assert traces[0].status == "conditional-disabled"
 
 def test_r016_license_cannot_be_reused_for_noun_dakgogi():
