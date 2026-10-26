@@ -466,7 +466,7 @@ This change does not complete case-level classification, establish outcomes for 
 
 ## Exact-head inventory after assertion-candidate detector hardening (2026-10-26)
 
-**Status:** `DONE_VERIFIED` for the lossless candidate-inventory generation on merged research head `19832224daab7d17b56df75485bb5461ea3c9ef9`.
+**Status:** `DONE_VERIFIED` for lossless candidate-inventory generation on PR #343's synthetic merge ref `456f764390441bab7a02d55c1020144ffb57c015`; the post-merge research branch commit was `19832224daab7d17b56df75485bb5461ea3c9ef9`.
 
 - Extraction workflow [40408709171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171) passed the extractor tests, generated all five inventories, validated stable IDs, and uploaded artifact [12691822644](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171/artifacts/12691822644).
 - Artifact ZIP SHA-256: `28271fcbf18402e8046399721e6c6be1db42d4998e94d6f2dee7c9ca9d0b223e` (3,083,197 bytes).
