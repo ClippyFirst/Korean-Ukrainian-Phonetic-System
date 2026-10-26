@@ -12,6 +12,56 @@ Latest complete six-engine run: [40092929978](https://github.com/ClippyFirst/Kor
 
 On SIGMORPHON, native is 357/997 exact (35.8074%) versus g2pk 353/997 on the same scored subset (35.4062%); g2pk's paired exact delta is −0.4012 pp (95% CI −0.8024 to −0.1003). The two datasets do not support a universal g2pk advantage. All 48 UGTPHON abstention occurrences and both SIGMORPHON abstentions are present in the complete schema-v4 pairwise artifact.
 
+## Neural G2P diagnostic extension — 2026-10-26
+
+### Task ledger
+
+| Task | Status | Evidence / acceptance criterion |
+|---|---|---|
+| Find a runnable neural checkpoint | DONE_VERIFIED for execution; PARTIAL for open-license status | CharsiuG2P `charsiu/g2p_multilingual_byT5_small_100` executed on CPU; code repository declares MIT, but checkpoint weights have no explicit license metadata and remain **UNRESOLVED** for redistribution. |
+| Run pinned inference on both existing benchmark splits | DONE_VERIFIED | [Neural run 40285484220](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40285484220), artifact [12633674500](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40285484220/artifacts/12633674500). Model/tokenizer SHAs and hashes are recorded in `model-provenance.json`; weights were not uploaded. |
+| Preserve full per-case baseline predictions for cross-model pairing | DONE_VERIFIED | [Baseline run 40286178462](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40286178462), artifact [12634178267](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40286178462/artifacts/12634178267). New `per_engine_occurrences` ledger preserves one raw-output/status record per eligible token occurrence and engine. |
+| Generate neural-vs-all-engine paired report | PARTIAL pending current CI artifact | [Workflow run 40286994417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40286994417) downloads the pinned neural artifact and pairs it with the complete baseline occurrence ledger. Acceptance: successful paired-report job and retained JSON artifact with same occurrence IDs, per-case raw outputs/statuses, paired deltas, and row-cluster bootstrap intervals. |
+| Establish leakage-free generalization | BLOCKED / evidence-limited | No local fine-tuning or test-set selection occurred, but upstream checkpoint training-data overlap with public UGTPHON/SIGMORPHON sources could not be ruled out. Scores are diagnostic, not a clean generalization claim. |
+| Run NN-KoG2P | BLOCKED | No authentic public checkpoint, reproducible inference implementation, licensing terms, and verified phone-to-IPA map found. See `NN-KOG2P-BENCHMARK-ATTEMPT-2026-10-26.md`. |
+| Integrate neural output into production or Ukrainian target rendering | DEFERRED / BLOCKED | No independently adjudicated IPA-to-Ukrainian gold corpus; weights rights unresolved; sentence-context performance not evaluated. |
+
+### Actual CharsiuG2P results (not upstream paper scores)
+
+Model revision: `ed5cf99707fb39f5f3ccc461530d56b6fb531fd3`; tokenizer revision: `68377bdc18a2ffec8a0533fef03b1c513a4dd49d`. CPU stack: Python 3.12, PyTorch 2.4.1, Transformers 4.44.2, SentencePiece 0.2.0, huggingface_hub 0.24.6. Model weight file SHA-256: `1ef4032409d33944e4249f959d028f78436f968e26b81cb6b0d508a6cf12ce6c` (1,198,608,045 bytes). Tokenizer is Apache-2.0; weights license is **UNRESOLVED**, so do not redistribute the checkpoint.
+
+| System | UGTPHON exact / CER | SIGMORPHON exact / CER |
+|---|---:|---:|
+| CharsiuG2P multilingual ByT5 small | 2,393/2,703 (88.5313%) / 3.6239%; 100% coverage | 709/999 (70.9710%) / 5.4081%; 100% coverage |
+| ClippyFirst native | 1,430/2,698 (53.0022%) / 9.1697%; 99.815% coverage | 357/997 (35.8074%) / 14.7037%; 99.800% coverage |
+| g2pk 0.9.4 | 1,435/2,703 (53.0892%) / 9.2285% | 353/999 (35.3353%) / 14.8222% |
+| KoG2P | 738/2,703 (27.3030%) / 19.5122% | 187/999 (18.7187%) / 21.8327% |
+| hangul_to_ipa | 439/2,703 (16.2412%) / 24.8054% | 89/999 (8.9089%) / 29.8448% |
+| eSpeak NG | 220/2,703 (8.1391%) / 33.6101% | 43/999 (4.3043%) / 40.7236% |
+| phonemize 2.0.1 | 1,150/2,703 (42.5453%) / 14.3531% | 289/999 (28.9289%) / 17.4387% |
+
+Paired Charsiu-minus-baseline deltas on common scored occurrences (exact-match delta in percentage points; CER delta in percentage points; negative CER delta favors Charsiu):
+
+| Baseline | UGTPHON common; Δ exact / Δ CER | SIGMORPHON common; Δ exact / Δ CER |
+|---|---:|---:|
+| ClippyFirst native | 2,698; +35.656 / −5.567 | 997; +35.105 / −9.279 |
+| g2pk 0.9.4 | 2,703; +35.442 / −5.605 | 999; +35.636 / −9.414 |
+| KoG2P | 2,703; +61.228 / −15.889 | 999; +52.252 / −16.425 |
+| hangul_to_ipa | 2,703; +72.290 / −21.182 | 999; +62.062 / −24.437 |
+| eSpeak NG | 2,703; +80.392 / −29.986 | 999; +66.667 / −35.316 |
+| phonemize 2.0.1 | 2,703; +45.986 / −10.727 | 999; +42.042 / −12.031 |
+
+The complete paired JSON contains raw model and engine outputs/statuses, case-level exact/CER values, paired wins/losses, and row-cluster bootstrap intervals. Do not use the initial neural artifact's embedded g2pk pair counts: that optional adapter initially imported the segment parser/renderer from the wrong module; the import was corrected and regression-tested, and the paired report uses the authoritative six-engine occurrence ledger.
+
+### Scope and caveats
+
+- UGTPHON is a **token-level ablation** for CharsiuG2P; sentence context is not passed to the model. SIGMORPHON is a lexical/word-level benchmark.
+- The public checkpoint may overlap the public test sources through its unknown upstream training corpus. No local fine-tuning or test-set tuning occurred, but the results are not a leakage-free generalization estimate.
+- These are comparisons against corpus annotations, not independently adjudicated normative IPA gold and not Ukrainian-target accuracy.
+- The model page has no explicit weights license; no weights/caches were uploaded or committed.
+- SMART-G2P is GPL-3.0 code for code-mixed transliteration and delegates pronunciation conversion to g2pk/KoG2P, so it is not an independent neural IPA baseline. The public MLX tiny derivative declares MIT metadata but is MLX/Apple-Silicon-oriented and derives from the same Charsiu family; its upstream weight rights remain unresolved. KoGPT weights are CC-BY-NC-ND 4.0 and the cited 6B model's resource requirements make it unsuitable for this CPU run. NN-KoG2P remains blocked and unscored.
+- **Decision:** keep CharsiuG2P as a research-only comparison candidate; do not route it into the production ClippyFirst pipeline until weights rights, data-overlap risk, context-level evaluation, and independent IPA/UA adjudication are resolved.
+
 ## Eight complementary benchmark suites
 
 | # | Suite | Primary question and metrics | Current state | Acceptance evidence still required |
