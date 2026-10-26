@@ -122,3 +122,21 @@ The workflow now builds both datasets into separate JSONL outputs and publishes 
 ## Cross-corpus compatibility gate — 2026-10-26 continuation
 
 The workflow now runs scripts/audit_korean_corpus_compatibility.py after preparing both source datasets. It verifies each generated JSONL against the SHA-256 in its manifest, validates row counts and split labels, then reports train/dev cross-corpus normalized-form intersections and target-string relations. The report contains counts and hashes only; it does not emit source words or combine the datasets. For diagnostic comparison only, it removes whitespace phone-token separators from SIGMORPHON targets and compares the resulting compact string with the UGTPHON target. It does not map IPA symbols, infer syllable boundaries, or equate this representation with ClippyFirst broad IPA. The audit therefore reports target compatibility as UNVERIFIED and explicitly refuses to merge or train. Its next gate is a reviewed common representation adapter, followed by source-form and target-conflict adjudication. This keeps useful overlapping data visible without allowing accidental mixing to conceal different conventions.
+
+
+### First cross-corpus overlap results (CI run 40295700341)
+
+The generated compatibility report found these normalized source-form intersections:
+
+| SIGMORPHON split vs UGTPHON split | Shared source forms | Same raw target after removing SIGMORPHON token separators | Different target strings after that limited operation |
+|---|---:|---:|---:|
+| train vs train | 1,084 | 718 | 366 |
+| train vs dev | 257 | 180 | 77 |
+| dev vs train | 140 | 86 | 54 |
+| dev vs dev | 33 | 23 | 10 |
+
+The zero exact raw-string matches before separator removal are expected from the different serialization formats. The 718/1,084 train/train matches are evidence of serialization-level agreement for overlapping forms, **not** proof of equal phonological conventions or ClippyFirst broad IPA correctness. The 366 train/train target-string differences need adjudication; possible causes include pronunciation variants, transcription conventions, or source annotation differences. Do not resolve them by selecting whichever corpus agrees with the current engine.
+
+UGTPHON itself has 538 eligible source forms overlapping between its sentence-level train/dev partitions, 510 between train/test, and 228 between dev/test. These are repeated token forms across sentence splits, not duplicate sentence IDs; report them explicitly and avoid describing the token-level evaluation as a novel-word-only test. The SIGMORPHON word-level partition has zero source-form overlap across train/dev/test in its pinned preparation run.
+
+Evidence: [Teacher corpus audit run 40295700341](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40295700341). The metadata-only report is included in artifact [12637628382](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40294887100/artifacts/12637628382) from the earlier build without compatibility metrics; regenerate the latest artifact from the current successful workflow run for the full report.
