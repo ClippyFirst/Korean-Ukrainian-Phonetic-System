@@ -58,10 +58,10 @@ test('§6 compound exceptions retain long vowels beyond the first syllable and b
   assert.match(row.source_url, officialSource);
   const result = engine.convert('반신반의');
   assert.equal(result.surfaceHangul, '반신바늬');
-  assert.equal(result.ipa, renderExpectedIpa('반신반의', 'paːn ɕin baː ni'));
+  assert.equal(result.ipa, renderExpectedIpa('반신반의', 'paːn.ɕin.baː.ni'));
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '반신바니');
-  assert.equal(result.variants[0].ipa, 'paːn ɕin baː ni');
+  assert.equal(result.variants[0].ipa, 'paːn.ɕin.baː.ni');
 });
 
 test('§6 contracted -아/-어 forms cover every listed long-vowel form and every explicit short exception', () => {
