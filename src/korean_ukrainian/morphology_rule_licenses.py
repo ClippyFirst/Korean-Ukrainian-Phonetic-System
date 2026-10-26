@@ -30,9 +30,9 @@ _ENDING_TAGS = {"EC", "EF", "EP", "ETM", "ETN"}
 _PARTICLE_TAGS = {"JC", "JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX"}
 _PLAIN_FORTITION_ONSETS = {"ㄱ", "ㄷ", "ㅅ", "ㅈ"}
 _SOURCE_BACKED_LEXICAL_ROOT_LICENSES = (
-    *_NIKL_R012_WORD_LICENSES,
-    *_NIKL_R014_WORD_LICENSES,
-    *_NIKL_R015_WORD_LICENSES,
+    *(("R012", "sino_ryeon", root, pair) for root, pair in _NIKL_R012_WORD_LICENSES.items()),
+    *(("R014", "compound", root, pair) for root, pair in _NIKL_R014_WORD_LICENSES.items()),
+    *(("R015", "saisiot", root, pair) for root, pair in _NIKL_R015_WORD_LICENSES.items()),
 )
 
 
@@ -267,11 +267,7 @@ def analyzer_consensus_rule_licenses(
             for tags in right_tags_at_boundary
         )
         if grammatical_suffix_agreement and offset < len(text):
-            for root_license in _SOURCE_BACKED_LEXICAL_ROOT_LICENSES:
-                parts = root_license.split(":", 3)
-                if len(parts) != 4:
-                    continue
-                rule_id, scope, licensed_root, licensed_pair = parts
+            for rule_id, scope, licensed_root, licensed_pair in _SOURCE_BACKED_LEXICAL_ROOT_LICENSES:
                 if len(licensed_root) >= len(text) or not text.startswith(licensed_root):
                     continue
                 if len(licensed_root) != offset:
