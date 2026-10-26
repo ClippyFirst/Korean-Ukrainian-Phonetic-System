@@ -53,4 +53,8 @@ def test_pairwise_overlap_reports_counts_without_leaking_forms():
     report = pairwise_overlaps({"train": {"a", "b"}, "dev": {"b", "c"}, "test": {"z"}})
     assert report["train__vs__dev"]["unique_form_intersection"] == 1
     assert report["train__vs__test"]["unique_form_intersection"] == 0
-    assert "a" not in json.dumps(report)
+    serialized = json.dumps(report)
+    assert '"a"' not in serialized
+    assert '"b"' not in serialized
+    assert '"c"' not in serialized
+    assert '"z"' not in serialized
