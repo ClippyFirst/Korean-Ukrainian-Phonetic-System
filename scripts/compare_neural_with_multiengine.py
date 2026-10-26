@@ -214,6 +214,7 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
             "Both benchmarks are evaluated on corpus-tokenized words; sentence context is not passed to this neural model.",
             "SIGMORPHON is lexical word-level, not a sentence-context benchmark.",
             "Scores are diagnostic comparisons to the supplied corpus annotations, not normative IPA gold or Ukrainian-target accuracy.",
+            "This report contains predictions and provenance only, not weights; follow the checkpoint-specific weights_license_status and tokenizer license recorded above.",
             "A shared segment renderer can affect the native/g2pk comparison; see the baseline report's engine adapter notes.",
             "No local fine-tuning or test-set selection was performed, but overlap between the public checkpoint's training sources and these public benchmark sources cannot be excluded; these are diagnostic scores, not leakage-free generalization estimates.",
         ],
