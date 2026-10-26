@@ -291,3 +291,18 @@ The analyzer's source-shape table shows lower exact match for three-/four-Hangul
 - Primary source review: [KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md](KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md). SIGMORPHON 2021 target format and preprocessing are not equivalent by default to UGTPHON's IPA-Dict-derived Korean token annotations.
 - Executable queue: `scripts/build_korean_ipa_adjudication_queue.py`, tested by `tests/test_build_korean_ipa_adjudication_queue.py` and run in the existing teacher-corpus workflow. It queues only train/train conflicts and preserves raw candidates, provenance, and Unicode code-point inventories. It does not claim phoneme segmentation.
 - Acceptance status: queue implementation is separate from annotation adjudication. The 366 target conflicts are still unadjudicated; no broad-IPA adapter, neural-versus-Strict comparison, or production-rule promotion is claimed until a reviewed source-specific mapping is available.
+## 2026-10-26: controlled teacher profile comparison and verified rule parity additions
+
+The first completed train/dev Charsiu artifact is available at [run 40334001997](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40334001997). Its initial broad/narrow comparison is not a valid controlled profile delta because the broad baseline included lexical IPA overrides while the narrow path bypassed them and did not preserve the production unresolved-pronunciation gate. The apparent narrow-profile improvement in that artifact is superseded and must not be used as evidence of a rule gain.
+
+The runner now produces a separate controlled profile-sensitivity report: broad and narrow are rendered from the same post-rule syllable analysis, lexical IPA overrides are excluded from both, and unresolved pronunciation contexts abstain in both. The full production baseline remains separate. Raw per-occurrence output is preserved; no rule is promoted automatically. Corrected run [40338691112](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338691112) was queued at this update and has no final result yet.
+
+The source-backed rule parity batch also added/mirrored:
+- R011 / NIKL §25: exact 넓다, 넓고, 넓지, 훑다, 훑고, 훑지.
+- R012 / NIKL §26: exact 갈등, 발동, 절도, 말살, 일시, 갈증, 물질, 발전, 몰상식, 불세출; sense-dependent 불소 is excluded.
+- R013 / NIKL §27: attached -ㄹ게 fortition, with a same-word boundary guard.
+- R014 / NIKL §28: full exact-compound table mirrored into browser runtime, plus official Q&A forms 물가[물까], 봄비[봄삐].
+- R015 / NIKL §30: exact saisiot forms mirrored from the Python inventory, with unadjudicated compounds still withheld.
+
+All results remain diagnostic because the corpus IPA convention has not been independently mapped to ClippyFirst broad IPA. This benchmark register records workflow state, not a claim of model-to-rule accuracy improvement.
+

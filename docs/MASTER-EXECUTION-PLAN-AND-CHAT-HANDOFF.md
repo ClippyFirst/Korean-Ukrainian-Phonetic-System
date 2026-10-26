@@ -1885,4 +1885,37 @@ The partial narrow profile is now implemented in `src/korean_ukrainian/ipa.py` w
 The first train/dev inference attempt on run [40332391810](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40332391810) successfully installed pinned dependencies, passed its split-guard tests, and prepared both datasets with no test rows exported. It then failed at report serialization because the paired benchmark uses the key `word`, while the review ledger expected `token`. That schema bug was fixed in `23cf6c0804e402ce3e70e25804b2c7e68907ae66`; the regression fixture was corrected in `972b394c983f89a2146f145ca44377a57596527f`. The corrected exact-head test and Charsiu runs were queued at handoff update time; they are **not yet passes**.
 
 This is the first deterministic allophonic IPA feature batch derived through source review, not a claim that Charsiu's outputs are authoritative. No test split is used to choose these rules. Remaining high-frequency differences such as lateral retroflexion and /h/ allophony stay unimplemented because the available literature documents context/dialect variability and no independent adjudicated IPA gold set exists.
+## 2026-10-26: source-backed rule transfer and cross-runtime parity audit
+
+This batch responds to the large neural-vs-Strict gap by auditing the production browser engine against the Python rule inventory and official NIKL rules, rather than assuming raw neural IPA can be copied directly into runtime.
+
+### Rule changes implemented (CI still pending)
+
+- R011 / NIKL §25: added exact source-backed stem ㄼ/ㄾ + ending cases 넓다, 넓고, 넓지, 훑다, 훑고, 훑지 to the Python license inventory and mirrored them in browser JavaScript. No generic ㄼ/ㄾ category license was added.
+- R012 / NIKL §26: added exact source-backed Sino-Korean ㄹ + ㄷ/ㅅ/ㅈ cases 갈등, 발동, 절도, 말살, 일시, 갈증, 물질, 발전, 몰상식, 불세출. 불소 is deliberately omitted because the relevant reading depends on lexical sense.
+- R013 / NIKL §27: mirrored the already source-backed attached ending -ㄹ게 → fortis onset rule in the browser engine, using official Q&A 330963. The rule does not cross a written space; a negative control tests that boundary.
+- R014 / NIKL §28: mirrored the entire existing Python exact-compound table into browser JavaScript. Benchmark review exposed 물가, whose gold was [물까] while both the model and prior native browser behavior missed the fortition. Official NIKL Q&A 316282 explicitly lists 물가[물까] and 봄비[봄삐]; both exact-form licenses are now in Python and browser. This is an exact lexical license, not a general ㄹ+ㄱ or ㅁ+ㅂ rule.
+- R015 / NIKL §30: mirrored the 15 exact source-backed saisiot forms from the Python inventory into the browser engine, including deletion + fortition and the listed nasalization/n-insertion cases. 베갯잇 and 도리깻열 remain fail-closed because they are not in the adjudicated rule inventory.
+- Added Python and browser regression coverage, including negative controls against category-only overgeneralization. The official sources used for the new exact-form rules are registered in data/korean/sources.csv and research/SOURCE-REGISTER.csv.
+
+### Teacher benchmark correction: do not use the previous narrow score delta
+
+The first Charsiu dev run [40334001997](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40334001997) completed and produced a raw artifact. Review found that its initial “narrow vs broad” comparison was not controlled: broad scores came from the full native pipeline with lexical IPA overrides, while narrow scores came from a direct renderer call that bypassed those overrides and did not preserve the full pipeline's unresolved-pronunciation abstentions. Therefore the apparent narrow-profile gain in that artifact must not be cited as an effect size for the sibilant rule.
+
+The runner was corrected to render broad and narrow from the same post-rule syllable analysis; exclude lexical IPA overrides from both controlled profile outputs; preserve the same unresolved-pronunciation abstentions for both profiles; keep the full production-pipeline baseline separately; and record per-occurrence raw outputs and deltas with an explicit convention-unreviewed, diagnostic-only interpretation.
+
+The g2pk comparison adapter was also made importable at module level. The earlier Charsiu artifact showed g2pk blocked because the runner imported a nonexistent _g2pk_surface_to_ipa; that was fixed and regression-tested.
+
+### Verification state and task ledger
+
+- DONE_PENDING_CI: source-backed R011/R012/R014/R015 exact-form rule inventories and R013 attached-ending rule are implemented in both Python and browser runtime, with positive/negative regression tests.
+- DONE_PENDING_CI: official NIKL Q&A 316282 and 330963 are registered and the source-backed R014/R013 cases are documented.
+- DONE_PENDING_CI: controlled broad/narrow IPA profile renderer, common abstention gate, per-occurrence ledger, and g2pk adapter regression are implemented.
+- BLOCKED_PENDING_EVIDENCE: no Charsiu output is automatically promoted. Its output convention still lacks an independently adjudicated mapping to ClippyFirst broad IPA; training overlap and checkpoint license remain unresolved.
+- TODO: inspect the corrected dev artifact after it completes; classify repeated disagreements as already-covered source rules, IPA convention/feature differences, genuinely missing phonological environments, or morphology/lexical uncertainty. Promote only independently source-confirmed candidates with positive and negative controls.
+- BLOCKED: live official NIKL source-inventory workflow remains skipped/blocked by source access, not passed. Independent IPA→Ukrainian target gold is still absent.
+
+At handoff update time, corrected Charsiu train/dev run [40338300356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338300356) and later exact-head run [40338691112](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338691112) were queued. Latest system verification [40338700703](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338700703) was also queued. These are not passes. Latest code/source head before this documentation batch was 6b1eb894f15c74fdfb4afd11bebbb146f7e0dabf.
+
+Readiness remains research-ready partial prototype, not release-ready until exact-head CI passes, corrected dev artifacts are inspected, target IPA/Ukrainian adjudication is established, and remaining evidence gaps are resolved.
 

@@ -1087,3 +1087,25 @@ The latest software hardening:
 - UI wording distinguishes candidate/unavailable status and states that `model-selected` target spellings are project-defined, not independently adjudicated.
 
 **Disposition:** software-verified partial research prototype, **not release-ready**. Remaining acceptance blockers: verified primary source for the original 24-form list; independent Korean IPA adjudication/gold; independent Ukrainian target gold and evaluation protocol; authorized live NIKL inventory. No invented gold labels, phonological forms, or accuracy claims were added.
+## 2026-10-26 continuation: cross-runtime rule parity and teacher-workflow correction
+
+Status at audit update: implementation present; exact-head CI and corrected teacher artifact pending.
+
+Implemented in the continuation branch:
+- R011 (§25) exact stem ㄼ/ㄾ fortition cases and R012 (§26) exact Sino-Korean ㄹ + ㄷ/ㅅ/ㅈ cases are now source-licensed in Python and mirrored in browser JavaScript.
+- R013 attached -ㄹ게 fortition is mirrored in browser runtime with an explicit same-eojeol boundary and official Q&A 330963 provenance.
+- R014 (§28) exact compound-fortition table is now mirrored in browser runtime; official Q&A 316282 supports added exact forms 물가[물까], 봄비[봄삐].
+- R015 (§30) exact saisiot pronunciation forms from the Python inventory are mirrored in browser runtime; unadjudicated forms remain fail-closed.
+- Added positive and negative controls for all newly mirrored exact-form families and registered the official sources.
+
+A review of the first completed Charsiu run [40334001997](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40334001997) identified a benchmark methodology defect: broad metrics used the full pipeline with lexical IPA overrides, while narrow metrics used a direct renderer that bypassed those overrides and failed to retain unresolved-pronunciation abstentions. Those earlier narrow-profile deltas are superseded and must not be interpreted as a measured rule gain. The runner now renders both profiles from the same post-rule analysis, uses the same unresolved gate, excludes lexical IPA overrides from both controlled outputs, and keeps the full production baseline separately. The g2pk surface-to-IPA helper import bug is also fixed.
+
+Task ledger:
+- DONE_PENDING_CI: Python/browser implementations and regression tests for R011/R012/R013/R014/R015.
+- DONE_PENDING_CI: source-register updates for official NIKL Q&A 316282 and 330963.
+- DONE_PENDING_CI: controlled broad/narrow IPA comparison and per-occurrence evidence ledger.
+- BLOCKED: neural-to-production rule distillation remains evidence-gated; the Charsiu output convention is not independently mapped to ClippyFirst broad IPA, and model training overlap/weights licensing remain unresolved.
+- BLOCKED: live official NIKL source inventory was skipped, not passed; independently adjudicated IPA→Ukrainian target gold is still missing.
+
+Corrected Charsiu run [40338691112](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338691112) and latest system verification [40338700703](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338700703) were queued at update time. Do not mark implementation DONE_VERIFIED until exact-head CI and the corrected dev artifact are inspected. The repository remains a research-ready partial prototype, not release-ready.
+

@@ -153,4 +153,11 @@ The profile emits `transcription_profile.target_compatible=false`. `transliterat
 - `DONE_VERIFIED` only after exact-head CI passes the new narrow-profile tests and existing broad regressions.
 - `PARTIAL` as a complete narrow-IPA system: additional allophones require source evidence, explicit variability/uncertainty handling, positive and negative controls, and independent IPA adjudication.
 - No Charsiu output has been copied into production. The neural teacher is used to identify high-value review areas; the implemented sibilant rules are independently supported by the cited phonetics literature.
+## 2026-10-26 controlled broad/narrow comparison correction
+
+The first completed Charsiu dev artifact [40334001997](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40334001997) must not be used to claim that the partial narrow profile improved the engine. It compared a broad full-pipeline baseline (including lexical IPA overrides) with a narrow direct-renderer baseline (without those overrides), and the narrow path also failed to retain unresolved-pronunciation abstentions. That conflated profile effects with lexical-override and coverage effects.
+
+The runner was corrected to render broad and narrow from one shared post-rule syllable analysis, exclude lexical IPA overrides from both controlled renderings, preserve unresolved abstentions in both, and report profile sensitivity separately from the full production pipeline. Raw IPA conventions remain unreviewed relative to ClippyFirst broad IPA; profile metrics are diagnostic only and cannot by themselves justify Ukrainian target adaptation.
+
+The deterministic rule inventory also now has source-backed browser parity for R011/R012/R013/R014/R015, including exact NIKL §28 물가[물까] and 봄비[봄삐] cases and the attached ending 할게[할께]. New official source pages are registered. Exact-head CI and the corrected Charsiu dev artifact were queued at update time; no pass is claimed.
 
