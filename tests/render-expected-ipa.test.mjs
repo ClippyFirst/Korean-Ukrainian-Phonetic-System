@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderExpectedIpa } from './render-expected-ipa.mjs';
+import { parseIpaSyllables, renderExpectedIpa } from './render-expected-ipa.mjs';
+
+test('IPA token parser accepts source pipes and rendered dots without changing segment order', () => {
+  assert.deepEqual(parseIpaSyllables('ka|bʌp̚|t͈a'), ['ka', 'bʌp̚', 't͈a']);
+  assert.deepEqual(parseIpaSyllables('ka.bʌp̚.t͈a'), ['ka', 'bʌp̚', 't͈a']);
+});
 
 test('expected IPA rendering inserts dots within eojeols and preserves source spaces', () => {
   assert.equal(renderExpectedIpa('3 연대', ['sam', 'ɲʌn', 'dɛ']), 'sam ɲʌn.dɛ');

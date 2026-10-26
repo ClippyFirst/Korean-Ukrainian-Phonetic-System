@@ -2,9 +2,13 @@
  * Test-only renderer for IPA syllable arrays, using source eojeol boundaries.
  * This checks output serialization; it does not generate or validate phonology.
  */
-export function renderExpectedIpa(input, ipaValue) {
+export function parseIpaSyllables(ipaValue) {
   const raw = Array.isArray(ipaValue) ? ipaValue.join('|') : String(ipaValue ?? '');
-  const syllables = raw.split(/[|.\s]+/u).filter(Boolean);
+  return raw.split(/[|.\s]+/u).filter(Boolean);
+}
+
+export function renderExpectedIpa(input, ipaValue) {
+  const syllables = parseIpaSyllables(ipaValue);
   const tokens = String(input ?? '').match(/\s+|[^\s]+/gu) || [];
   let index = 0;
   return tokens.map((token, tokenIndex) => {

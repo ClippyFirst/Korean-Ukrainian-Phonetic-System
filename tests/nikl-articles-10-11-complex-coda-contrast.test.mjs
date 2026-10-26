@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { parseIpaSyllables, renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -39,14 +40,14 @@ test('§10–11 official complex-coda examples preserve the standard distinction
     assert.ok(row, 'missing official complex-coda lexical record: ' + word);
     assert.match(row.source_url, officialSource, word + ': source must be on the NIKL domain');
     assert.equal(row.surface_hangul, surface, word + ': recorded standard surface');
-    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word + ': recorded broad IPA');
+    assert.deepEqual(row.ipa_syllables.split('|'), parseIpaSyllables(ipa), word + ': recorded broad IPA syllables');
 
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': engine standard surface');
     assert.ok(!result.ukrainian.includes('⟦') && !result.ukrainian.includes('⟧'), word + ': no unresolved placeholder');
     assert.equal(result.issues.length, 0, word + ': no engine issue');
     if (row.target_status !== 'surface-only') {
-      assert.equal(result.ipa, ipa, word + ': engine broad IPA');
+      assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': engine broad IPA');
       assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), word + ': engine target follows reviewed row');
     } else {
       // Surface-only rows intentionally do not claim a lexical override;

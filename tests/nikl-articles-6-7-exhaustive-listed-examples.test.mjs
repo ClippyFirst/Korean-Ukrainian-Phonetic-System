@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { parseIpaSyllables, renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -14,10 +15,10 @@ function assertOfficial(word, surface, ipa, { long = false, short = false } = {}
   assert.ok(row, 'missing sourced §6–7 example: ' + word);
   assert.match(row.source_url, officialSource, word);
   assert.equal(row.surface_hangul, surface, word);
-  assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word);
+  assert.deepEqual(row.ipa_syllables.split('|'), parseIpaSyllables(ipa), word + ': source IPA syllables');
   const result = engine.convert(word);
   assert.equal(result.surfaceHangul, surface, word);
-  assert.equal(result.ipa, ipa, word);
+  assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
   assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), word);
   if (long) assert.match(ipa, /ː/u, word + ': expected a long vowel');
   if (short) assert.doesNotMatch(ipa, /ː/u, word + ': expected no long vowel');
@@ -57,7 +58,7 @@ test('§6 compound exceptions retain long vowels beyond the first syllable and b
   assert.match(row.source_url, officialSource);
   const result = engine.convert('반신반의');
   assert.equal(result.surfaceHangul, '반신바늬');
-  assert.equal(result.ipa, 'paːn ɕin baː ni');
+  assert.equal(result.ipa, renderExpectedIpa('반신반의', 'paːn ɕin baː ni'));
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '반신바니');
   assert.equal(result.variants[0].ipa, 'paːn ɕin baː ni');

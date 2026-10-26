@@ -2,28 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const rows = parseCsv(lexicalText);
 const engine = createEngine(canonical, lexicalText);
 
-function renderExpectedIpa(input, ipaSyllables){
-  const tokens=input.match(/\\s+|[^\\s]+/gu)||[];
-  let index=0;
-  return tokens.map(token=>{
-    if(/^\\s+$/u.test(token))return token;
-    if(/^[가-힣]+$/u.test(token)){
-      const count=[...token].length;
-      const values=ipaSyllables.slice(index,index+count);
-      index+=count;
-      return values.join('.');
-    }
-    const value=ipaSyllables[index]||'';
-    index++;
-    return value;
-  }).join('');
-}
 const allowedStatuses = new Set(['model-selected', 'provisional', 'surface-only']);
 
 test('lexical CSV stays structurally valid and every row has an explicit target status', () => {

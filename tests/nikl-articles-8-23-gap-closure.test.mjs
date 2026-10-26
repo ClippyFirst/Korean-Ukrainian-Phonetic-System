@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { parseIpaSyllables, renderExpectedIpa } from './render-expected-ipa.mjs';
 import { renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
@@ -188,7 +189,7 @@ test('§21 all seven official place-assimilation negative controls keep their ex
     assert.ok(row, '§21 missing official negative control: ' + word);
     assert.match(row.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u, word + ': NIKL source');
     assert.equal(row.surface_hangul, surface, word + ': source surface');
-    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word + ': source IPA');
+    assert.deepEqual(row.ipa_syllables.split('|'), parseIpaSyllables(ipa), word + ': source IPA syllables');
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': engine surface');
     assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': engine IPA');

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { parseIpaSyllables, renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -23,11 +24,11 @@ test('§15 substantive-morpheme liaison uses representative codas, not the §13 
     assert.match(row.source_url, officialSource, input + ': source must be on the NIKL domain');
     assert.match(row.rule_notes, /제15항|§15/u, input + ': evidence must identify §15');
     assert.equal(row.surface_hangul, want.surface, input + ': standard surface');
-    assert.equal(row.ipa_syllables.split('|').join(' '), want.ipa, input + ': source-attested IPA');
+    assert.deepEqual(row.ipa_syllables.split('|'), parseIpaSyllables(want.ipa), input + ': source-attested IPA syllables');
 
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, want.surface, input + ': engine surface');
-    assert.equal(result.ipa, want.ipa, input + ': engine IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, want.ipa), input + ': engine IPA');
     assert.equal(result.ukrainian, (input === '밭 아래' ? 'па таре' : row.target_syllables.split('|').join('')),
       input + ': engine output agrees with reviewed target and preserves phrase spacing');
     assert.equal(result.issues.length, 0, input + ': sourced form must be resolved');
