@@ -89,3 +89,20 @@ The official MFA documentation lists [Korean (Jamo) MFA G2P v3.0.0](https://mfa-
 
 **Decision: promising alternative candidate, not yet approved as an IPA teacher.** Unlike the Charsiu checkpoint currently under review, the MFA page does state a model license. However, licensing alone is insufficient: the output inventory is the MFA phone set, not a guaranteed IPA transcription, and the reported 100% WER/PER is a major quality warning that needs investigation. Before any benchmark use, pin the exact release artifact and hash, verify the artifact's accompanying terms and underlying dictionary provenance, inspect the phoneset, define and test an explicit MFA-phone-to-IPA adapter (including unmapped-symbol failure), and independently reproduce or explain the reported metrics. No model was downloaded or run in this continuation. Do not relabel MFA output as IPA and do not use its predictions as gold.
 
+
+
+## Executable corpus preparation — 2026-10-26 continuation
+
+The audit-only workflow has been extended with `scripts/prepare_korean_g2p_corpus.py`. It materializes the pinned SIGMORPHON 2021 medium Korean `train` and `dev` partitions as JSONL while preserving the original tokenized-IPA target string. Every row carries the immutable source revision, split, source line, and explicit target-representation label. Hangul input is normalized to NFC for the model-facing field, while the original source spelling is preserved separately. IPA targets are **not** normalized, re-tokenized, converted to broad IPA, or treated as already equivalent to the ClippyFirst IPA contract.
+
+The preparation command verifies all three source Git blob identities and expected row counts. It checks normalized source-form duplicates within each split and rejects any train/dev, train/test, or dev/test source-form intersection. The test source is fetched only to verify its pin and split isolation; test records are never written to output. Only `train.jsonl`, `dev.jsonl`, and a provenance/hash manifest are generated. The workflow uploads these research outputs as a build artifact; it does not commit corpus rows into the repository or train a model.
+
+Run locally:
+
+```powershell
+python scripts/prepare_korean_g2p_corpus.py --output-dir reports/korean-g2p-corpus
+```
+
+Expected source counts are 8,000 train and 1,000 dev examples; the pinned 1,000-row test split is not exported. These are source-record counts, not claims about unique phonological contexts, normative accuracy, or target IPA compatibility. The manifest captures byte SHA-256 values and generated-file hashes so the corpus can be reproduced and compared.
+
+**Scope correction:** this dataset-preparation path is independent of the Charsiu checkpoint. Unresolved teacher-weight provenance does not block preparing source-backed train/dev examples for ClippyFirst's own research. However, this step is not model training, does not settle all source/task terms, and does not itself authorize any rule change. Before combining with UGTPHON, run cross-corpus overlap checks and inspect the UGTPHON token/phoneme schema; do not treat sentence-level labels as word-level gold by assumption.
