@@ -164,7 +164,7 @@ test('user-supplied stress corpus: complex-coda and assimilation controls are co
     '밭이': ['바치', 'pa tɕʰi'],
     '해돋이': ['해도지', 'hɛ do dʑi'],
     '있었는지': ['이썬는지', 'i s͈ʌn nɯn dʑi'],
-    '독립문': ['동님문', 'toŋ nim mun'],
+    '독립문': ['동님문', 'toŋ.nim.mun'],
     '꽃잎': ['꼰닙', 'k͈on nip̚'],
   };
   for (const [input, [surface, ipa]] of Object.entries(expected)) {

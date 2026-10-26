@@ -61,7 +61,7 @@ test('master passage is passed through the browser engine and emits a reproducib
       report.lexicalHits += 1;
       assert.equal(result.surfaceHangul, row.surface_hangul, token + ': lexical surface drift');
       if (row.target_status !== 'surface-only') {
-        assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), token + ': lexical IPA drift');
+        assert.equal(result.ipa, row.ipa_syllables.split('|').join('.'), token + ': lexical IPA drift');
         const runtimeTarget=result.ukrainian||result.candidate_ukrainian||'';
         assert.equal(runtimeTarget, row.target_syllables.split('|').join(''), token + ': IPA-derived Ukrainian target/candidate drift');
       }
@@ -128,7 +128,7 @@ test('core source-backed examples in the passage retain the current engine surfa
     '꽃잎': ['꼰닙', 'k͈on nip̚'],
     '솜이불': ['솜니불', 'soːm ni bul'],
     '색연필': ['생년필', 'sɛŋ ɲʌn pʰil'],
-    '신라': ['실라', 'ɕil la'],
+    '신라': ['실라', 'ɕil.la'],
     '국물': ['궁물', 'kuŋ mul'],
     '먹는': ['멍는', 'mʌŋ nɯn'],
     '놓고': ['노코', 'no kʰo'],
@@ -147,7 +147,7 @@ test('core source-backed examples in the passage retain the current engine surfa
     const row = entries.get(word);
     assert.ok(row, 'missing source-backed lexicon row: ' + word);
     assert.equal(row.surface_hangul, surface, word + ': stored surface');
-    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word + ': stored IPA');
+    assert.equal(row.ipa_syllables.split('|').join('.'), ipa, word + ': stored IPA');
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': engine surface');
     assert.equal(result.ipa, ipa, word + ': engine IPA');
