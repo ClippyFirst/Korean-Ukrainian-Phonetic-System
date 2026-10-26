@@ -16,8 +16,6 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="
     if c=="ㅇ": return []
     if not phonemic and level=="narrow" and c=="ㅅ":
         return ["ɕʰ" if s.nucleus in _NARROW_HIGH_FRONT_SIBILANT_NUCLEI else "sʰ"]
-    if not phonemic and level=="narrow" and c=="ㅆ":
-        return ["ɕ͈" if s.nucleus in _NARROW_HIGH_FRONT_SIBILANT_NUCLEI else "s͈"]
     if c in FORTIS: return [FORTIS[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
     if c in ASPIRATED: return [ASPIRATED[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
     if c=="ㄹ":
@@ -127,12 +125,12 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     if level=="narrow":
         result["transcription_profile"]={
             "name":"korean-narrow-partial-sibilant-v1",
-            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅖ, ㅑ","tense ㅆ as [s͈], palatalized [ɕ͈] before ㅣ, ㅖ, ㅑ"],
+            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅖ, ㅑ","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
             "sources":[
                 "Cho, Jun & Ladefoged (2002), via High-toned [il] in Korean: https://www.sciencedirect.com/science/article/pii/S0095447015000339",
                 "Kang (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770",
             ],
-            "limitations":["partial profile, not a complete narrow transcription","does not model /h/ allophony, lateral retroflexion, dialectal variation, or prosody","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
+            "limitations":["partial profile, not a complete narrow transcription","does not model /h/ allophony, lateral retroflexion, dialectal variation, or prosody","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
             "target_compatible":False,
         }
     return result
