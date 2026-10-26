@@ -379,6 +379,7 @@ jobs:
             --model-weights-license-status "UNRESOLVED: official checkpoint page has no explicit weights license; research-only, no redistribution" \
             --tokenizer-license "Apache-2.0 (google/byt5-small model card)" \
             --output-convention "CharsiuG2P IPA output; raw convention retained for inspection" \
+            --language-prefix "<kor>:" \
             --model-limitation "Upstream training-data overlap with public benchmark sources is not ruled out." \
             --compare-existing-engines \
             | tee "$RUNNER_TEMP/neural-results/charsiu-ugtphon-summary.json"
@@ -562,6 +563,7 @@ jobs:
             --model-weights-license-status "CC BY-SA 4.0 (checkpoint model card; attribution and share-alike terms)" \
             --tokenizer-license "CC BY-SA 4.0 for checkpoint repository; base google/byt5-small Apache-2.0" \
             --output-convention "gruut-anchored IPA; space-separated IPA symbols" \
+            --language-prefix "kor:" \
             --model-limitation "Training corpus includes WikiPron/gruut; overlap with public benchmark sources cannot be excluded." \
             --compare-existing-engines \
             | tee "$RUNNER_TEMP/licensed-neural-results/willwade-ugtphon-summary.json"
@@ -598,6 +600,7 @@ jobs:
             --model-weights-license-status "CC BY-SA 4.0 (checkpoint model card; attribution and share-alike terms)" \
             --tokenizer-license "CC BY-SA 4.0 for checkpoint repository; base google/byt5-small Apache-2.0" \
             --output-convention "gruut-anchored IPA; space-separated IPA symbols" \
+            --language-prefix "kor:" \
             --model-limitation "Training corpus includes WikiPron/gruut; overlap with public benchmark sources cannot be excluded." \
             --compare-existing-engines \
             | tee "$RUNNER_TEMP/licensed-neural-results/willwade-sigmorphon-summary.json"
@@ -638,8 +641,11 @@ jobs:
           payload = {
               "schema_version": 1,
               "model": {"id": "willwade/byt5-g2p-multilingual-tiny", "revision": model_sha,
+                        "model_card_url": "https://huggingface.co/willwade/byt5-g2p-multilingual-tiny",
+                        "base_model_url": "https://huggingface.co/google/byt5-small",
                         "code_license": "Project-owned adapter; upstream training-code license not independently verified",
-                        "weights_license_status": "CC BY-SA 4.0 (Hugging Face checkpoint model card; attribution and share-alike terms)"},
+                        "weights_license_status": "CC BY-SA 4.0 (Hugging Face checkpoint model card; attribution and share-alike terms)",
+                        "input_prefix": "kor:"},
               "tokenizer": {"id": "willwade/byt5-g2p-multilingual-tiny", "revision": tokenizer_sha,
                             "license": "CC BY-SA 4.0 for checkpoint repository; base google/byt5-small Apache-2.0"},
               "dependencies": {"python": "3.12", "torch": "2.4.1 CPU", "transformers": "4.44.2", "sentencepiece": "0.2.0", "huggingface_hub": "0.24.6"},
@@ -648,6 +654,8 @@ jobs:
                 {"id": "sigmorphon/2021-task1", "commit": "821bcdece5a47820872215969f275004b0abe80c", "file": "data/medium/kor_test.tsv", "license": "CC BY-SA 3.0", "rows": 1000, "evaluation": "lexical word-level; not sentence-context evaluation"}
               ],
               "training_data_note": "Upstream model card describes a 4.12M-pair harmonized corpus derived from WikiPron and gruut; overlap with public benchmark sources has not been ruled out.",
+              "training_data_license_status": "PARTIAL: source families are named, but per-language source licenses and SIGMORPHON/WikiPron overlap were not independently audited.",
+              "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
               "files": files,
               "artifact_policy": "Predictions/provenance only; no model weights or caches are uploaded."
           }
