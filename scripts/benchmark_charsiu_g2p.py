@@ -60,13 +60,13 @@ def score_prediction(prediction: str, gold_raw: str) -> dict[str, Any]:
 def load_model(model_id: str, revision: str, tokenizer_id: str, tokenizer_revision: str):
     try:
         import torch
-        from transformers import AutoTokenizer, T5ForConditionalGeneration
+        from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
     except ImportError as exc:
         raise RuntimeError(
             "Neural benchmark dependencies are optional; install pinned torch and transformers"
         ) from exc
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_id, revision=tokenizer_revision)
-    model = T5ForConditionalGeneration.from_pretrained(model_id, revision=revision)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_id, revision=revision)
     # Hugging Face resolves short immutable commit prefixes to full commit SHAs.
     os.environ["CHARSIU_RESOLVED_MODEL_REVISION"] = (
         getattr(model.config, "_commit_hash", None) or revision
@@ -183,10 +183,10 @@ def _metrics(scored: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def compare_baselines(rows: list[dict[str, Any]], neural: dict[str, str],
-                      baselines: dict[str, dict[str, dict[str, Any]]]) -> dict[str, Any]:
+                      baselines: dict[str, dict[str, dict[str, Any]]], *, engine_key: str = "charsiu_byt5") -> dict[str, Any]:
     occurrences, _ = eligible_occurrences(rows)
     report: dict[str, Any] = {}
-    scored_by_engine: dict[str, list[dict[str, Any]]] = {"charsiu_byt5": [], **{
+    scored_by_engine: dict[str, list[dict[str, Any]]] = {engine_key: [], **{
         name: [] for name in baselines
     }}
     pair_rows: list[dict[str, Any]] = []
@@ -197,8 +197,8 @@ def compare_baselines(rows: list[dict[str, Any]], neural: dict[str, str],
         }
         if word in neural:
             scored = score_prediction(neural[word], gold)
-            scored_by_engine["charsiu_byt5"].append({**scored, **entry})
-            entry["charsiu_byt5"] = {
+            scored_by_engine[engine_key].append({**scored, **entry})
+            entry[engine_key] = {
                 "status": "scored", "ipa": neural[word], "exact": scored["exact"],
                 "distance": scored["distance"]
             }
@@ -231,7 +231,7 @@ def compare_baselines(rows: list[dict[str, Any]], neural: dict[str, str],
     paired: dict[str, Any] = {}
     neural_by_id = {x["occurrence_id"]: x for x in scored_by_engine["charsiu_byt5"]}
     for name, scored in scored_by_engine.items():
-        if name == "charsiu_byt5":
+        if name == engine_key:
             continue
         baseline_by_id = {x["occurrence_id"]: x for x in scored}
         common_ids = sorted(set(neural_by_id) & set(baseline_by_id))
@@ -242,19 +242,19 @@ def compare_baselines(rows: list[dict[str, Any]], neural: dict[str, str],
         losses = sum(not a["exact"] and b["exact"] for a, b in zip(neural_common, baseline_common))
         paired[name] = {
             "common_scored_occurrences": len(common_ids),
-            "charsiu_metrics_on_common_subset": neural_metrics,
+            "model_metrics_on_common_subset": neural_metrics,
             "baseline_metrics_on_common_subset": baseline_metrics,
-            "exact_match_delta_charsiu_minus_baseline": (
+            "exact_match_delta_model_minus_baseline": (
                 round(neural_metrics["exact_match_rate"] - baseline_metrics["exact_match_rate"], 6)
                 if neural_metrics["exact_match_rate"] is not None and baseline_metrics["exact_match_rate"] is not None
                 else None
             ),
-            "cer_delta_charsiu_minus_baseline": (
+            "cer_delta_model_minus_baseline": (
                 round(neural_metrics["character_error_rate"] - baseline_metrics["character_error_rate"], 6)
                 if neural_metrics["character_error_rate"] is not None and baseline_metrics["character_error_rate"] is not None
                 else None
             ),
-            "charsiu_only_exact": wins,
+            "model_only_exact": wins,
             "baseline_only_exact": losses,
             "both_exact": sum(a["exact"] and b["exact"] for a, b in zip(neural_common, baseline_common)),
             "both_not_exact": sum(not a["exact"] and not b["exact"] for a, b in zip(neural_common, baseline_common)),
@@ -264,9 +264,27 @@ def compare_baselines(rows: list[dict[str, Any]], neural: dict[str, str],
     return report
 
 
-def evaluate(rows: list[dict[str, Any]], predictions: dict[str, str],
-             prediction_failures: dict[str, dict[str, str]] | None = None) -> dict[str, Any]:
+def evaluate(
+    rows: list[dict[str, Any]],
+    predictions: dict[str, str],
+    prediction_failures: dict[str, dict[str, str]] | None = None,
+    *,
+    engine_key: str | None = None,
+    model_label: str | None = None,
+    model_code_license: str | None = None,
+    model_weights_license_status: str | None = None,
+    tokenizer_license: str | None = None,
+    output_convention: str | None = None,
+    additional_limitations: list[str] | None = None,
+) -> dict[str, Any]:
     occurrences, words = eligible_occurrences(rows)
+    engine_key = engine_key or os.environ.get("G2P_ENGINE_KEY", "charsiu_byt5")
+    model_label = model_label or os.environ.get("G2P_MODEL_LABEL", "CharsiuG2P multilingual ByT5")
+    model_code_license = model_code_license or os.environ.get("G2P_MODEL_CODE_LICENSE", "MIT (CharsiuG2P upstream repository)")
+    model_weights_license_status = model_weights_license_status or os.environ.get("G2P_MODEL_WEIGHTS_LICENSE_STATUS", "UNRESOLVED: Hugging Face model page has no explicit weights license; research-only, no redistribution")
+    tokenizer_license = tokenizer_license or os.environ.get("G2P_TOKENIZER_LICENSE", "Apache-2.0 (google/byt5-small model card)")
+    output_convention = output_convention or os.environ.get("G2P_OUTPUT_CONVENTION", "model IPA convention not independently specified")
+    additional_limitations = additional_limitations or []
     scored = []
     missing = []
     for index, item in enumerate(occurrences):
@@ -289,16 +307,18 @@ def evaluate(rows: list[dict[str, Any]], predictions: dict[str, str],
                       for status in ("empty_output", "invalid_output", "model_error")}
     return {
         "schema_version": 2,
-        "engine": "CharsiuG2P multilingual ByT5",
+        "engine": model_label,
+        "engine_key": engine_key,
         "model_id": os.environ.get("CHARSIU_MODEL_ID", "charsiu/g2p_multilingual_byT5_small_100"),
         "model_revision_requested": os.environ.get("CHARSIU_MODEL_REVISION_REQUESTED", "UNPINNED"),
         "model_revision": os.environ.get("CHARSIU_RESOLVED_MODEL_REVISION", os.environ.get("CHARSIU_MODEL_REVISION", "UNPINNED")),
-        "model_code_license": "MIT (CharsiuG2P upstream repository)",
-        "model_weights_license_status": "UNRESOLVED: Hugging Face model page has no explicit weights license; research-only, no redistribution",
+        "model_code_license": model_code_license,
+        "model_weights_license_status": model_weights_license_status,
         "tokenizer_id": os.environ.get("CHARSIU_TOKENIZER_ID", "google/byt5-small"),
         "tokenizer_revision_requested": os.environ.get("CHARSIU_TOKENIZER_REVISION_REQUESTED", "UNPINNED"),
         "tokenizer_revision": os.environ.get("CHARSIU_RESOLVED_TOKENIZER_REVISION", os.environ.get("CHARSIU_TOKENIZER_REVISION", "UNPINNED")),
-        "tokenizer_license": "Apache-2.0 (google/byt5-small model card)",
+        "tokenizer_license": tokenizer_license,
+        "output_convention": output_convention,
         "dataset": "pinned input supplied by caller; diagnostic score only",
         "eligible_occurrences": len(occurrences),
         "unique_words": len(words),
@@ -314,10 +334,12 @@ def evaluate(rows: list[dict[str, Any]], predictions: dict[str, str],
         "predictions": scored,
         "limitations": [
             "This is a word/token-level ablation; it does not preserve sentence context or perform Korean morphological segmentation.",
-            "CharsiuG2P expects pre-tokenized words; the repository's tokenization is inherited from each benchmark.",
+            "The model expects pre-tokenized words; the repository's tokenization is inherited from each benchmark.",
             "Upstream PER/WER are not scores measured on this repository's data.",
             "IPA exact/CER scores are diagnostic and do not validate Ukrainian target rendering.",
-            "Model code is MIT, but the official Hugging Face weights page has no explicit license; weights are not redistributed.",
+            "The model output convention may differ from the benchmark's reference convention; raw output is retained and normalized output is diagnostic.",
+            "Weights are not redistributed by this runner; respect the checkpoint's declared license and attribution requirements.",
+            *additional_limitations,
         ],
     }
 
@@ -331,6 +353,13 @@ def main() -> int:
     parser.add_argument("--tokenizer", default=os.environ.get("CHARSIU_TOKENIZER_ID", "google/byt5-small"))
     parser.add_argument("--tokenizer-revision", default=os.environ.get("CHARSIU_TOKENIZER_REVISION"))
     parser.add_argument("--batch-size", type=int, default=8)
+    parser.add_argument("--engine-key", default=os.environ.get("G2P_ENGINE_KEY", "charsiu_byt5"))
+    parser.add_argument("--model-label", default=os.environ.get("G2P_MODEL_LABEL", "CharsiuG2P multilingual ByT5"))
+    parser.add_argument("--model-code-license", default=os.environ.get("G2P_MODEL_CODE_LICENSE", "MIT (CharsiuG2P upstream repository)"))
+    parser.add_argument("--model-weights-license-status", default=os.environ.get("G2P_MODEL_WEIGHTS_LICENSE_STATUS", "UNRESOLVED: Hugging Face model page has no explicit weights license; research-only, no redistribution"))
+    parser.add_argument("--tokenizer-license", default=os.environ.get("G2P_TOKENIZER_LICENSE", "Apache-2.0 (google/byt5-small model card)"))
+    parser.add_argument("--output-convention", default=os.environ.get("G2P_OUTPUT_CONVENTION", "model IPA convention not independently specified"))
+    parser.add_argument("--model-limitation", action="append", default=[])
     parser.add_argument("--compare-existing-engines", action="store_true")
     args = parser.parse_args()
     if not args.model_revision or not args.tokenizer_revision:
@@ -346,10 +375,18 @@ def main() -> int:
     os.environ["CHARSIU_MODEL_REVISION_REQUESTED"] = args.model_revision
     os.environ["CHARSIU_TOKENIZER_ID"] = args.tokenizer
     os.environ["CHARSIU_TOKENIZER_REVISION_REQUESTED"] = args.tokenizer_revision
-    report = evaluate(rows, predictions, prediction_failures)
+    report = evaluate(
+        rows, predictions, prediction_failures,
+        engine_key=args.engine_key, model_label=args.model_label,
+        model_code_license=args.model_code_license,
+        model_weights_license_status=args.model_weights_license_status,
+        tokenizer_license=args.tokenizer_license,
+        output_convention=args.output_convention,
+        additional_limitations=args.model_limitation,
+    )
     if args.compare_existing_engines:
         baselines = collect_existing_baselines(words)
-        report["comparison"] = compare_baselines(rows, predictions, baselines)
+        report["comparison"] = compare_baselines(rows, predictions, baselines, engine_key=args.engine_key)
         report["comparison"]["method"] = (
             "paired occurrence-level scoring with the same benchmark normalizer and gold variants; "
             "native abstentions and engine errors reduce coverage, not accuracy denominators"
@@ -357,10 +394,11 @@ def main() -> int:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     summary = {k: report[k] for k in (
-        "engine", "model_id", "model_revision_requested", "model_revision",
+        "engine", "engine_key", "model_id", "model_revision_requested", "model_revision",
         "tokenizer_revision_requested", "tokenizer_revision", "eligible_occurrences",
         "scored_occurrences", "coverage", "exact_matches", "exact_match_rate",
         "character_error_rate", "missing_predictions", "prediction_failure_counts_by_unique_word",
+        "model_code_license", "model_weights_license_status", "tokenizer_license", "output_convention",
     )}
     if "comparison" in report:
         summary["paired_comparisons"] = report["comparison"]["paired_comparisons"]
