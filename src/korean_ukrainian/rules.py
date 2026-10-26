@@ -161,6 +161,9 @@ _NIKL_R014_WORD_LICENSES = {
     "그믐달": "믐>달", "강가": "강>가", "초승달": "승>달",
     "등불": "등>불", "창살": "창>살", "강줄기": "강>줄",
     "아침밥": "침>밥", "굴속": "굴>속", "술잔": "술>잔",
+    # NIKL Online Q&A qna_seq=316282 explicitly gives 물가[물까] and 봄비[봄삐]
+    # as fortition examples in compounds without written 사이시옷.
+    "물가": "물>가", "봄비": "봄>비",
 }
 
 # Exact examples explicitly listed in NIKL §30. Each form is licensed only
