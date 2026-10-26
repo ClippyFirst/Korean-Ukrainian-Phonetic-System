@@ -24,6 +24,7 @@ Promotion requires primary-source evidence for the exact environment, a reviewed
 | Teacher-vs-Strict discrepancies adjudicated as true phonological errors | **0 established by this evidence set** | IPA conventions have not been mapped to reviewed ClippyFirst broad IPA |
 | New generalized production rules confirmed specifically from neural output in this workstream | **0** | Source-backed rule additions are not neural discoveries |
 | New exact-form licenses added to existing R003 in this workstream | 6 | NIKL §12(4) examples, not six generalized rules |
+| New source-backed exact-form entries added to existing R010 in this workstream | 2 | 안지 (S015) and 신다 (NIKL Q&A 325349); exact-form coverage only, not new generalized rules |
 | Total genuinely missing rules remaining | **Unknown** | Requires case-level enumeration and adjudication |
 
 ## Evidence and limitations
