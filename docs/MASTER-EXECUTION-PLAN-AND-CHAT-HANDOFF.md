@@ -1561,3 +1561,11 @@ Release classification remains **software-verified research prototype / partial 
 - This may offer a legally clearer alternative to Charsiu's undocumented checkpoint weights, but is **not yet cleared for IPA teacher use**. The phone set requires a verified adapter, and the published WER/PER are both 100%, a quality warning requiring investigation. No artifact was downloaded and no inference was run.
 - Next acceptance criteria: pin artifact/version/hash; inspect phone inventory and dictionary/data terms; explain/reproduce the published metrics; test an explicit phone-set-to-IPA adapter; then evaluate only on approved train/dev examples, keeping test/holdout sealed.
 
+
+
+## Train-only IPA conflict queue and source-convention review — 2026-10-26
+
+- Added `scripts/build_korean_ipa_adjudication_queue.py` with regression tests and integrated it into the pinned-corpus audit workflow. It creates a provenance-preserving queue from SIGMORPHON-train × UGTPHON-train shared forms, retaining all raw candidate annotations and literal Unicode code-point inventories without claiming these are phoneme segments.
+- The queue removes only SIGMORPHON token-separator whitespace for diagnostic comparison. It rejects dev/test rows, mismatched source revisions, unsupported target representations, and duplicate IDs. No source target is chosen as gold; no IPA mapping or runtime rule is generated.
+- Added `docs/KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md` with pinned primary-source references. SIGMORPHON 2021 documents roughly-phonemic IPA tokenized with `segments` and removal of stress/syllable markers in preprocessing; UGTPHON documents IPA-Dict-derived Korean token targets checked by native speakers and its own token-level annotation conventions. This supports the decision not to equate the two corpora by raw symbol identity.
+- Status: **DONE_VERIFIED** for the queue implementation only after exact-head corpus workflow and focused tests pass. The 366 conflicting train/train forms remain **PARTIAL / UNADJUDICATED** until source-specific symbol mapping and independent review. Teacher-versus-Strict comparison remains invalid across incompatible representations until the reviewed adapter exists. Production pronunciation rules and runtime output remain unchanged.
