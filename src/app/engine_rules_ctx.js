@@ -3,7 +3,7 @@
  */
 import {
   COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
-  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -27,6 +27,8 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     const exactR002Licensed=exactR002Pair===exactMorphPair;
     const exactR002SubstantivePair=NIKL_15_SUBSTANTIVE_LIAISON_FORMS.get(currentWord);
     const exactR002SubstantiveLicensed=exactR002SubstantivePair===exactMorphPair;
+    const exactR016Pair=NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS.get(currentWord);
+    const exactR016Licensed=exactR016Pair===exactMorphPair;
 
     if(a.coda==='ㄼ'&&b.onset!=='ㅇ'){
       if(a.char==='밟'){a.coda='ㅂ';rules.push('lexical-coda-balm');}
@@ -231,10 +233,18 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     }
 
     if(a.coda==='ㄺ'&&b.onset==='ㄱ'){
-      a.__rieulGiyeokUnlicensed='left';
-      b.__rieulGiyeokUnlicensed='right';
-      rules.push('rieul-giyeok-exception-requires-morphology');
-      nextRules.push('rieul-giyeok-exception-requires-morphology');
+      if(exactR016Licensed){
+        // NIKL §11: exact verbal-stem examples retain ㄹ and fortify ㄱ.
+        a.coda='ㄹ';
+        b.onset='ㄲ';
+        rules.push('rieul-giyeok-exception-§11-exact-form');
+        nextRules.push('rieul-giyeok-exception-§11-exact-form');
+      }else{
+        a.__rieulGiyeokUnlicensed='left';
+        b.__rieulGiyeokUnlicensed='right';
+        rules.push('rieul-giyeok-exception-requires-morphology');
+        nextRules.push('rieul-giyeok-exception-requires-morphology');
+      }
       continue;
     }
 
