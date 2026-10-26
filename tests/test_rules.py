@@ -818,3 +818,33 @@ def test_nikl_qna_330963_attested_attached_l_ge_fortition_is_productive_but_not_
     items, traces = apply_ordered_rules(parse_syllables("할 게"), ["R013"], boundary_mode="same_word")
     assert items[1].onset == "ㄱ"
     assert not traces[0].changed
+
+
+
+def test_nikl_section_27_adnominal_phrase_licenses_match_browser_inventory():
+    expected = {
+        "할 것을": ("할>것", "ㄲ"),
+        "갈 데가": ("갈>데", "ㄸ"),
+        "할 바를": ("할>바", "ㅃ"),
+        "할 수는": ("할>수", "ㅆ"),
+        "읽을 수": ("을>수", "ㅆ"),
+        "할 적에": ("할>적", "ㅉ"),
+        "갈 곳": ("갈>곳", "ㄲ"),
+        "할 도리": ("할>도", "ㄸ"),
+        "만날 사람": ("날>사", "ㅆ"),
+    }
+    for phrase, (pair, onset) in expected.items():
+        items, traces = apply_ordered_rules(
+            parse_syllables(phrase), ["R013"], boundary_mode="phrase"
+        )
+        right = pair.split(">")[1]
+        right_item = next(item for item in items if item.text == right)
+        assert right_item.onset == onset, phrase
+        assert traces[0].changed, phrase
+        assert traces[0].license_context == f"R013:adnominal_l:{phrase}:{pair}", phrase
+
+    items, traces = apply_ordered_rules(
+        parse_syllables("할 것을"), ["R013"], boundary_mode="same_word"
+    )
+    assert next(item for item in items if item.text == "것").onset == "ㄱ"
+    assert traces[0].status == "conditional-disabled"
