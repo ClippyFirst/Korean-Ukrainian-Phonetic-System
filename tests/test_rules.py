@@ -652,6 +652,8 @@ def test_nikl_rule_28_listed_compound_fortition_examples_have_exact_licenses():
         "아침밥": ("침>밥", "ㅃ"),
         "굴속": ("굴>속", "ㅆ"),
         "술잔": ("술>잔", "ㅉ"),
+        "물가": ("물>가", "ㄲ"),
+        "봄비": ("봄>비", "ㅃ"),
     }
     for word, (pair, expected_onset) in examples.items():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R014"])
@@ -742,3 +744,16 @@ def test_nikl_stem_fortition_rules_do_not_include_ㅂ():
         )
         assert items[1].onset == "ㅂ", word
         assert not trace.changed, word
+
+
+
+def test_nikl_qna_316282_compound_fortition_examples_do_not_generalize_from_coda_alone():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    assert phoneticize_korean("물가")["surface_hangul"] == "물까"
+    assert phoneticize_korean("봄비")["surface_hangul"] == "봄삐"
+
+    # The exact lexical/compound license is not a generic ㄹ+ㄱ or ㅁ+ㅂ rule.
+    items, traces = apply_ordered_rules(parse_syllables("물고"), ["R014"])
+    assert items[1].onset == "ㄱ"
+    assert traces[0].status == "conditional-disabled"
