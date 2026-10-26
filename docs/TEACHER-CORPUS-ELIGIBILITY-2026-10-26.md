@@ -157,3 +157,8 @@ The compatibility audit now classifies target-string differences that remain aft
 | SIGMORPHON dev vs UGTPHON dev | 4 | 6 | 0 |
 
 For the train/train overlap, 151 of the 366 mismatching forms differ only when length marks are removed in this diagnostic; the other 215 still differ. This suggests target-convention differences are material and length handling is one contributor, but it does not prove the length mark is wrong in either source. Length remains phonologically meaningful and is never removed from exported data. No syllable-dot-only mismatch was observed under this particular comparison. These aggregate categories guide manual source review only.
+
+
+## Typed annotation packets (2026-10-26)
+
+The source-only builders now feed `scripts/packetize_korean_ipa_annotations.py` on train/dev only. The output preserves each source target string and exposes its representation-specific units/markers for inspection; it leaves `clippyfirst_broad_ipa` and Ukrainian output null until a reviewed mapping exists. This does not change the underlying source data, combine the corpora, or promote either corpus to normative IPA gold. The focused tests and CI artifact are maintained by `.github/workflows/teacher-corpus-audit.yml`.
