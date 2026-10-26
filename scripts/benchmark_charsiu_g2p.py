@@ -276,6 +276,7 @@ def evaluate(
     model_weights_license_status: str | None = None,
     tokenizer_license: str | None = None,
     output_convention: str | None = None,
+    input_prefix: str | None = None,
     additional_limitations: list[str] | None = None,
 ) -> dict[str, Any]:
     occurrences, words = eligible_occurrences(rows)
@@ -285,6 +286,7 @@ def evaluate(
     model_weights_license_status = model_weights_license_status or os.environ.get("G2P_MODEL_WEIGHTS_LICENSE_STATUS", "UNRESOLVED: Hugging Face model page has no explicit weights license; research-only, no redistribution")
     tokenizer_license = tokenizer_license or os.environ.get("G2P_TOKENIZER_LICENSE", "Apache-2.0 (google/byt5-small model card)")
     output_convention = output_convention or os.environ.get("G2P_OUTPUT_CONVENTION", "model IPA convention not independently specified")
+    input_prefix = input_prefix or os.environ.get("G2P_LANGUAGE_PREFIX", "<kor>:")
     additional_limitations = additional_limitations or []
     scored = []
     missing = []
@@ -320,6 +322,7 @@ def evaluate(
         "tokenizer_revision": os.environ.get("CHARSIU_RESOLVED_TOKENIZER_REVISION", os.environ.get("CHARSIU_TOKENIZER_REVISION", "UNPINNED")),
         "tokenizer_license": tokenizer_license,
         "output_convention": output_convention,
+        "input_prefix": input_prefix,
         "dataset": "pinned input supplied by caller; diagnostic score only",
         "eligible_occurrences": len(occurrences),
         "unique_words": len(words),
@@ -360,6 +363,7 @@ def main() -> int:
     parser.add_argument("--model-weights-license-status", default=os.environ.get("G2P_MODEL_WEIGHTS_LICENSE_STATUS", "UNRESOLVED: Hugging Face model page has no explicit weights license; research-only, no redistribution"))
     parser.add_argument("--tokenizer-license", default=os.environ.get("G2P_TOKENIZER_LICENSE", "Apache-2.0 (google/byt5-small model card)"))
     parser.add_argument("--output-convention", default=os.environ.get("G2P_OUTPUT_CONVENTION", "model IPA convention not independently specified"))
+    parser.add_argument("--language-prefix", default=os.environ.get("G2P_LANGUAGE_PREFIX", "<kor>:"))
     parser.add_argument("--model-limitation", action="append", default=[])
     parser.add_argument("--compare-existing-engines", action="store_true")
     args = parser.parse_args()
@@ -383,6 +387,7 @@ def main() -> int:
         model_weights_license_status=args.model_weights_license_status,
         tokenizer_license=args.tokenizer_license,
         output_convention=args.output_convention,
+        input_prefix=args.language_prefix,
         additional_limitations=args.model_limitation,
     )
     if args.compare_existing_engines:
@@ -399,7 +404,7 @@ def main() -> int:
         "tokenizer_revision_requested", "tokenizer_revision", "eligible_occurrences",
         "scored_occurrences", "coverage", "exact_matches", "exact_match_rate",
         "character_error_rate", "missing_predictions", "prediction_failure_counts_by_unique_word",
-        "model_code_license", "model_weights_license_status", "tokenizer_license", "output_convention",
+        "model_code_license", "model_weights_license_status", "tokenizer_license", "output_convention", "input_prefix",
     )}
     if "comparison" in report:
         summary["paired_comparisons"] = report["comparison"]["paired_comparisons"]
