@@ -73,3 +73,27 @@ Do not run it against UGTPHON test, SIGMORPHON test, the project 24-form holdout
 ## Final principle
 
 The desired product is a **neural-free deterministic engine with neural-comparable results where evidence supports that claim**, not a disguised neural service. This workflow helps us learn from neural disagreements while keeping the runtime transparent, source-backed, reproducible, and safe against test leakage.
+
+
+## Benchmark corpora: training vs evaluation (clarification, 2026-10-26)
+
+**Yes, benchmark data can be useful for learning, but only through its explicitly released training/development partitions.** A benchmark's test file is an evaluation set and must not be used to fine-tune the neural teacher, select rules, choose IPA normalization, or decide which examples to patch. The fact that a repository is called UGTPHON or SIGMORPHON does not itself disqualify its train/dev partitions; the exact file, immutable revision, split, license, and row membership must be verified.
+
+The candidate miner now allows a pinned UGTPHON/SIGMORPHON dataset identifier when the provenance declares a real `train` or `dev` split. It continues to reject non-train/dev splits and dataset identifiers that denote the project holdout or a sealed test set. This is an eligibility correction, **not evidence that such train/dev files have already been located, licensed, or processed**. The benchmark snapshots currently described in the repository are test/evaluation inputs; they must not be re-labelled as training data.
+
+Keep two distinct workflows:
+
+1. **Teacher inference / rule discovery:** run the existing pinned neural checkpoint on licensed train/dev examples; compare raw IPA outputs with Strict; manually verify discrepancies against primary Korean sources; validate candidate changes on a separate dev subset.
+2. **Fine-tuning the neural teacher:** only if the exact checkpoint's license permits modification/training and the dataset license permits the intended use. Record base checkpoint/revision, training code and config, seeds, data hashes/splits, output checkpoint provenance, and overlap with the original teacher training data. If model rights or original training-data overlap remain unresolved, this step stays blocked; do not download/redistribute weights or claim leakage-free evaluation.
+
+Use a three-way separation where data availability permits: train partition for fitting/fine-tuning, dev partition for selecting hypotheses and deterministic rule candidates, and a sealed test/holdout partition for one-time final evaluation only. Deduplicate normalized source forms across partitions before training and report exact overlap counts. If the upstream source has only a test split, it is useful for evaluation only and is not repurposed as training data. For any deterministic rule, neural agreement is a hypothesis signal—not a linguistic citation—and the final implementation still requires positive and negative controls plus a held-out gain.
+
+### Updated task status
+
+| Task | Status | Acceptance criterion |
+|---|---|---|
+| Permit benchmark-family train/dev partitions in the diagnostic miner | `DONE_VERIFIED` after exact-head CI | UGTPHON/SIGMORPHON identifiers accepted for train/dev; explicit holdout/test identifiers and non-train/dev splits rejected |
+| Locate and license actual benchmark train/dev files | `TODO` | Pin upstream revision and exact file paths; verify license, split semantics, duplicates and leakage before inference |
+| Run Charsiu teacher on benchmark train/dev | `BLOCKED` | Need actual permitted train/dev files, pinned inference environment, and checkpoint usage rights/overlap assessment |
+| Fine-tune Charsiu on benchmark data | `BLOCKED` | In addition to dataset rights, verify checkpoint license permits fine-tuning and define an uncontaminated held-out evaluation protocol |
+| Add source-adjudicated rules to deterministic Strict | `TODO` | Each rule backed by primary source, positive/negative regression tests, and a separate dev/holdout evaluation |
