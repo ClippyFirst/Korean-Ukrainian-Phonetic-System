@@ -61,6 +61,10 @@ class TestBuildTestCaseRegister(unittest.TestCase):
             self.assertEqual(stats["source_lines_preserved"], 3)
             self.assertTrue(any(row["raw_line"] == "const a = '안지'; // expected surface 안찌 and IPA an.tɕ͈i" for row in source_lines))
             self.assertTrue(any(row["source_category"] == "fixture" and row["raw_line"] == "안지와 안다" for row in source_lines))
+            with (output / "TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv").open(encoding="utf-8", newline="") as stream:
+                assertions = list(csv.DictReader(stream))
+            self.assertTrue(any(row["raw_line"].lstrip().startswith("def test_exports_") for row in assertions))
+            self.assertTrue(any("self.assertEqual" in row["raw_line"] for row in assertions))
 
 
 if __name__ == "__main__":
