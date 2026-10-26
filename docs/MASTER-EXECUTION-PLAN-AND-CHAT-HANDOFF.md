@@ -29,15 +29,15 @@
 | Task | Status | Acceptance evidence |
 |---|---|---|
 | Add reproducible teacher-vs-Strict per-case diagnostic | DONE_VERIFIED | Script emits machine-readable case-level raw/normalized outputs, exact-match and teacher-reference CER; full Python matrix passed |
-| Prevent use of known test/holdout splits | DONE_VERIFIED | Tests reject non-train/dev splits, known benchmark/holdout identifiers, row/provenance split mismatch, and duplicate case IDs |
+| Prevent use of known test/holdout splits | DONE_VERIFIED | Tests reject non-train/dev splits and explicit holdout IDs even when mislabeled; verified benchmark family names are permitted only with train/dev split metadata, and row/provenance split mismatch and duplicate case IDs are rejected |
 | Validate conservative normalization and context associations | DONE_VERIFIED | Tests cover preservation of IPA contrasts, eojeol boundary classes, all adjacent word pairs, and reference-normalized CER |
 | Use model disagreements to add production rules | TODO | Each candidate needs independent primary-source adjudication, positive/negative controls, and separate dev-set improvement |
-| Run teacher inference on a legally cleared train/dev corpus | BLOCKED | Need an eligible corpus split, model rights review, pinned inference artifact, and upstream training-data-overlap audit |
+| Audit benchmark corpus split eligibility and rights | DONE_VERIFIED | Pinned UGTPHON train/dev/test files and Apache-2.0 data notice verified; SIGMORPHON fixture confirmed test-only in this repo; Charsiu upstream source notes and missing checkpoint model card documented |\n| Run teacher inference / fine-tuning on a legally cleared train/dev corpus | BLOCKED | UGTPHON train/dev are candidates, but Charsiu checkpoint weight license and original-data overlap remain unresolved; SIGMORPHON train/dev source not verified |
 | Change Strict runtime or Ukrainian rendering from teacher predictions | DEFERRED | No automatic distillation; preserve deterministic runtime and IPA-to-Ukrainian boundary until evidence gates clear |
 
 ## Immediate continuation
 
-1. Check the CI started by the latest documentation-only commit; the executable code was already verified on `6eb5448`.
+1. Confirm exact-head CI for the current documentation updates; the executable code and train/dev eligibility tests passed on `7e3728e`.
 2. Keep the PR draft until a suitable train/dev corpus, model rights, and overlap evidence are available.
 3. Review context associations only as a human review queue. Never convert a teacher prediction into a source-backed rule without primary-source support.
 4. Continue deterministic Strict improvement from sourced phonological evidence independently of unresolved neural-model licensing; do not tune on benchmark holdouts.
