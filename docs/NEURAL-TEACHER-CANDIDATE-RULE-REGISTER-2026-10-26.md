@@ -61,6 +61,24 @@ The same artifact's development report groups teacher exact-match rate by Hangul
 
 This is a useful prioritization signal for manual stratification: within this dev artifact, teacher exact match is lower for three- and four-character forms containing a coda than for same-length forms without one. It is **not** evidence that coda phonology causes the errors or that Strict is missing a coda rule. Bucket sizes above four characters are very small and must not support generalizations. The next useful analysis is to cross-tabulate these forms with reviewed IPA error types and current Strict traces, then separate model errors, convention differences, unresolved morphology and genuine Strict omissions.
 
+
+## Case-level diagnostic evidence from the pinned Charsiu run
+
+The workflow artifact [12666733087](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40356670303/artifacts/12666733087) was retrieved and its JSON reports and paired JSONL files were parsed. Its inference and artifact upload completed, but workflow run 40356670303 ended at a final validation assertion because the check expected a lowercase phrase while the report emits "Controlled IPA-renderer sensitivity diagnostic". The assertion was corrected in commit defa4a2; these metrics remain **exploratory until a corrected exact-head workflow passes**.
+
+| Corpus / dev partition | Charsiu exact vs corpus annotation | Strict broad-profile exact | Charsiu exact, Strict broad not exact | Strict abstentions |
+|---|---:|---:|---:|---:|
+| SIGMORPHON 2021 medium Korean | 676/1,000 (67.60%) | 332/994 (33.40%) | 345 | 6 |
+| UGTPHON Korean | 1,670/1,834 (91.06%) | 977/1,800 (54.28%) | 728 | 34 |
+
+The SIGMORPHON paired cross-tab is: both exact 330; Charsiu exact / Strict broad not exact 345; Charsiu not exact / Strict broad exact 2; both not exact 317; Strict abstained with Charsiu not exact 5; Strict abstained with Charsiu exact 1. For UGTPHON: both exact 922; Charsiu exact / Strict broad not exact 728; Charsiu not exact / Strict broad exact 55; both not exact 95; Strict abstained with Charsiu not exact 14; Strict abstained with Charsiu exact 20. These are comparisons under the current diagnostic normalizer, not adjudicated pronunciation scores.
+
+A second signal is that the renderer itself materially changes apparent agreement. On SIGMORPHON, the partial narrow sibilant profile reaches 431/994 exact (43.36%) vs the broad renderer's 332/994 (33.40%), with reported codepoint CER 11.2901% vs 15.4088%. On UGTPHON it reaches 1,193/1,800 (66.28%) vs 977/1,800 (54.28%), with CER 6.3537% vs 9.6086%. The profile is explicitly partial and target-incompatible; this is **not** a recommendation to switch production output to narrow IPA. It demonstrates why source-convention reconciliation must precede rule mining.
+
+The paired rows illustrate why the counts cannot be interpreted as missing phonological rules. For SIGMORPHON 가수, the corpus target is k a̠ sʰ u, Charsiu emits ka̠sʰu, and Strict broad emits ka.su; the differences include source tokenization, vowel diacritics, aspiration notation, and syllable boundary. For UGTPHON 애들, the corpus target and Charsiu output are ɛ̝dɯɭ, while Strict broad emits ɛ.dɯl. These require a typed feature mapping and explicit loss accounting before any phonological judgment.
+
+**Case-ledger decision:** the 345 and 728 rows where Charsiu matches its corpus annotation but Strict broad does not are a *convention-review queue*, not 1,073 missing rules. The original dev artifacts preserve the full case IDs and raw strings. Do not select production rules from this dev queue; use eligible train examples for hypothesis selection and a separately reviewed dev gold set for evaluation. Checkpoint training overlap and weights license remain unresolved, so the Charsiu outputs remain research-only.
+
 ## Candidate register
 
 **Important:** The families below are review queues inferred from documented disagreement types and existing rule boundaries. They are not seven rules extracted from the teacher and must not be counted as seven confirmed missing rules. Candidate-level case IDs, environments, sources and independent outcomes must be attached when artifacts are available.
