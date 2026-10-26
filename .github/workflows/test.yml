@@ -47,3 +47,21 @@ jobs:
           "$RUNNER_TEMP/korean-ua-wheel/bin/python" -m pip install dist/*.whl
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/korean-ua-wheel/bin/python" -c "from korean_ukrainian.ipa_target_renderer import render_ipa_sequence_to_ukrainian as render; a=render('k.a'); strict=render('kʰjʌ'); b=render('kʰjʌ', allow_provisional=True); assert a['ukrainian_orthography']=='ка' and len(a['segments'])==2; assert strict['ukrainian_orthography'] is None and strict['reason']=='provisional_mapping_requires_review'; assert b['ukrainian_orthography']=='кхьо' and b['status']=='provisional'; print('wheel IPA target data OK')"
+
+  teacher-corpus-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Unit-test pinned corpus parsers and overlap logic
+        run: python -m pytest -q tests/test_audit_teacher_corpus_splits.py
+      - name: Verify source pins and audit Korean train/dev/test overlaps
+        run: python scripts/audit_teacher_corpus_splits.py --output-json "$RUNNER_TEMP/teacher-corpus-split-audit.json"
+      - name: Upload metadata-only audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: teacher-corpus-split-audit
+          path: ${{ runner.temp }}/teacher-corpus-split-audit.json
+          if-no-files-found: error
