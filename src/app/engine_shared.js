@@ -124,6 +124,19 @@ const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
   ['넘게','넘>게'],
 ]);
 
+// Exact, source-backed NIKL §28 compound fortition cases. These licenses
+// are lexical: a coda + plain onset alone is not enough to infer a compound.
+const NIKL_28_COMPOUND_FORTITION_FORMS=new Map([
+  ['문고리','문>고'], ['눈동자','눈>동'], ['신바람','신>바'],
+  ['산새','산>새'], ['손재주','손>재'], ['길가','길>가'],
+  ['물동이','물>동'], ['발바닥','발>바'], ['바람결','람>결'],
+  ['그믐달','믐>달'], ['강가','강>가'], ['초승달','승>달'],
+  ['등불','등>불'], ['창살','창>살'], ['강줄기','강>줄'],
+  ['아침밥','침>밥'], ['굴속','굴>속'], ['술잔','술>잔'],
+  // NIKL Online Q&A 316282 explicitly cites 물가[물까], 봄비[봄삐].
+  ['물가','물>가'], ['봄비','봄>비'],
+]);
+
 // Exact, source-licensed phrase boundaries whose rules require syntax or a
 // known compound. These maps deliberately do not generalize from ㄹ/ㄴ codas.
 const NIKL_27_ADNOMINAL_PHRASES=new Map([
@@ -200,7 +213,7 @@ export {
   HANGUL_BASE, HANGUL_END, V_COUNT, T_COUNT, N_COUNT,
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
-  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
+  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
   NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,
