@@ -295,6 +295,56 @@ def _load_rows_and_words(rows: list[dict[str, Any]]) -> tuple[list[dict[str, str
     return items, unique
 
 
+def _per_engine_occurrence_ledger(
+    items: list[dict[str, str]],
+    predictions: dict[str, dict[str, Any]],
+    native_cache: dict[str, dict[str, Any]],
+) -> dict[str, list[dict[str, Any]]]:
+    """Preserve every token occurrence and raw output/status for cross-engine pairing."""
+    ledger: dict[str, list[dict[str, Any]]] = {}
+    for name, engine_predictions in predictions.items():
+        rows: list[dict[str, Any]] = []
+        for item in items:
+            word = item["word"]
+            if name == "clippyfirst_native":
+                entry = native_cache.get(word, {})
+                ipa = entry.get("ipa")
+                if entry.get("unresolved"):
+                    status = "abstained"
+                elif entry.get("error"):
+                    status = "error"
+                elif not isinstance(ipa, str) or not ipa.strip():
+                    status = "no_output"
+                else:
+                    status = "scored"
+            else:
+                entry = engine_predictions.get(word, {})
+                ipa = entry.get("ipa")
+                if entry.get("error"):
+                    status = "error"
+                elif not isinstance(ipa, str) or not ipa.strip():
+                    status = "no_output"
+                else:
+                    status = "scored"
+            record: dict[str, Any] = {
+                "occurrence_id": item["occurrence_id"],
+                "row_id": item["row_id"],
+                "token": word,
+                "gold": item["gold"],
+                "status": status,
+                "ipa": ipa if isinstance(ipa, str) else None,
+            }
+            if status == "scored":
+                record.update(_score(ipa, item["gold"]))
+            else:
+                record["reason"] = entry.get("error") or entry.get("reason") or (
+                    "native pronunciation unresolved" if status == "abstained" else "engine returned no IPA"
+                )
+            rows.append(record)
+        ledger[name] = rows
+    return ledger
+
+
 def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
     from korean_ukrainian.pipeline import phoneticize_korean
     from korean_ukrainian.phonology import parse_syllables
@@ -646,6 +696,8 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         },
         "engine_order": list(engine_results),
         "engines": engine_results,
+        "per_engine_occurrences": _per_engine_occurrence_ledger(items, predictions, native_cache),
+        "per_engine_occurrence_contract": "one record per eligible occurrence and engine; raw IPA plus status; no-output/error/abstention remain explicit",
         "diagnostic_mismatch_sample": mismatch_details,
         "native_g2pk_pairwise_audit": {
             "occurrence_count": len(native_g2pk_pairwise_audit),
