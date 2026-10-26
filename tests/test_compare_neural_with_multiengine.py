@@ -59,7 +59,7 @@ def test_pairing_uses_identical_occurrences_and_separates_coverage():
             ],
             "g2pk_0_9_4": [
                 {**_scored(0, "r1", False, 1), "token": "가", "gold": "ipa", "status": "scored", "ipa": "bad"},
-                {**_scored(1, "r1", True, 0), "token": "на", "gold": "ipa", "status": "scored", "ipa": "ipa"},
+                {**_scored(1, "r1", True, 0), "token": "나", "gold": "ipa", "status": "scored", "ipa": "ipa"},
                 {**_scored(2, "r2", True, 0), "token": "다", "gold": "ipa", "status": "scored", "ipa": "ipa"},
             ],
         },
