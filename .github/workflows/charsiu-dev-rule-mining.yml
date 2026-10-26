@@ -1,4 +1,4 @@
-name: Charsiu train-dev teacher rule-review queue
+name: Charsiu train-dev broad-and-narrow IPA rule-review queue
 
 on:
   workflow_dispatch:
