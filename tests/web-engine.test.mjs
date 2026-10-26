@@ -114,10 +114,10 @@ test('NIKL R003 exact-form licenses do not generalize to unreviewed lookalikes',
 
 test('NIKL §15 substantive liaison is licensed for 값어치 only, not formal-morpheme lookalikes', () => {
   const substantive = decompose('값어치');
-  applyContextualRules(substantive, '값어치');
+  const substantiveRules = applyContextualRules(substantive, '값어치');
   assert.equal(substantive[0].coda, '');
   assert.equal(substantive[1].onset, 'ㅂ');
-  assert.ok(substantive[0].rules.includes('complex-coda-substantive-liaison-§15-exact-form'));
+  assert.ok(substantiveRules[0].includes('complex-coda-substantive-liaison-§15-exact-form'));
 
   const formal = decompose('값이');
   applyContextualRules(formal, '값이');
