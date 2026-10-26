@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -35,7 +36,7 @@ test('high-risk user-corpus words use explicit standard surface readings', () =>
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     assert.equal(result.ukrainian, target, word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.status, 'lexical-review', word);
     assert.deepEqual(result.issues, [], word);
   }
@@ -143,7 +144,7 @@ test('user-supplied stress corpus: exact phrase entries preserve word boundaries
     const result = engine.convert(input, { morphologyMode: 'practical' });
     assert.equal(result.surfaceHangul, surface, input + ': surface');
     assert.equal(result.ukrainian, target, input + ': Ukrainian target');
-    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': IPA');
     assert.deepEqual(result.issues, [], input + ': ' + JSON.stringify(result.issues));
   }
 });
@@ -170,7 +171,7 @@ test('user-supplied stress corpus: complex-coda and assimilation controls are co
   for (const [input, [surface, ipa]] of Object.entries(expected)) {
     const result = engine.convert(input, { morphologyMode: 'practical' });
     assert.equal(result.surfaceHangul, surface, input + ': surface');
-    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': IPA');
     assert.deepEqual(result.issues, [], input + ': ' + JSON.stringify(result.issues));
     assert.ok(!result.ukrainian.includes('⟦'), input + ': unresolved placeholder');
   }
