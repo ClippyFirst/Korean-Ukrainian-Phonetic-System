@@ -52,6 +52,7 @@ _NIKL_R002_FORMAL_LICENSES = {
     "맞아": "맞>아",  # §13: 맞아[마자].
     "붙어": "붙>어",  # §13: 붙어[부터].
     "읽어": "읽>어",  # §14: 읽어[일거].
+    "헛웃음": "웃>음",  # §13 formal -음 nominalizer after the §15 compound boundary.
     "없어도": "없>어",  # 없- + connective ending -어도; NIKL §14 attests 없어[업써].
     # Direct NIKL surface evidence: 없음[업씀], Q&A/FAQ 8391 (also listed in Q&A 335008).
     "없음": "없>음",
