@@ -207,3 +207,10 @@ Descriptive exact-match rates by Hangul character count and whether the final sy
 - 4 syllables: 41.5% with coda (17/41), 62.9% without (73/116).
 
 Longer-form buckets have small samples (five or more syllables total only 35 cases), so their rates are unstable. The three-/four-syllable coda gap is a diagnostic lead for reviewing the model's contexts, not evidence of a Korean rule. The analysis only groups errors; it does not generate or change runtime rules. The current code/test head's Python tests, browser/build checks, system verification, corpus audit, and scratch training/error-analysis workflow all passed on commit 985bfbab0cfc1a696e4f69209bb84d41446aec43.
+
+
+## Typed IPA annotation boundary (2026-10-26)
+
+The executable packetizer in `scripts/packetize_korean_ipa_annotations.py` is intentionally lossless and non-converting. It preserves SIGMORPHON whitespace tokens and UGTPHON Unicode clusters as differently typed source units, records explicit dot-like boundaries, stress and length markers, and refuses sealed splits. It does not assert that a Unicode cluster is a phoneme, normalize away diacritics, infer missing syllable boundaries, or emit ClippyFirst broad IPA or Ukrainian text.
+
+The dedicated test suite and teacher-corpus workflow now packetize only train/dev examples from both corpora and upload separate artifacts. See [typed IPA boundary contract](TYPED-IPA-ANNOTATION-BOUNDARY-2026-10-26.md). This is an executable safety boundary, **not yet a conversion adapter**. The next requirement is a primary-source-backed symbol/feature mapping with explicit loss accounting and independent review. No production rules changed.
