@@ -98,7 +98,64 @@ def render_profile_pair(words: list[str]) -> tuple[dict[str, dict[str, Any]], di
     diagnostic isolates the declared IPA renderer difference rather than mixing
     profile changes with lexical override coverage.
     """
-    broad_outputs, narrow_outputs = render_profile_pair(words)
+    broad_outputs: dict[str, dict[str, Any]] = {}
+    narrow_outputs: dict[str, dict[str, Any]] = {}
+    for word in words:
+        # Reuse the production pipeline's exact ambiguity gate. Its IPA string
+        # is deliberately not used here because broad profile output must not
+        # include lexical IPA overrides.
+        production = phoneticize_korean(word, ipa_level="broad")
+        if production["pronunciation_status"] == "unresolved":
+            finding = production["unresolved_contexts"][0] if production["unresolved_contexts"] else {}
+            abstention = {
+                "status": "abstained",
+                "reason": finding.get("reason", "unresolved_pronunciation_context"),
+                "ipa": None,
+            }
+            broad_outputs[word] = dict(abstention)
+            narrow_outputs[word] = dict(abstention)
+            continue
+
+        items = parse_syllables(word)
+        items, traces = apply_ordered_rules(items)
+        lexical_traces = _apply_lexical_pronunciations(items)
+        # Preserve the same surface analysis as production but render both IPA
+        # profiles from the same mutable syllable sequence. Exclude lexical
+        # IPA overrides from both sides to isolate only the renderer delta.
+        traces_payload = [trace.to_dict() for trace in traces] + lexical_traces
+        unresolved = _unlicensed_ambiguous_pronunciation_contexts(traces_payload, items)
+        for i in range(len(items)):
+            start = i
+            while start > 0 and items[start - 1].boundary_after != "word":
+                start -= 1
+            end = i + 1
+            while end < len(items) and items[end - 1].boundary_after != "word":
+                end += 1
+            word_form = "".join(item.text for item in items[start:end])
+            entry = LEXICAL_PRONUNCIATIONS.get(word_form)
+            if entry and entry.get("ipa_adjudication_status") == "diagnostic_only_unresolved_pronunciation":
+                unresolved.append({"reason": "independent_ipa_adjudication_required"})
+                break
+        if unresolved:
+            finding = unresolved[0]
+            abstention = {
+                "status": "abstained",
+                "reason": finding.get("reason", "unresolved_pronunciation_context"),
+                "ipa": None,
+            }
+            broad_outputs[word] = dict(abstention)
+            narrow_outputs[word] = dict(abstention)
+            continue
+
+        broad = realize_syllables(items, level="broad")
+        narrow = realize_syllables(items, level="narrow")
+        broad_outputs[word] = {"status": "scored", "ipa": broad["ipa"], "level": "broad"}
+        narrow_outputs[word] = {
+            "status": "scored",
+            "ipa": narrow["ipa"],
+            "level": "narrow",
+            "transcription_profile": narrow.get("transcription_profile"),
+        }
     return broad_outputs, narrow_outputs
 
 
