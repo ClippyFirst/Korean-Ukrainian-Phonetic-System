@@ -189,6 +189,7 @@ def prepare(output_dir: Path) -> dict:
             split: {
                 **source_meta[split],
                 **summaries[split],
+                "output_row_count": summaries[split]["eligible_token_occurrences"] if split in {"train", "dev"} else 0,
                 "output_file_sha256": sha256((output_dir / f"{split}.jsonl").read_bytes())
                 if split in {"train", "dev"} else None,
             }
