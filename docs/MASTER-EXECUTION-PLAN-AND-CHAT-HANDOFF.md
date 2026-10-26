@@ -2318,3 +2318,35 @@ The test-case inventory artifact remains the reusable source of candidate occurr
 2. Poll exact-head test workflow 40400451313 and system verification 40400451288; inspect the full logs for the updated head.
 3. Reconcile IPA dot/space failures in bounded batches with explicit word-boundary controls; keep unrelated phonological and target-layer failures separate.
 4. Continue from the generated inventory artifact to case-level assertion classification. Do not restart inventory generation or neural training unnecessarily.
+
+
+## Verified inventory generation and full test result — 2026-10-26
+
+### Inventory artifact is now complete
+
+The loss-preserving extraction workflow [40400451180](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451180) finished successfully on code/test head ceda29b and uploaded [artifact 12689091191](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451180/artifacts/12689091191). ZIP SHA-256: 1b7ebaf1feaeb0139b395388b052c639c43ba0db58a40723f7c60178ad287b3b.
+
+Verified counts: 644 lexical rows; 357 test files; 385 source files; 6,794 lexical-to-test text links; 50,753 Hangul literal candidates; 34,509 exact source lines with per-line hashes; 5,522 assertion/test-declaration candidates; 644 lexical inputs with at least one textual match. This artifact is reproducible and loss-preserving, but remains a candidate inventory rather than a semantically complete case ledger.
+
+### Exact code/test-head verification
+
+Workflow [40400451313](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451313) on ceda29b completed with:
+- PASS: Python 3.11, Python 3.12, Python 3.13, wheel install, teacher-corpus audit.
+- FAIL: browser/web test job.
+Workflow [40400451288](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451288): Python regression/data integrity PASS; browser regression FAIL; optional NIKL metadata-only inventory skipped by workflow condition.
+Browser G2P integration [40400451174](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40400451174) also failed.
+
+The web test log contains **82 failing subtests**. Most observed examples are serialization-contract mismatches: current output uses dots between syllables within one eojeol (for example actual nʌk̚.ɕ͈i), while older assertions still expect spaces (nʌk̚ ɕ͈i). However, not all failures are separator-only: the log also includes incomplete output for mixed numeric/phrase inputs (e.g. “3 연대” returned only “sam” instead of the expected full phrase) and a generic vowel-variant assertion still using the old format. Do not bulk-replace all spaces or call all 82 failures mere formatting. Separate pure renderer-expectation updates from actual tokenization, variant, surface, and target failures.
+
+### Task ledger refresh
+
+| Task | Status | Evidence |
+|---|---|---|
+| Lossless raw-line register generation | DONE_VERIFIED | Artifact 12689091191; run 40400451180 passed generation and upload |
+| Python unit/data tests across 3.11–3.13 | DONE_VERIFIED for code/test head ceda29b | Run 40400451313 |
+| Wheel installation | DONE_VERIFIED for code/test head ceda29b | Run 40400451313 |
+| Browser suite / public build gate | PARTIAL / FAIL | 82 browser subtests failed; build step skipped after test failure |
+| Full semantic case register | PARTIAL | Candidate inventory exists; assertion classification, exact observed-result joins, and duplicate provenance reconciliation remain |
+| Neural-teacher-to-production-rule promotion | BLOCKED | IPA conventions and independent source/target adjudication remain unresolved |
+
+The current PR head includes later documentation-only commits after ceda29b; the above executable verification is explicitly for ceda29b. Exact-head checks for the later documentation head must be confirmed separately. PR #339 remains draft and must not be merged while the browser gate is failing.
