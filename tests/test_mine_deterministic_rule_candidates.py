@@ -116,6 +116,23 @@ def test_duplicate_case_ids_are_rejected(tmp_path):
         build_report(input_path, provenance_path)
 
 
+@pytest.mark.parametrize("case_id", [
+    "test-001",
+    "case_holdout_002",
+    "nikl-24-form-003",
+])
+def test_sealed_test_or_holdout_case_ids_are_rejected_even_when_split_says_dev(tmp_path, case_id):
+    input_path, provenance_path = write_inputs(tmp_path)
+    rows = [json.loads(line) for line in input_path.read_text(encoding="utf-8").splitlines()]
+    rows[1]["case_id"] = case_id
+    input_path.write_text(
+        "\\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="identifiers marked test/holdout"):
+        build_report(input_path, provenance_path)
+
+
 def test_context_buckets_distinguish_eojeol_space_from_within_word():
     contexts = context_buckets("국밥 국 물")
     assert "within-eojeol:coda=velar-family:next-onset=bilabial" in contexts
