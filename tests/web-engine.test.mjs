@@ -128,6 +128,28 @@ test('NIKL §15 substantive liaison is licensed for 값어치 only, not formal-m
   assert.equal(result.surfaceHangul, '가버치');
 });
 
+test('browser strict rules cover official NIKL §§13–14 liaison examples without productive guessing', () => {
+  const cases = [
+    ['닭이', 'ㄹ', 'ㄱ'],
+    ['넋이', 'ㄱ', 'ㅆ'],
+    ['값이', 'ㅂ', 'ㅆ'],
+    ['깎아', '', 'ㄲ'],
+    ['있어', '', 'ㅆ'],
+    ['쫓아', '', 'ㅊ'],
+    ['덮어', '', 'ㅍ'],
+    ['맞아', '', 'ㅈ'],
+    ['붙어', '', 'ㅌ'],
+    ['읽어', 'ㄹ', 'ㄱ'],
+  ];
+  for (const [input, expectedCoda, expectedOnset] of cases) {
+    const units = [...input].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+    const rules = applyContextualRules(units, input);
+    assert.equal(units[0].coda, expectedCoda, input);
+    assert.equal(units[1].onset, expectedOnset, input);
+    assert.ok(rules[0].some(rule => rule.includes('exact-form')), input);
+  }
+});
+
 test('exact-form R002 licenses resolve Korean surface contexts in browser strict mode', () => {
   const result = engine.convert('없음');
   assert.equal(result.surfaceHangul, '업씀');
