@@ -1417,3 +1417,48 @@ Interpretation boundary:
 - Regression tests cover three R016 forms, exact rule trace/source retention, the noun negative control, all five §15 forms, and the two-boundary 헛웃음 path.
 - Exact-head CI for the combined R002/R016/trace changes is currently queued behind earlier diagnostic runs. Do not mark this follow-on DONE_VERIFIED until the latest Python and browser test workflows pass. The optional live NIKL inventory remains separately skipped by workflow condition.
 - No aggregate accuracy percentage is claimed: several forms already had lexical overrides, and broad IPA/Ukrainian target gold remains independently unadjudicated.
+
+
+## Exact-head reconciliation — R002/R016 — 2026-10-26 15:05 +0200
+
+**Status: DONE_VERIFIED for the implemented rule/test scope at commit `66c8e62dd575e70edd24e0e837a13dcc5a2dbc1a`; PARTIAL for overall linguistic validation and accuracy.** This section supersedes the earlier queued-CI statement in the preceding R016 note.
+
+### Exact-head CI evidence
+
+All listed runs below are on the exact head SHA `66c8e62dd575e70edd24e0e837a13dcc5a2dbc1a` (not the earlier parent SHA):
+
+- [Verify Korean–Ukrainian system, run 40325471931](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471931) — **success**. Python regression/data integrity and browser regression/build jobs both succeeded. The optional official NIKL source-inventory job was **skipped by its workflow condition**, not passed.
+- [Tests, run 40325471784](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471784) — **success**: Python 3.11, 3.12, 3.13, browser/web, and wheel-install jobs all succeeded.
+- [Master table and research corpus artifacts, run 40325471664](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471664) — **success**.
+- [Paired native Korean engine vs g2pk diagnostic, run 40325471709](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471709) — **success** as a diagnostic workflow; not independent gold adjudication.
+- [Multi-engine Korean IPA diagnostic benchmark, run 40325471732](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471732) — **success** as a benchmark execution.
+- [External UGTPHON Korean IPA diagnostic, run 40325471662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471662) — **success** as a diagnostic execution.
+- [Korean morphology-consensus IPA diagnostic, run 40325472069](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325472069) — **success**.
+- [Research morphology adapter smoke, run 40325471811](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471811) — **success**.
+- The duplicate push-triggered system verification [run 40325461907](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325461907) also **succeeded** on the same SHA.
+
+These results verify CI for the current head; they do not prove broad phonological accuracy. The diagnostic workflow conclusions mean the workflows completed successfully, not that ClippyFirst beat or matched a model on independent gold.
+
+### Reconciled implementation ledger
+
+- **DONE_VERIFIED — R002 formal liaison:** exact-form licenses for NIKL §§13–14 are present in Python and browser paths; positive cases and negative controls are covered.
+- **DONE_VERIFIED — R002 substantive-morpheme liaison:** §15 cases remain a separate path from formal-morpheme liaison; multi-boundary trace preserves the applicable exact-form license evidence.
+- **DONE_VERIFIED — R016:** exact source-backed same-word licenses for `읽고[일꼬]`, `묽고[물꼬]`, and `얽거나[얼꺼나]` are present in both implementations; the noun negative control `닭고기` remains fail-closed.
+- **DONE_VERIFIED — test and artifact gates listed above:** exact-head CI is complete; no local test execution is claimed in this GitHub-only session.
+- **PARTIAL — rule generalization:** these exact-form licenses improve supported rule-layer coverage and parity but are not a general-purpose morphology analyzer. Do not infer broader ㄺ + ㄱ behavior from these licenses.
+- **PARTIAL — measured quality:** no causal aggregate accuracy gain is claimed from R002/R016 because some listed forms already had lexical overrides and the rule additions target a small curated set. A pre/post comparison on a frozen, independently adjudicated holdout is still required.
+- **BLOCKED — live NIKL inventory collector:** the workflow's metadata-only inventory check was skipped by condition; this is not fresh source collection. Existing registered official sources remain usable evidence, with item-level reuse markings still not fully verified.
+- **BLOCKED — independent phonetic/target validation:** direct NIKL bracket pronunciations attest Korean surface forms, not IPA or Ukrainian target gold. Broad independent IPA adjudication and a separately reviewed IPA-to-Ukrainian target set remain outstanding.
+
+### Branch and PR state at reconciliation
+
+- Branch: `fix/r002-source-backed-substantive-liaison-2026-10-26`.
+- Head: `66c8e62dd575e70edd24e0e837a13dcc5a2dbc1a`.
+- Base `main` at the observed time: `a452054a669de28426404d1110731715083423bb`.
+- Draft PR [#341](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/341) remains open, mergeable, and based on `main`; it was not merged.
+- Other open research/implementation PRs were left untouched because they cover distinct research or residual-case scopes; no competing branch was force-updated or closed.
+- Repository-wide readiness remains **research-ready partial prototype, not release-ready**.
+
+### Next acceptance gate
+
+Freeze a pre-change snapshot and a disjoint holdout before further rule mining; run the exact same forms through Python and browser, compare Korean surface output first, IPA second, and Ukrainian target output separately. Report exact-match/CER (or a clearly defined feature error), coverage/abstentions, and positive/negative controls. Until that independent evaluation exists, describe R002/R016 as verified rule-coverage and parity improvements, not a proven overall accuracy increase.
