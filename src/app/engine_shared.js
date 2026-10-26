@@ -80,6 +80,13 @@ const NIKL_15_SUBSTANTIVE_LIAISON_FORMS=new Map([
   ['맛없다','맛>없'],
 ]);
 
+// Exact source-backed NIKL §11 verbal-stem ㄺ + ㄱ exceptions.
+const NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS=new Map([
+  ['읽고','읽>고'], // NIKL Online Q&A qna_seq=329463: 읽고[일꼬].
+  ['묽고','묽>고'], // NIKL §11 example.
+  ['얽거나','얽>거'], // NIKL §11 example.
+]);
+
 // Exact-form NIKL §12(4) ㅎ-coda deletion licenses. These attest only
 // Korean surface behavior, not independent IPA or Ukrainian-output gold.
 const NIKL_COMPLEX_H_SUFFIX_FORMS=new Map([
@@ -193,7 +200,7 @@ export {
   HANGUL_BASE, HANGUL_END, V_COUNT, T_COUNT, N_COUNT,
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
-  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
+  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
   NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,
