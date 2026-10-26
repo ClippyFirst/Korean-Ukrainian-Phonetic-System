@@ -42,6 +42,14 @@ def _tag_parts(value: Any) -> set[str]:
     return {part.strip() for part in value.split("+") if part.strip()}
 
 
+def _grammatical_family(tags: set[str]) -> str:
+    if tags & _ENDING_TAGS:
+        return "ending"
+    if tags & _PARTICLE_TAGS:
+        return "particle"
+    return "other"
+
+
 def _formal_boundary_offsets(text: str, analysis: Mapping[str, Any]) -> set[int]:
     """Return source offsets where a non-zero morpheme boundary has a formal right tag.
 
@@ -262,9 +270,11 @@ def analyzer_consensus_rule_licenses(
             _tag_parts(pairing[1].get("tag", "")) if pairing else set()
             for pairing in aligned
         ]
-        grammatical_suffix_agreement = all(
-            bool(tags & (_ENDING_TAGS | _PARTICLE_TAGS))
-            for tags in right_tags_at_boundary
+        suffix_families = [_grammatical_family(tags) for tags in right_tags_at_boundary]
+        grammatical_suffix_agreement = (
+            len(suffix_families) == len(analyses)
+            and len(set(suffix_families)) == 1
+            and suffix_families[0] in {"ending", "particle"}
         )
         if grammatical_suffix_agreement and offset < len(text):
             for rule_id, scope, licensed_root, licensed_pair in _SOURCE_BACKED_LEXICAL_ROOT_LICENSES:
