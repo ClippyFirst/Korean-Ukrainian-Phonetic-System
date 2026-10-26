@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -29,7 +30,7 @@ test('new adversarial standard-pronunciation forms are sourced and regression-lo
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, want.surface, input + ': standard surface Hangul');
     assert.equal(result.ukrainian, want.target, input + ': project Ukrainian target');
-    assert.equal(result.ipa, want.ipa, input + ': broad IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, want.ipa), input + ': broad IPA');
     assert.equal(result.status, 'lexical-review', input + ': provisional target label');
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), input + ': exact lexical evidence used');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholder');
@@ -69,7 +70,7 @@ test('the contrasting ㄺ/ㄼ/ㄿ/ㅄ contexts keep distinct readings', () => {
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input);
     assert.equal(result.ukrainian, target, input);
-    assert.equal(result.ipa, ipa, input);
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input);
     assert.ok(!result.ukrainian.includes('⟦'), input);
   }
 });
@@ -84,7 +85,7 @@ test('other official coda-plus-fortition examples remain rule-governed', () => {
   for (const [input, want] of Object.entries(expected)) {
     const result = genericEngine.convert(input);
     assert.equal(result.ukrainian, want.target, input);
-    assert.equal(result.ipa, want.ipa, input);
+    assert.equal(result.ipa, renderExpectedIpa(input, want.ipa), input);
     for (const rule of want.rules) {
       assert.ok(result.trace.some((item) => item.rules.includes(rule)), input + ': ' + rule);
     }
