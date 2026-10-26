@@ -2008,7 +2008,7 @@ Expanded the closed R010 inventory in both Python and browser runtimes with elev
 
 The production rule remains gated by an exact full-form + adjacent-pair license and the existing R010 coda/onset environment; this change does not create a broad coda-only heuristic. Added positive runtime regressions and negative controls for the official `-기-` exception (`안기다`), noun-like sequence `감도`, and ambiguous homograph `신고`. The latter is deliberately omitted from automatic licensing because the orthography can be a noun meaning ‘report’; an unconditional full-form rule would not be safe without morphology/sense evidence.
 
-The Python map and browser `NIKL_24_STEM_NM_ENDING_FORMS` map are covered by the existing exact parity test. The canonical S001 source record points directly to the official NIKL Standard Pronunciation Rules page, and S015 registers the official 2009 teacher-training material used for the four supplementary examples. The IPA convention review records scope and exclusions.
+The Python map and browser `NIKL_24_STEM_NM_ENDING_FORMS` map are covered by the existing exact parity test. The canonical S001 source record points directly to the official NIKL Standard Pronunciation Rules page; S015 in `data/korean/sources.csv` and `SRC-NIKL-TRAINING-2009` in `research/SOURCE-REGISTER.csv` both record the official 2009 teacher-training material and its item-level rights uncertainty. The IPA convention review records scope and exclusions.
 
 ### Existing verified implementation preserved
 
