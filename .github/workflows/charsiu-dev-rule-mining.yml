@@ -81,7 +81,7 @@ jobs:
             --tokenizer "$CHARSIU_TOKENIZER_ID" --tokenizer-revision "$CHARSIU_TOKENIZER_REVISION" \
             --batch-size 8
 
-      - name: Assert provenance and sealed-split policy
+      - name: Assert provenance, sealed-split policy, and no automatic rule promotion
         run: |
           python - "$RUNNER_TEMP" <<'PY'
           import json, sys
