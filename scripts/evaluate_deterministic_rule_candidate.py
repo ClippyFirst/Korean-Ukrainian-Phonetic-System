@@ -15,7 +15,7 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
-FORBIDDEN_MARKERS = ("test", "holdout", "sealed", "24-form", "24_form")
+SEALED_TOKEN = re.compile(r"(^|[-/])(test|holdout|sealed|24-form|24form)([-/]|$)", re.I)
 REQUIRED_EVIDENCE = (
     "rule_id",
     "primary_source_url",
@@ -51,10 +51,8 @@ def edit_distance(left: str, right: str) -> int:
 
 
 def _sealed(value: str) -> bool:
-    normalized = re.sub(r"[\s_]+", "-", unicodedata.normalize("NFC", value).strip().lower())
-    return any(marker in normalized for marker in FORBIDDEN_MARKERS) or bool(
-        re.search(r"(^|[-/])(test|holdout|sealed)([-/]|$)", normalized)
-    )
+    normalized = re.sub(r"[\\s_]+", "-", unicodedata.normalize("NFC", value).strip().lower())
+    return bool(SEALED_TOKEN.search(normalized))
 
 
 def load_manifest(path: Path) -> dict[str, Any]:
