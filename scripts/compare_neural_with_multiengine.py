@@ -184,12 +184,18 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
         "dataset": dataset_name,
         "comparison_contract": "same ordered eligible occurrences, same benchmark_ugtphon_ko.normalize_ipa normalizer and gold variants; model/engine outputs are predictions, not normative gold",
         "eligible_occurrences": expected_count,
-        "normalization": baseline.get("normalization"),
+        "normalization_profile": (
+            baseline.get("normalization_profile")
+            or baseline.get("normalization")
+            or "benchmark_ugtphon_ko.normalize_ipa; shared scoring profile for neural and baseline runners"
+        ),
         "neural_model": {
             "id": neural.get("model_id"),
             "revision": neural.get("model_revision"),
             "tokenizer_id": neural.get("tokenizer_id"),
             "tokenizer_revision": neural.get("tokenizer_revision"),
+            "code_license": neural.get("model_code_license"),
+            "tokenizer_license": neural.get("tokenizer_license"),
             "weights_license_status": neural.get("model_weights_license_status"),
             "metrics": {key: neural.get(key) for key in (
                 "scored_occurrences", "coverage", "exact_matches", "exact_match_rate",
@@ -204,6 +210,7 @@ def compare_reports(neural: dict[str, Any], baseline: dict[str, Any], dataset_na
             "SIGMORPHON is lexical word-level, not a sentence-context benchmark.",
             "Scores are diagnostic comparisons to the supplied corpus annotations, not normative IPA gold or Ukrainian-target accuracy.",
             "A shared segment renderer can affect the native/g2pk comparison; see the baseline report's engine adapter notes.",
+            "No local fine-tuning or test-set selection was performed, but overlap between the public checkpoint's training sources and these public benchmark sources cannot be excluded; these are diagnostic scores, not leakage-free generalization estimates.",
         ],
     }
 
@@ -213,10 +220,17 @@ def main() -> int:
     parser.add_argument("--neural-report", type=Path, required=True)
     parser.add_argument("--baseline-report", type=Path, required=True)
     parser.add_argument("--dataset-name", required=True)
+    parser.add_argument("--neural-run-id", default=None)
+    parser.add_argument("--baseline-run-id", default=None)
+    parser.add_argument("--provenance-json", type=Path, default=None,
+                        help="optional model-provenance.json from the same neural run")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     try:
         result = compare_reports(_load(args.neural_report), _load(args.baseline_report), args.dataset_name)
+        result["source_runs"] = {"neural": args.neural_run_id, "baseline": args.baseline_run_id}
+        if args.provenance_json:
+            result["model_provenance"] = _load(args.provenance_json)
     except Exception as exc:
         print(f"comparison failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
