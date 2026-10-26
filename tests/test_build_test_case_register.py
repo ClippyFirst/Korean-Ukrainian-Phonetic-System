@@ -95,8 +95,9 @@ class TestBuildTestCaseRegister(unittest.TestCase):
                 "input,surface_hangul,target_syllables,ipa_syllables\n", encoding="utf-8"
             )
             (root / "tests/bad.txt").write_bytes(b"valid prefix\\xff invalid UTF-8")
-            with self.assertRaisesRegex(RuntimeError, r"Cannot scan source file .*tests[/\\\\]bad\\.txt"):
+            with self.assertRaisesRegex(RuntimeError, "Cannot scan source file") as caught:
                 build(root, root / "out")
+            self.assertIn("bad.txt", str(caught.exception))
 
 if __name__ == "__main__":
     unittest.main()
