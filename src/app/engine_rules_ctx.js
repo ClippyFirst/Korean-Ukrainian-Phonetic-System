@@ -333,6 +333,11 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     const currentPair=a.char+'>'+b.char;
     const fortisRep=representative(a.coda);
     if(exactR010Pair===currentPair&&['ㄴ','ㅁ'].includes(fortisRep)&&PLAIN_TO_FORTIS[b.onset]){
+      // Exact §24 licenses also expose the realized simple coda when the
+      // written stem ends in a complex coda (e.g. 닮고 → 담꼬, 젊지 → 점찌).
+      // Do not simplify unrelated complex codas without their own evidence.
+      if(['ㄵ','ㄶ'].includes(a.coda)&&fortisRep==='ㄴ')a.coda='ㄴ';
+      else if(['ㄻ','ㄼ'].includes(a.coda)&&fortisRep==='ㅁ')a.coda='ㅁ';
       b.onset=PLAIN_TO_FORTIS[b.onset];
       nextRules.push('stem-n-m-fortition-§24');
     }else if(PLAIN_TO_FORTIS[b.onset]&&['ㄱ','ㄷ','ㅂ'].includes(fortisRep)){
