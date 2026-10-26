@@ -135,8 +135,12 @@ def _require(condition: bool, message: str) -> None:
 def load_provenance(path: Path) -> dict[str, Any]:
     provenance = json.loads(path.read_text(encoding="utf-8"))
     for field in ("model_id", "model_revision", "dataset_id", "dataset_revision",
-                  "split", "source_url", "dataset_license_status"):
+                  "split", "source_url", "dataset_license_status",
+                  "model_license_status", "teacher_output_type",
+                  "teacher_model_training_overlap_status"):
         _require(bool(provenance.get(field)), f"provenance field {field!r} is required")
+    _require(str(provenance["teacher_output_type"]).upper() == "IPA",
+             "teacher_output_type must be IPA; do not mislabel custom phone alphabets")
     split = str(provenance["split"]).lower()
     _require(split in ALLOWED_SPLITS,
              f"refusing split {split!r}; only train/dev are allowed, never test/holdout")
@@ -240,7 +244,9 @@ def build_report(input_path: Path, provenance_path: Path, min_context_support: i
             "context_features": "coarse adjacent Hangul coda/onset classes; not morphological analysis",
             "automatic_rule_generation": False,
             "test_data_used_for_tuning": False,
-            "checkpoint_training_data_overlap": "not inferred by this tool; must be audited separately",
+            "checkpoint_training_data_overlap": provenance["teacher_model_training_overlap_status"],
+            "model_license_status": provenance["model_license_status"],
+            "weight_redistribution": "not performed by this tool",
         },
         "summary": {
             "case_count": n,
