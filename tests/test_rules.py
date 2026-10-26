@@ -73,17 +73,37 @@ def test_n_insertion_disabled_by_default_for_unlisted_form():
     items,_=apply_ordered_rules(parse_syllables("각여름"),["R009"]); assert items[1].onset=="ㅇ"
 
 def test_complex_coda_liaison_requires_exact_formal_morpheme_license():
-    expected={"넋이":(("ㄱ","ㅆ"),"넋>이"),"값이":(("ㅂ","ㅆ"),"값>이"),"앉아":(("ㄴ","ㅈ"),"앉>아"),"닭을":(("ㄹ","ㄱ"),"닭>을"),"젊어":(("ㄹ","ㅁ"),"젊>어")}
+    expected={"앉아":(("ㄴ","ㅈ"),"앉>아"),"닭을":(("ㄹ","ㄱ"),"닭>을"),"젊어":(("ㄹ","ㅁ"),"젊>어")}
     for word,((coda,onset),pair) in expected.items():
         items,traces=apply_ordered_rules(parse_syllables(word),["R002"])
         assert traces[0].status=="conditional-disabled"
-        assert items[0].coda in {"ㄳ","ㅄ","ㄵ","ㄺ","ㄻ"}
+        assert items[0].coda in {"ㄵ","ㄺ","ㄻ"}
         items,traces=apply_ordered_rules(
             parse_syllables(word),["R002"],
             rule_licenses={f"R002:formal:{word}:{pair}"},
         )
         assert items[0].coda==coda and items[1].onset==onset
         assert traces[0].changed
+
+def test_nikl_official_formal_liaison_examples_are_source_backed_exact_forms():
+    cases = {
+        "닭이": ("닭>이", "ㄹ", "ㄱ"),
+        "넋이": ("넋>이", "ㄱ", "ㅆ"),
+        "값이": ("값>이", "ㅂ", "ㅆ"),
+        "깎아": ("깎>아", "", "ㄲ"),
+        "있어": ("있>어", "", "ㅆ"),
+        "쫓아": ("쫓>아", "", "ㅊ"),
+        "덮어": ("덮>어", "", "ㅍ"),
+        "맞아": ("맞>아", "", "ㅈ"),
+        "붙어": ("붙>어", "", "ㅌ"),
+        "읽어": ("읽>어", "ㄹ", "ㄱ"),
+    }
+    for word, (pair, expected_coda, expected_onset) in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R002"])
+        assert items[0].coda == expected_coda, word
+        assert items[1].onset == expected_onset, word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R002:formal:{word}:{pair}", word
 
 def test_source_backed_substantive_morpheme_liaison_resolves_official_value_case():
     # NIKL Q&A 5949 explicitly attests 값어치[가버치] under §15(붙임).
