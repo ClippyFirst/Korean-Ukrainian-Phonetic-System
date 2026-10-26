@@ -112,6 +112,22 @@ test('NIKL R003 exact-form licenses do not generalize to unreviewed lookalikes',
   }
 });
 
+test('NIKL §11 exact verbal-stem ㄺ-before-ㄱ exceptions match Python without broadening to nouns', () => {
+  for (const input of ['읽고', '묽고', '얽거나']) {
+    const units = [...input].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+    const rules = applyContextualRules(units, input);
+    assert.equal(units[0].coda, 'ㄹ', input);
+    assert.equal(units[1].onset, 'ㄲ', input);
+    assert.ok(rules[0].includes('rieul-giyeok-exception-§11-exact-form'), input);
+  }
+
+  const noun = [...'닭고기'].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+  const nounRules = applyContextualRules(noun, '닭고기');
+  assert.equal(noun[0].coda, 'ㄺ');
+  assert.equal(noun[1].onset, 'ㄱ');
+  assert.ok(nounRules[0].includes('rieul-giyeok-exception-requires-morphology'));
+});
+
 test('NIKL §15 substantive liaison covers exact official forms only', () => {
   const cases = [
     ['값어치', '', 'ㅂ'],
