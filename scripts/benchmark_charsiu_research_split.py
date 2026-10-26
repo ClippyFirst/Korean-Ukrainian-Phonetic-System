@@ -20,7 +20,10 @@ from benchmark_charsiu_g2p import (
     eligible_occurrences,
     predict,
 )
-from korean_ukrainian.pipeline import phoneticize_korean
+from korean_ukrainian.pipeline import _apply_lexical_pronunciations, phoneticize_korean
+from korean_ukrainian.phonology import parse_syllables
+from korean_ukrainian.rules import apply_ordered_rules
+from korean_ukrainian.ipa import realize_syllables
 
 HANGUL = re.compile(r"^[\uac00-\ud7a3]+$")
 
@@ -92,17 +95,24 @@ def build_pair_ledger(
     report: dict[str, Any],
     metadata: dict[str, Any],
     narrow_report: dict[str, Any] | None = None,
+    broad_profile_report: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     output = []
     narrow_rows = {
         (row.get("row_id"), row.get("occurrence_id")): row
         for row in (narrow_report or {}).get("per_occurrence", [])
     }
+    broad_profile_rows = {
+        (row.get("row_id"), row.get("occurrence_id")): row
+        for row in (broad_profile_report or {}).get("per_occurrence", [])
+    }
     for row in report.get("per_occurrence", []):
         teacher = row.get("charsiu_byt5", {})
         native = row.get("clippyfirst_native", row.get("baselines", {}).get("clippyfirst_native", {}))
         narrow_row = narrow_rows.get((row.get("row_id"), row.get("occurrence_id")), {})
         narrow_native = narrow_row.get("clippyfirst_native", {})
+        broad_profile_row = broad_profile_rows.get((row.get("row_id"), row.get("occurrence_id")), {})
+        broad_profile_native = broad_profile_row.get("clippyfirst_native", {})
         output.append({
             "case_id": f"{metadata['dataset_id']}:{metadata['split']}:{row['row_id']}:{row['occurrence_id']}",
             "split": metadata["split"],
@@ -119,6 +129,10 @@ def build_pair_ledger(
             "strict_status": native.get("status", "missing"),
             "strict_exact_under_declared_diagnostic_normalizer": native.get("exact"),
             "strict_edit_distance": native.get("distance"),
+            "strict_broad_profile_ipa_raw": broad_profile_native.get("ipa"),
+            "strict_broad_profile_status": broad_profile_native.get("status", "missing"),
+            "strict_broad_profile_exact_under_declared_diagnostic_normalizer": broad_profile_native.get("exact"),
+            "strict_broad_profile_edit_distance": broad_profile_native.get("distance"),
             "strict_narrow_ipa_raw": narrow_native.get("ipa"),
             "strict_narrow_status": narrow_native.get("status", "missing"),
             "strict_narrow_exact_under_declared_diagnostic_normalizer": narrow_native.get("exact"),
@@ -144,28 +158,83 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     baselines = collect_existing_baselines(words)
     report = compare_baselines(rows, predictions, baselines, engine_key="charsiu_byt5")
 
-    # Run the same deterministic engine's explicitly partial narrow profile
-    # against the same teacher predictions. This is a diagnostic comparison
-    # only; it must not become accepted Ukrainian target input.
-    narrow_baselines = dict(baselines)
+    # Compare broad and narrow from the same post-rule syllable analysis. The
+    # narrow profile is research-only; this controlled profile-sensitivity pass
+    # excludes lexical IPA overrides so the only intended difference is the
+    # declared sibilant allophony. Unresolved pronunciation cases abstain in
+    # both profiles instead of being accidentally scored as newly covered.
+    broad_outputs: dict[str, dict[str, Any]] = {}
     narrow_outputs: dict[str, dict[str, Any]] = {}
     for word in words:
         try:
-            narrow_result = phoneticize_korean(word, ipa_level="narrow")
+            gate = phoneticize_korean(word, ipa_level="broad")
+            if gate.get("pronunciation_status") == "unresolved":
+                reason = gate.get("ipa_status_reason") or "unresolved_pronunciation"
+                broad_outputs[word] = {"status": "abstained", "reason": reason}
+                narrow_outputs[word] = {"status": "abstained", "reason": reason}
+                continue
+            items = parse_syllables(word)
+            items, _ = apply_ordered_rules(items)
+            _apply_lexical_pronunciations(items)
+            broad_result = realize_syllables(items, level="broad")
+            narrow_result = realize_syllables(items, level="narrow")
+            broad_outputs[word] = {
+                "status": "scored", "ipa": broad_result["ipa"],
+                "profile": "broad-rule-renderer-no-lexical-ipa-override",
+            }
             narrow_outputs[word] = {
-                "status": "scored",
-                "ipa": narrow_result["ipa"]["ipa"],
-                "transcription_profile": narrow_result["ipa"].get("transcription_profile"),
+                "status": "scored", "ipa": narrow_result["ipa"],
+                "transcription_profile": narrow_result.get("transcription_profile"),
             }
         except (TypeError, ValueError, RuntimeError) as exc:
+            broad_outputs[word] = {"status": "abstained", "reason": str(exc)}
             narrow_outputs[word] = {"status": "abstained", "reason": str(exc)}
+
+    broad_profile_baselines = dict(baselines)
+    broad_profile_baselines["clippyfirst_native"] = broad_outputs
+    broad_profile_report = compare_baselines(
+        rows, predictions, broad_profile_baselines, engine_key="charsiu_byt5"
+    )
+    narrow_baselines = dict(baselines)
     narrow_baselines["clippyfirst_native"] = narrow_outputs
     narrow_report = compare_baselines(rows, predictions, narrow_baselines, engine_key="charsiu_byt5")
+
+    broad_metrics = broad_profile_report.get("clippyfirst_native", {})
+    narrow_metrics = narrow_report.get("clippyfirst_native", {})
+    report["ipa_profile_sensitivity"] = {
+        "broad_rule_renderer": broad_metrics,
+        "narrow_partial_sibilant_profile": narrow_metrics,
+        "paired_scored_occurrences": min(
+            broad_metrics.get("scored_occurrences", 0),
+            narrow_metrics.get("scored_occurrences", 0),
+        ),
+        "exact_match_delta_narrow_minus_broad": (
+            round(narrow_metrics["exact_match_rate"] - broad_metrics["exact_match_rate"], 6)
+            if broad_metrics.get("exact_match_rate") is not None and narrow_metrics.get("exact_match_rate") is not None
+            else None
+        ),
+        "character_error_rate_delta_narrow_minus_broad": (
+            round(narrow_metrics["character_error_rate"] - broad_metrics["character_error_rate"], 6)
+            if broad_metrics.get("character_error_rate") is not None and narrow_metrics.get("character_error_rate") is not None
+            else None
+        ),
+        "interpretation": (
+            "Controlled IPA-renderer sensitivity diagnostic only; target corpus IPA conventions are unreviewed. "
+            "Lexical IPA overrides are excluded from both profiles; unresolved pronunciation cases abstain in both. "
+            "No production promotion is inferred."
+        ),
+    }
     report["narrow_comparison"] = {
-        "clippyfirst_native": narrow_report.get("clippyfirst_native"),
+        "clippyfirst_native": narrow_metrics,
         "paired_comparisons": narrow_report.get("paired_comparisons", {}).get("clippyfirst_native"),
         "per_occurrence": narrow_report.get("per_occurrence", []),
         "profile": "korean-narrow-partial-sibilant-v1",
+        "target_compatible": False,
+    }
+    report["broad_profile_comparison"] = {
+        "clippyfirst_native": broad_metrics,
+        "per_occurrence": broad_profile_report.get("per_occurrence", []),
+        "profile": "broad-rule-renderer-no-lexical-ipa-override",
         "target_compatible": False,
     }
     report["dataset_metadata"] = metadata
@@ -184,7 +253,9 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "Teacher-guided hypothesis generation only. Raw IPA is preserved; the source convention "
         "is not assumed equivalent to ClippyFirst broad IPA. No rules are automatically promoted."
     )
-    report["paired_rule_review_cases"] = build_pair_ledger(report, metadata, narrow_report=narrow_report)
+    report["paired_rule_review_cases"] = build_pair_ledger(
+        report, metadata, narrow_report=narrow_report, broad_profile_report=broad_profile_report
+    )
     return report
 
 
