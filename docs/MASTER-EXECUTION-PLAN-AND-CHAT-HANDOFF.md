@@ -2386,3 +2386,12 @@ The original assertion-candidate regex also treated import lines such as “impo
 1. Confirm the updated extractor regression and regenerate the five inventories on the latest PR head; record the new counts and file hashes from the embedded report.
 2. Use the 82-row failure ledger to split the 77 possible separator cases from the five non-separator cases. Fix/normalize only assertions confirmed to conflict with the declared eojeol renderer contract; investigate the five remaining cases against their exact source inputs and stack locations.
 3. Continue semantic case extraction after preserving the original raw assertions and per-test provenance. No production rule promotion is justified by this browser failure ledger.
+
+
+### Continuation — fail-closed source scanning for the case register (2026-10-26)
+
+- **Change:** `scripts/build_test_case_register.py` previously skipped files on `UnicodeDecodeError` or `OSError`. That could silently undercount source files and make an incomplete evidence inventory look like a successful scan. The extractor now raises a path-bearing `RuntimeError` and stops, so the operator must resolve the file or explicitly change the inventory scope.
+- **Regression coverage:** `tests/test_build_test_case_register.py` now includes a genuinely invalid UTF-8 source fixture and verifies that each preserved line's SHA-256 matches the exact UTF-8 bytes of `raw_line`.
+- **Status:** implementation committed on `fix/register-fail-closed-source-scan-2026-10-26`, PR [#342](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/342) targets `research/strict-teacher-guided-rule-mining-2026-10-26` to isolate the change from that branch's existing 557-commit delta against `main`. Current PR head at handoff update: `c708f728f7ed16a381de0654c77f398e27b144e0`.
+- **Verification:** local `git clone` and test execution are blocked by container DNS resolution (`Could not resolve host: github.com`). The focused GitHub Actions workflow has not yet been confirmed for this exact head; do not mark the change `DONE_VERIFIED` until the PR workflow passes.
+- **Scope boundary:** no pronunciation rules, corpus labels, IPA mappings, or Ukrainian outputs changed. The independent IPA and Ukrainian-target reviews, complete case-level extraction, and release blockers remain unchanged.
