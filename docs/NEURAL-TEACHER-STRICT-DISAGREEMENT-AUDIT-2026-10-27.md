@@ -345,3 +345,28 @@ The actual v3 runtime was executed on the same pinned development inputs by work
 These are **actual runtime broad-vs-narrow profile sensitivity measurements**, not broad-profile production accuracy or independent phonetic validation. The metric comparison is explicitly labelled `DIAGNOSTIC_ONLY_IPA_CONVENTION_UNREVIEWED`; Charsiu weights' license status and potential training overlap are unresolved. The result supports keeping v3 as a research instrument, not approving its outputs as target-ready IPA.
 
 The first exact-head test workflows on commit 45f6312 failed for two stale assertions in `tests/test_narrow_ipa.py` that still expected profile v2 and the old status string. The assertions were updated to expect profile `korean-narrow-partial-sibilant-nasal-h-v3`, version 3, and `partial-narrow-research-profile` in commit `9807deacd0b9887a31cff3a73084010af38b13eb`. **The repair is not yet verified by a successful post-fix CI run**; do not mark the task DONE_VERIFIED until the exact-head Python/system/browser jobs pass.
+
+
+## Exact-head CI and fresh runtime artifact — 2026-10-27
+
+PR merge-ref commit `8a42c3c9c762be421d71abf48256aa03a430aa13` (PR head `97f3784e669ef24df831a57b3ea2307b4c68e899` merged into base `a452054a669de28426404d1110731715083423bb`) passed the exact-head validation gates after the source-register assertion repair:
+- Python regression/data integrity and browser regression/build: PASS (`40574521179`).
+- Python 3.11, 3.12, 3.13; wheel build/install; teacher-corpus split audit; web/npm checks: all PASS (`40574521301`).
+- g2pK integration on Python 3.11 and 3.12: PASS (`40574521197`); browser G2P integration: PASS (`40574521257`).
+- Research-only Charsiu run: PASS (`40574521095`); morphology consensus: PASS (`40574521198`); multi-engine diagnostic: PASS (`40574520978`); UGTPHON diagnostic: PASS (`40574521003`); native-vs-g2pK diagnostic: PASS (`40574521028`); real Kiwi/MeCab-Ko morphology smoke and boundary agreement: PASS (`40574521129`); seed portfolio: PASS (`40574521109`); exhaustive test-case extraction: PASS (`40574521154`).
+
+The new Charsiu artifact is `12766869026`, SHA-256 `81e394b52248e7a2594bf5e4cad0c48c74914a93398c71e8ff92e74c050c80da`. It uses pinned model revision `ed5cf99707fb39f5f3ccc461530d56b6fb531fd3` and tokenizer revision `68377bdc18a2ffec8a0533fef03b1c513a4dd49d`. Test records were not serialized.
+
+Actual post-change metrics from the run:
+- SIGMORPHON dev: broad 332/999 exact, CER 15.4736%; narrow v3 466/999, CER 10.5929%; +13.41 percentage points exact and −4.8807 pp CER; 1 unresolved of 1,000 eligible.
+- UGTPHON dev: broad 977/1,800 exact, CER 9.6086%; narrow v3 1,265/1,800, CER 5.5950%; +16.00 percentage points exact and −4.0136 pp CER; 34 unresolved/excluded of 1,834 eligible.
+
+These are renderer-sensitivity diagnostics against corpus targets whose IPA conventions are not independently harmonized. They do not establish universal phonetic accuracy, Ukrainian target accuracy, or independence from Charsiu's training data. The research profile remains opt-in and target-incompatible.
+
+Status distinction:
+- CI/test-repair batch: DONE_VERIFIED for the tested PR merge ref.
+- Actual research benchmark execution and artifact provenance guards: DONE_VERIFIED.
+- Linguistic interpretation of v3: PARTIAL; optionality and dialect/speaker variation are not modelled, and independent case-level adjudication is outstanding.
+- Charsiu licensing/training overlap: BLOCKED pending terms/provenance review.
+- Cross-corpus IPA convention reconciliation and Ukrainian adaptation: TODO/BLOCKED pending independent adjudication.
+- Overall repository: research prototype, not release-ready. PR #339 remains draft/open/unmerged.
