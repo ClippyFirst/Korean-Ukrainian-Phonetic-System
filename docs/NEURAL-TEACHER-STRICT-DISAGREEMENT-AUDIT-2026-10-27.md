@@ -1,5 +1,31 @@
 # Neural-teacher vs ClippyFirst Strict: first error-correlation audit (2026-10-27)
 
+## Latest Charsiu dev artifact triage — 2026-10-27
+
+Artifact [12756518697](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40554419963/artifacts/12756518697) from workflow [40554419963](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40554419963) was downloaded and inspected locally. ZIP SHA-256: `b1d2d601f02b5554bea85dc65b8ff9bdacd92bcbead3889701808df8b88d445c`. It contains paired raw outputs for the SIGMORPHON dev split (1,000 rows; 999 scored) and UGTPHON dev split (1,834 eligible rows in the pair file; 1,800 scored by native narrow profile).
+
+Using the benchmark's declared diagnostic normalizer (NFD, `g`→`ɡ`, removal of tie bars, spaces, syllable dots, and the four declared vowel diacritics; aspiration/length remain), exploratory row counts were:
+- SIGMORPHON dev: Charsiu exactly matches the corpus target while Strict narrow does not on 345/999 scored rows; Strict narrow matches while Charsiu does not on 1 row.
+- UGTPHON dev: Charsiu exactly matches while Strict narrow does not on 728/1,800 scored rows; Strict narrow matches while Charsiu does not on 55 rows.
+
+These counts **do not measure generalization**: the model's training overlap is explicitly UNKNOWN and the corpus's IPA convention has not been adjudicated against ClippyFirst. They only identify where to inspect repeated correspondences.
+
+The most frequent edit operations among Charsiu-exact / Strict-mismatch rows were:
+| Exploratory string edit | SIGMORPHON operations | UGTPHON operations | Interpretation |
+|---|---:|---:|---|
+| Insert aspiration `ʰ` | 135 | 269 | Often corpus IPA convention / narrow phonetics, not necessarily a broad-IPA error |
+| `l` → `ɭ` | 105 | 229 | Lateral realization/notation; speaker and prosodic variation must be reviewed |
+| `h` → `ɦ` | 38 | 102 | Candidate context-conditioned /h/ allophony; not yet source-adjudicated |
+| `s` → `ɕʰ` | 35 | 75 | Related to the existing partial sibilant profile; not universal categorical evidence |
+| `n` → `ɲ` | 18 | 39 | Repeated nasal-before-glide hypothesis; see the counterfactual below |
+| `h` → `β` | 12 | 33 | Likely environment-/transcription-specific; not a standalone rule count |
+
+Counts are string-alignment operations, not unique cases or phonological rule counts; multiple operations may come from one form. The high-frequency families are predominantly phonetic-detail/IPA-convention differences, explaining why blindly copying teacher outputs would corrupt the engine's intended broad IPA.
+
+### Narrow nasal-glide counterfactual
+
+A dev-only simulation replaced onset `n` with `ɲ` only before glide-initial nuclei ㅑ/ㅒ/ㅕ/ㅖ/ㅛ/ㅠ, not before ㅣ. This changed 9 SIGMORPHON rows and 27 UGTPHON rows; exact matches changed 431→438/999 and 1193→1214/1800; mean normalized CER changed 0.11348→0.11225 and 0.06034→0.05830. Including ㅣ instead **worsened** the metrics, so the broader mapping was rejected. The opt-in Python narrow profile now contains the scoped rule with profile ID `korean-narrow-partial-sibilant-nasal-v2`; the counterfactual figures are not a post-change benchmark or independent test score. It remains research-only and target-incompatible. See the runtime profile contract for sources, exact scope, and acceptance gate.
+
 ## Status and scope
 
 **Status: PARTIAL / research-only.** This is a diagnostic of a three-seed SIGMORPHON development portfolio and paired native-Strict outputs. A later run found cross-run drift for identical seed/configuration, so the portfolio is **not yet reproducible**; only each artifact's own metrics are valid. It is not an independently adjudicated accuracy comparison, not a normative pronunciation gold set, and not a production-rule change.
