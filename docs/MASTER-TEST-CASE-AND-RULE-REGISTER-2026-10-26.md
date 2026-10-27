@@ -503,3 +503,21 @@ Exact-head system verification [40408709236](https://github.com/ClippyFirst/Kore
 ## Current PR #339 merge-ref artifact verification (2026-10-27)
 
 The latest case-register workflow [40410859892](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40410859892) ran on synthetic PR merge commit `348a3dc18764191f68339333ce24bc0f54e2c523`, which merged research head `256b27a454c992218ca87a0fdf58ea6135071560` into `main` `a452054a669de28426404d1110731715083423bb`. It passed extractor tests, generation, stable-ID checks, and artifact upload: artifact [12693590917](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40410859892/artifacts/12693590917), ZIP SHA-256 `c8e90fe5bd121fa31073d087faa6787cf2136c4fa4e6e71962ba63c6b2b4a34e` (3,083,199 bytes). Inventory counts: 644 lexical records, 359 test files, 387 source files, 6,801 lexical text links, 34,573 preserved lines, 5,241 assertion/test-declaration candidates, 644 lexical inputs with at least one text match. This is reproducible candidate extraction, not a semantically complete case ledger.
+
+
+## Assertion classification queue — verified artifact (2026-10-27)
+
+The conservative queue generator was integrated by PR [#344](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/344), squash commit `e324ffe699ad4a234c39cace330a8ecd4a84259e`. Focused extraction [run 40464392516](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464392516) passed, including unit tests, generation, stable-ID validation and artifact upload [12715418796](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464392516/artifacts/12715418796). The full system run [40464392495](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464392495) passed browser regression/build and Python/data-integrity jobs; the metadata-only NIKL inventory was skipped.
+
+| Inventory | Rows / count | Evidence status |
+|---|---:|---|
+| Lexical records | 644 | Source data rows; not all independently reviewed |
+| Test files scanned | 360 | Files, not semantic cases |
+| Source files scanned | 388 | In-scope files read successfully |
+| Lexical-to-test text links | 6,801 | Text matches, not assertion proof |
+| Hangul-literal candidates | 50,768 | Candidate spans, not inputs/gold labels |
+| Exact source lines preserved | 34,661 | Loss-preserving inventory |
+| Assertion/test-declaration candidates | 5,261 | Candidate lines, not classified cases |
+| Classification queue rows | 5,261 | Queue CSV SHA-256: `599a5c22659c9bfe1492276241963db6debf605f86195f4ebabf47cf54424e36` |
+
+All six generated CSVs passed non-empty stable-ID and uniqueness checks. The new queue records heuristic dimension hints only. Its rows remain `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW`; expected values are not parsed and observed outcomes are not inferred. This is a reproducible triage artifact, **not** completion of the semantic case-level register. Overall register status remains **PARTIAL INVENTORY**; independent IPA and Ukrainian-target review remain blocked on qualified human adjudication.
