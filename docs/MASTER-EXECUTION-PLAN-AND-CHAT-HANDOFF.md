@@ -2860,3 +2860,56 @@ Readiness remains research-ready partial prototype, not release-ready. Do not pr
 - The research source register now has 120 rows. The rights audit remains intentionally unresolved for 116 sources; source registration does not establish permission to redistribute source text. The final source-register audit must still pass after this batch.
 - PR #339 remains open and Draft. Repository remains **research-ready partial prototype, not release-ready**. Remaining blockers: (1) source/convention adjudication of broad/narrow IPA and sibilant contexts; (2) full structured IPA segment/feature/boundary representation and exclusive production wiring through the guard; (3) independent target-inventory review before any Ukrainian mapping change; (4) item-level source-rights clearance where needed. No neural teacher output was promoted to production rules.
 
+
+
+## Exact-head CI reconciliation and next acceptance gate — 2026-10-27 15:32 UTC+02
+
+### Repository state
+
+- Working branch: `research/strict-teacher-guided-rule-mining-2026-10-26`.
+- Latest code/test head reviewed: `f0e6a56e712a98ab8710df22d7a8e7decb27801c` (`research: register sibilant evidence and pin teacher environment`).
+- PR [#339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339) remains open and Draft. No merge, release, branch deletion, or external setting change was performed.
+- The branch head includes the profile-aware Python/browser fail-closed guards and their tests, plus the lexical/phrase IPA metadata consistency fix. The runtime allowlists are intentionally empty.
+
+### Exact-head workflow reconciliation
+
+The following workflow runs report the exact head `f0e6a56e712a98ab8710df22d7a8e7decb27801c` and completed successfully:
+
+- [Tests — 40507960275](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960275): PASS.
+- [System verification — 40507960621](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960621): PASS.
+- [Browser G2P integration — 40507960342](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960342): PASS.
+- [Teacher corpus split audit — 40507960639](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960639): PASS.
+- [Teacher seed portfolio — 40507960633](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960633): PASS.
+- [Scratch teacher training — 40507960182](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960182): PASS.
+- [Master table/research artifacts — 40507962745](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507962745): PASS.
+- [Exhaustive test-case register extraction — 40507961067](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507961067): PASS.
+- [Native engine vs g2pk diagnostic — 40507960638](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960638): PASS.
+- [Multi-engine IPA diagnostic — 40507960369](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960369): PASS.
+- [Morphology consensus diagnostic — 40507960113](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960113): PASS.
+- [External UGTPHON diagnostic — 40507960131](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960131): PASS.
+- [Research morphology adapter smoke — 40507960500](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960500): PASS.
+- [Optional g2pK integration — 40507960433](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960433): PASS.
+- [Charsiu train/dev broad-vs-narrow review — 40507960081](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40507960081): PASS.
+
+These workflow successes verify the code/tests/diagnostics at this commit. They do **not** establish that the broad/narrow IPA convention is independently adjudicated, that either corpus's target strings are equivalent to ClippyFirst IPA, or that a profile is ready for Ukrainian adaptation. The official live NIKL source-inventory step is skipped by workflow policy and remains SKIPPED, not PASS. Local clean-checkout tests were not run because this execution environment previously could not resolve `github.com`; no local pass is claimed.
+
+### Updated task ledger
+
+| Task | Status | Acceptance evidence / remaining criterion |
+|---|---|---|
+| Current branch and PR state reconciled | DONE_VERIFIED | PR #339 is open/Draft; exact code/test head identified |
+| Python/browser regression, build, wheel, integration checks | DONE_VERIFIED | Exact-head workflow runs listed above passed |
+| Pinned teacher environment and deterministic seed portfolio | DONE_VERIFIED | Exact-head training/portfolio workflows passed; dev metrics remain source-convention-specific |
+| Teacher corpus split integrity and research diagnostics | DONE_VERIFIED | Exact-head audit/diagnostic workflows passed; diagnostics do not define IPA gold |
+| Versioned IPA metadata in normal and lexical/phrase runtime returns | DONE_VERIFIED | Code/test head 8d19b204a655c998ee9d3ca1c1fd70afbfa7c7 passed; later exact-head test suite also passes |
+| Fail-closed profile-aware adapter guard in Python and browser | DONE_VERIFIED as guard API only | Exact-head tests pass; allowlists remain empty and legacy raw-string paths still exist |
+| Full shared typed IPA segment/feature/boundary representation | TODO | Define and test a loss-preserving schema shared by Python/browser; preserve raw IPA, profile/version, boundary type, feature spans and unknown/unresolved state |
+| Exclusive production wiring through approved profile gate | BLOCKED pending profile adjudication | Must not silently break all current output by wiring an empty allowlist; acceptance requires approved profile plus migration tests proving no bypass remains |
+| Broad/narrow and ㅅ/ㅆ context adjudication | BLOCKED / UNADJUDICATED | Blind independent review and source/convention decision required; current studies do not settle universal tense-/sibilant-palatalization behavior |
+| NIKL official source inventory | BLOCKED / SKIPPED | Workflow policy skips live source retrieval; requires an accessible official source snapshot and a non-skipped inventory audit |
+| Source redistribution/license clearance | PARTIAL | Source registry records sources, but many rights remain not assessed; item-level clearance required before redistribution |
+| Ukrainian target inventory and mapping changes | DEFERRED | Resume only after Korean surface IPA and typed adapter acceptance; do not change mapping to compensate for upstream uncertainty |
+
+### Immediate next action
+
+Continue from the existing schema and target-trace implementations rather than creating a parallel pipeline. Design the typed runtime IPA result as an additive, loss-preserving representation first; require exact Python/browser fixture parity for structure and provenance, but do not assert identical IPA strings until the profile convention is adjudicated. Keep the production allowlists empty and PR #339 Draft until blind review, target inventory review, and migration/no-bypass acceptance tests are complete. Repository remains **research-ready partial prototype, not release-ready**.
