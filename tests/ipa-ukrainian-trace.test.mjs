@@ -374,3 +374,35 @@ test('shared typed-IPA gate fixtures preserve fail-closed outcomes', () => {
     assert.equal(actual.text, null, item.id);
   }
 });
+
+
+test('engine exposes an opt-in profile-gated target path without changing legacy default behavior', () => {
+  const engine = createEngine(canonicalCsv, lexicalCsv);
+  const legacy = engine.convert('가');
+  assert.equal(legacy.ipa_profile_status, 'unadjudicated-cross-runtime');
+  assert.ok(legacy.ipa, 'legacy mode remains available for compatibility');
+
+  for (const result of [
+    engine.convert('가', {requireAdjudicatedIpaProfile:true}),
+    engine.convertSurface('가', {requireAdjudicatedIpaProfile:true}),
+  ]) {
+    assert.equal(result.target_adapter, 'profile-gated');
+    assert.equal(result.target_status, 'unavailable');
+    assert.equal(result.target_reason, 'ipa_profile_not_adjudicated_compatible');
+    assert.equal(result.ukrainian, '', 'unadjudicated IPA must not be returned as accepted target text in strict mode');
+    assert.equal(result.candidate_ukrainian, null);
+    assert.equal(result.candidate_status, null);
+  }
+});
+
+test('engine profile-gate option rejects non-boolean values', () => {
+  const engine = createEngine(canonicalCsv, lexicalCsv);
+  assert.throws(
+    () => engine.convert('가', {requireAdjudicatedIpaProfile:'yes'}),
+    {name:'TypeError', message:'requireAdjudicatedIpaProfile must be a boolean'}
+  );
+  assert.throws(
+    () => engine.convertSurface('가', {requireAdjudicatedIpaProfile:1}),
+    {name:'TypeError', message:'requireAdjudicatedIpaProfile must be a boolean'}
+  );
+});
