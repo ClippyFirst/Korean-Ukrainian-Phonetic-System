@@ -222,3 +222,62 @@ export function ipaTargetForSource(source,ipa,options={}){
   }
   return {text,syllables,unknown:'',status,reason:null,mappingTrace};
 }
+
+
+// Fail-closed adapter boundary for callers that have a complete IPA result
+// object rather than an untyped string. No runtime profile is approved yet:
+// the set must only be populated after independent phonetic adjudication and
+// explicit cross-runtime/target-inventory acceptance. Do not add profiles
+// merely because their output maps successfully.
+export const ADAPTER_COMPATIBLE_IPA_PROFILES = new Set();
+
+export function ipaTargetForProfile(source, ipaResult, options = {}) {
+  if (!ipaResult || typeof ipaResult !== 'object' || Array.isArray(ipaResult)) {
+    return {
+      text: null, syllables: [], unknown: '', status: 'unavailable',
+      reason: 'ipa_profile_result_required', mappingTrace: []
+    };
+  }
+  const profile = ipaResult.ipa_profile;
+  const version = ipaResult.ipa_profile_version;
+  const level = ipaResult.ipa_profile_level;
+  const profileStatus = ipaResult.ipa_profile_status;
+  if (typeof profile !== 'string' || !profile ||
+      !Number.isInteger(version) || version < 1 ||
+      typeof level !== 'string' || !level ||
+      typeof profileStatus !== 'string' || !profileStatus ||
+      typeof ipaResult.ipa !== 'string' || !ipaResult.ipa.trim()) {
+    return {
+      text: null, syllables: [], unknown: '', status: 'unavailable',
+      reason: 'ipa_profile_metadata_incomplete', mappingTrace: []
+    };
+  }
+  if (profileStatus !== 'adjudicated-compatible') {
+    return {
+      text: null, syllables: [], unknown: '', status: 'unavailable',
+      reason: profileStatus === 'partial-research-only'
+        ? 'ipa_profile_partial_research_only'
+        : 'ipa_profile_not_adjudicated_compatible',
+      ipa_profile: profile, ipa_profile_version: version,
+      ipa_profile_level: level, ipa_profile_status: profileStatus,
+      mappingTrace: []
+    };
+  }
+  if (!ADAPTER_COMPATIBLE_IPA_PROFILES.has(`${profile}@${version}:${level}`)) {
+    return {
+      text: null, syllables: [], unknown: '', status: 'unavailable',
+      reason: 'ipa_profile_not_allowlisted_for_target_adapter',
+      ipa_profile: profile, ipa_profile_version: version,
+      ipa_profile_level: level, ipa_profile_status: profileStatus,
+      mappingTrace: []
+    };
+  }
+  const adapted = ipaTargetForSource(source, ipaResult.ipa, options);
+  return {
+    ...adapted,
+    ipa_profile: profile,
+    ipa_profile_version: version,
+    ipa_profile_level: level,
+    ipa_profile_status: profileStatus
+  };
+}
