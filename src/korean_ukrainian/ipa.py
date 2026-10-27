@@ -130,7 +130,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     result={
         "level":level,
         "ipa_profile":profile_ids[level],
-        "ipa_profile_version":1,
+        "ipa_profile_version":2 if level=="narrow" else 1,
         "ipa_profile_level":level,
         "ipa_profile_status":(
             "partial-research-only" if level=="narrow"
