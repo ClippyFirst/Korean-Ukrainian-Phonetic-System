@@ -66,7 +66,7 @@ class TestClassifyTestCaseCandidates(unittest.TestCase):
             output = root / "queue.csv"
             fields = list(row("ASSERT-1", "tests/example.test.mjs", 3, "assert.equal", "assert.equal(result.ipa, 'an');"))
             with source.open("w", encoding="utf-8", newline="") as stream:
-                writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\\n")
+                writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
                 writer.writeheader()
                 writer.writerow(row("ASSERT-1", "tests/example.test.mjs", 3, "assert.equal", "assert.equal(result.ipa, 'an');"))
             rows = classify_rows(read_candidates(source))
@@ -79,7 +79,7 @@ class TestClassifyTestCaseCandidates(unittest.TestCase):
     def test_rejects_incomplete_schema(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "bad.csv"
-            source.write_text("source_path,line_number,raw_line\\ntests/x.mjs,1,assert.ok(true)\\n", encoding="utf-8")
+            source.write_text("source_path,line_number,raw_line\ntests/x.mjs,1,assert.ok(true)\n", encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "missing required columns"):
                 read_candidates(source)
 
