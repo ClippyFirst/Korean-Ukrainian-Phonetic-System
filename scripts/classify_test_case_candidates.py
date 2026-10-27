@@ -21,7 +21,9 @@ OUTPUT_NAME = "TEST-CASE-REGISTER-ASSERTION-CLASSIFICATION-QUEUE-2026-10-27.csv"
 OUTPUT_COLUMNS = [
     "queue_id", "assertion_candidate_id", "source_path", "source_category",
     "line_number", "assertion_kind", "candidate_role", "dimension_hints",
-    "polarity_hint", "raw_line", "classification_method", "review_status",
+    "nearest_suite_title", "nearest_suite_line", "nearest_suite_declaration",
+    "nearest_test_title", "nearest_test_line", "nearest_test_declaration",
+    "context_resolution_status", "polarity_hint", "raw_line", "classification_method", "review_status",
     "expected_value_status", "observed_run_status",
 ]
 
@@ -40,6 +42,10 @@ NEGATIVE_HINT = re.compile(
     r"doesNot|assertFalse|False|notDeepEqual|fail.closed)\b|⟦|⟧",
     re.I,
 )
+TEST_DECLARATION_RE = re.compile(r"""^\s*(?:async\s+)?(?:test|it)\s*\(\s*(?P<quote>['"])(?P<title>.*?)\1""")
+SUITE_DECLARATION_RE = re.compile(r"""^\s*(?:describe|suite)\s*\(\s*(?P<quote>['"])(?P<title>.*?)\1""")
+PY_TEST_DECLARATION_RE = re.compile(r"^\s*def\s+(?P<title>test_[A-Za-z0-9_]+)\s*\(")
+PY_SUITE_DECLARATION_RE = re.compile(r"^\s*class\s+(?P<title>Test[A-Za-z0-9_]*)\b")
 
 
 def _queue_id(source_path: str, line_number: str, raw_line: str) -> str:
@@ -66,8 +72,52 @@ def _dimension_hints(assertion_kind: str, raw_line: str) -> str:
     return ";".join(found)
 
 
-def classify_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+def _context_index(rows: list[dict[str, str]], repo_root: Path) -> dict[tuple[str, int], dict[str, str]]:
+    """Index nearest preceding test/suite declarations; never infer assertion semantics."""
+    needed: dict[str, set[int]] = {}
+    for row in rows:
+        if row.get("source_category") == "test_source":
+            needed.setdefault(row["source_path"], set()).add(int(row["line_number"]))
+    result: dict[tuple[str, int], dict[str, str]] = {}
+    for source_path, target_lines in needed.items():
+        path = repo_root / source_path
+        try:
+            lines = path.read_text(encoding="utf-8-sig").splitlines()
+        except (UnicodeDecodeError, OSError) as exc:
+            raise RuntimeError(f"Cannot index test context from {path}: {exc}") from exc
+        last_test_title = last_test_raw = last_test_line = ""
+        last_suite_title = last_suite_raw = last_suite_line = ""
+        for line_number, line in enumerate(lines, start=1):
+            test_match = TEST_DECLARATION_RE.search(line) or PY_TEST_DECLARATION_RE.search(line)
+            if test_match:
+                last_test_title = test_match.group("title")
+                last_test_raw = line
+                last_test_line = str(line_number)
+            suite_match = SUITE_DECLARATION_RE.search(line) or PY_SUITE_DECLARATION_RE.search(line)
+            if suite_match:
+                last_suite_title = suite_match.group("title")
+                last_suite_raw = line
+                last_suite_line = str(line_number)
+            if line_number in target_lines:
+                result[(source_path, line_number)] = {
+                    "nearest_suite_title": last_suite_title,
+                    "nearest_suite_line": last_suite_line,
+                    "nearest_suite_declaration": last_suite_raw,
+                    "nearest_test_title": last_test_title,
+                    "nearest_test_line": last_test_line,
+                    "nearest_test_declaration": last_test_raw,
+                    "context_resolution_status": "NEAREST_TEST_DECLARATION_FOUND" if last_test_line else "NO_TEST_DECLARATION_FOUND",
+                }
+    for source_path, target_lines in needed.items():
+        missing = target_lines.difference(line for path, line in result if path == source_path)
+        if missing:
+            raise RuntimeError(f"Candidate line(s) outside source file {source_path}: {sorted(missing)}")
+    return result
+
+
+def classify_rows(rows: list[dict[str, str]], repo_root: Path | None = None) -> list[dict[str, str]]:
     """Return deterministic, explicitly unverified triage rows."""
+    contexts = _context_index(rows, repo_root) if repo_root is not None else {}
     output: list[dict[str, str]] = []
     seen: set[str] = set()
     for row in rows:
@@ -93,6 +143,11 @@ def classify_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
             "assertion_kind": kind,
             "candidate_role": _candidate_role(kind),
             "dimension_hints": _dimension_hints(kind, raw_line),
+            **contexts.get((source_path, int(line_number)), {
+                "nearest_suite_title": "", "nearest_suite_line": "", "nearest_suite_declaration": "",
+                "nearest_test_title": "", "nearest_test_line": "", "nearest_test_declaration": "",
+                "context_resolution_status": "CONTEXT_INDEX_NOT_SUPPLIED" if repo_root is None else "NOT_EXECUTABLE_TEST_SOURCE",
+            }),
             "polarity_hint": "HEURISTIC_NEGATIVE" if NEGATIVE_HINT.search(raw_line) else "NOT_IDENTIFIED_AS_NEGATIVE",
             "raw_line": raw_line,
             "classification_method": "REGEX_HINTS_V1_NOT_SEMANTIC",
@@ -131,8 +186,9 @@ def main() -> int:
         help="existing assertion-candidate inventory CSV",
     )
     parser.add_argument("--output", type=Path, default=None, help="output CSV path (defaults beside input)")
+    parser.add_argument("--repo-root", type=Path, default=Path(__file__).resolve().parents[1], help="repository root for nearest test-context indexing")
     args = parser.parse_args()
-    rows = classify_rows(read_candidates(args.input))
+    rows = classify_rows(read_candidates(args.input), repo_root=args.repo_root.resolve())
     output = args.output or args.input.with_name(OUTPUT_NAME)
     write_queue(output, rows)
     print(f"input_candidates={len(rows)}")
