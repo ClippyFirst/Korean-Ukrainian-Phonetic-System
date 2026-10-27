@@ -3379,3 +3379,28 @@ The work materially improves reproducibility, exact-form Korean rule coverage ac
 ## Integrity note
 
 This checkpoint is a remote source/metadata inspection, not an implementation test run or independent linguistic evaluation. No accuracy claim is upgraded. The repository remains a **PARTIAL research prototype, not release-ready** until the IPA and Ukrainian target evidence gates are satisfied. The latest exact branch HEAD and exact final CI state must be read from GitHub branch/Actions metadata at the next execution; the content API response supplies blob hashes, not the branch commit SHA.
+
+
+# Execution continuation — final evidence boundary (2026-10-27)
+
+## This pass's exact actions and results
+
+- **Remote inspection:** GitHub content API read the public main README, current research-branch handoff/audit, research/SOURCE-REGISTER.csv, src/korean_ukrainian/ipa.py, and src/korean_ukrainian/ipa_target_renderer.py; fetched metadata/body for PRs #339, #341, #338, #329, #326, #336 and #327, plus reviewer recruitment issue #337.
+- **Documentation changed:** appended evidence-gated recheck sections to this handoff and docs/audits/COMPLETION-AUDIT-2026-10-20.md on the existing research branch. Audit update commit: f35b1a5ecc8218a7bbc81c5ef51a7ab94f484fe2. The commit exists on GitHub and its diff contains only the intended audit addendum. No runtime code, corpus, rule registry, or production profile was changed in this pass.
+- **GitHub Actions status:** combined-status API returned an empty status list for audit commit f35b1a5ecc8218a7bbc81c5ef51a7ab94f484fe2. This means no status checks were exposed by that endpoint for this documentation commit; it is not a pass. No new workflow runs were started by this pass.
+- **Local commands:** none. A clean local checkout/runtime was not available through the tools used here. Python, Node, build, wheel install, generated-artifact drift, benchmarks, and live Pages checks are therefore NOT RUN in this pass.
+
+## Corrected interpretation
+
+The latest branch code contains the narrow [ɲ] and [ɦ] research candidates. They remain non-production hypotheses; the previous rejection of generalized coda /n/ → [ɲ] remains applicable to that broader proposal and is not contradicted by the narrower opt-in candidate. Any benchmark results on dev data are selection-contaminated and cannot establish independent phonetic correctness. The IPA-to-Ukrainian renderer is documented and implemented as an IPA consumer, but this pass did not execute a mutation-based end-to-end proof on the exact branch head.
+
+The current file names explicitly requested in the continuation prompt for the dated runtime-profile contract and neural-teacher candidate register were not found at those exact paths on the inspected branch. Do not cite those filenames as current artifacts until the repository tree is searched and the canonical paths are reconciled. The strict-disagreement audit is present.
+
+## Final status ledger for this pass
+
+- DONE_VERIFIED: remote source inspection and the two documentation append commits are present on the named branch; PR/issue bodies for the named workstreams were read.
+- PARTIAL: IPA-first renderer contract is visible in source/docs; narrow profile is implemented but not independently adjudicated; PR #341 contains potentially reusable source-backed rules but no combined-tree verification exists.
+- BLOCKED: independent expert IPA labels; separate Ukrainian target gold; official NIKL live inventory (HTTP 403, no manifest); exact external model/tokenizer rights and teacher-training overlap; Charsiu inference retry after reported HTTP 429; local exact-head tests and artifact reproducibility.
+- TODO: compare the exact current head SHAs/diffs of #339 and #341, integrate safe non-conflicting changes only after inspection, run full CI on the combined tree, locate/reconcile missing contract/register paths, and validate all generated artifacts.
+
+**Readiness remains: PARTIAL RESEARCH PROTOTYPE — NOT RELEASE-READY.** The documentation updates clarify evidence and blockers but do not themselves improve or prove phonetic accuracy. The next genuinely useful action is to inspect exact live PR head/base SHAs and current workflow runs, then test a deliberately constructed combined tree; independently, obtain qualified source-blind IPA annotations and close the Ukrainian target review only after IPA is frozen.
