@@ -362,3 +362,15 @@ test('profile-aware IPA adapter validates options before rejecting unapproved pr
   );
   assert.equal(ipaTargetForProfile('씨', {ipa:'s͈i'}).reason, 'ipa_profile_metadata_incomplete');
 });
+
+
+test('shared typed-IPA gate fixtures preserve fail-closed outcomes', () => {
+  const fixture = JSON.parse(readFileSync(new URL('./fixtures/ipa-profile-gate-cases.json', import.meta.url), 'utf8'));
+  assert.equal(fixture.schema_version, 1);
+  for (const item of fixture.cases) {
+    const actual = ipaTargetForProfile('씨', item.ipa_result);
+    assert.equal(actual.reason, item.expected_reason, item.id);
+    assert.equal(actual.status, 'unavailable', item.id);
+    assert.equal(actual.text, null, item.id);
+  }
+});
