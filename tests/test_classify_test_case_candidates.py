@@ -41,12 +41,34 @@ class TestClassifyTestCaseCandidates(unittest.TestCase):
         self.assertEqual(classified[1]["polarity_hint"], "HEURISTIC_NEGATIVE")
         self.assertEqual(classified[2]["candidate_role"], "TEST_DECLARATION")
         self.assertIn("RULE_TRACE", classified[3]["dimension_hints"])
+        self.assertEqual(classified[0]["assertion_subject"], "result.ipa")
+        self.assertEqual(classified[0]["expected_value_kind"], "STRING_LITERAL")
+        self.assertEqual(classified[0]["expected_value_raw"], "'an.tɕ͈i'")
+        self.assertEqual(classified[0]["expected_value_status"], "RAW_LITERAL_EXTRACTED_NOT_ADJUDICATED")
+        self.assertEqual(classified[1]["expected_value_status"], "NO_SECOND_ARGUMENT_PREDICATE_ASSERTION")
+        self.assertEqual(classified[2]["expected_value_status"], "NOT_AN_ASSERTION")
         for item in classified:
             self.assertEqual(item["review_status"], "UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW")
-            self.assertEqual(item["expected_value_status"], "NOT_PARSED_FROM_SOURCE_LINE")
             self.assertEqual(item["observed_run_status"], "NOT_TIED_TO_EXACT_HEAD_RUN")
             self.assertEqual(item["classification_method"], "REGEX_HINTS_V1_NOT_SEMANTIC")
         self.assertEqual(list(classified[0]), OUTPUT_COLUMNS)
+
+    def test_extracts_raw_string_and_regex_literals_but_never_evaluates_expressions(self):
+        rows = [
+            row("ASSERT-1", "tests/example.test.mjs", 1, "assert.equal", "assert.equal(result.ipa, 'a,b', 'message');"),
+            row("ASSERT-2", "tests/example.test.mjs", 2, "assert.match", "assert.match(result.ipa, /an\\./u);"),
+            row("ASSERT-3", "tests/example.test.mjs", 3, "assert.equal", "assert.equal(result.ipa, renderExpectedIpa(input, ipa));"),
+        ]
+        classified = classify_rows(rows)
+        self.assertEqual(classified[0]["assertion_subject"], "result.ipa")
+        self.assertEqual(classified[0]["expected_value_kind"], "STRING_LITERAL")
+        self.assertEqual(classified[0]["expected_value_raw"], "'a,b'")
+        self.assertEqual(classified[1]["expected_value_kind"], "REGEX_LITERAL")
+        self.assertEqual(classified[1]["expected_value_raw"], "/an\\./u")
+        self.assertEqual(classified[2]["expected_value_kind"], "EXPRESSION")
+        self.assertEqual(classified[2]["expected_value_raw"], "renderExpectedIpa(input, ipa)")
+        self.assertEqual(classified[2]["expected_value_status"], "EXPECTED_EXPRESSION_NOT_EVALUATED")
+        self.assertTrue(all(item["review_status"] == "UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW" for item in classified))
 
     def test_queue_ids_are_stable_and_source_identity_duplicates_fail_closed(self):
         source = row("ASSERT-1", "tests/example.test.mjs", 3, "assert.equal", "assert.equal(result.ipa, 'an');")
@@ -83,7 +105,7 @@ class TestClassifyTestCaseCandidates(unittest.TestCase):
             self.assertEqual(classified[0]["nearest_test_line"], "2")
             self.assertEqual(classified[0]["context_resolution_status"], "NEAREST_TEST_DECLARATION_FOUND")
             self.assertEqual(classified[0]["review_status"], "UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW")
-            self.assertEqual(classified[0]["expected_value_status"], "NOT_PARSED_FROM_SOURCE_LINE")
+            self.assertEqual(classified[0]["expected_value_status"], "RAW_LITERAL_EXTRACTED_NOT_ADJUDICATED")
             self.assertEqual(classified[0]["observed_run_status"], "NOT_TIED_TO_EXACT_HEAD_RUN")
 
     def test_reads_inventory_and_writes_reproducible_csv(self):
