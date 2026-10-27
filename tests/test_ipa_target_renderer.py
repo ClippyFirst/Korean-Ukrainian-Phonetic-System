@@ -277,3 +277,20 @@ def test_shared_typed_ipa_gate_fixtures_preserve_fail_closed_outcomes():
         assert result["reason"] == case["expected_reason"], case["id"]
         assert result["status"] == "unavailable", case["id"]
         assert result["ukrainian_orthography"] is None, case["id"]
+
+
+def test_pipeline_opt_in_profile_gate_withholds_unadjudicated_and_partial_profiles():
+    import pytest
+    from korean_ukrainian.pipeline import transliterate_korean
+
+    broad = transliterate_korean("가", require_adjudicated_ipa_profile=True)
+    assert broad["ukrainian_orthography"] is None
+    assert broad["target_status"] == "unavailable"
+    assert broad["target_unavailable_reason"] == "ipa_profile_not_adjudicated_compatible"
+
+    narrow = transliterate_korean("씨", ipa_level="narrow", require_adjudicated_ipa_profile=True)
+    assert narrow["ukrainian_orthography"] is None
+    assert narrow["target_unavailable_reason"] == "ipa_profile_partial_research_only"
+
+    with pytest.raises(TypeError, match="require_adjudicated_ipa_profile"):
+        transliterate_korean("가", require_adjudicated_ipa_profile="yes")
