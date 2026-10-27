@@ -10,7 +10,7 @@ const engine = createEngine(canonical, lexical);
 test('exact-form R002 teacher-triage cases resolve identically in browser engine', () => {
   const expected = {
     '가없이': '가업씨',
-    '말없이': '말업씨',
+    '말없이': '마럽씨',
     '수없이': '수업씨',
     '늙은이': '늘그니',
   };
