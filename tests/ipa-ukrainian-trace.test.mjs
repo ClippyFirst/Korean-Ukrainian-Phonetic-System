@@ -241,6 +241,10 @@ test('a phrase with a provisional target withholds partial output but preserves 
   assert.ok(result.candidate_ukrainian.includes('ий'));
   assert.ok(result.candidate_ukrainian.includes('!'));
   assert.ok(result.candidate_ukrainian.includes(' '));
+  assert.equal(result.ipa_profile, 'browser-legacy-contextual-v1');
+  assert.equal(result.ipa_profile_version, 1);
+  assert.equal(result.ipa_profile_level, 'surface-contextual');
+  assert.equal(result.ipa_profile_status, 'unadjudicated-cross-runtime');
 });
 
 

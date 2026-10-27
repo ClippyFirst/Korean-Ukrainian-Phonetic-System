@@ -93,6 +93,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       return{
         source:text,
         ipa_profile:options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+        ipa_profile_version:1,
+        ipa_profile_level:options.surfaceMode?'surface-mode':'surface-contextual',
         ipa_profile_status:'unadjudicated-cross-runtime',
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
         // A phrase with any provisional target has no complete accepted
