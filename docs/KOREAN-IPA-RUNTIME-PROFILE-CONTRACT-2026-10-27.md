@@ -72,3 +72,10 @@ The function ipaTargetForProfile(source, ipaResult, options) is now available in
 The allowlist is intentionally empty. A successful string-to-target mapping is not evidence that the pronunciation profile is linguistically valid or that its features are safely representable in Ukrainian. A profile may be added only after independent phonetic adjudication, a stable versioned contract, cross-runtime acceptance, and target-inventory review. The legacy raw-string APIs remain available for existing runtime paths and diagnostic compatibility; therefore this guard is a new fail-closed API, not yet a claim that all production calls are forced through it.
 
 Tests in tests/ipa-ukrainian-trace.test.mjs cover missing metadata, unadjudicated broad IPA, partial narrow IPA, unregistered purportedly approved profiles, and complete profile metadata on a lexical phrase return. The exact code/test head 8d19b204a655c998ee9d3ca1cfd70afbfa7c7f7 passed tests, system verification, and browser integration; remaining research diagnostics are tracked separately.
+
+
+## Shared cross-runtime fail-closed fixtures — 2026-10-27
+
+`tests/fixtures/ipa-profile-gate-cases.json` is the shared negative contract suite consumed by both `tests/ipa-ukrainian-trace.test.mjs` and `tests/test_ipa_target_renderer.py`. It covers a legacy raw string, missing metadata, empty IPA, zero and boolean versions, unadjudicated status, partial research-only status, and an unknown profile claiming compatibility. The expected outcomes are adapter rejection reasons, not IPA gold labels. Python explicitly excludes booleans from integer profile versions, matching JavaScript's `Number.isInteger` behavior. The adapter-compatible profile sets remain empty; these fixtures cannot be interpreted as acceptance of any profile.
+
+The new shared fixture and both runtime test consumers are committed, but remain `PARTIAL` until exact-head CI completes. They do not remove legacy raw-string APIs or establish exclusive production routing through the typed boundary.
