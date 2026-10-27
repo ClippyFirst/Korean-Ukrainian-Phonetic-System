@@ -83,7 +83,8 @@ jobs:
               "dimension_hint_counts": counts(dimension_values),
               "expected_value_kind_counts": counts(row["expected_value_kind"] for row in queue_rows),
               "expected_value_status_counts": counts(row["expected_value_status"] for row in queue_rows),
-              "raw_expected_value_rows": sum(bool(row["expected_value_raw"]) for row in queue_rows),
+              "rows_with_expected_fragment": sum(bool(row["expected_value_raw"]) for row in queue_rows),
+              "raw_literal_or_regex_rows": sum(row["expected_value_kind"] in {"STRING_LITERAL", "SCALAR_LITERAL", "REGEX_LITERAL"} for row in queue_rows),
               "all_rows_require_manual_review": True,
               "observed_results_inferred": False,
           }
