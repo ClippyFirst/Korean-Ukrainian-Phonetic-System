@@ -203,3 +203,11 @@ Current task ledger:
 - `DEFERRED`: neural runtime integration; any rule promotion inferred solely from teacher outputs.
 
 No claim is made that these candidates improve Ukrainian output accuracy; the current evidence licenses Korean morphophonological steps only.
+
+## Sequential-rule regression correction and browser coverage (2026-10-27)
+
+While hardening the newly licensed `많아지다` case, inspection of the actual ordered-rule implementation exposed an incorrect expectation in the first focused Python test: after R003 removes the ㅎ component from ㄶ, the following R002 pass must resyllabify the retained ㄴ before the vowel-initial syllable. The test now expects `마나지다`, not a retained coda followed by a silent onset. This is a test correction to match the declared rule order and Korean surface structure; it does not broaden the rule license.
+
+Added `tests/exact-form-teacher-triage-cases.test.mjs` to exercise the browser engine end-to-end for the four R002 forms (`가없이 → 가업씨`, `말없이 → 말업씨`, `수없이 → 수업씨`, `늙은이 → 늘그니`), the sequential R003→R002 form `많아지다 → 마나지다`, and a negative control that `많아보이다` does not become `마나보이다`. These are expected Korean surface-Hangul forms, not claims of IPA-to-Ukrainian accuracy. The new test and corrected Python test have not yet been executed by CI at the time of this note.
+
+The current source-level comparison confirms that the Python and browser exact-form maps have identical key/value inventories for the affected R002 and R003 maps (37 and 25 entries respectively). This is a local structural check only; the full test matrix and runtime output tests remain pending.
