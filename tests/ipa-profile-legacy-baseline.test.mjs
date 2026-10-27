@@ -22,6 +22,8 @@ test('browser legacy sibilant IPA baseline remains inspectable pending profile a
     const result = engine.convert(source);
     assert.equal(result.ipa, expectedIpa, source);
     assert.equal(result.ipa_profile, 'browser-legacy-contextual-v1', source);
+    assert.equal(result.ipa_profile_version, 1, source);
+    assert.equal(result.ipa_profile_level, 'surface-contextual', source);
     assert.equal(result.ipa_profile_status, 'unadjudicated-cross-runtime', source);
   }
 });
