@@ -239,3 +239,8 @@ The candidate miner now requires explicit `teacher_ipa_convention`, `strict_ipa_
 ### Verification update — 2026-10-27
 
 The source-register count guard repair and exact-head CI batch are now **DONE_VERIFIED** for the tested PR merge ref. All gates listed in the acceptance line above completed successfully, including three Python versions, clean wheel install, npm/browser build, system verification, g2pK integration, and the research-only Charsiu benchmark. Do not promote the /h/ rule beyond the opt-in research profile: the outstanding work is now linguistic/rights/target evidence, not a known failing test in this batch.
+
+
+### Pair-level benchmark review and independence caveat — 2026-10-27
+
+Fresh artifact `12766869026` was inspected row-by-row. Broad-to-narrow IPA changed 326/1,000 SIGMORPHON dev rows (302 edit-distance improvements, 24 unchanged) and 472/1,834 UGTPHON dev rows (435 improvements, 37 unchanged); no changed row worsened the stored edit distance and no broad-exact case became narrow-nonexact in either artifact. These are descriptive measurements on the same dev sets used in candidate discovery/counterfactual selection, not independent evaluation. The no-regression observation is not a guarantee outside these selected data. The `/h/` candidate remains PARTIAL, opt-in, research-only, and target-incompatible until source-blind phonetic adjudication, an untouched evaluation set, licensing/training-overlap review, and downstream Ukrainian adaptation are completed.
