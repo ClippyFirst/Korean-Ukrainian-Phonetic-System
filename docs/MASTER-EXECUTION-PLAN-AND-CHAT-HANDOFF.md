@@ -2770,3 +2770,41 @@ No production pronunciation rule or Ukrainian mapping was changed in this contin
 - Current relevant commits: Python metadata 2e35037e718a5c19215165f176122e2ea36f2d6f; Python metadata tests a9d838af90b830198dd2396ba65cf8a5684b7267; browser metadata cfee2575620aa9d89a5cbe62f6ba0740cb775d9e; browser metadata tests 0513d836b9a4a05a964f9501bd20addcba6227da; shared fixture f54c2cdd211b8a4175cf70003616a92df7e2a41b; browser shared-fixture test 78af6c365f8a4259827f6c862958239884bcf30d; Python shared-fixture test e66750873e9685da45373bb3eccd7b6a9384f932; syntax correction ef0b47912a511fc3cff374b7679e0c942e963650; contract update 07dd0d72ce8bde18ddb6123a323ca6b05840df5f.
 - These changes remain PARTIAL until exact-head CI confirms all Python/browser tests. Metadata does not yet provide a shared structured segment/feature/boundary sequence and does not by itself enforce adapter eligibility; do not claim full typed IPA acceptance or parity.
 - No production Korean pronunciation rules or Ukrainian mappings changed. PR #339 remains Draft.
+
+
+## Final continuation checkpoint — 2026-10-27
+
+### Exact state and verification ledger
+
+- Starting branch HEAD: 4379463aab4f5a829c61ed666deb28cafffa1a6e. Latest code/data/test head before this handoff update: ea79916124e7fff9c939bf79b3e932c5f3b757fc.
+- Branch: research/strict-teacher-guided-rule-mining-2026-10-26. PR #339 remains OPEN / DRAFT; base main SHA observed as a452054a669de28426404d1110731715083423bb.
+- Local clone command attempted: git clone --filter=blob:none --depth=1 --branch research/strict-teacher-guided-rule-mining-2026-10-26 https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System.git /tmp/kua-repo. Result: BLOCKED, DNS could not resolve github.com. No local test pass is claimed.
+- Historical exact-head seed portfolio run 40480217054 on 4379463aab4f5a829c61ed666deb28cafffa1a6e: FAIL in the triage step because a fixed 994-pair expectation rejected a variable pair count. Its same-seed checkpoint and prediction hashes matched, and dev metrics matched. This was a triage cardinality assertion failure, not demonstrated model drift.
+- Corrected triage: validates 1,000 dev predictions, requires Strict pair IDs to be a subset of those IDs, and requires identical Strict pair-ID sets across seeds; count is no longer hard-coded. Added tests for variable pair counts and pair-set mismatch. Status remains PARTIAL pending current-head CI.
+- Versioned IPA metadata added to both runtime result shapes: ipa_profile, ipa_profile_version, ipa_profile_level, ipa_profile_status. Added a shared fixture for 싸/씨/시/쇼/쌰, preserving Python and browser outputs separately. Fixture labels are UNADJUDICATED and target-adapter eligibility UNVERIFIED. This does not yet create a typed segment/feature/boundary sequence or enforce a shared adapter gate.
+- Source register additions: SRC-KANG-2010-KOREAN-SIBILANT-COARTICULATION and SRC-KONG-KANG-2020-SEOUL-SIBILANTS. Their license states remain not_assessed; source register audit test expectations updated from 117 to 119 rows and REVIEW_REQUIRED from 113 to 115; manual-classification count remains 2.
+- Exact-head CI poll for ea79916124e7fff9c939bf79b3e932c5f3b757fc showed tests, browser integration, system verification, seed portfolio, teacher training, corpus audit, and research workflows QUEUED. They are not PASS. Latest run IDs include tests 40486623075, system verification 40486623078, browser integration 40486623079, seed portfolio 40486623081, teacher split audit 40486623109, and master artifacts 40486623134. Poll these and inspect logs/artifacts before marking anything verified. A prior code/test head a826d23d8c2623ef8a7c6f1fc552804bd5f4bfc5 passed tests, system verification, browser integration, corpus audit and several diagnostics, but that is not verification of the later IPA metadata/fixture/source-register changes.
+- Primary source abstracts: Kang (2010) reports context-specific /s/ coarticulation and a distinct /yu, yo/ pattern; Kong & Kang (2020) report speaker/context variation and palatalized variants before /i/. These do not settle a universal categorical [ɕ͈] output for tense /s͈/. Do not change either profile without further adjudication.
+
+### PR and branch reconciliation
+
+- PR #340 is merged into this research branch and its train-only conflict-queue work was reused; it was not independently re-merged.
+- PR #341 remains open/Draft and has source-backed R002/R016 changes in rules.py and browser rule modules. No duplicate rule edits were made in this continuation; its branch remains separately owned and was not merged blindly.
+- PR #338 remains open/Draft for separate neural V3 benchmark research; no runtime neural dependency or weights were added.
+- PR #336 remains open and outside the present IPA-profile scope; it was left untouched.
+- No branch was deleted, no PR was merged, no release was published, and no external settings were changed.
+
+### Final task ledger
+
+| Task | Status | Remaining acceptance criterion |
+|---|---|---|
+| Repository state, PR state, contract presence | DONE_VERIFIED | Recheck exact final HEAD after this handoff commit |
+| Seed-portfolio triage correction | PARTIAL | Exact-head seed workflow passes and all three pair-ID sets are inspected |
+| Shared versioned profile metadata | PARTIAL | Exact-head Python/browser CI passes |
+| Paired IPA fixtures | PARTIAL | Shared fixture tests pass; independent adjudication remains separate |
+| Source register / rights triage | PARTIAL | Exact-head source-register audit passes; publication rights remain not assessed |
+| ㅅ/ㅆ phonetic adjudication | BLOCKED / UNADJUDICATED | Independent evidence specifically adjudicates tense /s͈/ contexts and broad-vs-narrow representation |
+| Full typed IPA features/boundaries and adapter eligibility enforcement | TODO | Shared typed structure and fail-closed downstream gate with tests |
+| Ukrainian target changes | DEFERRED | Revisit only after Korean surface and IPA gates pass |
+
+Readiness remains research-ready partial prototype, not release-ready. Do not promote rules, claim teacher accuracy against ClippyFirst broad IPA, change Ukrainian adaptation, or mark PR #339 ready until the required evidence and exact-head CI are complete.
