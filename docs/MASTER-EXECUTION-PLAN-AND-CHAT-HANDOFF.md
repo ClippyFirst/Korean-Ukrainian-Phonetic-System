@@ -2670,3 +2670,19 @@ These are neither passes nor failures; the runner has not returned a conclusion.
 
 - Follow-up sequential-rule review corrected the browser test expectation for `말없이`: its preceding ㄹ coda resyllabifies into 없, so the expected surface-Hangul form is `마럽씨`, not `말업씨`. Test correction commit: `e34e9285474cbe8f8dc34a33ea10283e1ad31e7f`; audit correction commit: `a0bbc9bc446b207b03403e479edd12c6f89e92ba`.
 - This was an expectation correction only; no runtime rule changed. The browser test and Python rule tests remain unexecuted because the corresponding GitHub Actions jobs have stayed queued. Keep the new outputs `PARTIAL` pending test execution and independent source review.
+
+
+### Scope clarification: Korean phonology and IPA first; Ukrainian target last (2026-10-27)
+
+The active implementation scope is now explicitly ordered as requested: **Korean structural/morphological analysis → Korean phonological surface → typed IPA → cross-runtime IPA acceptance → Ukrainian adaptation only at the very end.** Do not spend this phase tuning Ukrainian letters or target mappings while Korean IPA remains under-specified.
+
+New finding in audit commit `52e1fd4ab7def80531cb5a5591d2f897292c50d2`: Python broad IPA renders fortis ㅆ as `s͈`, while the browser renderer emits `ɕ͈` before its broad `J_VOWELS` set. Python labels its narrower sibilant profile explicitly and only partially; browser currently has no equivalent named profile contract. This is a **Korean IPA contract issue**, independent of Ukrainian spelling quality. Do not choose a canonical form by convenience or silently normalize the strings.
+
+Updated task ledger:
+- `DONE_VERIFIED`: source-level Python/browser rule-map equality for the two affected exact-form inventories (37 R002 entries and 25 R003 entries); this does not imply runtime parity.
+- `PARTIAL`: five exact-form rules mirrored and regression cases added, with test execution still waiting on CI.
+- `TODO`: define a runtime-independent IPA profile contract and paired fixtures for the same Korean forms; explicitly distinguish phonemic, broad, and partial-narrow outputs.
+- `BLOCKED`: end-to-end runtime acceptance and canonical neural-teacher metric status while CI runs remain queued and the duplicate-seed gate is unresolved.
+- `DEFERRED`: Ukrainian practical orthography, target mapping refinements, and UI output polish until Korean surface forms and IPA profiles pass acceptance.
+
+At the latest poll, all current-head workflows (tests, system verification, browser integration, seed portfolio, corpus audit and multi-engine diagnostics) remained `QUEUED`; no pass/fail claims are made. The optional NIKL source-inventory job was skipped by its condition. PR #339 stays open/draft. No runtime IPA-profile change was made because changing browser IPA without first separating the target adapter could silently change Ukrainian output, contrary to the current phase boundary.
