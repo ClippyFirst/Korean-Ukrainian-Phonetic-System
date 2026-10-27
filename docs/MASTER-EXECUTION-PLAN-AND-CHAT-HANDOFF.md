@@ -3404,3 +3404,11 @@ The current file names explicitly requested in the continuation prompt for the d
 - TODO: compare the exact current head SHAs/diffs of #339 and #341, integrate safe non-conflicting changes only after inspection, run full CI on the combined tree, locate/reconcile missing contract/register paths, and validate all generated artifacts.
 
 **Readiness remains: PARTIAL RESEARCH PROTOTYPE — NOT RELEASE-READY.** The documentation updates clarify evidence and blockers but do not themselves improve or prove phonetic accuracy. The next genuinely useful action is to inspect exact live PR head/base SHAs and current workflow runs, then test a deliberately constructed combined tree; independently, obtain qualified source-blind IPA annotations and close the Ukrainian target review only after IPA is frozen.
+
+
+# Mainline consolidation checkpoint — 2026-10-27
+
+- The source-backed exact-form R002 liaison and R016 ㄺ+ㄱ changes from PR #341 were merged into `main` as `1def51dd9f88364891ff0051e9aadb5900f2e42c`.
+- This consolidation branch is based on that current mainline commit and carries forward the full research branch tree from PR #339, including the already-present R002/R016 implementation/test changes, research-only narrow IPA profile, teacher-corpus safeguards, benchmark tooling, registers, and handoff updates. It deliberately does not promote the narrow profile into the production Ukrainian target path.
+- The prior PR #339 text saying PR #341 was not merged is historical and superseded by this checkpoint. The branch is a tree-level consolidation snapshot; its new exact-head workflows must pass before merge.
+- Scientific status is unchanged: public noisy-corpus diagnostics are not normative IPA gold; dev profile gains are selection-contaminated; independent IPA adjudication and separate Ukrainian target gold remain blocked. Do not describe this consolidation as a proven accuracy gain.
