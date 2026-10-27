@@ -55,3 +55,12 @@ The seed-portfolio CI failure on `4379463aab4f5a829c61ed666deb28cafffa1a6e` was 
 ## Verification boundary
 
 This is a contract/design artifact, not evidence that runtime parity has passed. Use exact-head Python and browser CI plus independent phonetic adjudication to close the gate. No production pronunciation rules, IPA outputs, or Ukrainian target mappings are changed by this document.
+
+
+## Fail-closed target adapter guard — 2026-10-27
+
+The function ipaTargetForProfile(source, ipaResult, options) is now available in src/app/engine_ipa.js. It accepts a complete IPA result object rather than a bare IPA string and requires explicit profile ID, positive integer version, level, status, and IPA payload. It rejects missing metadata, unadjudicated profiles, partial research-only profiles, and any profile not present in ADAPTER_COMPATIBLE_IPA_PROFILES.
+
+The allowlist is intentionally empty. A successful string-to-target mapping is not evidence that the pronunciation profile is linguistically valid or that its features are safely representable in Ukrainian. A profile may be added only after independent phonetic adjudication, a stable versioned contract, cross-runtime acceptance, and target-inventory review. The legacy raw-string APIs remain available for existing runtime paths and diagnostic compatibility; therefore this guard is a new fail-closed API, not yet a claim that all production calls are forced through it.
+
+Tests added to tests/ipa-ukrainian-trace.test.mjs cover missing metadata, unadjudicated broad IPA, partial narrow IPA, and unregistered purportedly approved profiles. Exact-head CI must pass before this guard is marked verified.
