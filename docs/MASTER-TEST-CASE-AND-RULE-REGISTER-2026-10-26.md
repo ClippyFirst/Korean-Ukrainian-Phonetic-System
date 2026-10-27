@@ -521,3 +521,24 @@ The conservative queue generator was integrated by PR [#344](https://github.com/
 | Classification queue rows | 5,261 | Queue CSV SHA-256: `599a5c22659c9bfe1492276241963db6debf605f86195f4ebabf47cf54424e36` |
 
 All six generated CSVs passed non-empty stable-ID and uniqueness checks. The new queue records heuristic dimension hints only. Its rows remain `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW`; expected values are not parsed and observed outcomes are not inferred. This is a reproducible triage artifact, **not** completion of the semantic case-level register. Overall register status remains **PARTIAL INVENTORY**; independent IPA and Ukrainian-target review remain blocked on qualified human adjudication.
+
+
+## Assertion queue with nearest test context — verified artifact (2026-10-27)
+
+PR [#345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/345) was merged as `f319c3b343da4c362e8e9c531604736ee3d39178`. The merged tree `1c736eb07aea1a0300c2263d1762fc1fc755c1b7` exactly matches tested head `8a0506e032fdd80cb624177b3a77a94c0fef2edd`.
+
+- [Inventory extraction workflow 40464794197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464794197) **PASS**; artifact [12716545824](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464794197/artifacts/12716545824), 3,345,787 bytes; queue CSV SHA-256 `f797d5296f9073cbe8fecf4cfdc61d8959798a04384d8f054b8924b256833f4b`.
+- [System verification 40464794240](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464794240) **PASS** for Python regression/data integrity, browser regression/build and generated pages. Official NIKL source inventory remains skipped by metadata-only policy.
+
+| Inventory | Count | Interpretation |
+|---|---:|---|
+| Lexical records | 644 | Records, not independently adjudicated cases |
+| Test files scanned | 360 | File count |
+| Source files scanned | 388 | In-scope files read successfully |
+| Lexical-to-test text links | 6,801 | Text links, not assertion coverage |
+| Hangul-literal candidates | 50,768 | Candidate spans |
+| Exact source lines preserved | 34,688 | Loss-preserving inventory |
+| Assertion/test-declaration candidates | 5,270 | Candidate lines |
+| Classification queue rows | 5,270 | Each retains source identity, heuristic dimension hints and nearest test/suite context where recognized |
+
+The queue now has context fields for JS `test`/`it`, `describe`/`suite`, Python `def test_*`, and `class Test*`. Nearest-preceding context is a navigation aid, not a proof of lexical scope. Every row remains `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW`; expected and observed results are not inferred. The semantic register is still **PARTIAL INVENTORY**.
