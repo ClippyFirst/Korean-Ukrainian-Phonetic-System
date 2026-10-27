@@ -283,6 +283,8 @@ def render_profiled_ipa_to_ukrainian(
     Production callers should pass the structured IPA result to this guard so
     unadjudicated or partial profiles cannot be mistaken for approved input.
     """
+    if not isinstance(allow_provisional, bool):
+        raise TypeError("allow_provisional must be a bool")
     if not isinstance(ipa_result, dict):
         return {
             "ipa": None, "status": "unavailable",
