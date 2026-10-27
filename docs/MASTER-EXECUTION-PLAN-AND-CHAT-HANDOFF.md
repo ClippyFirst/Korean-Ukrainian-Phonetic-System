@@ -3171,3 +3171,35 @@ The teacher's own dev scores are 676/1,000 (67.60%, CER 5.6465%) for SIGMORPHON 
 - **Production decision:** no generalized production rule was promoted from this artifact. This is the correct evidence-gated decision given the available evidence, not a failed attempt to improve scores.
 
 No source data or model weights were added to runtime; raw predictions remain research artifacts. The artifact was inspected with Python's standard `zipfile`/JSON readers; repository tests were not run locally because the checkout/network blocker remains.
+
+
+## Follow-up implementation batch — narrow nasal/glide scope tests (2026-10-27)
+
+### Actual code change
+
+- Added regression coverage in `tests/test_ipa.py` for the existing teacher-guided, opt-in narrow profile's onset ㄴ → [ɲ] mapping before ㅑ/ㅒ/ㅕ/ㅖ/ㅛ/ㅠ.
+- Positive examples cover `냐`, `녀`, `녜`, `뇨`, and `뉴`; a no-onset control `얘` confirms that the mapping does not synthesize ㄴ.
+- Negative controls retain `니 → ni` and `난 → nan`; broad and phonemic output for `냐` must remain `nja`. This protects the non-production boundary and prevents the research allophone from leaking into default IPA.
+- Test source commit: `d42397801e317038449f059bd498c51ef95e708a`. The initial test expectations were corrected against the actual `VOWEL_IPA` table before the final test commit; the current head contains only the corrected expectations.
+
+### Evidence interpretation remains deliberately narrow
+
+The source check was strengthened with the KCI record for Mee-Jin Ahn (2009), *Korean /n/-deletion: phonetic initial strengthening to denasalization*, DOI 10.17959/sppm.2009.15.1.53, and the UCL thesis literature review that summarizes Korean /n/ as [nʲ]/[ɲ] before /i,j/. Ahn's abstract specifically discusses a word-initial strengthening/deletion pathway and does **not** justify categorical [ɲ] for every onset /n/ in every word. The UCL thesis is a secondary synthesis, not a normative pronunciation standard. Therefore:
+- the rule remains only a partial, opt-in narrow research profile;
+- it is not promoted into broad IPA, browser JavaScript, or Ukrainian target adaptation;
+- word-initial /n/-deletion and lexical/morphological variability remain open review questions;
+- the positive examples are implementation-scope tests, not independent phonetic gold labels.
+
+Sources: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001340886 and https://discovery.ucl.ac.uk/1324541/1/1324541.pdf . Existing source-register entries `SRC-AHN-2009-N-DELETION` and `SRC-UCL-KOREAN-PHONETICS-THESIS` were reused; no duplicate source rows were added.
+
+### Verification status
+
+GitHub Actions started for the test commit `d42397801e317038449f059bd498c51ef95e708a`, including [the full test workflow](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40569603269), [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40569603362), and [browser integration](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40569603677). At the time this handoff entry was written, these runs were queued; Charsiu rule-review and multi-engine diagnostics were in progress. No pass is claimed until the exact-head results are read.
+
+### Ledger
+
+| Item | Status | Acceptance |
+|---|---|---|
+| Narrow nasal-glide rule test coverage | PARTIAL pending exact-head CI | Full Python suite passes; broad/phonemic negative controls and profile metadata remain green |
+| Generalized production promotion from neural teacher | BLOCKED / evidence-limited | Independent case-level adjudication, source/environment limits, paired negative controls, and same-input eligible dev evaluation |
+| Word-initial /n/ variability in narrow IPA | TODO | Decide whether the profile should preserve [n], emit [ɲ], model uncertainty, or abstain for word-initial cases based on lexical/morphological and phonetic evidence |
