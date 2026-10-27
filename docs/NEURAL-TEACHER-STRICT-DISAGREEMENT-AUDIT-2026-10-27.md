@@ -175,3 +175,12 @@ Consequently, the original three-seed metrics remain valid for their original ar
 - Added Python/PyTorch versions, seed, thread settings, deterministic-algorithm status, and full training hyperparameters to each training report and portfolio index.
 - Added a same-seed repeatability gate that trains seed 20261026 twice and requires identical checkpoint SHA-256, prediction SHA-256, and dev metrics.
 - These changes are **not verified yet**. The previous successful workflow ran before this fix. The next accepted portfolio artifact must pass the new same-seed gate before any results are called reproducible. If it still fails, investigate backend determinism further rather than selecting among drifting outputs.
+
+
+## 9. What the new case-level artifact contains
+
+The successful triage workflow [40472610993](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40472610993) uploaded [artifact 12719507456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40472610993/artifacts/12719507456), including `seed-consensus-disagreement-triage.json` with 1,000 case-level records and the raw output from all three seeds.
+
+For that run only, the counts are 459 forms correct for all three seeds, 279 wrong for all three, and 262 with mixed correctness. After removing only whitespace and syllable dots, raw teacher-reference/Strict string equality occurs on 9/459 unanimous-correct cases, 2/262 mixed cases, and 4/279 unanimous-wrong cases. **These equality counts are not accuracy scores**: they do not map vowel diacritics, consonant conventions, boundaries, or target representation. Their value is to identify a small set of exact raw candidates for review while preserving every raw string.
+
+Because the same-seed runs drifted between artifacts, these counts describe artifact 12719507456 and are not a replacement for the earlier portfolio's metrics. The new one-thread/pinned-environment/repeated-seed gate must pass before the next portfolio can serve as the canonical reproducibility baseline.
