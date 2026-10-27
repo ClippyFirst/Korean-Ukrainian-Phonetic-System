@@ -3314,3 +3314,36 @@ The implementation and CI repair batch is now **DONE_VERIFIED** for the tested P
 ## Case-level audit of fresh Charsiu artifact — 2026-10-27
 
 Inspected both pair-level JSONL files inside artifact `12766869026` directly after download. The profile outputs differ from broad output on 326/1,000 SIGMORPHON dev rows and 472/1,834 UGTPHON dev rows. Among changed scored rows, the declared diagnostic edit distance improved on 302 and was unchanged on 24 for SIGMORPHON; it improved on 435 and was unchanged on 37 for UGTPHON. There were zero rows where the narrow output had a greater stored edit distance than broad, and zero broad-exact → narrow-nonexact cases on either set. This is an artifact-level descriptive audit, not proof of generalization: the candidate rule was chosen after counterfactual analysis of these same dev corpora, so these rows are selection-contaminated and must not be called an independent holdout. No test split was exported or evaluated. The next meaningful accuracy gate is source-blind case adjudication and an untouched, eligible evaluation set under a declared common IPA convention; rights and target-compatibility gates also remain open.
+
+
+## One-pass continuation reconciliation — 2026-10-27 (latest exact-head verification)
+
+### Exact current state
+
+- Branch: `research/strict-teacher-guided-rule-mining-2026-10-26`.
+- Starting PR head before this reconciliation: `0702e1c4778725b605ef432f038313af86b6b764`.
+- PR #339 remains open, draft, and unmerged. The PR is not release-ready merely because CI is green.
+- Latest PR-triggered checks for the exact starting head `0702e1c4778725b605ef432f038313af86b6b764` completed successfully: system verification `40576910940`; test matrix `40576910855`; browser integration `40576910747`; teacher-corpus split audit `40576910707`; Charsiu dev-only rule-review `40576910747` (see distinct run ID in workflow list if duplicated by connector); neural teacher seed portfolio `40576910768`; morphology-consensus `40576910938`; research morphology smoke `40576910725`; multi-engine benchmark `40576910776`; UGTPHON `40576910741`; native-vs-g2pK `40576911061`; exhaustive test-case register `40576910875`; master-table/research artifacts `40576910699`; optional g2pK integration `40576910764`. All listed runs reported completed/success in GitHub Actions. These are implementation, integrity, and diagnostic checks, not independent IPA or Ukrainian-target accuracy certification.
+
+### Open-PR reconciliation (reviewed; no blind port/merge)
+
+- **PR #341** (`fix/r002-source-backed-substantive-liaison-2026-10-26`, head `0f2177e60053fe85a5162229f6c0fd67561e817e`): source-backed exact-form rules for formal/substantive liaison and selected ㄺ+ㄱ verbal forms. Its eight relevant verification workflows completed successfully on that head. It overlaps this PR in `src/korean_ukrainian/rules.py`, browser rule modules, tests, the benchmark register, and the master handoff. Keep it separate until the owner/reviewer resolves the overlapping code and both PRs' combined behavior is verified; do not copy the same licenses into this branch or treat a separate PR's CI as proof for a combined tree.
+- **PR #338** (`research/neural-korean-g2p-v3-2026-10-26`, head `691a8ab77c7c6c24137fa9c2a11100de05386536`): neural G2P research harness and contextual evaluator. It remains research-only; authentic NN-KoG2P inference and licensing/training-overlap questions remain blocked. No model outputs are promoted into runtime rules.
+- **PR #329** (`fix/ipa-review-source-blinding-20261025`, head `636dac36c27e4d72b13dc37f9698ad90bfb24b96`): source-blind IPA review packets. Keep the review-packet work distinct; no qualified independent submissions are present, so do not manufacture adjudications.
+- **PR #326** (`research/benchmark-profile-sensitivity-and-ipa-holdout-2026-10-25`, head `ffa2d993b89e29ef5d43b2059d8aff0269b4f391`): diverged/non-mergeable research branch with frozen 24-form holdout infrastructure but no IPA gold annotations. Do not merge its broad runtime diff. Reconcile only after a fresh base comparison and explicit selection of non-conflicting research artifacts.
+- PRs #336 and #327 contain residual-case and NIKL crawl-blocker work; their documented blockers remain evidence-gated. The official NIKL inventory request previously returned HTTP 403; a skipped conditional job is not a successful crawl.
+
+### Current task ledger
+
+- `DONE_VERIFIED`: exact-head Python/browser/system/diagnostic workflows for PR #339's current starting head, including wheel install, corpus split guards, provenance assertions, and no automatic rule promotion.
+- `PARTIAL`: opt-in narrow IPA profile v3 and deterministic candidate mining; these are research-only and not target-compatible.
+- `PARTIAL`: source-backed rule coverage in PR #341 is separately implemented and tested, but not integrated into this branch or the default branch; overlapping diffs require coordinated review.
+- `BLOCKED`: independent, source-blind IPA adjudication under a declared common convention; qualified reviewer submissions are not available in the repository.
+- `BLOCKED`: an untouched eligible evaluation set for candidate selection; current dev comparisons are selection-contaminated.
+- `BLOCKED`: Charsiu model/tokenizer license review and possible training-data overlap; do not redistribute model/data or claim independence before review.
+- `BLOCKED`: remaining KOGL/source-rights classifications and the official NIKL inventory crawl after HTTP 403.
+- `DEFERRED`: Ukrainian adaptation of experimental narrow IPA until the upstream surface/IPA representation is independently adjudicated and target feature losses are explicitly accepted.
+
+### Release decision
+
+The work materially improves reproducibility, exact-form Korean rule coverage across separate PRs, IPA-profile metadata/gating, research provenance, and regression protection. It does **not** establish a validated end-to-end Korean→IPA→Ukrainian engine. Keep PR #339 draft/open; do not merge, publish, or mark release-ready. The next real acceptance evidence is independent blinded IPA annotation plus an untouched evaluation protocol, followed by a reviewed typed IPA-to-Ukrainian adapter and source-rights closure.
