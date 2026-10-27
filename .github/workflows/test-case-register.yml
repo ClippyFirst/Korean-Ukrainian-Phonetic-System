@@ -34,6 +34,7 @@ jobs:
           python scripts/classify_test_case_candidates.py --input "$RUNNER_TEMP/case-register/TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv" --output "$RUNNER_TEMP/case-register/TEST-CASE-REGISTER-ASSERTION-CLASSIFICATION-QUEUE-2026-10-27.csv"
           python - "$RUNNER_TEMP/case-register" "$GITHUB_SHA" <<'PY'
           import csv, hashlib, json, sys
+          from collections import Counter
           from pathlib import Path
 
           root = Path(sys.argv[1])
@@ -62,6 +63,31 @@ jobs:
                   "columns": len(columns),
                   "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
               }
+          queue_name = "TEST-CASE-REGISTER-ASSERTION-CLASSIFICATION-QUEUE-2026-10-27.csv"
+          with (root / queue_name).open(encoding="utf-8", newline="") as stream:
+              queue_rows = list(csv.DictReader(stream))
+          assert len(queue_rows) == report["files"]["TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv"]["rows"], "queue must retain one row per assertion candidate"
+          assert all(row["review_status"] == "UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW" for row in queue_rows), "queue must not auto-verify cases"
+          assert all(row["observed_run_status"] == "NOT_TIED_TO_EXACT_HEAD_RUN" for row in queue_rows), "queue must not invent observed results"
+          def counts(values):
+              return dict(sorted(Counter(values).items()))
+          dimension_values = [
+              label
+              for row in queue_rows
+              for label in row["dimension_hints"].split(";")
+              if label
+          ]
+          report["classification_queue_summary"] = {
+              "rows": len(queue_rows),
+              "candidate_role_counts": counts(row["candidate_role"] for row in queue_rows),
+              "dimension_hint_counts": counts(dimension_values),
+              "expected_value_kind_counts": counts(row["expected_value_kind"] for row in queue_rows),
+              "expected_value_status_counts": counts(row["expected_value_status"] for row in queue_rows),
+              "rows_with_expected_fragment": sum(bool(row["expected_value_raw"]) for row in queue_rows),
+              "raw_literal_or_regex_rows": sum(row["expected_value_kind"] in {"STRING_LITERAL", "SCALAR_LITERAL", "REGEX_LITERAL"} for row in queue_rows),
+              "all_rows_require_manual_review": True,
+              "observed_results_inferred": False,
+          }
           (root / "TEST-CASE-REGISTER-EXTRACTION-REPORT.json").write_text(
               json.dumps(report, ensure_ascii=False, indent=2) + "\n",
               encoding="utf-8",
