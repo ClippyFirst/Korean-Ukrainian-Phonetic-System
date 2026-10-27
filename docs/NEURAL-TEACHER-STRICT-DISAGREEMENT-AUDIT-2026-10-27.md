@@ -241,3 +241,8 @@ The Actions runs on `37487217fd187874099661025f5c6cb72963e172` surfaced one shar
 Added [Korean IPA runtime-profile contract](KOREAN-IPA-RUNTIME-PROFILE-CONTRACT-2026-10-27.md). The Python broad / browser contextual fortis-sibilant difference remains unadjudicated. Do not normalize `s͈` and `ɕ͈` automatically or use cross-runtime/teacher accuracy as a quality claim until the profile semantics are explicit and paired tests run against the same profile. Ukrainian adaptation remains deferred.
 
 At the time of this update, exact-head CI for `18eab9e6faf5448c20803257576d1182669e0564` is queued; therefore the test fixture correction and profile contract are **not yet marked DONE_VERIFIED by runtime CI**. The browser integration, corpus, and diagnostic successes on the previous head do not substitute for the failing Python test or for exact-head verification.
+
+
+## Paired runtime baseline fixtures added (2026-10-27)
+
+The current legacy behavior is now captured separately in browser and Python tests without labelling either side as gold: browser baseline cases include `씨 → ɕ͈i`, `싸 → s͈a`, `시 → ɕi`, `쇼 → ɕjo`, and `쌰 → ɕ͈ja`; Python broad assertions include `씨 → s͈i` and `싸 → s͈a`. The tests are diagnostic snapshots intended to keep the divergence visible, not a parity test. The exact-head tests are pending; the profile decision remains blocked on source-backed phonetic adjudication. No target mapping was changed.
