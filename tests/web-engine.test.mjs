@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv, decompose } from '../src/app/engine.js';
+import { applyContextualRules } from '../src/app/engine_rules_ctx.js';
 import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian } from '../src/app/engine_ipa.js';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
@@ -108,6 +109,79 @@ test('NIKL R003 exact-form licenses do not generalize to unreviewed lookalikes',
     const result = engine.convert(input);
     assert.notEqual(result.surfaceHangul, input === '많아보임' ? '마나보임' : input);
     assert.equal(result.status, 'unresolved', input);
+  }
+});
+
+test('NIKL §11 exact verbal-stem ㄺ-before-ㄱ exceptions match Python without broadening to nouns', () => {
+  for (const input of ['읽고', '묽고', '얽거나']) {
+    const units = [...input].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+    const rules = applyContextualRules(units, input);
+    assert.equal(units[0].coda, 'ㄹ', input);
+    assert.equal(units[1].onset, 'ㄲ', input);
+    assert.ok(rules[0].includes('rieul-giyeok-exception-§11-exact-form'), input);
+  }
+
+  const noun = [...'닭고기'].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+  const nounRules = applyContextualRules(noun, '닭고기');
+  assert.equal(noun[0].coda, 'ㄺ');
+  assert.equal(noun[1].onset, 'ㄱ');
+  assert.ok(nounRules[0].includes('rieul-giyeok-exception-requires-morphology'));
+});
+
+test('NIKL §15 substantive liaison covers exact official forms only', () => {
+  const cases = [
+    ['값어치', '', 'ㅂ'],
+    ['값있는', '', 'ㅂ'],
+    ['겉옷', '', 'ㄷ'],
+    ['헛웃음', '', 'ㄷ'],
+    ['맛없다', '', 'ㄷ'],
+  ];
+  for (const [input, expectedCoda, expectedOnset] of cases) {
+    const units = [...input].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+    const rules = applyContextualRules(units, input);
+    assert.equal(units[0].coda, expectedCoda, input);
+    assert.equal(units[1].onset, expectedOnset, input);
+    assert.ok(rules[0].some(rule => rule.includes('substantive-liaison-§15-exact-form')), input);
+    if (input === '헛웃음') {
+      assert.equal(units[1].coda, '');
+      assert.equal(units[2].onset, 'ㅅ');
+    }
+  }
+
+  const formal = [...'값이'].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+  const formalRules = applyContextualRules(formal, '값이');
+  assert.equal(formal[0].coda, 'ㅂ');
+  assert.equal(formal[1].onset, 'ㅆ');
+  assert.ok(formalRules[0].includes('complex-coda-liaison-exact-form-formal'));
+
+  const unlisted = [...'밭어'].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+  applyContextualRules(unlisted, '밭어');
+  assert.equal(unlisted[0].coda, 'ㅌ');
+  assert.equal(unlisted[1].onset, 'ㅇ');
+
+  const result = engine.convert('값어치');
+  assert.equal(result.surfaceHangul, '가버치');
+});
+
+test('browser strict rules cover official NIKL §§13–14 liaison examples without productive guessing', () => {
+  const cases = [
+    ['닭이', 'ㄹ', 'ㄱ'],
+    ['넋이', 'ㄱ', 'ㅆ'],
+    ['값이', 'ㅂ', 'ㅆ'],
+    ['깎아', '', 'ㄲ'],
+    ['있어', '', 'ㅆ'],
+    ['쫓아', '', 'ㅊ'],
+    ['덮어', '', 'ㅍ'],
+    ['맞아', '', 'ㅈ'],
+    ['붙어', '', 'ㅌ'],
+    ['읽어', 'ㄹ', 'ㄱ'],
+  ];
+  for (const [input, expectedCoda, expectedOnset] of cases) {
+    const units = [...input].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+    const rules = applyContextualRules(units, input);
+    assert.equal(units[0].coda, expectedCoda, input);
+    assert.equal(units[1].onset, expectedOnset, input);
+    assert.ok(rules[0].some(rule => rule.includes('exact-form')), input);
   }
 });
 

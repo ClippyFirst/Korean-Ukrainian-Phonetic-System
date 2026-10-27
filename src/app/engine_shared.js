@@ -36,6 +36,16 @@ const LEXICAL_B_CODA_PREFIXES=new Set(['넓죽','넓둥','넓적']);
 // Exact-form formal liaison licenses. Direct NIKL surface attestations and
 // transparent rule-derived applications are distinguished in comments.
 const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
+  ['닭이','닭>이'], // NIKL §13: 닭이[달기].
+  ['넋이','넋>이'], // NIKL §14: 넋이[넉씨].
+  ['값이','값>이'], // NIKL §14: 값이[갑씨].
+  ['깎아','깎>아'], // NIKL §13: 깎아[까까].
+  ['있어','있>어'], // NIKL §13: 있어[이써].
+  ['쫓아','쫓>아'], // NIKL §13: 쫓아[쪼차].
+  ['덮어','덮>어'], // NIKL §13: 덮어[더퍼].
+  ['맞아','맞>아'], // NIKL §13: 맞아[마자].
+  ['붙어','붙>어'], // NIKL §13: 붙어[부터].
+  ['읽어','읽>어'], // NIKL §14: 읽어[일거].
   ['없음','없>음'], // NIKL FAQ 8391 / Q&A 335008: 없음[업씀].
   ['있었','있>었'], // NIKL Q&A 326978 explains 있- + -었- as [이썯].
   ['멋있어','있>어'], // NIKL Q&A 306166 gives [머디써] and [머시써]; preserve variant status.
@@ -57,6 +67,24 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
   ['싶어서','싶>어'], // NIKL §§13–14, transparent 싶- + -어서.
   ['없으니깐','없>으'], // Exact noisy form; no productive ending heuristic.
   ['없으니까','없>으'], // NIKL §§13–14, 없다 + -으니까.
+]);
+
+// Exact-form substantive-morpheme liaison licenses under NIKL §15(붙임).
+// NIKL explicitly attests 값어치[가버치]; this is distinct from formal 값이[갑씨].
+// Source: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62
+const NIKL_15_SUBSTANTIVE_LIAISON_FORMS=new Map([
+  ['값어치','값>어'],
+  ['값있는','값>있'],
+  ['겉옷','겉>옷'],
+  ['헛웃음','헛>웃'],
+  ['맛없다','맛>없'],
+]);
+
+// Exact source-backed NIKL §11 verbal-stem ㄺ + ㄱ exceptions.
+const NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS=new Map([
+  ['읽고','읽>고'], // NIKL Online Q&A qna_seq=329463: 읽고[일꼬].
+  ['묽고','묽>고'], // NIKL §11 example.
+  ['얽거나','얽>거'], // NIKL §11 example.
 ]);
 
 // Exact-form NIKL §12(4) ㅎ-coda deletion licenses. These attest only
@@ -172,7 +200,7 @@ export {
   HANGUL_BASE, HANGUL_END, V_COUNT, T_COUNT, N_COUNT,
   ONSETS, VOWELS, CODAS, COMPLEX, FINAL_REPRESENTATIVE,
   NASAL_AFTER, PLAIN_TO_FORTIS, J_VOWELS, ASPIRATION, H_CODA_ASPIRATION,
-  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
+  LEXICAL_B_CODA_PREFIXES, NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION,
   NIKL_30_SAISIOT_INSERTION_FORMS,
   parseCsv, decompose, compose, createMap, get, isHangulUnit, nextHangul, prevHangul,
   representative, isJamoChar, isPreservableIpaLiteral, renderStructured,

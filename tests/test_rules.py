@@ -73,11 +73,11 @@ def test_n_insertion_disabled_by_default_for_unlisted_form():
     items,_=apply_ordered_rules(parse_syllables("각여름"),["R009"]); assert items[1].onset=="ㅇ"
 
 def test_complex_coda_liaison_requires_exact_formal_morpheme_license():
-    expected={"넋이":(("ㄱ","ㅆ"),"넋>이"),"값이":(("ㅂ","ㅆ"),"값>이"),"앉아":(("ㄴ","ㅈ"),"앉>아"),"닭을":(("ㄹ","ㄱ"),"닭>을"),"젊어":(("ㄹ","ㅁ"),"젊>어")}
+    expected={"앉아":(("ㄴ","ㅈ"),"앉>아"),"닭을":(("ㄹ","ㄱ"),"닭>을"),"젊어":(("ㄹ","ㅁ"),"젊>어")}
     for word,((coda,onset),pair) in expected.items():
         items,traces=apply_ordered_rules(parse_syllables(word),["R002"])
         assert traces[0].status=="conditional-disabled"
-        assert items[0].coda in {"ㄳ","ㅄ","ㄵ","ㄺ","ㄻ"}
+        assert items[0].coda in {"ㄵ","ㄺ","ㄻ"}
         items,traces=apply_ordered_rules(
             parse_syllables(word),["R002"],
             rule_licenses={f"R002:formal:{word}:{pair}"},
@@ -85,26 +85,46 @@ def test_complex_coda_liaison_requires_exact_formal_morpheme_license():
         assert items[0].coda==coda and items[1].onset==onset
         assert traces[0].changed
 
-def test_substantive_morpheme_uses_representative_of_complex_coda():
-    # 값어치 [가버치] follows §15, not §14's 값이 [갑씨] pattern.
-    items,traces=apply_ordered_rules(parse_syllables("값어치"),["R002"])
-    assert items[0].coda=="ㅄ" and items[1].onset=="ㅇ"
-    assert traces[0].status=="conditional-disabled"
+def test_nikl_official_formal_liaison_examples_are_source_backed_exact_forms():
+    cases = {
+        "닭이": ("닭>이", "ㄹ", "ㄱ"),
+        "넋이": ("넋>이", "ㄱ", "ㅆ"),
+        "값이": ("값>이", "ㅂ", "ㅆ"),
+        "깎아": ("깎>아", "", "ㄲ"),
+        "있어": ("있>어", "", "ㅆ"),
+        "쫓아": ("쫓>아", "", "ㅊ"),
+        "덮어": ("덮>어", "", "ㅍ"),
+        "맞아": ("맞>아", "", "ㅈ"),
+        "붙어": ("붙>어", "", "ㅌ"),
+        "읽어": ("읽>어", "ㄹ", "ㄱ"),
+    }
+    for word, (pair, expected_coda, expected_onset) in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R002"])
+        assert items[0].coda == expected_coda, word
+        assert items[1].onset == expected_onset, word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R002:formal:{word}:{pair}", word
 
-    items,traces=apply_ordered_rules(
-        parse_syllables("값어치"),["R002"],
-        rule_licenses={"R002:substantive:값어치:값>어"},
-    )
+def test_source_backed_substantive_morpheme_liaison_resolves_official_value_case():
+    # NIKL Q&A 5949 explicitly attests 값어치[가버치] under §15(붙임).
+    # This exact substantive license must not generalize to 닭을 or other forms.
+    items,traces=apply_ordered_rules(parse_syllables("값어치"),["R002"])
     assert items[0].coda==""
     assert items[1].onset=="ㅂ"
     assert traces[0].changed
+    assert traces[0].license_context=="R002:substantive:값어치:값>어"
+    assert "§§13–15" in traces[0].source
+
+    items,traces=apply_ordered_rules(parse_syllables("닭을"),["R002"])
+    assert items[0].coda=="ㄺ" and items[1].onset=="ㅇ"
+    assert traces[0].status=="conditional-disabled"
 
 def test_complex_coda_license_cannot_be_reused_for_another_word():
     items,traces=apply_ordered_rules(
-        parse_syllables("값어치"),["R002"],
+        parse_syllables("닭을"),["R002"],
         rule_licenses={"R002:formal:넋이:넋>이"},
     )
-    assert items[0].coda=="ㅄ" and items[1].onset=="ㅇ"
+    assert items[0].coda=="ㄺ" and items[1].onset=="ㅇ"
     assert traces[0].status=="conditional-disabled"
 
 def test_h_deletion_before_vowel_requires_exact_ending_or_suffix_evidence():
@@ -231,7 +251,7 @@ def test_unknown_complex_coda_before_h_is_not_guessed_as_a_suffix_pattern():
 def test_verbal_stem_rieul_giyeok_exception_requires_exact_morphological_license():
     generic = {"R016:verb_stem_rieul_giyeok_suffix"}
     items, traces = apply_ordered_rules(
-        parse_syllables("읽고"),
+        parse_syllables("긁고"),
         ["R016", "R008", "R001"],
         boundary_mode="morpheme",
         rule_licenses=generic,
@@ -241,13 +261,26 @@ def test_verbal_stem_rieul_giyeok_exception_requires_exact_morphological_license
     assert traces[1].status == "conditional-disabled"
 
     items, traces = apply_ordered_rules(
-        parse_syllables("읽고"),
+        parse_syllables("긁고"),
         ["R016", "R008", "R001"],
         boundary_mode="morpheme",
-        rule_licenses={"R016:verb_stem_rieul_giyeok_suffix:읽고:읽>고"},
+        rule_licenses={"R016:verb_stem_rieul_giyeok_suffix:긁고:긁>고"},
     )
     assert (items[0].coda, items[1].onset) == ("ㄹ", "ㄲ")
     assert traces[0].changed
+
+def test_nikl_r016_official_examples_resolve_with_exact_form_source_licenses():
+    cases = {"읽고": "읽>고", "묽고": "묽>고", "얽거나": "얽>거"}
+    for word, pair in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R016", "R008", "R001"])
+        assert (items[0].coda, items[1].onset) == ("ㄹ", "ㄲ"), word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R016:verb_stem_rieul_giyeok_suffix:{word}:{pair}", word
+        assert "qna_seq=329463" in traces[0].source, word
+
+    items, traces = apply_ordered_rules(parse_syllables("닭고기"), ["R016", "R008", "R001"])
+    assert (items[0].coda, items[1].onset) == ("ㄱ", "ㄱ")
+    assert traces[0].status == "conditional-disabled"
 
 def test_r016_license_cannot_be_reused_for_noun_dakgogi():
     items, traces = apply_ordered_rules(
@@ -275,35 +308,41 @@ def test_default_rule_order_produces_dongnimmun_surface():
     assert any(t.rule_id=="R006" and t.changed for t in traces)
     assert any(t.rule_id=="R005" and t.changed for t in traces)
 
-def test_simple_coda_liaison_requires_morphology_when_section_15_changes_the_representative():
-    items,traces=apply_ordered_rules(parse_syllables("깎아"),["R002"])
-    assert items[0].coda=="ㄲ" and items[1].onset=="ㅇ"
-    assert traces[0].status=="conditional-disabled"
-
-    items,traces=apply_ordered_rules(
-        parse_syllables("깎아"),["R002"],
-        rule_licenses={"R002:formal:깎아:깎>아"},
-    )
-    assert items[0].coda==""
-    assert items[1].onset=="ㄲ"
-    assert traces[0].changed
-
-def test_substantive_simple_coda_uses_representative_and_exact_pair_license():
-    items,traces=apply_ordered_rules(parse_syllables("겉옷"),["R002"])
+def test_unlisted_simple_coda_liaison_requires_morphology_when_representative_changes():
+    items,traces=apply_ordered_rules(parse_syllables("밭어"),["R002"])
     assert items[0].coda=="ㅌ" and items[1].onset=="ㅇ"
     assert traces[0].status=="conditional-disabled"
 
     items,traces=apply_ordered_rules(
-        parse_syllables("겉옷"),["R002"],
-        rule_licenses={"R002:substantive:겉옷:겉>옷"},
+        parse_syllables("밭어"),["R002"],
+        rule_licenses={"R002:formal:밭어:밭>어"},
     )
     assert items[0].coda==""
-    assert items[1].onset=="ㄷ"
+    assert items[1].onset=="ㅌ"
     assert traces[0].changed
+
+def test_official_nikl_substantive_examples_use_coda_representatives():
+    cases = {
+        "겉옷": ("겉>옷", "ㄷ"),
+        "헛웃음": ("헛>웃", "ㄷ"),
+        "맛없다": ("맛>없", "ㄷ"),
+        "값있는": ("값>있", "ㅂ"),
+        "값어치": ("값>어", "ㅂ"),
+    }
+    for word, (pair, expected_onset) in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R002"])
+        assert items[0].coda == "", word
+        assert items[1].onset == expected_onset, word
+        assert traces[0].changed, word
+        if word == "헛웃음":
+            assert items[1].coda == "" and items[2].onset == "ㅅ"
+            assert traces[0].license_context == "R002:substantive:헛웃음:헛>웃"
+        else:
+            assert traces[0].license_context == f"R002:substantive:{word}:{pair}", word
 
 def test_simple_coda_license_cannot_be_reused_for_another_full_form():
     items,traces=apply_ordered_rules(
-        parse_syllables("겉옷"),["R002"],
+        parse_syllables("밭어"),["R002"],
         rule_licenses={"R002:formal:깎아:깎>아"},
     )
     assert items[0].coda=="ㅌ" and items[1].onset=="ㅇ"

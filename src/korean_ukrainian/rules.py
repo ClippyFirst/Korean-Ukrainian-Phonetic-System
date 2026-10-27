@@ -32,15 +32,26 @@ RULE_META={
 "R013":("adnominal-l-fortition","NIKL §27","high"),
 "R014":("compound-fortition","NIKL §28; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R015":("saisiot-pronunciation","NIKL §30; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
-"R016":("verbal-stem-rieul-giyeok-exception","NIKL §11; lexical/morphological conditioning","high"),
+"R016":("verbal-stem-rieul-giyeok-exception","NIKL §11 https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002; Q&A qna_seq=329463 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=329463","high"),
 }
 
-# Exact-form licenses for clear formal-morpheme liaison examples derived from NIKL §14.
+# Exact-form licenses for formal-morpheme liaison examples explicitly attested in or derived from NIKL §§13–14.
 # The rule is general, but this engine intentionally requires a full-form license
 # until it has a morphological analyzer. The examples below have transparent
 # inflectional morphology and official rule support; this is not a broad coda rule.
 _NIKL_R002_FORMAL_LICENSES = {
     "앉아라": "앉>아",  # 앉- + imperative ending -아라; NIKL §14 explicitly attests 앉아[안자].
+    # Exact examples explicitly attested in NIKL Standard Pronunciation Rules §§13–14.
+    "닭이": "닭>이",  # §13: 닭이[달기].
+    "넋이": "넋>이",  # §14: 넋이[넉씨].
+    "값이": "값>이",  # §14: 값이[갑씨].
+    "깎아": "깎>아",  # §13: 깎아[까까].
+    "있어": "있>어",  # §13: 있어[이써].
+    "쫓아": "쫓>아",  # §13: 쫓아[쪼차].
+    "덮어": "덮>어",  # §13: 덮어[더퍼].
+    "맞아": "맞>아",  # §13: 맞아[마자].
+    "붙어": "붙>어",  # §13: 붙어[부터].
+    "읽어": "읽>어",  # §14: 읽어[일거].
     "없어도": "없>어",  # 없- + connective ending -어도; NIKL §14 attests 없어[업써].
     # Direct NIKL surface evidence: 없음[업씀], Q&A/FAQ 8391 (also listed in Q&A 335008).
     "없음": "없>음",
@@ -67,6 +78,18 @@ _NIKL_R002_FORMAL_LICENSES = {
     "없으니까": "없>으",
     # Q&A 306166 directly attests 멋있어[머디써/머시써]; license only 있>어.
     "멋있어": "있>어",
+}
+
+# NIKL §15(붙임): substantive-morpheme liaison uses the coda representative;
+# the official NIKL answer explicitly attests 값어치[가버치]. Keep this exact-form
+# exception separate from formal-morpheme liaison (값이[갑씨]).
+# Source: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62
+_NIKL_R002_SUBSTANTIVE_LICENSES = {
+    "값어치": "값>어",
+    "값있는": "값>있",
+    "겉옷": "겉>옷",
+    "헛웃음": "헛>웃",
+    "맛없다": "맛>없",
 }
 
 # Exact-form licenses for NIKL §12(4) ㅎ-coda deletion before a vowel-initial
@@ -156,12 +179,24 @@ _NIKL_R007_FORMAL_I_LICENSES = {
     "개같이못하고": "같>이",  # NIKL Q&A 327454 confirms 같이 [가치]; exact pair only.
 }
 
+# Exact source-backed NIKL §11 verbal-stem ㄺ + ㄱ exception examples.
+# Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+# 읽고 is also directly attested by NIKL Online Q&A qna_seq=329463.
+_NIKL_R016_VERBAL_STEM_LICENSES = {
+    "읽고": "읽>고",
+    "묽고": "묽>고",
+    "얽거나": "얽>거",
+}
+
 def _source_backed_rule_licenses(items, boundary_mode):
     full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
     licenses = set()
     pair = _NIKL_R002_FORMAL_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R002:formal:{full_form}:{pair}")
+    pair = _NIKL_R002_SUBSTANTIVE_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R002:substantive:{full_form}:{pair}")
     pair = _NIKL_R003_FORMAL_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R003:ending_or_suffix_h_deletion:{full_form}:{pair}")
@@ -187,6 +222,9 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R015_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R015:saisiot:{full_form}:{pair}")
+    pair = _NIKL_R016_VERBAL_STEM_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R016:verb_stem_rieul_giyeok_suffix:{full_form}:{pair}")
     return licenses
 
 @dataclass
@@ -235,6 +273,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         # adjacency alone. Require an exact full-form + pair license:
         # R002:formal:넋이:넋>이 or R002:substantive:값어치:값>어.
         liaison_licenses={x for x in licenses if x.startswith("R002:")}
+        applied_license_contexts=[]
         full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
@@ -259,11 +298,11 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 if scope=="formal":
                     retained,moved=COMPLEX_LIAISON[a.coda]
                     a.coda=retained; b.onset=moved or "ㅇ"; changed=True
-                    license_context=f"R002:formal:{full_form}:{pair}"
+                    applied_license_contexts.append(f"R002:formal:{full_form}:{pair}")
                 elif scope=="substantive":
                     representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
                     a.coda=""; b.onset=representative; changed=True
-                    license_context=f"R002:substantive:{full_form}:{pair}"
+                    applied_license_contexts.append(f"R002:substantive:{full_form}:{pair}")
                 else:
                     conditional_disabled=True
             elif a.coda in {"ㄷ","ㅌ"} and b.nucleus=="ㅣ":
@@ -287,12 +326,16 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                             break
                     if scope=="formal":
                         b.onset=a.coda; a.coda=""; changed=True
+                        applied_license_contexts.append(f"R002:formal:{full_form}:{pair}")
                     elif scope=="substantive":
                         b.onset=representative; a.coda=""; changed=True
+                        applied_license_contexts.append(f"R002:substantive:{full_form}:{pair}")
                     else:
                         conditional_disabled=True
                 else:
                     b.onset=a.coda; a.coda=""; changed=True
+        if applied_license_contexts:
+            license_context=";".join(dict.fromkeys(applied_license_contexts))
     elif rule_id=="R003":
         # NIKL §12(4) deletes ㅎ in ㅎ/ㄶ/ㅀ before a vowel-initial ending
         # or suffix. Adjacent Hangul blocks alone do not prove that boundary.
@@ -548,7 +591,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             parts=license.split(":",3)
             if len(parts)==4 and parts[1]=="verb_stem_rieul_giyeok_suffix" and parts[2]==full_form:
                 exact_pairs.add(parts[3])
-        if not exact_pairs or boundary_mode!="morpheme":
+        if not exact_pairs or boundary_mode not in {"same_word","morpheme"}:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):

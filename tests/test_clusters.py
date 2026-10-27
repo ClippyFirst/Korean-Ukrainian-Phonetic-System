@@ -11,10 +11,8 @@ def test_complex_coda_neutralizes():
 def test_complex_coda_ipa_is_supported():
     assert realize_syllables(parse_syllables("값"))["ipa"]=="kap̚"
 
-def test_complex_coda_liaison_examples_require_formal_morpheme_evidence():
+def test_complex_coda_liaison_requires_formal_morpheme_evidence_for_unlisted_forms():
     expected={
-        "넋이":("nʌk̚.s͈i","넋>이"),
-        "값이":("kap̚.s͈i","값>이"),
         "앉아":("an.dʑa","앉>아"),
         "닭을":("tal.ɡɯl","닭>을"),
         "젊어":("tɕʌl.mʌ","젊>어"),
@@ -26,6 +24,13 @@ def test_complex_coda_liaison_examples_require_formal_morpheme_evidence():
             parse_syllables(word),["R002"],
             rule_licenses={f"R002:formal:{word}:{pair}"},
         )
+        assert realize_syllables(items)["ipa"]==ipa
+        assert traces[0].changed
+
+def test_official_nikl_complex_coda_formal_examples_resolve_without_manual_licenses():
+    expected={"넋이":"nʌk̚.s͈i","값이":"kap̚.s͈i"}
+    for word,ipa in expected.items():
+        items,traces=apply_ordered_rules(parse_syllables(word),["R002"])
         assert realize_syllables(items)["ipa"]==ipa
         assert traces[0].changed
 

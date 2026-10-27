@@ -1384,3 +1384,113 @@ Release classification remains **software-verified research prototype / partial 
 - Source checks: NIKL MCFAQ 5716 explicitly permits `삶의[살믜]/[살메]` (Hangul pronunciation, not IPA); the Korean Basic Dictionary entry for `쫓아내다` gives `[쪼차내다]`; the official dictionary example includes correctly spelled `무서웠어`; an official NIKL Q&A quotes `많았구나`. These support source-level observations only, not silent spelling repair or exact noisy-form pronunciation.
 - No production pronunciation rule was added for `칡칡이`, `쫒아내면`, `많앗구나유유유`, or `무서웟어`: the first lacks a verified lexical parse and the other three are nonstandard spellings whose intended correction must not be silently substituted. `삶의` remains diagnostic-only until independent IPA review; Ukrainian target review remains a separate gate.
 - New branch: `fix/final-abstention-evidence-2026-10-25`, based on current main `d23646af23b10be6b9f5223002cf634cd128ea06`. Exact-head CI for this branch is not yet known; do not mark these new tests `DONE_VERIFIED` until Actions finishes.
+
+
+### Deterministic R002 exact-form coverage extension — 2026-10-26
+
+**Implementation outcome: DONE_VERIFIED for this bounded R002 rule-coverage task.** This is a real deterministic rule-layer change, not a neural-runtime integration. It is not an aggregate accuracy claim.
+
+Primary evidence:
+- NIKL Standard Pronunciation Rules §§13–15: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+- NIKL official FAQ directly explains 값어치[가버치] and why §15(붙임), not the formal-morpheme pattern, licenses this form: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62
+- The source is already represented in \`research/SOURCE-REGISTER.csv\` as \`SRC-NIKL-MCFAQ-5949\`; no duplicate source registry was created.
+
+Changes:
+- Python \`src/korean_ukrainian/rules.py\` now source-licenses exact formal-morpheme R002 forms: \`닭이\`, \`넋이\`, \`값이\`, \`깎아\`, \`있어\`, \`쫓아\`, \`덮어\`, \`맞아\`, \`붙어\`, \`읽어\`, alongside the previously licensed forms.
+- Python and browser rule paths now separately license exact §15 substantive-morpheme cases: \`값어치\`, \`값있는\`, \`겉옷\`, \`헛웃음\`, \`맛없다\`. The complex-coda case moves the representative coda; it does not reuse §14's second-component formal-liaison behavior.
+- Browser implementation mirrors the Python rule boundary. Tests cover expected coda/onset changes and negative controls (\`닭을\`, \`밭어\`, \`젊어\`) to ensure exact-form licenses do not become productive guessing.
+
+Interpretation boundary:
+- Some listed forms already have lexical surface entries, so their user-visible output may have been correct before this patch. This patch improves consistency and direct coverage of the deterministic R002 rule layer when a lexical override is absent; it does **not** prove an aggregate percentage increase or neural-level accuracy.
+- IPA and Ukrainian target outputs for these rows remain provisional where independent phonetic/target adjudication is absent. Korean surface evidence must not be mistaken for independent IPA or Ukrainian gold.
+- Exact-head CI results must be recorded below before this task can be marked \`DONE_VERIFIED\`.
+
+
+### R016 browser/Python parity and multi-boundary R002 trace — 2026-10-26
+
+**Status: PARTIAL pending exact-head CI.** The earlier R002-only scope is already recorded as DONE_VERIFIED above; this is the follow-on implementation.
+
+- Added exact source-backed NIKL §11 verbal-stem ㄺ + ㄱ licenses for 읽고[일꼬], 묽고[물꼬], 얽거나[얼꺼나] in Python and browser JavaScript. The exact forms retain ㄹ and fortify ㄱ; unlisted forms and noun 닭고기 remain fail-closed.
+- The Python rule engine now accepts a matching exact source-backed R016 license in same-word mode, because the exact full-form + pair evidence itself establishes the morphology; a category-only license still fails.
+- The R002 trace now retains all exact pair licenses applied within a multi-boundary form. For 헛웃음, the §15 substantive boundary 헛>웃 is separately licensed, while the subsequent 웃>음 follows the existing unambiguous written-coda liaison path. This avoids overwriting the first rule's evidence when one rule pass transforms more than one boundary.
+- Primary evidence is already in the source register: NIKL Standard Pronunciation Rules §§11, 13–15; NIKL Q&A qna_seq=329463 directly attests 읽고[일꼬]; NIKL FAQ mcfaq_seq=5949 directly attests 값어치[가버치].
+- Regression tests cover three R016 forms, exact rule trace/source retention, the noun negative control, all five §15 forms, and the two-boundary 헛웃음 path.
+- Exact-head CI for the combined R002/R016/trace changes is currently queued behind earlier diagnostic runs. Do not mark this follow-on DONE_VERIFIED until the latest Python and browser test workflows pass. The optional live NIKL inventory remains separately skipped by workflow condition.
+- No aggregate accuracy percentage is claimed: several forms already had lexical overrides, and broad IPA/Ukrainian target gold remains independently unadjudicated.
+
+
+## Exact-head reconciliation — R002/R016 — 2026-10-26 15:05 +0200
+
+**Status: DONE_VERIFIED for the implemented rule/test scope at commit `66c8e62dd575e70edd24e0e837a13dcc5a2dbc1a`; PARTIAL for overall linguistic validation and accuracy.** This section supersedes the earlier queued-CI statement in the preceding R016 note.
+
+### Exact-head CI evidence
+
+All listed runs below are on the exact head SHA `66c8e62dd575e70edd24e0e837a13dcc5a2dbc1a` (not the earlier parent SHA):
+
+- [Verify Korean–Ukrainian system, run 40325471931](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471931) — **success**. Python regression/data integrity and browser regression/build jobs both succeeded. The optional official NIKL source-inventory job was **skipped by its workflow condition**, not passed.
+- [Tests, run 40325471784](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471784) — **success**: Python 3.11, 3.12, 3.13, browser/web, and wheel-install jobs all succeeded.
+- [Master table and research corpus artifacts, run 40325471664](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471664) — **success**.
+- [Paired native Korean engine vs g2pk diagnostic, run 40325471709](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471709) — **success** as a diagnostic workflow; not independent gold adjudication.
+- [Multi-engine Korean IPA diagnostic benchmark, run 40325471732](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471732) — **success** as a benchmark execution.
+- [External UGTPHON Korean IPA diagnostic, run 40325471662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471662) — **success** as a diagnostic execution.
+- [Korean morphology-consensus IPA diagnostic, run 40325472069](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325472069) — **success**.
+- [Research morphology adapter smoke, run 40325471811](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471811) — **success**.
+- The duplicate push-triggered system verification [run 40325461907](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325461907) also **succeeded** on the same SHA.
+
+These results verify CI for the current head; they do not prove broad phonological accuracy. The diagnostic workflow conclusions mean the workflows completed successfully, not that ClippyFirst beat or matched a model on independent gold.
+
+### Reconciled implementation ledger
+
+- **DONE_VERIFIED — R002 formal liaison:** exact-form licenses for NIKL §§13–14 are present in Python and browser paths; positive cases and negative controls are covered.
+- **DONE_VERIFIED — R002 substantive-morpheme liaison:** §15 cases remain a separate path from formal-morpheme liaison; multi-boundary trace preserves the applicable exact-form license evidence.
+- **DONE_VERIFIED — R016:** exact source-backed same-word licenses for `읽고[일꼬]`, `묽고[물꼬]`, and `얽거나[얼꺼나]` are present in both implementations; the noun negative control `닭고기` remains fail-closed.
+- **DONE_VERIFIED — test and artifact gates listed above:** exact-head CI is complete; no local test execution is claimed in this GitHub-only session.
+- **PARTIAL — rule generalization:** these exact-form licenses improve supported rule-layer coverage and parity but are not a general-purpose morphology analyzer. Do not infer broader ㄺ + ㄱ behavior from these licenses.
+- **PARTIAL — measured quality:** no causal aggregate accuracy gain is claimed from R002/R016 because some listed forms already had lexical overrides and the rule additions target a small curated set. A pre/post comparison on a frozen, independently adjudicated holdout is still required.
+- **BLOCKED — live NIKL inventory collector:** the workflow's metadata-only inventory check was skipped by condition; this is not fresh source collection. Existing registered official sources remain usable evidence, with item-level reuse markings still not fully verified.
+- **BLOCKED — independent phonetic/target validation:** direct NIKL bracket pronunciations attest Korean surface forms, not IPA or Ukrainian target gold. Broad independent IPA adjudication and a separately reviewed IPA-to-Ukrainian target set remain outstanding.
+
+### Branch and PR state at reconciliation
+
+- Branch: `fix/r002-source-backed-substantive-liaison-2026-10-26`.
+- Head: `66c8e62dd575e70edd24e0e837a13dcc5a2dbc1a`.
+- Base `main` at the observed time: `a452054a669de28426404d1110731715083423bb`.
+- Draft PR [#341](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/341) remains open, mergeable, and based on `main`; it was not merged.
+- Other open research/implementation PRs were left untouched because they cover distinct research or residual-case scopes; no competing branch was force-updated or closed.
+- Repository-wide readiness remains **research-ready partial prototype, not release-ready**.
+
+### Next acceptance gate
+
+Freeze a pre-change snapshot and a disjoint holdout before further rule mining; run the exact same forms through Python and browser, compare Korean surface output first, IPA second, and Ukrainian target output separately. Report exact-match/CER (or a clearly defined feature error), coverage/abstentions, and positive/negative controls. Until that independent evaluation exists, describe R002/R016 as verified rule-coverage and parity improvements, not a proven overall accuracy increase.
+
+
+## Exact-head benchmark reconciliation after R002/R016 — 2026-10-26
+
+### Current branch / commit state
+- Branch: `fix/r002-source-backed-substantive-liaison-2026-10-26`.
+- Base main observed during this run: `a452054a669de28426404d1110731715083423bb`.
+- Runtime implementation/test head benchmarked: `66c8e62dd575e70edd24e0e837a13dcc5a2dbc1a`.
+- Handoff-only commit before this reconciliation: `69bac527191c28001f5b9a4cacfd21364c75f2a0`.
+- The benchmark register and completion audit are now updated in this branch; this handoff append is documentation-only and does not alter runtime code.
+- Draft PR [#341](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/341) remains open and mergeable. It was not merged.
+
+### Task ledger
+- **DONE_VERIFIED — R002 formal/substantive liaison and R016 exact-form ㄺ-before-ㄱ:** implementation is present in Python and browser code, with source-linked exact-form tests, negative controls, and trace assertions.
+- **DONE_VERIFIED — software checks on implementation head:** [system verification 40325471931](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471931), [test matrix 40325471784](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471784), [UGTPHON 40325471662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471662), [paired native-vs-g2pk 40325471709](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471709), and [multi-engine UGTPHON/SIGMORPHON 40325471732](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471732) all succeeded.
+- **DONE_VERIFIED — documentation-head checks:** Python regression/data integrity and browser regression/build passed on docs-only head `69bac527191c28001f5b9a4cacfd21364c75f2a0` in [40327789281](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40327789281). The live NIKL inventory job was skipped by workflow condition.
+- **PARTIAL — diagnostic benchmark impact:** same pinned UGTPHON corpus, previous run [40216156302](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156302) versus implementation-head run [40325471662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471662): scored native occurrences 2,688→2,698 (+10); abstentions 15→5 (−10); exact matches 1,425→1,430 (+5); CER 9.1757%→9.1697% (−0.0060 pp); exact match conditional on scored tokens 53.0134%→53.0022% (−0.0112 pp). Coverage rose 99.4451%→99.8150% (+0.3700 pp). The defensible result is better coverage, five more exact matches on the fixed corpus denominator, and a very small CER improvement—not a proven increase in conditional exact-match accuracy or normative accuracy.
+- **DONE_VERIFIED — independent lexical diagnostic cross-check:** on SIGMORPHON 2021 (999 eligible occurrences), native remains 357/997 exact (35.8074%), CER 14.7037%, two abstentions and zero runtime errors; comparison run [40216156253](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156253) reported the same values. No measured change on that split.
+- **PARTIAL — causal attribution to neural-model recommendations:** the measured delta is on the implementation batch that includes exact-form rules; it does not establish that any specific rule was first discovered by the neural model, nor that a neural teacher is more accurate. Model suggestions must remain hypotheses until linked to a source, a valid rule environment, and a held-out evaluation.
+- **BLOCKED — normative Korean IPA accuracy:** the 24-form holdout remains frozen but has no independently adjudicated IPA gold. Do not tune against it or treat official Hangul bracket readings as IPA.
+- **BLOCKED — Ukrainian target accuracy:** no independently adjudicated IPA-to-Ukrainian gold corpus is available.
+- **BLOCKED — fresh official source inventory:** the NIKL live metadata inventory was skipped, not passed; exact sources already registered remain usable only within their recorded scope.
+
+### How to continue without benchmark leakage
+1. Keep the 24-form frozen holdout untouched; use UGTPHON/SIGMORPHON only as diagnostic datasets, preserving their annotation-convention caveats.
+2. For each proposed model-derived pattern, record the model/version and exact observation separately from source evidence; verify the official NIKL rule and exact morphological/lexical environment before coding.
+3. Add a narrow deterministic rule only where exact-form or productive-environment evidence is adequate; mirror it in Python and browser implementations and include positive plus fail-closed negative controls.
+4. Run the same pinned benchmark workflows on the code head. Report coverage, abstentions, exact matches, CER, errors and paired deltas; do not use only the conditional exact-match rate to hide added abstentions.
+5. For normative acceptance, obtain two independent broad-IPA reviews and adjudicate disagreement on a frozen, disjoint set; evaluate Ukrainian target rendering only on separately reviewed target gold.
+6. Before merge, reconcile PR #341 description and this handoff to the latest exact-head evidence. Do not merge or mark release-ready on the basis of diagnostic benchmark gains alone.
+
+**Final classification:** software-verified research prototype with a measurable diagnostic coverage gain; still **not release-ready** because normative independent IPA and Ukrainian target gold remain unavailable.
