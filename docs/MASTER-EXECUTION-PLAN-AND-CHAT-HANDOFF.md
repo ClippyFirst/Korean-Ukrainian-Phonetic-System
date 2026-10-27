@@ -2679,10 +2679,15 @@ The active implementation scope is now explicitly ordered as requested: **Korean
 New finding in audit commit `52e1fd4ab7def80531cb5a5591d2f897292c50d2`: Python broad IPA renders fortis ㅆ as `s͈`, while the browser renderer emits `ɕ͈` before its broad `J_VOWELS` set. Python labels its narrower sibilant profile explicitly and only partially; browser currently has no equivalent named profile contract. This is a **Korean IPA contract issue**, independent of Ukrainian spelling quality. Do not choose a canonical form by convenience or silently normalize the strings.
 
 Updated task ledger:
-- `DONE_VERIFIED`: source-level Python/browser rule-map equality for the two affected exact-form inventories (37 R002 entries and 25 R003 entries); this does not imply runtime parity.
-- `PARTIAL`: five exact-form rules mirrored and regression cases added, with test execution still waiting on CI.
+- `PARTIAL`: source-level Python/browser rule-map equality for the affected exact-form inventories (37 R002 entries and 25 R003 entries) was checked manually; the pre-existing `tests/test_rule_license_parity.py` already automates parity across the larger set of exact-form inventories. The latest test execution is still waiting on CI, so it is not yet `DONE_VERIFIED`.
+- `PARTIAL`: five exact-form rules mirrored and regression cases added; latest-head runtime tests have not executed.
 - `TODO`: define a runtime-independent IPA profile contract and paired fixtures for the same Korean forms; explicitly distinguish phonemic, broad, and partial-narrow outputs.
 - `BLOCKED`: end-to-end runtime acceptance and canonical neural-teacher metric status while CI runs remain queued and the duplicate-seed gate is unresolved.
 - `DEFERRED`: Ukrainian practical orthography, target mapping refinements, and UI output polish until Korean surface forms and IPA profiles pass acceptance.
 
 At the latest poll, all current-head workflows (tests, system verification, browser integration, seed portfolio, corpus audit and multi-engine diagnostics) remained `QUEUED`; no pass/fail claims are made. The optional NIKL source-inventory job was skipped by its condition. PR #339 stays open/draft. No runtime IPA-profile change was made because changing browser IPA without first separating the target adapter could silently change Ukrainian output, contrary to the current phase boundary.
+
+
+### Parity-test inventory correction — 2026-10-27
+
+Inspection confirmed that `tests/test_rule_license_parity.py` already exists and compares Python dictionaries with browser exact-form maps across multiple rule families, including R002 and R003. Do not create a duplicate test or duplicate implementation. The earlier note's TODO applies only to **running the existing test on the current head**, not authoring a parity test from scratch. The test is currently unverified because current-head CI jobs remain queued. The separate Korean IPA-profile parity gap is not covered by this table-inventory test and remains a genuine TODO.
