@@ -114,8 +114,20 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     phonemic=level=="phonemic"
     rendered=["".join(onset_ipa(s,i,items,phonemic=phonemic,level=level)+nucleus_ipa(s,phonemic=phonemic)+coda_ipa(s.coda,phonemic=phonemic)) for i,s in enumerate(items)]
     ipa=render_syllable_sequence(items,rendered)
+    profile_ids={
+        "phonemic":"clippyfirst-korean-phonemic-v1",
+        "broad":"clippyfirst-korean-broad-v1",
+        "narrow":"clippyfirst-korean-narrow-partial-sibilant-v1",
+    }
     result={
         "level":level,
+        "ipa_profile":profile_ids[level],
+        "ipa_profile_version":1,
+        "ipa_profile_level":level,
+        "ipa_profile_status":(
+            "partial-research-only" if level=="narrow"
+            else "unadjudicated-cross-runtime"
+        ),
         "ipa":ipa,
         "syllables":rendered,
         "variants":generate_vowel_variants(items,rendered,level=level),
