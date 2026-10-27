@@ -253,3 +253,12 @@ def test_profile_aware_adapter_rejects_unadjudicated_partial_and_unregistered_pr
     })
     assert not_allowlisted["status"] == "unavailable"
     assert not_allowlisted["reason"] == "ipa_profile_not_allowlisted_for_target_adapter"
+
+
+def test_profiled_adapter_validates_research_opt_in_even_when_profile_is_blocked():
+    import pytest
+    from korean_ukrainian.ipa_target_renderer import render_profiled_ipa_to_ukrainian
+
+    with pytest.raises(TypeError, match="allow_provisional"):
+        render_profiled_ipa_to_ukrainian("씨", {"ipa": "s͈i"}, allow_provisional="yes")
+    assert render_profiled_ipa_to_ukrainian("씨", {"ipa": "s͈i"}, allow_provisional=False)["reason"] == "ipa_profile_metadata_incomplete"
