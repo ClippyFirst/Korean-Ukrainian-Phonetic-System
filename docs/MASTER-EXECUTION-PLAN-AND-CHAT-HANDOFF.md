@@ -3203,3 +3203,33 @@ GitHub Actions started for the test commit `d42397801e317038449f059bd498c51ef95e
 | Narrow nasal-glide rule test coverage | PARTIAL pending exact-head CI | Full Python suite passes; broad/phonemic negative controls and profile metadata remain green |
 | Generalized production promotion from neural teacher | BLOCKED / evidence-limited | Independent case-level adjudication, source/environment limits, paired negative controls, and same-input eligible dev evaluation |
 | Word-initial /n/ variability in narrow IPA | TODO | Decide whether the profile should preserve [n], emit [ɲ], model uncertainty, or abstain for word-initial cases based on lexical/morphological and phonetic evidence |
+
+
+## Candidate-cluster counterfactual and regression-gate update — 2026-10-27
+
+A second cluster was tested from the saved Charsiu dev pair artifact instead of being promoted from a high-frequency edit list.
+
+- Candidate `NT-CODA-N-PALATAL-AFFRICATE-2026-10-27`: coda `n` immediately before a following palatal affricate, simulated as `n → ɲ` in narrow IPA.
+- Exact same-input counterfactual, repository diagnostic normalizer:
+  - SIGMORPHON dev: 448/999 → 465/999 exact (+1.70 pp), CER 11.0870% → 10.7978%, 17 exact fixes / 0 exact regressions.
+  - UGTPHON dev: 1,226/1,800 → 1,182/1,800 exact (−2.44 pp), CER 6.0346% → 6.4530%, 0 exact fixes / 44 exact regressions.
+  - Coverage and abstentions did not change (SIGMORPHON 999/1,000; UGTPHON 1,800/1,834).
+- **Decision: reject production promotion.** Opposite corpus effects indicate the source IPA conventions are not interchangeable for this correspondence. No runtime code changed for this candidate. The case-level audit and canonical candidate register were updated in place.
+- This is a measured rejection, not a claim that [ɲ] is never a valid realization. Reopening requires source-blind case adjudication under one declared IPA profile and a context-sensitive review of positive and negative environments.
+
+### Test hardening in this continuation
+
+- `tests/test_ipa.py`: added positive examples for the existing opt-in onset ㄴ + glide → [ɲ] narrow-profile mapping, plus no-onset, /i/, non-glide, broad, and phonemic negative controls.
+- `tests/test_pipeline.py`: added a fail-closed check proving the narrow research IPA profile does not produce accepted Ukrainian orthography.
+- The first CI run at `a948418086c6a6cc2245ff5418911681a0c60b0b` failed in the new test because expected strings incorrectly omitted the IPA glide in ㅑ/ㅕ/ㅖ/ㅠ. The failure was inspected from the exact GitHub Actions log and the expectations were corrected against the repository's actual `VOWEL_IPA` table in subsequent commits. The failure is retained as historical evidence; it must not be described as a passing test.
+- Corrected test source commit: `d42397801e317038449f059bd498c51ef95e708a`; subsequent pipeline safety test commit: `94fcdb834d7706cc6b0bc39078d9b49340723a44`.
+- The current branch then received documentation-only commits for the measured candidate decision. Exact-head tests/system verification remain pending in Actions as of this entry; do not mark this test batch `DONE_VERIFIED` until their final conclusions are fetched.
+
+### Current status refinement
+
+| Item | Status | Decision |
+|---|---|---|
+| Existing onset ㄴ + selected glide → [ɲ] narrow profile | PARTIAL | Rule exists; new tests encode its intended scope; source limitations and lexical/word-initial variation remain. No broad IPA or target promotion. |
+| Coda /n/ → [ɲ] before palatal affricate | BLOCKED / EVIDENCE-LIMITED | Cross-corpus dev results conflict; no runtime implementation. |
+| Narrow IPA target leakage guard | PARTIAL pending exact-head CI | New pipeline test asserts narrow IPA remains target-incompatible and accepted Ukrainian output is withheld. |
+| General neural-teacher-to-production rule promotion | BLOCKED / EVIDENCE-LIMITED | No new generalized production rule passes independent IPA convention adjudication in this cycle. |
