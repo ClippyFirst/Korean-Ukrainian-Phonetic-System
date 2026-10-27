@@ -2664,3 +2664,9 @@ For exact branch head `4be18f7d25dda301120256868b85b1d59e20738b`, the following 
 - Scratch teacher training and error analysis: [40475409001](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40475409001).
 
 These are neither passes nor failures; the runner has not returned a conclusion. No exact-head test outcome is claimed. The current task is blocked on external CI execution/runner availability, while the research acceptance blockers (reproducibility, reviewed IPA adapter, independent pronunciation adjudication) remain separate.
+
+
+### `말없이` expected surface correction — 2026-10-27
+
+- Follow-up sequential-rule review corrected the browser test expectation for `말없이`: its preceding ㄹ coda resyllabifies into 없, so the expected surface-Hangul form is `마럽씨`, not `말업씨`. Test correction commit: `e34e9285474cbe8f8dc34a33ea10283e1ad31e7f`; audit correction commit: `a0bbc9bc446b207b03403e479edd12c6f89e92ba`.
+- This was an expectation correction only; no runtime rule changed. The browser test and Python rule tests remain unexecuted because the corresponding GitHub Actions jobs have stayed queued. Keep the new outputs `PARTIAL` pending test execution and independent source review.
