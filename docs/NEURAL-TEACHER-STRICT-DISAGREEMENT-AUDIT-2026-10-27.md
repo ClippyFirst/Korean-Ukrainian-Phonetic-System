@@ -106,3 +106,34 @@ Therefore this report separates:
 All seed-specific predictions, checkpoint weights, training histories, corpus manifest, error analyses, teacher/Strict paired JSONL, and hashes are retained in artifact 12717644093. The artifact contains train/dev only; the training workflow intentionally does not export or load test rows. Re-run the workflow rather than manually editing its derived metrics.
 
 **Conclusion:** The current strongest actionable findings are (1) a sizeable teacher-only length-mark convention mismatch that must not be confused with engine error, (2) teacher instability on a substantial subset of forms, and (3) six explicit native Strict abstentions clustered around two morphology-licensed rules. The first next step is not bulk rule insertion; it is a reviewed IPA mapping plus focused morphological evidence and tests.
+
+
+## 6. Raw character-level convention audit on the 455 unanimous-correct teacher cases
+
+A follow-up inventory was computed from the saved pair files. Scope: 455 dev forms where all three seeds exactly match the SIGMORPHON reference, within the 994 forms for which Strict has non-diagnostic IPA. This is a **raw Unicode character inventory**, not aligned phoneme/token scoring. Character counts below count occurrences, not words or error rates.
+
+| Raw feature in reference target | Count in teacher reference | Count in Strict broad IPA | What it tells us |
+|---|---:|---:|---|
+| Combining retraction mark in vowels (e.g. `a̠`) | 354 | 0 | The target uses more explicit vowel quality detail than broad output |
+| Combining lowering mark (e.g. `o̞`, `e̞`) | 211 | 0 | Another systematic narrowness/convention difference |
+| Combining rounding mark (e.g. `ʌ̹`) | 155 | 0 | The target distinguishes vowel rounding not represented in current broad IPA |
+| Affricate tie bar (e.g. `d͡ʑ`) | 167 | 0 | Different IPA serialization of affricates; this may be formatting/segmentation rather than a phonological difference |
+| Lateral retroflex symbol `ɭ` | 88 | 0 | Target coda-lateral convention differs from engine's `l` |
+| `ɦ` | 30 | 0 | Target marks a voiced glottal fricative where Strict's broad rendering uses `h` in relevant contexts |
+| Length mark `ː` | 55 | 2 | The target retains length in this subset more often than Strict broad output |
+| `sʰ` / `ɕʰ` components | 270 aspiration marks overall | 150 aspiration marks overall | The target marks sibilant aspiration more often; Strict's partial narrow profile explicitly handles this separately from broad IPA |
+
+Other rarer target symbols in this subset include `ʎ`, `β`, `ɸ`, `ʝ`, `ɥ`, and `ɘ`. These should be inspected by case and source convention before any mapping is proposed. The inventory also shows why a global “strip all diacritics” adapter would be unsafe: it would erase distinctions that the target uses and could hide real consonant or vowel differences.
+
+### Concrete case triage
+
+- **Likely teacher error, not a Strict error:** `가까이` reference is `k a̠ k͈ a̠ i`; Strict broad is `ka.k͈a.i`. Seed 20261026 inserts an extra `k͈` before `i`, while the other seeds match the reference. This is a sequence-generation instability; it is not evidence to add a consonant to ClippyFirst.
+- **Representation difference, not yet a confirmed engine error:** `가솔린` reference uses `sʰ` and `ɭ` symbols, while Strict broad uses `s` and `l` with syllable separators. The engine code explicitly maps onset `ㅅ` to `s` in broad mode, reserves `sʰ/ɕʰ` for its partial narrow profile, and maps coda `ㄹ` to `l`. This is a target-contract mismatch that needs a reviewed adapter, not an automatic production change.
+- **Possible surface-phonetic convention mismatch needing adjudication:** `경제학` target contains `ɦ` and tie-barred `d͡ʑ`, while Strict broad uses `h` and untied `dʑ`. Tie-bar normalization is likely a representation-level candidate; `ɦ` versus `h` requires an explicit decision about target phonetic detail and environment before classifying the engine.
+- **Vowel detail is systematic:** common cases such as `가곡` have reference `k a̠ ɡ o̞ k̚` and Strict `ka.ɡok̚`. Removing spaces and syllable dots still leaves distinct vowel diacritics. This is exactly why a raw string metric would be misleading and why the adapter needs a documented, narrow set of transformations.
+
+### Updated engineering interpretation
+
+The strongest new finding is not “Strict has 317 errors”; such a claim would be invalid. It is that the target convention differs systematically along at least four dimensions: vowel diacritics, sibilant aspiration, lateral realization, and affricate/glottal-fricative notation. These differences account for a substantial portion of apparent raw divergence and must be mapped before the remaining cases can be triaged as teacher-wrong, Strict-wrong, both-wrong, or unresolved.
+
+A new research-only script, `scripts/summarize_korean_teacher_strict_disagreements.py`, and its tests generate a reproducible case-level inventory across all three seeds while preserving raw IPA. The portfolio workflow archives `seed-consensus-disagreement-triage.json`. It intentionally emits no cross-IPA accuracy score and changes no production rules.
