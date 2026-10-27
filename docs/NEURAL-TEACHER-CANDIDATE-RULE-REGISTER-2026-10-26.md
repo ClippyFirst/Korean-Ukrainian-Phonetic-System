@@ -26,6 +26,7 @@ Promotion requires primary-source evidence for the exact environment, a reviewed
 | New exact-form licenses added to existing R003 in this workstream | 6 | NIKL §12(4) examples, not six generalized rules |
 | New source-backed exact-form entries added to existing R010 in this workstream | 2 | 안지 (S015) and 신다 (NIKL Q&A 325349); exact-form coverage only, not new generalized rules |
 | New source-backed exact-form entries added to existing R016 in this workstream | 2 | 맑게 → [말께], 맑고 → [말꼬]; exact-form coverage only, not a new generalized rule or a confirmed neural discovery |
+| New narrow-profile allophony candidates added from teacher-guided review | 1 | onset ㄴ → [ɲ] before glide-initial nuclei ㅑ/ㅒ/ㅕ/ㅖ/ㅛ/ㅠ; research-only IPA profile, not Ukrainian-target-compatible |
 | Total genuinely missing rules remaining | **Unknown** | Requires case-level enumeration and adjudication |
 
 ## Focused implementation batch — R016 coverage repair (2026-10-27)
@@ -35,6 +36,14 @@ Promotion requires primary-source evidence for the exact environment, a reviewed
 - **Primary evidence:** NIKL Standard Pronunciation Rule 11; official Q&A [qna_seq=320900](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320900) explicitly confirms 맑고[말꼬]/맑게[말께]; [qna_seq=335693](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=335693) clarifies the exception is based on written ㄺ followed by written ㄱ. Both sources are recorded in `research/SOURCE-REGISTER.csv`.
 - **Interpretation guard:** this is a source-backed exact-form coverage repair in an existing deterministic rule, not evidence that a neural model discovered a new general phonological rule. It does not close the teacher-disagreement adjudication gap, certify broad IPA, or validate Ukrainian target output. Runtime remains neural-free and fail-closed for unlicensed forms.
 - **Acceptance:** the Python and browser rule tests must pass on the exact final commit; system verification and the source/register integrity gates must be checked before marking DONE_VERIFIED.
+
+## Teacher-guided deterministic IPA change — nasal before /j/ (2026-10-27)
+
+- **Implementation:** the Python opt-in narrow IPA profile now emits [ɲ] for onset ㄴ before glide-initial nuclei ㅑ/ㅒ/ㅕ/ㅖ/ㅛ/ㅠ. It deliberately leaves ㅣ unchanged and does not alter broad IPA, the browser runtime, or Ukrainian target output. The profile was versioned to `korean-narrow-partial-sibilant-nasal-v2` to reflect the changed output contract.
+- **Why this candidate:** Charsiu artifact 12756518697 repeatedly shows reference [ɲ] versus native narrow [n] in /j/-initial contexts. The development-only counterfactual improved exact match by 7/999 on SIGMORPHON and 21/1800 on UGTPHON, with CER reductions from 0.11348→0.11225 and 0.06034→0.05830. Adding ㅣ to the mapping degraded both datasets, so the broad mapping was rejected.
+- **Evidence:** Ahn (2009) discusses the palatalized nasal before [j] and its possible denasalization in word-initial contexts; the UCL thesis literature review summarizes [nʲ]/[ɲ] before /j/. Both sources are registered. These support a scoped research-profile hypothesis, not a universal speaker-independent IPA target.
+- **Metric integrity:** model training overlap is UNKNOWN; corpus IPA conventions remain unreviewed. Counterfactual scores are from the saved dev artifact and are not a post-implementation benchmark or held-out result. Actual exact-head CI and rerun of the profile benchmark are still required.
+- **Status:** research-only narrow-profile change implemented; target adapter remains disabled. Do not count this as a new production Korean morphophonological rule or as proof that Charsiu itself discovered a normative rule.
 
 ## Evidence and limitations
 
