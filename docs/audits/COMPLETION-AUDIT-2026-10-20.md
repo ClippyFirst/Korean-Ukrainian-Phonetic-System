@@ -1205,3 +1205,12 @@ Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. Le
 - Added SRC-KANG-2010-KOREAN-SIBILANT-COARTICULATION and SRC-KONG-KANG-2020-SEOUL-SIBILANTS to the existing source register. The reviewed abstracts support context/speaker variation but do not adjudicate a universal categorical [ɕ͈] rendering for tense /s͈/.
 - Verification limitation: current code/test runs on later heads are QUEUED in GitHub Actions at this audit update; no local test result is claimed because clone failed with DNS error resolving github.com. Do not mark the code fix DONE_VERIFIED until exact-head test, system, browser, and seed-portfolio workflows finish successfully and logs/artifacts are inspected.
 - Current acceptance status: seed-triage fix PARTIAL; common IPA profile metadata PARTIAL; cross-runtime IPA acceptance BLOCKED / UNADJUDICATED; Ukrainian adaptation DEFERRED. PR #339 must remain Draft.
+
+
+
+## Follow-up audit — strict IPA target gate — 2026-10-27
+
+- Source audit confirmed the public browser default still maps IPA through the legacy path despite unadjudicated profile metadata. The Python default pipeline also retains a raw-IPA renderer path. Neither is approved for release.
+- Added opt-in strict gate entry points to browser convert()/convertSurface() and Python transliterate_korean(). Strict browser mode suppresses target spellings from public output, traces, and variants; both runtimes retain upstream unresolved/diagnostic-only guards.
+- Added browser/Python tests and kept the shared negative profile fixture. These code/tests are PARTIAL until exact-head CI passes. Current latest relevant code head before documentation-only updates: 4456d47393313090cb17115494a6ce85347fa121; tests 40517742289, system verification 40517742426, and browser integration 40517742266 were QUEUED. No local or exact-head CI pass is claimed.
+- Remaining blockers: default exclusive gate migration; independent broad/narrow and ㅅ/ㅆ adjudication; official NIKL inventory job skipped; Ukrainian target inventory review deferred; source-rights audit partial. PR #339 remains Draft.
