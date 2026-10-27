@@ -8,7 +8,7 @@ def test_narrow_ipa_is_explicitly_partial_and_source_scoped():
     narrow = phoneticize_korean("사", ipa_level="narrow")["ipa"]
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["realization_status"] == "partial-narrow-sibilant-profile"
+    assert narrow["realization_status"] == "partial-narrow-research-profile"
     assert narrow["transcription_profile"]["target_compatible"] is False
 
     # Default broad IPA remains stable; narrow is opt-in only.
