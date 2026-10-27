@@ -1,3 +1,39 @@
+# Final execution checkpoint — 2026-10-27
+
+## Branch and commit ledger
+
+- **Workstream:** existing dedicated branch `research/strict-teacher-guided-rule-mining-2026-10-26`, PR [#339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339), base `main`. The PR remains open and draft; no merge or release action was taken.
+- **Starting branch head for this execution batch:** `286e5cd7f6ee9785f55c5a38a2667e2e2f8038c6`.
+- **Implementation/test head before this final handoff update:** `49115cf4c8d69b98292eb7f524253fbf97022c41`.
+- This handoff update is documentation-only; its own commit becomes the new branch head. The implementation head above identifies the exact code/test state currently awaiting CI.
+
+## Outcome ledger
+
+| Work item | Status | Evidence / acceptance still required |
+|---|---|---|
+| R016 exact-form production coverage | **PARTIAL** | Python and browser license registries add `맑게` → `말께`, `맑고` → `말꼬`; positive tests and `닭고기` negative control added; NIKL Q&A 320900/335693 registered. Exact-head runtime CI still pending. |
+| Neural-teacher-guided narrow IPA | **PARTIAL** | Python narrow profile v2 adds onset ㄴ → [ɲ] before ㅑ/ㅒ/ㅕ/ㅖ/ㅛ/ㅠ only; profile metadata version is 2, tests cover positive and negative controls, broad IPA is unchanged. Dev-artifact counterfactual suggests improvement, but post-change benchmark and independent adjudication are pending. |
+| Teacher disagreement → general production rules | **PARTIAL / EVIDENCE-LIMITED** | Charsiu artifact was inspected. Most high-frequency differences involve aspiration, lateral realization, /h/ variants, and IPA convention. Model training overlap is unknown; do not promote these differences automatically. |
+| Ukrainian target adapter approval | **BLOCKED** | Narrow profile remains partial/research-only and target-incompatible; compatible-profile allowlist remains empty. |
+| Full release readiness | **NOT READY** | Exact-head tests/build and benchmark rerun have not completed; independent IPA adjudication, target-inventory review, source/rights gates remain open. |
+
+## Commands and checks actually executed
+
+- `git ls-remote https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System.git HEAD` — **BLOCKED**, local DNS/network could not resolve GitHub; no local clean checkout was available.
+- `unzip -l /mnt/data/charsiu-review.zip` — **PASS**, inspected artifact contents.
+- `python /tmp/analyze_teacher.py` — **PASS as an exploratory artifact analysis**, not a repository test. It computed dev-only mismatch clusters using the benchmark's declared diagnostic normalizer.
+- `python /tmp/counterfactual_nasal_j.py` — **PASS as a counterfactual simulation**, not a runtime test. It estimated dev-only exact-match/CER changes for the scoped nasal-glide mapping.
+- GitHub content integrity checks — **PASS** for the four newly registered source rows having 12 CSV columns; current profile ID/version references agreeing across runtime and tests; R016 entries present in Python and browser; and regression/negative-control assertions present.
+- Python pytest, Node browser tests, wheel-install checks, post-change Charsiu benchmark, and exact-head system verification — **NOT YET RUN TO COMPLETION**. On code head `49115cf4c8d69b98292eb7f524253fbf97022c41`, relevant Actions runs are queued: tests [40561248714](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40561248714), system verification [40561248790](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40561248790), Charsiu review [40561249001](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40561249001), and the remaining branch workflows. The official NIKL source inventory is skipped by workflow policy and is **not** a pass.
+
+## Next genuine blockers
+
+1. Wait for exact-head Actions; fix any test or build failures and rerun on the resulting code head.
+2. Rerun the pinned Charsiu narrow-profile benchmark after the [ɲ] code change; compare exact match, CER, coverage, and per-case regressions on the same dev partitions. Keep results labelled development-only.
+3. Independently adjudicate IPA conventions and the nasal-glide realization before considering a target-compatible profile.
+4. Continue mining candidate clusters only where a repeated context can be tied to a source-backed phonological condition and negative controls; keep unresolved IPA conventions out of production broad IPA.
+5. Complete the independent Ukrainian target-inventory review, KOGL/source-rights checks, and remaining acceptance gates before any release claim.
+
 # Latest continuation — teacher-guided narrow IPA improvement (2026-10-27)
 
 - **Implemented:** extended the opt-in Python narrow IPA profile with onset ㄴ → [ɲ] before glide-initial nuclei ㅑ/ㅒ/ㅕ/ㅖ/ㅛ/ㅠ. It deliberately does not apply before ㅣ. Broad IPA, browser runtime, and Ukrainian target adaptation remain unchanged.
