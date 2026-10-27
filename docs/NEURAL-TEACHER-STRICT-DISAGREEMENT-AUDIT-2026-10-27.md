@@ -246,3 +246,8 @@ At the time of this update, exact-head CI for `18eab9e6faf5448c20803257576d11826
 ## Paired runtime baseline fixtures added (2026-10-27)
 
 The current legacy behavior is now captured separately in browser and Python tests without labelling either side as gold: browser baseline cases include `씨 → ɕ͈i`, `싸 → s͈a`, `시 → ɕi`, `쇼 → ɕjo`, and `쌰 → ɕ͈ja`; Python broad assertions include `씨 → s͈i` and `싸 → s͈a`. The tests are diagnostic snapshots intended to keep the divergence visible, not a parity test. The exact-head tests are pending; the profile decision remains blocked on source-backed phonetic adjudication. No target mapping was changed.
+
+
+## Current execution snapshot (2026-10-27; head reconciliation)
+
+The fixture-prefix defect has been corrected and diagnostic Python/browser sibilant baselines added. These are source-controlled changes, not yet runtime-verified: GitHub Actions is backlogged and the exact current head has queued checks. Do not mark the repair `DONE_VERIFIED` until the current-head test, browser, and system checks finish. The `s͈` versus `ɕ͈` discrepancy remains a profile/adjudication blocker, not a license to normalize either representation. Ukrainian adaptation remains deferred.

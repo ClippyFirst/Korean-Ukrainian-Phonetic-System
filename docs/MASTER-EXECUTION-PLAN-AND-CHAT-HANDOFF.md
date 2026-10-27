@@ -2711,3 +2711,12 @@ Added a browser diagnostic snapshot `tests/ipa-profile-legacy-baseline.test.mjs`
 - `PARTIAL`: baseline tests added; exact-head CI must execute them before verification.
 - `BLOCKED`: profile equivalence and IPA correctness remain open until independent phonetic review determines whether broad IPA includes the contextual palatalization and whether the browser should expose a separate surface/narrow profile.
 - `DEFERRED`: Ukrainian adaptation changes until Korean IPA profile acceptance is stable.
+
+
+## Current execution snapshot (2026-10-27; head reconciliation)
+
+- Branch head at this snapshot: `82a0bf6b7aab1aa7b571a6e86910f566a01103ce`; the following documentation commit will supersede this SHA while preserving the state described here.
+- The prior exact-head test failure was a malformed fixture ID, not a relaxed analyzer contract. Fixture corrected in `82e24ce2375872693952ee2e5224c8743d317f33`.
+- Browser and Python diagnostic baseline fixtures now cover the unresolved sibilant profile difference; no production IPA output or Ukrainian mapping was modified.
+- Latest exact-head CI is backlogged. Runs on the current lineage are queued; therefore the fixture repair and new tests remain `PARTIAL`, not `DONE_VERIFIED`, until exact-head Python, browser, and system workflows complete.
+- The independent phonetic decision remains the genuine blocker: determine the intended broad/surface treatment of ㅅ/ㅆ before front/j-vowels, add versioned profile metadata/paired fixtures, then test. Ukrainian adaptation stays deferred.
