@@ -7,6 +7,13 @@
 - Added Python and browser regression coverage, including `닭고기` as a negative control. No generalization to all ㄺ forms; no IPA-to-Ukrainian behavior was changed.
 - **Status at register edit:** code/tests/docs are committed on the PR branch; exact-head CI has not yet been confirmed. Do not mark DONE_VERIFIED until the current head's Python, browser, build and source-register checks are inspected.
 
+## Latest research-profile change — teacher-guided nasal palatalization (2026-10-27)
+
+- The opt-in Python narrow IPA profile was versioned to `korean-narrow-partial-sibilant-nasal-v2` and now emits [ɲ] for onset ㄴ before glide-initial nuclei ㅑ/ㅒ/ㅕ/ㅖ/ㅛ/ㅠ. The rule does not apply before ㅣ; broad IPA and browser runtime are unchanged.
+- New tests cover positive cases 녀/냐/뉴 and negative controls 니/난, plus broad-profile stability. Source references are in `research/SOURCE-REGISTER.csv`.
+- The saved Charsiu dev artifact counterfactual suggested exact-match gains of +7/999 SIGMORPHON and +21/1800 UGTPHON, but these are **pre-implementation development-only simulation results**, not a test pass or final post-change score. Charsiu training overlap is unknown and target conventions remain unreviewed.
+- **Status:** code/tests are committed; local repository tests cannot run because GitHub DNS resolution fails in this environment, and no exact-head CI result is currently returned. Keep the profile research-only and the Ukrainian target adapter disabled until actual CI, post-change dev benchmark, regression review, and independent phonetic adjudication.
+
 ## Latest verification addendum — 2026-10-27
 
 The test-only IPA serialization repair was verified on PR-head commit [4019e233c2a07cbb2d4679ad85fd77a56a307af4](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/4019e233c2a07cbb2d4679ad85fd77a56a307af4):
