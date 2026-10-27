@@ -1214,3 +1214,29 @@ Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. Le
 - Added opt-in strict gate entry points to browser convert()/convertSurface() and Python transliterate_korean(). Strict browser mode suppresses target spellings from public output, traces, and variants; both runtimes retain upstream unresolved/diagnostic-only guards.
 - Added browser/Python tests and kept the shared negative profile fixture. These code/tests are PARTIAL until exact-head CI passes. Current latest relevant code head before documentation-only updates: 4456d47393313090cb17115494a6ce85347fa121; tests 40517742289, system verification 40517742426, and browser integration 40517742266 were QUEUED. No local or exact-head CI pass is claimed.
 - Remaining blockers: default exclusive gate migration; independent broad/narrow and ㅅ/ㅆ adjudication; official NIKL inventory job skipped; Ukrainian target inventory review deferred; source-rights audit partial. PR #339 remains Draft.
+
+
+## One-pass reconciliation addendum — 2026-10-27
+
+### Exact-head verification and cross-PR reconciliation
+
+The current continuation branch's pre-addendum head `0702e1c4778725b605ef432f038313af86b6b764` has successful PR-triggered checks: system verification `40576910940`; test matrix `40576910855`; browser G2P integration `40576910678`; teacher-corpus split audit `40576910707`; Charsiu dev-only rule review `40576910747`; neural teacher seed portfolio `40576910768`; morphology-consensus `40576910938`; research morphology smoke `40576910725`; multi-engine benchmark `40576910776`; UGTPHON `40576910741`; native-vs-g2pK `40576911061`; exhaustive test-case register `40576910875`; master-table/research artifacts `40576910699`; optional g2pK integration `40576910764`; scratch teacher `40576910753`. All reported completed/success. This validates the code/data contracts at that head, not independent pronunciation accuracy.
+
+The following open pull requests were compared rather than blindly merged:
+
+- **#341**, head `0f2177e60053fe85a5162229f6c0fd67561e817e`, has separately verified exact-form NIKL-backed liaison and ㄺ+ㄱ rules. It overlaps this branch's rule code/tests and handoff. Keep separate until the overlapping trees are reconciled and a combined exact-head test run succeeds.
+- **#338**, head `691a8ab77c7c6c24137fa9c2a11100de05386536`, is a research-only neural G2P harness; authentic NN-KoG2P inference, model licensing, and training overlap remain unresolved.
+- **#329**, head `636dac36c27e4d72b13dc37f9698ad90bfb24b96`, improves source-blind reviewer packets; it does not provide independent reviewer annotations.
+- **#326**, head `ffa2d993b89e29ef5d43b2059d8aff0269b4f391`, is diverged/non-mergeable and contains a frozen 24-form holdout with no IPA gold labels; do not merge its runtime diff.
+- **#336/#327** retain residual-case and official NIKL HTTP 403 evidence blockers; skipped jobs do not count as successful source inventory.
+
+### Status ledger
+
+- `DONE_VERIFIED`: implementation/test/data-integrity checks for the current PR #339 starting head; all listed workflows succeeded.
+- `PARTIAL`: opt-in narrow IPA v3, candidate-mining safeguards, and profile gate; profile remains target-incompatible.
+- `PARTIAL`: source-backed rules in PR #341 are verified on their own branch, but not integrated with this branch or main.
+- `BLOCKED`: independent blinded IPA adjudication and an untouched evaluation set.
+- `BLOCKED`: Charsiu model/tokenizer terms and training overlap; remaining KOGL/source-rights review; official NIKL inventory after HTTP 403.
+- `DEFERRED`: Ukrainian target adaptation until the IPA boundary is independently adjudicated and a reviewed typed adapter is wired exclusively.
+
+**Release assessment:** materially improved research and regression infrastructure; still a research prototype/partial, not release-ready. No merge, release, or production-profile promotion was performed. The next acceptance criterion is independent blinded IPA labels plus an untouched evaluation protocol, then target-adapter review and source-rights closure.
