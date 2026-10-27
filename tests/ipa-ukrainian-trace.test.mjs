@@ -385,6 +385,8 @@ test('engine exposes an opt-in profile-gated target path without changing legacy
   for (const result of [
     engine.convert('가', {requireAdjudicatedIpaProfile:true}),
     engine.convertSurface('가', {requireAdjudicatedIpaProfile:true}),
+    // 6·25 is a sourced mixed-script lexical key and exercises the early-return path.
+    engine.convert('6·25', {requireAdjudicatedIpaProfile:true}),
   ]) {
     assert.equal(result.target_adapter, 'profile-gated');
     assert.equal(result.target_status, 'unavailable');
