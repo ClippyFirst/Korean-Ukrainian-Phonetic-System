@@ -7,18 +7,18 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexicalText);
 
-// Diagnostic snapshot only: these are the browser's current legacy IPA strings,
-// NOT independently adjudicated pronunciation gold or a claim of Python parity.
-// Keep the mismatch visible until a versioned cross-runtime profile is approved.
+// Diagnostic snapshot only: outputs are stored per runtime and are not
+// independently adjudicated pronunciation gold or an approved crosswalk.
+const pairedFixture = JSON.parse(readFileSync(
+  new URL('./fixtures/korean-ipa-profile-pairs-2026-10-27.json', import.meta.url), 'utf8'
+));
 test('browser legacy sibilant IPA baseline remains inspectable pending profile adjudication', () => {
-  const cases = [
-    ['싸', 's͈a'],
-    ['씨', 'ɕ͈i'],
-    ['시', 'ɕi'],
-    ['쇼', 'ɕjo'],
-    ['쌰', 'ɕ͈ja'],
-  ];
-  for (const [source, expectedIpa] of cases) {
+  assert.equal(pairedFixture.adjudication_status, 'UNADJUDICATED');
+  assert.equal(pairedFixture.target_adapter_eligibility, 'UNVERIFIED');
+  for (const item of pairedFixture.cases) {
+    const source = item.source;
+    const expectedIpa = item.browser_legacy_contextual_ipa;
+  for (const item of pairedFixture.cases) {
     const result = engine.convert(source);
     assert.equal(result.ipa, expectedIpa, source);
     assert.equal(result.ipa_profile, 'browser-legacy-contextual-v1', source);
