@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 import math
+import platform
 import random
 import unicodedata
 from collections import Counter
@@ -242,7 +243,10 @@ def train(input_dir: Path, output_dir: Path, *, epochs: int, batch_size: int,
     random.seed(seed)
     torch.manual_seed(seed)
     torch.use_deterministic_algorithms(True)
-    torch.set_num_threads(2)
+    # Single-thread CPU execution avoids seed-identical runs drifting due to
+    # parallel floating-point accumulation in recurrent training.
+    torch.set_num_threads(1)
+    torch.set_num_interop_threads(1)
     device = torch.device("cpu")
 
     source_vocab = build_vocab(train_examples, target=False)
@@ -358,8 +362,29 @@ def train(input_dir: Path, output_dir: Path, *, epochs: int, batch_size: int,
                 "model_role": "research-only teacher; no runtime use",
             }, ensure_ascii=False, sort_keys=True) + "\n")
     report = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "model_role": "research-only scratch teacher for deterministic-rule hypothesis generation",
+        "seed": seed,
+        "environment": {
+            "python_version": platform.python_version(),
+            "torch_version": str(torch.__version__),
+            "device": "cpu",
+            "torch_num_threads": torch.get_num_threads(),
+            "torch_num_interop_threads": torch.get_num_interop_threads(),
+            "deterministic_algorithms": torch.are_deterministic_algorithms_enabled(),
+        },
+        "hyperparameters": {
+            "epochs_requested": epochs,
+            "batch_size": batch_size,
+            "patience": patience,
+            "max_decode_length": max_decode_length,
+            "optimizer": "AdamW",
+            "learning_rate": 0.001,
+            "weight_decay": 1e-5,
+            "embedding_dim": 96,
+            "hidden_dim": 128,
+            "architecture": "bidirectional GRU encoder + dot-attention GRU decoder",
+        },
         "dataset_id": DATASET_ID,
         "dataset_revision": source_manifest["dataset_revision"],
         "training_source_sha256": source_manifest["splits"]["train"]["output_file_sha256"],
