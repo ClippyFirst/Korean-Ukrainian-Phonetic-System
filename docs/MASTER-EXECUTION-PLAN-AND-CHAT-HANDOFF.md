@@ -3445,3 +3445,38 @@ Passed on the exact consolidation head:
 
 ## Readiness
 The repository is a **tested partial research prototype, not release-ready**. Keep the narrow IPA profile research-only and target-incompatible until independent IPA convention adjudication and Ukrainian-target review are completed. Other remaining blockers include official NIKL inventory/manifest access (HTTP 403), model licensing/training-overlap verification, and qualified independent reviewers.
+
+
+# One-pass continuation — current mainline and remaining evidence gates (2026-10-27)
+
+## Verified starting point
+
+- Default branch: `main`; starting commit: `42780155008c713200737d07246ef111e411d152`.
+- Dedicated continuation branch: `fix/one-pass-independent-validation-2026-10-27`.
+- Repository currently has no open PRs. Previously closed PRs remain closed; historical branch refs are not automatically deleted.
+- Local clean checkout and local test execution are blocked because this environment cannot resolve `github.com`. Do not report local tests as passed.
+- Current main commit has no reported combined-status checks through the connected status query; earlier successful Actions runs were on a different PR head and are not exact-head evidence.
+
+## One-pass task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Consolidated engine and prior source-backed rules | PARTIAL | Existing code/data preserved; exact current-main test suite still requires CI. |
+| Source-blind independent IPA packet generation | DONE_VERIFIED as software contract | Existing builder and per-review submission validator have regression tests; neither supplies real human annotations. |
+| Paired reviewer comparison and fail-closed disagreement report | IMPLEMENTED_PENDING_CI | New `scripts/compare-ipa-review-pair.mjs`, package command, and tests require a green exact-head CI run. Agreement is not treated as gold. |
+| Independent broad IPA gold | BLOCKED_EXTERNAL_REVIEW | The 24-case frozen holdout correctly has `ipaGold: null`; acceptance requires two real independent qualified reviews plus documented adjudication. |
+| Independent Ukrainian target gold | BLOCKED_EXTERNAL_REVIEW | Requires a separate blinded target-layer review on frozen, adjudicated IPA; no reviewer judgments are fabricated. |
+| NIKL official live crawl | BLOCKED_SOURCE_ACCESS | Previously observed HTTP 403; the local official HTML can support a local inventory, but does not establish permission to redistribute all content. |
+| Root license and citation metadata | BLOCKED_OWNER_DECISION / EVIDENCE | Do not choose a project license on the owner's behalf; citation metadata must use verified author/version/DOI details. |
+| Release gate | NOT_READY | Must wait for exact-head CI, independent IPA adjudication, Ukrainian-target review, and source/rights clearance. |
+
+## Commands and checks in this continuation
+
+- GitHub repository metadata, current default branch, recent commit list, root tree, execution plan, holdout manifest, runtime-profile contract, target renderer, and review scripts fetched through the connected GitHub API.
+- Local `git clone --depth 1 https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System.git /tmp/korean-ua` — BLOCKED: `Could not resolve host: github.com`.
+- No Python/Node test or build has been run locally in this environment.
+- The new pair-comparison tests are intended to run through the repository's existing `npm test` workflow when this branch PR is opened.
+
+## Stop condition and genuine next blocker
+
+The feasible software-side improvement in this pass is to make two-review comparison reproducible and explicitly non-adjudicative. The remaining blocker is now a real external dependency: qualified independent reviewers and owner/source-rights decisions. A green CI cannot substitute for those judgments.
