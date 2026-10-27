@@ -229,7 +229,11 @@ export function ipaTargetForSource(source,ipa,options={}){
 // the set must only be populated after independent phonetic adjudication and
 // explicit cross-runtime/target-inventory acceptance. Do not add profiles
 // merely because their output maps successfully.
-export const ADAPTER_COMPATIBLE_IPA_PROFILES = new Set();
+const ADAPTER_COMPATIBLE_IPA_PROFILES = new Set();
+
+export function adapterCompatibleIpaProfiles() {
+  return Object.freeze([...ADAPTER_COMPATIBLE_IPA_PROFILES]);
+}
 
 export function ipaTargetForProfile(source, ipaResult, options = {}) {
   if (!ipaResult || typeof ipaResult !== 'object' || Array.isArray(ipaResult)) {
