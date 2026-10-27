@@ -32,7 +32,7 @@ RULE_META={
 "R013":("adnominal-l-fortition","NIKL §27","high"),
 "R014":("compound-fortition","NIKL §28; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R015":("saisiot-pronunciation","NIKL §30; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
-"R016":("verbal-stem-rieul-giyeok-exception","NIKL §11 https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002; Q&A qna_seq=329463 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=329463","high"),
+"R016":("verbal-stem-rieul-giyeok-exception","NIKL §11 https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002; Q&A qna_seq=329463 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=329463; qna_seq=320900 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320900; qna_seq=335693 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=335693","high"),
 }
 
 # Exact-form licenses for formal-morpheme liaison examples explicitly attested in or derived from NIKL §§13–14.
