@@ -26,6 +26,13 @@ function applyProfileGate(source,result,options){
     ukrainian:gated.text??'',
     candidate_ukrainian:null,
     candidate_status:null,
+    // Keep source/IPA provenance inspectable, but do not leak legacy target
+    // candidates through per-unit traces or variants in strict mode.
+    trace:(result.trace||[]).map(item=>({
+      ...item, output:'', candidateOutput:null, candidateStatus:null,
+      targetMappings:[], targetFeatures:[]
+    })),
+    variants:(result.variants||[]).map(item=>({...item, ukrainian:''})),
     target_status:gated.status,
     target_reason:gated.reason||null,
     target_adapter:'profile-gated'
