@@ -1278,3 +1278,13 @@ No linguistic accuracy status was upgraded by this recheck. Acceptance requires 
 - Consolidation branch `consolidate/korean-best-mainline-2026-10-27` carries forward the research tree from PR #339 on top of that mainline state. Exact-head CI is required before merge; no local test run is claimed.
 - The combined tree includes the source-backed rules and research-only tooling/profile. The narrow IPA profile remains non-production and target-incompatible. Diagnostic metrics do not establish normative IPA or Ukrainian target accuracy.
 - Remaining blockers: independent source-blind IPA labels, separately adjudicated Ukrainian target gold, live NIKL inventory access/manifest, and external model rights/training-overlap verification.
+
+
+## Final consolidation outcome — 2026-10-27
+
+- `main` includes PR #341 (`1def51dd9f88364891ff0051e9aadb5900f2e42c`) and PR #348 (`72d2a785160382ffbfdce4f5654afb9671d957f9`). The latter is the consolidated snapshot of the former source-backed R002/R016 rules plus the research branch and unique contextual neural-G2P evaluation assets.
+- PR #339 and #338 are closed as superseded by #348; their source branches remain intact. Distinct evidence-gated PRs #329, #326, #336, #327 and #305 remain open because their reviewer packets, holdout/source blockers, or IPA contract work were not fully superseded.
+- Exact consolidation head `3c4bbfd83f2c8e33bbc50a4c016abe75f30795ac`: multi-engine benchmark, UGTPHON, paired native-vs-g2pK, system verification (Python regression/data integrity + browser/build), browser G2P, morphology adapters, teacher corpus audit, exhaustive case register, master artifacts, optional g2pK and scratch-teacher reproducibility workflows all passed (runs 40585528130, 40585528014, 40585528085, 40585528028, 40585527918, 40585528036, 40585527921, 40585528153, 40585528184, 40585528138, 40585528188).
+- Full Python 3.11–3.13/wheel/web test matrix run 40585528103 and several post-merge main push workflows were queued at the last poll; pending is not pass. The live NIKL inventory step was skipped; Charsiu/ByT5 inference was skipped as opt-in research.
+- Benchmark remains diagnostic: UGTPHON native 1,430/2,698 exact, CER 9.1697%; SIGMORPHON native 357/997 exact, CER 14.7037%. No independent IPA gold or Ukrainian target gold is established. Narrow IPA remains research-only.
+- Status: **PARTIAL research prototype — not release-ready**. Remaining acceptance criteria: independent source-blind IPA annotations and reconciliation; separate Ukrainian target policy/gold; official NIKL inventory with authorized manifest; explicit external model rights/training overlap; finish queued matrix and post-merge CI.
