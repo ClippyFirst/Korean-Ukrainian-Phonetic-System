@@ -647,3 +647,14 @@ def test_new_exact_form_abstention_recovery_batch_resolves_only_named_pairs():
     for form, rule_id in (("많이봄", "R003"), ("좋을거같이", "R007")):
         result = phoneticize_korean(form)
         assert any(context.get("rule_id") == rule_id for context in result.get("unresolved_contexts", [])), form
+
+def test_narrow_research_ipa_never_leaks_into_accepted_ukrainian_output():
+    from korean_ukrainian.pipeline import transliterate_korean
+
+    result = transliterate_korean("녀", ipa_level="narrow")
+    assert result["ipa"]["ipa"] == "ɲjʌ"
+    assert result["ipa"]["transcription_profile"]["target_compatible"] is False
+    assert result["ukrainian_orthography"] is None
+    assert result["target_status"] == "unavailable"
+    assert result["target_unavailable_reason"] == "narrow_ipa_profile_not_target_compatible"
+
