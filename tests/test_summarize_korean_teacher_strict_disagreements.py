@@ -50,6 +50,29 @@ def test_seed_consensus_is_preserved_without_cross_ipa_scoring(tmp_path):
     assert result["test_partition_used"] is False
     assert result["records"][0]["strict_comparison_status"] == "RAW_TRIAGE_ONLY_NO_REVIEWED_ADAPTER"
 
+def test_variable_strict_pair_count_is_reported_without_assuming_994(tmp_path):
+    make_portfolio(tmp_path)
+    for seed in SEEDS:
+        path = tmp_path / f"seed-{seed}" / "dev-teacher-strict-pairs.jsonl"
+        rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+        write_rows(path, rows[:990])
+    result = analyze(tmp_path)
+    assert result["case_count"] == 1000
+    assert result["strict_paired_case_count"] == 990
+    assert result["strict_unresolved_or_diagnostic_only_count"] == 10
+    assert all(row["strict_ipa_raw"] is None for row in result["records"][-10:])
+
+
+def test_different_strict_pair_id_sets_across_seeds_fail_closed(tmp_path):
+    make_portfolio(tmp_path)
+    seed = SEEDS[-1]
+    path = tmp_path / f"seed-{seed}" / "dev-teacher-strict-pairs.jsonl"
+    rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    write_rows(path, rows[:-1])
+    with pytest.raises(ValueError, match="Strict pair ID sets differ"):
+        analyze(tmp_path)
+
+
 def test_loader_rejects_non_dev_and_duplicate_ids(tmp_path):
     p = tmp_path / "bad.jsonl"
     p.write_text(json.dumps({"case_id":"x","split":"test"}) + "\n", encoding="utf-8")
