@@ -184,3 +184,22 @@ The successful triage workflow [40472610993](https://github.com/ClippyFirst/Kore
 For that run only, the counts are 459 forms correct for all three seeds, 279 wrong for all three, and 262 with mixed correctness. After removing only whitespace and syllable dots, raw teacher-reference/Strict string equality occurs on 9/459 unanimous-correct cases, 2/262 mixed cases, and 4/279 unanimous-wrong cases. **These equality counts are not accuracy scores**: they do not map vowel diacritics, consonant conventions, boundaries, or target representation. Their value is to identify a small set of exact raw candidates for review while preserving every raw string.
 
 Because the same-seed runs drifted between artifacts, these counts describe artifact 12719507456 and are not a replacement for the earlier portfolio's metrics. The new one-thread/pinned-environment/repeated-seed gate must pass before the next portfolio can serve as the canonical reproducibility baseline.
+
+
+## Continuation update — exact-form rule parity restored, CI pending (2026-10-27)
+
+The earlier note that the browser-side mirror could not be updated is superseded by commit `2f61d079d060159e6b1a6334a6c9f213069cc1dd`. The shared browser engine now mirrors the same five exact-form licenses already present in Python:
+- R002 formal-morpheme liaison: `가없이`, `말없이`, `수없이` at `없>이`, and `늙은이` at `늙>은`.
+- R003 ㅎ-coda deletion: `많아지다` at `많>아`.
+
+The licenses remain closed exact-form entries; they do not infer arbitrary morphology from substrings. The existing focused Python tests include positive cases and negative controls (`붉은기` remains unlicensed; `많아보이다` remains unlicensed). This is a parity repair, **not yet a verified acceptance result**: the write has just triggered fresh CI and neither browser tests nor the full test matrix have been confirmed on this new head. Do not merge until all relevant exact-head checks pass.
+
+The original reproducibility-gated portfolio workflow and general/system workflows were still reported as queued when last polled. Earlier portfolio artifacts disagree despite nominally matching trainer, data, and seed settings, so their metrics must not be combined. The new single-thread deterministic configuration and duplicate-seed hash gate are intended to test this; they are not evidence of reproducibility until that gate completes.
+
+Current task ledger:
+- `DONE_VERIFIED`: source-preserving teacher/Strict pairing, raw IPA inventory, consensus triage, exact-form Python regression tests as code present.
+- `PARTIAL`: exact-form R002/R003 additions mirrored to browser; awaiting same-head Python/browser/system CI.
+- `BLOCKED`: reproducible teacher metrics until duplicate-seed hashes and predictions pass the new gate; broad-IPA vs corpus-IPA comparison until reviewed adapter and adjudication exist.
+- `DEFERRED`: neural runtime integration; any rule promotion inferred solely from teacher outputs.
+
+No claim is made that these candidates improve Ukrainian output accuracy; the current evidence licenses Korean morphophonological steps only.
