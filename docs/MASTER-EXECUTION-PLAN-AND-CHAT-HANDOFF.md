@@ -3145,3 +3145,29 @@ Earlier failures on code head `49115cf4c8d69b98292eb7f524253fbf97022c41` are sup
 | Release readiness | NOT READY | PR remains draft; source/weights rights, IPA convention mapping, target-inventory review, default browser gating, and independently adjudicated rule gains remain open. |
 
 Next work should inspect the downloaded Charsiu rule-review artifact at case level, select a repeated candidate only if its exact context survives convention adjudication, and either implement a narrowly scoped rule with paired controls and before/after dev metrics or record a reasoned rejection. Keep test/holdout partitions sealed. No release or merge is authorized by this checkpoint.
+
+
+### Charsiu artifact inspection — exact run 40566333859
+
+Artifact `12762619456` was downloaded and its JSON reports and paired JSONL files inspected. Artifact SHA-256 matches the Actions metadata: `af307209d6844cc8f41d94d892c7d322ce9787615c8c11d91c1aeb18b55d887a`.
+
+| Dev corpus / profile | Exact match | CER | Coverage | Unresolved/abstained |
+|---|---:|---:|---:|---:|
+| SIGMORPHON reference, native broad | 332/999 = 33.23% | 15.4736% | 999/1,000 = 99.9% | 1 |
+| SIGMORPHON reference, research narrow | 448/999 = 44.84% | 11.0870% | 99.9% | 1 |
+| UGTPHON reference, native broad | 977/1,800 = 54.28% | 9.6086% | 1,800/1,834 = 98.15% | 34 |
+| UGTPHON reference, research narrow | 1,226/1,800 = 68.11% | 6.0346% | 98.15% | 34 |
+
+The narrow-minus-broad deltas are +11.61 percentage points exact / −4.3866 percentage points CER on SIGMORPHON and +13.83 points exact / −3.5740 points CER on UGTPHON, with unchanged coverage. These are same-input *profile-sensitivity diagnostics*, not proof of production improvement: the narrow profile includes the research-only sibilant and nasal-glide mappings; target IPA conventions are still unreviewed against ClippyFirst broad IPA; Charsiu weight licensing is unresolved and training overlap is unknown. The artifact explicitly marks every paired case `DIAGNOSTIC_ONLY_IPA_CONVENTION_UNREVIEWED` and `production_rule_promotion=false`.
+
+The teacher's own dev scores are 676/1,000 (67.60%, CER 5.6465%) for SIGMORPHON and 1,670/1,834 (91.06%, CER 2.3502%) for UGTPHON. Do not interpret the teacher/Strict gap as a comparable accuracy gap until the target conventions and evaluation independence are resolved. The 34 UGTPHON abstentions are coverage limitations, not automatically pronunciation errors.
+
+### Candidate-cluster decision from the artifact
+
+- **Repeated vowel diacritics / syllable separators:** reject as a phonological-rule candidate. The reference formats differ in token separators and vowel detail; normalization choices affect string metrics but do not license phonological rewrites.
+- **Coda lateral `l` vs `ɭ`:** evidence-limited convention/allophony candidate, not production-promotable from this artifact. Need a declared broad-vs-narrow policy and independent phonetic adjudication before changing the coda renderer.
+- **Aspiration, `h`/`ɦ`, and sibilant differences:** retain as separate context-sensitive hypotheses; do not collapse into a global symbol substitution. A teacher's exact prediction is not an independent gold label, and Charsiu training exposure is unknown.
+- **Onset `n` → `ɲ` before glide-initial nuclei:** keep only in the existing narrow research profile. The dev counterfactual supports investigating its narrowly stated environment, but it does not justify broad-IPA or Ukrainian-target promotion.
+- **Production decision:** no generalized production rule was promoted from this artifact. This is the correct evidence-gated decision given the available evidence, not a failed attempt to improve scores.
+
+No source data or model weights were added to runtime; raw predictions remain research artifacts. The artifact was inspected with Python's standard `zipfile`/JSON readers; repository tests were not run locally because the checkout/network blocker remains.
