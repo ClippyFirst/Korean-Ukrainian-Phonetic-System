@@ -137,3 +137,21 @@ Other rarer target symbols in this subset include `ʎ`, `β`, `ɸ`, `ʝ`, `ɥ`, 
 The strongest new finding is not “Strict has 317 errors”; such a claim would be invalid. It is that the target convention differs systematically along at least four dimensions: vowel diacritics, sibilant aspiration, lateral realization, and affricate/glottal-fricative notation. These differences account for a substantial portion of apparent raw divergence and must be mapped before the remaining cases can be triaged as teacher-wrong, Strict-wrong, both-wrong, or unresolved.
 
 A new research-only script, `scripts/summarize_korean_teacher_strict_disagreements.py`, and its tests generate a reproducible case-level inventory across all three seeds while preserving raw IPA. The portfolio workflow archives `seed-consensus-disagreement-triage.json`. It intentionally emits no cross-IPA accuracy score and changes no production rules.
+
+
+## 7. Critical cross-check: all six Strict abstentions are also unanimous teacher failures
+
+The saved prediction JSONL files show that **all three neural seeds miss the SIGMORPHON reference on each of the same six inputs that Strict abstains on**. This is a useful negative finding: the scratch teacher does not provide a reliable pronunciation answer for the exact cases where the deterministic engine needs more morphology evidence.
+
+| Input | SIGMORPHON reference (raw token sequence) | Teacher outcome |
+|---|---|---|
+| 가없이 | `k a̠ː ʌ̹ p ɕ͈ i` | 0/3 seeds exact |
+| 늙은이 | `n ɯ ɭ ɡ ɯ n i` | 0/3 seeds exact |
+| 많아지다 | `m a̠ː n a̠ d͡ʑ i d a̠` | 0/3 seeds exact |
+| 말없이 | `m a̠ː ɾ ʌ̹ p ɕ͈ i` | 0/3 seeds exact |
+| 붉은기 | `p u ɭ ɡ ɯ n ɡ i` | 0/3 seeds exact |
+| 수없이 | `sʰ uː ʌ̹ p ɕ͈ i` | 0/3 seeds exact |
+
+These are therefore **not** examples where a better neural result has shown Strict to be wrong. They are shared hard cases for the small teacher, and the reference itself still requires source-convention review before being treated as normative gold. The appropriate response is rule/source investigation and exact positive/negative tests, not copying any seed's predicted output.
+
+The case-level triage should retain this signal explicitly: Strict's six diagnostic-only cases fall inside the teacher's unanimous-wrong group, not the unanimous-correct candidate pool. That prioritizes morphology analysis while preventing circular validation.
