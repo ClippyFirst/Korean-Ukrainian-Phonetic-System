@@ -3412,3 +3412,36 @@ The current file names explicitly requested in the continuation prompt for the d
 - This consolidation branch is based on that current mainline commit and carries forward the full research branch tree from PR #339, including the already-present R002/R016 implementation/test changes, research-only narrow IPA profile, teacher-corpus safeguards, benchmark tooling, registers, and handoff updates. It deliberately does not promote the narrow profile into the production Ukrainian target path.
 - The prior PR #339 text saying PR #341 was not merged is historical and superseded by this checkpoint. The branch is a tree-level consolidation snapshot; its new exact-head workflows must pass before merge.
 - Scientific status is unchanged: public noisy-corpus diagnostics are not normative IPA gold; dev profile gains are selection-contaminated; independent IPA adjudication and separate Ukrainian target gold remain blocked. Do not describe this consolidation as a proven accuracy gain.
+
+
+# Mainline consolidation final checkpoint — 2026-10-27
+
+## Merge and branch reconciliation
+- PR #341 was squash-merged into `main` as `1def51dd9f88364891ff0051e9aadb5900f2e42c`, integrating exact-form source-backed R002 liaison and R016 ㄺ-before-ㄱ rules with regression coverage.
+- PR #348 was squash-merged as `72d2a785160382ffbfdce4f5654afb9671d957f9`. It consolidates the deterministic engine/research tree, IPA-first rendering boundary, benchmark and teacher-readiness tooling, source-blind packet tooling already present in that tree, and the unique contextual/sentence-level neural-G2P evaluator/tests/docs.
+- PRs #339 and #338 are closed as superseded by #348. Their source branches were not deleted or force-updated; branch deletion is intentionally not performed in this execution. PRs #329, #326, #336, #327, and #305 remain open because they contain distinct unresolved reviewer/holdout/source-evidence work not safely replaceable by the consolidation.
+
+## Exact-head verification evidence
+The final code-bearing consolidation head was `3c4bbfd83f2c8e33bbc50a4c016abe75f30795ac`; merge commit on `main` is `72d2a785160382ffbfdce4f5654afb9671d957f9`.
+
+Passed on the exact consolidation head:
+- Multi-engine IPA benchmark, including adapter tests, frozen-holdout-overlap audit, UGTPHON and SIGMORPHON comparison: [run 40585528130](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585528130) — success.
+- External UGTPHON diagnostic and paired native-vs-g2pK: [run 40585528014](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585528014) — success; [run 40585528085](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585528085) — success.
+- System verification, Python regression/data integrity, browser tests/build/page verification: [run 40585528028](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585528028) — success.
+- Browser G2P integration: [run 40585527918](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585527918) — success.
+- Morphology adapter smoke/strict-soft diagnostics: [run 40585528036](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585528036) — success.
+- Teacher corpus split audit: [run 40585527921](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585527921) — success.
+- Exhaustive test-case register extraction: [run 40585528153](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585528153) — success.
+- Master table/research corpus artifacts: [run 40585528184](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585528184) — success.
+- Optional g2pK integration: [run 40585528138](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585528138) — success.
+- Scratch-teacher three-seed reproducibility portfolio: [run 40585528188](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585528188) — success; research-only, dev-only, no production promotion.
+
+**Still pending:** full standalone Python 3.11/3.12/3.13 + wheel-install/web matrix [run 40585528103](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40585528103) remained queued at the final poll. Post-merge `main` push runs are also queued; do not count these as passed until completion. The post-merge master-table run passed. NIKL live inventory was skipped by workflow configuration, not passed; Charsiu and licensed ByT5 inference jobs were skipped as opt-in research dependencies.
+
+## Benchmark results and interpretation
+- UGTPHON test: native ClippyFirst scored 2,698/2,703, 1,430 exact (53.0022%), CER 9.1697%, 99.815% coverage, five abstentions, zero runtime errors. g2pK 0.9.4: 1,435/2,703 exact (53.0892%), CER 9.2285%.
+- SIGMORPHON 2021 Korean test: native scored 997/999, 357 exact (35.8074%), CER 14.7037%, 99.7998% coverage, two abstentions, zero runtime errors. g2pK: 353/999 exact (35.3353%), CER 14.8222%.
+- These remain diagnostic IPA comparisons against noisy/lexical reference corpora, not normative NIKL gold and not Ukrainian-target accuracy. Dev broad/narrow profile gains are selection-contaminated. No independent source-blind IPA adjudication or separate Ukrainian target gold was created by this merge.
+
+## Readiness
+The repository is a **tested partial research prototype, not release-ready**. Keep the narrow IPA profile research-only and target-incompatible until independent IPA convention adjudication and Ukrainian-target review are completed. Other remaining blockers include official NIKL inventory/manifest access (HTTP 403), model licensing/training-overlap verification, and qualified independent reviewers.
