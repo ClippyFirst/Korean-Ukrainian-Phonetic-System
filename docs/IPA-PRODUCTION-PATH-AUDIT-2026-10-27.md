@@ -17,15 +17,17 @@ Audited the current branch at `4c21616b1b96d954e1ed3384e6490e7a30443e9c` (the la
 
 The raw-string Python renderer is also a compatibility API. It must not be mistaken for approval of the upstream IPA profile.
 
-## Safe next implementation gate
+## Implementation result and next acceptance gate
 
-Do not simply wire the empty allowlist into the existing default browser route: that would silently suppress all existing target output before the approved profile and migration behavior have been decided. Instead:
+- Added an explicit opt-in `requireAdjudicatedIpaProfile: true` mode at the public browser engine wrapper (`src/app/engine.js`). Both `convert()` and `convertSurface()` route their final result through `ipaTargetForProfile()` in this mode; default legacy behavior remains unchanged for compatibility. Invalid non-boolean values throw a `TypeError`.
+- Added browser regression tests for both entry points. They assert that an unadjudicated profile yields no accepted Ukrainian text, clears candidate output, and returns `ipa_profile_not_adjudicated_compatible`; tests also cover option-type validation. These tests are committed but exact-head CI is pending.
+- The opt-in gate is a migration seam, not completion of exclusive production wiring: the default public browser mode still uses the legacy raw IPA mapping path, and the lexical/mixed-input path is only protected when callers opt in. Do not call the default route production-approved.
 
-1. Add an explicit strict/profile-gated browser mode and make it use `ipaTargetForProfile()` for both normal and lexical/mixed-input returns.
-2. Test that strict mode withholds Ukrainian output and returns the exact rejection reason for unadjudicated, partial, and unregistered profiles; test both return paths.
-3. Keep legacy compatibility mode explicitly labeled as legacy/research-only until the project chooses a migration cutover.
-4. Add parity coverage for Python and browser strict mode using the shared fixture, including profile metadata and the no-public-target invariant.
-5. Only enable strict mode by default after a profile is independently adjudicated, allowlisted, and the migration tests prove there is no bypass.
+Next acceptance gate:
+1. Add Python pipeline parity for the explicit strict/profile-gated mode and consume the same shared fixture.
+2. Verify the browser strict wrapper for lexical/mixed-input inputs as well as simple inputs, including source punctuation and IPA/source alignment.
+3. Wait for exact-head CI and fix any failures; do not count queued jobs as pass.
+4. Only enable strict mode by default after a profile is independently adjudicated, allowlisted, and migration tests prove there is no bypass.
 
 ## Verification state
 
