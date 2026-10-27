@@ -292,5 +292,12 @@ def test_pipeline_opt_in_profile_gate_withholds_unadjudicated_and_partial_profil
     assert narrow["ukrainian_orthography"] is None
     assert narrow["target_unavailable_reason"] == "ipa_profile_partial_research_only"
 
+    # Profile approval must never override unresolved Korean phonology.
+    unresolved = transliterate_korean("앉어라", require_adjudicated_ipa_profile=True)
+    assert unresolved["ukrainian_orthography"] is None
+    assert unresolved["target_status"] == "unresolved"
+    assert unresolved["target_unavailable_reason"] == "unresolved_korean_phonology"
+    assert unresolved["ipa_is_diagnostic_only"] is True
+
     with pytest.raises(TypeError, match="require_adjudicated_ipa_profile"):
         transliterate_korean("가", require_adjudicated_ipa_profile="yes")
