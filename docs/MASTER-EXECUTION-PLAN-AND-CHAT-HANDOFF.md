@@ -2489,3 +2489,19 @@ PR [#345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 - **Context fields added:** nearest preceding JS `test`/`it` and `describe`/`suite` declarations, plus Python `def test_*` and `class Test*` where recognized. The raw declaration and source line are retained. This is explicitly heuristic context: a nearest-preceding declaration may cross a closed scope, so reviewers must confirm the association.
 
 All queue rows still remain `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW`; expected values are not parsed and actual outcomes are not inferred. This reduces manual navigation cost but does not complete the semantic register or any linguistic adjudication gate. The project remains a research-ready partial prototype, not release-ready.
+
+
+## Verified raw-assertion literal extraction — 2026-10-27
+
+PR [#346](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/346) was squash-merged as `93736d0e6d6f826c4b502541a99bb44158afef53`. The merged Git tree `792a173c0d0533d2c656bf6564e4a3b19361b565` exactly matches tested head `44a4e9a10e66520345107d9fabb53908d504676c`.
+
+- **PASS — focused extraction and literal parser tests:** [workflow 40465361133](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465361133), artifact [12716302090](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465361133/artifacts/12716302090), 3,367,183 bytes; expires 2026-11-26.
+- **PASS — full system verification:** [workflow 40465361074](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465361074): Python regression/data integrity, browser regression/build and generated-page checks passed. Official NIKL source inventory was skipped in metadata-only mode.
+- **Current generated counts:** 644 lexical records; 360 test files; 388 source files; 6,801 lexical-to-test text links; 50,768 Hangul-literal candidates; 34,711 exact source lines; 5,286 assertion/test-declaration candidates; 5,286 queue rows.
+- **Queue CSV SHA-256:** `09c26a7ebd856619fe9941702f2e12e968e717afe8dc5fba27f5f470a0df39e9` (24 columns).
+
+### Raw expectation extraction contract
+
+The queue now copies a simple, explicitly present assertion subject and expected lexeme when the one-line call shape is recognized. String/scalar literals are labeled `RAW_LITERAL_EXTRACTED_NOT_ADJUDICATED`; regexes are labeled `RAW_REGEX_EXTRACTED_NOT_ADJUDICATED`; computed expressions are labeled `EXPECTED_EXPRESSION_NOT_EVALUATED`; predicate-only assertions and unsupported forms remain explicit. The parser preserves the raw lexeme—it does not decode escapes, normalize IPA, evaluate code, infer actual output, or adjudicate correctness.
+
+Every row remains `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW` and `NOT_TIED_TO_EXACT_HEAD_RUN`. This is a better evidence queue, not a completed semantic register. The next acceptance task is to resolve loop-variable fixtures and multi-line assertions into exact case inputs/modes without losing provenance, then attach actual outcomes only from matching CI logs/artifacts. Linguistic release blockers remain unchanged.
