@@ -2808,3 +2808,14 @@ No production pronunciation rule or Ukrainian mapping was changed in this contin
 | Ukrainian target changes | DEFERRED | Revisit only after Korean surface and IPA gates pass |
 
 Readiness remains research-ready partial prototype, not release-ready. Do not promote rules, claim teacher accuracy against ClippyFirst broad IPA, change Ukrainian adaptation, or mark PR #339 ready until the required evidence and exact-head CI are complete.
+
+
+## Fail-closed IPA adapter guard continuation — 2026-10-27
+
+- Implemented ipaTargetForProfile(source, ipaResult, options) in src/app/engine_ipa.js. It requires a structured runtime result with explicit IPA profile ID/version/level/status and a nonempty IPA string. It fails closed for absent metadata, unadjudicated profiles, partial research-only profiles, and profiles not in the target-compatibility allowlist.
+- ADAPTER_COMPATIBLE_IPA_PROFILES is intentionally empty; no existing profile has passed independent phonetic adjudication and target acceptance. Existing raw-string APIs and legacy runtime paths remain unchanged for compatibility, so the guard is not yet wired as the only production entry point. Do not call the entire adapter gate complete.
+- Added regression cases to tests/ipa-ukrainian-trace.test.mjs: missing object/metadata, broad unadjudicated profile, partial narrow profile, and unregistered profile claiming adjudication.
+- CI for implementation commit 56be0591f6342d27356ef64e965873b73321d9a3 and test commit 4b4dd73c8003dc29f84b88a52bbe3adb88fca431 was in progress/queued when this note was authored. Latest runs: tests 40503461770, system verification 40503462048, browser G2P 40503462012, seed portfolio 40503461991. Inspect exact-head results before upgrading status.
+- Prior HEAD b867fd01233bfaed64eec63beaa233bac9fbbe10 passed system verification (Python regression/data integrity and browser regression/build), test matrix (Python 3.11/3.12/3.13, web, wheel-install and teacher-corpus audit), browser integration, seed reproducibility, corpus split audit, and research diagnostic workflows. NIKL official inventory job was SKIPPED, not PASS.
+- Diagnostic note: a browser g2pK-vs-Python-g2pK report includes raw-port surface divergences such as 읽고; the same report labels them as raw JS-port divergence and says the practical NIKL correction yields 일꼬. Do not misclassify that diagnostic as a failure of the native strict engine or as IPA gold. Keep engine comparison layers separate.
+- Acceptance remains PARTIAL until the new tests pass, and adapter compatibility remains BLOCKED/UNADJUDICATED until the allowlist can be populated with independently accepted profiles and the production path is wired through the guard.
