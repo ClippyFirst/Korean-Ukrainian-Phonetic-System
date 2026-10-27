@@ -3261,3 +3261,51 @@ A source-supported, tightly scoped candidate was selected after a second control
 ### Follow-up CI finding and repair — source register count guards
 
 The first CI run after the IPA-profile assertion repair (`9807deacd0b9887a31cff3a73084010af38b13eb`) verified Python 3.11, 3.12, and 3.13 test jobs PASS; the clean wheel build/install PASS; and teacher-corpus audit PASS. Browser/npm tests still failed in two source-register rights-audit assertions because the two new peer-reviewed source rows raised the registry count from 124 to 126. Updated `tests/source-register-rights-audit.test.mjs` to expect 126 rows and 122 REVIEW_REQUIRED rows in commit `da85537a3e7857cae7301b0131a5c385f53c5730`. The same count failure affected browser/system workflows. **This second repair still needs a fresh exact-head npm/browser/system run**; do not infer success from the earlier Python passes. This is a test expectation correction for the intentionally expanded source register, not a relaxation of rights review: unresolved rights remain a hard block.
+
+
+## Exact-head verification completed — 2026-10-27
+
+### CI and implementation verification
+
+The fresh PR validation after the source-register count-guard repair has completed successfully. The workflows checked out the PR merge ref `8a42c3c9c762be421d71abf48256aa03a430aa13`, which merges PR-head commit `97f3784e669ef24df831a57b3ea2307b4c68e899` into base `a452054a669de28426404d1110731715083423bb`.
+
+- System verification workflow `40574521179`: Python regression/data integrity **PASS**; browser regression tests and build **PASS**.
+- Test workflow `40574521301`: Python 3.11 **PASS**; Python 3.12 **PASS**; Python 3.13 **PASS**; clean wheel build/install **PASS**; teacher-corpus split audit **PASS**; web/npm checks **PASS**.
+- Optional g2pK integration `40574521197`: Python 3.11 and 3.12 **PASS**.
+- Browser G2P integration `40574521257`: **PASS**.
+- Charsiu research-only train/dev comparison `40574521095`: **PASS**, including split guards, provenance assertions, no test-split serialization, and no automatic rule promotion.
+- Korean morphology-consensus IPA diagnostic `40574521198`: **PASS**.
+- Multi-engine IPA diagnostic `40574520978`: **PASS**.
+- External UGTPHON diagnostic `40574521003`: **PASS**.
+- Paired native-vs-g2pK diagnostic `40574521028`: **PASS**.
+- Research morphology adapter smoke `40574521129`: Kiwi and MeCab-Ko real-engine smoke tests, native strict/soft IPA checks, and boundary-agreement check **PASS**.
+- Scratch-teacher seed portfolio `40574521109`: **PASS**.
+- Exhaustive test-case register extraction `40574521154`: **PASS**.
+
+The stale source-register count expectations are now verified by the passing web/browser gates. The expected row counts were corrected to reflect the two added source records; unresolved licensing classifications remain unresolved and the rights gate was not weakened.
+
+### Fresh actual-runtime research benchmark
+
+Workflow `40574521095` uploaded artifact `12766869026`, SHA-256 `81e394b52248e7a2594bf5e4cad0c48c74914a93398c71e8ff92e74c050c80da`. Pinned Charsiu model revision: `ed5cf99707fb39f5f3ccc461530d56b6fb531fd3`; tokenizer revision: `68377bdc18a2ffec8a0533fef03b1c513a4dd49d`. Only development splits were serialized; test records were not exported.
+
+- SIGMORPHON dev: native broad renderer 332/999 exact (33.23%), CER 15.4736%; narrow research v3 466/999 (46.65%), CER 10.5929%; narrow-minus-broad +13.41 percentage points exact, CER −4.8807 pp; 1 unresolved in 1,000 eligible.
+- UGTPHON dev: native broad renderer 977/1,800 exact (54.28%), CER 9.6086%; narrow research v3 1,265/1,800 (70.28%), CER 5.5950%; narrow-minus-broad +16.00 percentage points exact, CER −4.0136 pp; 34 unresolved/excluded among 1,834 eligible.
+
+Interpretation remains strictly diagnostic: the two reference IPA conventions have not been independently adjudicated into a common profile. These results measure sensitivity to ClippyFirst's broad vs. narrow IPA rendering against the pinned corpora; they are not proof of universal Korean phonetic accuracy, target-compatible Ukrainian output, or independent gold-label accuracy. Charsiu's licensing/weight-use terms and possible training overlap remain review items. The neural teacher's higher match scores likewise do not authorize automatic rule promotion.
+
+### Updated task ledger
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Python/browser/system regression after the two test repairs | DONE_VERIFIED | PR merge-ref workflows above all pass, including three Python versions, wheel install, browser tests/build, and web/npm checks |
+| Research-only v3 runtime benchmark and provenance/split guards | DONE_VERIFIED for execution and artifact integrity | Run `40574521095`, artifact `12766869026`; phonetic interpretation and target compatibility remain unverified |
+| Narrow /h/ after same-word sonorant coda | PARTIAL / research-only | Code and regression tests verified; optionality, speaker/dialect variation, case-level IPA adjudication, and target adaptation remain unresolved |
+| Coda /n/ → [ɲ] before a palatal affricate | BLOCKED / EVIDENCE-LIMITED | Opposite cross-corpus effects; no runtime promotion |
+| IPA convention reconciliation across corpora and runtimes | TODO / BLOCKED by expert evidence | Independently adjudicate a source-blind sample under one declared profile; preserve disagreements and provenance |
+| Charsiu licensing and training-overlap review | BLOCKED | Confirm model/tokenizer terms and training-data overlap before redistributing or treating outputs as independent evidence |
+| Ukrainian adaptation for experimental narrow IPA | DEFERRED until IPA is adjudicated | Must consume typed IPA and remain fail-closed for unsupported/unreviewed forms |
+| Release readiness | NOT READY | CI is green, but linguistic adjudication, source rights, target adaptation, and broader independent evaluation are outstanding |
+
+### Current disposition
+
+The implementation and CI repair batch is now **DONE_VERIFIED** for the tested PR merge ref. The project overall remains a **research prototype / partial**, not release-ready. Keep the v3 narrow profile opt-in, research-only, and target-incompatible; do not promote corpus-sensitive outputs to broad IPA or Ukrainian orthography. PR #339 remains open, draft, and unmerged; no merge or release was performed by this continuation.
