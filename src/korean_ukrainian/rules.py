@@ -47,6 +47,13 @@ _NIKL_R002_FORMAL_LICENSES = {
     "값이": "값>이",  # §14: 값이[갑씨].
     "깎아": "깎>아",  # §13: 깎아[까까].
     "있어": "있>어",  # §13: 있어[이써].
+    # Exact forms with the transparent derivational suffix -이 in 없이/가없이.
+    # NIKL §§13–14 license liaison before formal morphemes; these exact keys do not generalize.
+    "가없이": "없>이",
+    "말없이": "없>이",
+    "수없이": "없>이",
+    # 늙- + adnominal ending -은 + 이; R002 applies only at 늙>은.
+    "늙은이": "늙>은",
     "쫓아": "쫓>아",  # §13: 쫓아[쪼차].
     "덮어": "덮>어",  # §13: 덮어[더퍼].
     "맞아": "맞>아",  # §13: 맞아[마자].
@@ -113,6 +120,8 @@ _NIKL_R003_FORMAL_LICENSES = {
     "싫어서": "싫>어",
     "수많은": "많>은",
     "많아서": "많>아",  # NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
+    # 많- + connective ending -아 + auxiliary 지다; exact-form application of §12(4).
+    "많아지다": "많>아",
     # Exact-form, rule-derived applications of NIKL §12(4); no productive suffix heuristic.
     "쌓아서": "쌓>아",
     "쳐넣어야": "넣>어",
