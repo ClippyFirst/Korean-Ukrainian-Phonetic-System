@@ -93,6 +93,8 @@ const NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS=new Map([
   ['읽거든','읽>거'], // Official §11 example; verbal-stem ㄺ before ㄱ.
   ['묽고','묽>고'], // NIKL §11 example.
   ['얽거나','얽>거'], // NIKL §11 example.
+  ['맑게','맑>게'], // NIKL §11; Online Q&A qna_seq=335693 clarifies written ㄺ before ㄱ.
+  ['맑고','맑>고'], // NIKL Online Q&A qna_seq=320900 confirms [말꼬].
 ]);
 
 // Exact-form NIKL §12(4) ㅎ-coda deletion licenses. These attest only
