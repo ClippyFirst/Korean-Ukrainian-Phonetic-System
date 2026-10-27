@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
-import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, traceIpaMapping, traceIpaMappingDetailed, ipaTargetForSource } from '../src/app/engine_ipa.js';
+import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, traceIpaMapping, traceIpaMappingDetailed, ipaTargetForSource, ipaTargetForProfile, ADAPTER_COMPATIBLE_IPA_PROFILES } from '../src/app/engine_ipa.js';
 
 const canonicalCsv = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const jamoCsv = readFileSync(new URL('../data/korean/jamo.csv', import.meta.url), 'utf8');
@@ -304,4 +304,44 @@ test('empty IPA syllable lists and malformed options are unavailable rather than
     () => ipaSyllablesToUkrainian([], {allowProvisional:'yes'}),
     {name:'TypeError', message:'allowProvisional must be a boolean'}
   );
+});
+
+
+test('profile-aware IPA target gate rejects unadjudicated and partial runtime profiles', () => {
+  assert.equal(ADAPTER_COMPATIBLE_IPA_PROFILES.size, 0,
+    'no IPA profile is approved until independent adjudication and target acceptance');
+  const base = {
+    ipa: 's͈i',
+    ipa_profile: 'clippyfirst-korean-broad-v1',
+    ipa_profile_version: 1,
+    ipa_profile_level: 'broad',
+    ipa_profile_status: 'unadjudicated-cross-runtime',
+  };
+  const unadjudicated = ipaTargetForProfile('씨', base);
+  assert.equal(unadjudicated.status, 'unavailable');
+  assert.equal(unadjudicated.text, null);
+  assert.equal(unadjudicated.reason, 'ipa_profile_not_adjudicated_compatible');
+
+  const partial = ipaTargetForProfile('씨', {
+    ...base,
+    ipa_profile: 'clippyfirst-korean-narrow-partial-sibilant-v1',
+    ipa_profile_level: 'narrow',
+    ipa_profile_status: 'partial-research-only',
+  });
+  assert.equal(partial.status, 'unavailable');
+  assert.equal(partial.reason, 'ipa_profile_partial_research_only');
+
+  const missingMetadata = ipaTargetForProfile('씨', { ipa: 's͈i' });
+  assert.equal(missingMetadata.status, 'unavailable');
+  assert.equal(missingMetadata.reason, 'ipa_profile_metadata_incomplete');
+
+  const missingObject = ipaTargetForProfile('씨', 's͈i');
+  assert.equal(missingObject.status, 'unavailable');
+  assert.equal(missingObject.reason, 'ipa_profile_result_required');
+
+  const unregistered = ipaTargetForProfile('씨', {
+    ...base, ipa_profile_status: 'adjudicated-compatible'
+  });
+  assert.equal(unregistered.status, 'unavailable');
+  assert.equal(unregistered.reason, 'ipa_profile_not_allowlisted_for_target_adapter');
 });
