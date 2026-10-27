@@ -2760,3 +2760,13 @@ The browser converter now attaches `ipa_profile` and `ipa_profile_status` metada
 | Ukrainian target changes | DEFERRED | Only after Korean surface and typed IPA acceptance; no target changes in this continuation |
 
 No production pronunciation rule or Ukrainian mapping was changed in this continuation. No local test result is claimed; verification relies on GitHub Actions. PR #339 must remain Draft until all required current-head gates pass and scientific IPA acceptance is independently supported.
+
+
+## Versioned IPA metadata and paired fixture continuation — 2026-10-27
+
+- Added common metadata fields to Python IPA output: ipa_profile, ipa_profile_version, ipa_profile_level, ipa_profile_status. Profile IDs distinguish Python phonemic, broad, and partial-narrow output. Existing IPA strings and target conversion behavior are unchanged by this metadata-only change.
+- Added the same metadata keys to browser output; browser profile IDs remain browser-legacy-contextual-v1 and browser-surface-mode-legacy-v1, with level identifying the relevant mode. Status remains unadjudicated-cross-runtime.
+- Added tests asserting the Python/browser metadata contract and shared source-form fixture at tests/fixtures/korean-ipa-profile-pairs-2026-10-27.json. The fixture preserves each runtime's current output separately, declares UNADJUDICATED and target-adapter eligibility UNVERIFIED, and does not pretend to establish cross-runtime parity.
+- Current relevant commits: Python metadata 2e35037e718a5c19215165f176122e2ea36f2d6f; Python metadata tests a9d838af90b830198dd2396ba65cf8a5684b7267; browser metadata cfee2575620aa9d89a5cbe62f6ba0740cb775d9e; browser metadata tests 0513d836b9a4a05a964f9501bd20addcba6227da; shared fixture f54c2cdd211b8a4175cf70003616a92df7e2a41b; browser shared-fixture test 78af6c365f8a4259827f6c862958239884bcf30d; Python shared-fixture test e66750873e9685da45373bb3eccd7b6a9384f932; syntax correction ef0b47912a511fc3cff374b7679e0c942e963650; contract update 07dd0d72ce8bde18ddb6123a323ca6b05840df5f.
+- These changes remain PARTIAL until exact-head CI confirms all Python/browser tests. Metadata does not yet provide a shared structured segment/feature/boundary sequence and does not by itself enforce adapter eligibility; do not claim full typed IPA acceptance or parity.
+- No production Korean pronunciation rules or Ukrainian mappings changed. PR #339 remains Draft.
