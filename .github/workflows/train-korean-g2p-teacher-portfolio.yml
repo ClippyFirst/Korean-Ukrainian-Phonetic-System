@@ -8,6 +8,8 @@ on:
       - "scripts/train_korean_g2p_teacher.py"
       - "scripts/analyze_korean_g2p_teacher_errors.py"
       - "scripts/compare_korean_teacher_strict_dev.py"
+      - "scripts/summarize_korean_teacher_strict_disagreements.py"
+      - "tests/test_summarize_korean_teacher_strict_disagreements.py"
       - "tests/test_prepare_korean_g2p_corpus.py"
       - "tests/test_train_korean_g2p_teacher.py"
       - ".github/workflows/train-korean-g2p-teacher-portfolio.yml"
@@ -34,6 +36,7 @@ jobs:
           tests/test_train_korean_g2p_teacher.py
           tests/test_analyze_korean_g2p_teacher_errors.py
           tests/test_compare_korean_teacher_strict_dev.py
+          tests/test_summarize_korean_teacher_strict_disagreements.py
       - name: Install CPU-only PyTorch
         run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu --extra-index-url https://pypi.org/simple
       - name: Prepare pinned train/dev data; test partition is never exported
@@ -59,6 +62,11 @@ jobs:
               --output-jsonl "$out/dev-teacher-strict-pairs.jsonl" \
               --summary-json "$out/dev-teacher-strict-pair-summary.json"
           done
+      - name: Create seed-consensus case-level disagreement triage
+        run: >-
+          python scripts/summarize_korean_teacher_strict_disagreements.py
+          --portfolio-dir "$RUNNER_TEMP/korean-g2p-portfolio"
+          --output-json "$RUNNER_TEMP/korean-g2p-portfolio/seed-consensus-disagreement-triage.json"
       - name: Create deterministic portfolio index with checkpoint hashes and comparable dev metrics
         run: |
           python - "$RUNNER_TEMP/korean-g2p-portfolio" "$GITHUB_SHA" <<'PY'
