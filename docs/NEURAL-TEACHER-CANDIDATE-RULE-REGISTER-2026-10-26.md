@@ -210,3 +210,15 @@ The same artifact's teacher/Strict pair summary contains 994 scored pairs and 6 
 
 The candidate miner now requires explicit `teacher_ipa_convention`, `strict_ipa_convention`, `ipa_conventions_comparable=true`, and a non-empty `ipa_convention_review_id` in provenance. This prevents raw SIGMORPHON/UGTPHON/Charsiu strings from being treated as comparable IPA merely because all are labelled “IPA”. A regression test verifies that an unreviewed comparison is rejected. This is a correctness guard, not proof that the current CI has passed; exact-head verification remains pending.
 
+
+
+## Candidate decision — coda /n/ before a palatal affricate (2026-10-27)
+
+- **ID:** `NT-CODA-N-PALATAL-AFFRICATE-2026-10-27`
+- **Status:** `BLOCKED / EVIDENCE-LIMITED`; no production promotion.
+- **Hypothesis:** convert coda `n` to `ɲ` only when the next syllable begins with `dʑ/tɕ`, as a possible narrow-IPA allophone.
+- **Evidence artifact:** workflow run 40566333859, artifact 12762619456; SIGMORPHON dev and UGTPHON dev paired outputs. Same-input simulation retained the benchmark normalizer and scoring eligibility.
+- **Before/after:** SIGMORPHON 448/999 → 465/999 exact; CER 11.0870% → 10.7978%; 17 exact fixes, no exact regressions. UGTPHON 1,226/1,800 → 1,182/1,800 exact; CER 6.0346% → 6.4530%; zero exact fixes and 44 regressions. Coverage/abstentions unchanged.
+- **Decision rationale:** opposite cross-corpus effects make this unsafe to generalize. This is likely at least partly an IPA convention mismatch, and the exact coda environment has not been independently adjudicated. Do not implement a runtime rule based on the SIGMORPHON gain.
+- **Next acceptance criterion:** source-blind case-level adjudication under a declared common IPA profile, with coda context and word boundaries explicit; repeat dev evaluation; require no unacceptable regressions and preserve all raw source outputs.
+- **Related evidence:** the broader teacher/Strict audit records that target IPA conventions differ and the UCL thesis is secondary synthesis. A teacher prediction or corpus gold string alone is not sufficient to promote this rule.
