@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
-import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, traceIpaMapping, traceIpaMappingDetailed, ipaTargetForSource, ipaTargetForProfile, ADAPTER_COMPATIBLE_IPA_PROFILES } from '../src/app/engine_ipa.js';
+import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, traceIpaMapping, traceIpaMappingDetailed, ipaTargetForSource, ipaTargetForProfile, adapterCompatibleIpaProfiles } from '../src/app/engine_ipa.js';
 
 const canonicalCsv = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const jamoCsv = readFileSync(new URL('../data/korean/jamo.csv', import.meta.url), 'utf8');
@@ -308,7 +308,7 @@ test('empty IPA syllable lists and malformed options are unavailable rather than
 
 
 test('profile-aware IPA target gate rejects unadjudicated and partial runtime profiles', () => {
-  assert.equal(ADAPTER_COMPATIBLE_IPA_PROFILES.size, 0,
+  assert.deepEqual(adapterCompatibleIpaProfiles(), [],
     'no IPA profile is approved until independent adjudication and target acceptance');
   const base = {
     ipa: 's͈i',
