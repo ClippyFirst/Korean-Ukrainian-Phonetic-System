@@ -2525,3 +2525,29 @@ PR [#347](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 - Queue CSV SHA-256 remains `09c26a7ebd856619fe9941702f2e12e968e717afe8dc5fba27f5f470a0df39e9`; the workflow report separately records the report/artifact metadata.
 
 These are parser coverage counts, not case coverage or linguistic accuracy. All rows remain `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW`; no expected value is adjudicated and no observed result is inferred. The semantic register remains partial. Next work must resolve fixtures/loop bindings and multiline assertions into exact inputs and modes, then join outcomes only to matching commit-specific test logs. Independent IPA and Ukrainian target adjudication remain separate acceptance gates.
+
+
+## Final one-pass reconciliation — 2026-10-27
+
+### Branch and commit state
+
+- Default branch `main` remains at starting reference `a452054a669de28426404d1110731715083423bb` for this continuation; no release or mainline merge was performed.
+- The continuation started from the existing research line around `823cfa48ae93643decc1f853763dacfcaac9eb25` because the canonical case-register generator and evidence documents exist on that research branch but are absent from `main`. The focused changes were isolated in feature branches/PRs and merged back into that research line to avoid duplicating the existing generator.
+- PRs #342, #343, #344, #345, #346 and #347 are integrated into the research branch. The latest queue/report implementation commit is `34cd98992dbbf3f1abfd63006a66c4e03cd5f2a5`; later commits update the master register, audit and handoff only. The last audit-only commit before this handoff refresh was `9f1d94cb44ca0666c09efdc41e1ba70eacc92dd7`.
+- Open draft PR [#339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339) still targets `main`. Do not merge it wholesale while the independent IPA, Ukrainian-target, licensing and complete-case-register gates remain open.
+
+### Verification boundary
+
+- **PASS on executable code/workflow head:** queue extraction + coverage report [40465942564](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465942564), artifact [12716247798](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465942564/artifacts/12716247798); system verification [40465937572](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465937572); corpus artifact workflow [40465937576](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465937576). The NIKL live inventory was skipped by policy, not passed.
+- The latest handoff/audit edits are documentation-only. Current docs-head workflows were queued at commit `0e5835eb69c2f9c3c1028ea85555e9d22c935f7b`; later documentation commits may trigger another run. Do not claim those queued runs passed. Runtime/tests are unchanged from the verified code/workflow head above.
+- Local clone and local tests remain unavailable: `git clone` could not resolve `github.com`. No local pass is claimed.
+
+### Final task ledger
+
+- **DONE_VERIFIED:** test-only dotted-IPA expectation reconciliation; deterministic assertion queue; nearest test/suite context hints; raw literal/regex extraction; queue coverage report and fail-closed status checks. All four new queue/coverage stages passed their focused GitHub Actions and system/browser/Python checks.
+- **PARTIAL:** semantic case-level register. Current queue: 5,286 rows; 4,257 assertion candidates and 1,029 test declarations. Raw literals/regexes are preserved, but expected expressions are not evaluated and no row has a commit-specific observed result.
+- **TODO:** bind loop-driven fixtures and multiline assertions to exact input/mode/test IDs; extract expected values for supported structures; join actual outcomes only from exact commit/run logs; validate generated queue coverage against all executable test cases.
+- **BLOCKED / EVIDENCE-LIMITED:** independent IPA annotation/adjudication and separate Ukrainian target review require qualified reviewers and a documented adjudication protocol. Official live NIKL source inventory remains skipped by metadata-only workflow policy; do not substitute the local snapshot for rights or provenance approval.
+- **DEFERRED:** teacher model invocation/training and any runtime rule promotion. Current teacher/model-license and dataset-overlap limitations remain as documented; this continuation changed no production pronunciation rules, did not add model weights, and did not change external settings.
+
+**Readiness decision:** research-ready partial prototype, not release-ready. The next real acceptance milestone is a source-linked case-level register with exact inputs/modes, raw expected evidence, actual results tied to exact runs, followed by independent IPA and Ukrainian-target adjudication. No neural-model hypothesis is promoted to production by this continuation.
