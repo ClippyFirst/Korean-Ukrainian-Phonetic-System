@@ -282,3 +282,36 @@ The fixture-prefix defect has been corrected and diagnostic Python/browser sibil
 ## Browser profile metadata implementation (2026-10-27)
 
 The browser result now labels the existing IPA convention with `ipa_profile` (`browser-legacy-contextual-v1` by default; `browser-surface-mode-legacy-v1` for explicit surface mode) and `ipa_profile_status=unadjudicated-cross-runtime`. This is metadata-only: IPA values and target mapping are unchanged. The baseline test checks the profile label alongside the current output. Exact-head CI remains queued, so this work is `PARTIAL` pending execution. A named legacy profile must not be mistaken for independent phonetic adjudication or parity with Python broad IPA.
+
+
+## Additional candidate cluster adjudication — coda /n/ before a palatal affricate (2026-10-27)
+
+### Hypothesis
+
+The paired Charsiu/dev artifact contains repeated SIGMORPHON targets with `ɲ` where native narrow IPA contains coda `n` before the next syllable's palatal affricate (for example, `문장`, `반지`, `군자`). A possible candidate is a narrowly scoped coda allophone `n → ɲ` immediately before a following onset `dʑ/tɕ`, without crossing word boundaries.
+
+This is a different environment from the already implemented onset `ㄴ` before glide nuclei. It must not be folded into that rule or generalized from a string edit alone.
+
+### Controlled dev-only counterfactual
+
+Inspected artifact 12762619456 from exact workflow run 40566333859. The source pair files were kept intact. Candidate simulation changed only serialized narrow IPA matching `n\.(?:dʑ|tɕ)` to `ɲ.` before scoring; no source words, gold strings, normalization, or scored-row eligibility changed. Scoring used the repository's pinned diagnostic normalizer from `scripts/benchmark_ugtphon_ko.py` (NFD, `g → ɡ`, remove tie bars, whitespace, syllable dots, and the declared vowel diacritics; retain `n/ɲ`, aspiration and length).
+
+| Dev set | Baseline exact | Candidate exact | Exact delta | Baseline CER | Candidate CER | Changed rows | Exact fixes / regressions |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| SIGMORPHON (999 scored) | 448/999 (44.84%) | 465/999 (46.55%) | +1.70 pp | 11.0870% | 10.7978% | 24 | 17 / 0 |
+| UGTPHON (1,800 scored) | 1,226/1,800 (68.11%) | 1,182/1,800 (65.67%) | −2.44 pp | 6.0346% | 6.4530% | 59 | 0 / 44 |
+
+Coverage and abstentions are unchanged: SIGMORPHON 999/1,000 scored (one unresolved); UGTPHON 1,800/1,834 scored (34 unresolved). These numbers are a counterfactual over the same saved dev artifact, not a runtime run or independent test result.
+
+### Decision
+
+**Reject promotion and do not change production code.** The same narrowly described symbol change helps SIGMORPHON but materially regresses UGTPHON, which is strong evidence that the two reference conventions differ for this correspondence or its environments. The UCL thesis literature review discusses [ɲ] before palatal contexts, but it is secondary synthesis and does not adjudicate this exact coda-to-affricate environment across the project's corpora. No corpus-specific symbol convention may be silently elevated into a universal Korean narrow-IPA rule.
+
+- Candidate ID: `NT-CODA-N-PALATAL-AFFRICATE-2026-10-27`
+- Status: `BLOCKED / EVIDENCE-LIMITED`
+- Positive evidence: 17 SIGMORPHON exact fixes in the controlled counterfactual; peer-reviewed/secondary descriptions make palatalized nasals phonetically plausible.
+- Negative evidence: 44 UGTPHON exact regressions; the corpora's target conventions remain unadjudicated against a shared profile.
+- Runtime: unchanged; no Python/JavaScript change and no target-adapter change.
+- Acceptance to reopen: independently annotate a case sample for the precise coda context under one declared IPA convention; distinguish segmental allophony from source transcription policy; define positive and negative environments; then rerun paired dev scoring and require no unacceptable cross-corpus regressions before considering a separately versioned research profile.
+
+This cluster is a concrete example of why neural disagreement must generate hypotheses rather than automatically generate production rules.
