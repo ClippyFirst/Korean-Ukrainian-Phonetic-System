@@ -31,9 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/build_test_case_register.py --output-dir "$RUNNER_TEMP/case-register"
-          python scripts/classify_test_case_candidates.py \\
-            --input "$RUNNER_TEMP/case-register/TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv" \\
-            --output "$RUNNER_TEMP/case-register/TEST-CASE-REGISTER-ASSERTION-CLASSIFICATION-QUEUE-2026-10-27.csv"
+          python scripts/classify_test_case_candidates.py --input "$RUNNER_TEMP/case-register/TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv" --output "$RUNNER_TEMP/case-register/TEST-CASE-REGISTER-ASSERTION-CLASSIFICATION-QUEUE-2026-10-27.csv"
           python - "$RUNNER_TEMP/case-register" "$GITHUB_SHA" <<'PY'
           import csv, hashlib, json, sys
           from pathlib import Path
