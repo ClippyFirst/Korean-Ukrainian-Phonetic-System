@@ -242,6 +242,7 @@ def test_profile_aware_adapter_rejects_unadjudicated_partial_and_unregistered_pr
     partial = render_profiled_ipa_to_ukrainian("씨", {
         **broad,
         "ipa_profile": "clippyfirst-korean-narrow-partial-sibilant-nasal-v2",
+        "ipa_profile_version": 2,
         "ipa_profile_level": "narrow",
         "ipa_profile_status": "partial-research-only",
     })
