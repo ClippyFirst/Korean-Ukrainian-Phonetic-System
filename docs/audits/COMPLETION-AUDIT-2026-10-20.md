@@ -1288,3 +1288,18 @@ No linguistic accuracy status was upgraded by this recheck. Acceptance requires 
 - Full Python 3.11–3.13/wheel/web test matrix run 40585528103 and several post-merge main push workflows were queued at the last poll; pending is not pass. The live NIKL inventory step was skipped; Charsiu/ByT5 inference was skipped as opt-in research.
 - Benchmark remains diagnostic: UGTPHON native 1,430/2,698 exact, CER 9.1697%; SIGMORPHON native 357/997 exact, CER 14.7037%. No independent IPA gold or Ukrainian target gold is established. Narrow IPA remains research-only.
 - Status: **PARTIAL research prototype — not release-ready**. Remaining acceptance criteria: independent source-blind IPA annotations and reconciliation; separate Ukrainian target policy/gold; official NIKL inventory with authorized manifest; explicit external model rights/training overlap; finish queued matrix and post-merge CI.
+
+
+## Addendum — current mainline closeout (2026-10-27)
+
+The earlier 2026-10-20 audit is historical and should not be read as a statement that all of its acceptance gaps are now closed. Since that snapshot, mainline consolidation and PR #350 have been integrated. PR #350 adds a tested source-blind reviewer-pair comparison CLI; this improves reproducibility of independent IPA review but does not supply reviewer annotations or linguistic gold.
+
+Exact PR-head CI for `e7b88d87005c75ad124b59041774e825dad9ca32`:
+- Node/browser tests and build: PASS, run [40591140023](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40591140023).
+- Browser G2P integration: PASS, run [40591140029](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40591140029).
+- Python/system verification: PASS, run [40591133811](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40591133811).
+- Master-table and research-corpus artifact generation: PASS, run [40591140186](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40591140186).
+- Test-case-register extraction and upload steps: PASS, run [40591140047](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40591140047), although the run summary remained in progress at the last poll.
+- Official NIKL live inventory: SKIPPED, not PASS.
+
+**Current disposition:** engineering regression checks passed on the exact PR head, but release readiness remains blocked by independent broad-IPA adjudication, separate Ukrainian-target validation, source/license clearance, and a final check on the post-merge main commit. The 24-case holdout's IPA and Ukrainian gold fields remain intentionally empty; no benchmark accuracy claim should be based on that holdout yet.
