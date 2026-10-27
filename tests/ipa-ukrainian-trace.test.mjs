@@ -394,6 +394,8 @@ test('engine exposes an opt-in profile-gated target path without changing legacy
     assert.equal(result.ukrainian, '', 'unadjudicated IPA must not be returned as accepted target text in strict mode');
     assert.equal(result.candidate_ukrainian, null);
     assert.equal(result.candidate_status, null);
+    assert.ok((result.trace||[]).every(item=>item.output===''&&item.candidateOutput===null), 'strict mode must not leak target text through the trace');
+    assert.ok((result.variants||[]).every(item=>item.ukrainian===''), 'strict mode must not leak target text through variants');
   }
 });
 
