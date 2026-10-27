@@ -331,3 +331,17 @@ This evidence justified a tightly scoped **research-only narrow profile v3** exp
 Tests now cover positive examples `감히`, `간호원`, `영화`; negative controls `아하` and `감 하`; broad/phonemic stability; and the existing nasal-glide rule's scope. The source registry contains `SRC-KANG-LEE-2019-H-REALIZATIONS` and `SRC-EOM-2014-H-SONORANT`.
 
 **Status: PARTIAL pending exact-head CI and fresh runtime benchmark.** The above metrics are a counterfactual, not the result of the changed engine. The profile is not a complete narrow transcription and does not encode the optionality, deletion rates, speaker variability, or dialect probabilities reported by the literature. Do not call this a universal Korean rule or approved Ukrainian target IPA.
+
+
+## Fresh post-change Charsiu runtime evaluation — 2026-10-27
+
+The actual v3 runtime was executed on the same pinned development inputs by workflow run 40571047706; artifact 12765811211 (SHA-256 `1b31b4e85315e44c423b18588e573688e17c2141cca3b9fb31bbf08fac8373f8`). The run completed successfully, including split/provenance assertions and artifact upload. Its measured v3 results match the prior counterfactual direction:
+
+| Dev corpus | Broad renderer exact / CER | Narrow v3 exact / CER | Delta exact | Delta CER | Coverage / abstentions |
+|---|---:|---:|---:|---:|---:|
+| SIGMORPHON (999 scored of 1,000) | 332/999 (33.23%) / 15.4736% | 466/999 (46.65%) / 10.5929% | +134 cases (+13.41 pp) | -4.8807 pp | 999/1,000; 1 unresolved |
+| UGTPHON (1,800 scored of 1,834 eligible) | 977/1,800 (54.28%) / 9.6086% | 1,265/1,800 (70.28%) / 5.5950% | +288 cases (+16.00 pp) | -4.0136 pp | 1,800/1,834; 34 unresolved/excluded |
+
+These are **actual runtime broad-vs-narrow profile sensitivity measurements**, not broad-profile production accuracy or independent phonetic validation. The metric comparison is explicitly labelled `DIAGNOSTIC_ONLY_IPA_CONVENTION_UNREVIEWED`; Charsiu weights' license status and potential training overlap are unresolved. The result supports keeping v3 as a research instrument, not approving its outputs as target-ready IPA.
+
+The first exact-head test workflows on commit 45f6312 failed for two stale assertions in `tests/test_narrow_ipa.py` that still expected profile v2 and the old status string. The assertions were updated to expect profile `korean-narrow-partial-sibilant-nasal-h-v3`, version 3, and `partial-narrow-research-profile` in commit `9807deacd0b9887a31cff3a73084010af38b13eb`. **The repair is not yet verified by a successful post-fix CI run**; do not mark the task DONE_VERIFIED until the exact-head Python/system/browser jobs pass.
