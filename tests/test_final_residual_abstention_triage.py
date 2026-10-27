@@ -27,20 +27,35 @@ def test_residual_abstention_register_is_complete_and_evidence_scoped():
     ]
     assert len({case["input"] for case in cases}) == 5
     assert all(case["acceptanceCriterion"] for case in cases)
-    assert all(case["productionChange"] == "none" or case["productionChange"].startswith("none;") for case in cases)
+    # Candidate-only UI improvements are allowed; the production phonetic/target pipeline must still abstain.
+    assert all(case["productionChange"].strip() not in ("", "none") for case in cases)
+    assert "no silent rewrite" in cases[0]["productionChange"]
+    assert "Original input" in cases[1]["productionChange"]
+    assert "No candidate is automatically applied" in cases[2]["productionChange"]
+    assert "No accepted Ukrainian output" in cases[3]["productionChange"]
+    assert "Original input" in cases[4]["productionChange"]
     assert all("IPA" in " ".join(queue["policy"]) or "IPA" in case["status"] for case in cases)
 
 
-def test_residual_cases_remain_unresolved_and_never_emit_accepted_ukrainian_output():
+def test_residual_cases_preserve_abstention_and_literal_ipa_contract():
     queue = json.loads(QUEUE.read_text(encoding="utf-8"))
     for case in queue["cases"]:
         form = case["input"]
         phonetics = phoneticize_korean(form)
         result = transliterate_korean(form)
-        assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
+        assert phonetics["input"] == form, (form, phonetics)
         assert result["target_status"] == "unresolved", (form, result)
         assert result["ukrainian_orthography"] is None, (form, result)
         assert result["candidate_orthography"] is None, (form, result)
+        if form == "많앗구나유유유":
+            # The literal written form receives an inspectable IPA diagnostic;
+            # the engine must not silently substitute a corrected spelling.
+            assert phonetics["ipa"]["ipa"], (form, phonetics)
+            assert phonetics["ipa"]["is_diagnostic_only"] is True, (form, phonetics)
+            assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
+            assert phonetics["input"] == "많앗구나유유유"
+        else:
+            assert phonetics["pronunciation_status"] == "unresolved", (form, phonetics)
 
 
 def test_spelling_sources_are_not_misrepresented_as_authorizing_normalization():
