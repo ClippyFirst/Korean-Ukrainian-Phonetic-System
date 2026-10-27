@@ -125,15 +125,33 @@ def _split_call_arguments(line: str, open_paren: int) -> list[str]:
     depth = 0
     quote = ""
     escaped = False
+    regex_literal = False
+    regex_in_class = False
     for index in range(open_paren + 1, len(line)):
         char = line[index]
         if quote:
             if escaped:
                 escaped = False
-            elif char == "\\\\":
+            elif char == "\\":
                 escaped = True
             elif char == quote:
                 quote = ""
+            continue
+        if regex_literal:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == "[":
+                regex_in_class = True
+            elif char == "]":
+                regex_in_class = False
+            elif char == "/" and not regex_in_class:
+                regex_literal = False
+            continue
+        if char == "/" and line[:index].rstrip()[-1:] in ("", "(", ",", ":", "="):
+            regex_literal = True
+            regex_in_class = False
             continue
         if char in ("'", '"', "\u0060"):
             quote = char
@@ -149,7 +167,6 @@ def _split_call_arguments(line: str, open_paren: int) -> list[str]:
             arguments.append(line[start:index].strip())
             start = index + 1
     return []
-
 
 def _raw_literal_kind(expression: str) -> str:
     value = expression.strip()
