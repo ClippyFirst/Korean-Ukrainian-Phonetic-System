@@ -222,3 +222,15 @@ The candidate miner now requires explicit `teacher_ipa_convention`, `strict_ipa_
 - **Decision rationale:** opposite cross-corpus effects make this unsafe to generalize. This is likely at least partly an IPA convention mismatch, and the exact coda environment has not been independently adjudicated. Do not implement a runtime rule based on the SIGMORPHON gain.
 - **Next acceptance criterion:** source-blind case-level adjudication under a declared common IPA profile, with coda context and word boundaries explicit; repeat dev evaluation; require no unacceptable regressions and preserve all raw source outputs.
 - **Related evidence:** the broader teacher/Strict audit records that target IPA conventions differ and the UCL thesis is secondary synthesis. A teacher prediction or corpus gold string alone is not sufficient to promote this rule.
+
+
+## Candidate: /h/ realization after a same-word sonorant coda
+
+- **ID:** `NT-H-SONORANT-VOICING-2026-10-27`
+- **Status:** `PARTIAL` — implemented only in Python's opt-in narrow research profile v3; exact-head verification pending.
+- **Hypothesis:** onset ㅎ after a same-word sonorant coda ㄴ/ㄹ/ㅁ/ㅇ can have a voiced [ɦ] realization.
+- **Primary evidence:** Kang & Lee (2019), DOI 10.17290/jlsk.2019..84.175, report optional voicing/deletion after sonorants and dialect-related differences; Eom (2014), DOI 10.17959/sppm.2014.20.3.357, examines optional weakening/deletion and preceding-sonorant effects. Both records are in `research/SOURCE-REGISTER.csv`.
+- **Counterfactual:** SIGMORPHON dev 448/999 → 466/999 exact, CER 11.0870% → 10.5929%, 18 fixes/0 regressions; UGTPHON dev 1,226/1,800 → 1,265/1,800 exact, CER 6.0346% → 5.5950%, 39 fixes/0 regressions. Coverage and abstentions unchanged. Saved-artifact counterfactual only; source conventions and optionality remain unresolved.
+- **Runtime scope:** same-word coda ㄴ/ㄹ/ㅁ/ㅇ before onset ㅎ, narrow profile only; no cross-word application, no deletion inference, no broad IPA/browser/target adaptation.
+- **Tests added:** positive `감히`, `간호원`, `영화`; negative `아하` and `감 하`; broad/phonemic negative controls; profile v3 metadata and target-incompatibility checks.
+- **Acceptance:** exact-head Python test, system and browser gates pass; fresh same-input Charsiu dev run confirms actual post-change profile metrics; inspect case-level regressions and keep test/holdout sealed. The profile remains research-only even if dev metrics hold.

@@ -315,3 +315,19 @@ Coverage and abstentions are unchanged: SIGMORPHON 999/1,000 scored (one unresol
 - Acceptance to reopen: independently annotate a case sample for the precise coda context under one declared IPA convention; distinguish segmental allophony from source transcription policy; define positive and negative environments; then rerun paired dev scoring and require no unacceptable cross-corpus regressions before considering a separately versioned research profile.
 
 This cluster is a concrete example of why neural disagreement must generate hypotheses rather than automatically generate production rules.
+
+
+## Candidate-cluster implementation — optional [ɦ] after same-word sonorant coda (2026-10-27)
+
+The second candidate with consistent paired dev direction was /h/ weakening/voicing after a sonorant coda. The primary study by Kang & Lee (2019) reports optional voicing or deletion after sonorants in Seoul Korean and greater weakening/deletion in its small Gwangju sample; Eom (2014) independently examines optional /h/ realization and preceding-sonorant effects. These sources support a variable phonetic environment, not obligatory [ɦ].
+
+A dev-only counterfactual on artifact 12762619456 changed only same-word `n/l/m/ŋ + . + h` sequences to `ɦ`:
+- SIGMORPHON dev: 448/999 → 466/999 exact; CER 11.0870% → 10.5929%; 18 exact fixes / 0 regressions (61 rows changed).
+- UGTPHON dev: 1,226/1,800 → 1,265/1,800 exact; CER 6.0346% → 5.5950%; 39 exact fixes / 0 regressions (99 rows changed).
+- Coverage/abstentions unchanged: 999/1,000 and 1,800/1,834, respectively.
+
+This evidence justified a tightly scoped **research-only narrow profile v3** experiment in `src/korean_ukrainian/ipa.py`, not broad IPA promotion. The new code emits [ɦ] only for onset ㅎ after a same-word coda ㄴ/ㄹ/ㅁ/ㅇ. It does not apply across spaces, infer /h/ deletion, modify JavaScript, or enable Ukrainian adaptation. The profile identifier is `korean-narrow-partial-sibilant-nasal-h-v3`, version 3, and remains target-incompatible.
+
+Tests now cover positive examples `감히`, `간호원`, `영화`; negative controls `아하` and `감 하`; broad/phonemic stability; and the existing nasal-glide rule's scope. The source registry contains `SRC-KANG-LEE-2019-H-REALIZATIONS` and `SRC-EOM-2014-H-SONORANT`.
+
+**Status: PARTIAL pending exact-head CI and fresh runtime benchmark.** The above metrics are a counterfactual, not the result of the changed engine. The profile is not a complete narrow transcription and does not encode the optionality, deletion rates, speaker variability, or dialect probabilities reported by the literature. Do not call this a universal Korean rule or approved Ukrainian target IPA.

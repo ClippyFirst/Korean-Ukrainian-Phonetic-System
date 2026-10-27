@@ -3233,3 +3233,16 @@ A second cluster was tested from the saved Charsiu dev pair artifact instead of 
 | Coda /n/ → [ɲ] before palatal affricate | BLOCKED / EVIDENCE-LIMITED | Cross-corpus dev results conflict; no runtime implementation. |
 | Narrow IPA target leakage guard | PARTIAL pending exact-head CI | New pipeline test asserts narrow IPA remains target-incompatible and accepted Ukrainian output is withheld. |
 | General neural-teacher-to-production rule promotion | BLOCKED / EVIDENCE-LIMITED | No new generalized production rule passes independent IPA convention adjudication in this cycle. |
+
+
+## Follow-up candidate implemented in research profile v3 — /h/ after sonorants (2026-10-27)
+
+A source-supported, tightly scoped candidate was selected after a second controlled counterfactual:
+- Kang & Lee (2019), DOI 10.17290/jlsk.2019..84.175, and Eom (2014), DOI 10.17959/sppm.2014.20.3.357, describe variable /h/ voicing/weakening/deletion after sonorants. They do not support a categorical all-speaker rule.
+- On saved dev outputs, replacing same-word coda-sonorant + onset /h/ with [ɦ] improved both convention-specific diagnostics: SIGMORPHON 448/999 → 466/999 exact and CER 11.0870% → 10.5929%; UGTPHON 1,226/1,800 → 1,265/1,800 exact and CER 6.0346% → 5.5950%. The simulation changed 61 and 99 rows respectively, with 18/0 and 39/0 exact fixes/regressions. These remain counterfactual dev metrics, not post-change runtime results.
+- Implemented in Python narrow IPA only: onset ㅎ after same-word coda ㄴ/ㄹ/ㅁ/ㅇ emits one [ɦ] candidate realization. Broad and phonemic output remain unchanged; no word-boundary crossing; no deletion inference; no JS or Ukrainian target changes.
+- Profile version bumped to `korean-narrow-partial-sibilant-nasal-h-v3` / version 3 and remains `partial-research-only`, `target_compatible=false`.
+- Regression tests added for positives `감히`, `간호원`, `영화`, negatives `아하` and `감 하`, broad/phonemic stability, and target-adapter fail-closed behavior.
+- Source register updated with `SRC-KANG-LEE-2019-H-REALIZATIONS` and `SRC-EOM-2014-H-SONORANT`.
+
+**Current status: PARTIAL.** A new same-input Charsiu dev run and exact-head Python/system/browser checks are pending; the narrow profile must remain research-only regardless of development scores. The previous CI failure for the first draft of nasal-glide tests was corrected in later commits; the new h-profile tests have not yet been marked passed. The coda /n/→[ɲ] candidate remains rejected for production due to opposite SIGMORPHON/UGTPHON effects.
