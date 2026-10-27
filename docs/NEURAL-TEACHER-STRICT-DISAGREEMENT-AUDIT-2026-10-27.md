@@ -2,11 +2,11 @@
 
 ## Status and scope
 
-**Status: PARTIAL / research-only.** This is a diagnostic of the reproducible three-seed SIGMORPHON development portfolio and the paired native-Strict outputs. It is not an independently adjudicated accuracy comparison, not a normative pronunciation gold set, and not a production-rule change.
+**Status: PARTIAL / research-only.** This is a diagnostic of a three-seed SIGMORPHON development portfolio and paired native-Strict outputs. A later run found cross-run drift for identical seed/configuration, so the portfolio is **not yet reproducible**; only each artifact's own metrics are valid. It is not an independently adjudicated accuracy comparison, not a normative pronunciation gold set, and not a production-rule change.
 
 - Repository branch: `research/strict-teacher-guided-rule-mining-2026-10-26`; portfolio code commit at training: `2a435c8574c924124e840bb83df5b2cdee2b9a0a`.
 - Portfolio workflow: [40470223568](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40470223568).
-- Reproducible artifact: [artifact 12717644093](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40470223568/artifacts/12717644093), ZIP SHA-256 `f5c77a85e92238fcbe13729b1c2a78c1277e933e5f2d982457e79d13d2dc2fef`.
+- Original portfolio artifact (later cross-run drift means it is not a reproducibility proof): [artifact 12717644093](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40470223568/artifacts/12717644093), ZIP SHA-256 `f5c77a85e92238fcbe13729b1c2a78c1277e933e5f2d982457e79d13d2dc2fef`.
 - Dataset: pinned SIGMORPHON 2021 medium Korean; the 1,000-row dev split was used both for model selection and this diagnostic. **Do not treat these numbers as held-out generalization.**
 - All three runs use the same bidirectional-GRU encoder + dot-attention GRU decoder, with different random seeds. This is a seed-robustness check, not an architecture bake-off.
 - Target is the corpus's tokenized roughly-phonemic IPA. ClippyFirst emits its own broad IPA convention, and no independently reviewed adapter currently reconciles them. Existing pair files therefore intentionally compute **no Strict-vs-teacher exact match, CER, WER, or ranking**.
@@ -197,8 +197,8 @@ The licenses remain closed exact-form entries; they do not infer arbitrary morph
 The original reproducibility-gated portfolio workflow and general/system workflows were still reported as queued when last polled. Earlier portfolio artifacts disagree despite nominally matching trainer, data, and seed settings, so their metrics must not be combined. The new single-thread deterministic configuration and duplicate-seed hash gate are intended to test this; they are not evidence of reproducibility until that gate completes.
 
 Current task ledger:
-- `DONE_VERIFIED`: source-preserving teacher/Strict pairing, raw IPA inventory, consensus triage, exact-form Python regression tests as code present.
-- `PARTIAL`: exact-form R002/R003 additions mirrored to browser; awaiting same-head Python/browser/system CI.
+- `DONE_VERIFIED`: source-preserving teacher/Strict pairing, raw IPA inventory, and consensus-triage tooling were exercised by earlier successful CI/artifacts; their findings remain diagnostic-only.
+- `PARTIAL`: exact-form R002/R003 changes and their positive/negative tests exist in both Python and browser code; latest-head test execution is still pending.
 - `BLOCKED`: reproducible teacher metrics until duplicate-seed hashes and predictions pass the new gate; broad-IPA vs corpus-IPA comparison until reviewed adapter and adjudication exist.
 - `DEFERRED`: neural runtime integration; any rule promotion inferred solely from teacher outputs.
 
