@@ -141,7 +141,7 @@ A new research-only script, `scripts/summarize_korean_teacher_strict_disagreemen
 
 ## 7. Critical cross-check: all six Strict abstentions are also unanimous teacher failures
 
-The saved prediction JSONL files show that **all three neural seeds miss the SIGMORPHON reference on each of the same six inputs that Strict abstains on**. This is a useful negative finding: the scratch teacher does not provide a reliable pronunciation answer for the exact cases where the deterministic engine needs more morphology evidence.
+The saved prediction JSONL files in both the original artifact [12718129194](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40470604816/artifacts/12718129194) and the subsequent run [12719507456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40472610993/artifacts/12719507456) show that **all three neural seeds miss the SIGMORPHON reference on each of the same six inputs that Strict abstains on**. This is a useful negative finding: the scratch teacher does not provide a reliable pronunciation answer for the exact cases where the deterministic engine needs more morphology evidence.
 
 | Input | SIGMORPHON reference (raw token sequence) | Teacher outcome |
 |---|---|---|
