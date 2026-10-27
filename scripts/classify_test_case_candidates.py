@@ -26,7 +26,7 @@ OUTPUT_COLUMNS = [
 ]
 
 DIMENSION_RULES = (
-    ("IPA", re.compile(r"\\bipa\\b|renderExpectedIpa|broad IPA|narrow IPA", re.I)),
+    ("IPA", re.compile(r"\bipa\b|renderExpectedIpa|broad IPA|narrow IPA", re.I)),
     ("UKRAINIAN_TARGET", re.compile(r"ukrainian|candidate_ukrainian|target_syllables|target_status", re.I)),
     ("KOREAN_SURFACE", re.compile(r"surfaceHangul|surface_hangul|surface pronunciation|surface drift", re.I)),
     ("RULE_TRACE", re.compile(r"trace|rules?\\.includes|traceRules|rule order|forbidden rule", re.I)),
@@ -36,20 +36,20 @@ DIMENSION_RULES = (
     ("BOUNDARY_SERIALIZATION", re.compile(r"punctuation|context|boundary|separator|whitespace|syllable|eojeol|deterministic|repeat", re.I)),
 )
 NEGATIVE_HINT = re.compile(
-    r"\\b(?:not|never|without|forbid(?:den)?|unresolved|abstain|reject|"
-    r"doesNot|assertFalse|False|notDeepEqual|fail.closed)\\b|⟦|⟧",
+    r"\b(?:not|never|without|forbid(?:den)?|unresolved|abstain|reject|"
+    r"doesNot|assertFalse|False|notDeepEqual|fail.closed)\b|⟦|⟧",
     re.I,
 )
 
 
 def _queue_id(source_path: str, line_number: str, raw_line: str) -> str:
-    identity = "\\0".join((source_path, line_number, raw_line)).encode("utf-8")
+    identity = "\0".join((source_path, line_number, raw_line)).encode("utf-8")
     return "QUEUE-" + hashlib.sha256(identity).hexdigest()[:16]
 
 
 def _candidate_role(assertion_kind: str) -> str:
     kind = assertion_kind.strip()
-    if re.match(r"^(?:async\\s+)?(?:test|it|describe)\\s*\\(", kind) or re.match(r"^def\\s+test_", kind):
+    if re.match(r"^(?:async\s+)?(?:test|it|describe)\s*\(", kind) or re.match(r"^def\s+test_", kind):
         return "TEST_DECLARATION"
     if kind and (kind.startswith("assert") or kind.startswith("expect") or kind.startswith("self.assert") or kind.startswith("strictEqual") or kind.startswith("deepEqual") or kind.startswith("pytest.raises")):
         return "ASSERTION"
@@ -117,7 +117,7 @@ def read_candidates(path: Path) -> list[dict[str, str]]:
 def write_queue(path: Path, rows: list[dict[str, str]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=OUTPUT_COLUMNS, lineterminator="\\n", extrasaction="ignore")
+        writer = csv.DictWriter(stream, fieldnames=OUTPUT_COLUMNS, lineterminator="\n", extrasaction="ignore")
         writer.writeheader()
         writer.writerows(rows)
 
