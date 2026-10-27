@@ -1,3 +1,12 @@
+# Latest continuation — source-backed R016 engine improvement (2026-10-27)
+
+- **Implemented:** extended the existing deterministic R016 exact-form registry in Python and browser JavaScript with `맑게` (`맑>게`) and `맑고` (`맑>고`). Expected Korean surface outputs are `말께` and `말꼬`.
+- **Evidence:** NIKL Standard Pronunciation Rule 11; official Q&A [qna_seq=320900](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320900) explicitly confirms both forms, while [qna_seq=335693](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=335693) clarifies the written ㄺ-before-ㄱ condition. Both sources are now in `research/SOURCE-REGISTER.csv`.
+- **Tests added:** Python R016 regression cases and browser runtime cases; the browser test asserts the final `surfaceHangul` outputs and retains `닭고기` as a negative control. The rule remains exact-form licensed; no blanket ㄺ+ㄱ rewrite was introduced.
+- **Scope:** this is a real source-backed coverage repair in the production deterministic rule path, not a claim that the neural model discovered a new general rule. No neural runtime, IPA renderer, Ukrainian adapter, or target mapping changed.
+- **Task ledger:** implementation = implemented; source records = added; Python/browser tests = added but awaiting exact-head CI; full teacher-disagreement-to-rule pipeline = still PARTIAL because corpus IPA conventions and candidate-level independent adjudication remain unresolved.
+- **Verification caveat:** the local environment previously could not resolve GitHub, so do not claim local tests. Check the final PR-head CI and the exact commit before promoting this batch to DONE_VERIFIED.
+
 # Continuation — neural-teacher-guided deterministic Strict improvement (2026-10-26)
 
 # Latest continuation — browser IPA serialization regression (2026-10-27)
