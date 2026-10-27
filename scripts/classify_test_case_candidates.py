@@ -29,7 +29,7 @@ DIMENSION_RULES = (
     ("IPA", re.compile(r"\bipa\b|renderExpectedIpa|broad IPA|narrow IPA", re.I)),
     ("UKRAINIAN_TARGET", re.compile(r"ukrainian|candidate_ukrainian|target_syllables|target_status", re.I)),
     ("KOREAN_SURFACE", re.compile(r"surfaceHangul|surface_hangul|surface pronunciation|surface drift", re.I)),
-    ("RULE_TRACE", re.compile(r"trace|rules?\\.includes|traceRules|rule order|forbidden rule", re.I)),
+    ("RULE_TRACE", re.compile(r"trace|rules?\.includes|traceRules|rule order|forbidden rule", re.I)),
     ("STATUS_ABSTENTION", re.compile(r"issues?|unresolved|placeholder|abstain|fail.closed|⟦|⟧|status", re.I)),
     ("VARIANT", re.compile(r"variant|alternate|alternant|permitted reading", re.I)),
     ("SOURCE_PROVENANCE", re.compile(r"source_url|NIKL|license|provenance|source-backed", re.I)),
