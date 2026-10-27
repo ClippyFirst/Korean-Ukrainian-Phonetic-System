@@ -1194,3 +1194,14 @@ Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. Le
 - Local clone/tests remain unavailable because outbound DNS for `github.com` failed. All reported passes above are GitHub Actions evidence; current queued runs remain pending, not failed and not passed.
 
 **Readiness:** research-ready partial prototype; not release-ready. No neural weights or teacher predictions were promoted to runtime, no licensing permissions were inferred, and no production pronunciation/target rule was changed by the assertion-queue work.
+
+
+## Runtime IPA profile / seed-triage continuation — 2026-10-27
+
+- Starting branch HEAD was 4379463aab4f5a829c61ed666deb28cafffa1a6e; PR #339 remains Draft/open.
+- Reproduced exact-head seed portfolio failure run 40480217054: triage required exactly 994 Strict pairs even though the paired engine workflow reported 999 paired cases and one excluded case per seed. Same-seed checkpoint/prediction hashes and dev metrics matched, so this was a triage cardinality assertion failure, not model drift.
+- Fix: accept a variable Strict pair count only when pair IDs are a subset of the pinned 1,000 dev prediction IDs and the same pair-ID set appears across all three seeds. Added regressions for variable pair counts and divergent pair-ID sets.
+- Added common versioned metadata fields to Python and browser IPA outputs, plus shared unadjudicated sibilant fixtures. This does not establish profile equivalence: the fixture explicitly labels adjudication UNADJUDICATED and target adapter eligibility UNVERIFIED. No Ukrainian target or production pronunciation rule was changed.
+- Added SRC-KANG-2010-KOREAN-SIBILANT-COARTICULATION and SRC-KONG-KANG-2020-SEOUL-SIBILANTS to the existing source register. The reviewed abstracts support context/speaker variation but do not adjudicate a universal categorical [ɕ͈] rendering for tense /s͈/.
+- Verification limitation: current code/test runs on later heads are QUEUED in GitHub Actions at this audit update; no local test result is claimed because clone failed with DNS error resolving github.com. Do not mark the code fix DONE_VERIFIED until exact-head test, system, browser, and seed-portfolio workflows finish successfully and logs/artifacts are inspected.
+- Current acceptance status: seed-triage fix PARTIAL; common IPA profile metadata PARTIAL; cross-runtime IPA acceptance BLOCKED / UNADJUDICATED; Ukrainian adaptation DEFERRED. PR #339 must remain Draft.
