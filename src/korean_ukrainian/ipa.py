@@ -9,11 +9,19 @@ LENIS={"ㄱ":"k","ㄷ":"t","ㅂ":"p","ㅅ":"s","ㅈ":"tɕ"}
 # https://www.sciencedirect.com/science/article/pii/S0095447015000339
 # https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770
 _NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
+# The research-only narrow profile models onset /n/ palatalization before
+# glide-initial nuclei. Keep /i/ out of this set: the teacher/reference corpus
+# does not support collapsing ordinary /ni/ into the same categorical output.
+# Sources: Ahn (2009) on palatalized /n/ before [j]; Lee (1996), summarized in
+# the UCL Korean phonetics thesis, describes [nʲ]/[ɲ] before /j/.
+_NARROW_PALATALIZED_NASAL_GLIDE_NUCLEI={"ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
 CODA={"ㄱ":"k̚","ㄲ":"k̚","ㄳ":"k̚","ㄴ":"n","ㄵ":"n","ㄶ":"n","ㄷ":"t̚","ㄹ":"l","ㄺ":"k̚","ㄻ":"m","ㄼ":"l","ㄽ":"l","ㄾ":"l","ㄿ":"p̚","ㅀ":"l","ㅁ":"m","ㅂ":"p̚","ㅄ":"p̚","ㅅ":"t̚","ㅆ":"t̚","ㅇ":"ŋ","ㅈ":"t̚","ㅊ":"t̚","ㅋ":"k̚","ㅌ":"t̚","ㅍ":"p̚","ㅎ":"t̚"}
 
 def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="broad")->list[str]:
     c=s.onset
     if c=="ㅇ": return []
+    if not phonemic and level=="narrow" and c=="ㄴ" and s.nucleus in _NARROW_PALATALIZED_NASAL_GLIDE_NUCLEI:
+        return ["ɲ"]
     if not phonemic and level=="narrow" and c=="ㅅ":
         return ["ɕʰ" if s.nucleus in _NARROW_HIGH_FRONT_SIBILANT_NUCLEI else "sʰ"]
     if c in FORTIS: return [FORTIS[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
@@ -117,7 +125,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",
         "broad":"clippyfirst-korean-broad-v1",
-        "narrow":"clippyfirst-korean-narrow-partial-sibilant-v1",
+        "narrow":"clippyfirst-korean-narrow-partial-sibilant-nasal-v2",
     }
     result={
         "level":level,
@@ -136,13 +144,15 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     }
     if level=="narrow":
         result["transcription_profile"]={
-            "name":"korean-narrow-partial-sibilant-v1",
-            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅖ, ㅑ","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
+            "name":"korean-narrow-partial-sibilant-nasal-v2",
+            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅖ, ㅑ","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
             "sources":[
                 "Cho, Jun & Ladefoged (2002), via High-toned [il] in Korean: https://www.sciencedirect.com/science/article/pii/S0095447015000339",
                 "Kang (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770",
+                "Ahn (2009), Korean /n/-deletion: phonetic initial strengthening to denasalization: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001340886",
+                "Lee (1996), Korean Phonetics, summarized in the UCL thesis: https://discovery.ucl.ac.uk/1324541/1/1324541.pdf",
             ],
-            "limitations":["partial profile, not a complete narrow transcription","does not model /h/ allophony, lateral retroflexion, dialectal variation, or prosody","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
+            "limitations":["partial profile, not a complete narrow transcription","does not model /h/ allophony, lateral retroflexion, dialectal variation, or prosody","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
             "target_compatible":False,
         }
     return result
