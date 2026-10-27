@@ -351,3 +351,8 @@ Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. Th
 ## Mainline consolidation checkpoint — 2026-10-27
 
 The current mainline first received the exact-form R002/R016 source-backed rules through PR #341 (`1def51dd9f88364891ff0051e9aadb5900f2e42c`). The consolidation snapshot carries the research branch's benchmark tools and pinned comparison portfolio forward. This is an implementation/reproducibility consolidation, not a benchmark score claim: noisy/public reference corpora remain diagnostic, broad/narrow dev profile selection is contaminated for independent evaluation, and no independent Ukrainian target gold is available. Exact-head workflows on the consolidation PR determine software verification status.
+
+
+## Final mainline consolidation — 2026-10-27
+
+The best verified implementation/research tree is now on `main` via PR #348 merge commit `72d2a785160382ffbfdce4f5654afb9671d957f9`, after source-backed R002/R016 integration in `1def51dd9f88364891ff0051e9aadb5900f2e42c`. Multi-engine UGTPHON and SIGMORPHON diagnostics both passed on the consolidated code head (run 40585528130); current benchmark values are UGTPHON native 53.0022% exact / 9.1697% CER (2,698 scored, five abstentions) and SIGMORPHON native 35.8074% exact / 14.7037% CER (997 scored, two abstentions). g2pK 0.9.4 remains near-native on these diagnostics. These are not normative IPA gold scores and do not score Ukrainian adaptation. The standalone cross-version test/wheel matrix and some post-merge main workflows were still queued at the last poll; do not record them as passed until completed. Charsiu and ByT5 inference remain skipped research opt-ins; NIKL live inventory is skipped/blocked, not passed.
