@@ -951,3 +951,31 @@ def test_nikl_section_11_official_readgeodeun_example_is_licensed_in_production(
     r016 = next(trace for trace in noun["rules"] if trace.get("rule_id") == "R016")
     assert not r016["changed"]
     assert not (r016.get("license_context") or "").startswith("R016:")
+
+
+def test_exact_form_r002_cases_from_teacher_triage():
+    cases = {
+        "가없이": ("없>이", 1, "ㅂ", "ㅆ"),
+        "말없이": ("없>이", 1, "ㅂ", "ㅆ"),
+        "수없이": ("없>이", 1, "ㅂ", "ㅆ"),
+        "늙은이": ("늙>은", 0, "ㄹ", "ㄱ"),
+    }
+    for word, (pair, index, coda, onset) in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R002"])
+        assert items[index].coda == coda, word
+        assert items[index + 1].onset == onset, word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R002:formal:{word}:{pair}", word
+    items, traces = apply_ordered_rules(parse_syllables("붉은기"), ["R002"])
+    assert items[0].coda == "ㄺ" and items[1].onset == "ㅇ"
+    assert traces[0].status == "conditional-disabled"
+
+
+def test_exact_form_r003_manyeojida_case():
+    items, traces = apply_ordered_rules(parse_syllables("많아지다"), ["R003", "R002"])
+    assert items[0].coda == "ㄴ" and items[1].onset == "ㅇ"
+    assert traces[0].changed
+    assert traces[0].license_context == "R003:ending_or_suffix_h_deletion:많아지다:많>아"
+    items, traces = apply_ordered_rules(parse_syllables("많아보이다"), ["R003", "R002"])
+    assert items[0].coda == "ㄶ"
+    assert traces[0].status == "conditional-disabled"
