@@ -37,3 +37,11 @@ Next acceptance gate:
 - Local tests: **BLOCKED** by the previously observed DNS failure resolving `github.com`; no local test pass is claimed.
 - Independent broad/narrow and ㅅ/ㅆ adjudication, target-inventory review, and rights clearance remain blocked/evidence-limited.
 - PR #339 remains open and Draft. No merge or release performed.
+
+
+## Cross-runtime opt-in gate continuation
+
+- Python parity added in `src/korean_ukrainian/pipeline.py` as `transliterate_korean(..., require_adjudicated_ipa_profile=True)`. It routes the typed `surface["ipa"]` result through `render_profiled_ipa_to_ukrainian()`; default legacy behavior is unchanged. Non-bool values are rejected. Regression tests cover broad unadjudicated, narrow partial research-only, and invalid-option cases in `tests/test_ipa_target_renderer.py`.
+- Browser public wrappers now support the same opt-in concept as `requireAdjudicatedIpaProfile: true` for both `convert()` and `convertSurface()`. The browser test additionally exercises the `6·25` mixed-script lexical early-return path, which previously was an important possible bypass. Test consumers for the common negative fixture remain in place.
+- Latest code/test head: `dce303cabdeedebe5508e94ddf5389af36c300a2`. Exact-head test workflow `40517249803`, system verification `40517249986`, and browser integration `40517249868` were **QUEUED** when checked. No CI or local test pass is claimed for these new changes.
+- Remaining: strict mode is opt-in, not the default; default legacy browser and Python raw-IPA routes still exist. Do not enable strict mode by default until independent profile adjudication, target-inventory acceptance, and clean exact-head verification are complete.
