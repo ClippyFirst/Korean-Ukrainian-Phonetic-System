@@ -56,7 +56,7 @@ class TestClassifyTestCaseCandidates(unittest.TestCase):
     def test_extracts_raw_string_and_regex_literals_but_never_evaluates_expressions(self):
         rows = [
             row("ASSERT-1", "tests/example.test.mjs", 1, "assert.equal", "assert.equal(result.ipa, 'a,b', 'message');"),
-            row("ASSERT-2", "tests/example.test.mjs", 2, "assert.match", "assert.match(result.ipa, /an\\./u);"),
+            row("ASSERT-2", "tests/example.test.mjs", 2, "assert.match", "assert.match(result.ipa, /an,ɕi/u);"),
             row("ASSERT-3", "tests/example.test.mjs", 3, "assert.equal", "assert.equal(result.ipa, renderExpectedIpa(input, ipa));"),
         ]
         classified = classify_rows(rows)
@@ -64,7 +64,7 @@ class TestClassifyTestCaseCandidates(unittest.TestCase):
         self.assertEqual(classified[0]["expected_value_kind"], "STRING_LITERAL")
         self.assertEqual(classified[0]["expected_value_raw"], "'a,b'")
         self.assertEqual(classified[1]["expected_value_kind"], "REGEX_LITERAL")
-        self.assertEqual(classified[1]["expected_value_raw"], "/an\\./u")
+        self.assertEqual(classified[1]["expected_value_raw"], "/an,ɕi/u")
         self.assertEqual(classified[1]["expected_value_status"], "RAW_REGEX_EXTRACTED_NOT_ADJUDICATED")
         self.assertEqual(classified[2]["expected_value_kind"], "EXPRESSION")
         self.assertEqual(classified[2]["expected_value_raw"], "renderExpectedIpa(input, ipa)")
