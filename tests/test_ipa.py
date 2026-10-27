@@ -183,3 +183,18 @@ def test_python_ipa_results_expose_a_versioned_profile_contract():
             "partial-research-only" if level == "narrow"
             else "unadjudicated-cross-runtime"
         )
+
+
+def test_python_broad_profile_uses_the_shared_unadjudicated_fixture():
+    import json
+    from pathlib import Path
+
+    fixture = json.loads(
+        (Path(__file__).parent / "fixtures" / "korean-ipa-profile-pairs-2026-10-27.json")
+        .read_text(encoding="utf-8")
+    )
+    assert fixture["adjudication_status"] == "UNADJUDICATED"
+    assert fixture["target_adapter_eligibility"] == "UNVERIFIED"
+    for item in fixture["cases"]:
+        result = phoneticize_korean(item["source"], ipa_level="broad")["ipa"]
+        assert result["ipa"] == item["python_broad_ipa"], item["source"]
