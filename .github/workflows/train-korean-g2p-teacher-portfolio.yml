@@ -1,0 +1,132 @@
+name: Korean G2P neural teacher seed portfolio
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/prepare_korean_g2p_corpus.py"
+      - "scripts/train_korean_g2p_teacher.py"
+      - "scripts/analyze_korean_g2p_teacher_errors.py"
+      - "scripts/compare_korean_teacher_strict_dev.py"
+      - "tests/test_prepare_korean_g2p_corpus.py"
+      - "tests/test_train_korean_g2p_teacher.py"
+      - ".github/workflows/train-korean-g2p-teacher-portfolio.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  train-seed-portfolio:
+    name: Reproducible scratch-teacher seed portfolio
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test runner
+        run: python -m pip install pytest
+      - name: Validate data and metric guards
+        run: >-
+          python -m pytest -q
+          tests/test_prepare_korean_g2p_corpus.py
+          tests/test_train_korean_g2p_teacher.py
+          tests/test_analyze_korean_g2p_teacher_errors.py
+          tests/test_compare_korean_teacher_strict_dev.py
+      - name: Install CPU-only PyTorch
+        run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu --extra-index-url https://pypi.org/simple
+      - name: Prepare pinned train/dev data; test partition is never exported
+        run: python scripts/prepare_korean_g2p_corpus.py --output-dir "$RUNNER_TEMP/korean-g2p-corpus"
+      - name: Train three independent initializations of the same baseline architecture
+        shell: bash
+        run: |
+          set -euo pipefail
+          for seed in 20261026 20261027 20261028; do
+            out="$RUNNER_TEMP/korean-g2p-portfolio/seed-$seed"
+            mkdir -p "$out"
+            python scripts/train_korean_g2p_teacher.py \
+              --input-dir "$RUNNER_TEMP/korean-g2p-corpus" \
+              --output-dir "$out" \
+              --epochs 12 --batch-size 64 --seed "$seed" --patience 3 \
+              --max-decode-length 64 | tee "$out/training-stdout.jsonl"
+            python scripts/analyze_korean_g2p_teacher_errors.py \
+              --predictions-jsonl "$out/dev-predictions.jsonl" \
+              --output-json "$out/dev-error-analysis.json"
+            python scripts/compare_korean_teacher_strict_dev.py \
+              --corpus-jsonl "$RUNNER_TEMP/korean-g2p-corpus/dev.jsonl" \
+              --teacher-predictions-jsonl "$out/dev-predictions.jsonl" \
+              --output-jsonl "$out/dev-teacher-strict-pairs.jsonl" \
+              --summary-json "$out/dev-teacher-strict-pair-summary.json"
+          done
+      - name: Create deterministic portfolio index with checkpoint hashes and comparable dev metrics
+        run: |
+          python - "$RUNNER_TEMP/korean-g2p-portfolio" "$GITHUB_SHA" <<'PY'
+          import hashlib, json, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          commit = sys.argv[2]
+          runs = []
+          for report_path in sorted(root.glob("seed-*/training-report.json")):
+              report = json.loads(report_path.read_text(encoding="utf-8"))
+              folder = report_path.parent
+              checkpoint = folder / "scratch_teacher.pt"
+              predictions = folder / "dev-predictions.jsonl"
+              error_path = folder / "dev-error-analysis.json"
+              runs.append({
+                  "seed": report["training_history"][0].get("seed", int(folder.name.split("-")[-1])),
+                  "run_directory": folder.name,
+                  "architecture": "bidirectional GRU encoder + dot-attention GRU decoder",
+                  "git_commit": commit,
+                  "dataset_id": report["dataset_id"],
+                  "dataset_revision": report["dataset_revision"],
+                  "train_sha256": report["training_source_sha256"],
+                  "dev_sha256": report["development_source_sha256"],
+                  "test_rows_loaded": report["test_rows_loaded"],
+                  "test_data_used_for_training_or_selection": report["test_data_used_for_training_or_selection"],
+                  "best_epoch": report["best_epoch"],
+                  "best_dev_metrics": report["best_dev_metrics"],
+                  "checkpoint_sha256": hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
+                  "predictions_sha256": hashlib.sha256(predictions.read_bytes()).hexdigest(),
+                  "error_analysis_sha256": hashlib.sha256(error_path.read_bytes()).hexdigest() if error_path.exists() else None,
+                  "training_report": str(report_path.relative_to(root)),
+                  "limitations": report["limitations"],
+              })
+          if len(runs) != 3:
+              raise SystemExit(f"expected 3 completed runs, found {len(runs)}")
+          ranked = sorted(runs, key=lambda x: (
+              x["best_dev_metrics"]["token_error_rate"],
+              -x["best_dev_metrics"]["exact_match_rate"],
+              x["seed"],
+          ))
+          result = {
+              "schema_version": "1.0",
+              "purpose": "research-only seed stability portfolio; not a model architecture comparison",
+              "git_commit": commit,
+              "selection_split": "dev",
+              "test_partition_used": False,
+              "selection_metric": "token_error_rate, then exact_match_rate, then seed for deterministic tie-breaking",
+              "best_seed_on_dev": ranked[0]["seed"],
+              "runs": runs,
+              "ranked_seed_ids": [x["seed"] for x in ranked],
+              "interpretation_guard": "Dev ranking is for research triage only. Do not report it as held-out benchmark accuracy or promote rules without independent source adjudication and a separate held-out evaluation.",
+          }
+          (root / "portfolio-index.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps({
+              "best_seed_on_dev": result["best_seed_on_dev"],
+              "ranked_seed_ids": result["ranked_seed_ids"],
+              "metrics": [{"seed": x["seed"], **x["best_dev_metrics"]} for x in ranked],
+              "test_partition_used": False,
+          }, ensure_ascii=False, indent=2))
+          PY
+      - name: Upload all research artifacts, including weights and intermediate analyses
+        uses: actions/upload-artifact@v4
+        with:
+          name: korean-g2p-neural-seed-portfolio
+          path: |
+            ${{ runner.temp }}/korean-g2p-portfolio/
+            ${{ runner.temp }}/korean-g2p-corpus/manifest.json
+            ${{ runner.temp }}/korean-g2p-corpus/train.jsonl
+            ${{ runner.temp }}/korean-g2p-corpus/dev.jsonl
+          if-no-files-found: error
+          retention-days: 90
