@@ -10,8 +10,8 @@ LENIS={"ㄱ":"k","ㄷ":"t","ㅂ":"p","ㅅ":"s","ㅈ":"tɕ"}
 # https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770
 _NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
 # The research-only narrow profile models onset /n/ palatalization before
-# glide-initial nuclei. Keep /i/ out of this set: the teacher/reference corpus
-# does not support collapsing ordinary /ni/ into the same categorical output.
+# glide-initial nuclei. Keep /i/ out: the dev counterfactual regressed when /i/
+# was included, so the observed /j/ correspondence must not be generalized.
 # Sources: Ahn (2009) on palatalized /n/ before [j]; Lee (1996), summarized in
 # the UCL Korean phonetics thesis, describes [nʲ]/[ɲ] before /j/.
 _NARROW_PALATALIZED_NASAL_GLIDE_NUCLEI={"ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
