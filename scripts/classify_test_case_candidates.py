@@ -245,7 +245,7 @@ def classify_rows(rows: list[dict[str, str]], repo_root: Path | None = None) -> 
             **_expected_value_fields(raw_line, _candidate_role(kind)),
             "polarity_hint": "HEURISTIC_NEGATIVE" if NEGATIVE_HINT.search(raw_line) else "NOT_IDENTIFIED_AS_NEGATIVE",
             "raw_line": raw_line,
-            "classification_method": "REGEX_HINTS_V1_NOT_SEMANTIC",
+            "classification_method": "STATIC_ASSERTION_HINTS_V2_NOT_SEMANTIC",
             "review_status": "UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW",
             "observed_run_status": "NOT_TIED_TO_EXACT_HEAD_RUN",
         })
