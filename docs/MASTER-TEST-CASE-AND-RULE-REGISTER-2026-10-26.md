@@ -1,5 +1,12 @@
 # Master test-case and rule-evidence register — 2026-10-26
 
+## Latest engine-rule implementation — R016 exact-form expansion (2026-10-27)
+
+- Added two source-backed exact-form licenses to the existing R016 ㄺ-before-ㄱ rule in both Python and browser JavaScript: `맑게` → Korean surface `말께`; `맑고` → `말꼬`.
+- Official evidence: NIKL Standard Pronunciation Rule 11; Q&A [320900](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320900) confirms both readings, and Q&A [335693](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=335693) clarifies the written ㄺ-before-ㄱ condition. Both records were added to `research/SOURCE-REGISTER.csv`.
+- Added Python and browser regression coverage, including `닭고기` as a negative control. No generalization to all ㄺ forms; no IPA-to-Ukrainian behavior was changed.
+- **Status at register edit:** code/tests/docs are committed on the PR branch; exact-head CI has not yet been confirmed. Do not mark DONE_VERIFIED until the current head's Python, browser, build and source-register checks are inspected.
+
 ## Latest verification addendum — 2026-10-27
 
 The test-only IPA serialization repair was verified on PR-head commit [4019e233c2a07cbb2d4679ad85fd77a56a307af4](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/4019e233c2a07cbb2d4679ad85fd77a56a307af4):
