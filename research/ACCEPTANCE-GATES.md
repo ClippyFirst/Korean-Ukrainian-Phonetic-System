@@ -412,3 +412,22 @@ The repository remains a research-ready partial prototype, not release-ready. PR
 - Browser G2P integration run 40517742266 completed SUCCESS on earlier code head 4456d47393313090cb17115494a6ce85347fa121. This is valid evidence for that browser snapshot only, not for the later Python test or latest branch head.
 - Python/web/wheel/teacher-corpus test matrix 40517742289 remains QUEUED; system verification 40517742426 remains QUEUED for Python regression/data integrity and browser regression/build. NIKL source inventory remains SKIPPED. Latest branch-head lookup returned no associated PR-triggered runs and no combined status entries.
 - Status remains PARTIAL: exact-head verification is not complete. Do not mark the suite green or treat this as release-ready.
+
+
+## Exact-head gate status refresh — 2026-10-27
+
+Current branch state at the preceding handoff update: `ff7841d3f49ffbe910ba031647828a34e7ad5baa`; audit and handoff ledger updates have since been committed. These statuses are conservative and do not imply the current documentation-only head has been tested.
+
+| Gate | Status | Acceptance condition |
+|---|---|---|
+| Browser/Python opt-in profile gate | PARTIAL | Shared negative fixture and runtime consumers exist; exact-head CI must pass. |
+| Unresolved Korean phonology must abstain | PARTIAL | Regression for `앉어라` is committed; exact-head Python/system workflow must pass. |
+| Exclusive default target path | TODO | Eliminate raw-IPA bypass only after approved profile and migration tests; preserve compatibility until safe. |
+| Compatible IPA profile allowlist | BLOCKED | Independent broad/narrow adjudication, source-backed versioning, and cross-runtime agreement required. |
+| Ukrainian target inventory | BLOCKED | Review follows accepted IPA; current mapping tests are not linguistic approval. |
+| Official NIKL source inventory | BLOCKED | Current CI metadata-only job skips it; supply verifiable official local/source evidence. |
+| Teacher/checkpoint and source rights | BLOCKED | Exact weights/data licensing and provenance need verification; no model use or redistribution. |
+| Exact-head automated checks | PARTIAL / WAITING | Latest observed runs on prior head `650465730888a1c852f242c41d1c60b1baac3371`: tests `40520590812`, system `40520590789`, browser integration `40520590788`, and Charsiu queue `40520590865` were all QUEUED; NIKL inventory was SKIPPED. Empty combined status is not success. |
+| Release gate | DEFERRED | Research-ready partial prototype only; not release-ready. |
+
+Do not mark any gate green until evidence meets the stated acceptance condition. Do not switch the strict profile gate on by default while its allowlist is empty.
