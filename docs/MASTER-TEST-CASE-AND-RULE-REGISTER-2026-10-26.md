@@ -554,3 +554,26 @@ PR [#346](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 The current artifact contains 644 lexical records, 360 test files, 388 source files, 6,801 lexical text links, 50,768 Hangul-literal candidates, 34,711 exact source lines, 5,286 assertion/test-declaration candidates and 5,286 queue rows (24 columns). Simple assertion-call literals are copied as raw strings/scalars/regexes; computed expressions are not evaluated. Every extracted value remains unadjudicated, and every queue row remains `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW` with observed status `NOT_TIED_TO_EXACT_HEAD_RUN`.
 
 **Scope limit:** raw literal extraction is not semantic case extraction. Loop-driven inputs, multi-line assertions, mode selection, expected/actual comparison and per-run outcomes still require separate parsing/join logic and review. Overall register status remains **PARTIAL INVENTORY**; no production pronunciation rule or Ukrainian target was promoted by this work.
+
+
+## Queue coverage report — verified (2026-10-27)
+
+PR [#347](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/347) was merged as `34cd98992dbbf3f1abfd63006a66c4e03cd5f2a5`. The extraction report now records candidate-role, dimension-hint, expected-value-kind and expected-value-status counts, and enforces that no row is auto-verified or assigned an inferred observed result.
+
+- [Extraction workflow 40465942564](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465942564) **PASS**; artifact [12716247798](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465942564/artifacts/12716247798), 3,367,720 bytes.
+- [System verification 40465937572](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465937572) **PASS** for Python/data integrity and browser/build; official NIKL inventory **SKIPPED** under metadata-only policy.
+- [Research corpus artifact workflow 40465937576](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465937576) **PASS**.
+
+| Classification metric | Count |
+|---|---:|
+| Queue rows | 5,286 |
+| Assertion candidates | 4,257 |
+| Test declarations | 1,029 |
+| String/scalar literal fragments copied raw | 1,004 |
+| Regex literal fragments copied raw | 549 |
+| Expected expressions not evaluated | 1,045 |
+| Predicate-only assertions | 336 |
+| Unsupported assertion forms | 1,323 |
+| Rows with a non-empty expected fragment | 2,598 |
+
+The dimension-hint counts are multi-label and must not be summed as if they partition cases. The queue remains a triage aid: all 5,286 rows require case-level review, and none is tied to an exact-head observed result. Raw literals are not gold; no IPA/Ukrainian correctness is established. **Status remains PARTIAL INVENTORY.**
