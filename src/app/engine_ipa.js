@@ -236,6 +236,13 @@ export function adapterCompatibleIpaProfiles() {
 }
 
 export function ipaTargetForProfile(source, ipaResult, options = {}) {
+  if (!options || typeof options !== 'object' || Array.isArray(options)) {
+    throw new TypeError('IPA target options must be an object');
+  }
+  const allowProvisional = options.allowProvisional ?? false;
+  if (typeof allowProvisional !== 'boolean') {
+    throw new TypeError('allowProvisional must be a boolean');
+  }
   if (!ipaResult || typeof ipaResult !== 'object' || Array.isArray(ipaResult)) {
     return {
       text: null, syllables: [], unknown: '', status: 'unavailable',
