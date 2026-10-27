@@ -2476,3 +2476,16 @@ The new queue's regex labels are triage hints only. Every row remains `UNCLASSIF
 1. Extend the queue into case-level rows with exact input, test title/path/line, mode, expected assertion, negative-control role, and provenance while retaining duplicate test provenance.
 2. Join observed actual outputs and pass/fail only from artifacts/logs tied to a specific commit and run; keep expected-only cases separate.
 3. Continue independent IPA convention and Ukrainian-target adjudication. Do not promote neural-teacher candidates to production rules until the evidence gates in this handoff are met.
+
+
+## Verified test-context enrichment for assertion queue — 2026-10-27
+
+PR [#345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/345) was squash-merged into the research branch as `f319c3b343da4c362e8e9c531604736ee3d39178`. Its Git tree `1c736eb07aea1a0300c2263d1762fc1fc755c1b7` is identical to tested PR head `8a0506e032fdd80cb624177b3a77a94c0fef2edd`, so the verification evidence covers the merged file state.
+
+- **PASS — inventory extraction + queue context:** [workflow 40464794197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464794197), artifact [12716545824](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464794197/artifacts/12716545824), 3,345,787 bytes; expires 2026-11-26. All six CSV inventories passed non-empty stable-ID and uniqueness checks.
+- **PASS — system verification:** [workflow 40464794240](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464794240): Python regression/data integrity, browser regression/build and generated-page verification passed. Official NIKL source inventory was skipped in metadata-only mode.
+- **Exact counts:** 644 lexical records; 360 test files; 388 source files; 6,801 lexical-to-test text links; 50,768 Hangul-literal candidates; 34,688 preserved source lines; 5,270 assertion/test-declaration candidates; 5,270 queue rows.
+- **Queue CSV SHA-256:** `f797d5296f9073cbe8fecf4cfdc61d8959798a04384d8f054b8924b256833f4b`.
+- **Context fields added:** nearest preceding JS `test`/`it` and `describe`/`suite` declarations, plus Python `def test_*` and `class Test*` where recognized. The raw declaration and source line are retained. This is explicitly heuristic context: a nearest-preceding declaration may cross a closed scope, so reviewers must confirm the association.
+
+All queue rows still remain `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW`; expected values are not parsed and actual outcomes are not inferred. This reduces manual navigation cost but does not complete the semantic register or any linguistic adjudication gate. The project remains a research-ready partial prototype, not release-ready.
