@@ -14,8 +14,8 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     narrow = _ipa("사", "narrow")
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
-    assert narrow["transcription_profile"]["name"] == "korean-narrow-partial-sibilant-nasal-v2"
-    assert narrow["ipa_profile_version"] == 2
+    assert narrow["transcription_profile"]["name"] == "korean-narrow-partial-sibilant-nasal-h-v3"
+    assert narrow["ipa_profile_version"] == 3
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -50,7 +50,7 @@ def test_tense_sibilant_is_not_aspirated_and_palatalization_is_not_assumed():
 def test_narrow_profile_is_explicitly_partial_and_does_not_change_target_default():
     narrow = _ipa("사", "narrow")
     broad = _ipa("사", "broad")
-    assert narrow["realization_status"] == "partial-narrow-sibilant-profile"
+    assert narrow["realization_status"] == "partial-narrow-research-profile"
     assert broad["ipa"] == "sa"
     assert broad.get("transcription_profile") is None
 
