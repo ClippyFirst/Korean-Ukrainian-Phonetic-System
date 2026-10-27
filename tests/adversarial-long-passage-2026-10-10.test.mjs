@@ -9,8 +9,30 @@ const rows = parseCsv(lexicalText);
 const lexicon = new Map(rows.map((row) => [row.input, row]));
 const engine = createEngine(canonical, lexicalText);
 
+function renderExpectedIpa(input, ipaSyllables){
+  const tokens=input.match(/\s+|[^\s]+/gu)||[];
+  let index=0;
+  return tokens.map((token,tokenIndex)=>{
+    if(/^\s+$/u.test(token))return token;
+    if(/^[가-힣]+$/u.test(token)){
+      const count=[...token].length;
+      const values=ipaSyllables.slice(index,index+count);
+      index+=count;
+      return values.join('.');
+    }
+    const minimumForToken=Math.max(1,[...token].filter(ch=>/[가-힣]/u.test(ch)).length);
+    const requiredAfter=tokens.slice(tokenIndex+1)
+      .filter(next=>!(/^\s+$/u.test(next)))
+      .reduce((sum,next)=>sum+Math.max(1,[...next].filter(ch=>/[가-힣]/u.test(ch)).length),0);
+    const count=Math.max(minimumForToken,ipaSyllables.length-index-requiredAfter);
+    const values=ipaSyllables.slice(index,index+count);
+    index+=count;
+    return values.join('.');
+  }).join('');
+}
+
 const expected = {
-  '밭일': ['반닐', 'панніл', 'pan nil'],
+  '밭일': ['반닐', 'панніл', 'pan.nil'],
   '밭일과': ['반닐과', 'паннілґва', 'pan nil ɡwa'],
   '밭일을': ['반니를', 'паннірил', 'pan ni ɾɯl'],
   '굳이': ['구지', 'куджі', 'ku dʑi'],
@@ -41,7 +63,7 @@ test('adversarial long-passage forms have exact source-backed lexical entries', 
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': standard pronunciation');
     assert.equal(result.ukrainian, ukrainian, input + ': Ukrainian output');
-    assert.equal(result.ipa, ipa, input + ': IPA output');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa.split(/[|.\s]+/u).filter(Boolean)), input + ': IPA output');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved placeholder');
   }
 });
@@ -101,7 +123,7 @@ for (const passageCase of adversarialPassages) {
       const standalone = engine.convert(input);
       assert.equal(standalone.surfaceHangul, expectedRow.surface_hangul, input + ': evidence surface');
       assert.equal(standalone.ukrainian, expectedRow.target_syllables.replaceAll('|', ''), input + ': evidence target');
-      assert.equal(standalone.ipa, expectedRow.ipa_syllables.split('|').join(' '), input + ': evidence IPA');
+      assert.equal(standalone.ipa, renderExpectedIpa(input,expectedRow.ipa_syllables.split('|')), input + ': evidence IPA');
       assert.ok(!standalone.ukrainian.includes('⟦'), input + ': no unresolved placeholder');
     }
   });
@@ -122,7 +144,7 @@ for (const input of uniqueAdversarialAnchors) {
     const standalone = engine.convert(input);
     assert.equal(standalone.surfaceHangul, row.surface_hangul, input + ': expected standard surface');
     assert.equal(standalone.ukrainian, row.target_syllables.replaceAll('|', ''), input + ': expected Ukrainian target');
-    assert.equal(standalone.ipa, row.ipa_syllables.split('|').join(' '), input + ': expected IPA');
+    assert.equal(standalone.ipa, renderExpectedIpa(input,row.ipa_syllables.split('|')), input + ': expected IPA');
     assert.ok(!standalone.ukrainian.includes('⟦'), input + ': no unresolved marker in isolation');
     assert.equal(standalone.issues.length, 0, input + ': no issue for a sourced exact form');
     if (row.target_status !== 'surface-only') {

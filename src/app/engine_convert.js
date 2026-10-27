@@ -49,7 +49,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
               const mapped=ipaSyllablesToUkrainian(sourceIpa,{allowProvisional:true});
               if(!mapped.unknown){
                 const mappedSegments=sourceIpa.map(ipa=>traceIpaMappingDetailed(ipa));
-                result.ipa=sourceIpa.join(' ');
+                result.ipa=sourceIpa.join('.');
                 const hasProvisionalCandidate=mapped.status==='provisional'||(mapped.status==='unavailable'&&mapped.candidates.some(Boolean));
                 result.ukrainian=hasProvisionalCandidate?'':mapped.syllables.join('');
                 result.candidate_ukrainian=hasProvisionalCandidate?mapped.candidates.join(''):null;
@@ -76,7 +76,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
               }else{
                 result.issues=[...(result.issues||[]),part+': sourced lexical IPA contains an unmapped segment "'+mapped.unknown+'".'];
                 result.status='unresolved';
-                result.trace=[...(result.trace||[]),{source:part,status:'unresolved',rules:['ipa-to-ukrainian-unmapped-segment'],output:'',ipa:sourceIpa.join(' ')}];
+                result.trace=[...(result.trace||[]),{source:part,status:'unresolved',rules:['ipa-to-ukrainian-unmapped-segment'],output:'',ipa:sourceIpa.join('.')}];
               }
             }
             return result;
@@ -92,6 +92,10 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const candidateText=hasCandidate?results.map(r=>r.candidate_ukrainian??r.ukrainian).join(''):null;
       return{
         source:text,
+        ipa_profile:options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+        ipa_profile_version:1,
+        ipa_profile_level:options.surfaceMode?'surface-mode':'surface-contextual',
+        ipa_profile_status:'unadjudicated-cross-runtime',
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
         // A phrase with any provisional target has no complete accepted
         // orthography. Return the complete candidate separately, not partial
@@ -315,7 +319,16 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   for(let i=0;i<units.length;i++){
     const u=units[i];
     if(u.type==='literal'){surfaceParts.push(u.char);continue;}
-    if(trace[i]?.status==='unresolved'||!output[i]){surfaceParts.push(u.char);continue;}
+    // Korean surface realization and Ukrainian target mapping are separate
+    // pipeline stages. A missing/provisional Ukrainian mapping must not erase a
+    // source-backed Korean surface change (e.g. §30 뒷마루 → 뒨마루).
+    const unresolvedKoreanMorphology=Boolean(
+      u.__palatalizationUnlicensed||u.__hDeletionUnlicensed||
+      u.__saisiotInsertionUnlicensed||u.__crossWordLiaisonUnlicensed||
+      u.__complexLiaisonUnlicensed||u.__complexHAspirationUnlicensed||
+      u.__substantiveLiaisonUnlicensed||u.__rieulGiyeokUnlicensed
+    );
+    if(unresolvedKoreanMorphology){surfaceParts.push(u.char);continue;}
     surfaceParts.push(compose(u.onset,u.vowel,u.coda||''));
   }
   const recomposed=surfaceParts.join('');
@@ -338,11 +351,15 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         : 'model-selected';
   return{
     source:text,
+    ipa_profile:options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+    ipa_profile_version:1,
+    ipa_profile_level:options.surfaceMode?'surface-mode':'surface-contextual',
+    ipa_profile_status:'unadjudicated-cross-runtime',
     surfaceHangul:recomposed===originalHangul?'':recomposed,
     ukrainian:unresolvedWholeHangulToken||provisionalCandidateAvailable?'':output.join(''),
     candidate_ukrainian:provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
     candidate_status:provisionalCandidateAvailable?'provisional':null,
-    ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,' '),
+    ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,'.'),
     analysis:renderStructured(units,analysis,' · '),
     trace,
     variants:unresolvedWholeHangulToken?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status),

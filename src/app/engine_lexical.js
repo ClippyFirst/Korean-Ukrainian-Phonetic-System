@@ -4,6 +4,30 @@
 import { get, renderStructured, J_VOWELS, decompose } from './engine_shared.js';
 import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, IPA_TO_UKRAINIAN } from './engine_ipa.js';
 
+function renderLexicalIpa(text, ipas){
+  // IPA entries are syllable-aligned. Use dots inside one eojeol and preserve
+  // literal source whitespace between eojeols; never infer a boundary from IPA.
+  const tokens=text.match(/\s+|[^\s]+/gu)||[];
+  let index=0;
+  return tokens.map((token,tokenIndex)=>{
+    if(/^\s+$/u.test(token))return token;
+    if(/^[가-힣]+$/u.test(token)){
+      const count=[...token].length;
+      const syllables=ipas.slice(index,index+count);
+      index+=count;
+      return syllables.join('.');
+    }
+    const minimumForToken=Math.max(1,[...token].filter(ch=>/[가-힣]/u.test(ch)).length);
+    const requiredAfter=tokens.slice(tokenIndex+1)
+      .filter(next=>!(/^\s+$/u.test(next)))
+      .reduce((sum,next)=>sum+Math.max(1,[...next].filter(ch=>/[가-힣]/u.test(ch)).length),0);
+    const count=Math.max(minimumForToken,ipas.length-index-requiredAfter);
+    const syllables=ipas.slice(index,index+count);
+    index+=count;
+    return syllables.join('.');
+  }).join('');
+}
+
 export function lexicalResult(text,entry){
   const ipas=entry.ipa_syllables.split('|');
   const mappedTargets=ipas.map(ipa=>ipaSyllableToUkrainian(ipa,{allowProvisional:true}));
@@ -28,7 +52,7 @@ export function lexicalResult(text,entry){
       }
       target+=targets.slice(targetIndex).join('');
     }
-    const ipa=ipas.join(' ');
+    const ipa=renderLexicalIpa(text,ipas);
     return {
       source:text,
       surfaceHangul:entry.surface_hangul||'',
@@ -54,7 +78,7 @@ export function lexicalResult(text,entry){
     ukrainian:candidateOnly?'':targets.join('')+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
     candidate_ukrainian:candidateOnly?targets.join(''):null,
     candidate_status:candidateOnly?'provisional':null,
-    ipa:ipas.join(' '),
+    ipa:renderLexicalIpa(text,ipas),
     analysis:analysis+' → lexical',
     variants:(()=>{
       const alternateIpas=(entry.alternate_ipa_syllables||'').split('|');
@@ -66,7 +90,7 @@ export function lexicalResult(text,entry){
         source:text,
         surface:alternateSurface,
         ukrainian:mapped.map(item=>item.text).join(''),
-        ipa:alternateIpas.join(' '),
+        ipa:renderLexicalIpa(text,alternateIpas),
         note:entry.variant_note||entry.rule_notes||'NIKL-listed alternate pronunciation; Ukrainian rendering remains provisional.',
         status:targetReview?'lexical-review':'lexical'
       }];
@@ -141,7 +165,7 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status)
       source:text,
       surface:text,
       ukrainian:alternateOutput.join(''),
-      ipa:renderStructured(units,alternateIpa,' '),
+      ipa:renderStructured(units,alternateIpa,'.'),
       note,
       status:alternateMapped.some(item=>item.status==='provisional')?'lexical-review':status,
       target_status:alternateMapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':alternateMapped.some(item=>item.status==='provisional')?'provisional':'model-selected'

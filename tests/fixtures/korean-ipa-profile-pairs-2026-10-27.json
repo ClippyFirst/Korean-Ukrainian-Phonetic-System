@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Paired source-form IPA profile fixtures; profile outputs are preserved separately and are not cross-runtime gold.",
+  "adjudication_status": "UNADJUDICATED",
+  "target_adapter_eligibility": "UNVERIFIED",
+  "cases": [
+    {"source": "싸", "python_broad_ipa": "s͈a", "browser_legacy_contextual_ipa": "s͈a"},
+    {"source": "씨", "python_broad_ipa": "s͈i", "browser_legacy_contextual_ipa": "ɕ͈i"},
+    {"source": "시", "python_broad_ipa": "si", "browser_legacy_contextual_ipa": "ɕi"},
+    {"source": "쇼", "python_broad_ipa": "sjo", "browser_legacy_contextual_ipa": "ɕjo"},
+    {"source": "쌰", "python_broad_ipa": "s͈ja", "browser_legacy_contextual_ipa": "ɕ͈ja"}
+  ]
+}

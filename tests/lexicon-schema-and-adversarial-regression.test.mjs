@@ -101,7 +101,7 @@ test('NIKL-attested 늙고 is resolved only by its exact sourced entry', () => {
   assert.ok(generic.ukrainian.includes('⟦') || generic.status === 'unresolved');
   assert.equal(engine.convert('늙고').surfaceHangul, '늘꼬');
   assert.equal(engine.convert('늙고').ukrainian, 'нилко');
-  assert.equal(engine.convert('늙고').ipa, 'nɯl k͈o');
+  assert.equal(engine.convert('늙고').ipa, 'nɯl.k͈o');
 });
 
 test('않았다 is resolved only by its exact sourced entry, not by generic morphology guessing', () => {
@@ -134,12 +134,12 @@ test('punctuation is a hard boundary for cross-word sound-rule propagation', () 
 
 test('a representative set of generic rule cases stays algorithmic with and without the lexical layer', () => {
   const expected = {
-    '국물':'kuŋ mul',
-    '막론':'maŋ non',
-    '신라':'ɕil la',
+    '국물':'kuŋ.mul',
+    '막론':'maŋ.non',
+    '신라':'ɕil.la',
     '값':'kap̚',
     '넋':'nʌk̚',
-    '낮이':'na dʑi',
+    '낮이':'na.dʑi',
   };
   for (const [word, ipa] of Object.entries(expected)) {
     const result = genericEngine.convert(word);

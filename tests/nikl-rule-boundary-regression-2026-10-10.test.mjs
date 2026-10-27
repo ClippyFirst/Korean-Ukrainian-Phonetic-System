@@ -58,7 +58,7 @@ test('NIKL-attested 늙고 is resolved exactly while other lookalikes remain gua
   assert.ok(row.source_url.startsWith('https://www.korean.go.kr/'), 'official NIKL source URL');
   assert.equal(engine.convert('늙고').surfaceHangul, '늘꼬');
   assert.equal(engine.convert('늙고').ukrainian, 'нилко');
-  assert.equal(engine.convert('늙고').ipa, 'nɯl k͈o');
+  assert.equal(engine.convert('늙고').ipa, 'nɯl.k͈o');
 
   assert.equal(engine.convert('읽어').surfaceHangul, '일거');
   assert.equal(engine.convert('헛웃음').surfaceHangul, '허두슴');

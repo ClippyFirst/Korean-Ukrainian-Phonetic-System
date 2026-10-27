@@ -1,0 +1,66 @@
+name: Train scratch Korean G2P research teacher
+
+on:
+  pull_request:
+    paths:
+      - "scripts/prepare_korean_g2p_corpus.py"
+      - "scripts/train_korean_g2p_teacher.py"
+      - "scripts/analyze_korean_g2p_teacher_errors.py"
+      - "scripts/compare_korean_teacher_strict_dev.py"
+      - "tests/test_prepare_korean_g2p_corpus.py"
+      - "tests/test_train_korean_g2p_teacher.py"
+      - "tests/test_analyze_korean_g2p_teacher_errors.py"
+      - "tests/test_compare_korean_teacher_strict_dev.py"
+      - ".github/workflows/train-korean-g2p-teacher.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  train-scratch-teacher:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test runner
+        run: python -m pip install pytest
+      - name: Test data validation, metrics, and pair validation without requiring PyTorch
+        run: python -m pytest -q tests/test_prepare_korean_g2p_corpus.py tests/test_train_korean_g2p_teacher.py tests/test_analyze_korean_g2p_teacher_errors.py tests/test_compare_korean_teacher_strict_dev.py
+      - name: Install CPU-only PyTorch
+        run: |
+          python -m pip install "torch==2.14.1+cpu" --index-url https://download.pytorch.org/whl/cpu --extra-index-url https://pypi.org/simple
+          python -c 'import torch; assert torch.__version__ == "2.14.1+cpu", torch.__version__'
+      - name: Build pinned train/dev corpus (never export test)
+        run: python scripts/prepare_korean_g2p_corpus.py --output-dir "$RUNNER_TEMP/korean-g2p-corpus"
+      - name: Train scratch sequence-to-sequence teacher and evaluate only on dev
+        run: >-
+          python scripts/train_korean_g2p_teacher.py
+          --input-dir "$RUNNER_TEMP/korean-g2p-corpus"
+          --output-dir "$RUNNER_TEMP/korean-g2p-teacher"
+          --epochs 12
+          --batch-size 64
+          --seed 20261026
+          --patience 3
+          --max-decode-length 64
+      - name: Analyze dev prediction errors without promoting rules
+        run: python scripts/analyze_korean_g2p_teacher_errors.py --predictions-jsonl "$RUNNER_TEMP/korean-g2p-teacher/dev-predictions.jsonl" --output-json "$RUNNER_TEMP/korean-g2p-teacher/dev-error-analysis.json"
+      - name: Pair teacher and native Strict outputs on identical dev inputs without scoring incompatible IPA
+        run: python scripts/compare_korean_teacher_strict_dev.py --corpus-jsonl "$RUNNER_TEMP/korean-g2p-corpus/dev.jsonl" --teacher-predictions-jsonl "$RUNNER_TEMP/korean-g2p-teacher/dev-predictions.jsonl" --output-jsonl "$RUNNER_TEMP/korean-g2p-teacher/dev-teacher-strict-pairs.jsonl" --summary-json "$RUNNER_TEMP/korean-g2p-teacher/dev-teacher-strict-pair-summary.json"
+      - name: Upload research-only checkpoint, dev predictions, paired diagnostics, error analysis, and provenance report
+        uses: actions/upload-artifact@v4
+        with:
+          name: korean-g2p-scratch-teacher
+          path: |
+            ${{ runner.temp }}/korean-g2p-teacher/scratch_teacher.pt
+            ${{ runner.temp }}/korean-g2p-teacher/dev-predictions.jsonl
+            ${{ runner.temp }}/korean-g2p-teacher/dev-error-analysis.json
+            ${{ runner.temp }}/korean-g2p-teacher/dev-teacher-strict-pairs.jsonl
+            ${{ runner.temp }}/korean-g2p-teacher/dev-teacher-strict-pair-summary.json
+            ${{ runner.temp }}/korean-g2p-teacher/training-report.json
+            ${{ runner.temp }}/korean-g2p-corpus/manifest.json
+          if-no-files-found: error
+          retention-days: 14

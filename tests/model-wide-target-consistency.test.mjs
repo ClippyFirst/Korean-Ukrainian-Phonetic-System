@@ -2,10 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
+import { parseIpaSyllables } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexical);
+
 const rows = parseCsv(lexical);
 const entries = new Map(rows.map((row) => [row.input, row]));
 
@@ -320,7 +323,7 @@ test('all lexical Ukrainian targets are mechanically reproducible from their IPA
       }
     }
     const runtime = engine.convert(row.input);
-    assert.equal(runtime.ipa, ipa.join(' '), row.input + ': runtime IPA must match the lexical source');
+    assert.equal(runtime.ipa, renderExpectedIpa(row.input,ipa), row.input + ': runtime IPA must match the lexical source');
     if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
       assert.equal(runtime.ukrainian, '', row.input + ': provisional target must not be accepted');
       assert.equal(runtime.candidate_ukrainian, target.join(''), row.input + ': runtime candidate must remain IPA-derived');

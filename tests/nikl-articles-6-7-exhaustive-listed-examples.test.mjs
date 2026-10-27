@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { parseIpaSyllables, renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -14,10 +15,10 @@ function assertOfficial(word, surface, ipa, { long = false, short = false } = {}
   assert.ok(row, 'missing sourced §6–7 example: ' + word);
   assert.match(row.source_url, officialSource, word);
   assert.equal(row.surface_hangul, surface, word);
-  assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word);
+  assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(ipa), word + ': source IPA syllables');
   const result = engine.convert(word);
   assert.equal(result.surfaceHangul, surface, word);
-  assert.equal(result.ipa, ipa, word);
+  assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
   assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), word);
   if (long) assert.match(ipa, /ː/u, word + ': expected a long vowel');
   if (short) assert.doesNotMatch(ipa, /ː/u, word + ': expected no long vowel');
@@ -25,7 +26,7 @@ function assertOfficial(word, surface, ipa, { long = false, short = false } = {}
 
 test('§6(1) every official first-syllable length example is explicitly tested', () => {
   const examples = {
-    '눈보라':['눈보라','nuːn bo ɾa'],
+    '눈보라':['눈보라','nuːn.bo.ɾa'],
     '말씨':['말씨','maːl ɕ͈i'],
     '밤나무':['밤나무','paːm na mu'],
     '많다':['만타','maːn tʰa'],
@@ -37,7 +38,7 @@ test('§6(1) every official first-syllable length example is explicitly tested',
 
 test('§6(2) all official short-vowel contrast examples remain short', () => {
   const examples = {
-    '첫눈':['천눈','tɕʰʌn nun'],
+    '첫눈':['천눈','tɕʰʌn.nun'],
     '참말':['참말','tɕʰam mal'],
     '쌍동밤':['쌍동밤','s͈aŋ doŋ pam'],
     '수많이':['수마니','suː ma ni'],
@@ -51,16 +52,16 @@ test('§6(2) all official short-vowel contrast examples remain short', () => {
 });
 
 test('§6 compound exceptions retain long vowels beyond the first syllable and both 반신반의 readings', () => {
-  assertOfficial('재삼재사','재삼재사','tɕɛː sam dʑɛː sa',{long:true});
+  assertOfficial('재삼재사','재삼재사','tɕɛː.sam.dʑɛː.sa',{long:true});
   const row = entries.get('반신반의');
   assert.ok(row);
   assert.match(row.source_url, officialSource);
   const result = engine.convert('반신반의');
   assert.equal(result.surfaceHangul, '반신바늬');
-  assert.equal(result.ipa, 'paːn ɕin baː ni');
+  assert.equal(result.ipa, renderExpectedIpa('반신반의', 'paːn.ɕin.baː.ni'));
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '반신바니');
-  assert.equal(result.variants[0].ipa, 'paːn ɕin baː ni');
+  assert.equal(result.variants[0].ipa, 'paːn.ɕin.baː.ni');
 });
 
 test('§6 contracted -아/-어 forms cover every listed long-vowel form and every explicit short exception', () => {
@@ -84,7 +85,7 @@ test('§6 contracted -아/-어 forms cover every listed long-vowel form and ever
 
 test('§7 long-vowel citation forms are paired with the short/retained inflected forms', () => {
   const citation = {
-    '감다':['감따','kaːm t͈a'],
+    '감다':['감따','kaːm.t͈a'],
     '밟다':['밥따','paːp̚ t͈a'],
     '신다':['신따','ɕiːn t͈a'],
     '알다':['알다','aːl da'],
@@ -100,7 +101,7 @@ test('§7 long-vowel citation forms are paired with the short/retained inflected
 
 test('§7(1) short-vowel alternations and every official length-retention exception are distinguished', () => {
   const short = {
-    '감으니':['가므니','ka mɯ ni'],
+    '감으니':['가므니','ka.mɯ.ni'],
     '밟으면':['발브면','pal bɯ mjʌn'],
     '신어':['시너','ɕi nʌ'],
     '알아':['아라','a ɾa'],
@@ -119,7 +120,7 @@ test('§7(1) short-vowel alternations and every official length-retention except
 
 test('§7(2) suffixes normally shorten the vowel, but listed lexical exceptions retain length', () => {
   const short = {
-    '감기다':['감기다','kam ɡi da'],
+    '감기다':['감기다','kam.ɡi.da'],
     '꼬이다':['꼬이다','k͈o i da'],
     '밟히다':['발피다','pal pʰi da'],
   };
@@ -134,6 +135,6 @@ test('§7(2) suffixes normally shorten the vowel, but listed lexical exceptions 
 });
 
 test('§7 compound controls 밀물 and 썰물 are short regardless of the length of their components', () => {
-  assertOfficial('밀물','밀물','mil mul',{short:true});
+  assertOfficial('밀물','밀물','mil.mul',{short:true});
   assertOfficial('썰물','썰물','s͈ʌl mul',{short:true});
 });

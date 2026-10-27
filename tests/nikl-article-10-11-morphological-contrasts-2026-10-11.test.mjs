@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { parseIpaSyllables, renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -13,7 +14,7 @@ test('§10–11 morphology contrasts distinguish ㄺ stems, 밟- exception, and 
   // Korean surface readings are attested by NIKL Q&A 315279 (2025-05-23)
   // and NIKL Q&A 307508 (2024-12-12); IPA is the project's broad rendering.
   const expected = {
-    '읽다': { surface: '익따', ipa: 'ik̚ t͈a', target: 'ікта' },
+    '읽다': { surface: '익따', ipa: 'ik̚.t͈a', target: 'ікта' },
     '읽고': { surface: '일꼬', ipa: 'il k͈o', target: 'ілко' },
     '붉다': { surface: '북따', ipa: 'puk̚ t͈a', target: 'пукта' },
     '붉지': { surface: '북찌', ipa: 'puk̚ tɕ͈i', target: 'пукчі' },
@@ -35,12 +36,12 @@ test('§10–11 morphology contrasts distinguish ㄺ stems, 밟- exception, and 
     assert.equal(row.confidence, 'high', word + ': source confidence');
     assert.ok(['provisional', 'model-selected'].includes(row.target_status), word + ': Ukrainian target status must remain explicit and non-normative');
     assert.equal(row.surface_hangul, want.surface, word + ': recorded normative surface');
-    assert.equal(row.ipa_syllables.split('|').join(' '), want.ipa, word + ': broad IPA');
+    assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(want.ipa), word + ': broad IPA syllables');
     assert.equal(row.target_syllables.split('|').join(''), want.target, word + ': reviewed IPA-derived target');
 
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, want.surface, word + ': runtime surface');
-    assert.equal(result.ipa, want.ipa, word + ': runtime IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, want.ipa), word + ': runtime IPA');
     assert.equal(result.ukrainian, want.target, word + ': runtime IPA-first target');
     assert.equal(result.issues.length, 0, word + ': sourced reading must resolve');
     assert.ok(!result.ukrainian.includes('⟦') && !result.ukrainian.includes('⟧'), word + ': no placeholder');

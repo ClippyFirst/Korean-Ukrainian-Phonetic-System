@@ -57,9 +57,32 @@ Added eight official examples from the attached note to Rule 29, including `들�
 
 - [Consolidated benchmark review, exact metrics, interpretation and remaining gates](docs/BENCHMARK-REVIEW-2026-10-24.md)
 
+## Teacher-guided improvement of the neural-free Strict engine (2026-10-26)
+
+CharsiuG2P can be used as a research teacher to identify contexts where a deterministic engine disagrees with a neural model; it is not added to the Strict runtime. The new offline tool `scripts/mine_deterministic_rule_candidates.py` preserves raw outputs, records model/data provenance, rejects known benchmark/holdout splits, and produces review-only context associations. It does not generate or activate rules automatically. A rule can enter production only after independent NIKL/source review, positive and negative-control tests, and a separate development-set improvement.
+
+- [Teacher-guided rule-discovery protocol and acceptance gates](docs/TEACHER-GUIDED-STRICT-RULE-MINING-2026-10-26.md)
+- [Rule candidate mining script](scripts/mine_deterministic_rule_candidates.py)
+- [Regression tests](tests/test_mine_deterministic_rule_candidates.py)
+- [Pinned train/dev corpus builder](scripts/prepare_korean_g2p_corpus.py) — emits provenance-bearing SIGMORPHON JSONL while preserving raw tokenized IPA; test records are never exported.
+- [Corpus preparation tests](tests/test_prepare_korean_g2p_corpus.py)
+- [Conservative UGTPHON Korean token corpus builder](scripts/prepare_ugtphon_korean_corpus.py) — uses aligned token-level fields and excludes ambiguous/noisy targets rather than guessing.
+- [UGTPHON preparation tests](tests/test_prepare_ugtphon_korean_corpus.py)
+- [Cross-corpus overlap and target-compatibility audit](scripts/audit_korean_corpus_compatibility.py) — reports source-form intersections and raw target-string relations without merging incompatible IPA conventions.
+- [Compatibility audit tests](tests/test_audit_korean_corpus_compatibility.py)
+- [Scratch G2P teacher training](scripts/train_korean_g2p_teacher.py) — trains from random initialization on SIGMORPHON train, selects on dev, and never loads test or pretrained weights.
+- [Scratch teacher tests](tests/test_train_korean_g2p_teacher.py)
+- [Dev-only teacher error analyzer](scripts/analyze_korean_g2p_teacher_errors.py) — groups errors by token sequence, length-mark differences, and source shape without producing rules.
+- [Teacher error-analysis tests](tests/test_analyze_korean_g2p_teacher_errors.py)
+- [CPU training workflow](.github/workflows/train-korean-g2p-teacher.yml) — uploads a short-lived research checkpoint and dev-only predictions.
+
+**Metric interpretation:** the latest saved checkpoint is 59.6% (596/1,000) exact token-sequence match of the separate, randomly initialized research-only GRU teacher on the SIGMORPHON dev convention. A distinct earlier checkpoint trained on the same pinned 8,000-row train / 1,000-row dev data scored 60.2% (602/1,000); the checkpoint hashes differ, so these are run-to-run training variation, not conflicting dataset versions. Neither score is an accuracy measure for the deterministic ClippyFirst Strict engine, the browser G2P path, the IPA-to-Ukrainian adapter, or Ukrainian transcription. The dev split selected the checkpoint, so neither score is an independent final evaluation. A valid Strict-versus-teacher score remains blocked until the source IPA conventions are independently mapped and a separate eligible evaluation set is established.
+
+The current CharsiuG2P checkpoint's weights-license status and training-data overlap remain unresolved. Do not redistribute its weights or use test/holdout predictions to tune Strict.
+
 ## Research-only morphological analyzers (2026-10-24)
 
-The Python research package has optional adapters for [Kiwi](https://github.com/bab2min/kiwi) and MeCab-Ko. They return inspectable morpheme forms, analyzer tags and source offsets only; they do not produce pronunciation, IPA, Ukrainian output, or automatic NIKL rule licenses. The public browser practical mode does not load or call these adapters.
+The Python research package has optional adapters for [Kiwi](https://github.com/bab2min/kiwi) and MeCab-Ko. The adapters return inspectable morpheme forms, tags and source offsets; the separate `morphology_rule_licenses.py` layer can consume two analyzer results and emit **low-confidence, exact-form licenses** for source-backed R002/R003/R007 and stem rules R010/R011/R016. It can also extend a registered R012/R014/R015 lexical root across a particle/ending only when both analyzers agree on that attached grammatical boundary. This is not pronunciation gold, not a default runtime path, and does not automatically certify IPA or Ukrainian output. The public browser practical mode does not load or call these adapters.
 
 - [Research morphology integration contract and acceptance gates](docs/RESEARCH-MORPHOLOGY-ADAPTERS-2026-10-24.md)
 - Adapter: `src/korean_ukrainian/research_morphology.py`
@@ -68,6 +91,7 @@ The Python research package has optional adapters for [Kiwi](https://github.com/
 - Diagnostic runner on the 16-item review list: `scripts/benchmark_research_morphology.py`
 - [Paired full-corpus IPA/morphology benchmark and measured results](docs/RESEARCH-MORPHOLOGY-ADAPTERS-2026-10-24.md#same-corpus-benchmark-results--2026-10-24): `scripts/benchmark_morphology_ipa_delta.py`
 - Pairwise Kiwi-vs-MeCab boundary comparison (agreement is not accuracy): `scripts/compare_morphology_analyzers.py`
+- [Consensus morphology rule-license adapter](src/korean_ukrainian/morphology_rule_licenses.py) and [regression tests](tests/test_morphology_rule_licenses.py).
 
 The pinned UGTPHON benchmark found that the existing native soft mode raised coverage from 98.22% to 99.04% but lowered exact-match rate from 24.41% to 24.28% and slightly worsened CER. Kiwi and MeCab-Ko each analyzed all 1,907 unique words, but their outputs are not yet used by the IPA engine. See the report for detailed limits and pairwise boundary agreement.
 
@@ -277,3 +301,23 @@ The committed official-source HTML is now paired with a machine-readable review 
 
 - [Surface-only evidence for unresolved 긁고](tests/fixtures/nikl-surface-only-complex-coda.json)
 - [Guard test keeping that case out of IPA/target gold](tests/nikl-surface-only-complex-coda.test.mjs)
+
+
+## Research: neural teacher and IPA corpus reconciliation
+
+The research-only scratch G2P teacher, source-pinned SIGMORPHON/UGTPHON train/dev builders, and lossless typed IPA packets are available through [PR #339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339). The [neural-teacher candidate rule register](docs/NEURAL-TEACHER-CANDIDATE-RULE-REGISTER-2026-10-26.md) is the separate ledger for measured teacher findings, candidate families, evidence gates, and the unresolved total of genuinely missing rules. The [source-convention review](docs/KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md) and [train-only adjudication queue](scripts/build_korean_ipa_adjudication_queue.py) preserve disagreements for review instead of treating either corpus as automatic IPA gold. The neural model is not in runtime; no production rules are changed by this research path.
+
+The teacher workflow also emits same-input raw IPA pairs for the scratch model and native Strict engine on the SIGMORPHON dev forms using [`scripts/compare_korean_teacher_strict_dev.py`](scripts/compare_korean_teacher_strict_dev.py). It intentionally computes no cross-engine accuracy metric: source IPA conventions are not yet reconciled, and the teacher was selected on this dev split. See the [IPA convention review](docs/KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md).
+
+The corpus workflow now also emits a source-specific [IPA symbol inventory audit](scripts/audit_korean_ipa_symbol_inventories.py). It counts literal Unicode code points and preserves SIGMORPHON's source whitespace tokens without inventing phoneme segmentation; see the [convention review](docs/KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md) for the measured inventory differences and remaining adapter gate.
+
+The source inventory review also checked the pinned upstream UGTPHON README, which itself shows `kçikçi` and `kçik̚kçik̚` for Korean examples. This confirms `ç` is part of the upstream annotation notation; it must be preserved until its ClippyFirst mapping is reviewed, not dropped as a suspected typo.
+
+A second-stage conflict triage report is generated by [`scripts/analyze_korean_ipa_conflict_patterns.py`](scripts/analyze_korean_ipa_conflict_patterns.py). It preserves multiple UGTPHON candidate annotations per form and reports literal-symbol/variant counts without pretending to align phones or adjudicate either source as gold; see the [source-convention review](docs/KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md).
+
+
+### Productive morphology licensing (research-only, 2026-10-26)
+
+The analyzer-consensus adapter now goes beyond exact word-list coverage without broadening the default strict engine. When Kiwi and MeCab-Ko agree on an exact surface-aligned grammatical boundary, it may create a full-form license for source-backed R002/R003/R007 and for VV/VA stem + ending environments in R010/R011/R016. It may also carry a registered R012/R014/R015 lexical root's internal rule across an analyzer-confirmed attached particle/ending (for example, a licensed compound root followed by a particle). Noun-to-noun lookalikes, analyzer boundary disagreements, zero-width morphemes, spaces, and unregistered roots remain fail-closed.
+
+Every such application is marked `analyzer-supported-low-confidence` and the IPA remains diagnostic-only. This is a controlled way to use morphology to make existing sourced rules productive; it is **not** evidence that the analyzers are gold, and it does not change the default browser or strict runtime.

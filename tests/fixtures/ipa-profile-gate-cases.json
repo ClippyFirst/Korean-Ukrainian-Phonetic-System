@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "purpose": "Shared negative cases for profile-gated IPA-to-Ukrainian adapters; reasons are contract outcomes, not pronunciation gold.",
+  "cases": [
+    {
+      "id": "raw-string-rejected",
+      "ipa_result": "s͈i",
+      "expected_reason": "ipa_profile_result_required"
+    },
+    {
+      "id": "missing-metadata",
+      "ipa_result": {
+        "ipa": "s͈i"
+      },
+      "expected_reason": "ipa_profile_metadata_incomplete"
+    },
+    {
+      "id": "empty-ipa",
+      "ipa_result": {
+        "ipa": " ",
+        "ipa_profile": "clippyfirst-korean-broad-v1",
+        "ipa_profile_version": 1,
+        "ipa_profile_level": "broad",
+        "ipa_profile_status": "unadjudicated-cross-runtime"
+      },
+      "expected_reason": "ipa_profile_metadata_incomplete"
+    },
+    {
+      "id": "zero-version",
+      "ipa_result": {
+        "ipa": "s͈i",
+        "ipa_profile": "clippyfirst-korean-broad-v1",
+        "ipa_profile_version": 0,
+        "ipa_profile_level": "broad",
+        "ipa_profile_status": "adjudicated-compatible"
+      },
+      "expected_reason": "ipa_profile_metadata_incomplete"
+    },
+    {
+      "id": "boolean-version",
+      "ipa_result": {
+        "ipa": "s͈i",
+        "ipa_profile": "clippyfirst-korean-broad-v1",
+        "ipa_profile_version": true,
+        "ipa_profile_level": "broad",
+        "ipa_profile_status": "adjudicated-compatible"
+      },
+      "expected_reason": "ipa_profile_metadata_incomplete"
+    },
+    {
+      "id": "unadjudicated",
+      "ipa_result": {
+        "ipa": "s͈i",
+        "ipa_profile": "clippyfirst-korean-broad-v1",
+        "ipa_profile_version": 1,
+        "ipa_profile_level": "broad",
+        "ipa_profile_status": "unadjudicated-cross-runtime"
+      },
+      "expected_reason": "ipa_profile_not_adjudicated_compatible"
+    },
+    {
+      "id": "partial-research",
+      "ipa_result": {
+        "ipa": "s͈i",
+        "ipa_profile": "clippyfirst-korean-narrow-partial-sibilant-v1",
+        "ipa_profile_version": 1,
+        "ipa_profile_level": "narrow",
+        "ipa_profile_status": "partial-research-only"
+      },
+      "expected_reason": "ipa_profile_partial_research_only"
+    },
+    {
+      "id": "unknown-compatible-profile",
+      "ipa_result": {
+        "ipa": "s͈i",
+        "ipa_profile": "unknown-profile",
+        "ipa_profile_version": 999,
+        "ipa_profile_level": "broad",
+        "ipa_profile_status": "adjudicated-compatible"
+      },
+      "expected_reason": "ipa_profile_not_allowlisted_for_target_adapter"
+    }
+  ]
+}

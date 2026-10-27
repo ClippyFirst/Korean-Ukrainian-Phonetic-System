@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
-import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, traceIpaMapping, traceIpaMappingDetailed, ipaTargetForSource } from '../src/app/engine_ipa.js';
+import { ipaSyllableToUkrainian, ipaSyllablesToUkrainian, traceIpaMapping, traceIpaMappingDetailed, ipaTargetForSource, ipaTargetForProfile, adapterCompatibleIpaProfiles } from '../src/app/engine_ipa.js';
 
 const canonicalCsv = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const jamoCsv = readFileSync(new URL('../data/korean/jamo.csv', import.meta.url), 'utf8');
@@ -241,6 +241,10 @@ test('a phrase with a provisional target withholds partial output but preserves 
   assert.ok(result.candidate_ukrainian.includes('ий'));
   assert.ok(result.candidate_ukrainian.includes('!'));
   assert.ok(result.candidate_ukrainian.includes(' '));
+  assert.equal(result.ipa_profile, 'browser-legacy-contextual-v1');
+  assert.equal(result.ipa_profile_version, 1);
+  assert.equal(result.ipa_profile_level, 'surface-contextual');
+  assert.equal(result.ipa_profile_status, 'unadjudicated-cross-runtime');
 });
 
 
@@ -303,5 +307,106 @@ test('empty IPA syllable lists and malformed options are unavailable rather than
   assert.throws(
     () => ipaSyllablesToUkrainian([], {allowProvisional:'yes'}),
     {name:'TypeError', message:'allowProvisional must be a boolean'}
+  );
+});
+
+
+test('profile-aware IPA target gate rejects unadjudicated and partial runtime profiles', () => {
+  assert.deepEqual(adapterCompatibleIpaProfiles(), [],
+    'no IPA profile is approved until independent adjudication and target acceptance');
+  const base = {
+    ipa: 's͈i',
+    ipa_profile: 'clippyfirst-korean-broad-v1',
+    ipa_profile_version: 1,
+    ipa_profile_level: 'broad',
+    ipa_profile_status: 'unadjudicated-cross-runtime',
+  };
+  const unadjudicated = ipaTargetForProfile('씨', base);
+  assert.equal(unadjudicated.status, 'unavailable');
+  assert.equal(unadjudicated.text, null);
+  assert.equal(unadjudicated.reason, 'ipa_profile_not_adjudicated_compatible');
+
+  const partial = ipaTargetForProfile('씨', {
+    ...base,
+    ipa_profile: 'clippyfirst-korean-narrow-partial-sibilant-v1',
+    ipa_profile_level: 'narrow',
+    ipa_profile_status: 'partial-research-only',
+  });
+  assert.equal(partial.status, 'unavailable');
+  assert.equal(partial.reason, 'ipa_profile_partial_research_only');
+
+  const missingMetadata = ipaTargetForProfile('씨', { ipa: 's͈i' });
+  assert.equal(missingMetadata.status, 'unavailable');
+  assert.equal(missingMetadata.reason, 'ipa_profile_metadata_incomplete');
+
+  const missingObject = ipaTargetForProfile('씨', 's͈i');
+  assert.equal(missingObject.status, 'unavailable');
+  assert.equal(missingObject.reason, 'ipa_profile_result_required');
+
+  const unregistered = ipaTargetForProfile('씨', {
+    ...base, ipa_profile_status: 'adjudicated-compatible'
+  });
+  assert.equal(unregistered.status, 'unavailable');
+  assert.equal(unregistered.reason, 'ipa_profile_not_allowlisted_for_target_adapter');
+});
+
+
+test('profile-aware IPA adapter validates options before rejecting unapproved profiles', () => {
+  assert.throws(
+    () => ipaTargetForProfile('씨', {ipa:'s͈i'}, {allowProvisional:'yes'}),
+    {name:'TypeError', message:'allowProvisional must be a boolean'}
+  );
+  assert.throws(
+    () => ipaTargetForProfile('씨', {ipa:'s͈i'}, null),
+    {name:'TypeError', message:'IPA target options must be an object'}
+  );
+  assert.equal(ipaTargetForProfile('씨', {ipa:'s͈i'}).reason, 'ipa_profile_metadata_incomplete');
+});
+
+
+test('shared typed-IPA gate fixtures preserve fail-closed outcomes', () => {
+  const fixture = JSON.parse(readFileSync(new URL('./fixtures/ipa-profile-gate-cases.json', import.meta.url), 'utf8'));
+  assert.equal(fixture.schema_version, 1);
+  for (const item of fixture.cases) {
+    const actual = ipaTargetForProfile('씨', item.ipa_result);
+    assert.equal(actual.reason, item.expected_reason, item.id);
+    assert.equal(actual.status, 'unavailable', item.id);
+    assert.equal(actual.text, null, item.id);
+  }
+});
+
+
+test('engine exposes an opt-in profile-gated target path without changing legacy default behavior', () => {
+  const engine = createEngine(canonicalCsv, lexicalCsv);
+  const legacy = engine.convert('가');
+  assert.equal(legacy.ipa_profile_status, 'unadjudicated-cross-runtime');
+  assert.ok(legacy.ipa, 'legacy mode remains available for compatibility');
+
+  for (const result of [
+    engine.convert('가', {requireAdjudicatedIpaProfile:true}),
+    engine.convertSurface('가', {requireAdjudicatedIpaProfile:true}),
+    // 6·25 is a sourced mixed-script lexical key and exercises the early-return path.
+    engine.convert('6·25', {requireAdjudicatedIpaProfile:true}),
+  ]) {
+    assert.equal(result.target_adapter, 'profile-gated');
+    assert.equal(result.target_status, 'unavailable');
+    assert.equal(result.target_reason, 'ipa_profile_not_adjudicated_compatible');
+    assert.equal(result.ukrainian, '', 'unadjudicated IPA must not be returned as accepted target text in strict mode');
+    assert.equal(result.candidate_ukrainian, null);
+    assert.equal(result.candidate_status, null);
+    assert.ok((result.trace||[]).every(item=>item.output===''&&item.candidateOutput===null), 'strict mode must not leak target text through the trace');
+    assert.ok((result.variants||[]).every(item=>item.ukrainian===''), 'strict mode must not leak target text through variants');
+  }
+});
+
+test('engine profile-gate option rejects non-boolean values', () => {
+  const engine = createEngine(canonicalCsv, lexicalCsv);
+  assert.throws(
+    () => engine.convert('가', {requireAdjudicatedIpaProfile:'yes'}),
+    {name:'TypeError', message:'requireAdjudicatedIpaProfile must be a boolean'}
+  );
+  assert.throws(
+    () => engine.convertSurface('가', {requireAdjudicatedIpaProfile:1}),
+    {name:'TypeError', message:'requireAdjudicatedIpaProfile must be a boolean'}
   );
 });

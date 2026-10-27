@@ -14,13 +14,13 @@ function rulesFor(result, source) {
 
 test('ordered-rule chains remain visible in surface-only source controls', () => {
   const cases = [
-    { input: '독립문', surface: '동님문', ipa: 'toŋ nim mun',
+    { input: '독립문', surface: '동님문', ipa: 'toŋ.nim.mun',
       requiredRules: ['liquid-to-nasal-before-obstruent', 'nasal-assimilation'] },
-    { input: '밟는', surface: '밤는', ipa: 'paːm nɯn',
+    { input: '밟는', surface: '밤는', ipa: 'paːm.nɯn',
       requiredRules: ['lexical-coda-balm', 'nasal-assimilation'] },
-    { input: '앞문', surface: '암문', ipa: 'am mun',
+    { input: '앞문', surface: '암문', ipa: 'am.mun',
       requiredRules: ['nasal-assimilation'] },
-    { input: '신라', surface: '실라', ipa: 'ɕil la',
+    { input: '신라', surface: '실라', ipa: 'ɕil.la',
       requiredRules: ['liquid-assimilation'] },
   ];
 

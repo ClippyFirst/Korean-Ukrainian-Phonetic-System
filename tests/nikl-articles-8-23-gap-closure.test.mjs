@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { parseIpaSyllables, renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -61,7 +62,7 @@ test('§12 official aspiration, ㅎ deletion, and ㅎ+ㄴ examples are source-ba
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     assert.equal(result.ukrainian, expectedTarget(row), word);
-    assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), word);
+    assert.equal(result.ipa, renderExpectedIpa(word, row.ipa_syllables), word);
   }
 });
 
@@ -73,7 +74,7 @@ test('§15 all official substantive-morpheme examples preserve spacing and exact
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     assert.equal(result.ukrainian, expectedTarget(row), word);
-    assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), word);
+    assert.equal(result.ipa, renderExpectedIpa(word, row.ipa_syllables), word);
   }
 });
 
@@ -89,7 +90,7 @@ test('§19 and §20 listed assimilation examples and lexical exceptions are regr
     assert.equal(row.surface_hangul, surface, word);
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
-    assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), word);
+    assert.equal(result.ipa, renderExpectedIpa(word, row.ipa_syllables), word);
   }
 });
 
@@ -107,22 +108,22 @@ test('§11 exact ㄺ-before-ㄱ exceptions and §18 nasalization example are sou
 
 test('§12 aspiration and §10/§20 exception chains remain algorithmic without lexical overrides', () => {
   const aspiration = {
-    '각하':'ka kʰa',
-    '좋던':'tɕo tʰʌn',
-    '쌓지':'s͈a tɕʰi',
-    '않던':'an tʰʌn',
-    '닳지':'tal tɕʰi',
-    '먹히다':'mʌ kʰi da',
-    '맏형':'ma tʰjʌŋ',
-    '좁히다':'tɕo pʰi da',
-    '꽂히다':'k͈o tɕʰi da',
-    '놓고':'no kʰo',
-    '많고':'man kʰo',
+    '각하':'ka.kʰa',
+    '좋던':'tɕo.tʰʌn',
+    '쌓지':'s͈a.tɕʰi',
+    '않던':'an.tʰʌn',
+    '닳지':'tal.tɕʰi',
+    '먹히다':'mʌ.kʰi.da',
+    '맏형':'ma.tʰjʌŋ',
+    '좁히다':'tɕo.pʰi.da',
+    '꽂히다':'k͈o.tɕʰi.da',
+    '놓고':'no.kʰo',
+    '많고':'man.kʰo',
   };
   for (const [word, expectedIpa] of Object.entries(aspiration)) {
     const result = genericEngine.convert(word);
     assert.equal(result.issues.length, 0, word);
-    assert.equal(result.ipa, expectedIpa, word + ': exact ordered aspiration IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, expectedIpa), word + ': exact ordered aspiration IPA');
     assert.ok(result.trace.some((item) => item.rules.includes('h-aspiration')), word);
   }
   const complexCodaH = engine.convert('밝히다');
@@ -143,7 +144,7 @@ test('§23 every listed fortition example has its exact expected IPA, not merely
   // pass when fortisness appears in the wrong syllable or a second segment is
   // missing, so compare the complete ordered output.
   const examples = {
-    '국밥': 'kuk̚ p͈ap̚',
+    '국밥': 'kuk̚.p͈ap̚',
     '깎다': 'k͈ak̚ t͈a',
     '넋받이': 'nʌk̚ p͈a dʑi',
     '삯돈': 'sak̚ t͈on',
@@ -167,14 +168,14 @@ test('§23 every listed fortition example has its exact expected IPA, not merely
   for (const [word, ipa] of Object.entries(examples)) {
     const result = engine.convert(word);
     assert.equal(result.issues.length, 0, word);
-    assert.equal(result.ipa, ipa, word + ': exact ordered IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': exact ordered IPA');
     assert.ok(result.ipa.includes('͈'), word + ': expected fortis IPA marker');
   }
 });
 
 test('§21 all seven official place-assimilation negative controls keep their exact standard surfaces', () => {
   const examples = {
-    '감기': ['감기', 'kaːm ɡi'],
+    '감기': ['감기', 'kaːm.ɡi'],
     '옷감': ['옫깜', 'ot̚ k͈am'],
     '있고': ['읻꼬', 'it̚ k͈o'],
     '꽃길': ['꼳낄', 'k͈ot̚ k͈il'],
@@ -187,10 +188,10 @@ test('§21 all seven official place-assimilation negative controls keep their ex
     assert.ok(row, '§21 missing official negative control: ' + word);
     assert.match(row.source_url, /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u, word + ': NIKL source');
     assert.equal(row.surface_hangul, surface, word + ': source surface');
-    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word + ': source IPA');
+    assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(ipa), word + ': source IPA syllables');
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': engine surface');
-    assert.equal(result.ipa, ipa, word + ': engine IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': engine IPA');
     assert.equal(result.ukrainian, expectedTarget(row), word + ': project target');
   }
 });

@@ -16,7 +16,7 @@ test('§23 exhaustive fortition matrix: each obstruent representative fortifies 
       const input = left + onsetSyllable[onset];
       const result = genericEngine.convert(input);
       assert.equal(result.issues.length, 0, input);
-      assert.equal(result.ipa, codaBaseIpa[coda] + ' ' + fortisIpa[onset] + 'a', input);
+      assert.equal(result.ipa, codaBaseIpa[coda] + '.' + fortisIpa[onset] + 'a', input);
       assert.ok(result.trace.some((item) => item.rules.includes('tensification')), input + ': expected §23 trace');
       assert.ok(!result.trace.some((item) => item.rules.includes('lexical-pronunciation')), input + ': generic engine only');
     }

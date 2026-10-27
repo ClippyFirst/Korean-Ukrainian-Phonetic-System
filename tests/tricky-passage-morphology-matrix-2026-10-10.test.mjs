@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -14,7 +15,7 @@ const cases = [
     input: '같아지는',
     surface: '가타지는',
     target: 'катаджінин',
-    ipa: 'ka tʰa dʑi nɯn',
+    ipa: 'ka.tʰa.dʑi.nɯn',
     source: 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002',
     article: '§13: formal-morpheme liaison, not §15 representative-coda neutralization',
   },
@@ -22,7 +23,7 @@ const cases = [
     input: '같았다',
     surface: '가탇따',
     target: 'кататта',
-    ipa: 'ka tʰat̚ t͈a',
+    ipa: 'ka.tʰat̚.t͈a',
     source: 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002',
     article: '§13 liaison followed by §9 coda neutralization and §23 fortition',
   },
@@ -63,7 +64,7 @@ test('tricky-passage morphology matrix: rule interactions are distinct, sourced,
     const result = engine.convert(item.input);
     assert.equal(result.surfaceHangul, item.surface, item.input + ': standard Korean surface form');
     assert.equal(result.ukrainian, item.target, item.input + ': project target');
-    assert.equal(result.ipa, item.ipa, item.input + ': broad IPA');
+    assert.equal(result.ipa, renderExpectedIpa(item.input, item.ipa), item.input + ': broad IPA');
     assert.equal(result.issues.length, 0, item.input + ': no engine issue for reviewed fixture');
     assert.ok(!result.ukrainian.includes('⟦'), item.input + ': no unresolved marker');
     assert.ok(result.trace.some((step) => step.rules.includes('lexical-pronunciation')), item.input + ': trace exposes the licensed evidence path');

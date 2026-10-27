@@ -10,8 +10,8 @@ const entries = new Map(parseCsv(lexical).map((row) => [row.input, row]));
 
 test('§29 numeric phrase examples preserve source spacing and normative inserted-liquid readings', () => {
   const cases = [
-    ['3 연대', '삼년대', 'сам ньонде', 'sam ɲʌn dɛ'],
-    ['1 연대', '일련대', 'іл льонде', 'il ljʌn dɛ'],
+    ['3 연대', '삼년대', 'сам ньонде', 'sam ɲʌn.dɛ'],
+    ['1 연대', '일련대', 'іл льонде', 'il ljʌn.dɛ'],
   ];
   for (const [input, surface, ukrainian, ipa] of cases) {
     const row = entries.get(input);

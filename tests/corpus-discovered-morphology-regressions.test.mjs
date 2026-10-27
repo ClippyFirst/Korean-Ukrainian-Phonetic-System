@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -9,8 +10,8 @@ const engine = createEngine(canonical, lexical);
 
 test('corpus-discovered source-backed and rule-derived pronunciation cases are regression-locked', () => {
   const expected = {
-    읽기: ['일끼','일끼','ілкі','il k͈i'],
-    읽어요: ['일거요','일거요','ілґойо','il ɡʌ jo'],
+    읽기: ['일끼','일끼','ілкі','il.k͈i'],
+    읽어요: ['일거요','일거요','ілґойо','il.ɡʌ.jo'],
     많이: ['마니','마니','мані','maː ni'],
     밝게: ['발께','발께','палке','pal k͈e'],
     같아: ['가타','가타','ката','ka tʰa'],
@@ -79,7 +80,7 @@ test('corpus-discovered source-backed and rule-derived pronunciation cases are r
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word + ': standard surface form');
     assert.equal(result.ukrainian, target, word + ': Ukrainian approximation');
-    assert.equal(result.ipa, ipa, word + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word + ': IPA');
     assert.equal(result.status, 'lexical-review', word + ': target review status');
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word + ': lexical evidence used');
     assert.ok(!result.ukrainian.includes('⟦'), word + ': no unresolved placeholder');

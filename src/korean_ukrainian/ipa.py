@@ -3,18 +3,42 @@ from .phonology import Syllable, CONSONANT_PHONEMES, VOWEL_IPA, split_coda
 FORTIS={"ㄲ":"k͈","ㄸ":"t͈","ㅃ":"p͈","ㅆ":"s͈","ㅉ":"tɕ͈"}
 ASPIRATED={"ㅋ":"kʰ","ㅌ":"tʰ","ㅍ":"pʰ","ㅊ":"tɕʰ"}
 LENIS={"ㄱ":"k","ㄷ":"t","ㅂ":"p","ㅅ":"s","ㅈ":"tɕ"}
+# Partial narrow profile: Korean /s/ is phonetically aspirated; its onset
+# before /i, je, ja/ shows robust palatalization/coarticulation. Do not extend
+# this to /yu, yo/: Kang (2010) reports a distinct spectral pattern there.
+# https://www.sciencedirect.com/science/article/pii/S0095447015000339
+# https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770
+_NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
+# The research-only narrow profile models onset /n/ palatalization before
+# glide-initial nuclei. Keep /i/ out: the dev counterfactual regressed when /i/
+# was included, so the observed /j/ correspondence must not be generalized.
+# Sources: Ahn (2009) on palatalized /n/ before [j]; Lee (1996), summarized in
+# the UCL Korean phonetics thesis, describes [nʲ]/[ɲ] before /j/.
+_NARROW_PALATALIZED_NASAL_GLIDE_NUCLEI={"ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
 CODA={"ㄱ":"k̚","ㄲ":"k̚","ㄳ":"k̚","ㄴ":"n","ㄵ":"n","ㄶ":"n","ㄷ":"t̚","ㄹ":"l","ㄺ":"k̚","ㄻ":"m","ㄼ":"l","ㄽ":"l","ㄾ":"l","ㄿ":"p̚","ㅀ":"l","ㅁ":"m","ㅂ":"p̚","ㅄ":"p̚","ㅅ":"t̚","ㅆ":"t̚","ㅇ":"ŋ","ㅈ":"t̚","ㅊ":"t̚","ㅋ":"k̚","ㅌ":"t̚","ㅍ":"p̚","ㅎ":"t̚"}
 
-def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False)->list[str]:
+def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="broad")->list[str]:
     c=s.onset
     if c=="ㅇ": return []
+    if not phonemic and level=="narrow" and c=="ㄴ" and s.nucleus in _NARROW_PALATALIZED_NASAL_GLIDE_NUCLEI:
+        return ["ɲ"]
+    if not phonemic and level=="narrow" and c=="ㅅ":
+        return ["ɕʰ" if s.nucleus in _NARROW_HIGH_FRONT_SIBILANT_NUCLEI else "sʰ"]
     if c in FORTIS: return [FORTIS[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
     if c in ASPIRATED: return [ASPIRATED[c] if not phonemic else CONSONANT_PHONEMES[c].strip("/")]
     if c=="ㄹ":
         # Surface ㄹ is [l] after a realized liquid coda (e.g. 신라, 칼날).
         if index>0 and items[index-1].coda=="ㄹ": return ["l"]
         return ["ɾ"]
-    if c=="ㅎ": return ["h"]
+    if c=="ㅎ":
+        # Narrow-profile candidate: /h/ after a same-word sonorant coda can
+        # surface as voiced [ɦ]. This is one documented variant, not a
+        # universal or obligatory realization; broad and phonemic IPA stay [h].
+        if not phonemic and level=="narrow" and index>0:
+            previous=items[index-1]
+            if previous.boundary_after!="word" and previous.coda in {"ㄴ","ㄹ","ㅁ","ㅇ"}:
+                return ["ɦ"]
+        return ["h"]
     if c in LENIS:
         if phonemic: return [CONSONANT_PHONEMES[c].strip("/")]
         if c in {"ㄱ","ㄷ","ㅂ","ㅈ"} and index>0:
@@ -103,15 +127,42 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
 
 def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     if level not in {"phonemic","broad","narrow"}: raise ValueError("level must be phonemic, broad, or narrow")
-    if level=="narrow":
-        raise ValueError("narrow IPA is unavailable: repository has no acoustic/allophonic model supporting a defensible narrow transcription")
     phonemic=level=="phonemic"
-    rendered=["".join(onset_ipa(s,i,items,phonemic=phonemic)+nucleus_ipa(s,phonemic=phonemic)+coda_ipa(s.coda,phonemic=phonemic)) for i,s in enumerate(items)]
+    rendered=["".join(onset_ipa(s,i,items,phonemic=phonemic,level=level)+nucleus_ipa(s,phonemic=phonemic)+coda_ipa(s.coda,phonemic=phonemic)) for i,s in enumerate(items)]
     ipa=render_syllable_sequence(items,rendered)
-    return {
+    profile_ids={
+        "phonemic":"clippyfirst-korean-phonemic-v1",
+        "broad":"clippyfirst-korean-broad-v1",
+        "narrow":"clippyfirst-korean-narrow-partial-sibilant-nasal-h-v3",
+    }
+    result={
         "level":level,
+        "ipa_profile":profile_ids[level],
+        "ipa_profile_version":3 if level=="narrow" else 1,
+        "ipa_profile_level":level,
+        "ipa_profile_status":(
+            "partial-research-only" if level=="narrow"
+            else "unadjudicated-cross-runtime"
+        ),
         "ipa":ipa,
         "syllables":rendered,
         "variants":generate_vowel_variants(items,rendered,level=level),
-        "status":"phonemic" if phonemic else "rule-supported-broad"
+        "status":"phonemic" if phonemic else ("rule-supported-broad" if level=="broad" else "partial-narrow-research-profile"),
+        "realization_status":"phonemic" if phonemic else ("rule-supported-broad" if level=="broad" else "partial-narrow-research-profile"),
     }
+    if level=="narrow":
+        result["transcription_profile"]={
+            "name":"korean-narrow-partial-sibilant-nasal-h-v3",
+            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅖ, ㅑ","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed","after a same-word sonorant coda, /h/ is rendered [ɦ] as one narrow-profile variant; no deletion is inferred"],
+            "sources":[
+                "Cho, Jun & Ladefoged (2002), via High-toned [il] in Korean: https://www.sciencedirect.com/science/article/pii/S0095447015000339",
+                "Kang (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770",
+                "Ahn (2009), Korean /n/-deletion: phonetic initial strengthening to denasalization: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001340886",
+                "Lee (1996), Korean Phonetics, summarized in the UCL thesis: https://discovery.ucl.ac.uk/1324541/1/1324541.pdf",
+                "Kang & Lee (2019), The Realizations of /h/ in Seoul and Gwangju Koreans: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART002495941",
+                "Eom (2014), Phonetic realizations of /h/ after a sonorant in Korean: https://doi.org/10.17959/sppm.2014.20.3.357",
+            ],
+            "limitations":["partial profile, not a complete narrow transcription","models only one optional [ɦ] variant after a same-word sonorant coda; does not model /h/ deletion, dialectal probabilities, lateral retroflexion, or prosody","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
+            "target_compatible":False,
+        }
+    return result

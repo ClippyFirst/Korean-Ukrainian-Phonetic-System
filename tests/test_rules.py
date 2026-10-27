@@ -1,3 +1,4 @@
+from korean_ukrainian import phoneticize_korean
 from korean_ukrainian.phonology import parse_syllables
 from korean_ukrainian.rules import apply_ordered_rules, apply_rule
 
@@ -142,6 +143,33 @@ def test_h_deletion_before_vowel_requires_exact_ending_or_suffix_evidence():
         assert items[1].onset==expected
         assert traces[0].changed
 
+def test_nikl_rule_12_4_exact_examples_have_closed_form_licenses():
+    cases = {
+        "낳은": ("낳>은", "", "ㅇ"),
+        "놓아": ("놓>아", "", "ㅇ"),
+        "쌓이다": ("쌓>이", "", "ㅇ"),
+        "않은": ("않>은", "", "ㄴ"),
+        "닳아": ("닳>아", "", "ㄹ"),
+        "싫어도": ("싫>어", "", "ㄹ"),
+    }
+    for word, (pair, expected_coda, expected_onset) in cases.items():
+        items, traces = apply_ordered_rules(
+            parse_syllables(word), ["R003", "R002"],
+            rule_licenses={f"R003:ending_or_suffix_h_deletion:{word}:{pair}"},
+        )
+        assert items[0].coda == expected_coda, word
+        assert items[1].onset == expected_onset, word
+        assert traces[0].changed, word
+
+    # Exact-form licenses must not transfer to an unreviewed lookalike.
+    items, traces = apply_ordered_rules(
+        parse_syllables("낳아보임"), ["R003", "R002"],
+        rule_licenses={"R003:ending_or_suffix_h_deletion:낳은:낳>은"},
+    )
+    assert items[0].coda == "ㅎ"
+    assert traces[0].status == "conditional-disabled"
+
+
 def test_h_deletion_license_cannot_be_reused_for_another_form():
     items,traces=apply_ordered_rules(
         parse_syllables("싫어"),["R003"],
@@ -270,7 +298,7 @@ def test_verbal_stem_rieul_giyeok_exception_requires_exact_morphological_license
     assert traces[0].changed
 
 def test_nikl_r016_official_examples_resolve_with_exact_form_source_licenses():
-    cases = {"읽고": "읽>고", "묽고": "묽>고", "얽거나": "얽>거"}
+    cases = {"읽고": "읽>고", "묽고": "묽>고", "얽거나": "얽>거", "맑게": "맑>게", "맑고": "맑>고"}
     for word, pair in cases.items():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R016", "R008", "R001"])
         assert (items[0].coda, items[1].onset) == ("ㄹ", "ㄲ"), word
@@ -400,9 +428,9 @@ def test_section_17_license_is_exact_to_full_form_and_pair():
 
 def test_sections_24_to_28_require_exact_full_form_and_pair_licenses():
     cases = [
-        ("R010", "안고", "stem_n_m+suffix", "안>고", "ㄲ"),
+        ("R010", "잔고", "stem_n_m+suffix", "잔>고", "ㄲ"),
         ("R011", "넓게", "stem_lb_lt+suffix", "넓>게", "ㄲ"),
-        ("R012", "갈등", "sino_ryeon", "갈>등", "ㄸ"),
+        ("R012", "갈도", "sino_ryeon", "갈>도", "ㄸ"),
         ("R014", "산고", "compound", "산>고", "ㄲ"),
     ]
     for rule, word, scope, pair, expected_onset in cases:
@@ -428,8 +456,13 @@ def test_nikl_section_24_exact_form_licenses_cover_dalmda_and_neomge_without_gen
         assert traces[0].changed, word
         assert traces[0].license_context == f"R010:stem_n_m+suffix:{word}:{pair}"
 
-    # The full-form license is intentionally not a productive morphology guess.
+    # 닮고 is an exact source-backed §24 example; do not generalize to 닮기.
     items, traces = apply_ordered_rules(parse_syllables("닮고"), ["R010"])
+    assert items[1].onset == "ㄲ"
+    assert traces[0].changed
+    assert traces[0].license_context == "R010:stem_n_m+suffix:닮고:닮>고"
+
+    items, traces = apply_ordered_rules(parse_syllables("닮기"), ["R010"])
     assert items[1].onset == "ㄱ"
     assert not traces[0].changed
     assert traces[0].status == "conditional-disabled"
@@ -605,7 +638,7 @@ def test_nikl_rule_29_listed_word_examples_receive_only_exact_builtin_licenses()
 
 def test_nikl_rule_29_phrase_examples_require_phrase_boundary_mode():
     examples = {
-        "한 입": ("한>입", "ㄴ"),
+        "한 일": ("한>일", "ㄴ"),
         "옷 입다": ("옷>입", "ㄴ"),
         "먹은 엿": ("은>엿", "ㄴ"),
         "할 일": ("할>일", "ㄹ"),
@@ -652,6 +685,8 @@ def test_nikl_rule_28_listed_compound_fortition_examples_have_exact_licenses():
         "아침밥": ("침>밥", "ㅃ"),
         "굴속": ("굴>속", "ㅆ"),
         "술잔": ("술>잔", "ㅉ"),
+        "물가": ("물>가", "ㄲ"),
+        "봄비": ("봄>비", "ㅃ"),
     }
     for word, (pair, expected_onset) in examples.items():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R014"])
@@ -742,3 +777,213 @@ def test_nikl_stem_fortition_rules_do_not_include_ㅂ():
         )
         assert items[1].onset == "ㅂ", word
         assert not trace.changed, word
+
+
+
+def test_nikl_qna_316282_compound_fortition_examples_do_not_generalize_from_coda_alone():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    assert phoneticize_korean("물가")["surface_hangul"] == "물까"
+    assert phoneticize_korean("봄비")["surface_hangul"] == "봄삐"
+
+    # The exact lexical/compound license is not a generic ㄹ+ㄱ or ㅁ+ㅂ rule.
+    items, traces = apply_ordered_rules(parse_syllables("물고"), ["R014"])
+    assert items[1].onset == "ㄱ"
+    assert traces[0].status == "conditional-disabled"
+
+
+
+def test_nikl_section_25_source_examples_have_exact_stem_fortition_licenses():
+    expected = {
+        "넓다": ("넓>다", "ㄸ"),
+        "넓고": ("넓>고", "ㄲ"),
+        "넓지": ("넓>지", "ㅉ"),
+        "훑다": ("훑>다", "ㄸ"),
+        "훑고": ("훑>고", "ㄲ"),
+        "훑지": ("훑>지", "ㅉ"),
+    }
+    for word, (pair, onset) in expected.items():
+        items, traces = apply_ordered_rules(parse_syllables(word))
+        assert items[1].onset == onset, word
+        assert traces[8].changed, word
+        assert traces[8].license_context == f"R011:stem_lb_lt+suffix:{word}:{pair}", word
+        if word.startswith("훑"):
+            assert items[0].coda == "ㄹ", word
+    assert phoneticize_korean("훑다")["surface_hangul"] == "훌따"
+
+    items, traces = apply_ordered_rules(parse_syllables("넓게"))
+    assert items[1].onset == "ㄱ"
+    assert traces[8].status == "conditional-disabled"
+
+
+def test_nikl_section_26_source_examples_have_exact_sino_korean_fortition_licenses():
+    expected = {
+        "갈등": ("갈>등", "ㄸ"),
+        "발동": ("발>동", "ㄸ"),
+        "절도": ("절>도", "ㄸ"),
+        "말살": ("말>살", "ㅆ"),
+        "일시": ("일>시", "ㅆ"),
+        "갈증": ("갈>증", "ㅉ"),
+        "물질": ("물>질", "ㅉ"),
+        "발전": ("발>전", "ㅉ"),
+        "몰상식": ("몰>상", "ㅆ"),
+        "불세출": ("불>세", "ㅆ"),
+    }
+    for word, (pair, onset) in expected.items():
+        items, traces = apply_ordered_rules(parse_syllables(word))
+        right = pair.split(">")[1]
+        right_index = next(i for i, item in enumerate(items) if item.text == right)
+        assert items[right_index].onset == onset, word
+        assert traces[9].changed, word
+        assert traces[9].license_context == f"R012:sino_ryeon:{word}:{pair}", word
+
+    # A coda/onset sequence alone is not evidence that the word is Sino-Korean.
+    items, traces = apply_ordered_rules(parse_syllables("갈구"))
+    assert items[1].onset == "ㄱ"
+    assert traces[9].status == "conditional-disabled"
+
+
+
+def test_nikl_qna_330963_attested_attached_l_ge_fortition_is_productive_but_not_phrase_level():
+    items, traces = apply_ordered_rules(parse_syllables("할게"), ["R013"])
+    assert items[1].onset == "ㄲ"
+    assert traces[0].changed
+    assert traces[0].license_context == "R013:attested_l_ge_ending:할게:할>게"
+    assert "qna_seq=330963" in traces[0].source
+
+    items, traces = apply_ordered_rules(parse_syllables("할 게"), ["R013"], boundary_mode="same_word")
+    assert items[1].onset == "ㄱ"
+    assert not traces[0].changed
+
+
+
+def test_nikl_section_27_adnominal_phrase_licenses_match_browser_inventory():
+    expected = {
+        "할 것을": ("할>것", "ㄲ"),
+        "갈 데가": ("갈>데", "ㄸ"),
+        "할 바를": ("할>바", "ㅃ"),
+        "할 수는": ("할>수", "ㅆ"),
+        "읽을 수": ("을>수", "ㅆ"),
+        "할 적에": ("할>적", "ㅉ"),
+        "갈 곳": ("갈>곳", "ㄲ"),
+        "할 도리": ("할>도", "ㄸ"),
+        "만날 사람": ("날>사", "ㅆ"),
+    }
+    for phrase, (pair, onset) in expected.items():
+        items, traces = apply_ordered_rules(
+            parse_syllables(phrase), ["R013"], boundary_mode="phrase"
+        )
+        right = pair.split(">")[1]
+        right_item = next(item for item in items if item.text == right)
+        assert right_item.onset == onset, phrase
+        assert traces[0].changed, phrase
+        assert traces[0].license_context == f"R013:adnominal_l:{phrase}:{pair}", phrase
+
+    items, traces = apply_ordered_rules(
+        parse_syllables("할 것을"), ["R013"], boundary_mode="same_word"
+    )
+    assert next(item for item in items if item.text == "것").onset == "ㄱ"
+    assert traces[0].status == "conditional-disabled"
+
+
+def test_nikl_section_24_official_examples_have_exact_stem_ending_licenses():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    expected = {
+        "안다": ("안>다", "ㄸ"),
+        "안고": ("안>고", "ㄲ"),
+        "안지": ("안>지", "ㅉ"),
+        "신다": ("신>다", "ㄸ"),
+        "감다": ("감>다", "ㄸ"),
+        "감고": ("감>고", "ㄲ"),
+        "껴안다": ("안>다", "ㄸ"),
+        "앉고": ("앉>고", "ㄲ"),
+        "얹다": ("얹>다", "ㄸ"),
+        "삼고": ("삼>고", "ㄲ"),
+        "더듬지": ("듬>지", "ㅉ"),
+        "닮고": ("닮>고", "ㄲ"),
+        "젊지": ("젊>지", "ㅉ"),
+    }
+    for word, (pair, onset) in expected.items():
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == {
+            "안다": "안따",
+            "안고": "안꼬",
+            "안지": "안찌",
+            "신다": "신따",
+            "감다": "감따",
+            "감고": "감꼬",
+            "껴안다": "껴안따",
+            "앉고": "안꼬",
+            "얹다": "언따",
+            "삼고": "삼꼬",
+            "더듬지": "더듬찌",
+            "닮고": "담꼬",
+            "젊지": "점찌",
+        }[word]
+        assert any(
+            trace.get("rule_id") == "R010"
+            and trace.get("changed")
+            and trace.get("license_context") == f"R010:stem_n_m+suffix:{word}:{pair}"
+            for trace in result["rules"]
+        ), word
+
+    # Rule 24 explicitly excludes passive/causative -기-; noun homographs
+    # must not be promoted merely because the adjacent consonants look right.
+    assert phoneticize_korean("안기다")["surface_hangul"] == "안기다"
+    assert phoneticize_korean("감도")["surface_hangul"] == "감도"
+    assert phoneticize_korean("신고")["surface_hangul"] != "신꼬"
+
+
+def test_nikl_section_11_official_readgeodeun_example_is_licensed_in_production():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("읽거든")
+    assert result["surface_hangul"] == "일꺼든"
+    assert any(
+        trace.get("rule_id") == "R016"
+        and trace.get("changed")
+        and trace.get("license_context") == "R016:verb_stem_rieul_giyeok_suffix:읽거든:읽>거"
+        for trace in result["rules"]
+    )
+    # The same ㄺ+ㄱ shape in a noun remains unlicensed by R016.
+    noun = phoneticize_korean("닭고기")
+    r016 = next(trace for trace in noun["rules"] if trace.get("rule_id") == "R016")
+    assert not r016["changed"]
+    assert not (r016.get("license_context") or "").startswith("R016:")
+
+
+def test_exact_form_r002_cases_from_teacher_triage():
+    cases = {
+        "가없이": ("없>이", 1, "ㅂ", "ㅆ"),
+        "말없이": ("없>이", 1, "ㅂ", "ㅆ"),
+        "수없이": ("없>이", 1, "ㅂ", "ㅆ"),
+        "늙은이": ("늙>은", 0, "ㄹ", "ㄱ"),
+    }
+    for word, (pair, index, coda, onset) in cases.items():
+        items, traces = apply_ordered_rules(parse_syllables(word), ["R002"])
+        assert items[index].coda == coda, word
+        assert items[index + 1].onset == onset, word
+        assert traces[0].changed, word
+        assert traces[0].license_context == f"R002:formal:{word}:{pair}", word
+    items, traces = apply_ordered_rules(parse_syllables("붉은기"), ["R002"])
+    assert items[0].coda == "ㄺ" and items[1].onset == "ㅇ"
+    assert traces[0].status == "conditional-disabled"
+
+
+def test_exact_form_r003_manyeojida_case():
+    # R003 deletes the ㅎ component in the licensed 많>아 environment;
+    # the following R002 pass must then resyllabify the retained ㄴ before 아.
+    items, traces = apply_ordered_rules(parse_syllables("많아지다"), ["R003", "R002"])
+    assert items[0].coda == ""
+    assert items[1].onset == "ㄴ"
+    assert traces[0].changed
+    assert traces[0].license_context == "R003:ending_or_suffix_h_deletion:많아지다:많>아"
+    assert traces[1].changed
+    assert phoneticize_korean("많아지다")["surface_hangul"] == "마나지다"
+
+    # Similar-looking 많아보이다 has no exact ending/suffix license and must abstain.
+    items, traces = apply_ordered_rules(parse_syllables("많아보이다"), ["R003", "R002"])
+    assert items[0].coda == "ㄶ"
+    assert traces[0].status == "conditional-disabled"
+    assert phoneticize_korean("많아보이다")["surface_hangul"] != "마나보이다"

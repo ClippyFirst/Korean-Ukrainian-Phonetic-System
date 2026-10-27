@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { parseIpaSyllables, renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -15,7 +16,7 @@ const exactOracles = [
     input: '해돋이처럼',
     surface: '해도지처럼',
     ukrainian: 'гедоджічором',
-    ipa: 'hɛ do dʑi tɕʰʌ ɾʌm',
+    ipa: 'hɛ.do.dʑi.tɕʰʌ.ɾʌm',
     source: 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327364',
     articles: ['§17'],
   },
@@ -23,7 +24,7 @@ const exactOracles = [
     input: '없으며',
     surface: '업쓰며',
     ukrainian: 'опсимйо',
-    ipa: 'ʌːp̚ s͈ɯ mjʌ',
+    ipa: 'ʌːp̚.s͈ɯ.mjʌ',
     source: 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002',
     articles: ['§7', '§14'],
   },
@@ -35,14 +36,14 @@ test('exact user-reported placeholder triggers now have narrow, source-backed re
     assert.ok(row, fixture.input + ': exact orthographic token needs its own lexical evidence row');
     assert.equal(row.surface_hangul, fixture.surface, fixture.input + ': CSV surface');
     assert.equal(row.target_syllables.replaceAll('|', ''), fixture.ukrainian, fixture.input + ': CSV Ukrainian target');
-    assert.equal(row.ipa_syllables.split('|').join(' '), fixture.ipa, fixture.input + ': CSV IPA');
+    assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(fixture.ipa), fixture.input + ': CSV IPA syllables');
     assert.equal(row.source_url, fixture.source, fixture.input + ': expected official source');
     assert.equal(row.target_status, 'provisional', fixture.input + ': Ukrainian rendering remains reviewable');
 
     const result = engine.convert(fixture.input);
     assert.equal(result.surfaceHangul, fixture.surface, fixture.input + ': standard Korean surface');
     assert.equal(result.ukrainian, fixture.ukrainian, fixture.input + ': project Ukrainian rendering');
-    assert.equal(result.ipa, fixture.ipa, fixture.input + ': broad IPA');
+    assert.equal(result.ipa, renderExpectedIpa(fixture.input, fixture.ipa), fixture.input + ': broad IPA');
     assert.equal(result.issues.length, 0, fixture.input + ': sourced exact token must not produce engine issues');
     assert.ok(!result.ukrainian.includes('⟦'), fixture.input + ': unresolved placeholders are forbidden for this verified token');
     assert.equal(result.status, 'lexical-review', fixture.input + ': provisional target remains reviewable');

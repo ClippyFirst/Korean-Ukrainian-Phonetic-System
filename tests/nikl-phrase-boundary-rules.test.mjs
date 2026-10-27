@@ -89,5 +89,5 @@ test('§29 internal compound example 서른여섯 uses the sourced standard surf
   const result = engine.convert('서른여섯');
   assert.equal(result.surfaceHangul, '서른녀섣');
   assert.equal(result.status, 'lexical-review');
-  assert.equal(result.ipa, 'sʌ ɾɯn ɲʌ sʌt̚');
+  assert.equal(result.ipa, 'sʌ.ɾɯn.ɲʌ.sʌt̚');
 });

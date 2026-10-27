@@ -8,6 +8,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
+    _g2pk_surface_to_ipa,
     _load_rows_and_words,
     _metrics,
     _paired_bootstrap_delta_ci,
@@ -92,3 +93,14 @@ def test_paired_bootstrap_delta_is_deterministic_and_paired():
     assert first["replicates"] == 100
     assert first["exact_rate_delta_candidate_minus_native_95pct_ci"] is not None
     assert first["cer_delta_candidate_minus_native_95pct_ci"] is not None
+
+
+
+def test_g2pk_surface_adapter_is_importable_and_does_not_reapply_rules():
+    assert _g2pk_surface_to_ipa(lambda _word: "물까", "물가") == "mul.k͈a"
+    try:
+        _g2pk_surface_to_ipa(lambda _word: "not-hangul", "물가")
+    except ValueError as exc:
+        assert "not a single Hangul surface form" in str(exc)
+    else:
+        raise AssertionError("non-Hangul surface output must be rejected")
