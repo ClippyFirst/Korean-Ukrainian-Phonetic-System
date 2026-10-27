@@ -21,9 +21,13 @@ function applyProfileGate(source,result,options){
     ipa_profile_level:result.ipa_profile_level,
     ipa_profile_status:result.ipa_profile_status
   });
+  const upstreamBlocked=result.status==='unresolved'||typeof result.ipa!=='string'||!result.ipa.trim();
+  const gateReason=result.status==='unresolved'
+    ? 'unresolved_korean_phonology'
+    : typeof result.ipa!=='string'||!result.ipa.trim() ? 'empty_ipa' : gated.reason;
   return {
     ...result,
-    ukrainian:gated.text??'',
+    ukrainian:upstreamBlocked?'':(gated.text??''),
     candidate_ukrainian:null,
     candidate_status:null,
     // Keep source/IPA provenance inspectable, but do not leak legacy target
@@ -33,8 +37,8 @@ function applyProfileGate(source,result,options){
       targetMappings:[], targetFeatures:[]
     })),
     variants:(result.variants||[]).map(item=>({...item, ukrainian:''})),
-    target_status:gated.status,
-    target_reason:gated.reason||null,
+    target_status:upstreamBlocked?'unavailable':gated.status,
+    target_reason:gateReason||null,
     target_adapter:'profile-gated'
   };
 }
