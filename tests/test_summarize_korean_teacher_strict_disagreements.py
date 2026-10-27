@@ -28,6 +28,10 @@ def make_portfolio(root):
                                 "reference_target_tokens": ref, "predicted_target_tokens": pred})
             if i < 994:
                 pairs.append({"case_id": cid, "split": "dev", "source_text": source,
+                              "source_dataset_id": "sigmorphon-2021-task1-medium-korean",
+                              "source_dataset_revision": "821bcdece5a47820872215969f275004b0abe80c",
+                              "teacher_target_representation": "tokenized_ipa_from_sigmorphon_tsv",
+                              "comparison_metrics_computed": False,
                               "strict_ipa_raw": "ka", "comparison_status": "BLOCKED"})
         folder = root / f"seed-{seed}"
         write_rows(folder / "dev-predictions.jsonl", predictions)
