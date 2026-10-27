@@ -346,3 +346,8 @@ The latest executable code/test head is `36b8e909d65ebf0e69af22f6183155853f34ae1
 
 Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. The morphology audit now records each lexical-root extension's registered root, internal source-backed pair, and full-form license as separate fields. The added provenance regression is pending exact-head CI; no pass is claimed.
 
+
+
+## Mainline consolidation checkpoint — 2026-10-27
+
+The current mainline first received the exact-form R002/R016 source-backed rules through PR #341 (`1def51dd9f88364891ff0051e9aadb5900f2e42c`). The consolidation snapshot carries the research branch's benchmark tools and pinned comparison portfolio forward. This is an implementation/reproducibility consolidation, not a benchmark score claim: noisy/public reference corpora remain diagnostic, broad/narrow dev profile selection is contaminated for independent evaluation, and no independent Ukrainian target gold is available. Exact-head workflows on the consolidation PR determine software verification status.
