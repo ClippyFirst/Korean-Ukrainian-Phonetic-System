@@ -3092,3 +3092,56 @@ Continue from the existing schema and target-trace implementations rather than c
 - **Preserved real engine changes already on this branch:** source-backed R010 exact-form additions and R016 `맑게 → 말께`, `맑고 → 말꼬` exist in Python/browser logic with negative controls. They are sourced deterministic coverage repairs, not claimed neural discoveries. The Charsiu-guided [ɲ] change is restricted to an opt-in Python narrow IPA research profile; it remains target-incompatible and is not a production Ukrainian-output rule.
 - **Neural-to-deterministic acceptance remains PARTIAL:** the current evidence identifies recurrent differences, but corpus IPA conventions and Charsiu training overlap/rights remain unresolved. No new generalized production phonology rule has been independently established from teacher output in this batch. Do not promote teacher strings or broaden the narrow profile to make benchmark scores look better.
 - **Next execution:** wait for exact-head CI on the test correction; then inspect fresh paired dev artifacts and adjudicate one high-frequency error family against the ClippyFirst broad-IPA convention and primary phonology sources. Any candidate must have positive and negative controls and show before/after metrics on an eligible development split. Benchmark test/holdout partitions remain sealed. Keep PR #339 draft until exact-head checks and evidence gates pass.
+
+
+## Exact-head verification and decision checkpoint — 2026-10-27 19:20 UTC
+
+### Repository state verified during continuation
+
+- Default branch: `main`, starting commit `a452054a669de28426404d1110731715083423bb` (2026-10-25; “docs: remove residual audit timestamp placeholder”).
+- Existing work branch: `research/strict-teacher-guided-rule-mining-2026-10-26`; PR #339 remains open and draft, base SHA `a452054a669de28426404d1110731715083423bb`.
+- Verified branch head at this checkpoint: `03b11167842f30ba241c07ceb3597ac4cb3abab7`. It is 746 commits ahead of `main`, 0 behind; the diff touches 142 files. Do not merge the branch wholesale based on CI alone.
+- Local clean checkout and local test execution remain BLOCKED: the environment cannot resolve `github.com` (git clone failed with DNS resolution error). Source inspection and CI checks below were performed through GitHub.
+
+### Exact-head Actions evidence
+
+All listed runs report conclusion `success` for the exact head `03b11167842f30ba241c07ceb3597ac4cb3abab7`:
+
+- [Core tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333765)
+- [System verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333499)
+- [Browser G2P integration](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333397)
+- [Charsiu train/dev IPA rule-review queue](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333859), artifact `12762619456` (SHA-256 `af307209d6844cc8f41d94d892c7d322ce9787615c8c11d91c1aeb18b55d887a`)
+- [Scratch neural-teacher portfolio](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333747)
+- [Multi-engine Korean IPA diagnostic benchmark](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333619)
+- [External UGTPHON diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333592)
+- [Morphology-consensus IPA diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333672)
+- [Teacher corpus split audit](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333728)
+- [Research morphology adapter smoke](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333472)
+- [Master tables and research corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333437)
+- [Test-case register extraction](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333935)
+- [Paired native engine vs g2pk diagnostic](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333715)
+- [Train scratch Korean G2P teacher](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40566333546)
+
+Earlier failures on code head `49115cf4c8d69b98292eb7f524253fbf97022c41` are superseded only for the tested later head above; do not erase them from historical evidence. A passing exact-head CI verifies the workflow commands, not the scientific validity of a phonological hypothesis.
+
+### Neural-to-rule decision: do not promote broad-IPA rules yet
+
+- The existing dev audit reports repeated Charsiu/Strict differences for aspiration, lateral symbols, /h/ variants, and sibilants. These counts use a diagnostic normalizer and corpora with unresolved convention mapping; they are not proof that Strict is wrong.
+- The scoped onset /n/ → [ɲ] before glide-initial nuclei remains an **opt-in narrow-IPA research-profile** change. Its dev counterfactual is encouraging but was performed on the teacher-selection/dev data, lacks an independently adjudicated ClippyFirst broad-IPA target, and is not a production Ukrainian-output rule. Do not copy it into broad IPA.
+- The source-backed R010/R016 exact-form repairs, including `맑게 → 말께` and `맑고 → 말꼬`, are real deterministic runtime changes on this branch with negative controls. They are not established neural discoveries; keep their evidence and attribution separate.
+- Current defensible count for new generalized production phonology rules independently established specifically from neural-teacher output in this cycle: **0**. This is an evidence-gated result, not a claim that no missing rules exist.
+- IPA-first review also identified a browser-path risk: default legacy browser conversion can return Ukrainian text under an unadjudicated profile label unless the explicit profile-gated option is enabled. The opt-in guard is a migration seam only; do not claim the default browser route is profile-approved. Python/browser behavior and target adapter approval still require a dedicated parity/migration acceptance decision.
+
+### Ledger update
+
+| Item | Status | Acceptance criterion / next action |
+|---|---|---|
+| Current branch CI | DONE_VERIFIED for head `03b11167842f30ba241c07ceb3597ac4cb3abab7` | All exact-head workflows listed above are green. Any new commit needs its own relevant CI. |
+| Source-backed R010/R016 exact-form runtime coverage | PARTIAL pending final merge/release gates | Preserve exact-form scope, source links, Python/JS parity, and positive/negative tests; do not misattribute to neural discovery. |
+| Narrow /n/→[ɲ] candidate | PARTIAL, research-only | Requires independent phonetic adjudication and a post-change, same-input evaluation with a reviewed target convention before any promotion. |
+| Teacher disagreements → generalized production rules | BLOCKED / evidence-limited | First complete independent IPA convention mapping and case-level adjudication; verify each context against primary sources and negative controls; evaluate on eligible dev data only. |
+| Browser/Python profile-gated IPA-first target path | PARTIAL | Prove that accepted Ukrainian output cannot bypass the reviewed profile gate, including lexical/mixed-script and word-alignment paths, while preserving a deliberate compatibility mode. |
+| Local tests | BLOCKED | DNS/network unavailable in this environment; CI is the only executed test evidence for the exact SHA above. |
+| Release readiness | NOT READY | PR remains draft; source/weights rights, IPA convention mapping, target-inventory review, default browser gating, and independently adjudicated rule gains remain open. |
+
+Next work should inspect the downloaded Charsiu rule-review artifact at case level, select a repeated candidate only if its exact context survives convention adjudication, and either implement a narrowly scoped rule with paired controls and before/after dev metrics or record a reasoned rejection. Keep test/holdout partitions sealed. No release or merge is authorized by this checkpoint.
