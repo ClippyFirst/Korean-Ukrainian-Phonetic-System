@@ -60,3 +60,30 @@ Next acceptance gate:
 Added a Python pipeline assertion in commit e12746255f576dd416587ff17cb20f59fc07ecc1: even with require_adjudicated_ipa_profile=True, the known unresolved input 앉어라 must remain abstained with target_status=unresolved, reason unresolved_korean_phonology, no Ukrainian orthography, and diagnostic-only IPA. This protects the ordering invariant: profile gating must not override unresolved source-language phonology.
 
 The workflow-run lookup for this exact test-only commit returned no associated runs. Earlier runs for code head 4456d47393313090cb17115494a6ce85347fa121 remain queued; neither observation establishes a passing test result. Treat this new regression as committed but unverified until a workflow actually runs on the exact head.
+
+
+## Live continuation check — 2026-10-27 (branch head `650465730888a1c852f242c41d1c60b1baac3371`)
+
+This section supersedes earlier queued-run snapshots above for workflow state only; it does not change the linguistic acceptance criteria.
+
+- **Branch:** `research/strict-teacher-guided-rule-mining-2026-10-26`; latest known head at this check: `650465730888a1c852f242c41d1c60b1baac3371`.
+- **Current-head CI was discovered and is queued, not green.** The latest commit workflow lookup returned these relevant runs: tests `40520590812` (web, Python 3.11/3.12/3.13, wheel install, teacher corpus audit all queued); system verification `40520590789` (browser regression/build and Python regression/data integrity queued; official NIKL source inventory skipped by workflow policy); browser G2P integration `40520590788` (queued); broad/narrow Charsiu rule-review queue `40520590865` (queued). Other research workflows were also queued. Combined commit status returned no status records; that is not a pass.
+- **Latest regression included in this head:** Python asserts that `앉어라` stays unresolved even when `require_adjudicated_ipa_profile=True`; this is committed but not yet verified by a completed run.
+- **No local test result:** a local clean checkout and test run remain blocked by the previously observed DNS failure resolving GitHub. No local or exact-head pass is claimed until CI finishes.
+- **Implementation state remains PARTIAL:** opt-in profile gate exists in both public wrappers; legacy target generation remains the default for compatibility. The allowlist `_ADAPTER_COMPATIBLE_IPA_PROFILES` / `ADAPTER_COMPATIBLE_IPA_PROFILES` remains empty. Enabling strict mode globally now would withhold all targets, so no default flip is justified.
+- **Acceptance blockers remain:** independent broad/narrow IPA adjudication (including the `ㅆ` cross-runtime discrepancy), a non-empty evidence-backed compatible-profile allowlist, target-inventory review, official NIKL inventory evidence, and rights/license clearance. The neural teacher and its datasets remain research-only and must not silently create production rules.
+- **PR #339:** still open and Draft at the last metadata check; no merge, force-push, release, or external setting change performed.
+
+### Task ledger at this check
+
+| Task | Status | Evidence / acceptance criterion |
+|---|---|---|
+| Cross-runtime opt-in profile gate | PARTIAL | Browser and Python wrappers exist; shared negative fixture is consumed by tests. Exact-head CI still queued. |
+| Preserve unresolved Korean phonology before target adaptation | PARTIAL | Regression exists for `앉어라`; must pass on exact head. |
+| Remove all legacy/raw-IPA bypasses from default public path | TODO | Migrate only after independent profile adjudication and a safe, tested migration strategy; current compatibility defaults remain. |
+| Approve IPA profile for target adaptation | BLOCKED | Requires independent broad/narrow adjudication, source-backed profile version, cross-runtime agreement, and explicit allowlist review. |
+| Ukrainian target inventory acceptance | BLOCKED | Requires review after source IPA profile is accepted; no approval inferred from current mapping tests. |
+| Official NIKL source inventory | BLOCKED | Workflow skips live inventory; verified local official source file/evidence is still needed. |
+| Dataset/model rights clearance | BLOCKED | Exact teacher checkpoint/data provenance and rights are not established; no model use or redistribution authorized. |
+| Exact-head automated verification | PARTIAL | Current relevant runs are queued; no pass can be recorded until conclusions are successful. |
+| Release readiness | DEFERRED | Current evidence supports a research-ready partial prototype, not a production release. |
