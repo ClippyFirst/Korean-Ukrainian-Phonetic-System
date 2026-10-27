@@ -386,3 +386,12 @@ The code/test snapshot was research head `256b27a454c992218ca87a0fdf58ea61350715
 - STILL RUNNING at last poll: Charsiu train/dev [40410860096](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40410860096); the log endpoint returned `BlobNotFound`, so its final result remains unknown.
 
 The repository remains a research-ready partial prototype, not release-ready. PR #339 is still Draft/open and 566 commits ahead of main; green individual CI does not independently establish pronunciation gold, Ukrainian target correctness, licensing completeness, or semantic case-register completeness.
+
+
+## IPA profile / teacher-triage continuation — 2026-10-27
+
+- Seed portfolio failure on 4379463aab4f5a829c61ed666deb28cafffa1a6e was a hard-coded 994-pair expectation; same-seed checkpoint and prediction hashes were identical. Triage logic now validates subset membership and identical pair-ID sets across seeds without assuming a fixed number of resolved Strict cases.
+- Python and browser IPA output now include versioned profile metadata fields; the shared fixture records separate runtime outputs as UNADJUDICATED and target-adapter eligibility UNVERIFIED.
+- The current sibilant evidence does not justify selecting s͈ vs ɕ͈ categorically for tense ㅆ. See the updated source register and KOREAN-IPA-RUNTIME-PROFILE-CONTRACT-2026-10-27.md.
+- Exact-head workflows for the updated code/tests remain QUEUED at this update; the local clone attempt is BLOCKED by DNS resolution. No test pass is claimed for the latest changes.
+- Gate statuses: seed triage PARTIAL pending exact-head CI; typed IPA metadata PARTIAL pending CI and adapter eligibility enforcement; cross-runtime phonetic parity BLOCKED / UNADJUDICATED; Ukrainian target changes DEFERRED. Keep PR #339 Draft.
