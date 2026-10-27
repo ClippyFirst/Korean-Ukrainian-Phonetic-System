@@ -395,3 +395,11 @@ The repository remains a research-ready partial prototype, not release-ready. PR
 - The current sibilant evidence does not justify selecting s͈ vs ɕ͈ categorically for tense ㅆ. See the updated source register and KOREAN-IPA-RUNTIME-PROFILE-CONTRACT-2026-10-27.md.
 - Exact-head workflows for the updated code/tests remain QUEUED at this update; the local clone attempt is BLOCKED by DNS resolution. No test pass is claimed for the latest changes.
 - Gate statuses: seed triage PARTIAL pending exact-head CI; typed IPA metadata PARTIAL pending CI and adapter eligibility enforcement; cross-runtime phonetic parity BLOCKED / UNADJUDICATED; Ukrainian target changes DEFERRED. Keep PR #339 Draft.
+
+## Opt-in strict IPA gate implementation — 2026-10-27
+
+- Browser API: createEngine().convert(text, {requireAdjudicatedIpaProfile:true}) and convertSurface() use the fail-closed profile adapter. Strict mode suppresses accepted Ukrainian output and removes Ukrainian target text from trace/variant fields. Regression coverage includes simple, surface-mode, and mixed-script lexical early-return input.
+- Python API: transliterate_korean(..., require_adjudicated_ipa_profile=True) uses render_profiled_ipa_to_ukrainian() after unresolved-phonology and diagnostic-only guards. Broad unadjudicated and narrow partial profiles remain unavailable.
+- These are opt-in migration paths only. The default browser and Python compatibility routes remain, so exclusive production routing is still TODO and the default runtime must not be described as IPA-profile-approved.
+- Latest code head at gate update: 4456d47393313090cb17115494a6ce85347fa121; tests 40517742289, system verification 40517742426, and browser integration 40517742266 were QUEUED. No exact-head pass is claimed. Official NIKL live inventory remains SKIPPED; local tests remain blocked by DNS.
+- Gate statuses: strict opt-in code/tests PARTIAL pending exact-head CI; exclusive production gate TODO; broad/narrow and ㅅ/ㅆ adjudication BLOCKED; target-inventory review DEFERRED; source-rights clearance PARTIAL. Keep PR #339 Draft and do not release.
