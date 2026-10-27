@@ -248,6 +248,8 @@ _NIKL_R016_VERBAL_STEM_LICENSES = {
     "읽거든": "읽>거",  # Official §11 example; same verbal-stem ㄺ-before-ㄱ environment.
     "묽고": "묽>고",
     "얽거나": "얽>거",
+    "맑게": "맑>게",  # NIKL §11; official Q&A qna_seq=335693 clarifies written ㄺ before ㄱ.
+    "맑고": "맑>고",  # NIKL Online Q&A qna_seq=320900 explicitly confirms [말꼬].
 }
 
 def _source_backed_rule_licenses(items, boundary_mode):
