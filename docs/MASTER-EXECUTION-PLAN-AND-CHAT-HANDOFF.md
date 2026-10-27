@@ -2649,3 +2649,18 @@ These are parser coverage counts, not case coverage or linguistic accuracy. All 
 - Source-level map parity check: Python/browser R002 formal map 37/37 entries and R003 map 25/25 entries matched exactly. This is not a substitute for Python tests, browser tests, build, or system verification.
 - Updated audit after the correction: `docs/NEURAL-TEACHER-STRICT-DISAGREEMENT-AUDIT-2026-10-27.md`, commit `96da861315cde71b2ed8c017b4ce87fa42f2d3fa`.
 - Current acceptance remains `PARTIAL`: exact-form rule code is mirrored and regression coverage added; do not mark it verified until latest-head CI finishes. Reproducibility remains `BLOCKED` until the repeated-seed checkpoint/prediction hash gate passes. The broad-IPA adapter and independent case adjudication remain the central research blockers.
+
+
+
+
+### Latest CI poll after browser regression addition — 2026-10-27
+
+For exact branch head `4be18f7d25dda301120256868b85b1d59e20738b`, the following key workflows were started but remained **QUEUED** at the latest poll:
+- Full tests (Python 3.11/3.12/3.13, browser, wheel): [40475408870](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40475408870).
+- System verification (Python/browser regression and data integrity): [40475408848](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40475408848); optional NIKL inventory job was skipped by its workflow condition.
+- Browser G2P integration: [40475408813](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40475408813).
+- Reproducible seed portfolio / duplicate-seed gate: [40475409331](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40475409331).
+- Teacher corpus audit: [40475409203](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40475409203).
+- Scratch teacher training and error analysis: [40475409001](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40475409001).
+
+These are neither passes nor failures; the runner has not returned a conclusion. No exact-head test outcome is claimed. The current task is blocked on external CI execution/runner availability, while the research acceptance blockers (reproducibility, reviewed IPA adapter, independent pronunciation adjudication) remain separate.
