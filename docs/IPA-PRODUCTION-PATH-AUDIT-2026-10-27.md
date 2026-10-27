@@ -52,3 +52,11 @@ Next acceptance gate:
 - Strict browser mode now also clears target text from per-unit trace outputs, candidate fields, target mapping details, and variant spellings, while retaining source/IPA provenance. Regression assertions enforce the no-target-leak invariant.
 - Both browser and Python strict modes now preserve the upstream unresolved-phonology gate before any profile approval can result in a target. Python checks unresolved pronunciation and diagnostic-only IPA before invoking the profiled renderer.
 - Latest code head after these fixes: `4456d47393313090cb17115494a6ce85347fa121`. Exact-head test matrix `40517742289`, system verification `40517742426`, and browser integration `40517742266` were **QUEUED** when checked. No test pass is claimed.
+
+
+
+## Additional regression guard — unresolved phonology
+
+Added a Python pipeline assertion in commit e12746255f576dd416587ff17cb20f59fc07ecc1: even with require_adjudicated_ipa_profile=True, the known unresolved input 앉어라 must remain abstained with target_status=unresolved, reason unresolved_korean_phonology, no Ukrainian orthography, and diagnostic-only IPA. This protects the ordering invariant: profile gating must not override unresolved source-language phonology.
+
+The workflow-run lookup for this exact test-only commit returned no associated runs. Earlier runs for code head 4456d47393313090cb17115494a6ce85347fa121 remain queued; neither observation establishes a passing test result. Treat this new regression as committed but unverified until a workflow actually runs on the exact head.
