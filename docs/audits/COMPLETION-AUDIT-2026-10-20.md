@@ -1240,3 +1240,33 @@ The following open pull requests were compared rather than blindly merged:
 - `DEFERRED`: Ukrainian target adaptation until the IPA boundary is independently adjudicated and a reviewed typed adapter is wired exclusively.
 
 **Release assessment:** materially improved research and regression infrastructure; still a research prototype/partial, not release-ready. No merge, release, or production-profile promotion was performed. The next acceptance criterion is independent blinded IPA labels plus an untouched evaluation protocol, then target-adapter review and source-rights closure.
+
+
+## Recheck addendum — 2026-10-27
+
+**Scope:** GitHub content/API inspection only. No local checkout, Python/Node execution, generated-artifact check, or independent linguistic review was performed in this pass.
+
+### Rechecked evidence
+
+- Current public `main` README describes the browser and Python IPA-first architecture, including the limitation that the browser G2P port does not reproduce Python g2pK's MeCab-based morphology. It explicitly treats Ukrainian mappings as project choices and provisional in many cases.
+- The current research branch's `src/korean_ukrainian/ipa.py` contains an opt-in narrow profile with scoped onset nasal palatalization and same-word sonorant-coda /h/ voicing. Neither candidate is independent broad-IPA gold; the reported corpus results are diagnostic and selection-contaminated.
+- The exact requested runtime-profile contract and neural-teacher candidate-register paths were not found on the inspected branch. Resolve canonical filenames/refs before using them as authoritative gates.
+- PR #339 is open/draft and its own body reports a mixed workflow state: successful code/test checks on a prior code head, but Charsiu inference blocked by Hugging Face HTTP 429 on a later head and a seed-portfolio workflow not yet complete at that update.
+- PR #341 is open and shares rule/test/handoff files with #339. Its own passing CI is not evidence that the combined tree passes; integration remains TODO until exact heads are compared and the combined tree is tested.
+- PR #329 provides packet blinding and validation infrastructure, not independent expert labels. Issue #337 still requires two qualified independent reviewers. PR #338 has no verified authentic NN-KoG2P inference artifact/terms. PRs #326/#336/#327 retain holdout, residual-case, and NIKL-access blockers.
+- The source register explicitly records HTTP 403 from the official NIKL collector and no crawl manifest. Rights review is partial and must not be represented as completed.
+
+### Revised status summary
+
+| Dimension | Status | Reason |
+|---|---|---|
+| Korean surface-form implementation | PARTIAL / locally source-backed subsets | Existing rule-specific tests and CI reports support subsets; no full lexical/morphological coverage claim. |
+| Typed IPA and narrow-profile research | PARTIAL | Runtime candidate code exists; independent IPA convention/phonetics adjudication is missing. |
+| IPA → Ukrainian renderer | PARTIAL | Source and README document IPA-only input, but no new exact-head end-to-end execution was available in this pass. |
+| Independent IPA evaluation | BLOCKED | No verified qualified blind submissions; holdout has no IPA gold labels. |
+| Ukrainian target evaluation | BLOCKED | No independent target gold set or completed target-inventory adjudication. |
+| Teacher-model evidence | BLOCKED / diagnostic only | Training overlap unknown, dev selection contamination, latest reported Charsiu download rate-limited; NN-KoG2P not runnable/verified. |
+| Source inventory and licensing | BLOCKED / PARTIAL | NIKL 403; item-level KOGL marks and external model/tokenizer terms not fully verified. |
+| Release readiness | NOT READY | Independent IPA and target gates, rights and latest exact-head verification remain outstanding. |
+
+No linguistic accuracy status was upgraded by this recheck. Acceptance requires exact-head tests and generated-artifact parity, a reproducible pinned benchmark, independent blind IPA adjudication, a separately reviewed Ukrainian target gold set, and explicit source/model rights resolution.
