@@ -1270,3 +1270,11 @@ The following open pull requests were compared rather than blindly merged:
 | Release readiness | NOT READY | Independent IPA and target gates, rights and latest exact-head verification remain outstanding. |
 
 No linguistic accuracy status was upgraded by this recheck. Acceptance requires exact-head tests and generated-artifact parity, a reproducible pinned benchmark, independent blind IPA adjudication, a separately reviewed Ukrainian target gold set, and explicit source/model rights resolution.
+
+
+## Mainline consolidation checkpoint — 2026-10-27
+
+- PR #341's exact-form NIKL-backed R002/R016 code and regressions were merged into `main` at `1def51dd9f88364891ff0051e9aadb5900f2e42c`.
+- Consolidation branch `consolidate/korean-best-mainline-2026-10-27` carries forward the research tree from PR #339 on top of that mainline state. Exact-head CI is required before merge; no local test run is claimed.
+- The combined tree includes the source-backed rules and research-only tooling/profile. The narrow IPA profile remains non-production and target-incompatible. Diagnostic metrics do not establish normative IPA or Ukrainian target accuracy.
+- Remaining blockers: independent source-blind IPA labels, separately adjudicated Ukrainian target gold, live NIKL inventory access/manifest, and external model rights/training-overlap verification.
