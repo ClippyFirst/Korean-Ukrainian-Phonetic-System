@@ -3480,3 +3480,15 @@ The repository is a **tested partial research prototype, not release-ready**. Ke
 ## Stop condition and genuine next blocker
 
 The feasible software-side improvement in this pass is to make two-review comparison reproducible and explicitly non-adjudicative. The remaining blocker is now a real external dependency: qualified independent reviewers and owner/source-rights decisions. A green CI cannot substitute for those judgments.
+
+
+# Post-merge closeout — 2026-10-27
+
+- PR [#350](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/350) merged by squash into `main`; merge commit `02f1c13cdf9387b2355fbe0716b8f8f05132c719`. The PR head tested was `e7b88d87005c75ad124b59041774e825dad9ca32`.
+- Added `scripts/compare-ipa-review-pair.mjs`, `npm run ipa:compare-review-pair`, tests in `tests/compare-ipa-review-pair.test.mjs`, and its operating contract in `docs/INDEPENDENT-IPA-REVIEW-PAIR-COMPARISON.md`.
+- Exact PR-head CI results: [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40591140023) PASS; [browser G2P integration](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40591140029) PASS; [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40591133811) PASS; [master-table/research-corpus artifacts](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40591140186) PASS; test-case-register extractor steps PASS in [run 40591140047](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40591140047). The official live NIKL inventory was SKIPPED by policy, not passed.
+- An earlier run on the same PR head failed one new assertion because its expected notice text did not match the actual notice. The notice was clarified, and the later exact PR-head test and system-verification runs passed. Do not count the earlier run as a pass.
+- Local `git clone` and local test execution remain blocked by DNS resolution of `github.com`; no local test results are claimed.
+- The merge commit's own CI was still running at the time of this update. PR-head green checks are strong exact-code evidence, but this documentation update and merge do not close the external linguistic gates.
+- Remaining genuine blockers: two independent qualified IPA reviewers plus documented reconciliation; separate Ukrainian-target review; source/rights clearance; owner decision on repository licensing; official live NIKL crawl remains blocked/skipped. Release status remains **NOT READY**.
+- Branch cleanup: PR debt was closed and there are no open PRs. This connector does not expose branch-ref deletion, so historical branch refs have not been deleted and are not claimed as deleted.
