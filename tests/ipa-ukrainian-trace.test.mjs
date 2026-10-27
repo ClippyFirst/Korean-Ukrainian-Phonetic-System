@@ -349,3 +349,16 @@ test('profile-aware IPA target gate rejects unadjudicated and partial runtime pr
   assert.equal(unregistered.status, 'unavailable');
   assert.equal(unregistered.reason, 'ipa_profile_not_allowlisted_for_target_adapter');
 });
+
+
+test('profile-aware IPA adapter validates options before rejecting unapproved profiles', () => {
+  assert.throws(
+    () => ipaTargetForProfile('씨', {ipa:'s͈i'}, {allowProvisional:'yes'}),
+    {name:'TypeError', message:'allowProvisional must be a boolean'}
+  );
+  assert.throws(
+    () => ipaTargetForProfile('씨', {ipa:'s͈i'}, null),
+    {name:'TypeError', message:'IPA target options must be an object'}
+  );
+  assert.equal(ipaTargetForProfile('씨', {ipa:'s͈i'}).reason, 'ipa_profile_metadata_incomplete');
+});
