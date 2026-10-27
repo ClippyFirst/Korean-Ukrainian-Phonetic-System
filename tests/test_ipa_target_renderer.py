@@ -218,3 +218,38 @@ def test_separator_or_length_marker_only_input_cannot_render_as_empty_success():
         assert result["ukrainian_orthography"] is None, ipa
         assert result["status"] == "unavailable", ipa
         assert result["reason"] == "no_renderable_ipa_segments", ipa
+
+
+def test_profile_aware_adapter_rejects_unadjudicated_partial_and_unregistered_profiles():
+    from korean_ukrainian.ipa_target_renderer import render_profiled_ipa_to_ukrainian
+
+    broad = {
+        "ipa": "s͈i",
+        "ipa_profile": "clippyfirst-korean-broad-v1",
+        "ipa_profile_version": 1,
+        "ipa_profile_level": "broad",
+        "ipa_profile_status": "unadjudicated-cross-runtime",
+    }
+    unadjudicated = render_profiled_ipa_to_ukrainian("씨", broad)
+    assert unadjudicated["status"] == "unavailable"
+    assert unadjudicated["ukrainian_orthography"] is None
+    assert unadjudicated["reason"] == "ipa_profile_not_adjudicated_compatible"
+
+    partial = render_profiled_ipa_to_ukrainian("씨", {
+        **broad,
+        "ipa_profile": "clippyfirst-korean-narrow-partial-sibilant-v1",
+        "ipa_profile_level": "narrow",
+        "ipa_profile_status": "partial-research-only",
+    })
+    assert partial["status"] == "unavailable"
+    assert partial["reason"] == "ipa_profile_partial_research_only"
+
+    incomplete = render_profiled_ipa_to_ukrainian("씨", {"ipa": "s͈i"})
+    assert incomplete["status"] == "unavailable"
+    assert incomplete["reason"] == "ipa_profile_metadata_incomplete"
+
+    not_allowlisted = render_profiled_ipa_to_ukrainian("씨", {
+        **broad, "ipa_profile_status": "adjudicated-compatible"
+    })
+    assert not_allowlisted["status"] == "unavailable"
+    assert not_allowlisted["reason"] == "ipa_profile_not_allowlisted_for_target_adapter"
