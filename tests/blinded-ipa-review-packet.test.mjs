@@ -18,9 +18,16 @@ test('packet contains all source-backed cases and a reproducible queue hash', ()
   assert.match(packetA.queueSha256, /^[a-f0-9]{64}$/u);
   assert.equal(packetA.reviewerSlot, 'A');
   assert.equal(packetB.reviewerSlot, 'B');
-  assert.deepEqual(packetA.cases.map(item => item.caseId), queue.cases.map(item => item.caseId));
+  assert.equal(packetA.blindnessMode, 'source-and-candidate-blind');
+  assert.deepEqual(packetA.cases.map(item => item.caseId), queue.cases.map((_, i) => 'BLIND-' + String(i + 1).padStart(3, '0')));
+  assert.deepEqual(packetA.cases.map(item => item.input), queue.cases.map(item => item.input));
   assert.ok(packetA.cases.every(item => item.reviewForm.reviewerSlot === 'A'));
   assert.ok(packetB.cases.every(item => item.reviewForm.reviewerSlot === 'B'));
+  for (const item of packetA.cases) {
+    for (const key of ['surfaceEvidenceStatus', 'surfaceEvidenceUrl', 'sourceLocator', 'normativeSurfaceComparator']) {
+      assert.ok(!Object.hasOwn(item, key), 'source-blind packet must omit ' + key);
+    }
+  }
 });
 
 test('packet is blinded even when the canonical queue contains other reviewer data or candidate IPA', () => {
@@ -44,9 +51,15 @@ test('packet is blinded even when the canonical queue contains other reviewer da
     'SECRET_DECISION',
     'SECRET_TARGET_REVIEW',
     'SECRET_SOURCE_NOTE',
+    'https://www.korean.go.kr',
+    '넉씨',
+    'normativeSurfaceComparator',
   ]) assert.ok(!serialized.includes(secret), 'blinded packet must not leak ' + secret);
 
-  for (const forbiddenKey of ['candidateBroadIpa', 'reviewerA', 'reviewerB', 'reconciliation', 'ukrainianTargetReview']) {
+  for (const forbiddenKey of [
+    'candidateBroadIpa', 'reviewerA', 'reviewerB', 'reconciliation', 'ukrainianTargetReview',
+    'surfaceEvidenceStatus', 'surfaceEvidenceUrl', 'sourceLocator', 'normativeSurfaceComparator',
+  ]) {
     assert.ok(!Object.hasOwn(packet.cases[0], forbiddenKey), 'packet must omit ' + forbiddenKey);
   }
   assert.equal(packet.cases[0].reviewForm.broadIpa, null);
@@ -90,12 +103,15 @@ test('R002/R003 source queue creates a blinded packet only for exact-form source
   const packetA = buildReviewerPacket(r002QueueText, 'A');
   const packetB = buildReviewerPacket(r002QueueText, 'B');
   assert.equal(packetA.queueSha256, packetB.queueSha256);
-  assert.deepEqual(packetA.cases.map(item => item.caseId), ['R002-05', 'R003-01', 'R003-04']);
+  assert.deepEqual(packetA.cases.map(item => item.caseId), ['BLIND-001', 'BLIND-002', 'BLIND-003']);
   assert.deepEqual(packetA.cases.map(item => item.input), ['멋있어', '수많은', '싫어서']);
-  assert.ok(packetA.cases.every(item => item.surfaceEvidenceStatus === 'SOURCE_FOUND_PENDING_IPA'));
   assert.ok(packetA.cases.every(item => item.reviewForm.reviewerSlot === 'A'));
   const serialized = JSON.stringify(packetA);
-  for (const forbidden of ['g2pkIpa', 'goldDiagnostic', 'finalBroadIpa', 'ukrainianTargetStatus', 'reviewerB', 'decisionNotes']) {
+  for (const forbidden of [
+    'g2pkIpa', 'goldDiagnostic', 'finalBroadIpa', 'ukrainianTargetStatus', 'reviewerB', 'decisionNotes',
+    'R002-05', 'R003-01', 'R003-04', 'SOURCE_FOUND_PENDING_IPA', 'sourceLocator', 'sourceExcerpt',
+    'qna_seq=306166', 'ParaWordNo=71144', 'qna_seq=313981', '[머디써]',
+  ]) {
     assert.ok(!serialized.includes(forbidden), 'source queue candidate data must not leak: ' + forbidden);
   }
   assert.ok(packetA.cases.every(item => item.reviewForm.broadIpa === null));
@@ -124,8 +140,10 @@ test('CLI can build a blinded packet from the R002/R003 queue without modifying 
   assert.equal(before, after, 'packet generation must not mutate the source queue');
   const packet = JSON.parse(run.stdout);
   assert.equal(packet.reviewerSlot, 'B');
-  assert.deepEqual(packet.cases.map(item => item.caseId), ['R002-05', 'R003-01', 'R003-04']);
+  assert.deepEqual(packet.cases.map(item => item.caseId), ['BLIND-001', 'BLIND-002', 'BLIND-003']);
   assert.ok(!run.stdout.includes('g2pkIpa'));
+  assert.ok(!run.stdout.includes('sourceLocator'));
+  assert.ok(!run.stdout.includes('SOURCE_FOUND_PENDING_IPA'));
   assert.ok(!run.stdout.includes('goldDiagnostic'));
 });
 
