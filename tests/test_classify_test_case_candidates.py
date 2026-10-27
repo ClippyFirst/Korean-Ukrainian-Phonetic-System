@@ -65,11 +65,11 @@ class TestClassifyTestCaseCandidates(unittest.TestCase):
             test_path = root / "tests/example.test.mjs"
             test_path.parent.mkdir(parents=True)
             test_path.write_text(
-                "describe('NIKL phonology', () => {\\n"
-                "  test('keeps IPA boundaries', () => {\\n"
-                "    assert.equal(result.ipa, 'an.tɕ͈i');\\n"
-                "  });\\n"
-                "});\\n",
+                "describe('NIKL phonology', () => {\n"
+                "  test('keeps IPA boundaries', () => {\n"
+                "    assert.equal(result.ipa, 'an.tɕ͈i');\n"
+                "  });\n"
+                "});\n",
                 encoding="utf-8",
             )
             candidate = row(
