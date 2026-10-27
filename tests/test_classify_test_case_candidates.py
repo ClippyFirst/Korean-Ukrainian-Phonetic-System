@@ -50,7 +50,7 @@ class TestClassifyTestCaseCandidates(unittest.TestCase):
         for item in classified:
             self.assertEqual(item["review_status"], "UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW")
             self.assertEqual(item["observed_run_status"], "NOT_TIED_TO_EXACT_HEAD_RUN")
-            self.assertEqual(item["classification_method"], "REGEX_HINTS_V1_NOT_SEMANTIC")
+            self.assertEqual(item["classification_method"], "STATIC_ASSERTION_HINTS_V2_NOT_SEMANTIC")
         self.assertEqual(list(classified[0]), OUTPUT_COLUMNS)
 
     def test_extracts_raw_string_and_regex_literals_but_never_evaluates_expressions(self):
@@ -65,6 +65,7 @@ class TestClassifyTestCaseCandidates(unittest.TestCase):
         self.assertEqual(classified[0]["expected_value_raw"], "'a,b'")
         self.assertEqual(classified[1]["expected_value_kind"], "REGEX_LITERAL")
         self.assertEqual(classified[1]["expected_value_raw"], "/an\\./u")
+        self.assertEqual(classified[1]["expected_value_status"], "RAW_REGEX_EXTRACTED_NOT_ADJUDICATED")
         self.assertEqual(classified[2]["expected_value_kind"], "EXPRESSION")
         self.assertEqual(classified[2]["expected_value_raw"], "renderExpectedIpa(input, ipa)")
         self.assertEqual(classified[2]["expected_value_status"], "EXPECTED_EXPRESSION_NOT_EVALUATED")
