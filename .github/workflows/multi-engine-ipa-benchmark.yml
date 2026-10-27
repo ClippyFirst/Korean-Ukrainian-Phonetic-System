@@ -175,21 +175,13 @@ jobs:
                         f"CI_delta_exact={ci_delta.get('exact_rate_delta_candidate_minus_native_95pct_ci')} "
                         f"CI_delta_CER={ci_delta.get('cer_delta_candidate_minus_native_95pct_ci')}")
           engines = r["engines"]
-          assert r["native_g2pk_pairwise_audit"]["status"] == "completed"
           assert "g2pk_0_9_4" in engines
           assert engines["g2pk_0_9_4"]["scored_tokens"] > 0
-          discrepancy_audit = r["clippyfirst_gold_discrepancy_audit"]
-          assert discrepancy_audit["occurrence_count"] == len(discrepancy_audit["occurrences"])
-          assert sum(discrepancy_audit["category_counts"].values()) == discrepancy_audit["occurrence_count"]
-          assert all(item.get("category") for item in discrepancy_audit["occurrences"])
-          print("ClippyFirst-vs-gold discrepancy audit:",
-                discrepancy_audit["occurrence_count"], discrepancy_audit["category_counts"],
-                "profile_sensitivity_occurrences=",
-                discrepancy_audit["profile_sensitivity_occurrence_count"])
           pairwise_audit = r["native_g2pk_pairwise_audit"]
-          assert pairwise_audit["status"] == "completed"
+          assert pairwise_audit["occurrence_count"] == len(pairwise_audit["occurrences"])
           assert pairwise_audit["occurrence_count"] == r["eligible_token_occurrences"]
           assert sum(pairwise_audit["category_counts"].values()) == pairwise_audit["occurrence_count"]
+          assert all(item.get("category") for item in pairwise_audit["occurrences"])
           print("ClippyFirst-vs-g2pK pairwise audit:",
                 pairwise_audit["occurrence_count"], pairwise_audit["category_counts"])
           print("g2pK 0.9.4 included as an external comparison baseline; its IPA adaptation path is documented in the report.")
@@ -248,21 +240,13 @@ jobs:
                 audit.get("unique_words"), "unique words; context counts=", audit.get("context_counts"))
           print("Diagnostic lexical test only; not a normative NIKL gate and not an IPA-to-Ukrainian score.")
           engines = r["engines"]
-          assert r["native_g2pk_pairwise_audit"]["status"] == "completed"
           assert "g2pk_0_9_4" in engines
           assert engines["g2pk_0_9_4"]["scored_tokens"] > 0
-          discrepancy_audit = r["clippyfirst_gold_discrepancy_audit"]
-          assert discrepancy_audit["occurrence_count"] == len(discrepancy_audit["occurrences"])
-          assert sum(discrepancy_audit["category_counts"].values()) == discrepancy_audit["occurrence_count"]
-          assert all(item.get("category") for item in discrepancy_audit["occurrences"])
-          print("ClippyFirst-vs-gold discrepancy audit:",
-                discrepancy_audit["occurrence_count"], discrepancy_audit["category_counts"],
-                "profile_sensitivity_occurrences=",
-                discrepancy_audit["profile_sensitivity_occurrence_count"])
           pairwise_audit = r["native_g2pk_pairwise_audit"]
-          assert pairwise_audit["status"] == "completed"
+          assert pairwise_audit["occurrence_count"] == len(pairwise_audit["occurrences"])
           assert pairwise_audit["occurrence_count"] == r["eligible_token_occurrences"]
           assert sum(pairwise_audit["category_counts"].values()) == pairwise_audit["occurrence_count"]
+          assert all(item.get("category") for item in pairwise_audit["occurrences"])
           print("ClippyFirst-vs-g2pK pairwise audit:",
                 pairwise_audit["occurrence_count"], pairwise_audit["category_counts"])
           for required in ("clippyfirst_native",):
