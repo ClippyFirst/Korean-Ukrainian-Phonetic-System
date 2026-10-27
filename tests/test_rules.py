@@ -298,7 +298,7 @@ def test_verbal_stem_rieul_giyeok_exception_requires_exact_morphological_license
     assert traces[0].changed
 
 def test_nikl_r016_official_examples_resolve_with_exact_form_source_licenses():
-    cases = {"읽고": "읽>고", "묽고": "묽>고", "얽거나": "얽>거"}
+    cases = {"읽고": "읽>고", "묽고": "묽>고", "얽거나": "얽>거", "맑게": "맑>게", "맑고": "맑>고"}
     for word, pair in cases.items():
         items, traces = apply_ordered_rules(parse_syllables(word), ["R016", "R008", "R001"])
         assert (items[0].coda, items[1].onset) == ("ㄹ", "ㄲ"), word
