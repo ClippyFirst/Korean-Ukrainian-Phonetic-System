@@ -215,3 +215,20 @@ The current source-level comparison confirms that the Python and browser exact-f
 ### Follow-up surface-form review — `말없이` (2026-10-27)
 
 A second pass over sequential R002 behavior corrected the new browser test's initial expected Hangul surface for `말없이`. Because the preceding coda ㄹ resyllabifies into 없 before the internal `없>이` liaison, the expected engine surface is `마럽씨`, not `말업씨`. The test was corrected in commit `e34e9285474cbe8f8dc34a33ea10283e1ad31e7f`. This is a test expectation correction, not a change to the rule engine. CI is still queued, so this expected output remains unverified by execution.
+
+
+## Newly identified cross-runtime IPA-profile divergence (2026-10-27)
+
+A source-level inspection found a separate Korean IPA acceptance issue that must be resolved before comparing Python and browser pronunciation output. The Python renderer in `src/korean_ukrainian/ipa.py` emits broad-profile fortis ㅆ as `s͈` regardless of the following vowel. The browser renderer in `src/app/engine_convert.js` changes ㅆ before members of `J_VOWELS` (including ㅣ) to `ɕ͈`. Therefore a form ending in 씨 can receive different IPA strings across runtimes even when the Korean surface-Hangul result matches.
+
+This note deliberately does **not** declare either representation universally correct. The difference could reflect distinct transcription conventions (phonemic/broad versus a surface-coarticulatory rendering), but the browser path does not currently expose a clearly named profile boundary corresponding to Python's `phonemic` / `broad` / `narrow` profiles. It is therefore not safe to normalize the two strings automatically or count the discrepancy as a Korean pronunciation error without a project decision supported by phonetic evidence.
+
+The same architectural distinction appears in the existing code: Python provides a typed `ipa_level` (`phonemic`, `broad`, `narrow`) and explicitly labels its narrow sibilant profile as partial; browser IPA is assembled from the target-correspondence CSV plus contextual rules, with a hard-coded palatalization branch. This is a cross-runtime contract gap, not a Ukrainian target-mapping task.
+
+Required follow-up, ordered before any Ukrainian adaptation work:
+1. Define one explicit runtime-independent IPA profile contract, including whether surface coarticulation is included in broad IPA and the status of /s, s͈/ before /i, jV/.
+2. Add paired fixtures for the same Korean surface forms at each supported profile; compare normalized structure only after the profile is the same.
+3. Keep phonemic and surface IPA separate if the evidence supports both; never silently rewrite `ɕ͈` to `s͈` (or vice versa).
+4. Run the same fixtures in Python and browser CI. Then expand to all consonant/vowel contexts, long-vowel and syllable-boundary preservation, and only after Korean IPA acceptance is stable resume Ukrainian target adaptation.
+
+This is a source inspection finding, not a test result. The full test jobs are still queued, so no cross-runtime runtime mismatch has yet been measured by executing these exact fixtures. Task ledger: `TODO` — document/implement a named IPA profile contract and paired fixtures; `BLOCKED` — cross-runtime IPA parity acceptance until the contract is agreed and the CI jobs execute; `DEFERRED` — Ukrainian practical-orthography adaptation work until Korean surface/IPA acceptance is stable.
