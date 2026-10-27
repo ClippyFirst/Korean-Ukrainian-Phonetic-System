@@ -25,7 +25,16 @@ Promotion requires primary-source evidence for the exact environment, a reviewed
 | New generalized production rules confirmed specifically from neural output in this workstream | **0** | Source-backed rule additions are not neural discoveries |
 | New exact-form licenses added to existing R003 in this workstream | 6 | NIKL §12(4) examples, not six generalized rules |
 | New source-backed exact-form entries added to existing R010 in this workstream | 2 | 안지 (S015) and 신다 (NIKL Q&A 325349); exact-form coverage only, not new generalized rules |
+| New source-backed exact-form entries added to existing R016 in this workstream | 2 | 맑게 → [말께], 맑고 → [말꼬]; exact-form coverage only, not a new generalized rule or a confirmed neural discovery |
 | Total genuinely missing rules remaining | **Unknown** | Requires case-level enumeration and adjudication |
+
+## Focused implementation batch — R016 coverage repair (2026-10-27)
+
+- **Status:** implementation committed to the existing research branch; exact-head CI is pending at the time of this entry.
+- **What changed:** the existing closed-form R016 license registry now includes `맑게` (`맑>게`) and `맑고` (`맑>고`) in both Python and browser JavaScript. Regression tests assert the Korean surface outputs `말께` and `말꼬`, and retain `닭고기` as a negative control so the exception does not spread to a noun merely because its spelling contains ㄺ + ㄱ.
+- **Primary evidence:** NIKL Standard Pronunciation Rule 11; official Q&A [qna_seq=320900](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320900) explicitly confirms 맑고[말꼬]/맑게[말께]; [qna_seq=335693](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=335693) clarifies the exception is based on written ㄺ followed by written ㄱ. Both sources are recorded in `research/SOURCE-REGISTER.csv`.
+- **Interpretation guard:** this is a source-backed exact-form coverage repair in an existing deterministic rule, not evidence that a neural model discovered a new general phonological rule. It does not close the teacher-disagreement adjudication gap, certify broad IPA, or validate Ukrainian target output. Runtime remains neural-free and fail-closed for unlicensed forms.
+- **Acceptance:** the Python and browser rule tests must pass on the exact final commit; system verification and the source/register integrity gates must be checked before marking DONE_VERIFIED.
 
 ## Evidence and limitations
 
