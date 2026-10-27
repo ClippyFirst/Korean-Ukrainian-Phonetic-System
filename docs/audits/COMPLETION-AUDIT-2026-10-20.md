@@ -1161,3 +1161,36 @@ The latest executable code/test head is `36b8e909d65ebf0e69af22f6183155853f34ae1
 
 Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. Lexical-root extensions now preserve three distinct pieces of evidence: registered lexical root, internal source-backed syllable pair, and generated full-form license. A new regression test checks that `물가로` records internal pair `물>가` rather than confusing it with the suffix boundary. Exact-head CI has not returned a result; status remains PARTIAL.
 
+
+
+### Continuation audit — assertion queue and IPA regression gate (2026-10-27)
+
+#### Task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Reconcile stale IPA browser assertions after dotted syllable-boundary contract | DONE_VERIFIED | PR #343 merged into research branch; browser regression/build and Python/data-integrity passed in runs [40408709236](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709236) and [40408709171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171). No runtime pronunciation rule was changed. |
+| Generate deterministic assertion classification queue | DONE_VERIFIED | PR #344; extraction [40464392516](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464392516), system [40464392495](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464392495). |
+| Add nearest test/suite context with explicit heuristic status | DONE_VERIFIED | PR #345; extraction [40464794197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464794197), system [40464794240](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464794240). |
+| Preserve raw expected literals and avoid evaluating expressions | DONE_VERIFIED | PR #346; extraction [40465361133](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465361133), system [40465361074](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465361074). |
+| Add coverage summary and CI fail-closed checks | DONE_VERIFIED | PR #347; extraction [40465942564](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465942564), system [40465937572](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465937572), corpus artifacts [40465937576](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465937576). |
+| Complete semantic case-level register with exact inputs/modes, expected and observed results | PARTIAL | 5,286 queue rows; 1,553 raw literal/regex fragments, 1,045 expressions not evaluated, 1,323 unsupported assertion forms. Acceptance requires case-to-fixture binding, mode extraction, multi-line/loop resolution and run-specific actual-output joins. |
+| Independently adjudicate broad IPA and Ukrainian target | BLOCKED / EVIDENCE-LIMITED | No independent adjudication corpus is created by this queue. Requires qualified independent reviewers and an auditable disagreement-resolution protocol; no gold labels may be inferred from Hangul-only NIKL readings or model outputs. |
+| Current exact-head workflow status after docs-only handoff refresh | BLOCKED / PENDING CI QUEUE | Code/workflow checks passed on code-equivalent head before the latest documentation-only commits. Current docs head `0e5835eb69c2f9c3c1028ea85555e9d22c935f7b` has test, system, browser, corpus and research workflows queued; do not claim those queued runs passed. |
+
+#### Latest generated queue evidence
+
+- 644 lexical records; 360 test files; 388 source files; 6,801 lexical-to-test text links; 50,768 Hangul-literal candidates; 34,711 preserved source lines.
+- 5,286 queue rows: 4,257 assertion candidates and 1,029 test declarations.
+- Raw source fragments: 1,004 string/scalar literals + 549 regex literals = 1,553 copied without evaluation; 1,045 computed expressions not evaluated; 336 predicate-only assertions; 1,323 unsupported forms; 1,029 non-assertion declarations.
+- Queue SHA-256: `09c26a7ebd856619fe9941702f2e12e968e717afe8dc5fba27f5f470a0df39e9`; artifact [12716247798](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465942564/artifacts/12716247798), 3,367,720 bytes.
+- Every row remains `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW` and `NOT_TIED_TO_EXACT_HEAD_RUN`. Dimension hints are multi-label; they are not case coverage or accuracy metrics.
+
+#### Branch/PR reconciliation
+
+- Current research branch continues to feed draft PR [#339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339) against main. It remains draft; do not merge wholesale until the scientific, data-rights, held-out IPA and Ukrainian-target acceptance gates are met.
+- PRs #342 and #343–#347 were integrated into the research branch. PR #341's exact-form R002/R016 rule coverage is already present in the research branch; comparison shows its branch is heavily divergent (49 commits ahead / 590 behind at comparison time), so it was not merged or ported blindly.
+- Other open PRs (#336, #338, #305 and others) were left untouched because their branches are divergent and contain separate runtime/research scope. No branches were deleted, no external settings changed, and no release was published.
+- Local clone/tests remain unavailable because outbound DNS for `github.com` failed. All reported passes above are GitHub Actions evidence; current queued runs remain pending, not failed and not passed.
+
+**Readiness:** research-ready partial prototype; not release-ready. No neural weights or teacher predictions were promoted to runtime, no licensing permissions were inferred, and no production pronunciation/target rule was changed by the assertion-queue work.
