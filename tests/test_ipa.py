@@ -198,3 +198,26 @@ def test_python_broad_profile_uses_the_shared_unadjudicated_fixture():
     for item in fixture["cases"]:
         result = phoneticize_korean(item["source"], ipa_level="broad")["ipa"]
         assert result["ipa"] == item["python_broad_ipa"], item["source"]
+
+def test_narrow_nasal_glide_rule_is_scoped_and_does_not_leak_to_broad_ipa():
+    # Teacher-guided candidate is narrow/research-only: [ɲ] before selected
+    # glide nuclei, not a general replacement for Korean onset /n/.
+    narrow_expected = {
+        "냐": "ɲa",
+        "얘": "jɛ",  # no onset ㄴ: must not synthesize a nasal
+        "녀": "ɲʌ",
+        "녜": "ɲe",
+        "뇨": "ɲjo",
+        "뉴": "ɲu",
+    }
+    for word, expected in narrow_expected.items():
+        assert phoneticize_korean(word, ipa_level="narrow")["ipa"]["ipa"] == expected
+
+    # Negative controls: /n/ before ㅣ and a non-glide context stays [n].
+    assert phoneticize_korean("니", ipa_level="narrow")["ipa"]["ipa"] == "ni"
+    assert phoneticize_korean("난", ipa_level="narrow")["ipa"]["ipa"] == "nan"
+
+    # The research allophone must not leak into broad or phonemic output.
+    assert phoneticize_korean("냐", ipa_level="broad")["ipa"]["ipa"] == "nja"
+    assert phoneticize_korean("냐", ipa_level="phonemic")["ipa"]["ipa"] == "nja"
+
