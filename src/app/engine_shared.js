@@ -69,6 +69,11 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
   ['싶어서','싶>어'], // NIKL §§13–14, transparent 싶- + -어서.
   ['없으니깐','없>으'], // Exact noisy form; no productive ending heuristic.
   ['없으니까','없>으'], // NIKL §§13–14, 없다 + -으니까.
+  // Exact-form morphology licenses mirrored from Python; these do not generalize to substrings.
+  ['가없이','없>이'],
+  ['말없이','없>이'],
+  ['수없이','없>이'],
+  ['늙은이','늙>은'],
 ]);
 
 // Exact-form substantive-morpheme liaison licenses under NIKL §15(붙임).
@@ -107,6 +112,7 @@ const NIKL_12_H_DELETION_FORMS=new Map([
   ['싫어서','싫>어'], // NIKL Online Q&A qna_seq=313981 (2025-04-29): [시러서].
   ['수많은','많>은'], // Korean Basic Dictionary, 수많다: [수ː마는].
   ['많아서','많>아'], // NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
+  ['많아지다','많>아'], // Exact form: 많- + -아 + auxiliary 지다; no productive heuristic.
   ['쌓아서','쌓>아'], // NIKL §12(4), 쌓- + -아서.
   ['쳐넣어야','넣>어'], // NIKL §12(4), 넣- + -어야 in compound verb.
   ['애새끼낳으면','낳>으'], // Exact noisy token; only internal 낳- + -으면.
