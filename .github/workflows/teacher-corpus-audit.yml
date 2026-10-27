@@ -1,0 +1,88 @@
+name: Teacher corpus split audit
+
+on:
+  pull_request:
+    paths:
+      - "scripts/audit_teacher_corpus_splits.py"
+      - "scripts/prepare_korean_g2p_corpus.py"
+      - "scripts/prepare_ugtphon_korean_corpus.py"
+      - "scripts/audit_korean_corpus_compatibility.py"
+      - "scripts/packetize_korean_ipa_annotations.py"
+      - "scripts/build_korean_ipa_adjudication_queue.py"
+      - "scripts/audit_korean_ipa_symbol_inventories.py"
+      - "scripts/analyze_korean_ipa_conflict_patterns.py"
+      - "scripts/validate_korean_ipa_adjudications.py"
+      - "scripts/evaluate_deterministic_rule_candidate.py"
+      - "scripts/mine_deterministic_rule_candidates.py"
+      - "tests/test_mine_deterministic_rule_candidates.py"
+      - "tests/test_prepare_korean_g2p_corpus.py"
+      - "tests/test_prepare_ugtphon_korean_corpus.py"
+      - "tests/test_audit_korean_corpus_compatibility.py"
+      - "tests/test_packetize_korean_ipa_annotations.py"
+      - "tests/test_build_korean_ipa_adjudication_queue.py"
+      - "tests/test_audit_korean_ipa_symbol_inventories.py"
+      - "tests/test_analyze_korean_ipa_conflict_patterns.py"
+      - "tests/test_validate_korean_ipa_adjudications.py"
+      - "tests/test_evaluate_deterministic_rule_candidate.py"
+      - "tests/test_audit_teacher_corpus_splits.py"
+      - "docs/TEACHER-CORPUS-ELIGIBILITY-2026-10-26.md"
+      - ".github/workflows/teacher-corpus-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependency
+        run: python -m pip install pytest
+      - name: Unit-test source parsing, overlap logic, and corpus preparation
+        run: python -m pytest -q tests/test_audit_teacher_corpus_splits.py tests/test_prepare_korean_g2p_corpus.py tests/test_prepare_ugtphon_korean_corpus.py tests/test_audit_korean_corpus_compatibility.py tests/test_packetize_korean_ipa_annotations.py tests/test_build_korean_ipa_adjudication_queue.py tests/test_audit_korean_ipa_symbol_inventories.py tests/test_analyze_korean_ipa_conflict_patterns.py tests/test_validate_korean_ipa_adjudications.py tests/test_mine_deterministic_rule_candidates.py
+      - name: Fetch pinned public corpora and audit split integrity
+        run: python scripts/audit_teacher_corpus_splits.py --output-json "$RUNNER_TEMP/teacher-corpus-split-audit.json"
+      - name: Prepare pinned SIGMORPHON train/dev corpus (test remains sealed)
+        run: python scripts/prepare_korean_g2p_corpus.py --output-dir "$RUNNER_TEMP/korean-g2p-corpus"
+      - name: Prepare conservative UGTPHON Korean train/dev token corpus
+        run: python scripts/prepare_ugtphon_korean_corpus.py --output-dir "$RUNNER_TEMP/ugtphon-korean-corpus"
+      - name: Audit cross-corpus form overlap and representation compatibility
+        run: python scripts/audit_korean_corpus_compatibility.py --sigmorphon-dir "$RUNNER_TEMP/korean-g2p-corpus" --ugtphon-dir "$RUNNER_TEMP/ugtphon-korean-corpus" --output-json "$RUNNER_TEMP/korean-corpus-compatibility.json"
+      - name: Build train/train IPA conflict adjudication queue
+        run: python scripts/build_korean_ipa_adjudication_queue.py --sigmorphon-train "$RUNNER_TEMP/korean-g2p-corpus/train.jsonl" --ugtphon-train "$RUNNER_TEMP/ugtphon-korean-corpus/train.jsonl" --output-json "$RUNNER_TEMP/korean-ipa-adjudication-queue.json"
+      - name: Audit source-specific IPA target symbol inventories without inferring segments
+        run: python scripts/audit_korean_ipa_symbol_inventories.py --sigmorphon-dir "$RUNNER_TEMP/korean-g2p-corpus" --ugtphon-dir "$RUNNER_TEMP/ugtphon-korean-corpus" --output-json "$RUNNER_TEMP/korean-ipa-symbol-inventories.json"
+      - name: Stratify cross-corpus conflicts and preserve source variants
+        run: python scripts/analyze_korean_ipa_conflict_patterns.py --queue-json "$RUNNER_TEMP/korean-ipa-adjudication-queue.json" --output-json "$RUNNER_TEMP/korean-ipa-conflict-patterns.json"
+      - name: Packetize SIGMORPHON train/dev targets without converting IPA
+        run: |
+          python scripts/packetize_korean_ipa_annotations.py --input-jsonl "$RUNNER_TEMP/korean-g2p-corpus/train.jsonl" --output-jsonl "$RUNNER_TEMP/korean-g2p-corpus/train.typed-ipa.jsonl"
+          python scripts/packetize_korean_ipa_annotations.py --input-jsonl "$RUNNER_TEMP/korean-g2p-corpus/dev.jsonl" --output-jsonl "$RUNNER_TEMP/korean-g2p-corpus/dev.typed-ipa.jsonl"
+      - name: Packetize UGTPHON train/dev annotations without converting IPA
+        run: |
+          python scripts/packetize_korean_ipa_annotations.py --input-jsonl "$RUNNER_TEMP/ugtphon-korean-corpus/train.jsonl" --output-jsonl "$RUNNER_TEMP/ugtphon-korean-corpus/train.typed-ipa.jsonl"
+          python scripts/packetize_korean_ipa_annotations.py --input-jsonl "$RUNNER_TEMP/ugtphon-korean-corpus/dev.jsonl" --output-jsonl "$RUNNER_TEMP/ugtphon-korean-corpus/dev.typed-ipa.jsonl"
+      - name: Upload audit metadata, adjudication queue, and separate train/dev corpora
+        uses: actions/upload-artifact@v4
+        with:
+          name: korean-g2p-train-dev-corpus
+          path: |
+            ${{ runner.temp }}/teacher-corpus-split-audit.json
+            ${{ runner.temp }}/korean-corpus-compatibility.json
+            ${{ runner.temp }}/korean-ipa-adjudication-queue.json
+            ${{ runner.temp }}/korean-ipa-symbol-inventories.json
+            ${{ runner.temp }}/korean-ipa-conflict-patterns.json
+            ${{ runner.temp }}/korean-g2p-corpus/train.jsonl
+            ${{ runner.temp }}/korean-g2p-corpus/dev.jsonl
+            ${{ runner.temp }}/korean-g2p-corpus/manifest.json
+            ${{ runner.temp }}/korean-g2p-corpus/*.typed-ipa.jsonl
+            ${{ runner.temp }}/ugtphon-korean-corpus/train.jsonl
+            ${{ runner.temp }}/ugtphon-korean-corpus/dev.jsonl
+            ${{ runner.temp }}/ugtphon-korean-corpus/manifest.json
+            ${{ runner.temp }}/ugtphon-korean-corpus/*.typed-ipa.jsonl
+          if-no-files-found: error

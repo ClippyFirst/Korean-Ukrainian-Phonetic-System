@@ -11,14 +11,14 @@ const rulesFor = (result) => result.trace.flatMap((entry) => entry.rules ?? []);
 
 test('§9 and §18: representative coda neutralization feeds nasal assimilation in 앞마당', () => {
   const result = engine.convert('앞마당');
-  assert.equal(result.ipa, 'am ma daŋ');
+  assert.equal(result.ipa, 'am.ma.daŋ');
   assert.ok(rulesFor(result).includes('nasal-assimilation'));
   assert.deepEqual(result.issues, []);
 });
 
 test('§9 and §23: a neutralized obstruent coda licenses fortition, unlike a sonorant coda', () => {
   const result = engine.convert('국밥');
-  assert.equal(result.ipa, 'kuk̚ p͈ap̚');
+  assert.equal(result.ipa, 'kuk̚.p͈ap̚');
   assert.ok(rulesFor(result).includes('tensification'));
   assert.deepEqual(result.issues, []);
 
@@ -30,7 +30,7 @@ test('§9 and §23: a neutralized obstruent coda licenses fortition, unlike a so
 
 test('§18 and §19: ordered assimilation remains stable when nasalization precedes a following coda', () => {
   const result = engine.convert('밥 먹는다');
-  assert.equal(result.ipa, 'pam mʌŋ nɯn da');
+  assert.equal(result.ipa, 'pam mʌŋ.nɯn.da');
   assert.ok(rulesFor(result).includes('nasal-assimilation'));
   assert.deepEqual(result.issues, []);
 });
@@ -38,7 +38,7 @@ test('§18 and §19: ordered assimilation remains stable when nasalization prece
 test('§9, §18, and §29: exact phrase insertion feeds the surface nasal sequence in 옷 입다', () => {
   const result = engine.convert('옷 입다');
   assert.ok(rulesFor(result).includes('phrase-n-insertion-§29'));
-  assert.equal(result.ipa, 'on nip̚ t͈a');
+  assert.equal(result.ipa, 'on nip̚.t͈a');
   assert.deepEqual(result.issues, []);
 });
 

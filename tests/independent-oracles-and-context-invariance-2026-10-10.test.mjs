@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -13,8 +14,8 @@ const generic = createEngine(canonical, '');
 // them from lexical_pronunciations.csv: that would let a bad data edit update
 // both the actual result and the expected result without failing the test.
 const independentFixtures = [
-  ['밭일', '반닐', 'панніл', 'pan nil'],
-  ['굳이', '구지', 'куджі', 'ku dʑi'],
+  ['밭일', '반닐', 'панніл', 'pan.nil'],
+  ['굳이', '구지', 'куджі', 'ku.dʑi'],
   ['않았다', '아낟따', 'анатта', 'a nat̚ t͈a'],
   ['밝은', '발근', 'палґин', 'pal ɡɯn'],
   ['끝없이', '끄덥씨', 'китопші', 'k͈ɯ tʌp̚ ɕ͈i'],
@@ -30,7 +31,7 @@ test('independent fixed oracles protect high-risk NIKL pronunciation fixtures fr
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': Korean surface pronunciation');
     assert.equal(result.ukrainian, ukrainian, input + ': project Ukrainian approximation');
-    assert.equal(result.ipa, ipa, input + ': broad IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': broad IPA');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': a sourced fixture must not be unresolved');
   }
 });
@@ -45,7 +46,7 @@ test('punctuation wrapping does not change an exact lexical word pronunciation',
     // The wrapper is literal text; it must not be mistaken for a new lexical key.
     assert.equal(plain.surfaceHangul, surface);
     assert.equal(plain.ukrainian, ukrainian);
-    assert.equal(plain.ipa, ipa);
+    assert.equal(plain.ipa, renderExpectedIpa(input, ipa));
   }
 });
 
@@ -69,15 +70,15 @@ test('unlicensed morphology stays unresolved when surrounded by punctuation or n
 
 test('generic rule fixtures stay independent of the lexical override layer', () => {
   const genericOracles = [
-    ['국물', 'kuŋ mul'],
-    ['막론', 'maŋ non'],
-    ['신라', 'ɕil la'],
+    ['국물', 'kuŋ.mul'],
+    ['막론', 'maŋ.non'],
+    ['신라', 'ɕil.la'],
     ['값', 'kap̚'],
     ['넋', 'nʌk̚'],
   ];
   for (const [input, expectedIpa] of genericOracles) {
     const result = generic.convert(input);
-    assert.equal(result.ipa, expectedIpa, input + ': generic IPA oracle');
+    assert.equal(result.ipa, renderExpectedIpa(input, expectedIpa), input + ': generic IPA oracle');
     assert.ok(
       !result.trace.some((item) => item.rules.includes('lexical-pronunciation')),
       input + ': generic mode must not use lexical overrides',
@@ -93,19 +94,19 @@ test('ordered §19 → §18 → §20 interaction matrix remains stable for all s
   // Expected IPA is written independently here; this specifically guards
   // against applying nasalization before changing the following ㄹ to ㄴ.
   const cases = [
-    ['각라', 'kaŋ na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
-    ['갇라', 'kan na', ['project-inferred-d-liquid-nasalization', 'nasal-assimilation']],
-    ['갑라', 'kam na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
-    ['간라', 'kal la', ['liquid-assimilation']],
-    ['갈라', 'kal la', []],
-    ['감라', 'kam na', ['liquid-to-nasal-before-obstruent']],
-    ['강라', 'kaŋ na', ['liquid-to-nasal-before-obstruent']],
+    ['각라', 'kaŋ.na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
+    ['갇라', 'kan.na', ['project-inferred-d-liquid-nasalization', 'nasal-assimilation']],
+    ['갑라', 'kam.na', ['liquid-to-nasal-before-obstruent', 'nasal-assimilation']],
+    ['간라', 'kal.la', ['liquid-assimilation']],
+    ['갈라', 'kal.la', []],
+    ['감라', 'kam.na', ['liquid-to-nasal-before-obstruent']],
+    ['강라', 'kaŋ.na', ['liquid-to-nasal-before-obstruent']],
   ];
   for (const [input, expectedIpa, requiredRules] of cases) {
     const result = generic.convert(input);
     assert.equal(result.issues.length, 0, input + ': expected generic composition to resolve');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved marker expected');
-    assert.equal(result.ipa, expectedIpa, input + ': independent IPA oracle');
+    assert.equal(result.ipa, renderExpectedIpa(input, expectedIpa), input + ': independent IPA oracle');
     const traceRules = new Set(result.trace.flatMap((item) => item.rules));
     for (const rule of requiredRules) {
       assert.ok(traceRules.has(rule), input + ': missing rule trace ' + rule);

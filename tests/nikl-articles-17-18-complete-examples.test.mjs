@@ -11,22 +11,22 @@ const officialSource = /^https:\/\/(www\.|m\.)?korean\.go\.kr\//u;
 
 test('§17 all six listed palatalization examples and all three ㄷ+히 examples are covered', () => {
   const expected = {
-    '곧이듣다':['고지듣따','ko dʑi dɯt̚ t͈a'],
-    '굳이':['구지','ku dʑi'],
-    '미닫이':['미다지','miː da dʑi'],
-    '땀받이':['땀바지','t͈am ba dʑi'],
-    '밭이':['바치','pa tɕʰi'],
-    '벼훑이':['벼훌치','pjʌ hul tɕʰi'],
-    '굳히다':['구치다','ku tɕʰi da'],
-    '닫히다':['다치다','ta tɕʰi da'],
-    '묻히다':['무치다','mu tɕʰi da'],
+    '곧이듣다': ['고지듣따','ko.dʑi.dɯt̚.t͈a'],
+    '굳이': ['구지','ku.dʑi'],
+    '미닫이': ['미다지','miː.da.dʑi'],
+    '땀받이': ['땀바지','t͈am.ba.dʑi'],
+    '밭이': ['바치','pa.tɕʰi'],
+    '벼훑이': ['벼훌치','pjʌ.hul.tɕʰi'],
+    '굳히다': ['구치다','ku.tɕʰi.da'],
+    '닫히다': ['다치다','ta.tɕʰi.da'],
+    '묻히다': ['무치다','mu.tɕʰi.da'],
   };
   for (const [word,[surface,ipa]] of Object.entries(expected)) {
     const row = entries.get(word);
     assert.ok(row, 'missing §17 official example: ' + word);
     assert.match(row.source_url, officialSource, word);
     assert.equal(row.surface_hangul, surface, word);
-    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word);
+    assert.equal(row.ipa_syllables.split('|').join('.'), ipa, word);
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     assert.equal(result.ipa, ipa, word);
@@ -37,37 +37,37 @@ test('§17 all six listed palatalization examples and all three ㄷ+히 examples
 
 test('§18 all twenty-four listed word examples are source-backed with exact standard surfaces', () => {
   const expected = {
-    '먹는':['멍는','mʌŋ nɯn'],
-    '국물':['궁물','kuŋ mul'],
-    '깎는':['깡는','k͈aŋ nɯn'],
-    '키읔만':['키응만','kʰi ɯŋ man'],
-    '몫몫이':['몽목씨','moŋ mok̚ ɕ͈i'],
-    '긁는':['긍는','kɯŋ nɯn'],
-    '흙만':['흥만','hɯŋ man'],
-    '닫는':['단는','tan nɯn'],
-    '짓는':['진는','tɕiːn nɯn'],
-    '옷맵시':['온맵씨','on mɛp̚ ɕ͈i'],
-    '있는':['인는','in nɯn'],
-    '맞는':['만는','man nɯn'],
-    '젖멍울':['전멍울','tɕʌn mʌŋ ul'],
-    '쫓는':['쫀는','tɕ͈on nɯn'],
-    '꽃망울':['꼰망울','k͈on maŋ ul'],
-    '붙는':['분는','pun nɯn'],
-    '놓는':['논는','non nɯn'],
-    '잡는':['잠는','tɕam nɯn'],
-    '밥물':['밤물','pam mul'],
-    '앞마당':['암마당','am ma daŋ'],
-    '밟는':['밤는','paːm nɯn'],
-    '읊는':['음는','ɯm nɯn'],
-    '없는':['엄는','ʌːm nɯn'],
-    '값매다':['감매다','kam mɛ da'],
+    '먹는': ['멍는','mʌŋ.nɯn'],
+    '국물': ['궁물','kuŋ.mul'],
+    '깎는': ['깡는','k͈aŋ.nɯn'],
+    '키읔만': ['키응만','kʰi.ɯŋ.man'],
+    '몫몫이': ['몽목씨','moŋ.mok̚.ɕ͈i'],
+    '긁는': ['긍는','kɯŋ.nɯn'],
+    '흙만': ['흥만','hɯŋ.man'],
+    '닫는': ['단는','tan.nɯn'],
+    '짓는': ['진는','tɕiːn.nɯn'],
+    '옷맵시': ['온맵씨','on.mɛp̚.ɕ͈i'],
+    '있는': ['인는','in.nɯn'],
+    '맞는': ['만는','man.nɯn'],
+    '젖멍울': ['전멍울','tɕʌn.mʌŋ.ul'],
+    '쫓는': ['쫀는','tɕ͈on.nɯn'],
+    '꽃망울': ['꼰망울','k͈on.maŋ.ul'],
+    '붙는': ['분는','pun.nɯn'],
+    '놓는': ['논는','non.nɯn'],
+    '잡는': ['잠는','tɕam.nɯn'],
+    '밥물': ['밤물','pam.mul'],
+    '앞마당': ['암마당','am.ma.daŋ'],
+    '밟는': ['밤는','paːm.nɯn'],
+    '읊는': ['음는','ɯm.nɯn'],
+    '없는': ['엄는','ʌːm.nɯn'],
+    '값매다': ['감매다','kam.mɛ.da'],
   };
   for (const [word,[surface,ipa]] of Object.entries(expected)) {
     const row = entries.get(word);
     assert.ok(row, 'missing §18 official example: ' + word);
     assert.match(row.source_url, officialSource, word);
     assert.equal(row.surface_hangul, surface, word);
-    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, word);
+    assert.equal(row.ipa_syllables.split('|').join('.'), ipa, word);
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     if (row.target_status !== 'surface-only') {
@@ -85,11 +85,11 @@ test('§18 all twenty-four listed word examples are source-backed with exact sta
 
 test('§18 all five official cross-word examples remain connected and nasalize', () => {
   const expected = {
-    '책 넣는다':'tɕʰɛŋ nʌn nɯn da',
-    '흙 말리다':'hɯŋ mal li da',
-    '옷 맞추다':'on mat̚ tɕʰu da',
-    '밥 먹는다':'pam mʌŋ nɯn da',
-    '값 매기다':'kam mɛ ɡi da',
+    '책 넣는다': 'tɕʰɛŋ nʌn.nɯn.da',
+    '흙 말리다': 'hɯŋ mal.li.da',
+    '옷 맞추다': 'on mat̚.tɕʰu.da',
+    '밥 먹는다': 'pam mʌŋ.nɯn.da',
+    '값 매기다': 'kam mɛ.ɡi.da',
   };
   for (const [phrase,ipa] of Object.entries(expected)) {
     const result = engine.convert(phrase);
@@ -102,11 +102,11 @@ test('§18 cross-word nasal/liquid assimilation survives a lexical/generic split
   // All five official eojeol examples are exercised after an unrelated lexical
   // token, so this specifically covers the mixed-tokenization adapter path.
   const cases = [
-    ['읽어 책 넣는다', 'il ɡʌ tɕʰɛŋ nʌn nɯn da'],
-    ['읽어 흙 말리다', 'il ɡʌ hɯŋ mal li da'],
-    ['읽어 옷 맞추다', 'il ɡʌ on mat̚ tɕʰu da'],
-    ['읽어 밥 먹는다', 'il ɡʌ pam mʌŋ nɯn da'],
-    ['읽어 값 매기다', 'il ɡʌ kam mɛ ɡi da'],
+    ['읽어 책 넣는다', 'il.ɡʌ tɕʰɛŋ nʌn.nɯn.da'],
+    ['읽어 흙 말리다', 'il.ɡʌ hɯŋ mal.li.da'],
+    ['읽어 옷 맞추다', 'il.ɡʌ on mat̚.tɕʰu.da'],
+    ['읽어 밥 먹는다', 'il.ɡʌ pam mʌŋ.nɯn.da'],
+    ['읽어 값 매기다', 'il.ɡʌ kam mɛ.ɡi.da'],
   ];
   for (const [phrase, expectedIpa] of cases) {
     const result = engine.convert(phrase);

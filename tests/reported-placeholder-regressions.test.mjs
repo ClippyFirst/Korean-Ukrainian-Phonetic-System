@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { parseIpaSyllables, renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -64,7 +65,7 @@ test('reported inflections have explicit NIKL rule derivations rather than unsup
     if (ruleB) assert.ok(row.rule_notes.includes(ruleB), `${input}: missing second rule/evidence note`);
     assert.equal(engine.convert(input).surfaceHangul, surface, `${input}: engine result`);
     assert.equal(engine.convert(input).ukrainian, expectedTarget.split('|').join(''), `${input}: engine Ukrainian target`);
-    assert.equal(engine.convert(input).ipa, expectedIpa.split('|').join(' '), `${input}: engine IPA`);
+    assert.equal(engine.convert(input).ipa, renderExpectedIpa(input, expectedIpa), `${input}: engine IPA`);
     assert.ok(!engine.convert(input).ukrainian.includes('⟦'), `${input}: placeholder remains`);
     assert.deepEqual(engine.convert(input).issues, [], `${input}: engine issues remain`);
   }
@@ -80,11 +81,11 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
   const result = engine.convert('값의');
   assert.equal(result.surfaceHangul, '갑씌');
   assert.equal(result.ukrainian, 'капший');
-  assert.equal(result.ipa, 'kap̚ ɕ͈ɰi');
+  assert.equal(result.ipa, 'kap̚.ɕ͈ɰi');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '갑쎄');
   assert.equal(result.variants[0].ukrainian, 'капсе');
-  assert.equal(result.variants[0].ipa, 'kap̚ s͈e');
+  assert.equal(result.variants[0].ipa, 'kap̚.s͈e');
   assert.ok(!result.ukrainian.includes('⟦'));
   assert.deepEqual(result.issues, []);
 });
@@ -92,7 +93,7 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
 test('§27 fortition survives mixed lexical/generic tokenization in 읽을 수 있습니다', () => {
   const result = engine.convert('읽을 수 있습니다');
   assert.equal(result.ukrainian, 'ілґил су ітсимніда');
-  assert.equal(result.ipa, 'il ɡɯl s͈u it̚ s͈ɯm ni da');
+  assert.equal(result.ipa, 'il.ɡɯl s͈u it̚.s͈ɯm.ni.da');
   assert.equal(result.issues.length, 0);
   assert.equal(result.status, 'lexical-review');
   assert.ok(result.trace.some(item => item.rules.includes('adnominal-r-fortition-§27')));
@@ -116,7 +117,7 @@ test('the other reported palatalization forms remain covered, including a whole 
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface);
     assert.equal(result.ukrainian, target.split('|').join(''));
-    assert.equal(result.ipa, ipa.split('|').join(' '));
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa));
     assert.ok(!result.ukrainian.includes('⟦'), `${input}: unresolved placeholder`);
     assert.deepEqual(result.issues, [], `${input}: unresolved engine issue`);
   }
@@ -145,7 +146,7 @@ test('§14 NIKL complex-coda liaison examples preserve official particle reading
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, `${input}: engine surface`);
     assert.equal(result.ukrainian, target.split('|').join(''), `${input}: Ukrainian target`);
-    assert.equal(result.ipa, ipa.split('|').join(' '), `${input}: IPA`);
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), `${input}: IPA`);
     assert.equal(result.status, 'lexical-review', `${input}: provisional Ukrainian mapping remains visibly reviewable`);
     assert.ok(result.trace.some(item => item.rules.includes('ukrainian-target-provisional')), `${input}: trace flags provisional target`);
     assert.ok(!result.ukrainian.includes('⟦'), `${input}: unresolved target placeholder`);
@@ -155,7 +156,7 @@ test('§14 NIKL complex-coda liaison examples preserve official particle reading
 
 test('lexical IPA consistently marks fortis sibilants as alveolo-palatal before the j-vowel set', () => {
   const expected = {
-    '넋이': 'nʌk̚ ɕ͈i',
+    '넋이': 'nʌk̚.ɕ͈i',
     '값이': 'kap̚ ɕ͈i',
     '말씨': 'maːl ɕ͈i',
     '몫몫이': 'moŋ mok̚ ɕ͈i',
@@ -173,9 +174,9 @@ test('lexical IPA consistently marks fortis sibilants as alveolo-palatal before 
   for (const [input, ipa] of Object.entries(expected)) {
     const row = entries.get(input);
     assert.ok(row, `${input}: missing lexical evidence row`);
-    assert.equal(row.ipa_syllables.split('|').join(' '), ipa, `${input}: stored broad IPA`);
+    assert.deepEqual(parseIpaSyllables(row.ipa_syllables), parseIpaSyllables(ipa), `${input}: stored broad IPA syllables`);
     const result = engine.convert(input);
-    assert.equal(result.ipa, ipa, `${input}: engine IPA`);
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), `${input}: engine IPA`);
     assert.equal(result.status, 'lexical-review', `${input}: provisional mapping remains reviewable`);
   }
 });
@@ -190,7 +191,7 @@ test('Ukrainian rendering is derived from the IPA layer for lexical readings', (
   ];
   for (const [input, expectedIpa, expectedUkrainian] of cases) {
     const result = engine.convert(input);
-    assert.equal(result.ipa, expectedIpa, input + ': canonical IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, expectedIpa), input + ': canonical IPA');
     assert.equal(result.ukrainian, expectedUkrainian, input + ': Ukrainian must be rendered from IPA');
     assert.ok(!result.ukrainian.includes('⟦'), input + ': no unresolved marker leaks into the target');
   }
@@ -199,12 +200,12 @@ test('Ukrainian rendering is derived from the IPA layer for lexical readings', (
 
 test('difficult passage forms have sourced IPA and render Ukrainian only from that IPA',()=>{
   const cases=[
-    ['읽었다는','il ɡʌt̚ t͈a nɯn','ілґоттанин'],
+    ['읽었다는','il.ɡʌt̚.t͈a.nɯn','ілґоттанин'],
     ['없어서','ʌp̚ s͈ʌ sʌ','опсосо'],
     ['찾았다','tɕʰa dʑa t͈a','чаджата'],
     ['앉히다','an tɕʰi da','анчіда'],
     ['해돋이','hɛ do dʑi','гедоджі'],
-    ['품삯이','pʰum s͈ak̚ ɕ͈i','пумсакші'],
+    ['품삯이','pʰum.s͈ak̚.ɕ͈i','пумсакші'],
     ['품삯을','pʰum s͈ak̚ s͈ɯl','пумсаксил'],
     ['품삯으로','pʰum s͈ak̚ s͈ɯ ɾo','пумсаксиро'],
     ['외곬에','ø ɡol s͈e','веґолсе'],
@@ -213,7 +214,7 @@ test('difficult passage forms have sourced IPA and render Ukrainian only from th
   ];
   for(const [word,ipa,ukrainian] of cases){
     const result=engine.convert(word);
-    assert.equal(result.ipa,ipa,word+': standard IPA');
+    assert.equal(result.ipa,renderExpectedIpa(word,ipa),word+': standard IPA');
     assert.equal(result.ukrainian,ukrainian,word+': IPA-derived Ukrainian');
     assert.ok(!result.ukrainian.includes('⟦')&&!result.ukrainian.includes('⟧'),word+': no inline markers');
     assert.deepEqual(result.issues,[],word+': sourced lexical reading resolves the form');
@@ -256,7 +257,7 @@ test('§23 all 20 enumerated NIKL fortition examples have sourced IPA-first lexi
     assert.equal(row.target_status, 'provisional', input + ': Ukrainian target remains provisional');
     const result = engine.convert(input);
     assert.equal(result.surfaceHangul, surface, input + ': runtime Korean surface');
-    assert.equal(result.ipa, ipa.split('|').join(' '), input + ': runtime IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': runtime IPA');
     assert.equal(result.ukrainian, target.split('|').join(''), input + ': Ukrainian must derive from IPA');
     assert.ok(!result.ukrainian.includes('⟦') && !result.ukrainian.includes('⟧'), input + ': no unresolved marker');
     assert.deepEqual(result.issues, [], input + ': no unresolved engine issue');

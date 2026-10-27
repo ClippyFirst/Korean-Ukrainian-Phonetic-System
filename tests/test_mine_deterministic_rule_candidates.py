@@ -1,0 +1,184 @@
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+import pytest
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from mine_deterministic_rule_candidates import (  # noqa: E402
+    build_report,
+    conservative_normalize,
+    context_buckets,
+    load_provenance,
+    main,
+)
+
+
+def write_inputs(tmp_path: Path, *, split: str = "dev", dataset_id: str = "internal-korean-dev"):
+    provenance = {
+        "model_id": "example/teacher",
+        "model_revision": "0123456789abcdef",
+        "dataset_id": dataset_id,
+        "dataset_revision": "abcdef0123456789",
+        "split": split,
+        "source_url": "https://example.org/corpus",
+        "dataset_license_status": "reviewed-for-local-research",
+        "model_license_status": "unresolved-local-research-only",
+        "teacher_output_type": "IPA",
+        "teacher_model_training_overlap_status": "unknown",
+        "teacher_ipa_convention": "example-reviewed-broad-ipa-v1",
+        "strict_ipa_convention": "example-reviewed-broad-ipa-v1",
+        "ipa_conventions_comparable": True,
+        "ipa_convention_review_id": "EXAMPLE-IPA-MAPPING-REVIEW-001",
+        "test_data_used_for_tuning": False,
+    }
+    provenance_path = tmp_path / "provenance.json"
+    provenance_path.write_text(json.dumps(provenance), encoding="utf-8")
+    input_path = tmp_path / "predictions.jsonl"
+    rows = [
+        {"case_id": "dev-001", "split": split, "source_text": "국밥", "teacher_ipa": "kuk̚.p͈ap̚", "strict_ipa": "kuk̚.p͈ap̚"},
+        {"case_id": "dev-002", "split": split, "source_text": "국물", "teacher_ipa": "kuŋ.mul", "strict_ipa": "kuk.mul"},
+        {"case_id": "dev-003", "split": split, "source_text": "국내", "teacher_ipa": "kuŋ.dɛ", "strict_ipa": "kuk.tɛ"},
+    ]
+    input_path.write_text(
+        "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+    return input_path, provenance_path
+
+
+def test_normalization_is_conservative_and_preserves_ipa_contrasts():
+    assert conservative_normalize("  a\u0303   b ") == "ã b"
+    assert conservative_normalize("aː") != conservative_normalize("a")
+    assert conservative_normalize("t͈") != conservative_normalize("t")
+    assert conservative_normalize("a.b") != conservative_normalize("ab")
+
+
+def test_report_preserves_raw_outputs_and_only_marks_context_associations(tmp_path):
+    input_path, provenance_path = write_inputs(tmp_path)
+    report = build_report(input_path, provenance_path, min_context_support=1)
+
+    assert report["summary"]["case_count"] == 3
+    assert report["summary"]["teacher_strict_disagreements"] == 2
+    assert report["cases"][1]["teacher_raw"] == "kuŋ.mul"
+    assert report["cases"][1]["strict_raw"] == "kuk.mul"
+    assert report["cases"][1]["human_review_status"] == "not-reviewed"
+    assert report["protocol"]["automatic_rule_generation"] is False
+    assert "association only" in report["context_associations"][0]["interpretation"]
+    assert report["provenance"]["model_revision"] == "0123456789abcdef"
+
+
+@pytest.mark.parametrize("split", ["test", "holdout", "test-dev"])
+def test_provenance_rejects_non_train_dev_splits(tmp_path, split):
+    _, provenance_path = write_inputs(tmp_path, split=split)
+    with pytest.raises(ValueError, match="only train/dev"):
+        load_provenance(provenance_path)
+
+
+@pytest.mark.parametrize("dataset_id", [
+    "naver-ai/UGTPHON",
+    "sigmorphon/2021-task1",
+])
+def test_verified_train_dev_partitions_of_benchmark_families_are_allowed(tmp_path, dataset_id):
+    _, provenance_path = write_inputs(tmp_path, dataset_id=dataset_id, split="train")
+    assert load_provenance(provenance_path)["dataset_id"] == dataset_id
+
+
+def test_provenance_rejects_sealed_holdout_ids_even_if_split_is_mislabeled(tmp_path):
+    _, provenance_path = write_inputs(
+        tmp_path, dataset_id="project-24-form-holdout", split="train"
+    )
+    with pytest.raises(ValueError, match="sealed holdout/test"):
+        load_provenance(provenance_path)
+
+
+def test_row_split_cannot_override_train_dev_provenance(tmp_path):
+    input_path, provenance_path = write_inputs(tmp_path)
+    rows = [json.loads(line) for line in input_path.read_text(encoding="utf-8").splitlines()]
+    rows[1]["split"] = "test"
+    input_path.write_text(
+        "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="refusing split"):
+        build_report(input_path, provenance_path)
+
+
+def test_duplicate_case_ids_are_rejected(tmp_path):
+    input_path, provenance_path = write_inputs(tmp_path)
+    rows = [json.loads(line) for line in input_path.read_text(encoding="utf-8").splitlines()]
+    rows[1]["case_id"] = rows[0]["case_id"]
+    input_path.write_text(
+        "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="duplicate case_id"):
+        build_report(input_path, provenance_path)
+
+
+@pytest.mark.parametrize("case_id", [
+    "test-001",
+    "case_holdout_002",
+    "nikl-24-form-003",
+])
+def test_sealed_test_or_holdout_case_ids_are_rejected_even_when_split_says_dev(tmp_path, case_id):
+    input_path, provenance_path = write_inputs(tmp_path)
+    rows = [json.loads(line) for line in input_path.read_text(encoding="utf-8").splitlines()]
+    rows[1]["case_id"] = case_id
+    input_path.write_text(
+        "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="identifiers marked test/holdout"):
+        build_report(input_path, provenance_path)
+
+
+def test_context_buckets_distinguish_eojeol_space_from_within_word():
+    contexts = context_buckets("국밥 국 물")
+    assert "within-eojeol:coda=velar-family:next-onset=bilabial" in contexts
+    assert "across-space:coda=velar-family:next-onset=nasal-m" in contexts
+    assert "across-space:coda=bilabial-family:next-onset=velar" in contexts
+
+
+def test_cer_uses_teacher_as_reference_denominator(tmp_path):
+    input_path, provenance_path = write_inputs(tmp_path)
+    rows = [json.loads(line) for line in input_path.read_text(encoding="utf-8").splitlines()]
+    rows[0]["teacher_ipa"] = "a"
+    rows[0]["strict_ipa"] = "ab"
+    input_path.write_text(
+        "\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
+        encoding="utf-8",
+    )
+    report = build_report(input_path, provenance_path, min_context_support=1)
+    first = next(row for row in report["cases"] if row["case_id"] == "dev-001")
+    assert first["character_edit_distance"] == 1
+    assert first["cer_teacher_vs_strict"] == 1.0
+
+
+def test_cli_writes_reproducible_json_report(tmp_path, capsys):
+    input_path, provenance_path = write_inputs(tmp_path)
+    output_path = tmp_path / "out" / "report.json"
+    exit_code = main([
+        "--input-jsonl", str(input_path),
+        "--provenance-json", str(provenance_path),
+        "--output-json", str(output_path),
+        "--min-context-support", "1",
+    ])
+    assert exit_code == 0
+    assert output_path.exists()
+    report = json.loads(output_path.read_text(encoding="utf-8"))
+    assert report["schema_version"] == "1.0"
+    assert report["summary"]["case_count"] == 3
+    assert json.loads(capsys.readouterr().out)["case_count"] == 3
+
+def test_provenance_rejects_unreviewed_ipa_convention_comparison(tmp_path):
+    _, provenance_path = write_inputs(tmp_path)
+    provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+    provenance["ipa_conventions_comparable"] = False
+    provenance_path.write_text(json.dumps(provenance), encoding="utf-8")
+    with pytest.raises(ValueError, match="must be explicitly reviewed as comparable"):
+        load_provenance(provenance_path)

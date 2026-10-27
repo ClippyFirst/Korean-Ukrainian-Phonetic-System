@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexical = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
@@ -62,7 +63,7 @@ test('§6 all remaining official long/short-vowel examples have source-backed re
     assert.equal(row.ipa_syllables, ipa, word);
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
-    assert.equal(result.ipa, ipa.split('|').join(' '), word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
   }
 });
 
@@ -82,7 +83,7 @@ test('§7 shortening and explicitly listed length-retaining exceptions remain di
     const row = entries.get(word);
     assert.ok(row, '§7 missing official example: ' + word);
     assert.equal(row.ipa_syllables, ipa, word);
-    assert.equal(engine.convert(word).ipa, ipa.split('|').join(' '), word);
+    assert.equal(engine.convert(word).ipa, renderExpectedIpa(word, ipa), word);
   }
   assert.ok(entries.get('감다').ipa_syllables.includes('ː'));
   assert.ok(!entries.get('감으니').ipa_syllables.includes('ː'));

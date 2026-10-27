@@ -32,7 +32,7 @@ RULE_META={
 "R013":("adnominal-l-fortition","NIKL §27","high"),
 "R014":("compound-fortition","NIKL §28; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R015":("saisiot-pronunciation","NIKL §30; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
-"R016":("verbal-stem-rieul-giyeok-exception","NIKL §11 https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002; Q&A qna_seq=329463 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=329463","high"),
+"R016":("verbal-stem-rieul-giyeok-exception","NIKL §11 https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002; Q&A qna_seq=329463 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=329463; qna_seq=320900 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=320900; qna_seq=335693 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=335693","high"),
 }
 
 # Exact-form licenses for formal-morpheme liaison examples explicitly attested in or derived from NIKL §§13–14.
@@ -47,6 +47,13 @@ _NIKL_R002_FORMAL_LICENSES = {
     "값이": "값>이",  # §14: 값이[갑씨].
     "깎아": "깎>아",  # §13: 깎아[까까].
     "있어": "있>어",  # §13: 있어[이써].
+    # Exact forms with the transparent derivational suffix -이 in 없이/가없이.
+    # NIKL §§13–14 license liaison before formal morphemes; these exact keys do not generalize.
+    "가없이": "없>이",
+    "말없이": "없>이",
+    "수없이": "없>이",
+    # 늙- + adnominal ending -은 + 이; R002 applies only at 늙>은.
+    "늙은이": "늙>은",
     "쫓아": "쫓>아",  # §13: 쫓아[쪼차].
     "덮어": "덮>어",  # §13: 덮어[더퍼].
     "맞아": "맞>아",  # §13: 맞아[마자].
@@ -103,9 +110,18 @@ _NIKL_R004_COMPLEX_H_SUFFIX_LICENSES = {
 }
 
 _NIKL_R003_FORMAL_LICENSES = {
+    # Exact examples explicitly listed in NIKL Standard Pronunciation Rule 12(4).
+    "낳은": "낳>은",
+    "놓아": "놓>아",
+    "쌓이다": "쌓>이",
+    "않은": "않>은",
+    "닳아": "닳>아",
+    "싫어도": "싫>어",
     "싫어서": "싫>어",
     "수많은": "많>은",
     "많아서": "많>아",  # NIKL Online Q&A qna_seq=334550 (2026-08-06): [마ː나서].
+    # 많- + connective ending -아 + auxiliary 지다; exact-form application of §12(4).
+    "많아지다": "많>아",
     # Exact-form, rule-derived applications of NIKL §12(4); no productive suffix heuristic.
     "쌓아서": "쌓>아",
     "쳐넣어야": "넣>어",
@@ -130,8 +146,26 @@ _NIKL_R003_FORMAL_LICENSES = {
 # analyzer can establish stem/ending boundaries productively.
 # Official source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
 _NIKL_R010_FORM_LICENSES = {
-    "닮다": "닮>다",  # 닮- + -다; ㄻ (ㅁ representative) before ending-initial ㄷ.
-    "넘게": "넘>게",  # 넘- + -게; ㅁ coda before ending-initial ㄱ.
+    # Exact examples from NIKL Standard Pronunciation Rule 24. The official
+    # rule is morphological (verb/adjective stem + ending), so these examples
+    # expand the closed production inventory without enabling category-only
+    # guesses. Ambiguous 신고 (noun 'report' vs verb form) is deliberately
+    # omitted; causative/passive -기- forms are explicit negative controls.
+    "안다": "안>다",  # Official NIKL training material §24 examples.
+    "안고": "안>고",
+    "안지": "안>지",  # Official NIKL training material §24 example.
+    "신다": "신>다",  # Official NIKL Online Q&A 325349 directly confirms [신따].
+    "감다": "감>다",
+    "감고": "감>고",
+    "껴안다": "안>다",
+    "앉고": "앉>고",
+    "얹다": "얹>다",
+    "삼고": "삼>고",
+    "더듬지": "듬>지",
+    "닮고": "닮>고",
+    "젊지": "젊>지",
+    "닮다": "닮>다",  # Rule-derived extension; exact form only.
+    "넘게": "넘>게",  # Rule-derived extension; exact form only.
 }
 
 # Exact, source-backed examples explicitly listed in NIKL Standard Pronunciation Rule 29.
@@ -147,13 +181,37 @@ _NIKL_R009_WORD_LICENSES = {
     "서른여섯": "른>여", "스물여섯": "물>여",
 }
 _NIKL_R009_PHRASE_LICENSES = {
-    "한 입": "한>입", "옷 입다": "옷>입", "먹은 엿": "은>엿",
+    "한 일": "한>일", "옷 입다": "옷>입", "먹은 엿": "은>엿",
     "할 일": "할>일", "잘 입다": "잘>입", "먹을 엿": "을>엿",
+}
+
+# Exact NIKL §25 stem ㄼ/ㄾ + ending fortition examples.
+# Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+_NIKL_R011_FORM_LICENSES = {
+    "넓다": "넓>다", "넓고": "넓>고", "넓지": "넓>지",
+    "훑다": "훑>다", "훑고": "훑>고", "훑지": "훑>지",
+}
+
+# Exact NIKL §26 Sino-Korean ㄹ + ㄷ/ㅅ/ㅈ fortition examples.
+# 불소(弗素) is omitted because the reading depends on the intended lexical sense.
+# Source: https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002
+_NIKL_R012_WORD_LICENSES = {
+    "갈등": "갈>등", "발동": "발>동", "절도": "절>도", "말살": "말>살",
+    "일시": "일>시", "갈증": "갈>증", "물질": "물>질", "발전": "발>전",
+    "몰상식": "몰>상", "불세출": "불>세",
 }
 
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds
 # without a written 사이시옷). Homographs whose reading depends on meaning
 # are deliberately omitted from automatic licensing.
+# Exact NIKL §27 adnominal phrases already mirrored by the browser runtime.
+# Licenses are emitted only when the caller explicitly selects phrase boundaries.
+_NIKL_R013_PHRASE_LICENSES = {
+    "할 것을": "할>것", "갈 데가": "갈>데", "할 바를": "할>바",
+    "할 수는": "할>수", "읽을 수": "을>수", "할 적에": "할>적",
+    "갈 곳": "갈>곳", "할 도리": "할>도", "만날 사람": "날>사",
+}
+
 _NIKL_R014_WORD_LICENSES = {
     "문고리": "문>고", "눈동자": "눈>동", "신바람": "신>바",
     "산새": "산>새", "손재주": "손>재", "길가": "길>가",
@@ -161,6 +219,9 @@ _NIKL_R014_WORD_LICENSES = {
     "그믐달": "믐>달", "강가": "강>가", "초승달": "승>달",
     "등불": "등>불", "창살": "창>살", "강줄기": "강>줄",
     "아침밥": "침>밥", "굴속": "굴>속", "술잔": "술>잔",
+    # NIKL Online Q&A qna_seq=316282 explicitly gives 물가[물까] and 봄비[봄삐]
+    # as fortition examples in compounds without written 사이시옷.
+    "물가": "물>가", "봄비": "봄>비",
 }
 
 # Exact examples explicitly listed in NIKL §30. Each form is licensed only
@@ -184,8 +245,11 @@ _NIKL_R007_FORMAL_I_LICENSES = {
 # 읽고 is also directly attested by NIKL Online Q&A qna_seq=329463.
 _NIKL_R016_VERBAL_STEM_LICENSES = {
     "읽고": "읽>고",
+    "읽거든": "읽>거",  # Official §11 example; same verbal-stem ㄺ-before-ㄱ environment.
     "묽고": "묽>고",
     "얽거나": "얽>거",
+    "맑게": "맑>게",  # NIKL §11; official Q&A qna_seq=335693 clarifies written ㄺ before ㄱ.
+    "맑고": "맑>고",  # NIKL Online Q&A qna_seq=320900 explicitly confirms [말꼬].
 }
 
 def _source_backed_rule_licenses(items, boundary_mode):
@@ -209,6 +273,16 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R010_FORM_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R010:stem_n_m+suffix:{full_form}:{pair}")
+    pair = _NIKL_R011_FORM_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R011:stem_lb_lt+suffix:{full_form}:{pair}")
+    pair = _NIKL_R012_WORD_LICENSES.get(full_form)
+    if pair is not None:
+        licenses.add(f"R012:sino_ryeon:{full_form}:{pair}")
+    if boundary_mode == "phrase":
+        pair = _NIKL_R013_PHRASE_LICENSES.get(full_form)
+        if pair is not None:
+            licenses.add(f"R013:adnominal_l:{full_form}:{pair}")
     pair = _NIKL_R009_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R009:word:{full_form}:{pair}")
@@ -571,6 +645,9 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if pair not in exact_pairs:
                 conditional_disabled=True
                 continue
+            if rule_id=="R011" and a.coda=="ㄾ":
+                # NIKL §25: 훑- realizes ㄾ as ㄹ before the licensed ending.
+                a.coda="ㄹ"
             b.onset=PLAIN_TO_FORTIS[b.onset]
             changed=True
             if pair in attested_l_ge_pairs:
@@ -673,8 +750,8 @@ def apply_ordered_rules(
         "R010", "R011", "R012", "R013", "R014", "R015", "R016", "R008", "R001",
     ]
     exact = list(rule_licenses or ())
-    # Use only exact-form licenses for examples explicitly listed in NIKL §§28–30.
-    # Other words still need an explicit caller license.
+    # Use exact-form licenses for source-listed examples in NIKL §§25–30.
+    # Other words still need an explicit caller license or verified morphology.
     exact.extend(_source_backed_rule_licenses(items, boundary_mode))
     soft = soft_formal_licenses(items) if morphology_mode == "soft" else []
     merged = merge_licenses(exact, soft, morphology_mode=morphology_mode)

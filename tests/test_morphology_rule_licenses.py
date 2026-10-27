@@ -102,3 +102,115 @@ def test_analyzer_license_does_not_mask_independent_ipa_adjudication_blocker():
     assert result["ipa_status"] == "diagnostic_only_unresolved_pronunciation"
     assert result["ipa_is_diagnostic_only"] is True
     assert any(context.get("rule_id") == "IPA_ADJUDICATION" for context in result["unresolved_contexts"])
+
+
+
+def test_analyzer_consensus_productively_licenses_verbal_stem_rieul_giyeok_exception():
+    analyses = [
+        _analysis("mecab-ko", "읽고", [("읽", "VV", 0, 1), ("고", "EC", 1, 2)]),
+        _analysis("kiwi", "읽고", [("읽", "VV", 0, 1), ("고", "EC", 1, 2)]),
+    ]
+    report = analyzer_consensus_rule_licenses("읽고", analyses)
+    license = "R016:verb_stem_rieul_giyeok_suffix:읽고:읽>고"
+    assert license in report["candidate_licenses"]
+    result = phoneticize_korean_with_analyzer_consensus("읽고", analyses)
+    assert result["surface_hangul"] == "일꼬"
+    assert license in result["morphology_analysis"]["applied_licenses"]
+    assert result["ipa_is_diagnostic_only"] is True
+
+
+def test_analyzer_consensus_productively_licenses_stem_fortition_but_not_nouns():
+    cases = [
+        ("넓고", [("넓", "VA", 0, 1), ("고", "EC", 1, 2)],
+         "R011:stem_lb_lt+suffix:넓고:넓>고", "널꼬"),
+        # ㅎ-bearing ㄶ does not license §24 fortition; the surface is aspirated 만타.
+        ("많다", [("많", "VA", 0, 1), ("다", "EF", 1, 2)],
+         None, "만타"),
+    ]
+    for word, morphemes, expected_license, expected_surface in cases:
+        analyses = [
+            _analysis("mecab-ko", word, morphemes),
+            _analysis("kiwi", word, morphemes),
+        ]
+        report = analyzer_consensus_rule_licenses(word, analyses)
+        if expected_license is None:
+            assert not any(item.startswith("R010:") for item in report["candidate_licenses"])
+        else:
+            assert expected_license in report["candidate_licenses"]
+        if word == "물가로":
+            detail = next(item for item in report["licensed_boundaries"] if item.get("lexical_root_extensions"))
+            extension = detail["lexical_root_extensions"][0]
+            assert extension["registered_root"] == "물가"
+            assert extension["internal_pair"] == "물>가"
+            assert extension["license"] == expected_license
+        result = phoneticize_korean_with_analyzer_consensus(word, analyses)
+        assert result["surface_hangul"] == expected_surface
+        if expected_license is None:
+            assert not any(item.startswith("R010:") for item in result["morphology_analysis"]["applied_licenses"])
+        else:
+            assert expected_license in result["morphology_analysis"]["applied_licenses"]
+        if expected_license is not None:
+            assert result["ipa_is_diagnostic_only"] is True
+
+    noun = "닭고기"
+    noun_analyses = [
+        _analysis("mecab-ko", noun, [("닭", "NNG", 0, 1), ("고기", "NNG", 1, 3)]),
+        _analysis("kiwi", noun, [("닭", "NNG", 0, 1), ("고기", "NNG", 1, 3)]),
+    ]
+    noun_report = analyzer_consensus_rule_licenses(noun, noun_analyses)
+    assert not any(item.startswith("R016:") for item in noun_report["candidate_licenses"])
+
+
+
+def test_analyzer_consensus_extends_only_registered_lexical_roots_before_grammatical_suffixes():
+    cases = [
+        ("물가로", [("물가", "NNG", 0, 2), ("로", "JKB", 2, 3)],
+         "R014:compound:물가로:물>가", "물까로"),
+        ("봄비가", [("봄비", "NNG", 0, 2), ("가", "JKS", 2, 3)],
+         "R014:compound:봄비가:봄>비", "봄삐가"),
+        ("냇가에", [("냇가", "NNG", 0, 2), ("에", "JKB", 2, 3)],
+         "R015:saisiot:냇가에:냇>가", "내까에"),
+        ("갈등이", [("갈등", "NNG", 0, 2), ("이", "JKS", 2, 3)],
+         "R012:sino_ryeon:갈등이:갈>등", "갈뜽이"),
+    ]
+    for word, morphemes, expected_license, expected_surface in cases:
+        analyses = [
+            _analysis("mecab-ko", word, morphemes),
+            _analysis("kiwi", word, morphemes),
+        ]
+        report = analyzer_consensus_rule_licenses(word, analyses)
+        assert expected_license in report["candidate_licenses"]
+        result = phoneticize_korean_with_analyzer_consensus(word, analyses)
+        assert result["surface_hangul"] == expected_surface
+        assert expected_license in result["morphology_analysis"]["applied_licenses"]
+        assert result["ipa_is_diagnostic_only"] is True
+
+
+def test_analyzer_consensus_does_not_extend_lexical_root_into_another_noun():
+    word = "물가공"
+    analyses = [
+        _analysis("mecab-ko", word, [("물가", "NNG", 0, 2), ("공", "NNG", 2, 3)]),
+        _analysis("kiwi", word, [("물가", "NNG", 0, 2), ("공", "NNG", 2, 3)]),
+    ]
+    report = analyzer_consensus_rule_licenses(word, analyses)
+    assert not any(item.startswith(("R012:", "R014:", "R015:")) for item in report["candidate_licenses"])
+
+
+
+def test_analyzer_consensus_rejects_missing_or_nonliteral_surface_alignment():
+    good = _analysis("mecab-ko", "좋아", [("좋", "VA", 0, 1), ("아", "EC", 1, 2)])
+    bad = _analysis("kiwi", "좋아", [("좋", "VA", 0, 1), ("아", "EC", 1, 2)])
+    del bad["morphemes"][0]["surface"]
+    report = analyzer_consensus_rule_licenses("좋아", [good, bad])
+    assert report["candidate_licenses"] == []
+
+
+
+def test_lexical_root_extension_requires_particle_versus_ending_class_agreement():
+    word = "물가로"
+    analyses = [
+        _analysis("mecab-ko", word, [("물가", "NNG", 0, 2), ("로", "JKB", 2, 3)]),
+        _analysis("kiwi", word, [("물가", "NNG", 0, 2), ("로", "EC", 2, 3)]),
+    ]
+    report = analyzer_consensus_rule_licenses(word, analyses)
+    assert not any(item.startswith(("R012:", "R014:", "R015:")) for item in report["candidate_licenses"])

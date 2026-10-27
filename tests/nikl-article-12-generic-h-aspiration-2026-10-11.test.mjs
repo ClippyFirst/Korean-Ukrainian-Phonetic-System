@@ -12,26 +12,26 @@ const genericEngine = createEngine(canonical, '');
 
 test('§12: a simple ㅎ coda aspirates a following plain stop in generic IPA', () => {
   const cases = [
-    ['좋다', 'tɕo tʰa', 'чота'],
-    ['좋고', 'tɕo kʰo', 'чоко'],
-    ['좋지', 'tɕo tɕʰi', 'чочі'],
-    ['좋소', 'tɕo s͈o', 'чосо'],
-    ['많소', 'man s͈o', 'мансо'],
-    ['놓다', 'no tʰa', 'нота'],
-    ['많다', 'man tʰa', 'манта'],
-    ['않다', 'an tʰa', 'анта'],
-    ['놓고', 'no kʰo', 'ноко'],
-    ['좋던', 'tɕo tʰʌn', 'чотон'],
-    ['쌓지', 's͈a tɕʰi', 'сачі'],
-    ['많고', 'man kʰo', 'манко'],
-    ['않던', 'an tʰʌn', 'антон'],
-    ['닳지', 'tal tɕʰi', 'талчі'],
-    ['싫소', 'ɕil s͈o', 'шілсо'],
-    ['각하', 'ka kʰa', 'кака'],
-    ['먹히다', 'mʌ kʰi da', 'мокіда'],
-    ['맏형', 'ma tʰjʌŋ', 'матйон'],
-    ['입학', 'i pʰak̚', 'іпак'],
-    ['좁히다', 'tɕo pʰi da', 'чопіда'],
+    ['좋다', 'tɕo.tʰa', 'чота'],
+    ['좋고', 'tɕo.kʰo', 'чоко'],
+    ['좋지', 'tɕo.tɕʰi', 'чочі'],
+    ['좋소', 'tɕo.s͈o', 'чосо'],
+    ['많소', 'man.s͈o', 'мансо'],
+    ['놓다', 'no.tʰa', 'нота'],
+    ['많다', 'man.tʰa', 'манта'],
+    ['않다', 'an.tʰa', 'анта'],
+    ['놓고', 'no.kʰo', 'ноко'],
+    ['좋던', 'tɕo.tʰʌn', 'чотон'],
+    ['쌓지', 's͈a.tɕʰi', 'сачі'],
+    ['많고', 'man.kʰo', 'манко'],
+    ['않던', 'an.tʰʌn', 'антон'],
+    ['닳지', 'tal.tɕʰi', 'талчі'],
+    ['싫소', 'ɕil.s͈o', 'шілсо'],
+    ['각하', 'ka.kʰa', 'кака'],
+    ['먹히다', 'mʌ.kʰi.da', 'мокіда'],
+    ['맏형', 'ma.tʰjʌŋ', 'матйон'],
+    ['입학', 'i.pʰak̚', 'іпак'],
+    ['좁히다', 'tɕo.pʰi.da', 'чопіда'],
   ];
 
   for (const [input, expectedIpa, expectedUkrainian] of cases) {
@@ -47,11 +47,11 @@ test('§12: a simple ㅎ coda aspirates a following plain stop in generic IPA', 
 
 test('§12: ㅎ/ㄶ/ㅀ before ㄴ composes with nasal/liquid rules in generic IPA', () => {
   const cases = [
-    ['놓는', 'non nɯn', 'ноннин'],
-    ['좋네', 'tɕon ne', 'чонне'],
-    ['많네', 'man ne', 'манне'],
-    ['않는', 'an nɯn', 'аннин'],
-    ['싫네', 'ɕil le', 'шілле'],
+    ['놓는', 'non.nɯn', 'ноннин'],
+    ['좋네', 'tɕon.ne', 'чонне'],
+    ['많네', 'man.ne', 'манне'],
+    ['않는', 'an.nɯn', 'аннин'],
+    ['싫네', 'ɕil.le', 'шілле'],
   ];
   for (const [input, expectedIpa, expectedUkrainian] of cases) {
     const result = genericEngine.convert(input);

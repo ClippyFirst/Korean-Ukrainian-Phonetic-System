@@ -2,8 +2,8 @@
  * Contextual phonological rules (same-eojeol pass).
  */
 import {
-  COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES,
-  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_30_SAISIOT_INSERTION_FORMS,
+  COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES, decompose,
+  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_29_WORD_INSERTION, NIKL_30_SAISIOT_PRONUNCIATION_FORMS, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -29,13 +29,23 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     const exactR002SubstantiveLicensed=exactR002SubstantivePair===exactMorphPair;
     const exactR016Pair=NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS.get(currentWord);
     const exactR016Licensed=exactR016Pair===exactMorphPair;
+    const exactR011Pair=NIKL_25_STEM_LB_LT_ENDING_FORMS.get(currentWord);
+    const exactR011Licensed=exactR011Pair===exactMorphPair;
+    const exactR012Pair=NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS.get(currentWord);
+    const exactR012Licensed=exactR012Pair===exactMorphPair;
+    const exactR014Pair=NIKL_28_COMPOUND_FORTITION_FORMS.get(currentWord);
+    const exactR014Licensed=exactR014Pair===exactMorphPair;
+    const exactR015Pair=NIKL_30_SAISIOT_PRONUNCIATION_FORMS.get(currentWord);
+    const exactR015Licensed=exactR015Pair===exactMorphPair;
+    const exactR009Pair=NIKL_29_WORD_INSERTION.get(currentWord);
+    const exactR009Licensed=exactR009Pair===exactMorphPair;
 
     if(a.coda==='ㄼ'&&b.onset!=='ㅇ'){
       if(a.char==='밟'){a.coda='ㅂ';rules.push('lexical-coda-balm');}
       else if(a.char==='넓'&&LEXICAL_B_CODA_PREFIXES.has(a.char+b.char)){a.coda='ㅂ';rules.push('lexical-coda-neolp');}
     }
 
-    if(['ㄷ','ㅌ','ㄾ'].includes(a.coda)&&b.onset==='ㅇ'&&b.vowel==='ㅣ'){
+    if(['ㄷ','ㅌ','ㄾ'].includes(a.coda)&&b.onset==='ㅇ'&&b.vowel==='ㅣ'&&!exactR009Licensed){
       const exactR007Pair=NIKL_17_FORMAL_I_FORMS.get(currentWord);
       if(exactR007Pair===exactMorphPair){
         const originalCoda=a.coda;
@@ -58,12 +68,44 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
       continue;
     }
 
-    if(NIKL_30_SAISIOT_INSERTION_FORMS.has(sourceText)&&a.coda==='ㅅ'&&b.onset==='ㅇ'){
+    if(NIKL_30_SAISIOT_INSERTION_FORMS.has(sourceText)&&a.coda==='ㅅ'&&b.onset==='ㅇ'&&!exactR015Licensed){
       a.__saisiotInsertionUnlicensed='left';
       b.__saisiotInsertionUnlicensed='right';
       rules.push('saisiot-n-insertion-§30(3)-requires-lexical-compound');
       nextRules.push('saisiot-n-insertion-§30(3)-requires-lexical-compound');
       continue;
+    }
+
+    // NIKL §30: exact source-backed saisiot cases. Never infer the
+    // morphological boundary from a written ㅅ coda alone.
+    if(exactR015Licensed&&a.coda==='ㅅ'){
+      let saisiotChanged=false;
+      if(PLAIN_TO_FORTIS[b.onset]){
+        b.onset=PLAIN_TO_FORTIS[b.onset];
+        a.coda='';
+        saisiotChanged=true;
+      }else if(b.onset==='ㄴ'||b.onset==='ㅁ'){
+        a.coda='ㄴ';
+        saisiotChanged=true;
+      }else if(b.onset==='ㅇ'&&b.vowel==='ㅣ'){
+        a.coda='ㄴ';
+        b.onset='ㄴ';
+        saisiotChanged=true;
+      }
+      if(saisiotChanged){
+        rules.push('saisiot-pronunciation-§30-exact-form');
+        nextRules.push('saisiot-pronunciation-§30-exact-form');
+        continue;
+      }
+    }
+
+    // NIKL §29 word-internal n-insertion is lexical; only the exact
+    // full-form + pair inventory is licensed here. The coda remains for the
+    // following ordered nasal-assimilation step.
+    if(exactR009Licensed&&a.coda&&b.onset==='ㅇ'&&['ㅣ','ㅑ','ㅕ','ㅛ','ㅠ','ㅖ','ㅒ'].includes(b.vowel)){
+      b.onset=representative(a.coda)==='ㄹ'?'ㄹ':'ㄴ';
+      rules.push('n-insertion-§29-exact-word');
+      nextRules.push('n-insertion-§29-exact-word');
     }
 
     if(a.coda&&b.onset==='ㅇ'&&!a.__palatalizationUnlicensed){
@@ -248,10 +290,54 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
       continue;
     }
 
+    // NIKL §27 official Q&A 330963 confirms attached ending -ㄹ게 as [ㄹ께].
+    // The rule is productive only for the orthographic -ㄹ게 ending inside one eojeol.
+    // Check the source syllable's original coda: a complex coda may already have
+    // been reduced to ㄹ by an earlier ordered rule and must not be mistaken for
+    // the orthographic -ㄹ게 ending (e.g. 넓게 is not 널께).
+    if(a.coda==='ㄹ'&&decompose(a.char)?.coda==='ㄹ'&&b.char==='게'&&b.onset==='ㄱ'){
+      b.onset='ㄲ';
+      rules.push('adnominal-l-fortition-§27-attested-l-ge');
+      nextRules.push('adnominal-l-fortition-§27-attested-l-ge');
+      continue;
+    }
+
+    // NIKL §25: stem-final ㄼ/ㄾ + licensed ending-initial ㄱ/ㄷ/ㅅ/ㅈ.
+    if(exactR011Licensed&&['ㄼ','ㄾ'].includes(a.coda)&&['ㄱ','ㄷ','ㅅ','ㅈ'].includes(b.onset)&&PLAIN_TO_FORTIS[b.onset]){
+      // NIKL §25: ㄾ in 훑- is realized as ㄹ in the coda before the licensed ending.
+      if(a.coda==='ㄾ')a.coda='ㄹ';
+      b.onset=PLAIN_TO_FORTIS[b.onset];
+      rules.push('stem-lb-lt-fortition-§25-exact-form');
+      nextRules.push('stem-lb-lt-fortition-§25-exact-form');
+      continue;
+    }
+
+    // NIKL §26: exact Sino-Korean ㄹ + ㄷ/ㅅ/ㅈ fortition examples.
+    if(exactR012Licensed&&a.coda==='ㄹ'&&['ㄷ','ㅅ','ㅈ'].includes(b.onset)&&PLAIN_TO_FORTIS[b.onset]){
+      b.onset=PLAIN_TO_FORTIS[b.onset];
+      rules.push('sino-korean-rieul-fortition-§26-exact-form');
+      nextRules.push('sino-korean-rieul-fortition-§26-exact-form');
+      continue;
+    }
+
+    // NIKL §28: compound fortition is lexical/morphological, so require an
+    // exact source-backed full-form + boundary license (e.g. 물가[물까]).
+    if(exactR014Licensed&&a.coda&&PLAIN_TO_FORTIS[b.onset]){
+      b.onset=PLAIN_TO_FORTIS[b.onset];
+      rules.push('compound-fortition-§28-exact-form');
+      nextRules.push('compound-fortition-§28-exact-form');
+      continue;
+    }
+
     const exactR010Pair=NIKL_24_STEM_NM_ENDING_FORMS.get(sourceText);
     const currentPair=a.char+'>'+b.char;
     const fortisRep=representative(a.coda);
     if(exactR010Pair===currentPair&&['ㄴ','ㅁ'].includes(fortisRep)&&PLAIN_TO_FORTIS[b.onset]){
+      // Exact §24 licenses also expose the realized simple coda when the
+      // written stem ends in a complex coda (e.g. 닮고 → 담꼬, 젊지 → 점찌).
+      // Do not simplify unrelated complex codas without their own evidence.
+      if(['ㄵ','ㄶ'].includes(a.coda)&&fortisRep==='ㄴ')a.coda='ㄴ';
+      else if(['ㄻ','ㄼ'].includes(a.coda)&&fortisRep==='ㅁ')a.coda='ㅁ';
       b.onset=PLAIN_TO_FORTIS[b.onset];
       nextRules.push('stem-n-m-fortition-§24');
     }else if(PLAIN_TO_FORTIS[b.onset]&&['ㄱ','ㄷ','ㅂ'].includes(fortisRep)){

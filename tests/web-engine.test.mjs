@@ -9,6 +9,11 @@ const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const engine = createEngine(canonical, lexicalText);
 
+function contextualRuleNames(source) {
+  const units = [...source].map(char => ({ type: 'hangul', ...decompose(char) }));
+  return applyContextualRules(units, source).flat();
+}
+
 test('createEngine exposes convert and decompose', () => {
   assert.equal(typeof engine.convert, 'function');
   assert.equal(typeof engine.decompose, 'function');
@@ -76,6 +81,22 @@ test('official dictionary-supported R004 cluster-plus-ㅎ form resolves in brows
 });
 
 
+test('NIKL §12(4) exact examples are licensed in browser strict mode', () => {
+  const cases = [
+    ['낳은', '나은'],
+    ['놓아', '노아'],
+    ['쌓이다', '싸이다'],
+    ['않은', '아는'],
+    ['닳아', '다라'],
+    ['싫어도', '시러도'],
+  ];
+  for (const [input, expectedSurface] of cases) {
+    const result = engine.convert(input);
+    assert.equal(result.surfaceHangul, expectedSurface, input);
+    assert.doesNotMatch(result.ipa, /⟦/u, input);
+  }
+});
+
 test('NIKL exact-form R003 licenses resolve two attested forms in browser strict mode', () => {
   const cases = [
     ['싫어서', '시러서'],
@@ -92,7 +113,7 @@ test('NIKL exact-form R003 licenses resolve two attested forms in browser strict
 test('NIKL usage-survey phrase variants are explicit provisional lexical candidates', () => {
   const result = engine.convert('못잃어');
   assert.equal(result.surfaceHangul, '몬니러');
-  assert.equal(result.ipa, 'mon ni ɾʌ');
+  assert.equal(result.ipa, 'mon.ni.ɾʌ');
   assert.equal(result.status, 'lexical-review');
   assert.equal(result.target_status, 'provisional');
   assert.equal(result.ukrainian, '', 'provisional lexical target must not look accepted');
@@ -100,7 +121,7 @@ test('NIKL usage-survey phrase variants are explicit provisional lexical candida
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '모시러');
-  assert.equal(result.variants[0].ipa, 'mo ɕi ɾʌ');
+  assert.equal(result.variants[0].ipa, 'mo.ɕi.ɾʌ');
   assert.match(result.variants[0].note, /NIKL 2022/u);
 });
 
@@ -119,6 +140,23 @@ test('NIKL §11 exact verbal-stem ㄺ-before-ㄱ exceptions match Python without
     assert.equal(units[0].coda, 'ㄹ', input);
     assert.equal(units[1].onset, 'ㄲ', input);
     assert.ok(rules[0].includes('rieul-giyeok-exception-§11-exact-form'), input);
+  }
+
+  const noun = [...'닭고기'].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+  const nounRules = applyContextualRules(noun, '닭고기');
+  assert.equal(noun[0].coda, 'ㄺ');
+  assert.equal(noun[1].onset, 'ㄱ');
+  assert.ok(nounRules[0].includes('rieul-giyeok-exception-requires-morphology'));
+});
+
+test('NIKL §11 R016 covers official forms 맑게 and 맑고 without licensing noun 닭고기', () => {
+  for (const [input, expectedSurface] of [['맑게', '말께'], ['맑고', '말꼬']]) {
+    const units = [...input].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
+    const rules = applyContextualRules(units, input);
+    assert.equal(units[0].coda, 'ㄹ', input);
+    assert.equal(units[1].onset, 'ㄲ', input);
+    assert.ok(rules[0].includes('rieul-giyeok-exception-§11-exact-form'), input);
+    assert.equal(engine.convert(input).surfaceHangul, expectedSurface, input);
   }
 
   const noun = [...'닭고기'].map((char, index) => ({ ...decompose(char), type: 'hangul', index }));
@@ -223,3 +261,144 @@ test('exact-form R007 licenses resolve 같이 but do not generalize to unlisted 
   }
   assert.equal(engine.convert('좋을거같이').status, 'unresolved');
 });
+
+
+
+test('NIKL §28 compound fortition is mirrored for every exact licensed form', () => {
+  const examples = {
+    문고리: '문꼬리',
+    눈동자: '눈똥자',
+    신바람: '신빠람',
+    산새: '산쌔',
+    손재주: '손째주',
+    길가: '길까',
+    물동이: '물똥이',
+    발바닥: '발빠닥',
+    바람결: '바람껼',
+    그믐달: '그믐딸',
+    강가: '강까',
+    초승달: '초승딸',
+    등불: '등뿔',
+    창살: '창쌀',
+    강줄기: '강쭐기',
+    아침밥: '아침빱',
+    굴속: '굴쏙',
+    술잔: '술짠',
+    물가: '물까',
+    봄비: '봄삐',
+  };
+  for (const [source, expectedSurface] of Object.entries(examples)) {
+    const result = engine.convert(source);
+    assert.equal(result.surfaceHangul, expectedSurface, source);
+    assert.ok(contextualRuleNames(source).includes('compound-fortition-§28-exact-form'), source);
+  }
+  assert.equal(engine.convert('물가').ipa, 'mul.k͈a');
+  assert.equal(engine.convert('봄비').ipa, 'pom.p͈i');
+
+  // Do not infer compound fortition from ㄹ+ㄱ alone.
+  const ordinarySequence = engine.convert('물고');
+  assert.notEqual(ordinarySequence.surfaceHangul, '물꼬');
+  assert.equal(ordinarySequence.ipa, 'mul.ɡo');
+});
+
+
+
+test('NIKL §25 and §26 exact fortition examples are mirrored in browser runtime', () => {
+  const stemExamples = {
+    넓다: '널따',
+    넓고: '널꼬',
+    넓지: '널찌',
+    훑다: '훌따',
+    훑고: '훌꼬',
+    훑지: '훌찌',
+  };
+  for (const [source, expectedSurface] of Object.entries(stemExamples)) {
+    const result = engine.convert(source);
+    assert.equal(result.surfaceHangul, expectedSurface, source);
+    assert.ok(contextualRuleNames(source).includes('stem-lb-lt-fortition-§25-exact-form'), source);
+  }
+
+  const sinoExamples = {
+    갈등: '갈뜽',
+    발동: '발똥',
+    절도: '절또',
+    말살: '말쌀',
+    일시: '일씨',
+    갈증: '갈쯩',
+    물질: '물찔',
+    발전: '발쩐',
+    몰상식: '몰쌍식',
+    불세출: '불쎄출',
+  };
+  for (const [source, expectedSurface] of Object.entries(sinoExamples)) {
+    const result = engine.convert(source);
+    assert.equal(result.surfaceHangul, expectedSurface, source);
+    assert.ok(contextualRuleNames(source).includes('sino-korean-rieul-fortition-§26-exact-form'), source);
+  }
+
+  // 넓게 is independently source-licensed in the lexical dictionary (§25),
+  // but that lexical fact must not be generalized by the productive -ㄹ게 rule.
+  assert.equal(engine.convert('넓게').surfaceHangul, '널께');
+  assert.ok(!contextualRuleNames('넓게').includes('adnominal-l-fortition-§27-attested-l-ge'));
+  assert.notEqual(engine.convert('넓거든').surfaceHangul, '널꺼든');
+  assert.notEqual(engine.convert('갈구').surfaceHangul, '갈꾸');
+});
+
+
+
+test('NIKL §27 attached -ㄹ게 fortition is mirrored without crossing a space', () => {
+  const attached = engine.convert('할게');
+  assert.equal(attached.surfaceHangul, '할께');
+  assert.equal(attached.ipa, 'hal.k͈e');
+  assert.ok(attached.trace.some(item => item.rules.includes('adnominal-l-fortition-§27-attested-l-ge')));
+
+  const separated = engine.convert('할 게');
+  assert.notEqual(separated.surfaceHangul, '할께');
+});
+
+
+
+test('NIKL §30 exact saisiot pronunciation forms match the Python rule inventory', () => {
+  const examples = {
+    냇가: '내까',
+    샛길: '새낄',
+    빨랫돌: '빨래똘',
+    콧등: '코뜽',
+    깃발: '기빨',
+    대폿밥: '대포빱',
+    햇살: '해쌀',
+    뱃속: '배쏙',
+    뱃전: '배쩐',
+    고갯짓: '고개찓',
+    아랫니: '아랜니',
+    뒷마루: '뒨마루',
+    뱃머리: '밴머리',
+    깻잎: '깬닙',
+    나뭇잎: '나문닙',
+  };
+  for (const [source, expectedSurface] of Object.entries(examples)) {
+    const result = engine.convert(source);
+    assert.equal(result.surfaceHangul, expectedSurface, source);
+    assert.ok(contextualRuleNames(source).includes('saisiot-pronunciation-§30-exact-form'), source);
+  }
+});
+
+test('Exact Python/browser formal-liaison inventories stay aligned', () => {
+  for (const [source, expected] of [['앉아라', '안자라'], ['없어도', '업써도']]) {
+    const result = engine.convert(source);
+    assert.equal(result.surfaceHangul, expected, source);
+    assert.ok(result.trace.some(item => item.rules.includes('complex-coda-liaison-exact-form-formal')), source);
+  }
+});
+
+test('NIKL section 29 word-internal n-insertion is exact-form licensed', () => {
+  for (const word of ['솜이불', '홑이불', '식용유', '들일']) {
+    const result = engine.convert(word);
+    assert.ok(contextualRuleNames(word).includes('n-insertion-§29-exact-word'), word);
+    if (word === '홑이불') assert.equal(result.surfaceHangul, '혼니불');
+  }
+  const unlicensed = engine.convert('솜이');
+  assert.ok(!unlicensed.trace.some(item => item.rules.includes('n-insertion-§29-exact-word')));
+  assert.notEqual(unlicensed.surfaceHangul, '솜니');
+});
+

@@ -2,11 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 
 const canonical = readFileSync(new URL('../data/korean/canonical_correspondence.csv', import.meta.url), 'utf8');
 const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.csv', import.meta.url), 'utf8');
 const rows = parseCsv(lexicalText);
 const engine = createEngine(canonical, lexicalText);
+
 const allowedStatuses = new Set(['model-selected', 'provisional', 'surface-only']);
 
 test('lexical CSV stays structurally valid and every row has an explicit target status', () => {
@@ -26,7 +28,7 @@ test('all mixed-script and phrase lexical entries preserve their source spacing 
 
   for (const row of candidates) {
     const result = engine.convert(row.input);
-    assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), row.input + ': phrase IPA');
+    assert.equal(result.ipa, renderExpectedIpa(row.input,row.ipa_syllables.split('|')), row.input + ': phrase IPA');
     assert.equal(result.issues.length, 0, row.input + ': sourced phrase should map without unresolved IPA');
     const targets = row.target_syllables.split('|');
     let expected = '';
@@ -54,7 +56,7 @@ test('every Hangul-only lexical target is rendered from its stored IPA, not inde
 
   for (const row of candidates) {
     const result = engine.convert(row.input);
-    assert.equal(result.ipa, row.ipa_syllables.split('|').join(' '), row.input + ': runtime IPA');
+    assert.equal(result.ipa, renderExpectedIpa(row.input,row.ipa_syllables.split('|')), row.input + ': runtime IPA');
     const expectedTarget = row.target_syllables.split('|').join('');
     if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
       assert.equal(result.ukrainian, '', row.input + ': provisional target must not be accepted');
@@ -85,7 +87,7 @@ test('all surface-only lexical overrides still cross the IPA-to-Ukrainian bounda
 
     const result = engine.convert(row.input);
     assert.equal(result.surfaceHangul, row.surface_hangul, row.input + ': source-attested surface override');
-    assert.equal(result.ipa, ipaSyllables.join(' '), row.input + ': runtime IPA must preserve the curated surface IPA');
+    assert.equal(result.ipa, renderExpectedIpa(row.input,ipaSyllables), row.input + ': runtime IPA must preserve the curated surface IPA');
     assert.equal(result.ukrainian, targetSyllables.join(''), row.input + ': Ukrainian output must be rendered from IPA');
     assert.equal(result.issues.length, 0, row.input + ': surface-only IPA should map without unresolved issues');
   }

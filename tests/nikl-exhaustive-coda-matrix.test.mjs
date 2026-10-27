@@ -28,13 +28,13 @@ test('§8–§11 exhaustive coda spelling matrix: all 27 coda Jamo resolve to on
 
 test('§18–§20 exhaustive coda matrix before ㄴ exercises ordered nasal/liquid outcomes', () => {
   const expected = {
-    '각나':'kaŋ na', '갂나':'kaŋ na', '갃나':'kaŋ na',
-    '간나':'kan na', '갅나':'kan na', '갆나':'kan na',
-    '갇나':'kan na', '갈나':'kal la', '갉나':'kaŋ na', '갊나':'kam na',
-    '갋나':'kal la', '갌나':'kal la', '갍나':'kal la', '갎나':'kam na', '갏나':'kal la',
-    '감나':'kam na', '갑나':'kam na', '값나':'kam na', '갓나':'kan na', '갔나':'kan na',
-    '강나':'kaŋ na', '갖나':'kan na', '갗나':'kan na', '갘나':'kaŋ na', '같나':'kan na',
-    '갚나':'kam na', '갛나':'kan na',
+    '각나':'kaŋ.na', '갂나':'kaŋ.na', '갃나':'kaŋ.na',
+    '간나':'kan.na', '갅나':'kan.na', '갆나':'kan.na',
+    '갇나':'kan.na', '갈나':'kal.la', '갉나':'kaŋ.na', '갊나':'kam.na',
+    '갋나':'kal.la', '갌나':'kal.la', '갍나':'kal.la', '갎나':'kam.na', '갏나':'kal.la',
+    '감나':'kam.na', '갑나':'kam.na', '값나':'kam.na', '갓나':'kan.na', '갔나':'kan.na',
+    '강나':'kaŋ.na', '갖나':'kan.na', '갗나':'kan.na', '갘나':'kaŋ.na', '같나':'kan.na',
+    '갚나':'kam.na', '갛나':'kan.na',
   };
   assert.equal(Object.keys(expected).length, 27);
   for (const [word, ipa] of Object.entries(expected)) {
@@ -47,13 +47,13 @@ test('§18–§20 exhaustive coda matrix before ㄴ exercises ordered nasal/liqu
 
 test('§18 exhaustive coda matrix before ㅁ verifies all 27 written codas', () => {
   const expected = {
-    '각마':'kaŋ ma', '갂마':'kaŋ ma', '갃마':'kaŋ ma',
-    '간마':'kan ma', '갅마':'kan ma', '갆마':'kan ma',
-    '갇마':'kan ma', '갈마':'kal ma', '갉마':'kaŋ ma', '갊마':'kam ma',
-    '갋마':'kal ma', '갌마':'kal ma', '갍마':'kal ma', '갎마':'kam ma', '갏마':'kal ma',
-    '감마':'kam ma', '갑마':'kam ma', '값마':'kam ma', '갓마':'kan ma', '갔마':'kan ma',
-    '강마':'kaŋ ma', '갖마':'kan ma', '갗마':'kan ma', '갘마':'kaŋ ma', '같마':'kan ma',
-    '갚마':'kam ma', '갛마':'kan ma',
+    '각마':'kaŋ.ma', '갂마':'kaŋ.ma', '갃마':'kaŋ.ma',
+    '간마':'kan.ma', '갅마':'kan.ma', '갆마':'kan.ma',
+    '갇마':'kan.ma', '갈마':'kal.ma', '갉마':'kaŋ.ma', '갊마':'kam.ma',
+    '갋마':'kal.ma', '갌마':'kal.ma', '갍마':'kal.ma', '갎마':'kam.ma', '갏마':'kal.ma',
+    '감마':'kam.ma', '갑마':'kam.ma', '값마':'kam.ma', '갓마':'kan.ma', '갔마':'kan.ma',
+    '강마':'kaŋ.ma', '갖마':'kan.ma', '갗마':'kan.ma', '갘마':'kaŋ.ma', '같마':'kan.ma',
+    '갚마':'kam.ma', '갛마':'kan.ma',
   };
   assert.equal(Object.keys(expected).length, 27);
   for (const [word, ipa] of Object.entries(expected)) {

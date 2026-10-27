@@ -1087,26 +1087,186 @@ The latest software hardening:
 - UI wording distinguishes candidate/unavailable status and states that `model-selected` target spellings are project-defined, not independently adjudicated.
 
 **Disposition:** software-verified partial research prototype, **not release-ready**. Remaining acceptance blockers: verified primary source for the original 24-form list; independent Korean IPA adjudication/gold; independent Ukrainian target gold and evaluation protocol; authorized live NIKL inventory. No invented gold labels, phonological forms, or accuracy claims were added.
+## 2026-10-26 continuation: cross-runtime rule parity and teacher-workflow correction
+
+Status at audit update: implementation present; exact-head CI and corrected teacher artifact pending.
+
+Implemented in the continuation branch:
+- R011 (§25) exact stem ㄼ/ㄾ fortition cases and R012 (§26) exact Sino-Korean ㄹ + ㄷ/ㅅ/ㅈ cases are now source-licensed in Python and mirrored in browser JavaScript.
+- R013 attached -ㄹ게 fortition is mirrored in browser runtime with an explicit same-eojeol boundary and official Q&A 330963 provenance.
+- R014 (§28) exact compound-fortition table is now mirrored in browser runtime; official Q&A 316282 supports added exact forms 물가[물까], 봄비[봄삐].
+- R015 (§30) exact saisiot pronunciation forms from the Python inventory are mirrored in browser runtime; unadjudicated forms remain fail-closed.
+- Added positive and negative controls for all newly mirrored exact-form families and registered the official sources.
+
+A review of the first completed Charsiu run [40334001997](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40334001997) identified a benchmark methodology defect: broad metrics used the full pipeline with lexical IPA overrides, while narrow metrics used a direct renderer that bypassed those overrides and failed to retain unresolved-pronunciation abstentions. Those earlier narrow-profile deltas are superseded and must not be interpreted as a measured rule gain. The runner now renders both profiles from the same post-rule analysis, uses the same unresolved gate, excludes lexical IPA overrides from both controlled outputs, and keeps the full production baseline separately. The g2pk surface-to-IPA helper import bug is also fixed.
+
+Task ledger:
+- DONE_PENDING_CI: Python/browser implementations and regression tests for R011/R012/R013/R014/R015.
+- DONE_PENDING_CI: source-register updates for official NIKL Q&A 316282 and 330963.
+- DONE_PENDING_CI: controlled broad/narrow IPA comparison and per-occurrence evidence ledger.
+- BLOCKED: neural-to-production rule distillation remains evidence-gated; the Charsiu output convention is not independently mapped to ClippyFirst broad IPA, and model training overlap/weights licensing remain unresolved.
+- BLOCKED: live official NIKL source inventory was skipped, not passed; independently adjudicated IPA→Ukrainian target gold is still missing.
+
+Corrected Charsiu run [40338691112](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338691112) and latest system verification [40338700703](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40338700703) were queued at update time. Do not mark implementation DONE_VERIFIED until exact-head CI and the corrected dev artifact are inspected. The repository remains a research-ready partial prototype, not release-ready.
+## 2026-10-26 final inventory reconciliation addendum
+
+The Python/browser source-backed rule tables were compared directly. Additional parity gaps closed:
+- R002 formal liaison: browser now includes the two Python exact forms 앉아라 and 없어도.
+- R009 / §29: browser now includes the same 29 exact word-internal n-insertion licenses as Python; Python phrase-boundary mode now carries the same nine R013 adnominal phrase licenses as the browser.
+- Added automated test_rule_license_parity.py to compare exact map values and phrase-license key sets across runtimes. Representative R009 browser cases and a negative control are covered.
+
+The verified map counts match: R002 formal 33, R002 substantive 5, R003 18, R004 1, R007 2, R009 word 29, R010 2, R011 6, R012 10, R014 20, R015 15, R016 3; R013 phrase 9 and R009 phrase 6.
+
+At this update, exact-head tests [40340319366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319366), system verification [40340318888](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340318888), and corrected Charsiu train/dev [40340319150](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40340319150) were queued. Local cloning/testing was blocked by DNS failure resolving github.com. No pass is claimed. The repository remains a research-ready partial prototype.
+
+## 2026-10-26 continuation: productive morphology licensing and evaluation-integrity correction
+
+### Implementation
+
+- The existing morphology-consensus license module was extended (not duplicated) to license source-backed R010/R011/R016 only when two distinct analyzers agree on a source-aligned VV/VA stem + grammatical ending boundary.
+- Existing official exact-form inventories R012/R014/R015 may be extended across an attached particle/ending only when the full registered lexical root is present and the analyzer boundary is agreed. The derived license still names the full input form and the original licensed internal syllable pair.
+- Exact source-span checks now fail closed when literal surface alignment is missing or inconsistent. Zero-width morphemes, disagreements, unsupported tags, spaces, unregistered roots, and noun-to-noun lookalikes do not create licenses.
+- Every analyzer-supported application is explicitly marked low-confidence and forces IPA to diagnostic-only. No default strict behavior, browser runtime, Ukrainian adaptation, or model runtime was changed.
+- Added focused regression assertions for R010/R011/R016, lexical-root extension, source alignment, and negative controls. They remain **pending verification** until the latest code/test head has completed CI.
+
+### Evaluation integrity
+
+The UGTPHON test artifact [40328909490](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40328909490) includes `물가로` at row `dc_inside_2261`, occurrence `2001`. This test mismatch was explicitly used to prioritize R014 review. Official NIKL Q&A 316282 independently supports the lexical rule `물가[물까]` and `봄비[봄삐]`, so the rule itself has primary-source evidence; however, the specific `물가로` test case is now test-informed and must not be counted as untouched final-evaluation evidence. Historical metrics remain reproducible diagnostics, not an unbiased final accuracy claim. Establish a replacement holdout or report a predeclared exclusion before final evaluation.
+
+### Status
+
+- Rule inventory parity: implementation present; previous map comparison documented; latest exact-head CI not yet passed.
+- Productive morphology consensus: PARTIAL, research-only and low-confidence; real-engine exact-head smoke and full regression matrix pending.
+- Charsiu controlled broad/narrow train/dev runner: recursion fixed; corrected output artifact still pending.
+- Test contamination: BLOCKED for an independent aggregate UGTPHON test claim until the `물가로` case is excluded or a fresh holdout is built.
+- Model checkpoint rights/training overlap and source IPA convention mapping remain unresolved.
+- Independent IPA→Ukrainian gold and live official NIKL inventory remain blocked/skipped.
+- Local tests were not run because `git ls-remote` failed with DNS resolution failure for `github.com`. No unexecuted tests are reported as passing.
+
+Readiness remains research-ready partial prototype, not release-ready.
+
+### Exact final continuation status
+
+- Branch HEAD: `f9cd130ad57c119fc2d600e63a28c9f6d000aacb`.
+- Latest code/test HEAD: `e14b4b026738755dbee1c819da8635aec4f6c0f7`; the later commits are documentation/PR reconciliation.
+- The most recent visible test matrix [40343059002](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343059002), system verification [40343058844](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058844), and corrected Charsiu train/dev [40343058866](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40343058866) remain queued on preceding code/test head `16d07d7`. No exact-head pass is available for the new morphology rule-license tests.
+- No local tests were executed; the container's `git ls-remote` failed because github.com DNS could not be resolved.
+- Do not mark the new morphology batch DONE_VERIFIED until exact-head CI passes. The independent test-evaluation blocker for the test-informed `물가로` case remains open.
+
+### Superseding exact-head verification status — 2026-10-26
+
+The latest executable code/test head is `36b8e909d65ebf0e69af22f6183155853f34ae14`. It includes the fail-closed suffix-family agreement guard and its regression test. Exact-head checks are now visible but still queued: test matrix [40344662542](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662542), system verification [40344662684](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662684), Charsiu train/dev [40344662592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662592), and real morphology smoke [40344662799](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40344662799). No exact-head pass exists yet; retain PARTIAL status until these complete.
+
+### Latest code/test delta — provenance trace
+
+Latest executable code/test head: `d09a739b2269298ffc2ef8941d0cf564a91f642d`. Lexical-root extensions now preserve three distinct pieces of evidence: registered lexical root, internal source-backed syllable pair, and generated full-form license. A new regression test checks that `물가로` records internal pair `물>가` rather than confusing it with the suffix boundary. Exact-head CI has not returned a result; status remains PARTIAL.
 
 
-## Follow-up implementation audit — source-backed deterministic R002 coverage (2026-10-26)
 
-**Status: DONE_VERIFIED for this bounded R002 rule-coverage task; overall project remains a partial research prototype.**
+### Continuation audit — assertion queue and IPA regression gate (2026-10-27)
 
-- Verified source basis: NIKL Standard Pronunciation Rules §§13–15 (https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002) and the official FAQ for 값어치[가버치] (https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&mn_id=62).
-- The exact-form R002 rule registries in Python and browser code now cover ten direct §13/§14 examples and five §15 substantive-morpheme examples. Formal and substantive paths are separate and remain exact-form licensed.
-- Regression tests cover expected transformations plus unlicensed negative controls; no model is imported into the runtime and no IPA/UA target is upgraded to independently verified gold.
-- Scope limitation: some exact forms already had lexical overrides, so this change improves deterministic rule-layer coverage and Python/browser parity rather than demonstrating an aggregate accuracy increase. Accuracy against a neural teacher remains unmeasured because IPA conventions and independent evaluation data are not yet reconciled.
-- Verification: code/test head `c827aa8884206b69df08fce29f6a333970296ad0` passed Python regression/data integrity and browser regression/build in [workflow 40323576453](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40323576453). Documentation descendants `f81d7a3152d36328ee637ba212039ec132d39e83` and `1d777e04c66d8c1c998a56708ccaa4f266e8a448` also passed [40323672074](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40323672074) and [40323702599](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40323702599). The optional live NIKL source inventory was skipped, not passed. Independent IPA adjudication, target-layer evaluation and a representative held-out benchmark remain separate release blockers.
+#### Task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Reconcile stale IPA browser assertions after dotted syllable-boundary contract | DONE_VERIFIED | PR #343 merged into research branch; browser regression/build and Python/data-integrity passed in runs [40408709236](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709236) and [40408709171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40408709171). No runtime pronunciation rule was changed. |
+| Generate deterministic assertion classification queue | DONE_VERIFIED | PR #344; extraction [40464392516](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464392516), system [40464392495](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464392495). |
+| Add nearest test/suite context with explicit heuristic status | DONE_VERIFIED | PR #345; extraction [40464794197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464794197), system [40464794240](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464794240). |
+| Preserve raw expected literals and avoid evaluating expressions | DONE_VERIFIED | PR #346; extraction [40465361133](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465361133), system [40465361074](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465361074). |
+| Add coverage summary and CI fail-closed checks | DONE_VERIFIED | PR #347; extraction [40465942564](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465942564), system [40465937572](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465937572), corpus artifacts [40465937576](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465937576). |
+| Complete semantic case-level register with exact inputs/modes, expected and observed results | PARTIAL | 5,286 queue rows; 1,553 raw literal/regex fragments, 1,045 expressions not evaluated, 1,323 unsupported assertion forms. Acceptance requires case-to-fixture binding, mode extraction, multi-line/loop resolution and run-specific actual-output joins. |
+| Independently adjudicate broad IPA and Ukrainian target | BLOCKED / EVIDENCE-LIMITED | No independent adjudication corpus is created by this queue. Requires qualified independent reviewers and an auditable disagreement-resolution protocol; no gold labels may be inferred from Hangul-only NIKL readings or model outputs. |
+| Current exact-head workflow status after docs-only handoff refresh | BLOCKED / PENDING CI QUEUE | Code/workflow checks passed on code-equivalent head before the latest documentation-only commits. Current docs head `0e5835eb69c2f9c3c1028ea85555e9d22c935f7b` has test, system, browser, corpus and research workflows queued; do not claim those queued runs passed. |
+
+#### Latest generated queue evidence
+
+- 644 lexical records; 360 test files; 388 source files; 6,801 lexical-to-test text links; 50,768 Hangul-literal candidates; 34,711 preserved source lines.
+- 5,286 queue rows: 4,257 assertion candidates and 1,029 test declarations.
+- Raw source fragments: 1,004 string/scalar literals + 549 regex literals = 1,553 copied without evaluation; 1,045 computed expressions not evaluated; 336 predicate-only assertions; 1,323 unsupported forms; 1,029 non-assertion declarations.
+- Queue SHA-256: `09c26a7ebd856619fe9941702f2e12e968e717afe8dc5fba27f5f470a0df39e9`; artifact [12716247798](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465942564/artifacts/12716247798), 3,367,720 bytes.
+- Every row remains `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW` and `NOT_TIED_TO_EXACT_HEAD_RUN`. Dimension hints are multi-label; they are not case coverage or accuracy metrics.
+
+#### Branch/PR reconciliation
+
+- Current research branch continues to feed draft PR [#339](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339) against main. It remains draft; do not merge wholesale until the scientific, data-rights, held-out IPA and Ukrainian-target acceptance gates are met.
+- PRs #342 and #343–#347 were integrated into the research branch. PR #341's exact-form R002/R016 rule coverage is already present in the research branch; comparison shows its branch is heavily divergent (49 commits ahead / 590 behind at comparison time), so it was not merged or ported blindly.
+- Other open PRs (#336, #338, #305 and others) were left untouched because their branches are divergent and contain separate runtime/research scope. No branches were deleted, no external settings changed, and no release was published.
+- Local clone/tests remain unavailable because outbound DNS for `github.com` failed. All reported passes above are GitHub Actions evidence; current queued runs remain pending, not failed and not passed.
+
+**Readiness:** research-ready partial prototype; not release-ready. No neural weights or teacher predictions were promoted to runtime, no licensing permissions were inferred, and no production pronunciation/target rule was changed by the assertion-queue work.
 
 
-## Follow-up implementation audit — R016 exact-form parity and R002 trace integrity (2026-10-26)
+## Runtime IPA profile / seed-triage continuation — 2026-10-27
 
-**Status: DONE_VERIFIED for implementation, regression tests, and diagnostic benchmark execution; PARTIAL for normative quality claims.**
+- Starting branch HEAD was 4379463aab4f5a829c61ed666deb28cafffa1a6e; PR #339 remains Draft/open.
+- Reproduced exact-head seed portfolio failure run 40480217054: triage required exactly 994 Strict pairs even though the paired engine workflow reported 999 paired cases and one excluded case per seed. Same-seed checkpoint/prediction hashes and dev metrics matched, so this was a triage cardinality assertion failure, not model drift.
+- Fix: accept a variable Strict pair count only when pair IDs are a subset of the pinned 1,000 dev prediction IDs and the same pair-ID set appears across all three seeds. Added regressions for variable pair counts and divergent pair-ID sets.
+- Added common versioned metadata fields to Python and browser IPA outputs, plus shared unadjudicated sibilant fixtures. This does not establish profile equivalence: the fixture explicitly labels adjudication UNADJUDICATED and target adapter eligibility UNVERIFIED. No Ukrainian target or production pronunciation rule was changed.
+- Added SRC-KANG-2010-KOREAN-SIBILANT-COARTICULATION and SRC-KONG-KANG-2020-SEOUL-SIBILANTS to the existing source register. The reviewed abstracts support context/speaker variation but do not adjudicate a universal categorical [ɕ͈] rendering for tense /s͈/.
+- Verification limitation: current code/test runs on later heads are QUEUED in GitHub Actions at this audit update; no local test result is claimed because clone failed with DNS error resolving github.com. Do not mark the code fix DONE_VERIFIED until exact-head test, system, browser, and seed-portfolio workflows finish successfully and logs/artifacts are inspected.
+- Current acceptance status: seed-triage fix PARTIAL; common IPA profile metadata PARTIAL; cross-runtime IPA acceptance BLOCKED / UNADJUDICATED; Ukrainian adaptation DEFERRED. PR #339 must remain Draft.
 
-- Added official exact-form R016 coverage for 읽고, 묽고 and 얽거나 in both Python and browser rules; source-backed exact forms may resolve in same-word mode, while category-only and wrong-form licenses remain blocked.
-- Added a regression for multi-boundary 헛웃음: the substantive §15 boundary is licensed independently, and the following written-coda liaison is verified separately. Python R002 traces preserve all applied exact licenses rather than only the last pair.
-- Primary sources are registered already; no duplicate source registry was created. NIKL Q&A qna_seq=329463 directly attests 읽고[일꼬]; the official Standard Pronunciation Rules support the listed §11 examples and §§13–15 rule distinctions.
-- Exact implementation head `66c8e62dd575e70edd24e0e837a13dcc5a2dbc1a` passed Python and browser regression/build in [40325471931](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471931), the test matrix in [40325471784](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471784), and diagnostic UGTPHON/SIGMORPHON benchmark workflows [40325471662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471662), [40325471709](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471709), and [40325471732](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40325471732). The follow-up documentation commit `69bac527191c28001f5b9a4cacfd21364c75f2a0` also passed Python and browser checks in [40327789281](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40327789281). Live NIKL inventory was skipped, not passed.
-- Same-pinned-corpus UGTPHON comparison against baseline [40216156302](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40216156302) shows native scored occurrences 2,688→2,698 (+10), abstentions 15→5 (−10), exact matches 1,425→1,430 (+5), and CER 9.1757%→9.1697% (−0.0060 percentage points). Exact match among scored tokens changes 53.0134%→53.0022% (−0.0112 pp); therefore the defensible result is increased coverage and a small CER improvement, not a blanket claim that conditional accuracy improved. On the separate SIGMORPHON split, native remains 357/997 exact, CER 14.7037%, with two abstentions; no measured change was observed.
-- These benchmark references are noisy/public diagnostic IPA references, not independent normative gold. Independent broad-IPA adjudication, a representative untouched holdout, and Ukrainian target gold remain release blockers. The live NIKL inventory workflow condition remains SKIPPED.
+
+
+## Follow-up audit — strict IPA target gate — 2026-10-27
+
+- Source audit confirmed the public browser default still maps IPA through the legacy path despite unadjudicated profile metadata. The Python default pipeline also retains a raw-IPA renderer path. Neither is approved for release.
+- Added opt-in strict gate entry points to browser convert()/convertSurface() and Python transliterate_korean(). Strict browser mode suppresses target spellings from public output, traces, and variants; both runtimes retain upstream unresolved/diagnostic-only guards.
+- Added browser/Python tests and kept the shared negative profile fixture. These code/tests are PARTIAL until exact-head CI passes. Current latest relevant code head before documentation-only updates: 4456d47393313090cb17115494a6ce85347fa121; tests 40517742289, system verification 40517742426, and browser integration 40517742266 were QUEUED. No local or exact-head CI pass is claimed.
+- Remaining blockers: default exclusive gate migration; independent broad/narrow and ㅅ/ㅆ adjudication; official NIKL inventory job skipped; Ukrainian target inventory review deferred; source-rights audit partial. PR #339 remains Draft.
+
+
+## One-pass reconciliation addendum — 2026-10-27
+
+### Exact-head verification and cross-PR reconciliation
+
+The current continuation branch's pre-addendum head `0702e1c4778725b605ef432f038313af86b6b764` has successful PR-triggered checks: system verification `40576910940`; test matrix `40576910855`; browser G2P integration `40576910678`; teacher-corpus split audit `40576910707`; Charsiu dev-only rule review `40576910747`; neural teacher seed portfolio `40576910768`; morphology-consensus `40576910938`; research morphology smoke `40576910725`; multi-engine benchmark `40576910776`; UGTPHON `40576910741`; native-vs-g2pK `40576911061`; exhaustive test-case register `40576910875`; master-table/research artifacts `40576910699`; optional g2pK integration `40576910764`; scratch teacher `40576910753`. All reported completed/success. This validates the code/data contracts at that head, not independent pronunciation accuracy.
+
+The following open pull requests were compared rather than blindly merged:
+
+- **#341**, head `0f2177e60053fe85a5162229f6c0fd67561e817e`, has separately verified exact-form NIKL-backed liaison and ㄺ+ㄱ rules. It overlaps this branch's rule code/tests and handoff. Keep separate until the overlapping trees are reconciled and a combined exact-head test run succeeds.
+- **#338**, head `691a8ab77c7c6c24137fa9c2a11100de05386536`, is a research-only neural G2P harness; authentic NN-KoG2P inference, model licensing, and training overlap remain unresolved.
+- **#329**, head `636dac36c27e4d72b13dc37f9698ad90bfb24b96`, improves source-blind reviewer packets; it does not provide independent reviewer annotations.
+- **#326**, head `ffa2d993b89e29ef5d43b2059d8aff0269b4f391`, is diverged/non-mergeable and contains a frozen 24-form holdout with no IPA gold labels; do not merge its runtime diff.
+- **#336/#327** retain residual-case and official NIKL HTTP 403 evidence blockers; skipped jobs do not count as successful source inventory.
+
+### Status ledger
+
+- `DONE_VERIFIED`: implementation/test/data-integrity checks for the current PR #339 starting head; all listed workflows succeeded.
+- `PARTIAL`: opt-in narrow IPA v3, candidate-mining safeguards, and profile gate; profile remains target-incompatible.
+- `PARTIAL`: source-backed rules in PR #341 are verified on their own branch, but not integrated with this branch or main.
+- `BLOCKED`: independent blinded IPA adjudication and an untouched evaluation set.
+- `BLOCKED`: Charsiu model/tokenizer terms and training overlap; remaining KOGL/source-rights review; official NIKL inventory after HTTP 403.
+- `DEFERRED`: Ukrainian target adaptation until the IPA boundary is independently adjudicated and a reviewed typed adapter is wired exclusively.
+
+**Release assessment:** materially improved research and regression infrastructure; still a research prototype/partial, not release-ready. No merge, release, or production-profile promotion was performed. The next acceptance criterion is independent blinded IPA labels plus an untouched evaluation protocol, then target-adapter review and source-rights closure.
+
+
+## Recheck addendum — 2026-10-27
+
+**Scope:** GitHub content/API inspection only. No local checkout, Python/Node execution, generated-artifact check, or independent linguistic review was performed in this pass.
+
+### Rechecked evidence
+
+- Current public `main` README describes the browser and Python IPA-first architecture, including the limitation that the browser G2P port does not reproduce Python g2pK's MeCab-based morphology. It explicitly treats Ukrainian mappings as project choices and provisional in many cases.
+- The current research branch's `src/korean_ukrainian/ipa.py` contains an opt-in narrow profile with scoped onset nasal palatalization and same-word sonorant-coda /h/ voicing. Neither candidate is independent broad-IPA gold; the reported corpus results are diagnostic and selection-contaminated.
+- The exact requested runtime-profile contract and neural-teacher candidate-register paths were not found on the inspected branch. Resolve canonical filenames/refs before using them as authoritative gates.
+- PR #339 is open/draft and its own body reports a mixed workflow state: successful code/test checks on a prior code head, but Charsiu inference blocked by Hugging Face HTTP 429 on a later head and a seed-portfolio workflow not yet complete at that update.
+- PR #341 is open and shares rule/test/handoff files with #339. Its own passing CI is not evidence that the combined tree passes; integration remains TODO until exact heads are compared and the combined tree is tested.
+- PR #329 provides packet blinding and validation infrastructure, not independent expert labels. Issue #337 still requires two qualified independent reviewers. PR #338 has no verified authentic NN-KoG2P inference artifact/terms. PRs #326/#336/#327 retain holdout, residual-case, and NIKL-access blockers.
+- The source register explicitly records HTTP 403 from the official NIKL collector and no crawl manifest. Rights review is partial and must not be represented as completed.
+
+### Revised status summary
+
+| Dimension | Status | Reason |
+|---|---|---|
+| Korean surface-form implementation | PARTIAL / locally source-backed subsets | Existing rule-specific tests and CI reports support subsets; no full lexical/morphological coverage claim. |
+| Typed IPA and narrow-profile research | PARTIAL | Runtime candidate code exists; independent IPA convention/phonetics adjudication is missing. |
+| IPA → Ukrainian renderer | PARTIAL | Source and README document IPA-only input, but no new exact-head end-to-end execution was available in this pass. |
+| Independent IPA evaluation | BLOCKED | No verified qualified blind submissions; holdout has no IPA gold labels. |
+| Ukrainian target evaluation | BLOCKED | No independent target gold set or completed target-inventory adjudication. |
+| Teacher-model evidence | BLOCKED / diagnostic only | Training overlap unknown, dev selection contamination, latest reported Charsiu download rate-limited; NN-KoG2P not runnable/verified. |
+| Source inventory and licensing | BLOCKED / PARTIAL | NIKL 403; item-level KOGL marks and external model/tokenizer terms not fully verified. |
+| Release readiness | NOT READY | Independent IPA and target gates, rights and latest exact-head verification remain outstanding. |
+
+No linguistic accuracy status was upgraded by this recheck. Acceptance requires exact-head tests and generated-artifact parity, a reproducible pinned benchmark, independent blind IPA adjudication, a separately reviewed Ukrainian target gold set, and explicit source/model rights resolution.

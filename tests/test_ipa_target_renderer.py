@@ -1,7 +1,11 @@
 import csv
+import json
 from pathlib import Path
 
-from korean_ukrainian.ipa_target_renderer import render_ipa_sequence_to_ukrainian
+from korean_ukrainian.ipa_target_renderer import (
+    render_ipa_sequence_to_ukrainian,
+    render_profiled_ipa_to_ukrainian,
+)
 
 
 def test_ipa_renderer_uses_longest_match_and_keeps_trace():
@@ -218,3 +222,83 @@ def test_separator_or_length_marker_only_input_cannot_render_as_empty_success():
         assert result["ukrainian_orthography"] is None, ipa
         assert result["status"] == "unavailable", ipa
         assert result["reason"] == "no_renderable_ipa_segments", ipa
+
+
+def test_profile_aware_adapter_rejects_unadjudicated_partial_and_unregistered_profiles():
+    from korean_ukrainian.ipa_target_renderer import render_profiled_ipa_to_ukrainian
+
+    broad = {
+        "ipa": "s͈i",
+        "ipa_profile": "clippyfirst-korean-broad-v1",
+        "ipa_profile_version": 1,
+        "ipa_profile_level": "broad",
+        "ipa_profile_status": "unadjudicated-cross-runtime",
+    }
+    unadjudicated = render_profiled_ipa_to_ukrainian("씨", broad)
+    assert unadjudicated["status"] == "unavailable"
+    assert unadjudicated["ukrainian_orthography"] is None
+    assert unadjudicated["reason"] == "ipa_profile_not_adjudicated_compatible"
+
+    partial = render_profiled_ipa_to_ukrainian("씨", {
+        **broad,
+        "ipa_profile": "clippyfirst-korean-narrow-partial-sibilant-nasal-v2",
+        "ipa_profile_version": 2,
+        "ipa_profile_level": "narrow",
+        "ipa_profile_status": "partial-research-only",
+    })
+    assert partial["status"] == "unavailable"
+    assert partial["reason"] == "ipa_profile_partial_research_only"
+
+    incomplete = render_profiled_ipa_to_ukrainian("씨", {"ipa": "s͈i"})
+    assert incomplete["status"] == "unavailable"
+    assert incomplete["reason"] == "ipa_profile_metadata_incomplete"
+
+    not_allowlisted = render_profiled_ipa_to_ukrainian("씨", {
+        **broad, "ipa_profile_status": "adjudicated-compatible"
+    })
+    assert not_allowlisted["status"] == "unavailable"
+    assert not_allowlisted["reason"] == "ipa_profile_not_allowlisted_for_target_adapter"
+
+
+def test_profiled_adapter_validates_research_opt_in_even_when_profile_is_blocked():
+    import pytest
+    from korean_ukrainian.ipa_target_renderer import render_profiled_ipa_to_ukrainian
+
+    with pytest.raises(TypeError, match="allow_provisional"):
+        render_profiled_ipa_to_ukrainian("씨", {"ipa": "s͈i"}, allow_provisional="yes")
+    assert render_profiled_ipa_to_ukrainian("씨", {"ipa": "s͈i"}, allow_provisional=False)["reason"] == "ipa_profile_metadata_incomplete"
+
+
+def test_shared_typed_ipa_gate_fixtures_preserve_fail_closed_outcomes():
+    fixture_path = Path(__file__).parent / "fixtures" / "ipa-profile-gate-cases.json"
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert fixture["schema_version"] == 1
+    for case in fixture["cases"]:
+        result = render_profiled_ipa_to_ukrainian("씨", case["ipa_result"])
+        assert result["reason"] == case["expected_reason"], case["id"]
+        assert result["status"] == "unavailable", case["id"]
+        assert result["ukrainian_orthography"] is None, case["id"]
+
+
+def test_pipeline_opt_in_profile_gate_withholds_unadjudicated_and_partial_profiles():
+    import pytest
+    from korean_ukrainian.pipeline import transliterate_korean
+
+    broad = transliterate_korean("가", require_adjudicated_ipa_profile=True)
+    assert broad["ukrainian_orthography"] is None
+    assert broad["target_status"] == "unavailable"
+    assert broad["target_unavailable_reason"] == "ipa_profile_not_adjudicated_compatible"
+
+    narrow = transliterate_korean("씨", ipa_level="narrow", require_adjudicated_ipa_profile=True)
+    assert narrow["ukrainian_orthography"] is None
+    assert narrow["target_unavailable_reason"] == "ipa_profile_partial_research_only"
+
+    # Profile approval must never override unresolved Korean phonology.
+    unresolved = transliterate_korean("앉어라", require_adjudicated_ipa_profile=True)
+    assert unresolved["ukrainian_orthography"] is None
+    assert unresolved["target_status"] == "unresolved"
+    assert unresolved["target_unavailable_reason"] == "unresolved_korean_phonology"
+    assert unresolved["ipa_is_diagnostic_only"] is True
+
+    with pytest.raises(TypeError, match="require_adjudicated_ipa_profile"):
+        transliterate_korean("가", require_adjudicated_ipa_profile="yes")

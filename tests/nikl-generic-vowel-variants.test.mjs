@@ -9,7 +9,7 @@ const engine = createEngine(canonical, lexical);
 
 test('§4 generic ㅚ words expose [we] without changing Korean spelling or Ukrainian output', () => {
   const result = engine.convert('괴물');
-  assert.equal(result.ipa, 'kø mul');
+  assert.equal(result.ipa, 'kø.mul');
   assert.equal(result.ukrainian, '');
   assert.equal(result.target_status, 'unavailable');
   assert.equal(result.candidate_ukrainian, 'квемул');
@@ -17,7 +17,7 @@ test('§4 generic ㅚ words expose [we] without changing Korean spelling or Ukra
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '괴물');
   assert.equal(result.variants[0].ukrainian, result.candidate_ukrainian);
-  assert.equal(result.variants[0].ipa, 'kwe mul');
+  assert.equal(result.variants[0].ipa, 'kwe.mul');
   assert.match(result.variants[0].note, /§4/u);
   assert.match(result.variants[0].note, /철자|нап(u|и)с/u);
 });
@@ -38,12 +38,12 @@ test('§4 generic ㅟ words expose [wi] without changing Korean spelling or Ukra
 
 test('§4 enumerates every combination for up to three optional vowels', () => {
   const result = engine.convert('괴물귀');
-  assert.equal(result.ipa, 'kø mul ɡy');
+  assert.equal(result.ipa, 'kø.mul.ɡy');
   assert.equal(result.variants.length, 3);
   assert.deepEqual(result.variants.map((variant) => variant.ipa), [
-    'kwe mul ɡy',
-    'kø mul ɡwi',
-    'kwe mul ɡwi',
+    'kwe.mul.ɡy',
+    'kø.mul.ɡwi',
+    'kwe.mul.ɡwi',
   ]);
   for (const variant of result.variants) {
     assert.equal(variant.surface, '괴물귀');
@@ -71,13 +71,13 @@ test('the listed lexical example 회 keeps its spelling in both permitted IPA re
 test('§5 non-initial ㅢ exposes the permitted [i] reading and adjusts the Ukrainian target', () => {
   const genericEngine = createEngine(canonical, '');
   const result = genericEngine.convert('민주주의');
-  assert.equal(result.ipa, 'min dʑu dʑu ɰi');
+  assert.equal(result.ipa, 'min.dʑu.dʑu.ɰi');
   assert.equal(result.ukrainian, '');
   assert.equal(result.target_status, 'unavailable');
   assert.equal(result.candidate_ukrainian, 'мінджуджуий');
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.variants.length, 1);
-  assert.equal(result.variants[0].ipa, 'min dʑu dʑu i');
+  assert.equal(result.variants[0].ipa, 'min.dʑu.dʑu.i');
   assert.equal(result.variants[0].ukrainian, 'мінджуджуі');
   assert.match(result.variants[0].note, /§5/u);
 });
@@ -85,7 +85,7 @@ test('§5 non-initial ㅢ exposes the permitted [i] reading and adjusts the Ukra
 test('§5 does not infer the optional [i] reading for word-initial ㅢ without particle evidence', () => {
   const genericEngine = createEngine(canonical, '');
   const result = genericEngine.convert('의견');
-  assert.equal(result.ipa, 'ɰi ɡjʌn');
+  assert.equal(result.ipa, 'ɰi.ɡjʌn');
   assert.equal(result.variants.length, 0);
 });
 
@@ -93,20 +93,20 @@ test('§5 word boundaries prevent non-initial ㅢ alternatives from leaking acro
   const genericEngine = createEngine(canonical, '');
   const result = genericEngine.convert('민주주의 의의');
   assert.equal(result.variants.length, 3);
-  assert.ok(result.variants.some((variant) => variant.ipa === 'min dʑu dʑu i ɰi ɰi'));
-  assert.ok(result.variants.some((variant) => variant.ipa === 'min dʑu dʑu ɰi ɰi i'));
-  assert.ok(result.variants.some((variant) => variant.ipa === 'min dʑu dʑu i ɰi i'));
+  assert.ok(result.variants.some((variant) => variant.ipa === 'min.dʑu.dʑu.i ɰi.ɰi'));
+  assert.ok(result.variants.some((variant) => variant.ipa === 'min.dʑu.dʑu.ɰi ɰi.i'));
+  assert.ok(result.variants.some((variant) => variant.ipa === 'min.dʑu.dʑu.i ɰi.i'));
 });
 
 
 test('§5 generic ㅖ may be [e] except in the syllables 예 and 례', () => {
   const genericEngine = createEngine(canonical, '');
   const result = genericEngine.convert('폐기');
-  assert.equal(result.ipa, 'pʰje ɡi');
+  assert.equal(result.ipa, 'pʰje.ɡi');
   assert.equal(result.ukrainian, 'пєґі');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '폐기');
-  assert.equal(result.variants[0].ipa, 'pʰe ɡi');
+  assert.equal(result.variants[0].ipa, 'pʰe.ɡi');
   assert.equal(result.variants[0].ukrainian, 'пеґі');
   assert.match(result.variants[0].note, /§5/u);
 
@@ -117,12 +117,12 @@ test('§5 generic ㅖ may be [e] except in the syllables 예 and 례', () => {
 test('§5 combines optional ㅖ-to-[e] readings without changing Korean spelling', () => {
   const genericEngine = createEngine(canonical, '');
   const result = genericEngine.convert('폐기계');
-  assert.equal(result.ipa, 'pʰje ɡi ɡje');
+  assert.equal(result.ipa, 'pʰje.ɡi.ɡje');
   assert.equal(result.variants.length, 3);
   assert.deepEqual(result.variants.map((variant) => variant.ipa), [
-    'pʰe ɡi ɡje',
-    'pʰje ɡi ɡe',
-    'pʰe ɡi ɡe',
+    'pʰe.ɡi.ɡje',
+    'pʰje.ɡi.ɡe',
+    'pʰe.ɡi.ɡe',
   ]);
   assert.deepEqual(result.variants.map((variant) => variant.ukrainian), [
     'пеґіґє',

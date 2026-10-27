@@ -4,9 +4,17 @@ from korean_ukrainian.pipeline import phoneticize_korean
 def test_basic_broad_ipa(): assert phoneticize_korean("가")["ipa"]["ipa"]=="ka"
 def test_intervocalic_lenis_voicing(): assert "ɡ" in phoneticize_korean("아가")["ipa"]["ipa"]
 def test_ipa_level_is_explicit(): assert phoneticize_korean("가",ipa_level="phonemic")["ipa"]["level"]=="phonemic"
-def test_narrow_ipa_is_explicitly_unavailable():
-    with pytest.raises(ValueError,match="narrow IPA is unavailable"):
-        phoneticize_korean("가",ipa_level="narrow")
+def test_narrow_ipa_is_explicitly_partial_and_source_scoped():
+    narrow = phoneticize_korean("사", ipa_level="narrow")["ipa"]
+    assert narrow["ipa"] == "sʰa"
+    assert narrow["level"] == "narrow"
+    assert narrow["realization_status"] == "partial-narrow-research-profile"
+    assert narrow["transcription_profile"]["target_compatible"] is False
+
+    # Default broad IPA remains stable; narrow is opt-in only.
+    assert phoneticize_korean("사")["ipa"]["ipa"] == "sa"
+    assert phoneticize_korean("시", ipa_level="narrow")["ipa"]["ipa"] == "ɕʰi"
+    assert phoneticize_korean("쇼", ipa_level="narrow")["ipa"]["ipa"] == "sʰjo"
 
 
 def test_broad_ipa_voicing_after_sonorant():
@@ -158,3 +166,80 @@ def test_yod_absorption_fixes_benchmark_mismatches():
     }
     for word, ipa in expected.items():
         assert phoneticize_korean(word)["ipa"]["ipa"] == ipa, word
+
+
+def test_python_ipa_results_expose_a_versioned_profile_contract():
+    expected = {
+        "phonemic": ("clippyfirst-korean-phonemic-v1", "phonemic"),
+        "broad": ("clippyfirst-korean-broad-v1", "broad"),
+        "narrow": ("clippyfirst-korean-narrow-partial-sibilant-nasal-h-v3", "narrow"),
+    }
+    for level, (profile_id, profile_level) in expected.items():
+        result = phoneticize_korean("씨", ipa_level=level)["ipa"]
+        assert result["ipa_profile"] == profile_id
+        assert result["ipa_profile_version"] == (3 if level == "narrow" else 1)
+        assert result["ipa_profile_level"] == profile_level
+        assert result["ipa_profile_status"] == (
+            "partial-research-only" if level == "narrow"
+            else "unadjudicated-cross-runtime"
+        )
+
+
+def test_python_broad_profile_uses_the_shared_unadjudicated_fixture():
+    import json
+    from pathlib import Path
+
+    fixture = json.loads(
+        (Path(__file__).parent / "fixtures" / "korean-ipa-profile-pairs-2026-10-27.json")
+        .read_text(encoding="utf-8")
+    )
+    assert fixture["adjudication_status"] == "UNADJUDICATED"
+    assert fixture["target_adapter_eligibility"] == "UNVERIFIED"
+    for item in fixture["cases"]:
+        result = phoneticize_korean(item["source"], ipa_level="broad")["ipa"]
+        assert result["ipa"] == item["python_broad_ipa"], item["source"]
+
+def test_narrow_nasal_glide_rule_is_scoped_and_does_not_leak_to_broad_ipa():
+    # Teacher-guided candidate is narrow/research-only: [ɲ] before selected
+    # glide nuclei, not a general replacement for Korean onset /n/.
+    narrow_expected = {
+        "냐": "ɲja",
+        "얘": "jɛ",  # no onset ㄴ: must not synthesize a nasal
+        "녀": "ɲjʌ",
+        "녜": "ɲje",
+        "뇨": "ɲjo",
+        "뉴": "ɲju",
+    }
+    for word, expected in narrow_expected.items():
+        assert phoneticize_korean(word, ipa_level="narrow")["ipa"]["ipa"] == expected
+
+    # Negative controls: /n/ before ㅣ and a non-glide context stays [n].
+    assert phoneticize_korean("니", ipa_level="narrow")["ipa"]["ipa"] == "ni"
+    assert phoneticize_korean("난", ipa_level="narrow")["ipa"]["ipa"] == "nan"
+
+    # The research allophone must not leak into broad or phonemic output.
+    assert phoneticize_korean("냐", ipa_level="broad")["ipa"]["ipa"] == "nja"
+    assert phoneticize_korean("냐", ipa_level="phonemic")["ipa"]["ipa"] == "nja"
+
+def test_narrow_h_voicing_after_sonorant_coda_is_scoped_and_not_target_approved():
+    # Peer-reviewed work reports optional voicing/weakening/deletion after
+    # sonorants. This profile selects [ɦ] as one research realization; it does
+    # not claim that all speakers obligatorily voice /h/ in these contexts.
+    expected = {
+        "감히": "kam.ɦi",
+        "간호원": "kan.ɦo.wʌn",
+        "영화": "jʌŋ.ɦwa",
+    }
+    for word, ipa in expected.items():
+        result = phoneticize_korean(word, ipa_level="narrow")["ipa"]
+        assert result["ipa"] == ipa, word
+        assert result["transcription_profile"]["target_compatible"] is False
+
+    # Negative controls: no preceding sonorant coda, or a word boundary.
+    assert phoneticize_korean("아하", ipa_level="narrow")["ipa"]["ipa"] == "a.ha"
+    assert phoneticize_korean("감 하", ipa_level="narrow")["ipa"]["ipa"] == "kam ha"
+
+    # The default broad and underlying phonemic representations remain stable.
+    assert phoneticize_korean("감히", ipa_level="broad")["ipa"]["ipa"] == "kam.hi"
+    assert phoneticize_korean("감히", ipa_level="phonemic")["ipa"]["ipa"] == "kam.hi"
+

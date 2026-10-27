@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { renderExpectedIpa } from './render-expected-ipa.mjs';
 import { readFileSync } from 'node:fs';
 import { createEngine, parseCsv } from '../src/app/engine.js';
 
@@ -23,8 +24,8 @@ const entries = new Map(effectiveRows);
 
 test('high-risk user-corpus words use explicit standard surface readings', () => {
   const expected = {
-    '국립국어원': ['궁님꾸거원', 'куннімкуґовон', 'kuŋ nim k͈u ɡʌ wʌn'],
-    '먹었어요': ['머거써요', 'моґосойо', 'mʌ ɡʌ s͈ʌ jo'],
+    '국립국어원': ['궁님꾸거원', 'куннімкуґовон', 'kuŋ.nim.k͈u.ɡʌ.wʌn'],
+    '먹었어요': ['머거써요', 'моґосойо', 'mʌ.ɡʌ.s͈ʌ.jo'],
     '찍었어요': ['찌거써요', 'чіґосойо', 'tɕ͈i ɡʌ s͈ʌ jo'],
   };
   for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
@@ -35,7 +36,7 @@ test('high-risk user-corpus words use explicit standard surface readings', () =>
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, surface, word);
     assert.equal(result.ukrainian, target, word);
-    assert.equal(result.ipa, ipa, word);
+    assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.status, 'lexical-review', word);
     assert.deepEqual(result.issues, [], word);
   }
@@ -122,9 +123,9 @@ test('second adversarial corpus resolves morphology-sensitive forms without plac
 
 test('phrase IPA and alternate readings preserve word boundaries and punctuation', () => {
   const result = engine.convert('맛있다, 값이!');
-  assert.equal(result.ipa, 'ma dit̚ t͈a, kap̚ ɕ͈i!');
+  assert.equal(result.ipa, 'ma.dit̚.t͈a, kap̚.ɕ͈i!');
   assert.equal(result.variants.length, 1);
-  assert.equal(result.variants[0].ipa, 'ma ɕit̚ t͈a, kap̚ ɕ͈i!');
+  assert.equal(result.variants[0].ipa, 'ma.ɕit̚.t͈a, kap̚.ɕ͈i!');
   assert.ok(!result.variants[0].ipa.includes('\\\\s'));
   assert.deepEqual(result.issues, []);
 });
@@ -133,7 +134,7 @@ test('phrase IPA and alternate readings preserve word boundaries and punctuation
 test('user-supplied stress corpus: exact phrase entries preserve word boundaries and source-backed IPA', () => {
   const cases = [
     ['몇 리', '면니', 'мйон ні', 'mjʌn ni'],
-    ['할 것을', '할꺼슬', 'гал косил', 'hal k͈ʌ sɯl'],
+    ['할 것을', '할꺼슬', 'гал косил', 'hal k͈ʌ.sɯl'],
     ['갈 데가', '갈떼가', 'кал теґа', 'kal t͈e ɡa'],
     ['읽을 수', '일글쑤', 'ілґил су', 'il ɡɯl s͈u'],
     ['읽을 것을', '일글꺼슬', 'ілґил косил', 'il ɡɯl k͈ʌ sɯl'],
@@ -143,15 +144,15 @@ test('user-supplied stress corpus: exact phrase entries preserve word boundaries
     const result = engine.convert(input, { morphologyMode: 'practical' });
     assert.equal(result.surfaceHangul, surface, input + ': surface');
     assert.equal(result.ukrainian, target, input + ': Ukrainian target');
-    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': IPA');
     assert.deepEqual(result.issues, [], input + ': ' + JSON.stringify(result.issues));
   }
 });
 
 test('user-supplied stress corpus: complex-coda and assimilation controls are covered', () => {
   const expected = {
-    '넋이': ['넉씨', 'nʌk̚ ɕ͈i'],
-    '몫을': ['목쓸', 'mok̚ s͈ɯl'],
+    '넋이': ['넉씨', 'nʌk̚.ɕ͈i'],
+    '몫을': ['목쓸', 'mok̚.s͈ɯl'],
     '값이': ['갑씨', 'kap̚ ɕ͈i'],
     '읽고': ['일꼬', 'il k͈o'],
     '읽는': ['잉는', 'iŋ nɯn'],
@@ -164,13 +165,13 @@ test('user-supplied stress corpus: complex-coda and assimilation controls are co
     '밭이': ['바치', 'pa tɕʰi'],
     '해돋이': ['해도지', 'hɛ do dʑi'],
     '있었는지': ['이썬는지', 'i s͈ʌn nɯn dʑi'],
-    '독립문': ['동님문', 'toŋ nim mun'],
+    '독립문': ['동님문', 'toŋ.nim.mun'],
     '꽃잎': ['꼰닙', 'k͈on nip̚'],
   };
   for (const [input, [surface, ipa]] of Object.entries(expected)) {
     const result = engine.convert(input, { morphologyMode: 'practical' });
     assert.equal(result.surfaceHangul, surface, input + ': surface');
-    assert.equal(result.ipa, ipa, input + ': IPA');
+    assert.equal(result.ipa, renderExpectedIpa(input, ipa), input + ': IPA');
     assert.deepEqual(result.issues, [], input + ': ' + JSON.stringify(result.issues));
     assert.ok(!result.ukrainian.includes('⟦'), input + ': unresolved placeholder');
   }

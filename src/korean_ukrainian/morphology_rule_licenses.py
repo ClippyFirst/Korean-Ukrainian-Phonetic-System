@@ -1,6 +1,6 @@
 """Low-confidence, analyzer-consensus rule licensing for Korean research mode.
 
-Two independent morphology analyses can support a *candidate* morpheme boundary.
+Two distinct morphology analyses can support a *candidate* morpheme boundary.
 They are not pronunciation gold. This adapter only licenses rules when both
 analyses align a formal morpheme to the same orthographic syllable boundary;
 the resulting IPA remains diagnostic-only and must not bypass the IPA→target
@@ -12,6 +12,11 @@ from collections.abc import Mapping, Sequence
 from typing import Any
 
 from .phonology import parse_syllables
+from .rules import (
+    _NIKL_R012_WORD_LICENSES,
+    _NIKL_R014_WORD_LICENSES,
+    _NIKL_R015_WORD_LICENSES,
+)
 
 _FORMAL_TAGS = {
     "EC", "EF", "EP", "ETM", "ETN",
@@ -20,12 +25,29 @@ _FORMAL_TAGS = {
 }
 _H_CODAS = {"ㅎ", "ㄶ", "ㅀ"}
 _R002_EXCLUDED_CODAS = _H_CODAS
+_STEM_TAGS = {"VV", "VA"}
+_ENDING_TAGS = {"EC", "EF", "EP", "ETM", "ETN"}
+_PARTICLE_TAGS = {"JC", "JKS", "JKC", "JKG", "JKO", "JKB", "JKV", "JKQ", "JX"}
+_PLAIN_FORTITION_ONSETS = {"ㄱ", "ㄷ", "ㅅ", "ㅈ"}
+_SOURCE_BACKED_LEXICAL_ROOT_LICENSES = (
+    *(("R012", "sino_ryeon", root, pair) for root, pair in _NIKL_R012_WORD_LICENSES.items()),
+    *(("R014", "compound", root, pair) for root, pair in _NIKL_R014_WORD_LICENSES.items()),
+    *(("R015", "saisiot", root, pair) for root, pair in _NIKL_R015_WORD_LICENSES.items()),
+)
 
 
 def _tag_parts(value: Any) -> set[str]:
     if not isinstance(value, str):
         return set()
     return {part.strip() for part in value.split("+") if part.strip()}
+
+
+def _grammatical_family(tags: set[str]) -> str:
+    if tags & _ENDING_TAGS:
+        return "ending"
+    if tags & _PARTICLE_TAGS:
+        return "particle"
+    return "other"
 
 
 def _formal_boundary_offsets(text: str, analysis: Mapping[str, Any]) -> set[int]:
@@ -57,7 +79,7 @@ def _formal_boundary_offsets(text: str, analysis: Mapping[str, Any]) -> set[int]
             zero_width_offsets.add(start)
             continue
         surface = item.get("surface")
-        if isinstance(surface, str) and surface and surface != text[start:end]:
+        if not isinstance(surface, str) or not surface or surface != text[start:end]:
             continue
         spans.append({"start": start, "end": end, "tag": item.get("tag")})
 
@@ -123,6 +145,39 @@ def _unspaced_adverb_verb_offsets(text: str, analysis: Mapping[str, Any]) -> set
     return result
 
 
+def _morphemes_at_boundary(
+    text: str,
+    analysis: Mapping[str, Any],
+    offset: int,
+) -> tuple[Mapping[str, Any], Mapping[str, Any]] | None:
+    """Return one exact aligned morpheme on each side of an offset."""
+    morphemes = analysis.get("morphemes")
+    if not isinstance(morphemes, list):
+        return None
+    left = []
+    right = []
+    for item in morphemes:
+        if not isinstance(item, Mapping):
+            continue
+        start, end = item.get("start"), item.get("end")
+        if isinstance(start, bool) or isinstance(end, bool):
+            continue
+        if not isinstance(start, int) or not isinstance(end, int) or start < 0 or end > len(text) or start >= end:
+            continue
+        surface = item.get("surface")
+        if not isinstance(surface, str) or not surface or surface != text[start:end]:
+            continue
+        if end == offset:
+            left.append(item)
+        if start == offset:
+            right.append(item)
+        if start < offset < end:
+            return None
+    if len(left) != 1 or len(right) != 1:
+        return None
+    return left[0], right[0]
+
+
 def analyzer_consensus_rule_licenses(
     text: str,
     analyses: Sequence[Mapping[str, Any]],
@@ -131,7 +186,8 @@ def analyzer_consensus_rule_licenses(
 
     The first version intentionally supports a single precomposed-Hangul token
     with character-aligned spans. It does not infer spaces, decompose syllables,
-    or license substantive-morpheme rules.
+    or license substantive-morpheme rules. R010/R011/R016 additionally require
+    both analyzers to agree on a VV/VA stem followed by a grammatical ending.
     """
     if not isinstance(text, str) or not text or any(not ("\uac00" <= char <= "\ud7a3") for char in text):
         raise ValueError("analyzer consensus currently requires one precomposed-Hangul token without spaces")
@@ -162,6 +218,7 @@ def analyzer_consensus_rule_licenses(
         left, right = syllables[offset - 1], syllables[offset]
         pair = f"{left.text}>{right.text}"
         applied: list[str] = []
+        lexical_root_extensions: list[dict[str, str]] = []
         if left.coda and left.coda not in _R002_EXCLUDED_CODAS and right.onset == "ㅇ":
             license = f"R002:formal:{text}:{pair}"
             licenses.add(license)
@@ -174,6 +231,68 @@ def analyzer_consensus_rule_licenses(
             license = f"R007:formal_morpheme_i:{text}:{pair}"
             licenses.add(license)
             applied.append("R007")
+        # §§24–25 and §11 are productive only when both analyzers agree on
+        # the same surface-aligned verb/adjective stem + grammatical ending.
+        # The rule engine still checks the coda/onset class and applies only
+        # these exact-form licenses; no category-only license is emitted.
+        aligned = [_morphemes_at_boundary(text, item, offset) for item in analyses]
+        if all(pairing is not None for pairing in aligned):
+            left_tags = [_tag_parts(pairing[0].get("tag", "")) for pairing in aligned]
+            right_tags = [_tag_parts(pairing[1].get("tag", "")) for pairing in aligned]
+            stem_agreement = all(tags & _STEM_TAGS for tags in left_tags)
+            ending_agreement = all(tags & _ENDING_TAGS for tags in right_tags)
+            if stem_agreement and ending_agreement and right.onset in _PLAIN_FORTITION_ONSETS:
+                representative = {
+                    "ㄳ": "ㄱ", "ㄵ": "ㄴ", "ㄶ": "ㄴ", "ㄺ": "ㄱ",
+                    "ㄻ": "ㅁ", "ㄼ": "ㄹ", "ㄽ": "ㄹ", "ㄾ": "ㄹ",
+                    "ㄿ": "ㅂ", "ㅀ": "ㄹ", "ㅄ": "ㅂ", "ㅅ": "ㄷ",
+                    "ㅆ": "ㄷ", "ㅈ": "ㄷ", "ㅊ": "ㄷ", "ㅌ": "ㄷ",
+                    "ㅎ": "ㄷ", "ㄲ": "ㄱ", "ㅋ": "ㄱ", "ㅍ": "ㅂ",
+                }.get(left.coda, left.coda)
+                if representative in {"ㄴ", "ㅁ"} and left.coda not in _H_CODAS:
+                    license = f"R010:stem_n_m+suffix:{text}:{pair}"
+                    licenses.add(license)
+                    applied.append("R010")
+                if left.coda in {"ㄼ", "ㄾ"}:
+                    license = f"R011:stem_lb_lt+suffix:{text}:{pair}"
+                    licenses.add(license)
+                    applied.append("R011")
+                if left.coda == "ㄺ" and right.onset == "ㄱ":
+                    license = f"R016:verb_stem_rieul_giyeok_suffix:{text}:{pair}"
+                    licenses.add(license)
+                    applied.append("R016")
+
+        # A source-backed lexical compound/Sino-Korean/saisiot root keeps its
+        # internal rule when a consensus analyzer identifies an attached
+        # particle or ending after the complete licensed root. This is not a
+        # category-only rule: the root and internal pair must already exist in
+        # the official exact-form inventory.
+        right_tags_at_boundary = [
+            _tag_parts(pairing[1].get("tag", "")) if pairing else set()
+            for pairing in aligned
+        ]
+        suffix_families = [_grammatical_family(tags) for tags in right_tags_at_boundary]
+        grammatical_suffix_agreement = (
+            len(suffix_families) == len(analyses)
+            and len(set(suffix_families)) == 1
+            and suffix_families[0] in {"ending", "particle"}
+        )
+        if grammatical_suffix_agreement and offset < len(text):
+            for rule_id, scope, licensed_root, licensed_pair in _SOURCE_BACKED_LEXICAL_ROOT_LICENSES:
+                if len(licensed_root) >= len(text) or not text.startswith(licensed_root):
+                    continue
+                if len(licensed_root) != offset:
+                    continue
+                extended = f"{rule_id}:{scope}:{text}:{licensed_pair}"
+                licenses.add(extended)
+                applied.append(rule_id)
+                lexical_root_extensions.append({
+                    "rule_id": rule_id,
+                    "registered_root": licensed_root,
+                    "internal_pair": licensed_pair,
+                    "license": extended,
+                })
+
         if applied:
             details.append({
                 "offset": offset,
@@ -185,7 +304,8 @@ def analyzer_consensus_rule_licenses(
                     )))
                     for item in analyses
                 ],
-                "candidate_rules": applied,
+                "candidate_rules": list(dict.fromkeys(applied)),
+                "lexical_root_extensions": lexical_root_extensions,
             })
 
     return {

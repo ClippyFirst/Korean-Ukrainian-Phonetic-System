@@ -73,6 +73,6 @@ test('explanatory jamo labels retain context through lexical tokenization', () =
 
 test('sourced mixed-script numeric lexical forms keep their exact IPA', () => {
   const result = engine.convert('3·1절');
-  assert.equal(result.ipa, 'sa mil tɕ͈ʌl');
+  assert.equal(result.ipa, 'sa.mil.tɕ͈ʌl');
   assert.equal(result.status, 'lexical-review');
 });

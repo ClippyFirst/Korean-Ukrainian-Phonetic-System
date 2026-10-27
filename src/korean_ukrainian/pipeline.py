@@ -8,7 +8,7 @@ from .rules import apply_ordered_rules
 from .ipa import generate_vowel_variants, realize_syllables
 from .ukrainian_adapter import UkrainianTargetAdapter
 from .orthography import render_sequence
-from .ipa_target_renderer import render_ipa_sequence_to_ukrainian
+from .ipa_target_renderer import render_ipa_sequence_to_ukrainian, render_profiled_ipa_to_ukrainian
 
 _LEXICON_PATH=Path(__file__).resolve().parents[2]/"data"/"korean"/"lexical_pronunciations.csv"
 _INSTALLED_LEXICON_PATH=Path(sysconfig.get_path("data"))/"share"/"korean-ukrainian-phonetic-system"/"lexical_pronunciations.csv"
@@ -770,7 +770,9 @@ def render_ipa_analysis_to_ukrainian(
     }
 
 
-def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict"):
+def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_level="broad",target_adapter=None,n_insertion_licensed=False,rule_licenses=None,morphology_mode="strict",require_adjudicated_ipa_profile=False):
+    if not isinstance(require_adjudicated_ipa_profile, bool):
+        raise TypeError("require_adjudicated_ipa_profile must be a bool")
     surface=phoneticize_korean(text,rule_ids=rule_ids,boundary_mode=boundary_mode,ipa_level=ipa_level,n_insertion_licensed=n_insertion_licensed,rule_licenses=rule_licenses,morphology_mode=morphology_mode)
     source_ipa=surface["ipa"]["ipa"]
     target_inventory_analysis,selected,inventory_diagnostic=_target_inventory_diagnostic(source_ipa,target_adapter)
@@ -785,6 +787,14 @@ def transliterate_korean(text,*,rule_ids=None,boundary_mode="same_word",ipa_leve
         target_mapping={
             "ipa":source_ipa,"status":"unavailable",
             "reason":"diagnostic_ipa_not_accepted","ukrainian_orthography":None,
+            "segments":[],"ignored_source_markers":[],
+        }
+    elif require_adjudicated_ipa_profile:
+        target_mapping=render_profiled_ipa_to_ukrainian(text, surface["ipa"])
+    elif surface["ipa"].get("transcription_profile", {}).get("target_compatible") is False:
+        target_mapping={
+            "ipa":source_ipa,"status":"unavailable",
+            "reason":"narrow_ipa_profile_not_target_compatible","ukrainian_orthography":None,
             "segments":[],"ignored_source_markers":[],
         }
     else:

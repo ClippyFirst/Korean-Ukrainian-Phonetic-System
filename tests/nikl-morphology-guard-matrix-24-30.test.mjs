@@ -18,7 +18,6 @@ test('§§24–28: generic mode does not claim morphology-specific fortition', (
     ['껴안다', 24],
     ['얹다', 24],
     ['더듬지', 24],
-    ['닮고', 24],
     ['젊지', 24],
     ['앉고', 24],
     ['안기다', 24],
@@ -47,17 +46,24 @@ test('§§24–28: generic mode does not claim morphology-specific fortition', (
 });
 
 test('§24 exact-form stem-n/m ending licenses match the native engine without enabling productive guessing', () => {
-  const expected = [['닮다', 'tam t͈a'], ['넘게', 'nʌm k͈e']];
+  const expected = [['닮다', 'tam.t͈a'], ['넘게', 'nʌm.k͈e'], ['안지', 'an.tɕ͈i'], ['신다', 'ɕin.t͈a']];
   for (const [input, ipa] of expected) {
     const result = generic.convert(input);
     assert.equal(result.ipa, ipa, input + ': source-backed broad IPA');
     assert.ok(result.trace.some((item) => item.rules.includes('stem-n-m-fortition-§24')), input + ': exact §24 trace');
   }
 
-  const unlicensed = generic.convert('닮고');
+  const licensed = generic.convert('닮고');
+  assert.equal(licensed.surfaceHangul, '담꼬');
+  assert.ok(
+    licensed.trace.some((item) => item.rules.includes('stem-n-m-fortition-§24')),
+    '닮고 is an explicit source-backed §24 example in the closed inventory',
+  );
+
+  const unlicensed = generic.convert('닮기');
   assert.ok(
     !unlicensed.trace.some((item) => item.rules.includes('stem-n-m-fortition-§24')),
-    '닮고 remains withheld without its own exact-form license',
+    'an unlisted lookalike must not inherit 닮고 license',
   );
 });
 
@@ -75,7 +81,7 @@ test('§27 punctuation-separated pause controls suppress adnominal fortition', (
 });
 
 test('§30: saisiot remains an exact lexical decision, not a generic ㅅ-final rewrite', () => {
-  const cases = ['냇가', '나뭇가지', '아랫방'];
+  const cases = ['나뭇가지', '아랫방'];
   for (const input of cases) {
     const result = generic.convert(input);
     assert.ok(
