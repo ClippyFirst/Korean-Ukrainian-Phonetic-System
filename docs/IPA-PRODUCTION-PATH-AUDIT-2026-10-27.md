@@ -45,3 +45,10 @@ Next acceptance gate:
 - Browser public wrappers now support the same opt-in concept as `requireAdjudicatedIpaProfile: true` for both `convert()` and `convertSurface()`. The browser test additionally exercises the `6·25` mixed-script lexical early-return path, which previously was an important possible bypass. Test consumers for the common negative fixture remain in place.
 - Latest code/test head: `dce303cabdeedebe5508e94ddf5389af36c300a2`. Exact-head test workflow `40517249803`, system verification `40517249986`, and browser integration `40517249868` were **QUEUED** when checked. No CI or local test pass is claimed for these new changes.
 - Remaining: strict mode is opt-in, not the default; default legacy browser and Python raw-IPA routes still exist. Do not enable strict mode by default until independent profile adjudication, target-inventory acceptance, and clean exact-head verification are complete.
+
+
+## Strict-mode hardening after code review
+
+- Strict browser mode now also clears target text from per-unit trace outputs, candidate fields, target mapping details, and variant spellings, while retaining source/IPA provenance. Regression assertions enforce the no-target-leak invariant.
+- Both browser and Python strict modes now preserve the upstream unresolved-phonology gate before any profile approval can result in a target. Python checks unresolved pronunciation and diagnostic-only IPA before invoking the profiled renderer.
+- Latest code head after these fixes: `4456d47393313090cb17115494a6ce85347fa121`. Exact-head test matrix `40517742289`, system verification `40517742426`, and browser integration `40517742266` were **QUEUED** when checked. No test pass is claimed.
