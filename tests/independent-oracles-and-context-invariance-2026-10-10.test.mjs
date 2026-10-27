@@ -84,7 +84,7 @@ test('generic rule fixtures stay independent of the lexical override layer', () 
       input + ': generic mode must not use lexical overrides',
     );
     if (!lexicalInputs.has(input)) {
-      assert.equal(engine.convert(input).ipa, expectedIpa, input + ': adding the lexicon must not alter an unlisted generic reading');
+      assert.equal(engine.convert(input).ipa, renderExpectedIpa(input, expectedIpa), input + ': adding the lexicon must not alter an unlisted generic reading');
     }
   }
 });
