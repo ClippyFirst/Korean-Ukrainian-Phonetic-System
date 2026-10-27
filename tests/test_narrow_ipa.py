@@ -49,3 +49,11 @@ def test_partial_narrow_profile_is_not_accepted_as_ukrainian_target_input():
     assert result["target_status"] == "unavailable"
     assert result["target_unavailable_reason"] == "narrow_ipa_profile_not_target_compatible"
     assert result["ukrainian_orthography"] is None
+
+
+def test_python_broad_fortis_sibilant_baseline_is_not_browser_profile_gold():
+    # Python's broad profile currently emits s͈ before ㅣ; the browser's legacy
+    # contextual profile emits ɕ͈. This records the Python side only and does
+    # not adjudicate which profile is correct or enable target adaptation.
+    assert _ipa("씨", "broad")["ipa"] == "s͈i"
+    assert _ipa("싸", "broad")["ipa"] == "s͈a"
