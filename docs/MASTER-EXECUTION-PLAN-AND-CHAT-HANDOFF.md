@@ -3309,3 +3309,8 @@ Interpretation remains strictly diagnostic: the two reference IPA conventions ha
 ### Current disposition
 
 The implementation and CI repair batch is now **DONE_VERIFIED** for the tested PR merge ref. The project overall remains a **research prototype / partial**, not release-ready. Keep the v3 narrow profile opt-in, research-only, and target-incompatible; do not promote corpus-sensitive outputs to broad IPA or Ukrainian orthography. PR #339 remains open, draft, and unmerged; no merge or release was performed by this continuation.
+
+
+## Case-level audit of fresh Charsiu artifact — 2026-10-27
+
+Inspected both pair-level JSONL files inside artifact `12766869026` directly after download. The profile outputs differ from broad output on 326/1,000 SIGMORPHON dev rows and 472/1,834 UGTPHON dev rows. Among changed scored rows, the declared diagnostic edit distance improved on 302 and was unchanged on 24 for SIGMORPHON; it improved on 435 and was unchanged on 37 for UGTPHON. There were zero rows where the narrow output had a greater stored edit distance than broad, and zero broad-exact → narrow-nonexact cases on either set. This is an artifact-level descriptive audit, not proof of generalization: the candidate rule was chosen after counterfactual analysis of these same dev corpora, so these rows are selection-contaminated and must not be called an independent holdout. No test split was exported or evaluated. The next meaningful accuracy gate is source-blind case adjudication and an untouched, eligible evaluation set under a declared common IPA convention; rights and target-compatibility gates also remain open.
