@@ -1,3 +1,11 @@
+# Latest continuation — teacher-guided narrow IPA improvement (2026-10-27)
+
+- **Implemented:** extended the opt-in Python narrow IPA profile with onset ㄴ → [ɲ] before glide-initial nuclei ㅑ/ㅒ/ㅕ/ㅖ/ㅛ/ㅠ. It deliberately does not apply before ㅣ. Broad IPA, browser runtime, and Ukrainian target adaptation remain unchanged.
+- **Profile contract:** versioned the narrow profile as `korean-narrow-partial-sibilant-nasal-v2`; it remains partial/research-only and target-incompatible.
+- **Teacher evidence:** inspected Charsiu train/dev artifact [12756518697](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40554419963/artifacts/12756518697), ZIP SHA-256 `b1d2d601f02b5554bea85dc65b8ff9bdacd92bcbead3889701808df8b88d445c`. The dev-only counterfactual changed 9 SIGMORPHON rows and 27 UGTPHON rows; exact match changed 431→438/999 and 1193→1214/1800, with CER 0.11348→0.11225 and 0.06034→0.05830. These are **simulation results before the code change**, not a post-change benchmark or held-out scores. The teacher's training overlap remains UNKNOWN.
+- **Evidence and controls:** Ahn (2009) and the UCL thesis literature review are recorded in the source register. Tests cover positive cases 녀/냐/뉴, negative controls 니/난, and unchanged broad IPA. A broader mapping that also covered ㅣ degraded both dev datasets and was rejected.
+- **Remaining verification:** exact-head CI is not currently available through the connected GitHub workflow query; local clone/test is blocked by DNS failure for `github.com`. Rerun Python tests and the pinned narrow-profile benchmark on the exact code head before marking DONE_VERIFIED. Do not enable Ukrainian target adaptation from this research profile.
+
 # Latest continuation — source-backed R016 engine improvement (2026-10-27)
 
 - **Implemented:** extended the existing deterministic R016 exact-form registry in Python and browser JavaScript with `맑게` (`맑>게`) and `맑고` (`맑>고`). Expected Korean surface outputs are `말께` and `말꼬`.
