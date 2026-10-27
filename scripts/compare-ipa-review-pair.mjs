@@ -101,7 +101,7 @@ export function compareReviewerPair(packetAText, packetBText, queueText) {
     adjudicationStatus: errors.length ? 'PAIR_INVALID' : disagreementCount ? 'DISAGREEMENT_REQUIRES_ADJUDICATION' : 'AGREEMENT_PENDING_COORDINATOR_REVIEW',
     cases,
     errors,
-    notice: 'Comparison is mechanical only. Agreement is not IPA gold and does not verify reviewer qualifications or independence; a coordinator must review provenance and adjudicate disagreements. Ukrainian-target review is separate.',
+    notice: 'Comparison is mechanical only and does not adjudicate IPA correctness. Agreement is not IPA gold and does not verify reviewer qualifications or independence; a coordinator must review provenance and adjudicate disagreements. Ukrainian-target review is separate.',
   };
 }
 
