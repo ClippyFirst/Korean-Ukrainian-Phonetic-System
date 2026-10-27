@@ -66,6 +66,7 @@ jobs:
           queue_name = "TEST-CASE-REGISTER-ASSERTION-CLASSIFICATION-QUEUE-2026-10-27.csv"
           with (root / queue_name).open(encoding="utf-8", newline="") as stream:
               queue_rows = list(csv.DictReader(stream))
+          assert len(queue_rows) == report["files"]["TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv"]["rows"], "queue must retain one row per assertion candidate"
           assert all(row["review_status"] == "UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW" for row in queue_rows), "queue must not auto-verify cases"
           assert all(row["observed_run_status"] == "NOT_TIED_TO_EXACT_HEAD_RUN" for row in queue_rows), "queue must not invent observed results"
           def counts(values):
