@@ -22,7 +22,8 @@
     "ipa:validate-submission": "node scripts/validate-ipa-review-submission.mjs",
     "audit:nikl-test-index": "node scripts/audit-nikl-article-test-index.mjs",
     "generate:ipa-target-data": "python scripts/generate_ipa_target_data.py",
-    "check:ipa-target-data": "python scripts/generate_ipa_target_data.py --check"
+    "check:ipa-target-data": "python scripts/generate_ipa_target_data.py --check",
+    "ipa:compare-review-pair": "node scripts/compare-ipa-review-pair.mjs"
   },
   "devDependencies": {
     "vite": "8.3.1"
