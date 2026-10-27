@@ -203,12 +203,12 @@ def test_narrow_nasal_glide_rule_is_scoped_and_does_not_leak_to_broad_ipa():
     # Teacher-guided candidate is narrow/research-only: [ɲ] before selected
     # glide nuclei, not a general replacement for Korean onset /n/.
     narrow_expected = {
-        "냐": "ɲa",
+        "냐": "ɲja",
         "얘": "jɛ",  # no onset ㄴ: must not synthesize a nasal
-        "녀": "ɲʌ",
-        "녜": "ɲe",
+        "녀": "ɲjʌ",
+        "녜": "ɲje",
         "뇨": "ɲjo",
-        "뉴": "ɲu",
+        "뉴": "ɲju",
     }
     for word, expected in narrow_expected.items():
         assert phoneticize_korean(word, ipa_level="narrow")["ipa"]["ipa"] == expected
