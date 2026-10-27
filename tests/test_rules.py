@@ -972,10 +972,18 @@ def test_exact_form_r002_cases_from_teacher_triage():
 
 
 def test_exact_form_r003_manyeojida_case():
+    # R003 deletes the ㅎ component in the licensed 많>아 environment;
+    # the following R002 pass must then resyllabify the retained ㄴ before 아.
     items, traces = apply_ordered_rules(parse_syllables("많아지다"), ["R003", "R002"])
-    assert items[0].coda == "ㄴ" and items[1].onset == "ㅇ"
+    assert items[0].coda == ""
+    assert items[1].onset == "ㄴ"
     assert traces[0].changed
     assert traces[0].license_context == "R003:ending_or_suffix_h_deletion:많아지다:많>아"
+    assert traces[1].changed
+    assert phoneticize_korean("많아지다")["surface_hangul"] == "마나지다"
+
+    # Similar-looking 많아보이다 has no exact ending/suffix license and must abstain.
     items, traces = apply_ordered_rules(parse_syllables("많아보이다"), ["R003", "R002"])
     assert items[0].coda == "ㄶ"
     assert traces[0].status == "conditional-disabled"
+    assert phoneticize_korean("많아보이다")["surface_hangul"] != "마나보이다"
