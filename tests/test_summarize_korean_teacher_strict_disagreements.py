@@ -17,7 +17,7 @@ def make_portfolio(root):
     for seed in SEEDS:
         predictions, pairs = [], []
         for i in range(1000):
-            cid = f"sigmorphon-dev:{i:05d}"
+            cid = f"sigmorphon-2021-task1-medium-korean:dev:{i:05d}"
             source = f"가{i}"
             ref = ["k", "a"]
             if i < 455: pred = ref
