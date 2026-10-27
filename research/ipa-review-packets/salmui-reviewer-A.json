@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 2,
+  "packetType": "independent-broad-IPA-review",
+  "blindnessMode": "source-and-candidate-blind",
+  "reviewerSlot": "A",
+  "queueSha256": "c13b50fa336a81d94b82ad689195655cd2e2ca3b11843874c9d46ca2178cdfe3",
+  "instructions": [
+    "Transcribe each Korean form independently into broad IPA under the agreed project convention.",
+    "This is a source-blind first pass: do not look up the exact form or consult official pronunciation evidence before submitting.",
+    "Do not consult engine outputs, candidate IPA, Ukrainian targets, another reviewer’s packet, or reconciliation notes.",
+    "Record the exact method/reference, syllable boundaries, and whether vowel length is present, absent, not applicable, or uncertain.",
+    "Preserve uncertainty in notes; do not silently normalize disputed, nonstandard, or context-dependent readings.",
+    "The packet contains only an opaque case ID and Korean input; source evidence is withheld until independent annotations are complete."
+  ],
+  "cases": [
+    {
+      "caseId": "BLIND-001",
+      "input": "삶의",
+      "reviewForm": {
+        "reviewerSlot": "A",
+        "reviewerId": null,
+        "qualification": null,
+        "reviewedAt": null,
+        "methodReference": null,
+        "broadIpa": null,
+        "syllableBoundaries": null,
+        "vowelLengthAssessment": null,
+        "notes": null
+      }
+    }
+  ]
+}
