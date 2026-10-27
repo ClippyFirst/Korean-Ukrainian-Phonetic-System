@@ -2968,3 +2968,11 @@ Continue from the existing schema and target-trace implementations rather than c
 - Strict mode preserves the upstream unresolved-pronunciation/diagnostic-only gate before an approved profile could produce a target. Detailed audit: `docs/IPA-PRODUCTION-PATH-AUDIT-2026-10-27.md`.
 - Latest code head reviewed: `4456d47393313090cb17115494a6ce85347fa121`. Exact-head tests `40517742289`, system verification `40517742426`, and browser integration `40517742266` were **QUEUED** when checked. No exact-head CI pass is claimed; local tests remain blocked by DNS/network unavailability. NIKL live source inventory remains skipped.
 - Status: strict opt-in APIs and tests `PARTIAL` pending exact-head CI; exclusive default production wiring `TODO`; independent broad/narrow and ㅅ/ㅆ adjudication `BLOCKED`; official NIKL inventory `SKIPPED`; Ukrainian target-inventory review `DEFERRED`; source rights `PARTIAL`. Do not make strict mode default until profile adjudication and target review are complete. PR #339 remains Draft and unmerged; no release performed.
+
+
+
+## Strict IPA abstention regression — 2026-10-27
+
+- Added a Python regression in commit e12746255f576dd416587ff17cb20f59fc07ecc1: input 앉어라 must remain unresolved when require_adjudicated_ipa_profile=True, with no Ukrainian orthography and reason unresolved_korean_phonology. This ensures the strict profile gate never overrides the upstream phonology abstention.
+- Exact-head workflow lookup for that test-only commit returned no associated runs. Prior code-head runs 40517742289 (tests), 40517742426 (system verification), and 40517742266 (browser integration) were still queued at last job inspection. Do not claim tests passed; new regression is PARTIAL until exact-head CI runs.
+- Latest branch head after the audit/handoff updates: fbedddecd6bfee1f23d3cdaf40d6e10d291ba1e1. No release or merge. Next step is to obtain an actual exact-head CI result, then fix failures before any further acceptance claims.
