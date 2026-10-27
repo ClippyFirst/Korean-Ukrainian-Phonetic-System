@@ -542,3 +542,15 @@ PR [#345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 | Classification queue rows | 5,270 | Each retains source identity, heuristic dimension hints and nearest test/suite context where recognized |
 
 The queue now has context fields for JS `test`/`it`, `describe`/`suite`, Python `def test_*`, and `class Test*`. Nearest-preceding context is a navigation aid, not a proof of lexical scope. Every row remains `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW`; expected and observed results are not inferred. The semantic register is still **PARTIAL INVENTORY**.
+
+
+## Raw expected-literal extraction — verified artifact (2026-10-27)
+
+PR [#346](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/346) was merged as `93736d0e6d6f826c4b502541a99bb44158afef53`; its tree `792a173c0d0533d2c656bf6564e4a3b19361b565` matches tested head `44a4e9a10e66520345107d9fabb53908d504676c`.
+
+- **PASS:** extraction workflow [40465361133](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465361133), artifact [12716302090](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465361133/artifacts/12716302090), 3,367,183 bytes. Queue CSV SHA-256: `09c26a7ebd856619fe9941702f2e12e968e717afe8dc5fba27f5f470a0df39e9`.
+- **PASS:** system verification [40465361074](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465361074) for browser/build and Python/data integrity. Official NIKL inventory was skipped by metadata-only policy.
+
+The current artifact contains 644 lexical records, 360 test files, 388 source files, 6,801 lexical text links, 50,768 Hangul-literal candidates, 34,711 exact source lines, 5,286 assertion/test-declaration candidates and 5,286 queue rows (24 columns). Simple assertion-call literals are copied as raw strings/scalars/regexes; computed expressions are not evaluated. Every extracted value remains unadjudicated, and every queue row remains `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW` with observed status `NOT_TIED_TO_EXACT_HEAD_RUN`.
+
+**Scope limit:** raw literal extraction is not semantic case extraction. Loop-driven inputs, multi-line assertions, mode selection, expected/actual comparison and per-run outcomes still require separate parsing/join logic and review. Overall register status remains **PARTIAL INVENTORY**; no production pronunciation rule or Ukrainian target was promoted by this work.
