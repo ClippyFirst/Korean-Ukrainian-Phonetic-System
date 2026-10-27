@@ -2701,3 +2701,13 @@ Inspection confirmed that `tests/test_rule_license_parity.py` already exists and
 - **IPA acceptance contract:** added [Korean IPA runtime-profile contract](KOREAN-IPA-RUNTIME-PROFILE-CONTRACT-2026-10-27.md). Python broad fortis ㅆ (`s͈`) and browser contextual fortis output (`ɕ͈` before `J_VOWELS`) remain intentionally unreconciled pending phonetic/profile adjudication. No production rule, IPA string, or Ukrainian adaptation was changed to conceal the mismatch.
 - **Task ledger:** `DONE_VERIFIED` — identify the fixture-prefix regression and correct the test data; `PARTIAL` — profile contract documented; `TODO` — paired versioned Python/browser IPA fixtures and explicit browser profile metadata; `BLOCKED` — parity approval until the profile semantics are independently decided and exact-head CI passes; `DEFERRED` — Ukrainian adaptation until Korean IPA acceptance is stable.
 - **Verification status for the fix:** Actions triggered on `82e24ce2375872693952ee2e5224c8743d317f33` were queued at the time this entry was written. The fix is not marked verified until those runs complete. No test pass is inferred from the code edit.
+
+
+## Paired sibilant-profile baseline fixtures (2026-10-27)
+
+Added a browser diagnostic snapshot `tests/ipa-profile-legacy-baseline.test.mjs` and Python broad-profile assertions in `tests/test_narrow_ipa.py`. The fixtures make the current mismatch inspectable on identical Korean forms: Python broad `씨 → s͈i`, while browser legacy `씨 → ɕ͈i`; Python broad and browser legacy both currently use `s͈a` for `싸`. Browser-only baseline cases also cover `시`, `쇼`, and `쌰`. Test comments explicitly classify these as current implementation baselines, not pronunciation gold and not cross-runtime parity approval. No production runtime output or Ukrainian adapter changed.
+
+- Current head after fixture additions: `a3666562c4817f15e33a6e68835094d81f1409f0`.
+- `PARTIAL`: baseline tests added; exact-head CI must execute them before verification.
+- `BLOCKED`: profile equivalence and IPA correctness remain open until independent phonetic review determines whether broad IPA includes the contextual palatalization and whether the browser should expose a separate surface/narrow profile.
+- `DEFERRED`: Ukrainian adaptation changes until Korean IPA profile acceptance is stable.
