@@ -232,3 +232,12 @@ Required follow-up, ordered before any Ukrainian adaptation work:
 4. Run the same fixtures in Python and browser CI. Then expand to all consonant/vowel contexts, long-vowel and syllable-boundary preservation, and only after Korean IPA acceptance is stable resume Ukrainian target adaptation.
 
 This is a source inspection finding, not a test result. The full test jobs are still queued, so no cross-runtime runtime mismatch has yet been measured by executing these exact fixtures. Task ledger: `TODO` — document/implement a named IPA profile contract and paired fixtures; `BLOCKED` — cross-runtime IPA parity acceptance until the contract is agreed and the CI jobs execute; `DEFERRED` — Ukrainian practical-orthography adaptation work until Korean surface/IPA acceptance is stable.
+
+
+## Exact-head regression triage and profile-contract follow-up (2026-10-27)
+
+The Actions runs on `37487217fd187874099661025f5c6cb72963e172` surfaced one shared fixture failure in the Python test suite, system verification, and neural seed-portfolio test gate. The failing test was `test_seed_consensus_is_preserved_without_cross_ipa_scoring`; the analyzer correctly enforces case IDs prefixed by `sigmorphon-2021-task1-medium-korean:dev:`, while the test fixture incorrectly emitted `sigmorphon-dev:`. The test fixture now uses the exact pinned dataset/split prefix in commit `82e24ce2375872693952ee2e5224c8743d317f33`. This is a test-data correction; the validation gate was not weakened.
+
+Added [Korean IPA runtime-profile contract](KOREAN-IPA-RUNTIME-PROFILE-CONTRACT-2026-10-27.md). The Python broad / browser contextual fortis-sibilant difference remains unadjudicated. Do not normalize `s͈` and `ɕ͈` automatically or use cross-runtime/teacher accuracy as a quality claim until the profile semantics are explicit and paired tests run against the same profile. Ukrainian adaptation remains deferred.
+
+At the time of this update, exact-head CI for `18eab9e6faf5448c20803257576d1182669e0564` is queued; therefore the test fixture correction and profile contract are **not yet marked DONE_VERIFIED by runtime CI**. The browser integration, corpus, and diagnostic successes on the previous head do not substitute for the failing Python test or for exact-head verification.
