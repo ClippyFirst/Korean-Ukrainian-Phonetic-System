@@ -2455,3 +2455,24 @@ The original assertion-candidate regex also treated import lines such as “impo
 ### Current disposition
 
 The isolated browser/test-oracle repair and register extraction are verified; the PR merge-ref core software gates are green. The research branch currently compares as 580 commits ahead of `main` and 0 behind (`main` base `a452054a669de28426404d1110731715083423bb`); PR #339 remains open/Draft. Do not merge the full research branch solely because the currently completed jobs passed. Scientific release blockers remain independent IPA convention adjudication, independent Ukrainian target validation, source/license review, and a complete semantic case-level register.
+
+
+## Verified assertion-classification queue — 2026-10-27
+
+**Implementation and focused acceptance:** PR [#344](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/344) was squash-merged into the research branch as `e324ffe699ad4a234c39cace330a8ecd4a84259e`. The branch now contains `scripts/classify_test_case_candidates.py`, its unit tests, and the extraction-workflow integration.
+
+- **PASS — focused queue and inventory generation:** [workflow 40464392516](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464392516), artifact [12715418796](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464392516/artifacts/12715418796), ZIP size 3,312,373 bytes; expires 2026-11-26.
+- **PASS — full system verification:** [run 40464392495](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464392495): browser regression/build and Python regression/data integrity passed. The official NIKL source inventory was skipped by metadata-only workflow policy.
+- **PASS — Python/browser system verification and research corpus artifact workflow:** [run 40464374294](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464374294) and [run 40464374206](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40464374206) passed on the same code head.
+- **Exact generated counts:** 644 lexical records; 360 test files; 388 source files; 6,801 lexical-to-test text links; 50,768 Hangul-literal candidates; 34,661 source lines preserved; 5,261 assertion/test-declaration candidates; 5,261 rows in the new classification queue.
+- **Queue artifact hash:** `599a5c22659c9bfe1492276241963db6debf605f86195f4ebabf47cf54424e36` (SHA-256 of the queue CSV). The extraction workflow validates non-empty unique IDs for all six CSV inventories.
+
+### Scope and limitations
+
+The new queue's regex labels are triage hints only. Every row remains `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW`; expected values are not parsed and observed results remain `NOT_TIED_TO_EXACT_HEAD_RUN`. This improves work ordering and stable provenance but **does not** complete the semantic case register or verify any IPA/Ukrainian gold. The register remains `PARTIAL INVENTORY`.
+
+### Next executable work
+
+1. Extend the queue into case-level rows with exact input, test title/path/line, mode, expected assertion, negative-control role, and provenance while retaining duplicate test provenance.
+2. Join observed actual outputs and pass/fail only from artifacts/logs tied to a specific commit and run; keep expected-only cases separate.
+3. Continue independent IPA convention and Ukrainian-target adjudication. Do not promote neural-teacher candidates to production rules until the evidence gates in this handoff are met.
