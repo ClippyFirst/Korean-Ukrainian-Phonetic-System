@@ -251,3 +251,8 @@ The current legacy behavior is now captured separately in browser and Python tes
 ## Current execution snapshot (2026-10-27; head reconciliation)
 
 The fixture-prefix defect has been corrected and diagnostic Python/browser sibilant baselines added. These are source-controlled changes, not yet runtime-verified: GitHub Actions is backlogged and the exact current head has queued checks. Do not mark the repair `DONE_VERIFIED` until the current-head test, browser, and system checks finish. The `s͈` versus `ɕ͈` discrepancy remains a profile/adjudication blocker, not a license to normalize either representation. Ukrainian adaptation remains deferred.
+
+
+## Browser profile metadata implementation (2026-10-27)
+
+The browser result now labels the existing IPA convention with `ipa_profile` (`browser-legacy-contextual-v1` by default; `browser-surface-mode-legacy-v1` for explicit surface mode) and `ipa_profile_status=unadjudicated-cross-runtime`. This is metadata-only: IPA values and target mapping are unchanged. The baseline test checks the profile label alongside the current output. Exact-head CI remains queued, so this work is `PARTIAL` pending execution. A named legacy profile must not be mistaken for independent phonetic adjudication or parity with Python broad IPA.

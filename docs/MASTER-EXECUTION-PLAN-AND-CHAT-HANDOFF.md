@@ -2720,3 +2720,8 @@ Added a browser diagnostic snapshot `tests/ipa-profile-legacy-baseline.test.mjs`
 - Browser and Python diagnostic baseline fixtures now cover the unresolved sibilant profile difference; no production IPA output or Ukrainian mapping was modified.
 - Latest exact-head CI is backlogged. Runs on the current lineage are queued; therefore the fixture repair and new tests remain `PARTIAL`, not `DONE_VERIFIED`, until exact-head Python, browser, and system workflows complete.
 - The independent phonetic decision remains the genuine blocker: determine the intended broad/surface treatment of ㅅ/ㅆ before front/j-vowels, add versioned profile metadata/paired fixtures, then test. Ukrainian adaptation stays deferred.
+
+
+## Browser IPA profile metadata boundary (2026-10-27)
+
+The browser converter now attaches `ipa_profile` and `ipa_profile_status` metadata to both the ordinary conversion result and the multi-part/lexical aggregate result. Default legacy output is labelled `browser-legacy-contextual-v1`; the explicit surface-mode path is labelled `browser-surface-mode-legacy-v1`; both currently report `unadjudicated-cross-runtime`. This change does not alter the IPA string, contextual rules, Ukrainian target mapping, or any phonological result. The baseline regression test asserts the metadata and current browser strings. Current pre-documentation head: `a3e916bf9769ccf7c3b227b57700681b4a441fb4`. Exact-head CI is queued; mark implementation `PARTIAL` until Python/browser/system tests pass. The metadata labels provenance, not phonetic correctness or approval for cross-runtime scoring.
