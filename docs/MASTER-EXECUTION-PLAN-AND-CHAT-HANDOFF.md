@@ -2976,3 +2976,11 @@ Continue from the existing schema and target-trace implementations rather than c
 - Added a Python regression in commit e12746255f576dd416587ff17cb20f59fc07ecc1: input 앉어라 must remain unresolved when require_adjudicated_ipa_profile=True, with no Ukrainian orthography and reason unresolved_korean_phonology. This ensures the strict profile gate never overrides the upstream phonology abstention.
 - Exact-head workflow lookup for that test-only commit returned no associated runs. Prior code-head runs 40517742289 (tests), 40517742426 (system verification), and 40517742266 (browser integration) were still queued at last job inspection. Do not claim tests passed; new regression is PARTIAL until exact-head CI runs.
 - Latest branch head after the audit/handoff updates: fbedddecd6bfee1f23d3cdaf40d6e10d291ba1e1. No release or merge. Next step is to obtain an actual exact-head CI result, then fix failures before any further acceptance claims.
+
+
+
+## CI status refresh — 2026-10-27
+
+- Refreshed job states for the strict-gate code head 4456d47393313090cb17115494a6ce85347fa121. Browser G2P integration run 40517742266 is now **SUCCESS** for that code head. This predates the additional Python-only unresolved-phonology regression commit e12746255f576dd416587ff17cb20f59fc07ecc1 and does not verify the exact latest branch head.
+- Test matrix run 40517742289 remains QUEUED across web, wheel-install, Python 3.11/3.12/3.13, and teacher-corpus-audit. System verification run 40517742426 remains QUEUED for Python regression/data integrity and browser regression/build; official NIKL inventory is SKIPPED. The exact latest branch head e4f682aecab3ae8bbc79ee56fbc7c2118edbe85e returned no associated PR-triggered workflow runs and no combined commit status entries.
+- Verification ledger: browser G2P integration on 4456d47 = DONE_VERIFIED for that earlier code snapshot only; current strict-gate tests = PARTIAL; exact-head CI = BLOCKED/WAITING on workflow scheduling. No full suite pass is claimed.
