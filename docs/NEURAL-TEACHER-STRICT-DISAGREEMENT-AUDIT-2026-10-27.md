@@ -155,3 +155,23 @@ The saved prediction JSONL files show that **all three neural seeds miss the SIG
 These are therefore **not** examples where a better neural result has shown Strict to be wrong. They are shared hard cases for the small teacher, and the reference itself still requires source-convention review before being treated as normative gold. The appropriate response is rule/source investigation and exact positive/negative tests, not copying any seed's predicted output.
 
 The case-level triage should retain this signal explicitly: Strict's six diagnostic-only cases fall inside the teacher's unanimous-wrong group, not the unanimous-correct candidate pool. That prioritizes morphology analysis while preventing circular validation.
+
+
+## 8. Reproducibility defect found by the second portfolio run
+
+The newer portfolio workflow [40472610993](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40472610993), artifact [12719507456](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40472610993/artifacts/12719507456), completed successfully and produced the new case-level triage. However, comparison with the earlier artifact [12718129194](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40470604816/artifacts/12718129194) exposed an important reproducibility problem:
+
+- Both artifacts report the same pinned train/dev JSONL hashes: train `b4ac3d28…57c7a0e`, dev `24fb3cdb…80696ac`.
+- The trainer source SHA is unchanged (`fbc2f1751431d8a81159b2fc34e39360c84fb1db`), the seeds and command-line hyperparameters are unchanged, and both logs installed PyTorch `2.14.1+cpu`.
+- Yet seed 20261026 changed from 602 exact dev forms to 596; seed 20261027 from 592 to 593; seed 20261028 from 584 to 597. Checkpoint and prediction hashes changed for all three seeds.
+- Even epoch-1 train loss differs in the last decimal places (e.g. seed 20261026: `2.5877135523` vs `2.5877135559`). This suggests CPU parallel floating-point behavior in the two-thread recurrent training path may be propagating into different later predictions. That is a hypothesis about the cause, not yet a proven diagnosis.
+
+Consequently, the original three-seed metrics remain valid for their original artifact only, and the newer triage's consensus counts (459 all-three-correct, 279 none-correct, 262 mixed) must not be substituted into the original audit's seed-consensus table. The six Strict abstentions are still teacher failures in all three seeds in both reviewed prediction bundles.
+
+### Fix added; verification pending
+
+- Changed scratch training to one intra-op and one inter-op CPU thread.
+- Pinned the workflow to Python 3.12.15 and PyTorch 2.14.1+cpu.
+- Added Python/PyTorch versions, seed, thread settings, deterministic-algorithm status, and full training hyperparameters to each training report and portfolio index.
+- Added a same-seed repeatability gate that trains seed 20261026 twice and requires identical checkpoint SHA-256, prediction SHA-256, and dev metrics.
+- These changes are **not verified yet**. The previous successful workflow ran before this fix. The next accepted portfolio artifact must pass the new same-seed gate before any results are called reproducible. If it still fails, investigate backend determinism further rather than selecting among drifting outputs.
