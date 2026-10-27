@@ -2984,3 +2984,11 @@ Continue from the existing schema and target-trace implementations rather than c
 - Refreshed job states for the strict-gate code head 4456d47393313090cb17115494a6ce85347fa121. Browser G2P integration run 40517742266 is now **SUCCESS** for that code head. This predates the additional Python-only unresolved-phonology regression commit e12746255f576dd416587ff17cb20f59fc07ecc1 and does not verify the exact latest branch head.
 - Test matrix run 40517742289 remains QUEUED across web, wheel-install, Python 3.11/3.12/3.13, and teacher-corpus-audit. System verification run 40517742426 remains QUEUED for Python regression/data integrity and browser regression/build; official NIKL inventory is SKIPPED. The exact latest branch head e4f682aecab3ae8bbc79ee56fbc7c2118edbe85e returned no associated PR-triggered workflow runs and no combined commit status entries.
 - Verification ledger: browser G2P integration on 4456d47 = DONE_VERIFIED for that earlier code snapshot only; current strict-gate tests = PARTIAL; exact-head CI = BLOCKED/WAITING on workflow scheduling. No full suite pass is claimed.
+
+
+
+## Final state of this continuation — 2026-10-27
+
+- Latest branch head after acceptance-gate evidence refresh: 4a077abfead6ec418ba41667971215aebbb6929c.
+- The only newly completed CI job identified in this continuation is browser G2P integration run 40517742266 on earlier code head 4456d47393313090cb17115494a6ce85347fa121. The current test matrix and system regression/build jobs remain queued; the exact latest branch head has no associated PR-triggered workflow run in the connector result. Do not infer pass from an empty run list.
+- The unresolved-phonology strict-mode regression is committed but unverified. This work session's accepted outcome is implementation + audit/handoff updates, not verified release readiness. PR #339 remains open/Draft/unmerged. Next action is exact-head CI verification; if the platform continues to leave jobs queued or not trigger runs, record that as an external CI blocker and continue with locally reproducible checks when network access becomes available.
