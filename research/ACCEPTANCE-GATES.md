@@ -431,3 +431,22 @@ Current branch state at the preceding handoff update: `ff7841d3f49ffbe910ba03164
 | Release gate | DEFERRED | Research-ready partial prototype only; not release-ready. |
 
 Do not mark any gate green until evidence meets the stated acceptance condition. Do not switch the strict profile gate on by default while its allowlist is empty.
+
+
+## Exact-head CI verification refresh — 2026-10-27
+
+Current research branch head at verification: `17faadd59c3457ab7bf53ce26a86bba940403235`. All 16 discovered workflow runs on this exact SHA completed with successful workflow conclusions. Core evidence: [tests matrix](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40521287118) passed wheel-install, Python 3.11/3.12/3.13, web tests/build, and teacher corpus audit; [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40521287327) passed browser regression/build and Python regression/data integrity. The official NIKL source inventory sub-job was skipped by workflow condition, not passed. Other successful exact-head workflows covered browser G2P, optional g2pK, Charsiu train/dev research comparison, multi-engine IPA diagnostics, morphology adapter smoke, corpus split audit, master/corpus generation, teacher training/seed portfolio, case-register extraction, morphology consensus, paired native-vs-g2pk, and UGTPHON diagnostics.
+
+| Gate | Updated status | Evidence / remaining acceptance condition |
+|---|---|---|
+| Opt-in browser/Python adjudicated-profile gate and negative-fixture regressions | **DONE_VERIFIED** | Exact-head test matrix and system/browser regressions passed; this verifies fail-closed behavior, not a linguistic profile approval. |
+| Preserve unresolved Korean phonology before target adaptation | **DONE_VERIFIED** | Python regression for `앉어라` passed in exact-head Python/system suite. |
+| Exclusive default target path; remove raw-IPA bypasses | **TODO** | Requires independently approved profile and migration tests; compatibility defaults remain intentionally unchanged. |
+| Compatible IPA profile allowlist | **BLOCKED** | Independent broad/narrow adjudication, source-backed profile version, cross-runtime agreement and explicit review required; allowlist remains empty. |
+| Ukrainian target inventory | **BLOCKED** | Must be reviewed only after source IPA profile acceptance; mapping tests alone do not constitute linguistic approval. |
+| Official NIKL source inventory | **BLOCKED / SKIPPED** | CI job was skipped by workflow condition; verifiable official source evidence still required. |
+| Teacher/checkpoint and source rights | **BLOCKED** | Checkpoint license, training-data provenance and applicable redistribution permissions remain unverified. |
+| Exact-head automated verification | **DONE_VERIFIED** | Relevant workflow runs for `17faadd59c3457ab7bf53ce26a86bba940403235` completed successfully; local tests were not run due DNS. |
+| Release readiness | **DEFERRED** | Research-ready partial prototype only; not release-ready. |
+
+PR #339 remains open/Draft/unmerged. Do not enable strict mode globally while the allowlist is empty, do not infer IPA or Ukrainian gold from teacher outputs, and do not treat a skipped NIKL job or successful software tests as resolution of the evidence/licensing gates.
