@@ -370,3 +370,10 @@ Status distinction:
 - Charsiu licensing/training overlap: BLOCKED pending terms/provenance review.
 - Cross-corpus IPA convention reconciliation and Ukrainian adaptation: TODO/BLOCKED pending independent adjudication.
 - Overall repository: research prototype, not release-ready. PR #339 remains draft/open/unmerged.
+
+
+## Pair-level regression audit and dev-selection limitation — 2026-10-27
+
+The downloaded fresh artifact `12766869026` was inspected row-by-row from its paired JSONL outputs (SHA-256 of the ZIP: `81e394b52248e7a2594bf5e4cad0c48c74914a93398c71e8ff92e74c050c80da`). For SIGMORPHON, broad-to-narrow output changed on 326/1,000 rows; among these, 302 stored edit distances improved and 24 stayed equal, with zero worse edit distances and zero exact-to-nonexact regressions. For UGTPHON, 472/1,834 outputs changed; 435 stored edit distances improved and 37 stayed equal, with zero worse edit distances and zero exact-to-nonexact regressions. All rows remained `DIAGNOSTIC_ONLY_IPA_CONVENTION_UNREVIEWED`; no row enabled rule promotion.
+
+**Critical limitation:** the narrow rule/profile was chosen after analyzing counterfactuals on these same development corpora. Consequently, the fresh run confirms runtime execution, deterministic output, provenance, and within-artifact descriptive behavior, but is not independent validation of the observed gains. Do not treat the zero-regression counts as a generalization guarantee or as permission to promote the rule. No test split was exported. Next acceptance requires source-blind case-level phonetic adjudication under one declared IPA profile and a genuinely untouched evaluation set, plus resolution of licensing/training overlap and target adaptation.
