@@ -5,6 +5,8 @@ on:
     paths:
       - "scripts/build_test_case_register.py"
       - "tests/test_build_test_case_register.py"
+      - "scripts/classify_test_case_candidates.py"
+      - "tests/test_classify_test_case_candidates.py"
       - "data/korean/**"
       - "examples/**"
       - "tests/**"
@@ -24,11 +26,14 @@ jobs:
         with:
           python-version: "3.12"
       - name: Test extractor behavior
-        run: python -m pip install pytest && python -m pytest -q tests/test_build_test_case_register.py
+        run: python -m pip install pytest && python -m pytest -q tests/test_build_test_case_register.py tests/test_classify_test_case_candidates.py
       - name: Generate loss-preserving inventories
         run: |
           set -euo pipefail
           python scripts/build_test_case_register.py --output-dir "$RUNNER_TEMP/case-register"
+          python scripts/classify_test_case_candidates.py \\
+            --input "$RUNNER_TEMP/case-register/TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv" \\
+            --output "$RUNNER_TEMP/case-register/TEST-CASE-REGISTER-ASSERTION-CLASSIFICATION-QUEUE-2026-10-27.csv"
           python - "$RUNNER_TEMP/case-register" "$GITHUB_SHA" <<'PY'
           import csv, hashlib, json, sys
           from pathlib import Path
@@ -41,6 +46,7 @@ jobs:
               "TEST-CASE-REGISTER-HANGUL-LITERAL-CANDIDATES-2026-10-26.csv": "candidate_id",
               "TEST-CASE-REGISTER-SOURCE-LINES-2026-10-26.csv": "line_id",
               "TEST-CASE-REGISTER-ASSERTION-CANDIDATES-2026-10-26.csv": "assertion_candidate_id",
+              "TEST-CASE-REGISTER-ASSERTION-CLASSIFICATION-QUEUE-2026-10-27.csv": "queue_id",
           }
           report = {"commit": commit, "files": {}}
           for name, id_column in expected.items():
