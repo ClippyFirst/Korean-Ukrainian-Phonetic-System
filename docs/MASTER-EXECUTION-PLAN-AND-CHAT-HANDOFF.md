@@ -2725,3 +2725,38 @@ Added a browser diagnostic snapshot `tests/ipa-profile-legacy-baseline.test.mjs`
 ## Browser IPA profile metadata boundary (2026-10-27)
 
 The browser converter now attaches `ipa_profile` and `ipa_profile_status` metadata to both the ordinary conversion result and the multi-part/lexical aggregate result. Default legacy output is labelled `browser-legacy-contextual-v1`; the explicit surface-mode path is labelled `browser-surface-mode-legacy-v1`; both currently report `unadjudicated-cross-runtime`. This change does not alter the IPA string, contextual rules, Ukrainian target mapping, or any phonological result. The baseline regression test asserts the metadata and current browser strings. Current pre-documentation head: `a3e916bf9769ccf7c3b227b57700681b4a441fb4`. Exact-head CI is queued; mark implementation `PARTIAL` until Python/browser/system tests pass. The metadata labels provenance, not phonetic correctness or approval for cross-runtime scoring.
+
+
+## Continuation handoff — 2026-10-27 12:00 UTC+02:00
+
+### Exact starting state and CI regression
+
+- Default branch: main; latest base SHA observed: a452054a669de28426404d1110731715083423bb.
+- Working branch: research/strict-teacher-guided-rule-mining-2026-10-26; initial HEAD for this session: 4379463aab4f5a829c61ed666deb28cafffa1a6e.
+- PR #339 remains open and Draft: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/339.
+- Contract file docs/KOREAN-IPA-RUNTIME-PROFILE-CONTRACT-2026-10-27.md exists. Its source/conformance wording has been reconciled with the implementation: browser results already expose versioned ipa_profile strings and ipa_profile_status=unadjudicated-cross-runtime; Python exposes level and realization_status, while its structured transcription_profile object is currently only returned for the partial narrow profile. A shared typed schema, feature/boundary sequence, adapter eligibility gate, and paired fixtures remain incomplete.
+- Exact-head run 40480217054 (seed portfolio, SHA 4379463aab4f5a829c61ed666deb28cafffa1a6e) FAIL: summarize_korean_teacher_strict_disagreements.py rejected a variable number of Strict pairs because it hard-coded 994. The preceding checkpoint/prediction same-seed hash and dev-metric comparison PASS; this failure is not evidence of model nondeterminism.
+- Corrective implementation: triage now requires 1,000 pinned dev predictions, requires every Strict pair ID to be a prediction ID, and requires identical Strict pair-ID sets across all three seeds. It no longer assumes a fixed number of resolved cases. Added tests for variable pair counts and for fail-closed behavior when pair IDs differ across seeds.
+- Changes committed via GitHub contents API: bdfa337827ecea10edcd727062ab22f30b04ec3b (triage logic), a826d23d8c2623ef8a7c6f1fc552804bd5f4bfc5 (regressions), b9509b0870a833dca95f6ab1fa2cb95782fea9fc (contract/source reconciliation). Verify the actual branch HEAD before treating these as final.
+- CI was launched on a826d23d8c2623ef8a7c6f1fc552804bd5f4bfc5; the seed portfolio, test suite, system verification, and other workflows were queued/in progress at the time of this note. These are QUEUED/IN_PROGRESS, not PASS. Poll exact-head runs and inspect logs before closing the defect.
+
+### Evidence update: Korean sibilants
+
+- Kang, Hyunsook (2010), “Coarticulation effects of Korean sibilant /s/ before a high front segment,” Studies in Phonetics, Phonology, and Morphology 16(1):3–18, https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770. The abstract reports acoustic differences for /s/ before /i, ye, ya/ and a distinct spectral pattern before /yu, yo/. This supports contextual distinctions, not a universal categorical IPA conversion for tense /s͈/.
+- Kong & Kang (2020), “Gendered spectral patterns of sibilant fricatives in Seoul Korean,” Studies in Phonetics, Phonology, and Morphology 26(1):1–19, https://kci.go.kr/kciportal/landing/article.kci?arti_id=ART002585434. The abstract includes lax and tense sibilants, notes palatalized variants before /i/, and reports speaker-related spectral differences. This does not resolve whether every browser ɕ͈ token should replace Python broad s͈.
+- Decision: keep the mismatch unadjudicated; do not rewrite either profile based on the abstracts alone.
+
+### Task ledger at this checkpoint
+
+| Task | Status | Acceptance evidence still required |
+|---|---|---|
+| Repository/PR/head and contract presence checked | DONE_VERIFIED | Recheck exact final HEAD before handoff closes |
+| Seed-portfolio variable-pair failure diagnosed and corrected | PARTIAL | Exact-head seed-portfolio run passes; inspect artifact and all three pair-ID sets |
+| Python/browser rule-license parity fixture | PARTIAL | Existing tests/test_rule_license_parity.py remains in use; current-head full test workflow must pass |
+| Browser IPA profile metadata | DONE_VERIFIED (limited scope) | Field exists; does not prove shared typed schema or compatibility |
+| Shared typed IPA schema and adapter gate | TODO | Versioned schema in both runtimes; incompatible/unreviewed profiles rejected before target mapping; no silent loss of boundaries/diacritics |
+| ㅅ/ㅆ profile adjudication | BLOCKED / UNADJUDICATED | Primary-source or expert evidence that specifically adjudicates fortis /s͈/ in listed vowel contexts; paired fixtures |
+| Independent gold for teacher disagreements | BLOCKED | Independent pronunciation/IPA adjudication; teacher consensus is not gold |
+| Ukrainian target changes | DEFERRED | Only after Korean surface and typed IPA acceptance; no target changes in this continuation |
+
+No production pronunciation rule or Ukrainian mapping was changed in this continuation. No local test result is claimed; verification relies on GitHub Actions. PR #339 must remain Draft until all required current-head gates pass and scientific IPA acceptance is independently supported.
