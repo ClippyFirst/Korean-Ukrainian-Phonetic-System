@@ -92,6 +92,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const candidateText=hasCandidate?results.map(r=>r.candidate_ukrainian??r.ukrainian).join(''):null;
       return{
         source:text,
+        ipa_profile:options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+        ipa_profile_status:'unadjudicated-cross-runtime',
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
         // A phrase with any provisional target has no complete accepted
         // orthography. Return the complete candidate separately, not partial
@@ -347,6 +349,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         : 'model-selected';
   return{
     source:text,
+    ipa_profile:options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+    ipa_profile_status:'unadjudicated-cross-runtime',
     surfaceHangul:recomposed===originalHangul?'':recomposed,
     ukrainian:unresolvedWholeHangulToken||provisionalCandidateAvailable?'':output.join(''),
     candidate_ukrainian:provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
