@@ -172,12 +172,12 @@ def test_python_ipa_results_expose_a_versioned_profile_contract():
     expected = {
         "phonemic": ("clippyfirst-korean-phonemic-v1", "phonemic"),
         "broad": ("clippyfirst-korean-broad-v1", "broad"),
-        "narrow": ("clippyfirst-korean-narrow-partial-sibilant-nasal-v2", "narrow"),
+        "narrow": ("clippyfirst-korean-narrow-partial-sibilant-nasal-h-v3", "narrow"),
     }
     for level, (profile_id, profile_level) in expected.items():
         result = phoneticize_korean("씨", ipa_level=level)["ipa"]
         assert result["ipa_profile"] == profile_id
-        assert result["ipa_profile_version"] == (2 if level == "narrow" else 1)
+        assert result["ipa_profile_version"] == (3 if level == "narrow" else 1)
         assert result["ipa_profile_level"] == profile_level
         assert result["ipa_profile_status"] == (
             "partial-research-only" if level == "narrow"
@@ -220,4 +220,26 @@ def test_narrow_nasal_glide_rule_is_scoped_and_does_not_leak_to_broad_ipa():
     # The research allophone must not leak into broad or phonemic output.
     assert phoneticize_korean("냐", ipa_level="broad")["ipa"]["ipa"] == "nja"
     assert phoneticize_korean("냐", ipa_level="phonemic")["ipa"]["ipa"] == "nja"
+
+def test_narrow_h_voicing_after_sonorant_coda_is_scoped_and_not_target_approved():
+    # Peer-reviewed work reports optional voicing/weakening/deletion after
+    # sonorants. This profile selects [ɦ] as one research realization; it does
+    # not claim that all speakers obligatorily voice /h/ in these contexts.
+    expected = {
+        "감히": "kam.ɦi",
+        "간호원": "kan.ɦo.wʌn",
+        "영화": "jʌŋ.ɦwa",
+    }
+    for word, ipa in expected.items():
+        result = phoneticize_korean(word, ipa_level="narrow")["ipa"]
+        assert result["ipa"] == ipa, word
+        assert result["transcription_profile"]["target_compatible"] is False
+
+    # Negative controls: no preceding sonorant coda, or a word boundary.
+    assert phoneticize_korean("아하", ipa_level="narrow")["ipa"]["ipa"] == "a.ha"
+    assert phoneticize_korean("감 하", ipa_level="narrow")["ipa"]["ipa"] == "kam ha"
+
+    # The default broad and underlying phonemic representations remain stable.
+    assert phoneticize_korean("감히", ipa_level="broad")["ipa"]["ipa"] == "kam.hi"
+    assert phoneticize_korean("감히", ipa_level="phonemic")["ipa"]["ipa"] == "kam.hi"
 
