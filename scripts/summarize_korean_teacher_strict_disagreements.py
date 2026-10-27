@@ -5,6 +5,8 @@ from collections import Counter
 from pathlib import Path
 
 SEEDS = (20261026, 20261027, 20261028)
+DATASET_ID = "sigmorphon-2021-task1-medium-korean"
+DATASET_REVISION = "821bcdece5a47820872215969f275004b0abe80c"
 
 def load(path):
     rows, seen = [], set()
@@ -27,6 +29,18 @@ def analyze(root):
         pairs[seed] = load(folder / "dev-teacher-strict-pairs.jsonl")
         if len(preds[seed]) != 1000 or len(pairs[seed]) != 994:
             raise ValueError(f"seed {seed}: expected 1000 predictions and 994 Strict pairs")
+        for row in preds[seed].values():
+            if not row["case_id"].startswith(DATASET_ID + ":dev:"):
+                raise ValueError(f"seed {seed}: unexpected dataset/split case id")
+            if not isinstance(row.get("reference_target_tokens"), list) or not isinstance(row.get("predicted_target_tokens"), list):
+                raise ValueError(f"seed {seed}: malformed token sequence")
+        for row in pairs[seed].values():
+            if (row.get("source_dataset_id") != DATASET_ID
+                    or row.get("source_dataset_revision") != DATASET_REVISION
+                    or row.get("teacher_target_representation") != "tokenized_ipa_from_sigmorphon_tsv"):
+                raise ValueError(f"seed {seed}: pair provenance/representation pin mismatch")
+            if row.get("comparison_metrics_computed") is not False:
+                raise ValueError(f"seed {seed}: cross-convention metrics must remain disabled")
     ids = set(preds[SEEDS[0]])
     if any(set(preds[s]) != ids for s in SEEDS): raise ValueError("prediction ID sets differ")
     paired = set.intersection(*(set(pairs[s]) for s in SEEDS))
