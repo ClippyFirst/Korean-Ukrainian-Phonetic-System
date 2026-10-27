@@ -177,7 +177,7 @@ def test_python_ipa_results_expose_a_versioned_profile_contract():
     for level, (profile_id, profile_level) in expected.items():
         result = phoneticize_korean("씨", ipa_level=level)["ipa"]
         assert result["ipa_profile"] == profile_id
-        assert result["ipa_profile_version"] == 1
+        assert result["ipa_profile_version"] == (2 if level == "narrow" else 1)
         assert result["ipa_profile_level"] == profile_level
         assert result["ipa_profile_status"] == (
             "partial-research-only" if level == "narrow"
