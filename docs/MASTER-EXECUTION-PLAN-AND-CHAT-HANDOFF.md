@@ -2505,3 +2505,23 @@ PR [#346](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/3
 The queue now copies a simple, explicitly present assertion subject and expected lexeme when the one-line call shape is recognized. String/scalar literals are labeled `RAW_LITERAL_EXTRACTED_NOT_ADJUDICATED`; regexes are labeled `RAW_REGEX_EXTRACTED_NOT_ADJUDICATED`; computed expressions are labeled `EXPECTED_EXPRESSION_NOT_EVALUATED`; predicate-only assertions and unsupported forms remain explicit. The parser preserves the raw lexeme—it does not decode escapes, normalize IPA, evaluate code, infer actual output, or adjudicate correctness.
 
 Every row remains `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW` and `NOT_TIED_TO_EXACT_HEAD_RUN`. This is a better evidence queue, not a completed semantic register. The next acceptance task is to resolve loop-variable fixtures and multi-line assertions into exact case inputs/modes without losing provenance, then attach actual outcomes only from matching CI logs/artifacts. Linguistic release blockers remain unchanged.
+
+
+## Assertion-queue coverage report verified — 2026-10-27
+
+PR [#347](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/347) was squash-merged as `34cd98992dbbf3f1abfd63006a66c4e03cd5f2a5`. It adds explicit coverage counts and CI assertions that the queue cannot auto-verify cases or invent observed outcomes.
+
+- **PASS — extraction + artifact report:** [workflow 40465942564](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465942564), artifact [12716247798](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465942564/artifacts/12716247798), 3,367,720 bytes; expires 2026-11-26.
+- **PASS — system verification:** [workflow 40465937572](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465937572): Python regression/data integrity and browser regression/build passed. Official NIKL source inventory was skipped by metadata-only policy.
+- **PASS — research corpus artifact workflow:** [workflow 40465937576](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40465937576).
+
+### Current measured triage coverage (5286 rows, 24 columns)
+
+- 4,257 assertion candidates; 1,029 test-declaration candidates.
+- 1,553 raw literal/regex fragments copied without evaluation: 1,004 string/scalar literals and 549 regex literals.
+- 1,045 expected expressions explicitly left unevaluated; 336 predicate-only assertions; 1,323 unsupported assertion forms; 1,029 non-assertion declarations.
+- 2,598 rows have a non-empty expected-expression fragment (includes raw literals, regexes and unevaluated expressions).
+- Dimension hints are multi-label, not mutually exclusive: IPA 590; Ukrainian target 482; Korean surface 280; rule trace 331; status/abstention 804; boundary/serialization 442; source provenance 500; variants 211; general assertion 1,848; unclassified 580.
+- Queue CSV SHA-256 remains `09c26a7ebd856619fe9941702f2e12e968e717afe8dc5fba27f5f470a0df39e9`; the workflow report separately records the report/artifact metadata.
+
+These are parser coverage counts, not case coverage or linguistic accuracy. All rows remain `UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW`; no expected value is adjudicated and no observed result is inferred. The semantic register remains partial. Next work must resolve fixtures/loop bindings and multiline assertions into exact inputs and modes, then join outcomes only to matching commit-specific test logs. Independent IPA and Ukrainian target adjudication remain separate acceptance gates.
