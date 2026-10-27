@@ -3347,3 +3347,35 @@ Inspected both pair-level JSONL files inside artifact `12766869026` directly aft
 ### Release decision
 
 The work materially improves reproducibility, exact-form Korean rule coverage across separate PRs, IPA-profile metadata/gating, research provenance, and regression protection. It does **not** establish a validated end-to-end Korean→IPA→Ukrainian engine. Keep PR #339 draft/open; do not merge, publish, or mark release-ready. The next real acceptance evidence is independent blinded IPA annotation plus an untouched evaluation protocol, followed by a reviewed typed IPA-to-Ukrainian adapter and source-rights closure.
+
+
+# Continuation checkpoint — repository/PR state recheck (2026-10-27)
+
+## Evidence obtained in this pass
+
+- Read the current public `main` README and the existing handoff, completion audit, source register, Python IPA generator and IPA-to-Ukrainian renderer through GitHub repository-content API. This was remote source inspection; no local clone or local test command was available/executed in this pass.
+- The repository's public `main` README explicitly documents the intended browser and native path as Korean surface pronunciation → project IPA → IPA-to-Ukrainian mapping, and states that the target renderer consumes IPA only. It also states that target choices remain provisional and that browser JS G2P is not fully equivalent to Python g2pK's MeCab-based morphological analysis.
+- The current research branch's `src/korean_ukrainian/ipa.py` contains both the narrow onset /n/ → [ɲ] before selected glide nuclei and the same-word sonorant-coda /h/ → [ɦ] candidate. These remain opt-in narrow-profile behavior; broad IPA and the renderer should not be inferred to be independently validated by their presence.
+- The requested path `docs/KOREAN-IPA-RUNTIME-PROFILE-CONTRACT-2026-10-27.md` was not found at that exact path on the inspected refs. Treat the contract as **BLOCKED / path-or-branch reconciliation required**, not as verified current documentation. The candidate register path named in the continuation prompt was likewise not found on the inspected branch; the strict-disagreement audit did exist. Locate the canonical paths before claiming those documents were updated.
+- PR #339 is open and draft; its description reports successful code/test workflows on code head `0702e1c4778725b605ef432f038313af86b6b764`, but the description also records a Charsiu model-download HTTP 429 failure on a later documentation head and a still-running seed portfolio. Do not treat all research workflows as green on the newest head.
+- PR #341 is open and overlaps the rule modules, tests and handoff. Its documented implementation includes exact-form R002 liaison and R016 ㄺ+ㄱ licenses, with separate successful checks on its own head. It has **not** been merged or tested as a combined tree with #339 in this pass; do not cherry-pick or merge it blindly.
+- PR #338 remains research-only; authentic NN-KoG2P inference, license terms and model availability are not established. PR #329 supplies blinded packet infrastructure but not independent annotations. PR #326 remains a non-gold holdout/profile-sensitivity effort; PR #336 still has unresolved evidence cases; PR #327 records the NIKL HTTP 403 blocker. No reviewer submissions were present in the inspected recruitment issue #337.
+- The source register records the official NIKL direct collector's HTTP 403 and explicitly says that no valid crawl manifest was emitted. This remains a real external-access/rights evidence blocker; a skipped workflow step is not a pass.
+
+## Task ledger after recheck
+
+| Task | Status | Evidence / acceptance criterion |
+|---|---|---|
+| Preserve IPA-first target renderer | PARTIAL | Current source code and README support the boundary; require current-head end-to-end test proving target renderer consumes IPA only and an IPA mutation changes target output where expected. |
+| Narrow IPA /h/ and nasal-glide candidates | PARTIAL | Present in research branch source, but dev selection contamination and no independent IPA adjudication prevent promotion; retain opt-in research-only scope. |
+| Reconcile #339 and #341 | TODO | Compare exact latest head SHAs and shared-file diffs, combine only source-backed non-conflicting changes, then run the full suite on the combined tree. This pass did not establish a combined tree. |
+| Independent IPA gold/review | BLOCKED | Need two qualified independent source-blind broad-IPA submissions under one declared convention, queue fingerprint validation and reconciliation. No submission may be fabricated. |
+| Independent Ukrainian target gold | BLOCKED | Need a separately reviewed target policy and gold set after IPA is frozen. |
+| Charsiu benchmark on latest code | BLOCKED | Earlier artifact is diagnostic/dev-only; the latest reported download returned HTTP 429. Retry pinned model retrieval and compare artifact hashes before inference; document model/tokenizer licenses and training overlap. |
+| Official NIKL source inventory and item-level rights | BLOCKED | Direct access returned HTTP 403 and no manifest exists. Import only an authorized local official copy with provenance/version and item-level rights checks; do not bypass access controls. |
+| Runtime-profile contract and candidate register canonical paths | TODO | Locate the actual current paths or create only if absent after repository tree search; synchronize IDs, versions, scope, tests and target-compatibility gate. |
+| Exact-head local verification | BLOCKED | No local checkout/runtime was available in this pass. Required acceptance: run documented Python, Node/browser, build, generation/drift, wheel-install and benchmark workflows against the final code SHA, recording skipped jobs separately. |
+
+## Integrity note
+
+This checkpoint is a remote source/metadata inspection, not an implementation test run or independent linguistic evaluation. No accuracy claim is upgraded. The repository remains a **PARTIAL research prototype, not release-ready** until the IPA and Ukrainian target evidence gates are satisfied. The latest exact branch HEAD and exact final CI state must be read from GitHub branch/Actions metadata at the next execution; the content API response supplies blob hashes, not the branch commit SHA.
