@@ -59,6 +59,33 @@ class TestClassifyTestCaseCandidates(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Duplicate source identity"):
             classify_rows([source, dict(source, assertion_candidate_id="ASSERT-OTHER")])
 
+    def test_indexes_nearest_test_and_suite_without_promoting_the_assertion(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            test_path = root / "tests/example.test.mjs"
+            test_path.parent.mkdir(parents=True)
+            test_path.write_text(
+                "describe('NIKL phonology', () => {\\n"
+                "  test('keeps IPA boundaries', () => {\\n"
+                "    assert.equal(result.ipa, 'an.tɕ͈i');\\n"
+                "  });\\n"
+                "});\\n",
+                encoding="utf-8",
+            )
+            candidate = row(
+                "ASSERT-1", "tests/example.test.mjs", 3, "assert.equal",
+                "    assert.equal(result.ipa, 'an.tɕ͈i');",
+            )
+            classified = classify_rows([candidate], repo_root=root)
+            self.assertEqual(classified[0]["nearest_suite_title"], "NIKL phonology")
+            self.assertEqual(classified[0]["nearest_suite_line"], "1")
+            self.assertEqual(classified[0]["nearest_test_title"], "keeps IPA boundaries")
+            self.assertEqual(classified[0]["nearest_test_line"], "2")
+            self.assertEqual(classified[0]["context_resolution_status"], "NEAREST_TEST_DECLARATION_FOUND")
+            self.assertEqual(classified[0]["review_status"], "UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW")
+            self.assertEqual(classified[0]["expected_value_status"], "NOT_PARSED_FROM_SOURCE_LINE")
+            self.assertEqual(classified[0]["observed_run_status"], "NOT_TIED_TO_EXACT_HEAD_RUN")
+
     def test_reads_inventory_and_writes_reproducible_csv(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
