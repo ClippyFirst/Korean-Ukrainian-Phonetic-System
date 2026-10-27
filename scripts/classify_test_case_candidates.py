@@ -24,8 +24,8 @@ OUTPUT_COLUMNS = [
     "nearest_suite_title", "nearest_suite_line", "nearest_suite_declaration",
     "nearest_test_title", "nearest_test_line", "nearest_test_declaration",
     "context_resolution_status", "assertion_subject", "expected_value_kind", "expected_value_raw",
-    "polarity_hint", "raw_line", "classification_method", "review_status",
-    "expected_value_status", "observed_run_status",
+    "expected_value_status", "polarity_hint", "raw_line", "classification_method", "review_status",
+    "observed_run_status",
 ]
 
 DIMENSION_RULES = (
@@ -135,7 +135,7 @@ def _split_call_arguments(line: str, open_paren: int) -> list[str]:
             elif char == quote:
                 quote = ""
             continue
-        if char in ("'", '"', "\`"):
+        if char in ("'", '"', "\u0060"):
             quote = char
             continue
         if char in "([{":
@@ -168,7 +168,7 @@ def _raw_literal_kind(expression: str) -> str:
             return "STRING_LITERAL"
     if value.startswith("/") and value.rfind("/") > 0:
         return "REGEX_LITERAL"
-    if re.fullmatch(r"(?:true|false|null|None|True|False|-?[0-9]+(?:\\\\.[0-9]+)?)", value):
+    if re.fullmatch(r"(?:true|false|null|None|True|False|-?[0-9]+(?:\.[0-9]+)?)", value):
         return "SCALAR_LITERAL"
     return "EXPRESSION"
 
@@ -181,7 +181,7 @@ def _expected_value_fields(raw_line: str, candidate_role: str) -> dict[str, str]
         return {**empty, "expected_value_kind": "NOT_APPLICABLE", "expected_value_status": "NOT_AN_ASSERTION"}
     matcher = EXPECT_MATCHER_RE.search(raw_line)
     if matcher:
-        expect_match = re.search(r"\\\\bexpect\\\\s*\\\\(", raw_line)
+        expect_match = re.search(r"\bexpect\s*\(", raw_line)
         if not expect_match:
             return {**empty, "expected_value_kind": "UNSUPPORTED_MATCHER", "expected_value_status": "ASSERTION_FORM_NOT_SUPPORTED"}
         args = _split_call_arguments(raw_line, expect_match.end() - 1)
