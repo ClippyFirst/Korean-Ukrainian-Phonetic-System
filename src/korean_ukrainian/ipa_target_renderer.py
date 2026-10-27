@@ -263,3 +263,74 @@ def render_ipa_sequence_to_ukrainian(ipa: str, *, allow_provisional: bool = Fals
 
 
 __all__ = ["render_ipa_sequence_to_ukrainian"]
+
+
+# No IPA profile is currently approved for production target adaptation. This
+# immutable allowlist is deliberately empty until phonetic adjudication,
+# cross-runtime acceptance, and target-inventory review are complete.
+_ADAPTER_COMPATIBLE_IPA_PROFILES: frozenset[str] = frozenset()
+
+
+def render_profiled_ipa_to_ukrainian(
+    source: str,
+    ipa_result: dict[str, Any],
+    *,
+    allow_provisional: bool = False,
+) -> dict[str, Any]:
+    """Fail closed unless a complete, explicitly approved IPA profile is supplied.
+
+    The raw-string renderer remains available for research and legacy callers.
+    Production callers should pass the structured IPA result to this guard so
+    unadjudicated or partial profiles cannot be mistaken for approved input.
+    """
+    if not isinstance(ipa_result, dict):
+        return {
+            "ipa": None, "status": "unavailable",
+            "reason": "ipa_profile_result_required",
+            "ukrainian_orthography": None, "segments": [],
+            "ignored_source_markers": [],
+        }
+    ipa = ipa_result.get("ipa")
+    profile = ipa_result.get("ipa_profile")
+    version = ipa_result.get("ipa_profile_version")
+    level = ipa_result.get("ipa_profile_level")
+    profile_status = ipa_result.get("ipa_profile_status")
+    base = {
+        "ipa": ipa if isinstance(ipa, str) else None,
+        "ipa_profile": profile,
+        "ipa_profile_version": version,
+        "ipa_profile_level": level,
+        "ipa_profile_status": profile_status,
+        "ukrainian_orthography": None,
+        "segments": [],
+        "ignored_source_markers": [],
+        "status": "unavailable",
+    }
+    if (
+        not isinstance(ipa, str) or not ipa.strip()
+        or not isinstance(profile, str) or not profile
+        or not isinstance(version, int) or isinstance(version, bool) or version < 1
+        or not isinstance(level, str) or not level
+        or not isinstance(profile_status, str) or not profile_status
+    ):
+        return {**base, "reason": "ipa_profile_metadata_incomplete"}
+    if profile_status != "adjudicated-compatible":
+        reason = (
+            "ipa_profile_partial_research_only"
+            if profile_status == "partial-research-only"
+            else "ipa_profile_not_adjudicated_compatible"
+        )
+        return {**base, "reason": reason}
+    profile_key = f"{profile}@{version}:{level}"
+    if profile_key not in _ADAPTER_COMPATIBLE_IPA_PROFILES:
+        return {**base, "reason": "ipa_profile_not_allowlisted_for_target_adapter"}
+    adapted = render_ipa_sequence_to_ukrainian(
+        ipa, allow_provisional=allow_provisional
+    )
+    return {
+        **adapted,
+        "ipa_profile": profile,
+        "ipa_profile_version": version,
+        "ipa_profile_level": level,
+        "ipa_profile_status": profile_status,
+    }
