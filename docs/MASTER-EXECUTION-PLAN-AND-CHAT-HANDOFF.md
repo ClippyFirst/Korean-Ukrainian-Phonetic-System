@@ -2551,3 +2551,15 @@ These are parser coverage counts, not case coverage or linguistic accuracy. All 
 - **DEFERRED:** teacher model invocation/training and any runtime rule promotion. Current teacher/model-license and dataset-overlap limitations remain as documented; this continuation changed no production pronunciation rules, did not add model weights, and did not change external settings.
 
 **Readiness decision:** research-ready partial prototype, not release-ready. The next real acceptance milestone is a source-linked case-level register with exact inputs/modes, raw expected evidence, actual results tied to exact runs, followed by independent IPA and Ukrainian-target adjudication. No neural-model hypothesis is promoted to production by this continuation.
+
+
+## Neural teacher portfolio for reusable rule-mining evidence (2026-10-27)
+
+- Added `.github/workflows/train-korean-g2p-teacher-portfolio.yml` on branch `research/strict-teacher-guided-rule-mining-2026-10-26`.
+- Reuses the existing pinned SIGMORPHON train/dev corpus builder and existing scratch-trained bidirectional-GRU + dot-attention-GRU model; does not duplicate the corpus pipeline and does not change production pronunciation rules.
+- Trains three independently seeded instances (20261026, 20261027, 20261028) with identical architecture and hyperparameters. This is a seed-stability portfolio, **not yet an architecture comparison**.
+- Each run retains the selected checkpoint weights, complete per-epoch training history, model/data config, checkpoint and prediction SHA-256 hashes, dev predictions, structured dev error analysis, teacher-vs-Strict aligned pairs, and pair summary. A deterministic portfolio index ranks seeds by dev token error rate, then exact match, then seed.
+- The artifact includes the pinned corpus manifest and train/dev JSONL so the experiment can be reproduced. Workflow artifact retention is set to 90 days (GitHub Actions artifact retention, not permanent archival).
+- The test split is never exported, loaded, scored, or used for model selection in this workflow. Dev rankings are research triage only and must not be reported as held-out benchmark results. Target strings remain SIGMORPHON-tokenized IPA; comparison with ClippyFirst broad IPA computes no accuracy until the reviewed representation mapping exists.
+- **Status: PARTIAL / CI pending** at commit `2a435c8574c924124e840bb83df5b2cdee2b9a0a`. The workflow has been committed to the existing research PR branch; no training run or artifact is claimed until Actions completes.
+- Next acceptance steps: verify exact-head tests and portfolio workflow; inspect all three reports and artifact hashes; then add a genuinely different compact architecture only if the seed portfolio is stable and resource cost remains reasonable. After source-convention mapping and split-overlap audit, evaluate the selected checkpoint once on a permitted held-out benchmark and feed disagreement cases into the existing train-only rule-candidate miner. Promote no rule without primary-source adjudication, positive/negative controls, and regression tests.
