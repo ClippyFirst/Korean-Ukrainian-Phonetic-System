@@ -18,7 +18,6 @@ test('browser legacy sibilant IPA baseline remains inspectable pending profile a
   for (const item of pairedFixture.cases) {
     const source = item.source;
     const expectedIpa = item.browser_legacy_contextual_ipa;
-  for (const item of pairedFixture.cases) {
     const result = engine.convert(source);
     assert.equal(result.ipa, expectedIpa, source);
     assert.equal(result.ipa_profile, 'browser-legacy-contextual-v1', source);
