@@ -27,8 +27,12 @@ def analyze(root):
         folder = root / f"seed-{seed}"
         preds[seed] = load(folder / "dev-predictions.jsonl")
         pairs[seed] = load(folder / "dev-teacher-strict-pairs.jsonl")
-        if len(preds[seed]) != 1000 or len(pairs[seed]) != 994:
-            raise ValueError(f"seed {seed}: expected 1000 predictions and 994 Strict pairs")
+        if len(preds[seed]) != 1000:
+            raise ValueError(f"seed {seed}: expected 1000 dev predictions, got {len(preds[seed])}")
+        prediction_ids = set(preds[seed])
+        pair_ids = set(pairs[seed])
+        if not pair_ids <= prediction_ids:
+            raise ValueError(f"seed {seed}: Strict pair IDs are not a subset of prediction IDs")
         for row in preds[seed].values():
             if not row["case_id"].startswith(DATASET_ID + ":dev:"):
                 raise ValueError(f"seed {seed}: unexpected dataset/split case id")
@@ -43,8 +47,10 @@ def analyze(root):
                 raise ValueError(f"seed {seed}: cross-convention metrics must remain disabled")
     ids = set(preds[SEEDS[0]])
     if any(set(preds[s]) != ids for s in SEEDS): raise ValueError("prediction ID sets differ")
-    paired = set.intersection(*(set(pairs[s]) for s in SEEDS))
-    if len(paired) != 994: raise ValueError("Strict pair ID sets differ")
+    pair_id_sets = [set(pairs[s]) for s in SEEDS]
+    if any(ids != pair_id_sets[0] for ids in pair_id_sets[1:]):
+        raise ValueError("Strict pair ID sets differ across seeds")
+    paired = pair_id_sets[0]
     counts, compact_equal = Counter(), Counter()
     records = []
     for cid in sorted(ids):
