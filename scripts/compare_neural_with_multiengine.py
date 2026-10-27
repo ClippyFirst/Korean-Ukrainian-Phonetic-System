@@ -9,14 +9,100 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import re
+
+from benchmark_ugtphon_ko import edit_distance, normalize_ipa
 from benchmark_multi_engine_ko import (
-    DIAGNOSTIC_NORMALIZERS,
-    DIAGNOSTIC_PROFILE_WARNINGS,
     _metrics,
     _paired_bootstrap_delta_ci,
-    _profile_change_audit,
-    _score,
 )
+
+def _normalize_broad_fricative_aspiration(value: str) -> str:
+    """Sensitivity-only profile: ignore narrow aspiration on Korean /s, ɕ/."""
+    return re.sub(r"(?<=[sɕ])ʰ", "", normalize_ipa(value))
+
+
+def _normalize_ignore_aspiration(value: str) -> str:
+    """Diagnostic only: remove aspiration marks after any segment."""
+    return normalize_ipa(value).replace("ʰ", "")
+
+
+def _normalize_ignore_length(value: str) -> str:
+    """Diagnostic only: ignore IPA length marks."""
+    return normalize_ipa(value).replace("ː", "").replace("ˑ", "")
+
+
+def _normalize_ignore_stress(value: str) -> str:
+    """Diagnostic only: ignore stress marks."""
+    return normalize_ipa(value).replace("ˈ", "").replace("ˌ", "")
+
+
+DIAGNOSTIC_NORMALIZERS = {
+    "primary": normalize_ipa,
+    "broad_fricative_aspiration": _normalize_broad_fricative_aspiration,
+    "ignore_all_aspiration": _normalize_ignore_aspiration,
+    "ignore_length": _normalize_ignore_length,
+    "ignore_stress": _normalize_ignore_stress,
+}
+DIAGNOSTIC_PROFILE_WARNINGS = {
+    "primary": "primary benchmark contract; only declared Unicode/format normalization",
+    "broad_fricative_aspiration": "sʰ/ɕʰ distinctions removed; sensitivity only, not accepted gold convention",
+    "ignore_all_aspiration": "all aspiration distinctions removed; deliberately over-permissive diagnostic, not accuracy",
+    "ignore_length": "length distinctions removed; diagnostic only, may erase lexical/prosodic information",
+    "ignore_stress": "stress marks removed; diagnostic only, not engine-specific gold",
+}
+
+
+def _score_with_normalizer(prediction: str, gold_raw: str, normalizer) -> dict[str, Any]:
+    predicted = normalizer(prediction)
+    variants = [normalizer(part) for part in gold_raw.split(",") if part.strip()]
+    if not variants:
+        raise ValueError("no usable IPA reference variants")
+    distance, closest = min(
+        ((edit_distance(predicted, gold), gold) for gold in variants),
+        key=lambda pair: pair[0],
+    )
+    return {
+        "predicted": prediction,
+        "normalized_predicted": predicted,
+        "closest_normalized_gold": closest,
+        "distance": distance,
+        "exact": distance == 0,
+        "reference_length": len(closest),
+    }
+
+
+def _profile_change_audit(primary_items, profile_items, sample_limit: int = 25) -> dict[str, Any]:
+    """Explain which individual cases change under a diagnostic-only profile."""
+    primary_by_id = {str(item["occurrence_id"]): item for item in primary_items}
+    profile_by_id = {str(item["occurrence_id"]): item for item in profile_items}
+    shared_ids = sorted(set(primary_by_id) & set(profile_by_id))
+    rescued, regressed = [], []
+    unchanged_exact = unchanged_mismatch = 0
+    for occurrence_id in shared_ids:
+        primary, profile = primary_by_id[occurrence_id], profile_by_id[occurrence_id]
+        if not primary["exact"] and profile["exact"]:
+            rescued.append({"occurrence_id": occurrence_id, "token": primary.get("token"),
+                "gold": primary.get("gold"), "prediction": primary.get("predicted"),
+                "primary_distance": primary.get("distance"), "profile_distance": profile.get("distance")})
+        elif primary["exact"] and not profile["exact"]:
+            regressed.append({"occurrence_id": occurrence_id, "token": primary.get("token"),
+                "gold": primary.get("gold"), "prediction": primary.get("predicted"),
+                "primary_distance": primary.get("distance"), "profile_distance": profile.get("distance")})
+        elif primary["exact"]:
+            unchanged_exact += 1
+        else:
+            unchanged_mismatch += 1
+    return {
+        "paired_occurrences": len(shared_ids),
+        "primary_mismatch_became_exact": len(rescued),
+        "primary_exact_became_mismatch": len(regressed),
+        "unchanged_exact": unchanged_exact,
+        "unchanged_mismatch": unchanged_mismatch,
+        "rescued_case_examples": rescued[:sample_limit],
+        "regressed_case_examples": regressed[:sample_limit],
+        "warning": "case transitions explain score sensitivity only; they do not establish that the profile is linguistically valid",
+    }
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -58,7 +144,7 @@ def _neural_profile_sensitivity(neural: dict[str, Any]) -> dict[str, Any]:
             "gold": gold,
             "predicted": prediction,
         }
-        item.update(_score(prediction, gold, normalizer=DIAGNOSTIC_NORMALIZERS["primary"]))
+        item.update(_score_with_normalizer(prediction, gold, DIAGNOSTIC_NORMALIZERS["primary"]))
         primary_items.append(item)
 
     primary_metrics = _metrics(primary_items)
@@ -73,7 +159,7 @@ def _neural_profile_sensitivity(neural: dict[str, Any]) -> dict[str, Any]:
                 "gold": primary["gold"],
                 "predicted": primary["predicted"],
             }
-            item.update(_score(primary["predicted"], primary["gold"], normalizer=normalizer))
+            item.update(_score_with_normalizer(primary["predicted"], primary["gold"], normalizer))
             profile_items.append(item)
         metrics = _metrics(profile_items)
         primary_exact = primary_metrics.get("exact_match_rate")
