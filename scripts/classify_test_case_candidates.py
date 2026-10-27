@@ -23,7 +23,8 @@ OUTPUT_COLUMNS = [
     "line_number", "assertion_kind", "candidate_role", "dimension_hints",
     "nearest_suite_title", "nearest_suite_line", "nearest_suite_declaration",
     "nearest_test_title", "nearest_test_line", "nearest_test_declaration",
-    "context_resolution_status", "polarity_hint", "raw_line", "classification_method", "review_status",
+    "context_resolution_status", "assertion_subject", "expected_value_kind", "expected_value_raw",
+    "polarity_hint", "raw_line", "classification_method", "review_status",
     "expected_value_status", "observed_run_status",
 ]
 
@@ -46,6 +47,8 @@ TEST_DECLARATION_RE = re.compile(r"""^\s*(?:async\s+)?(?:test|it)\s*\(\s*(?P<quo
 SUITE_DECLARATION_RE = re.compile(r"""^\s*(?:describe|suite)\s*\(\s*(?P<quote>['"])(?P<title>.*?)\1""")
 PY_TEST_DECLARATION_RE = re.compile(r"^\s*def\s+(?P<title>test_[A-Za-z0-9_]+)\s*\(")
 PY_SUITE_DECLARATION_RE = re.compile(r"^\s*class\s+(?P<title>Test[A-Za-z0-9_]*)\b")
+ASSERTION_CALL_RE = re.compile(r"\b(?:assert(?:\.[A-Za-z_][A-Za-z0-9_]*)?|self\.assert[A-Za-z0-9_]+)\s*\(")
+EXPECT_MATCHER_RE = re.compile(r"\.to(?:Be|Equal|Contain|Throw|Match|HaveLength)\s*\(")
 
 
 def _queue_id(source_path: str, line_number: str, raw_line: str) -> str:
@@ -115,6 +118,97 @@ def _context_index(rows: list[dict[str, str]], repo_root: Path) -> dict[tuple[st
     return result
 
 
+def _split_call_arguments(line: str, open_paren: int) -> list[str]:
+    """Split one-line call arguments while preserving nested expressions and literals."""
+    arguments: list[str] = []
+    start = open_paren + 1
+    depth = 0
+    quote = ""
+    escaped = False
+    for index in range(open_paren + 1, len(line)):
+        char = line[index]
+        if quote:
+            if escaped:
+                escaped = False
+            elif char == "\\\\":
+                escaped = True
+            elif char == quote:
+                quote = ""
+            continue
+        if char in ("'", '"', "\`"):
+            quote = char
+            continue
+        if char in "([{":
+            depth += 1
+        elif char in ")]}":
+            if char == ")" and depth == 0:
+                arguments.append(line[start:index].strip())
+                return arguments
+            depth -= 1
+        elif char == "," and depth == 0:
+            arguments.append(line[start:index].strip())
+            start = index + 1
+    return []
+
+
+def _raw_literal_kind(expression: str) -> str:
+    value = expression.strip()
+    if len(value) >= 2 and value[0] in ("'", '"') and value[-1] == value[0]:
+        escaped = False
+        valid = True
+        for char in value[1:-1]:
+            if escaped:
+                escaped = False
+            elif char == "\\\\":
+                escaped = True
+            elif char == value[0]:
+                valid = False
+                break
+        if valid and not escaped:
+            return "STRING_LITERAL"
+    if value.startswith("/") and value.rfind("/") > 0:
+        return "REGEX_LITERAL"
+    if re.fullmatch(r"(?:true|false|null|None|True|False|-?[0-9]+(?:\\\\.[0-9]+)?)", value):
+        return "SCALAR_LITERAL"
+    return "EXPRESSION"
+
+
+def _expected_value_fields(raw_line: str, candidate_role: str) -> dict[str, str]:
+    """Capture a raw literal only when the assertion syntax is simple and explicit."""
+    empty = {"assertion_subject": "", "expected_value_kind": "NOT_EXTRACTED", "expected_value_raw": "",
+             "expected_value_status": "NOT_PARSED_FROM_SOURCE_LINE"}
+    if candidate_role != "ASSERTION":
+        return {**empty, "expected_value_kind": "NOT_APPLICABLE", "expected_value_status": "NOT_AN_ASSERTION"}
+    matcher = EXPECT_MATCHER_RE.search(raw_line)
+    if matcher:
+        expect_match = re.search(r"\\\\bexpect\\\\s*\\\\(", raw_line)
+        if not expect_match:
+            return {**empty, "expected_value_kind": "UNSUPPORTED_MATCHER", "expected_value_status": "ASSERTION_FORM_NOT_SUPPORTED"}
+        args = _split_call_arguments(raw_line, expect_match.end() - 1)
+        subject = args[0] if args else ""
+        expected_args = _split_call_arguments(raw_line, matcher.end() - 1)
+        expected = expected_args[0] if expected_args else ""
+    else:
+        call = ASSERTION_CALL_RE.search(raw_line)
+        if not call:
+            return {**empty, "expected_value_kind": "UNSUPPORTED_ASSERTION", "expected_value_status": "ASSERTION_FORM_NOT_SUPPORTED"}
+        args = _split_call_arguments(raw_line, call.end() - 1)
+        subject = args[0] if args else ""
+        if len(args) < 2:
+            return {**empty, "assertion_subject": subject, "expected_value_kind": "PREDICATE_ONLY",
+                    "expected_value_status": "NO_SECOND_ARGUMENT_PREDICATE_ASSERTION"}
+        expected = args[1]
+    kind = _raw_literal_kind(expected)
+    status = {
+        "STRING_LITERAL": "RAW_LITERAL_EXTRACTED_NOT_ADJUDICATED",
+        "REGEX_LITERAL": "RAW_REGEX_EXTRACTED_NOT_ADJUDICATED",
+        "SCALAR_LITERAL": "RAW_LITERAL_EXTRACTED_NOT_ADJUDICATED",
+        "EXPRESSION": "EXPECTED_EXPRESSION_NOT_EVALUATED",
+    }[kind]
+    return {"assertion_subject": subject, "expected_value_kind": kind,
+            "expected_value_raw": expected, "expected_value_status": status}
+
+
 def classify_rows(rows: list[dict[str, str]], repo_root: Path | None = None) -> list[dict[str, str]]:
     """Return deterministic, explicitly unverified triage rows."""
     contexts = _context_index(rows, repo_root) if repo_root is not None else {}
@@ -148,11 +242,11 @@ def classify_rows(rows: list[dict[str, str]], repo_root: Path | None = None) -> 
                 "nearest_test_title": "", "nearest_test_line": "", "nearest_test_declaration": "",
                 "context_resolution_status": "CONTEXT_INDEX_NOT_SUPPLIED" if repo_root is None else "NOT_EXECUTABLE_TEST_SOURCE",
             }),
+            **_expected_value_fields(raw_line, _candidate_role(kind)),
             "polarity_hint": "HEURISTIC_NEGATIVE" if NEGATIVE_HINT.search(raw_line) else "NOT_IDENTIFIED_AS_NEGATIVE",
             "raw_line": raw_line,
             "classification_method": "REGEX_HINTS_V1_NOT_SEMANTIC",
             "review_status": "UNCLASSIFIED_REQUIRES_CASE_LEVEL_REVIEW",
-            "expected_value_status": "NOT_PARSED_FROM_SOURCE_LINE",
             "observed_run_status": "NOT_TIED_TO_EXACT_HEAD_RUN",
         })
     return output
