@@ -1,7 +1,11 @@
 import csv
+import json
 from pathlib import Path
 
-from korean_ukrainian.ipa_target_renderer import render_ipa_sequence_to_ukrainian
+from korean_ukrainian.ipa_target_renderer import (
+    render_ipa_sequence_to_ukrainian,
+    render_profiled_ipa_to_ukrainian,
+)
 
 
 def test_ipa_renderer_uses_longest_match_and_keeps_trace():
@@ -262,3 +266,14 @@ def test_profiled_adapter_validates_research_opt_in_even_when_profile_is_blocked
     with pytest.raises(TypeError, match="allow_provisional"):
         render_profiled_ipa_to_ukrainian("씨", {"ipa": "s͈i"}, allow_provisional="yes")
     assert render_profiled_ipa_to_ukrainian("씨", {"ipa": "s͈i"}, allow_provisional=False)["reason"] == "ipa_profile_metadata_incomplete"
+
+
+def test_shared_typed_ipa_gate_fixtures_preserve_fail_closed_outcomes():
+    fixture_path = Path(__file__).parent / "fixtures" / "ipa-profile-gate-cases.json"
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert fixture["schema_version"] == 1
+    for case in fixture["cases"]:
+        result = render_profiled_ipa_to_ukrainian("씨", case["ipa_result"])
+        assert result["reason"] == case["expected_reason"], case["id"]
+        assert result["status"] == "unavailable", case["id"]
+        assert result["ukrainian_orthography"] is None, case["id"]
