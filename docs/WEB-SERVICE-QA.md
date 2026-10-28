@@ -104,3 +104,7 @@ This is a presentation/interaction correction only; it does not promote candidat
 ## UX/UI audit — 2026-10-28
 
 The source/contract audit is recorded in [`docs/audits/UX-UI-AUDIT-2026-10-28.md`](./audits/UX-UI-AUDIT-2026-10-28.md). It identifies screen-reader feedback, mode-choice comprehension, methodology navigation, long-input performance, clipboard recovery, and mobile trace labelling for follow-up. **Status remains PARTIAL:** the screenshot service was unavailable due to exhausted credits and the web viewer could not retrieve the live page; no current screenshot or assistive-technology run is claimed. Complete the screenshot-first browser acceptance before closing the audit.
+
+## UX/UI remediation follow-up — 2026-10-28
+
+PR #362 implements concise debounced result announcements, goal-oriented mode labels with progressive technical disclosure, a responsive in-page methodology contents list, visible clipboard recovery, and field labels for narrow-screen trace rows. Added source-contract tests and synchronized the Pages smoke assertion. The visual/browser audit remains `PARTIAL`: do not infer screen-reader success, clipboard-denial behavior, mobile reflow, or performance from static tests alone. See [`docs/audits/UX-UI-AUDIT-2026-10-28.md`](./audits/UX-UI-AUDIT-2026-10-28.md).

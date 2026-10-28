@@ -256,3 +256,10 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - Status: `PARTIAL` — source/contract audit recorded in `docs/audits/UX-UI-AUDIT-2026-10-28.md`; the live screenshot-first phase is blocked by exhausted Firecrawl credits and the public-page viewer returning cache misses.
 - Findings are prioritized and include evidence, user impact, proposed remediation, and acceptance criteria. No runtime change was made on the strength of unverified visual hypotheses.
 - Do not mark this audit `DONE_VERIFIED` until current desktop/mobile screenshots, keyboard/accessibility checks, and representative long-input performance observations have been recorded.
+
+## UX/UI remediation — 2026-10-28
+
+- Implementation PR: #362 (`fix/ux-ui-accessibility-rebased-2026-10-28`).
+- Source-level changes: concise debounced result announcements; user-oriented mode descriptions with progressive technical disclosure; responsive in-page methodology navigation; visible clipboard recovery; labelled mobile trace fields; regression contracts.
+- Status: implementation present; acceptance remains `PARTIAL` until real desktop/mobile and assistive-technology verification. Performance optimization remains pending representative measurements (short, ~1,000 characters, 5,198 characters); do not change synchronous behavior without evidence.
+- Evidence and detailed acceptance gates: `docs/audits/UX-UI-AUDIT-2026-10-28.md`.

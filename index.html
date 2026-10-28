@@ -77,13 +77,13 @@
         <label class="mode-option" for="mode-practical">
           <input type="radio" name="transliteration-mode" id="mode-practical" value="practical" checked />
           <span><strong>Практичний режим</strong>
-          <em>JavaScript-порт g2pK + точкові виправлення за NIKL; далі IPA.</em></span>
+          <em>Для швидкого отримання українського читання з проміжним фонетичним аналізом.</em></span>
         </label>
-        <p class="practical-mode-hint">Практичний режим використовує JavaScript-порт g2pK і застосовує лише кілька точних виправлень корейської поверхневої форми, прямо підтверджених NIKL, перед етапом IPA. Це не гарантія повної нормативності: інші слова й морфологічні контексти все ще можуть відрізнятися від NIKL.</p>
+        <details class="mode-disclosure"><summary>Як працює практичний режим і які його обмеження</summary><p class="practical-mode-hint">Режим використовує JavaScript-порт g2pK і кілька точкових виправлень корейської поверхневої форми, підтверджених NIKL, перед етапом IPA. Це не гарантує повної нормативності: інші слова й морфологічні контексти можуть відрізнятися від NIKL.</p></details>
         <label class="mode-option" for="mode-research">
           <input type="radio" name="transliteration-mode" id="mode-research" value="research" />
           <span><strong>Дослідницький режим</strong>
-          <em>Нативний дослідницький рушій із суворими правилами, словниковими ліцензіями й позначенням невизначеності.</em></span>
+          <em>Для перевірки правил, проміжних етапів і випадків, де вимову чи український запис не вдалося підтвердити.</em></span>
         </label>
       </fieldset>
       <div id="research-options" class="research-options" hidden>
@@ -147,6 +147,7 @@
       </div>
       <p class="candidate-footnote">Перед використанням потрібна перевірка IPA та української цільової адаптації.</p>
     </section>
+    <p id="copy-feedback" class="copy-feedback" role="status" hidden></p>
     <div id="issue-state" class="issue-state" hidden><p id="issue-text"></p></div>
     <div id="variant-panel" class="variant-panel" hidden>
       <div class="section-title"><span class="section-number">B+</span><div><p class="section-kicker">Варіанти</p><h3>Альтернативні читання</h3></div></div>
