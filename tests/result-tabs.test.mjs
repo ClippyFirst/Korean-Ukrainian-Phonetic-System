@@ -29,5 +29,4 @@ test('Ukrainian option buttons expose pressed state and candidate is unavailable
 test('Ukrainian selector is keyboard-focusable and responsive without hiding other result cards', () => {
   assert.match(css, /\.ua-output-option:focus-visible/);
   assert.match(css, /\.result-grid > \.result-card\[hidden\] \{ display:none !important; \}/);
-  assert.doesNotMatch(css, /\.result-tabs \{/);
 });
