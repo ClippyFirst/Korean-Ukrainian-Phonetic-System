@@ -250,3 +250,9 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - All exact-head main checks passed: tests `40690480342`; system verification `40690480409`; browser G2P integration `40690480626`; research corpus/artifacts `40690480597`; Pages deploy and live browser smoke `40690480644`.
 - The live adversarial-passage smoke verified the neutral unconfirmed status, separate candidate panel/copy action, IPA output, practical JS G2P mode, and no browser runtime errors.
 - Scope note: this closes only the UX/deployment gate; broader linguistic evidence and independent IPA review remain open.
+
+## UX/UI audit — 2026-10-28
+
+- Status: `PARTIAL` — source/contract audit recorded in `docs/audits/UX-UI-AUDIT-2026-10-28.md`; the live screenshot-first phase is blocked by exhausted Firecrawl credits and the public-page viewer returning cache misses.
+- Findings are prioritized and include evidence, user impact, proposed remediation, and acceptance criteria. No runtime change was made on the strength of unverified visual hypotheses.
+- Do not mark this audit `DONE_VERIFIED` until current desktop/mobile screenshots, keyboard/accessibility checks, and representative long-input performance observations have been recorded.

@@ -100,3 +100,7 @@ Acceptance checks:
 - when a confirmed target is available, the normal Ukrainian output and copy action return.
 
 This is a presentation/interaction correction only; it does not promote candidates to accepted orthography or change linguistic mapping.
+
+## UX/UI audit — 2026-10-28
+
+The source/contract audit is recorded in [`docs/audits/UX-UI-AUDIT-2026-10-28.md`](./audits/UX-UI-AUDIT-2026-10-28.md). It identifies screen-reader feedback, mode-choice comprehension, methodology navigation, long-input performance, clipboard recovery, and mobile trace labelling for follow-up. **Status remains PARTIAL:** the screenshot service was unavailable due to exhausted credits and the web viewer could not retrieve the live page; no current screenshot or assistive-technology run is claimed. Complete the screenshot-first browser acceptance before closing the audit.
