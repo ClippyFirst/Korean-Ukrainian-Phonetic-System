@@ -529,3 +529,14 @@ button { color: inherit; }
   .methodology-toc ol { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   .methodology-toc li { font-size: .9rem; }
 }
+
+
+/* Corrected output interaction: only the Ukrainian record has two selectable states. */
+.ua-output-switch { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 8px; }
+.ua-output-option { min-height:38px; padding:8px 13px; border:1px solid var(--line-strong); background:var(--surface); color:var(--ink); font-size:.82rem; font-weight:750; cursor:pointer; }
+.ua-output-option:hover:not(:disabled) { border-color:var(--red); }
+.ua-output-option.is-active { border-color:var(--ink); background:var(--ink); color:#fff; }
+.ua-output-option:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
+.ua-output-option:disabled { opacity:.48; cursor:not-allowed; }
+#result-ukrainian[hidden], #candidate-panel[hidden] { display:none !important; }
+.result-grid > .result-card[hidden] { display:none !important; }
