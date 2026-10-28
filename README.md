@@ -338,3 +338,10 @@ The RR display is a separate diagnostic branch:
 **Scope limitation:** this initial adapter covers standard Hangul syllable decomposition, core RR onset/vowel/coda letter values, adjacent ㄹ handling, and preservation of whitespace/punctuation/non-Hangul text. It is not yet independently validated as a complete implementation of every NIKL Revised Romanization rule, and it does not reverse-convert Latin text to Hangul. Do not use it as pronunciation gold or infer IPA from the Latin output. See [the implementation contract and validation gaps](docs/KOREAN-ROMANIZATION-RR-2026-10-28.md).
 
 Normative reference: [National Institute of Korean Language — Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do).
+
+
+## Extended engine benchmark metrics (2026-10-29)
+
+The existing multi-engine IPA harness now records per-engine execution time/throughput (with timing scope disclosed), segment-based PER, a declared feature-weighted phonological error-rate proxy, coverage-adjusted exact match, and unsupported feature-inventory counts in addition to the existing CER, exact match, coverage, abstention/error, and paired-bootstrap metrics. See [the metric definitions and explicit evidence gates](docs/EXTENDED-BENCHMARK-METRICS-2026-10-29.md) and [unit tests](tests/test_benchmark_extended_metrics.py).
+
+Rule accuracy, Ukrainian target accuracy, end-to-end IPA→Ukrainian consistency, repeatability, and comparable memory usage are marked not measured until the required adjudicated labels, target gold set, controlled repetitions, or runtime instrumentation exist. This extension makes no new benchmark score claim; GitHub Actions must verify the branch and benchmark runs still require the existing pinned external corpora and optional engines.
