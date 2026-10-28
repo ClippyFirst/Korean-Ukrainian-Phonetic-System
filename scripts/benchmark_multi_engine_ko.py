@@ -17,6 +17,8 @@ import random
 import re
 import subprocess
 import sys
+import time
+import statistics
 import unicodedata
 from collections import defaultdict
 from pathlib import Path
@@ -65,6 +67,132 @@ def _gold_variants(raw: str) -> list[str]:
     return [normalize_ipa(part) for part in raw.split(",") if part.strip()]
 
 
+
+# Broad IPA segment inventory for a transparent PER/PFER-style diagnostic.
+# This is deliberately an inspectable approximation, not a complete phonetic
+# feature database. Unsupported segments are counted and reported.
+_AFFRICATES = ("tɕ", "dʑ", "tʃ", "dʒ", "ts", "dz", "pf", "bv", "kx", "ɡɣ")
+_MODIFIERS = set("ʰʲʷːˑ˞ʼ̩̃")
+_PLACE = {
+    **{x: "bilabial" for x in "pm bβ".replace(" ", "")},
+    **{x: "labiodental" for x in "ɱfv"},
+    **{x: "dental" for x in "θð"},
+    **{x: "alveolar" for x in "tdnszɾrɹlɬɮ"},
+    **{x: "postalveolar" for x in "ʃʒ"},
+    **{x: "alveolopalatal" for x in "ɕʑ"},
+    **{x: "palatal" for x in "cɟɲj"},
+    **{x: "velar" for x in "kɡŋxɣɰ"},
+    **{x: "uvular" for x in "qɢɴχʁ"},
+    **{x: "glottal" for x in "hɦʔ"},
+}
+_MANNER = {
+    **{x: "stop" for x in "pbtdɟc kɡqɢʔ".replace(" ", "")},
+    **{x: "nasal" for x in "mnɱɲŋɴ"},
+    **{x: "fricative" for x in "fvθðszʃʒɕʑxɣχʁhɦ"},
+    **{x: "approximant" for x in "jwɰɹɾɻ"},
+    **{x: "lateral" for x in "lɬɮʎ"},
+    **{x: "trill" for x in "rʀ"},
+}
+_VOWEL_HEIGHT = {**{x:"high" for x in "i y ɨ ʉ ɯ u".split()}, **{x:"mid" for x in "e ø ɘ ɵ ɤ o ə".split()}, **{x:"low" for x in "ɛ œ ɜ ɞ ʌ ɔ æ ɐ a ɶ ɑ ɒ".split()}}
+_VOWEL_BACKNESS = {**{x:"front" for x in "i y e ø ɛ œ æ ɶ".split()}, **{x:"central" for x in "ɨ ʉ ɘ ɵ ə ɜ ɞ ɐ".split()}, **{x:"back" for x in "ɯ u ɤ o ʌ ɔ ɑ ɒ".split()}}
+_VOICED = set("bdɟɡɢɴmnɱɲŋvðzʒʑɣʁɦɹɾrʀljwɰ")
+_UNVOICED = set("ptc kqʔfθsʃɕxχh".replace(" ", ""))
+
+
+def _ipa_segments(value: str) -> list[str]:
+    """Tokenize broad IPA into segment-like units, retaining length/aspiration."""
+    text = unicodedata.normalize("NFD", value).replace("g", "ɡ")
+    text = "".join(ch for ch in text if not ch.isspace() and ch != ".")
+    result: list[str] = []
+    i = 0
+    while i < len(text):
+        if unicodedata.category(text[i]).startswith("M"):
+            if result:
+                result[-1] += text[i]
+            i += 1
+            continue
+        matched = next((aff for aff in _AFFRICATES if text.startswith(aff, i)), None)
+        if matched:
+            token = matched
+            i += len(matched)
+        else:
+            token = text[i]
+            i += 1
+        while i < len(text) and (unicodedata.category(text[i]).startswith("M") or text[i] in _MODIFIERS):
+            token += text[i]
+            i += 1
+        result.append(token)
+    return result
+
+
+def _segment_features(segment: str) -> dict[str, str]:
+    base = "".join(ch for ch in unicodedata.normalize("NFD", segment)
+                   if not unicodedata.category(ch).startswith("M") and ch not in _MODIFIERS)
+    features: dict[str, str] = {}
+    if base in _AFFRICATES:
+        features.update(place="alveolar", manner="affricate")
+        if base.startswith(("d", "b")):
+            features["voicing"] = "voiced"
+        elif base.startswith(("t", "p")):
+            features["voicing"] = "voiceless"
+    elif base in _PLACE:
+        features["place"] = _PLACE[base]
+        features["manner"] = _MANNER.get(base, "other")
+        if base in _VOICED:
+            features["voicing"] = "voiced"
+        elif base in _UNVOICED:
+            features["voicing"] = "voiceless"
+    elif base in _VOWEL_HEIGHT:
+        features.update(kind="vowel", height=_VOWEL_HEIGHT[base],
+                        backness=_VOWEL_BACKNESS.get(base, "unknown"),
+                        rounded="rounded" if base in "yøʉɵuɔɒɶ" else "unrounded")
+    else:
+        features["kind"] = "unknown"
+    features["aspiration"] = "yes" if "ʰ" in segment else "no"
+    features["length"] = "long" if "ː" in segment else "half-long" if "ˑ" in segment else "short"
+    features["fortis"] = "yes" if "͈" in unicodedata.normalize("NFD", segment) or "ʼ" in segment else "no"
+    return features
+
+
+def _feature_substitution_cost(left: str, right: str) -> float:
+    a, b = _segment_features(left), _segment_features(right)
+    keys = sorted(set(a) | set(b))
+    if not keys:
+        return 0.0
+    mismatches = sum(a.get(key, "missing") != b.get(key, "missing") for key in keys)
+    # Unknown phones must not be granted an artificial near-match.
+    if a.get("kind") == "unknown" or b.get("kind") == "unknown":
+        return 1.0 if left != right else 0.0
+    return mismatches / len(keys)
+
+
+def _segment_edit_distance(left: list[str], right: list[str], weighted: bool = False) -> float:
+    previous = [float(j) for j in range(len(right) + 1)]
+    for i, a in enumerate(left, 1):
+        current = [float(i)]
+        for j, b in enumerate(right, 1):
+            substitution = (_feature_substitution_cost(a, b) if weighted else float(a != b))
+            current.append(min(current[-1] + 1.0, previous[j] + 1.0, previous[j - 1] + substitution))
+        previous = current
+    return previous[-1]
+
+
+def _latency_summary(samples_ms: list[float]) -> dict[str, Any]:
+    if not samples_ms:
+        return {"sample_count": 0, "total_ms": 0.0, "mean_ms": None, "p50_ms": None, "p95_ms": None}
+    ordered = sorted(samples_ms)
+    def percentile(p: float) -> float:
+        return ordered[min(len(ordered) - 1, int((len(ordered) - 1) * p))]
+    return {
+        "sample_count": len(ordered),
+        "total_ms": round(sum(ordered), 3),
+        "mean_ms": round(statistics.fmean(ordered), 6),
+        "p50_ms": round(percentile(0.50), 6),
+        "p95_ms": round(percentile(0.95), 6),
+        "measurement_note": "in-process wall-clock diagnostic; compare only on the same runner and environment",
+    }
+
+
 def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
     predicted = normalize_ipa(prediction)
     variants = _gold_variants(gold_raw)
@@ -74,6 +202,9 @@ def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
         ((edit_distance(predicted, gold), gold) for gold in variants),
         key=lambda pair: pair[0],
     )
+    predicted_segments = _ipa_segments(predicted)
+    reference_segments = _ipa_segments(closest)
+    unsupported = sum(_segment_features(segment).get("kind") == "unknown" for segment in predicted_segments + reference_segments)
     return {
         "predicted": prediction,
         "normalized_predicted": predicted,
@@ -81,6 +212,11 @@ def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
         "distance": distance,
         "exact": distance == 0,
         "reference_length": len(closest),
+        "predicted_phoneme_count": len(predicted_segments),
+        "reference_phoneme_count": len(reference_segments),
+        "phoneme_distance": int(_segment_edit_distance(predicted_segments, reference_segments)),
+        "feature_weighted_distance": round(_segment_edit_distance(predicted_segments, reference_segments, weighted=True), 6),
+        "unsupported_feature_segments": unsupported,
     }
 
 
@@ -93,11 +229,22 @@ def _metrics(items: list[dict[str, Any]]) -> dict[str, Any]:
     exact = sum(bool(item["exact"]) for item in items)
     distance = sum(int(item["distance"]) for item in items)
     ref_chars = sum(int(item["reference_length"]) for item in items)
+    ref_phonemes = sum(int(item.get("reference_phoneme_count", 0)) for item in items)
+    phoneme_errors = sum(int(item.get("phoneme_distance", 0)) for item in items)
+    feature_errors = sum(float(item.get("feature_weighted_distance", 0)) for item in items)
+    predicted_phonemes = sum(int(item.get("predicted_phoneme_count", 0)) for item in items)
+    unsupported = sum(int(item.get("unsupported_feature_segments", 0)) for item in items)
     return {
         "scored_tokens": len(items),
         "exact_matches": exact,
         "exact_match_rate": round(exact / len(items), 6),
         "character_error_rate": round(distance / ref_chars, 6) if ref_chars else None,
+        "phoneme_error_rate": round(phoneme_errors / ref_phonemes, 6) if ref_phonemes else None,
+        "phonological_feature_error_rate_proxy": round(feature_errors / ref_phonemes, 6) if ref_phonemes else None,
+        "phoneme_errors": phoneme_errors,
+        "reference_phonemes": ref_phonemes,
+        "predicted_phonemes": predicted_phonemes,
+        "unsupported_feature_segments": unsupported,
         "reference_characters": ref_chars,
     }
 
@@ -353,7 +500,10 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     def execute(name: str, source: str, fn: Callable[[str], str], adapter: str) -> None:
         output: dict[str, Any] = {}
         errors: list[dict[str, str]] = []
+        per_word_ms: list[float] = []
+        engine_started = time.perf_counter()
         for word in words:
+            word_started = time.perf_counter()
             try:
                 value = fn(word)
                 if not isinstance(value, str) or not value.strip():
@@ -363,12 +513,21 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 output[word] = {"error": f"{type(exc).__name__}: {exc}"}
                 if len(errors) < 30:
                     errors.append({"word": word, "error": output[word]["error"]})
+            finally:
+                per_word_ms.append((time.perf_counter() - word_started) * 1000)
+        elapsed_ms = (time.perf_counter() - engine_started) * 1000
         predictions[name] = output
         engine_meta[name] = {
             "status": "PARTIAL" if errors else "AVAILABLE",
             "source": source, "adapter": adapter,
             "unique_words": len(words), "outputs": len(words) - len(errors),
             "engine_errors": len(errors), "error_examples": errors,
+            "runtime": {
+                "total_ms": round(elapsed_ms, 3),
+                "throughput_words_per_second": round(len(words) / (elapsed_ms / 1000), 3) if elapsed_ms > 0 else None,
+                "per_word_latency": _latency_summary(per_word_ms),
+                "timing_scope": "unique-word engine calls; includes Python adapter overhead, excludes corpus loading and scoring",
+            },
         }
 
     execute(
