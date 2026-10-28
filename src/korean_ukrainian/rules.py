@@ -222,6 +222,9 @@ _NIKL_R014_WORD_LICENSES = {
     # NIKL Online Q&A qna_seq=316282 explicitly gives 물가[물까] and 봄비[봄삐]
     # as fortition examples in compounds without written 사이시옷.
     "물가": "물>가", "봄비": "봄>비",
+    # Korean Basic Dictionary directly lists 닭갈비[닥깔비] (ParaWordNo=56047).
+    # Exact-form only: the dictionary attests the surface, not IPA or Ukrainian output.
+    "닭갈비": "닭>갈",
 }
 
 # Exact examples explicitly listed in NIKL §30. Each form is licensed only
