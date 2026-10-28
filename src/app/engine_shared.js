@@ -186,6 +186,9 @@ const NIKL_28_COMPOUND_FORTITION_FORMS=new Map([
   ['아침밥','침>밥'], ['굴속','굴>속'], ['술잔','술>잔'],
   // NIKL Online Q&A 316282 explicitly cites 물가[물까], 봄비[봄삐].
   ['물가','물>가'], ['봄비','봄>비'],
+  // Korean Basic Dictionary directly lists 닭갈비[닥깔비] (ParaWordNo=56047).
+  // Exact-form surface evidence only; do not generalize to other ㄺ+ㄱ sequences.
+  ['닭갈비','닭>갈'],
 ]);
 
 // Exact, source-licensed phrase boundaries whose rules require syntax or a
