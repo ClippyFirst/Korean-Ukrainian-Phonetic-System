@@ -112,3 +112,21 @@ The source-backed remediation is implemented in PR #362. This does not close the
 ### Remaining acceptance gates
 
 The audit remains **PARTIAL** until a real browser verifies: desktop/mobile visual rendering; 320 px trace reflow; keyboard/focus behavior; screen-reader output announcements; clipboard denial fallback; comprehension of the mode labels; and conversion latency for the three representative input lengths. CI test success alone does not establish those outcomes.
+
+
+## Live browser verification — 2026-10-28
+
+**Evidence source:** post-deployment Playwright run [#40703251527](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40703251527), deployed commit `49160487f25e6c9569cecf24bbb234155932ba2c`. The script ran against the published GitHub Pages URL, not a local mock.
+
+**Passed in the live browser:**
+- A 1,443-character adversarial Korean passage produced a 2,774-character provisional candidate and 3,725 IPA characters; the UI retained the separate candidate panel and explicit unconfirmed status.
+- The live region announced a meaningful result state/value.
+- The practical-mode technical disclosure opened and retained the g2pK provenance.
+- Simulated Clipboard API permission denial displayed recovery guidance and selected the exact IPA field.
+- At a 390×844 viewport, trace fields exposed visible labels and the document had no horizontal overflow.
+- The methodology contents were visible on mobile and the `#methodology-00a` link navigated to a real target.
+- No browser runtime errors were reported by the smoke.
+
+**Not established by this smoke:** actual screen-reader speech/verbosity, manual keyboard-only evaluation, visual screenshots and design review, 320 px reflow, human comprehension testing of mode labels, and measured conversion latency for short / ~1,000 / 5,198-character input. The audit therefore remains **PARTIAL**, despite the live smoke passing.
+
+The updated smoke is in [PR #363](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/363); the application remediation is in [PR #362](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/362).

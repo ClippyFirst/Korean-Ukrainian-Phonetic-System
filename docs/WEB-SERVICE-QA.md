@@ -108,3 +108,7 @@ The source/contract audit is recorded in [`docs/audits/UX-UI-AUDIT-2026-10-28.md
 ## UX/UI remediation follow-up — 2026-10-28
 
 PR #362 implements concise debounced result announcements, goal-oriented mode labels with progressive technical disclosure, a responsive in-page methodology contents list, visible clipboard recovery, and field labels for narrow-screen trace rows. Added source-contract tests and synchronized the Pages smoke assertion. The visual/browser audit remains `PARTIAL`: do not infer screen-reader success, clipboard-denial behavior, mobile reflow, or performance from static tests alone. See [`docs/audits/UX-UI-AUDIT-2026-10-28.md`](./audits/UX-UI-AUDIT-2026-10-28.md).
+
+## Live UX smoke evidence — 2026-10-28
+
+Post-deployment Playwright run [#40703251527](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40703251527) passed against published Pages commit `49160487f25e6c9569cecf24bbb234155932ba2c`: 1,443-character adversarial input; meaningful live-region announcement; technical mode disclosure; simulated clipboard-denial recovery with exact IPA selection; mobile trace labels and no horizontal overflow at 390×844; methodology TOC fragment navigation; no browser runtime errors. This does not verify actual screen-reader speech, manual keyboard-only use, visual screenshot review, 320 px layout, mode comprehension, or performance at the 5,198-character stress case. Overall audit remains `PARTIAL`; see the UX/UI audit report.
