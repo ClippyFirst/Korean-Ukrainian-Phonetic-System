@@ -26,14 +26,17 @@ test('Pages smoke contracts cover the mode selector and system-page title', () =
   assert.ok(system.includes('<title>Система / 한국어 → УКРАЇНСЬКА</title>'), 'system-page title must match smoke assertion');
 });
 
-test('live browser smoke distinguishes neutral unconfirmed status from a provisional candidate', () => {
-  assert.match(browserSmoke, /#candidate-panel/u);
+test('live browser smoke verifies inline research candidate and neutral confirmed-result option', () => {
+  assert.match(browserSmoke, /#ua-unconfirmed-button/u);
+  assert.match(browserSmoke, /#ua-candidate-button/u);
   assert.match(browserSmoke, /#candidate-value/u);
+  assert.match(browserSmoke, /#candidate-note/u);
   assert.match(browserSmoke, /Немає підтвердженого запису/u);
-  assert.match(browserSmoke, /Запис не підтверджено/u);
+  assert.match(browserSmoke, /Достовірний варіант недоступний/u);
+  assert.match(browserSmoke, /Дослідницький результат/u);
   assert.match(browserSmoke, /#ukrainian-copy-button/u);
-  assert.match(browserSmoke, /#candidate-copy-button/u);
   assert.match(browserSmoke, /Показано попередній кандидат, не підтверджений результат/u);
-  assert.match(browserSmoke, /provisional status must not leave the Ukrainian\/candidate panel empty/u);
-  assert.match(browserSmoke, /outputLabel === 'Український запис' && ukrainian.length > 20/u);
+  assert.match(browserSmoke, /research option must show the candidate in the main Ukrainian field/u);
+  assert.match(browserSmoke, /obsolete standalone candidate panel must not exist/u);
+  assert.doesNotMatch(browserSmoke, /#candidate-copy-button|Запис не підтверджено|outputLabel === 'Український запис'/u);
 });
