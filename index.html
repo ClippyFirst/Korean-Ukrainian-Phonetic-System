@@ -139,10 +139,13 @@
 
     <p id="copy-feedback" class="copy-feedback" role="status" hidden></p>
     <div id="issue-state" class="issue-state" hidden><p id="issue-text"></p></div>
-    <div id="variant-panel" class="variant-panel" hidden>
-      <div class="section-title"><span class="section-number">B+</span><div><p class="section-kicker">Варіанти</p><h3>Альтернативні читання</h3></div></div>
-      <div id="variant-list" class="trace-list"></div>
-    </div>
+    <details id="variant-panel" class="trace-panel trace-disclosure variant-panel" hidden>
+      <summary class="trace-summary"><span class="trace-summary-index">B+</span><span class="trace-summary-copy"><strong>Альтернативні читання</strong><small>Відкрийте, щоб переглянути інші можливі вимови, їхній IPA, українські відповідники та статус підтвердження.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
+      <div class="trace-details">
+        <p class="trace-explainer">Кожен варіант подано окремо від основного результату. Статус і примітка показують підставу варіанта та обмеження; наявність альтернативи сама по собі не означає, що вона є нормативною або рівнозначною основному читанню.</p>
+        <div id="variant-list" class="trace-list"></div>
+      </div>
+    </details>
     <details class="trace-panel trace-disclosure">
       <summary class="trace-summary"><span class="trace-summary-index">C</span><span class="trace-summary-copy"><strong>Поскладовий розбір</strong><small>Відкрийте, щоб переглянути шлях Hangul → вимова → IPA → український запис для кожного сегмента.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
       <div class="trace-details">
