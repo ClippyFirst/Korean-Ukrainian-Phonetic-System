@@ -3492,3 +3492,16 @@ The feasible software-side improvement in this pass is to make two-review compar
 - The merge commit's own CI was still running at the time of this update. PR-head green checks are strong exact-code evidence, but this documentation update and merge do not close the external linguistic gates.
 - Remaining genuine blockers: two independent qualified IPA reviewers plus documented reconciliation; separate Ukrainian-target review; source/rights clearance; owner decision on repository licensing; official live NIKL crawl remains blocked/skipped. Release status remains **NOT READY**.
 - Branch cleanup: PR debt was closed and there are no open PRs. This connector does not expose branch-ref deletion, so historical branch refs have not been deleted and are not claimed as deleted.
+
+
+# Continuation — paired benchmark integrity hardening (2026-10-28)
+
+This section supersedes earlier branch/PR status statements above where they conflict with the current repository state.
+
+- **Current work branch:** `fix/paired-benchmark-integrity-2026-10-28`, based on `main` at `4bf96951cd3281c5e24c7f9f874aea86e6602f00`.
+- **PR:** [#351](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/351); open pending the pinned multi-engine benchmark result.
+- **Implementation:** `scripts/benchmark_multi_engine_ko.py` now rejects duplicate occurrence IDs rather than silently overwriting records in dictionary construction, rejects candidate/native pairs whose same occurrence ID points to different source rows, and emits explicit paired/candidate-only/native-only occurrence counts plus paired row count with paired bootstrap intervals.
+- **Regression tests:** `tests/test_multi_engine_benchmark.py` checks the denominator fields and invalid pairing rejection.
+- **Verification on code head `30b56f9a600b7f09fcbb7d88f5720cef24e3705d`:** Python 3.11, 3.12 and 3.13 suites, browser tests, wheel-install check, teacher-corpus audit, system verification, master-table/research artifacts and test-case-register extraction passed. The pinned multi-engine IPA benchmark run [40646208758](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40646208758) was still running at the time of this update; do not mark it passed until its final conclusion is success.
+- **Scope and interpretation:** this fixes statistical pairing integrity only; it does not change Korean phonological rules or claim improved IPA accuracy. Benchmark scores remain diagnostic and convention-sensitive, and do not measure Ukrainian orthographic adaptation.
+- **Remaining gates:** retrieve and inspect the completed benchmark artifact and per-engine metrics; only merge after benchmark CI passes. Independent Ukrainian target gold, IPA adjudication for genuinely ambiguous cases, and source/rights review remain evidence-limited blockers, not reasons to stop automated benchmark work.
