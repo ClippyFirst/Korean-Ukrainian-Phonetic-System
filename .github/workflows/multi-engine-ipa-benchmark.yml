@@ -164,9 +164,17 @@ jobs:
               print(f"{name}: status={m['unique_word_engine_status']['status']} "
                     f"scored={m['scored_tokens']}/{m['attempted_tokens']} "
                     f"coverage={m['coverage']} exact={m['exact_matches']} "
-                    f"exact_rate={m['exact_match_rate']} CER={m['character_error_rate']} "
+                    f"exact_rate={m['exact_match_rate']} coverage_adjusted_exact={m['coverage_adjusted_exact_match_rate']} "
+                    f"CER={m['character_error_rate']} PER={m['phoneme_error_rate']} "
+                    f"feature_error_proxy={m['phonological_feature_error_rate_proxy']} "
+                    f"unsupported_segments={m['unsupported_feature_segments']} "
                     f"CI95={ci} abstentions={m['abstentions_or_unresolved']} "
                     f"errors={m['engine_errors_on_token_loop']}")
+              runtime = m.get("unique_word_engine_status", {}).get("runtime", {})
+              print(f"  runtime_total_ms={runtime.get('total_ms')} throughput_words_s={runtime.get('throughput_words_per_second')} "
+                    f"latency_p50_ms={runtime.get('per_word_latency', {}).get('p50_ms')} "
+                    f"latency_p95_ms={runtime.get('per_word_latency', {}).get('p95_ms')} "
+                    f"timing_scope={runtime.get('timing_scope', runtime.get('per_word_latency', {}).get('measurement_note'))}")
               if "paired_with_native" in m:
                   p = m["paired_with_native"]
                   ci_delta = p.get("paired_bootstrap_delta_95pct_ci", {})
@@ -226,8 +234,16 @@ jobs:
               print(f"{name}: status={m['unique_word_engine_status']['status']} "
                     f"scored={m['scored_tokens']}/{m['attempted_tokens']} "
                     f"coverage={m['coverage']} exact={m['exact_matches']} "
-                    f"exact_rate={m['exact_match_rate']} CER={m['character_error_rate']} "
+                    f"exact_rate={m['exact_match_rate']} coverage_adjusted_exact={m['coverage_adjusted_exact_match_rate']} "
+                    f"CER={m['character_error_rate']} PER={m['phoneme_error_rate']} "
+                    f"feature_error_proxy={m['phonological_feature_error_rate_proxy']} "
+                    f"unsupported_segments={m['unsupported_feature_segments']} "
                     f"abstentions={m['abstentions_or_unresolved']} errors={m['engine_errors_on_token_loop']}")
+              runtime = m.get("unique_word_engine_status", {}).get("runtime", {})
+              print(f"  runtime_total_ms={runtime.get('total_ms')} throughput_words_s={runtime.get('throughput_words_per_second')} "
+                    f"latency_p50_ms={runtime.get('per_word_latency', {}).get('p50_ms')} "
+                    f"latency_p95_ms={runtime.get('per_word_latency', {}).get('p95_ms')} "
+                    f"timing_scope={runtime.get('timing_scope', runtime.get('per_word_latency', {}).get('measurement_note'))}")
               if "paired_with_native" in m:
                   p = m["paired_with_native"]
                   ci_delta = p.get("paired_bootstrap_delta_95pct_ci", {})
