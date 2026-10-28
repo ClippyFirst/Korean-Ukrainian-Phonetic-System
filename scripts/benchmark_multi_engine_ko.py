@@ -145,18 +145,46 @@ def _paired_bootstrap_delta_ci(
     replicates: int = BOOTSTRAP_REPLICATES,
 ) -> dict[str, Any]:
     """Paired row-cluster bootstrap for candidate-minus-native score deltas."""
-    candidate_by_id = {str(x["occurrence_id"]): x for x in candidate}
-    native_by_id = {str(x["occurrence_id"]): x for x in native}
+    def index_unique(items: list[dict[str, Any]], label: str) -> dict[str, dict[str, Any]]:
+        indexed: dict[str, dict[str, Any]] = {}
+        for item in items:
+            occurrence_id = str(item.get("occurrence_id", ""))
+            if not occurrence_id:
+                raise ValueError(f"{label} item is missing occurrence_id")
+            if occurrence_id in indexed:
+                raise ValueError(f"{label} contains duplicate occurrence_id: {occurrence_id}")
+            if not str(item.get("row_id", "")):
+                raise ValueError(f"{label} occurrence {occurrence_id} is missing row_id")
+            indexed[occurrence_id] = item
+        return indexed
+
+    candidate_by_id = index_unique(candidate, "candidate")
+    native_by_id = index_unique(native, "native")
     common = sorted(set(candidate_by_id) & set(native_by_id))
+    row_mismatches = [
+        occurrence_id for occurrence_id in common
+        if str(candidate_by_id[occurrence_id]["row_id"]) != str(native_by_id[occurrence_id]["row_id"])
+    ]
+    if row_mismatches:
+        raise ValueError(
+            "paired occurrence row_id mismatch for: " + ", ".join(row_mismatches[:10])
+        )
     grouped: dict[str, list[tuple[dict[str, Any], dict[str, Any]]]] = defaultdict(list)
     for occurrence_id in common:
         cand = candidate_by_id[occurrence_id]
         ref = native_by_id[occurrence_id]
         grouped[str(cand["row_id"])].append((cand, ref))
     clusters = list(grouped.values())
+    pairing_counts = {
+        "paired_occurrences": len(common),
+        "candidate_only_occurrences": len(set(candidate_by_id) - set(native_by_id)),
+        "native_only_occurrences": len(set(native_by_id) - set(candidate_by_id)),
+        "paired_rows": len(clusters),
+    }
     if len(clusters) < 2:
         return {
             "method": "paired row-cluster percentile bootstrap",
+            **pairing_counts,
             "replicates": 0,
             "note": "fewer than two paired rows",
         }
@@ -186,6 +214,7 @@ def _paired_bootstrap_delta_ci(
                 round(values[int((len(values) - 1) * 0.975)], 6)]
     return {
         "method": "paired row-cluster percentile bootstrap",
+        **pairing_counts,
         "seed": SEED + 1,
         "replicates": len(exact_deltas),
         "exact_rate_delta_candidate_minus_native_95pct_ci": bounds(exact_deltas),
