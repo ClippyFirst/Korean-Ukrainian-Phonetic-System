@@ -32,15 +32,18 @@ test('Ukrainian selector is keyboard-focusable and responsive without hiding oth
 });
 
 
-test('candidate is rendered inside the Ukrainian result card rather than as a duplicate external block', () => {
+test('candidate is rendered in the visible Ukrainian result field and state is synchronized', () => {
   const uaCardStart = html.indexOf('id="panel-ukrainian"');
   const uaCardEnd = html.indexOf('</article>', uaCardStart);
   const candidateStart = html.indexOf('id="candidate-note"');
   assert.ok(candidateStart > uaCardStart && candidateStart < uaCardEnd, 'candidate note should live inside the Ukrainian card');
   assert.doesNotMatch(html, /id="candidate-panel"|id="candidate-heading"|Кандидат — не підтверджений результат|Дослідницький режим<\/p>/);
-  assert.match(script, /const showCandidate=hasCandidate&&selectedUaView==='candidate'/);
-  assert.match(script, /output\.textContent=showCandidate\?candidateText/);
+  assert.match(script, /function selectUaView\(view\)/);
+  assert.match(script, /output\.hidden=false/);
+  assert.doesNotMatch(script, /if\(output\)output\.hidden=candidateSelected/);
   assert.match(script, /output\.textContent=candidateSelected\?\(candidateValue\?\.textContent/);
+  assert.match(script, /candidateNote\.hidden=!candidateSelected\|\|!candidateValue\?\.textContent/);
+  assert.match(script, /ukrainianOutputLabel\)ukrainianOutputLabel\.textContent=candidateSelected\?'Дослідницький результат'/);
+  assert.match(script, /selectUaView\(selectedUaView\)/);
   assert.match(script, /ukrainianCopyButton\.hidden=currentTargetUnconfirmed&&!candidateSelected/);
-  assert.match(script, /ukrainianOutputLabel\.textContent=selectedUaView==='candidate'&&hasCandidate\?'Дослідницький результат'/);
 });
