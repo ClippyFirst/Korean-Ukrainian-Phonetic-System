@@ -96,7 +96,7 @@ The exact-head multi-engine GitHub Actions run [40781704988](https://github.com/
 | KoG2P (2019 baseline) | Already included in both IPA benchmark datasets through a pinned external checkout; documented custom phone-to-IPA adapter is lossy | DONE_VERIFIED for the current diagnostic benchmark | Keep adapter limitations attached to every interpretation; improve only with an independently verified mapping |
 | KoG2Padvanced (2022 research implementation) | Public repository [seongmin-mun/KoG2Padvanced](https://github.com/seongmin-mun/KoG2Padvanced); README describes morphology-sensitive rules and requires Python, jamo, and KoNLPy/Kkma. Repository metadata reports no license and no root LICENSE file was found during inspection | BLOCKED_LICENSE | Obtain explicit license/permission or a license file from the author; then pin immutable commit, inspect dependencies and dictionary provenance, add isolated adapter, and run both existing IPA splits |
 | Novel morphological engine described at Interspeech 2026 | [Zenodo paper and downloadable PDF](https://zenodo.org/records/22167288) describe a syllable–morpheme-linked recursive rule engine and report results against g2pk, but the record exposes a paper PDF rather than a source-code repository or executable package | BLOCKED_IMPLEMENTATION | Locate an author-published source/model and installation contract; verify license and exact evaluation setup; then reproduce on the same pinned splits before comparing scores |
-| Hikka (Mikai Korean→Ukrainian system) | Documented public endpoint `POST https://api.mikai.me/public/v1/translit`, with `lang=ko` and `system=hikka`; endpoint contract supports batch `items` | PARTIAL_API_SMOKE_PENDING | Complete the same-input API smoke run; then build an independently adjudicated Ukrainian target set before computing CER/exact-match or declaring a winner |
+| Hikka (Mikai Korean→Ukrainian system) | Public endpoint exercised successfully on 20 shared Hangul inputs in [workflow 40782746527](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40782746527); one request took 512.496 ms in that run | DONE_VERIFIED for API smoke only | Build an independently adjudicated Ukrainian target set before computing CER/exact-match or declaring a winner |
 | Shchehel (Mikai Korean→Ukrainian system) | Same documented public endpoint, `system=shchegel`; a different target convention from Hikka, not a Korean IPA engine | PARTIAL_API_SMOKE_PENDING | Complete the same-input API smoke run; compare against independent target gold and document the precise system contract |
 | g2pk, hangul_to_ipa, eSpeak NG, phonemize | Already included in the existing IPA comparison workflow | DONE_VERIFIED for current diagnostic scope | Do not duplicate these integrations; future claims require repeat runs and gold suitable for the claim |
 
@@ -104,7 +104,7 @@ The exact-head multi-engine GitHub Actions run [40781704988](https://github.com/
 
 Added `.github/workflows/korean-ukrainian-external-translit-smoke.yml`. It calls the documented public API for Hikka and Shchegel using the same 20 Hangul inputs, checks HTTP/API success, verifies the output count and preservation of input order, prints each output, and uploads a JSON artifact with output differences and request wall time.
 
-This is a **connectivity and output-difference smoke test only**. It deliberately does not treat either system's output as gold and does not claim accuracy from agreement between the two systems. Its first run must pass before the smoke test is marked DONE_VERIFIED.
+This is a **connectivity and output-difference smoke test only**. It deliberately does not treat either system's output as gold and does not claim accuracy from agreement between the two systems. Its first run passed: [workflow 40782746527](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40782746527), commit `2d44fd29ee639cc6ec3d47fd8c1e31febb4a42eb`; report artifact: [korean-ukrainian-external-transcription-smoke](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40782746527/artifacts/12857408298). The API returned 20/20 rows for both systems and preserved source order. Outputs differed on 13/20 inputs. This is now DONE_VERIFIED as an API smoke test, not as an accuracy benchmark.
 
 ### Next evidence-gated steps
 
@@ -113,3 +113,25 @@ This is a **connectivity and output-difference smoke test only**. It deliberatel
 3. Commission independent Korean-pronunciation and Ukrainian-transcription adjudication for a balanced target set, including word names, ordinary words, sentence context, morphology, and adversarial sound changes.
 4. Revisit KoG2Padvanced only after licensing is clarified. Do not vendor, redistribute, or claim a license for its code based on public visibility alone.
 5. Do not claim to have run the 2026 morphological engine until an author-published executable implementation is located and reproduced.
+
+
+### Observed Hikka vs. Shchegel outputs (20-item smoke test)
+
+The two documented systems were queried through the same endpoint and identical inputs. Selected output differences from the successful smoke run:
+
+| Korean input | Hikka | Shchegel |
+|---|---|---|
+| 독립문 | Токріпмун | Докріпмун |
+| 국립 | Кукріп | Ґукріп |
+| 같이 | Каті | Ґаті |
+| 민주주의의 의의 | Мінджуджуіі Иіі | Мінджуджуийий Ийий |
+| 김치 | Кімчі | Ґімчхі |
+| 흙을 | Хильґиль | Хикиль |
+| 낡은 | Нальґин | Накин |
+| 햇빛이 | Хетпічі | Хетбіті |
+| 젊은 | Чольмин | Джьомин |
+| 종로 | Чонро | Джонро |
+
+Both systems produced 20 results and preserved source order. The two API requests took 512.496 ms (Hikka) and 226.906 ms (Shchegel) in one run; these are single-request observations, not comparable per-item engine latency or a stable performance result. Outputs differed on 13 of 20 inputs. Agreement on the other seven inputs does not establish correctness, and disagreement alone does not identify which output is better.
+
+The sampled outputs reveal concrete adjudication targets: initial velar consonant choices (e.g. 국립, 같이, 김치), complex codas and liaison (흙을, 낡은, 맑은), palatalization/fortition contexts (햇빛이), and morphological/lexical context. Some outputs are visibly not directly comparable because the systems implement different Ukrainian conventions. Do not turn these raw observations into an accuracy score until each source item has an independently approved Ukrainian target and an explicit accepted-variant policy.
