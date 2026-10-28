@@ -1303,3 +1303,14 @@ Exact PR-head CI for `e7b88d87005c75ad124b59041774e825dad9ca32`:
 - Official NIKL live inventory: SKIPPED, not PASS.
 
 **Current disposition:** engineering regression checks passed on the exact PR head, but release readiness remains blocked by independent broad-IPA adjudication, separate Ukrainian-target validation, source/license clearance, and a final check on the post-merge main commit. The 24-case holdout's IPA and Ukrainian gold fields remain intentionally empty; no benchmark accuracy claim should be based on that holdout yet.
+
+
+## Addendum — paired benchmark integrity, 2026-10-28
+
+- **Change under review:** PR [#351](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/351), branch `fix/paired-benchmark-integrity-2026-10-28`.
+- **Finding fixed:** paired bootstrap evaluation previously built dictionaries from occurrence IDs without checking uniqueness. A duplicate ID could silently overwrite an observation and change the effective denominator. Pairing also did not validate that candidate and native records for a shared occurrence belonged to the same source row.
+- **Fix:** fail closed on missing/duplicate occurrence IDs, missing row IDs, and row-ID mismatches; report paired occurrences, candidate-only occurrences, native-only occurrences, and paired row count in the confidence-interval record.
+- **Tests:** new assertions cover the reported denominator and invalid duplicate/mismatched pair inputs.
+- **Exact code-head verification:** on `30b56f9a600b7f09fcbb7d88f5720cef24e3705d`, GitHub Actions passed Python 3.11/3.12/3.13, browser tests, wheel installation, teacher corpus audit, system verification, master-table/research artifacts, and test-case-register extraction. The full pinned multi-engine benchmark [run 40646208758](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40646208758) was still in progress when this addendum was authored; its score and final status are intentionally not fabricated here.
+- **Interpretation:** this is a benchmark-methodology integrity repair, not a model-accuracy gain. Korean IPA scores remain convention-sensitive diagnostic evidence; Ukrainian adaptation is not evaluated by these metrics.
+- **Outstanding:** wait for benchmark completion, inspect its artifact and all per-engine/paired metrics, then decide merge from the exact final PR head. Independent target gold, disputed IPA adjudication, and source/rights gates remain unresolved.
