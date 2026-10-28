@@ -263,3 +263,8 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - Source-level changes: concise debounced result announcements; user-oriented mode descriptions with progressive technical disclosure; responsive in-page methodology navigation; visible clipboard recovery; labelled mobile trace fields; regression contracts.
 - Status: implementation present; acceptance remains `PARTIAL` until real desktop/mobile and assistive-technology verification. Performance optimization remains pending representative measurements (short, ~1,000 characters, 5,198 characters); do not change synchronous behavior without evidence.
 - Evidence and detailed acceptance gates: `docs/audits/UX-UI-AUDIT-2026-10-28.md`.
+
+## Live UX smoke evidence — 2026-10-28
+
+- Post-deployment Playwright smoke passed on commit `49160487f25e6c9569cecf24bbb234155932ba2c` (run #40703251527): meaningful live result announcement, technical disclosure, simulated clipboard denial and exact selection fallback, trace labels/no horizontal overflow at 390×844, and methodology anchor navigation.
+- Remaining: actual screen-reader and manual keyboard evaluation, screenshots/visual review, 320 px layout, human comprehension check, and measured latency for short, ~1,000-character, and 5,198-character inputs. Do not close the audit until these acceptance criteria are met.
