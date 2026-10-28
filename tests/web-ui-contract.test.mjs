@@ -128,3 +128,41 @@ test('unconfirmed Ukrainian candidates are separated from the accepted-result sl
   assert.match(css,/\.candidate-panel\s*\{/);
   assert.match(css,/\.result-body\.result-unconfirmed\s*\{/);
 });
+
+
+test('UX follow-up announces meaningful result state and provides visible clipboard recovery',()=>{
+  const html=read('index.html');
+  const main=read('src/main.js');
+  const css=read('src/styles/main.css');
+  assert.match(html,/id="copy-feedback" class="copy-feedback" role="status" hidden/);
+  assert.match(main,/function announceResult\(message\)/);
+  assert.match(main,/Дослідницький кандидат: /);
+  assert.match(main,/Обробку завершено з попередженнями/);
+  assert.match(main,/selection\?\.addRange\(range\)/);
+  assert.match(main,/Текст виділено: натисніть Ctrl\+C/);
+  assert.match(css,/\.copy-feedback\[hidden\]\s*\{\s*display:\s*none/);
+});
+
+test('mode choice is user-oriented while technical caveats remain available on demand',()=>{
+  const html=read('index.html');
+  assert.match(html,/Для швидкого отримання українського читання/);
+  assert.match(html,/<details class="mode-disclosure">/);
+  assert.match(html,/Як працює практичний режим і які його обмеження/);
+  assert.match(html,/не гарантує повної нормативності/);
+  assert.match(html,/Для перевірки правил, проміжних етапів/);
+});
+
+test('mobile trace values carry explicit labels and methodology has in-page navigation',()=>{
+  const html=read('index.html');
+  const main=read('src/main.js');
+  const system=read('system.html');
+  const css=read('src/styles/main.css');
+  assert.match(main,/source\.dataset\.label='Корейський сегмент · вхід'/);
+  assert.match(main,/mapping\.dataset\.label='IPA-токени → українські графеми'/);
+  assert.match(main,/state\.dataset\.label='Статус'/);
+  assert.match(css,/\.trace-row > \[data-label\]::before/);
+  assert.match(system,/aria-labelledby="methodology-toc-title"/);
+  assert.match(system,/href="#methodology-00a"/);
+  assert.match(system,/id="methodology-18"/);
+  assert.match(css,/\.methodology-toc ol/);
+});
