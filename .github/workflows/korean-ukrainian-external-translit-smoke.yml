@@ -16,6 +16,11 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the native project package
+        run: python -m pip install -e .
 
       - name: Query both public Korean-to-Ukrainian systems on the same diagnostic inputs
         run: |
@@ -26,6 +31,7 @@ jobs:
           import urllib.error
           import urllib.request
           from pathlib import Path
+          from korean_ukrainian.pipeline import transliterate_korean
 
           endpoint = "https://api.mikai.me/public/v1/translit"
           items = [
@@ -35,6 +41,32 @@ jobs:
               "설날", "종로", "서울",
           ]
           reports = {}
+          native_lines = []
+          for item in items:
+              started = time.perf_counter()
+              try:
+                  result = transliterate_korean(item)
+                  output = result.get("ukrainian_orthography") or result.get("candidate_orthography") or ""
+                  native_lines.append({
+                      "source": item,
+                      "result": output,
+                      "target_status": result.get("target_status"),
+                      "selection_status": result.get("selection_status"),
+                      "ipa": result.get("ipa", {}).get("ipa") if isinstance(result.get("ipa"), dict) else result.get("ipa"),
+                      "elapsed_ms": round((time.perf_counter() - started) * 1000, 3),
+                  })
+              except Exception as exc:
+                  native_lines.append({"source": item, "result": "", "error": f"{type(exc).__name__}: {exc}"})
+          reports["clippyfirst_native"] = {
+              "system": "ClippyFirst native research pipeline",
+              "input_count": len(items),
+              "lines": native_lines,
+              "available_targets": sum(bool(line.get("result")) for line in native_lines),
+          }
+          print(f"\\nSYSTEM=clippyfirst_native; inputs={len(items)}; available_targets={reports['clippyfirst_native']['available_targets']}")
+          for line in native_lines:
+              print(f"{line['source']}\\t{line.get('result', '')}\\t{line.get('target_status', line.get('error', ''))}")
+
           for system in ("hikka", "shchegel"):
               payload = json.dumps(
                   {"lang": "ko", "system": system, "mode": "text", "items": items},
@@ -89,6 +121,16 @@ jobs:
               for item in items
           ]
           different = [row for row in differences if row["hikka"] != row["shchegel"]]
+          native_by_source = {line["source"]: line for line in native_lines}
+          native_differences = {
+              system: [
+                  {"source": item, "clippyfirst_native": native_by_source[item].get("result", ""), system: next(line.get("result") for line in reports[system]["lines"] if line["source"] == item),
+                   "native_target_status": native_by_source[item].get("target_status"),
+                   "native_selection_status": native_by_source[item].get("selection_status")}
+                  for item in items
+                  if native_by_source[item].get("result", "") != next(line.get("result") for line in reports[system]["lines"] if line["source"] == item)
+              ] for system in ("hikka", "shchegel")
+          }
           output = {
               "purpose": "API smoke test and same-input output comparison only; no adjudicated Ukrainian gold, no accuracy claim",
               "endpoint": endpoint,
@@ -96,6 +138,10 @@ jobs:
               "systems": reports,
               "difference_count": len(different),
               "different_outputs": different,
+              "clippyfirst_native": reports["clippyfirst_native"],
+              "native_vs_external_differences": native_differences,
+              "native_vs_hikka_difference_count": len(native_differences["hikka"]),
+              "native_vs_shchegel_difference_count": len(native_differences["shchegel"]),
           }
           Path("external-transcription-smoke-report.json").write_text(
               json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
