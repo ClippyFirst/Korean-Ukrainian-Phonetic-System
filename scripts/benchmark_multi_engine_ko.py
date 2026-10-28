@@ -101,7 +101,7 @@ _UNVOICED = set("ptc kqʔfθsʃɕxχh".replace(" ", ""))
 
 def _ipa_segments(value: str) -> list[str]:
     """Tokenize broad IPA into segment-like units, retaining length/aspiration."""
-    text = unicodedata.normalize("NFD", value).replace("g", "ɡ")
+    text = unicodedata.normalize("NFD", value).replace("g", "ɡ").replace("\u0361", "").replace("\u035c", "")
     text = "".join(ch for ch in text if not ch.isspace() and ch != ".")
     result: list[str] = []
     i = 0
