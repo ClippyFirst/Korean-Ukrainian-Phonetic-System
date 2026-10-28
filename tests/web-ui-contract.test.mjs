@@ -111,21 +111,23 @@ test('service UX keeps the hero, simplifies the workbench, and progressively dis
 });
 
 
-test('unconfirmed Ukrainian candidates are separated from the accepted-result slot',()=>{
+test('Ukrainian status and research candidate share one visible result field',()=>{
   const html=read('index.html');
   const main=read('src/main.js');
   const css=read('src/styles/main.css');
-  assert.match(html,/id="candidate-panel" class="candidate-panel"/);
-  assert.match(html,/Кандидат — не підтверджений результат/);
-  assert.match(html,/id="candidate-copy-button"[^>]*data-copy="candidate"/);
+  assert.match(html,/id="ua-unconfirmed-button"[^>]*>Достовірний варіант/);
+  assert.match(html,/id="ua-candidate-button"[^>]*>Дослідницький результат/);
   assert.match(html,/id="result-ukrainian"/);
-  assert.doesNotMatch(html,/id="candidate-panel" class="issue-state"/);
-  assert.match(main,/output\.textContent=targetUnconfirmed\?'Немає підтвердженого запису'/);
-  assert.match(main,/ukrainianCopyButton\.hidden=targetUnconfirmed/);
-  assert.match(main,/output\.classList\.toggle\('result-unconfirmed',targetUnconfirmed\)/);
-  assert.match(main,/key==='candidate'\?candidateValue/);
-  assert.match(main,/Непідтверджений дослідницький кандидат скопійовано/);
-  assert.match(css,/\.candidate-panel\s*\{/);
+  assert.match(html,/id="candidate-note"/);
+  assert.doesNotMatch(html,/id="candidate-panel"|id="candidate-copy-button"|Кандидат — не підтверджений результат/);
+  assert.match(main,/function selectUaView\(view\)/);
+  assert.match(main,/output\.hidden=false/);
+  assert.match(main,/output\.textContent=candidateSelected\?\(candidateValue\?\.textContent/);
+  assert.match(main,/ukrainianCopyButton\.hidden=currentTargetUnconfirmed&&!candidateSelected/);
+  assert.match(main,/key==='ukrainian'\?output/);
+  assert.doesNotMatch(main,/key==='candidate'\?candidateValue|Копіювати кандидата|Непідтверджений дослідницький кандидат скопійовано/);
+  assert.doesNotMatch(css,/\.candidate-panel\s*\{|\.candidate-copy-button/);
+  assert.match(css,/\.candidate-footnote\s*\{/);
   assert.match(css,/\.result-body\.result-unconfirmed\s*\{/);
 });
 
