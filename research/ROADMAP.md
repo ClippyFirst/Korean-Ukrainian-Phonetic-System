@@ -234,3 +234,9 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - GitHub Pages deployment and public-page smoke checks succeeded, but the final live Playwright adversarial-passage step failed because `scripts/smoke-live-pages-browser.mjs` still expected the pre-redesign label `Попередній український кандидат` in the primary result slot. The deployed page correctly showed `Немає підтвердженого запису`; this is a stale acceptance assertion, not evidence that deployment failed.
 - Follow-up task: update live smoke assertions to recognize the neutral primary status, ensure the primary copy control is hidden, and verify the candidate has its own visible copy action. Re-run deployment workflow and verify the exact published revision before marking this gate DONE_VERIFIED.
 - Current status: `PARTIAL` until the updated live browser smoke passes on the deployed revision.
+
+## Live smoke finding — 2026-10-28 follow-up
+
+- The revised live smoke reached the newly deployed UI and exposed a real render defect: when a candidate existed, the primary result text was blank because `hasCandidate` took precedence over the neutral unconfirmed status. The earlier source-level UI contract had encoded that same defect.
+- Corrected the render precedence so any unconfirmed/unavailable target shows `Немає підтвердженого запису` in the primary slot while the candidate remains isolated in its research panel. Updated the UI contract test to guard this exact behavior.
+- Acceptance remains `PARTIAL` until the fix passes mainline CI and a fresh Pages deployment's live Playwright smoke verifies the public page.
