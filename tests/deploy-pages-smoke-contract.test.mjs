@@ -26,12 +26,14 @@ test('Pages smoke contracts cover the mode selector and system-page title', () =
   assert.ok(system.includes('<title>Система / 한국어 → УКРАЇНСЬКА</title>'), 'system-page title must match smoke assertion');
 });
 
-test('live browser smoke accepts only a visible, explicitly labelled provisional candidate', () => {
+test('live browser smoke distinguishes neutral unconfirmed status from a provisional candidate', () => {
   assert.match(browserSmoke, /#candidate-panel/u);
   assert.match(browserSmoke, /#candidate-value/u);
-  assert.match(browserSmoke, /Попередній український кандидат/u);
-  assert.match(browserSmoke, /попередній кандидат, не підтверджений результат/u);
+  assert.match(browserSmoke, /Немає підтвердженого запису/u);
+  assert.match(browserSmoke, /Запис не підтверджено/u);
+  assert.match(browserSmoke, /#ukrainian-copy-button/u);
+  assert.match(browserSmoke, /#candidate-copy-button/u);
+  assert.match(browserSmoke, /Показано попередній кандидат, не підтверджений результат/u);
   assert.match(browserSmoke, /provisional status must not leave the Ukrainian\/candidate panel empty/u);
-  assert.match(browserSmoke, /ukrainian\.length > 20 \|\| candidateVisible/u);
+  assert.match(browserSmoke, /outputLabel === 'Український запис' && ukrainian.length > 20/u);
 });
-
