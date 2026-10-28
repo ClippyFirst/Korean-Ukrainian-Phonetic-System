@@ -74,3 +74,14 @@ Record consequential linguistic, data, architecture, testing, licensing, and rel
 - **Affected files/rule IDs/runtimes:** src/korean_ukrainian/soft_morphology.py; tests/test_soft_morphology_parity.py; src/app/soft_morphology.js; tests/soft-morphology-parity.test.mjs.
 - **Validation/tests:** tests/build/Python 3.11–3.13 passed [39601258671](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258671); browser G2P integration passed [39601258672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258672); system verification passed [39601258670](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258670); corpus artifacts passed [39601258668](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/39601258668). Local execution remains unavailable in the API-only environment.
 - **Revisit when:** A source-backed morphological analyzer or independent evidence supports a narrower rule for a previously blocked form.
+
+## Decision: Revised Romanization is a parallel audit output, not an IPA intermediate (2026-10-28)
+
+- **Status:** adopted for the PR implementation; full standards conformance remains PARTIAL.
+- **Decision:** expose Korean Revised Romanization (RR) as a separate diagnostic display derived from the resolved Hangul surface form. Keep the production chain Hangul → Korean phonology → IPA → Ukrainian adaptation unchanged. Never derive IPA or Ukrainian output from Roman letters.
+- **Rationale:** RR is a Latin-script standard based on standard Korean pronunciation, not an English pronunciation guide. It can help users cross-check a resolved Korean form, but its letter sequence does not preserve all IPA distinctions. Reverse conversion is ambiguous and is not part of this change.
+- **Official source:** [NIKL Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do); official sound-change examples include 백마[뱅마], 신문로[신문노], 종로[종노], 왕십리[왕심니], 별내[별래], 신라[실라], 같이[가치], and 굳히다[구치다].
+- **Implementation:** `src/app/romanization.js`; UI in `index.html` and `src/main.js`; methodology in `system.html`; tests in `tests/romanization.test.mjs`; details and acceptance gaps in `docs/KOREAN-ROMANIZATION-RR-2026-10-28.md`.
+- **Safety against false certainty:** if the upstream G2P path supplies no surface form, the UI displays an em dash instead of romanizing the original spelling as if pronunciation had been resolved.
+- **Verification:** isolated Node.js harness passed 6/6 tests, including all 11,172 modern precomposed Hangul syllables. Full repository test/build/browser verification is not yet confirmed.
+- **Revisit/acceptance:** before merge, pass exact-head CI and browser checks; complete a source-backed NIKL RR conformance matrix. The current implementation is a basic RR renderer, not a claim of complete conformance.
