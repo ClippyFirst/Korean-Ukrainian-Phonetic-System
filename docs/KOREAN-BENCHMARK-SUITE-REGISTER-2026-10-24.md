@@ -356,3 +356,14 @@ The current mainline first received the exact-form R002/R016 source-backed rules
 ## Final mainline consolidation — 2026-10-27
 
 The best verified implementation/research tree is now on `main` via PR #348 merge commit `72d2a785160382ffbfdce4f5654afb9671d957f9`, after source-backed R002/R016 integration in `1def51dd9f88364891ff0051e9aadb5900f2e42c`. Multi-engine UGTPHON and SIGMORPHON diagnostics both passed on the consolidated code head (run 40585528130); current benchmark values are UGTPHON native 53.0022% exact / 9.1697% CER (2,698 scored, five abstentions) and SIGMORPHON native 35.8074% exact / 14.7037% CER (997 scored, two abstentions). g2pK 0.9.4 remains near-native on these diagnostics. These are not normative IPA gold scores and do not score Ukrainian adaptation. The standalone cross-version test/wheel matrix and some post-merge main workflows were still queued at the last poll; do not record them as passed until completed. Charsiu and ByT5 inference remain skipped research opt-ins; NIKL live inventory is skipped/blocked, not passed.
+
+
+## Extended benchmark metric implementation — 2026-10-29
+
+**Status: PARTIAL pending exact-head CI and fresh corpus runs.**
+
+- Added to the existing all-engine harness: segment-based PER; a clearly named, project-defined feature-weighted phonological error-rate proxy; per-engine execution time and throughput; per-word latency summaries for per-word adapters; total/throughput timings for batch adapters with scope warnings; coverage-adjusted exact match; unsupported feature-inventory counts.
+- Preserved existing engines and corpora: ClippyFirst native, g2pk, KoG2P, hangul_to_ipa, eSpeak NG, and phonemize. Existing paired bootstrap, CER, exact-match, coverage, abstention/error and mismatch outputs remain.
+- Added metric unit tests at `tests/test_benchmark_extended_metrics.py` and definitions/interpretation limits in `docs/EXTENDED-BENCHMARK-METRICS-2026-10-29.md`.
+- Not claimed measured: per-rule accuracy (requires per-case rule labels), Ukrainian target CER/exact match (requires independent target gold), end-to-end IPA→Ukrainian consistency on all engines (requires a shared IPA adapter contract/trace corpus), repeatability (requires repeated controlled runs), and comparable memory (requires process-level sampling).
+- **Verification blocker:** this execution environment cannot resolve `github.com`, so the local repository clone and direct test run were unavailable. No new benchmark scores are claimed. Acceptance criterion: exact-head GitHub Actions green, metric unit tests pass, and the existing multi-engine workflow completes on both configured benchmark splits with artifacts that include the new fields.
