@@ -30,69 +30,66 @@ try {
     await page.waitForFunction(() => {
       const results = document.querySelector('#results');
       const ukrainian = document.querySelector('#result-ukrainian')?.textContent?.trim() || '';
-      const candidatePanel = document.querySelector('#candidate-panel');
       const candidate = document.querySelector('#candidate-value')?.textContent?.trim() || '';
-      const candidateVisible = Boolean(candidatePanel && !candidatePanel.hidden && candidate.length > 20);
       const ipa = document.querySelector('#result-ipa')?.textContent?.trim() || '';
-      // The UI intentionally withholds accepted Ukrainian output when any
-      // target mapping is provisional. In that case, a substantial candidate
-      // is acceptable only if the separate candidate panel visibly labels it.
-      return results && !results.hidden && (ukrainian.length > 20 || candidateVisible) && ipa.length > 20;
+      return results && !results.hidden && ukrainian.length > 20 && candidate.length > 20 && ipa.length > 20;
     }, null, { timeout: 45000 });
   } catch (error) {
-    // Include the live DOM and browser errors in CI logs. Previously the
-    // timeout alone could not distinguish CDN propagation from app failures.
     const diagnostics = await page.evaluate(() => ({
       url: location.href,
       title: document.title,
       inputLength: document.querySelector('#source-input')?.value?.length ?? null,
       practicalChecked: document.querySelector('#mode-practical')?.checked ?? null,
       resultsHidden: document.querySelector('#results')?.hidden ?? null,
-      ukrainianLength: document.querySelector('#result-ukrainian')?.textContent?.trim().length ?? null,
-      candidatePanelHidden: document.querySelector('#candidate-panel')?.hidden ?? null,
+      ukrainianText: document.querySelector('#result-ukrainian')?.textContent?.trim().slice(0, 160) ?? null,
       candidateLength: document.querySelector('#candidate-value')?.textContent?.trim().length ?? null,
+      candidateButtonDisabled: document.querySelector('#ua-candidate-button')?.disabled ?? null,
+      candidateNoteHidden: document.querySelector('#candidate-note')?.hidden ?? null,
       ukrainianOutputLabel: document.querySelector('#ukrainian-output-label')?.textContent?.trim() ?? null,
       ipaLength: document.querySelector('#result-ipa')?.textContent?.trim().length ?? null,
       status: document.querySelector('#status-note')?.textContent?.trim() ?? null,
       bodyExcerpt: document.body.innerText.slice(0, 1200),
       scriptUrls: [...document.scripts].map(script => script.src).filter(Boolean)
     }));
-    console.error(JSON.stringify({
-      smokeFailure: error.message,
-      pageErrors,
-      diagnostics
-    }, null, 2));
+    console.error(JSON.stringify({ smokeFailure: error.message, pageErrors, diagnostics }, null, 2));
     throw error;
   }
 
-  const ukrainian = (await page.locator('#result-ukrainian').innerText()).trim();
-  const candidatePanel = page.locator('#candidate-panel');
-  const candidateVisible = await candidatePanel.isVisible();
+  const initialUkrainian = (await page.locator('#result-ukrainian').innerText()).trim();
   const candidate = (await page.locator('#candidate-value').innerText()).trim();
   const outputLabel = (await page.locator('#ukrainian-output-label').innerText()).trim();
   const ipa = (await page.locator('#result-ipa').innerText()).trim();
   const status = (await page.locator('#status-note').innerText()).trim();
-  // A neutral status message is deliberately rendered in the primary result slot;
-  // it must not be mistaken for accepted Ukrainian output merely because it is long.
-  const acceptedOutput = outputLabel === 'Український запис' && ukrainian.length > 20;
-  const displayedCandidate = candidateVisible && candidate.length > 20;
-  const displayedUkrainian = acceptedOutput ? ukrainian : candidate;
 
-  assert.ok(displayedUkrainian.length > 100,
-    'long input should produce a substantial accepted Ukrainian output or an explicitly displayed provisional candidate');
-  if (!acceptedOutput) {
-    assert.ok(displayedCandidate, 'provisional status must not leave the Ukrainian/candidate panel empty');
-    assert.equal(ukrainian, 'Немає підтвердженого запису',
-      'the primary result slot must show a neutral status instead of a provisional candidate');
-    assert.equal(outputLabel, 'Запис не підтверджено',
-      'the primary result label must disclose that no accepted Ukrainian output exists');
-    assert.equal(await page.locator('#ukrainian-copy-button').isVisible(), false,
-      'the primary-result copy action must not copy a neutral status as Ukrainian output');
-    assert.equal(await page.locator('#candidate-copy-button').isVisible(), true,
-      'the separate candidate panel must expose its own copy action');
-    assert.match(status, /Показано попередній кандидат, не підтверджений результат/u,
-      'the status note must explicitly disclose the provisional candidate');
-  }
+  assert.ok(candidate.length > 100, 'long input should produce a substantial research candidate');
+  assert.equal(await page.locator('#ua-candidate-button').isEnabled(), true,
+    'candidate option must be enabled when the engine returns a candidate');
+  assert.equal(initialUkrainian, 'Немає підтвердженого запису',
+    'unconfirmed mode must not present a candidate as an accepted result');
+  assert.equal(outputLabel, 'Достовірний варіант недоступний',
+    'the primary-result label must disclose that no accepted Ukrainian output exists');
+  assert.equal(await page.locator('#ukrainian-copy-button').isVisible(), false,
+    'the primary-result copy action must not copy a neutral status as Ukrainian output');
+
+  // The research option must display the candidate in the same visible output
+  // field, not in a separate panel or hidden storage element.
+  await page.locator('#ua-candidate-button').click();
+  await page.waitForFunction(() => document.querySelector('#ukrainian-output-label')?.textContent?.trim() === 'Дослідницький результат');
+  const candidateOutput = (await page.locator('#result-ukrainian').innerText()).trim();
+  assert.equal(candidateOutput, candidate, 'research option must show the candidate in the main Ukrainian field');
+  assert.equal(await page.locator('#candidate-note').isVisible(), true,
+    'candidate caution must appear inline with the selected research result');
+  assert.equal(await page.locator('#ukrainian-copy-button').isVisible(), true,
+    'copy action must copy the selected research result');
+  assert.equal(await page.locator('#candidate-panel').count(), 0,
+    'obsolete standalone candidate panel must not exist');
+  assert.match(status, /Показано попередній кандидат, не підтверджений результат/u,
+    'status note must disclose that the candidate is provisional');
+
+  // Return to the unconfirmed option to ensure the accepted-result slot is neutral.
+  await page.locator('#ua-unconfirmed-button').click();
+  assert.equal((await page.locator('#result-ukrainian').innerText()).trim(), 'Немає підтвердженого запису');
+  assert.equal(await page.locator('#ukrainian-copy-button').isVisible(), false);
   assert.ok(ipa.length > 100, 'long input should produce a substantial IPA result');
   assert.match(status, /g2pK JS/u, 'the live page must stay in the practical JavaScript-port mode');
   assert.deepEqual(pageErrors, [], 'the live page must not throw browser runtime errors');
@@ -103,7 +100,7 @@ try {
   await page.waitForFunction(() => {
     const message = document.querySelector('#live-region')?.textContent || '';
     return message.includes('Обробку завершено') &&
-      (message.includes('Український запис:') || message.includes('Дослідницький кандидат:') || message.includes('не підтверджено'));
+      (message.includes('Достовірний варіант:') || message.includes('Дослідницький результат:') || message.includes('не підтверджено'));
   }, null, { timeout: 5000 });
 
   // Technical provenance stays available but is no longer required to choose
@@ -158,7 +155,7 @@ try {
 
   console.log('PASS live UX smoke: live result announcement; mode disclosure; clipboard-denial fallback; mobile trace labels at 390px; methodology navigation');
 
-  console.log(`PASS live browser smoke: ${passage.length} Korean input characters; ${acceptedOutput ? 'accepted output' : 'provisional candidate'} ${displayedUkrainian.length} chars; ${ipa.length} IPA chars; status=${status}`);
+  console.log(`PASS live browser smoke: ${passage.length} Korean input characters; inline candidate ${candidate.length} chars; IPA ${ipa.length} chars; status=${status}`);
 } finally {
   await browser.close();
 }
