@@ -130,10 +130,17 @@ def _segment_features(segment: str) -> dict[str, str]:
                    if not unicodedata.category(ch).startswith("M") and ch not in _MODIFIERS)
     features: dict[str, str] = {}
     if base in _AFFRICATES:
-        features.update(place="alveolar", manner="affricate")
-        if base.startswith(("d", "b")):
+        place = (
+            "alveolopalatal" if base in {"tɕ", "dʑ"} else
+            "postalveolar" if base in {"tʃ", "dʒ"} else
+            "labiodental" if base in {"pf", "bv"} else
+            "velar" if base in {"kx", "ɡɣ"} else
+            "alveolar"
+        )
+        features.update(place=place, manner="affricate")
+        if base.startswith(("d", "b", "ɡ")):
             features["voicing"] = "voiced"
-        elif base.startswith(("t", "p")):
+        elif base.startswith(("t", "p", "k")):
             features["voicing"] = "voiceless"
     elif base in _PLACE:
         features["place"] = _PLACE[base]
