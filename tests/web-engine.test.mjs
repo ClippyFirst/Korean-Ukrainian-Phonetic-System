@@ -286,6 +286,7 @@ test('NIKL §28 compound fortition is mirrored for every exact licensed form', (
     술잔: '술짠',
     물가: '물까',
     봄비: '봄삐',
+    닭갈비: '닥깔비',
   };
   for (const [source, expectedSurface] of Object.entries(examples)) {
     const result = engine.convert(source);
@@ -294,6 +295,7 @@ test('NIKL §28 compound fortition is mirrored for every exact licensed form', (
   }
   assert.equal(engine.convert('물가').ipa, 'mul.k͈a');
   assert.equal(engine.convert('봄비').ipa, 'pom.p͈i');
+  assert.equal(engine.convert('닭갈비').ipa, 'tak̚.k͈al.bi');
 
   // Do not infer compound fortition from ㄹ+ㄱ alone.
   const ordinarySequence = engine.convert('물고');
