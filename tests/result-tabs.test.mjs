@@ -23,7 +23,7 @@ test('Ukrainian option buttons expose pressed state and candidate is unavailable
   assert.match(script, /uaUnconfirmedButton\.addEventListener\('click'/);
   assert.match(script, /uaCandidateButton\.addEventListener\('click'/);
   assert.match(script, /uaCandidateButton\.disabled=!hasCandidate/);
-  assert.match(script, /candidatePanel\.hidden=\!\(hasCandidate&&selectedUaView==='candidate'\)/);
+  assert.match(script, /candidateNote\.hidden=!candidateSelected\|\|!candidateValue\?\.textContent/);
 });
 
 test('Ukrainian selector is keyboard-focusable and responsive without hiding other result cards', () => {
@@ -35,9 +35,10 @@ test('Ukrainian selector is keyboard-focusable and responsive without hiding oth
 test('candidate is rendered inside the Ukrainian result card rather than as a duplicate external block', () => {
   const uaCardStart = html.indexOf('id="panel-ukrainian"');
   const uaCardEnd = html.indexOf('</article>', uaCardStart);
-  const candidateStart = html.indexOf('id="candidate-panel"');
-  assert.ok(candidateStart > uaCardStart && candidateStart < uaCardEnd, 'candidate panel should live inside the Ukrainian card');
-  assert.match(html, /id="candidate-heading">Дослідницький результат</);
-  assert.doesNotMatch(html, /Кандидат — не підтверджений результат|<p class="candidate-eyebrow">Дослідницький режим<\/p>/);
+  const candidateStart = html.indexOf('id="candidate-note"');
+  assert.ok(candidateStart > uaCardStart && candidateStart < uaCardEnd, 'candidate note should live inside the Ukrainian card');
+  assert.doesNotMatch(html, /id="candidate-panel"|id="candidate-heading"|Кандидат — не підтверджений результат|Дослідницький режим<\/p>/);
+  assert.match(script, /const showCandidate=hasCandidate&&selectedUaView==='candidate'/);
+  assert.match(script, /output\.textContent=showCandidate\?candidateText/);
   assert.match(script, /ukrainianOutputLabel\.textContent=hasCandidate\?'Дослідницький результат'/);
 });
