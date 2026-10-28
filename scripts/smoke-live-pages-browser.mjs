@@ -66,7 +66,9 @@ try {
   const outputLabel = (await page.locator('#ukrainian-output-label').innerText()).trim();
   const ipa = (await page.locator('#result-ipa').innerText()).trim();
   const status = (await page.locator('#status-note').innerText()).trim();
-  const acceptedOutput = ukrainian.length > 20;
+  // A neutral status message is deliberately rendered in the primary result slot;
+  // it must not be mistaken for accepted Ukrainian output merely because it is long.
+  const acceptedOutput = outputLabel === 'Український запис' && ukrainian.length > 20;
   const displayedCandidate = candidateVisible && candidate.length > 20;
   const displayedUkrainian = acceptedOutput ? ukrainian : candidate;
 
@@ -74,9 +76,15 @@ try {
     'long input should produce a substantial accepted Ukrainian output or an explicitly displayed provisional candidate');
   if (!acceptedOutput) {
     assert.ok(displayedCandidate, 'provisional status must not leave the Ukrainian/candidate panel empty');
-    assert.equal(outputLabel, 'Попередній український кандидат',
-      'provisional output must be labelled as a candidate, never as accepted Ukrainian');
-    assert.match(status, /попередній кандидат, не підтверджений результат/u,
+    assert.equal(ukrainian, 'Немає підтвердженого запису',
+      'the primary result slot must show a neutral status instead of a provisional candidate');
+    assert.equal(outputLabel, 'Запис не підтверджено',
+      'the primary result label must disclose that no accepted Ukrainian output exists');
+    assert.equal(await page.locator('#ukrainian-copy-button').isVisible(), false,
+      'the primary-result copy action must not copy a neutral status as Ukrainian output');
+    assert.equal(await page.locator('#candidate-copy-button').isVisible(), true,
+      'the separate candidate panel must expose its own copy action');
+    assert.match(status, /Показано попередній кандидат, не підтверджений результат/u,
       'the status note must explicitly disclose the provisional candidate');
   }
   assert.ok(ipa.length > 100, 'long input should produce a substantial IPA result');
