@@ -89,3 +89,26 @@ The service has a coherent editorial identity and a clear functional hierarchy: 
 - Run the live service with empty input, a short canonical example, a known candidate/unavailable example, the research mode, copy success/failure, and the 5,198-character stress case.
 - Inspect keyboard order, focus visibility, browser zoom/reflow, reduced-motion, and screen-reader announcements.
 - Update this report with screenshot-linked evidence and mark each finding confirmed, rejected, or revised. Until this is done, overall UX/UI audit status remains **PARTIAL**, not DONE_VERIFIED.
+
+
+## Implementation follow-up — branch `fix/ux-ui-accessibility-rebased-2026-10-28`
+
+The source-backed remediation is implemented in PR #362. This does not close the visual audit; runtime and deployed-site verification remain required.
+
+- **UX-01 — implemented, browser verification pending:** the polite live region now announces completion plus a concise Ukrainian-output state/value, debounced by 300 ms to avoid announcements on every keystroke. Candidate/unavailable states are described separately.
+- **UX-02 — implemented, comprehension check pending:** mode descriptions now lead with user goals; engine/provenance caveats remain accessible in a native disclosure and are not removed.
+- **UX-03 — implemented, visual verification pending:** methodology page has a responsive in-page contents list, stable fragment targets for all 21 topics, and a return-to-service link. A source check found no missing fragment targets or duplicate IDs.
+- **UX-04 — deliberately not changed pending measurement:** full conversion remains synchronous on input. No debounce/explicit-submit change is justified without measured responsiveness, because it could change the existing immediate-conversion interaction. Measure short, 1,000-character, and 5,198-character inputs before deciding.
+- **UX-05 — implemented, browser verification pending:** copy feedback is visible; if Clipboard API access fails, the intended output is selected and focused with a direct Ctrl+C recovery instruction.
+- **UX-06 — implemented in source, visual verification pending:** every trace field, including alternative-reading rows, now has a semantic `data-label`; narrow layouts display those labels with each value.
+
+### Code-level checks
+
+- Added three UI contract tests for result announcements/copy recovery, mode disclosure, and mobile trace labels/methodology navigation.
+- Updated the Pages smoke assertion to check that technical engine details remain available in the progressive disclosure rather than requiring them in the primary mode description.
+- Source integrity check: 22 methodology anchor IDs; 22 local fragment links; zero missing local targets; zero duplicate IDs (computed from the current branch source).
+- No changes to phonological rules, IPA, target mapping, or the hero block.
+
+### Remaining acceptance gates
+
+The audit remains **PARTIAL** until a real browser verifies: desktop/mobile visual rendering; 320 px trace reflow; keyboard/focus behavior; screen-reader output announcements; clipboard denial fallback; comprehension of the mode labels; and conversion latency for the three representative input lengths. CI test success alone does not establish those outcomes.
