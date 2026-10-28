@@ -1303,3 +1303,16 @@ Exact PR-head CI for `e7b88d87005c75ad124b59041774e825dad9ca32`:
 - Official NIKL live inventory: SKIPPED, not PASS.
 
 **Current disposition:** engineering regression checks passed on the exact PR head, but release readiness remains blocked by independent broad-IPA adjudication, separate Ukrainian-target validation, source/license clearance, and a final check on the post-merge main commit. The 24-case holdout's IPA and Ukrainian gold fields remain intentionally empty; no benchmark accuracy claim should be based on that holdout yet.
+
+
+## Addendum — paired benchmark integrity, 2026-10-28
+
+- **Change under review:** PR [#351](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/351), branch `fix/paired-benchmark-integrity-2026-10-28`.
+- **Finding fixed:** paired bootstrap evaluation previously built dictionaries from occurrence IDs without checking uniqueness. A duplicate ID could silently overwrite an observation and change the effective denominator. Pairing also did not validate that candidate and native records for a shared occurrence belonged to the same source row.
+- **Fix:** fail closed on missing/duplicate occurrence IDs, missing row IDs, and row-ID mismatches; report paired occurrences, candidate-only occurrences, native-only occurrences, and paired row count in the confidence-interval record.
+- **Tests:** new assertions cover the reported denominator and invalid duplicate/mismatched pair inputs.
+- **Exact-head verification:** Python 3.11/3.12/3.13, browser tests, wheel installation, teacher-corpus audit, system verification, master-table/research artifacts, test-case-register extraction, and the multi-engine IPA benchmark passed on PR head `fe868b03ba71068126998d3be3dd17dff5eec4b4`. Benchmark run: [40646442747](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40646442747); artifact: [12797696557](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40646442747).
+- **UGTPHON result:** ClippyFirst 1430/2698 exact (53.002%), CER 9.170%, coverage 99.815%; g2pk 1435/2703 (53.089%), CER 9.229%, coverage 100%. Paired shared-occurrence g2pk-minus-native exact delta +0.111 pp, 95% CI [-0.037, +0.299 pp]; CER delta +0.061 pp, 95% CI [-0.008, +0.138 pp]. Intervals include zero.
+- **SIGMORPHON 2021 result:** ClippyFirst 357/997 exact (35.807%), CER 14.704%, coverage 99.800%; g2pk 353/999 (35.335%), CER 14.822%, coverage 100%. Paired g2pk-minus-native exact delta -0.401 pp, 95% CI [-0.802, -0.100 pp]; CER delta +0.113 pp, 95% CI [-0.025, +0.273 pp]. The exact-match difference is small; the CER interval includes zero.
+- **Interpretation:** this is a benchmark-methodology integrity repair, not a model-accuracy gain. Scores are diagnostic, reference/normalizer dependent, and evaluate IPA rather than Ukrainian orthography. UGTPHON is noisy user-generated text; SIGMORPHON is a lexical test, not contextual normative pronunciation gold.
+- **Outstanding:** independent Ukrainian target gold, disputed IPA adjudication, and source/rights gates remain unresolved. The final documentation update changes no runtime or benchmark code; recheck exact-head CI before merging.

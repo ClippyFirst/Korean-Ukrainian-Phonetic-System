@@ -91,6 +91,10 @@ def test_paired_bootstrap_delta_is_deterministic_and_paired():
     second = _paired_bootstrap_delta_ci(candidate, native, replicates=100)
     assert first == second
     assert first["replicates"] == 100
+    assert first["paired_occurrences"] == 2
+    assert first["candidate_only_occurrences"] == 0
+    assert first["native_only_occurrences"] == 0
+    assert first["paired_rows"] == 2
     assert first["exact_rate_delta_candidate_minus_native_95pct_ci"] is not None
     assert first["cer_delta_candidate_minus_native_95pct_ci"] is not None
 
@@ -104,3 +108,33 @@ def test_g2pk_surface_adapter_is_importable_and_does_not_reapply_rules():
         assert "not a single Hangul surface form" in str(exc)
     else:
         raise AssertionError("non-Hangul surface output must be rejected")
+
+
+def test_paired_bootstrap_rejects_duplicate_occurrence_ids():
+    duplicate = [
+        {"occurrence_id": "same", "row_id": "a", "exact": True, "distance": 0, "reference_length": 2},
+        {"occurrence_id": "same", "row_id": "b", "exact": False, "distance": 1, "reference_length": 2},
+    ]
+    try:
+        _paired_bootstrap_delta_ci(duplicate, duplicate, replicates=10)
+    except ValueError as exc:
+        assert "duplicate occurrence_id" in str(exc)
+    else:
+        raise AssertionError("duplicate occurrence IDs must not be silently collapsed")
+
+
+def test_paired_bootstrap_rejects_occurrence_row_mismatch():
+    candidate = [
+        {"occurrence_id": "same", "row_id": "row-a", "exact": True, "distance": 0, "reference_length": 2},
+        {"occurrence_id": "other", "row_id": "row-b", "exact": False, "distance": 1, "reference_length": 2},
+    ]
+    native = [
+        {"occurrence_id": "same", "row_id": "wrong-row", "exact": False, "distance": 1, "reference_length": 2},
+        {"occurrence_id": "other", "row_id": "row-b", "exact": False, "distance": 2, "reference_length": 2},
+    ]
+    try:
+        _paired_bootstrap_delta_ci(candidate, native, replicates=10)
+    except ValueError as exc:
+        assert "row_id mismatch" in str(exc)
+    else:
+        raise AssertionError("paired occurrences must belong to the same source row")
