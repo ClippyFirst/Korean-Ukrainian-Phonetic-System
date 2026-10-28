@@ -364,3 +364,103 @@ button { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .trace-summary-mark { transform: none !important; }
 }
+
+
+/* A provisional Ukrainian candidate is diagnostic material, not the main result. */
+.result-body.result-unconfirmed {
+  display: flex;
+  align-items: center;
+  min-height: 72px;
+  margin-top: 15px;
+  padding: 14px 16px;
+  border: 1px dashed var(--line-strong);
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 1rem !important;
+  font-weight: 650 !important;
+  letter-spacing: 0 !important;
+}
+.candidate-panel {
+  margin-top: 16px;
+  padding: clamp(18px, 2.8vw, 28px);
+  border: 1px solid #d9b779;
+  border-top: 4px solid var(--warning);
+  background: #fffaf0;
+}
+.candidate-panel-heading {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 13px;
+  align-items: start;
+}
+.candidate-status-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #d9b779;
+  border-radius: 50%;
+  color: var(--warning);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+.candidate-eyebrow {
+  margin: 0 0 4px;
+  color: var(--warning);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.candidate-panel h3 {
+  margin: 0;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.35;
+}
+.candidate-explanation {
+  max-width: 72ch;
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.6;
+}
+.candidate-value-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid #e5d5b7;
+  background: #fffdf8;
+}
+.candidate-value {
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 750;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.candidate-copy-button {
+  flex-shrink: 0;
+  border-color: #c8a66b;
+  background: #fffaf0;
+}
+.candidate-copy-button:hover {
+  border-color: var(--warning);
+  background: #f9edda;
+}
+.candidate-footnote {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.5;
+}
+@media (max-width: 720px) {
+  .candidate-panel { padding: 16px; }
+  .candidate-value-row { align-items: stretch; padding: 14px; }
+  .candidate-copy-button { align-self: flex-start; }
+}
