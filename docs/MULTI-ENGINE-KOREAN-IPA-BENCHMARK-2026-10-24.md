@@ -179,3 +179,18 @@ The workflow checks out the exact upstream revisions into the ephemeral runner, 
 ## Contextual neural-G2P evaluator consolidation — 2026-10-27
 
 The consolidation branch also carries the strict sentence-context evaluator and its readiness/benchmark tests from the V3 research workstream. This evaluator is infrastructure, not an authentic NN-KoG2P model adapter: no NN-KoG2P inference or score is claimed. It requires declared IPA output, validates sentence IDs and canonical inputs, rejects unadapted Hangul outputs, and reports coverage/exact-match/CER at the sentence level. Word-level SIGMORPHON remains a context-free ablation, not a sentence-context benchmark. The current combined-head CI is the acceptance gate; previous PR-specific successes do not substitute for it. Model/license and training-data-overlap questions remain open, and all neural outputs remain diagnostic/hypothesis-generating only.
+
+
+## Candidate inventory reconciliation — 2026-10-29
+
+This results table intentionally includes only engines actually executed by the pinned workflow. The broader inventory and explicit blockers are in [the extended metrics and candidate register](EXTENDED-BENCHMARK-METRICS-2026-10-29.md).
+
+- **Interspeech 2026 morphological G2P:** not run; public paper record has no verified executable package. Reported 85.7% sentence accuracy is from the authors' own KSS evaluation and is not comparable to this corpus until reproduced.
+- **KoG2Padvanced:** not run; separate 2022 implementation, license not verified.
+- **kokorog2p:** inspected but not scored; current package output vocabulary is not guaranteed IPA and requires explicit Korean lexical assets. The invalid attempted version pin was removed.
+- **CharSIU multilingual ByT5:** dedicated research-only script/workflow exists, but workflow is opt-in and checkpoint weights license remains unresolved.
+- **SMART-G2P:** wrapper for code-mixed normalization that delegates G2P to other engines; not an independent phonology baseline.
+- **HAMA:** Korean model support not established by available public documentation.
+- **UGTPHON retrieval-augmented method:** official runnable model/checkpoint not established in this audit.
+
+No candidate in these blocked/not-comparable groups has a score in the table. The corrected exact-head benchmark workflow must pass before the latest branch state is considered verified.
