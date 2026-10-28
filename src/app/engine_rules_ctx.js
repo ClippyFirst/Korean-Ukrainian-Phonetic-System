@@ -281,6 +281,14 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
         b.onset='ㄲ';
         rules.push('rieul-giyeok-exception-§11-exact-form');
         nextRules.push('rieul-giyeok-exception-§11-exact-form');
+      }else if(exactR014Licensed){
+        // A dictionary-attested compound such as 닭갈비 is not the §11
+        // verbal-stem exception. Resolve this exact form through §28 instead
+        // of marking it unresolved before the compound rule can run.
+        a.coda=representative(a.coda);
+        b.onset='ㄲ';
+        rules.push('compound-fortition-§28-exact-form');
+        nextRules.push('compound-fortition-§28-exact-form');
       }else{
         a.__rieulGiyeokUnlicensed='left';
         b.__rieulGiyeokUnlicensed='right';
