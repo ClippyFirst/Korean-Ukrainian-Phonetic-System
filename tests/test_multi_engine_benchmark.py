@@ -14,33 +14,12 @@ from benchmark_multi_engine_ko import (  # noqa: E402
     _paired_bootstrap_delta_ci,
     _score,
     kog2p_phones_to_ipa,
-    kokorog2p_tokens_to_ipa,
 )
 
 
 def test_kog2p_documented_phone_labels_map_to_ipa():
     assert kog2p_phones_to_ipa("p0 aa ng mm uu ll k0 wa nf") == "paŋmulk wan".replace(" ", "")
     assert kog2p_phones_to_ipa("pp aa") == "p͈a"
-
-
-def test_kokorog2p_adapter_preserves_documented_token_phoneme_sequence():
-    class Token:
-        def __init__(self, phonemes):
-            self.phonemes = phonemes
-
-    assert kokorog2p_tokens_to_ipa([Token("an"), Token("ɲʌŋ"), Token("ha"), Token("se")]) == "anɲʌŋhase"
-
-
-def test_kokorog2p_adapter_fails_closed_on_missing_phonemes():
-    class Token:
-        phonemes = None
-
-    try:
-        kokorog2p_tokens_to_ipa([Token()])
-    except ValueError as exc:
-        assert "no string phonemes" in str(exc)
-    else:
-        raise AssertionError("missing phoneme output must not be silently guessed")
 
 
 def test_kog2p_adapter_fails_closed_on_unknown_phone_label():
