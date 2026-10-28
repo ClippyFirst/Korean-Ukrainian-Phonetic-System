@@ -367,3 +367,19 @@ The best verified implementation/research tree is now on `main` via PR #348 merg
 - Added metric unit tests at `tests/test_benchmark_extended_metrics.py` and definitions/interpretation limits in `docs/EXTENDED-BENCHMARK-METRICS-2026-10-29.md`.
 - Not claimed measured: per-rule accuracy (requires per-case rule labels), Ukrainian target CER/exact match (requires independent target gold), end-to-end IPA→Ukrainian consistency on all engines (requires a shared IPA adapter contract/trace corpus), repeatability (requires repeated controlled runs), and comparable memory (requires process-level sampling).
 - **Verification blocker:** this execution environment cannot resolve `github.com`, so the local repository clone and direct test run were unavailable. No new benchmark scores are claimed. Acceptance criterion: exact-head GitHub Actions green, metric unit tests pass, and the existing multi-engine workflow completes on both configured benchmark splits with artifacts that include the new fields.
+
+
+## Korean IPA engine portfolio expansion — 2026-10-29
+
+For the benchmark portfolio, distinguish executable IPA candidates from related tooling and paper-only methods:
+
+- **Current executable baseline set:** ClippyFirst native, g2pk 0.9.4, KoG2P 2019, hangul_to_ipa, eSpeak NG, phonemize 2.0.1.
+- **Novel morphology-aware engine (Interspeech 2026):** `BLOCKED_IMPLEMENTATION`. The paper's public Zenodo record currently exposes a PDF but no verified runnable implementation. Author-reported sentence-level accuracy must not be copied into our benchmark table.
+- **KoG2Padvanced (2022):** `BLOCKED_LICENSE`. Separate engine from the 2026 paper; requires clear license/author permission before CI execution.
+- **kokorog2p 0.9.15:** `NOT_YET_COMPARABLE`. Current package API outputs Kokoro's target phoneme vocabulary and needs Korean Lexphon data explicitly provisioned; no source-verified IPA adapter yet. An invalid 1.0.0 pin was removed after the install check failed.
+- **SMART-G2P:** `SUPPLEMENTARY_NOT_INDEPENDENT`; code-mixed text normalization layer that delegates to other G2P engines.
+- **HAMA:** `NOT_YET_ELIGIBLE` until Korean-trained model support is demonstrated.
+- **CharsiuG2P multilingual ByT5:** `SEPARATE_BENCHMARK_PATH`; dedicated script exists, but the research workflow is opt-in and weights licensing remains unresolved.
+- **UGTPHON retrieval-augmented compositional method:** `BLOCKED_IMPLEMENTATION` until an official inference checkpoint/package is located and training/test overlap is reviewed.
+
+Canonical evidence, candidate acceptance criteria, and links are maintained in `docs/EXTENDED-BENCHMARK-METRICS-2026-10-29.md`. Do not call a candidate verified until it has run on both pinned IPA splits, produced a report artifact, and passed adapter tests.
