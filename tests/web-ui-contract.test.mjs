@@ -120,7 +120,7 @@ test('unconfirmed Ukrainian candidates are separated from the accepted-result sl
   assert.match(html,/id="candidate-copy-button"[^>]*data-copy="candidate"/);
   assert.match(html,/id="result-ukrainian"/);
   assert.doesNotMatch(html,/id="candidate-panel" class="issue-state"/);
-  assert.match(main,/output\.textContent=hasCandidate\?'':targetUnconfirmed\?'Немає підтвердженого запису'/);
+  assert.match(main,/output\.textContent=targetUnconfirmed\?'Немає підтвердженого запису'/);
   assert.match(main,/ukrainianCopyButton\.hidden=targetUnconfirmed/);
   assert.match(main,/output\.classList\.toggle\('result-unconfirmed',targetUnconfirmed\)/);
   assert.match(main,/key==='candidate'\?candidateValue/);
