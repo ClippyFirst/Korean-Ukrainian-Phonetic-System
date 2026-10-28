@@ -132,10 +132,21 @@
         <p id="result-analysis" class="result-body analysis"></p>
       </article>
     </div>
-    <div id="candidate-panel" class="issue-state" hidden>
-      <p><strong>Увага: остаточний український запис не підтверджено.</strong> Нижче наведено лише дослідницького кандидата, а не прийнятий результат. Не використовуйте його як нормативний запис без перевірки IPA та цільової адаптації.</p>
-      <p id="candidate-value" class="result-body" aria-label="Попередній український кандидат"></p>
-    </div>
+    <section id="candidate-panel" class="candidate-panel" aria-labelledby="candidate-heading" hidden>
+      <div class="candidate-panel-heading">
+        <span class="candidate-status-mark" aria-hidden="true">?</span>
+        <div>
+          <p class="candidate-eyebrow">Дослідницький режим</p>
+          <h3 id="candidate-heading">Кандидат — не підтверджений результат</h3>
+          <p class="candidate-explanation">Система поки не може підтвердити український запис. Варіант нижче потрібен лише для аналізу; його не слід вважати нормативним.</p>
+        </div>
+      </div>
+      <div class="candidate-value-row">
+        <p id="candidate-value" class="candidate-value" aria-label="Непідтверджений український кандидат"></p>
+        <button id="candidate-copy-button" class="copy-button candidate-copy-button" data-copy="candidate" type="button">Копіювати кандидата</button>
+      </div>
+      <p class="candidate-footnote">Перед використанням потрібна перевірка IPA та української цільової адаптації.</p>
+    </section>
     <div id="issue-state" class="issue-state" hidden><p id="issue-text"></p></div>
     <div id="variant-panel" class="variant-panel" hidden>
       <div class="section-title"><span class="section-number">B+</span><div><p class="section-kicker">Варіанти</p><h3>Альтернативні читання</h3></div></div>
