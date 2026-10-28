@@ -47,3 +47,13 @@ test('candidate is rendered in the visible Ukrainian result field and state is s
   assert.match(script, /selectUaView\(selectedUaView\)/);
   assert.match(script, /ukrainianCopyButton\.hidden=currentTargetUnconfirmed&&!candidateSelected/);
 });
+
+
+test('alternative readings use the same accessible disclosure pattern as syllable analysis', () => {
+  assert.match(html, /<details id="variant-panel" class="trace-panel trace-disclosure variant-panel" hidden>/);
+  assert.match(html, /<summary class="trace-summary">[\\s\\S]*?<strong>Альтернативні читання<\\/strong>[\\s\\S]*?<small>Відкрийте, щоб переглянути інші можливі вимови/u);
+  assert.match(html, /<div id="variant-list" class="trace-list"><\\/div>/);
+  assert.match(html, /<details class="trace-panel trace-disclosure">[\\s\\S]*?<strong>Поскладовий розбір<\\/strong>/);
+  assert.match(css, /\\.trace-disclosure\\[open\\] \\.trace-summary/);
+  assert.match(script, /variantPanel\\.hidden=variants\\.length===0/);
+});
