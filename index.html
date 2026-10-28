@@ -119,21 +119,8 @@
         <div class="ua-output-switch" role="group" aria-label="Стан українського запису"><button id="ua-unconfirmed-button" class="ua-output-option is-active" type="button" aria-pressed="true">Достовірний варіант</button><button id="ua-candidate-button" class="ua-output-option" type="button" aria-pressed="false" disabled>Дослідницький результат</button></div>
         <p id="result-ukrainian" class="result-body"></p>
         <div id="surface-reading" class="surface-reading" hidden><span>Поверхнева форма</span><strong id="result-surface"></strong></div>
-        <section id="candidate-panel" class="candidate-panel" aria-labelledby="candidate-heading" hidden>
-          <div class="candidate-panel-heading">
-            <span class="candidate-status-mark" aria-hidden="true">?</span>
-            <div>
-              <p class="candidate-eyebrow">Український запис · дослідницький</p>
-              <h3 id="candidate-heading">Дослідницький результат</h3>
-              <p class="candidate-explanation">Попередній український варіант для аналізу; не є підтвердженим нормативним записом.</p>
-            </div>
-          </div>
-          <div class="candidate-value-row">
-            <p id="candidate-value" class="candidate-value" aria-label="Непідтверджений український кандидат"></p>
-            <button id="candidate-copy-button" class="copy-button candidate-copy-button" data-copy="candidate" type="button">Копіювати кандидата</button>
-          </div>
-          <p class="candidate-footnote">Перед використанням потрібна перевірка IPA та української цільової адаптації.</p>
-        </section>
+        <span id="candidate-value" hidden aria-hidden="true"></span>
+        <p id="candidate-note" class="candidate-footnote" hidden>Дослідницький результат — попередній варіант, не підтверджений нормативний запис. Перед використанням потрібна перевірка IPA та української цільової адаптації.</p>
       </article>
       <article id="panel-ipa" class="result-card" data-result-panel="ipa">
         <div class="result-meta"><span>IPA</span><strong>Широкий IPA</strong><button class="copy-button" data-copy="ipa" type="button">Копіювати</button></div>
