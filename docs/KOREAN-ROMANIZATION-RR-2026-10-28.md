@@ -35,7 +35,7 @@ A match between RR and an IPA string is not itself proof of correctness. RR is o
 ## Acceptance status
 
 - Implemented: basic RR display from the resolved Hangul surface, isolated from the IPA-to-Ukrainian pipeline.
-- Test files added: yes; runtime execution is pending CI/local execution.
+- Test files added: yes. An isolated Node.js smoke run of the adapter logic passed 5/5 cases; this was not the repository's actual test suite. Full `npm test`, `npm run build`, and browser checks remain pending.
 - Full NIKL RR conformance: not yet established.
 - Reverse romanization: not implemented.
 - Release status: this change should remain a reviewable PR until automated checks and the conformance matrix are completed.
