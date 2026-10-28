@@ -119,8 +119,9 @@ button { color: inherit; }
 .result-tab:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
 .result-grid { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
 .result-grid>.result-card[hidden] { display:none; }
-.result-grid:has(>.result-card:not([hidden]):only-child) { grid-template-columns:minmax(0,1fr); }
-.result-grid:has(>.result-card:not([hidden]):only-child)>.result-card:first-child { grid-column:auto; }
+.result-grid[data-active-result] { grid-template-columns:minmax(0,1fr); }
+.result-grid[data-active-result]>.result-card { grid-column:auto; }
+.result-grid[data-active-result="ukrainian"]>.result-card:first-child { grid-column:auto; }
 .result-card { min-width:0; padding:16px; border:1px solid var(--line); background:#fff; }
 .result-card:first-child { grid-column:1 / -1; border-color:var(--ink); background:#edf2f7; }
 .result-meta { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:13px; font-size:.82rem; }
