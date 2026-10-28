@@ -269,3 +269,98 @@ button { color: inherit; }
   font-size: .82rem;
   line-height: 1.5;
 }
+
+
+/* UX refresh 2026-10-28: preserve the editorial hero; simplify the service below it. */
+.workspace-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 22px;
+}
+.workbench, .output-workspace { width: 100%; min-width: 0; }
+.workbench { padding: clamp(20px, 3vw, 36px); border-top-width: 4px; }
+.input-shell { border-color: var(--line-strong); }
+.input-shell textarea, #stress-input {
+  min-height: 150px;
+  padding: 20px;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  line-height: 1.8;
+}
+.input-guidance { max-width: 78ch; margin: 12px 0 0; color: var(--muted); font-size: .86rem; line-height: 1.6; }
+.action-row { gap: 18px; }
+.chip-row { gap: 8px; }
+.mini-button { min-height: 38px; padding: 7px 11px; border-color: var(--line); background: #fff; }
+.mini-button:hover, .mini-button:focus-visible { border-color: var(--blue); background: var(--blue-soft); }
+.action-cell { align-items: center; }
+.button { min-height: 44px; padding: 10px 16px; }
+.button-primary { background: var(--blue); border-color: var(--blue); }
+.button-primary:hover { background: #003779; border-color: #003779; }
+.mode-fieldset { margin-top: 0; padding: 18px; background: var(--surface); border-color: var(--line); }
+.mode-option { margin: 8px 0 0; padding: 12px; border: 1px solid var(--line); background: #fff; }
+.mode-option:has(input:checked) { border-color: var(--blue); box-shadow: inset 3px 0 0 var(--blue); background: #f6f8fc; }
+.mode-option strong { font-size: .9rem; }
+.mode-option em { max-width: 78ch; }
+.practical-mode-hint { margin: 12px 0 0; padding: 12px 14px; border-left: 3px solid var(--line-strong); background: var(--surface-soft); color: var(--muted); font-size: .8rem; }
+.research-options { margin-top: 12px; padding: 14px; background: var(--surface-soft); }
+.empty-state { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 14px; padding: 24px; border: 1px dashed var(--line-strong); background: var(--surface); }
+.empty-glyph { display: grid; place-items: center; width: 54px; height: 54px; background: var(--ink); color: white; font-size: 1.8rem; }
+.empty-state strong, .empty-state span { display: block; }
+.empty-state strong { margin-bottom: 3px; font-size: 1rem; }
+.empty-state span { color: var(--muted); font-size: .88rem; }
+.empty-rule { display: none !important; }
+.results { padding: clamp(18px, 3vw, 36px); }
+.results-bar { margin-bottom: 20px; }
+.results-note { max-width: 42ch; padding: 7px 10px; border: 1px solid var(--line); background: var(--surface-soft); color: var(--muted); font-size: .75rem; line-height: 1.45; }
+.result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; background: transparent; }
+.result-card { min-width: 0; padding: 20px; border: 1px solid var(--line); border-top: 3px solid var(--line-strong); background: #fff; }
+.result-card:first-child { grid-column: 1 / -1; border-top: 4px solid var(--red); background: #fffdf8; }
+.result-card:nth-child(2) { border-top-color: var(--blue); }
+.result-card.romanization-card { border-top-color: var(--line-strong); }
+.result-card:nth-child(4) { border-top-color: var(--green); }
+.result-meta { flex-wrap: wrap; gap: 9px 12px; }
+.result-meta > span { display: inline-grid; place-items: center; min-width: 34px; min-height: 28px; padding: 3px 6px; background: var(--ink); color: #fff; font-size: .68rem; font-weight: 850; letter-spacing: .06em; }
+.result-card:first-child .result-meta > span { background: var(--red); }
+.result-body { overflow-wrap: anywhere; }
+.result-card:first-child .result-body { min-height: 1.5em; margin: 15px 0 8px; font-size: clamp(1.8rem, 4vw, 3.1rem); line-height: 1.25; font-weight: 780; letter-spacing: -.025em; }
+.result-card:nth-child(2) .result-body, .result-card.romanization-card .result-body { font-size: clamp(1.2rem, 2.2vw, 1.7rem); line-height: 1.5; }
+.copy-button { min-height: 35px; padding: 6px 10px; border-color: var(--line); background: var(--surface); }
+.copy-button:hover { border-color: var(--blue); background: var(--blue-soft); }
+.surface-reading { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.issue-state, .variant-panel { margin-top: 16px; }
+.issue-state { border-left-width: 4px; }
+.trace-disclosure { margin-top: 18px; padding: 0; border: 1px solid var(--line); background: var(--surface); }
+.trace-summary { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 13px; align-items: center; padding: 18px 20px; cursor: pointer; list-style: none; }
+.trace-summary::-webkit-details-marker { display: none; }
+.trace-summary-index { display: grid; place-items: center; width: 36px; height: 36px; background: var(--ink); color: white; font-size: .76rem; font-weight: 850; }
+.trace-summary-copy strong, .trace-summary-copy small { display: block; }
+.trace-summary-copy strong { font-size: 1rem; }
+.trace-summary-copy small { margin-top: 3px; color: var(--muted); font-size: .8rem; font-weight: 400; line-height: 1.5; }
+.trace-summary-mark { color: var(--blue); font-size: 1.4rem; font-weight: 400; }
+.trace-disclosure[open] .trace-summary { border-bottom: 1px solid var(--line); }
+.trace-disclosure[open] .trace-summary-mark { transform: rotate(45deg); }
+.trace-details { padding: 20px; }
+.trace-explainer { max-width: 95ch; color: var(--muted); font-size: .85rem; }
+.trace-columns { position: sticky; top: 0; z-index: 1; }
+.site-footer { margin-top: 30px; }
+@media (max-width: 720px) {
+  .workspace-layout { gap: 16px; }
+  .workbench, .results { padding: 16px; }
+  .input-shell textarea { min-height: 125px; padding: 15px; font-size: 1.1rem; }
+  .action-cell { display: grid; grid-template-columns: 1fr 1fr; }
+  .action-cell .button { width: 100%; }
+  .mode-fieldset { padding: 12px; }
+  .mode-option { padding: 10px; }
+  .empty-state { padding: 18px; }
+  .result-grid { grid-template-columns: minmax(0, 1fr); }
+  .result-card:first-child { grid-column: auto; }
+  .result-card { padding: 16px; }
+  .results-note { max-width: none; }
+  .trace-summary { grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; padding: 14px; }
+  .trace-summary-index { width: 32px; height: 32px; }
+  .trace-details { padding: 14px; }
+  .trace-row { overflow-wrap: anywhere; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trace-summary-mark { transform: none !important; }
+}
