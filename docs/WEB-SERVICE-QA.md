@@ -69,3 +69,18 @@ Known divergences that must remain visible rather than silently corrected in pra
 - `읽고`: JS port `익꼬`; NIKL Q&A gives `일꼬`.
 
 CI passing establishes the selected port's reproducibility and build/test integrity only. It does not validate all Korean surface pronunciations, independent IPA, Ukrainian target quality, or the live page's interactive behavior. The deployment workflow now performs both live HTTP smoke and headless Chromium interaction with the repository's 1,443-character adversarial Korean fixture. The live browser run produced substantial Ukrainian and IPA output without page errors. This does not verify the exact earlier user-pasted passage if different, nor does it validate normative pronunciation accuracy.
+
+
+## UX refresh — 2026-10-28
+
+The editorial hero is intentionally unchanged. Below it, the service uses a single-column workbench-to-results flow, so the input and output remain readable on desktop and mobile rather than competing in a narrow side-by-side layout.
+
+Acceptance checks:
+- input is labelled and has a visible explanation linked by `aria-describedby`;
+- example chips, clear action, practical/research mode choices and live conversion remain functional;
+- the Ukrainian result is visually primary; IPA, Revised Romanization and analysis are supporting outputs;
+- the syllable trace is collapsed by default and available through a keyboard-operable native `details/summary` disclosure;
+- the result hierarchy collapses to one column on narrow screens;
+- visible keyboard focus and reduced-motion handling remain in force.
+
+The automated UI contract checks source structure and CSS intent. A green build is not a substitute for visual inspection at real viewport sizes or assistive-technology testing.

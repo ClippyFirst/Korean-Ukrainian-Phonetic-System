@@ -206,3 +206,14 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **Critical scope boundary:** RR is rendered from the pronunciation path's surface Hangul. This checks the romanization adapter conditional on the upstream surface form; it does not validate G2P, IPA, or Ukrainian targets. The current code is basic RR coverage, not a standards-certified implementation of every NIKL convention.
 - **Remaining acceptance:** exact-head CI must pass; manually inspect the live/browser card and copy action; complete an official-rule matrix for coda allophones, liquid handling, sound changes, word boundaries, capitalization and mixed scripts; independently compare a broader official NIKL example set; keep Latin-to-Hangul reverse conversion deferred until ambiguity/status handling has a separate specification.
 - **Disposition:** do not merge or describe as fully NIKL-conformant until these gates are met.
+
+
+## UX refresh: Korean service workbench (2026-10-28)
+
+- **Status: PARTIAL — implementation on branch; exact-head CI and rendered-browser review pending.**
+- **Baseline:** `main` at `88f9bcc581d51756f6344961ef3ebc9951aaf3eb`; Thai reference repository inspected at `d39fc9e2c40db4a9f760069099c1f45973d592c8`.
+- **Preserved:** the current editorial hero and Korean/Ukraine identity; all engine modes, examples, live conversion, copy controls, IPA and RR outputs, research warnings, trace data contract, two-page navigation and local-only CSP.
+- **Implemented:** single-column input-to-output flow; larger, calmer input; clearer usage guidance; mode choices rendered as selectable cards; Ukrainian output promoted above supporting IPA/RR/analysis cards; detailed syllable trace moved into a native collapsed disclosure; mobile result cards collapse to one column.
+- **Evidence added:** `tests/web-ui-contract.test.mjs` checks the accessible input hint, disclosure structure, output hierarchy and responsive CSS; `docs/WEB-SERVICE-QA.md` records acceptance criteria.
+- **Acceptance still required:** exact-head CI (all existing tests and static build), deployment smoke check after merge, and visual inspection at desktop/mobile widths. The connector-only environment does not provide a local checkout or actual browser screenshot capture in this pass; CSS-source tests do not prove rendered visual quality.
+- **Next action:** run PR CI, repair any regression, then review the deployed result before marking UX work DONE_VERIFIED.
