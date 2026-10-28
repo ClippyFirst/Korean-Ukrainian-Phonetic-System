@@ -113,7 +113,14 @@ button { color: inherit; }
 .results-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:19px; }
 .results-bar .section-title { margin:0; }
 .results-note { color:var(--muted); font-size:.75rem; text-align:right; }
+.result-tabs { display:flex; flex-wrap:wrap; gap:4px; margin:0 0 10px; padding:4px; border:1px solid var(--line); background:var(--surface-soft); }
+.result-tab { flex:1 1 auto; min-height:40px; padding:8px 12px; border:1px solid transparent; background:transparent; color:var(--muted); cursor:pointer; font:inherit; font-size:.84rem; font-weight:750; text-align:center; }
+.result-tab[aria-selected="true"] { border-color:var(--ink); background:var(--surface); color:var(--ink); box-shadow:0 1px 2px rgba(25,33,43,.06); }
+.result-tab:focus-visible { outline:3px solid var(--focus); outline-offset:2px; }
 .result-grid { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+.result-grid>.result-card[hidden] { display:none; }
+.result-grid:has(>.result-card:not([hidden]):only-child) { grid-template-columns:minmax(0,1fr); }
+.result-grid:has(>.result-card:not([hidden]):only-child)>.result-card:first-child { grid-column:auto; }
 .result-card { min-width:0; padding:16px; border:1px solid var(--line); background:#fff; }
 .result-card:first-child { grid-column:1 / -1; border-color:var(--ink); background:#edf2f7; }
 .result-meta { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:13px; font-size:.82rem; }
@@ -205,6 +212,10 @@ button { color: inherit; }
 .site-footer>div { display:grid; gap:6px; }
 .site-footer strong { color:var(--ink); font-size:.81rem; letter-spacing:.04em; }
 .site-footer a { color:var(--muted); }
+@media (max-width:520px) {
+  .result-tabs { display:grid; grid-template-columns:1fr 1fr; }
+  .result-tab { padding:9px 7px; font-size:.8rem; }
+}
 @media (max-width:1000px) {
   .hero-home,.hero-system { grid-template-columns:minmax(0,1fr) minmax(200px,.65fr); gap:24px; }
   .workspace-layout { grid-template-columns:minmax(0,1fr); }
