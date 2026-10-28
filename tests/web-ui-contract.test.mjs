@@ -138,7 +138,7 @@ test('UX follow-up announces meaningful result state and provides visible clipbo
   assert.match(main,/function announceResult\(message\)/);
   assert.match(main,/Дослідницький кандидат: /);
   assert.match(main,/Обробку завершено з попередженнями/);
-  assert.match(main,/selection\.addRange\(range\)/);
+  assert.match(main,/selection\?\.addRange\(range\)/);
   assert.match(main,/Текст виділено: натисніть Ctrl\+C/);
   assert.match(css,/\.copy-feedback\[hidden\]\s*\{\s*display:\s*none/);
 });
