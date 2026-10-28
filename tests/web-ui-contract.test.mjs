@@ -168,3 +168,14 @@ test('mobile trace values carry explicit labels and methodology has in-page navi
   assert.match(system,/id="methodology-18"/);
   assert.match(css,/\.methodology-toc ol/);
 });
+
+
+test('live browser smoke follows the inline Ukrainian result contract',()=>{
+  const smoke=read('scripts/smoke-live-pages-browser.mjs');
+  assert.match(smoke,/page\.locator\('#ua-candidate-button'\)\.click\(\)/);
+  assert.match(smoke,/candidateOutput, candidate, 'research option must show the candidate in the main Ukrainian field'/);
+  assert.match(smoke,/page\.locator\('#candidate-note'\)\.isVisible\(\)/);
+  assert.match(smoke,/page\.locator\('#candidate-panel'\)\.count\(\)/);
+  assert.match(smoke,/Дослідницький результат/u);
+  assert.doesNotMatch(smoke,/candidate-copy-button|Показано попередній кандидат.*окрем/u);
+});
