@@ -91,6 +91,10 @@ def test_paired_bootstrap_delta_is_deterministic_and_paired():
     second = _paired_bootstrap_delta_ci(candidate, native, replicates=100)
     assert first == second
     assert first["replicates"] == 100
+    assert first["paired_occurrences"] == 2
+    assert first["candidate_only_occurrences"] == 0
+    assert first["native_only_occurrences"] == 0
+    assert first["paired_rows"] == 2
     assert first["exact_rate_delta_candidate_minus_native_95pct_ci"] is not None
     assert first["cer_delta_candidate_minus_native_95pct_ci"] is not None
 
