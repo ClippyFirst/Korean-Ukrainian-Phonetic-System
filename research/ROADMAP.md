@@ -239,4 +239,14 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 
 - The revised live smoke reached the newly deployed UI and exposed a real render defect: when a candidate existed, the primary result text was blank because `hasCandidate` took precedence over the neutral unconfirmed status. The earlier source-level UI contract had encoded that same defect.
 - Corrected the render precedence so any unconfirmed/unavailable target shows `Немає підтвердженого запису` in the primary slot while the candidate remains isolated in its research panel. Updated the UI contract test to guard this exact behavior.
-- Acceptance remains `PARTIAL` until the fix passes mainline CI and a fresh Pages deployment's live Playwright smoke verifies the public page.
+- Acceptance was `PARTIAL` pending final verification; the closure record below supersedes this interim status.
+
+
+## Final verification — 2026-10-28
+
+- Status: `DONE_VERIFIED` for the provisional-result UX and live deployment gate.
+- PR #356 separated the unconfirmed candidate from the primary result. PR #357 aligned the live smoke contract. PR #358 fixed a render-precedence defect found by the live smoke.
+- Final main commit: `4a7b5fdf7bf1de3ec0aca775696bfa0506dd040d`.
+- All exact-head main checks passed: tests `40690480342`; system verification `40690480409`; browser G2P integration `40690480626`; research corpus/artifacts `40690480597`; Pages deploy and live browser smoke `40690480644`.
+- The live adversarial-passage smoke verified the neutral unconfirmed status, separate candidate panel/copy action, IPA output, practical JS G2P mode, and no browser runtime errors.
+- Scope note: this closes only the UX/deployment gate; broader linguistic evidence and independent IPA review remain open.
