@@ -48,7 +48,7 @@
     <div class="section-title"><span class="section-number">A</span><div><p class="section-kicker">Вхід</p><h2 id="input-heading">Корейський текст</h2></div></div>
     <label class="sr-only" for="source-input">Корейський текст</label>
     <div class="input-shell">
-      <textarea id="source-input" rows="6" spellcheck="false" lang="ko" placeholder="한국어를 입력하세요"></textarea>
+      <textarea id="source-input" rows="5" spellcheck="false" lang="ko" aria-describedby="input-guidance" placeholder="한국어를 입력하세요"></textarea>
       <div class="input-hint"><span id="character-count">0 символів</span><span class="mode-note"><i aria-hidden="true"></i> практичний український</span></div>
       <section id="spelling-suggestions" class="spelling-suggestions" aria-label="Підказки щодо написання" aria-live="polite" hidden>
         <div class="spelling-suggestions-heading">
@@ -58,6 +58,7 @@
         <div id="spelling-suggestions-list" class="spelling-suggestions-list"></div>
       </section>
     </div>
+    <p class="input-guidance" id="input-guidance">Введіть слово, фразу або довший текст. Результат оновлюється автоматично; докладний поскладовий розбір можна відкрити нижче. Це дослідницький інструмент: попередні відповідники й невизначені ділянки позначаються окремо.</p>
     <div class="action-row">
       <div class="chip-row" role="group" aria-label="Швидкі приклади">
         <button class="mini-button" data-example="현대 한국어의 표준 발음" type="button">현대 한국어의 표준 발음</button>
@@ -68,7 +69,7 @@
       </div>
       <p class="input-hint">Стрес-тест — довгий діагностичний корпус, не дослівна цитата з NIKL; обробка може тривати довше.</p>
       <div class="action-cell">
-        <button id="example-button" class="button button-primary" type="button">Приклад <b aria-hidden="true">↗</b></button>
+        <button id="example-button" class="button button-primary" type="button">Вставити речення <b aria-hidden="true">↗</b></button>
         <button id="clear-button" class="button button-secondary" type="button">Очистити</button>
       </div>
       <fieldset class="mode-fieldset" id="transliteration-mode">
@@ -140,12 +141,14 @@
       <div class="section-title"><span class="section-number">B+</span><div><p class="section-kicker">Варіанти</p><h3>Альтернативні читання</h3></div></div>
       <div id="variant-list" class="trace-list"></div>
     </div>
-    <div class="trace-panel">
-      <div class="section-title"><span class="section-number">C</span><div><p class="section-kicker">Трасування</p><h3>Поскладовий розбір</h3></div></div>
+    <details class="trace-panel trace-disclosure">
+      <summary class="trace-summary"><span class="trace-summary-index">C</span><span class="trace-summary-copy"><strong>Поскладовий розбір</strong><small>Відкрийте, щоб переглянути шлях Hangul → вимова → IPA → український запис для кожного сегмента.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
+      <div class="trace-details">
       <p class="trace-explainer">Розбір показує повний ланцюг для кожного складу: початковий Hangul → реалізована корейська форма → IPA → окремі відповідності IPA-токенів українським графемам → підсумковий український запис. Правила корейської вимови й українське відображення IPA — різні етапи; статус указує, чи є сегмент нормативним, контекстним, словниковим або невирішеним.</p>
       <div class="trace-columns" aria-hidden="true"><span>Корейський сегмент · вхід</span><span>Корейська вимова</span><span>IPA</span><span>IPA-токен → графема</span><span>Український запис</span><span title="Правила / IPA">Нюанс / правило</span><span>Статус</span></div>
       <div id="trace-list" class="trace-list"></div>
-    </div>
+      </div>
+    </details>
   </section>
 
   </section>
