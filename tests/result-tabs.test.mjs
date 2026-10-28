@@ -40,5 +40,7 @@ test('candidate is rendered inside the Ukrainian result card rather than as a du
   assert.doesNotMatch(html, /id="candidate-panel"|id="candidate-heading"|Кандидат — не підтверджений результат|Дослідницький режим<\/p>/);
   assert.match(script, /const showCandidate=hasCandidate&&selectedUaView==='candidate'/);
   assert.match(script, /output\.textContent=showCandidate\?candidateText/);
-  assert.match(script, /ukrainianOutputLabel\.textContent=hasCandidate\?'Дослідницький результат'/);
+  assert.match(script, /output\.textContent=candidateSelected\?\(candidateValue\?\.textContent/);
+  assert.match(script, /ukrainianCopyButton\.hidden=currentTargetUnconfirmed&&!candidateSelected/);
+  assert.match(script, /ukrainianOutputLabel\.textContent=selectedUaView==='candidate'&&hasCandidate\?'Дослідницький результат'/);
 });
