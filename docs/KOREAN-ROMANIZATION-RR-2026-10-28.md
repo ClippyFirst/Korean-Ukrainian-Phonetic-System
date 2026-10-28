@@ -39,3 +39,24 @@ A match between RR and an IPA string is not itself proof of correctness. RR is o
 - Full NIKL RR conformance: not yet established.
 - Reverse romanization: not implemented.
 - Release status: this change should remain a reviewable PR until automated checks and the conformance matrix are completed.
+
+## Official-example regression matrix (NIKL)
+
+The browser unit tests now include the official examples from the NIKL Romanization rules, after the pronunciation engine has supplied the standard surface Hangul:
+
+| Original example | NIKL surface pronunciation | Expected RR | Test status |
+|---|---|---|---|
+| 백마 | 뱅마 | baengma | Added |
+| 신문로 | 신문노 | sinmunno | Added |
+| 종로 | 종노 | jongno | Added |
+| 왕십리 | 왕심니 | wangsimni | Added |
+| 별내 | 별래 | byeollae | Added |
+| 신라 | 실라 | silla | Added |
+| 같이 | 가치 | gachi | Added |
+| 굳히다 | 구치다 | guchida | Added |
+
+Source: [NIKL — Romanization of Korean, pronunciation changes](https://www.korean.go.kr/front/page/pageView.do?mn_id=97&page_id=P000150). This matrix validates the RR rendering *given the supplied surface form*; it does not validate the G2P engine's choice of surface form.
+
+A further test iterates over all 11,172 modern precomposed Hangul syllable code points to detect empty or undefined mappings. This is structural coverage, not evidence that every output is linguistically correct.
+
+The UI also fails closed when the pronunciation path does not provide a surface form: it displays an em dash instead of silently romanizing the original input spelling and implying a pronunciation result.
