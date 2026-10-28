@@ -138,3 +138,18 @@ def test_paired_bootstrap_rejects_occurrence_row_mismatch():
         assert "row_id mismatch" in str(exc)
     else:
         raise AssertionError("paired occurrences must belong to the same source row")
+
+
+def test_paired_bootstrap_labels_interval_direction_without_overclaiming_significance():
+    candidate = [
+        {"occurrence_id": "1", "row_id": "a", "exact": True, "distance": 0, "reference_length": 3},
+        {"occurrence_id": "2", "row_id": "b", "exact": True, "distance": 0, "reference_length": 3},
+    ]
+    native = [
+        {"occurrence_id": "1", "row_id": "a", "exact": False, "distance": 1, "reference_length": 3},
+        {"occurrence_id": "2", "row_id": "b", "exact": False, "distance": 1, "reference_length": 3},
+    ]
+    result = _paired_bootstrap_delta_ci(candidate, native, replicates=100)
+    assert result["exact_delta_interval_direction"] == "POSITIVE_INTERVAL"
+    assert result["cer_delta_interval_direction"] == "NEGATIVE_INTERVAL"
+    assert "independent gold validation" in result["interpretation"]

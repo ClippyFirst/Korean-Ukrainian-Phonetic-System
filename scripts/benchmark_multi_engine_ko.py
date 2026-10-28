@@ -212,14 +212,28 @@ def _paired_bootstrap_delta_ci(
         values.sort()
         return [round(values[int((len(values) - 1) * 0.025)], 6),
                 round(values[int((len(values) - 1) * 0.975)], 6)]
+    exact_ci = bounds(exact_deltas)
+    cer_ci = bounds(cer_deltas)
+
+    def interval_direction(interval: list[float] | None) -> str:
+        if interval is None:
+            return "UNAVAILABLE"
+        if interval[0] > 0:
+            return "POSITIVE_INTERVAL"
+        if interval[1] < 0:
+            return "NEGATIVE_INTERVAL"
+        return "CROSSES_ZERO"
+
     return {
         "method": "paired row-cluster percentile bootstrap",
         **pairing_counts,
         "seed": SEED + 1,
         "replicates": len(exact_deltas),
-        "exact_rate_delta_candidate_minus_native_95pct_ci": bounds(exact_deltas),
-        "cer_delta_candidate_minus_native_95pct_ci": bounds(cer_deltas),
-        "interpretation": "paired uncertainty interval; positive exact delta favors candidate, negative CER delta favors candidate",
+        "exact_rate_delta_candidate_minus_native_95pct_ci": exact_ci,
+        "cer_delta_candidate_minus_native_95pct_ci": cer_ci,
+        "exact_delta_interval_direction": interval_direction(exact_ci),
+        "cer_delta_interval_direction": interval_direction(cer_ci),
+        "interpretation": "paired diagnostic interval only; positive exact delta favors candidate, negative CER delta favors candidate. Interval direction is descriptive and is not a substitute for preregistered statistical inference or independent gold validation.",
     }
 
 
