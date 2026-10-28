@@ -63,19 +63,6 @@ def kog2p_phones_to_ipa(value: str) -> str:
     return "".join(_KOG2P_PHONE_TO_IPA[token] for token in tokens)
 
 
-def kokorog2p_tokens_to_ipa(tokens: Any) -> str:
-    """Extract the package's documented Korean G2P token phonemes without guessing mappings."""
-    if not isinstance(tokens, (list, tuple)) or not tokens:
-        raise ValueError(f"kokorog2p returned no token sequence: {tokens!r}")
-    parts: list[str] = []
-    for token in tokens:
-        phonemes = getattr(token, "phonemes", None)
-        if not isinstance(phonemes, str) or not phonemes.strip():
-            raise ValueError(f"kokorog2p token has no string phonemes: {token!r}")
-        parts.append(phonemes)
-    return "".join(parts)
-
-
 def _gold_variants(raw: str) -> list[str]:
     return [normalize_ipa(part) for part in raw.split(",") if part.strip()]
 
@@ -564,25 +551,6 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "g2pk surface Hangul -> project segment renderer; native rules not rerun")
 
     try:
-        from kokorog2p.ko import KoreanG2P
-        kokoro = KoreanG2P(language="ko-kr")
-        execute(
-            "kokorog2p_1_0_0",
-            "kokorog2p[ko]==1.0.0",
-            lambda word: kokorog2p_tokens_to_ipa(kokoro(word)),
-            "documented KoreanG2P token phonemes joined in sequence; package's Jamo-to-IPA output, no ClippyFirst rules applied",
-        )
-    except Exception as exc:
-        predictions["kokorog2p_1_0_0"] = {}
-        engine_meta["kokorog2p_1_0_0"] = {
-            "status": "BLOCKED_OR_ERROR",
-            "source": "kokorog2p[ko]==1.0.0",
-            "adapter": "KoreanG2P GToken.phonemes -> IPA sequence; fails closed on missing tokens",
-            "engine_errors": len(words),
-            "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
-        }
-
-    try:
         kog2p_fn, kog2p_adapter = _load_kog2p(args.kog2p_root)
         execute("KoG2P_2019", "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7",
                 lambda word: kog2p_phones_to_ipa(kog2p_fn(word)), kog2p_adapter)
@@ -923,7 +891,6 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "KoG2P": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7; GPL-3.0; executed as external checkout, not vendored",
             "hangul_to_ipa": "stannam/hangul_to_ipa commit 942abf132ea969a7e3476a1487c06710fb8db74b; MIT; executed as external checkout, not vendored",
             "phonemize": "hans00/phonemize npm 2.0.1; MIT",
-            "kokorog2p": "kokorog2p[ko]==1.0.0; Apache-2.0; KoreanG2P documented IPA token output",
             "eSpeak": "eSpeak NG system package via phonemizer==3.3.0; exact runtime version recorded in CI logs",
         },
         "limitations": [
@@ -932,7 +899,6 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison.",
             "KoG2P uses a documented custom phone alphabet; the explicit adapter is lossy, and its score must be read with adapter limitations.",
             "hangul_to_ipa explicitly omits several morphology-sensitive processes (including n-insertion and liquid tensification); this is a scope limitation, not an unexpected runtime failure.",
-            "kokorog2p is a distinct Korean frontend but is based on g2pK and shares some rule lineage; it is not statistically independent of g2pK.",
             "phonemize's published Korean evaluation uses a small LLM-judged sample, not this benchmark's independent human-gold IPA.",
             "eSpeak is a TTS-oriented phonemizer baseline, not a claim of narrow-IPA or Korean standard-pronunciation authority.",
             "This benchmark measures Korean IPA output only. It does not compare Ukrainian adaptation quality.",
