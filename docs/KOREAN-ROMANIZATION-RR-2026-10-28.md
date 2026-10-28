@@ -35,7 +35,7 @@ A match between RR and an IPA string is not itself proof of correctness. RR is o
 ## Acceptance status
 
 - Implemented: basic RR display from the resolved Hangul surface, isolated from the IPA-to-Ukrainian pipeline.
-- Test files added: yes. An isolated Node.js run of the adapter logic passed 6/6 tests, including the 11,172 modern Hangul syllable sweep; the code was run from a temporary isolated harness, not the full repository checkout. Full `npm test`, `npm run build`, and browser checks remain pending.
+- Local isolated harness: 6/6 tests passed, including the 11,172 modern Hangul syllable sweep. Separately, GitHub Actions for code/test snapshot `0dcde24374f1a67c38f00f44687c7a1e4a024a51` passed browser regression tests/build, Python regression/data-integrity tests, `npm test`, `npm run build`, Python 3.11/3.12/3.13, and research corpus audits. Official NIKL source inventory was skipped. Subsequent commits updated documentation only; exact latest-head checks have not been rerun.
 - Full NIKL RR conformance: not yet established.
 - Reverse romanization: not implemented.
 - Release status: this change should remain a reviewable PR until automated checks and the conformance matrix are completed.
