@@ -227,3 +227,10 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **Preserved:** engine behavior, IPA-first mapping, candidate value, IPA/RR/analysis/trace, status reporting, confirmed-target copy path.
 - **Evidence:** new source-level assertions in `tests/web-ui-contract.test.mjs`; acceptance criteria in `docs/WEB-SERVICE-QA.md`.
 - **Remaining gate:** PR CI, browser/static build, and actual visual review of candidate and confirmed states. No linguistic status is upgraded by this UI change.
+
+## Live deployment follow-up — 2026-10-28
+
+- UX correction for provisional Ukrainian output was merged in `c4fbe4f223f0017aeda2e3bae414a39e889f65b4` (PR #356). Mainline tests, system verification, corpus/artifact workflow, and browser G2P integration passed on that exact commit.
+- GitHub Pages deployment and public-page smoke checks succeeded, but the final live Playwright adversarial-passage step failed because `scripts/smoke-live-pages-browser.mjs` still expected the pre-redesign label `Попередній український кандидат` in the primary result slot. The deployed page correctly showed `Немає підтвердженого запису`; this is a stale acceptance assertion, not evidence that deployment failed.
+- Follow-up task: update live smoke assertions to recognize the neutral primary status, ensure the primary copy control is hidden, and verify the candidate has its own visible copy action. Re-run deployment workflow and verify the exact published revision before marking this gate DONE_VERIFIED.
+- Current status: `PARTIAL` until the updated live browser smoke passes on the deployed revision.
