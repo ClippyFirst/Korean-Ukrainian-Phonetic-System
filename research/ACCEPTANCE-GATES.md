@@ -450,3 +450,20 @@ Current research branch head at verification: `17faadd59c3457ab7bf53ce26a86bba94
 | Release readiness | **DEFERRED** | Research-ready partial prototype only; not release-ready. |
 
 PR #339 remains open/Draft/unmerged. Do not enable strict mode globally while the allowlist is empty, do not infer IPA or Ukrainian gold from teacher outputs, and do not treat a skipped NIKL job or successful software tests as resolution of the evidence/licensing gates.
+
+## Addendum — Revised Romanization feature gate (2026-10-28)
+
+Feature status: **PARTIAL / in review**, tracked by [PR #354](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/354).
+
+- [ ] Verify exact-head CI for `npm test`, `npm run build`, browser interaction/copy behavior, and Python/data-integrity regressions.
+- [x] Keep RR as a separate diagnostic branch from resolved Hangul surface; do not route RR through IPA or Ukrainian target generation.
+- [x] Add official NIKL surface-example regression cases and a structural sweep across all 11,172 modern Hangul syllables.
+- [x] Fail closed in the UI when no resolved surface form is supplied.
+- [ ] Build and review a full source-backed RR matrix covering consonant position/allophones, liquid conventions, phonological changes, word boundaries, capitalization, and mixed scripts.
+- [ ] Compare outputs against a trusted, independently verified RR implementation or complete official examples, documenting disagreements rather than tuning against the same fixture alone.
+- [ ] Confirm rendered page, mobile layout, accessibility text, and copy action in browser tests.
+- [ ] Do not implement reverse romanization until a separate spec defines ambiguity, candidate enumeration, confidence/status, and unsupported input behavior.
+
+**Evidence currently available:** isolated Node.js harness, 6/6 tests passed including the 11,172-syllable structural sweep. This is not full repository CI. GitHub workflow jobs initiated during PR creation were in progress at the last inspection; no final exact-head green status is claimed. See `docs/KOREAN-ROMANIZATION-RR-2026-10-28.md` and the corresponding entry in `research/ROADMAP.md`.
+
+**Release rule:** the feature must not be described as fully NIKL-conformant or merged solely on the basis of structural syllable coverage or the current example tests.
