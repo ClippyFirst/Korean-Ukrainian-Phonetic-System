@@ -58,6 +58,33 @@ const analysis=document.querySelector('#result-analysis');
 const traceList=document.querySelector('#trace-list');
 const variantPanel=document.querySelector('#variant-panel');
 const variantList=document.querySelector('#variant-list');
+const resultTabs=[...document.querySelectorAll('[data-result-tab]')];
+const resultPanels=[...document.querySelectorAll('[data-result-panel]')];
+const resultGrid=document.querySelector('.result-grid');
+function activateResultTab(name,moveFocus=false){
+  resultTabs.forEach((tab)=>{
+    const active=tab.dataset.resultTab===name;
+    tab.setAttribute('aria-selected',String(active));
+    tab.tabIndex=active?0:-1;
+    if(active&&moveFocus)tab.focus();
+  });
+  resultPanels.forEach((panel)=>{panel.hidden=panel.dataset.resultPanel!==name;});
+  if(resultGrid)resultGrid.dataset.activeResult=name;
+}
+resultTabs.forEach((tab,index)=>{
+  tab.addEventListener('click',()=>activateResultTab(tab.dataset.resultTab));
+  tab.addEventListener('keydown',(event)=>{
+    let next=index;
+    if(event.key==='ArrowRight')next=(index+1)%resultTabs.length;
+    else if(event.key==='ArrowLeft')next=(index-1+resultTabs.length)%resultTabs.length;
+    else if(event.key==='Home')next=0;
+    else if(event.key==='End')next=resultTabs.length-1;
+    else return;
+    event.preventDefault();
+    activateResultTab(resultTabs[next].dataset.resultTab,true);
+  });
+});
+activateResultTab('ukrainian');
 const RULE_LABELS={
   'g2pk-js-surface-realization':'g2pK: нормативна поверхнева реалізація',
   'contextual-voicing':'контекстне озвончення ㄱ/ㄷ/ㅂ/ㅈ',
