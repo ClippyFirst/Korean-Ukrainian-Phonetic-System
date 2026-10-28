@@ -464,3 +464,56 @@ button { color: inherit; }
   .candidate-value-row { align-items: stretch; padding: 14px; }
   .candidate-copy-button { align-self: flex-start; }
 }
+
+
+/* UX follow-up: progressive disclosure, visible copy recovery, and labelled mobile traces. */
+.mode-disclosure { margin: 10px 0 0; border-left: 3px solid var(--line-strong); background: var(--surface-soft); }
+.mode-disclosure summary { padding: 10px 12px; cursor: pointer; color: var(--blue); font-size: .8rem; font-weight: 750; }
+.mode-disclosure .practical-mode-hint { margin: 0; padding: 0 12px 12px; }
+.copy-feedback { margin: 14px 0 0; padding: 12px 14px; border-left: 3px solid var(--blue); background: var(--blue-soft); color: var(--ink); font-size: .88rem; line-height: 1.55; overflow-wrap: anywhere; }
+.copy-feedback[hidden] { display: none; }
+.mode-option em { max-width: 68ch; }
+@media (max-width: 720px) {
+  .trace-row { grid-template-columns: minmax(0, 1fr); }
+  .trace-row > [data-label] { padding-top: 8px; border-top: 1px solid var(--line); }
+  .trace-row > [data-label]:first-child { padding-top: 0; border-top: 0; }
+  .trace-row > [data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    color: var(--muted);
+    font-size: .68rem;
+    font-weight: 850;
+    letter-spacing: .015em;
+    line-height: 1.4;
+  }
+  .trace-row > [data-label]:nth-child(n+3) { padding-top: 8px; border-top: 1px solid var(--line); }
+}
+
+
+.methodology-toc {
+  display: grid;
+  grid-template-columns: minmax(180px, .7fr) minmax(0, 1.8fr);
+  gap: 22px;
+  margin: 26px 0 34px;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.methodology-toc-heading h2 { margin: 0 0 12px; font-size: clamp(1.25rem, 2.4vw, 1.8rem); line-height: 1.25; }
+.methodology-toc-heading > a { display: inline-block; margin-top: 6px; font-size: .85rem; font-weight: 750; }
+.methodology-toc ol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 18px;
+  margin: 0;
+  padding-left: 1.4rem;
+}
+.methodology-toc li { min-width: 0; padding-left: 3px; color: var(--muted); font-size: .84rem; line-height: 1.45; }
+.methodology-toc a { overflow-wrap: anywhere; }
+#system-content [id^="methodology-"] { scroll-margin-top: 20px; }
+@media (max-width: 720px) {
+  .methodology-toc { grid-template-columns: minmax(0, 1fr); gap: 14px; margin: 18px 0 24px; padding: 16px; }
+  .methodology-toc ol { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .methodology-toc li { font-size: .9rem; }
+}
