@@ -112,22 +112,28 @@
       <div class="section-title"><span class="section-number">B</span><div><p class="section-kicker">Вихід</p><h2 id="results-heading">Результати</h2></div></div>
       <span id="status-note" class="results-note">Канонічний режим</span>
     </div>
+    <div class="result-tabs" role="tablist" aria-label="Тип результату">
+      <button class="result-tab" id="tab-ukrainian" type="button" role="tab" aria-selected="true" aria-controls="panel-ukrainian" tabindex="0" data-result-tab="ukrainian">Український запис</button>
+      <button class="result-tab" id="tab-ipa" type="button" role="tab" aria-selected="false" aria-controls="panel-ipa" tabindex="-1" data-result-tab="ipa">IPA</button>
+      <button class="result-tab" id="tab-romanization" type="button" role="tab" aria-selected="false" aria-controls="panel-romanization" tabindex="-1" data-result-tab="romanization">Романізація</button>
+      <button class="result-tab" id="tab-analysis" type="button" role="tab" aria-selected="false" aria-controls="panel-analysis" tabindex="-1" data-result-tab="analysis">Аналіз</button>
+    </div>
     <div class="result-grid">
-      <article class="result-card">
+      <article id="panel-ukrainian" class="result-card" role="tabpanel" aria-labelledby="tab-ukrainian" data-result-panel="ukrainian">
         <div class="result-meta"><span>UA</span><strong id="ukrainian-output-label">Український запис</strong><button id="ukrainian-copy-button" class="copy-button" data-copy="ukrainian" type="button">Копіювати</button></div>
         <p id="result-ukrainian" class="result-body"></p>
         <div id="surface-reading" class="surface-reading" hidden><span>Поверхнева форма</span><strong id="result-surface"></strong></div>
       </article>
-      <article class="result-card">
+      <article id="panel-ipa" class="result-card" role="tabpanel" aria-labelledby="tab-ipa" data-result-panel="ipa" hidden>
         <div class="result-meta"><span>IPA</span><strong>Широкий IPA</strong><button class="copy-button" data-copy="ipa" type="button">Копіювати</button></div>
         <p id="result-ipa" class="result-body ipa"></p>
       </article>
-      <article class="result-card romanization-card">
+      <article id="panel-romanization" class="result-card romanization-card" role="tabpanel" aria-labelledby="tab-romanization" data-result-panel="romanization" hidden>
         <div class="result-meta"><span>RR</span><strong>Романізація (Revised Romanization)</strong><button class="copy-button" data-copy="romanization" type="button">Копіювати</button></div>
         <p id="result-romanization" class="result-body romanization" lang="ko-Latn"></p>
         <p class="romanization-note">Допоміжна латинська передача вже визначеної корейської поверхневої форми. Це не англійська вимова; IPA залишається фонетичною межею для українського запису.</p>
       </article>
-      <article class="result-card">
+      <article id="panel-analysis" class="result-card" role="tabpanel" aria-labelledby="tab-analysis" data-result-panel="analysis" hidden>
         <div class="result-meta"><span>AN</span><strong>Аналіз</strong><button class="copy-button" data-copy="analysis" type="button">Копіювати</button></div>
         <p id="result-analysis" class="result-body analysis"></p>
       </article>
