@@ -224,7 +224,10 @@ def _metrics(items: list[dict[str, Any]]) -> dict[str, Any]:
     if not items:
         return {
             "scored_tokens": 0, "exact_matches": 0, "exact_match_rate": None,
-            "character_error_rate": None, "reference_characters": 0,
+            "character_error_rate": None, "phoneme_error_rate": None,
+            "phonological_feature_error_rate_proxy": None, "phoneme_errors": 0,
+            "reference_phonemes": 0, "predicted_phonemes": 0,
+            "unsupported_feature_segments": 0, "reference_characters": 0,
         }
     exact = sum(bool(item["exact"]) for item in items)
     distance = sum(int(item["distance"]) for item in items)
@@ -565,13 +568,20 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         }
 
     try:
+        espeak_started = time.perf_counter()
         espeak_map, espeak_adapter = _load_espeak(words)
+        espeak_elapsed_ms = (time.perf_counter() - espeak_started) * 1000
         predictions["espeak_ng_ko"] = {word: {"ipa": ipa} for word, ipa in espeak_map.items()}
         engine_meta["espeak_ng_ko"] = {
             "status": "AVAILABLE" if len(espeak_map) == len(words) else "PARTIAL",
             "source": "eSpeak NG via phonemizer==3.3.0",
             "adapter": espeak_adapter, "unique_words": len(words), "outputs": len(espeak_map),
             "engine_errors": len(words) - len(espeak_map), "error_examples": [],
+            "runtime": {
+                "total_ms": round(espeak_elapsed_ms, 3),
+                "throughput_words_per_second": round(len(espeak_map) / (espeak_elapsed_ms / 1000), 3) if espeak_elapsed_ms > 0 else None,
+                "timing_scope": "one batched phonemizer call including backend startup; not directly comparable with per-word timings",
+            },
         }
     except Exception as exc:
         predictions["espeak_ng_ko"] = {}
@@ -582,15 +592,22 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         }
 
     try:
+        phonemize_started = time.perf_counter()
         phonemize_map, phonemize_adapter = _load_phonemize(
             args.phonemize_root, args.corpus, args.phonemize_output, words,
         )
+        phonemize_elapsed_ms = (time.perf_counter() - phonemize_started) * 1000
         predictions["phonemize_2_0_1"] = {word: {"ipa": ipa} for word, ipa in phonemize_map.items()}
         engine_meta["phonemize_2_0_1"] = {
             "status": "AVAILABLE" if len(phonemize_map) == len(words) else "PARTIAL",
             "source": "hans00/phonemize npm package 2.0.1",
             "adapter": phonemize_adapter, "unique_words": len(words), "outputs": len(phonemize_map),
             "engine_errors": len(words) - len(phonemize_map), "error_examples": [],
+            "runtime": {
+                "total_ms": round(phonemize_elapsed_ms, 3),
+                "throughput_words_per_second": round(len(phonemize_map) / (phonemize_elapsed_ms / 1000), 3) if phonemize_elapsed_ms > 0 else None,
+                "timing_scope": "includes Node subprocess startup and batch processing; not directly comparable with per-word timings",
+            },
         }
     except Exception as exc:
         predictions["phonemize_2_0_1"] = {}
