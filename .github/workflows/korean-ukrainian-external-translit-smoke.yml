@@ -152,6 +152,9 @@ jobs:
               json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
           )
           print(f"\nHikka/Shchegel outputs differ on {len(different)}/{len(items)} inputs.")
+          print('ClippyFirst/Hikka output-string differences:', len(native_differences['hikka']), '/', len(items))
+          print('ClippyFirst/Shchegel output-string differences:', len(native_differences['shchegel']), '/', len(items))
+          print("Native candidate-only or unavailable targets remain marked in the JSON report.")
           print("This is not an accuracy ranking: no independent Ukrainian gold labels are included.")
           PY
 
