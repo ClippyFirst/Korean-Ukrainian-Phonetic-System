@@ -81,3 +81,35 @@ Eligible/unique words: 999.
 - The feature-weighted score is a project-defined proxy. High unsupported-feature counts mean it must be interpreted cautiously and not as a standalone ranking.
 - These are Korean-to-IPA benchmark results, **not** Ukrainian target transcription accuracy. They do not validate normative Ukrainian spellings or IPA-to-Ukrainian pipeline consistency.
 
+
+
+## Expanded engine portfolio and Ukrainian-output checks (2026-10-29)
+
+### Existing IPA comparison: verified
+
+The exact-head multi-engine GitHub Actions run [40781704988](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40781704988) completed successfully at commit `365280e93a3b4a5ada0ff807c880cacf9236b6e7`. The job completed the pinned UGTPHON and SIGMORPHON comparisons, adapter tests, training-readiness/holdout audit, and uploaded the diagnostic artifact. This confirms the workflow ran successfully; it does not make the corpus normative gold or establish Ukrainian output accuracy.
+
+### Additional candidates and evidence gates
+
+| Candidate | Current evidence | Status | Acceptance criterion |
+|---|---|---|---|
+| KoG2P (2019 baseline) | Already included in both IPA benchmark datasets through a pinned external checkout; documented custom phone-to-IPA adapter is lossy | DONE_VERIFIED for the current diagnostic benchmark | Keep adapter limitations attached to every interpretation; improve only with an independently verified mapping |
+| KoG2Padvanced (2022 research implementation) | Public repository [seongmin-mun/KoG2Padvanced](https://github.com/seongmin-mun/KoG2Padvanced); README describes morphology-sensitive rules and requires Python, jamo, and KoNLPy/Kkma. Repository metadata reports no license and no root LICENSE file was found during inspection | BLOCKED_LICENSE | Obtain explicit license/permission or a license file from the author; then pin immutable commit, inspect dependencies and dictionary provenance, add isolated adapter, and run both existing IPA splits |
+| Novel morphological engine described at Interspeech 2026 | [Zenodo paper and downloadable PDF](https://zenodo.org/records/22167288) describe a syllable–morpheme-linked recursive rule engine and report results against g2pk, but the record exposes a paper PDF rather than a source-code repository or executable package | BLOCKED_IMPLEMENTATION | Locate an author-published source/model and installation contract; verify license and exact evaluation setup; then reproduce on the same pinned splits before comparing scores |
+| Hikka (Mikai Korean→Ukrainian system) | Documented public endpoint `POST https://api.mikai.me/public/v1/translit`, with `lang=ko` and `system=hikka`; endpoint contract supports batch `items` | PARTIAL_API_SMOKE_PENDING | Complete the same-input API smoke run; then build an independently adjudicated Ukrainian target set before computing CER/exact-match or declaring a winner |
+| Shchehel (Mikai Korean→Ukrainian system) | Same documented public endpoint, `system=shchegel`; a different target convention from Hikka, not a Korean IPA engine | PARTIAL_API_SMOKE_PENDING | Complete the same-input API smoke run; compare against independent target gold and document the precise system contract |
+| g2pk, hangul_to_ipa, eSpeak NG, phonemize | Already included in the existing IPA comparison workflow | DONE_VERIFIED for current diagnostic scope | Do not duplicate these integrations; future claims require repeat runs and gold suitable for the claim |
+
+### New same-input external transcription smoke workflow
+
+Added `.github/workflows/korean-ukrainian-external-translit-smoke.yml`. It calls the documented public API for Hikka and Shchegel using the same 20 Hangul inputs, checks HTTP/API success, verifies the output count and preservation of input order, prints each output, and uploads a JSON artifact with output differences and request wall time.
+
+This is a **connectivity and output-difference smoke test only**. It deliberately does not treat either system's output as gold and does not claim accuracy from agreement between the two systems. Its first run must pass before the smoke test is marked DONE_VERIFIED.
+
+### Next evidence-gated steps
+
+1. Complete the API smoke workflow and inspect the saved outputs for errors, unchanged unresolved strings, and Hikka/Shchegel differences.
+2. Add a traceable sample of the native system's Ukrainian output for exactly the same inputs; confirm the public browser path and Python research path implement the same contract before treating them as equivalent.
+3. Commission independent Korean-pronunciation and Ukrainian-transcription adjudication for a balanced target set, including word names, ordinary words, sentence context, morphology, and adversarial sound changes.
+4. Revisit KoG2Padvanced only after licensing is clarified. Do not vendor, redistribute, or claim a license for its code based on public visibility alone.
+5. Do not claim to have run the 2026 morphological engine until an author-published executable implementation is located and reproduced.
