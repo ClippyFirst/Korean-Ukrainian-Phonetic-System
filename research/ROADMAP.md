@@ -195,3 +195,14 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **Regression gates:** main-commit CI passed Python 3.11/3.12/3.13, browser tests/build (1,213 tests passed), and system verification. Python/browser surface differential remains 18/20 equal with known discrepancies at `넓죽하다` and `읽고`; NIKL live inventory job was skipped.
 - **Remaining TODO:** rerun manual-dispatch multi-engine/morphology benchmarks against main commit; build an independently adjudicated IPA-to-Ukrainian target corpus; resolve two surface mismatches with exact NIKL source evidence. Production morphology licensing remains BLOCKED on reviewed gold segmentation and rule-specific licenses.
 
+
+## Korean Revised Romanization audit view — 2026-10-28
+
+- **Status:** PARTIAL / in review. PR [#354](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/354), branch `feat/korean-revised-romanization-2026-10-28`, head `1cbbf4300b09d5faadeed46ac448ccb473622338` at the time of this entry.
+- **Implemented:** isolated RR rendering adapter; service result card and methodology explanation; copy support; fail-closed display when the G2P path supplies no resolved surface form; official NIKL examples in unit tests; all 11,172 modern Hangul syllables swept for empty/undefined mappings.
+- **Source:** [NIKL Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do) and [official sound-change examples](https://www.korean.go.kr/front/page/pageView.do?mn_id=97&page_id=P000150).
+- **Local verification:** isolated Node.js harness passed 6/6 tests, including the exhaustive syllable sweep. The harness copied the adapter into a temporary directory; it is not the repository's full test suite.
+- **CI:** workflow runs triggered during PR creation were still in progress at last inspection (browser regression/build and browser G2P tests); no final green exact-head status is claimed. Full `npm run check:release` and browser interaction verification remain unconfirmed.
+- **Critical scope boundary:** RR is rendered from the pronunciation path's surface Hangul. This checks the romanization adapter conditional on the upstream surface form; it does not validate G2P, IPA, or Ukrainian targets. The current code is basic RR coverage, not a standards-certified implementation of every NIKL convention.
+- **Remaining acceptance:** exact-head CI must pass; manually inspect the live/browser card and copy action; complete an official-rule matrix for coda allophones, liquid handling, sound changes, word boundaries, capitalization and mixed scripts; independently compare a broader official NIKL example set; keep Latin-to-Hangul reverse conversion deferred until ambiguity/status handling has a separate specification.
+- **Disposition:** do not merge or describe as fully NIKL-conformant until these gates are met.
