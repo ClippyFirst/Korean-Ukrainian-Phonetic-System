@@ -2,6 +2,11 @@ name: Korean-to-Ukrainian external transcription smoke comparison
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - "bench/extended-metrics-runtime-2026-10-29"
+    paths:
+      - ".github/workflows/korean-ukrainian-external-translit-smoke.yml"
   pull_request:
     paths:
       - ".github/workflows/korean-ukrainian-external-translit-smoke.yml"
