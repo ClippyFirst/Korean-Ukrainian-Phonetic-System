@@ -8,7 +8,13 @@ assert.ok(passage.length > 1000, 'the live smoke fixture must remain a long adve
 
 const browser = await chromium.launch({ headless: true });
 try {
-  const page = await browser.newPage();
+  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: () => Promise.reject(new Error('simulated clipboard permission denial')) }
+    });
+  });
   const pageErrors = [];
   page.on('pageerror', (error) => pageErrors.push(error.message));
 
@@ -90,6 +96,67 @@ try {
   assert.ok(ipa.length > 100, 'long input should produce a substantial IPA result');
   assert.match(status, /g2pK JS/u, 'the live page must stay in the practical JavaScript-port mode');
   assert.deepEqual(pageErrors, [], 'the live page must not throw browser runtime errors');
+
+
+  // The live region should communicate a useful result state/value, not only
+  // a generic "processing complete" message.
+  await page.waitForFunction(() => {
+    const message = document.querySelector('#live-region')?.textContent || '';
+    return message.includes('Обробку завершено') &&
+      (message.includes('Український запис:') || message.includes('Дослідницький кандидат:') || message.includes('не підтверджено'));
+  }, null, { timeout: 5000 });
+
+  // Technical provenance stays available but is no longer required to choose
+  // a mode. Native details/summary preserves keyboard access.
+  const modeDisclosure = page.locator('.mode-disclosure');
+  assert.equal(await modeDisclosure.isVisible(), true, 'technical caveat disclosure must be visible');
+  await modeDisclosure.locator('summary').click();
+  assert.match(await modeDisclosure.innerText(), /JavaScript-порт g2pK/u,
+    'technical engine provenance must remain available on demand');
+
+  // Simulate clipboard permission denial and verify the fallback selects the
+  // intended field and gives visible, actionable feedback.
+  await page.locator('[data-copy="ipa"]').click();
+  const copyFeedback = page.locator('#copy-feedback');
+  await copyFeedback.waitFor({ state: 'visible', timeout: 3000 });
+  assert.match(await copyFeedback.innerText(), /Текст виділено.*Ctrl\+C/u,
+    'clipboard denial must provide visible keyboard recovery guidance');
+  const selectedText = await page.evaluate(() => window.getSelection()?.toString() || '');
+  assert.equal(selectedText, ipa, 'clipboard fallback must select the exact intended output');
+
+  // Verify each trace value has a mobile-visible field label, not merely a
+  // desktop column heading that disappears at narrow widths.
+  await page.locator('.trace-disclosure summary').click();
+  await page.locator('#trace-list .trace-row').first().waitFor({ state: 'visible', timeout: 5000 });
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobileTrace = await page.evaluate(() => {
+    const row = document.querySelector('#trace-list .trace-row');
+    const field = row?.querySelector('[data-label]');
+    return {
+      label: field?.dataset.label || '',
+      pseudo: field ? getComputedStyle(field, '::before').content : 'none',
+      viewport: window.innerWidth,
+      document: document.documentElement.scrollWidth
+    };
+  });
+  assert.ok(mobileTrace.label.length > 0, 'mobile trace values must have field labels');
+  assert.notEqual(mobileTrace.pseudo, 'none', 'mobile trace labels must be visibly rendered');
+  assert.ok(mobileTrace.document <= mobileTrace.viewport,
+    `mobile trace must not introduce horizontal overflow (${mobileTrace.document}px > ${mobileTrace.viewport}px)`);
+
+  // Check the methodology contents and one representative fragment on mobile.
+  const systemUrl = new URL('system.html', baseUrl);
+  systemUrl.searchParams.set('__smoke', String(Date.now()));
+  await page.goto(systemUrl.toString(), { waitUntil: 'networkidle', timeout: 60000 });
+  const toc = page.locator('.methodology-toc');
+  assert.equal(await toc.isVisible(), true, 'methodology contents must be visible');
+  await toc.locator('a[href="#methodology-00a"]').click();
+  await page.waitForFunction(() => location.hash === '#methodology-00a');
+  assert.ok(await page.locator('#methodology-00a').isVisible(),
+    'methodology contents links must navigate to real section anchors');
+  assert.deepEqual(pageErrors, [], 'UX smoke must not introduce browser runtime errors');
+
+  console.log('PASS live UX smoke: live result announcement; mode disclosure; clipboard-denial fallback; mobile trace labels at 390px; methodology navigation');
 
   console.log(`PASS live browser smoke: ${passage.length} Korean input characters; ${acceptedOutput ? 'accepted output' : 'provisional candidate'} ${displayedUkrainian.length} chars; ${ipa.length} IPA chars; status=${status}`);
 } finally {
