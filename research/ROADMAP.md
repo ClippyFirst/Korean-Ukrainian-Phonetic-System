@@ -217,3 +217,13 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **Evidence added:** `tests/web-ui-contract.test.mjs` checks the accessible input hint, disclosure structure, output hierarchy and responsive CSS; `docs/WEB-SERVICE-QA.md` records acceptance criteria.
 - **Acceptance still required:** exact-head CI (all existing tests and static build), deployment smoke check after merge, and visual inspection at desktop/mobile widths. The connector-only environment does not provide a local checkout or actual browser screenshot capture in this pass; CSS-source tests do not prove rendered visual quality.
 - **Next action:** run PR CI, repair any regression, then review the deployed result before marking UX work DONE_VERIFIED.
+
+
+## Provisional UA candidate UX correction (2026-10-28)
+
+- **Status: PARTIAL — code and UI contract tests committed on branch; CI and rendered-page verification pending.**
+- **Problem:** a candidate was surfaced as the primary UA result with a "copy candidate" action while a second warning block repeated the same candidate and said not to use it. This created two competing result locations and made the copy action appear endorsed.
+- **Decision:** when the UA target is provisional/unavailable, show a neutral status in the primary result slot and suppress its copy action. Show the candidate once in a distinct research panel with explicit "not confirmed" wording and a separate "Копіювати кандидата" control. Copy feedback also names it as an unconfirmed research candidate.
+- **Preserved:** engine behavior, IPA-first mapping, candidate value, IPA/RR/analysis/trace, status reporting, confirmed-target copy path.
+- **Evidence:** new source-level assertions in `tests/web-ui-contract.test.mjs`; acceptance criteria in `docs/WEB-SERVICE-QA.md`.
+- **Remaining gate:** PR CI, browser/static build, and actual visual review of candidate and confirmed states. No linguistic status is upgraded by this UI change.

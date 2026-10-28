@@ -84,3 +84,19 @@ Acceptance checks:
 - visible keyboard focus and reduced-motion handling remain in force.
 
 The automated UI contract checks source structure and CSS intent. A green build is not a substitute for visual inspection at real viewport sizes or assistive-technology testing.
+
+
+## Provisional Ukrainian candidate UX — 2026-10-28
+
+When the engine cannot confirm the Ukrainian target, the accepted-result slot must not visually or behaviorally impersonate a final result.
+
+Acceptance checks:
+- the main UA result card displays a neutral status ("Немає підтвердженого запису") rather than an empty output or a candidate;
+- the main UA copy action is hidden while the target is provisional/unavailable;
+- a single separate research panel labels the candidate as unconfirmed, briefly explains its limited purpose, and offers a specifically named "Копіювати кандидата" action;
+- the candidate is not repeated as both the primary output and a warning block;
+- copying the candidate announces that it is an unconfirmed research candidate;
+- the IPA, RR, analysis, trace, and actual engine status remain visible and unchanged;
+- when a confirmed target is available, the normal Ukrainian output and copy action return.
+
+This is a presentation/interaction correction only; it does not promote candidates to accepted orthography or change linguistic mapping.

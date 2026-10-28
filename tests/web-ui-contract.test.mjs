@@ -109,3 +109,22 @@ test('service UX keeps the hero, simplifies the workbench, and progressively dis
   assert.match(css,/\.trace-disclosure\[open\]/);
   assert.match(css,/@media\s*\(max-width:\s*720px\)/);
 });
+
+
+test('unconfirmed Ukrainian candidates are separated from the accepted-result slot',()=>{
+  const html=read('index.html');
+  const main=read('src/main.js');
+  const css=read('src/styles/main.css');
+  assert.match(html,/id="candidate-panel" class="candidate-panel"/);
+  assert.match(html,/Кандидат — не підтверджений результат/);
+  assert.match(html,/id="candidate-copy-button"[^>]*data-copy="candidate"/);
+  assert.match(html,/id="result-ukrainian"/);
+  assert.doesNotMatch(html,/id="candidate-panel" class="issue-state"/);
+  assert.match(main,/output\.textContent=hasCandidate\?'':targetUnconfirmed\?'Немає підтвердженого запису'/);
+  assert.match(main,/ukrainianCopyButton\.hidden=targetUnconfirmed/);
+  assert.match(main,/output\.classList\.toggle\('result-unconfirmed',targetUnconfirmed\)/);
+  assert.match(main,/key==='candidate'\?candidateValue/);
+  assert.match(main,/Непідтверджений дослідницький кандидат скопійовано/);
+  assert.match(css,/\.candidate-panel\s*\{/);
+  assert.match(css,/\.result-body\.result-unconfirmed\s*\{/);
+});
