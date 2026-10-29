@@ -19,8 +19,10 @@ test('Hanja is an additional output in the requested order with an accessible co
   assert.deepEqual(outputPositions, [...outputPositions].sort((a, b) => a - b), 'outputs remain Romanization → IPA → Ukrainian → Hanja');
   assert.match(main, /import \{convertHangulToHanja, createHanjaConverter\} from '\.\/app\/hanja\.js'/u);
   assert.match(main, /renderHanja\(value\)/u);
-  assert.match(main, /import\('\.\/app\/hanja-dictionary-data\.js'\)/u);
+  assert.match(main, /import\.meta\.glob\('\.\/app\/hanja-dictionary\/hanja-dictionary-\*\.js'\)/u);
   assert.match(main, /hanjaOutput\.textContent=\(fullHanjaConverter\|\|convertHangulToHanja\)\(value\)/u);
+  assert.match(main, /createHanjaConverter\(loadedHanjaWordMap\)/u);
+  assert.match(main, /hanjaDictionaryChunks\[filename\]/u);
   assert.match(main, /key==='hanja'\?hanjaOutput/u);
   assert.equal(packageJson.scripts.prebuild, 'node scripts/prepare-hanja-dictionary.mjs');
   assert.equal(packageJson.scripts.predev, 'node scripts/prepare-hanja-dictionary.mjs');
@@ -32,5 +34,5 @@ test('Hanja conversion is deterministic and has no external runtime network path
   assert.match(html, /connect-src 'none'/u);
   assert.match(main, /const ipa=document\.querySelector\('#result-ipa'\)/u);
   assert.match(main, /const romanization=document\.querySelector\('#result-romanization'\)/u);
-  assert.match(main, /createHanjaConverter\(data\.HANJA_WORD_DATA\)/u);
+  assert.match(main, /createHanjaConverter\(loadedHanjaWordMap\)/u);
 });
