@@ -460,3 +460,8 @@ button { color: inherit; }
 .ua-output-option:disabled { opacity:.48; cursor:not-allowed; }
 #result-ukrainian[hidden], #candidate-panel[hidden] { display:none !important; }
 .result-grid > .result-card[hidden] { display:none !important; }
+
+/* Hanja is a separate deterministic lexical annotation layer, never a phonetic output. */
+.hanja-card { border-top:3px solid var(--line-strong); }
+.result-body.hanja { font-family:"Noto Sans KR","Noto Sans CJK KR","Arial Unicode MS",sans-serif; font-size:clamp(1.15rem,2vw,1.55rem); line-height:1.8; font-weight:650; }
+.hanja-note { margin:12px 0 0; padding-top:10px; border-top:1px solid var(--line); color:var(--muted); font-size:.76rem; line-height:1.55; }
