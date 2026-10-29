@@ -354,3 +354,59 @@ In run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-Sy
 | SIGMORPHON 2021 (999 occurrences) | 0% | 159.827% | 177.376% | 126.426% | 41,150.220 ms | 24.277 words/s |
 
 CER/PER above 100% are possible when edit distance exceeds reference length. These outputs are badly misaligned with the IPA references under the current pinned model/input/output contract, so this is a failed practical candidate in this configuration, not a general verdict on all ByT5 G2P models. It should not be ranked as a contender until the model prefix/token convention and output mapping are corrected and a new same-protocol run succeeds. The run's paired comparisons show no model-only exact matches on either dataset.
+
+
+## Expanded candidate scores and repeated timing (run 40833849437; baseline jobs verified)
+
+Source run: [40833849437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833849437), commit `97ffa7bbf8cfe2e0e853abbce260aadb52b37639`. The multi-engine job and both neural inference jobs succeeded and uploaded diagnostic artifacts. These tables are the verified expanded baseline for HAMA, kokorog2p, and KoG2Padvanced; the exact-head rerun [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742) adds the missing KoG2Padvanced checkout path for SIGMORPHON and reruns all candidates. Do not interpret the KoG2Padvanced SIGMORPHON row below as an algorithm score: the workflow invocation in this older run omitted its checkout-root argument.
+
+### UGTPHON Korean test split — 2,703 token occurrences / 1,907 unique words
+
+Error rates are percentages; lower is better. Timing columns use the median of five post-warm-up measurements. p50/p95 are per-word call latency only where available; batch-based calls are explicitly not comparable.
+
+| Engine | Exact match ↑ | CER ↓ | PER ↓ | Feature proxy ↓ | Coverage | Warm median ms | Approx. words/s at median | p50 / p95 ms |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 53.002% | 9.170% | 9.614% | 4.877% | 99.815% | 499.754 | 3,816 | 0.235 / 0.449 |
+| g2pk 0.9.4 | 53.089% | 9.229% | 9.647% | 4.895% | 100% | 24,545.786 | 78 | 12.803 / 13.295 |
+| KoG2P (2019) | 27.303% | 19.512% | 19.644% | 7.018% | 100% | 464.022 | 4,110 | 0.238 / 0.299 |
+| KoG2Padvanced (2022) | 47.318% | 10.677% | 11.338% | 6.156% | 100% | 1,207.706 | 1,579 | batch |
+| phonemize 2.0.1 | 42.545% | 14.353% | 14.258% | 7.706% | 100% | 247.800 | 7,696 | batch |
+| kokorog2p 0.9.15 | 23.714% | 21.182% | 21.633% | 6.948% | 100% | 1,065.624 | 1,790 | 0.557 / 0.574 |
+| hangul_to_ipa | 16.241% | 24.805% | 30.809% | 11.778% | 100% | 1,345.426 | 1,417 | 0.673 / 0.937 |
+| HAMA 1.7.0 | 16.907% | 25.108% | 23.911% | 8.428% | 100% | 57,491.958 | 33 | batch |
+| eSpeak NG Korean | 8.139% | 33.610% | 38.316% | 13.410% | 100% | 48.488 | 39,329 | batch |
+
+### SIGMORPHON 2021 Korean test split — 999 token occurrences / 999 unique words
+
+| Engine | Exact match ↑ | CER ↓ | PER ↓ | Feature proxy ↓ | Coverage | Warm median ms | Approx. words/s at median | p50 / p95 ms |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 35.772% | 14.698% | 16.234% | 7.549% | 99.900% | 211.299 | 4,728 | 0.177 / 0.324 |
+| g2pk 0.9.4 | 35.335% | 14.822% | 16.313% | 7.599% | 100% | 12,678.924 | 79 | 12.658 / 12.852 |
+| KoG2P (2019) | 18.719% | 21.833% | 23.663% | 8.608% | 100% | 233.207 | 4,284 | 0.230 / 0.268 |
+| KoG2Padvanced (2022) | **Not scored in this run** | — | — | — | 0% | — | — | checkout argument missing |
+| phonemize 2.0.1 | 28.929% | 17.439% | 18.266% | 8.462% | 100% | 217.685 | 4,589 | batch |
+| kokorog2p 0.9.15 | 14.114% | 24.449% | 26.888% | 9.302% | 100% | 544.931 | 1,833 | 0.545 / 0.559 |
+| hangul_to_ipa | 8.909% | 29.845% | 36.347% | 12.814% | 100% | 701.905 | 1,423 | 0.672 / 0.933 |
+| HAMA 1.7.0 | 12.713% | 27.616% | 27.090% | 9.324% | 100% | 25,296.734 | 39 | batch |
+| eSpeak NG Korean | 4.304% | 40.724% | 48.705% | 17.787% | 100% | 32.108 | 31,114 | batch |
+
+The words/s column is derived from each engine's repeated median and unique-word count, not from corpus-token count. eSpeak and phonemize are warm batch timings; HAMA and KoG2Padvanced use sentence-level batch calls. These batch values must not be ranked as if they were per-word-call latencies. Initial/cold-call times, repeat samples, bootstrap intervals, and per-case outputs remain in the downloadable JSON artifact: [artifact 12881304277](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833849437/artifacts/12881304277).
+
+### Neural candidates (single cold model-load + inference run)
+
+| Candidate | Dataset | Exact match | CER | PER | Feature proxy | Coverage | Total time | Throughput |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| CharsiuG2P multilingual ByT5 | UGTPHON | 88.531% (2,393/2,703) | 3.624% | 3.356% | 2.399% | 100% | 275.556 s | 6.921 tokens/s |
+| CharsiuG2P multilingual ByT5 | SIGMORPHON | 70.971% (709/999) | 5.408% | 5.582% | 2.136% | 100% | 108.710 s | 9.190 tokens/s |
+| Licensed multilingual ByT5 tiny | UGTPHON | 0% (0/2,703) | 164.574% | 172.425% | 118.953% | 100% | cold model run; see artifact | 24.277 tokens/s |
+| Licensed multilingual ByT5 tiny | SIGMORPHON | 0% (0/999) | 159.827% | 177.376% | 126.426% | 100% | cold model run; see artifact | 22.089 tokens/s |
+
+Neural runtime includes checkpoint/tokenizer loading and batched decoding, so it is not directly comparable with the in-process rule-engine timings. CharsiuG2P has no explicit license on the resolved model weights and its output convention is not independently specified for SIGMORPHON; keep it research-only and do not redistribute weights. Its score is a strong diagnostic result, but training-set overlap with public benchmark sources has not been ruled out. ByT5 tiny returned zero exact matches and malformed/misaligned phoneme sequences under the pinned `<kor>:` input prefix; it is not a viable candidate under this configuration. Artifacts: [CharsiuG2P diagnostic 12881174231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833849437/artifacts/12881174231) and [licensed ByT5 diagnostic 12881342670](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833849437/artifacts/12881342670).
+
+### Interpretation and exact-head rerun
+
+- Among currently scored non-neural engines, native and g2pk remain nearly tied on exact match; native has lower CER/PER/feature proxy on both sets and much lower per-word latency. The repeated median g2pk/native total-time ratio in this run is about 49.1× on UGTPHON and 60.0× on SIGMORPHON.
+- KoG2Padvanced is a meaningful candidate on UGTPHON (47.318% exact match), but its SIGMORPHON result is **not measured**, not a zero-accuracy result. The latest workflow commit adds the missing pinned checkout root to the SIGMORPHON invocation.
+- HAMA successfully emitted IPA for every token but has low exact match and very high batch latency on these word-level sets. This is empirical Korean performance, not a claim that HAMA lacks other use cases.
+- Memory remains `NOT_MEASURED`; repeated timing stability is available for rule/batch candidates from five samples, while neural timing repeatability remains `NOT_MEASURED`.
+- The current exact-head run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742) is the acceptance run for the fixed KoG2Padvanced SIGMORPHON path and the refreshed full candidate/neural results. Its result must supersede the partial rows above where applicable.
