@@ -534,7 +534,7 @@ test('fortisness remains in IPA and is preserved by doubled Ukrainian graphemes'
     '맛없다': ['мадоптта', 'ma.dʌp̚.t͈a'],
     '맛있다': ["мадіттта", 'ma.dit̚.t͈a'],
     '멋있다': ["модіттта", 'mʌ dit̚ t͈a'],
-    '깎아': ['кака', 'k͈a k͈a'],
+    '깎아': ['ккакка', 'k͈a k͈a'],
     '있어': ["іссо", 'i s͈ʌ'],
     '쫓아': ["ччоч'а", 'tɕ͈o tɕʰa'],
     '쌓이다': ["ссаіда", 's͈a i da'],

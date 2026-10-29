@@ -27,7 +27,7 @@ const derivedRegressions = [
   ['좋아도', '조아도', 'чо|а|до', 'tɕoː|a|do', '§12(4)', null],
   ['맑을', '말글', 'мал|ґил', 'mal|ɡɯl', '§14', null],
   ['없었다', '업썯따', "оп|ссот|тта", 'ʌp̚|s͈ʌt̚|t͈a', '§14', '§23'],
-  ['각하', '가카', 'ка|ка', 'ka|kʰa', '제12항 붙임 1', null],
+  ['각하', '가카', "ка|к'а", 'ka|kʰa', '제12항 붙임 1', null],
 ];
 
 test('reported complex-coda forms have exact official source attestations', () => {
@@ -125,7 +125,7 @@ test('the other reported palatalization forms remain covered, including a whole 
 
 test('§14 NIKL complex-coda liaison examples preserve official particle readings', () => {
   const cases = [
-    ['품삯이', '품싹씨', "п'ум|ссак|ші", 'pʰum|s͈ak̚|ɕ͈i'],
+    ['품삯이', '품싹씨', "п'ум|ссак|шші", 'pʰum|s͈ak̚|ɕ͈i'],
     ['품삯을', '품싹쓸', "п'ум|ссак|ссил", 'pʰum|s͈ak̚|s͈ɯl'],
     ['품삯으로', '품싹쓰로', "п'ум|ссак|сси|ро", 'pʰum|s͈ak̚|s͈ɯ|ɾo'],
     ['외곬에', '외골쎄', "ве|ґол|ссе", 'ø|ɡol|s͈e'],
@@ -205,7 +205,7 @@ test('difficult passage forms have sourced IPA and render Ukrainian only from th
     ['찾았다','tɕʰa dʑa t͈a',"ч'аджатта"],
     ['앉히다','an tɕʰi da',"анч'іда"],
     ['해돋이','hɛ do dʑi','гедоджі'],
-    ['품삯이','pʰum.s͈ak̚.ɕ͈i',"п'умссакші"],
+    ['품삯이','pʰum.s͈ak̚.ɕ͈i',"п'умссакшші"],
     ['품삯을','pʰum s͈ak̚ s͈ɯl',"п'умссакссил"],
     ['품삯으로','pʰum s͈ak̚ s͈ɯ ɾo',"п'умссакссиро"],
     ['외곬에','ø ɡol s͈e',"веґолссе"],
