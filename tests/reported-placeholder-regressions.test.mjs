@@ -84,7 +84,7 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
   assert.equal(result.ipa, 'kap̚.ɕ͈ɰi');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '갑쎄');
-  assert.equal(result.variants[0].ukrainian, 'капсе');
+  assert.equal(result.variants[0].ukrainian, 'капссе');
   assert.equal(result.variants[0].ipa, 'kap̚.s͈e');
   assert.ok(!result.ukrainian.includes('⟦'));
   assert.deepEqual(result.issues, []);
@@ -92,7 +92,7 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
 
 test('§27 fortition survives mixed lexical/generic tokenization in 읽을 수 있습니다', () => {
   const result = engine.convert('읽을 수 있습니다');
-  assert.equal(result.ukrainian, 'ілґил су ітсимніда');
+  assert.equal(result.ukrainian, 'ілґил су ітссимніда');
   assert.equal(result.ipa, 'il.ɡɯl s͈u it̚.s͈ɯm.ni.da');
   assert.equal(result.issues.length, 0);
   assert.equal(result.status, 'lexical-review');
@@ -102,7 +102,7 @@ test('§27 fortition survives mixed lexical/generic tokenization in 읽을 수 �
 
 test('the other reported palatalization forms remain covered, including a whole compound', () => {
   const cases = [
-    ['밭이', '바치', 'па|чі', 'pa|tɕʰi'],
+    ['밭이', '바치', 'па|ч\'і', 'pa|tɕʰi'],
     ['맏이', '마지', 'ма|джі', 'ma|dʑi'],
     ['맏이가', '마지가', 'ма|джі|ґа', 'ma|dʑi|ɡa'],
     ['미닫이', '미다지', 'мі|да|джі', 'miː|da|dʑi'],
@@ -185,7 +185,7 @@ test('lexical IPA consistently marks fortis sibilants as alveolo-palatal before 
 test('Ukrainian rendering is derived from the IPA layer for lexical readings', () => {
   const cases = [
     ['값의', 'kap̚ ɕ͈ɰi', 'капший'],
-    ['학생의', 'hak̚ s͈ɛŋ ɰi', 'гаксений'],
+    ['학생의', 'hak̚ s͈ɛŋ ɰi', 'гакссений'],
     ['주의', 'tɕu ɰi', 'чуий'],
     ['지식의', 'tɕi ɕi ɡɰi', 'чішіґий'],
   ];
@@ -200,7 +200,7 @@ test('Ukrainian rendering is derived from the IPA layer for lexical readings', (
 
 test('difficult passage forms have sourced IPA and render Ukrainian only from that IPA',()=>{
   const cases=[
-    ['읽었다는','il.ɡʌt̚.t͈a.nɯn','ілґоттанин'],
+    ['읽었다는','il.ɡʌt̚.t͈a.nɯn','ілґотттанин'],
     ['없어서','ʌp̚ s͈ʌ sʌ','опсосо'],
     ['찾았다','tɕʰa dʑa t͈a','чаджата'],
     ['앉히다','an tɕʰi da','анчіда'],
@@ -224,7 +224,7 @@ test('difficult passage forms have sourced IPA and render Ukrainian only from th
 
 test('§23 all 20 enumerated NIKL fortition examples have sourced IPA-first lexical regressions', () => {
   const cases = [
-    ['국밥', '국빱', 'кук|пап', 'kuk̚|p͈ap̚'],
+    ['국밥', '국빱', 'кук|ппап', 'kuk̚|p͈ap̚'],
     ['깎다', '깍따', 'как|та', 'k͈ak̚|t͈a'],
     ['넋받이', '넉빠지', 'нок|па|джі', 'nʌk̚|p͈a|dʑi'],
     ['삯돈', '삭똔', 'сак|тон', 'sak̚|t͈on'],

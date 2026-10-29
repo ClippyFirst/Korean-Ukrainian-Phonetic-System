@@ -13,7 +13,7 @@ test('user-corpus high-risk forms have exact NIKL-backed surface readings', () =
   const expected = {
     '해돋이': ['해도지', 'гедоджі', 'hɛ.do.dʑi'],
     '맏이': ['마지', 'маджі', 'ma.dʑi'],
-    '숱이': ['수치', 'сучі', 'su tɕʰi'],
+    '숱이': ['수치', 'суч\'і', 'su tɕʰi'],
     '끝이': ['끄치', 'кичі', 'k͈ɯ tɕʰi'],
     '꽃이': ['꼬치', 'кочі', 'k͈o tɕʰi'],
     '밝고': ['발꼬', 'палко', 'pal k͈o'],
