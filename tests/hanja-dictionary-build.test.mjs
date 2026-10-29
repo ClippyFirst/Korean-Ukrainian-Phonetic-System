@@ -46,6 +46,6 @@ test('generated browser module contains only a compact deterministic word map an
   assert.match(module, /export const HANJA_WORD_MAP/u);
   assert.match(module, /"경제":"經濟"/u);
   assert.match(module, /sourceCommit/u);
-  assert.match(module, /wordCount: 2/u);
+  assert.match(module, /wordReadingCount: 2/u);
   assert.doesNotMatch(module, /transformers|onnxruntime|fetch\(/iu);
 });
