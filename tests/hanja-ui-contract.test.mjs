@@ -11,6 +11,10 @@ test('Hanja is an additional output and has an accessible copy control', () => {
   assert.match(html, /id="panel-hanja"[^>]*data-result-panel="hanja"/u);
   assert.match(html, /id="result-hanja"[^>]*lang="ko"/u);
   assert.match(html, /data-copy="hanja"/u);
+  const outputOrder = ['panel-romanization', 'panel-ipa', 'panel-ukrainian', 'panel-hanja'];
+  const outputPositions = outputOrder.map((id) => html.indexOf(`id="${id}"`));
+  assert.ok(outputPositions.every((position) => position >= 0), 'all primary outputs exist');
+  assert.deepEqual(outputPositions, [...outputPositions].sort((a, b) => a - b), 'outputs remain Romanization → IPA → Ukrainian → Hanja');
   assert.match(main, /import \{convertHangulToHanja\} from '\.\/app\/hanja\.js'/u);
   assert.match(main, /hanjaOutput\.textContent=convertHangulToHanja\(value\)/u);
   assert.match(main, /key==='hanja'\?hanjaOutput/u);
