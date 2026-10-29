@@ -175,6 +175,10 @@ jobs:
                     f"latency_p50_ms={runtime.get('per_word_latency', {}).get('p50_ms')} "
                     f"latency_p95_ms={runtime.get('per_word_latency', {}).get('p95_ms')} "
                     f"timing_scope={runtime.get('timing_scope', runtime.get('per_word_latency', {}).get('measurement_note'))}")
+              repeat = runtime.get("repeatability", {})
+              print(f"  repeated_runs={repeat.get('measured_repetitions')} "
+                    f"repeat_median_ms={repeat.get('total_ms_median')} "
+                    f"repeat_min_ms={repeat.get('total_ms_min')} repeat_max_ms={repeat.get('total_ms_max')}")
               if "paired_with_native" in m:
                   p = m["paired_with_native"]
                   ci_delta = p.get("paired_bootstrap_delta_95pct_ci", {})
