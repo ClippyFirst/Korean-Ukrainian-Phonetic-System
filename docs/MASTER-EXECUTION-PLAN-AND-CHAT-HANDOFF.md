@@ -1,3 +1,28 @@
+# Continuation — Korean aspiration and fortis output convention (2026-10-29)
+
+| Task | Status | Acceptance evidence |
+|---|---|---|
+| Aspiration apostrophe | PARTIAL | Canonical IPA mappings, sequence override, and focused Python/browser tests updated; exact-head CI not yet run. |
+| Fortis doubling | PARTIAL | Five fortis IPA mappings now retain doubled Ukrainian graphemes; focused Python/browser tests added; exact-head CI not yet run. |
+| Generated artifact parity | BLOCKED pending verification | Browser artifact mirrors the intended rows; generator check must pass. |
+| Full release readiness | NOT READY | Independent IPA adjudication, target review, benchmark, and release gates remain open. |
+
+## Change contract
+
+- /kʰ/ → к', /tʰ/ → т', /pʰ/ → п', /tɕʰ/ → ч'.
+- /k͈/ → кк, /t͈/ → тт, /p͈/ → пп, /s͈/ → сс, /tɕ͈/ → чч.
+- /kʰjʌ/ → к'йо.
+- IPA remains the sole target-adapter input. No direct Hangul-to-Ukrainian substitutions were introduced.
+
+## Verification status
+
+- Inspected default branch at `716b32df7b52e84849cc2e9926868942857d48bb`.
+- Local tests/build were not executed in this connector-only session.
+- Required checks: `npm run check:ipa-target-data`, `npm test`, `npm run build`, and `pytest tests/test_ipa_target_renderer.py`.
+- Do not mark DONE_VERIFIED or release-ready until exact-head CI passes.
+
+---
+
 # Final execution checkpoint — 2026-10-27
 
 ## Branch and commit ledger

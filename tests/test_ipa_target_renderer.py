@@ -302,3 +302,14 @@ def test_pipeline_opt_in_profile_gate_withholds_unadjudicated_and_partial_profil
 
     with pytest.raises(TypeError, match="require_adjudicated_ipa_profile"):
         transliterate_korean("가", require_adjudicated_ipa_profile="yes")
+
+def test_korean_aspiration_is_marked_with_apostrophe():
+    for ipa, expected in [("kʰ", "к'"), ("tʰ", "т'"), ("pʰ", "п'"), ("tɕʰ", "ч'"), ("kʰjʌ", "к'йо")]:
+        result = render_ipa_sequence_to_ukrainian(ipa)
+        assert result["ukrainian_orthography"] == expected, ipa
+
+
+def test_korean_fortis_consonants_are_not_collapsed_in_ukrainian_output():
+    for ipa, expected in [("k͈", "кк"), ("t͈", "тт"), ("p͈", "пп"), ("s͈", "сс"), ("tɕ͈", "чч")]:
+        result = render_ipa_sequence_to_ukrainian(ipa)
+        assert result["ukrainian_orthography"] == expected, ipa

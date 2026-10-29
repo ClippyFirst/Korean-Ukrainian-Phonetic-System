@@ -71,3 +71,10 @@ A sequence made only of syllable delimiters, word-boundary markers, or vowel-len
 
 
 The browser labels `model-selected` output as a project-defined correspondence that has not been independently validated. This is not a claim that the output is wrong; it accurately distinguishes deterministic application of the author's system from independent target-language adjudication.
+
+## Korean aspiration and fortis output convention (2026-10-29)
+
+- Aspirated onsets use an apostrophe immediately after the Ukrainian consonant: /kʰ/ → к', /tʰ/ → т', /pʰ/ → п', /tɕʰ/ → ч'. Thus /kʰjʌ/ → к'йо.
+- Fortis onsets preserve doubling: /k͈/ → кк, /t͈/ → тт, /p͈/ → пп, /s͈/ → сс, /tɕ͈/ → чч.
+- IPA remains the only input to the target adapter; these are IPA-to-Ukrainian correspondence decisions, not direct Hangul substitutions.
+- These are project-specific practical orthography choices, not a claim about a national Ukrainian standard.

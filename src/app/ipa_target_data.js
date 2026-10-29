@@ -211,7 +211,7 @@ export const IPA_TARGET_MAPPINGS = [
   {
     "mapping_id": "KUA-CAN-3bf297c0d107",
     "source_ipa": "kʰ",
-    "target_grapheme": "к",
+    "target_grapheme": "к'",
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅋ:kʰ",
@@ -227,8 +227,8 @@ export const IPA_TARGET_MAPPINGS = [
       "KUA-IPA-015"
     ],
     "source_ipa": "kʰjʌ",
-    "target_grapheme": "кхьо",
-    "status": "provisional",
+    "target_grapheme": "к'йо",
+    "status": "model-selected",
     "scope": "ipa-sequence",
     "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "Existing project-level exception retained as provisional; aspiration spelling remains an explicit review item and is not generalized to other contexts.",
@@ -254,7 +254,7 @@ export const IPA_TARGET_MAPPINGS = [
   {
     "mapping_id": "KUA-CAN-b89deca165fc",
     "source_ipa": "k͈",
-    "target_grapheme": "к",
+    "target_grapheme": "кк",
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㄲ:k͈",
@@ -445,7 +445,7 @@ export const IPA_TARGET_MAPPINGS = [
   {
     "mapping_id": "KUA-CAN-a7e17d5666c2",
     "source_ipa": "pʰ",
-    "target_grapheme": "п",
+    "target_grapheme": "п'",
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅍ:pʰ",
@@ -474,7 +474,7 @@ export const IPA_TARGET_MAPPINGS = [
   {
     "mapping_id": "KUA-CAN-d4cf49cafd97",
     "source_ipa": "p͈",
-    "target_grapheme": "п",
+    "target_grapheme": "пп",
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅃ:p͈",
@@ -500,7 +500,7 @@ export const IPA_TARGET_MAPPINGS = [
   {
     "mapping_id": "KUA-CAN-68f7378d347d",
     "source_ipa": "s͈",
-    "target_grapheme": "с",
+    "target_grapheme": "сс",
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅆ:s͈",
@@ -539,7 +539,7 @@ export const IPA_TARGET_MAPPINGS = [
   {
     "mapping_id": "KUA-CAN-cfca53af9611",
     "source_ipa": "tɕʰ",
-    "target_grapheme": "ч",
+    "target_grapheme": "ч'",
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅊ:tɕʰ",
@@ -552,7 +552,7 @@ export const IPA_TARGET_MAPPINGS = [
   {
     "mapping_id": "KUA-CAN-0e2ae4c82d49",
     "source_ipa": "tɕ͈",
-    "target_grapheme": "ч",
+    "target_grapheme": "чч",
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅉ:tɕ͈",
@@ -565,7 +565,7 @@ export const IPA_TARGET_MAPPINGS = [
   {
     "mapping_id": "KUA-CAN-bb39626415cb",
     "source_ipa": "tʰ",
-    "target_grapheme": "т",
+    "target_grapheme": "т'",
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅌ:tʰ",
@@ -597,7 +597,7 @@ export const IPA_TARGET_MAPPINGS = [
   {
     "mapping_id": "KUA-CAN-7ecbcd7a8264",
     "source_ipa": "t͈",
-    "target_grapheme": "т",
+    "target_grapheme": "тт",
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㄸ:t͈",
