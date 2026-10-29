@@ -688,7 +688,7 @@ jobs:
   paired-neural-report:
     name: Pair pinned neural outputs with all engine predictions
     if: github.head_ref == 'bench/extended-metrics-runtime-2026-10-29'
-    needs: [multi-engine-ipa, licensed-byt5-korean-g2p]
+    needs: [multi-engine-ipa, neural-korean-g2p, licensed-byt5-korean-g2p]
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
