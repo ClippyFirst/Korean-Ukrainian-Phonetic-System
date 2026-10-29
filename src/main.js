@@ -66,7 +66,7 @@ function renderHanja(value){
   if(hanjaEngineStatus)hanjaEngineStatus.textContent='Завантаження словника з цього сайту…';
   if(!hanjaDictionaryLoad){
     hanjaDictionaryLoad=import('./app/hanja-dictionary-data.js').then((data)=>{
-      fullHanjaConverter=createHanjaConverter(data.HANJA_WORD_MAP);
+      fullHanjaConverter=createHanjaConverter(data.HANJA_WORD_DATA);
       if(hanjaEngineStatus)hanjaEngineStatus.textContent='Локальний словник: '+data.HANJA_DICTIONARY_METADATA.wordReadingCount+' словникових читань';
       return true;
     }).catch((error)=>{
