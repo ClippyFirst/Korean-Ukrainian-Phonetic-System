@@ -405,3 +405,13 @@ KoG2Padvanced first-run status: `ADAPTER_FIX_PENDING_CI`, not an accuracy failur
 
 - **Status reconciliation after run 40831542856:** Kokoro is no longer pending; the pinned candidate produced complete predictions and a report on both datasets. KoG2Padvanced remains `ADAPTER_FIX_PENDING_CI`: run 40831542856 rejected its mixed Hangul/jamo output, and the adapter correction is awaiting the newer exact-head run. HAMA, CharsiuG2P and licensed ByT5 tiny remain `PENDING_CI` for the current expanded run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742).
 - The official Interspeech 2026 morphology-aware engine is still `BLOCKED_IMPLEMENTATION`; the public paper record has the PDF but no verified executable source or model. Its reported sentence-level accuracy is not directly comparable to these word/token-level IPA metrics.
+
+
+## Comparison-only candidate expansion (2026-10-29, latest)
+
+- User authorized broad candidate evaluation for comparison only; no external engine is being integrated into production phonology by this authorization.
+- `g2p-ko 1.0.0` from `smbslt3/g2p-korean` is now included as a distinct morphology-aware surface-pronunciation candidate, pinned to commit `fc382a3f17e70b605b271cad8c87dd571284e5b3` (upstream package MIT). Inputs use `normalize=False` on Hangul-only tokens; surface output is rendered to broad IPA through the shared project adapter. Its score is `PENDING_CI` until run [40839007805](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40839007805) and artifact are inspected.
+- This public candidate is not the Interspeech 2026 authors' novel morphology-aware engine. That paper's official runnable implementation remains `BLOCKED_IMPLEMENTATION`; no verified source/package/checkpoint has been found.
+- Current run after adding g2p-ko: [40839007805](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40839007805), queued at documentation time. HAMA, repaired KoG2Padvanced, CharsiuG2P, and licensed ByT5 remain part of the expanded comparison workflow; only completed exact-head artifacts can establish their scores.
+- Repeated timing: five measured repetitions after warm-up are collected. Comparable per-engine peak RSS and separate output-determinism testing remain `NOT_MEASURED`.
+- No external code or weights are copied into the production pipeline. User authorization is not treated as an override to upstream license terms; KoG2Padvanced remains external-only without a declared license, and Charsiu weights are not redistributed.
