@@ -1,3 +1,32 @@
+# Continuation — deterministic Hanja browser preview (2026-10-29)
+
+| Task | Status | Acceptance evidence |
+|---|---|---|
+| Deterministic browser-local Hanja annotator | PARTIAL | `src/app/hanja.js` now supports a broad generated word map with deterministic ranking and fail-closed whole-run segmentation; `scripts/prepare-hanja-dictionary.mjs` fetches pinned BSD-attributed libhangul-derived data and verifies Git blob hashes. Exact-head CI must verify download/build/runtime. |
+| Fourth output card and copy action | PARTIAL | `index.html` and `src/main.js` include Hanja result; primary output order is RR → IPA → Ukrainian → Hanja and a regression assertion covers that order. Exact-head CI pending. |
+| Preserve existing pipeline and CSP | PARTIAL | Hanja is a separate orthographic output and no network/API was added; built-artifact and deployed smoke still required. |
+| Full contextual conversion / morphological disambiguation | DEFERRED | The broad deterministic dictionary is now integrated into build preparation; contextual homograph disambiguation still requires morphology/context evidence and is intentionally not simulated. Unknown runs fail closed. |
+| Release readiness | NOT VERIFIED | Connector-only session had no local checkout/runtime. Exact-head CI and live browser smoke required. |
+
+## Implementation contract
+
+- No neural model, external runtime API, remote runtime script, or new runtime dependency. Development/build preparation fetches only two pinned data files and verifies their Git blob hashes; the deployed browser loads the generated chunk from the same site.
+- Hanja is a fourth optional orthographic annotation; it must not alter Romanization, IPA, Ukrainian transcription, or their ordering.
+- Unknown Hangul runs are preserved whole unless they can be fully segmented into known lexicon entries and explicitly listed grammatical suffixes; punctuation, spacing, and non-Hangul spans are preserved.
+- The converter now avoids partial substitutions inside unknown runs (regression: 한국말 stays 한국말) and tests known compounds/suffixes. It remains context-insensitive for homographs.
+- A small manually curated override table remains for reviewed high-confidence entries; the broader dictionary map is generated from the pinned libhangul-derived word inventory. Do not claim complete coverage or contextual homograph disambiguation.
+- Reviewed a promising deterministic dictionary source: HanjaKey's ~4.87 MB word inventory derived from libhangul (BSD 3-Clause per-file notice); did not vendor it because large-file contents could not be retrieved and hash-verified through this connector. NIKL-derived 20 MB dictionary definitions are CC BY-SA 2.0 KR and are unnecessary for conversion-only output.
+- Canonical details and examples: [Hanja implementation/evidence ledger](HANJA-RESEARCH-LAYER-2026-10-29.md).
+
+## Verification
+
+- Local commands not run: `node --experimental-strip-types --test tests/*.test.mjs`, `npm run build`.
+- CI and Pages smoke must be checked for the exact PR head before calling this done.
+- Starting default branch commit observed: `2ac8b70894ef6ac0243e6581db794d51e028e50c`.
+- Working branch: `research/korean-hanja-layer-2026-10-29`.
+
+---
+
 # Continuation — Korean aspiration and fortis output convention (2026-10-29)
 
 | Task | Status | Acceptance evidence |

@@ -46,6 +46,19 @@ try {
   }
   await page.locator('#ua-unconfirmed-button').click();
 
+  // The Hanja data chunk must be loaded from the same-origin static build,
+  // then produce a deterministic mixed-script result without an external API.
+  const hanjaInput = '정부는 경제 발전을 연구한다.';
+  await page.locator('#source-input').fill(hanjaInput);
+  await page.waitForFunction(() => {
+    const status = document.querySelector('#hanja-engine-status')?.textContent?.trim() || '';
+    const output = document.querySelector('#result-hanja')?.textContent?.trim() || '';
+    return status.startsWith('Локальний словник:') && output.includes('政府') && output.includes('經濟');
+  }, null, { timeout: 45000 });
+  const hanjaOutput = (await page.locator('#result-hanja').innerText()).trim();
+  assert.equal(hanjaOutput, '政府는 經濟 發展을 硏究한다.',
+    'the deployed deterministic dictionary must convert known Sino-Korean words and preserve Korean particles/endings');
+
   await page.locator('#source-input').fill(passage);
 
   try {
@@ -175,7 +188,7 @@ try {
     'methodology contents links must navigate to real section anchors');
   assert.deepEqual(pageErrors, [], 'UX smoke must not introduce browser runtime errors');
 
-  console.log('PASS live UX smoke: live result announcement; mode disclosure; clipboard-denial fallback; mobile trace labels at 390px; methodology navigation');
+  console.log('PASS live UX smoke: deterministic Hanja dictionary chunk and output; live result announcement; mode disclosure; clipboard-denial fallback; mobile trace labels at 390px; methodology navigation');
 
   console.log(`PASS live browser smoke: ${passage.length} Korean input characters; inline candidate ${candidate.length} chars; IPA ${ipa.length} chars; status=${status}`);
 } finally {
