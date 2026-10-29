@@ -24,6 +24,28 @@ try {
   smokeUrl.searchParams.set('__smoke', String(Date.now()));
   await page.goto(smokeUrl.toString(), { waitUntil: 'networkidle', timeout: 60000 });
   await page.locator('#mode-practical').check();
+
+  // Verify the deployed practical path applies the requested Ukrainian target
+  // convention to ordinary aspirated and fortis Korean onsets.
+  const conventionInput = '코 토 포 초 꼬 또 뽀 쏘 쪼 씨';
+  await page.locator('#source-input').fill(conventionInput);
+  await page.waitForFunction(() => {
+    const output = document.querySelector('#result-ukrainian')?.textContent?.trim() || '';
+    const candidate = document.querySelector('#candidate-value')?.textContent?.trim() || '';
+    const ipa = document.querySelector('#result-ipa')?.textContent?.trim() || '';
+    return (output.length > 0 || candidate.length > 0) && ipa.length > 0;
+  }, null, { timeout: 20000 });
+  const shortCandidate = (await page.locator('#candidate-value').innerText()).trim();
+  if (shortCandidate) {
+    await page.locator('#ua-candidate-button').click();
+    await page.waitForFunction(() => document.querySelector('#ukrainian-output-label')?.textContent?.trim() === 'Дослідницький результат');
+  }
+  const conventionOutput = (await page.locator('#result-ukrainian').innerText()).trim();
+  for (const expected of ["к'о", "т'о", "п'о", "ч'о", "кко", "тто", "ппо", "ссо", "ччо", "шші"]) {
+    assert.ok(conventionOutput.includes(expected), `live target should preserve ${expected} in ${conventionInput}: ${conventionOutput}`);
+  }
+  await page.locator('#ua-unconfirmed-button').click();
+
   await page.locator('#source-input').fill(passage);
 
   try {
@@ -123,7 +145,7 @@ try {
 
   // Verify each trace value has a mobile-visible field label, not merely a
   // desktop column heading that disappears at narrow widths.
-  await page.locator('details.trace-panel.trace-disclosure:not([hidden]) summary').click();
+  await page.locator('details.trace-panel.trace-disclosure').filter({ has: page.locator('#trace-list') }).locator('summary').click();
   await page.locator('#trace-list .trace-row').first().waitFor({ state: 'visible', timeout: 5000 });
   await page.setViewportSize({ width: 390, height: 844 });
   const mobileTrace = await page.evaluate(() => {
