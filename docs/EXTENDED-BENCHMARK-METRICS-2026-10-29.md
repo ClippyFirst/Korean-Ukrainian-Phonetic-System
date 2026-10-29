@@ -195,3 +195,16 @@ ClippyFirst native's per-word p50/p95 latency was 0.306/0.506 ms; g2pk's was 22.
 - **Repeatability and memory:** repeat-run stability and comparable peak memory remain NOT_RUN. A future speed leaderboard should use warm-up plus at least 5 measured repetitions per dataset/engine, fixed runner/software versions, and report median/IQR as well as p50/p95 per-call latency. Do not describe this single-run speed result as a final stable ranking.
 
 Artifact: [multi-engine diagnostic outputs](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40783623954/artifacts/12858177529).
+
+
+## Expanded candidate run and repeated timing protocol
+
+The benchmark harness has now been expanded for the next exact-head run:
+
+- Added `kokorog2p==0.9.15` as a scored candidate using its documented Korean `output="ipa"` mode. Its Lexphon lookup and morphology are disabled for this run, so the benchmark measures the rule-based path on isolated Hangul words. This implementation is g2pK-derived, so it is a related implementation/configuration rather than a fully independent algorithm lineage.
+- Added `KoG2Padvanced` at upstream commit `491b2d7269a4666b0d7556efb26755219f861163` as an external batch-only comparison. Its output is Hangul, so the shared project broad-IPA renderer is explicitly part of the adapter. The upstream repository has no declared license; the source is cloned only into the ephemeral Actions runner, is not vendored or redistributed, and this status must not be interpreted as a license grant.
+- Added one warm-up call (excluded from measured repetitions) and five repeated full-dataset timings for per-word engines. Batch eSpeak, phonemize, and KoG2Padvanced calls also record five repeated full-batch timings. Each candidate records the individual runtime samples, median, minimum, maximum, and timing-scope caveat.
+- IPA normalization now canonicalizes the single-codepoint affricate symbols `ʨ` and `ʥ` to `tɕ` and `dʑ`, respectively, before scoring. This is a representation-equivalence correction for outputs such as kokorog2p; all engines and both datasets must be rerun under this normalization. Previous percentages in the historical section above belong to the prior normalization and must not be mixed with new results.
+- The current harness still does not claim comparable peak memory: the candidates run in one process and several native/runtime dependencies remain resident. A separate-process RSS harness is required before memory comparisons can be considered valid.
+
+The exact-head GitHub Actions rerun is the acceptance gate for the new candidate adapters and metrics. Until that run completes successfully, the new candidates are `PENDING_CI`, not scored, and the earlier result tables remain historical only.
