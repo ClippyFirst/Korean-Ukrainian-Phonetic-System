@@ -321,3 +321,24 @@ Artifact: [multi-engine-korean-ipa-diagnostic, run 40831542856](https://github.c
 ### Remaining portfolio run
 
 The next exact-head run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742) includes HAMA, the repaired KoG2Padvanced adapter, CharsiuG2P and licensed ByT5 tiny. It was queued when this section was written. Its artifact is the acceptance source for those candidates; do not treat these preceding tables as final scores for HAMA or neural systems.
+
+
+## Comparison-only authorization and new morphology-aware candidate (2026-10-29)
+
+The user explicitly authorized broad candidate evaluation for comparison only. This does not mean integrating any external engine into the production pipeline, and it does not supersede third-party license terms. The benchmark remains an IPA-output leaderboard; every candidate is run externally or through a research adapter, with its output and provenance recorded.
+
+### Added: g2p-ko 1.0.0 (smbslt3/g2p-korean)
+
+- Upstream repository: https://github.com/smbslt3/g2p-korean
+- Pinned commit: `fc382a3f17e70b605b271cad8c87dd571284e5b3`; package declares MIT. Its runtime uses Kiwi morphology analysis; the dependency and any bundled model/data notices remain separate license/provenance considerations.
+- This is a distinct, public morphology-aware Korean surface-pronunciation implementation, **not the same engine** as the Interspeech 2026 paper. The latter's official executable source remains undiscovered.
+- The benchmark calls `G2P.convert(word, normalize=False)` on Hangul-only eligible tokens to avoid testing number/Latin text normalization. Its Korean surface pronunciation is then mapped to broad IPA through the project's shared renderer. This adapter dependency is explicit; it is not counted as an independently implemented IPA encoder.
+- Adapter tests now cover complete output, incomplete-result rejection, non-Hangul rejection, and IPA rendering. The pinned package and `kiwipiepy==0.23.2` are installed only in the benchmark CI environment.
+- Status: `PENDING_CI`; no accuracy, latency, or throughput score is asserted until the new exact-head run succeeds and the artifact is inspected.
+
+### Latest verification after adding g2p-ko
+
+- Benchmark run [40839007805](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40839007805) was queued after the adapter, dependency pin, and regression tests were committed. General test, generated-artifact, and master-table workflows were also queued at that head; inspect their conclusions before claiming a pass.
+- The previous expanded portfolio run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742) predates g2p-ko and must not be treated as its score.
+- Five repeated timing samples are now collected after a warm-up for per-word and supported batch engines. The report schema was corrected to describe repeatability as partially measured; output determinism and comparable per-engine peak RSS remain unmeasured.
+- The novel Interspeech 2026 engine remains `BLOCKED_IMPLEMENTATION`: public sources found the paper and author's description of a new library, but no official runnable source, package, or checkpoint. Acceptance requires official implementation discovery, source/license verification, and same-protocol results on both pinned datasets. Do not substitute g2p-ko or a speculative reimplementation and label it as the paper's engine.
