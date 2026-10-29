@@ -14,19 +14,19 @@ test('§10–11 morphology contrasts distinguish ㄺ stems, 밟- exception, and 
   // Korean surface readings are attested by NIKL Q&A 315279 (2025-05-23)
   // and NIKL Q&A 307508 (2024-12-12); IPA is the project's broad rendering.
   const expected = {
-    '읽다': { surface: '익따', ipa: 'ik̚.t͈a', target: 'іктта' },
-    '읽고': { surface: '일꼬', ipa: 'il k͈o', target: 'ілкко' },
-    '붉다': { surface: '북따', ipa: 'puk̚ t͈a', target: 'пуктта' },
-    '붉지': { surface: '북찌', ipa: 'puk̚ tɕ͈i', target: 'пукччі' },
-    '붉고': { surface: '불꼬', ipa: 'pul k͈o', target: 'пулкко' },
-    '맑다': { surface: '막따', ipa: 'mak̚ t͈a', target: 'мактта' },
-    '맑고': { surface: '말꼬', ipa: 'mal k͈o', target: 'малкко' },
-    '밟다': { surface: '밥따', ipa: 'paːp̚ t͈a', target: 'паптта' },
-    '밟고': { surface: '밥꼬', ipa: 'paːp̚ k͈o', target: 'папкко' },
-    '밟으니': { surface: '발브니', ipa: 'pal bɯ ni', target: 'палбині' },
-    '넓다': { surface: '널따', ipa: 'nʌl t͈a', target: 'нолтта' },
-    '넓죽하다': { surface: '넙쭈카다', ipa: 'nʌp̚ tɕ͈u kʰa da', target: 'нопччук'ада' },
-    '넓둥글다': { surface: '넙뚱글다', ipa: 'nʌp̚ t͈uŋ ɡɯl da', target: 'нопттунґилда' },
+    '읽다': { surface: '익따', ipa: 'ik̚.t͈a', target: "іктта"},
+    '읽고': { surface: '일꼬', ipa: 'il k͈o', target: "ілкко"},
+    '붉다': { surface: '북따', ipa: 'puk̚ t͈a', target: "пуктта"},
+    '붉지': { surface: '북찌', ipa: 'puk̚ tɕ͈i', target: "пукччі"},
+    '붉고': { surface: '불꼬', ipa: 'pul k͈o', target: "пулкко"},
+    '맑다': { surface: '막따', ipa: 'mak̚ t͈a', target: "мактта"},
+    '맑고': { surface: '말꼬', ipa: 'mal k͈o', target: "малкко"},
+    '밟다': { surface: '밥따', ipa: 'paːp̚ t͈a', target: "паптта"},
+    '밟고': { surface: '밥꼬', ipa: 'paːp̚ k͈o', target: "папкко"},
+    '밟으니': { surface: '발브니', ipa: 'pal bɯ ni', target: "палбині"},
+    '넓다': { surface: '널따', ipa: 'nʌl t͈a', target: "нолтта"},
+    '넓죽하다': { surface: '넙쭈카다', ipa: 'nʌp̚ tɕ͈u kʰa da', target: "нопччук'ада"},
+    '넓둥글다': { surface: '넙뚱글다', ipa: 'nʌp̚ t͈uŋ ɡɯl da', target: "нопттунґилда"},
   };
 
   for (const [word, want] of Object.entries(expected)) {
