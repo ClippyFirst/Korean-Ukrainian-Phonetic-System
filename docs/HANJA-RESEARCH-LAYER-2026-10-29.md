@@ -38,7 +38,7 @@ These are unit-test fixtures for the curated dictionary, not claims of full ling
 | Task | Status | Evidence / acceptance criterion |
 |---|---|---|
 | Choose a deterministic browser-compatible approach | DONE_VERIFIED (design) | Local longest-match dictionary, no model/API/dependency. |
-| Implement first curated lexicon and converter | PARTIAL | Code exists; scope intentionally small; expand only with source-attributed reviewed entries. |
+| Implement first curated lexicon and converter | PARTIAL | Deterministic longest-valid-segmentation scanner and suffix inventory exist; unknown eojeol runs fail closed. Vocabulary remains intentionally small and needs source-attributed expansion. |
 | Add fourth Hanja output without replacing existing results | PARTIAL | UI card and copy action are wired; DOM order is now explicitly RR → IPA → Ukrainian → Hanja, with an order regression assertion. Exact-head CI still required. |
 | Preserve current CSP and no-network contract | PARTIAL | No network code added; verify source assertions and built artifact in CI. |
 | Add deterministic regression tests | PARTIAL | Focused tests added; not yet executed in a local checkout during this connector-only session. |
