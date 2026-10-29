@@ -9,6 +9,7 @@ sys.path.insert(0, str(SCRIPTS))
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _g2pk_surface_to_ipa,
+    _load_kog2padvanced_batch,
     _load_kokorog2p,
     _load_rows_and_words,
     _metrics,
@@ -184,3 +185,13 @@ def test_kokorog2p_uses_direct_ipa_and_disables_lexicon(monkeypatch):
     assert captured["morphology"] == "off"
     assert captured["use_dict"] is False
     assert "kokorog2p==0.9.15" in adapter
+
+
+
+def test_kog2padvanced_loader_fails_closed_for_incomplete_external_checkout(tmp_path):
+    try:
+        _load_kog2padvanced_batch(tmp_path, ["학교"])
+    except FileNotFoundError as exc:
+        assert "checkout incomplete" in str(exc)
+    else:
+        raise AssertionError("incomplete KoG2Padvanced checkout must not be scored")
