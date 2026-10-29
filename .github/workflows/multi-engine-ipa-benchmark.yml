@@ -45,7 +45,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes espeak-ng
           python -m pip install --upgrade pip
-          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "pytest>=8"
+          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "kokorog2p[ko]==0.9.15" "pytest>=8"
 
       - name: Fetch pinned external implementations and verify declared licenses
         env:
