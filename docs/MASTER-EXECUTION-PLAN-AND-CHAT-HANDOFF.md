@@ -3573,3 +3573,5 @@ This section supersedes earlier branch/PR status statements above where they con
 
 
 The latest workflow update enables the pinned CharsiuG2P checkpoint as a comparison-only neural candidate and joins its output with the baseline and licensed ByT5 results in the same run. No model weights or caches are uploaded; the checkpoint's weights-license status remains explicitly unresolved.
+
+- KoG2Padvanced failure analysis: first run 40831542856 completed, but the candidate was not scored because the upstream output included mixed Hangul/jamo (`유ㅣ칸`) and the initial adapter failed closed. The harness now composes isolated compatibility vowels and preserves per-token errors; regression test added. Re-score only after the latest exact-head run passes.
