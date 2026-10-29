@@ -11,6 +11,10 @@ on:
     paths:
       - ".github/workflows/korean-ukrainian-external-translit-smoke.yml"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

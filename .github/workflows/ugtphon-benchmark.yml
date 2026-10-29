@@ -12,6 +12,10 @@ on:
       - "data/korean/**"
       - ".github/workflows/native-vs-g2pk-benchmark.yml"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
