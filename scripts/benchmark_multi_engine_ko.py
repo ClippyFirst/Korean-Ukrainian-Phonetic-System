@@ -522,6 +522,61 @@ def _g2pk_surface_to_ipa(g2p: Callable[[str], str], word: str) -> str:
     return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
 
 
+def _load_kog2padvanced_batch(root: Path, words: list[str]) -> tuple[Callable[[], dict[str, str]], str]:
+    """Load upstream KoG2Padvanced without copying its source into this repository.
+
+    The upstream function uses relative dictionary paths and initializes Kkma
+    internally, so it is evaluated as a sentence-level batch. Its Hangul surface
+    output is rendered through the same explicit project IPA adapter as g2pk.
+    """
+    module_path = root / "G2P" / "KoG2Padvanced.py"
+    required = [
+        module_path,
+        root / "G2P" / "KoG2P.py",
+        root / "G2P" / "Dic" / "nSheetWords.csv",
+        root / "G2P" / "Dic" / "KoG2PDic.txt",
+    ]
+    if any(not path.is_file() for path in required):
+        raise FileNotFoundError(f"KoG2Padvanced checkout incomplete under {root}")
+    sys.path.insert(0, str(root))
+    original_cwd = Path.cwd()
+    try:
+        os.chdir(root)
+        module = importlib.import_module("G2P.KoG2Padvanced")
+    finally:
+        os.chdir(original_cwd)
+
+    def run_batch() -> dict[str, str]:
+        current_cwd = Path.cwd()
+        try:
+            os.chdir(root)
+            surface = module.KoG2Padvanced(" ".join(words))
+        finally:
+            os.chdir(current_cwd)
+        if not isinstance(surface, str):
+            raise TypeError(f"KoG2Padvanced returned {type(surface).__name__}")
+        output_words = surface.split()
+        if len(output_words) != len(words):
+            raise ValueError(
+                f"KoG2Padvanced changed token count: expected {len(words)}, got {len(output_words)}"
+            )
+        from korean_ukrainian.phonology import parse_syllables
+        from korean_ukrainian.ipa import realize_syllables
+
+        mapped: dict[str, str] = {}
+        for word, output in zip(words, output_words):
+            if not _HANGUL_TOKEN.fullmatch(output):
+                raise ValueError(f"KoG2Padvanced returned non-Hangul surface form: {output!r}")
+            mapped[word] = realize_syllables(parse_syllables(output), level="broad")["ipa"]
+        return mapped
+
+    return run_batch, (
+        "seongmin-mun/KoG2Padvanced commit 491b2d7269a4666b0d7556efb26755219f861163; "
+        "upstream Hangul output -> project broad-IPA renderer; batch mode; "
+        "upstream repository has no declared license, not vendored"
+    )
+
+
 def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
     from korean_ukrainian.pipeline import phoneticize_korean
     from korean_ukrainian.phonology import parse_syllables
@@ -632,6 +687,48 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "status": "BLOCKED_OR_ERROR",
             "source": "buchwandler/kokorog2p==0.9.15 (Apache-2.0)",
             "adapter": "direct KoreanG2P output='ipa'; lexicon lookup disabled",
+            "engine_errors": len(words),
+            "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
+        }
+
+    try:
+        advanced_batch, advanced_adapter = _load_kog2padvanced_batch(args.kog2padvanced_root, words)
+        advanced_started = time.perf_counter()
+        advanced_map = advanced_batch()
+        advanced_elapsed_ms = (time.perf_counter() - advanced_started) * 1000
+        advanced_repeat_totals_ms = []
+        for _ in range(max(0, args.timing_repetitions)):
+            repeat_started = time.perf_counter()
+            advanced_batch()
+            advanced_repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
+        predictions["KoG2Padvanced_2022"] = {word: {"ipa": ipa} for word, ipa in advanced_map.items()}
+        engine_meta["KoG2Padvanced_2022"] = {
+            "status": "AVAILABLE" if len(advanced_map) == len(words) else "PARTIAL",
+            "source": "seongmin-mun/KoG2Padvanced commit 491b2d7269a4666b0d7556efb26755219f861163",
+            "adapter": advanced_adapter,
+            "unique_words": len(words), "outputs": len(advanced_map),
+            "engine_errors": len(words) - len(advanced_map), "error_examples": [],
+            "runtime": {
+                "total_ms": round(advanced_elapsed_ms, 3),
+                "throughput_words_per_second": round(len(advanced_map) / (advanced_elapsed_ms / 1000), 3) if advanced_elapsed_ms and advanced_map else None,
+                "repeatability": {
+                    "warmup_calls_excluded": 0,
+                    "measured_repetitions": len(advanced_repeat_totals_ms),
+                    "total_ms_samples": [round(x, 3) for x in advanced_repeat_totals_ms],
+                    "total_ms_median": round(statistics.median(advanced_repeat_totals_ms), 3) if advanced_repeat_totals_ms else None,
+                    "total_ms_min": round(min(advanced_repeat_totals_ms), 3) if advanced_repeat_totals_ms else None,
+                    "total_ms_max": round(max(advanced_repeat_totals_ms), 3) if advanced_repeat_totals_ms else None,
+                    "method": "repeated sentence-level full-corpus calls; each call initializes Kkma",
+                },
+                "timing_scope": "one sentence-level batch call; includes Kkma initialization and shared IPA adapter; not comparable with per-word timing",
+            },
+        }
+    except Exception as exc:
+        predictions["KoG2Padvanced_2022"] = {}
+        engine_meta["KoG2Padvanced_2022"] = {
+            "status": "BLOCKED_OR_ERROR",
+            "source": "seongmin-mun/KoG2Padvanced commit 491b2d7269a4666b0d7556efb26755219f861163",
+            "adapter": "upstream Hangul output -> project broad-IPA renderer; no source vendoring",
             "engine_errors": len(words),
             "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
         }
@@ -1026,6 +1123,7 @@ def main() -> int:
     parser.add_argument("--benchmark-name", default="UGTPHON Korean test split", help="human-readable dataset/split label")
     parser.add_argument("--dataset-source", default="naver-ai/UGTPHON@ef0d5a09c2ea1874c7206020f875cbd9cfea2f54:ko/test.json (Apache-2.0)", help="dataset provenance and license statement")
     parser.add_argument("--kog2p-root", type=Path, default=os.environ.get("KOG2P_ROOT", "/tmp/KoG2P"))
+    parser.add_argument("--kog2padvanced-root", type=Path, default=os.environ.get("KOG2PADVANCED_ROOT", "/tmp/KoG2Padvanced"))
     parser.add_argument("--hangul-to-ipa-root", type=Path, default=os.environ.get("HANGUL_TO_IPA_ROOT", "/tmp/hangul_to_ipa"))
     parser.add_argument("--phonemize-root", type=Path, default=os.environ.get("PHONEMIZE_BASELINE_DIR", "/tmp/phonemize-baseline"))
     parser.add_argument("--phonemize-output", type=Path, default=Path("/tmp/phonemize-predictions.json"))
