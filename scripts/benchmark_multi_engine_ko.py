@@ -559,6 +559,21 @@ def _g2pk_surface_to_ipa(g2p: Callable[[str], str], word: str) -> str:
     return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
 
 
+def _g2p_ko_result_to_ipa(result: Any, word: str) -> str:
+    """Convert one complete g2p-ko result's Korean surface pronunciation to broad IPA."""
+    if not getattr(result, "complete", False):
+        raise ValueError(f"g2p-ko did not complete for {word!r}")
+    surface = getattr(result, "surface_pronunciation", None)
+    if not isinstance(surface, str):
+        raise TypeError(f"g2p-ko returned {type(surface).__name__} surface pronunciation")
+    surface = "".join(surface.split())
+    if not _HANGUL_TOKEN.fullmatch(surface):
+        raise ValueError(f"g2p-ko returned a non-Hangul surface form: {surface!r}")
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.ipa import realize_syllables
+    return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
+
+
 def _load_g2p_ko() -> tuple[Callable[[str], str], str]:
     """Load g2p-ko's morphology-aware surface pronunciation as a comparison candidate.
 
@@ -570,18 +585,7 @@ def _load_g2p_ko() -> tuple[Callable[[str], str], str]:
     engine = G2P()
 
     def run(word: str) -> str:
-        result = engine.convert(word, normalize=False)
-        if not getattr(result, "complete", False):
-            raise ValueError(f"g2p-ko did not complete for {word!r}")
-        surface = getattr(result, "surface_pronunciation", None)
-        if not isinstance(surface, str):
-            raise TypeError(f"g2p-ko returned {type(surface).__name__} surface pronunciation")
-        surface = "".join(surface.split())
-        if not _HANGUL_TOKEN.fullmatch(surface):
-            raise ValueError(f"g2p-ko returned a non-Hangul surface form: {surface!r}")
-        from korean_ukrainian.phonology import parse_syllables
-        from korean_ukrainian.ipa import realize_syllables
-        return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
+        return _g2p_ko_result_to_ipa(engine.convert(word, normalize=False), word)
 
     return run, (
         "smbslt3/g2p-korean commit fc382a3f17e70b605b271cad8c87dd571284e5b3 "
