@@ -424,7 +424,7 @@ def _load_hama_batch(words: list[str]) -> tuple[Callable[[], dict[str, dict[str,
     def run_batch() -> dict[str, dict[str, str]]:
         result = model.predict(
             " ".join(words),
-            split_delimiter=r"\\s+",
+            split_delimiter=r"\s+",
             output_delimiter=" ",
             preserve_literals="none",
         )
