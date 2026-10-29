@@ -1,6 +1,7 @@
 // Deterministic Hangul→Hanja lexical annotator.
-// This is an intentionally small, hand-curated vocabulary, not a complete Hanja
-// dictionary or a morphological analyzer. Unknown eojeol runs are preserved whole.
+// The default export path uses a small hand-curated lexicon for immediate fallback.
+// The browser lazily loads a generated, pinned word dictionary and calls
+// createHanjaConverter() for broader local-only coverage. No neural model or API.
 const LEXICON = [
   ['민주주의','民主主義'], ['대한민국','大韓民國'], ['대통령','大統領'],
   ['한국어','韓國語'], ['한국인','韓國人'], ['한국','韓國'],
@@ -23,87 +24,114 @@ const LEXICON = [
 // Common grammatical particles/endings and productive Sino-Korean suffixes.
 // This is a conservative segmentation aid, not a full Korean morphology model.
 const SUFFIXES = [
-  '으로부터','에서부터','에게서','으로써','이라고','이라고는','입니다',
+  '으로부터','에서부터','에게서','으로써','이라고는','이라고','입니다',
   '했습니다','합니다','하였다','하였다가','되었다','되며','되고','되다',
   '이었다','였다','한다','했다','하다','하며','하고','해서','해요','하면','하여',
   '에게','한테','께서','으로','에서','부터','까지','보다','처럼','만큼',
-  '이며','이고','이나','라도','라도','에는','에서','에게','께','은','는',
-  '이','가','을','를','의','와','과','도','만','에','로','랑','들','적',
+  '이며','이고','이나','라도','에는','께','은','는','이','가','을','를','의',
+  '와','과','도','만','에','로','랑','들','적',
 ].sort((a,b)=>b.length-a.length);
 
 const HANGUL_RUN = /[\uAC00-\uD7A3]+/gu;
 
-/**
- * Convert a Hangul run only when the entire run can be segmented into known
- * lexical entries plus an explicit suffix inventory. This avoids converting a
- * familiar substring inside an otherwise unknown word (e.g. 한국말 → 韓國말).
- * Longest valid lexical matches win; suffixes remain in Hangul.
- */
-function annotateKnownRun(run) {
-  const n = run.length;
-  // can[i][1]: suffix of run[i:] can be segmented when a lexical token has
-  // already occurred; can[i][0]: segmentation must start with a lexical token.
-  const can = Array.from({length:n+1},()=>[false,false]);
-  can[n][1] = true;
-  for(let i=n-1;i>=0;i--){
-    for(const [word] of LEXICON){
-      if(run.startsWith(word,i) && can[i+word.length][1]){
-        can[i][1]=true;
-        can[i][0]=true;
-        break;
-      }
+function createWordMap(dictionary = {}) {
+  const map = new Map();
+  if (dictionary instanceof Map) {
+    for (const [reading, hanja] of dictionary) {
+      if (reading && hanja) map.set(reading, hanja);
     }
-    if(!can[i][1]){
-      for(const suffix of SUFFIXES){
-        if(run.startsWith(suffix,i) && can[i+suffix.length][1]){
-          can[i][1]=true;
-          break;
-        }
-      }
-    } else {
-      // A suffix can also follow a known lexical token.
-      for(const suffix of SUFFIXES){
-        if(run.startsWith(suffix,i) && can[i+suffix.length][1]){
-          can[i][1]=true;
-          break;
-        }
-      }
+  } else if (dictionary && typeof dictionary === 'object') {
+    for (const [reading, hanja] of Object.entries(dictionary)) {
+      if (reading && typeof hanja === 'string' && hanja) map.set(reading, hanja);
     }
   }
-  // No complete lexical segmentation: fail closed and preserve the whole run.
-  if(!can[0][0]) return run;
+  // Project-reviewed entries take precedence over the generic dictionary ranker.
+  for (const [reading, hanja] of LEXICON) map.set(reading, hanja);
+  return map;
+}
 
-  let i=0, seenWord=false, out='';
-  while(i<n){
-    const wordMatch=LEXICON.find(([word])=>run.startsWith(word,i)&&can[i+word.length][1]);
-    if(wordMatch){
-      out+=wordMatch[1];
-      i+=wordMatch[0].length;
-      seenWord=true;
-      continue;
+function createAnnotator(wordMap) {
+  let maxWordLength = 1;
+  for (const word of wordMap.keys()) maxWordLength = Math.max(maxWordLength, word.length);
+
+  function matchesWord(run, index, can) {
+    const max = Math.min(maxWordLength, run.length-index);
+    for (let length=max; length>=1; length--) {
+      const word = run.slice(index,index+length);
+      if (wordMap.has(word) && can[index+length][1]) return word;
     }
-    if(seenWord){
-      const suffix=SUFFIXES.find((candidate)=>run.startsWith(candidate,i)&&can[i+candidate.length][1]);
-      if(suffix){
-        out+=suffix;
-        i+=suffix.length;
+    return null;
+  }
+
+  function annotateKnownRun(run) {
+    const n = run.length;
+    // can[i][1]: suffix run[i:] can be segmented after a lexical word has occurred.
+    // can[i][0]: run[i:] can be segmented and must start with a lexical word.
+    const can = Array.from({length:n+1},()=>[false,false]);
+    can[n][1] = true;
+    for(let i=n-1;i>=0;i--){
+      const max = Math.min(maxWordLength,n-i);
+      for(let length=max;length>=1;length--){
+        const word=run.slice(i,i+length);
+        if(wordMap.has(word)&&can[i+length][1]){
+          can[i][1]=true;
+          can[i][0]=true;
+          break;
+        }
+      }
+      for(const suffix of SUFFIXES){
+        if(run.startsWith(suffix,i)&&can[i+suffix.length][1]){
+          can[i][1]=true;
+          break;
+        }
+      }
+    }
+    // Fail closed: never convert a known substring inside an otherwise unknown run.
+    if(!can[0][0]) return run;
+
+    let i=0, seenWord=false, out='';
+    while(i<n){
+      const word=matchesWord(run,i,can);
+      if(word){
+        out+=wordMap.get(word);
+        i+=word.length;
+        seenWord=true;
         continue;
       }
+      if(seenWord){
+        const suffix=SUFFIXES.find(candidate=>run.startsWith(candidate,i)&&can[i+candidate.length][1]);
+        if(suffix){
+          out+=suffix;
+          i+=suffix.length;
+          continue;
+        }
+      }
+      // Defensive fallback: never emit a partially converted run.
+      return run;
     }
-    // Defensive fallback: never emit a partially converted run.
-    return run;
+    return out;
   }
-  return out;
+
+  return function convert(input) {
+    const source = String(input ?? '');
+    return source.replace(HANGUL_RUN, annotateKnownRun);
+  };
+}
+
+const fallbackConverter = createAnnotator(createWordMap());
+
+/** Small deterministic fallback used before the full local dictionary chunk loads. */
+export function convertHangulToHanja(input) {
+  return fallbackConverter(input);
 }
 
 /**
- * Annotate known Sino-Korean lexical entries in a fully segmentable Hangul
- * run. Whitespace, punctuation, non-Hangul text, and unknown runs are preserved.
- * The table is intentionally limited; homographs may still need context.
+ * Create a deterministic converter from the generated reading→Hanja word map.
+ * Candidate choice is made at build time using source-attributed, non-neural
+ * dictionary ranks. The converter itself only performs local table lookups.
  */
-export function convertHangulToHanja(input) {
-  const source = String(input ?? '');
-  return source.replace(HANGUL_RUN, annotateKnownRun);
+export function createHanjaConverter(dictionary = {}) {
+  return createAnnotator(createWordMap(dictionary));
 }
 
 export function getHanjaLexiconSize() {
