@@ -10,7 +10,7 @@ from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _g2pk_surface_to_ipa,
     _compose_kog2padvanced_surface,
-    _load_hama,
+    _load_hama_batch,
     _load_kog2padvanced_batch,
     _load_kokorog2p,
     _load_rows_and_words,
@@ -200,24 +200,27 @@ def test_kog2padvanced_loader_fails_closed_for_incomplete_external_checkout(tmp_
 
 
 
-def test_hama_adapter_uses_canonical_ipa_field(monkeypatch):
+def test_hama_adapter_uses_documented_batch_ipa_field(monkeypatch):
     import types
 
     class FakeResult:
-        ipa = "tɕʰa"
+        ipa = "tɕʰa kʰa"
 
     class FakeModel:
-        def predict(self, word):
-            assert word == "차"
+        def predict(self, text, **kwargs):
+            assert text == "차 카"
+            assert kwargs["split_delimiter"] == r"\\s+"
+            assert kwargs["output_delimiter"] == " "
             return FakeResult()
 
     hama_module = types.ModuleType("hama")
     hama_module.G2PModel = FakeModel
     monkeypatch.setitem(sys.modules, "hama", hama_module)
 
-    fn, adapter = _load_hama()
-    assert fn("차") == "tɕʰa"
-    assert "G2PModel.predict().ipa" in adapter
+    run_batch, adapter = _load_hama_batch(["차", "카"])
+    result = run_batch()
+    assert result == {"차": {"ipa": "tɕʰa"}, "카": {"ipa": "kʰa"}}
+    assert "sentence-level batch" in adapter
 
 
 
