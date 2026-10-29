@@ -32,5 +32,5 @@ test('Hanja conversion is deterministic and has no external runtime network path
   assert.match(html, /connect-src 'none'/u);
   assert.match(main, /const ipa=document\.querySelector\('#result-ipa'\)/u);
   assert.match(main, /const romanization=document\.querySelector\('#result-romanization'\)/u);
-  assert.match(main, /createHanjaConverter\(data\.HANJA_WORD_MAP\)/u);
+  assert.match(main, /createHanjaConverter\(data\.HANJA_WORD_DATA\)/u);
 });
