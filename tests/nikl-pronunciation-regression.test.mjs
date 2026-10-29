@@ -592,7 +592,7 @@ test('NIKL §9 regular final-neutralization examples are computed by rules', () 
     '쫓다': ['tɕ͈ot̚.t͈a', 'ччоттта'],
     '솥': ['sot̚', 'сот'],
     '앞': ['ap̚', 'ап'],
-    '덮다': ['tʌp̚.t͈a', 'топта'],
+    '덮다': ['tʌp̚.t͈a', 'топтта'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [ipa, target]] of Object.entries(expected)) {
@@ -639,7 +639,7 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '맞는': ['만는', 'man nɯn', 'маннин'],
     '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'чонмонул'],
     '쫓는': ['쫀는', 'tɕ͈on nɯn', 'ччоннин'],
-    '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'конманул'],
+    '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'кконманул'],
     '붙는': ['분는', 'pun nɯn', 'пуннин'],
     '놓는': ['논는', 'non nɯn', 'ноннин'],
     '잡는': ['잠는', 'tɕam nɯn', 'чамнин'],
