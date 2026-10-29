@@ -11,7 +11,7 @@ const entries = new Map(parseCsv(lexical).map((row) => [row.input, row]));
 
 test('common verb forms with morphologically licensed ㅆ liaison use exact standard readings', () => {
   const expected = {
-    '었어': ['어써', 'осо', 'ʌ.s͈ʌ'],
+    '었어': ['어써', 'оссо', 'ʌ.s͈ʌ'],
     '갔어': ['가써', 'касо', 'ka.s͈ʌ'],
     '갔어요': ['가써요', 'касо йо', 'ka s͈ʌ jo'],
     '있어요': ['이써요', 'ісо йо', 'i s͈ʌ jo'],

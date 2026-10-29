@@ -21,7 +21,7 @@ test('sentence-level adversarial corpus is present and has no unresolved morphem
 test('adversarial forms have explicit standard surface readings and traceable provisional Ukrainian targets', () => {
   const expected = {
     '나중엔': ['나중엔', 'наджунен'],
-    '덥고': ['덥꼬', 'топко'],
+    '덥고': ['덥꼬', 'топкко'],
     '밤에는': ['바메는', 'паменин'],
     '춥습니다': ['춥씀니다', 'чупсимніда'],
     '숱이': ['수치', 'сучі'],

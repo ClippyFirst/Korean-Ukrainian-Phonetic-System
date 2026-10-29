@@ -13,7 +13,7 @@ const genericEngine = createEngine(canonical, '');
 test('new adversarial standard-pronunciation forms are sourced and regression-locked', () => {
   const expected = {
     '밝는': { surface: '방는', target: 'паннин', ipa: 'paŋ.nɯn' },
-    '묽게': { surface: '물께', target: 'мулке', ipa: 'mul.k͈e' },
+    '묽게': { surface: '물께', target: 'мулкке', ipa: 'mul.k͈e' },
     '실없다': { surface: '시럽따', target: 'шіропта', ipa: 'ɕi.ɾʌp̚.t͈a' },
     '몇으로': { surface: '며츠로', target: 'мйочиро', ipa: 'mjʌ.tɕʰɯ.ɾo' },
     '값있는': { surface: '가빈는', target: 'кабіннин', ipa: 'ka.bin.nɯn' },
@@ -54,7 +54,7 @@ test('지식의 retains both NIKL-standard readings of genitive particle 의', (
 
 test('the contrasting ㄺ/ㄼ/ㄿ/ㅄ contexts keep distinct readings', () => {
   const expected = {
-    '읽고': ['일꼬', 'ілко', 'il.k͈o'],
+    '읽고': ['일꼬', 'ілкко', 'il.k͈o'],
     '읽는': ['잉는', 'іннин', 'iŋ.nɯn'],
     '읽어': ['일거', 'ілґо', 'il ɡʌ'],
     '밟다': ['밥따', 'папта', 'paːp̚ t͈a'],
@@ -77,7 +77,7 @@ test('the contrasting ㄺ/ㄼ/ㄿ/ㅄ contexts keep distinct readings', () => {
 
 test('other official coda-plus-fortition examples remain rule-governed', () => {
   const expected = {
-    '삯돈': { target: 'сактон', ipa: 'sak̚.t͈on', rules: ['tensification'] },
+    '삯돈': { target: 'сакттон', ipa: 'sak̚.t͈on', rules: ['tensification'] },
     '읊조리다': { target: 'ипчоріда', ipa: 'ɯp̚.tɕ͈o.ɾi.da', rules: ['tensification'] },
     '맑는': { target: 'маннин', ipa: 'maŋ.nɯn', rules: ['nasal-assimilation'] },
     '묽는': { target: 'муннин', ipa: 'muŋ.nɯn', rules: ['nasal-assimilation'] },

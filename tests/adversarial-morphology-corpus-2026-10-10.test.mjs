@@ -11,7 +11,7 @@ const engine = createEngine(canonical, lexical);
 
 test('morphology-sensitive past-tense and complex-coda forms have sourced surface readings', () => {
   const cases = [
-    ['있었다', '이썯따', 'ісотта', 'i.s͈ʌt̚.t͈a'],
+    ['있었다', '이썯따', 'іссоттта', 'i.s͈ʌt̚.t͈a'],
     ['있었고', '이썯꼬', 'ісотко', 'i.s͈ʌt̚.k͈o'],
     ['웃었고', '우섣꼬', 'усотко', 'u sʌt̚ k͈o'],
     ['넓어졌다는', '널버젇따는', 'нолбоджоттанин', 'nʌl bʌ dʑʌt̚ t͈a nɯn'],

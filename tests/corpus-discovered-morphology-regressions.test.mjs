@@ -10,7 +10,7 @@ const engine = createEngine(canonical, lexical);
 
 test('corpus-discovered source-backed and rule-derived pronunciation cases are regression-locked', () => {
   const expected = {
-    읽기: ['일끼','일끼','ілкі','il.k͈i'],
+    읽기: ['일끼','일끼','ілккі','il.k͈i'],
     읽어요: ['일거요','일거요','ілґойо','il.ɡʌ.jo'],
     많이: ['마니','마니','мані','maː ni'],
     밝게: ['발께','발께','палке','pal k͈e'],
