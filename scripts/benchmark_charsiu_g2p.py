@@ -326,6 +326,10 @@ def evaluate(
     total_ref = sum(x["reference_length"] for x in scored)
     total_distance = sum(x["distance"] for x in scored)
     exact = sum(x["exact"] for x in scored)
+    phoneme_ref_length = sum(x["phoneme_reference_length"] for x in scored)
+    phoneme_distance = sum(x["phoneme_distance"] for x in scored)
+    feature_distance = sum(x["feature_error_distance_proxy"] for x in scored)
+    unsupported_feature_segments = sum(x["unsupported_feature_segments"] for x in scored)
     prediction_failures = prediction_failures or {}
     failure_counts = {status: sum(1 for item in prediction_failures.values() if item.get("status") == status)
                       for status in ("empty_output", "invalid_output", "model_error")}
@@ -352,6 +356,10 @@ def evaluate(
         "exact_matches": exact,
         "exact_match_rate": round(exact / len(scored), 6) if scored else None,
         "character_error_rate": round(total_distance / total_ref, 6) if total_ref else None,
+        "phoneme_error_rate": round(phoneme_distance / phoneme_ref_length, 6) if phoneme_ref_length else None,
+        "phonological_feature_error_rate_proxy": round(feature_distance / phoneme_ref_length, 6) if phoneme_ref_length else None,
+        "unsupported_feature_segments": unsupported_feature_segments,
+        "reference_phoneme_segments": phoneme_ref_length,
         "missing_predictions": len(missing),
         "missing_word_examples": missing[:50],
         "prediction_failures_by_word": prediction_failures,
