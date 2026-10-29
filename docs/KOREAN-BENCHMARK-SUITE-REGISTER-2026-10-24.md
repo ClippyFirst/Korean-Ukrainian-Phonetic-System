@@ -379,7 +379,7 @@ For the benchmark portfolio, distinguish executable IPA candidates from related 
 - **kokorog2p 0.9.15:** `PENDING_CI`. Source inspection confirmed an explicit Korean `output="ipa"` mode (`KoreanG2P`); benchmark disables morphology and external lexicon lookup, pins Apache-2.0 package version 0.9.15, and records that it is g2pK-derived rather than a fully independent algorithm family. The prior invalid 1.0.0 pin was removed.
 - **SMART-G2P:** `SUPPLEMENTARY_NOT_INDEPENDENT`; code-mixed text normalization layer that delegates to other G2P engines.
 - **HAMA:** `PENDING_CI_EMPIRICAL_KOREAN_CHECK`. Pinned upstream commit `fb81fe97e54c00b3f73192b9351f96fcd4427b03` exposes direct IPA output and its encoder vocabulary includes Korean jamo, so it is now being tested empirically. Upstream `LICENSE` says MIT while `python/pyproject.toml` says Apache-2.0; this discrepancy is recorded and no HAMA source is vendored.
-- **CharsiuG2P multilingual ByT5:** `SEPARATE_BENCHMARK_PATH`; dedicated script exists, but the research workflow remains opt-in because weights licensing is unresolved.
+- **CharsiuG2P multilingual ByT5:** `PENDING_CI_COMPARISON_ONLY_LICENSE_UNRESOLVED`; the user authorized comparative-only evaluation, so the pinned model workflow is enabled on this branch. Its weights remain unredistributed, the license is explicitly unresolved, and results must carry this caveat.
 - **willwade/byt5-g2p-multilingual-tiny:** `PENDING_CI`; the pinned CC BY-SA 4.0 checkpoint is now enabled on the comparison branch; outputs exclude weights/caches and training-source overlap caveats remain.
 - **UGTPHON retrieval-augmented compositional method:** `BLOCKED_IMPLEMENTATION` until an official inference checkpoint/package is located and training/test overlap is reviewed.
 
@@ -395,3 +395,6 @@ Canonical evidence, candidate acceptance criteria, and links are maintained in `
 
 
 The HAMA candidate is run from a pinned external checkout and scored only if its direct IPA API returns usable output on the same two pinned splits. A Korean-jamo vocabulary alone is not evidence of Korean phonological accuracy; the resulting benchmark scores and error patterns determine eligibility.
+
+
+For the requested comparison-only run, both the pinned CharsiuG2P checkpoint (weights license unresolved; no weights/caches uploaded) and the CC BY-SA 4.0 ByT5 tiny checkpoint are enabled as separate neural candidates. This is not a production integration and does not resolve third-party licensing uncertainty.
