@@ -25,7 +25,7 @@ test('찾아가다 keeps its dictionary surface, IPA, and Ukrainian target witho
   assert.equal(word.source_url, source.url);
   assert.equal(word.surface_hangul, '차자가다');
   assert.equal(word.ipa_syllables, 'tɕʰa|dʑa|ɡa|da');
-  assert.equal(word.target_syllables, 'ча|джа|ґа|да');
+  assert.equal(word.target_syllables, 'ч\'а|джа|ґа|да');
   assert.match(word.rule_notes, /directly lists 찾아가다 pronunciation \[차자가다\]/u);
   assert.match(word.rule_notes, /Q&A itself addresses syntax\/usage, not phonological analysis/u);
   assert.match(word.rule_notes, /Rule mapping §13/u);

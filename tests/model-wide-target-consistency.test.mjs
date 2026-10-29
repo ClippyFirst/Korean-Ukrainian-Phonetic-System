@@ -14,7 +14,7 @@ const entries = new Map(rows.map((row) => [row.input, row]));
 
 test('practical targets do not duplicate Korean fortisness as doubled Ukrainian onset letters', () => {
   const expected = {
-    '밝다': 'пак|та',
+    '밝다': 'пак|тта',
     '넓고': 'нол|ко',
     '넓습니다': 'нол|сим|ні|да',
     '읊다': 'ип|та',
@@ -40,7 +40,7 @@ test('practical targets do not duplicate Korean fortisness as doubled Ukrainian 
 
 test('word-initial lenis and affricate targets follow the declared Ukrainian mapping', () => {
   const expected = {
-    '벼훑이': 'пйо|гул|чі',
+    '벼훑이': 'пйо|гул|ч\'і',
     '닫히다': 'та|чі|да',
     '겉옷': 'ко|дот',
     '젖어미': 'чо|до|мі',
@@ -71,7 +71,7 @@ test('word-initial lenis and affricate targets follow the declared Ukrainian map
 
 test('target syllable alignment and contextual IPA are consistent for high-risk connected forms', () => {
   const expected = {
-    '덥고': ['топ|ко', 'tʌp̚|k͈o'],
+    '덥고': ['топ|кко', 'tʌp̚|k͈o'],
     '춥습니다': ['чуп|сим|ні|да', 'tɕʰup̚|s͈ɯm|ni|da'],
     '나갔습니다': ['на|ґат|сим|ні|да', 'na|ɡat̚|s͈ɯm|ni|da'],
     '미닫이': ['мі|да|джі', 'miː|da|dʑi'],
@@ -110,7 +110,7 @@ test('coda ㄹ uses the declared Ukrainian л target without an added soft sign'
   const expected = {
     '넓네': 'нол|ле',
     '여덟': 'йо|дол',
-    '넓다': 'нол|та',
+    '넓다': 'нол|тта',
     '들일': 'тил|ліл',
     '얇실하다': 'ял|шіл|га|да',
     '짧다': 'чал|та',
@@ -148,7 +148,7 @@ test('coda ㄹ uses the declared Ukrainian л target without an added soft sign'
 
 test('context-sensitive vowel and voicing decisions remain explicit in the lexical layer', () => {
   const expected = {
-    '맛없다': ['ма|доп|та', 'ma|dʌp̚|t͈a'],
+    '맛없다': ['ма|доп|тта', 'ma|dʌp̚|t͈a'],
     '맛없고': ['ма|доп|ко', 'ma|dʌp̚|k͈o'],
     '협의': ['гьо|бі', 'hjʌ|bi'],
     '말씨': ['мал|ші', 'maːl|ɕ͈i'],

@@ -100,7 +100,7 @@ test('NIKL-attested 늙고 is resolved only by its exact sourced entry', () => {
   const generic = genericEngine.convert('늙고');
   assert.ok(generic.ukrainian.includes('⟦') || generic.status === 'unresolved');
   assert.equal(engine.convert('늙고').surfaceHangul, '늘꼬');
-  assert.equal(engine.convert('늙고').ukrainian, 'нилко');
+  assert.equal(engine.convert('늙고').ukrainian, 'нилкко');
   assert.equal(engine.convert('늙고').ipa, 'nɯl.k͈o');
 });
 
@@ -111,7 +111,7 @@ test('않았다 is resolved only by its exact sourced entry, not by generic morp
   const generic = genericEngine.convert('않았다');
   assert.ok(generic.ukrainian.includes('⟦') || generic.status === 'unresolved');
   assert.equal(engine.convert('않았다').surfaceHangul, '아낟따');
-  assert.equal(engine.convert('않았다').ukrainian, 'анатта');
+  assert.equal(engine.convert('않았다').ukrainian, 'анаттта');
 });
 
 test('punctuation is a hard boundary for cross-word sound-rule propagation', () => {

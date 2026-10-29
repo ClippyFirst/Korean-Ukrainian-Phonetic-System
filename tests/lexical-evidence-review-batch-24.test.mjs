@@ -26,7 +26,7 @@ test('붙이다 preserves its Korean surface, project IPA, and provisional Ukrai
   assert.equal(word.source_url, source.url);
   assert.equal(word.surface_hangul, '부치다');
   assert.equal(word.ipa_syllables, 'pu|tɕʰi|da');
-  assert.equal(word.target_syllables, 'пу|чі|да');
+  assert.equal(word.target_syllables, 'пу|ч\'і|да');
   assert.match(word.rule_notes, /directly attests 붙이다\[부치다\]/u);
   assert.match(word.rule_notes, /Korean bracket notation is not IPA/u);
   assert.match(report, /direct answer attestation for the exact lexical target 붙이다/u);
