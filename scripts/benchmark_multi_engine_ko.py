@@ -652,6 +652,11 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         espeak_started = time.perf_counter()
         espeak_map, espeak_adapter = _load_espeak(words)
         espeak_elapsed_ms = (time.perf_counter() - espeak_started) * 1000
+        espeak_repeat_totals_ms = []
+        for _ in range(max(0, args.timing_repetitions)):
+            repeat_started = time.perf_counter()
+            _load_espeak(words)
+            espeak_repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
         predictions["espeak_ng_ko"] = {word: {"ipa": ipa} for word, ipa in espeak_map.items()}
         engine_meta["espeak_ng_ko"] = {
             "status": "AVAILABLE" if len(espeak_map) == len(words) else "PARTIAL",
@@ -661,6 +666,15 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "runtime": {
                 "total_ms": round(espeak_elapsed_ms, 3),
                 "throughput_words_per_second": round(len(espeak_map) / (espeak_elapsed_ms / 1000), 3) if espeak_elapsed_ms > 0 else None,
+                "repeatability": {
+                    "warmup_calls_excluded": 0,
+                    "measured_repetitions": len(espeak_repeat_totals_ms),
+                    "total_ms_samples": [round(x, 3) for x in espeak_repeat_totals_ms],
+                    "total_ms_median": round(statistics.median(espeak_repeat_totals_ms), 3) if espeak_repeat_totals_ms else None,
+                    "total_ms_min": round(min(espeak_repeat_totals_ms), 3) if espeak_repeat_totals_ms else None,
+                    "total_ms_max": round(max(espeak_repeat_totals_ms), 3) if espeak_repeat_totals_ms else None,
+                    "method": "repeated full batch calls in the same process; includes backend startup",
+                },
                 "timing_scope": "one batched phonemizer call including backend startup; not directly comparable with per-word timings",
             },
         }
@@ -678,6 +692,11 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             args.phonemize_root, args.corpus, args.phonemize_output, words,
         )
         phonemize_elapsed_ms = (time.perf_counter() - phonemize_started) * 1000
+        phonemize_repeat_totals_ms = []
+        for _ in range(max(0, args.timing_repetitions)):
+            repeat_started = time.perf_counter()
+            _load_phonemize(args.phonemize_root, args.corpus, args.phonemize_output, words)
+            phonemize_repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
         predictions["phonemize_2_0_1"] = {word: {"ipa": ipa} for word, ipa in phonemize_map.items()}
         engine_meta["phonemize_2_0_1"] = {
             "status": "AVAILABLE" if len(phonemize_map) == len(words) else "PARTIAL",
@@ -687,6 +706,15 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "runtime": {
                 "total_ms": round(phonemize_elapsed_ms, 3),
                 "throughput_words_per_second": round(len(phonemize_map) / (phonemize_elapsed_ms / 1000), 3) if phonemize_elapsed_ms > 0 else None,
+                "repeatability": {
+                    "warmup_calls_excluded": 0,
+                    "measured_repetitions": len(phonemize_repeat_totals_ms),
+                    "total_ms_samples": [round(x, 3) for x in phonemize_repeat_totals_ms],
+                    "total_ms_median": round(statistics.median(phonemize_repeat_totals_ms), 3) if phonemize_repeat_totals_ms else None,
+                    "total_ms_min": round(min(phonemize_repeat_totals_ms), 3) if phonemize_repeat_totals_ms else None,
+                    "total_ms_max": round(max(phonemize_repeat_totals_ms), 3) if phonemize_repeat_totals_ms else None,
+                    "method": "repeated Node subprocess and full batch calls",
+                },
                 "timing_scope": "includes Node subprocess startup and batch processing; not directly comparable with per-word timings",
             },
         }
