@@ -12,10 +12,10 @@ const entries = new Map(parseCsv(lexical).map((row) => [row.input, row]));
 test('common verb forms with morphologically licensed ㅆ liaison use exact standard readings', () => {
   const expected = {
     '었어': ['어써', 'оссо', 'ʌ.s͈ʌ'],
-    '갔어': ['가써', 'касо', 'ka.s͈ʌ'],
+    '갔어': ['가써', "кассо", 'ka.s͈ʌ'],
     '갔어요': ['가써요', 'касо йо', 'ka s͈ʌ jo'],
     '있어요': ['이써요', 'ісо йо', 'i s͈ʌ jo'],
-    '있습니다': ['읻씀니다', 'ітсимніда', 'it̚ s͈ɯm ni da'],
+    '있습니다': ['읻씀니다', "ітссимніда", 'it̚ s͈ɯm ni da'],
   };
   for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
     const entry = entries.get(word);
@@ -35,7 +35,7 @@ test('the previously unresolved sequence reads without coda-morphology placehold
   const result = engine.convert('읽을 수 있습니다');
   assert.equal(result.issues.length, 0);
   assert.ok(!result.ukrainian.includes('⟦'));
-  assert.ok(result.ukrainian.includes('ітсимніда'));
+  assert.ok(result.ukrainian.includes("ітссимніда"));
   assert.ok(typeof result.surfaceHangul === 'string');
   assert.ok(!result.surfaceHangul.includes('⟦'));
 });
