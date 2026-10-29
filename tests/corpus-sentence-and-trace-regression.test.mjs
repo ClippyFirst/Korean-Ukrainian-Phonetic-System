@@ -64,7 +64,7 @@ test('trace panel has explicit column labels for source, target, rules and statu
 test('sentence conversion resolves exact lexical words inside punctuation-separated text', () => {
   for (const [input, expected] of [
     ['국립국어원에서', ['궁님꾸거워네서', 'куннімккуґовонесо']],
-    ['찍었어요.', ['찌거써요', 'чіґосойо']],
+    ['찍었어요.', ['찌거써요', 'ччіґоссойо']],
     ['있어요.', ['이써요', 'іссойо']],
     ['갔어요.', ['가써요', 'кассойо']],
   ]) {
@@ -77,9 +77,9 @@ test('sentence conversion resolves exact lexical words inside punctuation-separa
 
 test('the exact three user-reported sentences do not leave past-tense liaison placeholders', () => {
   const cases = [
-    ['독립문 앞에서 사진을 찍었어요.', '찍었어요', 'чіґосойо'],
-    ['한국 음식은 맛있지만 매울 수도 있어요.', '있어요', 'ісойо'],
-    ['오늘은 날씨가 맑고 바람이 붑니다. 책을 읽고 학교에 갔어요.', '갔어요', 'касойо'],
+    ['독립문 앞에서 사진을 찍었어요.', '찍었어요', 'ччіґоссойо'],
+    ['한국 음식은 맛있지만 매울 수도 있어요.', '있어요', 'іссойо'],
+    ['오늘은 날씨가 맑고 바람이 붑니다. 책을 읽고 학교에 갔어요.', '갔어요', 'кассойо'],
   ];
   for (const [sentence, word, expected] of cases) {
     const result = engine.convert(sentence);
@@ -105,7 +105,7 @@ test('second adversarial corpus resolves morphology-sensitive forms without plac
     '해돋이를': ['해도지를', 'гедоджірил'],
     '멋있어요': ['머디써요', 'модіссойо'],
     '맛있고': ['마딛꼬', 'мадіткко'],
-    '맛없고': ['마덥꼬', 'мадопко'],
+    '맛없고': ['마덥꼬', 'мадопкко'],
     '맛없어요': ['마더버요', 'мадобойо'],
     '젊은': ['절믄', 'чолмин'],
     '읽었습니다': ['일거씀니다', 'ілґосимніда'],

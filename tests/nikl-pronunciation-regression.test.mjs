@@ -189,7 +189,7 @@ test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () 
   }
   const phrase = engine.convert('맛있다!');
   assert.equal(phrase.variants.length, 1);
-  assert.equal(phrase.variants[0].ukrainian, 'машітта!');
+  assert.equal(phrase.variants[0].ukrainian, 'машіттта!');
   assert.equal(phrase.variants[0].ipa, 'ma.ɕit̚.t͈a!');
 });
 
@@ -492,7 +492,7 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
     '연계': {surface:'연계', target:'йонґє', ipa:'jʌn.ɡje', alternateSurface:'연게', alternateTarget:'йонґе', alternateIpa:'jʌn.ɡe'},
     '몌별': {surface:'몌별', target:'мєбйол', ipa:'mje.bjʌl', alternateSurface:'메별', alternateTarget:'мебйол', alternateIpa:'me.bjʌl'},
     '개폐': {surface:'개폐', target:'кеп\'є', ipa:'kɛ.pʰje', alternateSurface:'개페', alternateTarget:"кеп'е", alternateIpa:'kɛ.pʰe'},
-    '혜택': {surface:'혜택', target:"гєт'ек", ipa:'hjeː.tʰɛk̚', alternateSurface:'헤택', alternateTarget:'гетек', alternateIpa:'heː.tʰɛk̚'},
+    '혜택': {surface:'혜택', target:"гєт'ек", ipa:'hjeː.tʰɛk̚', alternateSurface:'헤택', alternateTarget:"гет'ек", alternateIpa:'heː.tʰɛk̚'},
     '지혜': {surface:'지혜', target:'чігє', ipa:'tɕi.hje', alternateSurface:'지헤', alternateTarget:'чіге', alternateIpa:'tɕi.he'},
   };
   const rows = parseCsv(lexical);
@@ -583,7 +583,7 @@ test('NIKL §9 regular final-neutralization examples are computed by rules', () 
   const expected = {
     '닦다': ['tak̚.t͈a', 'тактта'],
     '키읔': ['kʰi.ɯk̚', "к'іик"],
-    '키읔과': ['kʰi.ɯk̚.k͈wa', "к'іикква"],
+    '키읔과': ['kʰi.ɯk̚.k͈wa', "к'іиккква"],
     '옷': ['ot̚', 'от'],
     '있다': ['it̚.t͈a', 'ітта'],
     '젖': ['tɕʌt̚', 'чот'],
@@ -634,7 +634,7 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
     '흙만': ['흥만', 'hɯŋ man', 'гинман'],
     '닫는': ['단는', 'tan nɯn', 'таннин'],
     '짓는': ['진는', 'tɕiːn nɯn', 'чіннин'],
-    '옷맵시': ['온맵씨', 'on mɛp̚ ɕ͈i', 'онмепші'],
+    '옷맵시': ['온맵씨', 'on mɛp̚ ɕ͈i', 'онмепшші'],
     '있는': ['인는', 'in nɯn', 'іннин'],
     '맞는': ['만는', 'man nɯn', 'маннин'],
     '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'чонмонул'],

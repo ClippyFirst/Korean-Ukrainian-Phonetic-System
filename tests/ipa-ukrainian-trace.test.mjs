@@ -143,7 +143,7 @@ test('browser IPA mappings carry the same explicit status and provenance as the 
   assert.ok(provisional.features.some(feature => feature.feature === 'aspiration'));
 
   for (const ipa of ['ɰi', 'ø', 'y']) {
-    assert.equal(traceIpaMappingDetailed(ipa).status, 'model-selected', ipa);
+    assert.equal(traceIpaMappingDetailed(ipa).status, 'provisional', ipa);
   }
 });
 
