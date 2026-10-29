@@ -415,23 +415,40 @@ def _load_kog2p(root: Path) -> tuple[Callable[[str], str], str]:
     return run, "KoG2P custom phone labels -> explicit project-side label-to-IPA adapter"
 
 
-def _load_hama() -> tuple[Callable[[str], str], str]:
-    """Load the pinned HAMA model and request its canonical IPA output."""
+def _load_hama_batch(words: list[str]) -> tuple[Callable[[], dict[str, dict[str, str]]], str]:
+    """Load HAMA once and use its documented text-splitting batch API."""
     from hama import G2PModel
 
     model = G2PModel()
 
-    def run(word: str) -> str:
-        result = model.predict(word)
+    def run_batch() -> dict[str, dict[str, str]]:
+        result = model.predict(
+            " ".join(words),
+            split_delimiter=r"\\s+",
+            output_delimiter=" ",
+            preserve_literals="none",
+        )
         value = getattr(result, "ipa", None)
         if not isinstance(value, str) or not value.strip():
-            raise ValueError(f"HAMA returned no canonical IPA for {word!r}")
-        return value
+            raise ValueError("HAMA returned no canonical IPA for the batch")
+        tokens = value.split()
+        if len(tokens) != len(words):
+            raise ValueError(
+                f"HAMA batch output count mismatch: expected {len(words)}, got {len(tokens)}"
+            )
+        mapped: dict[str, dict[str, str]] = {}
+        for word, ipa in zip(words, tokens):
+            if not ipa.strip():
+                mapped[word] = {"error": "empty IPA token"}
+            else:
+                mapped[word] = {"ipa": ipa}
+        return mapped
 
-    return run, (
+    return run_batch, (
         "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03; "
-        "G2PModel.predict().ipa direct output; upstream LICENSE says MIT while "
-        "python/pyproject.toml metadata says Apache-2.0; external checkout only"
+        "G2PModel.predict(text, split_delimiter=r'\\s+', output_delimiter=' ').ipa; "
+        "sentence-level batch; upstream LICENSE says MIT while python/pyproject.toml "
+        "metadata says Apache-2.0; external checkout only"
     )
 
 
@@ -709,19 +726,54 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         }
 
     try:
-        hama_fn, hama_adapter = _load_hama()
-        execute(
-            "hama_1_7_0",
-            "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03",
-            hama_fn,
-            hama_adapter,
-        )
+        hama_batch, hama_adapter = _load_hama_batch(words)
+        hama_started = time.perf_counter()
+        hama_map = hama_batch()
+        hama_elapsed_ms = (time.perf_counter() - hama_started) * 1000
+        hama_repeat_totals_ms = []
+        for _ in range(max(0, args.timing_repetitions)):
+            repeat_started = time.perf_counter()
+            hama_batch()
+            hama_repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
+        hama_predictions = {
+            word: value for word, value in hama_map.items()
+            if isinstance(value, dict) and isinstance(value.get("ipa"), str)
+        }
+        hama_errors = [
+            {"word": word, **value} for word, value in hama_map.items()
+            if not isinstance(value, dict) or not isinstance(value.get("ipa"), str)
+        ]
+        predictions["hama_1_7_0"] = {
+            word: {"ipa": value["ipa"]} if isinstance(value, dict) and isinstance(value.get("ipa"), str)
+            else {"error": value.get("error", "invalid output")} for word, value in hama_map.items()
+        }
+        engine_meta["hama_1_7_0"] = {
+            "status": "AVAILABLE" if len(hama_predictions) == len(words) else ("PARTIAL" if hama_predictions else "BLOCKED_OR_ERROR"),
+            "source": "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03",
+            "adapter": hama_adapter,
+            "unique_words": len(words), "outputs": len(hama_predictions),
+            "engine_errors": len(hama_errors), "error_examples": hama_errors[:10],
+            "runtime": {
+                "total_ms": round(hama_elapsed_ms, 3),
+                "throughput_words_per_second": round(len(words) / (hama_elapsed_ms / 1000), 3) if hama_elapsed_ms else None,
+                "repeatability": {
+                    "warmup_calls_excluded": 1,
+                    "measured_repetitions": len(hama_repeat_totals_ms),
+                    "total_ms_samples": [round(x, 3) for x in hama_repeat_totals_ms],
+                    "total_ms_median": round(statistics.median(hama_repeat_totals_ms), 3) if hama_repeat_totals_ms else None,
+                    "total_ms_min": round(min(hama_repeat_totals_ms), 3) if hama_repeat_totals_ms else None,
+                    "total_ms_max": round(max(hama_repeat_totals_ms), 3) if hama_repeat_totals_ms else None,
+                    "method": "one scored full-batch call precedes repeated batch timing samples",
+                },
+                "timing_scope": "one sentence-level HAMA batch call; includes model inference and IPA splitting; not comparable with per-word timings",
+            },
+        }
     except Exception as exc:
         predictions["hama_1_7_0"] = {}
         engine_meta["hama_1_7_0"] = {
             "status": "BLOCKED_OR_ERROR",
             "source": "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03",
-            "adapter": "G2PModel.predict().ipa direct output",
+            "adapter": "G2PModel.predict(text, split_delimiter, output_delimiter).ipa batch output",
             "engine_errors": len(words),
             "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
         }
