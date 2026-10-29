@@ -418,3 +418,49 @@ Artifact: [12882472032](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic
 | SIGMORPHON | 70.971% (709/999) | 5.408% | 5.582% | 2.136% | 100% | 156.986 s | 6.364 tokens/s |
 
 This is one cold model-load plus batched-inference measurement; neural repeatability remains `NOT_MEASURED`. The weights license is unresolved and training overlap is not ruled out. The all-engine neural pairing job is queued, so no completed combined paired comparison is claimed.
+
+
+## Why CharsiuG2P currently scores higher, and how to close the gap (2026-10-29)
+
+### Observed gap on the paired benchmark
+
+The successful comparative-only Charsiu run in [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742) used the same eligible token occurrences and references as the native baseline. On the common scored subset:
+
+| Dataset | Metric | ClippyFirst native | CharsiuG2P | Difference |
+|---|---|---:|---:|---:|
+| UGTPHON | Exact match | 53.002% | 88.531% | Charsiu +35.529 pp |
+| UGTPHON | CER | 9.170% | 3.624% | Charsiu error 60.5% lower |
+| UGTPHON | PER | 9.614% | 3.356% | Charsiu error 65.1% lower |
+| SIGMORPHON | Exact match | 35.772% | 70.971% | Charsiu +35.199 pp |
+| SIGMORPHON | CER | 14.698% | 5.408% | Charsiu error 63.2% lower |
+| SIGMORPHON | PER | 16.234% | 5.582% | Charsiu error 65.6% lower |
+
+These are real observed score differences under the current harness, not proof that the neural model is intrinsically more linguistically correct. The test sets are not yet established as leakage-free for this checkpoint.
+
+### Most likely causes (separate evidence from hypotheses)
+
+1. **Data coverage and generalization — strong architectural explanation.** CharsiuG2P is a supervised multilingual ByT5 sequence model trained on many grapheme-to-pronunciation pairs. It can learn frequent and overlapping phonological patterns, orthographic exceptions, and distributional regularities without every pattern being manually encoded. The native engine is a transparent ordered-rule pipeline plus a sourced exact-form lexicon. Its rule inventory, morphological class evidence, and lexical coverage are necessarily more limited until those are added and verified.
+2. **Morphology and lexical context — confirmed native design limitation.** The native pipeline intentionally withholds some results when a process depends on exact morpheme evidence: liaison/neutralization, complex-coda + ㅎ aspiration, palatalization with formal morphemes, ㄺ-before-ㄱ fortition, and the -ㄹ게 ending. A learned model can predict a likely form from training regularities even without explicit segmentation; the deterministic engine must instead obtain a morphological analysis, a licensed rule environment, or a sourced lexical exception.
+3. **Reference-convention alignment — plausible contributor, not yet quantified as the cause of the 35 pp gap.** The neural model's output convention is not independently documented. It may emit symbols, segment boundaries, or phonetic variants closer to the reference corpus than the native broad-IPA renderer. The benchmark currently applies conservative Unicode/format normalization, not a fully adjudicated phonological equivalence relation. Do not weaken normalization simply to improve one model's score; define and independently validate the accepted IPA convention first.
+4. **Potential train/test overlap — material validity risk.** The repository's data audit found 508 unique UGTPHON test forms overlapping the public Charsiu repository's Korean training file, and 729 SIGMORPHON test forms overlapping that file. The Hugging Face checkpoint's full training manifest is unavailable, so these intersections do **not prove** the checkpoint trained on every overlapping item; they do mean independent evaluation cannot currently be claimed. SIGMORPHON overlap is particularly large (729/999 lexical forms). Scores on a decontaminated holdout are required before treating the full gap as generalization performance.
+5. **Abstention is not the main explanation.** Native coverage is 99.815% on UGTPHON and 99.900% on SIGMORPHON; the small number of abstentions cannot account for a roughly 35 percentage-point exact-match gap.
+
+### Recommended repair path for the deterministic engine
+
+Do not try to mimic the neural model by adding broad, guessed substitutions. Close the gap through evidence-backed rule coverage and morphology, in this order:
+
+1. **Protect a genuinely independent evaluation.** Audit all candidate training sources against benchmark forms; keep the existing test sets sealed. Create a decontaminated evaluation slice excluding any form known to occur in available Charsiu/SIGMORPHON training inventories, and add an independently sourced/annotated holdout. Publish both contaminated-risk and decontaminated scores rather than silently replacing the existing result.
+2. **Generate a paired error ledger.** For every occurrence, retain native IPA, Charsiu IPA, gold variants, CER/PER deltas, source form, morphology, and error class. Prioritize cases where Charsiu matches the gold but native does not. The existing paired-report workflow is designed to join the complete occurrence ledger; the most recent completed run's pairing job was still queued, so this artifact must be completed before claiming a fully categorized neural gap.
+3. **Mine candidates on train/dev only.** Use the existing `benchmark_charsiu_research_split.py`, `analyze_korean_g2p_teacher_errors.py`, and `mine_deterministic_rule_candidates.py` workflow only on permitted train/dev data. Group disagreements by coda/onset environment, liaison, nasalization, liquidization, tensification, ㅎ deletion/aspiration, palatalization, ㄴ insertion, compound boundaries, lexical exceptions, and IPA convention. These groups are hypotheses for review, not automatic production rules.
+4. **Add morphological evidence before broadening rules.** Evaluate the pinned morphology-aware `g2p-ko`/Kiwi adapter and the distinct 2026 Interspeech engine if its official runnable source becomes available. Feed explicit morpheme boundaries/classes into the existing ordered rule engine; recursively re-evaluate later rules only where the rule's formal environment and source evidence license it. A boundary alone is not enough to license a rule.
+5. **Require a primary-source-backed regression for every new rule.** Each change needs a source citation, positive and negative controls, explicit rule order, native/browser parity where applicable, and held-out dev improvement. Keep unresolved contexts unresolved rather than guessing. Exact-form lexical fixes require independently sourced pronunciation evidence and must not be generalized by spelling alone.
+6. **Normalize only verified IPA equivalences.** Establish a documented broad-IPA target profile with expert review and measure profile sensitivity separately. Keep raw model outputs and raw exact-match scores. Never remove aspiration, length, or segment contrasts globally just because that makes a candidate score better.
+7. **Re-run the same paired evaluation after each coherent batch.** Acceptance means lower error on an independent dev set without regressions in rule controls, stable browser/Python parity, and no increase in unsupported guesses. Only after the implementation is frozen should the sealed holdout be evaluated once.
+
+### Runtime trade-off
+
+The Charsiu measurements include cold model load and batched inference: about 391.8 s on UGTPHON and 157.0 s on SIGMORPHON in the refreshed run. Native warm median runtime was about 358 ms and 152 ms respectively in its five-sample measurement. These timing scopes differ (cold model startup plus batch inference versus in-process deterministic calls), so they are not a fair per-token speed ratio. Measure warmed neural inference separately before comparing steady-state throughput. The practical trade-off is clear even without that ratio: Charsiu currently has much higher reference match, while the deterministic engine is far lighter, transparent, and easier to execute at low latency.
+
+### Decision
+
+Treat CharsiuG2P as a strong **research teacher/baseline**, not as an automatically correct gold oracle or production dependency. The immediate corrective work is leakage-aware paired error analysis, IPA-convention adjudication, and morphology-aware deterministic rules backed by primary sources. Do not claim parity with Charsiu until the gap closes on an independent evaluation; do not claim the current Charsiu scores are unbiased until training overlap and weights provenance are resolved.
