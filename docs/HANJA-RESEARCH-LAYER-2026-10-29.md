@@ -4,24 +4,22 @@
 
 Hanja is an optional orthographic/lexical annotation, separate from pronunciation and translation. It must not feed the IPA or Ukrainian target adapter. Existing output logic is unchanged; Hanja is an additional result card.
 
-The implementation is deliberately deterministic and browser-local:
-- no neural models, model weights, API calls, remote scripts, or new runtime dependencies;
-- a hand-curated, small lexical table and longest-match scan;
-- preserve punctuation, whitespace, Latin/Cyrillic spans, and unknown Hangul characters;
-- known lexical strings are annotated while particles/endings remain Hangul when not part of a table entry;
-- unknown spans are retained, not guessed.
+The implementation is deliberately deterministic:
+- no neural models, model weights, inference APIs, or remote runtime calls;
+- a pinned build-time preparation script fetches only libhangul-derived Hanja data files, verifies both Git blob SHA-1 values, and emits a compact generated word-reading map;
+- the browser lazily imports the generated dictionary chunk from the same site on first Korean input; the existing `connect-src 'none'` CSP remains unchanged because this is a script chunk, not a `fetch()` call;
+- a deterministic ranker chooses one candidate per reading: gloss-bearing entries first, then the sum of per-character Hanja ranks from the single-character table, then stable source order; hand-reviewed project overrides take precedence;
+- whole Hangul runs are converted only if they can be segmented into dictionary terms and explicit suffixes; otherwise the whole run is preserved.
 
-This is an initial dictionary-preview, not a complete Hanja converter or morphological analyzer. Longest-match scanning can incorrectly annotate a known substring inside an unknown compound or a homograph with a different sense. The UI states this limitation. Do not claim contextual word-sense disambiguation or full Korean coverage.
+This is a broad deterministic dictionary-backed preview, not a complete Korean morphological analyzer or contextual Hanja WSD engine. The ranker cannot infer sentence meaning, so homographs can still be wrong. Do not claim contextual word-sense disambiguation or perfect Korean coverage.
 
 ## Current implementation
 
-- Engine: `src/app/hanja.js`
-- UI: `index.html`, `src/main.js`, `src/styles/main.css`
-- Tests: `tests/hanja.test.mjs`
-- Runtime uses no network. The existing `connect-src 'none'` Content Security Policy remains intact.
-- Initial curated entries cover common terms such as 韓國語, 經濟, 發展, 政府, 社會, 文化, 歷史, 政治, 學生, 學校, 大學, 科學, 技術, 情報, 國家, 世界, 時間, 問題, 方法, 結果, 硏究, 言語, and others. This is not claimed to be an exhaustive or frequency-ranked dictionary.
-- The mapping table is manually authored for this prototype; no third-party dictionary file or model weights are bundled. Any future imported lexicon must have its source, revision, transformation, and license recorded before inclusion.
-- A promising deterministic data source was reviewed: HanjaKey's `hanja_words.txt` is a ~4.87 MB word inventory derived from libhangul and identifies the per-file BSD 3-Clause provenance; its separate NIKL-derived `hanja_words_nikl.txt` is ~20.16 MB and CC BY-SA 2.0 KR. See [HanjaKey data provenance](https://github.com/SJY051/HanjaKey/blob/main/THIRD_PARTY_DATA.md) and [resource notes](https://github.com/SJY051/HanjaKey/blob/main/Sources/HanjaKitCore/Resources/README.md). Neither file is imported here: the connector cannot retrieve the large file contents for a pinned, byte-verified vendoring step, and a build-time download would introduce an avoidable external build dependency. This is a researched candidate, not integrated data.
+- Engine: `src/app/hanja.js`; build-time dictionary preparation: `scripts/prepare-hanja-dictionary.mjs`.
+- UI: `index.html`, `src/main.js`, `src/styles/main.css`; tests: `tests/hanja.test.mjs`, `tests/hanja-dictionary-build.test.mjs`, and `tests/hanja-ui-contract.test.mjs`.
+- Data source is pinned to HanjaKey commit `4397d39106453bf4ee71b565dfb25e98eb71580f`, using only `hanja.txt` (Git blob `7cca2b4666ca19dcb10aaada52af89360c381659`) and `hanja_words.txt` (Git blob `07a9a7fc675c82628f4bacfeb22db679ce60866f`). Both retain the libhangul BSD 3-Clause attribution; the full notice is in `public/THIRD_PARTY_NOTICES.txt`.
+- Build preparation generates a compact one-candidate-per-reading map. The selected candidate follows a deterministic, inspectable ranking heuristic; the runtime dictionary is loaded lazily from a same-origin JS chunk, not from a third-party API. `connect-src 'none'` remains unchanged.
+- The 4.87 MB raw word inventory is not checked into the repository; exact upstream revision and Git blob hashes are pinned so development/build preparation is reproducible and rejects changed source bytes. `npm run dev` and `npm run build` invoke the preparer automatically. The NIKL-derived definition corpus (~20.16 MB, CC BY-SA 2.0 KR) and any LLM-generated ranking data are intentionally excluded.
 
 ## Deterministic behavior examples
 
@@ -38,13 +36,13 @@ These are unit-test fixtures for the curated dictionary, not claims of full ling
 | Task | Status | Evidence / acceptance criterion |
 |---|---|---|
 | Choose a deterministic browser-compatible approach | DONE_VERIFIED (design) | Local longest-match dictionary, no model/API/dependency. |
-| Implement first curated lexicon and converter | PARTIAL | Deterministic longest-valid-segmentation scanner and suffix inventory exist; unknown eojeol runs fail closed. Vocabulary remains intentionally small and needs source-attributed expansion. |
+| Implement dictionary-backed deterministic converter | PARTIAL | Pinned source data, Git-blob integrity checks, deterministic candidate ranker, lazy local runtime chunk, and fail-closed segmentation are implemented; exact-head build and generated-data counts/size still need CI verification. |
 | Add fourth Hanja output without replacing existing results | PARTIAL | UI card and copy action are wired; DOM order is now explicitly RR → IPA → Ukrainian → Hanja, with an order regression assertion. Exact-head CI still required. |
-| Preserve current CSP and no-network contract | PARTIAL | No network code added; verify source assertions and built artifact in CI. |
-| Add deterministic regression tests | PARTIAL | Focused tests added; not yet executed in a local checkout during this connector-only session. |
+| Preserve current CSP and no external runtime network | PARTIAL | Runtime has no fetch/XHR/WebSocket or external API; a same-origin dynamic JS chunk is lazy-loaded under `script-src 'self'`. Verify built asset paths and browser smoke in CI. Build/dev preparation does fetch two pinned upstream data files and validates their Git blob hashes. |
+| Add deterministic regression tests | PARTIAL | Converter, UI-order, source-integrity/ranking fixtures added; exact-head CI is running. Local Node/build remain unavailable because direct GitHub network access from the connector session is blocked. |
 | Evaluate coverage and error rate | TODO | Source-separated manually reviewed test set; report exact-match/span precision/recall, false-positive annotation rate, and abstention/coverage. |
 | Add full morphological segmentation / contextual homograph disambiguation | DEFERRED | A dictionary-only implementation cannot reliably decide sense or morphology. Must not be simulated with invented rules. |
-| Import a broad external Hanja lexicon | BLOCKED pending reproducible vendoring | HanjaKey/libhangul word inventory is a promising BSD-attributed source, but the large file could not be retrieved for byte-verified vendoring in this connector session. Acceptance: pin upstream commit, verify exact file hash and per-file notice, add a deterministic transformation/import script, measure compressed payload and coverage, and test the built static asset. NIKL-derived definitions are not needed for a first conversion dictionary and remain excluded. |
+| Build reproducible broad dictionary input | PARTIAL | A pinned build-time fetcher now verifies both libhangul-derived source files by Git blob SHA-1 and emits a compact map. Acceptance: exact-head CI must verify hashes, entry count, build success, generated chunk size, and live lazy loading. Source rows are not committed to Git. |
 
 ## Candidate engines not selected for this browser implementation
 
@@ -54,7 +52,7 @@ These are unit-test fixtures for the curated dictionary, not claims of full ling
 - Hanjaro is a reference service, not a verified public API or redistribution license.
 - Gukhanmun is primarily Hanja/mixed text → Hangul, the opposite direction.
 
-These remain research references only; none is included as a runtime dependency.
+These remain research references only; none is included as a runtime dependency. The selected deterministic dictionary data comes from the separate BSD-attributed libhangul files described above; no neural model or model-generated data is included.
 
 ## Verification and release gate
 
