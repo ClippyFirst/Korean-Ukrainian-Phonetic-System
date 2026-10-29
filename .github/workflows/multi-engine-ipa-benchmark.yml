@@ -479,7 +479,8 @@ jobs:
 
   licensed-byt5-korean-g2p:
     name: Licensed multilingual ByT5 G2P tiny (CPU)
-    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+    # Comparative-only evaluation on the benchmark branch; artifacts exclude model weights and caches.
+    if: github.head_ref == 'bench/extended-metrics-runtime-2026-10-29'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
