@@ -15,7 +15,7 @@ const exactOracles = [
   {
     input: '해돋이처럼',
     surface: '해도지처럼',
-    ukrainian: 'гедоджічором',
+    ukrainian: "гедоджіч'ором",
     ipa: 'hɛ.do.dʑi.tɕʰʌ.ɾʌm',
     source: 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327364',
     articles: ['§17'],
@@ -23,7 +23,7 @@ const exactOracles = [
   {
     input: '없으며',
     surface: '업쓰며',
-    ukrainian: 'опсимйо',
+    ukrainian: "опссимйо",
     ipa: 'ʌːp̚.s͈ɯ.mjʌ',
     source: 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002',
     articles: ['§7', '§14'],

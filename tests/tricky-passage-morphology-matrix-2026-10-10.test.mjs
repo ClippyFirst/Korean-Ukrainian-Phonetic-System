@@ -14,7 +14,7 @@ const cases = [
   {
     input: '같아지는',
     surface: '가타지는',
-    target: 'катаджінин',
+    target: "кат'аджінин",
     ipa: 'ka.tʰa.dʑi.nɯn',
     source: 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002',
     article: '§13: formal-morpheme liaison, not §15 representative-coda neutralization',
@@ -22,7 +22,7 @@ const cases = [
   {
     input: '같았다',
     surface: '가탇따',
-    target: 'кататта',
+    target: "кат'аттта",
     ipa: 'ka.tʰat̚.t͈a',
     source: 'https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002',
     article: '§13 liaison followed by §9 coda neutralization and §23 fortition',
@@ -30,7 +30,7 @@ const cases = [
   {
     input: '밝히는',
     surface: '발키는',
-    target: 'палкінин',
+    target: "палк'інин",
     ipa: 'pal kʰi nɯn',
     source: 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=326660',
     article: '§12 attached rule: the licensed verb-stem + suffix pattern does not simplify ㄺ first',
@@ -38,7 +38,7 @@ const cases = [
   {
     input: '닭고기와',
     surface: '닥꼬기와',
-    target: 'таккоґіва',
+    target: "такккоґіва",
     ipa: 'tak̚ k͈o ɡi wa',
     source: 'https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=327808',
     article: '§11 noun coda simplification plus §23 fortition; particle 와 follows vowel-final 기',
@@ -46,7 +46,7 @@ const cases = [
   {
     input: '같이',
     surface: '가치',
-    target: 'качі',
+    target: "кач'і",
     ipa: 'ka tɕʰi',
     source: 'https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=313399',
     article: '§17 palatalization at a licensed formal-morpheme boundary',
