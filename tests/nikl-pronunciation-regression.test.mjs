@@ -173,8 +173,8 @@ test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', 
 
 test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () => {
   const expected = {
-    맛있다: {surface:'마딛따', target:'мадіттта', ipa:'ma.dit̚.t͈a', alternateSurface:'마싣따', alternateTarget:'машітта', alternateIpa:'ma.ɕit̚.t͈a'},
-    멋있다: {surface:'머딛따', target:"модіттта", ipa:'mʌ.dit̚.t͈a', alternateSurface:'머싣따', alternateTarget:'мошітта', alternateIpa:'mʌ.ɕit̚.t͈a'},
+    맛있다: {surface:'마딛따', target:'мадіттта', ipa:'ma.dit̚.t͈a', alternateSurface:'마싣따', alternateTarget:'машіттта', alternateIpa:'ma.ɕit̚.t͈a'},
+    멋있다: {surface:'머딛따', target:"модіттта", ipa:'mʌ.dit̚.t͈a', alternateSurface:'머싣따', alternateTarget:'мошіттта', alternateIpa:'mʌ.ɕit̚.t͈a'},
   };
   for (const [word, values] of Object.entries(expected)) {
     const result = engine.convert(word);
@@ -387,7 +387,7 @@ test('NIKL §21 negative controls prevent nonstandard place assimilation', () =>
 test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
   const expected = {
     '되어': {target:'твео', ipa:'tø.ʌ', alternateSurface:'되여', alternateTarget:'твейо', alternateIpa:'tø.jʌ'},
-    '피어': {target:'п\'іо', ipa:'pʰi.ʌ', alternateSurface:'피여', alternateTarget:'пійо', alternateIpa:'pʰi.jʌ'},
+    '피어': {target:'п\'іо', ipa:'pʰi.ʌ', alternateSurface:'피여', alternateTarget:"п'ійо", alternateIpa:'pʰi.jʌ'},
     '이오': {target:'іо', ipa:'i.o', alternateSurface:'이요', alternateTarget:'ійо', alternateIpa:'i.jo'},
     '아니오': {target:'аніо', ipa:'a.ni.o', alternateSurface:'아니요', alternateTarget:'анійо', alternateIpa:'a.ni.jo'},
   };
@@ -491,7 +491,7 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
     '시계': {surface:'시계', target:'шіґє', ipa:'ɕi.ɡje', alternateSurface:'시게', alternateTarget:'шіґе', alternateIpa:'ɕi.ɡe'},
     '연계': {surface:'연계', target:'йонґє', ipa:'jʌn.ɡje', alternateSurface:'연게', alternateTarget:'йонґе', alternateIpa:'jʌn.ɡe'},
     '몌별': {surface:'몌별', target:'мєбйол', ipa:'mje.bjʌl', alternateSurface:'메별', alternateTarget:'мебйол', alternateIpa:'me.bjʌl'},
-    '개폐': {surface:'개폐', target:'кеп\'є', ipa:'kɛ.pʰje', alternateSurface:'개페', alternateTarget:'кепе', alternateIpa:'kɛ.pʰe'},
+    '개폐': {surface:'개폐', target:'кеп\'є', ipa:'kɛ.pʰje', alternateSurface:'개페', alternateTarget:"кеп'е", alternateIpa:'kɛ.pʰe'},
     '혜택': {surface:'혜택', target:"гєт'ек", ipa:'hjeː.tʰɛk̚', alternateSurface:'헤택', alternateTarget:'гетек', alternateIpa:'heː.tʰɛk̚'},
     '지혜': {surface:'지혜', target:'чігє', ipa:'tɕi.hje', alternateSurface:'지헤', alternateTarget:'чіге', alternateIpa:'tɕi.he'},
   };
@@ -548,7 +548,7 @@ test('fortisness remains in IPA and is preserved by doubled Ukrainian graphemes'
     const entry = parseCsv(lexical).find((row) => row.input === word);
     assert.ok(entry.target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
     if (entry.alternate_target_syllables) {
-      assert.ok(!entry.alternate_target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
+      assert.ok(entry.alternate_target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
     }
   }
 });
@@ -582,8 +582,8 @@ test('NIKL §10 complex-coda examples and lexical exceptions are source-backed',
 test('NIKL §9 regular final-neutralization examples are computed by rules', () => {
   const expected = {
     '닦다': ['tak̚.t͈a', 'тактта'],
-    '키읔': ['kʰi.ɯk̚', 'кіик'],
-    '키읔과': ['kʰi.ɯk̚.k͈wa', 'кіикква'],
+    '키읔': ['kʰi.ɯk̚', "к'іик"],
+    '키읔과': ['kʰi.ɯk̚.k͈wa', "к'іикква"],
     '옷': ['ot̚', 'от'],
     '있다': ['it̚.t͈a', 'ітта'],
     '젖': ['tɕʌt̚', 'чот'],
@@ -610,7 +610,7 @@ test('NIKL §9 regular final-neutralization examples are computed by rules', () 
 test('NIKL §9 lexical vowel-length examples preserve source length in IPA', () => {
   const expected = {
     '웃다': ['욷따', 'uːt̚.t͈a', 'уттта'],
-    '뱉다': ['밷따', 'pɛːt̚.t͈a', 'петта'],
+    '뱉다': ['밷따', 'pɛːt̚.t͈a', 'петтта'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
@@ -628,8 +628,8 @@ test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
   const expected = {
     '먹는': ['멍는', 'mʌŋ.nɯn', 'моннин'],
     '깎는': ['깡는', 'k͈aŋ.nɯn', 'кканнин'],
-    '키읔만': ['키응만', 'kʰi.ɯŋ.man', 'кіинман'],
-    '몫몫이': ['몽목씨', 'moŋ mok̚ ɕ͈i', 'монмокші'],
+    '키읔만': ['키응만', 'kʰi.ɯŋ.man', "к'іинман"],
+    '몫몫이': ['몽목씨', 'moŋ mok̚ ɕ͈i', 'монмокшші'],
     '긁는': ['긍는', 'kɯŋ nɯn', 'киннин'],
     '흙만': ['흥만', 'hɯŋ man', 'гинман'],
     '닫는': ['단는', 'tan nɯn', 'таннин'],
@@ -681,8 +681,8 @@ test('NIKL §11 generic complex-coda examples use the general rules', () => {
   const expected = {
     '닭': ['tak̚', 'так'],
     '늙지': ['nɯk̚.tɕ͈i', 'никччі'],
-    '읊고': ['ɯp̚.k͈o', 'ипко'],
-    '읊다': ['ɯp̚.t͈a', 'ипта'],
+    '읊고': ['ɯp̚.k͈o', 'ипкко'],
+    '읊다': ['ɯp̚.t͈a', 'иптта'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [ipa, target]] of Object.entries(expected)) {

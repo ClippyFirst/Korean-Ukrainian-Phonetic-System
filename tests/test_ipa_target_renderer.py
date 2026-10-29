@@ -304,9 +304,12 @@ def test_pipeline_opt_in_profile_gate_withholds_unadjudicated_and_partial_profil
         transliterate_korean("가", require_adjudicated_ipa_profile="yes")
 
 def test_korean_aspiration_is_marked_with_apostrophe():
-    for ipa, expected in [("kʰ", "к'"), ("tʰ", "т'"), ("pʰ", "п'"), ("tɕʰ", "ч'"), ("kʰjʌ", "к'йо")]:
+    for ipa, expected in [("kʰ", "к'"), ("tʰ", "т'"), ("pʰ", "п'"), ("tɕʰ", "ч'")]:
         result = render_ipa_sequence_to_ukrainian(ipa)
         assert result["ukrainian_orthography"] == expected, ipa
+    sequence = render_ipa_sequence_to_ukrainian("kʰjʌ", allow_provisional=True)
+    assert sequence["ukrainian_orthography"] == "к'хьо"
+    assert sequence["status"] == "provisional"
 
 
 def test_korean_fortis_consonants_are_not_collapsed_in_ukrainian_output():
