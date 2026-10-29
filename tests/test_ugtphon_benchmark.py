@@ -7,6 +7,11 @@ def test_ipa_normalization_removes_boundaries_and_known_narrow_vowel_marks():
     assert normalize_ipa("a̠") == normalize_ipa("a")
 
 
+def test_ipa_normalization_canonicalizes_equivalent_affricate_letters():
+    assert normalize_ipa("ʨʰa") == normalize_ipa("tɕʰa")
+    assert normalize_ipa("ʥa") == normalize_ipa("dʑa")
+
+
 def test_ipa_normalization_preserves_phonologically_relevant_markers():
     assert normalize_ipa("k͈a") != normalize_ipa("ka")
     assert normalize_ipa("kʰa") != normalize_ipa("ka")

@@ -28,6 +28,9 @@ _TIE_BAR = "\u0361"
 
 def normalize_ipa(value: str) -> str:
     value = unicodedata.normalize("NFD", value).replace("g", "ɡ")
+    # Canonicalize equivalent single-codepoint IPA affricate letters used by
+    # some G2P frontends (notably kokorog2p) to the project's segmented form.
+    value = value.replace("ʨ", "tɕ").replace("ʥ", "dʑ")
     value = value.replace(_TIE_BAR, "")
     value = "".join(
         char for char in value

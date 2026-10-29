@@ -12,11 +12,13 @@ import json
 import os
 import re
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from benchmark_ugtphon_ko import edit_distance, load_corpus, normalize_ipa
+from benchmark_multi_engine_ko import _ipa_segments, _segment_edit_distance, _segment_features
 
 HANGUL = re.compile(r"^[\uac00-\ud7a3]+$")
 
@@ -48,6 +50,11 @@ def score_prediction(prediction: str, gold_raw: str) -> dict[str, Any]:
         ((edit_distance(predicted, gold), gold) for gold in variants),
         key=lambda item: item[0],
     )
+    predicted_segments = _ipa_segments(predicted)
+    reference_segments = _ipa_segments(reference)
+    phoneme_distance = _segment_edit_distance(predicted_segments, reference_segments)
+    feature_distance = _segment_edit_distance(predicted_segments, reference_segments, weighted=True)
+    unsupported_segments = sum(_segment_features(segment).get("kind") == "unknown" for segment in predicted_segments)
     return {
         "predicted": prediction,
         "normalized_predicted": predicted,
@@ -55,6 +62,12 @@ def score_prediction(prediction: str, gold_raw: str) -> dict[str, Any]:
         "distance": distance,
         "exact": distance == 0,
         "reference_length": len(reference),
+        "phoneme_distance": phoneme_distance,
+        "phoneme_reference_length": len(reference_segments),
+        "phoneme_error_rate": phoneme_distance / len(reference_segments) if reference_segments else None,
+        "feature_error_distance_proxy": feature_distance,
+        "feature_error_rate_proxy": feature_distance / len(reference_segments) if reference_segments else None,
+        "unsupported_feature_segments": unsupported_segments,
     }
 
 
@@ -175,12 +188,19 @@ def _metrics(scored: list[dict[str, Any]]) -> dict[str, Any]:
     reference_length = sum(item["reference_length"] for item in scored)
     distance = sum(item["distance"] for item in scored)
     exact = sum(item["exact"] for item in scored)
+    phoneme_ref_length = sum(item.get("phoneme_reference_length", 0) for item in scored)
+    phoneme_distance = sum(item.get("phoneme_distance", 0) for item in scored)
+    feature_distance = sum(item.get("feature_error_distance_proxy", 0) for item in scored)
     return {
         "scored_occurrences": len(scored),
         "exact_matches": exact,
         "exact_match_rate": round(exact / len(scored), 6) if scored else None,
         "character_error_rate": round(distance / reference_length, 6) if reference_length else None,
+        "phoneme_error_rate": round(phoneme_distance / phoneme_ref_length, 6) if phoneme_ref_length else None,
+        "phonological_feature_error_rate_proxy": round(feature_distance / phoneme_ref_length, 6) if phoneme_ref_length else None,
+        "unsupported_feature_segments": sum(item.get("unsupported_feature_segments", 0) for item in scored),
         "reference_characters": reference_length,
+        "reference_phoneme_segments": phoneme_ref_length,
     }
 
 
@@ -306,6 +326,10 @@ def evaluate(
     total_ref = sum(x["reference_length"] for x in scored)
     total_distance = sum(x["distance"] for x in scored)
     exact = sum(x["exact"] for x in scored)
+    phoneme_ref_length = sum(x["phoneme_reference_length"] for x in scored)
+    phoneme_distance = sum(x["phoneme_distance"] for x in scored)
+    feature_distance = sum(x["feature_error_distance_proxy"] for x in scored)
+    unsupported_feature_segments = sum(x["unsupported_feature_segments"] for x in scored)
     prediction_failures = prediction_failures or {}
     failure_counts = {status: sum(1 for item in prediction_failures.values() if item.get("status") == status)
                       for status in ("empty_output", "invalid_output", "model_error")}
@@ -332,6 +356,10 @@ def evaluate(
         "exact_matches": exact,
         "exact_match_rate": round(exact / len(scored), 6) if scored else None,
         "character_error_rate": round(total_distance / total_ref, 6) if total_ref else None,
+        "phoneme_error_rate": round(phoneme_distance / phoneme_ref_length, 6) if phoneme_ref_length else None,
+        "phonological_feature_error_rate_proxy": round(feature_distance / phoneme_ref_length, 6) if phoneme_ref_length else None,
+        "unsupported_feature_segments": unsupported_feature_segments,
+        "reference_phoneme_segments": phoneme_ref_length,
         "missing_predictions": len(missing),
         "missing_word_examples": missing[:50],
         "prediction_failures_by_word": prediction_failures,
@@ -372,11 +400,13 @@ def main() -> int:
         parser.error("--model-revision and --tokenizer-revision are required; floating model revisions are not reproducible")
     rows = load_corpus(args.corpus)
     _, words = eligible_occurrences(rows)
+    inference_started = time.perf_counter()
     predictions, prediction_failures = predict(
         words, model_id=args.model, revision=args.model_revision,
         tokenizer_id=args.tokenizer, tokenizer_revision=args.tokenizer_revision,
         batch_size=args.batch_size, language_prefix=args.language_prefix,
     )
+    inference_elapsed_ms = (time.perf_counter() - inference_started) * 1000
     os.environ["CHARSIU_MODEL_ID"] = args.model
     os.environ["CHARSIU_MODEL_REVISION_REQUESTED"] = args.model_revision
     os.environ["CHARSIU_TOKENIZER_ID"] = args.tokenizer
@@ -391,6 +421,14 @@ def main() -> int:
         input_prefix=args.language_prefix,
         additional_limitations=args.model_limitation,
     )
+    report["runtime"] = {
+        "total_ms": round(inference_elapsed_ms, 3),
+        "throughput_words_per_second": round(len(words) / (inference_elapsed_ms / 1000), 3) if inference_elapsed_ms > 0 else None,
+        "successful_outputs_per_second": round(len(predictions) / (inference_elapsed_ms / 1000), 3) if inference_elapsed_ms > 0 else None,
+        "timing_scope": "single full model-load plus batched inference run; includes tokenizer/model loading and batch decoding; not directly comparable with in-process per-word engine timings",
+        "measured_repetitions": 1,
+        "repeatability_status": "NOT_MEASURED for neural candidate; repeated model reloads would confound cold-start and inference time",
+    }
     if args.compare_existing_engines:
         baselines = collect_existing_baselines(words)
         report["comparison"] = compare_baselines(rows, predictions, baselines, engine_key=args.engine_key)
@@ -404,7 +442,8 @@ def main() -> int:
         "engine", "engine_key", "model_id", "model_revision_requested", "model_revision",
         "tokenizer_revision_requested", "tokenizer_revision", "eligible_occurrences",
         "scored_occurrences", "coverage", "exact_matches", "exact_match_rate",
-        "character_error_rate", "missing_predictions", "prediction_failure_counts_by_unique_word",
+        "character_error_rate", "phoneme_error_rate", "phonological_feature_error_rate_proxy",
+        "unsupported_feature_segments", "runtime", "missing_predictions", "prediction_failure_counts_by_unique_word",
         "model_code_license", "model_weights_license_status", "tokenizer_license", "output_convention", "input_prefix",
     )}
     if "comparison" in report:

@@ -23,6 +23,10 @@ on:
       - "src/korean_ukrainian/**"
       - "data/korean/**"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   actions: read
@@ -43,23 +47,34 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install --yes espeak-ng
+          sudo apt-get install --yes espeak-ng default-jre-headless
           python -m pip install --upgrade pip
-          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "pytest>=8"
+          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "kokorog2p[ko]==0.9.15" "kiwipiepy==0.23.2" "g2p-ko @ git+https://github.com/smbslt3/g2p-korean.git@fc382a3f17e70b605b271cad8c87dd571284e5b3" "konlpy==0.6.0" "jamo==0.4.1" "pytest>=8"
 
       - name: Fetch pinned external implementations and verify declared licenses
         env:
           KOG2P_COMMIT: cbc69bbe1439862364d4ffd1552f59b930f655c7
+          KOG2PADVANCED_COMMIT: 491b2d7269a4666b0d7556efb26755219f861163
+          HAMA_COMMIT: fb81fe97e54c00b3f73192b9351f96fcd4427b03
           HANGUL_TO_IPA_COMMIT: 942abf132ea969a7e3476a1487c06710fb8db74b
         run: |
           set -euo pipefail
           git clone https://github.com/scarletcho/KoG2P.git "$RUNNER_TEMP/KoG2P"
           git -C "$RUNNER_TEMP/KoG2P" checkout --detach "$KOG2P_COMMIT"
+          # KoG2Padvanced is evaluated as an external checkout only; it is not copied into this repository.
+          git clone https://github.com/seongmin-mun/KoG2Padvanced.git "$RUNNER_TEMP/KoG2Padvanced"
+          git -C "$RUNNER_TEMP/KoG2Padvanced" checkout --detach "$KOG2PADVANCED_COMMIT"
+          git clone https://github.com/hamanlp/hama.git "$RUNNER_TEMP/hama"
+          git -C "$RUNNER_TEMP/hama" checkout --detach "$HAMA_COMMIT"
+          # HAMA is installed from its pinned external checkout for comparison only.
+          python -m pip install "$RUNNER_TEMP/hama/python"
           git clone https://github.com/stannam/hangul_to_ipa.git "$RUNNER_TEMP/hangul_to_ipa"
           git -C "$RUNNER_TEMP/hangul_to_ipa" checkout --detach "$HANGUL_TO_IPA_COMMIT"
           grep -qi "GNU GENERAL PUBLIC LICENSE" "$RUNNER_TEMP/KoG2P/LICENSE.md"
           grep -qi "MIT License" "$RUNNER_TEMP/hangul_to_ipa/LICENSE"
           echo "KoG2P pinned commit: $(git -C "$RUNNER_TEMP/KoG2P" rev-parse HEAD) (GPL-3.0; external checkout only)"
+          echo "KoG2Padvanced pinned commit: $(git -C "$RUNNER_TEMP/KoG2Padvanced" rev-parse HEAD) (no license declared upstream; comparison-only external checkout, not vendored)"
+          echo "HAMA pinned commit: $(git -C "$RUNNER_TEMP/hama" rev-parse HEAD) (external checkout; LICENSE/metadata discrepancy noted in report)"
           echo "hangul_to_ipa pinned commit: $(git -C "$RUNNER_TEMP/hangul_to_ipa" rev-parse HEAD) (MIT; external checkout only)"
           echo "eSpeak NG runtime:"
           espeak-ng --version
@@ -140,6 +155,7 @@ jobs:
       - name: Run multi-engine comparison
         env:
           KOG2P_ROOT: ${{ runner.temp }}/KoG2P
+          KOG2PADVANCED_ROOT: ${{ runner.temp }}/KoG2Padvanced
           HANGUL_TO_IPA_ROOT: ${{ runner.temp }}/hangul_to_ipa
           PHONEMIZE_BASELINE_DIR: ${{ runner.temp }}/phonemize-baseline
         run: |
@@ -148,9 +164,11 @@ jobs:
             --corpus "$RUNNER_TEMP/ko-test.json" \
             --output "$RUNNER_TEMP/multi-engine-ipa-report.json" \
             --kog2p-root "$KOG2P_ROOT" \
+            --kog2padvanced-root "$KOG2PADVANCED_ROOT" \
             --hangul-to-ipa-root "$HANGUL_TO_IPA_ROOT" \
             --phonemize-root "$PHONEMIZE_BASELINE_DIR" \
             --phonemize-output "$RUNNER_TEMP/phonemize-predictions.json" \
+            --timing-repetitions 5 \
             > "$RUNNER_TEMP/multi-engine-ipa-stdout.json"
           python - "$RUNNER_TEMP/multi-engine-ipa-report.json" <<'PY'
           import json, sys
@@ -164,9 +182,21 @@ jobs:
               print(f"{name}: status={m['unique_word_engine_status']['status']} "
                     f"scored={m['scored_tokens']}/{m['attempted_tokens']} "
                     f"coverage={m['coverage']} exact={m['exact_matches']} "
-                    f"exact_rate={m['exact_match_rate']} CER={m['character_error_rate']} "
+                    f"exact_rate={m['exact_match_rate']} coverage_adjusted_exact={m['coverage_adjusted_exact_match_rate']} "
+                    f"CER={m['character_error_rate']} PER={m['phoneme_error_rate']} "
+                    f"feature_error_proxy={m['phonological_feature_error_rate_proxy']} "
+                    f"unsupported_segments={m['unsupported_feature_segments']} "
                     f"CI95={ci} abstentions={m['abstentions_or_unresolved']} "
                     f"errors={m['engine_errors_on_token_loop']}")
+              runtime = m.get("unique_word_engine_status", {}).get("runtime", {})
+              print(f"  runtime_total_ms={runtime.get('total_ms')} throughput_words_s={runtime.get('throughput_words_per_second')} "
+                    f"latency_p50_ms={runtime.get('per_word_latency', {}).get('p50_ms')} "
+                    f"latency_p95_ms={runtime.get('per_word_latency', {}).get('p95_ms')} "
+                    f"timing_scope={runtime.get('timing_scope', runtime.get('per_word_latency', {}).get('measurement_note'))}")
+              repeat = runtime.get("repeatability", {})
+              print(f"  repeated_runs={repeat.get('measured_repetitions')} "
+                    f"repeat_median_ms={repeat.get('total_ms_median')} "
+                    f"repeat_min_ms={repeat.get('total_ms_min')} repeat_max_ms={repeat.get('total_ms_max')}")
               if "paired_with_native" in m:
                   p = m["paired_with_native"]
                   ci_delta = p.get("paired_bootstrap_delta_95pct_ci", {})
@@ -201,6 +231,7 @@ jobs:
       - name: Run the same pinned engine portfolio on SIGMORPHON lexical gold
         env:
           KOG2P_ROOT: ${{ runner.temp }}/KoG2P
+          KOG2PADVANCED_ROOT: ${{ runner.temp }}/KoG2Padvanced
           HANGUL_TO_IPA_ROOT: ${{ runner.temp }}/hangul_to_ipa
           PHONEMIZE_BASELINE_DIR: ${{ runner.temp }}/phonemize-baseline
         run: |
@@ -214,6 +245,8 @@ jobs:
             --hangul-to-ipa-root "$HANGUL_TO_IPA_ROOT" \
             --phonemize-root "$PHONEMIZE_BASELINE_DIR" \
             --phonemize-output "$RUNNER_TEMP/sigmorphon-phonemize-predictions.json" \
+            --kog2padvanced-root "$KOG2PADVANCED_ROOT" \
+            --timing-repetitions 5 \
             > "$RUNNER_TEMP/sigmorphon-multi-engine-ipa-stdout.json"
           python - "$RUNNER_TEMP/sigmorphon-multi-engine-ipa-report.json" <<'PY'
           import json, sys
@@ -226,8 +259,16 @@ jobs:
               print(f"{name}: status={m['unique_word_engine_status']['status']} "
                     f"scored={m['scored_tokens']}/{m['attempted_tokens']} "
                     f"coverage={m['coverage']} exact={m['exact_matches']} "
-                    f"exact_rate={m['exact_match_rate']} CER={m['character_error_rate']} "
+                    f"exact_rate={m['exact_match_rate']} coverage_adjusted_exact={m['coverage_adjusted_exact_match_rate']} "
+                    f"CER={m['character_error_rate']} PER={m['phoneme_error_rate']} "
+                    f"feature_error_proxy={m['phonological_feature_error_rate_proxy']} "
+                    f"unsupported_segments={m['unsupported_feature_segments']} "
                     f"abstentions={m['abstentions_or_unresolved']} errors={m['engine_errors_on_token_loop']}")
+              runtime = m.get("unique_word_engine_status", {}).get("runtime", {})
+              print(f"  runtime_total_ms={runtime.get('total_ms')} throughput_words_s={runtime.get('throughput_words_per_second')} "
+                    f"latency_p50_ms={runtime.get('per_word_latency', {}).get('p50_ms')} "
+                    f"latency_p95_ms={runtime.get('per_word_latency', {}).get('p95_ms')} "
+                    f"timing_scope={runtime.get('timing_scope', runtime.get('per_word_latency', {}).get('measurement_note'))}")
               if "paired_with_native" in m:
                   p = m["paired_with_native"]
                   ci_delta = p.get("paired_bootstrap_delta_95pct_ci", {})
@@ -278,8 +319,9 @@ jobs:
           retention-days: 30
 
   neural-korean-g2p:
-    name: Pinned CharsiuG2P inference (research opt-in)
-    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26' && contains(github.event.pull_request.labels.*.name, 'enhancement')
+    name: Pinned CharsiuG2P inference (comparative-only; no weights redistributed)
+    # Explicitly enabled for the user's comparison request; checkpoint weights license remains unresolved.
+    if: github.head_ref == 'bench/extended-metrics-runtime-2026-10-29'
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
@@ -452,7 +494,8 @@ jobs:
 
   licensed-byt5-korean-g2p:
     name: Licensed multilingual ByT5 G2P tiny (CPU)
-    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+    # Comparative-only evaluation on the benchmark branch; artifacts exclude model weights and caches.
+    if: github.head_ref == 'bench/extended-metrics-runtime-2026-10-29'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
@@ -652,8 +695,8 @@ jobs:
           retention-days: 30
   paired-neural-report:
     name: Pair pinned neural outputs with all engine predictions
-    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
-    needs: [multi-engine-ipa, licensed-byt5-korean-g2p]
+    if: github.head_ref == 'bench/extended-metrics-runtime-2026-10-29'
+    needs: [multi-engine-ipa, neural-korean-g2p, licensed-byt5-korean-g2p]
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -677,13 +720,10 @@ jobs:
           name: multi-engine-korean-ipa-diagnostic
           path: ${{ runner.temp }}/baseline-artifact
 
-      - name: Download pinned neural inference artifact
+      - name: Download pinned neural inference artifact from this run
         uses: actions/download-artifact@v4
         with:
-          name: neural-korean-g2p-diagnostic-40285484220
-          run-id: 40285484220
-          repository: ${{ github.repository }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: neural-korean-g2p-diagnostic-${{ github.run_id }}
           path: ${{ runner.temp }}/neural-artifact
 
       - name: Download licensed ByT5 tiny inference artifact from this run
@@ -700,7 +740,7 @@ jobs:
             --neural-report "$RUNNER_TEMP/neural-artifact/charsiu-ugtphon.json" \
             --baseline-report "$RUNNER_TEMP/baseline-artifact/multi-engine-ipa-report.json" \
             --dataset-name UGTPHON \
-            --neural-run-id 40285484220 --baseline-run-id "$GITHUB_RUN_ID" \
+            --neural-run-id "$GITHUB_RUN_ID" --baseline-run-id "$GITHUB_RUN_ID" \
             --provenance-json "$RUNNER_TEMP/neural-artifact/model-provenance.json" \
             --output "$RUNNER_TEMP/combined-results/charsiu-ugtphon-all-engines.json"
           python scripts/compare_neural_with_multiengine.py \
