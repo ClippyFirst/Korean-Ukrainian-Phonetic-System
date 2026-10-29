@@ -43,7 +43,7 @@ test('dictionary builder ranks candidates deterministically without neural infer
 
 test('generated browser module contains only a compact deterministic word map and source metadata', () => {
   const module = renderDictionaryModule(new Map([['경제','經濟'],['한국어','韓國語']]));
-  assert.match(module, /export const HANJA_WORD_MAP/u);
+  assert.match(module, /export const HANJA_WORD_DATA/u);
   assert.match(module, /"경제":"經濟"/u);
   assert.match(module, /sourceCommit/u);
   assert.match(module, /wordReadingCount: 2/u);
