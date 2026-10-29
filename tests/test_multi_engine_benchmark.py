@@ -209,7 +209,7 @@ def test_hama_adapter_uses_documented_batch_ipa_field(monkeypatch):
     class FakeModel:
         def predict(self, text, **kwargs):
             assert text == "차 카"
-            assert kwargs["split_delimiter"] == r"\\s+"
+            assert kwargs["split_delimiter"] == r"\s+"
             assert kwargs["output_delimiter"] == " "
             return FakeResult()
 
