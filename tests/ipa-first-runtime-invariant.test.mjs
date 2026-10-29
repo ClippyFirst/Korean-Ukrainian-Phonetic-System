@@ -212,7 +212,7 @@ test('single Jamo inside square-bracket pronunciation notation is preserved in t
 test('IPA-derived targets preserve whitespace and align multiword inputs without guessing missing IPA', () => {
   const multiword = ipaTargetForSource('국립 국어원', 'kuŋ nim k͈u ɡʌ wʌn');
   assert.equal(multiword.text, 'куннім ккуґовон');
-  assert.deepEqual(multiword.syllables, ['кун', 'нім', 'ку', 'ґо', 'вон']);
+  assert.deepEqual(multiword.syllables, ['кун', 'нім', 'кку', 'ґо', 'вон']);
   assert.equal(multiword.unknown, '');
   assert.equal(multiword.status, 'model-selected');
 

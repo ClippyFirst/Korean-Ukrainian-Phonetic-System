@@ -13,8 +13,8 @@ test('common verb forms with morphologically licensed ㅆ liaison use exact stan
   const expected = {
     '었어': ['어써', 'оссо', 'ʌ.s͈ʌ'],
     '갔어': ['가써', "кассо", 'ka.s͈ʌ'],
-    '갔어요': ['가써요', 'касо йо', 'ka s͈ʌ jo'],
-    '있어요': ['이써요', 'ісо йо', 'i s͈ʌ jo'],
+    '갔어요': ['가써요', 'кассо йо', 'ka s͈ʌ jo'],
+    '있어요': ['이써요', 'іссо йо', 'i s͈ʌ jo'],
     '있습니다': ['읻씀니다', "ітссимніда", 'it̚ s͈ɯm ni da'],
   };
   for (const [word, [surface, target, ipa]] of Object.entries(expected)) {

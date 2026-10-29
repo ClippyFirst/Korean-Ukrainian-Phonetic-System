@@ -25,8 +25,8 @@ const entries = new Map(effectiveRows);
 test('high-risk user-corpus words use explicit standard surface readings', () => {
   const expected = {
     '국립국어원': ['궁님꾸거원', 'куннімккуґовон', 'kuŋ.nim.k͈u.ɡʌ.wʌn'],
-    '먹었어요': ['머거써요', 'моґосойо', 'mʌ.ɡʌ.s͈ʌ.jo'],
-    '찍었어요': ['찌거써요', 'чіґосойо', 'tɕ͈i ɡʌ s͈ʌ jo'],
+    '먹었어요': ['머거써요', 'моґоссойо', 'mʌ.ɡʌ.s͈ʌ.jo'],
+    '찍었어요': ['찌거써요', 'ччіґоссойо', 'tɕ͈i ɡʌ s͈ʌ jo'],
   };
   for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
     const entry = entries.get(word);
@@ -63,10 +63,10 @@ test('trace panel has explicit column labels for source, target, rules and statu
 
 test('sentence conversion resolves exact lexical words inside punctuation-separated text', () => {
   for (const [input, expected] of [
-    ['국립국어원에서', ['궁님꾸거워네서', 'куннімкуґовонесо']],
+    ['국립국어원에서', ['궁님꾸거워네서', 'куннімккуґовонесо']],
     ['찍었어요.', ['찌거써요', 'чіґосойо']],
-    ['있어요.', ['이써요', 'ісойо']],
-    ['갔어요.', ['가써요', 'касойо']],
+    ['있어요.', ['이써요', 'іссойо']],
+    ['갔어요.', ['가써요', 'кассойо']],
   ]) {
     const result = engine.convert(input);
     if (!input.endsWith('.')) assert.ok(result.surfaceHangul.startsWith(expected[0]), input + ' surface: ' + result.surfaceHangul);
@@ -103,7 +103,7 @@ test('second adversarial corpus resolves morphology-sensitive forms without plac
     '많은': ['마는', 'манин'],
     '빗었어요': ['비서써요', 'пісоссойо'],
     '해돋이를': ['해도지를', 'гедоджірил'],
-    '멋있어요': ['머디써요', 'модісойо'],
+    '멋있어요': ['머디써요', 'модіссойо'],
     '맛있고': ['마딛꼬', 'мадітко'],
     '맛없고': ['마덥꼬', 'мадопко'],
     '맛없어요': ['마더버요', 'мадобойо'],
@@ -135,10 +135,10 @@ test('user-supplied stress corpus: exact phrase entries preserve word boundaries
   const cases = [
     ['몇 리', '면니', 'мйон ні', 'mjʌn ni'],
     ['할 것을', '할꺼슬', 'гал ккосил', 'hal k͈ʌ.sɯl'],
-    ['갈 데가', '갈떼가', 'кал теґа', 'kal t͈e ɡa'],
-    ['읽을 수', '일글쑤', 'ілґил су', 'il ɡɯl s͈u'],
-    ['읽을 것을', '일글꺼슬', 'ілґил косил', 'il ɡɯl k͈ʌ sɯl'],
-    ['옷 입다', '온닙따', 'он ніпта', 'on nip t͈a'],
+    ['갈 데가', '갈떼가', 'кал ттеґа', 'kal t͈e ɡa'],
+    ['읽을 수', '일글쑤', 'ілґил ссу', 'il ɡɯl s͈u'],
+    ['읽을 것을', '일글꺼슬', 'ілґил ккосил', 'il ɡɯl k͈ʌ sɯl'],
+    ['옷 입다', '온닙따', 'он ніптта', 'on nip t͈a'],
   ];
   for (const [input, surface, target, ipa] of cases) {
     const result = engine.convert(input, { morphologyMode: 'practical' });

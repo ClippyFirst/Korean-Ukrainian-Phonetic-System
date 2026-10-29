@@ -406,8 +406,12 @@ test('NIKL section 29 word-internal n-insertion is exact-form licensed', () => {
 
 
 test('Korean aspiration is marked with apostrophe in Ukrainian output', () => {
-  const cases = [['kʰ', "к'"], ['tʰ', "т'"], ['pʰ', "п'"], ['tɕʰ', "ч'"], ['kʰjʌ', "к'йо"]];
+  const cases = [['kʰ', "к'"], ['tʰ', "т'"], ['pʰ', "п'"], ['tɕʰ', "ч'"]];
   for (const [ipa, expected] of cases) assert.equal(ipaSyllableToUkrainian(ipa).text, expected, ipa);
+  const sequence = ipaSyllableToUkrainian('kʰjʌ');
+  assert.equal(sequence.text, null);
+  assert.equal(sequence.candidateText, "к'хьо");
+  assert.equal(ipaSyllableToUkrainian('kʰjʌ', { allowProvisional: true }).text, "к'хьо");
 });
 test('Korean fortis consonants remain doubled in Ukrainian output', () => {
   const cases = [['k͈', 'кк'], ['t͈', 'тт'], ['p͈', 'пп'], ['s͈', 'сс'], ['tɕ͈', 'чч']];
