@@ -277,3 +277,12 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - Hanja remains a deterministic dictionary annotation, not a complete Korean-to-Hanja conversion. Native Korean vocabulary and grammatical particles are intentionally preserved in Hangul when no supported lexical Hanja mapping exists; the regression fixture `현대 한국어의 표준 발음 값이` checks that known terms can be annotated while `값이` stays Hangul.
 - **Acceptance:** run `npm test`, `npm run build`, inspect exact-head GitHub Actions, then verify the deployed Pages output order and the mixed-script example. Do not mark the UX gate DONE_VERIFIED before those checks pass.
 - **Preserved limits:** no neural models or runtime API calls; contextual homograph disambiguation and measured dictionary accuracy remain deferred/TODO as documented in `docs/HANJA-RESEARCH-LAYER-2026-10-29.md`.
+
+
+## UI follow-up: Hanja before wide IPA — 2026-10-30
+
+- **Status:** PARTIAL pending exact-head CI and deployed smoke.
+- **Requested output order:** Ukrainian → Romanization → 漢字 (Hanja · dictionary annotation) → IPA (wide IPA) → Analysis.
+- **Change:** swapped the Hanja and IPA result-card positions only; output IDs, labels, rendering, and copy controls are unchanged.
+- **Regression:** `tests/hanja-ui-contract.test.mjs` asserts the new DOM order.
+- **Acceptance:** exact-head `npm test` and `npm run build` must pass; Pages deployment and live smoke must verify Hanja appears immediately before wide IPA.
