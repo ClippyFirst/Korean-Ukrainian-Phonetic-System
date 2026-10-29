@@ -24,7 +24,7 @@ const entries = new Map(effectiveRows);
 
 test('high-risk user-corpus words use explicit standard surface readings', () => {
   const expected = {
-    '국립국어원': ['궁님꾸거원', 'куннімкуґовон', 'kuŋ.nim.k͈u.ɡʌ.wʌn'],
+    '국립국어원': ['궁님꾸거원', 'куннімккуґовон', 'kuŋ.nim.k͈u.ɡʌ.wʌn'],
     '먹었어요': ['머거써요', 'моґосойо', 'mʌ.ɡʌ.s͈ʌ.jo'],
     '찍었어요': ['찌거써요', 'чіґосойо', 'tɕ͈i ɡʌ s͈ʌ jo'],
   };
@@ -101,7 +101,7 @@ test('second adversarial corpus resolves morphology-sensitive forms without plac
     '얇아도': ['얄바도', 'ялбадо'],
     '얇아서': ['얄바서', 'ялбасо'],
     '많은': ['마는', 'манин'],
-    '빗었어요': ['비서써요', 'пісосойо'],
+    '빗었어요': ['비서써요', 'пісоссойо'],
     '해돋이를': ['해도지를', 'гедоджірил'],
     '멋있어요': ['머디써요', 'модісойо'],
     '맛있고': ['마딛꼬', 'мадітко'],
@@ -134,7 +134,7 @@ test('phrase IPA and alternate readings preserve word boundaries and punctuation
 test('user-supplied stress corpus: exact phrase entries preserve word boundaries and source-backed IPA', () => {
   const cases = [
     ['몇 리', '면니', 'мйон ні', 'mjʌn ni'],
-    ['할 것을', '할꺼슬', 'гал косил', 'hal k͈ʌ.sɯl'],
+    ['할 것을', '할꺼슬', 'гал ккосил', 'hal k͈ʌ.sɯl'],
     ['갈 데가', '갈떼가', 'кал теґа', 'kal t͈e ɡa'],
     ['읽을 수', '일글쑤', 'ілґил су', 'il ɡɯl s͈u'],
     ['읽을 것을', '일글꺼슬', 'ілґил косил', 'il ɡɯl k͈ʌ sɯl'],
