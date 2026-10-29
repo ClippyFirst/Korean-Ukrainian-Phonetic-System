@@ -92,7 +92,6 @@ function loadHanjaGroup(group){
     loadedHanjaGroups.add(group);
     failedHanjaGroups.delete(group);
     loadedHanjaReadings+=data.HANJA_DICTIONARY_METADATA.wordReadingCount;
-    fullHanjaConverter=createHanjaConverter(loadedHanjaWordMap);
     return true;
   }).catch((error)=>{
     hanjaDictionaryLoads.delete(group);
@@ -113,7 +112,8 @@ function renderHanja(value){
   const requestedValue=value;
   Promise.all(groups.map(loadHanjaGroup)).then(()=>{
     if(input.value!==requestedValue)return;
-    hanjaOutput.textContent=(fullHanjaConverter||convertHangulToHanja)(requestedValue);
+    fullHanjaConverter=createHanjaConverter(loadedHanjaWordMap);
+    hanjaOutput.textContent=fullHanjaConverter(requestedValue);
     if(hanjaEngineStatus){
       hanjaEngineStatus.textContent=failedHanjaGroups.size
         ?'Частковий локальний словник: '+loadedHanjaReadings+' словникових читань'
