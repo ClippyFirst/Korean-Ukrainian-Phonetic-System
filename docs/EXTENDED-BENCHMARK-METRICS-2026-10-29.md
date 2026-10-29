@@ -272,3 +272,15 @@ HAMA timing is now measured through its documented sentence-level batch API (one
 
 ### Neural metric report fix
 A ByT5 rerun at [40832456382](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40832456382) failed after inference because the new PER/feature metrics were present in paired scoring but absent from the neural report's top-level summary (`KeyError: 'phoneme_error_rate'`). The aggregation now emits PER, the feature-error proxy, unsupported-feature counts, and reference-segment counts at the report level; regression tests assert these fields. The current full run [40833849437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833849437) is the acceptance gate for this fix.
+
+
+## Expanded comparison run after explicit user authorization (2026-10-29)
+
+The user authorized comparative-only evaluation of the broader candidate set. The harness now attempts the runnable candidates HAMA, kokorog2p, and KoG2Padvanced in addition to the previously scored six; it also enables the comparison-only CharsiuG2P checkpoint and the separately licensed multilingual ByT5 tiny checkpoint in the dedicated neural jobs. These are independent experiment results only; no candidate source or weights are integrated into the production phonology pipeline.
+
+- Current code head for the timing/workflow fix: `86af8e9c472c12a32face705f3593830d1b8fecb`; follow-up handoff documentation commit: `62b50ceea58b74f85b8d55c751b918c192dd97d9`.
+- Current full candidate run: [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742). At report update time its three jobs (baseline multi-engine, CharsiuG2P, and licensed ByT5 tiny) were queued; therefore no expanded-candidate score is asserted here yet.
+- The workflow now explicitly requests five measured timing repetitions after a warm-up for both UGTPHON and SIGMORPHON and passes the pinned KoG2Padvanced checkout to both dataset runs. The generated JSON retains timing samples and median/min/max; per-engine comparable peak RSS is still not measured.
+- Previous six-engine tables above are verified historical results from their recorded run, not scores for the expanded portfolio or the updated normalization/code head. Replace/extend them only after inspecting the current run artifact.
+- The 2026 Interspeech morphology-aware engine remains unscored: the official Zenodo record exposes the paper PDF but no verified runnable source/package/checkpoint was found. Its published 85.7% versus 27.2% result uses the paper's own sentence-level evaluation and cannot be compared directly with these word/token-level IPA tests. See [the official paper record](https://zenodo.org/records/22167288).
+- License boundaries remain explicit: KoG2Padvanced has no declared upstream license and is external-checkout-only, not vendored; Charsiu model weights remain unresolved and are not uploaded; ByT5 tiny's checkpoint is separately labeled CC BY-SA 4.0 and outputs/provenance only are uploaded. User authorization is for comparison in this project, not a substitute for third-party licensing rights.
