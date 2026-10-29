@@ -15,10 +15,21 @@ MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 
 
-def test_neural_score_uses_existing_broad_ipa_normalization():
+def test_neural_score_uses_existing_broad_ipa_normalization_and_phonetic_metrics():
     score = MODULE.score_prediction("kʰa", "kʰa")
     assert score["exact"] is True
     assert score["distance"] == 0
+    assert score["phoneme_error_rate"] == 0
+    assert score["feature_error_rate_proxy"] == 0
+    assert "unsupported_feature_segments" in score
+
+
+def test_neural_metric_aggregation_includes_per_and_feature_proxy():
+    score = MODULE.score_prediction("kʰa", "kʰa")
+    metrics = MODULE._metrics([score])
+    assert metrics["phoneme_error_rate"] == 0
+    assert metrics["phonological_feature_error_rate_proxy"] == 0
+    assert metrics["reference_phoneme_segments"] > 0
 
 
 def test_evaluate_keeps_occurrences_and_reports_coverage_separately():
