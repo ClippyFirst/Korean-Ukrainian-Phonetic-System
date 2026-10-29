@@ -45,7 +45,7 @@ test('IPA adapter is the only source of Ukrainian targets for representative IPA
   assert.equal(ipaSyllableToUkrainian('ka').text, 'ка');
   assert.equal(ipaSyllableToUkrainian('ɡa').text, 'ґа');
   assert.equal(ipaSyllableToUkrainian('tɕʰi').text, 'ч\'і');
-  assert.equal(ipaSyllableToUkrainian('t͈a').text, 'та');
+  assert.equal(ipaSyllableToUkrainian('t͈a').text, 'тта');
   assert.equal(ipaSyllableToUkrainian('ɕi').text, 'ші');
   assert.equal(ipaSyllableToUkrainian('💥').unknown, '💥');
 });

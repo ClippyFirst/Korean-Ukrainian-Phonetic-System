@@ -119,7 +119,7 @@ def test_provisional_lexical_target_never_leaks_as_accepted_orthography():
 def test_python_transliteration_uses_ipa_derived_target_and_keeps_lexical_target_as_reference():
     from korean_ukrainian.pipeline import transliterate_korean, render_sequence
     for word, expected_reference, expected_reference_status in (
-        ("값없다", "кабопта", "model-selected"),
+        ("값없다", "кабоптта", "model-selected"),
         ("의견란", "ийґйоннан", "provisional"),
     ):
         value = transliterate_korean(word)
@@ -188,7 +188,7 @@ def test_python_lexical_target_reference_cannot_override_ipa_adapter_output(monk
     )
     result = pipeline.transliterate_korean("값없다")
     assert result["ukrainian_orthography"] == "тест"
-    assert result["lexical_target_reference"] == "кабопта"
+    assert result["lexical_target_reference"] == "кабоптта"
     assert result["lexical_target_comparison"] == "differs_from_reference"
     assert result["target_status"] == "model-selected"
 
@@ -216,14 +216,14 @@ def test_second_pass_sourced_lexical_pronunciations_match_shared_ipa_data():
 def test_second_pass_lexical_targets_are_references_not_ukrainian_overrides():
     from korean_ukrainian.pipeline import transliterate_korean, render_sequence
     expected = {
-        "꽃잎": "конніп",
-        "밭이": "пачі",
-        "밭을": "патил",
+        "꽃잎": "кконніп",
+        "밭이": "пач'і",
+        "밭을": "пат'ил",
         "넓네": "нолле",
-        "없다": "опта",
+        "없다": "оптта",
         "없는": "омнин",
         "국물": "кунмул",
-        "떡볶이": "токпокі",
+        "떡볶이": "ттокппоккі",
         "옷이": "оші",
     }
     for word, reference in expected.items():

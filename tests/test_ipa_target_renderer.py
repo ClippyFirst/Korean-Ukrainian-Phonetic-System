@@ -25,7 +25,7 @@ def test_ipa_renderer_applies_specific_surface_and_sequence_correspondences():
         "ɡa": ("ґа", "model-selected"),
         "dʑi": ("джі", "model-selected"),
         "ɕ͈i": ("ші", "model-selected"),
-        "tɕʰi": ("чі", "model-selected"),
+        "tɕʰi": ("ч\'і", "model-selected"),
         "ɲju": ("нью", "model-selected"),
         "njʌ": ("ньо", "model-selected"),
         "ljʌ": ("льо", "model-selected"),
@@ -33,7 +33,7 @@ def test_ipa_renderer_applies_specific_surface_and_sequence_correspondences():
         "hje": ("гє", "model-selected"),
         "wi": ("ві", "model-selected"),
         "ɰi": ("ий", "provisional"),
-        "kʰjʌ": ("кхьо", "provisional"),
+        "kʰjʌ": ("к\'хьо", "provisional"),
     }
     for ipa, (expected, status) in cases.items():
         result = render_ipa_sequence_to_ukrainian(ipa, allow_provisional=(status == "provisional"))
