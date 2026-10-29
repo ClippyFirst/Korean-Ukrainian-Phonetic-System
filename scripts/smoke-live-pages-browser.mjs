@@ -123,7 +123,7 @@ try {
 
   // Verify each trace value has a mobile-visible field label, not merely a
   // desktop column heading that disappears at narrow widths.
-  await page.locator('.trace-disclosure summary').click();
+  await page.locator('details.trace-panel.trace-disclosure:not([hidden]) summary').click();
   await page.locator('#trace-list .trace-row').first().waitFor({ state: 'visible', timeout: 5000 });
   await page.setViewportSize({ width: 390, height: 844 });
   const mobileTrace = await page.evaluate(() => {
