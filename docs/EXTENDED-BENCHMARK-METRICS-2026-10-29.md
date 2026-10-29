@@ -208,3 +208,6 @@ The benchmark harness has now been expanded for the next exact-head run:
 - The current harness still does not claim comparable peak memory: the candidates run in one process and several native/runtime dependencies remain resident. A separate-process RSS harness is required before memory comparisons can be considered valid.
 
 The exact-head GitHub Actions rerun is the acceptance gate for the new candidate adapters and metrics. Until that run completes successfully, the new candidates are `PENDING_CI`, not scored, and the earlier result tables remain historical only.
+
+
+The pinned `willwade/byt5-g2p-multilingual-tiny` checkpoint (CC BY-SA 4.0 per its model card) is now enabled for this comparison branch. Its workflow uploads predictions/provenance only, not model weights or caches. The Charsiu checkpoint remains gated because its weights license is unresolved.
