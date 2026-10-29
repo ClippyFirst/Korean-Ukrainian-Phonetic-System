@@ -9,6 +9,7 @@ sys.path.insert(0, str(SCRIPTS))
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _g2pk_surface_to_ipa,
+    _g2p_ko_result_to_ipa,
     _compose_kog2padvanced_surface,
     _load_hama_batch,
     _load_kog2padvanced_batch,
@@ -110,6 +111,34 @@ def test_g2pk_surface_adapter_is_importable_and_does_not_reapply_rules():
         _g2pk_surface_to_ipa(lambda _word: "not-hangul", "물가")
     except ValueError as exc:
         assert "not a single Hangul surface form" in str(exc)
+    else:
+        raise AssertionError("non-Hangul surface output must be rejected")
+
+def test_g2p_ko_surface_adapter_maps_complete_result_to_ipa():
+    from types import SimpleNamespace
+
+    result = SimpleNamespace(complete=True, surface_pronunciation="물까")
+    assert _g2p_ko_result_to_ipa(result, "물가") == "mul.k͈a"
+
+
+def test_g2p_ko_surface_adapter_fails_closed_on_incomplete_or_non_hangul_result():
+    from types import SimpleNamespace
+
+    try:
+        _g2p_ko_result_to_ipa(
+            SimpleNamespace(complete=False, surface_pronunciation="물까"), "물가"
+        )
+    except ValueError as exc:
+        assert "did not complete" in str(exc)
+    else:
+        raise AssertionError("incomplete g2p-ko result must not be scored")
+
+    try:
+        _g2p_ko_result_to_ipa(
+            SimpleNamespace(complete=True, surface_pronunciation="not-hangul"), "물가"
+        )
+    except ValueError as exc:
+        assert "non-Hangul surface form" in str(exc)
     else:
         raise AssertionError("non-Hangul surface output must be rejected")
 
