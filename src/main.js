@@ -57,30 +57,70 @@ const ipa=document.querySelector('#result-ipa');
 const romanization=document.querySelector('#result-romanization');
 const hanjaOutput=document.querySelector('#result-hanja');
 const hanjaEngineStatus=document.querySelector('#hanja-engine-status');
+const hanjaDictionaryChunks=import.meta.glob('./app/hanja-dictionary/hanja-dictionary-*.js');
+const loadedHanjaWordMap=new Map();
+const loadedHanjaGroups=new Set();
+const failedHanjaGroups=new Set();
+const hanjaDictionaryLoads=new Map();
+let loadedHanjaReadings=0;
 let fullHanjaConverter=null;
-let hanjaDictionaryLoad=null;
+function hanjaGroupsForText(value){
+  const groups=new Set();
+  for(const char of value){
+    const code=char.codePointAt(0);
+    if(code>=0xAC00&&code<=0xD7A3)groups.add(Math.floor((code-0xAC00)/588));
+  }
+  return [...groups].sort((a,b)=>a-b);
+}
+function loadHanjaGroup(group){
+  if(loadedHanjaGroups.has(group))return Promise.resolve(true);
+  if(hanjaDictionaryLoads.has(group))return hanjaDictionaryLoads.get(group);
+  const filename='./app/hanja-dictionary/hanja-dictionary-'+String(group).padStart(2,'0')+'.js';
+  const loader=hanjaDictionaryChunks[filename];
+  if(!loader){
+    failedHanjaGroups.add(group);
+    if(hanjaEngineStatus)hanjaEngineStatus.textContent='Частина локального словника недоступна; використовується базовий';
+    return Promise.resolve(false);
+  }
+  const promise=loader().then((data)=>{
+    for(const line of data.HANJA_WORD_DATA.split(/\r?\n/u)){
+      if(!line)continue;
+      const separator=line.indexOf(':');
+      if(separator<=0||separator===line.length-1)continue;
+      loadedHanjaWordMap.set(line.slice(0,separator),line.slice(separator+1));
+    }
+    loadedHanjaGroups.add(group);
+    failedHanjaGroups.delete(group);
+    loadedHanjaReadings+=data.HANJA_DICTIONARY_METADATA.wordReadingCount;
+    fullHanjaConverter=createHanjaConverter(loadedHanjaWordMap);
+    if(hanjaEngineStatus){
+      hanjaEngineStatus.textContent=failedHanjaGroups.size
+        ?'Частковий локальний словник: '+loadedHanjaReadings+' словникових читань'
+        :'Локальний словник: '+loadedHanjaReadings+' словникових читань';
+    }
+    return true;
+  }).catch((error)=>{
+    hanjaDictionaryLoads.delete(group);
+    failedHanjaGroups.add(group);
+    if(hanjaEngineStatus)hanjaEngineStatus.textContent='Частина локального словника недоступна; використовується базовий';
+    console.error('Could not load a same-origin Hanja dictionary chunk.',error);
+    return false;
+  });
+  hanjaDictionaryLoads.set(group,promise);
+  return promise;
+}
 function renderHanja(value){
   if(!hanjaOutput)return;
   hanjaOutput.textContent=(fullHanjaConverter||convertHangulToHanja)(value);
-  if(fullHanjaConverter||!/[\uAC00-\uD7A3]/u.test(value))return;
-  if(hanjaEngineStatus)hanjaEngineStatus.textContent='Завантаження словника з цього сайту…';
-  if(!hanjaDictionaryLoad){
-    hanjaDictionaryLoad=import('./app/hanja-dictionary-data.js').then((data)=>{
-      fullHanjaConverter=createHanjaConverter(data.HANJA_WORD_DATA);
-      if(hanjaEngineStatus)hanjaEngineStatus.textContent='Локальний словник: '+data.HANJA_DICTIONARY_METADATA.wordReadingCount+' словникових читань';
-      return true;
-    }).catch((error)=>{
-      hanjaDictionaryLoad=null;
-      if(hanjaEngineStatus)hanjaEngineStatus.textContent='Повний словник недоступний; використовується базовий';
-      console.error('Could not load the bundled Hanja dictionary chunk.',error);
-      return false;
-    });
-  }
+  const groups=hanjaGroupsForText(value);
+  if(!groups.length||groups.every(group=>loadedHanjaGroups.has(group)))return;
+  if(hanjaEngineStatus)hanjaEngineStatus.textContent='Завантаження локального словника з цього сайту…';
   const requestedValue=value;
-  hanjaDictionaryLoad.then((loaded)=>{
-    if(loaded&&fullHanjaConverter&&input.value===requestedValue)hanjaOutput.textContent=fullHanjaConverter(requestedValue);
+  Promise.all(groups.map(loadHanjaGroup)).then(()=>{
+    if(input.value===requestedValue)hanjaOutput.textContent=(fullHanjaConverter||convertHangulToHanja)(requestedValue);
   });
 }
+
 const analysis=document.querySelector('#result-analysis');
 const traceList=document.querySelector('#trace-list');
 const variantPanel=document.querySelector('#variant-panel');
