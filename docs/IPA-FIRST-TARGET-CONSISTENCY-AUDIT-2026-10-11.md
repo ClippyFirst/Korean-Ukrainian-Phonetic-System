@@ -133,3 +133,10 @@ A subsequent documentation-only commit records this status; it does not change t
 ## Runtime hardening follow-up — 2026-10-25
 
 The browser's public `ipaTargetForSource` adapter now uses `text: null` for unavailable output and withholds all partial syllable strings and partial mapping traces when any IPA segment is unknown or the source/IPA alignment fails. Empty IPA is reported as `empty_ipa`. Regression coverage includes unknown IPA, empty IPA, alignment mismatch, and provisional candidate-only mappings. This is a software-contract improvement, not new evidence for linguistic accuracy; exact-head CI status is tracked in the master handoff.
+
+
+## Follow-up audit entry — 2026-10-29: Korean aspiration and fortis target rendering
+
+The IPA-first target layer now renders aspirated onsets with an apostrophe and preserves fortis doubling in Ukrainian practical orthography. The explicit palatalized fortis-sibilant override `ɕ͈ → шш` follows the same no-collapse project convention. The `kʰjʌ → к'хьо` mapping remains **provisional**; strict mode must not promote it to accepted orthography.
+
+Verification on code head `08dd78de7efee0988b6fa1195b871425f988634f`: browser suite **1,305/1,305 passed**, Python 3.11–3.13 passed, wheel installation passed, and generated master-table/research artifacts plus system verification passed. The live Pages deployment was not yet verified at this head. These are implementation and regression results, not independent phonetic or Ukrainian-target adjudication. Source/rights review and independent target gold remain separate acceptance gates; repository-wide readiness remains a research-ready partial prototype, not release-ready.

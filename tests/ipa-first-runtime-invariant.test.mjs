@@ -44,9 +44,10 @@ test('IPA adapter is the only source of Ukrainian targets for representative IPA
   // reconstruct a Ukrainian result from the Korean spelling.
   assert.equal(ipaSyllableToUkrainian('ka').text, 'ка');
   assert.equal(ipaSyllableToUkrainian('ɡa').text, 'ґа');
-  assert.equal(ipaSyllableToUkrainian('tɕʰi').text, 'чі');
-  assert.equal(ipaSyllableToUkrainian('t͈a').text, 'та');
+  assert.equal(ipaSyllableToUkrainian('tɕʰi').text, 'ч\'і');
+  assert.equal(ipaSyllableToUkrainian('t͈a').text, 'тта');
   assert.equal(ipaSyllableToUkrainian('ɕi').text, 'ші');
+  assert.equal(ipaSyllableToUkrainian('ɕ͈i').text, 'шші');
   assert.equal(ipaSyllableToUkrainian('💥').unknown, '💥');
 });
 
@@ -210,8 +211,8 @@ test('single Jamo inside square-bracket pronunciation notation is preserved in t
 
 test('IPA-derived targets preserve whitespace and align multiword inputs without guessing missing IPA', () => {
   const multiword = ipaTargetForSource('국립 국어원', 'kuŋ nim k͈u ɡʌ wʌn');
-  assert.equal(multiword.text, 'куннім куґовон');
-  assert.deepEqual(multiword.syllables, ['кун', 'нім', 'ку', 'ґо', 'вон']);
+  assert.equal(multiword.text, 'куннім ккуґовон');
+  assert.deepEqual(multiword.syllables, ['кун', 'нім', 'кку', 'ґо', 'вон']);
   assert.equal(multiword.unknown, '');
   assert.equal(multiword.status, 'model-selected');
 

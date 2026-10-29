@@ -12,13 +12,13 @@ test('corpus-discovered morphology repairs have official Standard Pronunciation 
   const expected = {
   "늙게": {
     "surface": "늘께",
-    "target": "нилке",
+    "target": "нилкке",
     "ipa": "nɯl.k͈e",
     "source": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=319360"
   },
   "늙고": {
     "surface": "늘꼬",
-    "target": "нилко",
+    "target": "нилкко",
     "ipa": "nɯl.k͈o",
     "source": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=319360"
   }

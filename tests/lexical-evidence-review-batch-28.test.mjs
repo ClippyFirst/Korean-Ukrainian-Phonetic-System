@@ -26,7 +26,7 @@ test('몇으로 keeps its Korean surface, project IPA, and provisional Ukrainian
   assert.equal(word.source_url, source.url);
   assert.equal(word.surface_hangul, '며츠로');
   assert.equal(word.ipa_syllables, 'mjʌ|tɕʰɯ|ɾo');
-  assert.equal(word.target_syllables, 'мйо|чи|ро');
+  assert.equal(word.target_syllables, 'мйо|ч\'и|ро');
   assert.match(word.rule_notes, /directly attests 몇으로\[며츠로\]/u);
   assert.match(word.rule_notes, /Korean bracket notation is not IPA/u);
   assert.match(report, /direct official answer attestation for the exact lexical target 몇으로/u);

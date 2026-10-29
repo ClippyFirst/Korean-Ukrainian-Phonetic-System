@@ -24,9 +24,9 @@ const entries = new Map(effectiveRows);
 
 test('high-risk user-corpus words use explicit standard surface readings', () => {
   const expected = {
-    '국립국어원': ['궁님꾸거원', 'куннімкуґовон', 'kuŋ.nim.k͈u.ɡʌ.wʌn'],
-    '먹었어요': ['머거써요', 'моґосойо', 'mʌ.ɡʌ.s͈ʌ.jo'],
-    '찍었어요': ['찌거써요', 'чіґосойо', 'tɕ͈i ɡʌ s͈ʌ jo'],
+    '국립국어원': ['궁님꾸거원', 'куннімккуґовон', 'kuŋ.nim.k͈u.ɡʌ.wʌn'],
+    '먹었어요': ['머거써요', 'моґоссойо', 'mʌ.ɡʌ.s͈ʌ.jo'],
+    '찍었어요': ['찌거써요', 'ччіґоссойо', 'tɕ͈i ɡʌ s͈ʌ jo'],
   };
   for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
     const entry = entries.get(word);
@@ -63,10 +63,10 @@ test('trace panel has explicit column labels for source, target, rules and statu
 
 test('sentence conversion resolves exact lexical words inside punctuation-separated text', () => {
   for (const [input, expected] of [
-    ['국립국어원에서', ['궁님꾸거워네서', 'куннімкуґовонесо']],
-    ['찍었어요.', ['찌거써요', 'чіґосойо']],
-    ['있어요.', ['이써요', 'ісойо']],
-    ['갔어요.', ['가써요', 'касойо']],
+    ['국립국어원에서', ['궁님꾸거워네서', 'куннімккуґовонесо']],
+    ['찍었어요.', ['찌거써요', 'ччіґоссойо']],
+    ['있어요.', ['이써요', 'іссойо']],
+    ['갔어요.', ['가써요', 'кассойо']],
   ]) {
     const result = engine.convert(input);
     if (!input.endsWith('.')) assert.ok(result.surfaceHangul.startsWith(expected[0]), input + ' surface: ' + result.surfaceHangul);
@@ -77,9 +77,9 @@ test('sentence conversion resolves exact lexical words inside punctuation-separa
 
 test('the exact three user-reported sentences do not leave past-tense liaison placeholders', () => {
   const cases = [
-    ['독립문 앞에서 사진을 찍었어요.', '찍었어요', 'чіґосойо'],
-    ['한국 음식은 맛있지만 매울 수도 있어요.', '있어요', 'ісойо'],
-    ['오늘은 날씨가 맑고 바람이 붑니다. 책을 읽고 학교에 갔어요.', '갔어요', 'касойо'],
+    ['독립문 앞에서 사진을 찍었어요.', '찍었어요', 'ччіґоссойо'],
+    ['한국 음식은 맛있지만 매울 수도 있어요.', '있어요', 'іссойо'],
+    ['오늘은 날씨가 맑고 바람이 붑니다. 책을 읽고 학교에 갔어요.', '갔어요', 'кассойо'],
   ];
   for (const [sentence, word, expected] of cases) {
     const result = engine.convert(sentence);
@@ -101,14 +101,14 @@ test('second adversarial corpus resolves morphology-sensitive forms without plac
     '얇아도': ['얄바도', 'ялбадо'],
     '얇아서': ['얄바서', 'ялбасо'],
     '많은': ['마는', 'манин'],
-    '빗었어요': ['비서써요', 'пісосойо'],
+    '빗었어요': ['비서써요', 'пісоссойо'],
     '해돋이를': ['해도지를', 'гедоджірил'],
-    '멋있어요': ['머디써요', 'модісойо'],
-    '맛있고': ['마딛꼬', 'мадітко'],
-    '맛없고': ['마덥꼬', 'мадопко'],
+    '멋있어요': ['머디써요', 'модіссойо'],
+    '맛있고': ['마딛꼬', 'мадіткко'],
+    '맛없고': ['마덥꼬', 'мадопкко'],
     '맛없어요': ['마더버요', 'мадобойо'],
     '젊은': ['절믄', 'чолмин'],
-    '읽었습니다': ['일거씀니다', 'ілґосимніда'],
+    '읽었습니다': ['일거씀니다', 'ілґоссимніда'],
     '않아도': ['아나도', 'анадо'],
     '좋아질': ['조아질', 'чоаджіл'],
   };
@@ -134,11 +134,11 @@ test('phrase IPA and alternate readings preserve word boundaries and punctuation
 test('user-supplied stress corpus: exact phrase entries preserve word boundaries and source-backed IPA', () => {
   const cases = [
     ['몇 리', '면니', 'мйон ні', 'mjʌn ni'],
-    ['할 것을', '할꺼슬', 'гал косил', 'hal k͈ʌ.sɯl'],
-    ['갈 데가', '갈떼가', 'кал теґа', 'kal t͈e ɡa'],
-    ['읽을 수', '일글쑤', 'ілґил су', 'il ɡɯl s͈u'],
-    ['읽을 것을', '일글꺼슬', 'ілґил косил', 'il ɡɯl k͈ʌ sɯl'],
-    ['옷 입다', '온닙따', 'он ніпта', 'on nip t͈a'],
+    ['할 것을', '할꺼슬', 'гал ккосил', 'hal k͈ʌ.sɯl'],
+    ['갈 데가', '갈떼가', 'кал ттеґа', 'kal t͈e ɡa'],
+    ['읽을 수', '일글쑤', 'ілґил ссу', 'il ɡɯl s͈u'],
+    ['읽을 것을', '일글꺼슬', 'ілґил ккосил', 'il ɡɯl k͈ʌ sɯl'],
+    ['옷 입다', '온닙따', 'он ніптта', 'on nip t͈a'],
   ];
   for (const [input, surface, target, ipa] of cases) {
     const result = engine.convert(input, { morphologyMode: 'practical' });

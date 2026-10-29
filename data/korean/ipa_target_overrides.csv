@@ -3,7 +3,7 @@ KUA-IPA-001,ɡ,ґ,model-selected,surface-segment,data/korean/slavic_comparative_
 KUA-IPA-002,d,д,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C004,Surface-voiced lenis alveolar maps to д in the declared practical policy.
 KUA-IPA-003,b,б,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C008,Surface-voiced lenis bilabial maps to б in the declared practical policy.
 KUA-IPA-004,ɕ,ш,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C010,Palatalized Korean sibilant maps to ш under the documented /i,j/-environment target decision.
-KUA-IPA-005,ɕ͈,ш,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C011,Fortis palatalized sibilant converges on ш in the practical target while fortisness remains in IPA.
+KUA-IPA-005,ɕ͈,шш,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C011,Fortis palatalized sibilant is doubled as шш in the practical target.
 KUA-IPA-006,dʑ,дж,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C013,Surface-voiced realization of ㅈ maps to дж; the unvoiced realization remains ч.
 KUA-IPA-007,wi,ві,model-selected,ipa-sequence,data/korean/lexical_pronunciations.csv#위,The lexical row 위 declares alternate IPA wi with target ві; this explicit sequence mapping avoids relying on Jamo lookup.
 KUA-IPA-008,ljʌ,льо,model-selected,ipa-sequence,project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions,Explicit coda-liquid plus yod-vowel mapping from the current IPA-first target table.
@@ -13,7 +13,7 @@ KUA-IPA-011,ɲa,ня,model-selected,ipa-sequence,project-decision:docs/ukrainian
 KUA-IPA-012,ɲu,ню,model-selected,ipa-sequence,data/korean/lexical_pronunciations.csv#금융,The lexical IPA ɲuŋ has the declared target нюн; this explicit sequence maps the same IPA without consulting the source spelling.
 KUA-IPA-013,hjʌ,гьо,model-selected,ipa-sequence,project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions,The sequence /hjʌ/ maps to гьо rather than a literal гйо.
 KUA-IPA-014,hje,гє,model-selected,ipa-sequence,data/korean/lexical_pronunciations.csv#혜택,The lexical IPA hjeː has the declared target гє; this explicit sequence prevents a literal й or soft-sign decomposition.
-KUA-IPA-015,kʰjʌ,кхьо,provisional,ipa-sequence,project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions,Existing project-level exception retained as provisional; aspiration spelling remains an explicit review item and is not generalized to other contexts.
+KUA-IPA-015,kʰjʌ,к'хьо,provisional,ipa-sequence,project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions,Project convention: aspiration uses apostrophe; retain the existing /jʌ/ target.
 KUA-IPA-016,nja,ня,model-selected,ipa-sequence,data/korean/lexical_pronunciations.csv#생산량,The lexical IPA njaŋ has the declared target нян; this explicit sequence uses я rather than ньа.
 KUA-IPA-017,nje,нє,model-selected,ipa-sequence,data/korean/lexical_pronunciations.csv#상견례,The lexical IPA nje has the declared target нє; this explicit sequence uses є rather than нье.
 KUA-IPA-018,nju,ню,model-selected,ipa-sequence,project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions,The sequence uses Ukrainian ю rather than ньу.

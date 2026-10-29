@@ -26,7 +26,7 @@ test("낱낱이 keeps the long vowel in IPA and matches the source's explicit se
   assert.equal(word.source_url, source.url);
   assert.equal(word.surface_hangul, '난나치');
   assert.equal(word.ipa_syllables, 'nanː|na|tɕʰi');
-  assert.equal(word.target_syllables, 'нан|на|чі');
+  assert.equal(word.target_syllables, 'нан|на|ч\'і');
   assert.match(word.rule_notes, /sequence 음절의 끝소리 규칙 → 비음화 → 구개음화/u);
   assert.match(word.rule_notes, /Preserve vowel length in IPA/u);
   assert.doesNotMatch(word.rule_notes, /exact rule ordering can vary by analysis/u);

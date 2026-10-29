@@ -17,17 +17,17 @@ const regressions = [
 ];
 
 const derivedRegressions = [
-  ['잊었다', '이젇따', 'і|джот|та', 'i|dʑʌt̚|t͈a', '§13', '§23'],
-  ['쌓였다', '싸엳따', 'са|йот|та', 's͈a|jʌt̚|t͈a', '§12(4)', '§23'],
-  ['붙었다', '부텓따', 'пу|тот|та', 'pu|tʰʌt̚|t͈a', '§13', '§23'],
-  ['찾아가다', '차자가다', 'ча|джа|ґа|да', 'tɕʰa|dʑa|ɡa|da', 'directly lists 찾아가다 pronunciation', null],
+  ['잊었다', '이젇따', "і|джот|тта", 'i|dʑʌt̚|t͈a', '§13', '§23'],
+  ['쌓였다', '싸엳따', "сса|йот|тта", 's͈a|jʌt̚|t͈a', '§12(4)', '§23'],
+  ['붙었다', '부텓따', "пу|т'от|тта", 'pu|tʰʌt̚|t͈a', '§13', '§23'],
+  ['찾아가다', '차자가다', "ч'а|джа|ґа|да", 'tɕʰa|dʑa|ɡa|da', 'directly lists 찾아가다 pronunciation', null],
   ['미닫이문', '미다지문', 'мі|да|джі|мун', 'miː|da|dʑi|mun', '§17', null],
-  ['넣었다', '너얻따', 'но|от|та', 'nʌ|ʌt̚|t͈a', '§12(4)', '§23'],
-  ['놓았다', '노앋따', 'но|ат|та', 'no|at̚|t͈a', '§12(4)', '§23'],
+  ['넣었다', '너얻따', "но|от|тта", 'nʌ|ʌt̚|t͈a', '§12(4)', '§23'],
+  ['놓았다', '노앋따', "но|ат|тта", 'no|at̚|t͈a', '§12(4)', '§23'],
   ['좋아도', '조아도', 'чо|а|до', 'tɕoː|a|do', '§12(4)', null],
   ['맑을', '말글', 'мал|ґил', 'mal|ɡɯl', '§14', null],
-  ['없었다', '업썯따', 'оп|сот|та', 'ʌp̚|s͈ʌt̚|t͈a', '§14', '§23'],
-  ['각하', '가카', 'ка|ка', 'ka|kʰa', '제12항 붙임 1', null],
+  ['없었다', '업썯따', "оп|ссот|тта", 'ʌp̚|s͈ʌt̚|t͈a', '§14', '§23'],
+  ['각하', '가카', "ка|к'а", 'ka|kʰa', '제12항 붙임 1', null],
 ];
 
 test('reported complex-coda forms have exact official source attestations', () => {
@@ -80,11 +80,11 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
   assert.ok(row.rule_notes.includes('§5') && row.rule_notes.includes('§14'));
   const result = engine.convert('값의');
   assert.equal(result.surfaceHangul, '갑씌');
-  assert.equal(result.ukrainian, 'капший');
+  assert.equal(result.ukrainian, "капшший");
   assert.equal(result.ipa, 'kap̚.ɕ͈ɰi');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '갑쎄');
-  assert.equal(result.variants[0].ukrainian, 'капсе');
+  assert.equal(result.variants[0].ukrainian, 'капссе');
   assert.equal(result.variants[0].ipa, 'kap̚.s͈e');
   assert.ok(!result.ukrainian.includes('⟦'));
   assert.deepEqual(result.issues, []);
@@ -92,7 +92,7 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
 
 test('§27 fortition survives mixed lexical/generic tokenization in 읽을 수 있습니다', () => {
   const result = engine.convert('읽을 수 있습니다');
-  assert.equal(result.ukrainian, 'ілґил су ітсимніда');
+  assert.equal(result.ukrainian, 'ілґил су ітссимніда');
   assert.equal(result.ipa, 'il.ɡɯl s͈u it̚.s͈ɯm.ni.da');
   assert.equal(result.issues.length, 0);
   assert.equal(result.status, 'lexical-review');
@@ -102,7 +102,7 @@ test('§27 fortition survives mixed lexical/generic tokenization in 읽을 수 �
 
 test('the other reported palatalization forms remain covered, including a whole compound', () => {
   const cases = [
-    ['밭이', '바치', 'па|чі', 'pa|tɕʰi'],
+    ['밭이', '바치', 'па|ч\'і', 'pa|tɕʰi'],
     ['맏이', '마지', 'ма|джі', 'ma|dʑi'],
     ['맏이가', '마지가', 'ма|джі|ґа', 'ma|dʑi|ɡa'],
     ['미닫이', '미다지', 'мі|да|джі', 'miː|da|dʑi'],
@@ -125,10 +125,10 @@ test('the other reported palatalization forms remain covered, including a whole 
 
 test('§14 NIKL complex-coda liaison examples preserve official particle readings', () => {
   const cases = [
-    ['품삯이', '품싹씨', 'пум|сак|ші', 'pʰum|s͈ak̚|ɕ͈i'],
-    ['품삯을', '품싹쓸', 'пум|сак|сил', 'pʰum|s͈ak̚|s͈ɯl'],
-    ['품삯으로', '품싹쓰로', 'пум|сак|си|ро', 'pʰum|s͈ak̚|s͈ɯ|ɾo'],
-    ['외곬에', '외골쎄', 'ве|ґол|се', 'ø|ɡol|s͈e'],
+    ['품삯이', '품싹씨', "п'ум|ссак|шші", 'pʰum|s͈ak̚|ɕ͈i'],
+    ['품삯을', '품싹쓸', "п'ум|ссак|ссил", 'pʰum|s͈ak̚|s͈ɯl'],
+    ['품삯으로', '품싹쓰로', "п'ум|ссак|сси|ро", 'pʰum|s͈ak̚|s͈ɯ|ɾo'],
+    ['외곬에', '외골쎄', "ве|ґол|ссе", 'ø|ɡol|s͈e'],
   ];
   const sources = new Map([
     ['품삯이', 'https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=309950'],
@@ -184,8 +184,8 @@ test('lexical IPA consistently marks fortis sibilants as alveolo-palatal before 
 
 test('Ukrainian rendering is derived from the IPA layer for lexical readings', () => {
   const cases = [
-    ['값의', 'kap̚ ɕ͈ɰi', 'капший'],
-    ['학생의', 'hak̚ s͈ɛŋ ɰi', 'гаксений'],
+    ['값의', 'kap̚ ɕ͈ɰi', "капшший"],
+    ['학생의', 'hak̚ s͈ɛŋ ɰi', 'гакссений'],
     ['주의', 'tɕu ɰi', 'чуий'],
     ['지식의', 'tɕi ɕi ɡɰi', 'чішіґий'],
   ];
@@ -200,17 +200,17 @@ test('Ukrainian rendering is derived from the IPA layer for lexical readings', (
 
 test('difficult passage forms have sourced IPA and render Ukrainian only from that IPA',()=>{
   const cases=[
-    ['읽었다는','il.ɡʌt̚.t͈a.nɯn','ілґоттанин'],
-    ['없어서','ʌp̚ s͈ʌ sʌ','опсосо'],
-    ['찾았다','tɕʰa dʑa t͈a','чаджата'],
-    ['앉히다','an tɕʰi da','анчіда'],
+    ['읽었다는','il.ɡʌt̚.t͈a.nɯn','ілґотттанин'],
+    ['없어서','ʌp̚ s͈ʌ sʌ',"опссосо"],
+    ['찾았다','tɕʰa dʑa t͈a',"ч'аджатта"],
+    ['앉히다','an tɕʰi da',"анч'іда"],
     ['해돋이','hɛ do dʑi','гедоджі'],
-    ['품삯이','pʰum.s͈ak̚.ɕ͈i','пумсакші'],
-    ['품삯을','pʰum s͈ak̚ s͈ɯl','пумсаксил'],
-    ['품삯으로','pʰum s͈ak̚ s͈ɯ ɾo','пумсаксиро'],
-    ['외곬에','ø ɡol s͈e','веґолсе'],
-    ['값의','kap̚ ɕ͈ɰi','капший'],
-    ['값에','kap̚ s͈e','капсе'], 
+    ['품삯이','pʰum.s͈ak̚.ɕ͈i',"п'умссакшші"],
+    ['품삯을','pʰum s͈ak̚ s͈ɯl',"п'умссакссил"],
+    ['품삯으로','pʰum s͈ak̚ s͈ɯ ɾo',"п'умссакссиро"],
+    ['외곬에','ø ɡol s͈e',"веґолссе"],
+    ['값의','kap̚ ɕ͈ɰi',"капшший"],
+    ['값에','kap̚ s͈e',"капссе"], 
   ];
   for(const [word,ipa,ukrainian] of cases){
     const result=engine.convert(word);
@@ -224,26 +224,26 @@ test('difficult passage forms have sourced IPA and render Ukrainian only from th
 
 test('§23 all 20 enumerated NIKL fortition examples have sourced IPA-first lexical regressions', () => {
   const cases = [
-    ['국밥', '국빱', 'кук|пап', 'kuk̚|p͈ap̚'],
-    ['깎다', '깍따', 'как|та', 'k͈ak̚|t͈a'],
-    ['넋받이', '넉빠지', 'нок|па|джі', 'nʌk̚|p͈a|dʑi'],
-    ['삯돈', '삭똔', 'сак|тон', 'sak̚|t͈on'],
-    ['닭장', '닥짱', 'так|чан', 'tak̚|tɕ͈aŋ'],
-    ['칡범', '칙뻠', 'чік|пом', 'tɕʰik̚|p͈ʌm'],
-    ['뻗대다', '뻗때다', 'пот|те|да', 'p͈ʌt̚|t͈ɛ|da'],
-    ['옷고름', '옫꼬름', 'от|ко|рим', 'ot̚|k͈o|ɾɯm'],
-    ['있던', '읻떤', 'іт|тон', 'it̚|t͈ʌn'],
-    ['꽂고', '꼳꼬', 'кот|ко', 'k͈ot̚|k͈o'],
-    ['꽃다발', '꼳따발', 'кот|та|бал', 'k͈ot̚|t͈a|bal'],
-    ['낯설다', '낟썰다', 'нат|сол|да', 'nat̚|s͈ʌl|da'],
-    ['밭갈이', '받까리', 'пат|ка|рі', 'pat̚|k͈a|ɾi'],
-    ['솥전', '솓쩐', 'сот|чон', 'sot̚|tɕ͈ʌn'],
-    ['곱돌', '곱똘', 'коп|тол', 'kop̚|t͈ol'],
-    ['덮개', '덥깨', 'топ|ке', 'tʌp̚|k͈ɛ'],
-    ['옆집', '엽찝', 'йоп|чіп', 'jʌp̚|tɕ͈ip̚'],
-    ['넓죽하다', '넙쭈카다', 'ноп|чу|ка|да', 'nʌp̚|tɕ͈u|kʰa|da'],
-    ['읊조리다', '읍쪼리다', 'ип|чо|рі|да', 'ɯp̚|tɕ͈o|ɾi|da'],
-    ['값지다', '갑찌다', 'кап|чі|да', 'kap̚|tɕ͈i|da'],
+    ['국밥', '국빱', 'кук|ппап', 'kuk̚|p͈ap̚'],
+    ['깎다', '깍따', "ккак|тта", 'k͈ak̚|t͈a'],
+    ['넋받이', '넉빠지', "нок|ппа|джі", 'nʌk̚|p͈a|dʑi'],
+    ['삯돈', '삭똔', "сак|ттон", 'sak̚|t͈on'],
+    ['닭장', '닥짱', "так|ччан", 'tak̚|tɕ͈aŋ'],
+    ['칡범', '칙뻠', "ч'ік|ппом", 'tɕʰik̚|p͈ʌm'],
+    ['뻗대다', '뻗때다', "ппот|тте|да", 'p͈ʌt̚|t͈ɛ|da'],
+    ['옷고름', '옫꼬름', "от|кко|рим", 'ot̚|k͈o|ɾɯm'],
+    ['있던', '읻떤', "іт|ттон", 'it̚|t͈ʌn'],
+    ['꽂고', '꼳꼬', "ккот|кко", 'k͈ot̚|k͈o'],
+    ['꽃다발', '꼳따발', "ккот|тта|бал", 'k͈ot̚|t͈a|bal'],
+    ['낯설다', '낟썰다', "нат|ссол|да", 'nat̚|s͈ʌl|da'],
+    ['밭갈이', '받까리', "пат|кка|рі", 'pat̚|k͈a|ɾi'],
+    ['솥전', '솓쩐', "сот|ччон", 'sot̚|tɕ͈ʌn'],
+    ['곱돌', '곱똘', "коп|ттол", 'kop̚|t͈ol'],
+    ['덮개', '덥깨', "топ|кке", 'tʌp̚|k͈ɛ'],
+    ['옆집', '엽찝', "йоп|ччіп", 'jʌp̚|tɕ͈ip̚'],
+    ['넓죽하다', '넙쭈카다', "ноп|ччу|к'а|да", 'nʌp̚|tɕ͈u|kʰa|da'],
+    ['읊조리다', '읍쪼리다', "ип|ччо|рі|да", 'ɯp̚|tɕ͈o|ɾi|da'],
+    ['값지다', '갑찌다', "кап|ччі|да", 'kap̚|tɕ͈i|da'],
   ];
   assert.equal(cases.length, 20, 'the standard enumerates 20 §23 example forms');
   for (const [input, surface, target, ipa] of cases) {

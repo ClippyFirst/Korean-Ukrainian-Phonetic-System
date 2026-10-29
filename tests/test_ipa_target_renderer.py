@@ -24,8 +24,8 @@ def test_ipa_renderer_applies_specific_surface_and_sequence_correspondences():
         "ka": ("ка", "model-selected"),
         "ɡa": ("ґа", "model-selected"),
         "dʑi": ("джі", "model-selected"),
-        "ɕ͈i": ("ші", "model-selected"),
-        "tɕʰi": ("чі", "model-selected"),
+        "ɕ͈i": ("шші", "model-selected"),
+        "tɕʰi": ("ч\'і", "model-selected"),
         "ɲju": ("нью", "model-selected"),
         "njʌ": ("ньо", "model-selected"),
         "ljʌ": ("льо", "model-selected"),
@@ -33,7 +33,7 @@ def test_ipa_renderer_applies_specific_surface_and_sequence_correspondences():
         "hje": ("гє", "model-selected"),
         "wi": ("ві", "model-selected"),
         "ɰi": ("ий", "provisional"),
-        "kʰjʌ": ("кхьо", "provisional"),
+        "kʰjʌ": ("к\'хьо", "provisional"),
     }
     for ipa, (expected, status) in cases.items():
         result = render_ipa_sequence_to_ukrainian(ipa, allow_provisional=(status == "provisional"))
@@ -302,3 +302,17 @@ def test_pipeline_opt_in_profile_gate_withholds_unadjudicated_and_partial_profil
 
     with pytest.raises(TypeError, match="require_adjudicated_ipa_profile"):
         transliterate_korean("가", require_adjudicated_ipa_profile="yes")
+
+def test_korean_aspiration_is_marked_with_apostrophe():
+    for ipa, expected in [("kʰ", "к'"), ("tʰ", "т'"), ("pʰ", "п'"), ("tɕʰ", "ч'")]:
+        result = render_ipa_sequence_to_ukrainian(ipa)
+        assert result["ukrainian_orthography"] == expected, ipa
+    sequence = render_ipa_sequence_to_ukrainian("kʰjʌ", allow_provisional=True)
+    assert sequence["ukrainian_orthography"] == "к'хьо"
+    assert sequence["status"] == "provisional"
+
+
+def test_korean_fortis_consonants_are_not_collapsed_in_ukrainian_output():
+    for ipa, expected in [("k͈", "кк"), ("t͈", "тт"), ("p͈", "пп"), ("s͈", "сс"), ("tɕ͈", "чч")]:
+        result = render_ipa_sequence_to_ukrainian(ipa)
+        assert result["ukrainian_orthography"] == expected, ipa

@@ -12,26 +12,26 @@ const engine = createEngine(canonical, lexical);
 const rows = parseCsv(lexical);
 const entries = new Map(rows.map((row) => [row.input, row]));
 
-test('practical targets do not duplicate Korean fortisness as doubled Ukrainian onset letters', () => {
+test('practical targets preserve Korean fortisness as doubled Ukrainian onset letters', () => {
   const expected = {
-    '밝다': 'пак|та',
-    '넓고': 'нол|ко',
-    '넓습니다': 'нол|сим|ні|да',
-    '읊다': 'ип|та',
-    '읊고': 'ип|ко',
-    '앉고': 'ан|ко',
-    '많습니다': 'ман|сим|ні|да',
-    '좋습니다': 'чо|сим|ні|да',
-    '낫다': 'нат|та',
-    '낫고': 'нат|ко',
-    '낫지': 'нат|чі',
-    '낯설다': 'нат|сол|да',
-    '낮잠': 'нат|чам',
+    '밝다': 'пак|тта',
+    '넓고': "нол|кко",
+    '넓습니다': "нол|ссим|ні|да",
+    '읊다': "ип|тта",
+    '읊고': "ип|кко",
+    '앉고': "ан|кко",
+    '많습니다': "ман|ссим|ні|да",
+    '좋습니다': "чо|ссим|ні|да",
+    '낫다': "нат|тта",
+    '낫고': "нат|кко",
+    '낫지': "нат|ччі",
+    '낯설다': "нат|ссол|да",
+    '낮잠': "нат|ччам",
   };
   for (const [word, target] of Object.entries(expected)) {
     assert.equal(entries.get(word)?.target_syllables, target, word + ': target segmentation');
-    assert.ok(!target.split('|').some((syllable) => /^(?:кк|тт|пп|сс|чч|ґґ|дд|бб)/u.test(syllable)),
-      word + ': doubled onset should not encode fortisness');
+    assert.ok(target.split('|').some((syllable) => /^(?:кк|тт|пп|сс|чч)/u.test(syllable)),
+      word + ': doubled onset must preserve fortisness');
     if (entries.get(word)?.target_status !== 'surface-only') {
       assert.equal(engine.convert(word).ukrainian, target.replaceAll('|', ''), word + ': runtime target');
     }
@@ -40,8 +40,8 @@ test('practical targets do not duplicate Korean fortisness as doubled Ukrainian 
 
 test('word-initial lenis and affricate targets follow the declared Ukrainian mapping', () => {
   const expected = {
-    '벼훑이': 'пйо|гул|чі',
-    '닫히다': 'та|чі|да',
+    '벼훑이': 'пйо|гул|ч\'і',
+    '닫히다': "та|ч'і|да",
     '겉옷': 'ко|дот',
     '젖어미': 'чо|до|мі',
     '젊어': 'чол|мо',
@@ -54,11 +54,11 @@ test('word-initial lenis and affricate targets follow the declared Ukrainian map
     '지식의': 'чі|ші|ґий',
     '집안일': 'чі|бан|ніл',
     '잡는': 'чам|нин',
-    '닿소': 'та|со',
-    '빗었어요': 'пі|со|со|йо',
+    '닿소': "та|ссо",
+    '빗었어요': "пі|со|ссо|йо",
     '젊은': 'чол|мин',
     '좋아질': 'чо|а|джіл',
-    '실제': 'шіл|че',
+    '실제': "шіл|чче",
     '한국어': 'ган|ґу|ґо',
   };
   for (const [word, target] of Object.entries(expected)) {
@@ -71,14 +71,14 @@ test('word-initial lenis and affricate targets follow the declared Ukrainian map
 
 test('target syllable alignment and contextual IPA are consistent for high-risk connected forms', () => {
   const expected = {
-    '덥고': ['топ|ко', 'tʌp̚|k͈o'],
-    '춥습니다': ['чуп|сим|ні|да', 'tɕʰup̚|s͈ɯm|ni|da'],
-    '나갔습니다': ['на|ґат|сим|ні|да', 'na|ɡat̚|s͈ɯm|ni|da'],
+    '덥고': ['топ|кко', 'tʌp̚|k͈o'],
+    '춥습니다': ["ч'уп|ссим|ні|да", 'tɕʰup̚|s͈ɯm|ni|da'],
+    '나갔습니다': ["на|ґат|ссим|ні|да", 'na|ɡat̚|s͈ɯm|ni|da'],
     '미닫이': ['мі|да|джі', 'miː|da|dʑi'],
-    '땀받이': ['там|ба|джі', 't͈am|ba|dʑi'],
-    '국립국어원': ['кун|нім|ку|ґо|вон', 'kuŋ|nim|k͈u|ɡʌ|wʌn'],
-    '넓어졌다는': ['нол|бо|джот|та|нин', 'nʌl|bʌ|dʑʌt̚|t͈a|nɯn'],
-    '곧이듣다': ['ко|джі|дит|та', 'ko|dʑi|dɯt̚|t͈a'],
+    '땀받이': ["ттам|ба|джі", 't͈am|ba|dʑi'],
+    '국립국어원': ["кун|нім|кку|ґо|вон", 'kuŋ|nim|k͈u|ɡʌ|wʌn'],
+    '넓어졌다는': ["нол|бо|джот|тта|нин", 'nʌl|bʌ|dʑʌt̚|t͈a|nɯn'],
+    '곧이듣다': ["ко|джі|дит|тта", 'ko|dʑi|dɯt̚|t͈a'],
     '좋아질': ['чо|а|джіл', 'tɕo|a|dʑil'],
   };
   for (const [word, [target, ipa]] of Object.entries(expected)) {
@@ -110,33 +110,33 @@ test('coda ㄹ uses the declared Ukrainian л target without an added soft sign'
   const expected = {
     '넓네': 'нол|ле',
     '여덟': 'йо|дол',
-    '넓다': 'нол|та',
+    '넓다': 'нол|тта',
     '들일': 'тил|ліл',
-    '얇실하다': 'ял|шіл|га|да',
-    '짧다': 'чал|та',
-    '읽거든': 'іл|ко|дин',
-    '넓습니다': 'нол|сим|ні|да',
+    '얇실하다': "ял|шшіл|га|да",
+    '짧다': "ччал|тта",
+    '읽거든': "іл|кко|дин",
+    '넓습니다': "нол|ссим|ні|да",
     '젖멍울': 'чон|мон|ул',
-    '꽃망울': 'кон|ман|ул',
+    '꽃망울': "ккон|ман|ул",
     '밥물': 'пам|мул',
-    '결단력': 'кйол|тан|ньок',
-    '줄넘기': 'чул|лом|кі',
-    '뚫네': 'тул|ле',
+    '결단력': "кйол|ттан|ньок",
+    '줄넘기': "чул|лом|ккі",
+    '뚫네': "ттул|ле",
     '설날': 'сол|лал',
-    '넓고': 'нол|ко',
+    '넓고': "нол|кко",
     '콧물': 'кон|мул',
     '박물관': 'пан|мул|ґван',
     '한국말': 'ган|кун|мал',
     '얇아도': 'ял|ба|до',
     '얇아서': 'ял|ба|со',
-    '넓지만': 'нол|чі|ман',
-    '짧아도': 'чал|ба|до',
-    '일찍': 'іл|чік',
-    '설명했어요': 'сол|мйон|ге|со|йо',
+    '넓지만': "нол|ччі|ман",
+    '짧아도': "ччал|ба|до",
+    '일찍': "іл|ччік",
+    '설명했어요': "сол|мйон|ге|ссо|йо",
     '흙을': 'гил|ґил',
     '밟으며': 'пал|би|мйо',
     '낡은': 'нал|ґин',
-    '밟았습니다': 'пал|ба|сим|ні|да',
+    '밟았습니다': "пал|ба|ссим|ні|да",
     '맑은': 'мал|ґин',
   };
   for (const [word, target] of Object.entries(expected)) {
@@ -148,23 +148,23 @@ test('coda ㄹ uses the declared Ukrainian л target without an added soft sign'
 
 test('context-sensitive vowel and voicing decisions remain explicit in the lexical layer', () => {
   const expected = {
-    '맛없다': ['ма|доп|та', 'ma|dʌp̚|t͈a'],
-    '맛없고': ['ма|доп|ко', 'ma|dʌp̚|k͈o'],
+    '맛없다': ['ма|доп|тта', 'ma|dʌp̚|t͈a'],
+    '맛없고': ["ма|доп|кко", 'ma|dʌp̚|k͈o'],
     '협의': ['гьо|бі', 'hjʌ|bi'],
-    '말씨': ['мал|ші', 'maːl|ɕ͈i'],
+    '말씨': ["мал|шші", 'maːl|ɕ͈i'],
     '반신반의': ['пан|шін|ба|ні', 'paːn|ɕin|baː|ni'],
     '임진란': ['ім|джін|нан', 'imː|dʑin|nan'],
-    '결단력': ['кйол|тан|ньок', 'kjʌl|t͈an|njʌk̚'],
-    '공권력': ['кон|квон|ньок', 'koŋ|k͈wʌn|njʌk̚'],
+    '결단력': ["кйол|ттан|ньок", 'kjʌl|t͈an|njʌk̚'],
+    '공권력': ["кон|кквон|ньок", 'koŋ|k͈wʌn|njʌk̚'],
     '동원령': ['тон|вон|ньон', 'toŋː|wʌn|njʌŋ'],
-    '많습니다': ['ман|сим|ні|да', 'man|s͈ɯm|ni|da'],
-    '좋습니다': ['чо|сим|ні|да', 'tɕo|s͈ɯm|ni|da'],
-    '읽었습니다': ['іл|ґо|сим|ні|да', 'il|ɡʌ|s͈ɯm|ni|da'],
-    '춥습니다': ['чуп|сим|ні|да', 'tɕʰup̚|s͈ɯm|ni|da'],
-    '나갔습니다': ['на|ґат|сим|ні|да', 'na|ɡat̚|s͈ɯm|ni|da'],
-    '밟았습니다': ['пал|ба|сим|ні|да', 'pal|ba|s͈ɯm|ni|da'],
-    '값있다': ['ка|біт|та', 'ka|bit̚|t͈a'],
-    '할지라도': ['гал|чі|ра|до', 'hal|tɕ͈i|ɾa|do'],
+    '많습니다': ["ман|ссим|ні|да", 'man|s͈ɯm|ni|da'],
+    '좋습니다': ["чо|ссим|ні|да", 'tɕo|s͈ɯm|ni|da'],
+    '읽었습니다': ["іл|ґо|ссим|ні|да", 'il|ɡʌ|s͈ɯm|ni|da'],
+    '춥습니다': ["ч'уп|ссим|ні|да", 'tɕʰup̚|s͈ɯm|ni|da'],
+    '나갔습니다': ["на|ґат|ссим|ні|да", 'na|ɡat̚|s͈ɯm|ni|da'],
+    '밟았습니다': ["пал|ба|ссим|ні|да", 'pal|ba|s͈ɯm|ni|da'],
+    '값있다': ["ка|біт|тта", 'ka|bit̚|t͈a'],
+    '할지라도': ["гал|ччі|ра|до", 'hal|tɕ͈i|ɾa|do'],
     '불여우': ['пул|льо|у', 'pul|ljʌ|u'],
     '휘발유': ['гві|пал|лю', 'hwi|pal|lju'],
   };
@@ -271,12 +271,12 @@ test('lexical onset targets match declared surface-onset mappings across the cor
 // Keep this mapping intentionally in the test: it makes every stored lexical
 // target accountable to IPA, rather than merely checking a few hand-picked rows.
 const IPA_TO_UKRAINIAN_ORACLE = [
-  ['kʰjʌ','кхьо'],['hjʌ','гьо'],['njʌ','ньо'],['njo','ньо'],['nju','ню'],
+  ["kʰjʌ","к'хьо"],['hjʌ','гьо'],['njʌ','ньо'],['njo','ньо'],['nju','ню'],
   ['ɲʌ','ньо'],['ɲa','ня'],['ɲo','ньо'],['ɲu','ню'],
   ['ljʌ','льо'],['lju','лю'],
-  ['tɕ͈','ч'],['tɕʰ','ч'],['tɕ','ч'],['dʑ','дж'],['ɕ͈','ш'],['ɕ','ш'],
-  ['k͈','к'],['t͈','т'],['p͈','п'],['s͈','с'],
-  ['kʰ','к'],['tʰ','т'],['pʰ','п'],['k̚','к'],['t̚','т'],['p̚','п'],
+  ['tɕ͈','чч'],["tɕʰ","ч'"],['tɕ','ч'],['dʑ','дж'],['ɕ͈','шш'],['ɕ','ш'],
+  ['k͈','кк'],['t͈','тт'],['p͈','пп'],['s͈','сс'],
+  ["kʰ","к'"],["tʰ","т'"],["pʰ","п'"],['k̚','к'],['t̚','т'],['p̚','п'],
   ['ɰi','ий'],['jʌ','йо'],['jɛ','є'],['ja','я'],['je','є'],['jo','йо'],['ju','ю'],
   ['wa','ва'],['wɛ','ве'],['wʌ','во'],['we','ве'],['aː','а'],
   ['ɡ','ґ'],['k','к'],['g','ґ'],['t','т'],['d','д'],['p','п'],['b','б'],

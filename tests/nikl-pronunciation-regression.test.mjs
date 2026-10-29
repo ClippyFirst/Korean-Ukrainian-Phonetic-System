@@ -68,7 +68,7 @@ test('ㅢ with a consonant onset follows §5 and is realized as [i]', () => {
 
 test('palatalization applies to ㄷ/ㅌ before ㅣ, not every j-like vowel', () => {
   const result = engine.convert('같이');
-  assert.equal(result.ukrainian, 'качі');
+  assert.equal(result.ukrainian, 'кач\'і');
   assert.match(result.ipa, /ka\.tɕʰi/);
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
   assert.equal(result.status, 'lexical-review');
@@ -76,7 +76,7 @@ test('palatalization applies to ㄷ/ㅌ before ㅣ, not every j-like vowel', () 
 
 test('ㄷ+히 follows aspiration and then palatalization (§12 + §17)', () => {
   const result = engine.convert('굳히다');
-  assert.equal(result.ukrainian, 'кучіда');
+  assert.equal(result.ukrainian, 'куч\'іда');
   assert.match(result.ipa, /ku\.tɕʰi\.da/);
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
   assert.equal(result.status, 'lexical-review');
@@ -85,7 +85,7 @@ test('ㄷ+히 follows aspiration and then palatalization (§12 + §17)', () => {
 test('the complete official institution name uses its sourced standard surface form', () => {
   const result = engine.convert('국립국어원');
   assert.equal(result.surfaceHangul, '궁님꾸거원');
-  assert.equal(result.ukrainian, 'куннімкуґовон');
+  assert.equal(result.ukrainian, 'куннімккуґовон');
   assert.equal(result.ipa, 'kuŋ.nim.k͈u.ɡʌ.wʌn');
   assert.equal(result.status, 'lexical-review');
   assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')));
@@ -129,12 +129,12 @@ test('shared lexical pronunciation data is sourced, aligned, and marks provision
 
 test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays explicitly provisional', () => {
   const expected = {
-    같이: {surface:'가치', target:'качі', ipa:'ka.tɕʰi'},
+    같이: {surface:'가치', target:'кач\'і', ipa:'ka.tɕʰi'},
     굳이: {surface:'구지', target:'куджі', ipa:'ku.dʑi'},
-    곧이듣다: {surface:'고지듣따', target:'коджідитта', ipa:'ko.dʑi.dɯt̚.t͈a'},
-    굳히다: {surface:'구치다', target:'кучіда', ipa:'ku.tɕʰi.da'},
-    닫히다: {surface:'다치다', target:'тачіда', ipa:'ta.tɕʰi.da'},
-    묻히다: {surface:'무치다', target:'мучіда', ipa:'mu.tɕʰi.da'},
+    곧이듣다: {surface:'고지듣따', target:"коджідиттта", ipa:'ko.dʑi.dɯt̚.t͈a'},
+    굳히다: {surface:'구치다', target:"куч'іда", ipa:'ku.tɕʰi.da'},
+    닫히다: {surface:'다치다', target:"тач'іда", ipa:'ta.tɕʰi.da'},
+    묻히다: {surface:'무치다', target:"муч'іда", ipa:'mu.tɕʰi.da'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
@@ -151,10 +151,10 @@ test('NIKL §17 exact examples use sourced entries; the Ukrainian target stays e
 
 test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', () => {
   const expected = {
-    맛없다: {surface:'마덥따', target:'мадопта', ipa:'ma.dʌp̚.t͈a'},
+    맛없다: {surface:'마덥따', target:'мадоптта', ipa:'ma.dʌp̚.t͈a'},
     겉옷: {surface:'거돋', target:'кодот', ipa:'kʌ.dot̚'},
     헛웃음: {surface:'허두슴', target:'годусим', ipa:'hʌ.du.sɯm'},
-    값어치: {surface:'가버치', target:'кабочі', ipa:'ka.bʌ.tɕʰi'},
+    값어치: {surface:'가버치', target:"кабоч'і", ipa:'ka.bʌ.tɕʰi'},
     젖어미: {surface:'저더미', target:'чодомі', ipa:'tɕʌ.dʌ.mi'},
   };
   const rows = parseCsv(lexical);
@@ -173,8 +173,8 @@ test('NIKL §15 substantive-morpheme liaison uses exact sourced surface forms', 
 
 test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () => {
   const expected = {
-    맛있다: {surface:'마딛따', target:'мадітта', ipa:'ma.dit̚.t͈a', alternateSurface:'마싣따', alternateTarget:'машітта', alternateIpa:'ma.ɕit̚.t͈a'},
-    멋있다: {surface:'머딛따', target:'модітта', ipa:'mʌ.dit̚.t͈a', alternateSurface:'머싣따', alternateTarget:'мошітта', alternateIpa:'mʌ.ɕit̚.t͈a'},
+    맛있다: {surface:'마딛따', target:'мадіттта', ipa:'ma.dit̚.t͈a', alternateSurface:'마싣따', alternateTarget:'машіттта', alternateIpa:'ma.ɕit̚.t͈a'},
+    멋있다: {surface:'머딛따', target:"модіттта", ipa:'mʌ.dit̚.t͈a', alternateSurface:'머싣따', alternateTarget:'мошіттта', alternateIpa:'mʌ.ɕit̚.t͈a'},
   };
   for (const [word, values] of Object.entries(expected)) {
     const result = engine.convert(word);
@@ -189,7 +189,7 @@ test('NIKL §15 exposes both standard readings for 맛있다 and 멋있다', () 
   }
   const phrase = engine.convert('맛있다!');
   assert.equal(phrase.variants.length, 1);
-  assert.equal(phrase.variants[0].ukrainian, 'машітта!');
+  assert.equal(phrase.variants[0].ukrainian, 'машіттта!');
   assert.equal(phrase.variants[0].ipa, 'ma.ɕit̚.t͈a!');
 });
 
@@ -205,16 +205,16 @@ test('unknown complex-coda liaison is unresolved rather than guessed as §14', (
 
 test('§14 every enumerated complex-coda liaison example has an independently pinned surface and IPA', () => {
   const expected = {
-    '넋이': {surface:'넉씨', target:'нокші', ipa:'nʌk̚.ɕ͈i'},
-    '값이': {surface:'갑씨', target:'капші', ipa:'kap̚.ɕ͈i'},
+    '넋이': {surface:'넉씨', target:"нокшші", ipa:'nʌk̚.ɕ͈i'},
+    '값이': {surface:'갑씨', target:"капшші", ipa:'kap̚.ɕ͈i'},
     '앉아': {surface:'안자', target:'анджа', ipa:'an.dʑa'},
     '닭을': {surface:'달글', target:'талґил', ipa:'tal.ɡɯl'},
     '젊어': {surface:'절머', target:'чолмо', ipa:'tɕʌl.mʌ'},
-    '곬이': {surface:'골씨', target:'колші', ipa:'kol.ɕ͈i'},
-    '핥아': {surface:'할타', target:'галта', ipa:'hal.tʰa'},
-    '읊어': {surface:'을퍼', target:'илпо', ipa:'ɯl.pʰʌ'},
-    '값을': {surface:'갑쓸', target:'капсил', ipa:'kap̚.s͈ɯl'},
-    '없어': {surface:'업써', target:'опсо', ipa:'ʌːp̚.s͈ʌ'},
+    '곬이': {surface:'골씨', target:"колшші", ipa:'kol.ɕ͈i'},
+    '핥아': {surface:'할타', target:'галт\'а', ipa:'hal.tʰa'},
+    '읊어': {surface:'을퍼', target:"илп'о", ipa:'ɯl.pʰʌ'},
+    '값을': {surface:'갑쓸', target:"капссил", ipa:'kap̚.s͈ɯl'},
+    '없어': {surface:'업써', target:"опссо", ipa:'ʌːp̚.s͈ʌ'},
     '여덟이': {surface:'여덜비', target:'йодолбі', ipa:'jʌ.dʌl.bi'},
     '여덟을': {surface:'여덜블', target:'йодолбил', ipa:'jʌ.dʌl.bɯl'},
   };
@@ -243,20 +243,20 @@ test('simple codas with §15-sensitive representatives are not transferred blind
 
 test('§13 all enumerated simple-coda liaison examples have pinned surfaces and IPA', () => {
   const expected = {
-    '깎아': {surface:'까까', target:'кака', ipa:'k͈a.k͈a'},
+    '깎아': {surface:'까까', target:'ккакка', ipa:'k͈a.k͈a'},
     '옷이': {surface:'오시', target:'оші', ipa:'o.ɕi', targetStatus:'model-selected'},
-    '있어': {surface:'이써', target:'ісо', ipa:'i.s͈ʌ'},
+    '있어': {surface:'이써', target:"іссо", ipa:'i.s͈ʌ'},
     '낮이': {surface:'나지', target:'наджі', ipa:'na.dʑi'},
-    '꽂아': {surface:'꼬자', target:'коджа', ipa:'k͈o.dʑa'},
-    '꽃을': {surface:'꼬츨', target:'кочил', ipa:'k͈o.tɕʰɯl'},
-    '밭에': {surface:'바테', target:'пате', ipa:'pa.tʰe'},
-    '앞으로': {surface:'아프로', target:'апиро', ipa:'a.pʰɯ.ɾo'},
-    '덮이다': {surface:'더피다', target:'топіда', ipa:'tʌ.pʰi.da'},
-    '쫓아': {surface:'쪼차', target:'чоча', ipa:'tɕ͈o.tɕʰa'},
-    '덮어': {surface:'더퍼', target:'топо', ipa:'tʌ.pʰʌ'},
+    '꽂아': {surface:'꼬자', target:"ккоджа", ipa:'k͈o.dʑa'},
+    '꽃을': {surface:'꼬츨', target:"ккоч'ил", ipa:'k͈o.tɕʰɯl'},
+    '밭에': {surface:'바테', target:"пат'е", ipa:'pa.tʰe'},
+    '앞으로': {surface:'아프로', target:"ап'иро", ipa:'a.pʰɯ.ɾo'},
+    '덮이다': {surface:'더피다', target:"топ'іда", ipa:'tʌ.pʰi.da'},
+    '쫓아': {surface:'쪼차', target:"ччоч'а", ipa:'tɕ͈o.tɕʰa'},
+    '덮어': {surface:'더퍼', target:"топ'о", ipa:'tʌ.pʰʌ'},
     '맞아': {surface:'마자', target:'маджа', ipa:'ma.dʑa'},
     '낮아': {surface:'나자', target:'наджа', ipa:'na.dʑa'},
-    '붙어': {surface:'부터', target:'путо', ipa:'pu.tʰʌ'},
+    '붙어': {surface:'부터', target:"пут'о", ipa:'pu.tʰʌ'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
@@ -274,9 +274,9 @@ test('§13 all enumerated simple-coda liaison examples have pinned surfaces and 
 
 test('official §12 complex-coda + ㅎ examples use exact lexical evidence', () => {
   const expected = {
-    읽히다: {surface:'일키다', target:'ілкіда', ipa:'il.kʰi.da'},
-    앉히다: {surface:'안치다', target:'анчіда', ipa:'an.tɕʰi.da'},
-    넓히다: {surface:'널피다', target:'нолпіда', ipa:'nʌl.pʰi.da'},
+    읽히다: {surface:'일키다', target:'ілк\'іда', ipa:'il.kʰi.da'},
+    앉히다: {surface:'안치다', target:"анч'іда", ipa:'an.tɕʰi.da'},
+    넓히다: {surface:'널피다', target:"нолп'іда", ipa:'nʌl.pʰi.da'},
   };
   const rows = parseCsv(lexical);
   for (const [word, values] of Object.entries(expected)) {
@@ -303,7 +303,7 @@ test('official §12(4) H-deletion examples are sourced and marked provisional on
   const expected = {
     낳은: {surface:'나은', target:'наин', ipa:'na.ɯn'},
     놓아: {surface:'노아', target:'ноа', ipa:'no.a'},
-    쌓이다: {surface:'싸이다', target:'саіда', ipa:'s͈a.i.da'},
+    쌓이다: {surface:'싸이다', target:'ссаіда', ipa:'s͈a.i.da'},
     많아: {surface:'마나', target:'мана', ipa:'ma.na'},
     않은: {surface:'아는', target:'анин', ipa:'a.nɯn'},
     닳아: {surface:'다라', target:'тара', ipa:'ta.ɾa'},
@@ -330,18 +330,18 @@ test('NIKL §16 official letter-name examples are exact lexical entries', () => 
     '지읒이': ['지으시', 'чіиші', 'tɕi ɯ ɕi'],
     '지읒을': ['지으슬', 'чіисил', 'tɕi ɯ sɯl'],
     '지읒에': ['지으세', 'чіисе', 'tɕi ɯ se'],
-    '치읓이': ['치으시', 'чіиші', 'tɕʰi ɯ ɕi'],
-    '치읓을': ['치으슬', 'чіисил', 'tɕʰi ɯ sɯl'],
-    '치읓에': ['치으세', 'чіисе', 'tɕʰi ɯ se'],
-    '키읔이': ['키으기', 'кіиґі', 'kʰi ɯ ɡi'],
-    '키읔을': ['키으글', 'кіиґил', 'kʰi ɯ ɡɯl'],
-    '키읔에': ['키으게', 'кіиґе', 'kʰi ɯ ɡe'],
-    '티읕이': ['티으시', 'тіиші', 'tʰi ɯ ɕi'],
-    '티읕을': ['티으슬', 'тіисил', 'tʰi ɯ sɯl'],
-    '티읕에': ['티으세', 'тіисе', 'tʰi ɯ se'],
-    '피읖이': ['피으비', 'піибі', 'pʰi ɯ bi'],
-    '피읖을': ['피으블', 'піибил', 'pʰi ɯ bɯl'],
-    '피읖에': ['피으베', 'піибе', 'pʰi ɯ be'],
+    '치읓이': ['치으시', 'ч\'іиші', 'tɕʰi ɯ ɕi'],
+    '치읓을': ['치으슬', "ч'іисил", 'tɕʰi ɯ sɯl'],
+    '치읓에': ['치으세', "ч'іисе", 'tɕʰi ɯ se'],
+    '키읔이': ['키으기', "к'іиґі", 'kʰi ɯ ɡi'],
+    '키읔을': ['키으글', "к'іиґил", 'kʰi ɯ ɡɯl'],
+    '키읔에': ['키으게', "к'іиґе", 'kʰi ɯ ɡe'],
+    '티읕이': ['티으시', "т'іиші", 'tʰi ɯ ɕi'],
+    '티읕을': ['티으슬', "т'іисил", 'tʰi ɯ sɯl'],
+    '티읕에': ['티으세', "т'іисе", 'tʰi ɯ se'],
+    '피읖이': ['피으비', "п'іибі", 'pʰi ɯ bi'],
+    '피읖을': ['피으블', "п'іибил", 'pʰi ɯ bɯl'],
+    '피읖에': ['피으베', "п'іибе", 'pʰi ɯ be'],
     '히읗이': ['히으시', 'гіиші', 'hi ɯ ɕi'],
     '히읗을': ['히으슬', 'гіисил', 'hi ɯ sɯl'],
     '히읗에': ['히으세', 'гіисе', 'hi ɯ se'],
@@ -364,12 +364,12 @@ test('NIKL §16 official letter-name examples are exact lexical entries', () => 
 test('NIKL §21 negative controls prevent nonstandard place assimilation', () => {
   const expected = {
     '감기': ['감기', 'камґі'],
-    '옷감': ['옫깜', 'откам'],
-    '있고': ['읻꼬', 'ітко'],
-    '꽃길': ['꼳낄', 'коткіл'],
+    '옷감': ['옫깜', 'отккам'],
+    '있고': ['읻꼬', "іткко"],
+    '꽃길': ['꼳낄', "ккотккіл"],
     '젖먹이': ['전머기', 'чонмоґі'],
-    '문법': ['문뻡', 'мунпоп'],
-    '꽃밭': ['꼳빧', 'котпат'],
+    '문법': ['문뻡', "мунппоп"],
+    '꽃밭': ['꼳빧', "ккотппат"],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, target]] of Object.entries(expected)) {
@@ -387,7 +387,7 @@ test('NIKL §21 negative controls prevent nonstandard place assimilation', () =>
 test('NIKL §22 preserves both permitted [어] and [여] readings', () => {
   const expected = {
     '되어': {target:'твео', ipa:'tø.ʌ', alternateSurface:'되여', alternateTarget:'твейо', alternateIpa:'tø.jʌ'},
-    '피어': {target:'піо', ipa:'pʰi.ʌ', alternateSurface:'피여', alternateTarget:'пійо', alternateIpa:'pʰi.jʌ'},
+    '피어': {target:'п\'іо', ipa:'pʰi.ʌ', alternateSurface:'피여', alternateTarget:"п'ійо", alternateIpa:'pʰi.jʌ'},
     '이오': {target:'іо', ipa:'i.o', alternateSurface:'이요', alternateTarget:'ійо', alternateIpa:'i.jo'},
     '아니오': {target:'аніо', ipa:'a.ni.o', alternateSurface:'아니요', alternateTarget:'анійо', alternateIpa:'a.ni.jo'},
   };
@@ -431,36 +431,36 @@ test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings',
 test('NIKL §§6–7 source-backed length examples preserve long vowels and alternants', () => {
   const expected = {
     '눈보라': ['눈보라', 'нунбора', 'nuːn.bo.ɾa'],
-    '말씨': ['말씨', 'малші', 'maːl.ɕ͈i'],
+    '말씨': ['말씨', "малшші", 'maːl.ɕ͈i'],
     '밤나무': ['밤나무', 'памнаму', 'paːm na mu'],
-    '많다': ['만타', 'манта', 'maːn tʰa'],
+    '많다': ['만타', 'мант\'а', 'maːn tʰa'],
     '멀리': ['멀리', 'моллі', 'mʌːl li'],
     '벌리다': ['벌리다', 'полліда', 'pʌːl li da'],
-    '첫눈': ['천눈', 'чоннун', 'tɕʰʌn nun'],
+    '첫눈': ['천눈', "ч'оннун", 'tɕʰʌn nun'],
     '수많이': ['수마니', 'сумані', 'suː ma ni'],
     '재삼재사': ['재삼재사', 'чесамджеса', 'tɕɛː sam dʑɛː sa'],
-    '감다': ['감따', 'камта', 'kaːm t͈a'],
+    '감다': ['감따', "камтта", 'kaːm t͈a'],
     '감으니': ['가므니', 'камині', 'ka mɯ ni'],
-    '밟다': ['밥따', 'папта', 'paːp̚ t͈a'],
+    '밟다': ['밥따', "паптта", 'paːp̚ t͈a'],
     '밟으면': ['발브면', 'палбимйон', 'pal bɯ mjʌn'],
-    '신다': ['신따', 'шінта', 'ɕiːn t͈a'],
+    '신다': ['신따', "шінтта", 'ɕiːn t͈a'],
     '신어': ['시너', 'шіно', 'ɕi nʌ'],
     '알다': ['알다', 'алда', 'aːl da'],
     '알아': ['아라', 'ара', 'a ɾa'],
-    '끌다': ['끌따', 'килта', 'k͈ɯːl t͈a'],
-    '끌어': ['끄러', 'киро', 'k͈ɯː ɾʌ'],
-    '떫다': ['떨따', 'толта', 't͈ʌːl t͈a'],
-    '떫은': ['떨븐', 'толбин', 't͈ʌːl bɯn'],
+    '끌다': ['끌따', "ккилтта", 'k͈ɯːl t͈a'],
+    '끌어': ['끄러', "ккиро", 'k͈ɯː ɾʌ'],
+    '떫다': ['떨따', "ттолтта", 't͈ʌːl t͈a'],
+    '떫은': ['떨븐', "ттолбин", 't͈ʌːl bɯn'],
     '벌다': ['벌다', 'полда', 'pʌːl da'],
     '벌어': ['버러', 'поро', 'pʌː ɾʌ'],
-    '썰다': ['썰다', 'солда', 's͈ʌːl da'],
-    '썰어': ['써러', 'соро', 's͈ʌː ɾʌ'],
+    '썰다': ['썰다', "ссолда", 's͈ʌːl da'],
+    '썰어': ['써러', "ссоро", 's͈ʌː ɾʌ'],
     '감기다': ['감기다', 'камґіда', 'kam ɡi da'],
-    '꼬이다': ['꼬이다', 'коіда', 'k͈o i da'],
-    '밟히다': ['발피다', 'палпіда', 'pal pʰi da'],
-    '끌리다': ['끌리다', 'килліда', 'k͈ɯːl li da'],
-    '없으니': ['업쓰니', 'опсині', 'ʌːp̚ s͈ɯ ni'],
-    '없애다': ['업쌔다', 'опседа', 'ʌːp̚ s͈ɛ da'],
+    '꼬이다': ['꼬이다', "ккоіда", 'k͈o i da'],
+    '밟히다': ['발피다', "палп'іда", 'pal pʰi da'],
+    '끌리다': ['끌리다', "ккилліда", 'k͈ɯːl li da'],
+    '없으니': ['업쓰니', "опссині", 'ʌːp̚ s͈ɯ ni'],
+    '없애다': ['업쌔다', "опсседа", 'ʌːp̚ s͈ɛ da'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
@@ -491,8 +491,8 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
     '시계': {surface:'시계', target:'шіґє', ipa:'ɕi.ɡje', alternateSurface:'시게', alternateTarget:'шіґе', alternateIpa:'ɕi.ɡe'},
     '연계': {surface:'연계', target:'йонґє', ipa:'jʌn.ɡje', alternateSurface:'연게', alternateTarget:'йонґе', alternateIpa:'jʌn.ɡe'},
     '몌별': {surface:'몌별', target:'мєбйол', ipa:'mje.bjʌl', alternateSurface:'메별', alternateTarget:'мебйол', alternateIpa:'me.bjʌl'},
-    '개폐': {surface:'개폐', target:'кепє', ipa:'kɛ.pʰje', alternateSurface:'개페', alternateTarget:'кепе', alternateIpa:'kɛ.pʰe'},
-    '혜택': {surface:'혜택', target:'гєтек', ipa:'hjeː.tʰɛk̚', alternateSurface:'헤택', alternateTarget:'гетек', alternateIpa:'heː.tʰɛk̚'},
+    '개폐': {surface:'개폐', target:'кеп\'є', ipa:'kɛ.pʰje', alternateSurface:'개페', alternateTarget:"кеп'е", alternateIpa:'kɛ.pʰe'},
+    '혜택': {surface:'혜택', target:"гєт'ек", ipa:'hjeː.tʰɛk̚', alternateSurface:'헤택', alternateTarget:"гет'ек", alternateIpa:'heː.tʰɛk̚'},
     '지혜': {surface:'지혜', target:'чігє', ipa:'tɕi.hje', alternateSurface:'지헤', alternateTarget:'чіге', alternateIpa:'tɕi.he'},
   };
   const rows = parseCsv(lexical);
@@ -512,11 +512,11 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
   }
   const contractions = {
     '가져': ['가저', 'каджо', 'ka.dʑʌ'],
-    '쪄': ['쩌', 'чо', 'tɕ͈ʌ'],
-    '다쳐': ['다처', 'тачо', 'ta.tɕʰʌ'],
-    '묻혀': ['무쳐', 'мучо', 'mu tɕʰʌ'],
-    '붙여': ['부쳐', 'пучо', 'pu tɕʰʌ'],
-    '잊혀': ['이쳐', 'ічо', 'i tɕʰʌ'],
+    '쪄': ['쩌', 'ччо', 'tɕ͈ʌ'],
+    '다쳐': ['다처', "тач'о", 'ta.tɕʰʌ'],
+    '묻혀': ['무쳐', "муч'о", 'mu tɕʰʌ'],
+    '붙여': ['부쳐', "пуч'о", 'pu tɕʰʌ'],
+    '잊혀': ['이쳐', "іч'о", 'i tɕʰʌ'],
   };
   for (const [word, [surface, target, ipa]] of Object.entries(contractions)) {
     const row = rows.find((item) => item.input === word);
@@ -529,16 +529,16 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
   }
 });
 
-test('fortisness remains in IPA but is not encoded by doubled Ukrainian graphemes', () => {
+test('fortisness remains in IPA and is preserved by doubled Ukrainian graphemes', () => {
   const expected = {
-    '맛없다': ['мадопта', 'ma.dʌp̚.t͈a'],
-    '맛있다': ['мадітта', 'ma.dit̚.t͈a'],
-    '멋있다': ['модітта', 'mʌ dit̚ t͈a'],
-    '깎아': ['кака', 'k͈a k͈a'],
-    '있어': ['ісо', 'i s͈ʌ'],
-    '쫓아': ['чоча', 'tɕ͈o tɕʰa'],
-    '쌓이다': ['саіда', 's͈a i da'],
-    '얽거나': ['олкона', 'ʌl k͈ʌ na'],
+    '맛없다': ['мадоптта', 'ma.dʌp̚.t͈a'],
+    '맛있다': ["мадіттта", 'ma.dit̚.t͈a'],
+    '멋있다': ["модіттта", 'mʌ dit̚ t͈a'],
+    '깎아': ['ккакка', 'k͈a k͈a'],
+    '있어': ["іссо", 'i s͈ʌ'],
+    '쫓아': ["ччоч'а", 'tɕ͈o tɕʰa'],
+    '쌓이다': ["ссаіда", 's͈a i da'],
+    '얽거나': ["олккона", 'ʌl k͈ʌ na'],
   };
   for (const [word, [target, ipa]] of Object.entries(expected)) {
     const result = engine.convert(word);
@@ -546,24 +546,24 @@ test('fortisness remains in IPA but is not encoded by doubled Ukrainian grapheme
     assert.equal(result.ukrainian, target, word);
     assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     const entry = parseCsv(lexical).find((row) => row.input === word);
-    assert.ok(!entry.target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
+    assert.ok(entry.target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
     if (entry.alternate_target_syllables) {
-      assert.ok(!entry.alternate_target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
+      assert.ok(entry.alternate_target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
     }
   }
 });
 
 test('NIKL §10 complex-coda examples and lexical exceptions are source-backed', () => {
   const expected = {
-    '넋과': ['넉꽈', 'нокква', 'nʌk̚.k͈wa'],
-    '앉다': ['안따', 'анта', 'an.t͈a'],
+    '넋과': ['넉꽈', 'ноккква', 'nʌk̚.k͈wa'],
+    '앉다': ['안따', "антта", 'an.t͈a'],
     '여덟': ['여덜', 'йодол', 'jʌ dʌl'],
-    '넓다': ['널따', 'нолта', 'nʌl t͈a'],
+    '넓다': ['널따', "нолтта", 'nʌl t͈a'],
     '외곬': ['외골', 'веґол', 'ø ɡol'],
-    '밟소': ['밥쏘', 'папсо', 'paːp̚ s͈o'],
-    '밟지': ['밥찌', 'папчі', 'paːp̚ tɕ͈i'],
-    '밟게': ['밥께', 'папке', 'paːp̚ k͈e'],
-    '밟고': ['밥꼬', 'папко', 'paːp̚ k͈o'],
+    '밟소': ['밥쏘', "папссо", 'paːp̚ s͈o'],
+    '밟지': ['밥찌', "папччі", 'paːp̚ tɕ͈i'],
+    '밟게': ['밥께', "папкке", 'paːp̚ k͈e'],
+    '밟고': ['밥꼬', "папкко", 'paːp̚ k͈o'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, target, ipa]] of Object.entries(expected)) {
@@ -581,18 +581,18 @@ test('NIKL §10 complex-coda examples and lexical exceptions are source-backed',
 
 test('NIKL §9 regular final-neutralization examples are computed by rules', () => {
   const expected = {
-    '닦다': ['tak̚.t͈a', 'такта'],
-    '키읔': ['kʰi.ɯk̚', 'кіик'],
-    '키읔과': ['kʰi.ɯk̚.k͈wa', 'кіикква'],
+    '닦다': ['tak̚.t͈a', 'тактта'],
+    '키읔': ['kʰi.ɯk̚', "к'іик"],
+    '키읔과': ['kʰi.ɯk̚.k͈wa', "к'іиккква"],
     '옷': ['ot̚', 'от'],
-    '있다': ['it̚.t͈a', 'ітта'],
+    '있다': ['it̚.t͈a', 'іттта'],
     '젖': ['tɕʌt̚', 'чот'],
-    '빚다': ['pit̚.t͈a', 'пітта'],
-    '꽃': ['k͈ot̚', 'кот'],
-    '쫓다': ['tɕ͈ot̚.t͈a', 'чотта'],
+    '빚다': ['pit̚.t͈a', 'піттта'],
+    '꽃': ['k͈ot̚', 'ккот'],
+    '쫓다': ['tɕ͈ot̚.t͈a', 'ччоттта'],
     '솥': ['sot̚', 'сот'],
     '앞': ['ap̚', 'ап'],
-    '덮다': ['tʌp̚.t͈a', 'топта'],
+    '덮다': ['tʌp̚.t͈a', 'топтта'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [ipa, target]] of Object.entries(expected)) {
@@ -609,8 +609,8 @@ test('NIKL §9 regular final-neutralization examples are computed by rules', () 
 
 test('NIKL §9 lexical vowel-length examples preserve source length in IPA', () => {
   const expected = {
-    '웃다': ['욷따', 'uːt̚.t͈a', 'утта'],
-    '뱉다': ['밷따', 'pɛːt̚.t͈a', 'петта'],
+    '웃다': ['욷따', 'uːt̚.t͈a', 'уттта'],
+    '뱉다': ['밷따', 'pɛːt̚.t͈a', 'петтта'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
@@ -627,19 +627,19 @@ test('NIKL §9 lexical vowel-length examples preserve source length in IPA', () 
 test('NIKL §18 official nasal-assimilation examples are source-backed', () => {
   const expected = {
     '먹는': ['멍는', 'mʌŋ.nɯn', 'моннин'],
-    '깎는': ['깡는', 'k͈aŋ.nɯn', 'каннин'],
-    '키읔만': ['키응만', 'kʰi.ɯŋ.man', 'кіинман'],
-    '몫몫이': ['몽목씨', 'moŋ mok̚ ɕ͈i', 'монмокші'],
+    '깎는': ['깡는', 'k͈aŋ.nɯn', 'кканнин'],
+    '키읔만': ['키응만', 'kʰi.ɯŋ.man', "к'іинман"],
+    '몫몫이': ['몽목씨', 'moŋ mok̚ ɕ͈i', 'монмокшші'],
     '긁는': ['긍는', 'kɯŋ nɯn', 'киннин'],
     '흙만': ['흥만', 'hɯŋ man', 'гинман'],
     '닫는': ['단는', 'tan nɯn', 'таннин'],
     '짓는': ['진는', 'tɕiːn nɯn', 'чіннин'],
-    '옷맵시': ['온맵씨', 'on mɛp̚ ɕ͈i', 'онмепші'],
+    '옷맵시': ['온맵씨', 'on mɛp̚ ɕ͈i', 'онмепшші'],
     '있는': ['인는', 'in nɯn', 'іннин'],
     '맞는': ['만는', 'man nɯn', 'маннин'],
     '젖멍울': ['전멍울', 'tɕʌn mʌŋ ul', 'чонмонул'],
-    '쫓는': ['쫀는', 'tɕ͈on nɯn', 'чоннин'],
-    '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'конманул'],
+    '쫓는': ['쫀는', 'tɕ͈on nɯn', 'ччоннин'],
+    '꽃망울': ['꼰망울', 'k͈on maŋ ul', 'кконманул'],
     '붙는': ['분는', 'pun nɯn', 'пуннин'],
     '놓는': ['논는', 'non nɯn', 'ноннин'],
     '잡는': ['잠는', 'tɕam nɯn', 'чамнин'],
@@ -680,9 +680,9 @@ test('NIKL §11 generic complex-coda examples use the general rules', () => {
   // Official forms: 닭[닥], 흙과[흑꽈], 늙지[늑찌], 읊고[읍꼬], 읊다[읍따].
   const expected = {
     '닭': ['tak̚', 'так'],
-    '늙지': ['nɯk̚.tɕ͈i', 'никчі'],
-    '읊고': ['ɯp̚.k͈o', 'ипко'],
-    '읊다': ['ɯp̚.t͈a', 'ипта'],
+    '늙지': ['nɯk̚.tɕ͈i', 'никччі'],
+    '읊고': ['ɯp̚.k͈o', 'ипкко'],
+    '읊다': ['ɯp̚.t͈a', 'иптта'],
   };
   const rows = parseCsv(lexical);
   for (const [word, [ipa, target]] of Object.entries(expected)) {
@@ -699,9 +699,9 @@ test('NIKL §11 generic complex-coda examples use the general rules', () => {
 
 test('NIKL §11 lexical length and morphology exceptions preserve official readings', () => {
   const expected = {
-    '흙과': ['흑꽈', 'hɯk̚.k͈wa', 'гикква'],
+    '흙과': ['흑꽈', 'hɯk̚.k͈wa', 'гиккква'],
     '삶': ['삼', 'saːm', 'сам'],
-    '젊다': ['점따', 'tɕʌːm.t͈a', 'чомта'],
+    '젊다': ['점따', 'tɕʌːm.t͈a', "чомтта"],
   };
   const rows = parseCsv(lexical);
   for (const [word, [surface, ipa, target]] of Object.entries(expected)) {
@@ -758,11 +758,11 @@ test('NIKL §20 general liquid-assimilation examples use the general rules', () 
 
 test('NIKL §20 lexical ㄹ-to-ㄴ exceptions are exact source-backed entries', () => {
   const expected = {
-    '줄넘기': ['줄럼끼', 'tɕul.lʌm.k͈i', 'чулломкі'],
+    '줄넘기': ['줄럼끼', 'tɕul.lʌm.k͈i', 'чулломккі'],
     '임진란': ['임진난', 'imː.dʑin.nan', 'імджіннан'],
     '생산량': ['생산냥', 'sɛŋ san njaŋ', 'сенсаннян'],
-    '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', 'кйолтанньок'],
-    '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', 'конквонньок'],
+    '결단력': ['결딴녁', 'kjʌl t͈an njʌk̚', "кйолттанньок"],
+    '공권력': ['공꿘녁', 'koŋ k͈wʌn njʌk̚', "конкквонньок"],
     '동원령': ['동원녕', 'toŋː wʌn njʌŋ', 'тонвонньон'],
     '상견례': ['상견녜', 'saŋ ɡjʌn nje', 'санґйоннє'],
     '이원론': ['이원논', 'iː wʌn non', 'івоннон'],
