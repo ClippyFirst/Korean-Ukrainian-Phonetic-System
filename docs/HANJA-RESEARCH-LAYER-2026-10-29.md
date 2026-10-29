@@ -6,8 +6,8 @@ Hanja is an optional orthographic/lexical annotation, separate from pronunciatio
 
 The implementation is deliberately deterministic:
 - no neural models, model weights, inference APIs, or remote runtime calls;
-- a pinned build-time preparation script fetches only libhangul-derived Hanja data files, verifies both Git blob SHA-1 values, and emits a compact generated word-reading map;
-- the browser lazily imports the generated dictionary chunk from the same site on first Korean input; the existing `connect-src 'none'` CSP remains unchanged because this is a script chunk, not a `fetch()` call;
+- a pinned build-time preparation script fetches only libhangul-derived Hanja data files, verifies both Git blob SHA-1 values, and emits a compact word-reading map sharded into 19 initial-consonant chunks;
+- the browser lazily imports only the generated dictionary chunks matching the initial consonants present in the current input; the existing `connect-src 'none'` CSP remains unchanged because this is a script chunk, not a `fetch()` call;
 - a deterministic ranker chooses one candidate per reading: gloss-bearing entries first, then the sum of per-character Hanja ranks from the single-character table, then stable source order; hand-reviewed project overrides take precedence;
 - whole Hangul runs are converted only if they can be segmented into dictionary terms and explicit suffixes; otherwise the whole run is preserved.
 
@@ -18,7 +18,7 @@ This is a broad deterministic dictionary-backed preview, not a complete Korean m
 - Engine: `src/app/hanja.js`; build-time dictionary preparation: `scripts/prepare-hanja-dictionary.mjs`.
 - UI: `index.html`, `src/main.js`, `src/styles/main.css`; tests: `tests/hanja.test.mjs`, `tests/hanja-dictionary-build.test.mjs`, and `tests/hanja-ui-contract.test.mjs`.
 - Data source is pinned to HanjaKey commit `4397d39106453bf4ee71b565dfb25e98eb71580f`, using only `hanja.txt` (Git blob `7cca2b4666ca19dcb10aaada52af89360c381659`) and `hanja_words.txt` (Git blob `07a9a7fc675c82628f4bacfeb22db679ce60866f`). Both retain the libhangul BSD 3-Clause attribution; the full notice is in `public/THIRD_PARTY_NOTICES.txt`.
-- Build preparation generates a compact one-candidate-per-reading map. The selected candidate follows a deterministic, inspectable ranking heuristic; the runtime dictionary is loaded lazily from a same-origin JS chunk, not from a third-party API. `connect-src 'none'` remains unchanged.
+- Build preparation generates a compact one-candidate-per-reading map, sharded into 19 initial-consonant chunks. The selected candidate follows a deterministic, inspectable ranking heuristic; the browser loads only the chunks represented in the current input from the same origin, not from a third-party API. `connect-src 'none'` remains unchanged.
 - The 4.87 MB raw word inventory is not checked into the repository; exact upstream revision and Git blob hashes are pinned so development/build preparation is reproducible and rejects changed source bytes. `npm run dev` and `npm run build` invoke the preparer automatically. The NIKL-derived definition corpus (~20.16 MB, CC BY-SA 2.0 KR) and any LLM-generated ranking data are intentionally excluded.
 
 ## Deterministic behavior examples
