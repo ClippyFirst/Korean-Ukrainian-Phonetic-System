@@ -37,7 +37,7 @@ const HANGUL_RUN = /[\uAC00-\uD7A3]+/gu;
 function createWordMap(dictionary = {}) {
   const map = new Map();
   if (typeof dictionary === 'string') {
-    for (const line of dictionary.split(/\r?\n/u) {
+    for (const line of dictionary.split(/\r?\n/u)) {
       if (!line) continue;
       const separator = line.indexOf(':');
       if (separator <= 0 || separator === line.length - 1) continue;
