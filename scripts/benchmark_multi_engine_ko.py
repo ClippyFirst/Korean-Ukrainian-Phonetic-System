@@ -559,6 +559,37 @@ def _g2pk_surface_to_ipa(g2p: Callable[[str], str], word: str) -> str:
     return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
 
 
+def _load_g2p_ko() -> tuple[Callable[[str], str], str]:
+    """Load g2p-ko's morphology-aware surface pronunciation as a comparison candidate.
+
+    Its output is Korean pronunciation spelling, not IPA. The shared broad-IPA
+    renderer is an explicit adapter boundary; no native G2P rules are reapplied.
+    """
+    from g2p_ko import G2P
+
+    engine = G2P()
+
+    def run(word: str) -> str:
+        result = engine.convert(word, normalize=False)
+        if not getattr(result, "complete", False):
+            raise ValueError(f"g2p-ko did not complete for {word!r}")
+        surface = getattr(result, "surface_pronunciation", None)
+        if not isinstance(surface, str):
+            raise TypeError(f"g2p-ko returned {type(surface).__name__} surface pronunciation")
+        surface = "".join(surface.split())
+        if not _HANGUL_TOKEN.fullmatch(surface):
+            raise ValueError(f"g2p-ko returned a non-Hangul surface form: {surface!r}")
+        from korean_ukrainian.phonology import parse_syllables
+        from korean_ukrainian.ipa import realize_syllables
+        return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
+
+    return run, (
+        "smbslt3/g2p-korean commit fc382a3f17e70b605b271cad8c87dd571284e5b3 "
+        "(g2p-ko 1.0.0, MIT; kiwipiepy==0.23.2); normalize=False; "
+        "surface pronunciation -> shared broad-IPA renderer; comparison-only"
+    )
+
+
 def _compose_kog2padvanced_surface(surface: str, join_jamos: Callable[[str], str]) -> str:
     """Compose mixed precomposed Hangul and compatibility jamo deterministically."""
     compatibility = "ㄱㄲㄳㄴㄵㄶㄷㄸㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅃㅄㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"
@@ -712,6 +743,24 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     execute("g2pk_0_9_4", "g2pk==0.9.4",
             lambda word: _g2pk_surface_to_ipa(g2p, word),
             "g2pk surface Hangul -> project segment renderer; native rules not rerun")
+
+    try:
+        g2p_ko_fn, g2p_ko_adapter = _load_g2p_ko()
+        execute(
+            "g2p_ko_1_0_0",
+            "smbslt3/g2p-korean commit fc382a3f17e70b605b271cad8c87dd571284e5b3",
+            g2p_ko_fn,
+            g2p_ko_adapter,
+        )
+    except Exception as exc:
+        predictions["g2p_ko_1_0_0"] = {}
+        engine_meta["g2p_ko_1_0_0"] = {
+            "status": "BLOCKED_OR_ERROR",
+            "source": "smbslt3/g2p-korean commit fc382a3f17e70b605b271cad8c87dd571284e5b3",
+            "adapter": "surface pronunciation -> shared broad-IPA renderer; normalize=False",
+            "engine_errors": len(words),
+            "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
+        }
 
     try:
         kog2p_fn, kog2p_adapter = _load_kog2p(args.kog2p_root)
@@ -1187,8 +1236,8 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "rule_accuracy": "NOT_MEASURED: the corpus does not provide independently adjudicated per-token rule-application labels",
             "ukrainian_target_CER_and_exact_match": "NOT_MEASURED: this IPA benchmark has no independently adjudicated Korean-to-Ukrainian target gold set",
             "ipa_to_ukrainian_pipeline_consistency": "NOT_MEASURED: this benchmark compares Korean IPA outputs and does not run every competitor through a common Ukrainian target adapter",
-            "determinism_and_repeatability": "NOT_MEASURED: this run executes each unique-word prediction once; requires repeated controlled runs",
-            "memory_usage": "NOT_MEASURED: workflow does not collect comparable process-level memory samples",
+            "determinism_and_repeatability": "PARTIALLY_MEASURED: one excluded warm-up plus five same-process timing repetitions; repeated output equivalence is not separately asserted",
+            "memory_usage": "NOT_MEASURED: workflow does not collect comparable per-engine peak RSS; candidates share a process",
             "coverage_adjusted_exact_match_rate": "MEASURED; exact matches divided by all eligible occurrences, so abstentions/errors count as non-matches",
         },
         "diagnostic_mismatch_sample": mismatch_details,
@@ -1204,6 +1253,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "KoG2Padvanced": "seongmin-mun/KoG2Padvanced commit 491b2d7269a4666b0d7556efb26755219f861163; no upstream license declared; external comparison checkout only, not vendored; Hangul output mapped by shared project IPA renderer",
             "HAMA": "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03; direct IPA API; upstream LICENSE says MIT while package metadata says Apache-2.0; external checkout only; Korean output quality must be established empirically",
             "kokorog2p": "buchwandler/kokorog2p==0.9.15; Apache-2.0; direct output='ipa'; morphology and external lexicon disabled; implementation is g2pK-derived and not an independent phonological lineage",
+            "g2p-ko": "smbslt3/g2p-korean commit fc382a3f17e70b605b271cad8c87dd571284e5b3; g2p-ko 1.0.0 MIT; kiwipiepy==0.23.2; normalize=False; Hangul surface pronunciation rendered to broad IPA by shared adapter",
             "hangul_to_ipa": "stannam/hangul_to_ipa commit 942abf132ea969a7e3476a1487c06710fb8db74b; MIT; executed as external checkout, not vendored",
             "phonemize": "hans00/phonemize npm 2.0.1; MIT",
             "eSpeak": "eSpeak NG system package via phonemizer==3.3.0; exact runtime version recorded in CI logs",
@@ -1221,6 +1271,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "phonemize's published Korean evaluation uses a small LLM-judged sample, not this benchmark's independent human-gold IPA.",
             "eSpeak is a TTS-oriented phonemizer baseline, not a claim of narrow-IPA or Korean standard-pronunciation authority.",
             "This benchmark measures Korean IPA output only. It does not compare Ukrainian adaptation quality.",
+            "g2p-ko is a separate morphology-aware comparison candidate, but it emits Korean surface pronunciation rather than IPA; the shared project IPA renderer is an adapter and therefore this is not a fully independent IPA encoding.",
             "No candidate is considered universally best based on one dataset. Report coverage, abstention, CER, exact match and confidence intervals together.",
         ],
     }
