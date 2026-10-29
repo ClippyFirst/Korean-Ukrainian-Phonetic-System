@@ -465,3 +465,5 @@ button { color: inherit; }
 .hanja-card { border-top:3px solid var(--line-strong); }
 .result-body.hanja { font-family:"Noto Sans KR","Noto Sans CJK KR","Arial Unicode MS",sans-serif; font-size:clamp(1.15rem,2vw,1.55rem); line-height:1.8; font-weight:650; }
 .hanja-note { margin:12px 0 0; padding-top:10px; border-top:1px solid var(--line); color:var(--muted); font-size:.76rem; line-height:1.55; }
+
+.hanja-engine-status { margin:8px 0 0; color:var(--green); font-size:.75rem; font-weight:750; }
