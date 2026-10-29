@@ -45,7 +45,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes espeak-ng default-jre-headless
           python -m pip install --upgrade pip
-          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "kokorog2p[ko]==0.9.15" "konlpy==0.6.0" "jamo==0.4.1" "pytest>=8"
+          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "kokorog2p[ko]==0.9.15" "kiwipiepy==0.23.2" "g2p-ko @ git+https://github.com/smbslt3/g2p-korean.git@fc382a3f17e70b605b271cad8c87dd571284e5b3" "konlpy==0.6.0" "jamo==0.4.1" "pytest>=8"
 
       - name: Fetch pinned external implementations and verify declared licenses
         env:
