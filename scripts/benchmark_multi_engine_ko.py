@@ -533,6 +533,7 @@ def _load_kog2padvanced_batch(root: Path, words: list[str]) -> tuple[Callable[[]
     required = [
         module_path,
         root / "G2P" / "KoG2P.py",
+        root / "G2P" / "Dic" / "rulebook.txt",
         root / "G2P" / "Dic" / "nSheetWords.csv",
         root / "G2P" / "Dic" / "KoG2PDic.txt",
     ]
