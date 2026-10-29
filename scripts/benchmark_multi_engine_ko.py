@@ -415,6 +415,31 @@ def _load_kog2p(root: Path) -> tuple[Callable[[str], str], str]:
     return run, "KoG2P custom phone labels -> explicit project-side label-to-IPA adapter"
 
 
+def _load_kokorog2p() -> tuple[Callable[[str], str], str]:
+    """Load kokorog2p's explicit Korean IPA output without external lexicon lookup."""
+    from kokorog2p.ko.g2p import KoreanG2P
+
+    engine = KoreanG2P(
+        output="ipa",
+        morphology="off",
+        use_dict=False,
+        lexicons=(),
+        use_espeak_fallback=False,
+        use_goruut_fallback=False,
+    )
+
+    def run(word: str) -> str:
+        value = engine.lookup(word)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"kokorog2p returned no IPA for {word!r}")
+        return value
+
+    return run, (
+        "kokorog2p==0.9.15 KoreanG2P(output='ipa', morphology='off', "
+        "use_dict=False, lexicons=()); internal g2pK-derived rules, no external lexicon"
+    )
+
+
 def _load_hangul_to_ipa(root: Path) -> tuple[Callable[[str], str], str]:
     if not (root / "src" / "worker.py").is_file():
         raise FileNotFoundError(f"hangul_to_ipa checkout incomplete: {root}")
@@ -511,6 +536,14 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         output: dict[str, Any] = {}
         errors: list[dict[str, str]] = []
         per_word_ms: list[float] = []
+        repeat_totals_ms: list[float] = []
+        repeat_word_latencies_ms: list[float] = []
+        # One warm-up call is recorded separately and excluded from reported timings.
+        try:
+            if words:
+                fn(words[0])
+        except Exception:
+            pass
         engine_started = time.perf_counter()
         for word in words:
             word_started = time.perf_counter()
@@ -526,6 +559,19 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             finally:
                 per_word_ms.append((time.perf_counter() - word_started) * 1000)
         elapsed_ms = (time.perf_counter() - engine_started) * 1000
+        for _ in range(max(0, args.timing_repetitions)):
+            repeat_started = time.perf_counter()
+            for word in words:
+                word_started = time.perf_counter()
+                try:
+                    value = fn(word)
+                    if not isinstance(value, str) or not value.strip():
+                        raise ValueError("empty or non-string output during repeat timing")
+                except Exception:
+                    pass
+                finally:
+                    repeat_word_latencies_ms.append((time.perf_counter() - word_started) * 1000)
+            repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
         predictions[name] = output
         engine_meta[name] = {
             "status": "PARTIAL" if errors else "AVAILABLE",
@@ -536,6 +582,16 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 "total_ms": round(elapsed_ms, 3),
                 "throughput_words_per_second": round(len(words) / (elapsed_ms / 1000), 3) if elapsed_ms > 0 else None,
                 "per_word_latency": _latency_summary(per_word_ms),
+                "repeatability": {
+                    "warmup_calls_excluded": 1 if words else 0,
+                    "measured_repetitions": len(repeat_totals_ms),
+                    "total_ms_samples": [round(x, 3) for x in repeat_totals_ms],
+                    "total_ms_median": round(statistics.median(repeat_totals_ms), 3) if repeat_totals_ms else None,
+                    "total_ms_min": round(min(repeat_totals_ms), 3) if repeat_totals_ms else None,
+                    "total_ms_max": round(max(repeat_totals_ms), 3) if repeat_totals_ms else None,
+                    "per_word_latency": _latency_summary(repeat_word_latencies_ms),
+                    "method": "same unique-word list repeated in the same process after one warm-up; includes Python adapter overhead",
+                },
                 "timing_scope": "unique-word engine calls; includes Python adapter overhead, excludes corpus loading and scoring",
             },
         }
@@ -560,6 +616,24 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "status": "BLOCKED_OR_ERROR", "source": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7",
             "adapter": "custom phone labels -> explicit IPA mapping",
             "engine_errors": len(words), "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
+        }
+
+    try:
+        kokoro_fn, kokoro_adapter = _load_kokorog2p()
+        execute(
+            "kokorog2p_0_9_15",
+            "buchwandler/kokorog2p==0.9.15 (Apache-2.0)",
+            kokoro_fn,
+            kokoro_adapter,
+        )
+    except Exception as exc:
+        predictions["kokorog2p_0_9_15"] = {}
+        engine_meta["kokorog2p_0_9_15"] = {
+            "status": "BLOCKED_OR_ERROR",
+            "source": "buchwandler/kokorog2p==0.9.15 (Apache-2.0)",
+            "adapter": "direct KoreanG2P output='ipa'; lexicon lookup disabled",
+            "engine_errors": len(words),
+            "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
         }
 
     try:
@@ -927,7 +1001,10 @@ def main() -> int:
     parser.add_argument("--hangul-to-ipa-root", type=Path, default=os.environ.get("HANGUL_TO_IPA_ROOT", "/tmp/hangul_to_ipa"))
     parser.add_argument("--phonemize-root", type=Path, default=os.environ.get("PHONEMIZE_BASELINE_DIR", "/tmp/phonemize-baseline"))
     parser.add_argument("--phonemize-output", type=Path, default=Path("/tmp/phonemize-predictions.json"))
+    parser.add_argument("--timing-repetitions", type=int, default=5, help="warm-up excluded; repeated per-word timings")
     args = parser.parse_args()
+    if args.timing_repetitions < 0:
+        parser.error("--timing-repetitions must be >= 0")
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH")
     try:
