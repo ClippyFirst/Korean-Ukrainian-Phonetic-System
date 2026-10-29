@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { convertHangulToHanja, getHanjaLexiconSize } from '../src/app/hanja.js';
+import { convertHangulToHanja, createHanjaConverter, getHanjaLexiconSize } from '../src/app/hanja.js';
 
 test('deterministic Hanja annotation converts known Sino-Korean terms', () => {
   assert.equal(convertHangulToHanja('정부는 경제 발전을 연구한다.'), '政府는 經濟 發展을 硏究한다.');
@@ -26,4 +26,15 @@ test('conversion is deterministic and leaves non-Hangul spans unchanged', () => 
   assert.equal(convertHangulToHanja(input), '韓國語 / Korean → українська 123');
   assert.equal(convertHangulToHanja(input), convertHangulToHanja(input));
   assert.ok(getHanjaLexiconSize() >= 50);
+});
+
+test('dictionary-backed converter remains deterministic and preserves unknown runs', () => {
+  const convert = createHanjaConverter({
+    '한국어': '韓國語',
+    '교육': '敎育',
+    '중요': '重要',
+  });
+  assert.equal(convert('한국어교육은 중요하다.'), '韓國語敎育은 重要하다.');
+  assert.equal(convert('한국말'), '한국말');
+  assert.equal(convert('한국어교육은 중요하다.'), convert('한국어교육은 중요하다.'));
 });
