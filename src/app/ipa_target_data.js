@@ -227,11 +227,11 @@ export const IPA_TARGET_MAPPINGS = [
       "KUA-IPA-015"
     ],
     "source_ipa": "kʰjʌ",
-    "target_grapheme": "к'йо",
+    "target_grapheme": "к'хьо",
     "status": "model-selected",
     "scope": "ipa-sequence",
     "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
-    "notes": "Project convention: aspiration uses apostrophe; /jʌ/ is rendered йо.",
+    "notes": "Project convention: aspiration uses apostrophe; retain the existing /jʌ/ target.",
     "mapping_source": "ipa_target_overrides"
   },
   {

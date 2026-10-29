@@ -36,7 +36,7 @@ The regression suite checks:
 - retention of source IPA length markers without inventing a Ukrainian length sign;
 - fail-closed behavior for unknown or ambiguous IPA;
 - reproducibility of the 643 declared lexical rows and 45 declared alternate readings;
-- provisional status for `ɰi → ий`, `ø → ве`, `y → ві`, and `kʰjʌ → кхьо` where those mappings are used.
+- provisional status for `ɰi → ий`, `ø → ве`, `y → ві`, and `kʰjʌ → к'хьо` where those mappings are used.
 
 The lexical reproduction checks are internal consistency tests: they prove that declared project data reproduces itself, not that the declared Ukrainian forms are independently correct.
 
@@ -74,7 +74,7 @@ The browser labels `model-selected` output as a project-defined correspondence t
 
 ## Korean aspiration and fortis output convention (2026-10-29)
 
-- Aspirated onsets use an apostrophe immediately after the Ukrainian consonant: /kʰ/ → к', /tʰ/ → т', /pʰ/ → п', /tɕʰ/ → ч'. Thus /kʰjʌ/ → к'йо.
+- Aspirated onsets use an apostrophe immediately after the Ukrainian consonant: /kʰ/ → к', /tʰ/ → т', /pʰ/ → п', /tɕʰ/ → ч'. Thus /kʰjʌ/ → к'хьо, preserving the existing /jʌ/ target while marking aspiration.
 - Fortis onsets preserve doubling: /k͈/ → кк, /t͈/ → тт, /p͈/ → пп, /s͈/ → сс, /tɕ͈/ → чч.
 - IPA remains the only input to the target adapter; these are IPA-to-Ukrainian correspondence decisions, not direct Hangul substitutions.
 - These are project-specific practical orthography choices, not a claim about a national Ukrainian standard.

@@ -13,7 +13,7 @@ KUA-IPA-011,ɲa,ня,model-selected,ipa-sequence,project-decision:docs/ukrainian
 KUA-IPA-012,ɲu,ню,model-selected,ipa-sequence,data/korean/lexical_pronunciations.csv#금융,The lexical IPA ɲuŋ has the declared target нюн; this explicit sequence maps the same IPA without consulting the source spelling.
 KUA-IPA-013,hjʌ,гьо,model-selected,ipa-sequence,project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions,The sequence /hjʌ/ maps to гьо rather than a literal гйо.
 KUA-IPA-014,hje,гє,model-selected,ipa-sequence,data/korean/lexical_pronunciations.csv#혜택,The lexical IPA hjeː has the declared target гє; this explicit sequence prevents a literal й or soft-sign decomposition.
-KUA-IPA-015,kʰjʌ,к'йо,model-selected,ipa-sequence,project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions,Project convention: aspiration uses apostrophe; /jʌ/ is rendered йо.
+KUA-IPA-015,kʰjʌ,к'хьо,model-selected,ipa-sequence,project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions,Project convention: aspiration uses apostrophe; retain the existing /jʌ/ target.
 KUA-IPA-016,nja,ня,model-selected,ipa-sequence,data/korean/lexical_pronunciations.csv#생산량,The lexical IPA njaŋ has the declared target нян; this explicit sequence uses я rather than ньа.
 KUA-IPA-017,nje,нє,model-selected,ipa-sequence,data/korean/lexical_pronunciations.csv#상견례,The lexical IPA nje has the declared target нє; this explicit sequence uses є rather than нье.
 KUA-IPA-018,nju,ню,model-selected,ipa-sequence,project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions,The sequence uses Ukrainian ю rather than ньу.
