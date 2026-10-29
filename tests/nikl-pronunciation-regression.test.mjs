@@ -205,12 +205,12 @@ test('unknown complex-coda liaison is unresolved rather than guessed as §14', (
 
 test('§14 every enumerated complex-coda liaison example has an independently pinned surface and IPA', () => {
   const expected = {
-    '넋이': {surface:'넉씨', target:'нокші', ipa:'nʌk̚.ɕ͈i'},
-    '값이': {surface:'갑씨', target:'капші', ipa:'kap̚.ɕ͈i'},
+    '넋이': {surface:'넉씨', target:"нокшші", ipa:'nʌk̚.ɕ͈i'},
+    '값이': {surface:'갑씨', target:"капшші", ipa:'kap̚.ɕ͈i'},
     '앉아': {surface:'안자', target:'анджа', ipa:'an.dʑa'},
     '닭을': {surface:'달글', target:'талґил', ipa:'tal.ɡɯl'},
     '젊어': {surface:'절머', target:'чолмо', ipa:'tɕʌl.mʌ'},
-    '곬이': {surface:'골씨', target:'колші', ipa:'kol.ɕ͈i'},
+    '곬이': {surface:'골씨', target:"колшші", ipa:'kol.ɕ͈i'},
     '핥아': {surface:'할타', target:'галт\'а', ipa:'hal.tʰa'},
     '읊어': {surface:'을퍼', target:"илп'о", ipa:'ɯl.pʰʌ'},
     '값을': {surface:'갑쓸', target:"капссил", ipa:'kap̚.s͈ɯl'},
@@ -431,7 +431,7 @@ test('NIKL §5 ㅢ variants preserve lexical and particle-conditioned readings',
 test('NIKL §§6–7 source-backed length examples preserve long vowels and alternants', () => {
   const expected = {
     '눈보라': ['눈보라', 'нунбора', 'nuːn.bo.ɾa'],
-    '말씨': ['말씨', 'малші', 'maːl.ɕ͈i'],
+    '말씨': ['말씨', "малшші", 'maːl.ɕ͈i'],
     '밤나무': ['밤나무', 'памнаму', 'paːm na mu'],
     '많다': ['만타', 'мант\'а', 'maːn tʰa'],
     '멀리': ['멀리', 'моллі', 'mʌːl li'],
