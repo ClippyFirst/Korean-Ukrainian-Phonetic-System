@@ -410,3 +410,40 @@ Neural runtime includes checkpoint/tokenizer loading and batched decoding, so it
 - HAMA successfully emitted IPA for every token but has low exact match and very high batch latency on these word-level sets. This is empirical Korean performance, not a claim that HAMA lacks other use cases.
 - Memory remains `NOT_MEASURED`; repeated timing stability is available for rule/batch candidates from five samples, while neural timing repeatability remains `NOT_MEASURED`.
 - The current exact-head run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742) is the acceptance run for the fixed KoG2Padvanced SIGMORPHON path and the refreshed full candidate/neural results. Its result must supersede the partial rows above where applicable.
+
+
+## Exact-head expanded baseline refresh (run 40837034742)
+
+The pinned multi-engine job completed successfully on code head `62b50ceea58b74f85b8d55c751b918c192dd97d9`. It includes the corrected KoG2Padvanced checkout argument for both datasets. Artifact: [12882152990](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742/artifacts/12882152990). These scores supersede the earlier expanded baseline rows above for the nine engines in this job. Timing is the median of five post-warm-up samples; exact match, CER, PER, and feature proxy are percentages.
+
+### UGTPHON — 2,703 occurrences / 1,907 unique words
+
+| Engine | Exact ↑ | CER ↓ | PER ↓ | Feature proxy ↓ | Coverage | Warm median ms | p50 / p95 ms |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 53.002% | 9.170% | 9.614% | 4.877% | 99.815% | 358.119 | 0.170 / 0.318 |
+| g2pk 0.9.4 | 53.089% | 9.229% | 9.647% | 4.895% | 100% | 16,989.863 | 8.822 / 9.351 |
+| KoG2Padvanced (2022) | 47.318% | 10.677% | 11.338% | 6.156% | 100% | 881.155 | batch |
+| phonemize 2.0.1 | 42.545% | 14.353% | 14.258% | 7.706% | 100% | 205.245 | batch |
+| KoG2P (2019) | 27.303% | 19.512% | 19.644% | 7.018% | 100% | 342.252 | 0.176 / 0.219 |
+| kokorog2p 0.9.15 | 23.714% | 21.182% | 21.633% | 6.948% | 100% | 758.203 | 0.399 / 0.422 |
+| HAMA 1.7.0 | 16.907% | 25.108% | 23.911% | 8.428% | 100% | 40,463.723 | batch |
+| hangul_to_ipa | 16.241% | 24.805% | 30.809% | 11.778% | 100% | 881.647 | 0.442 / 0.616 |
+| eSpeak NG Korean | 8.139% | 33.610% | 38.316% | 13.410% | 100% | 37.421 | batch |
+
+### SIGMORPHON 2021 — 999 occurrences / 999 unique words
+
+| Engine | Exact ↑ | CER ↓ | PER ↓ | Feature proxy ↓ | Coverage | Warm median ms | p50 / p95 ms |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 35.772% | 14.698% | 16.234% | 7.549% | 99.900% | 152.441 | 0.131 / 0.229 |
+| g2pk 0.9.4 | 35.335% | 14.822% | 16.313% | 7.599% | 100% | 8,899.493 | 8.890 / 9.359 |
+| KoG2Padvanced (2022) | 32.633% | 15.824% | 17.553% | 9.098% | 100% | 429.461 | batch |
+| phonemize 2.0.1 | 28.929% | 17.439% | 18.266% | 8.462% | 100% | 176.476 | batch |
+| KoG2P (2019) | 18.719% | 21.833% | 23.663% | 8.608% | 100% | 171.823 | 0.170 / 0.196 |
+| kokorog2p 0.9.15 | 14.114% | 24.449% | 26.888% | 9.302% | 100% | 389.692 | 0.388 / 0.412 |
+| HAMA 1.7.0 | 12.713% | 27.616% | 27.090% | 9.324% | 100% | 17,977.491 | batch |
+| hangul_to_ipa | 8.909% | 29.845% | 36.347% | 12.814% | 100% | 461.121 | 0.444 / 0.616 |
+| eSpeak NG Korean | 4.304% | 40.724% | 48.705% | 17.787% | 100% | 24.059 | batch |
+
+Throughput at the repeated median is approximately 5,325 / 6,553 words/s for native and 112 / 112 words/s for g2pk on UGTPHON / SIGMORPHON. HAMA and KoG2Padvanced use sentence-level batch calls; eSpeak and phonemize use warm batch calls. Do not compare their batch latency directly with per-word p50/p95. Peak memory remains `NOT_MEASURED`.
+
+The CharsiuG2P job on this run is still in progress at the time of this report update. The earlier successful CharsiuG2P results remain diagnostic only until the refreshed neural artifact and paired comparison complete.
