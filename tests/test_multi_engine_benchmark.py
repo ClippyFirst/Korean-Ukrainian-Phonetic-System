@@ -9,6 +9,7 @@ sys.path.insert(0, str(SCRIPTS))
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _g2pk_surface_to_ipa,
+    _compose_kog2padvanced_surface,
     _load_hama,
     _load_kog2padvanced_batch,
     _load_kokorog2p,
@@ -217,3 +218,11 @@ def test_hama_adapter_uses_canonical_ipa_field(monkeypatch):
     fn, adapter = _load_hama()
     assert fn("차") == "tɕʰa"
     assert "G2PModel.predict().ipa" in adapter
+
+
+
+def test_kog2padvanced_adapter_composes_isolated_compatibility_vowel():
+    def fake_join_jamos(value):
+        return value.replace("ㅇㅣ", "이")
+
+    assert _compose_kog2padvanced_surface("유ㅣ칸", fake_join_jamos) == "유이칸"
