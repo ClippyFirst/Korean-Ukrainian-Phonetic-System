@@ -206,3 +206,10 @@ KoG2Padvanced is cloned to an ephemeral runner and not vendored; its upstream re
 
 
 The latest workflow update enables the pinned CharsiuG2P checkpoint as a comparison-only neural candidate and joins its output with the baseline and licensed ByT5 results in the same run. No model weights or caches are uploaded; the checkpoint's weights-license status remains explicitly unresolved.
+
+
+## Latest candidate extension: g2p-ko (2026-10-29)
+
+The benchmark now includes `g2p-ko 1.0.0`, pinned to `smbslt3/g2p-korean@fc382a3f17e70b605b271cad8c87dd571284e5b3`, as a comparison-only morphology-aware Korean surface-pronunciation engine. Its declared package license is MIT. For the Hangul-only benchmark tokens, the adapter calls `G2P.convert(..., normalize=False)`, rejects incomplete/non-Hangul results, and converts the Korean surface pronunciation to broad IPA through the shared project renderer. This adapter boundary must be included in interpretation; the result is not a standalone IPA encoder.
+
+Score status is `PENDING_CI` at run [40839007805](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40839007805). Do not report accuracy or speed until that run completes and its artifact is inspected. This candidate is not the proprietary/unreleased engine described by the Interspeech 2026 paper; that paper's official implementation remains `BLOCKED_IMPLEMENTATION`.
