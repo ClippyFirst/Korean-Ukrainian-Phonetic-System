@@ -12,7 +12,7 @@ const genericEngine = createEngine(canonical, '');
 
 test('§12: a simple ㅎ coda aspirates a following plain stop in generic IPA', () => {
   const cases = [
-    ['좋다', 'tɕo.tʰa', 'чота'],
+    ['좋다', 'tɕo.tʰa', 'чот\'а'],
     ['좋고', 'tɕo.kʰo', 'чоко'],
     ['좋지', 'tɕo.tɕʰi', 'чочі'],
     ['좋소', 'tɕo.s͈o', 'чосо'],

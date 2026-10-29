@@ -103,7 +103,7 @@ test('§5 generic ㅖ may be [e] except in the syllables 예 and 례', () => {
   const genericEngine = createEngine(canonical, '');
   const result = genericEngine.convert('폐기');
   assert.equal(result.ipa, 'pʰje.ɡi');
-  assert.equal(result.ukrainian, 'пєґі');
+  assert.equal(result.ukrainian, 'п\'єґі');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '폐기');
   assert.equal(result.variants[0].ipa, 'pʰe.ɡi');

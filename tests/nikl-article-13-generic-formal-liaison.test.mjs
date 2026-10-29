@@ -10,7 +10,7 @@ const genericEngine = createEngine(canonical, '');
 
 test('§13: unambiguous single-coda liaison works without lexical overrides', () => {
   const cases = [
-    ['책을', 'tɕʰɛ.ɡɯl', 'чеґил'],
+    ['책을', 'tɕʰɛ.ɡɯl', 'ч\'еґил'],
     ['옷이', 'o.ɕi', 'оші'],
     ['밭을', 'pa.tʰɯl', 'патил'],
   ];
