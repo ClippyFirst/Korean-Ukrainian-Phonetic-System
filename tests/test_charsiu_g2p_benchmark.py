@@ -53,6 +53,9 @@ def test_evaluate_keeps_occurrences_and_reports_coverage_separately():
     assert report["coverage"] == 0.666667
     assert report["exact_matches"] == 2
     assert report["missing_predictions"] == 1
+    assert report["phoneme_error_rate"] == 0
+    assert report["phonological_feature_error_rate_proxy"] == 0
+    assert report["reference_phoneme_segments"] > 0
     assert [x["occurrence_id"] for x in report["predictions"]] == [0, 2]
 
 
