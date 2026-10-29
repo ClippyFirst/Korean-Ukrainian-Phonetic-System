@@ -9,6 +9,7 @@ sys.path.insert(0, str(SCRIPTS))
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _g2pk_surface_to_ipa,
+    _load_hama,
     _load_kog2padvanced_batch,
     _load_kokorog2p,
     _load_rows_and_words,
@@ -195,3 +196,24 @@ def test_kog2padvanced_loader_fails_closed_for_incomplete_external_checkout(tmp_
         assert "checkout incomplete" in str(exc)
     else:
         raise AssertionError("incomplete KoG2Padvanced checkout must not be scored")
+
+
+
+def test_hama_adapter_uses_canonical_ipa_field(monkeypatch):
+    import types
+
+    class FakeResult:
+        ipa = "tɕʰa"
+
+    class FakeModel:
+        def predict(self, word):
+            assert word == "차"
+            return FakeResult()
+
+    hama_module = types.ModuleType("hama")
+    hama_module.G2PModel = FakeModel
+    monkeypatch.setitem(sys.modules, "hama", hama_module)
+
+    fn, adapter = _load_hama()
+    assert fn("차") == "tɕʰa"
+    assert "G2PModel.predict().ipa" in adapter
