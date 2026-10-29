@@ -415,6 +415,26 @@ def _load_kog2p(root: Path) -> tuple[Callable[[str], str], str]:
     return run, "KoG2P custom phone labels -> explicit project-side label-to-IPA adapter"
 
 
+def _load_hama() -> tuple[Callable[[str], str], str]:
+    """Load the pinned HAMA model and request its canonical IPA output."""
+    from hama import G2PModel
+
+    model = G2PModel()
+
+    def run(word: str) -> str:
+        result = model.predict(word)
+        value = getattr(result, "ipa", None)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"HAMA returned no canonical IPA for {word!r}")
+        return value
+
+    return run, (
+        "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03; "
+        "G2PModel.predict().ipa direct output; upstream LICENSE says MIT while "
+        "python/pyproject.toml metadata says Apache-2.0; external checkout only"
+    )
+
+
 def _load_kokorog2p() -> tuple[Callable[[str], str], str]:
     """Load kokorog2p's explicit Korean IPA output without external lexicon lookup."""
     from kokorog2p.ko.g2p import KoreanG2P
@@ -672,6 +692,24 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "status": "BLOCKED_OR_ERROR", "source": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7",
             "adapter": "custom phone labels -> explicit IPA mapping",
             "engine_errors": len(words), "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
+        }
+
+    try:
+        hama_fn, hama_adapter = _load_hama()
+        execute(
+            "hama_1_7_0",
+            "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03",
+            hama_fn,
+            hama_adapter,
+        )
+    except Exception as exc:
+        predictions["hama_1_7_0"] = {}
+        engine_meta["hama_1_7_0"] = {
+            "status": "BLOCKED_OR_ERROR",
+            "source": "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03",
+            "adapter": "G2PModel.predict().ipa direct output",
+            "engine_errors": len(words),
+            "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
         }
 
     try:
@@ -1090,6 +1128,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "g2pk": "0.9.4",
             "KoG2P": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7; GPL-3.0; executed as external checkout, not vendored",
             "KoG2Padvanced": "seongmin-mun/KoG2Padvanced commit 491b2d7269a4666b0d7556efb26755219f861163; no upstream license declared; external comparison checkout only, not vendored; Hangul output mapped by shared project IPA renderer",
+            "HAMA": "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03; direct IPA API; upstream LICENSE says MIT while package metadata says Apache-2.0; external checkout only; Korean output quality must be established empirically",
             "kokorog2p": "buchwandler/kokorog2p==0.9.15; Apache-2.0; direct output='ipa'; morphology and external lexicon disabled; implementation is g2pK-derived and not an independent phonological lineage",
             "hangul_to_ipa": "stannam/hangul_to_ipa commit 942abf132ea969a7e3476a1487c06710fb8db74b; MIT; executed as external checkout, not vendored",
             "phonemize": "hans00/phonemize npm 2.0.1; MIT",
@@ -1101,6 +1140,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison.",
             "KoG2P uses a documented custom phone alphabet; the explicit adapter is lossy, and its score must be read with adapter limitations.",
             "KoG2Padvanced and g2pk predictions are rendered to IPA through the shared project broad-IPA adapter; these scores compare pronunciation surfaces, not independent native IPA encoders.",
+            "HAMA's input vocabulary includes Korean jamo, but Korean phonological competence is not assumed from vocabulary membership; interpret only its measured output and note the upstream license metadata conflict.",
             "kokorog2p uses its explicit IPA mode but its Korean implementation is g2pK-derived; treat it as a variant/configuration comparison, not a fully independent algorithm family.",
             "Equivalent IPA affricate letters ʨ/ʥ are canonicalized to tɕ/dʑ before scoring; all engines are rerun under this normalization.",
             "hangul_to_ipa explicitly omits several morphology-sensitive processes (including n-insertion and liquid tensification); this is a scope limitation, not an unexpected runtime failure.",
