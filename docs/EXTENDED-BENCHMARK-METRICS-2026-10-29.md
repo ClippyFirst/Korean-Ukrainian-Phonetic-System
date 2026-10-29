@@ -342,3 +342,15 @@ The user explicitly authorized broad candidate evaluation for comparison only. T
 - The previous expanded portfolio run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742) predates g2p-ko and must not be treated as its score.
 - Five repeated timing samples are now collected after a warm-up for per-word and supported batch engines. The report schema was corrected to describe repeatability as partially measured; output determinism and comparable per-engine peak RSS remain unmeasured.
 - The novel Interspeech 2026 engine remains `BLOCKED_IMPLEMENTATION`: public sources found the paper and author's description of a new library, but no official runnable source, package, or checkpoint. Acceptance requires official implementation discovery, source/license verification, and same-protocol results on both pinned datasets. Do not substitute g2p-ko or a speculative reimplementation and label it as the paper's engine.
+
+
+### ByT5 tiny metrics from the expanded run (job completed; parent workflow still in progress)
+
+In run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742), the licensed ByT5 tiny job completed successfully and uploaded its predictions/provenance artifact [12882112177](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742/artifacts/12882112177). The baseline and CharsiuG2P jobs were still in progress when these results were captured.
+
+| Dataset | Exact match | CER | PER | Feature-error proxy | First-pass runtime | Throughput |
+|---|---:|---:|---:|---:|---:|---:|
+| UGTPHON (2,703 occurrences; 1,907 unique words) | 0% | 164.574% | 172.425% | 118.953% | 86,316.439 ms | 22.093 words/s |
+| SIGMORPHON 2021 (999 occurrences) | 0% | 159.827% | 177.376% | 126.426% | 41,150.220 ms | 24.277 words/s |
+
+CER/PER above 100% are possible when edit distance exceeds reference length. These outputs are badly misaligned with the IPA references under the current pinned model/input/output contract, so this is a failed practical candidate in this configuration, not a general verdict on all ByT5 G2P models. It should not be ranked as a contender until the model prefix/token convention and output mapping are corrected and a new same-protocol run succeeds. The run's paired comparisons show no model-only exact matches on either dataset.
