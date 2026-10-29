@@ -24,7 +24,7 @@ def test_ipa_renderer_applies_specific_surface_and_sequence_correspondences():
         "ka": ("ка", "model-selected"),
         "ɡa": ("ґа", "model-selected"),
         "dʑi": ("джі", "model-selected"),
-        "ɕ͈i": ("ші", "model-selected"),
+        "ɕ͈i": ("шші", "model-selected"),
         "tɕʰi": ("ч\'і", "model-selected"),
         "ɲju": ("нью", "model-selected"),
         "njʌ": ("ньо", "model-selected"),
