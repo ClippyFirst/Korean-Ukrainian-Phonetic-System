@@ -43,23 +43,28 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install --yes espeak-ng
+          sudo apt-get install --yes espeak-ng default-jre-headless
           python -m pip install --upgrade pip
-          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "kokorog2p[ko]==0.9.15" "pytest>=8"
+          python -m pip install -e . "regex==2024.5.10" "phonemizer==3.3.0" "g2pk==0.9.4" "kokorog2p[ko]==0.9.15" "konlpy==0.6.0" "jamo==0.4.1" "pytest>=8"
 
       - name: Fetch pinned external implementations and verify declared licenses
         env:
           KOG2P_COMMIT: cbc69bbe1439862364d4ffd1552f59b930f655c7
+          KOG2PADVANCED_COMMIT: 491b2d7269a4666b0d7556efb26755219f861163
           HANGUL_TO_IPA_COMMIT: 942abf132ea969a7e3476a1487c06710fb8db74b
         run: |
           set -euo pipefail
           git clone https://github.com/scarletcho/KoG2P.git "$RUNNER_TEMP/KoG2P"
           git -C "$RUNNER_TEMP/KoG2P" checkout --detach "$KOG2P_COMMIT"
+          # KoG2Padvanced is evaluated as an external checkout only; it is not copied into this repository.
+          git clone https://github.com/seongmin-mun/KoG2Padvanced.git "$RUNNER_TEMP/KoG2Padvanced"
+          git -C "$RUNNER_TEMP/KoG2Padvanced" checkout --detach "$KOG2PADVANCED_COMMIT"
           git clone https://github.com/stannam/hangul_to_ipa.git "$RUNNER_TEMP/hangul_to_ipa"
           git -C "$RUNNER_TEMP/hangul_to_ipa" checkout --detach "$HANGUL_TO_IPA_COMMIT"
           grep -qi "GNU GENERAL PUBLIC LICENSE" "$RUNNER_TEMP/KoG2P/LICENSE.md"
           grep -qi "MIT License" "$RUNNER_TEMP/hangul_to_ipa/LICENSE"
           echo "KoG2P pinned commit: $(git -C "$RUNNER_TEMP/KoG2P" rev-parse HEAD) (GPL-3.0; external checkout only)"
+          echo "KoG2Padvanced pinned commit: $(git -C "$RUNNER_TEMP/KoG2Padvanced" rev-parse HEAD) (no license declared upstream; comparison-only external checkout, not vendored)"
           echo "hangul_to_ipa pinned commit: $(git -C "$RUNNER_TEMP/hangul_to_ipa" rev-parse HEAD) (MIT; external checkout only)"
           echo "eSpeak NG runtime:"
           espeak-ng --version
@@ -140,6 +145,7 @@ jobs:
       - name: Run multi-engine comparison
         env:
           KOG2P_ROOT: ${{ runner.temp }}/KoG2P
+          KOG2PADVANCED_ROOT: ${{ runner.temp }}/KoG2Padvanced
           HANGUL_TO_IPA_ROOT: ${{ runner.temp }}/hangul_to_ipa
           PHONEMIZE_BASELINE_DIR: ${{ runner.temp }}/phonemize-baseline
         run: |
@@ -148,6 +154,7 @@ jobs:
             --corpus "$RUNNER_TEMP/ko-test.json" \
             --output "$RUNNER_TEMP/multi-engine-ipa-report.json" \
             --kog2p-root "$KOG2P_ROOT" \
+            --kog2padvanced-root "$KOG2PADVANCED_ROOT" \
             --hangul-to-ipa-root "$HANGUL_TO_IPA_ROOT" \
             --phonemize-root "$PHONEMIZE_BASELINE_DIR" \
             --phonemize-output "$RUNNER_TEMP/phonemize-predictions.json" \
