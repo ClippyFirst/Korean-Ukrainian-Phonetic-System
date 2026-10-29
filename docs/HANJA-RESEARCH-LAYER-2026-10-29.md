@@ -21,6 +21,7 @@ This is an initial dictionary-preview, not a complete Hanja converter or morphol
 - Runtime uses no network. The existing `connect-src 'none'` Content Security Policy remains intact.
 - Initial curated entries cover common terms such as 韓國語, 經濟, 發展, 政府, 社會, 文化, 歷史, 政治, 學生, 學校, 大學, 科學, 技術, 情報, 國家, 世界, 時間, 問題, 方法, 結果, 硏究, 言語, and others. This is not claimed to be an exhaustive or frequency-ranked dictionary.
 - The mapping table is manually authored for this prototype; no third-party dictionary file or model weights are bundled. Any future imported lexicon must have its source, revision, transformation, and license recorded before inclusion.
+- A promising deterministic data source was reviewed: HanjaKey's `hanja_words.txt` is a ~4.87 MB word inventory derived from libhangul and identifies the per-file BSD 3-Clause provenance; its separate NIKL-derived `hanja_words_nikl.txt` is ~20.16 MB and CC BY-SA 2.0 KR. See [HanjaKey data provenance](https://github.com/SJY051/HanjaKey/blob/main/THIRD_PARTY_DATA.md) and [resource notes](https://github.com/SJY051/HanjaKey/blob/main/Sources/HanjaKitCore/Resources/README.md). Neither file is imported here: the connector cannot retrieve the large file contents for a pinned, byte-verified vendoring step, and a build-time download would introduce an avoidable external build dependency. This is a researched candidate, not integrated data.
 
 ## Deterministic behavior examples
 
@@ -38,12 +39,12 @@ These are unit-test fixtures for the curated dictionary, not claims of full ling
 |---|---|---|
 | Choose a deterministic browser-compatible approach | DONE_VERIFIED (design) | Local longest-match dictionary, no model/API/dependency. |
 | Implement first curated lexicon and converter | PARTIAL | Code exists; scope intentionally small; expand only with source-attributed reviewed entries. |
-| Add fourth Hanja output without replacing existing results | PARTIAL | UI card and rendering wired; full repository tests/build and exact-head CI still required. |
+| Add fourth Hanja output without replacing existing results | PARTIAL | UI card and copy action are wired; DOM order is now explicitly RR → IPA → Ukrainian → Hanja, with an order regression assertion. Exact-head CI still required. |
 | Preserve current CSP and no-network contract | PARTIAL | No network code added; verify source assertions and built artifact in CI. |
 | Add deterministic regression tests | PARTIAL | Focused tests added; not yet executed in a local checkout during this connector-only session. |
 | Evaluate coverage and error rate | TODO | Source-separated manually reviewed test set; report exact-match/span precision/recall, false-positive annotation rate, and abstention/coverage. |
 | Add full morphological segmentation / contextual homograph disambiguation | DEFERRED | A dictionary-only implementation cannot reliably decide sense or morphology. Must not be simulated with invented rules. |
-| Import a broad external Hanja lexicon | BLOCKED pending provenance review | Need exact dataset, revision, redistribution license, transformation notes, and review of Korean-specific readings before bundling. |
+| Import a broad external Hanja lexicon | BLOCKED pending reproducible vendoring | HanjaKey/libhangul word inventory is a promising BSD-attributed source, but the large file could not be retrieved for byte-verified vendoring in this connector session. Acceptance: pin upstream commit, verify exact file hash and per-file notice, add a deterministic transformation/import script, measure compressed payload and coverage, and test the built static asset. NIKL-derived definitions are not needed for a first conversion dictionary and remain excluded. |
 
 ## Candidate engines not selected for this browser implementation
 
