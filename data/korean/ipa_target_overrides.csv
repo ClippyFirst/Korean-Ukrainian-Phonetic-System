@@ -3,7 +3,7 @@ KUA-IPA-001,ɡ,ґ,model-selected,surface-segment,data/korean/slavic_comparative_
 KUA-IPA-002,d,д,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C004,Surface-voiced lenis alveolar maps to д in the declared practical policy.
 KUA-IPA-003,b,б,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C008,Surface-voiced lenis bilabial maps to б in the declared practical policy.
 KUA-IPA-004,ɕ,ш,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C010,Palatalized Korean sibilant maps to ш under the documented /i,j/-environment target decision.
-KUA-IPA-005,ɕ͈,ш,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C011,Fortis palatalized sibilant converges on ш in the practical target while fortisness remains in IPA.
+KUA-IPA-005,ɕ͈,шш,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C011,Fortis palatalized sibilant is doubled as шш in the practical target.
 KUA-IPA-006,dʑ,дж,model-selected,surface-segment,data/korean/slavic_comparative_master.csv#C013,Surface-voiced realization of ㅈ maps to дж; the unvoiced realization remains ч.
 KUA-IPA-007,wi,ві,model-selected,ipa-sequence,data/korean/lexical_pronunciations.csv#위,The lexical row 위 declares alternate IPA wi with target ві; this explicit sequence mapping avoids relying on Jamo lookup.
 KUA-IPA-008,ljʌ,льо,model-selected,ipa-sequence,project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions,Explicit coda-liquid plus yod-vowel mapping from the current IPA-first target table.

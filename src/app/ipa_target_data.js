@@ -743,11 +743,11 @@ export const IPA_TARGET_MAPPINGS = [
       "KUA-IPA-005"
     ],
     "source_ipa": "ɕ͈",
-    "target_grapheme": "ш",
+    "target_grapheme": "шш",
     "status": "model-selected",
     "scope": "surface-segment",
     "source_ref": "data/korean/slavic_comparative_master.csv#C011",
-    "notes": "Fortis palatalized sibilant converges on ш in the practical target while fortisness remains in IPA.",
+    "notes": "Fortis palatalized sibilant is doubled as шш in the practical target.",
     "mapping_source": "ipa_target_overrides"
   },
   {
