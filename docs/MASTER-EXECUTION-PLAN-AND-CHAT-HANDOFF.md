@@ -3594,3 +3594,14 @@ This section supersedes earlier branch/PR status statements above where they con
 - **Execution limitation:** local clone and local test execution were unavailable in this connector-only session. Test claims above refer only to the named GitHub Actions runs on that exact code head.
 - **Task ledger:** `DONE_VERIFIED` — target mapping, corpus synchronization, and Python/browser regressions on the cited head; `PARTIAL` — public-site deployment and live smoke test pending merge/deploy; `BLOCKED` — independent Ukrainian-target gold and source/rights adjudication remain separate project gates; `DEFERRED` — no unrelated IPA-profile or neural-teacher redesign.
 - **Release/readiness:** this change is software-verified on the cited head, but it does not make the entire repository linguistically release-ready. The site is deployed from `main`; merge PR #372 only after all required exact-head checks are green, then verify the Pages deployment and its live smoke test.
+
+
+# Continuation — Ukrainian-first output and conservative Hanja annotation (2026-10-30)
+
+- **Branch:** `fix/hanja-output-hierarchy-and-unknown-spans-2026-10-30`, based on `main` at `1f78c26e6aeb43b7c2e7eba6f0659f9cceba38ec`.
+- **Change:** Ukrainian practical output is first. Romanization and IPA remain supporting cards. Hanja occupies the former Ukrainian-card position after those cards.
+- **Hanja coverage behavior:** unknown words and native Korean vocabulary are not converted by guessing. In `현대 한국어의 표준 발음 값이`, known dictionary entries can become Hanja while `값이` and grammatical particles remain Hangul. This is expected conservative annotation behavior; Hanja is not complete coverage or a translation.
+- **Regression coverage:** updated `tests/hanja-ui-contract.test.mjs` for the output order and visible fallback explanation; added a deterministic mixed-script fixture to `tests/hanja.test.mjs`.
+- **Status:** PARTIAL pending exact-head GitHub Actions, static build, and live deployed Pages smoke. This connector session cannot claim local test execution because it has no local repository checkout.
+- **Acceptance criterion:** `npm test`, `npm run build`, source integrity checks, and post-deployment browser smoke must pass on this branch's exact head; then inspect that the Ukrainian card is first and the mixed-script Hanja example preserves unsupported/native Hangul.
+- **Scope kept unchanged:** no neural model, no external runtime API, no changes to pronunciation/IPA/Ukrainian mapping; Hanja coverage metrics remain TODO and contextual WSD remains DEFERRED.

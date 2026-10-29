@@ -268,3 +268,12 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 
 - Post-deployment Playwright smoke passed on commit `49160487f25e6c9569cecf24bbb234155932ba2c` (run #40703251527): meaningful live result announcement, technical disclosure, simulated clipboard denial and exact selection fallback, trace labels/no horizontal overflow at 390×844, and methodology anchor navigation.
 - Remaining: actual screen-reader and manual keyboard evaluation, screenshots/visual review, 320 px layout, human comprehension check, and measured latency for short, ~1,000-character, and 5,198-character inputs. Do not close the audit until these acceptance criteria are met.
+
+
+## Output hierarchy and Hanja abstention — 2026-10-30
+
+- **Implementation status: PARTIAL pending exact-head CI and deployed smoke.**
+- Ukrainian practical output is now the first result card. Romanization and IPA stay as supporting cards, and Hanja occupies the prior Ukrainian-card position after them.
+- Hanja remains a deterministic dictionary annotation, not a complete Korean-to-Hanja conversion. Native Korean vocabulary and grammatical particles are intentionally preserved in Hangul when no supported lexical Hanja mapping exists; the regression fixture `현대 한국어의 표준 발음 값이` checks that known terms can be annotated while `값이` stays Hangul.
+- **Acceptance:** run `npm test`, `npm run build`, inspect exact-head GitHub Actions, then verify the deployed Pages output order and the mixed-script example. Do not mark the UX gate DONE_VERIFIED before those checks pass.
+- **Preserved limits:** no neural models or runtime API calls; contextual homograph disambiguation and measured dictionary accuracy remain deferred/TODO as documented in `docs/HANJA-RESEARCH-LAYER-2026-10-29.md`.
