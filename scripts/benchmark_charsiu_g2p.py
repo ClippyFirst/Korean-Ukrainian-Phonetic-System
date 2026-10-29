@@ -415,7 +415,8 @@ def main() -> int:
     )
     report["runtime"] = {
         "total_ms": round(inference_elapsed_ms, 3),
-        "throughput_words_per_second": round(len(predictions) / (inference_elapsed_ms / 1000), 3) if inference_elapsed_ms > 0 else None,
+        "throughput_words_per_second": round(len(words) / (inference_elapsed_ms / 1000), 3) if inference_elapsed_ms > 0 else None,
+        "successful_outputs_per_second": round(len(predictions) / (inference_elapsed_ms / 1000), 3) if inference_elapsed_ms > 0 else None,
         "timing_scope": "single full model-load plus batched inference run; includes tokenizer/model loading and batch decoding; not directly comparable with in-process per-word engine timings",
         "measured_repetitions": 1,
         "repeatability_status": "NOT_MEASURED for neural candidate; repeated model reloads would confound cold-start and inference time",
