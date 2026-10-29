@@ -218,7 +218,7 @@ The pinned `willwade/byt5-g2p-multilingual-tiny` checkpoint (CC BY-SA 4.0 per it
 HAMA is now included in the expanded candidate harness at pinned commit `fb81fe97e54c00b3f73192b9351f96fcd4427b03`, using its direct `G2PModel.predict().ipa` field. Its encoder vocabulary contains Korean jamo, but that fact alone does not establish Korean phonological competence; eligibility depends on actual output coverage and measured errors on both pinned datasets. The upstream root `LICENSE` says MIT while `python/pyproject.toml` declares Apache-2.0, so the license metadata discrepancy remains explicitly unresolved. HAMA source is cloned/installed only on the ephemeral comparison runner, not vendored into this repository. Its results are pending the exact-head CI run.
 
 
-The latest full candidate run including HAMA, licensed ByT5 tiny, comparison-only CharSIU, the repaired KoG2Padvanced adapter, and neural PER/feature/runtime metrics is [GitHub Actions run 40833631186](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833631186), queued at last check. Earlier runs are intermediate evidence only.
+The latest full candidate run including HAMA, licensed ByT5 tiny, comparison-only CharSIU, the repaired KoG2Padvanced adapter, and neural PER/feature/runtime metrics is [GitHub Actions run 40833849437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833849437), queued at last check. Earlier runs are intermediate evidence only.
 
 
 The latest workflow update enables the pinned CharsiuG2P checkpoint as a comparison-only neural candidate and joins its output with the baseline and licensed ByT5 results in the same run. No model weights or caches are uploaded; the checkpoint's weights-license status remains explicitly unresolved.
@@ -268,3 +268,7 @@ The completed ByT5 run [40831855862](https://github.com/ClippyFirst/Korean-Ukrai
 
 
 HAMA timing is now measured through its documented sentence-level batch API (one full-corpus call plus five repeated batch calls) rather than invoking the model once per token. This reflects the engine's supported usage and avoids an artificially slow per-word wrapper. The latest full candidate run is [40833631186](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833631186), queued at last check.
+
+
+### Neural metric report fix
+A ByT5 rerun at [40832456382](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40832456382) failed after inference because the new PER/feature metrics were present in paired scoring but absent from the neural report's top-level summary (`KeyError: 'phoneme_error_rate'`). The aggregation now emits PER, the feature-error proxy, unsupported-feature counts, and reference-segment counts at the report level; regression tests assert these fields. The current full run [40833849437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833849437) is the acceptance gate for this fix.
