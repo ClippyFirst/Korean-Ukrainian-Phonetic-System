@@ -228,7 +228,7 @@ export const IPA_TARGET_MAPPINGS = [
     ],
     "source_ipa": "kʰjʌ",
     "target_grapheme": "к'хьо",
-    "status": "model-selected",
+    "status": "provisional",
     "scope": "ipa-sequence",
     "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
     "notes": "Project convention: aspiration uses apostrophe; retain the existing /jʌ/ target.",
