@@ -3,7 +3,7 @@
 | Task | Status | Acceptance evidence |
 |---|---|---|
 | Deterministic browser-local Hanja annotator | PARTIAL | `src/app/hanja.js` implements curated longest-match lexicon; focused tests added but not yet run locally. |
-| Fourth output card and copy action | PARTIAL | `index.html` and `src/main.js` include Hanja result; full UI tests/build and exact-head CI pending. |
+| Fourth output card and copy action | PARTIAL | `index.html` and `src/main.js` include Hanja result; primary output order is RR → IPA → Ukrainian → Hanja and a regression assertion covers that order. Exact-head CI pending. |
 | Preserve existing pipeline and CSP | PARTIAL | Hanja is a separate orthographic output and no network/API was added; built-artifact and deployed smoke still required. |
 | Full contextual conversion / broad dictionary | DEFERRED / BLOCKED | Requires reviewed morphological disambiguation or source-attributed licensed dictionary; the prototype intentionally does not guess unsupported spans. |
 | Release readiness | NOT VERIFIED | Connector-only session had no local checkout/runtime. Exact-head CI and live browser smoke required. |
@@ -14,6 +14,7 @@
 - Hanja is a fourth optional orthographic annotation; it must not alter Romanization, IPA, Ukrainian transcription, or their ordering.
 - Unknown text, punctuation, spacing, and non-Hangul spans are preserved.
 - The current table is intentionally small and manually authored. Do not claim complete coverage or contextual homograph disambiguation.
+- Reviewed a promising deterministic dictionary source: HanjaKey's ~4.87 MB word inventory derived from libhangul (BSD 3-Clause per-file notice); did not vendor it because large-file contents could not be retrieved and hash-verified through this connector. NIKL-derived 20 MB dictionary definitions are CC BY-SA 2.0 KR and are unnecessary for conversion-only output.
 - Canonical details and examples: [Hanja implementation/evidence ledger](HANJA-RESEARCH-LAYER-2026-10-29.md).
 
 ## Verification
