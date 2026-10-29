@@ -3568,3 +3568,5 @@ This section supersedes earlier branch/PR status statements above where they con
 
 
 - Additional candidate discovery: HAMA is now included in the next benchmark run at pinned commit `fb81fe97e54c00b3f73192b9351f96fcd4427b03`, using its direct `G2PModel.predict().ipa` API. Korean jamo in its vocabulary is only a smoke-level eligibility clue, not evidence of accuracy. Its root LICENSE says MIT while package metadata says Apache-2.0; this is unresolved and the package is not vendored. The HAMA scores are pending CI.
+
+- Latest full candidate workflow run: [40832118694](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40832118694), queued at last check on the expanded code+workflow head. It includes HAMA and the licensed ByT5 tiny candidate; only this run can serve as acceptance evidence for the full current candidate set. Earlier run 40831542856 does not include HAMA or ByT5 execution.
