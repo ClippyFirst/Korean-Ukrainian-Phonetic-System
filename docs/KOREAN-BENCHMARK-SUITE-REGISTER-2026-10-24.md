@@ -375,11 +375,19 @@ For the benchmark portfolio, distinguish executable IPA candidates from related 
 
 - **Current executable baseline set:** ClippyFirst native, g2pk 0.9.4, KoG2P 2019, hangul_to_ipa, eSpeak NG, phonemize 2.0.1.
 - **Novel morphology-aware engine (Interspeech 2026):** `BLOCKED_IMPLEMENTATION`. The paper's public Zenodo record currently exposes a PDF but no verified runnable implementation. Author-reported sentence-level accuracy must not be copied into our benchmark table.
-- **KoG2Padvanced (2022):** `BLOCKED_LICENSE`. Separate engine from the 2026 paper; requires clear license/author permission before CI execution.
-- **kokorog2p 0.9.15:** `NOT_YET_COMPARABLE`. Current package API outputs Kokoro's target phoneme vocabulary and needs Korean Lexphon data explicitly provisioned; no source-verified IPA adapter yet. An invalid 1.0.0 pin was removed after the install check failed.
+- **KoG2Padvanced (2022):** `PENDING_CI_EXTERNAL_COMPARISON`. Pinned upstream commit is run from an ephemeral checkout only; no source is vendored or redistributed. Upstream has no declared license, which remains a legal/provenance caveat and is not resolved by this benchmark run. Hangul output is passed through the shared project IPA renderer, so its adapter is not independent.
+- **kokorog2p 0.9.15:** `PENDING_CI`. Source inspection confirmed an explicit Korean `output="ipa"` mode (`KoreanG2P`); benchmark disables morphology and external lexicon lookup, pins Apache-2.0 package version 0.9.15, and records that it is g2pK-derived rather than a fully independent algorithm family. The prior invalid 1.0.0 pin was removed.
 - **SMART-G2P:** `SUPPLEMENTARY_NOT_INDEPENDENT`; code-mixed text normalization layer that delegates to other G2P engines.
 - **HAMA:** `NOT_YET_ELIGIBLE` until Korean-trained model support is demonstrated.
 - **CharsiuG2P multilingual ByT5:** `SEPARATE_BENCHMARK_PATH`; dedicated script exists, but the research workflow is opt-in and weights licensing remains unresolved.
 - **UGTPHON retrieval-augmented compositional method:** `BLOCKED_IMPLEMENTATION` until an official inference checkpoint/package is located and training/test overlap is reviewed.
 
 Canonical evidence, candidate acceptance criteria, and links are maintained in `docs/EXTENDED-BENCHMARK-METRICS-2026-10-29.md`. Do not call a candidate verified until it has run on both pinned IPA splits, produced a report artifact, and passed adapter tests.
+
+
+## 2026-10-29 expanded comparison run
+
+- Candidate harness now includes Kokoro Korean IPA mode and KoG2Padvanced external batch mode.
+- The IPA normalizer now canonicalizes equivalent affricate symbols ʨ/ʥ to tɕ/dʑ. All old scores are historical under the previous normalization; the current run must recompute every engine and dataset before tables are combined.
+- Per-word engines and batch engines now collect five repeated timing samples after the stated warm-up policy. Comparable peak memory remains not measured.
+- Exact-head CI run: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40831392209 (pending at last check).
