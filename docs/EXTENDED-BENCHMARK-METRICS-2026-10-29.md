@@ -211,3 +211,8 @@ The exact-head GitHub Actions rerun is the acceptance gate for the new candidate
 
 
 The pinned `willwade/byt5-g2p-multilingual-tiny` checkpoint (CC BY-SA 4.0 per its model card) is now enabled for this comparison branch. Its workflow uploads predictions/provenance only, not model weights or caches. The Charsiu checkpoint remains gated because its weights license is unresolved.
+
+
+### HAMA candidate added for empirical check
+
+HAMA is now included in the expanded candidate harness at pinned commit `fb81fe97e54c00b3f73192b9351f96fcd4427b03`, using its direct `G2PModel.predict().ipa` field. Its encoder vocabulary contains Korean jamo, but that fact alone does not establish Korean phonological competence; eligibility depends on actual output coverage and measured errors on both pinned datasets. The upstream root `LICENSE` says MIT while `python/pyproject.toml` declares Apache-2.0, so the license metadata discrepancy remains explicitly unresolved. HAMA source is cloned/installed only on the ephemeral comparison runner, not vendored into this repository. Its results are pending the exact-head CI run.
