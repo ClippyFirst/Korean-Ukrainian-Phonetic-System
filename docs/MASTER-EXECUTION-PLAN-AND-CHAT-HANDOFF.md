@@ -12,7 +12,8 @@
 
 - No neural model, external API, remote script, or new runtime dependency.
 - Hanja is a fourth optional orthographic annotation; it must not alter Romanization, IPA, Ukrainian transcription, or their ordering.
-- Unknown text, punctuation, spacing, and non-Hangul spans are preserved.
+- Unknown Hangul runs are preserved whole unless they can be fully segmented into known lexicon entries and explicitly listed grammatical suffixes; punctuation, spacing, and non-Hangul spans are preserved.
+- The converter now avoids partial substitutions inside unknown runs (regression: 한국말 stays 한국말) and tests known compounds/suffixes. It remains context-insensitive for homographs.
 - The current table is intentionally small and manually authored. Do not claim complete coverage or contextual homograph disambiguation.
 - Reviewed a promising deterministic dictionary source: HanjaKey's ~4.87 MB word inventory derived from libhangul (BSD 3-Clause per-file notice); did not vendor it because large-file contents could not be retrieved and hash-verified through this connector. NIKL-derived 20 MB dictionary definitions are CC BY-SA 2.0 KR and are unnecessary for conversion-only output.
 - Canonical details and examples: [Hanja implementation/evidence ledger](HANJA-RESEARCH-LAYER-2026-10-29.md).
