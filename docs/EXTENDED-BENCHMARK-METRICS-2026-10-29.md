@@ -149,3 +149,49 @@ The sampled outputs reveal concrete adjudication targets: initial velar consonan
 ### Literature note: new morphological G2P (2026)
 
 The Interspeech 2026 paper by Heejo You and Sung-woo Moon proposes a rule engine with syllable–morpheme links and recursive rule re-evaluation. Its Zenodo record lists the paper PDF and does not identify source code or an installable implementation. The abstract reports 85.7% sentence-level accuracy vs 27.2% for g2pk under the authors' own KSS evaluation; this is an external claim, not a result reproduced by this repository. The next step is source-code discovery/contact with the authors, followed by a same-split reproduction. No score is imputed into the benchmark table.
+
+
+## Exact-head multi-engine results (2026-10-29)
+
+Verified GitHub Actions run on branch head `3fa8a13e4eaf334e3fce1b37d70cfe84dfea6222`: [run 40783623954](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40783623954). The multi-engine comparison job completed successfully and uploaded artifact `multi-engine-korean-ipa-diagnostic`. This is an observed single-run diagnostic, not a stable speed ranking.
+
+### UGTPHON Korean test split
+
+2,703 eligible token occurrences; 1,907 unique words. Exact match is against the dataset's paired IPA reference after benchmark normalization.
+
+| Engine | Exact match | CER | PER | Feature-error proxy | Coverage | Unique-word runtime | Throughput |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native (“Kozak Kim”) | 53.002% | 9.170% | 9.614% | 4.877% | 99.815% | 703.866 ms | 2,709 words/s |
+| g2pk 0.9.4 | **53.089%** | **9.229%** | **9.647%** | **4.895%** | 100% | 42,728.719 ms | 44.630 words/s |
+| phonemize 2.0.1 | 42.545% | 14.353% | 14.258% | 7.706% | 100% | 308.645 ms (batch) | 6,179 words/s (batch) |
+| KoG2P (2019) | 27.303% | 19.512% | 19.644% | 7.018% | 100% | 665.795 ms | 2,864 words/s |
+| hangul_to_ipa | 16.241% | 24.805% | 30.809% | 11.778% | 100% | 2,109.833 ms | 904 words/s |
+| eSpeak NG Korean | 8.139% | 33.610% | 38.316% | 13.410% | 100% | 514.117 ms (batch) | 3,709 words/s (batch) |
+
+ClippyFirst native's per-word p50/p95 latency was 0.331/0.635 ms; g2pk's was 22.354/22.808 ms; KoG2P's 0.338/0.414 ms; hangul_to_ipa's 1.050/1.475 ms. The observed native/g2pk total-runtime ratio is about 60.7× on this run. Batch timings for phonemize/eSpeak include different startup and batching scopes and must not be ranked directly against per-word-call timings.
+
+### SIGMORPHON 2021 Korean paired lexical test file
+
+999 eligible token occurrences and 999 unique words. The file's pinned content is used as found; the repository notes its README's format description differs from the pinned file contents.
+
+| Engine | Exact match | CER | PER | Feature-error proxy | Coverage | Unique-word runtime | Throughput |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native (“Kozak Kim”) | **35.772%** | **14.698%** | **16.234%** | **7.549%** | 99.900% | 328.223 ms | 3,044 words/s |
+| g2pk 0.9.4 | 35.335% | 14.822% | 16.313% | 7.599% | 100% | 22,171.959 ms | 45.057 words/s |
+| phonemize 2.0.1 | 28.929% | 17.439% | 18.266% | 8.462% | 100% | 264.691 ms (batch) | 3,774 words/s (batch) |
+| KoG2P (2019) | 18.719% | 21.833% | 23.663% | 8.608% | 100% | 342.093 ms | 2,920 words/s |
+| hangul_to_ipa | 8.909% | 29.845% | 36.347% | 12.814% | 100% | 1,095.604 ms | 912 words/s |
+| eSpeak NG Korean | 4.304% | 40.724% | 48.705% | 17.787% | 100% | 302.378 ms (batch) | 3,304 words/s (batch) |
+
+ClippyFirst native's per-word p50/p95 latency was 0.306/0.506 ms; g2pk's was 22.167/22.687 ms; KoG2P's 0.328/0.376 ms; hangul_to_ipa's 1.046/1.454 ms. The observed native/g2pk total-runtime ratio is about 67.5× on this run.
+
+### What these measurements do and do not establish
+
+- **Accuracy:** native and g2pk are effectively close on these two external sets: g2pk has a +0.087 percentage-point exact-match lead on UGTPHON, while native has a +0.437-point lead on SIGMORPHON. Paired bootstrap intervals for the exact-match difference are reported in the workflow log; on SIGMORPHON the native-minus-g2pk exact-rate interval was [-0.802, -0.100] percentage points under the harness's sign convention for candidate-minus-native, and CER difference interval [-0.013, +0.277] percentage points. This cautions against collapsing all metrics into one winner.
+- **Speed:** the run shows native is dramatically faster than g2pk under the current per-word adapter timing, but this is one CI run, not a repeated-run distribution. Runtime includes Python adapter overhead and excludes corpus loading/scoring. Warm-up effects and runner variance have not yet been quantified.
+- **PER and feature proxy:** the broad-IPA segmentation and project-defined feature inventory have limitations; unsupported-segment counts remain substantial (native: 1,004 on UGTPHON and 476 on SIGMORPHON). Interpret feature-error proxy only alongside these counts.
+- **Coverage:** native abstained on 5 UGTPHON token occurrences and 1 SIGMORPHON word, while other scored engines returned predictions for all rows. Coverage-adjusted exact match is therefore also retained.
+- **Not scored:** the 2026 morphological G2P paper's engine, KoG2Padvanced, kokorog2p, SMART-G2P as an independent engine, HAMA Korean support, and retrieval-augmented UGTPHON research are not assigned scores because a reproducible, licensed, comparable IPA implementation has not been established.
+- **Repeatability and memory:** repeat-run stability and comparable peak memory remain NOT_RUN. A future speed leaderboard should use warm-up plus at least 5 measured repetitions per dataset/engine, fixed runner/software versions, and report median/IQR as well as p50/p95 per-call latency. Do not describe this single-run speed result as a final stable ranking.
+
+Artifact: [multi-engine diagnostic outputs](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40783623954/artifacts/12858177529).
