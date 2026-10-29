@@ -210,7 +210,7 @@ The benchmark harness has now been expanded for the next exact-head run:
 The exact-head GitHub Actions rerun is the acceptance gate for the new candidate adapters and metrics. Until that run completes successfully, the new candidates are `PENDING_CI`, not scored, and the earlier result tables remain historical only.
 
 
-The pinned `willwade/byt5-g2p-multilingual-tiny` checkpoint (CC BY-SA 4.0 per its model card) is now enabled for this comparison branch. Its workflow uploads predictions/provenance only, not model weights or caches. The Charsiu checkpoint remains gated because its weights license is unresolved.
+The pinned `willwade/byt5-g2p-multilingual-tiny` checkpoint (CC BY-SA 4.0 per its model card) is now enabled for this comparison branch. Its workflow uploads predictions/provenance only, not model weights or caches. The Charsiu checkpoint is now enabled for comparison-only evaluation at the user's request; its weights license remains unresolved, and neither weights nor caches are uploaded.
 
 
 ### HAMA candidate added for empirical check
@@ -219,3 +219,6 @@ HAMA is now included in the expanded candidate harness at pinned commit `fb81fe9
 
 
 The latest expanded run including HAMA and the licensed ByT5 tiny candidate is [GitHub Actions run 40832118694](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40832118694), currently queued. The earlier run 40831542856 predates HAMA and must not be used as the final expanded candidate set.
+
+
+The latest workflow update enables the pinned CharsiuG2P checkpoint as a comparison-only neural candidate and joins its output with the baseline and licensed ByT5 results in the same run. No model weights or caches are uploaded; the checkpoint's weights-license status remains explicitly unresolved.
