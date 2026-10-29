@@ -12,7 +12,7 @@ const engine = createEngine(canonical, lexical);
 const rows = parseCsv(lexical);
 const entries = new Map(rows.map((row) => [row.input, row]));
 
-test('practical targets do not duplicate Korean fortisness as doubled Ukrainian onset letters', () => {
+test('practical targets preserve Korean fortisness as doubled Ukrainian onset letters', () => {
   const expected = {
     '밝다': 'пак|тта',
     '넓고': "нол|кко",
@@ -30,8 +30,8 @@ test('practical targets do not duplicate Korean fortisness as doubled Ukrainian 
   };
   for (const [word, target] of Object.entries(expected)) {
     assert.equal(entries.get(word)?.target_syllables, target, word + ': target segmentation');
-    assert.ok(!target.split('|').some((syllable) => /^(?:кк|тт|пп|сс|чч|ґґ|дд|бб)/u.test(syllable)),
-      word + ': doubled onset should not encode fortisness');
+    assert.ok(target.split('|').some((syllable) => /^(?:кк|тт|пп|сс|чч)/u.test(syllable)),
+      word + ': doubled onset must preserve fortisness');
     if (entries.get(word)?.target_status !== 'surface-only') {
       assert.equal(engine.convert(word).ukrainian, target.replaceAll('|', ''), word + ': runtime target');
     }
@@ -271,12 +271,12 @@ test('lexical onset targets match declared surface-onset mappings across the cor
 // Keep this mapping intentionally in the test: it makes every stored lexical
 // target accountable to IPA, rather than merely checking a few hand-picked rows.
 const IPA_TO_UKRAINIAN_ORACLE = [
-  ['kʰjʌ','кхьо'],['hjʌ','гьо'],['njʌ','ньо'],['njo','ньо'],['nju','ню'],
+  ["kʰjʌ","к'хьо"],['hjʌ','гьо'],['njʌ','ньо'],['njo','ньо'],['nju','ню'],
   ['ɲʌ','ньо'],['ɲa','ня'],['ɲo','ньо'],['ɲu','ню'],
   ['ljʌ','льо'],['lju','лю'],
-  ['tɕ͈','ч'],['tɕʰ','ч'],['tɕ','ч'],['dʑ','дж'],['ɕ͈','ш'],['ɕ','ш'],
-  ['k͈','к'],['t͈','т'],['p͈','п'],['s͈','с'],
-  ['kʰ','к'],['tʰ','т'],['pʰ','п'],['k̚','к'],['t̚','т'],['p̚','п'],
+  ['tɕ͈','чч'],["tɕʰ","ч'"],['tɕ','ч'],['dʑ','дж'],['ɕ͈','шш'],['ɕ','ш'],
+  ['k͈','кк'],['t͈','тт'],['p͈','пп'],['s͈','сс'],
+  ["kʰ","к'"],["tʰ","т'"],["pʰ","п'"],['k̚','к'],['t̚','т'],['p̚','п'],
   ['ɰi','ий'],['jʌ','йо'],['jɛ','є'],['ja','я'],['je','є'],['jo','йо'],['ju','ю'],
   ['wa','ва'],['wɛ','ве'],['wʌ','во'],['we','ве'],['aː','а'],
   ['ɡ','ґ'],['k','к'],['g','ґ'],['t','т'],['d','д'],['p','п'],['b','б'],

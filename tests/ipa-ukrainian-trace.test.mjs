@@ -134,10 +134,10 @@ test('every long-vowel marker in the lexical IPA inventory is surfaced as a targ
 
 test('browser IPA mappings carry the same explicit status and provenance as the Python target contract', () => {
   const provisional = traceIpaMappingDetailed('kʰjʌ');
-  assert.equal(provisional.status, 'model-selected');
+  assert.equal(provisional.status, 'provisional');
   assert.equal(provisional.tokens.length, 1);
   assert.equal(provisional.tokens[0].ipa, 'kʰjʌ');
-  assert.equal(provisional.tokens[0].ukrainian, 'кхьо');
+  assert.equal(provisional.tokens[0].ukrainian, "к'хьо");
   assert.equal(provisional.tokens[0].mapping_id, 'KUA-IPA-015');
   assert.equal(provisional.tokens[0].source_ref.length > 0, true);
   assert.ok(provisional.features.some(feature => feature.feature === 'aspiration'));

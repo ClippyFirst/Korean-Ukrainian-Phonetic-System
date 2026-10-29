@@ -107,7 +107,7 @@ test('§5 generic ㅖ may be [e] except in the syllables 예 and 례', () => {
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '폐기');
   assert.equal(result.variants[0].ipa, 'pʰe.ɡi');
-  assert.equal(result.variants[0].ukrainian, 'пеґі');
+  assert.equal(result.variants[0].ukrainian, "п'еґі");
   assert.match(result.variants[0].note, /§5/u);
 
   assert.equal(genericEngine.convert('예').variants.length, 0);
@@ -125,8 +125,8 @@ test('§5 combines optional ㅖ-to-[e] readings without changing Korean spelling
     'pʰe.ɡi.ɡe',
   ]);
   assert.deepEqual(result.variants.map((variant) => variant.ukrainian), [
-    'пеґіґє',
-    'пєґіґе',
-    'пеґіґе',
+    "п'еґіґє",
+    "п'єґіґе",
+    "п'еґіґе",
   ]);
 });

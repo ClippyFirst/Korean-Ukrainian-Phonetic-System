@@ -328,8 +328,8 @@ test('NIKL §16 official letter-name examples are exact lexical entries', () => 
     '디귿을': ['디그슬', 'тіґисил', 'ti.ɡɯ.sɯl'],
     '디귿에': ['디그세', 'тіґисе', 'ti ɡɯ se'],
     '지읒이': ['지으시', 'ч\'іиші', 'tɕi ɯ ɕi'],
-    '지읒을': ['지으슬', "ч'іисил", 'tɕi ɯ sɯl'],
-    '지읒에': ['지으세', "ч'іисе", 'tɕi ɯ se'],
+    '지읒을': ['지으슬', 'чіисил', 'tɕi ɯ sɯl'],
+    '지읒에': ['지으세', 'чіисе', 'tɕi ɯ se'],
     '치읓이': ['치으시', 'ч\'іиші', 'tɕʰi ɯ ɕi'],
     '치읓을': ['치으슬', "ч'іисил", 'tɕʰi ɯ sɯl'],
     '치읓에': ['치으세', "ч'іисе", 'tɕʰi ɯ se'],
@@ -529,7 +529,7 @@ test('NIKL §4–§5 preserves permitted vowel variants and contracted ㅕ readi
   }
 });
 
-test('fortisness remains in IPA but is not encoded by doubled Ukrainian graphemes', () => {
+test('fortisness remains in IPA and is preserved by doubled Ukrainian graphemes', () => {
   const expected = {
     '맛없다': ['мадоптта', 'ma.dʌp̚.t͈a'],
     '맛있다': ["мадіттта", 'ma.dit̚.t͈a'],
@@ -546,7 +546,7 @@ test('fortisness remains in IPA but is not encoded by doubled Ukrainian grapheme
     assert.equal(result.ukrainian, target, word);
     assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     const entry = parseCsv(lexical).find((row) => row.input === word);
-    assert.ok(!entry.target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
+    assert.ok(entry.target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
     if (entry.alternate_target_syllables) {
       assert.ok(!entry.alternate_target_syllables.split('|').some((syllable) => /(кк|тт|пп|сс|чч)/u.test(syllable)), word);
     }
