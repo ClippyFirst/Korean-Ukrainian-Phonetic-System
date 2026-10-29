@@ -284,3 +284,40 @@ The user authorized comparative-only evaluation of the broader candidate set. Th
 - Previous six-engine tables above are verified historical results from their recorded run, not scores for the expanded portfolio or the updated normalization/code head. Replace/extend them only after inspecting the current run artifact.
 - The 2026 Interspeech morphology-aware engine remains unscored: the official Zenodo record exposes the paper PDF but no verified runnable source/package/checkpoint was found. Its published 85.7% versus 27.2% result uses the paper's own sentence-level evaluation and cannot be compared directly with these word/token-level IPA tests. See [the official paper record](https://zenodo.org/records/22167288).
 - License boundaries remain explicit: KoG2Padvanced has no declared upstream license and is external-checkout-only, not vendored; Charsiu model weights remain unresolved and are not uploaded; ByT5 tiny's checkpoint is separately labeled CC BY-SA 4.0 and outputs/provenance only are uploaded. User authorization is for comparison in this project, not a substitute for third-party licensing rights.
+
+
+## Expanded baseline result: Kokoro and repeated timings (run 40831542856)
+
+Artifact: [multi-engine-korean-ipa-diagnostic, run 40831542856](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40831542856/artifacts/12879665317). This run uses the corrected affricate normalization and the expanded baseline harness, but predates the HAMA and neural-candidate jobs. It scored Kokoro; KoG2Padvanced failed closed and is not assigned accuracy or speed values. These results are distinct from the earlier six-engine historical run.
+
+### UGTPHON (2,703 eligible occurrences; 1,907 unique words)
+
+| Engine | Exact match ↑ | CER ↓ | PER ↓ | Feature-error proxy ↓ | Coverage | First-pass ms | Warm repeat median ms |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 53.002% | **9.170%** | **9.614%** | **4.877%** | 99.815% | 715.208 | 716.498 |
+| g2pk 0.9.4 | **53.089%** | 9.229% | 9.647% | 4.895% | 100% | 43,740.823 | 43,203.636 |
+| phonemize 2.0.1 | 42.545% | 14.353% | 14.258% | 7.706% | 100% | 324.331 | 328.763 |
+| KoG2P (2019) | 27.303% | 19.512% | 19.644% | 7.018% | 100% | 672.361 | 667.032 |
+| **kokorog2p 0.9.15** | 23.714% | 21.182% | 21.633% | 6.948% | 100% | 1,431.215 | 1,437.605 |
+| hangul_to_ipa | 16.241% | 24.805% | 30.809% | 11.778% | 100% | 2,160.522 | 2,149.687 |
+| eSpeak NG Korean | 8.139% | 33.610% | 38.316% | 13.410% | 100% | 600.410 | 68.059 |
+| KoG2Padvanced | NOT SCORED | — | — | — | 0% | — | — |
+
+### SIGMORPHON 2021 (999 eligible occurrences; 999 unique words)
+
+| Engine | Exact match ↑ | CER ↓ | PER ↓ | Feature-error proxy ↓ | Coverage | First-pass ms | Warm repeat median ms |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | **35.772%** | **14.698%** | **16.234%** | **7.549%** | 99.900% | 308.238 | 302.421 |
+| g2pk 0.9.4 | 35.335% | 14.822% | 16.313% | 7.599% | 100% | 22,775.136 | 22,814.169 |
+| phonemize 2.0.1 | 28.929% | 17.439% | 18.266% | 8.462% | 100% | 275.908 | 279.625 |
+| KoG2P (2019) | 18.719% | 21.833% | 23.663% | 8.608% | 100% | 346.806 | 344.542 |
+| **kokorog2p 0.9.15** | 14.114% | 24.449% | 26.888% | 9.302% | 100% | 754.037 | 750.938 |
+| hangul_to_ipa | 8.909% | 29.845% | 36.347% | 12.814% | 100% | 1,138.866 | 1,114.332 |
+| eSpeak NG Korean | 4.304% | 40.724% | 48.705% | 17.787% | 100% | 305.256 | 42.782 |
+| KoG2Padvanced | NOT SCORED | — | — | — | 0% | — | — |
+
+**Timing interpretation:** each engine has five repeated measurements after a warm-up; the table shows the first scored pass and median of the five later samples. eSpeak's first pass includes backend startup, while later calls reuse a warm backend, so its first-pass and warm median differ substantially. Kokoro's measured output is lower-scoring than the native/g2pk pair on both sets and its implementation is g2pK-derived, so it is a useful configuration baseline but not an independent algorithm family. KoG2Padvanced returned mixed Hangul/jamo output and was rejected by the initial adapter; a follow-up adapter fix composes isolated compatibility vowels, but its re-score must be taken from a later exact-head artifact.
+
+### Remaining portfolio run
+
+The next exact-head run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742) includes HAMA, the repaired KoG2Padvanced adapter, CharsiuG2P and licensed ByT5 tiny. It was queued when this section was written. Its artifact is the acceptance source for those candidates; do not treat these preceding tables as final scores for HAMA or neural systems.
