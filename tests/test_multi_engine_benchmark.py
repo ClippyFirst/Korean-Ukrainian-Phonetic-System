@@ -9,6 +9,7 @@ sys.path.insert(0, str(SCRIPTS))
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _g2pk_surface_to_ipa,
+    _load_kokorog2p,
     _load_rows_and_words,
     _metrics,
     _paired_bootstrap_delta_ci,
@@ -153,3 +154,33 @@ def test_paired_bootstrap_labels_interval_direction_without_overclaiming_signifi
     assert result["exact_delta_interval_direction"] == "POSITIVE_INTERVAL"
     assert result["cer_delta_interval_direction"] == "NEGATIVE_INTERVAL"
     assert "independent gold validation" in result["interpretation"]
+
+
+
+def test_kokorog2p_uses_direct_ipa_and_disables_lexicon(monkeypatch):
+    import types
+
+    captured = {}
+
+    class FakeKoreanG2P:
+        def __init__(self, **kwargs):
+            captured.update(kwargs)
+
+        def lookup(self, word):
+            return "kʰa"
+
+    package = types.ModuleType("kokorog2p")
+    ko_package = types.ModuleType("kokorog2p.ko")
+    g2p_module = types.ModuleType("kokorog2p.ko.g2p")
+    g2p_module.KoreanG2P = FakeKoreanG2P
+    monkeypatch.setitem(sys.modules, "kokorog2p", package)
+    monkeypatch.setitem(sys.modules, "kokorog2p.ko", ko_package)
+    monkeypatch.setitem(sys.modules, "kokorog2p.ko.g2p", g2p_module)
+
+    fn, adapter = _load_kokorog2p()
+    assert fn("카") == "kʰa"
+    assert captured["output"] == "ipa"
+    assert captured["lexicons"] == ()
+    assert captured["morphology"] == "off"
+    assert captured["use_dict"] is False
+    assert "kokorog2p==0.9.15" in adapter
