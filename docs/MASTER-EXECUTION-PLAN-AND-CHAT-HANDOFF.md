@@ -3569,7 +3569,7 @@ This section supersedes earlier branch/PR status statements above where they con
 
 - Additional candidate discovery: HAMA is now included in the next benchmark run at pinned commit `fb81fe97e54c00b3f73192b9351f96fcd4427b03`, using its direct `G2PModel.predict().ipa` API. Korean jamo in its vocabulary is only a smoke-level eligibility clue, not evidence of accuracy. Its root LICENSE says MIT while package metadata says Apache-2.0; this is unresolved and the package is not vendored. The HAMA scores are pending CI.
 
-- Latest full candidate workflow run: [40833631186](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833631186), queued at last check on the code head with HAMA, licensed ByT5 tiny, comparison-only CharSIU, repaired KoG2Padvanced adapter, and neural PER/feature/runtime metrics. Earlier runs are intermediate evidence only.
+- Latest full candidate workflow run: [40833849437](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833849437), queued at last check on the code head with HAMA, licensed ByT5 tiny, comparison-only CharSIU, repaired KoG2Padvanced adapter, and neural PER/feature/runtime metrics. Earlier runs are intermediate evidence only.
 
 
 The latest workflow update enables the pinned CharsiuG2P checkpoint as a comparison-only neural candidate and joins its output with the baseline and licensed ByT5 results in the same run. No model weights or caches are uploaded; the checkpoint's weights-license status remains explicitly unresolved.
@@ -3579,3 +3579,5 @@ The latest workflow update enables the pinned CharsiuG2P checkpoint as a compari
 - Licensed ByT5 tiny first diagnostic: run [40831855862](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40831855862), artifact [12879510859](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40831855862/artifacts/12879510859), scored full coverage but 0 exact matches on both datasets (CER 164.574% UGTPHON; 159.827% SIGMORPHON). Sample outputs are repetitive/misaligned. Treat as noncompetitive under current `kor:` prefix/output contract; current full run adds PER, feature proxy and runtime diagnostics.
 
 - HAMA now uses its documented sentence-level batch API for the full unique-word list and repeated timing, rather than per-word model calls. This makes the speed measurement better aligned with supported engine usage. Latest full candidate run: [40833631186](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40833631186), queued at last check.
+
+- Neural metrics fix: run 40832456382 failed with `KeyError: 'phoneme_error_rate'` after inference because top-level report aggregation did not include the new PER/feature fields. Fixed report aggregation and added assertions in `tests/test_charsiu_g2p_benchmark.py`; run 40833849437 is the current acceptance gate.
