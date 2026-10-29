@@ -222,3 +222,7 @@ The latest expanded run including HAMA and the licensed ByT5 tiny candidate is [
 
 
 The latest workflow update enables the pinned CharsiuG2P checkpoint as a comparison-only neural candidate and joins its output with the baseline and licensed ByT5 results in the same run. No model weights or caches are uploaded; the checkpoint's weights-license status remains explicitly unresolved.
+
+
+### KoG2Padvanced adapter correction
+The first completed expanded run (40831542856) returned `BLOCKED_OR_ERROR` for KoG2Padvanced because its output contains mixed precomposed Hangul and compatibility jamo (first example: `유ㅣ칸`). This is classified as an adapter failure, not as a zero-accuracy engine result. The adapter now deterministically inserts an onset for isolated compatibility vowels, composes the jamo, and records invalid tokens individually instead of aborting the full batch. A focused regression test covers the observed form. The corrected adapter is pending the next exact-head CI run.
