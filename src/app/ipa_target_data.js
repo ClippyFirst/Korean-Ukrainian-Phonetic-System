@@ -215,7 +215,7 @@ export const IPA_TARGET_MAPPINGS = [
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅋ:kʰ",
-    "notes": "Aspiration not encoded as a separate Ukrainian grapheme",
+    "notes": "Aspiration is marked with an apostrophe after the Ukrainian consonant.",
     "mapping_source": "canonical_correspondence",
     "correspondence_ids": [
       "KUA-CAN-3bf297c0d107"
@@ -258,7 +258,7 @@ export const IPA_TARGET_MAPPINGS = [
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㄲ:k͈",
-    "notes": "Fortis onset; fortisness is not encoded as a separate Ukrainian grapheme",
+    "notes": "Fortis onset is preserved by doubling the Ukrainian consonant.",
     "mapping_source": "canonical_correspondence",
     "correspondence_ids": [
       "KUA-CAN-b89deca165fc"
@@ -449,7 +449,7 @@ export const IPA_TARGET_MAPPINGS = [
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅍ:pʰ",
-    "notes": "Aspiration not encoded as a separate Ukrainian grapheme",
+    "notes": "Aspiration is marked with an apostrophe after the Ukrainian consonant.",
     "mapping_source": "canonical_correspondence",
     "correspondence_ids": [
       "KUA-CAN-a7e17d5666c2"
@@ -478,7 +478,7 @@ export const IPA_TARGET_MAPPINGS = [
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅃ:p͈",
-    "notes": "Fortisness neutralized in Ukrainian graphemic target",
+    "notes": "Fortis onset is preserved by doubling the Ukrainian consonant.",
     "mapping_source": "canonical_correspondence",
     "correspondence_ids": [
       "KUA-CAN-d4cf49cafd97"
@@ -504,7 +504,7 @@ export const IPA_TARGET_MAPPINGS = [
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅆ:s͈",
-    "notes": "Fortisness neutralized in Ukrainian graphemic target",
+    "notes": "Fortis onset is preserved by doubling the Ukrainian consonant.",
     "mapping_source": "canonical_correspondence",
     "correspondence_ids": [
       "KUA-CAN-68f7378d347d"
@@ -543,7 +543,7 @@ export const IPA_TARGET_MAPPINGS = [
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅊ:tɕʰ",
-    "notes": "Aspiration not encoded as a separate Ukrainian grapheme",
+    "notes": "Aspiration is marked with an apostrophe after the Ukrainian consonant.",
     "mapping_source": "canonical_correspondence",
     "correspondence_ids": [
       "KUA-CAN-cfca53af9611"
@@ -556,7 +556,7 @@ export const IPA_TARGET_MAPPINGS = [
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅉ:tɕ͈",
-    "notes": "Fortisness neutralized in Ukrainian graphemic target",
+    "notes": "Fortis onset is preserved by doubling the Ukrainian consonant.",
     "mapping_source": "canonical_correspondence",
     "correspondence_ids": [
       "KUA-CAN-0e2ae4c82d49"
@@ -569,7 +569,7 @@ export const IPA_TARGET_MAPPINGS = [
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㅌ:tʰ",
-    "notes": "Aspiration not encoded as a separate Ukrainian grapheme",
+    "notes": "Aspiration is marked with an apostrophe after the Ukrainian consonant.",
     "mapping_source": "canonical_correspondence",
     "correspondence_ids": [
       "KUA-CAN-bb39626415cb"
@@ -601,7 +601,7 @@ export const IPA_TARGET_MAPPINGS = [
     "status": "model-selected",
     "scope": "isolated-syllable",
     "source_ref": "data/korean/canonical_correspondence.csv#onset:ㄸ:t͈",
-    "notes": "Fortisness neutralized in Ukrainian graphemic target",
+    "notes": "Fortis onset is preserved by doubling the Ukrainian consonant.",
     "mapping_source": "canonical_correspondence",
     "correspondence_ids": [
       "KUA-CAN-7ecbcd7a8264"
