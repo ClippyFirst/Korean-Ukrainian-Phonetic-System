@@ -194,3 +194,12 @@ This results table intentionally includes only engines actually executed by the 
 - **UGTPHON retrieval-augmented method:** official runnable model/checkpoint not established in this audit.
 
 No candidate in these blocked/not-comparable groups has a score in the table. The corrected exact-head benchmark workflow must pass before the latest branch state is considered verified.
+
+
+## 2026-10-29 expanded candidate protocol
+
+The harness now includes Kokoro Korean IPA mode and KoG2Padvanced external batch mode in addition to the original six candidates. The IPA normalization canonicalizes equivalent `ʨ/ʥ` affricate letters to `tɕ/dʑ`; therefore prior numeric tables are historical and must not be merged with the rerun. The exact-head run is [40831542856](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40831542856).
+
+Speed is being remeasured with one excluded warm-up and five repetitions per engine/dataset. Per-word candidates report repeated total-time samples and latency percentiles; batch candidates report repeated batch-call times. Batch and per-word timing scopes remain separate. Peak memory is still unmeasured under a comparable per-engine process boundary.
+
+KoG2Padvanced is cloned to an ephemeral runner and not vendored; its upstream repository declares no license, which remains a caveat rather than a resolved grant. Its Hangul output uses the project's broad-IPA renderer. kokorog2p is pinned to 0.9.15 / Apache-2.0, configured for direct IPA output with morphology and external lexicon lookup disabled; it is g2pK-derived and should not be counted as a wholly independent algorithm lineage. Scores for both are pending exact-head CI.
