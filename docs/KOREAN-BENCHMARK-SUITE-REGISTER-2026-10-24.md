@@ -398,3 +398,6 @@ The HAMA candidate is run from a pinned external checkout and scored only if its
 
 
 For the requested comparison-only run, both the pinned CharsiuG2P checkpoint (weights license unresolved; no weights/caches uploaded) and the CC BY-SA 4.0 ByT5 tiny checkpoint are enabled as separate neural candidates. This is not a production integration and does not resolve third-party licensing uncertainty.
+
+
+KoG2Padvanced first-run status: `ADAPTER_FIX_PENDING_CI`, not an accuracy failure. The initial adapter rejected mixed precomposed Hangul/compatibility-jamo output; the correction composes isolated compatibility vowels and logs individual bad tokens rather than discarding the entire candidate.
