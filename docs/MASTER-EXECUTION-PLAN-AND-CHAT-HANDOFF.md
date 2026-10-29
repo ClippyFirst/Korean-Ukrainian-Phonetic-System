@@ -3569,7 +3569,7 @@ This section supersedes earlier branch/PR status statements above where they con
 
 - Additional candidate discovery: HAMA is now included in the next benchmark run at pinned commit `fb81fe97e54c00b3f73192b9351f96fcd4427b03`, using its direct `G2PModel.predict().ipa` API. Korean jamo in its vocabulary is only a smoke-level eligibility clue, not evidence of accuracy. Its root LICENSE says MIT while package metadata says Apache-2.0; this is unresolved and the package is not vendored. The HAMA scores are pending CI.
 
-- Latest full candidate workflow run: [40832118694](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40832118694), queued at last check on the expanded code+workflow head. It includes HAMA and the licensed ByT5 tiny candidate; only this run can serve as acceptance evidence for the full current candidate set. Earlier run 40831542856 does not include HAMA or ByT5 execution.
+- Latest full candidate workflow run: [40832998171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40832998171), queued at last check on the code head with HAMA, licensed ByT5 tiny, comparison-only CharSIU, repaired KoG2Padvanced adapter, and neural PER/feature/runtime metrics. Earlier runs are intermediate evidence only.
 
 
 The latest workflow update enables the pinned CharsiuG2P checkpoint as a comparison-only neural candidate and joins its output with the baseline and licensed ByT5 results in the same run. No model weights or caches are uploaded; the checkpoint's weights-license status remains explicitly unresolved.
