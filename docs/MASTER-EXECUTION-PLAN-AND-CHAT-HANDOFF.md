@@ -1,3 +1,30 @@
+# Continuation — deterministic Hanja browser preview (2026-10-29)
+
+| Task | Status | Acceptance evidence |
+|---|---|---|
+| Deterministic browser-local Hanja annotator | PARTIAL | `src/app/hanja.js` implements curated longest-match lexicon; focused tests added but not yet run locally. |
+| Fourth output card and copy action | PARTIAL | `index.html` and `src/main.js` include Hanja result; full UI tests/build and exact-head CI pending. |
+| Preserve existing pipeline and CSP | PARTIAL | Hanja is a separate orthographic output and no network/API was added; built-artifact and deployed smoke still required. |
+| Full contextual conversion / broad dictionary | DEFERRED / BLOCKED | Requires reviewed morphological disambiguation or source-attributed licensed dictionary; the prototype intentionally does not guess unsupported spans. |
+| Release readiness | NOT VERIFIED | Connector-only session had no local checkout/runtime. Exact-head CI and live browser smoke required. |
+
+## Implementation contract
+
+- No neural model, external API, remote script, or new runtime dependency.
+- Hanja is a fourth optional orthographic annotation; it must not alter Romanization, IPA, Ukrainian transcription, or their ordering.
+- Unknown text, punctuation, spacing, and non-Hangul spans are preserved.
+- The current table is intentionally small and manually authored. Do not claim complete coverage or contextual homograph disambiguation.
+- Canonical details and examples: [Hanja implementation/evidence ledger](HANJA-RESEARCH-LAYER-2026-10-29.md).
+
+## Verification
+
+- Local commands not run: `node --experimental-strip-types --test tests/*.test.mjs`, `npm run build`.
+- CI and Pages smoke must be checked for the exact PR head before calling this done.
+- Starting default branch commit observed: `2ac8b70894ef6ac0243e6581db794d51e028e50c`.
+- Working branch: `research/korean-hanja-layer-2026-10-29`.
+
+---
+
 # Continuation — Korean aspiration and fortis output convention (2026-10-29)
 
 | Task | Status | Acceptance evidence |
