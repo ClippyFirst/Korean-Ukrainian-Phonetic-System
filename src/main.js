@@ -62,7 +62,7 @@ let hanjaDictionaryLoad=null;
 function renderHanja(value){
   if(!hanjaOutput)return;
   hanjaOutput.textContent=(fullHanjaConverter||convertHangulToHanja)(value);
-  if(fullHanjaConverter||!/[\\uAC00-\\uD7A3]/u.test(value))return;
+  if(fullHanjaConverter||!/[\uAC00-\uD7A3]/u.test(value))return;
   if(hanjaEngineStatus)hanjaEngineStatus.textContent='Завантаження словника з цього сайту…';
   if(!hanjaDictionaryLoad){
     hanjaDictionaryLoad=import('./app/hanja-dictionary-data.js').then((data)=>{
