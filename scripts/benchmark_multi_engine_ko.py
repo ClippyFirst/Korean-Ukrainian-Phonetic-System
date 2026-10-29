@@ -542,7 +542,17 @@ def _g2pk_surface_to_ipa(g2p: Callable[[str], str], word: str) -> str:
     return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
 
 
-def _load_kog2padvanced_batch(root: Path, words: list[str]) -> tuple[Callable[[], dict[str, str]], str]:
+def _compose_kog2padvanced_surface(surface: str, join_jamos: Callable[[str], str]) -> str:
+    """Compose mixed precomposed Hangul and compatibility jamo deterministically."""
+    compatibility = "ㄱㄲㄳㄴㄵㄶㄷㄸㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅃㅄㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"
+    vowels = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"
+    # An isolated compatibility vowel following a complete syllable is an
+    # onset-less syllable in the upstream output; add ㅇ before composing.
+    surface = re.sub(rf"(?<![{re.escape(compatibility)}])([{re.escape(vowels)}])", r"ㅇ\1", surface)
+    return unicodedata.normalize("NFC", join_jamos(surface))
+
+
+def _load_kog2padvanced_batch(root: Path, words: list[str]) -> tuple[Callable[[], dict[str, dict[str, str]]], str]:
     """Load upstream KoG2Padvanced without copying its source into this repository.
 
     The upstream function uses relative dictionary paths and initializes Kkma
@@ -567,7 +577,7 @@ def _load_kog2padvanced_batch(root: Path, words: list[str]) -> tuple[Callable[[]
     finally:
         os.chdir(original_cwd)
 
-    def run_batch() -> dict[str, str]:
+    def run_batch() -> dict[str, dict[str, str]]:
         current_cwd = Path.cwd()
         try:
             os.chdir(root)
@@ -584,11 +594,15 @@ def _load_kog2padvanced_batch(root: Path, words: list[str]) -> tuple[Callable[[]
         from korean_ukrainian.phonology import parse_syllables
         from korean_ukrainian.ipa import realize_syllables
 
-        mapped: dict[str, str] = {}
-        for word, output in zip(words, output_words):
-            if not _HANGUL_TOKEN.fullmatch(output):
-                raise ValueError(f"KoG2Padvanced returned non-Hangul surface form: {output!r}")
-            mapped[word] = realize_syllables(parse_syllables(output), level="broad")["ipa"]
+        mapped: dict[str, dict[str, str]] = {}
+        for word, raw_output in zip(words, output_words):
+            try:
+                output = _compose_kog2padvanced_surface(raw_output, module.join_jamos)
+                if not _HANGUL_TOKEN.fullmatch(output):
+                    raise ValueError(f"non-Hangul surface after jamo composition: {output!r}")
+                mapped[word] = {"ipa": realize_syllables(parse_syllables(output), level="broad")["ipa"]}
+            except Exception as exc:
+                mapped[word] = {"error": f"{type(exc).__name__}: {exc}", "surface": raw_output}
         return mapped
 
     return run_batch, (
@@ -740,16 +754,24 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             repeat_started = time.perf_counter()
             advanced_batch()
             advanced_repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
-        predictions["KoG2Padvanced_2022"] = {word: {"ipa": ipa} for word, ipa in advanced_map.items()}
+        advanced_predictions = {word: value for word, value in advanced_map.items() if isinstance(value, dict) and isinstance(value.get("ipa"), str)}
+        advanced_errors = [
+            {"word": word, **value} for word, value in advanced_map.items()
+            if not isinstance(value, dict) or not isinstance(value.get("ipa"), str)
+        ]
+        predictions["KoG2Padvanced_2022"] = {
+            word: {"ipa": value["ipa"]} if isinstance(value, dict) and isinstance(value.get("ipa"), str)
+            else {"error": value.get("error", "invalid output")} for word, value in advanced_map.items()
+        }
         engine_meta["KoG2Padvanced_2022"] = {
-            "status": "AVAILABLE" if len(advanced_map) == len(words) else "PARTIAL",
+            "status": "AVAILABLE" if len(advanced_predictions) == len(words) else ("PARTIAL" if advanced_predictions else "BLOCKED_OR_ERROR"),
             "source": "seongmin-mun/KoG2Padvanced commit 491b2d7269a4666b0d7556efb26755219f861163",
             "adapter": advanced_adapter,
-            "unique_words": len(words), "outputs": len(advanced_map),
-            "engine_errors": len(words) - len(advanced_map), "error_examples": [],
+            "unique_words": len(words), "outputs": len(advanced_predictions),
+            "engine_errors": len(advanced_errors), "error_examples": advanced_errors[:10],
             "runtime": {
                 "total_ms": round(advanced_elapsed_ms, 3),
-                "throughput_words_per_second": round(len(advanced_map) / (advanced_elapsed_ms / 1000), 3) if advanced_elapsed_ms and advanced_map else None,
+                "throughput_words_per_second": round(len(words) / (advanced_elapsed_ms / 1000), 3) if advanced_elapsed_ms else None,
                 "repeatability": {
                     "warmup_calls_excluded": 0,
                     "measured_repetitions": len(advanced_repeat_totals_ms),
