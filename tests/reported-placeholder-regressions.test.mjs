@@ -80,7 +80,7 @@ test('값의 exposes both standard particle readings under NIKL §§5 and 14', (
   assert.ok(row.rule_notes.includes('§5') && row.rule_notes.includes('§14'));
   const result = engine.convert('값의');
   assert.equal(result.surfaceHangul, '갑씌');
-  assert.equal(result.ukrainian, 'капший');
+  assert.equal(result.ukrainian, "капшший");
   assert.equal(result.ipa, 'kap̚.ɕ͈ɰi');
   assert.equal(result.variants.length, 1);
   assert.equal(result.variants[0].surface, '갑쎄');
@@ -184,7 +184,7 @@ test('lexical IPA consistently marks fortis sibilants as alveolo-palatal before 
 
 test('Ukrainian rendering is derived from the IPA layer for lexical readings', () => {
   const cases = [
-    ['값의', 'kap̚ ɕ͈ɰi', 'капший'],
+    ['값의', 'kap̚ ɕ͈ɰi', "капшший"],
     ['학생의', 'hak̚ s͈ɛŋ ɰi', 'гакссений'],
     ['주의', 'tɕu ɰi', 'чуий'],
     ['지식의', 'tɕi ɕi ɡɰi', 'чішіґий'],
@@ -209,7 +209,7 @@ test('difficult passage forms have sourced IPA and render Ukrainian only from th
     ['품삯을','pʰum s͈ak̚ s͈ɯl',"п'умссакссил"],
     ['품삯으로','pʰum s͈ak̚ s͈ɯ ɾo',"п'умссакссиро"],
     ['외곬에','ø ɡol s͈e',"веґолссе"],
-    ['값의','kap̚ ɕ͈ɰi','капший'],
+    ['값의','kap̚ ɕ͈ɰi',"капшший"],
     ['값에','kap̚ s͈e',"капссе"], 
   ];
   for(const [word,ipa,ukrainian] of cases){
