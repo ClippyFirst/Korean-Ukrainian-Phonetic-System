@@ -231,7 +231,7 @@ export const IPA_TARGET_MAPPINGS = [
     "status": "model-selected",
     "scope": "ipa-sequence",
     "source_ref": "project-decision:docs/ukrainian-target-layer.md#mapping-status-and-project-decisions",
-    "notes": "Existing project-level exception retained as provisional; aspiration spelling remains an explicit review item and is not generalized to other contexts.",
+    "notes": "Project convention: aspiration uses apostrophe; /jʌ/ is rendered йо.",
     "mapping_source": "ipa_target_overrides"
   },
   {
