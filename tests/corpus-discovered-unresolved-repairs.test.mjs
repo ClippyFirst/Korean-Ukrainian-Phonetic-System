@@ -18,7 +18,7 @@ test('corpus-discovered morphology repairs have official Standard Pronunciation 
   },
   "늙고": {
     "surface": "늘꼬",
-    "target": "нилко",
+    "target": "нилкко",
     "ipa": "nɯl.k͈o",
     "source": "https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&pageIndex=1&qna_seq=319360"
   }
