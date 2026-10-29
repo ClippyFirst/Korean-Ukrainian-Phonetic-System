@@ -3605,3 +3605,13 @@ This section supersedes earlier branch/PR status statements above where they con
 - **Status:** PARTIAL pending exact-head GitHub Actions, static build, and live deployed Pages smoke. This connector session cannot claim local test execution because it has no local repository checkout.
 - **Acceptance criterion:** `npm test`, `npm run build`, source integrity checks, and post-deployment browser smoke must pass on this branch's exact head; then inspect that the Ukrainian card is first and the mixed-script Hanja example preserves unsupported/native Hangul.
 - **Scope kept unchanged:** no neural model, no external runtime API, no changes to pronunciation/IPA/Ukrainian mapping; Hanja coverage metrics remain TODO and contextual WSD remains DEFERRED.
+
+
+# UI follow-up — swap wide IPA and Hanja cards (2026-10-30)
+
+- **Branch:** `fix/swap-ipa-hanja-cards-2026-10-30`, based on `main` at `7f0d20c228d91836f192744b45447822cc3d2d4e`.
+- **Requested order:** Ukrainian → Romanization → 漢字 (Hanja · dictionary annotation) → IPA (wide IPA) → Analysis.
+- **Implementation:** swapped only the adjacent IPA and Hanja result-card DOM blocks in `index.html`; labels, output IDs, copy controls, content, rendering logic, and the Ukrainian-first hierarchy remain unchanged.
+- **Regression:** updated `tests/hanja-ui-contract.test.mjs` to assert the exact new order.
+- **Status:** PARTIAL until exact-head CI, build, and post-deployment Pages smoke confirm the order.
+- **Scope:** no Korean processing, IPA values, Ukrainian adaptation, Hanja dictionary, or network behavior changed.
