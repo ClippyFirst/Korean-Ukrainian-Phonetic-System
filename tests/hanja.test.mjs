@@ -21,6 +21,17 @@ test('known compounds and grammatical suffixes convert without partial unknown-w
   assert.equal(convertHangulToHanja('학생이 학교에서 공부해요!'), '學生이 學校에서 工夫해요!');
 });
 
+
+test('mixed Sino-Korean phrase annotates known words and preserves native Korean words', () => {
+  const convert = createHanjaConverter({
+    '현대': '現代',
+    '한국어': '韓國語',
+    '표준': '表準',
+    '발음': '發音',
+  });
+  assert.equal(convert('현대 한국어의 표준 발음 값이'), '現代 韓國語의 表準 發音 값이');
+});
+
 test('conversion is deterministic and leaves non-Hangul spans unchanged', () => {
   const input = '한국어 / Korean → українська 123';
   assert.equal(convertHangulToHanja(input), '韓國語 / Korean → українська 123');
