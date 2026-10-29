@@ -2,19 +2,19 @@
 
 | Task | Status | Acceptance evidence |
 |---|---|---|
-| Deterministic browser-local Hanja annotator | PARTIAL | `src/app/hanja.js` implements curated longest-match lexicon; focused tests added but not yet run locally. |
+| Deterministic browser-local Hanja annotator | PARTIAL | `src/app/hanja.js` now supports a broad generated word map with deterministic ranking and fail-closed whole-run segmentation; `scripts/prepare-hanja-dictionary.mjs` fetches pinned BSD-attributed libhangul-derived data and verifies Git blob hashes. Exact-head CI must verify download/build/runtime. |
 | Fourth output card and copy action | PARTIAL | `index.html` and `src/main.js` include Hanja result; primary output order is RR → IPA → Ukrainian → Hanja and a regression assertion covers that order. Exact-head CI pending. |
 | Preserve existing pipeline and CSP | PARTIAL | Hanja is a separate orthographic output and no network/API was added; built-artifact and deployed smoke still required. |
-| Full contextual conversion / broad dictionary | DEFERRED / BLOCKED | Requires reviewed morphological disambiguation or source-attributed licensed dictionary; the prototype intentionally does not guess unsupported spans. |
+| Full contextual conversion / morphological disambiguation | DEFERRED | The broad deterministic dictionary is now integrated into build preparation; contextual homograph disambiguation still requires morphology/context evidence and is intentionally not simulated. Unknown runs fail closed. |
 | Release readiness | NOT VERIFIED | Connector-only session had no local checkout/runtime. Exact-head CI and live browser smoke required. |
 
 ## Implementation contract
 
-- No neural model, external API, remote script, or new runtime dependency.
+- No neural model, external runtime API, remote runtime script, or new runtime dependency. Development/build preparation fetches only two pinned data files and verifies their Git blob hashes; the deployed browser loads the generated chunk from the same site.
 - Hanja is a fourth optional orthographic annotation; it must not alter Romanization, IPA, Ukrainian transcription, or their ordering.
 - Unknown Hangul runs are preserved whole unless they can be fully segmented into known lexicon entries and explicitly listed grammatical suffixes; punctuation, spacing, and non-Hangul spans are preserved.
 - The converter now avoids partial substitutions inside unknown runs (regression: 한국말 stays 한국말) and tests known compounds/suffixes. It remains context-insensitive for homographs.
-- The current table is intentionally small and manually authored. Do not claim complete coverage or contextual homograph disambiguation.
+- A small manually curated override table remains for reviewed high-confidence entries; the broader dictionary map is generated from the pinned libhangul-derived word inventory. Do not claim complete coverage or contextual homograph disambiguation.
 - Reviewed a promising deterministic dictionary source: HanjaKey's ~4.87 MB word inventory derived from libhangul (BSD 3-Clause per-file notice); did not vendor it because large-file contents could not be retrieved and hash-verified through this connector. NIKL-derived 20 MB dictionary definitions are CC BY-SA 2.0 KR and are unnecessary for conversion-only output.
 - Canonical details and examples: [Hanja implementation/evidence ledger](HANJA-RESEARCH-LAYER-2026-10-29.md).
 
