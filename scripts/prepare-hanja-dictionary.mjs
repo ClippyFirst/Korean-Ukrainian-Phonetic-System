@@ -119,7 +119,7 @@ export function renderDictionaryModule(wordMap) {
     '// Data: libhangul hanja.txt + hanja_words.txt; BSD 3-Clause per-file notice.',
     '// Runtime ranking is deterministic and context-insensitive; see docs/HANJA-RESEARCH-LAYER-2026-10-29.md.',
     `export const HANJA_WORD_MAP = Object.freeze(${JSON.stringify(object)}); `,
-    `export const HANJA_DICTIONARY_METADATA = Object.freeze({ sourceCommit: '${UPSTREAM_COMMIT}', wordCount: ${wordMap.size}, ranking: 'gloss-first; single-character source-rank sum; stable source order' });`,
+    `export const HANJA_DICTIONARY_METADATA = Object.freeze({ sourceCommit: '${UPSTREAM_COMMIT}', wordReadingCount: ${wordMap.size}, ranking: 'gloss-first; single-character source-rank sum; stable source order' });`,
     '',
   ].join('\n');
 }
