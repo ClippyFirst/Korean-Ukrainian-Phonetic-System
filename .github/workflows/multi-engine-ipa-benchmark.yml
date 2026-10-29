@@ -51,6 +51,7 @@ jobs:
         env:
           KOG2P_COMMIT: cbc69bbe1439862364d4ffd1552f59b930f655c7
           KOG2PADVANCED_COMMIT: 491b2d7269a4666b0d7556efb26755219f861163
+          HAMA_COMMIT: fb81fe97e54c00b3f73192b9351f96fcd4427b03
           HANGUL_TO_IPA_COMMIT: 942abf132ea969a7e3476a1487c06710fb8db74b
         run: |
           set -euo pipefail
@@ -59,12 +60,17 @@ jobs:
           # KoG2Padvanced is evaluated as an external checkout only; it is not copied into this repository.
           git clone https://github.com/seongmin-mun/KoG2Padvanced.git "$RUNNER_TEMP/KoG2Padvanced"
           git -C "$RUNNER_TEMP/KoG2Padvanced" checkout --detach "$KOG2PADVANCED_COMMIT"
+          git clone https://github.com/hamanlp/hama.git "$RUNNER_TEMP/hama"
+          git -C "$RUNNER_TEMP/hama" checkout --detach "$HAMA_COMMIT"
+          # HAMA is installed from its pinned external checkout for comparison only.
+          python -m pip install "$RUNNER_TEMP/hama/python"
           git clone https://github.com/stannam/hangul_to_ipa.git "$RUNNER_TEMP/hangul_to_ipa"
           git -C "$RUNNER_TEMP/hangul_to_ipa" checkout --detach "$HANGUL_TO_IPA_COMMIT"
           grep -qi "GNU GENERAL PUBLIC LICENSE" "$RUNNER_TEMP/KoG2P/LICENSE.md"
           grep -qi "MIT License" "$RUNNER_TEMP/hangul_to_ipa/LICENSE"
           echo "KoG2P pinned commit: $(git -C "$RUNNER_TEMP/KoG2P" rev-parse HEAD) (GPL-3.0; external checkout only)"
           echo "KoG2Padvanced pinned commit: $(git -C "$RUNNER_TEMP/KoG2Padvanced" rev-parse HEAD) (no license declared upstream; comparison-only external checkout, not vendored)"
+          echo "HAMA pinned commit: $(git -C "$RUNNER_TEMP/hama" rev-parse HEAD) (external checkout; LICENSE/metadata discrepancy noted in report)"
           echo "hangul_to_ipa pinned commit: $(git -C "$RUNNER_TEMP/hangul_to_ipa" rev-parse HEAD) (MIT; external checkout only)"
           echo "eSpeak NG runtime:"
           espeak-ng --version
