@@ -226,3 +226,38 @@ The latest workflow update enables the pinned CharsiuG2P checkpoint as a compari
 
 ### KoG2Padvanced adapter correction
 The first completed expanded run (40831542856) returned `BLOCKED_OR_ERROR` for KoG2Padvanced because its output contains mixed precomposed Hangul and compatibility jamo (first example: `유ㅣ칸`). This is classified as an adapter failure, not as a zero-accuracy engine result. The adapter now deterministically inserts an onset for isolated compatibility vowels, composes the jamo, and records invalid tokens individually instead of aborting the full batch. A focused regression test covers the observed form. The corrected adapter is pending the next exact-head CI run.
+
+
+## First completed expanded benchmark subset (run 40831542856)
+
+This run completed successfully with the corrected IPA affricate normalization and five timing repetitions. It predates HAMA, neural candidates, and the KoG2Padvanced adapter repair. The tables below are valid for the candidates that produced output; KoG2Padvanced is deliberately unscored in this run.
+
+### UGTPHON (2,703 occurrences; 1,907 unique words)
+
+| Candidate | Exact match ↑ | CER ↓ | PER ↓ | Feature proxy ↓ | Coverage | Repeated median total time | p50 / p95 per-word |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 53.002% | 9.170% | 9.614% | 4.877% | 99.815% | 716.5 ms | 0.339 / 0.623 ms |
+| g2pk 0.9.4 | 53.089% | 9.229% | 9.647% | 4.895% | 100% | 43,203.6 ms | 22.826 / 23.499 ms |
+| phonemize 2.0.1 | 42.545% | 14.353% | 14.258% | 7.706% | 100% | 328.8 ms (batch) | N/A (batch) |
+| KoG2P (2019) | 27.303% | 19.512% | 19.644% | 7.018% | 100% | 667.0 ms | 0.346 / 0.422 ms |
+| kokorog2p 0.9.15 | 23.714% | 21.182% | 21.633% | 6.948% | 100% | 1,437.6 ms | 0.748 / 0.777 ms |
+| hangul_to_ipa | 16.241% | 24.805% | 30.809% | 11.778% | 100% | 2,149.7 ms | 1.078 / 1.502 ms |
+| eSpeak NG Korean | 8.139% | 33.610% | 38.316% | 13.410% | 100% | 68.1 ms (batch) | N/A (batch) |
+| KoG2Padvanced | **Not scored** | — | — | — | 0% usable IPA | — | — |
+
+### SIGMORPHON 2021 (999 occurrences; 999 unique words)
+
+| Candidate | Exact match ↑ | CER ↓ | PER ↓ | Feature proxy ↓ | Coverage | Repeated median total time | p50 / p95 per-word |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| ClippyFirst native | 35.772% | 14.698% | 16.234% | 7.549% | 99.900% | 302.4 ms | 0.266 / 0.441 ms |
+| g2pk 0.9.4 | 35.335% | 14.822% | 16.313% | 7.599% | 100% | 22,814.2 ms | 22.779 / 23.216 ms |
+| phonemize 2.0.1 | 28.929% | 17.439% | 18.266% | 8.462% | 100% | 279.6 ms (batch) | N/A (batch) |
+| KoG2P (2019) | 18.719% | 21.833% | 23.663% | 8.608% | 100% | 344.5 ms | 0.342 / 0.392 ms |
+| kokorog2p 0.9.15 | 14.114% | 24.449% | 26.888% | 9.302% | 100% | 750.9 ms | 0.745 / 0.778 ms |
+| hangul_to_ipa | 8.909% | 29.845% | 36.347% | 12.814% | 100% | 1,114.3 ms | 1.074 / 1.503 ms |
+| eSpeak NG Korean | 4.304% | 40.724% | 48.705% | 17.787% | 100% | 42.8 ms (batch) | N/A (batch) |
+| KoG2Padvanced | **Not scored** | — | — | — | 0% usable IPA | — | — |
+
+The timing samples are repeated full-dataset calls after the initial scored call has warmed the engine. Batch timing is not directly comparable to per-word calls. The original cold/first-pass runtime remains in the JSON artifact, and repeated sample ranges are available in the same report JSON. The run's exact logs and JSON artifact are at [run 40831542856](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40831542856), artifact [12879665317](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40831542856/artifacts/12879665317).
+
+These are preliminary subset results only. The current exact-head run must still validate HAMA, both neural candidates, the repaired KoG2Padvanced adapter, and the updated batch warm-up metadata before the final all-candidate table is frozen.
