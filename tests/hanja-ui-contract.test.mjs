@@ -6,6 +6,7 @@ const read = (path) => readFileSync(new URL(path, import.meta.url), 'utf8');
 const html = read('../index.html');
 const main = read('../src/main.js');
 const hanja = read('../src/app/hanja.js');
+const packageJson = JSON.parse(read('../package.json'));
 
 test('Hanja is an additional output and has an accessible copy control', () => {
   assert.match(html, /id="panel-hanja"[^>]*data-result-panel="hanja"/u);
