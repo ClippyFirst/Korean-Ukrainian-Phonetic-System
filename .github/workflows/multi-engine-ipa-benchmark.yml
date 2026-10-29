@@ -164,6 +164,7 @@ jobs:
             --hangul-to-ipa-root "$HANGUL_TO_IPA_ROOT" \
             --phonemize-root "$PHONEMIZE_BASELINE_DIR" \
             --phonemize-output "$RUNNER_TEMP/phonemize-predictions.json" \
+            --timing-repetitions 5 \
             > "$RUNNER_TEMP/multi-engine-ipa-stdout.json"
           python - "$RUNNER_TEMP/multi-engine-ipa-report.json" <<'PY'
           import json, sys
@@ -226,6 +227,7 @@ jobs:
       - name: Run the same pinned engine portfolio on SIGMORPHON lexical gold
         env:
           KOG2P_ROOT: ${{ runner.temp }}/KoG2P
+          KOG2PADVANCED_ROOT: ${{ runner.temp }}/KoG2Padvanced
           HANGUL_TO_IPA_ROOT: ${{ runner.temp }}/hangul_to_ipa
           PHONEMIZE_BASELINE_DIR: ${{ runner.temp }}/phonemize-baseline
         run: |
@@ -239,6 +241,8 @@ jobs:
             --hangul-to-ipa-root "$HANGUL_TO_IPA_ROOT" \
             --phonemize-root "$PHONEMIZE_BASELINE_DIR" \
             --phonemize-output "$RUNNER_TEMP/sigmorphon-phonemize-predictions.json" \
+            --kog2padvanced-root "$KOG2PADVANCED_ROOT" \
+            --timing-repetitions 5 \
             > "$RUNNER_TEMP/sigmorphon-multi-engine-ipa-stdout.json"
           python - "$RUNNER_TEMP/sigmorphon-multi-engine-ipa-report.json" <<'PY'
           import json, sys
