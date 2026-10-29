@@ -107,7 +107,12 @@ function renderHanja(value){
   if(!hanjaOutput)return;
   hanjaOutput.textContent=(fullHanjaConverter||convertHangulToHanja)(value);
   const groups=hanjaGroupsForText(value);
-  if(!groups.length||groups.every(group=>loadedHanjaGroups.has(group)))return;
+  if(!groups.length)return;
+  if(groups.every(group=>loadedHanjaGroups.has(group))){
+    if(!fullHanjaConverter)fullHanjaConverter=createHanjaConverter(loadedHanjaWordMap);
+    hanjaOutput.textContent=fullHanjaConverter(value);
+    return;
+  }
   if(hanjaEngineStatus)hanjaEngineStatus.textContent='Завантаження локального словника з цього сайту…';
   const requestedValue=value;
   Promise.all(groups.map(loadHanjaGroup)).then(()=>{
