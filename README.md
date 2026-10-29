@@ -339,6 +339,6 @@ The RR display is a separate diagnostic branch:
 
 Normative reference: [National Institute of Korean Language — Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do).
 
-## Optional Hanja research layer (2026-10-29)
+## Optional Hanja output (deterministic preview)
 
-Hanja is being evaluated as a separate fourth output, not as a replacement for the existing sequence **Romanization → IPA → Ukrainian transcription**. Contextual Hangul-to-Hanja conversion is lexical disambiguation; it must preserve particles, endings, native Korean words, and uncertain spans rather than mechanically substituting characters. The initial candidate review and integration/evaluation gates are documented in [the Hanja research-layer review](docs/HANJA-RESEARCH-LAYER-2026-10-29.md). No Hanja engine or model weights are integrated into the public runtime by this research note.
+The browser includes an additional, deterministic Hangul→Hanja lexical annotation card using a small hand-curated dictionary. It runs locally with no model or network calls, and does not affect Romanization, IPA, or Ukrainian transcription. Unknown text is preserved, but the limited dictionary and longest-match algorithm can mis-annotate substrings; it is a research preview, not a full morphological or context-sensitive converter. See [the implementation and evidence ledger](docs/HANJA-RESEARCH-LAYER-2026-10-29.md).
