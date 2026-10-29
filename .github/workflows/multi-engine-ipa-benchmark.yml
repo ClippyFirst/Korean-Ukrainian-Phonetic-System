@@ -311,8 +311,9 @@ jobs:
           retention-days: 30
 
   neural-korean-g2p:
-    name: Pinned CharsiuG2P inference (research opt-in)
-    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26' && contains(github.event.pull_request.labels.*.name, 'enhancement')
+    name: Pinned CharsiuG2P inference (comparative-only; no weights redistributed)
+    # Explicitly enabled for the user's comparison request; checkpoint weights license remains unresolved.
+    if: github.head_ref == 'bench/extended-metrics-runtime-2026-10-29'
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
@@ -686,7 +687,7 @@ jobs:
           retention-days: 30
   paired-neural-report:
     name: Pair pinned neural outputs with all engine predictions
-    if: github.head_ref == 'research/neural-korean-g2p-v3-2026-10-26'
+    if: github.head_ref == 'bench/extended-metrics-runtime-2026-10-29'
     needs: [multi-engine-ipa, licensed-byt5-korean-g2p]
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -711,13 +712,10 @@ jobs:
           name: multi-engine-korean-ipa-diagnostic
           path: ${{ runner.temp }}/baseline-artifact
 
-      - name: Download pinned neural inference artifact
+      - name: Download pinned neural inference artifact from this run
         uses: actions/download-artifact@v4
         with:
-          name: neural-korean-g2p-diagnostic-40285484220
-          run-id: 40285484220
-          repository: ${{ github.repository }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: neural-korean-g2p-diagnostic-${{ github.run_id }}
           path: ${{ runner.temp }}/neural-artifact
 
       - name: Download licensed ByT5 tiny inference artifact from this run
@@ -734,7 +732,7 @@ jobs:
             --neural-report "$RUNNER_TEMP/neural-artifact/charsiu-ugtphon.json" \
             --baseline-report "$RUNNER_TEMP/baseline-artifact/multi-engine-ipa-report.json" \
             --dataset-name UGTPHON \
-            --neural-run-id 40285484220 --baseline-run-id "$GITHUB_RUN_ID" \
+            --neural-run-id "$GITHUB_RUN_ID" --baseline-run-id "$GITHUB_RUN_ID" \
             --provenance-json "$RUNNER_TEMP/neural-artifact/model-provenance.json" \
             --output "$RUNNER_TEMP/combined-results/charsiu-ugtphon-all-engines.json"
           python scripts/compare_neural_with_multiengine.py \
