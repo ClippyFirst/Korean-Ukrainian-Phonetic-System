@@ -379,7 +379,8 @@ For the benchmark portfolio, distinguish executable IPA candidates from related 
 - **kokorog2p 0.9.15:** `PENDING_CI`. Source inspection confirmed an explicit Korean `output="ipa"` mode (`KoreanG2P`); benchmark disables morphology and external lexicon lookup, pins Apache-2.0 package version 0.9.15, and records that it is g2pK-derived rather than a fully independent algorithm family. The prior invalid 1.0.0 pin was removed.
 - **SMART-G2P:** `SUPPLEMENTARY_NOT_INDEPENDENT`; code-mixed text normalization layer that delegates to other G2P engines.
 - **HAMA:** `NOT_YET_ELIGIBLE` until Korean-trained model support is demonstrated.
-- **CharsiuG2P multilingual ByT5:** `SEPARATE_BENCHMARK_PATH`; dedicated script exists, but the research workflow is opt-in and weights licensing remains unresolved.
+- **CharsiuG2P multilingual ByT5:** `SEPARATE_BENCHMARK_PATH`; dedicated script exists, but the research workflow remains opt-in because weights licensing is unresolved.
+- **willwade/byt5-g2p-multilingual-tiny:** `PENDING_CI`; the pinned CC BY-SA 4.0 checkpoint is now enabled on the comparison branch; outputs exclude weights/caches and training-source overlap caveats remain.
 - **UGTPHON retrieval-augmented compositional method:** `BLOCKED_IMPLEMENTATION` until an official inference checkpoint/package is located and training/test overlap is reviewed.
 
 Canonical evidence, candidate acceptance criteria, and links are maintained in `docs/EXTENDED-BENCHMARK-METRICS-2026-10-29.md`. Do not call a candidate verified until it has run on both pinned IPA splits, produced a report artifact, and passed adapter tests.
