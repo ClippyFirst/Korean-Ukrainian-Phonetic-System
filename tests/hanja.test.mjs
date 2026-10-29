@@ -13,6 +13,12 @@ test('particles, endings, punctuation, whitespace, and unknown Hangul survive', 
 
 test('loanwords and unsupported spans are not guessed', () => {
   assert.equal(convertHangulToHanja('컴퓨터와 서울'), '컴퓨터와 서울');
+  assert.equal(convertHangulToHanja('한국말'), '한국말');
+});
+
+test('known compounds and grammatical suffixes convert without partial unknown-word substitutions', () => {
+  assert.equal(convertHangulToHanja('한국어교육은 중요하다.'), '韓國語敎育은 重要하다.');
+  assert.equal(convertHangulToHanja('학생이 학교에서 공부해요!'), '學生이 學校에서 工夫해요!');
 });
 
 test('conversion is deterministic and leaves non-Hangul spans unchanged', () => {
