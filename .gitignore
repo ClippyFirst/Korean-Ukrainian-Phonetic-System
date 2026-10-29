@@ -1,3 +1,5 @@
 reports/nikl/*.json
 reports/nikl/*.html
 reports/nikl/*.txt
+
+src/app/hanja-dictionary-data.js
