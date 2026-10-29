@@ -36,7 +36,14 @@ const HANGUL_RUN = /[\uAC00-\uD7A3]+/gu;
 
 function createWordMap(dictionary = {}) {
   const map = new Map();
-  if (dictionary instanceof Map) {
+  if (typeof dictionary === 'string') {
+    for (const line of dictionary.split(/\\r?\\n/u)) {
+      if (!line) continue;
+      const separator = line.indexOf(':');
+      if (separator <= 0 || separator === line.length - 1) continue;
+      map.set(line.slice(0, separator), line.slice(separator + 1));
+    }
+  } else if (dictionary instanceof Map) {
     for (const [reading, hanja] of dictionary) {
       if (reading && hanja) map.set(reading, hanja);
     }
