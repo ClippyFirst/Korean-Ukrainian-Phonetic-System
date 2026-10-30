@@ -3946,3 +3946,61 @@ PR #397 is open, unmerged, and GitHub currently reports it mergeable. The implem
 - Public URLs: [service](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/index.html) · [methodology](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#methodology-02c-kozak-kim).
 - PR #371 remains open and untouched; it is a separate benchmark-metrics workstream. Independent specialist-adjudicated Korean pronunciation gold and Ukrainian target gold remain evidence-limited; this release makes no new claim of independent linguistic certification. Python CLI/API Super-soft parity remains deferred.
 - Release classification for this scope: **deployed documentation/service-clarity update, CI-green and live-smoke-verified**. The underlying research prototype is not thereby certified as a fully accurate Korean-to-Ukrainian pronunciation standard.
+
+
+# Three-layer Korean methodology and evidence reconciliation — 2026-10-30
+
+**Branch:** `docs/korean-methodology-evidence-debate-2026-10-30`  
+**Base:** `main` at `f93ae007592f216ccd2493f6652d228b876c8338`  
+**Scope:** Korean repository only; documentation, methodology and evidence presentation. No phonological rules, lexical IPA, Ukrainian target mappings, engine code or third-party weights changed.
+
+## Work performed
+
+- Applied the agreed review sequence: Superpowers-style repository grounding and structure first; separate academic-logic and scientific-evidence review passes next; adjudication against repository code, benchmark logs and source provenance last. These are applied review procedures, not claims that the upstream skills' autonomous agents executed or communicated.
+- Preserved the existing three-layer information architecture: public service methodology, full technical methodology, and claim-to-evidence register.
+- Updated `docs/methodology.md` to replace the stale 2026-10-24-only benchmark interpretation with the expanded 2026-10-29 results, exact denominators, paired intervals, metric definitions, timing scopes, neural baseline, and unresolved evidence gates.
+- Updated `system.html` with a public-facing extended benchmark subsection and current main CI status. The site now openly presents the strong CharsiuG2P reference-match results and their contamination/licensing/convention caveats.
+- Added `docs/METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md` to map key public claims to code, tests, runs, statuses and permitted wording.
+- Added `docs/METHODOLOGY-DEBATE-REVIEW-2026-10-30.md` to record the two independent review lenses, disagreements and evidence-based resolutions.
+- Updated README links to the expanded benchmark report and both methodology governance documents.
+
+## Verified evidence used
+
+- Starting main: `f93ae007592f216ccd2493f6652d228b876c8338`.
+- Main browser tests/build [41110109093](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41110109093): **PASS**, 1,340 / 1,340 browser tests, Vite build; Python 3.11, 3.12, 3.13, wheel-install and teacher-corpus audit passed.
+- System verification [41110109184](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41110109184): **PASS**; Python regression/data integrity passed; official NIKL metadata-only inventory **SKIPPED**.
+- Master/research artifacts [41110109342](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41110109342): **PASS**.
+- Pages deploy [41110109231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41110109231): **PASS**.
+- Extended benchmark [40843579685](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579685), head `a10e2bb7ea9b636a816f13c972589fd0d8e505ec`: baseline multi-engine and separate Charsiu/ByT5 jobs completed, but final pairing/aggregation job **FAILED** with missing `per_engine_occurrences`. Standalone per-engine outputs are retained as research-branch evidence; the complete combined neural ledger is not accepted as verified.
+
+## Task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Three-layer methodology structure | DONE_VERIFIED as documentation architecture | Public page, technical methodology, claims register and debate record now cross-link. |
+| Refresh native vs g2pK benchmark interpretation | DONE_VERIFIED for cited research run | Exact denominators, paired deltas/intervals, coverage and timing scope recorded. |
+| Public disclosure of CharsiuG2P observed scores | DONE_VERIFIED as descriptive result | Scores displayed with overlap, convention, weights-license and repeatability caveats. |
+| Integrate PR #371 benchmark implementation into main | BLOCKED / NOT IN SCOPE OF THIS DOCS BRANCH | PR remains open, diverged (117 ahead / 26 behind); reconcile source changes and CI before any port/merge. |
+| Complete neural pairing/aggregation artifact | BLOCKED by run failure | Fix report schema so baseline emits `per_engine_occurrences`; rerun exact-head workflow; verify complete joined per-engine ledger. |
+| Independent Korean IPA normative gold | BLOCKED / EVIDENCE-LIMITED | Requires source-grounded representative holdout and independent Korean phonetics adjudication. |
+| Independent Ukrainian target gold / reader validation | BLOCKED / EVIDENCE-LIMITED | Requires approved IPA-aligned Ukrainian target forms and specialist/reader evaluation. |
+| Charsiu decontaminated generalization claim | BLOCKED / EVIDENCE-LIMITED | Audit full training manifest or build a decontaminated independent holdout; current public overlap is 508 UGTPHON forms and 729/999 SIGMORPHON forms. |
+| Charsiu weights redistribution | BLOCKED | Need explicit verified weights license; do not redistribute weights/caches. |
+| Python CLI/API Super-soft parity | DEFERRED | Browser-service scope; do not imply parity. |
+
+## PR and branch reconciliation
+
+- PR #371 `bench/extended-metrics-runtime-2026-10-29` was inspected and compared with current main. It is 117 commits ahead and 26 behind, status `diverged`, GitHub mergeable=false. It is intentionally left open and untouched; no blind merge or bulk port was performed.
+- No other branch or PR was altered in this work.
+
+## Commands and checks
+
+- No local shell commands or local test suite are claimed: this connector session has GitHub repository read/write access but no checked-out working tree or local dependency installation.
+- Verified GitHub Actions runs listed above and inspected relevant job logs, including the exact benchmark metric lines and aggregation failure.
+- Documentation changes require exact-head CI, link checks and Pages smoke before being marked fully accepted/deployed. No merge, release or production-setting change was performed in this session.
+
+## Readiness
+
+The existing service remains deployed and CI/live-smoke verified at the previous main commit. This documentation branch is a review candidate, not yet production-published. The project remains a research prototype with strong engineering and benchmark evidence, but not an independently certified Korean-to-Ukrainian pronunciation standard.
+
+**Next genuine blockers:** exact-head CI for this documentation branch; resolve PR #371's divergent history and failed aggregation separately; obtain independent Korean IPA and Ukrainian target gold; resolve Charsiu model provenance/license and contamination risk before any generalization claim.
