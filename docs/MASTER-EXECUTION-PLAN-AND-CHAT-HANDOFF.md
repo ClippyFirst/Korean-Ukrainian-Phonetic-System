@@ -3615,3 +3615,13 @@ This section supersedes earlier branch/PR status statements above where they con
 - **Regression:** updated `tests/hanja-ui-contract.test.mjs` to assert the exact new order.
 - **Status:** PARTIAL until exact-head CI, build, and post-deployment Pages smoke confirm the order.
 - **Scope:** no Korean processing, IPA values, Ukrainian adaptation, Hanja dictionary, or network behavior changed.
+
+
+# Super-soft mode — 100% input coverage requirement (2026-10-30)
+
+- **User requirement:** the Kozak Kim Korean engine must gain a distinct opt-in Super-soft mode with **100% technical coverage of modern Hangul syllable input**, comparable in coverage intent to other G2P engines. This is not a request to claim 100% pronunciation accuracy.
+- **Definition:** every modern Hangul syllable receives a non-empty Ukrainian candidate and IPA/typed phonetic result; every source span is accounted for in provenance; literals are preserved; unresolved morphology must fall back to an explicitly low-confidence orthographic/phonemic path rather than disappearing.
+- **Pipeline invariant:** source Hangul → structural analysis → Korean phonology or typed orthographic fallback → IPA/typed result → Ukrainian IPA adapter → Ukrainian output. No direct Hangul→Ukrainian bypass, neural model, or runtime API.
+- **Mode separation:** Strict remains fail-closed; current Soft and Practical contracts remain unchanged; Super-soft is a separate opt-in maximum-coverage tier. Heuristic fallback never becomes exact/NIKL evidence and never writes into the lexical registry.
+- **Acceptance:** exhaustive end-to-end coverage of all 11,172 modern Hangul syllables, complete reachable IPA-target inventory, adversarial unknown/morphological/mixed-script tests, source-span trace accounting, strict-mode regression, cross-runtime parity, build and deployed smoke. Measure coverage separately from pronunciation accuracy.
+- **Current status: TODO — specification recorded, implementation not yet started.** The existing Practical mode is not 100% coverage: unresolved morphology, unsupported Jamo, and unmapped IPA can still produce empty output. See [Super-soft 100% coverage specification](SUPER-SOFT-100-PERCENT-COVERAGE-SPEC-2026-10-30.md).
