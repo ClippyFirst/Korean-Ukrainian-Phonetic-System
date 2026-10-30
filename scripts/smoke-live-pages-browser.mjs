@@ -158,7 +158,7 @@ try {
   assert.equal((await page.locator('#result-ukrainian').innerText()).trim(), 'Немає підтвердженого запису');
   assert.equal(await page.locator('#ukrainian-copy-button').isVisible(), false);
   assert.ok(ipa.length > 100, 'long input should produce a substantial IPA result');
-  assert.match(status, /g2pK JS/u, 'the live page must stay in the practical JavaScript-port mode');
+  assert.match(status, /g2pK ·/u, 'the live page must stay in the practical JavaScript-port mode');
   assert.deepEqual(pageErrors, [], 'the live page must not throw browser runtime errors');
 
 

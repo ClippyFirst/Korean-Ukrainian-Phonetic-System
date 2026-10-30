@@ -28,6 +28,7 @@ test('Pages smoke contracts cover the mode selector and system-page title', () =
 
 test('live browser smoke verifies inline research candidate and neutral confirmed-result option', () => {
   assert.match(browserSmoke, /#ua-unconfirmed-button/u);
+  assert.match(browserSmoke, /g2pK ·/u, 'live smoke must check the current ordinary-mode engine label');
   assert.match(browserSmoke, /#ua-candidate-button/u);
   assert.match(browserSmoke, /#candidate-value/u);
   assert.match(browserSmoke, /#candidate-note/u);
