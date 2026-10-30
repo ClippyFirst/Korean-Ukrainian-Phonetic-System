@@ -37,7 +37,7 @@ test('methodology reports the latest expanded benchmark, historical snapshot and
   for (const term of ['1 340 / 1 340','41110109093','41110109184','41110109342','41110109231','53,002%','53,089%','35,772%','35,335%','88,531%','70,971%','508 унікальними тестовими формами','729 тестових форм','PR','40843579685','Історичний benchmark 24 жовтня','53,1827%','53,3333%','35,8074%','35,4062%','не дають підстав проголосити один рушій універсальним переможцем']) {
     assert.ok(system.includes(term), 'methodology must include ' + term);
   }
-  for (const term of ['coverage-adjusted exact-match rate','feature-weighted phonological error-rate proxy','47.6×','CharsiuG2P','training manifest','per_engine_occurrences']) {
+  for (const term of ['coverage-adjusted exact match','feature-weighted phonological error-rate proxy','47.6×','CharsiuG2P','training manifest','per_engine_occurrences']) {
     assert.ok(methodology.includes(term), 'technical methodology must include ' + term);
   }
   assert.match(evidenceRegister, /M-07[\s\S]*88\.531%/u);
