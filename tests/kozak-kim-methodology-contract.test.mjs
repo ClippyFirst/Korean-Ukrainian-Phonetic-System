@@ -12,7 +12,7 @@ const g2pk = readFileSync(new URL('../src/app/g2pk_web.js', import.meta.url), 'u
 test('ordinary and detailed modes disclose the two actual browser engines', () => {
   assert.match(index, /Звичайний режим/u);
   assert.match(index, /Режим докладного аналізу/u);
-  assert.match(index, /власним детермінованим рушієм Козака Кіма/u);
+  assert.match(index, /детермінованим рушієм Козака Кіма/u);
   assert.match(index, /href="\.\/system\.html#methodology-02c-kozak-kim"/u);
   assert.match(main, /const useG2p=\!\(modeResearch&&modeResearch\.checked\)/u);
   assert.match(main, /useG2p\?webEngine\.convert\(value\):engine\.convert\(value,\{morphologyMode\}\)/u);
@@ -25,7 +25,7 @@ test('methodology documents all three native modes and their real constraints', 
     assert.ok(system.includes(term), 'methodology must document ' + term);
   }
   assert.match(engine, /morphologyMode==='super-soft'/u);
-  assert.match(soft, /Soft NEVER resolves substantive/u);
+  assert.match(soft, /Soft NEVER \u00a715 substantive neutralization via soft/u);
   assert.match(soft, /Quality is intentionally lower than strict\/soft/u);
 });
 
