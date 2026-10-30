@@ -1,7 +1,7 @@
 # Super-soft Korean → Ukrainian engine mode: 100% input coverage contract
 
 **Date:** 2026-10-30  
-**Status:** APPROVED REQUIREMENT / IMPLEMENTATION TODO  
+**Status:** DONE_VERIFIED for browser implementation and coverage acceptance on PR head 75a49524184be96bf0b492541815a8783ee80cb0; deployment smoke and independent pronunciation-accuracy evaluation remain pending/evidence-limited.  
 **Runtime constraint:** deterministic, browser-local; no neural model and no runtime API.
 
 ## 1. Product requirement
@@ -93,13 +93,13 @@ No neural model, remote service, browser network call, or nondeterministic looku
 
 | Work item | Status | Acceptance evidence |
 |---|---|---|
-| Preserve Strict/Soft/Practical contracts | TODO | Existing suites remain unchanged and pass |
-| Add Super-soft mode API and opt-in UI | TODO | Browser UI + API tests |
-| Add total Korean-span accounting | TODO | No missing trace spans; exact offsets |
-| Add conservative orthographic fallback for unresolved Hangul | TODO | Exhaustive 11,172-syllable end-to-end test; low-confidence trace |
-| Make IPA→Ukrainian adapter total for reachable Super-soft IPA | TODO | Exhaustive IPA inventory audit and zero unmapped target tokens |
-| Preserve literals and typed handling for Jamo/archaic input | TODO | Mixed Unicode regression corpus |
-| Cross-runtime parity | TODO | Shared fixture tests |
+| Preserve Strict/Soft/Practical contracts | DONE_VERIFIED | Exact-head regression suite passes; strict fail-closed behavior retained |
+| Add Super-soft mode API and opt-in UI | DONE_VERIFIED | Browser API, research-only UI toggle, measured coverage display, and static UI tests pass |
+| Add total Korean-span accounting | DONE_VERIFIED | Full adversarial NIKL master passage has 100% trace coverage; per-span source offsets are attached |
+| Add conservative orthographic fallback for unresolved Hangul | DONE_VERIFIED | §30 fallback path is exercised directly below lexical lookup; trace type and low confidence asserted |
+| Make IPA→Ukrainian adapter total for reachable Super-soft IPA | DONE_VERIFIED | All 11,172 modern Hangul syllables yield IPA and a non-empty Ukrainian candidate through the existing IPA adapter |
+| Preserve literals and typed handling for Jamo/archaic input | DONE_VERIFIED | Compatibility Jamo, decomposed Jamo, punctuation, digits, and emoji preservation tests pass |
+| Cross-runtime parity | DEFERRED | Python pipeline/API currently expose only strict/soft modes; Super-soft is intentionally scoped to the browser-native service runtime. No parity claim is made. |
 | Independent pronunciation accuracy evaluation | BLOCKED / EVIDENCE-LIMITED | Requires independently adjudicated held-out Korean pronunciation gold; coverage tests alone cannot establish accuracy |
 
 ## 8. Non-goals and release wording
@@ -126,3 +126,21 @@ Implemented in the browser research engine:
 - Added exhaustive tests over all 11,172 modern Hangul syllables, morphology fallback, literal preservation, mode isolation, and UI wiring.
 
 **Not yet DONE_VERIFIED:** tests have been authored but must pass on the exact branch head. The exhaustive inventory test is the acceptance gate for 100% syllable coverage; independent pronunciation accuracy remains evidence-limited and is not implied by coverage.
+
+
+## 10. Exact-head verification — 2026-10-30
+
+**DONE_VERIFIED for the browser maximum-coverage contract on PR head 75a49524184be96bf0b492541815a8783ee80cb0.**
+
+- Exhaustive modern Hangul inventory: all 11,172/11,172 syllable blocks produced non-empty IPA and an IPA-adapted Ukrainian candidate; no source Hangul leaked into IPA or candidate output.
+- Registered strict-mode morphology gaps: all 13 adversarial cases produced a candidate with complete Hangul and trace coverage while strict controls remained unresolved.
+- Full NIKL master passage fixture: 100% Hangul candidate coverage and 100% source-span trace coverage, with no unresolved placeholder spans.
+- Dedicated §30 fallback test: typed orthographic-phonemic fallback is exercised with lexical lookup deliberately bypassed; the public engine continues to prefer exact sourced lexical entries.
+- Literal/Jamo tests and UI wiring/coverage display tests pass.
+- npm test: 1325 passed, 0 failed (19.8 s).
+- npm run build: passed. Existing bundle-size warning remains (dictionary chunks above 500 kB); it is not a build failure.
+- CI: browser regression/build, Python regression/data integrity on Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser-G2P integration, master table/research corpus artifacts, and exhaustive test-case register extraction all succeeded.
+- Official NIKL source inventory job was skipped by workflow configuration (metadata-only); do not report it as passed.
+- Local clone/test execution was unavailable because the container could not resolve github.com; exact-head GitHub Actions provide the verification evidence above.
+
+Remaining release gate: merge and verify deployed Pages smoke. Independent pronunciation accuracy remains evidence-limited. Python CLI/API parity is deferred because those entry points currently expose strict/soft only.
