@@ -3703,3 +3703,44 @@ This is a test-only follow-up to the final deployed verification above.
 - **Exact-head evidence:** 1,328 browser tests passed / 0 failed; Vite production build passed; Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, system verification, master table/research corpus artifacts, and exhaustive test-case register extraction passed.
 - **Task ledger:** modern Hangul maximum coverage, exact mixed-Unicode trace accounting, literal/archaic-Jamo/malformed-code-unit preservation, and live Super-soft Pages smoke — DONE_VERIFIED. Independent Korean pronunciation and Ukrainian target accuracy — BLOCKED / EVIDENCE-LIMITED. Python CLI/API parity — DEFERRED.
 - **No runtime behavior or IPA correspondence changed in PR #382.** The 100% coverage claim remains limited to modern Hangul syllable blocks, not archaic Jamo or pronunciation accuracy.
+
+# Super-soft long-passage quality audit continuation (2026-10-30)
+
+**Branch:** research/super-soft-long-passage-quality-audit-2026-10-30  
+**PR:** [#384](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/384)  
+**Base:** main at 9351c5ad5e09291d2dfa314df5b6472231dc55e8.
+
+## Finding and bounded implementation
+
+The existing Super-soft contract verifies non-empty IPA/candidate output and exact source-span accounting. It correctly warns that coverage is not accuracy, but the result metadata and browser status line did not quantify the share of low-confidence syllables or separate target-adapter states. This made long stress-text output harder to assess at a glance.
+
+The continuation adds the following transparent counters without changing any pronunciation rule or Ukrainian mapping:
+
+- low-confidence syllable count and share (also exposed as heuristic_share);
+- model-selected, provisional, and unavailable target-adapter counts;
+- missing-IPA count;
+- explicit null for independently verified pronunciation rate, with status not_independently_adjudicated;
+- a browser status-line disclosure of low-confidence share;
+- regression coverage for a morphology-sensitive token and the full NIKL master-passage fixture.
+
+## Current task ledger
+
+| Item | Status | Evidence / acceptance |
+|---|---|---|
+| Base branch and latest main inspected | DONE_VERIFIED | Default branch main, base SHA above; recent commits and open PRs inspected |
+| Existing Super-soft implementation and fixture reused | DONE_VERIFIED | src/app/engine.js, src/app/engine_convert.js, tests/super-soft-coverage.test.mjs, NIKL master-passage fixture |
+| Low-confidence and target certainty metrics | PARTIAL | Implemented on PR #384; exact-head test/CI verification in progress |
+| UI disclosure of heuristic share | PARTIAL | Implemented on PR #384; UI contract and browser CI verification in progress |
+| Independent Korean pronunciation accuracy | BLOCKED / EVIDENCE-LIMITED | Requires independently adjudicated held-out Korean pronunciation gold; master passage is a stress fixture, not gold |
+| Independent Ukrainian target quality | BLOCKED / EVIDENCE-LIMITED | Requires blinded review of frozen, adjudicated IPA inputs |
+| Python CLI/API parity for Super-soft | DEFERRED | Current scope is browser-native service only |
+
+## Verification record
+
+The first exact-head CI attempt on 8ecb8dd803a72fd273ab1b85d5f5db0039f0508f exposed a mismatch in the newly authored test: it assumed each trace item represented exactly one Hangul code point, while some lexical spans cover multiple code points. The runtime correctly counted every source code point covered by a trace interval. The test was corrected to match intervals against exact UTF-16 offsets. The corrected head is 08e438338389015917dff002bbd6b01ce0889308; the browser regression test and build, Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, and system verification have succeeded on that head. Remaining queued workflows must complete before marking all checks DONE_VERIFIED.
+
+No local npm/Python/browser command is claimed in this connector-only execution. Do not infer accuracy from candidate coverage, test pass counts, or the IPA mapping table.
+
+## Next acceptance gate
+
+Confirm the remaining exact-head workflows finish successfully; inspect the stress fixture's computed counts; verify the browser status line discloses the heuristic share. Only source-backed and independently adjudicated cases may be promoted into pronunciation gold or production rules.
