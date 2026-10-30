@@ -32,7 +32,7 @@ test('Super-soft uncertainty markup follows actual trace confidence without muta
   const display=renderSuperSoftCandidate(result.trace,original);
   assert.equal(result.candidate_ukrainian,original,'the underlying IPA-derived candidate remains unchanged');
   assert.ok(display.includes('[')&&display.includes(']'),'at least one low-confidence trace span must be bracketed');
-  assert.equal(display.replace(/\\[[^\\]]*\\]/gu,'').length>0,true,'confident portions remain unbracketed');
+  assert.equal(display.replace(/\[[^\]]*\]/gu,'').length>0,true,'confident portions remain unbracketed');
   assert.equal(display, result.trace.map(item=>{
     const value=String(item.candidateOutput??item.output??'');
     const uncertain=item.confidence==='low'||item.uncertainty?.confidence==='low'||
