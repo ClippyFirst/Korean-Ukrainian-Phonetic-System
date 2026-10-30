@@ -33,13 +33,18 @@ These are three policies within one native engine, not three separate engines. S
 
 ## How to interpret the comparative measurements
 
-The latest documented paired diagnostics in `docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md` compare Korean IPA, not Ukrainian target quality:
+The corrected multi-engine run [41138727409](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41138727409), artifact `13018218724`, compares Korean IPA on pinned UGTPHON and SIGMORPHON test data. It does not measure Ukrainian target quality.
 
-- On UGTPHON, the native engine abstains on 48 of 2,703 eligible occurrences. On the 2,655 shared scored occurrences, native Strict has 53.1827% exact match and 9.1883% CER; g2pK has 53.3333% exact match and 9.2414% CER. The small exact-match difference favors g2pK (+0.1506 percentage points), while CER is slightly lower for native; the paired CER interval crosses zero.
-- On SIGMORPHON, native Strict has 35.8074% exact match and 14.7037% CER on 997 shared scored words; g2pK has 35.4062% exact match and 14.8222% CER. Exact match favors native by 0.4012 percentage points; the paired CER interval crosses zero.
+| Dataset | Engine | Scored / eligible | Abstentions | Exact match | CER | PER | Feature proxy |
+|---|---|---:|---:|---:|---:|---:|---:|
+| UGTPHON | ClippyFirst native | 2,698 / 2,703 | 5 | 53.0022% | 9.1697% | 9.6139% | 4.8765% |
+| UGTPHON | g2pk 0.9.4 | 2,703 / 2,703 | 0 | 53.0892% | 9.2285% | 9.6472% | 4.8952% |
+| SIGMORPHON 2021 | ClippyFirst native | 998 / 999 | 1 | 35.7716% | 14.6978% | 16.2343% | 7.5491% |
+| SIGMORPHON 2021 | g2pk 0.9.4 | 999 / 999 | 0 | 35.3353% | 14.8222% | 16.3126% | 7.5990% |
 
-These results are diagnostic rather than normative: UGTPHON is noisy user-generated text, SIGMORPHON has its own IPA convention, and the g2pK comparison shares the project's segment-level IPA renderer. They do not score IPA-to-Ukrainian adaptation. Therefore they do not establish a universal winner or prove that Kozak Kim is more accurate for every input. Its engineering value is transparent rule licensing, source-backed exact exceptions, controlled abstention, and a trace that makes the derivation inspectable.
+Rates are calculated over each engine's scored predictions; coverage and abstentions are separate. They are not automatically a paired comparison because denominators differ. Exact/CER, PER, and the feature-weighted proxy each select their own closest IPA gold alternative and denominator. PER is a broad-IPA segment metric. The feature-weighted error is a project-defined proxy, not a standardized phonological feature error rate. Latency p95 uses nearest-rank.
 
+These results remain diagnostic rather than normative. UGTPHON includes test-informed material; SIGMORPHON is a public lexical test file with its own transcription convention. The g2pK comparison shares the project's segment-level IPA renderer. The benchmark artifact's occurrence ledgers and aggregate totals were independently checked for ordering, source-identity alignment, and recomputation, but that validates report consistency, not the corpus annotations or linguistic correctness. Neither corpus evaluates the IPA-to-Ukrainian target adapter. The results do not establish a universal winner or prove independent Korean pronunciation accuracy.
 
 ## Evidence classes
 
