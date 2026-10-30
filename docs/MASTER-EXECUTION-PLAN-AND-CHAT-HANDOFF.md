@@ -3916,3 +3916,18 @@ PR #387 was merged to `main` as `a1c03fec1316433ab6f496b7ed88002c53c93067`.
 - Connector-only execution limitation remains: no local checkout was available, so no local shell test commands are claimed; the exact-head GitHub Actions results above are the verification evidence.
 
 **Current acceptance state:** implementation and all PR-head CI gates listed above are green at code/documentation head `e3331ce8cdb24146bf79471390284a076aac5684`. The PR is suitable for review/merge from a CI perspective, but deployment/live-browser acceptance is pending after merge. Research accuracy is not certified by CI and remains evidence-limited.
+
+
+## Final PR-head rerun confirmation — 2026-10-30 18:35 UTC
+
+The handoff-only branch head `f7177a03c849c03d7c0f77d0aafb05206f55b34d` has now also completed its rerun:
+- Browser regression tests/build: **PASS** (1,340 / 1,340; Vite build) — [run 41108026830](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026830).
+- Python regression/data integrity: **PASS** — [run 41108026830](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026830).
+- Python 3.11/3.12/3.13, teacher-corpus audit, wheel installation: **PASS** — [run 41108026860](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026860).
+- Browser G2P integration: **PASS** — [run 41108026931](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026931).
+- Corpus generation: **PASS** — [run 41108026834](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026834).
+- Exhaustive test-case register extraction: **PASS** — [run 41108026977](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026977).
+- Official NIKL metadata-only inventory: **SKIPPED** in the system workflow; it is not represented as a successful live inventory/crawl.
+- Live Pages deployment/Playwright smoke remains post-merge acceptance, not part of these PR-head checks.
+
+PR #397 is open, unmerged, and GitHub currently reports it mergeable. The implementation is CI-green and review-ready; the public site is not updated until the PR is merged and Pages deployment passes.
