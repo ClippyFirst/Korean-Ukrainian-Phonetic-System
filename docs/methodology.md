@@ -6,6 +6,41 @@ Korean orthography → Korean phonology → Korean phonological rules → Korean
 
 The system must never collapse these layers into a direct character substitution.
 
+## Runtime architecture: two browser engines, one IPA-first target adapter
+
+The public browser service exposes two distinct pronunciation paths. They are not two labels for the same implementation.
+
+| Public mode | Korean surface-pronunciation engine | Role and boundary |
+|---|---|---|
+| **Звичайний режим** | Locally bundled JavaScript port of g2pK, adapted from `ntdgo/korean-pronunciation 1.0.1` | Practical, high-coverage browser path. It uses the port's heuristic annotation and does not reproduce the original Python g2pK package's MeCab morphological analysis. |
+| **Режим докладного аналізу** | The project's own deterministic **Kozak Kim** engine | Evidence-gated research path. It applies this repository's source-licensed phonological rules, exact lexical records, explicit uncertainty states, and inspectable IPA-to-Ukrainian trace. It does not call g2pK. |
+
+Both paths converge on the same architectural boundary: Korean surface spelling → IPA representation → the project's IPA-to-Ukrainian adapter → Ukrainian practical orthography. Neither mode is permitted to generate the Ukrainian output by a parallel Hangul-to-Ukrainian character map.
+
+The browser g2pK port is vendored under `src/vendor/g2pk/`; its application adapter is `src/app/g2pk_web.js`. The pinned port is called with `descriptive: false`, `verbose: false`, `groupVowels: false`, and `toSyl: true`. The port and its browser adaptation are attributed under Apache-2.0 in `public/THIRD_PARTY_NOTICES.txt` and `public/LICENSES/Apache-2.0.txt`. It runs locally in the browser without Python, MeCab, a server, or runtime network requests. A finite exact-form list may correct Korean surface forms only where an identified NIKL source directly supports the correction; raw vendored-port behavior remains separately testable, and corrections are not generalized to unseen words.
+
+The Kozak Kim browser engine is implemented in `src/app/`: `engine.js` is its entry point; `engine_shared.js` handles Hangul structure and shared inventories; `engine_rules_ctx.js` handles within-word contextual rules; `engine_rules_phrase.js` handles a separate, restricted phrase-boundary pass; `engine_lexical.js` supplies exact lexical records; `engine_convert.js` coordinates the conversion; and `engine_ipa.js` owns IPA-to-Ukrainian mapping. The soft-mode policy is isolated in `soft_morphology.js`; Super-soft uncertainty brackets are a presentation annotation over the existing trace, not a change to IPA.
+
+### The three Kozak Kim modes
+
+- **Strict** is the default. It applies canonical correspondences, exact sourced lexical entries, and phonological rules only when the relevant environment is licensed. If the engine cannot establish a morphology-sensitive condition, it abstains or marks the target as unresolved/provisional rather than promoting a guess.
+- **Soft** is an opt-in, limited hypothesis layer for a closed set of formal endings inside one Korean eojeol. It can cautiously extend selected formal liaison (R002), ㅎ deletion (R003), and palatalization (R007) patterns. It does not license substantive liaison under NIKL §15, R009/R010–R016, or transformations across whitespace. Such outputs carry low-confidence status.
+- **Super-soft** is a separate opt-in maximum-coverage tier in the browser. It combines available Soft hypotheses with wider explicitly low-confidence practical fallbacks and, if needed, a typed orthographic-phonemic IPA fallback. For all 11,172 modern precomposed Hangul syllable blocks, it aims to provide an IPA or typed fallback and a Ukrainian candidate, with source spans accounted for in the trace. Low-confidence/provisional Ukrainian fragments are bracketed individually. Compatibility Jamo, decomposed Jamo, archaic Jamo, punctuation, and other non-syllable content are preserved literally rather than assigned invented pronunciations.
+
+These are three policies within one native engine, not three separate engines. Super-soft's 100% coverage target is a software coverage contract for the defined modern Hangul syllable inventory; it is not a 100% pronunciation-accuracy claim. The browser UI exposes Strict, Soft, and Super-soft. Python CLI/API support is narrower and must not be assumed to have Super-soft parity.
+
+**Canonical researcher-facing explanation:** [the service methodology page](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#methodology-02c-kozak-kim), with [ordinary-mode g2pK details](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#methodology-02a).
+
+## How to interpret the comparative measurements
+
+The latest documented paired diagnostics in `docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md` compare Korean IPA, not Ukrainian target quality:
+
+- On UGTPHON, the native engine abstains on 48 of 2,703 eligible occurrences. On the 2,655 shared scored occurrences, native Strict has 53.1827% exact match and 9.1883% CER; g2pK has 53.3333% exact match and 9.2414% CER. The small exact-match difference favors g2pK (+0.1506 percentage points), while CER is slightly lower for native; the paired CER interval crosses zero.
+- On SIGMORPHON, native Strict has 35.8074% exact match and 14.7037% CER on 997 shared scored words; g2pK has 35.4062% exact match and 14.8222% CER. Exact match favors native by 0.4012 percentage points; the paired CER interval crosses zero.
+
+These results are diagnostic rather than normative: UGTPHON is noisy user-generated text, SIGMORPHON has its own IPA convention, and the g2pK comparison shares the project's segment-level IPA renderer. They do not score IPA-to-Ukrainian adaptation. Therefore they do not establish a universal winner or prove that Kozak Kim is more accurate for every input. Its engineering value is transparent rule licensing, source-backed exact exceptions, controlled abstention, and a trace that makes the derivation inspectable.
+
+
 ## Evidence classes
 
 FACT: directly supported by a cited normative, peer-reviewed or technical source.
