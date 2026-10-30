@@ -3769,3 +3769,17 @@ Confirm the remaining exact-head workflows finish successfully; inspect the stre
 - The 27-control regression protects existing evidence-backed cases; it does not certify the remaining stress-passage forms or independently adjudicate Ukrainian target quality.
 
 PR #384 remains the proposed change set. No unrelated benchmark PR was modified.
+
+# Post-merge status and live Super-soft confidence smoke (2026-10-30)
+
+PR #384 was merged into main by squash commit f9cefe405b80a802424a30af91c3b3e096d7d1ac.
+
+- Main-branch browser tests: 1,332 passed, 0 failed; Vite production build passed in run 41053956460.
+- Python 3.11/3.12/3.13, clean wheel installation, teacher-corpus audit, system verification, and browser G2P integration passed in runs 41053956460, 41053956498, and 41053956423.
+- GitHub Pages deployment run 41053956599 completed successfully. HTTP smoke passed for index.html, system.html, and the first JS asset; Playwright live browser smoke passed the adversarial Korean passage and existing Hanja, clipboard, accessibility/mobile, mode-disclosure, and methodology checks.
+- Public service: https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/ .
+- The deployed Super-soft mode now displays low-confidence share beside candidate and trace coverage. A follow-up live smoke assertion is being added on branch docs/live-super-soft-confidence-smoke-2026-10-30 to verify the exact numeric UI label; the previous live smoke already verified the Super-soft path, candidate, IPA, 100% modern-Hangul coverage, and low-confidence disclosure.
+
+**Superseding status:** PR #384 is MERGED; deployment run 41053956599 is SUCCESS. The earlier statement that PR #384 remained open/no deployment had not yet been refreshed at the time it was appended and is superseded by this section.
+
+**Readiness:** software implementation and public deployment are verified. Independent Korean pronunciation accuracy and Ukrainian target quality remain BLOCKED / EVIDENCE-LIMITED pending adjudicated gold and specialist review. Python CLI/API Super-soft parity remains DEFERRED. The service is a deterministic research prototype, not a linguistically accuracy-certified product.
