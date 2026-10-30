@@ -206,6 +206,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const applied=ruleSets[i]||[];
     const unresolvedMorphologyFlags=['__palatalizationUnlicensed','__hDeletionUnlicensed','__saisiotInsertionUnlicensed','__crossWordLiaisonUnlicensed','__complexLiaisonUnlicensed','__complexHAspirationUnlicensed','__substantiveLiaisonUnlicensed','__rieulGiyeokUnlicensed'];
     if(superSoftOn&&unresolvedMorphologyFlags.some(flag=>u[flag])){
+      u.__superSoftUnresolvedFlags=unresolvedMorphologyFlags.filter(flag=>u[flag]);
       u.__superSoftFallback=true;
       for(const flag of unresolvedMorphologyFlags)delete u[flag];
     }
@@ -327,6 +328,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa,
       phoneticResultType:u.__superSoftFallback?'orthographic-phonemic-fallback':'surface-ipa',
       confidence:u.__superSoftFallback||superSoftOn&&(u.__practicalHeuristic||u.__softHeuristic)?'low':'ungraded',
+      unresolvedMorphologyFlags:u.__superSoftUnresolvedFlags||[],
+      uncertainty:u.__superSoftFallback?{kind:'unresolved-morphology',strategy:'orthographic-phonemic-fallback',confidence:'low'}:superSoftOn&&(u.__practicalHeuristic||u.__softHeuristic)?{kind:'heuristic-morphology',confidence:'low'}:null,
       targetStatus:targetFromIpa.status,
       targetReason:targetFromIpa.reason||null,
       candidateOutput:targetFromIpa.candidateText||null,
