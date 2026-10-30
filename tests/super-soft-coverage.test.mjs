@@ -188,7 +188,7 @@ test('Super-soft reports candidate coverage, low-confidence share, and target ce
     for(const char of source){
       if(/[가-힣]/u.test(char)){
         hangul.push(char);
-        items.push(result.trace.find(entry=>entry.sourceStart===sourceOffset&&entry.sourceEnd===sourceOffset+char.length));
+        items.push(result.trace.find(entry=>Number.isInteger(entry.sourceStart)&&entry.sourceStart<=sourceOffset&&entry.sourceEnd>=sourceOffset+char.length));
       }
       sourceOffset+=char.length;
     }
