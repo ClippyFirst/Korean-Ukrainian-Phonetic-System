@@ -182,8 +182,16 @@ test('Super-soft reports candidate coverage, low-confidence share, and target ce
   const fixture=readFileSync(new URL('./fixtures/nikl-all-articles-master-passage-2026-10-22.txt',import.meta.url),'utf8');
   for(const source of ['짧은소리의',fixture]){
     const result=engine.convert(source,SUPER);
-    const hangul=[...source].filter(char=>/[가-힣]/u.test(char));
-    const items=hangul.map((char,index)=>result.trace.find(entry=>entry.source===char));
+    const hangul=[];
+    const items=[];
+    let sourceOffset=0;
+    for(const char of source){
+      if(/[가-힣]/u.test(char)){
+        hangul.push(char);
+        items.push(result.trace.find(entry=>entry.sourceStart===sourceOffset&&entry.sourceEnd===sourceOffset+char.length));
+      }
+      sourceOffset+=char.length;
+    }
     const lowConfidence=items.filter(item=>item&&(item.confidence==='low'||['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status))).length;
     const provisional=items.filter(item=>item&&(item.candidateStatus==='provisional'||item.targetStatus==='provisional'||item.targetReason==='provisional_mapping_requires_review')).length;
     const modelSelected=items.filter(item=>item&&item.targetStatus==='model-selected').length;
