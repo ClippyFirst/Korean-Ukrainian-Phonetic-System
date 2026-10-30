@@ -130,4 +130,8 @@ test('service exposes the opt-in control only inside research mode and labels it
   assert.match(main,/super-soft-low-confidence/u);
   assert.match(main,/покриття складів Hangul/u);
   assert.match(main,/r\.coverage\.input_covered/u);
+  const methodology=readFileSync(new URL('../system.html',import.meta.url),'utf8');
+  assert.match(methodology,/methodology-02a-super-soft/u);
+  assert.match(methodology,/11&nbsp;172 сучасні склади Hangul/u);
+  assert.match(methodology,/не означає 100% правильної вимови/u);
 });
