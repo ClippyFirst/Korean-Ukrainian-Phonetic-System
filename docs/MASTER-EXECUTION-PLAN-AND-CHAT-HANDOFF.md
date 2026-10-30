@@ -3691,3 +3691,15 @@ This section is the latest authoritative status and supersedes the earlier pendi
 - **Task ledger:** Super-soft browser implementation — DONE_VERIFIED; exhaustive 11,172-syllable IPA + Ukrainian candidate coverage — DONE_VERIFIED; source-span trace integrity on tested mixed Unicode — DONE_VERIFIED; Super-soft live Pages UI smoke — DONE_VERIFIED; Strict/Soft/Practical regression and Python data checks — DONE_VERIFIED; independent pronunciation accuracy — BLOCKED / EVIDENCE-LIMITED; Python CLI/API parity — DEFERRED.
 - **Readiness:** the deterministic browser feature is deployed and software-verified. This is not a claim that Korean pronunciation accuracy or Ukrainian target quality has been independently established; those linguistic evidence gates remain open.
 - **Local execution limitation:** no local npm/Python/browser commands are claimed from this connector-only session. The exact-head and post-merge GitHub Actions results above are the verification evidence.
+
+
+# Super-soft Unicode edge-case verification follow-up (2026-10-30)
+
+This is a test-only follow-up to the final deployed verification above.
+
+- **PR:** [#382](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/382), tested head `a40f0c87468bb1a410861899b9e9795c1ae219cd`, merged to `main` as `d700f1662c86324fba2c01df9d2aa46422cb9ab2`.
+- **Added regression:** explicitly checks archaic Hangul Jamo U+1113, U+115F, U+11F9 and an isolated high surrogate. They remain literal source spans with status `literal`, identical output, empty IPA, and exact trace offsets; no pronunciation is guessed.
+- **Scope:** the test includes one modern Hangul syllable and confirms 100% syllable coverage plus complete trace accounting of the mixed input. Archaic Jamo and malformed code units are not counted as modern Hangul pronunciation coverage; they are preserved source text.
+- **Exact-head evidence:** 1,328 browser tests passed / 0 failed; Vite production build passed; Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, system verification, master table/research corpus artifacts, and exhaustive test-case register extraction passed.
+- **Task ledger:** modern Hangul maximum coverage, exact mixed-Unicode trace accounting, literal/archaic-Jamo/malformed-code-unit preservation, and live Super-soft Pages smoke — DONE_VERIFIED. Independent Korean pronunciation and Ukrainian target accuracy — BLOCKED / EVIDENCE-LIMITED. Python CLI/API parity — DEFERRED.
+- **No runtime behavior or IPA correspondence changed in PR #382.** The 100% coverage claim remains limited to modern Hangul syllable blocks, not archaic Jamo or pronunciation accuracy.

@@ -167,3 +167,10 @@ The Super-soft-specific live UI path was not part of that first deployment smoke
 - Pages deployment and live Playwright smoke passed in run `41033991218`. The live script exercised the Super-soft research toggle and asserted 100% Hangul coverage, 100% trace accounting, a Ukrainian candidate, IPA, and low-confidence disclosure. It also retained the existing practical, Hanja, clipboard, mobile trace, and methodology checks.
 - The optional official NIKL metadata-only inventory job was skipped by workflow configuration.
 - **Final status:** technical maximum coverage and deployed browser behavior are DONE_VERIFIED. Independent pronunciation accuracy and independent Ukrainian target adjudication remain BLOCKED / EVIDENCE-LIMITED pending gold data and expert review. Python CLI/API parity remains DEFERRED. No 100%-accuracy claim is supported.
+
+
+## 13. Archaic Jamo and malformed Unicode preservation (2026-10-30)
+
+PR #382 (`a40f0c87468bb1a410861899b9e9795c1ae219cd`) merged as `d700f1662c86324fba2c01df9d2aa46422cb9ab2`. A new regression explicitly verifies archaic Hangul Jamo U+1113, U+115F, U+11F9 and an isolated high surrogate are preserved as literal source spans with status, identical output, empty IPA, and exact trace offsets. The same mixed input contains one modern Hangul syllable and asserts 100% coverage for that syllable plus complete trace accounting.
+
+Exact-head CI passed: **1,328 tests, 0 failures**, production build, Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, system verification, research artifacts, and test-case register extraction. This is a test-only change; no runtime behavior changed. Archaic Jamo/malformed code units remain preserved text, not covered Korean pronunciation input.
