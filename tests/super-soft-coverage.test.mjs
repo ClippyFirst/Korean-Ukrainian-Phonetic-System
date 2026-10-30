@@ -207,5 +207,6 @@ test('Super-soft reports candidate coverage, low-confidence share, and target ce
     assert.equal(result.coverage.verified_pronunciation_rate,null);
     assert.equal(result.coverage.pronunciation_verification_status,'not_independently_adjudicated');
     assert.equal(result.coverage.complete,true);
+    if(source===fixture) console.log('SUPER_SOFT_LONG_PASSAGE_METRICS '+JSON.stringify(result.coverage));
   }
 });
