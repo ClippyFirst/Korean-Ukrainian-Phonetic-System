@@ -144,3 +144,12 @@ Implemented in the browser research engine:
 - Local clone/test execution was unavailable because the container could not resolve github.com; exact-head GitHub Actions provide the verification evidence above.
 
 Remaining release gate: merge and verify deployed Pages smoke. Independent pronunciation accuracy remains evidence-limited. Python CLI/API parity is deferred because those entry points currently expose strict/soft only.
+
+
+## 11. Post-merge status and trace-integrity hardening (2026-10-30)
+
+The implementation was merged to `main` as commit `10ce8b580af145da58c41f7a66c7752f021ca13f` through [PR #379](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/379). Exact-head GitHub Actions completed successfully: 1,326 browser tests passed, the static build passed, Python 3.11/3.12/3.13 and data-integrity checks passed, and the Pages deployment plus general live browser smoke passed. The optional official NIKL metadata-only inventory job was skipped by configuration.
+
+The Super-soft-specific live UI path was not part of that first deployment smoke. A follow-up [PR #380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/380) adds that live assertion and hardens source trace alignment: failed monotonic source matches are no longer retried from offset zero, and untraced UTF-16 source offsets are reported explicitly. It adds a repeated/mixed-Unicode regression requiring every trace range to point to its exact original substring and collectively cover the complete source. PR #380 is pending exact-head CI at the time of this update; its status must remain PARTIAL until all required checks pass.
+
+**Current ledger:** browser implementation and 11,172-syllable technical coverage — DONE_VERIFIED on merged main; general Pages deployment smoke — DONE_VERIFIED; Super-soft-specific deployed UI smoke and exact-offset hardening — PARTIAL pending PR #380 CI; Python CLI/API parity — DEFERRED; independent pronunciation accuracy — BLOCKED / EVIDENCE-LIMITED pending adjudicated held-out gold.
