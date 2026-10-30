@@ -177,3 +177,27 @@ test('service exposes the opt-in control only inside research mode and labels it
   assert.match(methodology,/11&nbsp;172 сучасні склади Hangul/u);
   assert.match(methodology,/не означає 100% правильної вимови/u);
 });
+
+test('Super-soft reports candidate coverage, low-confidence share, and target certainty as separate metrics',()=>{
+  const fixture=readFileSync(new URL('./fixtures/nikl-all-articles-master-passage-2026-10-22.txt',import.meta.url),'utf8');
+  for(const source of ['짧은소리의',fixture]){
+    const result=engine.convert(source,SUPER);
+    const hangul=[...source].filter(char=>/[가-힣]/u.test(char));
+    const items=hangul.map((char,index)=>result.trace.find(entry=>entry.source===char));
+    const lowConfidence=items.filter(item=>item&&(item.confidence==='low'||['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status))).length;
+    const provisional=items.filter(item=>item&&(item.candidateStatus==='provisional'||item.targetStatus==='provisional'||item.targetReason==='provisional_mapping_requires_review')).length;
+    const modelSelected=items.filter(item=>item&&item.targetStatus==='model-selected').length;
+    const unavailable=items.filter(item=>item&&item.targetStatus==='unavailable'&&item.candidateStatus!=='provisional').length;
+    assert.equal(result.coverage.input_total,hangul.length);
+    assert.equal(result.coverage.low_confidence_units,lowConfidence);
+    assert.equal(result.coverage.low_confidence_share,hangul.length?lowConfidence/hangul.length:1);
+    assert.equal(result.coverage.heuristic_share,result.coverage.low_confidence_share);
+    assert.equal(result.coverage.target_provisional_units,provisional);
+    assert.equal(result.coverage.target_model_selected_units,modelSelected);
+    assert.equal(result.coverage.target_unavailable_units,unavailable);
+    assert.equal(result.coverage.verified_pronunciation_units,null);
+    assert.equal(result.coverage.verified_pronunciation_rate,null);
+    assert.equal(result.coverage.pronunciation_verification_status,'not_independently_adjudicated');
+    assert.equal(result.coverage.complete,true);
+  }
+});
