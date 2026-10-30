@@ -218,3 +218,15 @@ test('Super-soft confidence share is zero when the input contains no modern Hang
   assert.equal(result.coverage.heuristic_share,0);
   assert.equal(result.coverage.verified_pronunciation_rate,null);
 });
+
+test('Super-soft preserves the strict engine output for exact source-backed passage controls',()=>{
+  const controls=['국립국어원','굳이','같이','읽다','읽고','맑다','맑고','밟다','넓죽하다','값어치','꽃잎','솜이불','색연필','신라','국물','먹는','놓고','좋던','많고','싫어','밭이','맛있다','멋있다','서울역','검열','금융','수많은'];
+  for(const source of controls){
+    const strict=engine.convert(source,STRICT);
+    const superSoft=engine.convert(source,SUPER);
+    assert.equal(superSoft.ipa,strict.ipa,source+': Super-soft must not replace exact/source-backed IPA');
+    assert.equal(superSoft.surfaceHangul,strict.surfaceHangul,source+': Super-soft must preserve the sourced surface form');
+    assert.equal(superSoft.ukrainian||superSoft.candidate_ukrainian||'',strict.ukrainian||strict.candidate_ukrainian||'',source+': Super-soft must not change the IPA-derived target for a sourced control');
+    assert.ok(superSoft.coverage.complete,source+': trace and candidate coverage remain complete');
+  }
+});
