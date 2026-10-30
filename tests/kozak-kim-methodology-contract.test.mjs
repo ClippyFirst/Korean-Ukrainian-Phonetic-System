@@ -4,6 +4,8 @@ import { test } from 'node:test';
 
 const index = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const system = readFileSync(new URL('../system.html', import.meta.url), 'utf8');
+const evidenceRegister = readFileSync(new URL('../docs/METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md', import.meta.url), 'utf8');
+const debateReview = readFileSync(new URL('../docs/METHODOLOGY-DEBATE-REVIEW-2026-10-30.md', import.meta.url), 'utf8');
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const engine = readFileSync(new URL('../src/app/engine.js', import.meta.url), 'utf8');
 const soft = readFileSync(new URL('../src/app/soft_morphology.js', import.meta.url), 'utf8');
@@ -42,6 +44,25 @@ test('methodology reports corrected benchmark metrics, coverage, and evidence li
     'не доводить лінгвістичну правильність'
   ]) {
     assert.ok(system.includes(term), 'methodology must include ' + term);
+  }
+});
+
+test('methodology evidence register and debate review preserve current evidence boundaries', () => {
+  for (const term of [
+    'M-05','53.0022%','53.0892%','35.7715%','35.3353%',
+    'McNemar exact two-sided p=0.125','13019822857',
+    'M-13','M-14','M-15','DONE_VERIFIED','BLOCKED / EVIDENCE-LIMITED',
+    'CharsiuG2P','weights','NIKL metadata-only inventory'
+  ]) {
+    assert.ok(evidenceRegister.includes(term), 'evidence register must include ' + term);
+  }
+  for (const term of [
+    'не є незалежним людським рецензуванням',
+    'mattpocock/skills','DietrichGebert/ponytail',
+    'McNemar exact two-sided p=0.125','58.79×',
+    'Charsiu inference було SKIPPED','issue #337'
+  ]) {
+    assert.ok(debateReview.includes(term), 'debate review must include ' + term);
   }
 });
 
