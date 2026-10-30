@@ -451,3 +451,12 @@ CharsiuG2P inference, ByT5 inference, and neural pairing remain **SKIPPED** unde
 PR [#403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/403) merged as `f2e870eb45edc821af712c243774baa549e2ded1`. Exact-head verification [41143561334](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143561334) passed. Post-merge main checks passed: system [41143654455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143654455), Python/web/wheel/teacher audit [41143653449](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143653449), artifacts [41143653435](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143653435), and Pages deploy/live smoke [41143653453](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143653453). NIKL metadata-only inventory remains **SKIPPED**.
 
 The documentation-head benchmark rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) completed **PASS** and uploaded artifact `13019822857`. Independent artifact checks passed for all 10 ordered ledgers on both datasets, occurrence IDs, source identity alignment, and recomputed scored/exact totals. Aggregate metric values are unchanged from artifact `13018218724`. The SIGMORPHON native exact rate is correctly rounded to **35.7715%** (357/998 = 0.357715); all active docs and contract assertions now use that value.
+
+
+## Methodology claim register and adjudication record — 2026-10-31
+
+Two complementary evidence documents were selectively ported from PR #398 after updating their statuses and figures to current main:
+- `docs/METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md` maps public claims to code, tests, sources and artifacts.
+- `docs/METHODOLOGY-DEBATE-REVIEW-2026-10-30.md` records structured academic/evidence/engineering review lenses and adjudication rules.
+
+The review record explicitly distinguishes structured analytical perspectives from independent human expert review. The claim register uses the corrected SIGMORPHON native exact rate of 35.7715%, reports paired exact-classification McNemar p=0.125, marks historical Charsiu results as historical, and preserves unresolved licensing, training-overlap, Korean IPA gold and Ukrainian target gold gates. The new docs are linked from README and covered by methodology contract tests.

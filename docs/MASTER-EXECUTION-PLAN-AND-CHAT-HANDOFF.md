@@ -4061,6 +4061,19 @@ The documentation-head rerun [41141286672](https://github.com/ClippyFirst/Korean
 - ordered occurrence IDs, identical source identity triples across engines, and recomputed scored/exact counts all **PASS**;
 - all aggregate metric values match the previously inspected artifact `13018218724` for both datasets.
 
-**Rounding correction:** SIGMORPHON native exact match is 357/998 = 0.357715, i.e. **35.7715%** to four decimal places (not 35.7715%). The earlier 35.7715% transcription was a rounding typo; no underlying count or metric changed. Corrected consistently in `system.html`, `docs/methodology.md`, this register, and the methodology contract test.
+**Rounding correction:** SIGMORPHON native exact match is 357/998 = 0.357715, i.e. **35.7715%** to four decimal places (not 35.7716%). The earlier 35.7716% transcription was a rounding typo; no underlying count or metric changed. Corrected consistently in `system.html`, `docs/methodology.md`, this register, and the methodology contract test.
 
 Neural CharsiuG2P, ByT5, and paired neural jobs were **SKIPPED** under the default-off opt-in. This run does not resolve independent Korean IPA gold, Ukrainian target gold, checkpoint licensing, or training-overlap uncertainty.
+
+
+## Selective port of methodology evidence register and review record — 2026-10-31
+
+The useful methodology work from open PR [#398](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/398) is being selectively ported, not merged wholesale. Two new canonical documents are added:
+- `docs/METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md`: public-claim → implementation/test/source/artifact mapping with DONE_VERIFIED / PARTIAL / BLOCKED / DEFERRED statuses.
+- `docs/METHODOLOGY-DEBATE-REVIEW-2026-10-30.md`: structured academic/evidence/engineering review lenses and adjudication rules.
+
+Both were rewritten against the current main state: PRs #401–#404, corrected metrics, final artifact `13019822857`, current CI, and current licensing/reviewer blockers. Stale #398 claims about a statistically noticeable SIGMORPHON advantage were removed; paired exact-classification McNemar p=0.125 is now recorded as non-significant. Historical Charsiu scores remain explicitly historical because current inference was skipped.
+
+**Important distinction:** the review record documents structured analytical perspectives based on published skill instructions. It does not claim independent human review, autonomous external agents, or participation by the skill authors. Issue [#337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337) still has no qualified independent reviewer submissions.
+
+The new documents are linked from README and guarded by the methodology contract test. No pronunciation rules, IPA values, Ukrainian target mappings, or runtime behavior changed.

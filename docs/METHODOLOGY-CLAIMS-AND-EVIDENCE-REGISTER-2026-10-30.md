@@ -1,0 +1,58 @@
+# Методологія: реєстр тверджень і доказів — оновлено 2026-10-31
+
+## Призначення
+
+Це доказовий індекс публічних і дослідницьких тверджень корейсько-українського сервісу. Він пов'язує кожне важливе формулювання з кодом, тестом, першоджерелом або відтворюваним вимірюванням. Документ **не замінює** `research/SOURCE-REGISTER.csv`, `research/RULE-COVERAGE.csv`, benchmark-suite register або машинні звіти: він відповідає на інше запитання — що саме можна безпечно стверджувати на підставі наявних доказів.
+
+## Статуси
+
+- **DONE_VERIFIED** — реалізація або вимірювання відтворюється, а визначені acceptance criteria мають конкретні докази.
+- **PARTIAL** — частина реалізації/вимірювання є, але повні acceptance criteria не виконані.
+- **BLOCKED / EVIDENCE-LIMITED** — потрібен незалежний gold, фахове adjudication, дозвіл або інший конкретний зовнішній доказ.
+- **DEFERRED** — явно поза поточним обсягом.
+
+## Реєстр тверджень
+
+| ID | Твердження | Статус | Докази | Дозволене формулювання | Не стверджувати |
+|---|---|---|---|---|---|
+| M-01 | Вебсервіс має два різні browser pronunciation paths | DONE_VERIFIED | `src/app/g2pk_web.js`, `src/app/engine.js`, browser contracts, `docs/methodology.md` | Звичайний режим використовує локальний JS-порт g2pK; докладний режим — власний Kozak Kim | Що це два режими одного й того самого рушія |
+| M-02 | Обидва browser paths формують український кандидат через IPA-first adapter | DONE_VERIFIED | `src/app/engine_ipa.js`, `tests/ipa-first-runtime-invariant.test.mjs`, trace/runtime tests | Український кандидат проходить через спільний IPA→український адаптер | Що український вихід незалежно обчислюється прямою заміною Hangul-графем |
+| M-03 | Native engine має Strict, Soft і Super-soft | DONE_VERIFIED | `src/app/engine_convert.js`, `src/app/soft_morphology.js`, methodology/coverage contracts | Це три політики одного native engine з різними межами припущень | Що це три незалежні рушії або що Super-soft гарантує правильну вимову |
+| M-04 | Super-soft покриває всі 11 172 сучасні складові блоки Hangul у визначеному software contract | DONE_VERIFIED — inventory contract | `tests/super-soft-coverage.test.mjs` та fixtures | 100% технічного покриття визначеного набору сучасних складових блоків | 100% лексичної, морфологічної або фонетичної точності |
+| M-05 | Native і g2pK мають близькі exact-match результати на двох діагностичних корпусах | DONE_VERIFIED як відтворюване вимірювання; generalization EVIDENCE-LIMITED | Run [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672), artifact `13019822857`; 10 ordered ledgers per corpus | UGTPHON: native 1,430/2,698 scored = 53.0022% (5 abstentions), g2pK 0.9.4 1,435/2,703 = 53.0892%. SIGMORPHON: native 357/998 scored = 35.7715% (1 abstention), g2pK 0.9.4 353/999 = 35.3353%. Paired exact-classification McNemar exact two-sided p=0.125 on each corpus. | Що один рушій статистично або універсально кращий; що це нормативна точність; що exact-match вимірює український target quality |
+| M-06 | У конкретному Python benchmark harness native мав менший час виконання, ніж g2pK | DONE_VERIFIED лише для цього runner/harness | Artifact `13019822857`, UGTPHON unique-word runtime, 1,907 words, one warm-up plus five repetitions | Median total time: native 712.053 ms, g2pK 41,863.406 ms (≈58.79× у цьому harness); native p95 0.611322 ms/word, g2pK p95 22.270451 ms/word | Універсальне прискорення для браузера, пристрою, production workload або іншого timing scope |
+| M-07 | CharsiuG2P показував значно вищий raw reference match в історичному comparative-only run | PARTIAL / HISTORICAL; generalization BLOCKED | Історичний run [40843579685](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579685); поточний run [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) пропустив Charsiu inference | Історично спостерігалися 88.531% UGTPHON і 70.971% SIGMORPHON; ці значення не є результатом поточного corrected benchmark | Публікувати їх як актуальне порівняння, gold oracle або доказ незалежного узагальнення |
+| M-08 | CharsiuG2P training contamination виключено | BLOCKED / EVIDENCE-LIMITED | Доступний public training file має потенційні перетини з 508 UGTPHON і 729/999 SIGMORPHON тестових форм; повний checkpoint manifest відсутній | Ризик перетину відомий, фактичне використання кожної форми у навчанні не доведене | Стверджувати як доведений leakage або як гарантовано чистий holdout |
+| M-09 | CharsiuG2P checkpoint weights мають підтверджену redistribution license | BLOCKED | У доступних checkpoint metadata немає підтвердженої явної ліцензії саме ваг | Не розповсюджувати ваги; окремо перевіряти код, модель, tokenizer і dataset licenses | Приписувати вагам MIT/Apache без підтвердження |
+| M-10 | Український IPA-to-target layer незалежно валідований | BLOCKED / EVIDENCE-LIMITED | Немає незалежно adjudicated Ukrainian target gold і user study | Це практична модель із простежуваним IPA-derived шляхом | Що українські форми оптимальні, нормативні або експертно сертифіковані |
+| M-11 | Нормативна корейська вимова native engine незалежно встановлена | BLOCKED / EVIDENCE-LIMITED | Немає репрезентативного незалежного NIKL-style holdout з фаховим adjudication | Є джерельно підтверджені приклади, регресії та діагностичні benchmark results | Абсолютну точність, per-rule accuracy або загальну перевагу |
+| M-12 | Поточний main CI підтверджує реалізацію, збірку й розгортання | DONE_VERIFIED для software gates | Main `2cd049762fc2a1bd5ea85428762b9ceb2c4d3130`; runs [41144152248](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41144152248), [41144152231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41144152231), [41144152316](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41144152316), [41144152247](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41144152247) | 1,340/1,340 browser tests; Python 3.11/3.12/3.13; web tests/build; clean wheel install; teacher-corpus audit; strict corpus/artifact generation; Pages deploy and live Playwright smoke | Що CI доводить незалежну лінгвістичну правильність. NIKL metadata-only inventory у цих runs — SKIPPED |
+| M-13 | Corrected extended multi-engine benchmark implementation інтегрований у main | DONE_VERIFIED | PR [#401](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/401), merged as `eb8e1f100e8aca377aef05a2aa896756c909ec5c`; benchmark run [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) | Corrected per-metric gold selection, nearest-rank p95, 10-engine comparison, ordered ledgers and coverage disclosure are in main | Що це доводить незалежну нормативну якість корпусів або українського target |
+| M-14 | Baseline emits a complete occurrence ledger for every engine on both datasets | DONE_VERIFIED як artifact contract | Artifact `13019822857`; schema v1; 10 engines × 2,703 UGTPHON and 10 × 999 SIGMORPHON occurrences; source identity/order/aggregate recomputation checks | Усі ledgers мають впорядковані occurrence IDs, однакові source identity triples і totals, що перераховуються в aggregate reports | Що ledger validation дорівнює мовній adjudication |
+| M-15 | Two independent specialist reviews for the Korean IPA gate are complete | BLOCKED | Issue [#337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337) remains open; no qualified submissions | Потрібні дві незалежні packet-based annotations під визначеною IPA convention | Що CI або benchmark замінює людське фахове adjudication |
+| M-16 | Neural inference and joined neural-vs-baseline aggregation are complete | PARTIAL / SKIPPED | Run [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672); Charsiu, ByT5 and paired neural jobs skipped under default-off opt-in | Поточний non-neural portfolio and ledgers are verified; neural comparison requires explicit research-only dispatch | Що skipped jobs passed or that a fresh neural result exists |
+| M-17 | KoG2Padvanced upstream license is established | BLOCKED | Benchmark source/license audit reports no declared upstream license | Не поширювати upstream code/weights unless permission is established | Будь-яку конкретну permissive license без джерела |
+
+## Ключові методологічні правила
+
+1. Публікувати scored denominator, coverage і abstentions поряд з exact match.
+2. Exact match, CER, PER і feature-weighted proxy — різні метрики; feature proxy — проєктне діагностичне визначення, не універсальний стандарт.
+3. Розрізняти full-set і shared-subset comparisons; occurrence IDs мають бути вирівняні для paired analysis.
+4. Не переносити Korean IPA scores на українську цільову якість.
+5. Порівнювати runtime лише за сумісних timing scopes, runner і repetition policy.
+6. Neural outputs можуть бути candidate/teacher evidence, але не стають gold і не породжують production rules автоматично.
+7. Позначати training overlap як contamination risk, якщо checkpoint manifest не доводить фактичне використання форм.
+8. Ліцензії коду, моделі, ваг, tokenizer і dataset — окремі питання.
+9. Не перетворювати пропущені jobs, неперевірені джерела або припущення на позитивні результати.
+
+## Основні джерела
+
+- [Main commit `2cd049762fc2a1bd5ea85428762b9ceb2c4d3130`](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/commit/2cd049762fc2a1bd5ea85428762b9ceb2c4d3130).
+- [Corrected benchmark rerun 41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672), artifact `13019822857`.
+- [Benchmark suite register](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md).
+- [Canonical execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
+- [Reviewer gate issue #337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337).
+
+## Maintenance rule
+
+Оновлювати цей реєстр, коли змінюється публічне твердження, метрика, статус моделі, джерельна ліцензія або acceptance status. Не переносити score на публічну сторінку без run, corpus, denominator, metric, version і interpretation note.

@@ -139,3 +139,10 @@ Consequences for interpretation and evaluation:
 - Regression tests can verify the deterministic implementation, but cannot establish the intended prosodic grouping of arbitrary user text.
 
 Normative source: National Institute of Korean Language, *한국어 어문 규범 — 표준 발음법 제18항*, including the note that the rule also applies when two words are pronounced together as one utterance: https://korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002#a402
+
+
+## Claim traceability and review record
+
+The [methodology claims-and-evidence register](METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md) maps each public statement to code, tests, sources, benchmark runs, denominators and evidence limits. The [methodology review and adjudication record](METHODOLOGY-DEBATE-REVIEW-2026-10-30.md) documents the structured academic, evidence and engineering review perspectives used to challenge those claims.
+
+The review record is a record of analytical procedures, not independent human expert review. Independent Korean IPA adjudication and independent Ukrainian target review remain separate blocked acceptance gates.
