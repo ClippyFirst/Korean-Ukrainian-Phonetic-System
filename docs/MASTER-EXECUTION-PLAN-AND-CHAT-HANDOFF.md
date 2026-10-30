@@ -3931,3 +3931,18 @@ The handoff-only branch head `f7177a03c849c03d7c0f77d0aafb05206f55b34d` has now 
 - Live Pages deployment/Playwright smoke remains post-merge acceptance, not part of these PR-head checks.
 
 PR #397 is open, unmerged, and GitHub currently reports it mergeable. The implementation is CI-green and review-ready; the public site is not updated until the PR is merged and Pages deployment passes.
+
+
+## Merge and production deployment acceptance — 2026-10-30 18:49 UTC
+
+- PR [#397](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/397) was squash-merged after all required PR-head checks passed. Merge commit: `4ee68ae0be1ec9431d3101e847f196d292d8f06e`. This is now the `main` branch implementation commit.
+- Main-branch browser tests/build: **PASS** — [run 41109750124](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41109750124).
+- Main-branch system verification: **PASS** — [run 41109750290](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41109750290).
+- Main-branch master/research artifacts: **PASS** — [run 41109750198](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41109750198).
+- GitHub Pages deployment: **PASS** — [run 41109750296](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41109750296). Python 3.11/3.12/3.13 regression and data checks all passed; browser tests and static build passed; deployment job completed successfully.
+- Deployed HTTP smoke: **PASS** for `index.html`, `system.html`, and the first built JavaScript asset at `https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/`.
+- Deployed Playwright browser smoke: **PASS**. The live run verified the deterministic Hanja dictionary chunk/output, result announcement, mode disclosure, clipboard-denial fallback, mobile trace labels at 390 px, and methodology navigation. It processed a 1,443-character Korean input and observed the expected inline candidate/IPA outputs. The output status explicitly retained its uncertainty wording: `g2pK · Словникова вимова застосована · Показано попередній кандидат, не підтверджений результат`.
+- Therefore the previous live Pages smoke blocker is **DONE_VERIFIED**. The service update is deployed and its production HTTP/browser smoke passed.
+- Public URLs: [service](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/index.html) · [methodology](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#methodology-02c-kozak-kim).
+- PR #371 remains open and untouched; it is a separate benchmark-metrics workstream. Independent specialist-adjudicated Korean pronunciation gold and Ukrainian target gold remain evidence-limited; this release makes no new claim of independent linguistic certification. Python CLI/API Super-soft parity remains deferred.
+- Release classification for this scope: **deployed documentation/service-clarity update, CI-green and live-smoke-verified**. The underlying research prototype is not thereby certified as a fully accurate Korean-to-Ukrainian pronunciation standard.
