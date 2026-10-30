@@ -56,6 +56,8 @@ Added eight official examples from the attached note to Rule 29, including `들�
 ## Benchmark review after renderer integration (2026-10-24)
 
 - [Consolidated benchmark review, exact metrics, interpretation and remaining gates](docs/BENCHMARK-REVIEW-2026-10-24.md)
+- [Expanded 2026-10-29 benchmark metrics, runtime and neural baselines](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/bench/extended-metrics-runtime-2026-10-29/docs/EXTENDED-BENCHMARK-METRICS-2026-10-29.md) — separate research branch PR #371; scores are reported with their contamination, licensing and aggregation caveats.
+- [Methodology claims-and-evidence register](docs/METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md) · [Methodology debate and adjudication](docs/METHODOLOGY-DEBATE-REVIEW-2026-10-30.md)
 
 ## Teacher-guided improvement of the neural-free Strict engine (2026-10-26)
 
