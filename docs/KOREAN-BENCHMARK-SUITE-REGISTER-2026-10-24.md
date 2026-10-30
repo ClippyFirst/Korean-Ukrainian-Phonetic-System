@@ -408,3 +408,16 @@ Downloaded and inspected GitHub artifact `13018218724` (10 files; ZIP archive). 
 - Artifact integrity assertions executed in the analysis runtime: **PASS** (ledger ordering/count, cross-engine source identity alignment, recomputed scored/exact totals for both datasets).
 
 This validates internal report consistency, not corpus validity or linguistic correctness. Public methodology score publication still requires review of the exact artifact-derived tables and caveats; no new accuracy claim is authorized by this consistency check.
+
+
+## Mainline integration and public metric refresh — 2026-10-31
+
+PR [#401](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/401) merged to `main` as `eb8e1f100e8aca377aef05a2aa896756c909ec5c`. Benchmark run [41138727409](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41138727409) passed on benchmark code commit `e27725c62ee02b00fda6d6e76f178d0479609bf9`; the four subsequent commits to the merged PR head were documentation-only, verified by GitHub compare. The redundant documentation-head benchmark run [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) was still in progress at merge time and is not counted as passed.
+
+Post-merge mainline checks:
+- Browser tests/build + Python regression/data integrity: **PASS**, run [41142749793](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749793).
+- Python 3.11/3.12/3.13, web tests/build, clean wheel install, teacher-corpus audit: **PASS**, run [41142749808](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749808).
+- Master/research artifact generation: **PASS**, run [41142749796](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749796).
+- Pages deployment run [41142749819](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749819): **IN_PROGRESS at this update**; Python regression/corpus checks passed, browser test/build and deployment still running. NIKL metadata-only inventory was **SKIPPED**.
+
+The public methodology and technical methodology are being updated to the corrected values from artifact `13018218724`. Reported rates use each engine's own scored denominator; coverage and abstentions remain separate. These are diagnostic Korean IPA metrics, not independent adjudicated gold and not Ukrainian-target accuracy. The feature-weighted metric remains a project-defined proxy.
