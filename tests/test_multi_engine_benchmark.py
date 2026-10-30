@@ -10,6 +10,11 @@ from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _build_per_engine_occurrences,
     _g2pk_surface_to_ipa,
+    _g2p_ko_result_to_ipa,
+    _compose_kog2padvanced_surface,
+    _load_hama_batch,
+    _load_kog2padvanced_batch,
+    _load_kokorog2p,
     _load_rows_and_words,
     _metrics,
     _paired_bootstrap_delta_ci,
@@ -110,6 +115,34 @@ def test_g2pk_surface_adapter_is_importable_and_does_not_reapply_rules():
     else:
         raise AssertionError("non-Hangul surface output must be rejected")
 
+def test_g2p_ko_surface_adapter_maps_complete_result_to_ipa():
+    from types import SimpleNamespace
+
+    result = SimpleNamespace(complete=True, surface_pronunciation="물까")
+    assert _g2p_ko_result_to_ipa(result, "물가") == "mul.k͈a"
+
+
+def test_g2p_ko_surface_adapter_fails_closed_on_incomplete_or_non_hangul_result():
+    from types import SimpleNamespace
+
+    try:
+        _g2p_ko_result_to_ipa(
+            SimpleNamespace(complete=False, surface_pronunciation="물까"), "물가"
+        )
+    except ValueError as exc:
+        assert "did not complete" in str(exc)
+    else:
+        raise AssertionError("incomplete g2p-ko result must not be scored")
+
+    try:
+        _g2p_ko_result_to_ipa(
+            SimpleNamespace(complete=True, surface_pronunciation="not-hangul"), "물가"
+        )
+    except ValueError as exc:
+        assert "non-Hangul surface form" in str(exc)
+    else:
+        raise AssertionError("non-Hangul surface output must be rejected")
+
 
 def test_paired_bootstrap_rejects_duplicate_occurrence_ids():
     duplicate = [
@@ -154,6 +187,79 @@ def test_paired_bootstrap_labels_interval_direction_without_overclaiming_signifi
     assert result["exact_delta_interval_direction"] == "POSITIVE_INTERVAL"
     assert result["cer_delta_interval_direction"] == "NEGATIVE_INTERVAL"
     assert "independent gold validation" in result["interpretation"]
+
+
+
+def test_kokorog2p_uses_direct_ipa_and_disables_lexicon(monkeypatch):
+    import types
+
+    captured = {}
+
+    class FakeKoreanG2P:
+        def __init__(self, **kwargs):
+            captured.update(kwargs)
+
+        def lookup(self, word):
+            return "kʰa"
+
+    package = types.ModuleType("kokorog2p")
+    ko_package = types.ModuleType("kokorog2p.ko")
+    g2p_module = types.ModuleType("kokorog2p.ko.g2p")
+    g2p_module.KoreanG2P = FakeKoreanG2P
+    monkeypatch.setitem(sys.modules, "kokorog2p", package)
+    monkeypatch.setitem(sys.modules, "kokorog2p.ko", ko_package)
+    monkeypatch.setitem(sys.modules, "kokorog2p.ko.g2p", g2p_module)
+
+    fn, adapter = _load_kokorog2p()
+    assert fn("카") == "kʰa"
+    assert captured["output"] == "ipa"
+    assert captured["lexicons"] == ()
+    assert captured["morphology"] == "off"
+    assert captured["use_dict"] is False
+    assert "kokorog2p==0.9.15" in adapter
+
+
+
+def test_kog2padvanced_loader_fails_closed_for_incomplete_external_checkout(tmp_path):
+    try:
+        _load_kog2padvanced_batch(tmp_path, ["학교"])
+    except FileNotFoundError as exc:
+        assert "checkout incomplete" in str(exc)
+    else:
+        raise AssertionError("incomplete KoG2Padvanced checkout must not be scored")
+
+
+
+def test_hama_adapter_uses_documented_batch_ipa_field(monkeypatch):
+    import types
+
+    class FakeResult:
+        ipa = "tɕʰa kʰa"
+
+    class FakeModel:
+        def predict(self, text, **kwargs):
+            assert text == "차 카"
+            assert kwargs["split_delimiter"] == r"\s+"
+            assert kwargs["output_delimiter"] == " "
+            return FakeResult()
+
+    hama_module = types.ModuleType("hama")
+    hama_module.G2PModel = FakeModel
+    monkeypatch.setitem(sys.modules, "hama", hama_module)
+
+    run_batch, adapter = _load_hama_batch(["차", "카"])
+    result = run_batch()
+    assert result == {"차": {"ipa": "tɕʰa"}, "카": {"ipa": "kʰa"}}
+    assert "sentence-level batch" in adapter
+
+
+
+def test_kog2padvanced_adapter_composes_isolated_compatibility_vowel():
+    def fake_join_jamos(value):
+        return value.replace("ㅇㅣ", "이")
+
+    assert _compose_kog2padvanced_surface("유ㅣ칸", fake_join_jamos) == "유이칸"
+
 
 def test_occurrence_ledger_preserves_repeated_tokens_and_explicit_non_scored_states():
     items = [
