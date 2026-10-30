@@ -1337,7 +1337,7 @@ Verification on code head `08dd78de7efee0988b6fa1195b871425f988634f`: browser su
 
 ## Super-soft maximum-coverage mode — 2026-10-30
 
-**Status: DONE_VERIFIED for browser implementation and technical coverage acceptance on PR head 75a49524184be96bf0b492541815a8783ee80cb0; deployment smoke pending.**
+**Status: DONE_VERIFIED for browser implementation and technical coverage acceptance on PR head 8c6d9b42cd574be96f889477ed141db5c8bb4ba9; deployment smoke pending.**
 
 The approved requirement is a separate deterministic, browser-local Super-soft mode targeting 100% technical coverage of modern Hangul syllable blocks, not 100% pronunciation accuracy. The implementation adds a distinct morphology mode, reuses existing Soft/Practical heuristics, and applies a typed low-confidence orthographic-phonemic IPA fallback only where morphology remains unresolved. IPA→Ukrainian mapping remains the only target path. Provisional target correspondences are candidates, not accepted orthography. Literal non-Korean content and standalone compatibility Jamo are preserved. The result includes source-span and Hangul coverage counters.
 
@@ -1349,7 +1349,7 @@ Acceptance is pending the new exhaustive 11,172-syllable end-to-end test and exa
 - Exhaustive 11,172/11,172 modern Hangul syllable blocks → non-empty IPA and IPA-adapted Ukrainian candidate.
 - All 13 registered strict morphology-gap cases → complete candidate and trace coverage in Super-soft; strict controls remain fail-closed.
 - NIKL master passage fixture → 100% Hangul candidate coverage and 100% source-span trace coverage.
-- npm test: 1325 pass, 0 fail. npm run build: pass.
+- npm test: 1326 pass, 0 fail. npm run build: pass.
 - CI: browser regression/build, browser-G2P, Python 3.11/3.12/3.13, wheel install, teacher corpus audit, generated master/research artifacts, and exhaustive test-case register extraction pass. NIKL metadata-only inventory skipped by workflow config.
 - Local clone unavailable due GitHub DNS resolution failure; remote exact-head CI is the verification evidence.
 - Remaining: deployment smoke after merge; independent pronunciation accuracy gold is evidence-limited; Python CLI/API parity deferred because those entry points currently expose strict/soft only.
