@@ -18,8 +18,10 @@ function attachSuperSoftCoverage(source,result){
   for(const item of result.trace||[]){
     const value=String(item.source??'');
     if(!value)continue;
-    let start=text.indexOf(value,cursor);
-    if(start<0)start=text.indexOf(value);
+    // Trace entries must align monotonically with the original source.
+    // Never retry from offset zero: doing so can attach a repeated token to an
+    // earlier occurrence and falsely inflate the coverage metric.
+    const start=text.indexOf(value,cursor);
     if(start<0)continue;
     const end=start+value.length;
     spans.push({start,end,item});
@@ -55,6 +57,7 @@ function attachSuperSoftCoverage(source,result){
     source_span_total:sourceUnits.length,
     source_span_covered:traced.length,
     source_span_uncovered:sourceUnits.length-traced.length,
+    untraced_source_offsets:sourceUnits.filter(unit=>!spanAt[unit.start]||!spanAt[unit.end-1]).map(unit=>({source:unit.char,start:unit.start,end:unit.end})),
     trace_coverage:ratio(traced.length,sourceUnits.length),
     low_confidence_units:fallbackCount,
     complete:covered.length===hangul.length&&traced.length===sourceUnits.length
