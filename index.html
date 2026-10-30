@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Корейський текст → практичний український запис за авторською фонетично-графемною системою.">
+  <meta name="description" content="Введіть корейський текст і перегляньте його вимову та український запис.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'none'; img-src 'self' data:; font-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'none';">
   <title>한국어 / УКРАЇНСЬКА</title>
   <link rel="stylesheet" href="./src/styles/main.css?v=20261028-ua-candidate-toggle">
@@ -25,81 +25,79 @@
     </div>
     <div class="hero hero-home">
       <div class="hero-copy">
-        <p class="eyebrow">Korean → Ukrainian · лабораторія вимови</p>
-        <h1>Від знака — <em>до звучання.</em></h1>
-        <p class="subtitle">Корейська вимова, відтворена українською. Введіть текст і побачте не лише результат, а й IPA, аналіз та шлях кожного сегмента. Це транскрипція — не переклад.</p>
-        <div class="method-line" aria-label="Послідовність перетворення"><span><b>01 · Hangul</b></span><span><b>02 · Нормативна вимова</b></span><span><b>03 · IPA</b></span><span><b>04 · Український запис</b></span></div>
+        <p class="eyebrow">Корейсько-український сервіс передачі вимови</p>
+        <h1>Від корейського тексту — <em>до українського читання.</em></h1>
+        <p class="subtitle">Введіть корейське слово, речення або уривок — сервіс покаже приблизну вимову українськими літерами. За потреби можна переглянути IPA та докладний розбір. Сервіс передає звучання, а не перекладає зміст.</p>
+        <div class="method-line" aria-label="Послідовність перетворення"><span><b>01 · Корейський текст</b></span><span><b>02 · Вимова</b></span><span><b>03 · Фонетичний запис</b></span><span><b>04 · Українське читання</b></span></div>
       </div>
       <aside class="hero-specimen" aria-label="Приклад шляху транскрипції">
-        <div class="specimen-top"><span>Польовий приклад</span><span>№ 001</span></div>
+        <div class="specimen-top"><span>Приклад</span><span>№ 001</span></div>
         <div>
           <span class="specimen-glyph" lang="ko">시</span>
           <div class="specimen-rule"></div>
           <div class="specimen-ipa">/ɕi/</div>
           <div class="specimen-ua">ші</div>
         </div>
-        <div class="specimen-bottom"><span>форма → звук → запис</span><span>IPA-first</span></div>
+        <div class="specimen-bottom"><span>текст → вимова → читання</span><span>Через IPA</span></div>
       </aside>
     </div>
   </header>
 
   <div class="workspace-layout">
   <section class="workbench" aria-labelledby="input-heading">
-    <div class="section-title"><span class="section-number">A</span><div><p class="section-kicker">Вхід</p><h2 id="input-heading">Корейський текст</h2></div></div>
+    <div class="section-title"><span class="section-number">A</span><div><p class="section-kicker">Крок 1</p><h2 id="input-heading">Корейський текст</h2></div></div>
     <label class="sr-only" for="source-input">Корейський текст</label>
     <div class="input-shell">
       <textarea id="source-input" rows="5" spellcheck="false" lang="ko" aria-describedby="input-guidance" placeholder="한국어를 입력하세요"></textarea>
-      <div class="input-hint"><span id="character-count">0 символів</span><span class="mode-note"><i aria-hidden="true"></i> практичний український</span></div>
+      <div class="input-hint"><span id="character-count">0 символів</span><span class="mode-note"><i aria-hidden="true"></i> Українське читання</span></div>
       <section id="spelling-suggestions" class="spelling-suggestions" aria-label="Підказки щодо написання" aria-live="polite" hidden>
         <div class="spelling-suggestions-heading">
-          <strong>Можливі виправлення</strong>
-          <span>Оригінал не змінюється автоматично. Виберіть варіант лише якщо він відповідає вашому задуму.</span>
+          <strong>Підказки до написання</strong>
+          <span>Сервіс не змінює введений текст самостійно. Застосуйте підказку лише тоді, коли вона відповідає тому, що ви хотіли написати.</span>
         </div>
         <div id="spelling-suggestions-list" class="spelling-suggestions-list"></div>
       </section>
     </div>
-    <p class="input-guidance" id="input-guidance">Введіть слово, фразу або довший текст. Результат оновлюється автоматично; докладний поскладовий розбір можна відкрити нижче. Це дослідницький інструмент: попередні відповідники й невизначені ділянки позначаються окремо.</p>
+    <p class="input-guidance" id="input-guidance">Введіть корейський текст або виберіть приклад. Результат оновлюється автоматично. Щоб побачити, як сервіс визначив вимову, відкрийте поскладовий розбір.</p>
     <div class="action-row">
       <div class="chip-row" role="group" aria-label="Швидкі приклади">
         <button class="mini-button" data-example="현대 한국어의 표준 발음" type="button">현대 한국어의 표준 발음</button>
         <button class="mini-button" data-example="값이" type="button">값이</button>
         <button class="mini-button" data-example="옷이" type="button">옷이</button>
         <button class="mini-button" data-example="시" type="button">시</button>
-        <button class="mini-button" id="nikl-stress-example" type="button">Стрес-тест · 5 198 символів</button>
+        <button class="mini-button" id="nikl-stress-example" type="button">Довгий тестовий текст · 5 198 символів</button>
       </div>
-      <p class="input-hint">Стрес-тест — довгий діагностичний корпус, не дослівна цитата з NIKL; обробка може тривати довше.</p>
+      <p class="input-hint">Довгий тестовий текст потрібен для перевірки роботи сервісу на великих уривках; обробка може тривати довше.</p>
       <div class="action-cell">
-        <button id="example-button" class="button button-primary" type="button">Вставити речення <b aria-hidden="true">↗</b></button>
+        <button id="example-button" class="button button-primary" type="button">Вставити приклад <b aria-hidden="true">↗</b></button>
         <button id="clear-button" class="button button-secondary" type="button">Очистити</button>
       </div>
       <fieldset class="mode-fieldset" id="transliteration-mode">
-        <legend class="mode-legend">Режим виводу</legend>
+        <legend class="mode-legend">Спосіб обробки</legend>
         <label class="mode-option" for="mode-practical">
           <input type="radio" name="transliteration-mode" id="mode-practical" value="practical" checked />
-          <span><strong>Практичний режим</strong>
-          <em>Для швидкого отримання українського читання з проміжним фонетичним аналізом.</em></span>
+          <span><strong>Звичайний режим</strong>
+          <em>Для повсякденного використання: показує українське читання та основні відомості про вимову.</em></span>
         </label>
-        <details class="mode-disclosure"><summary>Як працює практичний режим і які його обмеження</summary><p class="practical-mode-hint">Режим використовує JavaScript-порт g2pK і кілька точкових виправлень корейської поверхневої форми, підтверджених NIKL, перед етапом IPA. Це не гарантує повної нормативності: інші слова й морфологічні контексти можуть відрізнятися від NIKL.</p></details>
+        <details class="mode-disclosure"><summary>Як працює звичайний режим</summary><p class="practical-mode-hint">Сервіс автоматично визначає вимову за набором правил і словникових винятків. Для частини слів результат може бути неточним, особливо якщо вимова залежить від будови слова або контексту. Докладніше про рушій, джерела й обмеження — на сторінці «Методологія».</p></details>
         <label class="mode-option" for="mode-research">
           <input type="radio" name="transliteration-mode" id="mode-research" value="research" />
-          <span><strong>Дослідницький режим</strong>
-          <em>Для перевірки правил, проміжних етапів і випадків, де вимову чи український запис не вдалося підтвердити.</em></span>
+          <span><strong>Режим докладного аналізу</strong>
+          <em>Показує додаткові етапи обробки та дає змогу переглядати непевні або альтернативні варіанти.</em></span>
         </label>
       </fieldset>
       <div id="research-options" class="research-options" hidden>
         <label class="soft-morphology-toggle" for="super-soft-morphology">
           <input type="checkbox" id="super-soft-morphology" />
-          Суперм’який режим · максимальне покриття (низька впевненість)
+          Максимальне покриття · експериментальний режим
         </label>
-        <p class="soft-morphology-hint">Намагається повернути український кандидат для кожного сучасного складу Hangul. Якщо морфологічну вимову не вдалося встановити, використовує детермінований складовий резервний варіант; такий фрагмент позначається як непідтверджений. 100% покриття не означає 100% точності вимови.</p>
+        <p class="soft-morphology-hint">Цей режим намагається сформувати результат для кожного сучасного складу Hangul. Якщо точну вимову встановити не вдається, сервіс використовує резервний варіант і позначає його як непідтверджений. Повне покриття тексту не означає, що кожен фрагмент вимовлено правильно.</p>
         <label class="soft-morphology-toggle" for="soft-morphology">
           <input type="checkbox" id="soft-morphology" />
-          М’яка морфологія (heuristic, низька впевненість)
+          М’який морфологічний аналіз · експериментально
         </label>
         <p class="soft-morphology-hint">
-          Лише в дослідницькому режимі. Увімкнено: пропонує читання для частих
-          закінчень (이/을/어/…) зі статусом <code>heuristic-low-confidence</code>.
-          Вимкнено — лише точні NIKL/lexical licenses.
+          Працює лише в режимі докладного аналізу. Якщо ввімкнути цю опцію, сервіс запропонує додаткові варіанти для поширених закінчень (이/을/어/…). Вони мають нижчу впевненість. Якщо опцію вимкнено, використовуються лише варіанти з точним підтвердженням у джерелах.
         </p>
       </div>
     </div>
@@ -108,35 +106,35 @@
   <section class="output-workspace" aria-label="Результат перетворення">
   <section id="empty-state" class="empty-state" aria-live="polite">
     <div class="empty-glyph" aria-hidden="true">한</div>
-    <div><strong>Тут з’явиться результат</strong><span>Введіть корейський текст або скористайтеся прикладом.</span></div>
+    <div><strong>Тут буде українське читання</strong><span>Введіть корейський текст або виберіть один із прикладів.</span></div>
     <span class="empty-rule" aria-hidden="true"></span>
   </section>
 
   <section id="results" class="results" aria-labelledby="results-heading" hidden>
     <div class="results-bar">
-      <div class="section-title"><span class="section-number">B</span><div><p class="section-kicker">Вихід</p><h2 id="results-heading">Результати</h2></div></div>
-      <span id="status-note" class="results-note">Канонічний режим</span>
+      <div class="section-title"><span class="section-number">B</span><div><p class="section-kicker">Крок 2</p><h2 id="results-heading">Результати</h2></div></div>
+      <span id="status-note" class="results-note">Звичайний режим</span>
     </div>
     <div class="result-grid">
 
       <article id="panel-ukrainian" class="result-card" data-result-panel="ukrainian">
         <div class="result-meta"><span>UA</span><strong id="ukrainian-output-label">Український запис</strong><button id="ukrainian-copy-button" class="copy-button" data-copy="ukrainian" type="button">Копіювати</button></div>
-        <div class="ua-output-switch" role="group" aria-label="Стан українського запису"><button id="ua-unconfirmed-button" class="ua-output-option is-active" type="button" aria-pressed="true">Достовірний варіант</button><button id="ua-candidate-button" class="ua-output-option" type="button" aria-pressed="false" disabled>Дослідницький результат</button></div>
+        <div class="ua-output-switch" role="group" aria-label="Стан українського запису"><button id="ua-unconfirmed-button" class="ua-output-option is-active" type="button" aria-pressed="true">Основний результат</button><button id="ua-candidate-button" class="ua-output-option" type="button" aria-pressed="false" disabled>Дослідницький результат</button></div>
         <p id="result-ukrainian" class="result-body"></p>
         <div id="surface-reading" class="surface-reading" hidden><span>Поверхнева форма</span><strong id="result-surface"></strong></div>
         <span id="candidate-value" hidden aria-hidden="true"></span>
-        <p id="candidate-note" class="candidate-footnote" hidden>Дослідницький результат — попередній варіант, не підтверджений нормативний запис. Перед використанням потрібна перевірка IPA та української цільової адаптації.</p>
+        <p id="candidate-note" class="candidate-footnote" hidden>Це попередній варіант, а не підтверджена нормативна передача. Його варто перевірити за IPA та правилами української адаптації.</p>
       </article>
       <article id="panel-romanization" class="result-card romanization-card" data-result-panel="romanization">
         <div class="result-meta"><span>RR</span><strong>Романізація (Revised Romanization)</strong><button class="copy-button" data-copy="romanization" type="button">Копіювати</button></div>
         <p id="result-romanization" class="result-body romanization" lang="ko-Latn"></p>
-        <p class="romanization-note">Допоміжна латинська передача вже визначеної корейської поверхневої форми. Це не англійська вимова; IPA залишається фонетичною межею для українського запису.</p>
+        <p class="romanization-note">Додатковий запис корейської вимови латинськими літерами. Він не призначений для читання за правилами англійської мови й не використовується для побудови українського результату.</p>
       </article>
       <article id="panel-hanja" class="result-card hanja-card" data-result-panel="hanja">
         <div class="result-meta"><span>漢字</span><strong>Ханча · словникова анотація</strong><button class="copy-button" data-copy="hanja" type="button">Копіювати</button></div>
         <p id="result-hanja" class="result-body hanja" lang="ko"></p>
         <p id="hanja-engine-status" class="hanja-engine-status" role="status">Базовий словник</p>
-        <p class="hanja-note">Детермінований локальний словник завантажується з цього сайту лише під час першого введення корейського тексту. Це словникова анотація, а не повний запис кожного складу ханча: невідомі слова й питомо корейська лексика (наприклад, 값 у 값이) залишаються хангилем; граматичні частки також зберігаються. Неоднозначні слова ранжуються за фіксованими словниковими правилами, без нейромоделі та без аналізу контексту.</p>
+        <p class="hanja-note">Ханча — це словникова підказка: вона показує ієрогліфи для тих слів, для яких їх знайдено у словнику. Не всі корейські слова мають ханча; невідомі слова та граматичні частки залишаються хангилем.</p>
       </article>
       <article id="panel-ipa" class="result-card" data-result-panel="ipa">
         <div class="result-meta"><span>IPA</span><strong>Широкий IPA</strong><button class="copy-button" data-copy="ipa" type="button">Копіювати</button></div>
@@ -156,16 +154,16 @@
     <p id="copy-feedback" class="copy-feedback" role="status" hidden></p>
     <div id="issue-state" class="issue-state" hidden><p id="issue-text"></p></div>
     <details id="variant-panel" class="trace-panel trace-disclosure variant-panel" hidden>
-      <summary class="trace-summary"><span class="trace-summary-index">B+</span><span class="trace-summary-copy"><strong>Альтернативні читання</strong><small>Відкрийте, щоб переглянути інші можливі вимови, їхній IPA, українські відповідники та статус підтвердження.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
+      <summary class="trace-summary"><span class="trace-summary-index">B+</span><span class="trace-summary-copy"><strong>Альтернативні читання</strong><small>Показати інші варіанти вимови та пояснення, наскільки вони підтверджені.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
       <div class="trace-details">
-        <p class="trace-explainer">Кожен варіант подано окремо від основного результату. Статус і примітка показують підставу варіанта та обмеження; наявність альтернативи сама по собі не означає, що вона є нормативною або рівнозначною основному читанню.</p>
+        <p class="trace-explainer">Альтернативи відокремлено від основного результату. Пояснення до кожної з них указує, чому її запропоновано та наскільки вона надійна.</p>
         <div id="variant-list" class="trace-list"></div>
       </div>
     </details>
     <details class="trace-panel trace-disclosure">
-      <summary class="trace-summary"><span class="trace-summary-index">C</span><span class="trace-summary-copy"><strong>Поскладовий розбір</strong><small>Відкрийте, щоб переглянути шлях Hangul → вимова → IPA → український запис для кожного сегмента.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
+      <summary class="trace-summary"><span class="trace-summary-index">C</span><span class="trace-summary-copy"><strong>Поскладовий розбір</strong><small>Показати, як кожен склад перетворюється з корейського написання на український запис.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
       <div class="trace-details">
-      <p class="trace-explainer">Розбір показує повний ланцюг для кожного складу: початковий Hangul → реалізована корейська форма → IPA → окремі відповідності IPA-токенів українським графемам → підсумковий український запис. Правила корейської вимови й українське відображення IPA — різні етапи; статус указує, чи є сегмент нормативним, контекстним, словниковим або невирішеним.</p>
+      <p class="trace-explainer">У таблиці показано шлях кожного сегмента: корейське написання → визначена вимова → IPA → відповідність звуків українським літерам. Так можна побачити, на якому етапі виникла невизначеність або спрацювало окреме правило.</p>
       <div class="trace-columns" aria-hidden="true"><span>Корейський сегмент · вхід</span><span>Корейська вимова</span><span>IPA</span><span>IPA-токен → графема</span><span>Український запис</span><span title="Правила / IPA">Нюанс / правило</span><span>Статус</span></div>
       <div id="trace-list" class="trace-list"></div>
       </div>
@@ -175,8 +173,8 @@
   </section>
   </div>
   <footer class="site-footer">
-    <div><strong>한국어 / УКРАЇНСЬКА</strong><span>Авторська система практичної передачі корейської вимови українською.</span></div>
-    <div><span>Результат — транскрипція, не переклад; українські відповідники можуть бути попередніми.</span><span><a href="./system.html">Методологія</a> · <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" rel="noreferrer">Стандарт вимови NIKL</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">GitHub</a></span></div>
+    <div><strong>한국어 / УКРАЇНСЬКА</strong><span>Інструмент для передачі корейської вимови українськими літерами.</span></div>
+    <div><span>Сервіс передає вимову, а не значення тексту. Деякі українські відповідники мають попередній статус.</span><span><a href="./system.html">Методологія</a> · <a href="https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002" rel="noreferrer">Стандарт вимови NIKL</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System">GitHub</a></span></div>
   </footer>
   <div id="live-region" class="sr-only" aria-live="polite"></div>
 </main>

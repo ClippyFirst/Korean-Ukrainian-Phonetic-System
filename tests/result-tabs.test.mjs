@@ -7,7 +7,7 @@ const script = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const css = readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
 
 test('only Ukrainian status/candidate are selectable; IPA, romanization and analysis stay visible', () => {
-  assert.match(html, /id="ua-unconfirmed-button"[^>]*>Достовірний варіант</);
+  assert.match(html, /id="ua-unconfirmed-button"[^>]*>Основний результат</);
   assert.match(html, /id="ua-candidate-button"[^>]*>Дослідницький результат</);
   assert.doesNotMatch(html, /role="tablist"|data-result-tab=/);
   for (const panel of ['ipa','romanization','analysis']) {
@@ -51,7 +51,7 @@ test('candidate is rendered in the visible Ukrainian result field and state is s
 
 test('alternative readings use the same accessible disclosure pattern as syllable analysis', () => {
   assert.match(html, /<details id="variant-panel" class="trace-panel trace-disclosure variant-panel" hidden>/);
-  assert.match(html, /<summary class="trace-summary">[\s\S]*?<strong>Альтернативні читання<\/strong>[\s\S]*?<small>Відкрийте, щоб переглянути інші можливі вимови/u);
+  assert.match(html, /<summary class="trace-summary">[\s\S]*?<strong>Альтернативні читання<\/strong>[\s\S]*?<small>Показати інші варіанти вимови/u);
   assert.match(html, /<div id="variant-list" class="trace-list"><\/div>/);
   assert.match(html, /<details class="trace-panel trace-disclosure">[\s\S]*?<strong>Поскладовий розбір<\/strong>/);
   assert.match(css, /\.trace-disclosure\[open\] \.trace-summary/);

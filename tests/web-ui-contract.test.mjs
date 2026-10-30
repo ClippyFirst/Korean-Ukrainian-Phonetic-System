@@ -115,7 +115,7 @@ test('Ukrainian status and research candidate share one visible result field',()
   const html=read('index.html');
   const main=read('src/main.js');
   const css=read('src/styles/main.css');
-  assert.match(html,/id="ua-unconfirmed-button"[^>]*>Достовірний варіант/);
+  assert.match(html,/id="ua-unconfirmed-button"[^>]*>Основний результат/);
   assert.match(html,/id="ua-candidate-button"[^>]*>Дослідницький результат/);
   assert.match(html,/id="result-ukrainian"/);
   assert.match(html,/id="candidate-note"/);
@@ -147,11 +147,11 @@ test('UX follow-up announces meaningful result state and provides visible clipbo
 
 test('mode choice is user-oriented while technical caveats remain available on demand',()=>{
   const html=read('index.html');
-  assert.match(html,/Для швидкого отримання українського читання/);
+  assert.match(html,/Для повсякденного використання: показує українське читання/);
   assert.match(html,/<details class="mode-disclosure">/);
-  assert.match(html,/Як працює практичний режим і які його обмеження/);
-  assert.match(html,/не гарантує повної нормативності/);
-  assert.match(html,/Для перевірки правил, проміжних етапів/);
+  assert.match(html,/Як працює звичайний режим/);
+  assert.match(html,/Для частини слів результат може бути неточним/);
+  assert.match(html,/Показує додаткові етапи обробки/);
 });
 
 test('mobile trace values carry explicit labels and methodology has in-page navigation',()=>{
