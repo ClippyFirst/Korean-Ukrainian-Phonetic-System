@@ -4034,3 +4034,17 @@ The existing service remains deployed and CI/live-smoke verified at the previous
 | PR #371 full neural aggregate | BLOCKED | Fix `per_engine_occurrences` report schema and rerun exact-head benchmark workflow. |
 
 **Readiness:** this PR is documentation-complete and exact-head CI-green; it is review-ready, not yet production-published. The overall research system remains a strong engineering research prototype, not an independently certified Korean-to-Ukrainian pronunciation standard.
+
+
+## Final PR-head acceptance — 2026-10-30 20:01 UTC
+
+The final documentation/test head before this handoff-only addendum was `ee6a5e32b1eb84e289b55275540660d864108939`. PR [#398](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/398) is **ready for review**, open, unmerged, and GitHub reports `mergeable_state=clean` against `main` at `f93ae007592f216ccd2493f6652d228b876c8338`.
+
+All relevant exact-head workflows on `ee6a5e32...` passed:
+- Tests [41119750072](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41119750072): **PASS**, 1,340 / 1,340; 0 failures; Vite 8.3.1 build **PASS**; Python 3.11/3.12/3.13, wheel-install and teacher-corpus audit **PASS**.
+- System verification [41119750078](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41119750078): **PASS** for browser tests/build and Python regression/data integrity; official NIKL metadata-only inventory **SKIPPED**.
+- Browser G2P integration [41119750093](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41119750093): **PASS**.
+- Master/research artifacts [41119750065](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41119750065): **PASS**.
+- Exhaustive test-case register extraction [41119750108](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41119750108): **PASS**.
+
+This addendum is handoff-only. It changes no engine or benchmark behavior. PR #398 is not merged; production publication remains under repository-owner control. The final commit SHA for this handoff update is the resulting branch head shown by PR #398; no self-referential commit hash is embedded in the file.
