@@ -212,7 +212,7 @@ try {
   const systemUrl = new URL('system.html', baseUrl);
   systemUrl.searchParams.set('__smoke', String(Date.now()));
   await page.goto(systemUrl.toString(), { waitUntil: 'networkidle', timeout: 60000 });
-  assert.match(await page.locator('body').innerText(), /JavaScript-порт g2pK/u,
+  assert.match(await page.locator('body').innerText(), /JavaScript-порту g2pK/u,
     'technical engine provenance must remain available on the researcher-facing methodology page');
   const toc = page.locator('.methodology-toc');
   assert.equal(await toc.isVisible(), true, 'methodology contents must be visible');

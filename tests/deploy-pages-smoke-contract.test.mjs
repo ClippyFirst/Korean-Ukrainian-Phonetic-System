@@ -43,8 +43,8 @@ test('live browser smoke verifies inline research candidate and neutral confirme
 
 
 test('technical engine provenance is kept on the researcher-facing methodology page', () => {
-  assert.doesNotMatch(index, /JavaScript-порт g2pK/u);
+  assert.doesNotMatch(index, /JavaScript-порту g2pK/u);
   assert.match(index, /href="\.\/system\.html">«Методологія»/u);
-  assert.match(system, /JavaScript-порт g2pK/u);
+  assert.match(system, /JavaScript-порту g2pK/u);
   assert.match(browserSmoke, /technical engine provenance must remain available on the researcher-facing methodology page/u);
 });
