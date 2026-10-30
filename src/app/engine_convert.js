@@ -127,12 +127,11 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         }))),
         trace:results.flatMap(r=>r.trace||[]),
         issues,
-        target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
+        target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional'||r.status==='lexical-review')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
         candidate_ukrainian:hasCandidate||superSoftCandidateOnly?candidateText:null,
-        candidate_status:hasSuperSoftFallback?'super-soft-low-confidence':superSoftOn&&hasProvisionalTarget?'provisional':hasCandidate?'provisional':null,
         status:superSoftOn?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'super-soft-orthographic-fallback':hasSuperSoftFallback?'super-soft-heuristic-coverage':results.some(r=>r.status==='unresolved')?'unresolved':'super-soft-maximum-coverage'):issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical',
         phonetic_result_type:hasSuperSoftFallback?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
-        candidate_status:hasSuperSoftFallback?'super-soft-low-confidence':hasCandidate?'provisional':null
+        candidate_status:hasSuperSoftFallback?'super-soft-low-confidence':superSoftOn&&hasProvisionalTarget?'provisional':hasCandidate?'provisional':null
       };
     }
   }
