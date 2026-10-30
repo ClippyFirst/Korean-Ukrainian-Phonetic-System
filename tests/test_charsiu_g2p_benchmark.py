@@ -15,10 +15,21 @@ MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)
 
 
-def test_neural_score_uses_existing_broad_ipa_normalization():
+def test_neural_score_uses_existing_broad_ipa_normalization_and_phonetic_metrics():
     score = MODULE.score_prediction("kʰa", "kʰa")
     assert score["exact"] is True
     assert score["distance"] == 0
+    assert score["phoneme_error_rate"] == 0
+    assert score["feature_error_rate_proxy"] == 0
+    assert "unsupported_feature_segments" in score
+
+
+def test_neural_metric_aggregation_includes_per_and_feature_proxy():
+    score = MODULE.score_prediction("kʰa", "kʰa")
+    metrics = MODULE._metrics([score])
+    assert metrics["phoneme_error_rate"] == 0
+    assert metrics["phonological_feature_error_rate_proxy"] == 0
+    assert metrics["reference_phoneme_segments"] > 0
 
 
 def test_evaluate_keeps_occurrences_and_reports_coverage_separately():
@@ -42,6 +53,9 @@ def test_evaluate_keeps_occurrences_and_reports_coverage_separately():
     assert report["coverage"] == 0.666667
     assert report["exact_matches"] == 2
     assert report["missing_predictions"] == 1
+    assert report["phoneme_error_rate"] == 0
+    assert report["phonological_feature_error_rate_proxy"] == 0
+    assert report["reference_phoneme_segments"] > 0
     assert [x["occurrence_id"] for x in report["predictions"]] == [0, 2]
 
 
@@ -262,3 +276,28 @@ def test_predict_accepts_checkpoint_specific_language_prefix(monkeypatch):
     assert tokenizer.texts == ["kor: 학교"]
     assert predictions == {"학교": "k a"}
     assert failures == {}
+
+
+def test_neural_segment_metrics_choose_gold_variants_independently(monkeypatch):
+    def synthetic_distance(left, right, weighted=False):
+        reference = "".join(right)
+        if weighted:
+            return 0.0 if reference == "pa" else 0.5
+        return 0.0 if reference == "ba" else 1.0
+    monkeypatch.setattr(MODULE, "_segment_edit_distance", synthetic_distance)
+    score = MODULE.score_prediction("pa", "pa,ba")
+    assert score["closest_normalized_gold"] == "pa"
+    assert score["closest_phoneme_gold"] == "ba"
+    assert score["closest_feature_gold"] == "pa"
+    assert score["phoneme_reference_length"] == 2
+    assert score["feature_reference_length"] == 2
+
+
+def test_neural_feature_proxy_uses_feature_variant_denominator():
+    metrics = MODULE._metrics([{
+        "reference_length": 2, "distance": 1, "exact": False,
+        "phoneme_reference_length": 4, "phoneme_distance": 2,
+        "feature_reference_length": 2, "feature_error_distance_proxy": 1.0,
+    }])
+    assert metrics["phoneme_error_rate"] == 0.5
+    assert metrics["phonological_feature_error_rate_proxy"] == 0.5
