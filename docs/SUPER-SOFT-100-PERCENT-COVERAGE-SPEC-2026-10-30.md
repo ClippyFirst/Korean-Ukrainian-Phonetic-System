@@ -153,3 +153,17 @@ The implementation was merged to `main` as commit `10ce8b580af145da58c41f7a66c77
 The Super-soft-specific live UI path was not part of that first deployment smoke. A follow-up [PR #380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/380) adds that live assertion and hardens source trace alignment: failed monotonic source matches are no longer retried from offset zero, and untraced UTF-16 source offsets are reported explicitly. It adds a repeated/mixed-Unicode regression requiring every trace range to point to its exact original substring and collectively cover the complete source. PR #380 is pending exact-head CI at the time of this update; its status must remain PARTIAL until all required checks pass.
 
 **Current ledger:** browser implementation and 11,172-syllable technical coverage — DONE_VERIFIED on merged main; general Pages deployment smoke — DONE_VERIFIED; Super-soft-specific deployed UI smoke and exact-offset hardening — PARTIAL pending PR #380 CI; Python CLI/API parity — DEFERRED; independent pronunciation accuracy — BLOCKED / EVIDENCE-LIMITED pending adjudicated held-out gold.
+
+
+## 12. Final deployed verification after PR #380 (2026-10-30)
+
+**DONE_VERIFIED — browser implementation, coverage acceptance, source trace integrity, and live deployment.**
+
+- PR #380 merged as `1394f496242cec631f7341995cdbf402f70274bf`; its tested head was `d8a9070dd253c8f4242685c8c67f69179b4a4a05`.
+- The source-offset binder no longer retries unmatched trace text from offset zero. Unmatched code points are reported in `coverage.untraced_source_offsets`, so they cannot be silently counted as covered by a repeated earlier substring.
+- The mixed-Unicode regression asserts monotonic, non-overlapping UTF-16 intervals and exact `source.slice(start,end) === trace.source` equality, with full source accounting.
+- Exact-head browser test suite: **1,327 passed, 0 failed**; production build passed. Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser G2P, research artifact generation, and exhaustive test-case register extraction passed.
+- Post-merge checks on main passed: tests `41033991233`, system verification `41033991213`, browser G2P `41033991249`, and master table/research corpus artifacts `41033991232`.
+- Pages deployment and live Playwright smoke passed in run `41033991218`. The live script exercised the Super-soft research toggle and asserted 100% Hangul coverage, 100% trace accounting, a Ukrainian candidate, IPA, and low-confidence disclosure. It also retained the existing practical, Hanja, clipboard, mobile trace, and methodology checks.
+- The optional official NIKL metadata-only inventory job was skipped by workflow configuration.
+- **Final status:** technical maximum coverage and deployed browser behavior are DONE_VERIFIED. Independent pronunciation accuracy and independent Ukrainian target adjudication remain BLOCKED / EVIDENCE-LIMITED pending gold data and expert review. Python CLI/API parity remains DEFERRED. No 100%-accuracy claim is supported.
