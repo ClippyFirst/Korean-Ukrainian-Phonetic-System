@@ -156,6 +156,23 @@ jobs:
           import json, sys
           from pathlib import Path
           r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          ledger = r.get("per_engine_occurrences")
+          expected = r["eligible_token_occurrences"]
+          if r.get("occurrence_ledger_schema_version") != 1 or not isinstance(ledger, dict):
+              raise SystemExit("baseline report lacks occurrence-ledger schema v1")
+          if set(ledger) != set(r["engine_order"]):
+              raise SystemExit("occurrence-ledger engine keys do not match engine_order")
+          expected_ids = [str(i) for i in range(expected)]
+          for engine, records in ledger.items():
+              if len(records) != expected or [str(x.get("occurrence_id")) for x in records] != expected_ids:
+                  raise SystemExit(f"{engine}: incomplete or unordered occurrence ledger")
+              if any(not x.get("row_id") or not x.get("token") or not x.get("gold") for x in records):
+                  raise SystemExit(f"{engine}: occurrence identity fields are incomplete")
+              if any(x.get("status") == "scored" and not all(
+                  key in x for key in ("ipa", "normalized_predicted", "exact", "distance", "reference_length")
+              ) for x in records):
+                  raise SystemExit(f"{engine}: scored ledger record lacks score fields")
+          print("Occurrence ledger schema v1 validated for", len(ledger), "engines and", expected, "occurrences")
           print("DATASET:", r["benchmark"], "rows=", r["dataset_rows"],
                 "eligible token occurrences=", r["eligible_token_occurrences"],
                 "unique words=", r["unique_hangul_words"])
