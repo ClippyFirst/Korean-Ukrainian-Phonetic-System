@@ -290,8 +290,8 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 
 ## 2026-10-30 — Super-soft 100% technical coverage mode
 
-- **DONE_VERIFIED (browser runtime, PR head 75a49524184be96bf0b492541815a8783ee80cb0):** implementation added on `feat/super-soft-100-percent-coverage-2026-10-30`: deterministic opt-in mode, existing Soft/Practical rule reuse, typed orthographic-phonemic fallback for unresolved morphology, IPA-first target adaptation, literal/Jamo preservation, source-span coverage counters, and research-only UI toggle.
-- **DONE_VERIFIED:** exact-head CI passed exhaustive 11,172-syllable IPA + Ukrainian candidate coverage, 13 strict morphology gaps, full NIKL master passage coverage, trace accounting, regression suite (1325/1325), and static build. Coverage is not pronunciation accuracy. Deployment smoke remains pending merge.
+- **DONE_VERIFIED (browser runtime, PR head 8c6d9b42cd574be96f889477ed141db5c8bb4ba9):** implementation added on `feat/super-soft-100-percent-coverage-2026-10-30`: deterministic opt-in mode, existing Soft/Practical rule reuse, typed orthographic-phonemic fallback for unresolved morphology, IPA-first target adaptation, literal/Jamo preservation, source-span coverage counters, and research-only UI toggle.
+- **DONE_VERIFIED:** exact-head CI passed exhaustive 11,172-syllable IPA + Ukrainian candidate coverage, 13 strict morphology gaps, full NIKL master passage coverage, trace accounting, provisional lexical target candidate-only behavior, methodology documentation, regression suite (1326/1326), and static build. Coverage is not pronunciation accuracy. Deployment smoke remains pending merge.
 - **BLOCKED / EVIDENCE-LIMITED:** independent accuracy evaluation needs adjudicated held-out Korean pronunciation gold. No neural runtime or remote service is introduced.
 
 - **DEFERRED:** Python CLI/API do not expose Super-soft and remain strict/soft; no cross-runtime parity claim.
