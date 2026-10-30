@@ -4015,3 +4015,22 @@ Downloaded and inspected GitHub artifact `13018218724` (10 files; ZIP archive). 
 - Artifact integrity assertions executed in the analysis runtime: **PASS** (ledger ordering/count, cross-engine source identity alignment, recomputed scored/exact totals for both datasets).
 
 This validates internal report consistency, not corpus validity or linguistic correctness. Public methodology score publication still requires review of the exact artifact-derived tables and caveats; no new accuracy claim is authorized by this consistency check.
+
+
+## PR #401 integration and corrected public benchmark disclosure — 2026-10-31
+
+**Integration: DONE_VERIFIED.** PR [#401](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/401) was squash-merged to `main` as `eb8e1f100e8aca377aef05a2aa896756c909ec5c`. The benchmark run [41138727409](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41138727409) passed on benchmark-code commit `e27725c62ee02b00fda6d6e76f178d0479609bf9`. The four commits from that tested code head to PR head `104a49c04e2ecc6f613fc60cc44101fc1f85474e` changed only the canonical handoff and benchmark register; the GitHub compare confirms no workflow, script, or test changes. Therefore the successful benchmark is code-equivalent to the merged tree. The redundant documentation-head benchmark rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) was still in progress at merge time; it is not represented as a pass.
+
+**Exact-head and post-merge verification:**
+- PR-head Python 3.11/3.12/3.13, web tests/build, clean wheel install, teacher-corpus audit: **PASS** — [41141286664](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286664).
+- PR-head system verification: **PASS** — [41141286671](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286671).
+- PR-head master/research artifacts: **PASS** — [41141286694](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286694).
+- PR-head exhaustive test-case extraction: **PASS** — [41141286716](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286716).
+- Post-merge main browser tests/build and Python regression/data integrity: **PASS** — [41142749793](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749793).
+- Post-merge Python 3.11/3.12/3.13, web tests/build, wheel install, teacher-corpus audit: **PASS** — [41142749808](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749808).
+- Post-merge master/research artifact generation: **PASS** — [41142749796](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749796).
+- Post-merge Pages deployment [41142749819](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749819): **IN_PROGRESS at this update**. Python 3.11/3.12/3.13 corpus and pipeline checks passed; browser regression/build and deployment steps were still running. The metadata-only NIKL inventory was **SKIPPED**, not passed.
+
+**Public benchmark correction:** `system.html` and `docs/methodology.md` are being refreshed in branch `docs/korean-benchmark-evidence-refresh-2026-10-31` to replace the stale pre-correction native/g2pK figures with the inspected schema-v1 artifact results. Rates are stated over each engine's scored predictions, with coverage/abstentions shown separately. The feature-weighted metric is explicitly described as a project-defined proxy. Neither benchmark establishes independent Korean IPA gold or Ukrainian target quality.
+
+**Remaining gates:** independent specialist-adjudicated Korean IPA gold and Ukrainian target gold remain **BLOCKED / EVIDENCE-LIMITED**; CharsiuG2P training overlap and weights-license status remain unresolved; KoG2Padvanced upstream license is undeclared; neural inference and paired neural aggregation remain opt-in and were skipped. Issue [#337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337) still has no qualified reviewer submissions. PR #371 and PR #398 remain open and are not to be merged wholesale.
