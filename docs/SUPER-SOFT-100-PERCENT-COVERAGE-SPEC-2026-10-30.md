@@ -174,3 +174,15 @@ The Super-soft-specific live UI path was not part of that first deployment smoke
 PR #382 (`a40f0c87468bb1a410861899b9e9795c1ae219cd`) merged as `d700f1662c86324fba2c01df9d2aa46422cb9ab2`. A new regression explicitly verifies archaic Hangul Jamo U+1113, U+115F, U+11F9 and an isolated high surrogate are preserved as literal source spans with status, identical output, empty IPA, and exact trace offsets. The same mixed input contains one modern Hangul syllable and asserts 100% coverage for that syllable plus complete trace accounting.
 
 Exact-head CI passed: **1,328 tests, 0 failures**, production build, Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, system verification, research artifacts, and test-case register extraction. This is a test-only change; no runtime behavior changed. Archaic Jamo/malformed code units remain preserved text, not covered Korean pronunciation input.
+
+
+## 14. Confidence and target-adapter coverage are reported separately (2026-10-30)
+
+The result now reports, per modern Hangul syllable:
+
+- `low_confidence_units` and `low_confidence_share` / `heuristic_share`: the number and proportion whose trace is explicitly low-confidence or uses a Super-soft fallback tier;
+- `target_model_selected_units`, `target_provisional_units`, and `target_unavailable_units`: target-adapter states, separate from Korean pronunciation confidence;
+- `ipa_missing_units`: Hangul units without an inspectable IPA result;
+- `verified_pronunciation_rate: null` and `pronunciation_verification_status: not_independently_adjudicated`: no numerical pronunciation-accuracy claim is inferred from deterministic execution or coverage tests.
+
+The browser status line displays the low-confidence share next to candidate and trace coverage. This is a transparency/measurement change; it does not alter Korean phonological rules, IPA strings, Ukrainian mappings, or mode defaults. The long NIKL master passage remains a stress fixture, not independent pronunciation gold.
