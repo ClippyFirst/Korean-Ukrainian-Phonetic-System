@@ -232,6 +232,52 @@ def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
     }
 
 
+def _build_per_engine_occurrences(
+    items: list[dict[str, str]],
+    scored_by_engine: dict[str, list[dict[str, Any]]],
+    predictions: dict[str, dict[str, Any]],
+    native_cache: dict[str, dict[str, Any]],
+) -> dict[str, list[dict[str, Any]]]:
+    """Build a complete occurrence ledger, preserving repeated words and abstentions."""
+    ledgers: dict[str, list[dict[str, Any]]] = {}
+    for engine, scored_items in scored_by_engine.items():
+        scored_by_id = {str(item["occurrence_id"]): item for item in scored_items}
+        if len(scored_by_id) != len(scored_items):
+            raise ValueError(f"{engine}: duplicate scored occurrence IDs")
+        records: list[dict[str, Any]] = []
+        for item in items:
+            occurrence_id = str(item["occurrence_id"])
+            word = item["word"]
+            record: dict[str, Any] = {
+                "occurrence_id": occurrence_id,
+                "row_id": str(item["row_id"]),
+                "token": word,
+                "gold": item["gold"],
+            }
+            scored = scored_by_id.get(occurrence_id)
+            if scored is not None:
+                record.update({
+                    "status": "scored",
+                    "ipa": scored.get("predicted"),
+                    "normalized_predicted": scored.get("normalized_predicted"),
+                    "exact": scored.get("exact"),
+                    "distance": scored.get("distance"),
+                    "reference_length": scored.get("reference_length"),
+                })
+            else:
+                if engine == "clippyfirst_native":
+                    source = native_cache.get(word, {})
+                    status = "abstained" if source.get("unresolved") else "error" if source.get("error") else "missing"
+                    reason = source.get("reason") or source.get("error")
+                else:
+                    source = predictions.get(engine, {}).get(word, {})
+                    status = "error" if source.get("error") else "missing"
+                    reason = source.get("error")
+                record.update({"status": status, "reason": reason})
+            records.append(record)
+        ledgers[engine] = records
+    return ledgers
+
 def _metrics(items: list[dict[str, Any]]) -> dict[str, Any]:
     if not items:
         return {
