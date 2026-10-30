@@ -4003,3 +4003,15 @@ PR #397 is open, unmerged, and GitHub currently reports it mergeable. The implem
 - No production phonology, IPA mapping, Ukrainian target mapping, runtime UI, deployment, or release changed.
 
 **Next acceptance gates:** inspect artifact `13018218724` and compare paired per-occurrence deltas; refresh technical/public methodology only from inspected artifacts; run neural comparison manually only if explicitly authorized for this branch and after license/overlap caveats remain visible; obtain independent specialist-adjudicated Korean IPA and Ukrainian target gold before any normative accuracy claim. PRs #371 and #398 remain open and must not be bulk-merged; #401 is the selective corrected benchmark port.
+
+
+### Artifact-level integrity verification — 2026-10-31
+
+Downloaded and inspected GitHub artifact `13018218724` (10 files; ZIP archive). Independently parsed both report JSON files:
+- UGTPHON: all 10 engine ledgers have exactly 2,703 ordered occurrence IDs; source identity triples (row_id, token, gold) are identical across engines; each engine's recomputed scored/exact counts match the aggregate report.
+- SIGMORPHON: all 10 engine ledgers have exactly 999 ordered occurrence IDs; source identity triples align across engines; recomputed scored/exact counts match aggregates.
+- The native-vs-g2pk occurrence audit is complete: UGTPHON counts 1,429 both-exact, 1,264 both-not-exact, 4 g2pk-only exact, 1 native-only exact, and 5 native abstentions (2 where g2pk is exact); SIGMORPHON counts 353 both-exact, 641 both-not-exact, 4 native-only exact, and 1 native abstention where g2pk is not exact. These are comparisons to the corpus annotation, explicitly not normative gold.
+- Report supplemental status confirms rule accuracy and Ukrainian target metrics are NOT_MEASURED; output determinism is not asserted; comparable peak RSS is not measured. PER is a broad-IPA segment metric; feature-weighted error is a project-defined proxy, not a standardized universal PFER.
+- Artifact integrity assertions executed in the analysis runtime: **PASS** (ledger ordering/count, cross-engine source identity alignment, recomputed scored/exact totals for both datasets).
+
+This validates internal report consistency, not corpus validity or linguistic correctness. Public methodology score publication still requires review of the exact artifact-derived tables and caveats; no new accuracy claim is authorized by this consistency check.
