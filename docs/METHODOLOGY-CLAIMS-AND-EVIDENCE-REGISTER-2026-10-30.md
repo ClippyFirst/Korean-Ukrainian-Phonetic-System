@@ -28,6 +28,7 @@
 | M-11 | Native normative Korean pronunciation accuracy is independently established | BLOCKED / EVIDENCE-LIMITED | Немає representative independent NIKL-style holdout з expert adjudication | Є нормативно-джерельні приклади, регресії й діагностичні benchmark results | Абсолютну точність, per-rule accuracy або загальну перевагу |
 | M-12 | Current main CI verifies implementation and build | DONE_VERIFIED at main commit `f93ae007592f216ccd2493f6652d228b876c8338` | Runs 41110109093, 41110109184, 41110109342, 41110109231 | 1,340/1,340 browser tests; Python 3.11/3.12/3.13; system/data; build; Pages deployment | Що CI доводить незалежну лінгвістичну правильність |
 | M-13 | Extended benchmark implementation is already integrated into main | PARTIAL / NOT IN MAIN | PR #371 open; branch `bench/extended-metrics-runtime-2026-10-29`, head `a10e2bb7...`; compare status diverged, 117 ahead/26 behind | Нові вимірювання існують на окремій дослідницькій гілці й доступні для аудиту | Що новий harness/report уже є частиною production main |
+| M-14 | Baseline benchmark now emits the occurrence ledger required by the neural comparator | DONE_VERIFIED on PR #399 head; neural pairing rerun still PARTIAL | PR [#399](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/399), head `ad7ce7caf1dc56f22449a88b2c565e049d95873d`; exact-head run [41123471367](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471367); artifact `13008699681` | Ledger schema v1 contains all 2,703 UGTPHON and 999 SIGMORPHON occurrences for six engines; CI validates order, identity fields and scored records | Що свіжий Charsiu-vs-baseline joined run пройшов: research-only neural inference and pairing jobs were skipped on this PR |
 
 ## Ключові методологічні правила
 
@@ -49,6 +50,7 @@
 - Master/research artifacts: [41110109342](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41110109342).
 - Pages deployment: [41110109231](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41110109231).
 - Expanded benchmark PR: [#371](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/371).
+- Baseline occurrence-ledger fix: [PR #399](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/399), exact-head baseline benchmark [run 41123471367](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471367); neural pairing job skipped by opt-in policy.
 - Expanded benchmark report: [branch report](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/bench/extended-metrics-runtime-2026-10-29/docs/EXTENDED-BENCHMARK-METRICS-2026-10-29.md).
 - Native/g2pK/Charsiu/ByT5 detailed logs: [run 40843579685](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579685).
 
