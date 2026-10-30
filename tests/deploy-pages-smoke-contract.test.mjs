@@ -26,6 +26,12 @@ test('Pages smoke contracts cover the mode selector and system-page title', () =
   assert.ok(system.includes('<title>Система / 한국어 → УКРАЇНСЬКА</title>'), 'system-page title must match smoke assertion');
 });
 
+test('live browser smoke selects the ordinary-mode disclosure without ambiguous matches', () => {
+  assert.match(browserSmoke, /\.mode-disclosure'\)\.filter\(\{ hasText: 'Як працює звичайний режим' \}\)/u);
+  assert.match(browserSmoke, /ordinary-mode disclosure must be selected unambiguously/u);
+  assert.doesNotMatch(browserSmoke, /page\.locator\('\.mode-disclosure'\);/u);
+});
+
 test('live browser smoke verifies inline research candidate and neutral confirmed-result option', () => {
   assert.match(browserSmoke, /#ua-unconfirmed-button/u);
   assert.match(browserSmoke, /g2pK ·/u, 'live smoke must check the current ordinary-mode engine label');

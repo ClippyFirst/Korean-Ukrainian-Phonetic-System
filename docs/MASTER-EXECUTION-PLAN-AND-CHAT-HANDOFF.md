@@ -3837,3 +3837,97 @@ PR #387 was merged to `main` as `a1c03fec1316433ab6f496b7ed88002c53c93067`.
 - **Public site:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/ .
 
 **Status:** bracketed uncertainty display — DONE_VERIFIED and deployed. This is a presentation of the engine's existing confidence metadata, not a claim that unbracketed spans are independently certified. Independent Korean pronunciation accuracy and Ukrainian target quality remain BLOCKED / EVIDENCE-LIMITED pending adjudicated gold and specialist review; Python CLI/API Super-soft parity remains DEFERRED.
+
+
+# Two-engine methodology and service disclosure follow-up — 2026-10-30
+
+**Branch:** `docs/full-methodology-service-clarity-2026-10-30`  
+**Base:** `main` at `11f03cc261ebc8385ab76b6e0041fd9fe9f0563d`  
+**PR:** [#397 — Document the two Korean engines and complete Kozak Kim methodology](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/397)  
+**Latest branch head at this handoff update:** pending this handoff commit; inspect the PR head for the exact SHA.
+
+## Work completed in this branch
+
+- Updated the service mode description so users see directly that **Режим докладного аналізу** uses the project's own deterministic Kozak Kim engine, unlike **Звичайний режим** on the JavaScript g2pK port. The existing direct methodology anchor remains linked from the explanatory disclosure.
+- Expanded `system.html` with the pinned browser-port identity/configuration, upstream provenance and Apache-2.0 notices, the distinction from Python g2pK/MeCab, the Kozak Kim module map, the strict/soft/super-soft mode boundaries, and the actual Super-soft coverage contract.
+- Refreshed section 19 against main's 2026-10-30 exact-head evidence: browser tests 1,339/1,339; Vite build; Python 3.11/3.12/3.13 regression and wheel checks; system verification; master/research artifact generation.
+- Added paired benchmark confidence intervals and retained the mixed conclusion: the small UGTPHON exact-match edge is g2pK's, while SIGMORPHON exact match favours native; paired CER intervals cross zero. Neither benchmark evaluates Ukrainian target quality or proves a universal winner.
+- Updated `docs/methodology.md` with the two-engine architecture and a compact account of all three Kozak Kim modes.
+- Fixed the live Pages smoke's ambiguous `.mode-disclosure` selector by selecting the ordinary-mode disclosure using its summary text; added a regression contract to prevent the ambiguity from returning.
+
+## Verification evidence and honest status
+
+- Main baseline commit: `11f03cc261ebc8385ab76b6e0041fd9fe9f0563d`.
+- Main browser suite/build: run [41084643011](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41084643011) — **PASS**, 1,339 tests passed, 0 failed; Vite build passed; Python 3.11/3.12/3.13 matrix and wheel build passed.
+- Main system verification: [41084642910](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41084642910) — **PASS**; official NIKL metadata-only inventory was **SKIPPED**, not passed.
+- Main master/research artifacts: [41084643006](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41084643006) — **PASS**.
+- Main Pages run [41084642903](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41084642903): deployment and HTTP smoke passed; live Playwright smoke failed because the generic locator matched two disclosure elements. This is a test-selector failure, not a pronunciation assertion. The PR fixes the selector, but the fix is not yet verified until exact-head CI runs.
+- PR #397 exact-head runs [41101168856](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101168856), [41101168913](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101168913), [41101168889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101168889), [41101168989](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101168989), and [41101168912](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101168912) were **QUEUED** at the time of this update. No PR test pass is claimed.
+- Local commands were not run: this GitHub connector session does not provide a checked-out working tree. Verification must come from exact-head GitHub Actions, not an assumed local run.
+
+## Task ledger
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Visible service distinction between g2pK and Kozak Kim | PARTIAL | Copy is updated; exact-head browser/UI test and live Pages smoke still need to pass. |
+| Full researcher-facing engine/mode methodology | PARTIAL | Source-grounded page and companion document updated; exact-head test and build pending. |
+| Benchmark interpretation and CI evidence | DONE_VERIFIED | Figures and caveats checked against the current multi-engine report and main workflow runs cited above. |
+| Pages smoke selector repair | PARTIAL | Source and contract test updated; exact-head Actions run must prove it passes. |
+| Independent Korean pronunciation gold and Ukrainian target gold | BLOCKED / EVIDENCE-LIMITED | No independently adjudicated, sufficiently representative holdout corpus and specialist review yet. |
+| Python CLI/API Super-soft parity | DEFERRED | Current scope is the browser service; the methodology explicitly avoids implying parity. |
+
+## Scope preserved
+
+- No Korean phonological rule, lexical pronunciation, IPA value, or Ukrainian target mapping was changed.
+- PR #371 (extended multi-engine benchmark) remains open and untouched; its benchmark work is independent of this documentation/service-clarity change.
+- No merge, release, or production-setting change was performed.
+
+**Next acceptance gate:** wait for PR #397 exact-head test, Python/data, browser G2P, artifact-generation, and live Pages checks. Fix only evidence-backed failures, then update this handoff with the final head SHA and actual run conclusions. Until that gate is green, the PR remains **PARTIAL**, not release-ready.
+
+
+## Final documentation-link and queue refresh — 2026-10-30 17:46 UTC
+
+- Corrected the two remaining IPA-first evidence links in `system.html` that still pointed to the historical `test/block-standard-rule-coverage-gate-2026-10-11` branch. They now resolve against `main`; both target files are present on the default branch.
+- Code/documentation head before this handoff-only refresh: `827a4e00c879f1c39f73275e403e9e2f16c626a7`. The handoff update itself is documentation-only; the PR head is authoritative for the resulting commit SHA.
+- Latest PR-head workflows for code/documentation head `827a4e00c879f1c39f73275e403e9e2f16c626a7` are queued: tests [41101428380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101428380), system verification [41101428438](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101428438), Browser G2P integration [41101428325](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101428325), master/research artifacts [41101428447](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101428447), and exhaustive test-case register extraction [41101428483](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101428483). Queue state is not a pass.
+- PR #397 remains open and unmerged. No production release or merge was performed.
+
+
+## Final exact-match assertion correction — 2026-10-30 17:47 UTC
+
+- Tightened the methodology contract test to assert the exact positive wording actually used for the native SIGMORPHON exact-match delta (`вищий на 0,4012 відсоткового пункта`). This is a test expectation correction only; no benchmark data or engine behavior changed.
+- Latest code/documentation/test head: `aea77aa42100cc5ab0cd013eac48767789786f84`.
+- Exact-head runs at this point remain **QUEUED**: tests [41101524940](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101524940), system verification [41101524989](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101524989), Browser G2P integration [41101524894](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101524894), research artifacts [41101525219](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101525219), and exhaustive register extraction [41101525065](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101525065). No exact-head pass is claimed.
+
+
+## Exact-head CI resolution and final handoff — 2026-10-30 18:34 UTC
+
+- Corrected the exact browser/UI contract regression found by CI. The pre-existing test requires the user-facing phrase `Власна розробка з детермінованим рушієм Козака Кіма`; the first wording update had replaced that exact phrase with a semantically similar but contract-incompatible formulation. Restored the tested phrase while retaining the explicit contrast with ordinary mode on g2pK. This is a copy/contract correction; no engine behavior or phonological data changed.
+- Corrected code/documentation head: `e3331ce8cdb24146bf79471390284a076aac5684`.
+- Exact-head browser G2P integration [41107787309](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41107787309): **PASS**.
+- Exact-head system verification [41107787171](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41107787171): **PASS**; Python regression/data-integrity job passed. Official NIKL metadata-only inventory was **SKIPPED**, not a crawl or source validation.
+- Exact-head browser tests/build [41107787277](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41107787277): **PASS**, 1,340 / 1,340 tests, 0 failures; Vite production build passed. Python 3.11, 3.12, 3.13, teacher-corpus audit, and wheel-install jobs all passed in the same workflow.
+- Exact-head master/research artifacts [41107787203](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41107787203): **PASS**.
+- Exact-head exhaustive test-case register extraction [41107787353](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41107787353): **PASS**.
+- The earlier failures on `6184285` were a single UI-contract mismatch: the changed service copy no longer matched the existing exact phrase assertion. CI logs confirmed the phonology/G2P logic was not the cause. The corrected exact-head run now passes.
+- The PR's browser smoke selector repair is covered by the passing source contract and build/tests. The live Pages Playwright smoke still requires a post-merge deployment run; no deployment is claimed here.
+- Task ledger update: visible service distinction — **DONE_VERIFIED** (exact-head tests/build); researcher-facing two-engine and Kozak Kim methodology — **DONE_VERIFIED** (exact-head tests/build, research artifacts); benchmark interpretation — **DONE_VERIFIED**; browser G2P integration — **DONE_VERIFIED**; Python regression/data integrity and 3.11/3.12/3.13 + wheel — **DONE_VERIFIED**; master/research artifacts and exhaustive register extraction — **DONE_VERIFIED**; live Pages smoke repair — **PARTIAL** pending the post-merge deployed-browser acceptance run; independent specialist-adjudicated Korean pronunciation gold and Ukrainian target gold — **BLOCKED / EVIDENCE-LIMITED**; Python CLI/API Super-soft parity — **DEFERRED**.
+- PR #397 remains open and unmerged. Public Pages has not yet received these changes. PR #371 remains untouched. No pronunciation rules, lexical outputs, IPA values, Ukrainian mappings, external settings, or release state were changed.
+- Connector-only execution limitation remains: no local checkout was available, so no local shell test commands are claimed; the exact-head GitHub Actions results above are the verification evidence.
+
+**Current acceptance state:** implementation and all PR-head CI gates listed above are green at code/documentation head `e3331ce8cdb24146bf79471390284a076aac5684`. The PR is suitable for review/merge from a CI perspective, but deployment/live-browser acceptance is pending after merge. Research accuracy is not certified by CI and remains evidence-limited.
+
+
+## Final PR-head rerun confirmation — 2026-10-30 18:35 UTC
+
+The handoff-only branch head `f7177a03c849c03d7c0f77d0aafb05206f55b34d` has now also completed its rerun:
+- Browser regression tests/build: **PASS** (1,340 / 1,340; Vite build) — [run 41108026830](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026830).
+- Python regression/data integrity: **PASS** — [run 41108026830](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026830).
+- Python 3.11/3.12/3.13, teacher-corpus audit, wheel installation: **PASS** — [run 41108026860](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026860).
+- Browser G2P integration: **PASS** — [run 41108026931](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026931).
+- Corpus generation: **PASS** — [run 41108026834](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026834).
+- Exhaustive test-case register extraction: **PASS** — [run 41108026977](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41108026977).
+- Official NIKL metadata-only inventory: **SKIPPED** in the system workflow; it is not represented as a successful live inventory/crawl.
+- Live Pages deployment/Playwright smoke remains post-merge acceptance, not part of these PR-head checks.
+
+PR #397 is open, unmerged, and GitHub currently reports it mergeable. The implementation is CI-green and review-ready; the public site is not updated until the PR is merged and Pages deployment passes.
