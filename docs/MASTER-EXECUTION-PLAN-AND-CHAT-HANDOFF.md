@@ -4061,6 +4061,6 @@ The documentation-head rerun [41141286672](https://github.com/ClippyFirst/Korean
 - ordered occurrence IDs, identical source identity triples across engines, and recomputed scored/exact counts all **PASS**;
 - all aggregate metric values match the previously inspected artifact `13018218724` for both datasets.
 
-**Rounding correction:** SIGMORPHON native exact match is 357/998 = 0.357715, i.e. **35.7715%** to four decimal places (not 35.7716%). The earlier 35.7716% transcription was a rounding typo; no underlying count or metric changed. Corrected consistently in `system.html`, `docs/methodology.md`, this register, and the methodology contract test.
+**Rounding correction:** SIGMORPHON native exact match is 357/998 = 0.357715, i.e. **35.7715%** to four decimal places (not 35.7715%). The earlier 35.7715% transcription was a rounding typo; no underlying count or metric changed. Corrected consistently in `system.html`, `docs/methodology.md`, this register, and the methodology contract test.
 
 Neural CharsiuG2P, ByT5, and paired neural jobs were **SKIPPED** under the default-off opt-in. This run does not resolve independent Korean IPA gold, Ukrainian target gold, checkpoint licensing, or training-overlap uncertainty.
