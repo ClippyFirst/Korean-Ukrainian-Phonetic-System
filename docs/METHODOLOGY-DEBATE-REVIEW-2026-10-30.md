@@ -40,7 +40,7 @@
 
 - **Академічна перспектива:** стабільність реалізації й відтворення зафіксованих software expectations.
 - **Доказова перспектива:** не незалежну фонетичну правильність, репрезентативність корпусів чи оптимальність українських форм.
-- **Рішення:** на main `2cd049762fc2a1bd5ea85428762b9ceb2c4d3130` підтверджено 1,340/1,340 browser tests, Python 3.11/3.12/3.13, web tests/build, clean wheel install, teacher-corpus audit, strict corpus generation, Pages deployment, HTTP smoke і live Playwright practical-mode smoke. NIKL metadata-only inventory було SKIPPED. Лінгвістична валідація залишається окремим gate.
+- **Рішення:** на main `ca6133890139f76c88253b2b1d0bbc3a6191601a` підтверджено 1,341/1,341 browser tests, Python 3.11/3.12/3.13, web tests/build, clean wheel install, teacher-corpus audit, strict corpus generation, Pages deployment, HTTP smoke і live Playwright practical-mode smoke (runs 41144925083, 41144925101, 41144925095, 41144925073). NIKL metadata-only inventory було SKIPPED. Лінгвістична валідація залишається окремим gate.
 
 ## Питання 6. Чи є тепер occurrence ledger достатнім для neural pairing?
 
@@ -52,8 +52,8 @@
 
 - PR #401 інтегрував corrected extended benchmark; PR #402 оновив публічні/технічні metric disclosures; PR #403 оновив current CI evidence; PR #404 виправив округлення SIGMORPHON native exact rate до 35.7715%.
 - PR #371 залишається відкритим і не зливається wholesale: корисні benchmark зміни були selectively ported у #401, а решта гілки diverged/stale.
-- PR #398 залишається відкритим і не зливається wholesale; claim/evidence register та цей review record переносяться вибірково після актуалізації, а застарілі public metrics не копіюються.
-- Issue #337 не має кваліфікованих reviewer submissions. Потрібні дві незалежні packet-based Korean IPA annotations.
+- PR #398 закрито як superseded після вибіркового перенесення оновлених claim/evidence register і review record через PR #405; вихідну гілку збережено, застарілі public metrics не зливалися.
+- Issue #337 не має кваліфікованих reviewer submissions. Попередньо визначено три potential leads (Yoonjung Kang, Taehong Cho, Seongyeon Ko), але нікого не контактували; availability та conflicts of interest не перевірені. Потрібні дві незалежні packet-based Korean IPA annotations.
 - Незалежний Korean IPA gold, Ukrainian target gold, Charsiu checkpoint license/training manifest і KoG2Padvanced upstream license залишаються BLOCKED / EVIDENCE-LIMITED.
 
 ## Узгоджена редакційна політика
