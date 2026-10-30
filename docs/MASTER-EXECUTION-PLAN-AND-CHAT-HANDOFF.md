@@ -4052,3 +4052,15 @@ A follow-up branch `docs/refresh-methodology-ci-evidence-2026-10-31` refreshes t
 The redundant PR #401 documentation-head benchmark rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) is still **IN_PROGRESS** at this handoff update (UGTPHON stage completed; SIGMORPHON stage running). The benchmark code itself already passed on `e27725c62ee02b00fda6d6e76f178d0479609bf9`, and the four commits to the merged PR head were documentation-only. Do not report the redundant rerun as passed unless it completes.
 
 **Still blocked/evidence-limited:** independent specialist-adjudicated Korean IPA gold, independent Ukrainian target gold, qualified reviewer submissions for issue #337, Charsiu checkpoint weights licensing and full training-overlap resolution. Neural inference and paired neural aggregation remain default-off opt-ins; KoG2Padvanced upstream license is undeclared. These prevent research certification, not the software CI/build/deployment gates.
+
+
+## Latest exact-head benchmark rerun and rounding correction — 2026-10-31
+
+The documentation-head rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) completed **PASS** on code-equivalent PR #401 head `104a49c04e2ecc6f613fc60cc44101fc1f85474e`. Artifact `13019822857` (`multi-engine-korean-ipa-diagnostic`) was downloaded and independently checked:
+- 10 engine ledgers × 2,703 UGTPHON occurrences and 10 × 999 SIGMORPHON occurrences;
+- ordered occurrence IDs, identical source identity triples across engines, and recomputed scored/exact counts all **PASS**;
+- all aggregate metric values match the previously inspected artifact `13018218724` for both datasets.
+
+**Rounding correction:** SIGMORPHON native exact match is 357/998 = 0.357715, i.e. **35.7715%** to four decimal places (not 35.7716%). The earlier 35.7716% transcription was a rounding typo; no underlying count or metric changed. Corrected consistently in `system.html`, `docs/methodology.md`, this register, and the methodology contract test.
+
+Neural CharsiuG2P, ByT5, and paired neural jobs were **SKIPPED** under the default-off opt-in. This run does not resolve independent Korean IPA gold, Ukrainian target gold, checkpoint licensing, or training-overlap uncertainty.
