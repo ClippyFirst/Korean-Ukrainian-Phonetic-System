@@ -41,7 +41,7 @@
 
 ## Невирішена технічна суперечність
 
-PR #371 містить актуальні розширені вимірювання, але його гілка `bench/extended-metrics-runtime-2026-10-29` розходиться з main: 117 commits ahead, 26 behind; GitHub позначає PR як non-mergeable. У run 40843579685 основний multi-engine job і два окремі neural inference jobs завершилися успішно, але підсумковий neural pairing job завершився помилкою `baseline report lacks per_engine_occurrences`. Тому scores у job outputs можна цитувати як окремі вимірювання з відповідними caveats, але повний combined ledger і готовність інтегрувати гілку не підтверджені.
+PR #371 містить актуальні розширені вимірювання, але його гілка `bench/extended-metrics-runtime-2026-10-29` розходиться з main (117 commits ahead, 26 behind) і лишається non-mergeable. У run 40843579685 neural pairing job справді впав через відсутній `per_engine_occurrences` у baseline report. Цей конкретний schema defect усунуто в окремому PR #399: baseline producer тепер формує повний occurrence ledger для кожного рушія, а workflow перевіряє schema v1, кількість, порядок, ідентичність і score fields. На точному head `ad7ce7caf1dc56f22449a88b2c565e049d95873d` run 41123471367 пройшов для обох корпусів; завантажений artifact містить 2,703 UGTPHON і 999 SIGMORPHON входжень для шести рушіїв. Водночас neural inference і joined pairing jobs на цьому PR були SKIPPED через їхню окрему research-only opt-in умову. Отже, producer/schema fix тепер DONE_VERIFIED на PR #399, але свіжий joined neural-vs-baseline result залишається PARTIAL до окремого контрольованого запуску. Це не робить гілку PR #371 автоматично придатною до merge.
 
 ## Узгоджена редакційна політика
 
