@@ -57,6 +57,7 @@ test('Super-soft applies the orthographic-phonemic fallback to unresolved §30 s
   const fallbacks=result.trace.filter(item=>item.status==='super-soft-orthographic-fallback');
   assert.ok(fallbacks.length>0);
   assert.ok(fallbacks.every(item=>item.phoneticResultType==='orthographic-phonemic-fallback'&&item.confidence==='low'));
+  assert.ok(fallbacks.every(item=>item.unresolvedMorphologyFlags.length>0&&item.uncertainty?.kind==='unresolved-morphology'));
   assert.ok(fallbacks.every(item=>(item.rules||[]).includes('super-soft-orthographic-fallback')));
   assert.ok(!fallbacks.some(item=>(item.rules||[]).some(rule=>/NIKL|exact-lexical/u.test(rule))));
 });
