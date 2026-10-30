@@ -56,7 +56,7 @@ function attachSuperSoftCoverage(source,result){
     source_span_covered:traced.length,
     source_span_uncovered:sourceUnits.length-traced.length,
     trace_coverage:ratio(traced.length,sourceUnits.length),
-    low_confidence_fallback_units:fallbackCount,
+    low_confidence_units:fallbackCount,
     complete:covered.length===hangul.length&&traced.length===sourceUnits.length
   };
   return result;
