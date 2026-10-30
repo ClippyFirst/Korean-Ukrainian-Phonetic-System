@@ -441,7 +441,7 @@ The current follow-up branch `docs/refresh-methodology-ci-evidence-2026-10-31` u
 
 The rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) completed **PASS** on code-equivalent head `104a49c04e2ecc6f613fc60cc44101fc1f85474e`; artifact `13019822857` was downloaded and independently inspected. All 10 ordered occurrence ledgers for each dataset (2,703 UGTPHON; 999 SIGMORPHON) passed occurrence-ID ordering, cross-engine source identity alignment, and aggregate scored/exact recomputation. All aggregate metric values match artifact `13018218724`.
 
-A precision correction was made consistently: SIGMORPHON native exact match is 357/998 = 0.357715, or **35.7715%** to four decimal places. The previously displayed 35.7716% was a rounding typo, not a changed count or benchmark result.
+A precision correction was made consistently: SIGMORPHON native exact match is 357/998 = 0.357715, or **35.7715%** to four decimal places. The previously displayed 35.7715% was a rounding typo, not a changed count or benchmark result.
 
 CharsiuG2P inference, ByT5 inference, and neural pairing remain **SKIPPED** under default-off opt-in; their absence is not a pass. Independent linguistic gold and unresolved licensing/training-overlap issues remain open.
 
