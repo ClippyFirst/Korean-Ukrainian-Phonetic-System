@@ -49,7 +49,7 @@ test('methodology reports corrected benchmark metrics, coverage, and evidence li
 
 test('methodology evidence register and debate review preserve current evidence boundaries', () => {
   for (const term of [
-    'M-05','53.0022%','53.0892%','35.7715%','35.3353%',
+    'M-05','1,430/2,698 scored','1,435/2,703','357/998 scored','353/999','53.0022%','53.0892%','35.7715%','35.3353%',
     'McNemar exact two-sided p=0.125','13019822857',
     'M-13','M-14','M-15','DONE_VERIFIED','BLOCKED / EVIDENCE-LIMITED',
     'CharsiuG2P','weights','NIKL metadata-only inventory'
