@@ -3759,3 +3759,13 @@ Confirm the remaining exact-head workflows finish successfully; inspect the stre
 - PR #384 remains open; no merge or deployment was performed. PR #371 remains untouched because it is an independent multi-engine benchmark effort.
 
 **Final status:** transparency metrics, trace-aligned counting, UI disclosure, tests, and handoff — DONE_VERIFIED on code head 7ca4e62. Independent Korean pronunciation accuracy and Ukrainian target quality — BLOCKED / EVIDENCE-LIMITED pending adjudicated gold and specialist review. Python CLI/API Super-soft parity — DEFERRED. The service remains a deterministic research prototype with a deployed browser implementation, not a linguistically accuracy-certified release.
+
+## Exact lexical controls and final CI confirmation (2026-10-30)
+
+- Added 27 exact/source-backed controls from the master passage. For each, Super-soft is required to preserve the Strict engine's Korean surface form, IPA, and IPA-derived Ukrainian target.
+- Exact code head: 31ab5269e70ac800870b60251fe8b1e744f9e179.
+- Browser tests: 1,332 passed, 0 failed; production build passed in run 41053589850.
+- Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit, system verification, browser G2P integration, master/research artifact generation, and exhaustive test-case register extraction all passed on the exact head. Relevant runs: 41053589850, 41053590044, 41053589866, 41053589911, 41053589871.
+- The 27-control regression protects existing evidence-backed cases; it does not certify the remaining stress-passage forms or independently adjudicate Ukrainian target quality.
+
+PR #384 remains the proposed change set. No unrelated benchmark PR was modified.
