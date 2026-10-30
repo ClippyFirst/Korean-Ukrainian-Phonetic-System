@@ -13,7 +13,7 @@ test('Hanja is an additional output in the requested order with an accessible co
   assert.match(html, /id="result-hanja"[^>]*lang="ko"/u);
   assert.match(html, /id="hanja-engine-status"[^>]*role="status"/u);
   assert.match(html, /data-copy="hanja"/u);
-  assert.match(html, /питомо корейська лексика \(наприклад, 값 у 값이\) залишаються хангилем/u);
+  assert.match(html, /Не всі корейські слова мають ханча; невідомі слова та граматичні частки залишаються хангилем/u);
   const outputOrder = ['panel-ukrainian', 'panel-romanization', 'panel-hanja', 'panel-ipa'];
   const outputPositions = outputOrder.map((id) => html.indexOf(`id="${id}"`));
   assert.ok(outputPositions.every((position) => position >= 0), 'all primary outputs exist');
