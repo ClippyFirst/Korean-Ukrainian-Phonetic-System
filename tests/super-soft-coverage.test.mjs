@@ -137,6 +137,24 @@ test('Super-soft records exact monotonic UTF-16 source offsets for repeated and 
   }
 });
 
+test('Super-soft preserves archaic Jamo and malformed Unicode as explicit literal spans',()=>{
+  const source='힣 ᄓᅟᇹ\uD800';
+  const result=engine.convert(source,SUPER);
+  assert.equal(result.coverage.input_total,1);
+  assert.equal(result.coverage.input_covered,1);
+  assert.equal(result.coverage.input_coverage,1);
+  assert.equal(result.coverage.trace_coverage,1);
+  assert.equal(result.coverage.complete,true,JSON.stringify(result.coverage));
+  for(const literal of ['ᄓ','ᅟ','ᇹ','\uD800']){
+    const item=result.trace.find(entry=>entry.source===literal);
+    assert.ok(item,JSON.stringify({literal,trace:result.trace.map(entry=>entry.source)}));
+    assert.equal(item.status,'literal','archaic Jamo and malformed code units are preserved, not pronounced by guesswork');
+    assert.equal(item.output,literal);
+    assert.equal(item.ipa,'');
+    assert.equal(source.slice(item.sourceStart,item.sourceEnd),literal);
+  }
+});
+
 test('Super-soft is opt-in and does not alter strict or existing soft behavior',()=>{
   const input='삶이';
   assert.deepEqual(engine.convert(input),engine.convert(input,STRICT));
