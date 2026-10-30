@@ -56,6 +56,9 @@ Added eight official examples from the attached note to Rule 29, including `ë“¤ì
 ## Benchmark review after renderer integration (2026-10-24)
 
 - [Consolidated benchmark review, exact metrics, interpretation and remaining gates](docs/BENCHMARK-REVIEW-2026-10-24.md)
+- [Current Korean benchmark suite register](docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md)
+- [Methodology claims-and-evidence register](docs/METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md)
+- [Methodology review and adjudication record](docs/METHODOLOGY-DEBATE-REVIEW-2026-10-30.md)
 
 ## Teacher-guided improvement of the neural-free Strict engine (2026-10-26)
 
