@@ -370,3 +370,29 @@ The current mainline first received the exact-form R002/R016 source-backed rules
 ## Final mainline consolidation — 2026-10-27
 
 The best verified implementation/research tree is now on `main` via PR #348 merge commit `72d2a785160382ffbfdce4f5654afb9671d957f9`, after source-backed R002/R016 integration in `1def51dd9f88364891ff0051e9aadb5900f2e42c`. Multi-engine UGTPHON and SIGMORPHON diagnostics both passed on the consolidated code head (run 40585528130); current benchmark values are UGTPHON native 53.0022% exact / 9.1697% CER (2,698 scored, five abstentions) and SIGMORPHON native 35.8074% exact / 14.7037% CER (997 scored, two abstentions). g2pK 0.9.4 remains near-native on these diagnostics. These are not normative IPA gold scores and do not score Ukrainian adaptation. The standalone cross-version test/wheel matrix and some post-merge main workflows were still queued at the last poll; do not record them as passed until completed. Charsiu and ByT5 inference remain skipped research opt-ins; NIKL live inventory is skipped/blocked, not passed.
+
+
+## Corrected per-metric scoring + occurrence-ledger run (2026-10-30; PR #401)
+
+**DONE_VERIFIED — executable baseline benchmark.** Exact benchmark job [41138727409](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41138727409) passed for both pinned corpora and uploaded artifact `13018218724` (`multi-engine-korean-ipa-diagnostic`). The workflow validates schema-v1 ordered occurrence ledgers for all 10 engines: 2,703 UGTPHON occurrences and 999 SIGMORPHON occurrences.
+
+Correctness deltas in this port:
+- Nearest-rank p95 preserves the upper tail (regression fixture `[1, 2, 3, 100]` yields 100 at p95).
+- Exact/CER, segment PER, and feature-weighted proxy each choose their own best IPA gold alternative; their reference denominators are metric-specific.
+- CharsiuG2P scoring follows the same metric-specific gold selection.
+- Ledger records retain occurrence identity, engine result/status, IPA and scoring fields for reproducible paired comparisons.
+
+Corrected diagnostic snapshot (exact rate / CER / PER / feature proxy):
+| Engine | UGTPHON (2,703) | SIGMORPHON (999) |
+|---|---:|---:|
+| ClippyFirst native | 53.0022% / 9.1697% / 9.6139% / 4.8765% | 35.7716% / 14.6978% / 16.2343% / 7.5491% |
+| g2pk 0.9.4 | 53.0892% / 9.2285% / 9.6472% / 4.8952% | 35.3353% / 14.8222% / 16.3126% / 7.5990% |
+| g2p-ko 1.0.0 | 52.4602% / 9.3885% / 9.8446% / 4.9779% | 35.6356% / 14.6970% / 16.2351% / 7.5524% |
+| KoG2Padvanced 2022 | 47.3178% / 10.6772% / 11.3378% / 6.1562% | 32.6326% / 15.8237% / 17.5531% / 9.0979% |
+| phonemize 2.0.1 | 42.5453% / 14.3531% / 14.2582% / 7.7056% | 28.9289% / 17.4387% / 18.2664% / 8.4616% |
+
+Rates are proportions ×100; table values rounded to four decimals for exact rate and four decimals for error rates. The workflow log/artifact is authoritative for all 10 engines and unrounded values. Native coverage is 99.8150% (5 abstentions) on UGTPHON and 99.8999% (1 abstention) on SIGMORPHON; other rows above had full coverage.
+
+**Evidence limitations:** These remain diagnostic results, not independent adjudicated Korean IPA gold; UGTPHON includes test-informed material. The SIGMORPHON set is a public paired lexical test file, not a validated Ukrainian target set. Tiny rank differences among native/g2pk/g2p-ko must not be presented as decisive without paired uncertainty analysis. The workflow's CharsiuG2P, ByT5, and paired neural jobs were **SKIPPED** under the default-off manual opt-in. KoG2Padvanced's upstream license is undeclared; Charsiu checkpoint license and training overlap remain unresolved. No weights/source were vendored.
+
+**Next:** inspect artifact `13018218724` and use its paired occurrence ledger for per-item deltas; only then refresh public PER/PFER claims. Independent Korean IPA gold and Ukrainian target gold remain BLOCKED on specialist adjudication/data acquisition.
