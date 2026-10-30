@@ -4,6 +4,9 @@ import { test } from 'node:test';
 
 const index = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const system = readFileSync(new URL('../system.html', import.meta.url), 'utf8');
+const methodology = readFileSync(new URL('../docs/methodology.md', import.meta.url), 'utf8');
+const evidenceRegister = readFileSync(new URL('../docs/METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md', import.meta.url), 'utf8');
+const debateReview = readFileSync(new URL('../docs/METHODOLOGY-DEBATE-REVIEW-2026-10-30.md', import.meta.url), 'utf8');
 const main = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
 const engine = readFileSync(new URL('../src/app/engine.js', import.meta.url), 'utf8');
 const soft = readFileSync(new URL('../src/app/soft_morphology.js', import.meta.url), 'utf8');
@@ -30,10 +33,15 @@ test('methodology documents all three native modes and their real constraints', 
   assert.match(soft, /Quality is intentionally lower than strict\/soft/u);
 });
 
-test('methodology reports the real benchmark balance and current CI evidence', () => {
-  for (const term of ['1 339 / 1 339','41084643011','41084642910','41084643006','41084642903','53,1827%','53,3333%','35,8074%','35,4062%','+0,1506 відсоткового пункта','вищий на 0,4012 відсоткового пункта','не дають підстав проголосити один рушій універсальним переможцем','strict mode violation']) {
+test('methodology reports the latest expanded benchmark, historical snapshot and current CI evidence', () => {
+  for (const term of ['1 340 / 1 340','41110109093','41110109184','41110109342','41110109231','53,002%','53,089%','35,772%','35,335%','88,531%','70,971%','508 унікальними тестовими формами','729 тестових форм','PR','40843579685','Історичний benchmark 24 жовтня','53,1827%','53,3333%','35,8074%','35,4062%','не дають підстав проголосити один рушій універсальним переможцем']) {
     assert.ok(system.includes(term), 'methodology must include ' + term);
   }
+  for (const term of ['coverage-adjusted exact-match rate','feature-weighted phonological error-rate proxy','47.6×','CharsiuG2P','training manifest','per_engine_occurrences']) {
+    assert.ok(methodology.includes(term), 'technical methodology must include ' + term);
+  }
+  assert.match(evidenceRegister, /M-07[\s\S]*88\.531%/u);
+  assert.match(debateReview, /Питання 3\. Чи потрібно показати CharsiuG2P/u);
 });
 
 test('RR and Hanja are described as parallel outputs, not pronunciation inputs', () => {
