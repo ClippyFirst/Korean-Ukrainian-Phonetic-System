@@ -396,3 +396,15 @@ Rates are proportions ×100; table values rounded to four decimals for exact rat
 **Evidence limitations:** These remain diagnostic results, not independent adjudicated Korean IPA gold; UGTPHON includes test-informed material. The SIGMORPHON set is a public paired lexical test file, not a validated Ukrainian target set. Tiny rank differences among native/g2pk/g2p-ko must not be presented as decisive without paired uncertainty analysis. The workflow's CharsiuG2P, ByT5, and paired neural jobs were **SKIPPED** under the default-off manual opt-in. KoG2Padvanced's upstream license is undeclared; Charsiu checkpoint license and training overlap remain unresolved. No weights/source were vendored.
 
 **Next:** inspect artifact `13018218724` and use its paired occurrence ledger for per-item deltas; only then refresh public PER/PFER claims. Independent Korean IPA gold and Ukrainian target gold remain BLOCKED on specialist adjudication/data acquisition.
+
+
+### Artifact-level integrity verification — 2026-10-31
+
+Downloaded and inspected GitHub artifact `13018218724` (10 files; ZIP archive). Independently parsed both report JSON files:
+- UGTPHON: all 10 engine ledgers have exactly 2,703 ordered occurrence IDs; source identity triples (row_id, token, gold) are identical across engines; each engine's recomputed scored/exact counts match the aggregate report.
+- SIGMORPHON: all 10 engine ledgers have exactly 999 ordered occurrence IDs; source identity triples align across engines; recomputed scored/exact counts match aggregates.
+- The native-vs-g2pk occurrence audit is complete: UGTPHON counts 1,429 both-exact, 1,264 both-not-exact, 4 g2pk-only exact, 1 native-only exact, and 5 native abstentions (2 where g2pk is exact); SIGMORPHON counts 353 both-exact, 641 both-not-exact, 4 native-only exact, and 1 native abstention where g2pk is not exact. These are comparisons to the corpus annotation, explicitly not normative gold.
+- Report supplemental status confirms rule accuracy and Ukrainian target metrics are NOT_MEASURED; output determinism is not asserted; comparable peak RSS is not measured. PER is a broad-IPA segment metric; feature-weighted error is a project-defined proxy, not a standardized universal PFER.
+- Artifact integrity assertions executed in the analysis runtime: **PASS** (ledger ordering/count, cross-engine source identity alignment, recomputed scored/exact totals for both datasets).
+
+This validates internal report consistency, not corpus validity or linguistic correctness. Public methodology score publication still requires review of the exact artifact-derived tables and caveats; no new accuracy claim is authorized by this consistency check.
