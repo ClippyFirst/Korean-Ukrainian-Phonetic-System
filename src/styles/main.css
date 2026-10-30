@@ -467,3 +467,7 @@ button { color: inherit; }
 .hanja-note { margin:12px 0 0; padding-top:10px; border-top:1px solid var(--line); color:var(--muted); font-size:.76rem; line-height:1.55; }
 
 .hanja-engine-status { margin:8px 0 0; color:var(--green); font-size:.75rem; font-weight:750; }
+
+/* Shared service-family type scale — 2026-10-30. */
+.hero h1{font-size:clamp(2.65rem,5.7vw,5rem);line-height:1.03}
+@media(max-width:720px){.hero h1{font-size:clamp(2.4rem,10vw,3.5rem);line-height:1.06}}
