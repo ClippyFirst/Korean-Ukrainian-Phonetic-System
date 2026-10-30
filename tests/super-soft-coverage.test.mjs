@@ -30,8 +30,8 @@ test('Super-soft returns IPA and an IPA-adapted Ukrainian candidate for all 11,1
   assert.equal(result.trace.filter(item=>item.source&&/^[가-힣]$/u.test(item.source)&&item.ipa).length,11172);
 });
 
-test('Super-soft resolves known morphology abstentions through explicitly typed low-confidence fallback',()=>{
-  const source='값어치';
+test('Super-soft resolves a morphology abstention through a typed low-confidence heuristic',()=>{
+  const source='짧은소리의';
   const strict=engine.convert(source,STRICT);
   const result=engine.convert(source,SUPER);
   assert.equal(strict.status,'unresolved','strict mode remains fail-closed');
