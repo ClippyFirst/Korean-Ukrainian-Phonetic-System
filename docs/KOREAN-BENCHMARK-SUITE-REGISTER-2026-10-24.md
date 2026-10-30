@@ -385,7 +385,7 @@ Correctness deltas in this port:
 Corrected diagnostic snapshot (exact rate / CER / PER / feature proxy):
 | Engine | UGTPHON (2,703) | SIGMORPHON (999) |
 |---|---:|---:|
-| ClippyFirst native | 53.0022% / 9.1697% / 9.6139% / 4.8765% | 35.7716% / 14.6978% / 16.2343% / 7.5491% |
+| ClippyFirst native | 53.0022% / 9.1697% / 9.6139% / 4.8765% | 35.7715% / 14.6978% / 16.2343% / 7.5491% |
 | g2pk 0.9.4 | 53.0892% / 9.2285% / 9.6472% / 4.8952% | 35.3353% / 14.8222% / 16.3126% / 7.5990% |
 | g2p-ko 1.0.0 | 52.4602% / 9.3885% / 9.8446% / 4.9779% | 35.6356% / 14.6970% / 16.2351% / 7.5524% |
 | KoG2Padvanced 2022 | 47.3178% / 10.6772% / 11.3378% / 6.1562% | 32.6326% / 15.8237% / 17.5531% / 9.0979% |
@@ -435,3 +435,19 @@ Post-merge exact-main verification:
 - NIKL metadata-only inventory: **SKIPPED**.
 
 The current follow-up branch `docs/refresh-methodology-ci-evidence-2026-10-31` updates the public methodology's CI section to this exact mainline evidence and adjusts the methodology contract test. Its latest exact-head run remains pending.
+
+
+## Final exact-head benchmark artifact validation and rate correction — 2026-10-31
+
+The rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) completed **PASS** on code-equivalent head `104a49c04e2ecc6f613fc60cc44101fc1f85474e`; artifact `13019822857` was downloaded and independently inspected. All 10 ordered occurrence ledgers for each dataset (2,703 UGTPHON; 999 SIGMORPHON) passed occurrence-ID ordering, cross-engine source identity alignment, and aggregate scored/exact recomputation. All aggregate metric values match artifact `13018218724`.
+
+A precision correction was made consistently: SIGMORPHON native exact match is 357/998 = 0.357715, or **35.7715%** to four decimal places. The previously displayed 35.7715% was a rounding typo, not a changed count or benchmark result.
+
+CharsiuG2P inference, ByT5 inference, and neural pairing remain **SKIPPED** under default-off opt-in; their absence is not a pass. Independent linguistic gold and unresolved licensing/training-overlap issues remain open.
+
+
+## PR #403 integration and final benchmark rerun — 2026-10-31
+
+PR [#403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/403) merged as `f2e870eb45edc821af712c243774baa549e2ded1`. Exact-head verification [41143561334](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143561334) passed. Post-merge main checks passed: system [41143654455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143654455), Python/web/wheel/teacher audit [41143653449](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143653449), artifacts [41143653435](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143653435), and Pages deploy/live smoke [41143653453](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143653453). NIKL metadata-only inventory remains **SKIPPED**.
+
+The documentation-head benchmark rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) completed **PASS** and uploaded artifact `13019822857`. Independent artifact checks passed for all 10 ordered ledgers on both datasets, occurrence IDs, source identity alignment, and recomputed scored/exact totals. Aggregate metric values are unchanged from artifact `13018218724`. The SIGMORPHON native exact rate is correctly rounded to **35.7715%** (357/998 = 0.357715); all active docs and contract assertions now use that value.

@@ -39,7 +39,7 @@ The corrected multi-engine run [41138727409](https://github.com/ClippyFirst/Kore
 |---|---|---:|---:|---:|---:|---:|---:|
 | UGTPHON | ClippyFirst native | 2,698 / 2,703 | 5 | 53.0022% | 9.1697% | 9.6139% | 4.8765% |
 | UGTPHON | g2pk 0.9.4 | 2,703 / 2,703 | 0 | 53.0892% | 9.2285% | 9.6472% | 4.8952% |
-| SIGMORPHON 2021 | ClippyFirst native | 998 / 999 | 1 | 35.7716% | 14.6978% | 16.2343% | 7.5491% |
+| SIGMORPHON 2021 | ClippyFirst native | 998 / 999 | 1 | 35.7715% | 14.6978% | 16.2343% | 7.5491% |
 | SIGMORPHON 2021 | g2pk 0.9.4 | 999 / 999 | 0 | 35.3353% | 14.8222% | 16.3126% | 7.5990% |
 
 Rates are calculated over each engine's scored predictions; coverage and abstentions are separate. They are not automatically a paired comparison because denominators differ. Exact/CER, PER, and the feature-weighted proxy each select their own closest IPA gold alternative and denominator. PER is a broad-IPA segment metric. The feature-weighted error is a project-defined proxy, not a standardized phonological feature error rate. Latency p95 uses nearest-rank.
