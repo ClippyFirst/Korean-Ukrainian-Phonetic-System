@@ -57,7 +57,7 @@ test('methodology evidence register and debate review preserve current evidence 
     assert.ok(evidenceRegister.includes(term), 'evidence register must include ' + term);
   }
   for (const term of [
-    'не є незалежним людським рецензуванням',
+    'не незалежне людське рецензування',
     'mattpocock/skills','DietrichGebert/ponytail',
     'McNemar exact two-sided p=0.125','58.79×',
     'Charsiu inference було SKIPPED','issue #337'
