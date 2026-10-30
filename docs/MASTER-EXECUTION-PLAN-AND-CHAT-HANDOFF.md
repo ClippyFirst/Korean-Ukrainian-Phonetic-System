@@ -3746,3 +3746,16 @@ No local npm/Python/browser command is claimed in this connector-only execution.
 Confirm the remaining exact-head workflows finish successfully; inspect the stress fixture's computed counts; verify the browser status line discloses the heuristic share. Only source-backed and independently adjudicated cases may be promoted into pronunciation gold or production rules.
 
 - **Metric semantics follow-up:** `low_confidence_share` and `heuristic_share` now return 0 (not 100%) for an input with no modern Hangul syllables. The target count field is named `target_project_mapping_units` to avoid implying a neural/model inference stage; the runtime remains deterministic.
+
+## Final continuation verification (2026-10-30)
+
+**Verified code head:** 7ca4e625a0ef1687a89b021c3a1f9b357cdc19ca. **PR head after handoff-only update:** 062f08de4cc8ab8a9c7b51476fcb402b12ff47ac. The handoff-only commit changes no runtime or test code.
+
+- Browser suite: **1,331 passed, 0 failed**; production Vite build passed in exact-head run [41053021059](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41053021059).
+- Python regression/data integrity passed on Python 3.11, 3.12, and 3.13; clean wheel installation and teacher-corpus audit passed in the same run.
+- System verification, browser G2P integration, master-table/research-corpus generation, and exhaustive test-case register extraction all completed successfully on the verified code head: runs [41053021107](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41053021107), [41053021035](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41053021035), [41053021046](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41053021046), and [41053021090](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41053021090).
+- The initial test-only failure on 8ecb8dd was fixed by aligning confidence calculations to the complete UTF-16 trace intervals; the corrected test passed on 7ca4e62.
+- The low-confidence share is explicitly 0 for empty/no-modern-Hangul input; this avoids reusing the coverage convention of 100% for an empty denominator. The target mapping counter is named target_project_mapping_units to avoid implying neural inference.
+- PR #384 remains open; no merge or deployment was performed. PR #371 remains untouched because it is an independent multi-engine benchmark effort.
+
+**Final status:** transparency metrics, trace-aligned counting, UI disclosure, tests, and handoff — DONE_VERIFIED on code head 7ca4e62. Independent Korean pronunciation accuracy and Ukrainian target quality — BLOCKED / EVIDENCE-LIMITED pending adjudicated gold and specialist review. Python CLI/API Super-soft parity — DEFERRED. The service remains a deterministic research prototype with a deployed browser implementation, not a linguistically accuracy-certified release.
