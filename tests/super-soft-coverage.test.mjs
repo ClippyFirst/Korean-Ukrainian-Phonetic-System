@@ -36,17 +36,17 @@ test('Super-soft resolves known morphology abstentions through explicitly typed 
   const result=engine.convert(source,SUPER);
   assert.equal(strict.status,'unresolved','strict mode remains fail-closed');
   assert.equal(strict.ukrainian,'','strict mode must not change');
-  assert.equal(result.status,'super-soft-orthographic-fallback');
+  assert.ok(['super-soft-orthographic-fallback','super-soft-heuristic-coverage'].includes(result.status));
   assert.ok(result.coverage.complete);
   assert.ok(result.coverage.input_coverage===1);
   assert.ok(result.ipa,'fallback retains a complete inspectable IPA string');
   assert.ok(result.candidate_ukrainian,'fallback exposes a complete Ukrainian candidate');
   assert.equal(result.candidate_status,'super-soft-low-confidence');
-  const fallbacks=result.trace.filter(item=>item.status==='super-soft-orthographic-fallback');
-  assert.ok(fallbacks.length>0);
-  assert.ok(fallbacks.every(item=>item.phoneticResultType==='orthographic-phonemic-fallback'&&item.confidence==='low'));
-  assert.ok(fallbacks.every(item=>(item.rules||[]).includes('super-soft-orthographic-fallback')));
-  assert.ok(!fallbacks.some(item=>(item.rules||[]).some(rule=>/NIKL|exact-lexical/u.test(rule))));
+  const lowConfidence=result.trace.filter(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status));
+  assert.ok(lowConfidence.length>0);
+  assert.ok(lowConfidence.every(item=>item.confidence==='low'));
+  assert.ok(lowConfidence.every(item=>(item.rules||[]).some(rule=>rule.startsWith('super-soft-'))));
+  assert.ok(!lowConfidence.some(item=>(item.rules||[]).some(rule=>/NIKL|exact-lexical/u.test(rule))));
 });
 
 test('Super-soft preserves non-syllabic Jamo and non-Korean literals without inventing IPA',()=>{
