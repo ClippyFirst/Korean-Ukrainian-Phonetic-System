@@ -170,13 +170,13 @@ try {
       (message.includes('Достовірний варіант:') || message.includes('Дослідницький результат:') || message.includes('не підтверджено'));
   }, null, { timeout: 5000 });
 
-  // Technical provenance stays available but is no longer required to choose
-  // a mode. Native details/summary preserves keyboard access.
+  // Keep the home page explanation concise; detailed engine provenance belongs
+  // to the researcher-facing methodology page.
   const modeDisclosure = page.locator('.mode-disclosure');
-  assert.equal(await modeDisclosure.isVisible(), true, 'technical caveat disclosure must be visible');
+  assert.equal(await modeDisclosure.isVisible(), true, 'mode explanation must be available on demand');
   await modeDisclosure.locator('summary').click();
-  assert.match(await modeDisclosure.innerText(), /JavaScript-порт g2pK/u,
-    'technical engine provenance must remain available on demand');
+  assert.match(await modeDisclosure.innerText(), /Докладніше про рушій, джерела й обмеження/u,
+    'home-page caveat must direct interested users to the methodology');
 
   // Simulate clipboard permission denial and verify the fallback selects the
   // intended field and gives visible, actionable feedback.
@@ -212,6 +212,8 @@ try {
   const systemUrl = new URL('system.html', baseUrl);
   systemUrl.searchParams.set('__smoke', String(Date.now()));
   await page.goto(systemUrl.toString(), { waitUntil: 'networkidle', timeout: 60000 });
+  assert.match(await page.locator('body').innerText(), /JavaScript-порт g2pK/u,
+    'technical engine provenance must remain available on the researcher-facing methodology page');
   const toc = page.locator('.methodology-toc');
   assert.equal(await toc.isVisible(), true, 'methodology contents must be visible');
   await toc.locator('a[href="#methodology-00a"]').click();

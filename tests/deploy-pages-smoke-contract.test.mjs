@@ -40,3 +40,11 @@ test('live browser smoke verifies inline research candidate and neutral confirme
   assert.match(browserSmoke, /obsolete standalone candidate panel must not exist/u);
   assert.doesNotMatch(browserSmoke, /#candidate-copy-button|Запис не підтверджено|outputLabel === 'Український запис'/u);
 });
+
+
+test('technical engine provenance is kept on the researcher-facing methodology page', () => {
+  assert.doesNotMatch(index, /JavaScript-порт g2pK/u);
+  assert.match(index, /href="\.\/system\.html">«Методологія»/u);
+  assert.match(system, /JavaScript-порт g2pK/u);
+  assert.match(browserSmoke, /technical engine provenance must remain available on the researcher-facing methodology page/u);
+});
