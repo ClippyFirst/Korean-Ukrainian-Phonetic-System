@@ -8,6 +8,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
+    _build_per_engine_occurrences,
     _g2pk_surface_to_ipa,
     _load_rows_and_words,
     _metrics,
@@ -153,3 +154,37 @@ def test_paired_bootstrap_labels_interval_direction_without_overclaiming_signifi
     assert result["exact_delta_interval_direction"] == "POSITIVE_INTERVAL"
     assert result["cer_delta_interval_direction"] == "NEGATIVE_INTERVAL"
     assert "independent gold validation" in result["interpretation"]
+
+def test_occurrence_ledger_preserves_repeated_tokens_and_explicit_non_scored_states():
+    items = [
+        {"occurrence_id": "0", "row_id": "r1", "word": "학교", "gold": "hak.kjo"},
+        {"occurrence_id": "1", "row_id": "r2", "word": "학교", "gold": "hak.kjo"},
+        {"occurrence_id": "2", "row_id": "r3", "word": "물가", "gold": "mul.ka"},
+    ]
+    scored = {
+        "clippyfirst_native": [
+            {"occurrence_id": "0", "row_id": "r1", "token": "학교", "gold": "hak.kjo",
+             "predicted": "hak.kjo", "normalized_predicted": "hak.kjo", "exact": True,
+             "distance": 0, "reference_length": 6},
+        ],
+        "g2pk_0_9_4": [
+            {"occurrence_id": "0", "row_id": "r1", "token": "학교", "gold": "hak.kjo",
+             "predicted": "hak.kjo", "normalized_predicted": "hak.kjo", "exact": True,
+             "distance": 0, "reference_length": 6},
+            {"occurrence_id": "1", "row_id": "r2", "token": "학교", "gold": "hak.kjo",
+             "predicted": "hak.kjo", "normalized_predicted": "hak.kjo", "exact": True,
+             "distance": 0, "reference_length": 6},
+        ],
+    }
+    ledgers = _build_per_engine_occurrences(
+        items, scored,
+        {"g2pk_0_9_4": {"학교": {"ipa": "hak.kjo"}, "물가": {"error": "adapter failed"}}},
+        {"학교": {"unresolved": False}, "물가": {"unresolved": True, "reason": "R002"}},
+    )
+    assert [x["occurrence_id"] for x in ledgers["clippyfirst_native"]] == ["0", "1", "2"]
+    assert ledgers["clippyfirst_native"][1]["status"] == "missing"
+    assert ledgers["clippyfirst_native"][2]["status"] == "abstained"
+    assert ledgers["clippyfirst_native"][2]["reason"] == "R002"
+    assert ledgers["g2pk_0_9_4"][2]["status"] == "error"
+    assert ledgers["g2pk_0_9_4"][2]["reason"] == "adapter failed"
+    assert ledgers["g2pk_0_9_4"][1]["row_id"] == "r2"
