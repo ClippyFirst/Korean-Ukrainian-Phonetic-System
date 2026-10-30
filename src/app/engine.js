@@ -44,7 +44,7 @@ function attachSuperSoftCoverage(source,result){
     const target=String(item.output||item.candidateOutput||'');
     return Boolean(item.ipa&&target&&!/[⟦⟧]/u.test(target));
   });
-  const fallbackCount=(result.trace||[]).filter(item=>item.status==='super-soft-orthographic-fallback').length;
+  const fallbackCount=(result.trace||[]).filter(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status)).length;
   const ratio=(part,total)=>total?part/total:1;
   result.coverage={
     scope:'modern-hangul-syllable-blocks',
