@@ -31,17 +31,76 @@ These are three policies within one native engine, not three separate engines. S
 
 **Canonical researcher-facing explanation:** [the service methodology page](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#methodology-02c-kozak-kim), with [ordinary-mode g2pK details](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#methodology-02a).
 
-## How to interpret the comparative measurements
+## Comparative measurements and their scope (latest diagnostic run: 2026-10-29)
 
-The latest documented paired diagnostics in `docs/MULTI-ENGINE-KOREAN-IPA-BENCHMARK-2026-10-24.md` compare Korean IPA, not Ukrainian target quality:
+The 2026-10-24 values in the historical benchmark review below are retained for traceability, but they are superseded for current interpretation by the expanded, corrected broad-IPA run in PR [#371](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/371), workflow [40843579685](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579685), at benchmark-branch commit `a10e2bb7ea9b636a816f13c972589fd0d8e505ec). The report is [EXTENDED-BENCHMARK-METRICS-2026-10-29.md](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/bench/extended-metrics-runtime-2026-10-29/docs/EXTENDED-BENCHMARK-METRICS-2026-10-29.md).
 
-- On UGTPHON, the native engine abstains on 48 of 2,703 eligible occurrences. On the 2,655 shared scored occurrences, native Strict has 53.1827% exact match and 9.1883% CER; g2pK has 53.3333% exact match and 9.2414% CER. The small exact-match difference favors g2pK (+0.1506 percentage points), while CER is slightly lower for native; the paired CER interval crosses zero.
-- On SIGMORPHON, native Strict has 35.8074% exact match and 14.7037% CER on 997 shared scored words; g2pK has 35.4062% exact match and 14.8222% CER. Exact match favors native by 0.4012 percentage points; the paired CER interval crosses zero.
+This is a diagnostic comparison of Korean IPA outputs against two public paired datasets. It is not a normative NIKL gold evaluation and does not score the IPA-to-Ukrainian adapter.
 
-These results are diagnostic rather than normative: UGTPHON is noisy user-generated text, SIGMORPHON has its own IPA convention, and the g2pK comparison shares the project's segment-level IPA renderer. They do not score IPA-to-Ukrainian adaptation. Therefore they do not establish a universal winner or prove that Kozak Kim is more accurate for every input. Its engineering value is transparent rule licensing, source-backed exact exceptions, controlled abstention, and a trace that makes the derivation inspectable.
+### Native Kozak Kim vs g2pK 0.9.4
 
+| Dataset | Engine | Coverage | Exact match | Coverage-adjusted exact | CER | PER | Feature-weighted proxy |
+|---|---|---:|---:|---:|---:|---:|---:|
+| UGTPHON | ClippyFirst native | 99.815% (2,698/2,703) | 53.002% | 52.904% | 9.170% | 9.614% | 4.877% |
+| UGTPHON | g2pK 0.9.4 | 100% (2,703/2,703) | 53.089% | 53.089% | 9.229% | 9.647% | 4.895% |
+| SIGMORPHON | ClippyFirst native | 99.900% (998/999) | 35.772% | 35.736% | 14.698% | 16.234% | 7.549% |
+| SIGMORPHON | g2pK 0.9.4 | 100% (999/999) | 35.335% | 35.335% | 14.822% | 16.313% | 7.599% |
+
+The paired comparison is more informative than comparing percentages with different denominators:
+
+- **UGTPHON:** on 2,698 shared scored occurrences, g2pK minus native exact-match delta is +0.1112 percentage points (95% row-cluster bootstrap CI −0.0371…+0.2988); CER delta is +0.0607 points (CI −0.0084…+0.1383). Both intervals cross zero. The measured exact-match and CER differences do not establish a statistically clear winner.
+- **SIGMORPHON:** on 998 shared scored occurrences, g2pK minus native exact-match delta is −0.4008 percentage points (95% CI −0.8016…−0.1002), favouring native on exact match for this split. CER delta is +0.1128 points (CI −0.0126…+0.2771), crossing zero. The exact-match result is a small, dataset-specific native advantage, not universal superiority.
+
+The updated run adds segment-based PER and a **project-defined feature-weighted phonological error-rate proxy**. The latter is not a universally standardized metric; unsupported-feature counts must accompany it (native: 1,004 on UGTPHON and 476 on SIGMORPHON). The run also records coverage-adjusted exact match, abstentions, paired deltas, and timing. No single metric should be used as a standalone ranking.
+
+### Measured runtime under the benchmark harness
+
+For UGTPHON, five repeated unique-word timing samples gave a native median of **366.002 ms** (range 358.042–391.706 ms) and a g2pK median of **17,412.489 ms** (range 17,250.866–17,644.237 ms), approximately **47.6× lower elapsed time** for the native implementation under this particular harness. The measured scope includes Python adapter overhead and excludes corpus loading/scoring. This is a reproducible engineering result for that run configuration, not a universal speed claim across machines, languages, or browser execution.
+
+On SIGMORPHON, the recorded pass took 155.475 ms for native and 9,359.415 ms for g2pK (unique-word calls, including Python adapter overhead; corpus loading/scoring excluded). Treat this as a measured run-level diagnostic; do not extrapolate it to all environments. Batch engines and neural cold-start timings are not directly comparable with in-process per-word calls.
+
+### CharsiuG2P: a strong research result that must remain qualified
+
+The separate comparative-only CharsiuG2P job in run [40843579685](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579685) completed and produced these observed scores:
+
+| Dataset | Exact match | CER | PER | Feature proxy | Coverage |
+|---|---:|---:|---:|---:|---:|
+| UGTPHON (2,703 occurrences) | **88.531%** (2,393/2,703) | 3.624% | 3.356% | 2.399% | 100% |
+| SIGMORPHON (999 occurrences) | **70.971%** (709/999) | 5.408% | 5.582% | 2.136% | 100% |
+
+These are materially higher reference-match scores than the deterministic native baseline in this particular experiment. They must be reported, not hidden. They are **not yet independent generalization evidence**: the public Charsiu training inventory intersects 508 unique UGTPHON test forms and 729 of 999 SIGMORPHON forms; the checkpoint's full training manifest is unavailable, so this does not prove that every intersecting form was used in training, but contamination cannot be ruled out. The model's output IPA convention is not independently specified, and the checkpoint weights' license is unresolved. The model was run once with cold model load plus batched inference; neural repeatability was not measured. Therefore CharsiuG2P is a strong research teacher/baseline, not an automatically correct gold oracle or production dependency.
+
+The separate licensed `willwade/byt5-g2p-multilingual-tiny` experiment returned zero exact matches and CER above 100% under the tested `<kor>:` prefix/output contract. This is a failed candidate **in that configuration**, not a general verdict on ByT5 architectures.
+
+### Workflow and verification status
+
+Run 40843579685 used benchmark head `a10e2bb7ea9b636a816f13c972589fd0d8e505ec`. Its pinned multi-engine IPA job and the separate neural inference jobs completed successfully; the final pairing/aggregation job failed because the baseline report lacked the expected `per_engine_occurrences` field. Thus the per-engine result files/logs above exist, but the full joined neural error ledger and the parent workflow are **not fully green**. PR #371 remains open and diverged from current `main` (117 commits ahead, 26 behind at inspection); its branch has not been merged. Treat its measurements as inspectable research-branch evidence, not as a benchmark implementation already integrated into production `main`.
+
+### What these measurements do not establish
+
+- No independently adjudicated, representative NIKL holdout currently establishes absolute Korean pronunciation accuracy or per-rule accuracy.
+- Neither public dataset is a normative standard-pronunciation gold corpus; reference conventions and noise matter.
+- No independently approved IPA-to-Ukrainian gold set exists, so these IPA scores do not measure Ukrainian target accuracy, readability, or user preference.
+- Passing regression tests establish conformance to declared fixtures/contracts, not independent linguistic correctness.
+- Full Hangul syllable-inventory software coverage is not lexical, morphological, or pronunciation accuracy.
+- The feature-weighted proxy is project-defined and partly constrained by unsupported feature inventories.
+- The Charsiu checkpoint's training overlap and weights-license status remain unresolved; do not redistribute its weights or claim leakage-free generalization.
 
 ## Evidence classes
+
+FACT: directly supported by a cited normative, peer-reviewed or technical source.
+
+MODEL ASSUMPTION: a computational choice required to make the system deterministic.
+
+HEURISTIC: a parameterized engineering approximation, especially candidate-ranking weights.
+
+EMPIRICAL RESULT: a result obtained from a pinned corpus/run with declared denominator and metric.
+
+INDEPENDENTLY VALIDATED RESULT: an empirical result checked against a separately adjudicated, representative gold set by qualified reviewers. The current public IPA benchmark results do not meet this stronger category.
+
+UNRESOLVED: a question for which sources support competing analyses or the available evidence is insufficient.
+
+
 
 FACT: directly supported by a cited normative, peer-reviewed or technical source.
 
