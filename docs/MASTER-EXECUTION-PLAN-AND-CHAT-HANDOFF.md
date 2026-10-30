@@ -1,3 +1,42 @@
+# Benchmark integration and review checkpoint — 2026-10-31
+
+**Starting main:** `f93ae007592f216ccd2493f6652d228b876c8338`  
+**Current main after this session's integration:** `cb1ceafd0d9a01c60cf68dd279e0858e732eb780`  
+**Documentation continuation branch:** `docs/benchmark-ledger-integration-2026-10-31` (created from the then-current `main`; this handoff change is documentation-only).
+
+## Task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Complete ordered per-engine occurrence ledger | **DONE_VERIFIED — merged to main** | PR [#399](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/399) squash-merged as `cb1ceafd0d9a01c60cf68dd279e0858e732eb780`. Adds schema v1, ordered occurrence identities, duplicate-word preservation, and explicit scored/abstained/error/missing states. |
+| Validate the baseline ledger and neural comparator contract | **DONE_VERIFIED for unit/integration contract** | Exact PR-head runs: multi-engine benchmark [41123471367](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471367), system verification [41123471365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471365), tests [41123471398](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471398), master/research artifacts [41123471374](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471374), test-case extraction [41123471454](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471454): all PASS. The workflow validated 2,703 UGTPHON and 999 SIGMORPHON eligible occurrences across six engines (22,212 ledger records total). |
+| Full neural inference + joined comparison on the merged ledger | **TODO / NOT VERIFIED** | The PR #399 run intentionally skipped CharsiuG2P inference, ByT5 inference, and joined pairing under the research-only opt-in policy. Acceptance: explicitly dispatch the research jobs on the merged/current integration head, confirm both inference artifacts, and validate joined comparisons for both corpora. |
+| Extended PER/PFER and latency metrics from PR #371 | **PARTIAL / REVIEW REQUIRED** | PR [#371](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/371) remains divergent from current main (117 ahead / 26 behind at inspection; head `a10e2bb7ea9b636a816f13c972589fd0d8e505ec`). Review comment [5719312796](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/371#pullrequestreview-5719312796) records three concrete issues: p95 index convention/test, gold-variant selection shared across CER and PER/PFER, and neural jobs hard-coded to one branch name. No code from #371 was ported or merged. |
+| Public methodology update from PR #398 | **PARTIAL / REVIEW REQUIRED** | PR [#398](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/398) passed exact-head browser/Python/build/system/artifact checks at head `944cb8df49eeb7ec297b6b1a1c50dd6ef4ec3860` (tests [41124866780](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41124866780), browser G2P [41124866802](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41124866802), system verification [41124866794](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41124866794), artifacts [41124866787](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41124866787), test-case extraction [41124866828](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41124866828): all PASS). After #399 merged, #398 is one commit behind/diverged from main; it must be reconciled before merge. Review comment [5719314642](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/398#pullrequestreview-5719314642) asks that PER/PFER claims be refreshed after #371's metric definitions are corrected. |
+| Independent Korean IPA gold and Ukrainian target gold | **BLOCKED / EVIDENCE-LIMITED** | Requires qualified independent adjudication and source-separated representative holdouts. Existing external corpus scores remain diagnostic; they do not establish normative IPA or Ukrainian target accuracy. |
+| Charsiu generalization and weight rights | **BLOCKED / EVIDENCE-LIMITED** | Public overlap warnings remain; full checkpoint training manifest and explicit weights license are unresolved. Do not redistribute weights/caches or claim leakage-free generalization. |
+
+## Reconciliation decisions
+
+- PR #399 was merged because it was based directly on main (5 commits ahead, 0 behind), its scope was limited to the missing ledger producer/schema guard/tests, and all exact-head relevant workflows passed. The merge does **not** claim that neural inference or joined pairing ran.
+- PR #398 remains open and unmerged. Its exact-head checks passed, but the branch is now one commit behind/diverged after #399; do not overwrite the newer main handoff with its older handoff snapshot. Port/rebase the methodology docs selectively and refresh its benchmark dependency notes.
+- PR #371 remains open and untouched because its 117/26 divergence makes a wholesale merge unsafe. Preserve useful additions only after the metric/test/workflow review findings are addressed and its code is reconciled with the merged ledger producer.
+- No PR was closed, no branch was deleted, no model weights were redistributed, and no production release setting was changed.
+
+## Commands and verification actually executed
+
+- GitHub repository/PR/commit comparison and file inspection via repository connector; no local checkout or local shell was available.
+- Verified exact PR-head GitHub Actions runs listed above. No local pytest, npm test, Vite build, Python benchmark, or full neural inference is claimed in this session.
+- Main now contains the merged occurrence-ledger producer at `cb1ceafd0d9a01c60cf68dd279e0858e732eb780`; the current handoff update is a separate documentation-only branch and must pass its own CI before merge.
+
+## Readiness
+
+The benchmark infrastructure is improved and the baseline occurrence ledger is now integrated and CI-verified. The full neural pairing result is **not yet verified**. The overall repository remains a technically mature research prototype, not a linguistically release-certified Korean-to-Ukrainian transcription standard.
+
+**Next executable task:** correct PR #371's metric definitions and tests on a fresh branch based on current main (retaining the merged ledger), make neural inference an explicit opt-in, rerun focused tests and both pinned datasets, then update the benchmark report and PR #398 methodology figures from the resulting exact-head artifacts.
+
+---
+
 # Continuation — full public methodology and engine separation (2026-10-30)
 
 | Task | Status | Acceptance evidence |
