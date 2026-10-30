@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createEngine } from '../src/app/engine.js';
 import { convertText } from '../src/app/engine_convert.js';
 import { createMap } from '../src/app/engine_shared.js';
+import { renderSuperSoftCandidate } from '../src/app/super_soft_annotation.js';
 
 const canonical=readFileSync(new URL('../data/korean/canonical_correspondence.csv',import.meta.url),'utf8');
 const lexical=readFileSync(new URL('../data/korean/lexical_pronunciations.csv',import.meta.url),'utf8');
@@ -11,6 +12,36 @@ const engine=createEngine(canonical,lexical);
 const canonicalMap=createMap(canonical);
 const STRICT={morphologyMode:'strict'};
 const SUPER={morphologyMode:'super-soft'};
+
+
+test('Super-soft marks only low-confidence IPA-derived Ukrainian spans with square brackets',()=>{
+  const trace=[
+    {source:'가',status:'canonical',output:'ка',confidence:'ungraded'},
+    {source:'값',status:'super-soft-orthographic-fallback',output:'кап',confidence:'low'},
+    {source:'이',status:'canonical',output:'і',confidence:'ungraded'},
+    {source:'잇',status:'lexical-review',candidateOutput:'іт',candidateStatus:'provisional'},
+    {source:' ',status:'literal',output:' '}
+  ];
+  assert.equal(renderSuperSoftCandidate(trace,'unused-fallback'),'ка[кап]і[іт] ');
+});
+
+test('Super-soft uncertainty markup follows actual trace confidence without mutating engine output',()=>{
+  const source='짧은소리의';
+  const result=engine.convert(source,SUPER);
+  const original=result.candidate_ukrainian;
+  const display=renderSuperSoftCandidate(result.trace,original);
+  assert.equal(result.candidate_ukrainian,original,'the underlying IPA-derived candidate remains unchanged');
+  assert.ok(display.includes('[')&&display.includes(']'),'at least one low-confidence trace span must be bracketed');
+  assert.equal(display.replace(/\\[[^\\]]*\\]/gu,'').length>0,true,'confident portions remain unbracketed');
+  assert.equal(display, result.trace.map(item=>{
+    const value=String(item.candidateOutput??item.output??'');
+    const uncertain=item.confidence==='low'||item.uncertainty?.confidence==='low'||
+      ['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic','lexical-review'].includes(item.status)||
+      item.candidateStatus==='provisional'||item.targetStatus==='provisional'||
+      item.targetReason==='provisional_mapping_requires_review';
+    return value?(uncertain?'['+value+']':value):'';
+  }).join(''));
+});
 
 test('Super-soft returns IPA and an IPA-adapted Ukrainian candidate for all 11,172 modern Hangul syllables',()=>{
   const syllables=Array.from({length:11172},(_,i)=>String.fromCodePoint(0xAC00+i));
