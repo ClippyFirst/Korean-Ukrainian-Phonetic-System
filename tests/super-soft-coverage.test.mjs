@@ -33,6 +33,15 @@ test('Super-soft returns IPA and an IPA-adapted Ukrainian candidate for all 11,1
   assert.equal(result.trace.filter(item=>item.source&&/^[가-힣]$/u.test(item.source)&&item.ipa).length,11172);
 });
 
+test('Super-soft keeps provisional lexical target adaptation in the candidate channel',()=>{
+  const result=engine.convert('베갯잇',SUPER);
+  assert.equal(result.target_status,'provisional');
+  assert.equal(result.ukrainian,'');
+  assert.ok(result.candidate_ukrainian);
+  assert.equal(result.candidate_status,'provisional');
+  assert.ok(result.trace.every(item=>item.output===''||item.candidateStatus==='provisional'));
+});
+
 test('Super-soft applies the orthographic-phonemic fallback to unresolved §30 saisiot insertion',()=>{
   const source='베갯잇';
   // Bypass the exact lexical hit deliberately to exercise the lower-priority
