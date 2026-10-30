@@ -201,12 +201,20 @@ test('Super-soft reports candidate coverage, low-confidence share, and target ce
     assert.equal(result.coverage.low_confidence_share,hangul.length?lowConfidence/hangul.length:1);
     assert.equal(result.coverage.heuristic_share,result.coverage.low_confidence_share);
     assert.equal(result.coverage.target_provisional_units,provisional);
-    assert.equal(result.coverage.target_model_selected_units,modelSelected);
+    assert.equal(result.coverage.target_project_mapping_units,modelSelected);
     assert.equal(result.coverage.target_unavailable_units,unavailable);
     assert.equal(result.coverage.verified_pronunciation_units,null);
     assert.equal(result.coverage.verified_pronunciation_rate,null);
     assert.equal(result.coverage.pronunciation_verification_status,'not_independently_adjudicated');
     assert.equal(result.coverage.complete,true);
-    if(source===fixture) console.log('SUPER_SOFT_LONG_PASSAGE_METRICS '+JSON.stringify(result.coverage));
   }
+});
+
+test('Super-soft confidence share is zero when the input contains no modern Hangul',()=>{
+  const result=engine.convert('',SUPER);
+  assert.equal(result.coverage.input_total,0);
+  assert.equal(result.coverage.low_confidence_units,0);
+  assert.equal(result.coverage.low_confidence_share,0);
+  assert.equal(result.coverage.heuristic_share,0);
+  assert.equal(result.coverage.verified_pronunciation_rate,null);
 });
