@@ -444,3 +444,10 @@ The rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic
 A precision correction was made consistently: SIGMORPHON native exact match is 357/998 = 0.357715, or **35.7715%** to four decimal places. The previously displayed 35.7716% was a rounding typo, not a changed count or benchmark result.
 
 CharsiuG2P inference, ByT5 inference, and neural pairing remain **SKIPPED** under default-off opt-in; their absence is not a pass. Independent linguistic gold and unresolved licensing/training-overlap issues remain open.
+
+
+## PR #403 integration and final benchmark rerun — 2026-10-31
+
+PR [#403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/403) merged as `f2e870eb45edc821af712c243774baa549e2ded1`. Exact-head verification [41143561334](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143561334) passed. Post-merge main checks passed: system [41143654455](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143654455), Python/web/wheel/teacher audit [41143653449](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143653449), artifacts [41143653435](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143653435), and Pages deploy/live smoke [41143653453](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143653453). NIKL metadata-only inventory remains **SKIPPED**.
+
+The documentation-head benchmark rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) completed **PASS** and uploaded artifact `13019822857`. Independent artifact checks passed for all 10 ordered ledgers on both datasets, occurrence IDs, source identity alignment, and recomputed scored/exact totals. Aggregate metric values are unchanged from artifact `13018218724`. The SIGMORPHON native exact rate is correctly rounded to **35.7715%** (357/998 = 0.357715); all active docs and contract assertions now use that value.
