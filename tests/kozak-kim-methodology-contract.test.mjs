@@ -30,8 +30,17 @@ test('methodology documents all three native modes and their real constraints', 
   assert.match(soft, /Quality is intentionally lower than strict\/soft/u);
 });
 
-test('methodology reports the real benchmark balance and current CI evidence', () => {
-  for (const term of ['1 339 / 1 339','41084643011','41084642910','41084643006','41084642903','53,1827%','53,3333%','35,8074%','35,4062%','+0,1506 відсоткового пункта','вищий на 0,4012 відсоткового пункта','не дають підстав проголосити один рушій універсальним переможцем','strict mode violation']) {
+test('methodology reports corrected benchmark metrics, coverage, and evidence limits', () => {
+  for (const term of [
+    '1 339 / 1 339','41084643011','41084642910','41084643006','41084642903',
+    '41138727409','2 698 scored / 5 abstentions','998 scored / 1 abstention',
+    '53,0022%','53,0892%','35,7716%','35,3353%',
+    '9,1697%','9,2285%','14,6978%','14,8222%',
+    '9,6139%','9,6472%','16,2343%','16,3126%',
+    '4,8765%','4,8952%','7,5491%','7,5990%',
+    'не дають підстав проголосити один рушій універсальним переможцем',
+    'не доводить лінгвістичну правильність'
+  ]) {
     assert.ok(system.includes(term), 'methodology must include ' + term);
   }
 });
