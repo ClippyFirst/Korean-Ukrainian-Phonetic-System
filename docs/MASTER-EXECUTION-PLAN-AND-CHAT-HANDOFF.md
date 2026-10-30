@@ -3883,3 +3883,11 @@ PR #387 was merged to `main` as `a1c03fec1316433ab6f496b7ed88002c53c93067`.
 - No merge, release, or production-setting change was performed.
 
 **Next acceptance gate:** wait for PR #397 exact-head test, Python/data, browser G2P, artifact-generation, and live Pages checks. Fix only evidence-backed failures, then update this handoff with the final head SHA and actual run conclusions. Until that gate is green, the PR remains **PARTIAL**, not release-ready.
+
+
+## Final documentation-link and queue refresh — 2026-10-30 17:46 UTC
+
+- Corrected the two remaining IPA-first evidence links in `system.html` that still pointed to the historical `test/block-standard-rule-coverage-gate-2026-10-11` branch. They now resolve against `main`; both target files are present on the default branch.
+- Code/documentation head before this handoff-only refresh: `827a4e00c879f1c39f73275e403e9e2f16c626a7`. The handoff update itself is documentation-only; the PR head is authoritative for the resulting commit SHA.
+- Latest PR-head workflows for code/documentation head `827a4e00c879f1c39f73275e403e9e2f16c626a7` are queued: tests [41101428380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101428380), system verification [41101428438](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101428438), Browser G2P integration [41101428325](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101428325), master/research artifacts [41101428447](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101428447), and exhaustive test-case register extraction [41101428483](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101428483). Queue state is not a pass.
+- PR #397 remains open and unmerged. No production release or merge was performed.
