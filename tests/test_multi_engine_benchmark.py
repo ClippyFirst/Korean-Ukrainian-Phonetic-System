@@ -8,6 +8,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
+    _build_per_engine_occurrences,
     _g2pk_surface_to_ipa,
     _g2p_ko_result_to_ipa,
     _compose_kog2padvanced_surface,
