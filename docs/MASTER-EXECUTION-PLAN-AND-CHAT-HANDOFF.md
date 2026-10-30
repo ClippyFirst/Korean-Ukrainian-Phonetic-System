@@ -4008,7 +4008,7 @@ PR #397 is open, unmerged, and GitHub currently reports it mergeable. The implem
 - External-only/legal caveats remain: KoG2Padvanced has no declared upstream license; Charsiu weights licensing and train/test overlap are unresolved; no third-party weights or source are vendored.
 - No production phonology, IPA mapping, Ukrainian target mapping, runtime UI, deployment, or release changed.
 
-**Next acceptance gates:** inspect artifact `13018218724` and compare paired per-occurrence deltas; refresh technical/public methodology only from inspected artifacts; run neural comparison manually only if explicitly authorized for this branch and after license/overlap caveats remain visible; obtain independent specialist-adjudicated Korean IPA and Ukrainian target gold before any normative accuracy claim. PRs #371 and #398 remain open and must not be bulk-merged; #401 is the selective corrected benchmark port.
+**Next acceptance gates:** recruit two independent Korean phonetics/phonology reviewers for issue #337 using the separate blind packets; after IPA is frozen, complete a separate Ukrainian-target review; resolve Charsiu checkpoint licensing/training manifest and KoG2Padvanced license. Neural inference remains a manual, default-off research opt-in and should only run after legal/evidence gates are cleared. PR #371 remains open/divergent with useful corrections selectively ported through #401; PR #398 is closed as superseded; PRs #401–#405 are merged.
 
 
 ### Artifact-level integrity verification — 2026-10-31
@@ -4039,7 +4039,7 @@ This validates internal report consistency, not corpus validity or linguistic co
 
 **Public benchmark correction:** `system.html` and `docs/methodology.md` are being refreshed in branch `docs/korean-benchmark-evidence-refresh-2026-10-31` to replace the stale pre-correction native/g2pK figures with the inspected schema-v1 artifact results. Rates are stated over each engine's scored predictions, with coverage/abstentions shown separately. The feature-weighted metric is explicitly described as a project-defined proxy. Neither benchmark establishes independent Korean IPA gold or Ukrainian target quality.
 
-**Remaining gates:** independent specialist-adjudicated Korean IPA gold and Ukrainian target gold remain **BLOCKED / EVIDENCE-LIMITED**; CharsiuG2P training overlap and weights-license status remain unresolved; KoG2Padvanced upstream license is undeclared; neural inference and paired neural aggregation remain opt-in and were skipped. Issue [#337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337) still has no qualified reviewer submissions. PR #371 and PR #398 remain open and are not to be merged wholesale.
+**Remaining gates:** independent specialist-adjudicated Korean IPA gold and Ukrainian target gold remain **BLOCKED / EVIDENCE-LIMITED**; CharsiuG2P training overlap and weights-license status remain unresolved; KoG2Padvanced upstream license is undeclared; neural inference and paired neural aggregation remain opt-in and were skipped. Issue [#337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337) still has no qualified reviewer submissions. Potential reviewer leads are listed in the current task ledger but have not been contacted. PR #371 remains open/divergent; PR #398 is closed as superseded.
 
 
 ## PR #402 integration and current CI evidence refresh — 2026-10-31
