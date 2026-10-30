@@ -12,11 +12,14 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import math
 import os
 import random
 import re
 import subprocess
 import sys
+import time
+import statistics
 import unicodedata
 from collections import defaultdict
 from pathlib import Path
@@ -65,87 +68,199 @@ def _gold_variants(raw: str) -> list[str]:
     return [normalize_ipa(part) for part in raw.split(",") if part.strip()]
 
 
+
+# Broad IPA segment inventory for a transparent PER/PFER-style diagnostic.
+# This is deliberately an inspectable approximation, not a complete phonetic
+# feature database. Unsupported segments are counted and reported.
+_AFFRICATES = ("tɕ", "dʑ", "tʃ", "dʒ", "ts", "dz", "pf", "bv", "kx", "ɡɣ")
+_MODIFIERS = set("ʰʲʷːˑ˞ʼ̩̃")
+_PLACE = {
+    **{x: "bilabial" for x in "pm bβ".replace(" ", "")},
+    **{x: "labiodental" for x in "ɱfv"},
+    **{x: "dental" for x in "θð"},
+    **{x: "alveolar" for x in "tdnszɾrɹlɬɮ"},
+    **{x: "postalveolar" for x in "ʃʒ"},
+    **{x: "alveolopalatal" for x in "ɕʑ"},
+    **{x: "palatal" for x in "cɟɲj"},
+    **{x: "velar" for x in "kɡŋxɣɰ"},
+    **{x: "uvular" for x in "qɢɴχʁ"},
+    **{x: "glottal" for x in "hɦʔ"},
+}
+_MANNER = {
+    **{x: "stop" for x in "pbtdɟc kɡqɢʔ".replace(" ", "")},
+    **{x: "nasal" for x in "mnɱɲŋɴ"},
+    **{x: "fricative" for x in "fvθðszʃʒɕʑxɣχʁhɦ"},
+    **{x: "approximant" for x in "jwɰɹɾɻ"},
+    **{x: "lateral" for x in "lɬɮʎ"},
+    **{x: "trill" for x in "rʀ"},
+}
+_VOWEL_HEIGHT = {**{x:"high" for x in "i y ɨ ʉ ɯ u".split()}, **{x:"mid" for x in "e ø ɘ ɵ ɤ o ə".split()}, **{x:"low" for x in "ɛ œ ɜ ɞ ʌ ɔ æ ɐ a ɶ ɑ ɒ".split()}}
+_VOWEL_BACKNESS = {**{x:"front" for x in "i y e ø ɛ œ æ ɶ".split()}, **{x:"central" for x in "ɨ ʉ ɘ ɵ ə ɜ ɞ ɐ".split()}, **{x:"back" for x in "ɯ u ɤ o ʌ ɔ ɑ ɒ".split()}}
+_VOICED = set("bdɟɡɢɴmnɱɲŋvðzʒʑɣʁɦɹɾrʀljwɰ")
+_UNVOICED = set("ptc kqʔfθsʃɕxχh".replace(" ", ""))
+
+
+def _ipa_segments(value: str) -> list[str]:
+    """Tokenize broad IPA into segment-like units, retaining length/aspiration."""
+    text = unicodedata.normalize("NFD", value).replace("g", "ɡ").replace("\u0361", "").replace("\u035c", "")
+    text = "".join(ch for ch in text if not ch.isspace() and ch != ".")
+    result: list[str] = []
+    i = 0
+    while i < len(text):
+        if unicodedata.category(text[i]).startswith("M"):
+            if result:
+                result[-1] += text[i]
+            i += 1
+            continue
+        matched = next((aff for aff in _AFFRICATES if text.startswith(aff, i)), None)
+        if matched:
+            token = matched
+            i += len(matched)
+        else:
+            token = text[i]
+            i += 1
+        while i < len(text) and (unicodedata.category(text[i]).startswith("M") or text[i] in _MODIFIERS):
+            token += text[i]
+            i += 1
+        result.append(token)
+    return result
+
+
+def _segment_features(segment: str) -> dict[str, str]:
+    base = "".join(ch for ch in unicodedata.normalize("NFD", segment)
+                   if not unicodedata.category(ch).startswith("M") and ch not in _MODIFIERS)
+    features: dict[str, str] = {}
+    if base in _AFFRICATES:
+        place = (
+            "alveolopalatal" if base in {"tɕ", "dʑ"} else
+            "postalveolar" if base in {"tʃ", "dʒ"} else
+            "labiodental" if base in {"pf", "bv"} else
+            "velar" if base in {"kx", "ɡɣ"} else
+            "alveolar"
+        )
+        features.update(place=place, manner="affricate")
+        if base.startswith(("d", "b", "ɡ")):
+            features["voicing"] = "voiced"
+        elif base.startswith(("t", "p", "k")):
+            features["voicing"] = "voiceless"
+    elif base in _PLACE:
+        features["place"] = _PLACE[base]
+        features["manner"] = _MANNER.get(base, "other")
+        if base in _VOICED:
+            features["voicing"] = "voiced"
+        elif base in _UNVOICED:
+            features["voicing"] = "voiceless"
+    elif base in _VOWEL_HEIGHT:
+        features.update(kind="vowel", height=_VOWEL_HEIGHT[base],
+                        backness=_VOWEL_BACKNESS.get(base, "unknown"),
+                        rounded="rounded" if base in "yøʉɵuɔɒɶ" else "unrounded")
+    else:
+        features["kind"] = "unknown"
+    features["aspiration"] = "yes" if "ʰ" in segment else "no"
+    features["length"] = "long" if "ː" in segment else "half-long" if "ˑ" in segment else "short"
+    features["fortis"] = "yes" if "͈" in unicodedata.normalize("NFD", segment) or "ʼ" in segment else "no"
+    return features
+
+
+def _feature_substitution_cost(left: str, right: str) -> float:
+    a, b = _segment_features(left), _segment_features(right)
+    keys = sorted(set(a) | set(b))
+    if not keys:
+        return 0.0
+    mismatches = sum(a.get(key, "missing") != b.get(key, "missing") for key in keys)
+    # Unknown phones must not be granted an artificial near-match.
+    if a.get("kind") == "unknown" or b.get("kind") == "unknown":
+        return 1.0 if left != right else 0.0
+    return mismatches / len(keys)
+
+
+def _segment_edit_distance(left: list[str], right: list[str], weighted: bool = False) -> float:
+    previous = [float(j) for j in range(len(right) + 1)]
+    for i, a in enumerate(left, 1):
+        current = [float(i)]
+        for j, b in enumerate(right, 1):
+            substitution = (_feature_substitution_cost(a, b) if weighted else float(a != b))
+            current.append(min(current[-1] + 1.0, previous[j] + 1.0, previous[j - 1] + substitution))
+        previous = current
+    return previous[-1]
+
+
+def _latency_summary(samples_ms: list[float]) -> dict[str, Any]:
+    if not samples_ms:
+        return {"sample_count": 0, "total_ms": 0.0, "mean_ms": None, "p50_ms": None, "p95_ms": None}
+    ordered = sorted(samples_ms)
+    def percentile(p: float) -> float:
+        """Nearest-rank percentile: rank=ceil(p*n), using one-based ranks."""
+        if not 0 <= p <= 1:
+            raise ValueError("percentile must be between 0 and 1")
+        return ordered[max(0, math.ceil(p * len(ordered)) - 1)]
+    return {
+        "sample_count": len(ordered),
+        "total_ms": round(sum(ordered), 3),
+        "mean_ms": round(statistics.fmean(ordered), 6),
+        "p50_ms": round(percentile(0.50), 6),
+        "p95_ms": round(percentile(0.95), 6),
+        "percentile_method": "nearest-rank (ceil(p*n), one-based rank)",
+        "measurement_note": "in-process wall-clock diagnostic; compare only on the same runner and environment",
+    }
+
+
 def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
+    """Score CER, PER and the feature proxy against their own best gold variant."""
     predicted = normalize_ipa(prediction)
     variants = _gold_variants(gold_raw)
     if not variants:
         raise ValueError("no usable IPA reference variants")
-    distance, closest = min(
-        ((edit_distance(predicted, gold), gold) for gold in variants),
-        key=lambda pair: pair[0],
-    )
+    distance, closest = min(((edit_distance(predicted, gold), gold) for gold in variants), key=lambda pair: pair[0])
+    predicted_segments = _ipa_segments(predicted)
+    phoneme_candidates = [(_segment_edit_distance(predicted_segments, _ipa_segments(gold)), gold, _ipa_segments(gold)) for gold in variants]
+    phoneme_distance, phoneme_gold, phoneme_reference_segments = min(phoneme_candidates, key=lambda item: item[0])
+    feature_candidates = [(_segment_edit_distance(predicted_segments, _ipa_segments(gold), weighted=True), gold, _ipa_segments(gold)) for gold in variants]
+    feature_distance, feature_gold, feature_reference_segments = min(feature_candidates, key=lambda item: item[0])
+    unsupported = sum(_segment_features(segment).get("kind") == "unknown" for segment in predicted_segments + feature_reference_segments)
     return {
-        "predicted": prediction,
-        "normalized_predicted": predicted,
-        "closest_normalized_gold": closest,
-        "distance": distance,
-        "exact": distance == 0,
-        "reference_length": len(closest),
+        "predicted": prediction, "normalized_predicted": predicted,
+        "closest_normalized_gold": closest, "closest_phoneme_gold": phoneme_gold,
+        "closest_feature_gold": feature_gold, "distance": distance,
+        "exact": distance == 0, "reference_length": len(closest),
+        "predicted_phoneme_count": len(predicted_segments),
+        "reference_phoneme_count": len(phoneme_reference_segments),
+        "phoneme_distance": int(phoneme_distance),
+        "feature_weighted_distance": round(feature_distance, 6),
+        "feature_reference_phoneme_count": len(feature_reference_segments),
+        "unsupported_feature_segments": unsupported,
     }
-
-
-def _build_per_engine_occurrences(
-    items: list[dict[str, str]],
-    scored_by_engine: dict[str, list[dict[str, Any]]],
-    predictions: dict[str, dict[str, Any]],
-    native_cache: dict[str, dict[str, Any]],
-) -> dict[str, list[dict[str, Any]]]:
-    """Build a complete occurrence ledger, preserving repeated words and abstentions."""
-    ledgers: dict[str, list[dict[str, Any]]] = {}
-    for engine, scored_items in scored_by_engine.items():
-        scored_by_id = {str(item["occurrence_id"]): item for item in scored_items}
-        if len(scored_by_id) != len(scored_items):
-            raise ValueError(f"{engine}: duplicate scored occurrence IDs")
-        records: list[dict[str, Any]] = []
-        for item in items:
-            occurrence_id = str(item["occurrence_id"])
-            word = item["word"]
-            record: dict[str, Any] = {
-                "occurrence_id": occurrence_id,
-                "row_id": str(item["row_id"]),
-                "token": word,
-                "gold": item["gold"],
-            }
-            scored = scored_by_id.get(occurrence_id)
-            if scored is not None:
-                record.update({
-                    "status": "scored",
-                    "ipa": scored.get("predicted"),
-                    "normalized_predicted": scored.get("normalized_predicted"),
-                    "exact": scored.get("exact"),
-                    "distance": scored.get("distance"),
-                    "reference_length": scored.get("reference_length"),
-                })
-            else:
-                if engine == "clippyfirst_native":
-                    source = native_cache.get(word, {})
-                    status = "abstained" if source.get("unresolved") else "error" if source.get("error") else "missing"
-                    reason = source.get("reason") or source.get("error")
-                else:
-                    source = predictions.get(engine, {}).get(word, {})
-                    status = "error" if source.get("error") else "missing"
-                    reason = source.get("error")
-                record.update({"status": status, "reason": reason})
-            records.append(record)
-        ledgers[engine] = records
-    return ledgers
 
 
 def _metrics(items: list[dict[str, Any]]) -> dict[str, Any]:
     if not items:
         return {
             "scored_tokens": 0, "exact_matches": 0, "exact_match_rate": None,
-            "character_error_rate": None, "reference_characters": 0,
+            "character_error_rate": None, "phoneme_error_rate": None,
+            "phonological_feature_error_rate_proxy": None, "phoneme_errors": 0,
+            "reference_phonemes": 0, "feature_reference_phonemes": 0,
+            "predicted_phonemes": 0, "unsupported_feature_segments": 0,
+            "reference_characters": 0,
         }
-    exact = sum(bool(item["exact"]) for item in items)
-    distance = sum(int(item["distance"]) for item in items)
-    ref_chars = sum(int(item["reference_length"]) for item in items)
+    exact = sum(bool(x["exact"]) for x in items)
+    distance = sum(int(x["distance"]) for x in items)
+    ref_chars = sum(int(x["reference_length"]) for x in items)
+    ref_phonemes = sum(int(x.get("reference_phoneme_count", 0)) for x in items)
+    feature_ref_phonemes = sum(int(x.get("feature_reference_phoneme_count", x.get("reference_phoneme_count", 0))) for x in items)
+    phoneme_errors = sum(int(x.get("phoneme_distance", 0)) for x in items)
+    feature_errors = sum(float(x.get("feature_weighted_distance", 0)) for x in items)
+    predicted_phonemes = sum(int(x.get("predicted_phoneme_count", 0)) for x in items)
+    unsupported = sum(int(x.get("unsupported_feature_segments", 0)) for x in items)
     return {
-        "scored_tokens": len(items),
-        "exact_matches": exact,
+        "scored_tokens": len(items), "exact_matches": exact,
         "exact_match_rate": round(exact / len(items), 6),
         "character_error_rate": round(distance / ref_chars, 6) if ref_chars else None,
-        "reference_characters": ref_chars,
+        "phoneme_error_rate": round(phoneme_errors / ref_phonemes, 6) if ref_phonemes else None,
+        "phonological_feature_error_rate_proxy": round(feature_errors / feature_ref_phonemes, 6) if feature_ref_phonemes else None,
+        "phoneme_errors": phoneme_errors, "reference_phonemes": ref_phonemes,
+        "feature_reference_phonemes": feature_ref_phonemes,
+        "predicted_phonemes": predicted_phonemes,
+        "unsupported_feature_segments": unsupported, "reference_characters": ref_chars,
     }
 
 
@@ -305,6 +420,68 @@ def _load_kog2p(root: Path) -> tuple[Callable[[str], str], str]:
     return run, "KoG2P custom phone labels -> explicit project-side label-to-IPA adapter"
 
 
+def _load_hama_batch(words: list[str]) -> tuple[Callable[[], dict[str, dict[str, str]]], str]:
+    """Load HAMA once and use its documented text-splitting batch API."""
+    from hama import G2PModel
+
+    model = G2PModel()
+
+    def run_batch() -> dict[str, dict[str, str]]:
+        result = model.predict(
+            " ".join(words),
+            split_delimiter=r"\s+",
+            output_delimiter=" ",
+            preserve_literals="none",
+        )
+        value = getattr(result, "ipa", None)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError("HAMA returned no canonical IPA for the batch")
+        tokens = value.split()
+        if len(tokens) != len(words):
+            raise ValueError(
+                f"HAMA batch output count mismatch: expected {len(words)}, got {len(tokens)}"
+            )
+        mapped: dict[str, dict[str, str]] = {}
+        for word, ipa in zip(words, tokens):
+            if not ipa.strip():
+                mapped[word] = {"error": "empty IPA token"}
+            else:
+                mapped[word] = {"ipa": ipa}
+        return mapped
+
+    return run_batch, (
+        "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03; "
+        "G2PModel.predict(text, split_delimiter=r'\\s+', output_delimiter=' ').ipa; "
+        "sentence-level batch; upstream LICENSE says MIT while python/pyproject.toml "
+        "metadata says Apache-2.0; external checkout only"
+    )
+
+
+def _load_kokorog2p() -> tuple[Callable[[str], str], str]:
+    """Load kokorog2p's explicit Korean IPA output without external lexicon lookup."""
+    from kokorog2p.ko.g2p import KoreanG2P
+
+    engine = KoreanG2P(
+        output="ipa",
+        morphology="off",
+        use_dict=False,
+        lexicons=(),
+        use_espeak_fallback=False,
+        use_goruut_fallback=False,
+    )
+
+    def run(word: str) -> str:
+        value = engine.lookup(word)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"kokorog2p returned no IPA for {word!r}")
+        return value
+
+    return run, (
+        "kokorog2p==0.9.15 KoreanG2P(output='ipa', morphology='off', "
+        "use_dict=False, lexicons=()); internal g2pK-derived rules, no external lexicon"
+    )
+
+
 def _load_hangul_to_ipa(root: Path) -> tuple[Callable[[str], str], str]:
     if not (root / "src" / "worker.py").is_file():
         raise FileNotFoundError(f"hangul_to_ipa checkout incomplete: {root}")
@@ -387,6 +564,111 @@ def _g2pk_surface_to_ipa(g2p: Callable[[str], str], word: str) -> str:
     return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
 
 
+def _g2p_ko_result_to_ipa(result: Any, word: str) -> str:
+    """Convert one complete g2p-ko result's Korean surface pronunciation to broad IPA."""
+    if not getattr(result, "complete", False):
+        raise ValueError(f"g2p-ko did not complete for {word!r}")
+    surface = getattr(result, "surface_pronunciation", None)
+    if not isinstance(surface, str):
+        raise TypeError(f"g2p-ko returned {type(surface).__name__} surface pronunciation")
+    surface = "".join(surface.split())
+    if not _HANGUL_TOKEN.fullmatch(surface):
+        raise ValueError(f"g2p-ko returned a non-Hangul surface form: {surface!r}")
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.ipa import realize_syllables
+    return realize_syllables(parse_syllables(surface), level="broad")["ipa"]
+
+
+def _load_g2p_ko() -> tuple[Callable[[str], str], str]:
+    """Load g2p-ko's morphology-aware surface pronunciation as a comparison candidate.
+
+    Its output is Korean pronunciation spelling, not IPA. The shared broad-IPA
+    renderer is an explicit adapter boundary; no native G2P rules are reapplied.
+    """
+    from g2p_ko import G2P
+
+    engine = G2P()
+
+    def run(word: str) -> str:
+        return _g2p_ko_result_to_ipa(engine.convert(word, normalize=False), word)
+
+    return run, (
+        "smbslt3/g2p-korean commit fc382a3f17e70b605b271cad8c87dd571284e5b3 "
+        "(g2p-ko 1.0.0, MIT; kiwipiepy==0.23.2); normalize=False; "
+        "surface pronunciation -> shared broad-IPA renderer; comparison-only"
+    )
+
+
+def _compose_kog2padvanced_surface(surface: str, join_jamos: Callable[[str], str]) -> str:
+    """Compose mixed precomposed Hangul and compatibility jamo deterministically."""
+    compatibility = "ㄱㄲㄳㄴㄵㄶㄷㄸㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅃㅄㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"
+    vowels = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"
+    # An isolated compatibility vowel following a complete syllable is an
+    # onset-less syllable in the upstream output; add ㅇ before composing.
+    surface = re.sub(rf"(?<![{re.escape(compatibility)}])([{re.escape(vowels)}])", r"ㅇ\1", surface)
+    return unicodedata.normalize("NFC", join_jamos(surface))
+
+
+def _load_kog2padvanced_batch(root: Path, words: list[str]) -> tuple[Callable[[], dict[str, dict[str, str]]], str]:
+    """Load upstream KoG2Padvanced without copying its source into this repository.
+
+    The upstream function uses relative dictionary paths and initializes Kkma
+    internally, so it is evaluated as a sentence-level batch. Its Hangul surface
+    output is rendered through the same explicit project IPA adapter as g2pk.
+    """
+    module_path = root / "G2P" / "KoG2Padvanced.py"
+    required = [
+        module_path,
+        root / "G2P" / "KoG2P.py",
+        root / "G2P" / "Dic" / "rulebook.txt",
+        root / "G2P" / "Dic" / "nSheetWords.csv",
+        root / "G2P" / "Dic" / "KoG2PDic.txt",
+    ]
+    if any(not path.is_file() for path in required):
+        raise FileNotFoundError(f"KoG2Padvanced checkout incomplete under {root}")
+    sys.path.insert(0, str(root))
+    original_cwd = Path.cwd()
+    try:
+        os.chdir(root)
+        module = importlib.import_module("G2P.KoG2Padvanced")
+    finally:
+        os.chdir(original_cwd)
+
+    def run_batch() -> dict[str, dict[str, str]]:
+        current_cwd = Path.cwd()
+        try:
+            os.chdir(root)
+            surface = module.KoG2Padvanced(" ".join(words))
+        finally:
+            os.chdir(current_cwd)
+        if not isinstance(surface, str):
+            raise TypeError(f"KoG2Padvanced returned {type(surface).__name__}")
+        output_words = surface.split()
+        if len(output_words) != len(words):
+            raise ValueError(
+                f"KoG2Padvanced changed token count: expected {len(words)}, got {len(output_words)}"
+            )
+        from korean_ukrainian.phonology import parse_syllables
+        from korean_ukrainian.ipa import realize_syllables
+
+        mapped: dict[str, dict[str, str]] = {}
+        for word, raw_output in zip(words, output_words):
+            try:
+                output = _compose_kog2padvanced_surface(raw_output, module.join_jamos)
+                if not _HANGUL_TOKEN.fullmatch(output):
+                    raise ValueError(f"non-Hangul surface after jamo composition: {output!r}")
+                mapped[word] = {"ipa": realize_syllables(parse_syllables(output), level="broad")["ipa"]}
+            except Exception as exc:
+                mapped[word] = {"error": f"{type(exc).__name__}: {exc}", "surface": raw_output}
+        return mapped
+
+    return run_batch, (
+        "seongmin-mun/KoG2Padvanced commit 491b2d7269a4666b0d7556efb26755219f861163; "
+        "upstream Hangul output -> project broad-IPA renderer; batch mode; "
+        "upstream repository has no declared license, not vendored"
+    )
+
+
 def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
     from korean_ukrainian.pipeline import phoneticize_korean
     from korean_ukrainian.phonology import parse_syllables
@@ -400,7 +682,18 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     def execute(name: str, source: str, fn: Callable[[str], str], adapter: str) -> None:
         output: dict[str, Any] = {}
         errors: list[dict[str, str]] = []
+        per_word_ms: list[float] = []
+        repeat_totals_ms: list[float] = []
+        repeat_word_latencies_ms: list[float] = []
+        # One warm-up call is recorded separately and excluded from reported timings.
+        try:
+            if words:
+                fn(words[0])
+        except Exception:
+            pass
+        engine_started = time.perf_counter()
         for word in words:
+            word_started = time.perf_counter()
             try:
                 value = fn(word)
                 if not isinstance(value, str) or not value.strip():
@@ -410,12 +703,44 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 output[word] = {"error": f"{type(exc).__name__}: {exc}"}
                 if len(errors) < 30:
                     errors.append({"word": word, "error": output[word]["error"]})
+            finally:
+                per_word_ms.append((time.perf_counter() - word_started) * 1000)
+        elapsed_ms = (time.perf_counter() - engine_started) * 1000
+        for _ in range(max(0, args.timing_repetitions)):
+            repeat_started = time.perf_counter()
+            for word in words:
+                word_started = time.perf_counter()
+                try:
+                    value = fn(word)
+                    if not isinstance(value, str) or not value.strip():
+                        raise ValueError("empty or non-string output during repeat timing")
+                except Exception:
+                    pass
+                finally:
+                    repeat_word_latencies_ms.append((time.perf_counter() - word_started) * 1000)
+            repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
         predictions[name] = output
         engine_meta[name] = {
             "status": "PARTIAL" if errors else "AVAILABLE",
             "source": source, "adapter": adapter,
             "unique_words": len(words), "outputs": len(words) - len(errors),
             "engine_errors": len(errors), "error_examples": errors,
+            "runtime": {
+                "total_ms": round(elapsed_ms, 3),
+                "throughput_words_per_second": round(len(words) / (elapsed_ms / 1000), 3) if elapsed_ms > 0 else None,
+                "per_word_latency": _latency_summary(per_word_ms),
+                "repeatability": {
+                    "warmup_calls_excluded": 1 if words else 0,
+                    "measured_repetitions": len(repeat_totals_ms),
+                    "total_ms_samples": [round(x, 3) for x in repeat_totals_ms],
+                    "total_ms_median": round(statistics.median(repeat_totals_ms), 3) if repeat_totals_ms else None,
+                    "total_ms_min": round(min(repeat_totals_ms), 3) if repeat_totals_ms else None,
+                    "total_ms_max": round(max(repeat_totals_ms), 3) if repeat_totals_ms else None,
+                    "per_word_latency": _latency_summary(repeat_word_latencies_ms),
+                    "method": "same unique-word list repeated in the same process after one warm-up; includes Python adapter overhead",
+                },
+                "timing_scope": "unique-word engine calls; includes Python adapter overhead, excludes corpus loading and scoring",
+            },
         }
 
     execute(
@@ -429,6 +754,24 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "g2pk surface Hangul -> project segment renderer; native rules not rerun")
 
     try:
+        g2p_ko_fn, g2p_ko_adapter = _load_g2p_ko()
+        execute(
+            "g2p_ko_1_0_0",
+            "smbslt3/g2p-korean commit fc382a3f17e70b605b271cad8c87dd571284e5b3",
+            g2p_ko_fn,
+            g2p_ko_adapter,
+        )
+    except Exception as exc:
+        predictions["g2p_ko_1_0_0"] = {}
+        engine_meta["g2p_ko_1_0_0"] = {
+            "status": "BLOCKED_OR_ERROR",
+            "source": "smbslt3/g2p-korean commit fc382a3f17e70b605b271cad8c87dd571284e5b3",
+            "adapter": "surface pronunciation -> shared broad-IPA renderer; normalize=False",
+            "engine_errors": len(words),
+            "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
+        }
+
+    try:
         kog2p_fn, kog2p_adapter = _load_kog2p(args.kog2p_root)
         execute("KoG2P_2019", "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7",
                 lambda word: kog2p_phones_to_ipa(kog2p_fn(word)), kog2p_adapter)
@@ -438,6 +781,127 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "status": "BLOCKED_OR_ERROR", "source": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7",
             "adapter": "custom phone labels -> explicit IPA mapping",
             "engine_errors": len(words), "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
+        }
+
+    try:
+        hama_batch, hama_adapter = _load_hama_batch(words)
+        hama_started = time.perf_counter()
+        hama_map = hama_batch()
+        hama_elapsed_ms = (time.perf_counter() - hama_started) * 1000
+        hama_repeat_totals_ms = []
+        for _ in range(max(0, args.timing_repetitions)):
+            repeat_started = time.perf_counter()
+            hama_batch()
+            hama_repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
+        hama_predictions = {
+            word: value for word, value in hama_map.items()
+            if isinstance(value, dict) and isinstance(value.get("ipa"), str)
+        }
+        hama_errors = [
+            {"word": word, **value} for word, value in hama_map.items()
+            if not isinstance(value, dict) or not isinstance(value.get("ipa"), str)
+        ]
+        predictions["hama_1_7_0"] = {
+            word: {"ipa": value["ipa"]} if isinstance(value, dict) and isinstance(value.get("ipa"), str)
+            else {"error": value.get("error", "invalid output")} for word, value in hama_map.items()
+        }
+        engine_meta["hama_1_7_0"] = {
+            "status": "AVAILABLE" if len(hama_predictions) == len(words) else ("PARTIAL" if hama_predictions else "BLOCKED_OR_ERROR"),
+            "source": "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03",
+            "adapter": hama_adapter,
+            "unique_words": len(words), "outputs": len(hama_predictions),
+            "engine_errors": len(hama_errors), "error_examples": hama_errors[:10],
+            "runtime": {
+                "total_ms": round(hama_elapsed_ms, 3),
+                "throughput_words_per_second": round(len(words) / (hama_elapsed_ms / 1000), 3) if hama_elapsed_ms else None,
+                "repeatability": {
+                    "warmup_calls_excluded": 1,
+                    "measured_repetitions": len(hama_repeat_totals_ms),
+                    "total_ms_samples": [round(x, 3) for x in hama_repeat_totals_ms],
+                    "total_ms_median": round(statistics.median(hama_repeat_totals_ms), 3) if hama_repeat_totals_ms else None,
+                    "total_ms_min": round(min(hama_repeat_totals_ms), 3) if hama_repeat_totals_ms else None,
+                    "total_ms_max": round(max(hama_repeat_totals_ms), 3) if hama_repeat_totals_ms else None,
+                    "method": "one scored full-batch call precedes repeated batch timing samples",
+                },
+                "timing_scope": "one sentence-level HAMA batch call; includes model inference and IPA splitting; not comparable with per-word timings",
+            },
+        }
+    except Exception as exc:
+        predictions["hama_1_7_0"] = {}
+        engine_meta["hama_1_7_0"] = {
+            "status": "BLOCKED_OR_ERROR",
+            "source": "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03",
+            "adapter": "G2PModel.predict(text, split_delimiter, output_delimiter).ipa batch output",
+            "engine_errors": len(words),
+            "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
+        }
+
+    try:
+        kokoro_fn, kokoro_adapter = _load_kokorog2p()
+        execute(
+            "kokorog2p_0_9_15",
+            "buchwandler/kokorog2p==0.9.15 (Apache-2.0)",
+            kokoro_fn,
+            kokoro_adapter,
+        )
+    except Exception as exc:
+        predictions["kokorog2p_0_9_15"] = {}
+        engine_meta["kokorog2p_0_9_15"] = {
+            "status": "BLOCKED_OR_ERROR",
+            "source": "buchwandler/kokorog2p==0.9.15 (Apache-2.0)",
+            "adapter": "direct KoreanG2P output='ipa'; lexicon lookup disabled",
+            "engine_errors": len(words),
+            "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
+        }
+
+    try:
+        advanced_batch, advanced_adapter = _load_kog2padvanced_batch(args.kog2padvanced_root, words)
+        advanced_started = time.perf_counter()
+        advanced_map = advanced_batch()
+        advanced_elapsed_ms = (time.perf_counter() - advanced_started) * 1000
+        advanced_repeat_totals_ms = []
+        for _ in range(max(0, args.timing_repetitions)):
+            repeat_started = time.perf_counter()
+            advanced_batch()
+            advanced_repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
+        advanced_predictions = {word: value for word, value in advanced_map.items() if isinstance(value, dict) and isinstance(value.get("ipa"), str)}
+        advanced_errors = [
+            {"word": word, **value} for word, value in advanced_map.items()
+            if not isinstance(value, dict) or not isinstance(value.get("ipa"), str)
+        ]
+        predictions["KoG2Padvanced_2022"] = {
+            word: {"ipa": value["ipa"]} if isinstance(value, dict) and isinstance(value.get("ipa"), str)
+            else {"error": value.get("error", "invalid output")} for word, value in advanced_map.items()
+        }
+        engine_meta["KoG2Padvanced_2022"] = {
+            "status": "AVAILABLE" if len(advanced_predictions) == len(words) else ("PARTIAL" if advanced_predictions else "BLOCKED_OR_ERROR"),
+            "source": "seongmin-mun/KoG2Padvanced commit 491b2d7269a4666b0d7556efb26755219f861163",
+            "adapter": advanced_adapter,
+            "unique_words": len(words), "outputs": len(advanced_predictions),
+            "engine_errors": len(advanced_errors), "error_examples": advanced_errors[:10],
+            "runtime": {
+                "total_ms": round(advanced_elapsed_ms, 3),
+                "throughput_words_per_second": round(len(words) / (advanced_elapsed_ms / 1000), 3) if advanced_elapsed_ms else None,
+                "repeatability": {
+                    "warmup_calls_excluded": 1,
+                    "measured_repetitions": len(advanced_repeat_totals_ms),
+                    "total_ms_samples": [round(x, 3) for x in advanced_repeat_totals_ms],
+                    "total_ms_median": round(statistics.median(advanced_repeat_totals_ms), 3) if advanced_repeat_totals_ms else None,
+                    "total_ms_min": round(min(advanced_repeat_totals_ms), 3) if advanced_repeat_totals_ms else None,
+                    "total_ms_max": round(max(advanced_repeat_totals_ms), 3) if advanced_repeat_totals_ms else None,
+                    "method": "one scored full-batch call precedes repeated full-corpus timing samples; each call initializes Kkma",
+                },
+                "timing_scope": "one sentence-level batch call; includes Kkma initialization and shared IPA adapter; not comparable with per-word timing",
+            },
+        }
+    except Exception as exc:
+        predictions["KoG2Padvanced_2022"] = {}
+        engine_meta["KoG2Padvanced_2022"] = {
+            "status": "BLOCKED_OR_ERROR",
+            "source": "seongmin-mun/KoG2Padvanced commit 491b2d7269a4666b0d7556efb26755219f861163",
+            "adapter": "upstream Hangul output -> project broad-IPA renderer; no source vendoring",
+            "engine_errors": len(words),
+            "error_examples": [{"error": f"{type(exc).__name__}: {exc}"}],
         }
 
     try:
@@ -453,13 +917,34 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         }
 
     try:
+        espeak_started = time.perf_counter()
         espeak_map, espeak_adapter = _load_espeak(words)
+        espeak_elapsed_ms = (time.perf_counter() - espeak_started) * 1000
+        espeak_repeat_totals_ms = []
+        for _ in range(max(0, args.timing_repetitions)):
+            repeat_started = time.perf_counter()
+            _load_espeak(words)
+            espeak_repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
         predictions["espeak_ng_ko"] = {word: {"ipa": ipa} for word, ipa in espeak_map.items()}
         engine_meta["espeak_ng_ko"] = {
             "status": "AVAILABLE" if len(espeak_map) == len(words) else "PARTIAL",
             "source": "eSpeak NG via phonemizer==3.3.0",
             "adapter": espeak_adapter, "unique_words": len(words), "outputs": len(espeak_map),
             "engine_errors": len(words) - len(espeak_map), "error_examples": [],
+            "runtime": {
+                "total_ms": round(espeak_elapsed_ms, 3),
+                "throughput_words_per_second": round(len(espeak_map) / (espeak_elapsed_ms / 1000), 3) if espeak_elapsed_ms > 0 else None,
+                "repeatability": {
+                    "warmup_calls_excluded": 1,
+                    "measured_repetitions": len(espeak_repeat_totals_ms),
+                    "total_ms_samples": [round(x, 3) for x in espeak_repeat_totals_ms],
+                    "total_ms_median": round(statistics.median(espeak_repeat_totals_ms), 3) if espeak_repeat_totals_ms else None,
+                    "total_ms_min": round(min(espeak_repeat_totals_ms), 3) if espeak_repeat_totals_ms else None,
+                    "total_ms_max": round(max(espeak_repeat_totals_ms), 3) if espeak_repeat_totals_ms else None,
+                    "method": "one scored batch call precedes repeated full-batch timing samples; backend is warm in later samples",
+                },
+                "timing_scope": "one batched phonemizer call including backend startup; not directly comparable with per-word timings",
+            },
         }
     except Exception as exc:
         predictions["espeak_ng_ko"] = {}
@@ -470,15 +955,36 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         }
 
     try:
+        phonemize_started = time.perf_counter()
         phonemize_map, phonemize_adapter = _load_phonemize(
             args.phonemize_root, args.corpus, args.phonemize_output, words,
         )
+        phonemize_elapsed_ms = (time.perf_counter() - phonemize_started) * 1000
+        phonemize_repeat_totals_ms = []
+        for _ in range(max(0, args.timing_repetitions)):
+            repeat_started = time.perf_counter()
+            _load_phonemize(args.phonemize_root, args.corpus, args.phonemize_output, words)
+            phonemize_repeat_totals_ms.append((time.perf_counter() - repeat_started) * 1000)
         predictions["phonemize_2_0_1"] = {word: {"ipa": ipa} for word, ipa in phonemize_map.items()}
         engine_meta["phonemize_2_0_1"] = {
             "status": "AVAILABLE" if len(phonemize_map) == len(words) else "PARTIAL",
             "source": "hans00/phonemize npm package 2.0.1",
             "adapter": phonemize_adapter, "unique_words": len(words), "outputs": len(phonemize_map),
             "engine_errors": len(words) - len(phonemize_map), "error_examples": [],
+            "runtime": {
+                "total_ms": round(phonemize_elapsed_ms, 3),
+                "throughput_words_per_second": round(len(phonemize_map) / (phonemize_elapsed_ms / 1000), 3) if phonemize_elapsed_ms > 0 else None,
+                "repeatability": {
+                    "warmup_calls_excluded": 1,
+                    "measured_repetitions": len(phonemize_repeat_totals_ms),
+                    "total_ms_samples": [round(x, 3) for x in phonemize_repeat_totals_ms],
+                    "total_ms_median": round(statistics.median(phonemize_repeat_totals_ms), 3) if phonemize_repeat_totals_ms else None,
+                    "total_ms_min": round(min(phonemize_repeat_totals_ms), 3) if phonemize_repeat_totals_ms else None,
+                    "total_ms_max": round(max(phonemize_repeat_totals_ms), 3) if phonemize_repeat_totals_ms else None,
+                    "method": "one scored Node batch call precedes repeated subprocess/batch timing samples",
+                },
+                "timing_scope": "includes Node subprocess startup and batch processing; not directly comparable with per-word timings",
+            },
         }
     except Exception as exc:
         predictions["phonemize_2_0_1"] = {}
@@ -555,6 +1061,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             **metrics,
             "attempted_tokens": attempted,
             "coverage": round(len(scored) / attempted, 6) if attempted else None,
+            "coverage_adjusted_exact_match_rate": round(metrics["exact_matches"] / attempted, 6) if attempted else None,
             "abstentions_or_unresolved": unresolved_native if name == "clippyfirst_native" else 0,
             "engine_errors_on_token_loop": errors_by_engine[name],
             "unique_word_engine_status": engine_meta[name],
@@ -711,7 +1218,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
 
     return {
         "benchmark": args.benchmark_name,
-        "benchmark_version": "multi-engine-ipa-diagnostic-v4",
+        "benchmark_version": "multi-engine-ipa-diagnostic-v5",
         "dataset_source": args.dataset_source,
         "native_abstention_audit": {
             "occurrence_count": len(native_abstention_audit),
@@ -727,7 +1234,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "normalization": {
             "function": "benchmark_ugtphon_ko.normalize_ipa",
             "rules": "NFD canonicalization, g->ɡ, tie bars and selected narrow diacritics (including retraction U+0320) removed, spaces/periods removed; stress/length/aspiration/fortis/unreleased stops retained",
-            "gold_variants": "best distance among comma-separated IPA alternatives",
+            "gold_variants": "CER, PER and feature proxy independently select the best comma-separated IPA alternative for their own metric",
         },
         "engine_order": list(engine_results),
         "engines": engine_results,
@@ -735,6 +1242,17 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "per_engine_occurrences": _build_per_engine_occurrences(
             items, scored_by_engine, predictions, native_cache
         ),
+        "supplemental_metrics_status": {
+            "phoneme_error_rate": "MEASURED; broad-IPA segment tokenizer and current inventory; inspect unsupported_feature_segments",
+            "phonological_feature_error_rate_proxy": "MEASURED; project-defined feature-weighted edit distance, not a universally standardized PFER implementation",
+            "execution_time": "MEASURED; diagnostic wall-clock timing. Per-word timings and batched backend timings have different scopes and must not be ranked naively against one another",
+            "rule_accuracy": "NOT_MEASURED: the corpus does not provide independently adjudicated per-token rule-application labels",
+            "ukrainian_target_CER_and_exact_match": "NOT_MEASURED: this IPA benchmark has no independently adjudicated Korean-to-Ukrainian target gold set",
+            "ipa_to_ukrainian_pipeline_consistency": "NOT_MEASURED: this benchmark compares Korean IPA outputs and does not run every competitor through a common Ukrainian target adapter",
+            "determinism_and_repeatability": "PARTIALLY_MEASURED: one excluded warm-up plus five same-process timing repetitions; repeated output equivalence is not separately asserted",
+            "memory_usage": "NOT_MEASURED: workflow does not collect comparable per-engine peak RSS; candidates share a process",
+            "coverage_adjusted_exact_match_rate": "MEASURED; exact matches divided by all eligible occurrences, so abstentions/errors count as non-matches",
+        },
         "diagnostic_mismatch_sample": mismatch_details,
         "native_g2pk_pairwise_audit": {
             "occurrence_count": len(native_g2pk_pairwise_audit),
@@ -745,6 +1263,10 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         "upstream_pins": {
             "g2pk": "0.9.4",
             "KoG2P": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7; GPL-3.0; executed as external checkout, not vendored",
+            "KoG2Padvanced": "seongmin-mun/KoG2Padvanced commit 491b2d7269a4666b0d7556efb26755219f861163; no upstream license declared; external comparison checkout only, not vendored; Hangul output mapped by shared project IPA renderer",
+            "HAMA": "hamanlp/hama commit fb81fe97e54c00b3f73192b9351f96fcd4427b03; direct IPA API; upstream LICENSE says MIT while package metadata says Apache-2.0; external checkout only; Korean output quality must be established empirically",
+            "kokorog2p": "buchwandler/kokorog2p==0.9.15; Apache-2.0; direct output='ipa'; morphology and external lexicon disabled; implementation is g2pK-derived and not an independent phonological lineage",
+            "g2p-ko": "smbslt3/g2p-korean commit fc382a3f17e70b605b271cad8c87dd571284e5b3; g2p-ko 1.0.0 MIT; kiwipiepy==0.23.2; normalize=False; Hangul surface pronunciation rendered to broad IPA by shared adapter",
             "hangul_to_ipa": "stannam/hangul_to_ipa commit 942abf132ea969a7e3476a1487c06710fb8db74b; MIT; executed as external checkout, not vendored",
             "phonemize": "hans00/phonemize npm 2.0.1; MIT",
             "eSpeak": "eSpeak NG system package via phonemizer==3.3.0; exact runtime version recorded in CI logs",
@@ -754,10 +1276,15 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "IPA conventions differ between systems and reference annotations; exact match and CER are diagnostic, not absolute truth.",
             "g2pk output is converted through the project's segment renderer, which shares a representation layer with the native system and may bias comparison.",
             "KoG2P uses a documented custom phone alphabet; the explicit adapter is lossy, and its score must be read with adapter limitations.",
+            "KoG2Padvanced and g2pk predictions are rendered to IPA through the shared project broad-IPA adapter; these scores compare pronunciation surfaces, not independent native IPA encoders.",
+            "HAMA's input vocabulary includes Korean jamo, but Korean phonological competence is not assumed from vocabulary membership; interpret only its measured output and note the upstream license metadata conflict.",
+            "kokorog2p uses its explicit IPA mode but its Korean implementation is g2pK-derived; treat it as a variant/configuration comparison, not a fully independent algorithm family.",
+            "Equivalent IPA affricate letters ʨ/ʥ are canonicalized to tɕ/dʑ before scoring; all engines are rerun under this normalization.",
             "hangul_to_ipa explicitly omits several morphology-sensitive processes (including n-insertion and liquid tensification); this is a scope limitation, not an unexpected runtime failure.",
             "phonemize's published Korean evaluation uses a small LLM-judged sample, not this benchmark's independent human-gold IPA.",
             "eSpeak is a TTS-oriented phonemizer baseline, not a claim of narrow-IPA or Korean standard-pronunciation authority.",
             "This benchmark measures Korean IPA output only. It does not compare Ukrainian adaptation quality.",
+            "g2p-ko is a separate morphology-aware comparison candidate, but it emits Korean surface pronunciation rather than IPA; the shared project IPA renderer is an adapter and therefore this is not a fully independent IPA encoding.",
             "No candidate is considered universally best based on one dataset. Report coverage, abstention, CER, exact match and confidence intervals together.",
         ],
     }
@@ -780,10 +1307,14 @@ def main() -> int:
     parser.add_argument("--benchmark-name", default="UGTPHON Korean test split", help="human-readable dataset/split label")
     parser.add_argument("--dataset-source", default="naver-ai/UGTPHON@ef0d5a09c2ea1874c7206020f875cbd9cfea2f54:ko/test.json (Apache-2.0)", help="dataset provenance and license statement")
     parser.add_argument("--kog2p-root", type=Path, default=os.environ.get("KOG2P_ROOT", "/tmp/KoG2P"))
+    parser.add_argument("--kog2padvanced-root", type=Path, default=os.environ.get("KOG2PADVANCED_ROOT", "/tmp/KoG2Padvanced"))
     parser.add_argument("--hangul-to-ipa-root", type=Path, default=os.environ.get("HANGUL_TO_IPA_ROOT", "/tmp/hangul_to_ipa"))
     parser.add_argument("--phonemize-root", type=Path, default=os.environ.get("PHONEMIZE_BASELINE_DIR", "/tmp/phonemize-baseline"))
     parser.add_argument("--phonemize-output", type=Path, default=Path("/tmp/phonemize-predictions.json"))
+    parser.add_argument("--timing-repetitions", type=int, default=5, help="warm-up excluded; repeated per-word timings")
     args = parser.parse_args()
+    if args.timing_repetitions < 0:
+        parser.error("--timing-repetitions must be >= 0")
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH")
     try:
