@@ -118,7 +118,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         candidate_ukrainian:candidateText,
         candidate_status:hasCandidate?'provisional':null,
         status:superSoftOn?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'super-soft-orthographic-fallback':hasSuperSoftFallback?'super-soft-heuristic-coverage':results.some(r=>r.status==='unresolved')?'unresolved':'super-soft-maximum-coverage'):issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical',
-        phonetic_result_type:hasSuperSoftFallback?'mixed-surface-ipa-and-orthographic-fallback':'surface-ipa',
+        phonetic_result_type:hasSuperSoftFallback?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
         candidate_status:hasSuperSoftFallback?'super-soft-low-confidence':hasCandidate?'provisional':null
       };
     }
@@ -377,7 +377,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     candidate_ukrainian:superSoftCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
     candidate_status:superSoftCandidateAvailable?'super-soft-low-confidence':provisionalCandidateAvailable?'provisional':null,
     ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,'.'),
-    phonetic_result_type:superSoftCandidateAvailable?'mixed-surface-ipa-and-orthographic-fallback':'surface-ipa',
+    phonetic_result_type:superSoftCandidateAvailable?(trace.some(item=>item?.status==='super-soft-orthographic-fallback')?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
     analysis:renderStructured(units,analysis,' · '),
     trace,
     variants:unresolvedWholeHangulToken?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status),
