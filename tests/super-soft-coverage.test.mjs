@@ -63,6 +63,33 @@ test('Super-soft exposes practical morphology guesses only as low-confidence can
   assert.ok(heuristic.every(item=>item.confidence==='low'));
 });
 
+
+test('Super-soft covers every registered strict-mode morphology gap with a candidate',()=>{
+  const gaps=['짧은소리의','수많이는','없으니를','없애다에서는','값에서는','밟으니와','싫어도에서는','외곬에를','값있는에서는','히읗을의','벼훑이를','밭이와','붙임'];
+  for(const source of gaps){
+    const strict=engine.convert(source,STRICT);
+    assert.equal(strict.status,'unresolved',source+': strict control must remain fail-closed');
+    const result=engine.convert(source,SUPER);
+    assert.notEqual(result.status,'unresolved',source+': Super-soft must not drop the Korean span');
+    assert.equal(result.coverage.input_coverage,1,source+': all Hangul syllables must be represented');
+    assert.equal(result.coverage.trace_coverage,1,source+': all source spans must be traceable');
+    assert.ok(result.coverage.complete,source+': coverage accounting must be complete');
+    assert.ok(result.ukrainian||result.candidate_ukrainian,source+': must produce a Ukrainian candidate');
+    assert.doesNotMatch(result.ukrainian||result.candidate_ukrainian,/[⟦⟧]/u,source+': no unresolved placeholder may replace a syllable');
+  }
+});
+
+test('Super-soft covers the full adversarial NIKL master passage without dropping Hangul',()=>{
+  const source=readFileSync(new URL('./fixtures/nikl-all-articles-master-passage-2026-10-22.txt',import.meta.url),'utf8');
+  const result=engine.convert(source,SUPER);
+  const visible=result.ukrainian||result.candidate_ukrainian||'';
+  assert.ok(result.coverage.complete,JSON.stringify(result.coverage));
+  assert.equal(result.coverage.input_coverage,1);
+  assert.equal(result.coverage.trace_coverage,1);
+  assert.ok(visible.length>0);
+  assert.doesNotMatch(visible,/[⟦⟧]/u,'no Hangul span may be replaced by unresolved placeholders');
+});
+
 test('Super-soft preserves non-syllabic Jamo and non-Korean literals without inventing IPA',()=>{
   const source='안녕 ㄱ 가 123, 🙂!';
   const result=engine.convert(source,SUPER);
