@@ -109,3 +109,20 @@ Do not claim “100% correct”, “complete Korean pronunciation”, or “NIKL
 > “Super-soft mode returns a deterministic Ukrainian reading candidate for 100% of modern Hangul syllable input covered by the exhaustive test, using explicit low-confidence fallbacks where lexical or morphological evidence is unavailable.”
 
 This claim must be narrowed if exhaustive tests expose unsupported Unicode or runtime boundaries.
+
+
+## 9. First implementation batch — 2026-10-30
+
+**Status: PARTIAL; implementation started, exhaustive acceptance pending.**
+
+Implemented in the browser research engine:
+
+- Added opt-in `morphologyMode: "super-soft"`; Strict, Soft, and Practical remain separate.
+- Super-soft reuses existing Soft and Practical deterministic heuristics first. Only unresolved morphology guards fall through to the decomposed Hangul onset/vowel/coda representation.
+- Fallback segments are explicitly typed as `orthographic-phonemic-fallback`, tagged low-confidence, and traced with `super-soft-orthographic-fallback`. They are not added to lexical evidence.
+- Provisional IPA→Ukrainian correspondences are exposed as a complete candidate rather than silently promoted to accepted orthography.
+- Standalone compatibility Jamo are preserved literally and are not assigned fabricated IPA. Non-Korean literals are preserved.
+- The result exposes input/trace coverage counts and source offsets. The UI exposes the mode only within research mode and warns that 100% coverage is not 100% accuracy.
+- Added exhaustive tests over all 11,172 modern Hangul syllables, morphology fallback, literal preservation, mode isolation, and UI wiring.
+
+**Not yet DONE_VERIFIED:** tests have been authored but must pass on the exact branch head. The exhaustive inventory test is the acceptance gate for 100% syllable coverage; independent pronunciation accuracy remains evidence-limited and is not implied by coverage.

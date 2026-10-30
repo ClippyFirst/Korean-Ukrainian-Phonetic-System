@@ -9,8 +9,8 @@ import {
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
 
 export function applyContextualRules(units,sourceText='',{ morphologyMode = 'strict' } = {}){
-  const softOn = morphologyMode === 'soft' || morphologyMode === 'practical';
-  const practicalOn = morphologyMode === 'practical';
+  const softOn = morphologyMode === 'soft' || morphologyMode === 'practical' || morphologyMode === 'super-soft';
+  const practicalOn = morphologyMode === 'practical' || morphologyMode === 'super-soft';
   const ruleSets=units.map(()=>[]);
   for(let i=0;i<units.length-1;i++){
     const a=units[i],b=units[i+1];

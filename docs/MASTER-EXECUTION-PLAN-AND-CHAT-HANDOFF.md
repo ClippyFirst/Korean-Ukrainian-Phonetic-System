@@ -3625,3 +3625,13 @@ This section supersedes earlier branch/PR status statements above where they con
 - **Mode separation:** Strict remains fail-closed; current Soft and Practical contracts remain unchanged; Super-soft is a separate opt-in maximum-coverage tier. Heuristic fallback never becomes exact/NIKL evidence and never writes into the lexical registry.
 - **Acceptance:** exhaustive end-to-end coverage of all 11,172 modern Hangul syllables, complete reachable IPA-target inventory, adversarial unknown/morphological/mixed-script tests, source-span trace accounting, strict-mode regression, cross-runtime parity, build and deployed smoke. Measure coverage separately from pronunciation accuracy.
 - **Current status: TODO — specification recorded, implementation not yet started.** The existing Practical mode is not 100% coverage: unresolved morphology, unsupported Jamo, and unmapped IPA can still produce empty output. See [Super-soft 100% coverage specification](SUPER-SOFT-100-PERCENT-COVERAGE-SPEC-2026-10-30.md).
+
+
+# Super-soft 100% coverage implementation continuation — 2026-10-30
+
+- **User authorization:** implementation approved; proceed autonomously and rigorously.
+- **Branch:** `feat/super-soft-100-percent-coverage-2026-10-30`, based on main `0083bed43e824836dd6613c53ca70944b9a9290d` and the preceding specification-only branch commit `4e9c2bd1aefeaf0228cc07a50ffe7d2bda07321f`.
+- **Implemented batch (verification pending):** opt-in `super-soft` mode in browser native engine; reuses existing Soft/Practical deterministic rule paths; only unresolved morphology falls back to orthographic-phonemic IPA with explicit low-confidence provenance; target provisional mappings remain candidate-only; standalone compatibility Jamo and non-Korean literals are preserved; adds per-source-span coverage accounting and research-only UI toggle.
+- **Tests authored:** exhaustive 11,172 modern Hangul syllable inventory through IPA and Ukrainian target adaptation; unresolved morphology fallback; literal/Jamo preservation; mode isolation; UI wiring.
+- **Status:** PARTIAL until exact-head CI passes. Do not claim 100% until the exhaustive test and complete target mapping gate pass. Independent pronunciation accuracy is BLOCKED/EVIDENCE-LIMITED without independently adjudicated held-out Korean pronunciation gold.
+- **Environment blocker:** direct local GitHub clone was attempted and failed because DNS could not resolve `github.com`; local npm/Python/browser commands cannot be run from this container. GitHub Actions exact-head workflows are the available verification path. This is not a test pass.
