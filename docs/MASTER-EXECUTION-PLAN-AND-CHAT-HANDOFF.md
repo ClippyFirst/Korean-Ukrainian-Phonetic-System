@@ -3837,3 +3837,49 @@ PR #387 was merged to `main` as `a1c03fec1316433ab6f496b7ed88002c53c93067`.
 - **Public site:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/ .
 
 **Status:** bracketed uncertainty display — DONE_VERIFIED and deployed. This is a presentation of the engine's existing confidence metadata, not a claim that unbracketed spans are independently certified. Independent Korean pronunciation accuracy and Ukrainian target quality remain BLOCKED / EVIDENCE-LIMITED pending adjudicated gold and specialist review; Python CLI/API Super-soft parity remains DEFERRED.
+
+
+# Two-engine methodology and service disclosure follow-up — 2026-10-30
+
+**Branch:** `docs/full-methodology-service-clarity-2026-10-30`  
+**Base:** `main` at `11f03cc261ebc8385ab76b6e0041fd9fe9f0563d`  
+**PR:** [#397 — Document the two Korean engines and complete Kozak Kim methodology](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/397)  
+**Latest branch head at this handoff update:** pending this handoff commit; inspect the PR head for the exact SHA.
+
+## Work completed in this branch
+
+- Updated the service mode description so users see directly that **Режим докладного аналізу** uses the project's own deterministic Kozak Kim engine, unlike **Звичайний режим** on the JavaScript g2pK port. The existing direct methodology anchor remains linked from the explanatory disclosure.
+- Expanded `system.html` with the pinned browser-port identity/configuration, upstream provenance and Apache-2.0 notices, the distinction from Python g2pK/MeCab, the Kozak Kim module map, the strict/soft/super-soft mode boundaries, and the actual Super-soft coverage contract.
+- Refreshed section 19 against main's 2026-10-30 exact-head evidence: browser tests 1,339/1,339; Vite build; Python 3.11/3.12/3.13 regression and wheel checks; system verification; master/research artifact generation.
+- Added paired benchmark confidence intervals and retained the mixed conclusion: the small UGTPHON exact-match edge is g2pK's, while SIGMORPHON exact match favours native; paired CER intervals cross zero. Neither benchmark evaluates Ukrainian target quality or proves a universal winner.
+- Updated `docs/methodology.md` with the two-engine architecture and a compact account of all three Kozak Kim modes.
+- Fixed the live Pages smoke's ambiguous `.mode-disclosure` selector by selecting the ordinary-mode disclosure using its summary text; added a regression contract to prevent the ambiguity from returning.
+
+## Verification evidence and honest status
+
+- Main baseline commit: `11f03cc261ebc8385ab76b6e0041fd9fe9f0563d`.
+- Main browser suite/build: run [41084643011](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41084643011) — **PASS**, 1,339 tests passed, 0 failed; Vite build passed; Python 3.11/3.12/3.13 matrix and wheel build passed.
+- Main system verification: [41084642910](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41084642910) — **PASS**; official NIKL metadata-only inventory was **SKIPPED**, not passed.
+- Main master/research artifacts: [41084643006](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41084643006) — **PASS**.
+- Main Pages run [41084642903](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41084642903): deployment and HTTP smoke passed; live Playwright smoke failed because the generic locator matched two disclosure elements. This is a test-selector failure, not a pronunciation assertion. The PR fixes the selector, but the fix is not yet verified until exact-head CI runs.
+- PR #397 exact-head runs [41101168856](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101168856), [41101168913](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101168913), [41101168889](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101168889), [41101168989](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101168989), and [41101168912](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41101168912) were **QUEUED** at the time of this update. No PR test pass is claimed.
+- Local commands were not run: this GitHub connector session does not provide a checked-out working tree. Verification must come from exact-head GitHub Actions, not an assumed local run.
+
+## Task ledger
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Visible service distinction between g2pK and Kozak Kim | PARTIAL | Copy is updated; exact-head browser/UI test and live Pages smoke still need to pass. |
+| Full researcher-facing engine/mode methodology | PARTIAL | Source-grounded page and companion document updated; exact-head test and build pending. |
+| Benchmark interpretation and CI evidence | DONE_VERIFIED | Figures and caveats checked against the current multi-engine report and main workflow runs cited above. |
+| Pages smoke selector repair | PARTIAL | Source and contract test updated; exact-head Actions run must prove it passes. |
+| Independent Korean pronunciation gold and Ukrainian target gold | BLOCKED / EVIDENCE-LIMITED | No independently adjudicated, sufficiently representative holdout corpus and specialist review yet. |
+| Python CLI/API Super-soft parity | DEFERRED | Current scope is the browser service; the methodology explicitly avoids implying parity. |
+
+## Scope preserved
+
+- No Korean phonological rule, lexical pronunciation, IPA value, or Ukrainian target mapping was changed.
+- PR #371 (extended multi-engine benchmark) remains open and untouched; its benchmark work is independent of this documentation/service-clarity change.
+- No merge, release, or production-setting change was performed.
+
+**Next acceptance gate:** wait for PR #397 exact-head test, Python/data, browser G2P, artifact-generation, and live Pages checks. Fix only evidence-backed failures, then update this handoff with the final head SHA and actual run conclusions. Until that gate is green, the PR remains **PARTIAL**, not release-ready.
