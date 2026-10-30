@@ -60,7 +60,7 @@ test('methodology evidence register and debate review preserve current evidence 
     'не незалежне людське рецензування',
     'mattpocock/skills','DietrichGebert/ponytail',
     'McNemar exact two-sided p=0.125','58.79×',
-    'Charsiu inference було SKIPPED','issue #337'
+    'Charsiu inference було SKIPPED','Issue #337'
   ]) {
     assert.ok(debateReview.includes(term), 'debate review must include ' + term);
   }
