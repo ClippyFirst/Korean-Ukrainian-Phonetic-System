@@ -1,3 +1,17 @@
+## Integration checkpoint — occurrence ledger merged, extended metrics still under review (2026-10-31)
+
+PR [#399](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/399) was squash-merged to main as `cb1ceafd0d9a01c60cf68dd279e0858e732eb780`. The benchmark producer now emits a schema-v1 `per_engine_occurrences` ledger for every engine, preserving repeated token occurrences by occurrence ID and recording scored, abstained, error, and missing outcomes. The exact PR-head multi-engine benchmark, comparator contract tests, general tests, system verification, and artifact workflows passed. The merged workflow validated 2,703 UGTPHON plus 999 SIGMORPHON eligible occurrences across six engines (22,212 ledger rows).
+
+**Scope limit:** the neural inference and joined pairing jobs were skipped on the #399 head by the research-only opt-in condition. The merge repairs the missing baseline producer and verifies the ledger contract; it does not verify a fresh CharsiuG2P/ByT5 joined comparison.
+
+PR #371 remains open and divergent (117 commits ahead / 26 behind at review). Before its PER/PFER and latency figures are treated as accepted:
+- define and test a standard p95 percentile convention (the current floor-index implementation reports 3 ms for [1, 2, 3, 100], hiding the 100 ms tail);
+- score alternative IPA gold variants independently per metric or document a defensible joint-selection rule (the current implementation selects by CER and reuses that variant for PER/PFER);
+- replace branch-name-specific neural job conditions with an explicit, default-off workflow opt-in;
+- retain the merged schema-v1 occurrence ledger and rerun the exact-head benchmark plus full neural pairing.
+
+PR #398's public methodology figures depend on #371's PER/PFER calculations. Its exact-head CI passed before #399 merged, but the PR branch is now one commit behind/diverged and requires selective reconciliation plus metric refresh. No PER/PFER update should be presented as a corrected result until the above scoring fixes have been rerun on both pinned datasets.
+
 # Korean engine benchmark suite register — 2026-10-24
 
 ## Purpose and rules
