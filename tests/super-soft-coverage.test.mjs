@@ -177,3 +177,56 @@ test('service exposes the opt-in control only inside research mode and labels it
   assert.match(methodology,/11&nbsp;172 сучасні склади Hangul/u);
   assert.match(methodology,/не означає 100% правильної вимови/u);
 });
+
+test('Super-soft reports candidate coverage, low-confidence share, and target certainty as separate metrics',()=>{
+  const fixture=readFileSync(new URL('./fixtures/nikl-all-articles-master-passage-2026-10-22.txt',import.meta.url),'utf8');
+  for(const source of ['짧은소리의',fixture]){
+    const result=engine.convert(source,SUPER);
+    const hangul=[];
+    const items=[];
+    let sourceOffset=0;
+    for(const char of source){
+      if(/[가-힣]/u.test(char)){
+        hangul.push(char);
+        items.push(result.trace.find(entry=>Number.isInteger(entry.sourceStart)&&entry.sourceStart<=sourceOffset&&entry.sourceEnd>=sourceOffset+char.length));
+      }
+      sourceOffset+=char.length;
+    }
+    const lowConfidence=items.filter(item=>item&&(item.confidence==='low'||['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status))).length;
+    const provisional=items.filter(item=>item&&(item.candidateStatus==='provisional'||item.targetStatus==='provisional'||item.targetReason==='provisional_mapping_requires_review')).length;
+    const modelSelected=items.filter(item=>item&&item.targetStatus==='model-selected').length;
+    const unavailable=items.filter(item=>item&&item.targetStatus==='unavailable'&&item.candidateStatus!=='provisional').length;
+    assert.equal(result.coverage.input_total,hangul.length);
+    assert.equal(result.coverage.low_confidence_units,lowConfidence);
+    assert.equal(result.coverage.low_confidence_share,hangul.length?lowConfidence/hangul.length:1);
+    assert.equal(result.coverage.heuristic_share,result.coverage.low_confidence_share);
+    assert.equal(result.coverage.target_provisional_units,provisional);
+    assert.equal(result.coverage.target_project_mapping_units,modelSelected);
+    assert.equal(result.coverage.target_unavailable_units,unavailable);
+    assert.equal(result.coverage.verified_pronunciation_units,null);
+    assert.equal(result.coverage.verified_pronunciation_rate,null);
+    assert.equal(result.coverage.pronunciation_verification_status,'not_independently_adjudicated');
+    assert.equal(result.coverage.complete,true);
+  }
+});
+
+test('Super-soft confidence share is zero when the input contains no modern Hangul',()=>{
+  const result=engine.convert('',SUPER);
+  assert.equal(result.coverage.input_total,0);
+  assert.equal(result.coverage.low_confidence_units,0);
+  assert.equal(result.coverage.low_confidence_share,0);
+  assert.equal(result.coverage.heuristic_share,0);
+  assert.equal(result.coverage.verified_pronunciation_rate,null);
+});
+
+test('Super-soft preserves the strict engine output for exact source-backed passage controls',()=>{
+  const controls=['국립국어원','굳이','같이','읽다','읽고','맑다','맑고','밟다','넓죽하다','값어치','꽃잎','솜이불','색연필','신라','국물','먹는','놓고','좋던','많고','싫어','밭이','맛있다','멋있다','서울역','검열','금융','수많은'];
+  for(const source of controls){
+    const strict=engine.convert(source,STRICT);
+    const superSoft=engine.convert(source,SUPER);
+    assert.equal(superSoft.ipa,strict.ipa,source+': Super-soft must not replace exact/source-backed IPA');
+    assert.equal(superSoft.surfaceHangul,strict.surfaceHangul,source+': Super-soft must preserve the sourced surface form');
+    assert.equal(superSoft.ukrainian||superSoft.candidate_ukrainian||'',strict.ukrainian||strict.candidate_ukrainian||'',source+': Super-soft must not change the IPA-derived target for a sourced control');
+    assert.ok(superSoft.coverage.complete,source+': trace and candidate coverage remain complete');
+  }
+});

@@ -3703,3 +3703,69 @@ This is a test-only follow-up to the final deployed verification above.
 - **Exact-head evidence:** 1,328 browser tests passed / 0 failed; Vite production build passed; Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, system verification, master table/research corpus artifacts, and exhaustive test-case register extraction passed.
 - **Task ledger:** modern Hangul maximum coverage, exact mixed-Unicode trace accounting, literal/archaic-Jamo/malformed-code-unit preservation, and live Super-soft Pages smoke — DONE_VERIFIED. Independent Korean pronunciation and Ukrainian target accuracy — BLOCKED / EVIDENCE-LIMITED. Python CLI/API parity — DEFERRED.
 - **No runtime behavior or IPA correspondence changed in PR #382.** The 100% coverage claim remains limited to modern Hangul syllable blocks, not archaic Jamo or pronunciation accuracy.
+
+# Super-soft long-passage quality audit continuation (2026-10-30)
+
+**Branch:** research/super-soft-long-passage-quality-audit-2026-10-30  
+**PR:** [#384](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/384)  
+**Base:** main at 9351c5ad5e09291d2dfa314df5b6472231dc55e8.
+
+## Finding and bounded implementation
+
+The existing Super-soft contract verifies non-empty IPA/candidate output and exact source-span accounting. It correctly warns that coverage is not accuracy, but the result metadata and browser status line did not quantify the share of low-confidence syllables or separate target-adapter states. This made long stress-text output harder to assess at a glance.
+
+The continuation adds the following transparent counters without changing any pronunciation rule or Ukrainian mapping:
+
+- low-confidence syllable count and share (also exposed as heuristic_share);
+- model-selected, provisional, and unavailable target-adapter counts;
+- missing-IPA count;
+- explicit null for independently verified pronunciation rate, with status not_independently_adjudicated;
+- a browser status-line disclosure of low-confidence share;
+- regression coverage for a morphology-sensitive token and the full NIKL master-passage fixture.
+
+## Current task ledger
+
+| Item | Status | Evidence / acceptance |
+|---|---|---|
+| Base branch and latest main inspected | DONE_VERIFIED | Default branch main, base SHA above; recent commits and open PRs inspected |
+| Existing Super-soft implementation and fixture reused | DONE_VERIFIED | src/app/engine.js, src/app/engine_convert.js, tests/super-soft-coverage.test.mjs, NIKL master-passage fixture |
+| Low-confidence and target certainty metrics | PARTIAL | Implemented on PR #384; exact-head test/CI verification in progress |
+| UI disclosure of heuristic share | PARTIAL | Implemented on PR #384; UI contract and browser CI verification in progress |
+| Independent Korean pronunciation accuracy | BLOCKED / EVIDENCE-LIMITED | Requires independently adjudicated held-out Korean pronunciation gold; master passage is a stress fixture, not gold |
+| Independent Ukrainian target quality | BLOCKED / EVIDENCE-LIMITED | Requires blinded review of frozen, adjudicated IPA inputs |
+| Python CLI/API parity for Super-soft | DEFERRED | Current scope is browser-native service only |
+
+## Verification record
+
+The first exact-head CI attempt on 8ecb8dd803a72fd273ab1b85d5f5db0039f0508f exposed a mismatch in the newly authored test: it assumed each trace item represented exactly one Hangul code point, while some lexical spans cover multiple code points. The runtime correctly counted every source code point covered by a trace interval. The test was corrected to match intervals against exact UTF-16 offsets. The corrected head is 08e438338389015917dff002bbd6b01ce0889308; the browser regression test and build, Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, and system verification have succeeded on that head. Remaining queued workflows must complete before marking all checks DONE_VERIFIED.
+
+No local npm/Python/browser command is claimed in this connector-only execution. Do not infer accuracy from candidate coverage, test pass counts, or the IPA mapping table.
+
+## Next acceptance gate
+
+Confirm the remaining exact-head workflows finish successfully; inspect the stress fixture's computed counts; verify the browser status line discloses the heuristic share. Only source-backed and independently adjudicated cases may be promoted into pronunciation gold or production rules.
+
+- **Metric semantics follow-up:** `low_confidence_share` and `heuristic_share` now return 0 (not 100%) for an input with no modern Hangul syllables. The target count field is named `target_project_mapping_units` to avoid implying a neural/model inference stage; the runtime remains deterministic.
+
+## Final continuation verification (2026-10-30)
+
+**Verified code head:** 7ca4e625a0ef1687a89b021c3a1f9b357cdc19ca. **PR head after handoff-only update:** 062f08de4cc8ab8a9c7b51476fcb402b12ff47ac. The handoff-only commit changes no runtime or test code.
+
+- Browser suite: **1,331 passed, 0 failed**; production Vite build passed in exact-head run [41053021059](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41053021059).
+- Python regression/data integrity passed on Python 3.11, 3.12, and 3.13; clean wheel installation and teacher-corpus audit passed in the same run.
+- System verification, browser G2P integration, master-table/research-corpus generation, and exhaustive test-case register extraction all completed successfully on the verified code head: runs [41053021107](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41053021107), [41053021035](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41053021035), [41053021046](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41053021046), and [41053021090](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41053021090).
+- The initial test-only failure on 8ecb8dd was fixed by aligning confidence calculations to the complete UTF-16 trace intervals; the corrected test passed on 7ca4e62.
+- The low-confidence share is explicitly 0 for empty/no-modern-Hangul input; this avoids reusing the coverage convention of 100% for an empty denominator. The target mapping counter is named target_project_mapping_units to avoid implying neural inference.
+- PR #384 remains open; no merge or deployment was performed. PR #371 remains untouched because it is an independent multi-engine benchmark effort.
+
+**Final status:** transparency metrics, trace-aligned counting, UI disclosure, tests, and handoff — DONE_VERIFIED on code head 7ca4e62. Independent Korean pronunciation accuracy and Ukrainian target quality — BLOCKED / EVIDENCE-LIMITED pending adjudicated gold and specialist review. Python CLI/API Super-soft parity — DEFERRED. The service remains a deterministic research prototype with a deployed browser implementation, not a linguistically accuracy-certified release.
+
+## Exact lexical controls and final CI confirmation (2026-10-30)
+
+- Added 27 exact/source-backed controls from the master passage. For each, Super-soft is required to preserve the Strict engine's Korean surface form, IPA, and IPA-derived Ukrainian target.
+- Exact code head: 31ab5269e70ac800870b60251fe8b1e744f9e179.
+- Browser tests: 1,332 passed, 0 failed; production build passed in run 41053589850.
+- Python 3.11/3.12/3.13, wheel installation, teacher-corpus audit, system verification, browser G2P integration, master/research artifact generation, and exhaustive test-case register extraction all passed on the exact head. Relevant runs: 41053589850, 41053590044, 41053589866, 41053589911, 41053589871.
+- The 27-control regression protects existing evidence-backed cases; it does not certify the remaining stress-passage forms or independently adjudicate Ukrainian target quality.
+
+PR #384 remains the proposed change set. No unrelated benchmark PR was modified.

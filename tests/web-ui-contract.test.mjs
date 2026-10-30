@@ -179,3 +179,9 @@ test('live browser smoke follows the inline Ukrainian result contract',()=>{
   assert.match(smoke,/Дослідницький результат/u);
   assert.doesNotMatch(smoke,/candidate-copy-button|Показано попередній кандидат.*окрем/u);
 });
+
+test('Super-soft status reports the low-confidence share alongside input coverage',()=>{
+  const main=read('src/main.js');
+  assert.match(main,/low_confidence_share/u);
+  assert.match(main,/низька впевненість:/u);
+});
