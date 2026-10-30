@@ -3783,3 +3783,16 @@ PR #384 was merged into main by squash commit f9cefe405b80a802424a30af91c3b3e096
 **Superseding status:** PR #384 is MERGED; deployment run 41053956599 is SUCCESS. The earlier statement that PR #384 remained open/no deployment had not yet been refreshed at the time it was appended and is superseded by this section.
 
 **Readiness:** software implementation and public deployment are verified. Independent Korean pronunciation accuracy and Ukrainian target quality remain BLOCKED / EVIDENCE-LIMITED pending adjudicated gold and specialist review. Python CLI/API Super-soft parity remains DEFERRED. The service is a deterministic research prototype, not a linguistically accuracy-certified product.
+
+# Final live-metric verification (2026-10-30)
+
+PR #385 was merged into main by squash commit 0ab1e2c3da0210a76b6edc63c0190a499ff36fab. This supersedes the earlier note that the numeric Super-soft confidence smoke was still being added.
+
+- Main browser tests: 1,332 passed, 0 failed in run 41054652297.
+- Python 3.11/3.12/3.13 regression and data checks passed; system verification passed in run 41054652213; master/research artifact generation passed in run 41054652115.
+- GitHub Pages deployment completed successfully in run 41054652088. HTTP smoke, static build, and live Playwright browser smoke passed.
+- The live Super-soft smoke now asserts the exact numeric status pattern `низька впевненість: N% (n/total)` and verifies the Hangul denominator, in addition to candidate/IPA presence and complete modern-Hangul/trace coverage.
+- Public URL: https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/ .
+- Final main commit at this handoff update: 0ab1e2c3da0210a76b6edc63c0190a499ff36fab. PR #384 and PR #385 are merged. PR #371 remains open and untouched as a separate benchmark effort.
+
+**Final readiness:** deterministic browser implementation, confidence/target-coverage transparency, regression controls, and public deployment — DONE_VERIFIED. Independent Korean pronunciation accuracy and Ukrainian target quality — BLOCKED / EVIDENCE-LIMITED pending independently adjudicated gold and specialist review. Python CLI/API Super-soft parity — DEFERRED. This remains a deterministic research prototype, not an accuracy-certified linguistic release.
