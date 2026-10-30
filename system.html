@@ -46,7 +46,7 @@
     <div class="methodology-toc-heading"><p class="section-kicker">Навігація розділами</p><h2 id="methodology-toc-title">Зміст методології</h2><a href="./index.html">← Повернутися до сервісу</a></div>
     <ol>
       <li><a href="#methodology-00a">Нормативна база</a></li><li><a href="#methodology-01">Що це</a></li><li><a href="#methodology-02">Архітектура</a></li>
-      <li><a href="#methodology-02a">Вебрушій</a></li><li><a href="#methodology-02b">Романізація</a></li><li><a href="#methodology-03">Приголосні</a></li>
+      <li><a href="#methodology-02a">Звичайний режим · g2pK</a></li><li><a href="#methodology-02c-kozak-kim">Рушій Козака Кіма · три режими</a></li><li><a href="#methodology-19">Тести й порівняння рушіїв</a></li><li><a href="#methodology-20">Романізація та ханча</a></li><li><a href="#methodology-02b">Романізація</a></li><li><a href="#methodology-03">Приголосні</a></li>
       <li><a href="#methodology-04">Голосні</a></li><li><a href="#methodology-05">Контекстні правила</a></li><li><a href="#methodology-06">Порівняння систем</a></li>
       <li><a href="#methodology-07">Доказовість</a></li><li><a href="#methodology-08">Обмеження</a></li><li><a href="#methodology-09">Складні випадки</a></li>
       <li><a href="#methodology-10">Зв’язний текст</a></li><li><a href="#methodology-11">IPA та українська ціль</a></li><li><a href="#methodology-12">Перевірка правил</a></li>
@@ -75,12 +75,12 @@
   </section>
 
   <section class="doc-section">
-    <div class="doc-label" id="methodology-02a">02A</div><div class="doc-content"><p class="section-kicker">Вебрушій · JavaScript</p><h2>Практичний режим використовує G2P до етапу IPA</h2><p>Браузерний сервіс використовує локально адаптоване ядро з <a href="https://github.com/ntdgo/korean-pronunciation" rel="noreferrer">korean-pronunciation 1.0.1</a> — JavaScript-порту g2pK під Apache-2.0. З ядра вилучено невикористаний CMU-словник англійської вимови, англійську транслітерацію та перетворення чисел: сервіс зберігає ці фрагменти буквально. Це суттєво зменшує завантаження. Код працює локально в браузері без Python, MeCab, API-сервера чи мережевого запиту; повідомлення про авторство та повний текст ліцензії копіюються до збірки.</p><div class="layers">
+    <div class="doc-label" id="methodology-02a">02A</div><div class="doc-content"><p class="section-kicker">Вебрушій · JavaScript</p><h2>Звичайний режим використовує готовий рушій g2pK до етапу IPA</h2><p>Браузерний сервіс використовує локально адаптоване ядро з <a href="https://github.com/ntdgo/korean-pronunciation" rel="noreferrer">korean-pronunciation 1.0.1</a> — JavaScript-порту g2pK під Apache-2.0. З ядра вилучено невикористаний CMU-словник англійської вимови, англійську транслітерацію та перетворення чисел: сервіс зберігає ці фрагменти буквально. Це суттєво зменшує завантаження. Код працює локально в браузері без Python, MeCab, API-сервера чи мережевого запиту; повідомлення про авторство та повний текст ліцензії копіюються до збірки.</p><div class="layers">
       <article><b>01</b><strong>Hangul</strong><span>вхідний текст із захистом пунктуації та іншописемних фрагментів</span></article>
       <article><b>02</b><strong>JS G2P</strong><span>правила стандартної вимови та словникові винятки → поверхнева форма Hangul</span></article>
       <article><b>03</b><strong>IPA</strong><span>поверхнева форма конвертується у фонетичні сегменти; правила вимови вдруге не застосовуються</span></article>
       <article><b>04</b><strong>Українська фонетична ціль</strong><span>формується лише на основі IPA за таблицею відповідників проєкту</span></article>
-    </div><div class="callout blue"><strong>Обмеження, яке не можна приховувати</strong><span>Цей JavaScript-порт не відтворює MeCab-морфологічний аналіз оригінального Python g2pK. Тому омографи й форми, де вимова залежить від частини мови або морфемної межі, можуть потребувати точного словникового запису. Для них зберігається дослідницький режим нативного рушія, а нормативні винятки додаються лише після перевірки джерелом і регресійним тестом.</span></div><p>Практичний режим спочатку отримує поверхневу корейську форму від JS G2P, а потім застосовує вузький список точних виправлень, підтверджених NIKL: <a href="https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&amp;mn_id=217" rel="noreferrer">값어치 → 가버치</a>, <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&amp;pageIndex=1&amp;qna_seq=307508" rel="noreferrer">넓죽하다 → 넙쭈카다</a>, <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&amp;pageIndex=1&amp;qna_seq=322805" rel="noreferrer">넓둥글다 → 넙뚱글다 та 넓적하다 → 넙쩌카다</a> і <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&amp;pageIndex=1&amp;qna_seq=315279" rel="noreferrer">읽고 → 일꼬</a>. Ці виправлення виконуються до етапу IPA; український результат і далі формується лише з IPA. Початковий результат vendored G2P збережено в окремому регресійному наборі, а виправлення не узагальнюються на невідомі слова. Це точкові нормативні контролі, а не доказ повного покриття всіх правил.</p><p>Дослідницький режим свідомо залишено окремим, щоб не видавати евристичний результат за NIKL-сертифікований і щоб можна було порівнювати рушії на одному корпусі.</p></div>
+    </div><div class="callout blue"><strong>Обмеження, яке не можна приховувати</strong><span>Цей JavaScript-порт не відтворює MeCab-морфологічний аналіз оригінального Python g2pK. Тому омографи й форми, де вимова залежить від частини мови або морфемної межі, можуть потребувати точного словникового запису. Для них зберігається дослідницький режим нативного рушія, а нормативні винятки додаються лише після перевірки джерелом і регресійним тестом.</span></div><p>Звичайний режим спочатку отримує поверхневу корейську форму від JS G2P, а потім застосовує точковий список точних виправлень, підтверджених джерелами NIKL або словниковою статтею: <a href="https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5949&amp;mn_id=217" rel="noreferrer">값어치 → 가버치</a>, <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&amp;pageIndex=1&amp;qna_seq=307219" rel="noreferrer">넓죽하다 → 넙쭈카다</a>, <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&amp;pageIndex=1&amp;qna_seq=322805" rel="noreferrer">넓둥글다 → 넙뚱글다 та 넓적하다 → 넙쩌카다</a>, <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=&amp;pageIndex=1&amp;qna_seq=329463" rel="noreferrer">읽고 → 일꼬</a>, <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&amp;pageIndex=1&amp;qna_seq=313981" rel="noreferrer">싫어서 → 시러서</a> та <a href="https://krdict.korean.go.kr/kor/dicSearch/SearchView?ParaWordNo=71144" rel="noreferrer">수많은 → 수마는</a>. Для <a href="https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&amp;pageIndex=1&amp;qna_seq=306166" rel="noreferrer">멋있어</a> збережено два прийнятні поверхневі варіанти: 머디써 і 머시써. Виправлення виконуються до етапу IPA, а український результат і далі формується лише з IPA. Вони прив’язані до точних форм і не узагальнюються на невідомі слова. Це вузькі нормативні контролі, а не доказ повного покриття всіх правил.</p><p>Дослідницький режим свідомо залишено окремим, щоб не видавати евристичний результат за NIKL-сертифікований і щоб можна було порівнювати рушії на одному корпусі.</p></div>
   </section>
 
   <section class="doc-section">
@@ -90,6 +90,40 @@
       <article><b>03</b><strong>IPA-резерв</strong><span>якщо морфологічний контекст лишається невизначеним, склад розкладається на початковий приголосний, голосний і кінцевий приголосний; результат типізується як orthographic-phonemic fallback</span></article>
       <article><b>04</b><strong>Український адаптер</strong><span>кандидат формується лише з IPA через той самий табличний відповідник «IPA → українська графема»; прямого Hangul → українська обходу немає</span></article>
     </div><div class="callout red"><strong>Статус кандидата — не нормативний висновок</strong><span>Практичні/морфологічні евристики та орфографічно-фонемний резерв показуються лише як кандидати низької впевненості. Попередні українські відповідники також залишаються кандидатами. Суворий режим і його відмова від непідтверджених морфологічних припущень не змінюються.</span></div><p>Приймальні перевірки охоплюють усі 11&nbsp;172 сучасні склади Hangul, 13 контрольних форм, які залишаються невизначеними у суворому режимі, та довгий майстер-фрагмент NIKL. Для цього набору перевірено 100% покриття складових блоків і 100% облік вихідних фрагментів. Нескладові сумісні Jamo, декомпоновані Jamo й іншописемні символи зберігаються буквально; їм не приписується вигадана вимова.</p><p>Цей режим детермінований і працює локально в браузері без нейромережі та мережевого API. Він не переноситься автоматично на Python CLI/API: ті інтерфейси наразі підтримують суворий і м’який режими. Незалежна оцінка точності потребує окремого вручну перевіреного корпусу вимови; технічне покриття саме по собі її не доводить.</p></div>
+  </section>
+
+  <section class="doc-section">
+    <div class="doc-label" id="methodology-02c-kozak-kim">02C</div>
+    <div class="doc-content">
+      <p class="section-kicker">Власна розробка · рушій Козака Кіма</p>
+      <h2>Режим докладного аналізу працює на власному детермінованому рушії, а не на g2pK</h2>
+      <p>У цьому проєкті назва <strong>«рушій Козака Кіма»</strong> позначає власний корейсько-український фонологічний рушій ClippyFirst. Це не сторонній готовий корейський G2P-пакет і не нейромережа. Його правила, словникові ліцензії, український IPA-адаптер, статуси впевненості та поскладовий слід реалізовано в репозиторії. Саме цей рушій запускається, коли користувач обирає <strong>Режим докладного аналізу</strong>; за замовчуванням він працює у строгому режимі.</p>
+      <p>На відміну від звичайного режиму, який делегує первинне визначення корейської поверхневої форми JavaScript-порту g2pK, рушій Козака Кіма сам застосовує набір джерельно перевірених правил корейської вимови, точні лексичні записи та власні правила адаптації. Він зберігає можливість відмовитися від непідтвердженої вимови, показати причину невизначеності або, за явним вибором користувача, запропонувати евристичний кандидат.</p>
+      <div class="layers">
+        <article><b>01 · STRICT</b><strong>Строгий режим</strong><span>Стандартний стан рушія. Застосовує канонічні відповідники, точні словникові записи й правила лише за підтвердженого середовища. Якщо морфологічну умову не встановлено, не підмінює її здогадом: позначає невизначеність або залишає український запис непідтвердженим.</span></article>
+        <article><b>02 · SOFT</b><strong>М’який режим</strong><span>Опційний режим для дослідницького перегляду. Додає обмежені гіпотези для формальних закінчень у межах одного корейського слова: зокрема liaison R002, видалення ㅎ R003 та палаталізацію R007. Кожне таке спрацювання має низьку впевненість; режим не ліцензує субстантивну вимову за §15, правила R009/R010–R016 або переходи через пробіли.</span></article>
+        <article><b>03 · SUPER-SOFT</b><strong>Суперм’який режим</strong><span>Окрема опція максимального покриття. Поєднує доступні м’які формальні гіпотези з ширшими практичними евристиками для нерозв’язаних переходів, а якщо цього недостатньо — формує типізований орфографічно-фонемний IPA-резерв із початкового приголосного, голосного й кінцевого приголосного. Резерв не є встановленою вимовою; низьковпевнені українські фрагменти виводяться в квадратних дужках.</span></article>
+      </div>
+      <div class="callout red"><strong>Ці три режими не є трьома незалежними рушіями</strong><span>Це три політики невизначеності й застосування правил усередині одного власного рушія. Строгий режим — доказова базова лінія; м’який — обмежене розширення для формальних морфем; суперм’який — максимальне покриття з явним маркуванням припущень. Перемикання режиму не перетворює гіпотезу на нормативний факт.</span></div>
+      <h3>Як читати результати та статуси</h3>
+      <ul>
+        <li><strong>Нормативна базова форма / контекстне правило застосовано.</strong> Корейська поверхнева форма отримана з канонічної таблиці, точного словника або правила, для якого виконано потрібні умови.</li>
+        <li><strong>Словникова вимова.</strong> Для конкретної лексеми використовується запис із лексичного корпусу, який зберігає джерело, IPA та статус української цілі.</li>
+        <li><strong>Низька впевненість.</strong> М’яке або практичне припущення спрацювало без повного морфологічного підтвердження.</li>
+        <li><strong>Кандидат / provisional.</strong> IPA є, але український відповідник позначений як попередній; він не подається як підтверджена норма.</li>
+        <li><strong>Невизначено / unavailable.</strong> Система не має підстав видати підтверджений український запис. Це контрольована відмова, а не збій, який треба приховати.</li>
+        <li><strong>Літерально збережено.</strong> Пунктуація, пробіли, цифри, латиниця, невідомі знаки та нескладові Jamo не отримують вигаданої вимови.</li>
+      </ul>
+      <p>У суперм’якому режимі квадратні дужки <code>[фрагмент]</code> позначають тільки ті ділянки українського кандидата, для яких простежено низьку впевненість або попередній статус. Дужки не є IPA, не означають альтернативне написання і не змінюють внутрішній результат рушія. Непозначені частини не стають через це незалежно перевіреними українськими нормами.</p>
+      <h3>Чому власний рушій корисний поряд із g2pK</h3>
+      <p>Його перевага — не універсальна перемога в будь-якому статистичному тесті, а контроль над моделлю: правила мають ідентифікатори та джерельні умови; точні винятки не узагальнюються на невідомі слова; невизначеність зберігається; можна побачити шлях «вхідний склад → поверхнева форма → IPA → IPA-токен → українська графема». Це дає змогу досліджувати й виправляти конкретні морфологічні та фонологічні випадки, які готовий браузерний порт не аналізує повноцінно.</p>
+      <p>Твердження про загальну вищу точність було б передчасним: порівняльні корпуси дають змішаний результат, а українська цільова адаптація ще не має незалежного експертно розміченого gold-корпусу. Точні показники й межі порівняння наведені в <a href="#methodology-19">розділі про тестування та benchmark</a>.</p>
+      <div class="evidence-list">
+        <p><b>Реалізація</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/tree/main/src/app">Модулі власного рушія</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/src/app/engine.js">engine.js</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/src/app/soft_morphology.js">soft_morphology.js</a></span></p>
+        <p><b>Дані</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/tree/main/data/korean">Канонічні відповідники й лексичні вимови</a></span></p>
+        <p><b>Контроль</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/super-soft-coverage.test.mjs">Вичерпний тест суперм’якого режиму</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/soft-morphology.test.mjs">Тести м’якої морфології</a></span></p>
+      </div>
+    </div>
   </section>
 
   <section class="doc-section">
@@ -311,8 +345,8 @@
 
   <section class="doc-section" id="current-release-status">
     <div class="doc-label" id="methodology-14">14</div><div class="doc-content">
-      <p class="section-kicker">Актуальний стан системи · 10 жовтня 2026</p>
-      <h2>Поточна версія: нормативні корейські форми відокремлено від українських рішень</h2>
+      <p class="section-kicker">Історичний зріз · 10 жовтня 2026</p>
+      <h2>Стан моделі на 10 жовтня: нормативні корейські форми відокремлено від українських рішень</h2>
       <p>Цей розділ фіксує актуальний стан реалізації та її межі. Сервіс використовує лексичні записи з джерелами, контекстуальні правила й регресійні тести; він не вважає український результат автоматично правильним лише тому, що корейська вимова має високу доказовість.</p>
       <div class="decision-table">
         <div class="table-row table-head"><span>Частина</span><span>Поточне покриття</span><span>Як це перевіряється</span><span>Обмеження</span></div>
@@ -346,7 +380,7 @@
 
   <section class="doc-section" id="expanded-regression-stress-tests">
     <div class="doc-label" id="methodology-15">15</div><div class="doc-content">
-      <p class="section-kicker">Регресійний аудит · 10 жовтня 2026</p>
+      <p class="section-kicker">Історичний регресійний аудит · 10 жовтня 2026</p>
       <h2>Розширені стрес-тести: довгі тексти, незалежні еталони та межі морфології</h2>
       <p>Корпус розширено п’ятьма складними фрагментами й 46 унікальними лексичними опорами. Окремий набір містить десять фіксованих еталонів, записаних без генерації очікувань із CSV під час тесту. Це зменшує ризик, що помилка в словникових даних автоматично підтверджується тим самим словником у тесті.</p>
       <div class="decision-table">
@@ -391,8 +425,8 @@
       <h3>3. Результат повторної перевірки</h3>
       <p>Автоматична перевірка усіх 637 записів не знайшла залишкових невідповідностей у двох конкретних категоріях цього аудиту: IPA для ㅆ перед відповідними голосними та непередбачене подвоєння українських цільових приголосних. Окремо додано регресію для всіх двадцяти прикладів §23. Це не є твердженням про повне покриття всіх правил стандартної корейської вимови.</p>
       <div class="evidence-list">
-        <p><b>Словник</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/test/block-standard-rule-coverage-gate-2026-10-11/data/korean/lexical_pronunciations.csv">lexical_pronunciations.csv · гілка аудиту</a></span></p>
-        <p><b>Регресії</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/test/block-standard-rule-coverage-gate-2026-10-11/tests/reported-placeholder-regressions.test.mjs">reported-placeholder-regressions.test.mjs</a></span></p>
+        <p><b>Словник</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/data/korean/lexical_pronunciations.csv">lexical_pronunciations.csv · гілка аудиту</a></span></p>
+        <p><b>Регресії</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/reported-placeholder-regressions.test.mjs">reported-placeholder-regressions.test.mjs</a></span></p>
         <p><b>CI</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38151388338">1005/1005 тести й збірка</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38151388371">системна перевірка</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/38151388351">генерація артефактів</a></span></p>
         <p><b>Статус змін</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/144">PR #144 — чернетка; ще не злито до main</a></span></p>
       </div>
@@ -412,9 +446,62 @@
       </ol>
       <p>Для невстановленого морфологічного контексту рушій не має вигадувати вимову: невизначеність показується окремо в діагностиці, а службові корейські фрагменти не вставляються в український результат. Такий випадок усе ще потребує нормативного розв’язання перед тим, як його можна вважати повністю опрацьованим.</p>
       <div class="evidence-list">
-        <p><b>Рушій</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/test/block-standard-rule-coverage-gate-2026-10-11/src/app/engine.js">engine.js · IPA-first conversion</a></span></p>
+        <p><b>Рушій</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/src/app/engine.js">engine.js · IPA-first conversion</a></span></p>
         <p><b>Словникові дані</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/test/block-standard-rule-coverage-gate-2026-10-11/data/korean/lexical_pronunciations.csv">lexical_pronunciations.csv · IPA та узгоджені цільові форми</a></span></p>
         <p><b>Регресії</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/test/block-standard-rule-coverage-gate-2026-10-11/tests/reported-placeholder-regressions.test.mjs">Перевірки відповідності IPA→українська</a></span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="doc-section" id="current-validation-and-benchmarks">
+    <div class="doc-label" id="methodology-19">19</div>
+    <div class="doc-content">
+      <p class="section-kicker">Перевірка програмної реалізації · 30 жовтня 2026</p>
+      <h2>Що саме перевірено: регресії, збірка, три Python-версії та порівняльні корпуси</h2>
+      <p>Тести перевіряють різні властивості, які не можна зводити до одного відсотка «точності»: відповідність коду заявленому контракту, відтворення нормативних корейських форм, цілісність IPA-first шляху, узгодженість українського адаптера, поведінку за невизначеності та стабільність вебзастосунку. Успішний CI доводить, що реалізація відтворює зафіксовані очікування; він не замінює незалежну оцінку носіями корейської та української мов.</p>
+      <h3>Поточний CI на основній гілці</h3>
+      <div class="decision-table">
+        <div class="table-row"><b>Браузерні тести</b><span>1 339 / 1 339 пройшли; 0 помилок</span><strong>PASS</strong><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41071074637">GitHub Actions · tests</a>. У цьому наборі є фонологічні регресії, контракти інтерфейсу, IPA-адаптер, g2pK і суперм’яке покриття.</span></div>
+        <div class="table-row"><b>Production build</b><span>Vite 8.3.1</span><strong>PASS</strong><span>Збірка вебзастосунку завершилася успішно в тому самому CI job.</span></div>
+        <div class="table-row"><b>Python regression/data integrity</b><span>Системна перевірка</span><strong>PASS</strong><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41071074615">Verify Korean–Ukrainian system</a>.</span></div>
+        <div class="table-row"><b>Python 3.11 / 3.12 / 3.13</b><span>Три окремі jobs</span><strong>PASS</strong><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41071074615">Deploy workflow · regression matrix</a>.</span></div>
+        <div class="table-row"><b>Master table та corpus artifacts</b><span>Генерація артефактів</span><strong>PASS</strong><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41071074620">Master table and research corpus artifacts</a>.</span></div>
+        <div class="table-row"><b>GitHub Pages deployment</b><span>Статичні сторінки та browser smoke</span><strong>PASS</strong><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41062714460">Deploy Korean–Ukrainian service</a>.</span></div>
+        <div class="table-row"><b>Live NIKL source inventory</b><span>Metadata-only job не запускає повний crawl</span><strong>SKIPPED</strong><span>Цей пропуск не рахується як перевірка джерел у live-режимі.</span></div>
+      </div>
+      <p>Ці результати перевірено на PR head <code>76b52eae31106f6878c1e68e37c42a5762f77913</code>: браузерний набір і збірка, Python regression/data integrity, Python 3.11/3.12/3.13, Browser G2P integration та генерація corpus artifacts пройшли. Live Pages deploy для цієї ревізії виконується лише після злиття в main; попередній main deploy не видається тут за розгортання нової версії.</p>
+      <h3>Порівняння власного рушія з g2pK</h3>
+      <p>Зовнішні корпуси тут використовуються як діагностичні набори для корейського IPA. Вони не є нормативним еталоном NIKL і не оцінюють якість українського практичного запису. Нижче наведено post-fix результати з реєстру benchmark-системи; для кожного набору важливо зберігати однаковий знаменник і відокремлювати покриття від збігів.</p>
+      <div class="decision-table">
+        <div class="table-row"><b>UGTPHON Korean test</b><span>2 703 допустимі токен-входження; спільний scored subset — 2 655</span><strong>Змішаний результат</strong><span>Власний Strict: 1 412/2 655 exact (53,1827%), CER 9,1883%; g2pK на тих самих 2 655: 1 416 exact (53,3333%), CER 9,2414%. g2pK видав результат для всіх 2 703; власний Strict утримався від 48. Перевага g2pK за exact match тут невелика (+0,1506 відсоткового пункта), а CER нижчий у власного рушія на 0,0531 пункта.</span></div>
+        <div class="table-row"><b>SIGMORPHON paired lexical file</b><span>999 допустимих слів; 997 спільних scored</span><strong>Власний Strict попереду</strong><span>Власний Strict: 357/997 exact (35,8074%), CER 14,7037%; g2pK: 353/997 (35,4062%), CER 14,8222%. На цьому наборі exact match власного рушія вищий на 0,4012 відсоткового пункта; g2pK має повне покриття, власний Strict утримався від двох форм.</span></div>
+      </div>
+      <p>Ці цифри не дають підстав проголосити один рушій універсальним переможцем. UGTPHON містить шумний користувацький текст; SIGMORPHON має власну конвенцію транскрибування. Порівнюється корейський IPA, а не український вихід. Крім того, g2pK у цьому діагностичному порівнянні використовує спільний сегментний IPA renderer проєкту, тож це не порівняння двох цілком незалежних IPA стеків. Повні знаменники, інтервали, класи розбіжностей та походження наборів описано в <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/BENCHMARK-REVIEW-2026-10-24.md">benchmark review</a> і <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md">реєстрі benchmark-наборів</a>.</p>
+      <h3>Що тестування ще не доводить</h3>
+      <ul>
+        <li>Немає незалежно adjudicated holdout-корпусу нормативного корейського IPA, який дозволив би заявити абсолютну точність обох рушіїв.</li>
+        <li>Немає незалежно затвердженого корпусу «IPA → український практичний запис»; українська цільова адаптація лишається авторською моделлю, яку треба перевіряти окремо.</li>
+        <li>Повне технічне покриття складів Hangul не означає повного словникового чи морфологічного покриття.</li>
+        <li>Розбіжності між Python і браузерними портами, якщо вони виявляються, треба adjudicate за точним правилом та джерелом, а не автоматично прирівнювати до помилки одного з рушіїв.</li>
+        <li>Доступність Kiwi/MeCab-Ko в дослідницьких скриптах не означає, що вони є runtime-залежностями вебсервісу або самостійним нормативним аналізатором.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="doc-section" id="romanization-and-hanja">
+    <div class="doc-label" id="methodology-20">20</div>
+    <div class="doc-content">
+      <p class="section-kicker">Допоміжні результати інтерфейсу</p>
+      <h2>Романізація та ханча — паралельні анотації, не джерела української вимови</h2>
+      <h3>Revised Romanization (RR)</h3>
+      <p>Картка RR показує латинське представлення вже визначеної корейської поверхневої форми. Її генерує окремий детермінований адаптер <code>src/app/romanization.js</code>: він розкладає складові блоки Hangul на початковий приголосний, голосний і кінцевий приголосний, зберігає пробіли, пунктуацію, цифри й іншописемні фрагменти та враховує базову послідовність ㄹ/ㄹ. Це не англійська фонетична підказка й не зворотний транслітератор. Адаптер перевірено на всіх 11 172 складових блоках як структурний набір і на окремих офіційних прикладах NIKL, зокрема 백마, 신문로, 종로, 왕십리, 별내, 신라, 같이 та 굳히다. Повну відповідність усім правилам NIKL ще не доведено; RR не є входом IPA чи українського адаптера. Докладніше: <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/KOREAN-ROMANIZATION-RR-2026-10-28.md">аудит RR</a>.</p>
+      <h3>Ханча (漢字) — словникова анотація</h3>
+      <p>Картка ханча — незалежний від вимови шар: вона показує ієрогліфи для тих корейських слів, які вдалося знайти у словнику. Вона не перекладає текст, не визначає вимову та не змінює IPA чи український результат. Граматичні частки, невідомі слова, питомо корейська лексика та неповністю сегментовані фрагменти залишаються хангилем.</p>
+      <p>Реалізація детермінована: використовує підготовлений локальний словник на основі двох pinned-файлів libhangul-derived data; джерельні Git blob hashes перевіряються під час підготовки збірки. Поточна генерація містить 184 079 словникових читань у 19 групах, які браузер завантажує ліниво за початковими приголосними, присутніми у введенні. Ранжування кандидатів стабільне й відтворюване; ручні проєктні відповідники мають пріоритет. Це не повний морфологічний аналізатор і не контекстне розрізнення омонімів: для багатозначного слова вибір може бути неправильним. Джерело даних має BSD 3-Clause атрибуцію; повідомлення про авторство й ліцензію включено до збірки.</p>
+      <p>Порядок результатів у вебінтерфейсі: <strong>український запис → RR → ханча → широкий IPA → поскладовий аналіз</strong>. Порядок карток не означає, що RR чи ханча беруть участь у фонетичному перетворенні. Основний алгоритмічний шлях залишається IPA-first.</p>
+      <div class="evidence-list">
+        <p><b>RR</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/src/app/romanization.js">romanization.js</a> · <a href="https://www.korean.go.kr/front_eng/roman/roman_01.do">NIKL Revised Romanization</a></span></p>
+        <p><b>Ханча</b><span><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/src/app/hanja.js">hanja.js</a> · <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/HANJA-RESEARCH-LAYER-2026-10-29.md">реєстр даних, ліцензій та обмежень</a></span></p>
       </div>
     </div>
   </section>

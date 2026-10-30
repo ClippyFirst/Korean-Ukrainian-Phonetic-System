@@ -7,10 +7,10 @@ Research-grade, machine-readable framework for Korean → Ukrainian phonetic-gra
 The project has two public-facing pages:
 
 - **Service** — Korean text → practical Ukrainian reading.
-- **System** — explanation of the author's Ukrainian system, methodology, evidence and limitations.
+- **System** — full researcher-facing methodology: the g2pK ordinary path, the three Kozak Kim modes, IPA-first Ukrainian adaptation, RR/Hanja side layers, benchmarks, tests, evidence and limitations.
 
 - [Open the live service](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/index.html)
-- [Read the methodology and edge-case registry](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#lexical-edge-cases)
+- [Read the methodology and edge-case registry](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/system.html#methodology-02c-kozak-kim)
 
 The service is intentionally modelled on the functional architecture of the Chinese-for-Ukrainians project: the tool is the centre of the page, typography carries hierarchy, results are inspectable and there is no marketing/AI decoration.
 

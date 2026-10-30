@@ -1,3 +1,18 @@
+# Continuation — full public methodology and engine separation (2026-10-30)
+
+| Task | Status | Acceptance evidence |
+|---|---|---|
+| Document the actual browser engine split | DONE_VERIFIED (documentation pending CI) | Ordinary mode selects the vendored g2pK JavaScript port through `createG2pWebAdapter`; detailed analysis selects the in-repository deterministic engine. |
+| Document the three Kozak Kim modes | DONE_VERIFIED (documentation pending CI) | `strict`, `soft`, and `super-soft` are the actual `morphologyMode` values; soft is opt-in and super-soft is an explicit maximum-coverage branch. |
+| Document current tests and benchmark limits | DONE_VERIFIED (documentation pending CI) | Main commit `f8dc58e84810179780a580ad3a93d0719e85c957`: 1,335 browser tests passed, Vite build passed, Python 3.11–3.13 passed, corpus artifacts and Pages deploy passed; NIKL metadata-only crawl skipped. Benchmark outcomes are mixed across UGTPHON and SIGMORPHON; no universal winner is claimed. |
+| Document RR and Hanja as independent display layers | DONE_VERIFIED (documentation pending CI) | RR is generated from resolved Hangul surface; Hanja is a deterministic dictionary annotation and never feeds IPA/UA. Hanja dataset: 184,079 readings / 19 lazy chunks. |
+| Independently validate Ukrainian target quality | BLOCKED | No independently adjudicated IPA→Ukrainian gold corpus or reader study; do not claim validated Ukrainian accuracy until one exists. |
+| Establish universal Korean IPA accuracy | BLOCKED | No independent NIKL adjudicated holdout; noisy UGTPHON and SIGMORPHON conventions are diagnostic only. |
+
+This continuation records a public-facing methodology update. It does not alter pronunciation rules, lexical records, generated linguistic data, or benchmark scores. Re-run current-head CI before marking the documentation changes as release-verified.
+
+---
+
 # Continuation — deterministic Hanja browser preview (2026-10-29)
 
 | Task | Status | Acceptance evidence |
