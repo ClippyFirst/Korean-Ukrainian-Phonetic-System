@@ -3617,6 +3617,17 @@ This section supersedes earlier branch/PR status statements above where they con
 - **Scope:** no Korean processing, IPA values, Ukrainian adaptation, Hanja dictionary, or network behavior changed.
 
 
+# Editorial principle — separate service and methodology audiences (2026-10-30)
+
+This is a standing content and information-architecture decision for the public website:
+
+- **Service page — for everyday users.** Explain the practical task in plain Ukrainian: what to enter, what result they receive, how to use it, and how to interpret visible uncertainty or limitations. Keep academic and implementation terminology out of the main user path unless a short explanation is genuinely necessary. Do not hide limitations; explain them in ordinary language and link to the methodology for technical detail.
+- **Methodology page — for scholars, linguists, and technical researchers.** Preserve scientific precision and full technical depth: IPA, G2P, NIKL, phonological rules, source evidence, corpora, confidence/evidence statuses, architecture, validation limits, and research history where relevant.
+- **Cross-link the two layers.** The service may link to the methodology for readers who want to know exactly how a result is produced; the methodology may link back to the service as the practical demonstration. These are two audience-specific presentations of the same system, not separate products or contradictory accounts.
+- **Do not flatten the methodology to make it accessible, and do not burden the service UI with academic exposition.** Translate limitations for the service audience without weakening or omitting the underlying scientific qualifications.
+
+Apply this boundary to future copy edits, UI labels, help text, navigation, and documentation placement. When in doubt, ask whether the sentence helps an ordinary visitor use/understand the result (service) or documents how/why the system works (methodology).
+
 # Super-soft mode — 100% input coverage requirement (2026-10-30)
 
 - **User requirement:** the Kozak Kim Korean engine must gain a distinct opt-in Super-soft mode with **100% technical coverage of modern Hangul syllable input**, comparable in coverage intent to other G2P engines. This is not a request to claim 100% pronunciation accuracy.
