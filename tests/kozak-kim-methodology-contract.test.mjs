@@ -34,7 +34,7 @@ test('methodology reports corrected benchmark metrics, coverage, and evidence li
   for (const term of [
     '1 340 / 1 340','41143243310','41143243218','41143243251','41143243225','live Playwright practical-mode smoke',
     '41138727409','2 698 scored / 5 abstentions','998 scored / 1 abstention',
-    '53,0022%','53,0892%','35,7716%','35,3353%',
+    '53,0022%','53,0892%','35,7715%','35,3353%',
     '9,1697%','9,2285%','14,6978%','14,8222%',
     '9,6139%','9,6472%','16,2343%','16,3126%',
     '4,8765%','4,8952%','7,5491%','7,5990%',
