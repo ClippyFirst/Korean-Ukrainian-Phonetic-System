@@ -4071,7 +4071,7 @@ The earlier handoff rows describing the missing `per_engine_occurrences` produce
 
 | Task | Status | Evidence / acceptance |
 |---|---|---|
-| Three-layer methodology documentation | DONE_VERIFIED on PR #398 head before this addendum | Public page, technical methodology, evidence register, debate review; exact-head checks had passed. New PR #398 docs addendum is pending its own CI. |
+| Three-layer methodology documentation | DONE_VERIFIED on PR #398 head before this addendum | Public page, technical methodology, evidence register, debate review; exact-head checks had passed. The PR #398 docs/handoff addendum passed exact-head browser/Python system verification in run [41124518292](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41124518292): 1,340/1,340 browser tests, 0 failures, Vite 8.3.1 build PASS; Python regression/data integrity PASS. Python 3.11/3.13, wheel-install, teacher-corpus audit, browser G2P integration, master artifacts and exhaustive register extraction also passed in runs 41124450903, 41124450982, 41124450957 and 41124451001. Python 3.12 test step completed successfully; GitHub run finalization was still pending when recorded. |
 | Baseline occurrence-ledger producer/schema fix | DONE_VERIFIED on PR #399 head | Exact-head run 41123471367; artifact 13008699681 inspected for both datasets. |
 | Occurrence-ledger unit/integration tests | DONE_VERIFIED on PR #399 head | Tests run in 41123471398; Python 3.11/3.12/3.13 matrix passed. |
 | Workflow-level occurrence-ledger schema guard | DONE_VERIFIED on PR #399 head | UGTPHON CI log explicitly prints schema v1 validation for six engines × 2,703 occurrences; SIGMORPHON artifact independently inspected. |
