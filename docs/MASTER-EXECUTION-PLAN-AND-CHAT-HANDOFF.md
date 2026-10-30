@@ -3796,3 +3796,13 @@ PR #385 was merged into main by squash commit 0ab1e2c3da0210a76b6edc63c0190a499f
 - Final main commit at this handoff update: 0ab1e2c3da0210a76b6edc63c0190a499ff36fab. PR #384 and PR #385 are merged. PR #371 remains open and untouched as a separate benchmark effort.
 
 **Final readiness:** deterministic browser implementation, confidence/target-coverage transparency, regression controls, and public deployment — DONE_VERIFIED. Independent Korean pronunciation accuracy and Ukrainian target quality — BLOCKED / EVIDENCE-LIMITED pending independently adjudicated gold and specialist review. Python CLI/API Super-soft parity — DEFERRED. This remains a deterministic research prototype, not an accuracy-certified linguistic release.
+
+# Super-soft inline uncertainty notation (2026-10-30)
+
+**User-facing convention:** in the Super-soft research candidate, square brackets mark only the Ukrainian target span whose Korean phonological derivation or IPA→Ukrainian mapping is low-confidence/provisional. Example: `ка[кап]і[іт]`; unbracketed spans are not thereby certified as independently accurate. Brackets do not repeat the reading, do not contain IPA, and do not mark the entire word unless the entire trace unit is uncertain.
+
+- Added deterministic trace-based rendering in `src/app/super_soft_annotation.js`; the underlying IPA and unannotated candidate fields are not mutated.
+- Low-confidence fallback/heuristic statuses, low-confidence uncertainty metadata, and provisional lexical target mappings are bracketed per trace item.
+- Strict, Soft, Practical, and ordinary candidate displays are unchanged; annotation is enabled only when the research-only Super-soft mode is selected.
+- The candidate note explains the notation; live Pages Playwright smoke asserts that the Super-soft candidate contains bracketed uncertainty.
+- Verification is pending exact-head CI and live deployment smoke. No Korean phonology rule, IPA value, or Ukrainian correspondence was changed by this presentation feature.

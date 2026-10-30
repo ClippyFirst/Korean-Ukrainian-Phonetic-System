@@ -66,6 +66,13 @@ try {
   assert.match(superSoftStatus, /Суперм’який режим/u, 'live status must identify Super-soft');
   assert.match(superSoftStatus, /низької впевненості/u, 'live status must disclose low-confidence fallback');
   assert.match(superSoftStatus, /низька впевненість: \d+% \(\d+\/\d+\)/u, 'live status must quantify the low-confidence share and its Hangul denominator');
+  await page.locator('#ua-candidate-button').click();
+  const annotatedSuperSoftCandidate = (await page.locator('#result-ukrainian').innerText()).trim();
+  assert.match(annotatedSuperSoftCandidate, /\[[^\]]+\]/u,
+    'live Super-soft candidate must bracket at least one low-confidence target span');
+  assert.match(await page.locator('#candidate-note').innerText(), /квадратних дужках \[фрагмент\]/u,
+    'live Super-soft candidate note must explain square-bracket uncertainty notation');
+  await page.locator('#ua-unconfirmed-button').click();
   const superSoftIpa = (await page.locator('#result-ipa').innerText()).trim();
   assert.ok(superSoftIpa.length > 0);
   assert.doesNotMatch(superSoftIpa, /[가-힣ㄱ-ㅎㅏ-ㅣ]/u, 'live IPA must not leak Hangul/Jamo');
