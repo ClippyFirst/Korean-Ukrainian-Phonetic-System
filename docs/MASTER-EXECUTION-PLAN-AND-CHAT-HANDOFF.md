@@ -4034,3 +4034,21 @@ This validates internal report consistency, not corpus validity or linguistic co
 **Public benchmark correction:** `system.html` and `docs/methodology.md` are being refreshed in branch `docs/korean-benchmark-evidence-refresh-2026-10-31` to replace the stale pre-correction native/g2pK figures with the inspected schema-v1 artifact results. Rates are stated over each engine's scored predictions, with coverage/abstentions shown separately. The feature-weighted metric is explicitly described as a project-defined proxy. Neither benchmark establishes independent Korean IPA gold or Ukrainian target quality.
 
 **Remaining gates:** independent specialist-adjudicated Korean IPA gold and Ukrainian target gold remain **BLOCKED / EVIDENCE-LIMITED**; CharsiuG2P training overlap and weights-license status remain unresolved; KoG2Padvanced upstream license is undeclared; neural inference and paired neural aggregation remain opt-in and were skipped. Issue [#337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337) still has no qualified reviewer submissions. PR #371 and PR #398 remain open and are not to be merged wholesale.
+
+
+## PR #402 integration and current CI evidence refresh — 2026-10-31
+
+**Integration: DONE_VERIFIED.** PR [#402](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/402) was squash-merged to `main` as `17ed09fd96ea5883172c4a5f908177535ef4ed29`. It replaces the stale pre-correction native/g2pK benchmark figures in the public service methodology and technical methodology with the artifact-inspected PR #401 results. The public disclosure reports each engine's scored denominator and abstentions separately, and labels PER and the feature-weighted proxy accurately.
+
+**Exact-main post-merge verification at `17ed09fd96ea5883172c4a5f908177535ef4ed29`:**
+- System verification [41143243310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143243310): **PASS** — 1,340 / 1,340 browser tests, Python regression/data integrity, and Vite 8.3.1 production build.
+- Tests workflow [41143243218](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143243218): **PASS** — Python 3.11/3.12/3.13, web tests/build, clean wheel installation, and teacher-corpus audit.
+- Master/research artifact generation [41143243251](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143243251): **PASS** — master table and strict Korean corpus generation/artifact upload.
+- Pages deployment [41143243225](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143243225): **PASS** — Python checks, browser tests/build, Pages deployment, HTTP smoke, and live Playwright smoke of practical mode using an adversarial Korean passage.
+- Official NIKL metadata-only inventory: **SKIPPED**, not passed.
+
+A follow-up branch `docs/refresh-methodology-ci-evidence-2026-10-31` refreshes the public methodology's stale CI section (formerly 1,339 tests and an older incomplete deployment smoke) to the exact-main evidence above, and updates the contract test accordingly. Exact branch-head verification is pending; no pass is claimed until its latest run completes.
+
+The redundant PR #401 documentation-head benchmark rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) is still **IN_PROGRESS** at this handoff update (UGTPHON stage completed; SIGMORPHON stage running). The benchmark code itself already passed on `e27725c62ee02b00fda6d6e76f178d0479609bf9`, and the four commits to the merged PR head were documentation-only. Do not report the redundant rerun as passed unless it completes.
+
+**Still blocked/evidence-limited:** independent specialist-adjudicated Korean IPA gold, independent Ukrainian target gold, qualified reviewer submissions for issue #337, Charsiu checkpoint weights licensing and full training-overlap resolution. Neural inference and paired neural aggregation remain default-off opt-ins; KoG2Padvanced upstream license is undeclared. These prevent research certification, not the software CI/build/deployment gates.
