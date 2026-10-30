@@ -30,23 +30,34 @@ test('Super-soft returns IPA and an IPA-adapted Ukrainian candidate for all 11,1
   assert.equal(result.trace.filter(item=>item.source&&/^[가-힣]$/u.test(item.source)&&item.ipa).length,11172);
 });
 
-test('Super-soft resolves a morphology abstention through a typed low-confidence heuristic',()=>{
-  const source='짧은소리의';
+test('Super-soft applies the orthographic-phonemic fallback to unresolved §30 saisiot insertion',()=>{
+  const source='베갯잇';
   const strict=engine.convert(source,STRICT);
   const result=engine.convert(source,SUPER);
   assert.equal(strict.status,'unresolved','strict mode remains fail-closed');
   assert.equal(strict.ukrainian,'','strict mode must not change');
-  assert.ok(['super-soft-orthographic-fallback','super-soft-heuristic-coverage'].includes(result.status));
+  assert.equal(result.status,'super-soft-orthographic-fallback');
   assert.ok(result.coverage.complete);
   assert.ok(result.coverage.input_coverage===1);
   assert.ok(result.ipa,'fallback retains a complete inspectable IPA string');
   assert.ok(result.candidate_ukrainian,'fallback exposes a complete Ukrainian candidate');
   assert.equal(result.candidate_status,'super-soft-low-confidence');
-  const lowConfidence=result.trace.filter(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status));
-  assert.ok(lowConfidence.length>0);
-  assert.ok(lowConfidence.every(item=>item.confidence==='low'));
-  assert.ok(lowConfidence.every(item=>(item.rules||[]).some(rule=>rule.startsWith('super-soft-'))));
-  assert.ok(!lowConfidence.some(item=>(item.rules||[]).some(rule=>/NIKL|exact-lexical/u.test(rule))));
+  const fallbacks=result.trace.filter(item=>item.status==='super-soft-orthographic-fallback');
+  assert.ok(fallbacks.length>0);
+  assert.ok(fallbacks.every(item=>item.phoneticResultType==='orthographic-phonemic-fallback'&&item.confidence==='low'));
+  assert.ok(fallbacks.every(item=>(item.rules||[]).includes('super-soft-orthographic-fallback')));
+  assert.ok(!fallbacks.some(item=>(item.rules||[]).some(rule=>/NIKL|exact-lexical/u.test(rule))));
+});
+
+test('Super-soft exposes practical morphology guesses only as low-confidence candidates',()=>{
+  const result=engine.convert('짧은소리의',SUPER);
+  assert.equal(result.status,'super-soft-heuristic-coverage');
+  assert.equal(result.ukrainian,'');
+  assert.ok(result.candidate_ukrainian);
+  assert.equal(result.candidate_status,'super-soft-low-confidence');
+  const heuristic=result.trace.filter(item=>['super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status));
+  assert.ok(heuristic.length>0);
+  assert.ok(heuristic.every(item=>item.confidence==='low'));
 });
 
 test('Super-soft preserves non-syllabic Jamo and non-Korean literals without inventing IPA',()=>{
