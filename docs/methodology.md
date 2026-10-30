@@ -102,16 +102,6 @@ UNRESOLVED: a question for which sources support competing analyses or the avail
 
 
 
-FACT: directly supported by a cited normative, peer-reviewed or technical source.
-
-MODEL ASSUMPTION: a computational choice required to make the system deterministic.
-
-HEURISTIC: a parameterized engineering approximation, especially candidate-ranking weights.
-
-EMPIRICAL RESULT: a result obtained from corpus/data validation.
-
-UNRESOLVED: a question for which sources support competing analyses or the available evidence is insufficient.
-
 ## Candidate ranking
 
 Candidate score is a cost function, not a probability. Feature mismatch weights are model parameters. Context, phonotactics and orthographic legality are separate penalties so a reviewer can inspect why a candidate ranked where it did.
