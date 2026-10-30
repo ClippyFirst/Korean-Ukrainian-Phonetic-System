@@ -1337,7 +1337,7 @@ Verification on code head `08dd78de7efee0988b6fa1195b871425f988634f`: browser su
 
 ## Super-soft maximum-coverage mode — 2026-10-30
 
-**Status: DONE_VERIFIED for browser implementation and technical coverage acceptance on PR head 8c6d9b42cd574be96f889477ed141db5c8bb4ba9; deployment smoke pending.**
+**Status: DONE_VERIFIED for browser implementation and technical coverage acceptance on PR head c57f34c52e15e5a55fc5943e4069c019bfb12a07; deployment smoke pending.**
 
 The approved requirement is a separate deterministic, browser-local Super-soft mode targeting 100% technical coverage of modern Hangul syllable blocks, not 100% pronunciation accuracy. The implementation adds a distinct morphology mode, reuses existing Soft/Practical heuristics, and applies a typed low-confidence orthographic-phonemic IPA fallback only where morphology remains unresolved. IPA→Ukrainian mapping remains the only target path. Provisional target correspondences are candidates, not accepted orthography. Literal non-Korean content and standalone compatibility Jamo are preserved. The result includes source-span and Hangul coverage counters.
 
