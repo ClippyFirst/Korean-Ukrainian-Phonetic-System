@@ -3651,12 +3651,12 @@ Apply this boundary to future copy edits, UI labels, help text, navigation, and 
 
 # Super-soft mode — exact-head verification update (2026-10-30)
 
-- Verified branch head: feat/super-soft-100-percent-coverage-2026-10-30 at 8c6d9b42cd574be96f889477ed141db5c8bb4ba9.
+- Verified branch head: feat/super-soft-100-percent-coverage-2026-10-30 at c57f34c52e15e5a55fc5943e4069c019bfb12a07.
 - Status: DONE_VERIFIED for browser implementation and technical coverage acceptance; release deployment smoke remains pending.
 - Exhaustive evidence: all 11,172 modern Hangul syllables produced non-empty IPA and IPA-adapted Ukrainian candidates; 13 registered strict morphology gaps each achieved full candidate and trace coverage; full NIKL master passage achieved 100% Hangul candidate coverage and 100% source-span trace coverage.
 - Tests: npm test 1326 passed / 0 failed; npm run build passed; browser regression/build, browser-G2P, Python 3.11/3.12/3.13 regression/data integrity, wheel install, teacher-corpus audit, master table/research corpus artifacts, and exhaustive test-case register extraction passed. Official NIKL metadata-only inventory job skipped by configuration.
 - Methodology page: system.html now documents the Super-soft ladder, coverage scope, candidate confidence, and accuracy limitations for researchers.
-- Design: Strict/Soft/Practical unchanged; Super-soft is opt-in in research mode. Low-confidence practical/morphological heuristics, orthographic-phonemic fallbacks, and provisional lexical target adaptations are candidate-only and explicitly traced. IPA remains the only input to the Ukrainian target adapter. Compatibility/decomposed Jamo and non-Korean literals are preserved.
+- Design: Strict/Soft/Practical unchanged; Super-soft is opt-in in research mode. Low-confidence practical/morphological heuristics, orthographic-phonemic fallbacks, and provisional lexical target adaptations are candidate-only and explicitly traced; unresolved morphology flags are preserved in trace uncertainty metadata. IPA remains the only input to the Ukrainian target adapter. Compatibility/decomposed Jamo and non-Korean literals are preserved.
 - Scope note: Python CLI/API still accept only strict/soft; this new mode is scoped to browser-native service runtime. Cross-runtime parity is DEFERRED, not claimed.
 - Evidence limitation: no independent held-out adjudicated gold corpus was added; 100% coverage is not 100% pronunciation accuracy.
 - Next step: make PR #379 ready, merge only against unchanged tested head, then verify Pages deployment and live smoke. Local clone/test commands unavailable because GitHub DNS resolution failed in the container.
