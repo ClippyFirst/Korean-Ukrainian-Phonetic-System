@@ -46,6 +46,30 @@ try {
   }
   await page.locator('#ua-unconfirmed-button').click();
 
+  // Verify the deployed research-only Super-soft path itself, not just the
+  // source-level unit test: every Hangul syllable in this mixed input must
+  // have IPA and a Ukrainian candidate, with explicit coverage/confidence UI.
+  await page.locator('#mode-research').check();
+  await page.locator('#super-soft-morphology').check();
+  const superSoftInput = '짧은소리의 베갯잇 ㄱ 123 🙂';
+  await page.locator('#source-input').fill(superSoftInput);
+  await page.waitForFunction(() => {
+    const status = document.querySelector('#status-note')?.textContent || '';
+    const candidate = document.querySelector('#candidate-value')?.textContent?.trim() || '';
+    const ipa = document.querySelector('#result-ipa')?.textContent?.trim() || '';
+    return status.includes('покриття складів Hangul: 100%') &&
+      status.includes('облік фрагментів: 100%') && candidate.length > 0 && ipa.length > 0;
+  }, null, { timeout: 20000 });
+  const superSoftStatus = (await page.locator('#status-note').innerText()).trim();
+  const superSoftCandidate = (await page.locator('#candidate-value').innerText()).trim();
+  assert.ok(superSoftCandidate.length > 0, 'live Super-soft must expose a Ukrainian candidate');
+  assert.match(superSoftStatus, /Суперм’який режим/u, 'live status must identify Super-soft');
+  assert.match(superSoftStatus, /низької впевненості/u, 'live status must disclose low-confidence fallback');
+  const superSoftIpa = (await page.locator('#result-ipa').innerText()).trim();
+  assert.ok(superSoftIpa.length > 0);
+  assert.doesNotMatch(superSoftIpa, /[가-힣ㄱ-ㅎㅏ-ㅣ]/u, 'live IPA must not leak Hangul/Jamo');
+  await page.locator('#mode-practical').check();
+
   // The Hanja data chunk must be loaded from the same-origin static build,
   // then produce a deterministic mixed-script result without an external API.
   const hanjaInput = '정부는 경제 발전을 연구한다.';

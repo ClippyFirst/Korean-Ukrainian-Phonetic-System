@@ -115,6 +115,28 @@ test('Super-soft preserves non-syllabic Jamo and non-Korean literals without inv
   assert.equal(result.coverage.input_coverage,1);
 });
 
+test('Super-soft records exact monotonic UTF-16 source offsets for repeated and mixed Unicode spans',()=>{
+  const source='가가🙂, 나 ㄱ 가 123! 가가';
+  const result=engine.convert(source,SUPER);
+  assert.equal(result.coverage.complete,true,JSON.stringify(result.coverage));
+  assert.equal(result.coverage.source_span_uncovered,0);
+  assert.deepEqual(result.coverage.untraced_source_offsets,[]);
+  let cursor=0;
+  for(const item of result.trace){
+    assert.ok(Number.isInteger(item.sourceStart),JSON.stringify(item));
+    assert.ok(Number.isInteger(item.sourceEnd),JSON.stringify(item));
+    assert.ok(item.sourceStart>=cursor,'trace spans must be monotonic and non-overlapping');
+    assert.equal(source.slice(item.sourceStart,item.sourceEnd),item.source,'trace offsets must point to the exact source text');
+    cursor=item.sourceEnd;
+  }
+  assert.equal(cursor,source.length,'trace must account for the complete UTF-16 source');
+  for(const literal of ['🙂',',',' ','ㄱ','ᄀ','ᅡ','1','2','3','!']){
+    const item=result.trace.find(entry=>entry.source===literal&&source.slice(entry.sourceStart,entry.sourceEnd)===literal);
+    assert.ok(item,JSON.stringify({literal,trace:result.trace.map(entry=>entry.source)}));
+    assert.equal(item.output,literal,'non-Hangul literals and isolated Jamo must remain visible in their own trace span');
+  }
+});
+
 test('Super-soft is opt-in and does not alter strict or existing soft behavior',()=>{
   const input='삶이';
   assert.deepEqual(engine.convert(input),engine.convert(input,STRICT));
