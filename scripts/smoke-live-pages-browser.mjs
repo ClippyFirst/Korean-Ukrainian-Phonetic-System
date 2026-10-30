@@ -172,7 +172,8 @@ try {
 
   // Keep the home page explanation concise; detailed engine provenance belongs
   // to the researcher-facing methodology page.
-  const modeDisclosure = page.locator('.mode-disclosure');
+  const modeDisclosure = page.locator('.mode-disclosure').filter({ hasText: 'Як працює звичайний режим' });
+  assert.equal(await modeDisclosure.count(), 1, 'ordinary-mode disclosure must be selected unambiguously');
   assert.equal(await modeDisclosure.isVisible(), true, 'mode explanation must be available on demand');
   await modeDisclosure.locator('summary').click();
   assert.match(await modeDisclosure.innerText(), /Докладніше про рушій, джерела й обмеження/u,
