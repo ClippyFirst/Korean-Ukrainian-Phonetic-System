@@ -41,7 +41,7 @@ test('methodology reports corrected benchmark metrics, coverage, and evidence li
     '9,6139%','9,6472%','16,2343%','16,3126%',
     '4,8765%','4,8952%','7,5491%','7,5990%',
     'не встановлюють універсального переможця',
-    'не доводить лінгвістичну правильність'
+    'не доводить лінгвістичну правильність','METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md','METHODOLOGY-DEBATE-REVIEW-2026-10-30.md'
   ]) {
     assert.ok(system.includes(term), 'methodology must include ' + term);
   }
