@@ -181,7 +181,7 @@ Exact-head CI passed: **1,328 tests, 0 failures**, production build, Python 3.11
 The result now reports, per modern Hangul syllable:
 
 - `low_confidence_units` and `low_confidence_share` / `heuristic_share`: the number and proportion whose trace is explicitly low-confidence or uses a Super-soft fallback tier;
-- `target_model_selected_units`, `target_provisional_units`, and `target_unavailable_units`: target-adapter states, separate from Korean pronunciation confidence;
+- `target_project_mapping_units`, `target_provisional_units`, and `target_unavailable_units`: target-adapter states, separate from Korean pronunciation confidence;
 - `ipa_missing_units`: Hangul units without an inspectable IPA result;
 - `verified_pronunciation_rate: null` and `pronunciation_verification_status: not_independently_adjudicated`: no numerical pronunciation-accuracy claim is inferred from deterministic execution or coverage tests.
 
