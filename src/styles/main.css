@@ -471,3 +471,9 @@ button { color: inherit; }
 /* Shared service-family type scale — 2026-10-30. */
 .hero h1{font-size:clamp(2.65rem,5.7vw,5rem);line-height:1.03}
 @media(max-width:720px){.hero h1{font-size:clamp(2.4rem,10vw,3.5rem);line-height:1.06}}
+
+
+/* Readability baseline: explanatory labels and helper text should not compete with tiny metadata. */
+.eyebrow,.section-kicker,.specimen-top,.specimen-bottom,.specimen-note,.input-hint,.mini-button,.practical-mode-hint,.soft-morphology-hint,.stress-hint,.results-note,.result-meta p,.copy-button,.site-nav a,.mode-option em{font-size:.8rem;line-height:1.5}
+.mini-button,.site-nav a{min-height:40px}
+.copy-button{min-height:40px}
