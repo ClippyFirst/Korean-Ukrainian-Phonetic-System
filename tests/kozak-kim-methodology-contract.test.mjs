@@ -31,7 +31,7 @@ test('methodology documents all three native modes and their real constraints', 
 });
 
 test('methodology reports the real benchmark balance and current CI evidence', () => {
-  for (const term of ['1 339 / 1 339','41084643011','41084642910','41084643006','41084642903','53,1827%','53,3333%','35,8074%','35,4062%','+0,1506 відсоткового пункта','−0,4012 відсоткового пункта','не дають підстав проголосити один рушій універсальним переможцем','strict mode violation']) {
+  for (const term of ['1 339 / 1 339','41084643011','41084642910','41084643006','41084642903','53,1827%','53,3333%','35,8074%','35,4062%','+0,1506 відсоткового пункта','вищий на 0,4012 відсоткового пункта','не дають підстав проголосити один рушій універсальним переможцем','strict mode violation']) {
     assert.ok(system.includes(term), 'methodology must include ' + term);
   }
 });
