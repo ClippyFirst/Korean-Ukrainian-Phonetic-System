@@ -46,7 +46,23 @@ function attachSuperSoftCoverage(source,result){
     const target=String(item.output||item.candidateOutput||'');
     return Boolean(item.ipa&&target&&!/[⟦⟧]/u.test(target));
   });
-  const fallbackCount=(result.trace||[]).filter(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status)).length;
+  const hangulItems=hangul.map(unit=>{
+    const item=spanAt[unit.start];
+    return item&&spanAt[unit.end-1]===item?item:null;
+  });
+  const lowConfidenceUnits=hangulItems.filter(item=>item&&(
+    item.confidence==='low'||
+    ['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status)
+  )).length;
+  const provisionalTargetUnits=hangulItems.filter(item=>item&&(
+    item.candidateStatus==='provisional'||item.targetStatus==='provisional'||
+    item.targetReason==='provisional_mapping_requires_review'
+  )).length;
+  const modelSelectedTargetUnits=hangulItems.filter(item=>item&&item.targetStatus==='model-selected').length;
+  const unavailableTargetUnits=hangulItems.filter(item=>item&&(
+    item.targetStatus==='unavailable'&&item.candidateStatus!=='provisional'
+  )).length;
+  const missingIpaUnits=hangulItems.filter(item=>!item||!String(item.ipa||'').trim()).length;
   const ratio=(part,total)=>total?part/total:1;
   result.coverage={
     scope:'modern-hangul-syllable-blocks',
@@ -59,7 +75,16 @@ function attachSuperSoftCoverage(source,result){
     source_span_uncovered:sourceUnits.length-traced.length,
     untraced_source_offsets:sourceUnits.filter(unit=>!spanAt[unit.start]||!spanAt[unit.end-1]).map(unit=>({source:unit.char,start:unit.start,end:unit.end})),
     trace_coverage:ratio(traced.length,sourceUnits.length),
-    low_confidence_units:fallbackCount,
+    low_confidence_units:lowConfidenceUnits,
+    low_confidence_share:ratio(lowConfidenceUnits,hangul.length),
+    heuristic_share:ratio(lowConfidenceUnits,hangul.length),
+    target_model_selected_units:modelSelectedTargetUnits,
+    target_provisional_units:provisionalTargetUnits,
+    target_unavailable_units:unavailableTargetUnits,
+    ipa_missing_units:missingIpaUnits,
+    verified_pronunciation_units:null,
+    verified_pronunciation_rate:null,
+    pronunciation_verification_status:'not_independently_adjudicated',
     complete:covered.length===hangul.length&&traced.length===sourceUnits.length
   };
   return result;
