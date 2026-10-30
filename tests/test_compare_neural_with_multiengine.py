@@ -7,6 +7,7 @@ SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 from compare_neural_with_multiengine import compare_reports  # noqa: E402
+from benchmark_multi_engine_ko import _build_per_engine_occurrences  # noqa: E402
 
 
 def _scored(occurrence_id, row_id, exact, distance, gold="ipa"):
@@ -104,3 +105,44 @@ def test_pairing_rejects_different_gold_or_occurrence_identity():
         assert "identity mismatch" in str(exc)
     else:
         raise AssertionError("mismatched gold must be rejected")
+
+
+def test_neural_comparator_accepts_ledger_emitted_by_baseline_builder():
+    items = [
+        {"occurrence_id": "0", "row_id": "r1", "word": "학교", "gold": "hak.kjo"},
+        {"occurrence_id": "1", "row_id": "r2", "word": "학교", "gold": "hak.kjo"},
+    ]
+    native_scored = [
+        {**_scored(0, "r1", True, 0, "hak.kjo"), "token": "학교", "gold": "hak.kjo"},
+        {**_scored(1, "r2", False, 1, "hak.kjo"), "token": "학교", "gold": "hak.kjo"},
+    ]
+    g2pk_scored = [
+        {**_scored(0, "r1", False, 1, "hak.kjo"), "token": "학교", "gold": "hak.kjo"},
+        {**_scored(1, "r2", True, 0, "hak.kjo"), "token": "학교", "gold": "hak.kjo"},
+    ]
+    ledger = _build_per_engine_occurrences(
+        items,
+        {"clippyfirst_native": native_scored, "g2pk_0_9_4": g2pk_scored},
+        {"g2pk_0_9_4": {"학교": {"ipa": "hak.kjo"}}},
+        {"학교": {"ipa": "hak.kjo"}},
+    )
+    neural = {
+        "eligible_occurrences": 2,
+        "predictions": [
+            {**_scored(0, "r1", True, 0, "hak.kjo"), "word": "학교", "gold": "hak.kjo"},
+            {**_scored(1, "r2", False, 1, "hak.kjo"), "word": "학교", "gold": "hak.kjo"},
+        ],
+        "prediction_failures_by_word": {},
+        "comparison": {"per_occurrence": [
+            {"occurrence_id": 0, "row_id": "r1", "word": "학교", "gold": "hak.kjo"},
+            {"occurrence_id": 1, "row_id": "r2", "word": "학교", "gold": "hak.kjo"},
+        ]},
+    }
+    baseline = {
+        "eligible_token_occurrences": 2,
+        "normalization": {"function": "benchmark_ugtphon_ko.normalize_ipa"},
+        "per_engine_occurrences": ledger,
+    }
+    report = compare_reports(neural, baseline, "synthetic")
+    assert report["paired_comparisons"]["clippyfirst_native"]["common_scored_occurrences"] == 2
+    assert report["paired_comparisons"]["g2pk_0_9_4"]["common_scored_occurrences"] == 2
