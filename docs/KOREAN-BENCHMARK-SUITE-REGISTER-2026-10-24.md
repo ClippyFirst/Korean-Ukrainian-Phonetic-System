@@ -1,17 +1,17 @@
-## Integration checkpoint — occurrence ledger merged, extended metrics still under review (2026-10-31)
+## Integration checkpoint — corrected 10-engine benchmark integrated and validated (2026-10-31)
 
-PR [#399](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/399) was squash-merged to main as `cb1ceafd0d9a01c60cf68dd279e0858e732eb780`. The benchmark producer now emits a schema-v1 `per_engine_occurrences` ledger for every engine, preserving repeated token occurrences by occurrence ID and recording scored, abstained, error, and missing outcomes. The exact PR-head multi-engine benchmark, comparator contract tests, general tests, system verification, and artifact workflows passed. The merged workflow validated 2,703 UGTPHON plus 999 SIGMORPHON eligible occurrences across six engines (22,212 ledger rows).
+PR [#399](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/399) added schema-v1 occurrence ledgers; PR [#401](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/401) integrated the corrected extended benchmark into main as `eb8e1f100e8aca377aef05a2aa896756c909ec5c`. The corrected implementation uses nearest-rank p95, independently selects the best IPA gold alternative per metric, validates ledger identity/order/score fields, and exposes CER, broad-IPA segment PER, and the project-defined feature-weighted proxy.
 
-**Scope limit:** the neural inference and joined pairing jobs were skipped on the #399 head by the research-only opt-in condition. The merge repairs the missing baseline producer and verifies the ledger contract; it does not verify a fresh CharsiuG2P/ByT5 joined comparison.
+The final exact-code-equivalent rerun [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672) passed and uploaded artifact `13019822857`. It contains 10 engine ledgers × 2,703 UGTPHON occurrences and 10 × 999 SIGMORPHON occurrences — **37,020 occurrence records**. Independent inspection verified ordered IDs, identical source identity triples across engines, and recomputation of scored/exact aggregate counts. All aggregate metric values match the earlier inspected artifact `13018218724`.
 
-PR #371 remains open and divergent (117 commits ahead / 26 behind at review). Before its PER/PFER and latency figures are treated as accepted:
-- define and test a standard p95 percentile convention (the current floor-index implementation reports 3 ms for [1, 2, 3, 100], hiding the 100 ms tail);
-- score alternative IPA gold variants independently per metric or document a defensible joint-selection rule (the current implementation selects by CER and reuses that variant for PER/PFER);
-- replace branch-name-specific neural job conditions with an explicit, default-off workflow opt-in;
-- retain the merged schema-v1 occurrence ledger and rerun the exact-head benchmark plus full neural pairing.
+Current native/g2pK exact-match values are diagnostic, not normative: UGTPHON native 1,430/2,698 scored = 53.0022% (5 abstentions), g2pK 1,435/2,703 = 53.0892%; SIGMORPHON native 357/998 = 35.7715% (1 abstention), g2pK 353/999 = 35.3353%. Paired exact-classification McNemar exact two-sided p=0.125 on both datasets; no statistically convincing universal winner is established. The feature-weighted proxy is not a standardized metric.
 
-PR #398's public methodology figures depend on #371's PER/PFER calculations. Its exact-head CI passed before #399 merged, but the PR branch is now one commit behind/diverged and requires selective reconciliation plus metric refresh. No PER/PFER update should be presented as a corrected result until the above scoring fixes have been rerun on both pinned datasets.
+Public/technical disclosures were refreshed through PRs [#402](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/402), [#403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/403), and [#404](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/404). The claim-to-evidence register and structured review record were added through PR [#405](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/405).
 
+**Neural scope limit:** CharsiuG2P inference, ByT5 inference, and joined neural pairing were **SKIPPED** under the default-off research opt-in. Historical Charsiu scores are not current corrected-benchmark results. Charsiu checkpoint training overlap/weights licensing and KoG2Padvanced upstream licensing remain unresolved.
+
+PR #371 remains open and divergent; useful scoring/workflow corrections were selectively ported into #401, but the branch is not merged wholesale. PR #398 was closed as superseded after its useful evidence-register/review documents were rewritten and ported via #405; its source branch was preserved.
+ 
 # Korean engine benchmark suite register — 2026-10-24
 
 ## Purpose and rules
@@ -395,7 +395,7 @@ Rates are proportions ×100; table values rounded to four decimals for exact rat
 
 **Evidence limitations:** These remain diagnostic results, not independent adjudicated Korean IPA gold; UGTPHON includes test-informed material. The SIGMORPHON set is a public paired lexical test file, not a validated Ukrainian target set. Tiny rank differences among native/g2pk/g2p-ko must not be presented as decisive without paired uncertainty analysis. The workflow's CharsiuG2P, ByT5, and paired neural jobs were **SKIPPED** under the default-off manual opt-in. KoG2Padvanced's upstream license is undeclared; Charsiu checkpoint license and training overlap remain unresolved. No weights/source were vendored.
 
-**Next:** inspect artifact `13018218724` and use its paired occurrence ledger for per-item deltas; only then refresh public PER/PFER claims. Independent Korean IPA gold and Ukrainian target gold remain BLOCKED on specialist adjudication/data acquisition.
+**Next:** the final artifact `13019822857` has been inspected and its paired occurrence ledgers validated; corrected PER/PFER and exact-rate disclosures are now in the public and technical methodology. Remaining acceptance gates are independent Korean IPA adjudication, independent Ukrainian target review, and licensing/training-manifest resolution.
 
 
 ### Artifact-level integrity verification — 2026-10-31
@@ -420,7 +420,7 @@ Post-merge mainline checks:
 - Master/research artifact generation: **PASS**, run [41142749796](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749796).
 - Pages deployment run [41142749819](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749819): **PASS**; Python regression/corpus checks, browser tests, static build, Pages deploy, HTTP smoke, and live Playwright practical-mode smoke all passed. NIKL metadata-only inventory was **SKIPPED**.
 
-The public methodology and technical methodology are being updated to the corrected values from artifact `13018218724`. Reported rates use each engine's own scored denominator; coverage and abstentions remain separate. These are diagnostic Korean IPA metrics, not independent adjudicated gold and not Ukrainian-target accuracy. The feature-weighted metric remains a project-defined proxy.
+The public methodology and technical methodology now use the corrected values from artifact `13019822857` (matching the earlier artifact `13018218724`). Reported rates use each engine's own scored denominator; coverage and abstentions remain separate. These are diagnostic Korean IPA metrics, not independent adjudicated gold and not Ukrainian-target accuracy. The feature-weighted metric remains a project-defined proxy.
 
 
 ## PR #402 mainline integration and current CI — 2026-10-31
