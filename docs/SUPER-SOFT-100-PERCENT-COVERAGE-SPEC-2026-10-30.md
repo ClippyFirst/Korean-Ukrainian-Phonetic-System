@@ -1,7 +1,7 @@
 # Super-soft Korean → Ukrainian engine mode: 100% input coverage contract
 
 **Date:** 2026-10-30  
-**Status:** DONE_VERIFIED for browser implementation and coverage acceptance on PR head 75a49524184be96bf0b492541815a8783ee80cb0; deployment smoke and independent pronunciation-accuracy evaluation remain pending/evidence-limited.  
+**Status:** DONE_VERIFIED for browser implementation and coverage acceptance on PR head 8c6d9b42cd574be96f889477ed141db5c8bb4ba9; deployment smoke and independent pronunciation-accuracy evaluation remain pending/evidence-limited.  
 **Runtime constraint:** deterministic, browser-local; no neural model and no runtime API.
 
 ## 1. Product requirement
@@ -130,14 +130,14 @@ Implemented in the browser research engine:
 
 ## 10. Exact-head verification — 2026-10-30
 
-**DONE_VERIFIED for the browser maximum-coverage contract on PR head 75a49524184be96bf0b492541815a8783ee80cb0.**
+**DONE_VERIFIED for the browser maximum-coverage contract on PR head 8c6d9b42cd574be96f889477ed141db5c8bb4ba9.**
 
 - Exhaustive modern Hangul inventory: all 11,172/11,172 syllable blocks produced non-empty IPA and an IPA-adapted Ukrainian candidate; no source Hangul leaked into IPA or candidate output.
 - Registered strict-mode morphology gaps: all 13 adversarial cases produced a candidate with complete Hangul and trace coverage while strict controls remained unresolved.
 - Full NIKL master passage fixture: 100% Hangul candidate coverage and 100% source-span trace coverage, with no unresolved placeholder spans.
 - Dedicated §30 fallback test: typed orthographic-phonemic fallback is exercised with lexical lookup deliberately bypassed; the public engine continues to prefer exact sourced lexical entries.
-- Literal/Jamo tests and UI wiring/coverage display tests pass.
-- npm test: 1325 passed, 0 failed (19.8 s).
+- Literal/Jamo tests, candidate-only handling for provisional lexical targets, UI wiring/coverage display, and the scientific methodology section in system.html pass.
+- npm test: 1326 passed, 0 failed (19.8 s).
 - npm run build: passed. Existing bundle-size warning remains (dictionary chunks above 500 kB); it is not a build failure.
 - CI: browser regression/build, Python regression/data integrity on Python 3.11/3.12/3.13, wheel install, teacher-corpus audit, browser-G2P integration, master table/research corpus artifacts, and exhaustive test-case register extraction all succeeded.
 - Official NIKL source inventory job was skipped by workflow configuration (metadata-only); do not report it as passed.
