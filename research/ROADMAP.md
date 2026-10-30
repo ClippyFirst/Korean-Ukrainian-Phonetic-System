@@ -286,3 +286,12 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **Change:** swapped the Hanja and IPA result-card positions only; output IDs, labels, rendering, and copy controls are unchanged.
 - **Regression:** `tests/hanja-ui-contract.test.mjs` asserts the new DOM order.
 - **Acceptance:** exact-head `npm test` and `npm run build` must pass; Pages deployment and live smoke must verify Hanja appears immediately before wide IPA.
+
+
+## 2026-10-30 — Super-soft 100% technical coverage mode
+
+- **DONE_VERIFIED (browser runtime, PR head c57f34c52e15e5a55fc5943e4069c019bfb12a07):** implementation added on `feat/super-soft-100-percent-coverage-2026-10-30`: deterministic opt-in mode, existing Soft/Practical rule reuse, typed orthographic-phonemic fallback for unresolved morphology, IPA-first target adaptation, literal/Jamo preservation, source-span coverage counters, and research-only UI toggle.
+- **DONE_VERIFIED:** exact-head CI passed exhaustive 11,172-syllable IPA + Ukrainian candidate coverage, 13 strict morphology gaps, full NIKL master passage coverage, trace accounting, provisional lexical target candidate-only behavior, unresolved-morphology provenance, mutually exclusive UI controls, methodology documentation, regression suite (1326/1326), and static build. Coverage is not pronunciation accuracy. Deployment smoke remains pending merge.
+- **BLOCKED / EVIDENCE-LIMITED:** independent accuracy evaluation needs adjudicated held-out Korean pronunciation gold. No neural runtime or remote service is introduced.
+
+- **DEFERRED:** Python CLI/API do not expose Super-soft and remain strict/soft; no cross-runtime parity claim.

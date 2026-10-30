@@ -1333,3 +1333,23 @@ Exact PR-head CI for `e7b88d87005c75ad124b59041774e825dad9ca32`:
 The IPA-first target layer now renders aspirated onsets with an apostrophe and preserves fortis doubling in Ukrainian practical orthography. The explicit palatalized fortis-sibilant override `ɕ͈ → шш` follows the same no-collapse project convention. The `kʰjʌ → к'хьо` mapping remains **provisional**; strict mode must not promote it to accepted orthography.
 
 Verification on code head `08dd78de7efee0988b6fa1195b871425f988634f`: browser suite **1,305/1,305 passed**, Python 3.11–3.13 passed, wheel installation passed, and generated master-table/research artifacts plus system verification passed. The live Pages deployment was not yet verified at this head. These are implementation and regression results, not independent phonetic or Ukrainian-target adjudication. Source/rights review and independent target gold remain separate acceptance gates; repository-wide readiness remains a research-ready partial prototype, not release-ready.
+
+
+## Super-soft maximum-coverage mode — 2026-10-30
+
+**Status: DONE_VERIFIED for browser implementation and technical coverage acceptance on PR head c57f34c52e15e5a55fc5943e4069c019bfb12a07; deployment smoke pending.**
+
+The approved requirement is a separate deterministic, browser-local Super-soft mode targeting 100% technical coverage of modern Hangul syllable blocks, not 100% pronunciation accuracy. The implementation adds a distinct morphology mode, reuses existing Soft/Practical heuristics, and applies a typed low-confidence orthographic-phonemic IPA fallback only where morphology remains unresolved. IPA→Ukrainian mapping remains the only target path. Provisional target correspondences are candidates, not accepted orthography. Literal non-Korean content and standalone compatibility Jamo are preserved. The result includes source-span and Hangul coverage counters.
+
+Acceptance is pending the new exhaustive 11,172-syllable end-to-end test and exact-head CI. Independent pronunciation accuracy remains evidence-limited pending independently adjudicated held-out Korean pronunciation gold. Do not promote this mode as normative or release-ready on coverage alone.
+
+
+### Verification evidence
+
+- Exhaustive 11,172/11,172 modern Hangul syllable blocks → non-empty IPA and IPA-adapted Ukrainian candidate.
+- All 13 registered strict morphology-gap cases → complete candidate and trace coverage in Super-soft; strict controls remain fail-closed.
+- NIKL master passage fixture → 100% Hangul candidate coverage and 100% source-span trace coverage.
+- npm test: 1326 pass, 0 fail. npm run build: pass.
+- CI: browser regression/build, browser-G2P, Python 3.11/3.12/3.13, wheel install, teacher corpus audit, generated master/research artifacts, and exhaustive test-case register extraction pass. NIKL metadata-only inventory skipped by workflow config.
+- Local clone unavailable due GitHub DNS resolution failure; remote exact-head CI is the verification evidence.
+- Remaining: deployment smoke after merge; independent pronunciation accuracy gold is evidence-limited; Python CLI/API parity deferred because those entry points currently expose strict/soft only.

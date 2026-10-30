@@ -14,8 +14,9 @@ import { practicalStatusForUnit, softStatusForUnit } from './soft_morphology.js'
 function ipaSafeLiteral(value){return [...value].filter(isPreservableIpaLiteral).join('');}
 
 export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options={}){
-  const morphologyMode=options.morphologyMode==='practical'?'practical':options.morphologyMode==='soft'?'soft':'strict';
+  const morphologyMode=options.morphologyMode==='super-soft'?'super-soft':options.morphologyMode==='practical'?'practical':options.morphologyMode==='soft'?'soft':'strict';
   const practicalOn=morphologyMode==='practical';
+  const superSoftOn=morphologyMode==='super-soft';
   const preserveUnresolvedSource=options.preserveUnresolvedSource===true;
   if(!skipLexicon&&lexicon.size){
     const mixedKeys=[...lexicon.keys()].filter(key=>/[^가-힣]/u.test(key)).sort((a,b)=>b.length-a.length);
@@ -89,18 +90,32 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const issues=results.flatMap(r=>r.issues||[]);
       if(/[가-힣][A-Za-z]/u.test(text))issues.push('Mixed Hangul and Latin residue without a boundary; non-Korean characters are withheld from IPA.');
       const hasCandidate=results.some(r=>r.candidate_ukrainian);
-      const candidateText=hasCandidate?results.map(r=>r.candidate_ukrainian??r.ukrainian).join(''):null;
+      const hasProvisionalTarget=results.some(r=>r.target_status==='provisional'||r.status==='lexical-review');
+      const hasSuperSoftFallback=results.some(r=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(r.status)||(r.trace||[]).some(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status)));
+      const superSoftCandidateOnly=superSoftOn&&(hasProvisionalTarget||hasSuperSoftFallback);
+      const candidateText=hasCandidate||superSoftCandidateOnly?results.map(r=>r.candidate_ukrainian??r.ukrainian).join(''):null;
+      if(superSoftOn&&hasProvisionalTarget){
+        for(const result of results){
+          if(result.target_status!=='provisional'&&result.status!=='lexical-review')continue;
+          for(const item of result.trace||[]){
+            if(!item.output||item.candidateOutput)continue;
+            item.candidateOutput=item.output;
+            item.candidateStatus='provisional';
+            item.output='';
+          }
+        }
+      }
       return{
         source:text,
-        ipa_profile:options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+        ipa_profile:superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
         ipa_profile_version:1,
-        ipa_profile_level:options.surfaceMode?'surface-mode':'surface-contextual',
+        ipa_profile_level:superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
         ipa_profile_status:'unadjudicated-cross-runtime',
         surfaceHangul:results.map(r=>r.surfaceHangul||'').join(''),
         // A phrase with any provisional target has no complete accepted
         // orthography. Return the complete candidate separately, not partial
         // accepted fragments that could be mistaken for the full result.
-        ukrainian:hasCandidate?'':results.map(r=>r.ukrainian).join(''),
+        ukrainian:hasCandidate||superSoftCandidateOnly?'':results.map(r=>r.ukrainian).join(''),
         ipa:results.map((r,index)=>(lexicon.has(parts[index])||/^[가-힣]+$/u.test(parts[index]))?r.ipa:ipaSafeLiteral(parts[index])).join(''),
         analysis:results.map(r=>r.analysis).filter(Boolean).join(' · '),
         variants:results.flatMap((result,variantIndex)=>(result.variants||[]).map(variant=>({
@@ -112,10 +127,11 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         }))),
         trace:results.flatMap(r=>r.trace||[]),
         issues,
-        target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
-        candidate_ukrainian:candidateText,
-        candidate_status:hasCandidate?'provisional':null,
-        status:issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical'
+        target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional'||r.status==='lexical-review')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
+        candidate_ukrainian:hasCandidate||superSoftCandidateOnly?candidateText:null,
+        status:superSoftOn?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'super-soft-orthographic-fallback':hasSuperSoftFallback?'super-soft-heuristic-coverage':results.some(r=>r.status==='unresolved')?'unresolved':'super-soft-maximum-coverage'):issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical',
+        phonetic_result_type:hasSuperSoftFallback?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
+        candidate_status:hasSuperSoftFallback?'super-soft-low-confidence':superSoftOn&&hasProvisionalTarget?'provisional':hasCandidate?'provisional':null
       };
     }
   }
@@ -160,9 +176,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   for(let i=0;i<units.length;i++){
     const u=units[i];
     if(u.type==='jamo'){
-      output[i]=preserveUnresolvedSource?'⟦'+u.char+'⟧':'';ipa[i]='';analysis[i]='';
-      issues.push(u.char+': standalone compatibility jamo is not a syllable; IPA is withheld.');
-      trace[i]={source:u.char,surface:u.char,status:'unsupported-jamo',rules:['unsupported-standalone-jamo'],output:output[i],ipa:''};
+      output[i]=superSoftOn?u.char:(preserveUnresolvedSource?'⟦'+u.char+'⟧':'');ipa[i]='';analysis[i]='';
+      issues.push(superSoftOn?u.char+': standalone compatibility Jamo is preserved literally; it is not a pronounceable syllable.':u.char+': standalone compatibility jamo is not a syllable; IPA is withheld.');
+      trace[i]={source:u.char,surface:u.char,status:superSoftOn?'literal-preserved':'unsupported-jamo',rules:['unsupported-standalone-jamo',...(superSoftOn?['super-soft-literal-preservation']:[])],output:output[i],ipa:'',phoneticResultType:'not-applicable'};
       continue;
     }
     if(u.type==='literal'){
@@ -188,6 +204,12 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       }
     }
     const applied=ruleSets[i]||[];
+    const unresolvedMorphologyFlags=['__palatalizationUnlicensed','__hDeletionUnlicensed','__saisiotInsertionUnlicensed','__crossWordLiaisonUnlicensed','__complexLiaisonUnlicensed','__complexHAspirationUnlicensed','__substantiveLiaisonUnlicensed','__rieulGiyeokUnlicensed'];
+    if(superSoftOn&&unresolvedMorphologyFlags.some(flag=>u[flag])){
+      u.__superSoftUnresolvedFlags=unresolvedMorphologyFlags.filter(flag=>u[flag]);
+      u.__superSoftFallback=true;
+      for(const flag of unresolvedMorphologyFlags)delete u[flag];
+    }
     if(u.__palatalizationUnlicensed){
       if(u.__palatalizationUnlicensed==='left')issues.push(u.char+': §17 palatalization requires a verified formal-morpheme boundary; add a sourced lexical pronunciation entry.');
       output[i]=preserveUnresolvedSource?'⟦'+u.char+'⟧':'';ipa[i]='';
@@ -241,7 +263,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
-    let status=u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi?'contextual':'canonical');
+    let status=u.__superSoftFallback?'super-soft-orthographic-fallback':superSoftOn&&u.__practicalHeuristic?'super-soft-practical-heuristic':superSoftOn&&u.__softHeuristic?'super-soft-morphology-heuristic':u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi?'contextual':'canonical');
     const onset=u.onset;
     const previousCoda=prev?.__effectiveCoda??prev?.coda??'';
     const liaisonOnset=Boolean(u.__liaison);
@@ -252,6 +274,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const fortis=!options.surfaceMode&&!liaisonOnset&&previousObstruent&&['ㄱ','ㄷ','ㅂ','ㅅ','ㅈ'].includes(onset);
     const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
     const traceRules=[...applied];
+    if(u.__superSoftFallback)traceRules.push('super-soft-orthographic-fallback');
+    if(superSoftOn&&u.__practicalHeuristic)traceRules.push('super-soft-practical-heuristic');
+    if(superSoftOn&&u.__softHeuristic)traceRules.push('super-soft-morphology-heuristic');
     if(contextualUi)traceRules.push('vowel-ui-to-i');
     if(defaultUi)traceRules.push('vowel-ui-default-ɰi');
     if(voiced)traceRules.push('contextual-voicing');
@@ -301,6 +326,10 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     trace[i]={
       source:u.char,surface:compose(u.onset,u.vowel,u.coda||''),status,
       rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa,
+      phoneticResultType:u.__superSoftFallback?'orthographic-phonemic-fallback':'surface-ipa',
+      confidence:u.__superSoftFallback||superSoftOn&&(u.__practicalHeuristic||u.__softHeuristic)?'low':'ungraded',
+      unresolvedMorphologyFlags:u.__superSoftUnresolvedFlags||[],
+      uncertainty:u.__superSoftFallback?{kind:'unresolved-morphology',strategy:'orthographic-phonemic-fallback',confidence:'low'}:superSoftOn&&(u.__practicalHeuristic||u.__softHeuristic)?{kind:'heuristic-morphology',confidence:'low'}:null,
       targetStatus:targetFromIpa.status,
       targetReason:targetFromIpa.reason||null,
       candidateOutput:targetFromIpa.candidateText||null,
@@ -314,11 +343,13 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   if(/[가-힣][A-Za-z]/u.test(text))issues.push('Mixed Hangul and Latin/digit residue without a boundary; non-Korean characters are withheld from IPA.');
   const hasJamo=units.some(u=>u.type==='jamo');
   const hasHangulSyllables=units.some(u=>u.type==='hangul');
-  const status=hasJamo?'unresolved':!hasHangulSyllables?'non-korean-input':issues.length?'unresolved':trace.some(x=>x?.status==='practical-transliteration')?'practical-transliteration':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
+  const status=superSoftOn
+    ? (trace.some(x=>x?.status==='super-soft-orthographic-fallback')?'super-soft-orthographic-fallback':trace.some(x=>['super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(x?.status))?'super-soft-heuristic-coverage':hasHangulSyllables?'super-soft-maximum-coverage':'non-korean-input')
+    : hasJamo?'unresolved':!hasHangulSyllables?'non-korean-input':issues.length?'unresolved':trace.some(x=>x?.status==='practical-transliteration')?'practical-transliteration':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
   const surfaceParts=[];
   for(let i=0;i<units.length;i++){
     const u=units[i];
-    if(u.type==='literal'){surfaceParts.push(u.char);continue;}
+    if(u.type==='literal'||(superSoftOn&&u.type==='jamo')){surfaceParts.push(u.char);continue;}
     // Korean surface realization and Ukrainian target mapping are separate
     // pipeline stages. A missing/provisional Ukrainian mapping must not erase a
     // source-backed Korean surface change (e.g. §30 뒷마루 → 뒨마루).
@@ -342,6 +373,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // separately labelled candidate. Research traces retain per-token detail.
   const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
   const provisionalCandidateAvailable=/[가-힣]/u.test(text)&&status!=='unresolved'&&trace.some(item=>item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review');
+  const superSoftCandidateAvailable=superSoftOn&&trace.some(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item?.status));
   const target_status=unresolvedWholeHangulToken||!hasHangulSyllables
     ? 'unavailable'
     : trace.some(item=>item?.targetStatus==='unavailable'||item?.status==='unresolved')
@@ -351,15 +383,16 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         : 'model-selected';
   return{
     source:text,
-    ipa_profile:options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+    ipa_profile:superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
     ipa_profile_version:1,
-    ipa_profile_level:options.surfaceMode?'surface-mode':'surface-contextual',
+    ipa_profile_level:superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
     ipa_profile_status:'unadjudicated-cross-runtime',
     surfaceHangul:recomposed===originalHangul?'':recomposed,
-    ukrainian:unresolvedWholeHangulToken||provisionalCandidateAvailable?'':output.join(''),
-    candidate_ukrainian:provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
-    candidate_status:provisionalCandidateAvailable?'provisional':null,
+    ukrainian:unresolvedWholeHangulToken||provisionalCandidateAvailable||superSoftCandidateAvailable?'':output.join(''),
+    candidate_ukrainian:superSoftCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
+    candidate_status:superSoftCandidateAvailable?'super-soft-low-confidence':provisionalCandidateAvailable?'provisional':null,
     ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,'.'),
+    phonetic_result_type:superSoftCandidateAvailable?(trace.some(item=>item?.status==='super-soft-orthographic-fallback')?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
     analysis:renderStructured(units,analysis,' · '),
     trace,
     variants:unresolvedWholeHangulToken?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status),

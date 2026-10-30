@@ -3627,3 +3627,36 @@ This is a standing content and information-architecture decision for the public 
 - **Do not flatten the methodology to make it accessible, and do not burden the service UI with academic exposition.** Translate limitations for the service audience without weakening or omitting the underlying scientific qualifications.
 
 Apply this boundary to future copy edits, UI labels, help text, navigation, and documentation placement. When in doubt, ask whether the sentence helps an ordinary visitor use/understand the result (service) or documents how/why the system works (methodology).
+
+# Super-soft mode — 100% input coverage requirement (2026-10-30)
+
+- **User requirement:** the Kozak Kim Korean engine must gain a distinct opt-in Super-soft mode with **100% technical coverage of modern Hangul syllable input**, comparable in coverage intent to other G2P engines. This is not a request to claim 100% pronunciation accuracy.
+- **Definition:** every modern Hangul syllable receives a non-empty Ukrainian candidate and IPA/typed phonetic result; every source span is accounted for in provenance; literals are preserved; unresolved morphology must fall back to an explicitly low-confidence orthographic/phonemic path rather than disappearing.
+- **Pipeline invariant:** source Hangul → structural analysis → Korean phonology or typed orthographic fallback → IPA/typed result → Ukrainian IPA adapter → Ukrainian output. No direct Hangul→Ukrainian bypass, neural model, or runtime API.
+- **Mode separation:** Strict remains fail-closed; current Soft and Practical contracts remain unchanged; Super-soft is a separate opt-in maximum-coverage tier. Heuristic fallback never becomes exact/NIKL evidence and never writes into the lexical registry.
+- **Acceptance:** exhaustive end-to-end coverage of all 11,172 modern Hangul syllables, IPA-target coverage, adversarial morphology/mixed-script tests, source-span trace accounting, strict-mode regression, browser build, and deployed smoke. Measure coverage separately from pronunciation accuracy. Python CLI/API parity is deferred because those entry points do not expose Super-soft.
+- **Initial finding:** the existing Practical mode was not 100% coverage: unresolved morphology, unsupported Jamo, and unmapped IPA could produce empty output.
+- **Current status: DONE_VERIFIED for browser implementation and exact-head coverage tests; deployment smoke pending.** See [Super-soft 100% coverage specification](SUPER-SOFT-100-PERCENT-COVERAGE-SPEC-2026-10-30.md).
+
+
+# Super-soft 100% coverage implementation continuation — 2026-10-30
+
+- **User authorization:** implementation approved; proceed autonomously and rigorously.
+- **Branch:** `feat/super-soft-100-percent-coverage-2026-10-30`, based on main `0083bed43e824836dd6613c53ca70944b9a9290d` and the preceding specification-only branch commit `4e9c2bd1aefeaf0228cc07a50ffe7d2bda07321f`.
+- **Implemented batch (verification pending):** opt-in `super-soft` mode in browser native engine; reuses existing Soft/Practical deterministic rule paths; only unresolved morphology falls back to orthographic-phonemic IPA with explicit low-confidence provenance; target provisional mappings remain candidate-only; standalone compatibility Jamo and non-Korean literals are preserved; adds per-source-span coverage accounting and research-only UI toggle.
+- **Tests authored:** exhaustive 11,172 modern Hangul syllable inventory through IPA and Ukrainian target adaptation; unresolved morphology fallback; literal/Jamo preservation; mode isolation; UI wiring.
+- **Status:** PARTIAL until exact-head CI passes. Do not claim 100% until the exhaustive test and complete target mapping gate pass. Independent pronunciation accuracy is BLOCKED/EVIDENCE-LIMITED without independently adjudicated held-out Korean pronunciation gold.
+- **Environment blocker:** direct local GitHub clone was attempted and failed because DNS could not resolve `github.com`; local npm/Python/browser commands cannot be run from this container. GitHub Actions exact-head workflows are the available verification path. This is not a test pass.
+
+
+# Super-soft mode — exact-head verification update (2026-10-30)
+
+- Verified branch head: feat/super-soft-100-percent-coverage-2026-10-30 at c57f34c52e15e5a55fc5943e4069c019bfb12a07.
+- Status: DONE_VERIFIED for browser implementation and technical coverage acceptance; release deployment smoke remains pending.
+- Exhaustive evidence: all 11,172 modern Hangul syllables produced non-empty IPA and IPA-adapted Ukrainian candidates; 13 registered strict morphology gaps each achieved full candidate and trace coverage; full NIKL master passage achieved 100% Hangul candidate coverage and 100% source-span trace coverage.
+- Tests: npm test 1326 passed / 0 failed; npm run build passed; browser regression/build, browser-G2P, Python 3.11/3.12/3.13 regression/data integrity, wheel install, teacher-corpus audit, master table/research corpus artifacts, and exhaustive test-case register extraction passed. Official NIKL metadata-only inventory job skipped by configuration.
+- Methodology page: system.html now documents the Super-soft ladder, coverage scope, candidate confidence, and accuracy limitations for researchers.
+- Design: Strict/Soft/Practical unchanged; Super-soft is opt-in in research mode. Low-confidence practical/morphological heuristics, orthographic-phonemic fallbacks, and provisional lexical target adaptations are candidate-only and explicitly traced; unresolved morphology flags are preserved in trace uncertainty metadata. IPA remains the only input to the Ukrainian target adapter. Compatibility/decomposed Jamo and non-Korean literals are preserved.
+- Scope note: Python CLI/API still accept only strict/soft; this new mode is scoped to browser-native service runtime. Cross-runtime parity is DEFERRED, not claimed.
+- Evidence limitation: no independent held-out adjudicated gold corpus was added; 100% coverage is not 100% pronunciation accuracy.
+- Next step: make PR #379 ready, merge only against unchanged tested head, then verify Pages deployment and live smoke. Local clone/test commands unavailable because GitHub DNS resolution failed in the container.
