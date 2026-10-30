@@ -4004,3 +4004,33 @@ PR #397 is open, unmerged, and GitHub currently reports it mergeable. The implem
 The existing service remains deployed and CI/live-smoke verified at the previous main commit. This documentation branch is a review candidate, not yet production-published. The project remains a research prototype with strong engineering and benchmark evidence, but not an independently certified Korean-to-Ukrainian pronunciation standard.
 
 **Next genuine blockers:** exact-head CI for this documentation branch; resolve PR #371's divergent history and failed aggregation separately; obtain independent Korean IPA and Ukrainian target gold; resolve Charsiu model provenance/license and contamination risk before any generalization claim.
+
+
+## Exact-head verification and review handoff — 2026-10-30 20:00 UTC
+
+- Documentation and contract-test head before this handoff update: `7ccd4258ba7e8da70238c613e6ae28c2c015b254`; based directly on main `f93ae007592f216ccd2493f6652d228b876c8338`.
+- Pull request: [#398 — Reconcile Korean methodology with current evidence and benchmark results](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/398), draft, open, not merged.
+- Exact-head browser tests/build [41119531367](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41119531367): **PASS**, 1,340 / 1,340 tests, 0 failures; Vite 8.3.1 production build passed.
+- Exact-head Python matrix in the same run: **PASS** for Python 3.11, 3.12, 3.13; teacher-corpus audit and wheel-install also **PASS**.
+- Exact-head system verification [41119531441](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41119531441): **PASS** for browser build/tests and Python regression/data integrity. Official NIKL metadata-only inventory: **SKIPPED**, not a live crawl.
+- Exact-head master/research artifact generation [41119531460](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41119531460): **PASS**.
+- Exact-head exhaustive test-case register extraction [41119531480](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41119531480): **PASS**.
+- During review, the first exact-head test attempts exposed stale methodology-contract assertions: one expected the previous 1,339-test count and another expected an outdated metric label. The test was updated to assert the current 1,340 count, the 2026-10-29 metrics, evidence-register/debate documents, and the retained historical benchmark snapshot. The final exact-head test/build run above passed. These were documentation-test expectation failures; no engine or phonological implementation was changed.
+- PR #371 remains separate, open and untouched; its head remains divergent from main (117 ahead / 26 behind) and its neural aggregation job remains failed. No merge or bulk port was attempted.
+- No local shell commands are claimed because no local checkout is available in this connector session. The exact-head GitHub Actions runs above are the verification evidence.
+
+### Final task ledger for this documentation scope
+
+| Task | Status | Evidence / next acceptance |
+|---|---|---|
+| Public three-layer methodology presentation | DONE_VERIFIED on PR head | `system.html` now shows current and historical benchmark snapshots, engine balance, runtime and neural-baseline caveats. Deployment/publication awaits merge by repository owner. |
+| Technical methodology update | DONE_VERIFIED on PR head | `docs/methodology.md` updated with latest denominators, paired CIs, metrics, timings, neural results and boundaries. |
+| Claim-to-evidence register | DONE_VERIFIED on PR head | `docs/METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md`. |
+| Debate/adjudication record | DONE_VERIFIED on PR head | `docs/METHODOLOGY-DEBATE-REVIEW-2026-10-30.md`. |
+| Documentation contract regression | DONE_VERIFIED on exact head | Updated `tests/kozak-kim-methodology-contract.test.mjs`; 1,340 tests pass. |
+| PR #398 integration/deployment | PARTIAL | PR is draft and not merged; repository owner review/merge and post-merge Pages smoke remain. |
+| Independent Korean pronunciation gold and Ukrainian target gold | BLOCKED / EVIDENCE-LIMITED | Requires independent specialist-adjudicated corpora. |
+| Charsiu decontaminated evaluation and weights license | BLOCKED / EVIDENCE-LIMITED | Need complete training manifest/decontaminated holdout and explicit weights license. |
+| PR #371 full neural aggregate | BLOCKED | Fix `per_engine_occurrences` report schema and rerun exact-head benchmark workflow. |
+
+**Readiness:** this PR is documentation-complete and exact-head CI-green; it is review-ready, not yet production-published. The overall research system remains a strong engineering research prototype, not an independently certified Korean-to-Ukrainian pronunciation standard.
