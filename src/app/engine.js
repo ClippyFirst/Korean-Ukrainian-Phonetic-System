@@ -32,14 +32,18 @@ function attachSuperSoftCoverage(source,result){
     const start=utf16Offset;utf16Offset+=char.length;
     return {char,start,end:utf16Offset};
   });
+  const spanAt=new Array(text.length).fill(null);
+  for(const span of spans){
+    for(let offset=span.start;offset<span.end;offset++)spanAt[offset]=span.item;
+  }
   const hangul=sourceUnits.filter(unit=>/[가-힣]/u.test(unit.char));
-  const traced=sourceUnits.filter(unit=>spans.some(span=>span.start<=unit.start&&span.end>=unit.end));
-  const covered=hangul.filter(unit=>spans.some(span=>{
-    if(span.start>unit.start||span.end<unit.end)return false;
-    const item=span.item;
+  const traced=sourceUnits.filter(unit=>spanAt[unit.start]&&spanAt[unit.end-1]);
+  const covered=hangul.filter(unit=>{
+    const item=spanAt[unit.start];
+    if(!item||spanAt[unit.end-1]!==item)return false;
     const target=String(item.output||item.candidateOutput||'');
     return Boolean(item.ipa&&target&&!/[⟦⟧]/u.test(target));
-  }));
+  });
   const fallbackCount=(result.trace||[]).filter(item=>item.status==='super-soft-orthographic-fallback').length;
   const ratio=(part,total)=>total?part/total:1;
   result.coverage={
