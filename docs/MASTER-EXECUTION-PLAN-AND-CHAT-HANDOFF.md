@@ -4048,3 +4048,36 @@ All relevant exact-head workflows on `ee6a5e32...` passed:
 - Exhaustive test-case register extraction [41119750108](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41119750108): **PASS**.
 
 This addendum is handoff-only. It changes no engine or benchmark behavior. PR #398 is not merged; production publication remains under repository-owner control. The final commit SHA for this handoff update is the resulting branch head shown by PR #398; no self-referential commit hash is embedded in the file.
+
+
+## Superseding benchmark-pairing status — 2026-10-30 20:32 UTC
+
+The earlier handoff rows describing the missing `per_engine_occurrences` producer field as an unresolved blocker are superseded by the following verified continuation. The historical run [40843579685](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579685) still failed at its final neural pairing job; that historical result is not rewritten. The producer defect has now been fixed separately.
+
+- New branch: `fix/neural-baseline-occurrence-ledger-2026-10-30`, based directly on main `f93ae007592f216ccd2493f6652d228b876c8338`.
+- PR [#399 — Emit complete occurrence ledgers for neural benchmark pairing](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/399), head `ad7ce7caf1dc56f22449a88b2c565e049d95873d`, open, not merged.
+- Producer change: `scripts/benchmark_multi_engine_ko.py` now emits `occurrence_ledger_schema_version: 1` and a full ordered `per_engine_occurrences` ledger for every engine. Repeated words remain distinct by occurrence ID. Scored IPA/normalized output/metrics and explicit abstained/error/missing states are preserved.
+- Regression tests: `tests/test_multi_engine_benchmark.py` covers repeated tokens, explicit abstentions and adapter errors; `tests/test_compare_neural_with_multiengine.py` verifies that the emitted ledger is accepted by the actual comparator.
+- Workflow guard: `.github/workflows/multi-engine-ipa-benchmark.yml` validates schema version, engine-key set, expected record count, ordered occurrence IDs, identity fields, and score fields before accepting the UGTPHON baseline artifact.
+- Exact-head benchmark [41123471367](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471367): **PASS**. Log confirms schema v1 validation for six engines and 2,703 UGTPHON occurrences. SIGMORPHON run also completed successfully.
+- Exact-head regression matrix [41123471398](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471398): **PASS** — Python 3.11/3.12/3.13, web tests, wheel-install and teacher-corpus audit.
+- Exact-head system verification [41123471365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471365): **PASS** — Python regression/data integrity and browser tests/build; NIKL metadata-only inventory **SKIPPED**.
+- Exact-head exhaustive test-case extraction [41123471454](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471454): **PASS**; master/research artifact generation [41123471374](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471374): **PASS**.
+- Downloaded artifact [13008699681](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41123471367) inspected directly: UGTPHON ledger has six engines × 2,703 ordered occurrences; SIGMORPHON has six engines × 999 ordered occurrences. Both reports declare ledger schema v1. JSON SHA-256: UGTPHON `52b443d8252751aeb11e6422cace721efa67e1b57e85a6ecc414a21545eb0b3d`; SIGMORPHON `dddd196fe0b669a3fadf922f92efa4ff98548995261187d9bd83a3345c77bd94`.
+- The research-only CharsiuG2P inference and joined neural-pairing jobs were **SKIPPED** on PR #399 because the workflow deliberately restricts them to a dedicated opt-in research branch. Therefore the producer/schema fix is **DONE_VERIFIED**, but a fresh joined neural-vs-baseline run remains **PARTIAL**. No fresh neural significance claim is made.
+- PR #371 remains open, divergent and unmerged; PR #399 does not bulk-port or merge its 117-ahead/26-behind branch.
+
+### Superseding task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Three-layer methodology documentation | DONE_VERIFIED on PR #398 head before this addendum | Public page, technical methodology, evidence register, debate review; exact-head checks had passed. New PR #398 docs addendum is pending its own CI. |
+| Baseline occurrence-ledger producer/schema fix | DONE_VERIFIED on PR #399 head | Exact-head run 41123471367; artifact 13008699681 inspected for both datasets. |
+| Occurrence-ledger unit/integration tests | DONE_VERIFIED on PR #399 head | Tests run in 41123471398; Python 3.11/3.12/3.13 matrix passed. |
+| Workflow-level occurrence-ledger schema guard | DONE_VERIFIED on PR #399 head | UGTPHON CI log explicitly prints schema v1 validation for six engines × 2,703 occurrences; SIGMORPHON artifact independently inspected. |
+| Fresh neural inference + joined comparator run | PARTIAL / OPT-IN REQUIRED | Existing neural outputs are from run 40843579685; PR #399 correctly skips inference/pairing under current workflow condition. Acceptance: dedicated approved research-branch run producing fresh model and baseline artifacts, then joined report with identity checks. |
+| PR #371 branch reconciliation | BLOCKED / SEPARATE WORKSTREAM | Branch diverged 117 ahead / 26 behind; compare and selectively port only after complete source/test review. |
+| Independent Korean IPA gold / Ukrainian target gold | BLOCKED / EVIDENCE-LIMITED | Requires independent expert adjudication and approved IPA-aligned Ukrainian target forms. |
+| Charsiu decontaminated generalization + weights license | BLOCKED / EVIDENCE-LIMITED | Need full training provenance or decontaminated holdout, plus explicit weights license. |
+
+**Current readiness:** PR #398 contains the agreed methodology package and the updated schema-status interpretation; PR #399 contains a separately verified benchmark data-contract fix. Both remain open and unmerged. The code/data pipelines are CI-verified on their respective heads; no production release is claimed. The overall service remains a research prototype, not an independently certified Korean-to-Ukrainian standard.
