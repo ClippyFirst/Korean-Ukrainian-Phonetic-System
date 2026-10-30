@@ -32,7 +32,7 @@ test('methodology documents all three native modes and their real constraints', 
 
 test('methodology reports corrected benchmark metrics, coverage, and evidence limits', () => {
   for (const term of [
-    '1 339 / 1 339','41084643011','41084642910','41084643006','41084642903',
+    '1 340 / 1 340','41143243310','41143243218','41143243251','41143243225','live Playwright practical-mode smoke',
     '41138727409','2 698 scored / 5 abstentions','998 scored / 1 abstention',
     '53,0022%','53,0892%','35,7716%','35,3353%',
     '9,1697%','9,2285%','14,6978%','14,8222%',
