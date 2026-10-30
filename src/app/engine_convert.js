@@ -90,7 +90,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const issues=results.flatMap(r=>r.issues||[]);
       if(/[가-힣][A-Za-z]/u.test(text))issues.push('Mixed Hangul and Latin residue without a boundary; non-Korean characters are withheld from IPA.');
       const hasCandidate=results.some(r=>r.candidate_ukrainian);
-      const hasSuperSoftFallback=results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'));
+      const hasSuperSoftFallback=results.some(r=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(r.status)||(r.trace||[]).some(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status)));
       const candidateText=hasCandidate?results.map(r=>r.candidate_ukrainian??r.ukrainian).join(''):null;
       return{
         source:text,
@@ -117,7 +117,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
         candidate_ukrainian:candidateText,
         candidate_status:hasCandidate?'provisional':null,
-        status:superSoftOn?(hasSuperSoftFallback?'super-soft-orthographic-fallback':results.some(r=>r.status==='unresolved')?'unresolved':'super-soft-maximum-coverage'):issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical',
+        status:superSoftOn?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'super-soft-orthographic-fallback':hasSuperSoftFallback?'super-soft-heuristic-coverage':results.some(r=>r.status==='unresolved')?'unresolved':'super-soft-maximum-coverage'):issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical',
         phonetic_result_type:hasSuperSoftFallback?'mixed-surface-ipa-and-orthographic-fallback':'surface-ipa',
         candidate_status:hasSuperSoftFallback?'super-soft-low-confidence':hasCandidate?'provisional':null
       };
@@ -165,7 +165,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const u=units[i];
     if(u.type==='jamo'){
       output[i]=superSoftOn?u.char:(preserveUnresolvedSource?'⟦'+u.char+'⟧':'');ipa[i]='';analysis[i]='';
-      issues.push(u.char+': standalone compatibility Jamo is preserved literally; it is not a pronounceable syllable.');
+      issues.push(superSoftOn?u.char+': standalone compatibility Jamo is preserved literally; it is not a pronounceable syllable.':u.char+': standalone compatibility jamo is not a syllable; IPA is withheld.');
       trace[i]={source:u.char,surface:u.char,status:superSoftOn?'literal-preserved':'unsupported-jamo',rules:['unsupported-standalone-jamo',...(superSoftOn?['super-soft-literal-preservation']:[])],output:output[i],ipa:'',phoneticResultType:'not-applicable'};
       continue;
     }
@@ -250,7 +250,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
-    let status=u.__superSoftFallback?'super-soft-orthographic-fallback':u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi?'contextual':'canonical');
+    let status=u.__superSoftFallback?'super-soft-orthographic-fallback':superSoftOn&&u.__practicalHeuristic?'super-soft-practical-heuristic':superSoftOn&&u.__softHeuristic?'super-soft-morphology-heuristic':u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi?'contextual':'canonical');
     const onset=u.onset;
     const previousCoda=prev?.__effectiveCoda??prev?.coda??'';
     const liaisonOnset=Boolean(u.__liaison);
@@ -262,6 +262,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const liquid=onset==='ㄹ'&&['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
     const traceRules=[...applied];
     if(u.__superSoftFallback)traceRules.push('super-soft-orthographic-fallback');
+    if(superSoftOn&&u.__practicalHeuristic)traceRules.push('super-soft-practical-heuristic');
+    if(superSoftOn&&u.__softHeuristic)traceRules.push('super-soft-morphology-heuristic');
     if(contextualUi)traceRules.push('vowel-ui-to-i');
     if(defaultUi)traceRules.push('vowel-ui-default-ɰi');
     if(voiced)traceRules.push('contextual-voicing');
@@ -312,7 +314,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       source:u.char,surface:compose(u.onset,u.vowel,u.coda||''),status,
       rules:[...new Set(traceRules)],output:output[i],ipa:unitIpa,
       phoneticResultType:u.__superSoftFallback?'orthographic-phonemic-fallback':'surface-ipa',
-      confidence:u.__superSoftFallback?'low':'ungraded',
+      confidence:u.__superSoftFallback||superSoftOn&&(u.__practicalHeuristic||u.__softHeuristic)?'low':'ungraded',
       targetStatus:targetFromIpa.status,
       targetReason:targetFromIpa.reason||null,
       candidateOutput:targetFromIpa.candidateText||null,
@@ -327,7 +329,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   const hasJamo=units.some(u=>u.type==='jamo');
   const hasHangulSyllables=units.some(u=>u.type==='hangul');
   const status=superSoftOn
-    ? (trace.some(x=>x?.status==='super-soft-orthographic-fallback')?'super-soft-orthographic-fallback':hasHangulSyllables?'super-soft-maximum-coverage':'non-korean-input')
+    ? (trace.some(x=>x?.status==='super-soft-orthographic-fallback')?'super-soft-orthographic-fallback':trace.some(x=>['super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(x?.status))?'super-soft-heuristic-coverage':hasHangulSyllables?'super-soft-maximum-coverage':'non-korean-input')
     : hasJamo?'unresolved':!hasHangulSyllables?'non-korean-input':issues.length?'unresolved':trace.some(x=>x?.status==='practical-transliteration')?'practical-transliteration':trace.some(x=>x?.status==='heuristic-low-confidence')?'heuristic-low-confidence':trace.some(x=>x?.status==='contextual')?'contextual':'canonical';
   const surfaceParts=[];
   for(let i=0;i<units.length;i++){
@@ -356,7 +358,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // separately labelled candidate. Research traces retain per-token detail.
   const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
   const provisionalCandidateAvailable=/[가-힣]/u.test(text)&&status!=='unresolved'&&trace.some(item=>item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review');
-  const superSoftCandidateAvailable=superSoftOn&&trace.some(item=>item?.status==='super-soft-orthographic-fallback');
+  const superSoftCandidateAvailable=superSoftOn&&trace.some(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item?.status));
   const target_status=unresolvedWholeHangulToken||!hasHangulSyllables
     ? 'unavailable'
     : trace.some(item=>item?.targetStatus==='unavailable'||item?.status==='unresolved')
