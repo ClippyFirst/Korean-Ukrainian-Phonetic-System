@@ -395,7 +395,7 @@ Rates are proportions ×100; table values rounded to four decimals for exact rat
 
 **Evidence limitations:** These remain diagnostic results, not independent adjudicated Korean IPA gold; UGTPHON includes test-informed material. The SIGMORPHON set is a public paired lexical test file, not a validated Ukrainian target set. Tiny rank differences among native/g2pk/g2p-ko must not be presented as decisive without paired uncertainty analysis. The workflow's CharsiuG2P, ByT5, and paired neural jobs were **SKIPPED** under the default-off manual opt-in. KoG2Padvanced's upstream license is undeclared; Charsiu checkpoint license and training overlap remain unresolved. No weights/source were vendored.
 
-**Next:** inspect artifact `13018218724` and use its paired occurrence ledger for per-item deltas; only then refresh public PER/PFER claims. Independent Korean IPA gold and Ukrainian target gold remain BLOCKED on specialist adjudication/data acquisition.
+**Next:** the final artifact `13019822857` has been inspected and its paired occurrence ledgers validated; corrected PER/PFER and exact-rate disclosures are now in the public and technical methodology. Remaining acceptance gates are independent Korean IPA adjudication, independent Ukrainian target review, and licensing/training-manifest resolution.
 
 
 ### Artifact-level integrity verification — 2026-10-31
@@ -420,7 +420,7 @@ Post-merge mainline checks:
 - Master/research artifact generation: **PASS**, run [41142749796](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749796).
 - Pages deployment run [41142749819](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749819): **PASS**; Python regression/corpus checks, browser tests, static build, Pages deploy, HTTP smoke, and live Playwright practical-mode smoke all passed. NIKL metadata-only inventory was **SKIPPED**.
 
-The public methodology and technical methodology are being updated to the corrected values from artifact `13018218724`. Reported rates use each engine's own scored denominator; coverage and abstentions remain separate. These are diagnostic Korean IPA metrics, not independent adjudicated gold and not Ukrainian-target accuracy. The feature-weighted metric remains a project-defined proxy.
+The public methodology and technical methodology now use the corrected values from artifact `13019822857` (matching the earlier artifact `13018218724`). Reported rates use each engine's own scored denominator; coverage and abstentions remain separate. These are diagnostic Korean IPA metrics, not independent adjudicated gold and not Ukrainian-target accuracy. The feature-weighted metric remains a project-defined proxy.
 
 
 ## PR #402 mainline integration and current CI — 2026-10-31
