@@ -3806,3 +3806,19 @@ PR #385 was merged into main by squash commit 0ab1e2c3da0210a76b6edc63c0190a499f
 - Strict, Soft, Practical, and ordinary candidate displays are unchanged; annotation is enabled only when the research-only Super-soft mode is selected.
 - The candidate note explains the notation; live Pages Playwright smoke asserts that the Super-soft candidate contains bracketed uncertainty.
 - Verification is pending exact-head CI and live deployment smoke. No Korean phonology rule, IPA value, or Ukrainian correspondence was changed by this presentation feature.
+
+# Final verification — Super-soft uncertainty brackets (2026-10-30)
+
+PR #387 was merged to `main` as `a1c03fec1316433ab6f496b7ed88002c53c93067`.
+
+- **Behavior:** only in the opt-in Super-soft research candidate, low-confidence phonological fallback/heuristic spans and provisional IPA→Ukrainian target spans are wrapped in square brackets, per trace item. Confident trace spans remain unbracketed. The candidate note defines `[fragment]` as uncertainty notation.
+- **Pipeline integrity:** annotation consumes the existing per-span trace and IPA-derived Ukrainian segment; it does not alter IPA, the underlying unannotated candidate, lexical data, or phonological rules. Strict, Soft, Practical, and non-Super-soft candidate displays remain unchanged.
+- **Browser suite:** 1,334 passed, 0 failed; production build passed in exact-head run [41058618197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41058618197).
+- **System verification:** passed in run [41058618272](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41058618272).
+- **Python:** 3.11, 3.12, 3.13 regression/data checks and clean wheel installation passed in run [41058618197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41058618197).
+- **Browser G2P integration:** passed in run [41058618240](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41058618240).
+- **Research artifacts:** master table/research corpus artifacts passed in run [41058618233](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41058618233); exhaustive test-case register extraction passed in run [41058469280](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41058469280).
+- **Deployment/live smoke:** GitHub Pages deployment, HTTP smoke, and Playwright live-browser smoke passed in run [41058618208](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41058618208). The live smoke selected the Super-soft candidate and asserted bracketed uncertain spans plus the explanatory note.
+- **Public site:** https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/ .
+
+**Status:** bracketed uncertainty display — DONE_VERIFIED and deployed. This is a presentation of the engine's existing confidence metadata, not a claim that unbracketed spans are independently certified. Independent Korean pronunciation accuracy and Ukrainian target quality remain BLOCKED / EVIDENCE-LIMITED pending adjudicated gold and specialist review; Python CLI/API Super-soft parity remains DEFERRED.
