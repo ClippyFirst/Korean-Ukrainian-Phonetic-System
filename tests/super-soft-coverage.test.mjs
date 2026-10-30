@@ -197,7 +197,7 @@ test('service exposes the opt-in control only inside research mode and labels it
   const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
   const main=readFileSync(new URL('../src/main.js',import.meta.url),'utf8');
   assert.match(html,/id="super-soft-morphology"/u);
-  assert.match(html,/100% покриття не означає 100% точності вимови/u);
+  assert.match(html,/Повне покриття тексту не означає, що кожен фрагмент вимовлено правильно/u);
   assert.match(main,/superSoftToggle&&superSoftToggle\.checked\?'super-soft'/u);
   assert.match(main,/super-soft-low-confidence/u);
   assert.match(main,/покриття складів Hangul/u);
