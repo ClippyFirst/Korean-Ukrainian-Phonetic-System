@@ -31,7 +31,7 @@
           <div class="specimen-ipa">[일꼬] → /il.k͈o/</div>
           <div class="specimen-ua">ілко</div>
         </div>
-        <div class="specimen-bottom"><span>контекст вирішує</span><span>IPA-first</span></div>
+        <div class="specimen-bottom"><span>контекст визначає вимову</span><span>Спершу IPA</span></div>
       </aside>
     </div>
   </header>
@@ -51,7 +51,7 @@
       <li><a href="#methodology-07">Доказовість</a></li><li><a href="#methodology-08">Обмеження</a></li><li><a href="#methodology-09">Складні випадки</a></li>
       <li><a href="#methodology-10">Зв’язний текст</a></li><li><a href="#methodology-11">IPA та українська ціль</a></li><li><a href="#methodology-12">Перевірка правил</a></li>
       <li><a href="#methodology-13">Модель</a></li><li><a href="#methodology-14">Поточний стан</a></li><li><a href="#methodology-15">Стрес-тести</a></li>
-      <li><a href="#methodology-17">IPA-first pipeline</a></li><li><a href="#methodology-18">Відкриті питання</a></li><li><a href="#methodology-16">Джерела</a></li>
+      <li><a href="#methodology-17">Послідовність IPA-first</a></li><li><a href="#methodology-18">Відкриті питання</a></li><li><a href="#methodology-16">Джерела</a></li>
     </ol>
   </nav>
 
@@ -104,14 +104,14 @@
   <section class="doc-section">
     <div class="doc-label" id="methodology-03">03</div><div class="doc-content"><p class="section-kicker">Приголосні</p><h2>Ключові рішення</h2><div class="decision-table">
       <div class="table-row table-head"><span>Корейська</span><span>Поверхнева основа</span><span>Українська фонетична ціль</span><span>Коментар</span></div>
-      <div class="table-row"><b>ㄱ</b><span>[k] ~ [ɡ]</span><strong>к / ґ</strong><span>вибір залежить від реалізація у мовленні.</span></div>
+      <div class="table-row"><b>ㄱ</b><span>[k] ~ [ɡ]</span><strong>к / ґ</strong><span>вибір залежить від реалізації у мовленні.</span></div>
       <div class="table-row"><b>ㄷ</b><span>[t] ~ [d]</span><strong>т / д</strong><span>не одна безумовна заміна.</span></div>
       <div class="table-row"><b>ㅂ</b><span>[p] ~ [b]</span><strong>п / б</strong><span>визначається контекстом.</span></div>
       <div class="table-row"><b>ㅎ</b><span>[h] (із контекстними змінами)</span><strong>г</strong><span>Авторська практична апроксимація: українське [ɦ] зберігає гортанне місце творення, але не глухість корейського [h]. Це модельне рішення, яке потребує перевірки читачами; ㅎ у правилах аспірації не передається механічним додаванням «г».</span></div>
       <div class="table-row"><b>ㅋ ㅌ ㅍ ㅊ</b><span>[kʰ tʰ pʰ tɕʰ]</span><strong>к т п ч</strong><span>аспірація зберігається аналітично, але в основному практичному режимі нейтралізується.</span></div>
       <div class="table-row"><b>ㅅ / ㅆ</b><span>[s] ~ [ɕ]</span><strong>с / ш</strong><span>перед середовищем [i] або [j] працює окреме правило.</span></div>
-      <div class="table-row"><b>ㄹ</b><span>[ɾ] ~ [l]</span><strong>р / л</strong><span>поверхнева реалізація визначає український target.</span></div>
-      <div class="table-row"><b>ㅇ</b><span>початок складу ∅ / кінцівка [ŋ]</span><strong>∅ / н</strong><span>Структурний нуль не плутається з кода-носовим; у target не додаємо «г» лише для відтворення написання IPA ng.</span></div>
+      <div class="table-row"><b>ㄹ</b><span>[ɾ] ~ [l]</span><strong>р / л</strong><span>поверхнева реалізація визначає український відповідник.</span></div>
+      <div class="table-row"><b>ㅇ</b><span>початок складу ∅ / кінцівка [ŋ]</span><strong>∅ / н</strong><span>Структурний нуль не плутається з кода-носовим; в українському записі не додаємо «г» лише для відтворення послідовності IPA [ŋ].</span></div>
     </div></div>
   </section>
 
@@ -202,12 +202,12 @@
         <div class="table-row"><b>숱이</b><span>[수치]</span><strong>сучі</strong><span>палаталізація ㅌ перед 이.</span></div>
         <div class="table-row"><b>꽃밭에</b><span>[꼳빠테]</span><strong>котпате</strong><span>нейтралізація, напруження та перенесення ㅌ.</span></div>
         <div class="table-row"><b>학생의</b><span>[학쌩의] ~ [학쌩에]</span><strong>гаксені ~ гаксене</strong><span>допустиме читання частки 의; варіант не можна губити.</span></div>
-        <div class="table-row"><b>발음의</b><span>[바르미] ~ [바르메]</span><strong>паримі ~ париме</strong><span>варіантність 의 відображається і в IPA, і в target.</span></div>
+        <div class="table-row"><b>발음의</b><span>[바르미] ~ [바르메]</span><strong>паримі ~ париме</strong><span>варіантність 의 відображається і в IPA, і в українському цільовому записі.</span></div>
         <div class="table-row"><b>설명했어요</b><span>[설명해써요]</span><strong>солмйонгесойо</strong><span>морфемний стик 설명 + 했어요; не залишати ⟦했⟧⟦어⟧.</span></div>
         <div class="table-row"><b>딸이</b><span>[따리]</span><strong>тарі</strong><span>перенесення ㄹ і його реалізація між голосними.</span></div>
         <div class="table-row"><b>춥습니다</b><span>[춥씀니다]</span><strong>чупсимнида</strong><span> 된소리되기 в закінченні та подальша складова структура.</span></div>
       </div>
-      <p class="small-note">У тестах очікувана корейська поверхнева форма — окрема перевірювана величина. Українська фонетична ціль позначений як provisional, бо його якість потребує незалежної оцінки читачами та порівняння з альтернативами. Варіант частки 의 зберігається, а не приховується за єдиним «правильним» українським записом.</p>
+      <p class="small-note">У тестах очікувана корейська поверхнева форма — окрема перевірювана величина. Український цільовий запис має попередній статус, оскільки його якість потребує незалежної оцінки читачами та порівняння з альтернативами. Варіант частки 의 зберігається, а не приховується за єдиним «правильним» українським записом.</p>
       <div class="repo-links">
         <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/fixtures/adversarial-sentence-corpus.txt">Відкрити тестовий корпус ↗</a>
         <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/tests/adversarial-sentence-corpus.test.mjs">Відкрити регресійні тести ↗</a>
@@ -316,11 +316,11 @@
       <p>Цей розділ фіксує актуальний стан реалізації та її межі. Сервіс використовує лексичні записи з джерелами, контекстуальні правила й регресійні тести; він не вважає український результат автоматично правильним лише тому, що корейська вимова має високу доказовість.</p>
       <div class="decision-table">
         <div class="table-row table-head"><span>Частина</span><span>Поточне покриття</span><span>Як це перевіряється</span><span>Обмеження</span></div>
-        <div class="table-row"><b>Лексичні вимови</b><span>понад 500 записів у контрольному наборі</span><span>Джерело, корейська поверхнева форма, IPA та український target зберігаються окремо.</span><span>Кількість записів не означає повного словникового покриття корейської мови.</span></div>
+        <div class="table-row"><b>Лексичні вимови</b><span>понад 500 записів у контрольному наборі</span><span>Джерело, корейська поверхнева форма, IPA та український цільовий запис зберігаються окремо.</span><span>Кількість записів не означає повного словникового покриття корейської мови.</span></div>
         <div class="table-row"><b>NIKL §27–28</b><span>Приклади адномінальних закінчень і офіційні приклади 된소리되기</span><span>Окремі лексичні фікстури та регресійні тести.</span><span>Це покриття перевірених прикладів, а не повний автоматичний морфологічний аналіз.</span></div>
         <div class="table-row"><b>NIKL §29</b><span>Усі 19 прикладів ㄴ-вставки, включно з варіантами</span><span>Позитивні та негативні контрольні випадки; окремі записи для дозволених читань.</span><span>Невідомі морфологічні умови не слід виводити лише з написання.</span></div>
         <div class="table-row"><b>NIKL §30</b><span>Усі 19 наведених прикладів вимови 사이시옷</span><span>Окремо перевіряються 된소리되기, носова реалізація та ㄴ-вставка.</span><span>Корейські варіанти не означають, що українські відповідники вже пройшли читацьке дослідження.</span></div>
-        <div class="table-row"><b>Числа й пунктуація</b><span><code>6·25</code> та <code>3·1절</code></span><span>Точні змішані лексичні ключі; target та IPA вирівнюються за корейським поверхневим читанням, а не за кількістю символів.</span><span>Ці українські записи є рішеннями проєкту, не нормативними українськими транскрипціями.</span></div>
+        <div class="table-row"><b>Числа й пунктуація</b><span><code>6·25</code> та <code>3·1절</code></span><span>Точні змішані лексичні ключі; український запис та IPA вирівнюються за корейською вимовою, а не за кількістю символів.</span><span>Ці українські записи є рішеннями проєкту, не нормативними українськими транскрипціями.</span></div>
       </div>
       <h3>Що змінено в актуальному наборі</h3>
       <ul>
@@ -333,7 +333,7 @@
       </ul>
       <h3>Важлива межа: українська передача ще не має статусу емпірично затвердженої системи</h3>
       <p>Окремий перегляд цільового шару виявив питання, які не можна чесно «виправити» інтуїтивно в сотнях записів: передавання довготи голосних, нейтралізація аспірації та fortisness у практичному написанні, апроксимації корейських голосних без прямих українських відповідників, кода [ŋ], а також послідовності р/л. Наявні українські цілі узгоджуються з поточними правилами моделі, але це ще не доводить, що вони найкращі для українського читача. Додаткова перевірка лексикону знайшла залишкові «ль» для некондиційованого корейського [l] у <code>얇실하다</code>, <code>짧다</code> й <code>읽거든</code>, а також подвоєне українське «сс» у <code>넓습니다</code>. Їх виправлено відповідно до оголошеної моделі: твердий «л» і непозначення fortisness подвоєнням літер. Окремо виправлено <code>밭이랑</code>: target тепер відображає саме поверхневу вимову [반니랑] — <code>пан|ні|ран</code>, а не написання вихідного 받침. Подальша звірка початкових приголосних із surface IPA також виправила лексичні targets у <code>들일</code>, <code>불여우</code>, <code>지식의</code>, <code>집안일</code>, <code>넓어졌다는</code>, <code>할지라도</code> та <code>휘발유</code>; для <code>값있다</code> уточнено контекстуальне IPA [b] між голосними.</p>
-      <p><strong>Поточне рішення:</strong> не підміняти відсутні результати дослідження масовими інтуїтивними правками. Наступний доказовий крок — зіставлення кількох українських варіантів на тих самих аудіозаписах, перевірка корейських міток носіями мови та сліпе читальницьке тестування. Впевненість у джерелі, корейській поверхневій формі, IPA й українському target потрібно оцінювати окремо.</p>
+      <p><strong>Поточне рішення:</strong> не підміняти відсутні результати дослідження масовими інтуїтивними правками. Наступний доказовий крок — зіставлення кількох українських варіантів на тих самих аудіозаписах, перевірка корейських міток носіями мови та сліпе читальницьке тестування. Надійність джерела, корейської вимови, IPA й українського запису потрібно оцінювати окремо.</p>
       <div class="repo-links">
         <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/korean-system-audit-report-2026-10.md">Повний технічний аудит ↗</a>
         <a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/ukrainian-target-review-2026-10-10.md">Аудит українського цільового шару ↗</a><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/complex-coda-liaison-followup-2026-10-10.md">Аудит складних 받침 та 연음 ↗</a><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/n-insertion-exceptions-audit-2026-10-10.md">Аудит винятків ㄴ-вставки ↗</a><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/rule29-liquid-assimilation-audit-2026-10-10.md">Аудит асиміляції ㄹ за правилом 29 ↗</a><a href="https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/blob/main/docs/adversarial-morphology-fix-2026-10-10.md">Аудит морфологічного корпусу ↗</a>
