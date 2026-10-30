@@ -22,7 +22,7 @@
 
 - **Академічна перспектива:** показувати корпуси окремо, не оголошувати універсального переможця.
 - **Доказова перспектива:** публікувати scored denominators, coverage, abstentions, paired occurrence identities, metric definitions і shared-renderer caveat.
-- **Рішення:** UGTPHON exact match: native 53.0022% (2,698/2,703 scored; 5 abstentions), g2pK 53.0892% (2,703/2,703). SIGMORPHON exact match: native 35.7715% (357/998 scored; 1 abstention), g2pK 35.3353% (353/999). Paired exact-classification McNemar exact two-sided p=0.125 on each corpus; ці дані не встановлюють статистично переконливої переваги. Показники є діагностикою Korean IPA, а не нормативною accuracy.
+- **Рішення:** UGTPHON exact match: native 1,430/2,698 scored = 53.0022% (5 abstentions), g2pK 1,435/2,703 = 53.0892%. SIGMORPHON: native 357/998 scored = 35.7715% (1 abstention), g2pK 353/999 = 35.3353%. Paired exact-classification McNemar exact two-sided p=0.125 on each corpus; ці дані не встановлюють статистично переконливої переваги. Показники є діагностикою Korean IPA, а не нормативною accuracy.
 
 ## Питання 3. Чи потрібно публікувати сильні CharsiuG2P scores?
 
