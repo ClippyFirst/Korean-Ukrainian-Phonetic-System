@@ -3744,3 +3744,5 @@ No local npm/Python/browser command is claimed in this connector-only execution.
 ## Next acceptance gate
 
 Confirm the remaining exact-head workflows finish successfully; inspect the stress fixture's computed counts; verify the browser status line discloses the heuristic share. Only source-backed and independently adjudicated cases may be promoted into pronunciation gold or production rules.
+
+- **Metric semantics follow-up:** `low_confidence_share` and `heuristic_share` now return 0 (not 100%) for an input with no modern Hangul syllables. The target count field is named `target_project_mapping_units` to avoid implying a neural/model inference stage; the runtime remains deterministic.
