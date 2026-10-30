@@ -421,3 +421,17 @@ Post-merge mainline checks:
 - Pages deployment run [41142749819](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41142749819): **PASS**; Python regression/corpus checks, browser tests, static build, Pages deploy, HTTP smoke, and live Playwright practical-mode smoke all passed. NIKL metadata-only inventory was **SKIPPED**.
 
 The public methodology and technical methodology are being updated to the corrected values from artifact `13018218724`. Reported rates use each engine's own scored denominator; coverage and abstentions remain separate. These are diagnostic Korean IPA metrics, not independent adjudicated gold and not Ukrainian-target accuracy. The feature-weighted metric remains a project-defined proxy.
+
+
+## PR #402 mainline integration and current CI — 2026-10-31
+
+PR [#402](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/402) merged to `main` as `17ed09fd96ea5883172c4a5f908177535ef4ed29`. The public and technical methodology now use the corrected artifact-inspected PR #401 metrics, with per-engine scored denominators, coverage, and abstentions separated.
+
+Post-merge exact-main verification:
+- [41143243310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143243310): **PASS**, 1,340/1,340 browser tests, Python regression/data integrity, Vite build.
+- [41143243218](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143243218): **PASS**, Python 3.11/3.12/3.13, web tests/build, clean wheel install, teacher-corpus audit.
+- [41143243251](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143243251): **PASS**, master table and strict corpus artifact generation.
+- [41143243225](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41143243225): **PASS**, Pages deployment, HTTP smoke, and live Playwright practical-mode smoke on an adversarial Korean passage.
+- NIKL metadata-only inventory: **SKIPPED**.
+
+The current follow-up branch `docs/refresh-methodology-ci-evidence-2026-10-31` updates the public methodology's CI section to this exact mainline evidence and adjusts the methodology contract test. Its latest exact-head run remains pending.
