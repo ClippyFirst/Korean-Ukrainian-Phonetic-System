@@ -79,9 +79,9 @@ test('covers every modern precomposed Hangul syllable without missing RR mapping
 test('context matrix has unique, inspectable word-level examples', () => {
   const rows = contextRulesCsv.trim().split(/\r?\n/u).slice(1);
   const ids = rows.map((row) => row.split(',')[0]);
-  assert.equal(rows.length, 41);
+  assert.equal(rows.length, 43);
   assert.equal(new Set(ids).size, rows.length);
-  assert.equal(rows.filter((row) => row.split(',')[14]).length, 16);
+  assert.equal(rows.filter((row) => row.split(',')[14]).length, 17);
   for (const row of rows) {
     const fields = row.split(',');
     assert.ok(fields[11], 'missing example surface for ' + fields[0]);
@@ -103,4 +103,20 @@ test('adapts RR ui according to Korean ㅢ pronunciation context without changin
   assert.equal(nonInitial.romanization, 'juui');
   assert.equal(nonInitial.text, 'чуі');
   assert.ok(nonInitial.trace.some((entry) => entry.mapping_id === 'RRUA-UI-SILENT-FINAL'));
+});
+
+test('distinguishes a resyllabified coda from a lexical consonant onset before ㅢ', () => {
+  const resyllabified = transcribeRevisedToUkrainian('혀븨', '협의');
+  assert.equal(resyllabified.romanization, 'hyeobui');
+  assert.equal(resyllabified.text, 'хйобуї');
+  const resyllabifiedVowel = resyllabified.trace.find((entry) => entry.mapping_id === 'RRUA-UI-RESYLLABIFIED-ONSET');
+  assert.equal(resyllabifiedVowel.onsetContext, 'resyllabified');
+  assert.equal(resyllabifiedVowel.onsetOrigin, 'previous-coda');
+  assert.equal(resyllabifiedVowel.alignmentStatus, 'aligned');
+
+  const ambiguous = transcribeRevisedToUkrainian('혀븨', '협의의');
+  const ambiguousVowel = ambiguous.trace.find((entry) => entry.mapping_id === 'RRUA-UI-AMBIGUOUS-ONSET');
+  assert.equal(ambiguousVowel.onsetContext, 'ambiguous-consonantal');
+  assert.equal(ambiguousVowel.alignmentStatus, 'unknown');
+  assert.equal(ambiguousVowel.alternativeUkrainian, 'і');
 });
