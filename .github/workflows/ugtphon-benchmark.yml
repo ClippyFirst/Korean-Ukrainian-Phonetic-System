@@ -104,7 +104,9 @@ jobs:
         with:
           name: ugtphon-korean-ipa-diagnostic
           path: |
-            ${{ runner.temp }}/ugtphon-ko-report.json
-            ${{ runner.temp }}/benchmark-stdout.json
+            ${{ runner.temp }}/ugtphon-ko-broad-report.json
+            ${{ runner.temp }}/ugtphon-ko-broad-stdout.json
+            ${{ runner.temp }}/ugtphon-ko-narrow-report.json
+            ${{ runner.temp }}/ugtphon-ko-narrow-stdout.json
             ${{ runner.temp }}/ko-LICENSE
           if-no-files-found: warn
