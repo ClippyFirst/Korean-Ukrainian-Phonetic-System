@@ -162,7 +162,7 @@ export function createHanjaToHangulConverter(dictionary = {}) {
     const source = String(input ?? '');
     const ambiguities = [];
     const unmapped = [];
-    const text = source.replace(/[\\u3400-\\u4DBF\\u4E00-\\u9FFF\\uF900-\\uFAFF]+/gu, (run) => {
+    const text = source.replace(/[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]+/gu, (run) => {
       let output = '';
       for (let index = 0; index < run.length;) {
         let match = null;
