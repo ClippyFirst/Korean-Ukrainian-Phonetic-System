@@ -23,10 +23,10 @@ vowel,ㅐ,ae,е,nucleus,provisional,VOWEL-AE-E,Modern Korean merger; practical o
 vowel,ㅑ,ya,я,nucleus,model-selected,,Palatalized vowel onset represented by я
 vowel,ㅒ,yae,є,nucleus,provisional,VOWEL-YAE-YE,Modern Korean merger; practical output є; collision is explicit in the RR trace
 vowel,ㅓ,eo,о,nucleus,provisional,VOWEL-EO-O,No one-to-one Ukrainian vowel counterpart; practical output collides with the other vowel; RR trace preserves eo vs o
-vowel,ㅔ,e,е,nucleus,model-selected,VOWEL-AE-E,Modern Korean merger; practical output е; collision is explicit in the RR trace
+vowel,ㅔ,e,е,nucleus,provisional,VOWEL-AE-E,Modern Korean merger; practical output е; collision is explicit in the RR trace
 vowel,ㅕ,yeo,йо,nucleus,provisional,VOWEL-YEO-YO,Practical output collides with the paired vowel; RR trace preserves yeo vs yo
 vowel,ㅖ,ye,є,nucleus,provisional,VOWEL-YAE-YE,Modern Korean merger; practical output є; collision is explicit in the RR trace
-vowel,ㅗ,o,о,nucleus,model-selected,VOWEL-EO-O,No one-to-one Ukrainian vowel counterpart; practical output collides with the other vowel; RR trace preserves eo vs o
+vowel,ㅗ,o,о,nucleus,provisional,VOWEL-EO-O,No one-to-one Ukrainian vowel counterpart; practical output collides with the other vowel; RR trace preserves eo vs o
 vowel,ㅘ,wa,ва,nucleus,provisional,,RR glide sequence rendered as Ukrainian ва
 vowel,ㅙ,wae,ве,nucleus,provisional,VOWEL-WAE-OE-WE,Modern vowel merger/practical approximation; collision is explicit in the RR trace
 vowel,ㅚ,oe,ве,nucleus,provisional,VOWEL-WAE-OE-WE,Modern vowel merger/practical approximation; collision is explicit in the RR trace
