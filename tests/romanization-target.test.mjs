@@ -73,6 +73,28 @@ test('records the actual right-hand phonological context rather than a fixed pla
   ]);
 });
 
+test('documents every Ukrainian vowel collision and exposes the RR identity in trace', () => {
+  const [header, ...lines] = correspondenceCsv.trim().split(/\r?\n/u);
+  const columns = header.split(',');
+  const rows = lines.map((line) => Object.fromEntries(line.split(',').map((value, index) => [columns[index], value])));
+  const byTarget = new Map();
+  for (const row of rows.filter((entry) => entry.layer === 'vowel')) {
+    const group = byTarget.get(row.ukrainian) || [];
+    group.push(row);
+    byTarget.set(row.ukrainian, group);
+  }
+  const collisions = [...byTarget.values()].filter((group) => new Set(group.map((row) => row.rr)).size > 1);
+  assert.equal(collisions.length, 5);
+  for (const group of collisions) {
+    assert.ok(group[0].collision_group, 'undocumented Ukrainian vowel collision: ' + group[0].ukrainian);
+    assert.ok(group.every((row) => row.collision_group === group[0].collision_group));
+  }
+  const eo = transcribeRevisedToUkrainian('어').trace.find((entry) => entry.layer === 'vowel');
+  const o = transcribeRevisedToUkrainian('오').trace.find((entry) => entry.layer === 'vowel');
+  assert.equal(eo.collisionGroup, 'VOWEL-EO-O');
+  assert.equal(o.collisionGroup, 'VOWEL-EO-O');
+});
+
 test('parses quoted commas in correspondence notes without shifting CSV columns', () => {
   const quotedCsv = correspondenceCsv.replace('Simple vowel', '"Simple, vowel"');
   const adapter = createRomanizationTarget(quotedCsv, contextRulesCsv);
