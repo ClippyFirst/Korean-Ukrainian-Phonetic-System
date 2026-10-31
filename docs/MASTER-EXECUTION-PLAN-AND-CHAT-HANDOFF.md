@@ -4222,3 +4222,14 @@ The reverse Hanja adapter does not yet make the browser bidirectional. Do not st
 | Reverse Hanja ambiguity ordering | PARTIAL / fix submitted | CI exposed that candidate readings were correctly sorted by Unicode codepoint, while the test expected the reverse order. The test expectation is now aligned with deterministic ordering; exact-head tests on `a124df38397fb961e76a80a63f98192eba54a9d6` are pending. |
 
 The current user-facing IPA contract is: **surface phonetic IPA** from the selected G2P engine, plus a separately labelled **orthography-derived phonemic baseline**. Never imply that the baseline is contextually adjudicated phonemic output. The primary Ukrainian result remains the project's existing author-developed transliteration/practical rendering system, not a replacement subsystem.
+
+
+## Continuation — Hanja bidirectional UI integration — 2026-10-31
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Hangul → Hanja annotation | DONE_VERIFIED as conservative dictionary annotation in prior CI | Existing deterministic, pinned dictionary path remains unchanged. |
+| Hanja → Hangul reverse workbench | PARTIAL pending exact-head CI and linguistic evaluation | Hanja card now includes a separate Hanja input field, editable Hangul reading output, ambiguity/unmapped notes, and a handoff button to the main Korean input. The browser loads all 19 local dictionary chunks only when reverse lookup is used. Ambiguous/partial results are blocked until the user edits the reading; no silent homophone choice. Tests: `tests/hanja.test.mjs`, `tests/hanja-ui-contract.test.mjs`. |
+| Hanja mixed-script normalization and pronunciation | PARTIAL | User can reverse-convert a mixed Hanja/Hangul phrase and transfer the edited Hangul result into the main pipeline. It is intentionally a separate step so the original input and normalized reading remain visible. End-to-end browser smoke, source-offset review and reverse-coverage benchmark remain TODO. |
+
+The reverse lookup is dictionary-backed, not contextual Hanja WSD. It inverts a reading→Hanja word map and lacks full single-character coverage. Unknown/ambiguous spans remain visible for manual correction. Do not claim arbitrary Hanja text is automatically and contextually resolved.
