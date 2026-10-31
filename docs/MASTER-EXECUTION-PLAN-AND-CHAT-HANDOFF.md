@@ -4233,3 +4233,33 @@ The current user-facing IPA contract is: **surface phonetic IPA** from the selec
 | Hanja mixed-script normalization and pronunciation | PARTIAL | User can reverse-convert a mixed Hanja/Hangul phrase and transfer the edited Hangul result into the main pipeline. It is intentionally a separate step so the original input and normalized reading remain visible. End-to-end browser smoke, source-offset review and reverse-coverage benchmark remain TODO. |
 
 The reverse lookup is dictionary-backed, not contextual Hanja WSD. It inverts a reading→Hanja word map and lacks full single-character coverage. Unknown/ambiguous spans remain visible for manual correction. Do not claim arbitrary Hanja text is automatically and contextually resolved.
+
+
+## Owner-confirmed final product contract — implementation reconciliation — 2026-10-31
+
+The primary Ukrainian output is named **українська транслітерація** throughout the product UI and methodology. The term is defined here as the existing author-developed practical Ukrainian-letter rendering guided by Korean pronunciation and project research rules; it is not literal character-by-character Hangul substitution, a translation, or IPA itself. The existing IPA-first target and RR-mediated target are preserved as distinct routes; no replacement target system was introduced.
+
+### Current user-facing implementation
+
+- Korean Hangul input remains the main field. A generated adversarial quick example is available; the full synthetic passage is retained in `tests/fixtures/adversarial-corpora/31-generated-mixed-phonology-prose-2026-10-31.txt` and carries no gold labels.
+- Default dialect scope is explicitly labelled standard South Korean (Seoul-based standard).
+- Ordinary and specialist audiences are served by the accessible default mode plus separate detailed research mode and collapsed full trace panels.
+- IPA has two separately labelled outputs: selected-engine surface phonetic IPA, and a Hangul-derived phonemic baseline. The JS baseline is parity-tested against the Python phonemic inventory on representative syllable/coda/vowel cases. It remains explicitly non-morphological and non-prosodic.
+- Revised Romanization remains a separate result and a separate RR→Ukrainian route.
+- Hangul→Hanja annotation remains in the result card. Hanja→Hangul is now a standalone disclosure below the main input, so it can be used before any Hangul result exists. It loads the 19 local dictionary chunks only when Han-script input is present, supports mixed text, shows ambiguity/unmapped spans, provides an editable Hangul reading, blocks transfer while any Han characters remain, and transfers the manually resolved Hangul into the main input. It is dictionary lookup, not contextual WSD or complete character coverage.
+
+### Updated task ledger
+
+| Task | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Owner-approved Ukrainian transliteration terminology | DONE_VERIFIED as UI/docs contract | `index.html`, `src/main.js`, `system.html`, `README.md`; UI regression assertions updated. The existing target correspondence data remains unchanged by the terminology change. |
+| Dual IPA fields | PARTIAL | `src/app/ipa_phonemic.js`, separate UI field/copy action, `tests/ipa-phonemic.test.mjs`, and Python↔browser parity test in `tests/test_ipa.py`. Exact-head CI is pending; phonemic output is a baseline, not morphology/prosody-resolved IPA. |
+| Hanja both directions | PARTIAL | Reverse lookup and standalone UI are implemented; ambiguous/unmapped readings require manual correction. Exact-head CI, browser smoke, dictionary coverage/error rates and contextual reading evaluation remain required. |
+| Standard South Korean profile label | DONE_VERIFIED as product default label | Main input guidance identifies the standard South Korean / Seoul-based scope; linguistic coverage remains standard-only. |
+| Simple + expert audience | DONE_VERIFIED as current interaction structure | Ordinary default mode, detailed Kozak Kim mode, collapsed trace disclosures and full source/rule trace remain available. |
+| Generated adversarial inputs | DONE_VERIFIED as stimuli only | Added quick example and fixture; no fabricated gold outputs. |
+
+### CI failures found and corrected during this continuation
+
+- Exact-head web tests on `d917ca865fd66239089bfb8497ac0aeff16fe417` exposed stale assertions expecting the old UI term "Український запис" and the old Hanja import signature. The UI and methodology now use the confirmed "Українська транслітерація" term; affected tests were updated, including `tests/ipa-ukrainian-trace.test.mjs`, `tests/corpus-sentence-and-trace-regression.test.mjs`, `tests/web-ui-contract.test.mjs`, and `tests/hanja-ui-contract.test.mjs`.
+- Exact-head CI on the current continuation branch is pending because GitHub Actions runners are queued. Do not mark these latest UI changes DONE_VERIFIED until the newest `tests`, browser integration and system verification jobs complete.
