@@ -110,6 +110,18 @@
         </p>
       </div>
     </div>
+    <details class="hanja-reverse-details">
+      <summary>Є текст Hanja? Визначити корейське читання → Hangul</summary>
+              <div class="hanja-reverse-workbench">
+                <div class="result-meta"><span>漢字 → 한글</span><strong>Зворотне читання Hanja → Hangul</strong><button class="copy-button" data-copy="hanja-reading" type="button">Копіювати</button></div>
+                <label class="sr-only" for="hanja-input">Введіть текст ханча для визначення корейського читання</label>
+                <textarea id="hanja-input" rows="2" lang="ko" spellcheck="false" placeholder="政府 經濟 發展"></textarea>
+                <label class="hanja-reading-label" for="hanja-reading-output">Корейське читання · перевірте неоднозначні місця</label>
+                <textarea id="hanja-reading-output" rows="2" lang="ko" spellcheck="false" placeholder="여기에 한글 독음이 표시됩니다"></textarea>
+                <p id="hanja-reading-status" class="hanja-engine-status" role="status">Неоднозначні читання не вгадуються: їх потрібно перевірити або виправити вручну.</p>
+                <button id="hanja-use-reading" class="copy-button" type="button" disabled>Передати читання в основне поле</button>
+              </div>
+    </details>
   </section>
 
   <section class="output-workspace" aria-label="Результат перетворення">
@@ -144,15 +156,7 @@
         <p id="result-hanja" class="result-body hanja" lang="ko"></p>
         <p id="hanja-engine-status" class="hanja-engine-status" role="status">Базовий словник</p>
         <p class="hanja-note">Ханча — це словникова підказка: вона показує ієрогліфи для тих слів, для яких їх знайдено у словнику. Не всі корейські слова мають ханча; невідомі слова та граматичні частки залишаються хангилем.</p>
-        <div class="hanja-reverse-workbench">
-          <div class="result-meta"><span>漢字 → 한글</span><strong>Зворотне читання Hanja → Hangul</strong><button class="copy-button" data-copy="hanja-reading" type="button">Копіювати</button></div>
-          <label class="sr-only" for="hanja-input">Введіть текст ханча для визначення корейського читання</label>
-          <textarea id="hanja-input" rows="2" lang="ko" spellcheck="false" placeholder="政府 經濟 發展"></textarea>
-          <label class="hanja-reading-label" for="hanja-reading-output">Корейське читання · перевірте неоднозначні місця</label>
-          <textarea id="hanja-reading-output" rows="2" lang="ko" spellcheck="false" placeholder="여기에 한글 독음이 표시됩니다"></textarea>
-          <p id="hanja-reading-status" class="hanja-engine-status" role="status">Неоднозначні читання не вгадуються: їх потрібно перевірити або виправити вручну.</p>
-          <button id="hanja-use-reading" class="copy-button" type="button" disabled>Передати читання в основне поле</button>
-        </div>
+
       </article>
       <article id="panel-ipa" class="result-card" data-result-panel="ipa">
         <div class="result-meta"><span>IPA</span><strong>Фонетичний IPA · широкий поверхневий рівень</strong><button class="copy-button" data-copy="ipa" type="button">Копіювати</button></div>
