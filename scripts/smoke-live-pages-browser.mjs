@@ -109,6 +109,26 @@ try {
   assert.equal(hanjaOutput, '政府는 經濟 發展을 硏究한다.',
     'the deployed deterministic dictionary must convert known Sino-Korean words and preserve Korean particles/endings');
 
+  // Reverse Hanja lookup is a standalone input path and must remain available
+  // while the main Hangul results are empty. Ambiguity/unknowns must not be
+  // silently transferred into the pronunciation engine.
+  await page.locator('#source-input').fill('');
+  await page.locator('.hanja-reverse-details summary').click();
+  await page.locator('#hanja-input').fill('政府는 經濟 발전을 연구한다.');
+  await page.waitForFunction(() =>
+    document.querySelector('#hanja-reading-output')?.value?.trim() === '정부는 경제 발전을 연구한다.' &&
+    (document.querySelector('#hanja-reading-status')?.textContent || '').includes('Однозначне словникове читання'),
+  null, { timeout: 45000 });
+  assert.equal(await page.locator('#hanja-use-reading').isEnabled(), true,
+    'a unique reverse dictionary reading may be transferred without manual correction');
+  await page.locator('#hanja-use-reading').click();
+  await page.waitForFunction(() =>
+    document.querySelector('#source-input')?.value === '정부는 경제 발전을 연구한다.' &&
+    (document.querySelector('#result-ipa')?.textContent?.trim() || '').length > 0,
+  null, { timeout: 20000 });
+  assert.equal((await page.locator('#source-input').inputValue()).trim(), '정부는 경제 발전을 연구한다.',
+    'the reviewed Hangul reading must be handed off to the main pronunciation pipeline');
+
   await page.locator('#source-input').fill(passage);
 
   try {
