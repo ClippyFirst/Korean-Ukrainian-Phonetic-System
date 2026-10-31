@@ -76,19 +76,32 @@ test('covers every modern precomposed Hangul syllable without missing RR mapping
   }
 });
 
-test('context matrix has unique, inspectable word-level examples', () => {
-  const rows = contextRulesCsv.trim().split(/\r?\n/u).slice(1);
-  const ids = rows.map((row) => row.split(',')[0]);
+test('context matrix examples reproduce the declared syllable and phonological environment', () => {
+  const [header, ...lines] = contextRulesCsv.trim().split(/\r?\n/u);
+  const columns = header.split(',');
+  const rows = lines.map((line) => Object.fromEntries(line.split(',').map((value, index) => [columns[index], value])));
   assert.equal(rows.length, 43);
-  assert.equal(new Set(ids).size, rows.length);
-  assert.equal(rows.filter((row) => row.split(',')[14]).length, 17);
-  for (const row of rows) {
-    const fields = row.split(',');
-    assert.ok(fields[11], 'missing example surface for ' + fields[0]);
-    assert.ok(fields[12], 'missing RR example for ' + fields[0]);
+  assert.equal(new Set(rows.map((row) => row.rule_id)).size, rows.length);
+  assert.equal(rows.filter((row) => row.alternative_ukrainian).length, 16);
+
+  for (const rule of rows) {
+    assert.ok(rule.example_source, 'missing source example or ∅ alignment marker for ' + rule.rule_id);
+    assert.ok(rule.example_surface, 'missing surface example for ' + rule.rule_id);
+    assert.ok(rule.example_rr, 'missing RR example for ' + rule.rule_id);
+    const source = rule.example_source === '∅' ? '' : rule.example_source;
+    const example = romanizeRevisedDetailed(rule.example_surface, source);
+    assert.equal(example.text, rule.example_rr, 'RR mismatch for ' + rule.rule_id);
+    const syllables = example.segments.filter((segment) => segment.type === 'syllable');
+    const segment = syllables.find((candidate) => rule.layer === 'onset'
+      ? candidate.onsetHangul === rule.hangul && candidate.onset === rule.rr
+      : candidate.vowelHangul === rule.hangul && candidate.vowel === rule.rr);
+    assert.ok(segment, 'example lacks target ' + rule.layer + ' ' + rule.hangul + ' for ' + rule.rule_id);
+    if (rule.word_position !== '*') assert.equal(segment.wordPosition, rule.word_position, 'word position for ' + rule.rule_id);
+    if (rule.left_context !== '*') assert.equal(segment.leftContext, rule.left_context, 'left context for ' + rule.rule_id);
+    if (rule.sentence_position !== '*') assert.equal(segment.sentencePosition, rule.sentence_position, 'sentence position for ' + rule.rule_id);
+    if (rule.onset_context !== '*') assert.equal(segment.onsetContext, rule.onset_context, 'onset origin for ' + rule.rule_id);
   }
 });
-
 test('adapts RR ui according to Korean ㅢ pronunciation context without changing RR', () => {
   const initial = transcribeRevisedToUkrainian('의미');
   assert.equal(initial.romanization, 'uimi');
