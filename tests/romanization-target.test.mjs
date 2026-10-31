@@ -15,6 +15,16 @@ test('maps RR syllable units to a separate Ukrainian output', () => {
   assert.equal(result.status, 'provisional');
 });
 
+test('retains NIKL RR source-orthography exceptions in the Ukrainian route trace', () => {
+  const result = transcribeRevisedToUkrainian('압꾸정', '압구정');
+  assert.equal(result.romanization, 'apgujeong');
+  assert.equal(result.status, 'provisional');
+  const overridden = result.trace.find((entry) => entry.layer === 'onset' && entry.syllableIndex === 1);
+  assert.equal(overridden.rr, 'g');
+  assert.equal(overridden.rrRule, 'NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED');
+  assert.equal(overridden.sourceOrthography, '구');
+});
+
 test('distinguishes initial voiceless lenis from intervocalically voiced lenis', () => {
   assert.equal(transcribeRevisedToUkrainian('가').text, 'ка');
   assert.equal(transcribeRevisedToUkrainian('가가').text, 'каґа');
