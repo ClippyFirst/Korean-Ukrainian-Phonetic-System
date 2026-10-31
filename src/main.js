@@ -180,8 +180,11 @@ function renderHanjaReverse(){
 if(hanjaInput)hanjaInput.addEventListener('input',renderHanjaReverse);
 if(hanjaReadingOutput)hanjaReadingOutput.addEventListener('input',()=>{
   if(!hanjaUseReading)return;
-  hanjaUseReading.disabled=!hanjaReadingOutput.value.trim()
-    ||(hanjaReverseNeedsManualResolution&&hanjaReadingOutput.value===hanjaReverseSuggestedText);
+  const stillContainsHanja=/[\\u3400-\\u4DBF\\u4E00-\\u9FFF\\uF900-\\uFAFF]/u.test(hanjaReadingOutput.value);
+  hanjaUseReading.disabled=!hanjaReadingOutput.value.trim()||stillContainsHanja;
+  if(hanjaReverseNeedsManualResolution&&!stillContainsHanja&&hanjaReadingOutput.value!==hanjaReverseSuggestedText){
+    hanjaReadingStatus.textContent='Ручне читання відредаговано; перевірте його перед передаванням у головне поле.';
+  }
 });
 if(hanjaUseReading)hanjaUseReading.addEventListener('click',()=>{
   if(!input||!hanjaReadingOutput||hanjaUseReading.disabled)return;
