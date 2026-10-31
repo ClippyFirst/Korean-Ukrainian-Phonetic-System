@@ -120,6 +120,8 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
             : null);
         trace.push({
           source: segment.source,
+          sourceOrthography: segment.sourceOrthography,
+          rrRule: segment.rrRule,
           layer,
           rr,
           ukrainian: mapping.ukrainian,
