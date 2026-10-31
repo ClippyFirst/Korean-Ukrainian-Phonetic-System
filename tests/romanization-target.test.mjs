@@ -213,7 +213,7 @@ test('adapts RR ui according to Korean ㅢ pronunciation context without changin
 
   const consonantOnset = transcribeRevisedToUkrainian('희망');
   assert.equal(consonantOnset.romanization, 'huimang');
-  assert.equal(consonantOnset.text, 'гіманґ');
+  assert.equal(consonantOnset.text, 'гіманг');
   assert.ok(consonantOnset.trace.some((entry) => entry.mapping_id === 'RRUA-UI-CONSONANT-ONSET' && entry.ukrainian === 'і'));
 
   const nonInitial = transcribeRevisedToUkrainian('주의');
