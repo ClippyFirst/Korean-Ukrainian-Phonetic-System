@@ -22,6 +22,7 @@ test('distinguishes initial voiceless lenis from intervocalically voiced lenis',
   const result = transcribeRevisedToUkrainian('가가');
   const secondOnset = result.trace.find((entry) => entry.source === '가' && entry.layer === 'onset' && entry.syllableIndex === 1);
   assert.equal(secondOnset.phonologicalFeature, 'intervocalic-voicing');
+  assert.equal(secondOnset.alternativeUkrainian, 'к');
   assert.equal(secondOnset.wordPosition, 'final');
   assert.equal(secondOnset.leftContext, 'vowel');
 });
@@ -80,6 +81,7 @@ test('context matrix has unique, inspectable word-level examples', () => {
   const ids = rows.map((row) => row.split(',')[0]);
   assert.equal(rows.length, 41);
   assert.equal(new Set(ids).size, rows.length);
+  assert.equal(rows.filter((row) => row.split(',')[14]).length, 16);
   for (const row of rows) {
     const fields = row.split(',');
     assert.ok(fields[11], 'missing example surface for ' + fields[0]);
