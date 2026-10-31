@@ -4083,3 +4083,42 @@ Both were rewritten against the current main state: PRs #401–#404, corrected m
 **Important distinction:** the review record documents structured analytical perspectives based on published skill instructions. It does not claim independent human review, autonomous external agents, or participation by the skill authors. Issue [#337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337) still has no qualified independent reviewer submissions.
 
 The new documents are linked from README and guarded by the methodology contract test. No pronunciation rules, IPA values, Ukrainian target mappings, or runtime behavior changed.
+
+
+---
+
+# Continuation — adversarial phonetic engineering skill integration (2026-11-01)
+
+**Starting main:** 5cec9deb4a8d622cd5f0ba969a2fd49b17281f43  
+**Working branch:** chore/phonetic-engineering-agent-skill-2026-11-01  
+**Scope:** agent workflow and test-quality guidance only; no runtime pronunciation or Ukrainian correspondence changes.
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Inspect the three requested skill repositories | DONE_VERIFIED | Inspected Superpowers, Matt Pocock Skills, and Ponytail at pinned main revisions; checked MIT license files and selected relevant individual skills. |
+| Add repository-specific phonetic engineering skill | PARTIAL | Added .agents/skills/phonetic-engineering/SKILL.md; exact-head contract test and CI are pending. |
+| Record selected skills, exclusions, and provenance | PARTIAL | Added docs/AGENT-SKILL-INTEGRATION-2026-11-01.md; exact-head CI is pending. |
+| Add structural contract tests for the new skill | PARTIAL | Added tests/phonetic-engineering-agent-skill-contract.test.mjs; no local Node environment was available in this connector-only session. |
+| Existing adversarial corpus and Korean rule coverage | DONE_VERIFIED for current main baseline | Main already contains long-passage, sentence-corpus, morphology, coda/liaison, nasalization, liquid assimilation, fortition, palatalization, phrase-boundary, NIKL interaction, mixed-input, and uncertainty tests. Open PR #411 adds a generated mixed-phonology prose fixture and end-to-end trace regression, but remains draft and is not part of main. |
+| Select production G2P winner | BLOCKED / EVIDENCE-LIMITED | Latest #411 exact-head multi-engine diagnostic was still running at inspection; Charsiu and ByT5 were skipped under default-off research gates. Do not select an engine without fresh comparable artifacts, independent IPA gold, and rights/training-provenance clearance. |
+| Independent Korean IPA and Ukrainian target validation | BLOCKED | No qualified independent IPA adjudications or independent Ukrainian target gold/reader study; see issue #337 and canonical acceptance gates. |
+
+## Skill selection
+
+The integration adopts Superpowers test-driven development, systematic debugging, and verification-before-completion; Matt Pocock's standards/spec code-review and primary-source research lenses; and Ponytail's whole-repository audit and change-review lenses. Duplicate TDD/debugging prescriptions were consolidated. Ponytail's gain scoreboard was excluded because its measurements are not Korean G2P evidence. Upstream skill text was not copied; exact revisions and MIT license status are recorded in the linked integration note.
+
+## Verification and limitations
+
+- GitHub connector inspection was used for repository metadata, source files, branches, PRs, and workflow runs.
+- No local shell, Node, npm, pytest, build, or browser command is claimed in this connector-only session.
+- The new structural skill test is not a linguistic correctness test. It verifies process guardrails only.
+- Current main baseline test/build evidence is recorded in the preceding canonical section. PR #411 remains a separate draft feature branch with its own exact-head CI evidence; it has not been merged or deployed by this skill-only workstream.
+- Re-run the complete repository test workflow and build on this branch. If green, update this section with exact run IDs and final branch/PR SHA. No runtime deployment is required because no service code or generated runtime data changes.
+
+## Next genuine acceptance gates
+
+1. Run the new contract test and full Node/Python regression suites on the exact PR head; fix failures and rerun.
+2. Run production build and system verification; confirm the added skill does not break existing agent-skill contracts.
+3. Review the new skill against the three upstream sources for accidental duplication or incompatible requirements.
+4. Separately complete PR #411's exact-head benchmark, live-browser preview smoke, RR conformance, Hanja adjudication, and Ukrainian target review; do not conflate that feature branch with this skill-only workstream.
+5. Resolve independent Korean IPA holdout, Ukrainian target gold, and model/data licensing blockers before research certification or engine selection.
