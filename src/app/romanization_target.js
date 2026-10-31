@@ -82,6 +82,7 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
           alternativeUkrainian: mapping.alternative_ukrainian || null,
           phonologicalFeature: contextRule?.feature ?? null,
           wordIndex: segment.wordIndex,
+          sentenceWordIndex: segment.sentenceWordIndex,
           sentenceIndex: segment.sentenceIndex,
           syllableIndex: segment.syllableIndex,
           wordLength: segment.wordLength,
@@ -101,6 +102,7 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
     return {
       text: issues.length ? null : text,
       romanization: romanized.text,
+      sourceOrthography: String(original ?? ''),
       status: issues.length ? 'unavailable' : 'provisional',
       issues,
       trace,
