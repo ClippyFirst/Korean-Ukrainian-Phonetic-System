@@ -484,3 +484,10 @@ button { color: inherit; }
 .rr-ua-table th, .rr-ua-table td { padding:9px 11px; border:1px solid var(--line); text-align:left; vertical-align:top; }
 .rr-ua-table th { background:var(--surface-soft); font-weight:800; }
 .rr-ua-table td:first-child, .rr-ua-table td:nth-child(2), .rr-ua-table td:nth-child(3) { white-space:nowrap; }
+
+
+.hanja-reverse-workbench { margin-top:16px; padding-top:14px; border-top:1px solid var(--line); display:grid; gap:8px; }
+.hanja-reverse-workbench textarea { display:block; width:100%; min-height:68px; resize:vertical; border:1px solid var(--line); border-radius:8px; padding:10px 12px; background:var(--surface); color:var(--ink); font-family:"Noto Sans KR","Noto Sans CJK KR",sans-serif; font-size:1rem; line-height:1.6; }
+.hanja-reverse-workbench textarea:focus { outline:2px solid var(--blue); outline-offset:1px; }
+.hanja-reading-label { color:var(--muted); font-size:.76rem; font-weight:700; }
+.hanja-reverse-workbench .copy-button { justify-self:start; margin-left:0; }
