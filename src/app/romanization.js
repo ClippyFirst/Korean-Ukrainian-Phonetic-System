@@ -1,10 +1,13 @@
 /**
- * Korean Revised Romanization (RR) for an already-resolved Hangul surface form.
+ * NIKL-based Revised Romanization (RR) from source orthography + resolved
+ * Hangul surface form. Surface syllables drive the pronunciation-sensitive RR
+ * rules; source spelling is retained for NIKL's explicit orthographic
+ * exceptions (e.g. compound fortis and selected noun + ㅎ cases).
  *
- * RR follows standard Korean pronunciation. This adapter encodes the resolved
- * surface syllables; it does not run Korean phonological rules or feed the
- * IPA-first Ukrainian renderer. It also records word/sentence position and
- * the immediately preceding coda class for the separate RR→Ukrainian adapter.
+ * This is a conservative subset, not a complete name/administrative-unit
+ * romanizer. It does not run Korean phonological rules or feed the IPA-first
+ * Ukrainian renderer. It records word/sentence position and coda context for
+ * the separate RR→Ukrainian adapter.
  */
 const INITIALS = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 const VOWEL_JAMO = ['ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ', 'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ'];
@@ -15,6 +18,23 @@ const CODAS = ['', 'k', 'k', 'k', 'n', 'n', 'n', 't', 'l', 'k', 'm', 'l', 'l', '
 const SENTENCE_END = new Set(['.', '!', '?', '。', '！', '？', '\n']);
 const SONORANT_CODAS = new Set(['n', 'm', 'ng', 'l']);
 const SONORANT_ONSETS = new Set(['ㄴ', 'ㄹ', 'ㅁ']);
+
+// NIKL, Romanization of Korean, §3(1): these source forms retain the written
+// lenis consonant instead of romanizing the compound's fortis surface onset.
+// The two noun + ㅎ examples retain written h rather than a surface aspirate.
+// Match only the attested source prefixes; do not generalize to unseen words.
+const NIKL_RR_ORTHOGRAPHIC_EXCEPTIONS = [
+  {orthography: '압구정', rule: 'NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED'},
+  {orthography: '낙동강', rule: 'NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED'},
+  {orthography: '죽변', rule: 'NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED'},
+  {orthography: '낙성대', rule: 'NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED'},
+  {orthography: '합정', rule: 'NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED'},
+  {orthography: '팔당', rule: 'NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED'},
+  {orthography: '샛별', rule: 'NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED'},
+  {orthography: '울산', rule: 'NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED'},
+  {orthography: '묵호', rule: 'NIKL-RR-3-1-NOUN-H-NOT-ASPIRATED'},
+  {orthography: '집현전', rule: 'NIKL-RR-3-1-NOUN-H-NOT-ASPIRATED'}
+].sort((a, b) => b.orthography.length - a.orthography.length);
 
 function isHangulSyllable(code) {
   return code >= 0xac00 && code <= 0xd7a3;
@@ -82,6 +102,11 @@ export function romanizeRevisedDetailed(surface, original = surface) {
   const surfaceSyllables = extractHangulSyllables(surface);
   const alignmentKnown = sourceSyllables.length === surfaceSyllables.length
     && sourceSyllables.every((unit, index) => unit.wordIndex === surfaceSyllables[index].wordIndex);
+  const sourceWords = new Map();
+  for (const unit of sourceSyllables) {
+    if (!sourceWords.has(unit.wordIndex)) sourceWords.set(unit.wordIndex, []);
+    sourceWords.get(unit.wordIndex).push(unit);
+  }
   const segments = [];
   let output = '';
   let wordIndex = 0;
@@ -113,11 +138,20 @@ export function romanizeRevisedDetailed(surface, original = surface) {
     wordIndex += 1;
     sentenceWordIndex += 1;
     let previousCoda = '';
+    const alignedSourceWord = alignmentKnown
+      ? sourceWords.get(surfaceSyllables[syllableOrdinal]?.wordIndex) || []
+      : [];
+    const sourceWordText = alignedSourceWord.map((unit) => unit.char).join('');
+    const rrException = NIKL_RR_ORTHOGRAPHIC_EXCEPTIONS.find((item) => sourceWordText.startsWith(item.orthography)) || null;
+    const rrExceptionSyllables = rrException ? Array.from(rrException.orthography).length : 0;
 
     word.forEach((char, syllableIndex) => {
-      const parts = decomposeSyllable(char);
+      const surfaceParts = decomposeSyllable(char);
       const surfaceUnit = surfaceSyllables[syllableOrdinal];
       const sourceUnit = alignmentKnown ? sourceSyllables[syllableOrdinal] : null;
+      const useOrthographicException = Boolean(rrException && syllableIndex < rrExceptionSyllables && sourceUnit);
+      const parts = useOrthographicException ? sourceUnit.parts : surfaceParts;
+      const rrRule = useOrthographicException ? rrException.rule : 'NIKL-RR-SURFACE-BASED';
       const previousSource = alignmentKnown ? sourceSyllables[syllableOrdinal - 1] : null;
       const previousSurface = alignmentKnown ? surfaceSyllables[syllableOrdinal - 1] : null;
       const transferredOnset = previousSource
@@ -165,6 +199,8 @@ export function romanizeRevisedDetailed(surface, original = surface) {
       segments.push({
         type: 'syllable',
         source: char,
+        sourceOrthography: sourceUnit?.char ?? char,
+        rrRule,
         text,
         onset,
         vowel: parts.vowel,
