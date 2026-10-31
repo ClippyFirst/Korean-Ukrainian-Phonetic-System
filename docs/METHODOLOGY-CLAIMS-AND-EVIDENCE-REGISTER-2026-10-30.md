@@ -99,3 +99,14 @@ The current branch now exposes both IPA fields and copy controls while keeping t
 ## Bidirectional Hanja UI integration — 2026-10-31
 
 The browser now exposes a standalone Hanja→Hangul workbench below the main input, available even before any Hangul result exists. It loads the local pinned dictionary chunks on demand, applies deterministic longest-match reverse lookup, preserves ambiguous and unknown Hanja spans, displays candidate readings, and requires manual editing before an ambiguous/partial reading can be transferred to the main Hangul input. The Hangul→Hanja annotation path remains separate. This supports mixed Hangul/Hanja text as a manually reviewable workflow; it is not contextual word-sense disambiguation and does not imply complete Hanja coverage. Regression tests cover the reverse adapter and UI handoff. Status: PARTIAL pending exact-head CI, end-to-end browser smoke and a source-separated reverse-reading coverage/error benchmark.
+
+
+## Product terminology and final user-facing scope — 2026-10-31
+
+The owner explicitly chose the product term **Ukrainian transliteration** rather than Ukrainian transcription. The repository defines this as its existing author-developed practical Ukrainian-letter rendering guided by Korean pronunciation and research rules—not literal character-by-character Hangul substitution, translation, or IPA itself. UI, README, methodology page and relevant regression assertions now use this term. Existing IPA-first and RR-mediated Ukrainian target data/routes were preserved.
+
+The standard South Korean / Seoul-based scope is now stated in the input guidance. The default mode serves general use; the detailed Kozak Kim mode and collapsed full trace disclosures preserve specialist inspection. A generated adversarial quick example complements the synthetic corpus fixture; neither is treated as pronunciation gold.
+
+The IPA UI now exposes surface phonetic IPA from the selected G2P engine and a separate orthography-derived phonemic baseline. A Python↔browser parity test compares representative cases with the Python `phonemic_segments` inventory. The JS baseline intentionally does not resolve morphology or prosody and flags non-Hangul input. Status remains PARTIAL until the latest exact-head CI passes and independent phonological adjudication is available.
+
+The reverse Hanja workbench was moved outside the results container so it remains available when the main input is empty. It loads local dictionary chunks only when Han-script input is present, exposes ambiguous/unmapped spans, requires manual editing until no Han characters remain, and can transfer the resolved Hangul into the main field. This is not full single-character Hanja coverage or contextual WSD. Status remains PARTIAL pending exact-head browser verification and a source-separated coverage/error benchmark.
