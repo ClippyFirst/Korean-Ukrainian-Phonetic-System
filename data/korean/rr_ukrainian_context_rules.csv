@@ -1,37 +1,42 @@
-rule_id,layer,hangul,rr,word_position,left_context,sentence_position,ukrainian,feature,status,notes,example_surface,example_rr
-RRUA-G-INITIAL,onset,ㄱ,g,initial,word-boundary,*,к,voiceless-lenis-stop,provisional,Word-initial lenis ㄱ is not the phonemic aspirate ㅋ; no apostrophe,가,ga
-RRUA-G-SINGLE,onset,ㄱ,g,single,word-boundary,*,к,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㄱ,가,ga
-RRUA-G-MEDIAL-VOWEL,onset,ㄱ,g,medial,vowel,*,ґ,intervocalic-voicing,provisional,Lenis ㄱ between voiced segments,아가,aga
-RRUA-G-MEDIAL-SONORANT,onset,ㄱ,g,medial,sonorant,*,ґ,sonorant-conditioned-voicing,provisional,Lenis ㄱ after a voiced sonorant,안가,anga
-RRUA-G-MEDIAL-OBSTRUENT,onset,ㄱ,g,medial,obstruent,*,к,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent; only if the resolved surface onset remains lenis (otherwise tensification is represented by ㄲ),악가,gakga
-RRUA-D-INITIAL,onset,ㄷ,d,initial,word-boundary,*,т,voiceless-lenis-stop,provisional,Word-initial lenis ㄷ is not the phonemic aspirate ㅌ; no apostrophe,다,da
-RRUA-D-SINGLE,onset,ㄷ,d,single,word-boundary,*,т,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㄷ,다,da
-RRUA-D-MEDIAL-VOWEL,onset,ㄷ,d,medial,vowel,*,д,intervocalic-voicing,provisional,Lenis ㄷ between voiced segments,아다,ada
-RRUA-D-MEDIAL-SONORANT,onset,ㄷ,d,medial,sonorant,*,д,sonorant-conditioned-voicing,provisional,Lenis ㄷ after a voiced sonorant,안다,anda
-RRUA-D-MEDIAL-OBSTRUENT,onset,ㄷ,d,medial,obstruent,*,т,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent,악다,akda
-RRUA-B-INITIAL,onset,ㅂ,b,initial,word-boundary,*,п,voiceless-lenis-stop,provisional,Word-initial lenis ㅂ is not the phonemic aspirate ㅍ; no apostrophe,바,ba
-RRUA-B-SINGLE,onset,ㅂ,b,single,word-boundary,*,п,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㅂ,바,ba
-RRUA-B-MEDIAL-VOWEL,onset,ㅂ,b,medial,vowel,*,б,intervocalic-voicing,provisional,Lenis ㅂ between voiced segments,아바,aba
-RRUA-B-MEDIAL-SONORANT,onset,ㅂ,b,medial,sonorant,*,б,sonorant-conditioned-voicing,provisional,Lenis ㅂ after a voiced sonorant,암바,amba
-RRUA-B-MEDIAL-OBSTRUENT,onset,ㅂ,b,medial,obstruent,*,п,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent,악바,akba
-RRUA-J-INITIAL,onset,ㅈ,j,initial,word-boundary,*,ч,voiceless-lenis-affricate,provisional,Word-initial lenis ㅈ approximated by unvoiced Ukrainian ч; no aspiration apostrophe,자,ja
-RRUA-J-SINGLE,onset,ㅈ,j,single,word-boundary,*,ч,voiceless-lenis-affricate,provisional,Single-syllable word-initial lenis ㅈ,자,ja
-RRUA-J-MEDIAL-VOWEL,onset,ㅈ,j,medial,vowel,*,дж,intervocalic-voicing,provisional,Lenis ㅈ between voiced segments,아자,aja
-RRUA-J-MEDIAL-SONORANT,onset,ㅈ,j,medial,sonorant,*,дж,sonorant-conditioned-voicing,provisional,Lenis ㅈ after a voiced sonorant,안자,anja
-RRUA-J-MEDIAL-OBSTRUENT,onset,ㅈ,j,medial,obstruent,*,ч,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent,악자,akja
-RRUA-K-ASP,onset,ㅋ,k,*,*,*,к',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅋ; coda ㅋ is handled separately,카,ka
-RRUA-T-ASP,onset,ㅌ,t,*,*,*,т',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅌ; coda ㅌ is handled separately,타,ta
-RRUA-P-ASP,onset,ㅍ,p,*,*,*,п',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅍ; coda ㅍ is handled separately,파,pa
-RRUA-CH-ASP,onset,ㅊ,ch,*,*,*,ч',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅊ; coda ㅊ is handled separately,차,cha
-RRUA-G-FINAL-VOWEL,onset,ㄱ,g,final,vowel,*,ґ,intervocalic-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,아가,aga
-RRUA-G-FINAL-SONORANT,onset,ㄱ,g,final,sonorant,*,ґ,sonorant-conditioned-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,안가,anga
-RRUA-G-FINAL-OBSTRUENT,onset,ㄱ,g,final,obstruent,*,к,voiceless-after-obstruent,provisional,Contextual target proposal; phonological context is shown in the trace,악가,gakga
-RRUA-D-FINAL-VOWEL,onset,ㄷ,d,final,vowel,*,д,intervocalic-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,아다,ada
-RRUA-D-FINAL-SONORANT,onset,ㄷ,d,final,sonorant,*,д,sonorant-conditioned-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,안다,anda
-RRUA-D-FINAL-OBSTRUENT,onset,ㄷ,d,final,obstruent,*,т,voiceless-after-obstruent,provisional,Contextual target proposal; phonological context is shown in the trace,악다,akda
-RRUA-B-FINAL-VOWEL,onset,ㅂ,b,final,vowel,*,б,intervocalic-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,아바,aba
-RRUA-B-FINAL-SONORANT,onset,ㅂ,b,final,sonorant,*,б,sonorant-conditioned-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,암바,amba
-RRUA-B-FINAL-OBSTRUENT,onset,ㅂ,b,final,obstruent,*,п,voiceless-after-obstruent,provisional,Contextual target proposal; phonological context is shown in the trace,악바,akba
-RRUA-J-FINAL-VOWEL,onset,ㅈ,j,final,vowel,*,дж,intervocalic-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,아자,aja
-RRUA-J-FINAL-SONORANT,onset,ㅈ,j,final,sonorant,*,дж,sonorant-conditioned-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,안자,anja
-RRUA-J-FINAL-OBSTRUENT,onset,ㅈ,j,final,obstruent,*,ч,voiceless-after-obstruent,provisional,Contextual target proposal; phonological context is shown in the trace,악자,akja
+rule_id,layer,hangul,rr,word_position,left_context,sentence_position,ukrainian,feature,status,notes,example_surface,example_rr,onset_context
+RRUA-G-INITIAL,onset,ㄱ,g,initial,word-boundary,*,к,voiceless-lenis-stop,provisional,Word-initial lenis ㄱ is not the phonemic aspirate ㅋ; no apostrophe,가,ga,*
+RRUA-G-SINGLE,onset,ㄱ,g,single,word-boundary,*,к,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㄱ,가,ga,*
+RRUA-G-MEDIAL-VOWEL,onset,ㄱ,g,medial,vowel,*,ґ,intervocalic-voicing,provisional,Lenis ㄱ between voiced segments,아가,aga,*
+RRUA-G-MEDIAL-SONORANT,onset,ㄱ,g,medial,sonorant,*,ґ,sonorant-conditioned-voicing,provisional,Lenis ㄱ after a voiced sonorant,안가,anga,*
+RRUA-G-MEDIAL-OBSTRUENT,onset,ㄱ,g,medial,obstruent,*,к,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent; only if the resolved surface onset remains lenis (otherwise tensification is represented by ㄲ),악가,gakga,*
+RRUA-D-INITIAL,onset,ㄷ,d,initial,word-boundary,*,т,voiceless-lenis-stop,provisional,Word-initial lenis ㄷ is not the phonemic aspirate ㅌ; no apostrophe,다,da,*
+RRUA-D-SINGLE,onset,ㄷ,d,single,word-boundary,*,т,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㄷ,다,da,*
+RRUA-D-MEDIAL-VOWEL,onset,ㄷ,d,medial,vowel,*,д,intervocalic-voicing,provisional,Lenis ㄷ between voiced segments,아다,ada,*
+RRUA-D-MEDIAL-SONORANT,onset,ㄷ,d,medial,sonorant,*,д,sonorant-conditioned-voicing,provisional,Lenis ㄷ after a voiced sonorant,안다,anda,*
+RRUA-D-MEDIAL-OBSTRUENT,onset,ㄷ,d,medial,obstruent,*,т,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent,악다,akda,*
+RRUA-B-INITIAL,onset,ㅂ,b,initial,word-boundary,*,п,voiceless-lenis-stop,provisional,Word-initial lenis ㅂ is not the phonemic aspirate ㅍ; no apostrophe,바,ba,*
+RRUA-B-SINGLE,onset,ㅂ,b,single,word-boundary,*,п,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㅂ,바,ba,*
+RRUA-B-MEDIAL-VOWEL,onset,ㅂ,b,medial,vowel,*,б,intervocalic-voicing,provisional,Lenis ㅂ between voiced segments,아바,aba,*
+RRUA-B-MEDIAL-SONORANT,onset,ㅂ,b,medial,sonorant,*,б,sonorant-conditioned-voicing,provisional,Lenis ㅂ after a voiced sonorant,암바,amba,*
+RRUA-B-MEDIAL-OBSTRUENT,onset,ㅂ,b,medial,obstruent,*,п,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent,악바,akba,*
+RRUA-J-INITIAL,onset,ㅈ,j,initial,word-boundary,*,ч,voiceless-lenis-affricate,provisional,Word-initial lenis ㅈ approximated by unvoiced Ukrainian ч; no aspiration apostrophe,자,ja,*
+RRUA-J-SINGLE,onset,ㅈ,j,single,word-boundary,*,ч,voiceless-lenis-affricate,provisional,Single-syllable word-initial lenis ㅈ,자,ja,*
+RRUA-J-MEDIAL-VOWEL,onset,ㅈ,j,medial,vowel,*,дж,intervocalic-voicing,provisional,Lenis ㅈ between voiced segments,아자,aja,*
+RRUA-J-MEDIAL-SONORANT,onset,ㅈ,j,medial,sonorant,*,дж,sonorant-conditioned-voicing,provisional,Lenis ㅈ after a voiced sonorant,안자,anja,*
+RRUA-J-MEDIAL-OBSTRUENT,onset,ㅈ,j,medial,obstruent,*,ч,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent,악자,akja,*
+RRUA-K-ASP,onset,ㅋ,k,*,*,*,к',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅋ; coda ㅋ is handled separately,카,ka,*
+RRUA-T-ASP,onset,ㅌ,t,*,*,*,т',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅌ; coda ㅌ is handled separately,타,ta,*
+RRUA-P-ASP,onset,ㅍ,p,*,*,*,п',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅍ; coda ㅍ is handled separately,파,pa,*
+RRUA-CH-ASP,onset,ㅊ,ch,*,*,*,ч',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅊ; coda ㅊ is handled separately,차,cha,*
+RRUA-G-FINAL-VOWEL,onset,ㄱ,g,final,vowel,*,ґ,intervocalic-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,아가,aga,*
+RRUA-G-FINAL-SONORANT,onset,ㄱ,g,final,sonorant,*,ґ,sonorant-conditioned-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,안가,anga,*
+RRUA-G-FINAL-OBSTRUENT,onset,ㄱ,g,final,obstruent,*,к,voiceless-after-obstruent,provisional,Contextual target proposal; phonological context is shown in the trace,악가,gakga,*
+RRUA-D-FINAL-VOWEL,onset,ㄷ,d,final,vowel,*,д,intervocalic-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,아다,ada,*
+RRUA-D-FINAL-SONORANT,onset,ㄷ,d,final,sonorant,*,д,sonorant-conditioned-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,안다,anda,*
+RRUA-D-FINAL-OBSTRUENT,onset,ㄷ,d,final,obstruent,*,т,voiceless-after-obstruent,provisional,Contextual target proposal; phonological context is shown in the trace,악다,akda,*
+RRUA-B-FINAL-VOWEL,onset,ㅂ,b,final,vowel,*,б,intervocalic-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,아바,aba,*
+RRUA-B-FINAL-SONORANT,onset,ㅂ,b,final,sonorant,*,б,sonorant-conditioned-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,암바,amba,*
+RRUA-B-FINAL-OBSTRUENT,onset,ㅂ,b,final,obstruent,*,п,voiceless-after-obstruent,provisional,Contextual target proposal; phonological context is shown in the trace,악바,akba,*
+RRUA-J-FINAL-VOWEL,onset,ㅈ,j,final,vowel,*,дж,intervocalic-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,아자,aja,*
+RRUA-J-FINAL-SONORANT,onset,ㅈ,j,final,sonorant,*,дж,sonorant-conditioned-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,안자,anja,*
+RRUA-J-FINAL-OBSTRUENT,onset,ㅈ,j,final,obstruent,*,ч,voiceless-after-obstruent,provisional,Contextual target proposal; phonological context is shown in the trace,악자,akja,*
+RRUA-UI-CONSONANT-ONSET,vowel,ㅢ,ui,*,*,*,і,consonant-onset-ㅢ-to-i,model-selected,NIKL Standard Pronunciation Rule 5: ㅢ in a syllable with a consonantal onset is [i]; Ukrainian і is a project adaptation,희망,huimang,consonantal
+RRUA-UI-SILENT-INITIAL,vowel,ㅢ,ui,initial,*,*,уї,initial-syllable-ㅢ-retained,provisional,Initial-syllable ㅢ retains the [ɰi] sequence; Ukrainian уї is an approximation,의미,uimi,silent
+RRUA-UI-SILENT-SINGLE,vowel,ㅢ,ui,single,*,*,уї,initial-syllable-ㅢ-retained,provisional,Single-syllable word is also word-initial,의,ui,silent
+RRUA-UI-SILENT-MEDIAL,vowel,ㅢ,ui,medial,*,*,і,noninitial-ㅢ-to-i-allowed,provisional,NIKL permits [i] for ㅢ outside the first syllable; choose this allowed reading,의의적,uiuijeok,silent
+RRUA-UI-SILENT-FINAL,vowel,ㅢ,ui,final,*,*,і,noninitial-ㅢ-to-i-allowed,provisional,NIKL permits [i] for ㅢ outside the first syllable; possessive particle [e] variant needs morphology and is not guessed,주의,juui,silent
