@@ -23,6 +23,7 @@ Terminology ruling: in this project, “Ukrainian transliteration” is the sele
 | Correct user-facing terminology | **DONE_VERIFIED (software contract)** | Updated service hero/footer, README, package description, service requirements, user guide and terminology contract to call the output Ukrainian transliteration and explain its two routes. |
 | Surface phonetic and phonemic IPA | **DONE_VERIFIED (software integration); scientific scope PARTIAL** | `result-ipa` is the selected engine's surface phonetic IPA; `result-ipa-phonemic` is an orthography-derived baseline from `renderPhonemicIpa`, not a separate G2P engine or fully morphology/prosody-resolved phonemic analysis. |
 | Hanja in both directions | **DONE_VERIFIED (software integration/tests); dictionary coverage PARTIAL** | Existing local dictionary supports Hangul→Hanja lexical annotation and Hanja→Hangul reading workbench, preserves unknown spans and requires manual resolution of ambiguous readings. Coverage and ambiguity rates remain unevaluated. |
+| NIKL-based RR source-orthography exceptions | **PARTIAL pending exact-head CI; full NIKL conformance EVIDENCE-LIMITED** | Uses resolved surface for pronunciation-sensitive rules and original spelling for ten explicit NIKL §3(1) examples (압구정, 낙동강, 죽변, 낙성대, 합정, 팔당, 샛별, 울산, 묵호, 집현전). Each exception has a rule ID carried into the RR→Ukrainian trace. Proper-name capitalization, administrative-unit hyphenation and unlisted lexical/morphological exceptions are not implemented. Synthetic surface forms are test stimuli, not pronunciation gold. |
 | Synthetic adversarial Korean text | DONE_VERIFIED as a generated fixture, not linguistic gold | Existing `tests/fixtures/adversarial-corpora/31-generated-mixed-phonology-prose-2026-10-31.txt` is explicitly labelled synthetic and not authoritative pronunciation gold. Reuse it; do not duplicate it or train/score from it without independent adjudication and held-out controls. |
 
 **Rulings**
@@ -31,22 +32,42 @@ Terminology ruling: in this project, “Ukrainian transliteration” is the sele
 - Keep the phonemic IPA field labelled as an orthography-derived baseline. Treating it as an independent phonemic G2P engine would overstate the evidence.
 - Reuse the existing synthetic adversarial corpus instead of generating a near-duplicate; its provenance label and current corpus tests already match the request.
 
-**Verification state at this handoff refresh (latest PR head `132e0a0cc79a8e758e57bc4490c615a6297194cb`)**
+**Verification state at this handoff refresh (latest PR head `3e6d09f7692e5b5d4e8e2e3a1154d0a8ad3fe6ad`; last fully verified code-bearing head `132e0a0cc79a8e758e57bc4490c615a6297194cb`)**
 - Exact-head tests run [41244469096](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244469096) **PASS**: Node suite **1,386/1,386**; Python 3.11, 3.12 and 3.13 all passed; clean wheel-install verification and teacher-corpus audit passed.
 - Browser integration run [41244469110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244469110) **PASS**: browser Node tests and Vite build.
 - System verification [41244469127](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244469127) **PASS**: browser regression/build and Python regression/data-integrity jobs. Its NIKL metadata-only inventory was **SKIPPED**, not passed.
 - Master table/research corpus generation [41244469103](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244469103) **PASS**; exhaustive test-case register extraction [41244469161](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244469161) **PASS**.
-- Paired native/g2pK diagnostic [41244469111](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244469111) **PASS**. UGTPHON external diagnostic [41244469172](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244469172) and multi-engine benchmark [41244469093](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244469093) were still **IN_PROGRESS** at the time of this update; Charsiu and ByT5 remained skipped by their default-off research gates. No new benchmark score is claimed.
-- A final source review found that selecting RR as the primary route displayed a provisional RR result under the label “Достовірний варіант”. Fixed the label to “Транслітерація за RR · попередня” and added a regression assertion in `tests/romanization-mode-ui.test.mjs`. The 1,386-test exact-head run above includes this fix.
+- Paired native/g2pK diagnostic [41244469111](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244469111) **PASS**. UGTPHON external diagnostic [41244469172](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244469172) **PASS**. Multi-engine benchmark [41244630161](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41244630161) was repeatedly **CANCELLED** while PR updates were being made; Charsiu and ByT5 remained skipped by their default-off research gates. No new benchmark score or artifact is claimed.
+- A final source review found that selecting RR as the primary route displayed a provisional RR result under the label “Достовірний варіант”. Fixed it to “Транслітерація за RR · попередня”; the live-browser smoke and UI contract now expect the same label. This label fix was present in the 1,386-test code-head run above.
+- A deeper NIKL audit found that surface-only RR would incorrectly romanize some compound-fortis and noun+ㅎ examples. The current branch now uses source spelling for the ten explicit NIKL §3(1) examples, carries `rrRule` and `sourceOrthography` into the RR→Ukrainian trace, and adds regression/smoke fixtures. These latest RR changes are **not covered by the earlier 1,386-test pass** and have no exact-head Actions run; they remain PARTIAL.
 - These are GitHub Actions checks, not local execution. No local clone, `npm test`, `npm run build`, or `pytest` is claimed. No live Pages deployment or live-browser smoke is claimed for this PR head.
-- PR [#411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/411) remains **draft/open**, based on main `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`; its feature branch is 158 commits ahead and 0 behind. No merge or deployment has been performed.
+- PR [#411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/411) remains **draft/open**, based on main `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`; current branch head `3e6d09f7692e5b5d4e8e2e3a1154d0a8ad3fe6ad` is 183 commits ahead and 0 behind, with 41 changed files. It is mergeable but deliberately remains draft because the latest RR implementation has no exact-head CI and the live-browser and independent linguistic gates remain open. No merge or deployment has been performed.
 
 **Remaining acceptance gates**
-1. Complete the in-progress benchmark/diagnostic runs and inspect their artifacts; do not treat skipped neural jobs as success.
-2. Run the changed live-browser smoke against a preview/deployed build to confirm both cards, primary-route preference, trace visibility and correct copy behavior in a real browser.
-3. Independent Ukrainian-language review and reader testing are still required; all Ukrainian correspondences, especially [ŋ]→н versus RR ng→нг and positional lenis variants, remain project proposals.
-4. Hanja dictionary coverage, ambiguity and false-conversion rates require a source-separated adjudicated evaluation set; contextual WSD remains unsupported.
-5. Independent Korean IPA adjudication (issue #337) and held-out comparative evaluation remain evidence-limited.
+1. Obtain an exact-head CI run for the latest source-aware RR implementation, including the ten NIKL §3(1) exceptions, trace provenance, regression tests and updated smoke fixture.
+2. Complete the multi-engine benchmark only after a non-cancelled run; inspect artifacts and do not treat skipped neural jobs as success.
+3. Run the changed live-browser smoke against a preview build to confirm both cards, primary-route preference, exception output, trace provenance and copy behavior in a real browser.
+4. Extend the RR conformance matrix beyond the ten explicit examples: proper-name capitalization, administrative-unit hyphenation, personal-name formatting, ambiguous hyphenation and unlisted lexical/morphological cases.
+5. Independent Ukrainian-language review and reader testing remain required; all Ukrainian correspondences, especially [ŋ]→н versus RR ng→нг and positional lenis variants, remain project proposals.
+6. Hanja dictionary coverage, ambiguity and false-conversion rates require a source-separated adjudicated evaluation set; contextual WSD remains unsupported.
+7. Independent Korean IPA adjudication (issue #337) and held-out comparative evaluation remain evidence-limited.
+
+---
+
+## Continuation — source-aware NIKL Revised Romanization — 2026-10-31
+
+A source-level review of the official NIKL RR specification found that the earlier adapter's surface-only strategy was incomplete. NIKL §3(1) explicitly does not transcribe compound fortis changes in eight examples (압구정, 낙동강, 죽변, 낙성대, 합정, 팔당, 샛별, 울산) and preserves ㅎ after ㄱ/ㄷ/ㅂ in the noun examples 묵호 and 집현전. The official page also specifies proper-name capitalization and administrative-unit hyphenation, which remain outside the current implementation. See [NIKL — Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do).
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Verify official NIKL RR §3(1) exceptions | DONE_VERIFIED (primary source) | Official NIKL page lists the ten forms and outputs. Source register row SRC-KOR-ROMANIZATION now records the checked page, scope and unverified item-level license. |
+| Apply source spelling to explicit RR exceptions | PARTIAL pending exact-head CI | src/app/romanization.js uses resolved surface for pronunciation-sensitive cases and source spelling for the ten explicit examples when source/surface syllable alignment is known. It fails closed to surface-based RR when alignment is unknown. |
+| Carry exception provenance into RR→Ukrainian trace | PARTIAL pending exact-head CI | Each segment carries sourceOrthography and rrRule; src/app/romanization_target.js retains both, and src/main.js displays the exception rule ID. |
+| Regression and live smoke fixtures | PARTIAL pending exact-head CI/live preview | tests/romanization.test.mjs covers all ten outputs and an unaligned negative control; tests/romanization-target.test.mjs checks trace provenance; tests/romanization-mode-ui.test.mjs locks UI/smoke expectations; scripts/smoke-live-pages-browser.mjs includes 압구정 낙동강 묵호 집현전. Surface strings in the test fixture are synthetic stimuli, not pronunciation gold. |
+| Full NIKL RR conformance | PARTIAL / EVIDENCE-LIMITED | Proper-name capitalization, administrative-unit hyphenation, personal-name formatting, optional hyphenation, and unlisted lexical/morphological exceptions remain unimplemented. Do not describe this as a complete official RR romanizer. |
+| RR→Ukrainian target quality | BLOCKED / EVIDENCE-LIMITED | The RR→Ukrainian correspondence remains a project-authored proposal; no independent Ukrainian expert review or reader study exists. |
+
+**Verification:** the last fully verified code-bearing head 132e0a0cc79a8e758e57bc4490c615a6297194cb passed 1,386/1,386 Node tests and Python 3.11/3.12/3.13, build, clean wheel and teacher-corpus checks. The source-aware RR code and tests were added after that head. The latest branch head 3e6d09f7692e5b5d4e8e2e3a1154d0a8ad3fe6ad has no exact-head Actions run. Local git ls-remote also failed because the execution container could not resolve github.com; no local test/build is claimed.
 
 ---
 
