@@ -1,10 +1,15 @@
 from __future__ import annotations
 
 import json
+import sys
+from pathlib import Path
 
 import pytest
 
-from scripts.compare_external_korean_ukrainian import (
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from compare_external_korean_ukrainian import (
     DIAGNOSTIC_INPUTS,
     SYSTEMS,
     build_report,
