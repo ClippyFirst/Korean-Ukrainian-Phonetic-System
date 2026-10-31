@@ -132,6 +132,22 @@ def test_external_payload_requires_exact_count_and_source_order() -> None:
         validate_external_payload("hikka", 200, wrong_system, items, 12.5)
 
 
+def test_external_payload_accepts_the_verified_localized_shchegel_label() -> None:
+    items = ("한글",)
+    body = {
+        "ok": True,
+        "result": {
+            "system": "Система Щегеля",
+            "lines": [{"source": "한글", "result": "Ханґиль"}],
+        },
+    }
+
+    checked = validate_external_payload("shchegel", 200, body, items, 12.5)
+
+    assert checked["system"] == "Система Щегеля"
+    assert checked["nonempty_output_count"] == 1
+
+
 def test_fetch_external_sends_only_fixed_diagnostic_inputs_and_checks_response() -> None:
     class FakeResponse:
         status = 200
