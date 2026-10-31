@@ -79,6 +79,7 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
           mapping_id: contextRule ? contextRule.rule_id : mapping.hangul + ':' + layer,
           status: mapping.status,
           notes: mapping.notes,
+          alternativeUkrainian: mapping.alternative_ukrainian || null,
           phonologicalFeature: contextRule?.feature ?? null,
           wordIndex: segment.wordIndex,
           sentenceIndex: segment.sentenceIndex,
