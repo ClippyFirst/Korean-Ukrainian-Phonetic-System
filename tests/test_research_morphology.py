@@ -6,6 +6,9 @@ import pytest
 from korean_ukrainian.research_morphology import (
     KiwiMorphologyAnalyzer,
     MecabKoMorphologyAnalyzer,
+    MorphologyResult,
+    Morpheme,
+    align_morphemes_to_syllables,
     analyzer_by_name,
 )
 
@@ -100,3 +103,87 @@ def test_bad_spans_fail_closed():
 def test_unknown_analyzer_does_not_fallback():
     with pytest.raises(ValueError, match="unsupported morphology analyzer"):
         analyzer_by_name("guess")
+
+
+
+def test_morpheme_alignment_links_syllables_and_marks_morpheme_boundary():
+    from korean_ukrainian.phonology import parse_syllables
+
+    text = "우리의"
+    result = MorphologyResult(text, "kiwi", (
+        Morpheme("우리", "NNG", 0, 2, analyzer="kiwi", surface="우리"),
+        Morpheme("의", "JKG", 2, 3, analyzer="kiwi", surface="의"),
+    ))
+    aligned = align_morphemes_to_syllables(text, parse_syllables(text), result)
+
+    assert aligned.status == "fully_aligned"
+    assert [link.morpheme_index for link in aligned.links] == [0, 0, 1]
+    assert [boundary.kind for boundary in aligned.boundaries] == ["same_morpheme", "morpheme"]
+    assert aligned.to_dict()["contract"] == "alignment_only_no_pronunciation_or_rule_licenses"
+
+
+def test_morpheme_alignment_preserves_zero_width_morph_and_abstains_at_boundary():
+    from korean_ukrainian.phonology import parse_syllables
+
+    text = "가다"
+    result = MorphologyResult(text, "kiwi", (
+        Morpheme("가", "NNG", 0, 1, analyzer="kiwi", surface="가"),
+        Morpheme("이", "VCP", 1, 1, analyzer="kiwi", surface="", span_status="zero_width_morph"),
+        Morpheme("다", "EF", 1, 2, analyzer="kiwi", surface="다"),
+    ))
+    aligned = align_morphemes_to_syllables(text, parse_syllables(text), result)
+
+    assert aligned.status == "partial_zero_width_morphs"
+    assert [link.morpheme_index for link in aligned.links] == [0, 2]
+    assert [boundary.kind for boundary in aligned.boundaries] == ["unknown_zero_width_morph"]
+
+
+def test_morpheme_alignment_preserves_word_boundaries():
+    from korean_ukrainian.phonology import parse_syllables
+
+    text = "가 나"
+    result = MorphologyResult(text, "mecab-ko", (
+        Morpheme("가", "NNG", 0, 1, analyzer="mecab-ko", surface="가"),
+        Morpheme("나", "NNG", 2, 3, analyzer="mecab-ko", surface="나"),
+    ))
+    aligned = align_morphemes_to_syllables(text, parse_syllables(text), result)
+
+    assert aligned.status == "fully_aligned"
+    assert [boundary.kind for boundary in aligned.boundaries] == ["word"]
+
+
+def test_morpheme_alignment_marks_missing_coverage_unaligned():
+    from korean_ukrainian.phonology import parse_syllables
+
+    text = "가나다"
+    result = MorphologyResult(text, "kiwi", (
+        Morpheme("가", "NNG", 0, 1, analyzer="kiwi", surface="가"),
+        Morpheme("다", "NNG", 2, 3, analyzer="kiwi", surface="다"),
+    ))
+    aligned = align_morphemes_to_syllables(text, parse_syllables(text), result)
+
+    assert aligned.status == "partial_unaligned"
+    assert [link.status for link in aligned.links] == ["aligned", "unaligned", "aligned"]
+    assert [boundary.kind for boundary in aligned.boundaries] == ["unknown_unaligned", "unknown_unaligned"]
+
+
+def test_morpheme_alignment_rejects_text_mismatch_overlaps_and_bad_surface():
+    from korean_ukrainian.phonology import parse_syllables
+
+    with pytest.raises(ValueError, match="does not match source text"):
+        align_morphemes_to_syllables(
+            "가", parse_syllables("가"), MorphologyResult("나", "kiwi", ())
+        )
+
+    overlapping = MorphologyResult("가나", "kiwi", (
+        Morpheme("가", "NNG", 0, 1, analyzer="kiwi", surface="가"),
+        Morpheme("가나", "NNG", 0, 2, analyzer="kiwi", surface="가나"),
+    ))
+    with pytest.raises(ValueError, match="not ordered|overlap"):
+        align_morphemes_to_syllables("가나", parse_syllables("가나"), overlapping)
+
+    bad_surface = MorphologyResult("가", "kiwi", (
+        Morpheme("나", "NNG", 0, 1, analyzer="kiwi", surface="나"),
+    ))
+    with pytest.raises(ValueError, match="does not match its source span"):
+        align_morphemes_to_syllables("가", parse_syllables("가"), bad_surface)

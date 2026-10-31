@@ -184,3 +184,21 @@ The 130-item paper challenge is useful for designing rule strata, but its curate
 A separate 2026 Findings paper on UGTPHON proposes retrieval-augmented, staged canonicalization for user-generated text and reports a large reduction in the canonical-to-noncanonical gap. That supports investigating a distinct raw-text normalization stage; it does not justify changing the standard Korean phonology rules or treating noisy-text normalization as ordinary G2P. See [Jeon et al. (2026)](https://aclanthology.org/2026.findings-emnlp.1020/).
 
 **Status:** literature audit DONE; no new normative phonological rule promoted. Morphology-aware candidate layer TODO / research-only pending independently adjudicated cases, POS/span validation, and paired benchmark evaluation.
+
+
+## Deep morphology bridge — 2026-11-01 implementation update
+
+A recent Interspeech 2026 paper by You & Moon describes an object-oriented G2P engine with syllable–morpheme connectivity and recursive rule re-evaluation. The Zenodo record reports 3.14 ms versus 14.98 ms average latency and 85.7% versus 27.2% sentence-level accuracy against g2pk in that study. These are the authors' results on their own standard-reading evaluation, not a score for this repository or a directly comparable UGTPHON result. The public Zenodo record provides the paper PDF but no executable engine or benchmark corpus; no implementation or data was copied. See [You & Moon (2026), DOI 10.5281/zenodo.22167288](https://doi.org/10.5281/zenodo.22167288).
+
+### Repository design reconciliation
+
+- Existing `research_morphology.py` adapters already preserve Kiwi/MeCab source offsets, analyzer identity, and zero-width morphology.
+- Existing `Syllable` objects carry source Hangul and word boundaries, but previously had no validated link to analyzer morphemes.
+- Existing `apply_ordered_rules` performs one ordered pass; rule-specific exact-form license dictionaries are already isolated by rule.
+- **Implemented (research-only):** `align_morphemes_to_syllables` now validates analyzer text/spans and returns explicit syllable→morpheme links plus same-morpheme, morpheme, word, or unknown boundary labels. Zero-width morphs and missing coverage are preserved as uncertainty. This helper grants no pronunciation-rule licenses and is not called by the production G2P path.
+
+### Next controlled experiment
+
+The next step is a research-only rule-licensing adapter that consumes these links for a small, source-backed subset of morphology-conditioned rules. It must retain analyzer provenance, reject unaligned/zero-width spans, preserve alternative analyses, and abstain on disagreement. Only after paired challenge tests demonstrate a real cascading case should the engine trial bounded rule re-evaluation with cycle detection. The production single-pass rule order remains unchanged.
+
+**Acceptance:** source offsets round-trip exactly; no overlap or normalized-span guesses; zero-width and missing spans remain unknown; word boundaries remain distinct; no rule is licensed by alignment alone; production output is byte-for-byte unchanged.
