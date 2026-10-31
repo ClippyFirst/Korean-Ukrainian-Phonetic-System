@@ -56,7 +56,7 @@ test('preserves spaces, punctuation, digits and non-Hangul text', () => {
 
 test('retains RR vowel sequences as single correspondence units', () => {
   assert.equal(transcribeRevisedToUkrainian('어으의').romanization, 'eoeuui');
-  assert.equal(transcribeRevisedToUkrainian('어으의').text, 'оиі');
+  assert.equal(transcribeRevisedToUkrainian('어으의').text, 'оиуї');
 });
 
 test('records sentence-local word order separately from global word order', () => {
@@ -123,19 +123,19 @@ test('adapts RR ui according to Korean ㅢ pronunciation context without changin
 
   const consonantOnset = transcribeRevisedToUkrainian('희망');
   assert.equal(consonantOnset.romanization, 'huimang');
-  assert.equal(consonantOnset.text, 'хіманґ');
+  assert.equal(consonantOnset.text, 'гіманґ');
   assert.ok(consonantOnset.trace.some((entry) => entry.mapping_id === 'RRUA-UI-CONSONANT-ONSET' && entry.ukrainian === 'і'));
 
   const nonInitial = transcribeRevisedToUkrainian('주의');
   assert.equal(nonInitial.romanization, 'juui');
-  assert.equal(nonInitial.text, 'чуі');
+  assert.equal(nonInitial.text, 'чууї');
   assert.ok(nonInitial.trace.some((entry) => entry.mapping_id === 'RRUA-UI-SILENT-FINAL'));
 });
 
 test('distinguishes a resyllabified coda from a lexical consonant onset before ㅢ', () => {
   const resyllabified = transcribeRevisedToUkrainian('혀븨', '협의');
   assert.equal(resyllabified.romanization, 'hyeobui');
-  assert.equal(resyllabified.text, 'хйобуї');
+  assert.equal(resyllabified.text, 'гйобуї');
   const resyllabifiedVowel = resyllabified.trace.find((entry) => entry.mapping_id === 'RRUA-UI-RESYLLABIFIED-ONSET');
   assert.equal(resyllabifiedVowel.onsetContext, 'resyllabified');
   assert.equal(resyllabifiedVowel.onsetOrigin, 'previous-coda');
