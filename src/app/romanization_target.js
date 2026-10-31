@@ -1,46 +1,100 @@
 import { romanizeRevisedDetailed } from './romanization.js';
 
+function parseCsv(csv) {
+  const [headerLine, ...lines] = String(csv ?? '').trim().split(/\r?\n/u);
+  if (!headerLine) return [];
+  const headers = headerLine.split(',');
+  return lines.filter((line) => line.trim()).map((line) => {
+    const values = line.split(',');
+    return Object.fromEntries(headers.map((header, index) => [header, values[index] ?? '']));
+  });
+}
+
 function loadCorrespondences(csv) {
-  const rows = csv.trim().split(/\r?\n/u).slice(1);
   const map = new Map();
-  for (const row of rows) {
-    const [layer, hangul, rr, ukrainian, scope, status, notes] = row.split(',');
-    map.set(layer + ':' + rr, { layer, hangul, rr, ukrainian, scope, status, notes });
+  for (const row of parseCsv(csv)) {
+    map.set(row.layer + ':' + row.rr, row);
   }
   return map;
 }
 
-/** Create a reusable RR-mediated target adapter from the canonical CSV source. */
-export function createRomanizationTarget(correspondenceCsv) {
-  const correspondences = loadCorrespondences(correspondenceCsv);
-  /** RR-mediated Ukrainian output; distinct from the IPA-first Kozak Kim target adapter. */
-  return function transcribeRevisedToUkrainian(surface) {
-  const romanized = romanizeRevisedDetailed(surface);
-  const trace = [];
-  const issues = [];
-  let text = '';
+function loadContextRules(csv) {
+  return parseCsv(csv).sort((a, b) => a.rule_id.localeCompare(b.rule_id));
+}
 
-  for (const segment of romanized.segments) {
-    if (segment.type === 'literal') {
-      text += segment.text;
-      trace.push({ ...segment, ukrainian: segment.text, status: 'literal-preserved' });
-      continue;
-    }
-    let syllableOutput = '';
-    for (const [layer, rr] of [['onset', segment.onset], ['vowel', segment.vowel], ['coda', segment.coda]]) {
-      if (!rr) continue;
-      const mapping = correspondences.get(layer + ':' + rr);
-      if (!mapping) {
-        issues.push({ source: segment.source, layer, rr, reason: 'unmapped-rr-unit' });
+function matchesRule(rule, segment) {
+  return rule.layer === 'onset'
+    && rule.hangul === segment.onsetHangul
+    && rule.rr === segment.onset
+    && (rule.word_position === '*' || rule.word_position === segment.wordPosition)
+    && (rule.left_context === '*' || rule.left_context === segment.leftContext)
+    && (rule.sentence_position === '*' || rule.sentence_position === segment.sentencePosition);
+}
+
+function selectContextRule(rules, segment) {
+  return rules.find((rule) => matchesRule(rule, segment)) ?? null;
+}
+
+/** Create a reusable RR-mediated target adapter from canonical CSV sources. */
+export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = '') {
+  const correspondences = loadCorrespondences(correspondenceCsv);
+  const contextRules = loadContextRules(contextRulesCsv);
+
+  /** RR-mediated Ukrainian output; separate from the IPA-first Kozak Kim adapter. */
+  return function transcribeRevisedToUkrainian(surface) {
+    const romanized = romanizeRevisedDetailed(surface);
+    const trace = [];
+    const issues = [];
+    let text = '';
+
+    for (const segment of romanized.segments) {
+      if (segment.type === 'literal') {
+        text += segment.text;
+        trace.push({ ...segment, ukrainian: segment.text, status: 'literal-preserved' });
         continue;
       }
-      syllableOutput += mapping.ukrainian;
-      trace.push({ source: segment.source, layer, rr, ukrainian: mapping.ukrainian,
-        mapping_id: mapping.hangul + ':' + layer, status: mapping.status, notes: mapping.notes });
+
+      let syllableOutput = '';
+      for (const [layer, rr] of [['onset', segment.onset], ['vowel', segment.vowel], ['coda', segment.coda]]) {
+        if (!rr) continue;
+        const contextRule = layer === 'onset' ? selectContextRule(contextRules, segment) : null;
+        const mapping = contextRule ?? correspondences.get(layer + ':' + rr);
+        if (!mapping) {
+          issues.push({ source: segment.source, layer, rr, reason: 'unmapped-rr-unit',
+            wordPosition: segment.wordPosition, leftContext: segment.leftContext });
+          continue;
+        }
+        syllableOutput += mapping.ukrainian;
+        trace.push({
+          source: segment.source,
+          layer,
+          rr,
+          ukrainian: mapping.ukrainian,
+          mapping_id: contextRule ? contextRule.rule_id : mapping.hangul + ':' + layer,
+          status: mapping.status,
+          notes: mapping.notes,
+          phonologicalFeature: contextRule?.feature ?? null,
+          wordIndex: segment.wordIndex,
+          sentenceIndex: segment.sentenceIndex,
+          syllableIndex: segment.syllableIndex,
+          wordLength: segment.wordLength,
+          wordPosition: segment.wordPosition,
+          sentencePosition: segment.sentencePosition,
+          leftContext: segment.leftContext,
+          rightContext: segment.rightContext,
+          onsetClass: segment.onsetClass
+        });
+      }
+      text += syllableOutput;
     }
-    text += syllableOutput;
-  }
-  return { text: issues.length ? null : text, romanization: romanized.text,
-    status: issues.length ? 'unavailable' : 'provisional', issues, trace };
+
+    return {
+      text: issues.length ? null : text,
+      romanization: romanized.text,
+      status: issues.length ? 'unavailable' : 'provisional',
+      issues,
+      trace,
+      syllables: romanized.segments.filter((segment) => segment.type === 'syllable')
+    };
   };
 }
