@@ -73,3 +73,15 @@ test('covers every modern precomposed Hangul syllable without missing RR mapping
     assert.equal(typeof result.text, 'string');
   }
 });
+
+test('context matrix has unique, inspectable word-level examples', () => {
+  const rows = contextRulesCsv.trim().split(/\r?\n/u).slice(1);
+  const ids = rows.map((row) => row.split(',')[0]);
+  assert.equal(rows.length, 36);
+  assert.equal(new Set(ids).size, rows.length);
+  for (const row of rows) {
+    const fields = row.split(',');
+    assert.ok(fields[11], 'missing example surface for ' + fields[0]);
+    assert.ok(fields[12], 'missing RR example for ' + fields[0]);
+  }
+});
