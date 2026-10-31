@@ -1,0 +1,47 @@
+name: External Korean-to-Ukrainian service smoke comparison
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/external-korean-ukrainian-smoke.yml"
+      - "scripts/compare_external_korean_ukrainian.py"
+      - "tests/test_external_korean_ukrainian_smoke.py"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  external-service-smoke:
+    name: Hikka and Shchegel fixed-input public API smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the native project package
+        run: python -m pip install -e .
+
+      - name: Test comparison and evidence safeguards without network access
+        run: python -m pytest tests/test_external_korean_ukrainian_smoke.py
+
+      - name: Query Hikka and Shchegel using only the fixed diagnostic corpus
+        run: |
+          set -euo pipefail
+          python scripts/compare_external_korean_ukrainian.py \
+            --output "$RUNNER_TEMP/external-korean-ukrainian-smoke-report.json"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: external-korean-ukrainian-smoke
+          path: ${{ runner.temp }}/external-korean-ukrainian-smoke-report.json
+          if-no-files-found: error
+          retention-days: 14
