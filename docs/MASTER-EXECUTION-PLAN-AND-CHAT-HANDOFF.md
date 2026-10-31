@@ -4263,3 +4263,11 @@ The primary Ukrainian output is named **українська трансліте�
 
 - Exact-head web tests on `d917ca865fd66239089bfb8497ac0aeff16fe417` exposed stale assertions expecting the old UI term "Український запис" and the old Hanja import signature. The UI and methodology now use the confirmed "Українська транслітерація" term; affected tests were updated, including `tests/ipa-ukrainian-trace.test.mjs`, `tests/corpus-sentence-and-trace-regression.test.mjs`, `tests/web-ui-contract.test.mjs`, and `tests/hanja-ui-contract.test.mjs`.
 - Exact-head CI on the current continuation branch is pending because GitHub Actions runners are queued. Do not mark these latest UI changes DONE_VERIFIED until the newest `tests`, browser integration and system verification jobs complete.
+
+
+## Open-PR reconciliation — 2026-10-31
+
+- PR #411 is the active draft for this workstream; it has no submitted review or inline review threads, is based on current main `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`, and remains unmerged.
+- PR #371 is a historical benchmark branch. Its review findings on p95 percentile definition, independent gold-variant selection per metric, and branch-name-gated research jobs were already ported through PR #401 and merged into main at `eb8e1f100e8aca377aef05a2aa896756c909ec5c`; the occurrence-ledger fix from PR #399 was also merged at `cb1ceafd0d9a01c60cf68dd279e0858e732eb780`. Current main's benchmark code/tests contain nearest-rank p95, per-metric IPA gold selection, and explicit default-off workflow dispatch for research inference.
+- PR #371 remains open and is not merged or modified. Its unique external smoke workflow calls `https://api.mikai.me/public/v1/translit`; it is left untouched because this continuation does not require sending project/user text to an unreviewed external service. Its base is stale/diverged from current main.
+- Inspiration repositories inspected: obra/superpowers (spec → reviewed plan → TDD and explicit recovery), mattpocock/skills (small composable engineering practices and shared domain vocabulary), and DietrichGebert/ponytail (reuse existing components, keep risky logic covered by tests, avoid unnecessary code). These practices informed the incremental test-first repairs; no external agent framework or code was copied into the product.
