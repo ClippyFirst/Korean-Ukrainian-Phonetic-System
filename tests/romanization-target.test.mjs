@@ -265,3 +265,13 @@ test('records Korean sibilant palatalization before /i/ and keeps Ukrainian soft
   assert.equal(soOnset.mapping_id, 'ㅅ:onset');
   assert.notEqual(soOnset.phonologicalFeature, 'alveolo-palatal-sibilant-before-i');
 });
+
+
+test('maps Korean coda ㅇ by its velar-nasal phonetic value, not the RR spelling ng', () => {
+  const result = transcribeRevisedToUkrainian('강');
+  assert.equal(result.romanization, 'gang');
+  assert.equal(result.text, 'кан');
+  const coda = result.trace.find((entry) => entry.layer === 'coda');
+  assert.equal(coda.rr, 'ng');
+  assert.equal(coda.ukrainian, 'н');
+});
