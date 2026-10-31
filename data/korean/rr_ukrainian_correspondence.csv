@@ -1,23 +1,23 @@
 layer,hangul,rr,ukrainian,scope,status,notes
-onset,ㄱ,g,ґ,onset,model-selected,RR lenis stop rendered as Ukrainian ґ
+onset,ㄱ,g,к,onset,model-selected,Unvoiced default for lenis onset; contextual voiced allophones are explicit in the context matrix
 onset,ㄲ,kk,кк,onset,model-selected,Fortis stop retained by doubling
 onset,ㄴ,n,н,onset,model-selected,Nasal onset
-onset,ㄷ,d,д,onset,model-selected,RR lenis stop rendered as Ukrainian д
+onset,ㄷ,d,т,onset,model-selected,Unvoiced default for lenis onset; contextual voiced allophones are explicit in the context matrix
 onset,ㄸ,tt,тт,onset,model-selected,Fortis stop retained by doubling
 onset,ㄹ,r,р,onset,model-selected,RR liquid before a vowel
 onset,ㅁ,m,м,onset,model-selected,Nasal onset
-onset,ㅂ,b,б,onset,model-selected,RR lenis stop rendered as Ukrainian б
+onset,ㅂ,b,п,onset,model-selected,Unvoiced default for lenis onset; contextual voiced allophones are explicit in the context matrix
 onset,ㅃ,pp,пп,onset,model-selected,Fortis stop retained by doubling
 onset,ㅅ,s,с,onset,model-selected,Plain fricative
 onset,ㅆ,ss,сс,onset,model-selected,Fortis fricative retained by doubling
 onset,ㅇ,,,onset,structural-null,Silent onset contributes no Ukrainian letter
-onset,ㅈ,j,дж,onset,provisional,Approximation of the Korean affricate by Ukrainian дж
-onset,ㅉ,jj,дждж,onset,provisional,Fortis affricate retained by doubling
+onset,ㅈ,j,ч,onset,provisional,Unvoiced default approximation for lenis affricate; contextual voiced allophones are explicit in the context matrix
+onset,ㅉ,jj,чч,onset,provisional,Fortis voiceless affricate; doubling is a project notation for tenseness, not gemination
 onset,ㅊ,ch,ч,onset,model-selected,Aspirated affricate
 onset,ㅋ,k,к,onset,model-selected,Aspirated stop
 onset,ㅌ,t,т,onset,model-selected,Aspirated stop
 onset,ㅍ,p,п,onset,model-selected,Aspirated stop
-onset,ㅎ,h,х,onset,model-selected,Glottal fricative approximated by х
+onset,ㅎ,h,г,onset,model-selected,Ukrainian /ɦ/ is selected as the closest practical glottal-fricative approximation; voicing differs from Korean [h]
 vowel,ㅏ,a,а,nucleus,model-selected,Simple vowel
 vowel,ㅐ,ae,е,nucleus,provisional,Modern Korean merger represented by one Ukrainian е
 vowel,ㅑ,ya,я,nucleus,model-selected,Palatalized vowel onset represented by я
@@ -59,7 +59,7 @@ coda,ㅂ,p,п,coda,model-selected,Neutralized coda stop
 coda,ㅄ,p,п,coda,model-selected,Complex coda surface representative
 coda,ㅅ,t,т,coda,model-selected,Neutralized coda stop
 coda,ㅆ,t,т,coda,model-selected,Neutralized coda stop
-coda,ㅇ,ng,нг,coda,provisional,Ukrainian lacks a phonemic velar nasal
+coda,ㅇ,ng,нг,coda,provisional,Ukrainian has no phonemic /ŋ/; нг is a practical approximation and does not claim an exact segmental match
 coda,ㅈ,t,т,coda,model-selected,Neutralized coda stop
 coda,ㅊ,t,т,coda,model-selected,Neutralized coda stop
 coda,ㅋ,k,к,coda,model-selected,Neutralized coda stop
