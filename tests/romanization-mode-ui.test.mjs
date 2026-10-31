@@ -13,8 +13,8 @@ test('RR mode is an explicit third user-selectable output mode', () => {
 test('RR output uses its own adapter and typed RR trace rather than the IPA target trace', () => {
   assert.match(app, /createRomanizationTarget\(rrUkrainianCsv,rrUkrainianContextRulesCsv\)/u);
   assert.match(app, /transcribeRevisedToUkrainian\(r\.surfaceHangul,value\)/u);
-  assert.match(app, /ipaTracePanel\.hidden=romanizationMode/u);
-  assert.match(app, /rrTracePanel\.hidden=!romanizationMode/u);
+  assert.match(app, /ipaTracePanel\.hidden=false/u);
+  assert.match(app, /rrTracePanel\.hidden=false/u);
   assert.match(html, /id="rr-trace-panel"/u);
   assert.match(html, /id="ipa-trace-panel"/u);
 });
@@ -54,7 +54,7 @@ test('both IPA-mediated and RR-mediated Ukrainian transliterations are visible f
   assert.match(html, /id="alternate-ukrainian-label"/u);
   assert.match(app, /const alternateOutput=document\.querySelector\('#alternate-ukrainian-output'\)/u);
   assert.match(app, /const rrTarget=r\.surfaceHangul\?transcribeRevisedToUkrainian\(r\.surfaceHangul,value\):null/u);
-  assert.match(app, /alternateOutput\.textContent=romanizationMode\?/u);
+  assert.match(app, /alternateOutput\.textContent=alternateText/u);
   assert.match(app, /ipaTracePanel\.hidden=false/u);
   assert.match(app, /rrTracePanel\.hidden=false/u);
 });
@@ -64,5 +64,5 @@ test('both route traces remain independently inspectable regardless of the selec
   assert.match(html, /id="rr-trace-panel"/u);
   assert.match(app, /for\(const entry of \(rrTarget\?\.trace\|\|\[\]\)\)/u);
   assert.match(app, /for\(const t of r\.trace\)/u);
-  assert.match(app, /alternateLabel\.textContent=romanizationMode\?/u);
+  assert.match(app, /alternateLabel\.textContent=alternateUsesIpa\?/u);
 });
