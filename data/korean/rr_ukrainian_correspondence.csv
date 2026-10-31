@@ -59,7 +59,7 @@ coda,ㅂ,p,п,coda,model-selected,,Neutralized coda stop
 coda,ㅄ,p,п,coda,model-selected,,Complex coda surface representative
 coda,ㅅ,t,т,coda,model-selected,,Neutralized coda stop
 coda,ㅆ,t,т,coda,model-selected,,Neutralized coda stop
-coda,ㅇ,ng,нг,coda,provisional,,Ukrainian has no phonemic /ŋ/; нг is a practical approximation and does not claim an exact segmental match
+coda,ㅇ,ng,нг,coda,provisional,,Project digraph candidate for one Korean velar nasal [ŋ]; read as one target unit rather than /n+ɦ/ or /n+g/. Ukrainian has no phonemic /ŋ/; reader interpretation requires independent testing
 coda,ㅈ,t,т,coda,model-selected,,Neutralized coda stop
 coda,ㅊ,t,т,coda,model-selected,,Neutralized coda stop
 coda,ㅋ,k,к,coda,model-selected,,Neutralized coda stop
