@@ -59,6 +59,13 @@ test('retains RR vowel sequences as single correspondence units', () => {
   assert.equal(transcribeRevisedToUkrainian('어으의').text, 'оиі');
 });
 
+test('records sentence-local word order separately from global word order', () => {
+  const syllables = romanizeRevisedDetailed('가가. 가 다').segments.filter((segment) => segment.type === 'syllable');
+  assert.deepEqual(syllables.map((segment) => segment.sentenceIndex), [0, 0, 1, 1]);
+  assert.deepEqual(syllables.map((segment) => segment.wordIndex), [1, 1, 2, 3]);
+  assert.deepEqual(syllables.map((segment) => segment.sentenceWordIndex), [1, 1, 1, 2]);
+});
+
 test('exposes word and sentence position for every Hangul syllable', () => {
   const result = romanizeRevisedDetailed('가가. 가');
   const syllables = result.segments.filter((segment) => segment.type === 'syllable');
@@ -80,9 +87,9 @@ test('context matrix examples reproduce the declared syllable and phonological e
   const [header, ...lines] = contextRulesCsv.trim().split(/\r?\n/u);
   const columns = header.split(',');
   const rows = lines.map((line) => Object.fromEntries(line.split(',').map((value, index) => [columns[index], value])));
-  assert.equal(rows.length, 43);
+  assert.equal(rows.length, 35);
   assert.equal(new Set(rows.map((row) => row.rule_id)).size, rows.length);
-  assert.equal(rows.filter((row) => row.alternative_ukrainian).length, 16);
+  assert.equal(rows.filter((row) => row.alternative_ukrainian).length, 20);
 
   for (const rule of rows) {
     assert.ok(rule.example_source, 'missing source example or ∅ alignment marker for ' + rule.rule_id);
