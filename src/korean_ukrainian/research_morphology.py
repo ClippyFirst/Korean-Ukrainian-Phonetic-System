@@ -272,7 +272,7 @@ def align_morphemes_to_syllables(
     source_syllables = [
         (offset, char)
         for offset, char in enumerate(text)
-        if "\\uac00" <= char <= "\\ud7a3"
+        if "\uac00" <= char <= "\ud7a3"
     ]
     if len(source_syllables) != len(syllables):
         raise ValueError("syllable sequence does not match Hangul source characters")
