@@ -262,6 +262,6 @@ test('records Korean sibilant palatalization before /i/ and keeps Ukrainian soft
 
   const so = transcribeRevisedToUkrainian('소');
   const soOnset = so.trace.find((entry) => entry.layer === 'onset');
-  assert.equal(soOnset.mapping_id, 'ㄱ:');
+  assert.equal(soOnset.mapping_id, 'ㅅ:onset');
   assert.notEqual(soOnset.phonologicalFeature, 'alveolo-palatal-sibilant-before-i');
 });
