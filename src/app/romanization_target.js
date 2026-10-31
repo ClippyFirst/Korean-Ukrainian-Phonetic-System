@@ -109,17 +109,29 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
           continue;
         }
         syllableOutput += mapping.ukrainian;
+        const palatalizedSibilant = layer === 'onset'
+          && segment.vowelHangul === 'ㅣ'
+          && (segment.onsetHangul === 'ㅅ' || segment.onsetHangul === 'ㅆ');
+        const phonologicalFeature = contextRule?.feature
+          ?? (palatalizedSibilant
+            ? segment.onsetHangul === 'ㅆ'
+              ? 'tense-alveolo-palatal-sibilant-before-i'
+              : 'alveolo-palatal-sibilant-before-i'
+            : null);
         trace.push({
           source: segment.source,
           layer,
           rr,
           ukrainian: mapping.ukrainian,
-          mapping_id: contextRule ? contextRule.rule_id : mapping.hangul + ':' + layer,
+          mapping_id: contextRule ? contextRule.rule_id
+            : palatalizedSibilant
+              ? segment.onsetHangul === 'ㅆ' ? 'RRUA-SS-PALATALIZED-I' : 'RRUA-S-PALATALIZED-I'
+              : mapping.hangul + ':' + layer,
           status: mapping.status,
           notes: mapping.notes,
           collisionGroup: mapping.collision_group || null,
           alternativeUkrainian: mapping.alternative_ukrainian || null,
-          phonologicalFeature: contextRule?.feature ?? null,
+          phonologicalFeature,
           wordIndex: segment.wordIndex,
           sentenceWordIndex: segment.sentenceWordIndex,
           sentenceIndex: segment.sentenceIndex,
@@ -131,6 +143,7 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
           rightContext: segment.rightContext,
           onsetClass: segment.onsetClass,
           onsetContext: segment.onsetContext,
+          vowelContext: segment.vowelHangul === 'ㅣ' ? 'high-front-i' : null,
           onsetOrigin: segment.onsetOrigin,
           alignmentStatus: segment.alignmentStatus
         });
