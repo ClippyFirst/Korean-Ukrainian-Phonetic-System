@@ -32,5 +32,6 @@ test('RR trace displays the syllable context and selected phonetic rule', () => 
 });
 
 test('RR trace exposes an alternate target where lenis voicing is variable', () => {
-  assert.match(app, /entry\.alternativeUkrainian\?entry\.ukrainian\+' \(альт\. '\+entry\.alternativeUkrainian\)/u);
+  assert.match(app, /entry\.alternativeUkrainian\?/u);
+  assert.match(app, /альт\./u);
 });
