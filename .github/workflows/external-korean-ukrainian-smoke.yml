@@ -28,7 +28,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install the native project package
-        run: python -m pip install -e .
+        run: python -m pip install -e ".[dev]"
 
       - name: Test comparison and evidence safeguards without network access
         run: python -m pytest tests/test_external_korean_ukrainian_smoke.py
@@ -40,8 +40,9 @@ jobs:
             --output "$RUNNER_TEMP/external-korean-ukrainian-smoke-report.json"
 
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: external-korean-ukrainian-smoke
           path: ${{ runner.temp }}/external-korean-ukrainian-smoke-report.json
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 14
