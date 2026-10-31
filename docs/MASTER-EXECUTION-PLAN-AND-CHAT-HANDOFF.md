@@ -4157,3 +4157,46 @@ The new documents are linked from README and guarded by the methodology contract
 - Executed independent remote-data contract inspection: 68 base correspondence rows (20 onset, 21 vowel, 27 coda), 43 context rules, zero duplicate composite `layer:hangul:rr` keys, zero duplicate context-rule IDs; confirmed the coda-`ㅇ` digraph status, composite lookup implementation, coda-identity regression, and UI rendering/test assertions for `mapping_id` and `notes`. This is a static data/code contract check, not a substitute for the repository test suite.
 - Open PR #371 remains untouched: its benchmark branch is 117 commits ahead and 34 behind main (diverged); useful benchmark work was already selectively integrated through the mainline PR history and it is unrelated to this RR task. No merge, release, or deployment setting was changed.
 - Readiness: RR contextual implementation is present on the PR branch, but it remains PARTIAL pending exact-head CI and independent Ukrainian target review. No superiority claim over Kholodovich–Konzevich is supported without a held-out comparison corpus and blinded reader evaluation.
+
+
+---
+
+## Continuation — confirmed product contract and CI repair — 2026-10-31
+
+### Owner decisions (confirmed in chat)
+
+- Audience: both general users and specialists; default presentation should be accessible, with full technical trace available.
+- Dialect: standard South Korean (Seoul-based standard).
+- IPA: expose both phonetic and phonemic representations where the selected engine can support them; label the profile, engine and provenance. Do not imply that one engine emits both if it does not.
+- Hanja: bidirectional goal (Hangul → Hanja annotation and Hanja → Hangul reading), including mixed Hangul/Hanja input. Existing dictionary-backed Hangul → Hanja preview is not evidence that reverse conversion is implemented. Reverse readings must retain ambiguity and must not silently choose a homophone.
+- Primary Ukrainian target: the project's existing author-developed Ukrainian **transliteration / practical Ukrainian rendering system**, to be improved in place. Do not replace it with a new transcription system. Keep the IPA-mediated and RR-mediated input routes distinct and inspectable; terminology in UI must follow this product contract. Do not conflate the Ukrainian target with IPA itself.
+- Detail: full expert trace is available; ordinary users get a simple result first.
+- Test data: create additional adversarial Korean stimuli as project-generated fixtures; label them as synthetic test inputs, not authoritative pronunciation gold. Existing adversarial corpus files are retained and extended only where a distinct gap is identified.
+
+### Verified engine inventory
+
+- Ordinary browser mode: pinned JavaScript port of g2pK via `createG2pWebAdapter`; UI currently identifies it as g2pK.
+- Detailed research mode: project-owned deterministic Kozak Kim engine; separate strict/soft/super-soft modes.
+- RR mode: browser-only resolved Hangul surface → NIKL Revised Romanization → project-authored Ukrainian correspondence adapter. It is not the IPA-first route.
+- The displayed IPA is currently the IPA result emitted by the selected G2P engine; the repository has not yet established a separately selectable phonemic-IPA engine/profile in the user interface. Acceptance requires an explicit phonetic/phonemic profile contract and engine provenance, not merely a second label.
+
+### Task ledger
+
+| Task | Status | Evidence / next acceptance |
+|---|---|---|
+| Preserve and improve the existing Ukrainian target | PARTIAL | Existing IPA-first and RR-mediated adapters are preserved. Treat the project target as the primary Ukrainian output; audit labels and methodology terminology without changing its data contract blindly. Acceptance: documented target contract, route provenance, regression coverage. |
+| Expose phonetic and phonemic IPA | PARTIAL | Existing engine IPA is visible, but no confirmed selectable dual-profile contract is established. Acceptance: engine-specific profile definition, feature-preserving conversion or independently sourced output, tests and provenance; no fabricated narrow IPA. |
+| Hanja Hangul→Hanja | DONE_VERIFIED as dictionary annotation preview | `src/app/hanja.js`, pinned libhangul-derived BSD-3-Clause data and existing tests; lexical annotation only, with conservative Hangul fallback. |
+| Hanja Hanja→Hangul and mixed-script input | TODO | Reverse dictionary/readings and an input normalization/UI contract are not implemented. Acceptance: source-attributed reverse index, explicit multiple-reading alternatives, no silent homophone selection, mixed-script regression tests, and correct IPA/RR processing after user selection. |
+| Standard South Korean dialect default | PARTIAL | Current data and source-rule inventory are standard South Korean/NIKL oriented; make the dialect/profile explicit in UI and trace. Acceptance: documented scope and regression fixtures; no claim of North Korean coverage. |
+| Generated adversarial Korean tests | PARTIAL | Extensive pre-existing adversarial fixtures already cover coda liaison, complex codas, palatalization, assimilation, fortition, aspiration, n-insertion, morphology, names/loans, minimal contrasts and rule chains. Add only new, non-duplicative synthetic passages with no invented gold labels. |
+| Fix exact-head web test failures | PARTIAL | Previous exact-head CI run 41237406700 failed 2/1,370 web tests (1,368 passed): (a) stale expectation `희망` → `гіманґ` conflicted with the declared provisional coda `ㅇ→нг` mapping; test now expects `гіманг`; (b) trace omitted ㅅ/ㅆ-before-ㅣ palatalization metadata; adapter now records feature, mapping ID and vowel context. New exact-head CI triggered at commit `3289724b47acfaf320157faeda3c45c242a6309a`; results must be inspected before marking DONE_VERIFIED. |
+| Independent Ukrainian target review and reader testing | BLOCKED / EVIDENCE-LIMITED | Requires independent reviewers and held-out readers; software tests cannot establish the quality of Ukrainian letter choices. |
+| Release readiness | BLOCKED | Exact-head web/browser CI, full Hanja reverse-input behavior, IPA profile contract, and independent target validation remain open. |
+
+### Current execution state
+
+- Active review branch: `feat/korean-rr-contextual-phonetics-final`; PR [#411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/411), still draft/open.
+- Repair commits: `39bf53200fe663ce87ac33d7bbe5dd482f10dbe1` (palatalization trace metadata) and `3289724b47acfaf320157faeda3c45c242a6309a` (align the `ng` regression expectation with the declared table).
+- Exact-head CI for `3289724b47acfaf320157faeda3c45c242a6309a`: runs 41239825542 (tests), 41239825512 (system verification), 41239825533 (browser G2P), 41239825505 (multi-engine IPA diagnostic), 41239825553 (UGTPHON diagnostic), 41239825603 (paired native/g2pk diagnostic), 41239825611 (master artifacts), and 41239825564 (test register extraction). Pending at the time of this update.
+- Do not merge PR #411 until the exact-head web/browser gates pass and product-contract corrections are reconciled. PR #371 remains a separate benchmark workstream and is untouched.
