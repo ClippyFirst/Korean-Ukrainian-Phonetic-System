@@ -118,6 +118,19 @@ def test_external_payload_requires_exact_count_and_source_order() -> None:
             12.5,
         )
 
+    wrong_system = {
+        "ok": True,
+        "result": {
+            "system": "Shchegel",
+            "lines": [
+                {"source": "한글", "result": "Ханґиль"},
+                {"source": "같이", "result": "Каті"},
+            ],
+        },
+    }
+    with pytest.raises(RuntimeError, match="did not identify the requested system"):
+        validate_external_payload("hikka", 200, wrong_system, items, 12.5)
+
 
 def test_fetch_external_sends_only_fixed_diagnostic_inputs_and_checks_response() -> None:
     class FakeResponse:
