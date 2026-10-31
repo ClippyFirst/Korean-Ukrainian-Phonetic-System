@@ -4318,3 +4318,14 @@ The primary Ukrainian output is named **українська трансліте�
 - PR #371 is a historical benchmark branch. Its review findings on p95 percentile definition, independent gold-variant selection per metric, and branch-name-gated research jobs were already ported through PR #401 and merged into main at `eb8e1f100e8aca377aef05a2aa896756c909ec5c`; the occurrence-ledger fix from PR #399 was also merged at `cb1ceafd0d9a01c60cf68dd279e0858e732eb780`. Current main's benchmark code/tests contain nearest-rank p95, per-metric IPA gold selection, and explicit default-off workflow dispatch for research inference.
 - PR #371 remains open and is not merged or modified. Its unique external smoke workflow calls `https://api.mikai.me/public/v1/translit`; it is left untouched because this continuation does not require sending project/user text to an unreviewed external service. Its base is stale/diverged from current main.
 - Inspiration repositories inspected: obra/superpowers (spec → reviewed plan → TDD and explicit recovery), mattpocock/skills (small composable engineering practices and shared domain vocabulary), and DietrichGebert/ponytail (reuse existing components, keep risky logic covered by tests, avoid unnecessary code). These practices informed the incremental test-first repairs; no external agent framework or code was copied into the product.
+
+
+## Exact-head handoff snapshot — 2026-10-31
+
+- Base: `main` at `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`.
+- Active branch: `feat/korean-rr-contextual-phonetics-final`.
+- PR #411: open, draft, mergeable, no review submissions/inline threads; latest branch head at this snapshot: `26e1693b0283857020f753aabe978ed7d13a10c5`.
+- Latest exact-head workflow set on that SHA: tests `41242883661`, browser G2P `41242883863`, system verification `41242883742`, master artifacts `41242883671`, test-case register `41242883725`, paired engine diagnostic `41242883835`, UGTPHON `41242883745`, multi-engine IPA diagnostic `41242883728`. These were queued/in progress at snapshot time; no passing claim is made for this exact head.
+- The last fully completed test run before the Hanja standalone UI, updated terminology and engine-provenance changes was `41240462365`: 1,378 web tests passed, 0 failed; Python 3.11/3.12/3.13, wheel install and teacher-corpus audit passed. This is historical evidence only, not acceptance for the current head.
+- Latest known failures on earlier heads were stale assertions after product-label/import changes; those tests have been updated. Current exact-head CI is required to confirm the repairs.
+- Local npm/Python/build/browser execution remains unavailable in this connector-only session. Continue from exact-head GitHub Actions and independent linguistic evaluation; do not merge or mark release-ready while gates remain pending.
