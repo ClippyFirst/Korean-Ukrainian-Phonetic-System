@@ -4,7 +4,7 @@
 |---|---|---|
 | Distinct RR → Ukrainian service mode | PARTIAL pending exact-head CI | New UI option uses Korean surface form → Revised Romanization → Ukrainian correspondence; it does not replace the IPA-first Kozak Kim route. |
 | Machine-readable RR → Ukrainian correspondence register | PARTIAL pending table audit | `data/korean/rr_ukrainian_correspondence.csv` records onset, vowel and coda units with status and notes. |
-| Full methodology tables and evidence boundary | PARTIAL pending exact-head CI | Public methodology distinguishes NIKL's official RR source from project-authored Ukrainian approximations; no official Ukrainian standard is claimed. |
+| Full methodology tables and evidence boundary | PARTIAL pending exact-head CI | Public methodology distinguishes NIKL's official RR source from project-authored Ukrainian approximations; includes 19 onset, 21 vowel and 27 coda entries, whole-syllable examples, and a source-grounded H-K comparison; no official Ukrainian standard is claimed. |
 | Independent linguistic validation | BLOCKED / EVIDENCE-LIMITED | Requires independent Ukrainian-language reader study, expert review, and held-out error analysis. |
 
 Implementation branch: `feat/korean-rr-ukrainian-mode`. Focused test: `tests/romanization-target.test.mjs`. Local execution was unavailable in this connector-only session; do not claim new tests/build passed until exact-head GitHub Actions completes. Existing mainline verification applies only to the pre-change main commit.
