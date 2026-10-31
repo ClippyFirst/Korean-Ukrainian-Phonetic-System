@@ -33,6 +33,10 @@
 | M-16 | Neural inference and joined neural-vs-baseline aggregation are complete | PARTIAL / SKIPPED | Run [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672); Charsiu, ByT5 and paired neural jobs skipped under default-off opt-in | Поточний non-neural portfolio and ledgers are verified; neural comparison requires explicit research-only dispatch | Що skipped jobs passed or that a fresh neural result exists |
 | M-17 | KoG2Padvanced upstream license is established | BLOCKED | Benchmark source/license audit reports no declared upstream license | Не поширювати upstream code/weights unless permission is established | Будь-яку конкретну permissive license без джерела |
 
+| M-18 | RR → Ukrainian mode is separate from IPA-first Kozak Kim output | PARTIAL pending exact-head CI | PR #407; src/app/romanization_target.js; src/main.js | RR components are emitted from resolved Hangul surface form and mapped through a separate CSV; IPA trace is hidden in this mode and an RR trace is shown | Do not claim that RR output is IPA-derived or expert-validated |
+| M-19 | RR → Ukrainian correspondence table covers modern Hangul syllable components | PARTIAL pending independent review | data/korean/rr_ukrainian_correspondence.csv; tests/romanization-target.test.mjs; exact-head CI pending | 19 onset, 21 vowel and 27 coda entries; exhaustive modern precomposed syllable loop in test | Coverage of combinatorial inventory does not establish linguistic correctness |
+| M-20 | Russian Cyrillic transcription is a useful comparator for RR adaptation | DONE_VERIFIED as literature description; Ukrainian adaptation remains PARTIAL | Rud (2024), KNU repository thesis, ch. 3.1 and conclusions; NIKL RR source | H-K is a distinct Russian Cyrillic system, not a simple Russian-letter replacement of RR; documented contrasts include ㄱ, ㅈ, ㅡ, ㅇ coda and ㄹ | Do not claim the Russian system is an official RR→Cyrillic conversion or that it validates Ukrainian output |
+
 ## Ключові методологічні правила
 
 1. Публікувати scored denominator, coverage і abstentions поряд з exact match.
