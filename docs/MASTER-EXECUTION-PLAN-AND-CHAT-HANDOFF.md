@@ -4211,3 +4211,14 @@ The new documents are linked from README and guarded by the methodology contract
 | Exact-head CI after reverse adapter and new fixture | TODO / pending | Latest code and documentation commits trigger new test/build, browser G2P, system verification, IPA diagnostic, paired engine, corpus artifact and extraction workflows. Inspect the latest exact-head runs before marking these changes verified. |
 
 The reverse Hanja adapter does not yet make the browser bidirectional. Do not state that the input box accepts arbitrary Hanja as a fully supported pronunciation source until mixed-script normalization and ambiguous-reading selection are integrated and tested.
+
+
+## Continuation — dual IPA presentation and reverse-Hanja tests — 2026-10-31
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Surface phonetic IPA provenance | PARTIAL | Ordinary browser mode uses pinned g2pK JS port; detailed mode uses Kozak Kim; each emits its own surface IPA and is identified in the UI. Cross-runtime profiles remain unadjudicated and must not be treated as approved target-adapter inputs. |
+| Separate phonemic IPA display | PARTIAL / baseline implemented | `src/app/ipa_phonemic.js` mirrors the Python `phonemic_segments` inventory for Hangul onset/nucleus/coda values; `index.html` exposes a separate field and copy control. It is explicitly labelled as an orthography-derived phonemic baseline, not a second G2P engine. It does not resolve morphology, lexical alternations or prosody and flags non-Hangul material. Tests cover onset/nucleus/coda, fortis, aspiration, ㅢ, complex codas and mixed literals. Acceptance for a full phonemic profile requires cross-runtime parity fixtures and independent phonological adjudication. |
+| Reverse Hanja ambiguity ordering | PARTIAL / fix submitted | CI exposed that candidate readings were correctly sorted by Unicode codepoint, while the test expected the reverse order. The test expectation is now aligned with deterministic ordering; exact-head tests on `a124df38397fb961e76a80a63f98192eba54a9d6` are pending. |
+
+The current user-facing IPA contract is: **surface phonetic IPA** from the selected G2P engine, plus a separately labelled **orthography-derived phonemic baseline**. Never imply that the baseline is contextually adjudicated phonemic output. The primary Ukrainian result remains the project's existing author-developed transliteration/practical rendering system, not a replacement subsystem.
