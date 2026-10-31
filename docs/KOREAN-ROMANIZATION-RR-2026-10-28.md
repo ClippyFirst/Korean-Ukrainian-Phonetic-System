@@ -35,10 +35,29 @@ A match between RR and an IPA string is not itself proof of correctness. RR is o
 ## Acceptance status
 
 - Implemented: NIKL-based RR display using source spelling plus resolved surface, isolated from the IPA-first route; ten explicit §3(1) source-spelling examples are covered by tests.
-- Local isolated harness: 6/6 tests passed, including the 11,172 modern Hangul syllable sweep. Separately, GitHub Actions for code/test snapshot `0dcde24374f1a67c38f00f44687c7a1e4a024a51` passed browser regression tests/build, Python regression/data-integrity tests, `npm test`, `npm run build`, Python 3.11/3.12/3.13, and research corpus audits. Official NIKL source inventory was skipped. Subsequent commits updated documentation only; exact latest-head checks have not been rerun.
+- Historical isolated harness: 6/6 tests passed, including the 11,172 modern Hangul syllable sweep. Earlier GitHub Actions passed the baseline browser/Python/build checks, but they predate the source-orthography exception implementation. The latest source-aware RR code, new tests and smoke fixture have not yet received an exact-head CI run; do not count the earlier runs as verification of this follow-up.
 - Full NIKL RR conformance: not yet established.
 - Reverse romanization: not implemented.
 - Release status: this change should remain a reviewable PR until automated checks and the conformance matrix are completed.
+
+## Source-orthography exceptions — NIKL §3(1)
+
+The official NIKL RR page explicitly says that compound tense sounds are not transcribed in the listed examples and that aspiration is not transcribed in the listed nouns. The adapter now uses the original Hangul spelling for these ten exact/prefix-scoped examples while continuing to use the resolved surface form for the ordinary pronunciation-sensitive cases. The test surface forms below are synthetic stimuli, not IPA or pronunciation gold.
+
+| NIKL source spelling | RR output (lowercase internal form) | Rule ID |
+|---|---|---|
+| 압구정 | apgujeong | NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED |
+| 낙동강 | nakdonggang | NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED |
+| 죽변 | jukbyeon | NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED |
+| 낙성대 | nakseongdae | NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED |
+| 합정 | hapjeong | NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED |
+| 팔당 | paldang | NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED |
+| 샛별 | saetbyeol | NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED |
+| 울산 | ulsan | NIKL-RR-3-1-COMPOUND-TENSE-NOT-TRANSCRIBED |
+| 묵호 | mukho | NIKL-RR-3-1-NOUN-H-NOT-ASPIRATED |
+| 집현전 | jiphyeonjeon | NIKL-RR-3-1-NOUN-H-NOT-ASPIRATED |
+
+This is a conservative allowlist of the official examples, not a productive morpheme parser. Proper-name capitalization, administrative-unit hyphenation, and unlisted exceptions remain outside the implemented subset.
 
 ## Official-example regression matrix (NIKL)
 
