@@ -48,6 +48,16 @@
 - **Доказова перспектива:** наявність ledger не означає, що neural predictions існують або що їх можна порівняти.
 - **Рішення:** occurrence-ledger contract DONE_VERIFIED; Charsiu inference, ByT5 inference і joined neural pairing у run 41141286672 були SKIPPED через default-off opt-in. Fresh neural-vs-baseline result не заявляється.
 
+## Питання 7. Чи є RR → українська окремою методикою, а не ще одним відображенням IPA?
+- **Академічна перспектива:** так, якщо проміжною основою є саме Revised Romanization, а не паралельний IPA trace. RR — офіційна корейська система латинського запису, заснована на стандартній вимові; її диграфи й триграфи є одиницями таблиці, а не англійською орфографією.
+- **Доказова перспектива:** NIKL підтверджує RR values, але не українські графемні відповідники. Рудь (2024) описує брак єдиного корейсько-українського стандарту та розрізняє транскрипцію й транслітерацію.
+- **Рішення:** у PR #407 створено окремий ланцюг Hangul surface → RR components → Ukrainian table. У RR-режимі UI показує власний trace та не показує IPA→Ukrainian trace як джерело цільового результату. Українські відповідники залишаються проєктними й попередніми до незалежного читачевого/фахового тесту.
+
+## Питання 8. Чи можна просто перенести російську таблицю на українську?
+- **Академічна перспектива:** ні. Рудь (2024), розділ 3.1, описує Холодовича—Концевича як окрему кириличну систему, зорієнтовану на російську фонологію; у ній окремі контрасти зливаються (зокрема ㄴ/ㅇ coda та 어/오). RR — інша система, латинська й офіційна для Республіки Корея.
+- **Доказова перспектива:** російська система корисна як порівняльний прецедент для послідовної кирилізації, але не є джерелом нормативних українських відповідників і не повинна стирати українські фонологічні відмінності.
+- **Рішення:** таблиця в system.html#methodology-02b-ukrainian-rr показує RR, H-K та проєктний український відповідник окремо. Вона не заявляє, що H-K є прямою транслітерацією RR.
+
 ## Поточна інтеграція та нерозв'язані gates
 
 - PR #401 інтегрував corrected extended benchmark; PR #402 оновив публічні/технічні metric disclosures; PR #403 оновив current CI evidence; PR #404 виправив округлення SIGMORPHON native exact rate до 35.7715%.
@@ -72,3 +82,39 @@
 - [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)
 - [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills)
 - [K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills)
+
+## RR → Ukrainian contextual phonetic layer — 2026-10-31
+
+### Decision recorded
+
+The previous flat component mapping is retained as a fallback register, but it is no longer treated as the complete target algorithm. A separate context-rule register now selects onset mappings using Hangul Jamo identity, RR unit, word position and preceding coda class. The trace additionally records sentence position, word/sentence indices and syllable index so that results can be inspected in running text.
+
+### Phonetic rationale
+
+- NIKL Revised Romanization is based on standard Korean pronunciation and explicitly distinguishes context-dependent ㄱ/ㄷ/ㅂ values, ㄹ versus ㄹㄹ, and special cases such as assimilation, epenthesis, palatalization and ㅎ-conditioned aspiration.
+- Korean phonetics research describes the lenis/fortis/aspirated contrast. The project therefore reserves the apostrophe marker for the phonemic aspirated onset series ㅋ/ㅌ/ㅍ/ㅊ, while keeping lenis and fortis as separate categories.
+- Lenis ㄱ/ㄷ/ㅂ/ㅈ are adapted as voiceless at word onset or after an obstruent, and as voiced after a vowel/sonorant. This is an explicit project approximation; it is not a claim that RR itself encodes these Ukrainian choices.
+- RR ㄹㄹ can produce an onset unit `l`; the Ukrainian base register now includes that unit, fixing the previously unmapped liquid-assimilation case.
+
+### Adjudication and limits
+
+1. **Accepted as an engineering improvement:** explicit syllable/word/sentence context and an inspectable rule ID are preferable to unconditional one-grapheme replacement.
+2. **Accepted as a project convention:** ASCII apostrophe marks the phonemic aspirated series in this mode. This must remain distinct from weak aspiration of word-initial lenis consonants and from fortis tension.
+3. **Not accepted as established Ukrainian phonetic fact:** the exact Ukrainian outputs к/ґ, т/д, п/б, ч/дж and к'/т'/п'/ч' still require independent Ukrainian phonetic review and reader testing.
+4. **Not established:** superiority over Kholodovich–Konzevich. The method preserves more explicit contextual distinctions in its trace, but comparative quality requires a held-out word/sentence corpus and blinded readers.
+5. Sentence position is currently recorded and resets at sentence punctuation; no sentence-position-specific target rules are asserted yet. The active selection rules are word-position and local-coda based.
+6. The RR adapter consumes an already-resolved Hangul surface form. It does not independently implement Korean phonological processes, recover morphology, or infer proper-name boundary conventions.
+
+### Sources
+
+- [NIKL — Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do)
+- [NIKL — 2026 guidance on the pronunciation of ㅢ](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=201&pageIndex=1&qna_seq=334585)
+- [Song, Kim & Cho (2023), Korean three-way stop contrast](https://biz.hanyang.ac.kr/documents/10980062/13049795/HISPhonCog2023_P76_Song_etal.pdf/f52b4285-3aee-1657-3383-d266ffff55d0)
+- [Kim et al. (2024), laryngeal contrast and prosodic strengthening](https://doi.org/10.13064/ksss.2024.16.1.017)
+- [Rud (2024), Ukrainian transcription of Korean proper names](https://ir.library.knu.ua/entities/publication/bdb2f408-ca5b-4fdc-879a-95240572e08a)
+### Additional vowel-context decision — ㅢ
+
+NIKL's Standard Pronunciation Rule 5 distinguishes ㅢ by syllable context: ㅢ with a consonantal onset is [i]; outside the first syllable [i] is permitted; the possessive particle 의 may also be [e]. The RR spelling remains `ui`. The contextual adapter therefore keeps `ui` in the RR trace but maps to Ukrainian `і` in the consonantal-onset case and in the selected noninitial [i] variant; initial silent-onset 의 retains the [ɰi]-approximation `уї`. It does not guess the particle [e] variant because the current RR route has no morphological analysis. This is grounded on NIKL's [2026 clarification of Rule 5](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=201&pageIndex=1&qna_seq=334585). The Ukrainian spelling choices remain project adaptations.
+### Lenis voicing and prosodic variation
+
+The voiced medial mapping is the primary project candidate after vowels/sonorants, but 16 such rules now expose the corresponding unvoiced Ukrainian alternative in the trace. This prevents one allophonic realization from being presented as invariant. Choi, Kim & Cho (2020) show that Seoul Korean lenis–aspirated cues vary with prosodic position and focus; punctuation-derived sentence position is not a reliable substitute for accentual-phrase/IP boundaries. The implementation records sentence position but does not infer prosodic boundaries from punctuation. See [Choi et al. (2020)](https://pmc.ncbi.nlm.nih.gov/articles/PMC7580931/).

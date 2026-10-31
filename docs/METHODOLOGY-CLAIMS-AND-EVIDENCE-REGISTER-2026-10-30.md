@@ -33,6 +33,13 @@
 | M-16 | Neural inference and joined neural-vs-baseline aggregation are complete | PARTIAL / SKIPPED | Run [41141286672](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41141286672); Charsiu, ByT5 and paired neural jobs skipped under default-off opt-in | Поточний non-neural portfolio and ledgers are verified; neural comparison requires explicit research-only dispatch | Що skipped jobs passed or that a fresh neural result exists |
 | M-17 | KoG2Padvanced upstream license is established | BLOCKED | Benchmark source/license audit reports no declared upstream license | Не поширювати upstream code/weights unless permission is established | Будь-яку конкретну permissive license без джерела |
 
+| M-18 | RR → Ukrainian mode is separate from IPA-first Kozak Kim output | DONE_VERIFIED on code-bearing head; latest docs-only head CI pending | PR #407; run 41230139392 (npm test/build); run 41230139366 (browser regression/build and Python regression) | RR components are emitted from resolved Hangul surface form and mapped through a separate CSV; IPA trace is hidden in this mode and an RR trace is shown | Do not claim that RR output is IPA-derived or expert-validated |
+| M-19 | RR → Ukrainian correspondence table covers modern Hangul syllable components | PARTIAL pending independent linguistic review | data/korean/rr_ukrainian_correspondence.csv; tests/romanization-target.test.mjs; 1,349/1,349 Node tests passed on code-bearing head | 20 onset RR units (19 Hangul onset Jamo; ㄹ has r/l variants), 21 vowel and 27 coda entries; exhaustive modern precomposed syllable loop in test | Coverage of combinatorial inventory does not establish linguistic correctness |
+| M-20 | Russian Cyrillic transcription is a useful comparator for RR adaptation | DONE_VERIFIED as literature description; Ukrainian adaptation remains PARTIAL | Rud (2024), KNU repository thesis, ch. 3.1 and conclusions; NIKL RR source | H-K is a distinct Russian Cyrillic system, not a simple Russian-letter replacement of RR; documented contrasts include ㄱ, ㅈ, ㅡ, ㅇ coda and ㄹ | Do not claim the Russian system is an official RR→Cyrillic conversion or that it validates Ukrainian output |
+
+| M-21 | RR adapter exposes syllable, word, sentence and local phonological context | PARTIAL pending exact-head CI | `src/app/romanization.js`, `src/app/romanization_target.js`, `tests/romanization-target.test.mjs` | Each Hangul syllable trace records word/sentence index, syllable position, left coda class, onset class and selected rule; the 41-row context register has word-level examples | Do not claim that sentence position itself already selects a distinct pronunciation rule or that every Korean morphophonological boundary is inferred |
+| M-22 | RR → Ukrainian output distinguishes contextual lenis, phonemic aspiration and ㅢ vowel pronunciation | PARTIAL / project proposal pending independent review | `data/korean/rr_ukrainian_context_rules.csv`; NIKL RR and Standard Pronunciation Rule 5; Choi, Kim & Cho (2020); Song, Kim & Cho (2023); Kim et al. (2024); regression tests | Initial lenis ㄱ/ㄷ/ㅂ/ㅈ are separated from voiced medial defaults with 16 unvoiced alternatives exposed for prosodic variation; ㅋ/ㅌ/ㅍ/ㅊ receive the project apostrophe marker; ㅢ keeps RR `ui` but adapts to [i] where NIKL §5 requires or permits it; ㄹㄹ receives a dedicated l-onset mapping | Do not claim proven superiority over Kholodovich–Konzevich or expert-validated Ukrainian correspondences |
+
 ## Ключові методологічні правила
 
 1. Публікувати scored denominator, coverage і abstentions поряд з exact match.
@@ -52,6 +59,8 @@
 - [Benchmark suite register](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md).
 - [Canonical execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
 - [Reviewer gate issue #337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337).
+- [NIKL — Revised Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do).
+- [Rud, V. S. (2024), KNU thesis — Korean proper-name transcription into Ukrainian](https://ir.library.knu.ua/entities/publication/bdb2f408-ca5b-4fdc-879a-95240572e08a); source pages 30–40 and conclusions.
 
 ## Maintenance rule
 

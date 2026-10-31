@@ -1,3 +1,44 @@
+## Continuation — context-aware RR → Ukrainian phonetic adaptation — 2026-10-31
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Syllable-aware RR trace | PARTIAL pending exact-head CI | `src/app/romanization.js` decomposes each resolved Hangul syllable and records word/sentence index, syllable position, preceding coda class, onset class and local context; UI shows those fields per RR component. |
+| Context-sensitive lenis mapping | PARTIAL / project proposal | `data/korean/rr_ukrainian_context_rules.csv` distinguishes initial/single ㄱ/ㄷ/ㅂ/ㅈ from medial realizations after vowels, sonorants and obstruents; 16 voiced-medial rules expose an unvoiced alternative because prosodic position and speaker variation matter; 41 rows include word-level examples. |
+| Context-sensitive ㅢ vowel adaptation | PARTIAL / NIKL-grounded rule, Ukrainian mapping provisional | RR remains `ui`; the target adapter maps consonant-onset ㅢ to Ukrainian `і`, initial silent-onset ㅢ to `уї`, and noninitial silent-onset ㅢ to an allowed `і` variant. The possessive particle [e] variant is not guessed without morphology. |
+| Phonemic aspiration marker | PARTIAL / project convention implemented | Onset ㅋ/ㅌ/ㅍ/ㅊ map to к'/т'/п'/ч'; lenis ㄱ/ㄷ/ㅂ/ㅈ and fortis ㄲ/ㄸ/ㅃ/ㅆ/ㅉ are not assigned the aspiration apostrophe. Coda aspiration is not copied into Ukrainian output. |
+| RR ㄹㄹ edge case | DONE_VERIFIED in implementation/tests; CI pending | RR onset `l` after a liquid coda now has a Ukrainian `л` mapping; test covers `별래 → byeollae → пйолле`. |
+| Sentence-position metadata | PARTIAL | Sentence boundaries reset the sentence index; sentence-initial/medial position is visible in the trace. Current target rules are word-position/local-context based (sentence-position wildcard), not sentence-specific phonological rules. |
+| Independent Ukrainian phonetic validation | BLOCKED / EVIDENCE-LIMITED | Requires expert review and reader testing; all new Ukrainian positional correspondences remain project proposals. |
+| Claim of superiority over Kholodovich–Konzevich | BLOCKED pending comparative evaluation | The design preserves distinctions (including aspirated vs lenis and context-conditioned voicing) that the project intends to evaluate; no held-out comparative corpus or reader study yet proves higher quality. |
+
+**Starting point:** branch `feat/korean-rr-ukrainian-mode`, commit `9b1c51bc224bc003c41b495307d86bf51ad127a6`.  
+**Working branch:** `feat/korean-rr-contextual-phonetics`, created from that exact commit. Code and methodology snapshot before this final handoff refresh: `e43d046239cb0d221331c2bff10879778aa8b7d3`.  
+**Review PR:** [#408](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/408), draft/open. Earlier draft [#407](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/407) was closed as superseded after confirming it had no submitted reviews or inline review threads; its branch and commits were preserved.
+
+**Verification history:** The first full browser test run on commit `5ed9324271b753161cce28647d0285a97b9df7fb` produced 1 failure out of 1,355 tests: the test expected the feature label `intervocalic-voicing`, while the final-syllable rule had the generic label `contextual-lenis-voicing`. The browser regression workflow failed for the same assertion; Python 3.12 and 3.13 test jobs passed. The final-syllable feature labels were corrected to match their actual context classes, then the context matrix was expanded with NIKL §5-backed ㅢ rules and corresponding tests. Exact-head rerun after the ㅢ vowel rules and 16 alternative lenis outputs were added is still required; the final branch-head workflows have not yet completed. Do not treat the earlier failed run as a pass.
+
+**Research basis:** NIKL's RR specification explicitly conditions ㄱ/ㄷ/ㅂ and ㄹ romanization and records assimilation, epenthesis, palatalization and aspiration-related cases ([official RR rules](https://www.korean.go.kr/front_eng/roman/roman_01.do)). Korean phonetics sources describe the lenis/fortis/aspirated contrast and its acoustic cues ([Song, Kim & Cho, 2023](https://biz.hanyang.ac.kr/documents/10980062/13049795/HISPhonCog2023_P76_Song_etal.pdf/f52b4285-3aee-1657-3383-d266ffff55d0); [Kim et al., 2024](https://doi.org/10.13064/ksss.2024.16.1.017)). These sources support Korean-side distinctions, not the chosen Ukrainian graphemes. The Ukrainian apostrophe is a project notation for phonemic aspiration, not an official Ukrainian Korean-transcription rule.
+
+**Verification discipline:** no local test/build was available through this connector-only session. New regression tests cover contextual lenis choices, aspirated onsets, RR `ll`, sentence/word metadata, 36 unique example-bearing rules and all 11,172 modern Hangul syllables. GitHub Actions for the final branch head remain the acceptance gate; until those checks complete, implementation is PARTIAL rather than DONE_VERIFIED.
+
+---
+
+## Continuation — RR-mediated Ukrainian output — 2026-10-31
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Distinct RR → Ukrainian service mode | DONE_VERIFIED on code-bearing head; latest docs-only head pending CI | New UI option uses Korean surface form → Revised Romanization → Ukrainian correspondence; it does not replace the IPA-first Kozak Kim route. Dedicated RR trace is shown while the IPA target trace is hidden. |
+| Machine-readable RR → Ukrainian correspondence register | PARTIAL pending independent linguistic review | `data/korean/rr_ukrainian_correspondence.csv` records 20 onset RR units (19 Hangul onset Jamo; ㄹ has r/l variants), 21 vowel and 27 coda units with status and notes; all 11,172 modern precomposed syllables are exercised by a test. |
+| Full methodology tables and evidence boundary | DONE_VERIFIED on code-bearing head; latest docs-only head pending CI | Public methodology distinguishes NIKL's official RR source from project-authored Ukrainian approximations; includes component tables, whole-syllable examples, explicit target collisions, and a source-grounded H-K comparison; no official Ukrainian standard is claimed. |
+| Independent linguistic validation | BLOCKED / EVIDENCE-LIMITED | Requires independent Ukrainian-language reader study, expert review, and held-out error analysis. |
+| Python CLI/API RR mode | DEFERRED | User request implemented as a browser response mode; Python package, CLI and optional API remain on their existing IPA-first contract. |
+
+Implementation branch: `feat/korean-rr-ukrainian-mode`; PR [#407](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/407) remains draft/open and mergeable. Starting main SHA: `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`. Code-bearing head `6fa554c9980969ba346a7421501e8b453a2b6816`: GitHub Actions run 41230139392 passed `npm test` (1,349/1,349) and `npm run build`; run 41230139366 passed browser regression/build and Python regression. Later commits through `32a1131d656bdb002c5c619180af72b25e1b3554` changed documentation, methodology tables and stylesheet cache-busting only; no application logic changed after the code-bearing head. Exact-head CI for the documentation-only tip was queued at last inspection. Initial failures were fixed: Node tests now load the CSV through the factory, the new trace DOM IDs are present, and UI contract tests accept identified disclosure panels. Local execution was unavailable in this connector-only session.
+
+Primary RR source: NIKL, [Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do). Ukrainian evidence context: Rud, V. (2024), [Особливості транслітерації корейських власних назв українською мовою](https://ir.library.knu.ua/entities/publication/bdb2f408-ca5b-4fdc-879a-95240572e08a). The Ukrainian mappings are project decisions requiring validation, not facts asserted by those sources.
+
+---
+
 # Full benchmark integration, methodology evidence and readiness — 2026-10-31
 
 **Starting main for this continuation:** `f0bd109a294fff9eca9037023653c5765eb17225`  
