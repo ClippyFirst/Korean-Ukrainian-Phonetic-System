@@ -162,29 +162,31 @@ export function createHanjaToHangulConverter(dictionary = {}) {
     const source = String(input ?? '');
     const ambiguities = [];
     const unmapped = [];
-    const text = source.replace(/[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]+/gu, (run, runOffset) => {
+    const text = source.replace(/\p{Script=Han}+/gu, (run, runOffset) => {
+      const characters = [...run];
       let output = '';
-      for (let index = 0; index < run.length;) {
+      for (let index = 0; index < characters.length;) {
         let match = null;
-        const limit = Math.min(maxLength, run.length - index);
+        const limit = Math.min(maxLength, characters.length - index);
         for (let length = limit; length >= 1; length -= 1) {
-          const candidate = run.slice(index, index + length);
+          const candidate = characters.slice(index, index + length).join('');
           if (reverse.has(candidate)) { match = candidate; break; }
         }
+        const sourceOffset = runOffset + characters.slice(0, index).join('').length;
         if (!match) {
-          const literal = [...run.slice(index)][0];
+          const literal = characters[index];
           output += literal;
-          unmapped.push({ source: literal, offset: runOffset + index });
-          index += literal.length;
+          unmapped.push({ source: literal, offset: sourceOffset });
+          index += 1;
           continue;
         }
         const readings = [...reverse.get(match)].sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
         if (readings.length === 1) output += readings[0];
         else {
           output += match;
-          ambiguities.push({ source: match, offset: runOffset + index, readings });
+          ambiguities.push({ source: match, offset: sourceOffset, readings });
         }
-        index += match.length;
+        index += [...match].length;
       }
       return output;
     });
