@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { romanizeRevised } from '../src/app/romanization.js';
+import { romanizeRevised, romanizeRevisedDetailed } from '../src/app/romanization.js';
 
 test('uses Revised Romanization vowel values, not English spelling', () => {
   assert.equal(romanizeRevised('어으의'), 'eoeuui');
@@ -37,6 +37,39 @@ test('preserves spaces, punctuation, digits and non-Hangul text', () => {
 test('empty and nullish input are safe', () => {
   assert.equal(romanizeRevised(''), '');
   assert.equal(romanizeRevised(null), '');
+});
+
+
+test('uses source orthography for NIKL RR exceptions instead of copying every surface change', () => {
+  // NIKL RR §3(1) lists these compounds as examples where tense sounds are
+  // not transcribed. Surface forms below are synthetic fixtures, not IPA gold.
+  const compoundCases = [
+    ['압꾸정', '압구정', 'apgujeong'],
+    ['낙똥강', '낙동강', 'nakdonggang'],
+    ['죽뼌', '죽변', 'jukbyeon'],
+    ['낙썽대', '낙성대', 'nakseongdae'],
+    ['합쩡', '합정', 'hapjeong'],
+    ['팔땅', '팔당', 'paldang'],
+    ['샏뼐', '샛별', 'saetbyeol'],
+    ['울싼', '울산', 'ulsan']
+  ];
+  for (const [surface, source, expected] of compoundCases) {
+    assert.equal(romanizeRevisedDetailed(surface, source).text, expected, source);
+  }
+  // NIKL RR §3(1) noun examples retain written h rather than transcribing
+  // aspiration after ㄱ/ㅂ as kh/ph.
+  assert.equal(romanizeRevisedDetailed('무코', '묵호').text, 'mukho');
+  assert.equal(romanizeRevisedDetailed('지편전', '집현전').text, 'jiphyeonjeon');
+});
+
+test('scopes RR source exceptions to aligned words and leaves unknown alignment surface-based', () => {
+  assert.equal(romanizeRevisedDetailed('압꾸정역', '압구정역').text, 'apgujeongyeok');
+  // A separate unaligned word must not disable an aligned exception in the same input.
+  assert.equal(romanizeRevisedDetailed('압꾸정 가나', '압구정 가나다').text, 'apgujeong gana');
+  const unaligned = romanizeRevisedDetailed('압꾸정', '압구정역');
+  assert.equal(unaligned.text, 'apkkujeong');
+  assert.ok(unaligned.segments.filter((segment) => segment.type === 'syllable')
+    .every((segment) => segment.rrRule === 'NIKL-RR-SURFACE-BASED'));
 });
 
 test('covers every modern precomposed Hangul syllable without undefined output', () => {

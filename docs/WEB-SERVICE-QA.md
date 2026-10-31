@@ -2,7 +2,7 @@
 
 ## Automated tests
 
-npm test covers modern Hangul decomposition, CV/CVC mapping, ㅅ before ㅣ, ㄹ onset/coda, ㅇ onset/coda, simple and complex-coda liaison (including ㄶ/ㅀ and ㅆ liaison), ㅎ deletion/aspiration including complex-coda retention, nasal and liquid assimilation, palatalization, practical tensification, contextual voicing, context-sensitive ㅢ, non-Korean preservation, CSV quoting, deterministic conversion, preservation of original Hangul decomposition, IPA/analysis whitespace, and the public two-page/UI/CSP contract.
+npm test covers modern Hangul decomposition, CV/CVC mapping, ㅅ before ㅣ, ㄹ onset/coda, ㅇ onset/coda, simple and complex-coda liaison (including ㄶ/ㅀ and ㅆ liaison), ㅎ deletion/aspiration including complex-coda retention, nasal and liquid assimilation, palatalization, practical tensification, contextual voicing, context-sensitive ㅢ, non-Korean preservation, CSV quoting, deterministic conversion, preservation of original Hangul decomposition, IPA/analysis whitespace, both IPA-mediated and RR-mediated Ukrainian transliteration outputs and traces, Hanja in both directions, and the public two-page/UI/CSP contract.
 
 ## Build
 
@@ -10,7 +10,7 @@ npm run build is the release build gate.
 
 ## Browser acceptance
 
-Check desktop and narrow mobile widths: empty state; example flow; conversion; analytical panels; trace; copy; two-way navigation; visible keyboard focus; and reduced-motion behaviour.
+Check desktop and narrow mobile widths: empty state; example flow; conversion; both Ukrainian transliteration routes visible for the same input; route preference changes primary emphasis without hiding the alternate result; both route traces; IPA fields; Hanja in both directions; correct copy targets; two-way navigation; visible keyboard focus; and reduced-motion behaviour.
 
 ## Research correctness
 
@@ -54,7 +54,7 @@ A UI build is not by itself scientific validation. The web layer is complete onl
 - Shared browser/Python lexical data: `data/korean/lexical_pronunciations.csv`.
 - Exact entries: 값없다 [가법따], 의견란 [의ː견난], 읽고/읽다/읽어/읽는/읽지, 맑게/맑고/맑다, 밝기, 닭고기, and sourced §17 palatalization examples.
 - Confirm each entry has an official source URL, surface Hangul form, IPA sequence, Ukrainian target syllables, and a confidence distinction.
-- `의견란` has a normative pronunciation entry, but its Ukrainian `ийґйоннан` rendering is explicitly provisional and must not be treated as a normative Ukrainian transcription.
+- `의견란` has a normative pronunciation entry, but its Ukrainian `ийґйоннан` rendering is explicitly provisional and must not be treated as an independently validated Ukrainian transliteration.
 - Negative controls: `닭이` remains `달기` and `값이` remains `갑씨`; the lexical ㄺ exceptions must not spread to noun `닭-` or all words with coda `ㅄ`.
 - Run `npm test`, `pytest`, `npm run build`, and inspect the latest GitHub Pages deployment before claiming the public service reflects the latest data.
 
@@ -78,7 +78,7 @@ The editorial hero is intentionally unchanged. Below it, the service uses a sing
 Acceptance checks:
 - input is labelled and has a visible explanation linked by `aria-describedby`;
 - example chips, clear action, practical/research mode choices and live conversion remain functional;
-- the Ukrainian result is visually primary; IPA, Revised Romanization and analysis are supporting outputs;
+- one Ukrainian transliteration route is visually primary while the second route's result remains visible beside it; IPA, Revised Romanization, Hanja and analysis provide supporting evidence;
 - the syllable trace is collapsed by default and available through a keyboard-operable native `details/summary` disclosure;
 - the result hierarchy collapses to one column on narrow screens;
 - visible keyboard focus and reduced-motion handling remain in force.
@@ -93,9 +93,9 @@ When the engine cannot confirm the Ukrainian target, the accepted-result slot mu
 Acceptance checks:
 - the main UA result card displays a neutral status ("Немає підтвердженого запису") rather than an empty output or a candidate;
 - the main UA copy action is hidden while the target is provisional/unavailable;
-- a single separate research panel labels the candidate as unconfirmed, briefly explains its limited purpose, and offers a specifically named "Копіювати кандидата" action;
+- the candidate toggle displays the research candidate in the same visible Ukrainian result field and labels it as unconfirmed; there is no duplicate standalone candidate panel;
 - the candidate is not repeated as both the primary output and a warning block;
-- copying the candidate announces that it is an unconfirmed research candidate;
+- copying the selected research candidate announces that it is an unconfirmed research candidate;
 - the IPA, RR, analysis, trace, and actual engine status remain visible and unchanged;
 - when a confirmed target is available, the normal Ukrainian output and copy action return.
 

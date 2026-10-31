@@ -243,3 +243,33 @@ def test_narrow_h_voicing_after_sonorant_coda_is_scoped_and_not_target_approved(
     assert phoneticize_korean("감히", ipa_level="broad")["ipa"]["ipa"] == "kam.hi"
     assert phoneticize_korean("감히", ipa_level="phonemic")["ipa"]["ipa"] == "kam.hi"
 
+
+
+def test_browser_phonemic_baseline_matches_python_phonemic_inventory_when_node_is_available():
+    import json
+    import shutil
+    import subprocess
+    from pathlib import Path
+    import pytest
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.ipa import realize_syllables
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("Node.js is unavailable; browser/Python phonemic parity cannot run")
+    samples = ["가치", "까카의", "넋", "값", "희망", "괴물", "민주주의 의의", "읽히다", "신라"]
+    script = (
+        "import { renderPhonemicIpa } from './src/app/ipa_phonemic.js'; "
+        "const samples = JSON.parse(process.argv[1]); "
+        "process.stdout.write(JSON.stringify(samples.map(value => renderPhonemicIpa(value).ipa)));"
+    )
+    completed = subprocess.run(
+        [node, "--input-type=module", "-e", script, json.dumps(samples, ensure_ascii=False)],
+        cwd=Path(__file__).resolve().parents[1],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    browser_values = json.loads(completed.stdout)
+    python_values = [realize_syllables(parse_syllables(value), level="phonemic")["ipa"] for value in samples]
+    assert browser_values == python_values

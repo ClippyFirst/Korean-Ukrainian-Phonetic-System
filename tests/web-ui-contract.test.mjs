@@ -93,7 +93,7 @@ test('provisional target candidate is announced before generic unavailable statu
 
 test('model-selected target output is not presented as independently validated',()=>{
   const main=read('src/main.js');
-  assert.match(main,/r\.target_status==='model-selected'\?' · Український запис за проєктними відповідностями; незалежно не валідований'/);
+  assert.match(main,/r\.target_status==='model-selected'\?' · Українська транслітерація за проєктними відповідностями; незалежно не валідований'/);
 });
 
 test('service UX keeps the hero, simplifies the workbench, and progressively discloses trace details',()=>{
@@ -101,7 +101,7 @@ test('service UX keeps the hero, simplifies the workbench, and progressively dis
   const css=read('src/styles/main.css');
   assert.match(html,/id="input-guidance"/);
   assert.match(html,/aria-describedby="input-guidance"/);
-  assert.match(html,/<details class="trace-panel trace-disclosure">/);
+  assert.match(html,/<details(?: id="[^"]+")? class="trace-panel trace-disclosure">/);
   assert.match(html,/<summary class="trace-summary">/);
   assert.match(html,/id="result-romanization"/);
   assert.match(css,/\.workspace-layout\s*\{\s*display:\s*flex;/);
@@ -147,7 +147,7 @@ test('UX follow-up announces meaningful result state and provides visible clipbo
 
 test('mode choice is user-oriented while technical caveats remain available on demand',()=>{
   const html=read('index.html');
-  assert.match(html,/Для повсякденного використання: показує українське читання/);
+  assert.match(html,/Для повсякденного використання: показує українську транслітерацію/);
   assert.match(html,/<details class="mode-disclosure">/);
   assert.match(html,/Як працює звичайний режим/);
   assert.match(html,/Для частини слів результат може бути неточним/);
