@@ -26,7 +26,7 @@ function parseCsvLine(line) {
 }
 
 function parseCsv(csv) {
-  const lines = String(csv ?? '').replace(/^\\uFEFF/u, '').trim().split(/\\r?\\n/u);
+  const lines = String(csv ?? '').replace(/^\uFEFF/u, '').trim().split(/\r?\n/u);
   const headerLine = lines.shift();
   if (!headerLine) return [];
   const headers = parseCsvLine(headerLine);
