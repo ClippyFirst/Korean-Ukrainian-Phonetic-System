@@ -12,7 +12,7 @@ test('RR mode is an explicit third user-selectable output mode', () => {
 
 test('RR output uses its own adapter and typed RR trace rather than the IPA target trace', () => {
   assert.match(app, /createRomanizationTarget\(rrUkrainianCsv,rrUkrainianContextRulesCsv\)/u);
-  assert.match(app, /transcribeRevisedToUkrainian\(r\.surfaceHangul\)/u);
+  assert.match(app, /transcribeRevisedToUkrainian\(r\.surfaceHangul,value\)/u);
   assert.match(app, /ipaTracePanel\.hidden=romanizationMode/u);
   assert.match(app, /rrTracePanel\.hidden=!romanizationMode/u);
   assert.match(html, /id="rr-trace-panel"/u);
@@ -26,7 +26,13 @@ test('RR output remains explicitly provisional and does not relabel the IPA-firs
 });
 
 test('RR trace displays the syllable context and selected phonetic rule', () => {
-  assert.match(app, /entry\.wordPosition\+' · '\+entry\.leftContext\+' · '\+entry\.onsetContext\+' · '\+entry\.onsetOrigin\+' · '\+entry\.alignmentStatus\+' · '\+entry\.sentencePosition/u);
+  assert.match(app, /entry\.sentenceIndex\+1/u);
+  assert.match(app, /entry\.sentenceWordIndex/u);
+  assert.match(app, /entry\.syllableIndex\+1/u);
+  assert.match(app, /entry\.wordPosition/u);
+  assert.match(app, /entry\.onsetOrigin/u);
+  assert.match(app, /entry\.alignmentStatus/u);
+  assert.match(app, /entry\.sentencePosition/u);
   assert.match(app, /entry\.phonologicalFeature/u);
   assert.match(app, /Одиниця RR і контекст/u);
 });
