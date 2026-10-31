@@ -4216,7 +4216,7 @@ The new documents are linked from README and guarded by the methodology contract
 | Record selected skills, exclusions, and provenance | DONE_VERIFIED | Merged docs/AGENT-SKILL-INTEGRATION-2026-11-01.md with pinned upstream revisions, selection rationale, exclusions, and no-copy provenance. |
 | Add structural contract tests for the new skill | DONE_VERIFIED | Exact-head test workflow 41248353710 passed across Python 3.11/3.12/3.13 and web tests; system verification 41248353653 and test-register extraction 41248353763 passed. |
 | Existing adversarial corpus and Korean rule coverage | DONE_VERIFIED for current main baseline | Main already contains long-passage, sentence-corpus, morphology, coda/liaison, nasalization, liquid assimilation, fortition, palatalization, phrase-boundary, NIKL interaction, mixed-input, and uncertainty tests. Open PR #411 adds a generated mixed-phonology prose fixture and end-to-end trace regression, but remains draft and is not part of main. |
-| Select production G2P winner | BLOCKED / EVIDENCE-LIMITED | The #411 multi-engine diagnostic run 41248014178 ended cancelled; Charsiu and ByT5 were skipped by default-off conditions. No benchmark winner is established. Do not select an engine without fresh comparable artifacts, independent IPA gold, and rights/training-provenance clearance. |
+| Select production G2P winner | BLOCKED / EVIDENCE-LIMITED | The first attempt at multi-engine diagnostic run 41248014178 was cancelled; a rerun of the pinned Python 3.12 comparison is currently in progress. Charsiu and ByT5 remain skipped under default-off research gates. No benchmark winner is established. Do not select an engine without fresh comparable artifacts, independent IPA gold, and rights/training-provenance clearance. |
 | Independent Korean IPA and Ukrainian target validation | BLOCKED | No qualified independent IPA adjudications or independent Ukrainian target gold/reader study; see issue #337 and canonical acceptance gates. |
 
 ## Skill selection
@@ -4234,8 +4234,8 @@ The integration adopts Superpowers test-driven development, systematic debugging
 ## Next genuine acceptance gates
 
 1. PR #412 skill integration is merged and verified; no remaining acceptance work on the skill itself.
-2. Resolve the now-dirty base relationship of PR #411 after the skill merge; preserve its 51-file feature diff and reconcile the handoff without dropping either continuation record.
-3. Re-run or replace the cancelled multi-engine benchmark with a fresh exact-head run; do not treat cancellation as a result.
+2. Verify PR #411 mergeability after porting the skill section to the shared handoff insertion point; preserve the 51-file feature diff and both continuation records.
+3. Complete and inspect the in-progress multi-engine rerun; do not treat the cancelled first attempt as a result.
 4. Complete RR conformance, Hanja adjudication, and Ukrainian target review for PR #411.
 5. Resolve independent Korean IPA holdout, Ukrainian target gold, and model/data licensing blockers before research certification or production engine selection.
 
