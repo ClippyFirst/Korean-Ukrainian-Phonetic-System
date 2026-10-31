@@ -106,6 +106,7 @@ The previous flat component mapping is retained as a fallback register, but it i
 6. The RR adapter consumes an already-resolved Hangul surface form. It does not independently implement Korean phonological processes, recover morphology, or infer proper-name boundary conventions.
 
 ### Sources
+- Comparative study (2025), [KNU repository PDF](https://ir.library.knu.ua/bitstreams/d1e9eddb-9bcb-4c86-8e39-d5e2f11c9570/download); used only for the documented H-K/Koncevich contrasts.
 
 - [NIKL — Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do)
 - [NIKL — Standard Pronunciation Rule 5](https://www.korean.go.kr/front/page/pageView.do?page_id=P000098)
