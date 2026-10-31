@@ -40,6 +40,9 @@ test('RR trace displays the syllable context and selected phonetic rule', () => 
   assert.match(app, /entry\.sentencePosition/u);
   assert.match(app, /entry\.phonologicalFeature/u);
   assert.match(app, /entry\.mapping_id/u);
+  assert.match(app, /entry\.rrRule/u);
+  assert.match(app, /entry\.sourceOrthography/u);
+  assert.match(app, /romanizeRevised\(r\.surfaceHangul,value\)/u);
   assert.match(app, /entry\.notes/u);
   assert.match(app, /правило /u);
   assert.match(app, /Одиниця RR і контекст/u);
