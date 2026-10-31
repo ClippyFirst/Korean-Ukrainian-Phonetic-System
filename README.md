@@ -6,7 +6,7 @@ Research-grade, machine-readable framework for Korean → Ukrainian phonetic-gra
 
 The project has two public-facing pages:
 
-- **Service** — Korean text → practical Ukrainian reading.
+- **Service** — Korean text → two Ukrainian transliteration results, shown together: one via IPA and one via Revised Romanization (RR).
 - **System** — full researcher-facing methodology: the g2pK ordinary path, the three Kozak Kim modes, IPA-first Ukrainian adaptation, RR/Hanja side layers, benchmarks, tests, evidence and limitations.
 
 - [Open the live service](https://clippyfirst.github.io/Korean-Ukrainian-Phonetic-System/index.html)
@@ -18,7 +18,7 @@ The Korean visual identity uses South Korean national colours: Taegeuk red #CD2E
 
 ## Output and engine contract
 
-The primary Ukrainian result is the project's existing author-developed Ukrainian transliteration / practical rendering system. In this project, *Ukrainian transliteration* means a practical Ukrainian-letter rendering guided by Korean pronunciation and the project's research rules; it is not literal character-by-character Hangul substitution, a translation, or the IPA representation itself. The IPA-mediated Ukrainian route and the separate Revised Romanization (RR)-mediated route remain distinct and expose their provenance. Ordinary browser mode uses the pinned JavaScript g2pK port; detailed research mode uses the project-owned deterministic Kozak Kim engine. The browser now exposes two separately labelled IPA fields: surface phonetic IPA from the selected engine, and an orthography-derived phonemic baseline. The latter mirrors the Python phonemic inventory but does not resolve morphology or prosody; it is not a second G2P engine or a fully adjudicated phonemic analysis.
+The primary Ukrainian result is the project's existing author-developed Ukrainian transliteration / practical rendering system. In this project, *Ukrainian transliteration* means a practical Ukrainian-letter rendering guided by Korean pronunciation and the project's research rules; it is not literal character-by-character Hangul substitution, a translation, or the IPA representation itself. The IPA-mediated Ukrainian route and the separate Revised Romanization (RR)-mediated route remain distinct, are displayed simultaneously, and expose their separate provenance and uncertainty. Ordinary browser mode uses the pinned JavaScript g2pK port; detailed research mode uses the project-owned deterministic Kozak Kim engine. The browser now exposes two separately labelled IPA fields: surface phonetic IPA from the selected engine, and an orthography-derived phonemic baseline. The latter mirrors the Python phonemic inventory but does not resolve morphology or prosody; it is not a second G2P engine or a fully adjudicated phonemic analysis.
 
 The default linguistic scope is standard South Korean. Hanja is available in both directions: Hangul→Hanja lexical annotation and a separate Hanja→Hangul reading workbench. The reverse workbench loads the pinned local dictionary on demand, preserves unknown spans, exposes multiple readings instead of guessing, and lets the user edit a reading before transferring it to the main Korean input. This remains dictionary lookup, not contextual word-sense disambiguation; coverage and ambiguity rates still need evaluation.
 
