@@ -87,9 +87,9 @@ test('context matrix examples reproduce the declared syllable and phonological e
   const [header, ...lines] = contextRulesCsv.trim().split(/\r?\n/u);
   const columns = header.split(',');
   const rows = lines.map((line) => Object.fromEntries(line.split(',').map((value, index) => [columns[index], value])));
-  assert.equal(rows.length, 35);
+  assert.equal(rows.length, 43);
   assert.equal(new Set(rows.map((row) => row.rule_id)).size, rows.length);
-  assert.equal(rows.filter((row) => row.alternative_ukrainian).length, 20);
+  assert.equal(rows.filter((row) => row.alternative_ukrainian).length, 28);
 
   for (const rule of rows) {
     assert.ok(rule.example_source, 'missing source example or ∅ alignment marker for ' + rule.rule_id);
