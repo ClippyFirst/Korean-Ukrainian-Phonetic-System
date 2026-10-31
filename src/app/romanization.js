@@ -31,31 +31,38 @@ function romanizeSyllable(char, previousCoda) {
   const codaIndex = offset % 28;
   let onset = ONSETS[onsetIndex];
   if (onsetIndex === 5 && previousCoda === 'l') onset = 'l';
-  return { text: onset + VOWELS[vowelIndex] + CODAS[codaIndex], coda: CODAS[codaIndex] };
+  return { text: onset + VOWELS[vowelIndex] + CODAS[codaIndex], onset, vowel: VOWELS[vowelIndex], coda: CODAS[codaIndex] };
 }
 
 /**
  * Romanize a Hangul surface string using RR letter values.
  * Returns lowercase text; preserves whitespace, punctuation, Latin text and digits.
  */
-export function romanizeRevised(surface) {
+export function romanizeRevisedDetailed(surface) {
   const chars = Array.from(String(surface ?? ''));
   let output = '';
   let previousCoda = '';
   let previousWasHangul = false;
-
+  const segments = [];
   for (const char of chars) {
     const code = char.codePointAt(0);
     if (!isHangulSyllable(code)) {
       output += char;
+      segments.push({ type: 'literal', text: char });
       previousCoda = '';
       previousWasHangul = false;
       continue;
     }
     const result = romanizeSyllable(char, previousWasHangul ? previousCoda : '');
     output += result.text;
+    segments.push({ type: 'syllable', source: char, text: result.text,
+      onset: result.onset, vowel: result.vowel, coda: result.coda });
     previousCoda = result.coda;
     previousWasHangul = true;
   }
-  return output;
+  return { text: output, segments };
+}
+
+export function romanizeRevised(surface) {
+  return romanizeRevisedDetailed(surface).text;
 }
