@@ -111,6 +111,7 @@ export function romanizeRevisedDetailed(surface) {
         vowelHangul: parts.vowelHangul,
         codaHangul: parts.codaHangul,
         onsetClass,
+        onsetContext: parts.onsetHangul === 'ㅇ' ? 'silent' : 'consonantal',
         wordIndex,
         sentenceIndex,
         syllableIndex,
