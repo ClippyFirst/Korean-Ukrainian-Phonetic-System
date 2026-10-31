@@ -56,6 +56,8 @@
 - [Benchmark suite register](KOREAN-BENCHMARK-SUITE-REGISTER-2026-10-24.md).
 - [Canonical execution plan and handoff](MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
 - [Reviewer gate issue #337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337).
+- [NIKL — Revised Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do).
+- [Rud, V. S. (2024), KNU thesis — Korean proper-name transcription into Ukrainian](https://ir.library.knu.ua/entities/publication/bdb2f408-ca5b-4fdc-879a-95240572e08a); source pages 30–40 and conclusions.
 
 ## Maintenance rule
 
