@@ -1,3 +1,18 @@
+## Continuation — RR-mediated Ukrainian output — 2026-10-31
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Distinct RR → Ukrainian service mode | PARTIAL pending exact-head CI | New UI option uses Korean surface form → Revised Romanization → Ukrainian correspondence; it does not replace the IPA-first Kozak Kim route. |
+| Machine-readable RR → Ukrainian correspondence register | PARTIAL pending table audit | `data/korean/rr_ukrainian_correspondence.csv` records onset, vowel and coda units with status and notes. |
+| Full methodology tables and evidence boundary | PARTIAL pending exact-head CI | Public methodology distinguishes NIKL's official RR source from project-authored Ukrainian approximations; no official Ukrainian standard is claimed. |
+| Independent linguistic validation | BLOCKED / EVIDENCE-LIMITED | Requires independent Ukrainian-language reader study, expert review, and held-out error analysis. |
+
+Implementation branch: `feat/korean-rr-ukrainian-mode`. Focused test: `tests/romanization-target.test.mjs`. Local execution was unavailable in this connector-only session; do not claim new tests/build passed until exact-head GitHub Actions completes. Existing mainline verification applies only to the pre-change main commit.
+
+Primary RR source: NIKL, [Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do). Ukrainian evidence context: Rud, V. (2024), [Особливості транслітерації корейських власних назв українською мовою](https://ir.library.knu.ua/entities/publication/bdb2f408-ca5b-4fdc-879a-95240572e08a). The Ukrainian mappings are project decisions requiring validation, not facts asserted by those sources.
+
+---
+
 # Full benchmark integration, methodology evidence and readiness — 2026-10-31
 
 **Starting main for this continuation:** `f0bd109a294fff9eca9037023653c5765eb17225`  
