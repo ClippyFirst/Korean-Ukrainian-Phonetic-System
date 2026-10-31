@@ -6,6 +6,7 @@ const read = (path) => readFileSync(new URL(path, import.meta.url), 'utf8');
 const html = read('../index.html');
 const main = read('../src/main.js');
 const hanja = read('../src/app/hanja.js');
+const phonemic = read('../src/app/ipa_phonemic.js');
 const packageJson = JSON.parse(read('../package.json'));
 
 test('Hanja is an additional output in the requested order with an accessible copy control', () => {
@@ -36,4 +37,16 @@ test('Hanja conversion is deterministic and has no external runtime network path
   assert.match(main, /const ipa=document\.querySelector\('#result-ipa'\)/u);
   assert.match(main, /const romanization=document\.querySelector\('#result-romanization'\)/u);
   assert.match(main, /createHanjaConverter\(loadedHanjaWordMap\)/u);
+});
+
+
+test('service exposes separate surface-phonetic and orthography-derived phonemic IPA', () => {
+  assert.match(html, /id="result-ipa"/u);
+  assert.match(html, /id="result-ipa-phonemic"/u);
+  assert.match(html, /data-copy="ipa-phonemic"/u);
+  assert.match(main, /import \{renderPhonemicIpa\} from '\.\/app\/ipa_phonemic\.js'/u);
+  assert.match(main, /renderPhonemicIpa\(value\)/u);
+  assert.match(main, /key==='ipa-phonemic'\?ipaPhonemic/u);
+  assert.match(phonemic, /clippyfirst-korean-phonemic-v1/u);
+  assert.match(phonemic, /orthographic-baseline-not-morphology-resolved/u);
 });
