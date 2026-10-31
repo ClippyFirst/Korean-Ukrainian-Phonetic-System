@@ -54,7 +54,8 @@ test('preserves spaces, punctuation, digits and non-Hangul text', () => {
 });
 
 test('retains RR vowel sequences as single correspondence units', () => {
-  assert.equal(transcribeRevisedToUkrainian('어으의').text, 'оиуї');
+  assert.equal(transcribeRevisedToUkrainian('어으의').romanization, 'eoeuui');
+  assert.equal(transcribeRevisedToUkrainian('어으의').text, 'оиі');
 });
 
 test('exposes word and sentence position for every Hangul syllable', () => {
@@ -77,11 +78,27 @@ test('covers every modern precomposed Hangul syllable without missing RR mapping
 test('context matrix has unique, inspectable word-level examples', () => {
   const rows = contextRulesCsv.trim().split(/\r?\n/u).slice(1);
   const ids = rows.map((row) => row.split(',')[0]);
-  assert.equal(rows.length, 36);
+  assert.equal(rows.length, 41);
   assert.equal(new Set(ids).size, rows.length);
   for (const row of rows) {
     const fields = row.split(',');
     assert.ok(fields[11], 'missing example surface for ' + fields[0]);
     assert.ok(fields[12], 'missing RR example for ' + fields[0]);
   }
+});
+
+test('adapts RR ui according to Korean ㅢ pronunciation context without changing RR', () => {
+  const initial = transcribeRevisedToUkrainian('의미');
+  assert.equal(initial.romanization, 'uimi');
+  assert.equal(initial.text, 'уїмі');
+
+  const consonantOnset = transcribeRevisedToUkrainian('희망');
+  assert.equal(consonantOnset.romanization, 'huimang');
+  assert.equal(consonantOnset.text, 'хіманґ');
+  assert.ok(consonantOnset.trace.some((entry) => entry.mapping_id === 'RRUA-UI-CONSONANT-ONSET' && entry.ukrainian === 'і'));
+
+  const nonInitial = transcribeRevisedToUkrainian('주의');
+  assert.equal(nonInitial.romanization, 'juui');
+  assert.equal(nonInitial.text, 'чуі');
+  assert.ok(nonInitial.trace.some((entry) => entry.mapping_id === 'RRUA-UI-SILENT-FINAL'));
 });
