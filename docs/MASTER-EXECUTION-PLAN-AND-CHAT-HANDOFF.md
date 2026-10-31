@@ -4125,3 +4125,12 @@ Both were rewritten against the current main state: PRs #401–#404, corrected m
 **Important distinction:** the review record documents structured analytical perspectives based on published skill instructions. It does not claim independent human review, autonomous external agents, or participation by the skill authors. Issue [#337](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/issues/337) still has no qualified independent reviewer submissions.
 
 The new documents are linked from README and guarded by the methodology contract test. No pronunciation rules, IPA values, Ukrainian target mappings, or runtime behavior changed.
+
+
+### RR contextual adapter follow-up — coda ㅇ and Ukrainian target convention (2026-10-31)
+
+- Added a focused regression for Hangul 강: the surface RR unit is `gang`; the final `ng` is one coda correspondence unit and the current project output is `нг` (`канг`). The trace must contain one coda mapping, not two independent mappings for `n` and `g`.
+- Clarified the data row and the public comparison table: `нг` is a **provisional project digraph candidate for one Korean velar nasal [ŋ]**, not an instruction to pronounce a two-consonant sequence /n+ɦ/ or /n+g/. This preserves the RR distinction from coda `n`, but reader interpretation is not validated and must remain a target-review item.
+- This decision intentionally does not silently force the RR route to copy the IPA-first route's current `ŋ → н` practical mapping. The two routes have different contracts; their divergent target spellings are a known cross-route consistency question for independent Ukrainian phonetic review, not evidence that either one is correct.
+- Test-first commit: `4a766a1f1dec91373694ca05631ac055b1bce4ad` added the regression asserting `кан`; review of the existing comparison table and correspondence decision showed that this assertion contradicted the declared RR project convention. The test was corrected in `fd11f799424672be62551cc6a43cecb39241e875` to assert the intended one-unit `нг` candidate. The data and public methodology clarification are in `b399542c6ae17310f8f201ad201a9d596f3639bc` and `edb6de5edf766f562448fcbab090e055f6a0e97b`.
+- Exact-head GitHub Actions were queued at the last check; no fresh test/build pass is claimed. Local execution is unavailable in the connector-only environment. Keep M-18/M-19/M-21/M-22 PARTIAL until exact-head checks complete; independent Ukrainian reader/phonetic review remains BLOCKED.
