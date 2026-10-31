@@ -99,9 +99,16 @@ test('context matrix examples reproduce the declared syllable and phonological e
     const example = romanizeRevisedDetailed(rule.example_surface, source);
     assert.equal(example.text, rule.example_rr, 'RR mismatch for ' + rule.rule_id);
     const syllables = example.segments.filter((segment) => segment.type === 'syllable');
-    const segment = syllables.find((candidate) => rule.layer === 'onset'
-      ? candidate.onsetHangul === rule.hangul && candidate.onset === rule.rr
-      : candidate.vowelHangul === rule.hangul && candidate.vowel === rule.rr);
+    const segment = syllables.find((candidate) => {
+      const targetMatches = rule.layer === 'onset'
+        ? candidate.onsetHangul === rule.hangul && candidate.onset === rule.rr
+        : candidate.vowelHangul === rule.hangul && candidate.vowel === rule.rr;
+      return targetMatches
+        && (rule.word_position === '*' || candidate.wordPosition === rule.word_position)
+        && (rule.left_context === '*' || candidate.leftContext === rule.left_context)
+        && (rule.sentence_position === '*' || candidate.sentencePosition === rule.sentence_position)
+        && (rule.onset_context === '*' || candidate.onsetContext === rule.onset_context);
+    });
     assert.ok(segment, 'example lacks target ' + rule.layer + ' ' + rule.hangul + ' for ' + rule.rule_id);
     if (rule.word_position !== '*') assert.equal(segment.wordPosition, rule.word_position, 'word position for ' + rule.rule_id);
     if (rule.left_context !== '*') assert.equal(segment.leftContext, rule.left_context, 'left context for ' + rule.rule_id);
