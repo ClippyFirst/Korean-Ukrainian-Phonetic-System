@@ -4,6 +4,8 @@ import { readFileSync } from 'node:fs';
 
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const app = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
+const browserSmoke = readFileSync(new URL('../scripts/smoke-live-pages-browser.mjs', import.meta.url), 'utf8');
+const deployWorkflow = readFileSync(new URL('../.github/workflows/deploy-pages.yml', import.meta.url), 'utf8');
 
 test('RR mode is an explicit third user-selectable output mode', () => {
   assert.match(html, /id="mode-romanization"[^>]*value="romanization"/u);
@@ -65,4 +67,13 @@ test('both route traces remain independently inspectable regardless of the selec
   assert.match(app, /for\(const entry of \(rrTarget\?\.trace\|\|\[\]\)\)/u);
   assert.match(app, /for\(const t of r\.trace\)/u);
   assert.match(app, /alternateLabel\.textContent=alternateUsesIpa\?/u);
+});
+
+
+test('deployed browser smoke and Pages gate verify both Ukrainian routes', () => {
+  assert.match(browserSmoke, /#alternate-ukrainian-output/u);
+  assert.match(browserSmoke, /#mode-romanization/u);
+  assert.match(browserSmoke, /IPA-mediated Ukrainian output must remain populated/u);
+  assert.match(browserSmoke, /RR-mediated Ukrainian transliteration must be visible/u);
+  assert.match(deployWorkflow, /українську транслітерацію двома окремими маршрутами/u);
 });
