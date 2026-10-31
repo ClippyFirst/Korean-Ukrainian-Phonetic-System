@@ -66,6 +66,20 @@ A release is not accepted merely because the build succeeds or documentation des
 - Reviewer:
 - Decision: accepted / rejected / conditional
 
+## Current evidence snapshot — 2026-10-31 continuation PR #411
+
+This snapshot supersedes the historical 2026-10-21 table for the current dual-route continuation. It is not a release acceptance decision. Main remains at `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`; PR [#411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/411) is draft/open on a branch based directly on that main commit. The latest recorded branch head at this snapshot is `4d88a3c1c25bebb38748921b84547f5423b79602`; it has not received exact-head CI.
+
+| Gate | Status | Evidence / reason |
+|---|---|---|
+| 0 — Repository integrity | PARTIAL | Main SHA recorded. PR #411 contains the dual-route UI and source-aware RR continuation; it is 183+ commits ahead, 0 behind, and mergeable but remains draft. PR #371 is a separate benchmark branch, 117 ahead and 34 behind main; it is not merged blindly. PRs #409/#410 remain closed unmerged as superseded; their branches are preserved. |
+| 1 — Source and licensing | PARTIAL / BLOCKED | Official NIKL RR page checked for §2 and §3(1), including the ten source-spelling examples. `SRC-KOR-ROMANIZATION` now records the official source and scope; item-level reuse/license status remains unchecked. Root project license remains an owner decision. The NIKL metadata-only source inventory job was skipped, not passed. |
+| 2 — Rule and data integrity | PARTIAL | RR source spelling is now used for the ten explicit NIKL §3(1) examples when source/surface alignment is known; surface-based RR remains the fallback when alignment is unknown. Rule IDs and source orthography are carried into the RR→Ukrainian trace. This code, its tests and smoke fixture are not yet exact-head CI verified. Full NIKL conformance is not claimed: proper-name capitalization, administrative-unit hyphenation, personal-name formatting and unlisted lexical/morphological exceptions remain open. Ukrainian correspondences remain project proposals. |
+| 3 — Independent evaluation corpus | PARTIAL / EVIDENCE-LIMITED | Synthetic surface strings for the ten RR exceptions are labelled test stimuli, not pronunciation gold. There is no independent Ukrainian target gold/user study and no new held-out Korean IPA gold. Hanja coverage/ambiguity/false-reading rates remain unmeasured. |
+| 4 — Runtime correctness | PARTIAL for current PR head | Last fully verified code-bearing head `132e0a0cc79a8e758e57bc4490c615a6297194cb`: Node 1,386/1,386; Python 3.11/3.12/3.13; build; clean wheel; teacher-corpus audit; browser integration and system checks passed. Subsequent RR source-exception code/tests and smoke updates have no exact-head Actions run. Local `git ls-remote` failed because the execution container could not resolve `github.com`; no local `npm test`, build or pytest is claimed. |
+| 5 — Product quality | PARTIAL | Both Ukrainian routes, trace panels and separate copy controls are implemented in PR #411; RR-primary uncertainty is labelled provisional. Live smoke now includes NIKL source-spelling exceptions, but it has not been run against a preview build. No production deployment is claimed. |
+| 6 — Release and independent review | BLOCKED | Keep PR #411 draft. Required: exact-head CI for source-aware RR, live preview browser smoke, independent Ukrainian-language review/reader study, independent Korean IPA adjudication (issue #337), Hanja evaluation, and held-out comparative evidence. No merge or release performed. |
+
 ## Current evidence snapshot — 2026-10-21
 
 This status snapshot supersedes the untouched template checkboxes above for the current mainline and the follow-up branch. It is not a release acceptance decision.
