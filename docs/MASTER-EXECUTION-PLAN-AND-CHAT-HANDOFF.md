@@ -3,7 +3,7 @@
 | Task | Status | Evidence / acceptance |
 |---|---|---|
 | Syllable-aware RR trace | PARTIAL pending exact-head CI | `src/app/romanization.js` decomposes each resolved Hangul syllable and records word/sentence index, syllable position, preceding coda class, onset class and local context; UI shows those fields per RR component. |
-| Context-sensitive lenis mapping | PARTIAL / project proposal | `data/korean/rr_ukrainian_context_rules.csv` distinguishes initial/single ㄱ/ㄷ/ㅂ/ㅈ from medial realizations after vowels, sonorants and obstruents; 41 rows include word-level examples. |
+| Context-sensitive lenis mapping | PARTIAL / project proposal | `data/korean/rr_ukrainian_context_rules.csv` distinguishes initial/single ㄱ/ㄷ/ㅂ/ㅈ from medial realizations after vowels, sonorants and obstruents; 16 voiced-medial rules expose an unvoiced alternative because prosodic position and speaker variation matter; 41 rows include word-level examples. |
 | Context-sensitive ㅢ vowel adaptation | PARTIAL / NIKL-grounded rule, Ukrainian mapping provisional | RR remains `ui`; the target adapter maps consonant-onset ㅢ to Ukrainian `і`, initial silent-onset ㅢ to `уї`, and noninitial silent-onset ㅢ to an allowed `і` variant. The possessive particle [e] variant is not guessed without morphology. |
 | Phonemic aspiration marker | PARTIAL / project convention implemented | Onset ㅋ/ㅌ/ㅍ/ㅊ map to к'/т'/п'/ч'; lenis ㄱ/ㄷ/ㅂ/ㅈ and fortis ㄲ/ㄸ/ㅃ/ㅆ/ㅉ are not assigned the aspiration apostrophe. Coda aspiration is not copied into Ukrainian output. |
 | RR ㄹㄹ edge case | DONE_VERIFIED in implementation/tests; CI pending | RR onset `l` after a liquid coda now has a Ukrainian `л` mapping; test covers `별래 → byeollae → пйолле`. |
