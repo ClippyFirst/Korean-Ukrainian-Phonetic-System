@@ -29,3 +29,9 @@ test('quick examples and clipboard actions have matching public controls', () =>
   assert.match(html, /data-copy="ipa"/u);
   assert.match(html, /data-copy="analysis"/u);
 });
+
+
+test('a generated adversarial Korean quick example is available in the public input controls', () => {
+  assert.match(html, /data-example="값이 바뀌었다고 해서 넋이 나간 사람처럼 굴면 안 된다\./u);
+  assert.match(html, /Каверзний текст · 받침 \/ ㅢ/u);
+});
