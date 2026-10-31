@@ -1,12 +1,41 @@
 import { romanizeRevisedDetailed } from './romanization.js';
 
+function parseCsvLine(line) {
+  const values = [];
+  let value = '';
+  let quoted = false;
+  for (let index = 0; index < line.length; index += 1) {
+    const char = line[index];
+    if (char === '"') {
+      if (quoted && line[index + 1] === '"') {
+        value += '"';
+        index += 1;
+      } else {
+        quoted = !quoted;
+      }
+    } else if (char === ',' && !quoted) {
+      values.push(value);
+      value = '';
+    } else {
+      value += char;
+    }
+  }
+  if (quoted) throw new Error('Unclosed quoted field in RR correspondence CSV');
+  values.push(value);
+  return values;
+}
+
 function parseCsv(csv) {
-  const [headerLine, ...lines] = String(csv ?? '').trim().split(/\r?\n/u);
+  const lines = String(csv ?? '').replace(/^\\uFEFF/u, '').trim().split(/\\r?\\n/u);
+  const headerLine = lines.shift();
   if (!headerLine) return [];
-  const headers = headerLine.split(',');
-  return lines.filter((line) => line.trim()).map((line) => {
-    const values = line.split(',');
-    return Object.fromEntries(headers.map((header, index) => [header, values[index] ?? '']));
+  const headers = parseCsvLine(headerLine);
+  return lines.filter((line) => line.trim()).map((line, rowIndex) => {
+    const values = parseCsvLine(line);
+    if (values.length !== headers.length) {
+      throw new Error('RR correspondence CSV row ' + (rowIndex + 2) + ' has ' + values.length + ' fields; expected ' + headers.length);
+    }
+    return Object.fromEntries(headers.map((header, index) => [header, values[index]]));
   });
 }
 
@@ -19,7 +48,15 @@ function loadCorrespondences(csv) {
 }
 
 function loadContextRules(csv) {
-  return parseCsv(csv).sort((a, b) => a.rule_id.localeCompare(b.rule_id));
+  const rules = parseCsv(csv);
+  const ids = new Set();
+  for (const rule of rules) {
+    if (!rule.rule_id || ids.has(rule.rule_id)) throw new Error('Duplicate or missing RR context rule ID: ' + rule.rule_id);
+    ids.add(rule.rule_id);
+  }
+  const specificity = (rule) => ['word_position', 'left_context', 'sentence_position', 'onset_context']
+    .filter((field) => rule[field] && rule[field] !== '*').length;
+  return rules.sort((a, b) => specificity(b) - specificity(a) || a.rule_id.localeCompare(b.rule_id));
 }
 
 function matchesRule(rule, segment, layer, rr) {
@@ -92,8 +129,6 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
           rightContext: segment.rightContext,
           onsetClass: segment.onsetClass,
           onsetContext: segment.onsetContext,
-          onsetOrigin: segment.onsetOrigin,
-          alignmentStatus: segment.alignmentStatus,
           onsetOrigin: segment.onsetOrigin,
           alignmentStatus: segment.alignmentStatus
         });
