@@ -276,3 +276,16 @@ test('maps Korean coda ㅇ by its velar-nasal phonetic value, not the RR spellin
   assert.equal(coda.ukrainian, 'нг');
   assert.equal(result.trace.filter((entry) => entry.layer === 'coda').length, 1);
 });
+
+
+test('keeps Hangul coda identity when multiple codas share one RR surface unit', () => {
+  const simple = transcribeRevisedToUkrainian('각');
+  const complex = transcribeRevisedToUkrainian('넋');
+  const simpleCoda = simple.trace.find((entry) => entry.layer === 'coda');
+  const complexCoda = complex.trace.find((entry) => entry.layer === 'coda');
+  assert.equal(simpleCoda.rr, 'k');
+  assert.equal(complexCoda.rr, 'k');
+  assert.equal(simpleCoda.mapping_id, 'ㄱ:coda');
+  assert.equal(complexCoda.mapping_id, 'ㄳ:coda');
+  assert.match(complexCoda.notes, /Complex coda/u);
+});
