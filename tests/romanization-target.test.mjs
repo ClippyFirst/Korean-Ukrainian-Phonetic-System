@@ -36,6 +36,11 @@ test('marks phonemic aspiration with apostrophe, not lenis or fortis consonants'
   assert.equal(transcribeRevisedToUkrainian('가').text, 'ка');
 });
 
+test('uses Ukrainian glottal and fortis-affricate approximations explicitly', () => {
+  assert.equal(transcribeRevisedToUkrainian('하').text, '가');
+  assert.equal(transcribeRevisedToUkrainian('짜').text, 'чча');
+});
+
 test('retains fortis and resolved surface-form RR units', () => {
   const result = transcribeRevisedToUkrainian('일꼬');
   assert.equal(result.romanization, 'ilkko');
@@ -110,6 +115,11 @@ test('context matrix examples reproduce the declared syllable and phonological e
         && (rule.onset_context === '*' || candidate.onsetContext === rule.onset_context);
     });
     assert.ok(segment, 'example lacks target ' + rule.layer + ' ' + rule.hangul + ' for ' + rule.rule_id);
+    const adapted = transcribeRevisedToUkrainian(rule.example_surface, source);
+    const selected = adapted.trace.find((entry) => entry.mapping_id === rule.rule_id);
+    assert.ok(selected, 'adapter did not select ' + rule.rule_id);
+    assert.equal(selected.ukrainian, rule.ukrainian, 'target mapping for ' + rule.rule_id);
+    assert.equal(selected.alternativeUkrainian, rule.alternative_ukrainian || null, 'alternative target for ' + rule.rule_id);
     if (rule.word_position !== '*') assert.equal(segment.wordPosition, rule.word_position, 'word position for ' + rule.rule_id);
     if (rule.left_context !== '*') assert.equal(segment.leftContext, rule.left_context, 'left context for ' + rule.rule_id);
     if (rule.sentence_position !== '*') assert.equal(segment.sentencePosition, rule.sentence_position, 'sentence position for ' + rule.rule_id);
