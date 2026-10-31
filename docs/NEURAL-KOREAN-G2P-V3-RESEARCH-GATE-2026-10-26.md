@@ -154,3 +154,33 @@ Added a strict sentence-level scoring boundary in `scripts/benchmark_contextual_
 - SMART-TTS/SMART-G2P is a code-mixed transliteration component and delegates pronunciation conversion to g2pK/KoG2P; it is not an independent neural Korean G2P baseline.
 - NN-KoG2P remains BLOCKED / not scored because no authentic runnable implementation, weights, license terms, and verified phone-to-IPA map were found. The later Fast Bilingual G2P publication is a different model, not a substitute.
 - **Current score status:** no new CharsiuG2P score is claimed until the labelled workflow finishes and its artifact is inspected. A successful CI unit-test run is not evidence of neural inference quality.
+
+
+## External linguistic audit — KoG2Padvanced and the 2022 rule study (2026-11-01)
+
+The study by Mun, Kim & Ko (2022), *A proposal to improve on existing Grapheme-to-Phoneme conversion models informed by linguistics*, DOI [10.29403/LI.26.2.2](https://doi.org/10.29403/LI.26.2.2), is a useful independent checklist. Its manually reviewed challenge set has 130 examples across 13 rule families; the authors report initial inter-annotator agreement of 0.842 and a post-change aggregate of 0.938 for their revised KoG2P-based system. These are the paper's own curated-set results, not comparable to this repository's UGTPHON/SIGMORPHON diagnostics or a general Korean accuracy claim.
+
+### Feature-by-feature reconciliation
+
+| Study finding / candidate | Current ClippyFirst coverage | Decision |
+|---|---|---|
+| ㅎ deletion | R003 exact-form licenses and lexical entries already cover source-attested forms; narrow /h/ realization remains a separate research profile | Do not add a categorical across-the-board deletion rule. The study itself describes POS-, frequency-, and context-sensitive variation |
+| ㅢ variation | §5 vowel alternatives plus exact lexical entries preserve cases such as 우리의, 강의의, 학생의, 발음의, 지식의, 값의, 삶의 | Existing coverage is preserved; broader productive application needs a POS/morphology boundary, not Hangul adjacency |
+| ㅖ → [e] variation | Existing §5 variant generator covers consonant-initial ㅖ while excluding 예/례 | No duplicate rule needed |
+| ㄴ insertion | R009 uses exact source-backed lexical/phrase licenses | Keep fail-closed lexical treatment; do not make it productive solely from the paper's aggregate score |
+| Coda place assimilation | Not part of the default standard-pronunciation profile | Keep out of default output: the paper explicitly treats it as optional/variable. A future descriptive profile needs independent speaker/register evidence and a distinct output ID |
+| Rule ordering | Existing ordered rule engine and NIKL-backed interaction tests | Use the paper as a targeted audit checklist; change order only when a source-backed counterexample demonstrates a defect |
+
+The paper also highlights the role of morphological analysis for particles and verb forms. This repository already has optional Kiwi and MeCab-Ko adapters with source offsets, but those adapters currently expose morphology only; they do not automatically license pronunciation rules. A high-value next experiment is a **research-only morphology-aware candidate layer** for ambiguous particle/ending cases, with exact span alignment, analyzer provenance, multiple candidates where analyses disagree, and abstention on zero-width or unaligned spans. It must not silently promote analyzer output to normative pronunciation.
+
+### KoG2Padvanced reuse and rights gate
+
+The authors' [KoG2Padvanced repository](https://github.com/seongmin-mun/KoG2Padvanced) was inspected at main tree `491b2d7269a4666b0d7556efb26755219f861163`. GitHub reports no repository license; the inspected tree contains a README and a test-set file, but no LICENSE or executable Python module. Therefore its README and the paper are used as bibliographic research evidence only. No code, corpus rows, or derived test fixtures were copied. The source is recorded as rights-unverified in `research/SOURCE-REGISTER.csv`.
+
+### Benchmark implications
+
+The 130-item paper challenge is useful for designing rule strata, but its curated examples, Hangul-output comparison, and selected rules are not a replacement for an independently adjudicated broad-IPA holdout. The current project should report (1) source-backed rule challenge performance, (2) canonical lexical G2P, and (3) noisy-text normalization plus G2P as separate tracks. Do not tune a single engine against the paper's challenge and then present that score as generalization.
+
+A separate 2026 Findings paper on UGTPHON proposes retrieval-augmented, staged canonicalization for user-generated text and reports a large reduction in the canonical-to-noncanonical gap. That supports investigating a distinct raw-text normalization stage; it does not justify changing the standard Korean phonology rules or treating noisy-text normalization as ordinary G2P. See [Jeon et al. (2026)](https://aclanthology.org/2026.findings-emnlp.1020/).
+
+**Status:** literature audit DONE; no new normative phonological rule promoted. Morphology-aware candidate layer TODO / research-only pending independently adjudicated cases, POS/span validation, and paired benchmark evaluation.

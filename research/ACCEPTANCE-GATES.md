@@ -481,3 +481,14 @@ Feature status: **PARTIAL / in review**, tracked by [PR #354](https://github.com
 **Evidence currently available:** isolated Node.js harness, 6/6 tests passed including the 11,172-syllable structural sweep. In addition, CI passed on code/test snapshot `0dcde24374f1a67c38f00f44687c7a1e4a024a51`: browser regression/build, Python regression/data integrity, `npm test`, `npm run build`, Python 3.11/3.12/3.13, and corpus audit jobs. See [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40680654498), [browser G2P](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40680654450), and [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40680654400). Official NIKL source inventory was skipped. Later commits were documentation-only; latest-head CI is not yet confirmed. See `docs/KOREAN-ROMANIZATION-RR-2026-10-28.md` and the corresponding entry in `research/ROADMAP.md`.
 
 **Release rule:** the feature must not be described as fully NIKL-conformant or merged solely on the basis of structural syllable coverage or the current example tests.
+
+
+## Addendum — G2P improvement research audit (2026-11-01)
+
+- **DONE_VERIFIED:** reviewed Mun, Kim & Ko (2022) and the public KoG2Padvanced repository metadata; reconciled candidate rule families against current R003, R009, §5 IPA variants, lexical alternatives, and the optional morphology adapters.
+- **DONE_VERIFIED:** registered KoG2Padvanced as rights-unverified research evidence. No upstream code or test corpus was imported.
+- **PARTIAL:** source-backed /h/ deletion, /ㅢ/ variants, and /n/-insertion already have implementation coverage; this audit did not prove exhaustive coverage of all lexical/morphological environments.
+- **DEFERRED:** variable coda place assimilation remains outside the standard South Korean output profile; a separate descriptive profile would require independent speaker/register evidence, explicit variant semantics, and its own evaluation.
+- **TODO:** morphology-aware candidate generation from Kiwi/MeCab-Ko. Acceptance requires exact source-offset alignment, POS evidence, analyzer provenance, multiple hypotheses or abstention, positive/negative homograph controls, Python/browser contract parity if exposed in the UI, and paired evaluation on independently adjudicated cases.
+- **BLOCKED:** KoG2Padvanced implementation/corpus reuse due no declared upstream license and no executable source module in the inspected tree.
+- **Benchmark policy:** curated rule-challenge scores, canonical lexical G2P, and noisy-text normalization+G2P must remain separate; no aggregate benchmark claim may blend them.

@@ -179,3 +179,14 @@ The workflow checks out the exact upstream revisions into the ephemeral runner, 
 ## Contextual neural-G2P evaluator consolidation — 2026-10-27
 
 The consolidation branch also carries the strict sentence-context evaluator and its readiness/benchmark tests from the V3 research workstream. This evaluator is infrastructure, not an authentic NN-KoG2P model adapter: no NN-KoG2P inference or score is claimed. It requires declared IPA output, validates sentence IDs and canonical inputs, rejects unadapted Hangul outputs, and reports coverage/exact-match/CER at the sentence level. Word-level SIGMORPHON remains a context-free ablation, not a sentence-context benchmark. The current combined-head CI is the acceptance gate; previous PR-specific successes do not substitute for it. Model/license and training-data-overlap questions remain open, and all neural outputs remain diagnostic/hypothesis-generating only.
+
+
+## Linguistic-rule benchmark reconciliation — 2026-11-01
+
+The 2022 Mun, Kim & Ko study and its KoG2Padvanced implementation were reviewed as an independent rule-family checklist. Its 130 manually reviewed cases across 13 phonological categories are valuable for designing a balanced challenge set, but are not a directly comparable broad-IPA benchmark: the paper evaluates Hangul surface outputs on a curated rule set, while this repository's external diagnostics compare IPA under explicitly declared normalization profiles.
+
+The paper reports the following baseline weak areas for g2pk/KoG2P: /h/-deletion, /ui/ variation, coda place assimilation, and /n/-insertion; its revised system reports improvements after morphology-aware handling, a small /n/-insertion lexicon, and additional rules. ClippyFirst already implements source-backed /h/ licenses, §5 /ㅢ/ variants and lexical alternatives, and exact-form R009 /n/-insertion licenses. Variable coda place assimilation is intentionally excluded from the standard profile. See the detailed reconciliation in [the V3 research gate](NEURAL-KOREAN-G2P-V3-RESEARCH-GATE-2026-10-26.md).
+
+The external KoG2Padvanced repository does not declare a license and the inspected tree did not expose an executable source module. It was not installed, copied, or scored. Its 130-item test set was not imported. The 2022 aggregate score (0.938) is therefore cited only as the authors' result on their own curated challenge; it is not a ClippyFirst result and not a cross-corpus comparison.
+
+**Next experiment:** connect existing optional morphology adapters to a research-only candidate layer, initially for particle/ending ambiguity such as genitive 의, while preserving all analyzer hypotheses, offsets, and abstentions. Evaluate on a separately adjudicated morphology challenge and compare paired per-case outcomes; do not alter default broad IPA until independent review clears it.
