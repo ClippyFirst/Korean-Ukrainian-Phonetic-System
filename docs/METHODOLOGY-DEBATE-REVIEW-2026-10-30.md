@@ -82,3 +82,34 @@
 - [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail)
 - [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills)
 - [K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills)
+
+## RR → Ukrainian contextual phonetic layer — 2026-10-31
+
+### Decision recorded
+
+The previous flat component mapping is retained as a fallback register, but it is no longer treated as the complete target algorithm. A separate context-rule register now selects onset mappings using Hangul Jamo identity, RR unit, word position and preceding coda class. The trace additionally records sentence position, word/sentence indices and syllable index so that results can be inspected in running text.
+
+### Phonetic rationale
+
+- NIKL Revised Romanization is based on standard Korean pronunciation and explicitly distinguishes context-dependent ㄱ/ㄷ/ㅂ values, ㄹ versus ㄹㄹ, and special cases such as assimilation, epenthesis, palatalization and ㅎ-conditioned aspiration.
+- Korean phonetics research describes the lenis/fortis/aspirated contrast. The project therefore reserves the apostrophe marker for the phonemic aspirated onset series ㅋ/ㅌ/ㅍ/ㅊ, while keeping lenis and fortis as separate categories.
+- Lenis ㄱ/ㄷ/ㅂ/ㅈ are adapted as voiceless at word onset or after an obstruent, and as voiced after a vowel/sonorant. This is an explicit project approximation; it is not a claim that RR itself encodes these Ukrainian choices.
+- RR ㄹㄹ can produce an onset unit `l`; the Ukrainian base register now includes that unit, fixing the previously unmapped liquid-assimilation case.
+
+### Adjudication and limits
+
+1. **Accepted as an engineering improvement:** explicit syllable/word/sentence context and an inspectable rule ID are preferable to unconditional one-grapheme replacement.
+2. **Accepted as a project convention:** ASCII apostrophe marks the phonemic aspirated series in this mode. This must remain distinct from weak aspiration of word-initial lenis consonants and from fortis tension.
+3. **Not accepted as established Ukrainian phonetic fact:** the exact Ukrainian outputs к/ґ, т/д, п/б, ч/дж and к'/т'/п'/ч' still require independent Ukrainian phonetic review and reader testing.
+4. **Not established:** superiority over Kholodovich–Konzevich. The method preserves more explicit contextual distinctions in its trace, but comparative quality requires a held-out word/sentence corpus and blinded readers.
+5. Sentence position is currently recorded and resets at sentence punctuation; no sentence-position-specific target rules are asserted yet. The active selection rules are word-position and local-coda based.
+6. The RR adapter consumes an already-resolved Hangul surface form. It does not independently implement Korean phonological processes, recover morphology, or infer proper-name boundary conventions.
+
+### Sources
+
+- [NIKL — Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do)
+- [NIKL — 2026 guidance on the pronunciation of ㅢ](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=201&pageIndex=1&qna_seq=334585)
+- [Song, Kim & Cho (2023), Korean three-way stop contrast](https://biz.hanyang.ac.kr/documents/10980062/13049795/HISPhonCog2023_P76_Song_etal.pdf/f52b4285-3aee-1657-3383-d266ffff55d0)
+- [Kim et al. (2024), laryngeal contrast and prosodic strengthening](https://doi.org/10.13064/ksss.2024.16.1.017)
+- [Rud (2024), Ukrainian transcription of Korean proper names](https://ir.library.knu.ua/entities/publication/bdb2f408-ca5b-4fdc-879a-95240572e08a)
+
