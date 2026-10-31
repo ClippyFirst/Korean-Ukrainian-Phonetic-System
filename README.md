@@ -16,6 +16,12 @@ The service is intentionally modelled on the functional architecture of the Chin
 
 The Korean visual identity uses South Korean national colours: Taegeuk red #CD2E3A and Taegeuk blue #0047A0.
 
+## Output and engine contract
+
+The primary Ukrainian result is the project's existing author-developed Ukrainian transliteration / practical rendering system. It is not a translation and must not be confused with the IPA representation. The IPA-mediated Ukrainian route and the separate Revised Romanization (RR)-mediated route remain distinct and expose their provenance. Ordinary browser mode uses the pinned JavaScript g2pK port; detailed research mode uses the project-owned deterministic Kozak Kim engine. Both currently provide an inspectable IPA result, but a selectable phonetic-versus-phonemic IPA profile is still a research/UI task and is not claimed as complete.
+
+The default linguistic scope is standard South Korean. Hanja is currently available as a conservative Hangul→Hanja lexical annotation; reverse Hanja→Hangul lookup has a tested ambiguity-preserving adapter but is not yet integrated into the browser input flow. Unknown or ambiguous readings must not be guessed.
+
 ## Sentence-level adversarial corpus
 
 The system page now publishes a five-line running-text test corpus that stresses complex-coda liaison, coda neutralization, fortition, palatalization, the particle `의`, and the contracted form `설명했어요`. The regression fixture and tests keep the normative Korean surface form separate from the provisional Ukrainian target.
@@ -355,3 +361,9 @@ Normative reference: [National Institute of Korean Language — Romanization of 
 ## Optional Hanja output (deterministic preview)
 
 The browser shows the outputs in the order **Romanization → IPA → Ukrainian transcription → Hanja annotation**. Hanja uses a deterministic word dictionary derived from the BSD-licensed libhangul data inventory, fetched at a pinned revision and integrity-checked only during development/build preparation. The deployed browser lazily loads only the generated dictionary chunks matching the initial consonants present in the current input; it makes no external network/API calls and does not affect the three existing conversion results. Candidate selection is deterministic but context-insensitive, so homographs can still be wrong; unknown Hangul runs are preserved unless they can be fully segmented. This is a research feature, not a complete Korean morphological analyzer. See [the implementation and evidence ledger](docs/HANJA-RESEARCH-LAYER-2026-10-29.md).
+
+## Additional synthetic adversarial passage (2026-10-31)
+
+A generated mixed-phonology passage adds dense combinations of complex codas, liaison, fortition, palatalization, ㅢ, morphology, names, loans, numbers, punctuation and long prose. It is a stress-test input fixture, **not pronunciation gold**.
+
+- [Synthetic passage fixture](tests/fixtures/adversarial-corpora/31-generated-mixed-phonology-prose-2026-10-31.txt)
