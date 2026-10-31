@@ -11,8 +11,8 @@
 | Claim of superiority over Kholodovich–Konzevich | BLOCKED pending comparative evaluation | The design preserves distinctions (including aspirated vs lenis and context-conditioned voicing) that the project intends to evaluate; no held-out comparative corpus or reader study yet proves higher quality. |
 
 **Starting point:** branch `feat/korean-rr-ukrainian-mode`, commit `9b1c51bc224bc003c41b495307d86bf51ad127a6`.  
-**Working branch:** `feat/korean-rr-contextual-phonetics`, created from that exact commit.  
-**Previous RR-mode PR:** [#407](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/407) remains separate; this continuation has not merged or rewritten it.
+**Working branch:** `feat/korean-rr-contextual-phonetics`, created from that exact commit. Code and methodology snapshot before this handoff refresh: `5ed9324271b753161cce28647d0285a97b9df7fb`.  
+**Review PR:** [#408](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/408), draft/open. Earlier draft [#407](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/407) was closed as superseded after confirming it had no submitted reviews or inline review threads; its branch and commits were preserved.
 
 **Research basis:** NIKL's RR specification explicitly conditions ㄱ/ㄷ/ㅂ and ㄹ romanization and records assimilation, epenthesis, palatalization and aspiration-related cases ([official RR rules](https://www.korean.go.kr/front_eng/roman/roman_01.do)). Korean phonetics sources describe the lenis/fortis/aspirated contrast and its acoustic cues ([Song, Kim & Cho, 2023](https://biz.hanyang.ac.kr/documents/10980062/13049795/HISPhonCog2023_P76_Song_etal.pdf/f52b4285-3aee-1657-3383-d266ffff55d0); [Kim et al., 2024](https://doi.org/10.13064/ksss.2024.16.1.017)). These sources support Korean-side distinctions, not the chosen Ukrainian graphemes. The Ukrainian apostrophe is a project notation for phonemic aspiration, not an official Ukrainian Korean-transcription rule.
 
