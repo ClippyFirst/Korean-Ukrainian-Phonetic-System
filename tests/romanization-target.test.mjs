@@ -107,18 +107,18 @@ test('documents every Ukrainian vowel collision and exposes the RR identity in t
 
 test('rejects malformed correspondence rows and duplicate context-rule IDs', () => {
   assert.throws(
-    () => createRomanizationTarget(correspondenceCsv + 'broken,row\\n', contextRulesCsv),
+    () => createRomanizationTarget(correspondenceCsv + 'broken,row\n', contextRulesCsv),
     /expected/u
   );
-  const firstRule = contextRulesCsv.trim().split(/\\r?\\n/u)[1];
+  const firstRule = contextRulesCsv.trim().split(/\r?\n/u)[1];
   assert.throws(
-    () => createRomanizationTarget(correspondenceCsv, contextRulesCsv.trim() + '\\n' + firstRule),
+    () => createRomanizationTarget(correspondenceCsv, contextRulesCsv.trim() + '\n' + firstRule),
     /Duplicate or missing RR context rule ID/u
   );
 });
 
 test('more-specific context rules take precedence over broader matching rules', () => {
-  const [header, ...existing] = contextRulesCsv.trim().split(/\\r?\\n/u);
+  const [header, ...existing] = contextRulesCsv.trim().split(/\r?\n/u);
   const row = (id, wordPosition, leftContext, sentencePosition, onsetContext, target) => [
     id, 'onset', 'ㄱ', 'g', wordPosition, leftContext, sentencePosition, target,
     'specificity-test', 'provisional', '', '아가', '아가', 'aga', onsetContext, ''
@@ -128,7 +128,7 @@ test('more-specific context rules take precedence over broader matching rules', 
     ...existing,
     row('TEST-BROAD', '*', '*', '*', '*', 'x'),
     row('TEST-SPECIFIC', 'final', 'vowel', 'sentence-initial', 'consonantal', 'y')
-  ].join('\\n');
+  ].join('\n');
   const adapter = createRomanizationTarget(correspondenceCsv, rules);
   const result = adapter('아가');
   const onset = result.trace.find((entry) => entry.layer === 'onset' && entry.syllableIndex === 1);
