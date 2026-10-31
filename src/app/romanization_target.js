@@ -93,6 +93,8 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
           onsetClass: segment.onsetClass,
           onsetContext: segment.onsetContext,
           onsetOrigin: segment.onsetOrigin,
+          alignmentStatus: segment.alignmentStatus,
+          onsetOrigin: segment.onsetOrigin,
           alignmentStatus: segment.alignmentStatus
         });
       }
