@@ -126,6 +126,14 @@ The Python package, CLI, and optional FastAPI backend can still use the original
 
 Both runtimes preserve the same methodological boundary: the Ukrainian target is generated from IPA, never by a parallel Hangul-to-Ukrainian substitution. See [the Python integration and validation boundary](docs/G2PK-INTEGRATION-2026-10-15.md).
 
+## RR-mediated Ukrainian output (2026-10-31)
+
+The browser service adds a distinct **Revised Romanization → Ukrainian** mode. It obtains the Korean surface form, applies NIKL Revised Romanization, then maps RR onset/nucleus/coda units through `data/korean/rr_ukrainian_correspondence.csv`. This is separate from the Kozak Kim IPA-first target renderer. Ukrainian RR mappings are project proposals, not an official standard or independently validated gold.
+
+- [RR methodology and full correspondence tables](system.html#methodology-02b-ukrainian-rr)
+- Implementation: `src/app/romanization.js`, `src/app/romanization_target.js`
+- Regression tests: `tests/romanization-target.test.mjs`
+
 ## Scientific pipeline
 
 Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
