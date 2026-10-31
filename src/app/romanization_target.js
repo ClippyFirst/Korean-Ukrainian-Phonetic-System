@@ -1,4 +1,3 @@
-import correspondenceCsv from '../../data/korean/rr_ukrainian_correspondence.csv?raw';
 import { romanizeRevisedDetailed } from './romanization.js';
 
 function loadCorrespondences(csv) {
@@ -11,10 +10,11 @@ function loadCorrespondences(csv) {
   return map;
 }
 
-const CORRESPONDENCES = loadCorrespondences(correspondenceCsv);
-
-/** RR-mediated Ukrainian output; distinct from the IPA-first Kozak Kim target adapter. */
-export function transcribeRevisedToUkrainian(surface) {
+/** Create a reusable RR-mediated target adapter from the canonical CSV source. */
+export function createRomanizationTarget(correspondenceCsv) {
+  const correspondences = loadCorrespondences(correspondenceCsv);
+  /** RR-mediated Ukrainian output; distinct from the IPA-first Kozak Kim target adapter. */
+  return function transcribeRevisedToUkrainian(surface) {
   const romanized = romanizeRevisedDetailed(surface);
   const trace = [];
   const issues = [];
@@ -29,7 +29,7 @@ export function transcribeRevisedToUkrainian(surface) {
     let syllableOutput = '';
     for (const [layer, rr] of [['onset', segment.onset], ['vowel', segment.vowel], ['coda', segment.coda]]) {
       if (!rr) continue;
-      const mapping = CORRESPONDENCES.get(layer + ':' + rr);
+      const mapping = correspondences.get(layer + ':' + rr);
       if (!mapping) {
         issues.push({ source: segment.source, layer, rr, reason: 'unmapped-rr-unit' });
         continue;
@@ -42,4 +42,5 @@ export function transcribeRevisedToUkrainian(surface) {
   }
   return { text: issues.length ? null : text, romanization: romanized.text,
     status: issues.length ? 'unavailable' : 'provisional', issues, trace };
+  };
 }
