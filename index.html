@@ -28,7 +28,7 @@
         <p class="eyebrow">Корейсько-український сервіс передачі вимови</p>
         <h1>Від корейського тексту — <em>до українського читання.</em></h1>
         <p class="subtitle">Введіть корейське слово, речення або уривок — сервіс покаже приблизну вимову українськими літерами. За потреби можна переглянути IPA та докладний розбір. Сервіс передає звучання, а не перекладає зміст.</p>
-        <div class="method-line" aria-label="Послідовність перетворення"><span><b>01 · Корейський текст</b></span><span><b>02 · Вимова</b></span><span><b>03 · Фонетичний запис</b></span><span><b>04 · Українське читання</b></span></div>
+        <div class="method-line" aria-label="Послідовність перетворення"><span><b>01 · Корейський текст</b></span><span><b>02 · Вимова</b></span><span><b>03 · Фонетичний запис</b></span><span><b>04 · Українська транслітерація</b></span></div>
       </div>
       <aside class="hero-specimen" aria-label="Приклад шляху транскрипції">
         <div class="specimen-top"><span>Приклад</span><span>№ 001</span></div>
@@ -49,7 +49,7 @@
     <label class="sr-only" for="source-input">Корейський текст</label>
     <div class="input-shell">
       <textarea id="source-input" rows="5" spellcheck="false" lang="ko" aria-describedby="input-guidance" placeholder="한국어를 입력하세요"></textarea>
-      <div class="input-hint"><span id="character-count">0 символів</span><span class="mode-note"><i aria-hidden="true"></i> Українське читання</span></div>
+      <div class="input-hint"><span id="character-count">0 символів</span><span class="mode-note"><i aria-hidden="true"></i> Українська транслітерація</span></div>
       <section id="spelling-suggestions" class="spelling-suggestions" aria-label="Підказки щодо написання" aria-live="polite" hidden>
         <div class="spelling-suggestions-heading">
           <strong>Підказки до написання</strong>
@@ -127,7 +127,7 @@
     <div class="result-grid">
 
       <article id="panel-ukrainian" class="result-card" data-result-panel="ukrainian">
-        <div class="result-meta"><span>UA</span><strong id="ukrainian-output-label">Український запис</strong><button id="ukrainian-copy-button" class="copy-button" data-copy="ukrainian" type="button">Копіювати</button></div>
+        <div class="result-meta"><span>UA</span><strong id="ukrainian-output-label">Українська транслітерація</strong><button id="ukrainian-copy-button" class="copy-button" data-copy="ukrainian" type="button">Копіювати</button></div>
         <div class="ua-output-switch" role="group" aria-label="Стан українського запису"><button id="ua-unconfirmed-button" class="ua-output-option is-active" type="button" aria-pressed="true">Основний результат</button><button id="ua-candidate-button" class="ua-output-option" type="button" aria-pressed="false" disabled>Дослідницький результат</button></div>
         <p id="result-ukrainian" class="result-body"></p>
         <div id="surface-reading" class="surface-reading" hidden><span>Поверхнева форма</span><strong id="result-surface"></strong></div>
@@ -185,7 +185,7 @@
       <summary class="trace-summary"><span class="trace-summary-index">C</span><span class="trace-summary-copy"><strong>Поскладовий розбір</strong><small>Показати, як кожен склад перетворюється з корейського написання на український запис.</small></span><span class="trace-summary-mark" aria-hidden="true">＋</span></summary>
       <div class="trace-details">
       <p class="trace-explainer">У таблиці показано шлях кожного сегмента: корейське написання → визначена вимова → IPA → відповідність звуків українським літерам. Так можна побачити, на якому етапі виникла невизначеність або спрацювало окреме правило.</p>
-      <div class="trace-columns" aria-hidden="true"><span>Корейський сегмент · вхід</span><span>Корейська вимова</span><span>IPA</span><span>IPA-токен → графема</span><span>Український запис</span><span title="Правила / IPA">Нюанс / правило</span><span>Статус</span></div>
+      <div class="trace-columns" aria-hidden="true"><span>Корейський сегмент · вхід</span><span>Корейська вимова</span><span>IPA</span><span>IPA-токен → графема</span><span>Українська транслітерація</span><span title="Правила / IPA">Нюанс / правило</span><span>Статус</span></div>
       <div id="trace-list" class="trace-list"></div>
       </div>
     </details>
