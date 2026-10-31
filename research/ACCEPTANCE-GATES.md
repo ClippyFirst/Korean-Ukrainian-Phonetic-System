@@ -68,7 +68,7 @@ A release is not accepted merely because the build succeeds or documentation des
 
 ## Current evidence snapshot — 2026-10-31 continuation PR #411
 
-This snapshot supersedes the historical 2026-10-21 table for the current dual-route continuation. It is not a release acceptance decision. Main remains at `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`; PR [#411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/411) is draft/open on a branch based directly on that main commit. The latest recorded branch head at this snapshot is `4d88a3c1c25bebb38748921b84547f5423b79602`; it has not received exact-head CI.
+This snapshot supersedes the historical 2026-10-21 table for the current dual-route continuation. It is not a release acceptance decision. Main remains at `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`; PR [#411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/411) is draft/open on a branch based directly on that main commit. The latest code-bearing head is `9c8ad0c7a51ba08edaa18ccf16542384e4d9e4d0`; subsequent branch commits only reconcile documentation. The current PR tip has not received exact-head CI.
 
 | Gate | Status | Evidence / reason |
 |---|---|---|
