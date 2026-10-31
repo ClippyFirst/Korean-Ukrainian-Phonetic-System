@@ -1,22 +1,28 @@
 # Web service architecture
 
-    Korean input
+    Korean input (Hangul / Hanja / mixed)
       ↓
-    Unicode-safe scan
+    Unicode-safe scan + Hanja review
       ↓
-    Hangul syllable decomposition
+    Hangul structural and morphological analysis
       ↓
-    canonical Jamo source data
+    selected Korean surface-form engine
+      ├─ pinned JS g2pK ordinary path
+      └─ deterministic Kozak Kim research path
       ↓
-    implemented contextual rules
+    resolved surface Hangul
+      ├─ surface phonetic IPA ─→ existing IPA→Ukrainian transliteration adapter
+      └─ Revised Romanization ─→ existing RR→Ukrainian transliteration adapter
       ↓
-    Ukrainian practical target
-      ↓
-    Ukrainian output + analytical trace
+    two Ukrainian transliteration outputs + separate traces
+
+    Parallel analysis fields:
+      ├─ surface phonetic IPA from selected G2P engine
+      └─ orthography-derived phonemic IPA baseline (not a G2P engine)
 
 ## Source of truth
 
-data/korean/canonical_correspondence.csv is the canonical editable correspondence source for the web adapter. The web engine reads it through Vite's raw import mechanism and does not maintain a second hand-edited mapping table.
+The IPA route uses the existing canonical correspondence and IPA target adapter. The separate RR route uses `data/korean/rr_ukrainian_correspondence.csv` plus `data/korean/rr_ukrainian_context_rules.csv`. Both remain independent, inspectable and project-owned target paths; do not merge them or create a duplicate third Ukrainian inventory.
 
 ## Security
 
