@@ -132,14 +132,20 @@ def validate_external_payload(
     result = body.get("result")
     if not isinstance(result, dict):
         raise RuntimeError(f"{system} API response has no result object")
+    reported_system = result.get("system")
+    if not isinstance(reported_system, str) or system.casefold() not in reported_system.casefold():
+        raise RuntimeError(f"{system} API did not identify the requested system: {reported_system!r}")
+
     lines = result.get("lines")
     if not isinstance(lines, list) or len(lines) != len(inputs):
         count = len(lines) if isinstance(lines, list) else "no"
         raise RuntimeError(f"{system} returned {count} lines for {len(inputs)} inputs")
-    if [line.get("source") for line in lines if isinstance(line, dict)] != list(inputs):
-        raise RuntimeError(f"{system} changed input order or source strings")
-    if any(not isinstance(line, dict) or not isinstance(line.get("result"), str) for line in lines):
+    if any(not isinstance(line, dict) for line in lines):
         raise RuntimeError(f"{system} returned a malformed output line")
+    if [line.get("source") for line in lines] != list(inputs):
+        raise RuntimeError(f"{system} changed input order or source strings")
+    if any(not isinstance(line.get("result"), str) for line in lines):
+        raise RuntimeError(f"{system} returned a malformed output value")
 
     nonempty = sum(bool(line["result"]) for line in lines)
     return {
@@ -181,7 +187,7 @@ def fetch_external(
         with opener(request, timeout=timeout) as response:
             status = response.status
             body = json.loads(response.read().decode("utf-8"))
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+    except (urllib.error.URLError, TimeoutError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise RuntimeError(f"{system} API request failed: {type(exc).__name__}: {exc}") from exc
     elapsed_ms = (time.perf_counter() - started) * 1000
     return validate_external_payload(system, status, body, inputs, elapsed_ms)
