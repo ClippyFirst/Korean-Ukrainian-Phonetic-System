@@ -4141,3 +4141,10 @@ The new documents are linked from README and guarded by the methodology contract
 - The adapter already returned `mapping_id` and `notes` for each selected RR correspondence, but the browser trace rendered only the RR unit, phonological feature and context. This made the selected rule itself invisible to users.
 - Added UI rendering for the selected rule ID and mapping rationale; the UI contract test now requires both fields. This is an observability correction, not a change to phonetic rule selection or Ukrainian output.
 - Test contract commit: `5074596cb13ed3c478ddbd3eecff9197352a15ea`; implementation commit: `3c75c398a4dad87d2895a3f421189b11a9f4de92`. Exact-head Actions are queued; no pass is claimed until completed. Local Node/build execution is unavailable in this connector-only session.
+
+
+### RR correspondence-key correctness — 2026-10-31
+
+- Review found that the base correspondence loader keyed rows only by `layer + RR`. Several distinct Korean coda Jamo share the same RR surface value (for example ㄱ, ㄲ, ㄳ, ㄺ → `k`), so later CSV rows overwrote earlier ones. The Ukrainian output could remain identical, but the trace could report the wrong source Jamo/rule rationale.
+- Added a regression comparing 각 (ㄱ coda) and 넋 (ㄳ coda), both with RR `k`, and requiring distinct trace IDs `ㄱ:coda` and `ㄳ:coda` plus the complex-coda note. Updated correspondence indexing and lookup to use the triple `layer + Hangul Jamo + RR unit`. This preserves source identity without changing the selected Ukrainian string.
+- Test contract commit: `0a458011f5cd8afdc0d8414e6778e4f21e30d3fd`; implementation commit: `2e9a92147d672e51bbe0b8815c7cd0ccb87a8659`. Exact-head tests/build are still pending in GitHub Actions; local execution remains unavailable.
