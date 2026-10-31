@@ -88,7 +88,8 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
           sentencePosition: segment.sentencePosition,
           leftContext: segment.leftContext,
           rightContext: segment.rightContext,
-          onsetClass: segment.onsetClass
+          onsetClass: segment.onsetClass,
+          onsetContext: segment.onsetContext
         });
       }
       text += syllableOutput;
