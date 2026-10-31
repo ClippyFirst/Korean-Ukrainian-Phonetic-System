@@ -14,7 +14,7 @@ Primary route:
 `Korean orthography → Korean structure/morphology/phonology → resolved surface Hangul → surface phonetic IPA → existing author-developed IPA→Ukrainian transliteration adapter → Ukrainian output`
 
 Parallel comparison route:
-`resolved surface Hangul → Revised Romanization (RR) → existing author-developed RR→Ukrainian transliteration adapter → Ukrainian output`
+`source Hangul spelling + resolved surface Hangul → NIKL-based Revised Romanization (RR) → existing author-developed RR→Ukrainian transliteration adapter → Ukrainian output`
 
 Both Ukrainian route outputs are displayed simultaneously. The user may choose which route is visually primary, but choosing a primary route must not hide the other result or its trace. Phonetic IPA and the orthography-derived phonemic baseline are separate analytical fields; the latter is not a G2P engine.
 
@@ -27,7 +27,7 @@ A simple Jamo replacement must never be presented as a complete Korean pronuncia
 - Local-processing indicator.
 - Two simultaneous Ukrainian transliteration results: **через IPA** and **через RR**, each with explicit provenance/status.
 - Surface phonetic IPA from the selected G2P engine and a separately labelled orthography-derived phonemic baseline.
-- Revised Romanization of the resolved surface form.
+- NIKL-based Revised Romanization from both source spelling and resolved surface form; source spelling is used only for explicit, source-backed RR exceptions. The adapter is a conservative subset, not a complete name/administrative-unit romanizer.
 - Hangul→Hanja lexical annotation and a separate Hanja→Hangul reading workbench; unknown spans are preserved and ambiguous readings require user resolution.
 - Korean structure, analysis and route-specific trace information where defensible.
 - Copy buttons for results.
