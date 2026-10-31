@@ -76,3 +76,13 @@ test('reverse Hanja lookup preserves unknown characters and reports partial cove
   assert.ok(result.unmapped.some((entry) => entry.source === '未'));
   assert.equal(result.unmapped.find((entry) => entry.source === '未').offset, 4);
 });
+
+
+test('reverse Hanja lookup preserves supplementary-plane Han characters safely', () => {
+  const extensionB = String.fromCodePoint(0x20000);
+  const result = createHanjaToHangulConverter({})(extensionB);
+  assert.equal(result.text, extensionB);
+  assert.equal(result.status, 'partial');
+  assert.equal(result.unmapped[0].source, extensionB);
+  assert.equal(result.unmapped[0].offset, 0);
+});
