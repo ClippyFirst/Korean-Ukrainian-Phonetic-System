@@ -14,6 +14,7 @@ const VOWELS = ['a', 'ae', 'ya', 'yae', 'eo', 'e', 'yeo', 'ye', 'o', 'wa', 'wae'
 const CODAS = ['', 'k', 'k', 'k', 'n', 'n', 'n', 't', 'l', 'k', 'm', 'l', 'l', 'l', 'p', 'l', 'm', 'p', 'p', 't', 't', 'ng', 't', 't', 'k', 't', 'p', 't'];
 const SENTENCE_END = new Set(['.', '!', '?', '。', '！', '？', '\n']);
 const SONORANT_CODAS = new Set(['n', 'm', 'ng', 'l']);
+const SONORANT_ONSETS = new Set(['ㄴ', 'ㄹ', 'ㅁ']);
 
 function isHangulSyllable(code) {
   return code >= 0xac00 && code <= 0xd7a3;
@@ -38,11 +39,12 @@ function decomposeSyllable(char) {
 }
 
 const CODA_TO_RESYLLABIFIED_ONSET = {
-  'ㄱ': 'ㄱ', 'ㄲ': 'ㄲ', 'ㄳ': 'ㅅ', 'ㄴ': 'ㄴ', 'ㄵ': 'ㅈ', 'ㄶ': 'ㅎ',
-  'ㄷ': 'ㄷ', 'ㄹ': 'ㄹ', 'ㄺ': 'ㄱ', 'ㄻ': 'ㅁ', 'ㄼ': 'ㅂ', 'ㄽ': 'ㅅ',
-  'ㄾ': 'ㅌ', 'ㄿ': 'ㅍ', 'ㅀ': 'ㅎ', 'ㅁ': 'ㅁ', 'ㅂ': 'ㅂ', 'ㅄ': 'ㅅ',
-  'ㅅ': 'ㅅ', 'ㅆ': 'ㅆ', 'ㅈ': 'ㅈ', 'ㅊ': 'ㅊ', 'ㅋ': 'ㅋ', 'ㅌ': 'ㅌ',
-  'ㅍ': 'ㅍ', 'ㅎ': 'ㅎ'
+  // Only simple codas with an unambiguous one-to-one surface transfer are
+  // classified automatically. Complex codas and ㅎ-conditioned changes stay
+  // explicitly ambiguous until the surface rule can be verified.
+  'ㄱ': 'ㄱ', 'ㄲ': 'ㄲ', 'ㄴ': 'ㄴ', 'ㄷ': 'ㄷ', 'ㄹ': 'ㄹ',
+  'ㅁ': 'ㅁ', 'ㅂ': 'ㅂ', 'ㅅ': 'ㅅ', 'ㅆ': 'ㅆ', 'ㅈ': 'ㅈ',
+  'ㅊ': 'ㅊ', 'ㅋ': 'ㅋ', 'ㅌ': 'ㅌ', 'ㅍ': 'ㅍ'
 };
 
 function extractHangulSyllables(value) {
@@ -136,6 +138,14 @@ export function romanizeRevisedDetailed(surface, original = surface) {
       // any phonological assimilation; this step only applies RR's r/l choice.
       if (parts.onsetHangul === 'ㄹ' && previousCoda === 'l') onset = 'l';
       const text = onset + parts.vowel + parts.coda;
+      const nextParts = syllableIndex + 1 < word.length ? decomposeSyllable(word[syllableIndex + 1]) : null;
+      const rightContext = !nextParts
+        ? 'word-boundary'
+        : nextParts.onsetHangul === 'ㅇ'
+          ? 'vowel'
+          : SONORANT_ONSETS.has(nextParts.onsetHangul)
+            ? 'sonorant'
+            : 'obstruent';
       const wordPosition = word.length === 1
         ? 'single'
         : syllableIndex === 0
@@ -164,7 +174,7 @@ export function romanizeRevisedDetailed(surface, original = surface) {
         codaHangul: parts.codaHangul,
         onsetClass,
         onsetContext: resyllabified ? 'resyllabified' : parts.onsetHangul === 'ㅇ' ? 'silent' : sourceUnit?.parts.onsetHangul === 'ㅇ' ? 'ambiguous-consonantal' : alignmentKnown ? 'consonantal' : 'ambiguous-consonantal',
-        onsetOrigin: resyllabified ? 'previous-coda' : alignmentKnown && sourceUnit?.parts.onsetHangul !== 'ㅇ' ? 'source-onset' : 'unknown',
+        onsetOrigin: resyllabified ? 'previous-coda' : parts.onsetHangul === 'ㅇ' && sourceUnit?.parts.onsetHangul === 'ㅇ' ? 'silent-onset' : alignmentKnown && sourceUnit?.parts.onsetHangul !== 'ㅇ' ? 'source-onset' : 'unknown',
         alignmentStatus: alignmentKnown ? 'aligned' : 'unknown',
         wordIndex,
         sentenceWordIndex,
@@ -174,7 +184,7 @@ export function romanizeRevisedDetailed(surface, original = surface) {
         wordPosition,
         sentencePosition,
         leftContext,
-        rightContext: 'vowel'
+        rightContext
       });
       previousCoda = parts.coda;
       syllableOrdinal += 1;
