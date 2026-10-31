@@ -141,6 +141,62 @@ export function createHanjaConverter(dictionary = {}) {
   return createAnnotator(createWordMap(dictionary));
 }
 
+/**
+ * Create a conservative Hanja→Hangul reverse lookup.
+ * The source dictionary is reading→Hanja, so the reverse direction can be
+ * ambiguous. Longest dictionary matches are used; homographic Hanja entries
+ * are left unchanged and returned as explicit alternatives rather than guessed.
+ */
+export function createHanjaToHangulConverter(dictionary = {}) {
+  const forward = createWordMap(dictionary);
+  const reverse = new Map();
+  let maxLength = 1;
+  for (const [reading, hanja] of forward) {
+    maxLength = Math.max(maxLength, [...hanja].length);
+    const candidates = reverse.get(hanja) || new Set();
+    candidates.add(reading);
+    reverse.set(hanja, candidates);
+  }
+
+  return function convertHanjaToHangul(input) {
+    const source = String(input ?? '');
+    const ambiguities = [];
+    const unmapped = [];
+    const text = source.replace(/[\\u3400-\\u4DBF\\u4E00-\\u9FFF\\uF900-\\uFAFF]+/gu, (run) => {
+      let output = '';
+      for (let index = 0; index < run.length;) {
+        let match = null;
+        const limit = Math.min(maxLength, run.length - index);
+        for (let length = limit; length >= 1; length -= 1) {
+          const candidate = run.slice(index, index + length);
+          if (reverse.has(candidate)) { match = candidate; break; }
+        }
+        if (!match) {
+          const literal = [...run.slice(index)][0];
+          output += literal;
+          unmapped.push({ source: literal, offset: index });
+          index += literal.length;
+          continue;
+        }
+        const readings = [...reverse.get(match)].sort((a, b) => a.localeCompare(b, 'ko'));
+        if (readings.length === 1) output += readings[0];
+        else {
+          output += match;
+          ambiguities.push({ source: match, offset: index, readings });
+        }
+        index += match.length;
+      }
+      return output;
+    });
+    return {
+      text,
+      status: ambiguities.length ? 'ambiguous' : unmapped.length ? 'partial' : 'resolved',
+      ambiguities,
+      unmapped,
+    };
+  };
+}
+
 export function getHanjaLexiconSize() {
   return LEXICON.length;
 }
