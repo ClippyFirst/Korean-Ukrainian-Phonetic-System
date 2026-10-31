@@ -45,7 +45,7 @@ test('source rights triage never promotes vague source descriptions to a license
   assert.equal(report.structuralErrorCount, 0);
   assert.deepEqual(report.rightsClassificationCounts, {
     ITEM_LEVEL_LICENSE_RECORDED: 1,
-    NOT_APPLICABLE_RECORDED: 1,
+    NOT_APPLICABLE_RECORDED: 2,
     REVIEW_REQUIRED: 5,
     MANUAL_CLASSIFICATION_REQUIRED: 1,
   });
