@@ -20,7 +20,7 @@ The Korean visual identity uses South Korean national colours: Taegeuk red #CD2E
 
 The primary Ukrainian result is the project's existing author-developed Ukrainian transliteration / practical rendering system. It is not a translation and must not be confused with the IPA representation. The IPA-mediated Ukrainian route and the separate Revised Romanization (RR)-mediated route remain distinct and expose their provenance. Ordinary browser mode uses the pinned JavaScript g2pK port; detailed research mode uses the project-owned deterministic Kozak Kim engine. The browser now exposes two separately labelled IPA fields: surface phonetic IPA from the selected engine, and an orthography-derived phonemic baseline. The latter mirrors the Python phonemic inventory but does not resolve morphology or prosody; it is not a second G2P engine or a fully adjudicated phonemic analysis.
 
-The default linguistic scope is standard South Korean. Hanja is currently available as a conservative Hangul→Hanja lexical annotation; reverse Hanja→Hangul lookup has a tested ambiguity-preserving adapter but is not yet integrated into the browser input flow. Unknown or ambiguous readings must not be guessed.
+The default linguistic scope is standard South Korean. Hanja is available in both directions: Hangul→Hanja lexical annotation and a separate Hanja→Hangul reading workbench. The reverse workbench loads the pinned local dictionary on demand, preserves unknown spans, exposes multiple readings instead of guessing, and lets the user edit a reading before transferring it to the main Korean input. This remains dictionary lookup, not contextual word-sense disambiguation; coverage and ambiguity rates still need evaluation.
 
 ## Sentence-level adversarial corpus
 
