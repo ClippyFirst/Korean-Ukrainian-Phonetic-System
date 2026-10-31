@@ -46,7 +46,7 @@
     <div class="methodology-toc-heading"><p class="section-kicker">Навігація розділами</p><h2 id="methodology-toc-title">Зміст методології</h2><a href="./index.html">← Повернутися до сервісу</a></div>
     <ol>
       <li><a href="#methodology-00a">Нормативна база</a></li><li><a href="#methodology-01">Що це</a></li><li><a href="#methodology-02">Архітектура</a></li>
-      <li><a href="#methodology-02a">Звичайний режим · g2pK</a></li><li><a href="#methodology-02c-kozak-kim">Рушій Козака Кіма · три режими</a></li><li><a href="#methodology-19">Тести й порівняння рушіїв</a></li><li><a href="#methodology-20">Романізація та ханча</a></li><li><a href="#methodology-02b">Романізація</a></li><li><a href="#methodology-03">Приголосні</a></li>
+      <li><a href="#methodology-02a">Звичайний режим · g2pK</a></li><li><a href="#methodology-02c-kozak-kim">Рушій Козака Кіма · три режими</a></li><li><a href="#methodology-19">Тести й порівняння рушіїв</a></li><li><a href="#methodology-20">Романізація та ханча</a></li><li><a href="#methodology-02b">Романізація</a></li><li><a href="#methodology-02b-ukrainian-rr">RR → українська</a></li><li><a href="#methodology-03">Приголосні</a></li>
       <li><a href="#methodology-04">Голосні</a></li><li><a href="#methodology-05">Контекстні правила</a></li><li><a href="#methodology-06">Порівняння систем</a></li>
       <li><a href="#methodology-07">Доказовість</a></li><li><a href="#methodology-08">Обмеження</a></li><li><a href="#methodology-09">Складні випадки</a></li>
       <li><a href="#methodology-10">Зв’язний текст</a></li><li><a href="#methodology-11">IPA та українська ціль</a></li><li><a href="#methodology-12">Перевірка правил</a></li>
@@ -147,6 +147,94 @@
     </div><div class="callout blue"><strong>Поточна межа</strong><span>Нинішній RR-адаптер охоплює базові відповідності складів Hangul і ще не пройшов повну незалежну перевірку всіх правил NIKL. Він не приймає латинський текст для зворотного перетворення. Тому романізація є допоміжним переглядом, а не еталоном вимови чи доказом правильності IPA. Повне покриття правил має пройти окрему матрицю відповідності.</span></div><p>Основний шлях не змінюється: <strong>Hangul → корейська фонологія → IPA → українська адаптація</strong>. Романізація лише відображає вже визначену поверхневу форму й не може підміняти фонетичний аналіз.</p></div>
   </section>
 
+  <section class="doc-section">
+      <section class="doc-section">
+    <div class="doc-label" id="methodology-02b-ukrainian-rr">02B-UA</div><div class="doc-content">
+      <p class="section-kicker">Окремий практичний режим · RR → українська</p>
+      <h2>Українська передача через Revised Romanization</h2>
+      <p>Цей режим не змінює IPA-first методику Козака Кіма. Він бере корейську поверхневу форму, отриману корейським етапом, кодує її за офіційною Revised Romanization (RR), а потім відображає складники RR українськими графемами. Окремий ланцюг: <strong>Hangul → surface form → RR → український запис</strong>. RR заснована на стандартній корейській вимові, але латинські буквосполучення — умовні позначення корейських одиниць, а не англійська орфографія.</p>
+      <p>Офіційні значення RR визначає <a href="https://www.korean.go.kr/front_eng/roman/roman_01.do" rel="noreferrer">Національний інститут корейської мови</a>. Українська колонка нижче — авторська проєктна адаптація, а не затверджений український стандарт. Дослідження українського відтворення корейських власних назв фіксує відсутність єдиного усталеного корейсько-українського рішення (<a href="https://ir.library.knu.ua/entities/publication/bdb2f408-ca5b-4fdc-879a-95240572e08a" rel="noreferrer">Рудь, 2024</a>).</p>
+      <div class="callout blue"><strong>Методологічна межа</strong><span>RR-маршрут не бере IPA як вхід і не повинен подаватися як результат фонетичної методики. Його перевага — відтворюваність через латинський проміжний запис; ціна — залежність від умовних RR-літер і втрати/злиття фонетичних відмінностей. Відповідності зі статусом provisional — дослідницькі рішення, що потребують незалежної оцінки читачами та фахівцями.</span></div>
+      <h3>Початкові приголосні</h3>
+      <table class="rr-ua-table"><thead><tr><th>Корейська графема</th><th>RR</th><th>Українська відповідність</th><th>Статус</th><th>Примітка</th></tr></thead><tbody>
+        <tr><td lang="ko">ㄱ</td><td><code>g</code></td><td>ґ</td><td>model-selected</td><td>RR lenis stop rendered as Ukrainian ґ</td></tr>
+        <tr><td lang="ko">ㄲ</td><td><code>kk</code></td><td>кк</td><td>model-selected</td><td>Fortis stop retained by doubling</td></tr>
+        <tr><td lang="ko">ㄴ</td><td><code>n</code></td><td>н</td><td>model-selected</td><td>Nasal onset</td></tr>
+        <tr><td lang="ko">ㄷ</td><td><code>d</code></td><td>д</td><td>model-selected</td><td>RR lenis stop rendered as Ukrainian д</td></tr>
+        <tr><td lang="ko">ㄸ</td><td><code>tt</code></td><td>тт</td><td>model-selected</td><td>Fortis stop retained by doubling</td></tr>
+        <tr><td lang="ko">ㄹ</td><td><code>r</code></td><td>р</td><td>model-selected</td><td>RR liquid before a vowel</td></tr>
+        <tr><td lang="ko">ㅁ</td><td><code>m</code></td><td>м</td><td>model-selected</td><td>Nasal onset</td></tr>
+        <tr><td lang="ko">ㅂ</td><td><code>b</code></td><td>б</td><td>model-selected</td><td>RR lenis stop rendered as Ukrainian б</td></tr>
+        <tr><td lang="ko">ㅃ</td><td><code>pp</code></td><td>пп</td><td>model-selected</td><td>Fortis stop retained by doubling</td></tr>
+        <tr><td lang="ko">ㅅ</td><td><code>s</code></td><td>с</td><td>model-selected</td><td>Plain fricative</td></tr>
+        <tr><td lang="ko">ㅆ</td><td><code>ss</code></td><td>сс</td><td>model-selected</td><td>Fortis fricative retained by doubling</td></tr>
+        <tr><td lang="ko">ㅇ</td><td><code>∅</code></td><td>∅</td><td>structural-null</td><td>Silent onset contributes no Ukrainian letter</td></tr>
+        <tr><td lang="ko">ㅈ</td><td><code>j</code></td><td>дж</td><td>provisional</td><td>Approximation of the Korean affricate by Ukrainian дж</td></tr>
+        <tr><td lang="ko">ㅉ</td><td><code>jj</code></td><td>дждж</td><td>provisional</td><td>Fortis affricate retained by doubling</td></tr>
+        <tr><td lang="ko">ㅊ</td><td><code>ch</code></td><td>ч</td><td>model-selected</td><td>Aspirated affricate</td></tr>
+        <tr><td lang="ko">ㅋ</td><td><code>k</code></td><td>к</td><td>model-selected</td><td>Aspirated stop</td></tr>
+        <tr><td lang="ko">ㅌ</td><td><code>t</code></td><td>т</td><td>model-selected</td><td>Aspirated stop</td></tr>
+        <tr><td lang="ko">ㅍ</td><td><code>p</code></td><td>п</td><td>model-selected</td><td>Aspirated stop</td></tr>
+        <tr><td lang="ko">ㅎ</td><td><code>h</code></td><td>х</td><td>model-selected</td><td>Glottal fricative approximated by х</td></tr>
+      </tbody></table>
+      <h3>Голосні</h3>
+      <table class="rr-ua-table"><thead><tr><th>Корейська графема</th><th>RR</th><th>Українська відповідність</th><th>Статус</th><th>Примітка</th></tr></thead><tbody>
+        <tr><td lang="ko">ㅏ</td><td><code>a</code></td><td>а</td><td>model-selected</td><td>Simple vowel</td></tr>
+        <tr><td lang="ko">ㅐ</td><td><code>ae</code></td><td>е</td><td>provisional</td><td>Modern Korean merger represented by one Ukrainian е</td></tr>
+        <tr><td lang="ko">ㅑ</td><td><code>ya</code></td><td>я</td><td>model-selected</td><td>Palatalized vowel onset represented by я</td></tr>
+        <tr><td lang="ko">ㅒ</td><td><code>yae</code></td><td>є</td><td>provisional</td><td>Modern Korean merger represented by one Ukrainian є</td></tr>
+        <tr><td lang="ko">ㅓ</td><td><code>eo</code></td><td>о</td><td>provisional</td><td>RR eo is a single vowel sequence not English e plus o</td></tr>
+        <tr><td lang="ko">ㅔ</td><td><code>e</code></td><td>е</td><td>model-selected</td><td>Simple vowel</td></tr>
+        <tr><td lang="ko">ㅕ</td><td><code>yeo</code></td><td>йо</td><td>provisional</td><td>RR yeo treated as one vowel sequence</td></tr>
+        <tr><td lang="ko">ㅖ</td><td><code>ye</code></td><td>є</td><td>provisional</td><td>RR ye treated as one vowel sequence</td></tr>
+        <tr><td lang="ko">ㅗ</td><td><code>o</code></td><td>о</td><td>model-selected</td><td>Simple vowel</td></tr>
+        <tr><td lang="ko">ㅘ</td><td><code>wa</code></td><td>ва</td><td>provisional</td><td>RR glide sequence rendered as Ukrainian ва</td></tr>
+        <tr><td lang="ko">ㅙ</td><td><code>wae</code></td><td>ве</td><td>provisional</td><td>Modern vowel merger approximated by ве</td></tr>
+        <tr><td lang="ko">ㅚ</td><td><code>oe</code></td><td>ве</td><td>provisional</td><td>Modern vowel merger approximated by ве</td></tr>
+        <tr><td lang="ko">ㅛ</td><td><code>yo</code></td><td>йо</td><td>provisional</td><td>RR yo treated as one vowel sequence</td></tr>
+        <tr><td lang="ko">ㅜ</td><td><code>u</code></td><td>у</td><td>model-selected</td><td>Simple vowel</td></tr>
+        <tr><td lang="ko">ㅝ</td><td><code>wo</code></td><td>во</td><td>provisional</td><td>RR glide sequence rendered as Ukrainian во</td></tr>
+        <tr><td lang="ko">ㅞ</td><td><code>we</code></td><td>ве</td><td>provisional</td><td>RR glide sequence rendered as Ukrainian ве</td></tr>
+        <tr><td lang="ko">ㅟ</td><td><code>wi</code></td><td>ві</td><td>provisional</td><td>RR glide sequence rendered as Ukrainian ві</td></tr>
+        <tr><td lang="ko">ㅠ</td><td><code>yu</code></td><td>ю</td><td>model-selected</td><td>Palatalized vowel onset represented by ю</td></tr>
+        <tr><td lang="ko">ㅡ</td><td><code>eu</code></td><td>и</td><td>provisional</td><td>Closest practical Ukrainian vowel approximation</td></tr>
+        <tr><td lang="ko">ㅢ</td><td><code>ui</code></td><td>уї</td><td>provisional</td><td>Literal Ukrainian rendering of RR sequence; pronunciation may vary</td></tr>
+        <tr><td lang="ko">ㅣ</td><td><code>i</code></td><td>і</td><td>model-selected</td><td>Simple vowel</td></tr>
+      </tbody></table>
+      <h3>Кінцеві приголосні (받침)</h3>
+      <table class="rr-ua-table"><thead><tr><th>Корейська графема</th><th>RR</th><th>Українська відповідність</th><th>Статус</th><th>Примітка</th></tr></thead><tbody>
+        <tr><td lang="ko">ㄱ</td><td><code>k</code></td><td>к</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㄲ</td><td><code>k</code></td><td>к</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㄳ</td><td><code>k</code></td><td>к</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㄴ</td><td><code>n</code></td><td>н</td><td>model-selected</td><td>Nasal coda</td></tr>
+        <tr><td lang="ko">ㄵ</td><td><code>n</code></td><td>н</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㄶ</td><td><code>n</code></td><td>н</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㄷ</td><td><code>t</code></td><td>т</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㄹ</td><td><code>l</code></td><td>л</td><td>model-selected</td><td>RR liquid at syllable end or before consonant</td></tr>
+        <tr><td lang="ko">ㄺ</td><td><code>k</code></td><td>к</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㄻ</td><td><code>m</code></td><td>м</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㄼ</td><td><code>l</code></td><td>л</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㄽ</td><td><code>l</code></td><td>л</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㄾ</td><td><code>l</code></td><td>л</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㄿ</td><td><code>p</code></td><td>п</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㅀ</td><td><code>l</code></td><td>л</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㅁ</td><td><code>m</code></td><td>м</td><td>model-selected</td><td>Nasal coda</td></tr>
+        <tr><td lang="ko">ㅂ</td><td><code>p</code></td><td>п</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㅄ</td><td><code>p</code></td><td>п</td><td>model-selected</td><td>Complex coda surface representative</td></tr>
+        <tr><td lang="ko">ㅅ</td><td><code>t</code></td><td>т</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㅆ</td><td><code>t</code></td><td>т</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㅇ</td><td><code>ng</code></td><td>нг</td><td>provisional</td><td>Ukrainian lacks a phonemic velar nasal</td></tr>
+        <tr><td lang="ko">ㅈ</td><td><code>t</code></td><td>т</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㅊ</td><td><code>t</code></td><td>т</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㅋ</td><td><code>k</code></td><td>к</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㅌ</td><td><code>t</code></td><td>т</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㅍ</td><td><code>p</code></td><td>п</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+        <tr><td lang="ko">ㅎ</td><td><code>t</code></td><td>т</td><td>model-selected</td><td>Neutralized coda stop</td></tr>
+      </tbody></table>
+      <p>Повний машинозчитуваний реєстр — <code>data/korean/rr_ukrainian_correspondence.csv</code>. Trace зберігає корейський склад, RR onset/nucleus/coda та український відповідник. Довільний латинський текст не приймається для зворотного перетворення: межі складів та послідовності RR потребують окремого розв’язання неоднозначностей.</p>
+      <p><strong>Критерій валідації:</strong> незалежний україномовний читацький тест, фахове рецензування адаптацій, аналіз мінімальних пар і помилок на holdout-корпусі. До виконання цих умов режим позначається як попередній.</p>
+    </div>
+  </section>
   <section class="doc-section">
     <div class="doc-label" id="methodology-03">03</div><div class="doc-content"><p class="section-kicker">Приголосні</p><h2>Ключові рішення</h2><div class="decision-table">
       <div class="table-row table-head"><span>Корейська</span><span>Поверхнева основа</span><span>Українська фонетична ціль</span><span>Коментар</span></div>
