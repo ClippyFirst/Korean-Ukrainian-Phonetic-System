@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { romanizeRevised } from '../src/app/romanization.js';
+import { romanizeRevised, romanizeRevisedDetailed } from '../src/app/romanization.js';
 
 test('uses Revised Romanization vowel values, not English spelling', () => {
   assert.equal(romanizeRevised('어으의'), 'eoeuui');
@@ -37,6 +37,17 @@ test('preserves spaces, punctuation, digits and non-Hangul text', () => {
 test('empty and nullish input are safe', () => {
   assert.equal(romanizeRevised(''), '');
   assert.equal(romanizeRevised(null), '');
+});
+
+
+test('uses source orthography for NIKL RR exceptions instead of copying every surface change', () => {
+  // NIKL RR §3(1): tense sounds in compounds are not romanized as fortis;
+  // the official example 압구정 is Apgujeong, not a surface-fortis spelling.
+  assert.equal(romanizeRevisedDetailed('압꾸정', '압구정').text, 'apgujeong');
+  // NIKL RR §3(1): noun examples 묵호 and 집현전 retain h rather than
+  // romanizing the aspirated surface as k/t/p+h assimilation.
+  assert.equal(romanizeRevisedDetailed('무코', '묵호').text, 'mukho');
+  assert.equal(romanizeRevisedDetailed('지편전', '집현전').text, 'jiphyeonjeon');
 });
 
 test('covers every modern precomposed Hangul syllable without undefined output', () => {
