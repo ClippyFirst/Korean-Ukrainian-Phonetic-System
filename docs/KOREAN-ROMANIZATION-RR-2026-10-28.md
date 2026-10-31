@@ -35,7 +35,7 @@ A match between RR and an IPA string is not itself proof of correctness. RR is o
 ## Acceptance status
 
 - Implemented: NIKL-based RR display using source spelling plus resolved surface, isolated from the IPA-first route; ten explicit §3(1) source-spelling examples are covered by tests.
-- Historical isolated harness: 6/6 tests passed, including the 11,172 modern Hangul syllable sweep. Earlier GitHub Actions passed the baseline browser/Python/build checks, but they predate the source-orthography exception implementation. Latest code-bearing head `9c8ad0c7a51ba08edaa18ccf16542384e4d9e4d0` includes the source-aware RR code, exception trace, tests and live-smoke fixture. Subsequent branch commits only reconcile documentation. No exact-head CI run is available for the code-bearing head, so the new behavior remains PARTIAL pending verification. Do not count earlier runs as verification of this follow-up.
+- Historical isolated harness: 6/6 tests passed, including the 11,172 modern Hangul syllable sweep. Earlier GitHub Actions passed the baseline browser/Python/build checks, but they predate the source-orthography exception implementation. Latest code-bearing head `797d43b823fddcee5334229978f6463a1495f907` includes the source-aware RR code, exception trace, tests and live-smoke fixture. Subsequent branch commits only reconcile documentation. No exact-head CI run is available for the code-bearing head, so the new behavior remains PARTIAL pending verification. Do not count earlier runs as verification of this follow-up.
 - Full NIKL RR conformance: not yet established.
 - Reverse romanization: not implemented.
 - Release status: this change should remain a reviewable PR until automated checks and the conformance matrix are completed.
