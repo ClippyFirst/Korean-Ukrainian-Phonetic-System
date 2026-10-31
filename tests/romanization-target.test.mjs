@@ -64,6 +64,23 @@ test('retains RR vowel sequences as single correspondence units', () => {
   assert.equal(transcribeRevisedToUkrainian('어으의').text, 'оиуї');
 });
 
+test('records the actual right-hand phonological context rather than a fixed placeholder', () => {
+  const syllables = romanizeRevisedDetailed('가가 가나 가아').segments.filter((segment) => segment.type === 'syllable');
+  assert.deepEqual(syllables.map((segment) => segment.rightContext), [
+    'obstruent', 'word-boundary',
+    'sonorant', 'word-boundary',
+    'vowel', 'word-boundary'
+  ]);
+});
+
+test('parses quoted commas in correspondence notes without shifting CSV columns', () => {
+  const quotedCsv = correspondenceCsv.replace('Simple vowel', '"Simple, vowel"');
+  const adapter = createRomanizationTarget(quotedCsv, contextRulesCsv);
+  const result = adapter('가');
+  const vowel = result.trace.find((entry) => entry.layer === 'vowel');
+  assert.equal(vowel.notes, 'Simple, vowel');
+});
+
 test('records sentence-local word order separately from global word order', () => {
   const syllables = romanizeRevisedDetailed('가가. 가 다').segments.filter((segment) => segment.type === 'syllable');
   assert.deepEqual(syllables.map((segment) => segment.sentenceIndex), [0, 0, 1, 1]);
