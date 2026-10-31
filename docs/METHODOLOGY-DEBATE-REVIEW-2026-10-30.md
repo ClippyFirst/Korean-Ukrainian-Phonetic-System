@@ -112,4 +112,6 @@ The previous flat component mapping is retained as a fallback register, but it i
 - [Song, Kim & Cho (2023), Korean three-way stop contrast](https://biz.hanyang.ac.kr/documents/10980062/13049795/HISPhonCog2023_P76_Song_etal.pdf/f52b4285-3aee-1657-3383-d266ffff55d0)
 - [Kim et al. (2024), laryngeal contrast and prosodic strengthening](https://doi.org/10.13064/ksss.2024.16.1.017)
 - [Rud (2024), Ukrainian transcription of Korean proper names](https://ir.library.knu.ua/entities/publication/bdb2f408-ca5b-4fdc-879a-95240572e08a)
+### Additional vowel-context decision — ㅢ
 
+NIKL's Standard Pronunciation Rule 5 distinguishes ㅢ by syllable context: ㅢ with a consonantal onset is [i]; outside the first syllable [i] is permitted; the possessive particle 의 may also be [e]. The RR spelling remains `ui`. The contextual adapter therefore keeps `ui` in the RR trace but maps to Ukrainian `і` in the consonantal-onset case and in the selected noninitial [i] variant; initial silent-onset 의 retains the [ɰi]-approximation `уї`. It does not guess the particle [e] variant because the current RR route has no morphological analysis. This is grounded on NIKL's [2026 clarification of Rule 5](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=201&pageIndex=1&qna_seq=334585). The Ukrainian spelling choices remain project adaptations.
