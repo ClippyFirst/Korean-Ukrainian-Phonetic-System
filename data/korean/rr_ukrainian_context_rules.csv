@@ -25,7 +25,7 @@ RRUA-P-ASP,onset,ㅍ,p,*,*,*,п',phonemic-aspiration,model-selected,Explicit apo
 RRUA-CH-ASP,onset,ㅊ,ch,*,*,*,ч',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅊ; coda ㅊ is handled separately,차,cha
 RRUA-G-FINAL-VOWEL,onset,ㄱ,g,final,vowel,*,ґ,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,아가,aga
 RRUA-G-FINAL-SONORANT,onset,ㄱ,g,final,sonorant,*,ґ,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,안가,anga
-RRUA-G-FINAL-OBSTRUENT,onset,ㄱ,g,final,obstruent,*,к,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,악가,agga
+RRUA-G-FINAL-OBSTRUENT,onset,ㄱ,g,final,obstruent,*,к,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,악가,gakga
 RRUA-D-FINAL-VOWEL,onset,ㄷ,d,final,vowel,*,д,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,아다,ada
 RRUA-D-FINAL-SONORANT,onset,ㄷ,d,final,sonorant,*,д,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,안다,anda
 RRUA-D-FINAL-OBSTRUENT,onset,ㄷ,d,final,obstruent,*,т,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace,악다,akda
