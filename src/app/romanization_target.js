@@ -47,8 +47,8 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
   const contextRules = loadContextRules(contextRulesCsv);
 
   /** RR-mediated Ukrainian output; separate from the IPA-first Kozak Kim adapter. */
-  return function transcribeRevisedToUkrainian(surface) {
-    const romanized = romanizeRevisedDetailed(surface);
+  return function transcribeRevisedToUkrainian(surface, original = surface) {
+    const romanized = romanizeRevisedDetailed(surface, original);
     const trace = [];
     const issues = [];
     let text = '';
