@@ -100,13 +100,20 @@ export function romanizeRevisedDetailed(surface, original = surface) {
   const chars = Array.from(String(surface ?? ''));
   const sourceSyllables = extractHangulSyllables(original);
   const surfaceSyllables = extractHangulSyllables(surface);
-  const alignmentKnown = sourceSyllables.length === surfaceSyllables.length
-    && sourceSyllables.every((unit, index) => unit.wordIndex === surfaceSyllables[index].wordIndex);
   const sourceWords = new Map();
+  const surfaceWords = new Map();
   for (const unit of sourceSyllables) {
     if (!sourceWords.has(unit.wordIndex)) sourceWords.set(unit.wordIndex, []);
     sourceWords.get(unit.wordIndex).push(unit);
   }
+  for (const unit of surfaceSyllables) {
+    if (!surfaceWords.has(unit.wordIndex)) surfaceWords.set(unit.wordIndex, []);
+    surfaceWords.get(unit.wordIndex).push(unit);
+  }
+  const sourceWordIndexes = [...sourceWords.keys()];
+  const surfaceWordIndexes = [...surfaceWords.keys()];
+  const wordRunAlignmentKnown = sourceWordIndexes.length === surfaceWordIndexes.length
+    && sourceWordIndexes.every((wordId, index) => wordId === surfaceWordIndexes[index]);
   const segments = [];
   let output = '';
   let wordIndex = 0;
@@ -138,22 +145,27 @@ export function romanizeRevisedDetailed(surface, original = surface) {
     wordIndex += 1;
     sentenceWordIndex += 1;
     let previousCoda = '';
-    const alignedSourceWord = alignmentKnown
-      ? sourceWords.get(surfaceSyllables[syllableOrdinal]?.wordIndex) || []
-      : [];
+    const surfaceWordId = surfaceSyllables[syllableOrdinal]?.wordIndex;
+    const alignedSourceWord = wordRunAlignmentKnown ? sourceWords.get(surfaceWordId) || [] : [];
+    const alignedSurfaceWord = surfaceWords.get(surfaceWordId) || [];
+    const wordAlignmentKnown = wordRunAlignmentKnown
+      && alignedSourceWord.length === alignedSurfaceWord.length
+      && alignedSourceWord.length === word.length;
     const sourceWordText = alignedSourceWord.map((unit) => unit.char).join('');
-    const rrException = NIKL_RR_ORTHOGRAPHIC_EXCEPTIONS.find((item) => sourceWordText.startsWith(item.orthography)) || null;
+    const rrException = wordAlignmentKnown
+      ? NIKL_RR_ORTHOGRAPHIC_EXCEPTIONS.find((item) => sourceWordText.startsWith(item.orthography)) || null
+      : null;
     const rrExceptionSyllables = rrException ? Array.from(rrException.orthography).length : 0;
 
     word.forEach((char, syllableIndex) => {
       const surfaceParts = decomposeSyllable(char);
-      const surfaceUnit = surfaceSyllables[syllableOrdinal];
-      const sourceUnit = alignmentKnown ? sourceSyllables[syllableOrdinal] : null;
+      const surfaceUnit = alignedSurfaceWord[syllableIndex] || surfaceSyllables[syllableOrdinal];
+      const sourceUnit = wordAlignmentKnown ? alignedSourceWord[syllableIndex] : null;
       const useOrthographicException = Boolean(rrException && syllableIndex < rrExceptionSyllables && sourceUnit);
       const parts = useOrthographicException ? sourceUnit.parts : surfaceParts;
       const rrRule = useOrthographicException ? rrException.rule : 'NIKL-RR-SURFACE-BASED';
-      const previousSource = alignmentKnown ? sourceSyllables[syllableOrdinal - 1] : null;
-      const previousSurface = alignmentKnown ? surfaceSyllables[syllableOrdinal - 1] : null;
+      const previousSource = wordAlignmentKnown ? alignedSourceWord[syllableIndex - 1] : null;
+      const previousSurface = wordAlignmentKnown ? alignedSurfaceWord[syllableIndex - 1] : null;
       const transferredOnset = previousSource
         ? CODA_TO_RESYLLABIFIED_ONSET[previousSource.parts.codaHangul]
         : null;
@@ -209,9 +221,9 @@ export function romanizeRevisedDetailed(surface, original = surface) {
         vowelHangul: parts.vowelHangul,
         codaHangul: parts.codaHangul,
         onsetClass,
-        onsetContext: resyllabified ? 'resyllabified' : parts.onsetHangul === 'ㅇ' ? 'silent' : sourceUnit?.parts.onsetHangul === 'ㅇ' ? 'ambiguous-consonantal' : alignmentKnown ? 'consonantal' : 'ambiguous-consonantal',
-        onsetOrigin: resyllabified ? 'previous-coda' : parts.onsetHangul === 'ㅇ' && sourceUnit?.parts.onsetHangul === 'ㅇ' ? 'silent-onset' : alignmentKnown && sourceUnit?.parts.onsetHangul !== 'ㅇ' ? 'source-onset' : 'unknown',
-        alignmentStatus: alignmentKnown ? 'aligned' : 'unknown',
+        onsetContext: resyllabified ? 'resyllabified' : parts.onsetHangul === 'ㅇ' ? 'silent' : sourceUnit?.parts.onsetHangul === 'ㅇ' ? 'ambiguous-consonantal' : wordAlignmentKnown ? 'consonantal' : 'ambiguous-consonantal',
+        onsetOrigin: resyllabified ? 'previous-coda' : parts.onsetHangul === 'ㅇ' && sourceUnit?.parts.onsetHangul === 'ㅇ' ? 'silent-onset' : wordAlignmentKnown && sourceUnit?.parts.onsetHangul !== 'ㅇ' ? 'source-onset' : 'unknown',
+        alignmentStatus: wordAlignmentKnown ? 'aligned' : 'unknown',
         wordIndex,
         sentenceWordIndex,
         sentenceIndex,
