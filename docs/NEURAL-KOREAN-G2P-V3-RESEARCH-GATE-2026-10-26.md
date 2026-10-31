@@ -202,3 +202,27 @@ A recent Interspeech 2026 paper by You & Moon describes an object-oriented G2P e
 The next step is a research-only rule-licensing adapter that consumes these links for a small, source-backed subset of morphology-conditioned rules. It must retain analyzer provenance, reject unaligned/zero-width spans, preserve alternative analyses, and abstain on disagreement. Only after paired challenge tests demonstrate a real cascading case should the engine trial bounded rule re-evaluation with cycle detection. The production single-pass rule order remains unchanged.
 
 **Acceptance:** source offsets round-trip exactly; no overlap or normalized-span guesses; zero-width and missing spans remain unknown; word boundaries remain distinct; no rule is licensed by alignment alone; production output is byte-for-byte unchanged.
+
+
+## Profile-aware UGTPHON evaluation — 2026-11-01
+
+The UGTPHON diagnostic previously compared only the project's broad IPA against gold whose annotations include narrower phonetic detail. The benchmark now runs broad and partial-narrow profiles over the same pinned corpus, records the exact IPA profile ID/status/version, and uploads separate reports. This is a measurement change, not a change to the default production output.
+
+| Profile | Scored tokens | Exact matches | Exact rate | CER | Unresolved | Engine errors |
+|---|---:|---:|---:|---:|---:|---:|
+| Broad \`clippyfirst-korean-broad-v1\` | 2,698 | 1,430 | 53.0022% | 9.1697% | 5 | 0 |
+| Narrow \`clippyfirst-korean-narrow-partial-sibilant-nasal-h-v3\` | 2,698 | 1,900 | 70.4225% | 4.8992% | 5 | 0 |
+
+The narrow profile improves exact match by 17.4203 percentage points and reduces CER by 4.2705 percentage points on this corpus. This demonstrates that transcription granularity explains a material portion of the earlier broad-vs-gold mismatch. It does **not** establish normative narrow-IPA accuracy: the narrow profile remains partial/research-only, and its output is not accepted by the Ukrainian target renderer. Both profiles share 275 corpus rows, 2,698 scored tokens, 437 skipped tokens, and 5 unresolved tokens.
+
+The remaining largest mismatches include ㅟ [y] versus gold [ɥi], coda lateral [l] versus [ɭ], and vowel/prosodic detail. Do not add these variants solely to raise the score; each needs independent phonetic evidence and an explicit profile scope.
+
+## Morphology-aware G2P architecture research — You & Moon (Interspeech 2026)
+
+You & Moon describe a morphology-aware engine with syllable–morpheme connectivity and recursive phonological-rule re-evaluation. Their Zenodo abstract reports 85.7% versus 27.2% sentence-level accuracy and 3.14 ms versus 14.98 ms latency in their own evaluation. These results are not comparable to our noisy-text token-level UGTPHON metrics. The Zenodo record contains the paper but no executable implementation or benchmark corpus; no code or data was copied. The bibliographic source is registered in research/SOURCE-REGISTER.csv.
+
+The repository now has a safe first bridge: align_morphemes_to_syllables validates source text and spans, links each syllable to a morpheme, distinguishes same-morpheme/morpheme/word/unknown boundaries, and preserves zero-width and unaligned spans as uncertainty. This helper grants no pronunciation-rule licenses and is not called by the production G2P path.
+
+The separate Kiwi+MeCab-Ko consensus diagnostic changed four unique words but did not improve exact accuracy: 53.0022% remained unchanged; CER changed from 9.1697% to 9.1784% (slightly worse). It produced one newly resolved word, no new exact matches, one lower-edit-distance occurrence and two higher-edit-distance occurrences. The consensus candidate is therefore **not promoted**. The next experiment must be rule-specific, source-backed licensing on independently adjudicated morphology cases; only a demonstrated cascading counterexample can justify bounded recursive re-evaluation with cycle detection.
+
+**Decision:** keep the production single-pass rule engine unchanged. The alignment helper, morphology consensus, and narrow IPA profile remain diagnostic/research-only.

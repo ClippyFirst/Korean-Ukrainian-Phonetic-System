@@ -492,3 +492,16 @@ Feature status: **PARTIAL / in review**, tracked by [PR #354](https://github.com
 - **TODO:** morphology-aware candidate generation from Kiwi/MeCab-Ko. Acceptance requires exact source-offset alignment, POS evidence, analyzer provenance, multiple hypotheses or abstention, positive/negative homograph controls, Python/browser contract parity if exposed in the UI, and paired evaluation on independently adjudicated cases.
 - **BLOCKED:** KoG2Padvanced implementation/corpus reuse due no declared upstream license and no executable source module in the inspected tree.
 - **Benchmark policy:** curated rule-challenge scores, canonical lexical G2P, and noisy-text normalization+G2P must remain separate; no aggregate benchmark claim may blend them.
+
+
+## Addendum — profile-aware IPA and morphology alignment (2026-11-01)
+
+- **DONE_VERIFIED:** UGTPHON runner now evaluates broad and partial-narrow IPA separately, records profile ID/status/version, and uploads separate artifacts. Exact same token set: broad 53.0022% exact / 9.1697% CER; partial narrow 70.4225% exact / 4.8992% CER. Five unresolved tokens and zero engine errors in each profile.
+- **PARTIAL:** narrow profile improves alignment to UGTPHON gold but remains partial/research-only, not fully adjudicated, and not target-compatible. It must not be used for Ukrainian adaptation.
+- **DONE_VERIFIED:** syllable↔morpheme alignment helper validates source offsets and preserves zero-width, unaligned, and word-boundary uncertainty; it grants no pronunciation-rule licenses.
+- **PARTIAL:** Kiwi+MeCab-Ko consensus diagnostic changed four words but added no exact matches and slightly worsened CER; no candidate rule is promoted.
+- **DONE_VERIFIED:** real Kiwi and MeCab-Ko smoke jobs, browser integration, Python 3.11/3.12/3.13, Node 1,389 tests, wheel install, system verification, master artifacts, and test-register extraction passed on code head cb89fc8.
+- **TODO:** rule-specific morphology licensing using aligned spans, exact POS evidence, analyzer provenance, homograph controls, multiple analyses, and abstention on disagreement.
+- **DEFERRED:** recursive rule re-evaluation. Acceptance requires a source-backed cascading counterexample, a bounded fixed-point design with cycle detection, and paired non-regression tests.
+- **BLOCKED:** KoG2Padvanced implementation/corpus reuse due no declared upstream license and no executable source module. You & Moon (2026) is paper-only in the inspected Zenodo record; no executable implementation/corpus was available to reuse.
+- **PENDING:** multi-engine benchmark run 41248014178; do not mark complete until its artifact is inspected.
