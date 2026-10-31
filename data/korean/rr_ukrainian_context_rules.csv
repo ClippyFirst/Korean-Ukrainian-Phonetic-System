@@ -1,0 +1,25 @@
+rule_id,layer,hangul,rr,word_position,left_context,sentence_position,ukrainian,feature,status,notes
+RRUA-G-INITIAL,onset,ㄱ,g,initial,word-boundary,*,к,voiceless-lenis-stop,provisional,Word-initial lenis ㄱ is not the phonemic aspirate ㅋ; no apostrophe
+RRUA-G-SINGLE,onset,ㄱ,g,single,word-boundary,*,к,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㄱ
+RRUA-G-MEDIAL-VOWEL,onset,ㄱ,g,medial,vowel,*,ґ,intervocalic-voicing,provisional,Lenis ㄱ between voiced segments
+RRUA-G-MEDIAL-SONORANT,onset,ㄱ,g,medial,sonorant,*,ґ,sonorant-conditioned-voicing,provisional,Lenis ㄱ after a voiced sonorant
+RRUA-G-MEDIAL-OBSTRUENT,onset,ㄱ,g,medial,obstruent,*,к,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent
+RRUA-D-INITIAL,onset,ㄷ,d,initial,word-boundary,*,т,voiceless-lenis-stop,provisional,Word-initial lenis ㄷ is not the phonemic aspirate ㅌ; no apostrophe
+RRUA-D-SINGLE,onset,ㄷ,d,single,word-boundary,*,т,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㄷ
+RRUA-D-MEDIAL-VOWEL,onset,ㄷ,d,medial,vowel,*,д,intervocalic-voicing,provisional,Lenis ㄷ between voiced segments
+RRUA-D-MEDIAL-SONORANT,onset,ㄷ,d,medial,sonorant,*,д,sonorant-conditioned-voicing,provisional,Lenis ㄷ after a voiced sonorant
+RRUA-D-MEDIAL-OBSTRUENT,onset,ㄷ,d,medial,obstruent,*,т,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent
+RRUA-B-INITIAL,onset,ㅂ,b,initial,word-boundary,*,п,voiceless-lenis-stop,provisional,Word-initial lenis ㅂ is not the phonemic aspirate ㅍ; no apostrophe
+RRUA-B-SINGLE,onset,ㅂ,b,single,word-boundary,*,п,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㅂ
+RRUA-B-MEDIAL-VOWEL,onset,ㅂ,b,medial,vowel,*,б,intervocalic-voicing,provisional,Lenis ㅂ between voiced segments
+RRUA-B-MEDIAL-SONORANT,onset,ㅂ,b,medial,sonorant,*,б,sonorant-conditioned-voicing,provisional,Lenis ㅂ after a voiced sonorant
+RRUA-B-MEDIAL-OBSTRUENT,onset,ㅂ,b,medial,obstruent,*,п,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent
+RRUA-J-INITIAL,onset,ㅈ,j,initial,word-boundary,*,ч,voiceless-lenis-affricate,provisional,Word-initial lenis ㅈ approximated by unvoiced Ukrainian ч; no aspiration apostrophe
+RRUA-J-SINGLE,onset,ㅈ,j,single,word-boundary,*,ч,voiceless-lenis-affricate,provisional,Single-syllable word-initial lenis ㅈ
+RRUA-J-MEDIAL-VOWEL,onset,ㅈ,j,medial,vowel,*,дж,intervocalic-voicing,provisional,Lenis ㅈ between voiced segments
+RRUA-J-MEDIAL-SONORANT,onset,ㅈ,j,medial,sonorant,*,дж,sonorant-conditioned-voicing,provisional,Lenis ㅈ after a voiced sonorant
+RRUA-J-MEDIAL-OBSTRUENT,onset,ㅈ,j,medial,obstruent,*,ч,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent
+RRUA-K-ASP,onset,ㅋ,k,*,*,*,к',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅋ; coda ㅋ is handled separately
+RRUA-T-ASP,onset,ㅌ,t,*,*,*,т',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅌ; coda ㅌ is handled separately
+RRUA-P-ASP,onset,ㅍ,p,*,*,*,п',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅍ; coda ㅍ is handled separately
+RRUA-CH-ASP,onset,ㅊ,ch,*,*,*,ч',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅊ; coda ㅊ is handled separately
