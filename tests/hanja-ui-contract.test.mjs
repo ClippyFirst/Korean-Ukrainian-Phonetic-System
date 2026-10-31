@@ -19,7 +19,7 @@ test('Hanja is an additional output in the requested order with an accessible co
   const outputPositions = outputOrder.map((id) => html.indexOf(`id="${id}"`));
   assert.ok(outputPositions.every((position) => position >= 0), 'all primary outputs exist');
   assert.deepEqual(outputPositions, [...outputPositions].sort((a, b) => a - b), 'outputs remain Ukrainian → Romanization → Hanja → IPA');
-  assert.match(main, /import \{convertHangulToHanja, createHanjaConverter\} from '\.\/app\/hanja\.js'/u);
+  assert.match(main, /import \{convertHangulToHanja, createHanjaConverter, createHanjaToHangulConverter\} from '\.\/app\/hanja\.js'/u);
   assert.match(main, /renderHanja\(value\)/u);
   assert.match(main, /import\.meta\.glob\('\.\/app\/hanja-dictionary\/hanja-dictionary-\*\.js'\)/u);
   assert.match(main, /hanjaOutput\.textContent=\(fullHanjaConverter\|\|convertHangulToHanja\)\(value\)/u);
