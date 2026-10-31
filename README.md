@@ -350,9 +350,9 @@ The pipeline remains:
 
 `Hangul → Korean surface pronunciation → IPA → Ukrainian target`
 
-The RR display is a separate diagnostic branch:
+The RR-mediated Ukrainian route is separate from the IPA-first route:
 
-`resolved Hangul surface → RR letter-value rendering`
+`source Hangul spelling + resolved surface → NIKL-based RR → RR→Ukrainian correspondence → Ukrainian orthography`
 
 **Scope limitation:** the adapter covers standard Hangul syllable decomposition, core RR onset/vowel/coda values, adjacent ㄹ handling, pronunciation-sensitive surface rules, and a conservative source-orthography allowlist for ten explicit NIKL §3(1) examples. It is still not a complete implementation of every NIKL rule: proper-name capitalization, administrative-unit hyphenation, and unlisted lexical/morphological exceptions are not inferred. It does not reverse-convert Latin text to Hangul. Do not use it as pronunciation gold or infer IPA from the Latin output. See [the implementation contract and validation gaps](docs/KOREAN-ROMANIZATION-RR-2026-10-28.md).
 
