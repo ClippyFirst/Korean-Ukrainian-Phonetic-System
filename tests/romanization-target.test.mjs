@@ -1,6 +1,9 @@
 import test from 'node:test';
+import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
-import { transcribeRevisedToUkrainian } from '../src/app/romanization_target.js';
+import { createRomanizationTarget } from '../src/app/romanization_target.js';
+const correspondenceCsv = readFileSync(new URL('../data/korean/rr_ukrainian_correspondence.csv', import.meta.url), 'utf8');
+const transcribeRevisedToUkrainian = createRomanizationTarget(correspondenceCsv);
 
 test('maps RR syllable units to a separate Ukrainian output', () => {
   const result = transcribeRevisedToUkrainian('가치');
