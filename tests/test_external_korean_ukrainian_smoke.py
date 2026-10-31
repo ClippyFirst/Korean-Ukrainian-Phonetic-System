@@ -99,6 +99,7 @@ def test_external_payload_requires_exact_count_and_source_order() -> None:
     bad_order = {
         "ok": True,
         "result": {
+            "system": "Hikka",
             "lines": [
                 {"source": "같이", "result": "Каті"},
                 {"source": "한글", "result": "Ханґиль"},
@@ -112,7 +113,7 @@ def test_external_payload_requires_exact_count_and_source_order() -> None:
         validate_external_payload(
             "hikka",
             200,
-            {"ok": True, "result": {"lines": [{"source": "한글", "result": "Ханґиль"}]}},
+            {"ok": True, "result": {"system": "Hikka", "lines": [{"source": "한글", "result": "Ханґиль"}]}},
             items,
             12.5,
         )
