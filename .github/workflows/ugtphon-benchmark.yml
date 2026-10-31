@@ -46,23 +46,27 @@ jobs:
           assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
           print(f"Validated pinned UGTPHON Korean test split: {len(rows)} rows")
           PY
-      - name: Run external IPA diagnostic
+      - name: Run broad and partial-narrow IPA diagnostics
         run: |
           set -euo pipefail
-          python scripts/benchmark_ugtphon_ko.py \
-            --corpus "$RUNNER_TEMP/ko-test.json" \
-            --output "$RUNNER_TEMP/ugtphon-ko-report.json" \
-            > "$RUNNER_TEMP/benchmark-stdout.json"
-          python - "$RUNNER_TEMP/ugtphon-ko-report.json" <<'PY'
+          for level in broad narrow; do
+            python scripts/benchmark_ugtphon_ko.py \
+              --ipa-level "$level" \
+              --corpus "$RUNNER_TEMP/ko-test.json" \
+              --output "$RUNNER_TEMP/ugtphon-ko-$level-report.json" \
+              > "$RUNNER_TEMP/ugtphon-ko-$level-stdout.json"
+          done
+          python - "$RUNNER_TEMP" <<'PY'
           import json, sys
           from pathlib import Path
-          report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-          for key in ("benchmark", "rows", "scored_tokens", "exact_matches",
-                      "exact_match_rate", "character_error_rate", "unresolved_tokens",
-                      "skipped_tokens", "skipped_non_hangul_or_multitoken",
-                      "skipped_missing_gold", "skipped_empty_variants", "engine_errors"):
-              print(f"{key}: {report.get(key)}")
-          print("Diagnostic only: do not treat this score as normative accuracy or a release gate.")
+          root = Path(sys.argv[1])
+          for level in ("broad", "narrow"):
+              report = json.loads((root / f"ugtphon-ko-{level}-report.json").read_text(encoding="utf-8"))
+              print(f"PROFILE: {level} ({report.get('ipa_profile')}; {report.get('ipa_profile_status')})")
+              for key in ("rows", "scored_tokens", "exact_matches", "exact_match_rate",
+                          "character_error_rate", "unresolved_tokens", "skipped_tokens", "engine_errors"):
+                  print(f"  {key}: {report.get(key)}")
+          print("Broad and partial-narrow results are separate diagnostics; narrow is research-only.")
           PY
       - name: Run paired native-vs-g2pk comparison
         run: |

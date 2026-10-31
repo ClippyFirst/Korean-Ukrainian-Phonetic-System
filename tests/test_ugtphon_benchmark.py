@@ -51,3 +51,53 @@ def test_corpus_loader_rejects_wrong_language(tmp_path):
         assert "Korean test split" in str(exc)
     else:
         raise AssertionError("wrong-language corpus must be rejected")
+
+
+
+def test_evaluate_records_and_uses_the_selected_ipa_profile(monkeypatch):
+    from scripts.benchmark_ugtphon_ko import evaluate
+
+    calls = []
+
+    def fake_phoneticize(text, *, ipa_level="broad"):
+        calls.append((text, ipa_level))
+        return {
+            "pronunciation_status": "resolved",
+            "ipa": {
+                "ipa": "ka",
+                "ipa_profile": f"clippyfirst-korean-{ipa_level}-test",
+                "ipa_profile_status": "partial-research-only" if ipa_level == "narrow" else "unadjudicated-cross-runtime",
+                "ipa_profile_version": 3 if ipa_level == "narrow" else 1,
+            },
+        }
+
+    monkeypatch.setattr("korean_ukrainian.pipeline.phoneticize_korean", fake_phoneticize)
+    rows = [{
+        "id": "sample_1",
+        "lang": "ko",
+        "split": "test",
+        "text": "가",
+        "canonical": "가",
+        "phonemes": "ka",
+        "tokens": [{"text": "가", "canonical": "가", "phoneme": "ka"}],
+    }]
+
+    report = evaluate(rows, ipa_level="narrow")
+
+    assert calls == [("가", "narrow")]
+    assert report["ipa_level"] == "narrow"
+    assert report["ipa_profile"] == "clippyfirst-korean-narrow-test"
+    assert report["ipa_profile_status"] == "partial-research-only"
+    assert report["ipa_profile_version"] == 3
+    assert report["exact_match_rate"] == 1.0
+
+
+def test_evaluate_rejects_unknown_ipa_profile():
+    from scripts.benchmark_ugtphon_ko import evaluate
+
+    try:
+        evaluate([], ipa_level="experimental")
+    except ValueError as exc:
+        assert "ipa_level" in str(exc)
+    else:
+        raise AssertionError("unknown IPA profiles must be rejected")

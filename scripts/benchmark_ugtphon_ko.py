@@ -69,7 +69,9 @@ def load_corpus(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def evaluate(rows: list[dict[str, Any]], *, ipa_level: str = "broad") -> dict[str, Any]:
+    if ipa_level not in {"phonemic", "broad", "narrow"}:
+        raise ValueError("ipa_level must be phonemic, broad, or narrow")
     # Import lazily so the schema/unit tests can run without the package installed.
     from korean_ukrainian.pipeline import phoneticize_korean
 
@@ -80,6 +82,7 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     skipped_missing_gold = 0
     skipped_empty_variants = 0
     errors = 0
+    profile_metadata: dict[str, Any] | None = None
     for row in rows:
         for token in row["tokens"]:
             canonical = token.get("canonical", "")
@@ -91,7 +94,14 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
                 skipped_missing_gold += 1
                 continue
             try:
-                engine_result = phoneticize_korean(canonical)
+                engine_result = phoneticize_korean(canonical, ipa_level=ipa_level)
+                ipa_metadata = engine_result.get("ipa", {})
+                if profile_metadata is None and isinstance(ipa_metadata, dict):
+                    profile_metadata = {
+                        "ipa_profile": ipa_metadata.get("ipa_profile"),
+                        "ipa_profile_status": ipa_metadata.get("ipa_profile_status"),
+                        "ipa_profile_version": ipa_metadata.get("ipa_profile_version"),
+                    }
                 if engine_result.get("pronunciation_status") == "unresolved":
                     unresolved_tokens += 1
                     if len(unresolved_examples) < 100:
@@ -133,6 +143,8 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "benchmark": "UGTPHON Korean test split",
         "purpose": "diagnostic external IPA comparison; not a normative acceptance gate",
+        "ipa_level": ipa_level,
+        **(profile_metadata or {"ipa_profile": None, "ipa_profile_status": "unavailable", "ipa_profile_version": None}),
         "rows": len(rows),
         "scored_tokens": len(comparable),
         "exact_matches": exact,
@@ -150,7 +162,8 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
             key=lambda item: (-(item["distance"] / max(len(item["normalized_predicted"]), len(item["closest_normalized_gold"]), 1)), -item["distance"], item["token"]),
         )[:50],
         "notes": [
-            "Gold IPA follows UGTPHON/IPA-Dict annotation conventions and may not match this project's broad-IPA convention exactly.",
+            f"Gold IPA follows UGTPHON/IPA-Dict annotation conventions; this run uses the project's {ipa_level} IPA profile.",
+            "The narrow profile is partial and research-only; its score is a diagnostic and does not establish full narrow-transcription correctness or target compatibility." if ipa_level == "narrow" else "Broad and phonemic runs are separate from the partial narrow research profile.",
             "Token-level evaluation loses sentence prosody and cross-token context; it is a diagnostic, not a complete sentence-level score.",
             "Do not interpret this result as validation of Ukrainian orthographic rendering.",
             "Tokens explicitly marked unresolved by the native engine are excluded from IPA scores and reported separately.",
@@ -164,12 +177,14 @@ def main() -> int:
     parser.add_argument("--corpus", type=Path, default=os.environ.get("UGTPHON_KO_TEST_PATH"),
                         help="path to external UGTPHON ko/test.json (or set UGTPHON_KO_TEST_PATH)")
     parser.add_argument("--output", type=Path, help="optional JSON report destination")
+    parser.add_argument("--ipa-level", choices=("phonemic", "broad", "narrow"), default="broad",
+                        help="IPA realization profile to evaluate; narrow is partial research-only")
     args = parser.parse_args()
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH; no network download is performed")
     try:
         rows = load_corpus(Path(args.corpus))
-        report = evaluate(rows)
+        report = evaluate(rows, ipa_level=args.ipa_level)
     except Exception as exc:
         print(f"benchmark failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
