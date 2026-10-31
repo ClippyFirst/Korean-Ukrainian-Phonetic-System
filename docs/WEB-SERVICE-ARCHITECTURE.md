@@ -1,8 +1,6 @@
 # Web service architecture
 
-    Korean input (Hangul / Hanja / mixed)
-      ↓
-    Unicode-safe scan + Hanja review
+    Main Korean input (Hangul)
       ↓
     Hangul structural and morphological analysis
       ↓
@@ -16,6 +14,13 @@
       ↓
     two Ukrainian transliteration outputs + separate traces
 
+    Optional Hanja workbench (separate from the main input):
+      Hanja / mixed-script text
+        ↓ local reverse dictionary lookup
+      unique Hangul readings + explicit ambiguous/unmapped spans
+        ↓ user review and manual correction
+      confirmed Hangul can be transferred into the main input
+
     Parallel analysis fields:
       ├─ surface phonetic IPA from selected G2P engine
       └─ orthography-derived phonemic IPA baseline (not a G2P engine)
@@ -26,7 +31,7 @@ The IPA route uses the existing canonical correspondence and IPA target adapter.
 
 ## Security
 
-User-controlled strings are rendered with textContent. The runtime does not evaluate input as HTML or JavaScript and does not perform runtime network requests.
+User-controlled strings are rendered with textContent. The runtime does not evaluate input as HTML or JavaScript and does not call third-party services. Pinned Hanja dictionary chunks are static same-origin assets loaded on demand.
 
 ## Known boundary
 
