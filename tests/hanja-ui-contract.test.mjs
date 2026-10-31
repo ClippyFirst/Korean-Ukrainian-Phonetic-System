@@ -54,6 +54,7 @@ test('service exposes separate surface-phonetic and orthography-derived phonemic
 
 test('Hanja panel supports reverse reading with explicit ambiguity review and main-input handoff', () => {
   assert.match(html, /id="hanja-input"/u);
+  assert.ok(html.indexOf('id="hanja-input"') < html.indexOf('id="results"'), 'Hanja input must remain available before any main result is generated');
   assert.match(html, /id="hanja-reading-output"/u);
   assert.match(html, /id="hanja-reading-status"/u);
   assert.match(html, /id="hanja-use-reading"/u);
