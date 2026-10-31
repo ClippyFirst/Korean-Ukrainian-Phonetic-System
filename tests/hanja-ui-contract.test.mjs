@@ -50,3 +50,16 @@ test('service exposes separate surface-phonetic and orthography-derived phonemic
   assert.match(phonemic, /clippyfirst-korean-phonemic-v1/u);
   assert.match(phonemic, /orthographic-baseline-not-morphology-resolved/u);
 });
+
+
+test('Hanja panel supports reverse reading with explicit ambiguity review and main-input handoff', () => {
+  assert.match(html, /id="hanja-input"/u);
+  assert.match(html, /id="hanja-reading-output"/u);
+  assert.match(html, /id="hanja-reading-status"/u);
+  assert.match(html, /id="hanja-use-reading"/u);
+  assert.match(main, /createHanjaToHangulConverter\(loadedHanjaWordMap\)/u);
+  assert.match(main, /hanjaReverseNeedsManualResolution/u);
+  assert.match(main, /hanjaReadingOutput\.value===hanjaReverseSuggestedText/u);
+  assert.match(main, /input\.dispatchEvent\(new Event\('input'/u);
+  assert.match(main, /key==='hanja-reading'\?hanjaReadingOutput/u);
+});
