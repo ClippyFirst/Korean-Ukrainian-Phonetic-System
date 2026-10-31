@@ -93,7 +93,7 @@ test('provisional target candidate is announced before generic unavailable statu
 
 test('model-selected target output is not presented as independently validated',()=>{
   const main=read('src/main.js');
-  assert.match(main,/r\.target_status==='model-selected'\?' · Український запис за проєктними відповідностями; незалежно не валідований'/);
+  assert.match(main,/r\.target_status==='model-selected'\?' · Українська транслітерація за проєктними відповідностями; незалежно не валідований'/);
 });
 
 test('service UX keeps the hero, simplifies the workbench, and progressively discloses trace details',()=>{
