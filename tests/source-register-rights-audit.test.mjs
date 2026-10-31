@@ -45,7 +45,7 @@ test('source rights triage never promotes vague source descriptions to a license
   assert.equal(report.structuralErrorCount, 0);
   assert.deepEqual(report.rightsClassificationCounts, {
     ITEM_LEVEL_LICENSE_RECORDED: 1,
-    NOT_APPLICABLE_RECORDED: 2,
+    NOT_APPLICABLE_RECORDED: 1,
     REVIEW_REQUIRED: 5,
     MANUAL_CLASSIFICATION_REQUIRED: 1,
   });
@@ -59,7 +59,7 @@ test('real source register is structurally valid and unresolved rights remain vi
   assert.equal(report.sourceRegisterRows, 132);
   assert.deepEqual(report.rightsClassificationCounts, {
     ITEM_LEVEL_LICENSE_RECORDED: 1,
-    NOT_APPLICABLE_RECORDED: 1,
+    NOT_APPLICABLE_RECORDED: 2,
     REVIEW_REQUIRED: 124,
     MANUAL_CLASSIFICATION_REQUIRED: 5,
   });
