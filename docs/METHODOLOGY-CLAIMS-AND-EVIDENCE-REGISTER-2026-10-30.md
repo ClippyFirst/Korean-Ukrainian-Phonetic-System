@@ -65,3 +65,16 @@
 ## Maintenance rule
 
 Оновлювати цей реєстр, коли змінюється публічне твердження, метрика, статус моделі, джерельна ліцензія або acceptance status. Не переносити score на публічну сторінку без run, corpus, denominator, metric, version і interpretation note.
+
+
+## Product-contract clarification — 2026-10-31
+
+The owner confirmed that the Ukrainian target is the project's existing author-developed **Ukrainian transliteration / practical rendering system**, not a replacement phonetic-transcription subsystem. Preserve its existing IPA-first and RR-mediated adapters as separate routes and improve the existing target correspondences in place. Use the project's chosen term "українська транслітерація" in the user-facing product while keeping technical provenance explicit: IPA is a pronunciation representation; RR is an orthographic romanization; the Ukrainian target is a separate project-authored rendering. Do not imply the RR route is IPA-derived.
+
+The owner selected standard South Korean as the default dialect, both general and specialist audiences, full technical detail, bidirectional Hanja as the product goal, and both phonetic/phonemic IPA. Current verified engine inventory: ordinary browser mode uses the pinned JavaScript g2pK port; detailed research mode uses the project-owned deterministic Kozak Kim engine; RR is a separate browser-only surface-Hangul → RR → Ukrainian adapter. The currently displayed IPA comes from the selected G2P engine; a selectable phonetic/phonemic IPA profile is not yet established. Mark that feature PARTIAL until the profile and provenance contract is implemented and verified.
+
+Hanja implementation currently supports deterministic dictionary-backed Hangul → Hanja annotation only. Hanja → Hangul and mixed-script normalization are TODO. The reverse direction must expose homophone/readings ambiguity and require disambiguation where the reverse map is not unique; no silent one-reading guess is acceptable. The existing Hanja data source remains pinned libhangul-derived BSD-3-Clause material; do not expand data sources without provenance and license review.
+
+The repository already contains extensive adversarial fixtures for liaison, complex codas, palatalization, assimilation, fortition, aspiration, n-insertion, morphology, compounds, names/loans, minimal contrasts and rule chains. Additional generated passages must be explicitly marked synthetic stimuli, not gold pronunciation labels.
+
+CI repair evidence: exact-head run 41237406700 on `c2a12668ca442589c34d593e71fcc6b2bb0f3e57` reported 1,368/1,370 web tests passing. Failures were (1) a stale `희망` expected target `гіманґ` inconsistent with the table's provisional `ㅇ→нг` output `гіманг`; (2) absent palatalization trace metadata for ㅅ/ㅆ before ㅣ. The expectation and adapter trace have been repaired in commits `39bf53200fe663ce87ac33d7bbe5dd482f10dbe1` and `3289724b47acfaf320157faeda3c45c242a6309a`. Exact-head CI on the repair commit was triggered but was still pending at this documentation update; do not call the repair verified until all relevant jobs finish.
