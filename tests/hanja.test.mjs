@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { convertHangulToHanja, createHanjaConverter, getHanjaLexiconSize } from '../src/app/hanja.js';
+import { convertHangulToHanja, createHanjaConverter, createHanjaToHangulConverter, getHanjaLexiconSize } from '../src/app/hanja.js';
 
 test('deterministic Hanja annotation converts known Sino-Korean terms', () => {
   assert.equal(convertHangulToHanja('정부는 경제 발전을 연구한다.'), '政府는 經濟 發展을 硏究한다.');
@@ -48,4 +48,29 @@ test('dictionary-backed converter remains deterministic and preserves unknown ru
   assert.equal(convert('한국어교육은 중요하다.'), '韓國語敎育은 重要하다.');
   assert.equal(convert('한국말'), '한국말');
   assert.equal(convert('한국어교육은 중요하다.'), convert('한국어교육은 중요하다.'));
+});
+
+
+test('reverse Hanja lookup converts unique dictionary readings and preserves mixed text', () => {
+  const convert = createHanjaToHangulConverter({ '정부': '政府', '경제': '經濟' });
+  const result = convert('政府는 經濟 발전을 연구한다.');
+  assert.equal(result.text, '정부는 경제 발전을 연구한다.');
+  assert.equal(result.status, 'resolved');
+  assert.deepEqual(result.ambiguities, []);
+});
+
+test('reverse Hanja lookup exposes homophone ambiguity instead of guessing', () => {
+  const convert = createHanjaToHangulConverter({ '정부': '政府', '정무': '政府' });
+  const result = convert('政府는 중요하다.');
+  assert.equal(result.text, '政府는 중요하다.');
+  assert.equal(result.status, 'ambiguous');
+  assert.deepEqual(result.ambiguities[0].readings, ['정부', '정무']);
+});
+
+test('reverse Hanja lookup preserves unknown characters and reports partial coverage', () => {
+  const convert = createHanjaToHangulConverter({ '경제': '經濟' });
+  const result = convert('經濟와 未知');
+  assert.equal(result.text, '경제와 未知');
+  assert.equal(result.status, 'partial');
+  assert.ok(result.unmapped.some((entry) => entry.source === '未'));
 });
