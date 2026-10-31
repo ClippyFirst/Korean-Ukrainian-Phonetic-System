@@ -4200,3 +4200,14 @@ The new documents are linked from README and guarded by the methodology contract
 - Repair commits: `39bf53200fe663ce87ac33d7bbe5dd482f10dbe1` (palatalization trace metadata) and `3289724b47acfaf320157faeda3c45c242a6309a` (align the `ng` regression expectation with the declared table).
 - Exact-head CI for `3289724b47acfaf320157faeda3c45c242a6309a`: runs 41239825542 (tests), 41239825512 (system verification), 41239825533 (browser G2P), 41239825505 (multi-engine IPA diagnostic), 41239825553 (UGTPHON diagnostic), 41239825603 (paired native/g2pk diagnostic), 41239825611 (master artifacts), and 41239825564 (test register extraction). Pending at the time of this update.
 - Do not merge PR #411 until the exact-head web/browser gates pass and product-contract corrections are reconciled. PR #371 remains a separate benchmark workstream and is untouched.
+
+
+## Continuation — reverse Hanja adapter and synthetic adversarial fixture — 2026-10-31
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Reverse Hanja reading adapter | PARTIAL | `src/app/hanja.js:createHanjaToHangulConverter` reverses the existing reading→Hanja map with deterministic longest-match lookup. Unique readings convert; ambiguous Hanja spans are preserved and return candidate readings; unknown characters are preserved/reported. Unit tests added for unique, mixed-script, ambiguous and partial cases. Browser input integration, candidate selection, source-offset preservation and coverage benchmark remain TODO. |
+| Synthetic owner-requested adversarial text | DONE_VERIFIED as test stimulus only | `tests/fixtures/adversarial-corpora/31-generated-mixed-phonology-prose-2026-10-31.txt` adds generated passages covering complex codas, liaison, fortition, palatalization, ㅢ, morphology, names/loans, numerals, punctuation and longer prose. It explicitly carries no pronunciation gold and must not be used as a scored reference without independent adjudication. |
+| Exact-head CI after reverse adapter and new fixture | TODO / pending | Latest code and documentation commits trigger new test/build, browser G2P, system verification, IPA diagnostic, paired engine, corpus artifact and extraction workflows. Inspect the latest exact-head runs before marking these changes verified. |
+
+The reverse Hanja adapter does not yet make the browser bidirectional. Do not state that the input box accepts arbitrary Hanja as a fully supported pronunciation source until mixed-script normalization and ambiguous-reading selection are integrated and tested.
