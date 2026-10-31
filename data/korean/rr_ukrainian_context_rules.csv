@@ -3,7 +3,7 @@ RRUA-G-INITIAL,onset,ㄱ,g,initial,word-boundary,*,к,voiceless-lenis-stop,provi
 RRUA-G-SINGLE,onset,ㄱ,g,single,word-boundary,*,к,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㄱ,가,ga
 RRUA-G-MEDIAL-VOWEL,onset,ㄱ,g,medial,vowel,*,ґ,intervocalic-voicing,provisional,Lenis ㄱ between voiced segments,아가,aga
 RRUA-G-MEDIAL-SONORANT,onset,ㄱ,g,medial,sonorant,*,ґ,sonorant-conditioned-voicing,provisional,Lenis ㄱ after a voiced sonorant,안가,anga
-RRUA-G-MEDIAL-OBSTRUENT,onset,ㄱ,g,medial,obstruent,*,к,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent,악가,agga
+RRUA-G-MEDIAL-OBSTRUENT,onset,ㄱ,g,medial,obstruent,*,к,voiceless-after-obstruent,provisional,Conservative voiceless rendering after an obstruent; only if the resolved surface onset remains lenis (otherwise tensification is represented by ㄲ),악가,gakga
 RRUA-D-INITIAL,onset,ㄷ,d,initial,word-boundary,*,т,voiceless-lenis-stop,provisional,Word-initial lenis ㄷ is not the phonemic aspirate ㅌ; no apostrophe,다,da
 RRUA-D-SINGLE,onset,ㄷ,d,single,word-boundary,*,т,voiceless-lenis-stop,provisional,Single-syllable word-initial lenis ㄷ,다,da
 RRUA-D-MEDIAL-VOWEL,onset,ㄷ,d,medial,vowel,*,д,intervocalic-voicing,provisional,Lenis ㄷ between voiced segments,아다,ada
