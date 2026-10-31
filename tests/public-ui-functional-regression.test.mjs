@@ -35,3 +35,9 @@ test('a generated adversarial Korean quick example is available in the public in
   assert.match(html, /data-example="값이 바뀌었다고 해서 넋이 나간 사람처럼 굴면 안 된다\./u);
   assert.match(html, /Каверзний текст · 받침 \/ ㅢ/u);
 });
+
+
+test('primary Ukrainian output uses the owner-approved transliteration terminology', () => {
+  assert.match(html, /Українська транслітерація/u);
+  assert.doesNotMatch(html, /Українська транскрипція/u);
+});
