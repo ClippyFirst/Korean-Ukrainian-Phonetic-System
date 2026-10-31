@@ -108,7 +108,7 @@ The previous flat component mapping is retained as a fallback register, but it i
 ### Sources
 
 - [NIKL — Romanization of Korean](https://www.korean.go.kr/front_eng/roman/roman_01.do)
-- [NIKL — 2026 guidance on the pronunciation of ㅢ](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=201&pageIndex=1&qna_seq=334585)
+- [NIKL — Standard Pronunciation Rule 5](https://www.korean.go.kr/front/page/pageView.do?page_id=P000098)
 - [Song, Kim & Cho (2023), Korean three-way stop contrast](https://biz.hanyang.ac.kr/documents/10980062/13049795/HISPhonCog2023_P76_Song_etal.pdf/f52b4285-3aee-1657-3383-d266ffff55d0)
 - [Kim et al. (2024), laryngeal contrast and prosodic strengthening](https://doi.org/10.13064/ksss.2024.16.1.017)
 - [Rud (2024), Ukrainian transcription of Korean proper names](https://ir.library.knu.ua/entities/publication/bdb2f408-ca5b-4fdc-879a-95240572e08a)
