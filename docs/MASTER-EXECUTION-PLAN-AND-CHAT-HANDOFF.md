@@ -4134,3 +4134,10 @@ The new documents are linked from README and guarded by the methodology contract
 - This decision intentionally does not silently force the RR route to copy the IPA-first route's current `ŋ → н` practical mapping. The two routes have different contracts; their divergent target spellings are a known cross-route consistency question for independent Ukrainian phonetic review, not evidence that either one is correct.
 - Test-first commit: `4a766a1f1dec91373694ca05631ac055b1bce4ad` added the regression asserting `кан`; review of the existing comparison table and correspondence decision showed that this assertion contradicted the declared RR project convention. The test was corrected in `fd11f799424672be62551cc6a43cecb39241e875` to assert the intended one-unit `нг` candidate. The data and public methodology clarification are in `b399542c6ae17310f8f201ad201a9d596f3639bc` and `edb6de5edf766f562448fcbab090e055f6a0e97b`.
 - Exact-head GitHub Actions were queued at the last check; no fresh test/build pass is claimed. Local execution is unavailable in the connector-only environment. Keep M-18/M-19/M-21/M-22 PARTIAL until exact-head checks complete; independent Ukrainian reader/phonetic review remains BLOCKED.
+
+
+### RR trace visibility follow-up — 2026-10-31
+
+- The adapter already returned `mapping_id` and `notes` for each selected RR correspondence, but the browser trace rendered only the RR unit, phonological feature and context. This made the selected rule itself invisible to users.
+- Added UI rendering for the selected rule ID and mapping rationale; the UI contract test now requires both fields. This is an observability correction, not a change to phonetic rule selection or Ukrainian output.
+- Test contract commit: `5074596cb13ed3c478ddbd3eecff9197352a15ea`; implementation commit: `3c75c398a4dad87d2895a3f421189b11a9f4de92`. Exact-head Actions are queued; no pass is claimed until completed. Local Node/build execution is unavailable in this connector-only session.
