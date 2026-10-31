@@ -65,6 +65,7 @@ test('reverse Hanja lookup exposes homophone ambiguity instead of guessing', () 
   assert.equal(result.text, '政府는 중요하다.');
   assert.equal(result.status, 'ambiguous');
   assert.deepEqual(result.ambiguities[0].readings, ['정무', '정부']);
+  assert.equal(result.ambiguities[0].offset, 0);
 });
 
 test('reverse Hanja lookup preserves unknown characters and reports partial coverage', () => {
@@ -73,4 +74,5 @@ test('reverse Hanja lookup preserves unknown characters and reports partial cove
   assert.equal(result.text, '경제와 未知');
   assert.equal(result.status, 'partial');
   assert.ok(result.unmapped.some((entry) => entry.source === '未'));
+  assert.equal(result.unmapped.find((entry) => entry.source === '未').offset, 4);
 });
