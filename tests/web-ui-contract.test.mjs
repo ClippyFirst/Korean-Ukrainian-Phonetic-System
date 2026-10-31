@@ -147,7 +147,7 @@ test('UX follow-up announces meaningful result state and provides visible clipbo
 
 test('mode choice is user-oriented while technical caveats remain available on demand',()=>{
   const html=read('index.html');
-  assert.match(html,/Для повсякденного використання: показує українське читання/);
+  assert.match(html,/Для повсякденного використання: показує українську транслітерацію/);
   assert.match(html,/<details class="mode-disclosure">/);
   assert.match(html,/Як працює звичайний режим/);
   assert.match(html,/Для частини слів результат може бути неточним/);
