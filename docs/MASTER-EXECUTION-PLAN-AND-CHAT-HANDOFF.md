@@ -4126,3 +4126,46 @@ The integration adopts Superpowers test-driven development, systematic debugging
 
 
 
+
+
+---
+
+# Continuation — external Korean-to-Ukrainian service comparison (2026-11-01)
+
+**Starting main:** 6992aa211fc772fcfbcae1d8b1fd4e577b46f440  
+**Working branch:** feat/external-korean-ukrainian-smoke-2026-11-01  
+**Scope:** optional fixed-input benchmark workflow only; no production service integration and no runtime pronunciation changes.
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Inspect open PR #371 and reconcile its benchmark work | DONE_VERIFIED for audit | PR #371 is 117 commits ahead and 36 behind main at inspection. Main already contains extended PER, feature-weighted proxy, repeated timing, coverage-adjusted metrics, and their tests. Do not merge the stale branch wholesale. |
+| Inspect Hikka and Shchegel same-input API smoke | DONE_VERIFIED as historical smoke only | PR #371 run 40843579356 returned 20/20 rows from both systems; source order preserved; raw Hikka/Shchegel outputs differ on 13/20. Artifact 12883323989, SHA-256 11d1c762bd6453d9a97e5c7ba0f8d89f28b88e7337f46d30eba540bdc2700c90. No gold or accuracy claim. |
+| Correct native target coverage accounting | DONE_VERIFIED in implementation | Historical artifact's available_targets=20 counted provisional candidates. Correct status split is 10 model-selected and 10 unavailable. New comparator keeps accepted outputs separate from provisional candidates. |
+| Add repeatable optional external smoke comparator | PARTIAL | Added scripts/compare_external_korean_ukrainian.py, fixed 20-item corpus, and public API response validation. Exact-head tests and live smoke workflow pending. |
+| Add external smoke contract tests | PARTIAL | Added tests/test_external_korean_ukrainian_smoke.py for accepted-vs-candidate separation, source order/count, and no-accuracy semantics. Exact-head CI pending. |
+| Add optional workflow and evidence note | PARTIAL | Added .github/workflows/external-korean-ukrainian-smoke.yml and updated the canonical multi-engine benchmark doc. Exact-head workflow and artifact pending. |
+| Select Hikka or Shchegel as production winner | BLOCKED | Neither service returns IPA or source trace; no independently adjudicated Ukrainian gold; terms/privacy/stability not yet reviewed. |
+| Select a production G2P winner | BLOCKED / EVIDENCE-LIMITED | CharsiuG2P is the strongest historical diagnostic score but training overlap and weight-license provenance remain unresolved. Native and g2pk are close on current pinned IPA corpora. PR #411's fresh expanded run must finish before its candidate scores can be recorded. |
+
+## What was reused rather than duplicated
+
+The main branch already contains the extended multi-engine evaluator and its tests: exact match, CER, PER-style IPA segment distance, the explicitly experimental feature-weighted proxy, coverage-adjusted exact match, abstentions/errors, paired bootstrap intervals, and repeated runtime measurements. These were verified in scripts/benchmark_multi_engine_ko.py, .github/workflows/multi-engine-ipa-benchmark.yml, and tests/test_benchmark_extended_metrics.py. The 466-line report from PR #371 was not copied wholesale because much of it is stale or duplicates the canonical benchmark register.
+
+The only relevant missing piece ported here is the Hikka/Shchegel public API smoke comparison, rewritten as a testable script rather than a large inline workflow block. The old report's available_targets=20 metric was found to overcount provisional candidates; the new implementation separates accepted native outputs from candidate-only outputs.
+
+## Evidence boundaries
+
+- The external smoke sends only 20 fixed public Korean diagnostic phrases, never user-supplied text.
+- Hikka/Shchegel output differences are raw string comparisons, not accuracy. The services do not expose IPA, confidence, or a source-to-target trace.
+- One batch request per service is not stable latency evidence.
+- Hikka/Shchegel remain optional comparison references, not production dependencies.
+- The new script/test/workflow are awaiting exact-head CI and a fresh live API artifact. Update this section with exact run ID, artifact ID/digest, and outcomes before marking these rows DONE_VERIFIED.
+
+## Next acceptance gates
+
+1. Run the new pure unit tests and live fixed-input API smoke on the exact PR head; correct any response-schema or package API mismatch.
+2. Inspect the new artifact and record accepted/provisional native counts, source-order checks, service status, and raw disagreement counts.
+3. Verify Hikka/Shchegel terms, privacy/data handling, and permission for automated benchmarking before any user-facing integration.
+4. Keep external services comparison-only until independent Ukrainian target gold and accepted-variant policy exist.
+5. Finish PR #411's current multi-engine run and inspect the artifact; do not choose an engine from historical scores alone.
+6. Resolve independent Korean IPA adjudication, Ukrainian target review, and Charsiu model/license/training-overlap blockers before research certification or production selection.
