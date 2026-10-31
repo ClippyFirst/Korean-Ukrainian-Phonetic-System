@@ -124,7 +124,7 @@ A clean installation can therefore render IPA sequences covered by local corresp
 
 The Python package, CLI, and optional FastAPI backend can still use the original pinned g2pK engine. Its MeCab binding is tested on Python 3.11/3.12; on Python 3.13/3.14, use the native engine or a separate 3.11/3.12 environment. Install with `python -m pip install -e ".[g2pk]"`, then run `korean-ua analyze "넋이 굳이" --pronunciation-engine g2pk`. The native Python engine remains the default unless g2pK is explicitly selected; missing dependencies never trigger a silent fallback.
 
-Both runtimes preserve the same methodological boundary: the Ukrainian target is generated from IPA, never by a parallel Hangul-to-Ukrainian substitution. See [the Python integration and validation boundary](docs/G2PK-INTEGRATION-2026-10-15.md).
+Both IPA-first runtimes preserve the same methodological boundary: the phonetic Ukrainian target is generated from IPA, never by a parallel Hangul-to-Ukrainian substitution. The browser-only RR mode below is an explicitly separate orthographic-intermediary route; it is not part of the Python CLI/API. See [the Python integration and validation boundary](docs/G2PK-INTEGRATION-2026-10-15.md).
 
 ## RR-mediated Ukrainian output (2026-10-31)
 
@@ -136,7 +136,9 @@ The browser service adds a distinct **Revised Romanization → Ukrainian** mode.
 
 ## Scientific pipeline
 
-Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
+**Phonetic mode:** Korean orthography → Korean phonology → contextual rules → Korean surface representation / IPA → Ukrainian phonetic target → Ukrainian orthography
+
+**Browser-only RR mode:** Korean surface representation → Revised Romanization units → Ukrainian RR correspondence table → Ukrainian orthography
 
 The web service is a practical runtime projection of this research model. It is **not** an official Ukrainian national standard and it does not translate Korean meaning. Ukrainian correspondences are model decisions: for example, ㅎ → г is a documented approximation with a stated phonetic trade-off, not a claim of exact equivalence.
 
