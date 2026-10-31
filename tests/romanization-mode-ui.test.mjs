@@ -78,6 +78,7 @@ test('deployed browser smoke and Pages gate verify both Ukrainian routes', () =>
   assert.match(browserSmoke, /#alternate-ukrainian-output/u);
   assert.match(browserSmoke, /#mode-romanization/u);
   assert.match(browserSmoke, /Транслітерація за RR · попередня/u);
+  assert.match(browserSmoke, /apgujeong nakdonggang mukho jiphyeonjeon/u);
   assert.match(browserSmoke, /\.hanja-reverse-details summary/u);
   assert.match(browserSmoke, /#hanja-input/u);
   assert.match(browserSmoke, /#hanja-use-reading/u);
