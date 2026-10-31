@@ -1,69 +1,69 @@
-layer,hangul,rr,ukrainian,scope,status,notes
-onset,ㄱ,g,к,onset,model-selected,Unvoiced default for lenis onset; contextual voiced allophones are explicit in the context matrix
-onset,ㄲ,kk,кк,onset,model-selected,Fortis stop retained by doubling
-onset,ㄴ,n,н,onset,model-selected,Nasal onset
-onset,ㄷ,d,т,onset,model-selected,Unvoiced default for lenis onset; contextual voiced allophones are explicit in the context matrix
-onset,ㄸ,tt,тт,onset,model-selected,Fortis stop retained by doubling
-onset,ㄹ,r,р,onset,model-selected,RR liquid before a vowel
-onset,ㅁ,m,м,onset,model-selected,Nasal onset
-onset,ㅂ,b,п,onset,model-selected,Unvoiced default for lenis onset; contextual voiced allophones are explicit in the context matrix
-onset,ㅃ,pp,пп,onset,model-selected,Fortis stop retained by doubling
-onset,ㅅ,s,с,onset,model-selected,Plain fricative
-onset,ㅆ,ss,сс,onset,model-selected,Fortis fricative retained by doubling
-onset,ㅇ,,,onset,structural-null,Silent onset contributes no Ukrainian letter
-onset,ㅈ,j,ч,onset,provisional,Unvoiced default approximation for lenis affricate; contextual voiced allophones are explicit in the context matrix
-onset,ㅉ,jj,чч,onset,provisional,Fortis voiceless affricate; doubling is a project notation for tenseness, not gemination
-onset,ㅊ,ch,ч,onset,model-selected,Aspirated affricate
-onset,ㅋ,k,к,onset,model-selected,Aspirated stop
-onset,ㅌ,t,т,onset,model-selected,Aspirated stop
-onset,ㅍ,p,п,onset,model-selected,Aspirated stop
-onset,ㅎ,h,г,onset,model-selected,Ukrainian /ɦ/ is selected as the closest practical glottal-fricative approximation; voicing differs from Korean [h]
-vowel,ㅏ,a,а,nucleus,model-selected,Simple vowel
-vowel,ㅐ,ae,е,nucleus,provisional,Modern Korean merger represented by one Ukrainian е
-vowel,ㅑ,ya,я,nucleus,model-selected,Palatalized vowel onset represented by я
-vowel,ㅒ,yae,є,nucleus,provisional,Modern Korean merger represented by one Ukrainian є
-vowel,ㅓ,eo,о,nucleus,provisional,RR eo is a single vowel sequence not English e plus o
-vowel,ㅔ,e,е,nucleus,model-selected,Simple vowel
-vowel,ㅕ,yeo,йо,nucleus,provisional,RR yeo treated as one vowel sequence
-vowel,ㅖ,ye,є,nucleus,provisional,RR ye treated as one vowel sequence
-vowel,ㅗ,o,о,nucleus,model-selected,Simple vowel
-vowel,ㅘ,wa,ва,nucleus,provisional,RR glide sequence rendered as Ukrainian ва
-vowel,ㅙ,wae,ве,nucleus,provisional,Modern vowel merger approximated by ве
-vowel,ㅚ,oe,ве,nucleus,provisional,Modern vowel merger approximated by ве
-vowel,ㅛ,yo,йо,nucleus,provisional,RR yo treated as one vowel sequence
-vowel,ㅜ,u,у,nucleus,model-selected,Simple vowel
-vowel,ㅝ,wo,во,nucleus,provisional,RR glide sequence rendered as Ukrainian во
-vowel,ㅞ,we,ве,nucleus,provisional,RR glide sequence rendered as Ukrainian ве
-vowel,ㅟ,wi,ві,nucleus,provisional,RR glide sequence rendered as Ukrainian ві
-vowel,ㅠ,yu,ю,nucleus,model-selected,Palatalized vowel onset represented by ю
-vowel,ㅡ,eu,и,nucleus,provisional,Closest practical Ukrainian vowel approximation
-vowel,ㅢ,ui,уї,nucleus,provisional,Literal Ukrainian rendering of RR sequence; pronunciation may vary
-vowel,ㅣ,i,і,nucleus,model-selected,Simple vowel
-coda,ㄱ,k,к,coda,model-selected,Neutralized coda stop
-coda,ㄲ,k,к,coda,model-selected,Neutralized coda stop
-coda,ㄳ,k,к,coda,model-selected,Complex coda surface representative
-coda,ㄴ,n,н,coda,model-selected,Nasal coda
-coda,ㄵ,n,н,coda,model-selected,Complex coda surface representative
-coda,ㄶ,n,н,coda,model-selected,Complex coda surface representative
-coda,ㄷ,t,т,coda,model-selected,Neutralized coda stop
-coda,ㄹ,l,л,coda,model-selected,RR liquid at syllable end or before consonant
-coda,ㄺ,k,к,coda,model-selected,Complex coda surface representative
-coda,ㄻ,m,м,coda,model-selected,Complex coda surface representative
-coda,ㄼ,l,л,coda,model-selected,Complex coda surface representative
-coda,ㄽ,l,л,coda,model-selected,Complex coda surface representative
-coda,ㄾ,l,л,coda,model-selected,Complex coda surface representative
-coda,ㄿ,p,п,coda,model-selected,Complex coda surface representative
-coda,ㅀ,l,л,coda,model-selected,Complex coda surface representative
-coda,ㅁ,m,м,coda,model-selected,Nasal coda
-coda,ㅂ,p,п,coda,model-selected,Neutralized coda stop
-coda,ㅄ,p,п,coda,model-selected,Complex coda surface representative
-coda,ㅅ,t,т,coda,model-selected,Neutralized coda stop
-coda,ㅆ,t,т,coda,model-selected,Neutralized coda stop
-coda,ㅇ,ng,нг,coda,provisional,Ukrainian has no phonemic /ŋ/; нг is a practical approximation and does not claim an exact segmental match
-coda,ㅈ,t,т,coda,model-selected,Neutralized coda stop
-coda,ㅊ,t,т,coda,model-selected,Neutralized coda stop
-coda,ㅋ,k,к,coda,model-selected,Neutralized coda stop
-coda,ㅌ,t,т,coda,model-selected,Neutralized coda stop
-coda,ㅍ,p,п,coda,model-selected,Neutralized coda stop
-coda,ㅎ,t,т,coda,model-selected,Neutralized coda stop
-onset,ㄹ,l,л,onset,provisional,RR ll after a preceding liquid coda is rendered with Ukrainian л
+layer,hangul,rr,ukrainian,scope,status,collision_group,notes
+onset,ㄱ,g,к,onset,model-selected,,Unvoiced default for lenis onset; contextual voiced allophones are explicit in the context matrix
+onset,ㄲ,kk,кк,onset,model-selected,,Fortis stop retained by doubling
+onset,ㄴ,n,н,onset,model-selected,,Nasal onset
+onset,ㄷ,d,т,onset,model-selected,,Unvoiced default for lenis onset; contextual voiced allophones are explicit in the context matrix
+onset,ㄸ,tt,тт,onset,model-selected,,Fortis stop retained by doubling
+onset,ㄹ,r,р,onset,model-selected,,RR liquid before a vowel
+onset,ㅁ,m,м,onset,model-selected,,Nasal onset
+onset,ㅂ,b,п,onset,model-selected,,Unvoiced default for lenis onset; contextual voiced allophones are explicit in the context matrix
+onset,ㅃ,pp,пп,onset,model-selected,,Fortis stop retained by doubling
+onset,ㅅ,s,с,onset,model-selected,,Plain fricative
+onset,ㅆ,ss,сс,onset,model-selected,,Fortis fricative retained by doubling
+onset,ㅇ,,,onset,structural-null,,Silent onset contributes no Ukrainian letter
+onset,ㅈ,j,ч,onset,provisional,,Unvoiced default approximation for lenis affricate; contextual voiced allophones are explicit in the context matrix
+onset,ㅉ,jj,чч,onset,provisional,,Fortis voiceless affricate; doubling is a project notation for tenseness
+onset,ㅊ,ch,ч,onset,model-selected,,Aspirated affricate
+onset,ㅋ,k,к,onset,model-selected,,Aspirated stop
+onset,ㅌ,t,т,onset,model-selected,,Aspirated stop
+onset,ㅍ,p,п,onset,model-selected,,Aspirated stop
+onset,ㅎ,h,г,onset,provisional,,Ukrainian /ɦ/ is selected as the closest practical glottal-fricative approximation; voicing differs from Korean [h]
+vowel,ㅏ,a,а,nucleus,model-selected,,Simple vowel
+vowel,ㅐ,ae,е,nucleus,provisional,VOWEL-AE-E,Modern Korean merger; practical output е; collision is explicit in the RR trace
+vowel,ㅑ,ya,я,nucleus,model-selected,,Palatalized vowel onset represented by я
+vowel,ㅒ,yae,є,nucleus,provisional,VOWEL-YAE-YE,Modern Korean merger; practical output є; collision is explicit in the RR trace
+vowel,ㅓ,eo,о,nucleus,provisional,VOWEL-EO-O,No one-to-one Ukrainian vowel counterpart; practical output collides with the other vowel; RR trace preserves eo vs o
+vowel,ㅔ,e,е,nucleus,model-selected,VOWEL-AE-E,Modern Korean merger; practical output е; collision is explicit in the RR trace
+vowel,ㅕ,yeo,йо,nucleus,provisional,VOWEL-YEO-YO,Practical output collides with the paired vowel; RR trace preserves yeo vs yo
+vowel,ㅖ,ye,є,nucleus,provisional,VOWEL-YAE-YE,Modern Korean merger; practical output є; collision is explicit in the RR trace
+vowel,ㅗ,o,о,nucleus,model-selected,VOWEL-EO-O,No one-to-one Ukrainian vowel counterpart; practical output collides with the other vowel; RR trace preserves eo vs o
+vowel,ㅘ,wa,ва,nucleus,provisional,,RR glide sequence rendered as Ukrainian ва
+vowel,ㅙ,wae,ве,nucleus,provisional,VOWEL-WAE-OE-WE,Modern vowel merger/practical approximation; collision is explicit in the RR trace
+vowel,ㅚ,oe,ве,nucleus,provisional,VOWEL-WAE-OE-WE,Modern vowel merger/practical approximation; collision is explicit in the RR trace
+vowel,ㅛ,yo,йо,nucleus,provisional,VOWEL-YEO-YO,Practical output collides with the paired vowel; RR trace preserves yeo vs yo
+vowel,ㅜ,u,у,nucleus,model-selected,,Simple vowel
+vowel,ㅝ,wo,во,nucleus,provisional,,RR glide sequence rendered as Ukrainian во
+vowel,ㅞ,we,ве,nucleus,provisional,VOWEL-WAE-OE-WE,Modern vowel merger/practical approximation; collision is explicit in the RR trace
+vowel,ㅟ,wi,ві,nucleus,provisional,,RR glide sequence rendered as Ukrainian ві
+vowel,ㅠ,yu,ю,nucleus,model-selected,,Palatalized vowel onset represented by ю
+vowel,ㅡ,eu,и,nucleus,provisional,,Closest practical Ukrainian vowel approximation
+vowel,ㅢ,ui,уї,nucleus,provisional,,Literal Ukrainian rendering of RR sequence; pronunciation may vary
+vowel,ㅣ,i,і,nucleus,model-selected,,Simple vowel
+coda,ㄱ,k,к,coda,model-selected,,Neutralized coda stop
+coda,ㄲ,k,к,coda,model-selected,,Neutralized coda stop
+coda,ㄳ,k,к,coda,model-selected,,Complex coda surface representative
+coda,ㄴ,n,н,coda,model-selected,,Nasal coda
+coda,ㄵ,n,н,coda,model-selected,,Complex coda surface representative
+coda,ㄶ,n,н,coda,model-selected,,Complex coda surface representative
+coda,ㄷ,t,т,coda,model-selected,,Neutralized coda stop
+coda,ㄹ,l,л,coda,model-selected,,RR liquid at syllable end or before consonant
+coda,ㄺ,k,к,coda,model-selected,,Complex coda surface representative
+coda,ㄻ,m,м,coda,model-selected,,Complex coda surface representative
+coda,ㄼ,l,л,coda,model-selected,,Complex coda surface representative
+coda,ㄽ,l,л,coda,model-selected,,Complex coda surface representative
+coda,ㄾ,l,л,coda,model-selected,,Complex coda surface representative
+coda,ㄿ,p,п,coda,model-selected,,Complex coda surface representative
+coda,ㅀ,l,л,coda,model-selected,,Complex coda surface representative
+coda,ㅁ,m,м,coda,model-selected,,Nasal coda
+coda,ㅂ,p,п,coda,model-selected,,Neutralized coda stop
+coda,ㅄ,p,п,coda,model-selected,,Complex coda surface representative
+coda,ㅅ,t,т,coda,model-selected,,Neutralized coda stop
+coda,ㅆ,t,т,coda,model-selected,,Neutralized coda stop
+coda,ㅇ,ng,нг,coda,provisional,,Ukrainian has no phonemic /ŋ/; нг is a practical approximation and does not claim an exact segmental match
+coda,ㅈ,t,т,coda,model-selected,,Neutralized coda stop
+coda,ㅊ,t,т,coda,model-selected,,Neutralized coda stop
+coda,ㅋ,k,к,coda,model-selected,,Neutralized coda stop
+coda,ㅌ,t,т,coda,model-selected,,Neutralized coda stop
+coda,ㅍ,p,п,coda,model-selected,,Neutralized coda stop
+coda,ㅎ,t,т,coda,model-selected,,Neutralized coda stop
+onset,ㄹ,l,л,onset,provisional,,RR ll after a preceding liquid coda is rendered with Ukrainian л
