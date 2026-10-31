@@ -55,7 +55,7 @@ try {
   assert.equal(await page.locator('#rr-trace-panel').evaluate(element => element.hidden), false);
   await page.locator('#mode-romanization').check();
   await page.waitForFunction(() =>
-    document.querySelector('#ukrainian-output-label')?.textContent?.trim() === 'Транслітерація за RR' &&
+    document.querySelector('#ukrainian-output-label')?.textContent?.trim() === 'Транслітерація за RR · попередня' &&
     document.querySelector('#alternate-ukrainian-label')?.textContent?.trim() === 'Українська транслітерація через IPA'
   );
   assert.ok((await page.locator('#result-ukrainian').innerText()).trim().length > 0,
