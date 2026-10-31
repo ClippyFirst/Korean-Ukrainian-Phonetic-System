@@ -162,7 +162,7 @@ export function createHanjaToHangulConverter(dictionary = {}) {
     const source = String(input ?? '');
     const ambiguities = [];
     const unmapped = [];
-    const text = source.replace(/[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]+/gu, (run) => {
+    const text = source.replace(/[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]+/gu, (run, runOffset) => {
       let output = '';
       for (let index = 0; index < run.length;) {
         let match = null;
@@ -174,7 +174,7 @@ export function createHanjaToHangulConverter(dictionary = {}) {
         if (!match) {
           const literal = [...run.slice(index)][0];
           output += literal;
-          unmapped.push({ source: literal, offset: index });
+          unmapped.push({ source: literal, offset: runOffset + index });
           index += literal.length;
           continue;
         }
@@ -182,7 +182,7 @@ export function createHanjaToHangulConverter(dictionary = {}) {
         if (readings.length === 1) output += readings[0];
         else {
           output += match;
-          ambiguities.push({ source: match, offset: index, readings });
+          ambiguities.push({ source: match, offset: runOffset + index, readings });
         }
         index += match.length;
       }
