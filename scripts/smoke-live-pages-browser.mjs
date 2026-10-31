@@ -46,6 +46,24 @@ try {
   }
   await page.locator('#ua-unconfirmed-button').click();
 
+  // Both Ukrainian routes must remain visible together. Selecting RR as the
+  // primary result must not hide the IPA-mediated alternative or either trace.
+  const rrAlternative = (await page.locator('#alternate-ukrainian-output').innerText()).trim();
+  assert.ok(rrAlternative.length > 0, 'the RR-mediated Ukrainian transliteration must be visible beside the IPA result');
+  assert.equal((await page.locator('#alternate-ukrainian-label').innerText()).trim(), 'Українська транслітерація через RR');
+  assert.equal(await page.locator('#ipa-trace-panel').evaluate(element => element.hidden), false);
+  assert.equal(await page.locator('#rr-trace-panel').evaluate(element => element.hidden), false);
+  await page.locator('#mode-romanization').check();
+  await page.waitForFunction(() =>
+    document.querySelector('#ukrainian-output-label')?.textContent?.trim() === 'Транслітерація за RR' &&
+    document.querySelector('#alternate-ukrainian-label')?.textContent?.trim() === 'Українська транслітерація через IPA'
+  );
+  assert.ok((await page.locator('#result-ukrainian').innerText()).trim().length > 0,
+    'RR-primary Ukrainian output must be populated');
+  assert.ok((await page.locator('#alternate-ukrainian-output').innerText()).trim().length > 0,
+    'IPA-mediated Ukrainian output must remain populated when RR is primary');
+  await page.locator('#mode-practical').check();
+
   // Verify the deployed research-only Super-soft path itself, not just the
   // source-level unit test: every Hangul syllable in this mixed input must
   // have IPA and a Ukrainian candidate, with explicit coverage/confidence UI.
