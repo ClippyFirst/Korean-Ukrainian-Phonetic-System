@@ -24,6 +24,7 @@ test('RR output uses its own adapter and typed RR trace rather than the IPA targ
 test('RR output remains explicitly provisional and does not relabel the IPA-first path', () => {
   assert.match(app, /Revised Romanization → українська · окрема попередня таблиця/u);
   assert.match(app, /currentOutputMethod=romanizationMode\?'rr':'ipa'/u);
+  assert.match(app, /currentOutputMethod==='rr'\?'Транслітерація за RR · попередня'/u);
   assert.match(html, /Це не фонетичний IPA-режим/u);
 });
 
