@@ -178,7 +178,7 @@ export function createHanjaToHangulConverter(dictionary = {}) {
           index += literal.length;
           continue;
         }
-        const readings = [...reverse.get(match)].sort((a, b) => a.localeCompare(b, 'ko'));
+        const readings = [...reverse.get(match)].sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
         if (readings.length === 1) output += readings[0];
         else {
           output += match;
