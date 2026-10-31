@@ -41,3 +41,10 @@ test('primary Ukrainian output uses the owner-approved transliteration terminolo
   assert.match(html, /Українська транслітерація/u);
   assert.doesNotMatch(html, /Українська транскрипція/u);
 });
+
+
+test('surface IPA identifies the selected pronunciation engine and research mode', () => {
+  assert.match(html, /id="ipa-engine-status"/u);
+  assert.match(main, /Джерело поверхневої IPA: g2pK JavaScript port/u);
+  assert.match(main, /детермінований рушій Козака Кіма/u);
+});
