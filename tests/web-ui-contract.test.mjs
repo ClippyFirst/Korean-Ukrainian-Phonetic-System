@@ -101,7 +101,7 @@ test('service UX keeps the hero, simplifies the workbench, and progressively dis
   const css=read('src/styles/main.css');
   assert.match(html,/id="input-guidance"/);
   assert.match(html,/aria-describedby="input-guidance"/);
-  assert.match(html,/<details class="trace-panel trace-disclosure">/);
+  assert.match(html,/<details(?: id="[^"]+")? class="trace-panel trace-disclosure">/);
   assert.match(html,/<summary class="trace-summary">/);
   assert.match(html,/id="result-romanization"/);
   assert.match(css,/\.workspace-layout\s*\{\s*display:\s*flex;/);
