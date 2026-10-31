@@ -41,11 +41,23 @@ test('empty and nullish input are safe', () => {
 
 
 test('uses source orthography for NIKL RR exceptions instead of copying every surface change', () => {
-  // NIKL RR §3(1): tense sounds in compounds are not romanized as fortis;
-  // the official example 압구정 is Apgujeong, not a surface-fortis spelling.
-  assert.equal(romanizeRevisedDetailed('압꾸정', '압구정').text, 'apgujeong');
-  // NIKL RR §3(1): noun examples 묵호 and 집현전 retain h rather than
-  // romanizing the aspirated surface as k/t/p+h assimilation.
+  // NIKL RR §3(1) lists these compounds as examples where tense sounds are
+  // not transcribed. Surface forms below are synthetic fixtures, not IPA gold.
+  const compoundCases = [
+    ['압꾸정', '압구정', 'apgujeong'],
+    ['낙똥강', '낙동강', 'nakdonggang'],
+    ['죽뼌', '죽변', 'jukbyeon'],
+    ['낙썽대', '낙성대', 'nakseongdae'],
+    ['합쩡', '합정', 'hapjeong'],
+    ['팔땅', '팔당', 'paldang'],
+    ['샏뼐', '샛별', 'saetbyeol'],
+    ['울싼', '울산', 'ulsan']
+  ];
+  for (const [surface, source, expected] of compoundCases) {
+    assert.equal(romanizeRevisedDetailed(surface, source).text, expected, source);
+  }
+  // NIKL RR §3(1) noun examples retain written h rather than transcribing
+  // aspiration after ㄱ/ㅂ as kh/ph.
   assert.equal(romanizeRevisedDetailed('무코', '묵호').text, 'mukho');
   assert.equal(romanizeRevisedDetailed('지편전', '집현전').text, 'jiphyeonjeon');
 });
