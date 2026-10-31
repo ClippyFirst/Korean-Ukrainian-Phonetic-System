@@ -62,6 +62,14 @@ test('uses source orthography for NIKL RR exceptions instead of copying every su
   assert.equal(romanizeRevisedDetailed('지편전', '집현전').text, 'jiphyeonjeon');
 });
 
+test('scopes RR source exceptions to aligned words and leaves unknown alignment surface-based', () => {
+  assert.equal(romanizeRevisedDetailed('압꾸정역', '압구정역').text, 'apgujeongyeok');
+  const unaligned = romanizeRevisedDetailed('압꾸정', '압구정역');
+  assert.equal(unaligned.text, 'apkkujeong');
+  assert.ok(unaligned.segments.filter((segment) => segment.type === 'syllable')
+    .every((segment) => segment.rrRule === 'NIKL-RR-SURFACE-BASED'));
+});
+
 test('covers every modern precomposed Hangul syllable without undefined output', () => {
   for (let code = 0xac00; code <= 0xd7a3; code += 1) {
     const source = String.fromCodePoint(code);
