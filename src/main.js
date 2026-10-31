@@ -156,6 +156,14 @@ function renderHanjaReverse(){
     if(hanjaUseReading)hanjaUseReading.disabled=true;
     return;
   }
+  if(!/\p{Script=Han}/u.test(source)){
+    hanjaReadingOutput.value=source;
+    hanjaReverseSuggestedText=source;
+    hanjaReverseNeedsManualResolution=false;
+    hanjaReadingStatus.textContent='Hanja-символів не знайдено; текст Hangul/латиницею збережено без змін.';
+    if(hanjaUseReading)hanjaUseReading.disabled=false;
+    return;
+  }
   hanjaReadingStatus.textContent='Завантаження локального словника для зворотного пошуку…';
   Promise.all(Array.from({length:19},(_,group)=>loadHanjaGroup(group))).then(()=>{
     if(generation!==hanjaReverseGeneration||hanjaInput.value!==source)return;
