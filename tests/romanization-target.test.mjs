@@ -270,8 +270,9 @@ test('records Korean sibilant palatalization before /i/ and keeps Ukrainian soft
 test('maps Korean coda ㅇ by its velar-nasal phonetic value, not the RR spelling ng', () => {
   const result = transcribeRevisedToUkrainian('강');
   assert.equal(result.romanization, 'gang');
-  assert.equal(result.text, 'кан');
+  assert.equal(result.text, 'канг');
   const coda = result.trace.find((entry) => entry.layer === 'coda');
   assert.equal(coda.rr, 'ng');
-  assert.equal(coda.ukrainian, 'н');
+  assert.equal(coda.ukrainian, 'нг');
+  assert.equal(result.trace.filter((entry) => entry.layer === 'coda').length, 1);
 });
