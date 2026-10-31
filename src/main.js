@@ -10,7 +10,7 @@ import rrUkrainianCsv from '../data/korean/rr_ukrainian_correspondence.csv?raw';
 import rrUkrainianContextRulesCsv from '../data/korean/rr_ukrainian_context_rules.csv?raw';
 import {createRomanizationTarget} from './app/romanization_target.js';
 import {renderSuperSoftCandidate} from './app/super_soft_annotation.js';
-import {convertHangulToHanja, createHanjaConverter} from './app/hanja.js';
+import {convertHangulToHanja, createHanjaConverter, createHanjaToHangulConverter} from './app/hanja.js';
 import niklMasterPassage from '../tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt?raw';
 
 // Merge base lexicon with dated additions (later rows override earlier on same key).
@@ -67,6 +67,13 @@ const ipaPhonemicStatus=document.querySelector('#ipa-phonemic-status');
 const romanization=document.querySelector('#result-romanization');
 const hanjaOutput=document.querySelector('#result-hanja');
 const hanjaEngineStatus=document.querySelector('#hanja-engine-status');
+const hanjaInput=document.querySelector('#hanja-input');
+const hanjaReadingOutput=document.querySelector('#hanja-reading-output');
+const hanjaReadingStatus=document.querySelector('#hanja-reading-status');
+const hanjaUseReading=document.querySelector('#hanja-use-reading');
+let hanjaReverseGeneration=0;
+let hanjaReverseNeedsManualResolution=false;
+let hanjaReverseSuggestedText='';
 const hanjaDictionaryChunks=import.meta.glob('./app/hanja-dictionary/hanja-dictionary-*.js');
 const loadedHanjaWordMap=new Map();
 const loadedHanjaGroups=new Set();
@@ -137,6 +144,52 @@ function renderHanja(value){
   });
 }
 
+function renderHanjaReverse(){
+  if(!hanjaInput||!hanjaReadingOutput||!hanjaReadingStatus)return;
+  const source=hanjaInput.value;
+  const generation=++hanjaReverseGeneration;
+  if(!source.trim()){
+    hanjaReadingOutput.value='';
+    hanjaReadingStatus.textContent='Введіть Hanja або змішаний текст для пошуку корейського читання.';
+    hanjaReverseNeedsManualResolution=false;
+    hanjaReverseSuggestedText='';
+    if(hanjaUseReading)hanjaUseReading.disabled=true;
+    return;
+  }
+  hanjaReadingStatus.textContent='Завантаження локального словника для зворотного пошуку…';
+  Promise.all(Array.from({length:19},(_,group)=>loadHanjaGroup(group))).then(()=>{
+    if(generation!==hanjaReverseGeneration||hanjaInput.value!==source)return;
+    const result=createHanjaToHangulConverter(loadedHanjaWordMap)(source);
+    hanjaReadingOutput.value=result.text;
+    hanjaReverseSuggestedText=result.text;
+    hanjaReverseNeedsManualResolution=result.status!=='resolved';
+    const details=[
+      ...result.ambiguities.map(item=>item.source+' → '+item.readings.join(' / ')),
+      ...result.unmapped.map(item=>item.source+' → немає словникового читання')
+    ];
+    hanjaReadingStatus.textContent=result.status==='resolved'
+      ?'Однозначне словникове читання знайдено. Можна передати Hangul у головне поле.'
+      :'Потрібна ручна перевірка: '+details.join('; ')+'. Відредагуйте поле читання, щоб підтвердити вибір.';
+    if(hanjaUseReading)hanjaUseReading.disabled=result.status!=='resolved';
+  }).catch(error=>{
+    if(generation!==hanjaReverseGeneration)return;
+    hanjaReadingStatus.textContent='Не вдалося завантажити словник: '+String(error?.message||error);
+    if(hanjaUseReading)hanjaUseReading.disabled=true;
+  });
+}
+if(hanjaInput)hanjaInput.addEventListener('input',renderHanjaReverse);
+if(hanjaReadingOutput)hanjaReadingOutput.addEventListener('input',()=>{
+  if(!hanjaUseReading)return;
+  hanjaUseReading.disabled=!hanjaReadingOutput.value.trim()
+    ||(hanjaReverseNeedsManualResolution&&hanjaReadingOutput.value===hanjaReverseSuggestedText);
+});
+if(hanjaUseReading)hanjaUseReading.addEventListener('click',()=>{
+  if(!input||!hanjaReadingOutput||hanjaUseReading.disabled)return;
+  input.value=hanjaReadingOutput.value;
+  input.dispatchEvent(new Event('input',{bubbles:true}));
+  input.focus();
+});
+
 const analysis=document.querySelector('#result-analysis');
 const traceList=document.querySelector('#trace-list');
 const ipaTracePanel=document.querySelector('#ipa-trace-panel');
@@ -206,6 +259,6 @@ document.querySelector('#clear-button').addEventListener('click',()=>{input.valu
 document.querySelector('#example-button').addEventListener('click',()=>{input.value='현대 한국어의 표준 발음';render();input.focus();});
 document.querySelector('#nikl-stress-example').addEventListener('click',()=>{input.value=niklMasterPassage.trim();render();input.focus();});
 for(const button of document.querySelectorAll('[data-example]'))button.addEventListener('click',()=>{input.value=button.dataset.example;render();input.focus();});
-for(const button of document.querySelectorAll('[data-copy]'))button.addEventListener('click',async()=>{clearTimeout(announcementTimer);const key=button.dataset.copy;const source=key==='ukrainian'?output:key==='ipa'?ipa:key==='ipa-phonemic'?ipaPhonemic:key==='romanization'?romanization:key==='hanja'?hanjaOutput:analysis;try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard API unavailable');await navigator.clipboard.writeText(source.textContent);button.textContent='Скопійовано';setCopyFeedback('Результат скопійовано.');setTimeout(()=>button.textContent='Копіювати',1200);}catch{const selection=window.getSelection();const range=document.createRange();range.selectNodeContents(source);selection?.removeAllRanges();selection?.addRange(range);source.setAttribute('tabindex','-1');source.focus();setCopyFeedback('Автоматичне копіювання недоступне. Текст виділено: натисніть Ctrl+C або скористайтеся командою копіювання пристрою.');}});
+for(const button of document.querySelectorAll('[data-copy]'))button.addEventListener('click',async()=>{clearTimeout(announcementTimer);const key=button.dataset.copy;const source=key==='ukrainian'?output:key==='ipa'?ipa:key==='ipa-phonemic'?ipaPhonemic:key==='romanization'?romanization:key==='hanja'?hanjaOutput:key==='hanja-reading'?hanjaReadingOutput:analysis;try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard API unavailable');await navigator.clipboard.writeText(source.textContent);button.textContent='Скопійовано';setCopyFeedback('Результат скопійовано.');setTimeout(()=>button.textContent='Копіювати',1200);}catch{const selection=window.getSelection();const range=document.createRange();range.selectNodeContents(source);selection?.removeAllRanges();selection?.addRange(range);source.setAttribute('tabindex','-1');source.focus();setCopyFeedback('Автоматичне копіювання недоступне. Текст виділено: натисніть Ctrl+C або скористайтеся командою копіювання пристрою.');}});
 
 render();
