@@ -491,3 +491,9 @@ button { color: inherit; }
 .hanja-reverse-workbench textarea:focus { outline:2px solid var(--blue); outline-offset:1px; }
 .hanja-reading-label { color:var(--muted); font-size:.76rem; font-weight:700; }
 .hanja-reverse-workbench .copy-button { justify-self:start; margin-left:0; }
+
+
+.hanja-reverse-details { margin-top:14px; border:1px solid var(--line); border-radius:10px; background:var(--surface); }
+.hanja-reverse-details > summary { padding:12px 14px; color:var(--ink); cursor:pointer; font-weight:750; }
+.hanja-reverse-details[open] { padding-bottom:12px; }
+.hanja-reverse-details .hanja-reverse-workbench { margin:0 14px; padding-top:0; border-top:0; }
