@@ -73,6 +73,9 @@ test('both route traces remain independently inspectable regardless of the selec
 test('deployed browser smoke and Pages gate verify both Ukrainian routes', () => {
   assert.match(browserSmoke, /#alternate-ukrainian-output/u);
   assert.match(browserSmoke, /#mode-romanization/u);
+  assert.match(browserSmoke, /\.hanja-reverse-details summary/u);
+  assert.match(browserSmoke, /#hanja-input/u);
+  assert.match(browserSmoke, /#hanja-use-reading/u);
   assert.match(browserSmoke, /IPA-mediated Ukrainian output must remain populated/u);
   assert.match(browserSmoke, /RR-mediated Ukrainian transliteration must be visible/u);
   assert.match(deployWorkflow, /українську транслітерацію двома окремими маршрутами/u);
