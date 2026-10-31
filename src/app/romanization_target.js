@@ -22,17 +22,23 @@ function loadContextRules(csv) {
   return parseCsv(csv).sort((a, b) => a.rule_id.localeCompare(b.rule_id));
 }
 
-function matchesRule(rule, segment) {
-  return rule.layer === 'onset'
-    && rule.hangul === segment.onsetHangul
-    && rule.rr === segment.onset
+function matchesRule(rule, segment, layer, rr) {
+  const hangul = layer === 'onset'
+    ? segment.onsetHangul
+    : layer === 'vowel'
+      ? segment.vowelHangul
+      : segment.codaHangul;
+  return rule.layer === layer
+    && rule.hangul === hangul
+    && rule.rr === rr
     && (rule.word_position === '*' || rule.word_position === segment.wordPosition)
     && (rule.left_context === '*' || rule.left_context === segment.leftContext)
-    && (rule.sentence_position === '*' || rule.sentence_position === segment.sentencePosition);
+    && (rule.sentence_position === '*' || rule.sentence_position === segment.sentencePosition)
+    && (rule.onset_context === '*' || rule.onset_context === segment.onsetContext);
 }
 
-function selectContextRule(rules, segment) {
-  return rules.find((rule) => matchesRule(rule, segment)) ?? null;
+function selectContextRule(rules, segment, layer, rr) {
+  return rules.find((rule) => matchesRule(rule, segment, layer, rr)) ?? null;
 }
 
 /** Create a reusable RR-mediated target adapter from canonical CSV sources. */
@@ -57,7 +63,7 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
       let syllableOutput = '';
       for (const [layer, rr] of [['onset', segment.onset], ['vowel', segment.vowel], ['coda', segment.coda]]) {
         if (!rr) continue;
-        const contextRule = layer === 'onset' ? selectContextRule(contextRules, segment) : null;
+        const contextRule = selectContextRule(contextRules, segment, layer, rr);
         const mapping = contextRule ?? correspondences.get(layer + ':' + rr);
         if (!mapping) {
           issues.push({ source: segment.source, layer, rr, reason: 'unmapped-rr-unit',
