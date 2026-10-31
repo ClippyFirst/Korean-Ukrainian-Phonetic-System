@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+import unicodedata
 import urllib.error
 import urllib.request
 from collections import Counter
@@ -11,6 +12,10 @@ from typing import Any, Callable
 
 ENDPOINT = "https://api.mikai.me/public/v1/translit"
 SYSTEMS = ("hikka", "shchegel")
+SYSTEM_LABEL_ALIASES = {
+    "hikka": ("hikka", "система hikka"),
+    "shchegel": ("shchegel", "система щегеля"),
+}
 DIAGNOSTIC_INPUTS = (
     "한글",
     "안녕하세요",
@@ -133,7 +138,13 @@ def validate_external_payload(
     if not isinstance(result, dict):
         raise RuntimeError(f"{system} API response has no result object")
     reported_system = result.get("system")
-    if not isinstance(reported_system, str) or system.casefold() not in reported_system.casefold():
+    normalized_system = (
+        unicodedata.normalize("NFKC", reported_system).casefold().strip()
+        if isinstance(reported_system, str)
+        else ""
+    )
+    aliases = SYSTEM_LABEL_ALIASES.get(system, (system.casefold(),))
+    if normalized_system not in aliases:
         raise RuntimeError(f"{system} API did not identify the requested system: {reported_system!r}")
 
     lines = result.get("lines")
