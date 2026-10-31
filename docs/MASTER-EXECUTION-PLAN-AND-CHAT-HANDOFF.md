@@ -1175,7 +1175,7 @@ No open PRs remained after #282 merged. The scientific status is still research 
 - **Fixes discovered during verification:** initial smoke attempts exposed a missing pytest install, comment lines being misread as inputs, and a mismatch between MeCab-Ko binding APIs. The workflow now installs test dependencies, the runner skips corpus comments, and the adapter supports the documented Rust binding, `python-mecab-ko`, and compatible legacy MeCab API. Final real-engine smoke passed for both engines.
 - **Scope guard:** research-only Python adapter. It emits token forms, raw tags, source offsets, nullable lemma, and selected MeCab binding in diagnostic output; it does not emit pronunciation/IPA/Ukrainian output or automatically change phonology. The browser practical mode was not modified by the PR; post-merge live practical-mode regression passed.
 - **Remaining blockers:** independent IPA adjudication; Ukrainian target-layer review; NIKL source reuse/terms and human clause-boundary review; specialist review of any future morphology-to-rule licensing; accuracy benchmarking against an adjudicated morphology corpus.
-- **Release classification:** research preview / partial prototype, not release-ready. Successful analyzer installation and tokenization do not prove phonological correctness or Ukrainian transcription accuracy.
+- **Release classification:** research preview / partial prototype, not release-ready. Successful analyzer installation and tokenization do not prove phonological correctness or Ukrainian transliteration quality.
 
 ## Continuation update — IPA→Ukrainian target abstention diagnostics (2026-10-24)
 
@@ -2039,7 +2039,7 @@ The input uses `schema_version: "1.0"`, the queue's exact `source_pins`, and a `
 - Scratch-teacher run [40317106628](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40317106628) completed successfully and uploaded artifact [12646399461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40317106628/artifacts/12646399461), SHA-256 `6b3c545fa4b1eb9c80268d54181f60c8be612b5bbda32376acc86cff6f111b1c`.
 - On 1,000 SIGMORPHON dev rows, the scratch teacher reproduced the existing metrics: 602 exact token-sequence matches (60.2%), token error rate 12.72%, compact-character error rate 12.18%; 107 mismatches were length-mark-only diagnostics and 291 were other token/feature differences (80 underpredicted and 27 overpredicted length marks).
 - Teacher/Strict same-input pairing produced 994 paired cases and excluded 6, but correctly reported `BLOCKED_INCOMPATIBLE_OR_UNREVIEWED_IPA_CONVENTIONS`; cross-convention comparison metrics were not computed. This is the correct fail-closed result, not a missing test or a failed model.
-- These figures are SIGMORPHON source-token-sequence metrics only. They are not broad-IPA accuracy, Ukrainian transcription accuracy, or evidence that any Strict rule should be changed.
+- These figures are SIGMORPHON source-token-sequence metrics only. They are not broad-IPA accuracy, Ukrainian transliteration quality, or evidence that any Strict rule should be changed.
 
 
 ### Explicit interpretation of the 60.2% result — 2026-10-26
