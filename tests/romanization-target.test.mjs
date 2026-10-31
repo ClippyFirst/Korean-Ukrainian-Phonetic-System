@@ -245,3 +245,23 @@ test('distinguishes a resyllabified coda from a lexical consonant onset before �
   assert.equal(ambiguousVowel.alignmentStatus, 'unknown');
   assert.equal(ambiguousVowel.alternativeUkrainian, 'і');
 });
+
+test('records Korean sibilant palatalization before /i/ and keeps Ukrainian softening in the target', () => {
+  const si = transcribeRevisedToUkrainian('시');
+  const siOnset = si.trace.find((entry) => entry.layer === 'onset');
+  assert.equal(si.text, 'сі');
+  assert.equal(siOnset.phonologicalFeature, 'alveolo-palatal-sibilant-before-i');
+  assert.equal(siOnset.mapping_id, 'RRUA-S-PALATALIZED-I');
+  assert.equal(siOnset.vowelContext, 'high-front-i');
+
+  const ssi = transcribeRevisedToUkrainian('씨');
+  const ssiOnset = ssi.trace.find((entry) => entry.layer === 'onset');
+  assert.equal(ssi.text, 'ссі');
+  assert.equal(ssiOnset.phonologicalFeature, 'tense-alveolo-palatal-sibilant-before-i');
+  assert.equal(ssiOnset.mapping_id, 'RRUA-SS-PALATALIZED-I');
+
+  const so = transcribeRevisedToUkrainian('소');
+  const soOnset = so.trace.find((entry) => entry.layer === 'onset');
+  assert.equal(soOnset.mapping_id, 'ㄱ:');
+  assert.notEqual(soOnset.phonologicalFeature, 'alveolo-palatal-sibilant-before-i');
+});
