@@ -116,3 +116,8 @@ The reverse Hanja workbench was moved outside the results container so it remain
 ## Exact-head evidence boundary — 2026-10-31
 
 The last completed full test run before the latest Hanja standalone input, product terminology and engine-provenance UI changes was run `41240462365`: 1,378 web tests passed and the Python 3.11/3.12/3.13, wheel-install and teacher-corpus-audit jobs passed. This evidence does not cover the latest UI state. On branch `feat/korean-rr-contextual-phonetics-final`, head `26e1693b0283857020f753aabe978ed7d13a10c5`, exact-head tests `41242883661`, browser G2P `41242883863`, and system verification `41242883742` were queued, as were research/artifact jobs. Do not mark the current branch fully verified until these exact-head checks finish. The current target remains a research prototype pending independent Ukrainian review, Hanja reverse-lookup evaluation and IPA profile adjudication.
+
+
+## Live Hanja browser acceptance — 2026-10-31
+
+A deployed Pages Playwright smoke now covers the standalone Hanja→Hangul workbench as well as the existing Hangul→Hanja annotation. It clears the main Hangul input first, opens the Hanja disclosure, submits mixed-script text, checks the unique Hangul reading, transfers it to the main input, and waits for IPA output. This verifies that the reverse input is available independently of the results container and that the confirmed reading can enter the main pipeline. The smoke is a deployment acceptance gate, not yet a completed run for this PR head. Current exact-head CI remains pending.
