@@ -64,6 +64,8 @@ test('uses source orthography for NIKL RR exceptions instead of copying every su
 
 test('scopes RR source exceptions to aligned words and leaves unknown alignment surface-based', () => {
   assert.equal(romanizeRevisedDetailed('압꾸정역', '압구정역').text, 'apgujeongyeok');
+  // A separate unaligned word must not disable an aligned exception in the same input.
+  assert.equal(romanizeRevisedDetailed('압꾸정 가나', '압구정 가나다').text, 'apgujeong gana');
   const unaligned = romanizeRevisedDetailed('압꾸정', '압구정역');
   assert.equal(unaligned.text, 'apkkujeong');
   assert.ok(unaligned.segments.filter((segment) => segment.type === 'syllable')
