@@ -51,7 +51,7 @@
 ## Питання 7. Чи є RR → українська окремою методикою, а не ще одним відображенням IPA?
 - **Академічна перспектива:** так, якщо проміжною основою є саме Revised Romanization, а не паралельний IPA trace. RR — офіційна корейська система латинського запису, заснована на стандартній вимові; її диграфи й триграфи є одиницями таблиці, а не англійською орфографією.
 - **Доказова перспектива:** NIKL підтверджує RR values, але не українські графемні відповідники. Рудь (2024) описує брак єдиного корейсько-українського стандарту та розрізняє транскрипцію й транслітерацію.
-- **Рішення:** у PR #407 створено окремий ланцюг Hangul surface → RR components → Ukrainian table. У RR-режимі UI показує власний trace та не показує IPA→Ukrainian trace як джерело цільового результату. Українські відповідники залишаються проєктними й попередніми до незалежного читачевого/фахового тесту.
+- **Рішення:** у PR #409 створено окремий ланцюг Hangul surface → RR components → Ukrainian table з контекстним шаром, що читає джерельне написання для вирівнювання onset/coda. У RR-режимі UI показує власний trace та не показує IPA→Ukrainian trace як джерело цільового результату. Українські відповідники залишаються проєктними й попередніми до незалежного читачевого/фахового тесту.
 
 ## Питання 8. Чи можна просто перенести російську таблицю на українську?
 - **Академічна перспектива:** ні. Рудь (2024), розділ 3.1, описує Холодовича—Концевича як окрему кириличну систему, зорієнтовану на російську фонологію; у ній окремі контрасти зливаються (зокрема ㄴ/ㅇ coda та 어/오). RR — інша система, латинська й офіційна для Республіки Корея.
@@ -93,8 +93,8 @@ The previous flat component mapping is retained as a fallback register, but it i
 
 - NIKL Revised Romanization is based on standard Korean pronunciation and explicitly distinguishes context-dependent ㄱ/ㄷ/ㅂ values, ㄹ versus ㄹㄹ, and special cases such as assimilation, epenthesis, palatalization and ㅎ-conditioned aspiration.
 - Korean phonetics research describes the lenis/fortis/aspirated contrast. The project therefore reserves the apostrophe marker for the phonemic aspirated onset series ㅋ/ㅌ/ㅍ/ㅊ, while keeping lenis and fortis as separate categories.
-- Lenis ㄱ/ㄷ/ㅂ/ㅈ are adapted as voiceless at word onset or after an obstruent, and as voiced after a vowel/sonorant. This is an explicit project approximation; it is not a claim that RR itself encodes these Ukrainian choices.
-- RR ㄹㄹ can produce an onset unit `l`; the Ukrainian base register now includes that unit, fixing the previously unmapped liquid-assimilation case.
+- The base RR-to-Ukrainian values for lenis ㄱ/ㄷ/ㅂ/ㅈ are unvoiced; explicit contextual rules select voiced candidates after vowels/sonorants. Sixteen voiced-medial rules expose unvoiced alternatives; eight sentence-medial word-initial rules expose voiced alternatives because sentence punctuation does not reveal the accentual-phrase boundary. Unverified post-obstruent lenis rules were removed; when the Korean surface G2P resolves fortition, the fortis Jamo has its own mapping.
+- RR ㄹㄹ can produce an onset unit `l`; the Ukrainian base register now includes that unit. The ㅢ adapter preserves RR `ui`, applies [i] for consonantal onset, retains [ɰi] as the default for null-onset contexts and exposes [i] as a permitted noninitial variant. The source spelling plus G2P surface distinguishes the NIKL `협의 [혀븨/혀비]` case. The Ukrainian ㅎ→г mapping is a project approximation; fortis doubling is a graphic tension marker, not gemination.
 
 ### Adjudication and limits
 
@@ -102,7 +102,7 @@ The previous flat component mapping is retained as a fallback register, but it i
 2. **Accepted as a project convention:** ASCII apostrophe marks the phonemic aspirated series in this mode. This must remain distinct from weak aspiration of word-initial lenis consonants and from fortis tension.
 3. **Not accepted as established Ukrainian phonetic fact:** the exact Ukrainian outputs к/ґ, т/д, п/б, ч/дж and к'/т'/п'/ч' still require independent Ukrainian phonetic review and reader testing.
 4. **Not established:** superiority over Kholodovich–Konzevich. The method preserves more explicit contextual distinctions in its trace, but comparative quality requires a held-out word/sentence corpus and blinded readers.
-5. Sentence position is currently recorded and resets at sentence punctuation; no sentence-position-specific target rules are asserted yet. The active selection rules are word-position and local-coda based.
+5. Sentence position is recorded and used to distinguish sentence-initial from sentence-medial word-initial contexts, but it is not treated as an accentual-phrase boundary; ambiguous medial cases expose an alternative. The active selection rules are word-position and local-coda based.
 6. The RR adapter consumes an already-resolved Hangul surface form. It does not independently implement Korean phonological processes, recover morphology, or infer proper-name boundary conventions.
 
 ### Sources
