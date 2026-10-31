@@ -5,7 +5,8 @@ import {createEngine} from './app/engine.js';
 import {createG2pWebAdapter} from './app/g2pk_web.js';
 import {traceIpaMappingDetailed} from './app/engine_ipa.js';
 import {romanizeRevised} from './app/romanization.js';
-import {transcribeRevisedToUkrainian} from './app/romanization_target.js';
+import rrUkrainianCsv from '../data/korean/rr_ukrainian_correspondence.csv?raw';
+import {createRomanizationTarget} from './app/romanization_target.js';
 import {renderSuperSoftCandidate} from './app/super_soft_annotation.js';
 import {convertHangulToHanja, createHanjaConverter} from './app/hanja.js';
 import niklMasterPassage from '../tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt?raw';
@@ -21,6 +22,7 @@ const engine=createEngine(canonicalCsv, mergedLexicalCsv);
 // Practical mode uses only the pinned JS G2P port; the merged lexical corpus
 // is passed to the separate research engine above, never as a practical override.
 const webEngine=createG2pWebAdapter(engine);
+const transcribeRevisedToUkrainian=createRomanizationTarget(rrUkrainianCsv);
 const softToggle=document.querySelector('#soft-morphology');
 const superSoftToggle=document.querySelector('#super-soft-morphology');
 const modePractical=document.querySelector('#mode-practical');
