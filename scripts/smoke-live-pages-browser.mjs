@@ -62,6 +62,14 @@ try {
     'RR-primary Ukrainian output must be populated');
   assert.ok((await page.locator('#alternate-ukrainian-output').innerText()).trim().length > 0,
     'IPA-mediated Ukrainian output must remain populated when RR is primary');
+  await page.locator('#mode-romanization').check();
+  await page.locator('#source-input').fill('압구정 낙동강 묵호 집현전');
+  await page.waitForFunction(() =>
+    (document.querySelector('#result-romanization')?.textContent || '').includes('apgujeong'),
+  null, { timeout: 20000 });
+  assert.equal((await page.locator('#result-romanization').innerText()).trim(),
+    'apgujeong nakdonggang mukho jiphyeonjeon',
+    'the RR display must preserve NIKL orthographic exceptions when the G2P surface is fortis/aspirated');
   await page.locator('#mode-practical').check();
 
   // Verify the deployed research-only Super-soft path itself, not just the
