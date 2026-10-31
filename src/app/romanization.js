@@ -37,6 +37,33 @@ function decomposeSyllable(char) {
   };
 }
 
+const CODA_TO_RESYLLABIFIED_ONSET = {
+  'ㄱ': 'ㄱ', 'ㄲ': 'ㄲ', 'ㄳ': 'ㅅ', 'ㄴ': 'ㄴ', 'ㄵ': 'ㅈ', 'ㄶ': 'ㅎ',
+  'ㄷ': 'ㄷ', 'ㄹ': 'ㄹ', 'ㄺ': 'ㄱ', 'ㄻ': 'ㅁ', 'ㄼ': 'ㅂ', 'ㄽ': 'ㅅ',
+  'ㄾ': 'ㅌ', 'ㄿ': 'ㅍ', 'ㅀ': 'ㅎ', 'ㅁ': 'ㅁ', 'ㅂ': 'ㅂ', 'ㅄ': 'ㅅ',
+  'ㅅ': 'ㅅ', 'ㅆ': 'ㅆ', 'ㅈ': 'ㅈ', 'ㅊ': 'ㅊ', 'ㅋ': 'ㅋ', 'ㅌ': 'ㅌ',
+  'ㅍ': 'ㅍ', 'ㅎ': 'ㅎ'
+};
+
+function extractHangulSyllables(value) {
+  const chars = Array.from(String(value ?? ''));
+  const syllables = [];
+  let wordIndex = 0;
+  let i = 0;
+  while (i < chars.length) {
+    if (!isHangulSyllable(chars[i].codePointAt(0))) {
+      i += 1;
+      continue;
+    }
+    wordIndex += 1;
+    while (i < chars.length && isHangulSyllable(chars[i].codePointAt(0))) {
+      syllables.push({ char: chars[i], wordIndex, parts: decomposeSyllable(chars[i]) });
+      i += 1;
+    }
+  }
+  return syllables;
+}
+
 function leftContextFor(previousCoda, firstInWord) {
   if (firstInWord) return 'word-boundary';
   if (!previousCoda) return 'vowel';
@@ -47,14 +74,19 @@ function leftContextFor(previousCoda, firstInWord) {
  * Romanize a Hangul surface string using RR values and expose contextual
  * metadata for every syllable. Non-Hangul text is preserved literally.
  */
-export function romanizeRevisedDetailed(surface) {
+export function romanizeRevisedDetailed(surface, original = surface) {
   const chars = Array.from(String(surface ?? ''));
+  const sourceSyllables = extractHangulSyllables(original);
+  const surfaceSyllables = extractHangulSyllables(surface);
+  const alignmentKnown = sourceSyllables.length === surfaceSyllables.length
+    && sourceSyllables.every((unit, index) => unit.wordIndex === surfaceSyllables[index].wordIndex);
   const segments = [];
   let output = '';
   let wordIndex = 0;
   let sentenceIndex = 0;
   let sentenceInitial = true;
   let i = 0;
+  let syllableOrdinal = 0;
 
   while (i < chars.length) {
     if (!isHangulSyllable(chars[i].codePointAt(0))) {
@@ -79,6 +111,23 @@ export function romanizeRevisedDetailed(surface) {
 
     word.forEach((char, syllableIndex) => {
       const parts = decomposeSyllable(char);
+      const surfaceUnit = surfaceSyllables[syllableOrdinal];
+      const sourceUnit = alignmentKnown ? sourceSyllables[syllableOrdinal] : null;
+      const previousSource = alignmentKnown ? sourceSyllables[syllableOrdinal - 1] : null;
+      const previousSurface = alignmentKnown ? surfaceSyllables[syllableOrdinal - 1] : null;
+      const transferredOnset = previousSource
+        ? CODA_TO_RESYLLABIFIED_ONSET[previousSource.parts.codaHangul]
+        : null;
+      const resyllabified = Boolean(
+        sourceUnit
+        && previousSource
+        && sourceUnit.wordIndex === previousSource.wordIndex
+        && sourceUnit.parts.onsetHangul === 'ㅇ'
+        && transferredOnset
+        && transferredOnset !== 'ㅇ'
+        && surfaceUnit.parts.onsetHangul === transferredOnset
+        && previousSurface.parts.codaHangul === ''
+      );
       let onset = parts.onset;
       // NIKL: ㄹㄹ is romanized ll. The resolved surface form already contains
       // any phonological assimilation; this step only applies RR's r/l choice.
@@ -111,7 +160,9 @@ export function romanizeRevisedDetailed(surface) {
         vowelHangul: parts.vowelHangul,
         codaHangul: parts.codaHangul,
         onsetClass,
-        onsetContext: parts.onsetHangul === 'ㅇ' ? 'silent' : 'consonantal',
+        onsetContext: resyllabified ? 'resyllabified' : parts.onsetHangul === 'ㅇ' ? 'silent' : alignmentKnown ? 'consonantal' : 'ambiguous-consonantal',
+        onsetOrigin: resyllabified ? 'previous-coda' : alignmentKnown ? 'source-onset' : 'unknown',
+        alignmentStatus: alignmentKnown ? 'aligned' : 'unknown',
         wordIndex,
         sentenceIndex,
         syllableIndex,
@@ -122,12 +173,13 @@ export function romanizeRevisedDetailed(surface) {
         rightContext: 'vowel'
       });
       previousCoda = parts.coda;
+      syllableOrdinal += 1;
     });
   }
 
   return { text: output, segments };
 }
 
-export function romanizeRevised(surface) {
-  return romanizeRevisedDetailed(surface).text;
+export function romanizeRevised(surface, original = surface) {
+  return romanizeRevisedDetailed(surface, original).text;
 }
