@@ -73,6 +73,16 @@ test('records the actual right-hand phonological context rather than a fixed pla
   ]);
 });
 
+test('base correspondence inventory covers every onset, vowel and coda row', () => {
+  const [header, ...lines] = correspondenceCsv.trim().split(/\r?\n/u);
+  const columns = header.split(',');
+  const rows = lines.map((line) => Object.fromEntries(line.split(',').map((value, index) => [columns[index], value])));
+  assert.equal(rows.length, 68);
+  assert.equal(rows.filter((row) => row.layer === 'onset').length, 19);
+  assert.equal(rows.filter((row) => row.layer === 'vowel').length, 21);
+  assert.equal(rows.filter((row) => row.layer === 'coda').length, 28);
+});
+
 test('documents every Ukrainian vowel collision and exposes the RR identity in trace', () => {
   const [header, ...lines] = correspondenceCsv.trim().split(/\r?\n/u);
   const columns = header.split(',');
