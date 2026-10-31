@@ -4329,3 +4329,11 @@ The primary Ukrainian output is named **українська трансліте�
 - The last fully completed test run before the Hanja standalone UI, updated terminology and engine-provenance changes was `41240462365`: 1,378 web tests passed, 0 failed; Python 3.11/3.12/3.13, wheel install and teacher-corpus audit passed. This is historical evidence only, not acceptance for the current head.
 - Latest known failures on earlier heads were stale assertions after product-label/import changes; those tests have been updated. Current exact-head CI is required to confirm the repairs.
 - Local npm/Python/build/browser execution remains unavailable in this connector-only session. Continue from exact-head GitHub Actions and independent linguistic evaluation; do not merge or mark release-ready while gates remain pending.
+
+
+## Live Pages acceptance and parallel owner commits — 2026-10-31
+
+- Preserved owner-authored commits adding the dual-route live browser smoke / Pages contract test and the separate IPA/RR architecture and QA documentation. No unrelated user changes were reverted.
+- Corrected the architecture diagram to distinguish the main Hangul input from the optional standalone Hanja/mixed-script workbench. Reverse Hanja lookup is manual-review → confirmed Hangul → main input; it is not an automatic pre-G2P normalization stage.
+- Extended `scripts/smoke-live-pages-browser.mjs` to clear the main input, open the standalone Hanja workbench, convert a known mixed Hanja/Hangul phrase, verify a unique reading, and transfer that reading into the main pronunciation pipeline. `tests/romanization-mode-ui.test.mjs` locks this live smoke contract.
+- Current PR #411 head: `b5482f9408515b393fb6b3ec155f1887a002c1d0`. Exact-head tests `41243394040`, browser integration `41243394029`, system verification `41243394008`, master artifacts `41243394023`, test-register extraction `41243394106`, paired-engine diagnostic `41243394069`, UGTPHON `41243394208`, and multi-engine benchmark `41243394014` were queued/in progress at this snapshot. Await these; no current-head pass is claimed.
