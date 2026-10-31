@@ -1,3 +1,50 @@
+# Continuation — owner decisions: Ukrainian transliteration and dual-route service — 2026-10-31
+
+## Confirmed product contract
+
+The owner selected:
+- Audience: both general users and specialists; concise presentation with full expert detail.
+- Hanja: both Hangul→Hanja lexical annotation and Hanja→Hangul reading support.
+- IPA: both surface phonetic IPA and phonemic representation.
+- Dialect: standard South Korean (Seoul-based standard profile).
+- Ukrainian output: **Ukrainian transliteration**, not a user-facing Ukrainian transcription product; preserve and improve the existing author-developed target system.
+- Route coverage: show both IPA-mediated and RR-mediated Ukrainian transliteration.
+- Detail: full provenance, trace and uncertainty.
+- Adversarial inputs: project-generated Korean stress texts, clearly separated from normative NIKL evidence.
+
+Terminology ruling: in this project, “Ukrainian transliteration” is the selected practical name for a Ukrainian-letter rendering guided by Korean pronunciation analysis and the existing project rules. It is not literal Hangul character replacement, translation, or the IPA itself. Do not relabel the public Ukrainian result as transcription.
+
+## Implementation continuation
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Preserve the existing Ukrainian target | DONE_VERIFIED by source inspection; validation remains PARTIAL | The IPA-mediated route continues to use `src/app/engine_ipa.js` and generated IPA target data; the separate RR route continues to use `src/app/romanization_target.js`, `data/korean/rr_ukrainian_correspondence.csv`, and `data/korean/rr_ukrainian_context_rules.csv`. No third-party Ukrainian scheme was substituted. |
+| Show both Ukrainian routes simultaneously | PARTIAL pending exact-head CI | Added a second Ukrainian result card; RR target is computed regardless of which route is selected as primary; both IPA and RR traces remain available; the secondary output has a separate copy control and explicit route/status note. Tests added in `tests/romanization-mode-ui.test.mjs`. |
+| Correct user-facing terminology | PARTIAL pending exact-head CI | Updated service hero/footer, README, package description, service requirements, user guide and terminology contract to call the output Ukrainian transliteration and explain its two routes. |
+| Surface phonetic and phonemic IPA | DONE_VERIFIED by source inspection; scientific scope remains PARTIAL | `result-ipa` is the selected engine's surface phonetic IPA; `result-ipa-phonemic` is an orthography-derived baseline from `renderPhonemicIpa`, not a separate G2P engine or fully morphology/prosody-resolved phonemic analysis. |
+| Hanja in both directions | DONE_VERIFIED by existing implementation/tests; dictionary coverage PARTIAL | Existing local dictionary supports Hangul→Hanja lexical annotation and Hanja→Hangul reading workbench, preserves unknown spans and requires manual resolution of ambiguous readings. Coverage and ambiguity rates remain unevaluated. |
+| Synthetic adversarial Korean text | DONE_VERIFIED as a generated fixture, not linguistic gold | Existing `tests/fixtures/adversarial-corpora/31-generated-mixed-phonology-prose-2026-10-31.txt` is explicitly labelled synthetic and not authoritative pronunciation gold. Reuse it; do not duplicate it or train/score from it without independent adjudication and held-out controls. |
+
+**Rulings**
+- Keep the existing primary IPA and RR adapters as separate, inspectable routes. The user's “both” means both outputs are visible together, not a replacement or a merged adapter.
+- Keep the route selector only as a choice of which output is primary; it must not hide the second result or its trace.
+- Keep the phonemic IPA field labelled as an orthography-derived baseline. Treating it as an independent phonemic G2P engine would overstate the evidence.
+- Reuse the existing synthetic adversarial corpus instead of generating a near-duplicate; its provenance label and current corpus tests already match the request.
+
+**Verification state at this handoff refresh**
+- The static source-contract check against the pre-implementation baseline failed all eight expected dual-output assertions; after implementation, all eight corresponding static checks passed, required DOM IDs were present, and no duplicate IDs were found. This is a connector-side static inspection, not a substitute for the repository test suite.
+- The exact-head GitHub Actions `tests` run [41242744214](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41242744214) and verification run [41242744232](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41242744232) were queued at the time of this update. No test/build pass is claimed.
+- A local `git clone` attempt failed because this execution environment could not resolve `github.com`; local `npm test` and `npm run build` therefore remain unavailable. Continue to use exact-head CI as the acceptance gate.
+
+**Remaining acceptance gates**
+1. Exact-head Node tests, browser G2P integration, Vite build, Python tests and release checks must complete successfully.
+2. Browser smoke must confirm both Ukrainian route cards update on the same input, the primary-route preference does not hide the alternate result, both traces are accessible, and copy controls copy the correct field.
+3. Validate route-level uncertainty: IPA route must not expose provisional candidates as confirmed; RR route remains provisional pending independent Ukrainian-language review.
+4. Hanja dictionary coverage and ambiguous-reading rates still need measurement; context-sensitive Hanja sense selection remains unsupported.
+5. Independent Ukrainian reader/expert evaluation and a held-out comparison against the project's named Ukrainian transliteration comparators remain evidence-limited.
+
+---
+
 ## Continuation — context-aware RR → Ukrainian phonetic adaptation — 2026-10-31
 
 | Task | Status | Evidence / acceptance |
