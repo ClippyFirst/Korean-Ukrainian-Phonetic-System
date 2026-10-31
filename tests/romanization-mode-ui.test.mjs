@@ -26,7 +26,7 @@ test('RR output remains explicitly provisional and does not relabel the IPA-firs
 });
 
 test('RR trace displays the syllable context and selected phonetic rule', () => {
-  assert.match(app, /entry\.wordPosition\+' · '\+entry\.leftContext\+' · '\+entry\.sentencePosition/u);
+  assert.match(app, /entry\.wordPosition\+' · '\+entry\.leftContext\+' · '\+entry\.onsetContext\+' · '\+entry\.sentencePosition/u);
   assert.match(app, /entry\.phonologicalFeature/u);
   assert.match(app, /Одиниця RR і контекст/u);
 });
