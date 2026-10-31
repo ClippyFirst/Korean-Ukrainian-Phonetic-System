@@ -244,7 +244,7 @@ The stale PR #371 branch contains useful neural inference artifacts. The overall
 
 ### CharsiuG2P multilingual ByT5 small
 
-<badge>Research-only; weights license unresolved</badge>
+**Research-only — weights license unresolved.**
 
 | Dataset | Exact match | CER | PER | Coverage |
 |---|---:|---:|---:|---:|
