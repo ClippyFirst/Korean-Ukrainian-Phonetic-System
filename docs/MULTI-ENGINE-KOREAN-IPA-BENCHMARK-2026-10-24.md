@@ -169,7 +169,7 @@ A higher score on UGTPHON does not establish that an engine is best for NIKL sta
 3. Per-rule error strata, especially liaison, coda neutralization, aspiration, fortition, nasal/liquid assimilation, palatalization, 의 variants, N-insertion, morphology-sensitive cases, and lexical exceptions.
 4. A second evaluation on held-out examples not used to develop rules or choose exceptions.
 5. Separate expert review of IPA-to-Ukrainian adaptation and user-facing readability.
-6. Review of the current PR against the independent native-engine case PR #281 before merging; both currently touch the canonical handoff, so do not blindly merge either branch.
+6. PR #281 was merged on 2026-10-24; its evidence-backed native cases are already part of main. Review the still-open PRs #371 and #411 independently; PR #371 is stale/diverged and must not be merged wholesale.
 
 ## Reproduction
 
@@ -223,7 +223,13 @@ The report now distinguishes:
 - external non-empty outputs and source-order validation;
 - raw exact-string disagreements, explicitly not accuracy.
 
-The new exact-head smoke workflow and artifact are the acceptance evidence for this port; append its run ID and artifact digest after the workflow completes.
+Fresh exact-head repeat on PR #414:
+- Head: 8384d9c7d175c20888d780bdce8ab7cbb8ea3d1d.
+- Workflow: [41249753994](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41249753994), success; all 7 comparator contract tests passed.
+- Artifact: [13060223073](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41249753994/artifacts/13060223073), SHA-256 b4a3d0d540a73b22d589b576314222b181ff479a52132ab32f5b363df23a3075.
+- Hikka and Shchegel again returned 20/20 outputs in order. Single-batch times were 574.826 ms and 530.391 ms, respectively; these are not p50/p95.
+- The corrected report records 10/20 native model-selected targets, 10/20 provisional candidates with unavailable status, 13/20 Hikka/Shchegel raw disagreements, and 20/20 raw differences between native display candidates and each external service.
+
 
 ### Interpretation and production gate
 
