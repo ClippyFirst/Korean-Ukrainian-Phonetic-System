@@ -25,7 +25,7 @@
 | Task | Status | Evidence / acceptance |
 |---|---|---|
 | Distinct RR → Ukrainian service mode | DONE_VERIFIED on code-bearing head; latest docs-only head pending CI | New UI option uses Korean surface form → Revised Romanization → Ukrainian correspondence; it does not replace the IPA-first Kozak Kim route. Dedicated RR trace is shown while the IPA target trace is hidden. |
-| Machine-readable RR → Ukrainian correspondence register | PARTIAL pending independent linguistic review | `data/korean/rr_ukrainian_correspondence.csv` records 19 onset, 21 vowel and 27 coda units with status and notes; all 11,172 modern precomposed syllables are exercised by a test. |
+| Machine-readable RR → Ukrainian correspondence register | PARTIAL pending independent linguistic review | `data/korean/rr_ukrainian_correspondence.csv` records 20 onset RR units (19 Hangul onset Jamo; ㄹ has r/l variants), 21 vowel and 27 coda units with status and notes; all 11,172 modern precomposed syllables are exercised by a test. |
 | Full methodology tables and evidence boundary | DONE_VERIFIED on code-bearing head; latest docs-only head pending CI | Public methodology distinguishes NIKL's official RR source from project-authored Ukrainian approximations; includes component tables, whole-syllable examples, explicit target collisions, and a source-grounded H-K comparison; no official Ukrainian standard is claimed. |
 | Independent linguistic validation | BLOCKED / EVIDENCE-LIMITED | Requires independent Ukrainian-language reader study, expert review, and held-out error analysis. |
 | Python CLI/API RR mode | DEFERRED | User request implemented as a browser response mode; Python package, CLI and optional API remain on their existing IPA-first contract. |
