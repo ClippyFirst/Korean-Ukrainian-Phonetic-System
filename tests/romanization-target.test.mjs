@@ -159,6 +159,14 @@ test('adapts RR ui according to Korean ㅢ pronunciation context without changin
   assert.ok(nonInitial.trace.some((entry) => entry.mapping_id === 'RRUA-UI-SILENT-FINAL'));
 });
 
+test('keeps complex-coda transfer ambiguous instead of overclaiming source alignment', () => {
+  const result = romanizeRevisedDetailed('넉씨', '넋이');
+  const second = result.segments.filter((segment) => segment.type === 'syllable')[1];
+  assert.equal(second.onsetContext, 'ambiguous-consonantal');
+  assert.equal(second.onsetOrigin, 'unknown');
+  assert.equal(second.alignmentStatus, 'aligned');
+});
+
 test('distinguishes a resyllabified coda from a lexical consonant onset before ㅢ', () => {
   const resyllabified = transcribeRevisedToUkrainian('혀븨', '협의');
   assert.equal(resyllabified.romanization, 'hyeobui');
