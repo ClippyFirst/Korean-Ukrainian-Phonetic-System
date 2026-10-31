@@ -37,7 +37,7 @@ test('marks phonemic aspiration with apostrophe, not lenis or fortis consonants'
 });
 
 test('uses Ukrainian glottal and fortis-affricate approximations explicitly', () => {
-  assert.equal(transcribeRevisedToUkrainian('하').text, '가');
+  assert.equal(transcribeRevisedToUkrainian('하').text, 'га');
   assert.equal(transcribeRevisedToUkrainian('짜').text, 'чча');
 });
 
