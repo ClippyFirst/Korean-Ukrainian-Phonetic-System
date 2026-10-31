@@ -477,3 +477,10 @@ button { color: inherit; }
 .eyebrow,.section-kicker,.specimen-top,.specimen-bottom,.specimen-note,.input-hint,.mini-button,.practical-mode-hint,.soft-morphology-hint,.stress-hint,.results-note,.result-meta p,.copy-button,.site-nav a,.mode-option em{font-size:.8rem;line-height:1.5}
 .mini-button,.site-nav a{min-height:40px}
 .copy-button{min-height:40px}
+
+/* RR → Ukrainian research correspondence tables */
+.rr-ua-table { display:block; width:100%; overflow-x:auto; border-collapse:collapse; margin:12px 0 24px; font-size:.84rem; }
+.rr-ua-table thead, .rr-ua-table tbody { width:100%; }
+.rr-ua-table th, .rr-ua-table td { padding:9px 11px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+.rr-ua-table th { background:var(--surface-soft); font-weight:800; }
+.rr-ua-table td:first-child, .rr-ua-table td:nth-child(2), .rr-ua-table td:nth-child(3) { white-space:nowrap; }
