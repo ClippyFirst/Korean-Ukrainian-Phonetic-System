@@ -179,3 +179,54 @@ The workflow checks out the exact upstream revisions into the ephemeral runner, 
 ## Contextual neural-G2P evaluator consolidation — 2026-10-27
 
 The consolidation branch also carries the strict sentence-context evaluator and its readiness/benchmark tests from the V3 research workstream. This evaluator is infrastructure, not an authentic NN-KoG2P model adapter: no NN-KoG2P inference or score is claimed. It requires declared IPA output, validates sentence IDs and canonical inputs, rejects unadapted Hangul outputs, and reports coverage/exact-match/CER at the sentence level. Word-level SIGMORPHON remains a context-free ablation, not a sentence-context benchmark. The current combined-head CI is the acceptance gate; previous PR-specific successes do not substitute for it. Model/license and training-data-overlap questions remain open, and all neural outputs remain diagnostic/hypothesis-generating only.
+
+
+## External Korean-to-Ukrainian services: fixed-input smoke comparison only
+
+**Scope:** Hikka and Shchegel are included as external Ukrainian-output reference services, not as Korean IPA engines and not as production dependencies. Their public API returns Ukrainian strings but does not expose source IPA, rule trace, confidence, or evidence provenance required by the IPA-first project contract.
+
+### Historical observed run (2026-10-29)
+
+- Source: open PR #371, branch bench/extended-metrics-runtime-2026-10-29, head a10e2bb7ea9b636a816f13c972589fd0d8e505ec.
+- Exact workflow run: [40843579356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579356).
+- Artifact: [external-transcription-smoke-report](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579356/artifacts/12883323989), SHA-256 11d1c762bd6453d9a97e5c7ba0f8d89f28b88e7337f46d30eba540bdc2700c90.
+- Both Hikka and Shchegel returned HTTP 200, 20/20 rows, and preserved input order.
+- One batch request measured 471.152 ms for Hikka and 402.449 ms for Shchegel. These are single wall-clock observations, not p50/p95 or comparable per-item latency.
+- Hikka and Shchegel raw output strings differed on 13/20 inputs.
+- Native raw display strings differed from Hikka on 20/20 and from Shchegel on 20/20. These are case-sensitive string differences, not accuracy rates.
+- The native pipeline marked 10/20 targets model-selected and 10/20 unavailable. The historical artifact's available_targets=20 field was misleading: it counted non-empty display strings, including provisional candidate_orthography values whose target_status was unavailable. The corrected comparator added in PR #414 separates accepted targets from provisional candidates.
+
+Selected Hikka/Shchegel disagreements:
+
+| Korean input | Hikka | Shchegel |
+|---|---|---|
+| 독립문 | Токріпмун | Докріпмун |
+| 국립 | Кукріп | Ґукріп |
+| 같이 | Каті | Ґаті |
+| 민주주의의 의의 | Мінджуджуіі Иіі | Мінджуджуийий Ийий |
+| 김치 | Кімчі | Ґімчхі |
+| 흙을 | Хильґиль | Хикиль |
+| 낡은 | Нальґин | Накин |
+| 햇빛이 | Хетпічі | Хетбіті |
+| 젊은 | Чольмин | Джьомин |
+| 종로 | Чонро | Джонро |
+
+These examples identify useful adjudication targets: initial velar/affricate choices, complex codas and liaison, palatalization/fortition, vowel handling, and the ㅢ sequence. They do not establish which service is correct.
+
+### Corrected repeatable workflow
+
+PR #414 adds scripts/compare_external_korean_ukrainian.py, tests/test_external_korean_ukrainian_smoke.py, and .github/workflows/external-korean-ukrainian-smoke.yml. The workflow is manually dispatchable and runs on changes to its own workflow/script/tests. It sends only the same fixed 20 public diagnostic phrases; it never sends user-supplied text.
+
+The report now distinguishes:
+- accepted native targets (target_status == model-selected and a non-empty accepted output);
+- provisional native candidates, which remain unaccepted when target_status is unavailable;
+- external non-empty outputs and source-order validation;
+- raw exact-string disagreements, explicitly not accuracy.
+
+The new exact-head smoke workflow and artifact are the acceptance evidence for this port; append its run ID and artifact digest after the workflow completes.
+
+### Interpretation and production gate
+
+Hikka and Shchegel are useful optional comparison references because they expose different Ukrainian-output conventions on the same inputs. They are not eligible as core pronunciation engines: neither response exposes IPA or a source-to-target trace, and there is no independently adjudicated Ukrainian gold set for this 20-item sample. Their 20/20 output coverage is not evidence of better accuracy than the native pipeline's 10/20 accepted targets; the native system deliberately withholds unreviewed mappings.
+
+Do not select a winner or route user text to either service by default. Before any product integration, verify each service's terms, privacy/data handling, stability, and permission for automated benchmarking; build a balanced independently adjudicated Ukrainian target set with accepted variants; and compare against the exact same source IPA and morphology contexts. Until then, keep both services in the optional fixed-input smoke workflow only.
