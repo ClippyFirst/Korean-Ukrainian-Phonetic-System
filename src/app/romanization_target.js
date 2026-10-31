@@ -42,7 +42,7 @@ function parseCsv(csv) {
 function loadCorrespondences(csv) {
   const map = new Map();
   for (const row of parseCsv(csv)) {
-    map.set(row.layer + ':' + row.rr, row);
+    map.set(row.layer + ':' + row.hangul + ':' + row.rr, row);
   }
   return map;
 }
@@ -101,7 +101,8 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
       for (const [layer, rr] of [['onset', segment.onset], ['vowel', segment.vowel], ['coda', segment.coda]]) {
         if (!rr) continue;
         const contextRule = selectContextRule(contextRules, segment, layer, rr);
-        const mapping = contextRule ?? correspondences.get(layer + ':' + rr);
+        const hangulUnit = segment[layer + 'Hangul'];
+        const mapping = contextRule ?? correspondences.get(layer + ':' + hangulUnit + ':' + rr);
         if (!mapping) {
           issues.push({ source: segment.source, layer, rr, reason: 'unmapped-rr-unit',
             wordPosition: segment.wordPosition, leftContext: segment.leftContext });
