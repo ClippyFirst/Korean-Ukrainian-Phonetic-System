@@ -90,7 +90,9 @@ export function createRomanizationTarget(correspondenceCsv, contextRulesCsv = ''
           leftContext: segment.leftContext,
           rightContext: segment.rightContext,
           onsetClass: segment.onsetClass,
-          onsetContext: segment.onsetContext
+          onsetContext: segment.onsetContext,
+          onsetOrigin: segment.onsetOrigin,
+          alignmentStatus: segment.alignmentStatus
         });
       }
       text += syllableOutput;
