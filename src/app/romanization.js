@@ -84,6 +84,7 @@ export function romanizeRevisedDetailed(surface, original = surface) {
   let output = '';
   let wordIndex = 0;
   let sentenceIndex = 0;
+  let sentenceWordIndex = 0;
   let sentenceInitial = true;
   let i = 0;
   let syllableOrdinal = 0;
@@ -95,6 +96,7 @@ export function romanizeRevisedDetailed(surface, original = surface) {
       segments.push({ type: 'literal', text: literal });
       if (SENTENCE_END.has(literal)) {
         sentenceIndex += 1;
+        sentenceWordIndex = 0;
         sentenceInitial = true;
       }
       i += 1;
@@ -107,6 +109,7 @@ export function romanizeRevisedDetailed(surface, original = surface) {
     const sentencePosition = sentenceInitial ? 'sentence-initial' : 'sentence-medial';
     sentenceInitial = false;
     wordIndex += 1;
+    sentenceWordIndex += 1;
     let previousCoda = '';
 
     word.forEach((char, syllableIndex) => {
@@ -164,6 +167,7 @@ export function romanizeRevisedDetailed(surface, original = surface) {
         onsetOrigin: resyllabified ? 'previous-coda' : alignmentKnown && sourceUnit?.parts.onsetHangul !== 'ㅇ' ? 'source-onset' : 'unknown',
         alignmentStatus: alignmentKnown ? 'aligned' : 'unknown',
         wordIndex,
+        sentenceWordIndex,
         sentenceIndex,
         syllableIndex,
         wordLength: word.length,
