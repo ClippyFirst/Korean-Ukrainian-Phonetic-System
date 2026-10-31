@@ -31,6 +31,7 @@ test('RR trace displays the syllable context and selected phonetic rule', () => 
   assert.match(app, /entry\.syllableIndex\+1/u);
   assert.match(app, /entry\.wordPosition/u);
   assert.match(app, /entry\.rightContext/u);
+  assert.match(app, /entry\.collisionGroup/u);
   assert.match(app, /entry\.onsetOrigin/u);
   assert.match(app, /entry\.alignmentStatus/u);
   assert.match(app, /entry\.sentencePosition/u);
