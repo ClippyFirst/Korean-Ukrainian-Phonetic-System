@@ -1,8 +1,11 @@
 # Programme Roadmap
 
-Last updated: 2026-10-21  
-Current phase: Phase 7 — verification and Phase 9 — release acceptance. Mainline implementation is tested/deployed as a research preview; independent linguistic and owner-dependent release gates remain open.  
+Last updated: 2026-10-31  
+Current phase: Phase 7 — verification and Phase 9 — release acceptance. Mainline remains a research preview; PR #411 carries the dual-route UI and a source-aware NIKL RR follow-up. The latest RR exception implementation is not exact-head CI verified; independent linguistic and owner-dependent release gates remain open.  
 Planned phases are not evidence of completion.
+
+## Current continuation pointer — 2026-10-31
+The canonical task ledger and evidence are in `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`, `docs/METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md`, `research/ACCEPTANCE-GATES.md`, `research/SOURCE-REGISTER.csv`, and `docs/KOREAN-ROMANIZATION-RR-2026-10-28.md`. PR #411 is draft/open on `feat/korean-rr-contextual-phonetics-final`; it is based on current main `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`. Do not merge/deploy until exact-head CI for the latest RR code and live-preview smoke are complete. Independent Ukrainian target review, Korean IPA adjudication, Hanja coverage evaluation, full RR conformance and owner-dependent license decisions remain open.
 
 ## Operating model
 Work in bounded phases. Each phase must produce durable artifacts and satisfy exit criteria before closure. Parallel research is acceptable, but shared runtime changes should wait until source and behavior contracts are sufficiently clear. Use focused branches; avoid creating many branches without an integration plan.
