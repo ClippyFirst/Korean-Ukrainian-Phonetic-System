@@ -23,3 +23,15 @@ RRUA-K-ASP,onset,ㅋ,k,*,*,*,к',phonemic-aspiration,model-selected,Explicit apo
 RRUA-T-ASP,onset,ㅌ,t,*,*,*,т',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅌ; coda ㅌ is handled separately
 RRUA-P-ASP,onset,ㅍ,p,*,*,*,п',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅍ; coda ㅍ is handled separately
 RRUA-CH-ASP,onset,ㅊ,ch,*,*,*,ч',phonemic-aspiration,model-selected,Explicit apostrophe marks aspirated ㅊ; coda ㅊ is handled separately
+RRUA-G-FINAL-VOWEL,onset,ㄱ,g,final,vowel,*,ґ,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-G-FINAL-SONORANT,onset,ㄱ,g,final,sonorant,*,ґ,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-G-FINAL-OBSTRUENT,onset,ㄱ,g,final,obstruent,*,к,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-D-FINAL-VOWEL,onset,ㄷ,d,final,vowel,*,д,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-D-FINAL-SONORANT,onset,ㄷ,d,final,sonorant,*,д,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-D-FINAL-OBSTRUENT,onset,ㄷ,d,final,obstruent,*,т,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-B-FINAL-VOWEL,onset,ㅂ,b,final,vowel,*,б,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-B-FINAL-SONORANT,onset,ㅂ,b,final,sonorant,*,б,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-B-FINAL-OBSTRUENT,onset,ㅂ,b,final,obstruent,*,п,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-J-FINAL-VOWEL,onset,ㅈ,j,final,vowel,*,дж,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-J-FINAL-SONORANT,onset,ㅈ,j,final,sonorant,*,дж,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
+RRUA-J-FINAL-OBSTRUENT,onset,ㅈ,j,final,obstruent,*,ч,contextual-lenis-voicing,provisional,Contextual target proposal; phonological context is shown in the trace
