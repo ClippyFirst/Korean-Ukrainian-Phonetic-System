@@ -88,7 +88,7 @@ New tests cover a unique reverse lookup, mixed Hanja/Hangul text, homophone ambi
 
 ## Browser reverse-reading workbench — 2026-10-31
 
-The reverse adapter is now wired into the service UI as a separate Hanja input area. It loads the 19 pinned dictionary chunks on demand, runs `createHanjaToHangulConverter`, shows the Hangul reading in an editable field, and exposes ambiguity/unmapped notes. A uniquely resolved reading can be sent directly to the main Korean input; an ambiguous or partial reading remains blocked until the user edits the output. This avoids silently choosing a homophone and keeps the main IPA/RR/Ukrainian pipeline Hangul-based.
+The reverse adapter is now wired into the service UI as a standalone disclosure below the main input, available even before any Hangul result exists. It loads the 19 pinned dictionary chunks on demand, runs `createHanjaToHangulConverter`, shows the Hangul reading in an editable field, and exposes ambiguity/unmapped notes. A uniquely resolved reading can be sent directly to the main Korean input; an ambiguous or partial reading remains blocked until the user edits the output. This avoids silently choosing a homophone and keeps the main IPA/RR/Ukrainian pipeline Hangul-based.
 
 Implementation: `index.html`, `src/main.js`, `src/app/hanja.js`, `src/styles/main.css`; regression coverage: `tests/hanja.test.mjs`, `tests/hanja-ui-contract.test.mjs`. The reverse lookup uses a dictionary generated for Hangul→Hanja and inverted at runtime. It is not a full reverse dictionary of every individual Hanja character and it does not perform sentence-level word-sense disambiguation. The 19 chunks are loaded only when the user opens/uses reverse lookup; the normal Hangul input path remains lazy by initial consonant.
 
