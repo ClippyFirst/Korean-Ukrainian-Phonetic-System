@@ -497,3 +497,6 @@ button { color: inherit; }
 .hanja-reverse-details > summary { padding:12px 14px; color:var(--ink); cursor:pointer; font-weight:750; }
 .hanja-reverse-details[open] { padding-bottom:12px; }
 .hanja-reverse-details .hanja-reverse-workbench { margin:0 14px; padding-top:0; border-top:0; }
+
+
+.ipa-engine-status { margin:8px 0 12px; color:var(--muted); font-size:.75rem; line-height:1.5; }
