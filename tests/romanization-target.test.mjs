@@ -78,9 +78,9 @@ test('base correspondence inventory covers every onset, vowel and coda row', () 
   const columns = header.split(',');
   const rows = lines.map((line) => Object.fromEntries(line.split(',').map((value, index) => [columns[index], value])));
   assert.equal(rows.length, 68);
-  assert.equal(rows.filter((row) => row.layer === 'onset').length, 19);
+  assert.equal(rows.filter((row) => row.layer === 'onset').length, 20);
   assert.equal(rows.filter((row) => row.layer === 'vowel').length, 21);
-  assert.equal(rows.filter((row) => row.layer === 'coda').length, 28);
+  assert.equal(rows.filter((row) => row.layer === 'coda').length, 27);
 });
 
 test('documents every Ukrainian vowel collision and exposes the RR identity in trace', () => {
