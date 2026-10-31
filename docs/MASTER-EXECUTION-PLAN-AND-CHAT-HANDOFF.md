@@ -4387,3 +4387,42 @@ The primary Ukrainian output is named **українська трансліте�
 - The first alignment-helper test run failed because a Unicode range was escaped as a literal string; fixed in cb89fc8. The exact-head test suite then passed across all Python versions.
 - Remaining next work: inspect the in-progress multi-engine artifact; adjudicate residual narrow IPA (especially ㅟ and coda lateral); design source-backed rule-specific morphology licenses with homograph controls; only test recursive re-evaluation after a real cascading case is established. Keep production default and Ukrainian renderer unchanged meanwhile.
 - Local container tests remain unavailable due GitHub DNS/network limitations; all pass claims above are GitHub Actions evidence.
+
+
+---
+
+# Continuation — adversarial phonetic engineering skill integration (2026-11-01)
+
+**Starting main:** 5cec9deb4a8d622cd5f0ba969a2fd49b17281f43  
+**Merged via:** PR #412, merge commit 95c9f42b8efc757863664f4387ca0d285584911e  
+**Scope:** agent workflow and test-quality guidance only; no runtime pronunciation or Ukrainian correspondence changes.
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Inspect the three requested skill repositories | DONE_VERIFIED | Inspected Superpowers, Matt Pocock Skills, and Ponytail at pinned main revisions; checked MIT license files and selected relevant individual skills. |
+| Add repository-specific phonetic engineering skill | DONE_VERIFIED | Merged PR #412 (95c9f42); exact tested tree contains .agents/skills/phonetic-engineering/SKILL.md. |
+| Record selected skills, exclusions, and provenance | DONE_VERIFIED | Merged docs/AGENT-SKILL-INTEGRATION-2026-11-01.md with pinned upstream revisions, selection rationale, exclusions, and no-copy provenance. |
+| Add structural contract tests for the new skill | DONE_VERIFIED | Exact-head test workflow 41248353710 passed across Python 3.11/3.12/3.13 and web tests; system verification 41248353653 and test-register extraction 41248353763 passed. |
+| Existing adversarial corpus and Korean rule coverage | DONE_VERIFIED for current main baseline | Main already contains long-passage, sentence-corpus, morphology, coda/liaison, nasalization, liquid assimilation, fortition, palatalization, phrase-boundary, NIKL interaction, mixed-input, and uncertainty tests. Open PR #411 adds a generated mixed-phonology prose fixture and end-to-end trace regression, but remains draft and is not part of main. |
+| Select production G2P winner | BLOCKED / EVIDENCE-LIMITED | The #411 multi-engine diagnostic run 41248014178 ended cancelled; Charsiu and ByT5 were skipped by default-off conditions. No benchmark winner is established. Do not select an engine without fresh comparable artifacts, independent IPA gold, and rights/training-provenance clearance. |
+| Independent Korean IPA and Ukrainian target validation | BLOCKED | No qualified independent IPA adjudications or independent Ukrainian target gold/reader study; see issue #337 and canonical acceptance gates. |
+
+## Skill selection
+
+The integration adopts Superpowers test-driven development, systematic debugging, and verification-before-completion; Matt Pocock's standards/spec code-review and primary-source research lenses; and Ponytail's whole-repository audit and change-review lenses. Duplicate TDD/debugging prescriptions were consolidated. Ponytail's gain scoreboard was excluded because its measurements are not Korean G2P evidence. Upstream skill text was not copied; exact revisions and MIT license status are recorded in the linked integration note.
+
+## Verification and limitations
+
+- GitHub connector inspection was used for repository metadata, source files, branches, PRs, and workflow runs.
+- No local shell, Node, npm, pytest, build, or browser command is claimed in this connector-only session.
+- The new structural skill test is not a linguistic correctness test. It verifies process guardrails only.
+- Current main baseline test/build evidence is recorded in the preceding canonical section. PR #411 remains a separate draft feature branch with its own exact-head CI evidence; it has not been merged or deployed by this skill-only workstream.
+- PR #412 exact-head test, system-verification, master-table/research-artifact, and exhaustive-register workflows all passed (41248353710, 41248353653, 41248353651, 41248353763). The squash merge commit 95c9f42 has the same Git tree as the tested PR head fbbab90, so the merged content is exactly the tested content. No runtime deployment was required because no service code or generated runtime data changed.
+
+## Next genuine acceptance gates
+
+1. PR #412 skill integration is merged and verified; no remaining acceptance work on the skill itself.
+2. Resolve the now-dirty base relationship of PR #411 after the skill merge; preserve its 51-file feature diff and reconcile the handoff without dropping either continuation record.
+3. Re-run or replace the cancelled multi-engine benchmark with a fresh exact-head run; do not treat cancellation as a result.
+4. Complete RR conformance, Hanja adjudication, and Ukrainian target review for PR #411.
+5. Resolve independent Korean IPA holdout, Ukrainian target gold, and model/data licensing blockers before research certification or production engine selection.
