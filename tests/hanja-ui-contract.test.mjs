@@ -59,7 +59,8 @@ test('Hanja panel supports reverse reading with explicit ambiguity review and ma
   assert.match(html, /id="hanja-use-reading"/u);
   assert.match(main, /createHanjaToHangulConverter\(loadedHanjaWordMap\)/u);
   assert.match(main, /hanjaReverseNeedsManualResolution/u);
-  assert.match(main, /hanjaReadingOutput\.value===hanjaReverseSuggestedText/u);
+  assert.match(main, /stillContainsHanja/u);
+  assert.match(main, /hanjaReadingOutput\.value!==hanjaReverseSuggestedText/u);
   assert.match(main, /input\.dispatchEvent\(new Event\('input'/u);
   assert.match(main, /key==='hanja-reading'\?hanjaReadingOutput/u);
 });
