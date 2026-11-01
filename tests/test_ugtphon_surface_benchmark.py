@@ -100,8 +100,12 @@ def test_surface_evaluation_uses_train_lookup_not_test_gold_normalization(monkey
 
     assert calls == [("크크", "broad")]
     assert report["scored_tokens"] == 1
+    assert report["coverage_rate"] == 1.0
     assert report["exact_match_rate"] == 1.0
+    assert report["coverage_adjusted_exact_match_rate"] == 1.0
     assert report["normalization"]["hits"] == 1
+    assert report["normalization"]["noncanonical_tokens"] == 1
+    assert report["normalization"]["retrieval_hit_rate_noncanonical"] == 1.0
     assert report["normalization"]["hits_noncanonical"] == 1
     assert report["normalization"]["hits_canonical"] == 0
     assert report["by_category"]["B2"]["exact_match_rate"] == 1.0
@@ -176,6 +180,10 @@ def test_surface_evaluation_keeps_unresolved_and_engine_errors_separate(monkeypa
     assert report["unresolved_tokens"] == 1
     assert report["engine_errors"] == 1
     assert report["scored_tokens"] == 0
+    assert report["coverage_rate"] == 0.0
+    assert report["coverage_adjusted_exact_match_rate"] == 0.0
+    assert report["unresolved_examples"][0]["surface"] == "가"
+    assert report["engine_error_examples"][0]["surface"] == "unsupported"
 
 
 def test_surface_report_exposes_case_level_mismatches(monkeypatch):
