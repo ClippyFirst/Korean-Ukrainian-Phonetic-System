@@ -36,7 +36,7 @@ Sources:
 - NIKL Q&A 308180 (2024-12-24): confirms 할게요 is -ㄹ게 plus the auxiliary particle 요; it grounds the optional 요 boundary, while Q&A 330963 / §27 ground fortition: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=308180
 - The NIKL educational PDF also explicitly gives 할게요 [할께요] as a §27 example (search-indexed official source).
 
-**Status:** implementation and regression authored; exact-head CI has not yet run. Keep this PARTIAL until the browser suite and build pass on the resulting commit and the paired benchmark is rerun.
+**Status:** DONE_VERIFIED for the native rule implementation, focused regression, full browser/Python/build checks, and paired before/after diagnostic. The rule's broader productivity is still limited to the attested ending boundary; this does not verify unrelated morphology or IPA conventions.
 
 ## Discrepancy inventory from the paired report
 
@@ -128,12 +128,12 @@ A claim must state the exact corpus/version, shared occurrence denominator, refe
 |---|---|---|
 | Freeze scope: Kozak Kim only; g2pK immutable | DONE_VERIFIED | Explicit user direction; branch changes only native Kozak Kim and its tests/docs |
 | Inspect paired diagnostic and extract output-different cases | DONE_VERIFIED | Artifact 13093672281; 2,699 shared; 23 output-different; 15 KK closer / 8 g2pK closer |
-| §27 complete `-ㄹ게` boundary repair | PARTIAL | Code and focused test authored; run exact-head Node tests/build and paired diagnostic |
+| §27 complete `-ㄹ게` boundary repair | DONE_VERIFIED | Browser test 1114 passed; run 41335549779 confirms `올게이` distance 3→1, no other paired Kozak Kim output changes, and no regressions in 2,699 shared occurrences |
 | Long-vowel discrepancies | TODO | Source-vs-reference adjudication for 없는/없다/없어/알다/많이/사건/한자 |
 | §11 complex-coda contrast expansion | TODO | Positive verbal-stem and negative noun/lookalike controls, source review |
 | 못잃어 variant adjudication | PARTIAL | NIKL survey records both variants; no source-backed ranking for this exact item |
 | Broad IPA convention clusters | BLOCKED | Independent IPA convention and reviewer adjudication needed |
-| Overall Kozak Kim superiority claim | BLOCKED | Current paired CI crosses zero; independent held-out gold required |
+| Overall Kozak Kim superiority claim | BLOCKED | Exact-match CI still crosses zero; CER advantage is supported on this diagnostic only. Independent held-out, normatively adjudicated gold required |
 
 ## Measured result of the §27 boundary repair
 
@@ -155,7 +155,7 @@ Use it to locate existing positive/negative controls and identify gaps, then cla
 
 ## Verification status
 
-Exact branch head verified: `5fca54917ceea174d74205198e9929101b2172d4`.
+Code/test verification head: `5fca54917ceea174d74205198e9929101b2172d4`; paired-benchmark code-bearing head: `8ac8cd18cadb8f074ecdc3cbc7ee3a562144a3dc`; latest documentation-only branch tip: `f42bc8694662d39eed208126f766ac66fb2949d9`.
 
 - Actions run [41335266673](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266673): **PASS**. Browser regression tests: 1,365/1,365; public-page build: PASS; generated-page verification: PASS; Python regression/data-integrity job: PASS.
 - After updating the benchmark workflow path filter, run [41335549717](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335549717): **PASS**. Browser suite/build and Python regression/data-integrity passed again on code-bearing head `8ac8cd18cadb8f074ecdc3cbc7ee3a562144a3dc`.
