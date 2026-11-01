@@ -508,22 +508,37 @@ def evaluate_surface(
         for category, items in sorted(category_records.items())
     }
     baseline_aggregate = _aggregate(baseline_records)
+    baseline_aggregate.pop("normalization_hits", None)
+    baseline_aggregate.pop("normalization_misses", None)
     baseline_by_category = {
         category: _aggregate(items)
         for category, items in sorted(baseline_category_records.items())
     }
+    for category_metrics in baseline_by_category.values():
+        category_metrics.pop("normalization_hits", None)
+        category_metrics.pop("normalization_misses", None)
+
     paired = [
         (baseline, normalized)
         for baseline, normalized in zip(baseline_records, records)
         if baseline["distance"] is not None and normalized["distance"] is not None
     ]
-    paired_chars = sum(len(normalized["gold"]) for _, normalized in paired)
-    paired_baseline_edits = sum(baseline["distance"] for baseline, _ in paired)
-    paired_normalized_edits = sum(normalized["distance"] for _, normalized in paired)
+    # Multi-reference tokens can have different closest gold variants for the
+    # two paths. Compare CER only where both paths select the same gold string;
+    # exact match still accepts any listed gold variant independently.
+    paired_same_gold = [
+        (baseline, normalized)
+        for baseline, normalized in paired
+        if baseline["gold"] == normalized["gold"]
+    ]
+    paired_chars = sum(len(baseline["gold"]) for baseline, _ in paired_same_gold)
+    paired_baseline_edits = sum(baseline["distance"] for baseline, _ in paired_same_gold)
+    paired_normalized_edits = sum(normalized["distance"] for _, normalized in paired_same_gold)
     paired_baseline_exact = sum(baseline["exact"] for baseline, _ in paired)
     paired_normalized_exact = sum(normalized["exact"] for _, normalized in paired)
     paired_subset = {
         "tokens_scored_by_both": len(paired),
+        "tokens_with_shared_best_gold": len(paired_same_gold),
         "baseline": {
             "exact_matches": paired_baseline_exact,
             "exact_match_rate": round(paired_baseline_exact / len(paired), 6) if paired else None,
@@ -538,7 +553,8 @@ def evaluate_surface(
             round((paired_normalized_exact - paired_baseline_exact) / len(paired), 6) if paired else None
         ),
         "cer_delta_normalized_minus_baseline": (
-            round((paired_normalized_edits - paired_baseline_edits) / paired_chars, 6) if paired_chars else None
+            round((paired_normalized_edits - paired_baseline_edits) / paired_chars, 6)
+            if paired_chars else None
         ),
         "normalization_rescued_tokens": sum(
             baseline["distance"] is None and normalized["distance"] is not None
