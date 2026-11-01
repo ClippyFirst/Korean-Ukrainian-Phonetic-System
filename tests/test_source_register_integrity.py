@@ -219,6 +219,11 @@ def test_2026_11_01_g2p_sources_keep_scope_and_license_provenance_explicit():
     assert "not clearly established" in caution["authority_or_role"]
     assert "Does not independently attest" in caution["limitations_or_next_action"]
 
+    silsoo = rows["SRC-NIKL-QNA-330843"]
+    assert "실수[실쑤]" in silsoo["coverage"]
+    assert "§26" in silsoo["integration_status"]
+    assert "item-level KOGL" in silsoo["license_status"]
+
     diphthong = rows["SRC-NIKL-QNA-326554"]
     assert "ㅟ" in diphthong["coverage"]
     assert "[wi]" in diphthong["coverage"]
