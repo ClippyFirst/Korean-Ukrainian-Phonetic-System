@@ -11,7 +11,7 @@ The five previously unenumerated C08 contexts have now been reconstructed from t
 | `dc_inside_2024` | `유사성` | Exact lexical/suffix analysis unresolved; Q&A 312649 confirms `의외성` only | Keep unresolved; no `-성` generalization |
 | `multilexnorm2026_1916` | `해줄것` | Likely `해 줄 것`; Q&A 317798 gives `할 것을[할꺼슬]` and the §27 cohesion condition | Conditional rule-environment support; no exact-token IPA |
 | `multilexnorm2026_2011` | `많을거같이` | Likely `많을 거 같이`; Q&A 310899 confirms colloquial dependent noun `거`, Q&A 317798 supports the conditional §27 environment | Conditional morphology; exact token and prosody not attested |
-| `dc_inside_2186` | `보일거라` | Likely `보일 거라`; Q&A 310899 + 335204 | Conditional morphology; exact token and prosody not attested |
+| `dc_inside_2186` | `보일거라` | Likely `보일 거라`; Q&A 310899 + 317798 | Conditional morphology; exact token and prosody not attested |
 | `dc_inside_2266` | `내릴수있는` | Likely `내릴 수 있는`; Q&A 331601 gives `알 수 없는[알쑤엄는]`, Q&A 307960 supports the same environment | Direct rule-environment precedent; not exact-token IPA |
 | `dc_inside_2557` | `안할듯` | Likely `안 할 듯`; Q&A 317798 gives `할 듯[할뜯]` and notes a pause can permit a plain onset | Direct analogous example; exact UGC prosody unresolved |
 
@@ -51,7 +51,7 @@ The 2021 NIKL educational PDF remains listed as supplementary research only. Its
 
 Python previously matched exact R013 same-word licenses against the entire request string, so a licensed eojeol inside a sentence could be missed. The Python rule-license path now resolves the containing eojeol and matches only the exact licensed word/pair. Browser and Python full-sentence tests cover both positive contexts; negative controls preserve the unresolved 유사성 case.
 
-The latest completed paired browser benchmark (run 41353450686, artifact 13102456604) scores 2,699 shared occurrences: exact match is 53.4272% for both systems; Kozak Kim CER is 8.1097% versus original g2pK 8.2138%, a −0.1040 pp paired delta (95% sentence-cluster bootstrap CI −0.1951 to −0.0261 pp). Exact-match delta remains unproven because its interval crosses zero. Relative to the preceding PR #416 browser artifact, only the two targeted C08 outputs changed; each improved by one edit, neither became exact, and g2pK outputs did not change.
+The latest completed paired browser benchmark (run 41357680349, artifact 13104120884) scores 2,699 shared occurrences: exact match is 53.4272% for both systems; Kozak Kim CER is 8.1097% versus original g2pK 8.2138%, a −0.1040 pp paired delta (95% sentence-cluster bootstrap CI −0.1951 to −0.0261 pp). Exact-match delta remains unproven because its interval crosses zero. Relative to the preceding PR #416 browser artifact, only the two targeted C08 outputs changed; each improved by one edit, neither became exact, and g2pK outputs did not change.
 
 **Current conclusion:** source-context traceability and runtime parity improved; the eight-case C08 cluster is not fully resolved; C01–C07 still require independent human IPA adjudication. Research prototype only.
 
@@ -417,3 +417,11 @@ A separate training-readiness audit (partial workflow artifact 13101748305) repo
 
 
 **Evidence-source correction (2026-11-02):** the earlier provisional references to NIKL Q&A 335204 and 336313 were removed from the active source register because their direct pages could not be independently retrieved in this verification pass. The current active basis is NIKL Q&A 317798 (Rule §27 examples and pause caveat), 310899 (colloquial dependent noun 거), 331601 (알 수 없는[알쑤엄는]), plus the already registered 307960/327466/313481/333044 and the official Rule §27 page. Older historical mentions of 335204/336313 are superseded and are not current evidence claims.
+
+
+## Latest runtime verification — 2026-11-02
+
+- Exact-head system/Python regression and browser build: push run `41357675602` PASS and PR run `41357680448` PASS on code/test head `8b22f778112442024f876061bd0e576af762e761`.
+- Latest paired browser diagnostic: run `41357680349`, artifact `13104120884`; 2,699 shared occurrences; exact match tied at 53.4272%; CER 8.1097% vs original g2pK 8.2138%; paired delta −0.1040 pp, 95% sentence-cluster CI [−0.1951, −0.0261] pp.
+- Latest native pair: run `41357680365`, artifact `13104485246`; 2,698 shared; CER 9.1047% vs 9.2304%; exact match 53.0393% vs 53.1134% (g2pK slightly higher); five native abstentions, zero errors. The two runtime profiles must not be conflated.
+- Three active new NIKL Q&A sources are registered: 317798, 310899 and 331601. Provisional Q&A IDs 335204 and 336313 were removed from the active register after their pages could not be independently retrieved in this pass; earlier mentions are superseded.
