@@ -32,7 +32,7 @@ Secondary native paired diagnostic: run 41358068788, artifact 13104072941; 2,698
 ## Verification
 
 
-- Multi-engine run 41354753780 completed as CANCELLED. The latest run 41358068874 was still in progress at handoff; optional CharsiuG2P and ByT5 inference jobs were SKIPPED. No completed multi-engine score is claimed.
+- Multi-engine run 41354753780 completed as CANCELLED. Run 41358068874 was later CANCELLED by the next branch update; latest run 41358392151 is IN_PROGRESS at this handoff. Optional CharsiuG2P and ByT5 inference jobs were SKIPPED. No completed multi-engine score is claimed.
 - Exact-head push system/Python regression and data integrity: PASS — run 41357675602.
 - Exact-head PR system/Python regression, browser regression tests and build: PASS — run 41357680448.
 - Test-case extraction: PASS — run 41357680364.
