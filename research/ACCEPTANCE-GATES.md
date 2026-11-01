@@ -513,3 +513,10 @@ PR #415 continues to add exact-form evidence, but the new code is **PARTIAL pend
 | Updated source-register structure and rights totals | PARTIAL | CSV parsed as 139 × 12; exact-head Node/Python register gates still required. |
 | New direct browser UGTPHON score | BLOCKED | Previous artifact is pre-change; projected deltas are not a benchmark run. |
 | Release readiness | BLOCKED / DEFERRED | Korean IPA adjudication, Ukrainian target review, item-level source-rights checks and exact-head CI remain open. |
+
+
+## Canonical IPA benchmark convention sensitivity — 2026-11-01
+
+Direct browser artifact [41309605083](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605083): 2,699 tokens; strict exact 52.9085%, CER 8.2571%. Research-only broad-candidate sensitivity: exact 92.4416%, CER 1.3562%. Of 1,271 strict mismatches, 1,067 (83.95%) become exact under the broad candidate profile; 204 remain.
+
+**Interpretation:** strict exact match is highly sensitive to IPA annotation conventions (allophones, ㅟ, vowel length, unreleased codas, sibilant aspiration). The broad profile is unadjudicated and is not a gold metric. The remaining mismatches require source-backed review, not heuristic tuning. The two new lexical corrections have only projected, not measured, deltas.
