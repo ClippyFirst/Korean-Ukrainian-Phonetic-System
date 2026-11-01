@@ -98,3 +98,15 @@ Do not promote general R010/R012/R013/R028 fortition or compound rules based on 
 | M-27 | Bounded §26 출산-family fortition repair — DONE_VERIFIED for original four forms; PARTIAL for `저출산` follow-up | Official NIKL Basic Dictionary search; source register `SRC-NIKL-DIC-CHULSAN`; exact-head Actions [41336800458](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800458) and paired browser run [41336800424](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800424), artifact `13095038704` | Kozak Kim now emits `출싼` for exact licensed 출산-family forms, including the test occurrence `비출산`; g2pK is unchanged. `비출산` is one IPA edit closer to the UGTPHON target; exact rate remains tied, CER improves slightly. `저출산` is an official dictionary-backed positive control, not a benchmark win. | Productive Sino-Korean morphology, universal R012 coverage, independent normative IPA accuracy, or overall superiority |
 
 The §26 rule remains exact-form and boundary-conditioned. The NIKL dictionary directly records `출산[출싼]`, `출산율[출싼뉼]`, `출산하다[출싼하다]`, and `저출산[저ː출싼]`. The original four-form runtime set is CI/benchmark verified; the additional `저출산` control was authored afterward and awaits exact-head CI. The implementation does not infer Sino-Korean status from a raw `ㄹ+ㅅ` sequence. NIKL's §26 explanations also note lexical constituent boundaries and exceptions. Item-level KOGL rights remain review-required.
+
+ 
+## 2026-11-01 — additional discrepancy claims and evidence boundaries
+
+| Claim | Evidence | Status / limitation |
+|---|---|---|
+| 실시간 requires fortis ㅆ at the Sino-Korean 실>시간 boundary | NIKL lexical source lists 實時間; NIKL Standard Pronunciation Rule §26; exact Kozak Kim license and positive/negative tests | Supported for this exact source-attested form; no general ㄹ+ㅅ inference. |
+| 이중성 has long vowel and fortis onset | NIKL Korean Basic Dictionary directly lists 이중성(二重性) [이ː중썽]; project derives IPA iː.dʑuŋ.s͈ʌŋ | Korean surface/IPA entry supported; IPA symbols are project-derived; Ukrainian target provisional. UGTPHON gold omits length, so edit-distance tie is not an authoritative contradiction. |
+| Derivational suffix -성 is a potential fortition family | NIKL Basic Dictionary defines suffix -성; NIKL Q&A 312649 directly confirms 의외성[의ː외썽] | Research candidate only. Q&A question text mentions 유사성 but answer does not directly confirm it; no productive rule or output for 유사성. |
+| Unspaced 했을시 / 일수도있다는 should receive §27 fortition | UGTPHON occurrence-level examples and NIKL §27 general rule | Not licensed: corpus whitespace is missing and morphological boundaries are not independently established. |
+
+The corresponding primary sources are registered as SRC-NIKL-INFO-SILSIGAN, SRC-NIKL-DIC-IJUNGSEONG, SRC-NIKL-DIC-SEONG-SUFFIX, and SRC-NIKL-QNA-312649. Item-level reuse rights remain unreviewed.

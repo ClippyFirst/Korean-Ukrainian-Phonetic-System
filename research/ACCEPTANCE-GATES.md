@@ -649,3 +649,19 @@ This is a bounded branch snapshot, not a release acceptance decision. Branch `re
 ### §26 paired evidence
 
 Before artifact `13094763897`; after artifact `13095038704`. Shared subset 2,699. Exact match tied at 1,442/2,699 (53.4272%). Kozak Kim CER 8.1271% → 8.1228%; original g2pK CER 8.2138%; paired CER delta −0.08669 → −0.09102 pp; post-change sentence-cluster 95% CI [−0.17881, −0.01647] pp. `비출산` IPA distance 2→1 and surface changed to `비출싼`; `출산` surface changed to `출싼`, but IPA distance tied because UGTPHON writes [sʰ] rather than the NIKL dictionary's fortis surface. No g2pK source/output changes.
+
+
+## 2026-11-01 — Kozak Kim §26 / lexical follow-up (superseding current status)
+
+| Gate | Status | Evidence / limitation |
+|---|---|---|
+| Scope isolation | DONE_VERIFIED | Only Kozak Kim native modules and dated lexical additions changed; original g2pK code/output path unchanged; Browser G2P integration run 41342127246 PASS. |
+| §26 exact 실시간 license | DONE_VERIFIED | NIKL Hanja source 實時間 + NIKL §26; browser/Python positive and negative controls; paired browser output distance 3→2. |
+| Exact lexical 이중성 | DONE_VERIFIED for Korean surface/IPA; PARTIAL for target | NIKL Basic Dictionary directly lists [이ː중썽]; IPA-first lexical entry preserves length and fortisness; Ukrainian target remains provisional and is not accepted. |
+| Remaining C08 phrase/affix cases | BLOCKED / EVIDENCE-LIMITED | 했을시 and 무고일수도있다는 lose phrase boundaries; 유사성 lacks direct exact-word pronunciation attestation. No generic -성 or unspaced phrase rule. |
+| Paired browser diagnostic | DONE_VERIFIED diagnostic | Run 41342127112 artifact 13098181051; 2,699 shared tokens; exact tied at 1,442/2,699; Kozak Kim CER 8.1184%, g2pK 8.2138%; only 실시간 improved edit distance; 이중성 now follows dictionary length/fortisness despite gold omission. |
+| Independent overall superiority | BLOCKED / EVIDENCE-LIMITED | Exact-rate CI crosses zero; CER interval is diagnostic on UGTPHON only; no specialist-adjudicated holdout. |
+| Source rights and target review | BLOCKED | Source register 147 rows, 138 review-required; metadata-only inventory job skipped; Ukrainian target review absent. |
+| Release readiness | BLOCKED | Research prototype only; no release claim. |
+
+Software verification on code-bearing head a0e17a187ee023c84c7208bb6a1df5755ed4b226: run 41342127230 PASS (browser 1,368/1,368, build, generated pages, Python regression/data integrity); g2pK integration run 41342127246 PASS. Multi-engine diagnostic 41342127137 was still in progress at handoff. The source inventory job was skipped and is not counted as a pass.

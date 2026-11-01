@@ -369,3 +369,16 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **PARTIAL / TODO:** remaining §26 candidates (`실시간`, `유사성`, `이중성`) and §27 phrase candidates (`했을 시`, `일 수`) require lexical/morpheme-boundary evidence; no blanket generalization.
 - **BLOCKED:** broad IPA mismatch classes need independent Korean phonetic/IPA adjudication; item-level NIKL/KOGL rights, Ukrainian target review and independent holdout remain open.
 - **Release status:** research prototype; not research-certified or release-ready. Detailed paired ledger, artifact IDs and acceptance status are in `docs/KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md` and the master handoff.
+
+
+
+## 2026-11-01 — Kozak Kim source-backed discrepancy follow-up
+
+- **DONE_VERIFIED §26:** exact Sino-Korean 실>시 license for 실시간, based on NIKL lexical source 實時間 plus Standard Pronunciation Rule §26. Browser/Python regression controls pass; paired browser IPA distance improves 3→2.
+- **DONE_VERIFIED lexical IPA:** NIKL Basic Dictionary directly attests 이중성[이ː중썽]. Added as an exact IPA-first lexical reading in the dated additions file; long vowel and fortisness are preserved. Ukrainian target remains provisional and cannot be accepted as confirmed.
+- **PARTIAL C08:** 3 of the initial 11 fortition mismatches now have source-backed repairs (비출산, 실시간, 이중성); 8 residual occurrences remain. Do not infer 했을 시 or 일 수 from unspaced corpus strings. 유사성 lacks direct exact-word attestation; no generic -성 rule.
+- **DONE_VERIFIED paired diagnostic:** exact 1,442/2,699 for both; Kozak Kim CER 8.1184%, g2pK 8.2138%; paired CER delta −0.09536 pp; exact CI still crosses zero. Only two native Kozak Kim output changes vs previous post-§26 snapshot: 실시간 3→2 edit distance and source-backed 이중성 surface/IPA (distance remains 1 because gold omits length). Original g2pK unchanged.
+- **DONE_VERIFIED software checks:** system 41342127230, browser g2pK integration 41342127246, native-vs-g2pK 41342127228, morphology consensus 41342127218, morphology adapter 41342127131, test-case extraction 41342127140 all PASS. Browser tests 1,368/1,368; build/generated-page checks and Python regression/data integrity PASS.
+- **IN_PROGRESS:** multi-engine Charsiu/ByT5 diagnostic 41342127137 at last check; do not claim a result until completed.
+- **BLOCKED:** item-level NIKL/KOGL rights (source register 147 rows; 138 review-required; metadata-only job skipped), independent Korean IPA review, Ukrainian target review, and specialist-adjudicated holdout.
+- **Release status:** research prototype, not release-ready. PR #416 remains draft and unmerged.

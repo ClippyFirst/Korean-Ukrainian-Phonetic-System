@@ -205,3 +205,42 @@ The source-derived `저출산` control was added after inspecting the same offic
 ### Verification status of the `저출산` follow-up
 
 The code and positive/negative controls for `저출산` were added after the completed benchmark/system runs 41336800424 and 41336800458. New exact-head Actions for the current branch tip were created: system run `41339399132`, paired browser benchmark `41339399053`, native paired benchmark `41339399044`, and register extraction `41339399017`. At the time of this handoff these jobs were queued/in progress; no pass is claimed for the new `저출산` test until those runs complete.
+
+ 
+## Follow-up: source-derived §26 and lexical readings — 2026-11-01
+
+This continuation supersedes the earlier pending status for 실시간 and 이중성. Scope remains **Kozak Kim only**; original g2pK is unchanged and remains a comparison baseline, not linguistic gold.
+
+### Implemented and verified
+
+- **§26 실시간**: official NIKL lexical material records 실시간(實時間); combined with NIKL Standard Pronunciation Rule §26, this establishes the exact Sino-Korean 실>시간 boundary. Kozak Kim now surfaces 실씨간. The license is exact-form scoped; no generic ㄹ+ㅅ inference was introduced.
+- **Exact lexical 이중성**: NIKL Korean Basic Dictionary directly lists 이중성(二重性) [이ː중썽]. The dated lexical addition preserves the long vowel and fortis onset in project IPA iː|dʑuŋ|s͈ʌŋ. IPA is derived from the attested Hangul reading, not supplied by NIKL. The Ukrainian target is explicitly provisional and is not accepted as confirmed output.
+- **-성 research boundary**: the Basic Dictionary identifies -성(性) as a derivational suffix, and NIKL Q&A 312649 directly confirms 의외성[의ː외썽]. That answer does not directly confirm 유사성; the questioner's examples are not treated as official attestations. No productive suffix rule is implemented.
+- **Phrase cases remain bounded**: 했을시 and 무고일수도있다는 occur without reliable whitespace in the corpus. The engine does not infer 했을 시 or 일 수 boundaries from an unspaced string. Exact phrase/morphology evidence is still required.
+
+Sources registered: SRC-NIKL-INFO-SILSIGAN, SRC-NIKL-DIC-IJUNGSEONG, SRC-NIKL-DIC-SEONG-SUFFIX, and SRC-NIKL-QNA-312649. The source register now contains 147 rows; 138 remain review-required for item-level reuse terms. The official metadata-only source-inventory workflow was skipped, so rights closure is not claimed.
+
+### Paired diagnostic result
+
+Exact-head browser comparison: [Actions run 41342127112](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342127112), artifact 13098181051. Same 2,699 shared occurrences:
+
+- Exact match: 1,442/2,699 (53.4272%) for both engines; exact-rate delta remains zero.
+- Kozak Kim CER: 8.1184%; original g2pK CER: 8.2138%; paired CER delta: −0.09536 percentage points.
+- Sentence-cluster bootstrap (264 source rows, 2,000 resamples, seed 20261101): exact-delta 95% CI [−0.20697, +0.20056] pp (crosses zero); CER-delta 95% CI [−0.18443, −0.02046] pp. This is diagnostic evidence on UGTPHON, not independent normative adjudication.
+- Only two Kozak Kim outputs changed relative to the preceding post-§26 snapshot: 실시간 improved from edit distance 3→2; 이중성 changed from i.dʑuŋ.sʌŋ to iː.dʑuŋ.s͈ʌŋ, preserving the dictionary's long vowel and fortisness while edit distance stayed 1 because UGTPHON omits length. g2pK outputs did not change; no paired regressions were observed.
+
+### Mass-cluster status after this pass
+
+- C08 fortition cluster: 11 initial occurrences → 8 residual after source-backed repairs for 비출산, 실시간, and 이중성. Remaining cases include the unspaced phrase forms and 유사성; no broad suffix or phrase rule is authorized.
+- C09 length cluster: 15 → 16 because source-backed 이중성[이ː중썽] now correctly preserves length even though the corpus reference omits it. Do not strip length to optimize CER.
+- C01–C07 remain profile/allophony or environment-review tasks. No changes were made for [ɭ]~/l/, conditioned /h/, [ɲ], [ʰ]~/h/, /y/~/ɥi/, unreleased-coda marks, or liquid realization.
+
+### Verification
+
+- System run [41342127230](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342127230): PASS. Browser tests 1,368/1,368; public-page build and generated-page verification PASS; Python regression/data-integrity PASS. The metadata-only NIKL inventory job was SKIPPED.
+- Browser g2pK integration [41342127246](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342127246): PASS; original practical-mode integration remains intact.
+- Native-vs-g2pK paired diagnostic [41342127228](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342127228): PASS.
+- Morphology consensus [41342127218](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342127218), research morphology adapter [41342127131](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342127131), and exhaustive test-case register extraction [41342127140](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342127140): PASS.
+- Multi-engine Charsiu/ByT5 diagnostic [41342127137](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342127137) was still in progress at this handoff; no result is claimed.
+
+**Readiness:** implementation and available software checks are verified, but the project remains a research prototype. Independent Korean IPA adjudication, independent Ukrainian target review, item-level NIKL rights review, and a held-out specialist-adjudicated corpus remain blockers. PR #416 stays draft and unmerged.
