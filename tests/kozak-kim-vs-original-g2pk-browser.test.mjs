@@ -56,6 +56,10 @@ test('paired browser benchmark compares Kozak Kim with the untouched raw g2pK su
   assert.equal(report.g2pk.character_error_rate, 0.125);
   assert.equal(report.paired_subset.kozak_kim.character_error_rate, 1 / 6);
   assert.equal(report.paired_subset.g2pk.character_error_rate, 1 / 6);
+  assert.deepEqual(report.paired_subset.sentence_cluster_bootstrap.exact_match_delta_95_ci, [0, 0]);
+  assert.deepEqual(report.paired_subset.sentence_cluster_bootstrap.cer_delta_95_ci, [0, 0]);
+  assert.equal(report.paired_subset.sentence_cluster_bootstrap.cluster_count, 1);
+  assert.equal(report.paired_subset.sentence_cluster_bootstrap.resamples, 2000);
   assert.equal(report.records.find(item => item.token === '나').g2pk_surface, '다');
   assert.equal(report.records.find(item => item.token === '나').kozak_kim.exact, true);
   assert.equal(report.records.find(item => item.token === '나').g2pk.exact, false);
