@@ -316,3 +316,8 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **PARTIAL:** a paired raw-input baseline is now added to the benchmark, with same-token deltas and rescued/lost coverage. Exact-head CI and a new train/test run are required before claiming the normalizer improves quality.
 - **Design decision:** keep raw-UGT canonicalization separate from canonical-word G2P; do not add fuzzy context rules or broad phonological heuristics based on this sparse retrieval result.
 - **Sentence-context native vs g2pK test:** native 7.9755% exact / 14.8323% CER on paired 163 sentences vs g2pK 7.3620% / 15.4797%; no evidence to replace native G2P with g2pK in this test.
+
+
+## UGT model direction — evidence from EMNLP 2026
+
+For Korean, Jeon et al. report PERnc 47.5 Word→Word, 28.1 Sent→Word, 27.7 Sent→Word + retrieval without staged decoding, and 32.0 when staged decoding is added; full Sent→Sent also degrades canonical PERc. Future work should test sentence-context **canonical-word prediction** plus optional train-only retrieval, then call the existing Kozak Kim G2P. Do not generate whole-sentence IPA or enable staged decoding by default.
