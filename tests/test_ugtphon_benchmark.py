@@ -116,7 +116,7 @@ def test_sentence_benchmark_uses_sentence_gold_and_explicit_phrase_boundary_mode
         "lang": "ko",
         "split": "test",
         "text": "가 나",
-        "canonical": "가 나",
+        "canonical": "가, 나!",
         "phonemes": "ka na",
         "tokens": [
             {"text": "가", "canonical": "가", "phoneme": "deliberately-wrong-token-gold"},
@@ -127,6 +127,7 @@ def test_sentence_benchmark_uses_sentence_gold_and_explicit_phrase_boundary_mode
     report = evaluate_sentences(rows, ipa_level="broad", boundary_mode="phrase")
 
     assert calls == [("가 나", "broad", "phrase")]
+    assert report["punctuation_stripped_sentences"] == 1
     assert report["granularity"] == "sentence"
     assert report["boundary_mode"] == "phrase"
     assert report["scored_sentences"] == 1
