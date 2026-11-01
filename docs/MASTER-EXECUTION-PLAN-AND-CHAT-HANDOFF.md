@@ -4588,6 +4588,11 @@ The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026
 - `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv`.
 - `docs/KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md`.
 
+- Benchmark trigger repair: `.github/workflows/ugtphon-benchmark.yml` now watches `src/app/engine_rules_ctx.js`, `engine_rules_phrase.js`, `engine_shared.js`, and the focused morphology guard test. This fixed the missing trigger that previously prevented context-rule changes from automatically running the paired diagnostic.
+- Before/after comparison of artifacts 13093672281 and 13094763897: the only Kozak Kim output change across 2,699 shared occurrences was `올게이`, from `ol.k͈e.i` (distance 3) to `ol.ɡe.i` (distance 1). g2pK stayed unchanged; no other paired output changes or regressions.
+- Paired CER delta improved from -0.07802 pp to -0.08669 pp. The post-change sentence-cluster 95% CI is [-0.17414, -0.01235] pp. Exact-match delta remains 0 and its interval crosses zero.
+- The paired diagnostic was run on code-bearing commit `8ac8cd18cadb8f074ecdc3cbc7ee3a562144a3dc`; subsequent commits are documentation/evidence updates only. Current branch head before this handoff refresh: `3aa7fe634e0ccb5f0572a3eb6f0cd6b449d8f832`.
+
 ## Verification actually performed
 
 - Inspected the exact paired JSON artifact using Python `zipfile`/JSON and recomputed the set of 23 output-different occurrences, their edit-distance direction, and paired aggregate counts.
