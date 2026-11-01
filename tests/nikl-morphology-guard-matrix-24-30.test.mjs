@@ -167,3 +167,34 @@ test('§26: source-derived 실시간 boundary applies Sino-Korean ㄹ+ㅅ fortit
     );
   }
 });
+
+
+test('§27: exact source-backed C08 same-eojeol forms fortify only their licensed morpheme pair', () => {
+  const cases = [
+    ['무고일수도있다는', '일>수', 's͈u', '쑤'],
+    ['했을시', '을>시', 'ɕ͈i', '씨'],
+  ];
+  for (const [input, pair, ipa, surface] of cases) {
+    const result = generic.convert(input);
+    assert.ok(result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27-exact-form')), input + ': exact §27 form license');
+    assert.ok(result.ipa.includes(ipa), input + ': fortis onset must be preserved in IPA');
+    assert.ok(result.surfaceHangul.includes(surface), input + ': only the licensed onset is fortisized');
+  }
+
+  for (const input of ['유사성', '했을지']) {
+    const result = generic.convert(input);
+    assert.ok(!result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27-exact-form')), input + ': no substring or suffix-wide inheritance');
+  }
+});
+
+test('§27: the same C08 morphology is licensed in the correctly spaced phrase form, not across punctuation', () => {
+  for (const [input, ipa] of [['무고일 수도', 's͈u'], ['했을 시', 'ɕ͈i']]) {
+    const result = generic.convert(input);
+    assert.ok(result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')), input + ': exact phrase §27 license');
+    assert.ok(result.ipa.includes(ipa), input + ': phrase-level fortis IPA');
+  }
+  for (const input of ['무고일, 수도', '했을, 시']) {
+    const result = generic.convert(input);
+    assert.ok(!result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')), input + ': punctuation breaks the connected phrase license');
+  }
+});
