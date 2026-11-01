@@ -278,3 +278,16 @@ def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
         assert "item-level" in source["license_status"].lower()
     pdf = rows["SRC-NIKL-EDU-2021-DEPENDENT-SI"]
     assert "not used as production evidence" in pdf["limitations_or_next_action"].lower()
+
+
+def test_c08_analyzer_cross_check_is_recorded_as_diagnostic_not_gold():
+    fixture_path = ROOT / "tests" / "fixtures" / "kozak-kim-c08-source-contexts.json"
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    cross_check = fixture["morphology_analyzer_cross_check"]
+    assert cross_check["run_id"] == "41353171166"
+    assert cross_check["status"] == "DIAGNOSTIC_ONLY_NOT_GOLD"
+    cases = cross_check["target_cases"]
+    assert cases["multilexnorm2026_1953"]["status"] == "PARTIAL_AGREEMENT_ON_TARGET_BOUNDARY"
+    assert cases["multilexnorm2026_1979"]["status"] == "ANALYZER_DISAGREEMENT_ON_SI_BOUNDARY"
+    assert cases["dc_inside_2024"]["status"] == "ANALYZER_DISAGREEMENT_ON_LEXICAL_VS_SUFFIX_SEGMENTATION"
+    assert any("majority vote" in item for item in cross_check["limitations"])

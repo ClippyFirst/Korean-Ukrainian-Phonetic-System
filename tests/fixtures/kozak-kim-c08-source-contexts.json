@@ -60,5 +60,39 @@
       "status": "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION",
       "notes": "Q&A 312649 directly confirms 의외성 only; 유사성 appears in the question, not in the official answer. No suffix-wide -성 rule is authorized."
     }
-  ]
+  ],
+  "morphology_analyzer_cross_check": {
+    "run_id": "41353171166",
+    "artifacts": {
+      "kiwi": "13102576042",
+      "mecab_ko": "13101838045",
+      "consensus": "13102406365"
+    },
+    "status": "DIAGNOSTIC_ONLY_NOT_GOLD",
+    "target_cases": {
+      "multilexnorm2026_1953": {
+        "kiwi": "무고/NNG + 이/VCP + ᆯ/ETM + 수/NNB + 도/JX + 있/VA + 다는/ETM",
+        "mecab_ko": "무고/NNG + 일/VCP+ETM + 수/NNB + 도/JX + 있/VA + 다는/ETM",
+        "status": "PARTIAL_AGREEMENT_ON_TARGET_BOUNDARY",
+        "interpretation": "Both analyzers place the target boundary between 일 and 수 and identify 수 as NNB; internal segmentation of 일 differs. This supports a morphological boundary hypothesis, not pronunciation or IPA."
+      },
+      "multilexnorm2026_1979": {
+        "kiwi": "하/VV + 었/EP + 을/ETM + 시/NNB",
+        "mecab_ko": "했/VV+EP + 을시/EC",
+        "status": "ANALYZER_DISAGREEMENT_ON_SI_BOUNDARY",
+        "interpretation": "Kiwi identifies dependent noun 시 after -을; MeCab-Ko treats 을시 as a connective ending. Official NIKL Q&A supports the dependent-noun construction, but analyzer consensus is absent and the unspaced UGC context remains uncertain."
+      },
+      "dc_inside_2024": {
+        "kiwi": "유사/NNG + 성/XSN",
+        "mecab_ko": "유사성/NNG",
+        "status": "ANALYZER_DISAGREEMENT_ON_LEXICAL_VS_SUFFIX_SEGMENTATION",
+        "interpretation": "Analyzer disagreement does not resolve the lexical reading. NIKL Q&A 312649 confirms 의외성 only, not 유사성; no suffix-wide rule is authorized."
+      }
+    },
+    "limitations": [
+      "Kiwi and MeCab-Ko outputs are diagnostic morphology hypotheses, not gold segmentation.",
+      "Analyzer agreement does not prove the phonological rule environment or IPA.",
+      "Analyzer disagreement must remain visible and must not be resolved by majority vote."
+    ]
+  }
 }
