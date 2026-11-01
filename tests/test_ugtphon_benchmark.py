@@ -92,6 +92,59 @@ def test_evaluate_records_and_uses_the_selected_ipa_profile(monkeypatch):
     assert report["exact_match_rate"] == 1.0
 
 
+
+def test_sentence_benchmark_uses_sentence_gold_and_explicit_phrase_boundary_mode(monkeypatch):
+    from scripts.benchmark_ugtphon_ko import evaluate_sentences
+
+    calls = []
+
+    def fake_phoneticize(text, *, ipa_level="broad", boundary_mode="same_word"):
+        calls.append((text, ipa_level, boundary_mode))
+        return {
+            "pronunciation_status": "resolved",
+            "ipa": {
+                "ipa": "ka.na",
+                "ipa_profile": "test-profile",
+                "ipa_profile_status": "test-only",
+                "ipa_profile_version": 1,
+            },
+        }
+
+    monkeypatch.setattr("korean_ukrainian.pipeline.phoneticize_korean", fake_phoneticize)
+    rows = [{
+        "id": "sentence_1",
+        "lang": "ko",
+        "split": "test",
+        "text": "가 나",
+        "canonical": "가 나",
+        "phonemes": "ka na",
+        "tokens": [
+            {"text": "가", "canonical": "가", "phoneme": "deliberately-wrong-token-gold"},
+            {"text": "나", "canonical": "나", "phoneme": "also-not-used"},
+        ],
+    }]
+
+    report = evaluate_sentences(rows, ipa_level="broad", boundary_mode="phrase")
+
+    assert calls == [("가 나", "broad", "phrase")]
+    assert report["granularity"] == "sentence"
+    assert report["boundary_mode"] == "phrase"
+    assert report["scored_sentences"] == 1
+    assert report["exact_match_rate"] == 1.0
+    assert report["coverage_adjusted_exact_match_rate"] == 1.0
+
+
+def test_sentence_benchmark_rejects_unknown_boundary_mode():
+    from scripts.benchmark_ugtphon_ko import evaluate_sentences
+
+    try:
+        evaluate_sentences([], boundary_mode="guess")
+    except ValueError as exc:
+        assert "boundary_mode" in str(exc)
+    else:
+        raise AssertionError("unknown sentence boundary modes must be rejected")
+
+
 def test_evaluate_rejects_unknown_ipa_profile():
     from scripts.benchmark_ugtphon_ko import evaluate
 
