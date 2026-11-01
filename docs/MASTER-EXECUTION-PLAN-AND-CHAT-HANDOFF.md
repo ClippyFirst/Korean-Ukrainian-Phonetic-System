@@ -4284,3 +4284,15 @@ Workflow [41311996175](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-
 This confirms the small CER improvements projected from the prior artifact. It does not raise strict exact match, and the broad profile remains unadjudicated. The correct conclusion is a modest evidence-backed phonological improvement, not a large benchmark breakthrough.
 
 The paired native/g2pK diagnostic from the same workflow, artifact [13085736948](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41311996175/artifacts/13085736948), scored 2,698 shared tokens: native 53.0393% exact / 9.1220% CER; g2pK 53.1134% / 9.2304%. g2pK is +0.0741 percentage points exact but +0.1084 points worse CER. This still does not justify replacing the native engine.
+
+
+## Latest exact-head regression repair — 2026-11-01
+
+Browser regression run [41311996128](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41311996128), job \`124864119611\`, exposed two test failures in the new \`한자\` lexical row:
+
+1. The row had an empty \`target_syllables\`, violating the shared lexical-data invariant that each Hangul syllable has an aligned target candidate and IPA syllable.
+2. Four commas after \`provisional\` placed \`variant-aware-research\` in \`variant_note\`, not \`input_kind\`; consequently the browser treated the candidate \`ганчча\` as accepted Ukrainian output.
+
+Fixed the row to 13 columns, with \`target_syllables=ган|чча\`, \`input_kind=variant-aware-research\`, and explicit rule notes that the Ukrainian form is a project-generated provisional candidate, not a dictionary mapping. The intended browser result is now an empty accepted \`ukrainian\`, a separate candidate \`ганчча\`, and \`target_status=provisional\`. CSV field alignment has been statically checked; exact-head CI for the repair is pending.
+
+**Latest code-bearing and branch tip:** \`eba968b383e1ae4ca8ebb52094c3f2d32439e315\`. Do not promote the tests to DONE_VERIFIED until the new browser and Python runs pass.
