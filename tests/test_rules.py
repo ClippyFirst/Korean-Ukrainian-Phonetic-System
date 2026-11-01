@@ -830,6 +830,10 @@ def test_nikl_section_26_source_examples_have_exact_sino_korean_fortition_licens
         "발전": ("발>전", "ㅉ"),
         "몰상식": ("몰>상", "ㅆ"),
         "불세출": ("불>세", "ㅆ"),
+        "출산": ("출>산", "ㅆ"),
+        "출산율": ("출>산", "ㅆ"),
+        "출산하다": ("출>산", "ㅆ"),
+        "비출산": ("출>산", "ㅆ"),
     }
     for word, (pair, onset) in expected.items():
         items, traces = apply_ordered_rules(parse_syllables(word))
