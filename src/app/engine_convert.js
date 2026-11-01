@@ -436,7 +436,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     ipa_profile_level:superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
     ipa_profile_status:'unadjudicated-cross-runtime',
     surfaceHangul:recomposed===originalHangul?'':recomposed,
-    ukrainian:unresolvedWholeHangulToken||targetMappingUnavailable||pronunciation_status==='partial'||provisionalCandidateAvailable||superSoftCandidateAvailable?'':output.join(''),
+    ukrainian:unresolvedWholeHangulToken||targetMappingUnavailable||(pronunciation_status==='partial'&&!superSoftOn)||provisionalCandidateAvailable||superSoftCandidateAvailable?'':output.join(''),
     candidate_ukrainian:superSoftCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
     candidate_status:superSoftCandidateAvailable?'super-soft-low-confidence':provisionalCandidateAvailable?'provisional':null,
     ipa:unresolvedWholeHangulToken||pronunciation_status==='not_applicable'?'':renderStructured(units,ipa,'.'),
