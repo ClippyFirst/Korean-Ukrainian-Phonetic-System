@@ -520,3 +520,17 @@ PR #415 continues to add exact-form evidence, but the new code is **PARTIAL pend
 Direct browser artifact [41309605083](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605083): 2,699 tokens; strict exact 52.9085%, CER 8.2571%. Research-only broad-candidate sensitivity: exact 92.4416%, CER 1.3562%. Of 1,271 strict mismatches, 1,067 (83.95%) become exact under the broad candidate profile; 204 remain.
 
 **Interpretation:** strict exact match is highly sensitive to IPA annotation conventions (allophones, ㅟ, vowel length, unreleased codas, sibilant aspiration). The broad profile is unadjudicated and is not a gold metric. The remaining mismatches require source-backed review, not heuristic tuning. The two new lexical corrections have only projected, not measured, deltas.
+
+
+## Measured source-backed G2P correction benchmark — 2026-11-01
+
+**DONE_VERIFIED for the direct browser diagnostic:** workflow [41311996175](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41311996175), code-bearing head \`00ac99a93c6ba8c64d66588e8a7e86aec3cfff7c\`.
+
+- 2,703 eligible / 2,699 scored; coverage 99.852%; 4 unresolved; 0 engine errors.
+- Strict exact 52.9085% unchanged; strict CER 8.2571% → **8.2441%**.
+- Broad-candidate exact 92.4416% → **92.4787%**; broad-candidate CER 1.3562% → **1.3427%**.
+- \`실수\` output \`ɕil.s͈u\`, broad-candidate exact; strict mismatch remains due allophone conventions. \`한자\` output \`haːn.tɕ͈a\`, strict distance 1 because gold omits the dictionary long vowel. The long vowel remains preserved and Ukrainian target is provisional.
+
+This confirms a modest edit-distance improvement, not an exact-match increase. Broad-candidate results remain unadjudicated sensitivity analysis.
+
+**DONE_VERIFIED as a comparison, not as a replacement decision:** paired native/g2pK run on 2,698 tokens: native 53.0393% exact / 9.1220% CER; g2pK 53.1134% / 9.2304%. The tiny exact advantage does not compensate for worse CER; keep native as default.
