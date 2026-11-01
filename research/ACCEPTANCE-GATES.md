@@ -566,3 +566,27 @@ The current-main commit `7bbbd7e7ce888a9c995bb70959e17858263c07a8` added a multi
 - Browser integration [41313216398](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41313216398) passed. Node tests passed 1,356/1,356 and browser build passed in 41313216461. Python test collection failed because the raw-surface benchmark module was missing; system verification 41313216444 failed its Python job for the same reason, while browser regression/build passed.
 
 The benchmark results are valid for the engine code present in the run, but do not verify the later restored raw-surface benchmark module. Exact-head Python 3.11–3.13 suite, wheel test, system verification and rerun of the raw-surface benchmark remain TODO after repair commit `c069031a6cea830ad4d5f00fcf5314b5dd1e8e12`.
+
+
+## 2026-11-01 — exact-head raw-surface and Python CI verification
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Restore raw-surface benchmark module and current tests | DONE_VERIFIED | PR #415 contains `scripts/benchmark_ugtphon_ko_surface.py` and its tests; exact-head Python test matrix [41325015110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325015110) passed on Python 3.11/3.12/3.13. |
+| Fix three Python regression assertions without weakening the engine | DONE_VERIFIED | Broad IPA test now matches broad profile for `실수`; source-register word check is case-insensitive; paired raw/normalized evaluator test expects both G2P calls and asserts false-rewrite reporting. |
+| Synchronize PR branch with current main | DONE_VERIFIED | Merge commit `20fec483165ea170c9944df0704f04414c5590ec` includes current main `7bbbd7e7ce888a9c995bb70959e17858263c07a8`; comparison at sync: 79 ahead / 0 behind. |
+| Python regression and data-integrity suite | DONE_VERIFIED | System run [41325014981](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325014981) PASS. |
+| Python 3.11/3.12/3.13, web, wheel, teacher-corpus audit | DONE_VERIFIED | Test matrix [41325015110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325015110) PASS. |
+| Browser tests and build | DONE_VERIFIED | System [41325014981](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325014981) PASS; browser suite 1,356/1,356. Browser G2P integration [41325014980](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325014980) PASS. |
+| Verify pinned UGTPHON train/test inputs and Apache-2.0 declaration | DONE_VERIFIED | External benchmark run [41325015010](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325015010) validates train 1,976 rows and test 275 rows with expected Git blob SHA-1 values. |
+| Run paired raw-surface baseline and train-only retrieval | DONE_VERIFIED as research diagnostic | Artifact `13090704109`: 2,624 shared tokens; exact 51.3720% → 51.6006 (+0.2287 pp); CER 10.0783% → 9.9730 (−0.1054 pp); 6 exact improvements, 0 regressions, 15 rescued, 0 lost. |
+| Promote raw-surface retriever to standard runtime | DEFERRED | Only 22/722 noncanonical tokens hit (3.0471%); exact-context hits 0. Keep separate until sentence-context model/candidate evidence and false-rewrite controls demonstrate broader utility. |
+| Promote Kiwi/MeCab consensus rules | DEFERRED | Artifact `13090938199`: no exact-match gain and paired CER worsened by 0.000087; candidate morphology is not gold. |
+| Independent Korean IPA adjudication | BLOCKED | Requires independent specialist review; current broad-candidate score is only sensitivity analysis. |
+| Ukrainian target-layer review | BLOCKED | Requires independent Ukrainian phonetics/orthography adjudication. |
+| NIKL item-level rights and IPA-Dict/UGTPHON license compatibility | BLOCKED | NIKL metadata-only inventory remains SKIPPED; verify item-level marks and all source terms before redistribution. |
+| Neural Charsiu/ByT5 inference | DEFERRED / SKIPPED | Default-off gates remain; no inference result is claimed. |
+
+**Measured canonical browser baseline:** 2,703 eligible / 2,699 scored, 99.852% coverage, 52.9085% exact, 8.2441% CER, 4 unresolved, 0 engine errors. The research-only broad-candidate profile is 92.4787% exact / 1.3427% CER and must not be represented as normative accuracy.
+
+**Research interpretation:** the 2026 EMNLP UGTPHON Korean ablation shows a large sentence-context effect, only a small additional exact-retrieval effect, and a regression from staged decoding. Any further UGT work should use sentence-context-conditioned candidate normalization with train-only evidence, canonical controls, paired scoring and abstention; it must remain separate from canonical G2P.
