@@ -206,3 +206,58 @@ def test_surface_report_exposes_case_level_mismatches(monkeypatch):
     assert report["worst_mismatches"][0]["surface"] == "가"
     assert report["worst_mismatches"][0]["predicted"] == "kɯ"
     assert report["worst_mismatches"][0]["normalization_hit"] is False
+
+
+def test_direct_cli_runs_from_repository_root(tmp_path):
+    import json
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    train_path = tmp_path / "train.json"
+    test_path = tmp_path / "test.json"
+    output_path = tmp_path / "report.json"
+    train_path.write_text(json.dumps([{
+        "id": "train_cli",
+        "lang": "ko",
+        "split": "train",
+        "text": "ㅋㅋ",
+        "tokens": [{
+            "text": "ㅋㅋ",
+            "canonical": "크크",
+            "is_nc": True,
+            "nc_type": "B2",
+        }],
+    }], ensure_ascii=False), encoding="utf-8")
+    test_path.write_text(json.dumps([{
+        "id": "test_cli",
+        "lang": "ko",
+        "split": "test",
+        "text": "ㅋㅋ",
+        "tokens": [{
+            "text": "ㅋㅋ",
+            "phoneme": "kɯ.kʰɯ",
+            "is_nc": True,
+            "nc_type": "B2",
+        }],
+    }], ensure_ascii=False), encoding="utf-8")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/benchmark_ugtphon_ko_surface.py",
+            "--train-corpus", str(train_path),
+            "--test-corpus", str(test_path),
+            "--output", str(output_path),
+        ],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    report = json.loads(output_path.read_text(encoding="utf-8"))
+    assert report["normalization"]["hits"] == 1
+    assert report["attempted_tokens"] == 1
