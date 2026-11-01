@@ -326,3 +326,11 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - Research-only broad-candidate sensitivity: 92.4416% exact, CER 1.3562%; 1,067/1,271 strict mismatches (83.95%) normalize to exact; 204 remain.
 - Broad normalization is unadjudicated and must not be promoted as the official score. Review remaining cases with Korean sources and preserve length/allophone detail unless an adjudicated standard permits normalization.
 - New 실수 and 한자 corrections have projected, not measured, deltas pending exact-head CI and benchmark rerun.
+
+
+## 2026-11-01 — Measured source-backed G2P corrections (PR #415)
+
+- **DONE_VERIFIED diagnostic:** direct browser run 41311996175 on 2,699 tokens (99.852% coverage): strict exact 52.9085% unchanged; strict CER improved 8.2571% → 8.2441%; broad-candidate exact 92.4416% → 92.4787%, CER 1.3562% → 1.3427%.
+- \`실수\` now produces \`ɕil.s͈u\` and is broad-candidate exact; strict mismatch is annotation allophone. \`한자\` now produces \`haːn.tɕ͈a\`, preserving dictionary length; benchmark gold omits length, so distance 1 remains.
+- Paired native/g2pK: native 53.0393% exact / 9.1220% CER vs g2pK 53.1134% / 9.2304%; keep native as default.
+- Exact-head unit/system CI remains required before these changes can be promoted from benchmark-verified to fully verified.
