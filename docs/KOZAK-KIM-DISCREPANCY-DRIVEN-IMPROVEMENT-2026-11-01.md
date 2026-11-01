@@ -135,6 +135,18 @@ A claim must state the exact corpus/version, shared occurrence denominator, refe
 | Broad IPA convention clusters | BLOCKED | Independent IPA convention and reviewer adjudication needed |
 | Overall Kozak Kim superiority claim | BLOCKED | Current paired CI crosses zero; independent held-out gold required |
 
+## Measured result of the §27 boundary repair
+
+The repaired branch was rerun through the existing paired browser benchmark after adding `src/app/engine_rules_ctx.js` and the morphology regression test to the workflow's PR path filter.
+
+- Before repair: run [41331679243](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679243), artifact `13093672281`. Shared subset: 2,699. Kozak Kim exact 1,442/2,699 (53.4272%), CER 8.1358%; g2pK exact 1,442/2,699 (53.4272%), CER 8.2138%. Paired CER delta (Kozak minus g2pK) = -0.07802 pp; 95% sentence-cluster bootstrap CI [-0.16560, 0] pp.
+- After repair: run [41335549779](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335549779), artifact `13094763897`. Same shared subset: 2,699. Kozak Kim exact 1,442/2,699 (53.4272%), CER 8.1271%; g2pK exact 1,442/2,699 (53.4272%), CER 8.2138%. Paired CER delta = -0.08669 pp; 95% sentence-cluster bootstrap CI [-0.17414, -0.01235] pp. Exact-match delta remains zero; its 95% CI [-0.20697, +0.20056] pp crosses zero.
+- Paired unit: 264 UGTPHON sentence/utterance rows; 2,000 bootstrap resamples; seed 20261101.
+- A record-by-record diff of the before/after JSON artifacts found exactly one changed Kozak Kim IPA output among all 2,699 shared scored occurrences: `올게이` changed from `ol.k͈e.i` (edit distance 3) to `ol.ɡe.i` (distance 1). g2pK was `ol.ɡe.i` in both runs. No other Kozak Kim paired output changed; no benchmark regression was observed.
+- The CER reduction is exactly the two-edit improvement on this occurrence; exact match does not increase because the reference still differs in other phonetic details. This verifies the targeted repair, not a broad accuracy jump.
+
+Interpretation: on this diagnostic, Kozak Kim's CER advantage over untouched g2pK is now supported by the paired sentence-cluster interval, while exact-match rates remain tied. This is a narrow, source-backed diagnostic result. It does not establish universal superiority, nor does it resolve IPA convention differences or the need for independent normative gold.
+
 ## Repository-wide test-candidate pool
 
 The existing exhaustive test-case register extractor also ran on the current branch head. Actions run [41335266701](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266701) completed successfully and produced artifact `13095127295`. Its classification queue contains 6,389 candidates: 5,174 assertion candidates and 1,215 test declarations. Dimension hints include 667 IPA, 298 Korean-surface, 373 rule-trace, 916 status/abstention, 558 Ukrainian-target, 226 variant, and 479 boundary/serialization candidates. **All 6,389 require manual review**; 1,701 extracted assertion forms are unsupported, and observed results were not inferred. This is a broad test-discovery pool, not gold data and not proof that all linguistic phenomena have been adjudicated.
@@ -146,8 +158,10 @@ Use it to locate existing positive/negative controls and identify gaps, then cla
 Exact branch head verified: `5fca54917ceea174d74205198e9929101b2172d4`.
 
 - Actions run [41335266673](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266673): **PASS**. Browser regression tests: 1,365/1,365; public-page build: PASS; generated-page verification: PASS; Python regression/data-integrity job: PASS.
+- After updating the benchmark workflow path filter, run [41335549717](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335549717): **PASS**. Browser suite/build and Python regression/data-integrity passed again on code-bearing head `8ac8cd18cadb8f074ecdc3cbc7ee3a562144a3dc`.
+- Run [41335549779](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335549779): **PASS**. Pinned corpus validation, direct browser diagnostic, paired Kozak Kim-vs-original-g2pK diagnostic, raw-surface diagnostic, and paired native-vs-g2pk diagnostic all completed and artifacts uploaded.
 - The focused §27 boundary test passed as browser test 1114. It confirms `할게`, `할게요`, `다를게`, `안타까울게` retain the licensed rule and `올게이` does not receive fortition from an internal substring.
 - Actions run [41335266701](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266701): **PASS**. Test-case register extraction, validation, inventory generation, and artifact upload all succeeded.
 - An earlier run failed because the new NIKL source row duplicated an existing `SRC-NIKL-QNA-330963` and the source-register test still expected 141 rows. The duplicate was removed, the existing record reused, a distinct `SRC-NIKL-QNA-308180` row added, and the expected count updated to 142 (133 review-required). The latest browser and Python jobs pass.
 - The metadata-only official NIKL source-inventory job was skipped; item-level reuse/license review remains open.
-- **Not run:** the paired Kozak Kim-vs-original-g2pK benchmark on the repaired code. The baseline artifact predates this change. No measured post-change benchmark gain is claimed.
+- The paired Kozak Kim-vs-original-g2pK benchmark has now been rerun after the repair; see the measured before/after section above. The official NIKL source-inventory metadata-only job was skipped, and item-level reuse/license review remains open.
