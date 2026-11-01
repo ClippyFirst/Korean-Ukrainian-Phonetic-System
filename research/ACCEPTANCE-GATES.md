@@ -10,7 +10,7 @@
 | 5 — Product quality | BLOCKED / EVIDENCE-LIMITED | No independent Ukrainian target review or user study. Korean IPA metrics do not validate Ukrainian orthography. |
 | 6 — Release and independent review | BLOCKED | Two qualified blind IPA submissions, independent C08 adjudication, C09/C10 convention review, item-level rights and Ukrainian target review remain outstanding. |
 
-The latest paired browser diagnostic (run 41357680349; artifact 13104120884) has 2,699 shared occurrences, equal exact match (53.4272%) and CER 8.1097% for Kozak Kim versus 8.2138% for original g2pK (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp). This is a noisy-corpus diagnostic, not a release gate or normative accuracy claim.
+The latest paired browser diagnostic (run 41358068900; artifact 13103478172) has 2,699 shared occurrences, equal exact match (53.4272%) and CER 8.1097% for Kozak Kim versus 8.2138% for original g2pK (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp). This is a noisy-corpus diagnostic, not a release gate or normative accuracy claim.
 
 **Disposition: research prototype; not research-certified and not release-ready.**
 

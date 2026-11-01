@@ -10,7 +10,7 @@ Current focused work is Phase 7 verification plus Phase 10 independent-review pr
 - C01–C07 blind packet preparation is DONE_VERIFIED: seven neutral packets, 42 entries, 39 unique UGTPHON source rows with source contexts. Two independent reviewer submissions are still required.
 - C08 is PARTIAL / EVIDENCE-LIMITED: all eight source contexts are now mapped. Five formerly missing memberships were reconstructed from the pinned fortis-mismatch signature because the original extraction table is absent. Seven forms have conditional -(으)ㄹ + dependent-noun evidence from official NIKL Q&A; 유사성 remains unresolved. No new production rules were added. Kiwi/MeCab-Ko disagreement for 했을시 remains diagnostic only.
 - Python R013 exact same-eojeol licensing now applies within full sentences, matching the browser engine. Full-context positive and negative tests pass.
-- Current paired browser benchmark (run 41357680349; artifact 13104120884): 2,699 shared occurrences; CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp); exact match tied at 53.4272%. Diagnostic only.
+- Current paired browser benchmark (run 41358068900; artifact 13103478172): 2,699 shared occurrences; CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp); exact match tied at 53.4272%. Diagnostic only.
 - Remaining acceptance work: two independent IPA reviews, independent C08/prosody adjudication and recovery of the original cluster extraction provenance, C09/C10 convention adjudication, NIKL item-level rights, and Ukrainian target review.
 
 
@@ -432,4 +432,4 @@ The earlier blocker “source utterance context unavailable” is superseded. Al
 
 Training gate: the latest readiness audit finds 644 unique lexical rows but zero explicitly independently adjudicated IPA gold rows and 24 frozen holdout cases without IPA gold. Supervised IPA training remains blocked until provenance review, independent annotation/adjudication and frozen train/dev/test splits are complete.
 
-- Exact-head Python/data integrity and browser regression/build passed on code/test head `8b22f778112442024f876061bd0e576af762e761` (push run 41357675602; PR run 41357680448). Latest native pair: run 41357680365, artifact 13104485246; native CER 9.1047% vs g2pK 9.2304%, exact match 53.0393% vs 53.1134%.
+- Exact-head Python/data integrity and browser regression/build passed on code/test head `8b22f778112442024f876061bd0e576af762e761` (push run 41357675602; PR run 41357680448). Latest native pair: run 41358068788, artifact 13104072941; native CER 9.1047% vs g2pK 9.2304%, exact match 53.0393% vs 53.1134%.
