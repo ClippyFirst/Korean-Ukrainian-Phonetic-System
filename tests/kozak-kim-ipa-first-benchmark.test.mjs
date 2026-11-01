@@ -121,6 +121,18 @@ test('dictionary-backed 한자 reduces strict IPA edit distance while retaining 
   assert.equal(report.records[0].distance, 1);
 });
 
+test('browser engine applies NIKL lexical ㄼ and ㄺ exceptions beyond the raw g2pK port', () => {
+  const engine = createBrowserKozakKimEngine();
+
+  const neolp = engine.convert('넓죽하다');
+  assert.equal(neolp.pronunciation_status, 'resolved');
+  assert.equal(neolp.surfaceHangul, '넙쭈카다');
+
+  const ilggo = engine.convert('읽고');
+  assert.equal(ilggo.pronunciation_status, 'resolved');
+  assert.equal(ilggo.surfaceHangul, '일꼬');
+});
+
 test('Kozak Kim still withholds IPA for unlicensed Korean morphophonology', () => {
   const engine = createBrowserKozakKimEngine();
   const result = engine.convert('읽게');
