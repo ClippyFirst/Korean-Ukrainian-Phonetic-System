@@ -50,6 +50,28 @@ Four exact-match discordances are especially informative:
 
 The g2pK-only exact cases all concern the corpus omitting vowel length that is represented in the registered NIKL evidence. They are not sufficient grounds to remove length from Kozak Kim. `못잃어` is also variant-sensitive: the source register records both insertion and non-insertion readings, so the exact match is not by itself a normative ranking.
 
+## Mass mismatch inventory
+
+The direct browser diagnostic artifact from run `41335549779` (`13094469490`) contains 2,699 scored occurrences. Strict profile: 1,442 exact and 1,257 mismatches (53.4272% exact). The unadjudicated broad-candidate sensitivity profile: 2,522 exact and 177 residual mismatches (93.4420% exact; CER 1.2211%). The broad profile is research-only and does not define normative correctness.
+
+A feature-alignment review produced the occurrence-level cluster summary in [`research/KOZAK-KIM-MASS-MISMATCH-CLUSTERS-2026-11-01.csv`](../research/KOZAK-KIM-MASS-MISMATCH-CLUSTERS-2026-11-01.csv). Top recurring clusters (counts are unique occurrences within each cluster, not additive; clusters overlap):
+
+- Strict-only profile differences: dark/lateral [ɭ] versus /l/ (464); conditioned /h/ allophones [ɦ, ç, β, ʝ, ɸ, x, …] versus broad /h/ (261); palatal nasal [ɲ] versus /n/ (77).
+- Broad residual differences: aspiration notation [ʰ] versus [h] (37); /y/ versus /ɥi/ (35); unreleased-coda diacritic (34); /l/ versus [ɾ] (12); fortis mark missing in the reference/prediction comparison (11); vowel length (15).
+- Stress-mark differences occur in 11 strict-profile occurrences and overlap with length/IPA annotation differences.
+
+These are not 10 confirmed phonological defects. Most are likely IPA-profile or narrow-allophone differences; the /l/~[ɾ] and fortition groups require environment-specific linguistic review. The inventory preserves examples, profile scope, counts, provisional classification, and next actions. Do not sum cluster counts or use them as independent statistical units.
+
+## Second source-backed candidate: §26 fortition in the 출산 family
+
+The broad residual fortition cluster includes `비출산`. In the pre-fix diagnostic, both Kozak Kim and g2pK emitted `pi.tɕʰul.san` (distance 2), while the reference included fortis `/s͈/`. The NIKL Korean Basic Dictionary directly lists `출산[출싼]`, `출산율[출싼뉼]`, and `출산하다[출싼하다]` (official dictionary search result). Standard Pronunciation Rule §26 covers Sino-Korean ㄹ + ㄷ/ㅅ/ㅈ fortition.
+
+**Change authored:** the existing exact-form §26 license map now includes `출산`, `출산율`, `출산하다`, and the corpus form `비출산` with the internal `출>산` boundary. The corpus form is rule-derived from the attested `출산` constituent; it is not claimed as a direct dictionary quotation. A positive test checks all four exact licenses and a negative lookalike `비출고` ensures the rule is not generalized from arbitrary substrings.
+
+Source: NIKL Korean Basic Dictionary, `출산` search result, showing [출싼], [출싼뉼], [출싼하다]: https://krdict.korean.go.kr/kor/dicMarinerSearch/search?ParaWordNo=&mainSearchWord=%EC%B6%9C%EC%82%B0
+
+**Status:** PARTIAL pending exact-head browser/Python/build checks and a paired post-change diagnostic. The §26 license remains exact-form and boundary-conditioned; it is not a productive Sino-Korean analyzer.
+
 ## Prioritized research clusters
 
 ### A. Morphology-conditioned fortition and rule boundaries — highest implementation priority
@@ -82,7 +104,7 @@ Evidence: 못잃어. The registered NIKL usage-survey source reports both insert
 
 ### E. IPA convention and segmental annotation
 
-The earlier broad-candidate review identified recurring strict mismatches involving aspiration notation ([ʰ] vs [h]), /y/ vs /ɥi/, unreleased-coda marks, /j/ presence, and lateral allophones. These are review strata, not five proven phonological bugs. Maintain strict and broad-candidate metrics separately. Only an adjudicated IPA convention may decide whether a symbol difference is a true error.
+Use the mass mismatch inventory and its profile scope. The 464 dark-l, 261 /h/-allophone, and 77 palatal-nasal occurrences are primarily strict IPA-profile candidates; 37 aspiration-notation, 35 /y/~/ɥi/, 34 unreleased-coda, and 12 lateral-flap occurrences remain in the broad residual. Do not rewrite the engine to match a narrow transcription convention without independent review. The 11 residual fortition cases are a separate phonological-rule workstream; `비출산` now has an exact §26 license, while the remaining examples are not yet adjudicated.
 
 ### F. Remaining true engine candidates
 
@@ -129,6 +151,7 @@ A claim must state the exact corpus/version, shared occurrence denominator, refe
 | Freeze scope: Kozak Kim only; g2pK immutable | DONE_VERIFIED | Explicit user direction; branch changes only native Kozak Kim and its tests/docs |
 | Inspect paired diagnostic and extract output-different cases | DONE_VERIFIED | Artifact 13093672281; 2,699 shared; 23 output-different; 15 KK closer / 8 g2pK closer |
 | §27 complete `-ㄹ게` boundary repair | DONE_VERIFIED | Browser test 1114 passed; run 41335549779 confirms `올게이` distance 3→1, no other paired Kozak Kim output changes, and no regressions in 2,699 shared occurrences |
+| §26 exact `출산`-family fortition licenses | PARTIAL | NIKL Basic Dictionary directly attests `출산[출싼]`, `출산율[출싼뉼]`, `출산하다[출싼하다]`; exact licenses for these and corpus `비출산` added with positive/negative tests. Exact-head CI and paired post-change diagnostic pending |
 | Long-vowel discrepancies | TODO | Source-vs-reference adjudication for 없는/없다/없어/알다/많이/사건/한자 |
 | §11 complex-coda contrast expansion | TODO | Positive verbal-stem and negative noun/lookalike controls, source review |
 | 못잃어 variant adjudication | PARTIAL | NIKL survey records both variants; no source-backed ranking for this exact item |
