@@ -3,7 +3,7 @@
 **Scope:** Kozak Kim only. The original/vendor g2pK implementation remains unchanged and comparison-only.
 **Working branch:** research/kozak-kim-independent-ipa-packets-2026-11-01.
 **PR:** #417, draft and stacked on the PR #416 implementation line. PRs #415 and #416 remain open; no merge or destructive branch operation was performed.
-**Last code/test head with passing exact-head CI:** `8b22f778112442024f876061bd0e576af762e761` (push run `41357675602` PASS; PR run `41357680448` PASS, including Python/data integrity and browser regression/build). Production-code head remains `bc7b1474eecfe8df8006572abf0f07957f829647`; later commits add tests, research data and documentation only. This final handoff refresh is documentation/evidence-only; no production phonology rules changed.
+**Last code/test head with passing exact-head CI:** `8b22f778112442024f876061bd0e576af762e761` (push run `41358504664` PASS; PR run `41358508399` PASS, including Python/data integrity and browser regression/build). Production-code head remains `bc7b1474eecfe8df8006572abf0f07957f829647`; later commits add tests, research data and documentation only. This final handoff refresh is documentation/evidence-only; no production phonology rules changed.
 
 ## Current task ledger
 
@@ -19,7 +19,7 @@
 
 ## Latest paired browser benchmark
 
-Run 41358068900, paired artifact 13103478172.
+Run 41358508374, paired artifact 13103483761.
 
 - 2,703 eligible occurrences; 2,699 shared scored occurrences; Kozak Kim coverage 99.852%.
 - Paired exact match: 1,442/2,699 = 53.4272% for each engine. Exact-match delta is zero; its 95% cluster-bootstrap interval crosses zero.
@@ -27,19 +27,19 @@ Run 41358068900, paired artifact 13103478172.
 - Four Kozak Kim abstentions; zero engine errors. This is a diagnostic on noisy UGTPHON annotations, not normative IPA adjudication or Ukrainian-target validation.
 - Compared with the preceding PR #416 browser artifact, exactly two Kozak Kim outputs changed: 무고일수도있다는 and 했을시. Each reduced edit distance by one; neither became an exact match. All g2pK predictions remained unchanged.
 
-Secondary native paired diagnostic: run 41358068788, artifact 13104072941; 2,698 shared occurrences; native CER 9.1047% vs g2pK 9.2304%, exact match 53.0393% vs 53.1134% (slight exact-match advantage for g2pK); five native abstentions and zero engine errors. Separate runtime profile, not directly comparable with browser.
+Secondary native paired diagnostic: run 41358508325, artifact 13104257589; 2,698 shared occurrences; native CER 9.1047% vs g2pK 9.2304%, exact match 53.0393% vs 53.1134% (slight exact-match advantage for g2pK); five native abstentions and zero engine errors. Separate runtime profile, not directly comparable with browser.
 
 ## Verification
 
 
-- Multi-engine run 41354753780 completed as CANCELLED. Run 41358068874 was later CANCELLED by the next branch update; latest run 41358392151 is IN_PROGRESS at this handoff. Optional CharsiuG2P and ByT5 inference jobs were SKIPPED. No completed multi-engine score is claimed.
+- Multi-engine run 41354753780 completed as CANCELLED. Run 41358068874 was later CANCELLED by the next branch update; latest run 41358508284 is IN_PROGRESS at this handoff. Optional CharsiuG2P and ByT5 inference jobs were SKIPPED. No completed multi-engine score is claimed.
 - Exact-head push system/Python regression and data integrity: PASS — run 41357675602.
 - Exact-head PR system/Python regression, browser regression tests and build: PASS — run 41357680448.
 - Test-case extraction: PASS — run 41357680364.
-- Paired browser UGTPHON comparison: PASS — run 41358068900.
-- Native paired Kozak Kim vs original g2pK diagnostic: PASS — run 41358068788.
-- Morphology consensus: PASS — run 41358068794.
-- Morphology adapter smoke: PASS — run 41358068856.
+- Paired browser UGTPHON comparison: PASS — run 41358508374.
+- Native paired Kozak Kim vs original g2pK diagnostic: PASS — run 41358508325.
+- Morphology consensus: PASS — run 41358508508.
+- Morphology adapter smoke: PASS — run 41358508288.
 - Kiwi/MeCab-Ko analyzer cross-check: PASS — run 41353171166 (artifact 13102406365 plus analyzer outputs 13102576042 and 13101838045).
 - CharsiuG2P inference and ByT5 inference: SKIPPED (optional research jobs; no fresh neural result claimed).
 - NIKL metadata-only inventory: SKIPPED.

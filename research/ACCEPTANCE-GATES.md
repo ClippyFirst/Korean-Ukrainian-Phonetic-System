@@ -10,7 +10,7 @@
 | 5 — Product quality | BLOCKED / EVIDENCE-LIMITED | No independent Ukrainian target review or user study. Korean IPA metrics do not validate Ukrainian orthography. |
 | 6 — Release and independent review | BLOCKED | Two qualified blind IPA submissions, independent C08 adjudication, C09/C10 convention review, item-level rights and Ukrainian target review remain outstanding. |
 
-The latest paired browser diagnostic (run 41358068900; artifact 13103478172) has 2,699 shared occurrences, equal exact match (53.4272%) and CER 8.1097% for Kozak Kim versus 8.2138% for original g2pK (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp). This is a noisy-corpus diagnostic, not a release gate or normative accuracy claim.
+The latest paired browser diagnostic (run 41358508374; artifact 13103483761) has 2,699 shared occurrences, equal exact match (53.4272%) and CER 8.1097% for Kozak Kim versus 8.2138% for original g2pK (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp). This is a noisy-corpus diagnostic, not a release gate or normative accuracy claim.
 
 **Disposition: research prototype; not research-certified and not release-ready.**
 
@@ -724,4 +724,4 @@ The earlier blocker “source utterance context unavailable” is superseded. Al
 The multi-engine comparison workflow did not produce a completed score report: runs 41353171180 and 41353450707 were cancelled during the comparison step after branch updates. The partial readiness artifact 13101748305 is complete for its own audit: 644 unique lexical rows, no explicitly adjudicated IPA gold, 24 frozen holdout cases without IPA gold, no overlap. Do not train on provisional candidates or holdout data.
 
 
-Exact-head verification: push run `41357675602` and PR run `41357680448` both passed on code/test head `8b22f778112442024f876061bd0e576af762e761`. Native paired diagnostic run `41357680365` is a separate runtime profile and does not establish normative IPA accuracy.
+Exact-head verification: push run `41358504664` and PR run `41358508399` both passed on code/test head `8b22f778112442024f876061bd0e576af762e761`. Native paired diagnostic run `41357680365` is a separate runtime profile and does not establish normative IPA accuracy.
