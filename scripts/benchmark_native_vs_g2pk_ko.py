@@ -313,11 +313,20 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corpus", type=Path, default=os.environ.get("UGTPHON_KO_TEST_PATH"))
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--granularity", choices=("token", "sentence"), default="token")
+    parser.add_argument("--boundary-mode", choices=("same_word", "phrase"), default="same_word")
+    parser.add_argument("--split", choices=("dev", "test"), default="test")
     args = parser.parse_args()
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH")
     try:
-        report = evaluate(load_corpus(Path(args.corpus)))
+        rows = load_corpus(Path(args.corpus), expected_split=args.split)
+        if args.granularity == "sentence":
+            report = evaluate_sentences(rows, boundary_mode=args.boundary_mode)
+        else:
+            if args.boundary_mode != "same_word":
+                parser.error("--boundary-mode phrase requires --granularity sentence")
+            report = evaluate(rows)
     except Exception as exc:
         print(f"comparison failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
