@@ -529,3 +529,12 @@ Feature status: **PARTIAL / in review**, tracked by [PR #354](https://github.com
 - **EVIDENCE:** Jeon et al., Findings EMNLP 2026, report Korean PERnc 47.5→32.0 for ByT5 and 77.3→32.4 for Qwen2.5-0.5B with their compositional retrieval model. Korean ablation: retrieval-only PERnc 27.7; retrieval+staged decoding 32.0. Test retrieval-only first; do not blindly add staged decoding.
 - **DEFERRED:** neural UGT normalization, because no verified public implementation/checkpoint was found and a transparent retrieval baseline has not yet been measured.
 - **BLOCKED:** exact-head CI for code commit 447df1febc769dcb0cfa1091f7b992bc6f2be7f3 and a real-data surface benchmark run. GitHub-App-authored commits did not emit workflow runs; local network/data access was unavailable.
+
+
+## Raw-surface UGT normalization diagnostic — 2026-11-01
+
+- **DONE_VERIFIED as an earlier diagnostic:** workflow [41306501056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41306501056) ran train-only raw-surface normalization on the pinned Korean UGTPHON test split: 3,140 attempted, 2,639 scored, coverage 84.0446%, exact 51.6105%, coverage-adjusted exact 43.3758%, CER 10.0256%, 4 unresolved, 0 engine errors.
+- **Finding:** retrieval hit only 22/722 noncanonical tokens (3.0471%): 15 exact surface, 7 B1 lengthening, 0 exact-context. 47 canonical collisions and 483 ambiguous contexts were blocked. This is sparse retrieval, not a demonstrated accuracy improvement.
+- **PARTIAL:** paired raw-vs-normalized baseline metrics are now implemented in the script, tests and workflow output on PR #411. They compare only tokens scored by both and report exact/CER deltas, rescued/lost tokens and exact improvements/regressions. Exact-head CI and a new real-data artifact are still pending.
+- **DEFERRED:** no fuzzy local-context fallback. The EMNLP 2026 sentence-context results concern a trained model and cannot be reproduced by exact trigram lookup; no default engine behavior is changed.
+- **Release gate:** do not claim a raw-UGT improvement until the paired baseline run shows a positive effect without canonical false rewrites or category-specific regressions.
