@@ -4484,3 +4484,12 @@ The primary Ukrainian output is named **українська трансліте�
 ## Research design clarification — Korean UGTPHON ablation (2026-11-01)
 
 Jeon et al., Table 4, p. 6 ([ACL Anthology PDF](https://aclanthology.org/2026.findings-emnlp.1020.pdf)) report Korean PERnc: Word→Word 47.5; Sent→Word 28.1; Sent→Word + retrieval, no staged decoding 27.7; Sent→Word + retrieval + staged decoding 32.0. Sent→Sent produces PERnc 31.3 but canonical PERc 41.6. The evidence supports sentence context as input while emitting only the target word, with optional retrieval hints; it argues against full-sentence phoneme generation and against adding staged decoding blindly. This is a separate UGT canonicalization component, not a reason to widen deterministic Korean phonology rules.
+
+
+## Paired-metric multi-reference hardening — latest code head 7bbbd7e
+
+- Exact-match deltas continue to accept any listed gold variant independently for each path.
+- Paired CER is now calculated only on tokens where both paths select the same closest gold string. If the two paths select different valid variants, the token remains in paired exact-match metrics but is excluded from paired CER, avoiding a reference/denominator mismatch.
+- Baseline aggregate output omits normalization-hit/miss counters because those do not apply to an unnormalized path.
+- Added a regression fixture where raw and normalized outputs match different accepted IPA variants; expected paired CER is null for that token, and no exact improvement/regression is counted.
+- **PARTIAL:** exact-head tests and the new real-data paired report have not run at code head \`7bbbd7e7ce888a9c995bb70959e17858263c07a8\`. The prior paired implementation run is still queued on the earlier code head; no new metrics may be claimed.
