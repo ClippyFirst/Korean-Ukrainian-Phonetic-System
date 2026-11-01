@@ -17,7 +17,9 @@ test('IPA normalization and edit distance match the Python benchmark contract', 
 
 test('broad candidate IPA normalization collapses documented allophones but preserves contrasts', () => {
   assert.equal(normalizeIpaBroadCandidate('ˈsʰa̠ːk͈ʌn'), 'saːk͈ʌn');
-  assert.equal(normalizeIpaBroadCandidate('ɭɲɦçxɸβʝ'), 'lnhhhhhh');
+  assert.equal(normalizeIpaBroadCandidate('ɭɲɦçxɸβʝɣ'), 'lnhhhhhhh');
+  assert.equal(normalizeIpaBroadCandidate('ɥi'), 'y');
+  assert.equal(normalizeIpaBroadCandidate('ɥa'), 'ɥa');
   assert.equal(normalizeIpaBroadCandidate('sʰɕʰʃʰ'), 'sɕʃ');
   assert.equal(normalizeIpaBroadCandidate('pʰtʰkʰk͈aːt̚'), 'pʰtʰkʰk͈aːt̚');
 });
