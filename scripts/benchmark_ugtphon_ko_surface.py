@@ -278,6 +278,13 @@ def evaluate_surface(
         {key: item.get(key) for key in ("surface", "g2p_input", "category", "normalization_hit")}
         for item in records if item["status"] == "unresolved"
     ][:30]
+    normalization_hit_examples = [
+        {
+            key: item.get(key)
+            for key in ("surface", "g2p_input", "category", "status", "gold", "predicted", "distance", "error")
+        }
+        for item in records if item.get("normalization_hit") is True
+    ][:100]
     return {
         "benchmark": "UGTPHON Korean test split — raw-surface retrieval + G2P",
         "purpose": "research-only exact-match normalization baseline; separate from canonical lexical G2P",
@@ -311,6 +318,7 @@ def evaluate_surface(
         ],
         "engine_error_examples": engine_error_examples,
         "unresolved_examples": unresolved_examples,
+        "normalization_hit_examples": normalization_hit_examples,
         "notes": [
             "The test token's canonical field is not read; only the training datastore can rewrite raw surfaces.",
             "Exact-match lookup has no contextual disambiguation and deliberately abstains on ambiguous mappings.",
