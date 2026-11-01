@@ -395,11 +395,12 @@ def test_provisional_lexical_target_without_reference_never_becomes_accepted():
     assert result["target_unavailable_reason"] == "provisional_lexical_target_requires_review"
 
 
-def test_nikl_sino_korean_rieul_fortition_has_direct_dictionary_attestation():
+def test_nikl_sino_korean_rieul_fortition_has_direct_qna_attestation():
     from korean_ukrainian.pipeline import phoneticize_korean
 
     analysis = phoneticize_korean("실수")
-    assert analysis["ipa"]["ipa"] == "ɕil.s͈u"
+    # Broad IPA intentionally keeps the sibilant allophone at [s]; the NIKL Q&A attests the Hangul surface and fortition, not a narrow [ɕ] transcription.
+    assert analysis["ipa"]["ipa"] == "sil.s͈u"
     trace = next(item for item in analysis["rules"] if item["rule_id"] == "R012" and item["changed"])
     assert "실수" in trace["license_context"]
     assert "qna_seq=330843" in trace["source"]
