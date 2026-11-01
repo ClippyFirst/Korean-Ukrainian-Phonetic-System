@@ -169,7 +169,7 @@ A higher score on UGTPHON does not establish that an engine is best for NIKL sta
 3. Per-rule error strata, especially liaison, coda neutralization, aspiration, fortition, nasal/liquid assimilation, palatalization, 의 variants, N-insertion, morphology-sensitive cases, and lexical exceptions.
 4. A second evaluation on held-out examples not used to develop rules or choose exceptions.
 5. Separate expert review of IPA-to-Ukrainian adaptation and user-facing readability.
-6. Review of the current PR against the independent native-engine case PR #281 before merging; both currently touch the canonical handoff, so do not blindly merge either branch.
+6. PR #281 was merged on 2026-10-24; its evidence-backed native cases are already part of main. Review the still-open PRs #371 and #411 independently; PR #371 is stale/diverged and must not be merged wholesale.
 
 ## Reproduction
 
@@ -179,3 +179,102 @@ The workflow checks out the exact upstream revisions into the ephemeral runner, 
 ## Contextual neural-G2P evaluator consolidation — 2026-10-27
 
 The consolidation branch also carries the strict sentence-context evaluator and its readiness/benchmark tests from the V3 research workstream. This evaluator is infrastructure, not an authentic NN-KoG2P model adapter: no NN-KoG2P inference or score is claimed. It requires declared IPA output, validates sentence IDs and canonical inputs, rejects unadapted Hangul outputs, and reports coverage/exact-match/CER at the sentence level. Word-level SIGMORPHON remains a context-free ablation, not a sentence-context benchmark. The current combined-head CI is the acceptance gate; previous PR-specific successes do not substitute for it. Model/license and training-data-overlap questions remain open, and all neural outputs remain diagnostic/hypothesis-generating only.
+
+
+## External Korean-to-Ukrainian services: fixed-input smoke comparison only
+
+**Scope:** Hikka and Shchegel are included as external Ukrainian-output reference services, not as Korean IPA engines and not as production dependencies. Their public API returns Ukrainian strings but does not expose source IPA, rule trace, confidence, or evidence provenance required by the IPA-first project contract.
+
+### Historical observed run (2026-10-29)
+
+- Source: open PR #371, branch bench/extended-metrics-runtime-2026-10-29, head a10e2bb7ea9b636a816f13c972589fd0d8e505ec.
+- Exact workflow run: [40843579356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579356).
+- Artifact: [external-transcription-smoke-report](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579356/artifacts/12883323989), SHA-256 11d1c762bd6453d9a97e5c7ba0f8d89f28b88e7337f46d30eba540bdc2700c90.
+- Both Hikka and Shchegel returned HTTP 200, 20/20 rows, and preserved input order.
+- One batch request measured 471.152 ms for Hikka and 402.449 ms for Shchegel. These are single wall-clock observations, not p50/p95 or comparable per-item latency.
+- Hikka and Shchegel raw output strings differed on 13/20 inputs.
+- Native raw display strings differed from Hikka on 20/20 and from Shchegel on 20/20. These are case-sensitive string differences, not accuracy rates.
+- The native pipeline marked 10/20 targets model-selected and 10/20 unavailable. The historical artifact's available_targets=20 field was misleading: it counted non-empty display strings, including provisional candidate_orthography values whose target_status was unavailable. The corrected comparator added in PR #414 separates accepted targets from provisional candidates.
+
+Selected Hikka/Shchegel disagreements:
+
+| Korean input | Hikka | Shchegel |
+|---|---|---|
+| 독립문 | Токріпмун | Докріпмун |
+| 국립 | Кукріп | Ґукріп |
+| 같이 | Каті | Ґаті |
+| 민주주의의 의의 | Мінджуджуіі Иіі | Мінджуджуийий Ийий |
+| 김치 | Кімчі | Ґімчхі |
+| 흙을 | Хильґиль | Хикиль |
+| 낡은 | Нальґин | Накин |
+| 햇빛이 | Хетпічі | Хетбіті |
+| 젊은 | Чольмин | Джьомин |
+| 종로 | Чонро | Джонро |
+
+These examples identify useful adjudication targets: initial velar/affricate choices, complex codas and liaison, palatalization/fortition, vowel handling, and the ㅢ sequence. They do not establish which service is correct.
+
+### Corrected repeatable workflow
+
+PR #414 adds scripts/compare_external_korean_ukrainian.py, tests/test_external_korean_ukrainian_smoke.py, and .github/workflows/external-korean-ukrainian-smoke.yml. The workflow is manually dispatchable and runs on changes to its own workflow/script/tests. It sends only the same fixed 20 public diagnostic phrases; it never sends user-supplied text.
+
+The report now distinguishes:
+- accepted native targets (target_status == model-selected and a non-empty accepted output);
+- provisional native candidates, which remain unaccepted when target_status is unavailable;
+- external non-empty outputs and source-order validation;
+- raw exact-string disagreements, explicitly not accuracy.
+
+Fresh exact-head repeat on PR #414:
+- Head: 8384d9c7d175c20888d780bdce8ab7cbb8ea3d1d.
+- Workflow: [41249753994](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41249753994), success; all 7 comparator contract tests passed.
+- Artifact: [13060223073](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41249753994/artifacts/13060223073), SHA-256 b4a3d0d540a73b22d589b576314222b181ff479a52132ab32f5b363df23a3075.
+- Hikka and Shchegel again returned 20/20 outputs in order. Single-batch times were 574.826 ms and 530.391 ms, respectively; these are not p50/p95.
+- The corrected report records 10/20 native model-selected targets, 10/20 provisional candidates with unavailable status, 13/20 Hikka/Shchegel raw disagreements, and 20/20 raw differences between native display candidates and each external service.
+
+
+### Interpretation and production gate
+
+Hikka and Shchegel are useful optional comparison references because they expose different Ukrainian-output conventions on the same inputs. They are not eligible as core pronunciation engines: neither response exposes IPA or a source-to-target trace, and there is no independently adjudicated Ukrainian gold set for this 20-item sample. Their 20/20 output coverage is not evidence of better accuracy than the native pipeline's 10/20 accepted targets; the native system deliberately withholds unreviewed mappings.
+
+Do not select a winner or route user text to either service by default. Before any product integration, verify each service's terms, privacy/data handling, stability, and permission for automated benchmarking; build a balanced independently adjudicated Ukrainian target set with accepted variants; and compare against the exact same source IPA and morphology contexts. Until then, keep both services in the optional fixed-input smoke workflow only.
+
+
+## Research-only neural G2P candidates: historical exact-job evidence
+
+The stale PR #371 branch contains useful neural inference artifacts. The overall workflow run [40843579685](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40843579685) is **not green**: the baseline multi-engine job and both neural inference jobs succeeded, but the final per-occurrence join job failed because that branch's baseline artifact lacked the required per_engine_occurrences field. The current main and PR #411 versions of the benchmark runner now emit that field; PR #411's fresh run is the current verification gate for the join.
+
+### CharsiuG2P multilingual ByT5 small
+
+**Research-only — weights license unresolved.**
+
+| Dataset | Exact match | CER | PER | Coverage |
+|---|---:|---:|---:|---:|
+| UGTPHON Korean test split (275 rows; 2,698 scored tokens) | 88.531% | 3.624% | 3.356% | 100% |
+| SIGMORPHON 2021 Korean lexical test (999 words) | 70.971% | 5.408% | 5.582% | 100% |
+
+- Successful component job: 123345574019 in run 40843579685.
+- Artifact: 12883949705, SHA-256 579fc596b2b6ea72446f7a83005f73d06ec77620a388fad31db6b5819a283bfe.
+- Model: charsiu/g2p_multilingual_byT5_small_100, revision ed5cf99707fb39f5f3ccc461530d56b6fb531fd3; tokenizer google/byt5-small, revision 68377bdc18a2ffec8a0533fef03b1c513a4dd49d.
+- Upstream code license is MIT, but the model-weight license is unresolved. The 1.198 GB weights were not redistributed; only predictions and provenance were uploaded.
+- The training-data manifest is insufficient to rule out overlap with public evaluation sources. The test is token/word-level and does not preserve sentence context.
+
+This is the strongest observed research candidate on these two pinned lexical datasets, not a production winner. The score must not be generalized to sentence-level pronunciation, names, morphology contexts, or independently adjudicated normative accuracy. Do not redistribute or deploy the checkpoint until its weights license and training-data provenance are clarified.
+
+### Licensed ByT5 multilingual tiny negative control
+
+| Dataset | Exact match | CER | PER | Coverage |
+|---|---:|---:|---:|---:|
+| UGTPHON Korean test split | 0% | 164.574% | 172.425% | 100% |
+| SIGMORPHON 2021 Korean lexical test | 0% | 159.827% | 177.376% | 100% |
+
+- Successful component job: 123345573780 in run 40843579685.
+- Artifact: 12883639995, SHA-256 7043cae92e66f318e0490dcfe11d4eab0c2a7a15deac94e2e0286c70b0b4c9f3.
+- Model: willwade/byt5-g2p-multilingual-tiny, revision 181c25807512f35851062afadf26d09db9fa1968; model card declares CC BY-SA 4.0.
+- The model card describes a 4.12M-pair corpus derived from WikiPron and gruut; per-language source licenses and overlap with the evaluation sets were not independently audited.
+
+Despite 100% output coverage, this checkpoint is not a viable candidate on these evaluations. Coverage must never be mistaken for correctness.
+
+### Join failure and current fix
+
+The paired-report job 123352874858 failed with: baseline report lacks per_engine_occurrences; rerun the updated multi-engine runner. This is a schema incompatibility in the stale PR #371 branch, not a failure of the Charsiu or ByT5 inference jobs. The main branch runner now emits per_engine_occurrences and has a contract test for the report schema. PR #411's current run must verify that the joined reports now complete before the neural-vs-all-engine comparison is marked DONE_VERIFIED.
+
+**Decision:** Charsiu is the best measured research candidate; ByT5 tiny is a measured negative control. Neither changes the production engine selection: Charsiu remains blocked by unresolved weight rights and training-data overlap; the licensed tiny model is inaccurate; native/g2pk remain the strongest conventional baselines on the existing IPA corpora.
