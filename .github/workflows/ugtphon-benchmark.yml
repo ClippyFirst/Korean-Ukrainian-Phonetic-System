@@ -10,6 +10,7 @@ on:
       - "scripts/benchmark_ugtphon_ko_surface.py"
       - "scripts/benchmark_native_vs_g2pk_ko.py"
       - "tests/test_ugtphon_benchmark.py"
+      - "tests/test_native_vs_g2pk_sentence_benchmark.py"
       - "tests/test_ugtphon_surface_benchmark.py"
       - ".github/workflows/ugtphon-benchmark.yml"
       - "src/korean_ukrainian/**"
