@@ -40,7 +40,7 @@ Sources:
 
 ## Discrepancy inventory from the paired report
 
-The complete occurrence-level ledger is stored in [`research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv`](../research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv). It contains exactly 23 occurrences where the two engines emitted different normalized IPA strings, including repeated tokens as distinct occurrences. Each row records the reference, both engine outputs, edit distances, the closer engine, a provisional phenomenon cluster, and an adjudication note.
+The occurrence-level ledger is stored in [`research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv`](../research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv). Its original 23 rows are explicitly tagged `baseline_pre_§26`; two additional rows record the newly created post-§26 output divergences from run 41336800424. The 25 rows therefore span two labelled snapshots and must not be treated as one simultaneous comparison. Each row records source identity, reference, both engine outputs, edit distances, a provisional phenomenon cluster, and adjudication notes.
 
 The ledger confirms 15 occurrences with lower edit distance for Kozak Kim and 8 for g2pK. This count is occurrence-level and must not be interpreted as 15 independent lexical wins: repeated forms include `없는`, `없다`, and `사건`, and the bootstrap unit remains the source sentence/utterance row.
 
