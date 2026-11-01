@@ -358,3 +358,13 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **Residual rule work:** keep R010/R012/R013/R028 conservative until a morphology-boundary model can distinguish verb stems, bound nouns, Sino-Korean compounds and lexicalized compounds. Do not add test-specific exact entries. Remaining IPA notation groups (ㅟ, aspiration notation, coda release marks, liquids) need convention adjudication, not blind normalization.
 - **Exact-head verification at implementation commit c7e2ce435960856a9382e79e71a8d49dc51c4e09:** system, JavaScript tests (1,364/1,364), Python 3.11/3.12/3.13, wheel/clean install, teacher corpus audit, browser build/integration, external UGTPHON benchmark, paired browser g2pK benchmark, morphology smoke/consensus, exhaustive register extraction and master-table artifacts passed.
 - **Status:** research prototype; not release-ready. Independent Korean IPA review, Ukrainian target review and item-level licensing remain blockers. PR #415 remains draft and unmerged.
+
+
+## 2026-11-01 — Kozak Kim discrepancy-driven exact-form corrections
+
+- **DONE_VERIFIED:** complete `-ㄹ게` ending boundary in native Kozak Kim; positive controls (`할게`, `할게요`, `다를게`, `안타까울게`) and substring-only negative control (`올게이`).
+- **DONE_VERIFIED (bounded R012):** source-backed §26 fortition licenses for `출산`, `출산율`, `출산하다`, `비출산`, and dictionary-attested `저출산`; Python/browser parity tests and negative lookalikes `비출고`, `저출고`.
+- **DONE_VERIFIED diagnostic:** on 2,699 shared UGTPHON occurrences, exact match remains tied at 1,442/2,699; Kozak Kim CER improves 8.1271%→8.1228%, original g2pK CER 8.2138%; `비출산` improves one IPA edit and `출산` gains the NIKL-attested fortis surface despite an IPA convention mismatch in gold.
+- **PARTIAL / TODO:** remaining §26 candidates (`실시간`, `유사성`, `이중성`) and §27 phrase candidates (`했을 시`, `일 수`) require lexical/morpheme-boundary evidence; no blanket generalization.
+- **BLOCKED:** broad IPA mismatch classes need independent Korean phonetic/IPA adjudication; item-level NIKL/KOGL rights, Ukrainian target review and independent holdout remain open.
+- **Release status:** research prototype; not research-certified or release-ready. Detailed paired ledger, artifact IDs and acceptance status are in `docs/KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md` and the master handoff.
