@@ -17,9 +17,10 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from benchmark_ugtphon_ko import edit_distance, load_corpus, normalize_ipa
+from benchmark_ugtphon_ko import edit_distance, load_corpus, normalize_ipa, prepare_korean_sentence
 
 _HANGUL_TOKEN = re.compile(r"^[\uac00-\ud7a3]+$")
+_HANGUL_SENTENCE = re.compile(r"^[\uac00-\ud7a3\s]+$")
 
 
 def _gold_variants(raw: str) -> list[str]:
