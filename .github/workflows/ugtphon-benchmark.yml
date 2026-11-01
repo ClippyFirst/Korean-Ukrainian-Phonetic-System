@@ -104,7 +104,7 @@ jobs:
           from pathlib import Path
           r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
           print("DATASET:", r["benchmark"])
-          print("OVERALL:", {k: r[k] for k in ("attempted_tokens", "scored_tokens", "exact_match_rate", "character_error_rate", "unresolved_tokens", "engine_errors")})
+          print("OVERALL:", {k: r[k] for k in ("attempted_tokens", "scored_tokens", "coverage_rate", "exact_match_rate", "coverage_adjusted_exact_match_rate", "character_error_rate", "unresolved_tokens", "engine_errors")})
           print("NORMALIZATION:", r["normalization"])
           print("BY CATEGORY:", json.dumps(r["by_category"], ensure_ascii=False, sort_keys=True))
           print("Research-only exact-match baseline; not canonical G2P or normative standard-pronunciation accuracy.")
