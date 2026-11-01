@@ -1,15 +1,18 @@
-# Implementation ledger
+# Superpowers execution ledger — latest continuation 2026-11-01
 
-Ruling: Keep the Ukrainian inventory external so it remains a single source of truth.
-Ruling: Keep each Korean process as a separate traceable rule so competing ordering analyses can be represented later.
-Ruling: Represent contemporary Seoul stop cue change in evidence/analysis metadata rather than a universal acoustic transcription.
-Ruling: Make the UPI dependency optional; absence returns explicit unavailable status.
-Ruling: Expose broad IPA first and do not invent unsupported narrow detail.
-Ruling: Treat ㄴ-insertion as explicitly licensed because the same phonological environment does not deterministically trigger it.
-Ruling: Order explicitly licensed ㄴ-insertion before generic vowel liaison so 한여름 and phrase-level examples are not incorrectly resyllabified.
-Ruling: Apply representative-coda normalization inside nasal/liquid assimilation rather than waiting until final neutralization.
-Ruling: Require exact generated-artifact equality with the deterministic 11,172-syllable generator.
+## Latest verified status — C01–C07 / C08 continuation
 
+- **Scope:** only Kozak Kim; original g2pK stays untouched.
+- **Branch/PR:** research/kozak-kim-independent-ipa-packets-2026-11-01, draft PR #417 stacked on PR #416.
+- **C01–C07:** seven neutral blind packets, 42 entries, 39 unique source rows, full source contexts, no engine/baseline/IPA leakage. Packet preparation is DONE_VERIFIED; independent reviewer submissions remain BLOCKED.
+- **C08:** source contexts recovered for 무고일수도있다는, 했을시, and 유사성. NIKL Q&A 327466 supports the first morphology; Q&A 313481/333044 support the dependent-noun 시 analysis. Existing exact-form §27 licenses are retained. 유사성 remains unresolved; five C08 row IDs remain unidentified. No new rule family or generalized -성 rule was added.
+- **Runtime:** Python exact R013 same-eojeol licensing now works for a licensed word inside a full sentence. Full-context positive and negative tests pass in Python and browser.
+- **Benchmark:** browser paired CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster CI −0.1951 to −0.0261 pp); exact match 53.4272% each, no statistically supported exact-match winner. Only the two C08 target outputs changed relative to the prior PR #416 browser artifact; g2pK outputs are unchanged.
+- **Rights:** source register 151 rows; 142 review required and 7 manual classifications remain. NIKL item-level rights review is open.
+- **CI:** Python regression/data integrity, browser regression/build, packet tests, paired browser benchmark, native paired diagnostic, morphology consensus/adapter and extractor passed on the verified code head. Optional Charsiu/ByT5 and NIKL metadata-only inventory were skipped; multi-engine run was still in progress at snapshot.
+- **Readiness:** research prototype, not research-certified or release-ready. Next blockers are two independent IPA reviews, five missing C08 IDs/contexts, C09/C10 adjudication, item-level rights and Ukrainian target review.
+
+## Historical snapshots
 
 ## Kozak Kim continuation — 2026-11-01
 

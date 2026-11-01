@@ -3,6 +3,17 @@
 Last updated: 2026-11-01  
 Current phase: Phase 7 — verification and Phase 9 — release acceptance. Mainline implementation is tested/deployed as a research preview; independent linguistic and owner-dependent release gates remain open.  
 Planned phases are not evidence of completion.
+## Current continuation status — 2026-11-01
+
+Current focused work is Phase 7 verification plus Phase 10 independent-review preparation; Phase 9 release acceptance remains blocked.
+
+- C01–C07 blind packet preparation is DONE_VERIFIED: seven neutral packets, 42 entries, 39 unique UGTPHON source rows with source contexts. Two independent reviewer submissions are still required.
+- C08 is PARTIAL: three contexts restored, two existing exact §27 forms context-validated, 유사성 unresolved, five occurrence IDs still unidentified. Do not add more phonetic exceptions without exact source/morphology evidence.
+- Python R013 exact same-eojeol licensing now applies within full sentences, matching the browser engine. Full-context positive and negative tests pass.
+- Current paired browser benchmark: 2,699 shared occurrences; CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp); exact match tied at 53.4272%. Diagnostic only.
+- Remaining acceptance work: two independent IPA reviews, five C08 IDs/contexts, C09/C10 convention adjudication, NIKL item-level rights, and Ukrainian target review.
+
+
 
 ## Operating model
 Work in bounded phases. Each phase must produce durable artifacts and satisfy exit criteria before closure. Parallel research is acceptable, but shared runtime changes should wait until source and behavior contracts are sufficiently clear. Use focused branches; avoid creating many branches without an integration plan.

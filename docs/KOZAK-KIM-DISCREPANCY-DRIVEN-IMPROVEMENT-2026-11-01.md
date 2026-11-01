@@ -1,5 +1,39 @@
 # Kozak Kim: discrepancy-driven phonology improvement — 2026-11-01
 
+## Latest continuation update — 2026-11-01: C01–C07 blind packets, C08 contexts, and Python sentence parity
+
+This section supersedes the earlier C08/context-readiness notes below. Older entries are retained as historical snapshots.
+
+### C01–C07 independent-review packages
+
+- Seven separate packets: research/ipa-review-packets/blind-ipa-C01.json through blind-ipa-C07.json; six pilot forms per packet, 42 entries and 39 unique source-row IDs.
+- All 39 IDs and target tokens were matched to the pinned UGTPHON Korean test split. Raw sentence context is included; canonical labels, phoneme annotations, IPA, engine outputs and benchmark results are excluded.
+- The packet schema is now neutral (korean-independent-ipa-review-v1). A leak in the former kozak-kim schema identifier was removed from all seven packets. The regression test now rejects kozak-kim, kozak_kim, g2pk, engine labels, IPA/reference fields and internal artifact identifiers.
+- UGTPHON's Korean subset is covered by its Apache-2.0 license and attribution. Raw MultiLexNorm++ source files are not redistributed.
+- **Disposition:** READY_FOR_INDEPENDENT_REVIEW_PILOT. This means packages are prepared, not that independent review has occurred. Two separate qualified reviewer submissions remain outstanding.
+
+### C08 context and morphology evidence
+
+A pinned fixture at tests/fixtures/kozak-kim-c08-source-contexts.json restores three source contexts:
+
+1. multilexnorm2026_1953, 무고일수도있다는: full sentence confirms the intended X일 수도 construction. NIKL Q&A 327466 supports the dependent-noun morphology; Standard Pronunciation Rule §27 supports a conditional fortition derivation.
+2. multilexnorm2026_1979, 했을시: full user-generated sentence is restored. NIKL Q&A 313481 and 333044 confirm dependent noun 시 after -을; §27 supports a conditional derivation. The unspaced, noisy UGC context leaves exact segmentation/prosodic cohesion less certain.
+3. dc_inside_2024, 유사성: context is restored, but NIKL Q&A 312649 confirms 의외성 only; 유사성 is mentioned in the question, not confirmed in the official answer. It remains unresolved.
+
+The existing two exact same-eojeol §27 forms are retained; **no new phonological rule family or generalized -성 / ㄹ+ㅅ rule was added in this continuation**. Five of the eight C08 occurrences still lack recovered source-row IDs/context. None of these context/morphology sources is direct IPA gold.
+
+The 2021 NIKL educational PDF remains listed as supplementary research only. Its item-level reuse marking has not been cleared, and it is no longer relied on as production evidence; the C08 morphology claims instead cite official Q&A 313481/333044 and Q&A 327466.
+
+### Cross-runtime correction and measured effect
+
+Python previously matched exact R013 same-word licenses against the entire request string, so a licensed eojeol inside a sentence could be missed. The Python rule-license path now resolves the containing eojeol and matches only the exact licensed word/pair. Browser and Python full-sentence tests cover both positive contexts; negative controls preserve the unresolved 유사성 case.
+
+The current paired browser benchmark (run 41352607907, artifact 13102275101) scores 2,699 shared occurrences: exact match is 53.4272% for both systems; Kozak Kim CER is 8.1097% versus original g2pK 8.2138%, a −0.1040 pp paired delta (95% sentence-cluster bootstrap CI −0.1951 to −0.0261 pp). Exact-match delta remains unproven because its interval crosses zero. Relative to the preceding PR #416 browser artifact, only the two targeted C08 outputs changed; each improved by one edit, neither became exact, and g2pK outputs did not change.
+
+**Current conclusion:** source-context traceability and runtime parity improved; the eight-case C08 cluster is not fully resolved; C01–C07 still require independent human IPA adjudication. Research prototype only.
+
+---
+
 ## Scope and invariants
 
 This workstream improves **only the in-repository Kozak Kim engine**. The vendored/original g2pK implementation is a frozen external comparison baseline: do not edit it, port its rules into Kozak Kim, or optimize Kozak Kim merely to imitate its output.
