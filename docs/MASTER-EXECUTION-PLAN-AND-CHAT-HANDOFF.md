@@ -4427,3 +4427,15 @@ The preceding exact-head PASS runs are on the code-equivalent head before the fi
 - PR #415 remains draft. No merge, release or deployment was performed.
 
 **Status:** the raw-surface benchmark restoration and its measured diagnostic are verified; the standard pronunciation engine remains a strong research prototype, not research-certified or release-ready.
+
+
+## Engineering-method references reviewed for this continuation (2026-11-01)
+
+The three user-supplied repositories were inspected at their current main-branch READMEs and relevant skill files:
+
+- [obra/superpowers](https://github.com/obra/superpowers): systematic debugging, test-first red/green work, and verification-before-completion. Applied by tracing each Python failure to its contract mismatch, preserving the intended engine behavior, and requiring exact Actions evidence before declaring the repair verified.
+- [mattpocock/skills](https://github.com/mattpocock/skills): small vertical TDD slices, tests at public behavioral seams, focused bug diagnosis, and two-axis code/spec review. Applied by correcting the benchmark evaluator's actual raw/normalized call contract and testing the report behavior rather than private implementation details.
+- [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail): correctness and safety before speed, reuse before new code, and YAGNI/lean review. Applied by restoring the already-existing PR #411 benchmark module instead of creating a duplicate, keeping the normalizer out of production runtime after its low recall, and declining to promote morphology candidates that did not improve paired metrics.
+
+These are engineering-method references, not Korean G2P engines or linguistic authorities. No external agent framework, skill runtime, package, or code was imported into the application. Their MIT licenses were not used to infer anything about the project's linguistic datasets or model weights.
+
