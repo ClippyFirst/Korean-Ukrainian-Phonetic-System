@@ -146,6 +146,7 @@ def _aggregate(records: list[dict[str, Any]]) -> dict[str, Any]:
         "unresolved_tokens": sum(item["status"] == "unresolved" for item in records),
         "engine_errors": sum(item["status"] == "engine_error" for item in records),
         "missing_gold": sum(item["status"] == "missing_gold" for item in records),
+        "unsupported_input_tokens": sum(item["status"] == "unsupported_input" for item in records),
         "normalization_hits": sum(item.get("normalization_hit") is True for item in records),
         "normalization_misses": sum(item.get("normalization_hit") is False for item in records),
     }
@@ -204,6 +205,26 @@ def evaluate_surface(
                     hits_canonical += 1
             elif is_nc:
                 misses_noncanonical += 1
+            # The native pronunciation API accepts precomposed Hangul and
+            # whitespace only. Keep unsupported raw UGT (Latin, emoji,
+            # compatibility jamo, mixed-script tokens) out of the engine-error
+            # bucket. A successful train-only canonical retrieval is checked
+            # first, so forms such as ㅋㅋ can still reach G2P as 크크.
+            has_hangul = any("\uac00" <= char <= "\ud7a3" for char in g2p_input)
+            supported_surface = has_hangul and all(
+                char.isspace() or "\uac00" <= char <= "\ud7a3"
+                for char in g2p_input
+            )
+            if not supported_surface:
+                item = {
+                    "status": "unsupported_input", "distance": None, "category": category,
+                    "surface": surface, "g2p_input": g2p_input,
+                    "normalization_hit": canonical_hint is not None,
+                }
+                records.append(item)
+                category_records[category].append(item)
+                continue
+
             if not isinstance(gold_raw, str) or not gold_raw.strip():
                 item = {
                     "status": "missing_gold", "distance": None, "category": category,
@@ -317,11 +338,16 @@ def evaluate_surface(
             for item in worst_mismatches
         ],
         "engine_error_examples": engine_error_examples,
+        "unsupported_input_examples": [
+            {key: item.get(key) for key in ("surface", "g2p_input", "category", "normalization_hit")}
+            for item in records if item["status"] == "unsupported_input"
+        ][:30],
         "unresolved_examples": unresolved_examples,
         "normalization_hit_examples": normalization_hit_examples,
         "notes": [
             "The test token's canonical field is not read; only the training datastore can rewrite raw surfaces.",
             "Exact-match lookup has no contextual disambiguation and deliberately abstains on ambiguous mappings.",
+            "Inputs outside the native Hangul+whitespace contract are counted as unsupported, not engine errors; train-only retrieval is attempted before this check.",
             "Potential canonical false rewrites are reported, not hidden; a production normalizer needs context-aware detection.",
             "This is not the paper's trained retrieval-augmented ByT5/Qwen model or its staged decoder.",
             "UGTPHON is noisy user-generated text; results must remain separate from canonical G2P and standard-pronunciation evaluation.",
