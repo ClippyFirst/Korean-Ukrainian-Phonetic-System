@@ -6,7 +6,9 @@
     "No candidate IPA, syllabification, allophone, or phonological analysis is supplied.",
     "Do not score boundary-sensitive or morphologically ambiguous items without original utterance context.",
     "This is a six-form pilot sample, not a complete cluster census.",
-    "UGTPHON IPA/reference annotations are not shown to reviewers; the supplied source_sentence is raw context only."
+    "UGTPHON IPA/reference annotations are not shown to reviewers; the supplied source_sentence is raw context only.",
+    "This is a six-form pilot sample, not a complete cluster census.",
+    "The included source_sentence is raw UGTPHON context only; canonical and IPA/reference annotations are deliberately excluded."
   ],
   "reviewer_instructions": [
     "Independently transcribe each item in broad phonemic IPA first.",
@@ -29,10 +31,10 @@
     "status": "READY_FOR_INDEPENDENT_REVIEW_PILOT",
     "required_before_scoring": [
       "Assign at least two qualified Korean IPA reviewers separate blind copies.",
-      "Record each reviewer's transcription convention and confidence.",
-      "Preserve the source attribution and Apache-2.0 notice with any shared packet."
+      "Record each reviewer's transcription convention, method, and confidence.",
+      "Preserve source attribution and the Apache-2.0 notice with any shared packet."
     ],
-    "promotion_rule": "No general rule or system change follows from pilot packets alone. Require independent first-pass agreement/reconciliation, source-backed positive/negative/boundary/interaction controls, and exact-head paired verification."
+    "promotion_rule": "Do not generalize beyond the pilot items. Any downstream rule proposal requires independent first-pass review, source adjudication, positive/negative/boundary/interaction controls, and exact-head paired verification."
   },
   "packet_id": "BLIND-IPA-C02-2026-11-01",
   "cluster_id": "C02",
@@ -157,7 +159,7 @@
     }
   ],
   "dataset_scope": "UGTPHON Korean test split; six-item pilot sample per cluster",
-  "source_license": "Apache-2.0 (UGTPHON Korean subset; see source license notice)",
+  "source_license": "Apache-2.0 (UGTPHON Korean subset; ko/LICENSE)",
   "source_attribution": [
     "Jeon et al. 2026, UGTPHON: Phonemizing User-Generated Text (Findings of EMNLP 2026)",
     "Choi et al. 2023, KoMultiText (NeurIPS SoLaR workshop)",
@@ -165,5 +167,5 @@
   ],
   "source_repository": "https://github.com/naver-ai/UGTPHON",
   "source_license_url": "https://www.apache.org/licenses/LICENSE-2.0",
-  "source_license_note": "The official UGTPHON Korean subset ko/LICENSE states Apache-2.0 and identifies KoMultiText/MultiLexNorm++ sources. Preserve this attribution and license notice when sharing excerpts; do not redistribute raw gated MultiLexNorm++ files."
+  "source_license_note": "UGTPHON ko/LICENSE states Apache-2.0 for the Korean subset. Preserve attribution and this license notice when sharing these excerpts. No canonical text, phoneme annotations, or IPA-Dict data are included."
 }
