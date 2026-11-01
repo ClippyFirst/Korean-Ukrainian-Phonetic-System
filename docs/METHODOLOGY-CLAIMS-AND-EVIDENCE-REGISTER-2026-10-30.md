@@ -89,3 +89,33 @@ The raw g2pK JavaScript source is instantiated directly and is not modified. Its
 ### Current research boundary
 
 Do not promote general R010/R012/R013/R028 fortition or compound rules based on a final coda alone. Their conditioning depends on stem, morpheme, compound and lexical boundaries. The current explicit source-backed licenses remain conservative until a verified morphology-boundary layer and an independent dev/holdout evaluation exist. The original g2pK baseline remains unchanged.
+
+
+## 2026-11-01 — Kozak Kim §26 exact 출산-family repair
+
+| ID | Claim / status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|
+| M-27 | Bounded §26 출산-family fortition repair — DONE_VERIFIED for original four forms; PARTIAL for `저출산` follow-up | Official NIKL Basic Dictionary search; source register `SRC-NIKL-DIC-CHULSAN`; exact-head Actions [41336800458](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800458) and paired browser run [41336800424](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800424), artifact `13095038704` | Kozak Kim now emits `출싼` for exact licensed 출산-family forms, including the test occurrence `비출산`; g2pK is unchanged. `비출산` is one IPA edit closer to the UGTPHON target; exact rate remains tied, CER improves slightly. `저출산` is an official dictionary-backed positive control, not a benchmark win. | Productive Sino-Korean morphology, universal R012 coverage, independent normative IPA accuracy, or overall superiority |
+
+The §26 rule remains exact-form and boundary-conditioned. The NIKL dictionary directly records `출산[출싼]`, `출산율[출싼뉼]`, `출산하다[출싼하다]`, and `저출산[저ː출싼]`. The original four-form runtime set is CI/benchmark verified; the additional `저출산` control was authored afterward and awaits exact-head CI. The implementation does not infer Sino-Korean status from a raw `ㄹ+ㅅ` sequence. NIKL's §26 explanations also note lexical constituent boundaries and exceptions. Item-level KOGL rights remain review-required.
+
+ 
+## 2026-11-01 — additional discrepancy claims and evidence boundaries
+
+| Claim | Evidence | Status / limitation |
+|---|---|---|
+| 실시간 requires fortis ㅆ at the Sino-Korean 실>시간 boundary | NIKL lexical source lists 實時間; NIKL Standard Pronunciation Rule §26; exact Kozak Kim license and positive/negative tests | Supported for this exact source-attested form; no general ㄹ+ㅅ inference. |
+| 이중성 has long vowel and fortis onset | NIKL Korean Basic Dictionary directly lists 이중성(二重性) [이ː중썽]; project derives IPA iː.dʑuŋ.s͈ʌŋ | Korean surface/IPA entry supported; IPA symbols are project-derived; Ukrainian target provisional. UGTPHON gold omits length, so edit-distance tie is not an authoritative contradiction. |
+| Derivational suffix -성 is a potential fortition family | NIKL Basic Dictionary defines suffix -성; NIKL Q&A 312649 directly confirms 의외성[의ː외썽] | Research candidate only. Q&A question text mentions 유사성 but answer does not directly confirm it; no productive rule or output for 유사성. |
+| Unspaced 했을시 / 일수도있다는 should receive §27 fortition | UGTPHON occurrence-level examples and NIKL §27 general rule | Not licensed: corpus whitespace is missing and morphological boundaries are not independently established. |
+
+The corresponding primary sources are registered as SRC-NIKL-INFO-SILSIGAN, SRC-NIKL-DIC-IJUNGSEONG, SRC-NIKL-DIC-SEONG-SUFFIX, and SRC-NIKL-QNA-312649. Item-level reuse rights remain unreviewed.
+
+
+## 2026-11-01 — exact-head Kozak Kim paired-browser reproducibility
+
+| ID | Claim | Status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|---|
+| M-18 | Current native Kozak Kim vs untouched original g2pK paired browser result | DONE_VERIFIED as a reproducible diagnostic measurement; generalization EVIDENCE-LIMITED | Exact-head PR #416 commit `0c7688bb91687fec81965f426c24dd248df918bb`; UGTPHON workflow [41342607471](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607471), browser pair artifact `13097847614`; exact-head system [41342607492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607492) | On 2,699 shared occurrences, exact match is tied at 1,442/2,699 (53.4272%); Kozak Kim CER is 8.1184% vs g2pK 8.2138%, paired delta -0.09536 pp, sentence-cluster 95% CI [-0.18443, -0.02046] pp. Current normalized-IPA discordance set: 26 occurrences. | Universal or normative superiority; exact-match advantage; independent Korean IPA gold; Ukrainian target quality; item-level NIKL/KOGL reuse clearance |
+
+The 26 current IPA-discordant occurrences must not be conflated with the 23 cases in the original pre-§27/§26 snapshot. The historical occurrence ledger contains 27 rows across snapshots; row `paired-17` preserves the resolved `올게이` false-positive as historical evidence. The latest artifact reproduces the immediately preceding paired artifact `13098181051` with no output changes on the shared subset. The UGTPHON metadata-only source inventory was skipped; optional ByT5/Charsiu inference and joined neural pairing were also skipped. No score or rights status is inferred from skipped jobs.

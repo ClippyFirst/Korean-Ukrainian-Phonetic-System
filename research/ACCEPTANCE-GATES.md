@@ -607,3 +607,61 @@ The benchmark results are valid for the engine code present in the run, but do n
 | NIKL item-level rights and dataset-license compatibility | BLOCKED | Verify item-level NIKL reuse marks and source terms before redistribution or release. |
 
 **Exact-head verification:** system run 41331679290 PASS; test matrix 41331679310 PASS (JavaScript 1,364/1,364; Python 3.11/3.12/3.13; wheel/clean install; teacher-corpus audit); browser G2P integration 41331679270 PASS; external UGTPHON diagnostic 41331679243 PASS.
+
+## Kozak Kim discrepancy-driven improvement snapshot — 2026-11-01
+
+Scope: improve native Kozak Kim only; preserve original g2pK as an unchanged comparison baseline.
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Paired baseline and occurrence-level discrepancy extraction | DONE_VERIFIED as diagnostic | Run [41331679243](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679243), artifact 13093672281; 2,699 shared occurrences; 23 output-different occurrences; 15 lower-distance Kozak Kim / 8 lower-distance g2pK |
+| Post-§27 paired browser diagnostic | DONE_VERIFIED as a diagnostic | Run 41335549779, artifact 13094763897; 2,699 shared tokens, exact tie, Kozak CER 8.1271% vs g2pK 8.2138%; only changed Kozak output is `올게이`, distance 3→1; no paired regressions. |
+| Demonstrate statistically established overall Kozak Kim superiority | BLOCKED | Exact rates tie at 53.4272%; sentence-cluster bootstrap exact-delta 95% CI [-0.20697, +0.20056] pp crosses zero; independent adjudicated holdout required |
+| §27 complete `-ㄹ게` boundary repair | DONE_VERIFIED | Browser test 1114 passed; paired run [41335549779](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335549779) confirms `올게이` distance 3→1 and no other Kozak Kim output changes in 2,699 shared occurrences. |
+| Source provenance for §27 ending analysis | DONE_VERIFIED for source discovery/registration | NIKL Q&A 330963 and 308180 registered as SRC-NIKL-QNA-330963 and SRC-NIKL-QNA-308180; item-level reuse mark remains unverified |
+| Long-vowel and IPA annotation differences | BLOCKED / EVIDENCE-LIMITED | Reference omits length in several forms where NIKL source records length; independent IPA convention adjudication required before changing engine |
+| Morphology/fortition clusters | PARTIAL | Existing §§11, 24–28 source-backed rules retained; add rule-specific contrasts and holdout validation |
+| Variable phrase reading `못잃어` | PARTIAL | NIKL usage survey source records both insertion and non-insertion; variant ranking not established |
+| Exact-head software verification | DONE_VERIFIED | Run [41335266673](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266673) and follow-up [41335549717](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335549717) PASS: 1,365/1,365 browser tests, public-page build, generated-page verification, Python regression/data-integrity; extraction runs 41335266701 and 41335549794 PASS. Paired diagnostic [41335549779](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335549779) PASS. |
+| Release readiness | BLOCKED / DEFERRED | Exact-head verification, independent Korean IPA review, and independent Ukrainian target review remain outstanding |
+
+The detailed methodology and occurrence ledger are:
+- `docs/KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md`
+- `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv`
+
+Do not count an authored test as passing. Do not treat g2pK as normative gold. Do not remove length or collapse allophones solely to match UGTPHON.
+
+
+## Kozak Kim discrepancy-driven continuation — 2026-11-01
+
+This is a bounded branch snapshot, not a release acceptance decision. Branch `research/kozak-kim-discrepancy-driven-improvement-2026-11-01-current`, PR #416 draft; original g2pK is an immutable comparison baseline.
+
+| Gate | Status | Evidence / limitation |
+|---|---|---|
+| 0 — Repository integrity | PARTIAL | PR #416 and its stacked base inspected; no merge, branch deletion, or unrelated PR mutation. Final branch head is recorded in the PR and handoff. |
+| 1 — Source and licensing | PARTIAL / BLOCKED | Official NIKL dictionary evidence checked for 출산 family and 저출산; item-level KOGL reuse mark remains unverified. |
+| 2 — Rule and data integrity | PASS for original four-form §26 set; PARTIAL for `저출산` follow-up and R012 generally | Exact full-form + internal `출>산` licenses. Original 출산, 출산율, 출산하다, 비출산 controls verified in run 41336800458. Follow-up 저출산/저출고 tests are authored but await exact-head CI. Productive Sino-Korean morphology is not implemented. |
+| 3 — Independent evaluation corpus | PARTIAL / EVIDENCE-LIMITED | Same 2,699 UGTPHON occurrences paired before/after; UGTPHON IPA is diagnostic and has an aspiration-vs-fortition annotation mismatch on 출산. No independent specialist gold. |
+| 4 — Runtime correctness | PASS for pre-`저출산` code head; current exact head pending | Run 41336800458: Python regression/data-integrity and browser regression/build/generated-page checks PASS. Run 41336800424: paired browser benchmark and pinned-data checks PASS. New exact-head runs 41339399132/41339399053/41339399044/41339399017 were queued/in progress at handoff. No local test run is claimed. |
+| 5 — Product quality | PARTIAL | This is engine-only work; no UI or deployment change. Existing release/product gates are unchanged. |
+| 6 — Release and independent review | BLOCKED | No independent Korean IPA reviewers, no independent Ukrainian target review, and unresolved item-level source rights. Do not claim overall superiority or release readiness. |
+
+### §26 paired evidence
+
+Before artifact `13094763897`; after artifact `13095038704`. Shared subset 2,699. Exact match tied at 1,442/2,699 (53.4272%). Kozak Kim CER 8.1271% → 8.1228%; original g2pK CER 8.2138%; paired CER delta −0.08669 → −0.09102 pp; post-change sentence-cluster 95% CI [−0.17881, −0.01647] pp. `비출산` IPA distance 2→1 and surface changed to `비출싼`; `출산` surface changed to `출싼`, but IPA distance tied because UGTPHON writes [sʰ] rather than the NIKL dictionary's fortis surface. No g2pK source/output changes.
+
+
+## 2026-11-01 — Kozak Kim §26 / lexical follow-up (superseding current status)
+
+| Gate | Status | Evidence / limitation |
+|---|---|---|
+| Scope isolation | DONE_VERIFIED | Only Kozak Kim native modules and dated lexical additions changed; original g2pK code/output path unchanged; Browser G2P integration run 41342127246 PASS. |
+| §26 exact 실시간 license | DONE_VERIFIED | NIKL Hanja source 實時間 + NIKL §26; browser/Python positive and negative controls; paired browser output distance 3→2. |
+| Exact lexical 이중성 | DONE_VERIFIED for Korean surface/IPA; PARTIAL for target | NIKL Basic Dictionary directly lists [이ː중썽]; IPA-first lexical entry preserves length and fortisness; Ukrainian target remains provisional and is not accepted. |
+| Remaining C08 phrase/affix cases | BLOCKED / EVIDENCE-LIMITED | 했을시 and 무고일수도있다는 lose phrase boundaries; 유사성 lacks direct exact-word pronunciation attestation. No generic -성 or unspaced phrase rule. |
+| Paired browser diagnostic | DONE_VERIFIED diagnostic | Run 41342127112 artifact 13098181051; 2,699 shared tokens; exact tied at 1,442/2,699; Kozak Kim CER 8.1184%, g2pK 8.2138%; only 실시간 improved edit distance; 이중성 now follows dictionary length/fortisness despite gold omission. |
+| Independent overall superiority | BLOCKED / EVIDENCE-LIMITED | Exact-rate CI crosses zero; CER interval is diagnostic on UGTPHON only; no specialist-adjudicated holdout. |
+| Source rights and target review | BLOCKED | Source register 147 rows, 138 review-required; metadata-only inventory job skipped; Ukrainian target review absent. |
+| Release readiness | BLOCKED | Research prototype only; no release claim. |
+
+Software verification on code-bearing head a0e17a187ee023c84c7208bb6a1df5755ed4b226: run 41342127230 PASS (browser 1,368/1,368, build, generated pages, Python regression/data integrity); g2pK integration run 41342127246 PASS. Multi-engine diagnostic 41342127137 was still in progress at handoff. The source inventory job was skipped and is not counted as a pass.

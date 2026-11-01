@@ -358,3 +358,27 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **Residual rule work:** keep R010/R012/R013/R028 conservative until a morphology-boundary model can distinguish verb stems, bound nouns, Sino-Korean compounds and lexicalized compounds. Do not add test-specific exact entries. Remaining IPA notation groups (ㅟ, aspiration notation, coda release marks, liquids) need convention adjudication, not blind normalization.
 - **Exact-head verification at implementation commit c7e2ce435960856a9382e79e71a8d49dc51c4e09:** system, JavaScript tests (1,364/1,364), Python 3.11/3.12/3.13, wheel/clean install, teacher corpus audit, browser build/integration, external UGTPHON benchmark, paired browser g2pK benchmark, morphology smoke/consensus, exhaustive register extraction and master-table artifacts passed.
 - **Status:** research prototype; not release-ready. Independent Korean IPA review, Ukrainian target review and item-level licensing remain blockers. PR #415 remains draft and unmerged.
+
+
+## 2026-11-01 — Kozak Kim discrepancy-driven exact-form corrections
+
+- **DONE_VERIFIED:** complete `-ㄹ게` ending boundary in native Kozak Kim; positive controls (`할게`, `할게요`, `다를게`, `안타까울게`) and substring-only negative control (`올게이`).
+- **DONE_VERIFIED (bounded R012 original set):** source-backed §26 fortition licenses for `출산`, `출산율`, `출산하다`, and `비출산`; Python/browser tests and negative lookalike `비출고` passed on run 41336800458.
+- **PARTIAL follow-up:** add dictionary-attested `저출산` and negative `저출고` controls in Python/browser; exact-head CI and benchmark runs 41339399132/41339399053/41339399044 were queued/in progress at handoff.
+- **DONE_VERIFIED diagnostic:** on 2,699 shared UGTPHON occurrences, exact match remains tied at 1,442/2,699; Kozak Kim CER improves 8.1271%→8.1228%, original g2pK CER 8.2138%; `비출산` improves one IPA edit and `출산` gains the NIKL-attested fortis surface despite an IPA convention mismatch in gold.
+- **PARTIAL / TODO:** remaining §26 candidates (`실시간`, `유사성`, `이중성`) and §27 phrase candidates (`했을 시`, `일 수`) require lexical/morpheme-boundary evidence; no blanket generalization.
+- **BLOCKED:** broad IPA mismatch classes need independent Korean phonetic/IPA adjudication; item-level NIKL/KOGL rights, Ukrainian target review and independent holdout remain open.
+- **Release status:** research prototype; not research-certified or release-ready. Detailed paired ledger, artifact IDs and acceptance status are in `docs/KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md` and the master handoff.
+
+
+
+## 2026-11-01 — Kozak Kim source-backed discrepancy follow-up
+
+- **DONE_VERIFIED §26:** exact Sino-Korean 실>시 license for 실시간, based on NIKL lexical source 實時間 plus Standard Pronunciation Rule §26. Browser/Python regression controls pass; paired browser IPA distance improves 3→2.
+- **DONE_VERIFIED lexical IPA:** NIKL Basic Dictionary directly attests 이중성[이ː중썽]. Added as an exact IPA-first lexical reading in the dated additions file; long vowel and fortisness are preserved. Ukrainian target remains provisional and cannot be accepted as confirmed.
+- **PARTIAL C08:** 3 of the initial 11 fortition mismatches now have source-backed repairs (비출산, 실시간, 이중성); 8 residual occurrences remain. Do not infer 했을 시 or 일 수 from unspaced corpus strings. 유사성 lacks direct exact-word attestation; no generic -성 rule.
+- **DONE_VERIFIED paired diagnostic:** exact 1,442/2,699 for both; Kozak Kim CER 8.1184%, g2pK 8.2138%; paired CER delta −0.09536 pp; exact CI still crosses zero. Only two native Kozak Kim output changes vs previous post-§26 snapshot: 실시간 3→2 edit distance and source-backed 이중성 surface/IPA (distance remains 1 because gold omits length). Original g2pK unchanged.
+- **DONE_VERIFIED software checks:** system 41342127230, browser g2pK integration 41342127246, native-vs-g2pK 41342127228, morphology consensus 41342127218, morphology adapter 41342127131, test-case extraction 41342127140 all PASS. Browser tests 1,368/1,368; build/generated-page checks and Python regression/data integrity PASS.
+- **IN_PROGRESS:** multi-engine Charsiu/ByT5 diagnostic 41342127137 at last check; do not claim a result until completed.
+- **BLOCKED:** item-level NIKL/KOGL rights (source register 147 rows; 138 review-required; metadata-only job skipped), independent Korean IPA review, Ukrainian target review, and specialist-adjudicated holdout.
+- **Release status:** research prototype, not release-ready. PR #416 remains draft and unmerged.

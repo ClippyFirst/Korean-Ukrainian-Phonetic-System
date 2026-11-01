@@ -303,7 +303,8 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
     // Check the source syllable's original coda: a complex coda may already have
     // been reduced to ㄹ by an earlier ordered rule and must not be mistaken for
     // the orthographic -ㄹ게 ending (e.g. 넓게 is not 널께).
-    if(a.coda==='ㄹ'&&decompose(a.char)?.coda==='ㄹ'&&b.char==='게'&&b.onset==='ㄱ'){
+    const licensedLGeEnding=currentWord.endsWith(a.char+'게')||currentWord.endsWith(a.char+'게요');
+    if(licensedLGeEnding&&a.coda==='ㄹ'&&decompose(a.char)?.coda==='ㄹ'&&b.char==='게'&&b.onset==='ㄱ'){
       b.onset='ㄲ';
       rules.push('adnominal-l-fortition-§27-attested-l-ge');
       nextRules.push('adnominal-l-fortition-§27-attested-l-ge');
