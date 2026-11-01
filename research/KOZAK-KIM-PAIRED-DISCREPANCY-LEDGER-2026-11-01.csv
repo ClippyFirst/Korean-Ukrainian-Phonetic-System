@@ -15,7 +15,7 @@ paired-13,dc_inside_2131,넘게,nʌ̹mk͈e̞,nʌm.k͈e,0,nʌm.ɡe,2,Kozak Kim,st
 paired-14,dc_inside_2155,없어,ʌ̹ps͈ʌ̹,ʌːp̚.s͈ʌ,2,ʌp̚.s͈ʌ,1,g2pK,vowel_length_and_vowel_quality,NIKL source supports length in related inflected forms; corpus omits length; investigate IPA annotation
 paired-15,dc_inside_2212,없는,ʌ̹mnɯn,ʌːm.nɯn,1,ʌm.nɯn,0,g2pK,vowel_length_and_vowel_quality,Repeated occurrence; same source-vs-reference length issue
 paired-16,dc_inside_2232,대한민국,ˈtɛ̝ːɦa̠nminɡuk̚,te.han.min.ɡuk̚,4,tɛ.han.min.ɡuk̚,3,g2pK,vowel_quality_and_length,Requires source and transcription-convention review; both engines miss reference detail
-paired-17,dc_inside_2236,올게이,o̞ɭɡe̞i,ol.k͈e.i,3,ol.ɡe.i,1,g2pK,adnominal_l_ge_fortition_boundary,§27 substring false positive in Kozak Kim; complete-ending boundary guard authored; negative control not a lexical gold claim
+paired-17,dc_inside_2236,올게이,o̞ɭɡe̞i,ol.k͈e.i,3,ol.ɡe.i,1,g2pK,adnominal_l_ge_fortition_boundary,§27 substring false positive repaired: on run 41335549779 Kozak Kim now emits ol.ɡe.i at distance 1; g2pK remains ol.ɡe.i at distance 1; record-level before/after diff found no other Kozak Kim output change across the 2699 shared occurrences
 paired-18,dc_inside_2269,없는,ʌ̹mnɯn,ʌːm.nɯn,1,ʌm.nɯn,0,g2pK,vowel_length_and_vowel_quality,Repeated occurrence; same source-vs-reference length issue
 paired-19,dc_inside_2269,없다,ˈɘːp̚t͈a̠,ʌːp̚.t͈a,2,ʌp̚.t͈a,3,Kozak Kim,vowel_length_and_vowel_quality,Repeated occurrence; length/fortition closer to source-backed form
 paired-20,dc_inside_2269,사건,ˈsʰa̠ːk͈ʌ̹n,saː.k͈ʌn,2,sa.ɡʌn,5,Kozak Kim,lexical_length_and_fortition,Dictionary/NIKL-backed length and fortition; g2pK misses both
