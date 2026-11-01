@@ -4352,3 +4352,12 @@ The Actions runs attached to branch commit `38c416b8040d8967092c193dfc1729a5cccd
 **Interpretation:** g2pK's tiny exact-match lead is statistically inconclusive, its CER is significantly worse on the paired subset, it has no meaningful advantage over the native engine, and it is materially slower in this diagnostic. Keep Kozak Kim as default. The right next improvements are targeted error-family corrections and better input normalization/coverage with strict abstention, not wholesale replacement or broad rule inflation.
 
 These runs predate the restored raw-surface benchmark module and do not verify the current branch tip. They remain valid evidence about the engine code present at that run's branch head. The raw-surface benchmark repair remains PARTIAL pending exact-head CI.
+
+
+### Final continuation snapshot — 2026-11-01 17:xx UTC+2
+
+- PR #415 remains open and draft; GitHub currently reports mergeable. Current branch tip after README, handoff and acceptance updates: `9be965c58c9236683e0bf16e05017d62b24fd4a8`.
+- Last engine-bearing code commit remains `eba968b383e1ae4ca8ebb52094c3f2d32439e315`; the later benchmark restoration `c069031a6cea830ad4d5f00fcf5314b5dd1e8e12` and test-contract copy `85facdd7d2a882da58d3b27eeab9a65c046be461` are separate test/benchmark integration changes. No new production G2P rule was added in this continuation.
+- The last verified browser engine diagnostic and paired comparison are runs 41313216356 / 41313216411; the last Python suite on the pre-repair branch failed at collection for the missing module. No workflow run or combined status is visible for the post-repair tip.
+- The repository's browser/Node path passed 1,356/1,356 and Vite build in the prior run; Python/system gates remain unverified after repair. Container GitHub access failed DNS resolution, so no local test/build command was possible.
+- Keep the branch draft. No merge, release or deployment was performed. Research certification remains blocked by independent Korean IPA adjudication, Ukrainian target review and source-rights checks.
