@@ -257,7 +257,7 @@ def test_g2pk_differential_script_has_valid_python_syntax():
     ast.parse(script.read_text(encoding="utf-8"), filename=str(script))
 
 
-def test_python_g2pk_surface_differential_against_browser_fixture():
+def test_python_g2pk_surface_differential_against_pinned_js_port_fixture():
     import json
     import sys
     import warnings
@@ -281,7 +281,7 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
         rows.append({
             "input": case["input"],
             "phenomenon": case["phenomenon"],
-            "browser_expected_surface": case["expectedSurface"],
+            "pinned_js_port_surface": case["expectedSurface"],
             "recorded_python_surface": case["pythonG2pkSurface"],
             "python_g2pk_surface": python_surface,
             "equal": python_surface == case["expectedSurface"],
@@ -290,19 +290,19 @@ def test_python_g2pk_surface_differential_against_browser_fixture():
             "practical_adapter_surface": case.get("normativeSurface"),
         })
     mismatches = [row for row in rows if not row["equal"]]
-    # These are known, evidence-backed JS-port divergences, not interchangeable
-    # IPA gold. Keep the practical port contract visible while guarding against
-    # silent additions/removals from this diagnostic.
+    # These are known, evidence-backed raw JS g2pK-port divergences, not
+    # current browser-engine outputs or interchangeable IPA gold. Keep the
+    # practical port contract visible while guarding against silent drift.
     expected_mismatches = {
-        "넓죽하다": {"browser": "널쭈카다", "python": "넙쭈카다"},
-        "읽고": {"browser": "익꼬", "python": "일꼬"},
+        "넓죽하다": {"js_port": "널쭈카다", "python": "넙쭈카다"},
+        "읽고": {"js_port": "익꼬", "python": "일꼬"},
     }
     assert {row["input"] for row in mismatches} == set(expected_mismatches)
     by_input = {case["input"]: case for case in fixture["cases"]}
     for row in mismatches:
         expected = expected_mismatches[row["input"]]
         case = by_input[row["input"]]
-        assert row["browser_expected_surface"] == expected["browser"]
+        assert row["pinned_js_port_surface"] == expected["js_port"]
         assert row["python_g2pk_surface"] == expected["python"]
         assert case["normativeSurface"] == expected["python"], row["input"]
         assert case["expectedSurface"] != case["normativeSurface"], row["input"]
