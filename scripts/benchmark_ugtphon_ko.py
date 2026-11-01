@@ -174,6 +174,17 @@ def evaluate(rows: list[dict[str, Any]], *, ipa_level: str = "broad") -> dict[st
 
 
 
+def prepare_korean_sentence(text: str) -> str:
+    """Align canonical Hangul input with UGTPHON sentence IPA preprocessing."""
+    canonical_raw = text.strip()
+    return " ".join(
+        "".join(
+            " " if unicodedata.category(char).startswith("P") else char
+            for char in canonical_raw
+        ).split()
+    )
+
+
 def evaluate_sentences(
     rows: list[dict[str, Any]],
     *,
@@ -212,14 +223,8 @@ def evaluate_sentences(
         gold_raw = row.get("phonemes", "")
         canonical_raw = canonical.strip() if isinstance(canonical, str) else ""
         # UGTPHON documents that punctuation is dropped from sentence IPA.
-        # Replace punctuation with a word boundary before applying the native
-        # Hangul-only API; do not silently drop digits, Latin, URLs or symbols.
-        canonical_text = " ".join(
-            "".join(
-                " " if unicodedata.category(char).startswith("P") else char
-                for char in canonical_raw
-            ).split()
-        )
+        # Replace punctuation with a word boundary; retain all other characters.
+        canonical_text = prepare_korean_sentence(canonical_raw)
         if canonical_text != canonical_raw:
             punctuation_stripped += 1
         if not canonical_text or not _HANGUL_SENTENCE.fullmatch(canonical_text):
