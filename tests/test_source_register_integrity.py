@@ -295,7 +295,7 @@ def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
     assert "qna_seq=310899" in geo_source["url"]
     assert "dependent noun" in geo_source["coverage"]
     assert "colloquial" in geo_source["coverage"]
-    assert "not independently attest pronunciation" in geo_source["limitations_or_next_action"]
+    assert "does not independently attest pronunciation" in geo_source["contribution_expected"]
 
     rule27 = rows["SRC-NIKL-QNA-335204"]
     assert "qna_seq=335204" in rule27["url"]
@@ -306,7 +306,7 @@ def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
     su = rows["SRC-NIKL-QNA-331601"]
     assert "qna_seq=331601" in su["url"]
     assert "알 수 없는[알쑤엄는]" in su["coverage"]
-    assert "not an exact-token IPA" in su["limitations_or_next_action"]
+    assert "Does not attest the exact corpus token" in su["limitations_or_next_action"]
 
     deut = rows["SRC-NIKL-QNA-336313"]
     assert "qna_seq=336313" in deut["url"]
