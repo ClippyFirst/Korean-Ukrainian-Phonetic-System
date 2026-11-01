@@ -675,8 +675,22 @@ Software verification on code-bearing head a0e17a187ee023c84c7208bb6a1df5755ed4b
 | 1 — Source and licensing | PARTIAL / RIGHTS OPEN | Added NIKL Q&A 327466 and NIKL 2021 dependent-noun-`시` source records. Exact official morphology scope checked; item-level KOGL/reviewer-sharing rights remain unverified. |
 | 2 — Rule and data integrity | PARTIAL | No production rule changed. C08 summary reports 8 cases, but current occurrence ledger has no C08 rows; 3 source IDs recovered and 5 remain missing. |
 | 3 — Independent evaluation corpus | PARTIAL / BLOCKED | Seven source-blind C01–C07 pilot packets and a regression test exist. Full utterance context and reviewer-sharing rights are missing; no independent submissions exist. |
-| 4 — Runtime correctness | PASS for recorded software gates on continuation head | Run `41346666445`: browser regression/build PASS (1,369 tests, 0 failures); Python regression/data integrity PASS. Run `41346594433` extractor PASS. NIKL metadata-only inventory SKIPPED. Multi-engine run `41344981358` remained in progress; neural inference jobs SKIPPED. |
+| 4 — Runtime correctness | PASS for recorded software gates on continuation head | Run `41346666445`: browser regression/build PASS (1,369 tests, 0 failures); Python regression/data integrity PASS. Run `41346594433` extractor PASS. NIKL metadata-only inventory SKIPPED. Multi-engine run `41344981358` completed PASS; artifact `13099523369` inspected. Neural inference jobs SKIPPED. |
 | 5 — Product quality | PARTIAL | This continuation does not alter UI or Ukrainian target behavior; independent Ukrainian target review remains open. |
 | 6 — Release and independent review | BLOCKED | No independent Korean IPA adjudication, no item-level source/reviewer rights clearance, five C08 occurrence IDs missing, Ukrainian target review incomplete. Research prototype only. |
 
 This is a research continuation status, not a release acceptance decision. No claim of linguistic certification follows from CI.
+
+
+## Supplementary paired benchmark — SIGMORPHON 2021 Korean lexical test (run 41344981358)
+
+The completed multi-engine diagnostic artifact `13099523369` was downloaded and inspected. It pins g2pK 0.9.4 and compares the native Kozak Kim path with the same 998 paired word-level inputs:
+
+| Metric | Kozak Kim (clippyfirst_native) | Original g2pK 0.9.4 | Paired delta (g2pK − Kozak) |
+|---|---:|---:|---:|
+| Exact match | 358/998 = 35.8717% | 353/998 = 35.3707% | −0.5010 pp |
+| CER | 14.6225% | 14.8106% | +0.1881 pp |
+
+Paired row-cluster bootstrap (1,000 replicates): exact-match delta 95% interval `[-1.0020, -0.1002]` pp; CER delta interval `[+0.0250, +0.3859]` pp. Pairwise audit: 5 native-only exact cases, 0 g2pK-only exact cases, 353 both exact, 640 both non-exact, and 1 native abstention while g2pK returned a non-exact output. This is a **small diagnostic advantage**, not proof of universal superiority.
+
+**Mandatory limitations:** SIGMORPHON is a lexical word-level set, not a sentence-context or normative NIKL set; IPA conventions differ from the reference; g2pK outputs pass through the project's shared segment renderer, which may bias comparison; the benchmark does not score Ukrainian output. The bootstrap intervals are diagnostic uncertainty intervals, not a substitute for independent gold adjudication or a preregistered statistical claim. ByT5 and CharsiuG2P inference jobs were SKIPPED. g2pK source/version remained unchanged.
