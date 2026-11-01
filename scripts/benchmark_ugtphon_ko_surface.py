@@ -200,7 +200,7 @@ def evaluate_surface(
                     if isinstance(ipa, dict) and not profile_metadata:
                         profile_metadata.update({
                             "ipa_profile": ipa.get("ipa_profile"),
-                            "ipa_profile_status": ipa.get("ipa_profile_status"),
+                            "ipa_profile_status": ipa.get("ipa_profile_status") or "unavailable",
                             "ipa_profile_version": ipa.get("ipa_profile_version"),
                         })
                     predicted_raw = ipa.get("ipa", "") if isinstance(ipa, dict) else ""
