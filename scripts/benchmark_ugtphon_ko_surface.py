@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Research-only exact-retrieval normalization + G2P benchmark for Korean UGT.
+"""Research-only exact/contextual retrieval normalization + G2P benchmark for Korean UGT.
 
 This is deliberately separate from benchmark_ugtphon_ko.py, which evaluates
 canonical Hangul tokens. It takes raw token surfaces as input, builds a
@@ -24,6 +24,9 @@ class NormalizationStore:
     mapping: dict[str, str]
     ambiguous_keys: tuple[str, ...]
     blocked_canonical_collisions: tuple[str, ...]
+    context_mapping: dict[tuple[str, str, str], str]
+    ambiguous_context_keys: tuple[tuple[str, str, str], ...]
+    blocked_canonical_contexts: tuple[tuple[str, str, str], ...]
 
 
 def _validate_rows(rows: list[dict[str, Any]], expected_split: str) -> None:
@@ -64,31 +67,45 @@ def _single_canonical_form(value: Any) -> str | None:
     return forms[0]
 
 
+def _context_key(tokens: list[dict[str, Any]], index: int) -> tuple[str, str, str]:
+    """Return an exact local context key using explicit sentence-edge markers."""
+    previous = tokens[index - 1]["text"] if index > 0 else "<BOS>"
+    following = tokens[index + 1]["text"] if index + 1 < len(tokens) else "<EOS>"
+    return (previous, tokens[index]["text"], following)
+
+
 def build_normalization_datastore(
     train_rows: list[dict[str, Any]],
 ) -> NormalizationStore:
-    """Build exact surface→canonical mappings from the training split only.
+    """Build conservative train-only surface and exact-context mappings.
 
-    A surface key is withheld if it has multiple canonical targets, multiple
-    accepted canonical variants, or also occurs as a canonical token in the
-    training data. The last guard prevents obvious over-normalization of
-    canonical words. No dev/test labels are consulted.
+    Surface mappings require a unique target and block any surface observed as
+    canonical. Context mappings use (previous surface, current surface, next
+    surface) and can disambiguate a surface only when that exact context has a
+    single non-canonical target and no canonical/ambiguous observation. This is
+    exact contextual retrieval, not fuzzy matching or a trained language model.
     """
     _validate_rows(train_rows, "train")
     candidates: dict[str, set[str]] = defaultdict(set)
     ambiguous: set[str] = set()
     canonical_surfaces: set[str] = set()
+    context_candidates: dict[tuple[str, str, str], set[str]] = defaultdict(set)
+    ambiguous_contexts: set[tuple[str, str, str]] = set()
+    canonical_contexts: set[tuple[str, str, str]] = set()
 
     for row in train_rows:
-        for token in row["tokens"]:
+        tokens = row["tokens"]
+        for index, token in enumerate(tokens):
             if not isinstance(token, dict):
                 continue
             surface = token.get("text")
             if not isinstance(surface, str) or not surface:
                 continue
+            context = _context_key(tokens, index)
             is_nc = token.get("is_nc")
             if is_nc is False:
                 canonical_surfaces.add(surface)
+                canonical_contexts.add(context)
                 canonical_value = token.get("canonical")
                 if isinstance(canonical_value, str):
                     canonical_surfaces.update(
@@ -100,8 +117,10 @@ def build_normalization_datastore(
             canonical = _single_canonical_form(token.get("canonical"))
             if canonical is None:
                 ambiguous.add(surface)
+                ambiguous_contexts.add(context)
             else:
                 candidates[surface].add(canonical)
+                context_candidates[context].add(canonical)
 
     mapping: dict[str, str] = {}
     blocked: set[str] = set()
@@ -115,10 +134,25 @@ def build_normalization_datastore(
             if canonical != surface:
                 mapping[surface] = canonical
 
+    context_mapping: dict[tuple[str, str, str], str] = {}
+    blocked_contexts: set[tuple[str, str, str]] = set()
+    for context, forms in context_candidates.items():
+        if context in canonical_contexts:
+            blocked_contexts.add(context)
+        elif context in ambiguous_contexts or len(forms) != 1:
+            ambiguous_contexts.add(context)
+        else:
+            canonical = next(iter(forms))
+            if canonical != context[1]:
+                context_mapping[context] = canonical
+
     return NormalizationStore(
         mapping=mapping,
         ambiguous_keys=tuple(sorted(ambiguous - blocked)),
         blocked_canonical_collisions=tuple(sorted(blocked)),
+        context_mapping=context_mapping,
+        ambiguous_context_keys=tuple(sorted(ambiguous_contexts - blocked_contexts)),
+        blocked_canonical_contexts=tuple(sorted(blocked_contexts)),
     )
 
 
@@ -175,6 +209,8 @@ def evaluate_surface(
     records: list[dict[str, Any]] = []
     category_records: dict[str, list[dict[str, Any]]] = defaultdict(list)
     normalization_hits = 0
+    context_hits = 0
+    surface_hits = 0
     hits_noncanonical = 0
     hits_canonical = 0
     misses_noncanonical = 0
@@ -195,10 +231,22 @@ def evaluate_surface(
                 noncanonical_tokens += 1
             else:
                 canonical_tokens += 1
-            canonical_hint = store.mapping.get(surface)
+            context = _context_key(row["tokens"], row["tokens"].index(token))
+            context_hint = store.context_mapping.get(context)
+            surface_hint = store.mapping.get(surface)
+            canonical_hint = context_hint if context_hint is not None else surface_hint
+            retrieval_method = (
+                "exact_context" if context_hint is not None
+                else "exact_surface" if surface_hint is not None
+                else "none"
+            )
             g2p_input = canonical_hint if canonical_hint is not None else surface
             if canonical_hint is not None:
                 normalization_hits += 1
+                if retrieval_method == "exact_context":
+                    context_hits += 1
+                else:
+                    surface_hits += 1
                 if is_nc:
                     hits_noncanonical += 1
                 else:
@@ -220,6 +268,7 @@ def evaluate_surface(
                     "status": "unsupported_input", "distance": None, "category": category,
                     "surface": surface, "g2p_input": g2p_input,
                     "normalization_hit": canonical_hint is not None,
+                    "retrieval_method": retrieval_method,
                 }
                 records.append(item)
                 category_records[category].append(item)
@@ -311,10 +360,15 @@ def evaluate_surface(
         "purpose": "research-only exact-match normalization baseline; separate from canonical lexical G2P",
         "input_field": "token.text",
         "normalization": {
-            "policy": "train-only exact surface lookup; unique canonical target; canonical-token collision guard; abstain on ambiguity",
+            "policy": "train-only exact local-context lookup first, then exact surface lookup; unique canonical target; canonical-context/surface collision guards; abstain on ambiguity",
             "store_size": len(store.mapping),
             "ambiguous_keys": len(store.ambiguous_keys),
             "blocked_canonical_collisions": len(store.blocked_canonical_collisions),
+            "context_store_size": len(store.context_mapping),
+            "ambiguous_context_keys": len(store.ambiguous_context_keys),
+            "blocked_canonical_contexts": len(store.blocked_canonical_contexts),
+            "context_hits": context_hits,
+            "surface_hits": surface_hits,
             "hits": normalization_hits,
             "hits_noncanonical": hits_noncanonical,
             "hits_canonical": hits_canonical,
@@ -345,8 +399,8 @@ def evaluate_surface(
         "unresolved_examples": unresolved_examples,
         "normalization_hit_examples": normalization_hit_examples,
         "notes": [
-            "The test token's canonical field is not read; only the training datastore can rewrite raw surfaces.",
-            "Exact-match lookup has no contextual disambiguation and deliberately abstains on ambiguous mappings.",
+            "The test token's canonical field is not read; only train-split surface/context observations can rewrite raw surfaces.",
+            "Context retrieval requires an exact previous/current/next surface triple; surface retrieval is the fallback. Both abstain on ambiguous mappings and canonical collisions.",
             "Inputs outside the native Hangul+whitespace contract are counted as unsupported, not engine errors; train-only retrieval is attempted before this check.",
             "Potential canonical false rewrites are reported, not hidden; a production normalizer needs context-aware detection.",
             "This is not the paper's trained retrieval-augmented ByT5/Qwen model or its staged decoder.",
