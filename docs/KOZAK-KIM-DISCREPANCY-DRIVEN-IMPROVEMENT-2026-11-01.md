@@ -305,3 +305,8 @@ The official-source search found useful **morphological** evidence for two of th
 | `유사성` | Sino-Korean noun + suffix `-성` | NIKL Q&A 312649 asks about 의외성 and mentions 유사성[-썽] in the question, but its answer confirms only 의외성 `[의ː외썽/의ː웨썽]`. No exact official dictionary/Q&A attestation for 유사성 was found in this search. | Still unsupported as an exact lexical claim. Do not generalize a productive `-성` fortition rule from 의외성. |
 
 **Evidence boundary:** Rule §27 states that ㄱ/ㄷ/ㅂ/ㅅ/ㅈ after the adnominal `-(으)ㄹ` are fortis and gives `할 수는[할쑤는]`; the official explanation also notes that closeness between the two elements matters. This establishes the rule environment, not the missing source context for these two unspaced tokens. No positive production patch is justified until source-row utterances are restored and checked. Source records added: `SRC-NIKL-QNA-327466` and `SRC-NIKL-EDU-2021-DEPENDENT-SI`.
+
+
+## C08 occurrence-mapping gap — 2026-11-01
+
+The mass-mismatch cluster register reports eight C08 occurrences, but the current `KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv` has 27 rows and contains no C08 entries. Three source-row IDs were recovered from paired artifact `13097847614`: `multilexnorm2026_1953` (`무고일수도있다는`), `multilexnorm2026_1979` (`했을시`), and `dc_inside_2024` (`유사성`). The other five C08 occurrences are not currently enumerated in either the occurrence ledger or the inspected report excerpt. The stale phrase “remaining cases in the paired ledger” has been replaced with this explicit gap. Do not claim all eight have been source-reviewed until the five missing source-row IDs and exact utterances are recovered.

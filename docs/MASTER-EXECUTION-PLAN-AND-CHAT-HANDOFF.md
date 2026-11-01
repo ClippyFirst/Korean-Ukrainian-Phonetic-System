@@ -4829,3 +4829,8 @@ Two exact morphological leads are now registered, but no production rule was add
 - `유사성`: NIKL Q&A 312649 mentions it only in the question; the answer confirms only 의외성. No exact official lexical pronunciation found. No generalized `-성` rule.
 
 Source register additions: `SRC-NIKL-QNA-327466`, `SRC-NIKL-EDU-2021-DEPENDENT-SI`. Both retain item-level KOGL/reviewer-sharing rights as unverified. Exact source utterances are still needed before any engine change.
+
+
+## C08 occurrence-mapping gap — 2026-11-01
+
+The mass-mismatch cluster register reports eight C08 occurrences, but the current `KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv` has 27 rows and contains no C08 entries. Three source-row IDs were recovered from paired artifact `13097847614`: `multilexnorm2026_1953` (`무고일수도있다는`), `multilexnorm2026_1979` (`했을시`), and `dc_inside_2024` (`유사성`). The other five C08 occurrences are not currently enumerated in either the occurrence ledger or the inspected report excerpt. The stale phrase “remaining cases in the paired ledger” has been replaced with this explicit gap. Do not claim all eight have been source-reviewed until the five missing source-row IDs and exact utterances are recovered.
