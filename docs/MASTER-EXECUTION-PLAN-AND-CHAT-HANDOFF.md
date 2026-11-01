@@ -4260,3 +4260,12 @@ These are projections calculated from the previous artifact, not observed result
 4. Keep PR #415 draft until exact-head CI, independent Korean IPA adjudication, Ukrainian target review and source-rights gates are satisfied.
 
 **Release status:** research prototype / diagnostic engine, not research-certified and not release-ready. No merge, release or deployment was performed.
+
+
+## Canonical benchmark error taxonomy — direct browser artifact
+
+The direct browser UGTPHON diagnostic [41309605083](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605083) scored 2,699 tokens with strict exact 52.9085% and CER 8.2571%. The research-only broad-candidate sensitivity profile scored 92.4416% exact and CER 1.3562%. Of 1,271 strict mismatches, 1,067 (83.95%) become exact under the broad-candidate normalization; 204 remain.
+
+This is strong evidence that the headline strict exact score is heavily sensitive to annotation conventions, not evidence that the broad profile is already correct. The candidate profile is unadjudicated and must not be promoted to a standard metric. Frequent differences include lateral/nasal allophones, sibilant aspiration, h-realization, unreleased codas, ㅟ representations and vowel length. The remaining 204 broad mismatches need source-backed phonological review; do not patch them by guessing or by tuning to IPA-Dict.
+
+The new exact-form fixes for 실수 and 한자 are expected to reduce edit distance modestly while preserving the dictionary vowel length in 한자. Their projected deltas are documented separately and are not new measured scores.
