@@ -23,6 +23,7 @@ def test_g2pk_adapter_derives_ipa_from_surface_hangul(monkeypatch):
     assert result["surface_hangul"] == "넉씨, 구지!"
     assert result["ipa"]["ipa"] == "nʌk̚.ɕ͈i ku.dʑi"
     assert result["ipa"]["rendered_text"] == "nʌk̚.ɕ͈i, ku.dʑi!"
+    assert result["ipa"]["word_alignment_status"] == "verified-source-surface-word-boundaries"
     assert result["rules"][0]["status"] == "external-engine-output"
     assert "NIKL" not in result["rules"][0]["source"]
 
