@@ -1,0 +1,111 @@
+{
+  "packet_schema": "kozak-kim-independent-ipa-review-v1",
+  "review_mode": "BLINDED_INPUT_ONLY",
+  "source_artifact": {
+    "workflow_run_id": 41342607471,
+    "artifact_id": 13097847614,
+    "dataset": "UGTPHON test split",
+    "file": "kozak-kim-vs-original-g2pk-browser-report.json"
+  },
+  "independence_controls": {
+    "engine_outputs_included": false,
+    "reference_ipa_included": false,
+    "engine_identity_included": false,
+    "benchmark_ranking_included": false,
+    "source_rule_hypothesis_included": false
+  },
+  "limitations": [
+    "Pilot sample only; not a complete cluster census.",
+    "The paired artifact contains token-level records but not the full source sentence/utterance.",
+    "No candidate IPA, syllabification, allophone, or phonological analysis is supplied.",
+    "Do not score boundary-sensitive or morphologically ambiguous items without original utterance context."
+  ],
+  "reviewer_instructions": [
+    "Independently transcribe each item in broad phonemic IPA first.",
+    "If useful, add a separate narrow phonetic transcription and state the allophonic detail represented.",
+    "State syllable boundaries and vowel length only under a declared convention and supported evidence.",
+    "Classify the distinction as phonemic, predictable allophony, transcription convention, lexical variation, or unresolved.",
+    "Cite primary sources or describe phonetic evidence, method, and confidence.",
+    "Do not infer a productive Kozak Kim rule from this pilot packet."
+  ],
+  "reviewer_submission": {
+    "reviewer_id": null,
+    "qualification": null,
+    "method_and_convention": null,
+    "reviewed_at": null,
+    "item_decisions": [],
+    "overall_notes": null,
+    "signed_off": false
+  },
+  "acceptance_gate": {
+    "status": "BLOCKED_MISSING_SENTENCE_CONTEXT_AND_RIGHTS_CHECK",
+    "required_before_scoring": [
+      "Restore exact source utterance for every source_row_id from the licensed corpus artifact.",
+      "Verify per-item redistribution and reviewer-sharing rights.",
+      "Freeze packet hashes before dispatch.",
+      "Assign separate blind copies and freeze first-pass submissions before reconciliation."
+    ],
+    "promotion_rule": "No production change until independent review, source adjudication, positive/negative/boundary/interaction controls, and exact-head paired verification are complete."
+  },
+  "packet_id": "KOZAK-C03-2026-11-01",
+  "cluster_id": "C03",
+  "cluster_name": "Palatal nasal realization",
+  "review_question": "In which of these environments, if any, is a palatal nasal [ɲ] justified as predictable narrow realization rather than a phonemic representation?",
+  "items": [
+    {
+      "input_hangul": "그냥",
+      "source_row_ids": [
+        "multilexnorm2026_1914",
+        "multilexnorm2026_2017",
+        "dc_inside_2024",
+        "dc_inside_2146",
+        "dc_inside_2227",
+        "dc_inside_2256",
+        "dc_inside_2564",
+        "dc_inside_2548"
+      ],
+      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
+      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+    },
+    {
+      "input_hangul": "불렀겠냐나",
+      "source_row_ids": [
+        "multilexnorm2026_1916"
+      ],
+      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
+      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+    },
+    {
+      "input_hangul": "연예계",
+      "source_row_ids": [
+        "multilexnorm2026_1916"
+      ],
+      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
+      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+    },
+    {
+      "input_hangul": "한녀들보다",
+      "source_row_ids": [
+        "multilexnorm2026_1922"
+      ],
+      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
+      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+    },
+    {
+      "input_hangul": "귀엽냐",
+      "source_row_ids": [
+        "multilexnorm2026_1926"
+      ],
+      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
+      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+    },
+    {
+      "input_hangul": "상류층",
+      "source_row_ids": [
+        "multilexnorm2026_1930"
+      ],
+      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
+      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+    }
+  ]
+}

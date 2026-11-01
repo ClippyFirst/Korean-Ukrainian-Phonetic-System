@@ -275,3 +275,20 @@ The same artifact contains four unresolved Kozak Kim occurrences:
 | `dc_inside_2241` | `무서웟어` | Likely nonstandard spelling of an inflected form, but source intent is not adjudicated | Keep unresolved; no silent typo repair |
 
 Original g2pK returns outputs for these four inputs, but that does not establish those outputs as correct. The correct next step is an explicit source-orthography/typo policy and, for `칡칡이`, lexical/morphological evidence. Until then, Kozak Kim's abstention is preferable to an unsupported confident guess.
+
+
+## Continuation — C01–C07 blind packetization and C08 evidence triage (2026-11-01)
+
+### C01–C07 independent review packets
+
+Seven separate blind pilot packets are stored in `research/ipa-review-packets/kozak-kim-C01.json` through `kozak-kim-C07.json`; see [packet index](../research/ipa-review-packets/README-KOZAK-KIM-C01-C07.md). They exclude engine outputs, reference IPA, engine identities, benchmark rankings, and proposed rule explanations.
+
+**Not ready for external scoring:** artifact `13097847614` contains token-level forms and source-row identifiers but not the original sentence/utterance. Restore full licensed source context, verify item-level reviewer-sharing rights, freeze packet hashes, and only then dispatch blind copies. Current status: `PARTIAL / BLOCKED_MISSING_SENTENCE_CONTEXT_AND_RIGHTS_CHECK`.
+
+### C08 exact-form evidence triage
+
+- **의외성:** NIKL Q&A 312649 (2025-04-09) points to Urimalsaem's explicit pronunciation `[의ː외썽/의ː웨썽]`. The question mentions 다양성[-썽] and 유사성[-썽] as examples, but the official answer confirms only 의외성. Do not generalize this source to every `-성` form. [Official Q&A](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&pageIndex=1&qna_seq=312649).
+- **했을시:** NIKL Standard Pronunciation Rule §27 establishes fortition of ㄱ/ㄷ/ㅂ/ㅅ/ㅈ after the adnominal `-(으)ㄹ` ending. It does not establish that this unspaced corpus string is segmented as `했을 시` or that this was the intended construction. Apply §27 only if the original context confirms the morphology and boundary. [Official rule text](https://korean.go.kr/kornorms/regltn/regltnView.do).
+- **무고일수도있다는:** exact spacing, morpheme segmentation, and the relevant trigger remain unresolved; no exact-form source or trustworthy parse is established.
+
+**Decision:** no C08 production change. No productive `-성` suffix rule. No silent insertion of spaces or inferred morphology. Keep all eight residual cases unresolved until each exact occurrence has source context, a defensible morphological analysis, and source-backed pronunciation. Any later change must add positive, negative, boundary, and interaction controls before paired re-benchmarking.
