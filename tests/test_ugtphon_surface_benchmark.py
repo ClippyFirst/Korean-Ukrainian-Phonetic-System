@@ -155,10 +155,10 @@ def test_surface_evaluation_reports_canonical_false_rewrite_risk(monkeypatch):
     assert report["normalization"]["potential_canonical_false_rewrites"] == 1
 
 
-def test_surface_evaluation_keeps_unresolved_and_engine_errors_separate(monkeypatch):
+def test_surface_evaluation_separates_unresolved_engine_errors_and_unsupported_input(monkeypatch):
     def fake_phoneticize(text, *, ipa_level="broad"):
-        if text == "unsupported":
-            raise ValueError("unsupported input")
+        if text == "가":
+            raise RuntimeError("simulated engine failure")
         return {"pronunciation_status": "unresolved", "ipa": {"ipa": ""}}
 
     monkeypatch.setattr(
@@ -170,10 +170,11 @@ def test_surface_evaluation_keeps_unresolved_and_engine_errors_separate(monkeypa
         "id": "test_3",
         "lang": "ko",
         "split": "test",
-        "text": "가 unsupported",
+        "text": "가 나 API",
         "tokens": [
             {"text": "가", "phoneme": "ka", "is_nc": False, "nc_type": None},
-            {"text": "unsupported", "phoneme": "sʌpʰɔɾtʰɯ", "is_nc": True, "nc_type": "C3"},
+            {"text": "나", "phoneme": "na", "is_nc": False, "nc_type": None},
+            {"text": "API", "phoneme": "eɪ.pi.aɪ", "is_nc": True, "nc_type": "C3"},
         ],
     }]
 
@@ -181,11 +182,13 @@ def test_surface_evaluation_keeps_unresolved_and_engine_errors_separate(monkeypa
 
     assert report["unresolved_tokens"] == 1
     assert report["engine_errors"] == 1
+    assert report["unsupported_input_tokens"] == 1
+    assert report["unsupported_input_examples"][0]["surface"] == "API"
     assert report["scored_tokens"] == 0
     assert report["coverage_rate"] == 0.0
     assert report["coverage_adjusted_exact_match_rate"] == 0.0
-    assert report["unresolved_examples"][0]["surface"] == "가"
-    assert report["engine_error_examples"][0]["surface"] == "unsupported"
+    assert report["unresolved_examples"][0]["surface"] == "나"
+    assert report["engine_error_examples"][0]["surface"] == "가"
 
 
 def test_surface_report_exposes_case_level_mismatches(monkeypatch):
