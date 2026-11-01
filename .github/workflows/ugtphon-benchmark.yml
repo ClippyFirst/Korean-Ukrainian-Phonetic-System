@@ -55,7 +55,7 @@ jobs:
           }
           for split, filename in zip(("train", "test"), sys.argv[1:]):
               data = Path(filename).read_bytes()
-              actual = hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\\0" + data).hexdigest()
+              actual = hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
               rows = json.loads(data.decode("utf-8"))
               expected_sha, expected_rows = expected[split]
               assert actual == expected_sha, f"{split} pinned Git blob drift: {actual}"
