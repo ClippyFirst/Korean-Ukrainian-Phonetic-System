@@ -8,6 +8,10 @@ const lexicalText = readFileSync(new URL('../data/korean/lexical_pronunciations.
 const lexicalRows = parseCsv(lexicalText);
 const lexical = new Map(lexicalRows.map((row) => [row.input, row]));
 const generic = createEngine(canonical, '');
+const c08ContextFixture = JSON.parse(readFileSync(
+  new URL('../tests/fixtures/kozak-kim-c08-source-contexts.json', import.meta.url),
+  'utf8',
+));
 
 test('§§24–28: generic mode does not claim morphology-specific fortition', () => {
   // These are deliberately tested without the lexical layer. The browser has no
@@ -197,4 +201,28 @@ test('§27: the same C08 morphology is licensed in the correctly spaced phrase f
     const result = generic.convert(input);
     assert.ok(!result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27')), input + ': punctuation breaks the connected phrase license');
   }
+});
+
+
+test('§27 C08 source contexts: exact eojeol licenses apply inside full sentences', () => {
+  const positiveCases = [
+    ['multilexnorm2026_1953', '무고일수도있다는', '일>수', 's͈u', '쑤'],
+    ['multilexnorm2026_1979', '했을시', '을>시', 'ɕ͈i', '씨'],
+  ];
+  for (const [sourceRowId, input, pair, ipa, surface] of positiveCases) {
+    const sourceCase = c08ContextFixture.cases.find((item) => item.source_row_id === sourceRowId);
+    assert.ok(sourceCase, sourceRowId + ': source context fixture row');
+    assert.ok(sourceCase.source_sentence.includes(input), sourceRowId + ': exact target token is present in its original sentence');
+    const result = generic.convert(sourceCase.source_sentence);
+    assert.ok(result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27-exact-form')), sourceRowId + ': exact C08 license must fire within the sentence');
+    assert.ok(result.ipa.includes(ipa), sourceRowId + ': rule-derived fortis feature must be present in IPA');
+    assert.ok(result.surfaceHangul.includes(surface), sourceRowId + ': surface form must show the licensed fortis onset');
+  }
+});
+
+test('C08 context recovery does not authorize the unresolved -성 lexical case', () => {
+  const sourceCase = c08ContextFixture.cases.find((item) => item.source_row_id === 'dc_inside_2024');
+  assert.ok(sourceCase && sourceCase.source_sentence.includes('유사성'));
+  const result = generic.convert(sourceCase.source_sentence);
+  assert.ok(!result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27-exact-form')), 'the exact -성 token remains unlicensed; no suffix-wide fortition');
 });

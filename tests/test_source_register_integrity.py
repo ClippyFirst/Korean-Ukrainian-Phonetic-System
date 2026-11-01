@@ -247,3 +247,33 @@ def test_2026_11_01_g2p_sources_keep_scope_and_license_provenance_explicit():
     assert "CC BY-SA" in ugtphon["license_status"]
     assert "UGT" in ugtphon["limitations_or_next_action"]
 
+
+
+def test_c08_context_fixture_restores_three_source_rows_without_importing_ipa_gold():
+    fixture_path = ROOT / "tests" / "fixtures" / "kozak-kim-c08-source-contexts.json"
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert fixture["source_revision"] == "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54"
+    assert fixture["source_license"].startswith("Apache-2.0")
+    cases = fixture["cases"]
+    assert {case["source_row_id"] for case in cases} == {
+        "multilexnorm2026_1953", "multilexnorm2026_1979", "dc_inside_2024"
+    }
+    assert all(case["input"] in case["source_sentence"] for case in cases)
+    assert all("ipa" not in case and "expected_ipa" not in case for case in cases)
+    unresolved = next(case for case in cases if case["source_row_id"] == "dc_inside_2024")
+    assert unresolved["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"
+
+
+def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    for source_id, qna_id in [
+        ("SRC-NIKL-QNA-313481", "313481"),
+        ("SRC-NIKL-QNA-333044", "333044"),
+    ]:
+        source = rows[source_id]
+        assert f"qna_seq={qna_id}" in source["url"]
+        assert "dependent noun" in source["coverage"].lower()
+        assert "does not directly attest pronunciation" in source["limitations_or_next_action"].lower()
+        assert "item-level" in source["license_status"].lower()
+    pdf = rows["SRC-NIKL-EDU-2021-DEPENDENT-SI"]
+    assert "not used as production evidence" in pdf["limitations_or_next_action"].lower()

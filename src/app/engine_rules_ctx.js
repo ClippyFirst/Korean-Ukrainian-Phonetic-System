@@ -311,10 +311,10 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
       continue;
     }
 
-    // C08 exact forms: NIKL Q&A 327466 supports the copula + -(으)ㄹ + 수
-    // parse in 무고일 수도; NIKL's 2021 public-language guideline p.106
-    // confirms dependent noun 시 after -을 in 했을 시. §27 supplies fortition.
-    // Keep these as full-eojeol licenses; do not generalize to -성 or -ㄹ+ㅅ.
+    // C08 exact forms: source contexts are restored from UGTPHON ko/test.json.
+    // NIKL Q&A 327466 supports X일 수도; Q&A 313481 and 333044 confirm
+    // dependent noun 시 after -을. §27 supplies conditional, rule-derived
+    // fortition (not direct IPA attestation). Keep full-eojeol licenses only.
     const exactAdnominalPair=NIKL_27_ADNOMINAL_FORMS.get(currentWord);
     if(exactAdnominalPair===exactMorphPair&&a.coda==='ㄹ'&&decompose(a.char)?.coda==='ㄹ'&&PLAIN_TO_FORTIS[b.onset]){
       b.onset=PLAIN_TO_FORTIS[b.onset];

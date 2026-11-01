@@ -1,4 +1,11 @@
+import json
+from pathlib import Path
+
 from korean_ukrainian.pipeline import transliterate_korean, tokenize_ipa
+
+C08_CONTEXTS = json.loads(
+    (Path(__file__).parent / "fixtures" / "kozak-kim-c08-source-contexts.json").read_text(encoding="utf-8")
+)
 
 def test_end_to_end_preserves_layers():
     out=transliterate_korean("국밥")
@@ -47,3 +54,28 @@ def test_nikl_27_c08_exact_same_word_and_phrase_licenses():
             trace["rule_id"] == "R013" and trace["changed"]
             for trace in result["phonetics"]["rules"]
         )
+
+
+def test_nikl_27_c08_exact_word_licenses_apply_inside_full_sentences():
+    cases = [
+        ("multilexnorm2026_1953", "무고일수도있다는", "일>수", "s͈u"),
+        ("multilexnorm2026_1979", "했을시", "을>시", "s͈i"),
+    ]
+    for source_row_id, input_word, pair, expected_ipa in cases:
+        source_case = next(item for item in C08_CONTEXTS["cases"] if item["source_row_id"] == source_row_id)
+        assert input_word in source_case["source_sentence"]
+        result = transliterate_korean(source_case["source_sentence"])
+        assert expected_ipa in result["ipa"]["ipa"]
+        assert any(
+            trace["rule_id"] == "R013"
+            and trace["changed"]
+            and trace["license_context"] == f"R013:adnominal_l:{input_word}:{pair}"
+            for trace in result["phonetics"]["rules"]
+        ), f"{source_row_id}: exact eojeol license must apply inside the full sentence"
+
+    unresolved = next(item for item in C08_CONTEXTS["cases"] if item["source_row_id"] == "dc_inside_2024")
+    result = transliterate_korean(unresolved["source_sentence"])
+    assert not any(
+        trace["rule_id"] == "R013" and trace["changed"]
+        for trace in result["phonetics"]["rules"]
+    ), "the unresolved 유사성 context must not inherit a suffix-wide rule"

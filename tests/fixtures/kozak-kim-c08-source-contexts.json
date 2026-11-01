@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "dataset": "UGTPHON Korean test split",
+  "source_repository": "https://github.com/naver-ai/UGTPHON",
+  "source_file": "ko/test.json",
+  "source_revision": "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54",
+  "source_license": "Apache-2.0 (UGTPHON Korean subset; ko/LICENSE)",
+  "attribution": [
+    "Jeon et al. 2026, UGTPHON: Phonemizing User-Generated Text (Findings of EMNLP 2026)",
+    "Choi et al. 2023, KoMultiText (NeurIPS SoLaR workshop)",
+    "Buaphet et al. 2026, MultiLexNorm++"
+  ],
+  "cases": [
+    {
+      "case_id": "C08-CTX-001",
+      "source_row_id": "multilexnorm2026_1953",
+      "source": "multilexnorm2026",
+      "split": "test",
+      "input": "무고일수도있다는",
+      "source_sentence": "아니 그니깐 너는 이게 무고일수도있다는 소리 하고 있는 거냐고",
+      "morphological_analysis": "무고 + 이- + -(으)ㄹ + 수 + 도 + 있- + -다는",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-327466"
+      ],
+      "rule_evidence": [
+        "SRC-NIKL-PRON"
+      ],
+      "status": "CONDITIONAL_RULE_DERIVATION_CONTEXT_RESTORED",
+      "notes": "The source sentence supports the intended X일 수도 phrase. NIKL Q&A 327466 explains the morphology; §27 provides a conditional fortition derivation. No direct pronunciation or IPA attestation is claimed."
+    },
+    {
+      "case_id": "C08-CTX-002",
+      "source_row_id": "multilexnorm2026_1979",
+      "source": "multilexnorm2026",
+      "split": "test",
+      "input": "했을시",
+      "source_sentence": "중국내 소수민족들 했을시 중국치하 있을때보다 붙어야 대대적으로 독립운동 국정원 지하실 아직까지도 음반만들고 보다도 이라는게",
+      "morphological_analysis": "했- + -(으)ㄹ + 시(時)",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-313481",
+        "SRC-NIKL-QNA-333044"
+      ],
+      "rule_evidence": [
+        "SRC-NIKL-PRON"
+      ],
+      "status": "CONDITIONAL_RULE_DERIVATION_CONTEXT_RESTORED_WITH_UGC_SPACING_UNCERTAINTY",
+      "notes": "NIKL confirms dependent noun 시 can follow -을. The raw user-generated sentence is unspaced and syntactically noisy; the exact parse and prosodic cohesion remain a source-context-supported analysis, not direct pronunciation evidence."
+    },
+    {
+      "case_id": "C08-CTX-003",
+      "source_row_id": "dc_inside_2024",
+      "source": "dc_inside",
+      "split": "test",
+      "input": "유사성",
+      "source_sentence": "저번에 사전체험 풀었을때 해봤는데 배낀게 문제가 아니라 그냥 재미가 없음 못만들었음배낀게 ㅈ같긴 해도 장르의 유사성 뭐 시발 잘만들면 됐지 이렇게 생각한 내가 빡대가리 새끼였음취향차이라고 하기엔 조오온나 답답한 조작감에 거기서 나오는 어정쩡한 모션어디서 많이본 시스템을 채택했지만 위 단점때문에 오히려 비슷한 게임들이랑 비교하게끔 만듬사전체험때 10시간인가 이것저것 해봤는데 그냥 씹노잼임 구매 안해서 지금은 모르겠는데 솔직히 텀이 긴것도 아니고 바뀐거 거의 없을듯",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-312649"
+      ],
+      "rule_evidence": [],
+      "status": "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION",
+      "notes": "Q&A 312649 directly confirms 의외성 only; 유사성 appears in the question, not in the official answer. No suffix-wide -성 rule is authorized."
+    }
+  ]
+}

@@ -218,9 +218,10 @@ _NIKL_R013_PHRASE_LICENSES = {
     "무고일 수도": "일>수", "했을 시": "을>시",
 }
 
-# Exact same-eojeol C08 forms. NIKL Q&A 327466 confirms the morphology of
-# X일 수도; NIKL 2021 guideline p.106 confirms dependent noun 시 after -을.
-# Rule §27 supplies the conditional fortition. No suffix-wide -성 inference.
+# Exact same-eojeol C08 forms. Restored UGTPHON source contexts confirm the
+# target eojeols; NIKL Q&A 327466 supports X일 수도, while Q&A 313481 and
+# 333044 confirm dependent noun 시 after -을. §27 supplies rule-derived
+# fortition, not direct IPA attestation. No suffix-wide -성 inference.
 _NIKL_R013_WORD_LICENSES = {
     "무고일수도있다는": "일>수",
     "했을시": "을>시",
@@ -297,9 +298,17 @@ def _source_backed_rule_licenses(items, boundary_mode):
     if pair is not None:
         licenses.add(f"R012:sino_ryeon:{full_form}:{pair}")
     if boundary_mode in {"same_word", "morpheme"}:
-        pair = _NIKL_R013_WORD_LICENSES.get(full_form)
-        if pair is not None:
-            licenses.add(f"R013:adnominal_l:{full_form}:{pair}")
+        # Exact R013 word licenses apply to the matching eojeol inside a
+        # sentence, not only when the entire request is that one word.
+        word_start = 0
+        for index, item in enumerate(items):
+            if item.boundary_after == "word" or index == len(items) - 1:
+                word_end = index + 1
+                word_form = "".join(part.text for part in items[word_start:word_end])
+                pair = _NIKL_R013_WORD_LICENSES.get(word_form)
+                if pair is not None:
+                    licenses.add(f"R013:adnominal_l:{word_form}:{pair}")
+                word_start = word_end
     if boundary_mode == "phrase":
         pair = _NIKL_R013_PHRASE_LICENSES.get(full_form)
         if pair is not None:
@@ -633,6 +642,25 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             parts=license.split(":",3)
             if len(parts)==4 and parts[1]==scope and parts[2]==full_form:
                 exact_pairs.add(parts[3])
+        # Same-word R013 licenses are matched against the containing eojeol.
+        # This preserves the exact full-form gate when the public API receives
+        # a complete sentence instead of a single token.
+        word_exact_pair_contexts={}
+        if rule_id=="R013" and boundary_mode in {"same_word","morpheme"}:
+            word_start=0
+            for end_index,item in enumerate(items):
+                if item.boundary_after=="word" or end_index==len(items)-1:
+                    word_end=end_index+1
+                    word_form="".join(part.text for part in items[word_start:word_end])
+                    for license in exact_licenses:
+                        parts=license.split(":",3)
+                        if len(parts)!=4 or parts[1]!=scope or parts[2]!=word_form:
+                            continue
+                        licensed_pair=parts[3]
+                        for pair_index in range(word_start,word_end-1):
+                            if f"{items[pair_index].text}>{items[pair_index+1].text}"==licensed_pair:
+                                word_exact_pair_contexts[pair_index]=word_form
+                    word_start=word_end
         # NIKL explicitly confirms that the attached ending -ㄹ게 is pronounced
         # with fortis ㄲ ([할께]); this is not a free inference from ㄹ + ㄱ.
         # License only the exact orthographic environment where 게 is attached
@@ -645,7 +673,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                     pair=f"{a.text}>{b.text}"
                     exact_pairs.add(pair)
                     attested_l_ge_pairs.add(pair)
-        if not exact_pairs:
+        if not exact_pairs and not word_exact_pair_contexts:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
@@ -663,7 +691,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             )
             if not applies: continue
             pair=f"{a.text}>{b.text}"
-            if pair not in exact_pairs:
+            if pair not in exact_pairs and i not in word_exact_pair_contexts:
                 conditional_disabled=True
                 continue
             if rule_id=="R011" and a.coda=="ㄾ":
@@ -676,7 +704,8 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 source="NIKL Standard Pronunciation Rule 27; official Q&A https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=330963"
                 confidence="high"
             else:
-                license_context=f"{rule_id}:{scope}:{full_form}:{pair}"
+                license_form=word_exact_pair_contexts.get(i,full_form)
+                license_context=f"{rule_id}:{scope}:{license_form}:{pair}"
     elif rule_id=="R016":
         # §11's ㄺ-before-ㄱ exception is morphology-conditioned. A category
         # token alone can incorrectly license unrelated words (e.g. 닭고기).
