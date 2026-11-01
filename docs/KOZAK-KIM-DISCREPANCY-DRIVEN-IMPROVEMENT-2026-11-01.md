@@ -135,6 +135,19 @@ A claim must state the exact corpus/version, shared occurrence denominator, refe
 | Broad IPA convention clusters | BLOCKED | Independent IPA convention and reviewer adjudication needed |
 | Overall Kozak Kim superiority claim | BLOCKED | Current paired CI crosses zero; independent held-out gold required |
 
+## Repository-wide test-candidate pool
+
+The existing exhaustive test-case register extractor also ran on the current branch head. Actions run [41335266701](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266701) completed successfully and produced artifact `13095127295`. Its classification queue contains 6,389 candidates: 5,174 assertion candidates and 1,215 test declarations. Dimension hints include 667 IPA, 298 Korean-surface, 373 rule-trace, 916 status/abstention, 558 Ukrainian-target, 226 variant, and 479 boundary/serialization candidates. **All 6,389 require manual review**; 1,701 extracted assertion forms are unsupported, and observed results were not inferred. This is a broad test-discovery pool, not gold data and not proof that all linguistic phenomena have been adjudicated.
+
+Use it to locate existing positive/negative controls and identify gaps, then classify by linguistic environment and source evidence. Do not bulk-promote extracted literals into gold expectations.
+
 ## Verification status
 
-The code/test change is committed through GitHub's repository contents API on this branch. This connector-only environment does not provide a local checkout or a workflow-dispatch action. No local Node test, npm test, browser build, Python test, or exact-head Actions run is claimed for the new change. The next verification must run the focused `nikl-morphology-guard-matrix-24-30.test.mjs`, full browser suite/build, and paired browser diagnostic on the new branch head.
+Exact branch head verified: `5fca54917ceea174d74205198e9929101b2172d4`.
+
+- Actions run [41335266673](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266673): **PASS**. Browser regression tests: 1,365/1,365; public-page build: PASS; generated-page verification: PASS; Python regression/data-integrity job: PASS.
+- The focused §27 boundary test passed as browser test 1114. It confirms `할게`, `할게요`, `다를게`, `안타까울게` retain the licensed rule and `올게이` does not receive fortition from an internal substring.
+- Actions run [41335266701](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266701): **PASS**. Test-case register extraction, validation, inventory generation, and artifact upload all succeeded.
+- An earlier run failed because the new NIKL source row duplicated an existing `SRC-NIKL-QNA-330963` and the source-register test still expected 141 rows. The duplicate was removed, the existing record reused, a distinct `SRC-NIKL-QNA-308180` row added, and the expected count updated to 142 (133 review-required). The latest browser and Python jobs pass.
+- The metadata-only official NIKL source-inventory job was skipped; item-level reuse/license review remains open.
+- **Not run:** the paired Kozak Kim-vs-original-g2pK benchmark on the repaired code. The baseline artifact predates this change. No measured post-change benchmark gain is claimed.
