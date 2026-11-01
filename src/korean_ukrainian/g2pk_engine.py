@@ -84,12 +84,12 @@ def pronounce_surface(text: str, *, descriptive: bool = False) -> str:
 
 
 def _aligned_source_words(source_text: str, surface: str) -> list[str] | None:
-    """Return source words only when Korean word spans retain their separators.
+    """Return source words only when token boundaries can be conservatively paired.
 
     Equal token counts are insufficient: a split/merge or shifted punctuation
     boundary can otherwise attach a lexical pronunciation/IPA override to the
-    wrong source word. g2pK normally preserves punctuation and spacing, so an
-    exact inter-word separator match is a conservative alignment contract.
+    wrong source word. Require exact inter-word separators and equal syllable
+    counts per word; count-changing contractions are deliberately unaligned.
     """
     source_matches = list(re.finditer(r"[가-힣]+", source_text))
     surface_matches = list(re.finditer(r"[가-힣]+", surface))
