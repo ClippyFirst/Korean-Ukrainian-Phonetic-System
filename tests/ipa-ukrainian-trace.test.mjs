@@ -389,7 +389,7 @@ test('engine exposes an opt-in profile-gated target path without changing legacy
     engine.convert('6·25', {requireAdjudicatedIpaProfile:true}),
   ]) {
     assert.equal(result.target_adapter, 'profile-gated');
-    assert.equal(result.target_status, 'provisional');
+    assert.equal(result.target_status, 'unavailable');
     assert.equal(result.target_reason, 'ipa_profile_not_adjudicated_compatible');
     assert.equal(result.ukrainian, '', 'unadjudicated IPA must not be returned as accepted target text in strict mode');
     assert.equal(result.candidate_ukrainian, null);
