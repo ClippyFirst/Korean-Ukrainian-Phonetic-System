@@ -318,3 +318,11 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **Projected only:** prior artifact recalculation estimates strict CER 8.2571% → 8.2441% (exact match unchanged) and broad-candidate exact 92.4416% → 92.4787%. No updated score may be published until current-head browser benchmark completes.
 - **BLOCKED:** connector commits have not triggered new CI runs; exact-head tests/build/system/benchmark require manual Actions dispatch or an event-triggering push. Korean phonetics adjudication, Ukrainian target review and item-level rights verification remain open.
 - **Release status:** research prototype; not research-certified or release-ready. See the latest continuation in `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
+
+
+## 2026-11-01 — Canonical IPA benchmark error taxonomy (PR #415)
+
+- Direct browser run 41309605083: 2,699 tokens; strict exact 52.9085%, CER 8.2571%.
+- Research-only broad-candidate sensitivity: 92.4416% exact, CER 1.3562%; 1,067/1,271 strict mismatches (83.95%) normalize to exact; 204 remain.
+- Broad normalization is unadjudicated and must not be promoted as the official score. Review remaining cases with Korean sources and preserve length/allophone detail unless an adjudicated standard permits normalization.
+- New 실수 and 한자 corrections have projected, not measured, deltas pending exact-head CI and benchmark rerun.
