@@ -640,9 +640,9 @@ This is a bounded branch snapshot, not a release acceptance decision. Branch `re
 |---|---|---|
 | 0 — Repository integrity | PARTIAL | PR #416 and its stacked base inspected; no merge, branch deletion, or unrelated PR mutation. Final branch head is recorded in the PR and handoff. |
 | 1 — Source and licensing | PARTIAL / BLOCKED | Official NIKL dictionary evidence checked for 출산 family and 저출산; item-level KOGL reuse mark remains unverified. |
-| 2 — Rule and data integrity | PASS for bounded §26 / PARTIAL for R012 generally | Exact full-form + internal `출>산` licenses; positive tests for 출산, 출산율, 출산하다, 비출산, 저출산; negative controls 비출고 and 저출고. Productive Sino-Korean morphology is not implemented. |
+| 2 — Rule and data integrity | PASS for original four-form §26 set; PARTIAL for `저출산` follow-up and R012 generally | Exact full-form + internal `출>산` licenses. Original 출산, 출산율, 출산하다, 비출산 controls verified in run 41336800458. Follow-up 저출산/저출고 tests are authored but await exact-head CI. Productive Sino-Korean morphology is not implemented. |
 | 3 — Independent evaluation corpus | PARTIAL / EVIDENCE-LIMITED | Same 2,699 UGTPHON occurrences paired before/after; UGTPHON IPA is diagnostic and has an aspiration-vs-fortition annotation mismatch on 출산. No independent specialist gold. |
-| 4 — Runtime correctness | PASS for recorded exact-head Actions | Run 41336800458: Python regression/data-integrity and browser regression/build/generated-page checks PASS. Run 41336800424: paired browser benchmark and pinned-data checks PASS. No local test run is claimed. |
+| 4 — Runtime correctness | PASS for pre-`저출산` code head; current exact head pending | Run 41336800458: Python regression/data-integrity and browser regression/build/generated-page checks PASS. Run 41336800424: paired browser benchmark and pinned-data checks PASS. New exact-head runs 41339399132/41339399053/41339399044/41339399017 were queued/in progress at handoff. No local test run is claimed. |
 | 5 — Product quality | PARTIAL | This is engine-only work; no UI or deployment change. Existing release/product gates are unchanged. |
 | 6 — Release and independent review | BLOCKED | No independent Korean IPA reviewers, no independent Ukrainian target review, and unresolved item-level source rights. Do not claim overall superiority or release readiness. |
 
