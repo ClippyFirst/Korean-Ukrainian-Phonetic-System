@@ -4572,7 +4572,7 @@ The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026
 |---|---|---|
 | Confirm scope and preserve original g2pK | DONE_VERIFIED | Explicit owner instruction; changed paths on this branch do not touch g2pK runtime files |
 | Extract paired output discordances | DONE_VERIFIED | Artifact 13093672281; 23 output-different occurrences and full ledger |
-| §27 complete `-ㄹ게` boundary | DONE_VERIFIED (implementation/tests) | Current engine rule requires complete eojeol-final `-ㄹ게` or `-ㄹ게요`; focused positives/negative passed as browser test 1114 in run 41335266673. Paired benchmark rerun remains TODO. Existing NIKL Q&A 330963 reused; Q&A 308180 registered as a separate -ㄹ게 + 요 morphology source. |
+| §27 complete `-ㄹ게` boundary | DONE_VERIFIED | Browser test 1114 passed; paired browser run 41335549779 confirms `올게이` distance 3→1, with no other Kozak Kim output changes in 2,699 shared occurrences. Existing NIKL Q&A 330963 reused; Q&A 308180 registered for -ㄹ게 + 요 segmentation. |
 | Source register and rule coverage | DONE_VERIFIED (structural integrity) | Python regression/data-integrity and browser source-register audit passed on code/test head 5fca549; 142 rows, unique IDs, R013 updated. Item-level rights review remains open. |
 | Long-vowel discordances | TODO / evidence-limited | Multiple g2pK exact matches omit length that the NIKL evidence records; independent IPA convention review needed before any code change |
 | §11 complex-coda, §24/§26 fortition, phrase variation | PARTIAL / TODO | Existing source-backed rules preserved; expand positive/negative/minimal contrast coverage and independently adjudicate variants |
@@ -4598,7 +4598,8 @@ The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026
 - Actions run 41335266701 passed on the same head: extractor behavior, loss-preserving inventory generation, validation, and artifact upload. Artifact 13095127295 contains 6,389 assertion/test-declaration candidates; all require manual review.
 - An earlier CI run exposed a duplicate `SRC-NIKL-QNA-330963` ID and a stale 141-row test expectation. The duplicate was removed by reusing the existing source record; Q&A 308180 was added under its own ID; the expected row count was updated to 142. The subsequent full system run passed.
 - The official NIKL source inventory metadata-only job was skipped; item-level reuse rights remain unresolved.
-- **Not run:** the paired Kozak Kim-vs-original-g2pK diagnostic after the §27 change. The existing baseline artifact predates the fix; no post-change gain is claimed.
+- Paired browser diagnostic run 41335549779 passed on code-bearing head `8ac8cd18cadb8f074ecdc3cbc7ee3a562144a3dc`, artifact 13094763897. On 2,699 shared tokens, exact rates tie at 53.4272%; Kozak Kim CER 8.1271%, g2pK CER 8.2138%; paired CER delta -0.08669 pp, sentence-cluster 95% CI [-0.17414, -0.01235] pp. Exact-match delta is zero and its CI crosses zero.
+- Before/after JSON comparison found only `올게이` changed: Kozak Kim `ol.k͈e.i` → `ol.ɡe.i`, distance 3→1; g2pK output unchanged. No other Kozak Kim output changes or regressions were observed in the shared paired set.
 
 ## Next executable steps
 
@@ -4608,4 +4609,4 @@ The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026
 4. Expand discrepancy analysis by conditioning environment, not just IPA edit string; preserve sentence-level clustering and repeated-occurrence identity.
 5. Continue only with source-backed rules and independent negative controls. Do not claim an overall Kozak Kim win until a paired, independently adjudicated holdout supports it.
 
-**Current readiness:** research prototype. The §27 rule-boundary repair and software regression/build checks are verified; the paired post-change benchmark, independent IPA adjudication, item-level source-rights review, and independent Ukrainian target review remain outstanding. It is not release-ready or research-certified.
+**Current readiness:** research prototype. The §27 rule-boundary repair, full browser/Python/build checks, and post-change paired diagnostic are verified. Independent IPA adjudication, item-level source-rights review, broader discrepancy-cluster adjudication, and independent Ukrainian target review remain outstanding. It is not release-ready or research-certified.
