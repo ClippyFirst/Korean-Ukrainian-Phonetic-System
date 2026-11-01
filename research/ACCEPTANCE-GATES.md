@@ -539,3 +539,15 @@ This confirms a modest edit-distance improvement, not an exact-match increase. B
 ## Latest 한자 lexical-row regression repair (2026-11-01)
 
 Browser regression run 41311996128 failed two new checks: target-syllable alignment (empty target field) and provisional candidate suppression (the 12-field row placed `variant-aware-research` in the wrong column). The row is corrected to 13 columns, target candidate `ган|чча`, and `input_kind=variant-aware-research`. The candidate is explicitly project-generated and provisional; it is not dictionary-sourced Ukrainian. CSV alignment is statically verified. Exact-head browser/Python tests for commit `eba968b383e1ae4ca8ebb52094c3f2d32439e315` are pending.
+
+
+## Python raw-surface benchmark import repair — 2026-11-01
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Diagnose Python suite failure | DONE_VERIFIED | Actions 41313216461 and 41313216444 logs show test collection failed because `tests/test_ugtphon_surface_benchmark.py` imported missing `scripts.benchmark_ugtphon_ko_surface`. Browser build/regression passed in system run; Python job failed. |
+| Restore existing benchmark implementation | PARTIAL | Restored the existing PR #411 implementation on PR #415 in commit `c069031a6cea830ad4d5f00fcf5314b5dd1e8e12`; no new prediction logic or runtime pronunciation rule added. |
+| Exact-head Python/browser/system CI | TODO | Re-run on the repair commit; require Python 3.11/3.12/3.13, Node suite/build, wheel install, data-integrity and system verification. |
+| Exact-head UGTPHON raw-surface and paired benchmark | TODO | Re-run against pinned train/test splits; report raw baseline, train-only retrieval, paired deltas, abstentions and false rewrites separately. |
+
+The previous failed tests are not to be counted as passing, and the restored file is not DONE_VERIFIED until exact-head CI confirms the import and all tests. The repair changes test/benchmark availability only; it does not claim a G2P accuracy improvement.
