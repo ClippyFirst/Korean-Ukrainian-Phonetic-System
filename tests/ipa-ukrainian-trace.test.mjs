@@ -223,7 +223,7 @@ test('main browser conversion withholds provisional target output and exposes on
   const engine = createEngine(jamoCsv, lexicalCsv);
   const result = engine.convert('의', { morphologyMode: 'strict' });
   assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.target_status, 'provisional');
   assert.equal(result.candidate_ukrainian, 'ий');
   assert.equal(result.candidate_status, 'provisional');
   assert.equal(result.trace[0].candidateOutput, 'ий');
@@ -236,7 +236,7 @@ test('a phrase with a provisional target withholds partial output but preserves 
   const engine = createEngine(canonicalCsv, lexicalCsv);
   const result = engine.convert('가 의!');
   assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.target_status, 'provisional');
   assert.equal(result.candidate_status, 'provisional');
   assert.ok(result.candidate_ukrainian.includes('ий'));
   assert.ok(result.candidate_ukrainian.includes('!'));
@@ -389,7 +389,7 @@ test('engine exposes an opt-in profile-gated target path without changing legacy
     engine.convert('6·25', {requireAdjudicatedIpaProfile:true}),
   ]) {
     assert.equal(result.target_adapter, 'profile-gated');
-    assert.equal(result.target_status, 'unavailable');
+    assert.equal(result.target_status, 'provisional');
     assert.equal(result.target_reason, 'ipa_profile_not_adjudicated_compatible');
     assert.equal(result.ukrainian, '', 'unadjudicated IPA must not be returned as accepted target text in strict mode');
     assert.equal(result.candidate_ukrainian, null);
