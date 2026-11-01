@@ -4550,7 +4550,7 @@ The owner explicitly selected **Kozak Kim only** as the improvement target. The 
 
 - Main at start: `7bbbd7e7ce888a9c995bb70959e17858263c07a8`.
 - Reused research/code baseline: PR #415 branch head `559000fa845b40450cb7173167a2d28016d282f8`, previously verified in Actions; no wholesale merge of PR #415 was performed.
-- Dedicated branch: `research/kozak-kim-discrepancy-driven-improvement-2026-11-01`.
+- Dedicated current branch: `research/kozak-kim-discrepancy-driven-improvement-2026-11-01-current`, stacked on current PR #415 head `0b4b1260ffa2327a176613a4585ad82f0cc0d2ef`. The earlier branch `research/kozak-kim-discrepancy-driven-improvement-2026-11-01` was based on the stale 559000f PR tip and is superseded; it was preserved, not deleted.
 - This continuation changes only the native Kozak Kim engine, its tests, and research/evidence documentation. The original g2pK implementation is untouched.
 
 ## Paired discrepancy evidence
@@ -4573,7 +4573,7 @@ The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026
 | Confirm scope and preserve original g2pK | DONE_VERIFIED | Explicit owner instruction; changed paths on this branch do not touch g2pK runtime files |
 | Extract paired output discordances | DONE_VERIFIED | Artifact 13093672281; 23 output-different occurrences and full ledger |
 | §27 complete `-ㄹ게` boundary | PARTIAL | `src/app/engine_rules_ctx.js` now requires the current eojeol to end in the complete `-ㄹ게` or `-ㄹ게요` sequence; test added for `할게`, `할게요`, `다를게`, `안타까울게`, and substring-only control `올게이`. NIKL Q&A 330963 and 308180 registered as `SRC-NIKL-QNA-330963` and `SRC-NIKL-QNA-308180`. Exact-head tests/build/paired benchmark still required. |
-| Source register and rule coverage | PARTIAL | New exact NIKL source row; R013 coverage row updated. CSV/schema integrity tests not yet run on this branch head |
+| Source register and rule coverage | DONE_VERIFIED (structural integrity) | Python regression/data-integrity and browser source-register audit passed on code/test head 5fca549; 142 rows, unique IDs, R013 updated. Item-level rights review remains open. |
 | Long-vowel discordances | TODO / evidence-limited | Multiple g2pK exact matches omit length that the NIKL evidence records; independent IPA convention review needed before any code change |
 | §11 complex-coda, §24/§26 fortition, phrase variation | PARTIAL / TODO | Existing source-backed rules preserved; expand positive/negative/minimal contrast coverage and independently adjudicate variants |
 | Broad IPA mismatch groups | BLOCKED | Need an independently adjudicated IPA convention/gold; do not normalize away aspiration, glide, coda, or lateral contrasts to improve headline scores |
@@ -4594,7 +4594,11 @@ The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026
 - Reviewed the §27 native implementation and the existing morphology guard tests before changing the rule.
 - Verified the official NIKL Q&A page for `할게` and registered its exact URL in the source register.
 - Performed static review of the code/test edits through GitHub file reads.
-- **Not run:** local Node tests, `npm test`, browser build, Python tests, or exact-head GitHub Actions. This connector-only session has no local repository checkout and the available GitHub actions do not expose workflow dispatch. Do not mark the new code/tests DONE_VERIFIED until a push/dispatch-capable run passes.
+- Actions run 41335266673 passed on code/test head `5fca54917ceea174d74205198e9929101b2172d4`: 1,365/1,365 browser tests, build, generated-page verification, and Python regression/data-integrity.
+- Actions run 41335266701 passed on the same head: extractor behavior, loss-preserving inventory generation, validation, and artifact upload. Artifact 13095127295 contains 6,389 assertion/test-declaration candidates; all require manual review.
+- An earlier CI run exposed a duplicate `SRC-NIKL-QNA-330963` ID and a stale 141-row test expectation. The duplicate was removed by reusing the existing source record; Q&A 308180 was added under its own ID; the expected row count was updated to 142. The subsequent full system run passed.
+- The official NIKL source inventory metadata-only job was skipped; item-level reuse rights remain unresolved.
+- **Not run:** the paired Kozak Kim-vs-original-g2pK diagnostic after the §27 change. The existing baseline artifact predates the fix; no post-change gain is claimed.
 
 ## Next executable steps
 
@@ -4604,4 +4608,4 @@ The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026
 4. Expand discrepancy analysis by conditioning environment, not just IPA edit string; preserve sentence-level clustering and repeated-occurrence identity.
 5. Continue only with source-backed rules and independent negative controls. Do not claim an overall Kozak Kim win until a paired, independently adjudicated holdout supports it.
 
-**Current readiness:** research prototype. This branch has a narrow, source-backed rule-boundary improvement authored, but exact-head verification is pending; it is not release-ready or research-certified.
+**Current readiness:** research prototype. The §27 rule-boundary repair and software regression/build checks are verified; the paired post-change benchmark, independent IPA adjudication, item-level source-rights review, and independent Ukrainian target review remain outstanding. It is not release-ready or research-certified.
