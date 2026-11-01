@@ -77,20 +77,20 @@
       "source_sentence": "유재석 은인 정말 좋은 말 해줄것 같아서 불렀겠냐나 연예계 최정상 사회 봐주는 사람 자랑하고 싶은거지",
       "morphological_analysis": "해 주- + -(으)ㄹ + 것 (dependent noun) + 같- + -아서",
       "morphology_evidence": [
-        "SRC-NIKL-QNA-335204"
+        "SRC-NIKL-QNA-317798"
       ],
       "rule_evidence": [
         "SRC-NIKL-PRON"
       ],
       "status": "Rule-environment precedent for 해 줄 것; not exact-token pronunciation or IPA.",
-      "notes": "CONDITIONAL_RULE_ENVIRONMENT_CONTEXT_RESTORED_NOT_DIRECT_TOKEN_IPA",
+      "notes": "The pinned sentence contains 해줄것 같아서. The likely segmentation is 해 줄 것 같아서; the NIKL example 할 것을 directly supports the analogous dependent-noun environment, not this UGC token.",
       "pronunciation_evidence": {
         "source_ids": [
-          "SRC-NIKL-QNA-335204"
+          "SRC-NIKL-QNA-317798"
         ],
-        "claim": "NIKL §27 directly gives 할 것을[할꺼슬] and explains the close-connection condition for fortition after -(으)ㄹ.",
-        "scope": "NIKL §27 directly gives 할 것을[할꺼슬] and explains the close-connection condition for fortition after -(으)ㄹ.",
-        "caveat": "Rule-environment precedent, not direct IPA gold for the UGTPHON token. Item-level NIKL reuse rights remain unverified."
+        "claim": "NIKL Q&A 317798 reproduces Standard Pronunciation Rule §27 and directly lists 할 것을[할꺼슬].",
+        "scope": "Direct rule-environment precedent for 해 줄 것; not an exact-token pronunciation or IPA attestation.",
+        "caveat": "Official rule-environment precedent, not direct IPA gold for this UGTPHON token. Item-level NIKL reuse rights remain unverified."
       }
     },
     {
@@ -108,14 +108,14 @@
         "SRC-NIKL-PRON"
       ],
       "status": "Conditional morphology/rule-environment support; no direct IPA for 많을거같이.",
-      "notes": "CONDITIONAL_RULE_ENVIRONMENT_WITH_COLLOQUIAL_DEPENDENT_NOUN_NOT_DIRECT_TOKEN_IPA",
+      "notes": "The source sentence has 많을거같이 생김. The analysis treats 거 as the colloquial dependent noun for 것; prosodic cohesion and exact surface realization are not directly attested.",
       "pronunciation_evidence": {
         "source_ids": [
-          "SRC-NIKL-QNA-335204"
+          "SRC-NIKL-QNA-317798"
         ],
-        "claim": "Q&A 310899 confirms 거 is a dependent noun and colloquial expression for 것; Q&A 335204 explains §27 fortition after -(으)ㄹ when closely connected.",
-        "scope": "Q&A 310899 confirms 거 is a dependent noun and colloquial expression for 것; Q&A 335204 explains §27 fortition after -(으)ㄹ when closely connected.",
-        "caveat": "Rule-environment precedent, not direct IPA gold for the UGTPHON token. Item-level NIKL reuse rights remain unverified."
+        "claim": "Q&A 310899 confirms 거 is the colloquial dependent noun for 것; Q&A 317798 reproduces §27 and its dependent-noun examples.",
+        "scope": "Conditional morphology/rule-environment support; no direct IPA for 많을거같이.",
+        "caveat": "Official rule-environment precedent, not direct IPA gold for this UGTPHON token. Item-level NIKL reuse rights remain unverified."
       }
     },
     {
@@ -133,14 +133,14 @@
         "SRC-NIKL-PRON"
       ],
       "status": "Conditional morphology/rule-environment support; no direct IPA for 보일거라.",
-      "notes": "CONDITIONAL_RULE_ENVIRONMENT_WITH_COLLOQUIAL_DEPENDENT_NOUN_NOT_DIRECT_TOKEN_IPA",
+      "notes": "The source sentence contains 보일거라 생각하는건가. The likely parse is 보일 거라 생각하는 건가; exact token IPA and prosodic cohesion are not directly attested.",
       "pronunciation_evidence": {
         "source_ids": [
-          "SRC-NIKL-QNA-335204"
+          "SRC-NIKL-QNA-317798"
         ],
-        "claim": "Q&A 310899 confirms 거 as a dependent noun for 것; Q&A 335204 describes the close-boundary condition for §27 fortition after -(으)ㄹ.",
-        "scope": "Q&A 310899 confirms 거 as a dependent noun for 것; Q&A 335204 describes the close-boundary condition for §27 fortition after -(으)ㄹ.",
-        "caveat": "Rule-environment precedent, not direct IPA gold for the UGTPHON token. Item-level NIKL reuse rights remain unverified."
+        "claim": "Q&A 310899 confirms 거 as the colloquial dependent noun for 것; Q&A 317798 reproduces the §27 environment for -(으)ㄹ + dependent nouns.",
+        "scope": "Conditional morphology/rule-environment support; no direct IPA for 보일거라.",
+        "caveat": "Official rule-environment precedent, not direct IPA gold for this UGTPHON token. Item-level NIKL reuse rights remain unverified."
       }
     },
     {
@@ -152,21 +152,22 @@
       "source_sentence": "상대를 존중하는 것은 합리적이고 타당한 논리로 존중시킬수도있지만 저런 물리적 힘이 있음에도 자기를 공격하지않는.. 그런곳에서도 나오는 존중이 엄청나게 크다고함 힘에 의해 내릴수있는 어떤 갑질 논리가 아닌곳에서 처음 신뢰가 시작된다고함 왜냐면 국가의 힘들은 항상 똑같지가 안았기때문임 언제나 1의 힘이있는 국가가있다면 99의 힘을 가진놈 20힘 50 힘 모두가 달랐기에 이 물리적인 힘과 논리적인힘이 공존하는 외교상태가 발현되었음",
       "morphological_analysis": "내리- + -(으)ㄹ + 수 (dependent noun) + 있- + -는",
       "morphology_evidence": [
-        "SRC-NIKL-QNA-331601"
+        "SRC-NIKL-QNA-331601",
+        "SRC-NIKL-QNA-307960"
       ],
       "rule_evidence": [
         "SRC-NIKL-PRON"
       ],
       "status": "Direct rule-environment precedent for dependent noun 수; not exact-token IPA for 내릴수있는.",
-      "notes": "CONDITIONAL_RULE_ENVIRONMENT_CONTEXT_RESTORED_NOT_DIRECT_TOKEN_IPA",
+      "notes": "The pinned sentence contains 내릴수있는 어떤 갑질 논리. The likely segmentation is 내릴 수 있는; two NIKL answers support the same environment, not this exact UGC token.",
       "pronunciation_evidence": {
         "source_ids": [
           "SRC-NIKL-QNA-331601",
           "SRC-NIKL-QNA-307960"
         ],
         "claim": "Q&A 331601 gives 알 수 없는[알쑤엄는] under §27; Q&A 307960 directly discusses [쑤] after -(으)ㄹ.",
-        "scope": "Q&A 331601 gives 알 수 없는[알쑤엄는] under §27; Q&A 307960 directly discusses [쑤] after -(으)ㄹ.",
-        "caveat": "Rule-environment precedent, not direct IPA gold for the UGTPHON token. Item-level NIKL reuse rights remain unverified."
+        "scope": "Direct rule-environment precedent for dependent noun 수; not an exact-token IPA attestation for 내릴수있는.",
+        "caveat": "Official rule-environment precedent, not direct IPA gold for this UGTPHON token. Item-level NIKL reuse rights remain unverified."
       }
     },
     {
@@ -178,20 +179,20 @@
       "source_sentence": "죽여도 집유인데 판매면 입건도 안할듯 ㅋㅋㅋㅋㅋ",
       "morphological_analysis": "안 + 하- + -(으)ㄹ + 듯 (dependent noun)",
       "morphology_evidence": [
-        "SRC-NIKL-QNA-336313"
+        "SRC-NIKL-QNA-317798"
       ],
       "rule_evidence": [
         "SRC-NIKL-PRON"
       ],
       "status": "Direct pronunciation precedent for the morphological environment; not exact-token IPA. A pause can permit a plain onset.",
-      "notes": "CONDITIONAL_RULE_ENVIRONMENT_CONTEXT_RESTORED_WITH_PROSODY_CAVEAT",
+      "notes": "The pinned sentence contains 안할듯 followed by laughter. The likely parse is 안 할 듯; the official rule example is 할 듯하다. Actual prosodic cohesion in the UGC utterance is not recorded.",
       "pronunciation_evidence": {
         "source_ids": [
-          "SRC-NIKL-QNA-336313"
+          "SRC-NIKL-QNA-317798"
         ],
-        "claim": "Q&A 336313 explicitly gives 할 듯[할뜯] and 말 듯[말뜯] under §27.",
-        "scope": "Q&A 336313 explicitly gives 할 듯[할뜯] and 말 듯[말뜯] under §27.",
-        "caveat": "Rule-environment precedent, not direct IPA gold for the UGTPHON token. Item-level NIKL reuse rights remain unverified."
+        "claim": "NIKL Rule §27 gives 할 듯하다[할뜨타다] and notes that a pause can permit a plain onset.",
+        "scope": "Direct analogous example for the -(으)ㄹ + 듯 environment; exact UGC token prosody remains unresolved.",
+        "caveat": "Official rule-environment precedent, not direct IPA gold for this UGTPHON token. Item-level NIKL reuse rights remain unverified."
       }
     }
   ],

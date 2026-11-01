@@ -9,17 +9,17 @@ The five previously unenumerated C08 contexts have now been reconstructed from t
 | `multilexnorm2026_1953` | `무고일수도있다는` | `X일 + -(으)ㄹ + 수`; NIKL Q&A 327466 + 307960 | Exact §27 context rule now present; output changed plain `s` → fortis `s͈` |
 | `multilexnorm2026_1979` | `했을시` | `했- + -(으)ㄹ + 시`; NIKL Q&A 313481 + 333044 | Exact §27 context rule now present; output changed plain `ɕ` → fortis `ɕ͈`; analyzer disagreement remains |
 | `dc_inside_2024` | `유사성` | Exact lexical/suffix analysis unresolved; Q&A 312649 confirms `의외성` only | Keep unresolved; no `-성` generalization |
-| `multilexnorm2026_1916` | `해줄것` | Likely `해 줄 것`; Q&A 335204 gives `할 것을[할꺼슬]` and the §27 cohesion condition | Conditional rule-environment support; no exact-token IPA |
-| `multilexnorm2026_2011` | `많을거같이` | Likely `많을 거 같이`; Q&A 310899 confirms colloquial dependent noun `거`, Q&A 335204 supports the conditional §27 environment | Conditional morphology; exact token and prosody not attested |
+| `multilexnorm2026_1916` | `해줄것` | Likely `해 줄 것`; Q&A 317798 gives `할 것을[할꺼슬]` and the §27 cohesion condition | Conditional rule-environment support; no exact-token IPA |
+| `multilexnorm2026_2011` | `많을거같이` | Likely `많을 거 같이`; Q&A 310899 confirms colloquial dependent noun `거`, Q&A 317798 supports the conditional §27 environment | Conditional morphology; exact token and prosody not attested |
 | `dc_inside_2186` | `보일거라` | Likely `보일 거라`; Q&A 310899 + 335204 | Conditional morphology; exact token and prosody not attested |
 | `dc_inside_2266` | `내릴수있는` | Likely `내릴 수 있는`; Q&A 331601 gives `알 수 없는[알쑤엄는]`, Q&A 307960 supports the same environment | Direct rule-environment precedent; not exact-token IPA |
-| `dc_inside_2557` | `안할듯` | Likely `안 할 듯`; Q&A 336313 gives `할 듯[할뜯]` and notes a pause can permit a plain onset | Direct analogous example; exact UGC prosody unresolved |
+| `dc_inside_2557` | `안할듯` | Likely `안 할 듯`; Q&A 317798 gives `할 듯[할뜯]` and notes a pause can permit a plain onset | Direct analogous example; exact UGC prosody unresolved |
 
 The two output changes above were independently verified by comparing pre-context artifact `13097847614` with current artifact `13102456604`: exactly those two Kozak Kim token outputs changed among the shared occurrences; all g2pK outputs remained unchanged.
 
 **Traceability caveat:** the original one-off C08 extraction table containing the eight source-row IDs was not preserved. The five new memberships are high-confidence reconstructions from the pinned benchmark mismatch signature plus exact target-token/source-sentence matching, not copied from that missing extraction artifact. They are recorded as reconstructed rather than primary-source mappings.
 
-Four new NIKL sources are now registered: Q&A 335204 (Rule §27 and the dependent-noun/cohesion condition), 310899 (colloquial dependent noun `거`), 331601 (`알 수 없는[알쑤엄는]`), and 336313 (`할 듯[할뜯]`). These establish conditional morphological/rule environments; they do not supply independent IPA gold for the UGC tokens. No production rule was added in this continuation. All eight contexts are now in the fixture; `유사성` remains unresolved; independent IPA/prosody review and item-level rights remain open.
+Four new NIKL sources are now registered: Q&A 317798 (Rule §27 and the dependent-noun/cohesion condition), 310899 (colloquial dependent noun `거`), 331601 (`알 수 없는[알쑤엄는]`), and 336313 (`할 듯[할뜯]`). These establish conditional morphological/rule environments; they do not supply independent IPA gold for the UGC tokens. No production rule was added in this continuation. All eight contexts are now in the fixture; `유사성` remains unresolved; independent IPA/prosody review and item-level rights remain open.
 
 ---
 

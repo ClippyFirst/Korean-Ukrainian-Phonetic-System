@@ -15,7 +15,7 @@
 | C08 morphology/rule evidence | PARTIAL | 무고일수도있다는: NIKL Q&A 327466 supports the X일 수도 construction; Kiwi and MeCab-Ko agree on the target boundary. 했을시: NIKL Q&A 313481/333044 support dependent noun 시 after -을, but Kiwi parses 을/ETM + 시/NNB while MeCab-Ko returns 을시/EC. 유사성 remains unresolved; Kiwi/MeCab-Ko disagree on suffix versus lexical segmentation and Q&A 312649 confirms 의외성 only. These are morphology hypotheses, not direct IPA attestations. |
 | Python/browser R013 parity | DONE_VERIFIED | Python exact same-eojeol licenses now match the containing eojeol inside a full sentence, rather than comparing the whole sentence to a single-word key. Positive and negative full-context tests cover both runtimes. |
 | g2pK baseline integrity | DONE_VERIFIED | No original/vendor g2pK file changed. Current and previous paired browser artifacts show zero changed g2pK predictions. |
-| Source/licensing register | PARTIAL | Register now has 156 rows: 147 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL Q&A item-level reuse terms remain unchecked. The 2021 NIKL PDF is supplementary only and is not used as production evidence. |
+| Source/licensing register | PARTIAL | Register now has 155 rows: 146 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL Q&A item-level reuse terms remain unchecked. The 2021 NIKL PDF is supplementary only and is not used as production evidence. |
 
 ## Latest paired browser benchmark
 
