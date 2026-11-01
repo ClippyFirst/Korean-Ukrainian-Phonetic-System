@@ -290,7 +290,6 @@ def test_surface_evaluation_reports_canonical_false_rewrite_risk(monkeypatch):
     assert report["baseline"]["scored_tokens"] == 1
     assert report["normalization"]["hits_canonical"] == 1
     assert report["normalization"]["potential_canonical_false_rewrites"] == 1
-    assert report["normalization"]["potential_canonical_false_rewrites"] == 1
 
 
 def test_surface_evaluation_separates_unresolved_engine_errors_and_unsupported_input(monkeypatch):
