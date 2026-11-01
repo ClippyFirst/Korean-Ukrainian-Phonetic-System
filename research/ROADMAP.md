@@ -334,3 +334,16 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - \`실수\` now produces \`ɕil.s͈u\` and is broad-candidate exact; strict mismatch is annotation allophone. \`한자\` now produces \`haːn.tɕ͈a\`, preserving dictionary length; benchmark gold omits length, so distance 1 remains.
 - Paired native/g2pK: native 53.0393% exact / 9.1220% CER vs g2pK 53.1134% / 9.2304%; keep native as default.
 - Exact-head unit/system CI remains required before these changes can be promoted from benchmark-verified to fully verified.
+
+
+## 2026-11-01 — measured raw-surface and morphology follow-up (PR #415)
+
+- **DONE_VERIFIED:** restored the existing raw-surface benchmark implementation and corrected its Python regression contract; Python 3.11/3.12/3.13, wheel, web, teacher-corpus, browser regression/build and system verification passed in runs 41325015110 / 41325014981 / 41325014980.
+- **DONE_VERIFIED diagnostic:** exact pinned UGTPHON train/test split integrity and Apache-2.0 declaration checked in run 41325015010. Train 1,976 rows; test 275 rows; both Git blob hashes match the repository's pinned manifest.
+- **DONE_VERIFIED research result:** train-only raw-surface retrieval improves the paired 2,624-token subset from 51.3720% to 51.6006% exact (+0.2287 pp) and CER 10.0783% to 9.9730% (−0.1054 pp); 6 exact improvements, 0 regressions, 15 rescued, 0 lost. Only 22/722 noncanonical tokens hit; exact-context retrieval produced 0 hits. Do not promote to standard runtime.
+- **DONE_VERIFIED diagnostic / no adoption:** Kiwi + MeCab consensus changed 4 unique words, gave no exact-match gain and worsened paired CER by 0.000087. Preserve strict engine.
+- **Research direction:** EMNLP 2026's Korean ablation identifies sentence context as the main UGT lever; retrieval adds little after context and staged decoding worsens Korean. If continuing UGT, prototype a context-conditioned train-only candidate stage with canonical controls and calibrated abstention, not broad phonological rules.
+- **Benchmark interpretation:** direct browser canonical test remains 52.9085% exact / 8.2441% CER at 99.852% coverage. Broad-candidate sensitivity (92.4787% exact / 1.3427% CER) is not normative engine accuracy. Paired native/g2pK still favours native CER; no reason to replace Kozak Kim.
+- **BLOCKED:** independent Korean IPA adjudication, independent Ukrainian target review, NIKL item-level rights and IPA-Dict/UGTPHON license compatibility.
+- **IN_PROGRESS at last check:** latest post-test-only head workflows were still running; verify the current tip before merge. Multi-engine Charsiu/ByT5 jobs remain skipped by default.
+- **Release status:** research prototype; not research-certified or release-ready. Canonical handoff and exact artifact details remain in `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
