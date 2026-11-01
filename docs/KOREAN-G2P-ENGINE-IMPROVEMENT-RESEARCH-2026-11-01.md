@@ -181,4 +181,64 @@ This is deliberately a transparent retrieval-only baseline. It is **not** a repr
 4. If lookup helps, add contextual retrieval/detection as a separate optional UGT normalizer. Do not insert this behavior into the default standard-Korean engine.
 5. Only after a clean retrieval baseline, consider a small research-only neural normalizer. The paper's public repository currently provides the dataset and license, not a verified released training implementation/checkpoint; no model code or weights were copied.
 
-**Verification status:** the new script and fixture tests were added to the PR branch, but exact-head CI did not run for the GitHub-App-authored commits and the external train/test files were not available in the local execution container. The benchmark is therefore PARTIAL until the tests run and the real Korean train/test split is evaluated.
+
+**Verification status (superseded 2026-11-01):** exact-head GitHub Actions now ran the benchmark and tests against the pinned Korean train/dev/test files. The current branch's native engine code was not changed by this benchmark work; the results below are diagnostic and do not authorize new phonological rules.
+
+## Measured continuation — 2026-11-01
+
+### Native engine versus external engines
+
+Completed multi-engine run [41291822746](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41291822746), artifact [13077179199](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41291822746/artifacts/13077179199), used the pinned SIGMORPHON and UGTPHON sets. The native engine remained the strongest or statistically indistinguishable option among the compared licensed alternatives.
+
+| Dataset / engine | Scored | Exact match | CER | Notes |
+|---|---:|---:|---:|---|
+| SIGMORPHON — native | 998/999 | 35.7715% | 14.6978% | 1 abstention |
+| SIGMORPHON — g2pK 0.9.4 | 999/999 | 35.3353% | 14.8222% | Native paired exact advantage: 0.4008 pp; 95% CI excludes zero |
+| SIGMORPHON — g2p_ko 1.0.0 | 999/999 | 35.6356% | 14.6970% | Essentially tied CER; lower exact match |
+| UGTPHON — native | 2,698/2,703 | 53.0022% | 9.1697% | 5 abstentions |
+| UGTPHON — g2pK 0.9.4 | 2,703/2,703 | 53.0892% | 9.2285% | Tiny exact advantage; worse CER |
+| UGTPHON — KoG2Padvanced 2022 | 2,703/2,703 | 47.3178% | 10.6772% | Worse than native; upstream declares no license, comparison-only |
+
+On the paired SIGMORPHON subset, g2pK-minus-native exact delta is -0.004008 (95% CI [-0.008016, -0.001002]); CER delta is +0.001128 (95% CI [-0.000126, 0.002771]). On paired UGTPHON, exact delta is +0.001112 (95% CI [-0.000371, 0.002988]) and CER delta is +0.000607 (95% CI [-0.000084, 0.001383]); both intervals include zero. Therefore replacing the native engine with g2pK is not justified by these benchmarks.
+
+### Sentence-level context benchmark
+
+The pinned UGTPHON workflow now evaluates the sentence-level canonical field against the independent sentence-level phonemes field, not a concatenation of token labels. Punctuation is converted to whitespace in accordance with the corpus annotation contract; digits, Latin, URLs and symbols are not guessed or silently removed. The run [41302329828](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41302329828) uploaded sentence IPA artifact [13081168898](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41302329828/artifacts/13081168898) and paired full-sentence native/g2pK artifact [13081873194](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41302329828/artifacts/13081873194).
+
+| Split / mode | Eligible | Scored native | Exact | CER | Unresolved |
+|---|---:|---:|---:|---:|---:|
+| Dev, same_word | 208 | 176 | 5.6818% | 15.5184% | 32 |
+| Dev, phrase | 208 | 176 | 5.6818% | 15.6803% | 32 |
+| Test, same_word | 200 | 163 | 7.9755% | 14.8323% | 37 |
+| Test, phrase | 200 | 163 | 7.9755% | 15.0149% | 37 |
+
+Phrase mode produced no additional exact sentence matches and worsened CER on both dev and test. Keep same_word as the conservative default; do not treat every eojeol boundary as a prosodic phrase boundary.
+
+The paired full-sentence comparison gives g2pK its MeCab context, unlike the token-level comparison. On the test paired subset (163 sentences), g2pK-minus-native exact delta is -0.006135 and CER delta is +0.006474; on dev (176 sentences), exact delta is 0 and CER delta is +0.009611. g2pK therefore did not outperform the native engine in this sentence-context diagnostic. Its Hangul output is converted through the repository's IPA segment renderer, so the comparison shares that renderer and remains diagnostic rather than fully independent.
+
+Sentence exact match is a harsh whole-sequence metric and must not be compared numerically with token exact match. The corpus is noisy user-generated text, not a normative standard-pronunciation corpus.
+
+### Raw-surface UGT normalization experiment
+
+The raw-surface test [41302329828](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41302329828), artifact [13081623927](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41302329828/artifacts/13081623927), attempted 3,140 tokens: 2,636 scored, 83.949% coverage, 51.4416% exact among scored, 43.1847% coverage-adjusted exact, 10.1151% CER, 4 unresolved, and **0 engine errors**. The 487 tokens previously reported as engine errors are now classified separately as unsupported raw input outside the native Hangul+whitespace contract; train-only retrieval is attempted before this check.
+
+The train-only datastore contains 192 exact surface mappings (89 ambiguous keys; 47 canonical collisions blocked) and 297 exact local-context mappings (483 ambiguous context keys; 1 canonical-context collision blocked). Exact context retrieval produced **0 test hits**; exact surface retrieval produced 15 hits among 722 non-canonical tokens (2.0776%), with 0 potential canonical false rewrites. This exact-trigram experiment does not generalize to the held-out test set and is not promoted to runtime. A learned/fuzzy contextual normalizer would need dev-only threshold selection, explicit false-rewrite controls and a separate acceptance gate.
+
+### Existing phonological coverage — avoid duplicating rules
+
+The 2022 paper's major rule families are already represented in the native engine: R003 h-deletion, R005 nasal/place assimilation, R006 liquid assimilation, R007 palatalization and R009 n-insertion. data/korean/rule_ordering.csv explicitly orders n-insertion before licensed h-deletion and liaison, and liquid assimilation before nasal assimilation. The IPA adapter already represents ㅢ as context-dependent (ɰi/ɯi at the phonemic boundary and [i] in the licensed broad context). The study's broader concern about gradient application and prosodic boundaries remains relevant, but no new general rule or probability model is justified without adjudicated source evidence.
+
+The current morphology-consensus diagnostic [41302329863](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41302329863) is diagnostic only: the strict/soft/analyzer-consensus strategies remain near-identical, with no exact-match gain from analyzer consensus and a slight CER regression. Do not promote Kiwi/MeCab analyzer outputs into rule licenses.
+
+### Exact-head verification and status
+
+Code-bearing head: eeb25fbd4f5bc4bd05baa491eb0118116fb7e107 on feat/korean-rr-contextual-phonetics-final, PR [#411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/411).
+
+- Node/browser suite: 1,393/1,393 passed.
+- Python 3.11, 3.12 and 3.13: passed; wheel install and teacher-corpus audit passed.
+- System verification, browser regression/build, browser G2P integration, optional g2pK integration, paired native/g2pK, external UGTPHON, morphology consensus, research morphology smoke, master artifacts and exhaustive test-register extraction: passed on this head.
+- CharsiuG2P, ByT5 and NIKL metadata-only inventory: skipped by default-off/metadata-only gates; no weights were downloaded and no unlicensed code was vendored.
+- The repeated multi-engine run [41302329825](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41302329825) was still in progress at this documentation update; the completed run 41291822746 above remains the available multi-engine evidence.
+
+**Decision:** do not change the native pronunciation rules or default boundary mode based on the current evidence. The engine is already competitive with g2pK; phrase mode and exact-context UGT retrieval did not improve the held-out results. Continue with independent IPA-convention adjudication, a source-backed sentence/prosody boundary dataset, and a dev-tuned contextual UGT normalizer as separate research work. The repository remains a research prototype, not release-ready.
+
