@@ -155,7 +155,12 @@ def evaluate_surface(
     if ipa_level not in {"phonemic", "broad", "narrow"}:
         raise ValueError("ipa_level must be phonemic, broad, or narrow")
     _validate_rows(test_rows, "test")
-    from scripts.benchmark_ugtphon_ko import edit_distance, normalize_ipa
+    try:
+        from scripts.benchmark_ugtphon_ko import edit_distance, normalize_ipa
+    except ModuleNotFoundError:
+        # Direct "python scripts/..." execution puts scripts/ on sys.path,
+        # not the repository root; support both CLI and package-test imports.
+        from benchmark_ugtphon_ko import edit_distance, normalize_ipa
     from korean_ukrainian.pipeline import phoneticize_korean
 
     records: list[dict[str, Any]] = []
