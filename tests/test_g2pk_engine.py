@@ -62,6 +62,22 @@ def test_g2pk_lexical_overrides_require_verified_word_boundary_alignment(monkeyp
     assert all(item["status"] == "derived-from-surface" for item in result["ipa"]["word_analyses"])
 
 
+def test_g2pk_lexical_overrides_are_withheld_when_word_boundaries_shift_with_same_token_count(monkeypatch):
+    class ShiftedSplitG2p:
+        def __call__(self, text, descriptive=False):
+            # Token count and separators match, but syllables moved between
+            # words. Equal counts alone must not authorize positional mapping.
+            return "아 나아"
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", ShiftedSplitG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("아아 나")
+
+    assert result["surface_hangul"] == "아 나아"
+    assert result["ipa"]["word_alignment_status"] == "unknown-source-surface-word-boundaries"
+    assert result["ipa"]["lexical_overrides"] == []
+    assert all(not item["input"] for item in result["ipa"]["word_analyses"])
+
+
 def test_g2pk_lexical_overrides_are_withheld_when_surface_word_count_changes(monkeypatch):
     class MergedWordsG2p:
         def __call__(self, text, descriptive=False):
