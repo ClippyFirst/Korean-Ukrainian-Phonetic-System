@@ -3,15 +3,23 @@
 ## Latest verified status — C01–C07 / C08 continuation
 
 - **Scope:** only Kozak Kim; original g2pK stays untouched.
-- **Branch/PR:** research/kozak-kim-independent-ipa-packets-2026-11-01, draft PR #417 stacked on PR #416.
+- **Branch/PR:** `research/kozak-kim-independent-ipa-packets-2026-11-01`, draft PR #417 stacked on PR #416; pre-refresh head `ccc423a79fe854fba365f3966d78ceadda978036`.
 - **C01–C07:** seven neutral blind packets, 42 entries, 39 unique source rows, full source contexts, no engine/baseline/IPA leakage. Packet preparation is DONE_VERIFIED; independent reviewer submissions remain BLOCKED.
 - **C08:** source contexts recovered for 무고일수도있다는, 했을시, and 유사성. NIKL Q&A 327466 supports the first morphology; Q&A 313481/333044 support the dependent-noun 시 analysis. Kiwi and MeCab-Ko agree on the target boundary in the first form but disagree on 했을시 and 유사성 segmentation. Existing exact-form §27 licenses are retained. 유사성 remains unresolved; five C08 row IDs remain unidentified. No new rule family or generalized -성 rule was added.
 - **Runtime:** Python exact R013 same-eojeol licensing now works for a licensed word inside a full sentence. Full-context positive and negative tests pass in Python and browser.
 - **Benchmark:** browser paired CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster CI −0.1951 to −0.0261 pp); exact match 53.4272% each, no statistically supported exact-match winner. Only the two C08 target outputs changed relative to the prior PR #416 browser artifact; g2pK outputs are unchanged.
-- **Rights:** source register 151 rows; 142 review required and 7 manual classifications remain. NIKL item-level rights review is open.
-- **CI:** Python regression/data integrity, browser regression/build, packet tests, paired browser benchmark, native paired diagnostic, morphology consensus/adapter and extractor passed on the verified code head. Optional Charsiu/ByT5 and NIKL metadata-only inventory were skipped; multi-engine comparison runs were cancelled before a complete score report was produced.
+- **Rights:** source register 152 rows; 143 review required and 7 manual classifications remain (plus one item-level license recorded and one not applicable). NIKL item-level rights review is open.
+- **CI:** Python regression/data integrity and browser regression/build passed on code/test head `bc7b147` in run `41353450715`; packet extraction `41353450682`, paired browser comparison `41353450686`, native paired diagnostic `41353450687`, morphology consensus `41353450703`, and morphology adapter/analyzer checks `41353450714` also passed. These results do not cover the later `ccc423a` test-only assertion update or this documentation/test refresh; fresh CI is required on the new branch head. Optional Charsiu/ByT5 and NIKL metadata-only inventory were skipped; multi-engine comparison runs were cancelled before a complete score report was produced, including latest run `41354753780`; no multi-engine score is claimed.
 - **Training readiness:** supervised IPA training is NOT READY: the partial audit found 644 unique lexical rows but zero explicitly independently adjudicated IPA rows and 24 frozen holdout cases without IPA gold; no holdout overlap was found.
 - **Readiness:** research prototype, not research-certified or release-ready. Next blockers are two independent IPA reviews, five missing C08 IDs/contexts, C09/C10 adjudication, item-level rights and Ukrainian target review.
+
+## Revalidation note — 2026-11-02
+
+- The latest completed paired browser run is `41353450686` (artifact `13102456604`): 2,699 shared scored occurrences; exact match 53.4272% for both systems; Kozak Kim CER 8.1097%, original g2pK CER 8.2138%, paired delta −0.1040 pp (95% sentence-cluster CI −0.1951 to −0.0261 pp). This is a diagnostic on noisy UGTPHON annotations, not normative IPA adjudication.
+- The latest source register is 152 rows (143 review-required, 7 manual-classification-required, 1 item-level license recorded, 1 not applicable). Item-level NIKL rights remain open.
+- C01–C07 packet preparation is complete, but no independent reviewer annotations have been received. C08 remains PARTIAL: three contexts restored, five occurrence IDs still missing, `유사성` unresolved, and no suffix-wide or generic fortition rule added.
+- The full-sentence Python negative control is strengthened to exercise the recovered `유사성` source sentence, not only the isolated token. This is test coverage only; it does not change production phonology.
+- Latest multi-engine workflow `41354753780` was cancelled; neural inference was skipped. No multi-engine result is claimed.
 
 ## Historical snapshots
 

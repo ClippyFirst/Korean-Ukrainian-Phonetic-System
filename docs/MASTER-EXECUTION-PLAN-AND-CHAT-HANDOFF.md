@@ -3,7 +3,7 @@
 **Scope:** Kozak Kim only. The original/vendor g2pK implementation remains unchanged and comparison-only.
 **Working branch:** research/kozak-kim-independent-ipa-packets-2026-11-01.
 **PR:** #417, draft and stacked on the PR #416 implementation line. PRs #415 and #416 remain open; no merge or destructive branch operation was performed.
-**Verified code/test base:** bc7b1474eecfe8df8006572abf0f07957f829647; all later branch updates are documentation/PR metadata only.
+**Last implementation/test head with passing exact-head CI:** `bc7b1474eecfe8df8006572abf0f07957f829647` (system run `41353450715`; paired browser run `41353450686`). **Branch head before this reconciliation:** `ccc423a79fe854fba365f3966d78ceadda978036`, which contains only a source-register test-assertion wording adjustment and no production-code changes. This continuation strengthens the full-sentence negative control and reconciles the handoff; fresh CI on the resulting branch head is required before claiming exact-head verification.
 
 ## Current task ledger
 
@@ -15,11 +15,11 @@
 | C08 morphology/rule evidence | PARTIAL | 무고일수도있다는: NIKL Q&A 327466 supports the X일 수도 construction; Kiwi and MeCab-Ko agree on the target boundary. 했을시: NIKL Q&A 313481/333044 support dependent noun 시 after -을, but Kiwi parses 을/ETM + 시/NNB while MeCab-Ko returns 을시/EC. 유사성 remains unresolved; Kiwi/MeCab-Ko disagree on suffix versus lexical segmentation and Q&A 312649 confirms 의외성 only. These are morphology hypotheses, not direct IPA attestations. |
 | Python/browser R013 parity | DONE_VERIFIED | Python exact same-eojeol licenses now match the containing eojeol inside a full sentence, rather than comparing the whole sentence to a single-word key. Positive and negative full-context tests cover both runtimes. |
 | g2pK baseline integrity | DONE_VERIFIED | No original/vendor g2pK file changed. Current and previous paired browser artifacts show zero changed g2pK predictions. |
-| Source/licensing register | PARTIAL | Register now has 151 rows: 142 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL Q&A item-level reuse terms remain unchecked. The 2021 NIKL PDF is supplementary only and is not used as production evidence. |
+| Source/licensing register | PARTIAL | Register now has 152 rows: 143 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL Q&A item-level reuse terms remain unchecked. The 2021 NIKL PDF is supplementary only and is not used as production evidence. |
 
 ## Latest paired browser benchmark
 
-Run 41352607907, artifact 13102275101; direct browser artifact 13100769975.
+Run 41353450686, paired artifact 13102456604.
 
 - 2,703 eligible occurrences; 2,699 shared scored occurrences; Kozak Kim coverage 99.852%.
 - Paired exact match: 1,442/2,699 = 53.4272% for each engine. Exact-match delta is zero; its 95% cluster-bootstrap interval crosses zero.
@@ -31,6 +31,8 @@ Secondary native paired diagnostic: run 41352607885, artifact 13101886624. It us
 
 ## Verification
 
+
+- Multi-engine run 41354753780 completed as CANCELLED; optional CharsiuG2P and ByT5 inference jobs were SKIPPED. No completed multi-engine score is available and none is claimed.
 - System / Python regression and data integrity: PASS — run 41353450715.
 - Browser regression tests and build: PASS — run 41353450715.
 - Exhaustive test-case register extraction: PASS — run 41353450682.

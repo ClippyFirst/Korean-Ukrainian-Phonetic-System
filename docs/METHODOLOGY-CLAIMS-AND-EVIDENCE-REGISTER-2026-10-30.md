@@ -158,3 +158,12 @@ The browser paired report remains diagnostic: four Kozak Kim abstentions, zero e
 | M-33 | Supervised IPA training-readiness audit — DONE_VERIFIED as an audit; training NOT READY | Partial artifact 13101748305 from cancelled multi-engine run 41353171180 attempt 2; 644 unique lexical rows; zero additions explicitly marked independently adjudicated IPA gold; 24 frozen holdout cases without IPA gold; no holdout overlap | Training-data readiness is demonstrably insufficient for supervised IPA training; no leakage was detected in the checked overlap tests | That provisional/model-selected IPA candidates are gold, or that a supervised model should be trained |
 
 The full multi-engine comparison did not complete: runs 41353171180 and 41353450707 were cancelled during the comparison step. No comparative score is claimed from partial artifact 13101748305; its training-readiness JSON is a separate completed audit. The training-readiness JSON is a separate completed audit within that artifact.
+
+
+## Revalidation snapshot — 2026-11-02
+
+- Latest completed browser pair: Actions run [41353450686](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41353450686), artifact `13102456604`; 2,699 shared scored occurrences; exact match 53.4272% for both Kozak Kim and untouched original g2pK; CER 8.1097% vs 8.2138%; paired CER delta −0.1040 pp, 95% sentence-cluster CI [−0.1951, −0.0261] pp. This is a corpus/profile-specific diagnostic, not normative IPA gold.
+- System/Python and browser regression/build run [41353450715](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41353450715) passed on code/test head `bc7b1474eecfe8df8006572abf0f07957f829647`. The subsequent branch head `ccc423a79fe854fba365f3966d78ceadda978036` changes a source-register assertion only; it was not covered by that run. The next branch update must receive fresh CI before exact-head verification is claimed.
+- C01–C07 packets are prepared for pilot review (7 packets, 42 entries, 39 unique source rows), but independent review submissions remain blocked. C08 context recovery is partial (3/8 occurrences); five occurrence IDs remain unidentified; `유사성` remains unresolved. No additional production rule was justified.
+- Source register: 152 rows; 143 review-required, 7 manual-classification-required, 1 item-level license recorded, 1 not applicable. NIKL item-level reuse rights remain open.
+- Multi-engine run `41354753780` was cancelled and optional neural inference was skipped; no multi-engine score is available.

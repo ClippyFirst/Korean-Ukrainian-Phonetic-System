@@ -75,7 +75,7 @@ def test_nikl_27_c08_exact_word_licenses_apply_inside_full_sentences():
 
     unresolved = next(item for item in C08_CONTEXTS["cases"] if item["source_row_id"] == "dc_inside_2024")
     assert "유사성" in unresolved["source_sentence"]
-    result = transliterate_korean(unresolved["input"])
+    result = transliterate_korean(unresolved["source_sentence"])
     assert not any(
         trace["rule_id"] == "R013" and trace["changed"]
         for trace in result["phonetics"]["rules"]

@@ -28,7 +28,7 @@ The 2021 NIKL educational PDF remains listed as supplementary research only. Its
 
 Python previously matched exact R013 same-word licenses against the entire request string, so a licensed eojeol inside a sentence could be missed. The Python rule-license path now resolves the containing eojeol and matches only the exact licensed word/pair. Browser and Python full-sentence tests cover both positive contexts; negative controls preserve the unresolved 유사성 case.
 
-The current paired browser benchmark (run 41352607907, artifact 13102275101) scores 2,699 shared occurrences: exact match is 53.4272% for both systems; Kozak Kim CER is 8.1097% versus original g2pK 8.2138%, a −0.1040 pp paired delta (95% sentence-cluster bootstrap CI −0.1951 to −0.0261 pp). Exact-match delta remains unproven because its interval crosses zero. Relative to the preceding PR #416 browser artifact, only the two targeted C08 outputs changed; each improved by one edit, neither became exact, and g2pK outputs did not change.
+The latest completed paired browser benchmark (run 41353450686, artifact 13102456604) scores 2,699 shared occurrences: exact match is 53.4272% for both systems; Kozak Kim CER is 8.1097% versus original g2pK 8.2138%, a −0.1040 pp paired delta (95% sentence-cluster bootstrap CI −0.1951 to −0.0261 pp). Exact-match delta remains unproven because its interval crosses zero. Relative to the preceding PR #416 browser artifact, only the two targeted C08 outputs changed; each improved by one edit, neither became exact, and g2pK outputs did not change.
 
 **Current conclusion:** source-context traceability and runtime parity improved; the eight-case C08 cluster is not fully resolved; C01–C07 still require independent human IPA adjudication. Research prototype only.
 

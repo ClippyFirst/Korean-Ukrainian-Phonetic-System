@@ -282,7 +282,7 @@ def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
     dependent_su = rows["SRC-NIKL-QNA-307960"]
     assert "qna_seq=307960" in dependent_su["url"]
     assert "[쑤]" in dependent_su["coverage"]
-    assert "typo" in dependent_su["limitations_or_next_action"].lower()
+    assert "appears to contain a typo" in dependent_su["limitations_or_next_action"].lower()
     assert "item-level" in dependent_su["license_status"].lower()
     pdf = rows["SRC-NIKL-EDU-2021-DEPENDENT-SI"]
     assert "not used as production evidence" in pdf["limitations_or_next_action"].lower()
