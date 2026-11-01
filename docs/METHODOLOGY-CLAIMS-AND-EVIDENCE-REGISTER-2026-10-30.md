@@ -110,3 +110,12 @@ The §26 rule remains exact-form and boundary-conditioned. The NIKL dictionary d
 | Unspaced 했을시 / 일수도있다는 should receive §27 fortition | UGTPHON occurrence-level examples and NIKL §27 general rule | Not licensed: corpus whitespace is missing and morphological boundaries are not independently established. |
 
 The corresponding primary sources are registered as SRC-NIKL-INFO-SILSIGAN, SRC-NIKL-DIC-IJUNGSEONG, SRC-NIKL-DIC-SEONG-SUFFIX, and SRC-NIKL-QNA-312649. Item-level reuse rights remain unreviewed.
+
+
+## 2026-11-01 — exact-head Kozak Kim paired-browser reproducibility
+
+| ID | Claim | Status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|---|
+| M-18 | Current native Kozak Kim vs untouched original g2pK paired browser result | DONE_VERIFIED as a reproducible diagnostic measurement; generalization EVIDENCE-LIMITED | Exact-head PR #416 commit `0c7688bb91687fec81965f426c24dd248df918bb`; UGTPHON workflow [41342607471](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607471), browser pair artifact `13097847614`; exact-head system [41342607492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607492) | On 2,699 shared occurrences, exact match is tied at 1,442/2,699 (53.4272%); Kozak Kim CER is 8.1184% vs g2pK 8.2138%, paired delta -0.09536 pp, sentence-cluster 95% CI [-0.18443, -0.02046] pp. Current normalized-IPA discordance set: 26 occurrences. | Universal or normative superiority; exact-match advantage; independent Korean IPA gold; Ukrainian target quality; item-level NIKL/KOGL reuse clearance |
+
+The 26 current IPA-discordant occurrences must not be conflated with the 23 cases in the original pre-§27/§26 snapshot. The historical occurrence ledger contains 27 rows across snapshots; row `paired-17` preserves the resolved `올게이` false-positive as historical evidence. The latest artifact reproduces the immediately preceding paired artifact `13098181051` with no output changes on the shared subset. The UGTPHON metadata-only source inventory was skipped; optional ByT5/Charsiu inference and joined neural pairing were also skipped. No score or rights status is inferred from skipped jobs.
