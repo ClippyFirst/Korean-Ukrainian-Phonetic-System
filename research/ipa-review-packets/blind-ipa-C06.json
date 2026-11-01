@@ -1,19 +1,6 @@
 {
   "packet_schema": "kozak-kim-independent-ipa-review-v1",
   "review_mode": "BLINDED_INPUT_ONLY",
-  "source_artifact": {
-    "workflow_run_id": 41342607471,
-    "artifact_id": 13097847614,
-    "dataset": "UGTPHON test split",
-    "file": "kozak-kim-vs-original-g2pk-browser-report.json"
-  },
-  "independence_controls": {
-    "engine_outputs_included": false,
-    "reference_ipa_included": false,
-    "engine_identity_included": false,
-    "benchmark_ranking_included": false,
-    "source_rule_hypothesis_included": false
-  },
   "limitations": [
     "Pilot sample only; not a complete cluster census.",
     "The paired artifact contains token-level records but not the full source sentence/utterance.",
@@ -26,7 +13,7 @@
     "State syllable boundaries and vowel length only under a declared convention and supported evidence.",
     "Classify the distinction as phonemic, predictable allophony, transcription convention, lexical variation, or unresolved.",
     "Cite primary sources or describe phonetic evidence, method, and confidence.",
-    "Do not infer a productive Kozak Kim rule from this pilot packet."
+    "Do not infer a general phonological rule from this pilot packet."
   ],
   "reviewer_submission": {
     "reviewer_id": null,
@@ -45,60 +32,60 @@
       "Freeze packet hashes before dispatch.",
       "Assign separate blind copies and freeze first-pass submissions before reconciliation."
     ],
-    "promotion_rule": "No production change until independent review, source adjudication, positive/negative/boundary/interaction controls, and exact-head paired verification are complete."
+    "promotion_rule": "Do not generalize beyond reviewed items. Any downstream rule proposal requires source adjudication, positive/negative/boundary/interaction controls, and independent confirmation."
   },
-  "packet_id": "KOZAK-C07-2026-11-01",
-  "cluster_id": "C07",
-  "cluster_name": "Liquid realization at morphology and phrase boundaries",
-  "review_question": "Which liquid realizations are licensed by the segmental environment, and do any items require morphological or cross-word context before transcription?",
+  "packet_id": "BLIND-IPA-C06-2026-11-01",
+  "cluster_id": "C06",
   "items": [
     {
-      "input_hangul": "창렬하다",
+      "input_hangul": "랍시고",
       "source_row_ids": [
-        "multilexnorm2026_1954"
+        "multilexnorm2026_1914"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     },
     {
-      "input_hangul": "자결함",
+      "input_hangul": "없어도",
       "source_row_ids": [
-        "multilexnorm2026_1958"
+        "multilexnorm2026_1922"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     },
     {
-      "input_hangul": "말한",
+      "input_hangul": "목숨",
       "source_row_ids": [
-        "multilexnorm2026_1963"
+        "multilexnorm2026_1925"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     },
     {
-      "input_hangul": "디씨질하면서",
+      "input_hangul": "없음",
       "source_row_ids": [
-        "dc_inside_2131"
+        "multilexnorm2026_1928",
+        "dc_inside_2024"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     },
     {
-      "input_hangul": "뭘해도",
+      "input_hangul": "다크티렉스",
       "source_row_ids": [
-        "dc_inside_2183"
+        "multilexnorm2026_1929"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     },
     {
-      "input_hangul": "일했다",
+      "input_hangul": "주작썰",
       "source_row_ids": [
-        "dc_inside_2244"
+        "multilexnorm2026_1932"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     }
-  ]
+  ],
+  "dataset_scope": "UGTPHON test split; token-level pilot sample"
 }

@@ -1,19 +1,6 @@
 {
   "packet_schema": "kozak-kim-independent-ipa-review-v1",
   "review_mode": "BLINDED_INPUT_ONLY",
-  "source_artifact": {
-    "workflow_run_id": 41342607471,
-    "artifact_id": 13097847614,
-    "dataset": "UGTPHON test split",
-    "file": "kozak-kim-vs-original-g2pk-browser-report.json"
-  },
-  "independence_controls": {
-    "engine_outputs_included": false,
-    "reference_ipa_included": false,
-    "engine_identity_included": false,
-    "benchmark_ranking_included": false,
-    "source_rule_hypothesis_included": false
-  },
   "limitations": [
     "Pilot sample only; not a complete cluster census.",
     "The paired artifact contains token-level records but not the full source sentence/utterance.",
@@ -26,7 +13,7 @@
     "State syllable boundaries and vowel length only under a declared convention and supported evidence.",
     "Classify the distinction as phonemic, predictable allophony, transcription convention, lexical variation, or unresolved.",
     "Cite primary sources or describe phonetic evidence, method, and confidence.",
-    "Do not infer a productive Kozak Kim rule from this pilot packet."
+    "Do not infer a general phonological rule from this pilot packet."
   ],
   "reviewer_submission": {
     "reviewer_id": null,
@@ -45,67 +32,59 @@
       "Freeze packet hashes before dispatch.",
       "Assign separate blind copies and freeze first-pass submissions before reconciliation."
     ],
-    "promotion_rule": "No production change until independent review, source adjudication, positive/negative/boundary/interaction controls, and exact-head paired verification are complete."
+    "promotion_rule": "Do not generalize beyond reviewed items. Any downstream rule proposal requires source adjudication, positive/negative/boundary/interaction controls, and independent confirmation."
   },
-  "packet_id": "KOZAK-C03-2026-11-01",
-  "cluster_id": "C03",
-  "cluster_name": "Palatal nasal realization",
-  "review_question": "In which of these environments, if any, is a palatal nasal [ɲ] justified as predictable narrow realization rather than a phonemic representation?",
+  "packet_id": "BLIND-IPA-C07-2026-11-01",
+  "cluster_id": "C07",
   "items": [
     {
-      "input_hangul": "그냥",
+      "input_hangul": "창렬하다",
       "source_row_ids": [
-        "multilexnorm2026_1914",
-        "multilexnorm2026_2017",
-        "dc_inside_2024",
-        "dc_inside_2146",
-        "dc_inside_2227",
-        "dc_inside_2256",
-        "dc_inside_2564",
-        "dc_inside_2548"
+        "multilexnorm2026_1954"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     },
     {
-      "input_hangul": "불렀겠냐나",
+      "input_hangul": "자결함",
       "source_row_ids": [
-        "multilexnorm2026_1916"
+        "multilexnorm2026_1958"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     },
     {
-      "input_hangul": "연예계",
+      "input_hangul": "말한",
       "source_row_ids": [
-        "multilexnorm2026_1916"
+        "multilexnorm2026_1963"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     },
     {
-      "input_hangul": "한녀들보다",
+      "input_hangul": "디씨질하면서",
       "source_row_ids": [
-        "multilexnorm2026_1922"
+        "dc_inside_2131"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     },
     {
-      "input_hangul": "귀엽냐",
+      "input_hangul": "뭘해도",
       "source_row_ids": [
-        "multilexnorm2026_1926"
+        "dc_inside_2183"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     },
     {
-      "input_hangul": "상류층",
+      "input_hangul": "일했다",
       "source_row_ids": [
-        "multilexnorm2026_1930"
+        "dc_inside_2244"
       ],
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     }
-  ]
+  ],
+  "dataset_scope": "UGTPHON test split; token-level pilot sample"
 }

@@ -1,19 +1,6 @@
 {
   "packet_schema": "kozak-kim-independent-ipa-review-v1",
   "review_mode": "BLINDED_INPUT_ONLY",
-  "source_artifact": {
-    "workflow_run_id": 41342607471,
-    "artifact_id": 13097847614,
-    "dataset": "UGTPHON test split",
-    "file": "kozak-kim-vs-original-g2pk-browser-report.json"
-  },
-  "independence_controls": {
-    "engine_outputs_included": false,
-    "reference_ipa_included": false,
-    "engine_identity_included": false,
-    "benchmark_ranking_included": false,
-    "source_rule_hypothesis_included": false
-  },
   "limitations": [
     "Pilot sample only; not a complete cluster census.",
     "The paired artifact contains token-level records but not the full source sentence/utterance.",
@@ -26,7 +13,7 @@
     "State syllable boundaries and vowel length only under a declared convention and supported evidence.",
     "Classify the distinction as phonemic, predictable allophony, transcription convention, lexical variation, or unresolved.",
     "Cite primary sources or describe phonetic evidence, method, and confidence.",
-    "Do not infer a productive Kozak Kim rule from this pilot packet."
+    "Do not infer a general phonological rule from this pilot packet."
   ],
   "reviewer_submission": {
     "reviewer_id": null,
@@ -45,12 +32,10 @@
       "Freeze packet hashes before dispatch.",
       "Assign separate blind copies and freeze first-pass submissions before reconciliation."
     ],
-    "promotion_rule": "No production change until independent review, source adjudication, positive/negative/boundary/interaction controls, and exact-head paired verification are complete."
+    "promotion_rule": "Do not generalize beyond reviewed items. Any downstream rule proposal requires source adjudication, positive/negative/boundary/interaction controls, and independent confirmation."
   },
-  "packet_id": "KOZAK-C04-2026-11-01",
+  "packet_id": "BLIND-IPA-C04-2026-11-01",
   "cluster_id": "C04",
-  "cluster_name": "Aspiration representation convention",
-  "review_question": "What representation convention should distinguish aspiration as a feature/diacritic from a separate [h]-like segment, and which level is appropriate for this project?",
   "items": [
     {
       "input_hangul": "클래스급",
@@ -102,5 +87,6 @@
       "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
       "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
     }
-  ]
+  ],
+  "dataset_scope": "UGTPHON test split; token-level pilot sample"
 }
