@@ -263,9 +263,9 @@ export function evaluateRows(rows, kozakKimEngine, rawG2pK) {
       mcnemar_exact_p_value: exactBinomialMcNemarP(kozakOnlyExact, g2pkOnlyExact)
     },
     surface_comparison: {
-      tokens_with_both_surfaces: records.filter(item => item.kozak_kim && item.g2pkSurface !== null).length,
-      equal_surfaces: records.filter(item => item.surface_equal === true).length,
-      different_surfaces: records.filter(item => item.surface_equal === false).length
+      tokens_with_both_surfaces: records.filter(item => item.kozak_kim && item.g2pk && item.g2pkSurface !== null).length,
+      equal_surfaces: records.filter(item => item.kozak_kim && item.g2pk && item.surface_equal === true).length,
+      different_surfaces: records.filter(item => item.kozak_kim && item.g2pk && item.surface_equal === false).length
     },
     records,
     notes: [
