@@ -199,6 +199,7 @@ _NIKL_R012_WORD_LICENSES = {
     "갈등": "갈>등", "발동": "발>동", "절도": "절>도", "말살": "말>살",
     "일시": "일>시", "갈증": "갈>증", "물질": "물>질", "발전": "발>전",
     "몰상식": "몰>상", "불세출": "불>세",
+    "실수": "실>수",  # NIKL Online Q&A qna_seq=330843 confirms all listed homonyms [실쑤].
 }
 
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds
