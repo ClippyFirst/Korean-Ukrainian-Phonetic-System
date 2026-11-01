@@ -4462,3 +4462,20 @@ The primary Ukrainian output is named **українська трансліте�
 **Key research result:** Jeon et al. (2026) report Korean UGTPHON PERnc 47.5 for fine-tuned ByT5 vs 32.0 for their retrieval-augmented ByT5; Qwen2.5-0.5B 77.3 vs 32.4. Their Korean ablation shows retrieval-only PERnc 27.7, versus 32.0 when staged decoding is also added. Therefore the first experiment here is retrieval-only with a train-only canonical map and context-aware detection, not a blind normalize-everything or staged-decoding rewrite. This is UGT normalization, separate from standard Korean G2P.
 
 **Data contract:** UGTPHON Korean has 1,976 train / 246 dev / 275 test sentences and an Apache-2.0 language-specific license. No dataset was copied into this repository. The new script accepts external paths and performs no network download. It is an exact-lookup baseline, not a reproduction of the paper's ByT5/Qwen model.
+
+
+---
+
+# Continuation — raw-surface benchmark paired-baseline work (2026-11-01)
+
+**Branch:** `feat/korean-rr-contextual-phonetics-final`  
+**Code head:** `e9c0f912f90c00a0f8274a65edac030ac5b82473`  
+**Base:** `6992aa211fc772fcfbcae1d8b1fd4e577b46f440`  
+**PR:** #411 draft/open; PR #415 remains separate.
+
+- Raw-surface workflow [41306501056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41306501056) passed on earlier head `f24cb32a0e2ab09e880a61d6d3f71cc7f1a90b52`. Artifact [13083344197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41306501056/artifacts/13083344197): 3,140 attempted, 2,639 scored, coverage 84.0446%, exact 51.6105%, coverage-adjusted exact 43.3758%, CER 10.0256%, 4 unresolved, 0 engine errors, 496 unsupported.
+- Train-only retrieval had 22/722 noncanonical hits (3.0471%): 15 exact-surface, 7 B1 lengthening, 0 exact-context, 0 canonical hits; 47 canonical collisions and 483 ambiguous contexts blocked. It is a sparse baseline, not proof of normalization benefit.
+- Sentence-level same-word-boundary test: native 13/163 exact (7.9755%), CER 14.8323%; g2pK 12/200 exact (6.0%), CER 15.5691%. Paired 163: native exact 7.9755% / CER 14.8323%, g2pK exact 7.3620% / CER 15.4797%. Sentence-level values are not comparable with token-level metrics.
+- **New implementation, PARTIAL:** surface benchmark now also runs untouched raw input and reports paired subset deltas, rescued/lost coverage, and exact improvements/regressions. It avoids duplicate G2P calls when normalization leaves input unchanged. New tests and workflow output added.
+- Exact-head CI and a new paired raw-surface artifact are pending for `e9c0f912f90c00a0f8274a65edac030ac5b82473`; do not infer the retrieval improves the score until the paired report exists.
+- Recommendation: do not add fuzzy context matching or generic phonological rules from this result. Exact-context hits were zero. The EMNLP 2026 model uses sentence context as learned evidence; a deterministic exact local-context dictionary is not an equivalent substitute. Keep any future UGT canonicalizer separate from canonical-word G2P and require train-only evidence, collision checks, ambiguity abstention and per-category evaluation.
