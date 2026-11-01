@@ -4572,7 +4572,7 @@ The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026
 |---|---|---|
 | Confirm scope and preserve original g2pK | DONE_VERIFIED | Explicit owner instruction; changed paths on this branch do not touch g2pK runtime files |
 | Extract paired output discordances | DONE_VERIFIED | Artifact 13093672281; 23 output-different occurrences and full ledger |
-| §27 complete `-ㄹ게` boundary | PARTIAL | `src/app/engine_rules_ctx.js` now requires the current eojeol to end in the complete `-ㄹ게` or `-ㄹ게요` sequence; test added for `할게`, `할게요`, `다를게`, `안타까울게`, and substring-only control `올게이`. NIKL Q&A 330963 registered as `SRC-NIKL-QNA-330963`. Exact-head tests/build/paired benchmark still required. |
+| §27 complete `-ㄹ게` boundary | PARTIAL | `src/app/engine_rules_ctx.js` now requires the current eojeol to end in the complete `-ㄹ게` or `-ㄹ게요` sequence; test added for `할게`, `할게요`, `다를게`, `안타까울게`, and substring-only control `올게이`. NIKL Q&A 330963 and 308180 registered as `SRC-NIKL-QNA-330963` and `SRC-NIKL-QNA-308180`. Exact-head tests/build/paired benchmark still required. |
 | Source register and rule coverage | PARTIAL | New exact NIKL source row; R013 coverage row updated. CSV/schema integrity tests not yet run on this branch head |
 | Long-vowel discordances | TODO / evidence-limited | Multiple g2pK exact matches omit length that the NIKL evidence records; independent IPA convention review needed before any code change |
 | §11 complex-coda, §24/§26 fortition, phrase variation | PARTIAL / TODO | Existing source-backed rules preserved; expand positive/negative/minimal contrast coverage and independently adjudicate variants |
