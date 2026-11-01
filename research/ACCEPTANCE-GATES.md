@@ -534,3 +534,8 @@ Direct browser artifact [41309605083](https://github.com/ClippyFirst/Korean-Ukra
 This confirms a modest edit-distance improvement, not an exact-match increase. Broad-candidate results remain unadjudicated sensitivity analysis.
 
 **DONE_VERIFIED as a comparison, not as a replacement decision:** paired native/g2pK run on 2,698 tokens: native 53.0393% exact / 9.1220% CER; g2pK 53.1134% / 9.2304%. The tiny exact advantage does not compensate for worse CER; keep native as default.
+
+
+## Latest 한자 lexical-row regression repair (2026-11-01)
+
+Browser regression run 41311996128 failed two new checks: target-syllable alignment (empty target field) and provisional candidate suppression (the 12-field row placed `variant-aware-research` in the wrong column). The row is corrected to 13 columns, target candidate `ган|чча`, and `input_kind=variant-aware-research`. The candidate is explicitly project-generated and provisional; it is not dictionary-sourced Ukrainian. CSV alignment is statically verified. Exact-head browser/Python tests for commit `eba968b383e1ae4ca8ebb52094c3f2d32439e315` are pending.
