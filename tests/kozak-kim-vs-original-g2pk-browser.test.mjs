@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { evaluateRows } from '../scripts/benchmark_kozak_kim_vs_g2pk_browser.mjs';
+import {\n  createOriginalG2pKBrowserEngine,\n  evaluateRows\n} from '../scripts/benchmark_kozak_kim_vs_g2pk_browser.mjs';\nimport { createBrowserKozakKimEngine } from '../scripts/benchmark_kozak_kim_browser.mjs';
 
 test('paired browser benchmark compares Kozak Kim with the untouched raw g2pK surface', () => {
   const g2pCalls = [];
@@ -103,4 +103,22 @@ test('paired benchmark rejects malformed raw g2pK surfaces without changing the 
   assert.equal(report.g2pk.engine_errors, 1);
   assert.equal(report.paired_subset.tokens_scored_by_both, 0);
   assert.equal(report.records[0].g2pk_error, 'g2pK output is not a single Hangul token');
+});
+
+test('source-backed ㄼ and ㄺ exceptions distinguish Kozak Kim from the untouched raw g2pK port', () => {
+  const kozakKim = createBrowserKozakKimEngine();
+  const originalG2pK = createOriginalG2pKBrowserEngine();
+  const cases = [
+    { input: '넓죽하다', expected: '넙쭈카다' },
+    { input: '읽고', expected: '일꼬' }
+  ];
+
+  for (const item of cases) {
+    const ours = kozakKim.convert(item.input, { morphologyMode: 'strict' });
+    const original = originalG2pK.convert(item.input, {
+      descriptive: false, verbose: false, groupVowels: false, toSyl: true
+    });
+    assert.equal(ours.surfaceHangul, item.expected, item.input + ' Kozak Kim surface');
+    assert.notEqual(original, item.expected, item.input + ' raw g2pK must remain an independent baseline');
+  }
 });
