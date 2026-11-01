@@ -213,27 +213,27 @@ def test_2026_11_01_g2p_sources_keep_scope_and_license_provenance_explicit():
     popularity = rows["SRC-NIKL-QNA-331569"]
     assert "인기[인끼]" in popularity["coverage"]
     assert "optional" in popularity["coverage"]
-    assert "non-fortis" in popularity["integration_status"]
+    assert "provisional" in popularity["integration_status"]
 
     caution = rows["SRC-NIKL-QNA-337054"]
-    assert "not clearly established" in caution["coverage"]
-    assert "not independently verify" in caution["limitations_or_next_action"]
+    assert "not clearly established" in caution["authority_or_role"]
+    assert "Does not independently attest" in caution["limitations_or_next_action"]
 
     diphthong = rows["SRC-NIKL-QNA-326554"]
     assert "ㅟ" in diphthong["coverage"]
     assert "[wi]" in diphthong["coverage"]
 
     allophones = rows["SRC-OSU-KO-IPA-2022"]
-    assert "research" in allophones["integration_status"]
+    assert "broad_candidate" in allophones["integration_status"]
     assert "CC BY-NC" in allophones["license_status"]
     assert "not a normative" in allophones["limitations_or_next_action"]
 
     ipa_dict = rows["SRC-IPA-DICT-KO"]
     assert "CC BY-SA" in ipa_dict["license_status"]
-    assert "broadly phonemic" in ipa_dict["contribution_expected"]
+    assert "broadly phonemic" in ipa_dict["authority_or_role"]
 
     ugtphon = rows["SRC-UGTPHON-EMNLP-2026"]
     assert "Apache-2.0" in ugtphon["license_status"]
     assert "CC BY-SA" in ugtphon["license_status"]
-    assert "noisy UGT" in ugtphon["limitations_or_next_action"]
+    assert "UGT" in ugtphon["limitations_or_next_action"]
 
