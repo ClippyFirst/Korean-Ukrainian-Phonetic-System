@@ -64,19 +64,19 @@ function metrics(items, field, referenceField = null) {
     exact_matches: exactMatches,
     exact_match_rate: items.length ? exactMatches / items.length : null
   };
-  if (referenceField) {
-    const comparable = items.filter(item => item[referenceField] !== null);
-    const totalDistance = comparable.reduce(
-      (sum, item) => sum + item[referenceField][field === 'kozak_kim' ? 'kozak_kim_distance' : 'g2pk_distance'],
-      0
-    );
-    const totalGoldCharacters = comparable.reduce(
-      (sum, item) => sum + [...item[referenceField].gold].length,
-      0
-    );
-    result.cer_scored_tokens = comparable.length;
-    result.character_error_rate = totalGoldCharacters ? totalDistance / totalGoldCharacters : null;
-  }
+  const comparable = referenceField
+    ? items.filter(item => item[referenceField] !== null)
+    : items;
+  const totalDistance = comparable.reduce((sum, item) => sum + (
+    referenceField
+      ? item[referenceField][field === 'kozak_kim' ? 'kozak_kim_distance' : 'g2pk_distance']
+      : item[field].distance
+  ), 0);
+  const totalGoldCharacters = comparable.reduce((sum, item) => sum + [
+    ...(referenceField ? item[referenceField].gold : item[field].closest_gold)
+  ].length, 0);
+  result.cer_scored_tokens = comparable.length;
+  result.character_error_rate = totalGoldCharacters ? totalDistance / totalGoldCharacters : null;
   return result;
 }
 
