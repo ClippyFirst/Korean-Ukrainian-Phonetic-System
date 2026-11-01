@@ -10,7 +10,7 @@ paired-08,multilexnorm2026_2008,알다,a̠ɭda̠,aːl.da,2,al.da,1,g2pK,vowel_le
 paired-09,dc_inside_2035,없는,ʌ̹mnɯn,ʌːm.nɯn,1,ʌm.nɯn,0,g2pK,vowel_length_and_vowel_quality,NIKL Q&A records long vowel; corpus omits length; likely reference convention omission
 paired-10,dc_inside_2108,없는,ʌ̹mnɯn,ʌːm.nɯn,1,ʌm.nɯn,0,g2pK,vowel_length_and_vowel_quality,Repeated occurrence; same source-vs-reference length issue
 paired-11,dc_inside_2123,한자,ha̠nt͡ɕ͈a̠,haːn.tɕ͈a,1,han.dʑa,3,Kozak Kim,lexical_length_and_fortition,Dictionary-backed long vowel and fortis affricate; g2pK differs in both
-paired-12,dc_inside_2123,못잃어,mo̞nniɾʌ̹,mon.ni.ɾʌ,0,mo.ɕi.ɾʌ,2,Kozak Kim,phrase_n_insertion_and_variation,NIKL usage survey reports insertion and non-insertion; retain variants, avoid categorical claim
+paired-12,dc_inside_2123,못잃어,mo̞nniɾʌ̹,mon.ni.ɾʌ,0,mo.ɕi.ɾʌ,2,Kozak Kim,phrase_n_insertion_and_variation,"NIKL usage survey reports insertion and non-insertion; retain variants, avoid categorical claim"
 paired-13,dc_inside_2131,넘게,nʌ̹mk͈e̞,nʌm.k͈e,0,nʌm.ɡe,2,Kozak Kim,stem_nm_fortition,§24 source-backed fortition; exact match
 paired-14,dc_inside_2155,없어,ʌ̹ps͈ʌ̹,ʌːp̚.s͈ʌ,2,ʌp̚.s͈ʌ,1,g2pK,vowel_length_and_vowel_quality,NIKL source supports length in related inflected forms; corpus omits length; investigate IPA annotation
 paired-15,dc_inside_2212,없는,ʌ̹mnɯn,ʌːm.nɯn,1,ʌm.nɯn,0,g2pK,vowel_length_and_vowel_quality,Repeated occurrence; same source-vs-reference length issue
