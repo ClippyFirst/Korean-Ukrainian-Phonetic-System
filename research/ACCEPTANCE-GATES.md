@@ -505,3 +505,17 @@ Feature status: **PARTIAL / in review**, tracked by [PR #354](https://github.com
 - **DEFERRED:** recursive rule re-evaluation. Acceptance requires a source-backed cascading counterexample, a bounded fixed-point design with cycle detection, and paired non-regression tests.
 - **BLOCKED:** KoG2Padvanced implementation/corpus reuse due no declared upstream license and no executable source module. You & Moon (2026) is paper-only in the inspected Zenodo record; no executable implementation/corpus was available to reuse.
 - **PENDING:** multi-engine benchmark run 41248014178; do not mark complete until its artifact is inspected.
+
+
+## Addendum — paired G2P results and adapter alignment hardening (2026-11-01)
+
+- **DONE_VERIFIED on code head cb89fc8:** real Kiwi and MeCab-Ko adapters, source-offset syllable↔morpheme alignment, zero-width/unaligned boundary handling, analyzer boundary comparison, Python 3.11/3.12/3.13, Node 1,389 tests, wheel install, browser integration and system verification passed in the recorded CI batch.
+- **DONE_VERIFIED diagnostic, not gold:** Kiwi and MeCab-Ko exact boundary-set agreement was 1,537/1,907 words (80.5978%). Agreement is not segmentation accuracy. The native soft-rule alignment diagnostic found 217 common rule events: 186 observed by both, 18 by neither, 8 Kiwi-only and 5 MeCab-only.
+- **PARTIAL / no promotion:** morphology consensus changed four words and newly resolved one, but exact match did not improve (53.0022% strict vs 52.9826% consensus) and CER slightly worsened (9.1697% vs 9.1776%). Twenty-four unspaced phrase-boundary cases were withheld. No analyzer-derived license is promoted.
+- **DONE_VERIFIED diagnostic:** on the same 2,698 UGTPHON tokens, broad IPA scored 53.0022% exact / 9.1697% CER; partial narrow IPA v3 scored 70.4225% / 4.8992%. The narrow profile is partial, research-only, convention-sensitive and target-incompatible; do not describe it as a validated standard-pronunciation improvement.
+- **DONE_VERIFIED paired diagnostic:** native vs g2pK same-token subset: native 53.0022% exact / 9.1697% CER; g2pK 53.1134% / 9.2304%. g2pK's +0.1112 pp exact-match delta accompanies +0.0607 pp worse CER; the adapter also shares the repository IPA renderer. This is not a decisive winner.
+- **CANCELLED:** multi-engine portfolio run 41248014178 was cancelled at the comparison step. Uploaded training-readiness artifact is not a benchmark result. Charsiu and ByT5 were skipped.
+- **PARTIAL pending exact-head CI:** g2pK adapter now verifies equal Korean word-token counts and exact inter-word separators before source lexical surface/IPA overrides; otherwise it withholds overrides. Regression tests cover aligned input, shifted punctuation and merged-word output. Code commit a184db80c7a63b2333574e12973c7c0689b41e6e; later documentation-only tip at time of this update 751e352f2ecbdaa0007aaf5927da164ea480ff0e. No exact-head workflow run was returned for the new code commit.
+- **TODO:** use already verified morphology links for source-backed, rule-specific licensing only after exact POS/environment evidence, homograph controls, analyzer disagreement abstention and independently adjudicated evaluation.
+- **DEFERRED:** bounded recursive rule re-evaluation until a source-backed cascading counterexample demonstrates that the current deterministic single pass is insufficient.
+- **BLOCKED / EVIDENCE-LIMITED:** independent source-convention-compatible Korean IPA gold and separate Ukrainian target gold remain unavailable; do not optimize solely against raw corpus disagreement.
