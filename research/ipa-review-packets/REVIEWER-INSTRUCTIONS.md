@@ -4,7 +4,7 @@ You are receiving one pilot packet containing Korean input forms and source-row 
 
 ## Task
 
-1. Restore the complete source utterance for each listed source-row identifier before scoring. If the full context is unavailable, mark the item `NEEDS_CONTEXT`; do not guess from the isolated token.
+1. Read the included `source_sentence` for each source-row identifier before scoring. If the context is truncated or ambiguous, mark the item `NEEDS_CONTEXT`; do not guess from the isolated token.
 2. Provide a broad phonemic IPA transcription for each item.
 3. Optionally provide a separate narrow phonetic transcription, identifying exactly which predictable allophonic details you represent.
 4. Record syllable boundaries and vowel length only under a stated convention and supported evidence.
@@ -20,4 +20,4 @@ Please submit your first-pass decisions independently. Do not discuss or reconci
 
 ## Readiness
 
-These are pilot manifests, not complete scoring packets. Full source utterance context and per-item reviewer-sharing permission must be verified before scoring begins. If either is unavailable, leave the item unresolved and state the blocker.
+These are source-context-complete pilot packets, not a complete cluster census. The UGTPHON Korean subset `ko/LICENSE` states Apache-2.0; preserve the included attribution and license notice. The packets contain raw source sentences only, not canonical text or IPA/reference annotations. The corpus contains informal user-generated text and may include profanity; treat it as source material, not endorsement.

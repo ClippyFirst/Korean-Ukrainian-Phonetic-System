@@ -159,8 +159,11 @@ test('C01-C07 pilot packets remain source-blind and fail closed without source c
     assert.equal(packet.review_mode, 'BLINDED_INPUT_ONLY');
     assert.equal(packet.items.length, 6);
     assert.ok(packet.items.every(item => item.source_row_ids.length > 0));
-    assert.ok(packet.items.every(item => item.source_context_status === 'NOT_INCLUDED_IN_PAIRED_ARTIFACT'));
-    assert.equal(packet.acceptance_gate.status, 'BLOCKED_MISSING_SENTENCE_CONTEXT_AND_RIGHTS_CHECK');
+    assert.ok(packet.items.every(item => item.source_context_status === 'RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST'));
+    assert.ok(packet.items.every(item => item.source_contexts.length === item.source_row_ids.length));
+    assert.ok(packet.items.every(item => item.source_contexts.every(context => context.source_sentence.length > 0 && context.target_token_present)));
+    assert.equal(packet.source_license, 'Apache-2.0 (UGTPHON Korean subset; ko/LICENSE)');
+    assert.equal(packet.acceptance_gate.status, 'READY_FOR_INDEPENDENT_REVIEW_PILOT');
     const serialized = JSON.stringify(packet).toLowerCase();
     for (const forbidden of ['kozak kim', 'g2pk', 'engine', 'reference_ipa', 'gold_ipa', 'artifact_id', 'workflow_run_id', 'cluster_name', 'review_question', 'source_artifact']) {
       assert.ok(!serialized.includes(forbidden), 'blind packet must not disclose ' + forbidden);
