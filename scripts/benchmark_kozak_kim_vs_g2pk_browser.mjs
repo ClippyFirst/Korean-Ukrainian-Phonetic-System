@@ -204,6 +204,7 @@ export function evaluateRows(rows, kozakKimEngine, rawG2pK) {
       let kozak = null;
       let g2pk = null;
       let g2pkSurface = null;
+      let g2pkSurfaceValid = false;
       let kozakError = null;
       let g2pkError = null;
       let g2pkAdapterError = null;
@@ -228,12 +229,13 @@ export function evaluateRows(rows, kozakKimEngine, rawG2pK) {
         if (typeof g2pkSurface !== 'string' || !HANGUL_TOKEN.test(g2pkSurface)) {
           throw new TypeError('g2pK output is not a single Hangul token');
         }
+        g2pkSurfaceValid = true;
       } catch (error) {
         g2pkErrors += 1;
         g2pkError = error instanceof Error ? error.message : String(error);
       }
 
-      if (g2pkSurface !== null) {
+      if (g2pkSurfaceValid) {
         try {
           // Surface-only adapter: this maps g2pK's output to IPA without
           // rerunning Kozak Kim's coda, liaison, assimilation or fortition.
@@ -262,7 +264,8 @@ export function evaluateRows(rows, kozakKimEngine, rawG2pK) {
         kozak_kim: kozak,
         g2pk: g2pk,
         g2pk_surface: g2pkSurface,
-        surface_equal: kozak && g2pkSurface !== null
+        g2pk_surface_valid: g2pkSurfaceValid,
+        surface_equal: kozak && g2pkSurfaceValid
           ? kozak.surface === g2pkSurface
           : null,
         common_best_gold: commonReference,
@@ -330,9 +333,9 @@ export function evaluateRows(rows, kozakKimEngine, rawG2pK) {
       sentence_cluster_bootstrap: sentenceClusterBootstrap(paired)
     },
     surface_comparison: {
-      tokens_with_both_surfaces: records.filter(item => item.kozak_kim && item.g2pk && item.g2pkSurface !== null).length,
-      equal_surfaces: records.filter(item => item.kozak_kim && item.g2pk && item.surface_equal === true).length,
-      different_surfaces: records.filter(item => item.kozak_kim && item.g2pk && item.surface_equal === false).length
+      tokens_with_both_surfaces: records.filter(item => item.kozak_kim && item.g2pk && item.g2pk_surface_valid).length,
+      equal_surfaces: records.filter(item => item.kozak_kim && item.g2pk && item.g2pk_surface_valid && item.surface_equal === true).length,
+      different_surfaces: records.filter(item => item.kozak_kim && item.g2pk && item.g2pk_surface_valid && item.surface_equal === false).length
     },
     records,
     notes: [
