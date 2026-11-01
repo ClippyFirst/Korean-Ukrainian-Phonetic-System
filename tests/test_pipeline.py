@@ -384,6 +384,16 @@ def test_source_backed_complex_coda_lexicon_entry_resolves_its_own_pronunciation
     assert analysis["unresolved_contexts"] == []
 
 
+def test_nikl_sino_korean_rieul_fortition_has_direct_dictionary_attestation():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    analysis = phoneticize_korean("실수")
+    assert analysis["ipa"]["ipa"] == "ɕil.s͈u"
+    trace = next(item for item in analysis["rules"] if item["rule_id"] == "R012" and item["changed"])
+    assert "실수" in trace["license_context"]
+    assert "qna_seq=330843" in trace["source"]
+
+
 def test_nikl_attested_l_ge_ending_has_sourced_fortition():
     from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
 
