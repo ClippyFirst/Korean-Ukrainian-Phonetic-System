@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   ugtphon-korean-test:
-    name: Pinned UGTPHON Korean test split
+    name: Pinned UGTPHON Korean train/test splits
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -43,7 +43,7 @@ jobs:
             "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/LICENSE" \
             --output "$RUNNER_TEMP/ko-LICENSE"
           grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
-          python - "$RUNNER_TEMP/ko-test.json" <<'PY'
+          python - "$RUNNER_TEMP" <<'PY'
           import json, sys
           from pathlib import Path
           root = Path(sys.argv[1])
