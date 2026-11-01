@@ -4479,3 +4479,8 @@ The primary Ukrainian output is named **українська трансліте�
 - **New implementation, PARTIAL:** surface benchmark now also runs untouched raw input and reports paired subset deltas, rescued/lost coverage, and exact improvements/regressions. It avoids duplicate G2P calls when normalization leaves input unchanged. New tests and workflow output added.
 - Exact-head CI and a new paired raw-surface artifact are pending for `e9c0f912f90c00a0f8274a65edac030ac5b82473`; do not infer the retrieval improves the score until the paired report exists.
 - Recommendation: do not add fuzzy context matching or generic phonological rules from this result. Exact-context hits were zero. The EMNLP 2026 model uses sentence context as learned evidence; a deterministic exact local-context dictionary is not an equivalent substitute. Keep any future UGT canonicalizer separate from canonical-word G2P and require train-only evidence, collision checks, ambiguity abstention and per-category evaluation.
+
+
+## Research design clarification — Korean UGTPHON ablation (2026-11-01)
+
+Jeon et al., Table 4, p. 6 ([ACL Anthology PDF](https://aclanthology.org/2026.findings-emnlp.1020.pdf)) report Korean PERnc: Word→Word 47.5; Sent→Word 28.1; Sent→Word + retrieval, no staged decoding 27.7; Sent→Word + retrieval + staged decoding 32.0. Sent→Sent produces PERnc 31.3 but canonical PERc 41.6. The evidence supports sentence context as input while emitting only the target word, with optional retrieval hints; it argues against full-sentence phoneme generation and against adding staged decoding blindly. This is a separate UGT canonicalization component, not a reason to widen deterministic Korean phonology rules.
