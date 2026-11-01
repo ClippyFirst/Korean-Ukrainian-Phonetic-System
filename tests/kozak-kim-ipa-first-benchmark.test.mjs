@@ -57,6 +57,42 @@ test('Kozak Kim preserves inspectable IPA when only Ukrainian target mapping is 
   assert.ok(['unavailable', 'provisional'].includes(result.target_status));
 });
 
+test('NIKL-backed Sino-Korean fortition stays lexical and preserves optional variants', () => {
+  const engine = createBrowserKozakKimEngine();
+  const incident = engine.convert('사건');
+  assert.equal(incident.pronunciation_status, 'resolved');
+  assert.equal(incident.surfaceHangul, '사껀');
+  assert.equal(incident.ipa, 'saː.k͈ʌn');
+  assert.equal(incident.target_status, 'provisional');
+  assert.equal(incident.ukrainian, '');
+  assert.ok(incident.candidate_ukrainian);
+
+  const popularity = engine.convert('인기');
+  assert.equal(popularity.pronunciation_status, 'resolved');
+  assert.equal(popularity.surfaceHangul, '인끼');
+  assert.equal(popularity.ipa, 'in.k͈i');
+  assert.equal(popularity.target_status, 'provisional');
+  assert.equal(popularity.variants.length, 1);
+  assert.equal(popularity.variants[0].surface, '인기');
+  assert.equal(popularity.variants[0].ipa, 'in.ɡi');
+});
+
+test('broad candidate benchmark distinguishes transcription convention from engine error', () => {
+  const rows = [{
+    id: 'nikl-fortition',
+    lang: 'ko',
+    split: 'test',
+    tokens: [
+      { canonical: '사건', phoneme: 'ˈsʰa̠ːk͈ʌn' },
+      { canonical: '인기', phoneme: 'ink͈i' }
+    ]
+  }];
+  const report = evaluateRows(rows, createBrowserKozakKimEngine());
+  assert.equal(report.scored_tokens, 2);
+  assert.equal(report.exact_matches, 1);
+  assert.equal(report.broad_candidate_exact_matches, 2);
+});
+
 test('Kozak Kim still withholds IPA for unlicensed Korean morphophonology', () => {
   const engine = createBrowserKozakKimEngine();
   const result = engine.convert('읽게');
