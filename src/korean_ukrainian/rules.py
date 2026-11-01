@@ -215,6 +215,15 @@ _NIKL_R013_PHRASE_LICENSES = {
     "할 것을": "할>것", "갈 데가": "갈>데", "할 바를": "할>바",
     "할 수는": "할>수", "읽을 수": "을>수", "할 적에": "할>적",
     "갈 곳": "갈>곳", "할 도리": "할>도", "만날 사람": "날>사",
+    "무고일 수도": "일>수", "했을 시": "을>시",
+}
+
+# Exact same-eojeol C08 forms. NIKL Q&A 327466 confirms the morphology of
+# X일 수도; NIKL 2021 guideline p.106 confirms dependent noun 시 after -을.
+# Rule §27 supplies the conditional fortition. No suffix-wide -성 inference.
+_NIKL_R013_WORD_LICENSES = {
+    "무고일수도있다는": "일>수",
+    "했을시": "을>시",
 }
 
 _NIKL_R014_WORD_LICENSES = {
@@ -287,6 +296,10 @@ def _source_backed_rule_licenses(items, boundary_mode):
     pair = _NIKL_R012_WORD_LICENSES.get(full_form)
     if pair is not None:
         licenses.add(f"R012:sino_ryeon:{full_form}:{pair}")
+    if boundary_mode in {"same_word", "morpheme"}:
+        pair = _NIKL_R013_WORD_LICENSES.get(full_form)
+        if pair is not None:
+            licenses.add(f"R013:adnominal_l:{full_form}:{pair}")
     if boundary_mode == "phrase":
         pair = _NIKL_R013_PHRASE_LICENSES.get(full_form)
         if pair is not None:
