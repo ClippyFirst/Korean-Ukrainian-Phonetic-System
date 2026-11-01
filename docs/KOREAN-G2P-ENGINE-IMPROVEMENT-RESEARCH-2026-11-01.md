@@ -258,3 +258,17 @@ This is a sparse, conservative retrieval baseline, not evidence of quality impro
 The paired implementation at branch head `e9c0f912f90c00a0f8274a65edac030ac5b82473` is **PARTIAL** until exact-head CI and a new real-data artifact complete. Do not claim that retrieval improves accuracy before that paired report is available.
 
 The same prior workflow's sentence-level same-word-boundary diagnostic (not comparable with token-level scores) reported native 13/163 exact (7.9755%), CER 14.8323%, 37 unresolved; g2pK 12/200 exact (6.0%), CER 15.5691%. On the 163 sentences scored by both, native exact 7.9755% / CER 14.8323% versus g2pK exact 7.3620% / CER 15.4797%. This does not support replacing the native engine with g2pK for the sentence-level test.
+
+
+## Clarification of the EMNLP 2026 Korean ablation
+
+Table 4 of Jeon et al. ([ACL Anthology PDF, p. 6](https://aclanthology.org/2026.findings-emnlp.1020.pdf)) distinguishes four relevant Korean settings:
+
+- Word→Word baseline: Korean PERnc 47.5.
+- Sentence context, target-word output (Sent→Word), no retrieval and no staged decoding: 28.1.
+- Sentence context + retrieval, target-word output, no staged decoding: 27.7.
+- Sentence context + retrieval + staged decoding: 32.0.
+
+Full sentence generation (Sent→Sent) reports Korean PERnc 31.3 but canonical PERc 41.6, showing that the sentence should provide context, not be the generation target. For Korean, staged decoding after retrieval regresses from 27.7 to 32.0. The practical design implication is therefore: **encode sentence context, predict only the selected token's canonical Hangul form, optionally provide train-only retrieval hints, then pass the canonical token to the existing G2P engine.** Do not transplant the paper's staged decoder blindly.
+
+The paper's model is trained and evaluated as a separate UGT canonicalization/phonemization component. It is not evidence that the existing deterministic Kozak Kim phonology rules should be broadened.
