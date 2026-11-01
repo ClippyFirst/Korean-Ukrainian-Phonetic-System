@@ -70,7 +70,7 @@ The broad residual fortition cluster includes `비출산`. In the pre-fix diagno
 
 Source: [NIKL Korean Basic Dictionary search for 출산](https://krdict.korean.go.kr/kor/dicMarinerSearch/search?ParaWordNo=&mainSearchWord=%EC%B6%9C%EC%82%B0) directly returns `출산[출싼]`, `출산율[출싼뉼]`, `출산하다[출싼하다]`, and `저출산[저ː출싼]`. The official [NIKL explanation of Standard Pronunciation Rule §26](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=318429) gives the exact ㄹ + ㄷ/ㅅ/ㅈ environment and source-listed examples. Its later [Q&A on exceptions and lexical boundaries](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=327397) cautions that direct Sino-Korean constituent structure matters; therefore the implementation remains exact-form licensed.
 
-**Status:** DONE_VERIFIED for the exact five-form browser/Python license set, positive and negative controls, full system CI, and paired benchmark rerun. This does not make R012 a productive Sino-Korean analyzer; broader R012 coverage remains partial.
+**Status:** DONE_VERIFIED for the original four-form set (`출산`, `출산율`, `출산하다`, `비출산`), its positive/negative controls, exact-head CI and paired benchmark. The additional dictionary-attested `저출산` control was added after artifact `13095038704`; its focused/full exact-head CI is pending. It is not counted as a benchmark win. This does not make R012 a productive Sino-Korean analyzer; broader R012 coverage remains partial.
 
 ## Prioritized research clusters
 
@@ -151,7 +151,7 @@ A claim must state the exact corpus/version, shared occurrence denominator, refe
 | Freeze scope: Kozak Kim only; g2pK immutable | DONE_VERIFIED | Explicit user direction; branch changes only native Kozak Kim and its tests/docs |
 | Inspect paired diagnostic and extract output-different cases | DONE_VERIFIED | Artifact 13093672281; 2,699 shared; 23 output-different; 15 KK closer / 8 g2pK closer |
 | §27 complete `-ㄹ게` boundary repair | DONE_VERIFIED | Browser test 1114 passed; run 41335549779 confirms `올게이` distance 3→1, no other paired Kozak Kim output changes, and no regressions in 2,699 shared occurrences |
-| §26 exact `출산`-family fortition licenses | DONE_VERIFIED (bounded exact forms) | NIKL Basic Dictionary directly attests `출산`, `출산율`, `출산하다`, `저출산`; exact licenses include the corpus form `비출산`. Browser/Python positive controls, two negative lookalikes, full system CI and paired post-change artifact verified; productive R012 morphology remains partial |
+| §26 exact `출산`-family fortition licenses | PARTIAL (split verification) | Original `출산`, `출산율`, `출산하다`, `비출산` set: DONE_VERIFIED by run 41336800458 and paired artifact 13095038704. New `저출산` dictionary-backed control and `저출고` negative control: code/tests authored, exact-head CI pending; not included in paired artifact. Productive R012 morphology remains partial |
 | Long-vowel discrepancies | TODO | Source-vs-reference adjudication for 없는/없다/없어/알다/많이/사건/한자 |
 | §11 complex-coda contrast expansion | TODO | Positive verbal-stem and negative noun/lookalike controls, source review |
 | 못잃어 variant adjudication | PARTIAL | NIKL survey records both variants; no source-backed ranking for this exact item |
@@ -199,4 +199,9 @@ The exact-head paired browser run [41336800424](https://github.com/ClippyFirst/K
 - No other paired Kozak Kim outputs changed in this §26-only comparison; g2pK outputs remained unchanged.
 - On the paired subset, exact match stayed tied at 1,442/2,699 (53.4272%). Kozak Kim CER improved 8.1271% → 8.1228%; original g2pK CER remained 8.2138%. Paired CER delta improved from −0.08669 pp to −0.09102 pp; post-change 95% sentence-cluster bootstrap CI [−0.17881, −0.01647] pp (264 row clusters, 2,000 resamples, seed 20261101). This is a small measured diagnostic gain, not a universal accuracy claim.
 
-The source-derived `저출산` control was added after inspecting the same official dictionary entry; it is not a UGTPHON test-set-derived exception and was not counted as a benchmark win. The dictionary directly records its pronunciation `[저ː출싼]`; the engine's exact rule license here addresses fortition only, not independent validation of vowel length.
+The source-derived `저출산` control was added after inspecting the same official dictionary entry; it is not a UGTPHON test-set-derived exception and was not counted as a benchmark win. The dictionary directly records its pronunciation `[저ː출싼]`; the engine's exact rule license addresses fortition only, not independent validation of vowel length. This follow-up control still awaits exact-head CI.
+
+
+### Verification status of the `저출산` follow-up
+
+The code and positive/negative controls for `저출산` were added after the completed benchmark/system runs 41336800424 and 41336800458. New exact-head Actions for the current branch tip were created: system run `41339399132`, paired browser benchmark `41339399053`, native paired benchmark `41339399044`, and register extraction `41339399017`. At the time of this handoff these jobs were queued/in progress; no pass is claimed for the new `저출산` test until those runs complete.
