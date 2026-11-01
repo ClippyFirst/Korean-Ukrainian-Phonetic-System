@@ -616,12 +616,12 @@ Scope: improve native Kozak Kim only; preserve original g2pK as an unchanged com
 |---|---|---|
 | Paired baseline and occurrence-level discrepancy extraction | DONE_VERIFIED as diagnostic | Run [41331679243](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679243), artifact 13093672281; 2,699 shared occurrences; 23 output-different occurrences; 15 lower-distance Kozak Kim / 8 lower-distance g2pK |
 | Demonstrate statistically established overall Kozak Kim superiority | BLOCKED | Exact rates tie at 53.4272%; sentence-cluster bootstrap exact-delta 95% CI [-0.20697, +0.20056] pp crosses zero; independent adjudicated holdout required |
-| §27 complete `-ㄹ게` boundary repair | PARTIAL | Native rule now requires eojeol-final `-ㄹ게` or `-ㄹ게요`; positive and substring-negative regressions authored; exact-head CI and paired rerun required |
+| §27 complete `-ㄹ게` boundary repair | DONE_VERIFIED (implementation/tests) | Browser test 1114 passed in system run [41335266673](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266673); full 1,365/1,365 suite and build passed. Paired benchmark rerun remains TODO. |
 | Source provenance for §27 ending analysis | DONE_VERIFIED for source discovery/registration | NIKL Q&A 330963 and 308180 registered as SRC-NIKL-QNA-330963 and SRC-NIKL-QNA-308180; item-level reuse mark remains unverified |
 | Long-vowel and IPA annotation differences | BLOCKED / EVIDENCE-LIMITED | Reference omits length in several forms where NIKL source records length; independent IPA convention adjudication required before changing engine |
 | Morphology/fortition clusters | PARTIAL | Existing §§11, 24–28 source-backed rules retained; add rule-specific contrasts and holdout validation |
 | Variable phrase reading `못잃어` | PARTIAL | NIKL usage survey source records both insertion and non-insertion; variant ranking not established |
-| Exact-head software verification | TODO | Run focused Node test, full browser suite, build, source-register/data-integrity gates, and paired diagnostic on the final branch head |
+| Exact-head software verification | DONE_VERIFIED for code/test head | Run [41335266673](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266673) PASS: 1,365/1,365 browser tests, public-page build, generated-page verification, Python regression/data-integrity; run [41335266701](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266701) PASS: exhaustive test-case register extraction/validation/artifact upload. Paired diagnostic after the rule change remains TODO. |
 | Release readiness | BLOCKED / DEFERRED | Exact-head verification, independent Korean IPA review, and independent Ukrainian target review remain outstanding |
 
 The detailed methodology and occurrence ledger are:
