@@ -108,6 +108,19 @@ test('NIKL-backed 실수 improves broad IPA agreement without rewriting strict g
   assert.equal(report.broad_candidate_exact_matches, 1);
 });
 
+test('dictionary-backed 한자 reduces strict IPA edit distance while retaining lexical length', () => {
+  const rows = [{
+    id: 'krdict-hanja',
+    lang: 'ko',
+    split: 'test',
+    tokens: [{ canonical: '한자', phoneme: 'hantɕ͈a' }]
+  }];
+  const report = evaluateRows(rows, createBrowserKozakKimEngine());
+  assert.equal(report.scored_tokens, 1);
+  assert.equal(report.exact_matches, 0);
+  assert.equal(report.records[0].distance, 1);
+});
+
 test('Kozak Kim still withholds IPA for unlicensed Korean morphophonology', () => {
   const engine = createBrowserKozakKimEngine();
   const result = engine.convert('읽게');
