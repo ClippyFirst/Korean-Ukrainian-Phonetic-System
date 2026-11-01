@@ -306,7 +306,7 @@ def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
     assert "qna_seq=317798" in rule27["url"]
     assert "할 것을[할꺼슬]" in rule27["coverage"]
     assert "할 수는[할쑤는]" in rule27["coverage"]
-    assert "pause" in rule27["coverage"]
+    assert "broken off" in rule27["coverage"]
     assert "not exact-token IPA" in rule27["contribution_expected"]
 
     su = rows["SRC-NIKL-QNA-331601"]
