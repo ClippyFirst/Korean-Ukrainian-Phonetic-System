@@ -519,3 +519,13 @@ Feature status: **PARTIAL / in review**, tracked by [PR #354](https://github.com
 - **TODO:** use already verified morphology links for source-backed, rule-specific licensing only after exact POS/environment evidence, homograph controls, analyzer disagreement abstention and independently adjudicated evaluation.
 - **DEFERRED:** bounded recursive rule re-evaluation until a source-backed cascading counterexample demonstrates that the current deterministic single pass is insufficient.
 - **BLOCKED / EVIDENCE-LIMITED:** independent source-convention-compatible Korean IPA gold and separate Ukrainian target gold remain unavailable; do not optimize solely against raw corpus disagreement.
+
+
+## Addendum — raw-surface UGTPHON retrieval baseline (2026-11-01)
+
+- **DONE_VERIFIED — scope distinction:** scripts/benchmark_ugtphon_ko.py evaluates token.canonical and is a canonical lexical G2P diagnostic. It does not evaluate raw UGT normalization.
+- **PARTIAL — new research-only surface benchmark:** scripts/benchmark_ugtphon_ko_surface.py evaluates token.text and builds an exact-match surface→canonical datastore from train split only. It never reads test token.canonical for prediction. It blocks train-known canonical collisions and abstains on ambiguous keys; it reports canonical false-rewrite risk and A/B/C category metrics. Tests: tests/test_ugtphon_surface_benchmark.py.
+- **PARTIAL — no real data score:** external Korean UGTPHON train/test JSON were not available in the execution container. No dataset has been copied into the repository. The Korean subset is Apache-2.0; the script requires explicit local paths and does not download at runtime.
+- **EVIDENCE:** Jeon et al., Findings EMNLP 2026, report Korean PERnc 47.5→32.0 for ByT5 and 77.3→32.4 for Qwen2.5-0.5B with their compositional retrieval model. Korean ablation: retrieval-only PERnc 27.7; retrieval+staged decoding 32.0. Test retrieval-only first; do not blindly add staged decoding.
+- **DEFERRED:** neural UGT normalization, because no verified public implementation/checkpoint was found and a transparent retrieval baseline has not yet been measured.
+- **BLOCKED:** exact-head CI for code commit 447df1febc769dcb0cfa1091f7b992bc6f2be7f3 and a real-data surface benchmark run. GitHub-App-authored commits did not emit workflow runs; local network/data access was unavailable.
