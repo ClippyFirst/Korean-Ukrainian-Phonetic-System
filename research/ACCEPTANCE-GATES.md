@@ -543,3 +543,8 @@ Feature status: **PARTIAL / in review**, tracked by [PR #354](https://github.com
 ### EMNLP 2026 design constraint for a future UGT normalizer
 
 The Korean ablation in Jeon et al., Table 4, p. 6 ([paper](https://aclanthology.org/2026.findings-emnlp.1020.pdf)) is Word→Word PERnc 47.5; Sent→Word 28.1; Sent→Word + retrieval (no staged decoding) 27.7; Sent→Word + retrieval + staged decoding 32.0. Sent→Sent raises Korean canonical PERc to 41.6. Therefore any future model should consume sentence context but emit only the selected target word's canonical form, then pass that form to Kozak Kim. Full-sentence IPA generation and staged decoding are not accepted as defaults without independent Korean evidence.
+
+
+### Paired raw-surface metric multi-reference handling
+
+**PARTIAL pending exact-head CI:** the paired baseline now computes exact rates over all tokens scored by both paths (each path may match any accepted gold variant), but computes CER deltas only where both paths select the same closest gold variant. A test covers different best gold variants and prevents false CER improvements. The raw baseline summary omits normalization counters. Latest code head `7bbbd7e7ce888a9c995bb70959e17858263c07a8`; no exact-head run yet.
