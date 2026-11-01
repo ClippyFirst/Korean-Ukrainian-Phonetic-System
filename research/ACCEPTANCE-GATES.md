@@ -630,3 +630,22 @@ The detailed methodology and occurrence ledger are:
 - `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv`
 
 Do not count an authored test as passing. Do not treat g2pK as normative gold. Do not remove length or collapse allophones solely to match UGTPHON.
+
+
+## Kozak Kim discrepancy-driven continuation — 2026-11-01
+
+This is a bounded branch snapshot, not a release acceptance decision. Branch `research/kozak-kim-discrepancy-driven-improvement-2026-11-01-current`, PR #416 draft; original g2pK is an immutable comparison baseline.
+
+| Gate | Status | Evidence / limitation |
+|---|---|---|
+| 0 — Repository integrity | PARTIAL | PR #416 and its stacked base inspected; no merge, branch deletion, or unrelated PR mutation. Final branch head is recorded in the PR and handoff. |
+| 1 — Source and licensing | PARTIAL / BLOCKED | Official NIKL dictionary evidence checked for 출산 family and 저출산; item-level KOGL reuse mark remains unverified. |
+| 2 — Rule and data integrity | PASS for bounded §26 / PARTIAL for R012 generally | Exact full-form + internal `출>산` licenses; positive tests for 출산, 출산율, 출산하다, 비출산, 저출산; negative controls 비출고 and 저출고. Productive Sino-Korean morphology is not implemented. |
+| 3 — Independent evaluation corpus | PARTIAL / EVIDENCE-LIMITED | Same 2,699 UGTPHON occurrences paired before/after; UGTPHON IPA is diagnostic and has an aspiration-vs-fortition annotation mismatch on 출산. No independent specialist gold. |
+| 4 — Runtime correctness | PASS for recorded exact-head Actions | Run 41336800458: Python regression/data-integrity and browser regression/build/generated-page checks PASS. Run 41336800424: paired browser benchmark and pinned-data checks PASS. No local test run is claimed. |
+| 5 — Product quality | PARTIAL | This is engine-only work; no UI or deployment change. Existing release/product gates are unchanged. |
+| 6 — Release and independent review | BLOCKED | No independent Korean IPA reviewers, no independent Ukrainian target review, and unresolved item-level source rights. Do not claim overall superiority or release readiness. |
+
+### §26 paired evidence
+
+Before artifact `13094763897`; after artifact `13095038704`. Shared subset 2,699. Exact match tied at 1,442/2,699 (53.4272%). Kozak Kim CER 8.1271% → 8.1228%; original g2pK CER 8.2138%; paired CER delta −0.08669 → −0.09102 pp; post-change sentence-cluster 95% CI [−0.17881, −0.01647] pp. `비출산` IPA distance 2→1 and surface changed to `비출싼`; `출산` surface changed to `출싼`, but IPA distance tied because UGTPHON writes [sʰ] rather than the NIKL dictionary's fortis surface. No g2pK source/output changes.
