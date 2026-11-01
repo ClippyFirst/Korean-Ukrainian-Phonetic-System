@@ -287,8 +287,13 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     const contextualUi=u.vowel==='ㅢ'&&u.onset!=='ㅇ';
     const defaultUi=u.vowel==='ㅢ'&&u.onset==='ㅇ';
     const vowelJamo=contextualUi?'ㅣ':u.vowel;
-    let status=u.__superSoftFallback?'super-soft-orthographic-fallback':superSoftOn&&u.__practicalHeuristic?'super-soft-practical-heuristic':superSoftOn&&u.__softHeuristic?'super-soft-morphology-heuristic':u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi?'contextual':'canonical');
     const onset=u.onset;
+    // NIKL Standard Pronunciation Rule 5, exception 1: the glide in ㅕ is
+    // absorbed after palatal affricates ㅈ/ㅉ/ㅊ in surface pronunciation.
+    // The Python IPA adapter already applies this broad-profile rule; keep the
+    // browser runtime in parity. Phonemic /jʌ/ remains a distinct representation.
+    const palatalYeo=u.vowel==='ㅕ'&&['ㅈ','ㅉ','ㅊ'].includes(onset);
+    let status=u.__superSoftFallback?'super-soft-orthographic-fallback':superSoftOn&&u.__practicalHeuristic?'super-soft-practical-heuristic':superSoftOn&&u.__softHeuristic?'super-soft-morphology-heuristic':u.__practicalHeuristic?'practical-transliteration':u.__softHeuristic?'heuristic-low-confidence':(applied.length||contextualUi||defaultUi||palatalYeo?'contextual':'canonical');
     const previousCoda=prev?.__effectiveCoda??prev?.coda??'';
     const liaisonOnset=Boolean(u.__liaison);
     const previousSonorant=['ㄴ','ㄹ','ㅁ','ㅇ'].includes(previousCoda);
@@ -303,13 +308,14 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     if(superSoftOn&&u.__softHeuristic)traceRules.push('super-soft-morphology-heuristic');
     if(contextualUi)traceRules.push('vowel-ui-to-i');
     if(defaultUi)traceRules.push('vowel-ui-default-ɰi');
+    if(palatalYeo)traceRules.push('vowel-yeo-monophthongization-§5-exception-1');
     if(voiced)traceRules.push('contextual-voicing');
     if(fortis)traceRules.push('tensification');
     if(liquid&&!traceRules.includes('liquid-assimilation'))traceRules.push('liquid-assimilation');
     u.__effectiveCoda=u.coda;
 
     const o=get(map,'onset',onset),v=get(map,'vowel',vowelJamo),c=u.coda?get(map,'coda',u.coda):null;
-    const vowelIpa=defaultUi?'ɰi':(v?.ipa||'');
+    const vowelIpa=defaultUi?'ɰi':palatalYeo?'ʌ':(v?.ipa||'');
     const ipaOnset=(J_VOWELS.has(u.vowel)&&onset==='ㅅ')?'ɕ':
       (J_VOWELS.has(u.vowel)&&onset==='ㅆ')?'ɕ͈':(o?.ipa||'');
     let unitIpa=ipaOnset+vowelIpa+(c?.ipa||'');
