@@ -4757,3 +4757,10 @@ Interpretation: this UGTPHON diagnostic supports a lower Kozak Kim CER point est
 **No further production phonology change is justified by the currently inspectable residual mass clusters.** C01–C07 are primarily representation/allophony-profile questions; C08 still lacks exact boundary/source evidence for its remaining forms; C09 has source-vs-reference length conflicts. Guessing here would risk making Kozak Kim less linguistically faithful merely to improve noisy benchmark edit distance.
 
 **Readiness:** software and diagnostic checks pass on this PR head; the project remains a research prototype, not research-certified and not release-ready.
+
+
+### Current discordance direction and four abstentions
+
+The exact-head paired artifact `13097847614` has 26 normalized-IPA discordances across 21 distinct token forms. Against the best shared reference alternative, Kozak Kim is closer on 17 occurrences, original g2pK on 7, and they tie on 2. This is occurrence-level triage, not independent lexical adjudication; repeated forms include `없는` ×4, `없다` ×2, and `사건` ×2.
+
+Four Kozak Kim abstentions are `칡칡이`, `쫒아내면`, `많앗구나유유유`, and `무서웟어`. Three appear to contain nonstandard spelling/inflection, but source intent is not adjudicated; `칡칡이` lacks established lexical/structural analysis. Keep all four unresolved. Do not silently autocorrect orthography or adopt g2pK guesses as gold. A typo-normalization policy and exact lexical evidence are separate prerequisites.
