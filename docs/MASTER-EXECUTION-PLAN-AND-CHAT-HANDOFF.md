@@ -4451,3 +4451,22 @@ The current open PR inventory was checked against `main` at `7bbbd7e7ce888a9c995
 
 Relevant branch inspection found no reason to delete or force-update any user branch. Only the dedicated PR #415 branch was updated. No PR was merged or closed.
 
+
+## Residual IPA error taxonomy and a deliberately unmerged rule candidate (2026-11-01)
+
+The direct browser report `13090704104` has 1,428 strict exact matches and 2,496 exact matches under the research-only broad-candidate profile. The latter rescues 1,068 of 1,271 strict mismatches (84.03%); it is evidence that annotation/allophone conventions explain much of the strict CER/EM gap, not evidence that the engine has 92.48% normative accuracy. There are 203 residual broad-candidate mismatches.
+
+The largest residual aligned edit operations are:
+- 45 instances of `ʰ` versus `h`;
+- 35 instances of `y` versus `ɥi` (ㅟ representation);
+- 34 unreleased-coda `̚` marks present on one side only;
+- 27 `j` presence/absence differences;
+- 12 `l` versus `ɾ` differences;
+- smaller clusters of fortis marks, vowel length and lexical fortition.
+
+These clusters must be adjudicated by phonetic/IPA convention before changing the engine. Do not collapse them merely to raise exact match. Some may be true phonetic differences; others are annotation policies.
+
+One morphology-consensus candidate, `물가로`, is particularly instructive. The browser output lacks the fortition present in the UGTPHON target. The root `물가` is already source-licensed in the engine; NIKL materials cite `물가[물까]` among §28 compound-fortition examples and explain that the generalization is not reducible to the §26 Sino-Korean rule ([NIKL Q&A 316282](https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=261&pageIndex=1&qna_seq=316282), [NIKL Q&A 309990](https://m.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&qna_seq=309990), [official NIKL training material](https://www.korean.go.kr/common/download.do?c_file_name=9fb4c220-182a-4c27-bc5d-4aa22731aa16_0.pdf&file_path=etcData&o_file_name=%ED%95%9C%EA%B5%AD%EC%96%B4_%EC%A0%84%EB%AC%B8%EA%B0%80_%EA%B5%AD%EC%99%B8_%ED%8C%8C%EA%B2%AC_%EA%B5%90%EC%9C%A1_%EA%B0%95%EC%9D%98_%EA%B5%90%EC%9E%AC%28%EB%AA%A8%EC%8A%A4%ED%81%AC%EB%B0%94%29.pdf)). A pinned dev example also contains `물가로` with the same price-sense pronunciation. However, this exact form was first surfaced while inspecting the test-set mismatch. To avoid test leakage, no `물가로` exception or test-specific lexical entry was added in this run. A future general root-plus-particle treatment must be developed against dev evidence and evaluated on a fresh holdout, not counted as an independent win on the already inspected test token.
+
+Other consensus candidates such as `정권`, `해줄 것` and colloquial lateral variants were not added: analyzer boundaries and a benchmark target are not, by themselves, authoritative pronunciation evidence.
+
