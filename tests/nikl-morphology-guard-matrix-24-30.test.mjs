@@ -80,6 +80,26 @@ test('§27 punctuation-separated pause controls suppress adnominal fortition', (
   }
 });
 
+test('§27: -ㄹ게 fortition requires the complete ending boundary, not a matching substring', () => {
+  for (const input of ['할게', '할게요', '다를게', '안타까울게']) {
+    const result = generic.convert(input);
+    assert.ok(
+      result.trace.some((item) => item.rules.includes('adnominal-l-fortition-§27-attested-l-ge')),
+      input + ': the complete -ㄹ게 ending must retain source-backed fortition',
+    );
+  }
+
+  // The UGTPHON discordant occurrence 올게이 contains the same Hangul
+  // substring but is not the -ㄹ게 ending. This is a rule-boundary control,
+  // not an independently adjudicated lexical pronunciation.
+  const substringOnly = generic.convert('올게이');
+  assert.ok(
+    !substringOnly.trace.some((item) => item.rules.includes('adnominal-l-fortition-§27-attested-l-ge')),
+    '올게이 must not inherit -ㄹ게 fortition from an internal substring',
+  );
+  assert.ok(!substringOnly.ipa.includes('k͈'), 'the unlicensed substring must not be fortisized');
+});
+
 test('§30: saisiot remains an exact lexical decision, not a generic ㅅ-final rewrite', () => {
   const cases = ['나뭇가지', '아랫방'];
   for (const input of cases) {
