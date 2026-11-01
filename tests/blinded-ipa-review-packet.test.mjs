@@ -155,6 +155,7 @@ test('C01-C07 pilot packets remain source-blind and fail closed without source c
   for (const clusterId of pilotPacketIds) {
     const packetText = readFileSync(new URL('../research/ipa-review-packets/blind-ipa-' + clusterId + '.json', import.meta.url), 'utf8');
     const packet = JSON.parse(packetText);
+    assert.equal(packet.packet_schema, 'korean-independent-ipa-review-v1');
     assert.equal(packet.packet_id, 'BLIND-IPA-' + clusterId + '-2026-11-01');
     assert.equal(packet.review_mode, 'BLINDED_INPUT_ONLY');
     assert.equal(packet.items.length, 6);
@@ -165,7 +166,7 @@ test('C01-C07 pilot packets remain source-blind and fail closed without source c
     assert.equal(packet.source_license, 'Apache-2.0 (UGTPHON Korean subset; ko/LICENSE)');
     assert.equal(packet.acceptance_gate.status, 'READY_FOR_INDEPENDENT_REVIEW_PILOT');
     const serialized = JSON.stringify(packet).toLowerCase();
-    for (const forbidden of ['kozak kim', 'g2pk', 'engine', 'reference_ipa', 'gold_ipa', 'artifact_id', 'workflow_run_id', 'cluster_name', 'review_question', 'source_artifact']) {
+    for (const forbidden of ['kozak-kim', 'kozak_kim', 'kozak kim', 'g2pk', 'engine', 'reference_ipa', 'gold_ipa', 'artifact_id', 'workflow_run_id', 'cluster_name', 'review_question', 'source_artifact']) {
       assert.ok(!serialized.includes(forbidden), 'blind packet must not disclose ' + forbidden);
     }
   }

@@ -1,5 +1,5 @@
 {
-  "packet_schema": "kozak-kim-independent-ipa-review-v1",
+  "packet_schema": "korean-independent-ipa-review-v1",
   "review_mode": "BLINDED_INPUT_ONLY",
   "limitations": [
     "Pilot sample only; not a complete cluster census.",
