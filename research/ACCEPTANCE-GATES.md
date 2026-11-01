@@ -556,3 +556,13 @@ The previous failed tests are not to be counted as passing, and the restored fil
 ### Follow-up: paired-metric test contract synchronized (2026-11-01)
 
 The current-main commit `7bbbd7e7ce888a9c995bb70959e17858263c07a8` added a multi-reference regression to `tests/test_ugtphon_surface_benchmark.py`. PR #415 now carries that exact test module alongside the restored implementation. Latest PR branch code/test tip before this documentation-only update: `85facdd7d2a882da58d3b27eeab9a65c046be461`. GitHub reports the PR mergeable, but it remains one commit behind current main. Exact-head Python/browser/system CI and a fresh benchmark are still TODO; local execution remains blocked by GitHub DNS resolution.
+
+
+## Latest direct browser / paired native-vs-g2pK evidence — 2026-11-01
+
+- Direct browser benchmark [41313216356](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41313216356): 2,703 eligible / 2,699 scored; coverage 99.852%; 1,428 exact (52.9085%); coverage-adjusted exact 52.8302%; CER 8.2441%; 4 unresolved; 0 engine errors. IPA profile remains unadjudicated cross-runtime.
+- Paired native/g2pK benchmark [41313216411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41313216411): native 53.0393% exact / 9.1220% CER / 5 abstentions; g2pK 53.0892% exact / 9.2285% CER / 0 abstentions. On 2,698 common tokens, g2pK's exact delta is +0.0741 pp with 95% CI [-0.0824, +0.2840] pp (not significant); CER is worse by +0.1084 pp with 95% CI [+0.0234, +0.2038] pp. Recorded unique-word runtime: native 363 ms vs g2pK 16,733 ms, including Python adapter overhead.
+- Multi-engine run [41313216374](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41313216374) confirms this pattern. Keep native Kozak Kim as default; g2pK is not a statistically convincing exact-match improvement and has worse CER/runtime. CharsiuG2P and ByT5 were skipped by default-off gates.
+- Browser integration [41313216398](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41313216398) passed. Node tests passed 1,356/1,356 and browser build passed in 41313216461. Python test collection failed because the raw-surface benchmark module was missing; system verification 41313216444 failed its Python job for the same reason, while browser regression/build passed.
+
+The benchmark results are valid for the engine code present in the run, but do not verify the later restored raw-surface benchmark module. Exact-head Python 3.11–3.13 suite, wheel test, system verification and rerun of the raw-surface benchmark remain TODO after repair commit `c069031a6cea830ad4d5f00fcf5314b5dd1e8e12`.
