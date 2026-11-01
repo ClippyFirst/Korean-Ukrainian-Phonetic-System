@@ -212,7 +212,7 @@ def test_2026_11_01_g2p_sources_keep_scope_and_license_provenance_explicit():
 
     popularity = rows["SRC-NIKL-QNA-331569"]
     assert "인기[인끼]" in popularity["coverage"]
-    assert "optional" in popularity["coverage"]
+    assert "optional" in popularity["coverage"].casefold()
     assert "provisional" in popularity["integration_status"]
 
     caution = rows["SRC-NIKL-QNA-337054"]
