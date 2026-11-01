@@ -49,9 +49,9 @@ test('Kozak Kim preserves inspectable IPA when only Ukrainian target mapping is 
   assert.ok(['unavailable', 'provisional'].includes(result.target_status));
 });
 
-test('Kozak Kim still withholds IPA for unresolved Korean morphophonology', () => {
+test('Kozak Kim still withholds IPA for unlicensed Korean morphophonology', () => {
   const engine = createBrowserKozakKimEngine();
-  const result = engine.convert('밭이');
+  const result = engine.convert('읽게');
 
   assert.equal(result.pronunciation_status, 'unresolved');
   assert.equal(result.ipa, '');
