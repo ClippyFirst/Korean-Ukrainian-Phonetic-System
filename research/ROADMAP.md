@@ -307,3 +307,14 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **IN_PROGRESS:** multi-engine comparison workflow 41309605046; CharsiuG2P and ByT5 remain skipped under default-off gates.
 - **Release status:** research prototype / diagnostic engine; not research-certified or release-ready. Full ledger and exact run evidence: `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` and `research/ACCEPTANCE-GATES.md`.
 
+
+
+## 2026-11-01 — Kozak Kim exact-form G2P corrections (PR #415)
+
+- **PARTIAL pending exact-head CI:** add NIKL Q&A-backed exact §26 form `실수[실쑤]` to both browser and Python rule inventories; no productive rule expansion.
+- **PARTIAL pending exact-head CI:** add dictionary-backed `한자[한ː짜]` with long-vowel length preserved, IPA derived by the project, and Ukrainian target marked provisional.
+- **PARTIAL pending exact-head CI:** Python target adapter now withholds any candidate orthography for provisional lexical targets even when no target-reference string exists.
+- **Source register:** 139 records, 12 columns; rights counts 1 recorded, 1 not applicable, 130 review-required, 7 manual-classification-required.
+- **Projected only:** prior artifact recalculation estimates strict CER 8.2571% → 8.2441% (exact match unchanged) and broad-candidate exact 92.4416% → 92.4787%. No updated score may be published until current-head browser benchmark completes.
+- **BLOCKED:** connector commits have not triggered new CI runs; exact-head tests/build/system/benchmark require manual Actions dispatch or an event-triggering push. Korean phonetics adjudication, Ukrainian target review and item-level rights verification remain open.
+- **Release status:** research prototype; not research-certified or release-ready. See the latest continuation in `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
