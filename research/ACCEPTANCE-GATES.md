@@ -467,3 +467,26 @@ Feature status: **PARTIAL / in review**, tracked by [PR #354](https://github.com
 **Evidence currently available:** isolated Node.js harness, 6/6 tests passed including the 11,172-syllable structural sweep. In addition, CI passed on code/test snapshot `0dcde24374f1a67c38f00f44687c7a1e4a024a51`: browser regression/build, Python regression/data integrity, `npm test`, `npm run build`, Python 3.11/3.12/3.13, and corpus audit jobs. See [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40680654498), [browser G2P](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40680654450), and [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40680654400). Official NIKL source inventory was skipped. Later commits were documentation-only; latest-head CI is not yet confirmed. See `docs/KOREAN-ROMANIZATION-RR-2026-10-28.md` and the corresponding entry in `research/ROADMAP.md`.
 
 **Release rule:** the feature must not be described as fully NIKL-conformant or merged solely on the basis of structural syllable coverage or the current example tests.
+
+## Kozak Kim browser G2P / IPA-first acceptance refresh — 2026-11-01
+
+Code-bearing head verified: `d66d02889ffcf405dc9f927a61d3da69fbfe8697`. PR #415 remains open and separate from PR #411.
+
+| Gate | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Pronunciation status independent from Ukrainian target availability | DONE_VERIFIED | Browser engine returns resolved IPA when only IPA→Ukrainian mapping is provisional/unavailable; composed lexical paths carry an aggregate pronunciation status. Exact-head browser/system CI passed. |
+| Strict abstention for genuinely unresolved Korean morphology | DONE_VERIFIED | `읽게` regression confirms unresolved IPA is withheld. A previously used fixture `밭이` is source-backed in the lexical inventory and therefore is not a valid unresolved-morphology fixture. |
+| Super-soft literal/Jamo preservation | DONE_VERIFIED | Explicit Super-soft mode preserves standalone compatibility/decomposed jamo and non-Korean literals; strict mode remains fail-closed. |
+| NIKL lexical fortition exceptions | DONE_VERIFIED for two exact entries | 사건[사ː껀] and 인기[인끼] are source-backed; 인기 retains the non-fortis alternative. IPA is project-derived; Ukrainian target is provisional. No generic Sino-Korean fortition rule is introduced. |
+| Browser strict UGTPHON diagnostic | DONE_VERIFIED as diagnostic | Exact head: 1,428/2,699 exact (52.9085%), CER 8.2571%, coverage 99.852%, 4 unresolved, 0 engine errors. This is not normative accuracy or an untouched holdout. |
+| Broad IPA sensitivity profile | PARTIAL / RESEARCH-ONLY | 2,495/2,699 exact (92.4416%), CER 1.3562%. This profile collapses selected narrow allophones and sibilant aspiration for comparison only; it is not independently adjudicated and does not replace strict metrics. |
+| Native vs g2pK comparison | DONE_VERIFIED as paired diagnostic | Common 2,698 tokens: native 53.0393% exact / 9.1351% CER; g2pK 53.1134% / 9.2304%. Small exact-match edge to g2pK, lower CER for native; no winner established. |
+| Multi-engine comparison | PARTIAL / IN_PROGRESS | Workflow 41309605046 still running at this update; CharsiuG2P and ByT5 sub-jobs skipped by default-off gates. Do not claim a result for them. |
+| Independent Korean IPA profile adjudication | BLOCKED | Qualified Korean phonetics reviewer and independent broad/narrow IPA gold required. |
+| Ukrainian target mapping review | BLOCKED | Independent Ukrainian target gold/reviewer required; software mapping tests do not establish linguistic approval. |
+| NIKL and upstream dataset licensing | BLOCKED | NIKL item-level reuse mark not checked. UGTPHON README states Korean subset Apache-2.0; IPA-Dict credits Korean data CC BY-SA. Verify provenance/compatibility before redistribution or release. |
+| Sentence-context normalization of raw UGT | DEFERRED to separate stage | UGTPHON paper shows Korean benefits primarily from sentence context; do not fold canonical-form inference into phonological rules. Requires a separate specification, train-only retrieval, ambiguity/abstention policy and per-category evaluation. |
+| Release readiness | DEFERRED | Research prototype / diagnostic engine only; not research-certified or release-ready. |
+
+**Evidence:** tests [41309605110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605110); browser integration [41309605037](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605037); system verification [41309605032](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605032); browser UGTPHON diagnostic [41309605083](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605083); paired native/g2pK diagnostic [41309605065](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605065). NIKL metadata-only job was skipped, not passed.
+
