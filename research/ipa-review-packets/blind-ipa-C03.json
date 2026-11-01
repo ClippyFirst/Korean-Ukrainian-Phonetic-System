@@ -3,9 +3,10 @@
   "review_mode": "BLINDED_INPUT_ONLY",
   "limitations": [
     "Pilot sample only; not a complete cluster census.",
-    "The paired artifact contains token-level records but not the full source sentence/utterance.",
     "No candidate IPA, syllabification, allophone, or phonological analysis is supplied.",
-    "Do not score boundary-sensitive or morphologically ambiguous items without original utterance context."
+    "Do not score boundary-sensitive or morphologically ambiguous items without original utterance context.",
+    "This is a six-form pilot sample, not a complete cluster census.",
+    "UGTPHON IPA/reference annotations are not shown to reviewers; the supplied source_sentence is raw context only."
   ],
   "reviewer_instructions": [
     "Independently transcribe each item in broad phonemic IPA first.",
@@ -25,14 +26,13 @@
     "signed_off": false
   },
   "acceptance_gate": {
-    "status": "BLOCKED_MISSING_SENTENCE_CONTEXT_AND_RIGHTS_CHECK",
+    "status": "READY_FOR_INDEPENDENT_REVIEW_PILOT",
     "required_before_scoring": [
-      "Restore exact source utterance for every source_row_id from the licensed corpus artifact.",
-      "Verify per-item redistribution and reviewer-sharing rights.",
-      "Freeze packet hashes before dispatch.",
-      "Assign separate blind copies and freeze first-pass submissions before reconciliation."
+      "Assign at least two qualified Korean IPA reviewers separate blind copies.",
+      "Record each reviewer's transcription convention and confidence.",
+      "Preserve the source attribution and Apache-2.0 notice with any shared packet."
     ],
-    "promotion_rule": "Do not generalize beyond reviewed items. Any downstream rule proposal requires source adjudication, positive/negative/boundary/interaction controls, and independent confirmation."
+    "promotion_rule": "No general rule or system change follows from pilot packets alone. Require independent first-pass agreement/reconciliation, source-backed positive/negative/boundary/interaction controls, and exact-head paired verification."
   },
   "packet_id": "BLIND-IPA-C03-2026-11-01",
   "cluster_id": "C03",
@@ -49,49 +49,161 @@
         "dc_inside_2564",
         "dc_inside_2548"
       ],
-      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
-      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1914",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "근데 이새끼 카우보이 랍시고 올린 백인 사진들 아니라 그냥 총잡이 보안관 아님",
+          "target_token_present": true
+        },
+        {
+          "source_row_id": "multilexnorm2026_2017",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "와 그냥 만화 에서 튀어나올 것 같이 생김",
+          "target_token_present": true
+        },
+        {
+          "source_row_id": "dc_inside_2024",
+          "source": "dc_inside",
+          "split": "test",
+          "source_sentence": "저번에 사전체험 풀었을때 해봤는데 배낀게 문제가 아니라 그냥 재미가 없음 못만들었음배낀게 ㅈ같긴 해도 장르의 유사성 뭐 시발 잘만들면 됐지 이렇게 생각한 내가 빡대가리 새끼였음취향차이라고 하기엔 조오온나 답답한 조작감에 거기서 나오는 어정쩡한 모션어디서 많이본 시스템을 채택했지만 위 단점때문에 오히려 비슷한 게임들이랑 비교하게끔 만듬사전체험때 10시간인가 이것저것 해봤는데 그냥 씹노잼임 구매 안해서 지금은 모르겠는데 솔직히 텀이 긴것도 아니고 바뀐거 거의 없을듯",
+          "target_token_present": true
+        },
+        {
+          "source_row_id": "dc_inside_2146",
+          "source": "dc_inside",
+          "split": "test",
+          "source_sentence": "이새낀 그냥 급식 수준도 아니고 잼민이인 듯",
+          "target_token_present": true
+        },
+        {
+          "source_row_id": "dc_inside_2227",
+          "source": "dc_inside",
+          "split": "test",
+          "source_sentence": "군면제도 제약 있는 군면제라더라. 그러니까 극소수 남자들만이 노릴 수 있고 어느 분야의 월클급이며 우승까지 거머쥔것보다 그냥 한국여자로 태어난게 훨씬 더 가치가 높다고 치는거임 이 나라에선 ㅋㅋㅋㅋ 페미조센 갖제징용국뽕들 연전연패 ㅠㅠㅠ군면제도 제약 있는 군면제라더라. 그러니까 극소수 남자들만이 노릴 수 있고 어느 분야의 월클급이며 우승까지 거머쥔것보다 그냥 한국여자로 태어난게 훨씬 더 가치가 높다고 치는거임 이 나라에선 ㅋㅋㅋㅋ 페미조센 갖제징용국뽕들 연전연패 ㅠㅠㅠ군면제도 제약 있는 군면제라더라. 그러니까 극소수 남자들만이 노릴 수 있고 어느 분야의 월클급이며 우승까지 거머쥔것보다 그냥 한국여자로 태어난게 훨씬 더 가치가 높다고 치는거임 이 나라에선 ㅋㅋㅋㅋ 페미조센 갖제징용국뽕들 연전연패 ㅠㅠㅠ군면제도",
+          "target_token_present": true
+        },
+        {
+          "source_row_id": "dc_inside_2256",
+          "source": "dc_inside",
+          "split": "test",
+          "source_sentence": "저거 다하는데 널 좋아해주는 여자 만났으면 그냥 뒤질때 까졍 살아ㅏㄹ",
+          "target_token_present": true
+        },
+        {
+          "source_row_id": "dc_inside_2564",
+          "source": "dc_inside",
+          "split": "test",
+          "source_sentence": "그냥 일베정신을 계승한 찐따(특 밖에 다른 사람 있으면 말투 얌전해짐)들을 편하게 일베라고 정의하는 건데 이 찐따들 또 븅신처럼 알아듣고 \"나 일베 들어간 적 없는데? 주갤 야갤 하는데?\" 이지랄 반박 싸는 거 나만 병신같냐?독일에서 태어나지도 않았고 2차대전 참전하지도 않았지만 하는 꼬라지를 보고 나치라고 부르는 것과 같은 이치인데 이새끼들 ㄹㅇ 경계선지능장애들 모임임 그냥 지나가다가 와 관상 존나 찐따같네 하는 애들 보면 다 인터넷에서 여포짓함 과학이다",
+          "target_token_present": true
+        },
+        {
+          "source_row_id": "dc_inside_2548",
+          "source": "dc_inside",
+          "split": "test",
+          "source_sentence": "그냥 우리나라 선수들이 존나 못함. 매번 월드컵 보면서 느끼는건 월클 선수들은 포지션을 머리속에 집어넣고서 공 잡자마자 고민같은것도 없이 바로 패스하고 지치지도 않고 끝까지 뛰는데 우리나라 선수는 공잡고 1초 두리번 거리고 방향 확인하고 패스를 하더라 그리고 체력도 조루라서 존나 금방 지침. 그냥 프로 의식이 없는거손흥민이나 김민재같은 몇몇 월클 한두명 제외하면 그냥 뭐 아시안컵 수준이지",
+          "target_token_present": true
+        }
+      ]
     },
     {
       "input_hangul": "불렀겠냐나",
       "source_row_ids": [
         "multilexnorm2026_1916"
       ],
-      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
-      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1916",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "유재석 은인 정말 좋은 말 해줄것 같아서 불렀겠냐나 연예계 최정상 사회 봐주는 사람 자랑하고 싶은거지",
+          "target_token_present": true
+        }
+      ]
     },
     {
       "input_hangul": "연예계",
       "source_row_ids": [
         "multilexnorm2026_1916"
       ],
-      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
-      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1916",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "유재석 은인 정말 좋은 말 해줄것 같아서 불렀겠냐나 연예계 최정상 사회 봐주는 사람 자랑하고 싶은거지",
+          "target_token_present": true
+        }
+      ]
     },
     {
       "input_hangul": "한녀들보다",
       "source_row_ids": [
         "multilexnorm2026_1922"
       ],
-      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
-      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1922",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "어떻게 다리 하나 없어도 똥걸래에 인성개차반 한녀들보다 오조오억배 더 이쁘노",
+          "target_token_present": true
+        }
+      ]
     },
     {
       "input_hangul": "귀엽냐",
       "source_row_ids": [
         "multilexnorm2026_1926"
       ],
-      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
-      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1926",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "왤케 귀엽냐",
+          "target_token_present": true
+        }
+      ]
     },
     {
       "input_hangul": "상류층",
       "source_row_ids": [
         "multilexnorm2026_1930"
       ],
-      "source_context_status": "NOT_INCLUDED_IN_PAIRED_ARTIFACT",
-      "review_status": "AWAITING_CONTEXT_AND_INDEPENDENT_REVIEW"
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1930",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "점점 가정 꾸리다 자체 상류층 누리다 수 있다 특권 되다 시대 오다 같다",
+          "target_token_present": true
+        }
+      ]
     }
   ],
-  "dataset_scope": "UGTPHON test split; token-level pilot sample"
+  "dataset_scope": "UGTPHON Korean test split; six-item pilot sample per cluster",
+  "source_license": "Apache-2.0 (UGTPHON Korean subset; see source license notice)",
+  "source_attribution": [
+    "Jeon et al. 2026, UGTPHON: Phonemizing User-Generated Text (Findings of EMNLP 2026)",
+    "Choi et al. 2023, KoMultiText (NeurIPS SoLaR workshop)",
+    "Buaphet et al. 2026, MultiLexNorm++"
+  ],
+  "source_repository": "https://github.com/naver-ai/UGTPHON",
+  "source_license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+  "source_license_note": "The official UGTPHON Korean subset ko/LICENSE states Apache-2.0 and identifies KoMultiText/MultiLexNorm++ sources. Preserve this attribution and license notice when sharing excerpts; do not redistribute raw gated MultiLexNorm++ files."
 }
