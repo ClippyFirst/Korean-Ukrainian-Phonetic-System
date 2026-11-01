@@ -298,3 +298,12 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **BLOCKED / EVIDENCE-LIMITED:** independent accuracy evaluation needs adjudicated held-out Korean pronunciation gold. No neural runtime or remote service is introduced.
 
 - **DEFERRED:** Python CLI/API do not expose Super-soft and remain strict/soft; no cross-runtime parity claim.
+
+
+## Korean G2P benchmark separation — 2026-11-01
+
+- **DONE_VERIFIED:** literature review of Mun et al. (2022), You & Moon (Interspeech 2026), and Jeon et al. (Findings EMNLP 2026) is recorded in docs/KOREAN-G2P-ENGINE-IMPROVEMENT-RESEARCH-2026-11-01.md.
+- **DONE_VERIFIED:** canonical lexical G2P and raw-surface UGT normalization are now explicitly separate benchmark questions. The existing canonical runner uses token.canonical; the new scripts/benchmark_ugtphon_ko_surface.py uses token.text and a train-only exact-retrieval store.
+- **PARTIAL:** run the new surface benchmark on externally supplied Korean UGTPHON train/test data; exact-head CI is also pending for the new adapter and benchmark tests.
+- **DEFERRED:** neural UGT normalization and staged decoding until the retrieval-only baseline is measured. The EMNLP 2026 Korean ablation found retrieval-only PERnc 27.7 versus 32.0 with staged decoding; do not assume the full architecture helps every language/task.
+- **BLOCKED / EVIDENCE-LIMITED:** independent Korean IPA convention adjudication and Ukrainian target review remain separate gates. A better UGTPHON score does not by itself validate standard Korean pronunciation or Ukrainian transliteration.
