@@ -590,3 +590,25 @@ The benchmark results are valid for the engine code present in the run, but do n
 **Measured canonical browser baseline:** 2,703 eligible / 2,699 scored, 99.852% coverage, 52.9085% exact, 8.2441% CER, 4 unresolved, 0 engine errors. The research-only broad-candidate profile is 92.4787% exact / 1.3427% CER and must not be represented as normative accuracy.
 
 **Research interpretation:** the 2026 EMNLP UGTPHON Korean ablation shows a large sentence-context effect, only a small additional exact-retrieval effect, and a regression from staged decoding. Any further UGT work should use sentence-context-conditioned candidate normalization with train-only evidence, canonical controls, paired scoring and abstention; it must remain separate from canonical G2P.
+
+## Kozak Kim discrepancy-driven improvement snapshot — 2026-11-01
+
+Scope: improve native Kozak Kim only; preserve original g2pK as an unchanged comparison baseline.
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Paired baseline and occurrence-level discrepancy extraction | DONE_VERIFIED as diagnostic | Run [41331679243](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679243), artifact 13093672281; 2,699 shared occurrences; 23 output-different occurrences; 15 lower-distance Kozak Kim / 8 lower-distance g2pK |
+| Demonstrate statistically established overall Kozak Kim superiority | BLOCKED | Exact rates tie at 53.4272%; sentence-cluster bootstrap exact-delta 95% CI [-0.20697, +0.20056] pp crosses zero; independent adjudicated holdout required |
+| §27 complete `-ㄹ게` boundary repair | PARTIAL | Native rule now requires eojeol-final `-ㄹ게` or `-ㄹ게요`; positive and substring-negative regressions authored; exact-head CI and paired rerun required |
+| Source provenance for §27 ending analysis | DONE_VERIFIED for source discovery/registration | NIKL Q&A 330963 registered as SRC-NIKL-QNA-330963; item-level reuse mark remains unverified |
+| Long-vowel and IPA annotation differences | BLOCKED / EVIDENCE-LIMITED | Reference omits length in several forms where NIKL source records length; independent IPA convention adjudication required before changing engine |
+| Morphology/fortition clusters | PARTIAL | Existing §§11, 24–28 source-backed rules retained; add rule-specific contrasts and holdout validation |
+| Variable phrase reading `못잃어` | PARTIAL | NIKL usage survey source records both insertion and non-insertion; variant ranking not established |
+| Exact-head software verification | TODO | Run focused Node test, full browser suite, build, source-register/data-integrity gates, and paired diagnostic on the final branch head |
+| Release readiness | BLOCKED / DEFERRED | Exact-head verification, independent Korean IPA review, and independent Ukrainian target review remain outstanding |
+
+The detailed methodology and occurrence ledger are:
+- `docs/KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md`
+- `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv`
+
+Do not count an authored test as passing. Do not treat g2pK as normative gold. Do not remove length or collapse allophones solely to match UGTPHON.
