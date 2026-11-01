@@ -50,6 +50,9 @@ jobs:
             "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/train.json" \
             --output "$RUNNER_TEMP/ko-train.json"
           curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/dev.json" \
+            --output "$RUNNER_TEMP/ko-dev.json"
+          curl --fail --location --retry 3 \
             "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/test.json" \
             --output "$RUNNER_TEMP/ko-test.json"
           curl --fail --location --retry 3 \
@@ -61,12 +64,15 @@ jobs:
           from pathlib import Path
           root = Path(sys.argv[1])
           train = json.loads((root / "ko-train.json").read_text(encoding="utf-8"))
+          dev = json.loads((root / "ko-dev.json").read_text(encoding="utf-8"))
           test = json.loads((root / "ko-test.json").read_text(encoding="utf-8"))
           assert len(train) == 1976, f"pinned train row-count drift: {len(train)}"
+          assert len(dev) == 246, f"pinned dev row-count drift: {len(dev)}"
           assert len(test) == 275, f"pinned test row-count drift: {len(test)}"
           assert all(row.get("lang") == "ko" and row.get("split") == "train" for row in train)
+          assert all(row.get("lang") == "ko" and row.get("split") == "dev" for row in dev)
           assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in test)
-          print(f"Validated pinned UGTPHON Korean train/test splits: {len(train)} / {len(test)} rows")
+          print(f"Validated pinned UGTPHON Korean train/dev/test splits: {len(train)} / {len(dev)} / {len(test)} rows")
           PY
       - name: Run broad and partial-narrow IPA diagnostics
         run: |
@@ -90,6 +96,43 @@ jobs:
                   print(f"  {key}: {report.get(key)}")
           print("Broad and partial-narrow results are separate diagnostics; narrow is research-only.")
           PY
+
+      - name: Run sentence-level IPA diagnostics on dev and test
+        run: |
+          set -euo pipefail
+          for split in dev test; do
+            for boundary in same_word phrase; do
+              python scripts/benchmark_ugtphon_ko.py \
+                --granularity sentence \
+                --boundary-mode "$boundary" \
+                --split "$split" \
+                --ipa-level broad \
+                --corpus "$RUNNER_TEMP/ko-$split.json" \
+                --output "$RUNNER_TEMP/ugtphon-ko-sentence-$split-$boundary-report.json" \
+                > "$RUNNER_TEMP/ugtphon-ko-sentence-$split-$boundary-stdout.json"
+            done
+          done
+          python - "$RUNNER_TEMP" <<'PY'
+          import json, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          for split in ("dev", "test"):
+              for boundary in ("same_word", "phrase"):
+                  report = json.loads((root / f"ugtphon-ko-sentence-{split}-{boundary}-report.json").read_text(encoding="utf-8"))
+                  print(f"SENTENCE {split} boundary={boundary}: rows={report['rows']} eligible={report['eligible_sentences']} "
+                        f"scored={report['scored_sentences']} exact={report['exact_match_rate']} "
+                        f"CER={report['character_error_rate']} unresolved={report['unresolved_sentences']} "
+                        f"errors={report['engine_errors']} skipped={report['skipped_unsupported_sentences']}")
+          print("Sentence-level diagnostics use row.phonemes, not token-level gold; phrase mode is diagnostic only.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ugtphon-korean-sentence-ipa-diagnostic
+          path: |
+            ${{ runner.temp }}/ugtphon-ko-sentence-*-report.json
+            ${{ runner.temp }}/ugtphon-ko-sentence-*-stdout.json
+          if-no-files-found: warn
       - name: Run raw-surface train-retrieval normalization diagnostic
         run: |
           set -euo pipefail
