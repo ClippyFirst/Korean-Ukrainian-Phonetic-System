@@ -716,6 +716,13 @@ test('NIKL §11 lexical length and morphology exceptions preserve official readi
   }
 });
 
+test('NIKL §26 exact Sino-Korean 실수 fortition is shared with the Python rule inventory', () => {
+  const result = engine.convert('실수');
+  assert.equal(result.surfaceHangul, '실쑤');
+  assert.equal(result.ipa, renderExpectedIpa('실수', 'ɕil.s͈u'));
+  assert.ok(result.trace.some(item => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')));
+});
+
 test('NIKL §19 official examples preserve rule order before §18 nasalization', () => {
   const expected = {
     '침략': ['tɕʰim.njak̚', ['liquid-to-nasal-before-obstruent']],
