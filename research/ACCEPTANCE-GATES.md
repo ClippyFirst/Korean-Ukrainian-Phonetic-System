@@ -551,3 +551,8 @@ Browser regression run 41311996128 failed two new checks: target-syllable alignm
 | Exact-head UGTPHON raw-surface and paired benchmark | TODO | Re-run against pinned train/test splits; report raw baseline, train-only retrieval, paired deltas, abstentions and false rewrites separately. |
 
 The previous failed tests are not to be counted as passing, and the restored file is not DONE_VERIFIED until exact-head CI confirms the import and all tests. The repair changes test/benchmark availability only; it does not claim a G2P accuracy improvement.
+
+
+### Follow-up: paired-metric test contract synchronized (2026-11-01)
+
+The current-main commit `7bbbd7e7ce888a9c995bb70959e17858263c07a8` added a multi-reference regression to `tests/test_ugtphon_surface_benchmark.py`. PR #415 now carries that exact test module alongside the restored implementation. Latest PR branch code/test tip before this documentation-only update: `85facdd7d2a882da58d3b27eeab9a65c046be461`. GitHub reports the PR mergeable, but it remains one commit behind current main. Exact-head Python/browser/system CI and a fresh benchmark are still TODO; local execution remains blocked by GitHub DNS resolution.
