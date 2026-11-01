@@ -42,7 +42,7 @@ Sources:
 
 The occurrence-level ledger is stored in [`research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv`](../research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv). Its original 23 rows are explicitly tagged `baseline_run_41331679243_pre_§27_and_§26`; two additional rows record the newly created post-§26 output divergences from run 41336800424. The baseline tag refers to the original paired run before both the §27 substring-boundary repair and the §26 出産-family repair; the row for `올게이` separately records its §27 before/after result. The 25 rows therefore span two labelled snapshots and must not be treated as one simultaneous comparison. Each row records source identity, reference, both engine outputs, edit distances, a provisional phenomenon cluster, and adjudication notes.
 
-The ledger confirms 15 occurrences with lower edit distance for Kozak Kim and 8 for g2pK. This count is occurrence-level and must not be interpreted as 15 independent lexical wins: repeated forms include `없는`, `없다`, and `사건`, and the bootstrap unit remains the source sentence/utterance row.
+The original baseline ledger confirms 15 occurrences with lower edit distance for Kozak Kim and 8 for g2pK. This is a historical-snapshot count, not the current exact-head disagreement count, and must not be interpreted as 15 independent lexical wins: repeated forms include `없는`, `없다`, and `사건`, and the bootstrap unit remains the source sentence/utterance row.
 
 Four exact-match discordances are especially informative:
 - Kozak Kim only: `닮다`, `못잃어`, `넘게`, `인기`.
@@ -244,3 +244,18 @@ Exact-head browser comparison: [Actions run 41342127112](https://github.com/Clip
 - Multi-engine Charsiu/ByT5 diagnostic [41342127137](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342127137) was still in progress at this handoff; no result is claimed.
 
 **Readiness:** implementation and available software checks are verified, but the project remains a research prototype. Independent Korean IPA adjudication, independent Ukrainian target review, item-level NIKL rights review, and a held-out specialist-adjudicated corpus remain blockers. PR #416 stays draft and unmerged.
+
+
+## Exact-head reproducibility update — 2026-11-01
+
+The latest branch head `0c7688bb91687fec81965f426c24dd248df918bb` was re-run through [UGTPHON workflow 41342607471](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607471). Its paired browser artifact `13097847614` was downloaded and inspected. The result reproduces the immediately preceding artifact `13098181051` with no Kozak Kim output changes across the 2,699 shared scored occurrences.
+
+- 2,703 eligible occurrences; Kozak Kim scored 2,699 (4 unresolved, 99.8520% coverage); g2pK scored 2,703.
+- Shared subset: 2,699. Exact both: 1,438; Kozak Kim only: 4; g2pK only: 4; both wrong: 1,253.
+- Shared exact match: 1,442/2,699 (53.4272%) for each engine. Exact delta is zero; sentence-cluster 95% CI [-0.20697, +0.20056] pp crosses zero.
+- Kozak Kim CER 8.1184%; g2pK CER 8.2138%; paired CER delta -0.09536 pp; sentence-cluster 95% CI [-0.18443, -0.02046] pp (264 row clusters, 2,000 resamples, seed 20261101).
+- There are 26 current occurrences with different normalized IPA strings. The earlier 23-row count belongs to the original pre-§27/§26 baseline; the current 26 reflect the repaired `올게이` case leaving the set and four later source-backed output differences entering it (`비출산`, `출산`, `실시간`, `이중성`). The 27-row occurrence ledger deliberately retains historical snapshots; it is not a simultaneous current set. `paired-17` remains as historical evidence for the repaired false positive.
+
+Exact-head system verification [41342607492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607492), browser g2pK integration [41342607484](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607484), paired native diagnostic [41342607520](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607520), morphology consensus [41342607489](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607489), morphology adapter [41342607508](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607508), and test-case extraction [41342607558](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607558) all passed. The metadata-only NIKL inventory job was skipped; optional ByT5/Charsiu inference and joined neural pairing were skipped. No neural score or source-rights clearance is claimed.
+
+This verifies exact-head reproducibility and preserves the narrow claim: lower paired CER on this diagnostic profile, tied exact match, no independent normative IPA or Ukrainian target validation.
