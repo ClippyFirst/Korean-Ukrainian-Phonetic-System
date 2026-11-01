@@ -135,6 +135,8 @@ def _aggregate(records: list[dict[str, Any]]) -> dict[str, Any]:
         "unresolved_tokens": sum(item["status"] == "unresolved" for item in records),
         "engine_errors": sum(item["status"] == "engine_error" for item in records),
         "missing_gold": sum(item["status"] == "missing_gold" for item in records),
+        "normalization_hits": sum(item.get("normalization_hit") is True for item in records),
+        "normalization_misses": sum(item.get("normalization_hit") is False for item in records),
     }
 
 
@@ -157,6 +159,7 @@ def evaluate_surface(
     hits_noncanonical = 0
     hits_canonical = 0
     misses_noncanonical = 0
+    profile_metadata: dict[str, Any] = {}
     for row in test_rows:
         for token in row["tokens"]:
             if not isinstance(token, dict):
@@ -194,6 +197,12 @@ def evaluate_surface(
                     }
                 else:
                     ipa = result.get("ipa", {})
+                    if isinstance(ipa, dict) and not profile_metadata:
+                        profile_metadata.update({
+                            "ipa_profile": ipa.get("ipa_profile"),
+                            "ipa_profile_status": ipa.get("ipa_profile_status"),
+                            "ipa_profile_version": ipa.get("ipa_profile_version"),
+                        })
                     predicted_raw = ipa.get("ipa", "") if isinstance(ipa, dict) else ""
                     if not isinstance(predicted_raw, str) or not predicted_raw:
                         raise RuntimeError("engine returned no IPA for a resolved token")
@@ -246,6 +255,7 @@ def evaluate_surface(
             "misses_noncanonical": misses_noncanonical,
         },
         "ipa_level": ipa_level,
+        **(profile_metadata or {"ipa_profile": None, "ipa_profile_status": "unavailable", "ipa_profile_version": None}),
         **aggregate,
         "by_category": by_category,
         "notes": [
