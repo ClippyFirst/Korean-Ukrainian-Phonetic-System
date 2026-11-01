@@ -4615,3 +4615,53 @@ The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026
 5. Continue only with source-backed rules and independent negative controls. Do not claim an overall Kozak Kim win until a paired, independently adjudicated holdout supports it.
 
 **Current readiness:** research prototype. The §27 rule-boundary repair, full browser/Python/build checks, and post-change paired diagnostic are verified. Independent IPA adjudication, item-level source-rights review, broader discrepancy-cluster adjudication, and independent Ukrainian target review remain outstanding. It is not release-ready or research-certified.
+
+
+# Continuation — verified Kozak Kim §26 exact-form expansion (2026-11-01)
+
+## Scope and branch
+
+- User decision: improve **Kozak Kim only**; leave the original vendored g2pK code and behavior unchanged as an independent comparison baseline.
+- Default branch at start of this continuation: `main` at `7bbbd7e7ce888a9c995bb70959e17858263c07a8`.
+- Working branch: `research/kozak-kim-discrepancy-driven-improvement-2026-11-01-current` (PR #416, draft). It is stacked on the verified PR #415 research line; no PR was merged and no unrelated branch was changed.
+
+## Task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Preserve g2pK as untouched baseline | DONE_VERIFIED | PR #416 changed paths are native Kozak Kim, tests, research ledgers and documentation; no `src/vendor/g2pk/` runtime edit |
+| §27 complete `-ㄹ게` ending boundary | DONE_VERIFIED | Before/after paired artifact 13093672281 → 13094763897; only `올게이` changed from false fortis to plain onset, with positive controls for `할게`, `할게요`, `다를게`, `안타까울게` |
+| §26 exact 출산-family licenses | DONE_VERIFIED (bounded exact forms) | NIKL Basic Dictionary directly lists `출산[출싼]`, `출산율[출싼뉼]`, `출산하다[출싼하다]`, `저출산[저ː출싼]`; exact forms plus derived corpus `비출산` licensed in browser and Python; negative lookalikes `비출고`/`저출고` withheld |
+| §26 source evidence and rule coverage | DONE_VERIFIED for bounded entries; PARTIAL for productive R012 | `research/SOURCE-REGISTER.csv` row `SRC-NIKL-DIC-CHULSAN`; `research/RULE-COVERAGE.csv` R012; official NIKL §26 Q&A explains the Sino-Korean constituent boundary and exceptions |
+| Paired browser comparison after §26 | DONE_VERIFIED diagnostic | Run [41336800424](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800424), artifact `13095038704`; same 2,699 shared occurrences; g2pK output unchanged |
+| Long-vowel, IPA-convention and remaining fortition clusters | TODO / BLOCKED by evidence | Do not strip length or collapse IPA differences; remaining cases require exact source/phonological-environment adjudication and independent IPA review |
+| Overall engine superiority | BLOCKED / EVIDENCE-LIMITED | Exact match remains tied; UGTPHON is diagnostic, not independent normative gold; independent held-out adjudication is absent |
+
+## §26 measured effect
+
+The pre-§26 paired artifact `13094763897` and post-§26 artifact `13095038704` were compared on the same 2,699 shared occurrences:
+
+- `비출산`: Kozak Kim surface changed `비출산` → `비출싼`, IPA edit distance 2 → 1; g2pK remained `비출산`, distance 2.
+- `출산`: Kozak Kim surface changed `출산` → `출싼`; g2pK remained `출산`. IPA edit distance tied at 2 because the UGTPHON target marks the sibilant as `[sʰ]`, whereas NIKL's lexical surface evidence is fortis `[ㅆ]`. Do not present this as an IPA-scored win.
+- No other Kozak Kim output changes were found in the paired set; g2pK remained unchanged.
+- Paired exact: 1,442/2,699 (53.4272%) for both. Kozak Kim CER: 8.1271% → 8.1228%; g2pK CER: 8.2138%. Paired CER delta: −0.08669 → −0.09102 percentage points; post-change sentence-cluster 95% CI [−0.17881, −0.01647] pp (264 row clusters, 2,000 resamples, seed 20261101).
+- This is a narrow measured diagnostic gain, not proof of universal superiority or an independently adjudicated IPA accuracy result.
+
+The exact `저출산` rule control was added from the same NIKL dictionary entry after source inspection; it is not a test-set-derived exception and was not counted as a benchmark win. The rule license covers fortition only, not independent validation of the long-vowel target.
+
+## Exact-head verification
+
+- Browser/system verification: [run 41336800458](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800458) — Python regression/data integrity PASS; browser regression/build/generated-page checks PASS. The official NIKL metadata-only inventory job was SKIPPED and is not counted as a pass.
+- Paired external benchmark: [run 41336800424](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800424) — pinned UGTPHON integrity, external IPA diagnostic, actual browser Kozak Kim diagnostic, paired browser comparison against original g2pK, raw-surface diagnostic and native-vs-g2pk comparison all completed successfully; artifacts uploaded.
+- Paired artifact SHA-256: `11cc4ce290ceb8f567d63ac51eaef042524d5d08efb0e3c3366bd70c6b02b99c` (artifact `13095038704`).
+- No local shell/test execution is claimed; verification was performed by the recorded GitHub Actions runs.
+
+## Remaining blockers
+
+1. Adjudicate the remaining fortition candidates (`실시간`, `했을 시`, `일 수`, `유사성`, `이중성`) with exact source entries and morphological boundaries; no blanket rule is authorized.
+2. Review the long-vowel cases (`없는`, `없다`, `없어`, `알다`, `많이`, `사건`, `한자`) against exact dictionary senses and the chosen IPA profile.
+3. Obtain independent Korean phonetics/IPA review for [ɭ]~[l], /h/ allophones, [ɲ], [ʰ]~[h], /y/~/ɥi/, unreleased-coda marks and liquid realizations.
+4. Complete item-level NIKL/KOGL rights review; the metadata-only source inventory job was skipped.
+5. Obtain an independently adjudicated Korean IPA holdout and separate Ukrainian target review before any broad superiority or release claim.
+
+**Readiness:** the bounded §27/§26 corrections are software- and diagnostic-verified on this branch. The repository remains a research prototype, not research-certified or release-ready. PR #416 remains draft; no merge or release was performed.
