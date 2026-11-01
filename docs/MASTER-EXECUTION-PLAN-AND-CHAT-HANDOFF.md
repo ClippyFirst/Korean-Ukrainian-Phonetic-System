@@ -4361,3 +4361,69 @@ These runs predate the restored raw-surface benchmark module and do not verify t
 - The last verified browser engine diagnostic and paired comparison are runs 41313216356 / 41313216411; the last Python suite on the pre-repair branch failed at collection for the missing module. No workflow run or combined status is visible for the post-repair tip.
 - The repository's browser/Node path passed 1,356/1,356 and Vite build in the prior run; Python/system gates remain unverified after repair. Container GitHub access failed DNS resolution, so no local test/build command was possible.
 - Keep the branch draft. No merge, release or deployment was performed. Research certification remains blocked by independent Korean IPA adjudication, Ukrainian target review and source-rights checks.
+
+
+## Follow-up — exact-head CI repair, raw-surface measurement and morphology evidence (2026-11-01)
+
+**PR:** [#415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/415) — remains open and draft.  
+**Branch:** `fix/kozak-kim-ipa-first-browser-benchmark-2026-11-01`  
+**Current code/test head before this documentation update:** `6b8ed2ca4cbbdfecdfde6075f2b99c77a57c7fff`  
+**Base:** `main` at `7bbbd7e7ce888a9c995bb70959e17858263c07a8`.
+
+### Branch reconciliation
+
+- Main's one-commit advance added the multi-reference paired-metric test to `tests/test_ugtphon_surface_benchmark.py`. PR #415 carries the exact same test blob; the branch was synchronized with main using merge commit `20fec483165ea170c9944df0704f04414c5590ec`. The commit graph comparison at that point was **79 ahead / 0 behind**; no mainline changes were discarded.
+- The branch now includes the restored `scripts/benchmark_ugtphon_ko_surface.py`, its current test contract, three corrected Python assertions, and a CI workflow that fetches both pinned UGTPHON train and test splits and runs the raw-surface diagnostic.
+- The three Python failures on the earlier head were test-contract issues, not a reason to loosen the production engine: (1) the test expected a narrow [ɕ] in the broad profile even though NIKL attests the Hangul surface, not that IPA; (2) a source-register text assertion was case-sensitive; (3) the paired evaluator correctly calls G2P on both raw and normalized inputs. Tests now reflect the actual broad-profile and paired-evaluation contracts. No new production phonology rule was added in this repair.
+
+### Exact-head CI evidence reviewed
+
+- System verification [41325014981](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325014981): **PASS** — browser regression/build and Python regression/data integrity. The NIKL metadata-only inventory was **SKIPPED**, not passed.
+- Test matrix [41325015110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325015110): **PASS** — Python 3.11, 3.12 and 3.13; web tests/build; clean wheel install; teacher-corpus audit. Browser suite: **1,356/1,356 PASS**.
+- Browser G2P integration [41325014980](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325014980): **PASS**.
+- External UGTPHON and raw-surface diagnostic [41325015010](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325015010): **PASS**. The workflow fetched 1,976 Korean train rows and 275 test rows; both pinned Git blob SHA-1 values matched (`771ef17ceed8127980f0be5103674cfa53627e55` and `59380491d5a797308c475f7d0007dcf6c4be00af`). The upstream Korean subset's Apache-2.0 license check passed. Artifacts: browser report `13090704104`, raw-surface report `13090704109`, IPA diagnostic `13091320007`, paired native/g2pK `13090813676`.
+- Kiwi/MeCab research morphology smoke [41325014985](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325014985): **PASS**.
+- Analyzer-consensus UGTPHON diagnostic [41325014982](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325014982): **PASS as a diagnostic**; it does not establish analyzer output as pronunciation gold.
+- Multi-engine diagnostic [41325014974](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325014974) was still in progress at the last inspection. CharsiuG2P and multilingual ByT5 jobs were **SKIPPED** under default-off gates.
+
+The preceding exact-head PASS runs are on the code-equivalent head before the final removal of a duplicate assertion in `tests/test_ugtphon_surface_benchmark.py`; that last change is test-only. Fresh checks for the latest branch tip were triggered and must be checked before merge. Do not claim a newer head passed until its own runs finish.
+
+### Measured benchmark results
+
+**Direct browser Kozak Kim, canonical UGTPHON test diagnostic** [41325015010](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325015010):
+- 2,703 eligible tokens; 2,699 scored (99.852% coverage); 1,428 exact (52.9085%); coverage-adjusted exact 52.8302%; CER 8.2441%; 4 unresolved; 0 engine errors.
+- Research-only broad-candidate sensitivity profile: 2,496/2,699 exact (92.4787%); CER 1.3427%. This is an annotation-convention sensitivity view, not the engine's accuracy, a normative IPA profile, or a release gate.
+
+**Paired native/g2pK**, 2,698 common tokens:
+- Native: 53.0393% exact / 9.1220% CER.
+- g2pK-derived: 53.1134% exact / 9.2304% CER.
+- g2pK exact lead is +0.0741 percentage points; its CER is worse by 0.1084 percentage points. Retain native Kozak Kim as default; g2pK is a differential comparator, not a replacement.
+
+**New raw-surface UGTPHON experiment** [artifact `13090704109`]:
+- 3,140 token occurrences attempted. Normalized path scored 2,639 (84.0446% coverage), 1,363 exact (51.6484% of scored), CER 9.9753%, 4 unresolved, 0 engine errors, 496 unsupported.
+- Raw baseline scored 2,624 (83.5669% coverage), 1,348 exact (51.3720%), CER 10.0783%, 4 unresolved, 0 engine errors, 512 unsupported.
+- Fair paired subset: 2,624 tokens scored by both. Exact match improves from 51.3720% to 51.6006 (**+0.2287 pp**); CER improves from 10.0783% to 9.9730 (**−0.1054 pp**). There are 6 exact improvements, 0 exact regressions, 15 newly scored/rescued tokens and 0 lost tokens.
+- The train-only retriever produced 22 hits across 722 noncanonical tokens (3.0471% hit rate): 15 exact-surface and 7 B1 lengthening-signature hits; exact local-context hits were 0. All 22 hits were noncanonical; 0 canonical tokens were rewritten; measured potential canonical false rewrites were 0.
+- Category diagnostics show the strongest useful signal in A1 and B1: A1 scored 11/67 with 7 exact after retrieval; B1 scored 46/66 with 8 exact versus 0 exact in its raw baseline. B2 remains difficult because its iteration forms can be ambiguous; the retriever correctly does not invent a canonical choice.
+- Interpretation: this is a **small, high-precision research-only gain**, not a general UGT solution. Low retrieval recall and zero exact-context hits mean the present deterministic retriever should not be promoted to the standard runtime or described as a large accuracy improvement.
+
+**Kiwi + MeCab-Ko analyzer consensus** [artifact `13090938199`]:
+- Only 4 unique words changed. On the 2,698-occurrence paired comparison, exact match stayed identical at 53.0393%; CER changed from 9.1220% to 9.1307% (worse by 0.000087). One occurrence had lower edit distance, two had higher distance, and 2,695 were unchanged.
+- Do **not** promote analyzer-derived licenses into the strict runtime from this result. The analyzers are useful candidate-boundary evidence, not pronunciation gold.
+
+### Research implications and next work
+
+- The 2026 EMNLP UGTPHON paper's Korean ablation reports Word→Word PERnc 47.5, Sent→Word 28.1, Sent→Word+retrieval 27.7, Sent→Word+staged decoding 33.1, and all three 32.0. Thus sentence context is the large lever for Korean; retrieval adds little after context, and staged decoding harms this Korean setting. See [ACL Anthology paper](https://aclanthology.org/2026.findings-emnlp.1020/) and [PDF, Table 4 / §4.3](https://aclanthology.org/2026.findings-emnlp.1020.pdf).
+- Keep canonical G2P, raw-surface normalization and IPA convention scoring as separate experiments. The next credible UGT improvement is a sentence-context-conditioned, train-only candidate stage with explicit canonical controls, calibrated abstention and paired evaluation; it must not be a generic rewrite rule. The current dataset result does not justify building a large model or enabling a neural dependency by default.
+- Review the 203 remaining broad-candidate mismatches by phonological class and annotation convention before altering IPA rules. Major clusters include Korean /s/ aspiration/palatalization, ㅟ [y] versus [ɥi], unreleased-coda marks, /j/ treatment and lateral realizations. These are not automatically engine errors.
+- No benchmark tuning on test labels, no widening of broad IPA normalization, no unlicensed analyzer rules, and no Ukrainian target promotion.
+
+### Remaining blockers / release status
+
+- Independent Korean IPA adjudication remains blocked; broad-candidate normalization is not approved.
+- Independent Ukrainian target review remains open; IPA→Ukrainian outputs remain provisional/unavailable where the gate requires it.
+- NIKL item-level reuse markings and IPA-Dict/UGTPHON source-license compatibility remain unresolved; the metadata-only NIKL workflow was skipped.
+- CharsiuG2P/ByT5 inference remains default-off/skipped; no new neural result is claimed.
+- PR #415 remains draft. No merge, release or deployment was performed.
+
+**Status:** the raw-surface benchmark restoration and its measured diagnostic are verified; the standard pronunciation engine remains a strong research prototype, not research-certified or release-ready.
