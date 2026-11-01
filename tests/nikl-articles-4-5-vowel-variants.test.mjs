@@ -77,9 +77,6 @@ test('§5 contracted 져/쪄/쳐 use the explicit short-vowel readings in surfac
     const result = engine.convert(word);
     assert.equal(result.surfaceHangul, value.surface, word);
     assert.equal(result.ipa, value.ipa, word);
-    assert.ok(result.trace.some(item =>
-      item.rules.includes('vowel-yeo-monophthongization-§5-exception-1')
-    ), word);
   }
 });
 
@@ -90,6 +87,10 @@ test('§5 exception 1 removes the prohibited [j] glide after palatal affricates 
     빠져: 'p͈a.dʑʌ'
   };
   for (const [word, ipa] of Object.entries(expected)) {
-    assert.equal(engine.convert(word).ipa, ipa, word);
+    const result = engine.convert(word);
+    assert.equal(result.ipa, ipa, word);
+    assert.ok(result.trace.some(item =>
+      item.rules.includes('vowel-yeo-monophthongization-§5-exception-1')
+    ), word);
   }
 });
