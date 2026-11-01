@@ -244,6 +244,10 @@ def evaluate_surface(
         category: _aggregate(items)
         for category, items in sorted(category_records.items())
     }
+    worst_mismatches = sorted(
+        (item for item in records if item["status"] == "scored" and not item["exact"]),
+        key=lambda item: (-item["distance"], item["surface"]),
+    )[:30]
     return {
         "benchmark": "UGTPHON Korean test split — raw-surface retrieval + G2P",
         "purpose": "research-only exact-match normalization baseline; separate from canonical lexical G2P",
@@ -263,6 +267,13 @@ def evaluate_surface(
         **(profile_metadata or {"ipa_profile": None, "ipa_profile_status": "unavailable", "ipa_profile_version": None}),
         **aggregate,
         "by_category": by_category,
+        "worst_mismatches": [
+            {
+                key: item.get(key)
+                for key in ("surface", "g2p_input", "gold", "predicted", "category", "distance", "normalization_hit")
+            }
+            for item in worst_mismatches
+        ],
         "notes": [
             "The test token's canonical field is not read; only the training datastore can rewrite raw surfaces.",
             "Exact-match lookup has no contextual disambiguation and deliberately abstains on ambiguous mappings.",
