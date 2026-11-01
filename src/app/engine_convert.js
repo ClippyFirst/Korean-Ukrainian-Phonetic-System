@@ -94,7 +94,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       const pronunciationStatuses=results.map((r,index)=>{
         if(r.pronunciation_status)return r.pronunciation_status;
         if(!/[가-힣]/u.test(parts[index]))return 'not_applicable';
-        if(r.status==='unresolved'||!r.ipa)return 'unresolved';
+        if(r.status==='unresolved'||!r.ipa||(r.trace||[]).some(item=>item.status==='unresolved'||item.status==='unsupported-jamo'))return 'unresolved';
         if(['heuristic-low-confidence','practical-transliteration','super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(r.status))return 'heuristic';
         return 'resolved';
       });
@@ -113,6 +113,10 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         return superSoftOn&&!/[가-힣]/u.test(parts[index])&&!value?parts[index]:value;
       });
       const candidateText=hasCandidate||superSoftCandidateOnly?candidateParts.join(''):null;
+      const renderedParts=results.map((r,index)=>{
+        const value=r.ukrainian??'';
+        return superSoftOn&&!/[가-힣]/u.test(parts[index])&&!value?parts[index]:value;
+      });
       if(superSoftOn&&hasProvisionalTarget){
         for(const result of results){
           if(result.target_status!=='provisional'&&result.status!=='lexical-review')continue;
@@ -134,7 +138,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         // A phrase with any provisional target has no complete accepted
         // orthography. Return the complete candidate separately, not partial
         // accepted fragments that could be mistaken for the full result.
-        ukrainian:hasCandidate||superSoftCandidateOnly?'':results.map(r=>r.ukrainian).join(''),
+        ukrainian:hasCandidate||superSoftCandidateOnly?'':renderedParts.join(''),
         ipa:results.map((r,index)=>(lexicon.has(parts[index])||/^[가-힣]+$/u.test(parts[index]))?r.ipa:ipaSafeLiteral(parts[index])).join(''),
         analysis:results.map(r=>r.analysis).filter(Boolean).join(' · '),
         variants:results.flatMap((result,variantIndex)=>(result.variants||[]).map(variant=>({
