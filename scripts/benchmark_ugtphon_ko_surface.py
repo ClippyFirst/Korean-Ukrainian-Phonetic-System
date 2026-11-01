@@ -43,6 +43,9 @@ def _validate_rows(rows: list[dict[str, Any]], expected_split: str) -> None:
         seen.add(row["id"])
         if not isinstance(row["tokens"], list):
             raise ValueError(f"row {index} tokens must be a list")
+        for token_index, token in enumerate(row["tokens"]):
+            if not isinstance(token, dict) or not isinstance(token.get("text"), str) or not token["text"]:
+                raise ValueError(f"row {index} token {token_index} must contain non-empty string text")
 
 
 def load_corpus(path: Path, *, expected_split: str) -> list[dict[str, Any]]:
