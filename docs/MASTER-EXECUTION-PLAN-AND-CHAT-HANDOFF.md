@@ -4862,3 +4862,10 @@ The completed multi-engine diagnostic artifact `13099523369` was downloaded and 
 Paired row-cluster bootstrap (1,000 replicates): exact-match delta 95% interval `[-1.0020, -0.1002]` pp; CER delta interval `[+0.0250, +0.3859]` pp. Pairwise audit: 5 native-only exact cases, 0 g2pK-only exact cases, 353 both exact, 640 both non-exact, and 1 native abstention while g2pK returned a non-exact output. This is a **small diagnostic advantage**, not proof of universal superiority.
 
 **Mandatory limitations:** SIGMORPHON is a lexical word-level set, not a sentence-context or normative NIKL set; IPA conventions differ from the reference; g2pK outputs pass through the project's shared segment renderer, which may bias comparison; the benchmark does not score Ukrainian output. The bootstrap intervals are diagnostic uncertainty intervals, not a substitute for independent gold adjudication or a preregistered statistical claim. ByT5 and CharsiuG2P inference jobs were SKIPPED. g2pK source/version remained unchanged.
+
+
+## C01–C07 source-context restoration — 2026-11-01
+
+The earlier blocker “source utterance context unavailable” is superseded. All **39 unique source-row IDs** across the seven six-item pilot packets were matched to the official `naver-ai/UGTPHON/ko/test.json` (275-row Korean test split); every target token is present in its included raw sentence. UGTPHON's `ko/LICENSE` explicitly states Apache-2.0 for the Korean subset. Packets now include raw sentence context only, plus source-row provenance and attribution to UGTPHON, KoMultiText, and MultiLexNorm++; they exclude canonical text, phoneme annotations, IPA-Dict data, system outputs, and reference IPA.
+
+**Updated status:** packet preparation is `DONE_VERIFIED`; the packets are `READY_FOR_INDEPENDENT_REVIEW_PILOT`. Independent reviewer assignment and first-pass submissions remain `TODO`. These six-item-per-cluster samples are not full cluster censuses. Preserve the Apache-2.0 notice and attribution; no raw gated MultiLexNorm++ files are redistributed. Upstream provenance/terms remain a documented limitation for broader reuse.
