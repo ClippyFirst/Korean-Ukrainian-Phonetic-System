@@ -19,7 +19,7 @@ test('broad candidate IPA normalization collapses documented allophones but pres
   assert.equal(normalizeIpaBroadCandidate('ˈsʰa̠ːk͈ʌn'), 'saːk͈ʌn');
   assert.equal(normalizeIpaBroadCandidate('ɭɲɦçxɸβʝ'), 'lnhhhhhh');
   assert.equal(normalizeIpaBroadCandidate('sʰɕʰʃʰ'), 'sɕʃ');
-  assert.equal(normalizeIpaBroadCandidate('pʰtʰkʰk͈aːt̚'), 'pʰtʰk͈aːt̚');
+  assert.equal(normalizeIpaBroadCandidate('pʰtʰkʰk͈aːt̚'), 'pʰtʰkʰk͈aːt̚');
 });
 
 test('benchmark scores resolved IPA even when Ukrainian target mapping is unavailable', () => {
