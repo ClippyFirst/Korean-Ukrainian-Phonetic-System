@@ -590,3 +590,20 @@ The benchmark results are valid for the engine code present in the run, but do n
 **Measured canonical browser baseline:** 2,703 eligible / 2,699 scored, 99.852% coverage, 52.9085% exact, 8.2441% CER, 4 unresolved, 0 engine errors. The research-only broad-candidate profile is 92.4787% exact / 1.3427% CER and must not be represented as normative accuracy.
 
 **Research interpretation:** the 2026 EMNLP UGTPHON Korean ablation shows a large sentence-context effect, only a small additional exact-retrieval effect, and a regression from staged decoding. Any further UGT work should use sentence-context-conditioned candidate normalization with train-only evidence, canonical controls, paired scoring and abstention; it must remain separate from canonical G2P.
+
+
+## 2026-11-01 — Kozak Kim browser parity / paired g2pK gates
+
+| Gate | Status | Evidence / acceptance condition |
+|---|---|---|
+| Browser broad-IPA parity for NIKL §5 exception 1 | DONE_VERIFIED | engine_convert.js mirrors the existing Python IPA behavior for ㅕ after ㅈ/ㅉ/ㅊ; explicit browser regression tests; exact-head system and test matrix pass. |
+| Direct paired browser Kozak Kim vs untouched g2pK | DONE_VERIFIED as diagnostic | Run 41331679243, artifact 13093672281; 2,699 shared occurrences, shared references, 264 sentence clusters and deterministic bootstrap. g2pK source unchanged. |
+| Source adjudication of paired discordant outcomes | DONE_VERIFIED for the inspected discordant cases | NIKL source records distinguish long-vowel omission (없는), optional fortition (인기), attested variants (못잃어), and clear §24 readings (닮다, 넘게). The four g2pK-only exact corpus hits are not valid source-backed wins. |
+| Demonstrate a statistically robust overall Kozak Kim exact-match advantage | PARTIAL | Paired exact rates tie at 53.4272%; cluster-bootstrap exact-delta CI crosses zero. CER point estimate favours Kozak Kim by 0.078 pp, but its interval touches zero. Requires a larger independently adjudicated holdout. |
+| Generalize R010/R012/R013/R028 beyond explicit source-backed forms | BLOCKED | No reliable browser morphology-boundary analyzer/lexical-class model currently establishes the required stem, adnominal and compound boundaries. Acceptance requires source-backed boundary evidence, positive/negative controls, cross-runtime parity, and held-out gains without regressions. |
+| Resolve remaining four strict browser abstentions | PARTIAL | Current examples: 칡칡이, 쫒아내면, 많앗구나유유유, 무서웟어. Each needs a source-backed lexical or morphological analysis; no guessing. |
+| Independent Korean IPA adjudication | BLOCKED | Requires qualified independent phonetic review of gold alternatives, allophone conventions and broad/narrow IPA distinctions. |
+| Ukrainian target-layer review | BLOCKED | Requires independent Ukrainian phonetics/orthography adjudication. |
+| NIKL item-level rights and dataset-license compatibility | BLOCKED | Verify item-level NIKL reuse marks and source terms before redistribution or release. |
+
+**Exact-head verification:** system run 41331679290 PASS; test matrix 41331679310 PASS (JavaScript 1,364/1,364; Python 3.11/3.12/3.13; wheel/clean install; teacher-corpus audit); browser G2P integration 41331679270 PASS; external UGTPHON diagnostic 41331679243 PASS.

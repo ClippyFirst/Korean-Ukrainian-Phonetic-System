@@ -4470,3 +4470,72 @@ One morphology-consensus candidate, `물가로`, is particularly instructive. Th
 
 Other consensus candidates such as `정권`, `해줄 것` and colloquial lateral variants were not added: analyzer boundaries and a benchmark target are not, by themselves, authoritative pronunciation evidence.
 
+
+
+## 2026-11-01 — Kozak Kim browser IPA parity and untouched original g2pK comparison
+
+### Scope and implementation
+
+This continuation works on **Kozak Kim only**. The vendored g2pK implementation remains untouched and is used only as an independent comparison baseline.
+
+- src/app/engine_convert.js now mirrors the existing Python broad-IPA adapter for NIKL Standard Pronunciation Rule 5, exception 1: the glide in ㅕ is not separately rendered after the palatal affricate onsets ㅈ/ㅉ/ㅊ in the covered surface forms. The browser adapter now renders ㅕ as [ʌ] in that context and records trace rule vowel-yeo-monophthongization-§5-exception-1.
+- This was a cross-runtime parity correction, not a new lexical exception: the Python nucleus_ipa implementation already performed the same contextual realization; the browser IPA renderer had omitted it.
+- Regression tests cover 져, 쪄, 쳐, 던져주다, 쳐먹고, and 빠져. Source-adjudicated comparison tests also cover 없는, 닮다, 넘게, 인기, 못잃어, 넓죽하다, and 읽고.
+- scripts/benchmark_kozak_kim_vs_g2pk_browser.mjs compares the same browser token occurrences against the untouched G2pBrowser class in src/vendor/g2pk/g2p-browser.ts. Raw g2pK surface Hangul is converted to IPA only through the shared segment-to-IPA adapter; Kozak Kim phonological rules are not reapplied to the g2pK output.
+- The paired evaluator reports common-best-reference CER and a deterministic 2,000-resample sentence-cluster bootstrap (clustered by UGTPHON row ID). Malformed g2pK surfaces are excluded before IPA adaptation. The benchmark and artifact upload are wired into .github/workflows/ugtphon-benchmark.yml.
+
+### Measured effect of the Rule 5 browser correction
+
+The exact-head browser report is artifact 13093477739, from external diagnostic run [41331679243](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679243).
+
+| Metric | Before browser parity fix | After browser parity fix |
+|---|---:|---:|
+| Strict exact | 1,428 / 2,699 (52.9085%) | 1,442 / 2,699 (53.4272%) |
+| Strict CER | 8.2441% | 8.1358% |
+| Broad-candidate exact (research-only) | 2,496 / 2,699 (92.4787%) | 2,521 / 2,699 (93.4050%) |
+| Broad-candidate CER (research-only) | 1.3427% | 1.2301% |
+
+The change recovered 14 strict exact matches and 25 broad-candidate exact matches, with four unresolved tokens and zero engine errors. The broad-candidate profile remains a sensitivity analysis, not normative accuracy. The benchmark report's remaining unresolved examples are 칡칡이, 쫒아내면, 많앗구나유유유, and 무서웟어; these require separate source-backed lexical/morphological work.
+
+### Direct paired comparison with original g2pK
+
+The exact-head paired report is artifact 13093672281, also from run [41331679243](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679243).
+
+- Shared denominator: 2,699 token occurrences; 99.852% of the 2,703 eligible occurrences.
+- Exact match: 1,442/2,699 (53.4272%) for each engine on the shared subset.
+- Discordant exact outcomes: 4 Kozak-Kim-only and 4 g2pK-only; 1,438 both exact and 1,253 both non-exact.
+- CER: Kozak Kim 8.1358%; original g2pK 8.2138%; point difference −0.0780 percentage points in Kozak Kim's favour.
+- Sentence-cluster bootstrap, 264 row-ID clusters / 2,000 resamples: exact-delta 95% interval [−0.207, +0.201] percentage points; CER-delta interval [−0.166, 0.000] percentage points.
+
+**Interpretation:** the exact-match point estimate is tied. CER favours Kozak Kim slightly, but its cluster interval touches zero. This run does not establish a statistically robust overall advantage over g2pK. It is a fair paired diagnostic, not a reason to claim superiority.
+
+### Source adjudication of the discordant examples
+
+The raw UGTPHON gold labels do not settle all eight discordant outcomes:
+
+- All four g2pK-only exact occurrences are 없는. The registered NIKL Q&A reproduces the official §18 example 없는[엄ː는]; the gold omits the vowel-length mark, while Kozak Kim preserves it. These are annotation disagreements, not four genuine g2pK wins.
+- The Kozak-Kim-only cases include 닮다 and 넘게, for which the NIKL §24 stem-final ㄴ/ㅁ fortition evidence supports the Kozak Kim reading; 인기, where NIKL Q&A 331569 explicitly treats fortition as optional; and 못잃어, where the NIKL 2022 usage survey records both 몬니러 and 모시러. The latter two must not be counted as g2pK errors.
+- Existing source-backed regression tests for 넓죽하다[넙쭈카다] and 읽고[일꼬] remain explicit examples where Kozak Kim differs correctly from the untouched g2pK port.
+
+The source records are already in research/SOURCE-REGISTER.csv (including NIKL Q&A 311009 and 331569, the NIKL teacher-training material, and the 2022 usage survey). No new source claims or lexical exceptions were added from the UGTPHON test examples.
+
+### Updated residual-cluster decisions
+
+- **ㅕ / j:** the main subset after ㅈ/ㅉ/ㅊ is now handled by the Rule 5 IPA parity correction. Remaining /j/ insertions in other contexts are not automatically the same rule and remain annotation-/phonetic-review items.
+- **ㅟ: [y] vs [ɥi]:** do not rewrite the engine. NIKL permits monophthong and diphthong readings of ㅟ; the engine already exposes an alternate [wi] reading. [ɥi] in the corpus may also reflect a transcription convention.
+- **[ʰ] vs [h] and coda [ ̚ ]:** keep separate as aspiration and release-diacritic convention questions; no broad normalization was promoted.
+- **[l] vs [ɾ]:** likely reflects differing coda/onset annotation conventions in several occurrences; no blanket liquid rule was added.
+- **Fortition and n-insertion clusters:** R010, R012, R013 and R028 require a verified stem/compound/adnominal boundary. The current code intentionally uses explicit source-backed licenses. Do not generalize from a final ㄹ/ㅁ/ㄴ alone, and do not add exact forms first noticed in the held-out test split. A productive morphology boundary model plus source-backed dev/holdout evidence is the next genuine engineering dependency.
+
+### Verification at implementation head
+
+Implementation and benchmark code head: c7e2ce435960856a9382e79e71a8d49dc51c4e09.
+
+- System verification [41331679290](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679290): PASS.
+- Full test matrix [41331679310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679310): PASS; JavaScript 1,364/1,364; Python 3.11, 3.12 and 3.13; wheel build and clean install; teacher-corpus audit.
+- Browser G2P integration [41331679270](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679270): PASS.
+- External UGTPHON browser and paired-original-g2pK diagnostic [41331679243](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679243): PASS.
+- Native Python/g2pK comparison, morphology adapter smoke, morphology-consensus diagnostic, exhaustive test-register extraction, and master-table artifacts: PASS in runs 41331679292, 41331679289, 41331679303, 41331679329, and 41331679252.
+- The multi-engine diagnostic run 41331679222 was still in progress at the last check; it is not used as evidence for this Kozak-Kim-only result.
+
+PR #415 remains a draft and has not been merged. The g2pK vendor source and unrelated PRs/branches remain untouched. The repository remains a **research prototype**, not release-ready: independent Korean IPA adjudication, Ukrainian target review, and item-level source/licensing clearance are still open.

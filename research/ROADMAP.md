@@ -347,3 +347,14 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **BLOCKED:** independent Korean IPA adjudication, independent Ukrainian target review, NIKL item-level rights and IPA-Dict/UGTPHON license compatibility.
 - **IN_PROGRESS at last check:** latest post-test-only head workflows were still running; verify the current tip before merge. Multi-engine Charsiu/ByT5 jobs remain skipped by default.
 - **Release status:** research prototype; not research-certified or release-ready. Canonical handoff and exact artifact details remain in `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`.
+
+
+## 2026-11-01 — Kozak Kim browser parity and direct original-g2pK comparison
+
+- **DONE_VERIFIED implementation:** browser IPA now mirrors the existing Python broad-profile handling of NIKL Standard Pronunciation Rule 5, exception 1. The correction removes the prohibited [j] glide in the covered ㅈ/ㅉ/ㅊ + ㅕ forms and adds an inspectable trace entry. The g2pK vendor source is unchanged.
+- **DONE_VERIFIED measured browser regression:** strict exact 1,428→1,442 (+14), strict CER 8.2441%→8.1358%; broad-candidate exact 2,496→2,521 (+25), broad-candidate CER 1.3427%→1.2301%. Broad-candidate results remain sensitivity analysis only.
+- **DONE_VERIFIED paired diagnostic:** on 2,699 shared UGTPHON occurrences, Kozak Kim and original g2pK both score 53.4272% exact. Kozak Kim CER is 8.1358%, g2pK CER 8.2138%. Four exact discordances favour each engine. A 264-row-cluster, 2,000-resample bootstrap gives exact-delta 95% CI [−0.207,+0.201] pp and CER-delta CI [−0.166,0.000] pp. Do not claim statistically robust overall superiority.
+- **Source adjudication:** all four apparent g2pK-only exacts are 없는; the NIKL §18 quoted example preserves vowel length [엄ː는], which UGTPHON gold omits. 못잃어 has two survey-attested readings; 인기 has optional fortition. 닮다 and 넘게 are supported §24 Kozak Kim wins. Existing 넓죽하다 and 읽고 source-backed regressions remain.
+- **Residual rule work:** keep R010/R012/R013/R028 conservative until a morphology-boundary model can distinguish verb stems, bound nouns, Sino-Korean compounds and lexicalized compounds. Do not add test-specific exact entries. Remaining IPA notation groups (ㅟ, aspiration notation, coda release marks, liquids) need convention adjudication, not blind normalization.
+- **Exact-head verification at implementation commit c7e2ce435960856a9382e79e71a8d49dc51c4e09:** system, JavaScript tests (1,364/1,364), Python 3.11/3.12/3.13, wheel/clean install, teacher corpus audit, browser build/integration, external UGTPHON benchmark, paired browser g2pK benchmark, morphology smoke/consensus, exhaustive register extraction and master-table artifacts passed.
+- **Status:** research prototype; not release-ready. Independent Korean IPA review, Ukrainian target review and item-level licensing remain blockers. PR #415 remains draft and unmerged.

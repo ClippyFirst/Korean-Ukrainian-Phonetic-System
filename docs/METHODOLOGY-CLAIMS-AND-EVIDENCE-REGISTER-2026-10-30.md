@@ -71,3 +71,21 @@
 ### New methodological rule
 
 Keep canonical G2P, raw-surface normalization, and IPA annotation-convention sensitivity as separate tracks. Use the paired shared subset for normalizer deltas; always report rescued/lost tokens, unsupported inputs, canonical false rewrites and category coverage. Do not tune canonical phonology to UGT annotation symbols or promote analyzer/model candidates without independent evidence.
+
+
+## 2026-11-01 — Kozak Kim browser parity and original g2pK paired baseline
+
+| ID | Claim / status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|
+| M-23 | Browser IPA now matches the existing Python broad-profile handling of NIKL §5 exception 1 — DONE_VERIFIED | Code head c7e2ce4; tests in tests/nikl-articles-4-5-vowel-variants.test.mjs; system run [41331679290](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679290) and test run [41331679310](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679310) | Browser IPA renders the ㅕ glide as [ʌ] after ㅈ/ㅉ/ㅊ in the covered surface forms and records a trace rule. This removes a cross-runtime inconsistency. | That every residual /j/ mismatch is the same phenomenon, or that all Korean dialect/phonetic variation is resolved |
+| M-24 | Paired browser Kozak Kim vs untouched original g2pK diagnostic — DONE_VERIFIED as a diagnostic | External run [41331679243](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679243), artifact 13093672281 | 2,699 shared occurrences; exact 53.4272% each; CER 8.1358% vs 8.2138%; 4 exact wins each; sentence-cluster bootstrap (264 row clusters, 2,000 resamples) exact delta CI [−0.207,+0.201] pp and CER delta CI [−0.166,0.000] pp | A statistically robust overall exact-match advantage; broad-candidate scores are not normative |
+| M-25 | UGTPHON exact-match discordances require source adjudication — DONE_VERIFIED as an adjudication finding | Same paired artifact; NIKL Q&A 311009, NIKL Q&A 331569, NIKL §24 teacher-training material, NIKL 2022 usage survey; source-backed tests in tests/kozak-kim-vs-original-g2pk-browser.test.mjs | Four apparent g2pK-only exacts are 없는, where the source-backed long vowel is omitted from the UGTPHON gold. 못잃어 and 인기 are variant-sensitive; 닮다 and 넘게 are supported Kozak-Kim wins. | That a small hand-adjudicated subset establishes population-level superiority |
+| M-26 | Rule 5 browser correction improves the browser benchmark — DONE_VERIFIED as a measured regression result | Pre-fix browser artifact 13090704104; post-fix artifact 13093477739 | Strict exact 1,428→1,442 (+14); broad-candidate exact 2,496→2,521 (+25); strict CER 8.2441%→8.1358%; broad-candidate CER 1.3427%→1.2301%. | That broad-candidate exact is normative Korean accuracy |
+
+### Comparison protocol
+
+The raw g2pK JavaScript source is instantiated directly and is not modified. Its raw surface Hangul is passed only through Kozak Kim's shared convertSurface segment-to-IPA adapter; Kozak Kim's contextual phonological rules are not run over that surface. Exact match accepts any corpus-listed IPA alternative. CER is paired on a shared best reference. The bootstrap resamples UGTPHON row IDs to preserve within-sentence dependence.
+
+### Current research boundary
+
+Do not promote general R010/R012/R013/R028 fortition or compound rules based on a final coda alone. Their conditioning depends on stem, morpheme, compound and lexical boundaries. The current explicit source-backed licenses remain conservative until a verified morphology-boundary layer and an independent dev/holdout evaluation exist. The original g2pK baseline remains unchanged.
