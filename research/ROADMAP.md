@@ -295,3 +295,15 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **BLOCKED / EVIDENCE-LIMITED:** independent accuracy evaluation needs adjudicated held-out Korean pronunciation gold. No neural runtime or remote service is introduced.
 
 - **DEFERRED:** Python CLI/API do not expose Super-soft and remain strict/soft; no cross-runtime parity claim.
+
+## Kozak Kim browser G2P and benchmark improvement — 2026-11-01
+
+- **DONE_VERIFIED (PR #415, code head `d66d02889ffcf405dc9f927a61d3da69fbfe8697`):** separate Korean pronunciation resolution from IPA→Ukrainian target status; preserve resolved IPA when only the target mapping is provisional/unavailable; preserve literal/Jamo content in explicit Super-soft mode.
+- **DONE_VERIFIED:** add two exact NIKL-backed lexical surface entries: 사건[사ː껀] and 인기[인끼], retaining the optional non-fortis 인기[인기] alternative. IPA is project-derived from the attested Hangul surfaces; Ukrainian target remains provisional.
+- **DONE_VERIFIED (diagnostic only):** direct browser UGTPHON test-split run: 1,428/2,699 exact (52.9085%), CER 8.2571%, coverage 99.852%, 4 unresolved, 0 engine errors. Paired Python comparison on 2,698 common tokens: native 53.0393% exact / 9.1351% CER; g2pK 53.1134% / 9.2304%. No clear engine winner.
+- **PARTIAL / RESEARCH-ONLY:** broad IPA sensitivity profile yields 2,495/2,699 exact (92.4416%) and CER 1.3562% after collapsing selected narrow allophones and sibilant aspiration. This is a comparison convention analysis, not a change to engine output or a new accuracy claim; independent phonetics adjudication remains blocked.
+- **Research result:** UGTPHON's Korean task requires canonical-form inference from raw user-generated text. The EMNLP 2026 paper's Korean ablation shows sentence context is the dominant factor (word-to-word PERnc 47.5 vs sentence-to-word 28.1); retrieval adds only a small improvement (27.7), while staged decoding worsens the Korean result (33.1 / 32.0). If pursued, build a separate sentence-context lexical-normalization stage with train-only evidence and abstention, not a generic phonological rule.
+- **BLOCKED:** independent Korean IPA profile review; independent Ukrainian target review; NIKL item-level reuse verification and IPA-Dict/UGTPHON source-license compatibility review.
+- **IN_PROGRESS:** multi-engine comparison workflow 41309605046; CharsiuG2P and ByT5 remain skipped under default-off gates.
+- **Release status:** research prototype / diagnostic engine; not research-certified or release-ready. Full ledger and exact run evidence: `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` and `research/ACCEPTANCE-GATES.md`.
+
