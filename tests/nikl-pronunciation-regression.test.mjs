@@ -716,6 +716,16 @@ test('NIKL §11 lexical length and morphology exceptions preserve official readi
   }
 });
 
+test('dictionary-attested 한자 preserves lexical fortition and vowel length', () => {
+  const result = engine.convert('한자');
+  assert.equal(result.pronunciation_status, 'resolved');
+  assert.equal(result.surfaceHangul, '한짜');
+  assert.equal(result.ipa, renderExpectedIpa('한자', 'haːn.tɕ͈a'));
+  assert.equal(result.ukrainian, '');
+  assert.equal(result.target_status, 'provisional');
+  assert.ok(result.candidate_ukrainian);
+});
+
 test('NIKL §26 exact Sino-Korean 실수 fortition is shared with the Python rule inventory', () => {
   const result = engine.convert('실수');
   assert.equal(result.surfaceHangul, '실쑤');
