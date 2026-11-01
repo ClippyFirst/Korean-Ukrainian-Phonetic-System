@@ -4330,3 +4330,11 @@ Fixed the row to 13 columns, with \`target_syllables=ган|чча\`, \`input_ki
 4. Keep PR #415 draft until exact-head CI is green and independent Korean IPA, Ukrainian target and source-rights reviews are complete.
 
 **Status:** implementation restored; verification **PARTIAL**. No merge, release or deployment performed.
+
+
+### Follow-up — keep the upstream regression contract in the repair branch
+
+- Main advanced by one commit after PR #415's base: `7bbbd7e7ce888a9c995bb70959e17858263c07a8`, which adds the multi-reference paired-metric regression to `tests/test_ugtphon_surface_benchmark.py`.
+- Copied that exact current-main test module into PR #415 after restoring its implementation, commit `85facdd7d2a882da58d3b27eeab9a65c046be461`. The test and imported implementation now coexist in the PR branch.
+- GitHub now reports PR #415 as mergeable, but compare remains 68 commits ahead / 1 behind current main. No merge or rebase was performed. Local `git ls-remote` remains blocked by container DNS; no local runtime tests are claimed.
+- Latest branch tip: `85facdd7d2a882da58d3b27eeab9a65c046be461`. Exact-head CI is still not visible; status remains PARTIAL.
