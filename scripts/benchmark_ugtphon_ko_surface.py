@@ -218,7 +218,7 @@ def evaluate_surface(
     canonical_tokens = 0
     profile_metadata: dict[str, Any] = {}
     for row in test_rows:
-        for token in row["tokens"]:
+        for token_index, token in enumerate(row["tokens"]):
             if not isinstance(token, dict):
                 continue
             surface = token.get("text")
@@ -231,7 +231,7 @@ def evaluate_surface(
                 noncanonical_tokens += 1
             else:
                 canonical_tokens += 1
-            context = _context_key(row["tokens"], row["tokens"].index(token))
+            context = _context_key(row["tokens"], token_index)
             context_hint = store.context_mapping.get(context)
             surface_hint = store.mapping.get(surface)
             canonical_hint = context_hint if context_hint is not None else surface_hint
@@ -351,7 +351,7 @@ def evaluate_surface(
     normalization_hit_examples = [
         {
             key: item.get(key)
-            for key in ("surface", "g2p_input", "category", "status", "gold", "predicted", "distance", "error")
+            for key in ("surface", "g2p_input", "category", "status", "gold", "predicted", "distance", "error", "retrieval_method")
         }
         for item in records if item.get("normalization_hit") is True
     ][:100]
