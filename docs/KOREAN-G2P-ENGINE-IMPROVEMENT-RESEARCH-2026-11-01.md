@@ -144,3 +144,41 @@ The consensus evaluation artifact [13060490661](https://github.com/ClippyFirst/K
 - Mun, Kim and Ko (2022). [DOI 10.29403/LI.26.2.2](https://doi.org/10.29403/LI.26.2.2).
 - You and Moon (2026). [Zenodo 22167288](https://zenodo.org/records/22167288).
 - Repository's source and convention review: research/SOURCE-REGISTER.csv, docs/KOREAN-IPA-CONVENTION-REVIEW-2026-10-26.md, and docs/NEURAL-TEACHER-CANDIDATE-RULE-REGISTER-2026-10-26.md.
+
+
+## New UGT-specific finding — retrieval helps, but do not confuse it with canonical G2P
+
+A second directly relevant 2026 study is Jeon et al., *Phonemizing User-Generated Text: A Benchmark, Taxonomy, and Compositional Approach*, Findings of EMNLP 2026, pp. 21564–21581, [ACL Anthology](https://aclanthology.org/2026.findings-emnlp.1020/), [PDF](https://aclanthology.org/2026.findings-emnlp.1020.pdf), [arXiv:2609.27205](https://arxiv.org/abs/2609.27205).
+
+The paper's central distinction is raw non-canonical surface → intended canonical form → phonemes. It groups non-canonical UGT into:
+- Reconstruct: recover omitted characters or expansions (Korean has A1 shortening; A2/A3 are absent in the released Korean set);
+- Repetition: collapse character/unit repetition (B1/B2);
+- Pass-through: surface already encodes intended pronunciation (C1–C4).
+
+The Korean split contains 1,976 train, 246 dev and 275 test sentences. Its data repository states that the Korean subset is Apache-2.0; the other language subsets have different restrictions. The dataset is external and is not bundled by this project.
+
+In Table 3, the paper reports Korean non-canonical PER of 47.5 for ByT5 further-trained on UGTPHON versus 32.0 for its retrieval-augmented compositional ByT5; Qwen2.5-0.5B improves from 77.3 to 32.4. However, Table 4's Korean ablation is especially important: Sent→Word plus retrieval alone reaches 27.7 PERnc, while adding staged decoding gives 32.0; staged decoding without retrieval gives 33.1. For Korean, the immediate benefit is sentence context and canonical-form evidence, not blindly forcing a staged canonical intermediate. The paper also notes that Korean is pass-through-dominated and that the bottleneck shifts toward phonemization.
+
+### Repository benchmark scope correction
+
+The existing canonical benchmark script, scripts/benchmark_ugtphon_ko.py, reads each test token's canonical field before calling the pronunciation engine. It therefore measures **canonical lexical G2P**, not raw-surface UGT normalization. It intentionally cannot tell us how the engine handles a raw surface such as ㅋㅋ or an initial-consonant abbreviation.
+
+This continuation adds scripts/benchmark_ugtphon_ko_surface.py and tests/test_ugtphon_surface_benchmark.py as a separate, research-only diagnostic:
+- input is token.text from the raw surface;
+- a surface→canonical exact-match store is built from the training split only;
+- mappings with multiple targets, multiple canonical variants, or a collision with a canonical training token are withheld;
+- test token canonical fields are never read for prediction;
+- unmatched surfaces are passed through unchanged to the G2P engine;
+- results report overall and A/B/C-category metrics, retrieval coverage, ambiguous keys, unresolved forms, engine errors and potential canonical-token false rewrites.
+
+This is deliberately a transparent retrieval-only baseline. It is **not** a reproduction of the paper's trained ByT5/Qwen model, does not use contextual disambiguation, and does not implement staged decoding. Its purpose is to quantify whether a separate normalization stage helps on the actual raw UGT surface, without contaminating the strict standard-Korean pronunciation engine or the canonical benchmark.
+
+### Recommended next experiment
+
+1. Run the new script with externally supplied UGTPHON Korean train/test files; keep the official test split untouched.
+2. Report canonical tokens and non-canonical categories separately. Include retrieval-hit rate, PER/CER, false rewrites of canonical test tokens and abstentions.
+3. Compare raw-surface direct G2P, train-only retrieval→native G2P, and the existing canonical-oracle benchmark. These answer different questions and must never be collapsed into one score.
+4. If lookup helps, add contextual retrieval/detection as a separate optional UGT normalizer. Do not insert this behavior into the default standard-Korean engine.
+5. Only after a clean retrieval baseline, consider a small research-only neural normalizer. The paper's public repository currently provides the dataset and license, not a verified released training implementation/checkpoint; no model code or weights were copied.
+
+**Verification status:** the new script and fixture tests were added to the PR branch, but exact-head CI did not run for the GitHub-App-authored commits and the external train/test files were not available in the local execution container. The benchmark is therefore PARTIAL until the tests run and the real Korean train/test split is evaluated.
