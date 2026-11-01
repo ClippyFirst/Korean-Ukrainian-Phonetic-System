@@ -6,9 +6,12 @@ on:
     paths:
       - "scripts/benchmark_ugtphon_ko.py"
       - "scripts/benchmark_native_vs_g2pk_ko.py"
+      - "scripts/benchmark_kozak_kim_browser.mjs"
       - "tests/test_ugtphon_benchmark.py"
+      - "tests/kozak-kim-ipa-first-benchmark.test.mjs"
       - ".github/workflows/ugtphon-benchmark.yml"
       - "src/korean_ukrainian/**"
+      - "src/app/engine_convert.js"
       - "data/korean/**"
       - ".github/workflows/native-vs-g2pk-benchmark.yml"
 
@@ -64,6 +67,31 @@ jobs:
               print(f"{key}: {report.get(key)}")
           print("Diagnostic only: do not treat this score as normative accuracy or a release gate.")
           PY
+      - name: Run actual browser-side Kozak Kim JavaScript engine diagnostic
+        run: |
+          set -euo pipefail
+          node scripts/benchmark_kozak_kim_browser.mjs \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --split test \
+            --output "$RUNNER_TEMP/kozak-kim-browser-test-report.json"
+          python - "$RUNNER_TEMP/kozak-kim-browser-test-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          for key in ("engine", "rows", "eligible_tokens", "scored_tokens", "coverage_rate",
+                      "exact_matches", "exact_match_rate", "coverage_adjusted_exact_match_rate",
+                      "character_error_rate", "unresolved_tokens", "partial_tokens",
+                      "heuristic_tokens", "target_unavailable_tokens", "engine_errors"):
+              print(f"{key}: {report.get(key)}")
+          print("Direct browser-side Kozak Kim diagnostic; IPA is scored independently of Ukrainian target availability.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kozak-kim-browser-ugtphon-diagnostic
+          path: |
+            ${{ runner.temp }}/kozak-kim-browser-test-report.json
+          if-no-files-found: warn
       - name: Run paired native-vs-g2pk comparison
         run: |
           set -euo pipefail

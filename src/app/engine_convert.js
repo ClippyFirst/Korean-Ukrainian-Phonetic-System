@@ -371,16 +371,40 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
   // A phrase containing any provisional target also has no complete accepted
   // orthography: withhold the whole public result and return the complete,
   // separately labelled candidate. Research traces retain per-token detail.
-  const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&status==='unresolved';
-  const provisionalCandidateAvailable=/[가-힣]/u.test(text)&&status!=='unresolved'&&trace.some(item=>item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review');
+  const hasUnresolvedKoreanMorphology=units.some(u=>Boolean(
+    u.__palatalizationUnlicensed||u.__hDeletionUnlicensed||
+    u.__saisiotInsertionUnlicensed||u.__crossWordLiaisonUnlicensed||
+    u.__complexLiaisonUnlicensed||u.__complexHAspirationUnlicensed||
+    u.__substantiveLiaisonUnlicensed||u.__rieulGiyeokUnlicensed
+  ));
+  const hasHeuristicPronunciation=trace.some(item=>[
+    'super-soft-orthographic-fallback','super-soft-practical-heuristic',
+    'super-soft-morphology-heuristic','practical-transliteration',
+    'heuristic-low-confidence'
+  ].includes(item?.status));
+  const pronunciation_status=!hasHangulSyllables?'not_applicable'
+    :hasUnresolvedKoreanMorphology?'unresolved'
+    :hasHeuristicPronunciation?'heuristic'
+    :hasJamo?'partial':'resolved';
+  // Korean pronunciation and IPA→Ukrainian target availability are separate
+  // stages. A missing Ukrainian correspondence must not erase a resolved IPA.
+  const unresolvedWholeHangulToken=/^[가-힣]+$/u.test(text)&&pronunciation_status==='unresolved';
+  const targetMappingUnavailable=trace.some(item=>
+    item?.targetStatus==='unavailable'&&item?.candidateStatus!=='provisional'&&
+    item?.targetReason!=='provisional_mapping_requires_review'
+  );
+  const provisionalTargetAvailable=trace.some(item=>
+    item?.candidateStatus==='provisional'||item?.targetReason==='provisional_mapping_requires_review'||
+    item?.targetStatus==='provisional'
+  );
+  const provisionalCandidateAvailable=/[가-힣]/u.test(text)&&pronunciation_status!=='unresolved'&&provisionalTargetAvailable;
   const superSoftCandidateAvailable=superSoftOn&&trace.some(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item?.status));
-  const target_status=unresolvedWholeHangulToken||!hasHangulSyllables
+  const target_status=unresolvedWholeHangulToken||pronunciation_status==='partial'||
+    !hasHangulSyllables||targetMappingUnavailable||hasUnresolvedKoreanMorphology
     ? 'unavailable'
-    : trace.some(item=>item?.targetStatus==='unavailable'||item?.status==='unresolved')
-      ? 'unavailable'
-      : trace.some(item=>item?.targetStatus==='provisional')
-        ? 'provisional'
-        : 'model-selected';
+    : provisionalTargetAvailable
+      ? 'provisional'
+      : 'model-selected';
   return{
     source:text,
     ipa_profile:superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
@@ -388,17 +412,18 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     ipa_profile_level:superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
     ipa_profile_status:'unadjudicated-cross-runtime',
     surfaceHangul:recomposed===originalHangul?'':recomposed,
-    ukrainian:unresolvedWholeHangulToken||provisionalCandidateAvailable||superSoftCandidateAvailable?'':output.join(''),
+    ukrainian:unresolvedWholeHangulToken||targetMappingUnavailable||pronunciation_status==='partial'||provisionalCandidateAvailable||superSoftCandidateAvailable?'':output.join(''),
     candidate_ukrainian:superSoftCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):provisionalCandidateAvailable?trace.map(item=>item?.candidateOutput??item?.output??'').join(''):null,
     candidate_status:superSoftCandidateAvailable?'super-soft-low-confidence':provisionalCandidateAvailable?'provisional':null,
-    ipa:unresolvedWholeHangulToken?'':renderStructured(units,ipa,'.'),
+    ipa:unresolvedWholeHangulToken||pronunciation_status==='not_applicable'?'':renderStructured(units,ipa,'.'),
     phonetic_result_type:superSoftCandidateAvailable?(trace.some(item=>item?.status==='super-soft-orthographic-fallback')?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
     analysis:renderStructured(units,analysis,' · '),
     trace,
     variants:unresolvedWholeHangulToken?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status),
     issues,
     status,
-    target_status
+    target_status,
+    pronunciation_status
   };
 }
 
