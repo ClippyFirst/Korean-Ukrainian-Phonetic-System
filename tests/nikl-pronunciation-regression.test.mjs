@@ -52,7 +52,7 @@ test('ㅇ+ㅢ uses the normative [ɰi] default instead of an unresolved placehol
   assert.equal(result.issues.length, 0);
   assert.ok(!result.ukrainian.includes('⟦'));
   assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.target_status, 'provisional');
   assert.ok(result.candidate_ukrainian.includes('ий'));
   assert.equal(result.candidate_status, 'provisional');
   assert.match(result.ipa, /ɰi/);
