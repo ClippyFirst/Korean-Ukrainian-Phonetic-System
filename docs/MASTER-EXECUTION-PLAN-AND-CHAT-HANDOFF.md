@@ -4296,3 +4296,37 @@ Browser regression run [41311996128](https://github.com/ClippyFirst/Korean-Ukrai
 Fixed the row to 13 columns, with \`target_syllables=ган|чча\`, \`input_kind=variant-aware-research\`, and explicit rule notes that the Ukrainian form is a project-generated provisional candidate, not a dictionary mapping. The intended browser result is now an empty accepted \`ukrainian\`, a separate candidate \`ганчча\`, and \`target_status=provisional\`. CSV field alignment has been statically checked; exact-head CI for the repair is pending.
 
 **Latest code-bearing and branch tip:** \`eba968b383e1ae4ca8ebb52094c3f2d32439e315\`. Do not promote the tests to DONE_VERIFIED until the new browser and Python runs pass.
+
+
+## 2026-11-01 — Python benchmark module restoration after exact-head CI failure
+
+**Branch:** `fix/kozak-kim-ipa-first-browser-benchmark-2026-11-01` (PR #415)  
+**Previous failing head:** `38c416b8040d8967092c193dfc1729a5cccd3f01`  
+**Repair commit:** `c069031a6cea830ad4d5f00fcf5314b5dd1e8e12`
+
+### Failure found from actual Actions logs
+
+- Test workflow [41313216461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41313216461) failed during Python test collection on Python 3.12: `ModuleNotFoundError: No module named 'scripts.benchmark_ugtphon_ko_surface'` from `tests/test_ugtphon_surface_benchmark.py`.
+- System verification [41313216444](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41313216444) had the same failure in its Python regression/data-integrity job. Browser regression/build passed.
+- Root cause: the benchmark regression module was present on the base branch, but its imported implementation file was absent. This was a repository integration defect, not a linguistic benchmark failure.
+
+### Repair performed
+
+- Restored `scripts/benchmark_ugtphon_ko_surface.py` from the existing, tested implementation on PR #411 (blob `25d0b2054b7d12208d282cbe04197f3ff248b7c1`) into PR #415. No duplicate implementation was invented; the existing train-only retrieval, exact-context/B1 signature safeguards, paired raw-vs-normalized metrics, canonical false-rewrite accounting and abstention behavior are reused.
+- The file contains the functions imported by the existing test module, including `build_normalization_datastore` and `evaluate_surface`.
+- The restoration is committed as `c069031a6cea830ad4d5f00fcf5314b5dd1e8e12`. It does not change default pronunciation rules or runtime output; it repairs benchmark/test integration.
+
+### Verification status
+
+- The failure is **confirmed** by the exact Actions job logs above.
+- The repair has been committed, but no post-repair Python test, browser test, system verification or benchmark run is yet visible for commit `c069031a6cea830ad4d5f00fcf5314b5dd1e8e12`. Do not mark the repair DONE_VERIFIED until those checks pass.
+- Earlier direct-browser benchmark and paired native/g2pK evidence remain valid only for their recorded code heads; they are not evidence for the restored module or latest PR head.
+
+### Next acceptance
+
+1. Run Python 3.11/3.12/3.13 test collection and full suites; confirm the missing-module error is gone and inspect any newly exposed failures.
+2. Run browser Node tests/build and full system verification.
+3. Run the raw-surface UGTPHON benchmark and paired diagnostics on the exact head; keep them diagnostic and do not mix their scores with canonical-token G2P.
+4. Keep PR #415 draft until exact-head CI is green and independent Korean IPA, Ukrainian target and source-rights reviews are complete.
+
+**Status:** implementation restored; verification **PARTIAL**. No merge, release or deployment performed.
