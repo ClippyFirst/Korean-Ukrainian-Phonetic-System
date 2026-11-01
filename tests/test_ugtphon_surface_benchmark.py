@@ -110,6 +110,8 @@ def test_surface_evaluation_uses_train_lookup_not_test_gold_normalization(monkey
     assert report["normalization"]["hits_canonical"] == 0
     assert report["by_category"]["B2"]["exact_match_rate"] == 1.0
     assert report["by_category"]["B2"]["normalization_hits"] == 1
+    assert report["normalization_hit_examples"][0]["surface"] == "ㅋㅋ"
+    assert report["normalization_hit_examples"][0]["g2p_input"] == "크크"
     assert report["ipa_profile_status"] == "unavailable"
 
 
