@@ -219,6 +219,11 @@ def test_2026_11_01_g2p_sources_keep_scope_and_license_provenance_explicit():
     assert "not clearly established" in caution["authority_or_role"]
     assert "Does not independently attest" in caution["limitations_or_next_action"]
 
+    hanja = rows["SRC-KRDICT-ENG-72461"]
+    assert "한자[한ː짜]" in hanja["coverage"]
+    assert "item-level KOGL" in hanja["license_status"]
+    assert "preserve long vowel" in hanja["limitations_or_next_action"]
+
     silsoo = rows["SRC-NIKL-QNA-330843"]
     assert "실수[실쑤]" in silsoo["coverage"]
     assert "§26" in silsoo["integration_status"]
