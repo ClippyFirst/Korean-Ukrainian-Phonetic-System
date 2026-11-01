@@ -4,7 +4,8 @@ import {
   createBrowserKozakKimEngine,
   editDistance,
   evaluateRows,
-  normalizeIpa
+  normalizeIpa,
+  normalizeIpaBroadCandidate
 } from '../scripts/benchmark_kozak_kim_browser.mjs';
 
 test('IPA normalization and edit distance match the Python benchmark contract', () => {
@@ -12,6 +13,13 @@ test('IPA normalization and edit distance match the Python benchmark contract', 
   assert.equal(normalizeIpa('t͡ɕʰi'), 'tɕʰi');
   assert.equal(editDistance('kʰa', 'kʰa'), 0);
   assert.equal(editDistance('kʰa', 'k͈a'), 1);
+});
+
+test('broad candidate IPA normalization collapses documented allophones but preserves contrasts', () => {
+  assert.equal(normalizeIpaBroadCandidate('ˈsʰa̠ːk͈ʌn'), 'saːk͈ʌn');
+  assert.equal(normalizeIpaBroadCandidate('ɭɲɦçxɸβʝ'), 'lnhhhhhh');
+  assert.equal(normalizeIpaBroadCandidate('sʰɕʰʃʰ'), 'sɕʃ');
+  assert.equal(normalizeIpaBroadCandidate('pʰtʰkʰk͈aːt̚'), 'pʰtʰk͈aːt̚');
 });
 
 test('benchmark scores resolved IPA even when Ukrainian target mapping is unavailable', () => {
