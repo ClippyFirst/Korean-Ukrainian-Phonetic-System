@@ -279,6 +279,7 @@ def evaluate_surface(
                     "status": "missing_gold", "distance": None, "category": category,
                     "surface": surface, "g2p_input": g2p_input,
                     "normalization_hit": canonical_hint is not None,
+                    "retrieval_method": retrieval_method,
                 }
                 records.append(item)
                 category_records[category].append(item)
@@ -291,6 +292,7 @@ def evaluate_surface(
                         "status": "unresolved", "distance": None, "category": category,
                         "surface": surface, "g2p_input": g2p_input,
                         "normalization_hit": canonical_hint is not None,
+                        "retrieval_method": retrieval_method,
                     }
                 else:
                     ipa = result.get("ipa", {})
@@ -320,6 +322,7 @@ def evaluate_surface(
                             "predicted": predicted, "surface": surface,
                             "g2p_input": g2p_input, "category": category,
                             "normalization_hit": canonical_hint is not None,
+                            "retrieval_method": retrieval_method,
                         }
             except Exception as exc:
                 item = {
@@ -327,6 +330,7 @@ def evaluate_surface(
                     "surface": surface, "g2p_input": g2p_input,
                     "error": f"{type(exc).__name__}: {exc}",
                     "normalization_hit": canonical_hint is not None,
+                    "retrieval_method": retrieval_method,
                 }
             records.append(item)
             category_records[category].append(item)
