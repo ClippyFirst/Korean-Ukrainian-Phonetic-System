@@ -49,7 +49,7 @@ export function normalizeIpa(value) {
 
 const BROAD_ALLOPHONE_MAP = new Map([
   ['ɭ', 'l'], ['ʎ', 'l'], ['ɲ', 'n'],
-  ['ɦ', 'h'], ['ç', 'h'], ['x', 'h'], ['ɸ', 'h'], ['β', 'h'], ['ʝ', 'h']
+  ['ɦ', 'h'], ['ç', 'h'], ['x', 'h'], ['ɣ', 'h'], ['ɸ', 'h'], ['β', 'h'], ['ʝ', 'h']
 ]);
 
 // Research-only sensitivity profile: compare the project's broad IPA against
@@ -62,6 +62,11 @@ export function normalizeIpaBroadCandidate(value) {
   for (let index = 0; index < chars.length; index += 1) {
     const char = chars[index];
     if (char === 'ˈ' || char === 'ˌ') continue;
+    if (char === 'ɥ' && chars[index + 1] === 'i') {
+      normalized.push('y');
+      index += 1;
+      continue;
+    }
     if (['s', 'ɕ', 'ʃ'].includes(char) && chars[index + 1] === 'ʰ') {
       normalized.push(char);
       index += 1;
