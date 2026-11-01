@@ -132,7 +132,7 @@ jobs:
           print("paired:", {key: paired[key] for key in (
               "tokens_scored_by_both", "both_exact", "kozak_kim_only_exact",
               "g2pk_only_exact", "both_wrong", "exact_match_delta_kozak_minus_g2pk",
-              "cer_delta_kozak_minus_g2pk", "mcnemar_exact_p_value")})
+              "cer_delta_kozak_minus_g2pk", "sentence_cluster_bootstrap")})
           print("Diagnostic only: g2pK source is untouched; UGTPHON is not normative pronunciation gold.")
           PY
       - uses: actions/upload-artifact@v4
