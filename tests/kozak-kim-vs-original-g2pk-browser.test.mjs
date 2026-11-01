@@ -91,7 +91,7 @@ test('paired benchmark keeps unresolved Kozak Kim cases out of the shared denomi
     ]
   }], engine, rawG2pK);
 
-  assert.equal(report.attempted_tokens, 2);
+  assert.equal(report.eligible_tokens, 2);
   assert.equal(report.kozak_kim.unresolved_tokens, 1);
   assert.equal(report.g2pk.scored_tokens, 2);
   assert.equal(report.paired_subset.tokens_scored_by_both, 1);
@@ -113,6 +113,8 @@ test('paired benchmark rejects malformed raw g2pK surfaces without changing the 
 
   assert.equal(report.g2pk.engine_errors, 1);
   assert.equal(report.paired_subset.tokens_scored_by_both, 0);
+  assert.equal(report.records[0].g2pk_surface_valid, false);
+  assert.equal(report.records[0].g2pk, null);
   assert.equal(report.records[0].g2pk_error, 'g2pK output is not a single Hangul token');
 });
 
