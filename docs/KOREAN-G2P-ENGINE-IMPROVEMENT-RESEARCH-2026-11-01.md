@@ -242,3 +242,19 @@ Code-bearing head: eeb25fbd4f5bc4bd05baa491eb0118116fb7e107 on feat/korean-rr-co
 
 **Decision:** do not change the native pronunciation rules or default boundary mode based on the current evidence. The engine is already competitive with g2pK; phrase mode and exact-context UGT retrieval did not improve the held-out results. Continue with independent IPA-convention adjudication, a source-backed sentence/prosody boundary dataset, and a dev-tuned contextual UGT normalizer as separate research work. The repository remains a research prototype, not release-ready.
 
+
+
+## Follow-up real-data raw-surface run and paired baseline — 2026-11-01
+
+A later raw-surface diagnostic completed on pinned UGTPHON train/test data in workflow [41306501056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41306501056), artifact [13083344197](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41306501056/artifacts/13083344197), branch head `f24cb32a0e2ab09e880a61d6d3f71cc7f1a90b52`.
+
+- 3,140 raw tokens attempted; 2,639 scored; coverage 84.0446%.
+- 1,362 exact (51.6105% of scored); coverage-adjusted exact 43.3758%; CER 10.0256%.
+- 4 unresolved; 0 engine errors; 496 unsupported raw inputs.
+- Train-only retrieval: 22 hits among 722 noncanonical tokens (3.0471%); 15 exact-surface hits, 7 B1 lengthening-signature hits, **0 exact-context hits**, 0 canonical hits. The store blocked 47 canonical collisions and 483 ambiguous context keys.
+
+This is a sparse, conservative retrieval baseline, not evidence of quality improvement. The old report did not include the raw-input baseline, so it could not establish whether normalization helped. The current continuation adds a paired raw-vs-normalized baseline to `scripts/benchmark_ugtphon_ko_surface.py`, with same-token exact/CER deltas, rescued/lost coverage and paired exact improvements/regressions. It reuses the raw G2P result when no retrieval changes the input.
+
+The paired implementation at branch head `e9c0f912f90c00a0f8274a65edac030ac5b82473` is **PARTIAL** until exact-head CI and a new real-data artifact complete. Do not claim that retrieval improves accuracy before that paired report is available.
+
+The same prior workflow's sentence-level same-word-boundary diagnostic (not comparable with token-level scores) reported native 13/163 exact (7.9755%), CER 14.8323%, 37 unresolved; g2pK 12/200 exact (6.0%), CER 15.5691%. On the 163 sentences scored by both, native exact 7.9755% / CER 14.8323% versus g2pK exact 7.3620% / CER 15.4797%. This does not support replacing the native engine with g2pK for the sentence-level test.
