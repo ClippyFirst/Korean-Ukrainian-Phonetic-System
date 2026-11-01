@@ -4202,3 +4202,61 @@ This is not a decisive winner. g2pK emits surface Hangul and is passed through t
 
 **Release status:** research prototype / diagnostic engine, not research-certified and not release-ready. No local Node/Python/browser commands are claimed in this connector-only session; the GitHub Actions evidence above is the executed verification.
 
+
+
+---
+
+# Continuation — source-backed Kozak Kim G2P corrections (2026-11-01)
+
+**Branch:** `fix/kozak-kim-ipa-first-browser-benchmark-2026-11-01`  
+**Base:** `6992aa211fc772fcfbcae1d8b1fd4e577b46f440`  
+**Code head before this handoff update:** `00ac99a93c6ba8c64d66588e8a7e86aec3cfff7c`  
+**PR:** [#415](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/415), draft/open; PR #411 remains separate.
+
+## Task ledger
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Preserve Korean pronunciation status separately from Ukrainian target availability | DONE_VERIFIED at prior code head | Exact-head CI passed at `d66d02889ffcf405dc9f927a61d3da69fbfe8697`; new work below extends this behavior but is not yet exact-head CI verified. |
+| Add exact Sino-Korean §26 form 실수[실쑤] | PARTIAL | Official NIKL Q&A 330843 directly cites all listed homonymous forms as [실쑤]. Added exact full-form license to browser `engine_shared.js` and Python `rules.py`; added cross-runtime regression tests and trace provenance. Exact-head runtime verification pending. |
+| Add dictionary-attested 한자[한ː짜] | PARTIAL | NIKL Korean Basic Dictionary ParaWordNo=72461 directly gives [한ː짜]. Added a variant-aware lexical row preserving long-vowel length; IPA is project-derived, not dictionary-supplied. Ukrainian target remains provisional. Exact-head runtime verification pending. |
+| Prevent provisional lexical targets from becoming accepted without a target reference string | PARTIAL | Python pipeline now checks the lexical `target_status` even when `target_syllables` is absent and suppresses any non-null candidate orthography while status is provisional. Regression test added; exact-head runtime verification pending. |
+| Keep strict IPA distinct from benchmark annotation sensitivity | DONE_VERIFIED as methodology | Strict profile remains unchanged. Broad-candidate profile is explicitly research-only and cannot replace the strict result. |
+| Maintain source register integrity | PARTIAL pending exact-head audit | 139 parsed records, all 12 columns; 1 item-level license recorded, 1 not applicable, 130 review-required, 7 manual-classification-required. |
+| Exact-head tests, browser build, Python parity and benchmark rerun | BLOCKED | Connector-created commits updated PR #415, but no new workflow runs were emitted after the earlier d66 code head. The available GitHub connector exposes read/re-run operations but no workflow-dispatch operation; local GitHub access also remains unavailable in the execution container. Do not claim the new tests passed. |
+
+## Source-backed engine changes
+
+- NIKL Online Q&A 330843 (answer 2026-05-07) confirms the Standard Korean Dictionary readings of all listed homonymous 실수 entries as [실쑤]. The rule inventory adds only the exact form `실수 → 실>수`; it does not infer productive fortition for unlisted Sino-Korean words.
+- NIKL Korean Basic Dictionary, ParaWordNo=72461, lists 한자[한ː짜] and identifies it as Sino-Korean. The lexical entry preserves the long vowel as `haːn|tɕ͈a`. IPA is derived by the project from the Hangul reading; it is not represented as dictionary-supplied IPA. The Ukrainian mapping is explicitly provisional.
+- The Python target adapter now withholds a provisional lexical target even when no lexical target-reference string is supplied. A provisional lexical status cannot be bypassed merely because the generic IPA adapter found a candidate.
+
+## Benchmark impact — projection, not a new run
+
+The last successful direct browser artifact is run [41309605083](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605083), produced before the two new lexical corrections. It scored 2,699 tokens and 23,071 strict-normalized gold characters.
+
+A deterministic recalculation of that artifact, substituting the two newly specified outputs but retaining the same gold and normalizers, projects:
+
+- Strict exact match: unchanged at 1,428/2,699 (**52.9085%**); exact match does not improve because the benchmark omits the dictionary's vowel-length mark for 한자 and uses narrower allophones for 실수.
+- Strict edit distance: 1,905 → 1,902; projected CER **8.2571% → 8.2441%**.
+- Broad-candidate exact match: 2,495/2,699 → 2,496/2,699 (**92.4416% → 92.4787%**).
+- Broad-candidate CER: **1.3562% → 1.3427%**.
+
+These are projections calculated from the previous artifact, not observed results from the current branch. They assume the new tests' expected engine outputs are correct. The exact-head browser benchmark must be rerun before any updated score is claimed.
+
+## Verification and blockers
+
+- Prior code head `d66d02889ffcf405dc9f927a61d3da69fbfe8697`: tests [41309605110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605110) passed Node 1,352/1,352 and Python 3.11/3.12/3.13; browser integration [41309605037](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605037) and system verification [41309605032](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605032) passed. These runs predate the current lexical and Python target-gate changes.
+- Current branch includes new JS and Python regression tests, benchmark contract tests, source-register checks and 2 lexical source rows. They remain **not run at exact head**.
+- NIKL item-level reuse marks remain unchecked. The dictionary reading is verified; item-level reuse permission is not.
+- Korean IPA profile adjudication and Ukrainian target review remain independent acceptance gates.
+- The UGTPHON test split has already been inspected; all reported metrics are diagnostic, not an untouched independent holdout.
+
+## Next genuine acceptance steps
+
+1. Trigger exact-head Actions from an event-capable GitHub credential or use GitHub Actions UI workflow dispatch; run the full tests, browser integration/build, system verification, source-register audit and direct browser benchmark on the latest branch tip.
+2. Inspect actual JS/Python outputs for 실수 and 한자; confirm the trace cites the correct source and that the provisional Ukrainian target remains withheld.
+3. Compare the new benchmark artifact against run 41309605083; publish measured deltas only if the exact-head run succeeds.
+4. Keep PR #415 draft until exact-head CI, independent Korean IPA adjudication, Ukrainian target review and source-rights gates are satisfied.
+
+**Release status:** research prototype / diagnostic engine, not research-certified and not release-ready. No merge, release or deployment was performed.
