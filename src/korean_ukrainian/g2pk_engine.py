@@ -83,16 +83,40 @@ def pronounce_surface(text: str, *, descriptive: bool = False) -> str:
     return surface
 
 
+def _aligned_source_words(source_text: str, surface: str) -> list[str] | None:
+    """Return source words only when Korean word spans retain their separators.
+
+    Equal token counts are insufficient: a split/merge or shifted punctuation
+    boundary can otherwise attach a lexical pronunciation/IPA override to the
+    wrong source word. g2pK normally preserves punctuation and spacing, so an
+    exact inter-word separator match is a conservative alignment contract.
+    """
+    source_matches = list(re.finditer(r"[가-힣]+", source_text))
+    surface_matches = list(re.finditer(r"[가-힣]+", surface))
+    if not source_matches or len(source_matches) != len(surface_matches):
+        return None
+
+    def separators(text: str, matches: list[re.Match[str]]) -> list[str]:
+        return [
+            text[left.end():right.start()]
+            for left, right in zip(matches, matches[1:])
+        ]
+
+    if separators(source_text, source_matches) != separators(surface, surface_matches):
+        return None
+    return [match.group(0) for match in source_matches]
+
+
 def _apply_sourced_surface_overrides(source_text: str, surface: str) -> tuple[str, list[dict[str, str]]]:
     """Apply exact lexical surface forms only when word alignment is unambiguous."""
     from .pipeline import LEXICAL_PRONUNCIATIONS
 
-    source_words = re.findall(r"[가-힣]+", source_text)
+    source_words = _aligned_source_words(source_text, surface)
     surface_words = re.findall(r"[가-힣]+", surface)
-    if not source_words or len(source_words) != len(surface_words):
+    if source_words is None:
         return surface, []
 
-    replacement_by_index: dict[int, str] = {}
+    replacement_by_index: dict[int, str] = {};
     traces: list[dict[str, str]] = []
     for index, (source_word, surface_word) in enumerate(zip(source_words, surface_words)):
         entry = LEXICAL_PRONUNCIATIONS.get(source_word)
@@ -133,13 +157,16 @@ def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
     syllable_records: list[dict[str, Any]] = []
     word_analyses: list[dict[str, Any]] = []
     lexical_overrides: list[dict[str, str]] = []
-    source_words = re.findall(r"[가-힣]+", source_text)
+    aligned_source_words = _aligned_source_words(source_text, surface)
     source_index = 0
 
     for token in _SURFACE_TOKENS.findall(surface):
         if re.fullmatch(r"[가-힣]+", token):
             items = parse_syllables(token)
-            source_word = source_words[source_index] if source_index < len(source_words) else ""
+            source_word = (
+                aligned_source_words[source_index]
+                if aligned_source_words is not None else ""
+            )
             source_index += 1
             entry = LEXICAL_PRONUNCIATIONS.get(source_word)
             values = entry.get("ipa_syllables", "").split("|") if entry else []
@@ -201,6 +228,10 @@ def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
         "syllables": syllables,
         "surface_syllables": syllable_records,
         "word_analyses": word_analyses,
+        "word_alignment_status": (
+            "verified-source-surface-word-boundaries"
+            if aligned_source_words is not None else "unknown-source-surface-word-boundaries"
+        ),
         "lexical_overrides": lexical_overrides,
         "variants": [],
         "status": (
@@ -215,8 +246,9 @@ def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
         "surface_hangul": surface,
         "note": (
             "IPA is derived from g2pK's Hangul pronunciation spelling. "
-            "Sourced lexical IPA is restored only on an exact surface-form match. "
-            "Punctuation and non-Korean text are preserved only in rendered_text."
+            "Sourced lexical IPA is restored only when source/surface word boundaries "
+            "are verified and the surface form matches exactly. Punctuation and non-Korean "
+            "text are preserved only in rendered_text."
         ),
     }
 
