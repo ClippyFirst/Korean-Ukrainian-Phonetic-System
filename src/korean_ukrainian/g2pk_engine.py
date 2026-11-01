@@ -116,7 +116,7 @@ def _apply_sourced_surface_overrides(source_text: str, surface: str) -> tuple[st
     if source_words is None:
         return surface, []
 
-    replacement_by_index: dict[int, str] = {};
+    replacement_by_index: dict[int, str] = {}
     traces: list[dict[str, str]] = []
     for index, (source_word, surface_word) in enumerate(zip(source_words, surface_words)):
         entry = LEXICAL_PRONUNCIATIONS.get(source_word)
