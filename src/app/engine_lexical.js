@@ -56,6 +56,7 @@ export function lexicalResult(text,entry){
     return {
       source:text,
       surfaceHangul:entry.surface_hangul||'',
+      pronunciation_status:'resolved',
       ukrainian:target+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
       ipa,
       analysis:text+' → '+(entry.surface_hangul||'')+' (sourced lexical reading)',
@@ -75,6 +76,7 @@ export function lexicalResult(text,entry){
   return {
     source:text,
     surfaceHangul:entry.surface_hangul||'',
+    pronunciation_status:'resolved',
     ukrainian:candidateOnly?'':targets.join('')+(hasSyllableCountMismatch?'⟦IPA-syllable-count⟧':''),
     candidate_ukrainian:candidateOnly?targets.join(''):null,
     candidate_status:candidateOnly?'provisional':null,
