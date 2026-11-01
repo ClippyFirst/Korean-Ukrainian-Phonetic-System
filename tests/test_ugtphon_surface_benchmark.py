@@ -326,3 +326,83 @@ def test_direct_cli_runs_from_repository_root(tmp_path):
     report = json.loads(output_path.read_text(encoding="utf-8"))
     assert report["normalization"]["hits"] == 1
     assert report["attempted_tokens"] == 1
+
+
+
+def test_b1_lengthening_signatures_use_train_b1_only_and_support_compatibility_vowels():
+    train = [
+        _row(
+            {"text": "갸아악", "canonical": "갸악", "is_nc": True, "nc_type": "B1"},
+            {"text": "훠ㅓㅓ", "canonical": "훠어", "is_nc": True, "nc_type": "B1"},
+            {"text": "또또또", "canonical": "또또또", "is_nc": True, "nc_type": "B2"},
+            {"text": "서울", "canonical": "서울", "is_nc": False, "nc_type": None},
+        )
+    ]
+
+    store = build_normalization_datastore(train)
+
+    assert store.lengthening_mapping["갸악"] == "갸악"
+    assert store.lengthening_mapping["훠어"] == "훠어"
+    assert "또" not in store.lengthening_mapping
+    assert "또또또" not in store.lengthening_mapping
+
+
+def test_b1_lengthening_store_abstains_on_ambiguous_signatures_and_canonical_collisions():
+    ambiguous = build_normalization_datastore([
+        _row(
+            {"text": "갸아악", "canonical": "갸악", "is_nc": True, "nc_type": "B1"},
+            {"text": "갸아악", "canonical": "갸아악", "is_nc": True, "nc_type": "B1"},
+        )
+    ])
+    assert "갸악" not in ambiguous.lengthening_mapping
+    assert "갸악" in ambiguous.ambiguous_lengthening_keys
+
+    collision = build_normalization_datastore([
+        _row(
+            {"text": "갸아악", "canonical": "갸악", "is_nc": True, "nc_type": "B1"},
+            {"text": "갸악", "canonical": "갸악", "is_nc": False, "nc_type": None},
+        )
+    ])
+    assert "갸악" not in collision.lengthening_mapping
+    assert "갸악" in collision.blocked_lengthening_collisions
+
+
+def test_surface_evaluation_uses_train_b1_signature_not_test_canonical(monkeypatch):
+    calls = []
+
+    def fake_phoneticize(text, *, ipa_level="broad"):
+        calls.append((text, ipa_level))
+        return {"pronunciation_status": "resolved", "ipa": {"ipa": "kjaak"}}
+
+    monkeypatch.setattr(
+        "korean_ukrainian.pipeline.phoneticize_korean",
+        fake_phoneticize,
+    )
+    store = build_normalization_datastore([
+        _row(
+            {"text": "갸아악", "canonical": "갸악", "is_nc": True, "nc_type": "B1"},
+        )
+    ])
+    test_rows = [{
+        "id": "b1_test",
+        "lang": "ko",
+        "split": "test",
+        "text": "갸아아아악",
+        "tokens": [{
+            "text": "갸아아아악",
+            "canonical": "must-not-be-used",
+            "phoneme": "kjaak",
+            "is_nc": True,
+            "nc_type": "B1",
+        }],
+    }]
+
+    report = evaluate_surface(test_rows, store)
+
+    assert calls == [("갸악", "broad")]
+    assert report["normalization"]["lengthening_hits"] == 1
+    assert report["normalization"]["lengthening_hits_noncanonical"] == 1
+    assert report["normalization"]["lengthening_hits_canonical"] == 0
+    assert report["normalization"]["hits"] == 1
+    assert report["normalization_hit_examples"][0]["g2p_input"] == "갸악"
+    assert report["normalization_hit_examples"][0]["retrieval_method"] == "b1_lengthening_signature"

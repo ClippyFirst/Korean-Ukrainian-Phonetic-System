@@ -27,6 +27,9 @@ class NormalizationStore:
     context_mapping: dict[tuple[str, str, str], str]
     ambiguous_context_keys: tuple[tuple[str, str, str], ...]
     blocked_canonical_contexts: tuple[tuple[str, str, str], ...]
+    lengthening_mapping: dict[str, str]
+    ambiguous_lengthening_keys: tuple[str, ...]
+    blocked_lengthening_collisions: tuple[str, ...]
 
 
 def _validate_rows(rows: list[dict[str, Any]], expected_split: str) -> None:
@@ -74,6 +77,110 @@ def _context_key(tokens: list[dict[str, Any]], index: int) -> tuple[str, str, st
     return (previous, tokens[index]["text"], following)
 
 
+_COMPATIBILITY_VOWELS = {
+    "ㅏ": 0, "ㅐ": 1, "ㅑ": 2, "ㅒ": 3, "ㅓ": 4, "ㅔ": 5,
+    "ㅕ": 6, "ㅖ": 7, "ㅗ": 8, "ㅘ": 9, "ㅙ": 10, "ㅚ": 11,
+    "ㅛ": 12, "ㅜ": 13, "ㅝ": 14, "ㅞ": 15, "ㅟ": 16,
+    "ㅠ": 17, "ㅡ": 18, "ㅢ": 19, "ㅣ": 20,
+}
+_VOWEL_BASES = {
+    2: 0, 3: 1, 6: 4, 7: 5, 9: 0, 10: 1, 12: 8,
+    14: 4, 15: 5, 16: 20, 17: 13,
+}
+
+
+def _syllable_parts(char: str) -> tuple[str, int, int, int] | None:
+    code = ord(char)
+    offset = code - 0xAC00
+    if 0 <= offset < 11172:
+        return ("syllable", offset // 588, (offset % 588) // 28, offset % 28)
+    vowel = _COMPATIBILITY_VOWELS.get(char)
+    if vowel is not None:
+        return ("vowel", -1, vowel, 0)
+    return None
+
+
+def _base_vowel(vowel: int) -> int:
+    return _VOWEL_BASES.get(vowel, vowel)
+
+
+def _compose_syllable(onset: int, vowel: int, coda: int = 0) -> str:
+    return chr(0xAC00 + onset * 588 + vowel * 28 + coda)
+
+
+def _lengthening_signatures(surface: str) -> tuple[str, ...]:
+    """Return conservative train-retrieval keys for Korean B1 lengthening.
+
+    Only vowel-only Hangul syllables and compatibility-vowel runs are reduced.
+    The function emits keep-one/drop-all alternatives; it does not choose a
+    canonical form. A unique B1-only train mapping must select the target.
+    """
+    chars = list(surface)
+    signatures: set[str] = set()
+    for keep_trailing in (True, False):
+        output: list[str] = []
+        index = 0
+        while index < len(chars):
+            unit = _syllable_parts(chars[index])
+            if unit is not None and unit[0] == "syllable":
+                _, onset, vowel, coda = unit
+                if onset == 11 and coda == 0:
+                    end = index + 1
+                    while end < len(chars):
+                        following = _syllable_parts(chars[end])
+                        if (
+                            following is not None and following[0] == "syllable"
+                            and following[1] == 11 and following[3] == 0
+                            and _base_vowel(following[2]) == _base_vowel(vowel)
+                        ):
+                            end += 1
+                        else:
+                            break
+                    previous = _syllable_parts(chars[index - 1]) if index else None
+                    following = _syllable_parts(chars[end]) if end < len(chars) else None
+                    run_length = end - index
+                    has_coda_final = bool(
+                        following is not None and following[0] == "syllable"
+                        and following[3] > 0 and _base_vowel(following[2]) == _base_vowel(vowel)
+                    )
+                    previous_same_vowel = bool(
+                        previous is not None and previous[0] == "syllable"
+                        and _base_vowel(previous[2]) == _base_vowel(vowel)
+                    )
+                    if run_length >= 2 or previous_same_vowel or has_coda_final:
+                        if index == 0 or (keep_trailing and not has_coda_final):
+                            output.append(chars[index])
+                        index = end
+                        continue
+            elif unit is not None and unit[0] == "vowel":
+                vowel = unit[2]
+                end = index + 1
+                while end < len(chars):
+                    following = _syllable_parts(chars[end])
+                    if (
+                        following is not None and following[0] == "vowel"
+                        and _base_vowel(following[2]) == _base_vowel(vowel)
+                    ):
+                        end += 1
+                    else:
+                        break
+                previous = _syllable_parts(chars[index - 1]) if index else None
+                if (
+                    previous is not None and previous[0] == "syllable"
+                    and (end - index >= 2 or _base_vowel(previous[2]) == _base_vowel(vowel))
+                ):
+                    if keep_trailing:
+                        output.append(_compose_syllable(11, vowel))
+                    index = end
+                    continue
+            output.append(chars[index])
+            index += 1
+        signature = "".join(output)
+        if signature and signature != surface:
+            signatures.add(signature)
+    return tuple(sorted(signatures))
+
+
 def build_normalization_datastore(
     train_rows: list[dict[str, Any]],
 ) -> NormalizationStore:
@@ -84,6 +191,8 @@ def build_normalization_datastore(
     surface) and can disambiguate a surface only when that exact context has a
     single non-canonical target and no canonical/ambiguous observation. This is
     exact contextual retrieval, not fuzzy matching or a trained language model.
+    B1 lengthening signatures are learned only from train tokens explicitly
+    labelled B1; B2 iteration and all other categories are excluded.
     """
     _validate_rows(train_rows, "train")
     candidates: dict[str, set[str]] = defaultdict(set)
@@ -92,6 +201,8 @@ def build_normalization_datastore(
     context_candidates: dict[tuple[str, str, str], set[str]] = defaultdict(set)
     ambiguous_contexts: set[tuple[str, str, str]] = set()
     canonical_contexts: set[tuple[str, str, str]] = set()
+    lengthening_candidates: dict[str, set[str]] = defaultdict(set)
+    ambiguous_lengthening: set[str] = set()
 
     for row in train_rows:
         tokens = row["tokens"]
@@ -118,9 +229,14 @@ def build_normalization_datastore(
             if canonical is None:
                 ambiguous.add(surface)
                 ambiguous_contexts.add(context)
+                if token.get("nc_type") == "B1":
+                    ambiguous_lengthening.update(_lengthening_signatures(surface))
             else:
                 candidates[surface].add(canonical)
                 context_candidates[context].add(canonical)
+                if token.get("nc_type") == "B1":
+                    for signature in _lengthening_signatures(surface):
+                        lengthening_candidates[signature].add(canonical)
 
     mapping: dict[str, str] = {}
     blocked: set[str] = set()
@@ -146,6 +262,16 @@ def build_normalization_datastore(
             if canonical != context[1]:
                 context_mapping[context] = canonical
 
+    lengthening_mapping: dict[str, str] = {}
+    blocked_lengthening: set[str] = set()
+    for signature, forms in lengthening_candidates.items():
+        if signature in canonical_surfaces:
+            blocked_lengthening.add(signature)
+        elif signature in ambiguous_lengthening or len(forms) != 1:
+            ambiguous_lengthening.add(signature)
+        else:
+            lengthening_mapping[signature] = next(iter(forms))
+
     return NormalizationStore(
         mapping=mapping,
         ambiguous_keys=tuple(sorted(ambiguous - blocked)),
@@ -153,6 +279,9 @@ def build_normalization_datastore(
         context_mapping=context_mapping,
         ambiguous_context_keys=tuple(sorted(ambiguous_contexts - blocked_contexts)),
         blocked_canonical_contexts=tuple(sorted(blocked_contexts)),
+        lengthening_mapping=lengthening_mapping,
+        ambiguous_lengthening_keys=tuple(sorted(ambiguous_lengthening - blocked_lengthening)),
+        blocked_lengthening_collisions=tuple(sorted(blocked_lengthening)),
     )
 
 
@@ -211,6 +340,9 @@ def evaluate_surface(
     normalization_hits = 0
     context_hits = 0
     surface_hits = 0
+    lengthening_hits = 0
+    lengthening_hits_noncanonical = 0
+    lengthening_hits_canonical = 0
     hits_noncanonical = 0
     hits_canonical = 0
     misses_noncanonical = 0
@@ -234,10 +366,21 @@ def evaluate_surface(
             context = _context_key(row["tokens"], token_index)
             context_hint = store.context_mapping.get(context)
             surface_hint = store.mapping.get(surface)
-            canonical_hint = context_hint if context_hint is not None else surface_hint
+            lengthening_targets = {
+                store.lengthening_mapping[signature]
+                for signature in _lengthening_signatures(surface)
+                if signature in store.lengthening_mapping
+            }
+            lengthening_hint = next(iter(lengthening_targets)) if len(lengthening_targets) == 1 else None
+            canonical_hint = (
+                context_hint if context_hint is not None
+                else surface_hint if surface_hint is not None
+                else lengthening_hint
+            )
             retrieval_method = (
                 "exact_context" if context_hint is not None
                 else "exact_surface" if surface_hint is not None
+                else "b1_lengthening_signature" if lengthening_hint is not None
                 else "none"
             )
             g2p_input = canonical_hint if canonical_hint is not None else surface
@@ -245,12 +388,18 @@ def evaluate_surface(
                 normalization_hits += 1
                 if retrieval_method == "exact_context":
                     context_hits += 1
-                else:
+                elif retrieval_method == "exact_surface":
                     surface_hits += 1
+                else:
+                    lengthening_hits += 1
                 if is_nc:
                     hits_noncanonical += 1
+                    if retrieval_method == "b1_lengthening_signature":
+                        lengthening_hits_noncanonical += 1
                 else:
                     hits_canonical += 1
+                    if retrieval_method == "b1_lengthening_signature":
+                        lengthening_hits_canonical += 1
             elif is_nc:
                 misses_noncanonical += 1
             # The native pronunciation API accepts precomposed Hangul and
@@ -364,7 +513,7 @@ def evaluate_surface(
         "purpose": "research-only exact-match normalization baseline; separate from canonical lexical G2P",
         "input_field": "token.text",
         "normalization": {
-            "policy": "train-only exact local-context lookup first, then exact surface lookup; unique canonical target; canonical-context/surface collision guards; abstain on ambiguity",
+            "policy": "train-only exact local-context lookup, exact surface lookup, then unique B1-only lengthening-signature retrieval; canonical collision guards; abstain on ambiguity",
             "store_size": len(store.mapping),
             "ambiguous_keys": len(store.ambiguous_keys),
             "blocked_canonical_collisions": len(store.blocked_canonical_collisions),
@@ -383,6 +532,15 @@ def evaluate_surface(
                 round(hits_noncanonical / noncanonical_tokens, 6) if noncanonical_tokens else None
             ),
             "misses_noncanonical": misses_noncanonical,
+            "lengthening_store_size": len(store.lengthening_mapping),
+            "ambiguous_lengthening_keys": len(store.ambiguous_lengthening_keys),
+            "blocked_lengthening_collisions": len(store.blocked_lengthening_collisions),
+            "lengthening_hits": lengthening_hits,
+            "lengthening_hits_noncanonical": lengthening_hits_noncanonical,
+            "lengthening_hits_canonical": lengthening_hits_canonical,
+            "lengthening_hit_rate_noncanonical": (
+                round(lengthening_hits_noncanonical / noncanonical_tokens, 6) if noncanonical_tokens else None
+            ),
         },
         "ipa_level": ipa_level,
         **(profile_metadata or {"ipa_profile": None, "ipa_profile_status": "unavailable", "ipa_profile_version": None}),
@@ -404,9 +562,9 @@ def evaluate_surface(
         "normalization_hit_examples": normalization_hit_examples,
         "notes": [
             "The test token's canonical field is not read; only train-split surface/context observations can rewrite raw surfaces.",
-            "Context retrieval requires an exact previous/current/next surface triple; surface retrieval is the fallback. Both abstain on ambiguous mappings and canonical collisions.",
+            "Context and exact-surface retrieval are followed by a train-only B1 lengthening-signature store. The B1 store is learned only from training tokens labelled B1; it excludes B2 iteration and abstains on ambiguous signatures and canonical collisions.",
             "Inputs outside the native Hangul+whitespace contract are counted as unsupported, not engine errors; train-only retrieval is attempted before this check.",
-            "Potential canonical false rewrites are reported, not hidden; a production normalizer needs context-aware detection.",
+            "Potential canonical false rewrites are reported, not hidden. The B1 signature adapter is research-only and is not enabled in the standard pronunciation API.",
             "This is not the paper's trained retrieval-augmented ByT5/Qwen model or its staged decoder.",
             "UGTPHON is noisy user-generated text; results must remain separate from canonical G2P and standard-pronunciation evaluation.",
             "The Korean UGTPHON subset is Apache-2.0; the dataset is supplied externally and is not bundled or downloaded at runtime.",
