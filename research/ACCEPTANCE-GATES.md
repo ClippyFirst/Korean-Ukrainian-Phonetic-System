@@ -538,3 +538,8 @@ Feature status: **PARTIAL / in review**, tracked by [PR #354](https://github.com
 - **PARTIAL:** paired raw-vs-normalized baseline metrics are now implemented in the script, tests and workflow output on PR #411. They compare only tokens scored by both and report exact/CER deltas, rescued/lost tokens and exact improvements/regressions. Exact-head CI and a new real-data artifact are still pending.
 - **DEFERRED:** no fuzzy local-context fallback. The EMNLP 2026 sentence-context results concern a trained model and cannot be reproduced by exact trigram lookup; no default engine behavior is changed.
 - **Release gate:** do not claim a raw-UGT improvement until the paired baseline run shows a positive effect without canonical false rewrites or category-specific regressions.
+
+
+### EMNLP 2026 design constraint for a future UGT normalizer
+
+The Korean ablation in Jeon et al., Table 4, p. 6 ([paper](https://aclanthology.org/2026.findings-emnlp.1020.pdf)) is Word→Word PERnc 47.5; Sent→Word 28.1; Sent→Word + retrieval (no staged decoding) 27.7; Sent→Word + retrieval + staged decoding 32.0. Sent→Sent raises Korean canonical PERc to 41.6. Therefore any future model should consume sentence context but emit only the selected target word's canonical form, then pass that form to Kozak Kim. Full-sentence IPA generation and staged decoding are not accepted as defaults without independent Korean evidence.
