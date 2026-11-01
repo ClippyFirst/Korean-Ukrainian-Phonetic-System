@@ -134,11 +134,14 @@ def _aggregate(records: list[dict[str, Any]]) -> dict[str, Any]:
     total_chars = sum(len(item["gold"]) for item in scored)
     total_distance = sum(item["distance"] for item in scored)
     exact = sum(item["exact"] for item in scored)
+    attempted = len(records)
     return {
-        "attempted_tokens": len(records),
+        "attempted_tokens": attempted,
         "scored_tokens": len(scored),
+        "coverage_rate": round(len(scored) / attempted, 6) if attempted else None,
         "exact_matches": exact,
         "exact_match_rate": round(exact / len(scored), 6) if scored else None,
+        "coverage_adjusted_exact_match_rate": round(exact / attempted, 6) if attempted else None,
         "character_error_rate": round(total_distance / total_chars, 6) if total_chars else None,
         "unresolved_tokens": sum(item["status"] == "unresolved" for item in records),
         "engine_errors": sum(item["status"] == "engine_error" for item in records),
@@ -174,6 +177,8 @@ def evaluate_surface(
     hits_noncanonical = 0
     hits_canonical = 0
     misses_noncanonical = 0
+    noncanonical_tokens = 0
+    canonical_tokens = 0
     profile_metadata: dict[str, Any] = {}
     for row in test_rows:
         for token in row["tokens"]:
@@ -185,12 +190,10 @@ def evaluate_surface(
                 continue
             category = _category(token)
             is_nc = token.get("is_nc") is True
-            if not isinstance(gold_raw, str) or not gold_raw.strip():
-                item = {"status": "missing_gold", "distance": None, "category": category}
-                records.append(item)
-                category_records[category].append(item)
-                continue
-
+            if is_nc:
+                noncanonical_tokens += 1
+            else:
+                canonical_tokens += 1
             canonical_hint = store.mapping.get(surface)
             g2p_input = canonical_hint if canonical_hint is not None else surface
             if canonical_hint is not None:
@@ -201,6 +204,15 @@ def evaluate_surface(
                     hits_canonical += 1
             elif is_nc:
                 misses_noncanonical += 1
+            if not isinstance(gold_raw, str) or not gold_raw.strip():
+                item = {
+                    "status": "missing_gold", "distance": None, "category": category,
+                    "surface": surface, "g2p_input": g2p_input,
+                    "normalization_hit": canonical_hint is not None,
+                }
+                records.append(item)
+                category_records[category].append(item)
+                continue
 
             try:
                 result = phoneticize_korean(g2p_input, ipa_level=ipa_level)
@@ -258,6 +270,14 @@ def evaluate_surface(
         (item for item in records if item["status"] == "scored" and not item["exact"]),
         key=lambda item: (-item["distance"], item["surface"]),
     )[:30]
+    engine_error_examples = [
+        {key: item.get(key) for key in ("surface", "g2p_input", "category", "error", "normalization_hit")}
+        for item in records if item["status"] == "engine_error"
+    ][:30]
+    unresolved_examples = [
+        {key: item.get(key) for key in ("surface", "g2p_input", "category", "normalization_hit")}
+        for item in records if item["status"] == "unresolved"
+    ][:30]
     return {
         "benchmark": "UGTPHON Korean test split — raw-surface retrieval + G2P",
         "purpose": "research-only exact-match normalization baseline; separate from canonical lexical G2P",
@@ -271,6 +291,11 @@ def evaluate_surface(
             "hits_noncanonical": hits_noncanonical,
             "hits_canonical": hits_canonical,
             "potential_canonical_false_rewrites": hits_canonical,
+            "noncanonical_tokens": noncanonical_tokens,
+            "canonical_tokens": canonical_tokens,
+            "retrieval_hit_rate_noncanonical": (
+                round(hits_noncanonical / noncanonical_tokens, 6) if noncanonical_tokens else None
+            ),
             "misses_noncanonical": misses_noncanonical,
         },
         "ipa_level": ipa_level,
@@ -284,6 +309,8 @@ def evaluate_surface(
             }
             for item in worst_mismatches
         ],
+        "engine_error_examples": engine_error_examples,
+        "unresolved_examples": unresolved_examples,
         "notes": [
             "The test token's canonical field is not read; only the training datastore can rewrite raw surfaces.",
             "Exact-match lookup has no contextual disambiguation and deliberately abstains on ambiguous mappings.",
