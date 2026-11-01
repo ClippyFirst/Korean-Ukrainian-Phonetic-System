@@ -86,6 +86,11 @@ def build_normalization_datastore(
             is_nc = token.get("is_nc")
             if is_nc is False:
                 canonical_surfaces.add(surface)
+                canonical_value = token.get("canonical")
+                if isinstance(canonical_value, str):
+                    canonical_surfaces.update(
+                        part.strip() for part in canonical_value.split(",") if part.strip()
+                    )
                 continue
             if is_nc is not True:
                 continue
