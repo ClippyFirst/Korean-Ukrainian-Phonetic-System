@@ -122,7 +122,6 @@ def _category(token: dict[str, Any]) -> str:
 
 def _aggregate(records: list[dict[str, Any]]) -> dict[str, Any]:
     scored = [item for item in records if item["distance"] is not None]
-    from scripts.benchmark_ugtphon_ko import edit_distance  # shared metric implementation
 
     total_chars = sum(len(item["gold"]) for item in scored)
     total_distance = sum(item["distance"] for item in scored)
