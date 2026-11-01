@@ -149,3 +149,20 @@ test('§27: the explicitly listed adnominal phrase remains a narrow positive lic
     'the exact listed phrase 할 것을 should use the explicit §27 phrase license',
   );
 });
+
+test('§26: source-derived 실시간 boundary applies Sino-Korean ㄹ+ㅅ fortition only at the licensed pair', () => {
+  const result = generic.convert('실시간');
+  assert.ok(
+    result.trace.some((item) => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')),
+    '실>시 is the licensed Sino-Korean ㄹ+ㅅ boundary',
+  );
+  assert.ok(result.ipa.includes('s͈'), '§26 must preserve the fortis sibilant in 실시간');
+
+  for (const input of ['실구간', '실가간']) {
+    const lookalike = generic.convert(input);
+    assert.ok(
+      !lookalike.trace.some((item) => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')),
+      input + ': a similar ㄹ+coda sequence must not inherit the exact 실시간 license',
+    );
+  }
+});

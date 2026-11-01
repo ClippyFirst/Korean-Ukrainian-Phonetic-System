@@ -994,3 +994,17 @@ def test_exact_form_r003_manyeojida_case():
     assert items[0].coda == "ㄶ"
     assert traces[0].status == "conditional-disabled"
     assert phoneticize_korean("많아보이다")["surface_hangul"] != "마나보이다"
+
+
+def test_nikl_section_26_source_derived_silsigan_exact_license():
+    items, traces = apply_ordered_rules(parse_syllables("실시간"))
+    assert items[0].coda == "ㄹ"
+    assert items[1].onset == "ㅆ"
+    assert traces[9].changed
+    assert traces[9].license_context == "R012:sino_ryeon:실시간:실>시"
+
+    # The same local coda/onset shape without the attested Sino-Korean
+    # lexical/morpheme boundary must remain unlicensed.
+    items, traces = apply_ordered_rules(parse_syllables("실구간"))
+    assert items[1].onset == "ㄱ"
+    assert traces[9].status == "conditional-disabled"
