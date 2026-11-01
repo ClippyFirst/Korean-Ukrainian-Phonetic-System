@@ -483,13 +483,21 @@ def evaluate_surface(
 
             # Reuse the baseline result when no canonical hint changed the input;
             # only retrieved tokens need a second G2P call.
-            item = baseline_item if g2p_input == surface else score_input(
-                g2p_input,
-                surface=surface,
-                category=category,
-                gold_raw=gold_raw,
-                normalization_hit=canonical_hint is not None,
-                retrieval_method=retrieval_method,
+            item = (
+                {
+                    **baseline_item,
+                    "normalization_hit": canonical_hint is not None,
+                    "retrieval_method": retrieval_method,
+                }
+                if g2p_input == surface
+                else score_input(
+                    g2p_input,
+                    surface=surface,
+                    category=category,
+                    gold_raw=gold_raw,
+                    normalization_hit=canonical_hint is not None,
+                    retrieval_method=retrieval_method,
+                )
             )
             records.append(item)
             category_records[category].append(item)
@@ -542,11 +550,11 @@ def evaluate_surface(
         ),
         "normalization_exact_improvements": sum(
             not baseline.get("exact", False) and normalized.get("exact", False)
-            for baseline, normalized in zip(baseline_records, records)
+            for baseline, normalized in paired
         ),
         "normalization_exact_regressions": sum(
             baseline.get("exact", False) and not normalized.get("exact", False)
-            for baseline, normalized in zip(baseline_records, records)
+            for baseline, normalized in paired
         ),
     }
     worst_mismatches = sorted(
