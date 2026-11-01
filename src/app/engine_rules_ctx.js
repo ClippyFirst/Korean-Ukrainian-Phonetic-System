@@ -3,7 +3,7 @@
  */
 import {
   COMPLEX, FINAL_REPRESENTATIVE, LEXICAL_B_CODA_PREFIXES, decompose,
-  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_29_PHRASE_INSERTION, NIKL_29_WORD_INSERTION, NIKL_30_SAISIOT_PRONUNCIATION_FORMS, NIKL_30_SAISIOT_INSERTION_FORMS,
+  NIKL_12_H_DELETION_FORMS, NIKL_13_14_FORMAL_LIAISON_FORMS, NIKL_15_SUBSTANTIVE_LIAISON_FORMS, NIKL_11_VERBAL_STEM_RIEUL_GIYEOK_FORMS, NIKL_17_FORMAL_I_FORMS, NIKL_COMPLEX_H_SUFFIX_FORMS, NIKL_24_STEM_NM_ENDING_FORMS, NIKL_25_STEM_LB_LT_ENDING_FORMS, NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS, NIKL_28_COMPOUND_FORTITION_FORMS, NIKL_27_ADNOMINAL_PHRASES, NIKL_27_ADNOMINAL_FORMS, NIKL_29_PHRASE_INSERTION, NIKL_29_WORD_INSERTION, NIKL_30_SAISIOT_PRONUNCIATION_FORMS, NIKL_30_SAISIOT_INSERTION_FORMS,
   NASAL_AFTER, PLAIN_TO_FORTIS, ASPIRATION, H_CODA_ASPIRATION, representative,
 } from './engine_shared.js';
 import { isSoftFormalPair, trySoftFormal, tryPracticalHeuristic } from './soft_morphology.js';
@@ -308,6 +308,18 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
       b.onset='ㄲ';
       rules.push('adnominal-l-fortition-§27-attested-l-ge');
       nextRules.push('adnominal-l-fortition-§27-attested-l-ge');
+      continue;
+    }
+
+    // C08 exact forms: source contexts are restored from UGTPHON ko/test.json.
+    // NIKL Q&A 327466 supports X일 수도; Q&A 313481 and 333044 confirm
+    // dependent noun 시 after -을. §27 supplies conditional, rule-derived
+    // fortition (not direct IPA attestation). Keep full-eojeol licenses only.
+    const exactAdnominalPair=NIKL_27_ADNOMINAL_FORMS.get(currentWord);
+    if(exactAdnominalPair===exactMorphPair&&a.coda==='ㄹ'&&decompose(a.char)?.coda==='ㄹ'&&PLAIN_TO_FORTIS[b.onset]){
+      b.onset=PLAIN_TO_FORTIS[b.onset];
+      rules.push('adnominal-r-fortition-§27-exact-form');
+      nextRules.push('adnominal-r-fortition-§27-exact-form');
       continue;
     }
 

@@ -1,8 +1,19 @@
 # Programme Roadmap
 
-Last updated: 2026-10-21  
+Last updated: 2026-11-02  
 Current phase: Phase 7 — verification and Phase 9 — release acceptance. Mainline implementation is tested/deployed as a research preview; independent linguistic and owner-dependent release gates remain open.  
 Planned phases are not evidence of completion.
+## Current continuation status — 2026-11-02
+
+Current focused work is Phase 7 verification plus Phase 10 independent-review preparation; Phase 9 release acceptance remains blocked.
+
+- C01–C07 blind packet preparation is DONE_VERIFIED: seven neutral packets, 42 entries, 39 unique UGTPHON source rows with source contexts. Two independent reviewer submissions are still required.
+- C08 is PARTIAL / EVIDENCE-LIMITED: all eight source contexts are now mapped. Five formerly missing memberships were reconstructed from the pinned fortis-mismatch signature because the original extraction table is absent. Seven forms have conditional -(으)ㄹ + dependent-noun evidence from official NIKL Q&A; 유사성 remains unresolved. No new production rules were added. Kiwi/MeCab-Ko disagreement for 했을시 remains diagnostic only.
+- Python R013 exact same-eojeol licensing now applies within full sentences, matching the browser engine. Full-context positive and negative tests pass.
+- Current paired browser benchmark (run 41358508374; artifact 13103483761): 2,699 shared occurrences; CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp); exact match tied at 53.4272%. Diagnostic only.
+- Remaining acceptance work: two independent IPA reviews, independent C08/prosody adjudication and recovery of the original cluster extraction provenance, C09/C10 convention adjudication, NIKL item-level rights, and Ukrainian target review.
+
+
 
 ## Operating model
 Work in bounded phases. Each phase must produce durable artifacts and satisfy exit criteria before closure. Parallel research is acceptable, but shared runtime changes should wait until source and behavior contracts are sufficiently clear. Use focused branches; avoid creating many branches without an integration plan.
@@ -382,3 +393,43 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **IN_PROGRESS:** multi-engine Charsiu/ByT5 diagnostic 41342127137 at last check; do not claim a result until completed.
 - **BLOCKED:** item-level NIKL/KOGL rights (source register 147 rows; 138 review-required; metadata-only job skipped), independent Korean IPA review, Ukrainian target review, and specialist-adjudicated holdout.
 - **Release status:** research prototype, not release-ready. PR #416 remains draft and unmerged.
+
+
+## Kozak Kim discrepancy review continuation — 2026-11-01
+
+- Continuation branch: `research/kozak-kim-independent-ipa-packets-2026-11-01`; final branch head: `17647b219aa4310e37d77a8dd457c73c0871ace0`.
+- Stacked Draft PR #417 targets the PR #416 branch, is mergeable, and contains only the incremental review-packet, evidence-register, test, and handoff changes. PR #416 and PR #415 remain open; neither was merged or modified.
+- C01–C07: seven separate source-blind pilot JSON packets (six pilot forms each), separate reviewer instructions, and an internal-only cluster/provenance index. Browser regression test verifies no system/baseline names, candidate/reference IPA, or internal artifact identifiers leak into packet JSON. Packets remain PARTIAL/BLOCKED for scoring until exact source utterances and item-level reviewer-sharing rights are restored and verified.
+- C08: NIKL Q&A 327466 supports the morphology of `일 수도`; NIKL 2021 guideline p.106 confirms dependent noun `시` after `-을`; Standard Pronunciation Rule §27 supplies conditional fortition. These are conditional morphology/rule-environment leads, not exact pronunciation attestations. No production phonology change; no generalized `-성` rule.
+- C08 traceability correction: cluster summary reports eight cases, but the 27-row occurrence ledger contains no C08 entries. Three source-row IDs recovered (`multilexnorm2026_1953`, `multilexnorm2026_1979`, `dc_inside_2024`); five remain unidentified. Stale “remaining cases in paired ledger” wording was corrected.
+- Exact-head GitHub Actions run `41346666445`: browser regression/build PASS; Python regression/data integrity PASS; 1,369 browser tests, 0 failures; NIKL metadata-only inventory SKIPPED. Extractor run `41346594433`: PASS. Multi-engine comparison run `41344981358` completed PASS; artifact `13099523369` inspected. ByT5 and Charsiu jobs were SKIPPED.
+- Current main workflow `41334227038` has a Python collection failure because `scripts.benchmark_ugtphon_ko_surface` is absent from main; the inherited PR #416 branch contains it and passes Python regression/data integrity.
+- No local shell/npm/pytest/build commands were executed; all test evidence is from GitHub Actions. No original g2pK implementation file was changed.
+
+**Disposition:** research prototype. Independent linguistic adjudication, source context, item-level rights, five missing C08 occurrence IDs, and Ukrainian target review remain open. Not release-ready.
+
+
+## Supplementary paired benchmark — SIGMORPHON 2021 Korean lexical test (run 41344981358)
+
+The completed multi-engine diagnostic artifact `13099523369` was downloaded and inspected. It pins g2pK 0.9.4 and compares the native Kozak Kim path with the same 998 paired word-level inputs:
+
+| Metric | Kozak Kim (clippyfirst_native) | Original g2pK 0.9.4 | Paired delta (g2pK − Kozak) |
+|---|---:|---:|---:|
+| Exact match | 358/998 = 35.8717% | 353/998 = 35.3707% | −0.5010 pp |
+| CER | 14.6225% | 14.8106% | +0.1881 pp |
+
+Paired row-cluster bootstrap (1,000 replicates): exact-match delta 95% interval `[-1.0020, -0.1002]` pp; CER delta interval `[+0.0250, +0.3859]` pp. Pairwise audit: 5 native-only exact cases, 0 g2pK-only exact cases, 353 both exact, 640 both non-exact, and 1 native abstention while g2pK returned a non-exact output. This is a **small diagnostic advantage**, not proof of universal superiority.
+
+**Mandatory limitations:** SIGMORPHON is a lexical word-level set, not a sentence-context or normative NIKL set; IPA conventions differ from the reference; g2pK outputs pass through the project's shared segment renderer, which may bias comparison; the benchmark does not score Ukrainian output. The bootstrap intervals are diagnostic uncertainty intervals, not a substitute for independent gold adjudication or a preregistered statistical claim. ByT5 and CharsiuG2P inference jobs were SKIPPED. g2pK source/version remained unchanged.
+
+
+## C01–C07 source-context restoration — 2026-11-01
+
+The earlier blocker “source utterance context unavailable” is superseded. All **39 unique source-row IDs** across the seven six-item pilot packets were matched to the official `naver-ai/UGTPHON/ko/test.json` (275-row Korean test split); every target token is present in its included raw sentence. UGTPHON's `ko/LICENSE` explicitly states Apache-2.0 for the Korean subset. Packets now include raw sentence context only, plus source-row provenance and attribution to UGTPHON, KoMultiText, and MultiLexNorm++; they exclude canonical text, phoneme annotations, IPA-Dict data, system outputs, and reference IPA.
+
+**Updated status:** packet preparation is `DONE_VERIFIED`; the packets are `READY_FOR_INDEPENDENT_REVIEW_PILOT`. Independent reviewer assignment and first-pass submissions remain `TODO`. These six-item-per-cluster samples are not full cluster censuses. Preserve the Apache-2.0 notice and attribution; no raw gated MultiLexNorm++ files are redistributed. Upstream provenance/terms remain a documented limitation for broader reuse.
+
+
+Training gate: the latest readiness audit finds 644 unique lexical rows but zero explicitly independently adjudicated IPA gold rows and 24 frozen holdout cases without IPA gold. Supervised IPA training remains blocked until provenance review, independent annotation/adjudication and frozen train/dev/test splits are complete.
+
+- Exact-head Python/data integrity and browser regression/build passed on code/test head `8b22f778112442024f876061bd0e576af762e761` (push run 41358504664; PR run 41358508399). Latest native pair: run 41358508325, artifact 13104257589; native CER 9.1047% vs g2pK 9.2304%, exact match 53.0393% vs 53.1134%.

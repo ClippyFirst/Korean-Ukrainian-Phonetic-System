@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "dataset": "UGTPHON Korean test split",
+  "source_repository": "https://github.com/naver-ai/UGTPHON",
+  "source_file": "ko/test.json",
+  "source_revision": "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54",
+  "source_license": "Apache-2.0 (UGTPHON Korean subset; ko/LICENSE)",
+  "attribution": [
+    "Jeon et al. 2026, UGTPHON: Phonemizing User-Generated Text (Findings of EMNLP 2026)",
+    "Choi et al. 2023, KoMultiText (NeurIPS SoLaR workshop)",
+    "Buaphet et al. 2026, MultiLexNorm++"
+  ],
+  "cases": [
+    {
+      "case_id": "C08-CTX-001",
+      "source_row_id": "multilexnorm2026_1953",
+      "source": "multilexnorm2026",
+      "split": "test",
+      "input": "무고일수도있다는",
+      "source_sentence": "아니 그니깐 너는 이게 무고일수도있다는 소리 하고 있는 거냐고",
+      "morphological_analysis": "무고 + 이- + -(으)ㄹ + 수 + 도 + 있- + -다는",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-327466"
+      ],
+      "rule_evidence": [
+        "SRC-NIKL-PRON"
+      ],
+      "status": "CONDITIONAL_RULE_DERIVATION_CONTEXT_RESTORED",
+      "notes": "The source sentence supports the intended X일 수도 phrase. NIKL Q&A 327466 explains the morphology; Q&A 307960 directly supports the -(으)ㄹ + dependent noun 수 fortition environment. §27 supplies the conditional rule derivation. No exact-token pronunciation or IPA attestation is claimed.",
+      "pronunciation_evidence": {
+        "source_ids": [
+          "SRC-NIKL-QNA-307960"
+        ],
+        "claim": "NIKL recommends [쑤] for dependent noun 수 after -(으)ㄹ by reference to Standard Pronunciation Rule §27.",
+        "scope": "Rule-environment precedent only; it does not attest the exact corpus token or IPA.",
+        "caveat": "The question says 견딜 수, while the answer text appears to say 결딜 수 (likely typo); retain the source wording and do not treat it as a lexical form."
+      }
+    },
+    {
+      "case_id": "C08-CTX-002",
+      "source_row_id": "multilexnorm2026_1979",
+      "source": "multilexnorm2026",
+      "split": "test",
+      "input": "했을시",
+      "source_sentence": "중국내 소수민족들 했을시 중국치하 있을때보다 붙어야 대대적으로 독립운동 국정원 지하실 아직까지도 음반만들고 보다도 이라는게",
+      "morphological_analysis": "했- + -(으)ㄹ + 시(時)",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-313481",
+        "SRC-NIKL-QNA-333044"
+      ],
+      "rule_evidence": [
+        "SRC-NIKL-PRON"
+      ],
+      "status": "CONDITIONAL_RULE_DERIVATION_CONTEXT_RESTORED_WITH_UGC_SPACING_UNCERTAINTY",
+      "notes": "NIKL confirms dependent noun 시 can follow -을. The raw user-generated sentence is unspaced and syntactically noisy; the exact parse and prosodic cohesion remain a source-context-supported analysis, not direct pronunciation evidence."
+    },
+    {
+      "case_id": "C08-CTX-003",
+      "source_row_id": "dc_inside_2024",
+      "source": "dc_inside",
+      "split": "test",
+      "input": "유사성",
+      "source_sentence": "저번에 사전체험 풀었을때 해봤는데 배낀게 문제가 아니라 그냥 재미가 없음 못만들었음배낀게 ㅈ같긴 해도 장르의 유사성 뭐 시발 잘만들면 됐지 이렇게 생각한 내가 빡대가리 새끼였음취향차이라고 하기엔 조오온나 답답한 조작감에 거기서 나오는 어정쩡한 모션어디서 많이본 시스템을 채택했지만 위 단점때문에 오히려 비슷한 게임들이랑 비교하게끔 만듬사전체험때 10시간인가 이것저것 해봤는데 그냥 씹노잼임 구매 안해서 지금은 모르겠는데 솔직히 텀이 긴것도 아니고 바뀐거 거의 없을듯",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-312649"
+      ],
+      "rule_evidence": [],
+      "status": "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION",
+      "notes": "Q&A 312649 directly confirms 의외성 only; 유사성 appears in the question, not in the official answer. No suffix-wide -성 rule is authorized."
+    },
+    {
+      "case_id": "C08-CTX-004",
+      "source_row_id": "multilexnorm2026_1916",
+      "source": "multilexnorm2026",
+      "split": "test",
+      "input": "해줄것",
+      "source_sentence": "유재석 은인 정말 좋은 말 해줄것 같아서 불렀겠냐나 연예계 최정상 사회 봐주는 사람 자랑하고 싶은거지",
+      "morphological_analysis": "해 주- + -(으)ㄹ + 것 (dependent noun) + 같- + -아서",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-317798"
+      ],
+      "rule_evidence": [
+        "SRC-NIKL-PRON"
+      ],
+      "status": "Rule-environment precedent for 해 줄 것; not exact-token pronunciation or IPA.",
+      "notes": "The pinned sentence contains 해줄것 같아서. The likely segmentation is 해 줄 것 같아서; the NIKL example 할 것을 directly supports the analogous dependent-noun environment, not this UGC token.",
+      "pronunciation_evidence": {
+        "source_ids": [
+          "SRC-NIKL-QNA-317798"
+        ],
+        "claim": "NIKL Q&A 317798 reproduces Standard Pronunciation Rule §27 and directly lists 할 것을[할꺼슬].",
+        "scope": "Direct rule-environment precedent for 해 줄 것; not an exact-token pronunciation or IPA attestation.",
+        "caveat": "Official rule-environment precedent, not direct IPA gold for this UGTPHON token. Item-level NIKL reuse rights remain unverified."
+      }
+    },
+    {
+      "case_id": "C08-CTX-005",
+      "source_row_id": "multilexnorm2026_2011",
+      "source": "multilexnorm2026",
+      "split": "test",
+      "input": "많을거같이",
+      "source_sentence": "이 남자 게이픽 많을거같이 생김 딱 게이들 선호하는 외모네",
+      "morphological_analysis": "많- + -(으)ㄹ + 거 (colloquial dependent noun corresponding to 것) + 같이",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-310899"
+      ],
+      "rule_evidence": [
+        "SRC-NIKL-PRON"
+      ],
+      "status": "Conditional morphology/rule-environment support; no direct IPA for 많을거같이.",
+      "notes": "The source sentence has 많을거같이 생김. The analysis treats 거 as the colloquial dependent noun for 것; prosodic cohesion and exact surface realization are not directly attested.",
+      "pronunciation_evidence": {
+        "source_ids": [
+          "SRC-NIKL-QNA-317798"
+        ],
+        "claim": "Q&A 310899 confirms 거 is the colloquial dependent noun for 것; Q&A 317798 reproduces §27 and its dependent-noun examples.",
+        "scope": "Conditional morphology/rule-environment support; no direct IPA for 많을거같이.",
+        "caveat": "Official rule-environment precedent, not direct IPA gold for this UGTPHON token. Item-level NIKL reuse rights remain unverified."
+      }
+    },
+    {
+      "case_id": "C08-CTX-006",
+      "source_row_id": "dc_inside_2186",
+      "source": "dc_inside",
+      "split": "test",
+      "input": "보일거라",
+      "source_sentence": "주가랑 매출은 단기적으로 큰 상관관계가 없고 복합적 요인이있는데 지표하나 올려놓고 선동질하면 게임이 망한것처럼 보일거라 생각하는건가 ㅋㅋ 여전히 유저수 많아서 사냥터 붐비는데",
+      "morphological_analysis": "보이- + -(으)ㄹ + 거 (colloquial dependent noun corresponding to 것) + (이)라",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-310899"
+      ],
+      "rule_evidence": [
+        "SRC-NIKL-PRON"
+      ],
+      "status": "Conditional morphology/rule-environment support; no direct IPA for 보일거라.",
+      "notes": "The source sentence contains 보일거라 생각하는건가. The likely parse is 보일 거라 생각하는 건가; exact token IPA and prosodic cohesion are not directly attested.",
+      "pronunciation_evidence": {
+        "source_ids": [
+          "SRC-NIKL-QNA-317798"
+        ],
+        "claim": "Q&A 310899 confirms 거 as the colloquial dependent noun for 것; Q&A 317798 reproduces the §27 environment for -(으)ㄹ + dependent nouns.",
+        "scope": "Conditional morphology/rule-environment support; no direct IPA for 보일거라.",
+        "caveat": "Official rule-environment precedent, not direct IPA gold for this UGTPHON token. Item-level NIKL reuse rights remain unverified."
+      }
+    },
+    {
+      "case_id": "C08-CTX-007",
+      "source_row_id": "dc_inside_2266",
+      "source": "dc_inside",
+      "split": "test",
+      "input": "내릴수있는",
+      "source_sentence": "상대를 존중하는 것은 합리적이고 타당한 논리로 존중시킬수도있지만 저런 물리적 힘이 있음에도 자기를 공격하지않는.. 그런곳에서도 나오는 존중이 엄청나게 크다고함 힘에 의해 내릴수있는 어떤 갑질 논리가 아닌곳에서 처음 신뢰가 시작된다고함 왜냐면 국가의 힘들은 항상 똑같지가 안았기때문임 언제나 1의 힘이있는 국가가있다면 99의 힘을 가진놈 20힘 50 힘 모두가 달랐기에 이 물리적인 힘과 논리적인힘이 공존하는 외교상태가 발현되었음",
+      "morphological_analysis": "내리- + -(으)ㄹ + 수 (dependent noun) + 있- + -는",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-331601",
+        "SRC-NIKL-QNA-307960"
+      ],
+      "rule_evidence": [
+        "SRC-NIKL-PRON"
+      ],
+      "status": "Direct rule-environment precedent for dependent noun 수; not exact-token IPA for 내릴수있는.",
+      "notes": "The pinned sentence contains 내릴수있는 어떤 갑질 논리. The likely segmentation is 내릴 수 있는; two NIKL answers support the same environment, not this exact UGC token.",
+      "pronunciation_evidence": {
+        "source_ids": [
+          "SRC-NIKL-QNA-331601",
+          "SRC-NIKL-QNA-307960"
+        ],
+        "claim": "Q&A 331601 gives 알 수 없는[알쑤엄는] under §27; Q&A 307960 directly discusses [쑤] after -(으)ㄹ.",
+        "scope": "Direct rule-environment precedent for dependent noun 수; not an exact-token IPA attestation for 내릴수있는.",
+        "caveat": "Official rule-environment precedent, not direct IPA gold for this UGTPHON token. Item-level NIKL reuse rights remain unverified."
+      }
+    },
+    {
+      "case_id": "C08-CTX-008",
+      "source_row_id": "dc_inside_2557",
+      "source": "dc_inside",
+      "split": "test",
+      "input": "안할듯",
+      "source_sentence": "죽여도 집유인데 판매면 입건도 안할듯 ㅋㅋㅋㅋㅋ",
+      "morphological_analysis": "안 + 하- + -(으)ㄹ + 듯 (dependent noun)",
+      "morphology_evidence": [
+        "SRC-NIKL-QNA-317798"
+      ],
+      "rule_evidence": [
+        "SRC-NIKL-PRON"
+      ],
+      "status": "Direct pronunciation precedent for the morphological environment; not exact-token IPA. A pause can permit a plain onset.",
+      "notes": "The pinned sentence contains 안할듯 followed by laughter. The likely parse is 안 할 듯; the official rule example is 할 듯하다. Actual prosodic cohesion in the UGC utterance is not recorded.",
+      "pronunciation_evidence": {
+        "source_ids": [
+          "SRC-NIKL-QNA-317798"
+        ],
+        "claim": "NIKL Rule §27 gives 할 듯하다[할뜨타다] and notes that a pause can permit a plain onset.",
+        "scope": "Direct analogous example for the -(으)ㄹ + 듯 environment; exact UGC token prosody remains unresolved.",
+        "caveat": "Official rule-environment precedent, not direct IPA gold for this UGTPHON token. Item-level NIKL reuse rights remain unverified."
+      }
+    }
+  ],
+  "morphology_analyzer_cross_check": {
+    "run_id": "41353171166",
+    "artifacts": {
+      "kiwi": "13102576042",
+      "mecab_ko": "13101838045",
+      "consensus": "13102406365"
+    },
+    "status": "DIAGNOSTIC_ONLY_NOT_GOLD",
+    "target_cases": {
+      "multilexnorm2026_1953": {
+        "kiwi": "무고/NNG + 이/VCP + ᆯ/ETM + 수/NNB + 도/JX + 있/VA + 다는/ETM",
+        "mecab_ko": "무고/NNG + 일/VCP+ETM + 수/NNB + 도/JX + 있/VA + 다는/ETM",
+        "status": "PARTIAL_AGREEMENT_ON_TARGET_BOUNDARY",
+        "interpretation": "Both analyzers place the target boundary between 일 and 수 and identify 수 as NNB; internal segmentation of 일 differs. This supports a morphological boundary hypothesis, not pronunciation or IPA."
+      },
+      "multilexnorm2026_1979": {
+        "kiwi": "하/VV + 었/EP + 을/ETM + 시/NNB",
+        "mecab_ko": "했/VV+EP + 을시/EC",
+        "status": "ANALYZER_DISAGREEMENT_ON_SI_BOUNDARY",
+        "interpretation": "Kiwi identifies dependent noun 시 after -을; MeCab-Ko treats 을시 as a connective ending. Official NIKL Q&A supports the dependent-noun construction, but analyzer consensus is absent and the unspaced UGC context remains uncertain."
+      },
+      "dc_inside_2024": {
+        "kiwi": "유사/NNG + 성/XSN",
+        "mecab_ko": "유사성/NNG",
+        "status": "ANALYZER_DISAGREEMENT_ON_LEXICAL_VS_SUFFIX_SEGMENTATION",
+        "interpretation": "Analyzer disagreement does not resolve the lexical reading. NIKL Q&A 312649 confirms 의외성 only, not 유사성; no suffix-wide rule is authorized."
+      }
+    },
+    "limitations": [
+      "Kiwi and MeCab-Ko outputs are diagnostic morphology hypotheses, not gold segmentation.",
+      "Analyzer agreement does not prove the phonological rule environment or IPA.",
+      "Analyzer disagreement must remain visible and must not be resolved by majority vote."
+    ]
+  },
+  "cluster_occurrence_mapping": {
+    "status": "ALL_EIGHT_SOURCE_ROWS_MAPPED_WITH_FIVE_HIGH_CONFIDENCE_RECONSTRUCTIONS",
+    "benchmark_run_id": "41353450686",
+    "benchmark_artifact_id": "13102456604",
+    "preceding_artifact_id": "13097847614",
+    "pinned_ugtphon_revision": "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54",
+    "occurrence_ids": [
+      "multilexnorm2026_1953",
+      "multilexnorm2026_1979",
+      "dc_inside_2024",
+      "multilexnorm2026_1916",
+      "multilexnorm2026_2011",
+      "dc_inside_2186",
+      "dc_inside_2266",
+      "dc_inside_2557"
+    ],
+    "independently_recovered_ids": [
+      "multilexnorm2026_1953",
+      "multilexnorm2026_1979",
+      "dc_inside_2024"
+    ],
+    "reconstructed_ids": [
+      "multilexnorm2026_1916",
+      "multilexnorm2026_2011",
+      "dc_inside_2186",
+      "dc_inside_2266",
+      "dc_inside_2557"
+    ],
+    "delta_check": {
+      "prior_artifact": "13097847614",
+      "current_artifact": "13102456604",
+      "only_kozak_kim_output_changes_on_shared_token_occurrences": [
+        {
+          "source_row_id": "multilexnorm2026_1953",
+          "token": "무고일수도있다는",
+          "before": "muɡoilsudoit̚t͈anɯn",
+          "after": "muɡoils͈udoit̚t͈anɯn"
+        },
+        {
+          "source_row_id": "multilexnorm2026_1979",
+          "token": "했을시",
+          "before": "hɛs͈ɯlɕi",
+          "after": "hɛs͈ɯlɕ͈i"
+        }
+      ],
+      "result": "Exactly two Kozak Kim IPA outputs changed between the two pinned artifacts; all g2pK outputs remained unchanged."
+    },
+    "limitations": [
+      "The original one-off C08 cluster extraction table with its eight row IDs was not preserved in the repository.",
+      "The five reconstructed memberships are high-confidence matches from the pinned benchmark's fortis-versus-plain mismatch signature plus exact target-token occurrence in the pinned source split; they are not copied from the missing original extraction table.",
+      "UGTPHON annotations are diagnostic and are not independently adjudicated normative IPA gold.",
+      "Morphological and rule-environment sources do not directly attest the exact UGC token IPA.",
+      "No production phonology rule is authorized by this mapping alone; independent IPA review, prosodic review and interaction tests remain required."
+    ]
+  }
+}

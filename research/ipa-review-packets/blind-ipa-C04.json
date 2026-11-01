@@ -1,0 +1,171 @@
+{
+  "packet_schema": "korean-independent-ipa-review-v1",
+  "review_mode": "BLINDED_INPUT_ONLY",
+  "limitations": [
+    "Pilot sample only; not a complete cluster census.",
+    "No candidate IPA, syllabification, allophone, or phonological analysis is supplied.",
+    "Do not score boundary-sensitive or morphologically ambiguous items without original utterance context.",
+    "This is a six-form pilot sample, not a complete cluster census.",
+    "UGTPHON IPA/reference annotations are not shown to reviewers; the supplied source_sentence is raw context only.",
+    "This is a six-form pilot sample, not a complete cluster census.",
+    "The included source_sentence is raw UGTPHON context only; canonical and IPA/reference annotations are deliberately excluded."
+  ],
+  "reviewer_instructions": [
+    "Independently transcribe each item in broad phonemic IPA first.",
+    "If useful, add a separate narrow phonetic transcription and state the allophonic detail represented.",
+    "State syllable boundaries and vowel length only under a declared convention and supported evidence.",
+    "Classify the distinction as phonemic, predictable allophony, transcription convention, lexical variation, or unresolved.",
+    "Cite primary sources or describe phonetic evidence, method, and confidence.",
+    "Do not infer a general phonological rule from this pilot packet."
+  ],
+  "reviewer_submission": {
+    "reviewer_id": null,
+    "qualification": null,
+    "method_and_convention": null,
+    "reviewed_at": null,
+    "item_decisions": [],
+    "overall_notes": null,
+    "signed_off": false
+  },
+  "acceptance_gate": {
+    "status": "READY_FOR_INDEPENDENT_REVIEW_PILOT",
+    "required_before_scoring": [
+      "Assign at least two qualified Korean IPA reviewers separate blind copies.",
+      "Record each reviewer's transcription convention, method, and confidence.",
+      "Preserve source attribution and the Apache-2.0 notice with any shared packet."
+    ],
+    "promotion_rule": "Do not generalize beyond the pilot items. Any downstream rule proposal requires independent first-pass review, source adjudication, positive/negative/boundary/interaction controls, and exact-head paired verification."
+  },
+  "packet_id": "BLIND-IPA-C04-2026-11-01",
+  "cluster_id": "C04",
+  "items": [
+    {
+      "input_hangul": "클래스급",
+      "source_row_ids": [
+        "multilexnorm2026_1915"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1915",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "리틀야구 이쪽 일본 거의 자원봉사 굴러가고 그 다음 중 고교야구 고시엔 A B C 클래스급 학교 코치 아니면 솔직히 직업 삼기는",
+          "target_token_present": true
+        }
+      ]
+    },
+    {
+      "input_hangul": "솔직히",
+      "source_row_ids": [
+        "multilexnorm2026_1915",
+        "multilexnorm2026_1968",
+        "dc_inside_2024"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1915",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "리틀야구 이쪽 일본 거의 자원봉사 굴러가고 그 다음 중 고교야구 고시엔 A B C 클래스급 학교 코치 아니면 솔직히 직업 삼기는",
+          "target_token_present": true
+        },
+        {
+          "source_row_id": "multilexnorm2026_1968",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "솔직히 입 쫙쫙 붙는 대사",
+          "target_token_present": true
+        },
+        {
+          "source_row_id": "dc_inside_2024",
+          "source": "dc_inside",
+          "split": "test",
+          "source_sentence": "저번에 사전체험 풀었을때 해봤는데 배낀게 문제가 아니라 그냥 재미가 없음 못만들었음배낀게 ㅈ같긴 해도 장르의 유사성 뭐 시발 잘만들면 됐지 이렇게 생각한 내가 빡대가리 새끼였음취향차이라고 하기엔 조오온나 답답한 조작감에 거기서 나오는 어정쩡한 모션어디서 많이본 시스템을 채택했지만 위 단점때문에 오히려 비슷한 게임들이랑 비교하게끔 만듬사전체험때 10시간인가 이것저것 해봤는데 그냥 씹노잼임 구매 안해서 지금은 모르겠는데 솔직히 텀이 긴것도 아니고 바뀐거 거의 없을듯",
+          "target_token_present": true
+        }
+      ]
+    },
+    {
+      "input_hangul": "도쿄로",
+      "source_row_ids": [
+        "multilexnorm2026_1920"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1920",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "몸으로 때워야지 간은 후쿠오카로 눈은 오사카로 심장은 도쿄로",
+          "target_token_present": true
+        }
+      ]
+    },
+    {
+      "input_hangul": "다크티렉스",
+      "source_row_ids": [
+        "multilexnorm2026_1929"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1929",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "다크티렉스 존나 멋있노",
+          "target_token_present": true
+        }
+      ]
+    },
+    {
+      "input_hangul": "스크롤",
+      "source_row_ids": [
+        "multilexnorm2026_1933"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1933",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "뭐라노 진짜댓글단 여시련들 글 좃같아서 대충 읽고 스크롤 내리고댓글 분위기 보고 따라서 공감하는거다 백퍼 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "target_token_present": true
+        }
+      ]
+    },
+    {
+      "input_hangul": "시킨",
+      "source_row_ids": [
+        "multilexnorm2026_1950"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1950",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "이짓 자국민 시킨 나라는 어떤곳 일까",
+          "target_token_present": true
+        }
+      ]
+    }
+  ],
+  "dataset_scope": "UGTPHON Korean test split; six-item pilot sample per cluster",
+  "source_license": "Apache-2.0 (UGTPHON Korean subset; ko/LICENSE)",
+  "source_attribution": [
+    "Jeon et al. 2026, UGTPHON: Phonemizing User-Generated Text (Findings of EMNLP 2026)",
+    "Choi et al. 2023, KoMultiText (NeurIPS SoLaR workshop)",
+    "Buaphet et al. 2026, MultiLexNorm++"
+  ],
+  "source_repository": "https://github.com/naver-ai/UGTPHON",
+  "source_license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+  "source_license_note": "UGTPHON ko/LICENSE states Apache-2.0 for the Korean subset. Preserve attribution and this license notice when sharing these excerpts. No canonical text, phoneme annotations, or IPA-Dict data are included."
+}

@@ -247,3 +247,85 @@ def test_2026_11_01_g2p_sources_keep_scope_and_license_provenance_explicit():
     assert "CC BY-SA" in ugtphon["license_status"]
     assert "UGT" in ugtphon["limitations_or_next_action"]
 
+
+
+def test_c08_context_fixture_restores_all_eight_source_rows_without_importing_ipa_gold():
+    fixture_path = ROOT / "tests" / "fixtures" / "kozak-kim-c08-source-contexts.json"
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    assert fixture["source_revision"] == "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54"
+    assert fixture["source_license"].startswith("Apache-2.0")
+    cases = fixture["cases"]
+    assert {case["source_row_id"] for case in cases} == {
+        "multilexnorm2026_1953", "multilexnorm2026_1979", "dc_inside_2024",
+        "multilexnorm2026_1916", "multilexnorm2026_2011", "dc_inside_2186",
+        "dc_inside_2266", "dc_inside_2557",
+    }
+    assert all(case["input"] in case["source_sentence"] for case in cases)
+    assert all("ipa" not in case and "expected_ipa" not in case for case in cases)
+    mapping = fixture["cluster_occurrence_mapping"]
+    assert mapping["status"] == "ALL_EIGHT_SOURCE_ROWS_MAPPED_WITH_FIVE_HIGH_CONFIDENCE_RECONSTRUCTIONS"
+    assert len(mapping["reconstructed_ids"]) == 5
+    assert "original one-off C08 cluster extraction table" in " ".join(mapping["limitations"])
+    registered = {row["source_id"] for row in load_source_register()}
+    for case in cases:
+        evidence_ids = set(case.get("morphology_evidence", [])) | set(case.get("rule_evidence", []))
+        evidence_ids |= set(case.get("pronunciation_evidence", {}).get("source_ids", []))
+        assert evidence_ids <= registered, case["source_row_id"]
+    unresolved = next(case for case in cases if case["source_row_id"] == "dc_inside_2024")
+    assert unresolved["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"
+    supported = next(case for case in cases if case["source_row_id"] == "multilexnorm2026_1953")
+    assert supported["pronunciation_evidence"]["source_ids"] == ["SRC-NIKL-QNA-307960"]
+    assert "exact corpus token" in supported["pronunciation_evidence"]["scope"]
+
+
+def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    for source_id, qna_id in [
+        ("SRC-NIKL-QNA-313481", "313481"),
+        ("SRC-NIKL-QNA-333044", "333044"),
+    ]:
+        source = rows[source_id]
+        assert f"qna_seq={qna_id}" in source["url"]
+        assert "dependent noun" in source["coverage"].lower()
+        assert "pronunciation" in source["limitations_or_next_action"].lower()
+        assert "ipa" in source["limitations_or_next_action"].lower()
+        assert "item-level" in source["license_status"].lower()
+    dependent_su = rows["SRC-NIKL-QNA-307960"]
+    assert "qna_seq=307960" in dependent_su["url"]
+    assert "[쑤]" in dependent_su["coverage"]
+    assert "appears to contain a typo" in dependent_su["limitations_or_next_action"].lower()
+    assert "item-level" in dependent_su["license_status"].lower()
+
+    geo_source = rows["SRC-NIKL-QNA-310899"]
+    assert "qna_seq=310899" in geo_source["url"]
+    assert "dependent noun" in geo_source["coverage"]
+    assert "colloquial" in geo_source["coverage"]
+    assert "does not independently attest pronunciation" in geo_source["contribution_expected"]
+
+    rule27 = rows["SRC-NIKL-QNA-317798"]
+    assert "qna_seq=317798" in rule27["url"]
+    assert "할 것을[할꺼슬]" in rule27["coverage"]
+    assert "할 수는[할쑤는]" in rule27["coverage"]
+    assert "broken off" in rule27["coverage"]
+    assert "not exact-token IPA" in rule27["contribution_expected"]
+
+    su = rows["SRC-NIKL-QNA-331601"]
+    assert "qna_seq=331601" in su["url"]
+    assert "알 수 없는[알쑤엄는]" in su["coverage"]
+    assert "Does not attest the exact corpus token" in su["limitations_or_next_action"]
+
+    pdf = rows["SRC-NIKL-EDU-2021-DEPENDENT-SI"]
+    assert "not used as production evidence" in pdf["limitations_or_next_action"].lower()
+
+
+def test_c08_analyzer_cross_check_is_recorded_as_diagnostic_not_gold():
+    fixture_path = ROOT / "tests" / "fixtures" / "kozak-kim-c08-source-contexts.json"
+    fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    cross_check = fixture["morphology_analyzer_cross_check"]
+    assert cross_check["run_id"] == "41353171166"
+    assert cross_check["status"] == "DIAGNOSTIC_ONLY_NOT_GOLD"
+    cases = cross_check["target_cases"]
+    assert cases["multilexnorm2026_1953"]["status"] == "PARTIAL_AGREEMENT_ON_TARGET_BOUNDARY"
+    assert cases["multilexnorm2026_1979"]["status"] == "ANALYZER_DISAGREEMENT_ON_SI_BOUNDARY"
+    assert cases["dc_inside_2024"]["status"] == "ANALYZER_DISAGREEMENT_ON_LEXICAL_VS_SUFFIX_SEGMENTATION"
+    assert any("majority vote" in item for item in cross_check["limitations"])

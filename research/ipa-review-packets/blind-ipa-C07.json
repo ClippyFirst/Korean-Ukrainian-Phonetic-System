@@ -1,0 +1,155 @@
+{
+  "packet_schema": "korean-independent-ipa-review-v1",
+  "review_mode": "BLINDED_INPUT_ONLY",
+  "limitations": [
+    "Pilot sample only; not a complete cluster census.",
+    "No candidate IPA, syllabification, allophone, or phonological analysis is supplied.",
+    "Do not score boundary-sensitive or morphologically ambiguous items without original utterance context.",
+    "This is a six-form pilot sample, not a complete cluster census.",
+    "UGTPHON IPA/reference annotations are not shown to reviewers; the supplied source_sentence is raw context only.",
+    "This is a six-form pilot sample, not a complete cluster census.",
+    "The included source_sentence is raw UGTPHON context only; canonical and IPA/reference annotations are deliberately excluded."
+  ],
+  "reviewer_instructions": [
+    "Independently transcribe each item in broad phonemic IPA first.",
+    "If useful, add a separate narrow phonetic transcription and state the allophonic detail represented.",
+    "State syllable boundaries and vowel length only under a declared convention and supported evidence.",
+    "Classify the distinction as phonemic, predictable allophony, transcription convention, lexical variation, or unresolved.",
+    "Cite primary sources or describe phonetic evidence, method, and confidence.",
+    "Do not infer a general phonological rule from this pilot packet."
+  ],
+  "reviewer_submission": {
+    "reviewer_id": null,
+    "qualification": null,
+    "method_and_convention": null,
+    "reviewed_at": null,
+    "item_decisions": [],
+    "overall_notes": null,
+    "signed_off": false
+  },
+  "acceptance_gate": {
+    "status": "READY_FOR_INDEPENDENT_REVIEW_PILOT",
+    "required_before_scoring": [
+      "Assign at least two qualified Korean IPA reviewers separate blind copies.",
+      "Record each reviewer's transcription convention, method, and confidence.",
+      "Preserve source attribution and the Apache-2.0 notice with any shared packet."
+    ],
+    "promotion_rule": "Do not generalize beyond the pilot items. Any downstream rule proposal requires independent first-pass review, source adjudication, positive/negative/boundary/interaction controls, and exact-head paired verification."
+  },
+  "packet_id": "BLIND-IPA-C07-2026-11-01",
+  "cluster_id": "C07",
+  "items": [
+    {
+      "input_hangul": "창렬하다",
+      "source_row_ids": [
+        "multilexnorm2026_1954"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1954",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "인천공항 창렬하다 공항 문화체험공간 점수 깎이다",
+          "target_token_present": true
+        }
+      ]
+    },
+    {
+      "input_hangul": "자결함",
+      "source_row_ids": [
+        "multilexnorm2026_1958"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1958",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "만날 바에 살고 자결함",
+          "target_token_present": true
+        }
+      ]
+    },
+    {
+      "input_hangul": "말한",
+      "source_row_ids": [
+        "multilexnorm2026_1963"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "multilexnorm2026_1963",
+          "source": "multilexnorm2026",
+          "split": "test",
+          "source_sentence": "비혼 비출산 해야하는 이유 무조건 여기 있다는걸 바보라도 알겠지 헬좆센은 좌파 우파 그런거 없고 북괴공산 파시즘 전체주의가 디폴트라 노예만 필요한거지 루즈벨트가 말한 자유와 평화와 빵을 누리는 인간이 필요한게 아니거든",
+          "target_token_present": true
+        }
+      ]
+    },
+    {
+      "input_hangul": "디씨질하면서",
+      "source_row_ids": [
+        "dc_inside_2131"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "dc_inside_2131",
+          "source": "dc_inside",
+          "split": "test",
+          "source_sentence": "70 넘게 쳐먹은 틀극기 할배가 스마트폰에 돋보기 대고 디씨질하면서 얼굴 시뻘개져가지고 \"쥴리? 이노무쉐리가 감히 어디서 쥴리를 찾아 빼애액~\" 이 지랄 떨고 있으니까 손님들이 다 도망가지ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "target_token_present": true
+        }
+      ]
+    },
+    {
+      "input_hangul": "뭘해도",
+      "source_row_ids": [
+        "dc_inside_2183"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "dc_inside_2183",
+          "source": "dc_inside",
+          "split": "test",
+          "source_sentence": "이 병신은 지 쫒아내면 욕을 왜이리해대는지 ㅉㅉ 전형적인 니편내편인 새끼....... 내편이면 뭘해도 봐주고니편이면 다 욕하고 ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅄ",
+          "target_token_present": true
+        }
+      ]
+    },
+    {
+      "input_hangul": "일했다",
+      "source_row_ids": [
+        "dc_inside_2244"
+      ],
+      "source_context_status": "RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST",
+      "review_status": "AWAITING_INDEPENDENT_REVIEW",
+      "source_contexts": [
+        {
+          "source_row_id": "dc_inside_2244",
+          "source": "dc_inside",
+          "split": "test",
+          "source_sentence": "저런 포인트 제도라는게 포인트 제대로 이용못하고 방치하는 사람들이 있는것까지 계산한 제도그런데 사용률 0%는 홍보를 저어어어어언혀 안했다는 소리네 ㅋㅋ제도 만든 놈들끼리 와 우리 일했다 쎾쓰 이지랄 했다는 뜻",
+          "target_token_present": true
+        }
+      ]
+    }
+  ],
+  "dataset_scope": "UGTPHON Korean test split; six-item pilot sample per cluster",
+  "source_license": "Apache-2.0 (UGTPHON Korean subset; ko/LICENSE)",
+  "source_attribution": [
+    "Jeon et al. 2026, UGTPHON: Phonemizing User-Generated Text (Findings of EMNLP 2026)",
+    "Choi et al. 2023, KoMultiText (NeurIPS SoLaR workshop)",
+    "Buaphet et al. 2026, MultiLexNorm++"
+  ],
+  "source_repository": "https://github.com/naver-ai/UGTPHON",
+  "source_license_url": "https://www.apache.org/licenses/LICENSE-2.0",
+  "source_license_note": "UGTPHON ko/LICENSE states Apache-2.0 for the Korean subset. Preserve attribution and this license notice when sharing these excerpts. No canonical text, phoneme annotations, or IPA-Dict data are included."
+}
