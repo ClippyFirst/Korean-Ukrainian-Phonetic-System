@@ -3,7 +3,7 @@
 **Scope:** Kozak Kim only. The original/vendor g2pK implementation remains unchanged and comparison-only.
 **Working branch:** research/kozak-kim-independent-ipa-packets-2026-11-01.
 **PR:** #417, draft and stacked on the PR #416 implementation line. PRs #415 and #416 remain open; no merge or destructive branch operation was performed.
-**Verified code/test base:** bc7b1474eecfe8df8006572abf0f07957f829647; the next branch update is this documentation-only reconciliation.
+**Verified code/test base:** bc7b1474eecfe8df8006572abf0f07957f829647; all later branch updates are documentation/PR metadata only.
 
 ## Current task ledger
 
@@ -41,7 +41,7 @@ Secondary native paired diagnostic: run 41352607885, artifact 13101886624. It us
 - Kiwi/MeCab-Ko analyzer cross-check: PASS — run 41353171166 (artifact 13102406365 plus analyzer outputs 13102576042 and 13101838045).
 - CharsiuG2P inference and ByT5 inference: SKIPPED (optional research jobs; no fresh neural result claimed).
 - NIKL metadata-only inventory: SKIPPED.
-- Multi-engine IPA diagnostic run 41353450707 was still in progress at the last check. Earlier run 41353171180 was cancelled during the comparison step; its partial artifact 13101748305 contains a completed training-readiness audit but no completed multi-engine score report.
+- Multi-engine IPA diagnostic runs 41353171180 and 41353450707 were cancelled during the comparison step after subsequent branch updates; neither produced a completed multi-engine score report. Partial artifact 13101748305 contains a completed training-readiness audit only.
 
 ## Readiness and next genuine blockers
 
