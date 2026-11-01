@@ -11,14 +11,22 @@ Do not conflate g2pK with the native engine or describe the third-party library 
 
 ## Current measurable baseline
 
-The latest fully documented comparable multi-engine baseline currently available in the repository's benchmark history is Actions run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742):
+The latest completed paired native/g2pK diagnostic on the current research branch is Actions run [41248014239](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41248014239), artifact [13060260820](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41248014239/artifacts/13060260820). The separate UGTPHON profile run is [41248014136](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41248014136), artifact [13059792615](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41248014136/artifacts/13059792615).
 
-| Engine | UGTPHON exact | SIGMORPHON exact | Interpretation |
-|---|---:|---:|---|
-| Native ClippyFirst | 53.002% | 35.772% | Better CER/PER/feature proxy than g2pK on both sets in that run |
-| g2pK | 53.089% | 35.335% | Near-tied exact match; not better on all sequence/feature metrics |
+| Engine/profile | Scored tokens | Exact | CER | Interpretation |
+|---|---:|---:|---:|---|
+| Native broad IPA | 2,698 | 53.0022% | 9.1697% | 5 unresolved; 0 engine errors |
+| g2pK-derived IPA | 2,703 | 53.0892% | 9.2285% | 0 unresolved; 0 engine errors |
+| g2pK, same 2,698-token paired subset | 2,698 | 53.1134% | 9.2304% | +0.1112 percentage points exact vs native, but +0.0607 pp worse CER |
+| Native partial-narrow IPA profile v3 | 2,698 | 70.4225% | 4.8992% | Partial research-only profile; not independently adjudicated or target-compatible |
 
-This is a historical verified baseline, not a score for the current branch head. Exact match alone is not an adequate objective: a model can tie exact match while producing worse partial sequences, and IPA source conventions can create apparent errors that are not yet adjudicated phonological errors.
+The paired native/g2pK difference is tiny and metric-dependent: g2pK has a 3-token exact-match advantage on the paired subset, while native has lower CER. The comparison also shares the repository IPA renderer for g2pK surface Hangul and is therefore not fully independent. UGTPHON is noisy user-generated text, not a normative standard-pronunciation corpus.
+
+The broad-vs-partial-narrow result uses the same 2,698 tokens, but the narrow profile adds research-only allophonic detail to better match the UGTPHON annotation convention. Its higher exact match is **not proof of improved standard-Korean G2P** and must not be fed into the Ukrainian target adapter.
+
+The broader multi-engine run [41248014178](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41248014178) was **CANCELLED** during its multi-engine comparison step; its uploaded artifact contains training-readiness/leakage information, not a completed multi-engine score. Do not cite that cancelled run as a benchmark pass.
+
+Exact match alone is not an adequate objective: report CER, PER, coverage, unresolved cases and per-case errors together. IPA source conventions can create apparent errors that are not yet adjudicated phonological errors.
 
 The neural-teacher register currently reports 0 teacher-vs-Strict disagreements established as true phonological errors because the source IPA conventions have not yet been reconciled. It also records 107 length-mark-only diagnostics and 291 other teacher mismatches in one saved dev artifact; these are triage categories, not counts of missing rules.
 
@@ -52,11 +60,13 @@ These numbers are **not comparable** to this repository's token-level IPA exact 
 - Syllable stores onset, nucleus, coda, source character and word-boundary metadata.
 - The deterministic engine applies an explicitly ordered NIKL rule sequence and returns rule traces.
 - Morphology-sensitive rules fail closed without exact full-form/pair licenses.
-- A separate research path uses analyzer consensus to propose low-confidence licenses; it does not silently change the strict browser/runtime path.
+- The research-only morphology module already adapts Kiwi and MeCab-Ko, validates source offsets, preserves zero-width and unaligned morphemes, and builds syllable↔morpheme links and boundary classes. It explicitly grants no pronunciation-rule licenses.
+- The analyzer agreement diagnostic found exact boundary-set agreement for 1,537/1,907 words (80.5978%); this is pairwise analyzer agreement, **not** segmentation accuracy. The two analyzers are not gold.
+- A Kiwi+MeCab-Ko consensus diagnostic changed four words and newly resolved one previously unresolved form, but added no exact matches and slightly worsened CER (strict: 53.0022% exact / 9.1697% CER; consensus: 52.9826% exact / 9.1776% CER). It also withheld 24 unspaced phrase-boundary cases. No rule is promoted.
 - The neural-teacher workflow is hypothesis generation only; source IPA differences remain unadjudicated.
 - Exact lexical pronunciation entries preserve source URLs, confidence and rule notes.
 
-Do not replace these safeguards with a broad heuristic or train on the synthetic adversarial corpus.
+Do not duplicate the existing morphology alignment helper, replace these safeguards with broad heuristics, or train on the synthetic adversarial corpus.
 
 ## Implemented correctness hardening in this continuation
 
@@ -114,6 +124,12 @@ This is a proposal for a research-only prototype, not a production change in thi
 5. Use paired case-level comparisons and confidence intervals; do not infer an improvement from a single aggregate score.
 6. Require no unacceptable regressions on independently adjudicated standard Korean controls.
 7. Keep Korean surface accuracy, IPA accuracy and Ukrainian target accuracy as separate acceptance layers.
+
+## Latest morphology diagnostic — 2026-10-31
+
+Actions run [41248014188](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41248014188) verified real Kiwi and MeCab-Ko smoke jobs and pairwise boundary diagnostics. Artifact [13060536030](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41248014188/artifacts/13060536030) reports 80.5978% exact boundary-set agreement over 1,907 words. This measures how often two analyzers agree, not whether either is correct. A separate soft-rule alignment diagnostic found 217 common rule events, with 186 observed by both analyzers, 18 by neither, 8 Kiwi-only and 5 MeCab-only.
+
+The consensus evaluation artifact [13060490661](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41248014274/artifacts/13060490661) reports 2,703 token occurrences and 1,907 unique Hangul words. It changed four unique words; one additional word (칡칡이) became resolved, but overall exact match did not improve and CER became slightly worse. All changed IPA remains diagnostic-only. This confirms the correct next step is reviewed rule-specific licensing, not blanket promotion of analyzer consensus.
 
 ## Decisions and blockers
 
