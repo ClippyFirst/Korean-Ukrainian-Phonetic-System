@@ -18,7 +18,7 @@ The IPA is the comparison boundary. Do not patch Ukrainian spellings to conceal 
 - Working branch: `research/kozak-kim-discrepancy-driven-improvement-2026-11-01`, based on PR #415's verified research/code line `559000fa845b40450cb7173167a2d28016d282f8` (116 commits ahead of main, 0 behind at branch creation).
 - Paired browser diagnostic: [Actions run 41331679243](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679243), artifact `13093672281`, report `kozak-kim-vs-original-g2pk-browser-report.json`.
 - This artifact contains 2,703 eligible occurrences and 2,699 shared scored occurrences. Both engines scored 1,442/2,699 exact (53.4272%). Kozak Kim CER was 8.1358%; g2pK CER 8.2138%. The sentence-cluster bootstrap exact-delta 95% CI was [-0.20697, +0.20056] percentage points; it crosses zero. The CER-delta interval was [-0.16560, 0] percentage points and touches zero. This is evidence of a lower CER point estimate for Kozak Kim on this diagnostic, not a statistically established universal winner.
-- On the 2,699 shared occurrences: 1,438 were exact for both; 4 exact only for Kozak Kim; 4 exact only for g2pK; 1,253 were wrong for both. There were 23 occurrences where the engines emitted different normalized IPA strings. In those 23, Kozak Kim had the smaller edit distance on 15; g2pK on 8. This is a useful triage signal, not a linguistic adjudication.
+- On the 2,699 shared occurrences: 1,438 were exact for both; 4 exact only for Kozak Kim; 4 exact only for g2pK; 1,253 were wrong for both. In the original pre-§27/§26 baseline artifact, there were 23 occurrences where the engines emitted different normalized IPA strings. In that historical snapshot, Kozak Kim had the smaller edit distance on 15 and g2pK on 8. This is a useful triage signal, not a linguistic adjudication.
 - g2pK remains unchanged and is not a gold oracle. UGTPHON references are diagnostic phonetic annotations, not a fully independent normative IPA gold set.
 
 ## First verified discrepancy repair
@@ -259,3 +259,19 @@ The latest branch head `0c7688bb91687fec81965f426c24dd248df918bb` was re-run thr
 Exact-head system verification [41342607492](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607492), browser g2pK integration [41342607484](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607484), paired native diagnostic [41342607520](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607520), morphology consensus [41342607489](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607489), morphology adapter [41342607508](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607508), and test-case extraction [41342607558](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41342607558) all passed. The metadata-only NIKL inventory job was skipped; optional ByT5/Charsiu inference and joined neural pairing were skipped. No neural score or source-rights clearance is claimed.
 
 This verifies exact-head reproducibility and preserves the narrow claim: lower paired CER on this diagnostic profile, tied exact match, no independent normative IPA or Ukrainian target validation.
+
+
+### Current IPA-discordance direction and unresolved occurrences
+
+For the current exact-head artifact `13097847614`, the 26 normalized-IPA-discordant occurrences comprise **21 distinct token forms**. Relative to the best shared UGTPHON reference alternative, Kozak Kim has the lower edit distance on 17 occurrences, original g2pK on 7, and the engines tie on 2. These are occurrence-level reference-distance comparisons, not 17 independently adjudicated lexical wins: repeated forms include `없는` (4), `없다` (2), and `사건` (2), and the resampling unit remains the source sentence/utterance row.
+
+The same artifact contains four unresolved Kozak Kim occurrences:
+
+| Occurrence | Input | Evidence status | Decision |
+|---|---|---|---|
+| `dc_inside_2050` | `칡칡이` | Lexical/structural analysis not established | Keep unresolved; do not copy g2pK's resolved guess as gold |
+| `dc_inside_2183` | `쫒아내면` | Possible nonstandard spelling/typo for `쫓아내면`; not confirmed by this benchmark | Keep source orthography intact; do not auto-correct spelling in the phonology engine |
+| `dc_inside_2202` | `많앗구나유유유` | Likely nonstandard inflectional spelling, but no normalization contract or adjudication | Keep unresolved; no silent typo repair |
+| `dc_inside_2241` | `무서웟어` | Likely nonstandard spelling of an inflected form, but source intent is not adjudicated | Keep unresolved; no silent typo repair |
+
+Original g2pK returns outputs for these four inputs, but that does not establish those outputs as correct. The correct next step is an explicit source-orthography/typo policy and, for `칡칡이`, lexical/morphological evidence. Until then, Kozak Kim's abstention is preferable to an unsupported confident guess.
