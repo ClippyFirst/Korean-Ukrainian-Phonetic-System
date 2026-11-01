@@ -68,7 +68,7 @@ test('§24 exact-form stem-n/m ending licenses match the native engine without e
 });
 
 test('§26: NIKL-dictionary-attested 출산 compounds retain exact Sino-Korean ㄹ+ㅅ fortition', () => {
-  for (const input of ['출산', '출산율', '출산하다', '비출산']) {
+  for (const input of ['출산', '출산율', '출산하다', '비출산', '저출산']) {
     const result = generic.convert(input);
     assert.ok(
       result.trace.some((item) => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')),
@@ -77,11 +77,13 @@ test('§26: NIKL-dictionary-attested 출산 compounds retain exact Sino-Korean �
     assert.ok(result.ipa.includes('s͈'), input + ': following ㅅ must be fortis');
   }
 
-  const lookalike = generic.convert('비출고');
-  assert.ok(
-    !lookalike.trace.some((item) => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')),
-    'an unlicensed lookalike must not inherit the 출산 license',
-  );
+  for (const input of ['비출고', '저출고']) {
+    const lookalike = generic.convert(input);
+    assert.ok(
+      !lookalike.trace.some((item) => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')),
+      input + ': an unlicensed lookalike must not inherit the 출산 license',
+    );
+  }
 });
 
 test('§27 punctuation-separated pause controls suppress adnominal fortition', () => {
