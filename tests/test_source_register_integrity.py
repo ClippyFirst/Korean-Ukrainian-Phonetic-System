@@ -262,6 +262,9 @@ def test_c08_context_fixture_restores_three_source_rows_without_importing_ipa_go
     assert all("ipa" not in case and "expected_ipa" not in case for case in cases)
     unresolved = next(case for case in cases if case["source_row_id"] == "dc_inside_2024")
     assert unresolved["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"
+    supported = next(case for case in cases if case["source_row_id"] == "multilexnorm2026_1953")
+    assert supported["pronunciation_evidence"]["source_ids"] == ["SRC-NIKL-QNA-307960"]
+    assert "exact corpus token" in supported["pronunciation_evidence"]["scope"]
 
 
 def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
@@ -276,6 +279,11 @@ def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
         assert "pronunciation" in source["limitations_or_next_action"].lower()
         assert "ipa" in source["limitations_or_next_action"].lower()
         assert "item-level" in source["license_status"].lower()
+    dependent_su = rows["SRC-NIKL-QNA-307960"]
+    assert "qna_seq=307960" in dependent_su["url"]
+    assert "[쑤]" in dependent_su["coverage"]
+    assert "likely typo" in dependent_su["limitations_or_next_action"].lower()
+    assert "item-level" in dependent_su["license_status"].lower()
     pdf = rows["SRC-NIKL-EDU-2021-DEPENDENT-SI"]
     assert "not used as production evidence" in pdf["limitations_or_next_action"].lower()
 

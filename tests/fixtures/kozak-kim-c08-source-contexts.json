@@ -26,7 +26,15 @@
         "SRC-NIKL-PRON"
       ],
       "status": "CONDITIONAL_RULE_DERIVATION_CONTEXT_RESTORED",
-      "notes": "The source sentence supports the intended X일 수도 phrase. NIKL Q&A 327466 explains the morphology; §27 provides a conditional fortition derivation. No direct pronunciation or IPA attestation is claimed."
+      "notes": "The source sentence supports the intended X일 수도 phrase. NIKL Q&A 327466 explains the morphology; Q&A 307960 directly supports the -(으)ㄹ + dependent noun 수 fortition environment. §27 supplies the conditional rule derivation. No exact-token pronunciation or IPA attestation is claimed.",
+      "pronunciation_evidence": {
+        "source_ids": [
+          "SRC-NIKL-QNA-307960"
+        ],
+        "claim": "NIKL recommends [쑤] for dependent noun 수 after -(으)ㄹ by reference to Standard Pronunciation Rule §27.",
+        "scope": "Rule-environment precedent only; it does not attest the exact corpus token or IPA.",
+        "caveat": "The question says 견딜 수, while the answer text appears to say 결딜 수 (likely typo); retain the source wording and do not treat it as a lexical form."
+      }
     },
     {
       "case_id": "C08-CTX-002",
