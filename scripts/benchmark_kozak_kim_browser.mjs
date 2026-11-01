@@ -47,6 +47,35 @@ export function normalizeIpa(value) {
     .normalize('NFC');
 }
 
+const BROAD_ALLOPHONE_MAP = new Map([
+  ['ɭ', 'l'], ['ʎ', 'l'], ['ɲ', 'n'],
+  ['ɦ', 'h'], ['ç', 'h'], ['x', 'h'], ['ɸ', 'h'], ['β', 'h'], ['ʝ', 'h']
+]);
+
+// Research-only sensitivity profile: compare the project's broad IPA against
+// predictable Korean narrow allophones in UGTPHON-style phonetic gold.
+// It deliberately preserves stop aspiration, fortisness, vowel length and
+// unreleased codas; it does not replace the strict headline score.
+export function normalizeIpaBroadCandidate(value) {
+  const chars = [...String(value ?? '').normalize('NFD').replace(/g/gu, 'ɡ').replaceAll(TIE_BAR, '')];
+  const normalized = [];
+  for (let index = 0; index < chars.length; index += 1) {
+    const char = chars[index];
+    if (char === 'ˈ' || char === 'ˌ') continue;
+    if (['s', 'ɕ', 'ʃ'].includes(char) && chars[index + 1] === 'ʰ') {
+      normalized.push(char);
+      index += 1;
+      continue;
+    }
+    if (char === 'ʷ' && normalized.at(-1) === 'h') continue;
+    normalized.push(BROAD_ALLOPHONE_MAP.get(char) ?? char);
+  }
+  return normalized
+    .filter(char => !/\s/u.test(char) && char !== '.' && !IGNORABLE_DIACRITICS.has(char))
+    .join('')
+    .normalize('NFC');
+}
+
 export function editDistance(left, right) {
   const a = [...left];
   const b = [...right];
@@ -151,6 +180,11 @@ export function evaluateRows(rows, engine) {
         const distances = goldVariants.map(gold => ({ gold, distance: editDistance(predicted, gold) }));
         distances.sort((a, b) => a.distance - b.distance);
         const closest = distances[0];
+        const broadPredicted = normalizeIpaBroadCandidate(predictedRaw);
+        const broadGoldVariants = goldRaw.split(',').map(normalizeIpaBroadCandidate).filter(Boolean);
+        const broadDistances = broadGoldVariants.map(gold => ({ gold, distance: editDistance(broadPredicted, gold) }));
+        broadDistances.sort((a, b) => a.distance - b.distance);
+        const broadClosest = broadDistances[0];
         records.push({
           id: row.id,
           token: canonical,
@@ -160,6 +194,10 @@ export function evaluateRows(rows, engine) {
           closest_normalized_gold: closest.gold,
           distance: closest.distance,
           exact: closest.distance === 0,
+          broad_candidate_predicted: broadPredicted,
+          broad_candidate_gold: broadClosest?.gold ?? null,
+          broad_candidate_distance: broadClosest?.distance ?? null,
+          broad_candidate_exact: broadClosest?.distance === 0,
           pronunciation_status: pronunciationStatus,
           target_status: result.target_status ?? null,
           overall_status: result.status ?? null
@@ -181,6 +219,10 @@ export function evaluateRows(rows, engine) {
   const totalDistance = comparable.reduce((sum, item) => sum + item.distance, 0);
   const totalGoldCharacters = comparable.reduce((sum, item) => sum + [...item.closest_normalized_gold].length, 0);
   const scoredTokens = comparable.length;
+  const broadComparable = records.filter(item => typeof item.broad_candidate_distance === 'number');
+  const broadExactMatches = broadComparable.filter(item => item.broad_candidate_exact).length;
+  const broadTotalDistance = broadComparable.reduce((sum, item) => sum + item.broad_candidate_distance, 0);
+  const broadTotalGoldCharacters = broadComparable.reduce((sum, item) => sum + [...item.broad_candidate_gold].length, 0);
   const relativeError = item => item.distance / Math.max(
     [...item.normalized_predicted].length,
     [...item.closest_normalized_gold].length,
@@ -208,6 +250,12 @@ export function evaluateRows(rows, engine) {
     exact_match_rate: scoredTokens ? Number((exactMatches / scoredTokens).toFixed(6)) : null,
     coverage_adjusted_exact_match_rate: eligibleTokens ? Number((exactMatches / eligibleTokens).toFixed(6)) : null,
     character_error_rate: totalGoldCharacters ? Number((totalDistance / totalGoldCharacters).toFixed(6)) : null,
+    broad_candidate_profile: 'Korean phonemic comparison sensitivity v1 (research-only; not adjudicated)',
+    broad_candidate_scored_tokens: broadComparable.length,
+    broad_candidate_exact_matches: broadExactMatches,
+    broad_candidate_exact_match_rate: broadComparable.length ? Number((broadExactMatches / broadComparable.length).toFixed(6)) : null,
+    broad_candidate_character_error_rate: broadTotalGoldCharacters ? Number((broadTotalDistance / broadTotalGoldCharacters).toFixed(6)) : null,
+    broad_candidate_coverage_adjusted_exact_match_rate: eligibleTokens ? Number((broadExactMatches / eligibleTokens).toFixed(6)) : null,
     unresolved_tokens: unresolvedTokens,
     partial_tokens: partialTokens,
     heuristic_tokens: heuristicTokens,
@@ -228,6 +276,8 @@ export function evaluateRows(rows, engine) {
       'This script imports src/app/engine.js and exercises the browser-side Kozak Kim engine, not the ordinary g2pK adapter or Python reference engine.',
       'IPA is scored whenever pronunciation_status is resolved, even if the Ukrainian target adapter reports unavailable; target status is reported separately.',
       'The browser IPA profile is marked unadjudicated-cross-runtime. A high benchmark score does not establish normative IPA correctness.',
+      'The broad_candidate_* metrics are a research-only sensitivity analysis that collapses documented Korean allophones; the strict headline metrics remain unchanged.',
+      'Broad candidate normalization collapses Korean /l/, /n/ and /h/ allophones and fricative aspiration, while preserving stop aspiration, fortisness, vowel length and unreleased codas.',
       'The UGTPHON test split has been inspected during project research; treat this run as diagnostic, not as an untouched independent holdout.',
       'Only resolved pronunciation records are scored. Partial, heuristic, unresolved, and engine-error records are counted separately.'
     ]
