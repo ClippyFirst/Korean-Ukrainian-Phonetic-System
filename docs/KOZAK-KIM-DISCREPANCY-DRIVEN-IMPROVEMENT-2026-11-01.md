@@ -155,7 +155,7 @@ Use it to locate existing positive/negative controls and identify gaps, then cla
 
 ## Verification status
 
-Code/test verification head: `5fca54917ceea174d74205198e9929101b2172d4`; paired-benchmark code-bearing head: `8ac8cd18cadb8f074ecdc3cbc7ee3a562144a3dc`; latest documentation-only branch tip: `f42bc8694662d39eed208126f766ac66fb2949d9`.
+Code/test verification head: `5fca54917ceea174d74205198e9929101b2172d4`; paired-benchmark code-bearing head: `8ac8cd18cadb8f074ecdc3cbc7ee3a562144a3dc`. Subsequent commits only update research evidence, acceptance gates, and the handoff; they do not alter the verified engine/test code.
 
 - Actions run [41335266673](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335266673): **PASS**. Browser regression tests: 1,365/1,365; public-page build: PASS; generated-page verification: PASS; Python regression/data-integrity job: PASS.
 - After updating the benchmark workflow path filter, run [41335549717](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41335549717): **PASS**. Browser suite/build and Python regression/data-integrity passed again on code-bearing head `8ac8cd18cadb8f074ecdc3cbc7ee3a562144a3dc`.
