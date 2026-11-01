@@ -156,6 +156,8 @@ def test_surface_evaluation_uses_train_lookup_not_test_gold_normalization(monkey
     assert report["exact_match_rate"] == 1.0
     assert report["coverage_adjusted_exact_match_rate"] == 1.0
     assert report["normalization"]["hits"] == 1
+    assert report["baseline"]["unsupported_input_tokens"] == 1
+    assert report["paired_subset"]["normalization_rescued_tokens"] == 1
     assert report["normalization"]["noncanonical_tokens"] == 1
     assert report["normalization"]["retrieval_hit_rate_noncanonical"] == 1.0
     assert report["normalization"]["hits_noncanonical"] == 1
@@ -165,6 +167,50 @@ def test_surface_evaluation_uses_train_lookup_not_test_gold_normalization(monkey
     assert report["normalization_hit_examples"][0]["surface"] == "ㅋㅋ"
     assert report["normalization_hit_examples"][0]["g2p_input"] == "크크"
     assert report["ipa_profile_status"] == "unavailable"
+
+
+def test_surface_report_compares_train_retrieval_against_raw_surface_baseline(monkeypatch):
+    calls = []
+
+    def fake_phoneticize(text, *, ipa_level="broad"):
+        calls.append(text)
+        ipa = {
+            "조오온나": "tɕo.o.onna",
+            "존나": "tɕonna",
+        }[text]
+        return {"pronunciation_status": "resolved", "ipa": {"ipa": ipa}}
+
+    monkeypatch.setattr(
+        "korean_ukrainian.pipeline.phoneticize_korean",
+        fake_phoneticize,
+    )
+    store = build_normalization_datastore([
+        _row({"text": "조오온나", "canonical": "존나", "is_nc": True, "nc_type": "B1"})
+    ])
+    test_rows = [{
+        "id": "paired_surface_test",
+        "lang": "ko",
+        "split": "test",
+        "text": "조오온나",
+        "tokens": [{
+            "text": "조오온나",
+            "phoneme": "tɕonna",
+            "is_nc": True,
+            "nc_type": "B1",
+        }],
+    }]
+
+    report = evaluate_surface(test_rows, store)
+
+    assert calls == ["조오온나", "존나"]
+    assert report["baseline"]["scored_tokens"] == 1
+    assert report["baseline"]["exact_matches"] == 0
+    assert report["scored_tokens"] == 1
+    assert report["exact_matches"] == 1
+    assert report["paired_subset"]["tokens_scored_by_both"] == 1
+    assert report["paired_subset"]["normalization_exact_improvements"] == 1
+    assert report["paired_subset"]["normalization_exact_regressions"] == 0
+    assert report["paired_subset"]["cer_delta_normalized_minus_baseline"] < 0
 
 
 def test_surface_evaluation_reports_canonical_false_rewrite_risk(monkeypatch):
@@ -325,6 +371,8 @@ def test_direct_cli_runs_from_repository_root(tmp_path):
     assert result.returncode == 0, result.stderr
     report = json.loads(output_path.read_text(encoding="utf-8"))
     assert report["normalization"]["hits"] == 1
+    assert report["baseline"]["unsupported_input_tokens"] == 1
+    assert report["paired_subset"]["normalization_rescued_tokens"] == 1
     assert report["attempted_tokens"] == 1
 
 
@@ -399,7 +447,7 @@ def test_surface_evaluation_uses_train_b1_signature_not_test_canonical(monkeypat
 
     report = evaluate_surface(test_rows, store)
 
-    assert calls == [("갸악", "broad")]
+    assert calls == [("갸아아아악", "broad"), ("갸악", "broad")]
     assert report["normalization"]["lengthening_hits"] == 1
     assert report["normalization"]["lengthening_hits_noncanonical"] == 1
     assert report["normalization"]["lengthening_hits_canonical"] == 0
