@@ -57,7 +57,7 @@ const BROAD_ALLOPHONE_MAP = new Map([
 // It deliberately preserves stop aspiration, fortisness, vowel length and
 // unreleased codas; it does not replace the strict headline score.
 export function normalizeIpaBroadCandidate(value) {
-  const chars = [...String(value ?? '').normalize('NFD').replace(/g/gu, 'ɡ').replaceAll(TIE_BAR, '')];
+  const chars = [...String(value ?? '').normalize('NFC').replace(/g/gu, 'ɡ').replaceAll(TIE_BAR, '')];
   const normalized = [];
   for (let index = 0; index < chars.length; index += 1) {
     const char = chars[index];
