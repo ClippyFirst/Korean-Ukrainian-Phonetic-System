@@ -4430,3 +4430,20 @@ The primary Ukrainian output is named **українська трансліте�
 - The first alignment-helper test run failed because a Unicode range was escaped as a literal string; fixed in cb89fc8. The exact-head test suite then passed across all Python versions.
 - Remaining next work: inspect the in-progress multi-engine artifact; adjudicate residual narrow IPA (especially ㅟ and coda lateral); design source-backed rule-specific morphology licenses with homograph controls; only test recursive re-evaluation after a real cascading case is established. Keep production default and Ukrainian renderer unchanged meanwhile.
 - Local container tests remain unavailable due GitHub DNS/network limitations; all pass claims above are GitHub Actions evidence.
+
+
+## Continuation — Korean G2P improvement review (2026-11-01)
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Research benchmark-directed engine improvements | DONE_VERIFIED as literature/code review; implementation candidates remain PARTIAL/TODO | Added [Korean G2P improvement research](KOREAN-G2P-ENGINE-IMPROVEMENT-RESEARCH-2026-11-01.md). Reconciles the historical native/g2pK baseline, the IPA-convention blocker, the 2022 rule-by-rule study, and the Interspeech 2026 morphology-linked architecture proposal. No new accuracy claim is made. |
+| Harden g2pK source/surface lexical alignment | PARTIAL pending exact-head CI | Commit `a184db80c7a63b2333574e12973c7c0689b41e6e` adds strict inter-word separator alignment before source-specific surface/IPA overrides, plus tests for valid alignment, shifted punctuation and merged words. If alignment is unknown, lexical overrides are withheld. This is a correctness fix, not a benchmark gain. |
+| Morphology-linked syllable representation | TODO / research-only | Existing syllables expose source and word boundaries; analyzer consensus exists in the research path, but no canonical morpheme graph is part of the strict engine. Acceptance: preserve analyzer provenance, disagreement and unknown boundaries; no runtime promotion until adjudicated. |
+| Bounded local phonological rule re-evaluation | TODO / research-only | Current ordered rules are applied in a single declared pass. Prototype only after morphology graph; require deterministic dependency schedule, bounded convergence, cycle detection and full pass trace. |
+| Rule-family error adjudication | BLOCKED / EVIDENCE-LIMITED | SIGMORPHON and UGTPHON IPA conventions are not reconciled at case level. Existing teacher disagreements cannot yet be counted as true phonological errors. Acceptance: source-blind reviewed IPA mapping and adjudicated case set. |
+
+**Research decision:** prioritize boundary representation and case-level error adjudication over adding broad spelling heuristics. The 2022 Korean G2P study identifies h-deletion, ㅢ variation, place assimilation, rule ordering and prosodic boundaries as improvement areas. The Interspeech 2026 paper proposes syllable–morpheme connectivity and recursive rule re-evaluation, but its reported sentence accuracy/latency is not comparable to this repository's token-level IPA metrics, and no reusable executable implementation was verified. See the research note for sources, scope and acceptance gates.
+
+**Benchmark baseline retained, not refreshed:** Actions run [40837034742](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40837034742) reported native exact match 53.002% / 35.772% and g2pK 53.089% / 35.335% on UGTPHON / SIGMORPHON respectively; native had lower CER/PER/feature proxy on both. Do not interpret the 0.087-point UGTPHON exact-match gap as a meaningful g2pK win. No new score is available for the current head.
+
+**Current verification caveat:** GitHub connector returned no PR-triggered workflow runs for the new g2pK alignment commit at the time of this handoff update. Local clone/test execution remains unavailable in this environment. The new code/tests are therefore PARTIAL until exact-head Python, wheel, browser/system and benchmark-contract CI complete.
