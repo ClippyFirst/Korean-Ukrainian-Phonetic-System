@@ -104,6 +104,11 @@ def _aligned_source_words(source_text: str, surface: str) -> list[str] | None:
 
     if separators(source_text, source_matches) != separators(surface, surface_matches):
         return None
+    if any(
+        len(source_match.group(0)) != len(surface_match.group(0))
+        for source_match, surface_match in zip(source_matches, surface_matches)
+    ):
+        return None
     return [match.group(0) for match in source_matches]
 
 
