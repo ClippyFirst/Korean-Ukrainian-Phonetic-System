@@ -285,8 +285,11 @@ def test_surface_evaluation_reports_canonical_false_rewrite_risk(monkeypatch):
 
     report = evaluate_surface(test_rows, store)
 
-    assert calls == ["짱짱"]
+    # The evaluator deliberately scores both the untouched raw baseline and the retrieved candidate.
+    assert calls == ["짱", "짱짱"]
+    assert report["baseline"]["scored_tokens"] == 1
     assert report["normalization"]["hits_canonical"] == 1
+    assert report["normalization"]["potential_canonical_false_rewrites"] == 1
     assert report["normalization"]["potential_canonical_false_rewrites"] == 1
 
 
