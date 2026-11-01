@@ -7,9 +7,11 @@ on:
       - "scripts/benchmark_ugtphon_ko.py"
       - "scripts/benchmark_native_vs_g2pk_ko.py"
       - "scripts/benchmark_kozak_kim_browser.mjs"
+      - "scripts/benchmark_kozak_kim_vs_g2pk_browser.mjs"
       - "scripts/benchmark_ugtphon_ko_surface.py"
       - "tests/test_ugtphon_benchmark.py"
       - "tests/kozak-kim-ipa-first-benchmark.test.mjs"
+      - "tests/kozak-kim-vs-original-g2pk-browser.test.mjs"
       - "tests/test_ugtphon_surface_benchmark.py"
       - ".github/workflows/ugtphon-benchmark.yml"
       - "src/korean_ukrainian/**"
@@ -26,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.12.0"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -105,6 +110,37 @@ jobs:
           name: kozak-kim-browser-ugtphon-diagnostic
           path: |
             ${{ runner.temp }}/kozak-kim-browser-test-report.json
+          if-no-files-found: warn
+      - name: Run paired browser Kozak Kim vs untouched original g2pK diagnostic
+        run: |
+          set -euo pipefail
+          node --experimental-strip-types scripts/benchmark_kozak_kim_vs_g2pk_browser.mjs \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --output "$RUNNER_TEMP/kozak-kim-vs-original-g2pk-browser-report.json"
+          python - "$RUNNER_TEMP/kozak-kim-vs-original-g2pk-browser-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          for key in ("eligible_tokens", "skipped_non_hangul", "skipped_missing_gold"):
+              print(f"{key}: {report.get(key)}")
+          for engine in ("kozak_kim", "g2pk"):
+              item = report[engine]
+              print(f"{engine}: scored={item['scored_tokens']} exact={item['exact_matches']} "
+                    f"rate={item['exact_match_rate']} CER={item.get('character_error_rate')} "
+                    f"unresolved={item['unresolved_tokens']} errors={item['engine_errors']}")
+          paired = report["paired_subset"]
+          print("paired:", {key: paired[key] for key in (
+              "tokens_scored_by_both", "both_exact", "kozak_kim_only_exact",
+              "g2pk_only_exact", "both_wrong", "exact_match_delta_kozak_minus_g2pk",
+              "cer_delta_kozak_minus_g2pk", "mcnemar_exact_p_value")})
+          print("Diagnostic only: g2pK source is untouched; UGTPHON is not normative pronunciation gold.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kozak-kim-vs-original-g2pk-browser-diagnostic
+          path: |
+            ${{ runner.temp }}/kozak-kim-vs-original-g2pk-browser-report.json
           if-no-files-found: warn
       - name: Run train-only raw-surface UGTPHON retrieval diagnostic
         run: |
