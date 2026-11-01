@@ -1,5 +1,7 @@
 # Kozak Kim independent IPA review packets — 2026-11-01
 
+> **INTERNAL MAINTAINER INDEX — DO NOT FORWARD TO REVIEWERS.** This file contains cluster topics and internal provenance. Send only the source-blind packet JSON and `REVIEWER-INSTRUCTIONS.md` after context and rights gates are cleared.
+
 Seven separate blinded pilot packets are provided for C01–C07. They exclude engine outputs, reference IPA, engine identities, benchmark ranking, and proposed rule explanations.
 
 | Packet | Topic | Cluster count | Pilot forms |
