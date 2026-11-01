@@ -133,6 +133,46 @@ jobs:
             ${{ runner.temp }}/ugtphon-ko-sentence-*-report.json
             ${{ runner.temp }}/ugtphon-ko-sentence-*-stdout.json
           if-no-files-found: warn
+
+      - name: Compare native and MeCab-contextual g2pK on full sentences
+        run: |
+          set -euo pipefail
+          for split in dev test; do
+            for boundary in same_word phrase; do
+              python scripts/benchmark_native_vs_g2pk_ko.py \
+                --granularity sentence \
+                --boundary-mode "$boundary" \
+                --split "$split" \
+                --corpus "$RUNNER_TEMP/ko-$split.json" \
+                --output "$RUNNER_TEMP/native-vs-g2pk-sentence-$split-$boundary-report.json" \
+                > "$RUNNER_TEMP/native-vs-g2pk-sentence-$split-$boundary-stdout.json"
+            done
+          done
+          python - "$RUNNER_TEMP" <<'PY'
+          import json, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          for split in ("dev", "test"):
+              for boundary in ("same_word", "phrase"):
+                  report = json.loads((root / f"native-vs-g2pk-sentence-{split}-{boundary}-report.json").read_text(encoding="utf-8"))
+                  native = report["native_engine"]
+                  g2pk = report["g2pk"]
+                  paired = report["paired_subset"]
+                  print(f"PAIRED SENTENCE {split} boundary={boundary}: "
+                        f"native_exact={native['exact_match_rate']} native_CER={native['character_error_rate']} "
+                        f"g2pk_exact={g2pk['exact_match_rate']} g2pk_CER={g2pk['character_error_rate']} "
+                        f"paired_n={paired['sentences_scored_by_both']} "
+                        f"delta_exact={paired['exact_match_rate_delta_g2pk_minus_native']} "
+                        f"delta_CER={paired['cer_delta_g2pk_minus_native']}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-vs-g2pk-sentence-context-diagnostic
+          path: |
+            ${{ runner.temp }}/native-vs-g2pk-sentence-*-report.json
+            ${{ runner.temp }}/native-vs-g2pk-sentence-*-stdout.json
+          if-no-files-found: warn
       - name: Run raw-surface train-retrieval normalization diagnostic
         run: |
           set -euo pipefail
