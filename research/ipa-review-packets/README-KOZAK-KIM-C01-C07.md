@@ -29,4 +29,4 @@ The packets are **ready for independent pilot review**, not a complete cluster c
 5. Reconcile disagreements only after independent submissions; retain unresolved cases.
 6. Any production change requires source-backed positive, negative, boundary, and interaction controls plus exact-head tests and paired re-benchmarking.
 
-Each JSON packet has a submission structure and an explicit acceptance gate. The gate is `READY_FOR_INDEPENDENT_REVIEW_PILOT`; reviewer submissions are still outstanding.
+Each JSON packet has a submission structure and an explicit acceptance gate. The gate is `READY_FOR_INDEPENDENT_REVIEW_PILOT`; reviewer submissions are still outstanding. The gate is `READY_FOR_INDEPENDENT_REVIEW_PILOT`; reviewer submissions are still outstanding.
