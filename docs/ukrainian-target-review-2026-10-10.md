@@ -67,7 +67,7 @@ Fields such as `ко|ґе|чіт` for `고갯짓` and `са|міл|чол` for `
 4. **Native Korean validation of the audio labels.** Confirm each source recording matches the normative standard surface form; dialect and speech rate must be controlled.
 5. **Record decisions with evidence.** Every changed mapping should cite the tested contrast, not just intuition. Store alternatives and a rationale; keep a versioned record of rejected candidates.
 6. **Separate metrics.** Track source reliability, Korean surface-form confidence, IPA-analysis confidence, and Ukrainian-target confidence separately. A high-confidence Korean source must not imply a high-confidence Ukrainian target.
-7. **Do not optimize only for reversibility.** This is practical phonetic transcription, not transliteration. Evaluate perceptual fidelity and Ukrainian readability explicitly; report trade-offs.
+7. **Do not optimize only for reversibility.** The owner-selected product term is **Ukrainian transliteration** for the project's practical Ukrainian-letter rendering guided by Korean pronunciation analysis. The technical review still evaluates perceptual fidelity and Ukrainian readability separately from literal grapheme transliteration; report trade-offs explicitly.
 
 ## Current conclusion
 

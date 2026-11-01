@@ -1,0 +1,689 @@
+#!/usr/bin/env python3
+"""Research-only exact/contextual retrieval normalization + G2P benchmark for Korean UGT.
+
+This is deliberately separate from benchmark_ugtphon_ko.py, which evaluates
+canonical Hangul tokens. It takes raw token surfaces as input, builds a
+train-only exact-match normalization store, and then phonemizes the retrieved
+canonical form or (on a miss) the untouched surface. It is a transparent
+lookup baseline, not the paper's trained retrieval-augmented ByT5/Qwen model.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+from collections import defaultdict
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+
+@dataclass(frozen=True, slots=True)
+class NormalizationStore:
+    mapping: dict[str, str]
+    ambiguous_keys: tuple[str, ...]
+    blocked_canonical_collisions: tuple[str, ...]
+    context_mapping: dict[tuple[str, str, str], str]
+    ambiguous_context_keys: tuple[tuple[str, str, str], ...]
+    blocked_canonical_contexts: tuple[tuple[str, str, str], ...]
+    lengthening_mapping: dict[str, str]
+    ambiguous_lengthening_keys: tuple[str, ...]
+    blocked_lengthening_collisions: tuple[str, ...]
+
+
+def _validate_rows(rows: list[dict[str, Any]], expected_split: str) -> None:
+    if not isinstance(rows, list):
+        raise ValueError("UGTPHON corpus root must be a JSON array")
+    seen: set[str] = set()
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            raise ValueError(f"row {index} is not an object")
+        for field in ("id", "lang", "split", "text", "tokens"):
+            if field not in row:
+                raise ValueError(f"row {index} is missing required field {field!r}")
+        if row["lang"] != "ko" or row["split"] != expected_split:
+            raise ValueError(f"row {index} is not from the Korean {expected_split} split")
+        if row["id"] in seen:
+            raise ValueError(f"duplicate id: {row['id']}")
+        seen.add(row["id"])
+        if not isinstance(row["tokens"], list):
+            raise ValueError(f"row {index} tokens must be a list")
+        for token_index, token in enumerate(row["tokens"]):
+            if not isinstance(token, dict) or not isinstance(token.get("text"), str) or not token["text"]:
+                raise ValueError(f"row {index} token {token_index} must contain non-empty string text")
+
+
+def load_corpus(path: Path, *, expected_split: str) -> list[dict[str, Any]]:
+    rows = json.loads(path.read_text(encoding="utf-8"))
+    _validate_rows(rows, expected_split)
+    return rows
+
+
+def _single_canonical_form(value: Any) -> str | None:
+    """Return a single accepted Korean canonical form; abstain on alternatives."""
+    if not isinstance(value, str) or not value.strip():
+        return None
+    forms = [part.strip() for part in value.split(",") if part.strip()]
+    if len(forms) != 1:
+        return None
+    return forms[0]
+
+
+def _context_key(tokens: list[dict[str, Any]], index: int) -> tuple[str, str, str]:
+    """Return an exact local context key using explicit sentence-edge markers."""
+    previous = tokens[index - 1]["text"] if index > 0 else "<BOS>"
+    following = tokens[index + 1]["text"] if index + 1 < len(tokens) else "<EOS>"
+    return (previous, tokens[index]["text"], following)
+
+
+_COMPATIBILITY_VOWELS = {
+    "ㅏ": 0, "ㅐ": 1, "ㅑ": 2, "ㅒ": 3, "ㅓ": 4, "ㅔ": 5,
+    "ㅕ": 6, "ㅖ": 7, "ㅗ": 8, "ㅘ": 9, "ㅙ": 10, "ㅚ": 11,
+    "ㅛ": 12, "ㅜ": 13, "ㅝ": 14, "ㅞ": 15, "ㅟ": 16,
+    "ㅠ": 17, "ㅡ": 18, "ㅢ": 19, "ㅣ": 20,
+}
+_VOWEL_BASES = {
+    2: 0, 3: 1, 6: 4, 7: 5, 9: 0, 10: 1, 12: 8,
+    14: 4, 15: 5, 16: 20, 17: 13,
+}
+
+
+def _syllable_parts(char: str) -> tuple[str, int, int, int] | None:
+    code = ord(char)
+    offset = code - 0xAC00
+    if 0 <= offset < 11172:
+        return ("syllable", offset // 588, (offset % 588) // 28, offset % 28)
+    vowel = _COMPATIBILITY_VOWELS.get(char)
+    if vowel is not None:
+        return ("vowel", -1, vowel, 0)
+    return None
+
+
+def _base_vowel(vowel: int) -> int:
+    return _VOWEL_BASES.get(vowel, vowel)
+
+
+def _compose_syllable(onset: int, vowel: int, coda: int = 0) -> str:
+    return chr(0xAC00 + onset * 588 + vowel * 28 + coda)
+
+
+def _lengthening_signatures(surface: str) -> tuple[str, ...]:
+    """Return conservative train-retrieval keys for Korean B1 lengthening.
+
+    Only vowel-only Hangul syllables and compatibility-vowel runs are reduced.
+    The function emits keep-one/drop-all alternatives; it does not choose a
+    canonical form. A unique B1-only train mapping must select the target.
+    """
+    chars = list(surface)
+    signatures: set[str] = set()
+    for keep_trailing in (True, False):
+        output: list[str] = []
+        index = 0
+        while index < len(chars):
+            unit = _syllable_parts(chars[index])
+            if unit is not None and unit[0] == "syllable":
+                _, onset, vowel, coda = unit
+                if onset == 11 and coda == 0:
+                    end = index + 1
+                    while end < len(chars):
+                        following = _syllable_parts(chars[end])
+                        if (
+                            following is not None and following[0] == "syllable"
+                            and following[1] == 11 and following[3] == 0
+                            and _base_vowel(following[2]) == _base_vowel(vowel)
+                        ):
+                            end += 1
+                        else:
+                            break
+                    previous = _syllable_parts(chars[index - 1]) if index else None
+                    following = _syllable_parts(chars[end]) if end < len(chars) else None
+                    run_length = end - index
+                    has_coda_final = bool(
+                        following is not None and following[0] == "syllable"
+                        and following[3] > 0 and _base_vowel(following[2]) == _base_vowel(vowel)
+                    )
+                    previous_same_vowel = bool(
+                        previous is not None and previous[0] == "syllable"
+                        and _base_vowel(previous[2]) == _base_vowel(vowel)
+                    )
+                    if run_length >= 2 or previous_same_vowel or has_coda_final:
+                        if index == 0 or (keep_trailing and not has_coda_final):
+                            output.append(chars[index])
+                        index = end
+                        continue
+            elif unit is not None and unit[0] == "vowel":
+                vowel = unit[2]
+                end = index + 1
+                while end < len(chars):
+                    following = _syllable_parts(chars[end])
+                    if (
+                        following is not None and following[0] == "vowel"
+                        and _base_vowel(following[2]) == _base_vowel(vowel)
+                    ):
+                        end += 1
+                    else:
+                        break
+                previous = _syllable_parts(chars[index - 1]) if index else None
+                if (
+                    previous is not None and previous[0] == "syllable"
+                    and (end - index >= 2 or _base_vowel(previous[2]) == _base_vowel(vowel))
+                ):
+                    if keep_trailing:
+                        output.append(_compose_syllable(11, vowel))
+                    index = end
+                    continue
+            output.append(chars[index])
+            index += 1
+        signature = "".join(output)
+        if signature and signature != surface:
+            signatures.add(signature)
+    return tuple(sorted(signatures))
+
+
+def build_normalization_datastore(
+    train_rows: list[dict[str, Any]],
+) -> NormalizationStore:
+    """Build conservative train-only surface and exact-context mappings.
+
+    Surface mappings require a unique target and block any surface observed as
+    canonical. Context mappings use (previous surface, current surface, next
+    surface) and can disambiguate a surface only when that exact context has a
+    single non-canonical target and no canonical/ambiguous observation. This is
+    exact contextual retrieval, not fuzzy matching or a trained language model.
+    B1 lengthening signatures are learned only from train tokens explicitly
+    labelled B1; B2 iteration and all other categories are excluded.
+    """
+    _validate_rows(train_rows, "train")
+    candidates: dict[str, set[str]] = defaultdict(set)
+    ambiguous: set[str] = set()
+    canonical_surfaces: set[str] = set()
+    context_candidates: dict[tuple[str, str, str], set[str]] = defaultdict(set)
+    ambiguous_contexts: set[tuple[str, str, str]] = set()
+    canonical_contexts: set[tuple[str, str, str]] = set()
+    lengthening_candidates: dict[str, set[str]] = defaultdict(set)
+    ambiguous_lengthening: set[str] = set()
+
+    for row in train_rows:
+        tokens = row["tokens"]
+        for index, token in enumerate(tokens):
+            if not isinstance(token, dict):
+                continue
+            surface = token.get("text")
+            if not isinstance(surface, str) or not surface:
+                continue
+            context = _context_key(tokens, index)
+            is_nc = token.get("is_nc")
+            if is_nc is False:
+                canonical_surfaces.add(surface)
+                canonical_contexts.add(context)
+                canonical_value = token.get("canonical")
+                if isinstance(canonical_value, str):
+                    canonical_surfaces.update(
+                        part.strip() for part in canonical_value.split(",") if part.strip()
+                    )
+                continue
+            if is_nc is not True:
+                continue
+            canonical = _single_canonical_form(token.get("canonical"))
+            if canonical is None:
+                ambiguous.add(surface)
+                ambiguous_contexts.add(context)
+                if token.get("nc_type") == "B1":
+                    ambiguous_lengthening.update(_lengthening_signatures(surface))
+            else:
+                candidates[surface].add(canonical)
+                context_candidates[context].add(canonical)
+                if token.get("nc_type") == "B1":
+                    for signature in _lengthening_signatures(surface):
+                        lengthening_candidates[signature].add(canonical)
+
+    mapping: dict[str, str] = {}
+    blocked: set[str] = set()
+    for surface, forms in candidates.items():
+        if surface in canonical_surfaces:
+            blocked.add(surface)
+        elif surface in ambiguous or len(forms) != 1:
+            ambiguous.add(surface)
+        else:
+            canonical = next(iter(forms))
+            if canonical != surface:
+                mapping[surface] = canonical
+
+    context_mapping: dict[tuple[str, str, str], str] = {}
+    blocked_contexts: set[tuple[str, str, str]] = set()
+    for context, forms in context_candidates.items():
+        if context in canonical_contexts:
+            blocked_contexts.add(context)
+        elif context in ambiguous_contexts or len(forms) != 1:
+            ambiguous_contexts.add(context)
+        else:
+            canonical = next(iter(forms))
+            if canonical != context[1]:
+                context_mapping[context] = canonical
+
+    lengthening_mapping: dict[str, str] = {}
+    blocked_lengthening: set[str] = set()
+    for signature, forms in lengthening_candidates.items():
+        if signature in canonical_surfaces:
+            blocked_lengthening.add(signature)
+        elif signature in ambiguous_lengthening or len(forms) != 1:
+            ambiguous_lengthening.add(signature)
+        else:
+            lengthening_mapping[signature] = next(iter(forms))
+
+    return NormalizationStore(
+        mapping=mapping,
+        ambiguous_keys=tuple(sorted(ambiguous - blocked)),
+        blocked_canonical_collisions=tuple(sorted(blocked)),
+        context_mapping=context_mapping,
+        ambiguous_context_keys=tuple(sorted(ambiguous_contexts - blocked_contexts)),
+        blocked_canonical_contexts=tuple(sorted(blocked_contexts)),
+        lengthening_mapping=lengthening_mapping,
+        ambiguous_lengthening_keys=tuple(sorted(ambiguous_lengthening - blocked_lengthening)),
+        blocked_lengthening_collisions=tuple(sorted(blocked_lengthening)),
+    )
+
+
+def _category(token: dict[str, Any]) -> str:
+    if token.get("is_nc") is False:
+        return "canonical"
+    return str(token.get("nc_type") or "noncanonical_unknown")
+
+
+def _aggregate(records: list[dict[str, Any]]) -> dict[str, Any]:
+    scored = [item for item in records if item["distance"] is not None]
+
+    total_chars = sum(len(item["gold"]) for item in scored)
+    total_distance = sum(item["distance"] for item in scored)
+    exact = sum(item["exact"] for item in scored)
+    attempted = len(records)
+    return {
+        "attempted_tokens": attempted,
+        "scored_tokens": len(scored),
+        "coverage_rate": round(len(scored) / attempted, 6) if attempted else None,
+        "exact_matches": exact,
+        "exact_match_rate": round(exact / len(scored), 6) if scored else None,
+        "coverage_adjusted_exact_match_rate": round(exact / attempted, 6) if attempted else None,
+        "character_error_rate": round(total_distance / total_chars, 6) if total_chars else None,
+        "unresolved_tokens": sum(item["status"] == "unresolved" for item in records),
+        "engine_errors": sum(item["status"] == "engine_error" for item in records),
+        "missing_gold": sum(item["status"] == "missing_gold" for item in records),
+        "unsupported_input_tokens": sum(item["status"] == "unsupported_input" for item in records),
+        "normalization_hits": sum(item.get("normalization_hit") is True for item in records),
+        "normalization_misses": sum(item.get("normalization_hit") is False for item in records),
+    }
+
+
+def evaluate_surface(
+    test_rows: list[dict[str, Any]],
+    store: NormalizationStore,
+    *,
+    ipa_level: str = "broad",
+) -> dict[str, Any]:
+    """Evaluate raw token surfaces; token canonical fields are never read."""
+    if ipa_level not in {"phonemic", "broad", "narrow"}:
+        raise ValueError("ipa_level must be phonemic, broad, or narrow")
+    _validate_rows(test_rows, "test")
+    try:
+        from scripts.benchmark_ugtphon_ko import edit_distance, normalize_ipa
+    except ModuleNotFoundError as exc:
+        # Direct "python scripts/..." execution puts scripts/ on sys.path,
+        # not the repository root; support both CLI and package-test imports.
+        if exc.name not in {"scripts", "scripts.benchmark_ugtphon_ko"}:
+            raise
+        from benchmark_ugtphon_ko import edit_distance, normalize_ipa
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    records: list[dict[str, Any]] = []
+    category_records: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    baseline_records: list[dict[str, Any]] = []
+    baseline_category_records: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    normalization_hits = 0
+    context_hits = 0
+    surface_hits = 0
+    lengthening_hits = 0
+    lengthening_hits_noncanonical = 0
+    lengthening_hits_canonical = 0
+    hits_noncanonical = 0
+    hits_canonical = 0
+    misses_noncanonical = 0
+    noncanonical_tokens = 0
+    canonical_tokens = 0
+    profile_metadata: dict[str, Any] = {}
+
+    def score_input(
+        input_text: str,
+        *,
+        surface: str,
+        category: str,
+        gold_raw: Any,
+        normalization_hit: bool,
+        retrieval_method: str,
+    ) -> dict[str, Any]:
+        has_hangul = any("\uac00" <= char <= "\ud7a3" for char in input_text)
+        supported = has_hangul and all(
+            char.isspace() or "\uac00" <= char <= "\ud7a3"
+            for char in input_text
+        )
+        base = {
+            "category": category,
+            "surface": surface,
+            "g2p_input": input_text,
+            "normalization_hit": normalization_hit,
+            "retrieval_method": retrieval_method,
+        }
+        if not supported:
+            return {"status": "unsupported_input", "distance": None, **base}
+        if not isinstance(gold_raw, str) or not gold_raw.strip():
+            return {"status": "missing_gold", "distance": None, **base}
+        try:
+            result = phoneticize_korean(input_text, ipa_level=ipa_level)
+            if result.get("pronunciation_status") == "unresolved":
+                return {"status": "unresolved", "distance": None, **base}
+            ipa = result.get("ipa", {})
+            if isinstance(ipa, dict) and not profile_metadata:
+                profile_metadata.update({
+                    "ipa_profile": ipa.get("ipa_profile"),
+                    "ipa_profile_status": ipa.get("ipa_profile_status") or "unavailable",
+                    "ipa_profile_version": ipa.get("ipa_profile_version"),
+                })
+            predicted_raw = ipa.get("ipa", "") if isinstance(ipa, dict) else ""
+            if not isinstance(predicted_raw, str) or not predicted_raw:
+                raise RuntimeError("engine returned no IPA for a resolved token")
+            predicted = normalize_ipa(predicted_raw)
+            gold_variants = [
+                normalize_ipa(part) for part in gold_raw.split(",") if part.strip()
+            ]
+            if not gold_variants:
+                return {"status": "missing_gold", "distance": None, **base}
+            distance, closest_gold = min(
+                ((edit_distance(predicted, gold), gold) for gold in gold_variants),
+                key=lambda pair: pair[0],
+            )
+            return {
+                "status": "scored",
+                "distance": distance,
+                "exact": distance == 0,
+                "gold": closest_gold,
+                "predicted": predicted,
+                **base,
+            }
+        except Exception as exc:
+            return {
+                "status": "engine_error",
+                "distance": None,
+                "error": f"{type(exc).__name__}: {exc}",
+                **base,
+            }
+
+    for row in test_rows:
+        for token_index, token in enumerate(row["tokens"]):
+            if not isinstance(token, dict):
+                continue
+            surface = token.get("text")
+            gold_raw = token.get("phoneme", "")
+            if not isinstance(surface, str) or not surface:
+                continue
+            category = _category(token)
+            is_nc = token.get("is_nc") is True
+            if is_nc:
+                noncanonical_tokens += 1
+            else:
+                canonical_tokens += 1
+            context = _context_key(row["tokens"], token_index)
+            context_hint = store.context_mapping.get(context)
+            surface_hint = store.mapping.get(surface)
+            lengthening_targets = {
+                store.lengthening_mapping[signature]
+                for signature in _lengthening_signatures(surface)
+                if signature in store.lengthening_mapping
+            }
+            lengthening_hint = next(iter(lengthening_targets)) if len(lengthening_targets) == 1 else None
+            canonical_hint = (
+                context_hint if context_hint is not None
+                else surface_hint if surface_hint is not None
+                else lengthening_hint
+            )
+            retrieval_method = (
+                "exact_context" if context_hint is not None
+                else "exact_surface" if surface_hint is not None
+                else "b1_lengthening_signature" if lengthening_hint is not None
+                else "none"
+            )
+            g2p_input = canonical_hint if canonical_hint is not None else surface
+            if canonical_hint is not None:
+                normalization_hits += 1
+                if retrieval_method == "exact_context":
+                    context_hits += 1
+                elif retrieval_method == "exact_surface":
+                    surface_hits += 1
+                else:
+                    lengthening_hits += 1
+                if is_nc:
+                    hits_noncanonical += 1
+                    if retrieval_method == "b1_lengthening_signature":
+                        lengthening_hits_noncanonical += 1
+                else:
+                    hits_canonical += 1
+                    if retrieval_method == "b1_lengthening_signature":
+                        lengthening_hits_canonical += 1
+            elif is_nc:
+                misses_noncanonical += 1
+            baseline_item = score_input(
+                surface,
+                surface=surface,
+                category=category,
+                gold_raw=gold_raw,
+                normalization_hit=False,
+                retrieval_method="none",
+            )
+            baseline_records.append(baseline_item)
+            baseline_category_records[category].append(baseline_item)
+
+            # Reuse the baseline result when no canonical hint changed the input;
+            # only retrieved tokens need a second G2P call.
+            item = (
+                {
+                    **baseline_item,
+                    "normalization_hit": canonical_hint is not None,
+                    "retrieval_method": retrieval_method,
+                }
+                if g2p_input == surface
+                else score_input(
+                    g2p_input,
+                    surface=surface,
+                    category=category,
+                    gold_raw=gold_raw,
+                    normalization_hit=canonical_hint is not None,
+                    retrieval_method=retrieval_method,
+                )
+            )
+            records.append(item)
+            category_records[category].append(item)
+
+    aggregate = _aggregate(records)
+    by_category = {
+        category: _aggregate(items)
+        for category, items in sorted(category_records.items())
+    }
+    baseline_aggregate = _aggregate(baseline_records)
+    baseline_aggregate.pop("normalization_hits", None)
+    baseline_aggregate.pop("normalization_misses", None)
+    baseline_by_category = {
+        category: _aggregate(items)
+        for category, items in sorted(baseline_category_records.items())
+    }
+    for category_metrics in baseline_by_category.values():
+        category_metrics.pop("normalization_hits", None)
+        category_metrics.pop("normalization_misses", None)
+
+    paired = [
+        (baseline, normalized)
+        for baseline, normalized in zip(baseline_records, records)
+        if baseline["distance"] is not None and normalized["distance"] is not None
+    ]
+    # Multi-reference tokens can have different closest gold variants for the
+    # two paths. Compare CER only where both paths select the same gold string;
+    # exact match still accepts any listed gold variant independently.
+    paired_same_gold = [
+        (baseline, normalized)
+        for baseline, normalized in paired
+        if baseline["gold"] == normalized["gold"]
+    ]
+    paired_chars = sum(len(baseline["gold"]) for baseline, _ in paired_same_gold)
+    paired_baseline_edits = sum(baseline["distance"] for baseline, _ in paired_same_gold)
+    paired_normalized_edits = sum(normalized["distance"] for _, normalized in paired_same_gold)
+    paired_baseline_exact = sum(baseline["exact"] for baseline, _ in paired)
+    paired_normalized_exact = sum(normalized["exact"] for _, normalized in paired)
+    paired_subset = {
+        "tokens_scored_by_both": len(paired),
+        "tokens_with_shared_best_gold": len(paired_same_gold),
+        "baseline": {
+            "exact_matches": paired_baseline_exact,
+            "exact_match_rate": round(paired_baseline_exact / len(paired), 6) if paired else None,
+            "character_error_rate": round(paired_baseline_edits / paired_chars, 6) if paired_chars else None,
+        },
+        "normalized": {
+            "exact_matches": paired_normalized_exact,
+            "exact_match_rate": round(paired_normalized_exact / len(paired), 6) if paired else None,
+            "character_error_rate": round(paired_normalized_edits / paired_chars, 6) if paired_chars else None,
+        },
+        "exact_match_rate_delta_normalized_minus_baseline": (
+            round((paired_normalized_exact - paired_baseline_exact) / len(paired), 6) if paired else None
+        ),
+        "cer_delta_normalized_minus_baseline": (
+            round((paired_normalized_edits - paired_baseline_edits) / paired_chars, 6)
+            if paired_chars else None
+        ),
+        "normalization_rescued_tokens": sum(
+            baseline["distance"] is None and normalized["distance"] is not None
+            for baseline, normalized in zip(baseline_records, records)
+        ),
+        "normalization_lost_tokens": sum(
+            baseline["distance"] is not None and normalized["distance"] is None
+            for baseline, normalized in zip(baseline_records, records)
+        ),
+        "normalization_exact_improvements": sum(
+            not baseline.get("exact", False) and normalized.get("exact", False)
+            for baseline, normalized in paired
+        ),
+        "normalization_exact_regressions": sum(
+            baseline.get("exact", False) and not normalized.get("exact", False)
+            for baseline, normalized in paired
+        ),
+    }
+    worst_mismatches = sorted(
+        (item for item in records if item["status"] == "scored" and not item["exact"]),
+        key=lambda item: (-item["distance"], item["surface"]),
+    )[:30]
+    engine_error_examples = [
+        {key: item.get(key) for key in ("surface", "g2p_input", "category", "error", "normalization_hit")}
+        for item in records if item["status"] == "engine_error"
+    ][:30]
+    unresolved_examples = [
+        {key: item.get(key) for key in ("surface", "g2p_input", "category", "normalization_hit")}
+        for item in records if item["status"] == "unresolved"
+    ][:30]
+    normalization_hit_examples = [
+        {
+            key: item.get(key)
+            for key in ("surface", "g2p_input", "category", "status", "gold", "predicted", "distance", "error", "retrieval_method")
+        }
+        for item in records if item.get("normalization_hit") is True
+    ][:100]
+    return {
+        "benchmark": "UGTPHON Korean test split — raw-surface retrieval + G2P",
+        "purpose": "research-only exact-match normalization baseline; separate from canonical lexical G2P",
+        "input_field": "token.text",
+        "baseline": baseline_aggregate,
+        "baseline_by_category": baseline_by_category,
+        "paired_subset": paired_subset,
+        "normalization": {
+            "policy": "train-only exact local-context lookup, exact surface lookup, then unique B1-only lengthening-signature retrieval; canonical collision guards; abstain on ambiguity",
+            "store_size": len(store.mapping),
+            "ambiguous_keys": len(store.ambiguous_keys),
+            "blocked_canonical_collisions": len(store.blocked_canonical_collisions),
+            "context_store_size": len(store.context_mapping),
+            "ambiguous_context_keys": len(store.ambiguous_context_keys),
+            "blocked_canonical_contexts": len(store.blocked_canonical_contexts),
+            "context_hits": context_hits,
+            "surface_hits": surface_hits,
+            "hits": normalization_hits,
+            "hits_noncanonical": hits_noncanonical,
+            "hits_canonical": hits_canonical,
+            "potential_canonical_false_rewrites": hits_canonical,
+            "noncanonical_tokens": noncanonical_tokens,
+            "canonical_tokens": canonical_tokens,
+            "retrieval_hit_rate_noncanonical": (
+                round(hits_noncanonical / noncanonical_tokens, 6) if noncanonical_tokens else None
+            ),
+            "misses_noncanonical": misses_noncanonical,
+            "lengthening_store_size": len(store.lengthening_mapping),
+            "ambiguous_lengthening_keys": len(store.ambiguous_lengthening_keys),
+            "blocked_lengthening_collisions": len(store.blocked_lengthening_collisions),
+            "lengthening_hits": lengthening_hits,
+            "lengthening_hits_noncanonical": lengthening_hits_noncanonical,
+            "lengthening_hits_canonical": lengthening_hits_canonical,
+            "lengthening_hit_rate_noncanonical": (
+                round(lengthening_hits_noncanonical / noncanonical_tokens, 6) if noncanonical_tokens else None
+            ),
+        },
+        "ipa_level": ipa_level,
+        **(profile_metadata or {"ipa_profile": None, "ipa_profile_status": "unavailable", "ipa_profile_version": None}),
+        **aggregate,
+        "by_category": by_category,
+        "worst_mismatches": [
+            {
+                key: item.get(key)
+                for key in ("surface", "g2p_input", "gold", "predicted", "category", "distance", "normalization_hit")
+            }
+            for item in worst_mismatches
+        ],
+        "engine_error_examples": engine_error_examples,
+        "unsupported_input_examples": [
+            {key: item.get(key) for key in ("surface", "g2p_input", "category", "normalization_hit")}
+            for item in records if item["status"] == "unsupported_input"
+        ][:30],
+        "unresolved_examples": unresolved_examples,
+        "normalization_hit_examples": normalization_hit_examples,
+        "notes": [
+            "The test token's canonical field is not read; only train-split surface/context observations can rewrite raw surfaces.",
+            "Context and exact-surface retrieval are followed by a train-only B1 lengthening-signature store. The B1 store is learned only from training tokens labelled B1; it excludes B2 iteration and abstains on ambiguous signatures and canonical collisions.",
+            "Inputs outside the native Hangul+whitespace contract are counted as unsupported, not engine errors; train-only retrieval is attempted before this check.",
+            "Potential canonical false rewrites are reported, not hidden. The B1 signature adapter is research-only and is not enabled in the standard pronunciation API.",
+            "This is not the paper's trained retrieval-augmented ByT5/Qwen model or its staged decoder.",
+            "A paired raw-surface baseline is reported for the same tokens; paired deltas compare only tokens scored by both paths.",
+            "UGTPHON is noisy user-generated text; results must remain separate from canonical G2P and standard-pronunciation evaluation.",
+            "The Korean UGTPHON subset is Apache-2.0; the dataset is supplied externally and is not bundled or downloaded at runtime.",
+        ],
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--train-corpus", type=Path, default=os.environ.get("UGTPHON_KO_TRAIN_PATH"))
+    parser.add_argument("--test-corpus", type=Path, default=os.environ.get("UGTPHON_KO_TEST_PATH"))
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--ipa-level", choices=("phonemic", "broad", "narrow"), default="broad")
+    args = parser.parse_args()
+    if args.train_corpus is None or args.test_corpus is None:
+        parser.error("provide --train-corpus and --test-corpus or set UGTPHON_KO_TRAIN_PATH / UGTPHON_KO_TEST_PATH")
+    try:
+        train_rows = load_corpus(args.train_corpus, expected_split="train")
+        test_rows = load_corpus(args.test_corpus, expected_split="test")
+        store = build_normalization_datastore(train_rows)
+        report = evaluate_surface(test_rows, store, ipa_level=args.ipa_level)
+    except Exception as exc:
+        print(f"surface benchmark failed: {type(exc).__name__}: {exc}", file=sys.stderr)
+        return 2
+    rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
+    if args.output:
+        args.output.write_text(rendered, encoding="utf-8")
+    print(rendered, end="")
+    # Unsupported raw UGT forms are an expected diagnostic outcome, not a CI failure.
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

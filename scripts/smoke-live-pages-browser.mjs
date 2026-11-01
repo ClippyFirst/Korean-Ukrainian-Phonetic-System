@@ -46,6 +46,32 @@ try {
   }
   await page.locator('#ua-unconfirmed-button').click();
 
+  // Both Ukrainian routes must remain visible together. Selecting RR as the
+  // primary result must not hide the IPA-mediated alternative or either trace.
+  const rrAlternative = (await page.locator('#alternate-ukrainian-output').innerText()).trim();
+  assert.ok(rrAlternative.length > 0, 'the RR-mediated Ukrainian transliteration must be visible beside the IPA result');
+  assert.equal((await page.locator('#alternate-ukrainian-label').innerText()).trim(), 'Українська транслітерація через RR');
+  assert.equal(await page.locator('#ipa-trace-panel').evaluate(element => element.hidden), false);
+  assert.equal(await page.locator('#rr-trace-panel').evaluate(element => element.hidden), false);
+  await page.locator('#mode-romanization').check();
+  await page.waitForFunction(() =>
+    document.querySelector('#ukrainian-output-label')?.textContent?.trim() === 'Транслітерація за RR · попередня' &&
+    document.querySelector('#alternate-ukrainian-label')?.textContent?.trim() === 'Українська транслітерація через IPA'
+  );
+  assert.ok((await page.locator('#result-ukrainian').innerText()).trim().length > 0,
+    'RR-primary Ukrainian output must be populated');
+  assert.ok((await page.locator('#alternate-ukrainian-output').innerText()).trim().length > 0,
+    'IPA-mediated Ukrainian output must remain populated when RR is primary');
+  await page.locator('#mode-romanization').check();
+  await page.locator('#source-input').fill('압구정 낙동강 묵호 집현전');
+  await page.waitForFunction(() =>
+    (document.querySelector('#result-romanization')?.textContent || '').includes('apgujeong'),
+  null, { timeout: 20000 });
+  assert.equal((await page.locator('#result-romanization').innerText()).trim(),
+    'apgujeong nakdonggang mukho jiphyeonjeon',
+    'the RR display must preserve NIKL orthographic exceptions when the G2P surface is fortis/aspirated');
+  await page.locator('#mode-practical').check();
+
   // Verify the deployed research-only Super-soft path itself, not just the
   // source-level unit test: every Hangul syllable in this mixed input must
   // have IPA and a Ukrainian candidate, with explicit coverage/confidence UI.
@@ -90,6 +116,26 @@ try {
   const hanjaOutput = (await page.locator('#result-hanja').innerText()).trim();
   assert.equal(hanjaOutput, '政府는 經濟 發展을 硏究한다.',
     'the deployed deterministic dictionary must convert known Sino-Korean words and preserve Korean particles/endings');
+
+  // Reverse Hanja lookup is a standalone input path and must remain available
+  // while the main Hangul results are empty. Ambiguity/unknowns must not be
+  // silently transferred into the pronunciation engine.
+  await page.locator('#source-input').fill('');
+  await page.locator('.hanja-reverse-details summary').click();
+  await page.locator('#hanja-input').fill('政府는 經濟 발전을 연구한다.');
+  await page.waitForFunction(() =>
+    document.querySelector('#hanja-reading-output')?.value?.trim() === '정부는 경제 발전을 연구한다.' &&
+    (document.querySelector('#hanja-reading-status')?.textContent || '').includes('Однозначне словникове читання'),
+  null, { timeout: 45000 });
+  assert.equal(await page.locator('#hanja-use-reading').isEnabled(), true,
+    'a unique reverse dictionary reading may be transferred without manual correction');
+  await page.locator('#hanja-use-reading').click();
+  await page.waitForFunction(() =>
+    document.querySelector('#source-input')?.value === '정부는 경제 발전을 연구한다.' &&
+    (document.querySelector('#result-ipa')?.textContent?.trim() || '').length > 0,
+  null, { timeout: 20000 });
+  assert.equal((await page.locator('#source-input').inputValue()).trim(), '정부는 경제 발전을 연구한다.',
+    'the reviewed Hangul reading must be handed off to the main pronunciation pipeline');
 
   await page.locator('#source-input').fill(passage);
 

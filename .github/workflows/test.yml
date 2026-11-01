@@ -2,7 +2,7 @@ name: tests
 
 on:
   push:
-    branches: [main, "release/**"]
+    branches: [main, "release/**", "feat/korean-rr-contextual-phonetics-final"]
   pull_request:
     branches: [main]
 

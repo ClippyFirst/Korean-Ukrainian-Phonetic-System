@@ -23,6 +23,7 @@ def test_g2pk_adapter_derives_ipa_from_surface_hangul(monkeypatch):
     assert result["surface_hangul"] == "넉씨, 구지!"
     assert result["ipa"]["ipa"] == "nʌk̚.ɕ͈i ku.dʑi"
     assert result["ipa"]["rendered_text"] == "nʌk̚.ɕ͈i, ku.dʑi!"
+    assert result["ipa"]["word_alignment_status"] == "verified-source-surface-word-boundaries"
     assert result["rules"][0]["status"] == "external-engine-output"
     assert "NIKL" not in result["rules"][0]["source"]
 
@@ -42,6 +43,52 @@ def test_nikl_surface_override_corrects_an_unlicensed_external_mismatch(monkeypa
         for rule in result["rules"]
     )
     assert result["ipa"]["ipa"] == "nʌk̚.ɕ͈i"
+
+
+def test_g2pk_lexical_overrides_require_verified_word_boundary_alignment(monkeypatch):
+    class ShiftedBoundaryG2p:
+        def __call__(self, text, descriptive=False):
+            # Same two Korean word tokens, but punctuation moved across the
+            # boundary. A count-only zip would misattach the source words.
+            return "넉씨 굳이,"
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", ShiftedBoundaryG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("넋이, 굳이")
+
+    assert result["surface_hangul"] == "넉씨 굳이,"
+    assert result["ipa"]["word_alignment_status"] == "unknown-source-surface-word-boundaries"
+    assert result["ipa"]["lexical_overrides"] == []
+    assert all(not item["input"] for item in result["ipa"]["word_analyses"])
+    assert all(item["status"] == "derived-from-surface" for item in result["ipa"]["word_analyses"])
+
+
+def test_g2pk_lexical_overrides_are_withheld_when_word_boundaries_shift_with_same_token_count(monkeypatch):
+    class ShiftedSplitG2p:
+        def __call__(self, text, descriptive=False):
+            # Token count and separators match, but syllables moved between
+            # words. Equal counts alone must not authorize positional mapping.
+            return "아 나아"
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", ShiftedSplitG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("아아 나")
+
+    assert result["surface_hangul"] == "아 나아"
+    assert result["ipa"]["word_alignment_status"] == "unknown-source-surface-word-boundaries"
+    assert result["ipa"]["lexical_overrides"] == []
+    assert all(not item["input"] for item in result["ipa"]["word_analyses"])
+
+
+def test_g2pk_lexical_overrides_are_withheld_when_surface_word_count_changes(monkeypatch):
+    class MergedWordsG2p:
+        def __call__(self, text, descriptive=False):
+            return "넉씨굳이"
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", MergedWordsG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("넋이 굳이")
+
+    assert result["ipa"]["word_alignment_status"] == "unknown-source-surface-word-boundaries"
+    assert result["ipa"]["lexical_overrides"] == []
+    assert all(not item["input"] for item in result["ipa"]["word_analyses"])
 
 
 def test_g2pk_descriptive_mode_is_explicit_and_passed_through(monkeypatch):

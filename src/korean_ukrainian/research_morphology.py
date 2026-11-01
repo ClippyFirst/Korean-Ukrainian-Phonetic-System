@@ -201,3 +201,177 @@ def analyzer_by_name(name: str) -> MorphologicalAnalyzer:
     if name in {"mecab-ko", "mecab"}:
         return MecabKoMorphologyAnalyzer()
     raise ValueError(f"unsupported morphology analyzer: {name!r}")
+
+
+@dataclass(frozen=True, slots=True)
+class SyllableMorphemeLink:
+    """Source-aligned link from one Hangul syllable to one analyzer morpheme."""
+
+    syllable_index: int
+    source_start: int
+    source_end: int
+    morpheme_index: int | None
+    morpheme_form: str | None
+    morpheme_tag: str | None
+    status: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class MorphologicalBoundary:
+    """Alignment-only classification between adjacent Hangul syllables."""
+
+    left_syllable_index: int
+    right_syllable_index: int
+    kind: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class MorphologyAlignment:
+    """Validated syllable↔morpheme links; never a pronunciation-rule license."""
+
+    text: str
+    analyzer: str
+    status: str
+    links: tuple[SyllableMorphemeLink, ...]
+    boundaries: tuple[MorphologicalBoundary, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "text": self.text,
+            "analyzer": self.analyzer,
+            "status": self.status,
+            "links": [item.to_dict() for item in self.links],
+            "boundaries": [item.to_dict() for item in self.boundaries],
+            "contract": "alignment_only_no_pronunciation_or_rule_licenses",
+        }
+
+
+def align_morphemes_to_syllables(
+    text: str,
+    syllables: tuple[Any, ...] | list[Any],
+    result: MorphologyResult,
+) -> MorphologyAlignment:
+    """Build validated source-offset links for research-only morphology.
+
+    Every non-zero-width morpheme must point to the exact source substring.
+    Zero-width morphemes are retained but make the adjacent syllable boundary
+    unknown; they are never treated as evidence for a phonological rule.
+    Missing coverage is represented as an unaligned link rather than guessed.
+    """
+    if not isinstance(text, str):
+        raise TypeError("text must be a string")
+    if result.text != text:
+        raise ValueError("morphology result text does not match source text")
+
+    source_syllables = [
+        (offset, char)
+        for offset, char in enumerate(text)
+        if "\uac00" <= char <= "\ud7a3"
+    ]
+    if len(source_syllables) != len(syllables):
+        raise ValueError("syllable sequence does not match Hangul source characters")
+
+    for expected_index, (syllable, (offset, char)) in enumerate(zip(syllables, source_syllables)):
+        if getattr(syllable, "text", None) != char or getattr(syllable, "index", None) != expected_index:
+            raise ValueError("syllable order or source character does not match input text")
+
+    previous_start = -1
+    previous_nonzero_end = -1
+    indexed: list[tuple[int, int, int, Morpheme]] = []
+    zero_width_offsets: set[int] = set()
+    for morpheme_index, morpheme in enumerate(result.morphemes):
+        start, end = morpheme.start, morpheme.end
+        if not isinstance(start, int) or not isinstance(end, int) or start < 0 or end < start or end > len(text):
+            raise ValueError("morpheme contains an invalid source span")
+        if start < previous_start:
+            raise ValueError("morpheme spans are not ordered")
+        previous_start = start
+        if start == end or morpheme.span_status == "zero_width_morph":
+            if start != end:
+                raise ValueError("zero-width morpheme status has a non-empty source span")
+            zero_width_offsets.add(start)
+            continue
+        if start < previous_nonzero_end:
+            raise ValueError("morpheme source spans overlap")
+        source_surface = text[start:end]
+        if morpheme.surface and morpheme.surface != source_surface:
+            raise ValueError("morpheme surface does not match its source span")
+        previous_nonzero_end = end
+        indexed.append((morpheme_index, start, end, morpheme))
+
+    links: list[SyllableMorphemeLink] = []
+    for syllable, (offset, _char) in zip(syllables, source_syllables):
+        covering = [
+            item for item in indexed
+            if item[1] <= offset and item[2] >= offset + 1
+        ]
+        if len(covering) == 1:
+            morpheme_index, _start, _end, morpheme = covering[0]
+            links.append(SyllableMorphemeLink(
+                syllable_index=syllable.index,
+                source_start=offset,
+                source_end=offset + 1,
+                morpheme_index=morpheme_index,
+                morpheme_form=morpheme.form,
+                morpheme_tag=morpheme.tag,
+                status="aligned",
+            ))
+        elif not covering:
+            links.append(SyllableMorphemeLink(
+                syllable_index=syllable.index,
+                source_start=offset,
+                source_end=offset + 1,
+                morpheme_index=None,
+                morpheme_form=None,
+                morpheme_tag=None,
+                status="unaligned",
+            ))
+        else:
+            # Overlap is rejected above; keep this defensive branch fail-closed.
+            raise ValueError("syllable is covered by multiple morpheme spans")
+
+    boundaries: list[MorphologicalBoundary] = []
+    for index in range(len(syllables) - 1):
+        left, right = links[index], links[index + 1]
+        left_syllable = syllables[index]
+        right_offset = source_syllables[index + 1][0]
+        if getattr(left_syllable, "boundary_after", "same_word") == "word":
+            kind = "word"
+        elif right_offset in zero_width_offsets:
+            kind = "unknown_zero_width_morph"
+        elif left.status != "aligned" or right.status != "aligned":
+            kind = "unknown_unaligned"
+        elif left.morpheme_index == right.morpheme_index:
+            kind = "same_morpheme"
+        else:
+            left_morpheme = result.morphemes[left.morpheme_index]
+            right_morpheme = result.morphemes[right.morpheme_index]
+            kind = "morpheme" if left_morpheme.end == right_morpheme.start else "unknown_noncontiguous"
+        boundaries.append(MorphologicalBoundary(
+            left_syllable_index=left.syllable_index,
+            right_syllable_index=right.syllable_index,
+            kind=kind,
+        ))
+
+    if any(link.status != "aligned" for link in links):
+        status = "partial_unaligned"
+    elif zero_width_offsets:
+        status = "partial_zero_width_morphs"
+    elif any(boundary.kind.startswith("unknown_") for boundary in boundaries):
+        status = "partial_boundary_alignment"
+    else:
+        status = "fully_aligned"
+
+    return MorphologyAlignment(
+        text=text,
+        analyzer=result.analyzer,
+        status=status,
+        links=tuple(links),
+        boundaries=tuple(boundaries),
+    )

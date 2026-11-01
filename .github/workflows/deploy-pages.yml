@@ -83,7 +83,7 @@ jobs:
           system_file="$(mktemp)"
           asset_file="$(mktemp)"
           curl --fail --location --silent --show-error --retry 10 --retry-delay 5 --retry-all-errors --max-time 30 "$base_url" -o "$index_file"
-          grep -Fq 'Сервіс автоматично визначає вимову за набором правил і словникових винятків.' "$index_file"
+          grep -Fq 'українську транслітерацію двома окремими маршрутами: через IPA та через Revised Romanization (RR).' "$index_file"
           grep -Fq 'id="mode-practical"' "$index_file"
           curl --fail --location --silent --show-error --retry 10 --retry-delay 5 --retry-all-errors --max-time 30 "${base_url}system.html" -o "$system_file"
           grep -Fq '<title>Система / 한국어 → УКРАЇНСЬКА</title>' "$system_file"

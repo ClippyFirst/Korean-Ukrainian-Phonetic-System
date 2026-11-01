@@ -1,0 +1,41 @@
+# Synthetic adversarial Korean prose — generated 2026-10-31
+# Purpose: stress the existing Hangul→surface→IPA/RR→Ukrainian pipeline.
+# These are project-generated stimuli, NOT authoritative pronunciation gold.
+# Do not use these lines to train, tune, or score an engine without independent
+# source-backed surface-form adjudication and a held-out split.
+
+[01 complex codas and liaison]
+값이 바뀌었다고 해서 넋이 나간 사람처럼 굴면 안 된다.
+읽고 있던 책을 덮자마자 밟은 흙이 신발에 묻었다.
+닭 앞에서 맑은 물을 찾다가 값있는 정보를 놓쳤다.
+
+[02 fortition, aspiration, and h]
+국밥집에서 밥값을 계산하고 떡볶이와 칼국수를 주문했다.
+옷 한 벌을 입고 꽃 한 송이를 든 채 밖으로 나왔다.
+좋고 싫은 감정을 숨긴 채 학교 앞 축제를 구경했다.
+
+[03 palatalization and vowel contrasts]
+같이 읽던 책을 굳이 다시 읽으려는 이유가 뭐예요?
+희망과 회의, 의의와 의미를 문맥에 맞게 구별해 보세요.
+협의 결과를 의장에게 전달한 뒤 회의실을 정리했다.
+
+[04 nasal/liquid assimilation and boundaries]
+신라의 설날 풍습과 독립문 주변의 지명을 조사했다.
+종로에서 물엿을 산 뒤 유들유들한 반죽을 만들었다.
+한 문장이 끝났다고 해서 다음 어절의 운율 경계까지 알 수 있는 것은 아니다.
+
+[05 morphology and lexical ambiguity]
+낯선 사람이 말을 걸었지만 나는 모르는 척하고 지나갔다.
+그가 만든 결과물이 정말 좋은지, 좋을 수 있는지 다시 확인했다.
+읽을 수 없는 문장을 읽히게 만들려면 형태소와 발음 규칙을 함께 살펴야 한다.
+
+[06 names, loans, numerals, and mixed punctuation]
+2026년 10월 31일 오전 9시 07분에 서울역 3번 출구에서 만나요!
+퀴즈 앱의 URL은 https://example.invalid/test이고, 버전은 v2.8.1입니다.
+김서준 연구원과 박지우 교수는 AI·IPA·RR의 차이를 비교했다.
+
+[07 extended mixed prose]
+한국어 발음 연구에서는 표기와 실제 발음이 언제나 일치한다고 가정해서는 안 된다.
+예를 들어 받침의 중화, 연음, 비음화, 유음화, 경음화와 구개음화는 서로 다른 조건에서 일어나며, 형태소 경계와 단어 경계도 같은 방식으로 작동하지 않는다.
+특히 ㅢ가 포함된 단어와 조사, 복합 받침 뒤에 모음으로 시작하는 형태소가 이어지는 경우에는 표면형만 보고 어휘적 초성인지 재음절화된 받침인지 단정하기 어렵다.
+따라서 이 문단은 엔진의 처리 결과를 비교하기 위한 입력 자료일 뿐, 정답 IPA나 우크라이나어 표기를 미리 지정하지 않는다.

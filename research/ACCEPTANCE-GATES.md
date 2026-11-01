@@ -66,6 +66,20 @@ A release is not accepted merely because the build succeeds or documentation des
 - Reviewer:
 - Decision: accepted / rejected / conditional
 
+## Current evidence snapshot — 2026-10-31 continuation PR #411
+
+This snapshot supersedes the historical 2026-10-21 table for the current dual-route continuation. It is not a release acceptance decision. Main remains at `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`; PR [#411](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/411) is draft/open on a branch based directly on that main commit. The latest code-bearing head is `797d43b823fddcee5334229978f6463a1495f907`; subsequent branch commits only reconcile documentation. The current PR tip has not received exact-head CI.
+
+| Gate | Status | Evidence / reason |
+|---|---|---|
+| 0 — Repository integrity | PARTIAL | Main SHA recorded. PR #411 contains the dual-route UI and source-aware RR continuation; it is 189+ commits ahead, 0 behind, and mergeable but remains draft; the PR diff currently spans 43 files. PR #371 is a separate benchmark branch, 117 ahead and 34 behind main; it is not merged blindly. PRs #409/#410 remain closed unmerged as superseded; their branches are preserved. |
+| 1 — Source and licensing | PARTIAL / BLOCKED | Official NIKL RR page checked for §2 and §3(1), including the ten source-spelling examples. `SRC-KOR-ROMANIZATION` now records the official source and scope; item-level reuse/license status remains unchecked. Root project license remains an owner decision. The NIKL metadata-only source inventory job was skipped, not passed. |
+| 2 — Rule and data integrity | PARTIAL | RR source spelling is now used for the ten explicit NIKL §3(1) examples when source/surface alignment is known; surface-based RR remains the fallback when alignment is unknown. Rule IDs and source orthography are carried into the RR→Ukrainian trace. This code, its tests and smoke fixture are not yet exact-head CI verified. Full NIKL conformance is not claimed: proper-name capitalization, administrative-unit hyphenation, personal-name formatting and unlisted lexical/morphological exceptions remain open. Ukrainian correspondences remain project proposals. |
+| 3 — Independent evaluation corpus | PARTIAL / EVIDENCE-LIMITED | Synthetic surface strings for the ten RR exceptions are labelled test stimuli, not pronunciation gold. There is no independent Ukrainian target gold/user study and no new held-out Korean IPA gold. Hanja coverage/ambiguity/false-reading rates remain unmeasured. |
+| 4 — Runtime correctness | PARTIAL for current PR head | Last fully verified code-bearing head `132e0a0cc79a8e758e57bc4490c615a6297194cb`: Node 1,386/1,386; Python 3.11/3.12/3.13; build; clean wheel; teacher-corpus audit; browser integration and system checks passed. Subsequent RR source-exception code/tests and smoke updates have no exact-head Actions run. Local `git ls-remote` failed because the execution container could not resolve `github.com`; no local `npm test`, build or pytest is claimed. |
+| 5 — Product quality | PARTIAL | Both Ukrainian routes, trace panels and separate copy controls are implemented in PR #411; RR-primary uncertainty is labelled provisional. Live smoke now includes NIKL source-spelling exceptions, but it has not been run against a preview build. No production deployment is claimed. |
+| 6 — Release and independent review | BLOCKED | Keep PR #411 draft. Required: exact-head CI for source-aware RR, live preview browser smoke, independent Ukrainian-language review/reader study, independent Korean IPA adjudication (issue #337), Hanja evaluation, and held-out comparative evidence. No merge or release performed. |
+
 ## Current evidence snapshot — 2026-10-21
 
 This status snapshot supersedes the untouched template checkboxes above for the current mainline and the follow-up branch. It is not a release acceptance decision.
@@ -467,3 +481,60 @@ Feature status: **PARTIAL / in review**, tracked by [PR #354](https://github.com
 **Evidence currently available:** isolated Node.js harness, 6/6 tests passed including the 11,172-syllable structural sweep. In addition, CI passed on code/test snapshot `0dcde24374f1a67c38f00f44687c7a1e4a024a51`: browser regression/build, Python regression/data integrity, `npm test`, `npm run build`, Python 3.11/3.12/3.13, and corpus audit jobs. See [system verification](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40680654498), [browser G2P](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40680654450), and [tests](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/40680654400). Official NIKL source inventory was skipped. Later commits were documentation-only; latest-head CI is not yet confirmed. See `docs/KOREAN-ROMANIZATION-RR-2026-10-28.md` and the corresponding entry in `research/ROADMAP.md`.
 
 **Release rule:** the feature must not be described as fully NIKL-conformant or merged solely on the basis of structural syllable coverage or the current example tests.
+
+
+## Addendum — G2P improvement research audit (2026-11-01)
+
+- **DONE_VERIFIED:** reviewed Mun, Kim & Ko (2022) and the public KoG2Padvanced repository metadata; reconciled candidate rule families against current R003, R009, §5 IPA variants, lexical alternatives, and the optional morphology adapters.
+- **DONE_VERIFIED:** registered KoG2Padvanced as rights-unverified research evidence. No upstream code or test corpus was imported.
+- **PARTIAL:** source-backed /h/ deletion, /ㅢ/ variants, and /n/-insertion already have implementation coverage; this audit did not prove exhaustive coverage of all lexical/morphological environments.
+- **DEFERRED:** variable coda place assimilation remains outside the standard South Korean output profile; a separate descriptive profile would require independent speaker/register evidence, explicit variant semantics, and its own evaluation.
+- **TODO:** morphology-aware candidate generation from Kiwi/MeCab-Ko. Acceptance requires exact source-offset alignment, POS evidence, analyzer provenance, multiple hypotheses or abstention, positive/negative homograph controls, Python/browser contract parity if exposed in the UI, and paired evaluation on independently adjudicated cases.
+- **BLOCKED:** KoG2Padvanced implementation/corpus reuse due no declared upstream license and no executable source module in the inspected tree.
+- **Benchmark policy:** curated rule-challenge scores, canonical lexical G2P, and noisy-text normalization+G2P must remain separate; no aggregate benchmark claim may blend them.
+
+
+## Addendum — profile-aware IPA and morphology alignment (2026-11-01)
+
+- **DONE_VERIFIED:** UGTPHON runner now evaluates broad and partial-narrow IPA separately, records profile ID/status/version, and uploads separate artifacts. Exact same token set: broad 53.0022% exact / 9.1697% CER; partial narrow 70.4225% exact / 4.8992% CER. Five unresolved tokens and zero engine errors in each profile.
+- **PARTIAL:** narrow profile improves alignment to UGTPHON gold but remains partial/research-only, not fully adjudicated, and not target-compatible. It must not be used for Ukrainian adaptation.
+- **DONE_VERIFIED:** syllable↔morpheme alignment helper validates source offsets and preserves zero-width, unaligned, and word-boundary uncertainty; it grants no pronunciation-rule licenses.
+- **PARTIAL:** Kiwi+MeCab-Ko consensus diagnostic changed four words but added no exact matches and slightly worsened CER; no candidate rule is promoted.
+- **DONE_VERIFIED:** real Kiwi and MeCab-Ko smoke jobs, browser integration, Python 3.11/3.12/3.13, Node 1,389 tests, wheel install, system verification, master artifacts, and test-register extraction passed on code head cb89fc8.
+- **TODO:** rule-specific morphology licensing using aligned spans, exact POS evidence, analyzer provenance, homograph controls, multiple analyses, and abstention on disagreement.
+- **DEFERRED:** recursive rule re-evaluation. Acceptance requires a source-backed cascading counterexample, a bounded fixed-point design with cycle detection, and paired non-regression tests.
+- **BLOCKED:** KoG2Padvanced implementation/corpus reuse due no declared upstream license and no executable source module. You & Moon (2026) is paper-only in the inspected Zenodo record; no executable implementation/corpus was available to reuse.
+- **PENDING:** multi-engine benchmark run 41248014178; do not mark complete until its artifact is inspected.
+
+
+## Addendum — paired G2P results and adapter alignment hardening (2026-11-01)
+
+- **DONE_VERIFIED on code head cb89fc8:** real Kiwi and MeCab-Ko adapters, source-offset syllable↔morpheme alignment, zero-width/unaligned boundary handling, analyzer boundary comparison, Python 3.11/3.12/3.13, Node 1,389 tests, wheel install, browser integration and system verification passed in the recorded CI batch.
+- **DONE_VERIFIED diagnostic, not gold:** Kiwi and MeCab-Ko exact boundary-set agreement was 1,537/1,907 words (80.5978%). Agreement is not segmentation accuracy. The native soft-rule alignment diagnostic found 217 common rule events: 186 observed by both, 18 by neither, 8 Kiwi-only and 5 MeCab-only.
+- **PARTIAL / no promotion:** morphology consensus changed four words and newly resolved one, but exact match did not improve (53.0022% strict vs 52.9826% consensus) and CER slightly worsened (9.1697% vs 9.1776%). Twenty-four unspaced phrase-boundary cases were withheld. No analyzer-derived license is promoted.
+- **DONE_VERIFIED diagnostic:** on the same 2,698 UGTPHON tokens, broad IPA scored 53.0022% exact / 9.1697% CER; partial narrow IPA v3 scored 70.4225% / 4.8992%. The narrow profile is partial, research-only, convention-sensitive and target-incompatible; do not describe it as a validated standard-pronunciation improvement.
+- **DONE_VERIFIED paired diagnostic:** native vs g2pK same-token subset: native 53.0022% exact / 9.1697% CER; g2pK 53.1134% / 9.2304%. g2pK's +0.1112 pp exact-match delta accompanies +0.0607 pp worse CER; the adapter also shares the repository IPA renderer. This is not a decisive winner.
+- **CANCELLED:** multi-engine portfolio run 41248014178 was cancelled at the comparison step. Uploaded training-readiness artifact is not a benchmark result. Charsiu and ByT5 were skipped.
+- **PARTIAL pending exact-head CI:** g2pK adapter now verifies equal Korean word-token counts and exact inter-word separators before source lexical surface/IPA overrides; otherwise it withholds overrides. Regression tests cover aligned input, shifted punctuation and merged-word output. Code commit a184db80c7a63b2333574e12973c7c0689b41e6e; later documentation-only tip at time of this update 751e352f2ecbdaa0007aaf5927da164ea480ff0e. No exact-head workflow run was returned for the new code commit.
+- **TODO:** use already verified morphology links for source-backed, rule-specific licensing only after exact POS/environment evidence, homograph controls, analyzer disagreement abstention and independently adjudicated evaluation.
+- **DEFERRED:** bounded recursive rule re-evaluation until a source-backed cascading counterexample demonstrates that the current deterministic single pass is insufficient.
+- **BLOCKED / EVIDENCE-LIMITED:** independent source-convention-compatible Korean IPA gold and separate Ukrainian target gold remain unavailable; do not optimize solely against raw corpus disagreement.
+
+
+## Addendum — raw-surface UGTPHON retrieval baseline (2026-11-01)
+
+- **DONE_VERIFIED — scope distinction:** scripts/benchmark_ugtphon_ko.py evaluates token.canonical and is a canonical lexical G2P diagnostic. It does not evaluate raw UGT normalization.
+- **PARTIAL — new research-only surface benchmark:** scripts/benchmark_ugtphon_ko_surface.py evaluates token.text and builds an exact-match surface→canonical datastore from train split only. It never reads test token.canonical for prediction. It blocks train-known canonical collisions and abstains on ambiguous keys; it reports canonical false-rewrite risk and A/B/C category metrics. Tests: tests/test_ugtphon_surface_benchmark.py.
+- **PARTIAL — no real data score:** external Korean UGTPHON train/test JSON were not available in the execution container. No dataset has been copied into the repository. The Korean subset is Apache-2.0; the script requires explicit local paths and does not download at runtime.
+- **EVIDENCE:** Jeon et al., Findings EMNLP 2026, report Korean PERnc 47.5→32.0 for ByT5 and 77.3→32.4 for Qwen2.5-0.5B with their compositional retrieval model. Korean ablation: retrieval-only PERnc 27.7; retrieval+staged decoding 32.0. Test retrieval-only first; do not blindly add staged decoding.
+- **DEFERRED:** neural UGT normalization, because no verified public implementation/checkpoint was found and a transparent retrieval baseline has not yet been measured.
+- **BLOCKED:** exact-head CI for code commit 447df1febc769dcb0cfa1091f7b992bc6f2be7f3 and a real-data surface benchmark run. GitHub-App-authored commits did not emit workflow runs; local network/data access was unavailable.
+
+
+## Raw-surface UGT normalization diagnostic — 2026-11-01
+
+- **DONE_VERIFIED as an earlier diagnostic:** workflow [41306501056](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41306501056) ran train-only raw-surface normalization on the pinned Korean UGTPHON test split: 3,140 attempted, 2,639 scored, coverage 84.0446%, exact 51.6105%, coverage-adjusted exact 43.3758%, CER 10.0256%, 4 unresolved, 0 engine errors.
+- **Finding:** retrieval hit only 22/722 noncanonical tokens (3.0471%): 15 exact surface, 7 B1 lengthening, 0 exact-context. 47 canonical collisions and 483 ambiguous contexts were blocked. This is sparse retrieval, not a demonstrated accuracy improvement.
+- **PARTIAL:** paired raw-vs-normalized baseline metrics are now implemented in the script, tests and workflow output on PR #411. They compare only tokens scored by both and report exact/CER deltas, rescued/lost tokens and exact improvements/regressions. Exact-head CI and a new real-data artifact are still pending.
+- **DEFERRED:** no fuzzy local-context fallback. The EMNLP 2026 sentence-context results concern a trained model and cannot be reproduced by exact trigram lookup; no default engine behavior is changed.
+- **Release gate:** do not claim a raw-UGT improvement until the paired baseline run shows a positive effect without canonical false rewrites or category-specific regressions.

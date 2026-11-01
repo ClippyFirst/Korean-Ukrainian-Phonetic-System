@@ -1,8 +1,11 @@
 # Programme Roadmap
 
-Last updated: 2026-10-21  
-Current phase: Phase 7 — verification and Phase 9 — release acceptance. Mainline implementation is tested/deployed as a research preview; independent linguistic and owner-dependent release gates remain open.  
+Last updated: 2026-10-31  
+Current phase: Phase 7 — verification and Phase 9 — release acceptance. Mainline remains a research preview; PR #411 carries the dual-route UI and a source-aware NIKL RR follow-up. The latest RR exception implementation is not exact-head CI verified; independent linguistic and owner-dependent release gates remain open.  
 Planned phases are not evidence of completion.
+
+## Current continuation pointer — 2026-10-31
+The canonical task ledger and evidence are in `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`, `docs/METHODOLOGY-CLAIMS-AND-EVIDENCE-REGISTER-2026-10-30.md`, `research/ACCEPTANCE-GATES.md`, `research/SOURCE-REGISTER.csv`, and `docs/KOREAN-ROMANIZATION-RR-2026-10-28.md`. PR #411 is draft/open on `feat/korean-rr-contextual-phonetics-final`; it is based on current main `5cec9deb4a8d622cd5f0ba969a2fd49b17281f43`. Do not merge/deploy until exact-head CI for the latest RR code and live-preview smoke are complete. Independent Ukrainian target review, Korean IPA adjudication, Hanja coverage evaluation, full RR conformance and owner-dependent license decisions remain open.
 
 ## Operating model
 Work in bounded phases. Each phase must produce durable artifacts and satisfy exit criteria before closure. Parallel research is acceptable, but shared runtime changes should wait until source and behavior contracts are sufficiently clear. Use focused branches; avoid creating many branches without an integration plan.
@@ -295,3 +298,21 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **BLOCKED / EVIDENCE-LIMITED:** independent accuracy evaluation needs adjudicated held-out Korean pronunciation gold. No neural runtime or remote service is introduced.
 
 - **DEFERRED:** Python CLI/API do not expose Super-soft and remain strict/soft; no cross-runtime parity claim.
+
+
+## Korean G2P benchmark separation — 2026-11-01
+
+- **DONE_VERIFIED:** literature review of Mun et al. (2022), You & Moon (Interspeech 2026), and Jeon et al. (Findings EMNLP 2026) is recorded in docs/KOREAN-G2P-ENGINE-IMPROVEMENT-RESEARCH-2026-11-01.md.
+- **DONE_VERIFIED:** canonical lexical G2P and raw-surface UGT normalization are now explicitly separate benchmark questions. The existing canonical runner uses token.canonical; the new scripts/benchmark_ugtphon_ko_surface.py uses token.text and a train-only exact-retrieval store.
+- **PARTIAL:** run the new surface benchmark on externally supplied Korean UGTPHON train/test data; exact-head CI is also pending for the new adapter and benchmark tests.
+- **DEFERRED:** neural UGT normalization and staged decoding until the retrieval-only baseline is measured. The EMNLP 2026 Korean ablation found retrieval-only PERnc 27.7 versus 32.0 with staged decoding; do not assume the full architecture helps every language/task.
+- **BLOCKED / EVIDENCE-LIMITED:** independent Korean IPA convention adjudication and Ukrainian target review remain separate gates. A better UGTPHON score does not by itself validate standard Korean pronunciation or Ukrainian transliteration.
+
+
+## 2026-11-01 — Raw-surface UGT baseline evidence (PR #411)
+
+- **DONE_VERIFIED as diagnostic:** run 41306501056 scored pinned Korean raw token surfaces at 51.6105% exact / 10.0256% CER on 2,639/3,140 tokens (84.0446% coverage; coverage-adjusted exact 43.3758%).
+- **Finding:** train-only exact/context/lengthening retrieval hit 22/722 noncanonical tokens (3.0471%); 0 exact-context hits. Ambiguity and canonical collision guards blocked uncertain rewrites.
+- **PARTIAL:** a paired raw-input baseline is now added to the benchmark, with same-token deltas and rescued/lost coverage. Exact-head CI and a new train/test run are required before claiming the normalizer improves quality.
+- **Design decision:** keep raw-UGT canonicalization separate from canonical-word G2P; do not add fuzzy context rules or broad phonological heuristics based on this sparse retrieval result.
+- **Sentence-context native vs g2pK test:** native 7.9755% exact / 14.8323% CER on paired 163 sentences vs g2pK 7.3620% / 15.4797%; no evidence to replace native G2P with g2pK in this test.

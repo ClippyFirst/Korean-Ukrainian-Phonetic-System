@@ -17,9 +17,13 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from benchmark_ugtphon_ko import edit_distance, load_corpus, normalize_ipa
+try:
+    from benchmark_ugtphon_ko import edit_distance, load_corpus, normalize_ipa, prepare_korean_sentence
+except ModuleNotFoundError:
+    from scripts.benchmark_ugtphon_ko import edit_distance, load_corpus, normalize_ipa, prepare_korean_sentence
 
 _HANGUL_TOKEN = re.compile(r"^[\uac00-\ud7a3]+$")
+_HANGUL_SENTENCE = re.compile(r"^[\uac00-\ud7a3\s]+$")
 
 
 def _gold_variants(raw: str) -> list[str]:
@@ -180,15 +184,152 @@ def evaluate(rows: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+
+def _sentence_metrics(items: list[dict[str, Any]]) -> dict[str, Any]:
+    metrics = _metrics(items)
+    return {
+        "scored_sentences": metrics["scored_tokens"],
+        "exact_matches": metrics["exact_matches"],
+        "exact_match_rate": metrics["exact_match_rate"],
+        "character_error_rate": metrics["character_error_rate"],
+    }
+
+
+def evaluate_sentences(
+    rows: list[dict[str, Any]],
+    *,
+    boundary_mode: str = "same_word",
+) -> dict[str, Any]:
+    """Compare full-sentence native G2P with MeCab-contextual g2pK."""
+    if boundary_mode not in {"same_word", "phrase"}:
+        raise ValueError("boundary_mode must be same_word or phrase")
+    from korean_ukrainian.pipeline import phoneticize_korean
+    from korean_ukrainian.phonology import parse_syllables
+    from korean_ukrainian.ipa import realize_syllables
+    from g2pk import G2p
+
+    g2p = G2p()
+    native_scored: list[dict[str, Any]] = []
+    g2pk_scored: list[dict[str, Any]] = []
+    paired: list[dict[str, Any]] = []
+    unresolved_native = errors_native = errors_g2pk = skipped = 0
+    punctuation_stripped = 0
+    details: list[dict[str, Any]] = []
+
+    for row in rows:
+        raw = row.get("canonical", "")
+        raw = raw.strip() if isinstance(raw, str) else ""
+        sentence = prepare_korean_sentence(raw)
+        punctuation_stripped += sentence != raw
+        gold = row.get("phonemes", "")
+        if not sentence or not _HANGUL_SENTENCE.fullmatch(sentence):
+            skipped += 1
+            continue
+        if not isinstance(gold, str) or not gold.strip() or not _gold_variants(gold):
+            skipped += 1
+            continue
+
+        native_item = g2pk_item = None
+        native_error = g2pk_error = None
+        try:
+            result = phoneticize_korean(sentence, boundary_mode=boundary_mode)
+            if result.get("pronunciation_status") == "unresolved":
+                unresolved_native += 1
+            else:
+                native_item = _score_prediction(result["ipa"]["ipa"], gold)
+                native_item.update({"id": row["id"], "sentence": sentence, "gold": gold})
+                native_scored.append(native_item)
+        except Exception as exc:
+            errors_native += 1
+            native_error = f"{type(exc).__name__}: {exc}"
+
+        try:
+            surface = g2p(sentence)
+            if not isinstance(surface, str):
+                raise TypeError("g2pk did not return a string")
+            surface = " ".join(surface.split())
+            if not surface or not _HANGUL_SENTENCE.fullmatch(surface):
+                raise ValueError(f"g2pk returned unsupported sentence surface: {surface!r}")
+            ipa = realize_syllables(parse_syllables(surface), level="broad")["ipa"]
+            g2pk_item = _score_prediction(ipa, gold)
+            g2pk_item.update({"id": row["id"], "sentence": sentence, "gold": gold, "surface_hangul": surface})
+            g2pk_scored.append(g2pk_item)
+        except Exception as exc:
+            errors_g2pk += 1
+            g2pk_error = f"{type(exc).__name__}: {exc}"
+
+        if native_item is not None and g2pk_item is not None:
+            paired.append({"native": native_item, "g2pk": g2pk_item})
+        if native_error or g2pk_error or (native_item and not native_item["exact"]) or (g2pk_item and not g2pk_item["exact"]):
+            if len(details) < 100:
+                details.append({
+                    "id": row["id"], "sentence": sentence, "gold": gold,
+                    "native": native_item, "native_error": native_error,
+                    "g2pk": g2pk_item, "g2pk_error": g2pk_error,
+                })
+
+    native_metrics = _sentence_metrics(native_scored)
+    g2pk_metrics = _sentence_metrics(g2pk_scored)
+    paired_native = _sentence_metrics([item["native"] for item in paired])
+    paired_g2pk = _sentence_metrics([item["g2pk"] for item in paired])
+    return {
+        "benchmark": "UGTPHON Korean sentence-level native vs g2pK",
+        "purpose": "paired sentence-context diagnostic; not normative accuracy or release gate",
+        "granularity": "sentence",
+        "boundary_mode": boundary_mode,
+        "dataset_rows": len(rows),
+        "punctuation_stripped_sentences": punctuation_stripped,
+        "skipped_sentences": skipped,
+        "native_engine": {
+            **native_metrics, "unresolved_sentences": unresolved_native, "engine_errors": errors_native,
+        },
+        "g2pk": {
+            **g2pk_metrics, "unresolved_sentences": 0, "engine_errors": errors_g2pk,
+            "context": "one full sentence per G2p call; MeCab context is enabled",
+            "output_to_ipa": "g2pk Hangul surface -> repository segment IPA renderer",
+        },
+        "paired_subset": {
+            "sentences_scored_by_both": len(paired),
+            "native_engine": paired_native,
+            "g2pk": paired_g2pk,
+            "exact_match_rate_delta_g2pk_minus_native": (
+                round(paired_g2pk["exact_match_rate"] - paired_native["exact_match_rate"], 6)
+                if paired_g2pk["exact_match_rate"] is not None and paired_native["exact_match_rate"] is not None else None
+            ),
+            "cer_delta_g2pk_minus_native": (
+                round(paired_g2pk["character_error_rate"] - paired_native["character_error_rate"], 6)
+                if paired_g2pk["character_error_rate"] is not None and paired_native["character_error_rate"] is not None else None
+            ),
+        },
+        "details_sample": details,
+        "limitations": [
+            "UGTPHON is noisy user-generated text, not a normative standard-pronunciation corpus.",
+            "g2pK receives full sentence context; the token-level benchmark does not measure this capability.",
+            "Native phrase mode permits only explicitly word-boundary-licensed rules; prosodic phrase breaks are not annotated.",
+            "g2pk Hangul output is converted with the repository IPA renderer, so segment rendering is shared.",
+            "Gold IPA conventions may differ from the project's broad IPA conventions.",
+        ],
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--corpus", type=Path, default=os.environ.get("UGTPHON_KO_TEST_PATH"))
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--granularity", choices=("token", "sentence"), default="token")
+    parser.add_argument("--boundary-mode", choices=("same_word", "phrase"), default="same_word")
+    parser.add_argument("--split", choices=("dev", "test"), default="test")
     args = parser.parse_args()
     if args.corpus is None:
         parser.error("provide --corpus or set UGTPHON_KO_TEST_PATH")
     try:
-        report = evaluate(load_corpus(Path(args.corpus)))
+        rows = load_corpus(Path(args.corpus), expected_split=args.split)
+        if args.granularity == "sentence":
+            report = evaluate_sentences(rows, boundary_mode=args.boundary_mode)
+        else:
+            if args.boundary_mode != "same_word":
+                parser.error("--boundary-mode phrase requires --granularity sentence")
+            report = evaluate(rows)
     except Exception as exc:
         print(f"comparison failed: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2

@@ -179,3 +179,30 @@ The workflow checks out the exact upstream revisions into the ephemeral runner, 
 ## Contextual neural-G2P evaluator consolidation — 2026-10-27
 
 The consolidation branch also carries the strict sentence-context evaluator and its readiness/benchmark tests from the V3 research workstream. This evaluator is infrastructure, not an authentic NN-KoG2P model adapter: no NN-KoG2P inference or score is claimed. It requires declared IPA output, validates sentence IDs and canonical inputs, rejects unadapted Hangul outputs, and reports coverage/exact-match/CER at the sentence level. Word-level SIGMORPHON remains a context-free ablation, not a sentence-context benchmark. The current combined-head CI is the acceptance gate; previous PR-specific successes do not substitute for it. Model/license and training-data-overlap questions remain open, and all neural outputs remain diagnostic/hypothesis-generating only.
+
+
+## Linguistic-rule benchmark reconciliation — 2026-11-01
+
+The 2022 Mun, Kim & Ko study and its KoG2Padvanced implementation were reviewed as an independent rule-family checklist. Its 130 manually reviewed cases across 13 phonological categories are valuable for designing a balanced challenge set, but are not a directly comparable broad-IPA benchmark: the paper evaluates Hangul surface outputs on a curated rule set, while this repository's external diagnostics compare IPA under explicitly declared normalization profiles.
+
+The paper reports the following baseline weak areas for g2pk/KoG2P: /h/-deletion, /ui/ variation, coda place assimilation, and /n/-insertion; its revised system reports improvements after morphology-aware handling, a small /n/-insertion lexicon, and additional rules. ClippyFirst already implements source-backed /h/ licenses, §5 /ㅢ/ variants and lexical alternatives, and exact-form R009 /n/-insertion licenses. Variable coda place assimilation is intentionally excluded from the standard profile. See the detailed reconciliation in [the V3 research gate](NEURAL-KOREAN-G2P-V3-RESEARCH-GATE-2026-10-26.md).
+
+The external KoG2Padvanced repository does not declare a license and the inspected tree did not expose an executable source module. It was not installed, copied, or scored. Its 130-item test set was not imported. The 2022 aggregate score (0.938) is therefore cited only as the authors' result on their own curated challenge; it is not a ClippyFirst result and not a cross-corpus comparison.
+
+**Next experiment:** connect existing optional morphology adapters to a research-only candidate layer, initially for particle/ending ambiguity such as genitive 의, while preserving all analyzer hypotheses, offsets, and abstentions. Evaluate on a separately adjudicated morphology challenge and compare paired per-case outcomes; do not alter default broad IPA until independent review clears it.
+
+
+## Broad versus partial-narrow IPA profile comparison — 2026-11-01
+
+The pinned UGTPHON Korean test split was evaluated twice on the same 2,698 scorable token occurrences. The benchmark now records the selected IPA profile explicitly.
+
+| IPA profile | Exact matches | Exact rate | CER | Unresolved | Errors |
+|---|---:|---:|---:|---:|---:|
+| Broad v1 | 1,430 / 2,698 | 53.0022% | 9.1697% | 5 | 0 |
+| Partial narrow v3 | 1,900 / 2,698 | 70.4225% | 4.8992% | 5 | 0 |
+
+The narrow research profile is +17.4203 percentage points on exact match and -4.2705 points on CER. This is evidence that IPA detail level materially affects the score; it is not evidence that the partial narrow profile is fully correct. The profile remains research-only and cannot feed Ukrainian adaptation. The top residuals include ㅟ [y] versus [ɥi], lateral coda [l] versus [ɭ], and vowel/prosodic details. No extra rule was added to chase these labels.
+
+The Kiwi+MeCab-Ko morphology-consensus diagnostic on the same corpus changed four unique words, yielded no additional exact matches, and slightly worsened paired CER (0.091697 → 0.091784). One previously unresolved word became resolved, but the candidate produced one lower-edit-distance and two higher-edit-distance outcomes. The consensus layer remains diagnostic-only and is not promoted.
+
+A 2026 Interspeech paper by You & Moon proposes syllable–morpheme connectivity and recursive rule re-evaluation, with strong author-reported results on a separate standard-reading/TTS evaluation. This motivates the new research-only syllable↔morpheme alignment bridge, not a wholesale replacement: the paper's data/metrics differ, and its Zenodo record does not supply executable code or a reusable benchmark corpus. See the V3 research gate for exact scope and limitations.

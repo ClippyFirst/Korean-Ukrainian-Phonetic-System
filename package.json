@@ -2,7 +2,7 @@
   "name": "korean-ukrainian-phonetic-system-web",
   "private": true,
   "version": "1.0.0",
-  "description": "Korean to Ukrainian practical transcription service built on the research model.",
+  "description": "Korean to Ukrainian transliteration service with IPA-mediated and Revised Romanization-mediated output routes.",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"

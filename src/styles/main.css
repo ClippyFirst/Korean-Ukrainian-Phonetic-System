@@ -477,3 +477,26 @@ button { color: inherit; }
 .eyebrow,.section-kicker,.specimen-top,.specimen-bottom,.specimen-note,.input-hint,.mini-button,.practical-mode-hint,.soft-morphology-hint,.stress-hint,.results-note,.result-meta p,.copy-button,.site-nav a,.mode-option em{font-size:.8rem;line-height:1.5}
 .mini-button,.site-nav a{min-height:40px}
 .copy-button{min-height:40px}
+
+/* RR → Ukrainian research correspondence tables */
+.rr-ua-table { display:block; width:100%; overflow-x:auto; border-collapse:collapse; margin:12px 0 24px; font-size:.84rem; }
+.rr-ua-table thead, .rr-ua-table tbody { width:100%; }
+.rr-ua-table th, .rr-ua-table td { padding:9px 11px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+.rr-ua-table th { background:var(--surface-soft); font-weight:800; }
+.rr-ua-table td:first-child, .rr-ua-table td:nth-child(2), .rr-ua-table td:nth-child(3) { white-space:nowrap; }
+
+
+.hanja-reverse-workbench { margin-top:16px; padding-top:14px; border-top:1px solid var(--line); display:grid; gap:8px; }
+.hanja-reverse-workbench textarea { display:block; width:100%; min-height:68px; resize:vertical; border:1px solid var(--line); border-radius:8px; padding:10px 12px; background:var(--surface); color:var(--ink); font-family:"Noto Sans KR","Noto Sans CJK KR",sans-serif; font-size:1rem; line-height:1.6; }
+.hanja-reverse-workbench textarea:focus { outline:2px solid var(--blue); outline-offset:1px; }
+.hanja-reading-label { color:var(--muted); font-size:.76rem; font-weight:700; }
+.hanja-reverse-workbench .copy-button { justify-self:start; margin-left:0; }
+
+
+.hanja-reverse-details { margin-top:14px; border:1px solid var(--line); border-radius:10px; background:var(--surface); }
+.hanja-reverse-details > summary { padding:12px 14px; color:var(--ink); cursor:pointer; font-weight:750; }
+.hanja-reverse-details[open] { padding-bottom:12px; }
+.hanja-reverse-details .hanja-reverse-workbench { margin:0 14px; padding-top:0; border-top:0; }
+
+
+.ipa-engine-status { margin:8px 0 12px; color:var(--muted); font-size:.75rem; line-height:1.5; }

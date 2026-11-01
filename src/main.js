@@ -4,9 +4,13 @@ import lexicalAdditionsCsv from '../data/korean/lexical_additions_2026-10-15.csv
 import {createEngine} from './app/engine.js';
 import {createG2pWebAdapter} from './app/g2pk_web.js';
 import {traceIpaMappingDetailed} from './app/engine_ipa.js';
+import {renderPhonemicIpa} from './app/ipa_phonemic.js';
 import {romanizeRevised} from './app/romanization.js';
+import rrUkrainianCsv from '../data/korean/rr_ukrainian_correspondence.csv?raw';
+import rrUkrainianContextRulesCsv from '../data/korean/rr_ukrainian_context_rules.csv?raw';
+import {createRomanizationTarget} from './app/romanization_target.js';
 import {renderSuperSoftCandidate} from './app/super_soft_annotation.js';
-import {convertHangulToHanja, createHanjaConverter} from './app/hanja.js';
+import {convertHangulToHanja, createHanjaConverter, createHanjaToHangulConverter} from './app/hanja.js';
 import niklMasterPassage from '../tests/fixtures/nikl-all-articles-master-passage-2026-10-22.txt?raw';
 
 // Merge base lexicon with dated additions (later rows override earlier on same key).
@@ -20,10 +24,12 @@ const engine=createEngine(canonicalCsv, mergedLexicalCsv);
 // Practical mode uses only the pinned JS G2P port; the merged lexical corpus
 // is passed to the separate research engine above, never as a practical override.
 const webEngine=createG2pWebAdapter(engine);
+const transcribeRevisedToUkrainian=createRomanizationTarget(rrUkrainianCsv,rrUkrainianContextRulesCsv);
 const softToggle=document.querySelector('#soft-morphology');
 const superSoftToggle=document.querySelector('#super-soft-morphology');
 const modePractical=document.querySelector('#mode-practical');
 const modeResearch=document.querySelector('#mode-research');
+const modeRomanization=document.querySelector('#mode-romanization');
 const researchOptions=document.querySelector('#research-options');
 function currentMorphologyMode(){
   if(modeResearch&&modeResearch.checked){
@@ -50,15 +56,29 @@ function announceResult(message){clearTimeout(announcementTimer);live.textConten
 function setCopyFeedback(message){copyFeedback.textContent=message;copyFeedback.hidden=false;live.textContent=message;}
 const output=document.querySelector('#result-ukrainian');
 const candidateNote=document.querySelector('#candidate-note');
+const alternatePanel=document.querySelector('#alternate-ukrainian-panel');
+const alternateOutput=document.querySelector('#alternate-ukrainian-output');
+const alternateLabel=document.querySelector('#alternate-ukrainian-label');
+const alternateNote=document.querySelector('#alternate-ukrainian-note');
 const candidateValue=document.querySelector('#candidate-value');
 const ukrainianOutputLabel=document.querySelector('#ukrainian-output-label');
 const ukrainianCopyButton=document.querySelector('#ukrainian-copy-button');
 const surfaceReading=document.querySelector('#surface-reading');
 const surfaceOutput=document.querySelector('#result-surface');
 const ipa=document.querySelector('#result-ipa');
+const ipaPhonemic=document.querySelector('#result-ipa-phonemic');
+const ipaPhonemicStatus=document.querySelector('#ipa-phonemic-status');
+const ipaEngineStatus=document.querySelector('#ipa-engine-status');
 const romanization=document.querySelector('#result-romanization');
 const hanjaOutput=document.querySelector('#result-hanja');
 const hanjaEngineStatus=document.querySelector('#hanja-engine-status');
+const hanjaInput=document.querySelector('#hanja-input');
+const hanjaReadingOutput=document.querySelector('#hanja-reading-output');
+const hanjaReadingStatus=document.querySelector('#hanja-reading-status');
+const hanjaUseReading=document.querySelector('#hanja-use-reading');
+let hanjaReverseGeneration=0;
+let hanjaReverseNeedsManualResolution=false;
+let hanjaReverseSuggestedText='';
 const hanjaDictionaryChunks=import.meta.glob('./app/hanja-dictionary/hanja-dictionary-*.js');
 const loadedHanjaWordMap=new Map();
 const loadedHanjaGroups=new Set();
@@ -129,8 +149,68 @@ function renderHanja(value){
   });
 }
 
+function renderHanjaReverse(){
+  if(!hanjaInput||!hanjaReadingOutput||!hanjaReadingStatus)return;
+  const source=hanjaInput.value;
+  const generation=++hanjaReverseGeneration;
+  if(!source.trim()){
+    hanjaReadingOutput.value='';
+    hanjaReadingStatus.textContent='Введіть Hanja або змішаний текст для пошуку корейського читання.';
+    hanjaReverseNeedsManualResolution=false;
+    hanjaReverseSuggestedText='';
+    if(hanjaUseReading)hanjaUseReading.disabled=true;
+    return;
+  }
+  if(!/\p{Script=Han}/u.test(source)){
+    hanjaReadingOutput.value=source;
+    hanjaReverseSuggestedText=source;
+    hanjaReverseNeedsManualResolution=false;
+    hanjaReadingStatus.textContent='Hanja-символів не знайдено; текст Hangul/латиницею збережено без змін.';
+    if(hanjaUseReading)hanjaUseReading.disabled=false;
+    return;
+  }
+  hanjaReadingStatus.textContent='Завантаження локального словника для зворотного пошуку…';
+  Promise.all(Array.from({length:19},(_,group)=>loadHanjaGroup(group))).then(()=>{
+    if(generation!==hanjaReverseGeneration||hanjaInput.value!==source)return;
+    const result=createHanjaToHangulConverter(loadedHanjaWordMap)(source);
+    hanjaReadingOutput.value=result.text;
+    hanjaReverseSuggestedText=result.text;
+    hanjaReverseNeedsManualResolution=result.status!=='resolved';
+    const details=[
+      ...result.ambiguities.map(item=>item.source+' → '+item.readings.join(' / ')),
+      ...result.unmapped.map(item=>item.source+' → немає словникового читання')
+    ];
+    hanjaReadingStatus.textContent=result.status==='resolved'
+      ?'Однозначне словникове читання знайдено. Можна передати Hangul у головне поле.'
+      :'Потрібна ручна перевірка: '+details.join('; ')+'. Відредагуйте поле читання, щоб підтвердити вибір.';
+    if(hanjaUseReading)hanjaUseReading.disabled=result.status!=='resolved';
+  }).catch(error=>{
+    if(generation!==hanjaReverseGeneration)return;
+    hanjaReadingStatus.textContent='Не вдалося завантажити словник: '+String(error?.message||error);
+    if(hanjaUseReading)hanjaUseReading.disabled=true;
+  });
+}
+if(hanjaInput)hanjaInput.addEventListener('input',renderHanjaReverse);
+if(hanjaReadingOutput)hanjaReadingOutput.addEventListener('input',()=>{
+  if(!hanjaUseReading)return;
+  const stillContainsHanja=/\p{Script=Han}/u.test(hanjaReadingOutput.value);
+  hanjaUseReading.disabled=!hanjaReadingOutput.value.trim()||stillContainsHanja;
+  if(hanjaReverseNeedsManualResolution&&!stillContainsHanja&&hanjaReadingOutput.value!==hanjaReverseSuggestedText){
+    hanjaReadingStatus.textContent='Ручне читання відредаговано; перевірте його перед передаванням у головне поле.';
+  }
+});
+if(hanjaUseReading)hanjaUseReading.addEventListener('click',()=>{
+  if(!input||!hanjaReadingOutput||hanjaUseReading.disabled)return;
+  input.value=hanjaReadingOutput.value;
+  input.dispatchEvent(new Event('input',{bubbles:true}));
+  input.focus();
+});
+
 const analysis=document.querySelector('#result-analysis');
 const traceList=document.querySelector('#trace-list');
+const ipaTracePanel=document.querySelector('#ipa-trace-panel');
+const rrTracePanel=document.querySelector('#rr-trace-panel');
+const rrTraceList=document.querySelector('#rr-trace-list');
 const variantPanel=document.querySelector('#variant-panel');
 const variantList=document.querySelector('#variant-list');
 const uaUnconfirmedButton=document.querySelector('#ua-unconfirmed-button');
@@ -138,6 +218,7 @@ const uaCandidateButton=document.querySelector('#ua-candidate-button');
 let selectedUaView='unconfirmed';
 let currentConfirmedOutput='';
 let currentTargetUnconfirmed=true;
+let currentOutputMethod='ipa';
 function selectUaView(view){
   selectedUaView=view==='candidate'?'candidate':'unconfirmed';
   const candidateSelected=selectedUaView==='candidate';
@@ -158,7 +239,7 @@ function selectUaView(view){
     output.classList.toggle('result-unconfirmed',currentTargetUnconfirmed&&!candidateSelected);
   }
   if(candidateNote)candidateNote.hidden=!candidateSelected||!candidateValue?.textContent;
-  if(ukrainianOutputLabel)ukrainianOutputLabel.textContent=candidateSelected?'Дослідницький результат':currentTargetUnconfirmed?'Достовірний варіант недоступний':'Достовірний варіант';
+  if(ukrainianOutputLabel)ukrainianOutputLabel.textContent=candidateSelected?'Дослідницький результат':currentOutputMethod==='rr'?'Транслітерація за RR · попередня':currentTargetUnconfirmed?'Достовірний варіант недоступний':'Достовірний варіант';
   if(ukrainianCopyButton){ukrainianCopyButton.hidden=currentTargetUnconfirmed&&!candidateSelected;ukrainianCopyButton.textContent=candidateSelected?'Копіювати результат':'Копіювати';}
 }
 if(uaUnconfirmedButton)uaUnconfirmedButton.addEventListener('click',()=>selectUaView('unconfirmed'));
@@ -181,18 +262,19 @@ const RULE_LABELS={
 function describeRule(rule){return RULE_LABELS[rule]||rule.replaceAll('-',' ');}
 const STATUS_LABELS={'canonical':'Нормативна базова форма','contextual':'Контекстне правило застосовано','lexical':'Словникова вимова','lexical-review':'Потребує перевірки','practical-transliteration':'Практична евристика','heuristic-low-confidence':'Низька впевненість','super-soft-orthographic-fallback':'Суперм’який резервний запис · низька впевненість','super-soft-practical-heuristic':'Суперм’яка евристика · низька впевненість','super-soft-morphology-heuristic':'Суперм’яка гіпотеза · низька впевненість','super-soft-heuristic-coverage':'Суперм’який режим · евристичне покриття','super-soft-maximum-coverage':'Суперм’який режим · максимальне покриття','literal-preserved':'Збережено як буквальний запис','unresolved':'Не визначено'};
 function describeStatus(status){return STATUS_LABELS[status]||status;}
-function render(){const value=input.value;copyFeedback.hidden=true;count.textContent=`${[...value].length} символів`;if(!value){results.hidden=true;empty.hidden=false;issue.hidden=true;return;}const morphologyMode=currentMorphologyMode();const useG2p=!(modeResearch&&modeResearch.checked);const r=useG2p?webEngine.convert(value):engine.convert(value,{morphologyMode});empty.hidden=true;results.hidden=false;const candidateText=r.candidate_ukrainian??r.candidate_orthography??'';const candidateDisplayText=morphologyMode==='super-soft'?renderSuperSoftCandidate(r.trace,candidateText):candidateText;const hasCandidate=Boolean(candidateText||r.target_status==='provisional');const targetUnconfirmed=hasCandidate||r.target_status==='unavailable'||r.target_status==='provisional';currentTargetUnconfirmed=targetUnconfirmed;currentConfirmedOutput=r.ukrainian||'';if(candidateValue)candidateValue.textContent=candidateDisplayText;if(candidateNote)candidateNote.textContent=morphologyMode==='super-soft'?'Дослідницький результат — попередній варіант, не підтверджений нормативний запис. У квадратних дужках [фрагмент] позначено лише ділянки з низькою впевненістю. Перед використанням потрібна перевірка IPA та української цільової адаптації.':'Дослідницький результат — попередній варіант, не підтверджений нормативний запис. Перед використанням потрібна перевірка IPA та української цільової адаптації.';if(uaCandidateButton)uaCandidateButton.disabled=!hasCandidate;if(!hasCandidate&&selectedUaView==='candidate')selectedUaView='unconfirmed';selectUaView(selectedUaView);surfaceOutput.textContent=r.surfaceHangul||'';surfaceReading.hidden=!r.surfaceHangul;ipa.textContent=r.ipa;romanization.textContent=r.surfaceHangul?romanizeRevised(r.surfaceHangul):'—';analysis.textContent=r.analysis;renderHanja(value);const coverageLabel=morphologyMode==='super-soft'&&r.coverage&&r.coverage.input_total?` · покриття складів Hangul: ${Math.round(r.coverage.input_coverage*100)}% (${r.coverage.input_covered}/${r.coverage.input_total}); облік фрагментів: ${Math.round(r.coverage.trace_coverage*100)}%; низька впевненість: ${Math.round((r.coverage.low_confidence_share??0)*100)}% (${r.coverage.low_confidence_units??0}/${r.coverage.input_total})`:'';statusNote.textContent=(useG2p?'g2pK · ':'Козак Кім · ')+(r.status==='super-soft-orthographic-fallback'?'Суперм’який режим · резервна вимова низької впевненості':r.status==='super-soft-heuristic-coverage'?'Суперм’який режим · евристичний результат низької впевненості':r.status==='super-soft-maximum-coverage'?'Суперм’який режим · максимальне покриття':r.status==='canonical'?'Канонічна форма':r.status==='contextual'?'Контекстну вимову застосовано':r.status==='lexical'?'Словникова вимова застосована':r.status==='lexical-review'?'Вимова словникова; український запис попередній':r.status==='practical-transliteration'?'Практична транслітерація (нижча точність)':r.status==='heuristic-low-confidence'?'М’яка морфологія (низька впевненість); не NIKL-сертифіковано':'Є невизначені ділянки')+coverageLabel+(r.candidate_status==='super-soft-low-confidence'?' · Є резервні читання низької впевненості':r.candidate_status==='provisional'?' · Показано попередній кандидат, не підтверджений результат':r.target_status==='unavailable'?' · Український запис недоступний':r.target_status==='model-selected'?' · Український запис за проєктними відповідностями; незалежно не валідований':'');issue.hidden=!r.issues.length;issueText.textContent=r.issues.join(' ');variantList.textContent='';const variants=r.variants||[];variantPanel.hidden=variants.length===0;for(const v of variants){const row=document.createElement('div');row.className='trace-row';const source=document.createElement('span');source.className='trace-source';source.dataset.label='Варіант · джерело';source.textContent=`${v.source||value} → ${v.surface}`;const out=document.createElement('span');out.className='trace-output';out.dataset.label='Український варіант';out.textContent=v.ukrainian;const details=document.createElement('span');details.className='trace-ipa';details.dataset.label='IPA та примітка';details.textContent=`IPA: ${v.ipa}${v.note?' · '+v.note:''}`;const state=document.createElement('span');state.className=`trace-status ${v.status}`;state.dataset.label='Статус';state.textContent=v.note&&v.note.includes('§4')?'нормативний варіант вимови; український запис може збігатися':v.status==='lexical-review'?'український запис попередній':'словниковий варіант';row.append(source,out,details,state);variantList.append(row);}traceList.textContent='';for(const t of r.trace){if(t.status==='literal')continue;const row=document.createElement('div');row.className='trace-row';const source=document.createElement('span');source.className='trace-source';source.dataset.label='Корейський сегмент · вхід';source.textContent=t.source;source.title='Початковий корейський склад';const surface=document.createElement('span');surface.className='trace-surface';surface.dataset.label='Корейська вимова';surface.textContent=t.surface||t.source;surface.title='Склад після застосування правил вимови';const ipaValue=document.createElement('span');ipaValue.className='trace-ipa';ipaValue.dataset.label='IPA';ipaValue.textContent=t.ipa||'—';ipaValue.title='IPA — єдине джерело для українського відповідника';const mapping=document.createElement('span');mapping.className='trace-mapping';mapping.dataset.label='IPA-токени → українські графеми';const mappingResult=traceIpaMappingDetailed(t.ipa||'');const tokenTrace=mappingResult.tokens.map(token=>token.ipa+' → '+token.ukrainian+' ['+token.mapping_id+'; '+token.status+']').join(' · ');const featureTrace=(mappingResult.features||[]).map(feature=>feature.ipa+' — '+feature.note).join(' · ');const targetStatusNote=mappingResult.status==='provisional'?'цільова відповідність попередня':mappingResult.status==='unavailable'?'відповідність недоступна':'відповідність задана проєктом';mapping.textContent=[tokenTrace,featureTrace,targetStatusNote].filter(Boolean).join(' · ')||'—';mapping.title='Відображення IPA-токенів і явний облік ознак, які не мають окремого позначення в українському записі';const out=document.createElement('span');out.className='trace-output';out.dataset.label='Український запис';out.textContent=t.candidateStatus==='provisional'?'Кандидат: '+(t.candidateOutput||''):t.output||'∅';out.title=t.candidateStatus==='provisional'?'Попередній кандидат; не підтверджений український запис':'Повний український відповідник, складений з IPA-токенів';const rules=document.createElement('span');rules.className='trace-rules';rules.dataset.label='Нюанс / правило';const ruleNames=(t.rules||[]).map(describeRule);rules.textContent=ruleNames.length?ruleNames.join(' · '):'без контекстної зміни';rules.title=(t.rules||[]).join(' | ')||'Канонічне відображення IPA';const state=document.createElement('span');state.className='trace-status '+t.status;state.dataset.label='Статус';state.textContent=describeStatus(t.status);state.title='Технічний статус: '+t.status;row.append(source,surface,ipaValue,mapping,out,rules,state);traceList.append(row);}const spokenOutput=targetUnconfirmed?(hasCandidate&&candidateText?'Дослідницький результат: '+candidateDisplayText:'Достовірний варіант не підтверджено.'):('Достовірний варіант: '+(r.ukrainian||'немає результату'));const announcement=(r.issues.length?'Обробку завершено з попередженнями. ':'Обробку завершено. ')+spokenOutput;announceResult(announcement.slice(0,220));}
+function render(){const value=input.value;copyFeedback.hidden=true;count.textContent=`${[...value].length} символів`;if(!value){results.hidden=true;empty.hidden=false;issue.hidden=true;return;}const morphologyMode=currentMorphologyMode();const romanizationMode=Boolean(modeRomanization&&modeRomanization.checked);const useG2p=!(modeResearch&&modeResearch.checked);const r=useG2p?webEngine.convert(value):engine.convert(value,{morphologyMode});if(ipaEngineStatus)ipaEngineStatus.textContent=useG2p?'Джерело поверхневої IPA: g2pK JavaScript port (звичайний режим).':'Джерело поверхневої IPA: детермінований рушій Козака Кіма (режим '+morphologyMode+').';const rrTarget=r.surfaceHangul?transcribeRevisedToUkrainian(r.surfaceHangul,value):null;if(ipaTracePanel)ipaTracePanel.hidden=false;if(rrTracePanel)rrTracePanel.hidden=false;empty.hidden=true;results.hidden=false;const candidateText=romanizationMode?'':(r.candidate_ukrainian??r.candidate_orthography??'');const candidateDisplayText=morphologyMode==='super-soft'?renderSuperSoftCandidate(r.trace,candidateText):candidateText;const hasCandidate=!romanizationMode&&Boolean(candidateText||r.target_status==='provisional');const targetUnconfirmed=romanizationMode?(!rrTarget||rrTarget.status==='unavailable'):(hasCandidate||r.target_status==='unavailable'||r.target_status==='provisional');currentTargetUnconfirmed=targetUnconfirmed;currentOutputMethod=romanizationMode?'rr':'ipa';currentConfirmedOutput=romanizationMode?(rrTarget?.text||''):(r.ukrainian||'');if(candidateValue)candidateValue.textContent=candidateDisplayText;if(candidateNote)candidateNote.textContent=morphologyMode==='super-soft'?'Дослідницький результат — попередній варіант, непідтверджена нормативна транслітерація. У квадратних дужках [фрагмент] позначено лише ділянки з низькою впевненістю. Перед використанням потрібна перевірка IPA та української цільової адаптації.':'Дослідницький результат — попередній варіант, непідтверджена нормативна транслітерація. Перед використанням потрібна перевірка IPA та української цільової адаптації.';if(uaCandidateButton)uaCandidateButton.disabled=!hasCandidate;if(!hasCandidate&&selectedUaView==='candidate')selectedUaView='unconfirmed';selectUaView(selectedUaView);const alternateUsesIpa=romanizationMode;const alternateIpaText=r.ukrainian||candidateDisplayText||'';const alternateText=alternateUsesIpa?alternateIpaText:(rrTarget?.text||'');if(alternatePanel)alternatePanel.hidden=false;if(alternateOutput)alternateOutput.textContent=alternateText||(alternateUsesIpa?'IPA-маршрут недоступний для цього фрагмента':'RR-маршрут недоступний для цього фрагмента');if(alternateLabel)alternateLabel.textContent=alternateUsesIpa?'Українська транслітерація через IPA':'Українська транслітерація через RR';if(alternateNote)alternateNote.textContent=alternateUsesIpa?(r.ukrainian?'Окремий маршрут: поверхнева корейська форма → IPA → авторська українська таблиця відповідностей.':candidateDisplayText?'Попередній дослідницький кандидат через IPA; він не є незалежно підтвердженим результатом.':'Маршрут через IPA наразі недоступний; невідомі сегменти не вгадуються.'):(rrTarget?.status==='provisional'?'Попередній маршрут: початкове написання + поверхнева вимова → NIKL-based Revised Romanization → авторська українська таблиця. Результат потребує незалежної мовної перевірки.':'Маршрут через RR наразі недоступний.');surfaceOutput.textContent=r.surfaceHangul||'';surfaceReading.hidden=!r.surfaceHangul;ipa.textContent=r.ipa;const phonemicIpa=renderPhonemicIpa(value);if(ipaPhonemic)ipaPhonemic.textContent=phonemicIpa.ipa;if(ipaPhonemicStatus)ipaPhonemicStatus.textContent=phonemicIpa.issues.length?'Фонемний базовий запис частковий: не-Hangul фрагменти збережено буквально; перевірте їх окремо.':'Фонемний базовий запис побудовано з Hangul без морфологічної/просодичної реконструкції; це не поверхнева вимова.';romanization.textContent=r.surfaceHangul?romanizeRevised(r.surfaceHangul,value):'—';if(rrTraceList){rrTraceList.textContent='';for(const entry of (rrTarget?.trace||[])){const row=document.createElement('div');row.className='trace-row';const source=document.createElement('span');source.className='trace-source';source.textContent=entry.source||entry.text||'';source.dataset.label='Корейський склад';source.title=entry.sourceOrthography?'Початкове написання: '+entry.sourceOrthography:'Поверхнева корейська форма';const rr=document.createElement('span');rr.className='trace-ipa';const contextLabel=entry.wordPosition?' · речення '+(entry.sentenceIndex+1)+' · слово '+entry.sentenceWordIndex+' · склад '+(entry.syllableIndex+1)+'/'+entry.wordLength+' · '+entry.wordPosition+' · '+entry.leftContext+' → '+entry.rightContext+' · '+entry.onsetContext+' · '+entry.onsetOrigin+' · '+entry.alignmentStatus+' · '+entry.sentencePosition+(entry.collisionGroup?' · колізія '+entry.collisionGroup:''):'';const featureLabel=entry.phonologicalFeature?' · '+entry.phonologicalFeature:'';const rrRuleLabel=entry.rrRule&&entry.rrRule!=='NIKL-RR-SURFACE-BASED'?' · RR '+entry.rrRule:'';const ruleLabel=entry.mapping_id?' · правило '+entry.mapping_id:'';const noteLabel=entry.notes?' · '+entry.notes:'';rr.textContent=(entry.layer?entry.layer+': '+(entry.rr||'∅'):'літеральний фрагмент')+contextLabel+featureLabel+rrRuleLabel+ruleLabel+noteLabel;rr.dataset.label='Одиниця RR і контекст';const target=document.createElement('span');target.className='trace-output';target.textContent=entry.alternativeUkrainian?entry.ukrainian+' (альт. '+entry.alternativeUkrainian+')':(entry.ukrainian??'');target.dataset.label='Українська';const state=document.createElement('span');state.className='trace-status '+entry.status;state.textContent=entry.status||'—';state.dataset.label='Статус';row.append(source,rr,target,state);rrTraceList.append(row);}}const romanizationNote=document.querySelector('#romanization-note');if(romanizationNote)romanizationNote.textContent='NIKL-based Revised Romanization: поверхнева вимова враховується разом із початковим написанням для явно визначених винятків; це окремий проміжний шар, не IPA.';analysis.textContent=r.analysis;renderHanja(value);const coverageLabel=morphologyMode==='super-soft'&&r.coverage&&r.coverage.input_total?` · покриття складів Hangul: ${Math.round(r.coverage.input_coverage*100)}% (${r.coverage.input_covered}/${r.coverage.input_total}); облік фрагментів: ${Math.round(r.coverage.trace_coverage*100)}%; низька впевненість: ${Math.round((r.coverage.low_confidence_share??0)*100)}% (${r.coverage.low_confidence_units??0}/${r.coverage.input_total})`:'';statusNote.textContent=romanizationMode?'Revised Romanization → українська · окрема попередня таблиця':(useG2p?'g2pK · ':'Козак Кім · ')+(r.status==='super-soft-orthographic-fallback'?'Суперм’який режим · резервна вимова низької впевненості':r.status==='super-soft-heuristic-coverage'?'Суперм’який режим · евристичний результат низької впевненості':r.status==='super-soft-maximum-coverage'?'Суперм’який режим · максимальне покриття':r.status==='canonical'?'Канонічна форма':r.status==='contextual'?'Контекстну вимову застосовано':r.status==='lexical'?'Словникова вимова застосована':r.status==='lexical-review'?'Вимова словникова; українська транслітерація попередня':r.status==='practical-transliteration'?'Практична транслітерація (нижча точність)':r.status==='heuristic-low-confidence'?'М’яка морфологія (низька впевненість); не NIKL-сертифіковано':'Є невизначені ділянки')+coverageLabel+(r.candidate_status==='super-soft-low-confidence'?' · Є резервні читання низької впевненості':r.candidate_status==='provisional'?' · Показано попередній кандидат, не підтверджений результат':r.target_status==='unavailable'?' · Українська транслітерація недоступна':r.target_status==='model-selected'?' · Українська транслітерація за проєктними відповідностями; незалежно не валідований':'');issue.hidden=!r.issues.length;issueText.textContent=r.issues.join(' ');variantList.textContent='';const variants=r.variants||[];variantPanel.hidden=variants.length===0;for(const v of variants){const row=document.createElement('div');row.className='trace-row';const source=document.createElement('span');source.className='trace-source';source.dataset.label='Варіант · джерело';source.textContent=`${v.source||value} → ${v.surface}`;const out=document.createElement('span');out.className='trace-output';out.dataset.label='Український варіант';out.textContent=v.ukrainian;const details=document.createElement('span');details.className='trace-ipa';details.dataset.label='IPA та примітка';details.textContent=`IPA: ${v.ipa}${v.note?' · '+v.note:''}`;const state=document.createElement('span');state.className=`trace-status ${v.status}`;state.dataset.label='Статус';state.textContent=v.note&&v.note.includes('§4')?'нормативний варіант вимови; українська транслітерація може збігатися':v.status==='lexical-review'?'українська транслітерація попередня':'словниковий варіант';row.append(source,out,details,state);variantList.append(row);}traceList.textContent='';for(const t of r.trace){if(t.status==='literal')continue;const row=document.createElement('div');row.className='trace-row';const source=document.createElement('span');source.className='trace-source';source.dataset.label='Корейський сегмент · вхід';source.textContent=t.source;source.title='Початковий корейський склад';const surface=document.createElement('span');surface.className='trace-surface';surface.dataset.label='Корейська вимова';surface.textContent=t.surface||t.source;surface.title='Склад після застосування правил вимови';const ipaValue=document.createElement('span');ipaValue.className='trace-ipa';ipaValue.dataset.label='IPA';ipaValue.textContent=t.ipa||'—';ipaValue.title='IPA — єдине джерело для українського відповідника';const mapping=document.createElement('span');mapping.className='trace-mapping';mapping.dataset.label='IPA-токени → українські графеми';const mappingResult=traceIpaMappingDetailed(t.ipa||'');const tokenTrace=mappingResult.tokens.map(token=>token.ipa+' → '+token.ukrainian+' ['+token.mapping_id+'; '+token.status+']').join(' · ');const featureTrace=(mappingResult.features||[]).map(feature=>feature.ipa+' — '+feature.note).join(' · ');const targetStatusNote=mappingResult.status==='provisional'?'цільова відповідність попередня':mappingResult.status==='unavailable'?'відповідність недоступна':'відповідність задана проєктом';mapping.textContent=[tokenTrace,featureTrace,targetStatusNote].filter(Boolean).join(' · ')||'—';mapping.title='Відображення IPA-токенів і явний облік ознак, які не мають окремого позначення в українській транслітерації';const out=document.createElement('span');out.className='trace-output';out.dataset.label='Українська транслітерація';out.textContent=t.candidateStatus==='provisional'?'Кандидат: '+(t.candidateOutput||''):t.output||'∅';out.title=t.candidateStatus==='provisional'?'Попередній кандидат; непідтверджена українська транслітерація':'Повний український відповідник, складений з IPA-токенів';const rules=document.createElement('span');rules.className='trace-rules';rules.dataset.label='Нюанс / правило';const ruleNames=(t.rules||[]).map(describeRule);rules.textContent=ruleNames.length?ruleNames.join(' · '):'без контекстної зміни';rules.title=(t.rules||[]).join(' | ')||'Канонічне відображення IPA';const state=document.createElement('span');state.className='trace-status '+t.status;state.dataset.label='Статус';state.textContent=describeStatus(t.status);state.title='Технічний статус: '+t.status;row.append(source,surface,ipaValue,mapping,out,rules,state);traceList.append(row);}const spokenOutput=romanizationMode?(targetUnconfirmed?'Романізаційне зіставлення недоступне.':'Результат за RR: '+currentConfirmedOutput):(targetUnconfirmed?(hasCandidate&&candidateText?'Дослідницький результат: '+candidateDisplayText:'Достовірний варіант не підтверджено.'):('Достовірний варіант: '+(r.ukrainian||'немає результату')));const announcement=(r.issues.length?'Обробку завершено з попередженнями. ':'Обробку завершено. ')+spokenOutput;announceResult(announcement.slice(0,220));}
 
 if(softToggle)softToggle.addEventListener('change',()=>{if(softToggle.checked&&superSoftToggle)superSoftToggle.checked=false;render();});
 if(superSoftToggle)superSoftToggle.addEventListener('change',()=>{if(superSoftToggle.checked&&softToggle)softToggle.checked=false;render();});
 if(modePractical)modePractical.addEventListener('change',()=>{syncModeUi();render();});
 if(modeResearch)modeResearch.addEventListener('change',()=>{syncModeUi();render();});
+if(modeRomanization)modeRomanization.addEventListener('change',()=>{syncModeUi();render();});
 syncModeUi();
 input.addEventListener('input',render);
 document.querySelector('#clear-button').addEventListener('click',()=>{input.value='';render();input.focus();});
 document.querySelector('#example-button').addEventListener('click',()=>{input.value='현대 한국어의 표준 발음';render();input.focus();});
 document.querySelector('#nikl-stress-example').addEventListener('click',()=>{input.value=niklMasterPassage.trim();render();input.focus();});
 for(const button of document.querySelectorAll('[data-example]'))button.addEventListener('click',()=>{input.value=button.dataset.example;render();input.focus();});
-for(const button of document.querySelectorAll('[data-copy]'))button.addEventListener('click',async()=>{clearTimeout(announcementTimer);const key=button.dataset.copy;const source=key==='ukrainian'?output:key==='ipa'?ipa:key==='romanization'?romanization:key==='hanja'?hanjaOutput:analysis;try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard API unavailable');await navigator.clipboard.writeText(source.textContent);button.textContent='Скопійовано';setCopyFeedback('Результат скопійовано.');setTimeout(()=>button.textContent='Копіювати',1200);}catch{const selection=window.getSelection();const range=document.createRange();range.selectNodeContents(source);selection?.removeAllRanges();selection?.addRange(range);source.setAttribute('tabindex','-1');source.focus();setCopyFeedback('Автоматичне копіювання недоступне. Текст виділено: натисніть Ctrl+C або скористайтеся командою копіювання пристрою.');}});
+for(const button of document.querySelectorAll('[data-copy]'))button.addEventListener('click',async()=>{clearTimeout(announcementTimer);const key=button.dataset.copy;const source=key==='ukrainian'?output:key==='ukrainian-secondary'?alternateOutput:key==='ipa'?ipa:key==='ipa-phonemic'?ipaPhonemic:key==='romanization'?romanization:key==='hanja'?hanjaOutput:key==='hanja-reading'?hanjaReadingOutput:analysis;try{if(!navigator.clipboard?.writeText)throw new Error('Clipboard API unavailable');await navigator.clipboard.writeText(typeof source.value==='string'?source.value:source.textContent);button.textContent='Скопійовано';setCopyFeedback('Результат скопійовано.');setTimeout(()=>button.textContent='Копіювати',1200);}catch{if(typeof source.select==='function'){source.select();source.focus();}else{const selection=window.getSelection();const range=document.createRange();range.selectNodeContents(source);selection?.removeAllRanges();selection?.addRange(range);source.setAttribute('tabindex','-1');source.focus();}setCopyFeedback('Автоматичне копіювання недоступне. Текст виділено: натисніть Ctrl+C або скористайтеся командою копіювання пристрою.');}});
 
 render();

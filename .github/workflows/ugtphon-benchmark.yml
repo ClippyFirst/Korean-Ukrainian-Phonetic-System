@@ -2,11 +2,27 @@ name: External UGTPHON Korean IPA diagnostic
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - "feat/korean-rr-contextual-phonetics-final"
+    paths:
+      - "scripts/benchmark_ugtphon_ko.py"
+      - "scripts/benchmark_ugtphon_ko_surface.py"
+      - "scripts/benchmark_native_vs_g2pk_ko.py"
+      - "tests/test_ugtphon_benchmark.py"
+      - "tests/test_native_vs_g2pk_sentence_benchmark.py"
+      - "tests/test_ugtphon_surface_benchmark.py"
+      - ".github/workflows/ugtphon-benchmark.yml"
+      - "src/korean_ukrainian/**"
+      - "data/korean/**"
+      - ".github/workflows/native-vs-g2pk-benchmark.yml"
   pull_request:
     paths:
       - "scripts/benchmark_ugtphon_ko.py"
+      - "scripts/benchmark_ugtphon_ko_surface.py"
       - "scripts/benchmark_native_vs_g2pk_ko.py"
       - "tests/test_ugtphon_benchmark.py"
+      - "tests/test_ugtphon_surface_benchmark.py"
       - ".github/workflows/ugtphon-benchmark.yml"
       - "src/korean_ukrainian/**"
       - "data/korean/**"
@@ -17,7 +33,7 @@ permissions:
 
 jobs:
   ugtphon-korean-test:
-    name: Pinned UGTPHON Korean test split
+    name: Pinned UGTPHON Korean train/test splits
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,38 +48,161 @@ jobs:
         run: |
           set -euo pipefail
           curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/train.json" \
+            --output "$RUNNER_TEMP/ko-train.json"
+          curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/dev.json" \
+            --output "$RUNNER_TEMP/ko-dev.json"
+          curl --fail --location --retry 3 \
             "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/test.json" \
             --output "$RUNNER_TEMP/ko-test.json"
           curl --fail --location --retry 3 \
             "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/LICENSE" \
             --output "$RUNNER_TEMP/ko-LICENSE"
           grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
-          python - "$RUNNER_TEMP/ko-test.json" <<'PY'
+          python - "$RUNNER_TEMP" <<'PY'
           import json, sys
           from pathlib import Path
-          rows = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-          assert len(rows) == 275, f"pinned corpus row-count drift: {len(rows)}"
-          assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
-          print(f"Validated pinned UGTPHON Korean test split: {len(rows)} rows")
+          root = Path(sys.argv[1])
+          train = json.loads((root / "ko-train.json").read_text(encoding="utf-8"))
+          dev = json.loads((root / "ko-dev.json").read_text(encoding="utf-8"))
+          test = json.loads((root / "ko-test.json").read_text(encoding="utf-8"))
+          assert len(train) == 1976, f"pinned train row-count drift: {len(train)}"
+          assert len(dev) == 246, f"pinned dev row-count drift: {len(dev)}"
+          assert len(test) == 275, f"pinned test row-count drift: {len(test)}"
+          assert all(row.get("lang") == "ko" and row.get("split") == "train" for row in train)
+          assert all(row.get("lang") == "ko" and row.get("split") == "dev" for row in dev)
+          assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in test)
+          print(f"Validated pinned UGTPHON Korean train/dev/test splits: {len(train)} / {len(dev)} / {len(test)} rows")
           PY
-      - name: Run external IPA diagnostic
+      - name: Run broad and partial-narrow IPA diagnostics
         run: |
           set -euo pipefail
-          python scripts/benchmark_ugtphon_ko.py \
-            --corpus "$RUNNER_TEMP/ko-test.json" \
-            --output "$RUNNER_TEMP/ugtphon-ko-report.json" \
-            > "$RUNNER_TEMP/benchmark-stdout.json"
-          python - "$RUNNER_TEMP/ugtphon-ko-report.json" <<'PY'
+          for level in broad narrow; do
+            python scripts/benchmark_ugtphon_ko.py \
+              --ipa-level "$level" \
+              --corpus "$RUNNER_TEMP/ko-test.json" \
+              --output "$RUNNER_TEMP/ugtphon-ko-$level-report.json" \
+              > "$RUNNER_TEMP/ugtphon-ko-$level-stdout.json"
+          done
+          python - "$RUNNER_TEMP" <<'PY'
           import json, sys
           from pathlib import Path
-          report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-          for key in ("benchmark", "rows", "scored_tokens", "exact_matches",
-                      "exact_match_rate", "character_error_rate", "unresolved_tokens",
-                      "skipped_tokens", "skipped_non_hangul_or_multitoken",
-                      "skipped_missing_gold", "skipped_empty_variants", "engine_errors"):
-              print(f"{key}: {report.get(key)}")
-          print("Diagnostic only: do not treat this score as normative accuracy or a release gate.")
+          root = Path(sys.argv[1])
+          for level in ("broad", "narrow"):
+              report = json.loads((root / f"ugtphon-ko-{level}-report.json").read_text(encoding="utf-8"))
+              print(f"PROFILE: {level} ({report.get('ipa_profile')}; {report.get('ipa_profile_status')})")
+              for key in ("rows", "scored_tokens", "exact_matches", "exact_match_rate",
+                          "character_error_rate", "unresolved_tokens", "skipped_tokens", "engine_errors"):
+                  print(f"  {key}: {report.get(key)}")
+          print("Broad and partial-narrow results are separate diagnostics; narrow is research-only.")
           PY
+
+      - name: Run sentence-level IPA diagnostics on dev and test
+        run: |
+          set -euo pipefail
+          for split in dev test; do
+            for boundary in same_word phrase; do
+              python scripts/benchmark_ugtphon_ko.py \
+                --granularity sentence \
+                --boundary-mode "$boundary" \
+                --split "$split" \
+                --ipa-level broad \
+                --corpus "$RUNNER_TEMP/ko-$split.json" \
+                --output "$RUNNER_TEMP/ugtphon-ko-sentence-$split-$boundary-report.json" \
+                > "$RUNNER_TEMP/ugtphon-ko-sentence-$split-$boundary-stdout.json"
+            done
+          done
+          python - "$RUNNER_TEMP" <<'PY'
+          import json, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          for split in ("dev", "test"):
+              for boundary in ("same_word", "phrase"):
+                  report = json.loads((root / f"ugtphon-ko-sentence-{split}-{boundary}-report.json").read_text(encoding="utf-8"))
+                  print(f"SENTENCE {split} boundary={boundary}: rows={report['rows']} eligible={report['eligible_sentences']} "
+                        f"scored={report['scored_sentences']} exact={report['exact_match_rate']} "
+                        f"CER={report['character_error_rate']} unresolved={report['unresolved_sentences']} "
+                        f"errors={report['engine_errors']} skipped={report['skipped_unsupported_sentences']}")
+          print("Sentence-level diagnostics use row.phonemes, not token-level gold; phrase mode is diagnostic only.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ugtphon-korean-sentence-ipa-diagnostic
+          path: |
+            ${{ runner.temp }}/ugtphon-ko-sentence-*-report.json
+            ${{ runner.temp }}/ugtphon-ko-sentence-*-stdout.json
+          if-no-files-found: warn
+
+      - name: Compare native and MeCab-contextual g2pK on full sentences
+        run: |
+          set -euo pipefail
+          for split in dev test; do
+            for boundary in same_word phrase; do
+              python scripts/benchmark_native_vs_g2pk_ko.py \
+                --granularity sentence \
+                --boundary-mode "$boundary" \
+                --split "$split" \
+                --corpus "$RUNNER_TEMP/ko-$split.json" \
+                --output "$RUNNER_TEMP/native-vs-g2pk-sentence-$split-$boundary-report.json" \
+                > "$RUNNER_TEMP/native-vs-g2pk-sentence-$split-$boundary-stdout.json"
+            done
+          done
+          python - "$RUNNER_TEMP" <<'PY'
+          import json, sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          for split in ("dev", "test"):
+              for boundary in ("same_word", "phrase"):
+                  report = json.loads((root / f"native-vs-g2pk-sentence-{split}-{boundary}-report.json").read_text(encoding="utf-8"))
+                  native = report["native_engine"]
+                  g2pk = report["g2pk"]
+                  paired = report["paired_subset"]
+                  print(f"PAIRED SENTENCE {split} boundary={boundary}: "
+                        f"native_exact={native['exact_match_rate']} native_CER={native['character_error_rate']} "
+                        f"g2pk_exact={g2pk['exact_match_rate']} g2pk_CER={g2pk['character_error_rate']} "
+                        f"paired_n={paired['sentences_scored_by_both']} "
+                        f"delta_exact={paired['exact_match_rate_delta_g2pk_minus_native']} "
+                        f"delta_CER={paired['cer_delta_g2pk_minus_native']}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-vs-g2pk-sentence-context-diagnostic
+          path: |
+            ${{ runner.temp }}/native-vs-g2pk-sentence-*-report.json
+            ${{ runner.temp }}/native-vs-g2pk-sentence-*-stdout.json
+          if-no-files-found: warn
+      - name: Run raw-surface train-retrieval normalization diagnostic
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_ugtphon_ko_surface.py \
+            --train-corpus "$RUNNER_TEMP/ko-train.json" \
+            --test-corpus "$RUNNER_TEMP/ko-test.json" \
+            --ipa-level broad \
+            --output "$RUNNER_TEMP/ugtphon-ko-surface-report.json" \
+            > "$RUNNER_TEMP/ugtphon-ko-surface-stdout.json"
+          python - "$RUNNER_TEMP/ugtphon-ko-surface-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          print("DATASET:", r["benchmark"])
+          print("OVERALL:", {k: r[k] for k in ("attempted_tokens", "scored_tokens", "coverage_rate", "exact_match_rate", "coverage_adjusted_exact_match_rate", "character_error_rate", "unresolved_tokens", "engine_errors")})
+          print("RAW BASELINE:", {k: r["baseline"][k] for k in ("scored_tokens", "coverage_rate", "exact_match_rate", "coverage_adjusted_exact_match_rate", "character_error_rate", "unresolved_tokens", "engine_errors")})
+          print("PAIRED BASELINE VS RETRIEVAL:", r["paired_subset"])
+          print("NORMALIZATION:", r["normalization"])
+          print("BY CATEGORY:", json.dumps(r["by_category"], ensure_ascii=False, sort_keys=True))
+          print("Research-only exact-match baseline; not canonical G2P or normative standard-pronunciation accuracy.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ugtphon-korean-surface-normalization-diagnostic
+          path: |
+            ${{ runner.temp }}/ugtphon-ko-surface-report.json
+            ${{ runner.temp }}/ugtphon-ko-surface-stdout.json
+          if-no-files-found: warn
       - name: Run paired native-vs-g2pk comparison
         run: |
           set -euo pipefail
@@ -100,7 +239,9 @@ jobs:
         with:
           name: ugtphon-korean-ipa-diagnostic
           path: |
-            ${{ runner.temp }}/ugtphon-ko-report.json
-            ${{ runner.temp }}/benchmark-stdout.json
+            ${{ runner.temp }}/ugtphon-ko-broad-report.json
+            ${{ runner.temp }}/ugtphon-ko-broad-stdout.json
+            ${{ runner.temp }}/ugtphon-ko-narrow-report.json
+            ${{ runner.temp }}/ugtphon-ko-narrow-stdout.json
             ${{ runner.temp }}/ko-LICENSE
           if-no-files-found: warn

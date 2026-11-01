@@ -154,3 +154,75 @@ Added a strict sentence-level scoring boundary in `scripts/benchmark_contextual_
 - SMART-TTS/SMART-G2P is a code-mixed transliteration component and delegates pronunciation conversion to g2pK/KoG2P; it is not an independent neural Korean G2P baseline.
 - NN-KoG2P remains BLOCKED / not scored because no authentic runnable implementation, weights, license terms, and verified phone-to-IPA map were found. The later Fast Bilingual G2P publication is a different model, not a substitute.
 - **Current score status:** no new CharsiuG2P score is claimed until the labelled workflow finishes and its artifact is inspected. A successful CI unit-test run is not evidence of neural inference quality.
+
+
+## External linguistic audit — KoG2Padvanced and the 2022 rule study (2026-11-01)
+
+The study by Mun, Kim & Ko (2022), *A proposal to improve on existing Grapheme-to-Phoneme conversion models informed by linguistics*, DOI [10.29403/LI.26.2.2](https://doi.org/10.29403/LI.26.2.2), is a useful independent checklist. Its manually reviewed challenge set has 130 examples across 13 rule families; the authors report initial inter-annotator agreement of 0.842 and a post-change aggregate of 0.938 for their revised KoG2P-based system. These are the paper's own curated-set results, not comparable to this repository's UGTPHON/SIGMORPHON diagnostics or a general Korean accuracy claim.
+
+### Feature-by-feature reconciliation
+
+| Study finding / candidate | Current ClippyFirst coverage | Decision |
+|---|---|---|
+| ㅎ deletion | R003 exact-form licenses and lexical entries already cover source-attested forms; narrow /h/ realization remains a separate research profile | Do not add a categorical across-the-board deletion rule. The study itself describes POS-, frequency-, and context-sensitive variation |
+| ㅢ variation | §5 vowel alternatives plus exact lexical entries preserve cases such as 우리의, 강의의, 학생의, 발음의, 지식의, 값의, 삶의 | Existing coverage is preserved; broader productive application needs a POS/morphology boundary, not Hangul adjacency |
+| ㅖ → [e] variation | Existing §5 variant generator covers consonant-initial ㅖ while excluding 예/례 | No duplicate rule needed |
+| ㄴ insertion | R009 uses exact source-backed lexical/phrase licenses | Keep fail-closed lexical treatment; do not make it productive solely from the paper's aggregate score |
+| Coda place assimilation | Not part of the default standard-pronunciation profile | Keep out of default output: the paper explicitly treats it as optional/variable. A future descriptive profile needs independent speaker/register evidence and a distinct output ID |
+| Rule ordering | Existing ordered rule engine and NIKL-backed interaction tests | Use the paper as a targeted audit checklist; change order only when a source-backed counterexample demonstrates a defect |
+
+The paper also highlights the role of morphological analysis for particles and verb forms. This repository already has optional Kiwi and MeCab-Ko adapters with source offsets, but those adapters currently expose morphology only; they do not automatically license pronunciation rules. A high-value next experiment is a **research-only morphology-aware candidate layer** for ambiguous particle/ending cases, with exact span alignment, analyzer provenance, multiple candidates where analyses disagree, and abstention on zero-width or unaligned spans. It must not silently promote analyzer output to normative pronunciation.
+
+### KoG2Padvanced reuse and rights gate
+
+The authors' [KoG2Padvanced repository](https://github.com/seongmin-mun/KoG2Padvanced) was inspected at main tree `491b2d7269a4666b0d7556efb26755219f861163`. GitHub reports no repository license; the inspected tree contains a README and a test-set file, but no LICENSE or executable Python module. Therefore its README and the paper are used as bibliographic research evidence only. No code, corpus rows, or derived test fixtures were copied. The source is recorded as rights-unverified in `research/SOURCE-REGISTER.csv`.
+
+### Benchmark implications
+
+The 130-item paper challenge is useful for designing rule strata, but its curated examples, Hangul-output comparison, and selected rules are not a replacement for an independently adjudicated broad-IPA holdout. The current project should report (1) source-backed rule challenge performance, (2) canonical lexical G2P, and (3) noisy-text normalization plus G2P as separate tracks. Do not tune a single engine against the paper's challenge and then present that score as generalization.
+
+A separate 2026 Findings paper on UGTPHON proposes retrieval-augmented, staged canonicalization for user-generated text and reports a large reduction in the canonical-to-noncanonical gap. That supports investigating a distinct raw-text normalization stage; it does not justify changing the standard Korean phonology rules or treating noisy-text normalization as ordinary G2P. See [Jeon et al. (2026)](https://aclanthology.org/2026.findings-emnlp.1020/).
+
+**Status:** literature audit DONE; no new normative phonological rule promoted. Morphology-aware candidate layer TODO / research-only pending independently adjudicated cases, POS/span validation, and paired benchmark evaluation.
+
+
+## Deep morphology bridge — 2026-11-01 implementation update
+
+A recent Interspeech 2026 paper by You & Moon describes an object-oriented G2P engine with syllable–morpheme connectivity and recursive rule re-evaluation. The Zenodo record reports 3.14 ms versus 14.98 ms average latency and 85.7% versus 27.2% sentence-level accuracy against g2pk in that study. These are the authors' results on their own standard-reading evaluation, not a score for this repository or a directly comparable UGTPHON result. The public Zenodo record provides the paper PDF but no executable engine or benchmark corpus; no implementation or data was copied. See [You & Moon (2026), DOI 10.5281/zenodo.22167288](https://doi.org/10.5281/zenodo.22167288).
+
+### Repository design reconciliation
+
+- Existing `research_morphology.py` adapters already preserve Kiwi/MeCab source offsets, analyzer identity, and zero-width morphology.
+- Existing `Syllable` objects carry source Hangul and word boundaries, but previously had no validated link to analyzer morphemes.
+- Existing `apply_ordered_rules` performs one ordered pass; rule-specific exact-form license dictionaries are already isolated by rule.
+- **Implemented (research-only):** `align_morphemes_to_syllables` now validates analyzer text/spans and returns explicit syllable→morpheme links plus same-morpheme, morpheme, word, or unknown boundary labels. Zero-width morphs and missing coverage are preserved as uncertainty. This helper grants no pronunciation-rule licenses and is not called by the production G2P path.
+
+### Next controlled experiment
+
+The next step is a research-only rule-licensing adapter that consumes these links for a small, source-backed subset of morphology-conditioned rules. It must retain analyzer provenance, reject unaligned/zero-width spans, preserve alternative analyses, and abstain on disagreement. Only after paired challenge tests demonstrate a real cascading case should the engine trial bounded rule re-evaluation with cycle detection. The production single-pass rule order remains unchanged.
+
+**Acceptance:** source offsets round-trip exactly; no overlap or normalized-span guesses; zero-width and missing spans remain unknown; word boundaries remain distinct; no rule is licensed by alignment alone; production output is byte-for-byte unchanged.
+
+
+## Profile-aware UGTPHON evaluation — 2026-11-01
+
+The UGTPHON diagnostic previously compared only the project's broad IPA against gold whose annotations include narrower phonetic detail. The benchmark now runs broad and partial-narrow profiles over the same pinned corpus, records the exact IPA profile ID/status/version, and uploads separate reports. This is a measurement change, not a change to the default production output.
+
+| Profile | Scored tokens | Exact matches | Exact rate | CER | Unresolved | Engine errors |
+|---|---:|---:|---:|---:|---:|---:|
+| Broad \`clippyfirst-korean-broad-v1\` | 2,698 | 1,430 | 53.0022% | 9.1697% | 5 | 0 |
+| Narrow \`clippyfirst-korean-narrow-partial-sibilant-nasal-h-v3\` | 2,698 | 1,900 | 70.4225% | 4.8992% | 5 | 0 |
+
+The narrow profile improves exact match by 17.4203 percentage points and reduces CER by 4.2705 percentage points on this corpus. This demonstrates that transcription granularity explains a material portion of the earlier broad-vs-gold mismatch. It does **not** establish normative narrow-IPA accuracy: the narrow profile remains partial/research-only, and its output is not accepted by the Ukrainian target renderer. Both profiles share 275 corpus rows, 2,698 scored tokens, 437 skipped tokens, and 5 unresolved tokens.
+
+The remaining largest mismatches include ㅟ [y] versus gold [ɥi], coda lateral [l] versus [ɭ], and vowel/prosodic detail. Do not add these variants solely to raise the score; each needs independent phonetic evidence and an explicit profile scope.
+
+## Morphology-aware G2P architecture research — You & Moon (Interspeech 2026)
+
+You & Moon describe a morphology-aware engine with syllable–morpheme connectivity and recursive phonological-rule re-evaluation. Their Zenodo abstract reports 85.7% versus 27.2% sentence-level accuracy and 3.14 ms versus 14.98 ms latency in their own evaluation. These results are not comparable to our noisy-text token-level UGTPHON metrics. The Zenodo record contains the paper but no executable implementation or benchmark corpus; no code or data was copied. The bibliographic source is registered in research/SOURCE-REGISTER.csv.
+
+The repository now has a safe first bridge: align_morphemes_to_syllables validates source text and spans, links each syllable to a morpheme, distinguishes same-morpheme/morpheme/word/unknown boundaries, and preserves zero-width and unaligned spans as uncertainty. This helper grants no pronunciation-rule licenses and is not called by the production G2P path.
+
+The separate Kiwi+MeCab-Ko consensus diagnostic changed four unique words but did not improve exact accuracy: 53.0022% remained unchanged; CER changed from 9.1697% to 9.1784% (slightly worse). It produced one newly resolved word, no new exact matches, one lower-edit-distance occurrence and two higher-edit-distance occurrences. The consensus candidate is therefore **not promoted**. The next experiment must be rule-specific, source-backed licensing on independently adjudicated morphology cases; only a demonstrated cascading counterexample can justify bounded recursive re-evaluation with cycle detection.
+
+**Decision:** keep the production single-pass rule engine unchanged. The alignment helper, morphology consensus, and narrow IPA profile remain diagnostic/research-only.

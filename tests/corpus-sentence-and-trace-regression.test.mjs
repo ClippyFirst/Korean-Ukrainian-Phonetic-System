@@ -53,7 +53,7 @@ test('Korean onset ㅎ uses the documented practical Ukrainian target г', () =>
 test('trace panel has explicit column labels for source, target, rules and status', () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
   const css = readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
-  for (const label of ['Корейський сегмент', 'Український запис', 'Правила / IPA', 'Статус']) {
+  for (const label of ['Корейський сегмент', 'Українська транслітерація', 'Правила / IPA', 'Статус']) {
     assert.ok(html.includes(label), 'missing trace label: ' + label);
   }
   assert.match(css, /\.trace-columns\s*\{/u);

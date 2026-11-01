@@ -141,6 +141,64 @@ export function createHanjaConverter(dictionary = {}) {
   return createAnnotator(createWordMap(dictionary));
 }
 
+/**
+ * Create a conservative Hanja→Hangul reverse lookup.
+ * The source dictionary is reading→Hanja, so the reverse direction can be
+ * ambiguous. Longest dictionary matches are used; homographic Hanja entries
+ * are left unchanged and returned as explicit alternatives rather than guessed.
+ */
+export function createHanjaToHangulConverter(dictionary = {}) {
+  const forward = createWordMap(dictionary);
+  const reverse = new Map();
+  let maxLength = 1;
+  for (const [reading, hanja] of forward) {
+    maxLength = Math.max(maxLength, [...hanja].length);
+    const candidates = reverse.get(hanja) || new Set();
+    candidates.add(reading);
+    reverse.set(hanja, candidates);
+  }
+
+  return function convertHanjaToHangul(input) {
+    const source = String(input ?? '');
+    const ambiguities = [];
+    const unmapped = [];
+    const text = source.replace(/\p{Script=Han}+/gu, (run, runOffset) => {
+      const characters = [...run];
+      let output = '';
+      for (let index = 0; index < characters.length;) {
+        let match = null;
+        const limit = Math.min(maxLength, characters.length - index);
+        for (let length = limit; length >= 1; length -= 1) {
+          const candidate = characters.slice(index, index + length).join('');
+          if (reverse.has(candidate)) { match = candidate; break; }
+        }
+        const sourceOffset = runOffset + characters.slice(0, index).join('').length;
+        if (!match) {
+          const literal = characters[index];
+          output += literal;
+          unmapped.push({ source: literal, offset: sourceOffset });
+          index += 1;
+          continue;
+        }
+        const readings = [...reverse.get(match)].sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+        if (readings.length === 1) output += readings[0];
+        else {
+          output += match;
+          ambiguities.push({ source: match, offset: sourceOffset, readings });
+        }
+        index += [...match].length;
+      }
+      return output;
+    });
+    return {
+      text,
+      status: ambiguities.length ? 'ambiguous' : unmapped.length ? 'partial' : 'resolved',
+      ambiguities,
+      unmapped,
+    };
+  };
+}
+
 export function getHanjaLexiconSize() {
   return LEXICON.length;
 }
