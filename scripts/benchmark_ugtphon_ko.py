@@ -198,6 +198,8 @@ def evaluate_sentences(
     unresolved_examples: list[dict[str, str]] = []
     engine_error_examples: list[dict[str, str]] = []
     skipped_unsupported = 0
+    punctuation_stripped = 0
+    unsupported_examples: list[dict[str, str]] = []
     skipped_missing_gold = 0
     skipped_empty_gold = 0
     unresolved = 0
@@ -208,9 +210,25 @@ def evaluate_sentences(
     for row in rows:
         canonical = row.get("canonical", "")
         gold_raw = row.get("phonemes", "")
-        canonical_text = canonical.strip() if isinstance(canonical, str) else ""
+        canonical_raw = canonical.strip() if isinstance(canonical, str) else ""
+        # UGTPHON documents that punctuation is dropped from sentence IPA.
+        # Replace punctuation with a word boundary before applying the native
+        # Hangul-only API; do not silently drop digits, Latin, URLs or symbols.
+        canonical_text = " ".join(
+            "".join(
+                " " if unicodedata.category(char).startswith("P") else char
+                for char in canonical_raw
+            ).split()
+        )
+        if canonical_text != canonical_raw:
+            punctuation_stripped += 1
         if not canonical_text or not _HANGUL_SENTENCE.fullmatch(canonical_text):
             skipped_unsupported += 1
+            if len(unsupported_examples) < 50:
+                unsupported_examples.append({
+                    "id": str(row.get("id", "")),
+                    "canonical": canonical_raw,
+                })
             continue
         if not isinstance(gold_raw, str) or not gold_raw.strip():
             skipped_missing_gold += 1
@@ -310,6 +328,8 @@ def evaluate_sentences(
         "engine_errors": errors,
         "engine_error_examples": engine_error_examples[:50],
         "skipped_unsupported_sentences": skipped_unsupported,
+        "punctuation_stripped_sentences": punctuation_stripped,
+        "unsupported_examples": unsupported_examples,
         "skipped_missing_gold": skipped_missing_gold,
         "skipped_empty_gold": skipped_empty_gold,
         "worst_mismatches": sorted(
@@ -323,6 +343,7 @@ def evaluate_sentences(
         "notes": [
             "Prediction uses row.canonical and is scored against row.phonemes; token-level canonical/phoneme fields are not read.",
             "UGTPHON sentence-level phonemes are independently selected annotations and are not necessarily a literal concatenation of token-level phonemes.",
+            "Punctuation is replaced by whitespace before G2P because the dataset drops punctuation from sentence IPA; digits, Latin, URLs and symbols are not guessed or removed.",
             "same_word blocks rules across eojeol boundaries; phrase allows only rules explicitly implemented to cross word boundaries.",
             "The dataset does not provide prosodic phrase-break labels; phrase-mode scores are diagnostic and must not be promoted as a default without review.",
             "This evaluates Korean sentence IPA only, not Ukrainian orthographic adaptation.",
