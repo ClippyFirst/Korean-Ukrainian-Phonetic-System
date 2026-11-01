@@ -4269,3 +4269,18 @@ The direct browser UGTPHON diagnostic [41309605083](https://github.com/ClippyFir
 This is strong evidence that the headline strict exact score is heavily sensitive to annotation conventions, not evidence that the broad profile is already correct. The candidate profile is unadjudicated and must not be promoted to a standard metric. Frequent differences include lateral/nasal allophones, sibilant aspiration, h-realization, unreleased codas, ㅟ representations and vowel length. The remaining 204 broad mismatches need source-backed phonological review; do not patch them by guessing or by tuning to IPA-Dict.
 
 The new exact-form fixes for 실수 and 한자 are expected to reduce edit distance modestly while preserving the dictionary vowel length in 한자. Their projected deltas are documented separately and are not new measured scores.
+
+
+## Measured direct-browser benchmark after source-backed lexical corrections
+
+Workflow [41311996175](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41311996175), artifact [13085716949](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41311996175/artifacts/13085716949), ran on PR #415 branch tip \`6b5b839454ec6fe2bfd4a315ea9caa0984905434\`, containing code-bearing head \`00ac99a93c6ba8c64d66588e8a7e86aec3cfff7c\`.
+
+- 2,703 eligible tokens; 2,699 scored (99.852% coverage); 4 unresolved; 0 engine errors.
+- Strict exact: 1,428/2,699 = **52.9085%** (unchanged); strict CER **8.2441%**, down from 8.2571%.
+- Broad-candidate sensitivity: 2,496/2,699 = **92.4787%**; CER **1.3427%** (previously 92.4416% / 1.3562%).
+- \`실수\`: engine output \`ɕil.s͈u\`; strict edit distance 2 because IPA-Dict uses [ɕʰiɭs͈u], broad-candidate exact. The new NIKL §26 rule is active.
+- \`한자\`: engine output \`haːn.tɕ͈a\`; strict edit distance 1 because the benchmark gold omits dictionary vowel length. The dictionary long vowel is intentionally preserved; target status is \`provisional\`.
+
+This confirms the small CER improvements projected from the prior artifact. It does not raise strict exact match, and the broad profile remains unadjudicated. The correct conclusion is a modest evidence-backed phonological improvement, not a large benchmark breakthrough.
+
+The paired native/g2pK diagnostic from the same workflow, artifact [13085736948](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41311996175/artifacts/13085736948), scored 2,698 shared tokens: native 53.0393% exact / 9.1220% CER; g2pK 53.1134% / 9.2304%. g2pK is +0.0741 percentage points exact but +0.1084 points worse CER. This still does not justify replacing the native engine.
