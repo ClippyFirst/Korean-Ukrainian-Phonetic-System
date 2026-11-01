@@ -363,7 +363,8 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 ## 2026-11-01 — Kozak Kim discrepancy-driven exact-form corrections
 
 - **DONE_VERIFIED:** complete `-ㄹ게` ending boundary in native Kozak Kim; positive controls (`할게`, `할게요`, `다를게`, `안타까울게`) and substring-only negative control (`올게이`).
-- **DONE_VERIFIED (bounded R012):** source-backed §26 fortition licenses for `출산`, `출산율`, `출산하다`, `비출산`, and dictionary-attested `저출산`; Python/browser parity tests and negative lookalikes `비출고`, `저출고`.
+- **DONE_VERIFIED (bounded R012 original set):** source-backed §26 fortition licenses for `출산`, `출산율`, `출산하다`, and `비출산`; Python/browser tests and negative lookalike `비출고` passed on run 41336800458.
+- **PARTIAL follow-up:** add dictionary-attested `저출산` and negative `저출고` controls in Python/browser; exact-head CI and benchmark runs 41339399132/41339399053/41339399044 were queued/in progress at handoff.
 - **DONE_VERIFIED diagnostic:** on 2,699 shared UGTPHON occurrences, exact match remains tied at 1,442/2,699; Kozak Kim CER improves 8.1271%→8.1228%, original g2pK CER 8.2138%; `비출산` improves one IPA edit and `출산` gains the NIKL-attested fortis surface despite an IPA convention mismatch in gold.
 - **PARTIAL / TODO:** remaining §26 candidates (`실시간`, `유사성`, `이중성`) and §27 phrase candidates (`했을 시`, `일 수`) require lexical/morpheme-boundary evidence; no blanket generalization.
 - **BLOCKED:** broad IPA mismatch classes need independent Korean phonetic/IPA adjudication; item-level NIKL/KOGL rights, Ukrainian target review and independent holdout remain open.
