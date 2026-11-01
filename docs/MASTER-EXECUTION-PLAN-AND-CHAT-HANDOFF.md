@@ -3,7 +3,7 @@
 **Scope:** Kozak Kim only. The original/vendor g2pK implementation remains unchanged and comparison-only.
 **Working branch:** research/kozak-kim-independent-ipa-packets-2026-11-01.
 **PR:** #417, draft and stacked on the PR #416 implementation line. PRs #415 and #416 remain open; no merge or destructive branch operation was performed.
-**Last implementation/test head with passing exact-head CI:** `bc7b1474eecfe8df8006572abf0f07957f829647` (system run `41353450715`; paired browser run `41353450686`). **Branch head before this reconciliation:** `ccc423a79fe854fba365f3966d78ceadda978036`, which contains only a source-register test-assertion wording adjustment and no production-code changes. This continuation strengthens the full-sentence negative control and reconciles the handoff; fresh CI on the resulting branch head is required before claiming exact-head verification.
+**Last implementation/test head with passing exact-head CI:** `bc7b1474eecfe8df8006572abf0f07957f829647` (system run `41353450715`; paired browser run `41353450686`). **Branch head before this refresh:** `17526d550f4edf6e9563a819030e169f2b1d3518`. This continuation maps all eight C08 source contexts, adds four narrow NIKL source records, strengthens evidence/test coverage, and makes no production phonology changes. Fresh CI on the resulting branch head is required before claiming exact-head verification.
 
 ## Current task ledger
 
@@ -11,11 +11,11 @@
 |---|---|---|
 | C01–C07 independent IPA packets | DONE_VERIFIED (packet preparation only) | Seven separate blind JSON packets, six pilot forms each (42 entries; 39 unique source-row IDs). All 39 IDs resolve to the pinned UGTPHON Korean test split and every target token is present in its raw sentence context. Packet schema is neutral; packet tests reject Kozak Kim/g2pK/system identity, IPA/reference leakage and internal artifact identifiers. |
 | Independent IPA adjudication | BLOCKED | No reviewer submissions yet. Two qualified reviewers must annotate separately, freeze first-pass results, then reconcile disagreements. |
-| C08 context recovery | PARTIAL | Three source contexts are now restored: multilexnorm2026_1953 (무고일수도있다는), multilexnorm2026_1979 (했을시), and dc_inside_2024 (유사성). Five of the eight cluster occurrences remain unidentified. |
+| C08 context recovery | PARTIAL / EVIDENCE-LIMITED | All eight source contexts are now in the pinned fixture. Three were previously recovered; five memberships were reconstructed from the pinned fortis-mismatch signature and exact token/context match because the original extraction table is missing. Seven have conditional -(으)ㄹ + dependent-noun evidence; 유사성 remains unresolved. |
 | C08 morphology/rule evidence | PARTIAL | 무고일수도있다는: NIKL Q&A 327466 supports the X일 수도 construction; Kiwi and MeCab-Ko agree on the target boundary. 했을시: NIKL Q&A 313481/333044 support dependent noun 시 after -을, but Kiwi parses 을/ETM + 시/NNB while MeCab-Ko returns 을시/EC. 유사성 remains unresolved; Kiwi/MeCab-Ko disagree on suffix versus lexical segmentation and Q&A 312649 confirms 의외성 only. These are morphology hypotheses, not direct IPA attestations. |
 | Python/browser R013 parity | DONE_VERIFIED | Python exact same-eojeol licenses now match the containing eojeol inside a full sentence, rather than comparing the whole sentence to a single-word key. Positive and negative full-context tests cover both runtimes. |
 | g2pK baseline integrity | DONE_VERIFIED | No original/vendor g2pK file changed. Current and previous paired browser artifacts show zero changed g2pK predictions. |
-| Source/licensing register | PARTIAL | Register now has 152 rows: 143 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL Q&A item-level reuse terms remain unchecked. The 2021 NIKL PDF is supplementary only and is not used as production evidence. |
+| Source/licensing register | PARTIAL | Register now has 156 rows: 147 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL Q&A item-level reuse terms remain unchecked. The 2021 NIKL PDF is supplementary only and is not used as production evidence. |
 
 ## Latest paired browser benchmark
 

@@ -3,14 +3,14 @@
 | Gate | Status | Evidence / reason |
 |---|---|---|
 | 0 — Repository integrity | PARTIAL | Mainline, PR #415/#416 and stacked draft PR #417 inspected; current work is isolated to the Kozak Kim continuation branch. No merge or destructive branch action. |
-| 1 — Source and licensing | PARTIAL / EVIDENCE-LIMITED | UGTPHON Korean test subset license and attribution recorded. Two new NIKL Q&A sources are registered, but item-level reuse terms remain unchecked; the 2021 NIKL PDF is not used as production evidence. |
-| 2 — Rule and data integrity | PARTIAL | Existing exact C08 forms are source-context checked for two cases; Kiwi/MeCab-Ko agree on the target boundary in 무고일수도있다는 but disagree on 했을시; 유사성 remains unresolved. Five C08 occurrences remain unidentified. No broad generalization. |
+| 1 — Source and licensing | PARTIAL / EVIDENCE-LIMITED | UGTPHON Korean test subset license and attribution recorded. Four additional NIKL Q&A sources (335204, 310899, 331601, 336313) are registered with narrow claims; item-level reuse terms remain unchecked; the 2021 NIKL PDF is not used as production evidence. |
+| 2 — Rule and data integrity | PARTIAL / EVIDENCE-LIMITED | All eight C08 source rows now have pinned contexts. Five memberships were reconstructed from the fortis-mismatch signature because the original extraction table is missing. Seven forms have conditional -(으)ㄹ + dependent-noun evidence; 유사성 remains unresolved. No new production rules or broad generalization. |
 | 3 — Independent evaluation corpus | PARTIAL | Seven neutral C01–C07 blind packets cover 42 entries / 39 unique source rows with source context. No independent reviewer submissions; UGTPHON remains diagnostic rather than normative IPA gold. Training-readiness audit found zero explicitly adjudicated IPA gold rows and 24 frozen holdout cases without IPA gold; supervised training is not ready. |
 | 4 — Runtime correctness | PASS for current targeted tests; broader parity PARTIAL | Python and browser regression/build pass. Exact R013 word licensing now works inside full sentences in Python; full-context tests cover both runtimes. Other profiles and Ukrainian target are not independently adjudicated. |
 | 5 — Product quality | BLOCKED / EVIDENCE-LIMITED | No independent Ukrainian target review or user study. Korean IPA metrics do not validate Ukrainian orthography. |
-| 6 — Release and independent review | BLOCKED | Two qualified blind IPA submissions, C08 completion, C09/C10 convention review and item-level rights remain outstanding. |
+| 6 — Release and independent review | BLOCKED | Two qualified blind IPA submissions, independent C08 adjudication, C09/C10 convention review, item-level rights and Ukrainian target review remain outstanding. |
 
-The latest paired browser diagnostic has 2,699 shared occurrences, equal exact match (53.4272%) and CER 8.1097% for Kozak Kim versus 8.2138% for original g2pK (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp). This is a noisy-corpus diagnostic, not a release gate or normative accuracy claim.
+The latest paired browser diagnostic (run 41353450686; artifact 13102456604) has 2,699 shared occurrences, equal exact match (53.4272%) and CER 8.1097% for Kozak Kim versus 8.2138% for original g2pK (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp). This is a noisy-corpus diagnostic, not a release gate or normative accuracy claim.
 
 **Disposition: research prototype; not research-certified and not release-ready.**
 

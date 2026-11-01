@@ -249,17 +249,23 @@ def test_2026_11_01_g2p_sources_keep_scope_and_license_provenance_explicit():
 
 
 
-def test_c08_context_fixture_restores_three_source_rows_without_importing_ipa_gold():
+def test_c08_context_fixture_restores_all_eight_source_rows_without_importing_ipa_gold():
     fixture_path = ROOT / "tests" / "fixtures" / "kozak-kim-c08-source-contexts.json"
     fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
     assert fixture["source_revision"] == "ef0d5a09c2ea1874c7206020f875cbd9cfea2f54"
     assert fixture["source_license"].startswith("Apache-2.0")
     cases = fixture["cases"]
     assert {case["source_row_id"] for case in cases} == {
-        "multilexnorm2026_1953", "multilexnorm2026_1979", "dc_inside_2024"
+        "multilexnorm2026_1953", "multilexnorm2026_1979", "dc_inside_2024",
+        "multilexnorm2026_1916", "multilexnorm2026_2011", "dc_inside_2186",
+        "dc_inside_2266", "dc_inside_2557",
     }
     assert all(case["input"] in case["source_sentence"] for case in cases)
     assert all("ipa" not in case and "expected_ipa" not in case for case in cases)
+    mapping = fixture["cluster_occurrence_mapping"]
+    assert mapping["status"] == "ALL_EIGHT_SOURCE_ROWS_MAPPED_WITH_FIVE_HIGH_CONFIDENCE_RECONSTRUCTIONS"
+    assert len(mapping["reconstructed_ids"]) == 5
+    assert "original one-off C08 cluster extraction table" in " ".join(mapping["limitations"])
     unresolved = next(case for case in cases if case["source_row_id"] == "dc_inside_2024")
     assert unresolved["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"
     supported = next(case for case in cases if case["source_row_id"] == "multilexnorm2026_1953")
@@ -284,6 +290,29 @@ def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
     assert "[쑤]" in dependent_su["coverage"]
     assert "appears to contain a typo" in dependent_su["limitations_or_next_action"].lower()
     assert "item-level" in dependent_su["license_status"].lower()
+
+    geo_source = rows["SRC-NIKL-QNA-310899"]
+    assert "qna_seq=310899" in geo_source["url"]
+    assert "dependent noun" in geo_source["coverage"]
+    assert "colloquial" in geo_source["coverage"]
+    assert "not independently attest pronunciation" in geo_source["limitations_or_next_action"]
+
+    rule27 = rows["SRC-NIKL-QNA-335204"]
+    assert "qna_seq=335204" in rule27["url"]
+    assert "할 것을[할꺼슬]" in rule27["coverage"]
+    assert "close connection" in rule27["coverage"]
+    assert "not an exact-token IPA source" in rule27["contribution_expected"]
+
+    su = rows["SRC-NIKL-QNA-331601"]
+    assert "qna_seq=331601" in su["url"]
+    assert "알 수 없는[알쑤엄는]" in su["coverage"]
+    assert "not an exact-token IPA" in su["limitations_or_next_action"]
+
+    deut = rows["SRC-NIKL-QNA-336313"]
+    assert "qna_seq=336313" in deut["url"]
+    assert "할 듯[할뜯]" in deut["coverage"]
+    assert "pause" in deut["coverage"]
+    assert "does not attest the exact corpus token" in deut["limitations_or_next_action"].lower()
     pdf = rows["SRC-NIKL-EDU-2021-DEPENDENT-SI"]
     assert "not used as production evidence" in pdf["limitations_or_next_action"].lower()
 

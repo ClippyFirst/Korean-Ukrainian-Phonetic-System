@@ -1,6 +1,6 @@
 # Programme Roadmap
 
-Last updated: 2026-11-01  
+Last updated: 2026-11-02  
 Current phase: Phase 7 — verification and Phase 9 — release acceptance. Mainline implementation is tested/deployed as a research preview; independent linguistic and owner-dependent release gates remain open.  
 Planned phases are not evidence of completion.
 ## Current continuation status — 2026-11-01
@@ -8,10 +8,10 @@ Planned phases are not evidence of completion.
 Current focused work is Phase 7 verification plus Phase 10 independent-review preparation; Phase 9 release acceptance remains blocked.
 
 - C01–C07 blind packet preparation is DONE_VERIFIED: seven neutral packets, 42 entries, 39 unique UGTPHON source rows with source contexts. Two independent reviewer submissions are still required.
-- C08 is PARTIAL: three contexts restored, two existing exact §27 forms context-validated, 유사성 unresolved, five occurrence IDs still unidentified. Kiwi/MeCab-Ko agree on the target boundary in 무고일수도있다는 but disagree on 했을시 and 유사성. Do not add more phonetic exceptions without exact source/morphology evidence.
+- C08 is PARTIAL / EVIDENCE-LIMITED: all eight source contexts are now mapped. Five formerly missing memberships were reconstructed from the pinned fortis-mismatch signature because the original extraction table is absent. Seven forms have conditional -(으)ㄹ + dependent-noun evidence from official NIKL Q&A; 유사성 remains unresolved. No new production rules were added. Kiwi/MeCab-Ko disagreement for 했을시 remains diagnostic only.
 - Python R013 exact same-eojeol licensing now applies within full sentences, matching the browser engine. Full-context positive and negative tests pass.
 - Current paired browser benchmark: 2,699 shared occurrences; CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp); exact match tied at 53.4272%. Diagnostic only.
-- Remaining acceptance work: two independent IPA reviews, five C08 IDs/contexts, C09/C10 convention adjudication, NIKL item-level rights, and Ukrainian target review.
+- Remaining acceptance work: two independent IPA reviews, independent C08/prosody adjudication and recovery of the original cluster extraction provenance, C09/C10 convention adjudication, NIKL item-level rights, and Ukrainian target review.
 
 
 
