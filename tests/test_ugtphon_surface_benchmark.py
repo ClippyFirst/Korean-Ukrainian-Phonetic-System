@@ -16,6 +16,56 @@ def _row(*tokens):
     }
 
 
+
+def test_context_retrieval_disambiguates_ambiguous_surface_from_train_context(monkeypatch):
+    train = [
+        _row(
+            {"text": "가", "canonical": "가", "is_nc": False, "nc_type": None},
+            {"text": "ㅋㅋ", "canonical": "크크", "is_nc": True, "nc_type": "B2"},
+            {"text": "다", "canonical": "다", "is_nc": False, "nc_type": None},
+        ),
+        _row(
+            {"text": "가", "canonical": "가", "is_nc": False, "nc_type": None},
+            {"text": "ㅋㅋ", "canonical": "키키", "is_nc": True, "nc_type": "B2"},
+            {"text": "라", "canonical": "라", "is_nc": False, "nc_type": None},
+        ),
+    ]
+    store = build_normalization_datastore(train)
+
+    assert "ㅋㅋ" not in store.mapping
+    assert store.context_mapping[("가", "ㅋㅋ", "라")] == "키키"
+
+    def fake_phoneticize(text, *, ipa_level="broad"):
+        ipa = {"가": "ka", "키키": "kiki", "라": "ɾa"}[text]
+        return {"pronunciation_status": "resolved", "ipa": {"ipa": ipa}}
+
+    monkeypatch.setattr(
+        "korean_ukrainian.pipeline.phoneticize_korean",
+        fake_phoneticize,
+    )
+    test_rows = [{
+        "id": "context_test",
+        "lang": "ko",
+        "split": "test",
+        "text": "가 ㅋㅋ 라",
+        "tokens": [
+            {"text": "가", "canonical": "가", "phoneme": "ka", "is_nc": False, "nc_type": None},
+            {"text": "ㅋㅋ", "canonical": "not-a-prediction-source", "phoneme": "kiki", "is_nc": True, "nc_type": "B2"},
+            {"text": "라", "canonical": "라", "phoneme": "ɾa", "is_nc": False, "nc_type": None},
+        ],
+    }]
+
+    report = evaluate_surface(test_rows, store)
+
+    assert report["normalization"]["context_hits"] == 1
+    assert report["normalization"]["surface_hits"] == 0
+    assert report["normalization"]["hits_noncanonical"] == 1
+    assert report["exact_matches"] == 3
+    hit = next(item for item in report["normalization_hit_examples"] if item["surface"] == "ㅋㅋ")
+    assert hit["g2p_input"] == "키키"
+    assert hit["retrieval_method"] == "exact_context"
+
+
 def test_datastore_keeps_only_unique_noncanonical_exact_matches():
     train = [
         _row(
