@@ -665,3 +665,18 @@ Before artifact `13094763897`; after artifact `13095038704`. Shared subset 2,699
 | Release readiness | BLOCKED | Research prototype only; no release claim. |
 
 Software verification on code-bearing head a0e17a187ee023c84c7208bb6a1df5755ed4b226: run 41342127230 PASS (browser 1,368/1,368, build, generated pages, Python regression/data integrity); g2pK integration run 41342127246 PASS. Multi-engine diagnostic 41342127137 was still in progress at handoff. The source inventory job was skipped and is not counted as a pass.
+
+
+## Kozak Kim continuation snapshot — 2026-11-01
+
+| Gate | Current status | Evidence / blocker |
+|---|---|---|
+| 0 — Repository integrity | PARTIAL / VERIFIED BRANCH | Current main `7bbbd7e`; continuation branch `research/kozak-kim-independent-ipa-packets-2026-11-01`; Draft PR #417 stacks on PR #416. PRs #415/#416/#417 remain unmerged. |
+| 1 — Source and licensing | PARTIAL / RIGHTS OPEN | Added NIKL Q&A 327466 and NIKL 2021 dependent-noun-`시` source records. Exact official morphology scope checked; item-level KOGL/reviewer-sharing rights remain unverified. |
+| 2 — Rule and data integrity | PARTIAL | No production rule changed. C08 summary reports 8 cases, but current occurrence ledger has no C08 rows; 3 source IDs recovered and 5 remain missing. |
+| 3 — Independent evaluation corpus | PARTIAL / BLOCKED | Seven source-blind C01–C07 pilot packets and a regression test exist. Full utterance context and reviewer-sharing rights are missing; no independent submissions exist. |
+| 4 — Runtime correctness | PASS for recorded software gates on continuation head | Run `41346666445`: browser regression/build PASS (1,369 tests, 0 failures); Python regression/data integrity PASS. Run `41346594433` extractor PASS. NIKL metadata-only inventory SKIPPED. Multi-engine run `41344981358` remained in progress; neural inference jobs SKIPPED. |
+| 5 — Product quality | PARTIAL | This continuation does not alter UI or Ukrainian target behavior; independent Ukrainian target review remains open. |
+| 6 — Release and independent review | BLOCKED | No independent Korean IPA adjudication, no item-level source/reviewer rights clearance, five C08 occurrence IDs missing, Ukrainian target review incomplete. Research prototype only. |
+
+This is a research continuation status, not a release acceptance decision. No claim of linguistic certification follows from CI.
