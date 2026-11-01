@@ -102,8 +102,9 @@ function applyProfileGate(source,result,options){
     ipa_profile_level:result.ipa_profile_level,
     ipa_profile_status:result.ipa_profile_status
   });
-  const upstreamBlocked=result.status==='unresolved'||typeof result.ipa!=='string'||!result.ipa.trim();
-  const gateReason=result.status==='unresolved'
+  const unresolvedPronunciation=result.pronunciation_status==='unresolved'||result.pronunciation_status==='partial';
+  const upstreamBlocked=unresolvedPronunciation||typeof result.ipa!=='string'||!result.ipa.trim();
+  const gateReason=unresolvedPronunciation
     ? 'unresolved_korean_phonology'
     : typeof result.ipa!=='string'||!result.ipa.trim() ? 'empty_ipa' : gated.reason;
   return {
