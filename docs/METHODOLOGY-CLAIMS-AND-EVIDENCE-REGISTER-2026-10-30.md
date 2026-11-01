@@ -56,3 +56,18 @@
 ## Maintenance rule
 
 Оновлювати цей реєстр, коли змінюється публічне твердження, метрика, статус моделі, джерельна ліцензія або acceptance status. Не переносити score на публічну сторінку без run, corpus, denominator, metric, version і interpretation note.
+
+
+## 2026-11-01 — raw-surface retrieval and contextual G2P evidence
+
+| ID | Claim / status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|
+| M-18 | Train-only raw-surface retrieval gives a small paired improvement — DONE_VERIFIED as diagnostic | UGTPHON run [41325015010](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325015010), artifact `13090704109` | On 2,624 shared tokens: exact 51.3720% → 51.6006 (+0.2287 pp), CER 10.0783% → 9.9730 (−0.1054 pp); 6 exact wins, 0 losses; 22/722 noncanonical hits | A general UGT solution, a production-ready normalizer, or canonical G2P improvement |
+| M-19 | Exact-context retrieval has low observed test coverage — DONE_VERIFIED | Same artifact: 297 context keys, 0 test context hits; 15 surface and 7 B1-signature hits | Current exact local-context lookup does not generalize to unseen test contexts; retrieval hit rate is 3.0471% of noncanonical tokens | That a trained sentence-context model would fail |
+| M-20 | Kiwi/MeCab analyzer consensus is not an aggregate improvement — DONE_VERIFIED as negative diagnostic | Run [41325014982](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325014982), artifact `13090938199` | Four unique forms changed; exact rate unchanged; paired CER worsened by 0.000087; 1 lower-distance and 2 higher-distance occurrences | That analyzer consensus is pronunciation gold or should enter strict runtime |
+| M-21 | Sentence context is the strongest published Korean UGT lever — DONE_VERIFIED literature finding | Jeon et al., Findings EMNLP 2026, [ACL Anthology](https://aclanthology.org/2026.findings-emnlp.1020/), Table 4 / §4.3 [PDF](https://aclanthology.org/2026.findings-emnlp.1020.pdf) | Korean PERnc: Word→Word 47.5; Sent→Word 28.1; Sent→Word+retrieval 27.7; staged decoding without retrieval 33.1; all three 32.0. Context helps; retrieval adds little; staged decoding harms this Korean setup. | That the paper's model can be reproduced by exact-context lookup or that its score transfers to this deterministic engine |
+| M-22 | Canonical browser benchmark remains diagnostic, not normative gold — DONE_VERIFIED as reporting boundary | Browser report artifact `13090704104` | 2,699/2,703 scored; 52.9085% exact; CER 8.2441%; 99.852% coverage | Independent Korean phonetic adjudication or Ukrainian target accuracy |
+
+### New methodological rule
+
+Keep canonical G2P, raw-surface normalization, and IPA annotation-convention sensitivity as separate tracks. Use the paired shared subset for normalizer deltas; always report rescued/lost tokens, unsupported inputs, canonical false rewrites and category coverage. Do not tune canonical phonology to UGT annotation symbols or promote analyzer/model candidates without independent evidence.
