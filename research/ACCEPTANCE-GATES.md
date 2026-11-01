@@ -490,3 +490,26 @@ Code-bearing head verified: `d66d02889ffcf405dc9f927a61d3da69fbfe8697`. PR #415 
 
 **Evidence:** tests [41309605110](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605110); browser integration [41309605037](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605037); system verification [41309605032](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605032); browser UGTPHON diagnostic [41309605083](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605083); paired native/g2pK diagnostic [41309605065](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41309605065). NIKL metadata-only job was skipped, not passed.
 
+
+
+## Follow-up — source-backed G2P benchmark corrections (2026-11-01)
+
+PR #415 continues to add exact-form evidence, but the new code is **PARTIAL pending exact-head CI**.
+
+- Added NIKL Q&A-backed `실수[실쑤]` as one exact §26 full-form license in both browser and Python rule inventories. No productive generalization was introduced.
+- Added Korean Basic Dictionary `한자[한ː짜]` as a variant-aware lexical entry, preserving the dictionary long vowel. IPA is project-derived; Ukrainian target remains provisional.
+- Tightened Python's provisional lexical-target gate so no non-null Ukrainian orthography is accepted while the lexical target status is provisional, even without a reference target string.
+- Source register: 139 CSV records, 12 columns each; rights classification 1 item-level license recorded, 1 not applicable, 130 review-required, 7 manual-classification-required.
+
+**Projected benchmark effect only:** recalculation of the prior browser artifact projects strict CER 8.2571% → 8.2441%, with strict exact unchanged at 52.9085%; broad-candidate exact 92.4416% → 92.4787%. These are not new measurements. Current branch needs a new exact-head browser run.
+
+**CI blocker:** connector-created commits have not emitted new workflow runs after the last verified d66 code head; no workflow-dispatch action is available in the connected GitHub toolset. Local GitHub access is unavailable. Require an event-capable push or manual Actions dispatch before promotion to DONE_VERIFIED.
+
+| Gate | Status | Evidence / remaining acceptance |
+|---|---|---|
+| Exact NIKL §26 form 실수[실쑤] | PARTIAL | Source verified and mirrored in JS/Python; new regression tests not run at exact head. |
+| Dictionary-backed 한자[한ː짜] | PARTIAL | Official dictionary form verified; long vowel preserved; JS/Python tests not run at exact head. |
+| Provisional lexical target fail-closed behavior without target-reference string | PARTIAL | Python guard and regression added; needs exact-head Python suite and wheel test. |
+| Updated source-register structure and rights totals | PARTIAL | CSV parsed as 139 × 12; exact-head Node/Python register gates still required. |
+| New direct browser UGTPHON score | BLOCKED | Previous artifact is pre-change; projected deltas are not a benchmark run. |
+| Release readiness | BLOCKED / DEFERRED | Korean IPA adjudication, Ukrainian target review, item-level source-rights checks and exact-head CI remain open. |
