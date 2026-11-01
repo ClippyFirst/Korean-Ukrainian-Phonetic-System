@@ -147,3 +147,23 @@ test('CLI can build a blinded packet from the R002/R003 queue without modifying 
   assert.ok(!run.stdout.includes('goldDiagnostic'));
 });
 
+
+
+const pilotPacketIds = ['C01', 'C02', 'C03', 'C04', 'C05', 'C06', 'C07'];
+
+test('C01-C07 pilot packets remain source-blind and fail closed without source context', () => {
+  for (const clusterId of pilotPacketIds) {
+    const packetText = readFileSync(new URL('../research/ipa-review-packets/blind-ipa-' + clusterId + '.json', import.meta.url), 'utf8');
+    const packet = JSON.parse(packetText);
+    assert.equal(packet.packet_id, 'BLIND-IPA-' + clusterId + '-2026-11-01');
+    assert.equal(packet.review_mode, 'BLINDED_INPUT_ONLY');
+    assert.equal(packet.items.length, 6);
+    assert.ok(packet.items.every(item => item.source_row_ids.length > 0));
+    assert.ok(packet.items.every(item => item.source_context_status === 'NOT_INCLUDED_IN_PAIRED_ARTIFACT'));
+    assert.equal(packet.acceptance_gate.status, 'BLOCKED_MISSING_SENTENCE_CONTEXT_AND_RIGHTS_CHECK');
+    const serialized = JSON.stringify(packet).toLowerCase();
+    for (const forbidden of ['kozak kim', 'g2pk', 'engine', 'reference_ipa', 'gold_ipa', 'artifact_id', 'workflow_run_id', 'cluster_name', 'review_question', 'source_artifact']) {
+      assert.ok(!serialized.includes(forbidden), 'blind packet must not disclose ' + forbidden);
+    }
+  }
+});

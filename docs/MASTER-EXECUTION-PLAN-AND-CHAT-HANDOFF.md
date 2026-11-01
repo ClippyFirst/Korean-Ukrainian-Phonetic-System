@@ -11,7 +11,7 @@
 |---|---|---|
 | Reconcile current main and PR #415/#416 | DONE_VERIFIED (inspection) | main `7bbbd7e`; #415 head `0b4b126`; #416 head `2712b2c`; main...#416 = 192 ahead / 0 behind. Dedicated continuation branch created from main and fast-forwarded to #416 descendant. |
 | Preserve IPA-first and source-backed implementation | DONE_VERIFIED (inherited) | PR #416 exact-head system run `41344976774` PASS; browser G2P integration `41344981229` PASS; paired native/g2pK `41344981425` PASS; UGTPHON `41344981311` PASS; morphology diagnostics `41344981284` and `41344981338` PASS. |
-| C01–C07 blind review packetization | PARTIAL | Seven separate pilot JSON packets and index created. They contain token/source-row identifiers only; no engine output, reference IPA, or ranking. Not ready for scoring because source utterance context and reviewer-sharing rights are missing. |
+| C01–C07 blind review packetization | PARTIAL | Seven separate source-blind pilot JSON packets and an internal index created; reviewer-facing instructions are separate. They contain token/source-row identifiers only; no engine output, reference IPA, or ranking. Not ready for scoring because source utterance context and reviewer-sharing rights are missing. |
 | C08 lexical/morphological evidence | PARTIAL / EVIDENCE-LIMITED | NIKL Q&A 312649 confirms 의외성 only; 유사성 appears in the question but is not confirmed by the answer. §27 is conditional on exact morphology; no exact segmentation evidence for 했을시 or 무고일수도있다는. No production change justified. |
 | Remaining C08 cases | TODO / BLOCKED ON CONTEXT | Restore exact utterances, spacing/morpheme analysis, exact-form source evidence, and near-minimal negative controls. |
 | Original g2pK integrity | DONE_VERIFIED (scope control) | No original/vendor g2pK implementation file changed in this continuation. |
@@ -19,7 +19,7 @@
 
 ## C01–C07 packet details
 
-- Files: `research/ipa-review-packets/kozak-kim-C01.json` through `kozak-kim-C07.json`.
+- Files: `research/ipa-review-packets/blind-ipa-C01.json` through `kozak-kim-C07.json`.
 - Index/protocol: `research/ipa-review-packets/README-KOZAK-KIM-C01-C07.md`.
 - Blinding: no engine IPA, gold IPA, engine identity, ranking, or rule hypothesis.
 - Evidence limit: artifact `13097847614` has token-level rows, not source utterance text. Restore licensed context and verify sharing rights before dispatch.

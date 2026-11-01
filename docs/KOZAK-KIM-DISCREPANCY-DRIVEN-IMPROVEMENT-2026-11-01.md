@@ -281,7 +281,7 @@ Original g2pK returns outputs for these four inputs, but that does not establish
 
 ### C01–C07 independent review packets
 
-Seven separate blind pilot packets are stored in `research/ipa-review-packets/kozak-kim-C01.json` through `kozak-kim-C07.json`; see [packet index](../research/ipa-review-packets/README-KOZAK-KIM-C01-C07.md). They exclude engine outputs, reference IPA, engine identities, benchmark rankings, and proposed rule explanations.
+Seven separate source-blind pilot packets are stored in `research/ipa-review-packets/blind-ipa-C01.json` through `kozak-kim-C07.json`; see [packet index](../research/ipa-review-packets/README-KOZAK-KIM-C01-C07.md). They exclude engine outputs, reference IPA, engine identities, benchmark rankings, and proposed rule explanations.
 
 **Not ready for external scoring:** artifact `13097847614` contains token-level forms and source-row identifiers but not the original sentence/utterance. Restore full licensed source context, verify item-level reviewer-sharing rights, freeze packet hashes, and only then dispatch blind copies. Current status: `PARTIAL / BLOCKED_MISSING_SENTENCE_CONTEXT_AND_RIGHTS_CHECK`.
 
