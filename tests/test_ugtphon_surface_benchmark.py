@@ -30,6 +30,8 @@ def test_context_retrieval_disambiguates_ambiguous_surface_from_train_context(mo
             {"text": "라", "canonical": "라", "is_nc": False, "nc_type": None},
         ),
     ]
+    train[0]["id"] = "train_context_1"
+    train[1]["id"] = "train_context_2"
     store = build_normalization_datastore(train)
 
     assert "ㅋㅋ" not in store.mapping
