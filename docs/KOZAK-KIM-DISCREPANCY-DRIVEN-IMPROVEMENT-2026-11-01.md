@@ -37,35 +37,15 @@ Source: https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=216&page
 
 ## Discrepancy inventory from the paired report
 
-The following are the 23 output-different occurrences. Distances are the report's normalized IPA edit distances against its selected closest gold. Repeated rows are repeated corpus occurrences, not independent lexical types.
+The complete occurrence-level ledger is stored in [`research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv`](../research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv). It contains exactly 23 occurrences where the two engines emitted different normalized IPA strings, including repeated tokens as distinct occurrences. Each row records the reference, both engine outputs, edit distances, the closer engine, a provisional phenomenon cluster, and an adjudication note.
 
-| Occurrence | Token | Kozak Kim IPA (distance) | g2pK IPA (distance) | Initial interpretation |
-|---|---|---|---|---|
-| multilexnorm2026_1982 | 닮다 | `tam.t͈a` (0) | `tam.da` (2) | §24 stem-final ㄴ/ㅁ-conditioned fortition; Kozak exact |
-| dc_inside_2123 | 못잃어 | `mon.ni.ɾʌ` (0) | `mo.ɕi.ɾʌ` (2) | N-insertion/liaison variant; NIKL usage survey reports both readings, so variant policy matters |
-| dc_inside_2131 | 넘게 | `nʌm.k͈e` (0) | `nʌm.ɡe` (2) | §24 fortition; Kozak exact |
-| dc_inside_2537 | 인기 | `in.k͈i` (0) | `in.ɡi` (2) | lexical/Sino-Korean fortition; optionality must be preserved |
-| dc_inside_2035 | 없는 | `ʌːm.nɯn` (1) | `ʌm.nɯn` (0) | reference omits length; NIKL evidence records long vowel |
-| dc_inside_2108 | 없는 | `ʌːm.nɯn` (1) | `ʌm.nɯn` (0) | same convention issue |
-| dc_inside_2212 | 없는 | `ʌːm.nɯn` (1) | `ʌm.nɯn` (0) | same convention issue |
-| dc_inside_2269 | 없는 | `ʌːm.nɯn` (1) | `ʌm.nɯn` (0) | same convention issue |
-| multilexnorm2026_1913 | 대 | `tɛ` (0) | `tɛ` (0) | equal output; not a discrepancy in the paired engine output |
-| multilexnorm2026_1949 | 다를게 | `ta.ɾɯl.k͈e` (1) | `ta.ɾɯl.ɡe` (3) | §27 ending; Kozak closer |
-| multilexnorm2026_1949 | 안타까울게 | `an.tʰa.k͈a.ul.k͈e` (1) | `an.tʰa.k͈a.ul.ɡe` (3) | §27 ending; Kozak closer |
-| dc_inside_2514 | 할게 | `hal.k͈e` (1) | `hal.ɡe` (3) | §27 ending; Kozak closer |
-| dc_inside_2236 | 올게이 | `ol.k͈e.i` (3) | `ol.ɡe.i` (1) | §27 substring false positive; boundary repair authored |
-| multilexnorm2026_1916 | 사건 | `saː.k͈ʌn` (2) | `sa.ɡʌn` (5) | lexical fortition and length; Kozak substantially closer |
-| dc_inside_2537 | 한자 | `haːn.tɕ͈a` (1) | `han.dʑa` (3) | dictionary-backed length and fortition; target remains separate |
-| multilexnorm2026_1915 | 많이 | `maː.ni` (1) | `ma.ni` (2) | length annotation difference; Kozak closer |
-| multilexnorm2026_1916 | 실수 | `ɕil.s͈u` (2) | `ɕil.su` (3) | fortition plus sibilant aspiration/allophone convention |
-| dc_inside_2035 | 없다 | `ʌːp̚.t͈a` (2) | `ʌp̚.t͈a` (3) | length and vowel quality; Kozak closer |
-| dc_inside_2108 | 없다 | `ʌːp̚.t͈a` (2) | `ʌp̚.t͈a` (3) | repeated occurrence |
-| dc_inside_2035 | 없어 | `ʌːp̚.s͈ʌ` (2) | `ʌp̚.s͈ʌ` (1) | reference omits length; check NIKL length rule before changing engine |
-| dc_inside_2035 | 알다 | `aːl.da` (2) | `al.da` (1) | official long-vowel evidence vs reference omission; do not remove length to chase exact match |
-| dc_inside_2131 | 읽고 | `il.k͈o` (1) | `ik̚.k͈o` (2) | §11 verbal-stem ㄺ + ㄱ; Kozak closer |
-| multilexnorm2026_1918 | 대한민국 | `te.han.min.ɡuk̚` (4) | `tɛ.han.min.ɡuk̚` (3) | vowel quality/annotation issue; needs source and IPA convention review |
+The ledger confirms 15 occurrences with lower edit distance for Kozak Kim and 8 for g2pK. This count is occurrence-level and must not be interpreted as 15 independent lexical wins: repeated forms include `없는`, `없다`, and `사건`, and the bootstrap unit remains the source sentence/utterance row.
 
-*Correction to the table:* the paired report has 23 differing occurrences; use the raw artifact as the canonical record. The equal-output example `대` is not one of those 23 and is not a discrepancy; it is shown only to illustrate why occurrence-level report filtering must be used rather than copying a broad report excerpt. The actual differing-occurrence list and counts must be regenerated from the raw JSON artifact when a machine-readable ledger is added.
+Four exact-match discordances are especially informative:
+- Kozak Kim only: `닮다`, `못잃어`, `넘게`, `인기`.
+- g2pK only: four occurrences of `없는`.
+
+The g2pK-only exact cases all concern the corpus omitting vowel length that is represented in the registered NIKL evidence. They are not sufficient grounds to remove length from Kozak Kim. `못잃어` is also variant-sensitive: the source register records both insertion and non-insertion readings, so the exact match is not by itself a normative ranking.
 
 ## Prioritized research clusters
 
