@@ -202,6 +202,7 @@ _NIKL_R012_WORD_LICENSES = {
     "실수": "실>수",  # NIKL Online Q&A qna_seq=330843 confirms all listed homonyms [실쑤].
     "출산": "출>산", "출산율": "출>산", "출산하다": "출>산",
     "비출산": "출>산",  # Exact complete-token license for the corpus form; do not generalize to arbitrary internal ㄹ+ㅅ substrings. 출산 itself is dictionary-attested [출싼].
+    "저출산": "출>산",  # NIKL Basic Dictionary directly lists 저출산[저ː출싼].
 }
 
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds
