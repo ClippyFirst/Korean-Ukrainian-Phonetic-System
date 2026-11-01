@@ -176,3 +176,33 @@ def test_surface_evaluation_keeps_unresolved_and_engine_errors_separate(monkeypa
     assert report["unresolved_tokens"] == 1
     assert report["engine_errors"] == 1
     assert report["scored_tokens"] == 0
+
+
+def test_surface_report_exposes_case_level_mismatches(monkeypatch):
+    def fake_phoneticize(text, *, ipa_level="broad"):
+        return {
+            "pronunciation_status": "resolved",
+            "ipa": {"ipa": "kɯ"},
+        }
+
+    monkeypatch.setattr(
+        "korean_ukrainian.pipeline.phoneticize_korean",
+        fake_phoneticize,
+    )
+    report = evaluate_surface([{
+        "id": "test_4",
+        "lang": "ko",
+        "split": "test",
+        "text": "가",
+        "tokens": [{
+            "text": "가",
+            "phoneme": "ka",
+            "is_nc": False,
+            "nc_type": None,
+        }],
+    }], build_normalization_datastore([]))
+
+    assert report["exact_matches"] == 0
+    assert report["worst_mismatches"][0]["surface"] == "가"
+    assert report["worst_mismatches"][0]["predicted"] == "kɯ"
+    assert report["worst_mismatches"][0]["normalization_hit"] is False
