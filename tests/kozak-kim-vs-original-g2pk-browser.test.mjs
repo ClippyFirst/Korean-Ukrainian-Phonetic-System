@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import {\n  createOriginalG2pKBrowserEngine,\n  evaluateRows\n} from '../scripts/benchmark_kozak_kim_vs_g2pk_browser.mjs';\nimport { createBrowserKozakKimEngine } from '../scripts/benchmark_kozak_kim_browser.mjs';
+import {
+  createOriginalG2pKBrowserEngine,
+  evaluateRows
+} from '../scripts/benchmark_kozak_kim_vs_g2pk_browser.mjs';
+import { createBrowserKozakKimEngine } from '../scripts/benchmark_kozak_kim_browser.mjs';
 
 test('paired browser benchmark compares Kozak Kim with the untouched raw g2pK surface', () => {
   const g2pCalls = [];
