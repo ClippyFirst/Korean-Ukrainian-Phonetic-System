@@ -89,11 +89,30 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       applyPhraseBoundaryAssimilation(results,parts,map);
       const issues=results.flatMap(r=>r.issues||[]);
       if(/[가-힣][A-Za-z]/u.test(text))issues.push('Mixed Hangul and Latin residue without a boundary; non-Korean characters are withheld from IPA.');
+      // Aggregate Korean pronunciation independently from target availability.
+      // Literal-only components are not unresolved Korean pronunciations.
+      const pronunciationStatuses=results.map((r,index)=>{
+        if(r.pronunciation_status)return r.pronunciation_status;
+        if(!/[가-힣]/u.test(parts[index]))return 'not_applicable';
+        if(r.status==='unresolved'||!r.ipa)return 'unresolved';
+        if(['heuristic-low-confidence','practical-transliteration','super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(r.status))return 'heuristic';
+        return 'resolved';
+      });
+      const pronunciation_status=pronunciationStatuses.includes('unresolved')?'unresolved'
+        :pronunciationStatuses.includes('partial')?'partial'
+        :pronunciationStatuses.includes('heuristic')?'heuristic'
+        :pronunciationStatuses.includes('resolved')?'resolved':'not_applicable';
       const hasCandidate=results.some(r=>r.candidate_ukrainian);
       const hasProvisionalTarget=results.some(r=>r.target_status==='provisional'||r.status==='lexical-review');
       const hasSuperSoftFallback=results.some(r=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(r.status)||(r.trace||[]).some(item=>['super-soft-orthographic-fallback','super-soft-practical-heuristic','super-soft-morphology-heuristic'].includes(item.status)));
       const superSoftCandidateOnly=superSoftOn&&(hasProvisionalTarget||hasSuperSoftFallback);
-      const candidateText=hasCandidate||superSoftCandidateOnly?results.map(r=>r.candidate_ukrainian??r.ukrainian).join(''):null;
+      const candidateParts=results.map((r,index)=>{
+        const value=r.candidate_ukrainian??r.ukrainian??'';
+        // In Super-soft mode, retain standalone jamo and non-Korean literals
+        // even when another component forces the whole phrase into candidate mode.
+        return superSoftOn&&!/[가-힣]/u.test(parts[index])&&!value?parts[index]:value;
+      });
+      const candidateText=hasCandidate||superSoftCandidateOnly?candidateParts.join(''):null;
       if(superSoftOn&&hasProvisionalTarget){
         for(const result of results){
           if(result.target_status!=='provisional'&&result.status!=='lexical-review')continue;
@@ -127,7 +146,8 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
         }))),
         trace:results.flatMap(r=>r.trace||[]),
         issues,
-        target_status:results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional'||r.status==='lexical-review')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
+        target_status:pronunciation_status==='unresolved'||pronunciation_status==='partial'||results.some(r=>r.target_status==='unavailable')?'unavailable':results.some(r=>r.target_status==='provisional'||r.status==='lexical-review')?'provisional':results.some(r=>r.target_status==='model-selected')?'model-selected':null,
+        pronunciation_status,
         candidate_ukrainian:hasCandidate||superSoftCandidateOnly?candidateText:null,
         status:superSoftOn?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'super-soft-orthographic-fallback':hasSuperSoftFallback?'super-soft-heuristic-coverage':results.some(r=>r.status==='unresolved')?'unresolved':'super-soft-maximum-coverage'):issues.length?'unresolved':results.some(r=>r.status==='lexical-review')?'lexical-review':results.some(r=>r.status==='lexical')?'lexical':results.some(r=>r.status==='practical-transliteration')?'practical-transliteration':results.some(r=>r.status==='heuristic-low-confidence')?'heuristic-low-confidence':results.some(r=>r.status==='contextual')?'contextual':'canonical',
         phonetic_result_type:hasSuperSoftFallback?(results.some(r=>r.status==='super-soft-orthographic-fallback'||(r.trace||[]).some(item=>item.status==='super-soft-orthographic-fallback'))?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
