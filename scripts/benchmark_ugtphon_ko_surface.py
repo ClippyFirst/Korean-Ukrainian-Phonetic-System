@@ -337,6 +337,8 @@ def evaluate_surface(
 
     records: list[dict[str, Any]] = []
     category_records: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    baseline_records: list[dict[str, Any]] = []
+    baseline_category_records: dict[str, list[dict[str, Any]]] = defaultdict(list)
     normalization_hits = 0
     context_hits = 0
     surface_hits = 0
@@ -349,6 +351,72 @@ def evaluate_surface(
     noncanonical_tokens = 0
     canonical_tokens = 0
     profile_metadata: dict[str, Any] = {}
+
+    def score_input(
+        input_text: str,
+        *,
+        surface: str,
+        category: str,
+        gold_raw: Any,
+        normalization_hit: bool,
+        retrieval_method: str,
+    ) -> dict[str, Any]:
+        has_hangul = any("\uac00" <= char <= "\ud7a3" for char in input_text)
+        supported = has_hangul and all(
+            char.isspace() or "\uac00" <= char <= "\ud7a3"
+            for char in input_text
+        )
+        base = {
+            "category": category,
+            "surface": surface,
+            "g2p_input": input_text,
+            "normalization_hit": normalization_hit,
+            "retrieval_method": retrieval_method,
+        }
+        if not supported:
+            return {"status": "unsupported_input", "distance": None, **base}
+        if not isinstance(gold_raw, str) or not gold_raw.strip():
+            return {"status": "missing_gold", "distance": None, **base}
+        try:
+            result = phoneticize_korean(input_text, ipa_level=ipa_level)
+            if result.get("pronunciation_status") == "unresolved":
+                return {"status": "unresolved", "distance": None, **base}
+            ipa = result.get("ipa", {})
+            if isinstance(ipa, dict) and not profile_metadata:
+                profile_metadata.update({
+                    "ipa_profile": ipa.get("ipa_profile"),
+                    "ipa_profile_status": ipa.get("ipa_profile_status") or "unavailable",
+                    "ipa_profile_version": ipa.get("ipa_profile_version"),
+                })
+            predicted_raw = ipa.get("ipa", "") if isinstance(ipa, dict) else ""
+            if not isinstance(predicted_raw, str) or not predicted_raw:
+                raise RuntimeError("engine returned no IPA for a resolved token")
+            predicted = normalize_ipa(predicted_raw)
+            gold_variants = [
+                normalize_ipa(part) for part in gold_raw.split(",") if part.strip()
+            ]
+            if not gold_variants:
+                return {"status": "missing_gold", "distance": None, **base}
+            distance, closest_gold = min(
+                ((edit_distance(predicted, gold), gold) for gold in gold_variants),
+                key=lambda pair: pair[0],
+            )
+            return {
+                "status": "scored",
+                "distance": distance,
+                "exact": distance == 0,
+                "gold": closest_gold,
+                "predicted": predicted,
+                **base,
+            }
+        except Exception as exc:
+            return {
+                "status": "engine_error",
+                "distance": None,
+                "error": f"{type(exc).__name__}: {exc}",
+                **base,
+            }
+
     for row in test_rows:
         for token_index, token in enumerate(row["tokens"]):
             if not isinstance(token, dict):
@@ -402,85 +470,27 @@ def evaluate_surface(
                         lengthening_hits_canonical += 1
             elif is_nc:
                 misses_noncanonical += 1
-            # The native pronunciation API accepts precomposed Hangul and
-            # whitespace only. Keep unsupported raw UGT (Latin, emoji,
-            # compatibility jamo, mixed-script tokens) out of the engine-error
-            # bucket. A successful train-only canonical retrieval is checked
-            # first, so forms such as ㅋㅋ can still reach G2P as 크크.
-            has_hangul = any("\uac00" <= char <= "\ud7a3" for char in g2p_input)
-            supported_surface = has_hangul and all(
-                char.isspace() or "\uac00" <= char <= "\ud7a3"
-                for char in g2p_input
+            baseline_item = score_input(
+                surface,
+                surface=surface,
+                category=category,
+                gold_raw=gold_raw,
+                normalization_hit=False,
+                retrieval_method="none",
             )
-            if not supported_surface:
-                item = {
-                    "status": "unsupported_input", "distance": None, "category": category,
-                    "surface": surface, "g2p_input": g2p_input,
-                    "normalization_hit": canonical_hint is not None,
-                    "retrieval_method": retrieval_method,
-                }
-                records.append(item)
-                category_records[category].append(item)
-                continue
+            baseline_records.append(baseline_item)
+            baseline_category_records[category].append(baseline_item)
 
-            if not isinstance(gold_raw, str) or not gold_raw.strip():
-                item = {
-                    "status": "missing_gold", "distance": None, "category": category,
-                    "surface": surface, "g2p_input": g2p_input,
-                    "normalization_hit": canonical_hint is not None,
-                    "retrieval_method": retrieval_method,
-                }
-                records.append(item)
-                category_records[category].append(item)
-                continue
-
-            try:
-                result = phoneticize_korean(g2p_input, ipa_level=ipa_level)
-                if result.get("pronunciation_status") == "unresolved":
-                    item = {
-                        "status": "unresolved", "distance": None, "category": category,
-                        "surface": surface, "g2p_input": g2p_input,
-                        "normalization_hit": canonical_hint is not None,
-                        "retrieval_method": retrieval_method,
-                    }
-                else:
-                    ipa = result.get("ipa", {})
-                    if isinstance(ipa, dict) and not profile_metadata:
-                        profile_metadata.update({
-                            "ipa_profile": ipa.get("ipa_profile"),
-                            "ipa_profile_status": ipa.get("ipa_profile_status") or "unavailable",
-                            "ipa_profile_version": ipa.get("ipa_profile_version"),
-                        })
-                    predicted_raw = ipa.get("ipa", "") if isinstance(ipa, dict) else ""
-                    if not isinstance(predicted_raw, str) or not predicted_raw:
-                        raise RuntimeError("engine returned no IPA for a resolved token")
-                    predicted = normalize_ipa(predicted_raw)
-                    gold_variants = [
-                        normalize_ipa(part) for part in gold_raw.split(",") if part.strip()
-                    ]
-                    if not gold_variants:
-                        item = {"status": "missing_gold", "distance": None, "category": category}
-                    else:
-                        distance, closest_gold = min(
-                            ((edit_distance(predicted, gold), gold) for gold in gold_variants),
-                            key=lambda pair: pair[0],
-                        )
-                        item = {
-                            "status": "scored", "distance": distance,
-                            "exact": distance == 0, "gold": closest_gold,
-                            "predicted": predicted, "surface": surface,
-                            "g2p_input": g2p_input, "category": category,
-                            "normalization_hit": canonical_hint is not None,
-                            "retrieval_method": retrieval_method,
-                        }
-            except Exception as exc:
-                item = {
-                    "status": "engine_error", "distance": None, "category": category,
-                    "surface": surface, "g2p_input": g2p_input,
-                    "error": f"{type(exc).__name__}: {exc}",
-                    "normalization_hit": canonical_hint is not None,
-                    "retrieval_method": retrieval_method,
-                }
+            # Reuse the baseline result when no canonical hint changed the input;
+            # only retrieved tokens need a second G2P call.
+            item = baseline_item if g2p_input == surface else score_input(
+                g2p_input,
+                surface=surface,
+                category=category,
+                gold_raw=gold_raw,
+                normalization_hit=canonical_hint is not None,
+                retrieval_method=retrieval_method,
+            )
             records.append(item)
             category_records[category].append(item)
 
@@ -488,6 +498,56 @@ def evaluate_surface(
     by_category = {
         category: _aggregate(items)
         for category, items in sorted(category_records.items())
+    }
+    baseline_aggregate = _aggregate(baseline_records)
+    baseline_by_category = {
+        category: _aggregate(items)
+        for category, items in sorted(baseline_category_records.items())
+    }
+    paired = [
+        (baseline, normalized)
+        for baseline, normalized in zip(baseline_records, records)
+        if baseline["distance"] is not None and normalized["distance"] is not None
+    ]
+    paired_chars = sum(len(normalized["gold"]) for _, normalized in paired)
+    paired_baseline_edits = sum(baseline["distance"] for baseline, _ in paired)
+    paired_normalized_edits = sum(normalized["distance"] for _, normalized in paired)
+    paired_baseline_exact = sum(baseline["exact"] for baseline, _ in paired)
+    paired_normalized_exact = sum(normalized["exact"] for _, normalized in paired)
+    paired_subset = {
+        "tokens_scored_by_both": len(paired),
+        "baseline": {
+            "exact_matches": paired_baseline_exact,
+            "exact_match_rate": round(paired_baseline_exact / len(paired), 6) if paired else None,
+            "character_error_rate": round(paired_baseline_edits / paired_chars, 6) if paired_chars else None,
+        },
+        "normalized": {
+            "exact_matches": paired_normalized_exact,
+            "exact_match_rate": round(paired_normalized_exact / len(paired), 6) if paired else None,
+            "character_error_rate": round(paired_normalized_edits / paired_chars, 6) if paired_chars else None,
+        },
+        "exact_match_rate_delta_normalized_minus_baseline": (
+            round((paired_normalized_exact - paired_baseline_exact) / len(paired), 6) if paired else None
+        ),
+        "cer_delta_normalized_minus_baseline": (
+            round((paired_normalized_edits - paired_baseline_edits) / paired_chars, 6) if paired_chars else None
+        ),
+        "normalization_rescued_tokens": sum(
+            baseline["distance"] is None and normalized["distance"] is not None
+            for baseline, normalized in zip(baseline_records, records)
+        ),
+        "normalization_lost_tokens": sum(
+            baseline["distance"] is not None and normalized["distance"] is None
+            for baseline, normalized in zip(baseline_records, records)
+        ),
+        "normalization_exact_improvements": sum(
+            not baseline.get("exact", False) and normalized.get("exact", False)
+            for baseline, normalized in zip(baseline_records, records)
+        ),
+        "normalization_exact_regressions": sum(
+            baseline.get("exact", False) and not normalized.get("exact", False)
+            for baseline, normalized in zip(baseline_records, records)
+        ),
     }
     worst_mismatches = sorted(
         (item for item in records if item["status"] == "scored" and not item["exact"]),
@@ -512,6 +572,9 @@ def evaluate_surface(
         "benchmark": "UGTPHON Korean test split — raw-surface retrieval + G2P",
         "purpose": "research-only exact-match normalization baseline; separate from canonical lexical G2P",
         "input_field": "token.text",
+        "baseline": baseline_aggregate,
+        "baseline_by_category": baseline_by_category,
+        "paired_subset": paired_subset,
         "normalization": {
             "policy": "train-only exact local-context lookup, exact surface lookup, then unique B1-only lengthening-signature retrieval; canonical collision guards; abstain on ambiguity",
             "store_size": len(store.mapping),
@@ -566,6 +629,7 @@ def evaluate_surface(
             "Inputs outside the native Hangul+whitespace contract are counted as unsupported, not engine errors; train-only retrieval is attempted before this check.",
             "Potential canonical false rewrites are reported, not hidden. The B1 signature adapter is research-only and is not enabled in the standard pronunciation API.",
             "This is not the paper's trained retrieval-augmented ByT5/Qwen model or its staged decoder.",
+            "A paired raw-surface baseline is reported for the same tokens; paired deltas compare only tokens scored by both paths.",
             "UGTPHON is noisy user-generated text; results must remain separate from canonical G2P and standard-pronunciation evaluation.",
             "The Korean UGTPHON subset is Apache-2.0; the dataset is supplied externally and is not bundled or downloaded at runtime.",
         ],
