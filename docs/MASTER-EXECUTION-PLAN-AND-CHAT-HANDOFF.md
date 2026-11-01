@@ -4539,3 +4539,69 @@ Implementation and benchmark code head: c7e2ce435960856a9382e79e71a8d49dc51c4e09
 - The multi-engine diagnostic run 41331679222 was still in progress at the last check; it is not used as evidence for this Kozak-Kim-only result.
 
 PR #415 remains a draft and has not been merged. The g2pK vendor source and unrelated PRs/branches remain untouched. The repository remains a **research prototype**, not release-ready: independent Korean IPA adjudication, Ukrainian target review, and item-level source/licensing clearance are still open.
+
+# Continuation — Kozak Kim discrepancy-driven phonology improvement (2026-11-01)
+
+## Scope decision
+
+The owner explicitly selected **Kozak Kim only** as the improvement target. The original g2pK implementation remains unchanged as an external baseline. No g2pK rule, code, or behavior is to be copied into Kozak Kim solely to improve agreement. Compare both engines on identical browser inputs, the same reference alternatives, and paired sentence-cluster statistics.
+
+## Starting point and branch
+
+- Main at start: `7bbbd7e7ce888a9c995bb70959e17858263c07a8`.
+- Reused research/code baseline: PR #415 branch head `559000fa845b40450cb7173167a2d28016d282f8`, previously verified in Actions; no wholesale merge of PR #415 was performed.
+- Dedicated branch: `research/kozak-kim-discrepancy-driven-improvement-2026-11-01`.
+- This continuation changes only the native Kozak Kim engine, its tests, and research/evidence documentation. The original g2pK implementation is untouched.
+
+## Paired discrepancy evidence
+
+Paired browser run [41331679243](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41331679243), artifact `13093672281`:
+- 2,703 eligible occurrences; 2,699 shared scored occurrences.
+- Both engines: 1,442/2,699 exact (53.4272%).
+- Kozak Kim CER 8.1358%; g2pK CER 8.2138%.
+- Paired exact delta 0; sentence-cluster bootstrap 95% CI [-0.20697, +0.20056] pp, crossing zero.
+- CER delta interval [-0.16560, 0] pp, touching zero.
+- 1,438 both exact, 4 Kozak-only exact, 4 g2pK-only exact, 1,253 both wrong.
+- 23 occurrences had different normalized IPA strings; Kozak Kim had lower edit distance on 15 and g2pK on 8. These are triage statistics, not independent lexical wins or human adjudication.
+
+The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv`; methodology, classification limits, and next cluster work are in `docs/KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md`.
+
+## Implementation batch
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Confirm scope and preserve original g2pK | DONE_VERIFIED | Explicit owner instruction; changed paths on this branch do not touch g2pK runtime files |
+| Extract paired output discordances | DONE_VERIFIED | Artifact 13093672281; 23 output-different occurrences and full ledger |
+| §27 complete `-ㄹ게` boundary | PARTIAL | `src/app/engine_rules_ctx.js` now requires the current eojeol to end in the complete `-ㄹ게` or `-ㄹ게요` sequence; test added for `할게`, `할게요`, `다를게`, `안타까울게`, and substring-only control `올게이`. NIKL Q&A 330963 registered as `SRC-NIKL-QNA-330963`. Exact-head tests/build/paired benchmark still required. |
+| Source register and rule coverage | PARTIAL | New exact NIKL source row; R013 coverage row updated. CSV/schema integrity tests not yet run on this branch head |
+| Long-vowel discordances | TODO / evidence-limited | Multiple g2pK exact matches omit length that the NIKL evidence records; independent IPA convention review needed before any code change |
+| §11 complex-coda, §24/§26 fortition, phrase variation | PARTIAL / TODO | Existing source-backed rules preserved; expand positive/negative/minimal contrast coverage and independently adjudicate variants |
+| Broad IPA mismatch groups | BLOCKED | Need an independently adjudicated IPA convention/gold; do not normalize away aspiration, glide, coda, or lateral contrasts to improve headline scores |
+| Overall superiority claim | BLOCKED | Paired exact CI crosses zero; independent held-out specialist gold required |
+
+## Changes recorded on this branch
+
+- `src/app/engine_rules_ctx.js`: complete-ending boundary guard for §27 `-ㄹ게`.
+- `tests/nikl-morphology-guard-matrix-24-30.test.mjs`: positive/negative boundary regression.
+- `research/SOURCE-REGISTER.csv`: `SRC-NIKL-QNA-330963`.
+- `research/RULE-COVERAGE.csv`: R013 scope and acceptance update.
+- `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026-11-01.csv`.
+- `docs/KOZAK-KIM-DISCREPANCY-DRIVEN-IMPROVEMENT-2026-11-01.md`.
+
+## Verification actually performed
+
+- Inspected the exact paired JSON artifact using Python `zipfile`/JSON and recomputed the set of 23 output-different occurrences, their edit-distance direction, and paired aggregate counts.
+- Reviewed the §27 native implementation and the existing morphology guard tests before changing the rule.
+- Verified the official NIKL Q&A page for `할게` and registered its exact URL in the source register.
+- Performed static review of the code/test edits through GitHub file reads.
+- **Not run:** local Node tests, `npm test`, browser build, Python tests, or exact-head GitHub Actions. This connector-only session has no local repository checkout and the available GitHub actions do not expose workflow dispatch. Do not mark the new code/tests DONE_VERIFIED until a push/dispatch-capable run passes.
+
+## Next executable steps
+
+1. Run `node --test tests/nikl-morphology-guard-matrix-24-30.test.mjs` and the complete `npm test` suite on the current branch head.
+2. Run browser integration/build and the paired Kozak Kim-vs-original-g2pK diagnostic on the exact head; verify `올게이` no longer receives §27 fortition and the three valid `-ㄹ게` positives remain correct.
+3. Validate source-register and rule-coverage CSV schemas.
+4. Expand discrepancy analysis by conditioning environment, not just IPA edit string; preserve sentence-level clustering and repeated-occurrence identity.
+5. Continue only with source-backed rules and independent negative controls. Do not claim an overall Kozak Kim win until a paired, independently adjudicated holdout supports it.
+
+**Current readiness:** research prototype. This branch has a narrow, source-backed rule-boundary improvement authored, but exact-head verification is pending; it is not release-ready or research-certified.
