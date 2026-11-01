@@ -379,3 +379,15 @@ Paired row-cluster bootstrap (1,000 replicates): exact-match delta 95% interval 
 The earlier blocker “source utterance context unavailable” is superseded. All **39 unique source-row IDs** across the seven six-item pilot packets were matched to the official `naver-ai/UGTPHON/ko/test.json` (275-row Korean test split); every target token is present in its included raw sentence. UGTPHON's `ko/LICENSE` explicitly states Apache-2.0 for the Korean subset. Packets now include raw sentence context only, plus source-row provenance and attribution to UGTPHON, KoMultiText, and MultiLexNorm++; they exclude canonical text, phoneme annotations, IPA-Dict data, system outputs, and reference IPA.
 
 **Updated status:** packet preparation is `DONE_VERIFIED`; the packets are `READY_FOR_INDEPENDENT_REVIEW_PILOT`. Independent reviewer assignment and first-pass submissions remain `TODO`. These six-item-per-cluster samples are not full cluster censuses. Preserve the Apache-2.0 notice and attribution; no raw gated MultiLexNorm++ files are redistributed. Upstream provenance/terms remain a documented limitation for broader reuse.
+
+
+### Independent morphology cross-check and training-data readiness
+
+The pinned Kiwi/MeCab-Ko cross-check (run 41353171166; artifacts 13102576042, 13101838045, consensus 13102406365) adds a useful constraint:
+- Both analyzers find the target boundary before dependent noun 수 in 무고일수도있다는, though their internal segmentation of 일 differs.
+- Kiwi parses 했을시 as 하/VV + 었/EP + 을/ETM + 시/NNB; MeCab-Ko parses 했/VV+EP + 을시/EC. The NIKL Q&A supports the dependent-noun analysis, but independent analyzer consensus is absent.
+- Kiwi segments 유사성 as 유사/NNG + 성/XSN; MeCab-Ko treats it as one NNG. This does not establish the lexical pronunciation, and the form remains unresolved.
+
+Do not resolve analyzer disagreement by majority vote. These outputs are diagnostic morphology hypotheses, not gold segmentation or IPA.
+
+A separate training-readiness audit (partial workflow artifact 13101748305) reports 644 unique lexical rows, zero additions explicitly marked as independently adjudicated IPA gold, and 24 frozen holdout cases without IPA gold; no holdout overlap was found. Supervised IPA training is therefore NOT READY. No training was run.

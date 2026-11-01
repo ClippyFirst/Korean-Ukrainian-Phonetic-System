@@ -3,7 +3,7 @@
 **Scope:** Kozak Kim only. The original/vendor g2pK implementation remains unchanged and comparison-only.
 **Working branch:** research/kozak-kim-independent-ipa-packets-2026-11-01.
 **PR:** #417, draft and stacked on the PR #416 implementation line. PRs #415 and #416 remain open; no merge or destructive branch operation was performed.
-**Verified code/test base:** 7406c6303f643dce4a9b733138e8c4871dd501ea; subsequent changes in this continuation are documentation/PR metadata only.
+**Verified code/test base:** bc7b1474eecfe8df8006572abf0f07957f829647; the next branch update is this documentation-only reconciliation.
 
 ## Current task ledger
 
@@ -12,7 +12,7 @@
 | C01–C07 independent IPA packets | DONE_VERIFIED (packet preparation only) | Seven separate blind JSON packets, six pilot forms each (42 entries; 39 unique source-row IDs). All 39 IDs resolve to the pinned UGTPHON Korean test split and every target token is present in its raw sentence context. Packet schema is neutral; packet tests reject Kozak Kim/g2pK/system identity, IPA/reference leakage and internal artifact identifiers. |
 | Independent IPA adjudication | BLOCKED | No reviewer submissions yet. Two qualified reviewers must annotate separately, freeze first-pass results, then reconcile disagreements. |
 | C08 context recovery | PARTIAL | Three source contexts are now restored: multilexnorm2026_1953 (무고일수도있다는), multilexnorm2026_1979 (했을시), and dc_inside_2024 (유사성). Five of the eight cluster occurrences remain unidentified. |
-| C08 morphology/rule evidence | PARTIAL | 무고일수도있다는: NIKL Q&A 327466 supports the X일 수도 construction; Standard Pronunciation Rule §27 supplies a conditional rule derivation. 했을시: NIKL Q&A 313481 and 333044 confirm dependent noun 시 after -을; §27 supplies a conditional derivation. These are not direct IPA attestations. 유사성 remains unresolved; Q&A 312649 confirms 의외성 only. |
+| C08 morphology/rule evidence | PARTIAL | 무고일수도있다는: NIKL Q&A 327466 supports the X일 수도 construction; Kiwi and MeCab-Ko agree on the target boundary. 했을시: NIKL Q&A 313481/333044 support dependent noun 시 after -을, but Kiwi parses 을/ETM + 시/NNB while MeCab-Ko returns 을시/EC. 유사성 remains unresolved; Kiwi/MeCab-Ko disagree on suffix versus lexical segmentation and Q&A 312649 confirms 의외성 only. These are morphology hypotheses, not direct IPA attestations. |
 | Python/browser R013 parity | DONE_VERIFIED | Python exact same-eojeol licenses now match the containing eojeol inside a full sentence, rather than comparing the whole sentence to a single-word key. Positive and negative full-context tests cover both runtimes. |
 | g2pK baseline integrity | DONE_VERIFIED | No original/vendor g2pK file changed. Current and previous paired browser artifacts show zero changed g2pK predictions. |
 | Source/licensing register | PARTIAL | Register now has 151 rows: 142 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL Q&A item-level reuse terms remain unchecked. The 2021 NIKL PDF is supplementary only and is not used as production evidence. |
@@ -31,16 +31,17 @@ Secondary native paired diagnostic: run 41352607885, artifact 13101886624. It us
 
 ## Verification
 
-- System / Python regression and data integrity: PASS — run 41352607970.
-- Browser regression tests and build: PASS — run 41352607970.
-- Exhaustive test-case register extraction: PASS — run 41352607974.
-- Paired browser UGTPHON comparison: PASS — run 41352607907.
-- Native paired Kozak Kim vs original g2pK diagnostic: PASS — run 41352607885.
-- Morphology consensus: PASS — run 41352608221.
-- Morphology adapter smoke: PASS — run 41352608083.
+- System / Python regression and data integrity: PASS — run 41353450715.
+- Browser regression tests and build: PASS — run 41353450715.
+- Exhaustive test-case register extraction: PASS — run 41353450682.
+- Paired browser UGTPHON comparison: PASS — run 41353450686.
+- Native paired Kozak Kim vs original g2pK diagnostic: PASS — run 41353450687.
+- Morphology consensus: PASS — run 41353450703.
+- Morphology adapter smoke: PASS — run 41353450714.
+- Kiwi/MeCab-Ko analyzer cross-check: PASS — run 41353171166 (artifact 13102406365 plus analyzer outputs 13102576042 and 13101838045).
 - CharsiuG2P inference and ByT5 inference: SKIPPED (optional research jobs; no fresh neural result claimed).
 - NIKL metadata-only inventory: SKIPPED.
-- Multi-engine IPA diagnostic run 41352608128 was still in progress at the time of this handoff snapshot.
+- Multi-engine IPA diagnostic run 41353450707 was still in progress at the last check. Earlier run 41353171180 was cancelled during the comparison step; its partial artifact 13101748305 contains a completed training-readiness audit but no completed multi-engine score report.
 
 ## Readiness and next genuine blockers
 
@@ -4927,3 +4928,8 @@ Paired row-cluster bootstrap (1,000 replicates): exact-match delta 95% interval 
 The earlier blocker “source utterance context unavailable” is superseded. All **39 unique source-row IDs** across the seven six-item pilot packets were matched to the official `naver-ai/UGTPHON/ko/test.json` (275-row Korean test split); every target token is present in its included raw sentence. UGTPHON's `ko/LICENSE` explicitly states Apache-2.0 for the Korean subset. Packets now include raw sentence context only, plus source-row provenance and attribution to UGTPHON, KoMultiText, and MultiLexNorm++; they exclude canonical text, phoneme annotations, IPA-Dict data, system outputs, and reference IPA.
 
 **Updated status:** packet preparation is `DONE_VERIFIED`; the packets are `READY_FOR_INDEPENDENT_REVIEW_PILOT`. Independent reviewer assignment and first-pass submissions remain `TODO`. These six-item-per-cluster samples are not full cluster censuses. Preserve the Apache-2.0 notice and attribution; no raw gated MultiLexNorm++ files are redistributed. Upstream provenance/terms remain a documented limitation for broader reuse.
+
+
+## Training-data readiness audit — 2026-11-01
+
+The partial multi-engine workflow artifact 13101748305 (run 41353171180, attempt 2) contains a completed training-readiness report: 644 unique lexical rows, 0 additions explicitly marked as independently adjudicated IPA gold, and 24 frozen holdout cases with no IPA gold. No overlap was detected between the frozen holdout and lexical/addition inputs. The audit therefore marks supervised IPA training as NOT READY. No supervised training was run; do not treat model-selected/provisional IPA candidates as gold.

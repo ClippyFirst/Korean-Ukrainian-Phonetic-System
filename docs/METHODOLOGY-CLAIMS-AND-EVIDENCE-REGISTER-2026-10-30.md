@@ -148,3 +148,13 @@ The 26 current IPA-discordant occurrences must not be conflated with the 23 case
 
 The browser paired report remains diagnostic: four Kozak Kim abstentions, zero engine errors, and no statistically supported exact-match winner. CharsiuG2P/ByT5 inference and NIKL metadata-only inventory were skipped; no fresh neural or metadata-inventory result is claimed.
 
+
+
+## 2026-11-01 — analyzer cross-check and supervised-training readiness
+
+| ID | Claim / status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|
+| M-32 | Independent morphology analyzer cross-check for C08 — DONE_VERIFIED as a diagnostic | Kiwi/MeCab-Ko run 41353171166; artifacts 13102576042 (Kiwi), 13101838045 (MeCab-Ko), 13102406365 (consensus) | Both identify the target boundary before 수 in 무고일수도있다는; they disagree on 했을시 (ETM+NNB vs EC) and 유사성 (suffix vs lexical noun). Disagreement is preserved, not majority-voted. | Gold morphology, pronunciation, IPA or permission to generalize a suffix rule |
+| M-33 | Supervised IPA training-readiness audit — DONE_VERIFIED as an audit; training NOT READY | Partial artifact 13101748305 from cancelled multi-engine run 41353171180 attempt 2; 644 unique lexical rows; zero additions explicitly marked independently adjudicated IPA gold; 24 frozen holdout cases without IPA gold; no holdout overlap | Training-data readiness is demonstrably insufficient for supervised IPA training; no leakage was detected in the checked overlap tests | That provisional/model-selected IPA candidates are gold, or that a supervised model should be trained |
+
+The full multi-engine comparison did not complete in the recorded workflow attempt; no comparative score is claimed from partial artifact 13101748305. The training-readiness JSON is a separate completed audit within that artifact.

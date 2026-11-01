@@ -8,7 +8,7 @@ Planned phases are not evidence of completion.
 Current focused work is Phase 7 verification plus Phase 10 independent-review preparation; Phase 9 release acceptance remains blocked.
 
 - C01–C07 blind packet preparation is DONE_VERIFIED: seven neutral packets, 42 entries, 39 unique UGTPHON source rows with source contexts. Two independent reviewer submissions are still required.
-- C08 is PARTIAL: three contexts restored, two existing exact §27 forms context-validated, 유사성 unresolved, five occurrence IDs still unidentified. Do not add more phonetic exceptions without exact source/morphology evidence.
+- C08 is PARTIAL: three contexts restored, two existing exact §27 forms context-validated, 유사성 unresolved, five occurrence IDs still unidentified. Kiwi/MeCab-Ko agree on the target boundary in 무고일수도있다는 but disagree on 했을시 and 유사성. Do not add more phonetic exceptions without exact source/morphology evidence.
 - Python R013 exact same-eojeol licensing now applies within full sentences, matching the browser engine. Full-context positive and negative tests pass.
 - Current paired browser benchmark: 2,699 shared occurrences; CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp); exact match tied at 53.4272%. Diagnostic only.
 - Remaining acceptance work: two independent IPA reviews, five C08 IDs/contexts, C09/C10 convention adjudication, NIKL item-level rights, and Ukrainian target review.
@@ -428,3 +428,6 @@ Paired row-cluster bootstrap (1,000 replicates): exact-match delta 95% interval 
 The earlier blocker “source utterance context unavailable” is superseded. All **39 unique source-row IDs** across the seven six-item pilot packets were matched to the official `naver-ai/UGTPHON/ko/test.json` (275-row Korean test split); every target token is present in its included raw sentence. UGTPHON's `ko/LICENSE` explicitly states Apache-2.0 for the Korean subset. Packets now include raw sentence context only, plus source-row provenance and attribution to UGTPHON, KoMultiText, and MultiLexNorm++; they exclude canonical text, phoneme annotations, IPA-Dict data, system outputs, and reference IPA.
 
 **Updated status:** packet preparation is `DONE_VERIFIED`; the packets are `READY_FOR_INDEPENDENT_REVIEW_PILOT`. Independent reviewer assignment and first-pass submissions remain `TODO`. These six-item-per-cluster samples are not full cluster censuses. Preserve the Apache-2.0 notice and attribution; no raw gated MultiLexNorm++ files are redistributed. Upstream provenance/terms remain a documented limitation for broader reuse.
+
+
+Training gate: the latest readiness audit finds 644 unique lexical rows but zero explicitly independently adjudicated IPA gold rows and 24 frozen holdout cases without IPA gold. Supervised IPA training remains blocked until provenance review, independent annotation/adjudication and frozen train/dev/test splits are complete.

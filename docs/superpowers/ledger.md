@@ -5,11 +5,12 @@
 - **Scope:** only Kozak Kim; original g2pK stays untouched.
 - **Branch/PR:** research/kozak-kim-independent-ipa-packets-2026-11-01, draft PR #417 stacked on PR #416.
 - **C01–C07:** seven neutral blind packets, 42 entries, 39 unique source rows, full source contexts, no engine/baseline/IPA leakage. Packet preparation is DONE_VERIFIED; independent reviewer submissions remain BLOCKED.
-- **C08:** source contexts recovered for 무고일수도있다는, 했을시, and 유사성. NIKL Q&A 327466 supports the first morphology; Q&A 313481/333044 support the dependent-noun 시 analysis. Existing exact-form §27 licenses are retained. 유사성 remains unresolved; five C08 row IDs remain unidentified. No new rule family or generalized -성 rule was added.
+- **C08:** source contexts recovered for 무고일수도있다는, 했을시, and 유사성. NIKL Q&A 327466 supports the first morphology; Q&A 313481/333044 support the dependent-noun 시 analysis. Kiwi and MeCab-Ko agree on the target boundary in the first form but disagree on 했을시 and 유사성 segmentation. Existing exact-form §27 licenses are retained. 유사성 remains unresolved; five C08 row IDs remain unidentified. No new rule family or generalized -성 rule was added.
 - **Runtime:** Python exact R013 same-eojeol licensing now works for a licensed word inside a full sentence. Full-context positive and negative tests pass in Python and browser.
 - **Benchmark:** browser paired CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster CI −0.1951 to −0.0261 pp); exact match 53.4272% each, no statistically supported exact-match winner. Only the two C08 target outputs changed relative to the prior PR #416 browser artifact; g2pK outputs are unchanged.
 - **Rights:** source register 151 rows; 142 review required and 7 manual classifications remain. NIKL item-level rights review is open.
 - **CI:** Python regression/data integrity, browser regression/build, packet tests, paired browser benchmark, native paired diagnostic, morphology consensus/adapter and extractor passed on the verified code head. Optional Charsiu/ByT5 and NIKL metadata-only inventory were skipped; multi-engine run was still in progress at snapshot.
+- **Training readiness:** supervised IPA training is NOT READY: the partial audit found 644 unique lexical rows but zero explicitly independently adjudicated IPA rows and 24 frozen holdout cases without IPA gold; no holdout overlap was found.
 - **Readiness:** research prototype, not research-certified or release-ready. Next blockers are two independent IPA reviews, five missing C08 IDs/contexts, C09/C10 adjudication, item-level rights and Ukrainian target review.
 
 ## Historical snapshots
@@ -55,3 +56,8 @@ Paired row-cluster bootstrap (1,000 replicates): exact-match delta 95% interval 
 **Mandatory limitations:** SIGMORPHON is a lexical word-level set, not a sentence-context or normative NIKL set; IPA conventions differ from the reference; g2pK outputs pass through the project's shared segment renderer, which may bias comparison; the benchmark does not score Ukrainian output. The bootstrap intervals are diagnostic uncertainty intervals, not a substitute for independent gold adjudication or a preregistered statistical claim. ByT5 and CharsiuG2P inference jobs were SKIPPED. g2pK source/version remained unchanged.
 
 - C01–C07 packet preparation: DONE_VERIFIED. 39/39 unique source-row IDs matched to official UGTPHON Korean test; every target token present; raw sentence context included, no canonical/IPA/system outputs. UGTPHON ko/LICENSE states Apache-2.0; attribution included. Packets READY_FOR_INDEPENDENT_REVIEW_PILOT; reviewer assignment/submissions remain TODO.
+
+
+## Analyzer evidence and training-data gate
+
+Kiwi/MeCab-Ko run 41353171166 is diagnostic only: partial boundary agreement for 무고일수도있다는; disagreement for 했을시 and 유사성. The training-readiness artifact 13101748305 records 644 unique lexical rows, no explicitly adjudicated IPA gold, 24 frozen holdout cases without IPA gold, and no overlap. Supervised IPA training remains blocked.
