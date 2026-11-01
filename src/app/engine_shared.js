@@ -175,6 +175,7 @@ const NIKL_26_SINO_KOREAN_RIEUL_FORTITION_FORMS=new Map([
   ['출산','출>산'], ['출산율','출>산'], ['출산하다','출>산'],
   ['비출산','출>산'], // Exact prefixed form; its Sino-Korean constituent 출산 is dictionary-attested [출싼].
   ['저출산','출>산'], // NIKL Basic Dictionary directly lists 저출산[저ː출싼].
+  ['실시간','실>시'], // NIKL §26 + NIKL lexical source records 實時間; exact Sino-Korean 실>시간 boundary.
 ]);
 
 // Exact, source-backed NIKL §28 compound fortition cases. These licenses

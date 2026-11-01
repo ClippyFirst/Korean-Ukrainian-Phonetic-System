@@ -156,7 +156,8 @@ test('§26: source-derived 실시간 boundary applies Sino-Korean ㄹ+ㅅ fortit
     result.trace.some((item) => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')),
     '실>시 is the licensed Sino-Korean ㄹ+ㅅ boundary',
   );
-  assert.ok(result.ipa.includes('s͈'), '§26 must preserve the fortis sibilant in 실시간');
+  assert.equal(result.surfaceHangul, '실씨간', '§26 must change only the licensed onset');
+  assert.ok(result.ipa.includes('ɕ͈i'), '§26 must preserve the fortis palatal sibilant in 실시간');
 
   for (const input of ['실구간', '실가간']) {
     const lookalike = generic.convert(input);
