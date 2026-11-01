@@ -28,7 +28,7 @@ RULE_META={
 "R009":("n-insertion","NIKL §29; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R010":("stem-nm-fortition","NIKL §24","high"),
 "R011":("stem-lb-lt-fortition","NIKL §25","high"),
-"R012":("sino-korean-l-fortition","NIKL §26","high"),
+"R012":("sino-korean-l-fortition","NIKL §26; Q&A qna_seq=330843 https://www.korean.go.kr/front/onlineQna/onlineQnaView.do?mn_id=27&pageIndex=1&qna_seq=330843","high"),
 "R013":("adnominal-l-fortition","NIKL §27","high"),
 "R014":("compound-fortition","NIKL §28; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
 "R015":("saisiot-pronunciation","NIKL §30; official Standard Pronunciation Rules https://www.korean.go.kr/kornorms/regltn/regltnView.do?regltn_code=0002","high"),
@@ -199,6 +199,7 @@ _NIKL_R012_WORD_LICENSES = {
     "갈등": "갈>등", "발동": "발>동", "절도": "절>도", "말살": "말>살",
     "일시": "일>시", "갈증": "갈>증", "물질": "물>질", "발전": "발>전",
     "몰상식": "몰>상", "불세출": "불>세",
+    "실수": "실>수",  # NIKL Online Q&A qna_seq=330843 confirms all listed homonyms [실쑤].
 }
 
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds

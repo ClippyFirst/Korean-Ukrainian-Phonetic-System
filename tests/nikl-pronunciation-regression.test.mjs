@@ -52,7 +52,7 @@ test('ㅇ+ㅢ uses the normative [ɰi] default instead of an unresolved placehol
   assert.equal(result.issues.length, 0);
   assert.ok(!result.ukrainian.includes('⟦'));
   assert.equal(result.ukrainian, '');
-  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.target_status, 'provisional');
   assert.ok(result.candidate_ukrainian.includes('ий'));
   assert.equal(result.candidate_status, 'provisional');
   assert.match(result.ipa, /ɰi/);
@@ -714,6 +714,23 @@ test('NIKL §11 lexical length and morphology exceptions preserve official readi
     assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.ukrainian, target, word);
   }
+});
+
+test('dictionary-attested 한자 preserves lexical fortition and vowel length', () => {
+  const result = engine.convert('한자');
+  assert.equal(result.pronunciation_status, 'resolved');
+  assert.equal(result.surfaceHangul, '한짜');
+  assert.equal(result.ipa, renderExpectedIpa('한자', 'haːn.tɕ͈a'));
+  assert.equal(result.ukrainian, '');
+  assert.equal(result.target_status, 'provisional');
+  assert.ok(result.candidate_ukrainian);
+});
+
+test('NIKL §26 exact Sino-Korean 실수 fortition is shared with the Python rule inventory', () => {
+  const result = engine.convert('실수');
+  assert.equal(result.surfaceHangul, '실쑤');
+  assert.equal(result.ipa, renderExpectedIpa('실수', 'ɕil.s͈u'));
+  assert.ok(result.trace.some(item => item.rules.includes('sino-korean-rieul-fortition-§26-exact-form')));
 });
 
 test('NIKL §19 official examples preserve rule order before §18 nasalization', () => {

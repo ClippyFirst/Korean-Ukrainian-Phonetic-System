@@ -24,7 +24,9 @@ test('Latin residue attached to Hangul is withheld from IPA and reported', () =>
   const result = engine.convert('의nin');
   assert.doesNotMatch(result.ipa, /nin/u);
   assert.doesNotMatch(result.analysis, /nin/u);
-  assert.match(result.ukrainian, /nin/u);
+  assert.equal(result.ukrainian, '');
+  assert.match(result.candidate_ukrainian, /nin/u);
+  assert.equal(result.target_status, 'provisional');
   assert.ok(result.issues.some(issue => /mixed Hangul and Latin/iu.test(issue)));
   assert.equal(result.status, 'unresolved');
 });
