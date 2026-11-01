@@ -54,8 +54,8 @@ test('paired browser benchmark compares Kozak Kim with the untouched raw g2pK su
   assert.equal(report.paired_subset.g2pk.exact_matches, 3);
   assert.equal(report.records.find(item => item.token === 'на')?.token, undefined);
   assert.equal(report.records.find(item => item.token === '나').g2pk_surface, '다');
-  assert.equal(report.records.find(item => item.token === '나').kozak_kim_exact, true);
-  assert.equal(report.records.find(item => item.token === '나').g2pk_exact, false);
+  assert.equal(report.records.find(item => item.token === '나').kozak_kim.exact, true);
+  assert.equal(report.records.find(item => item.token === '나').g2pk.exact, false);
   assert.deepEqual(g2pCalls[0], {
     input: '가',
     options: { descriptive: false, verbose: false, groupVowels: false, toSyl: true }
