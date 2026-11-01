@@ -460,3 +460,16 @@ Two complementary evidence documents were selectively ported from PR #398 after 
 - `docs/METHODOLOGY-DEBATE-REVIEW-2026-10-30.md` records structured academic/evidence/engineering review lenses and adjudication rules.
 
 The review record explicitly distinguishes structured analytical perspectives from independent human expert review. The claim register uses the corrected SIGMORPHON native exact rate of 35.7715%, reports paired exact-classification McNemar p=0.125, marks historical Charsiu results as historical, and preserves unresolved licensing, training-overlap, Korean IPA gold and Ukrainian target gold gates. The new docs are linked from README and covered by methodology contract tests.
+
+
+## PR #415 — raw-surface train-only retrieval benchmark (2026-11-01)
+
+The exact pinned UGTPHON train/test inputs are now both fetched and verified in external benchmark workflow [41325015010](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41325015010): Korean train 1,976 rows, test 275 rows, Git blob SHA-1 values match `prepare_ugtphon_korean_corpus.py`, and the upstream Apache-2.0 declaration is checked. No external corpus file is committed.
+
+Artifact `13090704109` evaluates `token.text` without reading test `canonical` labels. On 3,140 attempted token occurrences, raw G2P scores 2,624/3,140 (83.5669% coverage), 1,348 exact (51.3720%), CER 10.0783%. Train-only normalization scores 2,639/3,140 (84.0446%), 1,363 exact (51.6484%), CER 9.9753%. Use the paired subset for comparison: 2,624 common tokens, exact 51.3720% → 51.6006% (+0.2287 pp), CER 10.0783% → 9.9730% (−0.1054 pp), 6 exact improvements, 0 exact regressions, 15 rescued, 0 lost.
+
+Retrieval yielded 22 hits among 722 noncanonical tokens (3.0471%): 15 exact-surface, 7 B1 lengthening-signature, 0 exact-context; 0 canonical hits and 0 measured canonical false rewrites. A1 and B1 show the clearest benefit; B2 remains largely ambiguous/unsupported. This is a modest high-precision research diagnostic, not a runtime feature or a broad UGT accuracy claim.
+
+Kiwi/MeCab consensus artifact `13090938199` changed 4 unique forms; exact match was unchanged and CER worsened by 0.000087. Do not promote analyzer-derived candidate licenses.
+
+The 2026 EMNLP paper's Korean ablation reports PERnc 47.5 Word→Word, 28.1 Sent→Word, 27.7 Sent→Word+retrieval, 33.1 Sent→Word+staged decoding and 32.0 with both. Sentence context is the dominant lever; retrieval adds little after context and staged decoding hurts Korean. See [ACL paper](https://aclanthology.org/2026.findings-emnlp.1020/) and [PDF](https://aclanthology.org/2026.findings-emnlp.1020.pdf).
