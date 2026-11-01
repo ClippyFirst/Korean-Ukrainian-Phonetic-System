@@ -80,19 +80,86 @@ function metrics(items, field, referenceField = null) {
   return result;
 }
 
-function exactBinomialMcNemarP(wins, losses) {
-  const n = wins + losses;
-  if (!n) return null;
-  const tail = Math.min(wins, losses);
-  const logFactorial = [0];
-  for (let i = 1; i <= n; i++) logFactorial[i] = logFactorial[i - 1] + Math.log(i);
-  let probability = 0;
-  for (let k = 0; k <= tail; k++) {
-    const logProbability = logFactorial[n] - logFactorial[k] -
-      logFactorial[n - k] - n * Math.log(2);
-    probability += Math.exp(logProbability);
+function percentile(sorted, fraction) {
+  if (!sorted.length) return null;
+  return sorted[Math.floor((sorted.length - 1) * fraction)];
+}
+
+function sentenceClusterBootstrap(paired, { resamples = 2000, seed = 20261101 } = {}) {
+  const grouped = new Map();
+  paired.forEach((item, index) => {
+    const key = item.id ?? 'occurrence-' + index;
+    if (!grouped.has(key)) {
+      grouped.set(key, {
+        tokens: 0,
+        exactDelta: 0,
+        sharedTokens: 0,
+        kozakDistance: 0,
+        g2pkDistance: 0,
+        goldCharacters: 0
+      });
+    }
+    const group = grouped.get(key);
+    group.tokens += 1;
+    group.exactDelta += Number(item.kozak_kim.exact) - Number(item.g2pk.exact);
+    if (item.common_best_gold) {
+      group.sharedTokens += 1;
+      group.kozakDistance += item.common_best_gold.kozak_kim_distance;
+      group.g2pkDistance += item.common_best_gold.g2pk_distance;
+      group.goldCharacters += [...item.common_best_gold.gold].length;
+    }
+  });
+  const groups = [...grouped.values()];
+  if (!groups.length) {
+    return {
+      cluster_unit: 'UGTPHON row id',
+      cluster_count: 0,
+      resamples: 0,
+      seed,
+      exact_match_delta_95_ci: null,
+      cer_delta_95_ci: null
+    };
   }
-  return Math.min(1, 2 * probability);
+
+  let state = seed >>> 0;
+  const random = () => {
+    state ^= state << 13; state >>>= 0;
+    state ^= state >>> 17; state >>>= 0;
+    state ^= state << 5; state >>>= 0;
+    return state / 0x100000000;
+  };
+  const exactDeltas = [];
+  const cerDeltas = [];
+  for (let sample = 0; sample < resamples; sample += 1) {
+    let tokens = 0;
+    let exactDelta = 0;
+    let kozakDistance = 0;
+    let g2pkDistance = 0;
+    let goldCharacters = 0;
+    for (let draw = 0; draw < groups.length; draw += 1) {
+      const group = groups[Math.floor(random() * groups.length)];
+      tokens += group.tokens;
+      exactDelta += group.exactDelta;
+      kozakDistance += group.kozakDistance;
+      g2pkDistance += group.g2pkDistance;
+      goldCharacters += group.goldCharacters;
+    }
+    if (tokens) exactDeltas.push(exactDelta / tokens);
+    if (goldCharacters) cerDeltas.push(
+      kozakDistance / goldCharacters - g2pkDistance / goldCharacters
+    );
+  }
+  exactDeltas.sort((a, b) => a - b);
+  cerDeltas.sort((a, b) => a - b);
+  return {
+    cluster_unit: 'UGTPHON row id (sentence/utterance)',
+    cluster_count: groups.length,
+    resamples,
+    seed,
+    exact_match_delta_95_ci: [percentile(exactDeltas, 0.025), percentile(exactDeltas, 0.975)],
+    cer_delta_95_ci: [percentile(cerDeltas, 0.025), percentile(cerDeltas, 0.975)],
+    note: 'Cluster bootstrap preserves within-row dependence; interval is diagnostic, not linguistic adjudication.'
+  };
 }
 
 export function evaluateRows(rows, kozakKimEngine, rawG2pK) {
@@ -260,7 +327,7 @@ export function evaluateRows(rows, kozakKimEngine, rawG2pK) {
         g2pkMetrics.character_error_rate !== null
         ? kozakMetrics.character_error_rate - g2pkMetrics.character_error_rate
         : null,
-      mcnemar_exact_p_value: exactBinomialMcNemarP(kozakOnlyExact, g2pkOnlyExact)
+      sentence_cluster_bootstrap: sentenceClusterBootstrap(paired)
     },
     surface_comparison: {
       tokens_with_both_surfaces: records.filter(item => item.kozak_kim && item.g2pk && item.g2pkSurface !== null).length,
