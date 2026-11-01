@@ -73,13 +73,13 @@ Do not duplicate the existing morphology alignment helper, replace these safegua
 The optional g2pK adapter previously aligned source and surface words by positional zip after checking only that their token counts matched. A changed separator or punctuation boundary could therefore associate a source lexical IPA entry with the wrong surface token.
 
 The adapter now uses _aligned_source_words:
-- requires equal Korean word-token counts;
+- requires equal Korean word-token counts and equal per-word syllable counts;
 - compares every exact inter-word separator between source and surface (including whitespace and punctuation);
 - returns no source-word mapping when alignment is uncertain;
 - withholds both source-specific surface overrides and lexical IPA overrides when alignment is not verified;
 - exposes word_alignment_status as either verified-source-surface-word-boundaries or unknown-source-surface-word-boundaries.
 
-Regression tests cover a normal aligned sentence, punctuation shifted across the boundary, and a merged-word output. This is a correctness/provenance fix, **not a claimed benchmark-accuracy gain**. Exact-head CI is required before marking it verified.
+Regression tests cover a normal aligned sentence, punctuation shifted across the boundary, a merged-word output, and a same-token-count boundary shift with syllables moved between words. This is a correctness/provenance fix, **not a claimed benchmark-accuracy gain**. Exact-head CI is required before marking it verified.
 
 ## Recommended implementation sequence
 
