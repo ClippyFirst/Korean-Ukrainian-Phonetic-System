@@ -307,3 +307,12 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 - **PARTIAL:** run the new surface benchmark on externally supplied Korean UGTPHON train/test data; exact-head CI is also pending for the new adapter and benchmark tests.
 - **DEFERRED:** neural UGT normalization and staged decoding until the retrieval-only baseline is measured. The EMNLP 2026 Korean ablation found retrieval-only PERnc 27.7 versus 32.0 with staged decoding; do not assume the full architecture helps every language/task.
 - **BLOCKED / EVIDENCE-LIMITED:** independent Korean IPA convention adjudication and Ukrainian target review remain separate gates. A better UGTPHON score does not by itself validate standard Korean pronunciation or Ukrainian transliteration.
+
+
+## 2026-11-01 — Raw-surface UGT baseline evidence (PR #411)
+
+- **DONE_VERIFIED as diagnostic:** run 41306501056 scored pinned Korean raw token surfaces at 51.6105% exact / 10.0256% CER on 2,639/3,140 tokens (84.0446% coverage; coverage-adjusted exact 43.3758%).
+- **Finding:** train-only exact/context/lengthening retrieval hit 22/722 noncanonical tokens (3.0471%); 0 exact-context hits. Ambiguity and canonical collision guards blocked uncertain rewrites.
+- **PARTIAL:** a paired raw-input baseline is now added to the benchmark, with same-token deltas and rescued/lost coverage. Exact-head CI and a new train/test run are required before claiming the normalizer improves quality.
+- **Design decision:** keep raw-UGT canonicalization separate from canonical-word G2P; do not add fuzzy context rules or broad phonological heuristics based on this sparse retrieval result.
+- **Sentence-context native vs g2pK test:** native 7.9755% exact / 14.8323% CER on paired 163 sentences vs g2pK 7.3620% / 15.4797%; no evidence to replace native G2P with g2pK in this test.
