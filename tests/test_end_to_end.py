@@ -74,7 +74,8 @@ def test_nikl_27_c08_exact_word_licenses_apply_inside_full_sentences():
         ), f"{source_row_id}: exact eojeol license must apply inside the full sentence"
 
     unresolved = next(item for item in C08_CONTEXTS["cases"] if item["source_row_id"] == "dc_inside_2024")
-    result = transliterate_korean(unresolved["source_sentence"])
+    assert "유사성" in unresolved["source_sentence"]
+    result = transliterate_korean(unresolved["input"])
     assert not any(
         trace["rule_id"] == "R013" and trace["changed"]
         for trace in result["phonetics"]["rules"]

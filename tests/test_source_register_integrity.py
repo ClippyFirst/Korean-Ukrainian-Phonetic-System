@@ -273,7 +273,8 @@ def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
         source = rows[source_id]
         assert f"qna_seq={qna_id}" in source["url"]
         assert "dependent noun" in source["coverage"].lower()
-        assert "does not directly attest pronunciation" in source["limitations_or_next_action"].lower()
+        assert "pronunciation" in source["limitations_or_next_action"].lower()
+        assert "ipa" in source["limitations_or_next_action"].lower()
         assert "item-level" in source["license_status"].lower()
     pdf = rows["SRC-NIKL-EDU-2021-DEPENDENT-SI"]
     assert "not used as production evidence" in pdf["limitations_or_next_action"].lower()
