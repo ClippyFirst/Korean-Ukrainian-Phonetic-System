@@ -95,6 +95,19 @@ test('broad candidate benchmark distinguishes transcription convention from engi
   assert.equal(report.broad_candidate_exact_matches, 2);
 });
 
+test('NIKL-backed 실수 improves broad IPA agreement without rewriting strict gold conventions', () => {
+  const rows = [{
+    id: 'nikl-silsoo',
+    lang: 'ko',
+    split: 'test',
+    tokens: [{ canonical: '실수', phoneme: 'ɕʰiɭs͈u' }]
+  }];
+  const report = evaluateRows(rows, createBrowserKozakKimEngine());
+  assert.equal(report.scored_tokens, 1);
+  assert.equal(report.exact_matches, 0);
+  assert.equal(report.broad_candidate_exact_matches, 1);
+});
+
 test('Kozak Kim still withholds IPA for unlicensed Korean morphophonology', () => {
   const engine = createBrowserKozakKimEngine();
   const result = engine.convert('읽게');
