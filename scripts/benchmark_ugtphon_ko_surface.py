@@ -160,9 +160,11 @@ def evaluate_surface(
     _validate_rows(test_rows, "test")
     try:
         from scripts.benchmark_ugtphon_ko import edit_distance, normalize_ipa
-    except ModuleNotFoundError:
+    except ModuleNotFoundError as exc:
         # Direct "python scripts/..." execution puts scripts/ on sys.path,
         # not the repository root; support both CLI and package-test imports.
+        if exc.name not in {"scripts", "scripts.benchmark_ugtphon_ko"}:
+            raise
         from benchmark_ugtphon_ko import edit_distance, normalize_ipa
     from korean_ukrainian.pipeline import phoneticize_korean
 
