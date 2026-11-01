@@ -4439,3 +4439,15 @@ The three user-supplied repositories were inspected at their current main-branch
 
 These are engineering-method references, not Korean G2P engines or linguistic authorities. No external agent framework, skill runtime, package, or code was imported into the application. Their MIT licenses were not used to infer anything about the project's linguistic datasets or model weights.
 
+
+## Open-PR and branch reconciliation (2026-11-01)
+
+The current open PR inventory was checked against `main` at `7bbbd7e7ce888a9c995bb70959e17858263c07a8`:
+
+- **PR #415 — current Kozak Kim IPA/benchmark work:** retained as the active continuation. It is based on current main (0 commits behind) and GitHub reports it mergeable, but it remains draft because independent Korean IPA, Ukrainian target and rights gates are still open.
+- **PR #411 — contextual RR / dual IPA / Hanja:** left open and untouched. It contains 60 changed files, is 298 commits ahead / 1 behind current main and GitHub reports it unmergeable. The raw-surface benchmark module was reused from this workstream; the PR as a whole was not merged or blindly ported because it includes broader UI, Hanja, romanization and workflow changes outside this task.
+- **PR #414 — external Hikka/Shchegel smoke benchmark:** left open and untouched. It contains 5 files, is 17 commits ahead / 1 behind its old base and is mergeable; its external-service scope is separate from Kozak Kim phonology and no external API calls were required here.
+- **PR #371 — extended benchmark metrics/runtime:** left open and untouched. It is 117 commits ahead / 37 behind and unmergeable. Its multi-engine benchmark implementation and core tests already have counterparts in current main; the stale branch also includes separate external-smoke and documentation work. No blind merge or duplicate benchmark implementation was made.
+
+Relevant branch inspection found no reason to delete or force-update any user branch. Only the dedicated PR #415 branch was updated. No PR was merged or closed.
+
