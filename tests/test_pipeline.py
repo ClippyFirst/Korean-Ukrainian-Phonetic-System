@@ -384,6 +384,17 @@ def test_source_backed_complex_coda_lexicon_entry_resolves_its_own_pronunciation
     assert analysis["unresolved_contexts"] == []
 
 
+def test_provisional_lexical_target_without_reference_never_becomes_accepted():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    analysis = phoneticize_korean("한자")
+    assert analysis["ipa"]["ipa"] == "haːn.tɕ͈a"
+    result = transliterate_korean("한자")
+    assert result["ukrainian_orthography"] is None
+    assert result["target_status"] == "unavailable"
+    assert result["target_unavailable_reason"] == "provisional_lexical_target_requires_review"
+
+
 def test_nikl_sino_korean_rieul_fortition_has_direct_dictionary_attestation():
     from korean_ukrainian.pipeline import phoneticize_korean
 
