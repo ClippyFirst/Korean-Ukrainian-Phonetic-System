@@ -419,7 +419,7 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
     phonetic_result_type:superSoftCandidateAvailable?(trace.some(item=>item?.status==='super-soft-orthographic-fallback')?'mixed-surface-ipa-and-orthographic-fallback':'mixed-surface-ipa-and-heuristic'):'surface-ipa',
     analysis:renderStructured(units,analysis,' · '),
     trace,
-    variants:unresolvedWholeHangulToken?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status),
+    variants:unresolvedWholeHangulToken||targetMappingUnavailable?[]:genericVowelVariants(text,units,originalUnits,ipa,output,status),
     issues,
     status,
     target_status,

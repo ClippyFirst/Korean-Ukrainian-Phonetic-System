@@ -13,21 +13,22 @@ import { fileURLToPath } from 'node:url';
 import { createEngine } from '../src/app/engine.js';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const HANGUL_TOKEN = /^[\\uac00-\\ud7a3]+$/u;
-const IGNORABLE_DIACRITICS = new Set(['\\u031d', '\\u0339', '\\u031e', '\\u0320']);
-const TIE_BAR = '\\u0361';
+const HANGUL_TOKEN = /^[\uac00-\ud7a3]+$/u;
+const IGNORABLE_DIACRITICS = new Set(['\u031d', '\u0339', '\u031e', '\u0320']);
+const TIE_BAR = '\u0361';
 
 function readProjectFile(path) {
   return readFileSync(resolve(ROOT, path), 'utf8');
 }
 
 function mergeLexicalCsv(base, extra) {
-  const header = base.split(/\\r?\\n/u).find(line => line.trim());
+  const baseLines = base.split(/\r?\n/u);
+  const extraLines = extra.split(/\r?\n/u);
   return [
-    header,
-    ...base.split(/\\r?\\n/u).filter(line => line.trim() && !line.startsWith('input,')),
-    ...extra.split(/\\r?\\n/u).filter(line => line.trim() && !line.startsWith('input,'))
-  ].join('\\n');
+    baseLines[0],
+    ...baseLines.slice(1).filter(line => line.trim()),
+    ...extraLines.slice(1).filter(line => line.trim())
+  ].join('\n');
 }
 
 export function createBrowserKozakKimEngine() {
@@ -41,7 +42,7 @@ export function createBrowserKozakKimEngine() {
 
 export function normalizeIpa(value) {
   return [...String(value ?? '').normalize('NFD').replace(/g/gu, 'ɡ').replaceAll(TIE_BAR, '')]
-    .filter(char => !/\\s/u.test(char) && char !== '.' && !IGNORABLE_DIACRITICS.has(char))
+    .filter(char => !/\s/u.test(char) && char !== '.' && !IGNORABLE_DIACRITICS.has(char))
     .join('')
     .normalize('NFC');
 }
@@ -227,6 +228,7 @@ export function evaluateRows(rows, engine) {
       'This script imports src/app/engine.js and exercises the browser-side Kozak Kim engine, not the ordinary g2pK adapter or Python reference engine.',
       'IPA is scored whenever pronunciation_status is resolved, even if the Ukrainian target adapter reports unavailable; target status is reported separately.',
       'The browser IPA profile is marked unadjudicated-cross-runtime. A high benchmark score does not establish normative IPA correctness.',
+      'The UGTPHON test split has been inspected during project research; treat this run as diagnostic, not as an untouched independent holdout.',
       'Only resolved pronunciation records are scored. Partial, heuristic, unresolved, and engine-error records are counted separately.'
     ]
   };
@@ -259,19 +261,30 @@ function main() {
   const split = value('--split') ?? 'test';
   const outputPath = value('--output');
   if (!corpusPath) {
-    process.stderr.write('Usage: node scripts/benchmark_kozak_kim_browser.mjs --corpus ko-test.json [--split test] [--output report.json]\\n');
+    process.stderr.write('Usage: node scripts/benchmark_kozak_kim_browser.mjs --corpus ko-test.json [--split test] [--output report.json]\n');
     process.exitCode = 2;
     return;
   }
   try {
     const rows = loadCorpus(corpusPath, split);
     const report = evaluateRows(rows, createBrowserKozakKimEngine());
-    const rendered = JSON.stringify(report, null, 2) + '\\n';
-    if (outputPath) writeFileSync(outputPath, rendered, 'utf8');
-    process.stdout.write(rendered);
+    const rendered = JSON.stringify(report, null, 2) + '\n';
+    if (outputPath) {
+      writeFileSync(outputPath, rendered, 'utf8');
+      const summary = Object.fromEntries([
+        'engine', 'split', 'ipa_profile', 'ipa_profile_status', 'eligible_tokens',
+        'scored_tokens', 'coverage_rate', 'exact_matches', 'exact_match_rate',
+        'coverage_adjusted_exact_match_rate', 'character_error_rate',
+        'unresolved_tokens', 'partial_tokens', 'heuristic_tokens',
+        'target_unavailable_tokens', 'target_provisional_tokens', 'engine_errors'
+      ].map(key => [key, report[key]]));
+      process.stdout.write(JSON.stringify(summary, null, 2) + '\n');
+    } else {
+      process.stdout.write(rendered);
+    }
   } catch (error) {
     process.stderr.write('Kozak Kim browser benchmark failed: ' +
-      (error instanceof Error ? error.name + ': ' + error.message : String(error)) + '\\n');
+      (error instanceof Error ? error.name + ': ' + error.message : String(error)) + '\n');
     process.exitCode = 2;
   }
 }
