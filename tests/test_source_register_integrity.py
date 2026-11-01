@@ -266,6 +266,11 @@ def test_c08_context_fixture_restores_all_eight_source_rows_without_importing_ip
     assert mapping["status"] == "ALL_EIGHT_SOURCE_ROWS_MAPPED_WITH_FIVE_HIGH_CONFIDENCE_RECONSTRUCTIONS"
     assert len(mapping["reconstructed_ids"]) == 5
     assert "original one-off C08 cluster extraction table" in " ".join(mapping["limitations"])
+    registered = {row["source_id"] for row in load_source_register()}
+    for case in cases:
+        evidence_ids = set(case.get("morphology_evidence", [])) | set(case.get("rule_evidence", []))
+        evidence_ids |= set(case.get("pronunciation_evidence", {}).get("source_ids", []))
+        assert evidence_ids <= registered, case["source_row_id"]
     unresolved = next(case for case in cases if case["source_row_id"] == "dc_inside_2024")
     assert unresolved["status"] == "UNRESOLVED_EXACT_LEXICAL_PRONUNCIATION"
     supported = next(case for case in cases if case["source_row_id"] == "multilexnorm2026_1953")

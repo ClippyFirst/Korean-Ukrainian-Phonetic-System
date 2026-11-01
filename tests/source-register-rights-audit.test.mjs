@@ -75,6 +75,9 @@ test('real source register is structurally valid and unresolved rights remain vi
   assert.ok(unresolvedIds.has('SRC-NIKL-QNA-313481'));
   assert.ok(unresolvedIds.has('SRC-NIKL-QNA-333044'));
   assert.ok(unresolvedIds.has('SRC-NIKL-QNA-307960'));
+  assert.ok(unresolvedIds.has('SRC-NIKL-QNA-317798'));
+  assert.ok(unresolvedIds.has('SRC-NIKL-QNA-310899'));
+  assert.ok(unresolvedIds.has('SRC-NIKL-QNA-331601'));
   assert.ok(unresolvedIds.has('SRC-NIKL-EDU-2021-DEPENDENT-SI'));
 });
 
@@ -83,7 +86,7 @@ test('CLI reports structure by default and keeps strict rights acceptance blocke
   const normal = spawnSync(process.execPath, [script, '--json'], { cwd: process.cwd(), encoding: 'utf8' });
   assert.equal(normal.status, 0, normal.stderr);
   const report = JSON.parse(normal.stdout);
-  assert.equal(report.sourceRegisterRows, 156);
+  assert.equal(report.sourceRegisterRows, 155);
   assert.equal(report.structuralErrorCount, 0);
   assert.ok(report.itemLevelRightsNotClosed.length > 0);
 

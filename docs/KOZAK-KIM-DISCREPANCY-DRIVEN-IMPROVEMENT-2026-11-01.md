@@ -414,3 +414,6 @@ The pinned Kiwi/MeCab-Ko cross-check (run 41353171166; artifacts 13102576042, 13
 Do not resolve analyzer disagreement by majority vote. These outputs are diagnostic morphology hypotheses, not gold segmentation or IPA.
 
 A separate training-readiness audit (partial workflow artifact 13101748305) reports 644 unique lexical rows, zero additions explicitly marked as independently adjudicated IPA gold, and 24 frozen holdout cases without IPA gold; no holdout overlap was found. Supervised IPA training is therefore NOT READY. No training was run.
+
+
+**Evidence-source correction (2026-11-02):** the earlier provisional references to NIKL Q&A 335204 and 336313 were removed from the active source register because their direct pages could not be independently retrieved in this verification pass. The current active basis is NIKL Q&A 317798 (Rule §27 examples and pause caveat), 310899 (colloquial dependent noun 거), 331601 (알 수 없는[알쑤엄는]), plus the already registered 307960/327466/313481/333044 and the official Rule §27 page. Older historical mentions of 335204/336313 are superseded and are not current evidence claims.
