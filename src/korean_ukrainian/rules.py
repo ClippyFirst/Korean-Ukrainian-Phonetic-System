@@ -201,7 +201,7 @@ _NIKL_R012_WORD_LICENSES = {
     "몰상식": "몰>상", "불세출": "불>세",
     "실수": "실>수",  # NIKL Online Q&A qna_seq=330843 confirms all listed homonyms [실쑤].
     "출산": "출>산", "출산율": "출>산", "출산하다": "출>산",
-    "비출산": "출>산",  # Exact prefixed corpus form; 출산 is directly attested [출싼] by NIKL Basic Dictionary.
+    "비출산": "출>산",  # Exact complete-token license for the corpus form; do not generalize to arbitrary internal ㄹ+ㅅ substrings. 출산 itself is dictionary-attested [출싼].
 }
 
 # Exact examples explicitly listed in NIKL §28 (fortition in compounds
