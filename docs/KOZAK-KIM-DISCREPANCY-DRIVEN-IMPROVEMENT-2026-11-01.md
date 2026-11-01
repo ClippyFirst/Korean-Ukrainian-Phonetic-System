@@ -292,3 +292,16 @@ Seven separate blind pilot packets are stored in `research/ipa-review-packets/ko
 - **무고일수도있다는:** exact spacing, morpheme segmentation, and the relevant trigger remain unresolved; no exact-form source or trustworthy parse is established.
 
 **Decision:** no C08 production change. No productive `-성` suffix rule. No silent insertion of spaces or inferred morphology. Keep all eight residual cases unresolved until each exact occurrence has source context, a defensible morphological analysis, and source-backed pronunciation. Any later change must add positive, negative, boundary, and interaction controls before paired re-benchmarking.
+
+
+## C08 evidence update — exact morphology leads checked (2026-11-01)
+
+The official-source search found useful **morphological** evidence for two of the residual forms, but not direct lexical pronunciation attestations. The decision remains research-only; no engine code changed.
+
+| Corpus token | Candidate analysis | New official evidence | Decision |
+|---|---|---|---|
+| `무고일수도있다는` | `무고 + 이- + -(으)ㄹ + 수 + 도 + 있- + -다는`, i.e. likely `무고일 수도 있다는` | NIKL Q&A 327466 explicitly parses `둘 다일 수도` as noun + copula `이-` + adnominal `-(으)ㄹ` + dependent noun `수` + particle `도`. Standard Pronunciation Rule §27 directly includes `할 수는[할쑤는]`. | Strong conditional morphology lead: if the missing source utterance confirms this parse and prosodic connection, §27 predicts fortition at `수`. Still not a direct attestation of this exact corpus phrase or its pronunciation. |
+| `했을시` | likely `했- + -(으)ㄹ + 시`, i.e. `했을 시` with dependent noun `시(時)` | NIKL's 2021 public-language guideline (p. 106) explicitly uses `규칙을 어겼을 시에는` and identifies `시` as a dependent noun used after `-을`. Rule §27 supplies the conditional fortition rule. | Strong conditional morphology/spacing lead. The exact source sentence and prosodic connection remain missing; no direct pronunciation entry for `했을 시` found. |
+| `유사성` | Sino-Korean noun + suffix `-성` | NIKL Q&A 312649 asks about 의외성 and mentions 유사성[-썽] in the question, but its answer confirms only 의외성 `[의ː외썽/의ː웨썽]`. No exact official dictionary/Q&A attestation for 유사성 was found in this search. | Still unsupported as an exact lexical claim. Do not generalize a productive `-성` fortition rule from 의외성. |
+
+**Evidence boundary:** Rule §27 states that ㄱ/ㄷ/ㅂ/ㅅ/ㅈ after the adnominal `-(으)ㄹ` are fortis and gives `할 수는[할쑤는]`; the official explanation also notes that closeness between the two elements matters. This establishes the rule environment, not the missing source context for these two unspaced tokens. No positive production patch is justified until source-row utterances are restored and checked. Source records added: `SRC-NIKL-QNA-327466` and `SRC-NIKL-EDU-2021-DEPENDENT-SI`.

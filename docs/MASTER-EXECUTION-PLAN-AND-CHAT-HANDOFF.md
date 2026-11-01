@@ -4818,3 +4818,14 @@ Interpretation: this UGTPHON diagnostic supports a lower Kozak Kim CER point est
 The exact-head paired artifact `13097847614` has 26 normalized-IPA discordances across 21 distinct token forms. Against the best shared reference alternative, Kozak Kim is closer on 17 occurrences, original g2pK on 7, and they tie on 2. This is occurrence-level triage, not independent lexical adjudication; repeated forms include `없는` ×4, `없다` ×2, and `사건` ×2.
 
 Four Kozak Kim abstentions are `칡칡이`, `쫒아내면`, `많앗구나유유유`, and `무서웟어`. Three appear to contain nonstandard spelling/inflection, but source intent is not adjudicated; `칡칡이` lacks established lexical/structural analysis. Keep all four unresolved. Do not silently autocorrect orthography or adopt g2pK guesses as gold. A typo-normalization policy and exact lexical evidence are separate prerequisites.
+
+
+## C08 evidence update — 2026-11-01 (after source search)
+
+Two exact morphological leads are now registered, but no production rule was added:
+
+- `무고일수도있다는`: NIKL Q&A 327466 explicitly parses `둘 다일 수도` as noun + copula `이-` + adnominal `-(으)ㄹ` + dependent noun `수` + particle `도`. Standard Pronunciation Rule §27 gives `할 수는[할쑤는]`. If the missing corpus context confirms `무고일 수도 있다`, this is a strong rule-level basis for fortition, not an exact pronunciation attestation.
+- `했을시`: NIKL's 2021 public-language guideline p.106 gives `규칙을 어겼을 시에는` and identifies dependent noun `시` after `-을`; §27 supplies the conditional fortition rule. The exact corpus context and prosodic connection remain unavailable.
+- `유사성`: NIKL Q&A 312649 mentions it only in the question; the answer confirms only 의외성. No exact official lexical pronunciation found. No generalized `-성` rule.
+
+Source register additions: `SRC-NIKL-QNA-327466`, `SRC-NIKL-EDU-2021-DEPENDENT-SI`. Both retain item-level KOGL/reviewer-sharing rights as unverified. Exact source utterances are still needed before any engine change.
