@@ -7,8 +7,10 @@ on:
       - "scripts/benchmark_ugtphon_ko.py"
       - "scripts/benchmark_native_vs_g2pk_ko.py"
       - "scripts/benchmark_kozak_kim_browser.mjs"
+      - "scripts/benchmark_ugtphon_ko_surface.py"
       - "tests/test_ugtphon_benchmark.py"
       - "tests/kozak-kim-ipa-first-benchmark.test.mjs"
+      - "tests/test_ugtphon_surface_benchmark.py"
       - ".github/workflows/ugtphon-benchmark.yml"
       - "src/korean_ukrainian/**"
       - "src/app/engine_convert.js"
@@ -35,19 +37,31 @@ jobs:
         run: |
           set -euo pipefail
           curl --fail --location --retry 3 \
+            "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/train.json" \
+            --output "$RUNNER_TEMP/ko-train.json"
+          curl --fail --location --retry 3 \
             "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/test.json" \
             --output "$RUNNER_TEMP/ko-test.json"
           curl --fail --location --retry 3 \
             "https://raw.githubusercontent.com/naver-ai/UGTPHON/${UGT_PHON_COMMIT}/ko/LICENSE" \
             --output "$RUNNER_TEMP/ko-LICENSE"
           grep -q "Apache License, Version 2.0" "$RUNNER_TEMP/ko-LICENSE"
-          python - "$RUNNER_TEMP/ko-test.json" <<'PY'
-          import json, sys
+          python - "$RUNNER_TEMP/ko-train.json" "$RUNNER_TEMP/ko-test.json" <<'PY'
+          import hashlib, json, sys
           from pathlib import Path
-          rows = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-          assert len(rows) == 275, f"pinned corpus row-count drift: {len(rows)}"
-          assert all(row.get("lang") == "ko" and row.get("split") == "test" for row in rows)
-          print(f"Validated pinned UGTPHON Korean test split: {len(rows)} rows")
+          expected = {
+              "train": ("771ef17ceed8127980f0be5103674cfa53627e55", 1976),
+              "test": ("59380491d5a797308c475f7d0007dcf6c4be00af", 275),
+          }
+          for split, filename in zip(("train", "test"), sys.argv[1:]):
+              data = Path(filename).read_bytes()
+              actual = hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\\0" + data).hexdigest()
+              rows = json.loads(data.decode("utf-8"))
+              expected_sha, expected_rows = expected[split]
+              assert actual == expected_sha, f"{split} pinned Git blob drift: {actual}"
+              assert len(rows) == expected_rows, f"{split} row-count drift: {len(rows)}"
+              assert all(row.get("lang") == "ko" and row.get("split") == split for row in rows)
+              print(f"Validated pinned UGTPHON Korean {split} split: {len(rows)} rows; Git blob {actual}")
           PY
       - name: Run external IPA diagnostic
         run: |
@@ -91,6 +105,34 @@ jobs:
           name: kozak-kim-browser-ugtphon-diagnostic
           path: |
             ${{ runner.temp }}/kozak-kim-browser-test-report.json
+          if-no-files-found: warn
+      - name: Run train-only raw-surface UGTPHON retrieval diagnostic
+        run: |
+          set -euo pipefail
+          python scripts/benchmark_ugtphon_ko_surface.py \
+            --train-corpus "$RUNNER_TEMP/ko-train.json" \
+            --test-corpus "$RUNNER_TEMP/ko-test.json" \
+            --ipa-level broad \
+            --output "$RUNNER_TEMP/ugtphon-ko-raw-surface-report.json"
+          python - "$RUNNER_TEMP/ugtphon-ko-raw-surface-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          for key in ("attempted_tokens", "scored_tokens", "coverage_rate",
+                      "exact_matches", "exact_match_rate", "coverage_adjusted_exact_match_rate",
+                      "character_error_rate", "unresolved_tokens", "engine_errors"):
+              print(f"normalized.{key}: {r.get(key)}")
+          print("raw_baseline:", r["baseline"])
+          print("paired_subset:", r["paired_subset"])
+          print("normalization:", r["normalization"])
+          print("Research-only train-retrieval diagnostic; canonical G2P and Ukrainian output are unchanged.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ugtphon-korean-raw-surface-diagnostic
+          path: |
+            ${{ runner.temp }}/ugtphon-ko-raw-surface-report.json
           if-no-files-found: warn
       - name: Run paired native-vs-g2pk comparison
         run: |
