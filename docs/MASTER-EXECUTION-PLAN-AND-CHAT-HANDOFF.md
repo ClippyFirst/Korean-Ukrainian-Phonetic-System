@@ -4631,7 +4631,7 @@ The full occurrence ledger is `research/KOZAK-KIM-PAIRED-DISCREPANCY-LEDGER-2026
 |---|---|---|
 | Preserve g2pK as untouched baseline | DONE_VERIFIED | PR #416 changed paths are native Kozak Kim, tests, research ledgers and documentation; no `src/vendor/g2pk/` runtime edit |
 | §27 complete `-ㄹ게` ending boundary | DONE_VERIFIED | Before/after paired artifact 13093672281 → 13094763897; only `올게이` changed from false fortis to plain onset, with positive controls for `할게`, `할게요`, `다를게`, `안타까울게` |
-| §26 exact 출산-family licenses | DONE_VERIFIED (bounded exact forms) | NIKL Basic Dictionary directly lists `출산[출싼]`, `출산율[출싼뉼]`, `출산하다[출싼하다]`, `저출산[저ː출싼]`; exact forms plus derived corpus `비출산` licensed in browser and Python; negative lookalikes `비출고`/`저출고` withheld |
+| §26 exact 출산-family licenses | PARTIAL (split verification) | Original `출산`, `출산율`, `출산하다`, derived corpus `비출산`: DONE_VERIFIED by run 41336800458 and paired artifact 13095038704. Follow-up `저출산` positive and `저출고` negative controls are authored but await exact-head CI; not included in that benchmark. |
 | §26 source evidence and rule coverage | DONE_VERIFIED for bounded entries; PARTIAL for productive R012 | `research/SOURCE-REGISTER.csv` row `SRC-NIKL-DIC-CHULSAN`; `research/RULE-COVERAGE.csv` R012; official NIKL §26 Q&A explains the Sino-Korean constituent boundary and exceptions |
 | Paired browser comparison after §26 | DONE_VERIFIED diagnostic | Run [41336800424](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800424), artifact `13095038704`; same 2,699 shared occurrences; g2pK output unchanged |
 | Long-vowel, IPA-convention and remaining fortition clusters | TODO / BLOCKED by evidence | Do not strip length or collapse IPA differences; remaining cases require exact source/phonological-environment adjudication and independent IPA review |
@@ -4647,12 +4647,12 @@ The pre-§26 paired artifact `13094763897` and post-§26 artifact `13095038704` 
 - Paired exact: 1,442/2,699 (53.4272%) for both. Kozak Kim CER: 8.1271% → 8.1228%; g2pK CER: 8.2138%. Paired CER delta: −0.08669 → −0.09102 percentage points; post-change sentence-cluster 95% CI [−0.17881, −0.01647] pp (264 row clusters, 2,000 resamples, seed 20261101).
 - This is a narrow measured diagnostic gain, not proof of universal superiority or an independently adjudicated IPA accuracy result.
 
-The exact `저출산` rule control was added from the same NIKL dictionary entry after source inspection; it is not a test-set-derived exception and was not counted as a benchmark win. The rule license covers fortition only, not independent validation of the long-vowel target.
+The exact `저출산` rule control was added from the same NIKL dictionary entry after source inspection; it is not a test-set-derived exception and was not counted as a benchmark win. It was added after the completed run `41336800458`; exact-head system/benchmark runs `41339399132`, `41339399053`, `41339399044`, and register extraction `41339399017` were queued/in progress at handoff, so no verification pass is claimed for that follow-up yet. The rule license covers fortition only, not independent validation of the long-vowel target.
 
 ## Exact-head verification
 
-- Browser/system verification: [run 41336800458](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800458) — Python regression/data integrity PASS; browser regression/build/generated-page checks PASS. The official NIKL metadata-only inventory job was SKIPPED and is not counted as a pass.
-- Paired external benchmark: [run 41336800424](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800424) — pinned UGTPHON integrity, external IPA diagnostic, actual browser Kozak Kim diagnostic, paired browser comparison against original g2pK, raw-surface diagnostic and native-vs-g2pk comparison all completed successfully; artifacts uploaded.
+- Browser/system verification on pre-`저출산` code head `f7ad810`: [run 41336800458](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800458) — Python regression/data integrity PASS; browser regression/build/generated-page checks PASS. The official NIKL metadata-only inventory job was SKIPPED and is not counted as a pass.
+- Paired external benchmark on pre-`저출산` code head `f7ad810`: [run 41336800424](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41336800424) — pinned UGTPHON integrity, external IPA diagnostic, actual browser Kozak Kim diagnostic, paired browser comparison against original g2pK, raw-surface diagnostic and native-vs-g2pk comparison all completed successfully; artifacts uploaded.
 - Paired artifact SHA-256: `11cc4ce290ceb8f567d63ac51eaef042524d5d08efb0e3c3366bd70c6b02b99c` (artifact `13095038704`).
 - No local shell/test execution is claimed; verification was performed by the recorded GitHub Actions runs.
 
