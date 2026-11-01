@@ -321,3 +321,8 @@ The workstream is now stronger in reproducibility and reviewer handoff, but not 
 ## UGT model direction — evidence from EMNLP 2026
 
 For Korean, Jeon et al. report PERnc 47.5 Word→Word, 28.1 Sent→Word, 27.7 Sent→Word + retrieval without staged decoding, and 32.0 when staged decoding is added; full Sent→Sent also degrades canonical PERc. Future work should test sentence-context **canonical-word prediction** plus optional train-only retrieval, then call the existing Kozak Kim G2P. Do not generate whole-sentence IPA or enable staged decoding by default.
+
+
+## 2026-11-01 — Paired raw-surface metric hardening
+
+Paired exact-match rates accept any gold variant independently; paired CER uses only tokens where both paths select the same closest gold string. A multi-reference regression test covers this. Baseline aggregates omit normalization-hit counters. Status **PARTIAL** pending exact-head CI at code head `7bbbd7e7ce888a9c995bb70959e17858263c07a8`.
