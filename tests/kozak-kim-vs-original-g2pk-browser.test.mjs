@@ -133,3 +133,46 @@ test('source-backed ㄼ and ㄺ exceptions distinguish Kozak Kim from the untouc
     assert.notEqual(original, item.expected, item.input + ' raw g2pK must remain an independent baseline');
   }
 });
+
+test('source-adjudicated contrasts distinguish genuine rule gains from annotation and variant effects', () => {
+  const kozakKim = createBrowserKozakKimEngine();
+  const originalG2pK = createOriginalG2pKBrowserEngine();
+  const cases = [
+    // NIKL §18 quotes 없는[엄ː는]: the user-generated gold omits length,
+    // but the source-backed Kozak Kim reading must preserve it.
+    { input: '없는', kkIpa: 'ʌːm.nɯn', g2pkSurface: '엄는', g2pkIpa: 'ʌm.nɯn' },
+    // NIKL training material §24 gives 닮다[담따].
+    { input: '닮다', kkIpa: 'tam.t͈a', g2pkSurface: '담다', g2pkIpa: 'tam.da' },
+    // §24 applies to stem-final ㅁ before the ㄱ-initial ending -게.
+    { input: '넘게', kkIpa: 'nʌm.k͈e', g2pkSurface: '넘게', g2pkIpa: 'nʌm.ɡe' },
+    // NIKL records 인기[인끼], while its Q&A notes optional fortition:
+    // this is a supported KK variant, not proof that every [인기] is wrong.
+    { input: '인기', kkIpa: 'in.k͈i', g2pkSurface: '인기', g2pkIpa: 'in.ɡi' }
+  ];
+
+  for (const item of cases) {
+    const ours = kozakKim.convert(item.input, { morphologyMode: 'strict' });
+    const rawSurface = originalG2pK.convert(item.input, {
+      descriptive: false, verbose: false, groupVowels: false, toSyl: true
+    });
+    const baseline = kozakKim.convertSurface(rawSurface, { morphologyMode: 'strict' });
+    assert.equal(ours.ipa, item.kkIpa, item.input + ' Kozak Kim IPA');
+    assert.equal(rawSurface, item.g2pkSurface, item.input + ' untouched g2pK surface');
+    assert.equal(baseline.ipa, item.g2pkIpa, item.input + ' shared IPA rendering of g2pK surface');
+  }
+});
+
+test('source-backed NIKL usage survey keeps both readings of 못 잃어 valid', () => {
+  const kozakKim = createBrowserKozakKimEngine();
+  const originalG2pK = createOriginalG2pKBrowserEngine();
+  const acceptedSurfaces = new Set(['몬니러', '모시러']);
+  const ours = kozakKim.convert('못잃어', { morphologyMode: 'strict' });
+  const rawSurface = originalG2pK.convert('못잃어', {
+    descriptive: false, verbose: false, groupVowels: false, toSyl: true
+  });
+
+  assert.equal(ours.surfaceHangul, '몬니러');
+  assert.equal(rawSurface, '모시러');
+  assert.ok(acceptedSurfaces.has(ours.surfaceHangul));
+  assert.ok(acceptedSurfaces.has(rawSurface));
+});
