@@ -632,7 +632,10 @@ def _native_competitor_error_analysis(
         def summary(broad: bool) -> dict[str, Any]:
             candidate_view = [view(item, broad) for item in candidate_items]
             native_view = [view(item, broad) for item in native_items]
-            cm, nm = _metrics(candidate_view), _metrics(native_view)
+            if broad:
+                cm, nm = _broad_candidate_metrics(candidate_items), _broad_candidate_metrics(native_items)
+            else:
+                cm, nm = _metrics(candidate_view), _metrics(native_view)
             category_counts: Counter[str] = Counter()
             worse: list[dict[str, Any]] = []
             for candidate, native in zip(candidate_view, native_view):
@@ -660,7 +663,7 @@ def _native_competitor_error_analysis(
                     })
             return {
                 "paired_scored_occurrences": len(common_ids),
-                "native": cm if False else nm,
+                "native": nm,
                 "competitor": cm,
                 "competitor_minus_native_exact_rate": (
                     round(cm["exact_match_rate"] - nm["exact_match_rate"], 6)
