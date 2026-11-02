@@ -73,6 +73,7 @@ def test_section4_combines_up_to_three_optional_vowels():
         "kwe.mul.ɡy",
         "kø.mul.ɡwi",
         "kwe.mul.ɡwi",
+        "kø.mul.ɡɥi",
     ]
 
 def test_section4_keeps_sourced_lexical_length_and_spelling_in_variants():
