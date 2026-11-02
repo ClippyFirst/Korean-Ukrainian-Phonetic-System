@@ -201,7 +201,7 @@ export function evaluateRows(rows, engine) {
           }
           records.push({
             occurrence_id: occurrenceId,
-            id: row.id, token: canonical, status: pronunciationStatus,
+            id: row.id, token: canonical, gold: goldRaw, status: pronunciationStatus,
             surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
             target_status: result.target_status ?? null, predicted: null
           });
@@ -211,7 +211,7 @@ export function evaluateRows(rows, engine) {
           partialTokens += 1;
           records.push({
             occurrence_id: occurrenceId,
-            id: row.id, token: canonical, status: pronunciationStatus,
+            id: row.id, token: canonical, gold: goldRaw, status: pronunciationStatus,
             surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
             target_status: result.target_status ?? null, predicted: null
           });
@@ -221,7 +221,7 @@ export function evaluateRows(rows, engine) {
           heuristicTokens += 1;
           records.push({
             occurrence_id: occurrenceId,
-            id: row.id, token: canonical, status: pronunciationStatus,
+            id: row.id, token: canonical, gold: goldRaw, status: pronunciationStatus,
             surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
             target_status: result.target_status ?? null, predicted: null
           });
@@ -272,7 +272,7 @@ export function evaluateRows(rows, engine) {
           error: error instanceof Error ? error.name + ': ' + error.message : String(error)
         };
         if (errorExamples.length < 100) errorExamples.push(item);
-        records.push({ ...item, occurrence_id: occurrenceId, status: 'engine_error', predicted: null, surface_hangul: null });
+        records.push({ ...item, occurrence_id: occurrenceId, gold: goldRaw, status: 'engine_error', predicted: null, surface_hangul: null });
       }
     }
   }
