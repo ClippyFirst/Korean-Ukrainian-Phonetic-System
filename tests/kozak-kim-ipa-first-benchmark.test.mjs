@@ -405,3 +405,25 @@ test('shared broad profile exposes optional Seoul ㅎ allophones without changin
   assert.equal(hu.ipa, 'hu');
   assert.ok(hu.variants.some(variant => variant.ipa === 'xu'));
 });
+
+test('shared Broad profile exposes Lee 1999 intervocalic [ɸ] and [ɭ] as optional variants', () => {
+  const engine = createBrowserKozakKimEngine();
+  const h = engine.convert('아하', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(h.ipa, 'a.ha');
+  assert.ok(h.variants.some(variant => variant.ipa === 'a.ɸa'));
+
+  const liquid = engine.convert('나라', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(liquid.ipa, 'na.ɾa');
+  assert.ok(liquid.variants.some(variant => variant.ipa === 'na.ɭa'));
+});
+
+test('shared Broad profile exposes [ɕ] before all Lee 1999 /j/-initial diphthongs only as variants', () => {
+  const engine = createBrowserKozakKimEngine();
+  for (const [word, expected] of [['쇼', 'ɕjo'], ['슈', 'ɕju'], ['셔', 'ɕjʌ']]) {
+    const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
+    assert.ok(result.variants.some(variant => variant.ipa === expected), word);
+  }
+  const fortis = engine.convert('쑈', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.ok(!fortis.variants.some(variant => variant.ipa.includes('ɕ͈')));
+});
+
