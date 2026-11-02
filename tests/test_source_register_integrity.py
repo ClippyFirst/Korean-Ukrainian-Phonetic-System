@@ -396,3 +396,26 @@ def test_c10_seoul_korean_prosody_sources_do_not_license_word_level_stress():
     assert "does not have lexical prominence" in source["coverage"]
     assert "Accentual Phrase" in source["coverage"]
     assert "not lexical word stress" in source["limitations_or_next_action"]
+
+
+
+def test_c01_c07_and_c10_cluster_decisions_follow_the_reviewed_profile_evidence():
+    with C08_CLUSTER_REGISTER.with_name("KOZAK-KIM-MASS-MISMATCH-CLUSTERS-2026-11-01.csv").open(
+        "r", encoding="utf-8-sig", newline=""
+    ) as stream:
+        clusters = {row["cluster_id"]: row for row in csv.DictReader(stream)}
+    expected_sources = {
+        "C01": "SRC-PLSA-KOREAN-LIQUID-2021",
+        "C02": "SRC-CAMBRIDGE-KOREAN-IPA",
+        "C03": "SRC-KCI-AHN-2014-N-PALATALIZATION",
+        "C05": "SRC-KCI-YUN-2005-KOREAN-GLIDES",
+        "C06": "SRC-CAMBRIDGE-KOREAN-IPA",
+        "C07": "SRC-PLSA-KOREAN-LIQUID-2021",
+        "C10": "SRC-SAGE-BAEK-2022-KOREAN-PROSODY",
+    }
+    for cluster_id, source_id in expected_sources.items():
+        row = clusters[cluster_id]
+        assert source_id in row["production_decision"] + row["next_action"]
+        assert row["status"] not in {"DONE_VERIFIED", "PASS"}
+    assert "IPA_CONVENTION_REVIEW_REQUIRED" == clusters["C04"]["status"]
+    assert "do not mark English-style primary lexical stress" in clusters["C10"]["production_decision"]
