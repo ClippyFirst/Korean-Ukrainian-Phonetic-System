@@ -37,6 +37,7 @@ test('shared broad-candidate profile exposes feature loss and keeps sibilant pla
     h_place_voicing_and_manner: 1,
     h_voicing: 1,
     lateral_retroflexion: 1,
+    lexical_stress: 1,
     nasal_palatalization: 1,
     selected_segmental_quality_diacritics: 1
   });
