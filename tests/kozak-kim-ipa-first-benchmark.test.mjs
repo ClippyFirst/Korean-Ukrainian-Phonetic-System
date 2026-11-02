@@ -265,3 +265,25 @@ test('Kozak Kim still withholds IPA for unlicensed Korean morphophonology', () =
   assert.equal(result.ipa, '');
   assert.equal(result.ukrainian, '');
 });
+
+
+test('browser Broad IPA benchmark report exposes the numeric v2 contract consumed by runtime parity audit', () => {
+  const rows = [{
+    id: 'broad-version-contract',
+    lang: 'ko',
+    split: 'test',
+    tokens: [{ canonical: '가', phoneme: 'ka' }]
+  }];
+  const report = evaluateRows(rows, {
+    convert: () => ({
+      pronunciation_status: 'resolved',
+      ipa: 'ka',
+      surfaceHangul: '가',
+      target_status: 'model-selected',
+      ukrainian: 'ка'
+    })
+  });
+
+  assert.equal(report.broad_candidate_benchmark, 'broad-candidate-ipa-v2');
+  assert.equal(report.broad_candidate_benchmark_version, 2);
+});
