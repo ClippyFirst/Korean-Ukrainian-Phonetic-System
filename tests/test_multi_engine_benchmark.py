@@ -9,6 +9,7 @@ sys.path.insert(0, str(SCRIPTS))
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _broad_candidate_metrics,
+    BROAD_CANDIDATE_BENCHMARK_VERSION,
     _native_competitor_error_analysis,
     _build_per_engine_occurrences,
     _g2pk_surface_to_ipa,
@@ -103,6 +104,10 @@ def test_native_competitor_error_analysis_finds_losses_to_both_baselines():
     assert report["native_loses_to_both"]["broad_native_distance_worse_than_both"]["count"] == 2
     assert report["comparisons"]["g2pk_0_9_4"]["strict"]["paired_scored_occurrences"] == 3
     assert report["comparisons"]["g2p_ko_1_0_0"]["broad_candidate"]["paired_scored_occurrences"] == 3
+
+
+def test_broad_candidate_benchmark_version_is_explicit():
+    assert BROAD_CANDIDATE_BENCHMARK_VERSION == 2
 
 
 def test_broad_candidate_metrics_use_their_own_denominator_and_loss_counts():
