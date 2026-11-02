@@ -117,7 +117,7 @@ def _score_metrics(items: list[tuple[dict[str, Any], dict[str, Any]]], *, broad:
 def compare_reports(native_report: dict[str, Any], browser_report: dict[str, Any]) -> dict[str, Any]:
     if native_report.get("occurrence_ledger_schema_version") != 2:
         raise ValueError("native report must use occurrence-ledger schema v2")
-    if native_report.get("broad_candidate_benchmark_version") != 2 or browser_report.get("broad_candidate_benchmark_version") != 2:
+    if any(report.get("broad_candidate_benchmark") != "broad-candidate-ipa-v2" or report.get("broad_candidate_benchmark_version") != 2 for report in (native_report, browser_report)):
         raise ValueError("both reports must use Broad IPA benchmark v2")
     if browser_report.get("benchmark") != "UGTPHON Korean canonical-token diagnostic":
         raise ValueError("browser report is not the direct Kozak Kim canonical-token diagnostic")
