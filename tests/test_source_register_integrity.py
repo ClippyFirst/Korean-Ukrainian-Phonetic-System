@@ -428,3 +428,5 @@ def test_c01_c07_and_c10_cluster_decisions_follow_the_reviewed_profile_evidence(
         assert row["status"] not in {"DONE_VERIFIED", "PASS"}
     assert "IPA_CONVENTION_REVIEW_REQUIRED" == clusters["C04"]["status"]
     assert "do not mark English-style primary lexical stress" in clusters["C10"]["production_decision"]
+    assert clusters["C09"]["status"] == "SOURCE_LENGTH_IMPLEMENTED_7_FORMS_IPA_REVIEW_PENDING"
+    assert "all seven named forms" in clusters["C09"]["production_decision"]
