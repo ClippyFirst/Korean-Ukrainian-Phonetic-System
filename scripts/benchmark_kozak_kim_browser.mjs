@@ -307,15 +307,15 @@ export function evaluateRows(rows, engine) {
     broad_candidate_benchmark_version: 'broad-candidate-ipa-v2',
     broad_candidate_profile: BROAD_CANDIDATE_PROFILE,
     broad_candidate_prediction_feature_loss_counts: Object.fromEntries(
-      Object.entries(records.filter(item => item.broad_candidate_prediction_feature_loss_counts)
+      [...records.filter(item => item.broad_candidate_prediction_feature_loss_counts)
         .flatMap(item => Object.entries(item.broad_candidate_prediction_feature_loss_counts))
-        .reduce((counts, [key, value]) => counts.set(key, (counts.get(key) ?? 0) + value), new Map()))
+        .reduce((counts, [key, value]) => counts.set(key, (counts.get(key) ?? 0) + value), new Map()).entries()]
         .sort(([a], [b]) => a.localeCompare(b))
     ),
     broad_candidate_reference_feature_loss_counts: Object.fromEntries(
-      Object.entries(records.filter(item => item.broad_candidate_gold_feature_loss_counts)
+      [...records.filter(item => item.broad_candidate_gold_feature_loss_counts)
         .flatMap(item => Object.entries(item.broad_candidate_gold_feature_loss_counts))
-        .reduce((counts, [key, value]) => counts.set(key, (counts.get(key) ?? 0) + value), new Map()))
+        .reduce((counts, [key, value]) => counts.set(key, (counts.get(key) ?? 0) + value), new Map()).entries()]
         .sort(([a], [b]) => a.localeCompare(b))
     ),
     broad_candidate_scored_tokens: broadComparable.length,
