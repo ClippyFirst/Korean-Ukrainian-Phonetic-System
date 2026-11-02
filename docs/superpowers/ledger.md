@@ -18,18 +18,18 @@
 
 The old multi-engine artifact did not serialize broad metrics, so broad scores below were recomputed from its per-occurrence raw IPA predictions using the repository's versioned `korean-broad-candidate-sensitivity-v1` normalizer. These are historical diagnostic values, not the final v2 artifact and not adjudicated accuracy.
 
-| Engine | UGTPHON broad exact | UGTPHON broad CER | SIGMORPHON broad exact | SIGMORPHON broad CER |
+| Engine | UGTPHON broad exact (scored) | UGTPHON broad CER | SIGMORPHON broad exact (scored) | SIGMORPHON broad CER |
 |---|---:|---:|---:|---:|
-| Kozak Kim Native | 86.25% (2698/2703 scored) | 2.22% | 69.64% (695/998 scored) | 6.23% |
-| g2pK 0.9.4 | 85.72% | 2.37% | 68.67% | 6.46% |
-| g2p-ko 1.0.0 | 84.83% | 2.54% | 69.07% | 6.31% |
-| KoG2Padvanced | 70.29% | 4.92% | 59.76% | 8.78% |
-| phonemize | 70.33% | 7.73% | 58.26% | 9.31% |
-| KoG2P 2019 | 40.77% | 13.35% | 34.53% | 14.39% |
-| kokorog2p | 28.49% | 20.39% | 20.42% | 23.18% |
-| hama | 28.30% | 18.98% | 27.53% | 19.99% |
-| hangul_to_ipa | 25.75% | 19.61% | 17.22% | 23.48% |
-| espeak-ng | 12.06% | 29.92% | 6.71% | 36.33% |
+| Kozak Kim Native | 2327/2698 (86.25%; coverage 2698/2703) | 2.22% | 695/998 (69.64%; coverage 998/999) | 6.23% |
+| g2pK 0.9.4 | 2317/2703 (85.72%) | 2.37% | 686/999 (68.67%) | 6.46% |
+| g2p-ko 1.0.0 | 2293/2703 (84.83%) | 2.54% | 690/999 (69.07%) | 6.31% |
+| KoG2Padvanced | 1900/2703 (70.29%) | 4.92% | 597/999 (59.76%) | 8.78% |
+| phonemize | 1901/2703 (70.33%) | 7.73% | 582/999 (58.26%) | 9.31% |
+| KoG2P 2019 | 1102/2703 (40.77%) | 13.35% | 345/999 (34.53%) | 14.39% |
+| kokorog2p | 770/2703 (28.49%) | 20.39% | 204/999 (20.42%) | 23.18% |
+| hama | 765/2703 (28.30%) | 18.98% | 275/999 (27.53%) | 19.99% |
+| hangul_to_ipa | 696/2703 (25.75%) | 19.61% | 172/999 (17.22%) | 23.48% |
+| espeak-ng | 326/2703 (12.06%) | 29.92% | 67/999 (6.71%) | 36.33% |
 
 The Native target of 90%+ broad exact and <=2% broad CER is **not yet met** on either historical set. Coverage-adjusted exact is 86.09% UGTPHON and 69.57% SIGMORPHON for Native. Broad profile status remains research-only/unadjudicated; the profile removes documented distinctions and its feature-loss report must accompany every score.
 
