@@ -9,6 +9,7 @@ sys.path.insert(0, str(SCRIPTS))
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
     _broad_candidate_metrics,
+    _native_competitor_error_analysis,
     _build_per_engine_occurrences,
     _g2pk_surface_to_ipa,
     _g2p_ko_result_to_ipa,
@@ -74,6 +75,33 @@ def test_scoring_keeps_strict_and_broad_candidate_metrics_separate():
     assert scored["broad_candidate"]["exact"] is True
     assert scored["broad_candidate"]["predicted"] == "saːk͈ʌn"
     assert scored["broad_candidate"]["reference_length"] == len("saːk͈ʌn")
+
+
+def test_native_competitor_error_analysis_finds_losses_to_both_baselines():
+    def item(key, distance, broad_distance):
+        return {
+            "occurrence_id": key, "row_id": "row-" + key, "token": "가" + key,
+            "gold": "ka", "predicted": "prediction-" + key,
+            "distance": distance, "exact": distance == 0, "reference_length": 2,
+            "broad_candidate": {
+                "distance": broad_distance, "exact": broad_distance == 0,
+                "reference_length": 2,
+            },
+        }
+
+    scored = {
+        "clippyfirst_native": [item("1", 2, 2), item("2", 1, 1), item("3", 2, 2)],
+        "g2pk_0_9_4": [item("1", 0, 0), item("2", 2, 2), item("3", 0, 0)],
+        "g2p_ko_1_0_0": [item("1", 1, 0), item("2", 0, 0), item("3", 0, 0)],
+    }
+    report = _native_competitor_error_analysis(scored)
+    assert report["three_way_common_scored_occurrences"] == 3
+    assert report["native_loses_to_both"]["strict_native_not_exact_both_competitors_exact"]["count"] == 1
+    assert report["native_loses_to_both"]["strict_native_distance_worse_than_both"]["count"] == 2
+    assert report["native_loses_to_both"]["broad_native_not_exact_both_competitors_exact"]["count"] == 1
+    assert report["native_loses_to_both"]["broad_native_distance_worse_than_both"]["count"] == 2
+    assert report["comparisons"]["g2pk_0_9_4"]["strict"]["paired_scored_occurrences"] == 3
+    assert report["comparisons"]["g2p_ko_1_0_0"]["broad_candidate"]["paired_scored_occurrences"] == 3
 
 
 def test_broad_candidate_metrics_use_their_own_denominator_and_loss_counts():
