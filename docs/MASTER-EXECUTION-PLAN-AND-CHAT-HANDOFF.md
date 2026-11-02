@@ -4989,3 +4989,16 @@ The partial multi-engine workflow artifact 13101748305 (run 41353171180, attempt
 
 
 **Active NIKL source correction:** current active additions are Q&A 317798, 310899 and 331601. Provisional references 335204 and 336313 were removed from the active source register after their direct pages could not be independently retrieved in this pass; older mentions are superseded.
+
+## Final C01–C10 continuation status — 2026-11-02
+
+- Evidence/data/test head: `f5a3c7e92250ef72b874cc3a433b7fa941a95079`; latest documentation/PR head at this snapshot: `8c6f03029ddfac64be907e93381319a5f8084eb9`.
+- Production-code head remains `bc7b1474eecfe8df8006572abf0f07957f829647`; this continuation changed no production phonology rules. g2pK vendor/original files remain untouched.
+- Source register: 165 rows; rights audit expected 155 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses recorded (UGTPHON and PLSA CC BY 4.0), 1 not applicable. The unverified Q&A locator 302689 was removed; `없어[업ː써]` is tied to official Standard Pronunciation Rule §14.
+- C09: seven named lexical forms have source-backed length; preserve it. IPA vowel quality, exact sense matching and syllable boundaries remain open.
+- C01–C07: profile-level literature map added. Broad IPA remains default; narrow remains partial/research-only. Token-level independent IPA submissions remain blocked.
+- C10: no English-style lexical primary stress in broad Seoul IPA; AP/IP prosody remains a separate optional contract.
+- Added tests: exact C09 source attestations; C01–C07/C10 source-scope checks; cluster-decision integrity; broad-profile no-lexical-stress regression; source-register rights/structure counts.
+- Verification: an initial C09 TDD run `017c7cf6a745c795a318af143aff52392d00f565` failed as expected because source rows had not yet been added. A later run on test additions also exposed a missing source-record assumption; the invalid Q&A locator was removed and replaced with the official §14 source. The final exact-head verification run `41413254120` on `8c6f03029ddfac64be907e93381319a5f8084eb9` was still QUEUED at this snapshot (Python regression/data integrity and browser regression/build); do not report it as passed. NIKL metadata-only inventory remains SKIPPED.
+- Local pytest/npm remain unavailable because the earlier clone attempt could not resolve github.com; rely on exact-head GitHub Actions once it completes.
+- Readiness remains research prototype, not research-certified or release-ready. Outstanding: two independent C01–C07 submissions; C08 provenance/IPA/prosody and `유사성`; C09 IPA-level review; optional AP/IP prosody contract; item-level rights; Ukrainian target review.
