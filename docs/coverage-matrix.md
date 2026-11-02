@@ -57,3 +57,15 @@ Unavailable output uses `null`, not a successful-looking empty string. Empty IPA
 ## Final exact-head status — 2026-10-25
 
 The current branch head `ab9a0ad7ea96e73c7fc76a8a97a3bf5f9ff16d38` passed system verification, browser regression/build, Python regression/data integrity, clean wheel installation, Python 3.11/3.12/3.13, browser G2P, optional g2pK, paired native/g2pK, pinned UGTPHON, multi-engine benchmark, morphology adapter smoke and generated research artifacts. The official live NIKL inventory job was skipped, not passed. This matrix records software readiness only; the repository remains a partial research prototype pending independent linguistic/target gold and original holdout provenance.
+
+
+## Latest Kozak Kim continuation — 2026-11-02
+
+**Verified implementation/test head:** `fb5e1686bd86fd012d63cc92ad0261efe1a38113` (descendant of current `main` `7bbbd7e7ce888a9c995bb70959e17858263c07a8`). The current continuation is evidence/documentation-only; no new production phonology rule is accepted.
+
+- Exact-head system verification: [41420395798](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41420395798) PASS (Python/data integrity, browser 1,374/1,374, production build and generated-page checks). NIKL metadata-only inventory SKIPPED.
+- Paired browser diagnostic: 2,699 shared; exact match tied 53.4272%; Kozak CER 8.0794% vs original g2pK 8.2138%; 95% sentence-cluster CI for the CER delta [−0.2246, −0.0531] pp.
+- Paired native diagnostic: 2,698 shared; Kozak exact 53.0393% / CER 9.0744%; g2pK exact 53.1134% / CER 9.2304%; five native abstentions, zero engine errors.
+- Multi-engine diagnostic: UGTPHON native 2,698 scored (exact 53.0393%, CER 9.0744%, PER 9.5378%) vs g2pK 2,703 (exact 53.0892%, CER 9.2285%, PER 9.6472%); SIGMORPHON native 998 scored (exact 35.8717%, CER 14.6100%, PER 16.1721%) vs g2pK 999 (exact 35.3353%, CER 14.8222%, PER 16.3126%). Denominators differ. These datasets are diagnostic, not normative IPA gold; g2pK output uses the shared project IPA renderer.
+- Five UGTPHON native abstentions remain evidence-limited: `칡칡이`, `쫒아내면`, `많앗구나유유유`, `삶의`, `무서웟어`. `삶의` already has NIKL MCFAQ 5716 Hangul variants [살믜]/[살메] and provisional project IPA variants `sal.mi`/`sal.me`; independent IPA adjudication is still required. Do not promote the corpus IPA annotation to gold.
+- Readiness remains **research prototype**, not research-certified or release-ready. Independent Korean IPA review, C08/C09/C10 adjudication, NIKL item-level rights and Ukrainian target review remain open.
