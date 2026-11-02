@@ -61,7 +61,7 @@ def _reports():
         "dataset_rows": 3,
         "dataset_source": "pinned",
         "native_ipa_profile": {"ipa_profile": "native-broad-v1", "ipa_profile_version": 1},
-        "broad_candidate_profile": {"profile_id": "broad-v1", "profile_version": 1, "status": "research-only"},
+        "broad_candidate_profile": {"profile_id": "broad-v1", "version": 1, "status": "research-only"},
         "per_engine_occurrences": {"clippyfirst_native": native_records},
     }
     browser_report = {
@@ -72,7 +72,7 @@ def _reports():
         "ipa_profile": "browser-legacy-v1",
         "ipa_profile_version": 1,
         "ipa_profile_status": "unadjudicated",
-        "broad_candidate_profile": {"profile_id": "broad-v1", "profile_version": 1, "status": "research-only"},
+        "broad_candidate_profile": {"profile_id": "broad-v1", "version": 1, "status": "research-only"},
         "records": browser_records,
     }
     return native_report, browser_report
