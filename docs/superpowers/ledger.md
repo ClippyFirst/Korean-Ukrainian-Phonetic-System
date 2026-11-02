@@ -21,7 +21,7 @@
 
 | Task | Status | Evidence / acceptance criterion |
 |---|---|---|
-| Current default/main ancestry and PR stack | DONE_VERIFIED | Main `7bbbd7e7`; working base `fb5e1686) descends from main; PR #419 is stacked on #417. No merge/release performed. |
+| Current default/main ancestry and PR stack | DONE_VERIFIED | Main `7bbbd7e7`; working base `fb5e1686` descends from main; PR #419 is stacked on #417. No merge/release performed. |
 | Original g2pK baseline preservation | DONE_VERIFIED | No original/vendor g2pK files changed in this continuation; g2pK remains comparison-only. |
 | Exact-head software verification | DONE_VERIFIED | Final PR head `509f962c`: push system 41426031138 and PR system 41426042389 PASS; browser 1,374/1,374; extraction 41426042166 PASS. |
 | Paired/multi-engine evidence refresh | DONE_VERIFIED | Runs 41420395792, 41420395800 and 41420395805 plus artifacts 13129915994, 13130305158 and 13129993707 inspected; diagnostic limitations recorded. |
