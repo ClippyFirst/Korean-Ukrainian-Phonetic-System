@@ -29,6 +29,8 @@ def test_builds_two_separate_blind_annotation_templates_without_engine_outputs(t
         with (tmp_path / entry["file"]).open(encoding="utf-8-sig", newline="") as handle:
             rows = list(csv.DictReader(handle))
         assert len(rows) == 24
+        checked_in = ROOT / "research/ipa-holdout-review-packets" / entry["file"]
+        assert (tmp_path / entry["file"]).read_bytes() == checked_in.read_bytes()
         assert all(row["ipa_primary"] == "" and row["ipa_alternatives"] == "" for row in rows)
         assert all(row["ipa_convention_or_profile"] == "" for row in rows)
         assert all(row["reviewer_id"] == "" and row["reviewed_at"] == "" for row in rows)
