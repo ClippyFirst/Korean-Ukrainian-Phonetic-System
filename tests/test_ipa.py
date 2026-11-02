@@ -265,3 +265,12 @@ def test_narrow_h_has_context_conditioned_palatal_and_velar_allophones():
     assert phoneticize_korean("후", ipa_level="narrow")["ipa"]["ipa"] == "xu"
     assert phoneticize_korean("하", ipa_level="narrow")["ipa"]["ipa"] == "ha"
 
+
+
+def test_narrow_sibilant_profile_includes_yae_but_broad_keeps_it_optional():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    assert phoneticize_korean("섀", ipa_level="narrow")["ipa"]["ipa"] == "ɕʰjɛ"
+    broad = phoneticize_korean("섀")["ipa"]
+    assert broad["ipa"] == "sjɛ"
+    assert any(variant["ipa"] == "ɕjɛ" for variant in broad["variants"])
