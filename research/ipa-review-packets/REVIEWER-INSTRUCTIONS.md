@@ -16,7 +16,7 @@ You are receiving one pilot packet containing Korean input forms, source-row ide
 
 - Do **not** retrieve or consult the UGTPHON IPA/reference annotations, benchmark outputs, or prior system transcriptions during first-pass transcription.
 - Source IDs and public sentences may make a row identifiable. If you already know or locate the corpus reference, disclose this and mark the affected item `COMPROMISED_FOR_BLIND_REVIEW`; do not score it as an independent transcription.
-- You may consult official pronunciation standards and cite them, provided you do not use the corpus's own reference annotation or an engine output as the answer.
+- You may consult official pronunciation standards and cite them, provided you do not use the corpus's own reference annotation or a prior software output as the answer.
 - Do not seek or infer the identity of any software system, comparison baseline, or previous transcription.
 - Submit first-pass decisions independently. Do not discuss or reconcile differences with another reviewer until both first-pass submissions have been frozen.
 
