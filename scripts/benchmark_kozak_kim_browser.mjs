@@ -317,6 +317,7 @@ export function evaluateRows(rows, engine) {
 
   return {
     benchmark: 'UGTPHON Korean canonical-token diagnostic',
+    broad_candidate_benchmark_version: 2,
     engine: 'Kozak Kim browser deterministic JavaScript engine',
     purpose: 'direct browser-engine IPA diagnostic; not normative acceptance or Ukrainian orthography validation',
     morphology_mode: 'strict',
