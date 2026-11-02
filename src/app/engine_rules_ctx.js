@@ -184,7 +184,7 @@ export function applyContextualRules(units,sourceText='',{ morphologyMode = 'str
         a.coda=pair[0];
         if(pair[1]){b.onset=pair[1];b.__liaison=true;}
         rules.push('complex-coda-liaison');
-      }else if(a.coda!=='ㅎ'&&a.coda!=='ㅇ'){
+      }else if(a.coda&&a.coda!=='ㅎ'&&a.coda!=='ㅇ'){
         b.onset=a.coda;
         b.__liaison=true;
         a.coda='';
