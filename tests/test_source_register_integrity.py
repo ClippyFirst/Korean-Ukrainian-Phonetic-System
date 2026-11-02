@@ -372,6 +372,9 @@ def test_c09_length_discrepancies_have_exact_dictionary_surface_evidence():
         assert any(term in source["limitations_or_next_action"] for term in ("Hangul", "Korean bracket notation"))
         assert "IPA" in source["limitations_or_next_action"]
         assert "item-level" in source["license_status"].lower()
+    rule14 = rows["SRC-NIKL-PRON"]
+    assert "§14" in rule14["coverage"]
+    assert "없어[업ː써]" in rule14["coverage"]
     no_length = rows["SRC-KRDICT-ENG-89445"]
     assert "알다[알ː다]" in no_length["coverage"]
 
