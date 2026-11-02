@@ -64,7 +64,7 @@ def test_section4_generic_oe_and_wi_diphthong_variants():
 
     wi = phoneticize_korean("귀")["ipa"]
     assert wi["ipa"] == "ky"
-    assert [variant["ipa"] for variant in wi["variants"]] == ["kwi"]
+    assert [variant["ipa"] for variant in wi["variants"]] == ["kwi", "kɥi"]
 
 def test_section4_combines_up_to_three_optional_vowels():
     result = phoneticize_korean("괴물귀")["ipa"]
@@ -242,4 +242,26 @@ def test_narrow_h_voicing_after_sonorant_coda_is_scoped_and_not_target_approved(
     # The default broad and underlying phonemic representations remain stable.
     assert phoneticize_korean("감히", ipa_level="broad")["ipa"]["ipa"] == "kam.hi"
     assert phoneticize_korean("감히", ipa_level="phonemic")["ipa"]["ipa"] == "kam.hi"
+
+
+
+def test_broad_sibilant_palatalization_is_available_as_an_optional_ipa_variant():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    result = phoneticize_korean("시")["ipa"]
+    assert result["ipa"] == "si"
+    assert any(variant["ipa"] == "ɕi" for variant in result["variants"])
+
+    # The evidence used here concerns lenis /s/, not fortis /s͈/.
+    fortis = phoneticize_korean("씨")["ipa"]
+    assert fortis["ipa"] == "s͈i"
+    assert not any("ɕ͈" in variant["ipa"] for variant in fortis["variants"])
+
+
+def test_narrow_h_has_context_conditioned_palatal_and_velar_allophones():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    assert phoneticize_korean("히", ipa_level="narrow")["ipa"]["ipa"] == "çi"
+    assert phoneticize_korean("후", ipa_level="narrow")["ipa"]["ipa"] == "xu"
+    assert phoneticize_korean("하", ipa_level="narrow")["ipa"]["ipa"] == "ha"
 
