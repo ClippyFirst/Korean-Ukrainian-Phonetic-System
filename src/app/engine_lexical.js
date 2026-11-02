@@ -226,6 +226,29 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
     }
   }
 
+  // Lee's Seoul Korean IPA description also supports [ç] before /i,j/ and
+  // [x] before /u/. Keep broad [h] canonical and expose scoped variants.
+  if(includeBroadAllophones){
+    for(let i=0;i<originalUnits.length;i++){
+      const syllable=originalUnits[i];
+      const alternateInitial=['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ'].includes(syllable.vowel)
+        ?'ç':syllable.vowel==='ㅜ'?'x':'';
+      if(syllable.onset!=='ㅎ'||!alternateInitial||!ipa[i]?.startsWith('h'))continue;
+      const alternateIpa=ipa.slice();
+      alternateIpa[i]=alternateInitial+alternateIpa[i].slice(1);
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,
+        surface:text,
+        ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Optional Seoul Korean /h/ allophone ['+alternateInitial+'] in this vowel context; broad canonical [h] is preserved.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+  }
+
   // Lee's Seoul Korean IPA description and Kang (2010) support [ɕ] as a
   // lenis /s/ allophone before /i/ and selected /j/-initial diphthongs.
   // Keep the broad canonical /s/ and fortis /s͈/ unchanged.
