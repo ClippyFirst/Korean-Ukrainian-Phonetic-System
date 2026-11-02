@@ -260,7 +260,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
                 "Kang & Lee (2019), The Realizations of /h/ in Seoul and Gwangju Koreans: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART002495941",
                 "Eom (2014), Phonetic realizations of /h/ after a sonorant in Korean: https://doi.org/10.17959/sppm.2014.20.3.357",
             ],
-            "limitations":["partial profile, not a complete narrow transcription","models [ç], [x], [ɸ], and [ɭ] in the cited Seoul contexts, plus one optional [ɦ] variant after a same-word sonorant coda; does not model /h/ deletion, dialectal probabilities, lateral retroflexion, or prosody","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
+            "limitations":["partial profile, not a complete narrow transcription","models [ç], [x], [ɸ], and [ɭ] in the cited Seoul contexts, plus one optional [ɦ] variant after a same-word sonorant coda; does not model /h/ deletion, dialectal probabilities, the full lateral allophone inventory, or prosody","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
             "target_compatible":False,
         }
     return result
