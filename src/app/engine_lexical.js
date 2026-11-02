@@ -207,21 +207,23 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
     }));
   }
 
-  // Korean ㅟ has a documented [ɥi] realization in addition to [y]/[wi].
-  // Keep [y] canonical and expose the phonetic realization as an alternative.
-  for(const site of sites.filter(item=>item.vowel==='ㅟ')){
-    const alternateIpa=ipa.slice();
-    alternateIpa[site.index]=alternateIpa[site.index].replace(site.primary,'ɥi');
-    const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
-    variants.push({
-      source:text,
-      surface:text,
-      ukrainian:mapped.map(item=>item.text??'').join(''),
-      ipa:renderStructured(units,alternateIpa,'.'),
-      note:'Korean ㅟ may be realized as [ɥi] in phonetic descriptions; canonical [y] and [wi] are retained.',
-      status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
-      target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
-    });
+  if(includeBroadAllophones){
+    // Korean ㅟ has a documented [ɥi] realization in addition to [y]/[wi].
+    // Keep [y] canonical and expose the phonetic realization as an alternative.
+    for(const site of sites.filter(item=>item.vowel==='ㅟ')){
+      const alternateIpa=ipa.slice();
+      alternateIpa[site.index]=alternateIpa[site.index].replace(site.primary,'ɥi');
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,
+        surface:text,
+        ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Korean ㅟ may be realized as [ɥi] in phonetic descriptions; canonical [y] and [wi] are retained.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
   }
 
   // Lee's Seoul Korean IPA description and Kang (2010) support [ɕ] as a
