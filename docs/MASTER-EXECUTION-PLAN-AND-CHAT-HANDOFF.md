@@ -1,3 +1,37 @@
+# Latest handoff — 2026-11-02: runtime parity and Broad IPA v2
+
+This is the active continuation for the Kozak Kim-only work. Preserve the existing PR chain; PR #420 is a draft stacked on PR #419. The original g2pK implementation remains untouched and is a comparator, not IPA gold.
+
+## Current branch and scope
+
+- Branch: `research/kozak-kim-runtime-parity-broad-v2-2026-11-02`
+- PR: [#420](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/420)
+- Starting point: #419 head `88cae4bdeefce66ee8026bb1380f17271c85630d`
+- Latest known head at this handoff: `855f0fc5a37ea6ac8f70036321b578831da669df`
+- Only Kozak Kim code/data/tests are in scope. No g2pK/vendor files appear in the PR changed-file list.
+
+## What changed
+
+1. Shared IPA profile selection: Browser benchmark now explicitly selects `clippyfirst-korean-broad-v1`, matching Python Native. Browser's legacy contextual profile remains the default for existing callers. This is profile selection, not a new phonological rule.
+2. Runtime audit: `scripts/audit_kozak_kim_runtime_parity.py` pairs all records by stable occurrence ID and checks identity, full profile contract, surface Hangul, raw IPA, broad IPA, paired strict/broad scores, and feature loss. The browser report reconstructs complete surface Hangul from per-syllable trace rather than treating the changed-surface delta as a full surface.
+3. Broad IPA v2: the same `korean-broad-candidate-sensitivity-v1` profile is used for every comparison engine. Strict metrics remain separate. Reports expose per-engine coverage, exact match, CER, and feature/serialization losses.
+4. Error triage: historical paired raw predictions are analyzed against g2pK and g2p-ko at occurrence level. Apparent losses are checked against NIKL and C09 evidence before changing code.
+5. Independent gold: separate reviewer A/B templates are generated from the frozen 24-item manifest, with no engine outputs and no IPA gold.
+
+## Current interpretation
+
+The old 7.56 percentage-point Native/Browser broad-score difference was not evidence that Browser was a better engine. The two runtimes used different IPA profiles. In the old paired sample, 231/232 raw IPA differences were `s` vs `ɕ`; the remaining `올게이` discrepancy came from an R013 boundary false positive now covered by a regression test. The current benchmark must use the same broad profile and re-measure parity before claiming the 99.9% target.
+
+Historical multi-engine Broad exact/CER recomputation is in `docs/superpowers/ledger.md`; it is diagnostic and not the final v2 CI artifact. Native scored 86.25% / 2.22% CER on UGTPHON and 69.64% / 6.23% on SIGMORPHON. The 90%+ exact / <=2% CER targets remain unmet.
+
+## Immediate next actions
+
+- Read the exact-head run of `Multi-engine Korean IPA diagnostic benchmark`; verify the browser profile contract matches Native and inspect surface/IPA parity.
+- If parity is below 99.9%, classify every residual by occurrence and fix only proven implementation divergence; do not collapse IPA distinctions.
+- Review broad feature-loss counts and Native-vs-g2pK/g2p-ko loss lists, especially cases where both baselines beat Native.
+- Send the two reviewer CSVs to independent Korean phonetics/phonology reviewers. Keep the holdout sealed; adjudicate only after both submissions are frozen.
+- Update this handoff and the master ledger with the final commit SHA and exact commands/results after all workflows finish.
+
 ## Latest verified continuation — native abstention audit and benchmark revalidation — 2026-11-02
 
 **Scope:** Kozak Kim only. Original/vendor g2pK remains unchanged and comparison-only.
