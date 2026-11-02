@@ -465,6 +465,7 @@ def test_nikl_section_24_exact_form_licenses_cover_dalmda_and_neomge_without_gen
     items, traces = apply_ordered_rules(parse_syllables("닮기"), ["R010"])
     assert items[1].onset == "ㄱ"
     assert not traces[0].changed
+    assert traces[0].status == "conditional-disabled"
 
 
 
@@ -493,7 +494,6 @@ def test_nikl_qna_330963_l_ge_license_requires_complete_attached_ending_boundary
             and trace.get("license_context", "").startswith("R013:attested_l_ge_ending:")
             for trace in result["rules"]
         ), word
-    assert traces[0].status == "conditional-disabled"
 
 
 def test_section_27_adnominal_l_fortition_can_cross_a_word_boundary_only_with_phrase_evidence():
