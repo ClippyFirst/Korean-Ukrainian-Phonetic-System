@@ -55,6 +55,7 @@ def _reports():
     ]
     native_report = {
         "occurrence_ledger_schema_version": 2,
+        "broad_candidate_benchmark_version": 2,
         "benchmark": "UGTPHON Korean test split",
         "dataset_rows": 3,
         "dataset_source": "pinned",
@@ -64,6 +65,7 @@ def _reports():
     }
     browser_report = {
         "benchmark": "UGTPHON Korean canonical-token diagnostic",
+        "broad_candidate_benchmark_version": 2,
         "eligible_tokens": 3,
         "ipa_profile": "browser-legacy-v1",
         "ipa_profile_version": 1,
