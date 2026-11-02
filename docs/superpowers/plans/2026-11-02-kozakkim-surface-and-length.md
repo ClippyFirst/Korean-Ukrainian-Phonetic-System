@@ -71,15 +71,15 @@
 ### Task 3: Restore NIKL-attested length in 대한민국
 
 **Files:**
-- Modify: `data/korean/lexical_pronunciations.csv` — existing exact 대한민국 row
+- Modify: `data/korean/lexical_additions_2026-10-15.csv` — source-backed exact-form overlay
 - Test: `tests/test_rules.py`
-- Test: `tests/kozak-kim-ipa-first-benchmark.test.mjs`
+- Test: `tests/lexical-csv-integrity-ipa-first.test.mjs` — existing C09 NIKL length audit
 
 **Evidence:** Registered source S017, NIKL Korean Basic Dictionary entry 70041, explicitly gives `대한민국[대ː한민국]`. The source supplies Hangul pronunciation and length, not IPA. The current project entry incorrectly omits length.
 
 - [ ] Add Native and Browser regression tests requiring the first syllable's length to be preserved.
 - [ ] Run focused tests and inspect RED.
-- [ ] Update only the existing exact lexical row to project-derived `teː|han|min|ɡuk̚`, preserving the existing target status and making the source/provenance note explicit: NIKL attests Hangul length; IPA vowel quality and Ukrainian target remain project-level/unreviewed.
+- [ ] Add one source-backed dated overlay for the existing baseline-control row, with project-derived `teː|han|min|ɡuk̚`, `variant-aware-research`, and provisional target status. Keep the base control row and the canonical vowel mapping unchanged. Make the provenance explicit: NIKL attests Hangul length; it does not supply IPA. IPA vowel quality and Ukrainian target remain project-level/unreviewed.
 - [ ] Re-run focused Python and Node tests, lexical CSV integrity, source-register checks, and paired benchmark.
 
 ### Task 4: Verify, reconcile evidence, and update the canonical handoff
