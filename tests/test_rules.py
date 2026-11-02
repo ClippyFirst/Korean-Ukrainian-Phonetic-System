@@ -465,6 +465,34 @@ def test_nikl_section_24_exact_form_licenses_cover_dalmda_and_neomge_without_gen
     items, traces = apply_ordered_rules(parse_syllables("닮기"), ["R010"])
     assert items[1].onset == "ㄱ"
     assert not traces[0].changed
+
+
+
+def test_nikl_qna_330963_l_ge_license_requires_complete_attached_ending_boundary():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    # NIKL Q&A 330963 licenses the complete attached ending -ㄹ게, including
+    # its particle-요 form; it does not license an internal ㄹ+게 substring.
+    for word, expected_surface in [("할게", "할께"), ("올게", "올께"), ("할게요", "할께요"), ("올게요", "올께요")]:
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == expected_surface, word
+        assert any(
+            trace.get("rule_id") == "R013"
+            and trace.get("changed")
+            and trace.get("license_context") == f"R013:attested_l_ge_ending:{word}:{word[:1]}>{word[1:2]}"
+            for trace in result["rules"]
+        ), word
+
+    # The UGTPHON token 올게이 is a boundary negative control, not normative IPA gold.
+    for word in ["올게이", "할게이"]:
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == word, word
+        assert not any(
+            trace.get("rule_id") == "R013"
+            and trace.get("changed")
+            and trace.get("license_context", "").startswith("R013:attested_l_ge_ending:")
+            for trace in result["rules"]
+        ), word
     assert traces[0].status == "conditional-disabled"
 
 
