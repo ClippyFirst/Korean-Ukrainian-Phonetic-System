@@ -185,7 +185,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     if level=="narrow":
         result["transcription_profile"]={
             "name":"korean-narrow-contextual-allophones-v4",
-            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅖ, ㅑ","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed","after a same-word sonorant coda, /h/ is rendered [ɦ] as one narrow-profile variant; no deletion is inferred"],
+            "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅒ, ㅖ, ㅑ","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ is rendered [ɦ] as one narrow-profile variant; no deletion is inferred","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
             "sources":[
                 "Lee, Hyun Bok (1999), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/: https://doi.org/10.1017/S0025100300004758",
                 "Cho, Jun & Ladefoged (2002), via High-toned [il] in Korean: https://www.sciencedirect.com/science/article/pii/S0095447015000339",
