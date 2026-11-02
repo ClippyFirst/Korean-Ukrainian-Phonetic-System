@@ -1,3 +1,14 @@
+## 2026-11-02 continuation — Kozak Kim runtime, benchmark and holdout tests
+
+- **R013 exact-boundary regression:** tests/test_rules.py covers licensed 할게, 올게, 할게요, 올게요 and negative controls 올게이, 할게이. The latter prevent substring matching from applying the ending rule inside a longer lexical token. This is a boundary correction to the existing R013 license, not a new phonological rule.
+- **Shared Browser IPA profile:** tests/kozak-kim-ipa-first-benchmark.test.mjs verifies that explicit clippyfirst-korean-broad-v1 emits the shared broad representation, that the default remains browser-legacy-contextual-v1, and that unsupported profiles / incompatible morphology modes fail closed.
+- **Complete browser surface reconstruction:** the same browser test suite checks partial changed-syllable deltas and unchanged lexical trace records so the runtime audit compares complete Hangul surface strings, not the legacy delta field.
+- **Cross-runtime audit:** tests/test_kozak_kim_runtime_parity.py checks occurrence identity/order, complete dataset counts, profile-contract mismatch, positive same-profile parity, raw/broad IPA parity and surface parity.
+- **Broad IPA benchmark v2:** tests/test_multi_engine_benchmark.py pins benchmark version 2, shared normalization profile, coverage-adjusted exact match and per-engine feature-loss accounting.
+- **Independent reviewer packets:** tests/test_ipa_holdout_review_packets.py verifies two separate 24-case blank sheets, byte-for-byte generated artifact parity, no engine outputs/IPA gold, and refusal to overwrite existing annotations.
+
+No original g2pK/vendor files are modified. No new general phonological rule is added in this continuation.
+
 # Master test-case and rule-evidence register — 2026-10-26
 
 ## Latest engine-rule implementation — R016 exact-form expansion (2026-10-27)
