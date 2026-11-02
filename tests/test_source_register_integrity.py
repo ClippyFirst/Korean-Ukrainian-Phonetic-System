@@ -380,6 +380,16 @@ def test_c09_length_discrepancies_have_exact_dictionary_surface_evidence():
 
 
 
+
+def test_c09_dictionary_length_is_not_a_guarantee_of_contemporary_surface_duration():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-KCI-KIM-PARK-2019-VOWEL-LENGTH"]
+    assert "only a limited number of subjects" in source["coverage"]
+    assert "1%" in source["coverage"]
+    assert "not a guarantee" in source["contribution_expected"]
+    assert "does not overturn official dictionary entries" in source["limitations_or_next_action"]
+
+
 def test_c01_c07_allophone_profile_research_is_registered_with_bounded_scope():
     rows = {row["source_id"]: row for row in load_source_register()}
     expected = {

@@ -5002,3 +5002,12 @@ The partial multi-engine workflow artifact 13101748305 (run 41353171180, attempt
 - Verification: an initial C09 TDD run `017c7cf6a745c795a318af143aff52392d00f565` failed as expected because source rows had not yet been added. A later run on test additions also exposed a missing source-record assumption; the invalid Q&A locator was removed and replaced with the official §14 source. The exact-head verification run `41414231979` on `d5008af0901628c36b43d627ea52c52a22c265c0` (Python regression/data integrity and browser regression/build) was still QUEUED; do not treat it as passed; do not report it as passed. NIKL metadata-only inventory remains SKIPPED.
 - Local pytest/npm remain unavailable because the earlier clone attempt could not resolve github.com; rely on exact-head GitHub Actions once it completes.
 - Readiness remains research prototype, not research-certified or release-ready. Outstanding: two independent C01–C07 submissions; C08 provenance/IPA/prosody and `유사성`; C09 IPA-level review; optional AP/IP prosody contract; item-level rights; Ukrainian target review.
+
+
+## Follow-up — 2026-11-02 (C09 surface-realization caveat and CI repair)
+
+- Added `SRC-KCI-KIM-PARK-2019-VOWEL-LENGTH` to the canonical source register. The paper's abstract reports substantial weakening of the vowel-length contrast among Seoul/Gyeonggi speakers. This is a contextual caveat only: it does not override official dictionary length or justify automatic short variants for individual words.
+- C09 remains seven dictionary-backed lexical forms. Kozak Kim retains length in the standard lexical profile; project-derived IPA and Ukrainian targets remain provisional pending IPA/target review.
+- Fixed four stale/inconsistent regression expectations: quoted CSV row matching for Q&A 321743, the live `괴성` dictionary locator wording, explicit C06 Cambridge source ID, and the source-register row count. The exact-head CI run `41418730591` passed Python/data integrity and browser tests/build on head `99276c82d389cc27fc228a5a3fcbcc68da096353`; NIKL metadata-only inventory was skipped.
+- No production phonology rule changed. Original/vendor g2pK remains unchanged and comparison-only.
+- New source register count: 166 rows; rights triage: 156 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses, 1 not applicable. This is not a rights clearance.
