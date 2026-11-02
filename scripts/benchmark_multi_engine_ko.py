@@ -1610,7 +1610,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     return {
         "benchmark": args.benchmark_name,
         "benchmark_version": "multi-engine-ipa-diagnostic-v6",
-        "broad_candidate_benchmark_version": "broad-candidate-ipa-v2",
+        "broad_candidate_benchmark": "broad-candidate-ipa-v2",
         "dataset_source": args.dataset_source,
         "native_abstention_audit": {
             "occurrence_count": len(native_abstention_audit),
@@ -1637,6 +1637,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             {
                 "ipa_profile": value.get("ipa_profile"),
                 "ipa_profile_version": value.get("ipa_profile_version"),
+                "ipa_profile_level": value.get("ipa_profile_level"),
                 "ipa_profile_status": value.get("ipa_profile_status"),
             }
             for value in native_cache.values() if value.get("ipa_profile")
