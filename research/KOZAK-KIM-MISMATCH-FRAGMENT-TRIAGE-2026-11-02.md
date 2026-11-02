@@ -81,3 +81,52 @@ The optional variants are exposed in both Native and Browser shared-Broad result
 ### Correction to the initial C04 label
 
 The earlier fragment heuristic called 45 operations across 37 occurrences an aspiration-notation mismatch because the grapheme aligner displayed fragments like h → kʰ. That label was misleading. The full IPA strings show the actual source forms are kx or kç, compared with Kozak Kim's kʰ. The exporter now identifies this as C12_aspirated_velar_coarticulation_profile and suppresses the false C04 label. It remains evidence-limited; no production kʰ rule has been changed.
+
+## Follow-up algorithm adaptations — 2026-11-02
+
+This continuation implements source-scoped variants in Kozak Kim itself. It does not rewrite canonical Broad IPA to fit the UGTPHON annotations. Original g2pK source/vendor files remain untouched.
+
+### Cluster-ordered disposition
+
+| Priority | Cluster | Engine change | Status and boundary |
+|---|---|---|---|
+| 1 | C11 — `ɕ → s`, 229 operations / 227 occurrences | Expanded optional lenis /s/ → [ɕ] candidates to all /j/-initial nuclei described by Lee (1999), including ㅕ/ㅛ/ㅠ. | PARTIAL: canonical /s/ remains; ㅆ is excluded; optional variants are not accuracy gains and are not scored as canonical predictions. |
+| 2 | C05 — ㅟ [y] vs [ɥi]/[wi], 72 combined operations | Retained existing [wi] and added [ɥi] as a separately inspectable Broad candidate. | PARTIAL: canonical [y] remains; speaker/context distribution needs independent review. |
+| 3 | C12 — `kx/kç → kʰ`, 45 operations / 37 occurrences | No phonological rewrite. The mismatch is velar coarticulation/release, not a simple ㅎ aspiration spelling difference. | BLOCKED: no sufficiently specific authoritative source and no independently adjudicated item-level IPA. Do not map `kx/kç` to `kʰ` in the normalizer. |
+| 4 | C06 — unreleased coda, 34 operations | No change; [p̚], [t̚], [k̚] remain represented and Broad normalization preserves the unreleased marker. | DONE_VERIFIED as a preservation decision; corpus omissions alone do not license stripping the feature. |
+| 5 | C01/C07 — liquid realizations, 12 operations | Added Seoul-scoped [ɭ] for intervocalic /l/ and before /i,j/ in Narrow v5; exposed the same as optional Broad variants. | PARTIAL: no blanket ɾ/l/ substitution; coda and geminate behavior remain separately conditioned. |
+| 6 | C09 — lexical length, 8 operations | No new global rule; existing source-attested length overrides remain. | DONE_VERIFIED as a preservation decision; annotation omissions do not license deleting lexical length. |
+| Additional unmapped | C02 /h/ realization and other fragments | Added source-scoped [ɸ] for same-word intervocalic ㅎ in Narrow v5 and as an optional Broad variant. Existing [ç]/[x] and post-sonorant [ɦ] contexts remain separately scoped. | PARTIAL: S018 describes [ɸ] between voiced sounds; this does not authorize a general /h/ rewrite or ㅎ deletion. |
+
+### Source and runtime contract
+
+- S018 (Lee 1999, Seoul Korean, Illustrations of the IPA) supports [ɕ] for /s/ before /i/ or a /j/-initial diphthong, [ç] before /i,j/, [x] before /u/, [ɸ] between voiced sounds, and [ɭ] intervocalically / before /i,j/. The implementation keeps the newly added broad readings optional and keeps narrow-profile details out of the Ukrainian target path.
+- S019 remains a narrower acoustic source for selected sibilant contexts; it is not used to force a universal /s/→[ɕ] rewrite.
+- S020 continues to support [ɥi] as one possible ㅟ realization; it does not replace [y] or [wi].
+- The narrow profile is now `clippyfirst-korean-narrow-contextual-allophones-v5`, version 5, partial research-only and not target-compatible.
+- Python and Browser Broad candidate generation were updated together. No original g2pK/vendor source was changed.
+
+### Exact-head verification boundary
+
+The last completed exact-head workflow set belongs to prior code head `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`, before this follow-up code change. It passed Python/data integrity, Browser tests/build, Browser G2P, external UGTPHON, paired Native/g2pK, morphology consensus, test-case extraction, and the ten-engine comparison. The new v5 code and tests have not yet obtained a workflow result at their current head; do not transfer the prior PASS statuses to the new code.
+
+The local environment could not resolve `github.com`, so a clean local checkout/test run was unavailable. GitHub connector commits also returned no exact-head workflow runs or commit status checks at the time of this update. Fresh exact-head CI is therefore BLOCKED pending a workflow run on the current branch head.
+
+### Diagnostic baseline — prior exact-head artifact only
+
+The completed multi-engine artifact on the previous head scored 2,698 Native occurrences and 2,703 g2pK occurrences. On the 2,698 paired scored occurrences:
+
+- Strict exact: Native 1,431/2,698 (53.0393%); original g2pK 1,433/2,698 (53.1134%).
+- Strict CER: Native 2,090/23,065 (9.0613%); original g2pK 2,129/23,065 (9.2304%).
+- Broad candidate exact: Native 2,328/2,698 (86.2861%); original g2pK 2,312/2,698 (85.6931%).
+- Broad candidate CER: Native 489/22,189 (2.2038%); original g2pK 527/22,189 (2.3751%).
+
+These are paired corpus-relative diagnostics, not normative IPA accuracy. Native has lower CER in both views; g2pK retains a two-occurrence strict exact-match edge. The new optional variants and v5 narrow-profile changes have not been benchmarked on a fresh exact head, so no improvement is claimed.
+
+### Next acceptance actions
+
+1. Obtain fresh exact-head Python and Browser test/build results for the current branch head.
+2. Run the paired Native/g2pK and multi-engine diagnostic on that exact head; compare strict and Broad metrics separately and inspect whether optional variant coverage is useful without changing canonical output.
+3. Keep C12 and the 239 unmapped mismatch occurrences evidence-limited until source/context adjudication exists.
+4. Obtain two independent IPA reviewers, complete item-level NIKL rights review, and independent Ukrainian target-layer review before release claims.
+
