@@ -31,13 +31,18 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="
         if index>0 and items[index-1].coda=="ㄹ": return ["l"]
         return ["ɾ"]
     if c=="ㅎ":
-        # Narrow-profile candidate: /h/ after a same-word sonorant coda can
-        # surface as voiced [ɦ]. This is one documented variant, not a
-        # universal or obligatory realization; broad and phonemic IPA stay [h].
-        if not phonemic and level=="narrow" and index>0:
-            previous=items[index-1]
-            if previous.boundary_after!="word" and previous.coda in {"ㄴ","ㄹ","ㅁ","ㅇ"}:
-                return ["ɦ"]
+        if not phonemic and level=="narrow":
+            # Source-scoped Seoul allophones: [ç] before /i,j/ and [x] before /u/.
+            # The optional post-sonorant [ɦ] candidate has priority in that
+            # environment; none of these narrow details enter broad/phonemic IPA.
+            if index>0:
+                previous=items[index-1]
+                if previous.boundary_after!="word" and previous.coda in {"ㄴ","ㄹ","ㅁ","ㅇ"}:
+                    return ["ɦ"]
+            if s.nucleus in {"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}:
+                return ["ç"]
+            if s.nucleus=="ㅜ":
+                return ["x"]
         return ["h"]
     if c in LENIS:
         if phonemic: return [CONSONANT_PHONEMES[c].strip("/")]
@@ -101,28 +106,55 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
             continue
         if primary in rendered[i]:
             sites.append((i,syllable.nucleus,primary,alternate,section))
-    if not sites:
-        return []
-    # Enumerate all readings for up to three optional vowels. Longer input
-    # receives each local alternative independently to prevent exponential growth.
-    masks=range(1,(1<<len(sites))) if len(sites)<=3 else (1<<i for i in range(len(sites)))
     variants=[]
-    for mask in masks:
-        changed=[site for i,site in enumerate(sites) if mask&(1<<i)]
-        alternate=list(rendered)
-        for index,vowel,primary,form,_ in changed:
-            alternate[index]=alternate[index].replace(primary,form,1)
-        labels=[f"{vowel} [{form}]" for _,vowel,_,form,_ in changed]
-        sections="/".join(dict.fromkeys(section for *_,section in changed))
-        note=(f"NIKL {sections} permits this alternate; Korean spelling is unchanged."
-              if len(sites)<=3 else
-              f"NIKL {sections} permits this local alternate; other optional vowels keep the primary reading.")
-        variants.append({
-            "syllable_indices":[index for index,_,_,_,_ in changed],
-            "ipa":render_syllable_sequence(items,alternate),
-            "note":note,
-            "vowels":labels,
-        })
+    if sites:
+        # Enumerate all readings for up to three optional vowels. Longer input
+        # receives each local alternative independently to prevent exponential growth.
+        masks=range(1,(1<<len(sites))) if len(sites)<=3 else (1<<i for i in range(len(sites)))
+        for mask in masks:
+            changed=[site for i,site in enumerate(sites) if mask&(1<<i)]
+            alternate=list(rendered)
+            for index,vowel,primary,form,_ in changed:
+                alternate[index]=alternate[index].replace(primary,form,1)
+            labels=[f"{vowel} [{form}]" for _,vowel,_,form,_ in changed]
+            sections="/".join(dict.fromkeys(section for *_,section in changed))
+            note=(f"NIKL {sections} permits this alternate; Korean spelling is unchanged."
+                  if len(sites)<=3 else
+                  f"NIKL {sections} permits this local alternate; other optional vowels keep the primary reading.")
+            variants.append({
+                "syllable_indices":[index for index,_,_,_,_ in changed],
+                "ipa":render_syllable_sequence(items,alternate),
+                "note":note,
+                "vowels":labels,
+            })
+
+    # A phonetic [ɥi] realization is documented alongside [wi] and [y] for
+    # Korean ㅟ. Keep [y] canonical and expose [ɥi] as an additional reading.
+    for i,syllable in enumerate(items):
+        if syllable.nucleus=="ㅟ" and "y" in rendered[i]:
+            alternate=list(rendered)
+            alternate[i]=alternate[i].replace("y","ɥi",1)
+            variants.append({
+                "syllable_indices":[i],
+                "ipa":render_syllable_sequence(items,alternate),
+                "note":"Korean ㅟ may be realized as [ɥi] in phonetic descriptions; canonical [y] and the existing [wi] variant are retained.",
+                "vowels":["ㅟ [ɥi]"],
+            })
+
+    # /s/ has a documented alveolo-palatal [ɕ] realization before /i/ and
+    # selected /j/-initial diphthongs. This remains optional in broad IPA;
+    # fortis /s͈/ is deliberately not rewritten on this evidence.
+    palatal_sibilant_nuclei={"ㅣ","ㅑ","ㅒ","ㅖ"}
+    for i,syllable in enumerate(items):
+        if syllable.onset=="ㅅ" and syllable.nucleus in palatal_sibilant_nuclei and rendered[i].startswith("s"):
+            alternate=list(rendered)
+            alternate[i]="ɕ"+alternate[i][1:]
+            variants.append({
+                "syllable_indices":[i],
+                "ipa":render_syllable_sequence(items,alternate),
+                "note":"Optional [ɕ] allophone of lenis /s/ before /i/ or a selected /j/-initial diphthong; broad canonical /s/ is preserved.",
+                "vowels":["ㅅ [ɕ]"],
+            })
     return variants
 
 def realize_syllables(items:list[Syllable],*,level="broad")->dict:
@@ -133,12 +165,12 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     profile_ids={
         "phonemic":"clippyfirst-korean-phonemic-v1",
         "broad":"clippyfirst-korean-broad-v1",
-        "narrow":"clippyfirst-korean-narrow-partial-sibilant-nasal-h-v3",
+        "narrow":"clippyfirst-korean-narrow-contextual-allophones-v4",
     }
     result={
         "level":level,
         "ipa_profile":profile_ids[level],
-        "ipa_profile_version":3 if level=="narrow" else 1,
+        "ipa_profile_version":4 if level=="narrow" else 1,
         "ipa_profile_level":level,
         "ipa_profile_status":(
             "partial-research-only" if level=="narrow"
@@ -152,9 +184,10 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
     }
     if level=="narrow":
         result["transcription_profile"]={
-            "name":"korean-narrow-partial-sibilant-nasal-h-v3",
+            "name":"korean-narrow-contextual-allophones-v4",
             "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅖ, ㅑ","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed","after a same-word sonorant coda, /h/ is rendered [ɦ] as one narrow-profile variant; no deletion is inferred"],
             "sources":[
+                "Lee, Hyun Bok (1999), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/: https://doi.org/10.1017/S0025100300004758",
                 "Cho, Jun & Ladefoged (2002), via High-toned [il] in Korean: https://www.sciencedirect.com/science/article/pii/S0095447015000339",
                 "Kang (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770",
                 "Ahn (2009), Korean /n/-deletion: phonetic initial strengthening to denasalization: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001340886",
@@ -162,7 +195,7 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
                 "Kang & Lee (2019), The Realizations of /h/ in Seoul and Gwangju Koreans: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART002495941",
                 "Eom (2014), Phonetic realizations of /h/ after a sonorant in Korean: https://doi.org/10.17959/sppm.2014.20.3.357",
             ],
-            "limitations":["partial profile, not a complete narrow transcription","models only one optional [ɦ] variant after a same-word sonorant coda; does not model /h/ deletion, dialectal probabilities, lateral retroflexion, or prosody","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
+            "limitations":["partial profile, not a complete narrow transcription","models [ç] and [x] as source-scoped context candidates and one optional [ɦ] variant after a same-word sonorant coda; does not model /h/ deletion, dialectal probabilities, lateral retroflexion, or prosody","the [ɲ] choice before /j/-initial nuclei is a research-profile generalization; do not treat it as universal speaker-independent output","does not force palatalization of tense /s͈/ because the available literature reports variation and disagreement","research-only profile; do not treat as approved Ukrainian target input without target-inventory review"],
             "target_compatible":False,
         }
     return result
