@@ -1,5 +1,23 @@
 # Kozak Kim: discrepancy-driven phonology improvement — 2026-11-01
 
+## C09 lexical vowel-length evidence review — 2026-11-02
+
+The seven lexical forms named in C09 now have official National Institute of Korean Language evidence for the relevant long-vowel surface in the cited dictionary/answer context:
+
+| Form | Official attestation | Scope |
+|---|---|---|
+| 사람 | Korean Basic Dictionary: [사ː람] | Direct lemma entry |
+| 괴성 | Korean Basic Dictionary result listing: [괴ː성/궤ː성] | Two listed variants; preserve both rather than choosing one |
+| 모르다 | Korean Basic Dictionary: [모ː르다], with [모ː르는] and [몰ː라] | Direct lemma and listed applications |
+| 알다 | Korean Basic Dictionary: [알ː다], with [아ː는] and [아ː니] | Direct lemma and listed applications |
+| 없는 | NIKL Q&A 331601: [업ː는→엄ː는] | Directly explains the exact phrase 알 수 없는; rule-environment evidence for lexical form 없는 |
+| 없어 | NIKL Q&A 302689: [업ː써] | Directly quotes the §14 example and explicitly retains length |
+| 이중성 | Korean Basic Dictionary: [이ː중썽] | Exact lexical attestation already present in the dated lexical additions |
+
+The source register now contains the corresponding records (SRC-KRDICT-ENG-58161, SRC-KRDICT-AR-GWESUNG, SRC-KRDICT-ENG-29712, SRC-KRDICT-ENG-89445, SRC-NIKL-QNA-331601, SRC-NIKL-QNA-302689, SRC-NIKL-DIC-IJUNGSEONG). Regression tests require those exact attestations and the source-register counts.
+
+**Decision:** retain source-backed vowel length in Kozak Kim; do not strip it to match UGTPHON's omissions. This closes the *lexical length evidence* portion of C09 for the seven listed forms, not the IPA adjudication as a whole. Dictionary Hangul length marks are not IPA, and do not by themselves adjudicate exact vowel quality, syllable boundaries, prosodic stress, or Ukrainian target adaptation. The 괴성 listing is a dictionary result page rather than a stable item-specific locator and explicitly retains two vowel variants; it is recorded with that limitation. C10 stress remains unresolved. No production rule change was justified by this source review.
+
 ## C08 occurrence mapping and exact morphology follow-up — 2026-11-02
 
 The five previously unenumerated C08 contexts have now been reconstructed from the pinned UGTPHON Korean test split (revision `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`) by matching the fortis-versus-plain mismatch signature and exact target token. The eight working IDs are:
