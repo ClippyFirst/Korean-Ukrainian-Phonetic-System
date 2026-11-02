@@ -265,7 +265,7 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
         surface:text,
         ukrainian:mapped.map(item=>item.text??'').join(''),
         ipa:renderStructured(units,alternateIpa,'.'),
-        note:'Optional [ɕ] allophone of lenis /s/ before /i/ or a selected /j/-initial diphthong; broad canonical /s/ is preserved.',
+        note:'Optional [ɕ] allophone of lenis /s/ before /i/ or a Lee (1999)-described /j/-initial diphthong; broad canonical /s/ is preserved.',
         status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
         target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
       });
