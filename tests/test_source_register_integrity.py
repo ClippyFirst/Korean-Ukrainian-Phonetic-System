@@ -118,8 +118,11 @@ def test_ipa_queue_sources_keep_evidence_scope_and_item_license_uncertainty_expl
 
 
 def test_every_lexical_dataset_citation_has_a_source_register_identity():
-    with LEXICAL_DATA.open("r", encoding="utf-8-sig", newline="") as stream:
-        lexical_rows = list(csv.DictReader(stream))
+    lexical_paths = [LEXICAL_DATA, *sorted(LEXICAL_DATA.parent.glob("lexical_additions_*.csv"))]
+    lexical_rows = []
+    for path in lexical_paths:
+        with path.open("r", encoding="utf-8-sig", newline="") as stream:
+            lexical_rows.extend(csv.DictReader(stream))
     registered_rows = load_source_register()
     registered_identities = {source_identity(row["url"]) for row in registered_rows}
     cited_identities = {
