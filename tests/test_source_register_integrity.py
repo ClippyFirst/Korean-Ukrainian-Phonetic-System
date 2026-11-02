@@ -360,7 +360,7 @@ def test_c09_length_discrepancies_have_exact_dictionary_surface_evidence():
         "SRC-KRDICT-ENG-58161": ("사람[사ː람]", "ParaWordNo=58161"),
         "SRC-KRDICT-ENG-29712": ("모르다[모ː르다]", "ParaWordNo=29712"),
         "SRC-KRDICT-ENG-89445": ("알다[알ː다]", "ParaWordNo=89445"),
-        "SRC-KRDICT-AR-GWESUNG": ("괴성[괴ː성/궤ː성]", "괴성"),
+        "SRC-KRDICT-AR-GWESUNG": ("괴성[괴ː성/궤ː성]", "krdict.korean.go.kr"),
     }
     for source_id, (attestation, locator) in expected.items():
         source = rows[source_id]
