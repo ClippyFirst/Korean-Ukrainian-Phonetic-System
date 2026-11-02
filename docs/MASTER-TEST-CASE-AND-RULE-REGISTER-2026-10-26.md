@@ -1,3 +1,20 @@
+## 2026-11-02 regression additions — Kozak Kim only
+
+The following tests were added and verified in GitHub Actions; no existing expectation was weakened:
+
+| Regression | Test location | Required behavior |
+|---|---|---|
+| Broad v2 report version | `tests/kozak-kim-ipa-first-benchmark.test.mjs` | Browser `evaluateRows()` exposes numeric `broad_candidate_benchmark_version === 2`, matching Native audit contract. |
+| Unadjudicated lexical IPA | `tests/kozak-kim-ipa-first-benchmark.test.mjs` | `삶의` retains source-backed surface alternatives `살믜` / `살메`, but has unresolved pronunciation, empty IPA, empty Ukrainian target, unavailable target status, and no IPA in variants. |
+| Broad surface serialization | `tests/kozak-kim-ipa-first-benchmark.test.mjs` | Shared Broad profile returns `읻따` for `있다`; legacy Browser default remains `있따`. |
+| R013 negative controls | `tests/test_rules.py` | `올게이` / `할게이` remain unchanged and are provisional non-diagnostic-only outputs, not unresolved R013 morphology. Complete `-ㄹ게` / `-ㄹ게요` cases retain their existing licensed behavior. |
+
+Exact system verification: run 41447654924 PASS; Browser suite 1,382 / 1,382; Python regression/data integrity PASS; production build and generated-page checks PASS. Multi-engine run 41447654927 has completed the comparison and Native/Browser audit steps; SIGMORPHON and artifact upload remain in progress at this snapshot.
+
+Test-case extraction run 41447654941 PASS. Its report records 644 lexical-base rows, 6,885 lexical-test links, 52,075 Hangul-literal candidates, 39,606 source lines, and 6,705 assertion-classification candidates. The assertion classification queue explicitly remains manual-review-required; extraction is not adjudication.
+
+---
+
 ## 2026-11-02 continuation — Kozak Kim runtime, benchmark and holdout tests
 
 - **R013 exact-boundary regression:** tests/test_rules.py covers licensed 할게, 올게, 할게요, 올게요 and negative controls 올게이, 할게이. The latter prevent substring matching from applying the ending rule inside a longer lexical token. This is a boundary correction to the existing R013 license, not a new phonological rule.
