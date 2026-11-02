@@ -294,10 +294,7 @@ def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
         assert "dependent noun" in source["coverage"].lower()
         assert "pronunciation" in source["limitations_or_next_action"].lower()
         assert "ipa" in source["limitations_or_next_action"].lower()
-        if source_id == "SRC-PLSA-KOREAN-LIQUID-2021":
-            assert "CC-BY-4.0 verified" in source["license_status"]
-        else:
-            assert "item-level" in source["license_status"].lower()
+        assert "item-level" in source["license_status"].lower()
     dependent_su = rows["SRC-NIKL-QNA-307960"]
     assert "qna_seq=307960" in dependent_su["url"]
     assert "[쑤]" in dependent_su["coverage"]
@@ -396,7 +393,10 @@ def test_c01_c07_allophone_profile_research_is_registered_with_bounded_scope():
         source = rows[source_id]
         assert all(term in source["coverage"] for term in terms), source_id
         assert "not" in source["limitations_or_next_action"].lower(), source_id
-        assert "item-level" in source["license_status"].lower(), source_id
+        if source_id == "SRC-PLSA-KOREAN-LIQUID-2021":
+            assert "CC-BY-4.0 verified" in source["license_status"]
+        else:
+            assert "item-level" in source["license_status"].lower(), source_id
 
 
 def test_c10_seoul_korean_prosody_sources_do_not_license_word_level_stress():
