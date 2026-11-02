@@ -155,6 +155,11 @@ function fullSurfaceHangul(result, token) {
       traceSyllables.every(item => typeof item.surface === 'string' && /^[가-힣]$/u.test(item.surface))) {
     return traceSyllables.map(item => item.surface).join('');
   }
+  if (surface === '' && traceSyllables.length === tokenSyllables.length &&
+      traceSyllables.every(item => !Object.hasOwn(item, 'surface'))) {
+    // Exact lexical entries with no surface override keep the input Hangul unchanged.
+    return tokenSyllables.join('');
+  }
   return null;
 }
 
