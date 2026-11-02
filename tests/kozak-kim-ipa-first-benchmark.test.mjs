@@ -312,3 +312,42 @@ test('shared Broad IPA profile exposes complete final-coda surface without chang
   assert.equal(sharedProfile.surfaceHangul, '읻따');
   assert.equal(legacyDefault.surfaceHangul, '있따');
 });
+
+
+test('Browser occurrence ledger reconstructs complete surfaces for mixed per-syllable traces', () => {
+  const cases = [
+    ['쌓아서', '싸아서'],
+    ['쳐넣어야', '쳐너어야'],
+    ['애새끼낳으면', '애새끼나으면'],
+    ['좋아보인다고', '조아보인다고'],
+    ['좋아해주는', '조아해주는'],
+    ['좋은데', '조은데']
+  ];
+  const engine = createBrowserKozakKimEngine();
+  const rows = cases.map(([canonical], index) => ({
+    id: 'surface-reconstruction-' + index,
+    lang: 'ko',
+    split: 'test',
+    tokens: [{ canonical, phoneme: 'ka' }]
+  }));
+  const report = evaluateRows(rows, engine);
+  const diagnostics = cases.map(([word]) => {
+    const result = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
+    return {
+      word,
+      surfaceHangul: result.surfaceHangul,
+      trace: (result.trace || []).map(item => ({
+        source: item.source,
+        surface: item.surface,
+        rules: item.rules,
+        status: item.status
+      }))
+    };
+  });
+
+  assert.deepEqual(
+    report.records.map(record => record.surface_hangul),
+    cases.map(([, expected]) => expected),
+    JSON.stringify(diagnostics, null, 2)
+  );
+});
