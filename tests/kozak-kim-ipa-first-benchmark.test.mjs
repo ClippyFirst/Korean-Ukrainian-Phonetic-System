@@ -395,22 +395,3 @@ test('shared broad profile offers [ɥi] as a documented ㅟ alternative', () => 
   assert.equal(result.ipa, 'ky');
   assert.ok(result.variants.some(variant => variant.ipa === 'kɥi'));
 });
-
-test('shared broad profile exposes source-backed sibilant palatalization as a variant, not a forced rewrite', () => {
-  const engine = createBrowserKozakKimEngine();
-  const lenis = engine.convert('시', { ipaProfile: 'clippyfirst-korean-broad-v1' });
-  assert.equal(lenis.ipa, 'si');
-  assert.ok(lenis.variants.some(variant => variant.ipa === 'ɕi'));
-
-  const fortis = engine.convert('씨', { ipaProfile: 'clippyfirst-korean-broad-v1' });
-  assert.equal(fortis.ipa, 's͈i');
-  assert.ok(!fortis.variants.some(variant => variant.ipa.includes('ɕ͈')));
-});
-
-test('shared broad profile offers [ɥi] as a documented ㅟ alternative', () => {
-  const result = createBrowserKozakKimEngine().convert('귀', {
-    ipaProfile: 'clippyfirst-korean-broad-v1'
-  });
-  assert.equal(result.ipa, 'ky');
-  assert.ok(result.variants.some(variant => variant.ipa === 'kɥi'));
-});
