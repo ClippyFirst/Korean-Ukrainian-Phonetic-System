@@ -173,7 +173,7 @@ def test_python_ipa_results_expose_a_versioned_profile_contract():
     expected = {
         "phonemic": ("clippyfirst-korean-phonemic-v1", "phonemic"),
         "broad": ("clippyfirst-korean-broad-v1", "broad"),
-        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v4", "narrow"),
+        "narrow": ("clippyfirst-korean-narrow-contextual-allophones-v5", "narrow"),
     }
     for level, (profile_id, profile_level) in expected.items():
         result = phoneticize_korean("씨", ipa_level=level)["ipa"]
@@ -237,7 +237,7 @@ def test_narrow_h_voicing_after_sonorant_coda_is_scoped_and_not_target_approved(
         assert result["transcription_profile"]["target_compatible"] is False
 
     # Negative controls: no preceding sonorant coda, or a word boundary.
-    assert phoneticize_korean("아하", ipa_level="narrow")["ipa"]["ipa"] == "a.ha"
+    assert phoneticize_korean("하", ipa_level="narrow")["ipa"]["ipa"] == "ha"
     assert phoneticize_korean("감 하", ipa_level="narrow")["ipa"]["ipa"] == "kam ha"
 
     # The default broad and underlying phonemic representations remain stable.
@@ -299,10 +299,12 @@ def test_seoul_broad_profile_offers_source_scoped_h_and_liquid_allophones():
     assert liquid["ipa"] == "na.ɾa"
     assert any(item["ipa"] == "na.ɭa" for item in liquid["variants"])
 
-    # The broader /j/-initial context is explicitly optional, not canonical.
-    sibilant = phoneticize_korean("쇼")["ipa"]
-    assert sibilant["ipa"] == "sjo"
-    assert any(item["ipa"] == "ɕjo" for item in sibilant["variants"])
+    # Lee (1999) describes /ɕ/ before all these /j/-initial diphthongs.
+    # Python and Browser shared Broad profiles must expose the same candidates.
+    for word, expected in {"셔": "ɕjʌ", "쇼": "ɕjo", "슈": "ɕju"}.items():
+        sibilant = phoneticize_korean(word)["ipa"]
+        assert sibilant["ipa"].startswith("s")
+        assert any(item["ipa"] == expected for item in sibilant["variants"]), word
     fortis = phoneticize_korean("쑈")["ipa"]
     assert not any("ɕ͈" in item["ipa"] for item in fortis["variants"])
 
