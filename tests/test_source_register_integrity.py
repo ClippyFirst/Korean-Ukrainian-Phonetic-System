@@ -386,7 +386,7 @@ def test_c01_c07_allophone_profile_research_is_registered_with_bounded_scope():
         "SRC-PLSA-KOREAN-LIQUID-2021": ("retroflex", "pauses"),
         "SRC-CAMBRIDGE-KOREAN-IPA": ("[ç]", "[x]", "[p̚]"),
         "SRC-KCI-KANG-LEE-2019-H": ("Seoul", "Gwangju"),
-        "SRC-KCI-AHN-2014-N-PALATALIZATION": ("늬", "[ɲi]"),
+        "SRC-KCI-CHOI-OH-2014-N-PALATALIZATION": ("늬", "[ɲi]"),
         "SRC-KCI-YUN-2005-KOREAN-GLIDES": ("[ɥ]", "front vowel"),
     }
     for source_id, terms in expected.items():
@@ -416,7 +416,7 @@ def test_c01_c07_and_c10_cluster_decisions_follow_the_reviewed_profile_evidence(
     expected_sources = {
         "C01": "SRC-PLSA-KOREAN-LIQUID-2021",
         "C02": "SRC-CAMBRIDGE-KOREAN-IPA",
-        "C03": "SRC-KCI-AHN-2014-N-PALATALIZATION",
+        "C03": "SRC-KCI-CHOI-OH-2014-N-PALATALIZATION",
         "C05": "SRC-KCI-YUN-2005-KOREAN-GLIDES",
         "C06": "SRC-CAMBRIDGE-KOREAN-IPA",
         "C07": "SRC-PLSA-KOREAN-LIQUID-2021",
