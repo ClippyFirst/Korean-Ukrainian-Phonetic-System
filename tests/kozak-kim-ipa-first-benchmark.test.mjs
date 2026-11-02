@@ -395,3 +395,13 @@ test('shared broad profile offers [ɥi] as a documented ㅟ alternative', () => 
   assert.equal(result.ipa, 'ky');
   assert.ok(result.variants.some(variant => variant.ipa === 'kɥi'));
 });
+
+test('shared broad profile exposes optional Seoul ㅎ allophones without changing canonical IPA', () => {
+  const engine = createBrowserKozakKimEngine();
+  const hi = engine.convert('히', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  const hu = engine.convert('후', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(hi.ipa, 'hi');
+  assert.ok(hi.variants.some(variant => variant.ipa === 'çi'));
+  assert.equal(hu.ipa, 'hu');
+  assert.ok(hu.variants.some(variant => variant.ipa === 'xu'));
+});
