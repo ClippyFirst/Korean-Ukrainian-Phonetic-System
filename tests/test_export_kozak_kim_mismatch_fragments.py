@@ -69,3 +69,15 @@ def test_candidate_clusters_keep_sibilant_place_separate():
     assert MODULE.candidate_clusters(fragments) == [
         "C11_sibilant_place_profile_boundary"
     ]
+
+
+def test_aspirated_velar_coarticulation_is_not_misclassified_as_h_aspiration():
+    fragments = [
+        {"op": "S", "reference_fragment": "k", "kozak_fragment": "kʰ"},
+        {"op": "S", "reference_fragment": "x", "kozak_fragment": "ɯ"},
+    ]
+    assert MODULE.candidate_clusters(
+        fragments,
+        strict_reference="kxɯ",
+        strict_prediction="kʰɯ",
+    ) == ["C12_aspirated_velar_coarticulation_profile"]
