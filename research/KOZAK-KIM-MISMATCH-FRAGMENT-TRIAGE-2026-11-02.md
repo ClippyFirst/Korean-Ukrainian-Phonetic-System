@@ -64,3 +64,15 @@ python scripts/export_kozak_kim_mismatch_fragments.py \
 6. Review all unmapped fragments and add new cluster IDs only when several cases share an evidenced cause.
 
 For every proposed production change: add a failing regression first, establish the exact Korean rule environment from primary sources, add positive and negative controls, run Python and Browser suites, and compare before/after occurrence ledgers. Never modify the original g2pK baseline or promote UGTPHON/SIGMORPHON predictions to IPA gold.
+
+## Algorithm updates — 2026-11-02 (evidence-scoped, profile-preserving)
+
+The following changes address high-frequency clusters without forcing a corpus convention onto canonical broad IPA:
+
+- **C11 sibilant place:** Broad canonical /s/ remains unchanged. The engine now exposes an optional [ɕ] allophone variant for lenis ㅅ before ㅣ, ㅑ, ㅒ, ㅖ; fortis ㅆ is deliberately excluded. The narrow profile continues to expose [ɕʰ] and now includes ㅒ. Evidence: Lee (1999), Korean, Illustrations of the IPA, describes /s/ as [ɕ] before /i/ or a diphthong beginning [j]; Kang (2010) supplies acoustic evidence for /i, ye, ya/ and cautions that /yo, yu/ differ. This is an optional reading, not a forced broad rewrite.
+- **C05 front-rounded ㅟ:** [ɥi] is now exposed as an additional broad IPA variant alongside existing canonical [y] and alternate [wi]. Evidence: the UCL acoustic/phonetic thesis review of Lee (1996) describes /wi/ as sometimes [ɥi], [ø] or [y]. The canonical remains [y]; the variant does not assert one speaker-independent pronunciation.
+- **C04 /h/ allophones:** Narrow research IPA now represents [ç] before selected high-front/glide nuclei and [x] before ㅜ; the previously implemented optional post-sonorant [ɦ] retains priority. Broad and phonemic IPA are unchanged. The narrow profile was versioned from v3 to v4. Evidence: Lee (1999), Illustrations of the IPA, for Seoul Korean. This is profile-scoped, not a general ㅎ deletion rule.
+- **C06 release marking and C09 lexical length:** No change. Existing [p̚,t̚,k̚] output and source-attested lexical length remain. UGTPHON omissions are not enough to justify stripping these features.
+- **C01/C07 liquids:** No blanket ɾ/l/ɭ/ʎ replacement. The remaining examples include different positions and possible morphology/prosody; the corpus does not establish a single safe environment. Further context/source adjudication is required.
+
+The optional variants are exposed in both Native and Browser shared-Broad result contracts; canonical IPA and the legacy Browser default remain unchanged. New tests cover lenis/fortis negative controls, [ɥi], and narrow /h/ contexts. This is an algorithmic representation improvement, not an adjudicated accuracy claim.
