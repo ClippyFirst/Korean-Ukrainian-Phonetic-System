@@ -24,7 +24,7 @@
 - Paired Native/g2pK PASS — run 41532567384.
 - Morphology consensus PASS — run 41532567281.
 - Test-case extraction PASS — run 41532567279.
-- Ten-engine + SIGMORPHON + Native/Browser parity still running — run 41532567426.
+- Ten-engine + SIGMORPHON + Native/Browser parity rerun queued as attempt 2 after attempt 1 was cancelled — run 41532567426.
 - NIKL metadata inventory, Charsiu queue and neural inference jobs skipped; no results claimed.
 
 ## Resume from here

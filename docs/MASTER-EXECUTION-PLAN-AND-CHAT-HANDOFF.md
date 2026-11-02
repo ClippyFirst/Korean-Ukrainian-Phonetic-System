@@ -29,11 +29,11 @@ Scope remains Kozak Kim only. The original g2pK 0.9.4 code/vendor is untouched a
 | Paired Native/g2pK | [41532567384](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41532567384) | **PASS** |
 | Morphology consensus | [41532567281](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41532567281) | **PASS** |
 | Exhaustive test-case extraction | [41532567279](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41532567279) | **PASS** |
-| Ten-engine UGTPHON/SIGMORPHON + Native/Browser parity | [41532567426](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41532567426) | **IN_PROGRESS**; final artifact not yet available |
+| Ten-engine UGTPHON/SIGMORPHON + Native/Browser parity | [41532567426](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41532567426) | **RERUN QUEUED** (attempt 2 after attempt 1 was cancelled when the PR head advanced); no final artifact yet |
 | NIKL metadata inventory | [41532567453](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41532567453) | **SKIPPED** |
 | Charsiu train/dev queue, Charsiu inference, ByT5 inference | [41532567368](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41532567368) / [41532567426](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41532567426) | **SKIPPED**; no model inference results claimed |
 
-The prior failing run [41530749317](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41530749317) exposed the actual Python/Browser Broad drift and word-initial [ɭ] overreach, plus stale v4 assertions and an incorrect [ɸ] negative control. These were fixed; the new exact-head Python and Browser jobs pass. The cancelled ten-engine run 41531591922 was superseded by 41532567426 after the newer PR run started.
+The prior failing run [41530749317](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41530749317) exposed the actual Python/Browser Broad drift and word-initial [ɭ] overreach, plus stale v4 assertions and an incorrect [ɸ] negative control. These were fixed; the new exact-head Python and Browser jobs pass. The earlier ten-engine run 41531591922 was superseded by 41532567426. Attempt 1 of 41532567426 was cancelled when the PR head advanced; a job-level rerun was accepted and is queued as attempt 2.
 
 Local clone attempt failed because the runner could not resolve github.com. No local pytest/npm/build command is claimed; exact-head verification was executed by GitHub Actions. Build emitted the existing chunk-size advisory and Node action deprecation notices; these were non-blocking.
 
