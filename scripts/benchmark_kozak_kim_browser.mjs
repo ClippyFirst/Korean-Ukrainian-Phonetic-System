@@ -339,7 +339,6 @@ export function evaluateRows(rows, engine) {
     exact_match_rate: scoredTokens ? Number((exactMatches / scoredTokens).toFixed(6)) : null,
     coverage_adjusted_exact_match_rate: eligibleTokens ? Number((exactMatches / eligibleTokens).toFixed(6)) : null,
     character_error_rate: totalGoldCharacters ? Number((totalDistance / totalGoldCharacters).toFixed(6)) : null,
-    broad_candidate_benchmark_version: 'broad-candidate-ipa-v2',
     broad_candidate_profile: BROAD_CANDIDATE_PROFILE,
     broad_candidate_prediction_feature_loss_counts: Object.fromEntries(
       [...records.filter(item => item.broad_candidate_prediction_feature_loss_counts)
