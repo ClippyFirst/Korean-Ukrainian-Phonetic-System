@@ -12,6 +12,10 @@ on:
   pull_request:
     paths:
       - "scripts/benchmark_multi_engine_ko.py"
+      - "scripts/benchmark_kozak_kim_browser.mjs"
+      - "scripts/audit_kozak_kim_runtime_parity.py"
+      - "tests/kozak-kim-ipa-first-benchmark.test.mjs"
+      - "tests/test_kozak_kim_runtime_parity.py"
       - "scripts/benchmark_phonemize_adapter.cjs"
       - "tests/test_multi_engine_benchmark.py"
       - "tests/test_sigmorphon_benchmark.py"
@@ -48,6 +52,10 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.12.0"
 
       - name: Install the native engine, comparison dependencies, and eSpeak NG
         run: |
@@ -153,7 +161,8 @@ jobs:
         run: |
           set -euo pipefail
           node --check scripts/benchmark_phonemize_adapter.cjs
-          python -m pytest tests/test_multi_engine_benchmark.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py tests/test_v3_training_readiness.py
+          node --test tests/kozak-kim-ipa-first-benchmark.test.mjs
+          python -m pytest tests/test_multi_engine_benchmark.py tests/test_kozak_kim_runtime_parity.py tests/test_sigmorphon_benchmark.py tests/test_contextual_g2p_benchmark.py tests/test_charsiu_g2p_benchmark.py tests/test_compare_neural_with_multiengine.py tests/test_v3_training_readiness.py
 
       - name: Audit training readiness and frozen-holdout overlap
         run: python scripts/audit_v3_training_readiness.py --output "$RUNNER_TEMP/v3-training-readiness.json"
@@ -182,7 +191,7 @@ jobs:
           r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
           ledger = r.get("per_engine_occurrences")
           expected = r["eligible_token_occurrences"]
-          if r.get("occurrence_ledger_schema_version") != 1 or not isinstance(ledger, dict):
+          if r.get("occurrence_ledger_schema_version") != 2 or not isinstance(ledger, dict):
               raise SystemExit("baseline report lacks occurrence-ledger schema v1")
           if set(ledger) != set(r["engine_order"]):
               raise SystemExit("occurrence-ledger engine keys do not match engine_order")
@@ -192,6 +201,8 @@ jobs:
                   raise SystemExit(f"{engine}: incomplete or unordered occurrence ledger")
               if any(not x.get("row_id") or not x.get("token") or not x.get("gold") for x in records):
                   raise SystemExit(f"{engine}: occurrence identity fields are incomplete")
+              if engine == "clippyfirst_native" and any("surface_hangul" not in x for x in records):
+                  raise SystemExit("native occurrence ledger lacks surface_hangul")
               if any(x.get("status") == "scored" and not all(
                   key in x for key in ("ipa", "normalized_predicted", "exact", "distance", "reference_length")
               ) for x in records):
@@ -216,6 +227,13 @@ jobs:
                     f"latency_p50_ms={runtime.get('per_word_latency', {}).get('p50_ms')} "
                     f"latency_p95_ms={runtime.get('per_word_latency', {}).get('p95_ms')} "
                     f"timing_scope={runtime.get('timing_scope', runtime.get('per_word_latency', {}).get('measurement_note'))}")
+              broad = m["broad_candidate"]
+              broad_ci = broad.get("bootstrap_95pct_ci", {}).get("exact_match_rate_95pct_ci")
+              print(f"  BROAD exact={broad['exact_matches']}/{broad['scored_tokens']} "
+                    f"rate={broad['exact_match_rate']} coverage_adjusted={broad['coverage_adjusted_exact_match_rate']} "
+                    f"CER={broad['character_error_rate']} CI95={broad_ci}")
+              print(f"  BROAD prediction_feature_loss={broad['prediction_feature_loss_counts']} "
+                    f"serialization_normalization={broad['prediction_serialization_normalization_counts']}")
               repeat = runtime.get("repeatability", {})
               print(f"  repeated_runs={repeat.get('measured_repetitions')} "
                     f"repeat_median_ms={repeat.get('total_ms_median')} "
@@ -248,6 +266,35 @@ jobs:
           if len(usable) < 2:
               raise SystemExit("fewer than two independent external candidates produced scores: " + repr(usable))
           print("Scored independent candidates:", ", ".join(usable))
+          PY
+
+      - name: Run Browser Kozak Kim on the same UGTPHON occurrences
+        run: |
+          set -euo pipefail
+          node scripts/benchmark_kozak_kim_browser.mjs \
+            --corpus "$RUNNER_TEMP/ko-test.json" \
+            --split test \
+            --output "$RUNNER_TEMP/kozak-kim-browser-ugtphon-report.json"
+
+      - name: Audit Native and Browser Kozak Kim runtime parity
+        run: |
+          set -euo pipefail
+          python scripts/audit_kozak_kim_runtime_parity.py \
+            --native-report "$RUNNER_TEMP/multi-engine-ipa-report.json" \
+            --browser-report "$RUNNER_TEMP/kozak-kim-browser-ugtphon-report.json" \
+            --output "$RUNNER_TEMP/kozak-kim-runtime-parity-report.json"
+          python - "$RUNNER_TEMP/kozak-kim-runtime-parity-report.json" <<'PY'
+          import json, sys
+          from pathlib import Path
+          report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          assert report["occurrence_identity"]["status"] == "PASS"
+          print("IPA profiles:", report["ipa_profiles"]["parity_status"])
+          print("Coverage:", report["coverage"])
+          print("Surface parity:", report["surface_parity"])
+          print("IPA parity:", {k: v for k, v in report["ipa_parity"].items() if not k.endswith("examples")})
+          print("Paired strict:", report["paired_gold_diagnostic"]["strict"])
+          print("Paired broad:", report["paired_gold_diagnostic"]["broad_candidate"])
+          print("Profile differences are reported, not forced into a false PASS.")
           PY
 
 
@@ -304,6 +351,10 @@ jobs:
                     f"feature_error_proxy={m['phonological_feature_error_rate_proxy']} "
                     f"unsupported_segments={m['unsupported_feature_segments']} "
                     f"abstentions={m['abstentions_or_unresolved']} errors={m['engine_errors_on_token_loop']}")
+              broad = m["broad_candidate"]
+              print(f"  BROAD exact={broad['exact_matches']}/{broad['scored_tokens']} "
+                    f"rate={broad['exact_match_rate']} coverage_adjusted={broad['coverage_adjusted_exact_match_rate']} "
+                    f"CER={broad['character_error_rate']}")
               runtime = m.get("unique_word_engine_status", {}).get("runtime", {})
               print(f"  runtime_total_ms={runtime.get('total_ms')} throughput_words_s={runtime.get('throughput_words_per_second')} "
                     f"latency_p50_ms={runtime.get('per_word_latency', {}).get('p50_ms')} "
@@ -346,6 +397,8 @@ jobs:
           name: multi-engine-korean-ipa-diagnostic
           path: |
             ${{ runner.temp }}/multi-engine-ipa-report.json
+            ${{ runner.temp }}/kozak-kim-browser-ugtphon-report.json
+            ${{ runner.temp }}/kozak-kim-runtime-parity-report.json
             ${{ runner.temp }}/multi-engine-ipa-stdout.json
             ${{ runner.temp }}/phonemize-predictions.json
             ${{ runner.temp }}/ko-LICENSE
