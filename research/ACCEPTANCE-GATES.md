@@ -1,3 +1,16 @@
+## 2026-11-02 — Kozak Kim runtime and Broad IPA v2 gate status
+
+| Gate | Target | Current evidence | Status |
+|---|---:|---|---|
+| Broad exact match (UGTPHON) | >=90% | Historical raw-artifact recomputation: Native 86.25%; current common-profile exact-head report pending | PARTIAL |
+| Broad exact match (SIGMORPHON) | >=90% | Historical raw-artifact recomputation: Native 69.64%; current exact-head report pending | PARTIAL |
+| Broad CER | <=2% | Historical Native: 2.22% UGTPHON; 6.23% SIGMORPHON | NOT_MET |
+| Native/Browser runtime parity | >=99.9% | New benchmark selects identical `clippyfirst-korean-broad-v1` profile and compares complete surface + raw IPA; exact-head report pending | PARTIAL |
+| Strict IPA preservation | No evidence-backed distinctions collapsed | Strict scoring retained; broad sensitivity losses separately reported | PARTIAL — independent convention adjudication pending |
+| Independent IPA gold | Two independent reviews + adjudication | Frozen 24-item holdout and separate A/B templates prepared; no reviewer submissions yet | BLOCKED |
+
+Do not use the old 93.81% Browser score as evidence of superiority: it came from `browser-legacy-contextual-v1`, whereas Native used `clippyfirst-korean-broad-v1`. The common-profile run is the only valid runtime comparison.
+
 ## Latest evidence snapshot — 2026-11-02 (research prototype; not release acceptance)
 
 | Gate | Status | Evidence / reason |
