@@ -23,7 +23,7 @@
 |---|---|---|
 | Current default/main ancestry and PR stack | DONE_VERIFIED | Main `7bbbd7e7`; working base `fb5e1686` descends from main; PR #419 is stacked on #417. No merge/release performed. |
 | Original g2pK baseline preservation | DONE_VERIFIED | No original/vendor g2pK files changed in this continuation; g2pK remains comparison-only. |
-| Exact-head software verification | DONE_VERIFIED | Final PR head `509f962c`: push system 41426031138 and PR system 41426042389 PASS; browser 1,374/1,374; extraction 41426042166 PASS. |
+| Exact-head software verification | DONE_VERIFIED | Code/test head `4225cea7`: push system 41425704134 and PR system 41425711289 PASS; browser 1,374/1,374; extraction 41425711296 PASS. Subsequent commits on this branch are documentation-only and preserve that verified test state. |
 | Paired/multi-engine evidence refresh | DONE_VERIFIED | Runs 41420395792, 41420395800 and 41420395805 plus artifacts 13129915994, 13130305158 and 13129993707 inspected; diagnostic limitations recorded. |
 | Native abstention regression protection | DONE_VERIFIED | New test pins four R002/R003 abstentions; existing `삶의` test pins both NIKL Hangul variants and independent-IPA abstention. |
 | C01–C07 review packet preparation | DONE_VERIFIED | Seven blind/reference-withheld packets, 42 entries / 39 source rows; acceptance still requires two independent reviewer submissions. |
