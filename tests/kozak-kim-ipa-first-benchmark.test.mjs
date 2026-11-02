@@ -302,3 +302,13 @@ test('Browser withholds project-derived IPA when independent lexical IPA adjudic
   assert.equal(result.variants[0].ipa, '');
   assert.equal(result.variants[0].ukrainian, '');
 });
+
+
+test('shared Broad IPA profile exposes complete final-coda surface without changing legacy default', () => {
+  const engine = createBrowserKozakKimEngine();
+  const sharedProfile = engine.convert('있다', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  const legacyDefault = engine.convert('있다');
+
+  assert.equal(sharedProfile.surfaceHangul, '읻따');
+  assert.equal(legacyDefault.surfaceHangul, '있따');
+});
