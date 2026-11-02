@@ -141,6 +141,23 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 "vowels":["ㅟ [ɥi]"],
             })
 
+    # Seoul /h/ has optional [ç] before /i,j/ and [x] before /u/ (S018).
+    # Keep broad /h/ canonical; expose these as source-scoped variants only.
+    for i,syllable in enumerate(items):
+        alternate_initial = (
+            "ç" if syllable.nucleus in {"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
+            else "x" if syllable.nucleus=="ㅜ" else ""
+        )
+        if syllable.onset=="ㅎ" and alternate_initial and rendered[i].startswith("h"):
+            alternate=list(rendered)
+            alternate[i]=alternate_initial+alternate[i][1:]
+            variants.append({
+                "syllable_indices":[i],
+                "ipa":render_syllable_sequence(items,alternate),
+                "note":f"Optional Seoul Korean /h/ allophone [{alternate_initial}] in this vowel context; broad canonical [h] is preserved.",
+                "vowels":[f"ㅎ [{alternate_initial}]"],
+            })
+
     # S018 and S019 document lenis /s/ as [ɕ] before /i/ and selected
     # /j/-initial diphthongs. This remains optional in broad IPA;
     # fortis /s͈/ is deliberately not rewritten on this evidence.
