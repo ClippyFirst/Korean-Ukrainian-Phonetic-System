@@ -1,3 +1,75 @@
+# Latest continuation checkpoint — 2026-11-02 (Kozak Kim only)
+
+## Current branch state
+
+- Repository: `ClippyFirst/Korean-Ukrainian-Phonetic-System`
+- Branch: `research/kozak-kim-mismatch-fragment-triage-2026-11-02`
+- Draft PR: [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423)
+- Latest branch head before this checkpoint update: `d941e3fa6d2c284e4de6ed19bb60a2950566d7f4`.
+- Original g2pK source and vendor files remain unchanged.
+- PR #423 remains Draft / open / unmerged. No release, deployment, merge, or branch deletion.
+
+## New implementation since the previous checkpoint
+
+1. Expanded optional lenis /s/ → [ɕ] variants to all /j/-initial diphthongs described by S018 (Lee 1999); canonical Broad /s/ remains unchanged and fortis ㅆ remains excluded.
+2. Added S018-backed [ɸ] for same-word intervocalic ㅎ in Narrow v5 and as an optional Broad variant.
+3. Added S018-backed [ɭ] for intervocalic /l/ and before /i,j/ in Narrow v5 and as an optional Broad variant.
+4. Kept ㅟ [y] canonical with [wi] and [ɥi] alternative candidates.
+5. Bumped the narrow profile to `clippyfirst-korean-narrow-contextual-allophones-v5`, version 5; it remains partial research-only and not target-compatible.
+6. Added Python and Browser regression tests for the new contexts and updated profile metadata assertions.
+7. Updated `research/KOZAK-KIM-MISMATCH-FRAGMENT-TRIAGE-2026-11-02.md` and `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md` with cluster dispositions, evidence and exact-head verification boundaries.
+
+## Current task ledger
+
+| Work item | Status | Acceptance / blocker |
+|---|---|---|
+| C11 sibilant place | PARTIAL | Optional [ɕ] covers S018 /j/-initial contexts; canonical /s/ unchanged; independent review and fresh benchmark required. |
+| C05 ㅟ [y]/[ɥi]/[wi] | PARTIAL | Alternatives exposed; speaker/context distribution not independently adjudicated. |
+| C12 `kx/kç → kʰ` | BLOCKED | 45 operations / 37 occurrences; no exact-environment primary source plus independent IPA adjudication. No rewrite. |
+| C06 unreleased coda | DONE_VERIFIED (preservation decision) | [p̚,t̚,k̚] preserved; broad normalization does not strip release marking. |
+| C01/C07 liquids | PARTIAL | Source-scoped [ɭ] in Narrow v5 and optional Broad variants; no blanket ɾ/l replacement. |
+| C09 lexical length | DONE_VERIFIED (preservation decision) | Source-attested length overrides retained. |
+| C02 /h/ realization | PARTIAL | Intervocalic [ɸ] source-scoped in Narrow v5 and optional Broad; no general /h/ rewrite. |
+| New Python/Browser regressions | PARTIAL | Added but no exact-head test results available. |
+| New exact-head CI | BLOCKED | No workflow runs or status checks returned for the new branch head. |
+| Independent IPA gold | BLOCKED | Two qualified independent reviewers and adjudication needed. |
+| NIKL item-level reuse rights | BLOCKED | Rights/permission review incomplete. |
+| Ukrainian target adaptation | BLOCKED | Independent Ukrainian phonetic/orthographic review outstanding. |
+| Release readiness | DEFERRED | Research prototype only. |
+
+## Verification boundary
+
+The previous code head `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695` has completed:
+- System verification 41471244329 PASS (Browser 1,384/1,384, Python/data integrity, build; NIKL inventory SKIPPED).
+- Browser G2P 41471244336 PASS.
+- Multi-engine diagnostic 41471244424 PASS.
+- External UGTPHON 41471244483 PASS.
+- Paired Native/g2pK 41471244408 PASS.
+- Morphology consensus 41471244332 PASS.
+- Test-case register extraction 41471244303 PASS.
+
+Those results predate the new v5 code and tests and must not be represented as verification of the current head. Current branch head has no returned workflow runs or commit status checks. Local clone was blocked because `github.com` could not be resolved in this environment.
+
+## Prior-head paired baseline (UGTPHON diagnostic, not gold)
+
+On 2,698 shared scored occurrences:
+- Strict exact: Native 53.0393%; g2pK 53.1134%.
+- Strict CER: Native 9.0613%; g2pK 9.2304%.
+- Broad exact: Native 86.2861%; g2pK 85.6931%.
+- Broad CER: Native 2.2038%; g2pK 2.3751%.
+
+Native has lower CER; original g2pK has a two-occurrence strict exact edge. No v5 gain is claimed.
+
+## Resume checklist
+
+1. Obtain fresh exact-head Python regression/data integrity, Browser tests/build, and generated-page checks.
+2. Run fresh paired Native/g2pK and ten-engine diagnostics on the exact same test occurrences.
+3. Compare strict and Broad metrics separately; inspect optional variant coverage without promoting variants or corpus annotations to gold.
+4. Keep C12 and all unmapped mismatch fragments evidence-limited.
+5. Obtain independent IPA adjudication, NIKL rights review, and Ukrainian target adaptation review before release claims.
+
+---
+
 # Kozak Kim session checkpoint — 2026-11-02
 
 ## Saved state
