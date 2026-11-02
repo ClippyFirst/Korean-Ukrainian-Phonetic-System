@@ -5,7 +5,8 @@ import {
   editDistance,
   evaluateRows,
   normalizeIpa,
-  normalizeIpaBroadCandidate
+  normalizeIpaBroadCandidate,
+  normalizeIpaBroadCandidateWithLoss
 } from '../scripts/benchmark_kozak_kim_browser.mjs';
 
 test('IPA normalization and edit distance match the Python benchmark contract', () => {
@@ -22,6 +23,25 @@ test('broad candidate IPA normalization collapses documented allophones but pres
   assert.equal(normalizeIpaBroadCandidate('ɥa'), 'ɥa');
   assert.equal(normalizeIpaBroadCandidate('sʰɕʰʃʰ'), 'sɕʃ');
   assert.equal(normalizeIpaBroadCandidate('pʰtʰkʰk͈aːt̚'), 'pʰtʰkʰk͈aːt̚');
+});
+
+test('shared broad-candidate profile exposes feature loss and keeps sibilant place distinctions', () => {
+  const audit = normalizeIpaBroadCandidateWithLoss('ˈsʰɭɲɦçxɣɸβʝʷ̠ːt̚k͈');
+  assert.equal(audit.normalized, 'slnhhhhhhhːt̚k͈');
+  assert.deepEqual(audit.feature_loss_counts, {
+    fricative_aspiration: 1,
+    h_labialization: 1,
+    h_place: 2,
+    h_place_and_manner: 2,
+    h_place_and_voicing: 1,
+    h_place_voicing_and_manner: 1,
+    h_voicing: 1,
+    lateral_retroflexion: 1,
+    nasal_palatalization: 1,
+    selected_segmental_quality_diacritics: 1
+  });
+  assert.equal(normalizeIpaBroadCandidate('s͈i'), 's͈i');
+  assert.equal(normalizeIpaBroadCandidate('ɕʰi'), 'ɕi');
 });
 
 test('benchmark scores resolved IPA even when Ukrainian target mapping is unavailable', () => {
