@@ -52,7 +52,7 @@ def build_packets(manifest_path: Path, output_dir: Path) -> dict[str, Any]:
         filename = f"reviewer-{reviewer.lower()}.csv"
         path = output_dir / filename
         with path.open("w", encoding="utf-8-sig", newline="") as handle:
-            writer = csv.DictWriter(handle, fieldnames=FIELDS, lineterminator="\n")
+            writer = csv.DictWriter(handle, fieldnames=FIELDS, quoting=csv.QUOTE_ALL, lineterminator="\n")
             writer.writeheader()
             for case in cases:
                 writer.writerow({
