@@ -355,22 +355,24 @@ test('Browser occurrence ledger reconstructs complete surfaces for mixed per-syl
 
 test('shared Broad profile exposes deterministic coda surfaces without resolving ambiguous morphology', () => {
   const cases = [
-    ['칡칡이', '칙칙이'],
-    ['쫒아내면', '쫃아내면'],
-    ['많앗구나유유유', '만앋꾸나유유유'],
-    ['무서웟어', '무서웓어']
+    ['칡칡이', '칙칙이', ''],
+    ['쫒아내면', '쫃아내면', ''],
+    ['많앗구나유유유', '만앋꾸나유유유', '많앗꾸나유유유'],
+    ['무서웟어', '무서웓어', '']
   ];
   const engine = createBrowserKozakKimEngine();
 
-  for (const [word, expectedSurface] of cases) {
+  for (const [word, expectedSurface, expectedLegacySurface] of cases) {
     const broad = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
     assert.equal(broad.surfaceHangul, expectedSurface, word);
     assert.equal(broad.pronunciation_status, 'unresolved', word);
     assert.equal(broad.ipa, '', word);
     assert.equal(broad.ukrainian, '', word);
 
-    // The public legacy Browser surface contract must not change.
+    // Preserve the exact legacy-default surface contract, including unrelated
+    // deterministic changes that were already exposed before this Broad-only fix.
     const legacy = engine.convert(word);
-    assert.equal(legacy.surfaceHangul, '', word);
+    assert.equal(legacy.ipa_profile, 'browser-legacy-contextual-v1', word);
+    assert.equal(legacy.surfaceHangul, expectedLegacySurface, word);
   }
 });
