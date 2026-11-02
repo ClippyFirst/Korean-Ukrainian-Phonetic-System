@@ -448,9 +448,9 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       : 'model-selected';
   return{
     source:text,
-    ipa_profile:superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
+    ipa_profile:useSharedBroadIpaProfile?'clippyfirst-korean-broad-v1':superSoftOn?'browser-super-soft-maximum-coverage-v1':options.surfaceMode?'browser-surface-mode-legacy-v1':'browser-legacy-contextual-v1',
     ipa_profile_version:1,
-    ipa_profile_level:superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
+    ipa_profile_level:useSharedBroadIpaProfile?'broad':superSoftOn?'orthographic-fallback-enabled':options.surfaceMode?'surface-mode':'surface-contextual',
     ipa_profile_status:'unadjudicated-cross-runtime',
     surfaceHangul:recomposed===originalHangul?'':recomposed,
     ukrainian:unresolvedWholeHangulToken||targetMappingUnavailable||(pronunciation_status==='partial'&&!superSoftOn)||provisionalCandidateAvailable||superSoftCandidateAvailable?'':output.join(''),
