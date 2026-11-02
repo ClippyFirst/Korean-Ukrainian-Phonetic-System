@@ -18,7 +18,7 @@ Seven separate system-blind pilot packets are provided for C01–C07. They inclu
 
 All 39 unique source-row identifiers used by the seven packets were matched to the official [UGTPHON Korean test split](https://github.com/naver-ai/UGTPHON/tree/main/ko); every target token is present in its included raw source sentence. The official `ko/LICENSE` states Apache-2.0 for the Korean subset. The packets include raw sentence text only — no canonical forms, phoneme annotations, IPA-Dict entries, system outputs, or reference IPA. They preserve attribution to UGTPHON, KoMultiText, and MultiLexNorm++. **Blinding limitation:** source-row IDs and public source sentences remain identifiable; these packets withhold references and system outputs but cannot guarantee source-identity blindness. Reviewers must not retrieve UGTPHON's own IPA annotations or prior engine outputs during first-pass scoring.
 
-The packets are **ready for independent pilot review**, not a complete cluster census. Preserve the Apache-2.0 notice and attribution when sharing. The raw MultiLexNorm++ source files are not redistributed; upstream provenance/terms remain documented as a limitation.
+The packets are **prepared for independent pilot review once the context and item-level rights gates are cleared**; they are not currently cleared for external distribution and are not a complete cluster census. Preserve the Apache-2.0 notice and attribution when sharing. The raw MultiLexNorm++ source files are not redistributed; upstream provenance/terms remain documented as a limitation.
 
 ## Protocol
 
