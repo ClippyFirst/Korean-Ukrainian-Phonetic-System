@@ -61,6 +61,7 @@ def test_broad_candidate_normalizer_uses_shared_profile_and_reports_feature_loss
         "h_place_voicing_and_manner": 1,
         "h_voicing": 1,
         "lateral_retroflexion": 1,
+        "lexical_stress": 1,
         "nasal_palatalization": 1,
         "selected_segmental_quality_diacritics": 1,
     }
@@ -98,7 +99,7 @@ def test_native_competitor_error_analysis_finds_losses_to_both_baselines():
     assert report["three_way_common_scored_occurrences"] == 3
     assert report["native_loses_to_both"]["strict_native_not_exact_both_competitors_exact"]["count"] == 1
     assert report["native_loses_to_both"]["strict_native_distance_worse_than_both"]["count"] == 2
-    assert report["native_loses_to_both"]["broad_native_not_exact_both_competitors_exact"]["count"] == 1
+    assert report["native_loses_to_both"]["broad_native_not_exact_both_competitors_exact"]["count"] == 2
     assert report["native_loses_to_both"]["broad_native_distance_worse_than_both"]["count"] == 2
     assert report["comparisons"]["g2pk_0_9_4"]["strict"]["paired_scored_occurrences"] == 3
     assert report["comparisons"]["g2p_ko_1_0_0"]["broad_candidate"]["paired_scored_occurrences"] == 3
