@@ -1,3 +1,60 @@
+## 2026-11-02 continuation ledger — PR #420
+
+**Starting point:** PR #419 head `88cae4bdeefce66ee8026bb1380f17271c85630d` (itself stacked on the existing #417 chain).  
+**Working branch:** `research/kozak-kim-runtime-parity-broad-v2-2026-11-02`  
+**PR:** [#420](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/420), draft, based on #419.  
+**Scope:** Kozak Kim only. Original g2pK is preserved as a comparator baseline; no g2pK/vendor files are changed.
+
+| Priority | Status | Evidence / remaining acceptance |
+|---|---|---|
+| 1. Native/Browser runtime parity | PARTIAL | Added explicit Browser selection of `clippyfirst-korean-broad-v1` without changing its default legacy profile; added same-occurrence audit with profile-contract, complete surface-Hangul, raw/broad IPA and paired-gold checks. Exact-head CI artifact still pending. |
+| 2. Broad IPA benchmark v2 | PARTIAL | Shared versioned sensitivity profile is applied to all comparison engines; per-engine feature-loss and serialization-loss counts plus coverage-adjusted exact/CER are emitted. Exact-head multi-engine artifact still pending. |
+| 3. Native error analysis vs g2pK and g2p-ko | PARTIAL | Added occurrence-level pairwise and three-way loss reports. Historical raw-artifact review shows many apparent losses are reference-convention omissions; see the discrepancy report. Re-run after the R013 boundary fix before final counts. |
+| 4. Independent IPA gold | PARTIAL / BLOCKED | Frozen 24-item holdout remains prediction-free. Separate reviewer A/B templates and a reproducible packet builder are ready. Two qualified independent annotations and adjudication remain external blockers. |
+| Preserve original g2pK | DONE_VERIFIED | PR #420 changed-file list contains no g2pK or vendor-g2pK paths. |
+| Avoid new phonological rules | DONE_VERIFIED | This continuation adds no general phonological rule. It selects an existing IPA profile for benchmarking; the already source-backed R013 boundary correction is retained. |
+
+### Reproducible baseline recomputation (pre-R013-fix raw artifact)
+
+The old multi-engine artifact did not serialize broad metrics, so broad scores below were recomputed from its per-occurrence raw IPA predictions using the repository's versioned `korean-broad-candidate-sensitivity-v1` normalizer. These are historical diagnostic values, not the final v2 artifact and not adjudicated accuracy.
+
+| Engine | UGTPHON broad exact | UGTPHON broad CER | SIGMORPHON broad exact | SIGMORPHON broad CER |
+|---|---:|---:|---:|---:|
+| Kozak Kim Native | 86.25% (2698/2703 scored) | 2.22% | 69.64% (695/998 scored) | 6.23% |
+| g2pK 0.9.4 | 85.72% | 2.37% | 68.67% | 6.46% |
+| g2p-ko 1.0.0 | 84.83% | 2.54% | 69.07% | 6.31% |
+| KoG2Padvanced | 70.29% | 4.92% | 59.76% | 8.78% |
+| phonemize | 70.33% | 7.73% | 58.26% | 9.31% |
+| KoG2P 2019 | 40.77% | 13.35% | 34.53% | 14.39% |
+| kokorog2p | 28.49% | 20.39% | 20.42% | 23.18% |
+| hama | 28.30% | 18.98% | 27.53% | 19.99% |
+| hangul_to_ipa | 25.75% | 19.61% | 17.22% | 23.48% |
+| espeak-ng | 12.06% | 29.92% | 6.71% | 36.33% |
+
+The Native target of 90%+ broad exact and <=2% broad CER is **not yet met** on either historical set. Coverage-adjusted exact is 86.09% UGTPHON and 69.57% SIGMORPHON for Native. Broad profile status remains research-only/unadjudicated; the profile removes documented distinctions and its feature-loss report must accompany every score.
+
+### Runtime root cause found
+
+On the old paired UGTPHON artifact, 2698 occurrences were scored by both runtimes: 2466 raw IPA outputs matched and 232 differed. Of the 232 differences, 231 were only `s` vs `ɕ`; one was the old `올게이` / R013 boundary false positive. The Python Native profile was `clippyfirst-korean-broad-v1`; Browser was `browser-legacy-contextual-v1`. Therefore the former 93.81% Browser broad score was not comparable with Native 86.25% and must not be presented as a runtime advantage. The benchmark now explicitly selects the shared broad IPA profile and leaves Browser's default behavior unchanged. The new audit must verify the full profile contract and complete surface output before any 99.9% parity claim.
+
+### Error triage found in the same historical artifact
+
+- `출산`: NIKL §26 / existing R012 supports `[출싼]`; the corpus gold omits the fortis distinction. Existing rule/test retained.
+- `없는`, `없어`, `알다`: source-backed lexical length is present in Kozak Kim but omitted by the corpus annotation. Existing C09 evidence retained; do not strip length to improve exact match.
+- `올게이`: old R013 substring false positive is fixed by the current boundary guard and regression coverage.
+- `대한민국`: NIKL Basic Dictionary entry 70041 records `[대ː한민국]` (source S017). Native and both baselines omit length in the old artifact; the IPA vowel-quality choice still requires expert review, so no speculative lexical IPA was added.
+
+### Independent review packet
+
+`research/ipa-holdout-review-packets/reviewer-a.csv` and `reviewer-b.csv` are separate blank templates with no engine outputs or IPA gold. `scripts/build_ipa_holdout_review_packets.py` records manifest and packet SHA-256 hashes and refuses to overwrite existing annotations. The 24 items remain a frozen holdout with tuning prohibited.
+
+### Verification state
+
+- A prior system verification run passed on the assertion-correction head; later exact-head runs are pending and must be read before marking this continuation complete.
+- Multi-engine workflow now runs Native and Browser on the same pinned UGTPHON test occurrences, validates occurrence-ledger schema v2, checks profile-contract equality, prints broad metrics and feature losses, and uploads the runtime-parity report.
+- The final commit SHA and exact-head CI outcomes are to be filled after the current workflow completes. Do not mark parity or release gates complete based on historical artifacts.
+- No local test run is claimed; verification is through repository CI.
+
 # Superpowers execution ledger — latest continuation 2026-11-02
 
 ## Latest verified status — discrepancy-ledger audit and evidence-gated revalidation
