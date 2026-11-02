@@ -371,3 +371,28 @@ def test_c09_length_discrepancies_have_exact_dictionary_surface_evidence():
         assert "item-level" in source["license_status"].lower()
     no_length = rows["SRC-KRDICT-ENG-89445"]
     assert "알다[알ː다]" in no_length["coverage"]
+
+
+
+def test_c01_c07_allophone_profile_research_is_registered_with_bounded_scope():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    expected = {
+        "SRC-PLSA-KOREAN-LIQUID-2021": ("retroflex", "pauses"),
+        "SRC-CAMBRIDGE-KOREAN-IPA": ("[ç]", "[x]", "[p̚]"),
+        "SRC-KCI-KANG-LEE-2019-H": ("Seoul", "Gwangju"),
+        "SRC-KCI-AHN-2014-N-PALATALIZATION": ("늬", "[ɲi]"),
+        "SRC-KCI-YUN-2005-KOREAN-GLIDES": ("[ɥ]", "front vowel"),
+    }
+    for source_id, terms in expected.items():
+        source = rows[source_id]
+        assert all(term in source["coverage"] for term in terms), source_id
+        assert "not" in source["limitations_or_next_action"].lower(), source_id
+        assert "item-level" in source["license_status"].lower(), source_id
+
+
+def test_c10_seoul_korean_prosody_sources_do_not_license_word_level_stress():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-SAGE-BAEK-2022-KOREAN-PROSODY"]
+    assert "does not have lexical prominence" in source["coverage"]
+    assert "Accentual Phrase" in source["coverage"]
+    assert "not lexical word stress" in source["limitations_or_next_action"]
