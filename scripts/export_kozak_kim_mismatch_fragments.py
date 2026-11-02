@@ -27,7 +27,9 @@ def graphemes(value: str) -> list[str]:
     """Keep each base code point with following combining marks."""
     result: list[str] = []
     for char in unicodedata.normalize("NFC", value):
-        if unicodedata.combining(char) and result:
+        codepoint = ord(char)
+        ipa_modifier = 0x02B0 <= codepoint <= 0x02FF and char not in {"ˈ", "ˌ"}
+        if (unicodedata.combining(char) or ipa_modifier) and result:
             result[-1] += char
         else:
             result.append(char)
