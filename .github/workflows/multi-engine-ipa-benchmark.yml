@@ -169,6 +169,12 @@ jobs:
       - name: Audit training readiness and frozen-holdout overlap
         run: python scripts/audit_v3_training_readiness.py --output "$RUNNER_TEMP/v3-training-readiness.json"
 
+      - name: Generate independent IPA holdout reviewer packets
+        run: |
+          python scripts/build_ipa_holdout_review_packets.py \
+            --manifest data/korean/benchmarks/ipa-holdout-24-manifest.json \
+            --output-dir "$RUNNER_TEMP/ipa-holdout-review-packets"
+
       - name: Run multi-engine comparison
         env:
           KOG2P_ROOT: ${{ runner.temp }}/KoG2P
@@ -410,6 +416,7 @@ jobs:
             ${{ runner.temp }}/sigmorphon-multi-engine-ipa-stdout.json
             ${{ runner.temp }}/sigmorphon-phonemize-predictions.json
             ${{ runner.temp }}/v3-training-readiness.json
+            ${{ runner.temp }}/ipa-holdout-review-packets/
           if-no-files-found: warn
           retention-days: 30
 
