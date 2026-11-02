@@ -415,6 +415,12 @@ test('shared Broad profile exposes Lee 1999 intervocalic [ɸ] and [ɭ] as option
   const liquid = engine.convert('나라', { ipaProfile: 'clippyfirst-korean-broad-v1' });
   assert.equal(liquid.ipa, 'na.ɾa');
   assert.ok(liquid.variants.some(variant => variant.ipa === 'na.ɭa'));
+
+  // Word-initial ㄹ before a glide is a tap context here, not the cited
+  // intervocalic /l/ environment; do not emit a spurious [ɭ] candidate.
+  const initialLiquid = engine.convert('례', { ipaProfile: 'clippyfirst-korean-broad-v1' });
+  assert.equal(initialLiquid.ipa, 'ɾje');
+  assert.ok(!initialLiquid.variants.some(variant => variant.ipa.includes('ɭ')));
 });
 
 test('shared Broad profile exposes [ɕ] before all Lee 1999 /j/-initial diphthongs only as variants', () => {
