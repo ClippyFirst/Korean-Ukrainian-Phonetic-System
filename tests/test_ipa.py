@@ -274,3 +274,14 @@ def test_narrow_sibilant_profile_includes_yae_but_broad_keeps_it_optional():
     broad = phoneticize_korean("섀")["ipa"]
     assert broad["ipa"] == "sjɛ"
     assert any(variant["ipa"] == "ɕjɛ" for variant in broad["variants"])
+
+def test_broad_h_allophones_are_optional_and_profile_scoped():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    hi = phoneticize_korean("히")["ipa"]
+    hu = phoneticize_korean("후")["ipa"]
+    assert hi["ipa"] == "hi"
+    assert any(item["ipa"] == "çi" for item in hi["variants"])
+    assert hu["ipa"] == "hu"
+    assert any(item["ipa"] == "xu" for item in hu["variants"])
+    assert phoneticize_korean("하")["ipa"]["variants"] == []
