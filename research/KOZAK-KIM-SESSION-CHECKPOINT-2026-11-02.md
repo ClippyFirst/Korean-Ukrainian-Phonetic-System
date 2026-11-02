@@ -1,0 +1,99 @@
+# Kozak Kim session checkpoint — 2026-11-02
+
+## Saved state
+
+- Repository: `ClippyFirst/Korean-Ukrainian-Phonetic-System`
+- Draft PR: https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423
+- Branch: `research/kozak-kim-mismatch-fragment-triage-2026-11-02`
+- Exact saved HEAD at checkpoint creation: `a93a371c92542085086ee292a58f01b370f23384`
+- Base branch: `fix/kozak-kim-surface-parity-and-lexical-length-2026-11-02`
+- Base SHA: `e7933ae4a67c94f0f69b4747d8e388aa082fc347`
+- PR remains **Draft / open / unmerged**.
+- Scope remains **Kozak Kim only**. Original upstream g2pK and vendor source are untouched.
+
+## Work already stored in the branch
+
+1. Occurrence-level mismatch-fragment exporter:
+   - `scripts/export_kozak_kim_mismatch_fragments.py`
+   - diagnostic-only; labels are `UNADJUDICATED_DIAGNOSTIC`
+   - grapheme-cluster Levenshtein alignment, explicitly not phoneme alignment
+   - missing occurrence ledgers fail closed
+   - C12 classifier detects full-IPA `kx/kç` vs `kʰ`, suppressing the misleading fragment-only C04/C02 labels.
+2. Algorithm/profile work:
+   - `src/korean_ukrainian/ipa.py`: narrow profile v4; contextual [ç]/[x]; ㅒ added to scoped lenis sibilant context; optional [ɕ] and [ɥi] variants in broad IPA.
+   - `src/app/engine_lexical.js` and `src/app/engine_convert.js`: matching optional variants for shared Browser Broad profile; legacy default output remains unchanged.
+   - Canonical Broad outputs remain unchanged; optional variants are inspectable candidates. Fortis ㅆ is not force-palatalized.
+3. Tests:
+   - `tests/test_ipa.py`
+   - `tests/test_narrow_ipa.py`
+   - `tests/kozak-kim-ipa-first-benchmark.test.mjs`
+   - `tests/test_export_kozak_kim_mismatch_fragments.py`
+   - Latest fix updated combined [ɥi] variant enumeration and stale narrow profile v3 assertions to v4.
+4. Evidence registry:
+   - `data/korean/sources.csv`: S018 Lee (1999, JIPA); S019 Kang (2010); S020 Kim (2011, UCL thesis).
+5. Reports/handoff:
+   - `research/KOZAK-KIM-MISMATCH-FRAGMENT-TRIAGE-2026-11-02.md`
+   - `docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md`
+   - PR #423 body has the current scope, findings, verification state, and blockers.
+
+## Diagnostic findings preserved
+
+From the pinned UGTPHON test artifact (2,698 scored Native occurrences):
+- 1,267 strict non-exact cases; 370 Broad non-exact cases. These are not adjudicated engine errors.
+- Largest Broad fragment cluster: `ɕ → s`, 229 edit operations / 227 occurrences. Treat as profile/allophony disagreement unless independently adjudicated.
+- Other clusters include `kx/kç` vs `kʰ`, ㅟ [y] vs [ɥi], unreleased-coda marking, liquid realizations, and lexical length.
+- No corpus-specific production rewrite was applied to C06, C01/C07, C09, or C12 because evidence is insufficient.
+- Existing previous result: UGTPHON Native strict exact 53.0393%, CER 9.0613%; Broad exact 86.2861%, CER 2.2038%. Do not claim the new optional variants improve accuracy; fresh exact-head benchmark is pending.
+- Training readiness remains false. Do not train on UGTPHON, SIGMORPHON test, or frozen holdout.
+
+## CI state at the saved HEAD
+
+For prior head `4fd78d59a46ccc4da8e6e57cff27899dff149987`:
+- Browser G2P integration PASS: run 41468344488.
+- External UGTPHON diagnostic PASS: run 41468344619.
+- Exhaustive test-case register extraction PASS: run 41468344570.
+- Paired Native-vs-g2pk PASS: run 41468344781.
+- Morphology-consensus diagnostic PASS: run 41468344848 (verify exact run ID if needed; prior fetch listed 41468344847).
+- General Verify: Browser/build job PASS; Python tests failed on two stale assertions. Failure details:
+  - combined `괴물귀` variants expected only [wi], but [ɥi] was newly added;
+  - `tests/test_narrow_ipa.py` expected v3 profile metadata after profile bump to v4.
+- Both stale assertions were corrected in commits ending at saved HEAD `a93a371...`.
+
+Fresh exact-HEAD runs triggered for saved HEAD:
+- Verify Korean–Ukrainian system: 41469463074 (in progress at checkpoint).
+- Browser G2P integration: 41469463354 (in progress).
+- Multi-engine Korean IPA diagnostic benchmark: 41469462964 (in progress).
+- External UGTPHON diagnostic: 41469462940 (in progress).
+- Paired Native vs g2pk: 41469463295 (in progress).
+- Morphology-consensus diagnostic: 41469463084 (in progress).
+- Exhaustive test-case register extraction: 41469462951 (in progress).
+
+## Resume checklist
+
+1. Query PR #423 and branch HEAD first; it may have advanced after this checkpoint.
+2. Fetch the exact-head workflow runs and wait for completion. Inspect Python failure logs if any; Browser/build and multi-engine must be checked separately.
+3. Fix only verified failures; update this checkpoint and master handoff in place.
+4. Download the successful multi-engine artifact and run the mismatch exporter to generate and inspect the actual CSV table. Do not invent or hand-edit occurrence annotations.
+5. Compare final benchmark metrics with the saved baseline; do not call a gain unless measured.
+6. Reconcile all open PRs/branches in the PR chain; do not merge automatically.
+7. Keep remaining tasks blocked until independent IPA adjudication, NIKL rights review, and Ukrainian target adaptation validation are completed.
+
+## Current task ledger
+
+| Work item | Status | Evidence / acceptance |
+|---|---|---|
+| Mismatch fragment exporter and tests | PARTIAL | Code and unit tests committed; generate/inspect CSV from exact-head benchmark artifact |
+| C12 cluster classification correction | DONE_VERIFIED (unit-level) | Full IPA classifier test; exact-head CI pending |
+| Optional allophone candidates [ɕ], [ɥi], [ç], [x] | PARTIAL | Native/Browser code and regression tests; exact-head CI and linguistic adjudication pending |
+| Narrow profile v4 | PARTIAL | Source-scoped code and tests; exact-head CI pending |
+| Master triage and source registry | DONE_VERIFIED (documented) | Files committed; linguistic generalizations remain bounded by listed sources |
+| Exact-head CI | TODO | Runs above still in progress |
+| Final multi-engine comparison | TODO | Run 41469462964 still in progress |
+| Independent IPA gold | BLOCKED | Two qualified independent reviewers/adjudication not yet available |
+| NIKL rights review | BLOCKED | Licensing/permission evidence required |
+| Ukrainian target adaptation validation | TODO | Target-inventory and adaptation review required |
+| Release readiness | DEFERRED | Research prototype only; not release-ready |
+
+## Important boundaries
+
+No merge, release, publication, or external settings changes were made. This checkpoint records the repository state and the next exact actions.
