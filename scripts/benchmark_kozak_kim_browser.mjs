@@ -220,7 +220,9 @@ export function evaluateRows(rows, engine) {
         if (pronunciationStatus === 'heuristic') {
           heuristicTokens += 1;
           records.push({
+            occurrence_id: occurrenceId,
             id: row.id, token: canonical, status: pronunciationStatus,
+            surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
             target_status: result.target_status ?? null, predicted: null
           });
           continue;
