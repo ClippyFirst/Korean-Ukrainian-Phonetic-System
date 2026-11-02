@@ -1,3 +1,18 @@
+## 2026-11-02 — Runtime and benchmark coverage
+
+| Coverage item | Evidence / implementation | Status |
+|---|---|---|
+| Shared Native/Browser IPA contract | Explicit Browser `ipaProfile: clippyfirst-korean-broad-v1`; legacy default preserved; full profile metadata compared | PARTIAL — exact-head parity artifact pending |
+| Stable cross-runtime occurrence identity | Browser and Native ledgers use ordered occurrence IDs and row/token/gold identity checks | PARTIAL — exact-head artifact pending |
+| Full surface Hangul parity | Browser complete surface reconstructed from syllable trace; Native surface included in occurrence ledger | PARTIAL — exact-head artifact pending |
+| Strict IPA comparison | Strict exact/CER retained separately from Broad sensitivity scores | DONE_IMPLEMENTED; exact-head output pending |
+| Broad IPA v2 for all engines | Shared `korean-broad-candidate-sensitivity-v1` profile; per-engine exact/CER, coverage and feature-loss counts | PARTIAL — exact-head multi-engine artifact pending |
+| Native losses vs g2pK and g2p-ko | Pairwise and three-way occurrence-level reports, including both-baselines-win cases | PARTIAL — re-run after R013 fix pending |
+| Independent IPA gold | Frozen 24-item holdout; reviewer A/B templates and deterministic packet generator | PARTIAL / BLOCKED — two independent reviewers and adjudication required |
+| Original g2pK baseline | No g2pK/vendor files changed in PR #420 | DONE_VERIFIED |
+
+The Broad sensitivity profile intentionally removes selected narrow distinctions and is research-only. Do not use its score as normative IPA accuracy. The old Native/Browser 7.56 pp gap is invalid as a runtime ranking because the old reports used different IPA profiles.
+
 # Initial specification → final implementation coverage
 
 Audit date: 2026-10-02
