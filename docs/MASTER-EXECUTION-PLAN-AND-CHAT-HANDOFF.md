@@ -12,7 +12,7 @@
 |---|---|---|
 | Preserve Kozak Kim implementation and IPA-first pipeline | DONE_VERIFIED for current code/test head | Existing Python/browser pipeline and IPA trace remain in place; no parallel engine or replacement implementation added. |
 | Original g2pK baseline integrity | DONE_VERIFIED | No original/vendor g2pK source file is in PR #417's changed-file list. Paired artifacts preserve the original baseline; g2pK predictions are unchanged across the two C08 context changes. |
-| C01–C07 blind IPA packets | DONE_VERIFIED (packet preparation only) | Seven system-blind, reference-withheld packets, 42 entries, 39 unique pinned UGTPHON source rows with raw sentence context and no engine/reference IPA leakage. Source IDs and public sentences remain identifiable; reviewer instructions explicitly prohibit consulting corpus gold or engine outputs. |
+| C01–C07 blind IPA packets | DONE_VERIFIED (packet preparation only) | Seven system-blind, reference-withheld packets, 42 entries, 39 unique pinned UGTPHON source rows with raw sentence context and no engine/reference IPA leakage. Source IDs and public sentences remain identifiable; reviewer instructions explicitly prohibit consulting corpus gold or engine outputs. |\n| C01–C07 profile-level phonetics review | PARTIAL / LITERATURE-REVIEWED | Peer-reviewed sources now document the /l/ onset/coda distinction and retroflex variation, conditioned /h/ realizations, context-specific /n/ palatalization, and competing /y/–[ɥ] analyses. Exact corpus-token IPA review remains open; broad profile stays default and narrow stays research-only. |
 | Independent C01–C07 IPA adjudication | BLOCKED | No reviewer submissions. Acceptance requires two qualified independent first-pass submissions, frozen before comparison, followed by explicit disagreement reconciliation. |
 | C08 source-context mapping | PARTIAL / TRACEABILITY-LIMITED | All eight working contexts are in the pinned fixture. Three IDs were independently recovered; five were reconstructed from the exact target-token/context plus fortis-mismatch signature because the original extraction table is missing. |
 | C08 morphology and pronunciation evidence | PARTIAL | Seven conditional -(으)ㄹ + dependent-noun environments have narrow NIKL leads. Q&A 317798, 310899 and 331601 are active; provisional 335204/336313 are removed. `유사성` remains unresolved. None of these sources supplies exact-token IPA gold for all UGC occurrences. |
@@ -22,6 +22,17 @@
 | C09 vowel length | PARTIAL / SOURCE-LENGTH-CONFIRMED | Official NIKL evidence now confirms long-vowel notation for all seven named forms (사람, 괴성, 모르다, 알다, 없는, 없어, 이중성). Preserve length; IPA quality, syllable boundaries and sense-level context remain for review. 괴성 has two dictionary variants. |\n| C10 stress-prosody | BLOCKED / CONVENTION-REVIEW | Do not infer lexical primary stress from the noisy corpus; define the project IPA/prosody contract and obtain independent Korean prosody review. |
 | Ukrainian target review | BLOCKED | Korean IPA metrics do not validate Ukrainian orthographic choices; independent target review is absent. |
 | Supervised IPA training readiness | BLOCKED / NOT READY | Audit: 644 unique lexical rows, zero additions explicitly marked independently adjudicated IPA gold, 24 frozen holdout cases without IPA gold; no overlap detected. |
+
+
+## C01–C10 phonetic evidence continuation — 2026-11-02
+
+- Source register expanded to 166 rows (157 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license, 1 not applicable). Added five C09 dictionary/Q&A sources and six academic phonetics/prosody references.
+- C09: official NIKL sources confirm long-vowel surface notation for 사람, 괴성 (two variants [괴ː성/궤ː성]), 모르다, 알다, 없는, 없어 and 이중성. Keep length; IPA quality/syllabification remain distinct from Hangul dictionary notation.
+- C01/C07: Korean liquid /l/ is conventionally onset flap [ɾ], coda/geminate lateral [l]; retroflex variants show speaker/prosodic variation and may increase near pauses. No global [ɭ] rule.
+- C02: /h/ realizations are conditioned and dialect-sensitive; preserve broad /h/ default and narrow [ɦ] as a partial research candidate only.
+- C03: [ɲi] evidence is specific to 늬 and does not justify universal /n/ palatalization. C05: /y,ø/ versus [ɥ]/[wi,we] analyses compete; preserve alternatives. C04 is an IPA convention issue. C06 release detail belongs to narrow, not broad, IPA.
+- C10: peer-reviewed Seoul Korean prosody work supports no English-style lexical word stress; broad lexical IPA should not acquire ˈ from noisy benchmark references. Phrase-level AP/IP prosody is a separate layer.
+- No production phonology code changed. Added source-register integrity tests, cluster-decision tests and a regression test that broad Seoul IPA does not add lexical primary stress. The final CI result for the latest branch head must be recorded before claiming verification.
 
 ## Latest paired and multi-engine results
 
