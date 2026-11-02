@@ -259,10 +259,6 @@ jobs:
                   print(f"  paired_BROAD={bp.get('paired_tokens')} "
                         f"delta_exact={bp.get('exact_rate_delta_candidate_minus_native')} "
                         f"delta_CER={bp.get('cer_delta_candidate_minus_native')}")
-                  bp = p.get("broad_candidate", {})
-                  print(f"  paired_BROAD={bp.get('paired_tokens')} "
-                        f"delta_exact={bp.get('exact_rate_delta_candidate_minus_native')} "
-                        f"delta_CER={bp.get('cer_delta_candidate_minus_native')}")
           engines = r["engines"]
           assert "g2pk_0_9_4" in engines
           assert engines["g2pk_0_9_4"]["scored_tokens"] > 0
@@ -317,7 +313,7 @@ jobs:
           print("IPA parity:", {k: v for k, v in report["ipa_parity"].items() if not k.endswith("examples")})
           print("Paired strict:", report["paired_gold_diagnostic"]["strict"])
           print("Paired broad:", report["paired_gold_diagnostic"]["broad_candidate"])
-          print("Profile differences are reported, not forced into a false PASS.")
+          print("A profile-contract mismatch fails this paired audit; IPA parity is only interpreted under the shared profile.")
           PY
 
 
@@ -348,7 +344,7 @@ jobs:
           ledger = r.get("per_engine_occurrences")
           expected = r["eligible_token_occurrences"]
           if r.get("occurrence_ledger_schema_version") != 2 or not isinstance(ledger, dict):
-              raise SystemExit("baseline report lacks occurrence-ledger schema v1")
+              raise SystemExit("baseline report lacks occurrence-ledger schema v2")
           if set(ledger) != set(r["engine_order"]):
               raise SystemExit("occurrence-ledger engine keys do not match engine_order")
           expected_ids = [str(i) for i in range(expected)]
