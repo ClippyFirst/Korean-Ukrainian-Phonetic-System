@@ -17,7 +17,7 @@ def test_alignment_keeps_combining_marks_attached_to_base():
     edits = MODULE.align("sʰa̠", "sa")
     assert edits == [
         {"op": "S", "reference_fragment": "sʰ", "kozak_fragment": "s"},
-        {"op": "D", "reference_fragment": "a̠", "kozak_fragment": ""},
+        {"op": "S", "reference_fragment": "a̠", "kozak_fragment": "a"},
     ]
 
 
