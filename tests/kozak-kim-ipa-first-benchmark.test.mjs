@@ -9,6 +9,31 @@ import {
   normalizeIpaBroadCandidateWithLoss
 } from '../scripts/benchmark_kozak_kim_browser.mjs';
 
+test('browser can explicitly select the shared Python broad IPA profile without changing its default', () => {
+  const engine = createBrowserKozakKimEngine();
+  const legacy = engine.convert('시파', { morphologyMode: 'strict' });
+  const broad = engine.convert('시파', {
+    morphologyMode: 'strict',
+    ipaProfile: 'clippyfirst-korean-broad-v1'
+  });
+
+  assert.equal(legacy.ipa_profile, 'browser-legacy-contextual-v1');
+  assert.match(legacy.ipa, /ɕ/u);
+  assert.equal(broad.ipa_profile, 'clippyfirst-korean-broad-v1');
+  assert.equal(broad.ipa_profile_version, 1);
+  assert.equal(broad.ipa_profile_level, 'broad');
+  assert.equal(broad.ipa_profile_status, 'unadjudicated-cross-runtime');
+  assert.ok(!broad.ipa.includes('ɕ'));
+  assert.throws(
+    () => engine.convert('시파', { morphologyMode: 'strict', ipaProfile: 'unknown-profile' }),
+    TypeError
+  );
+  assert.throws(
+    () => engine.convert('시파', { morphologyMode: 'soft', ipaProfile: 'clippyfirst-korean-broad-v1' }),
+    TypeError
+  );
+});
+
 test('IPA normalization and edit distance match the Python benchmark contract', () => {
   assert.equal(normalizeIpa('kɡa.ɾɯn'), 'kɡaɾɯn');
   assert.equal(normalizeIpa('t͡ɕʰi'), 'tɕʰi');
