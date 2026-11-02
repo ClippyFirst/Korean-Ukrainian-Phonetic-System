@@ -354,6 +354,14 @@ def _build_per_engine_occurrences(
                 "token": word,
                 "gold": item["gold"],
             }
+            if engine == "clippyfirst_native":
+                source = native_cache.get(word, {})
+                record.update({
+                    "surface_hangul": source.get("surface_hangul"),
+                    "ipa_profile": source.get("ipa_profile"),
+                    "ipa_profile_version": source.get("ipa_profile_version"),
+                    "ipa_profile_status": source.get("ipa_profile_status"),
+                })
             scored = scored_by_id.get(occurrence_id)
             if scored is not None:
                 record.update({
@@ -1355,8 +1363,13 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     for word in words:
         try:
             result = phoneticize_korean(word)
+            ipa_payload = result.get("ipa", {})
             native_cache[word] = {
-                "ipa": result.get("ipa", {}).get("ipa"),
+                "ipa": ipa_payload.get("ipa"),
+                "surface_hangul": result.get("surface_hangul"),
+                "ipa_profile": ipa_payload.get("ipa_profile"),
+                "ipa_profile_version": ipa_payload.get("ipa_profile_version"),
+                "ipa_profile_status": ipa_payload.get("ipa_profile_status"),
                 "unresolved": result.get("pronunciation_status") == "unresolved",
                 "reason": result.get("ipa_status_reason"),
                 "unresolved_contexts": result.get("unresolved_contexts", []),
@@ -1619,6 +1632,14 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "reference_feature_loss_counts": _reference_broad_candidate_loss(items),
         },
         "engine_order": list(engine_results),
+        "native_ipa_profile": next((
+            {
+                "ipa_profile": value.get("ipa_profile"),
+                "ipa_profile_version": value.get("ipa_profile_version"),
+                "ipa_profile_status": value.get("ipa_profile_status"),
+            }
+            for value in native_cache.values() if value.get("ipa_profile")
+        ), None),
         "engines": engine_results,
         "occurrence_ledger_schema_version": 2,
         "per_engine_occurrences": _build_per_engine_occurrences(
