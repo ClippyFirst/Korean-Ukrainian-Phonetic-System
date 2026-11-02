@@ -15,7 +15,7 @@ def test_narrow_profile_aspirates_lenis_sibilant_without_changing_broad():
     assert narrow["ipa"] == "sʰa"
     assert narrow["level"] == "narrow"
     assert narrow["transcription_profile"]["name"] == "korean-narrow-contextual-allophones-v4"
-    assert narrow["ipa_profile_version"] == 4
+    assert narrow["ipa_profile_version"] == 5
     assert narrow["transcription_profile"]["target_compatible"] is False
     assert narrow["transcription_profile"]["limitations"]
 
@@ -69,3 +69,9 @@ def test_python_broad_fortis_sibilant_baseline_is_not_browser_profile_gold():
     # not adjudicate which profile is correct or enable target adaptation.
     assert _ipa("씨", "broad")["ipa"] == "s͈i"
     assert _ipa("싸", "broad")["ipa"] == "s͈a"
+
+def test_narrow_seoul_h_and_liquid_allophones_are_contextual():
+    assert _ipa("아하", "narrow")["ipa"] == "a.ɸa"
+    assert _ipa("나라", "narrow")["ipa"] == "na.ɭa"
+    assert _ipa("하", "narrow")["ipa"] == "ha"
+    assert _ipa("가을", "narrow")["ipa"] == "ka.ɯl"
