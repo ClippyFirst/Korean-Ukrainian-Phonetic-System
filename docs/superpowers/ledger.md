@@ -88,3 +88,11 @@ Kiwi/MeCab-Ko run 41353171166 is diagnostic only: partial boundary agreement for
 **Evidence-source correction (2026-11-02):** the earlier provisional references to NIKL Q&A 335204 and 336313 were removed from the active source register because their direct pages could not be independently retrieved in this verification pass. The current active basis is NIKL Q&A 317798 (Rule §27 examples and pause caveat), 310899 (colloquial dependent noun 거), 331601 (알 수 없는[알쑤엄는]), plus the already registered 307960/327466/313481/333044 and the official Rule §27 page. Older historical mentions of 335204/336313 are superseded and are not current evidence claims.
 
 - Native diagnostic [run 41358508325](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358508325), artifact `13104257589`: 2,698 paired; native CER 9.1047% vs g2pK 9.2304%; exact match 53.0393% vs 53.1134%; five native abstentions and zero engine errors. Separate profile from browser.
+
+## Final continuation record — 2026-11-02
+
+- Evidence/data/test head: `f5a3c7e92250ef72b874cc3a433b7fa941a95079`; docs head at this entry: `8c6f03029ddfac64be907e93381319a5f8084eb9` (handoff subsequently updated).
+- Source register 165 rows: 155 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses recorded, 1 not applicable. The unverified Q&A locator 302689 was removed; the official §14 source is used for 없어[업ː써].
+- Production-code head unchanged: `bc7b1474eecfe8df8006572abf0f07957f829647`; no production phonology changes. Original g2pK untouched.
+- Exact-head system verification run `41413254120` was QUEUED when recorded; Python/data and browser/build outcomes are not yet verified. NIKL metadata-only inventory skipped. Local tests not run due clone DNS failure.
+- Stop status: research prototype; all new source claims are scope-limited and tests added, but no release certification.
