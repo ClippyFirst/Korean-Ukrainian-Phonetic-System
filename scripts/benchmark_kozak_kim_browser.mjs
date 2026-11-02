@@ -175,6 +175,7 @@ export function evaluateRows(rows, engine) {
         continue;
       }
       eligibleTokens += 1;
+      const occurrenceId = String(eligibleTokens - 1);
       try {
         const result = engine.convert(canonical, { morphologyMode: 'strict' });
         if (profileMetadata === null) {
@@ -199,7 +200,9 @@ export function evaluateRows(rows, engine) {
             });
           }
           records.push({
+            occurrence_id: occurrenceId,
             id: row.id, token: canonical, status: pronunciationStatus,
+            surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
             target_status: result.target_status ?? null, predicted: null
           });
           continue;
@@ -207,7 +210,9 @@ export function evaluateRows(rows, engine) {
         if (pronunciationStatus === 'partial') {
           partialTokens += 1;
           records.push({
+            occurrence_id: occurrenceId,
             id: row.id, token: canonical, status: pronunciationStatus,
+            surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
             target_status: result.target_status ?? null, predicted: null
           });
           continue;
@@ -237,10 +242,12 @@ export function evaluateRows(rows, engine) {
         broadDistances.sort((a, b) => a.distance - b.distance);
         const broadClosest = broadDistances[0];
         records.push({
+          occurrence_id: occurrenceId,
           id: row.id,
           token: canonical,
           gold: goldRaw,
           predicted: predictedRaw,
+          surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
           normalized_predicted: predicted,
           closest_normalized_gold: closest.gold,
           distance: closest.distance,
@@ -263,7 +270,7 @@ export function evaluateRows(rows, engine) {
           error: error instanceof Error ? error.name + ': ' + error.message : String(error)
         };
         if (errorExamples.length < 100) errorExamples.push(item);
-        records.push({ ...item, status: 'engine_error', predicted: null });
+        records.push({ ...item, occurrence_id: occurrenceId, status: 'engine_error', predicted: null, surface_hangul: null });
       }
     }
   }
