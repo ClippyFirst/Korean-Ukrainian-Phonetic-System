@@ -1,11 +1,11 @@
 # Current handoff — Kozak Kim continuation, 2026-11-02
 
 **Branch:** `research/kozak-kim-mismatch-fragment-triage-2026-11-02`  
-**Current branch HEAD:** `5c775dfa6b6a969c320f47c1420c75ffa645e369`  
+**Latest code/test head (all subsequent commits are documentation-only):** `5c775dfa6b6a969c320f47c1420c75ffa645e369`  
 **PR:** [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), Draft, open, unmerged.  
 **Starting commit for this continuation:** `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`.  
 **Code/test commit:** `2762e8647a075ed8143503c3f4f19d1318ef0e7c`.  
-**Latest docs-only commit:** `5c775dfa6b6a969c320f47c1420c75ffa645e369`.
+The current branch HEAD is available from PR #423; no code or test files changed after the code/test head above.
 
 Scope remains Kozak Kim only. The original g2pK 0.9.4 code/vendor is untouched and is retained as the independent comparison baseline. The branch remains stacked on the existing PR chain (base PR #422); do not retarget, flatten, merge, or close the stack without explicit integration review.
 
