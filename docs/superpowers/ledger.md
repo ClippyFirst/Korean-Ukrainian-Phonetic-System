@@ -4,17 +4,18 @@
 
 - **Scope:** Kozak Kim only; original/vendor g2pK remains unchanged and comparison-only.
 - **Base:** current `main` is `7bbbd7e7ce888a9c995bb70959e17858263c07a8`; verified PR #417 head is `fb5e1686bd86fd012d63cc92ad0261efe1a38113`, a descendant of main.
-- **Current branch:** `research/kozak-kim-abstention-audit-2026-11-02`, documentation/evidence update only; no production phonology rule changed.
+- **Current branch/PR:** `research/kozak-kim-abstention-audit-2026-11-02`, Draft PR #419 stacked on #417; documentation plus regression tests only, no production phonology rule changed.
 - **PR stack:** #415 → #416 → #417 remains open/Draft. Exploratory PR #418 was closed unmerged because `중심닮음` was not present in the discrepancy ledger or the five-item native-abstention audit; its branch remains preserved for auditability. PRs #411/#414/#371 were inspected and left untouched as out of scope.
 - **Exact-head verification on fb5:** system run 41420395798 PASS (Python/data, browser/build/generated pages, 1,374/1,374 browser tests); browser G2P 41420395791 PASS; extraction 41420395790 PASS; native pair 41420395800 PASS; pinned UGTPHON 41420395792 PASS; morphology consensus 41420395813 PASS; adapter smoke 41420395784 PASS; multi-engine 41420395805 PASS. NIKL metadata inventory, CharsiuG2P and ByT5 SKIPPED.
 - **Browser pair:** run 41420395792 / artifact 13129915994; 2,699 shared; exact 53.4272% each; CER 8.0794% vs g2pK 8.2138%; delta −0.1344 pp, 95% sentence-cluster CI [−0.2246, −0.0531].
 - **Native pair:** run 41420395800 / artifact 13130305158; 2,698 shared; Kozak exact 53.0393% / CER 9.0744%; g2pK on shared subset exact 53.1134% / CER 9.2304%; five native abstentions, zero engine errors. g2pK has a small exact point edge; Kozak has lower CER.
 - **Multi-engine:** run 41420395805 / artifact 13129993707. UGTPHON: native 2,698 scored, exact 53.0393%, CER 9.0744%, PER 9.5378%; g2pK 2,703 scored, exact 53.0892%, CER 9.2285%, PER 9.6472%. SIGMORPHON: native 998 scored, exact 35.8717%, CER 14.6100%, PER 16.1721%; g2pK 999 scored, exact 35.3353%, CER 14.8222%, PER 16.3126%. Different denominators; no aggregate paired-delta claim. Both datasets remain diagnostic, not normative IPA gold; g2pK output uses the shared segment renderer.
 - **Five real UGTPHON native abstentions:** `칡칡이` (R002 boundary unknown), `쫒아내면` (nonstandard spelling; do not normalize), `많앗구나유유유` (R003 ending boundary unknown), `삶의` (Hangul surface sourced but IPA unadjudicated), `무서웟어` (nonstandard spelling and R002 boundary unknown). No safe global or exact new rule is justified.
+- **Abstention regression:** `test_actual_native_abstentions_remain_fail_closed_without_exact_morphology` covers the four morphophonological forms; the existing `삶의` test protects its two official Hangul variants and unresolved IPA gate. Push run 41425704134, PR run 41425711289 and extraction run 41425711296 all PASS on code/test head `4225cea7` (browser 1,374/1,374).
 - **삶의 evidence:** NIKL MCFAQ 5716 gives `[살믜]` and permitted `[살메]`; current lexical row already preserves project-derived `sal.mi` and `sal.me` as provisional. NIKL supplies Hangul surface forms, not IPA. Existing test correctly keeps IPA diagnostic-only/unresolved and withholds Ukrainian output pending independent IPA review.
 - **Rejected exploration:** `중심닮음` was not a project discrepancy or one of the five abstentions; PR #418 closed without merge. Do not count it as a product improvement.
 - **Readiness:** research prototype; not research-certified/release-ready. Blockers: two independent C01–C07 submissions, C08 source extraction/prosody, C09 IPA quality/syllabification, C10 AP/IP contract, item-level NIKL rights, Ukrainian target review, and skipped optional source/neural jobs.
-- **Local verification:** no local pytest/npm run; evidence is from GitHub Actions. Do not claim local test success.
+- **Local verification:** no local pytest/npm run; evidence is from GitHub Actions. Do not claim local test success. NIKL metadata inventory remains SKIPPED.
 
 ## Current next actions
 

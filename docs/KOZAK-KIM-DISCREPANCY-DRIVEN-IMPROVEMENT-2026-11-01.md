@@ -18,6 +18,8 @@ For `삶의`, the primary source is [NIKL MCFAQ 5716](https://www.korean.go.kr/f
 
 **Production decision:** no additional production phonology rule is justified by this audit. The existing abstention behavior is intentional and evidence-gated. The next real dependency is independent IPA adjudication for `삶의` and source/context evidence for the four morphophonological cases.
 
+**Regression guard:** `test_actual_native_abstentions_remain_fail_closed_without_exact_morphology` now asserts unresolved/diagnostic-only status and exact R002/R003 reasons for the four morphophonological tokens. The existing `삶의` test continues to verify [살믜]/[살메] and independent-IPA abstention. Exact-head push/PR system checks and extraction passed on `4225cea7`; browser tests remain 1,374/1,374.
+
 
 ## C01–C07 and C10 independent literature review — 2026-11-02
 

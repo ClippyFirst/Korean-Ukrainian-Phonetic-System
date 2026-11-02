@@ -3,7 +3,7 @@
 **Scope:** Kozak Kim only. Original/vendor g2pK remains unchanged and comparison-only.
 **Default branch:** `main` at `7bbbd7e7ce888a9c995bb70959e17858263c07a8`.
 **Verified implementation/test head:** `fb5e1686bd86fd012d63cc92ad0261efe1a38113`, a descendant of current main.
-**Documentation branch:** `research/kozak-kim-abstention-audit-2026-11-02`, based on the verified head above. No production code change is proposed in this continuation.
+**Documentation/test branch:** `research/kozak-kim-abstention-audit-2026-11-02`, based on the verified head above; Draft PR [#419](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/419) is stacked on #417. No production phonology code change is proposed in this continuation.
 **PR chain:** #415 → #416 → #417 remains open/Draft. Exploratory PR #418 was closed unmerged after its `중심닮음` candidate was found not to belong to the repository's discrepancy ledger or native-abstention audit; its branch is preserved, not merged or deleted. Other open PRs #411, #414 and #371 remain untouched as out of scope.
 
 ### Verified CI and benchmark evidence on `fb5e1686`
@@ -11,6 +11,7 @@
 - System verification run [41420395798](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41420395798): Python/data integrity PASS; browser regression/build/generated-page verification PASS; 1,374/1,374 browser tests. NIKL metadata-only inventory SKIPPED.
 - Browser G2P integration [41420395791](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41420395791) PASS; exhaustive extraction [41420395790](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41420395790) PASS; native paired comparison [41420395800](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41420395800) PASS; pinned UGTPHON [41420395792](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41420395792) PASS; morphology consensus [41420395813](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41420395813) PASS; morphology adapter smoke [41420395784](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41420395784) PASS; multi-engine diagnostic [41420395805](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41420395805) PASS.
 - Optional CharsiuG2P and ByT5 inference and the live NIKL metadata inventory were SKIPPED, not passed. Local pytest/npm were not run in this API-only session.
+- On continuation branch head `4225cea7d6e7af271d5fc9858ae89e4b55f56a5b`, push system run [41425704134](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41425704134) and PR run [41425711289](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41425711289) passed Python/data integrity, browser build/generated-page verification and 1,374/1,374 browser tests; extraction run [41425711296](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41425711296) passed. NIKL metadata inventory remained SKIPPED.
 
 ### Latest paired results (diagnostic, not normative IPA gold)
 
@@ -31,6 +32,8 @@ UGTPHON native abstention audit in artifact `13129993707` contains five items:
 For `삶의`, NIKL MCFAQ 5716 directly gives `[살믜]` and the permitted variant `[살메]` under Standard Pronunciation Rule §5: https://www.korean.go.kr/front/mcfaq/mcfaqView.do?mcfaq_seq=5716&mn_id=217&pageIndex=225. The existing lexical row already records project-derived broad IPA candidates `sal.mi` and `sal.me`, both provisional. NIKL supplies Hangul readings, not IPA; the corpus annotation `sʰa̠ɭmi` is not independent IPA gold. The existing regression correctly keeps `삶의` unresolved and withholds Ukrainian output pending independent IPA adjudication.
 
 **Decision:** no additional production phonology rule is justified by the five abstentions in this session. The four morphophonological cases need exact lexical/morphological or audio evidence; `삶의` needs independent IPA review. Preserve abstention rather than force a benchmark match.
+
+A new regression test, `test_actual_native_abstentions_remain_fail_closed_without_exact_morphology`, pins the four R002/R003 cases as unresolved until exact evidence exists. The existing `test_nikl_attested_particle_readings_for_salmui_are_explicit_variants` continues to protect the two `삶의` surface variants and diagnostic-only IPA status. These are guard tests, not pronunciation gold.
 
 **Readiness:** research prototype; not research-certified or release-ready. Remaining blockers: two independent blind C01–C07 IPA submissions; C08 source-extraction traceability and prosody/lexical adjudication; C09 vowel-quality/syllable-boundary review; C10 AP/IP prosody contract; item-level NIKL rights; Ukrainian target review; and skipped optional neural/source-inventory work.
 
