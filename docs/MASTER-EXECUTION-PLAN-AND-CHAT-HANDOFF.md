@@ -4,7 +4,7 @@
 **Default branch:** `main` at `7bbbd7e7ce888a9c995bb70959e17858263c07a8`.
 **Working branch:** `research/kozak-kim-independent-ipa-packets-2026-11-01`.
 **PR:** [#417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/417), open / Draft, stacked on the PR #416 implementation line. PRs #415 and #416 remain open; no merge or destructive branch operation was performed.
-**Verified code/test head:** `8054bae49ed9218f1d4e21d50b9654d94448982f` (includes the C08 source-reference guard and corrected C01–C07 reference-withholding packet tests). Production-code head remains `bc7b1474eecfe8df8006572abf0f07957f829647`; this handoff refresh is documentation-only and follows the verified code/test head. At that code/test head the branch compares 244 commits ahead / 0 behind current `main`; PR #417 is 52 commits / 27 files beyond its stacked base.
+**Latest code/test head before this C09 evidence batch:** `8054bae49ed9218f1d4e21d50b9654d94448982f`. Production-code head remains `bc7b1474eecfe8df8006572abf0f07957f829647`; this batch adds source-register/test/research changes only, no production phonology rule. Current branch head and exact-head CI are recorded in the terminal continuation entry below.
 
 ## Current task ledger
 
@@ -18,8 +18,8 @@
 | C08 morphology and pronunciation evidence | PARTIAL | Seven conditional -(으)ㄹ + dependent-noun environments have narrow NIKL leads. Q&A 317798, 310899 and 331601 are active; provisional 335204/336313 are removed. `유사성` remains unresolved. None of these sources supplies exact-token IPA gold for all UGC occurrences. |
 | Bounded C08 R013 exact-word behavior | DONE_VERIFIED as implementation/regression | Two exact same-eojeol licenses are exercised in full sentences in Python and browser. No suffix-wide `-성` rule or generic `ㄹ+` fortition was introduced. Independent prosody/IPA review remains open. |
 | Python/browser R013 parity | DONE_VERIFIED for covered cases | Python matches an exact licensed eojeol inside a full sentence; browser and Python tests cover positive contexts and unresolved `유사성` negative control. |
-| Source and licensing register | PARTIAL / BLOCKED | 155 records: 146 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL item-level reuse rights remain unchecked. |
-| C09 vowel length / C10 stress-prosody | TODO / EVIDENCE-LIMITED | Require independent convention and lexical adjudication before any rule or profile change. |
+| Source and licensing register | PARTIAL / BLOCKED | 160 records: 151 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. New C09 dictionary/Q&A records are source-reviewed; NIKL item-level reuse rights remain unchecked. |
+| C09 vowel length | PARTIAL / SOURCE-LENGTH-CONFIRMED | Official NIKL evidence now confirms long-vowel notation for all seven named forms (사람, 괴성, 모르다, 알다, 없는, 없어, 이중성). Preserve length; IPA quality, syllable boundaries and sense-level context remain for review. 괴성 has two dictionary variants. |\n| C10 stress-prosody | BLOCKED / CONVENTION-REVIEW | Do not infer lexical primary stress from the noisy corpus; define the project IPA/prosody contract and obtain independent Korean prosody review. |
 | Ukrainian target review | BLOCKED | Korean IPA metrics do not validate Ukrainian orthographic choices; independent target review is absent. |
 | Supervised IPA training readiness | BLOCKED / NOT READY | Audit: 644 unique lexical rows, zero additions explicitly marked independently adjudicated IPA gold, 24 frozen holdout cases without IPA gold; no overlap detected. |
 
