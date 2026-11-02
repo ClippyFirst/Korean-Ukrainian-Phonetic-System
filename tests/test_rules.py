@@ -1043,3 +1043,11 @@ def test_nikl_section_26_source_derived_silsigan_exact_license():
     items, traces = apply_ordered_rules(parse_syllables("실구간"))
     assert items[1].onset == "ㄱ"
     assert traces[9].status == "conditional-disabled"
+
+
+def test_nikl_basic_dictionary_70041_preserves_initial_length_in_dae_han_min_guk():
+    result = phoneticize_korean("대한민국")
+    assert result["surface_hangul"] == "대한민국"
+    assert result["ipa"]["ipa"] == "teː.han.min.ɡuk̚"
+    assert result["ipa"]["status"] == "provisional"
+    assert result["ipa"]["is_diagnostic_only"] is False
