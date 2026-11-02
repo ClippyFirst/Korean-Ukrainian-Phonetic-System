@@ -20,7 +20,7 @@ These are grapheme-cluster edit operations from the artifact's selected Broad re
 | Candidate cluster | Fragment difference | Operations | Triage interpretation | Engine decision |
 |---|---:|---:|---|---|
 | C11 — sibilant place/profile boundary | `ɕ → s` | 229 (227 occurrences) | UGTPHON often records [ɕ], while Kozak Kim's broad profile intentionally preserves /s/ vs /ɕ/. This is the largest residual cluster. | Do not collapse /s/ and /ɕ/. Require an explicit broad-profile policy and independent IPA review. |
-| C04 — aspiration notation | `h → ʰ` | 45 (37 occurrences) | E.g. `솔직히`: reference `...khi`, prediction `...kʰi`. Likely segment/diacritic convention, but inspect exact contexts. | No blanket rewrite. |
+| C12 — aspirated velar coarticulation profile | `kx/kç → kʰ` | 45 operations across 37 occurrences | Examples include `크게`, `솔직히`, `도쿄로`, `스크롤`. This is not a simple h/ʰ mismatch: the source transcribes a velar closure plus fricated/coarticulated release, while Kozak Kim emits one aspirated velar stop. The broad normalizer's x/ç→h mapping does not make these sequences equivalent. | No rewrite until an authoritative source and a profile policy justify the allophone or its optional representation. |
 | C05 — front-rounded vowel/glide | `i → y`, `ɥ → ∅` | 72 combined | E.g. `분위기`: reference `punɥiɡi`, prediction `punyɡi`; `귀엽냐`: `kɥijʌmnja` vs `kyjʌmnja`. | Preserve alternate analyses pending source and token-level IPA adjudication. |
 | C06 — unreleased coda detail | `∅ → ̚` | 34 (34 occurrences) | E.g. `없어도`, `목숨`, `없음`. Broad-vs-narrow release marking may explain this. | Keep release detail profile-scoped; do not strip from canonical output solely to fit this corpus. |
 | C01/C07 — liquid realization | `ɾ → l` | 12 (12 occurrences) | E.g. `말한`: reference `maɾhan`, prediction `malhan`; boundary and onset/coda analysis need inspection. | Candidate for deeper rule/context audit; no global substitution. |
@@ -76,3 +76,7 @@ The following changes address high-frequency clusters without forcing a corpus c
 - **C01/C07 liquids:** No blanket ɾ/l/ɭ/ʎ replacement. The remaining examples include different positions and possible morphology/prosody; the corpus does not establish a single safe environment. Further context/source adjudication is required.
 
 The optional variants are exposed in both Native and Browser shared-Broad result contracts; canonical IPA and the legacy Browser default remain unchanged. New tests cover lenis/fortis negative controls, [ɥi], and narrow /h/ contexts. This is an algorithmic representation improvement, not an adjudicated accuracy claim.
+
+### Correction to the initial C04 label
+
+The earlier fragment heuristic called 45 operations across 37 occurrences an aspiration-notation mismatch because the grapheme aligner displayed fragments like h → kʰ. That label was misleading. The full IPA strings show the actual source forms are kx or kç, compared with Kozak Kim's kʰ. The exporter now identifies this as C12_aspirated_velar_coarticulation_profile and suppresses the false C04 label. It remains evidence-limited; no production kʰ rule has been changed.
