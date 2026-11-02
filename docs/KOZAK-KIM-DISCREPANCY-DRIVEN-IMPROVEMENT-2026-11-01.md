@@ -1,3 +1,30 @@
+## 2026-11-02 — Runtime-profile and three-way error triage
+
+### Runtime parity
+
+The earlier Native/Browser broad-score gap (86.25% vs 93.81%) was caused primarily by comparing different IPA contracts. On the old paired UGTPHON artifact, 231 of 232 raw IPA differences were `s` vs `ɕ`; the other case was an R013 boundary false positive on `올게이`. The Browser benchmark now explicitly requests `clippyfirst-korean-broad-v1`, the same profile as Python Native. The default Browser legacy contextual profile is unchanged.
+
+The audit script `scripts/audit_kozak_kim_runtime_parity.py` validates stable occurrence IDs, row/token/gold identity, complete surface Hangul, full IPA profile metadata, raw and broad IPA parity, paired gold metrics, and feature losses. Surface output is reconstructed from per-syllable trace where the browser's existing surface field contains only changed syllables. Exact-head CI is still the acceptance evidence; do not claim 99.9% until that report passes.
+
+### Broad benchmark v2
+
+All engines use `data/korean/ipa/broad-candidate-normalization-v1.json`. The normalizer is research-only and records its feature losses; it is not an adjudicated IPA standard. Strict IPA metrics are retained separately. Historical raw-artifact recomputation puts Native Kozak Kim at 86.25% Broad exact / 2.22% CER on UGTPHON and 69.64% / 6.23% on SIGMORPHON. These do not meet the 90%+ / <=2% targets. The exact-head workflow emits the authoritative v2 report.
+
+### What the apparent Native losses mean
+
+Occurrence-level review of the old 3-way Native/g2pK/g2p-ko set found nine broad cases where Native had greater edit distance than both baselines:
+
+- `출산`: existing R012 produces [출싼], supported by NIKL §26 and the NIKL teaching material registered as S015. The UGTPHON gold omits fortisness; do not remove the rule.
+- `없는` (four occurrences), `없어`, `알다`: the Native long vowels are supported by C09 lexical evidence, while the UGTPHON annotation omits length. Preserve length.
+- `대한민국`: NIKL Basic Dictionary entry 70041 records [대ː한민국] (new source S017). The old Native and both baselines omit length; the IPA vowel-quality realization still needs independent review. No IPA form was fabricated.
+- `올게이`: old R013 false positive, fixed by the existing exact-boundary guard in this branch.
+
+Four strict cases where both baselines were exact and Native was not were all `없는`, i.e. the same lexical-length reference issue. The current exact-head report must be checked after the R013 fix; historical counts are not final.
+
+### Independent IPA gold
+
+Two separate reviewer templates now exist at `research/ipa-holdout-review-packets/reviewer-a.csv` and `reviewer-b.csv`. They contain only the 24 frozen Hangul inputs, NIKL source locators and official Hangul surface readings; no engine outputs and no IPA gold. The packet builder records hashes and refuses to overwrite prior annotations. Gold remains BLOCKED until two qualified independent reviewers submit and an adjudicator resolves differences. No audio is supplied, so this packet cannot support narrow speaker-specific acoustic transcription.
+
 # Kozak Kim: discrepancy-driven phonology improvement — 2026-11-01
 
 ## Latest discrepancy audit — five native abstentions, no safe rule expansion — 2026-11-02
