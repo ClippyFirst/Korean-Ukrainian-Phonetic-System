@@ -212,7 +212,7 @@ jobs:
               if engine == "clippyfirst_native" and any("surface_hangul" not in x for x in records):
                   raise SystemExit("native occurrence ledger lacks surface_hangul")
               if any(x.get("status") == "scored" and not all(
-                  key in x for key in ("ipa", "normalized_predicted", "exact", "distance", "reference_length")
+                  key in x for key in ("ipa", "normalized_predicted", "exact", "distance", "reference_length", "broad_candidate")
               ) for x in records):
                   raise SystemExit(f"{engine}: scored ledger record lacks score fields")
           print("Occurrence ledger schema v2 validated for", len(ledger), "engines and", expected, "occurrences")
@@ -253,6 +253,14 @@ jobs:
                         f"delta_CER={p['cer_delta_candidate_minus_native']} "
                         f"CI_delta_exact={ci_delta.get('exact_rate_delta_candidate_minus_native_95pct_ci')} "
                         f"CI_delta_CER={ci_delta.get('cer_delta_candidate_minus_native_95pct_ci')}")
+                  bp = p.get("broad_candidate", {})
+                  print(f"  paired_BROAD={bp.get('paired_tokens')} "
+                        f"delta_exact={bp.get('exact_rate_delta_candidate_minus_native')} "
+                        f"delta_CER={bp.get('cer_delta_candidate_minus_native')}")
+                  bp = p.get("broad_candidate", {})
+                  print(f"  paired_BROAD={bp.get('paired_tokens')} "
+                        f"delta_exact={bp.get('exact_rate_delta_candidate_minus_native')} "
+                        f"delta_CER={bp.get('cer_delta_candidate_minus_native')}")
           engines = r["engines"]
           assert "g2pk_0_9_4" in engines
           assert engines["g2pk_0_9_4"]["scored_tokens"] > 0
@@ -263,6 +271,10 @@ jobs:
           assert all(item.get("category") for item in pairwise_audit["occurrences"])
           print("ClippyFirst-vs-g2pK pairwise audit:",
                 pairwise_audit["occurrence_count"], pairwise_audit["category_counts"])
+          triad = r.get("native_competitor_error_analysis", {})
+          print("Three-way common scored occurrences:", triad.get("three_way_common_scored_occurrences"))
+          print("Native losses to both g2pK and g2p-ko:",
+                {key: value.get("count") for key, value in triad.get("native_loses_to_both", {}).items()})
           print("g2pK 0.9.4 included as an external comparison baseline; its IPA adaptation path is documented in the report.")
           print("Diagnostic only. This corpus is not normative NIKL gold and does not evaluate Ukrainian output.")
           engines = r["engines"]
