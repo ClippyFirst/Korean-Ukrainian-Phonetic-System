@@ -91,6 +91,37 @@ def test_runtime_audit_pairs_occurrences_and_separates_surface_from_ipa():
     assert report["paired_gold_diagnostic"]["broad_candidate"]["paired_scored_occurrences"] == 2
 
 
+def test_runtime_audit_reports_true_parity_only_under_matching_profile_contract():
+    native, browser = _reports()
+    profile = {
+        "ipa_profile": "clippyfirst-korean-broad-v1",
+        "ipa_profile_version": 1,
+        "ipa_profile_level": "broad",
+        "ipa_profile_status": "unadjudicated-cross-runtime",
+    }
+    native["native_ipa_profile"] = dict(profile)
+    browser["ipa_profile"] = profile["ipa_profile"]
+    browser["ipa_profile_version"] = profile["ipa_profile_version"]
+    browser["ipa_profile_level"] = profile["ipa_profile_level"]
+    browser["ipa_profile_status"] = profile["ipa_profile_status"]
+
+    native_second = native["per_engine_occurrences"]["clippyfirst_native"][1]
+    browser_second = browser["records"][1]
+    browser_second["predicted"] = native_second["ipa"]
+    browser_second["distance"] = native_second["distance"]
+    browser_second["exact"] = native_second["exact"]
+    browser_second["broad_candidate_predicted"] = native_second["broad_candidate"]["predicted"]
+    browser_second["broad_candidate_distance"] = native_second["broad_candidate"]["distance"]
+    browser_second["broad_candidate_exact"] = native_second["broad_candidate"]["exact"]
+
+    report = MODULE.compare_reports(native, browser)
+    assert report["ipa_profiles"]["same_profile_contract"] is True
+    assert report["ipa_profiles"]["parity_status"] == "SAME_PROFILE_CONTRACT"
+    assert report["ipa_parity"]["raw_ipa_exact_rate"] == 1.0
+    assert report["ipa_parity"]["broad_ipa_exact_rate"] == 1.0
+    assert report["surface_parity"]["exact_rate"] == 1.0
+
+
 def test_runtime_audit_fails_closed_on_occurrence_identity_drift():
     native, browser = _reports()
     browser["records"][1]["id"] = "wrong-row"
