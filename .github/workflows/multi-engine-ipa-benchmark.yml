@@ -203,7 +203,7 @@ jobs:
           expected = r["eligible_token_occurrences"]
           if r.get("occurrence_ledger_schema_version") != 2 or not isinstance(ledger, dict):
               raise SystemExit("baseline report lacks occurrence-ledger schema v2")
-          if r.get("broad_candidate_benchmark_version") != 2:
+          if r.get("broad_candidate_benchmark") != "broad-candidate-ipa-v2" or r.get("broad_candidate_benchmark_version") != 2:
               raise SystemExit("baseline report lacks Broad IPA benchmark v2")
           if set(ledger) != set(r["engine_order"]):
               raise SystemExit("occurrence-ledger engine keys do not match engine_order")
@@ -347,7 +347,7 @@ jobs:
           expected = r["eligible_token_occurrences"]
           if r.get("occurrence_ledger_schema_version") != 2 or not isinstance(ledger, dict):
               raise SystemExit("baseline report lacks occurrence-ledger schema v2")
-          if r.get("broad_candidate_benchmark_version") != 2:
+          if r.get("broad_candidate_benchmark") != "broad-candidate-ipa-v2" or r.get("broad_candidate_benchmark_version") != 2:
               raise SystemExit("baseline report lacks Broad IPA benchmark v2")
           if set(ledger) != set(r["engine_order"]):
               raise SystemExit("occurrence-ledger engine keys do not match engine_order")
