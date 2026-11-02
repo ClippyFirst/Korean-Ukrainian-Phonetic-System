@@ -1,12 +1,12 @@
 # Frozen 24-form IPA holdout — independent reviewer packets
 
-This directory contains two separate, blank annotation sheets generated from the frozen NIKL-backed input manifest.
+This directory contains two separate, blank annotation sheets generated from the frozen NIKL-backed input manifest. The checked-in CSVs are reviewer templates; running the builder also emits a local `packet-manifest.json` with exact SHA-256 hashes.
 
 ## Files
 
 - `reviewer-a.csv` — independent reviewer A's blank sheet.
 - `reviewer-b.csv` — independent reviewer B's blank sheet.
-- `packet-manifest.json` — source-manifest SHA-256 and generated packet hashes.
+- `packet-manifest.json` — generated on each run by the packet builder; it records the source-manifest SHA-256 and generated packet hashes.
 
 ## Review protocol
 
