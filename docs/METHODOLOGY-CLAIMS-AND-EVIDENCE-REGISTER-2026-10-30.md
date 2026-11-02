@@ -210,3 +210,17 @@ The multi-engine artifact's purpose remains diagnostic. UGTPHON is noisy user-ge
 | Exact-head regression/build | DONE_VERIFIED | Push run `41419725829`, PR run `41419733699`, head `84e4200365851e7d070c76e0ebed7c113111475a` | Python/data integrity pass; browser 1,374/1,374; build and generated pages pass | NIKL metadata inventory (skipped), optional neural inference, or independent linguistic gold |
 
 Both g2pK comparisons use the shared project segment-to-IPA renderer after original g2pK surface generation. These diagnostics do not establish normative Korean IPA gold or Ukrainian adaptation quality. The original g2pK implementation remains unchanged.
+
+## Addendum — 2026-11-02 Kozak Kim runtime and Broad IPA claims
+
+| ID | Claim | Status | Evidence | Permitted wording | Do not claim |
+|---|---|---|---|---|---|
+| M-06 | Broad IPA exact match is a sensitivity metric, not normative pronunciation accuracy | DONE_VERIFIED as a profile contract | data/korean/ipa/broad-candidate-normalization-v1.json; Python/JS normalizer tests; benchmark v2 emits feature-loss and serialization-loss counters | Scores are comparisons after the explicitly documented collapses; report the profile and losses with every score | That Broad exact is expert-adjudicated IPA accuracy |
+| M-07 | Native and Browser can be compared under the same IPA profile | PARTIAL | Browser supports explicit clippyfirst-korean-broad-v1; default legacy profile unchanged; scripts/audit_kozak_kim_runtime_parity.py checks full profile metadata, occurrence identity, full surface and IPA | “Same-profile runtime parity is being measured” | 99.9% parity until exact-head artifact passes |
+| M-08 | Kozak Kim has a small Broad exact lead over original g2pK and g2p-ko on historical diagnostic sets | PARTIAL / EVIDENCE-LIMITED | Raw artifact 13129993707, recomputed under shared broad-candidate profile; UGTPHON and SIGMORPHON counts recorded in benchmark-suite register | “Historical diagnostic Broad exact was slightly higher for Native Kozak Kim” | Universal superiority, normative accuracy, or untouched holdout performance |
+| M-09 | Some Native losses to both baselines are corpus/profile disagreements rather than demonstrated engine errors | PARTIAL | Occurrence-level three-way analysis; NIKL §26/R012 for 출산[출싼]; C09 lexical-length evidence for 없는, 없어, 알다; R013 boundary regression for 올게이 | State each item with its source and uncertainty | Remove length/fortis distinctions merely to match UGTPHON |
+| M-10 | NIKL records long first-syllable quantity for 대한민국 | DONE_VERIFIED as Hangul dictionary evidence; IPA mapping EVIDENCE-LIMITED | NIKL Basic Dictionary entry 70041; data/korean/sources.csv S017 and research/SOURCE-REGISTER.csv SRC-NIKL-KRDICT-70041 | “The dictionary notation is [대ː한민국]” | An adjudicated IPA vowel quality or speaker-specific realization |
+| M-11 | Independent IPA gold is ready | BLOCKED | Frozen 24-item holdout; separate blank reviewer A/B sheets; packet generator | “Reviewer packets are prepared” | That IPA gold exists before two independent reviews and adjudication |
+
+The exact-head GitHub Actions runs for code/test head a921f268c9f19ae3f19ad3c7b134fdc0aff78c2e remain QUEUED (41440127701, 41440127807, 41440127686). Local clone/testing is blocked by DNS resolution failure for github.com. Do not mark the exact-head checks DONE_VERIFIED while the runs remain queued.
+
