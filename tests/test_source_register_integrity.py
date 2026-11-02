@@ -431,6 +431,7 @@ def test_c01_c07_and_c10_cluster_decisions_follow_the_reviewed_profile_evidence(
         "C06": "SRC-CAMBRIDGE-KOREAN-IPA",
         "C07": "SRC-PLSA-KOREAN-LIQUID-2021",
         "C10": "SRC-SAGE-BAEK-2022-KOREAN-PROSODY",
+        "C09": "SRC-KCI-KIM-PARK-2019-VOWEL-LENGTH",
     }
     for cluster_id, source_id in expected_sources.items():
         row = clusters[cluster_id]
