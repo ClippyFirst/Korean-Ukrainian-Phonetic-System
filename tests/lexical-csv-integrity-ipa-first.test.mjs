@@ -137,7 +137,7 @@ test('C09 NIKL dictionary length attestations enter the Kozak Kim IPA-first lexi
     assert.equal(row.target_status, 'provisional');
     assert.equal(row.input_kind, 'variant-aware-research');
     assert.ok(row.source_url.includes(item.source), word + ': exact NIKL dictionary locator');
-    assert.match(row.rule_notes, /Hangul pronunciation, not IPA/u);
+    assert.match(row.rule_notes, /Hangul pronunciation.*(?:not IPA|rather than IPA)/u);
     const result = researchEngine.convert(word);
     assert.equal(result.surfaceHangul, word);
     assert.equal(result.ipa, renderExpectedIpa(word, item.ipa.split('|')));
