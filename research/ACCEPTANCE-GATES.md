@@ -9,6 +9,8 @@
 | Strict IPA preservation | No evidence-backed distinctions collapsed | Strict scoring retained; broad sensitivity losses separately reported | PARTIAL — independent convention adjudication pending |
 | Independent IPA gold | Two independent reviews + adjudication | Frozen 24-item holdout and separate A/B templates prepared; no reviewer submissions yet | BLOCKED |
 
+The Browser normal-conversion metadata path has been corrected to report the explicitly selected broad profile; a Python/JavaScript normalizer parity test now checks shared edge cases and feature-loss ledgers. Both implementations are present, but the latest exact-head CI is still queued and these items remain PARTIAL until verified. The R013 change in this continuation is a narrowly scoped correction to the existing NIKL Q&A 330963-backed -ㄹ게 ending license, with positive and negative controls; it is not a new general phonological rule.
+
 Do not use the old 93.81% Browser score as evidence of superiority: it came from `browser-legacy-contextual-v1`, whereas Native used `clippyfirst-korean-broad-v1`. The common-profile run is the only valid runtime comparison.
 
 ## Latest evidence snapshot — 2026-11-02 (research prototype; not release acceptance)
