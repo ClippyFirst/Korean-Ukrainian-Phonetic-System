@@ -76,6 +76,7 @@ def _load_broad_candidate_profile() -> dict[str, Any]:
     return profile
 
 
+BROAD_CANDIDATE_BENCHMARK_VERSION = 2
 _BROAD_CANDIDATE_PROFILE = _load_broad_candidate_profile()
 _BROAD_OPS = _BROAD_CANDIDATE_PROFILE["operations"]
 _BROAD_ALLOPHONE_MAP = _BROAD_OPS["allophone_map"]
@@ -1642,7 +1643,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         ), None),
         "engines": engine_results,
         "occurrence_ledger_schema_version": 2,
-        "broad_candidate_benchmark_version": 2,
+        "broad_candidate_benchmark_version": BROAD_CANDIDATE_BENCHMARK_VERSION,
         "per_engine_occurrences": _build_per_engine_occurrences(
             items, scored_by_engine, predictions, native_cache
         ),
