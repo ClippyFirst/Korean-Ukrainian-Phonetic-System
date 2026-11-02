@@ -192,7 +192,7 @@ jobs:
           ledger = r.get("per_engine_occurrences")
           expected = r["eligible_token_occurrences"]
           if r.get("occurrence_ledger_schema_version") != 2 or not isinstance(ledger, dict):
-              raise SystemExit("baseline report lacks occurrence-ledger schema v1")
+              raise SystemExit("baseline report lacks occurrence-ledger schema v2")
           if set(ledger) != set(r["engine_order"]):
               raise SystemExit("occurrence-ledger engine keys do not match engine_order")
           expected_ids = [str(i) for i in range(expected)]
@@ -207,7 +207,7 @@ jobs:
                   key in x for key in ("ipa", "normalized_predicted", "exact", "distance", "reference_length")
               ) for x in records):
                   raise SystemExit(f"{engine}: scored ledger record lacks score fields")
-          print("Occurrence ledger schema v1 validated for", len(ledger), "engines and", expected, "occurrences")
+          print("Occurrence ledger schema v2 validated for", len(ledger), "engines and", expected, "occurrences")
           print("DATASET:", r["benchmark"], "rows=", r["dataset_rows"],
                 "eligible token occurrences=", r["eligible_token_occurrences"],
                 "unique words=", r["unique_hangul_words"])
@@ -324,7 +324,7 @@ jobs:
           r = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
           ledger = r.get("per_engine_occurrences")
           expected = r["eligible_token_occurrences"]
-          if r.get("occurrence_ledger_schema_version") != 1 or not isinstance(ledger, dict):
+          if r.get("occurrence_ledger_schema_version") != 2 or not isinstance(ledger, dict):
               raise SystemExit("baseline report lacks occurrence-ledger schema v1")
           if set(ledger) != set(r["engine_order"]):
               raise SystemExit("occurrence-ledger engine keys do not match engine_order")
