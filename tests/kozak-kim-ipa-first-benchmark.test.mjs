@@ -83,7 +83,7 @@ test('browser occurrence ledger retains stable identity and surface for heuristi
       pronunciation_status: 'heuristic',
       surfaceHangul: '가',
       target_status: 'unavailable',
-      ipa: '',
+      ipa: 'ka',
       ukrainian: ''
     })
   });
