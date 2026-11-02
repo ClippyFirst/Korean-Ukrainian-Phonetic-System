@@ -177,12 +177,13 @@ export function evaluateRows(rows, engine) {
       eligibleTokens += 1;
       const occurrenceId = String(eligibleTokens - 1);
       try {
-        const result = engine.convert(canonical, { morphologyMode: 'strict' });
+        const result = engine.convert(canonical, { morphologyMode: 'strict', ipaProfile: 'clippyfirst-korean-broad-v1' });
         if (profileMetadata === null) {
           profileMetadata = {
             ipa_profile: result.ipa_profile ?? null,
             ipa_profile_status: result.ipa_profile_status ?? null,
-            ipa_profile_version: result.ipa_profile_version ?? null
+            ipa_profile_version: result.ipa_profile_version ?? null,
+            ipa_profile_level: result.ipa_profile_level ?? null
           };
         }
         if (result.target_status === 'unavailable') targetUnavailableTokens += 1;
@@ -302,7 +303,8 @@ export function evaluateRows(rows, engine) {
       profileMetadata ?? {
         ipa_profile: null,
         ipa_profile_status: 'unavailable',
-        ipa_profile_version: null
+        ipa_profile_version: null,
+        ipa_profile_level: null
       }
     ),
     rows: rows.length,
