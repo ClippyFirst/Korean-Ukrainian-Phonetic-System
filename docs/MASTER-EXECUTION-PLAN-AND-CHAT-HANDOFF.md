@@ -5235,7 +5235,8 @@ Draft PR #423 now carries evidence-scoped algorithm updates after occurrence-lev
 |---|---|---|---|
 | C11 sibilant place (229 paired edit operations / 227 occurrences) | Optional [ɕ] alternative in shared Broad results for lenis ㅅ before ㅣ, ㅑ, ㅒ, ㅖ; narrow profile includes ㅒ | Broad canonical /s/ unchanged; fortis ㅆ is not palatalized on this evidence | IMPLEMENTED; exact-head CI pending |
 | C05 y / ɥi | Add [ɥi] alternative alongside existing [y] and [wi] for ㅟ | Canonical [y] unchanged | IMPLEMENTED; exact-head CI pending |
-| C04 h / ç / x | Add narrow-profile [ç] before selected high-front/glide nuclei and [x] before ㅜ; narrow profile bumped v3 to v4 | Broad/phonemic IPA unchanged; no general h deletion | IMPLEMENTED; exact-head CI pending |
+| C04 ㅎ allophones | Add narrow-profile [ç] before selected high-front/glide nuclei and [x] before ㅜ; narrow profile bumped v3 to v4 | Broad/phonemic IPA unchanged; no general h deletion | IMPLEMENTED; exact-head CI pending |
+| C12 kx/kç vs kʰ | Correct fragment classifier: 45 edit operations / 37 occurrences are aspirated-velar coarticulation/profile differences, not h/ʰ notation | No engine rewrite pending stronger evidence and a documented profile policy | BLOCKED — research/source adjudication |
 | C06 coda release diacritics | Keep source/profile distinction | [p̚,t̚,k̚] unchanged | DEFERRED — corpus annotation omission is insufficient |
 | C01/C07 liquids | No global rewrite; need boundary/prosody context | Existing onset/coda rules unchanged | BLOCKED — exact context/source evidence |
 | C09 lexical length | Preserve source-attested length | No stripping to match noisy corpus omissions | PRESERVED |
@@ -5243,3 +5244,5 @@ Draft PR #423 now carries evidence-scoped algorithm updates after occurrence-lev
 Evidence: Lee (1999), Korean, Illustrations of the IPA, DOI 10.1017/S0025100300004758; Kang (2010), DOI 10.17959/sppm.2010.16.1.3; UCL thesis review of Lee (1996), https://discovery.ucl.ac.uk/1324541/1/1324541.pdf. These sources support bounded allophonic possibilities, not universal obligatory outputs or token-level gold adjudication.
 
 New variants are optional and inspectable. They do not replace the canonical broad reading or change Ukrainian target mappings by direct Hangul rules. Original g2pK source/vendor files remain unchanged. Re-run Python/Browser suites and the multi-engine benchmark on the exact final PR head before claiming any quality improvement.
+
+**Cluster-label correction:** 45 edit operations across 37 occurrences previously surfaced as h → kʰ in grapheme alignment. Inspection of the full IPA strings shows kx/kç in the reference and kʰ in Kozak Kim. The fragment exporter now labels this C12 aspirated-velar coarticulation/profile difference and no longer mistakes it for a simple ㅎ/aspiration notation issue. This is a triage correction, not a pronunciation fix.
