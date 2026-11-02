@@ -488,6 +488,11 @@ def test_nikl_qna_330963_l_ge_license_requires_complete_attached_ending_boundary
     for word in ["올게이", "할게이"]:
         result = phoneticize_korean(word)
         assert result["surface_hangul"] == word, word
+        # An internal ㄹ+게 sequence is not the attested ending -ㄹ게.
+        # It must remain an ordinary resolved reading, not be blocked by
+        # the ambiguity guard for a rule that does not apply.
+        assert result["pronunciation_status"] == "resolved", word
+        assert isinstance(result["ipa"].get("ipa"), str) and result["ipa"]["ipa"], word
         assert not any(
             trace.get("rule_id") == "R013"
             and trace.get("changed")
