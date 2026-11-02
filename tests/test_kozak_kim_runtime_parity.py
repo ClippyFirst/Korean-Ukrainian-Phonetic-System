@@ -33,7 +33,7 @@ def _browser(occurrence_id, row, token, gold, ipa, surface, distance, broad):
     return {
         "occurrence_id": str(occurrence_id), "id": row, "token": token, "gold": gold,
         "pronunciation_status": "resolved" if ipa is not None else "unresolved",
-        "predicted": ipa, "surface_hangul": surface, "distance": distance,
+        "predicted": ipa, "surface_hangul": surface or token, "distance": distance,
         "exact": distance == 0 if distance is not None else None,
         "closest_normalized_gold": gold, "broad_candidate_predicted": broad,
         "broad_candidate_distance": 0 if broad == "ka" else 1,
