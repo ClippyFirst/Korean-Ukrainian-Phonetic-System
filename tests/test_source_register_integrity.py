@@ -351,3 +351,23 @@ def test_c08_analyzer_cross_check_is_recorded_as_diagnostic_not_gold():
     assert cases["multilexnorm2026_1979"]["status"] == "ANALYZER_DISAGREEMENT_ON_SI_BOUNDARY"
     assert cases["dc_inside_2024"]["status"] == "ANALYZER_DISAGREEMENT_ON_LEXICAL_VS_SUFFIX_SEGMENTATION"
     assert any("majority vote" in item for item in cross_check["limitations"])
+
+
+
+def test_c09_length_discrepancies_have_exact_dictionary_surface_evidence():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    expected = {
+        "SRC-KRDICT-ENG-58161": ("사람[사ː람]", "ParaWordNo=58161"),
+        "SRC-KRDICT-ENG-29712": ("모르다[모ː르다]", "ParaWordNo=29712"),
+        "SRC-KRDICT-ENG-89445": ("알다[알ː다]", "ParaWordNo=89445"),
+        "SRC-KRDICT-AR-GWESUNG": ("괴성[괴ː성/궤ː성]", "괴성"),
+    }
+    for source_id, (attestation, locator) in expected.items():
+        source = rows[source_id]
+        assert attestation in source["coverage"]
+        assert locator in source["url"]
+        assert "Hangul" in source["limitations_or_next_action"]
+        assert "IPA" in source["limitations_or_next_action"]
+        assert "item-level" in source["license_status"].lower()
+    no_length = rows["SRC-KRDICT-ENG-89445"]
+    assert "알다[알ː다]" in no_length["coverage"]
