@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -375,3 +378,47 @@ def test_occurrence_ledger_preserves_repeated_tokens_and_explicit_non_scored_sta
     assert ledgers["g2pk_0_9_4"][2]["status"] == "error"
     assert ledgers["g2pk_0_9_4"][2]["reason"] == "adapter failed"
     assert ledgers["g2pk_0_9_4"][1]["row_id"] == "r2"
+
+
+
+def test_broad_candidate_normalizer_matches_browser_runtime():
+    """The Python and browser benchmark adapters must implement one shared profile."""
+    node = shutil.which("node")
+    if node is None:
+        import pytest
+        pytest.skip("Node.js is required for the cross-runtime IPA profile parity check")
+
+    root = Path(__file__).resolve().parents[1]
+    cases = [
+        "ˈsʰɭɲɦçxɣɸβʝʷ̠ːt̚k͈",
+        "t͡ɕʰi",
+        "kɡa.ɾɯn",
+        "s͈i ɕʰi ʃʰi",
+        "a\u0320",
+        "",
+    ]
+    node_source = (
+        "import { readFileSync } from 'node:fs';"
+        "import { normalizeIpaBroadCandidateWithLoss } "
+        "from './scripts/benchmark_kozak_kim_browser.mjs';"
+        "const values = JSON.parse(readFileSync(0, 'utf8'));"
+        "process.stdout.write(JSON.stringify(values.map(normalizeIpaBroadCandidateWithLoss)));"
+    )
+    completed = subprocess.run(
+        [node, "--input-type=module", "-e", node_source],
+        input=json.dumps(cases, ensure_ascii=False),
+        text=True,
+        capture_output=True,
+        cwd=root,
+        check=True,
+    )
+    browser = json.loads(completed.stdout)
+    python = []
+    for value in cases:
+        normalized, audit = normalize_ipa_broad_candidate_with_loss(value)
+        python.append({
+            "normalized": normalized,
+            "feature_loss_counts": audit["feature_loss_counts"],
+            "serialization_normalization_counts": audit["serialization_normalization_counts"],
+        })
+    assert browser == python
