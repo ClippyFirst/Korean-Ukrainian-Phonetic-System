@@ -49,6 +49,7 @@ const NIKL_13_14_FORMAL_LIAISON_FORMS=new Map([
   ['읽어','읽>어'], // NIKL §14: 읽어[일거].
   ['없어도','없>어'], // Exact formal-morpheme environment; no productive generalization.
   ['없음','없>음'], // NIKL FAQ 8391 / Q&A 335008: 없음[업씀].
+  ['중심닮음','닮>음'], // 중심 + 닮- + nominalizer -음; exact NIKL §14 application only.
   ['있었','있>었'], // NIKL Q&A 326978 explains 있- + -었- as [이썯].
   ['멋있어','있>어'], // NIKL Q&A 306166 gives [머디써] and [머시써]; preserve variant status.
   ['같아서','같>아'], // NIKL §§13–14, transparent 같다 + -아서 inflection.

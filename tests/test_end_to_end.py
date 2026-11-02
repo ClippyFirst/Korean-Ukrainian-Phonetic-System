@@ -85,3 +85,21 @@ def test_nikl_27_c08_exact_word_licenses_apply_inside_full_sentences():
         trace["rule_id"] == "R013" and trace["changed"]
         for trace in result["phonetics"]["rules"]
     ), "the unresolved 유사성 context must not inherit a suffix-wide rule"
+
+
+def test_nikl_14_exact_jalmeum_nominalizer_liaison():
+    result = transliterate_korean("중심닮음")
+    assert result["phonetics"]["pronunciation_status"] == "resolved"
+    assert any(
+        trace["rule_id"] == "R002"
+        and trace["changed"]
+        and trace["license_context"] == "R002:formal:중심닮음:닮>음"
+        for trace in result["phonetics"]["rules"]
+    )
+
+    # The exact-form license must not leak to a consonant-initial lookalike.
+    negative = transliterate_korean("중심닮고")
+    assert not any(
+        trace["rule_id"] == "R002" and trace["changed"]
+        for trace in negative["phonetics"]["rules"]
+    )

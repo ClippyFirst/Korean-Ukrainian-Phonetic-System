@@ -226,3 +226,19 @@ test('C08 context recovery does not authorize the unresolved -성 lexical case',
   const result = generic.convert(sourceCase.source_sentence);
   assert.ok(!result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27-exact-form')), 'the exact -성 token remains unlicensed; no suffix-wide fortition');
 });
+
+
+test('§14: exact 중심닮음 nominalizer liaison is licensed without broadening the coda rule', () => {
+  const licensed = generic.convert('중심닮음');
+  assert.ok(licensed.surfaceHangul.includes('달믐'), '닮- + -음 must preserve ㄹ and resyllabify ㅁ');
+  assert.ok(
+    licensed.trace.some((item) => item.rules.includes('complex-coda-liaison-exact-form-formal')),
+    'the exact §14 full-form license must be visible in the rule trace',
+  );
+
+  const negative = generic.convert('중심닮고');
+  assert.ok(
+    !negative.trace.some((item) => item.rules.includes('complex-coda-liaison-exact-form-formal')),
+    'the exact -음 license must not leak to a consonant-initial lookalike',
+  );
+});
