@@ -89,7 +89,8 @@ def test_nikl_27_c08_exact_word_licenses_apply_inside_full_sentences():
 
 def test_nikl_14_exact_jalmeum_nominalizer_liaison():
     result = transliterate_korean("중심닮음")
-    assert result["phonetics"]["pronunciation_status"] == "resolved"
+    # The §14 surface rule is licensed, but IPA remains provisional pending independent phonetic review.
+    assert result["phonetics"]["pronunciation_status"] == "provisional"
     assert any(
         trace["rule_id"] == "R002"
         and trace["changed"]
