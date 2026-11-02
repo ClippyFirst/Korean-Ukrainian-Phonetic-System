@@ -60,3 +60,12 @@ def test_build_rows_fails_when_required_engine_ledgers_are_missing():
 
     with pytest.raises(ValueError, match="occurrence ledgers"):
         MODULE.build_rows({"per_engine_occurrences": {}})
+
+
+def test_candidate_clusters_keep_sibilant_place_separate():
+    fragments = [
+        {"op": "S", "reference_fragment": "ɕ", "kozak_fragment": "s"},
+    ]
+    assert MODULE.candidate_clusters(fragments) == [
+        "C11_sibilant_place_profile_boundary"
+    ]
