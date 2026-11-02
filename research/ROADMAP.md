@@ -1,3 +1,11 @@
+## 2026-11-02 — Active continuation: Kozak Kim runtime parity
+
+1. **Finish exact-head verification.** Read the paired multi-engine CI artifact. Require matching Native/Browser IPA profile contract, stable occurrence IDs, and inspect surface/IPA parity. Do not claim 99.9% without the actual report.
+2. **Close the Broad IPA v2 evidence loop.** Publish all-engine strict and broad exact/CER, coverage-adjusted exact, and feature-loss tables from the exact-head artifact. The old recomputation is diagnostic only; 90% exact and <=2% CER are not yet met.
+3. **Resolve discrepancy-ledger cases by source.** Preserve R012 `출산[출싼]`; preserve C09-supported lexical length for `없는`, `없어`, and `알다`; review the newly registered NIKL `대한민국[대ː한민국]` without guessing IPA vowel quality. Do not add general rules just to chase UGTPHON.
+4. **Complete independent gold.** Send reviewer A/B templates to two qualified reviewers, freeze both submissions, then adjudicate. Keep the 24 items out of tuning and do not call the current manifest IPA gold.
+5. **Keep g2pK untouched.** Continue to report it as the original comparison baseline; it is not a substitute for independent IPA gold.
+
 ## Current continuation status — 2026-11-02
 
 Current focused work remains Kozak Kim discrepancy-driven verification. Verified implementation/test base is `fb5e1686bd86fd012d63cc92ad0261efe1a38113`, a descendant of current main `7bbbd7e7ce888a9c995bb70959e17858263c07a8`. Documentation/test continuation head is `4225cea7d6e7af271d5fc9858ae89e4b55f56a5b`, Draft PR #419 stacked on #417. Original g2pK is unchanged and comparison-only.
