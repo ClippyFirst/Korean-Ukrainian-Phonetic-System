@@ -32,7 +32,7 @@ def onset_ipa(s:Syllable,index:int,items:list[Syllable],*,phonemic=False,level="
         return ["ɾ"]
     if c=="ㅎ":
         if not phonemic and level=="narrow":
-            # Source-scoped Seoul allophones: [ç] before /i,j/ and [x] before /u/.
+            # Source-scoped Seoul allophones from S018: [ç] before /i,j/ and [x] before /u/.
             # The optional post-sonorant [ɦ] candidate has priority in that
             # environment; none of these narrow details enter broad/phonemic IPA.
             if index>0:
@@ -128,7 +128,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 "vowels":labels,
             })
 
-    # A phonetic [ɥi] realization is documented alongside [wi] and [y] for
+    # S020 documents /ɥi/ alongside /wi/ and monophthongized [y] for
     # Korean ㅟ. Keep [y] canonical and expose [ɥi] as an additional reading.
     for i,syllable in enumerate(items):
         if syllable.nucleus=="ㅟ" and "y" in rendered[i]:
@@ -141,8 +141,8 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
                 "vowels":["ㅟ [ɥi]"],
             })
 
-    # /s/ has a documented alveolo-palatal [ɕ] realization before /i/ and
-    # selected /j/-initial diphthongs. This remains optional in broad IPA;
+    # S018 and S019 document lenis /s/ as [ɕ] before /i/ and selected
+    # /j/-initial diphthongs. This remains optional in broad IPA;
     # fortis /s͈/ is deliberately not rewritten on this evidence.
     palatal_sibilant_nuclei={"ㅣ","ㅑ","ㅒ","ㅖ"}
     for i,syllable in enumerate(items):
@@ -188,6 +188,8 @@ def realize_syllables(items:list[Syllable],*,level="broad")->dict:
             "scope":["aspiration of lenis ㅅ as [sʰ]","palatalized [ɕʰ] before ㅣ, ㅒ, ㅖ, ㅑ","palatalized [ɲ] for onset ㄴ before glide nuclei ㅑ, ㅒ, ㅕ, ㅖ, ㅛ, ㅠ; not generalized to ㅣ","ㅎ is [ç] before selected high-front/glide nuclei and [x] before ㅜ, following the cited Seoul description","after a same-word sonorant coda, /h/ is rendered [ɦ] as one narrow-profile variant; no deletion is inferred","tense ㅆ remains [s͈]; its palatalization is not assumed because evidence is mixed"],
             "sources":[
                 "Lee, Hyun Bok (1999), Korean, Illustrations of the IPA: /h/ [ç] before /i,j/ and [x] before /u/: https://doi.org/10.1017/S0025100300004758",
+                "Kang, Hyunsook (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://doi.org/10.17959/sppm.2010.16.1.3",
+                "Kim, Young Shin (2011), UCL PhD thesis, diphthong /ɥi/ and its [ɥi], [ø], [y] realizations: https://discovery.ucl.ac.uk/id/eprint/1324541/1/1324541.pdf",
                 "Cho, Jun & Ladefoged (2002), via High-toned [il] in Korean: https://www.sciencedirect.com/science/article/pii/S0095447015000339",
                 "Kang (2010), Coarticulation effects of Korean sibilant /s/ before a high front segment: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770",
                 "Ahn (2009), Korean /n/-deletion: phonetic initial strengthening to denasalization: https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001340886",
