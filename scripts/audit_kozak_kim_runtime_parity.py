@@ -57,8 +57,8 @@ def _surface(item: dict[str, Any], *, browser: bool) -> str | None:
     value = item.get("surface_hangul")
     if value is None:
         return None
-    # Browser surfaceHangul is a changed-surface delta: empty means unchanged.
-    return (str(item.get("token", "")) if value == "" else str(value)) if browser else str(value)
+    # The browser benchmark reconstructs a complete surface from trace; no delta semantics remain here.
+    return str(value)
 
 
 def _score_metrics(items: list[tuple[dict[str, Any], dict[str, Any]]], *, broad: bool) -> dict[str, Any]:
