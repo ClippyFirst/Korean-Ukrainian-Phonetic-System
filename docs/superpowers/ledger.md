@@ -3,7 +3,7 @@
 ## Latest verified status — Kozak Kim / C01–C08 and multi-engine revalidation
 
 - **Scope:** only Kozak Kim; original g2pK remains unchanged and comparison-only.
-- **Branch/PR:** `research/kozak-kim-independent-ipa-packets-2026-11-01`; verified code/test head `8054bae49ed9218f1d4e21d50b9654d94448982f`; draft PR #417 stacked on PR #416. PRs #415/#416 remain open. The current handoff refresh is documentation-only.
+- **Branch/PR:** `research/kozak-kim-independent-ipa-packets-2026-11-01`; C09 evidence/test continuation in progress; draft PR #417 stacked on PR #416. PRs #415/#416 remain open. No production phonology rule changed in this continuation.
 - **C01–C07:** seven system-blind, reference-withheld packets, 42 entries, 39 unique source rows, full source contexts, no engine/baseline/IPA leakage; source identities remain inferable and reviewer instructions prohibit corpus-gold lookup. Packet preparation DONE_VERIFIED; two independent reviewer submissions BLOCKED.
 - **C08:** all eight contexts are in the pinned fixture; three IDs were independently recovered and five reconstructed from the fortis-mismatch signature because the original extraction table is missing. Seven have conditional morphology/rule-environment leads. Active NIKL Q&A sources are 317798, 310899 and 331601; provisional 335204/336313 are removed. `유사성` remains unresolved. No suffix-wide `-성` rule.
 - **R013:** two exact same-eojeol C08 licenses are covered inside full sentences in Python and browser. This is bounded rule behavior, not independent IPA adjudication; the pause/prosody uncertainty remains.
@@ -11,7 +11,7 @@
 - **Native pair:** run 41409348973 / artifact 13124712631; 2,698 shared; exact 53.0393% vs 53.1134%; CER 9.1047% vs 9.2304%; five native abstentions, zero engine errors.
 - **Multi-engine:** run 41358812573 / artifact 13105045922 completed successfully. UGTPHON (2,698 shared): exact 53.0393% vs 53.1134%; CER 9.1047% vs 9.2304%; paired bootstrap CER interval for g2pK-minus-Kozak [+0.0428,+0.2194] pp. SIGMORPHON (998 shared): exact 35.8717% vs 35.3707%; CER 14.6225% vs 14.8106%; paired bootstrap intervals favor Kozak Kim on both metrics. Both datasets remain diagnostic, not normative IPA gold.
 - **g2pK integrity:** no original/vendor g2pK source file changed; shared segment-to-IPA renderer remains an evaluation caveat, not a g2pK code modification.
-- **Rights:** source register 155 rows: 146 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL item-level reuse review remains open.
+- **C09:** official NIKL dictionary/Q&A evidence now directly confirms length in 사람[사ː람], 모르다[모ː르다], 알다[알ː다], 없는[엄ː는], 없어[업ː써], 이중성[이ː중썽]; official dictionary result listing gives 괴성[괴ː성/궤ː성]. C09 lexical length evidence is PARTIAL / SOURCE-LENGTH-CONFIRMED; the IPA mapping, exact sense matching, vowel-quality variants, syllable boundaries and stress are not independently adjudicated. Keep length; do not optimize to corpus omission. C10 stress remains BLOCKED pending a declared prosody convention and specialist review.\n- **Rights:** source register 160 rows: 151 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL item-level reuse review remains open.
 - **Exact-head CI:** push system/Python/data run 41409343802 PASS; PR system/Python/data + browser regression/build 41409713381 PASS; browser suite 1,373/1,373; extraction 41409349029 PASS; browser pair 41409348959 PASS; native pair 41409348973 PASS; morphology consensus 41409348958 PASS; morphology adapter 41409348957 PASS. Multi-engine job 41409349048 was re-run but had not completed its comparison/report step at handoff; latest completed portfolio remains 41358812573. Optional Charsiu/ByT5 and NIKL metadata-only inventory SKIPPED.
 - **Training readiness:** NOT READY: 644 unique lexical rows, zero additions explicitly marked independently adjudicated IPA gold, 24 frozen holdout cases without IPA gold; no overlap found.
 - **Readiness:** research prototype, review-packet-ready but not research-certified or release-ready. Blockers: independent C01–C07 review, C08 source-extraction traceability/prosody/lexical review, C09/C10 adjudication, item-level rights, and Ukrainian target review.
@@ -22,7 +22,7 @@
 
 1. Obtain two independent blind IPA submissions for C01–C07.
 2. Seek the original C08 extraction table; keep five mappings explicitly inferred if unavailable; obtain token-level IPA/prosody review; do not license `유사성`.
-3. Adjudicate C09 length and C10 stress conventions.
+3. Keep source-backed C09 length; finish independent IPA vowel-quality/syllable-boundary adjudication; define and review C10 stress conventions.
 4. Resolve NIKL item-level reuse rights and Ukrainian target review.
 5. Re-run exact-head CI and paired benchmarks after any future production change.
 
