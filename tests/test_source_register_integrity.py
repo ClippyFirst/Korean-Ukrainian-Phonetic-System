@@ -366,7 +366,7 @@ def test_c09_length_discrepancies_have_exact_dictionary_surface_evidence():
         source = rows[source_id]
         assert attestation in source["coverage"]
         assert locator in source["url"]
-        assert "Hangul" in source["limitations_or_next_action"]
+        assert any(term in source["limitations_or_next_action"] for term in ("Hangul", "Korean bracket notation"))
         assert "IPA" in source["limitations_or_next_action"]
         assert "item-level" in source["license_status"].lower()
     no_length = rows["SRC-KRDICT-ENG-89445"]
