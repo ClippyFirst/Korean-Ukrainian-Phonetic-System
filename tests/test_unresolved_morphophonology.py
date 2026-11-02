@@ -97,6 +97,7 @@ def test_c09_source_backed_people_and_moreuda_keep_lexical_length_in_broad_ipa()
     expected = {
         "사람": ("사람", "saː.ɾam"),
         "모르다": ("모르다", "moː.ɾɯ.da"),
+        "괴성": ("괴성", "køː.sʌŋ"),
     }
     for word, (surface, ipa) in expected.items():
         result = phoneticize_korean(word)
@@ -106,3 +107,5 @@ def test_c09_source_backed_people_and_moreuda_keep_lexical_length_in_broad_ipa()
         assert result["ipa_status"] == "provisional"
         assert result["pronunciation_status"] == "provisional"
         assert result["unresolved_contexts"] == []
+    gweseong = phoneticize_korean("괴성")
+    assert gweseong["ipa"]["lexical_alternatives"][0]["ipa"] == "kweː.sʌŋ"
