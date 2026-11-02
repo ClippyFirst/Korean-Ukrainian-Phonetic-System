@@ -26,7 +26,7 @@
 
 ## C01–C10 phonetic evidence continuation — 2026-11-02
 
-- Source register expanded to 166 rows (157 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license, 1 not applicable). Added five C09 dictionary/Q&A sources and six academic phonetics/prosody references.
+- Source register expanded to 165 rows (155 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses, 1 not applicable). Added four C09 dictionary records and six academic phonetics/prosody references; `없어[업ː써]` is supported by the registered Standard Pronunciation Rule §14 source, not an unverified Q&A locator.
 - C09: official NIKL sources confirm long-vowel surface notation for 사람, 괴성 (two variants [괴ː성/궤ː성]), 모르다, 알다, 없는, 없어 and 이중성. Keep length; IPA quality/syllabification remain distinct from Hangul dictionary notation.
 - C01/C07: Korean liquid /l/ is conventionally onset flap [ɾ], coda/geminate lateral [l]; retroflex variants show speaker/prosodic variation and may increase near pauses. No global [ɭ] rule.
 - C02: /h/ realizations are conditioned and dialect-sensitive; preserve broad /h/ default and narrow [ɦ] as a partial research candidate only.
