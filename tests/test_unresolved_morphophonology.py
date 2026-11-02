@@ -90,3 +90,19 @@ def test_broad_seoul_korean_ipa_does_not_add_english_style_lexical_stress():
         result = phoneticize_korean(word)
         assert result["ipa"]["ipa_profile_level"] == "broad"
         assert "ˈ" not in result["ipa"]["ipa"], word
+
+
+
+def test_c09_source_backed_people_and_moreuda_keep_lexical_length_in_broad_ipa():
+    expected = {
+        "사람": ("사람", "saː.ɾam"),
+        "모르다": ("모르다", "moː.ɾɯ.da"),
+    }
+    for word, (surface, ipa) in expected.items():
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == surface
+        assert result["ipa"]["ipa"] == ipa
+        assert result["ipa"]["level"] == "broad"
+        assert result["ipa_status"] == "provisional"
+        assert result["pronunciation_status"] == "provisional"
+        assert result["unresolved_contexts"] == []
