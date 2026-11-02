@@ -143,6 +143,17 @@ def compare_reports(native_report: dict[str, Any], browser_report: dict[str, Any
     if list(native) != list(browser):
         raise ValueError("Native and Browser occurrence IDs differ")
     ids = list(native)
+    native_eligible = native_report.get("eligible_token_occurrences")
+    browser_eligible = browser_report.get("eligible_tokens")
+    if native_eligible != len(ids) or browser_eligible != len(ids):
+        raise ValueError(
+            f"eligible-occurrence count mismatch: ledger={len(ids)}, "
+            f"native={native_eligible}, browser={browser_eligible}"
+        )
+    native_rows = native_report.get("dataset_rows")
+    browser_rows = browser_report.get("rows")
+    if native_rows != browser_rows:
+        raise ValueError(f"dataset row-count mismatch: native={native_rows}, browser={browser_rows}")
     identity_mismatches = []
     for occurrence_id in ids:
         n, b = native[occurrence_id], browser[occurrence_id]
