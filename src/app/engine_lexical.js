@@ -296,9 +296,10 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
       const syllable=originalUnits[i];
       if(syllable.onset!=='ㄹ'||!ipa[i]||!(/^(ɾ|l)/u).test(ipa[i]))continue;
       const previous=originalUnits[i-1];
-      const afterLiquidCoda=previous?.coda==='ㄹ';
-      const intervocalic=Boolean(previous)&&previous.coda==='';
-      const beforeFrontGlide=palatalLiquidNuclei.has(syllable.vowel);
+      const sameWordPredecessor=Boolean(previous)&&!firstSyllableInWord(units,i);
+      const afterLiquidCoda=sameWordPredecessor&&previous.coda==='ㄹ';
+      const intervocalic=sameWordPredecessor&&previous.coda==='';
+      const beforeFrontGlide=sameWordPredecessor&&palatalLiquidNuclei.has(syllable.vowel);
       if(afterLiquidCoda||!(intervocalic||beforeFrontGlide))continue;
       const alternateIpa=ipa.slice();
       alternateIpa[i]='ɭ'+alternateIpa[i].slice(1);
