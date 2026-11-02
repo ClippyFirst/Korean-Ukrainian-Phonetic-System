@@ -14,9 +14,13 @@ The source search now has peer-reviewed phonetic evidence for the main profile d
 | C06 unreleased codas | The Cambridge IPA Korean illustration describes syllable-final stops as unreleased [p̚,t̚,k̚]. | Keep release detail in narrow phonetic profile; broad/phonemic profile may omit it. Score separately. |
 | C10 lexical stress | Seoul Korean is described as lacking English-style lexical prominence; pitch patterns are associated with Accentual Phrases and Intonational Phrases (Baek 2022). | Do not add primary lexical stress marks to broad Korean IPA. Phrase tones, boundaries, pauses and lengthening belong in a separately specified prosodic layer. |
 
-Source-register additions: `SRC-KCI-KIM-PARK-2019-VOWEL-LENGTH` (contemporary vowel-length merger caveat), `SRC-PLSA-KOREAN-LIQUID-2021`, `SRC-CAMBRIDGE-KOREAN-IPA`, `SRC-KCI-KANG-LEE-2019-H`, `SRC-KCI-CHOI-OH-2014-N-PALATALIZATION`, `SRC-KCI-YUN-2005-KOREAN-GLIDES`, and `SRC-SAGE-BAEK-2022-KOREAN-PROSODY`. Their scope/limitations are enforced by source-register tests. All remain research citations; no third-party text or code was copied into production.
+Source-register additions: `SRC-KCI-KIM-PARK-2019-VOWEL-LENGTH` (contemporary vowel-length merger caveat), `SRC-SNU-LEE-2017-KOREAN-VOWEL-CONTRAST` (C05 front-rounded vowel diphthongization), `SRC-PLSA-KOREAN-LIQUID-2021`, `SRC-CAMBRIDGE-KOREAN-IPA`, `SRC-KCI-KANG-LEE-2019-H`, `SRC-KCI-CHOI-OH-2014-N-PALATALIZATION`, `SRC-KCI-YUN-2005-KOREAN-GLIDES`, and `SRC-SAGE-BAEK-2022-KOREAN-PROSODY`. Their scope/limitations are enforced by source-register tests. All remain research citations; no third-party text or code was copied into production.
 
 **Disposition:** C01–C07 now have a defensible profile-level literature map, but exact occurrence-level independent IPA adjudication remains open. C10 has a source-backed no-lexical-stress decision for the broad Seoul profile, while phrase-level prosody and dialect scope remain open. The narrow profile remains partial/research-only. No production phonology change was justified by these profile-level sources; the current broad IPA remains the default and g2pK remains untouched.
+
+## C05 additional vowel-system corroboration — 2026-11-02
+
+Lee (2017), *Exploring the Contrast Transitions of Korean Vowels: An Information-theoretic View*, independently examines diphthongization of /y, ø/ and merger of /e, ɛ/ using written/spoken corpora. The abstract supports the broader conclusion that the front-rounded vowel system is changing, but it does not supply item-level IPA for the UGTPHON forms or choose a universal /y/, /ø/, [wi], [we] or [ɥi] transcription. C05 therefore remains `PARTIAL_SOURCE_REVIEWED_PROFILE_BOUNDARY`; Kozak Kim preserves its explicit alternate representations and no global mapping was added. Source `SRC-SNU-LEE-2017-KOREAN-VOWEL-CONTRAST` is registered with its CC BY-NC 4.0 status and abstract-only limitation.
 
 ## C09 lexical vowel-length evidence review — 2026-11-02
 

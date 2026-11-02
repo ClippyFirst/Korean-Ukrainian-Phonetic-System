@@ -357,6 +357,16 @@ def test_c08_analyzer_cross_check_is_recorded_as_diagnostic_not_gold():
 
 
 
+
+def test_c05_front_rounded_vowel_diphthongization_has_independent_corroboration_without_globalizing_it():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-SNU-LEE-2017-KOREAN-VOWEL-CONTRAST"]
+    assert "diphthongization" in source["coverage"]
+    assert "/y, ø/" in source["coverage"]
+    assert "does not establish a universal" in source["limitations_or_next_action"]
+    assert "CC BY-NC 4.0" in source["license_status"]
+
+
 def test_c09_length_discrepancies_have_exact_dictionary_surface_evidence():
     rows = {row["source_id"]: row for row in load_source_register()}
     expected = {
@@ -437,6 +447,7 @@ def test_c01_c07_and_c10_cluster_decisions_follow_the_reviewed_profile_evidence(
         row = clusters[cluster_id]
         assert source_id in row["production_decision"] + row["next_action"]
         assert row["status"] not in {"DONE_VERIFIED", "PASS"}
+    assert "SRC-SNU-LEE-2017-KOREAN-VOWEL-CONTRAST" in clusters["C05"]["production_decision"] + clusters["C05"]["next_action"]
     assert "IPA_CONVENTION_REVIEW_REQUIRED" == clusters["C04"]["status"]
     assert "do not mark English-style primary lexical stress" in clusters["C10"]["production_decision"]
     assert clusters["C09"]["status"] == "SOURCE_LENGTH_IMPLEMENTED_7_FORMS_IPA_REVIEW_PENDING"

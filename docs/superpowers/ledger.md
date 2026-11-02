@@ -103,3 +103,9 @@ Kiwi/MeCab-Ko run 41353171166 is diagnostic only: partial boundary agreement for
 - C09 now explicitly separates official dictionary vowel-length notation from contemporary Seoul/Gyeonggi surface realization. Added the abstract-reviewed Kim & Park (2019) source record; no word-specific short variants are inferred.
 - Corrected stale test expectations for quoted CSV source rows, the 괴성 dictionary result locator, C06 source citation, and source-register count. Exact-head system CI run `41418730591` passed Python/data integrity and browser regression/build; NIKL metadata inventory skipped.
 - Source register: 166 rows; 156 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses, 1 not applicable. Engine remains a research prototype; no production phonology rule or g2pK source changed.
+
+
+## Follow-up — 2026-11-02 (C05)
+
+- Added Lee (2017) as independent contextual evidence for /y, ø/ diphthongization. C05 remains partial; no global /y/→[ɥi] rule or token IPA was inferred.
+- Source register: 167 rows; 157 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses, 1 not applicable. No production phonology rule changed and g2pK remains untouched.

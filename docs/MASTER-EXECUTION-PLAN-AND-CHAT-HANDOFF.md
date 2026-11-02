@@ -5011,3 +5011,10 @@ The partial multi-engine workflow artifact 13101748305 (run 41353171180, attempt
 - Fixed four stale/inconsistent regression expectations: quoted CSV row matching for Q&A 321743, the live `괴성` dictionary locator wording, explicit C06 Cambridge source ID, and the source-register row count. The exact-head CI run `41418730591` passed Python/data integrity and browser tests/build on head `99276c82d389cc27fc228a5a3fcbcc68da096353`; NIKL metadata-only inventory was skipped.
 - No production phonology rule changed. Original/vendor g2pK remains unchanged and comparison-only.
 - New source register count: 166 rows; rights triage: 156 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses, 1 not applicable. This is not a rights clearance.
+
+
+## Follow-up — 2026-11-02 (C05 independent vowel-system corroboration)
+
+- Added `SRC-SNU-LEE-2017-KOREAN-VOWEL-CONTRAST` (Lee 2017, Seoul National University *Language Research*). The abstract independently studies /y, ø/ diphthongization and /e, ɛ/ merger using written/spoken corpora. It corroborates change/variation, not token-level IPA or a universal /ɥi/ mapping.
+- C05 remains `PARTIAL_SOURCE_REVIEWED_PROFILE_BOUNDARY`; Kozak Kim retains alternatives and no blanket rule was added. The exact token-level IPA remains evidence-limited.
+- Source register now has 167 rows; rights triage has 157 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses and 1 not applicable. CC BY-NC 4.0 is recorded for the cited paper; no text was copied into production.
