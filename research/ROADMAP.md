@@ -1,12 +1,12 @@
 ## Current continuation status — 2026-11-02
 
-Current focused work remains Kozak Kim discrepancy-driven verification. The original g2pK implementation is unchanged and comparison-only.
+Current focused work remains Kozak Kim discrepancy-driven verification; verified code/test head is `bf08b7f9be072445d9025411497af7502fde0ff4`, 239 commits ahead / 0 behind `main`. The original g2pK implementation is unchanged and comparison-only.
 
 - C01–C07 packet preparation is DONE_VERIFIED: seven neutral packets, 42 entries, 39 unique pinned UGTPHON source rows with contexts. Independent two-reviewer IPA adjudication is BLOCKED pending reviewer submissions.
 - C08 is PARTIAL / TRACEABILITY-LIMITED: all eight working contexts are mapped; three IDs were independently recovered and five reconstructed because the original extraction table is missing. Seven forms have conditional NIKL morphology/rule-environment leads. Active Q&A sources are 317798, 310899 and 331601; 335204/336313 are not active evidence. `유사성` remains unresolved.
 - Two exact R013 same-eojeol forms are tested inside full sentences in Python and browser. This is bounded rule coverage, not token-specific IPA adjudication or prosody proof.
-- Latest browser pair (run 41358812592; artifact 13104661411): 2,699 shared; exact match tied at 53.4272%; CER 8.1097% vs g2pK 8.2138%, delta −0.1040 pp; 95% sentence-cluster CI [−0.1951, −0.0261] pp.
-- Latest completed multi-engine run (41358812573; artifact 13105045922): UGTPHON native CER 9.1047% vs g2pK 9.2304% on 2,698 shared; SIGMORPHON native exact 35.8717% vs 35.3707% and CER 14.6225% vs 14.8106% on 998 shared. Results are diagnostic and use a shared renderer for g2pK surface output.
+- Latest browser pair (run 41407778535; artifact 13123653758): 2,699 shared; exact match tied at 53.4272%; CER 8.1097% vs g2pK 8.2138%, delta −0.1040 pp; 95% sentence-cluster CI [−0.1951, −0.0261] pp.
+- Latest completed multi-engine run (41358812573; artifact 13105045922; rerun 41407778528 was still in progress): UGTPHON native CER 9.1047% vs g2pK 9.2304% on 2,698 shared; SIGMORPHON native exact 35.8717% vs 35.3707% and CER 14.6225% vs 14.8106% on 998 shared. Results are diagnostic and use a shared renderer for g2pK surface output.
 - Exact-head system/Python/data and browser regression/build workflows pass. Optional CharsiuG2P/ByT5 and NIKL metadata-only inventory jobs were skipped. Local tests were not run because the local GitHub clone could not resolve github.com.
 - Remaining acceptance work: two independent C01–C07 IPA submissions; C08 extraction provenance and IPA/prosody adjudication; direct lexical resolution of `유사성`; C09/C10 convention review; NIKL item-level rights; Ukrainian target review.
 

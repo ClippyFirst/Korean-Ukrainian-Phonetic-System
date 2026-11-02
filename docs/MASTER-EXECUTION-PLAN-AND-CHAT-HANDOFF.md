@@ -4,7 +4,7 @@
 **Default branch:** `main` at `7bbbd7e7ce888a9c995bb70959e17858263c07a8`.
 **Working branch:** `research/kozak-kim-independent-ipa-packets-2026-11-01`.
 **PR:** [#417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/417), open / Draft, stacked on the PR #416 implementation line. PRs #415 and #416 remain open; no merge or destructive branch operation was performed.
-**Branch state:** PR #417 head `82c35882331d9a1a9b6e4b5500048a568b92caad`; last code/test head `8b22f778112442024f876061bd0e576af762e761`; production-code head `bc7b1474eecfe8df8006572abf0f07957f829647`. The branch compares 237 commits ahead / 0 behind current `main`; PR #417 itself is 45 commits / 27 files beyond its stacked base.
+**Verified code/test head:** `bf08b7f9be072445d9025411497af7502fde0ff4` (includes the C08 source-reference guard regression test). Production-code head remains `bc7b1474eecfe8df8006572abf0f07957f829647`; this handoff refresh is documentation-only and follows the verified code/test head. The branch compares 239 commits ahead / 0 behind current `main`; PR #417 is 47 commits / 27 files beyond its stacked base.
 
 ## Current task ledger
 
@@ -27,7 +27,7 @@
 
 ### Browser pair — UGTPHON
 
-Run [41358812592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812592), artifact `13104661411`.
+Run [41407778535](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41407778535), artifact `13123653758`.
 
 - 2,699 shared occurrences; exact match 1,442/2,699 = 53.4272% for both systems.
 - Kozak Kim CER 8.1097%; original g2pK CER 8.2138%; paired delta −0.1040 percentage points.
@@ -36,7 +36,7 @@ Run [41358812592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-Syste
 
 ### Native pair — UGTPHON
 
-Run [41358812571](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812571), artifact `13104522135`.
+Run [41407778461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41407778461), artifact `13123379329`.
 
 - 2,698 shared occurrences; Kozak Kim exact 53.0393% vs g2pK 53.1134%.
 - Kozak Kim CER 9.1047% vs g2pK 9.2304%; five native abstentions and zero engine errors.
@@ -63,15 +63,16 @@ Paired row-cluster bootstrap from the pinned artifact:
 
 ## Exact-head verification
 
-- Push system/Python regression and data integrity: PASS — run [41358807322](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358807322).
-- PR system verification, Python regression/data integrity, browser regression tests and build: PASS — run [41358812562](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812562).
-- Test-case extraction: PASS — run [41358812580](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812580).
-- Browser paired benchmark: PASS — run 41358812592.
-- Native paired benchmark: PASS — run 41358812571.
-- Multi-engine benchmark: PASS — run 41358812573; artifact 13105045922 downloaded and inspected.
-- Morphology adapter: PASS — run 41358812565.
-- Morphology consensus: PASS — run 41358812596.
-- Optional CharsiuG2P, ByT5 and joined neural pairing: SKIPPED, not passed. NIKL metadata-only inventory: SKIPPED.
+- Push system/Python regression and data integrity: PASS — run [41407771773](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41407771773).
+- PR system verification, Python regression/data integrity, browser regression tests and build: PASS — run [41407778527](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41407778527). Python regression includes the new C08 active-source guard; browser suite reports 1,373 passed / 0 failed; production build PASS.
+- Test-case extraction: PASS — run [41407778539](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41407778539).
+- External UGTPHON/browser paired benchmark: PASS — run 41407778535, artifact 13123653758.
+- Native paired benchmark: PASS — run 41407778461, artifact 13123379329.
+- Morphology consensus: PASS — run 41407778477.
+- Morphology adapter and Kiwi/MeCab-Ko smoke: PASS — run 41407778487.
+- Multi-engine rerun on this code/test head: IN_PROGRESS at last inspection — run 41407778528. The previous completed run 41358812573/artifact 13105045922 remains the latest completed 10-engine report; no result is attributed to the in-progress rerun.
+- Optional CharsiuG2P and ByT5 inference jobs: SKIPPED, not passed. NIKL metadata-only inventory: SKIPPED.
+- TDD note: the first C08 source-guard run failed because the new test regex was over-escaped; the exact CI log identified the assertion, the regex was corrected in `bf08b7f`, and the subsequent complete Python regression/data-integrity job passed.
 - Local pytest/npm commands were not run: this connector-only environment could not resolve github.com for a local clone. Exact-head GitHub Actions evidence is available; no local-run claim is made.
 
 ## Related branches and PR disposition

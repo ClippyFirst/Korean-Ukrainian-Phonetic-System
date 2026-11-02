@@ -2,7 +2,7 @@
 
 | Gate | Status | Evidence / reason |
 |---|---|---|
-| 0 — Repository integrity | PARTIAL / INSPECTED | Current main `7bbbd7e`; Kozak Kim continuation branch is 237 commits ahead / 0 behind. PR #417 is Draft and stacked on #416; #415/#416 remain open. Related #411/#414/#371 were inspected and left untouched as out of scope. |
+| 0 — Repository integrity | PARTIAL / INSPECTED | Current main `7bbbd7e`; Kozak Kim continuation branch is 239 commits ahead / 0 behind; verified code/test head `bf08b7f`. PR #417 is Draft and stacked on #416; #415/#416 remain open. Related #411/#414/#371 were inspected and left untouched as out of scope. |
 | 1 — Source and licensing | PARTIAL / EVIDENCE-LIMITED | UGTPHON Korean test subset is pinned with Apache-2.0 attribution. Active additional NIKL Q&A sources are 317798, 310899 and 331601; item-level reuse terms remain unchecked. Source register: 155 rows, 146 review-required, 7 manual classifications, 1 item-level license, 1 not applicable. |
 | 2 — Rule and data integrity | PARTIAL / EVIDENCE-LIMITED | All eight C08 contexts are in the pinned fixture; five memberships are reconstructed because the original extraction table is missing. Two exact R013 same-eojeol licenses have full-sentence Python/browser tests. `유사성` remains unresolved; no `-성` generalization. |
 | 3 — Independent evaluation corpus | PARTIAL | Seven neutral C01–C07 packets contain 42 entries / 39 source rows. No independent reviewer submissions. Multi-engine benchmark completed on UGTPHON and SIGMORPHON, but both are diagnostic datasets, not normative NIKL IPA gold. Training readiness is NOT READY: zero explicitly adjudicated IPA additions and 24 holdout cases without IPA gold. |
@@ -12,9 +12,9 @@
 
 ### Latest paired evidence
 
-- Browser UGTPHON pair, run [41358812592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812592), artifact `13104661411`: 2,699 shared; exact match tied at 53.4272%; CER 8.1097% vs g2pK 8.2138%; paired CER delta −0.1040 pp, 95% sentence-cluster CI [−0.1951, −0.0261] pp.
-- Native UGTPHON pair, run [41358812571](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812571), artifact `13104522135`: 2,698 shared; exact 53.0393% vs 53.1134%; CER 9.1047% vs 9.2304%; five native abstentions, zero engine errors.
-- Ten-engine run [41358812573](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812573), artifact `13105045922`: UGTPHON and SIGMORPHON completed. On SIGMORPHON's 998 paired words, Kozak Kim is ahead on exact match (35.8717% vs 35.3707%) and CER (14.6225% vs 14.8106%), with paired row-bootstrap intervals favoring Kozak Kim. On UGTPHON, Kozak Kim has lower CER but no exact-match advantage. g2pK is unchanged; its surface uses the shared project IPA renderer.
+- Browser UGTPHON pair, run [41407778535](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41407778535), artifact `13123653758`: 2,699 shared; exact match tied at 53.4272%; CER 8.1097% vs g2pK 8.2138%; paired CER delta −0.1040 pp, 95% sentence-cluster CI [−0.1951, −0.0261] pp.
+- Native UGTPHON pair, run [41407778461](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41407778461), artifact `13123379329`: 2,698 shared; exact 53.0393% vs 53.1134%; CER 9.1047% vs 9.2304%; five native abstentions, zero engine errors.
+- Latest completed ten-engine run [41358812573](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812573), artifact `13105045922`; rerun on code/test head `bf08b7f` (41407778528) remained in progress at last inspection: UGTPHON and SIGMORPHON completed. On SIGMORPHON's 998 paired words, Kozak Kim is ahead on exact match (35.8717% vs 35.3707%) and CER (14.6225% vs 14.8106%), with paired row-bootstrap intervals favoring Kozak Kim. On UGTPHON, Kozak Kim has lower CER but no exact-match advantage. g2pK is unchanged; its surface uses the shared project IPA renderer.
 
 **Disposition: research prototype; blind-review-packet-ready, not research-certified or release-ready.**
 
