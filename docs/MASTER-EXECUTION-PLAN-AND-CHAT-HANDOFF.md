@@ -7,7 +7,7 @@ This is the active continuation for the Kozak Kim-only work. Preserve the existi
 - Branch: `research/kozak-kim-runtime-parity-broad-v2-2026-11-02`
 - PR: [#420](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/420)
 - Starting point: #419 head `88cae4bdeefce66ee8026bb1380f17271c85630d`
-- Latest known head at this handoff: `855f0fc5a37ea6ac8f70036321b578831da669df`
+- Latest known head at this handoff: `2e6452a9ad2fd10ea3be45c24f9ac1775c64dfa7` (ledger/doc update after Browser profile-metadata correction and Python/JavaScript normalizer parity test).
 - Only Kozak Kim code/data/tests are in scope. No g2pK/vendor files appear in the PR changed-file list.
 
 ## What changed
@@ -18,6 +18,12 @@ This is the active continuation for the Kozak Kim-only work. Preserve the existi
 4. Error triage: historical paired raw predictions are analyzed against g2pK and g2p-ko at occurrence level. Apparent losses are checked against NIKL and C09 evidence before changing code.
 5. Independent gold: separate reviewer A/B templates are generated from the frozen 24-item manifest, with no engine outputs and no IPA gold.
 
+## Additional code-review corrections — 2026-11-02
+
+- The ordinary Browser `convertText()` return path now reports the selected `clippyfirst-korean-broad-v1` profile and `broad` level, matching the profile actually used in the IPA calculation. The lexical/multi-part path already reported it. This fixes provenance metadata, not pronunciation output.
+- The Python multi-engine test suite now compares the Python and JavaScript broad-candidate normalizers on shared edge cases, including allophone collapses, aspiration, tie bars, separators, diacritics, and empty input. The comparison checks normalized strings and both loss ledgers.
+- The R013 change in this branch is a narrow correction to the existing Q&A 330963-backed `-ㄹ게` fortition license: it requires the complete attached ending or attested `-ㄹ게요`, and rejects internal-substring cases such as `올게이`. It is not a new general phonological rule. The positive/negative controls are in `tests/test_rules.py`.
+- Exact-head Actions remain queued; the local container cannot resolve `github.com`, so no local pytest/npm result is claimed. See `docs/superpowers/ledger.md` for current run IDs and exact blockers.
 ## Current interpretation
 
 The old 7.56 percentage-point Native/Browser broad-score difference was not evidence that Browser was a better engine. The two runtimes used different IPA profiles. In the old paired sample, 231/232 raw IPA differences were `s` vs `ɕ`; the remaining `올게이` discrepancy came from an R013 boundary false positive now covered by a regression test. The current benchmark must use the same broad profile and re-measure parity before claiming the 99.9% target.
