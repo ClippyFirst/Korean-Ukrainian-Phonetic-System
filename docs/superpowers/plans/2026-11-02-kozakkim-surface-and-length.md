@@ -30,13 +30,13 @@
 
 ---
 
-### Task 1: Reconstruct complete Browser surface from mixed trace entries
+### Task 1: Preserve vowel-initial syllables after exact ㅎ deletion
 
 **Files:**
-- Modify: `scripts/benchmark_kozak_kim_browser.mjs` — `fullSurfaceHangul()`
+- Modify: `src/app/engine_rules_ctx.js` — post-ㅎ-deletion liaison guard
 - Test: `tests/kozak-kim-ipa-first-benchmark.test.mjs`
 
-**Hypothesis:** The six missing Browser surfaces in artifact 13143313187 arise when the trace contains a mixture of per-syllable surface values and unchanged source entries. Current reconstruction accepts either all per-syllable surfaces or no surfaces, and returns null for the mixed case.
+**Root cause (confirmed by the RED test):** Exact §12(4) handling changes the preceding `ㅎ` coda to `''`. The following generic liaison branch then checks only `a.coda !== 'ㅎ' && a.coda !== 'ㅇ'`; because the empty string passes both checks, it assigns `b.onset = ''`. `compose()` cannot rebuild that vowel-initial syllable, so Browser silently drops it from the surface (for example, `쌓아서` becomes `싸서` instead of `싸아서`). Native does not do this. The smallest correct guard is to require a non-empty coda before generic liaison.
 
 - [ ] Add a regression test using the six recorded occurrences and their Native surface values:
   - `쌓아서 → 싸아서`
@@ -46,7 +46,7 @@
   - `좋아해주는 → 조아해주는`
   - `좋은데 → 조은데`
 - [ ] Run the focused Node test and inspect the expected RED failure, including the trace evidence for the first failing item.
-- [ ] Make the smallest trace reconstruction change that preserves explicit surface values and uses the source syllable only where the trace deliberately has no surface override.
+- [ ] Add the non-empty-coda guard to the generic liaison branch. Do not change the NIKL exact-form inventory, morphology status, IPA mapping, or target output.
 - [ ] Re-run the focused Node test and the full Browser suite.
 
 ### Task 2: Align deterministic coda surface in shared Broad profile for unresolved morphology
