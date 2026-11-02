@@ -9,10 +9,10 @@
 |---|---|---|
 | 1. Native/Browser runtime parity | PARTIAL | Added explicit Browser selection of `clippyfirst-korean-broad-v1` without changing its default legacy profile; added same-occurrence audit with profile-contract, complete surface-Hangul, raw/broad IPA and paired-gold checks. Exact-head CI artifact still pending. |
 | 2. Broad IPA benchmark v2 | PARTIAL | Shared versioned sensitivity profile is applied to all comparison engines; per-engine feature-loss and serialization-loss counts plus coverage-adjusted exact/CER are emitted. Exact-head multi-engine artifact still pending. |
-| 3. Native error analysis vs g2pK and g2p-ko | PARTIAL | Added occurrence-level pairwise and three-way loss reports. Historical raw-artifact review shows many apparent losses are reference-convention omissions; see the discrepancy report. Re-run after the R013 boundary fix before final counts. |
+| 3. Native error analysis vs g2pK and g2p-ko | PARTIAL | Added occurrence-level pairwise and three-way loss reports. Historical raw-artifact review shows many apparent losses are reference-convention omissions; see the discrepancy report. Re-run after the narrow R013 ending-boundary tightening before final counts. |
 | 4. Independent IPA gold | PARTIAL / BLOCKED | Frozen 24-item holdout remains prediction-free. Separate reviewer A/B templates and a reproducible packet builder are ready. Two qualified independent annotations and adjudication remain external blockers. |
 | Preserve original g2pK | DONE_VERIFIED | PR #420 changed-file list contains no g2pK or vendor-g2pK paths. |
-| Avoid new phonological rules | DONE_VERIFIED | This continuation adds no general phonological rule. It selects an existing IPA profile for benchmarking; the already source-backed R013 boundary correction is retained. |
+| Avoid unsupported general rule expansion | DONE_VERIFIED | No new general rule was added. This continuation does include one narrow correction to existing, NIKL-backed R013: require the complete attached -ㄹ게 ending (or attested -ㄹ게요) rather than matching an internal ㄹ+게 substring. Positive/negative controls are present; exact-head CI remains pending. |
 
 ### Reproducible baseline recomputation (pre-R013-fix raw artifact)
 
@@ -47,6 +47,14 @@ On the old paired UGTPHON artifact, 2698 occurrences were scored by both runtime
 ### Independent review packet
 
 `research/ipa-holdout-review-packets/reviewer-a.csv` and `reviewer-b.csv` are separate blank templates with no engine outputs or IPA gold. `scripts/build_ipa_holdout_review_packets.py` records manifest and packet SHA-256 hashes and refuses to overwrite existing annotations. The 24 items remain a frozen holdout with tuning prohibited.
+
+### Review follow-ups on the implementation branch
+
+- **R013 scope clarification:** the branch does not add a new general phonological process. It tightens the existing Q&A 330963-backed -ㄹ게 fortition license so it applies only to the complete attached ending or the attested -ㄹ게요 extension. 올게이/할게이 are explicit negative controls. This is a production rule correction in this continuation, not a pre-existing change.
+- **Browser profile metadata:** fixed the ordinary convertText() return path so an explicit clippyfirst-korean-broad-v1 selection is reflected in ipa_profile and ipa_profile_level; the multi-part/lexical return path already exposed those fields. The existing browser benchmark test covers an ordinary non-lexical token.
+- **Normalizer parity:** added a Python test that invokes the Browser JavaScript normalizer against the same edge-case inputs and compares normalized IPA, feature-loss counts, and serialization-normalization counts. The test skips only when Node.js is unavailable; the multi-engine CI job installs Node 22.12.0.
+- **Current branch head at this ledger update:** 97ba13a8ce9d3acde8eaca4b158360f280b7eb52. Follow-up code commits: 321672de41853d8562578f6676302ff08005fdd4 (Browser metadata fix), b69737d5da49e3f2845b40a15b42562bdbbe5d31 (Python/Browser normalizer parity test). A later docs-only commit corrected historical broad-score denominators.
+- **Verification:** exact-head Actions runs for the current branch are queued (system verification, multi-engine, paired Native/g2pK, Browser G2P, UGTPHON, extraction and morphology smoke). The multi-engine run on the superseded predecessor head was cancelled by a newer push. No current-head pass is claimed. Local git ls-remote failed because the container cannot resolve github.com; local pytest/npm were therefore not run.
 
 ### Verification state
 
