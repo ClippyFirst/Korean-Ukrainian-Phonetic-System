@@ -17,6 +17,27 @@
 - **Readiness:** research prototype; not research-certified/release-ready. Blockers: two independent C01–C07 submissions, C08 source extraction/prosody, C09 IPA quality/syllabification, C10 AP/IP contract, item-level NIKL rights, Ukrainian target review, and skipped optional source/neural jobs.
 - **Local verification:** no local pytest/npm run; evidence is from GitHub Actions. Do not claim local test success. NIKL metadata inventory remains SKIPPED.
 
+## Canonical task ledger — 2026-11-02
+
+| Task | Status | Evidence / acceptance criterion |
+|---|---|---|
+| Current default/main ancestry and PR stack | DONE_VERIFIED | Main `7bbbd7e7`; working base `fb5e1686) descends from main; PR #419 is stacked on #417. No merge/release performed. |
+| Original g2pK baseline preservation | DONE_VERIFIED | No original/vendor g2pK files changed in this continuation; g2pK remains comparison-only. |
+| Exact-head software verification | DONE_VERIFIED | Final PR head `509f962c`: push system 41426031138 and PR system 41426042389 PASS; browser 1,374/1,374; extraction 41426042166 PASS. |
+| Paired/multi-engine evidence refresh | DONE_VERIFIED | Runs 41420395792, 41420395800 and 41420395805 plus artifacts 13129915994, 13130305158 and 13129993707 inspected; diagnostic limitations recorded. |
+| Native abstention regression protection | DONE_VERIFIED | New test pins four R002/R003 abstentions; existing `삶의` test pins both NIKL Hangul variants and independent-IPA abstention. |
+| C01–C07 review packet preparation | DONE_VERIFIED | Seven blind/reference-withheld packets, 42 entries / 39 source rows; acceptance still requires two independent reviewer submissions. |
+| C01–C07 independent IPA adjudication | BLOCKED | No independent reviewer submissions; criterion is two qualified independent transcriptions and reconciled disagreements. |
+| C08 source extraction / lexical / prosody | PARTIAL | Eight contexts mapped; five memberships reconstructed because original extraction table is missing; `유사성` unresolved. Criterion: original extraction provenance plus token-level IPA/prosody review. |
+| C09 lexical length | PARTIAL | Seven source-backed forms; length retained. Criterion: independent IPA vowel-quality and syllable-boundary review, including contemporary length realization. |
+| C10 AP/IP prosody contract | TODO | Define whether phrase-level prosody is in product scope; if yes, specify AP/IP representation and obtain specialist review. |
+| Four morphophonological native abstentions | BLOCKED | `칡칡이`, `쫒아내면`, `많앗구나유유유`, `무서웟어`; require exact lexical/morpheme/audio evidence before rule licensing. |
+| `삶의` IPA | PARTIAL | NIKL MCFAQ 5716 confirms [살믜]/[살메]; project IPA variants remain provisional. Criterion: independent IPA adjudication; until then no Ukrainian output. |
+| Source and item-level rights | PARTIAL | 167-row register; 157 review-required, 7 manual classifications, 2 item-level licenses, 1 not applicable. Criterion: complete item-level rights review and attribution. |
+| Ukrainian target adaptation | BLOCKED | No independent Ukrainian target review; criterion: documented target-policy review and accepted gold examples. |
+| Optional CharsiuG2P / ByT5 / live NIKL inventory | BLOCKED / NOT RUN | Workflows SKIPPED; not counted as successful. Criterion: licensed weights/data and available source inventory service. |
+| Research certification / release | BLOCKED | Research prototype only; requires all specialist, rights, target and product gates above. |
+
 ## Current next actions
 
 1. Obtain two independent blind IPA submissions for C01–C07.
