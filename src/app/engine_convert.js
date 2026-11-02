@@ -401,7 +401,10 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       u.__substantiveLiaisonUnlicensed||u.__rieulGiyeokUnlicensed
     );
     if(unresolvedKoreanMorphology){surfaceParts.push(u.char);continue;}
-    surfaceParts.push(compose(u.onset,u.vowel,u.coda||''));
+    // The shared research profile exposes the same fully neutralized Hangul
+    // surface as Native. Keep the legacy Browser display contract unchanged.
+    const surfaceCoda=useSharedBroadIpaProfile?representative(u.coda||''):(u.coda||'');
+    surfaceParts.push(compose(u.onset,u.vowel,surfaceCoda));
   }
   const recomposed=surfaceParts.join('');
   const originalHangul=units.filter(u=>u.type==='hangul').map(u=>u.char).join('');
