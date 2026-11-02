@@ -151,13 +151,15 @@ test('CLI can build a blinded packet from the R002/R003 queue without modifying 
 
 const pilotPacketIds = ['C01', 'C02', 'C03', 'C04', 'C05', 'C06', 'C07'];
 
-test('C01-C07 pilot packets remain source-blind and fail closed without source context', () => {
+test('C01-C07 pilot packets remain system-blind and reference-withheld, with source identity disclosed as identifiable', () => {
   for (const clusterId of pilotPacketIds) {
     const packetText = readFileSync(new URL('../research/ipa-review-packets/blind-ipa-' + clusterId + '.json', import.meta.url), 'utf8');
     const packet = JSON.parse(packetText);
     assert.equal(packet.packet_schema, 'korean-independent-ipa-review-v1');
     assert.equal(packet.packet_id, 'BLIND-IPA-' + clusterId + '-2026-11-01');
-    assert.equal(packet.review_mode, 'BLINDED_INPUT_ONLY');
+    assert.equal(packet.review_mode, 'SYSTEM_BLIND_REFERENCE_WITHHELD_SOURCE_IDENTIFIABLE');
+    assert.ok(packet.limitations.some(item => item.includes('Source identity is not blinded')));
+    assert.ok(packet.reviewer_instructions.some(item => item.includes('Do not retrieve or consult the UGTPHON IPA/reference annotations')));
     assert.equal(packet.items.length, 6);
     assert.ok(packet.items.every(item => item.source_row_ids.length > 0));
     assert.ok(packet.items.every(item => item.source_context_status === 'RESTORED_FROM_OFFICIAL_UGTPHON_KO_TEST'));

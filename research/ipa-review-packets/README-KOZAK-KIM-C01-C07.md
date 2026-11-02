@@ -1,6 +1,6 @@
 # Kozak Kim independent IPA review packets — 2026-11-01
 
-> **INTERNAL MAINTAINER INDEX — DO NOT FORWARD TO REVIEWERS.** This file contains cluster topics and internal provenance. Send only the source-blind packet JSON and `REVIEWER-INSTRUCTIONS.md` after context and rights gates are cleared.
+> **INTERNAL MAINTAINER INDEX — DO NOT FORWARD TO REVIEWERS.** This file contains cluster topics and internal provenance. Send only the system-blind, reference-withheld packet JSON and `REVIEWER-INSTRUCTIONS.md` after context and rights gates are cleared. The packets are not source-identity-blind: source-row IDs and raw public sentences remain visible.
 
 Seven separate system-blind pilot packets are provided for C01–C07. They include source sentences but exclude system outputs, reference IPA, system identities, benchmark ranking, and proposed rule explanations.
 
@@ -16,14 +16,14 @@ Seven separate system-blind pilot packets are provided for C01–C07. They inclu
 
 ## Readiness and licensing
 
-All 39 unique source-row identifiers used by the seven packets were matched to the official [UGTPHON Korean test split](https://github.com/naver-ai/UGTPHON/tree/main/ko); every target token is present in its included raw source sentence. The official `ko/LICENSE` states Apache-2.0 for the Korean subset. The packets include raw sentence text only — no canonical forms, phoneme annotations, IPA-Dict entries, system outputs, or reference IPA. They preserve attribution to UGTPHON, KoMultiText, and MultiLexNorm++.
+All 39 unique source-row identifiers used by the seven packets were matched to the official [UGTPHON Korean test split](https://github.com/naver-ai/UGTPHON/tree/main/ko); every target token is present in its included raw source sentence. The official `ko/LICENSE` states Apache-2.0 for the Korean subset. The packets include raw sentence text only — no canonical forms, phoneme annotations, IPA-Dict entries, system outputs, or reference IPA. They preserve attribution to UGTPHON, KoMultiText, and MultiLexNorm++. **Blinding limitation:** source-row IDs and public source sentences remain identifiable; these packets withhold references and system outputs but cannot guarantee source-identity blindness. Reviewers must not retrieve UGTPHON's own IPA annotations or prior engine outputs during first-pass scoring.
 
 The packets are **ready for independent pilot review**, not a complete cluster census. Preserve the Apache-2.0 notice and attribution when sharing. The raw MultiLexNorm++ source files are not redistributed; upstream provenance/terms remain documented as a limitation.
 
 ## Protocol
 
 1. Read the included source sentence and flag any context that remains ambiguous.
-2. Give reviewers separate blind copies; do not disclose systems, reference IPA, or suspected variant.
+2. Give reviewers separate system-blind, reference-withheld copies; do not disclose systems, reference IPA, or suspected variant. Explicitly instruct reviewers not to look up the source corpus's IPA/reference annotations. Source identity may be inferable from the public row IDs and sentences.
 3. Collect broad IPA, optional narrow IPA, syllable boundaries, length, convention, evidence, and confidence independently.
 4. Freeze both first-pass submissions before revealing engine/reference comparisons.
 5. Reconcile disagreements only after independent submissions; retain unresolved cases.

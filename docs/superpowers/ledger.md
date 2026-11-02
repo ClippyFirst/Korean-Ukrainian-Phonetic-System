@@ -4,7 +4,7 @@
 
 - **Scope:** only Kozak Kim; original g2pK remains unchanged and comparison-only.
 - **Branch/PR:** `research/kozak-kim-independent-ipa-packets-2026-11-01`; verified code/test head `bf08b7f9be072445d9025411497af7502fde0ff4`; draft PR #417 stacked on PR #416. PRs #415/#416 remain open. The current handoff refresh is documentation-only.
-- **C01–C07:** seven neutral blind packets, 42 entries, 39 unique source rows, full source contexts, no engine/baseline/IPA leakage. Packet preparation DONE_VERIFIED; two independent reviewer submissions BLOCKED.
+- **C01–C07:** seven system-blind, reference-withheld packets, 42 entries, 39 unique source rows, full source contexts, no engine/baseline/IPA leakage; source identities remain inferable and reviewer instructions prohibit corpus-gold lookup. Packet preparation DONE_VERIFIED; two independent reviewer submissions BLOCKED.
 - **C08:** all eight contexts are in the pinned fixture; three IDs were independently recovered and five reconstructed from the fortis-mismatch signature because the original extraction table is missing. Seven have conditional morphology/rule-environment leads. Active NIKL Q&A sources are 317798, 310899 and 331601; provisional 335204/336313 are removed. `유사성` remains unresolved. No suffix-wide `-성` rule.
 - **R013:** two exact same-eojeol C08 licenses are covered inside full sentences in Python and browser. This is bounded rule behavior, not independent IPA adjudication; the pause/prosody uncertainty remains.
 - **Browser pair:** run 41407778535 / artifact 13123653758; 2,699 shared; exact 53.4272% each; CER 8.1097% vs g2pK 8.2138%; delta −0.1040 pp, 95% sentence-cluster CI [−0.1951, −0.0261].

@@ -1,6 +1,6 @@
 {
   "packet_schema": "korean-independent-ipa-review-v1",
-  "review_mode": "BLINDED_INPUT_ONLY",
+  "review_mode": "SYSTEM_BLIND_REFERENCE_WITHHELD_SOURCE_IDENTIFIABLE",
   "limitations": [
     "Pilot sample only; not a complete cluster census.",
     "No candidate IPA, syllabification, allophone, or phonological analysis is supplied.",
@@ -8,7 +8,8 @@
     "This is a six-form pilot sample, not a complete cluster census.",
     "UGTPHON IPA/reference annotations are not shown to reviewers; the supplied source_sentence is raw context only.",
     "This is a six-form pilot sample, not a complete cluster census.",
-    "The included source_sentence is raw UGTPHON context only; canonical and IPA/reference annotations are deliberately excluded."
+    "The included source_sentence is raw UGTPHON context only; canonical and IPA/reference annotations are deliberately excluded.",
+    "Source identity is not blinded: source-row IDs and public raw sentences may identify UGTPHON rows. This packet withholds system outputs and reference IPA; reviewers must not retrieve or consult corpus reference annotations during first-pass transcription."
   ],
   "reviewer_instructions": [
     "Independently transcribe each item in broad phonemic IPA first.",
@@ -16,7 +17,9 @@
     "State syllable boundaries and vowel length only under a declared convention and supported evidence.",
     "Classify the distinction as phonemic, predictable allophony, transcription convention, lexical variation, or unresolved.",
     "Cite primary sources or describe phonetic evidence, method, and confidence.",
-    "Do not infer a general phonological rule from this pilot packet."
+    "Do not infer a general phonological rule from this pilot packet.",
+    "Do not retrieve or consult the UGTPHON IPA/reference annotations, benchmark outputs, or prior system transcriptions. Source IDs and public sentences may make a row identifiable; if you already know or locate the corpus reference, disclose this and mark the affected item COMPROMISED_FOR_BLIND_REVIEW rather than scoring it as an independent transcription.",
+    "Use the supplied source sentence for morphology and context. You may consult official pronunciation standards and cite them, but do not query the corpus's own pronunciation annotations or any engine output."
   ],
   "reviewer_submission": {
     "reviewer_id": null,
