@@ -89,6 +89,7 @@ test('browser occurrence ledger retains stable identity and surface for heuristi
   });
   assert.equal(report.records.length, 1);
   assert.equal(report.records[0].occurrence_id, '0');
+  assert.equal(report.records[0].gold, 'ka');
   assert.equal(report.records[0].surface_hangul, '가');
   assert.equal(report.records[0].status, 'heuristic');
   assert.equal(report.scored_tokens, 0);
