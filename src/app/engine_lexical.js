@@ -253,7 +253,7 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
   // lenis /s/ allophone before /i/ and selected /j/-initial diphthongs.
   // Keep the broad canonical /s/ and fortis /s͈/ unchanged.
   if(includeBroadAllophones){
-    const palatalNuclei=new Set(['ㅣ','ㅑ','ㅒ','ㅖ']);
+    const palatalNuclei=new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
     for(let i=0;i<originalUnits.length;i++){
       const syllable=originalUnits[i];
       if(syllable.onset!=='ㅅ'||!palatalNuclei.has(syllable.vowel)||!ipa[i]?.startsWith('s'))continue;
@@ -271,5 +271,47 @@ export function genericVowelVariants(text,units,originalUnits,ipa,output,status,
       });
     }
   }
+  if(includeBroadAllophones){
+    // S018: intervocalic /h/ may surface as [ɸ]. Keep [h] canonical.
+    for(let i=1;i<originalUnits.length;i++){
+      const syllable=originalUnits[i];
+      const previous=originalUnits[i-1];
+      if(syllable.onset!=='ㅎ'||previous.coda!==''||!ipa[i]?.startsWith('h'))continue;
+      const alternateIpa=ipa.slice();
+      alternateIpa[i]='ɸ'+alternateIpa[i].slice(1);
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,surface:text,ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Optional Seoul Korean [ɸ] for /h/ between voiced sounds (S018); broad canonical [h] is preserved.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+
+    // S018: /l/ may be [ɭ] intervocalically or before /i,j/. Keep
+    // the broad canonical liquid unchanged and expose this as a variant.
+    const palatalLiquidNuclei=new Set(['ㅣ','ㅑ','ㅒ','ㅕ','ㅖ','ㅛ','ㅠ']);
+    for(let i=0;i<originalUnits.length;i++){
+      const syllable=originalUnits[i];
+      if(syllable.onset!=='ㄹ'||!ipa[i]||!(/^(ɾ|l)/u).test(ipa[i]))continue;
+      const previous=originalUnits[i-1];
+      const afterLiquidCoda=previous?.coda==='ㄹ';
+      const intervocalic=Boolean(previous)&&previous.coda==='';
+      const beforeFrontGlide=palatalLiquidNuclei.has(syllable.vowel);
+      if(afterLiquidCoda||!(intervocalic||beforeFrontGlide))continue;
+      const alternateIpa=ipa.slice();
+      alternateIpa[i]='ɭ'+alternateIpa[i].slice(1);
+      const mapped=alternateIpa.map(value=>ipaSyllableToUkrainian(value,{allowProvisional:true}));
+      variants.push({
+        source:text,surface:text,ukrainian:mapped.map(item=>item.text??'').join(''),
+        ipa:renderStructured(units,alternateIpa,'.'),
+        note:'Optional Seoul Korean [ɭ] for /l/ intervocalically or before /i,j/ (S018); broad canonical liquid is preserved.',
+        status:mapped.some(item=>item.status==='provisional')?'lexical-review':status,
+        target_status:mapped.some(item=>item.status==='unavailable'||item.unknown)?'unavailable':mapped.some(item=>item.status==='provisional')?'provisional':'model-selected'
+      });
+    }
+  }
+
   return variants;
 }
