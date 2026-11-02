@@ -325,7 +325,7 @@ def test_c08_cluster_cites_only_active_registered_nikl_qna_sources():
         cluster_rows = list(csv.DictReader(stream))
     c08 = next(row for row in cluster_rows if row["cluster_id"] == "C08")
     c08_text = " ".join(c08.values())
-    cited_ids = set(re.findall(r"SRC-NIKL-QNA-\\d+", c08_text))
+    cited_ids = set(re.findall(r"SRC-NIKL-QNA-\d+", c08_text))
     registered_ids = {row["source_id"] for row in load_source_register()}
 
     assert cited_ids, "C08 must use explicit, traceable NIKL source-register IDs"
@@ -335,7 +335,7 @@ def test_c08_cluster_cites_only_active_registered_nikl_qna_sources():
         "SRC-NIKL-QNA-310899",
         "SRC-NIKL-QNA-331601",
     } <= cited_ids
-    assert not re.search(r"\\b(?:335204|336313)\\b", c08_text), (
+    assert not re.search(r"\b(?:335204|336313)\b", c08_text), (
         "unretrieved provisional Q&A references must not remain in the active C08 evidence row"
     )
 
