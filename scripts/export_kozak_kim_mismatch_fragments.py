@@ -77,12 +77,14 @@ def candidate_clusters(fragments: list[dict[str, str]]) -> list[str]:
     labels = []
     if any(char in text for char in "ɭɾʎ"):
         labels.append("C01_C07_liquid_realization")
-    if any(char in text for char in "hɦçβʝɸxɣ"):
+    if any(char in text for char in "ɦçβʝɸxɣ") or ("h" in text and "ʰ" not in text):
         labels.append("C02_h_realization")
     if "ɲ" in text:
         labels.append("C03_nasal_palatalization")
     if any(char in text for char in "ʰ͡"):
         labels.append("C04_aspiration_affricate_notation")
+    if "s" in text and "ɕ" in text:
+        labels.append("C11_sibilant_place_profile_boundary")
     if any(char in text for char in "yɥø"):
         labels.append("C05_front_rounded_vowel")
     if "̚" in text:
