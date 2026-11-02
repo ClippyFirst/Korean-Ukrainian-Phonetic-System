@@ -47,33 +47,79 @@ export function normalizeIpa(value) {
     .normalize('NFC');
 }
 
-const BROAD_ALLOPHONE_MAP = new Map([
-  ['ɭ', 'l'], ['ʎ', 'l'], ['ɲ', 'n'],
-  ['ɦ', 'h'], ['ç', 'h'], ['x', 'h'], ['ɣ', 'h'], ['ɸ', 'h'], ['β', 'h'], ['ʝ', 'h']
-]);
+const BROAD_CANDIDATE_PROFILE = JSON.parse(readProjectFile('data/korean/ipa/broad-candidate-normalization-v1.json'));
+const BROAD_OPS = BROAD_CANDIDATE_PROFILE.operations;
 
-// Research-only sensitivity profile: compare the project's broad IPA against
-// predictable Korean narrow allophones in UGTPHON-style phonetic gold.
-// It deliberately preserves stop aspiration, fortisness, vowel length and
-// unreleased codas; it does not replace the strict headline score.
-export function normalizeIpaBroadCandidate(value) {
-  const chars = [...String(value ?? '').normalize('NFC').replace(/g/gu, 'ɡ').replaceAll(TIE_BAR, '')];
+// Shared with the Python multi-engine runner through the versioned JSON profile.
+// The profile is intentionally research-only; it exposes every feature collapse
+// and preserves s/ɕ/ʃ place distinctions rather than normalizing them away.
+export function normalizeIpaBroadCandidateWithLoss(value) {
+  let text = String(value ?? '').normalize('NFC');
+  const featureLoss = {};
+  const serialization = {};
+  const add = (target, key, amount = 1) => { target[key] = (target[key] ?? 0) + amount; };
+
+  if (text.includes('g')) {
+    add(serialization, 'ascii_g_to_ipa_script_g', [...text].filter(char => char === 'g').length);
+    text = text.replace(/g/gu, BROAD_OPS.canonicalize_g);
+  }
+  if (text.includes(BROAD_OPS.remove_tie_bar)) {
+    add(serialization, 'affricate_tie_bar_removed', [...text].filter(char => char === BROAD_OPS.remove_tie_bar).length);
+    text = text.replaceAll(BROAD_OPS.remove_tie_bar, '');
+  }
+
+  const chars = [...text];
   const normalized = [];
+  const stressMarkers = new Set(BROAD_OPS.remove_stress_markers);
+  const fricatives = new Set(BROAD_OPS.remove_fricative_aspiration.after);
+  const ignoredDiacritics = new Set(BROAD_OPS.remove_diacritics);
+  const separators = new Set(BROAD_OPS.remove_separators);
+
   for (let index = 0; index < chars.length; index += 1) {
     const char = chars[index];
-    if (char === 'ˈ' || char === 'ˌ') continue;
-    if (['s', 'ɕ', 'ʃ'].includes(char) && chars[index + 1] === 'ʰ') {
+    if (stressMarkers.has(char)) {
+      add(featureLoss, 'lexical_stress');
+      continue;
+    }
+    if (fricatives.has(char) && chars[index + 1] === BROAD_OPS.remove_fricative_aspiration.marker) {
+      add(featureLoss, 'fricative_aspiration');
       normalized.push(char);
       index += 1;
       continue;
     }
-    if (char === 'ʷ' && normalized.at(-1) === 'h') continue;
-    normalized.push(BROAD_ALLOPHONE_MAP.get(char) ?? char);
+    if (char === BROAD_OPS.remove_h_labialization.marker && normalized.at(-1) === BROAD_OPS.remove_h_labialization.base) {
+      add(featureLoss, 'h_labialization');
+      continue;
+    }
+    const mapping = BROAD_OPS.allophone_map[char];
+    if (mapping) {
+      add(featureLoss, mapping.loss);
+      normalized.push(mapping.to);
+    } else {
+      normalized.push(char);
+    }
   }
-  return normalized
-    .filter(char => !/\s/u.test(char) && char !== '.' && !IGNORABLE_DIACRITICS.has(char))
-    .join('')
-    .normalize('NFC');
+
+  const output = [];
+  for (const char of normalized) {
+    if (/\s/u.test(char) || separators.has(char)) {
+      add(serialization, 'syllable_or_word_boundary_removed');
+    } else if (ignoredDiacritics.has(char)) {
+      add(featureLoss, 'selected_segmental_quality_diacritics');
+    } else {
+      output.push(char);
+    }
+  }
+
+  return {
+    normalized: output.join('').normalize('NFC'),
+    feature_loss_counts: Object.fromEntries(Object.entries(featureLoss).sort(([a], [b]) => a.localeCompare(b))),
+    serialization_normalization_counts: Object.fromEntries(Object.entries(serialization).sort(([a], [b]) => a.localeCompare(b)))
+  };
+}
+
+export function normalizeIpaBroadCandidate(value) {
+  return normalizeIpaBroadCandidateWithLoss(value).normalized;
 }
 
 export function editDistance(left, right) {
@@ -180,9 +226,14 @@ export function evaluateRows(rows, engine) {
         const distances = goldVariants.map(gold => ({ gold, distance: editDistance(predicted, gold) }));
         distances.sort((a, b) => a.distance - b.distance);
         const closest = distances[0];
-        const broadPredicted = normalizeIpaBroadCandidate(predictedRaw);
-        const broadGoldVariants = goldRaw.split(',').map(normalizeIpaBroadCandidate).filter(Boolean);
-        const broadDistances = broadGoldVariants.map(gold => ({ gold, distance: editDistance(broadPredicted, gold) }));
+        const broadPredictionAudit = normalizeIpaBroadCandidateWithLoss(predictedRaw);
+        const broadPredicted = broadPredictionAudit.normalized;
+        const broadGoldAudits = goldRaw.split(',').map(normalizeIpaBroadCandidateWithLoss).filter(item => item.normalized);
+        const broadDistances = broadGoldAudits.map(audit => ({
+          gold: audit.normalized,
+          distance: editDistance(broadPredicted, audit.normalized),
+          audit
+        }));
         broadDistances.sort((a, b) => a.distance - b.distance);
         const broadClosest = broadDistances[0];
         records.push({
@@ -198,6 +249,9 @@ export function evaluateRows(rows, engine) {
           broad_candidate_gold: broadClosest?.gold ?? null,
           broad_candidate_distance: broadClosest?.distance ?? null,
           broad_candidate_exact: broadClosest?.distance === 0,
+          broad_candidate_prediction_feature_loss_counts: broadPredictionAudit.feature_loss_counts,
+          broad_candidate_prediction_serialization_normalization_counts: broadPredictionAudit.serialization_normalization_counts,
+          broad_candidate_gold_feature_loss_counts: broadClosest?.audit.feature_loss_counts ?? {},
           pronunciation_status: pronunciationStatus,
           target_status: result.target_status ?? null,
           overall_status: result.status ?? null
@@ -250,7 +304,20 @@ export function evaluateRows(rows, engine) {
     exact_match_rate: scoredTokens ? Number((exactMatches / scoredTokens).toFixed(6)) : null,
     coverage_adjusted_exact_match_rate: eligibleTokens ? Number((exactMatches / eligibleTokens).toFixed(6)) : null,
     character_error_rate: totalGoldCharacters ? Number((totalDistance / totalGoldCharacters).toFixed(6)) : null,
-    broad_candidate_profile: 'Korean phonemic comparison sensitivity v1 (research-only; not adjudicated)',
+    broad_candidate_benchmark_version: 'broad-candidate-ipa-v2',
+    broad_candidate_profile: BROAD_CANDIDATE_PROFILE,
+    broad_candidate_prediction_feature_loss_counts: Object.fromEntries(
+      Object.entries(records.filter(item => item.broad_candidate_prediction_feature_loss_counts)
+        .flatMap(item => Object.entries(item.broad_candidate_prediction_feature_loss_counts))
+        .reduce((counts, [key, value]) => counts.set(key, (counts.get(key) ?? 0) + value), new Map()))
+        .sort(([a], [b]) => a.localeCompare(b))
+    ),
+    broad_candidate_reference_feature_loss_counts: Object.fromEntries(
+      Object.entries(records.filter(item => item.broad_candidate_gold_feature_loss_counts)
+        .flatMap(item => Object.entries(item.broad_candidate_gold_feature_loss_counts))
+        .reduce((counts, [key, value]) => counts.set(key, (counts.get(key) ?? 0) + value), new Map()))
+        .sort(([a], [b]) => a.localeCompare(b))
+    ),
     broad_candidate_scored_tokens: broadComparable.length,
     broad_candidate_exact_matches: broadExactMatches,
     broad_candidate_exact_match_rate: broadComparable.length ? Number((broadExactMatches / broadComparable.length).toFixed(6)) : null,
@@ -276,8 +343,9 @@ export function evaluateRows(rows, engine) {
       'This script imports src/app/engine.js and exercises the browser-side Kozak Kim engine, not the ordinary g2pK adapter or Python reference engine.',
       'IPA is scored whenever pronunciation_status is resolved, even if the Ukrainian target adapter reports unavailable; target status is reported separately.',
       'The browser IPA profile is marked unadjudicated-cross-runtime. A high benchmark score does not establish normative IPA correctness.',
-      'The broad_candidate_* metrics are a research-only sensitivity analysis that collapses documented Korean allophones; the strict headline metrics remain unchanged.',
-      'Broad candidate normalization collapses Korean /l/, /n/ and /h/ allophones and fricative aspiration, while preserving stop aspiration, fortisness, vowel length and unreleased codas.',
+      'The broad_candidate_* metrics use the shared versioned korean-broad-candidate-sensitivity-v1 profile; they are research-only and do not replace strict headline metrics.',
+      'The report exposes prediction and selected-reference feature-loss counts. The profile collapses lateral place/retroflexion, palatal nasality, several h-like realizations, fricative aspiration, stress and selected quality diacritics.',
+      'Stop aspiration, fortisness, vowel length, unreleased codas and the s/ɕ/ʃ place distinctions are retained. Sibilant-profile disagreements therefore remain visible and require independent adjudication.',
       'The UGTPHON test split has been inspected during project research; treat this run as diagnostic, not as an untouched independent holdout.',
       'Only resolved pronunciation records are scored. Partial, heuristic, unresolved, and engine-error records are counted separately.'
     ]
