@@ -13,6 +13,8 @@ on:
     paths:
       - "scripts/benchmark_multi_engine_ko.py"
       - "scripts/benchmark_kozak_kim_browser.mjs"
+      - "src/app/engine_convert.js"
+      - "src/app/engine.js"
       - "scripts/audit_kozak_kim_runtime_parity.py"
       - "tests/kozak-kim-ipa-first-benchmark.test.mjs"
       - "tests/test_kozak_kim_runtime_parity.py"
@@ -308,6 +310,7 @@ jobs:
           from pathlib import Path
           report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
           assert report["occurrence_identity"]["status"] == "PASS"
+          assert report["ipa_profiles"]["same_profile_contract"], report["ipa_profiles"]
           print("IPA profiles:", report["ipa_profiles"]["parity_status"])
           print("Coverage:", report["coverage"])
           print("Surface parity:", report["surface_parity"])
