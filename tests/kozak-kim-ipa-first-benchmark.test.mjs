@@ -287,3 +287,18 @@ test('browser Broad IPA benchmark report exposes the numeric v2 contract consume
   assert.equal(report.broad_candidate_benchmark, 'broad-candidate-ipa-v2');
   assert.equal(report.broad_candidate_benchmark_version, 2);
 });
+
+
+test('Browser withholds project-derived IPA when independent lexical IPA adjudication is required', () => {
+  const result = createBrowserKozakKimEngine().convert('삶의');
+
+  assert.equal(result.pronunciation_status, 'unresolved');
+  assert.equal(result.ipa, '');
+  assert.equal(result.ukrainian, '');
+  assert.equal(result.target_status, 'unavailable');
+  assert.equal(result.surfaceHangul, '살믜');
+  assert.equal(result.variants.length, 1);
+  assert.equal(result.variants[0].surface, '살메');
+  assert.equal(result.variants[0].ipa, '');
+  assert.equal(result.variants[0].ukrainian, '');
+});
