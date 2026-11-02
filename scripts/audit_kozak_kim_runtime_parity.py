@@ -124,11 +124,15 @@ def compare_reports(native_report: dict[str, Any], browser_report: dict[str, Any
         "ipa_profile": browser_report.get("ipa_profile"),
         "ipa_profile_version": browser_report.get("ipa_profile_version"),
         "ipa_profile_status": browser_report.get("ipa_profile_status"),
+        "ipa_profile_level": browser_report.get("ipa_profile_level"),
     }
     native_broad_profile = native_report.get("broad_candidate_profile") or {}
     browser_broad_profile = browser_report.get("broad_candidate_profile") or {}
-    if not native_broad_profile.get("profile_id") or native_broad_profile.get("profile_id") != browser_broad_profile.get("profile_id"):
-        raise ValueError("Native and Browser reports do not use the same broad-candidate profile")
+    if not native_broad_profile.get("profile_id") or any(
+        native_broad_profile.get(key) != browser_broad_profile.get(key)
+        for key in ("profile_id", "profile_version", "status")
+    ):
+        raise ValueError("Native and Browser reports do not use the same broad-candidate profile contract")
 
     native_records = native_report.get("per_engine_occurrences", {}).get("clippyfirst_native")
     browser_records = browser_report.get("records")
@@ -208,7 +212,9 @@ def compare_reports(native_report: dict[str, Any], browser_report: dict[str, Any
 
     surface_compared = surface_counts["surface_equal"] + surface_counts["surface_different"]
     ipa_compared = len(both_scored)
-    profile_same = native_profile.get("ipa_profile") == browser_profile.get("ipa_profile")
+    same_profile_id = native_profile.get("ipa_profile") == browser_profile.get("ipa_profile")
+    profile_fields = ("ipa_profile", "ipa_profile_version", "ipa_profile_level", "ipa_profile_status")
+    profile_same = all(native_profile.get(key) == browser_profile.get(key) for key in profile_fields)
     result = {
         "schema_version": 1,
         "benchmark": "UGTPHON Korean test split — paired Native/Browser Kozak Kim runtime audit",
@@ -228,8 +234,9 @@ def compare_reports(native_report: dict[str, Any], browser_report: dict[str, Any
         "ipa_profiles": {
             "native": native_profile,
             "browser": browser_profile,
-            "same_profile_id": profile_same,
-            "parity_status": "SAME_PROFILE" if profile_same else "DIFFERENT_PROFILE_CONTRACTS",
+            "same_profile_id": same_profile_id,
+            "same_profile_contract": profile_same,
+            "parity_status": "SAME_PROFILE_CONTRACT" if profile_same else "DIFFERENT_PROFILE_CONTRACTS",
             "shared_broad_candidate_profile": {
                 "profile_id": native_broad_profile.get("profile_id"),
                 "profile_version": native_broad_profile.get("profile_version"),
