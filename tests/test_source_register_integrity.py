@@ -402,9 +402,9 @@ def test_c01_c07_allophone_profile_research_is_registered_with_bounded_scope():
 def test_c10_seoul_korean_prosody_sources_do_not_license_word_level_stress():
     rows = {row["source_id"]: row for row in load_source_register()}
     source = rows["SRC-SAGE-BAEK-2022-KOREAN-PROSODY"]
-    assert "does not have lexical prominence" in source["coverage"]
+    assert "not having lexical prominence/stress" in source["coverage"]
     assert "Accentual Phrase" in source["coverage"]
-    assert "not lexical word stress" in source["limitations_or_next_action"]
+    assert "not every Korean dialect" in source["limitations_or_next_action"]
 
 
 
