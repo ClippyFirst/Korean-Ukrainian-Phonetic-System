@@ -91,8 +91,8 @@ Kiwi/MeCab-Ko run 41353171166 is diagnostic only: partial boundary agreement for
 
 ## Final continuation record — 2026-11-02
 
-- Evidence/data/test head: `9e6391d14edf9eb5c85a9b90052b656f83ec32a1`; docs head at this entry: `1ed447758990f3ab815bd9a00fc4ccca15f1c2bb` (handoff subsequently updated).
+- Engine/data/test head: `d5008af0901628c36b43d627ea52c52a22c265c0`; this ledger refresh is documentation-only.
 - Source register 165 rows: 155 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses recorded, 1 not applicable. The unverified Q&A locator 302689 was removed; the official §14 source is used for 없어[업ː써].
 - Production source-code head unchanged: `bc7b1474eecfe8df8006572abf0f07957f829647`; production lexical data now adds source-backed C09 long-vowel entries for 사람, 모르다 and 괴성 (with variants), all with provisional Ukrainian targets. No general phonology rule changed. Original g2pK untouched.
-- Exact-head system verification run `41413254120` was QUEUED when recorded; Python/data and browser/build outcomes are not yet verified. NIKL metadata-only inventory skipped. Local tests not run due clone DNS failure.
+- Exact-head system verification run `41414231979` on `d5008af0901628c36b43d627ea52c52a22c265c0` was QUEUED when recorded; Python/data and browser/build outcomes are not yet verified. NIKL metadata-only inventory skipped. Local tests not run due clone DNS failure.
 - Stop status: research prototype; all new source claims are scope-limited and tests added, but no release certification.
