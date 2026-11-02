@@ -5209,7 +5209,7 @@ The partial multi-engine workflow artifact 13101748305 (run 41353171180, attempt
 - Alignment attaches combining marks and IPA modifier letters to base segments, but remains grapheme-string alignment—not phoneme alignment or adjudication.
 - Added Python tests for combining/modifier attachment, mismatch-only export, missing-ledger failure, and a dedicated C11 sibilant-place classification.
 - Every exported row is marked `UNADJUDICATED_DIAGNOSTIC`; production action is `NO_CHANGE_PENDING_SOURCE_AND_IPA_REVIEW`.
-- Exact-head system verification run 41464797405 and extraction run 41464797390 were in progress at the last check. Do not claim their final outcomes until completed.
+- First verification run 41465005289 exposed one incorrect test expectation in the new fragment aligner (combining-mark mismatch was expected as deletion rather than substitution); the implementation was correct and the regression expectation was fixed. Exact-head run 41465552590 on final head `967d95179a749432e60c2e2e8da3f020c1ad520c` then passed Python regression/data integrity and Browser 1,384/1,384, production build, and generated-page checks. Exhaustive test-case extraction run 41464797390 passed. NIKL metadata-only inventory was SKIPPED.
 - No production phonology rule was changed in this continuation. Existing PR #422's source-backed empty-coda liaison fix and surface parity repairs are preserved.
 
 ## Task ledger
