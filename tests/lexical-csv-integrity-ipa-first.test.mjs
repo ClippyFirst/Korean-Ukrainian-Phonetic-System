@@ -143,7 +143,9 @@ test('C09 NIKL dictionary length attestations enter the Kozak Kim IPA-first lexi
     assert.equal(result.ipa, renderExpectedIpa(word, item.ipa.split('|')));
     assert.match(result.ipa, /ː/u, word + ': preserve dictionary-attested length');
     assert.equal(result.ukrainian, '', word + ': do not accept provisional Ukrainian target');
+    assert.equal(result.target_status, 'provisional');
     assert.equal(result.candidate_status, 'provisional');
+    assert.equal(result.candidate_ukrainian, item.target.split('|').join(''));
     if (item.alternate) {
       assert.equal(row.alternate_ipa_syllables, item.alternate);
       assert.equal(row.alternate_surface_hangul, word);
