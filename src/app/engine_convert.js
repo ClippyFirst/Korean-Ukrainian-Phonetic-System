@@ -400,7 +400,16 @@ export function convertText(text,map,lexicon=new Map(),skipLexicon=false,options
       u.__complexLiaisonUnlicensed||u.__complexHAspirationUnlicensed||
       u.__substantiveLiaisonUnlicensed||u.__rieulGiyeokUnlicensed
     );
-    if(unresolvedKoreanMorphology){surfaceParts.push(u.char);continue;}
+    if(unresolvedKoreanMorphology){
+      // Broad surface parity may expose deterministic coda neutralization, but
+      // unresolved morphology must still withhold IPA and Ukrainian output.
+      if(useSharedBroadIpaProfile){
+        surfaceParts.push(compose(u.onset,u.vowel,representative(u.coda||'')));
+      }else{
+        surfaceParts.push(u.char);
+      }
+      continue;
+    }
     // The shared research profile exposes the same fully neutralized Hangul
     // surface as Native. Keep the legacy Browser display contract unchanged.
     const surfaceCoda=useSharedBroadIpaProfile?representative(u.coda||''):(u.coda||'');
