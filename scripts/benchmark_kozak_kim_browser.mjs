@@ -141,6 +141,23 @@ export function editDistance(left, right) {
   return previous[b.length];
 }
 
+function fullSurfaceHangul(result, token) {
+  if (!result || typeof result !== 'object') return null;
+  const tokenSyllables = [...String(token ?? '')];
+  const surface = result.surfaceHangul ?? result.surface_hangul;
+  if (typeof surface === 'string' && surface && [...surface].length === tokenSyllables.length) {
+    return surface;
+  }
+  const traceSyllables = Array.isArray(result.trace)
+    ? result.trace.filter(item => typeof item?.source === 'string' && /^[가-힣]$/u.test(item.source))
+    : [];
+  if (traceSyllables.length === tokenSyllables.length &&
+      traceSyllables.every(item => typeof item.surface === 'string' && /^[가-힣]$/u.test(item.surface))) {
+    return traceSyllables.map(item => item.surface).join('');
+  }
+  return null;
+}
+
 export function evaluateRows(rows, engine) {
   const records = [];
   const unresolvedExamples = [];
@@ -203,7 +220,7 @@ export function evaluateRows(rows, engine) {
           records.push({
             occurrence_id: occurrenceId,
             id: row.id, token: canonical, gold: goldRaw, status: pronunciationStatus,
-            surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
+            surface_hangul: fullSurfaceHangul(result, canonical),
             target_status: result.target_status ?? null, predicted: null
           });
           continue;
@@ -213,7 +230,7 @@ export function evaluateRows(rows, engine) {
           records.push({
             occurrence_id: occurrenceId,
             id: row.id, token: canonical, gold: goldRaw, status: pronunciationStatus,
-            surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
+            surface_hangul: fullSurfaceHangul(result, canonical),
             target_status: result.target_status ?? null, predicted: null
           });
           continue;
@@ -223,7 +240,7 @@ export function evaluateRows(rows, engine) {
           records.push({
             occurrence_id: occurrenceId,
             id: row.id, token: canonical, gold: goldRaw, status: pronunciationStatus,
-            surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
+            surface_hangul: fullSurfaceHangul(result, canonical),
             target_status: result.target_status ?? null, predicted: null
           });
           continue;
@@ -250,7 +267,7 @@ export function evaluateRows(rows, engine) {
           token: canonical,
           gold: goldRaw,
           predicted: predictedRaw,
-          surface_hangul: result.surfaceHangul ?? result.surface_hangul ?? null,
+          surface_hangul: fullSurfaceHangul(result, canonical),
           normalized_predicted: predicted,
           closest_normalized_gold: closest.gold,
           distance: closest.distance,
