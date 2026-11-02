@@ -19,7 +19,7 @@
     "Cite primary sources or describe phonetic evidence, method, and confidence.",
     "Do not infer a general phonological rule from this pilot packet.",
     "Do not retrieve or consult the UGTPHON IPA/reference annotations, benchmark outputs, or prior system transcriptions. Source IDs and public sentences may make a row identifiable; if you already know or locate the corpus reference, disclose this and mark the affected item COMPROMISED_FOR_BLIND_REVIEW rather than scoring it as an independent transcription.",
-    "Use the supplied source sentence for morphology and context. You may consult official pronunciation standards and cite them, but do not query the corpus's own pronunciation annotations or any engine output."
+    "Use the supplied source sentence for morphology and context. You may consult official pronunciation standards and cite them, but do not query the corpus's own pronunciation annotations or prior software outputs."
   ],
   "reviewer_submission": {
     "reviewer_id": null,
