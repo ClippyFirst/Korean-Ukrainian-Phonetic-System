@@ -70,6 +70,30 @@ test('benchmark scores resolved IPA even when Ukrainian target mapping is unavai
   assert.equal(report.unresolved_tokens, 0);
 });
 
+
+test('browser occurrence ledger retains stable identity and surface for heuristic results', () => {
+  const rows = [{
+    id: 'heuristic-row',
+    lang: 'ko',
+    split: 'test',
+    tokens: [{ canonical: '가', phoneme: 'ka' }]
+  }];
+  const report = evaluateRows(rows, {
+    convert: () => ({
+      pronunciation_status: 'heuristic',
+      surfaceHangul: '가',
+      target_status: 'unavailable',
+      ipa: '',
+      ukrainian: ''
+    })
+  });
+  assert.equal(report.records.length, 1);
+  assert.equal(report.records[0].occurrence_id, '0');
+  assert.equal(report.records[0].surface_hangul, '가');
+  assert.equal(report.records[0].status, 'heuristic');
+  assert.equal(report.scored_tokens, 0);
+});
+
 test('Kozak Kim preserves inspectable IPA when only Ukrainian target mapping is unavailable', () => {
   const engine = createBrowserKozakKimEngine();
   const result = engine.convert('의');
