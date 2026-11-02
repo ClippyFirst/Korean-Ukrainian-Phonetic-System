@@ -172,7 +172,7 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
     # S018 and S019 document lenis /s/ as [ɕ] before /i/ and selected
     # /j/-initial diphthongs. This remains optional in broad IPA;
     # fortis /s͈/ is deliberately not rewritten on this evidence.
-    palatal_sibilant_nuclei={"ㅣ","ㅑ","ㅒ","ㅖ"}
+    palatal_sibilant_nuclei={"ㅣ","ㅑ","ㅒ","ㅕ","ㅖ","ㅛ","ㅠ"}
     for i,syllable in enumerate(items):
         if syllable.onset=="ㅅ" and syllable.nucleus in palatal_sibilant_nuclei and rendered[i].startswith("s"):
             alternate=list(rendered)
@@ -204,9 +204,10 @@ def generate_vowel_variants(items:list[Syllable],rendered:list[str],*,level="bro
     for i,syllable in enumerate(items):
         if syllable.onset!="ㄹ" or not rendered[i].startswith(("ɾ","l")):
             continue
-        after_liquid_coda=i>0 and items[i-1].coda=="ㄹ"
-        intervocalic=i>0 and items[i-1].boundary_after!="word" and items[i-1].coda==""
-        before_front_glide=syllable.nucleus in palatal_liquid_nuclei
+        same_word_predecessor=i>0 and items[i-1].boundary_after!="word"
+        after_liquid_coda=same_word_predecessor and items[i-1].coda=="ㄹ"
+        intervocalic=same_word_predecessor and items[i-1].coda==""
+        before_front_glide=same_word_predecessor and syllable.nucleus in palatal_liquid_nuclei
         if after_liquid_coda or not (intervocalic or before_front_glide):
             continue
         alternate=list(rendered)
