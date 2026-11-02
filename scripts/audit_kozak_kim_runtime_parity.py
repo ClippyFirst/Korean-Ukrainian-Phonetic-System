@@ -132,7 +132,7 @@ def compare_reports(native_report: dict[str, Any], browser_report: dict[str, Any
     browser_broad_profile = browser_report.get("broad_candidate_profile") or {}
     if not native_broad_profile.get("profile_id") or any(
         native_broad_profile.get(key) != browser_broad_profile.get(key)
-        for key in ("profile_id", "profile_version", "status")
+        for key in ("profile_id", "version", "status")
     ):
         raise ValueError("Native and Browser reports do not use the same broad-candidate profile contract")
 
@@ -252,7 +252,7 @@ def compare_reports(native_report: dict[str, Any], browser_report: dict[str, Any
             "parity_status": "SAME_PROFILE_CONTRACT" if profile_same else "DIFFERENT_PROFILE_CONTRACTS",
             "shared_broad_candidate_profile": {
                 "profile_id": native_broad_profile.get("profile_id"),
-                "profile_version": native_broad_profile.get("profile_version"),
+                "version": native_broad_profile.get("version"),
                 "status": native_broad_profile.get("status"),
             },
         },
