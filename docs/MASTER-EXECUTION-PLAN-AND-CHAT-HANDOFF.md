@@ -5235,7 +5235,7 @@ Draft PR #423 now carries evidence-scoped algorithm updates after occurrence-lev
 |---|---|---|---|
 | C11 sibilant place (229 paired edit operations / 227 occurrences) | Optional [ɕ] alternative in shared Broad results for lenis ㅅ before ㅣ, ㅑ, ㅒ, ㅖ; narrow profile includes ㅒ | Broad canonical /s/ unchanged; fortis ㅆ is not palatalized on this evidence | IMPLEMENTED; exact-head CI pending |
 | C05 y / ɥi | Add [ɥi] alternative alongside existing [y] and [wi] for ㅟ | Canonical [y] unchanged | IMPLEMENTED; exact-head CI pending |
-| C04 ㅎ allophones | Add narrow-profile [ç] before selected high-front/glide nuclei and [x] before ㅜ; narrow profile bumped v3 to v4 | Broad/phonemic IPA unchanged; no general h deletion | IMPLEMENTED; exact-head CI pending |
+| C04 ㅎ allophones | Add narrow-profile [ç] before selected high-front/glide nuclei and [x] before ㅜ; shared Broad results also expose optional [ç]/[x] variants; narrow profile bumped v3 to v4 | Broad canonical [h] and phonemic IPA unchanged; no general h deletion | IMPLEMENTED; exact-head CI pending |
 | C12 kx/kç vs kʰ | Correct fragment classifier: 45 edit operations / 37 occurrences are aspirated-velar coarticulation/profile differences, not h/ʰ notation | No engine rewrite pending stronger evidence and a documented profile policy | BLOCKED — research/source adjudication |
 | C06 coda release diacritics | Keep source/profile distinction | [p̚,t̚,k̚] unchanged | DEFERRED — corpus annotation omission is insufficient |
 | C01/C07 liquids | No global rewrite; need boundary/prosody context | Existing onset/coda rules unchanged | BLOCKED — exact context/source evidence |
