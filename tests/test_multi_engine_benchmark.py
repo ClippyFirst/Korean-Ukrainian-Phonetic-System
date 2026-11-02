@@ -8,6 +8,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 from benchmark_multi_engine_ko import (  # noqa: E402
     _bootstrap_ci,
+    _broad_candidate_metrics,
     _build_per_engine_occurrences,
     _g2pk_surface_to_ipa,
     _g2p_ko_result_to_ipa,
@@ -19,6 +20,8 @@ from benchmark_multi_engine_ko import (  # noqa: E402
     _metrics,
     _paired_bootstrap_delta_ci,
     _score,
+    normalize_ipa_broad_candidate,
+    normalize_ipa_broad_candidate_with_loss,
     kog2p_phones_to_ipa,
 )
 
@@ -42,6 +45,50 @@ def test_scoring_uses_best_reference_variant_and_reference_length():
     assert exact["exact"] is True
     assert exact["distance"] == 0
     assert exact["reference_length"] == 3
+
+
+def test_broad_candidate_normalizer_uses_shared_profile_and_reports_feature_losses():
+    value = "ˈsʰɭɲɦçxɣɸβʝʷ̠ːt̚k͈"
+    normalized, losses = normalize_ipa_broad_candidate_with_loss(value)
+    assert normalized == "slnhhhhhhhːt̚k͈"
+    assert losses["feature_loss_counts"] == {
+        "fricative_aspiration": 1,
+        "h_labialization": 1,
+        "h_place": 2,
+        "h_place_and_manner": 2,
+        "h_place_and_voicing": 1,
+        "h_place_voicing_and_manner": 1,
+        "h_voicing": 1,
+        "lateral_retroflexion": 1,
+        "nasal_palatalization": 1,
+        "selected_segmental_quality_diacritics": 1,
+    }
+    assert normalize_ipa_broad_candidate("s͈i") == "s͈i"
+    assert normalize_ipa_broad_candidate("ɕʰi") == "ɕi"
+    assert normalize_ipa_broad_candidate("pʰtʰkʰk͈aːt̚") == "pʰtʰkʰk͈aːt̚"
+
+
+def test_scoring_keeps_strict_and_broad_candidate_metrics_separate():
+    scored = _score("ˈsʰa̠ːk͈ʌn", "sʰa̠ːk͈ʌn")
+    assert scored["exact"] is False
+    assert scored["broad_candidate"]["exact"] is True
+    assert scored["broad_candidate"]["predicted"] == "saːk͈ʌn"
+    assert scored["broad_candidate"]["reference_length"] == len("saːk͈ʌn")
+
+
+def test_broad_candidate_metrics_use_their_own_denominator_and_loss_counts():
+    items = [
+        {"broad_candidate": {"exact": True, "distance": 0, "reference_length": 2,
+                             "prediction_feature_loss_counts": {"stress": 1}}},
+        {"broad_candidate": {"exact": False, "distance": 1, "reference_length": 2,
+                             "prediction_feature_loss_counts": {"h_place": 2}}},
+    ]
+    metrics = _broad_candidate_metrics(items)
+    assert metrics["scored_tokens"] == 2
+    assert metrics["exact_matches"] == 1
+    assert metrics["exact_match_rate"] == 0.5
+    assert metrics["character_error_rate"] == 0.25
+    assert metrics["prediction_feature_loss_counts"] == {"h_place": 2, "stress": 1}
 
 
 def test_metrics_report_coverage_denominator_independently():
