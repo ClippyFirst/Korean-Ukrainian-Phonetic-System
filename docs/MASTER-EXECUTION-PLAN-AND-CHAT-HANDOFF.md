@@ -5185,3 +5185,44 @@ The partial multi-engine workflow artifact 13101748305 (run 41353171180, attempt
 - Morphology adapter, Kiwi/MeCab-Ko, browser integration, extraction, paired and consensus jobs passed. CharsiuG2P/ByT5 inference and NIKL metadata-only inventory were skipped. The later multi-engine comparison remains limited to the previously completed artifact `13105045922`.
 - Source register: 167 rows; 157 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses, 1 not applicable. Independent human IPA submissions, C08 exact prosodic adjudication, C09 IPA-level review, C10 phrase-level prosody, item-level rights and Ukrainian target review remain blocked/todo.
 - Readiness remains research prototype, not research-certified or release-ready.
+
+
+---
+
+# Latest continuation — 2026-11-02: mismatch-fragment triage
+
+**Scope:** Kozak Kim only. Original g2pK 0.9.4 source/vendor files remain untouched. Draft PR [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), stacked directly on Draft PR #422 at base head `e7933ae4a67c94f0f69b4747d8e388aa082fc347`.
+
+## Latest artifact and findings
+
+- Successful multi-engine run: [41453407662](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41453407662), artifact 13148075070.
+- Dataset: UGTPHON Korean test split, pinned revision `ef0d5a09c2ea1874c7206020f875cbd9cfea2f54`.
+- 2,703 eligible occurrences; 2,698 scored; five abstained.
+- Strict IPA: 1,267 non-exact scored occurrences.
+- Research-only Broad candidate: 2,328/2,698 exact (86.2861%), 370 non-exact, CER 2.2038%.
+- Largest Broad fragment difference: `ɕ → s`, 229 edit operations across 227 occurrences. This reflects the profile's deliberate preservation of sibilant place against corpus annotations that often use [ɕ]; do not globally merge /s/ and /ɕ/.
+- Other recurring fragment candidates: `h → ʰ` (45 operations), /y/ vs [ɥi] (72 operations combined), insertion of unreleased-coda diacritic (34), liquid /ɾ/ vs /l/ (12), and length mark insertion (8). The detailed triage and examples are in `research/KOZAK-KIM-MISMATCH-FRAGMENT-TRIAGE-2026-11-02.md`.
+
+## New implementation and status
+
+- Added `scripts/export_kozak_kim_mismatch_fragments.py` to export every non-zero strict/Broad Native mismatch with source occurrence IDs, exact strings/distances, fragment pairs, g2pK comparator output, and candidate cluster labels.
+- Alignment attaches combining marks and IPA modifier letters to base segments, but remains grapheme-string alignment—not phoneme alignment or adjudication.
+- Added Python tests for combining/modifier attachment, mismatch-only export, missing-ledger failure, and a dedicated C11 sibilant-place classification.
+- Every exported row is marked `UNADJUDICATED_DIAGNOSTIC`; production action is `NO_CHANGE_PENDING_SOURCE_AND_IPA_REVIEW`.
+- Exact-head system verification run 41464797405 and extraction run 41464797390 were in progress at the last check. Do not claim their final outcomes until completed.
+- No production phonology rule was changed in this continuation. Existing PR #422's source-backed empty-coda liaison fix and surface parity repairs are preserved.
+
+## Task ledger
+
+| Work item | Status | Acceptance / blocker |
+|---|---|---|
+| Extract full occurrence-level mismatch fragments | PARTIAL | Exporter and tests added; exact-head Python test result and generated full CSV still need verification. |
+| Separate C11 sibilant-place cluster | DONE_VERIFIED | 227 occurrences identified; dedicated candidate label and test; profile decision remains no global collapse. |
+| C04/C05/C06/C01-C07/C09 triage | PARTIAL | Representative fragments and counts documented; token-level source/audio adjudication still needed before rule changes. |
+| Unmapped Broad mismatch fragments | TODO | Review all residual cases and create new cluster IDs only where a shared cause is evidenced. |
+| Production phonology corrections from new clusters | BLOCKED | No new cluster currently has sufficient independent IPA gold plus exact rule-environment evidence to justify a safe production change. |
+| Independent Korean IPA review | BLOCKED | Two qualified reviewers and adjudication remain required. |
+| NIKL item-level reuse-rights review | BLOCKED | Official metadata inventory remains skipped; KOGL item-level clearance unresolved. |
+| Ukrainian target adaptation review | BLOCKED | Independent Ukrainian phonetic/orthographic review outstanding. |
+
+**Readiness:** partial research prototype; not release-ready or research-certified. Next genuine work is source- and context-level adjudication of C11/C05/C04/C06/C01-C07, then TDD fixes only for demonstrated engine defects.
