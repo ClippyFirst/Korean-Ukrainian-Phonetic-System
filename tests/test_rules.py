@@ -489,9 +489,11 @@ def test_nikl_qna_330963_l_ge_license_requires_complete_attached_ending_boundary
         result = phoneticize_korean(word)
         assert result["surface_hangul"] == word, word
         # An internal ㄹ+게 sequence is not the attested ending -ㄹ게.
-        # It must remain an ordinary resolved reading, not be blocked by
-        # the ambiguity guard for a rule that does not apply.
-        assert result["pronunciation_status"] == "resolved", word
+        # It remains a provisional project analysis, but not a diagnostic-only
+        # abstention caused by an R013 rule that does not apply.
+        assert result["pronunciation_status"] == "provisional", word
+        assert result["ipa"]["status"] == "provisional", word
+        assert result["ipa"]["is_diagnostic_only"] is False, word
         assert isinstance(result["ipa"].get("ipa"), str) and result["ipa"]["ipa"], word
         assert not any(
             trace.get("rule_id") == "R013"
