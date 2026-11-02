@@ -72,16 +72,19 @@ def align(reference: str, prediction: str) -> list[dict[str, str]]:
     return list(reversed(edits))
 
 
-def candidate_clusters(fragments: list[dict[str, str]]) -> list[str]:
+def candidate_clusters(fragments: list[dict[str, str]], strict_reference: str = "", strict_prediction: str = "") -> list[str]:
     text = "".join(item["reference_fragment"] + item["kozak_fragment"] for item in fragments)
     labels = []
     if any(char in text for char in "ɭɾʎ"):
         labels.append("C01_C07_liquid_realization")
-    if any(char in text for char in "ɦçβʝɸxɣ") or ("h" in text and "ʰ" not in text):
+    aspirated_velar_profile_difference = (("kx" in strict_reference or "kç" in strict_reference) and "kʰ" in strict_prediction)
+    if aspirated_velar_profile_difference:
+        labels.append("C12_aspirated_velar_coarticulation_profile")
+    elif any(char in text for char in "ɦçβʝɸxɣ") or ("h" in text and "ʰ" not in text):
         labels.append("C02_h_realization")
     if "ɲ" in text:
         labels.append("C03_nasal_palatalization")
-    if any(char in text for char in "ʰ͡"):
+    if any(char in text for char in "ʰ͡") and not aspirated_velar_profile_difference:
         labels.append("C04_aspiration_affricate_notation")
     if "s" in text and "ɕ" in text:
         labels.append("C11_sibilant_place_profile_boundary")
@@ -119,7 +122,7 @@ def build_rows(report: dict) -> list[dict[str, str]]:
         broad_fragments = align(broad_reference, broad_prediction) if broad_distance else []
         if not strict_fragments and not broad_fragments:
             continue
-        labels = sorted(set(candidate_clusters(strict_fragments + broad_fragments)))
+        labels = sorted(set(candidate_clusters(strict_fragments + broad_fragments, item["gold"], item["ipa"])))
         rows.append({
             "occurrence_id": str(item["occurrence_id"]),
             "source_row_id": str(item.get("row_id", "")),
