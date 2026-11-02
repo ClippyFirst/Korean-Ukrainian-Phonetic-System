@@ -1,19 +1,14 @@
-# Programme Roadmap
-
-Last updated: 2026-11-02  
-Current phase: Phase 7 — verification and Phase 9 — release acceptance. Mainline implementation is tested/deployed as a research preview; independent linguistic and owner-dependent release gates remain open.  
-Planned phases are not evidence of completion.
 ## Current continuation status — 2026-11-02
 
-Current focused work is Phase 7 verification plus Phase 10 independent-review preparation; Phase 9 release acceptance remains blocked.
+Current focused work remains Kozak Kim discrepancy-driven verification. The original g2pK implementation is unchanged and comparison-only.
 
-- C01–C07 blind packet preparation is DONE_VERIFIED: seven neutral packets, 42 entries, 39 unique UGTPHON source rows with source contexts. Two independent reviewer submissions are still required.
-- C08 is PARTIAL / EVIDENCE-LIMITED: all eight source contexts are now mapped. Five formerly missing memberships were reconstructed from the pinned fortis-mismatch signature because the original extraction table is absent. Seven forms have conditional -(으)ㄹ + dependent-noun evidence from official NIKL Q&A; 유사성 remains unresolved. No new production rules were added. Kiwi/MeCab-Ko disagreement for 했을시 remains diagnostic only.
-- Python R013 exact same-eojeol licensing now applies within full sentences, matching the browser engine. Full-context positive and negative tests pass.
-- Current paired browser benchmark (run 41358508374; artifact 13103483761): 2,699 shared occurrences; CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster-bootstrap CI −0.1951 to −0.0261 pp); exact match tied at 53.4272%. Diagnostic only.
-- Remaining acceptance work: two independent IPA reviews, independent C08/prosody adjudication and recovery of the original cluster extraction provenance, C09/C10 convention adjudication, NIKL item-level rights, and Ukrainian target review.
-
-
+- C01–C07 packet preparation is DONE_VERIFIED: seven neutral packets, 42 entries, 39 unique pinned UGTPHON source rows with contexts. Independent two-reviewer IPA adjudication is BLOCKED pending reviewer submissions.
+- C08 is PARTIAL / TRACEABILITY-LIMITED: all eight working contexts are mapped; three IDs were independently recovered and five reconstructed because the original extraction table is missing. Seven forms have conditional NIKL morphology/rule-environment leads. Active Q&A sources are 317798, 310899 and 331601; 335204/336313 are not active evidence. `유사성` remains unresolved.
+- Two exact R013 same-eojeol forms are tested inside full sentences in Python and browser. This is bounded rule coverage, not token-specific IPA adjudication or prosody proof.
+- Latest browser pair (run 41358812592; artifact 13104661411): 2,699 shared; exact match tied at 53.4272%; CER 8.1097% vs g2pK 8.2138%, delta −0.1040 pp; 95% sentence-cluster CI [−0.1951, −0.0261] pp.
+- Latest completed multi-engine run (41358812573; artifact 13105045922): UGTPHON native CER 9.1047% vs g2pK 9.2304% on 2,698 shared; SIGMORPHON native exact 35.8717% vs 35.3707% and CER 14.6225% vs 14.8106% on 998 shared. Results are diagnostic and use a shared renderer for g2pK surface output.
+- Exact-head system/Python/data and browser regression/build workflows pass. Optional CharsiuG2P/ByT5 and NIKL metadata-only inventory jobs were skipped. Local tests were not run because the local GitHub clone could not resolve github.com.
+- Remaining acceptance work: two independent C01–C07 IPA submissions; C08 extraction provenance and IPA/prosody adjudication; direct lexical resolution of `유사성`; C09/C10 convention review; NIKL item-level rights; Ukrainian target review.
 
 ## Operating model
 Work in bounded phases. Each phase must produce durable artifacts and satisfy exit criteria before closure. Parallel research is acceptable, but shared runtime changes should wait until source and behavior contracts are sufficiently clear. Use focused branches; avoid creating many branches without an integration plan.

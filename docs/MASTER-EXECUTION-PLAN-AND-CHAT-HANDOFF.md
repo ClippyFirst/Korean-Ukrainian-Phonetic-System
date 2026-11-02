@@ -1,61 +1,100 @@
-# Latest verified continuation — C01–C07 independent IPA packets, C08 context recovery, and runtime parity — 2026-11-02
+# Latest verified continuation — Kozak Kim discrepancy review and multi-engine revalidation — 2026-11-02
 
 **Scope:** Kozak Kim only. The original/vendor g2pK implementation remains unchanged and comparison-only.
-**Working branch:** research/kozak-kim-independent-ipa-packets-2026-11-01.
-**PR:** #417, draft and stacked on the PR #416 implementation line. PRs #415 and #416 remain open; no merge or destructive branch operation was performed.
-**Last code/test head with passing exact-head CI:** `8b22f778112442024f876061bd0e576af762e761` (push run `41358504664` PASS; PR run `41358508399` PASS, including Python/data integrity and browser regression/build). Production-code head remains `bc7b1474eecfe8df8006572abf0f07957f829647`; later commits add tests, research data and documentation only. This final handoff refresh is documentation/evidence-only; no production phonology rules changed.
+**Default branch:** `main` at `7bbbd7e7ce888a9c995bb70959e17858263c07a8`.
+**Working branch:** `research/kozak-kim-independent-ipa-packets-2026-11-01`.
+**PR:** [#417](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/417), open / Draft, stacked on the PR #416 implementation line. PRs #415 and #416 remain open; no merge or destructive branch operation was performed.
+**Branch state:** PR #417 head `82c35882331d9a1a9b6e4b5500048a568b92caad`; last code/test head `8b22f778112442024f876061bd0e576af762e761`; production-code head `bc7b1474eecfe8df8006572abf0f07957f829647`. The branch compares 237 commits ahead / 0 behind current `main`; PR #417 itself is 45 commits / 27 files beyond its stacked base.
 
 ## Current task ledger
 
 | Task | Status | Current evidence / acceptance |
 |---|---|---|
-| C01–C07 independent IPA packets | DONE_VERIFIED (packet preparation only) | Seven separate blind JSON packets, six pilot forms each (42 entries; 39 unique source-row IDs). All 39 IDs resolve to the pinned UGTPHON Korean test split and every target token is present in its raw sentence context. Packet schema is neutral; packet tests reject Kozak Kim/g2pK/system identity, IPA/reference leakage and internal artifact identifiers. |
-| Independent IPA adjudication | BLOCKED | No reviewer submissions yet. Two qualified reviewers must annotate separately, freeze first-pass results, then reconcile disagreements. |
-| C08 context recovery | PARTIAL / EVIDENCE-LIMITED | All eight source contexts are now in the pinned fixture. Three were previously recovered; five memberships were reconstructed from the pinned fortis-mismatch signature and exact token/context match because the original extraction table is missing. Seven have conditional -(으)ㄹ + dependent-noun evidence; 유사성 remains unresolved. |
-| C08 morphology/rule evidence | PARTIAL | Seven conditional -(으)ㄹ + dependent-noun environments now have source-backed leads: 일 수도 (Q&A 327466/307960), -을 시 (313481/333044), 것 (317798), colloquial 거 (310899 + 317798), 수 (331601/307960), and 듯 (317798). Kiwi/MeCab-Ko still disagree on 했을시 segmentation. 유사성 remains unresolved; no -성 generalization. |
-| Python/browser R013 parity | DONE_VERIFIED | Python exact same-eojeol licenses now match the containing eojeol inside a full sentence, rather than comparing the whole sentence to a single-word key. Positive and negative full-context tests cover both runtimes. |
-| g2pK baseline integrity | DONE_VERIFIED | No original/vendor g2pK file changed. Current and previous paired browser artifacts show zero changed g2pK predictions. |
-| Source/licensing register | PARTIAL | Register now has 155 rows: 146 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL Q&A item-level reuse terms remain unchecked. The 2021 NIKL PDF is supplementary only and is not used as production evidence. |
+| Preserve Kozak Kim implementation and IPA-first pipeline | DONE_VERIFIED for current code/test head | Existing Python/browser pipeline and IPA trace remain in place; no parallel engine or replacement implementation added. |
+| Original g2pK baseline integrity | DONE_VERIFIED | No original/vendor g2pK source file is in PR #417's changed-file list. Paired artifacts preserve the original baseline; g2pK predictions are unchanged across the two C08 context changes. |
+| C01–C07 blind IPA packets | DONE_VERIFIED (packet preparation only) | Seven neutral packets, 42 entries, 39 unique pinned UGTPHON source rows with raw sentence context and no engine/reference IPA leakage. |
+| Independent C01–C07 IPA adjudication | BLOCKED | No reviewer submissions. Acceptance requires two qualified independent first-pass submissions, frozen before comparison, followed by explicit disagreement reconciliation. |
+| C08 source-context mapping | PARTIAL / TRACEABILITY-LIMITED | All eight working contexts are in the pinned fixture. Three IDs were independently recovered; five were reconstructed from the exact target-token/context plus fortis-mismatch signature because the original extraction table is missing. |
+| C08 morphology and pronunciation evidence | PARTIAL | Seven conditional -(으)ㄹ + dependent-noun environments have narrow NIKL leads. Q&A 317798, 310899 and 331601 are active; provisional 335204/336313 are removed. `유사성` remains unresolved. None of these sources supplies exact-token IPA gold for all UGC occurrences. |
+| Bounded C08 R013 exact-word behavior | DONE_VERIFIED as implementation/regression | Two exact same-eojeol licenses are exercised in full sentences in Python and browser. No suffix-wide `-성` rule or generic `ㄹ+` fortition was introduced. Independent prosody/IPA review remains open. |
+| Python/browser R013 parity | DONE_VERIFIED for covered cases | Python matches an exact licensed eojeol inside a full sentence; browser and Python tests cover positive contexts and unresolved `유사성` negative control. |
+| Source and licensing register | PARTIAL / BLOCKED | 155 records: 146 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL item-level reuse rights remain unchecked. |
+| C09 vowel length / C10 stress-prosody | TODO / EVIDENCE-LIMITED | Require independent convention and lexical adjudication before any rule or profile change. |
+| Ukrainian target review | BLOCKED | Korean IPA metrics do not validate Ukrainian orthographic choices; independent target review is absent. |
+| Supervised IPA training readiness | BLOCKED / NOT READY | Audit: 644 unique lexical rows, zero additions explicitly marked independently adjudicated IPA gold, 24 frozen holdout cases without IPA gold; no overlap detected. |
 
-## Latest paired browser benchmark
+## Latest paired and multi-engine results
 
-Run 41358508374, paired artifact 13103483761.
+### Browser pair — UGTPHON
 
-- 2,703 eligible occurrences; 2,699 shared scored occurrences; Kozak Kim coverage 99.852%.
-- Paired exact match: 1,442/2,699 = 53.4272% for each engine. Exact-match delta is zero; its 95% cluster-bootstrap interval crosses zero.
-- Paired CER: Kozak Kim 8.1097%; original g2pK 8.2138%; delta −0.1040 percentage points. 95% sentence-cluster bootstrap CI: −0.1951 to −0.0261 pp.
-- Four Kozak Kim abstentions; zero engine errors. This is a diagnostic on noisy UGTPHON annotations, not normative IPA adjudication or Ukrainian-target validation.
-- Compared with the preceding PR #416 browser artifact, exactly two Kozak Kim outputs changed: 무고일수도있다는 and 했을시. Each reduced edit distance by one; neither became an exact match. All g2pK predictions remained unchanged.
+Run [41358812592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812592), artifact `13104661411`.
 
-Secondary native paired diagnostic: run 41358508325, artifact 13104257589; 2,698 shared occurrences; native CER 9.1047% vs g2pK 9.2304%, exact match 53.0393% vs 53.1134% (slight exact-match advantage for g2pK); five native abstentions and zero engine errors. Separate runtime profile, not directly comparable with browser.
+- 2,699 shared occurrences; exact match 1,442/2,699 = 53.4272% for both systems.
+- Kozak Kim CER 8.1097%; original g2pK CER 8.2138%; paired delta −0.1040 percentage points.
+- Sentence-cluster bootstrap 95% CI for CER delta: −0.1951 to −0.0261 pp.
+- Four Kozak Kim abstentions; zero engine errors. Exact-match rate is tied; this is not normative IPA gold.
 
-## Verification
+### Native pair — UGTPHON
 
+Run [41358812571](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812571), artifact `13104522135`.
 
-- Multi-engine run 41354753780 completed as CANCELLED. Run 41358068874 was later CANCELLED by the next branch update; latest run 41358508284 is IN_PROGRESS at this handoff. Optional CharsiuG2P and ByT5 inference jobs were SKIPPED. No completed multi-engine score is claimed.
-- Exact-head push system/Python regression and data integrity: PASS — run 41357675602.
-- Exact-head PR system/Python regression, browser regression tests and build: PASS — run 41357680448.
-- Test-case extraction: PASS — run 41357680364.
-- Paired browser UGTPHON comparison: PASS — run 41358508374.
-- Native paired Kozak Kim vs original g2pK diagnostic: PASS — run 41358508325.
-- Morphology consensus: PASS — run 41358508508.
-- Morphology adapter smoke: PASS — run 41358508288.
-- Kiwi/MeCab-Ko analyzer cross-check: PASS — run 41353171166 (artifact 13102406365 plus analyzer outputs 13102576042 and 13101838045).
-- CharsiuG2P inference and ByT5 inference: SKIPPED (optional research jobs; no fresh neural result claimed).
-- NIKL metadata-only inventory: SKIPPED.
-- Multi-engine IPA diagnostic runs 41353171180 and 41353450707 were cancelled during the comparison step after subsequent branch updates; neither produced a completed multi-engine score report. Partial artifact 13101748305 contains a completed training-readiness audit only.
+- 2,698 shared occurrences; Kozak Kim exact 53.0393% vs g2pK 53.1134%.
+- Kozak Kim CER 9.1047% vs g2pK 9.2304%; five native abstentions and zero engine errors.
+- The native profile is separate from the browser profile; do not combine their absolute scores.
+
+### Completed 10-engine portfolio — UGTPHON and SIGMORPHON
+
+Run [41358812573](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812573), artifact `13105045922`; all 10 engine adapters and both pinned datasets completed.
+
+| Dataset / metric | Kozak Kim | Original g2pK 0.9.4 |
+|---|---:|---:|
+| UGTPHON, 2,698 shared — exact | 53.0393% | 53.1134% |
+| UGTPHON — CER | **9.1047%** | 9.2304% |
+| UGTPHON — phoneme error rate | **9.5733%** | 9.6444% |
+| SIGMORPHON, 998 shared — exact | **35.8717%** | 35.3707% |
+| SIGMORPHON — CER | **14.6225%** | 14.8106% |
+| SIGMORPHON — phoneme error rate | **16.1877%** | 16.3119% |
+
+Paired row-cluster bootstrap from the pinned artifact:
+- UGTPHON: g2pK-minus-Kozak exact delta +0.0741 pp, 95% CI [−0.0824, +0.2840] (crosses zero); g2pK-minus-Kozak CER delta +0.1257 pp, 95% CI [+0.0428, +0.2194] (favors Kozak Kim).
+- SIGMORPHON: g2pK-minus-Kozak exact delta −0.5010 pp, 95% CI [−1.0020, −0.1002]; g2pK-minus-Kozak CER delta +0.1881 pp, 95% CI [+0.0250, +0.3859]. Both intervals favor Kozak Kim on this lexical diagnostic.
+
+**Interpretation boundary:** UGTPHON is noisy user-generated text; SIGMORPHON is lexical word-level data and its reference IPA conventions differ. g2pK surface output is converted by the repository's shared segment-to-IPA renderer; this does not alter g2pK, but it is not a fully independent IPA encoder comparison. The benchmark does not evaluate Ukrainian output, and none of these corpus labels replaces independent IPA adjudication.
+
+## Exact-head verification
+
+- Push system/Python regression and data integrity: PASS — run [41358807322](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358807322).
+- PR system verification, Python regression/data integrity, browser regression tests and build: PASS — run [41358812562](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812562).
+- Test-case extraction: PASS — run [41358812580](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812580).
+- Browser paired benchmark: PASS — run 41358812592.
+- Native paired benchmark: PASS — run 41358812571.
+- Multi-engine benchmark: PASS — run 41358812573; artifact 13105045922 downloaded and inspected.
+- Morphology adapter: PASS — run 41358812565.
+- Morphology consensus: PASS — run 41358812596.
+- Optional CharsiuG2P, ByT5 and joined neural pairing: SKIPPED, not passed. NIKL metadata-only inventory: SKIPPED.
+- Local pytest/npm commands were not run: this connector-only environment could not resolve github.com for a local clone. Exact-head GitHub Actions evidence is available; no local-run claim is made.
+
+## Related branches and PR disposition
+
+- PR #415 and #416: retained as the existing stacked implementation lineage; left open and unmerged.
+- PR #417: continuation branch retained; no duplicate branch or duplicate PR created.
+- PR #411: left untouched; it combines broader Hanja, RR, contextual-Romanization and service work and overlaps shared documentation/engine areas outside this Kozak Kim-only task.
+- PR #414: left untouched; external service smoke benchmark is outside current scope.
+- PR #371: left untouched; it is a separate extended benchmark branch. Its benchmark work was not blindly merged; the current PR #417 multi-engine workflow already provides the diagnostic artifact required for this continuation.
+- `main` remains unchanged.
 
 ## Readiness and next genuine blockers
 
-**Status: research prototype; not research-certified and not release-ready.**
+**Disposition: research prototype; blind-review-packet-ready, but not research-certified or release-ready.**
 
-1. Obtain two independent blind Korean IPA submissions for C01–C07; no reviewer result is inferred from packet generation.
-2. Independently confirm the five reconstructed C08 memberships against the original extraction if recovered; obtain IPA/prosody adjudication for all eight; keep 유사성 unresolved until direct lexical evidence exists.
-3. Continue separate review of C09 vowel length and C10 stress/prosody conventions.
-4. Complete item-level rights review for NIKL materials and any other sources used in distributable artifacts.
-5. Obtain independent Ukrainian target review; Korean IPA benchmark scores do not validate Ukrainian orthography.
+1. Obtain two independent blind Korean IPA submissions for C01–C07; freeze first-pass annotations before engine/reference reveal.
+2. Recover the original C08 extraction table if available; otherwise preserve the five inferred memberships as inferred. Obtain independent IPA and prosodic adjudication for all eight contexts; keep `유사성` unresolved until direct lexical evidence exists.
+3. Adjudicate C09 vowel length and C10 stress/prosody conventions with independent evidence.
+4. Complete item-level rights review for NIKL materials and any sources used in distributable artifacts.
+5. Obtain independent Ukrainian target orthography review.
+6. Keep optional neural inference gated until model/data provenance, licenses, and evaluation protocol are verified.
 
-The earlier continuation snapshots below are historical and are superseded by this status.
+No new production phonology rule was justified by this revalidation. Do not promote CER improvements into universal superiority claims.
 
 ---
 

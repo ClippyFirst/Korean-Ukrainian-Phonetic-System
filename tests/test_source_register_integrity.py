@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
@@ -11,6 +12,7 @@ SOURCE_REGISTER = ROOT / "research" / "SOURCE-REGISTER.csv"
 IPA_QUEUE = ROOT / "research" / "ipa-adjudication-queue.json"
 SURFACE_FIXTURE = ROOT / "tests" / "fixtures" / "g2pk-surface-regression.json"
 LEXICAL_DATA = ROOT / "data" / "korean" / "lexical_pronunciations.csv"
+C08_CLUSTER_REGISTER = ROOT / "research" / "KOZAK-KIM-MASS-MISMATCH-CLUSTERS-2026-11-01.csv"
 EXPECTED_COLUMNS = [
     "source_id",
     "source_type",
@@ -316,6 +318,26 @@ def test_c08_morphology_sources_are_registered_with_limited_claim_scope():
 
     pdf = rows["SRC-NIKL-EDU-2021-DEPENDENT-SI"]
     assert "not used as production evidence" in pdf["limitations_or_next_action"].lower()
+
+
+def test_c08_cluster_cites_only_active_registered_nikl_qna_sources():
+    with C08_CLUSTER_REGISTER.open("r", encoding="utf-8-sig", newline="") as stream:
+        cluster_rows = list(csv.DictReader(stream))
+    c08 = next(row for row in cluster_rows if row["cluster_id"] == "C08")
+    c08_text = " ".join(c08.values())
+    cited_ids = set(re.findall(r"SRC-NIKL-QNA-\\d+", c08_text))
+    registered_ids = {row["source_id"] for row in load_source_register()}
+
+    assert cited_ids, "C08 must use explicit, traceable NIKL source-register IDs"
+    assert cited_ids <= registered_ids, "C08 cites a source absent from the active register"
+    assert {
+        "SRC-NIKL-QNA-317798",
+        "SRC-NIKL-QNA-310899",
+        "SRC-NIKL-QNA-331601",
+    } <= cited_ids
+    assert not re.search(r"\\b(?:335204|336313)\\b", c08_text), (
+        "unretrieved provisional Q&A references must not remain in the active C08 evidence row"
+    )
 
 
 def test_c08_analyzer_cross_check_is_recorded_as_diagnostic_not_gold():

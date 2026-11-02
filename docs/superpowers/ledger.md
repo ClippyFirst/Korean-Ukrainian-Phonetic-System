@@ -1,25 +1,29 @@
 # Superpowers execution ledger — latest continuation 2026-11-02
 
-## Latest verified status — C01–C07 / C08 continuation
+## Latest verified status — Kozak Kim / C01–C08 and multi-engine revalidation
 
-- **Scope:** only Kozak Kim; original g2pK stays untouched.
-- **Branch/PR:** `research/kozak-kim-independent-ipa-packets-2026-11-01`, draft PR #417 stacked on PR #416; last verified code/test head `8b22f778112442024f876061bd0e576af762e761`.
-- **C01–C07:** seven neutral blind packets, 42 entries, 39 unique source rows, full source contexts, no engine/baseline/IPA leakage. Packet preparation is DONE_VERIFIED; independent reviewer submissions remain BLOCKED.
-- **C08:** all eight source contexts are now mapped in the pinned fixture. Three were independently recovered earlier; five were reconstructed from the fortis-mismatch signature because the original extraction table is missing. Seven have conditional -(으)ㄹ + dependent-noun evidence: Q&A 317798 (것), 310899 (거), 331601/307960 (수), 336313 (듯), 327466 (일 수도), and 313481/333044 (시). `유사성` remains unresolved. No new production rule or generalized -성 rule was added.
-- **Runtime:** Python exact R013 same-eojeol licensing now works for a licensed word inside a full sentence. Full-context positive and negative tests pass in Python and browser.
-- **Benchmark:** browser paired run 41357680349/artifact 13104120884: 2,699 shared; CER 8.1097% vs g2pK 8.2138% (−0.1040 pp; 95% cluster CI −0.1951 to −0.0261 pp); exact match 53.4272% each. Native pair run 41358508325/artifact 13104257589: 2,698 shared; CER 9.1047% vs 9.2304%, exact match 53.0393% vs 53.1134% (g2pK slightly higher); five native abstentions, zero engine errors. Only the two C08 target outputs changed relative to the prior PR #416 browser artifact; g2pK outputs are unchanged.
-- **Rights:** source register 155 rows; 146 review required and 7 manual classifications remain (plus one item-level license recorded and one not applicable). NIKL item-level rights review is open.
-- **CI:** Exact-head push run `41358386793` and exact-head PR run `41358392166` both PASS on documentation head `94a2a2e` (code/test head `8b22f778`); Python regression/data integrity and browser regression/build included. Current branch also passed packet extraction `41358508478`, browser pair `41358508374`, native pair `41358508325`, morphology consensus `41358508508` and morphology adapter `41358508288`. Multi-engine run `41358068874` was cancelled by the subsequent branch update; latest run `41358508284` was still in progress at handoff; Charsiu/ByT5 jobs were skipped. No multi-engine score is claimed. Optional Charsiu/ByT5 and NIKL metadata-only inventory were skipped; multi-engine comparison runs were cancelled before a complete score report was produced, including latest run `41354753780`; no multi-engine score is claimed.
-- **Training readiness:** supervised IPA training is NOT READY: the partial audit found 644 unique lexical rows but zero explicitly independently adjudicated IPA rows and 24 frozen holdout cases without IPA gold; no holdout overlap was found.
-- **Readiness:** research prototype, not research-certified or release-ready. Next blockers are two independent IPA reviews, C08 source-extraction provenance and prosodic adjudication, C09/C10 adjudication, item-level rights and Ukrainian target review.
+- **Scope:** only Kozak Kim; original g2pK remains unchanged and comparison-only.
+- **Branch/PR:** `research/kozak-kim-independent-ipa-packets-2026-11-01`, head `82c35882331d9a1a9b6e4b5500048a568b92caad`; draft PR #417 stacked on PR #416. PRs #415/#416 remain open.
+- **C01–C07:** seven neutral blind packets, 42 entries, 39 unique source rows, full source contexts, no engine/baseline/IPA leakage. Packet preparation DONE_VERIFIED; two independent reviewer submissions BLOCKED.
+- **C08:** all eight contexts are in the pinned fixture; three IDs were independently recovered and five reconstructed from the fortis-mismatch signature because the original extraction table is missing. Seven have conditional morphology/rule-environment leads. Active NIKL Q&A sources are 317798, 310899 and 331601; provisional 335204/336313 are removed. `유사성` remains unresolved. No suffix-wide `-성` rule.
+- **R013:** two exact same-eojeol C08 licenses are covered inside full sentences in Python and browser. This is bounded rule behavior, not independent IPA adjudication; the pause/prosody uncertainty remains.
+- **Browser pair:** run 41358812592 / artifact 13104661411; 2,699 shared; exact 53.4272% each; CER 8.1097% vs g2pK 8.2138%; delta −0.1040 pp, 95% sentence-cluster CI [−0.1951, −0.0261].
+- **Native pair:** run 41358812571 / artifact 13104522135; 2,698 shared; exact 53.0393% vs 53.1134%; CER 9.1047% vs 9.2304%; five native abstentions, zero engine errors.
+- **Multi-engine:** run 41358812573 / artifact 13105045922 completed successfully. UGTPHON (2,698 shared): exact 53.0393% vs 53.1134%; CER 9.1047% vs 9.2304%; paired bootstrap CER interval for g2pK-minus-Kozak [+0.0428,+0.2194] pp. SIGMORPHON (998 shared): exact 35.8717% vs 35.3707%; CER 14.6225% vs 14.8106%; paired bootstrap intervals favor Kozak Kim on both metrics. Both datasets remain diagnostic, not normative IPA gold.
+- **g2pK integrity:** no original/vendor g2pK source file changed; shared segment-to-IPA renderer remains an evaluation caveat, not a g2pK code modification.
+- **Rights:** source register 155 rows: 146 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 1 item-level license recorded, 1 not applicable. NIKL item-level reuse review remains open.
+- **Exact-head CI:** push system/Python/data run 41358807322 PASS; PR system/Python/data + browser regression/build 41358812562 PASS; extraction 41358812580 PASS; browser pair 41358812592 PASS; native pair 41358812571 PASS; multi-engine 41358812573 PASS; morphology adapter 41358812565 PASS; morphology consensus 41358812596 PASS. Optional Charsiu/ByT5/joined neural jobs and NIKL metadata-only inventory SKIPPED.
+- **Training readiness:** NOT READY: 644 unique lexical rows, zero additions explicitly marked independently adjudicated IPA gold, 24 frozen holdout cases without IPA gold; no overlap found.
+- **Readiness:** research prototype, review-packet-ready but not research-certified or release-ready. Blockers: independent C01–C07 review, C08 source-extraction traceability/prosody/lexical review, C09/C10 adjudication, item-level rights, and Ukrainian target review.
+- **Local tests:** no local pytest/npm run; local clone attempt failed because github.com DNS was unavailable. Do not claim local test success.
 
-## Revalidation note — 2026-11-02
+## Current next actions
 
-- The latest completed paired browser run is `41357680349` (artifact `13104120884`): 2,699 shared scored occurrences; exact match 53.4272% for both systems; Kozak Kim CER 8.1097%, original g2pK CER 8.2138%, paired delta −0.1040 pp (95% sentence-cluster CI −0.1951 to −0.0261 pp). This is a diagnostic on noisy UGTPHON annotations, not normative IPA adjudication.
-- The latest source register is 155 rows (146 review-required, 7 manual-classification-required, 1 item-level license recorded, 1 not applicable). Item-level NIKL rights remain open.
-- C01–C07 packet preparation is complete, but no independent reviewer annotations have been received. C08 remains PARTIAL / EVIDENCE-LIMITED: all eight contexts are in the working fixture; five memberships are reconstructed because the original extraction table is missing; `유사성` remains unresolved and no suffix-wide or generic fortition rule was added.
-- The full-sentence Python negative control is strengthened to exercise the recovered `유사성` source sentence, not only the isolated token. This is test coverage only; it does not change production phonology.
-- Latest multi-engine workflow `41354753780` was cancelled; neural inference was skipped. No multi-engine result is claimed.
+1. Obtain two independent blind IPA submissions for C01–C07.
+2. Seek the original C08 extraction table; keep five mappings explicitly inferred if unavailable; obtain token-level IPA/prosody review; do not license `유사성`.
+3. Adjudicate C09 length and C10 stress conventions.
+4. Resolve NIKL item-level reuse rights and Ukrainian target review.
+5. Re-run exact-head CI and paired benchmarks after any future production change.
 
 ## Historical snapshots
 

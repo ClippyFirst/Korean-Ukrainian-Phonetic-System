@@ -19,8 +19,16 @@ The two output changes above were independently verified by comparing pre-contex
 
 **Traceability caveat:** the original one-off C08 extraction table containing the eight source-row IDs was not preserved. The five new memberships are high-confidence reconstructions from the pinned benchmark mismatch signature plus exact target-token/source-sentence matching, not copied from that missing extraction artifact. They are recorded as reconstructed rather than primary-source mappings.
 
-Four new NIKL sources are now registered: Q&A 317798 (Rule §27 and the dependent-noun/cohesion condition), 310899 (colloquial dependent noun `거`), 331601 (`알 수 없는[알쑤엄는]`), and 336313 (`할 듯[할뜯]`). These establish conditional morphological/rule environments; they do not supply independent IPA gold for the UGC tokens. No production rule was added in this continuation. All eight contexts are now in the fixture; `유사성` remains unresolved; independent IPA/prosody review and item-level rights remain open.
+Three additional NIKL Q&A sources are active in the register: 317798 (Rule §27 examples and the pause/cohesion caveat), 310899 (colloquial dependent noun `거`), and 331601 (`알 수 없는[알쑤엄는]`). Provisional Q&A references 335204 and 336313 were removed from the active register because their direct pages could not be independently retrieved; they are not current evidence. The active sources support conditional morphology/rule environments, not independent IPA gold for the UGC tokens. No production rule was added in this context-recovery follow-up. All eight contexts are in the fixture; `유사성` remains unresolved; independent IPA/prosody review and item-level rights remain open.
 
+
+
+## Latest paired and multi-engine evidence — 2026-11-02
+
+- **Browser pair:** run [41358812592](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812592), artifact `13104661411`; 2,699 shared occurrences; exact match 53.4272% for both; Kozak Kim CER 8.1097% vs original g2pK 8.2138%; paired delta −0.1040 pp, 95% sentence-cluster CI [−0.1951, −0.0261] pp.
+- **Native pair:** run [41358812571](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812571), artifact `13104522135`; 2,698 shared occurrences; exact 53.0393% vs 53.1134% (g2pK slightly higher); CER 9.1047% vs 9.2304% (Kozak Kim lower); five native abstentions, zero engine errors.
+- **Completed 10-engine diagnostic:** run [41358812573](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41358812573), artifact `13105045922`. On 2,698 shared UGTPHON occurrences, g2pK-minus-Kozak exact delta is +0.0741 pp with paired row-cluster 95% CI [−0.0824, +0.2840] pp; g2pK-minus-Kozak CER delta is +0.1257 pp with CI [+0.0428, +0.2194] pp. On 998 shared SIGMORPHON lexical words, Kozak Kim leads exact match 35.8717% vs 35.3707% and CER 14.6225% vs 14.8106%; the paired bootstrap intervals favor Kozak Kim on both metrics. The report's SIGMORPHON limitations (lexical rather than sentence-context evaluation; IPA-convention differences) remain applicable.
+- These are corpus/profile-specific diagnostics. The g2pK surface is converted through the project's shared segment-to-IPA renderer; its original implementation is not changed. None of these benchmarks evaluates Ukrainian target orthography or substitutes for independent Korean IPA adjudication.
 ---
 
 ## Latest continuation update — 2026-11-01: C01–C07 blind packets, C08 contexts, and Python sentence parity
