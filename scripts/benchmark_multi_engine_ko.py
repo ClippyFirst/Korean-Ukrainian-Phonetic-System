@@ -1642,6 +1642,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
         ), None),
         "engines": engine_results,
         "occurrence_ledger_schema_version": 2,
+        "broad_candidate_benchmark_version": 2,
         "per_engine_occurrences": _build_per_engine_occurrences(
             items, scored_by_engine, predictions, native_cache
         ),
