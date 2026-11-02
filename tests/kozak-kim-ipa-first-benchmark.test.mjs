@@ -119,6 +119,29 @@ test('browser occurrence ledger reconstructs complete surface when only one syll
   assert.equal(report.records[0].surface_hangul, '가나');
 });
 
+test('browser occurrence ledger reconstructs unchanged lexical surfaces from trace', () => {
+  const rows = [{
+    id: 'lexical-surface-row',
+    lang: 'ko',
+    split: 'test',
+    tokens: [{ canonical: '가나', phoneme: 'ka.na' }]
+  }];
+  const report = evaluateRows(rows, {
+    convert: () => ({
+      pronunciation_status: 'resolved',
+      ipa: 'ka.na',
+      surfaceHangul: '',
+      trace: [
+        { source: '가', ipa: 'ka' },
+        { source: '나', ipa: 'na' }
+      ],
+      target_status: 'model-selected',
+      ukrainian: 'кана'
+    })
+  });
+  assert.equal(report.records[0].surface_hangul, '가나');
+});
+
 test('browser occurrence ledger retains stable identity and surface for heuristic results', () => {
   const rows = [{
     id: 'heuristic-row',
