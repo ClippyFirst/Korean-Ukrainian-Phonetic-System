@@ -1,6 +1,7 @@
 import canonicalCsv from '../data/korean/canonical_correspondence.csv?raw';
 import lexicalCsv from '../data/korean/lexical_pronunciations.csv?raw';
 import lexicalAdditionsCsv from '../data/korean/lexical_additions_2026-10-15.csv?raw';
+import ipaAdjudicationCsv from '../data/korean/lexical_additions_ipa-adjudication-2026-10-24.csv?raw';
 import {createEngine} from './app/engine.js';
 import {createG2pWebAdapter} from './app/g2pk_web.js';
 import {traceIpaMappingDetailed} from './app/engine_ipa.js';
@@ -11,11 +12,26 @@ import niklMasterPassage from '../tests/fixtures/nikl-all-articles-master-passag
 
 // Merge base lexicon with dated additions (later rows override earlier on same key).
 function mergeLexicalCsv(base, additions) {
-  const header = (base.split(/\r?\n/).find(l => l.trim()) || '');
-  const body = (s) => s.split(/\r?\n/).filter(l => l.trim() && !l.startsWith('input,'));
-  return [header, ...body(base), ...body(additions)].join('\n');
+  const baseLines = base.split(/\r?\n/);
+  const additionLines = additions.split(/\r?\n/);
+  const baseHeader = baseLines.find(line => line.trim()) || '';
+  const additionHeader = additionLines.find(line => line.trim()) || '';
+  const baseColumns = baseHeader.split(',');
+  const additionColumns = additionHeader.split(',');
+  if (additionColumns.length < baseColumns.length ||
+      baseColumns.some((column, index) => additionColumns[index] !== column)) {
+    throw new Error('Lexical additions must preserve the base CSV columns and append any new metadata columns.');
+  }
+  const addedColumns = additionColumns.length - baseColumns.length;
+  const baseRows = baseLines.filter(line => line.trim() && line !== baseHeader)
+    .map(line => line + ','.repeat(addedColumns));
+  const additionRows = additionLines.filter(line => line.trim() && line !== additionHeader);
+  return [additionHeader, ...baseRows, ...additionRows].join('\n');
 }
-const mergedLexicalCsv=mergeLexicalCsv(lexicalCsv, lexicalAdditionsCsv);
+const mergedLexicalCsv=mergeLexicalCsv(
+  mergeLexicalCsv(lexicalCsv, lexicalAdditionsCsv),
+  ipaAdjudicationCsv
+);
 const engine=createEngine(canonicalCsv, mergedLexicalCsv);
 // Practical mode uses only the pinned JS G2P port; the merged lexical corpus
 // is passed to the separate research engine above, never as a practical override.

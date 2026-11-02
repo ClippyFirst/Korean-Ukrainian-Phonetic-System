@@ -24,18 +24,29 @@ function readProjectFile(path) {
 function mergeLexicalCsv(base, extra) {
   const baseLines = base.split(/\r?\n/u);
   const extraLines = extra.split(/\r?\n/u);
-  return [
-    baseLines[0],
-    ...baseLines.slice(1).filter(line => line.trim()),
-    ...extraLines.slice(1).filter(line => line.trim())
-  ].join('\n');
+  const baseHeader = baseLines.find(line => line.trim()) ?? '';
+  const extraHeader = extraLines.find(line => line.trim()) ?? '';
+  const baseColumns = baseHeader.split(',');
+  const extraColumns = extraHeader.split(',');
+  if (extraColumns.length < baseColumns.length ||
+      baseColumns.some((column, index) => extraColumns[index] !== column)) {
+    throw new Error('Lexical additions must preserve base CSV columns and append metadata columns.');
+  }
+  const addedColumns = extraColumns.length - baseColumns.length;
+  const baseRows = baseLines.filter(line => line.trim() && line !== baseHeader)
+    .map(line => line + ','.repeat(addedColumns));
+  const extraRows = extraLines.filter(line => line.trim() && line !== extraHeader);
+  return [extraHeader, ...baseRows, ...extraRows].join('\n');
 }
 
 export function createBrowserKozakKimEngine() {
   const canonical = readProjectFile('data/korean/canonical_correspondence.csv');
   const lexical = mergeLexicalCsv(
-    readProjectFile('data/korean/lexical_pronunciations.csv'),
-    readProjectFile('data/korean/lexical_additions_2026-10-15.csv')
+    mergeLexicalCsv(
+      readProjectFile('data/korean/lexical_pronunciations.csv'),
+      readProjectFile('data/korean/lexical_additions_2026-10-15.csv')
+    ),
+    readProjectFile('data/korean/lexical_additions_ipa-adjudication-2026-10-24.csv')
   );
   return createEngine(canonical, lexical);
 }
