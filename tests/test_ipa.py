@@ -286,3 +286,23 @@ def test_broad_h_allophones_are_optional_and_profile_scoped():
     assert hu["ipa"] == "hu"
     assert any(item["ipa"] == "xu" for item in hu["variants"])
     assert phoneticize_korean("하")["ipa"]["variants"] == []
+
+
+def test_seoul_broad_profile_offers_source_scoped_h_and_liquid_allophones():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    h = phoneticize_korean("아하")["ipa"]
+    assert h["ipa"] == "a.ha"
+    assert any(item["ipa"] == "a.ɸa" for item in h["variants"])
+
+    liquid = phoneticize_korean("나라")["ipa"]
+    assert liquid["ipa"] == "na.ɾa"
+    assert any(item["ipa"] == "na.ɭa" for item in liquid["variants"])
+
+    # The broader /j/-initial context is explicitly optional, not canonical.
+    sibilant = phoneticize_korean("쇼")["ipa"]
+    assert sibilant["ipa"] == "sjo"
+    assert any(item["ipa"] == "ɕjo" for item in sibilant["variants"])
+    fortis = phoneticize_korean("쑈")["ipa"]
+    assert not any("ɕ͈" in item["ipa"] for item in fortis["variants"])
+
