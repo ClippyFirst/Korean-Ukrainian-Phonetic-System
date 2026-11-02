@@ -597,6 +597,156 @@ def _paired_bootstrap_delta_ci(
     }
 
 
+def _native_competitor_error_analysis(
+    scored_by_engine: dict[str, list[dict[str, Any]]],
+) -> dict[str, Any]:
+    """Compare Kozak Kim with g2pK and g2p-ko on identical scored occurrences."""
+    native_by_id = {str(item["occurrence_id"]): item for item in scored_by_engine.get("clippyfirst_native", [])}
+    comparisons: dict[str, Any] = {}
+    competitor_names = ("g2pk_0_9_4", "g2p_ko_1_0_0")
+    indexed: dict[str, dict[str, dict[str, Any]]] = {}
+
+    def view(item: dict[str, Any], broad: bool) -> dict[str, Any]:
+        if not broad:
+            return item
+        candidate = item.get("broad_candidate")
+        if not isinstance(candidate, dict):
+            raise ValueError("broad candidate score missing from occurrence ledger")
+        return {
+            **item,
+            "exact": bool(candidate["exact"]),
+            "distance": int(candidate["distance"]),
+            "reference_length": int(candidate["reference_length"]),
+        }
+
+    for name in competitor_names:
+        candidate_by_id = {str(item["occurrence_id"]): item for item in scored_by_engine.get(name, [])}
+        indexed[name] = candidate_by_id
+        common_ids = sorted(set(native_by_id) & set(candidate_by_id))
+        candidate_items = [candidate_by_id[key] for key in common_ids]
+        native_items = [native_by_id[key] for key in common_ids]
+        for left, right in zip(candidate_items, native_items):
+            if str(left["row_id"]) != str(right["row_id"]) or str(left["token"]) != str(right["token"]):
+                raise ValueError(f"{name}: paired occurrence identity mismatch at {left['occurrence_id']}")
+
+        def summary(broad: bool) -> dict[str, Any]:
+            candidate_view = [view(item, broad) for item in candidate_items]
+            native_view = [view(item, broad) for item in native_items]
+            cm, nm = _metrics(candidate_view), _metrics(native_view)
+            category_counts: Counter[str] = Counter()
+            worse: list[dict[str, Any]] = []
+            for candidate, native in zip(candidate_view, native_view):
+                if candidate["exact"] and native["exact"]:
+                    category = "both_exact"
+                elif candidate["exact"]:
+                    category = "competitor_only_exact"
+                elif native["exact"]:
+                    category = "native_only_exact"
+                else:
+                    category = "both_not_exact"
+                category_counts[category] += 1
+                if int(native["distance"]) > int(candidate["distance"]):
+                    worse.append({
+                        "occurrence_id": native["occurrence_id"],
+                        "row_id": native["row_id"],
+                        "token": native["token"],
+                        "gold": native["gold"],
+                        "native_ipa": native.get("predicted"),
+                        "competitor_ipa": candidate.get("predicted"),
+                        "native_distance": native["distance"],
+                        "competitor_distance": candidate["distance"],
+                        "native_exact": native["exact"],
+                        "competitor_exact": candidate["exact"],
+                    })
+            return {
+                "paired_scored_occurrences": len(common_ids),
+                "native": cm if False else nm,
+                "competitor": cm,
+                "competitor_minus_native_exact_rate": (
+                    round(cm["exact_match_rate"] - nm["exact_match_rate"], 6)
+                    if cm["exact_match_rate"] is not None and nm["exact_match_rate"] is not None else None
+                ),
+                "competitor_minus_native_cer": (
+                    round(cm["character_error_rate"] - nm["character_error_rate"], 6)
+                    if cm["character_error_rate"] is not None and nm["character_error_rate"] is not None else None
+                ),
+                "exact_classification_counts": dict(sorted(category_counts.items())),
+                "native_distance_worse_occurrences": worse,
+            }
+
+        comparisons[name] = {
+            "strict": summary(False),
+            "broad_candidate": summary(True),
+        }
+
+    common_triad = set(native_by_id)
+    for name in competitor_names:
+        common_triad &= set(indexed.get(name, {}))
+    triad_cases: dict[str, list[dict[str, Any]]] = {
+        "strict_native_not_exact_both_competitors_exact": [],
+        "strict_native_distance_worse_than_both": [],
+        "broad_native_not_exact_both_competitors_exact": [],
+        "broad_native_distance_worse_than_both": [],
+    }
+    for occurrence_id in sorted(common_triad):
+        native = native_by_id[occurrence_id]
+        g2pk = indexed["g2pk_0_9_4"][occurrence_id]
+        g2p_ko = indexed["g2p_ko_1_0_0"][occurrence_id]
+        if str(native["row_id"]) != str(g2pk["row_id"]) or str(native["row_id"]) != str(g2p_ko["row_id"]):
+            raise ValueError(f"triad row identity mismatch at {occurrence_id}")
+
+        def add_case(key: str, broad: bool, condition: bool) -> None:
+            if not condition:
+                return
+            n, a, b = view(native, broad), view(g2pk, broad), view(g2p_ko, broad)
+            triad_cases[key].append({
+                "occurrence_id": occurrence_id,
+                "row_id": native["row_id"],
+                "token": native["token"],
+                "gold": native["gold"],
+                "native_ipa": native.get("predicted"),
+                "g2pk_ipa": g2pk.get("predicted"),
+                "g2p_ko_ipa": g2p_ko.get("predicted"),
+                "native_distance": n["distance"],
+                "g2pk_distance": a["distance"],
+                "g2p_ko_distance": b["distance"],
+                "native_exact": n["exact"],
+                "g2pk_exact": a["exact"],
+                "g2p_ko_exact": b["exact"],
+            })
+
+        add_case(
+            "strict_native_not_exact_both_competitors_exact", False,
+            not native["exact"] and g2pk["exact"] and g2p_ko["exact"],
+        )
+        add_case(
+            "strict_native_distance_worse_than_both", False,
+            native["distance"] > g2pk["distance"] and native["distance"] > g2p_ko["distance"],
+        )
+        nb, ab, bb = view(native, True), view(g2pk, True), view(g2p_ko, True)
+        add_case(
+            "broad_native_not_exact_both_competitors_exact", True,
+            not nb["exact"] and ab["exact"] and bb["exact"],
+        )
+        add_case(
+            "broad_native_distance_worse_than_both", True,
+            nb["distance"] > ab["distance"] and nb["distance"] > bb["distance"],
+        )
+
+    return {
+        "comparisons": comparisons,
+        "three_way_common_scored_occurrences": len(common_triad),
+        "native_loses_to_both": {
+            key: {"count": len(values), "occurrences": values}
+            for key, values in triad_cases.items()
+        },
+        "interpretation": (
+            "Occurrence-level differential analysis only. UGTPHON/SIGMORPHON annotations are not normative IPA gold; "
+            "a lower edit distance is a review priority, not proof of a correct pronunciation."
+        ),
+    }
+
+
 def _load_kog2p(root: Path) -> tuple[Callable[[str], str], str]:
     script = root / "g2p.py"
     rulebook = root / "rulebook.txt"
@@ -1489,6 +1639,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "interpretation": "complete occurrence-level native-vs-g2pk diagnostic; categories compare each prediction to the corpus annotation, which is not normative gold",
             "occurrences": native_g2pk_pairwise_audit,
         },
+        "native_competitor_error_analysis": _native_competitor_error_analysis(scored_by_engine),
         "upstream_pins": {
             "g2pk": "0.9.4",
             "KoG2P": "scarletcho/KoG2P commit cbc69bbe1439862364d4ffd1552f59b930f655c7; GPL-3.0; executed as external checkout, not vendored",
