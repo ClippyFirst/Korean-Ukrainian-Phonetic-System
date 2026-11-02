@@ -5018,3 +5018,14 @@ The partial multi-engine workflow artifact 13101748305 (run 41353171180, attempt
 - Added `SRC-SNU-LEE-2017-KOREAN-VOWEL-CONTRAST` (Lee 2017, Seoul National University *Language Research*). The abstract independently studies /y, ø/ diphthongization and /e, ɛ/ merger using written/spoken corpora. It corroborates change/variation, not token-level IPA or a universal /ɥi/ mapping.
 - C05 remains `PARTIAL_SOURCE_REVIEWED_PROFILE_BOUNDARY`; Kozak Kim retains alternatives and no blanket rule was added. The exact token-level IPA remains evidence-limited.
 - Source register now has 167 rows; rights triage has 157 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses and 1 not applicable. CC BY-NC 4.0 is recorded for the cited paper; no text was copied into production.
+
+
+## Final continuation record — 2026-11-02 (verified code/test head 84e4200)
+
+- Branch `research/kozak-kim-independent-ipa-packets-2026-11-01` head at verification: `84e4200365851e7d070c76e0ebed7c113111475a`; PR #417 remains Draft and stacked on #416/#415. The branch is 322 commits ahead / 0 behind main. No PR was merged and no release/deployment was made.
+- Exact-head push run `41419725829` and PR run `41419733699` passed Python/data integrity and browser/build. Browser tests: 1,374 passed, 0 failed, 0 skipped; production build and generated-page verification passed. NIKL metadata-only inventory skipped.
+- Paired browser diagnostic run `41419733723`, artifact `13129795347`: 2,699 paired, exact tied 53.4272%, CER 8.0794% vs original g2pK 8.2138%, paired CER delta −0.1344 pp, 95% sentence-cluster CI [−0.2246, −0.0531] pp.
+- Paired native diagnostic same run, artifact `13129641115`: Kozak 2,698 scored, exact 53.0393%, CER 9.0744%, five abstentions, zero errors; g2pK 2,703 scored, exact 53.0892%, CER 9.2285%. g2pK retains a small exact-match point edge; Kozak Kim has lower CER. g2pK remains untouched and its surface output uses the shared IPA renderer.
+- Morphology adapter, Kiwi/MeCab-Ko, browser integration, extraction, paired and consensus jobs passed. CharsiuG2P/ByT5 inference and NIKL metadata-only inventory were skipped. The later multi-engine comparison remains limited to the previously completed artifact `13105045922`.
+- Source register: 167 rows; 157 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses, 1 not applicable. Independent human IPA submissions, C08 exact prosodic adjudication, C09 IPA-level review, C10 phrase-level prosody, item-level rights and Ukrainian target review remain blocked/todo.
+- Readiness remains research prototype, not research-certified or release-ready.

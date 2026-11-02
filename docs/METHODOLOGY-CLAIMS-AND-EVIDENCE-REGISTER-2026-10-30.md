@@ -199,3 +199,14 @@ Three newly registered NIKL records (Q&A 317798, 310899, 331601) remain `REVIEW_
 The multi-engine artifact's purpose remains diagnostic. UGTPHON is noisy user-generated text; SIGMORPHON is a lexical word-level set with IPA-convention differences. The g2pK implementation remains unchanged; its surface is converted by the shared project segment-to-IPA renderer. The rerun on verified code/test head `bf08b7f` (workflow 41407778528) remained in progress at last inspection; no result is claimed from it. Optional CharsiuG2P and ByT5 inference jobs were skipped; no neural score is claimed. The run does not evaluate Ukrainian output.
 
 **Evidence-source correction:** active additional NIKL Q&A sources are 317798, 310899 and 331601. Provisional Q&A 335204 and 336313 were removed from the active source register because their direct pages could not be independently retrieved. Historical mentions are superseded; neither is used in the current C08 evidence row.
+
+
+## 2026-11-02 — latest paired revalidation on head 84e4200
+
+| Claim | Status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|
+| Browser paired UGTPHON comparison | DONE_VERIFIED as a diagnostic | Run [41419733723](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41419733723), artifact `13129795347`; 2,699 paired, 264 sentence/utterance clusters | Exact match tied at 53.4272%; Kozak Kim CER 8.0794% vs original g2pK 8.2138%; paired CER delta −0.1344 pp, 95% row-cluster CI [−0.2246, −0.0531] pp | Normative IPA accuracy, Ukrainian target quality, or universal superiority |
+| Native paired UGTPHON comparison | DONE_VERIFIED as a diagnostic | Same run, artifact `13129641115`; native Kozak 2,698 scored, g2pK 2,703 | Kozak exact 53.0393%, CER 9.0744%, five abstentions/zero errors; g2pK exact 53.0892%, CER 9.2285%. Paired g2pK-minus-native exact +0.0741 pp and CER +0.1560 pp | Exact-match advantage for Kozak; comparison of two independently native IPA encoders |
+| Exact-head regression/build | DONE_VERIFIED | Push run `41419725829`, PR run `41419733699`, head `84e4200365851e7d070c76e0ebed7c113111475a` | Python/data integrity pass; browser 1,374/1,374; build and generated pages pass | NIKL metadata inventory (skipped), optional neural inference, or independent linguistic gold |
+
+Both g2pK comparisons use the shared project segment-to-IPA renderer after original g2pK surface generation. These diagnostics do not establish normative Korean IPA gold or Ukrainian adaptation quality. The original g2pK implementation remains unchanged.

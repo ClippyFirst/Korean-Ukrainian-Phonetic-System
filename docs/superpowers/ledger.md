@@ -109,3 +109,11 @@ Kiwi/MeCab-Ko run 41353171166 is diagnostic only: partial boundary agreement for
 
 - Added Lee (2017) as independent contextual evidence for /y, ø/ diphthongization. C05 remains partial; no global /y/→[ɥi] rule or token IPA was inferred.
 - Source register: 167 rows; 157 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses, 1 not applicable. No production phonology rule changed and g2pK remains untouched.
+
+
+## Final continuation record — 2026-11-02 (head 84e4200)
+
+- Exact-head push/PR system verification passed Python/data integrity and browser/build; browser 1,374/1,374, zero failures/skips; production build and generated pages passed. NIKL metadata-only inventory skipped.
+- Latest browser pair: run 41419733723, artifact 13129795347; exact tied 53.4272%, CER 8.0794% vs g2pK 8.2138%, paired CER CI [−0.2246, −0.0531] pp. Latest native pair: artifact 13129641115; Kozak exact 53.0393%, CER 9.0744%; g2pK exact 53.0892%, CER 9.2285%. Kozak has lower CER; g2pK a small exact point edge. Shared IPA renderer caveat remains.
+- Morphology, browser, extraction and paired diagnostics passed. Optional neural inference skipped. Source register 167 rows; 157 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses, 1 not applicable.
+- No production phonology rule changed in this follow-up; original g2pK remains untouched. Research prototype, not release-ready.
