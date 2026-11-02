@@ -109,3 +109,23 @@ def test_c09_source_backed_people_and_moreuda_keep_lexical_length_in_broad_ipa()
         assert result["unresolved_contexts"] == []
     gweseong = phoneticize_korean("괴성")
     assert gweseong["ipa"]["lexical_alternatives"][0]["ipa"] == "kweː.sʌŋ"
+
+def test_actual_native_abstentions_remain_fail_closed_without_exact_morphology():
+    # These four forms are the R002/R003 items in the pinned UGTPHON native
+    # abstention audit. They are intentionally not normalized or guessed.
+    cases = {
+        "칡칡이": "R002",
+        "쫒아내면": "R002",
+        "많앗구나유유유": "R003",
+        "무서웟어": "R002",
+    }
+    for word, expected_rule in cases.items():
+        result = phoneticize_korean(word)
+        assert result["pronunciation_status"] == "unresolved", word
+        assert result["ipa_is_diagnostic_only"] is True, word
+        assert result["ipa_status_reason"] == "unresolved_morphophonological_context", word
+        assert any(
+            item["rule_id"] == expected_rule
+            and item["status"] == "unresolved-no-exact-license"
+            for item in result["unresolved_contexts"]
+        ), word
