@@ -212,7 +212,7 @@ test('broad candidate benchmark distinguishes transcription convention from engi
   assert.equal(report.broad_candidate_exact_matches, 2);
 });
 
-test('NIKL-backed 실수 improves broad IPA agreement without rewriting strict gold conventions', () => {
+test('shared broad IPA profile preserves the sibilant-place difference in NIKL-backed 실수', () => {
   const rows = [{
     id: 'nikl-silsoo',
     lang: 'ko',
@@ -220,9 +220,16 @@ test('NIKL-backed 실수 improves broad IPA agreement without rewriting strict g
     tokens: [{ canonical: '실수', phoneme: 'ɕʰiɭs͈u' }]
   }];
   const report = evaluateRows(rows, createBrowserKozakKimEngine());
+  assert.equal(report.ipa_profile, 'clippyfirst-korean-broad-v1');
   assert.equal(report.scored_tokens, 1);
   assert.equal(report.exact_matches, 0);
-  assert.equal(report.broad_candidate_exact_matches, 1);
+  // The shared broad profile removes selected narrow allophones, but it must
+  // not turn /s/ and /ɕ/ into the same segment merely to improve exact match.
+  assert.equal(report.broad_candidate_exact_matches, 0);
+  assert.equal(report.records[0].broad_candidate_predicted.includes('ɕ'), false);
+  assert.equal(report.records[0].broad_candidate_gold.includes('ɕ'), true);
+  assert.equal(report.broad_candidate_reference_feature_loss_counts.lateral_retroflexion, 1);
+  assert.equal(report.broad_candidate_reference_feature_loss_counts.fricative_aspiration, 1);
 });
 
 test('dictionary-backed 한자 reduces strict IPA edit distance while retaining lexical length', () => {
