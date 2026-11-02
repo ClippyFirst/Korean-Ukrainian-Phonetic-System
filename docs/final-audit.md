@@ -1,3 +1,11 @@
+## 2026-11-02 continuation addendum — supersedes the earlier release snapshot
+
+The 2026-10-03 audit below is retained as a historical snapshot; it is not the current release gate.
+
+**Current state:** research-ready benchmark instrumentation, but **not release-ready**. The Kozak Kim Native Broad exact historical diagnostic is 86.25% on UGTPHON and 69.64% on SIGMORPHON, with CER 2.22% and 6.23%; the 90% exact / <=2% CER targets are not met. The previous Browser 93.81% result used a different IPA profile and is not a valid Native-vs-Browser comparison. PR #420 adds same-profile Browser selection and an occurrence-level parity audit; exact-head GitHub Actions runs are queued, so no 99.9% parity claim is made.
+
+The independent 24-item IPA holdout has blank reviewer A/B templates but no expert submissions or adjudication. Original g2pK remains unchanged. No release, deployment or merge was performed. The correct current classification is **research-ready instrumentation / partial phonological prototype; release blocked by exact-head verification and independent IPA gold**.
+
 # Final audit — 2026-10-03
 
 ## Release status
