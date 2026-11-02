@@ -8,7 +8,7 @@ LENIS={"ㄱ":"k","ㄷ":"t","ㅂ":"p","ㅅ":"s","ㅈ":"tɕ"}
 # this to /yu, yo/: Kang (2010) reports a distinct spectral pattern there.
 # https://www.sciencedirect.com/science/article/pii/S0095447015000339
 # https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001444770
-_NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅖ","ㅑ"}
+_NARROW_HIGH_FRONT_SIBILANT_NUCLEI={"ㅣ","ㅒ","ㅖ","ㅑ"}
 # The research-only narrow profile models onset /n/ palatalization before
 # glide-initial nuclei. Keep /i/ out: the dev counterfactual regressed when /i/
 # was included, so the observed /j/ correspondence must not be generalized.
