@@ -126,6 +126,7 @@ test('C09 NIKL dictionary length attestations enter the Kozak Kim IPA-first lexi
   const expected = {
     '사람': { ipa: 'saː|ɾam', target: 'са|рам', source: 'ParaWordNo=58161' },
     '모르다': { ipa: 'moː|ɾɯ|da', target: 'мо|ри|да', source: 'ParaWordNo=29712' },
+    '괴성': { ipa: 'køː|sʌŋ', target: 'кве|сон', source: 'krdict.korean.go.kr', alternate: 'kweː|sʌŋ' },
   };
   for (const [word, item] of Object.entries(expected)) {
     const row = additions.find(entry => entry.input === word);
@@ -143,5 +144,11 @@ test('C09 NIKL dictionary length attestations enter the Kozak Kim IPA-first lexi
     assert.match(result.ipa, /ː/u, word + ': preserve dictionary-attested length');
     assert.equal(result.ukrainian, '', word + ': do not accept provisional Ukrainian target');
     assert.equal(result.candidate_status, 'provisional');
+    if (item.alternate) {
+      assert.equal(row.alternate_ipa_syllables, item.alternate);
+      assert.equal(row.alternate_surface_hangul, word);
+      assert.equal(result.variants.length, 1);
+      assert.equal(result.variants[0].ipa, renderExpectedIpa(word, item.alternate.split('|')));
+    }
   }
 });
