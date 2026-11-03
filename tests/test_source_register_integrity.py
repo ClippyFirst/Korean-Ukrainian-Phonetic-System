@@ -100,6 +100,21 @@ def test_nikl_2010_moscow_material_supports_only_the_exact_water_price_exception
     assert "item-level KOGL" in source["license_status"]
     assert "not a general" in source["limitations_or_next_action"].lower()
 
+def test_nikl_2010_and_dictionary_discrepancy_sources_keep_exact_evidence_scope():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    expected = {
+        "SRC-NIKL-EDU-MOSKVA-2010": "물가[물까]",
+        "SRC-NIKL-KRDICT-82835": "팔자[팔짜]",
+        "SRC-NIKL-KRDICT-75022": "정신병자[정신뼝자]",
+        "SRC-NIKL-KRDICT-HYEMO": "혐오증[혀모쯩]",
+    }
+    for source_id, example in expected.items():
+        source = rows[source_id]
+        assert example in source["coverage"]
+        assert "item-level KOGL" in source["license_status"]
+        assert "not checked" in source["license_status"].lower() or "not verified" in source["license_status"].lower()
+
+
 def test_every_ipa_queue_surface_source_is_registered_with_an_exact_url():
     rows = load_source_register()
     registered_urls = {row["url"] for row in rows}
