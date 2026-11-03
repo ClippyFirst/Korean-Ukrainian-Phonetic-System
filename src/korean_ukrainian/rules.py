@@ -165,6 +165,7 @@ _NIKL_R010_FORM_LICENSES = {
     "닮고": "닮>고",
     "젊지": "젊>지",
     "닮다": "닮>다",  # Rule-derived extension; exact form only.
+    "굶다": "굶>다",  # Rule §24: stem-final ㄻ + dictionary ending -다; exact form only.
     "넘게": "넘>게",  # Rule-derived extension; exact form only.
 }
 
