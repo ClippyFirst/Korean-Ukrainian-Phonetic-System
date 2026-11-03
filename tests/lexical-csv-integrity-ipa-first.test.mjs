@@ -141,6 +141,29 @@ test('NIKL Basic Dictionary exact 이중성 reading preserves long vowel and for
 
 
 
+
+test('NIKL 2010 irregular fortition is lexicalized for 물가 without generalizing to 결과', () => {
+  const row = additions.find(item => item.input === '물가');
+  assert.ok(row, 'the exact NIKL 2010 lexical exception must be present');
+  assert.equal(row.surface_hangul, '물까');
+  assert.equal(row.ipa_syllables, 'mul|k͈a');
+  assert.equal(row.target_syllables, 'мул|кка');
+  assert.equal(row.target_status, 'provisional');
+  assert.equal(row.input_kind, 'kozak-research-only');
+  assert.ok(row.source_url.includes('9fb4c220-182a-4c27-bc5d-4aa22731aa16'));
+
+  const result = researchEngine.convert('물가');
+  assert.equal(result.surfaceHangul, '물까');
+  assert.equal(result.ipa, renderExpectedIpa('물가', ['mul', 'k͈a']));
+  assert.equal(result.ukrainian, '', 'provisional Ukrainian target must remain unaccepted');
+  assert.equal(result.candidate_ukrainian, 'мулкка');
+  assert.equal(result.candidate_status, 'provisional');
+
+  const negativeControl = researchEngine.convert('결과');
+  assert.equal(negativeControl.surfaceHangul, '결과');
+  assert.doesNotMatch(negativeControl.ipa, /k͈/u);
+});
+
 test('C09 NIKL dictionary length attestations enter the Kozak Kim IPA-first lexical adapter', () => {
   const expected = {
     '사람': { ipa: 'saː|ɾam', target: 'са|рам', source: 'ParaWordNo=58161' },
