@@ -22,6 +22,8 @@ FIELDS = [
     "strict_fragment_cluster_labels", "broad_fragment_cluster_labels",
     "unmapped_strict_fragment_count", "unmapped_broad_fragment_count",
     "unmapped_broad_fragments", "has_unmapped_broad_fragments",
+    "context_corpus", "context_corpus_revision", "context_corpus_license",
+    "context_lookup_status",
     "candidate_clusters", "review_status", "production_action",
 ]
 
@@ -163,7 +165,18 @@ def candidate_clusters(
     return sorted(labels)
 
 
-def build_rows(report: dict) -> list[dict[str, str]]:
+def build_rows(
+    report: dict,
+    corpus_rows: list[dict] | None = None,
+    corpus_revision: str = "",
+) -> list[dict[str, str]]:
+    if corpus_rows is not None and not corpus_revision:
+        raise ValueError("corpus_revision is required when corpus_rows are supplied")
+    corpus_by_id = {
+        str(row["id"]): row
+        for row in (corpus_rows or [])
+        if isinstance(row, dict) and row.get("id") is not None
+    }
     engines = report.get("per_engine_occurrences", {})
     native = engines.get("clippyfirst_native")
     g2pk = engines.get("g2pk_0_9_4")
@@ -201,9 +214,12 @@ def build_rows(report: dict) -> list[dict[str, str]]:
             for fragment in broad_classified
             if "UNMAPPED_REQUIRES_REVIEW" in fragment["candidate_clusters"]
         ]
+        source_row_id = str(item.get("row_id", ""))
+        context_requested = corpus_rows is not None
+        context_found = source_row_id in corpus_by_id
         rows.append({
             "occurrence_id": str(item["occurrence_id"]),
-            "source_row_id": str(item.get("row_id", "")),
+            "source_row_id": source_row_id,
             "token": str(item.get("token", "")),
             "surface_hangul": str(item.get("surface_hangul", "")),
             "strict_reference_ipa": str(item["gold"]),
@@ -222,6 +238,12 @@ def build_rows(report: dict) -> list[dict[str, str]]:
             "unmapped_broad_fragment_count": str(len(unmapped_broad)),
             "unmapped_broad_fragments": json.dumps(unmapped_broad, ensure_ascii=False, separators=(",", ":")),
             "has_unmapped_broad_fragments": "true" if unmapped_broad else "false",
+            "context_corpus": "UGTPHON/ko/test.json" if context_requested else "",
+            "context_corpus_revision": corpus_revision if context_requested else "",
+            "context_corpus_license": "Apache-2.0" if context_requested else "",
+            "context_lookup_status": (
+                "FOUND" if context_found else "MISSING"
+            ) if context_requested else "NOT_REQUESTED",
             "candidate_clusters": ";".join(labels),
             "review_status": "UNADJUDICATED_DIAGNOSTIC",
             "production_action": "NO_CHANGE_PENDING_SOURCE_AND_IPA_REVIEW",
@@ -229,23 +251,49 @@ def build_rows(report: dict) -> list[dict[str, str]]:
     return rows
 
 
+def filter_unmapped_broad(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Select only occurrences with at least one unmapped Broad-profile edit."""
+    return [row for row in rows if row.get("has_unmapped_broad_fragments") == "true"]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--report-json", type=Path, required=True)
     parser.add_argument("--output-csv", type=Path, required=True)
+    parser.add_argument("--corpus-json", type=Path)
+    parser.add_argument("--corpus-revision")
+    parser.add_argument("--only-unmapped-broad", action="store_true")
     args = parser.parse_args()
+    if bool(args.corpus_json) != bool(args.corpus_revision):
+        parser.error("--corpus-json and --corpus-revision must be supplied together")
     report = json.loads(args.report_json.read_text(encoding="utf-8"))
-    rows = build_rows(report)
+    corpus_rows = (
+        json.loads(args.corpus_json.read_text(encoding="utf-8"))
+        if args.corpus_json else None
+    )
+    all_rows = build_rows(report, corpus_rows, args.corpus_revision or "")
+    rows = filter_unmapped_broad(all_rows) if args.only_unmapped_broad else all_rows
     args.output_csv.parent.mkdir(parents=True, exist_ok=True)
     with args.output_csv.open("w", encoding="utf-8", newline="") as stream:
-        writer = csv.DictWriter(stream, fieldnames=FIELDS)
+        writer = csv.DictWriter(stream, fieldnames=FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     print(json.dumps({
         "status": "DIAGNOSTIC_ONLY",
         "benchmark": report.get("benchmark"),
         "eligible_occurrences": report.get("eligible_token_occurrences"),
-        "annotated_mismatch_occurrences": len(rows),
+        "annotated_mismatch_occurrences": len(all_rows),
+        "output_rows": len(rows),
+        "only_unmapped_broad": args.only_unmapped_broad,
+        "unmapped_broad_occurrences": sum(
+            row["has_unmapped_broad_fragments"] == "true" for row in all_rows
+        ),
+        "unmapped_broad_fragments": sum(
+            int(row["unmapped_broad_fragment_count"]) for row in all_rows
+        ),
+        "context_lookup_missing": sum(
+            row["context_lookup_status"] == "MISSING" for row in all_rows
+        ),
         "strict_profile": report.get("native_ipa_profile"),
         "broad_profile": report.get("broad_candidate_profile", {}).get("profile_id"),
         "alignment": "NFC Unicode grapheme-cluster Levenshtein; not phoneme alignment",
