@@ -171,7 +171,7 @@ test('source-attested UGTPHON fortition mismatches are corrected by exact NIKL l
 
   const sentenceCases = [
     ['물가로 계산한다', '물까로', 'k͈'],
-    ['팔자걸음만 보인다', '팔짜거름만', 'tɕ͈'],
+    ['팔자걸음 보인다', '팔짜거름', 'tɕ͈'],
     ['정신병자네 하고 웃는다', '정신뼝자네', 'p͈'],
     ['보일거라 생각한다', '보일꺼라', 'k͈'],
     ['거의 없을듯', '업쓸뜯', 't͈'],

@@ -281,12 +281,9 @@ _NIKL_R016_VERBAL_STEM_LICENSES = {
     "맑고": "맑>고",  # NIKL Online Q&A qna_seq=320900 explicitly confirms [말꼬].
 }
 
-def _source_backed_rule_licenses(items, boundary_mode):
-    full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
-    # Exact licenses are eojeol-scoped: match a complete word anywhere in the
-    # sentence, never an arbitrary substring. This mirrors the browser engine's
-    # currentWord lookup and keeps the rule itself constrained by boundary_mode.
+def _word_forms_with_indices(items):
     word_forms = []
+    word_form_by_index = [""] * len(items)
     word_start = 0
     for index, item in enumerate(items):
         if item.boundary_after == "word" or index == len(items) - 1:
@@ -294,8 +291,17 @@ def _source_backed_rule_licenses(items, boundary_mode):
             word_form = "".join(part.text for part in items[word_start:word_end])
             if word_form:
                 word_forms.append(word_form)
+                for position in range(word_start, word_end):
+                    word_form_by_index[position] = word_form
             word_start = word_end
+    return word_forms, word_form_by_index
 
+
+def _source_backed_rule_licenses(items, boundary_mode):
+    full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
+    # Exact licenses are eojeol-scoped: match a complete word anywhere in the
+    # sentence, never an arbitrary substring. This mirrors browser currentWord.
+    word_forms, _ = _word_forms_with_indices(items)
     licenses = set()
     for word_form in word_forms:
         pair = _NIKL_R002_FORMAL_LICENSES.get(word_form)
@@ -374,6 +380,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     licenses=set(rule_licenses or ())
     before=_snap(items); changed=False; conditional_disabled=False
     license_context=_licensed(rule_id,licenses)
+    _, word_form_by_index = _word_forms_with_indices(items)
     if rule_id=="R001":
         for i,s in enumerate(items):
             if s.coda=="ㄼ" and s.boundary_after!="word" and i+1<len(items) and items[i+1].onset!="ㅇ":
@@ -387,70 +394,55 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 new=FINAL_REPRESENTATIVE[s.coda]
                 if new!=s.coda: s.coda=new; changed=True
     elif rule_id=="R002":
-        # Complex-coda liaison is morphologically ambiguous: §§13–14 move
-        # the second cluster component before a formal morpheme, while §15
-        # neutralizes the cluster and moves its representative before a
-        # substantive morpheme. Never infer the distinction from Hangul
-        # adjacency alone. Require an exact full-form + pair license:
-        # R002:formal:넋이:넋>이 or R002:substantive:값어치:값>어.
+        # §§13–15 complex-coda liaison is morphologically ambiguous. Require
+        # an exact eojeol + adjacent-pair license, even inside a sentence.
         liaison_licenses={x for x in licenses if x.startswith("R002:")}
         applied_license_contexts=[]
-        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode) or b.onset!="ㅇ" or not a.coda: continue
-            # A final ㅇ is the coda /ŋ/, not a liaison consonant that can
-            # become the silent onset ㅇ. Keep it in the preceding syllable
-            # (e.g. 공인 [koŋ.in], 동요 [toŋ.jo]); otherwise /ŋ/ disappears.
             if a.coda == "ㅇ":
                 continue
             if a.coda in {"ㄶ","ㅀ"}:
-                # These clusters are governed by §12(4) before vowel-initial
-                # endings/suffixes, not by the generic §§13–15 liaison path.
                 continue
             if a.coda in COMPLEX_LIAISON:
                 pair=f"{a.text}>{b.text}"
+                word_form=word_form_by_index[i]
                 scope=None
                 for license in liaison_licenses:
                     parts=license.split(":",3)
-                    if len(parts)==4 and parts[2]==full_form and parts[3]==pair:
+                    if len(parts)==4 and parts[2]==word_form and parts[3]==pair:
                         scope=parts[1]
                         break
                 if scope=="formal":
                     retained,moved=COMPLEX_LIAISON[a.coda]
                     a.coda=retained; b.onset=moved or "ㅇ"; changed=True
-                    applied_license_contexts.append(f"R002:formal:{full_form}:{pair}")
+                    applied_license_contexts.append(f"R002:formal:{word_form}:{pair}")
                 elif scope=="substantive":
                     representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
                     a.coda=""; b.onset=representative; changed=True
-                    applied_license_contexts.append(f"R002:substantive:{full_form}:{pair}")
+                    applied_license_contexts.append(f"R002:substantive:{word_form}:{pair}")
                 else:
                     conditional_disabled=True
             elif a.coda in {"ㄷ","ㅌ"} and b.nucleus=="ㅣ":
-                # §17 palatalization must get first refusal on ㄷ/ㅌ + formal
-                # ㅣ. Generic liaison here would consume the coda before R007
-                # can distinguish licensed forms such as 같이/굳이 from
-                # unverified lookalikes. Leave the pair unchanged for R007.
                 conditional_disabled=True
             elif a.coda!="ㅎ":
                 representative=FINAL_REPRESENTATIVE.get(a.coda,a.coda)
                 if representative!=a.coda and b.nucleus in {"ㅏ","ㅓ","ㅗ","ㅜ","ㅟ"}:
-                    # §15 can neutralize this coda before a substantive
-                    # morpheme, unlike §13 formal-morpheme liaison. Require
-                    # the same exact form/pair evidence as for complex codas.
                     pair=f"{a.text}>{b.text}"
+                    word_form=word_form_by_index[i]
                     scope=None
                     for license in liaison_licenses:
                         parts=license.split(":",3)
-                        if len(parts)==4 and parts[2]==full_form and parts[3]==pair:
+                        if len(parts)==4 and parts[2]==word_form and parts[3]==pair:
                             scope=parts[1]
                             break
                     if scope=="formal":
                         b.onset=a.coda; a.coda=""; changed=True
-                        applied_license_contexts.append(f"R002:formal:{full_form}:{pair}")
+                        applied_license_contexts.append(f"R002:formal:{word_form}:{pair}")
                     elif scope=="substantive":
                         b.onset=representative; a.coda=""; changed=True
-                        applied_license_contexts.append(f"R002:substantive:{full_form}:{pair}")
+                        applied_license_contexts.append(f"R002:substantive:{word_form}:{pair}")
                     else:
                         conditional_disabled=True
                 else:
@@ -458,16 +450,13 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         if applied_license_contexts:
             license_context=";".join(dict.fromkeys(applied_license_contexts))
     elif rule_id=="R003":
-        # NIKL §12(4) deletes ㅎ in ㅎ/ㄶ/ㅀ before a vowel-initial ending
-        # or suffix. Adjacent Hangul blocks alone do not prove that boundary.
         r003_licenses={x for x in licenses if x.startswith("R003:")}
-        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
-        exact_pairs=set()
+        exact_pairs_by_word={}
         for license in r003_licenses:
             parts=license.split(":",3)
-            if len(parts)==4 and parts[1]=="ending_or_suffix_h_deletion" and parts[2]==full_form:
-                exact_pairs.add(parts[3])
-        if not exact_pairs:
+            if len(parts)==4 and parts[1]=="ending_or_suffix_h_deletion":
+                exact_pairs_by_word.setdefault(parts[2],set()).add(parts[3])
+        if not exact_pairs_by_word:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
@@ -475,12 +464,13 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if not _eligible(a,b,boundary_mode=boundary_mode) or a.coda not in {"ㅎ","ㄶ","ㅀ"} or b.onset!="ㅇ":
                 continue
             pair=f"{a.text}>{b.text}"
-            if pair not in exact_pairs:
+            word_form=word_form_by_index[i]
+            if pair not in exact_pairs_by_word.get(word_form,set()):
                 conditional_disabled=True
                 continue
             a.coda={"ㅎ":"","ㄶ":"ㄴ","ㅀ":"ㄹ"}[a.coda]
             changed=True
-            license_context=f"R003:ending_or_suffix_h_deletion:{full_form}:{pair}"
+            license_context=f"R003:ending_or_suffix_h_deletion:{word_form}:{pair}"
     elif rule_id=="R004":
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
@@ -556,39 +546,32 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             elif representative=="ㄹ" and b.onset=="ㄴ":
                 a.coda="ㄹ"; b.onset="ㄹ"; changed=True
     elif rule_id=="R007":
-        # §17 is morphology-conditioned. A generic flag such as
-        # R007:formal_morpheme_i can accidentally license every ㄷ/ㅌ + ㅣ
-        # sequence in a string. Require exact full-form and adjacent-pair
-        # evidence, parallel to §§15 and 29:
-        # R007:formal_morpheme_i:굳이:굳>이
-        # R007:dh_suffix_hi:굳히다:굳>히
         r007_licenses={x for x in licenses if x.startswith("R007:")}
-        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
-        exact_pairs=set()
+        exact_pairs_by_word={}
         for license in r007_licenses:
             parts=license.split(":",3)
-            if len(parts)==4 and parts[2]==full_form:
-                exact_pairs.add((parts[1],parts[3]))
-        if not exact_pairs:
+            if len(parts)==4:
+                exact_pairs_by_word.setdefault(parts[2],set()).add((parts[1],parts[3]))
+        if not exact_pairs_by_word:
             conditional_disabled=True
             license_context=None
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode): continue
             pair=f"{a.text}>{b.text}"
+            word_form=word_form_by_index[i]
+            exact_pairs=exact_pairs_by_word.get(word_form,set())
             if ("formal_morpheme_i",pair) in exact_pairs and a.coda in {"ㄷ","ㅌ","ㄾ"} and b.onset=="ㅇ" and b.nucleus=="ㅣ":
                 coda=a.coda
-                # ㄾ is realized as ㄹ in the coda, while its ㅌ component
-                # palatalizes and moves to the next syllable onset.
                 a.coda="ㄹ" if coda=="ㄾ" else ""
                 b.onset="ㅈ" if coda=="ㄷ" else "ㅊ"
                 changed=True
-                license_context=f"R007:formal_morpheme_i:{full_form}:{pair}"
+                license_context=f"R007:formal_morpheme_i:{word_form}:{pair}"
             elif ("dh_suffix_hi",pair) in exact_pairs and getattr(b,"_palatalization_after_dh",False) and b.onset=="ㅌ" and b.nucleus=="ㅣ":
                 b.onset="ㅊ"
                 delattr(b,"_palatalization_after_dh")
                 changed=True
-                license_context=f"R007:dh_suffix_hi:{full_form}:{pair}"
+                license_context=f"R007:dh_suffix_hi:{word_form}:{pair}"
             elif ("formal_morpheme_i",pair) not in exact_pairs and ("dh_suffix_hi",pair) not in exact_pairs:
                 conditional_disabled=True
     elif rule_id=="R008":
@@ -606,45 +589,32 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             if representative in {"ㄱ","ㄷ","ㅂ"} and b.onset in PLAIN_TO_FORTIS:
                 b.onset=PLAIN_TO_FORTIS[b.onset]; changed=True
     elif rule_id=="R009":
-        # A global boolean is not sufficient evidence: §29 is lexical,
-        # morphological and sometimes optional. Require an exact per-pair
-        # license such as R009:word:한여름:한>여 or
-        # R009:phrase:무슨 일:슨>일.
         insertion_licenses={x for x in licenses if x.startswith("R009:")}
-        if not insertion_licenses:
-            name,source,confidence=RULE_META[rule_id]
-            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
-        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=True) or b.onset!="ㅇ": continue
             if b.nucleus not in {"ㅣ","ㅑ","ㅕ","ㅛ","ㅠ","ㅖ","ㅒ"}: continue
             if not a.coda: continue
             pair=f"{a.text}>{b.text}"
+            word_form=word_form_by_index[i]
             permitted=False
             permitted_scope=None
+            permitted_form=None
             for license in insertion_licenses:
                 parts=license.split(":",3)
                 if len(parts)!=4: continue
                 _,scope,licensed_form,licensed_pair=parts
-                if licensed_form!=full_form or licensed_pair!=pair: continue
-                if scope=="word" and a.boundary_after!="word" and " " not in licensed_form:
-                    permitted=True
-                    permitted_scope=scope
-                elif scope=="phrase" and boundary_mode=="phrase" and a.boundary_after=="word" and " " in licensed_form:
-                    permitted=True
-                    permitted_scope=scope
+                if licensed_pair!=pair: continue
+                if scope=="word" and licensed_form==word_form and a.boundary_after!="word":
+                    permitted=True; permitted_scope=scope; permitted_form=word_form
+                elif scope=="phrase" and licensed_form==full_form and boundary_mode=="phrase" and a.boundary_after=="word":
+                    permitted=True; permitted_scope=scope; permitted_form=full_form
                 if permitted: break
             if not permitted: continue
-            # NIKL §29 and its commentary include ㅣ and j-initial
-            # diphthongs; optionality and lexical licensing live in the
-            # exact license, not in this segmental environment check.
             b.onset="ㄹ" if FINAL_REPRESENTATIVE.get(a.coda,a.coda)=="ㄹ" else "ㄴ"
             changed=True
-            license_context=f"R009:{permitted_scope}:{full_form}:{pair}"
+            license_context=f"R009:{permitted_scope}:{permitted_form}:{pair}"
     elif rule_id in {"R010","R011","R012","R013","R014"}:
-        # These rules depend on morphology or lexical class, not just the
-        # consonant sequence. Require a full-form + adjacent-pair license.
         scope={
             "R010":"stem_n_m+suffix",
             "R011":"stem_lb_lt+suffix",
@@ -654,55 +624,31 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
         }[rule_id]
         exact_licenses={x for x in licenses if x.startswith(rule_id+":")}
         full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
-        exact_pairs=set()
+        exact_pairs={parts[3] for license in exact_licenses
+                     if len((parts:=license.split(":",3)))==4 and parts[1]==scope and parts[2]==full_form}
+        exact_pairs_by_word={}
         for license in exact_licenses:
             parts=license.split(":",3)
-            if len(parts)==4 and parts[1]==scope and parts[2]==full_form:
-                exact_pairs.add(parts[3])
-        # Same-word R013 licenses are matched against the containing eojeol.
-        # This preserves the exact full-form gate when the public API receives
-        # a complete sentence instead of a single token.
+            if len(parts)==4 and parts[1]==scope:
+                exact_pairs_by_word.setdefault(parts[2],set()).add(parts[3])
         word_exact_pair_contexts={}
-        if rule_id=="R013" and boundary_mode in {"same_word","morpheme"}:
-            word_start=0
-            for end_index,item in enumerate(items):
-                if item.boundary_after=="word" or end_index==len(items)-1:
-                    word_end=end_index+1
-                    word_form="".join(part.text for part in items[word_start:word_end])
-                    for license in exact_licenses:
-                        parts=license.split(":",3)
-                        if len(parts)!=4 or parts[1]!=scope or parts[2]!=word_form:
-                            continue
-                        licensed_pair=parts[3]
-                        for pair_index in range(word_start,word_end-1):
-                            if f"{items[pair_index].text}>{items[pair_index+1].text}"==licensed_pair:
-                                word_exact_pair_contexts[pair_index]=word_form
-                    word_start=word_end
-        # NIKL explicitly confirms that the attached ending -ㄹ게 is pronounced
-        # with fortis ㄲ ([할께]); this is not a free inference from ㄹ + ㄱ.
-        # License only the exact orthographic environment where 게 is attached
-        # to a preceding ㄹ coda, and preserve the official Q&A provenance.
+        if boundary_mode in {"same_word","morpheme"}:
+            for i in range(len(items)-1):
+                word_form=word_form_by_index[i]
+                pair=f"{items[i].text}>{items[i+1].text}"
+                if pair in exact_pairs_by_word.get(word_form,set()):
+                    word_exact_pair_contexts[i]=word_form
         attested_l_ge_pairs=set()
         if rule_id=="R013":
             for i in range(len(items)-1):
                 a,b=items[i],items[i+1]
                 if a.boundary_after=="word" or a.coda!="ㄹ" or b.text!="게" or b.onset!="ㄱ":
                     continue
-                # Q&A 330963 licenses the complete attached ending -ㄹ게.
-                # A following 요 is the one supported sentence-final particle
-                # extension; an arbitrary continuation (e.g. 올게이) is not.
                 ending_is_complete = (
                     i + 1 == len(items) - 1
                     or b.boundary_after == "word"
-                    or (
-                        i + 2 == len(items) - 1
-                        and items[i + 2].text == "요"
-                    )
-                    or (
-                        i + 2 < len(items)
-                        and items[i + 2].text == "요"
-                        and items[i + 2].boundary_after == "word"
-                    )
+                    or (i + 2 == len(items) - 1 and items[i + 2].text == "요")
+                    or (i + 2 < len(items) and items[i + 2].text == "요" and items[i + 2].boundary_after == "word")
                 )
                 if not ending_is_complete:
                     continue
@@ -716,8 +662,6 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode,allow_word_boundary=(rule_id=="R013")): continue
             if b.onset not in PLAIN_TO_FORTIS: continue
-            # NIKL §§24–25 enumerate ㄱ, ㄷ, ㅅ, ㅈ; ㅂ is not
-            # licensed by either stem-nasal or stem-ㄼ/ㄾ fortition rule.
             applies = (
                 (rule_id=="R010" and FINAL_REPRESENTATIVE.get(a.coda,a.coda) in {"ㄴ","ㅁ"} and b.onset in {"ㄱ","ㄷ","ㅅ","ㅈ"}) or
                 (rule_id=="R011" and a.coda in {"ㄼ","ㄾ"} and b.onset in {"ㄱ","ㄷ","ㅅ","ㅈ"}) or
@@ -731,7 +675,6 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 conditional_disabled=True
                 continue
             if rule_id=="R011" and a.coda=="ㄾ":
-                # NIKL §25: 훑- realizes ㄾ as ㄹ before the licensed ending.
                 a.coda="ㄹ"
             b.onset=PLAIN_TO_FORTIS[b.onset]
             changed=True
@@ -743,46 +686,58 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
                 license_form=word_exact_pair_contexts.get(i,full_form)
                 license_context=f"{rule_id}:{scope}:{license_form}:{pair}"
     elif rule_id=="R016":
-        # §11's ㄺ-before-ㄱ exception is morphology-conditioned. A category
-        # token alone can incorrectly license unrelated words (e.g. 닭고기).
-        # Require exact full-form and pair evidence:
-        # R016:verb_stem_rieul_giyeok_suffix:읽고:읽>고
         r016_licenses={x for x in licenses if x.startswith("R016:")}
-        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
-        exact_pairs=set()
+        exact_pairs_by_word={}
         for license in r016_licenses:
             parts=license.split(":",3)
-            if len(parts)==4 and parts[1]=="verb_stem_rieul_giyeok_suffix" and parts[2]==full_form:
-                exact_pairs.add(parts[3])
-        if not exact_pairs or boundary_mode not in {"same_word","morpheme"}:
+            if len(parts)==4 and parts[1]=="verb_stem_rieul_giyeok_suffix":
+                exact_pairs_by_word.setdefault(parts[2],set()).add(parts[3])
+        if not exact_pairs_by_word or boundary_mode not in {"same_word","morpheme"}:
             name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]
             if not _eligible(a,b,boundary_mode=boundary_mode): continue
             pair=f"{a.text}>{b.text}"
-            if a.coda=="ㄺ" and b.onset=="ㄱ" and pair in exact_pairs:
-                # NIKL §11: a morphologically licensed ㄺ-ending stem before
-                # a ㄱ-initial ending retains ㄹ and fortifies the following ㄱ.
+            word_form=word_form_by_index[i]
+            if a.coda=="ㄺ" and b.onset=="ㄱ" and pair in exact_pairs_by_word.get(word_form,set()):
                 a.coda="ㄹ"
                 b.onset="ㄲ"
                 changed=True
-                license_context=f"R016:verb_stem_rieul_giyeok_suffix:{full_form}:{pair}"
-            elif pair not in exact_pairs:
+                license_context=f"R016:verb_stem_rieul_giyeok_suffix:{word_form}:{pair}"
+            elif pair not in exact_pairs_by_word.get(word_form,set()):
                 conditional_disabled=True
     elif rule_id=="R015":
-        # §30 saisiot behavior is lexical/morphological. A category-only
-        # license must not apply to every written ㅅ coda in an input.
-        # Example: R015:saisiot:냇가:냇>가.
         r015_licenses={x for x in licenses if x.startswith("R015:")}
-        full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
-        exact_pairs=set()
+        exact_pairs_by_word={}
         for license in r015_licenses:
             parts=license.split(":",3)
-            if len(parts)==4 and parts[1]=="saisiot" and parts[2]==full_form:
-                exact_pairs.add(parts[3])
-        if not exact_pairs:
+            if len(parts)==4 and parts[1]=="saisiot":
+                exact_pairs_by_word.setdefault(parts[2],set()).add(parts[3])
+        if not exact_pairs_by_word:
             name,source,confidence=RULE_META[rule_id]
+            return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
+        for i in range(len(items)-1):
+            a,b=items[i],items[i+1]
+            if not _eligible(a,b,boundary_mode=boundary_mode) or a.coda!="ㅅ": continue
+            pair=f"{a.text}>{b.text}"
+            word_form=word_form_by_index[i]
+            if pair not in exact_pairs_by_word.get(word_form,set()):
+                conditional_disabled=True
+                continue
+            pair_changed=False
+            if b.onset in PLAIN_TO_FORTIS:
+                b.onset=PLAIN_TO_FORTIS[b.onset]; a.coda=""; pair_changed=True
+            elif b.onset in {"ㄴ","ㅁ"}:
+                a.coda="ㄴ"; pair_changed=True
+            elif b.onset=="ㅇ" and b.nucleus=="ㅣ":
+                a.coda="ㄴ"; b.onset="ㄴ"; pair_changed=True
+            else:
+                conditional_disabled=True
+            if pair_changed:
+                changed=True
+                license_context=f"R015:saisiot:{word_form}:{pair}"
+    name,source,confidence=RULE_META[rule_id]
             return RuleTrace(rule_id,name,False,before,before,"conditional-disabled",confidence,source,None)
         for i in range(len(items)-1):
             a,b=items[i],items[i+1]

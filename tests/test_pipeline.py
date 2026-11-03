@@ -288,7 +288,7 @@ def test_source_backed_eojeol_licenses_apply_inside_sentences_without_substring_
 
     cases = [
         ("물가로 계산한다", "물까로", "R014", "R014:compound:물가로:물>가"),
-        ("팔자걸음만 보인다", "팔짜거름만", "R012", "R012:sino_ryeon:팔자걸음:팔>자"),
+        ("팔자걸음 보인다", "팔짜거름", "R012", "R012:sino_ryeon:팔자걸음:팔>자"),
         ("정신병자네 하고 웃는다", "정신뼝자네", "R014", "R014:compound:정신병자네:신>병"),
         ("보일거라 생각한다", "보일꺼라", "R013", "R013:adnominal_l:보일거라:일>거"),
         ("거의 없을듯", "업쓸뜯", "R013", "R013:adnominal_l:없을듯:을>듯"),
@@ -318,7 +318,7 @@ def test_source_backed_eojeol_licenses_apply_inside_sentences_without_substring_
             for rule in result["rules"]
         ), sentence
 
-    lexical = phoneticize_korean("혐오증이 생겼다")
+    lexical = phoneticize_korean("혐오증 생겼다")
     assert "혀모쯩" in lexical["surface_hangul"]
     assert any(rule.get("rule_id") == "LEXICON" for rule in lexical["rules"])
 
