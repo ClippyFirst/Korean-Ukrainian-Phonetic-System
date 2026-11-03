@@ -229,3 +229,8 @@ Registered NIKL Q&A 319525 for `맛없다[마덥따]` under §15. It is Hangul s
 ## Exact-head verification addendum — 2026-11-03
 
 Full system Verify [41611005804](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611005804) on the 2026-11-03 branch head passed: 624 Python tests, 1,389 Browser tests, Vite public-page build and generated-page checks. The new C08 3+5 source-row mapping integrity test passed. NIKL metadata inventory was skipped. Browser G2P, UGTPHON, paired Native/g2pK, morphology and test extraction diagnostic workflows passed on the same production algorithm tree; the latest multi-engine result remains the previously inspected successful artifact 13184368365, because subsequent reruns were cancelled during concurrent PR-head updates. No production phonology code changed after algorithm tree `5c775dfa6b6a969c320f47c1420c75ffa645e369`.
+
+
+## C08 no-generalization regression — 2026-11-03
+
+The five reconstructed/uncertain contexts `해줄것`, `많을거같이`, `보일거라`, `내릴수있는`, and `안할듯` are now explicit negative controls in `tests/test_end_to_end.py`: the current R013 implementation must not fortify them without an exact same-word or phrase license. This protects against suffix-wide generalization; it does not assert plain-onset normative gold. Exact-head Verify [41611695345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611695345) passed 624 Python tests, 1,389 Browser tests, Vite build and generated-page checks. NIKL metadata inventory skipped.
