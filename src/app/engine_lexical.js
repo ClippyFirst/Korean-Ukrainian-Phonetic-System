@@ -102,7 +102,7 @@ export function lexicalResult(text,entry){
     return d?`${ch}[${d.onset}+${d.vowel}${d.coda?'+'+d.coda:''}]`:ch;
   }).join(' · ');
   const targetReview=entry.target_status==='provisional'||mappedTargets.some(item=>item.status==='provisional');
-  const candidateOnly=entry.input_kind==='variant-aware-research'&&entry.target_status==='provisional';
+  const candidateOnly=['variant-aware-research','kozak-research-only'].includes(entry.input_kind)&&entry.target_status==='provisional';
   return {
     source:text,
     surfaceHangul:entry.surface_hangul||'',
