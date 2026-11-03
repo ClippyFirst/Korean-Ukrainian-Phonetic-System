@@ -135,7 +135,7 @@ def test_broad_ipa_preserves_final_ng_before_vowel_initial_syllable():
 
 
 def test_nikl_section_24_source_backed_fortition_examples():
-    expected = {"닮다": "tam.t͈a", "넘게": "nʌm.k͈e"}
+    expected = {"닮다": "tam.t͈a", "넘게": "nʌm.k͈e", "굶다": "kum.t͈a"}
     for word, ipa in expected.items():
         result = phoneticize_korean(word)
         assert result["ipa"]["ipa"] == ipa, word
@@ -144,6 +144,11 @@ def test_nikl_section_24_source_backed_fortition_examples():
             and trace.get("license_context") == f"R010:stem_n_m+suffix:{word}:{word[0]}>" + word[1]
             for trace in result["rules"]
         ), word
+
+    negative = phoneticize_korean("굶기다")
+    assert not any(trace.get("rule_id") == "R010" for trace in negative["rules"]), (
+        "causative/passive -기- must remain outside the §24 stem+ending license"
+    )
 
 
 def test_nikl_끌다_lexical_surface_and_ipa_do_not_invent_fortition():
