@@ -2,7 +2,7 @@
 
 **Repository:** ClippyFirst/Korean-Ukrainian-Phonetic-System  
 **Branch:** research/kozak-kim-mismatch-fragment-triage-2026-11-02  
-**Branch HEAD:** dd450179d26380658f264fd88a21ef9724c13225  
+**Branch HEAD:** see the live head SHA on PR #423 (documentation-only commits follow the verified code/test tree below).  
 **Code/test tree:** 5c775dfa6b6a969c320f47c1420c75ffa645e369  
 **PR:** [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), Draft / open / unmerged; stacked on #422.  
 **Scope:** Kozak Kim only. Original g2pK 0.9.4 source and vendor files remain unchanged.
