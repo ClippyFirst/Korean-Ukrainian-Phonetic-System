@@ -66,7 +66,7 @@ test('every Hangul-only lexical target is rendered from its stored IPA, not inde
     const result = engine.convert(row.input);
     assert.equal(result.ipa, renderExpectedIpa(row.input,row.ipa_syllables.split('|')), row.input + ': runtime IPA');
     const expectedTarget = row.target_syllables.split('|').join('');
-    if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
+    if (['variant-aware-research', 'kozak-research-only'].includes(row.input_kind) && row.target_status === 'provisional') {
       assert.equal(result.ukrainian, '', row.input + ': provisional target must not be accepted');
       assert.equal(result.candidate_ukrainian, expectedTarget, row.input + ': IPA-derived candidate');
       assert.equal(result.candidate_status, 'provisional', row.input + ': candidate status');
@@ -110,7 +110,7 @@ test('NIKL §7 끌다 keeps its long vowel without unsupported fortition and wit
   assert.equal(row.ipa_syllables, 'k͈ɯːl|da');
   assert.equal(row.target_syllables, 'ккил|да');
   assert.equal(row.target_status, 'provisional');
-  assert.equal(row.input_kind, 'variant-aware-research');
+  assert.equal(row.input_kind, 'kozak-research-only');
 
   const result = engine.convert('끌다');
   assert.equal(result.surfaceHangul, '끌다');
