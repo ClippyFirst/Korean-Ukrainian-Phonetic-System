@@ -311,3 +311,15 @@ The exact-head GitHub Actions runs for code/test head a921f268c9f19ae3f19ad3c7b1
 | SIGMORPHON 2021 paired comparison | DONE_VERIFIED diagnostic | Multi-engine artifact 13226589858; paired n=998; exact delta −0.5010 pp (95% CI −1.0020 to −0.1002), CER delta +0.2508 pp (95% CI +0.0986 to +0.4444) | Kozak ahead on exact and CER in this lexical split | Universal superiority or sentence-context performance |
 
 Both corpus comparisons are diagnostic labels, not independent normative IPA gold. g2pK Hangul surface is rendered through the shared project IPA renderer. The newer rerun 41637795800 was in progress at this handoff and is not used as evidence.
+
+
+## 2026-11-03 — methodology claim update (PR #425)
+
+| Claim | Status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|
+| Research-only lexical overlays can be ablated without changing the default Kozak Kim policy | DONE_VERIFIED | New regression tests in `tests/test_pipeline.py`; exact-head System Verify 41654558006 PASS | Explicitly excludes `kozak-research-only` and `variant-aware-research` surface/IPA overrides when requested; exclusion is visible in trace output | That the ablated mode is a production pronunciation policy or that either candidate is independently adjudicated |
+| Occurrence-level ablation audit measures the effect of research lexical overlays | PARTIAL | `_build_research_lexical_ablation_audit`; adapter tests passed in 41654557693; full multi-engine run 41654557693 still in progress | Reports repeated corpus occurrences, unique forms, input-kind counts, and full/ablated exact outcomes | Final benchmark counts or a claim that corpus exactness proves normative pronunciation |
+| Native/g2pK pairwise comparison is independently testable without changing its comparison contract | DONE_VERIFIED | `_build_pairwise_engine_audit`; regression tests in `tests/test_multi_engine_benchmark.py`; paired run 41654557675 PASS | Complete occurrence-level categorization retained for original g2pK 0.9.4 | Independent IPA encoding by g2pK or universal superiority of Kozak Kim |
+| Standard Kozak Kim default behavior is unchanged by the new ablation option | DONE_VERIFIED for tested contract | Default remains `include_research_lexical=True`; System Verify and paired Native/g2pK run 41654557675 pass | Existing default lexical overlays remain active; no benchmark score change is claimed beyond the separately recorded paired run | That any research overlay is linguistically gold or suitable for training |
+
+The vendored g2pK Browser implementation is byte-identical to main at SHA `1e3705b9439c637f3442864cb3105e771dff2ed7`. The project-owned Python g2pK adapter excludes Kozak research-only rows; the raw multi-engine baseline continues to instantiate `G2p()` directly. Full multi-engine artifact review remains pending (run 41654557693).

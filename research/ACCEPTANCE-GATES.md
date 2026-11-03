@@ -831,3 +831,21 @@ Exact-head verification: push run `41358504664` and PR run `41358508399` both pa
 | C12, 239 mismatches, supervised training | BLOCKED / TODO | Need exact acoustic/articulatory evidence for C12, source-context adjudication for 239 occurrences, and independently adjudicated IPA gold for holdout/training. |
 
 **Disposition:** technically verified research prototype, not research-certified and not release-ready. CharsiuG2P, ByT5 and NIKL metadata-only inventory were SKIPPED, not passes. No merge or release.
+
+
+## Exact-head acceptance update — PR #425 (2026-11-03)
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Research lexical ablation | DONE_VERIFIED | `include_research_lexical=False` excludes both research-only input kinds from surface and IPA overlays, preserves explicit exclusion traces, and leaves the default policy unchanged. System Verify 41654558006 PASS. |
+| Ablation and pairwise audit helpers | DONE_VERIFIED at unit level | Multi-engine benchmark adapter tests passed in run 41654557693 before the long comparison step. Final artifact inspection remains pending. |
+| System regression/build | DONE_VERIFIED | 41654558006 PASS: Python regression/data integrity; Browser 1,391/1,391; Vite build and generated pages. |
+| Paired Native/g2pK | DONE_VERIFIED diagnostic | 41654557675 PASS, 2,698 paired occurrences; Native 53.0393% exact / 9.0613% CER; g2pK 53.1134% exact / 9.2304% CER. |
+| External UGTPHON | DONE_VERIFIED | 41654557866 PASS. |
+| Optional g2pK integration | DONE_VERIFIED | 41654557638 PASS. |
+| Morphology consensus and adapter smoke | DONE_VERIFIED | 41654557961 and 41654557801 PASS. |
+| Full multi-engine comparison / mismatch queue / Browser parity | IN PROGRESS | 41654557693; do not infer scores or artifact acceptance until all remaining steps finish. |
+| Independent IPA review / NIKL rights / Ukrainian target review | BLOCKED | External expert adjudication, item-level permission, and independent target review remain necessary. |
+| C12 / 239 mismatch cases / training | BLOCKED / TODO | Exact-context evidence, adjudication and independent IPA gold remain absent. |
+
+**Disposition:** software regression gates are green on implementation head; research/linguistic acceptance and release gates remain open. CharsiuG2P, ByT5, Charsiu train/dev, and NIKL metadata inventory are skipped, not passes.

@@ -234,3 +234,14 @@ Full system Verify [41611005804](https://github.com/ClippyFirst/Korean-Ukrainian
 ## C08 no-generalization regression — 2026-11-03
 
 The five reconstructed/uncertain contexts `해줄것`, `많을거같이`, `보일거라`, `내릴수있는`, and `안할듯` are now explicit negative controls in `tests/test_end_to_end.py`: the current R013 implementation must not fortify them without an exact same-word or phrase license. This protects against suffix-wide generalization; it does not assert plain-onset normative gold. Exact-head Verify [41611695345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611695345) passed 624 Python tests, 1,389 Browser tests, Vite build and generated-page checks. NIKL metadata inventory skipped.
+
+
+## 2026-11-03 — Kozak Kim lexical ablation continuation (PR #425)
+
+The new exact-head implementation adds an explicit research-overlay ablation mode and a benchmark audit without changing the default engine policy. See [PR #425](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/425) and the master handoff for full evidence.
+
+- Both `kozak-research-only` and `variant-aware-research` entries are excluded from both surface and IPA overrides when ablation is enabled; the result records `research-lexical-excluded`. The default mode remains unchanged.
+- New occurrence-level audit compares full and ablated native outputs; the separate Native/g2pK pairwise helper preserves repeated occurrences and exact-match categories.
+- System Verify 41654558006 PASS (Python regression/data integrity, Browser 1,391/1,391, Vite build, generated pages). Paired Native/g2pK 41654557675 PASS; Native exact 53.0393%, CER 9.0613%; g2pK paired exact 53.1134%, CER 9.2304% on 2,698 shared tokens.
+- Multi-engine run 41654557693 remains IN PROGRESS at this report update. Its completed artifact and generated mismatch queue must be inspected before any new benchmark conclusion or mismatch count is recorded.
+- Original g2pK vendor Browser file remains identical to main. No independent IPA gold, rights clearance, or Ukrainian target adjudication is implied by software tests.

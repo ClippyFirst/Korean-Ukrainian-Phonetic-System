@@ -5649,3 +5649,42 @@ On SIGMORPHON 2021, 998 paired tokens: Kozak 358 exact (35.8717%), CER 14.5598%;
 The source-backed `끌다` correction and bounded §24 `굶다` rule application remain in place. `끌다` is directly listed by official NIKL Standard Pronunciation Rule §7 as `[끌ː다]`, with `끌어[끄ː러]`; its project IPA is derived and Ukrainian target remains provisional/withheld. `굶다` is a rule-derived exact form under §24 (stem-final ㄻ + ending-initial ㄷ), with `굶기다` as the explicit -기- negative control; it is not claimed as a direct lexical example in the rule.
 
 PR #424 remains Draft/open/unmerged, stacked on #423. No merge, release, deployment, force-push, or branch deletion. The project remains a research prototype, not research-certified or release-ready. Independent Korean IPA adjudication, item-level NIKL rights, independent Ukrainian target review, C12 acoustic/articulatory evidence, 239 unmapped mismatch occurrences, and adjudicated IPA gold for training remain open.
+
+
+## 2026-11-03 — PR #425 research lexical ablation and audit continuation
+
+### Scope and implementation
+
+- Continuation branch: `fix/kozak-kim-research-lexical-ablation-2026-11-03`; PR [#425](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/425), Draft/open/unmerged, stacked on PR #424. Implementation commit: `c5f8f8a5db6ca1fae9ffb2cb86f014f7d4df900d`.
+- The red-test head `6c6edcc67a932d83f921137eb64ec180e96bb214` exposed four Python regressions and two benchmark helper import failures (System Verify run 41652833737; multi-engine run 41652833827). The implementation adds the missing contracts rather than deleting or weakening those tests.
+- `phoneticize_korean(..., include_research_lexical=True)` preserves the existing default. Setting it to false excludes both `kozak-research-only` and `variant-aware-research` from surface and IPA lexical overrides and emits explicit `research-lexical-excluded` traces. The excluded entries no longer suppress unresolved IPA/morphology gates.
+- The multi-engine report now includes an occurrence-level full-vs-ablated lexical audit. Native-vs-g2pK occurrence categorization was factored into a separately tested helper; output categories and occurrence detail are retained.
+- Scope is Kozak Kim only. No g2pK upstream package or vendored browser source was modified. Vendored `src/vendor/g2pk/g2p-browser.ts` SHA is identical on main and this branch: `1e3705b9439c637f3442864cb3105e771dff2ed7`. Project-owned `g2pk_engine.py` adapter guard from PR #424 is deliberately retained to keep Kozak research candidates out of the external baseline adapter; raw benchmark still instantiates pinned `G2p()` directly.
+
+### Exact-head verification (implementation head above)
+
+- System Verify [41654558006](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41654558006): **PASS** — Python regression/data integrity; Browser 1,391/1,391; Vite production build; generated-page verification. NIKL metadata-only inventory **SKIPPED**.
+- Optional g2pK integration [41654557638](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41654557638): **PASS**.
+- Paired Native/g2pK [41654557675](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41654557675): **PASS** — 2,698 paired UGTPHON occurrences; Kozak exact 53.0393%, CER 9.0613%; g2pK paired exact 53.1134%, CER 9.2304%. Kozak lower CER by 0.1691 pp; g2pK has two more exact matches. Diagnostic only, not normative gold.
+- External UGTPHON [41654557866](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41654557866): **PASS**.
+- Morphology consensus [41654557961](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41654557961): **PASS**.
+- Research morphology adapter smoke [41654557801](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41654557801): **PASS**.
+- Multi-engine comparison [41654557693](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41654557693): **IN PROGRESS at this checkpoint**. Its adapter tests, training-readiness audit, and blind holdout packet generation completed successfully; the full engine comparison and downstream mismatch export/parity steps had not completed. Do not claim new multi-engine scores or artifact results yet.
+- CharsiuG2P inference, ByT5 inference and Charsiu train/dev queue: **SKIPPED**, not passes. Local clone was attempted but failed because this session could not resolve `github.com`; no local test execution is claimed.
+
+### Ledger and disposition
+
+| Item | Status | Acceptance / blocker |
+|---|---|---|
+| Research lexical ablation API and traceability | DONE_VERIFIED | System Verify Python suite passed; both research input kinds covered by regressions. |
+| Occurrence-level research ablation audit | PARTIAL | Unit tests pass; inspect the completed exact-head multi-engine artifact and its occurrence counts before accepting benchmark output. |
+| Pairwise Native/g2pK audit helper | DONE_VERIFIED | Benchmark adapter tests pass; paired diagnostic workflow passes. |
+| Original g2pK baseline/vendor integrity | DONE_VERIFIED | Vendored Browser SHA unchanged; raw benchmark calls pinned `G2p()`; no upstream g2pK edits. |
+| Multi-engine rerun and mismatch export | IN PROGRESS | Run 41654557693; require completed comparison, exporter, Browser parity, and SIGMORPHON steps. |
+| Independent Korean IPA gold | BLOCKED | Two qualified independent reviewers and adjudication still required. |
+| NIKL item-level reuse rights | BLOCKED | Item-level rights and reviewer-sharing permission unresolved; metadata inventory skipped. |
+| Ukrainian target adaptation | BLOCKED | Independent phonetic/orthographic review required. |
+| C12 and 239 unmapped occurrences | BLOCKED / TODO | Exact-context primary evidence and source/morphology adjudication required; no unsupported rewrites. |
+| Supervised IPA training / release | DEFERRED | No independent IPA gold; remain research prototype, not release-ready. |
+
+No merge, release, deployment, force-push, or branch deletion. PR #420–#425 remain an unmerged Kozak Kim stack.
