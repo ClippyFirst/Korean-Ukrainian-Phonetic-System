@@ -236,6 +236,52 @@ def test_water_price_compound_fortis_survives_attached_particle_without_generali
     )
 
 
+def test_source_attested_ipa_discrepancy_forms_use_exact_licensed_nikl_rules():
+    from korean_ukrainian.pipeline import phoneticize_korean
+
+    expected = {
+        "팔자걸음": ("팔짜걸음", "R012", "R012:sino_ryeon:팔자걸음:팔>자"),
+        "정신병자네": ("정신뼝자네", "R014", "R014:compound:정신병자네:신>병"),
+        "보일거라": ("보일꺼라", "R013", "R013:adnominal_l:보일거라:일>거"),
+        "없을듯": ("없을뜯", "R013", "R013:adnominal_l:없을듯:을>듯"),
+        "안할듯": ("안할뜯", "R013", "R013:adnominal_l:안할듯:할>듯"),
+    }
+    for word, (surface, rule_id, license_context) in expected.items():
+        result = phoneticize_korean(word)
+        assert result["surface_hangul"] == surface, word
+        assert any(
+            rule.get("rule_id") == rule_id
+            and rule.get("status") == "established"
+            and rule.get("license_context") == license_context
+            for rule in result["rules"]
+        ), word
+
+    for word in ("많을거같이", "해줄것"):
+        result = phoneticize_korean(word)
+        assert not any(
+            rule.get("rule_id") == "R013" and rule.get("status") == "established"
+            for rule in result["rules"]
+        ), word
+
+
+def test_nikl_dictionary_hyeomojeung_is_an_exact_provisional_lexical_override():
+    from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
+
+    pronunciation = phoneticize_korean("혐오증")
+    assert pronunciation["surface_hangul"] == "혀모쯩"
+    assert pronunciation["ipa"]["ipa"] == "hjʌ.mo.tɕ͈ɯŋ"
+    assert any(
+        rule.get("rule_id") == "LEXICON" and rule.get("status") == "lexical-override"
+        for rule in pronunciation["rules"]
+    )
+
+    target = transliterate_korean("혐오증")
+    assert target["ukrainian_orthography"] is None
+    assert target["target_status"] == "unavailable"
+    assert target["candidate_orthography"] == "гьомоччин"
+    assert target["candidate_status"] == "provisional"
+
+
 def test_second_pass_lexical_targets_are_references_not_ukrainian_overrides():
     from korean_ukrainian.pipeline import transliterate_korean, render_sequence
     expected = {
