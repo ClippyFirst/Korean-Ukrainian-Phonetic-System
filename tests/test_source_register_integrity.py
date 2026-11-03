@@ -41,6 +41,13 @@ def load_source_register() -> list[dict[str, str]]:
     return rows
 
 
+DATA_SOURCE_CATALOG = ROOT / "data" / "korean" / "sources.csv"
+DATA_SOURCE_COLUMNS = [
+    "source_id", "source_type", "title", "author_or_organization",
+    "year", "locator", "url", "evidence_level",
+]
+
+
 def source_identity(url: str) -> tuple[str, ...]:
     parsed = urlsplit(url)
     query = parse_qs(parsed.query, keep_blank_values=True)
@@ -57,6 +64,21 @@ def source_identity(url: str) -> tuple[str, ...]:
     if query.get("regltn_code") == ["0002"]:
         return ("NIKL-RULES", "0002")
     return ("URL", url)
+
+
+def test_data_source_catalog_has_exact_columns_and_unique_source_ids():
+    with DATA_SOURCE_CATALOG.open("r", encoding="utf-8-sig", newline="") as stream:
+        reader = csv.DictReader(stream)
+        assert reader.fieldnames == DATA_SOURCE_COLUMNS
+        rows = list(reader)
+
+    assert rows, "data source catalog must not be empty"
+    assert all(None not in row and all(value is not None for value in row.values()) for row in rows), (
+        "every data/korean/sources.csv row must contain exactly the declared columns"
+    )
+    source_ids = [row["source_id"].strip() for row in rows]
+    assert all(source_ids), "every data source needs a nonblank source_id"
+    assert len(source_ids) == len(set(source_ids)), "data source IDs must be unique"
 
 
 def test_source_register_has_unique_nonblank_ids_and_stable_shape():

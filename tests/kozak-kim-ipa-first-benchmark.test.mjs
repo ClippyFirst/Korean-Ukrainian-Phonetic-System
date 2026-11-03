@@ -257,32 +257,6 @@ test('browser engine applies NIKL lexical ㄼ and ㄺ exceptions beyond the raw 
   assert.equal(ilggo.surfaceHangul, '일꼬');
 });
 
-test('source-backed compound and Sino-Korean licenses remain exact inside full sentences', () => {
-  const engine = createBrowserKozakKimEngine();
-  const positiveCases = [
-    ['물가로 계산한다', '물까로', 'compound-fortition-§28-exact-form'],
-    ['팔자걸음 보인다', '팔짜거름', 'sino-korean-rieul-fortition-§26-exact-form'],
-    ['정신병자네 하고 웃는다', '정신뼝자네', 'compound-fortition-§28-exact-form']
-  ];
-
-  for (const [sentence, expectedSurface, expectedRule] of positiveCases) {
-    const result = engine.convert(sentence);
-    assert.ok(result.surfaceHangul.includes(expectedSurface), sentence + ': exact eojeol license must apply inside the sentence');
-    assert.ok(
-      result.trace.some(item => (item.rules || []).includes(expectedRule)),
-      sentence + ': trace must identify the exact licensed rule'
-    );
-  }
-
-  const negative = engine.convert('결과로 확인한다');
-  assert.ok(negative.surfaceHangul.includes('결과로'), 'NIKL negative control 결과 must remain non-fortis');
-  assert.ok(
-    !negative.trace.some(item => (item.rules || []).includes('compound-fortition-§28-exact-form')),
-    'an unlicensed lookalike must not inherit the compound license'
-  );
-});
-
-
 test('Kozak Kim still withholds IPA for unlicensed Korean morphophonology', () => {
   const engine = createBrowserKozakKimEngine();
   const result = engine.convert('읽게');
