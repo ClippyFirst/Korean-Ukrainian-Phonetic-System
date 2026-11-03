@@ -378,6 +378,7 @@ def apply_rule(items:list[Syllable],rule_id:str,*,boundary_mode="same_word",n_in
     if rule_id not in RULE_META: raise ValueError(f"unknown rule_id: {rule_id}")
     if boundary_mode not in {"unknown","same_word","morpheme","word","phrase"}: raise ValueError("invalid boundary_mode")
     licenses=set(rule_licenses or ())
+    full_form="".join(item.text+(" " if item.boundary_after=="word" else "") for item in items).strip()
     before=_snap(items); changed=False; conditional_disabled=False
     license_context=_licensed(rule_id,licenses)
     _, word_form_by_index = _word_forms_with_indices(items)
