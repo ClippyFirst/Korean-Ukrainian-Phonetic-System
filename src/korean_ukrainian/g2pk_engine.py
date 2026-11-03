@@ -146,7 +146,7 @@ def _surface_ipa(surface: str, source_text: str) -> dict[str, Any]:
             source_index += 1
             entry = LEXICAL_PRONUNCIATIONS.get(source_word)
             # Research-only Kozak candidates are not evidence for the external g2pK adapter.
-            research_only = bool(entry and entry.get("input_kind") == "variant-aware-research")
+            research_only = bool(entry and entry.get("input_kind") == "kozak-research-only")
             values = entry.get("ipa_syllables", "").split("|") if entry and not research_only else []
             diagnostic_only = bool(
                 entry
