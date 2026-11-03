@@ -165,9 +165,11 @@ test('source-attested UGTPHON fortition mismatches are corrected by exact NIKL l
     assert.ok(result.ipa.includes(fortis), word + ': IPA must preserve the licensed fortis segment');
   }
 
-  assert.equal(engine.convert('많을거같이').surfaceHangul, '많을거같이');
-  assert.equal(engine.convert('해줄것').surfaceHangul, '해줄것');
-  assert.equal(engine.convert('결과로').surfaceHangul, '결과로');
+  for (const word of ['많을거같이', '해줄것', '결과로']) {
+    const control = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
+    assert.ok(control.ipa, word + ': broad IPA must be available');
+    assert.doesNotMatch(control.ipa, /k͈/u, word + ': no unlicensed R013/R014 fortition');
+  }
 });
 
 test('NIKL Basic Dictionary 혐오증 reading enters Kozak Kim as a provisional IPA-first lexical candidate', () => {
