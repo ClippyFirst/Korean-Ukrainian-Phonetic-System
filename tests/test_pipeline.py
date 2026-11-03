@@ -295,7 +295,7 @@ def test_source_backed_eojeol_licenses_apply_inside_sentences_without_substring_
         ), sentence
 
     no_space_generalization = [
-        ("багато", "많을거같이"),
+        ("많을거같이 보인다", "많을거같이"),
         ("해줄것 같다", "해줄것"),
         ("유사성은 있다", "유사성"),
     ]
