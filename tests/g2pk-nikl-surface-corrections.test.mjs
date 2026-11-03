@@ -102,7 +102,7 @@ test('Kozak research-only 끌다 candidate does not change the pinned browser g2
   const baselineIpa = engine.convertSurface(rawSurface);
   assert.deepEqual(result.normativeCorrections, []);
   assert.equal(result.surfaceHangul || '끌다', rawSurface);
-  assert.equal(result.ipa.replaceAll(' ', '.'), baselineIpa.ipa);
+  assert.equal(result.ipa, baselineIpa.ipa);
 });
 
 test('source-backed exceptions are exact-form allowlist entries, not generalized grapheme rules', () => {
