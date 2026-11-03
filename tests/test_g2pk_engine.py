@@ -45,7 +45,7 @@ def test_nikl_surface_override_corrects_an_unlicensed_external_mismatch(monkeypa
 
 
 
-def test_g2pk_baseline_does_not_consume_variant_aware_kozak_lexical_candidates(monkeypatch):
+def test_g2pk_baseline_does_not_consume_kozak_only_research_lexical_candidates(monkeypatch):
     class PassThroughG2p:
         def __call__(self, text, descriptive=False):
             return text
