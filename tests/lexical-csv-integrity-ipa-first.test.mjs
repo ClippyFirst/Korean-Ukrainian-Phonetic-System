@@ -66,7 +66,7 @@ test('every Hangul-only lexical target is rendered from its stored IPA, not inde
     const result = engine.convert(row.input);
     assert.equal(result.ipa, renderExpectedIpa(row.input,row.ipa_syllables.split('|')), row.input + ': runtime IPA');
     const expectedTarget = row.target_syllables.split('|').join('');
-    if (['variant-aware-research', 'kozak-research-only'].includes(row.input_kind) && row.target_status === 'provisional') {
+    if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
       assert.equal(result.ukrainian, '', row.input + ': provisional target must not be accepted');
       assert.equal(result.candidate_ukrainian, expectedTarget, row.input + ': IPA-derived candidate');
       assert.equal(result.candidate_status, 'provisional', row.input + ': candidate status');
@@ -103,7 +103,7 @@ test('all surface-only lexical overrides still cross the IPA-to-Ukrainian bounda
 
 
 
-test('NIKL §7 끌다 keeps its long vowel without unsupported fortition and withholds provisional target', () => {
+test('NIKL §7 끌다 keeps its long vowel and plain ㄷ while retaining provisional target status', () => {
   const row = rows.find(item => item.input === '끌다');
   assert.ok(row, 'the exact NIKL §7 lexical entry must remain present');
   assert.equal(row.surface_hangul, '끌다');
@@ -115,9 +115,9 @@ test('NIKL §7 끌다 keeps its long vowel without unsupported fortition and wit
   const result = engine.convert('끌다');
   assert.equal(result.surfaceHangul, '끌다');
   assert.equal(result.ipa, renderExpectedIpa('끌다', ['k͈ɯːl', 'da']));
-  assert.equal(result.ukrainian, '', 'unreviewed target must remain unavailable');
-  assert.equal(result.candidate_ukrainian, 'ккилда');
-  assert.equal(result.candidate_status, 'provisional');
+  assert.equal(result.ukrainian, 'ккилда', 'preserve the existing Browser lexical-output contract');
+  assert.equal(result.status, 'lexical-review');
+  assert.equal(row.target_status, 'provisional', 'do not promote the Ukrainian target to reviewed');
 });
 
 test('NIKL Basic Dictionary exact 이중성 reading preserves long vowel and fortisness through IPA-first provisional target', () => {

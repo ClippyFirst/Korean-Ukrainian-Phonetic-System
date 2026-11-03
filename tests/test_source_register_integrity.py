@@ -158,6 +158,15 @@ def test_kozak_kkeulda_dictionary_evidence_is_exact_and_not_ipa_gold():
     assert "item-level KOGL" in source["license_status"]
     assert "unverified" in source["license_status"].lower() or "not checked" in source["license_status"].lower()
 
+def test_nikl_rule24_scope_supports_exact_gulmda_license_and_preserves_gulm_gida_exception():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-TRAINING-2009"]
+    assert "ㅁ(ㄻ)" in source["coverage"]
+    assert "굶기다" in source["coverage"]
+    assert "굶다" in source["contribution_expected"]
+    assert "not a direct dictionary example" in source["limitations_or_next_action"]
+
+
 def test_orthography_qna_examples_are_not_described_as_direct_pronunciation_answers():
     with LEXICAL_DATA.open("r", encoding="utf-8-sig", newline="") as stream:
         lexical_rows = {row["input"]: row for row in csv.DictReader(stream)}
