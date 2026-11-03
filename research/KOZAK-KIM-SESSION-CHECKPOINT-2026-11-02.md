@@ -2,14 +2,14 @@
 
 **Repository:** ClippyFirst/Korean-Ukrainian-Phonetic-System  
 **Branch:** research/kozak-kim-mismatch-fragment-triage-2026-11-02  
-**Branch HEAD at checkpoint refresh:** see PR #423; last checked SHA `4a54dcd4d2c1908c898f97b5a3a31886c365de31`.  
+**Branch HEAD at checkpoint refresh:** `c8d26da8851c7b02d060f17802d79b44a46c7cb9` (PR #423 live head).  
 **Algorithm code tree:** `5c775dfa6b6a969c320f47c1420c75ffa645e369`; subsequent commits add research tests/records/docs.  
 **PR:** [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), Draft / open / unmerged; stacked on #422.  
 **Scope:** Kozak Kim only. Original g2pK 0.9.4 source and vendor files remain unchanged.
 
 ## Exact-head verification — 2026-11-03
 
-- Full system Verify [41611005804](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611005804) on `1e2536cdd6467c1e6d52962e0ae9372cf40664fd`: **PASS** — 624 Python tests; 1,389 Browser tests; Vite build and generated-page checks pass. NIKL metadata-only inventory **SKIPPED**.
+- Full system Verify [41611695345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611695345) on `c8d26da8851c7b02d060f17802d79b44a46c7cb9`: **PASS** — 624 Python tests; 1,389 Browser tests; Vite build and generated-page checks pass. NIKL metadata-only inventory **SKIPPED**. Five reconstructed/uncertain C08 contexts are negative controls for R013 and remain unchanged without an exact license.
 - Browser G2P [41610752163](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752163), UGTPHON [41610752125](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752125), paired Native/g2pK [41610752064](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752064), morphology [41610752140](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752140), and test extraction [41610752041](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752041): **PASS**.
 - Multi-engine comparison: last fully inspected success [41535300358](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358), artifact [13184368365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358/artifacts/13184368365). Newer attempts were cancelled by concurrent head updates; no newer result claimed.
 - Charsiu train/dev queue, CharsiuG2P inference and ByT5 inference: **SKIPPED**.
@@ -233,3 +233,8 @@ No merge, release, publication, or external settings changes were made. This che
 - C12 Ito (2007) is abstract-only context, not evidence for a production `kx/kç → kʰ` rewrite.
 - NIKL Q&A 319525 supports `맛없다[마덥따]` as Hangul surface only, not IPA. It gives a bounded SIGMORPHON comparison case where Kozak Kim matches and untouched g2pK differs.
 - Original g2pK and its vendor source remain unchanged.
+
+
+## C08 regression boundary — 2026-11-03
+
+`tests/test_end_to_end.py` now guards the five reconstructed/uncertain contexts (`해줄것`, `많을거같이`, `보일거라`, `내릴수있는`, `안할듯`) against inferred R013 fortition. This is a conservative no-generalization test, not gold pronunciation for those forms. Exact-head Verify [41611695345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611695345) passed.
