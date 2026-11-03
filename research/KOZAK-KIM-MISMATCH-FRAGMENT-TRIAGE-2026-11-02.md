@@ -224,3 +224,8 @@ Seven cases have conditional morphology / Rule §27 environment leads; this is n
 ### Additional NIKL surface comparator
 
 Registered NIKL Q&A 319525 for `맛없다[마덥따]` under §15. It is Hangul surface evidence, not IPA or Ukrainian target gold. In the paired SIGMORPHON diagnostic, Kozak Kim's surface-derived form matches this official Korean reading while original g2pK's does not. This is a bounded exact-form comparison only; it does not license a general rule for every `맛+vowel` sequence. Original g2pK remains unchanged.
+
+
+## Exact-head verification addendum — 2026-11-03
+
+Full system Verify [41611005804](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611005804) on the 2026-11-03 branch head passed: 624 Python tests, 1,389 Browser tests, Vite public-page build and generated-page checks. The new C08 3+5 source-row mapping integrity test passed. NIKL metadata inventory was skipped. Browser G2P, UGTPHON, paired Native/g2pK, morphology and test extraction diagnostic workflows passed on the same production algorithm tree; the latest multi-engine result remains the previously inspected successful artifact 13184368365, because subsequent reruns were cancelled during concurrent PR-head updates. No production phonology code changed after algorithm tree `5c775dfa6b6a969c320f47c1420c75ffa645e369`.
