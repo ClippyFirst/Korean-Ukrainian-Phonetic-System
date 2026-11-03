@@ -333,6 +333,102 @@ def _score(prediction: str, gold_raw: str) -> dict[str, Any]:
     }
 
 
+
+def _build_research_lexical_ablation_audit(items, native_cache, ablated_cache):
+    """Compare full native outputs with no-research-overlay outputs per occurrence."""
+    affected = []
+    input_kind_counts: Counter[str] = Counter()
+    for item in items:
+        word = item.get("word", item.get("token", ""))
+        native = native_cache.get(word, {})
+        entries = native.get("research_lexical_entries") or []
+        if not entries:
+            continue
+        kinds = sorted({str(entry.get("input_kind")) for entry in entries if entry.get("input_kind")})
+        for kind in kinds:
+            input_kind_counts[kind] += 1
+        gold = item.get("gold", item.get("gold_ipa", ""))
+        full_score = _score(native.get("ipa", ""), gold) if native.get("ipa") and gold else None
+        ablated = ablated_cache.get(word, {})
+        ablated_score = _score(ablated.get("ipa", ""), gold) if ablated.get("ipa") and gold else None
+        affected.append({
+            "occurrence_id": str(item.get("occurrence_id", "")),
+            "row_id": str(item.get("row_id", "")),
+            "word": word,
+            "input_kinds": kinds,
+            "full_native_exact": bool(full_score and full_score["exact"]),
+            "no_research_lexical_exact": bool(ablated_score and ablated_score["exact"]),
+            "full_native_distance": full_score["distance"] if full_score else None,
+            "no_research_lexical_distance": ablated_score["distance"] if ablated_score else None,
+        })
+    return {
+        "occurrence_count": len(affected),
+        "unique_forms": len({item["word"] for item in affected}),
+        "input_kind_counts": dict(sorted(input_kind_counts.items())),
+        "full_native_exact_matches": sum(item["full_native_exact"] for item in affected),
+        "no_research_lexical_exact_matches": sum(item["no_research_lexical_exact"] for item in affected),
+        "occurrences": affected,
+        "interpretation": "ablation diagnostic only; research overlays are not independently adjudicated IPA gold and do not license production generalization",
+    }
+
+
+def _build_pairwise_engine_audit(items, native_cache, candidate_predictions, *, candidate_name):
+    """Build a complete occurrence-level pairwise audit against corpus references."""
+    occurrences = []
+    category_counts: Counter[str] = Counter()
+    for item in items:
+        word = item.get("word", item.get("token", ""))
+        gold = item.get("gold", item.get("gold_ipa", ""))
+        native = native_cache.get(word, {})
+        candidate = candidate_predictions.get(word, {})
+        native_score = None
+        candidate_score = None
+        if not native.get("unresolved") and not native.get("error") and native.get("ipa"):
+            native_score = _score(native["ipa"], gold)
+        if isinstance(candidate, dict) and not candidate.get("error") and candidate.get("ipa"):
+            candidate_score = _score(candidate["ipa"], gold)
+        if native.get("unresolved"):
+            category = "native_abstained_g2pk_exact" if candidate_score and candidate_score["exact"] else "native_abstained_g2pk_not_exact"
+        elif native.get("error") or not native.get("ipa"):
+            category = "native_error_g2pk_exact" if candidate_score and candidate_score["exact"] else "native_error_g2pk_not_exact"
+        elif not candidate_score:
+            category = "g2pk_error_native_exact" if native_score and native_score["exact"] else "g2pk_error_native_not_exact"
+        elif native_score["exact"] and candidate_score["exact"]:
+            category = "both_exact"
+        elif native_score["exact"]:
+            category = "native_only_exact"
+        elif candidate_score["exact"]:
+            category = "g2pk_only_exact" if candidate_name == "g2pk_0_9_4" else "candidate_only_exact"
+        else:
+            category = "both_not_exact"
+        category_counts[category] += 1
+        native_entry = {
+            "status": "unresolved" if native.get("unresolved") else "error" if native.get("error") else "scored" if native_score else "no_output",
+            "ipa": native.get("ipa"),
+            "reason": native.get("reason") or native.get("error"),
+            "exact": native_score["exact"] if native_score else None,
+            "distance": native_score["distance"] if native_score else None,
+        }
+        if native.get("unresolved_contexts"):
+            native_entry["unresolved_contexts"] = native["unresolved_contexts"]
+        candidate_entry = {
+            "status": "scored" if candidate_score else "error_or_no_output",
+            "ipa": candidate.get("ipa") if isinstance(candidate, dict) else None,
+            "reason": candidate.get("error") if isinstance(candidate, dict) else None,
+            "exact": candidate_score["exact"] if candidate_score else None,
+            "distance": candidate_score["distance"] if candidate_score else None,
+        }
+        occurrences.append({
+            "occurrence_id": str(item.get("occurrence_id", "")),
+            "row_id": str(item.get("row_id", "")),
+            "token": word,
+            "gold": gold,
+            "category": category,
+            "native": native_entry,
+            candidate_name: candidate_entry,
+        })
+    return {"occurrence_count": len(occurrences), "category_counts": dict(sorted(category_counts.items())), "occurrences": occurrences}
+
 def _build_per_engine_occurrences(
     items: list[dict[str, str]],
     scored_by_engine: dict[str, list[dict[str, Any]]],
@@ -1361,10 +1457,17 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
 
     # Re-evaluate native separately to preserve its explicit abstention state.
     native_cache: dict[str, dict[str, Any]] = {}
+    ablated_native_cache: dict[str, dict[str, Any]] = {}
     for word in words:
         try:
             result = phoneticize_korean(word)
             ipa_payload = result.get("ipa", {})
+            research_entries = [
+                {"input_kind": trace.get("input_kind"), "source": trace.get("source")}
+                for trace in result.get("rules", [])
+                if trace.get("input_kind") in {"kozak-research-only", "variant-aware-research"}
+                and trace.get("status") == "lexical-override"
+            ]
             native_cache[word] = {
                 "ipa": ipa_payload.get("ipa"),
                 "surface_hangul": result.get("surface_hangul"),
@@ -1375,9 +1478,17 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
                 "unresolved": result.get("pronunciation_status") == "unresolved",
                 "reason": result.get("ipa_status_reason"),
                 "unresolved_contexts": result.get("unresolved_contexts", []),
+                "research_lexical_entries": research_entries,
+            }
+            ablated = phoneticize_korean(word, include_research_lexical=False)
+            ablated_native_cache[word] = {
+                "ipa": ablated.get("ipa", {}).get("ipa"),
+                "unresolved": ablated.get("pronunciation_status") == "unresolved",
+                "reason": ablated.get("ipa_status_reason"),
             }
         except Exception as exc:
             native_cache[word] = {"error": f"{type(exc).__name__}: {exc}"}
+            ablated_native_cache[word] = {"error": f"{type(exc).__name__}: {exc}"}
     native_abstentions_unique = sum(bool(value.get("unresolved")) for value in native_cache.values())
     native_runtime_errors_unique = sum(bool(value.get("error")) for value in native_cache.values())
     engine_meta["clippyfirst_native"].update({
@@ -1552,61 +1663,11 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
     # Keep the complete native-vs-g2pk occurrence-level ledger in the artifact.
     # The capped multi-engine mismatch sample is useful for quick reading but
     # cannot support a full error count or explain aggregate score differences.
-    native_g2pk_pairwise_audit: list[dict[str, Any]] = []
-    pairwise_category_counts: dict[str, int] = defaultdict(int)
     g2pk_predictions = predictions.get("g2pk_0_9_4", {})
-    for item in items:
-        word, gold = item["word"], item["gold"]
-        native = native_cache.get(word, {})
-        candidate = g2pk_predictions.get(word, {})
-        native_score = None
-        g2pk_score = None
-        if not native.get("unresolved") and not native.get("error") and native.get("ipa"):
-            native_score = _score(native["ipa"], gold)
-        if isinstance(candidate, dict) and not candidate.get("error") and candidate.get("ipa"):
-            g2pk_score = _score(candidate["ipa"], gold)
-
-        if native.get("unresolved"):
-            category = "native_abstained_g2pk_exact" if g2pk_score and g2pk_score["exact"] else "native_abstained_g2pk_not_exact"
-        elif native.get("error") or not native.get("ipa"):
-            category = "native_error_g2pk_exact" if g2pk_score and g2pk_score["exact"] else "native_error_g2pk_not_exact"
-        elif not g2pk_score:
-            category = "g2pk_error_native_exact" if native_score and native_score["exact"] else "g2pk_error_native_not_exact"
-        elif native_score["exact"] and g2pk_score["exact"]:
-            category = "both_exact"
-        elif native_score["exact"]:
-            category = "native_only_exact"
-        elif g2pk_score["exact"]:
-            category = "g2pk_only_exact"
-        else:
-            category = "both_not_exact"
-        pairwise_category_counts[category] += 1
-
-        native_entry: dict[str, Any] = {
-            "status": "unresolved" if native.get("unresolved") else "error" if native.get("error") else "scored" if native_score else "no_output",
-            "ipa": native.get("ipa"),
-            "reason": native.get("reason") or native.get("error"),
-            "exact": native_score["exact"] if native_score else None,
-            "distance": native_score["distance"] if native_score else None,
-        }
-        if native.get("unresolved_contexts"):
-            native_entry["unresolved_contexts"] = native["unresolved_contexts"]
-        g2pk_entry: dict[str, Any] = {
-            "status": "scored" if g2pk_score else "error_or_no_output",
-            "ipa": candidate.get("ipa") if isinstance(candidate, dict) else None,
-            "reason": candidate.get("error") if isinstance(candidate, dict) else None,
-            "exact": g2pk_score["exact"] if g2pk_score else None,
-            "distance": g2pk_score["distance"] if g2pk_score else None,
-        }
-        native_g2pk_pairwise_audit.append({
-            "occurrence_id": item["occurrence_id"],
-            "row_id": item["row_id"],
-            "token": word,
-            "gold": gold,
-            "category": category,
-            "native": native_entry,
-            "g2pk_0_9_4": g2pk_entry,
-        })
+    pairwise_audit = _build_pairwise_engine_audit(items, native_cache, g2pk_predictions, candidate_name="g2pk_0_9_4")
+    native_g2pk_pairwise_audit = pairwise_audit["occurrences"]
+    pairwise_category_counts = Counter(pairwise_audit["category_counts"])
+    research_lexical_ablation_audit = _build_research_lexical_ablation_audit(items, native_cache, ablated_native_cache)
 
     return {
         "benchmark": args.benchmark_name,
@@ -1667,6 +1728,7 @@ def evaluate(rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, 
             "interpretation": "complete occurrence-level native-vs-g2pk diagnostic; categories compare each prediction to the corpus annotation, which is not normative gold",
             "occurrences": native_g2pk_pairwise_audit,
         },
+        "research_lexical_ablation_audit": research_lexical_ablation_audit,
         "native_competitor_error_analysis": _native_competitor_error_analysis(scored_by_engine),
         "upstream_pins": {
             "g2pk": "0.9.4",
