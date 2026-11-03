@@ -146,6 +146,19 @@ def test_nikl_section_24_source_backed_fortition_examples():
         ), word
 
 
+def test_nikl_끌다_lexical_surface_and_ipa_do_not_invent_fortition():
+    result = phoneticize_korean("끌다")
+    assert result["surface_hangul"] == "끌다"
+    assert result["ipa"]["ipa"] == "k͈ɯːl.da"
+    assert result["target_status"] == "unavailable"
+    assert result["candidate_orthography"] == "ккилда"
+
+    # Preserve the separate §7 length-retention exception in 끌어.
+    inflected = phoneticize_korean("끌어")
+    assert inflected["surface_hangul"] == "끄러"
+    assert inflected["ipa"]["ipa"] == "k͈ɯː.ɾʌ"
+
+
 def test_broad_ipa_absorbs_yod_after_palatal_affricates():
     from korean_ukrainian.ipa import realize_syllables
     from korean_ukrainian.phonology import parse_syllables
@@ -307,4 +320,3 @@ def test_seoul_broad_profile_offers_source_scoped_h_and_liquid_allophones():
         assert any(item["ipa"] == expected for item in sibilant["variants"]), word
     fortis = phoneticize_korean("쑈")["ipa"]
     assert not any("ɕ͈" in item["ipa"] for item in fortis["variants"])
-
