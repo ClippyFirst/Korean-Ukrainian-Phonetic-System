@@ -2,21 +2,19 @@
 
 **Repository:** ClippyFirst/Korean-Ukrainian-Phonetic-System  
 **Branch:** research/kozak-kim-mismatch-fragment-triage-2026-11-02  
-**Branch HEAD:** see the live head SHA on PR #423 (documentation-only commits follow the verified code/test tree below).  
-**Code/test tree:** 5c775dfa6b6a969c320f47c1420c75ffa645e369  
+**Branch HEAD at checkpoint refresh:** see PR #423; last checked SHA `4a54dcd4d2c1908c898f97b5a3a31886c365de31`.  
+**Algorithm code tree:** `5c775dfa6b6a969c320f47c1420c75ffa645e369`; subsequent commits add research tests/records/docs.  
 **PR:** [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), Draft / open / unmerged; stacked on #422.  
 **Scope:** Kozak Kim only. Original g2pK 0.9.4 source and vendor files remain unchanged.
 
-## Latest verification
+## Latest exact-head verification — 2026-11-03
 
-- System Verify [41535300205](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300205) PASS: 621 Python tests, 1,389 Browser tests, source/data integrity, production build and generated-page checks.
-- Browser G2P [41535300397](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300397), UGTPHON [41535300287](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300287), paired Native/g2pK [41535300645](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300645), morphology [41535300307](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300307), test extraction [41535300790](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300790): PASS.
-- Multi-engine UGTPHON/SIGMORPHON and Native/Browser parity [41535300358](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358): PASS; artifact [13184368365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358/artifacts/13184368365).
-- Native/Browser: 2,703/2,703 surface parity; 2,698/2,698 raw IPA parity; five shared abstentions.
-- UGTPHON paired Native: Kozak 53.0393% exact / 9.0613% CER; g2pK 53.1134% / 9.2304%. Kozak lower CER; g2pK +2 exact occurrences.
-- SIGMORPHON paired: Kozak 35.8717% exact / 14.6100% CER; g2pK 35.3707% / 14.8106%. Kozak +5 exact occurrences and lower CER.
-- These are corpus diagnostics, not normative IPA gold. g2pK output passes through the shared project IPA renderer.
-- Charsiu/ByT5 inference and Charsiu train/dev queue skipped; NIKL metadata/license inventory skipped.
+- Exact head before this test correction: `4a54dcd4d2c1908c898f97b5a3a31886c365de31`.
+- Verify [41607719325](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719325): FAIL due to stale source-register expectations only. Python expected `not IPA` in the older 값어치 source note; Python and Browser expected outdated rights counts. Actual audit: 170 rows, 2 item-level licenses, 1 not-applicable, 159 REVIEW_REQUIRED, 8 MANUAL_CLASSIFICATION_REQUIRED. Browser 1,388 pass / 1 fail.
+- Browser G2P [41607719403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719403): same single rights-count assertion; 1,388 pass / 1 fail.
+- Paired Native/g2pK [41607719366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719366), morphology [41607719327](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719327), extraction [41607719316](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719316), and UGTPHON [41607719314](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719314): PASS.
+- Multi-engine [41607719380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719380): pending at last check. Charsiu train/dev queue [41607719395](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719395): SKIPPED.
+- Corrective commit adds exact Hangul-not-IPA source wording, updates rights counts, and adds C08 fixture mapping integrity test. Fresh exact-head CI is still required.
 
 ## Current ledger
 
@@ -219,3 +217,11 @@ Fresh exact-HEAD runs triggered for saved HEAD:
 ## Important boundaries
 
 No merge, release, publication, or external settings changes were made. This checkpoint records the repository state and the next exact actions.
+
+## Continuation correction — 2026-11-03
+
+- C08 fixture maps all eight rows: 3 independently recovered, 5 reconstructed. Seven have conditional morphology/Rule §27 leads; `유사성` remains unresolved. No exact-token IPA gold or new production rule. The new Python test verifies this boundary.
+- C04 is IPA aspiration-symbol/segmentation convention (0 residual occurrences); C02 is /h/ realization. Previous C04-/h/ descriptions are historical label errors.
+- C12 Ito (2007) is abstract-only context, not evidence for a production `kx/kç → kʰ` rewrite.
+- NIKL Q&A 319525 supports `맛없다[마덥따]` as Hangul surface only, not IPA. It gives a bounded SIGMORPHON comparison case where Kozak Kim matches and untouched g2pK differs.
+- Original g2pK and its vendor source remain unchanged.
