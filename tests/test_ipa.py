@@ -1,5 +1,5 @@
 import pytest
-from korean_ukrainian.pipeline import phoneticize_korean
+from korean_ukrainian.pipeline import phoneticize_korean, transliterate_korean
 
 def test_basic_broad_ipa(): assert phoneticize_korean("가")["ipa"]["ipa"]=="ka"
 def test_intervocalic_lenis_voicing(): assert "ɡ" in phoneticize_korean("아가")["ipa"]["ipa"]
@@ -148,7 +148,7 @@ def test_nikl_section_24_source_backed_fortition_examples():
     negative = phoneticize_korean("굶기다")
     assert not any(
         trace.get("rule_id") == "R010"
-        and trace.get("license_context", "").startswith("R010:stem_n_m+suffix:")
+        and (trace.get("license_context") or "").startswith("R010:stem_n_m+suffix:")
         for trace in negative["rules"]
     ), (
         "causative/passive -기- must remain outside the §24 stem+ending license"
@@ -159,8 +159,9 @@ def test_nikl_끌다_lexical_surface_and_ipa_do_not_invent_fortition():
     result = phoneticize_korean("끌다")
     assert result["surface_hangul"] == "끌다"
     assert result["ipa"]["ipa"] == "k͈ɯːl.da"
-    assert result["target_status"] == "unavailable"
-    assert result["candidate_orthography"] == "ккилда"
+    target = transliterate_korean("끌다")
+    assert target["target_status"] == "unavailable"
+    assert target["candidate_orthography"] == "ккилда"
 
     # Preserve the separate §7 length-retention exception in 끌어.
     inflected = phoneticize_korean("끌어")
