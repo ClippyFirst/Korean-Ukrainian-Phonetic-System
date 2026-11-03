@@ -90,6 +90,16 @@ def test_nikl_copyright_policy_is_registered_without_claiming_item_level_clearan
 
 
 
+
+def test_nikl_2010_moscow_material_supports_only_the_exact_water_price_exception():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-EDU-MOSKVA-2010"]
+    assert "물가[물까]" in source["coverage"]
+    assert "irregular" in source["coverage"].lower()
+    assert "2010-10-14" in source["version_or_date"]
+    assert "item-level KOGL" in source["license_status"]
+    assert "not a general" in source["limitations_or_next_action"].lower()
+
 def test_every_ipa_queue_surface_source_is_registered_with_an_exact_url():
     rows = load_source_register()
     registered_urls = {row["url"] for row in rows}
