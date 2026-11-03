@@ -102,6 +102,24 @@ test('all surface-only lexical overrides still cross the IPA-to-Ukrainian bounda
 });
 
 
+
+test('NIKL §7 끌다 keeps its long vowel without unsupported fortition and withholds provisional target', () => {
+  const row = rows.find(item => item.input === '끌다');
+  assert.ok(row, 'the exact NIKL §7 lexical entry must remain present');
+  assert.equal(row.surface_hangul, '끌다');
+  assert.equal(row.ipa_syllables, 'k͈ɯːl|da');
+  assert.equal(row.target_syllables, 'ккил|да');
+  assert.equal(row.target_status, 'provisional');
+  assert.equal(row.input_kind, 'variant-aware-research');
+
+  const result = engine.convert('끌다');
+  assert.equal(result.surfaceHangul, '끌다');
+  assert.equal(result.ipa, renderExpectedIpa('끌다', ['k͈ɯːl', 'da']));
+  assert.equal(result.ukrainian, '', 'unreviewed target must remain unavailable');
+  assert.equal(result.candidate_ukrainian, 'ккилда');
+  assert.equal(result.candidate_status, 'provisional');
+});
+
 test('NIKL Basic Dictionary exact 이중성 reading preserves long vowel and fortisness through IPA-first provisional target', () => {
   const row = additions.find(item => item.input === '이중성');
   assert.ok(row, 'dated lexical additions must include the exact NIKL 이중성 reading');
