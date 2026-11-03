@@ -1,7 +1,7 @@
 # Current handoff — Kozak Kim continuation, 2026-11-02
 
 **Branch:** `research/kozak-kim-mismatch-fragment-triage-2026-11-02`  
-**Current branch HEAD:** `06b0a9180295f729f9ba9580cd59c3097b02d745`  \n**Code/test tree:** `5c775dfa6b6a969c320f47c1420c75ffa645e369` (later commit updates the audit CSV and documentation).  
+**Current branch HEAD:** `dd450179d26380658f264fd88a21ef9724c13225`  \n**Code/test tree:** `5c775dfa6b6a969c320f47c1420c75ffa645e369` (later commit updates the audit CSV and documentation).  
 **PR:** [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), Draft, open, unmerged.  
 **Starting commit for this continuation:** `4f3f307c5bb056bce3b0aedc8ab07e0010eaa695`.  
 **Code/test commit:** `2762e8647a075ed8143503c3f4f19d1318ef0e7c`.  
@@ -11,7 +11,7 @@ Scope remains Kozak Kim only. The original g2pK 0.9.4 code/vendor is untouched a
 
 ## Latest exact-head evidence — 2026-11-03
 
-**Current branch HEAD:** 06b0a9180295f729f9ba9580cd59c3097b02d745  
+**Current branch HEAD:** dd450179d26380658f264fd88a21ef9724c13225  
 **Code/test tree:** 5c775dfa6b6a969c320f47c1420c75ffa645e369 (the later commit updates the research audit register and PR documentation only).  
 **PR:** [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), Draft / open / unmerged; base remains the existing stacked PR #422.  
 **Scope:** Kozak Kim only. Original g2pK 0.9.4 and its vendor files remain untouched. No merge, release, deployment, force-push, or branch deletion.
