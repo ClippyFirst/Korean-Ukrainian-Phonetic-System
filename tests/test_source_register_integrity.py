@@ -452,3 +452,20 @@ def test_c01_c07_and_c10_cluster_decisions_follow_the_reviewed_profile_evidence(
     assert "do not mark English-style primary lexical stress" in clusters["C10"]["production_decision"]
     assert clusters["C09"]["status"] == "SOURCE_LENGTH_IMPLEMENTED_7_FORMS_IPA_REVIEW_PENDING"
     assert "all seven named forms" in clusters["C09"]["production_decision"].lower()
+
+
+def test_c12_velar_coarticulation_source_is_cautionary_not_a_rewrite_license():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-KCI-ITO-2007-MORPHEME-STRUCTURE"]
+    assert source["url"] == "https://doi.org/10.17959/sppm.2007.13.3.373"
+    assert "abstract" in source["review_status"].lower()
+    assert "underrepresented" in source["coverage"].lower()
+    assert "velar/uvular fricative" in source["coverage"].lower()
+    assert "does not establish" in source["limitations_or_next_action"].lower()
+    assert "exact-token" in source["limitations_or_next_action"].lower()
+
+    triage = (ROOT / "research" / "KOZAK-KIM-MISMATCH-FRAGMENT-TRIAGE-2026-11-02.md").read_text(encoding="utf-8")
+    c12 = next(line for line in triage.splitlines() if "`kx/kç → kʰ`" in line)
+    assert "SRC-KCI-ITO-2007-MORPHEME-STRUCTURE" in c12
+    assert "No phonological rewrite" in c12
+    assert "BLOCKED" in c12
