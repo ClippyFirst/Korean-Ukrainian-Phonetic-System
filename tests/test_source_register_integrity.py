@@ -148,6 +148,16 @@ def test_unreviewed_lexical_citations_are_not_promoted_to_verified_evidence():
 
 
 
+
+def test_kozak_kkeulda_dictionary_evidence_is_exact_and_not_ipa_gold():
+    rows = {row["source_id"]: row for row in load_source_register()}
+    source = rows["SRC-NIKL-KRDICT-62281"]
+    assert "ParaWordNo=62281" in source["url"]
+    assert "끌다[끌ː다]" in source["coverage"]
+    assert "Hangul notation is not IPA" in source["contribution_expected"]
+    assert "item-level KOGL" in source["license_status"]
+    assert "unverified" in source["license_status"].lower() or "not checked" in source["license_status"].lower()
+
 def test_orthography_qna_examples_are_not_described_as_direct_pronunciation_answers():
     with LEXICAL_DATA.open("r", encoding="utf-8-sig", newline="") as stream:
         lexical_rows = {row["input"]: row for row in csv.DictReader(stream)}
