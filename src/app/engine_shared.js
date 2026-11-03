@@ -154,6 +154,7 @@ const NIKL_24_STEM_NM_ENDING_FORMS=new Map([
   ['닮고','닮>고'],
   ['젊지','젊>지'],
   ['닮다','닮>다'],
+  ['굶다','굶>다'], // §24: exact stem-final ㄻ + -다; -기- forms remain excluded.
   ['넘게','넘>게'],
 ]);
 
