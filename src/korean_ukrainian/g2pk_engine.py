@@ -97,7 +97,7 @@ def _apply_sourced_surface_overrides(source_text: str, surface: str) -> tuple[st
     for index, (source_word, surface_word) in enumerate(zip(source_words, surface_words)):
         entry = LEXICAL_PRONUNCIATIONS.get(source_word)
         # Kozak-only research candidates must never alter the pinned g2pK baseline.
-        if entry and entry.get("input_kind") == "variant-aware-research":
+        if entry and entry.get("input_kind") == "kozak-research-only":
             continue
         expected = entry.get("surface_hangul", "") if entry else ""
         if not expected or len(expected) != len(surface_word):
