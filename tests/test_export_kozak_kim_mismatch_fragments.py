@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import pytest
 import importlib.util
 from pathlib import Path
 
@@ -178,3 +179,59 @@ def test_filter_unmapped_broad_keeps_only_occurrences_with_unmapped_edits():
         {"occurrence_id": "3", "has_unmapped_broad_fragments": "true"},
     ]
     assert [row["occurrence_id"] for row in MODULE.filter_unmapped_broad(rows)] == ["1", "3"]
+
+
+
+def _minimal_mismatch_report(native_occurrences, g2pk_occurrences):
+    return {
+        "per_engine_occurrences": {
+            "clippyfirst_native": native_occurrences,
+            "g2pk_0_9_4": g2pk_occurrences,
+        },
+    }
+
+
+def _native_occurrence(occurrence_id="1", row_id="r1"):
+    return {
+        "occurrence_id": occurrence_id,
+        "row_id": row_id,
+        "token": "사",
+        "surface_hangul": "사",
+        "gold": "sʰa",
+        "ipa": "sa",
+        "status": "scored",
+        "distance": 1,
+        "broad_candidate": {"closest_gold": "sʰa", "predicted": "sa", "distance": 1},
+    }
+
+
+def _g2pk_occurrence(occurrence_id="1"):
+    return {"occurrence_id": occurrence_id, "ipa": "sʰa", "distance": 0}
+
+
+@pytest.mark.parametrize("duplicate_ledger", ["native", "g2pk"])
+def test_build_rows_rejects_duplicate_occurrence_ids_in_engine_ledgers(duplicate_ledger):
+    native = [_native_occurrence()]
+    g2pk = [_g2pk_occurrence()]
+    if duplicate_ledger == "native":
+        native.append(_native_occurrence())
+    else:
+        g2pk.append(_g2pk_occurrence())
+
+    with pytest.raises(ValueError, match="duplicate occurrence_id"):
+        MODULE.build_rows(_minimal_mismatch_report(native, g2pk))
+
+
+def test_build_rows_rejects_duplicate_context_corpus_row_ids():
+    report = _minimal_mismatch_report(
+        [_native_occurrence()],
+        [_g2pk_occurrence()],
+    )
+
+    with pytest.raises(ValueError, match="duplicate corpus row id"):
+        MODULE.build_rows(
+            report,
+            [{"id": "r1", "canonical": "사"}, {"id": "r1", "canonical": "다"}],
+            "pinned-revision",
+            "Apache-2.0",
+        )
