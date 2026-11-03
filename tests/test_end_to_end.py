@@ -46,9 +46,10 @@ def test_nikl_27_c08_exact_same_word_and_phrase_licenses():
             for trace in result["phonetics"]["rules"]
         )
 
-    # Exact morphology only: this does not authorize a suffix-wide -성 rule
-    # or the unrelated connective ending -ㄹ지.
-    for text in ["유사성", "했을지"]:
+    # Exact morphology only: this does not authorize a suffix-wide -성 rule,
+    # the unrelated connective ending -ㄹ지, or reconstructed C08 contexts whose
+    # segmentation/prosody has only conditional evidence.
+    for text in ["유사성", "했을지", "해줄것", "많을거같이", "보일거라", "내릴수있는", "안할듯"]:
         result = transliterate_korean(text)
         assert not any(
             trace["rule_id"] == "R013" and trace["changed"]
