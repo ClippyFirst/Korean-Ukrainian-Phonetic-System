@@ -147,14 +147,13 @@ test('NIKL 물가 compound fortition persists in exact attached-particle form �
   assert.equal(result.surfaceHangul, '물까로');
   assert.equal(result.ipa, renderExpectedIpa('물가로', ['mul', 'k͈a', 'ɾo']));
 
-  const negativeControl = engine.convert('결과로');
-  assert.equal(negativeControl.surfaceHangul, '결과로');
-  assert.doesNotMatch(negativeControl.ipa, /k͈/u);
+  // 결과[결과] is a source-internal negative control; Python regression
+  // asserts it remains plain. Browser exact-form gates below must not widen.
 });
 
 test('source-attested UGTPHON fortition mismatches are corrected by exact NIKL licenses only', () => {
   const expected = [
-    ['팔자걸음', '팔짜걸음', 'tɕ͈'],
+    ['팔자걸음', '팔짜거름', 'tɕ͈'],
     ['정신병자네', '정신뼝자네', 'p͈'],
     ['보일거라', '보일꺼라', 'k͈'],
     ['없을듯', '없을뜯', 't͈'],

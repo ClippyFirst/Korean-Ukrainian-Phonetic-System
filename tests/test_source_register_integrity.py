@@ -105,7 +105,7 @@ def test_nikl_dictionary_discrepancy_sources_keep_exact_evidence_scope():
         "SRC-NIKL-EDU-MOSKVA": "물가[물까]",
         "SRC-NIKL-KRDICT-82835": "팔자[팔짜]",
         "SRC-NIKL-KRDICT-75022": "정신병자[정신뼝자]",
-        "SRC-NIKL-KRDICT-HYEMO": "혐오증[혀모쯩]",
+        "SRC-NIKL-KRDICT-HYEMO": "혐오증(嫌惡症)[혀모쯩]",
     }
     for source_id, example in expected.items():
         source = rows[source_id]

@@ -240,7 +240,7 @@ def test_source_attested_ipa_discrepancy_forms_use_exact_licensed_nikl_rules():
     from korean_ukrainian.pipeline import phoneticize_korean
 
     expected = {
-        "팔자걸음": ("팔짜걸음", "R012", "R012:sino_ryeon:팔자걸음:팔>자"),
+        "팔자걸음": ("팔짜거름", "R012", "R012:sino_ryeon:팔자걸음:팔>자"),
         "정신병자네": ("정신뼝자네", "R014", "R014:compound:정신병자네:신>병"),
         "보일거라": ("보일꺼라", "R013", "R013:adnominal_l:보일거라:일>거"),
         "없을듯": ("없을뜯", "R013", "R013:adnominal_l:없을듯:을>듯"),
