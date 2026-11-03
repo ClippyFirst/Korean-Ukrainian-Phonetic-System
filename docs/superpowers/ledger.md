@@ -267,3 +267,20 @@ Kiwi/MeCab-Ko run 41353171166 is diagnostic only: partial boundary agreement for
 - Latest browser pair: run 41419733723, artifact 13129795347; exact tied 53.4272%, CER 8.0794% vs g2pK 8.2138%, paired CER CI [−0.2246, −0.0531] pp. Latest native pair: artifact 13129641115; Kozak exact 53.0393%, CER 9.0744%; g2pK exact 53.0892%, CER 9.2285%. Kozak has lower CER; g2pK a small exact point edge. Shared IPA renderer caveat remains.
 - Morphology, browser, extraction and paired diagnostics passed. Optional neural inference skipped. Source register 167 rows; 157 REVIEW_REQUIRED, 7 MANUAL_CLASSIFICATION_REQUIRED, 2 item-level licenses, 1 not applicable.
 - No production phonology rule changed in this follow-up; original g2pK remains untouched. Research prototype, not release-ready.
+
+
+## 2026-11-03 exact-head continuation — PR #424 (`dca64251`)
+
+| Task | Status | Evidence / acceptance criterion |
+|---|---|---|
+| Correct `끌다` Korean surface to `끌다` and retain first-syllable length/plain ㄷ | DONE_VERIFIED | NIKL Basic Dictionary ParaWordNo=62281 `[끌ː다]`, plus official NIKL §7 teaching material; exact-head Native/Browser/CSV tests pass. Project IPA is derived, not supplied by NIKL. |
+| `끌다` IPA adjudication and Ukrainian target acceptance | PARTIAL | Independent Korean IPA and Ukrainian target review still required; canonical Ukrainian target withheld. |
+| Exact §24 `굶다` application | DONE_VERIFIED | ㄻ stem + `-다` rule environment recorded; `굶기다` retained as negative control; Native/Browser parity tests pass. Rule-derived exact form, not direct lexical citation. |
+| g2pK baseline isolation from Kozak-only lexical candidates | DONE_VERIFIED | Adapter guard and Python/Browser regressions pass; vendored/upstream g2pK implementation unchanged. |
+| Exact-head verification | DONE_VERIFIED | Run 41628584922: 1,391 Browser tests, Python/data integrity, production build and generated-page checks PASS; g2pK integration 3.11/3.12 PASS. |
+| Paired benchmark refresh | DONE_VERIFIED | UGTPHON and SIGMORPHON paired artifacts from 41628584865/41628584832 inspected; diagnostic-only caveats retained. |
+| Independent Korean IPA review; NIKL item-level rights; Ukrainian target review | BLOCKED | Need external qualified reviewers, rights determination, and accepted Ukrainian target examples. |
+| C12, 239 unmapped mismatches, supervised training | BLOCKED / TODO | Need exact-context primary phonetic evidence, occurrence adjudication, and independently adjudicated IPA gold. |
+| Optional CharsiuG2P, ByT5, NIKL metadata inventory | DEFERRED / SKIPPED | No result claimed; run only when service/dependency/license gates are satisfied. |
+
+Benchmark update: UGTPHON paired (n=2,698), Kozak CER 9.0613% vs g2pK 9.2285%, exact 53.0393% vs 53.0892%; g2pK exact edge is two cases overall, while Kozak CER is lower. SIGMORPHON paired (n=998), Kozak CER 14.5598% vs g2pK 14.8222%, exact 35.8717% vs 35.3353%; Kozak ahead on both paired metrics. Neither dataset is independent normative IPA gold; g2pK is still passed through the shared IPA renderer. See master handoff for confidence intervals, abstention and parity details.
