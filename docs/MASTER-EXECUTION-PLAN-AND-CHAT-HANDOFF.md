@@ -1,30 +1,31 @@
 # Current handoff — Kozak Kim continuation, 2026-11-03
 
 **Branch:** `research/kozak-kim-mismatch-fragment-triage-2026-11-02`  
-**Live branch HEAD:** use PR #423 head SHA; latest checked before this handoff refresh: `4a54dcd4d2c1908c898f97b5a3a31886c365de31`.  
-**Algorithm code tree:** `5c775dfa6b6a969c320f47c1420c75ffa645e369`; subsequent commits add source-register/test/documentation changes, not production phonology changes.  
+**Last verified full branch head:** `1e2536cdd6467c1e6d52962e0ae9372cf40664fd` (the handoff refresh below is documentation-only).  
+**Production algorithm code tree:** `5c775dfa6b6a969c320f47c1420c75ffa645e369`; all subsequent changes are source-register, research-test, or documentation updates.  
 **PR:** [#423](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/pull/423), Draft / open / unmerged; stacked on #422.  
-**Scope:** Kozak Kim only. Original g2pK 0.9.4 source and vendor files remain unchanged. No merge, release, deployment, force-push, or branch deletion.
+**Scope:** Kozak Kim only. Original g2pK 0.9.4 and vendor files remain unchanged. No merge, release, deployment, force-push, or branch deletion.
 
 > This is the canonical continuation note. Older dated sections below are historical snapshots; where they conflict with this section or the 2026-11-03 continuation correction, the newer evidence and statuses supersede them.
 
-## Latest exact-head verification — 2026-11-03
+## Exact-head verification — 2026-11-03
 
-Current exact head `4a54dcd4d2c1908c898f97b5a3a31886c365de31` has fresh runs:
-- Verify system [41607719325](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719325): **FAIL** in Python and Browser regression steps due to stale source-register expectations, not production phonology. Python assertion expected the literal phrase `not IPA` in the older 값어치 record; Browser and Python both found stale rights-audit counts (actual 170 rows, 2 item-level, 1 not-applicable, 159 REVIEW_REQUIRED, 8 MANUAL_CLASSIFICATION_REQUIRED; tests expected 158/9). Browser suite: 1,388 pass / 1 fail. Python suite: one source-register assertion failed; all other collected tests passed.
-- Browser G2P [41607719403](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719403): **FAIL**, same single stale source-register rights-count assertion (1,388 pass / 1 fail).
-- Paired Native/g2pK [41607719366](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719366): **PASS**.
-- Morphology consensus [41607719327](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719327): **PASS**.
-- Exhaustive test-case extraction [41607719316](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719316): **PASS**.
-- External UGTPHON diagnostic [41607719314](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719314): **PASS**.
-- Multi-engine diagnostic [41607719380](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719380): was still running at the last status check; do not claim its result until rechecked.
-- Charsiu train/dev review queue [41607719395](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41607719395): **SKIPPED**.
+Full system Verify [41611005804](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611005804) on head `1e2536cdd6467c1e6d52962e0ae9372cf40664fd`: **PASS**. Python regression/data integrity: **624 tests passed**. Browser regression: **1,389 passed, 0 failed**. Vite public-page build and generated-page checks: **PASS**. Official NIKL metadata-only source inventory: **SKIPPED**.
 
-The current patch fixes the exact test-data drift, adds a C08 fixture integrity test, corrects C02/C04 cluster labels, and refreshes stale C08 traceability statements. A new exact-head CI pass is required before marking these tests DONE_VERIFIED.
+Additional diagnostics on the same production algorithm tree (later commits changed only source-register/test/docs):
+- Browser G2P integration [41610752163](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752163): **PASS**.
+- External UGTPHON diagnostic [41610752125](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752125): **PASS**.
+- Paired Native/g2pK [41610752064](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752064): **PASS**.
+- Morphology consensus [41610752140](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752140): **PASS**.
+- Test-case extraction [41610752041](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41610752041): **PASS**.
+- Multi-engine UGTPHON/SIGMORPHON and Native/Browser parity: latest fully inspected successful artifact remains run [41535300358](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358), artifact [13184368365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358/artifacts/13184368365). Later rerun attempts were cancelled by concurrent PR-head updates; production algorithm files were unchanged. Do not report a newer multi-engine run as passed.
+- Charsiu train/dev review queue and CharsiuG2P/ByT5 inference: **SKIPPED**.
+
+Two test-only failures before this pass were traced to stale source-register assertions (outdated rights counts and missing explicit §15 wording). Both were corrected; the final full-system run above passed. The new C08 integrity test passed as part of the 624 Python tests.
 
 ## Current source-backed research deltas
 
-- C12: Ito (2007) is registered as abstract-only lexical-distribution context. It does **not** establish acoustic [kx]/[kç], exact-token IPA, or authorize `kx/kç → kʰ`. C12 remains BLOCKED; no production rewrite.
+- C12: Ito (2007) is abstract-only lexical-distribution context. It does not establish acoustic [kx]/[kç], exact-token IPA, or authorize `kx/kç → kʰ`. C12 remains BLOCKED; no production rewrite.
 - C08: all eight source rows are mapped in the pinned fixture; three independently recovered and five high-confidence reconstructions. Seven have conditional morphology/Rule §27 leads; `유사성` remains unresolved. No exact-token IPA gold and no new production rule.
 - NIKL Q&A 319525 attests `맛없다[마덥따]` under §15. This is Korean Hangul surface evidence, not IPA. On one paired SIGMORPHON native-only exact case, Kozak Kim's surface-derived form matches while untouched g2pK's differs; no general `맛+vowel` rule is licensed.
 - C04 is IPA aspiration-symbol/segmentation convention (0 residual occurrences); C02 is /h/ realization. Earlier C04-/h/ labels in the historical triage narrative are corrected below.
@@ -38,14 +39,15 @@ The current patch fixes the exact test-data drift, adds a C08 fixture integrity 
 | C04 aspiration notation | TODO / policy review | Zero residual occurrences; define source/profile symbol-versus-segment convention, no sound-change rewrite. |
 | C08 fortition cases | PARTIAL | Eight mapped; 3 recovered + 5 reconstructed; seven conditional rule leads; `유사성` unresolved; independent IPA/prosody adjudication and original extraction recovery pending. |
 | C12 `kx/kç → kʰ` | BLOCKED | Exact-environment primary acoustic/articulatory evidence and independent IPA adjudication absent. |
-| Native/Browser parity | DONE_VERIFIED for code tree 5c775 | 2,703 surface and 2,698 scored IPA occurrences identical; re-run exact-head checks after test/document changes. |
-| Latest exact-head regression | TODO | Corrected tests committed; wait for fresh CI. |
+| Native/Browser parity | DONE_VERIFIED for production algorithm tree 5c775 | 2,703 surface and 2,698 scored IPA occurrences identical. |
+| Full system exact-head CI | DONE_VERIFIED | Run 41611005804: 624 Python, 1,389 Browser, build and generated pages pass. |
 | Independent Korean IPA gold | BLOCKED | Two qualified independent reviewers and adjudication. |
 | NIKL item-level reuse rights | BLOCKED | Written rights determination; metadata inventory skipped. |
 | Ukrainian target adaptation | BLOCKED | Independent target review and acceptance tests. |
 | 239 unmapped occurrences | TODO | Sentence/morphology/source adjudication. |
 | CharsiuG2P / ByT5 | DEFERRED | Inference skipped; no results. |
 | Release readiness | DEFERRED | Research prototype; not release-ready or research-certified. |
+
 
 ---
 
@@ -5535,6 +5537,15 @@ New variants are optional and inspectable. They do not replace the canonical bro
 ## C08 traceability correction — 2026-11-03 (supersedes earlier five-missing wording)
 
 The pinned fixture `tests/fixtures/kozak-kim-c08-source-contexts.json` maps all eight source-row IDs. Three were independently recovered from the paired artifact; five are high-confidence reconstructions from the pinned mismatch signature and exact source-split token/context. The original one-off extraction table remains missing, so the five reconstructed memberships are not promoted to independently recovered. Seven contexts have conditional morphology / Rule §27 leads; `유사성` remains unresolved because Q&A 312649 attests `의외성` only. These are not exact-token IPA gold. No new production rule is justified. The Python fixture-integrity test now asserts the 3+5 partition and the unresolved lexical case.
+
+## C02/C04 cluster-label correction — 2026-11-03
+
+Older triage progress bullets called the /h/ allophone work C04; that label is incorrect. Current register: C02 = /h/ realization; C04 = aspiration-symbol/segmentation convention with zero residual occurrences after C12 reclassification. C02 includes source-scoped [ç]/[x]/[ɸ]; C01/C07 contain the [ɭ] candidate. Do not use historical C04-/h/ wording as current cluster identity.
+
+
+## C08 traceability correction — 2026-11-03 (supersedes earlier five-missing wording)
+
+The pinned fixture `tests/fixtures/kozak-kim-c08-source-contexts.json` maps all eight source-row IDs. Three were independently recovered from the paired artifact; five are high-confidence reconstructions from the pinned mismatch signature and exact source-split token/context. The original one-off extraction table remains missing, so the five reconstructed memberships are not promoted to independently recovered. Seven contexts have conditional morphology / Rule §27 leads; `유사성` remains unresolved because Q&A 312649 attests `의외성` only. These are not exact-token IPA gold. No new production rule is justified. The Python fixture-integrity test verifies the 3+5 partition and unresolved lexical case.
 
 ## C02/C04 cluster-label correction — 2026-11-03
 
