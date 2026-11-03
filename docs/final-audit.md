@@ -248,3 +248,12 @@ Peer-reviewed phonetic evidence remains recorded in data/korean/sources.csv.
 The repository is suitable for a research demonstration, methodological paper draft, specialist review and further corpus-based validation.
 
 It should not claim that every Korean lexical item has a uniquely determined Ukrainian output, that heuristic ranking is probabilistic, or that the current broad IPA layer is an acoustic narrow transcription.
+
+## Kozak Kim exact-head audit update — 2026-11-03 (PR #424)
+
+- Exact head `dca64251e073c74a61e62dab3cb99c5fdcb36943`; stacked on Draft PR #423, no merge or release.
+- Source-backed `끌다` correction and bounded Rule §24 `굶다` entry are implemented with regression coverage. NIKL supplies Hangul readings, not IPA; `끌다` IPA is project-derived and Ukrainian output remains withheld.
+- Kozak-only research rows are explicitly prevented from affecting the g2pK comparison adapter. No vendored/upstream g2pK source files changed.
+- Exact-head System Verify 41628584922: Browser 1,391/1,391, Python regression/data integrity, Vite build and generated-page checks PASS. g2pK integration 3.11/3.12, morphology consensus, test extraction, UGTPHON, paired Native/g2pK and multi-engine diagnostics PASS. NIKL metadata inventory, CharsiuG2P and ByT5 SKIPPED.
+- Paired diagnostic update: UGTPHON n=2,698, Kozak CER 9.0613% vs g2pK 9.2285%, with g2pK +2 exact cases overall; SIGMORPHON n=998, Kozak exact 35.8717% vs g2pK 35.3353%, CER 14.5598% vs 14.8222%. The shared IPA renderer and non-gold corpus references limit claims.
+- Remaining acceptance blockers: two independent Korean IPA reviewers/adjudication; item-level NIKL reuse-rights determination; independent Ukrainian target review; C12 primary acoustic/articulatory evidence; 239 unmapped mismatches; adjudicated IPA gold for training. Current disposition remains research prototype, not release-ready.
