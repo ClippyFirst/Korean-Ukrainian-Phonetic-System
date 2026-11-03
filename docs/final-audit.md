@@ -257,3 +257,10 @@ It should not claim that every Korean lexical item has a uniquely determined Ukr
 - Exact-head System Verify 41628584922: Browser 1,391/1,391, Python regression/data integrity, Vite build and generated-page checks PASS. g2pK integration 3.11/3.12, morphology consensus, test extraction, UGTPHON, paired Native/g2pK and multi-engine diagnostics PASS. NIKL metadata inventory, CharsiuG2P and ByT5 SKIPPED.
 - Paired diagnostic update: UGTPHON n=2,698, Kozak CER 9.0613% vs g2pK 9.2285%, with g2pK +2 exact cases overall; SIGMORPHON n=998, Kozak exact 35.8717% vs g2pK 35.3353%, CER 14.5598% vs 14.8222%. The shared IPA renderer and non-gold corpus references limit claims.
 - Remaining acceptance blockers: two independent Korean IPA reviewers/adjudication; item-level NIKL reuse-rights determination; independent Ukrainian target review; C12 primary acoustic/articulatory evidence; 239 unmapped mismatches; adjudicated IPA gold for training. Current disposition remains research prototype, not release-ready.
+
+
+## Exact-head audit addendum — 2026-11-03 (PR #424, commit 2e6e739)
+
+A source-aware code-path audit found that the Python g2pK adapter filtered `kozak-research-only` rows but not `variant-aware-research`. The latter allowed the provisional `못잃어 → 몬니러` candidate and its project IPA to contaminate the g2pK application adapter. Test-first reproduction failed exactly as expected on `5131e807`; commit `2e6e739` now filters both research-only input kinds in both surface and IPA override paths. Exact-head system verify passed (Browser 1,391/1,391; Python/data integrity; production build; generated pages), as did optional g2pK integration on Python 3.11/3.12. Original vendored/upstream g2pK remains unchanged; raw multi-engine benchmark calls `G2p()` directly.
+
+The prior multi-engine artifact 13226589858 remains valid for the raw benchmark path. Rerun 41637795800 was still in progress at audit time; no new score is claimed. CharsiuG2P, ByT5 and NIKL metadata-only inventory were skipped. Release disposition remains research prototype / not release-ready.

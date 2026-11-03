@@ -5606,3 +5606,46 @@ All listed workflows ran on exact head `dca64251e073c74a61e62dab3cb99c5fdcb36943
 | CharsiuG2P / ByT5 inference and NIKL metadata inventory | DEFERRED / SKIPPED | Optional workflows skipped; no inference or rights conclusions claimed. |
 
 **Disposition:** stronger and freshly verified research prototype; not research-certified or release-ready. PR #424 remains Draft/open and unmerged. No release, deployment, force-push, branch deletion or main-branch write performed.
+
+
+## 2026-11-03 — Kozak Kim baseline-isolation audit (PR #424 follow-up)
+
+### Root cause and correction
+
+A full call-path review found that the Python g2pK application adapter excluded only `kozak-research-only` lexical rows. The same lexical CSV contains a second research-only class, `variant-aware-research`, currently represented by `못잃어`. Before the fix, a pass-through test engine for `못잃어` was rewritten to the provisional research candidate `몬니러`, and its project-derived IPA was applied as an override. That contaminated the g2pK adapter with a Kozak research hypothesis.
+
+Applied the repository's phonetic-engineering skill and red/green TDD:
+- Test-only commit `5131e8078f5b639c82187d6c1b2e53d05c5e7714` failed for the intended reason: `AssertionError: '몬니러' == '못잃어'`.
+- Minimal fix commit `2e6e739c2ede3f08b6289022037a06406221c5a4` defines one shared `_RESEARCH_ONLY_INPUT_KINDS` set containing `kozak-research-only` and `variant-aware-research`, and applies it consistently to both surface overrides and IPA lexical overrides.
+- Added regression test `test_g2pk_baseline_does_not_consume_variant_aware_research_lexical_candidates`. The test now passes on exact head.
+- This changes only the project's Python adapter policy. It does not modify the upstream g2pK package or any vendored source file.
+
+### Baseline integrity clarification
+
+The original g2pK 0.9.4 implementation remains unchanged. The pinned multi-engine benchmark script `scripts/benchmark_multi_engine_ko.py` constructs `G2p()` directly and converts its raw Hangul surface through the shared IPA renderer; it does not call the research-aware Python application adapter. Therefore the research-overlay guard does not alter the raw g2pK benchmark baseline. The vendored browser source `src/vendor/g2pk/g2p-browser.ts` SHA remains `1e3705b9439c637f3442864cb3105e771dff2ed7` on both `main` and the continuation branch.
+
+### Exact-head verification on code head `2e6e739`
+
+- System Verify [41637788167](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41637788167): **PASS** — Browser 1,391/1,391, Python regression/data integrity PASS, Vite production build PASS, generated-page checks PASS.
+- Duplicate PR verification [41637795909](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41637795909): **PASS**.
+- Optional g2pK integration [41637795791](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41637795791): **PASS** on Python 3.11 and 3.12.
+- Test-case extraction [41637795740](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41637795740): **PASS**.
+- External UGTPHON split [41637795766](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41637795766): **PASS**.
+- Paired Native/g2pK diagnostic [41637795818](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41637795818): **PASS**.
+- Morphology consensus [41637795832](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41637795832): **PASS**.
+- Morphology adapter smoke [41637795861](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41637795861): **PASS**, including Kiwi and MeCab-Ko real-engine smoke and boundary agreement.
+- Multi-engine rerun [41637795800](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41637795800): **IN PROGRESS at handoff**; no new result is claimed. The previously completed exact code/algorithm head run [41628584832](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584832) and artifact [13226589858](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41628584832/artifacts/13226589858) remain valid for the raw benchmark path described above.
+- CharsiuG2P and ByT5 inference, and NIKL metadata-only inventory: **SKIPPED**, not passes.
+- Local shell/pytest/npm execution was unavailable in this connector-only session; all verification claims above are from exact-head GitHub Actions.
+
+### Benchmark wording correction and limits
+
+On UGTPHON, the paired subset is 2,698 tokens: Kozak 1,431/2,698 exact (53.0393%), CER 9.0613%; g2pK has 1,433/2,698 exact on that same paired subset, giving a +0.0741 pp exact delta (95% CI −0.0824 to +0.2840) and +0.1691 pp CER delta (95% CI +0.0860 to +0.2617). Raw g2pK scored 2,703 tokens and 1,435 exact; do not compare its raw count/rate directly to Kozak's 2,698 denominator. Kozak abstained on five tokens; g2pK did not. Kozak has lower paired CER; the small exact difference is not conclusive.
+
+On SIGMORPHON 2021, 998 paired tokens: Kozak 358 exact (35.8717%), CER 14.5598%; g2pK 353 exact (35.3707%), CER 14.8222%. Paired g2pK−Kozak exact delta −0.5010 pp (95% CI −1.0020 to −0.1002), CER delta +0.2508 pp (95% CI +0.0986 to +0.4444). These remain corpus-label diagnostics, not independent normative IPA gold. g2pK output is Hangul surface passed through the shared renderer, not an independent IPA encoder.
+
+### Current disposition
+
+The source-backed `끌다` correction and bounded §24 `굶다` rule application remain in place. `끌다` is directly listed by official NIKL Standard Pronunciation Rule §7 as `[끌ː다]`, with `끌어[끄ː러]`; its project IPA is derived and Ukrainian target remains provisional/withheld. `굶다` is a rule-derived exact form under §24 (stem-final ㄻ + ending-initial ㄷ), with `굶기다` as the explicit -기- negative control; it is not claimed as a direct lexical example in the rule.
+
+PR #424 remains Draft/open/unmerged, stacked on #423. No merge, release, deployment, force-push, or branch deletion. The project remains a research prototype, not research-certified or release-ready. Independent Korean IPA adjudication, item-level NIKL rights, independent Ukrainian target review, C12 acoustic/articulatory evidence, 239 unmapped mismatch occurrences, and adjudicated IPA gold for training remain open.

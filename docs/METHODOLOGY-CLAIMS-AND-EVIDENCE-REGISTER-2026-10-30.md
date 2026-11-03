@@ -297,3 +297,17 @@ Both g2pK comparisons use the shared project segment-to-IPA renderer after origi
 
 The exact-head GitHub Actions runs for code/test head a921f268c9f19ae3f19ad3c7b134fdc0aff78c2e remain QUEUED (41440127701, 41440127807, 41440127686). Local clone/testing is blocked by DNS resolution failure for github.com. Do not mark the exact-head checks DONE_VERIFIED while the runs remain queued.
 
+
+
+## 2026-11-03 — Kozak Kim lexical and baseline-isolation claims
+
+| Claim | Status | Evidence | Supported interpretation | Not established |
+|---|---|---|---|---|
+| `끌다` preserves long first syllable and plain ㄷ | DONE_VERIFIED as official Hangul pronunciation evidence | NIKL Standard Pronunciation Rule §7 explicitly lists `끌다[끌ː다]` and `끌어[끄ː러]`; Korean Basic Dictionary ParaWordNo=62281 corroborates | Exact lexical surface/length exception; project broad IPA is a derived representation | Independent IPA adjudication or accepted Ukrainian target |
+| `굶다` receives §24 fortition | DONE_VERIFIED as rule derivation | NIKL §24: stem-final ㄴ(ㄵ), ㅁ(ㄻ) + ending-initial ㄱ/ㄷ/ㅅ/ㅈ; explicit -기- exception includes `굶기다`; exact-form test expects `kum.t͈a` | Rule-derived application to `굶-` + dictionary ending `-다`; `굶기다` must remain non-fortis | Direct lexical listing of `굶다` in §24; productive generalization beyond exact licensed forms |
+| g2pK app adapter is isolated from Kozak research-only candidates | DONE_VERIFIED | Red test `5131e807` reproduced `못잃어 → 몬니러`; fix `2e6e739` filters both `kozak-research-only` and `variant-aware-research` in surface and IPA override paths | Research candidates do not alter g2pK adapter output | Any change to original g2pK package (none made) |
+| Original g2pK benchmark is untouched | DONE_VERIFIED | No vendored/upstream files changed; `scripts/benchmark_multi_engine_ko.py` calls raw `G2p()` directly; vendored browser file SHA unchanged | The benchmark remains raw g2pK surface → shared renderer | Two independent native IPA encoders |
+| UGTPHON paired comparison | DONE_VERIFIED diagnostic | Run 41628584865 / multi-engine artifact 13226589858; paired n=2,698; exact delta +0.0741 pp (95% CI −0.0824 to +0.2840), CER delta +0.1691 pp (95% CI +0.0860 to +0.2617) | Kozak lower paired CER; g2pK +2 exact cases on paired subset; Kozak abstains on five, g2pK does not | Normative IPA accuracy or conclusive exact-match superiority |
+| SIGMORPHON 2021 paired comparison | DONE_VERIFIED diagnostic | Multi-engine artifact 13226589858; paired n=998; exact delta −0.5010 pp (95% CI −1.0020 to −0.1002), CER delta +0.2508 pp (95% CI +0.0986 to +0.4444) | Kozak ahead on exact and CER in this lexical split | Universal superiority or sentence-context performance |
+
+Both corpus comparisons are diagnostic labels, not independent normative IPA gold. g2pK Hangul surface is rendered through the shared project IPA renderer. The newer rerun 41637795800 was in progress at this handoff and is not used as evidence.

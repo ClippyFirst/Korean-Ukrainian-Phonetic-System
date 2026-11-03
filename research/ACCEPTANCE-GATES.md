@@ -813,3 +813,21 @@ The multi-engine comparison workflow did not produce a completed score report: r
 
 
 Exact-head verification: push run `41358504664` and PR run `41358508399` both passed on code/test head `8b22f778112442024f876061bd0e576af762e761`. Native paired diagnostic run `41357680365` is a separate runtime profile and does not establish normative IPA accuracy.
+
+
+## Kozak Kim exact-head acceptance update — 2026-11-03 (PR #424)
+
+| Gate | Status | Evidence / acceptance |
+|---|---|---|
+| Source-backed lexical correction `끌다` | DONE_VERIFIED for Hangul surface/length | Official NIKL Standard Pronunciation Rule §7 lists `끌다[끌ː다]` and `끌어[끄ː러]`; Korean Basic Dictionary ParaWordNo=62281 agrees. IPA is project-derived; Ukrainian target remains provisional/withheld. |
+| Rule §24 exact `굶다` | DONE_VERIFIED as rule-derived form | Official rule covers stem-final ㄴ(ㄵ), ㅁ(ㄻ) + ending-initial ㄱ/ㄷ/ㅅ/ㅈ; `굶기다` is an explicit -기- negative control. Not claimed as a direct lexical example. |
+| Research candidate isolation from g2pK app adapter | DONE_VERIFIED | Both `kozak-research-only` and `variant-aware-research` are excluded from surface and IPA overrides. Test-first failure `5131e807` reproduced `못잃어 → 몬니러`; fix `2e6e739` passes. |
+| Original g2pK baseline integrity | DONE_VERIFIED | No upstream/vendor file changed; raw benchmark script constructs `G2p()` directly. |
+| Software verification | DONE_VERIFIED | 41637788167 / 41637795909 PASS: Browser 1,391/1,391, Python/data integrity, Vite build and generated pages. g2pK 3.11/3.12 integration 41637795791 PASS. |
+| Paired and morphology diagnostics | DONE_VERIFIED | 41637795740, 41637795766, 41637795818, 41637795832, 41637795861 PASS. |
+| Multi-engine rerun | PARTIAL / IN PROGRESS | 41637795800 had not completed at this update; do not claim its result. Previous raw-path artifact 13226589858 is valid for the same benchmark code path. |
+| Independent Korean IPA / Ukrainian target review | BLOCKED | Need two qualified independent IPA reviewers/adjudication and independent Ukrainian phonetic/orthographic review. |
+| NIKL item-level reuse rights | BLOCKED | Metadata-only inventory skipped; exact item-level KOGL/reviewer-sharing rights unresolved. |
+| C12, 239 mismatches, supervised training | BLOCKED / TODO | Need exact acoustic/articulatory evidence for C12, source-context adjudication for 239 occurrences, and independently adjudicated IPA gold for holdout/training. |
+
+**Disposition:** technically verified research prototype, not research-certified and not release-ready. CharsiuG2P, ByT5 and NIKL metadata-only inventory were SKIPPED, not passes. No merge or release.

@@ -238,3 +238,14 @@ No merge, release, publication, or external settings changes were made. This che
 ## C08 regression boundary — 2026-11-03
 
 `tests/test_end_to_end.py` now guards the five reconstructed/uncertain contexts (`해줄것`, `많을거같이`, `보일거라`, `내릴수있는`, `안할듯`) against inferred R013 fortition. This is a conservative no-generalization test, not gold pronunciation for those forms. Exact-head Verify [41611695345](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41611695345) passed.
+
+
+## Session continuation checkpoint — 2026-11-03 (PR #424)
+
+- Active branch: `fix/kozak-kim-kkeulda-lexical-correction-2026-11-03`; code head `2e6e739c2ede3f08b6289022037a06406221c5a4`; PR #424 Draft/open, stacked on #423. The chain #420→#421→#422→#423→#424 remains unmerged.
+- `끌다`: exact NIKL §7 length-retention example `[끌ː다]` with `끌어[끄ː러]`; dictionary entry 62281 corroborates. Project IPA is derived; Ukrainian target withheld.
+- `굶다`: exact Rule §24 derivation from ㄻ + ending-initial ㄷ; `굶기다` is the explicit -기- negative control.
+- Fixed a g2pK adapter leak: `variant-aware-research` (`못잃어`) could previously change the adapter output to provisional `몬니러`. TDD red commit `5131e807` reproduced it; implementation `2e6e739` excludes both research-only input kinds from surface and IPA overrides. Original g2pK and vendored source remain unchanged; raw benchmark script uses direct `G2p()`.
+- System Verify 41637788167 and 41637795909 PASS; Browser 1,391/1,391, Python/data integrity, build and generated pages pass. g2pK 3.11/3.12 integration, extraction, UGTPHON, paired Native/g2pK, morphology consensus and adapter smoke all PASS.
+- Multi-engine rerun 41637795800 was IN PROGRESS; do not claim new results. Existing artifact 13226589858 remains valid for the unchanged raw benchmark path.
+- Remaining blockers: two independent Korean IPA reviewers/adjudication; item-level NIKL rights; independent Ukrainian target review; C12 acoustic/articulatory evidence; 239 mismatch occurrences; adjudicated IPA gold for supervised training. Not release-ready.

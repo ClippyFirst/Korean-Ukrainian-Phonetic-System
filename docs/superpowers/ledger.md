@@ -284,3 +284,18 @@ Kiwi/MeCab-Ko run 41353171166 is diagnostic only: partial boundary agreement for
 | Optional CharsiuG2P, ByT5, NIKL metadata inventory | DEFERRED / SKIPPED | No result claimed; run only when service/dependency/license gates are satisfied. |
 
 Benchmark update: UGTPHON paired (n=2,698), Kozak CER 9.0613% vs g2pK 9.2285%, exact 53.0393% vs 53.0892%; g2pK exact edge is two cases overall, while Kozak CER is lower. SIGMORPHON paired (n=998), Kozak CER 14.5598% vs g2pK 14.8222%, exact 35.8717% vs 35.3353%; Kozak ahead on both paired metrics. Neither dataset is independent normative IPA gold; g2pK is still passed through the shared IPA renderer. See master handoff for confidence intervals, abstention and parity details.
+
+
+## 2026-11-03 — baseline-isolation TDD follow-up (PR #424)
+
+| Task | Status | Evidence / acceptance |
+|---|---|---|
+| Exclude all Kozak research-only input kinds from Python g2pK adapter surface overrides | DONE_VERIFIED | Shared set covers `kozak-research-only` and `variant-aware-research`; test reproduces `못잃어 → 몬니러` defect before fix and passes after commit `2e6e739`. |
+| Exclude research-only IPA lexical overrides from g2pK adapter | DONE_VERIFIED | Same shared predicate gates `_surface_ipa`; no provisional `mon.ni.ɾʌ` overlay on `못잃어`. |
+| Preserve original g2pK 0.9.4 baseline | DONE_VERIFIED | No vendor/upstream source changes; benchmark script calls raw `G2p()` directly, not the research-aware application adapter. |
+| Exact-head system verification after adapter fix | DONE_VERIFIED | Runs 41637788167 and 41637795909 PASS; Browser 1,391/1,391, Python/data integrity, production build and generated-page checks PASS. |
+| g2pK integration / morphology / corpus checks | DONE_VERIFIED | Runs 41637795791, 41637795740, 41637795766, 41637795818, 41637795832, 41637795861 PASS. |
+| New multi-engine rerun | PARTIAL / IN PROGRESS | Run 41637795800 not complete at handoff; prior raw-path artifact 13226589858 remains valid because the code fix only affects the separate Python application adapter. |
+| Independent Korean IPA review, NIKL item-level rights, Ukrainian target review, C12 evidence, 239 mismatch occurrences, adjudicated IPA gold | BLOCKED / TODO | External review, rights evidence, exact acoustic/articulatory source, context adjudication and independent holdout labels remain absent. |
+
+TDD evidence: test-only commit `5131e807` failed with the intended assertion `'몬니러' == '못잃어'`; minimal implementation commit `2e6e739` passes. No new dependency, phonological generalization, or parallel adapter was introduced.

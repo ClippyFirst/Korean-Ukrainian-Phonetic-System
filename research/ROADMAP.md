@@ -449,3 +449,13 @@ Training gate: the latest readiness audit finds 644 unique lexical rows but zero
 - **DONE_VERIFIED diagnostic:** UGTPHON paired CER 9.0613% vs g2pK 9.2285% (2,698 paired); g2pK retains a two-case overall exact-match edge. SIGMORPHON paired CER 14.5598% vs 14.8222%, exact 35.8717% vs 35.3353% (998 paired); Kozak leads both. These are corpus-label diagnostics, not independent IPA gold; see master handoff.
 - **BLOCKED:** independent Korean IPA adjudication, NIKL item-level reuse rights, Ukrainian target review, C12 acoustic/articulatory evidence, 239 unmapped mismatches, and supervised training without adjudicated IPA gold.
 - **Release status:** research prototype; not research-certified or release-ready. PR #424 remains Draft/open/unmerged.
+
+
+## 2026-11-03 — research-overlay isolation correction (PR #424)
+
+- **DONE_VERIFIED:** Python g2pK application adapter now excludes both `kozak-research-only` and `variant-aware-research` rows from surface and IPA lexical overrides. Red/green regression: test-only head `5131e807` failed because `못잃어` was rewritten to provisional `몬니러`; minimal fix `2e6e739` passes.
+- **DONE_VERIFIED:** original g2pK package and vendored source unchanged. Raw multi-engine benchmark calls `G2p()` directly, so the baseline is not contaminated by the app adapter's research data.
+- **DONE_VERIFIED:** exact-head System Verify 41637788167 / 41637795909, g2pK integration 41637795791 (3.11/3.12), extraction 41637795740, UGTPHON 41637795766, paired benchmark 41637795818, morphology consensus 41637795832, and morphology adapter smoke 41637795861 all PASS.
+- **PARTIAL:** multi-engine rerun 41637795800 remained in progress; no new artifact/score claimed. Existing raw-path artifact 13226589858 remains valid.
+- **BLOCKED:** independent Korean IPA adjudication, NIKL item-level reuse rights, Ukrainian target review, C12 acoustic/articulatory evidence, 239 mismatch occurrences, and adjudicated IPA gold for training.
+- **Disposition:** research prototype; not research-certified or release-ready. PR #424 remains Draft/open/unmerged.

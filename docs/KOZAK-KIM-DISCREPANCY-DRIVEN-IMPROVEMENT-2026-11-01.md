@@ -597,3 +597,13 @@ A separate training-readiness audit (partial workflow artifact 13101748305) repo
 - g2pK surface output is passed through the project's shared segment-to-IPA renderer; the original g2pK implementation remains untouched. The paired scores do not establish independent native IPA encoding or universal engine superiority.
 - Morphology adapter smoke, Kiwi/MeCab-Ko engine smoke, consensus, browser integration, extraction, pinned test split and paired diagnostics all passed in the exact-head workflow family. Optional CharsiuG2P and ByT5 inference were SKIPPED in the diagnostic workflow; no neural score is claimed.
 - Three active additional NIKL Q&A sources are 317798, 310899 and 331601. Provisional Q&A IDs 335204 and 336313 remain retired from active evidence because their direct pages could not be independently retrieved.
+
+
+## 2026-11-03 — lexical correction and g2pK research-overlay isolation continuation
+
+- Source-backed `끌다` remains exact-form only: NIKL Standard Pronunciation Rule §7 explicitly lists `[끌ː다]` and `[끄ː러]`; Korean Basic Dictionary entry 62281 corroborates. The project IPA is derived; target Ukrainian form remains provisional.
+- `굶다` is a bounded Rule §24 derivation (ㄻ stem + `-다`); the explicit `굶기다` -기- negative control prevents overgeneralization.
+- Further call-path review found that `variant-aware-research` (`못잃어`) was not excluded from the Python g2pK app adapter. Test-only commit `5131e807` failed as intended (`못잃어` was changed to `몬니러`); fix `2e6e739` now excludes both research-only input kinds from surface and IPA overrides. The raw benchmark still invokes `G2p()` directly; original g2pK and vendor files are unchanged.
+- Exact-head System Verify 41637788167 / 41637795909 PASS (Browser 1,391/1,391, Python/data integrity, Vite build, generated pages); g2pK integration 41637795791 PASS on 3.11/3.12; paired, UGTPHON, morphology, extraction and adapter-smoke workflows PASS.
+- Multi-engine rerun 41637795800 was still in progress at this update; no new result is claimed. Prior raw-path artifact 13226589858 remains valid.
+- The current project remains a research prototype. Independent Korean IPA adjudication, NIKL item-level rights, Ukrainian target review, C12 exact-environment acoustic/articulatory evidence, 239 unmapped mismatch occurrences, and adjudicated IPA gold for training remain open.
