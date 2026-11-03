@@ -28,7 +28,7 @@ for (const row of singleScriptRows) {
     );
     const result = engine.convert(row.input);
     assert.equal(result.surfaceHangul, row.surface_hangul, row.input + ': standard surface form');
-    if (['variant-aware-research', 'kozak-research-only'].includes(row.input_kind) && row.target_status === 'provisional') {
+    if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
       assert.equal(result.ukrainian, '', row.input + ': provisional target must not be accepted');
       assert.equal(result.candidate_ukrainian, row.target_syllables.replaceAll('|', ''), row.input + ': candidate target');
       assert.equal(result.candidate_status, 'provisional', row.input + ': candidate status');

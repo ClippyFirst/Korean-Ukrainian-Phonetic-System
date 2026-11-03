@@ -165,6 +165,8 @@ def test_nikl_rule24_scope_supports_exact_gulmda_license_and_preserves_gulm_gida
     assert "굶기다" in source["coverage"]
     assert "굶다" in source["contribution_expected"]
     assert "not a directly quoted example" in source["limitations_or_next_action"]
+    dictionary = rows["SRC-NIKL-KRDICT-62281"]
+    assert "kozak-research-only lexical entry updated" in dictionary["integration_status"]
 
 
 def test_orthography_qna_examples_are_not_described_as_direct_pronunciation_answers():

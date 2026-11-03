@@ -73,7 +73,7 @@ function renderIpa(trace) {
       continue;
     }
     if (item.ipa) {
-      if (previousHangul) result += '.';
+      if (previousHangul) result += ' ';
       result += item.ipa;
       previousHangul = true;
     }
