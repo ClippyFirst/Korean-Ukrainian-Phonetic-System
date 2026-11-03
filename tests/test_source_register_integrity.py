@@ -73,8 +73,14 @@ def test_data_source_catalog_has_exact_columns_and_unique_source_ids():
         rows = list(reader)
 
     assert rows, "data source catalog must not be empty"
-    assert all(None not in row and all(value is not None for value in row.values()) for row in rows), (
-        "every data/korean/sources.csv row must contain exactly the declared columns"
+    malformed_rows = [
+        row.get("source_id", "<unknown>")
+        for row in rows
+        if None in row or any(value is None for value in row.values())
+    ]
+    assert not malformed_rows, (
+        "data/korean/sources.csv rows must contain exactly the declared columns: "
+        + ", ".join(malformed_rows)
     )
     source_ids = [row["source_id"].strip() for row in rows]
     assert all(source_ids), "every data source needs a nonblank source_id"
