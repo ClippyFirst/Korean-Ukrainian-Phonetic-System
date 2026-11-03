@@ -169,6 +169,20 @@ test('source-attested UGTPHON fortition mismatches are corrected by exact NIKL l
     }
   }
 
+  const sentenceCases = [
+    ['물가로 계산한다', '물까로', 'k͈'],
+    ['팔자걸음만 보인다', '팔짜거름만', 'tɕ͈'],
+    ['정신병자네 하고 웃는다', '정신뼝자네', 'p͈'],
+    ['보일거라 생각한다', '보일꺼라', 'k͈'],
+    ['거의 없을듯', '업쓸뜯', 't͈'],
+    ['안할듯 보인다', '안할뜯', 't͈'],
+  ];
+  for (const [sentence, surface, fortis] of sentenceCases) {
+    const contextual = engine.convert(sentence, { ipaProfile: 'clippyfirst-korean-broad-v1' });
+    assert.ok(contextual.surfaceHangul.includes(surface), sentence);
+    assert.ok(contextual.ipa.includes(fortis), sentence);
+  }
+
   for (const word of ['많을거같이', '해줄것', '결과로']) {
     const control = engine.convert(word, { ipaProfile: 'clippyfirst-korean-broad-v1' });
     assert.ok(control.ipa, word + ': broad IPA must be available');

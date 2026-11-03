@@ -283,63 +283,69 @@ _NIKL_R016_VERBAL_STEM_LICENSES = {
 
 def _source_backed_rule_licenses(items, boundary_mode):
     full_form = "".join(item.text + (" " if item.boundary_after == "word" else "") for item in items).strip()
+    # Exact licenses are eojeol-scoped: match a complete word anywhere in the
+    # sentence, never an arbitrary substring. This mirrors the browser engine's
+    # currentWord lookup and keeps the rule itself constrained by boundary_mode.
+    word_forms = []
+    word_start = 0
+    for index, item in enumerate(items):
+        if item.boundary_after == "word" or index == len(items) - 1:
+            word_end = index + 1
+            word_form = "".join(part.text for part in items[word_start:word_end])
+            if word_form:
+                word_forms.append(word_form)
+            word_start = word_end
+
     licenses = set()
-    pair = _NIKL_R002_FORMAL_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R002:formal:{full_form}:{pair}")
-    pair = _NIKL_R002_SUBSTANTIVE_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R002:substantive:{full_form}:{pair}")
-    pair = _NIKL_R003_FORMAL_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R003:ending_or_suffix_h_deletion:{full_form}:{pair}")
-    pair = _NIKL_R007_FORMAL_I_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R007:formal_morpheme_i:{full_form}:{pair}")
-    pair = _NIKL_R004_COMPLEX_H_SUFFIX_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R004:complex_h_suffix:{full_form}:{pair}")
-    pair = _NIKL_R010_FORM_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R010:stem_n_m+suffix:{full_form}:{pair}")
-    pair = _NIKL_R011_FORM_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R011:stem_lb_lt+suffix:{full_form}:{pair}")
-    pair = _NIKL_R012_WORD_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R012:sino_ryeon:{full_form}:{pair}")
-    if boundary_mode in {"same_word", "morpheme"}:
-        # Exact R013 word licenses apply to the matching eojeol inside a
-        # sentence, not only when the entire request is that one word.
-        word_start = 0
-        for index, item in enumerate(items):
-            if item.boundary_after == "word" or index == len(items) - 1:
-                word_end = index + 1
-                word_form = "".join(part.text for part in items[word_start:word_end])
-                pair = _NIKL_R013_WORD_LICENSES.get(word_form)
-                if pair is not None:
-                    licenses.add(f"R013:adnominal_l:{word_form}:{pair}")
-                word_start = word_end
+    for word_form in word_forms:
+        pair = _NIKL_R002_FORMAL_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R002:formal:{word_form}:{pair}")
+        pair = _NIKL_R002_SUBSTANTIVE_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R002:substantive:{word_form}:{pair}")
+        pair = _NIKL_R003_FORMAL_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R003:ending_or_suffix_h_deletion:{word_form}:{pair}")
+        pair = _NIKL_R007_FORMAL_I_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R007:formal_morpheme_i:{word_form}:{pair}")
+        pair = _NIKL_R004_COMPLEX_H_SUFFIX_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R004:complex_h_suffix:{word_form}:{pair}")
+        pair = _NIKL_R010_FORM_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R010:stem_n_m+suffix:{word_form}:{pair}")
+        pair = _NIKL_R011_FORM_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R011:stem_lb_lt+suffix:{word_form}:{pair}")
+        pair = _NIKL_R012_WORD_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R012:sino_ryeon:{word_form}:{pair}")
+        if boundary_mode in {"same_word", "morpheme"}:
+            pair = _NIKL_R013_WORD_LICENSES.get(word_form)
+            if pair is not None:
+                licenses.add(f"R013:adnominal_l:{word_form}:{pair}")
+        pair = _NIKL_R009_WORD_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R009:word:{word_form}:{pair}")
+        pair = _NIKL_R014_WORD_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R014:compound:{word_form}:{pair}")
+        pair = _NIKL_R015_WORD_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R015:saisiot:{word_form}:{pair}")
+        pair = _NIKL_R016_VERBAL_STEM_LICENSES.get(word_form)
+        if pair is not None:
+            licenses.add(f"R016:verb_stem_rieul_giyeok_suffix:{word_form}:{pair}")
+
     if boundary_mode == "phrase":
         pair = _NIKL_R013_PHRASE_LICENSES.get(full_form)
         if pair is not None:
             licenses.add(f"R013:adnominal_l:{full_form}:{pair}")
-    pair = _NIKL_R009_WORD_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R009:word:{full_form}:{pair}")
-    if boundary_mode == "phrase":
         pair = _NIKL_R009_PHRASE_LICENSES.get(full_form)
         if pair is not None:
             licenses.add(f"R009:phrase:{full_form}:{pair}")
-    pair = _NIKL_R014_WORD_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R014:compound:{full_form}:{pair}")
-    pair = _NIKL_R015_WORD_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R015:saisiot:{full_form}:{pair}")
-    pair = _NIKL_R016_VERBAL_STEM_LICENSES.get(full_form)
-    if pair is not None:
-        licenses.add(f"R016:verb_stem_rieul_giyeok_suffix:{full_form}:{pair}")
     return licenses
 
 @dataclass
