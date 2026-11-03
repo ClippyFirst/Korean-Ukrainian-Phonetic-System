@@ -215,25 +215,26 @@ def test_second_pass_sourced_lexical_pronunciations_match_shared_ipa_data():
 
 
 
-def test_water_price_fortis_is_an_exact_lexical_exception_not_a_general_rule():
+def test_water_price_compound_fortis_survives_attached_particle_without_generalizing():
     from korean_ukrainian.pipeline import phoneticize_korean
 
-    water_price = phoneticize_korean("물가")
-    assert water_price["surface_hangul"] == "물까"
-    assert water_price["ipa"]["ipa"] == "mul.k͈a"
+    water_price = phoneticize_korean("물가로")
+    assert water_price["surface_hangul"] == "물까로"
+    assert water_price["ipa"]["ipa"] == "mul.k͈a.ɾo"
     assert any(
-        rule.get("rule_id") == "LEXICON"
-        and rule.get("status") == "lexical-override"
-        and rule.get("input_kind") == "kozak-research-only"
+        rule.get("rule_id") == "R014"
+        and rule.get("status") == "established"
+        and rule.get("license_context") == "R014:compound:물가로:물>가"
         for rule in water_price["rules"]
     )
 
-    negative_control = phoneticize_korean("결과")
-    assert negative_control["surface_hangul"] == "결과"
+    negative_control = phoneticize_korean("결과로")
+    assert negative_control["surface_hangul"] == "결과로"
     assert not any(
-        rule.get("rule_id") == "LEXICON" and rule.get("status") == "lexical-override"
+        rule.get("rule_id") == "R014" and rule.get("status") == "established"
         for rule in negative_control["rules"]
     )
+
 
 def test_second_pass_lexical_targets_are_references_not_ukrainian_overrides():
     from korean_ukrainian.pipeline import transliterate_korean, render_sequence
