@@ -81,3 +81,40 @@ def test_aspirated_velar_coarticulation_is_not_misclassified_as_h_aspiration():
         strict_reference="kxɯ",
         strict_prediction="kʰɯ",
     ) == ["C12_aspirated_velar_coarticulation_profile"]
+
+
+
+def test_candidate_clusters_expose_unmapped_fragments_even_when_another_fragment_is_mapped():
+    fragments = [
+        {"op": "S", "reference_fragment": "ɕ", "kozak_fragment": "s"},
+        {"op": "S", "reference_fragment": "k͈", "kozak_fragment": "ɡ"},
+    ]
+    assert MODULE.candidate_clusters(fragments) == [
+        "C11_sibilant_place_profile_boundary",
+        "UNMAPPED_REQUIRES_REVIEW",
+    ]
+
+
+def test_build_rows_reports_unmapped_broad_fragments_inside_mixed_cluster_occurrence():
+    report = {
+        "benchmark": "fixture",
+        "eligible_token_occurrences": 1,
+        "native_ipa_profile": {"ipa_profile": "broad-v1"},
+        "broad_candidate_profile": {"profile_id": "broad-candidate-v1"},
+        "per_engine_occurrences": {
+            "clippyfirst_native": [
+                {
+                    "occurrence_id": "1", "row_id": "r1", "token": "시험",
+                    "surface_hangul": "시험", "gold": "ɕk͈", "ipa": "sɡ",
+                    "status": "scored", "distance": 2,
+                    "broad_candidate": {"closest_gold": "ɕk͈", "predicted": "sɡ", "distance": 2},
+                },
+            ],
+            "g2pk_0_9_4": [{"occurrence_id": "1", "ipa": "ɕk͈", "distance": 0}],
+        },
+    }
+    row = MODULE.build_rows(report)[0]
+    assert row["unmapped_broad_fragment_count"] == "1"
+    assert json.loads(row["unmapped_broad_fragments"]) == [
+        {"op": "S", "reference_fragment": "k͈", "kozak_fragment": "ɡ"},
+    ]
