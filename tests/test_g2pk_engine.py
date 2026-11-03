@@ -44,6 +44,18 @@ def test_nikl_surface_override_corrects_an_unlicensed_external_mismatch(monkeypa
     assert result["ipa"]["ipa"] == "nʌk̚.ɕ͈i"
 
 
+
+def test_g2pk_baseline_does_not_consume_variant_aware_kozak_lexical_candidates(monkeypatch):
+    class PassThroughG2p:
+        def __call__(self, text, descriptive=False):
+            return text
+
+    monkeypatch.setattr(g2pk_engine, "_ENGINE", PassThroughG2p())
+    result = g2pk_engine.phoneticize_with_g2pk("끌다")
+    assert result["surface_hangul"] == "끌다"
+    assert result["ipa"]["ipa"] == "k͈ɯl.da"
+    assert result["ipa"]["lexical_overrides"] == []
+
 def test_g2pk_descriptive_mode_is_explicit_and_passed_through(monkeypatch):
     monkeypatch.setattr(g2pk_engine, "_ENGINE", FakeG2p())
     assert g2pk_engine.pronounce_surface("나의 친구", descriptive=True) == "나에 친구"
