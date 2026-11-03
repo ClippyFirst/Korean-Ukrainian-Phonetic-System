@@ -2,6 +2,20 @@
 
 This report remains about **Kozak Kim only**. Original g2pK 0.9.4 is an untouched comparison baseline. Full execution/CI/paired-metric handoff is maintained in [MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md](../docs/MASTER-EXECUTION-PLAN-AND-CHAT-HANDOFF.md).
 
+## Final multi-engine results — 2026-11-03
+
+Exact-head workflow [41535300358](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358) completed successfully on branch head 06b0a9180295f729f9ba9580cd59c3097b02d745; artifact [13184368365](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300358/artifacts/13184368365).
+
+- Native/Browser parity: 2,703/2,703 eligible surface occurrences identical; 2,698/2,698 scored raw IPA strings identical; both runtimes abstained on the same five. This is implementation parity, not IPA gold validation.
+- UGTPHON (2,698 paired): Kozak Native exact 53.0393%, CER 9.0613%; untouched g2pK 0.9.4 exact 53.1134%, CER 9.2304%. Kozak CER is lower by 0.1691 pp; g2pK has two more exact matches. Paired row-cluster 95% CI for g2pK-minus-Kozak CER: [+0.0860,+0.2617] pp; exact-rate delta CI [−0.0824,+0.2840] pp crosses zero.
+- SIGMORPHON 2021 (998 paired): Kozak exact 35.8717%, CER 14.6100%; g2pK exact 35.3707%, CER 14.8106%. Kozak has five more exact matches and 0.2006 pp lower CER. Paired row-cluster 95% CI for g2pK-minus-Kozak exact delta [−1.0020,−0.1002] pp and CER delta [+0.0372,+0.3989] pp.
+- g2pK surface Hangul is rendered through the project's shared IPA adapter; it is not an independent IPA encoder. Both corpora carry annotation limitations; these scores are diagnostic, not normative gold and not Ukrainian target validation.
+- Training-readiness audit: 644 lexical rows, 45 additions, 24 frozen holdout forms, zero explicitly independently adjudicated IPA addition rows, and no holdout IPA gold. Supervised IPA training remains not ready. Reviewer A/B packets were generated without engine outputs and await independent annotation.
+- Main Verify [41535300205](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300205) PASS (621 Python, 1,389 Browser, data/source integrity, Vite build/generated pages); Browser G2P [41535300397](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300397), UGTPHON [41535300287](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300287), Native/g2pK [41535300645](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300645), morphology [41535300307](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300307), and test extraction [41535300790](https://github.com/ClippyFirst/Korean-Ukrainian-Phonetic-System/actions/runs/41535300790) all PASS.
+- Charsiu train/dev queue, CharsiuG2P inference, ByT5 inference and neural pairing were SKIPPED; NIKL metadata inventory was SKIPPED. No result or license clearance is claimed for these.
+
+Interpretation: the data now supports lower Kozak CER on both independent benchmark splits, and a SIGMORPHON exact-match advantage; UGTPHON exact match remains a tiny g2pK point advantage. This is meaningful comparative evidence, but it is not proof of universal superiority or normative correctness.
+
 ## Algorithm updates and cluster decisions
 
 | Order | Cluster | Evidence / change | Status |
@@ -34,7 +48,7 @@ Interpret these counts against sources, not as an unqualified win/loss tally:
 
 Native paired metrics: 2,698 shared occurrences; Kozak exact 53.0393% vs g2pK 53.1134%; Kozak CER 9.0613% vs g2pK 9.2304%. Browser paired metrics: exact tie at 53.4470%; Browser CER 8.0685% vs g2pK 8.2072%, cluster-bootstrap CER delta 95% CI [−0.2303, −0.0584] pp. These are corpus-relative diagnostics, not normative IPA gold; do not combine the two runtimes or fabricate a corrected score.
 
-## Exact-head verification
+## Historical exact-head verification snapshot (superseded by the 2026-11-03 final results above)
 
 Current branch head `5c775dfa6b6a969c320f47c1420c75ffa645e369`:
 - Python regression/data integrity: PASS, run 41532567453.
