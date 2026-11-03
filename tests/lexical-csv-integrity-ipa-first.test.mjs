@@ -152,6 +152,43 @@ test('NIKL 물가 compound fortition persists in exact attached-particle form �
   assert.doesNotMatch(negativeControl.ipa, /k͈/u);
 });
 
+test('source-attested UGTPHON fortition mismatches are corrected by exact NIKL licenses only', () => {
+  const expected = [
+    ['팔자걸음', '팔짜걸음', 'tɕ͈'],
+    ['정신병자네', '정신뼝자네', 'p͈'],
+    ['보일거라', '보일꺼라', 'k͈'],
+    ['없을듯', '없을뜯', 't͈'],
+    ['안할듯', '안할뜯', 't͈'],
+  ];
+  for (const [word, surface, fortis] of expected) {
+    const result = engine.convert(word);
+    assert.equal(result.surfaceHangul, surface, word);
+    assert.ok(result.ipa.includes(fortis), word + ': IPA must preserve the licensed fortis segment');
+  }
+
+  assert.equal(engine.convert('많을거같이').surfaceHangul, '많을거같이');
+  assert.equal(engine.convert('해줄것').surfaceHangul, '해줄것');
+  assert.equal(engine.convert('결과로').surfaceHangul, '결과로');
+});
+
+test('NIKL Basic Dictionary 혐오증 reading enters Kozak Kim as a provisional IPA-first lexical candidate', () => {
+  const row = additions.find(item => item.input === '혐오증');
+  assert.ok(row, 'the exact NIKL Basic Dictionary reading must be present');
+  assert.equal(row.surface_hangul, '혀모쯩');
+  assert.equal(row.ipa_syllables, 'hjʌ|mo|tɕ͈ɯŋ');
+  assert.equal(row.target_syllables, 'гьо|мо|ччин');
+  assert.equal(row.target_status, 'provisional');
+  assert.equal(row.input_kind, 'kozak-research-only');
+  assert.ok(row.source_url.includes('mainSearchWord='));
+
+  const result = researchEngine.convert('혐오증');
+  assert.equal(result.surfaceHangul, '혀모쯩');
+  assert.equal(result.ipa, renderExpectedIpa('혐오증', ['hjʌ', 'mo', 'tɕ͈ɯŋ']));
+  assert.equal(result.ukrainian, '', 'unreviewed target must remain unavailable');
+  assert.equal(result.candidate_ukrainian, 'гьомоччин');
+  assert.equal(result.candidate_status, 'provisional');
+});
+
 test('C09 NIKL dictionary length attestations enter the Kozak Kim IPA-first lexical adapter', () => {
   const expected = {
     '사람': { ipa: 'saː|ɾam', target: 'са|рам', source: 'ParaWordNo=58161' },
