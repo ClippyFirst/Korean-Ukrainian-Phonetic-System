@@ -354,7 +354,13 @@ test('NIKL §16 official letter-name examples are exact lexical entries', () => 
     assert.equal(row.target_status, 'provisional', word);
     const result = engine.convert(word);
     assert.equal(result.status, 'lexical-review', word);
-    assert.equal(result.ukrainian, target, word);
+    if (['variant-aware-research', 'kozak-research-only'].includes(row.input_kind) && row.target_status === 'provisional') {
+      assert.equal(result.ukrainian, '', word);
+      assert.equal(result.candidate_ukrainian, target, word);
+      assert.equal(result.candidate_status, 'provisional', word);
+    } else {
+      assert.equal(result.ukrainian, target, word);
+    }
     assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
     assert.equal(result.ukrainian, target, word);
     assert.ok(result.trace.some((item) => item.rules.includes('lexical-pronunciation')), word);

@@ -19,7 +19,13 @@ function assertOfficial(word, surface, ipa, { long = false, short = false } = {}
   const result = engine.convert(word);
   assert.equal(result.surfaceHangul, surface, word);
   assert.equal(result.ipa, renderExpectedIpa(word, ipa), word);
-  assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), word);
+  if (['variant-aware-research', 'kozak-research-only'].includes(row.input_kind) && row.target_status === 'provisional') {
+    assert.equal(result.ukrainian, '', word);
+    assert.equal(result.candidate_ukrainian, row.target_syllables.split('|').join(''), word);
+    assert.equal(result.candidate_status, 'provisional', word);
+  } else {
+    assert.equal(result.ukrainian, row.target_syllables.split('|').join(''), word);
+  }
   if (long) assert.match(ipa, /ː/u, word + ': expected a long vowel');
   if (short) assert.doesNotMatch(ipa, /ː/u, word + ': expected no long vowel');
 }

@@ -66,7 +66,7 @@ test('every Hangul-only lexical target is rendered from its stored IPA, not inde
     const result = engine.convert(row.input);
     assert.equal(result.ipa, renderExpectedIpa(row.input,row.ipa_syllables.split('|')), row.input + ': runtime IPA');
     const expectedTarget = row.target_syllables.split('|').join('');
-    if (row.input_kind === 'variant-aware-research' && row.target_status === 'provisional') {
+    if (['variant-aware-research', 'kozak-research-only'].includes(row.input_kind) && row.target_status === 'provisional') {
       assert.equal(result.ukrainian, '', row.input + ': provisional target must not be accepted');
       assert.equal(result.candidate_ukrainian, expectedTarget, row.input + ': IPA-derived candidate');
       assert.equal(result.candidate_status, 'provisional', row.input + ': candidate status');
@@ -115,8 +115,9 @@ test('NIKL §7 끌다 keeps its long vowel and plain ㄷ while retaining provisi
   const result = engine.convert('끌다');
   assert.equal(result.surfaceHangul, '끌다');
   assert.equal(result.ipa, renderExpectedIpa('끌다', ['k͈ɯːl', 'da']));
-  assert.equal(result.ukrainian, 'ккилда', 'preserve the existing Browser lexical-output contract');
-  assert.equal(result.status, 'lexical-review');
+  assert.equal(result.ukrainian, '', 'unreviewed target must remain unavailable');
+  assert.equal(result.candidate_ukrainian, 'ккилда');
+  assert.equal(result.candidate_status, 'provisional');
   assert.equal(row.target_status, 'provisional', 'do not promote the Ukrainian target to reviewed');
 });
 
