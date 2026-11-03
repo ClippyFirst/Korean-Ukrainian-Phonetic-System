@@ -165,6 +165,33 @@ def candidate_clusters(
     return sorted(labels)
 
 
+
+def _index_unique_ids(
+    records: list[dict],
+    id_field: str,
+    label: str,
+    *,
+    allow_missing: bool = False,
+    id_label: str | None = None,
+) -> dict[str, dict]:
+    """Index records without silently choosing a winner for duplicate IDs."""
+    indexed: dict[str, dict] = {}
+    display_field = id_label or id_field
+    for record in records:
+        if not isinstance(record, dict):
+            raise ValueError(f"{label} contains a non-object record")
+        value = record.get(id_field)
+        if value is None or str(value) == "":
+            if allow_missing:
+                continue
+            raise ValueError(f"{label} record is missing {display_field}")
+        identity = str(value)
+        if identity in indexed:
+            raise ValueError(f"{label} contains duplicate {display_field}: {identity}")
+        indexed[identity] = record
+    return indexed
+
+
 def build_rows(
     report: dict,
     corpus_rows: list[dict] | None = None,
@@ -173,17 +200,20 @@ def build_rows(
 ) -> list[dict[str, str]]:
     if corpus_rows is not None and (not corpus_revision or not corpus_license):
         raise ValueError("corpus_revision and corpus_license are required when corpus_rows are supplied")
-    corpus_by_id = {
-        str(row["id"]): row
-        for row in (corpus_rows or [])
-        if isinstance(row, dict) and row.get("id") is not None
-    }
+    corpus_by_id = _index_unique_ids(
+        corpus_rows or [],
+        "id",
+        "context corpus",
+        allow_missing=True,
+        id_label="corpus row id",
+    )
     engines = report.get("per_engine_occurrences", {})
     native = engines.get("clippyfirst_native")
     g2pk = engines.get("g2pk_0_9_4")
     if not isinstance(native, list) or not isinstance(g2pk, list):
         raise ValueError("report must contain Native and g2pK occurrence ledgers")
-    g2pk_by_id = {str(item["occurrence_id"]): item for item in g2pk}
+    _index_unique_ids(native, "occurrence_id", "Native occurrence ledger")
+    g2pk_by_id = _index_unique_ids(g2pk, "occurrence_id", "g2pK occurrence ledger")
     rows = []
     for item in native:
         if item.get("status") != "scored":
