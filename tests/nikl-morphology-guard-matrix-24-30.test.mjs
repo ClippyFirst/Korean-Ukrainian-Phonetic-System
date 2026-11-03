@@ -224,5 +224,8 @@ test('C08 context recovery does not authorize the unresolved -성 lexical case',
   const sourceCase = c08ContextFixture.cases.find((item) => item.source_row_id === 'dc_inside_2024');
   assert.ok(sourceCase && sourceCase.source_sentence.includes('유사성'));
   const result = generic.convert(sourceCase.source_sentence);
-  assert.ok(!result.trace.some((item) => item.rules.includes('adnominal-r-fortition-§27-exact-form')), 'the exact -성 token remains unlicensed; no suffix-wide fortition');
+  // This sentence also contains the independently licensed exact form 없을듯.
+  // Do not mistake that R013 trace for evidence about the unresolved -성 token.
+  assert.ok(result.surfaceHangul.includes('유사성'), '유사성 must remain plain');
+  assert.ok(!result.surfaceHangul.includes('유사썽'), 'no suffix-wide -성 fortition is authorized');
 });

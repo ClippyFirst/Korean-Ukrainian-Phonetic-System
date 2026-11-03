@@ -156,7 +156,7 @@ test('source-attested UGTPHON fortition mismatches are corrected by exact NIKL l
     ['팔자걸음', '팔짜거름', 'tɕ͈'],
     ['정신병자네', '정신뼝자네', 'p͈'],
     ['보일거라', '보일꺼라', 'k͈'],
-    ['없을듯', '없을뜯', 't͈'],
+    ['없을듯', '업쓸뜻', 't͈'],
     ['안할듯', '안할뜯', 't͈'],
   ];
   for (const [word, surface, fortis] of expected) {
